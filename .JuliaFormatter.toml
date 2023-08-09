@@ -1,0 +1,12 @@
+align_assignment = true
+align_matrix = true
+align_pair_arrow = true
+align_struct_field = true
+conditional_to_if = true
+format_docstrings = true
+format_markdown = false
+indent = 4
+normalize_line_endings = "unix"
+remove_extra_newlines = true
+separate_kwargs_with_semicolon = true
+verbose = true
