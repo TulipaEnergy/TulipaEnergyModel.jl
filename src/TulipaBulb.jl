@@ -9,6 +9,12 @@ using DataFrames
 # Exported functions
 export optimise_investments
 
+"""
+    optimise_investments
+
+This is a doc for optimise_investments.
+It should probably be improved.
+"""
 function optimise_investments(input_folder::AbstractString, output_folder::AbstractString)
     # Files names
     assets_file       = joinpath(input_folder, "assets.csv")
