@@ -1,0 +1,6 @@
+a,pVarCost,pInvCost,pUnitCap,pInitCap
+ocgt,0.07,25,100,0
+ccgt,0.05,40,400,0
+wind,0.001,70,50,0
+solar,0,50,10,0
+ens,0.180,0,0,0
