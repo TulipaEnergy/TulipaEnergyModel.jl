@@ -14,7 +14,7 @@ makedocs(;
         edit_link = "main",
         assets = String[],
     ),
-    pages=[
+    pages = [
         "Home" => "index.md",
         "Mathematical Formulation" => "mathematical-formulation.md",
         "How to Use" => "how-to-use.md",

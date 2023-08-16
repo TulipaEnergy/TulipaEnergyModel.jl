@@ -3,6 +3,7 @@ CurrentModule = TulipaBulb
 ```
 
 # [TulipaBulb.jl documentation](@id home)
+
 [TulipaBulb.jl](https://github.com/TNO-Tulipa/TulipaBulb.jl) is an optimization model for the electricity market and its coupling with other energy sectors (e.g., hydrogen, heat, natural gas, etc.). The optimization model determines the optimal investment and operation decisions for different types of assets (e.g., producers, consumers, conversion, storage, and transport). _TulipaBulb.jl_ is developed in [Julia](https://julialang.org/) and depends on the [JuMP.jl](https://github.com/jump-dev/JuMP.jl) package.
 
 ## [License](@id license)

@@ -1,6 +1,7 @@
 # [How to Use](@id how-to-use)
 
 ## [Install](@id install)
+
 * Clone the repository from [TulipaBulb.jl](https://github.com/TNO-Tulipa/TulipaBulb.jl) into your local machine
 * Open the project in your favorite IDE (e.g., [Visual Studio Code](https://code.visualstudio.com/))
 * Start a Julia REPL
