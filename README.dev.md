@@ -8,8 +8,9 @@
 git remote add upstream https://github.com/TNO-Tulipa/TulipaBulb.jl
 ```
 
-- Open this project in your editor, activate and instantiate the project.
-- Run the tests to make sure that everything is working as expected.
+5. Open this project in your editor. 
+6. On Julia, activate and instantiate the project under the package mode.
+7. Run the tests to make sure that everything is working as expected.
 
 ## Linting and formatting
 
@@ -48,7 +49,7 @@ Do it once now to make sure that everything works as expected.
 
 Now, you can only commit if all the pre-commit tests pass.
 
-**Note:** on subsequent occassions when you need to run pre-commit in a new shell, you will need to activate the Python virtual environment.
+**Note:** on subsequent occassions when you need to run pre-commit in a new shell, you will need to activate the Python virtual environment. If so, do the following:
 ```bash
 . env/Scripts/activate
 pre-commit run -a
@@ -63,11 +64,13 @@ pre-commit run -a
   - If there is an associated issue, add the issue number
   - If there is no associated issue, **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update.
   - If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes
+
 - Commit message
 
   - Use imperative, present tense (Add feature, Fix bug)
   - Have informative titles
   - If necessary, add a body with details
+
 - Try to create "atomic git commits" (recommended reading: [The Utopic Git History](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593))
 - Make sure the tests pass
 - Make sure the pre-commit tests pass
