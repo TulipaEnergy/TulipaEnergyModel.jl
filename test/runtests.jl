@@ -6,6 +6,8 @@ const INPUT_FOLDER  = joinpath(@__DIR__, "inputs")
 const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
 
 @testset "TulipaBulb.jl" begin
-    objective_function = optimise_investments(INPUT_FOLDER, OUTPUT_FOLDER)
-    @test objective_function ≈ 269238.43825 atol = 1e-5
+    parameters, sets = create_parameters_and_sets_from_file(INPUT_FOLDER)
+    solution = optimise_investments(parameters, sets)
+    @test solution.objective_value ≈ 269238.43825 atol = 1e-5
+    save_solution_to_file(OUTPUT_FOLDER, solution.v_investment, parameters.p_unit_capacity)
 end
