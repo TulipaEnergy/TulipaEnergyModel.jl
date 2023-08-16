@@ -4,13 +4,13 @@
 2. Clone your fork.
 3. Add this repo as upstream with the following command:
 
-```bash
-git remote add upstream https://github.com/TNO-Tulipa/TulipaBulb.jl
-```
+   ```bash
+   git remote add upstream https://github.com/TNO-Tulipa/TulipaBulb.jl
+   ```
 
-5. Open this project in your editor. 
-6. On Julia, activate and instantiate the project under the package mode.
-7. Run the tests to make sure that everything is working as expected.
+4. Open this project in your editor.
+5. On Julia, activate and instantiate the project under the package mode.
+6. Run the tests to make sure that everything is working as expected.
 
 ## Linting and formatting
 
@@ -29,6 +29,7 @@ pip install --upgrade pip setuptools pre-commit
 ```
 
 On Unix or MacOS, you need to active the environment using the following command instead of the previous one:
+
 ```bash
 . env/bin/activate
 ```
@@ -50,6 +51,7 @@ Do it once now to make sure that everything works as expected.
 Now, you can only commit if all the pre-commit tests pass.
 
 **Note:** on subsequent occassions when you need to run pre-commit in a new shell, you will need to activate the Python virtual environment. If so, do the following:
+
 ```bash
 . env/Scripts/activate
 pre-commit run -a
