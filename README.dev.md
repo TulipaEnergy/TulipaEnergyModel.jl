@@ -1,8 +1,8 @@
 # Developer documentation
 
-- Fork this repository.
-- Clone your fork.
-- Add this repo as upstream with
+1. Fork this repository.
+2. Clone your fork.
+3. Add this repo as upstream with the following command:
 
 ```bash
 git remote add upstream https://github.com/TNO-Tulipa/TulipaBulb.jl
