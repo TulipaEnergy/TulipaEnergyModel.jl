@@ -1,7 +1,8 @@
-- name: Close Stale Issues
+name: 'Close Stale Issues'
 on:
   schedule:
     - cron: '30 1 * * *'
+
 jobs:
   stale:
     runs-on: ubuntu-latest
