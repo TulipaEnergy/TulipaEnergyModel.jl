@@ -87,7 +87,7 @@ Before creating a pull request:
 - Make sure the tests pass
 - Make sure the pre-commit tests pass
 - Rebase: Fetch any `main` updates from upstream and rebase your branch into `origin/main` if necessary
-- Then you can pen a pull request and work with the reviewer to address any issues
+- Then you can open a pull request and work with the reviewer to address any issues
 
 ## GIT Rules of Engagement
 
