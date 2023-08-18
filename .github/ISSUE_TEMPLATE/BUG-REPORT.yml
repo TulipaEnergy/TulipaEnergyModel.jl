@@ -2,7 +2,7 @@ name: "🐛 Bug Report"
 description: Create a new ticket for a bug.
 title: "🐛 [BUG] - <title>"
 labels: [
-  "bug"
+  "Type: bug"
 ]
 body:
   - type: textarea
@@ -20,22 +20,12 @@ body:
       description: Please enter an explicit description of your issue
       value: |
         1. Go to '...'
-        2. Click on '....'
-        3. Scroll down to '....'
-        4. See error
+        2. Using input data '....'
+        3. With function '....'
+        4. [Specific error message]
       render: bash
     validations:
       required: true
-  - type: textarea
-    id: screenshot
-    attributes:
-      label: "Screenshots"
-      description: If applicable, add screenshots to help explain your problem.
-      value: |
-        ![DESCRIPTION](LINK.png)
-      render: bash
-    validations:
-      required: false
   - type: textarea
     id: logs
     attributes:
