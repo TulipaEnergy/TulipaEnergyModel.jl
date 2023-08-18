@@ -14,7 +14,14 @@ makedocs(;
         edit_link = "main",
         assets = String[],
     ),
-    pages = ["Home" => "index.md"],
+    pages = [
+        "Home" => "index.md",
+        "Mathematical Formulation" => "mathematical-formulation.md",
+        "How to Use" => "how-to-use.md",
+        "API" => "api.md",
+        "Tutorial" => "tutorial.md",
+        "Reference" => "reference.md",
+    ],
 )
 
 deploydocs(; repo = "github.com/TNO-Tulipa/TulipaBulb.jl", devbranch = "main")
