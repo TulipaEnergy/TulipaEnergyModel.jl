@@ -6,7 +6,7 @@ export optimise_investments
 This is a doc for optimise_investments.
 It should probably be improved.
 """
-function optimise_investments(params, sets)
+function optimise_investments(params, sets; verbose = false)
     # Sets unpacking
     A = sets.s_assets
     Ac = sets.s_assets_consumer
@@ -18,6 +18,7 @@ function optimise_investments(params, sets)
 
     # Model
     model = Model(HiGHS.Optimizer)
+    set_attribute(model, "output_flag", verbose)
 
     # Variables
     @variable(model, 0 ≤ v_flow[F, RP, K])         #flow from asset a to asset aa [MW]
@@ -66,9 +67,6 @@ function optimise_investments(params, sets)
 
     # Solve model
     optimize!(model)
-
-    # Objective function value
-    println("Total cost: ", objective_value(model))
 
     return (
         objective_value = objective_value(model),
