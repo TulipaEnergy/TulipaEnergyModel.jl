@@ -1,5 +1,5 @@
-name: "💡 Feature Request"
-description: Create a new ticket for a new feature request
+name: "Addition Request"
+description: Create a ticket for a new addition (or feature) request
 title: "<title>"
 labels: [
   "Type: addition"

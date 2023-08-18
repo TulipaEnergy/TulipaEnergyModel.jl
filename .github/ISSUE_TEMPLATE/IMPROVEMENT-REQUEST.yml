@@ -1,5 +1,5 @@
-name: "💡 Improvement Request"
-description: Create a new ticket for a new improvement request
+name: "Improvement Request"
+description: Create a ticket to request an improvement of something that already exists.
 title: "<title>"
 labels: [
   "Type: improvement"
