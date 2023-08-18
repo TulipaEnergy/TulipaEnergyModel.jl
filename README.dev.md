@@ -19,7 +19,7 @@
 
 Install a plugin to use [EditorConfig](https://editorconfig.org).
 
-We use [https://pre-commit.com](https://pre-commit.com) to run the linter and formatters.
+We use [https://pre-commit.com](https://pre-commit.com) to run the linters and formatters.
 In particular, the Julia code is formatted using [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl).
 
 You can install `pre-commit` globally using `pip install --user pre-commit`.
