@@ -89,7 +89,7 @@ Before creating a pull request:
 - Rebase: Fetch any `main` updates from upstream and rebase your branch into `origin/main` if necessary
 - Then you can open a pull request and work with the reviewer to address any issues
 
-## GIT Rules of Engagement
+## GitHub Rules of Engagement
 
 - Assign only yourself to issues.
 - Assign yourself to issues you **want** to address. Consider if you will be able to work on it in the near future - if not, consider leaving it available for someone else to address.
