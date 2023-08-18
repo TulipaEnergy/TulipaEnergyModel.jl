@@ -95,7 +95,7 @@ Before creating a pull request:
 - Assign yourself to issues you **want** to address. Consider if you will be able to work on it in the near future - if not, consider leaving it available for someone else to address.
 - Set the issue Status to "In Progress" when you have started working on it.
   - Creating a PR for an issue (even if only a draft) will automatically set an issue as 'In Progress.' A good habit is creating a *draft* PR early, to take advantage of this automation and get feedback early.
-- When finalizing a PR, set the Status to "Ready for Review" and consider assigning a specific Reviewer.
+- When finalizing a PR, set the Status to "Ready for Review" - if someone specific **needs** to review it, you can assign them as the reviewer.
 - Once Issues have been addressed by merged PRs, they will automatically move to Done.
 - If you want to discuss an issue at the next group meeting, mark it with the "question" label.
 - Issues without updates for 60 days (and PRs without updates in 30 days) will be labelled as "stale" and filtered out of view. There is a Stale project board to view and revive these.
