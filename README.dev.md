@@ -64,10 +64,10 @@ pre-commit run -a
 
 Our workflow is:
 
-1) Fetch from org remote, fast-forward your local main
-2) Create a branch to address the issue (see below for naming) - *"Always branch from `main`."*
-3) Push the new local branch to your personal remote repository
-4) Create a pull request to merge your remote branch into the org main
+1. Fetch from org remote, fast-forward your local main
+2. Create a branch to address the issue (see below for naming) - *"Always branch from `main`."*
+3. Push the new local branch to your personal remote repository
+4. Create a pull request to merge your remote branch into the org main
 
 Creating a branch:
 
