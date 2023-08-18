@@ -1,0 +1,39 @@
+name: "💡 Improvement Request"
+description: Create a new ticket for a new improvement request
+title: "<title>"
+labels: [
+  "Type: improvement"
+]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: "Summary"
+      description: Provide a brief explanation of the improvement
+      placeholder: Describe in a few lines your improvement request
+    validations:
+      required: true
+  - type: textarea
+    id: basic_example
+    attributes:
+      label: "Basic Example"
+      description: Indicate here some basic examples of your improvement.
+      placeholder: A few specific words about your improvement request.
+    validations:
+      required: true
+  - type: textarea
+    id: drawbacks
+    attributes:
+      label: "Drawbacks"
+      description: What are the drawbacks/impacts of your improvement request ?
+      placeholder: Identify the drawbacks and impacts while being neutral on your improvement request
+    validations:
+      required: true
+  - type: textarea
+    id: reference_issues
+    attributes:
+      label: "Reference Issues"
+      description: Common issues
+      placeholder: "#Issues IDs"
+    validations:
+      required: false
