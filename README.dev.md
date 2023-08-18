@@ -1,4 +1,7 @@
+
 # Developer documentation
+
+## GIT Setup
 
 1. Fork this repository.
 2. Clone your fork.
@@ -16,7 +19,7 @@
 
 Install a plugin to use [EditorConfig](https://editorconfig.org).
 
-We use [https://pre-commit.com](https://pre-commit.com) to run the linter and formatter of many things.
+We use [https://pre-commit.com](https://pre-commit.com) to run the linters and formatters.
 In particular, the Julia code is formatted using [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl).
 
 You can install `pre-commit` globally using `pip install --user pre-commit`.
@@ -59,22 +62,40 @@ pre-commit run -a
 
 ## Contributing workflow
 
-- Always branch from `main`
+Our workflow is:
 
-- Add a branch prefix
+1. Fetch from org remote, fast-forward your local main
+2. Create a branch to address the issue (see below for naming) - *"Always branch from `main`."*
+3. Push the new local branch to your personal remote repository
+4. Create a pull request to merge your remote branch into the org main
 
-  - If there is an associated issue, add the issue number
-  - If there is no associated issue, **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update.
-  - If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes
+Creating a branch:
 
-- Commit message
+- If there is an associated issue, add the issue number
+- If there is no associated issue, **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update
+- If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes
 
-  - Use imperative, present tense (Add feature, Fix bug)
-  - Have informative titles
-  - If necessary, add a body with details
+Commit message:
+
+- Use imperative, present tense (Add feature, Fix bug)
+- Have informative titles
+- If necessary, add a body with details
+
+Before creating a pull request:
 
 - Try to create "atomic git commits" (recommended reading: [The Utopic Git History](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593))
 - Make sure the tests pass
 - Make sure the pre-commit tests pass
-- Before creating the pull-request, fetch any `main` updates from upstream and rebase your branch into `origin/main` if necessary
-- Open a pull request and work with the reviewer to address any issues
+- Rebase: Fetch any `main` updates from upstream and rebase your branch into `origin/main` if necessary
+- Then you can open a pull request and work with the reviewer to address any issues
+
+## GitHub Rules of Engagement
+
+- Assign only yourself to issues.
+- Assign yourself to issues you **want** to address. Consider if you will be able to work on it in the near future - if not, consider leaving it available for someone else to address.
+- Set the issue Status to "In Progress" when you have started working on it.
+  - Creating a PR for an issue (even if only a draft) will automatically set an issue as 'In Progress.' A good habit is creating a *draft* PR early, to take advantage of this automation and get feedback early.
+- When finalizing a PR, set the Status to "Ready for Review" - if someone specific **needs** to review it, you can assign them as the reviewer.
+- Once Issues have been addressed by merged PRs, they will automatically move to Done.
+- If you want to discuss an issue at the next group meeting, mark it with the "question" label.
+- Issues without updates for 60 days (and PRs without updates in 30 days) will be labelled as "stale" and filtered out of view. There is a Stale project board to view and revive these.
