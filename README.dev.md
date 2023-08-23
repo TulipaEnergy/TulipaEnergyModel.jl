@@ -99,3 +99,60 @@ Before creating a pull request:
 - Once Issues have been addressed by merged PRs, they will automatically move to Done.
 - If you want to discuss an issue at the next group meeting, mark it with the "question" label.
 - Issues without updates for 60 days (and PRs without updates in 30 days) will be labelled as "stale" and filtered out of view. There is a Stale project board to view and revive these.
+
+## Most commonly used Git commands in the contributing flow
+
+Assuming `origin` is the important repository, i.e., not the fork.
+
+First, update your local main branch.
+
+- `git switch main`
+- `git fetch --all --prune`
+- `git merge --ff-only origin/main`
+
+Then, create a new branch, work, commit, and push.
+
+- `git switch -c NEW_BRANCH_ISSUE`
+- Coding...
+- `git commit -am "COMMENT"`: Equivalent to `git commit -a -m "COMMENT"`.
+- `git push myfork main`
+
+> **Warning**
+>
+> If you have a conflict on your main, it will appear now. You can delete your old `main` branch using `git reset --hard origin/main`.
+
+Now, we are going to rebase our local feature branch.
+
+- `git switch BRANCH_NAME`
+- `git rebase main BRANCH_NAME`
+
+It will say you have Conflicts. Open the file(s) and edit it to remove the conflicts, until you have legible code. CTRL+S to save the file.
+
+- `git diff`: Check that changes are correct.
+- `git add FILE_NAME`
+- `git diff --staged`: Another way to check changes, i.e., what you will see in the pull request.
+
+Run the tests and the linter.
+
+On Julia:
+
+```julia-pkg
+pkg> test
+```
+
+On the bash/git bash terminal, the pre-commit:
+
+```bash
+. env/bin/activate # if necessary (for Windows the command is: . env/Scripts/activate)
+pre-commit run -a
+```
+
+If there are things to fix, do it.
+Then, add them again (`git add`), and repeat the tests and linter.
+
+- `git status`: Another way to show that all conflicts are fixed.
+- `git rebase --continue`
+- `git push --force`
+
+After pushing, the PR will be automatically updated.
+If a review was made, re-request a review.
