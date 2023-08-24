@@ -1,7 +1,21 @@
 
 # Developer documentation
 
-## GIT Setup
+## Git setup
+
+First we need to set some config variables so that the code is
+consistent across all operating systems - different OSs use different
+line-endings for text files (source code).
+
+Disable any ambiguity in your global and current repository settings:
+
+```shell
+cd /path/to/TulipaBulb.jl
+git config --unset core.autocrlf         # disable autocrlf in the Bulb repo
+git config --global core.autocrlf false  # explicitly disable autocrlf globally
+git config --global --unset core.eol     # disable explicit file-ending globally
+git config core.eol lf                   # set Linux style file-endings in Bulb
+```
 
 1. Fork this repository.
 2. Clone your fork.
