@@ -95,16 +95,20 @@ Saves the solution variable v_investment to a file "investments.csv" inside `out
 The format of each row is `a,v,p*v`, where `a` is the asset indexing `v_investment`, `v`
 is corresponding `v_investment` value, and `p` is the corresponding `p_unit_capacity` value.
 """
-function save_solution_to_file(output_folder, v_investment, p_unit_capacity)
+function save_solution_to_file(
+    output_folder,
+    s_assets_investment,
+    v_investment,
+    p_unit_capacity,
+)
     # Writing the investment results to a CSV file
-    output_file = open(joinpath(output_folder, "investments.csv"), "w")
-    write(output_file, "a,InstalUnits,InstalCap_MW\n")
-    for a in axes(v_investment, 1)
-        v = v_investment[a]
-        p = p_unit_capacity[a]
-        write(output_file, "$a,$v,$(p * v)\n")
-    end
-    close(output_file)
+    output_file = joinpath(output_folder, "investments.csv")
+    output_table = DataFrame(;
+        a = s_assets_investment,
+        InstalUnits = [v_investment[a] for a in s_assets_investment],
+        InstalCap_MW = [p_unit_capacity[a] * v_investment[a] for a in s_assets_investment],
+    )
+    CSV.write(output_file, output_table)
 
     return
 end
