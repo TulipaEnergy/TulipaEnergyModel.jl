@@ -67,12 +67,20 @@ Do it once now to make sure that everything works as expected.
 
 Now, you can only commit if all the pre-commit tests pass.
 
-**Note:** on subsequent occassions when you need to run pre-commit in a new shell, you will need to activate the Python virtual environment. If so, do the following:
+**Note:** On subsequent occasions when you need to run pre-commit in a new shell, you will need to activate the Python virtual environment. If so, do the following:
 
 ```bash
 . env/Scripts/activate
 pre-commit run -a
 ```
+
+In VSCode, you can activate "Format on Save" for the Julia Formatter.
+
+1. Open VSCode Settings (CTRL + ,)
+2. In Search Settings, type "Format on Save"
+3. Tick the first result
+
+![Alt text](image.png)
 
 ## Contributing workflow
 
