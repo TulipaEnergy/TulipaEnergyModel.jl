@@ -128,7 +128,7 @@ Then, create a new branch, work, commit, and push.
 
 - `git switch -c NEW_BRANCH_ISSUE`
 - Coding...
-- `git commit -am "COMMENT"`: Equivalent to `git commit -a -m "COMMENT"`.
+- `git commit -am "A short but descriptive commit messag"`: Equivalent to `git commit -a -m "commit msg"`.
 - `git push myfork main`
 
 > **Warning**
@@ -140,7 +140,7 @@ Now, we are going to rebase our local feature branch.
 - `git switch BRANCH_NAME`
 - `git rebase main BRANCH_NAME`
 
-It will say you have Conflicts. Open the file(s) and edit it to remove the conflicts, until you have legible code. CTRL+S to save the file.
+It will say you have Conflicts. Open the file(s) and edit it to remove the conflicts, until the code looks correct to you.
 
 - `git diff`: Check that changes are correct.
 - `git add FILE_NAME`
@@ -162,7 +162,7 @@ pre-commit run -a
 ```
 
 If there are things to fix, do it.
-Then, add them again (`git add`), and repeat the tests and linter.
+Then, add them again (`git add`), rerun the tests & linter, and commit.
 
 - `git status`: Another way to show that all conflicts are fixed.
 - `git rebase --continue`
