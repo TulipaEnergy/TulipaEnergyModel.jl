@@ -19,5 +19,5 @@ Pages = ["reference.md"]
 ```
 
 ```@autodocs
-Modules = [TulipaBulb]
+Modules = [TulipaEnergyModel]
 ```

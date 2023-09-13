@@ -43,6 +43,6 @@ jobs:
             - run: |
                   julia --project=docs -e '
                     using Documenter: DocMeta, doctest
-                    using TulipaBulb
-                    DocMeta.setdocmeta!(TulipaBulb, :DocTestSetup, :(using TulipaBulb); recursive=true)
-                    doctest(TulipaBulb)'
+                    using TulipaEnergyModel
+                    DocMeta.setdocmeta!(TulipaEnergyModel, :DocTestSetup, :(using TulipaEnergyModel); recursive=true)
+                    doctest(TulipaEnergyModel)'

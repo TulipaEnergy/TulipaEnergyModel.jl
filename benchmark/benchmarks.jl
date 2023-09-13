@@ -1,5 +1,5 @@
 using BenchmarkTools
-using TulipaBulb
+using TulipaEnergyModel
 
 const SUITE = BenchmarkGroup()
 

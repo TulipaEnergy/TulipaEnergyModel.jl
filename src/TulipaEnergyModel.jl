@@ -1,4 +1,4 @@
-module TulipaBulb
+module TulipaEnergyModel
 
 # Packages
 using JuMP

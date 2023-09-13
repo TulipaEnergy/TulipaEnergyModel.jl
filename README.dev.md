@@ -8,7 +8,7 @@
 3. Add this repo as upstream with the following command:
 
    ```bash
-   git remote add upstream https://github.com/TNO-Tulipa/TulipaBulb.jl
+   git remote add upstream https://github.com/TulipaEnergy/TulipaEnergyModel.jl
    ```
 
 4. Open this project in your editor.
