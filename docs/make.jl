@@ -1,16 +1,21 @@
-using TulipaBulb
+using TulipaEnergyModel
 using Documenter
 
-DocMeta.setdocmeta!(TulipaBulb, :DocTestSetup, :(using TulipaBulb); recursive = true)
+DocMeta.setdocmeta!(
+    TulipaEnergyModel,
+    :DocTestSetup,
+    :(using TulipaEnergyModel);
+    recursive = true,
+)
 
 makedocs(;
-    modules = [TulipaBulb],
+    modules = [TulipaEnergyModel],
     authors = "Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors",
-    repo = "https://github.com/TNO-Tulipa/TulipaBulb.jl/blob/{commit}{path}#{line}",
-    sitename = "TulipaBulb.jl",
+    repo = "https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/{commit}{path}#{line}",
+    sitename = "TulipaEnergyModel.jl",
     format = Documenter.HTML(;
         prettyurls = get(ENV, "CI", "false") == "true",
-        canonical = "https://TNO-Tulipa.github.io/TulipaBulb.jl",
+        canonical = "https://TulipaEnergy.github.io/TulipaEnergyModel.jl",
         edit_link = "main",
         assets = String[],
     ),
@@ -24,4 +29,4 @@ makedocs(;
     ],
 )
 
-deploydocs(; repo = "github.com/TNO-Tulipa/TulipaBulb.jl", devbranch = "main")
+deploydocs(; repo = "github.com/TulipaEnergy/TulipaEnergyModel.jl", devbranch = "main")
