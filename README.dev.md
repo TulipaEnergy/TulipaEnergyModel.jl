@@ -116,41 +116,52 @@ Before creating a pull request:
 
 ## Most commonly used Git commands in the contributing flow
 
-Assuming `origin` is the important repository, i.e., not the fork.
+Assuming `origin` is the upstream repository, i.e., not the fork.
 
 First, update your local main branch.
 
-- `git switch main`
-- `git fetch --all --prune`
-- `git merge --ff-only origin/main`
-
-Then, create a new branch, work, commit, and push.
-
-- `git switch -c NEW_BRANCH_ISSUE`
-- Coding...
-- `git commit -am "A short but descriptive commit messag"`: Equivalent to `git commit -a -m "commit msg"`.
-- `git push myfork main`
+```bash
+git switch main
+git fetch --all --prune
+git merge --ff-only origin/main
+```
 
 > **Warning**
 >
 > If you have a conflict on your main, it will appear now. You can delete your old `main` branch using `git reset --hard origin/main`.
 
-Now, we are going to rebase our local feature branch.
+Then, create a new branch, work, commit, and push.
 
-- `git switch BRANCH_NAME`
-- `git rebase main BRANCH_NAME`
+```bash
+git switch -c <branch_name>
+# awesome coding...
+# run the tests and the linter (see end of this section).
+git commit -am "A short but descriptive commit message" # Equivalent to: git commit -a -m "commit msg"
+git push myfork <branch_name>
+```
 
-It will say you have Conflicts. Open the file(s) and edit it to remove the conflicts, until the code looks correct to you.
+Let's say upstream has updates while you are working on your local branch. You need to fetch the new changes because if you don't do conflict resolution locally, you will get conflicts in your PR. So you need to repeat the steps from the first code block in this section.
 
-- `git diff`: Check that changes are correct.
-- `git add FILE_NAME`
-- `git diff --staged`: Another way to check changes, i.e., what you will see in the pull request.
+Now, we are going to rebase our local feature branch on top of the updated `main`.
+
+```bash
+git switch <branch_name>
+git rebase main <branch_name>
+```
+
+It will say you have conflicts. Open the file(s) and edit it to remove the conflicts, until the code looks correct to you.
+
+```bash
+git diff # Check that changes are correct.
+git add <file_name>
+git diff --staged # Another way to check changes, i.e., what you will see in the pull request.
+```
 
 Run the tests and the linter.
 
 On Julia:
 
-```julia-pkg
+```bash
 pkg> test
 ```
 
@@ -164,9 +175,11 @@ pre-commit run -a
 If there are things to fix, do it.
 Then, add them again (`git add`), rerun the tests & linter, and commit.
 
-- `git status`: Another way to show that all conflicts are fixed.
-- `git rebase --continue`
-- `git push --force`
+```bash
+git status # Another way to show that all conflicts are fixed.
+git rebase --continue
+git push --force
+```
 
 After pushing, the PR will be automatically updated.
 If a review was made, re-request a review.
