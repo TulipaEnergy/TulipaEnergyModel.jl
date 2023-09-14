@@ -7,6 +7,7 @@ using CSV
 using DataFrames
 
 include("io.jl")
+include("graph.jl")
 include("model.jl")
 
 end

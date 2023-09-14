@@ -8,13 +8,20 @@ It should probably be improved.
 """
 function optimise_investments(params, sets; verbose = false)
     # Sets unpacking
-    A = sets.s_assets
-    Ac = sets.s_assets_consumer
+    # A = sets.s_assets
+    # Ac = sets.s_assets_consumer
     # Ap = sets.s_assets_producer
-    Ai = sets.s_assets_investment
-    F = sets.s_combinations_of_flows
+    # Ai = sets.s_assets_investment
+    # F = sets.s_combinations_of_flows
     K = sets.s_time_steps
     RP = sets.s_representative_periods
+
+    graph = create_graph_data(params, sets)
+    Ai = (a for a in labels(graph) if graph[a].can_invest)
+    Ac = (a for a in labels(graph) if graph[a].type == :consumer)
+
+    A = labels(graph)
+    F = edge_labels(graph)
 
     # Model
     model = Model(HiGHS.Optimizer)
