@@ -183,3 +183,11 @@ git push --force
 
 After pushing, the PR will be automatically updated.
 If a review was made, re-request a review.
+
+## Performance considerations
+
+If you updated something that might impact the performance of the
+package, you can run the `Benchmark.yml` workflow from your PR.  To do
+that, add the command `/run-benchmark` as a comment in the PR.  This
+will trigger the workflow for your branch, and post the results as a
+comment in you PR.
