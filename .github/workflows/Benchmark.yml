@@ -1,20 +1,47 @@
 name: Run benchmarks
+
 on:
-    pull_request:
-        paths:
-            - "src/**"
-            - "benchmark/**"
-            - "*.toml"
+    issue_comment:
+        types: [created, edited]
+    workflow_dispatch:
+        inputs:
+            ref:
+                description: Git branch/tag/reference to benchmark
+                type: string
+                default: main
+
 concurrency:
     # Skip intermediate builds: always.
     # Cancel intermediate builds: only if it is a pull request build.
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
 jobs:
     benchmark:
+        if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/run-benchmark') }}
+
         runs-on: ubuntu-latest
+        permissions:
+            issues: write
+            pull-requests: write
+
         steps:
-            - uses: actions/checkout@v3
+            - name: Find PR repo and ref
+              uses: actions/github-script@v6
+              id: find-ref
+              with:
+                  script: |
+                      const pr = await github.rest.pulls.get({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        pull_number: context.issue.number
+                      })
+                      core.setOutput('repo', pr.data.head.repo.full_name)
+                      core.setOutput('ref', pr.data.head.ref)
+            - uses: actions/checkout@v4
+              with:
+                  repository: ${{ steps.find-ref.outputs.repo }}
+                  ref: ${{ steps.find-ref.outputs.ref }}
             - uses: julia-actions/setup-julia@latest
               with:
                   version: 1
@@ -23,7 +50,22 @@ jobs:
               run: julia -e 'using Pkg; pkg"add PkgBenchmark BenchmarkCI@0.1"'
             - name: Run benchmarks
               run: julia -e 'using BenchmarkCI; BenchmarkCI.judge(baseline="origin/main")'
-            - name: Post results
-              run: julia -e 'using BenchmarkCI; BenchmarkCI.postjudge()'
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Results
+              id: benched
+              run: |
+                  {
+                    echo 'RESULT<<EOF';
+                    julia -e 'using BenchmarkCI; BenchmarkCI.displayjudgement()';
+                    echo EOF;
+                  } >> result.txt
+                  cat result.txt >> "$GITHUB_OUTPUT"
+                  { echo '```'; sed -e '1d;$d' result.txt; echo '```'; } >> $GITHUB_STEP_SUMMARY
+            - uses: actions/github-script@v6
+              with:
+                  script: |
+                      github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: context.issue.number,
+                        body: `\`\`\`\n${{ steps.benched.outputs.RESULT }}\n\`\`\``
+                      })
