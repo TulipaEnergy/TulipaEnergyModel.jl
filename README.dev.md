@@ -11,10 +11,10 @@ Disable any ambiguity in your global and current repository settings:
 
 ```shell
 cd /path/to/TulipaEnergyModel.jl
-git config --unset core.autocrlf         # disable autocrlf in the Bulb repo
+git config --unset core.autocrlf         # disable autocrlf in the EnergyModel repo
 git config --global core.autocrlf false  # explicitly disable autocrlf globally
 git config --global --unset core.eol     # disable explicit file-ending globally
-git config core.eol lf                   # set Linux style file-endings in Bulb
+git config core.eol lf                   # set Linux style file-endings in EnergyModel
 ```
 
 1. Fork this repository.
