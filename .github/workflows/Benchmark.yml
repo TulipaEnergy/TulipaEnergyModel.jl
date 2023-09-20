@@ -1,5 +1,4 @@
 name: Run benchmarks
-
 on:
     issue_comment:
         types: [created, edited]
@@ -9,21 +8,20 @@ on:
                 description: Git branch/tag/reference to benchmark
                 type: string
                 default: main
-
+permissions:
+    contents: write
+    issues: write
+    pull-requests: write # For writing the comment
 concurrency:
     # Skip intermediate builds: always.
     # Cancel intermediate builds: only if it is a pull request build.
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
-
 jobs:
     benchmark:
         if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/run-benchmark') }}
 
         runs-on: ubuntu-latest
-        permissions:
-            issues: write
-            pull-requests: write
 
         steps:
             - name: Find PR repo and ref
