@@ -11,7 +11,7 @@ on:
             ref:
                 description: Git branch/tag/reference to benchmark
                 type: string
-                default: main
+                default: ""
 permissions:
     contents: write
     issues: write
@@ -43,6 +43,9 @@ jobs:
                           core.setOutput('ref', pr.data.head.ref)
                       }
                       if (context.eventName == 'workflow_dispatch') {
+                          if ('${{inputs.repo}}' == "" && ["", "main"].includes('${{inputs.ref}}')) {
+                              core.setFailed("cannot run benchmark against current repo's main")
+                          }
                           core.setOutput('repo', '${{ inputs.repo }}')
                           core.setOutput('ref', '${{ inputs.ref }}')
                       }
