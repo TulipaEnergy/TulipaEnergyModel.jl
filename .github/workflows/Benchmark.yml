@@ -4,6 +4,10 @@ on:
         types: [created, edited]
     workflow_dispatch:
         inputs:
+            repo:
+                description: Fork to benchmark "user/repo", empty denotes current repo
+                type: string
+                default: ""
             ref:
                 description: Git branch/tag/reference to benchmark
                 type: string
@@ -19,23 +23,29 @@ concurrency:
     cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 jobs:
     benchmark:
-        if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/run-benchmark') }}
-
+        if: |
+            (github.event.issue.pull_request && contains(github.event.comment.body, '/run-benchmark')) ||
+            github.event_name == 'workflow_dispatch'
         runs-on: ubuntu-latest
-
         steps:
             - name: Find PR repo and ref
               uses: actions/github-script@v6
               id: find-ref
               with:
                   script: |
-                      const pr = await github.rest.pulls.get({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        pull_number: context.issue.number
-                      })
-                      core.setOutput('repo', pr.data.head.repo.full_name)
-                      core.setOutput('ref', pr.data.head.ref)
+                      if (context.eventName == 'pull_request') {
+                          const pr = await github.rest.pulls.get({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            pull_number: context.issue.number
+                          })
+                          core.setOutput('repo', pr.data.head.repo.full_name)
+                          core.setOutput('ref', pr.data.head.ref)
+                      }
+                      if (context.eventName == 'workflow_dispatch') {
+                          core.setOutput('repo', '${{ inputs.repo }}')
+                          core.setOutput('ref', '${{ inputs.ref }}')
+                      }
             - uses: actions/checkout@v4
               with:
                   repository: ${{ steps.find-ref.outputs.repo }}
@@ -59,6 +69,7 @@ jobs:
                   cat result.txt >> "$GITHUB_OUTPUT"
                   { echo '```'; sed -e '1d;$d' result.txt; echo '```'; } >> $GITHUB_STEP_SUMMARY
             - uses: actions/github-script@v6
+              if: github.event.issue.pull_request
               with:
                   script: |
                       github.rest.issues.createComment({
