@@ -1,0 +1,8 @@
+,,{producer;consumer},{true;false},{invest;not_allowed},kEUR/MWh,kEUR/MW/year,MW,MW,MW
+node_id,node_name,node_type,is_active,invest_method,variable_cost,investment_cost,asset_capacity,initial_capacity,consumer_peak_demand
+1,ocgt,producer,TRUE,invest,0.07,25,100,0,0
+2,ccgt,producer,TRUE,invest,0.05,40,400,0,0
+3,wind,producer,TRUE,invest,0.001,70,50,0,0
+4,solar,producer,TRUE,invest,0,50,10,0,0
+5,ens,producer,TRUE,not_allowed,0.18,0,0,0,0
+6,demand,consumer,TRUE,not_allowed,0,0,0,0,1115
