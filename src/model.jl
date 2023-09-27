@@ -1,18 +1,17 @@
 export optimise_investments
 
 """
-    optimise_investments
+    optimise_investments(graph, params, sets; verbose = false)
 
-This is a doc for optimise_investments.
-It should probably be improved.
+Create and solve the model using the `graph` structure, the parameters and sets.
 """
-function optimise_investments(params, sets; verbose = false)
+function optimise_investments(graph, params, sets; verbose = false)
     # Sets unpacking
     A = sets.s_assets
     Ac = sets.s_assets_consumer
     # Ap = sets.s_assets_producer
     Ai = sets.s_assets_investment
-    F = sets.s_combinations_of_flows
+    F = [(A[e.src], A[e.dst]) for e in edges(graph)]
     K = sets.s_time_steps
     RP = sets.s_representative_periods
 

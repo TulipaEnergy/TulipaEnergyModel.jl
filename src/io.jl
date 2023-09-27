@@ -8,67 +8,63 @@ input files in the `input_folder`.
 """
 function create_parameters_and_sets_from_file(input_folder::AbstractString)
     # Files names
-    assets_file   = joinpath(input_folder, "assets.csv")
-    profiles_file = joinpath(input_folder, "profiles.csv")
-    weights_file  = joinpath(input_folder, "weights.csv")
+    nodes_data_file     = joinpath(input_folder, "nodes-data.csv")
+    nodes_profiles_file = joinpath(input_folder, "nodes-profiles.csv")
+    # edges_data_file     = joinpath(input_folder, "edges-data.csv")
+    # edges_profiles_file = joinpath(input_folder, "edges-profiles.csv")
+    weights_file = joinpath(input_folder, "representatives-weights.csv")
 
     # Read data
-    assets_df   = CSV.read(assets_file, DataFrames.DataFrame; header = 2)
-    profiles_df = CSV.read(profiles_file, DataFrames.DataFrame; header = 2)
-    weights_df  = CSV.read(weights_file, DataFrames.DataFrame; header = 2)
+    nodes_data_df     = CSV.read(nodes_data_file, DataFrames.DataFrame; header = 2)
+    nodes_profiles_df = CSV.read(nodes_profiles_file, DataFrames.DataFrame; header = 2)
+    # edges_data_df     = CSV.read(edges_data_file, DataFrames.DataFrame; header = 2)
+    # edges_nodes_profiles_df = CSV.read(edges_profiles_file, DataFrames.DataFrame; header = 2)
+    weights_df = CSV.read(weights_file, DataFrames.DataFrame; header = 2)
 
     # Sets and subsets that depend on input data
-    A = s_assets = assets_df[assets_df.is_active.==true, :].asset_name         #assets in the energy system that are active
-    Ap = s_assets_producer = assets_df[assets_df.asset_type.=="producer", :].asset_name  #producer assets in the energy system
-    Ac = s_assets_consumer = assets_df[assets_df.asset_type.=="consumer", :].asset_name  #consumer assets in the energy system
-    s_assets_investment = assets_df[assets_df.invest_method.=="invest", :].asset_name #assets with investment method in the energy system
-    s_representative_periods = unique(profiles_df.rp)  #representative periods
-    s_time_steps = unique(profiles_df.k)   #time steps in the RP (e.g., hours)
+    A = s_assets = nodes_data_df[nodes_data_df.is_active.==true, :].node_name         #assets in the energy system that are active
+    Ap =
+        s_assets_producer = nodes_data_df[nodes_data_df.node_type.=="producer", :].node_name  #producer assets in the energy system
+    Ac =
+        s_assets_consumer = nodes_data_df[nodes_data_df.node_type.=="consumer", :].node_name  #consumer assets in the energy system
+    s_assets_investment = nodes_data_df[nodes_data_df.invest_method.=="invest", :].node_name #assets with investment method in the energy system
+    s_representative_periods = unique(nodes_profiles_df.rp)  #representative periods
+    s_time_steps = unique(nodes_profiles_df.k)   #time steps in the RP (e.g., hours)
 
     # Parameters for system
     p_rp_weight = Dict((row.rp) => row.weight for row in eachrow(weights_df)) #representative period weight [h]
 
     # Parameters for assets
     p_profile = Dict(
-        (row.asset_name, row.rp, row.k) => row.profile_value for
-        row in eachrow(profiles_df)
+        (A[row.node_id], row.rp, row.k) => row.profile_value for
+        row in eachrow(nodes_profiles_df)
     ) # asset profile [p.u.]
-    p_output_assets =
-        Dict((row.asset_name) => row.output_assets for row in eachrow(assets_df)) # output assets of asset a
-    p_input_assets =
-        Dict((row.asset_name) => row.input_assets for row in eachrow(assets_df)) # input assets of asset a
 
     # Parameters for producers
     p_variable_cost   = Dict{String,Float64}()
     p_investment_cost = Dict{String,Float64}()
     p_unit_capacity   = Dict{String,Float64}()
     p_init_capacity   = Dict{String,Float64}()
-    for row in eachrow(assets_df)
-        if row.asset_name in Ap
-            p_variable_cost[row.asset_name] = row.variable_cost
-            p_investment_cost[row.asset_name] = row.investment_cost
-            p_unit_capacity[row.asset_name] = row.asset_capacity
-            p_init_capacity[row.asset_name] = row.initial_capacity
+    for row in eachrow(nodes_data_df)
+        if row.node_name in Ap
+            p_variable_cost[row.node_name] = row.variable_cost
+            p_investment_cost[row.node_name] = row.investment_cost
+            p_unit_capacity[row.node_name] = row.asset_capacity
+            p_init_capacity[row.node_name] = row.initial_capacity
         end
     end
 
     # Parameters for consumers
     p_peak_demand = Dict{String,Float64}()
-    for row in eachrow(assets_df)
-        if row.asset_name in Ac
-            p_peak_demand[row.asset_name] = row.consumer_peak_demand
+    for row in eachrow(nodes_data_df)
+        if row.node_name in Ac
+            p_peak_demand[row.node_name] = row.consumer_peak_demand
         end
     end
 
-    # Subsets that depend on parameters
-    s_combinations_of_flows =
-        [(a, aa) for a in A, aa in A if p_output_assets[a] == aa || p_input_assets[a] == aa] #set of combitation of flows from asset a to asset aa
-
     params = (
         p_init_capacity = p_init_capacity,
-        p_input_assets = p_input_assets,
         p_investment_cost = p_investment_cost,
-        p_output_assets = p_output_assets,
         p_peak_demand = p_peak_demand,
         p_profile = p_profile,
         p_rp_weight = p_rp_weight,
@@ -80,7 +76,6 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         s_assets_consumer = s_assets_consumer,
         s_assets_investment = s_assets_investment,
         s_assets_producer = s_assets_producer,
-        s_combinations_of_flows = s_combinations_of_flows,
         s_representative_periods = s_representative_periods,
         s_time_steps = s_time_steps,
     )
