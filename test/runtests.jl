@@ -1,3 +1,4 @@
+using Graphs
 using TulipaEnergyModel
 using Test
 
@@ -15,4 +16,17 @@ const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
         solution.v_investment,
         parameters.p_unit_capacity,
     )
+end
+
+@testset "Tiny graph" begin
+    @testset "Graph structure is correct" begin
+        dir = joinpath(INPUT_FOLDER, "tiny")
+        graph =
+            create_graph(joinpath(dir, "nodes-data.csv"), joinpath(dir, "edges-data.csv"))
+
+        @test Graphs.nv(graph) == 6
+        @test Graphs.ne(graph) == 5
+        @test collect(Graphs.edges(graph)) ==
+              [Graphs.Edge(e) for e in [(1, 6), (2, 6), (3, 6), (4, 6), (5, 6)]]
+    end
 end

@@ -1,4 +1,4 @@
-export create_parameters_and_sets_from_file, save_solution_to_file
+export create_parameters_and_sets_from_file, create_graph, save_solution_to_file
 
 """
     parameters, sets = create_parameters_and_sets_from_file(input_folder)
@@ -111,4 +111,23 @@ function save_solution_to_file(
     CSV.write(output_file, output_table)
 
     return
+end
+
+"""
+    graph = create_graph(nodes_path, edges_path)
+
+Read the nodes and edges data CSVs and create a graph object.
+"""
+function create_graph(nodes_path, edges_path)
+    nodes_df = CSV.read(nodes_path, DataFrames.DataFrame; header = 2)
+    edges_df = CSV.read(edges_path, DataFrames.DataFrame; header = 2)
+
+    num_nodes = DataFrames.nrow(nodes_df)
+
+    graph = Graphs.DiGraph(num_nodes)
+    for row in eachrow(edges_df)
+        Graphs.add_edge!(graph, row.from_node_id, row.to_node_id)
+    end
+
+    return graph
 end
