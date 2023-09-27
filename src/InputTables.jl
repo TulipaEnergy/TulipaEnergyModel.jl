@@ -14,8 +14,8 @@ end
 struct EdgeData
     id::Int                     # Edge ID
     carrier::String             # (Optional?) Energy carrier
-    from::Int                   # Node ID
-    to::Int                     # Node ID
+    from_node_id::Int           # Node ID
+    to_node_id::Int             # Node ID
     active::Bool                # Active or decomissioned
     investable::Bool            # Whether able to invest
     variable_cost::Float32      # kEUR/MWh
