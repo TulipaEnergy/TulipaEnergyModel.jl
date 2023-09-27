@@ -1,0 +1,7 @@
+,node_id,node_id,node_id,{true;false},{invest;not_allowed},kEUR/MWh,kEUR/MW/year,MW,MW
+edge_id,from_node_id,to_node_id,use_input_data_from_node_id,is_active,invest_method,variable_cost,investment_cost,edge_capacity,initial_capacity
+1,1,6,1,TRUE,,,,,
+2,2,6,2,TRUE,,,,,
+3,3,6,3,TRUE,,,,,
+4,4,6,4,TRUE,,,,,
+5,5,6,5,TRUE,,,,,
