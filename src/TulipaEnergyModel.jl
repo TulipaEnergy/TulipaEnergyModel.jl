@@ -9,5 +9,6 @@ using JuMP
 
 include("io.jl")
 include("model.jl")
+include("input_tables.jl")
 
 end
