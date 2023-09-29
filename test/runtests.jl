@@ -3,15 +3,23 @@ using TulipaEnergyModel
 using Test
 
 # Folders names
-const INPUT_FOLDER  = joinpath(@__DIR__, "inputs")
+const INPUT_FOLDER = joinpath(@__DIR__, "inputs")
 const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
+#const CORRECT_FOLDER = joinpath(@__DIR__, "correct")
 
 @testset "TulipaEnergyModel.jl" begin
     dir = joinpath(INPUT_FOLDER, "tiny")
     parameters, sets = create_parameters_and_sets_from_file(dir)
     graph = create_graph(joinpath(dir, "nodes-data.csv"), joinpath(dir, "edges-data.csv"))
     solution = optimise_investments(graph, parameters, sets)
+
+    #correct_data_file = joinpath(CORRECT_FOLDER, "correct_investments.csv")
+    #correct_solution_df = CSV.read(correct_data_file, DataFrames.DataFrame; header = 1)
+
     @test solution.objective_value ≈ 269238.43825 atol = 1e-5
+    #@test solution.v_investment == correct_solution_df.
+    #@test solution.p_unit_capacity == correct_solution_df.
+
     save_solution_to_file(
         OUTPUT_FOLDER,
         sets.s_assets_investment,
