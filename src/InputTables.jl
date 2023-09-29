@@ -26,19 +26,19 @@ end
 
 struct EdgeProfiles
     id::Int                     # Edge ID
-    rep_period::Int
-    time_slice::Int
-    value::Float32              # MW?
+    rep_period_id::Int
+    time_step::Int
+    value::Float32              # p.u.
 end
 
 struct NodeProfiles
     id::Int                     # Node ID
-    rep_period::Int
-    time_slice::Int
-    value::Float32              # MW?
+    rep_period_id::Int
+    time_step::Int
+    value::Float32              # p.u.
 end
 
-struct RepPeriodWeights
-    rep_period::Int
+struct RepPeriodData
+    id::Int
     weight::Float32
 end
