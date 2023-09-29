@@ -12,31 +12,29 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     nodes_profiles_file = joinpath(input_folder, "nodes-profiles.csv")
     # edges_data_file     = joinpath(input_folder, "edges-data.csv")
     # edges_profiles_file = joinpath(input_folder, "edges-profiles.csv")
-    weights_file = joinpath(input_folder, "representatives-weights.csv")
+    rep_period_file = joinpath(input_folder, "rep-periods-data.csv")
 
     # Read data
     nodes_data_df     = CSV.read(nodes_data_file, DataFrames.DataFrame; header = 2)
     nodes_profiles_df = CSV.read(nodes_profiles_file, DataFrames.DataFrame; header = 2)
     # edges_data_df     = CSV.read(edges_data_file, DataFrames.DataFrame; header = 2)
     # edges_nodes_profiles_df = CSV.read(edges_profiles_file, DataFrames.DataFrame; header = 2)
-    weights_df = CSV.read(weights_file, DataFrames.DataFrame; header = 2)
+    rep_period_df = CSV.read(rep_period_file, DataFrames.DataFrame; header = 2)
 
     # Sets and subsets that depend on input data
-    A = s_assets = nodes_data_df[nodes_data_df.is_active.==true, :].node_name         #assets in the energy system that are active
-    Ap =
-        s_assets_producer = nodes_data_df[nodes_data_df.node_type.=="producer", :].node_name  #producer assets in the energy system
-    Ac =
-        s_assets_consumer = nodes_data_df[nodes_data_df.node_type.=="consumer", :].node_name  #consumer assets in the energy system
-    s_assets_investment = nodes_data_df[nodes_data_df.invest_method.=="invest", :].node_name #assets with investment method in the energy system
-    s_representative_periods = unique(nodes_profiles_df.rp)  #representative periods
-    s_time_steps = unique(nodes_profiles_df.k)   #time steps in the RP (e.g., hours)
+    A = s_assets = nodes_data_df[nodes_data_df.active.==true, :].name         #assets in the energy system that are active
+    Ap = s_assets_producer = nodes_data_df[nodes_data_df.type.=="producer", :].name  #producer assets in the energy system
+    Ac = s_assets_consumer = nodes_data_df[nodes_data_df.type.=="consumer", :].name  #consumer assets in the energy system
+    s_assets_investment = nodes_data_df[nodes_data_df.investable.==true, :].name #assets with investment method in the energy system
+    s_representative_periods = unique(nodes_profiles_df.rep_period_id)  #representative periods
+    s_time_steps = unique(nodes_profiles_df.time_step)   #time steps in the RP (e.g., hours)
 
     # Parameters for system
-    p_rp_weight = Dict((row.rp) => row.weight for row in eachrow(weights_df)) #representative period weight [h]
+    p_rp_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
 
     # Parameters for assets
     p_profile = Dict(
-        (A[row.node_id], row.rp, row.k) => row.profile_value for
+        (A[row.id], row.rep_period_id, row.time_step) => row.value for
         row in eachrow(nodes_profiles_df)
     ) # asset profile [p.u.]
 
@@ -46,19 +44,19 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     p_unit_capacity   = Dict{String,Float64}()
     p_init_capacity   = Dict{String,Float64}()
     for row in eachrow(nodes_data_df)
-        if row.node_name in Ap
-            p_variable_cost[row.node_name] = row.variable_cost
-            p_investment_cost[row.node_name] = row.investment_cost
-            p_unit_capacity[row.node_name] = row.asset_capacity
-            p_init_capacity[row.node_name] = row.initial_capacity
+        if row.name in Ap
+            p_variable_cost[row.name] = row.variable_cost
+            p_investment_cost[row.name] = row.investment_cost
+            p_unit_capacity[row.name] = row.capacity
+            p_init_capacity[row.name] = row.initial_capacity
         end
     end
 
     # Parameters for consumers
     p_peak_demand = Dict{String,Float64}()
     for row in eachrow(nodes_data_df)
-        if row.node_name in Ac
-            p_peak_demand[row.node_name] = row.consumer_peak_demand
+        if row.name in Ac
+            p_peak_demand[row.name] = row.peak_demand
         end
     end
 
