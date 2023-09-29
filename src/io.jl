@@ -23,10 +23,8 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
 
     # Sets and subsets that depend on input data
     A = s_assets = nodes_data_df[nodes_data_df.active.==true, :].name         #assets in the energy system that are active
-    Ap =
-        s_assets_producer = nodes_data_df[nodes_data_df.type.=="producer", :].name  #producer assets in the energy system
-    Ac =
-        s_assets_consumer = nodes_data_df[nodes_data_df.type.=="consumer", :].name  #consumer assets in the energy system
+    Ap = s_assets_producer = nodes_data_df[nodes_data_df.type.=="producer", :].name  #producer assets in the energy system
+    Ac = s_assets_consumer = nodes_data_df[nodes_data_df.type.=="consumer", :].name  #consumer assets in the energy system
     s_assets_investment = nodes_data_df[nodes_data_df.investable.==true, :].name #assets with investment method in the energy system
     s_representative_periods = unique(nodes_profiles_df.rep_period_id)  #representative periods
     s_time_steps = unique(nodes_profiles_df.time_step)   #time steps in the RP (e.g., hours)
