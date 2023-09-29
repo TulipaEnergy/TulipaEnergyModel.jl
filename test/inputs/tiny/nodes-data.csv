@@ -1,8 +1,8 @@
 ,,{producer;consumer},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW
 id,name,type,active,investable,variable_cost,investment_cost,capacity,initial_capacity,peak_demand
-1,ocgt,producer,TRUE,invest,0.07,25,100,0,0
-2,ccgt,producer,TRUE,invest,0.05,40,400,0,0
-3,wind,producer,TRUE,invest,0.001,70,50,0,0
-4,solar,producer,TRUE,invest,0,50,10,0,0
-5,ens,producer,TRUE,not_allowed,0.18,0,0,0,0
-6,demand,consumer,TRUE,not_allowed,0,0,0,0,1115
+1,ocgt,producer,TRUE,TRUE,0.07,25,100,0,0
+2,ccgt,producer,TRUE,TRUE,0.05,40,400,0,0
+3,wind,producer,TRUE,TRUE,0.001,70,50,0,0
+4,solar,producer,TRUE,TRUE,0,50,10,0,0
+5,ens,producer,TRUE,FALSE,0.18,0,0,0,0
+6,demand,consumer,TRUE,FALSE,0,0,0,0,1115
