@@ -1,3 +1,5 @@
+using CSV
+using DataFrames
 using Graphs
 using TulipaEnergyModel
 using Test
@@ -30,5 +32,24 @@ end
         @test Graphs.ne(graph) == 5
         @test collect(Graphs.edges(graph)) ==
               [Graphs.Edge(e) for e in [(1, 6), (2, 6), (3, 6), (4, 6), (5, 6)]]
+    end
+end
+
+@testset "Input validation" begin
+    # FIXME: test separately
+    @testset "missing columns and incompatible types" begin
+        dir = joinpath(INPUT_FOLDER, "tiny")
+        df = CSV.read(joinpath(dir, "bad-nodes-data.csv"), DataFrame; header = 2)
+
+        # FIXME: instead of examples, mutate and test
+        col_err, col_type_err = TulipaEnergyModel.validate_df(
+            df,
+            TulipaEnergyModel.NodeData;
+            fname = "bad-nodes-data.csv",
+            silent = true,
+        )
+        @test col_err == [:id]
+        @test col_type_err ==
+              [(:investable, Bool, String7), (:peak_demand, Float32, String7)]
     end
 end
