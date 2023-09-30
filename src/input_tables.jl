@@ -75,19 +75,22 @@ function validate_df(df::DataFrame, schema::DataType; fname::String = "", silent
         ),
     )
 
-    msg = length(col_error) > 0 ? "\n [1] missing columns: $(col_error)" : ""
-    if length(col_type_err) > 0
-        msg *= length(msg) > 0 ? "\n [2] " : " [1] "
-        msg *= "incompatible column types:"
-        msg *= join(
-            Iterators.map(
-                ((col, expect, col_t),) -> "\n     - $col::$col_t (expected: $expect)",
-                col_type_err,
-            ),
-        )
-    end
-    if !silent && length(msg) > 0
-        error("$fname failed validation", msg)
+    if !silent
+        msg = length(col_error) > 0 ? "\n [1] missing columns: $(col_error)" : ""
+        if length(col_type_err) > 0
+            msg *= length(msg) > 0 ? "\n [2] " : " [1] "
+            msg *= "incompatible column types:"
+            msg *= join(
+                Iterators.map(
+                    ((col, expect, col_t),) ->
+                        "\n     - $col::$col_t (expected: $expect)",
+                    col_type_err,
+                ),
+            )
+        end
+        if length(msg) > 0
+            error("$fname failed validation", msg)
+        end
     end
     return (col_error, col_type_err)
 end
