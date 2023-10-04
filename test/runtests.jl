@@ -16,9 +16,9 @@ const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
     @test solution.objective_value ≈ 269238.43825 atol = 1e-5
     save_solution_to_file(
         OUTPUT_FOLDER,
-        sets.s_assets_investment,
+        sets.assets_investment,
         solution.v_investment,
-        parameters.p_unit_capacity,
+        parameters.unit_capacity,
     )
 end
 
