@@ -7,13 +7,13 @@ Create and solve the model using the `graph` structure, the parameters and sets.
 """
 function optimise_investments(graph, params, sets; verbose = false)
     # Sets unpacking
-    A = sets.s_assets
-    Ac = sets.s_assets_consumer
-    # Ap = sets.s_assets_producer
-    Ai = sets.s_assets_investment
+    A = sets.assets
+    Ac = sets.assets_consumer
+    # Ap = sets.assets_producer
+    Ai = sets.assets_investment
     F = [(A[e.src], A[e.dst]) for e in edges(graph)]
-    K = sets.s_time_steps
-    RP = sets.s_representative_periods
+    K = sets.time_steps
+    RP = sets.rep_periods
 
     # Model
     model = Model(HiGHS.Optimizer)
@@ -27,15 +27,15 @@ function optimise_investments(graph, params, sets; verbose = false)
     e_investment_cost = @expression(
         model,
         sum(
-            params.p_investment_cost[a] * params.p_unit_capacity[a] * v_investment[a]
-            for a in Ai
+            params.investment_cost[a] * params.unit_capacity[a] * v_investment[a] for
+            a in Ai
         )
     )
 
     e_variable_cost = @expression(
         model,
         sum(
-            params.p_rp_weight[rp] * params.p_variable_cost[a] * v_flow[f, rp, k] for
+            params.rep_weight[rp] * params.variable_cost[a] * v_flow[f, rp, k] for
             a in A, f in F, rp in RP, k in K if f[1] == a
         )
     )
@@ -49,7 +49,7 @@ function optimise_investments(graph, params, sets; verbose = false)
         model,
         c_balance[a in Ac, rp in RP, k in K],
         sum(v_flow[f, rp, k] for f in F if f[2] == a) ==
-        params.p_profile[a, rp, k] * params.p_peak_demand[a]
+        params.profile[a, rp, k] * params.peak_demand[a]
     )
 
     # - maximum generation
@@ -57,8 +57,8 @@ function optimise_investments(graph, params, sets; verbose = false)
         model,
         c_max_prod[a in Ai, f in F, rp in RP, k in K; f[1] == a],
         v_flow[f, rp, k] <=
-        get(params.p_profile, (a, rp, k), 1.0) *
-        (params.p_init_capacity[a] + params.p_unit_capacity[a] * v_investment[a])
+        get(params.profile, (a, rp, k), 1.0) *
+        (params.init_capacity[a] + params.unit_capacity[a] * v_investment[a])
     )
 
     # print lp file

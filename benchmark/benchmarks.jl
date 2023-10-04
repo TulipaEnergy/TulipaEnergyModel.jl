@@ -23,8 +23,8 @@ solution = optimise_investments(parameters, sets)
 SUITE["io"]["output"] = @benchmarkable begin
     save_solution_to_file(
         $OUTPUT_FOLDER,
-        $(sets.s_assets_investment),
+        $(sets.assets_investment),
         $(solution.v_investment),
-        $(parameters.p_unit_capacity),
+        $(parameters.unit_capacity),
     )
 end

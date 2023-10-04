@@ -22,84 +22,84 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     rep_period_df = CSV.read(rep_period_file, DataFrames.DataFrame; header = 2)
 
     # Sets and subsets that depend on input data
-    A = s_assets = nodes_data_df[nodes_data_df.active.==true, :].name         #assets in the energy system that are active
-    Ap = s_assets_producer = nodes_data_df[nodes_data_df.type.=="producer", :].name  #producer assets in the energy system
-    Ac = s_assets_consumer = nodes_data_df[nodes_data_df.type.=="consumer", :].name  #consumer assets in the energy system
-    s_assets_investment = nodes_data_df[nodes_data_df.investable.==true, :].name #assets with investment method in the energy system
-    s_representative_periods = unique(nodes_profiles_df.rep_period_id)  #representative periods
-    s_time_steps = unique(nodes_profiles_df.time_step)   #time steps in the RP (e.g., hours)
+    A = assets = nodes_data_df[nodes_data_df.active.==true, :].name         #assets in the energy system that are active
+    Ap = assets_producer = nodes_data_df[nodes_data_df.type.=="producer", :].name  #producer assets in the energy system
+    Ac = assets_consumer = nodes_data_df[nodes_data_df.type.=="consumer", :].name  #consumer assets in the energy system
+    assets_investment = nodes_data_df[nodes_data_df.investable.==true, :].name #assets with investment method in the energy system
+    rep_periods = unique(nodes_profiles_df.rep_period_id)  #representative periods
+    time_steps = unique(nodes_profiles_df.time_step)   #time steps in the RP (e.g., hours)
 
     # Parameters for system
-    p_rp_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
+    rep_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
 
     # Parameters for assets
-    p_profile = Dict(
+    profile = Dict(
         (A[row.id], row.rep_period_id, row.time_step) => row.value for
         row in eachrow(nodes_profiles_df)
     ) # asset profile [p.u.]
 
     # Parameters for producers
-    p_variable_cost   = Dict{String,Float64}()
-    p_investment_cost = Dict{String,Float64}()
-    p_unit_capacity   = Dict{String,Float64}()
-    p_init_capacity   = Dict{String,Float64}()
+    variable_cost   = Dict{String,Float64}()
+    investment_cost = Dict{String,Float64}()
+    unit_capacity   = Dict{String,Float64}()
+    init_capacity   = Dict{String,Float64}()
     for row in eachrow(nodes_data_df)
         if row.name in Ap
-            p_variable_cost[row.name] = row.variable_cost
-            p_investment_cost[row.name] = row.investment_cost
-            p_unit_capacity[row.name] = row.capacity
-            p_init_capacity[row.name] = row.initial_capacity
+            variable_cost[row.name] = row.variable_cost
+            investment_cost[row.name] = row.investment_cost
+            unit_capacity[row.name] = row.capacity
+            init_capacity[row.name] = row.initial_capacity
         end
     end
 
     # Parameters for consumers
-    p_peak_demand = Dict{String,Float64}()
+    peak_demand = Dict{String,Float64}()
     for row in eachrow(nodes_data_df)
         if row.name in Ac
-            p_peak_demand[row.name] = row.peak_demand
+            peak_demand[row.name] = row.peak_demand
         end
     end
 
     params = (
-        p_init_capacity = p_init_capacity,
-        p_investment_cost = p_investment_cost,
-        p_peak_demand = p_peak_demand,
-        p_profile = p_profile,
-        p_rp_weight = p_rp_weight,
-        p_unit_capacity = p_unit_capacity,
-        p_variable_cost = p_variable_cost,
+        init_capacity = init_capacity,
+        investment_cost = investment_cost,
+        peak_demand = peak_demand,
+        profile = profile,
+        rep_weight = rep_weight,
+        unit_capacity = unit_capacity,
+        variable_cost = variable_cost,
     )
     sets = (
-        s_assets = s_assets,
-        s_assets_consumer = s_assets_consumer,
-        s_assets_investment = s_assets_investment,
-        s_assets_producer = s_assets_producer,
-        s_representative_periods = s_representative_periods,
-        s_time_steps = s_time_steps,
+        assets = assets,
+        assets_consumer = assets_consumer,
+        assets_investment = assets_investment,
+        assets_producer = assets_producer,
+        rep_periods = rep_periods,
+        time_steps = time_steps,
     )
 
     return params, sets
 end
 
 """
-    save_solution_to_file(output_file, v_investment, p_unit_capacity)
+    save_solution_to_file(output_file, v_investment, unit_capacity)
 
 Saves the solution variable v_investment to a file "investments.csv" inside `output_file`.
 The format of each row is `a,v,p*v`, where `a` is the asset indexing `v_investment`, `v`
-is corresponding `v_investment` value, and `p` is the corresponding `p_unit_capacity` value.
+is corresponding `v_investment` value, and `p` is the corresponding `unit_capacity` value.
 """
 function save_solution_to_file(
     output_folder,
-    s_assets_investment,
+    assets_investment,
     v_investment,
-    p_unit_capacity,
+    unit_capacity,
 )
     # Writing the investment results to a CSV file
     output_file = joinpath(output_folder, "investments.csv")
     output_table = DataFrame(;
-        a = s_assets_investment,
-        InstalUnits = [v_investment[a] for a in s_assets_investment],
-        InstalCap_MW = [p_unit_capacity[a] * v_investment[a] for a in s_assets_investment],
+        a = assets_investment,
+        InstalUnits = [v_investment[a] for a in assets_investment],
+        InstalCap_MW = [unit_capacity[a] * v_investment[a] for a in assets_investment],
     )
     CSV.write(output_file, output_table)
 
