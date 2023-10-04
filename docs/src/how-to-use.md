@@ -8,4 +8,4 @@
   * `]`: Enter package mode
   * `activate .` : Activate here (root of project)
   * `instantiate` : Instantiate any packages you need according to the Project.toml
-  * `test`: Run tests - they should pass before you create a pull request
+  * `test`: (Optional) Try running the tests to see if you're set up correctly - they should pass

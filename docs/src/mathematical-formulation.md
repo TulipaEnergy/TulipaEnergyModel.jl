@@ -1,6 +1,7 @@
 # [Mathematical Formulation](@id math-formulation)
 
-This section shows the mathematical formulation of the model.
+This section shows the mathematical formulation of the model.\
+The full mathematical formulation is also freely available in the [preprint](https://arxiv.org/abs/2309.07711).
 
 ## [Sets](@id math-sets)
 
