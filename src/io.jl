@@ -15,11 +15,11 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     rep_period_file = joinpath(input_folder, "rep-periods-data.csv")
 
     # Read data
-    nodes_data_df     = CSV.read(nodes_data_file, DataFrames.DataFrame; header = 2)
-    nodes_profiles_df = CSV.read(nodes_profiles_file, DataFrames.DataFrame; header = 2)
-    # edges_data_df     = CSV.read(edges_data_file, DataFrames.DataFrame; header = 2)
-    # edges_nodes_profiles_df = CSV.read(edges_profiles_file, DataFrames.DataFrame; header = 2)
-    rep_period_df = CSV.read(rep_period_file, DataFrames.DataFrame; header = 2)
+    nodes_data_df     = read_csv_into_dataframe(nodes_data_file)
+    nodes_profiles_df = read_csv_into_dataframe(nodes_profiles_file)
+    # edges_data_df     = read_csv_into_dataframe(edges_data_file)
+    # edges_nodes_profiles_df = read_csv_into_dataframe(edges_profiles_file)
+    rep_period_df = read_csv_into_dataframe(rep_period_file)
 
     # Sets and subsets that depend on input data
     A = assets = nodes_data_df[nodes_data_df.active.==true, :].name         #assets in the energy system that are active
@@ -39,10 +39,10 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     ) # asset profile [p.u.]
 
     # Parameters for producers
-    variable_cost   = Dict{String,Float64}()
-    investment_cost = Dict{String,Float64}()
-    unit_capacity   = Dict{String,Float64}()
-    init_capacity   = Dict{String,Float64}()
+    variable_cost   = Dict{String, Float64}()
+    investment_cost = Dict{String, Float64}()
+    unit_capacity   = Dict{String, Float64}()
+    init_capacity   = Dict{String, Float64}()
     for row in eachrow(nodes_data_df)
         if row.name in Ap
             variable_cost[row.name] = row.variable_cost
@@ -53,7 +53,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     end
 
     # Parameters for consumers
-    peak_demand = Dict{String,Float64}()
+    peak_demand = Dict{String, Float64}()
     for row in eachrow(nodes_data_df)
         if row.name in Ac
             peak_demand[row.name] = row.peak_demand
@@ -79,6 +79,15 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     )
 
     return params, sets
+end
+
+"""
+    read_csv_into_dataframe(csv_name)
+
+Reads the csv with 2 header rows and returns the dataframe
+"""
+function read_csv_into_dataframe(csv_name)
+    CSV.read(csv_name, DataFrames.DataFrame; header = 2)
 end
 
 """
