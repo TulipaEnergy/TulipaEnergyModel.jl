@@ -4,11 +4,11 @@ struct NodeData
     type::String                # Producer/Consumer - maybe an enum?
     active::Bool                # Active or decomissioned
     investable::Bool            # Whether able to invest
-    variable_cost::Float32      # kEUR/MWh
-    investment_cost::Float32    # kEUR/MW/year
-    capacity::Float32           # MW
-    initial_capacity::Float32   # MW
-    peak_demand::Float32        # MW
+    variable_cost::Float64      # kEUR/MWh
+    investment_cost::Float64    # kEUR/MW/year
+    capacity::Float64           # MW
+    initial_capacity::Float64   # MW
+    peak_demand::Float64        # MW
 end
 
 struct EdgeData
@@ -18,29 +18,29 @@ struct EdgeData
     to_node_id::Int             # Node ID
     active::Bool                # Active or decomissioned
     investable::Bool            # Whether able to invest
-    variable_cost::Float32      # kEUR/MWh
-    investment_cost::Float32    # kEUR/MW/year
-    capacity::Float32           # MW
-    initial_capacity::Float32   # MW
+    variable_cost::Float64      # kEUR/MWh
+    investment_cost::Float64    # kEUR/MW/year
+    capacity::Float64           # MW
+    initial_capacity::Float64   # MW
 end
 
 struct EdgeProfiles
     id::Int                     # Edge ID
     rep_period_id::Int
     time_step::Int
-    value::Float32              # p.u.
+    value::Float64              # p.u.
 end
 
 struct NodeProfiles
     id::Int                     # Node ID
     rep_period_id::Int
     time_step::Int
-    value::Float32              # p.u.
+    value::Float64              # p.u.
 end
 
 struct RepPeriodData
     id::Int
-    weight::Float32
+    weight::Float64
 end
 
 function validate_df(df::DataFrame, schema::DataType; fname::String = "", silent = false)

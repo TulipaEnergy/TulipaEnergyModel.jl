@@ -50,6 +50,6 @@ end
         )
         @test col_err == [:id]
         @test col_type_err ==
-              [(:investable, Bool, String7), (:peak_demand, Float32, String7)]
+              [(:investable, Bool, String7), (:peak_demand, Float64, String7)]
     end
 end
