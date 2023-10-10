@@ -7,19 +7,12 @@ Returns two NamedTuples with all parameters and sets read and created from the
 input files in the `input_folder`.
 """
 function create_parameters_and_sets_from_file(input_folder::AbstractString)
-    # Files names
-    nodes_data_file     = joinpath(input_folder, "nodes-data.csv")
-    nodes_profiles_file = joinpath(input_folder, "nodes-profiles.csv")
-    # edges_data_file     = joinpath(input_folder, "edges-data.csv")
-    # edges_profiles_file = joinpath(input_folder, "edges-profiles.csv")
-    rep_period_file = joinpath(input_folder, "rep-periods-data.csv")
-
     # Read data
-    nodes_data_df     = read_csv_into_dataframe(nodes_data_file)
-    nodes_profiles_df = read_csv_into_dataframe(nodes_profiles_file)
-    # edges_data_df     = read_csv_into_dataframe(edges_data_file)
-    # edges_nodes_profiles_df = read_csv_into_dataframe(edges_profiles_file)
-    rep_period_df = read_csv_into_dataframe(rep_period_file)
+    nodes_data_df     = get_df(input_folder, "nodes-data.csv", NodeData)
+    nodes_profiles_df = get_df(input_folder, "nodes-profiles.csv", NodeProfiles)
+    # edges_data_df     = get_df(input_folder, "edges-data.csv", EdgeData)
+    # edges_profiles_df = get_df(input_folder, "edges-profiles.csv", EdgeProfiles)
+    rep_period_df = get_df(input_folder, "rep-periods-data.csv", RepPeriodData)
 
     # Sets and subsets that depend on input data
     A = assets = nodes_data_df[nodes_data_df.active.==true, :].name         #assets in the energy system that are active
@@ -39,10 +32,10 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     ) # asset profile [p.u.]
 
     # Parameters for producers
-    variable_cost   = Dict{String, Float64}()
-    investment_cost = Dict{String, Float64}()
-    unit_capacity   = Dict{String, Float64}()
-    init_capacity   = Dict{String, Float64}()
+    variable_cost   = Dict{String,Float64}()
+    investment_cost = Dict{String,Float64}()
+    unit_capacity   = Dict{String,Float64}()
+    init_capacity   = Dict{String,Float64}()
     for row in eachrow(nodes_data_df)
         if row.name in Ap
             variable_cost[row.name] = row.variable_cost
@@ -53,7 +46,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     end
 
     # Parameters for consumers
-    peak_demand = Dict{String, Float64}()
+    peak_demand = Dict{String,Float64}()
     for row in eachrow(nodes_data_df)
         if row.name in Ac
             peak_demand[row.name] = row.peak_demand
@@ -82,12 +75,14 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
 end
 
 """
-    read_csv_into_dataframe(csv_name)
+    get_df(path, file_name, dataset_type)
 
-Reads the csv with 2 header rows and returns the dataframe
+Reads the csv with file_name at location path, with 2 header rows. Then validates it using the dataset_type.
 """
-function read_csv_into_dataframe(csv_name)
-    CSV.read(csv_name, DataFrames.DataFrame; header = 2)
+function get_df(path, file_name, dataset_type)
+    csv_name = joinpath(path, file_name)
+    df = CSV.read(csv_name, DataFrames.DataFrame; header = 2)
+    validate_df(df, dataset_type)
 end
 
 """
