@@ -8,11 +8,11 @@ input files in the `input_folder`.
 """
 function create_parameters_and_sets_from_file(input_folder::AbstractString)
     # Read data
-    nodes_data_df     = get_df(input_folder, "nodes-data.csv", NodeData)
-    nodes_profiles_df = get_df(input_folder, "nodes-profiles.csv", NodeProfiles)
-    # edges_data_df     = get_df(input_folder, "edges-data.csv", EdgeData)
-    # edges_profiles_df = get_df(input_folder, "edges-profiles.csv", EdgeProfiles)
-    rep_period_df = get_df(input_folder, "rep-periods-data.csv", RepPeriodData)
+    nodes_data_df     = get_df(input_folder, "nodes-data.csv", 2, NodeData)
+    nodes_profiles_df = get_df(input_folder, "nodes-profiles.csv", 2, NodeProfiles)
+    # edges_data_df     = get_df(input_folder, "edges-data.csv", 2, EdgeData)
+    # edges_profiles_df = get_df(input_folder, "edges-profiles.csv", 2, EdgeProfiles)
+    rep_period_df = get_df(input_folder, "rep-periods-data.csv", 2, RepPeriodData)
 
     # Sets and subsets that depend on input data
     A = assets = nodes_data_df[nodes_data_df.active.==true, :].name         #assets in the energy system that are active
@@ -75,14 +75,18 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
 end
 
 """
-    get_df(path, file_name, dataset_type)
+    get_df(path, file_name, schema)
 
-Reads the csv with file_name at location path, with 2 header rows. Then validates it using the dataset_type.
+Reads the csv with file_name at location path, with specified number of header rows.
+Then validates the data using the schema.
+The silent argument is used in validate_df to optionally silence error messages.
 """
-function get_df(path, file_name, dataset_type)
+function get_df(path, file_name, header_rows, data_schema, silent = false)
     csv_name = joinpath(path, file_name)
-    df = CSV.read(csv_name, DataFrames.DataFrame; header = 2)
-    validate_df(df, dataset_type)
+    df = CSV.read(csv_name, DataFrames.DataFrame; header = header_rows)
+    validate_df(df, data_schema; fname = file_name, silent = silent)
+
+    return df
 end
 
 """
