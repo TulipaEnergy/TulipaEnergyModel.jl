@@ -11,7 +11,7 @@ function optimise_investments(graph, params, sets; verbose = false)
     Ac = sets.assets_consumer
     # Ap = sets.assets_producer
     Ai = sets.assets_investment
-    F = [(A[e.src], A[e.dst]) for e in edges(graph)]
+    F = edges(graph)
     K = sets.time_steps
     RP = sets.rep_periods
 
@@ -35,8 +35,8 @@ function optimise_investments(graph, params, sets; verbose = false)
     e_variable_cost = @expression(
         model,
         sum(
-            params.rep_weight[rp] * params.variable_cost[a] * v_flow[f, rp, k] for
-            a in A, f in F, rp in RP, k in K if f[1] == a
+            params.rep_weight[rp] * params.variable_cost[f.src] * v_flow[f, rp, k] for
+            f in F, rp in RP, k in K
         )
     )
 
@@ -48,17 +48,17 @@ function optimise_investments(graph, params, sets; verbose = false)
     @constraint(
         model,
         c_balance[a in Ac, rp in RP, k in K],
-        sum(v_flow[f, rp, k] for f in F if f[2] == a) ==
+        sum(v_flow[Edge(alpha, a), rp, k] for alpha in inneighbors(graph, a)) ==
         params.profile[a, rp, k] * params.peak_demand[a]
     )
 
     # - maximum generation
     @constraint(
         model,
-        c_max_prod[a in Ai, f in F, rp in RP, k in K; f[1] == a],
+        c_max_prod[f in F, rp in RP, k in K; f.src in Ai],
         v_flow[f, rp, k] <=
-        get(params.profile, (a, rp, k), 1.0) *
-        (params.init_capacity[a] + params.unit_capacity[a] * v_investment[a])
+        get(params.profile, (f.src, rp, k), 1.0) *
+        (params.init_capacity[f.src] + params.unit_capacity[f.src] * v_investment[f.src])
     )
 
     # print lp file

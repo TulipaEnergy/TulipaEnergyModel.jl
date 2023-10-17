@@ -22,10 +22,10 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     rep_period_df = CSV.read(rep_period_file, DataFrames.DataFrame; header = 2)
 
     # Sets and subsets that depend on input data
-    A = assets = nodes_data_df[nodes_data_df.active.==true, :].name         #assets in the energy system that are active
-    Ap = assets_producer = nodes_data_df[nodes_data_df.type.=="producer", :].name  #producer assets in the energy system
-    Ac = assets_consumer = nodes_data_df[nodes_data_df.type.=="consumer", :].name  #consumer assets in the energy system
-    assets_investment = nodes_data_df[nodes_data_df.investable.==true, :].name #assets with investment method in the energy system
+    A = assets = nodes_data_df[nodes_data_df.active.==true, :].id         #assets in the energy system that are active
+    Ap = assets_producer = nodes_data_df[nodes_data_df.type.=="producer", :].id  #producer assets in the energy system
+    Ac = assets_consumer = nodes_data_df[nodes_data_df.type.=="consumer", :].id  #consumer assets in the energy system
+    assets_investment = nodes_data_df[nodes_data_df.investable.==true, :].id #assets with investment method in the energy system
     rep_periods = unique(nodes_profiles_df.rep_period_id)  #representative periods
     time_steps = unique(nodes_profiles_df.time_step)   #time steps in the RP (e.g., hours)
 
@@ -39,24 +39,24 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     ) # asset profile [p.u.]
 
     # Parameters for producers
-    variable_cost   = Dict{String,Float64}()
-    investment_cost = Dict{String,Float64}()
-    unit_capacity   = Dict{String,Float64}()
-    init_capacity   = Dict{String,Float64}()
+    variable_cost   = Dict{UInt,Float64}()
+    investment_cost = Dict{UInt,Float64}()
+    unit_capacity   = Dict{UInt,Float64}()
+    init_capacity   = Dict{UInt,Float64}()
     for row in eachrow(nodes_data_df)
-        if row.name in Ap
-            variable_cost[row.name] = row.variable_cost
-            investment_cost[row.name] = row.investment_cost
-            unit_capacity[row.name] = row.capacity
-            init_capacity[row.name] = row.initial_capacity
+        if row.id in Ap
+            variable_cost[row.id] = row.variable_cost
+            investment_cost[row.id] = row.investment_cost
+            unit_capacity[row.id] = row.capacity
+            init_capacity[row.id] = row.initial_capacity
         end
     end
 
     # Parameters for consumers
-    peak_demand = Dict{String,Float64}()
+    peak_demand = Dict{UInt,Float64}()
     for row in eachrow(nodes_data_df)
-        if row.name in Ac
-            peak_demand[row.name] = row.peak_demand
+        if row.id in Ac
+            peak_demand[row.id] = row.peak_demand
         end
     end
 
