@@ -4,21 +4,22 @@ This section shows the mathematical formulation of the model.\
 The full mathematical formulation is also freely available in the [preprint](https://arxiv.org/abs/2309.07711).
 
 ## [Sets](@id math-sets)
+
 **MUTUAL EXCLUSIVE TO THE ASSETS!!!!!**
 Name|Description|Elements
  ---|---|---:
 $\mathcal{A}$           | Energy assets                           | $a \in \mathcal{A}$
-$\mathcal{A_c}$         | Consumer energy assets                  | $\mathcal{A_c}   \subseteq \mathcal{A}$
-$\mathcal{A_p}$         | Producer energy assets                  | $\mathcal{A_p}   \subseteq \mathcal{A}$
-$\mathcal{A_s}$         | Storage energy assets                   | $\mathcal{A_s}   \subseteq \mathcal{A}$
-$\mathcal{A_h}$         | Hub energy assets (e.g., transshipment) | $\mathcal{A_h}   \subseteq \mathcal{A}$
-$\mathcal{A_{cv}}$      | Conversion energy assets                | $\mathcal{A_{cv}}\subseteq \mathcal{A}$
-$\mathcal{A_i}$         | Energy assets with investment method    | $\mathcal{A_i}   \subseteq \mathcal{A}$
+$\mathcal{A}_c$         | Consumer energy assets                  | $\mathcal{A}_c   \subseteq \mathcal{A}$
+$\mathcal{A}_p$         | Producer energy assets                  | $\mathcal{A}_p   \subseteq \mathcal{A}$
+$\mathcal{A}_s$         | Storage energy assets                   | $\mathcal{A}_s   \subseteq \mathcal{A}$
+$\mathcal{A}_h$         | Hub energy assets (e.g., transshipment) | $\mathcal{A}_h   \subseteq \mathcal{A}$
+$\mathcal{A}_{cv}$      | Conversion energy assets                | $\mathcal{A}_{cv}\subseteq \mathcal{A}$
+$\mathcal{A}_i$         | Energy assets with investment method    | $\mathcal{A}_i   \subseteq \mathcal{A}$
 $\mathcal{F}$           | Flow connections between two assets     | $f \in \mathcal{F}$
-$\mathcal{F_t}$         | Transport flow between two assets       | $\mathcal{F_t}   \subseteq \mathcal{F}$
-$\mathcal{F_i}$         | Transport flow with investment method   | $\mathcal{F_i}   \subseteq \mathcal{F_t}$
-$\mathcal{F_{in}}(a)$   | Set of flows going into asset $a$       | $\mathcal{F_{in}}(a) \subseteq \mathcal{F}$
-$\mathcal{F_{out}}(a)$  | Set of flows going out of asset $a$     | $\mathcal{F_{out}}(a) \subseteq \mathcal{F}$
+$\mathcal{F}_t$         | Transport flow between two assets       | $\mathcal{F}_t   \subseteq \mathcal{F}$
+$\mathcal{F}_i$         | Transport flow with investment method   | $\mathcal{F}_i   \subseteq \mathcal{F}_t$
+$\mathcal{F}_{in}(a)$   | Set of flows going into asset $a$       | $\mathcal{F}_{in}(a) \subseteq \mathcal{F}$
+$\mathcal{F}_{out}(a)$  | Set of flows going out of asset $a$     | $\mathcal{F}_{out}(a) \subseteq \mathcal{F}$
 $\mathcal{RP}$          | Representative periods                  | $rp \in \mathcal{RP}$
 $\mathcal{K}$           | Time steps within the $rp$              | $k \in \mathcal{K}$
 
@@ -26,25 +27,26 @@ $\mathcal{K}$           | Time steps within the $rp$              | $k \in \math
 
 Name|Domain|Description|Units
  ---|---|---|---
-$p^{investment\_cost}_{a}$ | $\mathcal{A_i}$    | Investment cost  of asset units         | [kEUR/MW/year]
+$p^{investment\_cost}_{a}$ | $\mathcal{A}_i$    | Investment cost  of asset units         | [kEUR/MW/year]
 $p^{unit\_capacity}_{a}$   | $\mathcal{A}$      | Capacity of asset units                 | [MW]
-$p^{peak\_demand}_{a}$     | $\mathcal{A_c}$    | Peak demand                             | [MW]
+$p^{peak\_demand}_{a}$     | $\mathcal{A}_c$    | Peak demand                             | [MW]
 $p^{init\_capacity}_{a}$   | $\mathcal{A}$      | Initial capacity of asset units         | [MW]
-$p^{investment\_cost}_{f}$ | $\mathcal{F_i}$    | Investment cost  of flow connections    | [kEUR/MW/year]
+$p^{investment\_cost}_{f}$ | $\mathcal{F}_i$    | Investment cost  of flow connections    | [kEUR/MW/year]
 $p^{variable\_cost}_{f}$   | $\mathcal{F}$      | Variable cost of flow connections       | [kEUR/MWh]
 $p^{unit\_capacity}_{f}$   | $\mathcal{F}$      | Capacity of flow connections            | [MW]
 $p^{init\_capacity}_{f}$   | $\mathcal{F}$      | Initial capacity of flow connections    | [MW]
 $p^{rp\_weight}_{rp}$      | $\mathcal{RP}$     | Representative period weight            | [h]
 $p^{profile}_{a,rp,k}$     | $\mathcal{A,RP,K}$ | Asset profile                           | [p.u.]
 $p^{profile}_{f,rp,k}$     | $\mathcal{F,RP,K}$ | Flow connections profile                | [p.u.]
+$p^{energy2power\_ratio}_a$| $\mathcal{A}_s$    | Energy to power ratio                   | [h]
 
 ## [Variables](@id math-variables)
 
 Name|Domain|Description|Units
  ---|---|---|---
 $v^{flow}_{f,rp,k}  \in \mathbb{R}$    | $\mathcal{F,RP,K}$ | Flow between two assets                      |[MW]
-$v^{investment}_{a} \in \mathbb{Z^{+}}$| $\mathcal{A_i}$    | Number of installed asset units              |[units]
-$v^{investment}_{f} \in \mathbb{Z^{+}}$| $\mathcal{F_i}$    | Number of installed units between two assets |[units]
+$v^{investment}_{a} \in \mathbb{Z}^{+}$| $\mathcal{A}_i$    | Number of installed asset units              |[units]
+$v^{investment}_{f} \in \mathbb{Z}^{+}$| $\mathcal{F}_i$    | Number of installed units between two assets |[units]
 
 ## [Objective Function](@id math-objective-function)
 
@@ -71,47 +73,45 @@ flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{rp \in \mathcal{RP}} \su
 
 ### Balancing Contraints for Asset Type
 
-#### Constraints for Consumers Energy Assets $\mathcal{A_c}$
+#### Constraints for Consumers Energy Assets $\mathcal{A}_c$
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F_{in}}(a)} v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F_{out}}(a)} v^{flow}_{f,rp,k} \left\{\begin{array}{l} = \\ \geqslant \\ \leqslant \end{array}\right\} p^{profile}_{a,rp,k} \cdot p^{peak\_demand}_{a} \quad \forall a \in \mathcal{A_c}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \left\{\begin{array}{l} = \\ \geqslant \\ \leqslant \end{array}\right\} p^{profile}_{a,rp,k} \cdot p^{peak\_demand}_{a} \quad \forall a \in \mathcal{A}_c, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
-With this formulation we can model also exports and imports.
-
-#### Constraints for Storage Energy Assets $\mathcal{A_s}$
+#### Constraints for Storage Energy Assets $\mathcal{A}_s$
 
 ```math
 \begin{aligned}
-s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \eta_{in} \cdot \sum_{f \in \mathcal{F_{in}}(a)} v^{flow}_{f,rp,k} - \frac{1}{\eta_{out}} \cdot \sum_{f \in \mathcal{F_{out}}(a)} v^{flow}_{f,rp,k} \quad \forall a \in \mathcal{A_s}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \eta_{in} \cdot \sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} - \frac{1}{\eta_{out}} \cdot \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \quad \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
-#### Constraints for Hub Energy Assets $\mathcal{A_h}$
+#### Constraints for Hub Energy Assets $\mathcal{A}_h$
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F_{in}}(a)} v^{flow}_{f,rp,k} = \sum_{f \in \mathcal{F_{out}}(a)} v^{flow}_{f,rp,k} \quad \forall a \in \mathcal{A_h}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} = \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \quad \forall a \in \mathcal{A}_h, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
-#### Constraints for Conversion Energy Assets $\mathcal{A_{cv}}$
+#### Constraints for Conversion Energy Assets $\mathcal{A}_{cv}$
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F_{in}}(a)} \eta_{f} \cdot {v^{flow}_{f,rp,k}} = \sum_{f \in \mathcal{F_{out}}(a)} \frac{v^{flow}_{f,rp,k}}{\eta_{f}}  \quad \forall a \in \mathcal{A_{cv}}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{in}(a)} \eta_{f} \cdot {v^{flow}_{f,rp,k}} = \sum_{f \in \mathcal{F}_{out}(a)} \frac{v^{flow}_{f,rp,k}}{\eta_{f}}  \quad \forall a \in \mathcal{A}_{cv}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
-### Bounding Constraints
+### Constraints that Define Bounds of Flows Related to Energy Assets $\mathcal{A}$
 
 #### Contraint for the Overall Output Flows from an Asset
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F_{out}}(a)} v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \forall a \in \mathcal{A_{cv}} \cup \mathcal{A_{s}} \cup \mathcal{A_{p}}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \forall a \in \mathcal{A}_{cv} \cup \mathcal{A_{s}} \cup \mathcal{A_{p}}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -119,26 +119,46 @@ s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \eta_{in} \cdo
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F_{in}}(a)} v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \forall a \in \mathcal{A_{s}}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \forall a \in \mathcal{A_{s}}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
-#### Upper Bound Constraint for Flows
+#### Upper Bound Constraint for Associated with Asset
 
 ```math
 \begin{aligned}
-v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{unit\_capacity}_f \cdot v^{investment}_f \right)  \quad \forall f \in \mathcal{F_t}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \forall a \notin \mathcal{A}_h, \forall f \in \mathcal{F}_{out}(a), \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
-#### Lower Bound Constraint for Flows
+#### Lower Bound Constraint Flows Associated with Asset
 
 ```math
-v^{flow}_{f,rp,k} \geq 0 \quad \forall f \in \mathcal{F}, \forall rp \in \mathcal{RP}, \forall k \in \mathcal{k}
+v^{flow}_{f,rp,k} \geq 0 \quad \forall f \notin \mathcal{F}_t, \forall rp \in \mathcal{RP}, \forall k \in \mathcal{k}
 ```
+
+### Constraints that Define Bounds for a Transport Flow $\mathcal{F}_t$
+
+#### Upper Bound Constraint for Transport Flows
+
+```math
+\begin{aligned}
+v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{unit\_capacity}_f \cdot v^{investment}_f \right)  \quad \forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\end{aligned}
+```
+
+#### Lower Bound Constraint for Transport Flows
+
+```math
+\begin{aligned}
+v^{flow}_{f,rp,k} \geq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{unit\_capacity}_f \cdot v^{investment}_f \right)  \quad \forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\end{aligned}
+```
+
+### Extra Constraints for Energy Storage Assets $\mathcal{A}_s$
 
 #### Upper and Lower Bound Constraints for Storage Level
 
 ```math
-0 \leq s_{a,rp,k}^{level} \leq p^{init\_storage\_capacity}_{a} + p^{energy\_to\_power\_ratio}_a \cdot p^{unit\_capacity}_a \cdot v^{investment}_a \quad \forall a \in \mathcal{A_s}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+0 \leq s_{a,rp,k}^{level} \leq p^{init\_storage\_capacity}_{a} + p^{energy2power\_ratio}_a \cdot p^{unit\_capacity}_a \cdot v^{investment}_a \quad \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 ```
