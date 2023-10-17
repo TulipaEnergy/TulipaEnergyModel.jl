@@ -7,19 +7,12 @@ Returns two NamedTuples with all parameters and sets read and created from the
 input files in the `input_folder`.
 """
 function create_parameters_and_sets_from_file(input_folder::AbstractString)
-    # Files names
-    nodes_data_file     = joinpath(input_folder, "nodes-data.csv")
-    nodes_profiles_file = joinpath(input_folder, "nodes-profiles.csv")
-    # edges_data_file     = joinpath(input_folder, "edges-data.csv")
-    # edges_profiles_file = joinpath(input_folder, "edges-profiles.csv")
-    rep_period_file = joinpath(input_folder, "rep-periods-data.csv")
-
     # Read data
-    nodes_data_df     = CSV.read(nodes_data_file, DataFrames.DataFrame; header = 2)
-    nodes_profiles_df = CSV.read(nodes_profiles_file, DataFrames.DataFrame; header = 2)
-    # edges_data_df     = CSV.read(edges_data_file, DataFrames.DataFrame; header = 2)
-    # edges_nodes_profiles_df = CSV.read(edges_profiles_file, DataFrames.DataFrame; header = 2)
-    rep_period_df = CSV.read(rep_period_file, DataFrames.DataFrame; header = 2)
+    nodes_data_df     = get_df(input_folder, "nodes-data.csv", NodeData; header = 2)
+    nodes_profiles_df = get_df(input_folder, "nodes-profiles.csv", NodeProfiles; header = 2)
+    # edges_data_df     = get_df(input_folder, "edges-data.csv", EdgeData; header = 2)
+    # edges_profiles_df = get_df(input_folder, "edges-profiles.csv", EdgeProfiles; header = 2)
+    rep_period_df = get_df(input_folder, "rep-periods-data.csv", RepPeriodData; header = 2)
 
     # Sets and subsets that depend on input data
     A = assets = nodes_data_df[nodes_data_df.active.==true, :].name         #assets in the energy system that are active
@@ -79,6 +72,19 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     )
 
     return params, sets
+end
+
+"""
+    get_df(path, file_name, schema)
+
+Reads the csv with file_name at location path, then validates the data using the schema.
+"""
+function get_df(path, file_name, schema; csvargs...)
+    csv_name = joinpath(path, file_name)
+    df = CSV.read(csv_name, DataFrames.DataFrame; csvargs...)
+    validate_df(df, schema; fname = file_name)
+
+    return df
 end
 
 """
