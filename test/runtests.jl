@@ -22,6 +22,15 @@ const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
     )
 end
 
+@testset "Infeasible run" begin
+    dir = joinpath(INPUT_FOLDER, "tiny")
+    parameters, sets = create_parameters_and_sets_from_file(dir)
+    parameters.peak_demand["demand"] = -1 # make it infeasible
+    graph = create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
+    solution = optimise_investments(graph, parameters, sets)
+    @test solution === nothing
+end
+
 @testset "Tiny graph" begin
     @testset "Graph structure is correct" begin
         dir = joinpath(INPUT_FOLDER, "tiny")
