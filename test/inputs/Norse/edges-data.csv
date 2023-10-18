@@ -1,0 +1,8 @@
+,,node_id,node_id,{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW
+id,carrier,from_node_id,to_node_id,active,investable,variable_cost,investment_cost,capacity,initial_capacity
+1,gas,6,13,TRUE,TRUE,0,200,[],[]
+2,gas,6,16,TRUE,TRUE,0,200,[],[]
+3,gas,13,16,TRUE,TRUE,0,200,[],[]
+4,electricity,3,12,TRUE,TRUE,0,1000,[],[]
+5,electricity,3,22,TRUE,TRUE,0,1000,[],[]
+6,electricity,12,22,TRUE,TRUE,0,1000,[],[]
