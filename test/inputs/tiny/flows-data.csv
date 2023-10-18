@@ -1,7 +1,7 @@
-,,asset_id,asset_id,{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,p.u.,p.u.
-id,carrier,from_asset_id,to_asset_id,active,investable,variable_cost,investment_cost,capacity,initial_capacity,efficiency_out,efficiency_in
-1,electricity,1,6,true,,,,,,0,0
-2,electricity,2,6,true,,,,,,0,0
-3,electricity,3,6,true,,,,,,0,0
-4,electricity,4,6,true,,,,,,0,0
-5,electricity,5,6,true,,,,,,0,0
+,,asset_id,asset_id,{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,p.u.
+id,carrier,from_asset_id,to_asset_id,active,investable,variable_cost,investment_cost,capacity,initial_capacity,efficiency
+1,electricity,1,6,true,,,,,,0
+2,electricity,2,6,true,,,,,,0
+3,electricity,3,6,true,,,,,,0
+4,electricity,4,6,true,,,,,,0
+5,electricity,5,6,true,,,,,,0

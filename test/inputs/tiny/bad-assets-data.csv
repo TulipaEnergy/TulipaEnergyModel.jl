@@ -1,8 +1,8 @@
-,,{producer;consumer},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,p.u.,p.u.,h
-iid,name,type,active,investable,variable_cost,investment_cost,capacity,initial_capacity,peak_demand,discharging_efficiency,charging_efficiency,storage_time
-1,ocgt,producer,true,t,0.07,25,100,0,t,0,0,0
-2,ccgt,producer,true,true,0.05,40,400,0,0,0,0,0
-3,wind,producer,true,true,0.001,70,50,0,0,0,0,0
-4,solar,producer,true,true,0,50,10,0,0,0,0,0
-5,ens,producer,true,false,0.18,0,0,0,0,0,0,0
-6,demand,consumer,true,false,0,0,0,0,1115,0,0,0
+,,{producer;consumer},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,h
+iid,name,type,active,investable,variable_cost,investment_cost,capacity,initial_capacity,peak_demand,storage_time
+1,ocgt,producer,true,t,0.07,25,100,0,t,0
+2,ccgt,producer,true,true,0.05,40,400,0,0,0
+3,wind,producer,true,true,0.001,70,50,0,0,0
+4,solar,producer,true,true,0,50,10,0,0,0
+5,ens,producer,true,false,0.18,0,0,0,0,0
+6,demand,consumer,true,false,0,0,0,0,1115,0
