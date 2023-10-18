@@ -1,8 +1,8 @@
-,,node_id,node_id,{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW
-id,carrier,from_asset_id,to_asset_id,active,investable,variable_cost,investment_cost,capacity,initial_capacity
-1,gas,6,13,TRUE,TRUE,0,200,[],[]
-2,gas,6,16,TRUE,TRUE,0,200,[],[]
-3,gas,13,16,TRUE,TRUE,0,200,[],[]
-4,electricity,3,12,TRUE,TRUE,0,1000,[],[]
-5,electricity,3,22,TRUE,TRUE,0,1000,[],[]
-6,electricity,12,22,TRUE,TRUE,0,1000,[],[]
+,,node_id,node_id,{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,p.u.,p.u.
+id,carrier,from_asset_id,to_asset_id,active,investable,variable_cost,investment_cost,capacity,initial_capacity,efficiency_out,efficiency_in
+1,gas,6,13,TRUE,TRUE,0,200,0,0,0,0
+2,gas,6,16,TRUE,TRUE,0,200,0,0,0,0
+3,gas,13,16,TRUE,TRUE,0,200,0,0,0,0
+4,electricity,3,12,TRUE,TRUE,0,1000,0,0,0,0
+5,electricity,3,22,TRUE,TRUE,0,1000,0,0,0,0
+6,electricity,12,22,TRUE,TRUE,0,1000,0,0,0,0
