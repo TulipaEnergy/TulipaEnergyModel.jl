@@ -8,19 +8,19 @@ input files in the `input_folder`.
 """
 function create_parameters_and_sets_from_file(input_folder::AbstractString)
     # Read data
-    nodes_data_df     = get_df(input_folder, "nodes-data.csv", NodeData; header = 2)
-    nodes_profiles_df = get_df(input_folder, "nodes-profiles.csv", NodeProfiles; header = 2)
-    # edges_data_df     = get_df(input_folder, "edges-data.csv", EdgeData; header = 2)
-    # edges_profiles_df = get_df(input_folder, "edges-profiles.csv", EdgeProfiles; header = 2)
+    assets_data_df     = get_df(input_folder, "assets-data.csv", AssetData; header = 2)
+    assets_profiles_df = get_df(input_folder, "assets-profiles.csv", AssetProfiles; header = 2)
+    # flows_data_df     = get_df(input_folder, "flows-data.csv", FlowData; header = 2)
+    # flows_profiles_df = get_df(input_folder, "flows-profiles.csv", FlowProfiles; header = 2)
     rep_period_df = get_df(input_folder, "rep-periods-data.csv", RepPeriodData; header = 2)
 
     # Sets and subsets that depend on input data
-    A = assets = nodes_data_df[nodes_data_df.active.==true, :].name         #assets in the energy system that are active
-    Ap = assets_producer = nodes_data_df[nodes_data_df.type.=="producer", :].name  #producer assets in the energy system
-    Ac = assets_consumer = nodes_data_df[nodes_data_df.type.=="consumer", :].name  #consumer assets in the energy system
-    assets_investment = nodes_data_df[nodes_data_df.investable.==true, :].name #assets with investment method in the energy system
-    rep_periods = unique(nodes_profiles_df.rep_period_id)  #representative periods
-    time_steps = unique(nodes_profiles_df.time_step)   #time steps in the RP (e.g., hours)
+    A = assets = assets_data_df[assets_data_df.active.==true, :].name         #assets in the energy system that are active
+    Ap = assets_producer = assets_data_df[assets_data_df.type.=="producer", :].name  #producer assets in the energy system
+    Ac = assets_consumer = assets_data_df[assets_data_df.type.=="consumer", :].name  #consumer assets in the energy system
+    assets_investment = assets_data_df[assets_data_df.investable.==true, :].name #assets with investment method in the energy system
+    rep_periods = unique(assets_profiles_df.rep_period_id)  #representative periods
+    time_steps = unique(assets_profiles_df.time_step)   #time steps in the RP (e.g., hours)
 
     # Parameters for system
     rep_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
@@ -28,7 +28,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     # Parameters for assets
     profile = Dict(
         (A[row.id], row.rep_period_id, row.time_step) => row.value for
-        row in eachrow(nodes_profiles_df)
+        row in eachrow(assets_profiles_df)
     ) # asset profile [p.u.]
 
     # Parameters for producers
@@ -36,7 +36,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     investment_cost = Dict{String,Float64}()
     unit_capacity   = Dict{String,Float64}()
     init_capacity   = Dict{String,Float64}()
-    for row in eachrow(nodes_data_df)
+    for row in eachrow(assets_data_df)
         if row.name in Ap
             variable_cost[row.name] = row.variable_cost
             investment_cost[row.name] = row.investment_cost
@@ -47,7 +47,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
 
     # Parameters for consumers
     peak_demand = Dict{String,Float64}()
-    for row in eachrow(nodes_data_df)
+    for row in eachrow(assets_data_df)
         if row.name in Ac
             peak_demand[row.name] = row.peak_demand
         end
@@ -113,19 +113,19 @@ function save_solution_to_file(
 end
 
 """
-    graph = create_graph(nodes_path, edges_path)
+    graph = create_graph(assets_path, flows_path)
 
-Read the nodes and edges data CSVs and create a graph object.
+Read the assets and flows data CSVs and create a graph object.
 """
-function create_graph(nodes_path, edges_path)
-    nodes_df = CSV.read(nodes_path, DataFrames.DataFrame; header = 2)
-    edges_df = CSV.read(edges_path, DataFrames.DataFrame; header = 2)
+function create_graph(assets_path, flows_path)
+    assets_df = CSV.read(assets_path, DataFrames.DataFrame; header = 2)
+    flows_df = CSV.read(flows_path, DataFrames.DataFrame; header = 2)
 
-    num_nodes = DataFrames.nrow(nodes_df)
+    num_assets = DataFrames.nrow(assets_df)
 
-    graph = Graphs.DiGraph(num_nodes)
-    for row in eachrow(edges_df)
-        Graphs.add_edge!(graph, row.from_node_id, row.to_node_id)
+    graph = Graphs.DiGraph(num_assets)
+    for row in eachrow(flows_df)
+        Graphs.add_edge!(graph, row.from_asset_id, row.to_asset_id)
     end
 
     return graph
