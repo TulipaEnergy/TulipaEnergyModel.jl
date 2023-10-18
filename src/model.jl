@@ -1,11 +1,12 @@
-export optimise_investments
+export create_model, solve_model
 
 """
-    optimise_investments(graph, params, sets; verbose = false)
+    create_model(graph, params, sets; verbose = false)
 
-Create and solve the model using the `graph` structure, the parameters and sets.
+Create the model using the `graph` structure, the parameters and sets.
 """
-function optimise_investments(graph, params, sets; verbose = false)
+
+function create_model(graph, params, sets; verbose = false)
     # Sets unpacking
     A = sets.assets
     Ac = sets.assets_consumer
@@ -61,8 +62,15 @@ function optimise_investments(graph, params, sets; verbose = false)
         (params.init_capacity[a] + params.unit_capacity[a] * v_investment[a])
     )
 
-    # print lp file
-    write_to_file(model, "model.lp")
+    return model
+end
+
+"""
+    solve_model(model)
+
+Solve the model.
+"""
+function solve_model(model)
 
     # Solve model
     optimize!(model)
@@ -75,7 +83,7 @@ function optimise_investments(graph, params, sets; verbose = false)
 
     return (
         objective_value = objective_value(model),
-        v_flow = value.(v_flow),
-        v_investment = value.(v_investment),
+        v_flow = value.(model[:v_flow]),
+        v_investment = value.(model[:v_investment]),
     )
 end
