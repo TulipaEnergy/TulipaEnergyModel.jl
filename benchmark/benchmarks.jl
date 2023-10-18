@@ -3,10 +3,10 @@ using TulipaEnergyModel
 
 const SUITE = BenchmarkGroup()
 
-SUITE["io"] = BenchmarkGroup(["data", "input", "output"])
+SUITE["io"] = BenchmarkGroup(["data", "input", "graph", "output"])
 SUITE["model"] = BenchmarkGroup(["model"])
 
-const INPUT_FOLDER = joinpath(@__DIR__, "..", "test", "inputs")
+const INPUT_FOLDER = joinpath(@__DIR__, "..", "test", "inputs", "tiny")
 const OUTPUT_FOLDER = joinpath(@__DIR__, "..", "test", "outputs")
 
 SUITE["io"]["input"] = @benchmarkable begin
@@ -14,11 +14,22 @@ SUITE["io"]["input"] = @benchmarkable begin
 end
 parameters, sets = create_parameters_and_sets_from_file(INPUT_FOLDER)
 
+SUITE["io"]["graph"] = @benchmarkable begin
+    create_graph(
+        $(joinpath(INPUT_FOLDER, "assets-data.csv")),
+        $(joinpath(INPUT_FOLDER, "flows-data.csv")),
+    )
+end
+graph = create_graph(
+    joinpath(INPUT_FOLDER, "assets-data.csv"),
+    joinpath(INPUT_FOLDER, "flows-data.csv"),
+)
+
 SUITE["model"]["all"] = @benchmarkable begin
-    optimise_investments($parameters, $sets)
+    optimise_investments($graph, $parameters, $sets)
 end
 
-solution = optimise_investments(parameters, sets)
+solution = optimise_investments(graph, parameters, sets)
 
 SUITE["io"]["output"] = @benchmarkable begin
     save_solution_to_file(
