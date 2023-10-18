@@ -11,7 +11,7 @@ const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
 @testset "TulipaEnergyModel.jl" begin
     dir = joinpath(INPUT_FOLDER, "tiny")
     parameters, sets = create_parameters_and_sets_from_file(dir)
-    graph = create_graph(joinpath(dir, "nodes-data.csv"), joinpath(dir, "edges-data.csv"))
+    graph = create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
     solution = optimise_investments(graph, parameters, sets)
     @test solution.objective_value ≈ 269238.43825 atol = 1e-5
     save_solution_to_file(
@@ -26,7 +26,7 @@ end
     @testset "Graph structure is correct" begin
         dir = joinpath(INPUT_FOLDER, "tiny")
         graph =
-            create_graph(joinpath(dir, "nodes-data.csv"), joinpath(dir, "edges-data.csv"))
+            create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
 
         @test Graphs.nv(graph) == 6
         @test Graphs.ne(graph) == 5
@@ -39,13 +39,13 @@ end
     # FIXME: test separately
     @testset "missing columns and incompatible types" begin
         dir = joinpath(INPUT_FOLDER, "tiny")
-        df = CSV.read(joinpath(dir, "bad-nodes-data.csv"), DataFrame; header = 2)
+        df = CSV.read(joinpath(dir, "bad-assets-data.csv"), DataFrame; header = 2)
 
         # FIXME: instead of examples, mutate and test
         col_err, col_type_err = TulipaEnergyModel.validate_df(
             df,
-            TulipaEnergyModel.NodeData;
-            fname = "bad-nodes-data.csv",
+            TulipaEnergyModel.AssetData;
+            fname = "bad-assets-data.csv",
             silent = true,
         )
         @test col_err == [:id]
