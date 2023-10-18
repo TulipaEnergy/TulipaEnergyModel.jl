@@ -9,8 +9,6 @@ struct AssetData
     capacity::Float64               # MW
     initial_capacity::Float64       # MW
     peak_demand::Float64            # MW
-    charging_efficiency::Float64    # p.u. (per unit)
-    discharging_efficiency::Float64 # p.u. (per unit)
     storage_time::Float64           # Hours
 end
 
@@ -25,8 +23,7 @@ struct FlowData
     investment_cost::Float64    # kEUR/MW/year
     capacity::Float64           # MW
     initial_capacity::Float64   # MW
-    efficiency_out::Float64     # p.u. (per unit)
-    efficiency_in::Float64      # p.u. (per unit)
+    efficiency::Float64         # p.u. (per unit)
 end
 
 struct FlowProfiles
