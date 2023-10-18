@@ -51,6 +51,7 @@ end
         df = CSV.read(joinpath(dir, "bad-assets-data.csv"), DataFrame; header = 2)
 
         # FIXME: instead of examples, mutate and test
+        # Example 1 - bad data, silent
         col_err, col_type_err = TulipaEnergyModel.validate_df(
             df,
             TulipaEnergyModel.AssetData;
@@ -60,5 +61,13 @@ end
         @test col_err == [:id]
         @test col_type_err ==
               [(:investable, Bool, String7), (:peak_demand, Float64, String7)]
+
+        # Example 2 - bad data, verbose
+        expected_error_message = "bad-assets-data.csv failed validation\n [1] missing columns: [:id]\n [2] incompatible column types:\n     - investable::String7 (expected: Bool)\n     - peak_demand::String7 (expected: Float64)"
+        @test_throws expected_error_message TulipaEnergyModel.validate_df(
+            df,
+            TulipaEnergyModel.AssetData;
+            fname = "bad-assets-data.csv",
+        )
     end
 end
