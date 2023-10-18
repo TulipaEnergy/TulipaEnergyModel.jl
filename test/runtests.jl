@@ -51,6 +51,7 @@ end
         df = CSV.read(joinpath(dir, "bad-assets-data.csv"), DataFrame; header = 2)
 
         # FIXME: instead of examples, mutate and test
+        # Example 1 - bad data, silent
         col_err, col_type_err = TulipaEnergyModel.validate_df(
             df,
             TulipaEnergyModel.AssetData;
@@ -60,5 +61,12 @@ end
         @test col_err == [:id]
         @test col_type_err ==
               [(:investable, Bool, String7), (:peak_demand, Float64, String7)]
+
+        # Example 2 - bad data, verbose
+        @test_throws ErrorException TulipaEnergyModel.validate_df(
+            df,
+            TulipaEnergyModel.AssetData;
+            fname = "bad-assets-data.csv",
+        )
     end
 end
