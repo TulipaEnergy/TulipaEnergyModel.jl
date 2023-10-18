@@ -67,6 +67,12 @@ function optimise_investments(graph, params, sets; verbose = false)
     # Solve model
     optimize!(model)
 
+    # Check solution status
+    if termination_status(model) != OPTIMAL
+        @warn("Model status different from optimal")
+        return nothing
+    end
+
     return (
         objective_value = objective_value(model),
         v_flow = value.(v_flow),
