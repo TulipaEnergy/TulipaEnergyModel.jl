@@ -1,19 +1,12 @@
-name: Test
+# This file was created because of issue #133 (run tests faster on PRs)
+# If you want to run the full test, change Test.yml and delete this file
+name: Test on PR
 on:
-    push:
-        branches:
-            - main
+    pull_request:
         paths:
             - "src/**"
             - "test/**"
             - "*.toml"
-        tags: ["*"]
-    # These lines were commented out because of issue #133 (run tests faster on PRs)
-    # pull_request:
-    #     paths:
-    #         - "src/**"
-    #         - "test/**"
-    #         - "*.toml"
 concurrency:
     # Skip intermediate builds: always.
     # Cancel intermediate builds: only if it is a pull request build.
@@ -29,13 +22,9 @@ jobs:
             fail-fast: false
             matrix:
                 version:
-                    - "1.6"
                     - "1"
-                    - nightly
                 os:
                     - ubuntu-latest
-                    - macos-latest
-                    - windows-latest
                 arch:
                     - x64
         steps:
@@ -48,8 +37,6 @@ jobs:
             - uses: julia-actions/julia-buildpkg@v1
             - uses: julia-actions/julia-runtest@v1
             - uses: julia-actions/julia-processcoverage@v1
-              if: ${{ matrix.version }} == "1" && ${{ matrix.os }} == "ubuntu-latest"
             - uses: codecov/codecov-action@v3
-              if: ${{ matrix.version }} == "1" && ${{ matrix.os }} == "ubuntu-latest"
               with:
                   files: lcov.info
