@@ -199,3 +199,16 @@ package, you can run the `Benchmark.yml` workflow from your PR.  To do
 that, add the command `/run-benchmark` as a comment in the PR.  This
 will trigger the workflow for your branch, and post the results as a
 comment in you PR.
+
+If you want to manually run the benchmarks, you can do the following:
+
+- Navigate to the benchmark folder
+- Run `julia --project=.`
+- Enter `pkg` mode by pressing `]`
+- Run `dev ..` to add the development version of TulipaEnergyModel
+- Now run
+
+  ```julia
+  tune!(SUITE)
+  results = run(SUITE, verbose=true)
+  ```
