@@ -11,9 +11,9 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     fillpath(filename) = joinpath(input_folder, filename)
     assets_data_df     = read_csv_with_schema(fillpath("assets-data.csv"), AssetData)
     assets_profiles_df = read_csv_with_schema(fillpath("assets-profiles.csv"), AssetProfiles)
-    # flows_data_df     = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
-    # flows_profiles_df = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles)
-    rep_period_df = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
+    flows_data_df      = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
+    flows_profiles_df  = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles)
+    rep_period_df      = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
 
     # Sets and subsets that depend on input data
     A = assets = assets_data_df[assets_data_df.active.==true, :].name         #assets in the energy system that are active
@@ -27,22 +27,29 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     rep_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
 
     # Parameters for assets
-    profile = Dict(
+    assets_profile = Dict(
         (A[row.id], row.rep_period_id, row.time_step) => row.value for
         row in eachrow(assets_profiles_df)
     ) # asset profile [p.u.]
 
+    # Parameter for profile of flow
+    flows = [(row.from_asset_id, row.to_asset_id) for row in eachrow(flows_data_df)]
+    flows_profile = Dict(
+        (flows[row.id], row.rep_period_id, row.time_step) => row.value for
+        row in eachrow(flows_profiles_df)
+    )
+
     # Parameters for producers
-    variable_cost   = Dict{String,Float64}()
-    investment_cost = Dict{String,Float64}()
-    unit_capacity   = Dict{String,Float64}()
-    init_capacity   = Dict{String,Float64}()
+    variable_cost = Dict{String,Float64}()
+    assets_investment_cost = Dict{String,Float64}()
+    assets_unit_capacity = Dict{String,Float64}()
+    assets_init_capacity = Dict{String,Float64}()
     for row in eachrow(assets_data_df)
         if row.name in Ap
             variable_cost[row.name] = row.variable_cost
-            investment_cost[row.name] = row.investment_cost
-            unit_capacity[row.name] = row.capacity
-            init_capacity[row.name] = row.initial_capacity
+            assets_investment_cost[row.name] = row.investment_cost
+            assets_unit_capacity[row.name] = row.capacity
+            assets_init_capacity[row.name] = row.initial_capacity
         end
     end
 
@@ -54,13 +61,30 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         end
     end
 
+    # Read from flows data
+    flows_investment_cost = Dict{UInt,Float64}()
+    flows_unit_capacity = Dict{UInt,Float64}()
+    flows_init_capacity = Dict{UInt,Float64}()
+    flows_investable = Dict{UInt,Bool}()
+    for row in eachrow(flows_data_df)
+        flows_investment_cost[(row.from_asset_id, row.to_asset_id)] = row.investment_cost
+        flows_unit_capacity[(row.from_asset_id, row.to_asset_id)] = row.capacity
+        flows_init_capacity[(row.from_asset_id, row.to_asset_id)] = row.initial_capacity
+        flows_investable[(row.from_asset_id, row.to_asset_id)] = row.investable
+    end
+
     params = (
-        init_capacity = init_capacity,
-        investment_cost = investment_cost,
+        assets_init_capacity = assets_init_capacity,
+        assets_investment_cost = assets_investment_cost,
+        assets_profile = assets_profile,
+        assets_type = assets_data_df.type,
+        assets_unit_capacity = assets_unit_capacity,
+        flows_init_capacity = flows_init_capacity,
+        flows_investment_cost = flows_investment_cost,
+        flows_profile = flows_profile,
+        flows_unit_capacity = flows_unit_capacity,
         peak_demand = peak_demand,
-        profile = profile,
         rep_weight = rep_weight,
-        unit_capacity = unit_capacity,
         variable_cost = variable_cost,
     )
     sets = (

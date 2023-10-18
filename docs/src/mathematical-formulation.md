@@ -53,6 +53,10 @@ $v^{investment}_{a} \in \mathbb{Z}^{+}$| $\mathcal{A}_i$       | Number of insta
 $v^{investment}_{f} \in \mathbb{Z}^{+}$| $\mathcal{F}_i$       | Number of installed units between two assets |[units]
 $s^{level}_{a,rp,k} \in \mathbb{R}$    | $\mathcal{A_s,RP,K}$  | Storage level                                |[MWh]
 
+**Missing:**
+
+- `s`
+
 ## [Objective Function](@id math-objective-function)
 
 Objective function:
