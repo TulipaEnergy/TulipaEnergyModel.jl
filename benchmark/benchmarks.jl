@@ -26,10 +26,11 @@ graph = create_graph(
 )
 
 SUITE["model"]["all"] = @benchmarkable begin
-    optimise_investments($graph, $parameters, $sets)
+    create_model($graph, $parameters, $sets)
 end
 
-solution = optimise_investments(graph, parameters, sets)
+model = create_model(graph, parameters, sets)
+solution = solve_model(model)
 
 SUITE["io"]["output"] = @benchmarkable begin
     save_solution_to_file(

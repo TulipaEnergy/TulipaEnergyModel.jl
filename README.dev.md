@@ -209,6 +209,8 @@ If you want to manually run the benchmarks, you can do the following:
 - Now run
 
   ```julia
+  using BenchmarkTools
+  include("benchmarks.jl")
   tune!(SUITE)
   results = run(SUITE, verbose=true)
   ```
