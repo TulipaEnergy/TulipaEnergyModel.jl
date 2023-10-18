@@ -5,7 +5,7 @@ The full mathematical formulation is also freely available in the [preprint](htt
 
 ## [Sets](@id math-sets)
 
-**MUTUAL EXCLUSIVE TO THE ASSETS!!!!!**
+NOTE: Asset types are mutually exclusive.
 Name|Description|Elements
  ---|---|---:
 $\mathcal{A}$           | Energy assets                           | $a \in \mathcal{A}$
@@ -39,14 +39,19 @@ $p^{rp\_weight}_{rp}$      | $\mathcal{RP}$     | Representative period weight  
 $p^{profile}_{a,rp,k}$     | $\mathcal{A,RP,K}$ | Asset profile                           | [p.u.]
 $p^{profile}_{f,rp,k}$     | $\mathcal{F,RP,K}$ | Flow connections profile                | [p.u.]
 $p^{energy2power\_ratio}_a$| $\mathcal{A}_s$    | Energy to power ratio                   | [h]
+$p^{eff\_out}_a$           | $\mathcal{A}_s$    | Discharge efficiency                    | [p.u.]
+$p^{eff\_in}_a$            | $\mathcal{A}_s$    | Charge efficiency                       | [p.u.]
+$p^{eff\_out}_f$           | $\mathcal{F}$      | Flow efficiency out                     | [p.u.]
+$p^{eff\_in}_f$            | $\mathcal{F}$      | Flow efficiency in                      | [p.u.]
 
 ## [Variables](@id math-variables)
 
 Name|Domain|Description|Units
  ---|---|---|---
-$v^{flow}_{f,rp,k}  \in \mathbb{R}$    | $\mathcal{F,RP,K}$ | Flow between two assets                      |[MW]
-$v^{investment}_{a} \in \mathbb{Z}^{+}$| $\mathcal{A}_i$    | Number of installed asset units              |[units]
-$v^{investment}_{f} \in \mathbb{Z}^{+}$| $\mathcal{F}_i$    | Number of installed units between two assets |[units]
+$v^{flow}_{f,rp,k}  \in \mathbb{R}$    | $\mathcal{F,RP,K}$    | Flow between two assets                      |[MW]
+$v^{investment}_{a} \in \mathbb{Z}^{+}$| $\mathcal{A}_i$       | Number of installed asset units              |[units]
+$v^{investment}_{f} \in \mathbb{Z}^{+}$| $\mathcal{F}_i$       | Number of installed units between two assets |[units]
+$s^{level}_{a,rp,k} \in \mathbb{R}$    | $\mathcal{A_s,RP,K}$  | Storage level                                |[MWh]
 
 ## [Objective Function](@id math-objective-function)
 
@@ -85,7 +90,7 @@ flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{rp \in \mathcal{RP}} \su
 
 ```math
 \begin{aligned}
-s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \eta_{in} \cdot \sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} - \frac{1}{\eta_{out}} \cdot \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \quad \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + p^{eff\_in}_a \cdot \sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} - \frac{1}{p^{eff\_out}_a} \cdot \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \quad \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -101,7 +106,7 @@ s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \eta_{in} \cdo
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}_{in}(a)} \eta_{f} \cdot {v^{flow}_{f,rp,k}} = \sum_{f \in \mathcal{F}_{out}(a)} \frac{v^{flow}_{f,rp,k}}{\eta_{f}}  \quad \forall a \in \mathcal{A}_{cv}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{in}(a)} p^{eff\_in}_f \cdot {v^{flow}_{f,rp,k}} = \sum_{f \in \mathcal{F}_{out}(a)} \frac{v^{flow}_{f,rp,k}}{p^{eff\_out}_f}  \quad \forall a \in \mathcal{A}_{cv}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
