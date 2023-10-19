@@ -62,7 +62,7 @@ Each element of `array_time_steps` is an array of ranges with the following assu
 Notice that this implies that they form a disjunct partition of `1:N`.
 
 The output will also be an array of ranges with the conditions above.
-The output is constructed greedly, i.e., it selects the next largest breakpoint following the algorithm below:
+The output is constructed greedily, i.e., it selects the next largest breakpoint following the algorithm below:
 
  0. Input: `Vᴵ₁, …, Vᴵₚ`, a list of time step ranges. Each element of `Vᴵⱼ` is a range `r = r.start:r.end`. Output: `V`.
  1. Compute the end of the representative period `N` (all `Vᴵⱼ` should have the same end)
@@ -87,6 +87,21 @@ compute_rp_periods([time_steps1, time_steps2])
  1:4
  5:8
  9:12
+```
+
+```jldoctest
+time_steps1 = [1:1, 2:3, 4:6, 7:10, 11:12]
+time_steps2 = [1:2, 3:4, 5:5, 6:7, 8:9, 10:12]
+compute_rp_periods([time_steps1, time_steps2])
+
+# output
+
+5-element Vector{UnitRange{Int64}}:
+ 1:2
+ 3:4
+ 5:6
+ 7:10
+ 11:12
 ```
 """
 function compute_rp_periods(
