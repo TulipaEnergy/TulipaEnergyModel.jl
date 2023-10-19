@@ -145,7 +145,7 @@ git switch -c <branch_name>
 # awesome coding...
 # run the tests and the linter (see end of this section).
 git commit -am "A short but descriptive commit message" # Equivalent to: git commit -a -m "commit msg"
-git push myfork <branch_name>
+git push -u myfork <branch_name>
 ```
 
 Let's say upstream has updates while you are working on your local branch. You need to fetch the new changes because if you don't do conflict resolution locally, you will get conflicts in your PR. So you need to repeat the steps from the first code block in this section.
@@ -186,7 +186,7 @@ Then, add them again (`git add`), rerun the tests & linter, and commit.
 ```bash
 git status # Another way to show that all conflicts are fixed.
 git rebase --continue
-git push --force
+git push --force myfork <branch_name>
 ```
 
 After pushing, the PR will be automatically updated.
