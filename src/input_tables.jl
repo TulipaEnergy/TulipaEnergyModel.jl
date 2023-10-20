@@ -15,8 +15,8 @@ end
 struct FlowData
     id::Int                     # Flow ID
     carrier::String             # (Optional?) Energy carrier
-    from_asset_id::Int          # Asset ID
-    to_asset_id::Int            # Asset ID
+    from_asset::String          # Name of Asset
+    to_asset::String            # Name of Asset
     active::Bool                # Active or decomissioned
     investable::Bool            # Whether able to invest
     variable_cost::Float64      # kEUR/MWh

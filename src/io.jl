@@ -33,7 +33,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     ) # asset profile [p.u.]
 
     # Parameter for profile of flow
-    flows = [(row.from_asset_id, row.to_asset_id) for row in eachrow(flows_data_df)]
+    flows = [(row.from_asset, row.to_asset) for row in eachrow(flows_data_df)]
     flows_profile = Dict(
         (flows[row.id], row.rep_period_id, row.time_step) => row.value for
         row in eachrow(flows_profiles_df)
@@ -62,15 +62,15 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     end
 
     # Read from flows data
-    flows_investment_cost = Dict{UInt,Float64}()
-    flows_unit_capacity = Dict{UInt,Float64}()
-    flows_init_capacity = Dict{UInt,Float64}()
-    flows_investable = Dict{UInt,Bool}()
+    flows_investment_cost = Dict{Tuple{String, String}, Float64}()
+    flows_unit_capacity   = Dict{Tuple{String, String}, Float64}()
+    flows_init_capacity   = Dict{Tuple{String, String}, Float64}()
+    flows_investable      = Dict{Tuple{String, String}, Bool}()
     for row in eachrow(flows_data_df)
-        flows_investment_cost[(row.from_asset_id, row.to_asset_id)] = row.investment_cost
-        flows_unit_capacity[(row.from_asset_id, row.to_asset_id)] = row.capacity
-        flows_init_capacity[(row.from_asset_id, row.to_asset_id)] = row.initial_capacity
-        flows_investable[(row.from_asset_id, row.to_asset_id)] = row.investable
+        flows_investment_cost[(row.from_asset, row.to_asset)] = row.investment_cost
+        flows_unit_capacity[(row.from_asset, row.to_asset)] = row.capacity
+        flows_init_capacity[(row.from_asset, row.to_asset)] = row.initial_capacity
+        flows_investable[(row.from_asset, row.to_asset)] = row.investable
     end
 
     params = (
@@ -83,6 +83,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         flows_investment_cost = flows_investment_cost,
         flows_profile = flows_profile,
         flows_unit_capacity = flows_unit_capacity,
+        flows_investable = flows_investable,
         peak_demand = peak_demand,
         rep_weight = rep_weight,
         variable_cost = variable_cost,
@@ -156,10 +157,13 @@ function create_graph(assets_path, flows_path)
     flows_df = CSV.read(flows_path, DataFrames.DataFrame; header = 2)
 
     num_assets = DataFrames.nrow(assets_df)
+    name_to_id = Dict(zip(assets_df.name, assets_df.id))
 
     graph = Graphs.DiGraph(num_assets)
     for row in eachrow(flows_df)
-        Graphs.add_edge!(graph, row.from_asset_id, row.to_asset_id)
+        from_id = name_to_id[row.from_asset]
+        to_id = name_to_id[row.to_asset]
+        Graphs.add_edge!(graph, from_id, to_id)
     end
 
     return graph
