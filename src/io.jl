@@ -77,7 +77,7 @@ end
 """
     get_df(path, file_name, schema)
 
-Reads the csv with file_name at location path, then validates the data using the schema.
+Reads the csv with file_name at location path validating the data using the schema.
 """
 function get_df(path, file_name, schema; csvargs...)
     csv_name = joinpath(path, file_name)
@@ -90,7 +90,6 @@ function get_df(path, file_name, schema; csvargs...)
         strict = true,
         csvargs...,
     )
-    validate_df(df, schema; fname = file_name)
 
     return df
 end

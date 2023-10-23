@@ -5,7 +5,7 @@ using TulipaEnergyModel
 using Test
 
 # Folders names
-const INPUT_FOLDER  = joinpath(@__DIR__, "inputs")
+const INPUT_FOLDER = joinpath(@__DIR__, "inputs")
 const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
 
 @testset "TulipaEnergyModel.jl" begin
@@ -53,31 +53,6 @@ end
             dir,
             "bad-assets-data.csv",
             TulipaEnergyModel.AssetData,
-        )
-    end
-
-    # FIXME: test separately
-    @testset "missing columns and incompatible types" begin
-        dir = joinpath(INPUT_FOLDER, "tiny")
-        df = CSV.read(joinpath(dir, "bad-assets-data.csv"), DataFrame; header = 2)
-
-        # FIXME: instead of examples, mutate and test
-        # Example 1 - bad data, silent
-        col_err, col_type_err = TulipaEnergyModel.validate_df(
-            df,
-            TulipaEnergyModel.AssetData;
-            fname = "bad-assets-data.csv",
-            silent = true,
-        )
-        @test col_err == [:id]
-        @test col_type_err ==
-              [(:investable, Bool, String7), (:peak_demand, Float64, String7)]
-
-        # Example 2 - bad data, verbose
-        @test_throws ErrorException TulipaEnergyModel.validate_df(
-            df,
-            TulipaEnergyModel.AssetData;
-            fname = "bad-assets-data.csv",
         )
     end
 end
