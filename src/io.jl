@@ -60,11 +60,11 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     end
 
     # Read from flows data
-    flows_variable_cost   = Dict{Tuple{String, String}, Float64}()
-    flows_investment_cost = Dict{Tuple{String, String}, Float64}()
-    flows_unit_capacity   = Dict{Tuple{String, String}, Float64}()
-    flows_init_capacity   = Dict{Tuple{String, String}, Float64}()
-    flows_investable      = Dict{Tuple{String, String}, Bool}()
+    flows_variable_cost   = Dict{Tuple{String,String},Float64}()
+    flows_investment_cost = Dict{Tuple{String,String},Float64}()
+    flows_unit_capacity   = Dict{Tuple{String,String},Float64}()
+    flows_init_capacity   = Dict{Tuple{String,String},Float64}()
+    flows_investable      = Dict{Tuple{String,String},Bool}()
     for row in eachrow(flows_data_df)
         flows_variable_cost[(row.from_asset, row.to_asset)] = row.variable_cost
         flows_investment_cost[(row.from_asset, row.to_asset)] = row.investment_cost

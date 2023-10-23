@@ -8,18 +8,18 @@ Create the model using the `graph` structure, the parameters and sets.
 
 function create_model(graph, params, sets; verbose = false, write_lp_file = false)
     # Sets unpacking
-    A  = sets.assets
-    Ac = sets.assets_consumer
-    Ap = sets.assets_producer
-    Ai = sets.assets_investment
-    As = Vector{String}[a for a ∈ A if params.assets_type == "storage"]
-    Ah = Vector{String}[a for a ∈ A if params.assets_type == "hub"]
-    Acv= Vector{String}[a for a ∈ A if params.assets_type == "conversion"]
-    F  = [(A[e.src], A[e.dst]) for e ∈ edges(graph)] # f[1] -> source, f[2] -> destination
-    Fi = [f for f ∈ F if params.flows_investable[f]]
-    Ft = Tuple{String,String}[] # TODO: Properly define Ft
-    K  = sets.time_steps
-    RP = sets.rep_periods
+    A   = sets.assets
+    Ac  = sets.assets_consumer
+    Ap  = sets.assets_producer
+    Ai  = sets.assets_investment
+    As  = Vector{String}[a for a ∈ A if params.assets_type == "storage"]
+    Ah  = Vector{String}[a for a ∈ A if params.assets_type == "hub"]
+    Acv = Vector{String}[a for a ∈ A if params.assets_type == "conversion"]
+    F   = [(A[e.src], A[e.dst]) for e ∈ edges(graph)] # f[1] -> source, f[2] -> destination
+    Fi  = [f for f ∈ F if params.flows_investable[f]]
+    Ft  = Tuple{String,String}[] # TODO: Properly define Ft
+    K   = sets.time_steps
+    RP  = sets.rep_periods
 
     # Model
     model = Model(HiGHS.Optimizer)
