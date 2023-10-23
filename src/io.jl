@@ -81,7 +81,15 @@ Reads the csv with file_name at location path, then validates the data using the
 """
 function get_df(path, file_name, schema; csvargs...)
     csv_name = joinpath(path, file_name)
-    df = CSV.read(csv_name, DataFrames.DataFrame; csvargs...)
+    # Get the schema names and types in the form of Dictionaries
+    col_types = zip(fieldnames(schema), fieldtypes(schema)) |> Dict
+    df = CSV.read(
+        csv_name,
+        DataFrames.DataFrame;
+        types = col_types,
+        strict = true,
+        csvargs...,
+    )
     validate_df(df, schema; fname = file_name)
 
     return df
