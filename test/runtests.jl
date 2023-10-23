@@ -47,6 +47,15 @@ end
 end
 
 @testset "Input validation" begin
+    @testset "Make sure that input validation fails for bad files" begin
+        dir = joinpath(INPUT_FOLDER, "tiny")
+        @test_throws ArgumentError TulipaEnergyModel.get_df(
+            dir,
+            "bad-assets-data.csv",
+            TulipaEnergyModel.AssetData,
+        )
+    end
+
     # FIXME: test separately
     @testset "missing columns and incompatible types" begin
         dir = joinpath(INPUT_FOLDER, "tiny")
