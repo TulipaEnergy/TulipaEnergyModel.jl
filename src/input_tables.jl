@@ -4,7 +4,6 @@ struct AssetData
     type::String                    # Producer/Consumer - maybe an enum?
     active::Bool                    # Active or decomissioned
     investable::Bool                # Whether able to invest
-    variable_cost::Float64          # kEUR/MWh
     investment_cost::Float64        # kEUR/MW/year
     capacity::Float64               # MW
     initial_capacity::Float64       # MW

@@ -40,13 +40,11 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     )
 
     # Parameters for producers
-    variable_cost = Dict{String,Float64}()
     assets_investment_cost = Dict{String,Float64}()
     assets_unit_capacity = Dict{String,Float64}()
     assets_init_capacity = Dict{String,Float64}()
     for row in eachrow(assets_data_df)
         if row.name in Ap
-            variable_cost[row.name] = row.variable_cost
             assets_investment_cost[row.name] = row.investment_cost
             assets_unit_capacity[row.name] = row.capacity
             assets_init_capacity[row.name] = row.initial_capacity
@@ -62,11 +60,13 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     end
 
     # Read from flows data
+    flows_variable_cost   = Dict{Tuple{String, String}, Float64}()
     flows_investment_cost = Dict{Tuple{String, String}, Float64}()
     flows_unit_capacity   = Dict{Tuple{String, String}, Float64}()
     flows_init_capacity   = Dict{Tuple{String, String}, Float64}()
     flows_investable      = Dict{Tuple{String, String}, Bool}()
     for row in eachrow(flows_data_df)
+        flows_variable_cost[(row.from_asset, row.to_asset)] = row.variable_cost
         flows_investment_cost[(row.from_asset, row.to_asset)] = row.investment_cost
         flows_unit_capacity[(row.from_asset, row.to_asset)] = row.capacity
         flows_init_capacity[(row.from_asset, row.to_asset)] = row.initial_capacity
@@ -79,6 +79,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         assets_profile = assets_profile,
         assets_type = assets_data_df.type,
         assets_unit_capacity = assets_unit_capacity,
+        flows_variable_cost = flows_variable_cost,
         flows_init_capacity = flows_init_capacity,
         flows_investment_cost = flows_investment_cost,
         flows_profile = flows_profile,
@@ -86,7 +87,6 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         flows_investable = flows_investable,
         peak_demand = peak_demand,
         rep_weight = rep_weight,
-        variable_cost = variable_cost,
     )
     sets = (
         assets = assets,
