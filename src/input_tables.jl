@@ -1,14 +1,15 @@
 struct AssetData
-    id::Int                         # Asset ID
-    name::String                    # Name of Asset (geographical?)
-    type::String                    # Producer/Consumer - maybe an enum?
-    active::Bool                    # Active or decomissioned
-    investable::Bool                # Whether able to invest
-    investment_cost::Float64        # kEUR/MW/year
-    capacity::Float64               # MW
-    initial_capacity::Float64       # MW
-    peak_demand::Float64            # MW
-    storage_time::Float64           # Hours
+    id::Int                           # Asset ID
+    name::String                      # Name of Asset (geographical?)
+    type::String                      # Producer/Consumer - maybe an enum?
+    active::Bool                      # Active or decomissioned
+    investable::Bool                  # Whether able to invest
+    investment_cost::Float64          # kEUR/MW/year
+    capacity::Float64                 # MW
+    initial_capacity::Float64         # MW
+    peak_demand::Float64              # MW
+    initial_storage_capacity::Float64 # MWh
+    energy_to_power_ratio::Float64    # Hours
 end
 
 struct FlowData
@@ -17,6 +18,7 @@ struct FlowData
     from_asset::String          # Name of Asset
     to_asset::String            # Name of Asset
     active::Bool                # Active or decomissioned
+    is_transport::Bool          # Whether a transport flow
     investable::Bool            # Whether able to invest
     variable_cost::Float64      # kEUR/MWh
     investment_cost::Float64    # kEUR/MW/year

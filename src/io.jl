@@ -29,7 +29,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     # Parameters for system
     rep_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
 
-    # Parameters for assets
+    # Parameter for profile of assets
     assets_profile = Dict(
         (assets[row.id], row.rep_period_id, row.time_step) => row.value for
         row in eachrow(assets_profiles_df)
@@ -42,15 +42,15 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         row in eachrow(flows_profiles_df)
     )
 
-    # Parameters for producers
+    # Parameters for assets
     assets_investment_cost = Dict{String,Float64}()
     assets_unit_capacity = Dict{String,Float64}()
     assets_init_capacity = Dict{String,Float64}()
     for row in eachrow(assets_data_df)
-        if row.name in assets_producer
+        if row.name in assets
             assets_investment_cost[row.name] = row.investment_cost
-            assets_unit_capacity[row.name] = row.capacity
-            assets_init_capacity[row.name] = row.initial_capacity
+            assets_unit_capacity[row.name]   = row.capacity
+            assets_init_capacity[row.name]   = row.initial_capacity
         end
     end
 
@@ -62,18 +62,32 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         end
     end
 
+    # Parameters for storage
+    initial_storage_capacity = Dict{String,Float64}()
+    energy_to_power_ratio    = Dict{String,Float64}()
+    for row in eachrow(assets_data_df)
+        if row.name in assets_storage
+            initial_storage_capacity[row.name] = row.initial_storage_capacity
+            energy_to_power_ratio[row.name]    = row.energy_to_power_ratio
+        end
+    end
+
     # Read from flows data
     flows_variable_cost   = Dict{Tuple{String,String},Float64}()
     flows_investment_cost = Dict{Tuple{String,String},Float64}()
     flows_unit_capacity   = Dict{Tuple{String,String},Float64}()
     flows_init_capacity   = Dict{Tuple{String,String},Float64}()
+    flows_efficiency      = Dict{Tuple{String,String},Float64}()
     flows_investable      = Dict{Tuple{String,String},Bool}()
+    flows_is_transport    = Dict{Tuple{String,String},Bool}()
     for row in eachrow(flows_data_df)
-        flows_variable_cost[(row.from_asset, row.to_asset)] = row.variable_cost
+        flows_variable_cost[(row.from_asset, row.to_asset)]   = row.variable_cost
         flows_investment_cost[(row.from_asset, row.to_asset)] = row.investment_cost
-        flows_unit_capacity[(row.from_asset, row.to_asset)] = row.capacity
-        flows_init_capacity[(row.from_asset, row.to_asset)] = row.initial_capacity
-        flows_investable[(row.from_asset, row.to_asset)] = row.investable
+        flows_unit_capacity[(row.from_asset, row.to_asset)]   = row.capacity
+        flows_init_capacity[(row.from_asset, row.to_asset)]   = row.initial_capacity
+        flows_efficiency[(row.from_asset, row.to_asset)]      = row.efficiency
+        flows_investable[(row.from_asset, row.to_asset)]      = row.investable
+        flows_is_transport[(row.from_asset, row.to_asset)]    = row.is_transport
     end
 
     params = (
@@ -87,8 +101,12 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         flows_investment_cost = flows_investment_cost,
         flows_profile = flows_profile,
         flows_unit_capacity = flows_unit_capacity,
+        flows_efficiency = flows_efficiency,
         flows_investable = flows_investable,
+        flows_is_transport = flows_is_transport,
         peak_demand = peak_demand,
+        initial_storage_capacity = initial_storage_capacity,
+        energy_to_power_ratio = energy_to_power_ratio,
         rep_weight = rep_weight,
     )
     sets = (

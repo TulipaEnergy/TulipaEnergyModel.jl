@@ -17,7 +17,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     Acv = sets.assets_conversion
     F   = [(A[e.src], A[e.dst]) for e ∈ edges(graph)] # f[1] -> source, f[2] -> destination
     Fi  = [f for f ∈ F if params.flows_investable[f]]
-    Ft  = Tuple{String,String}[] # TODO: Properly define Ft
+    Ft  = [f for f ∈ F if params.flows_is_transport[f]]
     K   = sets.time_steps
     RP  = sets.rep_periods
 
@@ -77,7 +77,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         c_consumer_balance[a ∈ Ac, rp ∈ RP, k ∈ K],
         sum(v_flow[f, rp, k] for f ∈ F if f[2] == a) -
         sum(v_flow[f, rp, k] for f ∈ F if f[1] == a) ==
-        params.assets_profile[a, rp, k] * params.peak_demand[a]
+        get(params.assets_profile, (a, rp, k), 1.0) * params.peak_demand[a]
     )
 
     # - storage balance equation
@@ -88,8 +88,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         c_storage_balance[a ∈ As, rp ∈ RP, k ∈ K],
         storage_level[a, rp, k] ==
         (k ≥ 2 ? storage_level[a, rp, k-1] : 0.0) +
-        sum(v_flow[f, rp, k] * params.efficiency[f] for f ∈ F if f[2] == a) -
-        sum(v_flow[f, rp, k] / params.efficiency[f] for f ∈ F if f[1] == a)
+        sum(v_flow[f, rp, k] * params.flows_efficiency[f] for f ∈ F if f[2] == a) -
+        sum(v_flow[f, rp, k] / params.flows_efficiency[f] for f ∈ F if f[1] == a)
     )
 
     # - hub balance equation
@@ -104,8 +104,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @constraint(
         model,
         c_conversion_balance[a ∈ Acv, rp ∈ RP, k ∈ K],
-        sum(v_flow[f, rp, k] * params.efficiency[f] for f ∈ F if f[2] == a) ==
-        sum(v_flow[f, rp, k] / params.efficiency[f] for f ∈ F if f[1] == a)
+        sum(v_flow[f, rp, k] * params.flows_efficiency[f] for f ∈ F if f[2] == a) ==
+        sum(v_flow[f, rp, k] / params.flows_efficiency[f] for f ∈ F if f[1] == a)
     )
 
     # Constraints that define bounds of flows related to energy assets A
@@ -150,6 +150,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     )
 
     # Constraints that define bounds for a transport flow Ft
+    # TODO: define two expressions, one for upper and one for lower bound (they can be different)
     @expression(
         model,
         e_upper_bound_transport_flow[f ∈ F, rp ∈ RP, k ∈ K],
@@ -160,15 +161,17 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     )
     @constraint(
         model,
-        c_transport_flow_bounds[f ∈ Ft, rp ∈ RP, k ∈ K],
-        -e_upper_bound_transport_flow[f, rp, k] ≤
-        v_flow[f, rp, k] ≤
-        e_upper_bound_transport_flow[f, rp, k]
+        c_transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, k ∈ K],
+        v_flow[f, rp, k] ≤ e_upper_bound_transport_flow[f, rp, k]
+    )
+    @constraint(
+        model,
+        c_transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, k ∈ K],
+        v_flow[f, rp, k] ≥ -e_upper_bound_transport_flow[f, rp, k]
     )
 
     # Extra constraints
     # - upper bound constraints for storage level
-    # TODO: params.initial_storage_capacity
     @constraint(
         model,
         upper_bound_for_storage_level[a ∈ As, rp ∈ RP, k ∈ K],
