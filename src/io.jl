@@ -8,11 +8,13 @@ input files in the `input_folder`.
 """
 function create_parameters_and_sets_from_file(input_folder::AbstractString)
     # Read data
-    assets_data_df     = get_df(input_folder, "assets-data.csv", AssetData; header = 2)
-    assets_profiles_df = get_df(input_folder, "assets-profiles.csv", AssetProfiles; header = 2)
-    # flows_data_df     = get_df(input_folder, "flows-data.csv", FlowData; header = 2)
-    # flows_profiles_df = get_df(input_folder, "flows-profiles.csv", FlowProfiles; header = 2)
-    rep_period_df = get_df(input_folder, "rep-periods-data.csv", RepPeriodData; header = 2)
+    fillpath(filename) = joinpath(input_folder, filename)
+    assets_data_df     = read_csv_with_schema(fillpath("assets-data.csv"), AssetData; header = 2)
+    assets_profiles_df = read_csv_with_schema(fillpath("assets-profiles.csv"), AssetProfiles; header = 2)
+    # flows_data_df     = read_csv_with_schema(fillpath("flows-data.csv"), FlowData; header = 2)
+    # flows_profiles_df = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles; header = 2)
+    rep_period_df =
+        read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData; header = 2)
 
     # Sets and subsets that depend on input data
     A = assets = assets_data_df[assets_data_df.active.==true, :].name         #assets in the energy system that are active
@@ -75,16 +77,15 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
 end
 
 """
-    get_df(path, file_name, schema)
+    read_csv_with_schema(file_path, schema)
 
 Reads the csv with file_name at location path validating the data using the schema.
 """
-function get_df(path, file_name, schema; csvargs...)
-    csv_name = joinpath(path, file_name)
+function read_csv_with_schema(file_path, schema; csvargs...)
     # Get the schema names and types in the form of Dictionaries
     col_types = zip(fieldnames(schema), fieldtypes(schema)) |> Dict
     df = CSV.read(
-        csv_name,
+        file_path,
         DataFrames.DataFrame;
         types = col_types,
         strict = true,
