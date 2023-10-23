@@ -6,7 +6,7 @@ export create_model, solve_model
 Create the model using the `graph` structure, the parameters and sets.
 """
 
-function create_model(graph, params, sets; verbose = false)
+function create_model(graph, params, sets; verbose = false, write_lp_file = false)
     # Sets unpacking
     A  = sets.assets
     Ac = sets.assets_consumer
@@ -183,6 +183,10 @@ function create_model(graph, params, sets; verbose = false)
             end
         )
     )
+
+    if write_lp_file
+        write_to_file(model, "model.lp")
+    end
 
     return model
 end
