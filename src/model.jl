@@ -8,17 +8,17 @@ Create the model using the `graph` structure, the parameters and sets.
 
 function create_model(graph, params, sets; verbose = false)
     # Sets unpacking
-    A = sets.assets
+    A  = sets.assets
     Ac = sets.assets_consumer
-    # Ap = sets.assets_producer
+    Ap = sets.assets_producer
     Ai = sets.assets_investment
-    As = [a for a ∈ A if params.assets_type == "storage"]
-    Ah = [a for a ∈ A if params.assets_type == "hub"]
-    Acv = [a for a ∈ A if params.assets_type == "conversion"]
-    F = [(A[e.src], A[e.dst]) for e ∈ edges(graph)] # f[1] -> source, f[2] -> destination
+    As = Vector{String}[a for a ∈ A if params.assets_type == "storage"]
+    Ah = Vector{String}[a for a ∈ A if params.assets_type == "hub"]
+    Acv= Vector{String}[a for a ∈ A if params.assets_type == "conversion"]
+    F  = [(A[e.src], A[e.dst]) for e ∈ edges(graph)] # f[1] -> source, f[2] -> destination
     Fi = [f for f ∈ F if params.flows_investable[f]]
-    Ft = F # TODO: Properly define Ft
-    K = sets.time_steps
+    Ft = Tuple{String,String}[] # TODO: Properly define Ft
+    K  = sets.time_steps
     RP = sets.rep_periods
 
     # Model
@@ -142,6 +142,13 @@ function create_model(graph, params, sets; verbose = false)
         )
     )
 
+    # Constraints that define bounds for a flows that are not transport assets
+    @constraint(
+        model,
+        c_lower_bound_asset_flow[f ∈ F, rp ∈ RP, k ∈ K; f ∉ Ft],
+        v_flow[f, rp, k] ≥ 0
+    )
+
     # Constraints that define bounds for a transport flow Ft
     @expression(
         model,
@@ -153,7 +160,7 @@ function create_model(graph, params, sets; verbose = false)
     )
     @constraint(
         model,
-        c_upper_bound_transport_flow[f ∈ Ft, rp ∈ RP, k ∈ K],
+        c_transport_flow_bounds[f ∈ Ft, rp ∈ RP, k ∈ K],
         -e_upper_bound_transport_flow[f, rp, k] ≤
         v_flow[f, rp, k] ≤
         e_upper_bound_transport_flow[f, rp, k]
@@ -199,6 +206,6 @@ function solve_model(model)
     return (
         objective_value = objective_value(model),
         v_flow = value.(model[:v_flow]),
-        v_investment = value.(model[:v_investment]),
+        v_investment = value.(model[:assets_investment]),
     )
 end
