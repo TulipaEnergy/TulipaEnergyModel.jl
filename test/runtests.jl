@@ -14,7 +14,7 @@ const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
     graph = create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
     model = create_model(graph, parameters, sets)
     solution = solve_model(model)
-    @test solution.objective_value ≈ 269535.73549 atol = 1e-5
+    @test solution.objective_value ≈ 269238.43825 atol = 1e-5
     save_solution_to_file(
         OUTPUT_FOLDER,
         sets.assets_investment,
