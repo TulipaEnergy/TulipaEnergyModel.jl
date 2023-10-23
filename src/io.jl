@@ -16,19 +16,22 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     rep_period_df      = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
 
     # Sets and subsets that depend on input data
-    A = assets = assets_data_df[assets_data_df.active.==true, :].name         #assets in the energy system that are active
-    Ap = assets_producer = assets_data_df[assets_data_df.type.=="producer", :].name  #producer assets in the energy system
-    Ac = assets_consumer = assets_data_df[assets_data_df.type.=="consumer", :].name  #consumer assets in the energy system
-    assets_investment = assets_data_df[assets_data_df.investable.==true, :].name #assets with investment method in the energy system
-    rep_periods = unique(assets_profiles_df.rep_period_id)  #representative periods
-    time_steps = unique(assets_profiles_df.time_step)   #time steps in the RP (e.g., hours)
+    assets            = assets_data_df[assets_data_df.active.==true, :].name         #assets in the energy system that are active
+    assets_producer   = assets_data_df[assets_data_df.type.=="producer", :].name  #producer assets in the energy system
+    assets_consumer   = assets_data_df[assets_data_df.type.=="consumer", :].name  #consumer assets in the energy system
+    assets_storage    = assets_data_df[assets_data_df.type.=="storage", :].name  #storage assets in the energy system
+    assets_hub        = assets_data_df[assets_data_df.type.=="hub", :].name  #hub assets in the energy system
+    assets_conversion = assets_data_df[assets_data_df.type.=="conversion", :].name  #conversion assets in the energy system
+    assets_investment = assets_data_df[assets_data_df.investable.==true, :].name  #assets with investment method in the energy system
+    rep_periods       = unique(assets_profiles_df.rep_period_id)  #representative periods
+    time_steps        = unique(assets_profiles_df.time_step)   #time steps in the RP (e.g., hours)
 
     # Parameters for system
     rep_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
 
     # Parameters for assets
     assets_profile = Dict(
-        (A[row.id], row.rep_period_id, row.time_step) => row.value for
+        (assets[row.id], row.rep_period_id, row.time_step) => row.value for
         row in eachrow(assets_profiles_df)
     ) # asset profile [p.u.]
 
@@ -44,7 +47,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     assets_unit_capacity = Dict{String,Float64}()
     assets_init_capacity = Dict{String,Float64}()
     for row in eachrow(assets_data_df)
-        if row.name in Ap
+        if row.name in assets_producer
             assets_investment_cost[row.name] = row.investment_cost
             assets_unit_capacity[row.name] = row.capacity
             assets_init_capacity[row.name] = row.initial_capacity
@@ -54,7 +57,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     # Parameters for consumers
     peak_demand = Dict{String,Float64}()
     for row in eachrow(assets_data_df)
-        if row.name in Ac
+        if row.name in assets_consumer
             peak_demand[row.name] = row.peak_demand
         end
     end
@@ -93,6 +96,9 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         assets_consumer = assets_consumer,
         assets_investment = assets_investment,
         assets_producer = assets_producer,
+        assets_storage = assets_storage,
+        assets_hub = assets_hub,
+        assets_conversion = assets_conversion,
         rep_periods = rep_periods,
         time_steps = time_steps,
     )
