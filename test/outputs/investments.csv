@@ -1,5 +1,5 @@
 a,InstalUnits,InstalCap_MW
-ocgt,0.0,0.0
+ocgt,1.0,100.0
 ccgt,2.0,800.0
-wind,35.0,1750.0
-solar,45.0,450.0
+wind,34.0,1700.0
+solar,48.0,480.0
