@@ -26,7 +26,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     set_attribute(model, "output_flag", verbose)
 
     # Variables
-    @variable(model, v_flow[F, RP, K])         #flow from asset a to asset aa [MW]
+    @variable(model, flow[F, RP, K])         #flow from asset a to asset aa [MW]
     @variable(model, 0 ≤ assets_investment[Ai], Int)  #number of installed asset units [N]
     @variable(model, 0 ≤ flows_investment[Fi], Int)
     @variable(model, 0 ≤ storage_level[As, RP, K])
@@ -55,7 +55,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     flows_variable_cost = @expression(
         model,
         sum(
-            params.rep_weight[rp] * params.flows_variable_cost[f] * v_flow[f, rp, k] for
+            params.rep_weight[rp] * params.flows_variable_cost[f] * flow[f, rp, k] for
             f ∈ F, rp ∈ RP, k ∈ K
         )
     )
@@ -74,8 +74,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @constraint(
         model,
         c_consumer_balance[a ∈ Ac, rp ∈ RP, k ∈ K],
-        sum(v_flow[f, rp, k] for f ∈ F if f[2] == a) -
-        sum(v_flow[f, rp, k] for f ∈ F if f[1] == a) ==
+        sum(flow[f, rp, k] for f ∈ F if f[2] == a) -
+        sum(flow[f, rp, k] for f ∈ F if f[1] == a) ==
         get(params.assets_profile, (a, rp, k), 1.0) * params.peak_demand[a]
     )
 
@@ -87,24 +87,24 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         c_storage_balance[a ∈ As, rp ∈ RP, k ∈ K],
         storage_level[a, rp, k] ==
         (k ≥ 2 ? storage_level[a, rp, k-1] : 0.0) +
-        sum(v_flow[f, rp, k] * params.flows_efficiency[f] for f ∈ F if f[2] == a) -
-        sum(v_flow[f, rp, k] / params.flows_efficiency[f] for f ∈ F if f[1] == a)
+        sum(flow[f, rp, k] * params.flows_efficiency[f] for f ∈ F if f[2] == a) -
+        sum(flow[f, rp, k] / params.flows_efficiency[f] for f ∈ F if f[1] == a)
     )
 
     # - hub balance equation
     @constraint(
         model,
         c_hub_balance[a ∈ Ah, rp ∈ RP, k ∈ K],
-        sum(v_flow[f, rp, k] for f ∈ F if f[2] == a) ==
-        sum(v_flow[f, rp, k] for f ∈ F if f[1] == a)
+        sum(flow[f, rp, k] for f ∈ F if f[2] == a) ==
+        sum(flow[f, rp, k] for f ∈ F if f[1] == a)
     )
 
     # - conversion balance equation
     @constraint(
         model,
         c_conversion_balance[a ∈ Acv, rp ∈ RP, k ∈ K],
-        sum(v_flow[f, rp, k] * params.flows_efficiency[f] for f ∈ F if f[2] == a) ==
-        sum(v_flow[f, rp, k] / params.flows_efficiency[f] for f ∈ F if f[1] == a)
+        sum(flow[f, rp, k] * params.flows_efficiency[f] for f ∈ F if f[2] == a) ==
+        sum(flow[f, rp, k] / params.flows_efficiency[f] for f ∈ F if f[1] == a)
     )
 
     # Constraints that define bounds of flows related to energy assets A
@@ -112,7 +112,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @constraint(
         model,
         c_overall_output_flows[a ∈ Acv∪As∪Ap, rp ∈ RP, k ∈ K],
-        sum(v_flow[f, rp, k] for f ∈ F if f[1] == a) ≤
+        sum(flow[f, rp, k] for f ∈ F if f[1] == a) ≤
         get(params.assets_profile, (a, rp, k), 1.0) * (
             params.assets_init_capacity[a] +
             (a ∈ Ai ? (params.assets_unit_capacity[a] * assets_investment[a]) : 0.0)
@@ -123,7 +123,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @constraint(
         model,
         c_overall_input_flows[a ∈ As, rp ∈ RP, k ∈ K],
-        sum(v_flow[f, rp, k] for f ∈ F if f[2] == a) ≤
+        sum(flow[f, rp, k] for f ∈ F if f[2] == a) ≤
         get(params.assets_profile, (a, rp, k), 1.0) * (
             params.assets_init_capacity[a] +
             (a ∈ Ai ? (params.assets_unit_capacity[a] * assets_investment[a]) : 0.0)
@@ -134,7 +134,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @constraint(
         model,
         c_upper_bound_asset[a ∈ A, f ∈ F, rp ∈ RP, k ∈ K; !(a ∈ Ah) && f[1] == a],
-        v_flow[f, rp, k] ≤
+        flow[f, rp, k] ≤
         get(params.assets_profile, (a, rp, k), 1.0) * (
             params.assets_init_capacity[a] +
             (a ∈ Ai ? (params.assets_unit_capacity[a] * assets_investment[a]) : 0.0)
@@ -145,7 +145,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @constraint(
         model,
         c_lower_bound_asset_flow[f ∈ F, rp ∈ RP, k ∈ K; f ∉ Ft],
-        v_flow[f, rp, k] ≥ 0
+        flow[f, rp, k] ≥ 0
     )
 
     # Constraints that define bounds for a transport flow Ft
@@ -160,7 +160,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @constraint(
         model,
         c_transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, k ∈ K],
-        v_flow[f, rp, k] ≤ e_upper_bound_transport_flow[f, rp, k]
+        flow[f, rp, k] ≤ e_upper_bound_transport_flow[f, rp, k]
     )
     @expression(
         model,
@@ -173,24 +173,23 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @constraint(
         model,
         c_transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, k ∈ K],
-        v_flow[f, rp, k] ≥ -e_lower_bound_transport_flow[f, rp, k]
+        flow[f, rp, k] ≥ -e_lower_bound_transport_flow[f, rp, k]
     )
 
     # Extra constraints
     # - upper bound constraints for storage level
+    @expression(
+        model,
+        energy_limit[a ∈ As∩Ai],
+        params.energy_to_power_ratio[a] *
+        params.assets_unit_capacity[a] *
+        assets_investment[a]
+    )
     @constraint(
         model,
         upper_bound_for_storage_level[a ∈ As, rp ∈ RP, k ∈ K],
         storage_level[a, rp, k] ≤
-        params.initial_storage_capacity[a] + (
-            if a ∈ Ai
-                params.energy_to_power_ratio[a] *
-                params.assets_unit_capacity[a] *
-                assets_investment[a]
-            else
-                0.0
-            end
-        )
+        params.initial_storage_capacity[a] + (a ∈ Ai ? energy_limit[a] : 0.0)
     )
 
     if write_lp_file
@@ -218,7 +217,7 @@ function solve_model(model)
 
     return (
         objective_value = objective_value(model),
-        v_flow = value.(model[:v_flow]),
-        v_investment = value.(model[:assets_investment]),
+        flow = value.(model[:flow]),
+        assets_investment = value.(model[:assets_investment]),
     )
 end

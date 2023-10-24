@@ -18,7 +18,7 @@ const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
     save_solution_to_file(
         OUTPUT_FOLDER,
         sets.assets_investment,
-        solution.v_investment,
+        solution.assets_investment,
         parameters.assets_unit_capacity,
     )
 end
@@ -33,7 +33,7 @@ end
     save_solution_to_file(
         OUTPUT_FOLDER,
         sets.assets_investment,
-        solution.v_investment,
+        solution.assets_investment,
         parameters.assets_unit_capacity,
     )
 end
