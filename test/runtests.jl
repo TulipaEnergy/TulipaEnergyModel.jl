@@ -23,11 +23,11 @@ const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
     )
 end
 
-@testset "Feasible run" begin
+@testset "Write lp file" begin
     dir = joinpath(INPUT_FOLDER, "tiny")
     parameters, sets = create_parameters_and_sets_from_file(dir)
     graph = create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
-    model = create_model(graph, parameters, sets)
+    model = create_model(graph, parameters, sets; write_lp_file = true)
     solution = solve_model(model)
     @test solution.objective_value ≈ 269238.43825 atol = 1e-5
     save_solution_to_file(
