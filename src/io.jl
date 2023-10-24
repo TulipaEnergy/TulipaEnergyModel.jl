@@ -1,4 +1,5 @@
-export create_parameters_and_sets_from_file, create_graph, save_solution_to_file
+export create_parameters_and_sets_from_file,
+    create_graph, save_solution_to_file, read_time_resolution_data
 
 """
     parameters, sets = create_parameters_and_sets_from_file(input_folder)
@@ -197,4 +198,35 @@ function create_graph(assets_path, flows_path)
     end
 
     return graph
+end
+
+"""
+"""
+function read_time_resolution_data(sets, file_path)
+    df = read_csv_with_schema(file_path, AssetsTimeResolutionData)
+    N = length(sets.time_steps)
+
+    time_resolution = Dict(
+        (a, rp) => begin
+            j = findfirst(df.id .== a_id .&& df.rep_period_id .== rp_id)
+            if j === nothing
+                [k:k for k = 1:N]
+            else
+                time_steps = UnitRange{Int}[]
+                range_start = 1
+                range_instruction = split(df[j, :time_steps], "+")
+                for R in range_instruction
+                    @show R
+                    num, len = Meta.parse.(split(R, "x"))
+                    for _ = 1:num
+                        r = (1:len) .+ (range_start - 1)
+                        range_start += len
+                        push!(time_steps, r)
+                    end
+                end
+                time_steps
+            end
+        end for (a_id, a) in enumerate(sets.assets),
+        (rp_id, rp) in enumerate(sets.rep_periods)
+    )
 end

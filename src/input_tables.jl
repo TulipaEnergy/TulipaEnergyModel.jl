@@ -46,3 +46,9 @@ struct RepPeriodData
     id::Int                     # Representative period ID
     weight::Float64             # Hours
 end
+
+struct AssetsTimeResolutionData
+    id::Int
+    rep_period_id::Int
+    time_steps::String
+end

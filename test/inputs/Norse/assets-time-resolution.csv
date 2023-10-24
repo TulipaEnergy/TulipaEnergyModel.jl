@@ -1,0 +1,5 @@
+,,
+id,rep_period_id,time_steps
+2,1,56x4
+3,1,42x3
+6,1,20x1+16x2+12x3+10x4+8x5
