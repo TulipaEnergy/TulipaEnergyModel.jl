@@ -35,14 +35,13 @@ $p^{investment\_cost}_{f}$ | $\mathcal{F}_i$    | Investment cost  of flow conne
 $p^{variable\_cost}_{f}$   | $\mathcal{F}$      | Variable cost of flow connections       | [kEUR/MWh]
 $p^{unit\_capacity}_{f}$   | $\mathcal{F}$      | Capacity of flow connections            | [MW]
 $p^{init\_capacity}_{f}$   | $\mathcal{F}$      | Initial capacity of flow connections    | [MW]
+$p^{export\_capacity}_{f}$ | $\mathcal{F}_t$    | Export capacity of flow connections     | [MW]
+$p^{import\_capacity}_{f}$ | $\mathcal{F}_t$    | Import capacity of flow connections     | [MW]
 $p^{rp\_weight}_{rp}$      | $\mathcal{RP}$     | Representative period weight            | [h]
 $p^{profile}_{a,rp,k}$     | $\mathcal{A,RP,K}$ | Asset profile                           | [p.u.]
 $p^{profile}_{f,rp,k}$     | $\mathcal{F,RP,K}$ | Flow connections profile                | [p.u.]
-$p^{energy2power\_ratio}_a$| $\mathcal{A}_s$    | Energy to power ratio                   | [h]
-$p^{eff\_out}_a$           | $\mathcal{A}_s$    | Discharge efficiency                    | [p.u.]
-$p^{eff\_in}_a$            | $\mathcal{A}_s$    | Charge efficiency                       | [p.u.]
-$p^{eff\_out}_f$           | $\mathcal{F}$      | Flow efficiency out                     | [p.u.]
-$p^{eff\_in}_f$            | $\mathcal{F}$      | Flow efficiency in                      | [p.u.]
+$p^{ene\_to\_pow\_ratio}_a$| $\mathcal{A}_s$    | Energy to power ratio                   | [h]
+$p^{eff}_f$                | $\mathcal{F}$      | Flow efficiency                         | [p.u.]
 
 ## [Variables](@id math-variables)
 
@@ -52,10 +51,6 @@ $v^{flow}_{f,rp,k}  \in \mathbb{R}$    | $\mathcal{F,RP,K}$    | Flow between tw
 $v^{investment}_{a} \in \mathbb{Z}^{+}$| $\mathcal{A}_i$       | Number of installed asset units              |[units]
 $v^{investment}_{f} \in \mathbb{Z}^{+}$| $\mathcal{F}_i$       | Number of installed units between two assets |[units]
 $s^{level}_{a,rp,k} \in \mathbb{R}$    | $\mathcal{A_s,RP,K}$  | Storage level                                |[MWh]
-
-**Missing:**
-
-- `s`
 
 ## [Objective Function](@id math-objective-function)
 
@@ -94,7 +89,7 @@ flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{rp \in \mathcal{RP}} \su
 
 ```math
 \begin{aligned}
-s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + p^{eff\_in}_a \cdot \sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} - \frac{1}{p^{eff\_out}_a} \cdot \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \quad \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f \in \mathcal{F}_{in}(a)} p^{eff}_f \cdot v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} \frac{1}{p^{eff}_f} \cdot v^{flow}_{f,rp,k} \quad \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -110,7 +105,7 @@ s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + p^{eff\_in}_a 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}_{in}(a)} p^{eff\_in}_f \cdot {v^{flow}_{f,rp,k}} = \sum_{f \in \mathcal{F}_{out}(a)} \frac{v^{flow}_{f,rp,k}}{p^{eff\_out}_f}  \quad \forall a \in \mathcal{A}_{cv}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{in}(a)} p^{eff}_f \cdot {v^{flow}_{f,rp,k}} = \sum_{f \in \mathcal{F}_{out}(a)} \frac{v^{flow}_{f,rp,k}}{p^{eff}_f}  \quad \forall a \in \mathcal{A}_{cv}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -152,7 +147,7 @@ v^{flow}_{f,rp,k} \geq 0 \quad \forall f \notin \mathcal{F}_t, \forall rp \in \m
 
 ```math
 \begin{aligned}
-v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{unit\_capacity}_f \cdot v^{investment}_f \right)  \quad \forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{export\_capacity}_f \cdot v^{investment}_f \right)  \quad \forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -160,7 +155,7 @@ v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} +
 
 ```math
 \begin{aligned}
-v^{flow}_{f,rp,k} \geq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{unit\_capacity}_f \cdot v^{investment}_f \right)  \quad \forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+v^{flow}_{f,rp,k} \geq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{import\_capacity}_f \cdot v^{investment}_f \right)  \quad \forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -169,5 +164,5 @@ v^{flow}_{f,rp,k} \geq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} +
 #### Upper and Lower Bound Constraints for Storage Level
 
 ```math
-0 \leq s_{a,rp,k}^{level} \leq p^{init\_storage\_capacity}_{a} + p^{energy2power\_ratio}_a \cdot p^{unit\_capacity}_a \cdot v^{investment}_a \quad \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+0 \leq s_{a,rp,k}^{level} \leq p^{init\_storage\_capacity}_{a} + p^{ene\_to\_pow\_ratio}_a \cdot p^{unit\_capacity}_a \cdot v^{investment}_a \quad \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 ```
