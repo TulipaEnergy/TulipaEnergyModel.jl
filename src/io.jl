@@ -11,63 +11,118 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     fillpath(filename) = joinpath(input_folder, filename)
     assets_data_df     = read_csv_with_schema(fillpath("assets-data.csv"), AssetData)
     assets_profiles_df = read_csv_with_schema(fillpath("assets-profiles.csv"), AssetProfiles)
-    # flows_data_df     = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
-    # flows_profiles_df = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles)
-    rep_period_df = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
+    flows_data_df      = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
+    flows_profiles_df  = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles)
+    rep_period_df      = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
 
     # Sets and subsets that depend on input data
-    A = assets = assets_data_df[assets_data_df.active.==true, :].name         #assets in the energy system that are active
-    Ap = assets_producer = assets_data_df[assets_data_df.type.=="producer", :].name  #producer assets in the energy system
-    Ac = assets_consumer = assets_data_df[assets_data_df.type.=="consumer", :].name  #consumer assets in the energy system
-    assets_investment = assets_data_df[assets_data_df.investable.==true, :].name #assets with investment method in the energy system
-    rep_periods = unique(assets_profiles_df.rep_period_id)  #representative periods
-    time_steps = unique(assets_profiles_df.time_step)   #time steps in the RP (e.g., hours)
+    assets            = assets_data_df[assets_data_df.active.==true, :].name         #assets in the energy system that are active
+    assets_producer   = assets_data_df[assets_data_df.type.=="producer", :].name  #producer assets in the energy system
+    assets_consumer   = assets_data_df[assets_data_df.type.=="consumer", :].name  #consumer assets in the energy system
+    assets_storage    = assets_data_df[assets_data_df.type.=="storage", :].name  #storage assets in the energy system
+    assets_hub        = assets_data_df[assets_data_df.type.=="hub", :].name  #hub assets in the energy system
+    assets_conversion = assets_data_df[assets_data_df.type.=="conversion", :].name  #conversion assets in the energy system
+    assets_investment = assets_data_df[assets_data_df.investable.==true, :].name  #assets with investment method in the energy system
+    rep_periods       = unique(assets_profiles_df.rep_period_id)  #representative periods
+    time_steps        = unique(assets_profiles_df.time_step)   #time steps in the RP (e.g., hours)
 
     # Parameters for system
     rep_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
 
-    # Parameters for assets
-    profile = Dict(
-        (A[row.id], row.rep_period_id, row.time_step) => row.value for
+    # Parameter for profile of assets
+    assets_profile = Dict(
+        (assets[row.id], row.rep_period_id, row.time_step) => row.value for
         row in eachrow(assets_profiles_df)
     ) # asset profile [p.u.]
 
-    # Parameters for producers
-    variable_cost   = Dict{String,Float64}()
-    investment_cost = Dict{String,Float64}()
-    unit_capacity   = Dict{String,Float64}()
-    init_capacity   = Dict{String,Float64}()
+    # Parameter for profile of flow
+    flows = [(row.from_asset, row.to_asset) for row in eachrow(flows_data_df)]
+    flows_profile = Dict(
+        (flows[row.id], row.rep_period_id, row.time_step) => row.value for
+        row in eachrow(flows_profiles_df)
+    )
+
+    # Parameters for assets
+    assets_investment_cost = Dict{String,Float64}()
+    assets_unit_capacity = Dict{String,Float64}()
+    assets_init_capacity = Dict{String,Float64}()
     for row in eachrow(assets_data_df)
-        if row.name in Ap
-            variable_cost[row.name] = row.variable_cost
-            investment_cost[row.name] = row.investment_cost
-            unit_capacity[row.name] = row.capacity
-            init_capacity[row.name] = row.initial_capacity
+        if row.name in assets
+            assets_investment_cost[row.name] = row.investment_cost
+            assets_unit_capacity[row.name]   = row.capacity
+            assets_init_capacity[row.name]   = row.initial_capacity
         end
     end
 
     # Parameters for consumers
     peak_demand = Dict{String,Float64}()
     for row in eachrow(assets_data_df)
-        if row.name in Ac
+        if row.name in assets_consumer
             peak_demand[row.name] = row.peak_demand
         end
     end
 
+    # Parameters for storage
+    initial_storage_capacity = Dict{String,Float64}()
+    energy_to_power_ratio    = Dict{String,Float64}()
+    for row in eachrow(assets_data_df)
+        if row.name in assets_storage
+            initial_storage_capacity[row.name] = row.initial_storage_capacity
+            energy_to_power_ratio[row.name]    = row.energy_to_power_ratio
+        end
+    end
+
+    # Read from flows data
+    flows_variable_cost   = Dict{Tuple{String,String},Float64}()
+    flows_investment_cost = Dict{Tuple{String,String},Float64}()
+    flows_export_capacity = Dict{Tuple{String,String},Float64}()
+    flows_import_capacity = Dict{Tuple{String,String},Float64}()
+    flows_unit_capacity   = Dict{Tuple{String,String},Float64}()
+    flows_init_capacity   = Dict{Tuple{String,String},Float64}()
+    flows_efficiency      = Dict{Tuple{String,String},Float64}()
+    flows_investable      = Dict{Tuple{String,String},Bool}()
+    flows_is_transport    = Dict{Tuple{String,String},Bool}()
+    for row in eachrow(flows_data_df)
+        flows_variable_cost[(row.from_asset, row.to_asset)]   = row.variable_cost
+        flows_investment_cost[(row.from_asset, row.to_asset)] = row.investment_cost
+        flows_export_capacity[(row.from_asset, row.to_asset)] = row.export_capacity
+        flows_import_capacity[(row.from_asset, row.to_asset)] = row.import_capacity
+        flows_init_capacity[(row.from_asset, row.to_asset)]   = row.initial_capacity
+        flows_efficiency[(row.from_asset, row.to_asset)]      = row.efficiency
+        flows_investable[(row.from_asset, row.to_asset)]      = row.investable
+        flows_is_transport[(row.from_asset, row.to_asset)]    = row.is_transport
+        flows_unit_capacity[(row.from_asset, row.to_asset)]   = max(row.export_capacity, row.import_capacity)
+    end
+
     params = (
-        init_capacity = init_capacity,
-        investment_cost = investment_cost,
+        assets_init_capacity = assets_init_capacity,
+        assets_investment_cost = assets_investment_cost,
+        assets_profile = assets_profile,
+        assets_type = assets_data_df.type,
+        assets_unit_capacity = assets_unit_capacity,
+        flows_variable_cost = flows_variable_cost,
+        flows_init_capacity = flows_init_capacity,
+        flows_investment_cost = flows_investment_cost,
+        flows_profile = flows_profile,
+        flows_export_capacity = flows_export_capacity,
+        flows_import_capacity = flows_import_capacity,
+        flows_unit_capacity = flows_unit_capacity,
+        flows_efficiency = flows_efficiency,
+        flows_investable = flows_investable,
+        flows_is_transport = flows_is_transport,
         peak_demand = peak_demand,
-        profile = profile,
+        initial_storage_capacity = initial_storage_capacity,
+        energy_to_power_ratio = energy_to_power_ratio,
         rep_weight = rep_weight,
-        unit_capacity = unit_capacity,
-        variable_cost = variable_cost,
     )
     sets = (
         assets = assets,
         assets_consumer = assets_consumer,
         assets_investment = assets_investment,
         assets_producer = assets_producer,
+        assets_storage = assets_storage,
+        assets_hub = assets_hub,
+        assets_conversion = assets_conversion,
         rep_periods = rep_periods,
         time_steps = time_steps,
     )
@@ -132,10 +187,13 @@ function create_graph(assets_path, flows_path)
     flows_df = CSV.read(flows_path, DataFrames.DataFrame; header = 2)
 
     num_assets = DataFrames.nrow(assets_df)
+    name_to_id = Dict(zip(assets_df.name, assets_df.id))
 
     graph = Graphs.DiGraph(num_assets)
     for row in eachrow(flows_df)
-        Graphs.add_edge!(graph, row.from_asset_id, row.to_asset_id)
+        from_id = name_to_id[row.from_asset]
+        to_id = name_to_id[row.to_asset]
+        Graphs.add_edge!(graph, from_id, to_id)
     end
 
     return graph

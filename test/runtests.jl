@@ -9,17 +9,32 @@ const INPUT_FOLDER = joinpath(@__DIR__, "inputs")
 const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
 
 @testset "TulipaEnergyModel.jl" begin
-    dir = joinpath(INPUT_FOLDER, "tiny")
+    dir = joinpath(INPUT_FOLDER, "Norse")
     parameters, sets = create_parameters_and_sets_from_file(dir)
     graph = create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
     model = create_model(graph, parameters, sets)
+    solution = solve_model(model)
+    @test solution.objective_value ≈ 58689060.84734 atol = 1e-5
+    save_solution_to_file(
+        OUTPUT_FOLDER,
+        sets.assets_investment,
+        solution.assets_investment,
+        parameters.assets_unit_capacity,
+    )
+end
+
+@testset "Write lp file" begin
+    dir = joinpath(INPUT_FOLDER, "tiny")
+    parameters, sets = create_parameters_and_sets_from_file(dir)
+    graph = create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
+    model = create_model(graph, parameters, sets; write_lp_file = true)
     solution = solve_model(model)
     @test solution.objective_value ≈ 269238.43825 atol = 1e-5
     save_solution_to_file(
         OUTPUT_FOLDER,
         sets.assets_investment,
-        solution.v_investment,
-        parameters.unit_capacity,
+        solution.assets_investment,
+        parameters.assets_unit_capacity,
     )
 end
 
