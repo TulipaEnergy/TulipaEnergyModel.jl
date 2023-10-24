@@ -9,12 +9,11 @@ input files in the `input_folder`.
 function create_parameters_and_sets_from_file(input_folder::AbstractString)
     # Read data
     fillpath(filename) = joinpath(input_folder, filename)
-    assets_data_df     = read_csv_with_schema(fillpath("assets-data.csv"), AssetData; header = 2)
-    assets_profiles_df = read_csv_with_schema(fillpath("assets-profiles.csv"), AssetProfiles; header = 2)
-    # flows_data_df     = read_csv_with_schema(fillpath("flows-data.csv"), FlowData; header = 2)
-    # flows_profiles_df = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles; header = 2)
-    rep_period_df =
-        read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData; header = 2)
+    assets_data_df     = read_csv_with_schema(fillpath("assets-data.csv"), AssetData)
+    assets_profiles_df = read_csv_with_schema(fillpath("assets-profiles.csv"), AssetProfiles)
+    # flows_data_df     = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
+    # flows_profiles_df = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles)
+    rep_period_df = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
 
     # Sets and subsets that depend on input data
     A = assets = assets_data_df[assets_data_df.active.==true, :].name         #assets in the energy system that are active
@@ -80,6 +79,8 @@ end
     read_csv_with_schema(file_path, schema)
 
 Reads the csv with file_name at location path validating the data using the schema.
+It is assumes that the file's header is at the second row.
+The first row of the file contains some metadata information that is not used.
 """
 function read_csv_with_schema(file_path, schema; csvargs...)
     # Get the schema names and types in the form of Dictionaries
@@ -87,6 +88,7 @@ function read_csv_with_schema(file_path, schema; csvargs...)
     df = CSV.read(
         file_path,
         DataFrames.DataFrame;
+        header = 2,
         types = col_types,
         strict = true,
         csvargs...,
