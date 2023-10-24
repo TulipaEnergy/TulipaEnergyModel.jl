@@ -75,6 +75,8 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     # Read from flows data
     flows_variable_cost   = Dict{Tuple{String,String},Float64}()
     flows_investment_cost = Dict{Tuple{String,String},Float64}()
+    flows_export_capacity = Dict{Tuple{String,String},Float64}()
+    flows_import_capacity = Dict{Tuple{String,String},Float64}()
     flows_unit_capacity   = Dict{Tuple{String,String},Float64}()
     flows_init_capacity   = Dict{Tuple{String,String},Float64}()
     flows_efficiency      = Dict{Tuple{String,String},Float64}()
@@ -83,11 +85,13 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     for row in eachrow(flows_data_df)
         flows_variable_cost[(row.from_asset, row.to_asset)]   = row.variable_cost
         flows_investment_cost[(row.from_asset, row.to_asset)] = row.investment_cost
-        flows_unit_capacity[(row.from_asset, row.to_asset)]   = row.capacity
+        flows_export_capacity[(row.from_asset, row.to_asset)] = row.export_capacity
+        flows_import_capacity[(row.from_asset, row.to_asset)] = row.import_capacity
         flows_init_capacity[(row.from_asset, row.to_asset)]   = row.initial_capacity
         flows_efficiency[(row.from_asset, row.to_asset)]      = row.efficiency
         flows_investable[(row.from_asset, row.to_asset)]      = row.investable
         flows_is_transport[(row.from_asset, row.to_asset)]    = row.is_transport
+        flows_unit_capacity[(row.from_asset, row.to_asset)]   = max(row.export_capacity, row.import_capacity)
     end
 
     params = (
@@ -100,6 +104,8 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         flows_init_capacity = flows_init_capacity,
         flows_investment_cost = flows_investment_cost,
         flows_profile = flows_profile,
+        flows_export_capacity = flows_export_capacity,
+        flows_import_capacity = flows_import_capacity,
         flows_unit_capacity = flows_unit_capacity,
         flows_efficiency = flows_efficiency,
         flows_investable = flows_investable,

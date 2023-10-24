@@ -22,7 +22,8 @@ struct FlowData
     investable::Bool            # Whether able to invest
     variable_cost::Float64      # kEUR/MWh
     investment_cost::Float64    # kEUR/MW/year
-    capacity::Float64           # MW
+    export_capacity::Float64    # MW
+    import_capacity::Float64    # MW
     initial_capacity::Float64   # MW
     efficiency::Float64         # p.u. (per unit)
 end

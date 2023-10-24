@@ -32,7 +32,6 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @variable(model, 0 ≤ storage_level[As, RP, K])
 
     # TODO: Fix storage_level[As, RP, 0] = 0
-    # TODO: Set lower bound v_flow[f, rp, k] for f in Ft
 
     # Expressions
     assets_investment_cost = @expression(
@@ -142,7 +141,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         )
     )
 
-    # Constraints that define bounds for a flows that are not transport assets
+    # Constraints that define a lower bound for flows that are not transport assets
     @constraint(
         model,
         c_lower_bound_asset_flow[f ∈ F, rp ∈ RP, k ∈ K; f ∉ Ft],
@@ -150,13 +149,12 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     )
 
     # Constraints that define bounds for a transport flow Ft
-    # TODO: define two expressions, one for upper and one for lower bound (they can be different)
     @expression(
         model,
         e_upper_bound_transport_flow[f ∈ F, rp ∈ RP, k ∈ K],
         get(params.flows_profile, (f, rp, k), 1.0) * (
             params.flows_init_capacity[f] +
-            (f ∈ Fi ? (params.flows_unit_capacity[f] * flows_investment[f]) : 0.0)
+            (f ∈ Fi ? (params.flows_export_capacity[f] * flows_investment[f]) : 0.0)
         )
     )
     @constraint(
@@ -164,10 +162,18 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         c_transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, k ∈ K],
         v_flow[f, rp, k] ≤ e_upper_bound_transport_flow[f, rp, k]
     )
+    @expression(
+        model,
+        e_lower_bound_transport_flow[f ∈ F, rp ∈ RP, k ∈ K],
+        get(params.flows_profile, (f, rp, k), 1.0) * (
+            params.flows_init_capacity[f] +
+            (f ∈ Fi ? (params.flows_import_capacity[f] * flows_investment[f]) : 0.0)
+        )
+    )
     @constraint(
         model,
         c_transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, k ∈ K],
-        v_flow[f, rp, k] ≥ -e_upper_bound_transport_flow[f, rp, k]
+        v_flow[f, rp, k] ≥ -e_lower_bound_transport_flow[f, rp, k]
     )
 
     # Extra constraints
