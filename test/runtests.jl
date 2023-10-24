@@ -117,3 +117,8 @@ end
         @test compute_rp_periods([time_steps4, time_steps5]) == [1:6, 7:12]
     end
 end
+
+@testset "Ensuring benchmark loads" begin
+    include(joinpath(@__DIR__, "..", "benchmark", "benchmarks.jl"))
+    @test SUITE !== nothing
+end
