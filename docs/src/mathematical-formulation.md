@@ -131,7 +131,7 @@ s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f 
 
 ```math
 \begin{aligned}
-v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \forall a \notin \mathcal{A}_h, \forall f \in \mathcal{F}_{out}(a), \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \forall a \notin \mathcal{A}_h \cup \mathcal{A}_c, \forall f \in \mathcal{F}_{out}(a) \& \notin \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 

@@ -133,7 +133,13 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     # - upper bound associated with asset
     @constraint(
         model,
-        c_upper_bound_asset[a ∈ A, f ∈ F, rp ∈ RP, k ∈ K; !(a ∈ Ah) && f[1] == a],
+        c_upper_bound_asset[
+            a ∈ A,
+            f ∈ F,
+            rp ∈ RP,
+            k ∈ K;
+            !(a ∈ Ah ∪ Ac) && f[1] == a && f ∉ Ft,
+        ],
         flow[f, rp, k] ≤
         get(params.assets_profile, (a, rp, k), 1.0) * (
             params.assets_init_capacity[a] +
