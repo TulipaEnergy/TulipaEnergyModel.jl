@@ -36,6 +36,13 @@ Install a plugin to use [EditorConfig](https://editorconfig.org).
 We use [https://pre-commit.com](https://pre-commit.com) to run the linters and formatters.
 In particular, the Julia code is formatted using [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl).
 
+You need to install `JuliaFormatter`. Open Julia and press `]` to enter `pkg` mode. Then enter the following:
+
+```bash
+pkg> activate
+pkg> add JuliaFormatter
+```
+
 You can install `pre-commit` globally using `pip install --user pre-commit`.
 If you prefer to create a local environment with it, do the following:
 
