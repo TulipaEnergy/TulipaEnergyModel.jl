@@ -6,32 +6,24 @@ body:
     - type: textarea
       id: summary
       attributes:
-          label: "Summary"
-          description: Provide a brief explanation of the improvement
-          placeholder: Describe in a few lines your improvement request
-      validations:
-          required: true
-    - type: textarea
-      id: basic_example
-      attributes:
-          label: "Basic Example"
-          description: Indicate here some basic examples of your improvement.
-          placeholder: A few specific words about your improvement request.
+          label: "What and Why"
+          description: Explain the improvement
+          placeholder: Describe your request, including why it's an improvement
       validations:
           required: true
     - type: textarea
       id: drawbacks
       attributes:
-          label: "Drawbacks"
-          description: What are the drawbacks/impacts of your improvement request ?
-          placeholder: Identify the drawbacks and impacts while being neutral on your improvement request
+          label: "Possible Drawbacks"
+          description: What are possible drawbacks of your improvement request?
+          placeholder: Identify the drawbacks, while remaining neutral
       validations:
-          required: true
+          required: false
     - type: textarea
-      id: reference_issues
+      id: related_issues
       attributes:
-          label: "Reference Issues"
-          description: Common issues
+          label: "Related Issues"
+          description: Existing issues related to this improvement
           placeholder: "#Issues IDs"
       validations:
           required: false

@@ -15,7 +15,7 @@ body:
       id: reprod
       attributes:
           label: "Reproduction steps"
-          description: Please enter an explicit description of your issue
+          description: Please describe steps to reproduce your issue
           value: |
               1. Go to '...'
               2. Using input data '....'
