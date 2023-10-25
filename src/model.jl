@@ -29,7 +29,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @variable(model, flow[F, rp ∈ RP, K[rp]])         #flow from asset a to asset aa [MW]
     @variable(model, 0 ≤ assets_investment[Ai], Int)  #number of installed asset units [N]
     @variable(model, 0 ≤ flows_investment[Fi], Int)
-    @variable(model, 0 ≤ storage_level[As, RP, K[rp]])
+    @variable(model, 0 ≤ storage_level[As, rp ∈ RP, K[rp]])
 
     # TODO: Fix storage_level[As, RP, 0] = 0
 
