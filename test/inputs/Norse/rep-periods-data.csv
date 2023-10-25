@@ -1,3 +1,3 @@
-,hours
-id,weight
-1,52.1423
+,hours,,
+id,weight,num_time_steps,time_scale
+1,52.1423,168,1
