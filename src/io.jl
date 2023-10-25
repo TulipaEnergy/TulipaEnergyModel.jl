@@ -24,7 +24,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     assets_conversion = assets_data_df[assets_data_df.type.=="conversion", :].name  #conversion assets in the energy system
     assets_investment = assets_data_df[assets_data_df.investable.==true, :].name  #assets with investment method in the energy system
     rep_periods       = unique(assets_profiles_df.rep_period_id)  #representative periods
-    time_steps        = unique(assets_profiles_df.time_step)   #time steps in the RP (e.g., hours)
+    time_steps        = Dict(row.id => 1:row.num_time_steps for row in eachrow(rep_period_df))   #time steps in the RP (e.g., hours), that are dependent on RP
 
     # Parameters for system
     rep_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
