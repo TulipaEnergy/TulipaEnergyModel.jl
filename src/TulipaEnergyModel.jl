@@ -7,7 +7,7 @@ using Graphs
 using HiGHS
 using JuMP
 
-include("input_tables.jl")
+include("input-tables.jl")
 include("io.jl")
 include("model.jl")
 include("time-resolution.jl")

@@ -9,9 +9,9 @@ const INPUT_FOLDER = joinpath(@__DIR__, "inputs")
 const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
 
 # Add run all test files in test folder
-include("test_io.jl")
-include("test_time-resolution.jl")
-include("test_TulipaEnergyModel.jl")
+include("test-io.jl")
+include("test-time-resolution.jl")
+include("test-case-studies.jl")
 
 # Other general tests that don't need their own file
 @testset "Ensuring benchmark loads" begin
