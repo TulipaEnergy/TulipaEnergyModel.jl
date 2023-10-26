@@ -1,29 +1,35 @@
 @testset "Time resolution" begin
     @testset "resolution_matrix" begin
         rp_periods = [1:4, 5:8, 9:12]
-        time_steps = [1:4, 5:8, 9:12]
-        expected = [
-            1.0 0.0 0.0
-            0.0 1.0 0.0
-            0.0 0.0 1.0
-        ]
-        @test resolution_matrix(rp_periods, time_steps) == expected
+        for time_scale in [1e-4, 0.5, 1.0, 3.14, 1e4]
+            time_steps = [1:4, 5:8, 9:12]
+            expected = time_scale * [
+                1.0 0.0 0.0
+                0.0 1.0 0.0
+                0.0 0.0 1.0
+            ]
+            @test resolution_matrix(rp_periods, time_steps; rp_time_scale = time_scale) ≈
+                  expected
 
-        time_steps = [1:3, 4:6, 7:9, 10:12]
-        expected = [
-            1.0 1/3 0.0 0.0
-            0.0 2/3 2/3 0.0
-            0.0 0.0 1/3 1.0
-        ]
-        @test resolution_matrix(rp_periods, time_steps) == expected
+            time_steps = [1:3, 4:6, 7:9, 10:12]
+            expected = time_scale * [
+                1.0 1/3 0.0 0.0
+                0.0 2/3 2/3 0.0
+                0.0 0.0 1/3 1.0
+            ]
+            @test resolution_matrix(rp_periods, time_steps; rp_time_scale = time_scale) ≈
+                  expected
 
-        time_steps = [1:6, 7:9, 10:10, 11:11, 12:12]
-        expected = [
-            2/3 0.0 0.0 0.0 0.0
-            1/3 2/3 0.0 0.0 0.0
-            0.0 1/3 1.0 1.0 1.0
-        ]
-        @test resolution_matrix(rp_periods, time_steps) == expected
+            time_steps = [1:6, 7:9, 10:10, 11:11, 12:12]
+            expected =
+                time_scale * [
+                    2/3 0.0 0.0 0.0 0.0
+                    1/3 2/3 0.0 0.0 0.0
+                    0.0 1/3 1.0 1.0 1.0
+                ]
+            @test resolution_matrix(rp_periods, time_steps; rp_time_scale = time_scale) ≈
+                  expected
+        end
     end
 
     @testset "compute_rp_periods" begin

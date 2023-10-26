@@ -1,10 +1,15 @@
 export resolution_matrix, compute_rp_periods
 
+using SparseArrays
+
 """
-    M = resolution_matrix(rp_periods, time_steps)
+    M = resolution_matrix(rp_periods, time_steps; rp_time_scale = 1.0)
 
 Computes the resolution balance matrix using the array of `rp_periods` and the array of `time_steps`.
+The `time_steps` will normally be from an asset or flow, but there is nothing constraining it to that.
 The elements in these arrays must be ranges.
+
+The resulting matrix will be multiplied by `rp_time_scale`.
 
 ## Examples
 
@@ -17,33 +22,34 @@ resolution_matrix(rp_periods, time_steps)
 
 # output
 
-3×3 Matrix{Float64}:
- 1.0  0.0  0.0
- 0.0  1.0  0.0
- 0.0  0.0  1.0
+3×3 SparseArrays.SparseMatrixCSC{Float64, Int64} with 3 stored entries:
+ 1.0   ⋅    ⋅
+  ⋅   1.0   ⋅
+  ⋅    ⋅   1.0
 ```
 
 ```jldoctest
 rp_periods = [1:4, 5:8, 9:12]
 time_steps = [1:3, 4:6, 7:9, 10:12]
-resolution_matrix(rp_periods, time_steps)
+resolution_matrix(rp_periods, time_steps; rp_time_scale = 1.5)
 
 # output
 
-3×4 Matrix{Float64}:
- 1.0  0.333333  0.0       0.0
- 0.0  0.666667  0.666667  0.0
- 0.0  0.0       0.333333  1.0
+3×4 SparseArrays.SparseMatrixCSC{Float64, Int64} with 6 stored entries:
+ 1.5  0.5   ⋅    ⋅
+  ⋅   1.0  1.0   ⋅
+  ⋅    ⋅   0.5  1.5
 ```
 """
 function resolution_matrix(
     rp_periods::AbstractVector{<:UnitRange{<:Integer}},
-    time_steps::AbstractVector{<:UnitRange{<:Integer}},
+    time_steps::AbstractVector{<:UnitRange{<:Integer}};
+    rp_time_scale = 1.0,
 )
-    matrix = [
-        length(period ∩ time_step) / length(time_step) for period in rp_periods,
-        time_step in time_steps
-    ]
+    matrix = sparse([
+        rp_time_scale * length(period ∩ time_step) / length(time_step) for
+        period in rp_periods, time_step in time_steps
+    ])
 
     return matrix
 end
