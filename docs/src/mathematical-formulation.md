@@ -6,22 +6,23 @@ The full mathematical formulation is also freely available in the [preprint](htt
 ## [Sets](@id math-sets)
 
 NOTE: Asset types are mutually exclusive.
+
 Name|Description|Elements
- ---|---|---:
+ ---|---|---
 $\mathcal{A}$           | Energy assets                           | $a \in \mathcal{A}$
-$\mathcal{A}_c$         | Consumer energy assets                  | $\mathcal{A}_c   \subseteq \mathcal{A}$
-$\mathcal{A}_p$         | Producer energy assets                  | $\mathcal{A}_p   \subseteq \mathcal{A}$
-$\mathcal{A}_s$         | Storage energy assets                   | $\mathcal{A}_s   \subseteq \mathcal{A}$
-$\mathcal{A}_h$         | Hub energy assets (e.g., transshipment) | $\mathcal{A}_h   \subseteq \mathcal{A}$
-$\mathcal{A}_{cv}$      | Conversion energy assets                | $\mathcal{A}_{cv}\subseteq \mathcal{A}$
-$\mathcal{A}_i$         | Energy assets with investment method    | $\mathcal{A}_i   \subseteq \mathcal{A}$
+$\mathcal{A}_c$         | Consumer energy assets                  | $\mathcal{A}_c        \subseteq \mathcal{A}$
+$\mathcal{A}_p$         | Producer energy assets                  | $\mathcal{A}_p        \subseteq \mathcal{A}$
+$\mathcal{A}_s$         | Storage energy assets                   | $\mathcal{A}_s        \subseteq \mathcal{A}$
+$\mathcal{A}_h$         | Hub energy assets (e.g., transshipment) | $\mathcal{A}_h        \subseteq \mathcal{A}$
+$\mathcal{A}_{cv}$      | Conversion energy assets                | $\mathcal{A}_{cv}     \subseteq \mathcal{A}$
+$\mathcal{A}_i$         | Energy assets with investment method    | $\mathcal{A}_i        \subseteq \mathcal{A}$
 $\mathcal{F}$           | Flow connections between two assets     | $f \in \mathcal{F}$
-$\mathcal{F}_t$         | Transport flow between two assets       | $\mathcal{F}_t   \subseteq \mathcal{F}$
-$\mathcal{F}_i$         | Transport flow with investment method   | $\mathcal{F}_i   \subseteq \mathcal{F}_t$
-$\mathcal{F}_{in}(a)$   | Set of flows going into asset $a$       | $\mathcal{F}_{in}(a) \subseteq \mathcal{F}$
+$\mathcal{F}_t$         | Transport flow between two assets       | $\mathcal{F}_t        \subseteq \mathcal{F}$
+$\mathcal{F}_i$         | Transport flow with investment method   | $\mathcal{F}_i        \subseteq \mathcal{F}_t$
+$\mathcal{F}_{in}(a)$   | Set of flows going into asset $a$       | $\mathcal{F}_{in}(a)  \subseteq \mathcal{F}$
 $\mathcal{F}_{out}(a)$  | Set of flows going out of asset $a$     | $\mathcal{F}_{out}(a) \subseteq \mathcal{F}$
 $\mathcal{RP}$          | Representative periods                  | $rp \in \mathcal{RP}$
-$\mathcal{K}$           | Time steps within the $rp$              | $k \in \mathcal{K}$
+$\mathcal{K}$           | Time steps within the $rp$              | $k  \in \mathcal{K}$
 
 ## [Parameters](@id math-parameters)
 
@@ -81,7 +82,8 @@ flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{rp \in \mathcal{RP}} \su
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \left\{\begin{array}{l} = \\ \geqslant \\ \leqslant \end{array}\right\} p^{profile}_{a,rp,k} \cdot p^{peak\_demand}_{a} \quad \forall a \in \mathcal{A}_c, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \left\{\begin{array}{l} = \\ \geqslant \\ \leqslant \end{array}\right\} p^{profile}_{a,rp,k} \cdot p^{peak\_demand}_{a} \quad
+\forall a \in \mathcal{A}_c, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -89,7 +91,8 @@ flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{rp \in \mathcal{RP}} \su
 
 ```math
 \begin{aligned}
-s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f \in \mathcal{F}_{in}(a)} p^{eff}_f \cdot v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} \frac{1}{p^{eff}_f} \cdot v^{flow}_{f,rp,k} \quad \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f \in \mathcal{F}_{in}(a)} p^{eff}_f \cdot v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} \frac{1}{p^{eff}_f} \cdot v^{flow}_{f,rp,k} \quad
+\forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -97,7 +100,8 @@ s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} = \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \quad \forall a \in \mathcal{A}_h, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} = \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \quad
+\forall a \in \mathcal{A}_h, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -105,7 +109,8 @@ s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}_{in}(a)} p^{eff}_f \cdot {v^{flow}_{f,rp,k}} = \sum_{f \in \mathcal{F}_{out}(a)} \frac{v^{flow}_{f,rp,k}}{p^{eff}_f}  \quad \forall a \in \mathcal{A}_{cv}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{in}(a)} p^{eff}_f \cdot {v^{flow}_{f,rp,k}} = \sum_{f \in \mathcal{F}_{out}(a)} \frac{v^{flow}_{f,rp,k}}{p^{eff}_f}  \quad
+\forall a \in \mathcal{A}_{cv}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -115,7 +120,8 @@ s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \forall a \in \mathcal{A}_{cv} \cup \mathcal{A_{s}} \cup \mathcal{A_{p}}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad
+\forall a \in \mathcal{A}_{cv} \cup \mathcal{A_{s}} \cup \mathcal{A_{p}}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -123,7 +129,8 @@ s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \forall a \in \mathcal{A_{s}}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad
+\forall a \in \mathcal{A_{s}}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -131,7 +138,8 @@ s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f 
 
 ```math
 \begin{aligned}
-v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \forall a \notin \mathcal{A}_h \cup \mathcal{A}_c, \forall f \in \mathcal{F}_{out}(a) \& \notin \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \forall a \notin \mathcal{A}_h \cup \mathcal{A}_c,
+\forall f \in \mathcal{F}_{out}(a) \& \notin \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -147,7 +155,8 @@ v^{flow}_{f,rp,k} \geq 0 \quad \forall f \notin \mathcal{F}_t, \forall rp \in \m
 
 ```math
 \begin{aligned}
-v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{export\_capacity}_f \cdot v^{investment}_f \right)  \quad \forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{export\_capacity}_f \cdot v^{investment}_f \right)  \quad
+\forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -155,7 +164,8 @@ v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} +
 
 ```math
 \begin{aligned}
-v^{flow}_{f,rp,k} \geq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{import\_capacity}_f \cdot v^{investment}_f \right)  \quad \forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+v^{flow}_{f,rp,k} \geq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{import\_capacity}_f \cdot v^{investment}_f \right)  \quad
+\forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -164,5 +174,6 @@ v^{flow}_{f,rp,k} \geq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} +
 #### Upper and Lower Bound Constraints for Storage Level
 
 ```math
-0 \leq s_{a,rp,k}^{level} \leq p^{init\_storage\_capacity}_{a} + p^{ene\_to\_pow\_ratio}_a \cdot p^{unit\_capacity}_a \cdot v^{investment}_a \quad \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+0 \leq s_{a,rp,k}^{level} \leq p^{init\_storage\_capacity}_{a} + p^{ene\_to\_pow\_ratio}_a \cdot p^{unit\_capacity}_a \cdot v^{investment}_a \quad
+\forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 ```
