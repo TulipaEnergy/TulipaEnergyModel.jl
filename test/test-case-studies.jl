@@ -34,6 +34,5 @@ end
     parameters.peak_demand["demand"] = -1 # make it infeasible
     graph = create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
     model = create_model(graph, parameters, sets)
-    solution = solve_model(model)
-    @test solution === nothing
+    @test_warn "Model status different from optimal" solve_model(model)
 end
