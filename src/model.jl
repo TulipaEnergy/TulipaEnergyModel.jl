@@ -18,18 +18,21 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     F   = [(A[e.src], A[e.dst]) for e ∈ edges(graph)] # f[1] -> source, f[2] -> destination
     Fi  = [f for f ∈ F if params.flows_investable[f]]
     Ft  = [f for f ∈ F if params.flows_is_transport[f]]
-    K   = sets.time_steps
-    RP  = sets.rep_periods
+    # K_rp = sets.time_steps
+    # K_A = sets.time_intervals_per_asset
+    K_F = sets.time_intervals_per_flow
+    P = sets.constraints_time_periods
+    RP = sets.rep_periods
 
     # Model
     model = Model(HiGHS.Optimizer)
     set_attribute(model, "output_flag", verbose)
 
     # Variables
-    @variable(model, flow[F, rp ∈ RP, K[rp]])         #flow from asset a to asset aa [MW]
+    @variable(model, flow[f ∈ F, rp ∈ RP, K_F[(f, rp)]])         #flow from asset a to asset aa [MW]
     @variable(model, 0 ≤ assets_investment[Ai], Int)  #number of installed asset units [N]
     @variable(model, 0 ≤ flows_investment[Fi], Int)
-    @variable(model, 0 ≤ storage_level[As, rp ∈ RP, K[rp]])
+    @variable(model, 0 ≤ storage_level[a ∈ As, rp ∈ RP, P[(a, rp)]])
 
     # TODO: Fix storage_level[As, RP, 0] = 0
 
@@ -55,8 +58,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     flows_variable_cost = @expression(
         model,
         sum(
-            params.rep_weight[rp] * params.flows_variable_cost[f] * flow[f, rp, k] for
-            f ∈ F, rp ∈ RP, k ∈ K[rp]
+            params.rep_weight[rp] * params.flows_variable_cost[f] * flow[f, rp, I] for
+            f ∈ F, rp ∈ RP, I ∈ K_F[(f, rp)]
         )
     )
 
@@ -68,118 +71,152 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     )
 
     # Constraints
+    # Computes the duration of the `interval` that is within the `period`, and multiply by the
+    # scale of the representative period `rp`.
+    # It is equivalent to finding the indexes of these values in the matrix.
+    function duration(T, I, rp)
+        return length(T ∩ I) * params.time_scale[rp]
+    end
 
     # Balance equations
     # - consumer balance equation
     @constraint(
         model,
-        c_consumer_balance[a ∈ Ac, rp ∈ RP, k ∈ K[rp]],
-        sum(flow[f, rp, k] for f ∈ F if f[2] == a) -
-        sum(flow[f, rp, k] for f ∈ F if f[1] == a) ==
-        get(params.assets_profile, (a, rp, k), 1.0) * params.peak_demand[a]
+        c_consumer_balance[a ∈ Ac, rp ∈ RP, T ∈ P[(a, rp)]],
+        sum(
+            duration(T, I, rp) * flow[f, rp, I] for
+            f ∈ F, I ∈ sets.time_intervals_per_flow[(f, rp)] if f[2] == a
+        ) - sum(
+            duration(T, I, rp) * flow[f, rp, I] for
+            f ∈ F, I ∈ sets.time_intervals_per_flow[(f, rp)] if f[1] == a
+        ) ==
+        sum(get(params.assets_profile, (a, rp, k), 1.0) for k ∈ T) * params.peak_demand[a]
     )
 
     # - storage balance equation
     # TODO: Add p^{inflow}
-    # TODO: Fix the initial storage_level
     @constraint(
         model,
-        c_storage_balance[a ∈ As, rp ∈ RP, k ∈ K[rp]],
-        storage_level[a, rp, k] ==
-        (k ≥ 2 ? storage_level[a, rp, k-1] : 0.0) +
-        sum(flow[f, rp, k] * params.flows_efficiency[f] for f ∈ F if f[2] == a) -
-        sum(flow[f, rp, k] / params.flows_efficiency[f] for f ∈ F if f[1] == a)
+        c_storage_balance[a ∈ As, rp ∈ RP, (k, T) ∈ enumerate(P[(a, rp)])],
+        storage_level[a, rp, T] ==
+        (k > 1 ? storage_level[a, rp, P[(a, rp)][k-1]] : 0.0) + sum(
+            duration(T, I, rp) * flow[f, rp, I] * params.flows_efficiency[f] for
+            f ∈ F, I ∈ sets.time_intervals_per_flow[(f, rp)] if f[2] == a
+        ) - sum(
+            duration(T, I, rp) * flow[f, rp, I] / params.flows_efficiency[f] for
+            f ∈ F, I ∈ sets.time_intervals_per_flow[(f, rp)] if f[1] == a
+        )
     )
 
     # - hub balance equation
     @constraint(
         model,
-        c_hub_balance[a ∈ Ah, rp ∈ RP, k ∈ K[rp]],
-        sum(flow[f, rp, k] for f ∈ F if f[2] == a) ==
-        sum(flow[f, rp, k] for f ∈ F if f[1] == a)
+        c_hub_balance[a ∈ Ah, rp ∈ RP, T ∈ P[(a, rp)]],
+        sum(
+            duration(T, I, rp) * flow[f, rp, I] for
+            f ∈ F, I ∈ sets.time_intervals_per_flow[(f, rp)] if f[2] == a
+        ) == sum(
+            duration(T, I, rp) * flow[f, rp, I] for
+            f ∈ F, I ∈ sets.time_intervals_per_flow[(f, rp)] if f[1] == a
+        )
     )
 
     # - conversion balance equation
     @constraint(
         model,
-        c_conversion_balance[a ∈ Acv, rp ∈ RP, k ∈ K[rp]],
-        sum(flow[f, rp, k] * params.flows_efficiency[f] for f ∈ F if f[2] == a) ==
-        sum(flow[f, rp, k] / params.flows_efficiency[f] for f ∈ F if f[1] == a)
+        c_conversion_balance[a ∈ Acv, rp ∈ RP, T ∈ P[(a, rp)]],
+        sum(
+            duration(T, I, rp) * flow[f, rp, I] * params.flows_efficiency[f] for
+            f ∈ F, I ∈ sets.time_intervals_per_flow[(f, rp)] if f[2] == a
+        ) == sum(
+            duration(T, I, rp) * flow[f, rp, I] / params.flows_efficiency[f] for
+            f ∈ F, I ∈ sets.time_intervals_per_flow[(f, rp)] if f[1] == a
+        )
     )
 
     # Constraints that define bounds of flows related to energy assets A
     # - overall output flows
     @constraint(
         model,
-        c_overall_output_flows[a ∈ Acv∪As∪Ap, rp ∈ RP, k ∈ K[rp]],
-        sum(flow[f, rp, k] for f ∈ F if f[1] == a) ≤
-        get(params.assets_profile, (a, rp, k), 1.0) * (
+        c_overall_output_flows[a ∈ Acv∪As∪Ap, rp ∈ RP, T ∈ P[(a, rp)]],
+        sum(
+            duration(T, I, rp) * flow[f, rp, I] for
+            f ∈ F, I ∈ sets.time_intervals_per_flow[(f, rp)] if f[1] == a
+        ) ≤
+        sum(get(params.assets_profile, (a, rp, k), 1.0) for k ∈ T) * (
             params.assets_init_capacity[a] +
             (a ∈ Ai ? (params.assets_unit_capacity[a] * assets_investment[a]) : 0.0)
         )
     )
-
-    # - overall input flows
+    #
+    # # - overall input flows
     @constraint(
         model,
-        c_overall_input_flows[a ∈ As, rp ∈ RP, k ∈ K[rp]],
-        sum(flow[f, rp, k] for f ∈ F if f[2] == a) ≤
-        get(params.assets_profile, (a, rp, k), 1.0) * (
+        c_overall_input_flows[a ∈ As, rp ∈ RP, T ∈ P[(a, rp)]],
+        sum(
+            duration(T, I, rp) * flow[f, rp, I] for
+            f ∈ F, I ∈ sets.time_intervals_per_flow[(f, rp)] if f[2] == a
+        ) ≤
+        sum(get(params.assets_profile, (a, rp, k), 1.0) for k ∈ T) * (
             params.assets_init_capacity[a] +
             (a ∈ Ai ? (params.assets_unit_capacity[a] * assets_investment[a]) : 0.0)
         )
     )
-
-    # - upper bound associated with asset
+    #
+    # # - upper bound associated with asset
     @constraint(
         model,
         c_upper_bound_asset[
             a ∈ A,
             f ∈ F,
             rp ∈ RP,
-            k ∈ K[rp];
+            T ∈ P[(a, rp)];
             !(a ∈ Ah ∪ Ac) && f[1] == a && f ∉ Ft,
         ],
-        flow[f, rp, k] ≤
-        get(params.assets_profile, (a, rp, k), 1.0) * (
+        sum(
+            duration(T, I, rp) * flow[f, rp, I] for
+            I ∈ sets.time_intervals_per_flow[(f, rp)]
+        ) ≤
+        sum(get(params.assets_profile, (a, rp, k), 1.0) for k ∈ T) * (
             params.assets_init_capacity[a] +
             (a ∈ Ai ? (params.assets_unit_capacity[a] * assets_investment[a]) : 0.0)
         )
     )
 
     # Constraints that define a lower bound for flows that are not transport assets
+    # TODO: set lower bound via JuMP API
     @constraint(
         model,
-        c_lower_bound_asset_flow[f ∈ F, rp ∈ RP, k ∈ K[rp]; f ∉ Ft],
-        flow[f, rp, k] ≥ 0
+        c_lower_bound_asset_flow[f ∈ F, rp ∈ RP, I ∈ K_F[(f, rp)]; f ∉ Ft],
+        flow[f, rp, I] ≥ 0
     )
 
     # Constraints that define bounds for a transport flow Ft
     @expression(
         model,
-        e_upper_bound_transport_flow[f ∈ F, rp ∈ RP, k ∈ K[rp]],
-        get(params.flows_profile, (f, rp, k), 1.0) * (
+        e_upper_bound_transport_flow[f ∈ F, rp ∈ RP, I ∈ K_F[(f, rp)]],
+        get(params.flows_profile, (f, rp, I), 1.0) * (
             params.flows_init_capacity[f] +
             (f ∈ Fi ? (params.flows_export_capacity[f] * flows_investment[f]) : 0.0)
         )
     )
     @constraint(
         model,
-        c_transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, k ∈ K[rp]],
-        flow[f, rp, k] ≤ e_upper_bound_transport_flow[f, rp, k]
+        c_transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, I ∈ K_F[(f, rp)]],
+        flow[f, rp, I] ≤ e_upper_bound_transport_flow[f, rp, I]
     )
     @expression(
         model,
-        e_lower_bound_transport_flow[f ∈ F, rp ∈ RP, k ∈ K[rp]],
-        get(params.flows_profile, (f, rp, k), 1.0) * (
+        e_lower_bound_transport_flow[f ∈ F, rp ∈ RP, I ∈ K_F[(f, rp)]],
+        get(params.flows_profile, (f, rp, I), 1.0) * (
             params.flows_init_capacity[f] +
             (f ∈ Fi ? (params.flows_import_capacity[f] * flows_investment[f]) : 0.0)
         )
     )
     @constraint(
         model,
-        c_transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, k ∈ K[rp]],
-        flow[f, rp, k] ≥ -e_lower_bound_transport_flow[f, rp, k]
+        c_transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, I ∈ K_F[(f, rp)]],
+        flow[f, rp, I] ≥ -e_lower_bound_transport_flow[f, rp, I]
     )
 
     # Extra constraints
@@ -193,8 +230,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     )
     @constraint(
         model,
-        upper_bound_for_storage_level[a ∈ As, rp ∈ RP, k ∈ K[rp]],
-        storage_level[a, rp, k] ≤
+        upper_bound_for_storage_level[a ∈ As, rp ∈ RP, T ∈ P[(a, rp)]],
+        storage_level[a, rp, T] ≤
         params.initial_storage_capacity[a] + (a ∈ Ai ? energy_limit[a] : 0.0)
     )
 
