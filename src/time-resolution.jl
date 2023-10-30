@@ -178,7 +178,7 @@ function compute_rp_periods(
 
     period_start = 1
     if strategy == :greedy
-        while period_start < representative_period_end
+        while period_start ≤ representative_period_end
             # The first range end larger than period_start for each range in each time_steps.
             breakpoints = (
                 first(r[end] for r in time_steps if r[end] ≥ period_start) for

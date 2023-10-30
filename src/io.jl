@@ -33,8 +33,26 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     time_intervals_per_asset = compute_time_intervals(assets_intervals_df, assets, time_steps)
     time_intervals_per_flow  = compute_time_intervals(flows_intervals_df, flows, time_steps)
 
+    # From balance equations:
+    # Every asset a ∈ A and every rp ∈ RP will define a collection of flows, and therefore the time steps
+    # can be defined a priori.
+    constraints_time_periods = Dict(
+        (a, rp) => begin
+            compute_rp_periods(
+                [
+                    [
+                        time_intervals_per_flow[(f, rp)] for
+                        f in flows if f[1] == a || f[2] == a
+                    ]
+                    [time_intervals_per_asset[(a, rp)]]
+                ],
+            )
+        end for a in assets, rp in rep_periods
+    )
+
     # Parameters for system
     rep_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
+    time_scale = Dict(row.id => row.time_scale for row in eachrow(rep_period_df))
 
     # Parameter for profile of assets
     assets_profile = Dict(
@@ -121,6 +139,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         initial_storage_capacity = initial_storage_capacity,
         energy_to_power_ratio = energy_to_power_ratio,
         rep_weight = rep_weight,
+        time_scale = time_scale,
     )
     sets = (
         assets = assets,
@@ -130,10 +149,12 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         assets_storage = assets_storage,
         assets_hub = assets_hub,
         assets_conversion = assets_conversion,
+        flows = flows,
         rep_periods = rep_periods,
         time_steps = time_steps,
         time_intervals_per_asset = time_intervals_per_asset,
         time_intervals_per_flow = time_intervals_per_flow,
+        constraints_time_periods = constraints_time_periods,
     )
 
     return params, sets
