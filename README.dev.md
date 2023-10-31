@@ -221,3 +221,22 @@ If you want to manually run the benchmarks, you can do the following:
   tune!(SUITE)
   results = run(SUITE, verbose=true)
   ```
+
+## Build and see the documentation locally
+
+To build and see the documentation locally, first, navigate to the `docs` folder in your file explorer and open a terminal. Then, run `julia --project` (remember that `julia` must be part of your environment variables to call it from the command line). With the `julia` open, enter the `pkg` mode by pressing `]`. Check that the environment name is `docs`. The first time here, you have to run:
+
+```julia-pkg
+pkg> dev ..
+pkg> update
+```
+
+Then, to build the documentation, run
+
+```julia
+julia> include("make.jl")
+```
+
+If you intend to rerun the build step, ensure you have the package `Revise` installed in your global environment, and run `using Revise` before including `make.jl`. Alternatively, close `julia` and reopen it.
+
+After building, the documentation will be available in the folder `docs/build/`. Open the `index.html` file on the browser to see it.
