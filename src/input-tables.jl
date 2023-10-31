@@ -48,3 +48,10 @@ struct RepPeriodData
     num_time_steps::Int         # Numer of time steps
     time_scale::Float64         # Duration of each time steps (hours)
 end
+
+struct TimeIntervalsData
+    id::Int
+    rep_period_id::Int
+    specification::Symbol
+    time_intervals::String
+end
