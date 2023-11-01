@@ -48,14 +48,14 @@ If you prefer to create a local environment with it, do the following:
 
 ```bash
 python -m venv env
-. env/Scripts/activate
+. env/bin/activate
 pip install --upgrade pip setuptools pre-commit
 ```
 
-On Unix or MacOS, you need to active the environment using the following command instead of the previous one:
+On Windows, you need to active the environment using the following command instead of the previous one:
 
 ```bash
-. env/bin/activate
+. env/Scrips/activate
 ```
 
 With `pre-commit` installed, activate it as a pre-commit hook:
@@ -77,7 +77,7 @@ Now, you can only commit if all the pre-commit tests pass.
 **Note:** On subsequent occasions when you need to run pre-commit in a new shell, you will need to activate the Python virtual environment. If so, do the following:
 
 ```bash
-. env/Scripts/activate
+. env/bin/activate # for Windows the command is: . env/Scripts/activate
 pre-commit run -a
 ```
 
@@ -177,7 +177,7 @@ Run the tests and the linter.
 On Julia:
 
 ```bash
-pkg> test
+TulipaEnergyModel> test
 ```
 
 On the bash/git bash terminal, the pre-commit:
@@ -227,8 +227,8 @@ If you want to manually run the benchmarks, you can do the following:
 To build and see the documentation locally, first, navigate to the `docs` folder in your file explorer and open a terminal. Then, run `julia --project` (remember that `julia` must be part of your environment variables to call it from the command line). With the `julia` open, enter the `pkg` mode by pressing `]`. Check that the environment name is `docs`. The first time here, you have to run:
 
 ```julia-pkg
-pkg> dev ..
-pkg> update
+docs> dev ..
+docs> update
 ```
 
 Then, to build the documentation, run
