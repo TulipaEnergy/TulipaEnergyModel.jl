@@ -1,5 +1,7 @@
 export create_parameters_and_sets_from_file,
-    create_graph, save_solution_to_file, compute_rp_partitions
+    create_graph, save_solution_to_file, compute_rp_partitions, read_esdl
+
+using EzXML
 
 """
     parameters, sets = create_parameters_and_sets_from_file(input_folder)
@@ -371,4 +373,59 @@ function compute_rp_partitions(df, elements, time_steps_per_rp)
     )
 
     return rp_partitions
+end
+
+"""
+    read_esdl(file_path; instance_name)
+
+Read an ESDL file to construct the flow graph and link the related
+assets and flows from the specification
+
+An ESDL file can contain multiple instances. If multiple instances
+are present in the file, a specific instance has to be selected.
+"""
+function read_esdl(file_path; instance_name = nothing)
+    doc = readxml(file_path)
+    doc_root = root(doc)
+    if countelements(doc_root) == 0
+        return nothing  # no instances
+    elseif countelements(doc_root) > 1
+        instance = nothing
+        for node in eachelement(doc_root)
+            if node["name"] == instance_name
+                instance = node
+                break
+            end
+        end
+        if isnothing(instance)
+            throw(KeyError(instance_name, "instance was not found in given ESDL file"))
+        end
+    else
+        instance = firstelement(doc_root)
+    end
+
+    area = firstelement(instance)  # an instance always has 1 top-level area
+    assets = gather_assets(area)  # gather assets
+    println(assets)
+    println(length(assets))
+end
+
+"""
+    gather_assets(area)
+
+Recursively gather all assets from an area defined in ESDL
+"""
+function gather_assets(area)
+    if area.name == "asset"
+        return [area]
+    elseif area.name == "area"
+        assets = []
+        for node in eachelement(area)
+            asset = gather_assets(node)
+            if !isnothing(asset)
+                assets = vcat(assets, asset)
+            end
+        end
+        return assets
+    end
 end
