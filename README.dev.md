@@ -174,11 +174,35 @@ git diff --staged # Another way to check changes, i.e., what you will see in the
 
 Run the tests and the linter.
 
+### Tests
+
 On Julia:
 
 ```bash
-pkg> test
+TulipaEnergyModel> test
 ```
+
+To run the tests with code coverage, you can use the `LocalCoverage` package.
+You can add it to and load it from your global environment to avoid polluting the package dependencies:
+
+```julia
+julia>
+# ]
+pkg> activate           # activate the global environment
+pkg> add LocalCoverage  # if not yet added previously
+# <backspace>
+julia> using LocalCoverage
+# ]
+pkg> activate .
+# <backspace>
+julia> cov = generate_coverage()
+```
+
+This will run the tests, track line coverage and print a report table as output. Note that we want to maintain 100% test coverage. If any file does not show 100% coverage, please add tests to cover the missing lines.
+
+If you are having trouble reaching 100% test coverage, you can set your PR to 'draft' status and ask for help.
+
+### Linter
 
 On the bash/git bash terminal, the pre-commit:
 
