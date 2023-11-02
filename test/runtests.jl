@@ -7,6 +7,7 @@ using Test
 # Folders names
 const INPUT_FOLDER = joinpath(@__DIR__, "inputs")
 const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
+const ESDL_FOLDER = joinpath(@__DIR__, "esdl")
 
 # Add run all test files in test folder
 include("test-io.jl")

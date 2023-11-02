@@ -57,3 +57,17 @@ end
         @test_throws AssertionError TEM._parse_rp_partition(Val(:math), "3x4", 1:14)
     end
 end
+
+@testset "ESDL parsing" begin
+    @testset "instance detection error handling" begin
+        @testset "no instance" begin
+            @test_throws ErrorException read_esdl(joinpath(ESDL_FOLDER, "no_instance.esdl"))
+        end
+
+        @testset "two instances" begin
+            @test_throws ErrorException read_esdl(
+                joinpath(ESDL_FOLDER, "two_instance.esdl"),
+            )
+        end
+    end
+end
