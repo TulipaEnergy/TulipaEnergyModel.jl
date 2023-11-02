@@ -239,7 +239,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         write_to_file(model, "model.lp")
     end
 
-    return model
+    return model, F
 end
 
 """

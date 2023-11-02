@@ -1,5 +1,9 @@
 export create_parameters_and_sets_from_file,
-    create_graph, save_solution_to_file, compute_time_intervals
+    create_graph,
+    save_solution_to_file,
+    compute_time_intervals,
+    show_flow_time_series,
+    run_model
 
 """
     parameters, sets = create_parameters_and_sets_from_file(input_folder)
@@ -207,6 +211,47 @@ function save_solution_to_file(
     return
 end
 
+"""
+    show_flow_time_series()
+
+Plots a time series for a flow, given asset `from_flow`, asset `to_flow`,
+`representative_period`, `set_time_steps`, and solution flow.
+"""
+function show_flow_time_series(
+    from_flow,
+    to_flow,
+    representative_period,
+    set_time_steps,
+    v_flow,
+)
+    x_values = set_time_steps[representative_period]
+    y_values = [v_flow[(from_flow, to_flow), representative_period, t] for t in x_values]
+
+    p = plot(x_values, y_values; label = "Flow", legend = :top)
+
+    xlabel!("Time steps")
+
+    return p
+end
+
+"""
+    run_model()
+
+Runs the model for the Norse case.
+Returns several outputs for plotting purposes.
+"""
+function run_model()
+    INPUT_FOLDER = joinpath(dirname(@__DIR__), "test/inputs")
+    OUTPUT_FOLDER = joinpath(dirname(@__DIR__), "test/outputs")
+
+    dir = joinpath(INPUT_FOLDER, "Norse")
+    parameters, sets = create_parameters_and_sets_from_file(dir)
+    graph = create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
+    model, F = create_model(graph, parameters, sets)
+    solution = solve_model(model)
+
+    return sets, graph, F, solution
+end
 """
     graph = create_graph(assets_path, flows_path)
 
