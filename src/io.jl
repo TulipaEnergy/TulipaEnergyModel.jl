@@ -387,45 +387,20 @@ are present in the file, a specific instance has to be selected.
 function read_esdl(file_path; instance_name = nothing)
     doc = readxml(file_path)
     doc_root = root(doc)
-    if countelements(doc_root) == 0
-        return nothing  # no instances
-    elseif countelements(doc_root) > 1
-        instance = nothing
-        for node in eachelement(doc_root)
-            if node["name"] == instance_name
-                instance = node
-                break
-            end
+    if countelements(doc_root) == 0 || firstelement(doc_root).name != "instance"
+        throw(ErrorException("no instance was found in given ESDL file"))
+    elseif isnothing(instance_name)
+        if countelements(doc_root) > 1
+            throw(
+                ErrorException(
+                    "multiple instances found in file, but no instance_name was given",
+                ),
+            )
+        else
+            instance_name = firstelement(docroot)["name"]
         end
-        if isnothing(instance)
-            throw(KeyError(instance_name, "instance was not found in given ESDL file"))
-        end
-    else
-        instance = firstelement(doc_root)
     end
 
-    area = firstelement(instance)  # an instance always has 1 top-level area
-    assets = gather_assets(area)  # gather assets
-    println(assets)
-    println(length(assets))
-end
-
-"""
-    gather_assets(area)
-
-Recursively gather all assets from an area defined in ESDL
-"""
-function gather_assets(area)
-    if area.name == "asset"
-        return [area]
-    elseif area.name == "area"
-        assets = []
-        for node in eachelement(area)
-            asset = gather_assets(node)
-            if !isnothing(asset)
-                assets = vcat(assets, asset)
-            end
-        end
-        return assets
-    end
+    # Use XPath expression to find all assets under the instance with name `instance_name`
+    return findall(doc, "//instance[@name='$instance_name']//asset")
 end
