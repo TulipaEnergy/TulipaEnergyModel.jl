@@ -66,8 +66,28 @@ end
 
         @testset "two instances" begin
             @test_throws ErrorException read_esdl(
-                joinpath(ESDL_FOLDER, "two_instance.esdl"),
+                joinpath(ESDL_FOLDER, "two_instances.esdl"),
             )
+        end
+    end
+
+    @testset "instance asset parsing" begin
+        @testset "unnamed single instance" begin
+            assets = read_esdl(joinpath(ESDL_FOLDER, "one_instance.esdl"))
+            @test length(assets) == 8
+        end
+
+        @testset "named instance out of multiple" begin
+            flat_assets = read_esdl(
+                joinpath(ESDL_FOLDER, "two_instances.esdl");
+                instance_name = "Flat",
+            )
+            @test length(flat_assets) == 4
+            nested_assets = read_esdl(
+                joinpath(ESDL_FOLDER, "two_instances.esdl");
+                instance_name = "Nested",
+            )
+            @test length(nested_assets) == 10
         end
     end
 end

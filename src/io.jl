@@ -397,10 +397,10 @@ function read_esdl(file_path; instance_name = nothing)
                 ),
             )
         else
-            instance_name = firstelement(docroot)["name"]
+            instance_name = firstelement(doc_root)["name"]
         end
     end
 
     # Use XPath expression to find all assets under the instance with name `instance_name`
-    return findall(doc, "//instance[@name='$instance_name']//asset")
+    return findall("//instance[@name='$instance_name']//asset", doc)
 end
