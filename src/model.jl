@@ -111,13 +111,28 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         )
     )
 
+    @expression(
+        model,
+        assets_profile_sum[a ∈ A, rp ∈ RP, T ∈ P[(a, rp)]],
+        sum(get(params.assets_profile, (a, rp, k), 1.0) for k ∈ T)
+    )
+
+    @expression(
+        model,
+        assets_profile_times_capacity[a ∈ A, rp ∈ RP, T ∈ P[(a, rp)]],
+        assets_profile_sum[a, rp, T] * (
+            params.assets_init_capacity[a] +
+            (a ∈ Ai ? (params.assets_unit_capacity[a] * assets_investment[a]) : 0.0)
+        )
+    )
+
     # Balance equations
     # - consumer balance equation
     @constraint(
         model,
         c_consumer_balance[a ∈ Ac, rp ∈ RP, T ∈ P[(a, rp)]],
         incoming_flow[(a, rp, T)] - outgoing_flow[(a, rp, T)] ==
-        sum(get(params.assets_profile, (a, rp, k), 1.0) for k ∈ T) * params.peak_demand[a]
+        assets_profile_sum[a, rp, T] * params.peak_demand[a]
     )
 
     # - storage balance equation
@@ -149,22 +164,14 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @constraint(
         model,
         c_overall_output_flows[a ∈ Acv∪As∪Ap, rp ∈ RP, T ∈ P[(a, rp)]],
-        outgoing_flow[(a, rp, T)] ≤
-        sum(get(params.assets_profile, (a, rp, k), 1.0) for k ∈ T) * (
-            params.assets_init_capacity[a] +
-            (a ∈ Ai ? (params.assets_unit_capacity[a] * assets_investment[a]) : 0.0)
-        )
+        outgoing_flow[(a, rp, T)] ≤ assets_profile_times_capacity[a, rp, T]
     )
     #
     # # - overall input flows
     @constraint(
         model,
         c_overall_input_flows[a ∈ As, rp ∈ RP, T ∈ P[(a, rp)]],
-        incoming_flow[(a, rp, T)] ≤
-        sum(get(params.assets_profile, (a, rp, k), 1.0) for k ∈ T) * (
-            params.assets_init_capacity[a] +
-            (a ∈ Ai ? (params.assets_unit_capacity[a] * assets_investment[a]) : 0.0)
-        )
+        incoming_flow[(a, rp, T)] ≤ assets_profile_times_capacity[a, rp, T]
     )
     #
     # # - upper bound associated with asset
@@ -180,11 +187,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         sum(
             duration(T, I, rp) * flow[f, rp, I] for
             I ∈ sets.time_intervals_per_flow[(f, rp)]
-        ) ≤
-        sum(get(params.assets_profile, (a, rp, k), 1.0) for k ∈ T) * (
-            params.assets_init_capacity[a] +
-            (a ∈ Ai ? (params.assets_unit_capacity[a] * assets_investment[a]) : 0.0)
-        )
+        ) ≤ assets_profile_times_capacity[a, rp, T]
     )
 
     # Constraints that define a lower bound for flows that are not transport assets
