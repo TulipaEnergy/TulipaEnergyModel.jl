@@ -7,7 +7,7 @@ SUITE["io"] = BenchmarkGroup()
 SUITE["model"] = BenchmarkGroup()
 
 const INPUT_FOLDER_BM = joinpath(@__DIR__, "..", "test", "inputs", "Norse")
-const OUTPUT_FOLDER_BM = joinpath(@__DIR__, "..", "test", "outputs")
+const OUTPUT_FOLDER_BM = mktempdir()
 
 SUITE["io"]["input"] = @benchmarkable begin
     create_parameters_and_sets_from_file($INPUT_FOLDER_BM)
