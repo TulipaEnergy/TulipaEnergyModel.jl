@@ -130,7 +130,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     # - consumer balance equation
     @constraint(
         model,
-        c_consumer_balance[a ∈ Ac, rp ∈ RP, T ∈ P[(a, rp)]],
+        consumer_balance[a ∈ Ac, rp ∈ RP, T ∈ P[(a, rp)]],
         incoming_flow[(a, rp, T)] - outgoing_flow[(a, rp, T)] ==
         assets_profile_sum[a, rp, T] * params.peak_demand[a]
     )
@@ -139,7 +139,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     # TODO: Add p^{inflow}
     @constraint(
         model,
-        c_storage_balance[a ∈ As, rp ∈ RP, (k, T) ∈ enumerate(P[(a, rp)])],
+        storage_balance[a ∈ As, rp ∈ RP, (k, T) ∈ enumerate(P[(a, rp)])],
         storage_level[a, rp, T] ==
         (k > 1 ? storage_level[a, rp, P[(a, rp)][k-1]] : 0.0) +
         incoming_flow_w_efficiency[(a, rp, T)] - outgoing_flow_w_efficiency[(a, rp, T)]
@@ -148,14 +148,14 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     # - hub balance equation
     @constraint(
         model,
-        c_hub_balance[a ∈ Ah, rp ∈ RP, T ∈ P[(a, rp)]],
+        hub_balance[a ∈ Ah, rp ∈ RP, T ∈ P[(a, rp)]],
         incoming_flow[(a, rp, T)] == outgoing_flow[(a, rp, T)]
     )
 
     # - conversion balance equation
     @constraint(
         model,
-        c_conversion_balance[a ∈ Acv, rp ∈ RP, T ∈ P[(a, rp)]],
+        conversion_balance[a ∈ Acv, rp ∈ RP, T ∈ P[(a, rp)]],
         incoming_flow_w_efficiency[(a, rp, T)] == outgoing_flow_w_efficiency[(a, rp, T)]
     )
 
@@ -163,21 +163,21 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     # - overall output flows
     @constraint(
         model,
-        c_overall_output_flows[a ∈ Acv∪As∪Ap, rp ∈ RP, T ∈ P[(a, rp)]],
+        overall_output_flows[a ∈ Acv∪As∪Ap, rp ∈ RP, T ∈ P[(a, rp)]],
         outgoing_flow[(a, rp, T)] ≤ assets_profile_times_capacity[a, rp, T]
     )
     #
     # # - overall input flows
     @constraint(
         model,
-        c_overall_input_flows[a ∈ As, rp ∈ RP, T ∈ P[(a, rp)]],
+        overall_input_flows[a ∈ As, rp ∈ RP, T ∈ P[(a, rp)]],
         incoming_flow[(a, rp, T)] ≤ assets_profile_times_capacity[a, rp, T]
     )
     #
     # # - upper bound associated with asset
     @constraint(
         model,
-        c_upper_bound_asset[
+        upper_bound_asset[
             a ∈ A,
             f ∈ F,
             rp ∈ RP,
@@ -194,14 +194,14 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     # TODO: set lower bound via JuMP API
     @constraint(
         model,
-        c_lower_bound_asset_flow[f ∈ F, rp ∈ RP, I ∈ K_F[(f, rp)]; f ∉ Ft],
+        lower_bound_asset_flow[f ∈ F, rp ∈ RP, I ∈ K_F[(f, rp)]; f ∉ Ft],
         flow[f, rp, I] ≥ 0
     )
 
     # Constraints that define bounds for a transport flow Ft
     @expression(
         model,
-        e_upper_bound_transport_flow[f ∈ F, rp ∈ RP, I ∈ K_F[(f, rp)]],
+        upper_bound_transport_flow[f ∈ F, rp ∈ RP, I ∈ K_F[(f, rp)]],
         get(params.flows_profile, (f, rp, I), 1.0) * (
             params.flows_init_capacity[f] +
             (f ∈ Fi ? (params.flows_export_capacity[f] * flows_investment[f]) : 0.0)
@@ -209,12 +209,12 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     )
     @constraint(
         model,
-        c_transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, I ∈ K_F[(f, rp)]],
-        flow[f, rp, I] ≤ e_upper_bound_transport_flow[f, rp, I]
+        transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, I ∈ K_F[(f, rp)]],
+        flow[f, rp, I] ≤ upper_bound_transport_flow[f, rp, I]
     )
     @expression(
         model,
-        e_lower_bound_transport_flow[f ∈ F, rp ∈ RP, I ∈ K_F[(f, rp)]],
+        lower_bound_transport_flow[f ∈ F, rp ∈ RP, I ∈ K_F[(f, rp)]],
         get(params.flows_profile, (f, rp, I), 1.0) * (
             params.flows_init_capacity[f] +
             (f ∈ Fi ? (params.flows_import_capacity[f] * flows_investment[f]) : 0.0)
@@ -222,8 +222,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     )
     @constraint(
         model,
-        c_transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, I ∈ K_F[(f, rp)]],
-        flow[f, rp, I] ≥ -e_lower_bound_transport_flow[f, rp, I]
+        transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, I ∈ K_F[(f, rp)]],
+        flow[f, rp, I] ≥ -lower_bound_transport_flow[f, rp, I]
     )
 
     # Extra constraints
