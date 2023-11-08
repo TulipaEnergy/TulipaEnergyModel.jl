@@ -245,8 +245,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     # - cycling condition for storage level
     @constraint(
         model,
-        cycling_condition_for_storage_level[a ∈ As, rp ∈ RP, T ∈ P[(a, rp)]],
-        storage_level[a, rp, T] ≥ params.initial_storage_level[a]
+        cycling_condition_for_storage_level[a ∈ As, rp ∈ RP],
+        storage_level[a, rp, P[(a, rp)][end]] ≥ params.initial_storage_level[a]
     )
 
     if write_lp_file
