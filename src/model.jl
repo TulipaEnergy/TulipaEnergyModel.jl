@@ -71,11 +71,11 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     )
 
     # Constraints
-    # Computes the duration of the `interval` that is within the `period`, and multiply by the
-    # scale of the representative period `rp`.
+    # Computes the duration of the `interval` that is within the `period`, and
+    # multiply by the resolution of the representative period `rp`.
     # It is equivalent to finding the indexes of these values in the matrix.
     function duration(T, I, rp)
-        return length(T ∩ I) * params.time_scale[rp]
+        return length(T ∩ I) * params.rp_resolution[rp]
     end
 
     @expression(

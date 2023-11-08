@@ -1,4 +1,4 @@
 ,hours,,hours
-id,weight,num_time_steps,time_scale
+id,weight,num_time_steps,resolution
 1,25,168,1.0
 2,190,24,1.0

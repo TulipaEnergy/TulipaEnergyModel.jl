@@ -52,7 +52,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
 
     # Parameters for system
     rep_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
-    time_scale = Dict(row.id => row.time_scale for row in eachrow(rep_period_df))
+    rp_resolution = Dict(row.id => row.resolution for row in eachrow(rep_period_df))
 
     # Parameter for profile of assets
     assets_profile = Dict(
@@ -139,7 +139,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         initial_storage_capacity = initial_storage_capacity,
         energy_to_power_ratio = energy_to_power_ratio,
         rep_weight = rep_weight,
-        time_scale = time_scale,
+        rp_resolution = rp_resolution,
     )
     sets = (
         assets = assets,

@@ -46,7 +46,7 @@ struct RepPeriodData
     id::Int                     # Representative period ID
     weight::Float64             # Hours
     num_time_steps::Int         # Numer of time steps
-    time_scale::Float64         # Duration of each time steps (hours)
+    resolution::Float64         # Duration of each time steps (hours)
 end
 
 struct TimeIntervalsData

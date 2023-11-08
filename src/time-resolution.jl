@@ -3,13 +3,13 @@ export resolution_matrix, compute_rp_periods
 using SparseArrays
 
 """
-    M = resolution_matrix(rp_periods, time_steps; rp_time_scale = 1.0)
+    M = resolution_matrix(rp_periods, time_steps; rp_resolution = 1.0)
 
 Computes the resolution balance matrix using the array of `rp_periods` and the array of `time_steps`.
 The `time_steps` will normally be from an asset or flow, but there is nothing constraining it to that.
 The elements in these arrays must be ranges.
 
-The resulting matrix will be multiplied by `rp_time_scale`.
+The resulting matrix will be multiplied by `rp_resolution`.
 
 ## Examples
 
@@ -31,7 +31,7 @@ resolution_matrix(rp_periods, time_steps)
 ```jldoctest
 rp_periods = [1:4, 5:8, 9:12]
 time_steps = [1:3, 4:6, 7:9, 10:12]
-resolution_matrix(rp_periods, time_steps; rp_time_scale = 1.5)
+resolution_matrix(rp_periods, time_steps; rp_resolution = 1.5)
 
 # output
 
@@ -44,10 +44,10 @@ resolution_matrix(rp_periods, time_steps; rp_time_scale = 1.5)
 function resolution_matrix(
     rp_periods::AbstractVector{<:UnitRange{<:Integer}},
     time_steps::AbstractVector{<:UnitRange{<:Integer}};
-    rp_time_scale = 1.0,
+    rp_resolution = 1.0,
 )
     matrix = sparse([
-        rp_time_scale * length(period ∩ time_step) / length(time_step) for
+        rp_resolution * length(period ∩ time_step) / length(time_step) for
         period in rp_periods, time_step in time_steps
     ])
 
