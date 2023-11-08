@@ -9,6 +9,7 @@ using JuMP
 using MathOptInterface
 using MetaGraphsNext
 using TOML
+using Plots
 
 include("input-tables.jl")
 include("structures.jl")
@@ -18,5 +19,6 @@ include("solver-parameters.jl")
 include("solve-model.jl")
 include("run-scenario.jl")
 include("time-resolution.jl")
+include("plot.jl")
 
 end
