@@ -9,6 +9,7 @@ struct AssetData
     initial_capacity::Float64         # MW
     peak_demand::Float64              # MW
     initial_storage_capacity::Float64 # MWh
+    initial_storage_level::Float64    # MWh
     energy_to_power_ratio::Float64    # Hours
 end
 

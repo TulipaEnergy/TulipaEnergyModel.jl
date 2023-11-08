@@ -85,10 +85,12 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
 
     # Parameters for storage
     initial_storage_capacity = Dict{String,Float64}()
+    initial_storage_level    = Dict{String,Float64}()
     energy_to_power_ratio    = Dict{String,Float64}()
     for row in eachrow(assets_data_df)
         if row.name in assets_storage
             initial_storage_capacity[row.name] = row.initial_storage_capacity
+            initial_storage_level[row.name]    = row.initial_storage_level
             energy_to_power_ratio[row.name]    = row.energy_to_power_ratio
         end
     end
@@ -134,6 +136,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         flows_is_transport = flows_is_transport,
         peak_demand = peak_demand,
         initial_storage_capacity = initial_storage_capacity,
+        initial_storage_level = initial_storage_level,
         energy_to_power_ratio = energy_to_power_ratio,
         rp_weight = rp_weight,
         rp_resolution = rp_resolution,

@@ -4,7 +4,7 @@
     graph = create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
     model = create_model(graph, parameters, sets)
     solution = solve_model(model)
-    @test solution.objective_value ≈ 164432876.31472 atol = 1e-5
+    @test solution.objective_value ≈ 164432875.02939 atol = 1e-5
     save_solution_to_file(
         OUTPUT_FOLDER,
         sets.assets_investment,
