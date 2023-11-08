@@ -1,24 +1,24 @@
-export resolution_matrix, compute_rp_periods
+export resolution_matrix, compute_rp_partition
 
 using SparseArrays
 
 """
-    M = resolution_matrix(rp_periods, time_steps; rp_time_scale = 1.0)
+    M = resolution_matrix(rp_partition, time_blocks; rp_resolution = 1.0)
 
-Computes the resolution balance matrix using the array of `rp_periods` and the array of `time_steps`.
-The `time_steps` will normally be from an asset or flow, but there is nothing constraining it to that.
+Computes the resolution balance matrix using the array of `rp_partition` and the array of `time_blocks`.
+The `time_blocks` will normally be from an asset or flow, but there is nothing constraining it to that.
 The elements in these arrays must be ranges.
 
-The resulting matrix will be multiplied by `rp_time_scale`.
+The resulting matrix will be multiplied by `rp_resolution`.
 
 ## Examples
 
 The following two examples are for two flows/assets with resolutions of 3h and 4h, so that the representative period has 4h periods.
 
 ```jldoctest
-rp_periods = [1:4, 5:8, 9:12]
-time_steps = [1:4, 5:8, 9:12]
-resolution_matrix(rp_periods, time_steps)
+rp_partition = [1:4, 5:8, 9:12]
+time_blocks = [1:4, 5:8, 9:12]
+resolution_matrix(rp_partition, time_blocks)
 
 # output
 
@@ -29,9 +29,9 @@ resolution_matrix(rp_periods, time_steps)
 ```
 
 ```jldoctest
-rp_periods = [1:4, 5:8, 9:12]
-time_steps = [1:3, 4:6, 7:9, 10:12]
-resolution_matrix(rp_periods, time_steps; rp_time_scale = 1.5)
+rp_partition = [1:4, 5:8, 9:12]
+time_blocks = [1:3, 4:6, 7:9, 10:12]
+resolution_matrix(rp_partition, time_blocks; rp_resolution = 1.5)
 
 # output
 
@@ -42,32 +42,33 @@ resolution_matrix(rp_periods, time_steps; rp_time_scale = 1.5)
 ```
 """
 function resolution_matrix(
-    rp_periods::AbstractVector{<:UnitRange{<:Integer}},
-    time_steps::AbstractVector{<:UnitRange{<:Integer}};
-    rp_time_scale = 1.0,
+    rp_partition::AbstractVector{<:UnitRange{<:Integer}},
+    time_blocks::AbstractVector{<:UnitRange{<:Integer}};
+    rp_resolution = 1.0,
 )
     matrix = sparse([
-        rp_time_scale * length(period ∩ time_step) / length(time_step) for
-        period in rp_periods, time_step in time_steps
+        rp_resolution * length(period ∩ time_block) / length(time_block) for
+        period in rp_partition, time_block in time_blocks
     ])
 
     return matrix
 end
 
 """
-    rp_periods = compute_rp_periods(array_time_steps; strategy = :greedy)
+    rp_partition = compute_rp_partition(partitions; strategy = :greedy)
 
-Given the time steps of various flows/assets in the `array_time_steps` input, compute the representative period splits.
-Each element of `array_time_steps` is an array of ranges with the following assumptions:
+Given the time steps of various flows/assets in the `partitions` input, compute the representative period partitions.
+
+Each element of `partitions` is a partition with the following assumptions:
 
   - An element is of the form `V = [r₁, r₂, …, rₘ]`, where each `rᵢ` is a range `a:b`.
   - `r₁` starts at 1.
   - `rᵢ₊₁` starts at the end of `rᵢ` plus 1.
-  - `rₘ` ends at some value `N`, that is the same for all elements of `array_time_steps`.
+  - `rₘ` ends at some value `N`, that is the same for all elements of `partitions`.
 
 Notice that this implies that they form a disjunct partition of `1:N`.
 
-The output will also be an array of ranges with the conditions above.
+The output will also be a partition with the conditions above.
 
 ## Strategies
 
@@ -76,7 +77,7 @@ The output will also be an array of ranges with the conditions above.
 If `strategy = :greedy` (default), then the output is constructed greedily,
 i.e., it selects the next largest breakpoint following the algorithm below:
 
- 0. Input: `Vᴵ₁, …, Vᴵₚ`, a list of time step ranges. Each element of `Vᴵⱼ` is a range `r = r.start:r.end`. Output: `V`.
+ 0. Input: `Vᴵ₁, …, Vᴵₚ`, a list of time blocks. Each element of `Vᴵⱼ` is a range `r = r.start:r.end`. Output: `V`.
  1. Compute the end of the representative period `N` (all `Vᴵⱼ` should have the same end)
  2. Start with an empty `V = []`
  3. Define the beginning of the range `s = 1`
@@ -89,9 +90,9 @@ i.e., it selects the next largest breakpoint following the algorithm below:
 #### Examples
 
 ```jldoctest
-time_steps1 = [1:4, 5:8, 9:12]
-time_steps2 = [1:3, 4:6, 7:9, 10:12]
-compute_rp_periods([time_steps1, time_steps2])
+partition1 = [1:4, 5:8, 9:12]
+partition2 = [1:3, 4:6, 7:9, 10:12]
+compute_rp_partition([partition1, partition2])
 
 # output
 
@@ -102,9 +103,9 @@ compute_rp_periods([time_steps1, time_steps2])
 ```
 
 ```jldoctest
-time_steps1 = [1:1, 2:3, 4:6, 7:10, 11:12]
-time_steps2 = [1:2, 3:4, 5:5, 6:7, 8:9, 10:12]
-compute_rp_periods([time_steps1, time_steps2])
+partition1 = [1:1, 2:3, 4:6, 7:10, 11:12]
+partition2 = [1:2, 3:4, 5:5, 6:7, 8:9, 10:12]
+compute_rp_partition([partition1, partition2])
 
 # output
 
@@ -124,9 +125,9 @@ Another way of describing it, is to select the minimum end-point instead of the 
 #### Examples
 
 ```jldoctest
-time_steps1 = [1:4, 5:8, 9:12]
-time_steps2 = [1:3, 4:6, 7:9, 10:12]
-compute_rp_periods([time_steps1, time_steps2]; strategy = :all)
+partition1 = [1:4, 5:8, 9:12]
+partition2 = [1:3, 4:6, 7:9, 10:12]
+compute_rp_partition([partition1, partition2]; strategy = :all)
 
 # output
 
@@ -140,9 +141,9 @@ compute_rp_periods([time_steps1, time_steps2]; strategy = :all)
 ```
 
 ```jldoctest
-time_steps1 = [1:1, 2:3, 4:6, 7:10, 11:12]
-time_steps2 = [1:2, 3:4, 5:5, 6:7, 8:9, 10:12]
-compute_rp_periods([time_steps1, time_steps2]; strategy = :all)
+partition1 = [1:1, 2:3, 4:6, 7:10, 11:12]
+partition2 = [1:2, 3:4, 5:5, 6:7, 8:9, 10:12]
+compute_rp_partition([partition1, partition2]; strategy = :all)
 
 # output
 
@@ -159,8 +160,8 @@ compute_rp_periods([time_steps1, time_steps2]; strategy = :all)
  11:12
 ```
 """
-function compute_rp_periods(
-    array_time_steps::AbstractVector{<:AbstractVector{<:UnitRange{<:Integer}}};
+function compute_rp_partition(
+    partitions::AbstractVector{<:AbstractVector{<:UnitRange{<:Integer}}};
     strategy = :greedy,
 )
     valid_strategies = [:greedy, :all]
@@ -168,38 +169,38 @@ function compute_rp_periods(
         error("`strategy` should be one of $valid_strategies. See docs for more info.")
     end
     # Get Vᴵ₁, the last range of it, the last element of the range
-    representative_period_end = array_time_steps[1][end][end]
-    for time_steps in array_time_steps
+    rp_end = partitions[1][end][end]
+    for partition in partitions
         # Assumption: All start at 1 and end at N
-        @assert time_steps[1][1] == 1
-        @assert representative_period_end == time_steps[end][end]
+        @assert partition[1][1] == 1
+        @assert rp_end == partition[end][end]
     end
-    rp_periods = UnitRange{Int}[] # List of ranges
+    rp_partition = UnitRange{Int}[] # List of ranges
 
-    period_start = 1
+    block_start = 1
     if strategy == :greedy
-        while period_start ≤ representative_period_end
-            # The first range end larger than period_start for each range in each time_steps.
+        while block_start ≤ rp_end
+            # The first range end larger than period_start for each range in each time_blocks.
             breakpoints = (
-                first(r[end] for r in time_steps if r[end] ≥ period_start) for
-                time_steps in array_time_steps
+                first(r[end] for r in partition if r[end] ≥ block_start) for
+                partition in partitions
             )
-            period_end = maximum(breakpoints)
-            @assert period_end ≥ period_start
-            push!(rp_periods, period_start:period_end)
-            period_start = period_end + 1
+            block_end = maximum(breakpoints)
+            @assert block_end ≥ block_start
+            push!(rp_partition, block_start:block_end)
+            block_start = block_end + 1
         end
     elseif strategy == :all
         # We need all end points of each interval
-        end_points_per_array = map(array_time_steps) do x # For each set of time_steps
+        end_points_per_array = map(partitions) do x # For each partition
             last.(x) # Retrieve the last element of each interval
         end
         # Then we concatenate, remove duplicates, and sort.
         end_points = vcat(end_points_per_array...) |> unique |> sort
-        for period_end in end_points
-            push!(rp_periods, period_start:period_end)
-            period_start = period_end + 1
+        for block_end in end_points
+            push!(rp_partition, block_start:block_end)
+            block_start = block_end + 1
         end
     end
-    return rp_periods
+    return rp_partition
 end

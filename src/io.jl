@@ -1,5 +1,5 @@
 export create_parameters_and_sets_from_file,
-    create_graph, save_solution_to_file, compute_time_intervals
+    create_graph, save_solution_to_file, compute_rp_partitions
 
 """
     parameters, sets = create_parameters_and_sets_from_file(input_folder)
@@ -11,48 +11,45 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     # Read data
     fillpath(filename) = joinpath(input_folder, filename)
 
-    assets_data_df      = read_csv_with_schema(fillpath("assets-data.csv"), AssetData)
-    assets_profiles_df  = read_csv_with_schema(fillpath("assets-profiles.csv"), AssetProfiles)
-    flows_data_df       = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
-    flows_profiles_df   = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles)
-    rep_period_df       = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
-    assets_intervals_df = read_csv_with_schema(fillpath("assets-time-intervals.csv"), TimeIntervalsData)
-    flows_intervals_df  = read_csv_with_schema(fillpath("flows-time-intervals.csv"), TimeIntervalsData)
+    assets_data_df       = read_csv_with_schema(fillpath("assets-data.csv"), AssetData)
+    assets_profiles_df   = read_csv_with_schema(fillpath("assets-profiles.csv"), AssetProfiles)
+    flows_data_df        = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
+    flows_profiles_df    = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles)
+    rep_period_df        = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
+    assets_partitions_df = read_csv_with_schema(fillpath("assets-partitions.csv"), PartitionData)
+    flows_partitions_df  = read_csv_with_schema(fillpath("flows-partitions.csv"), PartitionData)
 
     # Sets and subsets that depend on input data
-    assets                   = assets_data_df[assets_data_df.active.==true, :].name         #assets in the energy system that are active
-    assets_producer          = assets_data_df[assets_data_df.type.=="producer", :].name  #producer assets in the energy system
-    assets_consumer          = assets_data_df[assets_data_df.type.=="consumer", :].name  #consumer assets in the energy system
-    assets_storage           = assets_data_df[assets_data_df.type.=="storage", :].name  #storage assets in the energy system
-    assets_hub               = assets_data_df[assets_data_df.type.=="hub", :].name  #hub assets in the energy system
-    assets_conversion        = assets_data_df[assets_data_df.type.=="conversion", :].name  #conversion assets in the energy system
-    assets_investment        = assets_data_df[assets_data_df.investable.==true, :].name  #assets with investment method in the energy system
-    rep_periods              = unique(assets_profiles_df.rep_period_id)  #representative periods
-    time_steps               = Dict(row.id => 1:row.num_time_steps for row in eachrow(rep_period_df))   #time steps in the RP (e.g., hours), that are dependent on RP
-    flows                    = [(row.from_asset, row.to_asset) for row in eachrow(flows_data_df)]
-    time_intervals_per_asset = compute_time_intervals(assets_intervals_df, assets, time_steps)
-    time_intervals_per_flow  = compute_time_intervals(flows_intervals_df, flows, time_steps)
+    assets               = assets_data_df[assets_data_df.active.==true, :].name        #assets in the energy system that are active
+    assets_producer      = assets_data_df[assets_data_df.type.=="producer", :].name    #producer assets in the energy system
+    assets_consumer      = assets_data_df[assets_data_df.type.=="consumer", :].name    #consumer assets in the energy system
+    assets_storage       = assets_data_df[assets_data_df.type.=="storage", :].name     #storage assets in the energy system
+    assets_hub           = assets_data_df[assets_data_df.type.=="hub", :].name         #hub assets in the energy system
+    assets_conversion    = assets_data_df[assets_data_df.type.=="conversion", :].name  #conversion assets in the energy system
+    assets_investment    = assets_data_df[assets_data_df.investable.==true, :].name    #assets with investment method in the energy system
+    rep_periods          = unique(assets_profiles_df.rep_period_id)                    #representative periods
+    rp_time_steps        = Dict(row.id => 1:row.num_time_steps for row in eachrow(rep_period_df))   #time steps in the RP (e.g., hours), that are dependent on RP
+    flows                = [(row.from_asset, row.to_asset) for row in eachrow(flows_data_df)]
+    rp_partitions_assets = compute_rp_partitions(assets_partitions_df, assets, rp_time_steps)
+    rp_partitions_flows  = compute_rp_partitions(flows_partitions_df, flows, rp_time_steps)
 
     # From balance equations:
     # Every asset a ∈ A and every rp ∈ RP will define a collection of flows, and therefore the time steps
     # can be defined a priori.
     constraints_time_periods = Dict(
         (a, rp) => begin
-            compute_rp_periods(
+            compute_rp_partition(
                 [
-                    [
-                        time_intervals_per_flow[(f, rp)] for
-                        f in flows if f[1] == a || f[2] == a
-                    ]
-                    [time_intervals_per_asset[(a, rp)]]
+                    [rp_partitions_flows[(f, rp)] for f in flows if f[1] == a || f[2] == a]
+                    [rp_partitions_assets[(a, rp)]]
                 ],
             )
         end for a in assets, rp in rep_periods
     )
 
     # Parameters for system
-    rep_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
-    time_scale = Dict(row.id => row.time_scale for row in eachrow(rep_period_df))
+    rp_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
+    rp_resolution = Dict(row.id => row.resolution for row in eachrow(rep_period_df))
 
     # Parameter for profile of assets
     assets_profile = Dict(
@@ -118,7 +115,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         flows_unit_capacity[(row.from_asset, row.to_asset)]   = max(row.export_capacity, row.import_capacity)
     end
 
-    # Define time intervals
+    # Define parameters and sets
     params = (
         assets_init_capacity = assets_init_capacity,
         assets_investment_cost = assets_investment_cost,
@@ -138,8 +135,8 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         peak_demand = peak_demand,
         initial_storage_capacity = initial_storage_capacity,
         energy_to_power_ratio = energy_to_power_ratio,
-        rep_weight = rep_weight,
-        time_scale = time_scale,
+        rp_weight = rp_weight,
+        rp_resolution = rp_resolution,
     )
     sets = (
         assets = assets,
@@ -151,9 +148,9 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         assets_conversion = assets_conversion,
         flows = flows,
         rep_periods = rep_periods,
-        time_steps = time_steps,
-        time_intervals_per_asset = time_intervals_per_asset,
-        time_intervals_per_flow = time_intervals_per_flow,
+        rp_time_steps = rp_time_steps,
+        rp_partitions_assets = rp_partitions_assets,
+        rp_partitions_flows = rp_partitions_flows,
         constraints_time_periods = constraints_time_periods,
     )
 
@@ -230,7 +227,7 @@ function create_graph(assets_path, flows_path)
 end
 
 """
-    _parse_time_intervals(Val(specification), time_step_string, rp_time_steps)
+    _parse_rp_partition(Val(specification), time_step_string, rp_time_steps)
 
 Parses the time_step_string according to the specification.
 The representative period time steps (`rp_time_steps`) might not be used in the computation,
@@ -239,16 +236,16 @@ but it will be used for validation.
 The specification defines what is expected from the `time_step_string`:
 
   - `:uniform`: The `time_step_string` should be a single number indicating the duration of
-    each interval. Examples: "3", "4", "1".
+    each block. Examples: "3", "4", "1".
   - `:explicit`: The `time_step_string` should be a semicolon-separated list of integers.
-    Each integer is a duration of an interval. Examples: "3;3;3;3", "4;4;4",
+    Each integer is a duration of a block. Examples: "3;3;3;3", "4;4;4",
     "1;1;1;1;1;1;1;1;1;1;1;1", and "3;3;4;2".
   - `:math`: The `time_step_string` should be an expression of the form `NxD+NxD…`, where `D`
-    is the duration of the interval and `N` is the number of intervals. Examples: "4x3", "3x4",
+    is the duration of the block and `N` is the number of blocks. Examples: "4x3", "3x4",
     "12x1", and "2x3+1x4+1x2".
 
-The generated intervals will be ranges (`a:b`). The first interval starts at `1`, and the last
-interval ends at `length(rp_time_steps)`.
+The generated blocks will be ranges (`a:b`). The first block starts at `1`, and the last
+block ends at `length(rp_time_steps)`.
 
 The following table summarizes the formats for a `rp_time_steps = 1:12`:
 
@@ -263,7 +260,7 @@ The following table summarizes the formats for a `rp_time_steps = 1:12`:
 
 ```jldoctest
 using TulipaEnergyModel
-TulipaEnergyModel._parse_time_intervals(Val(:uniform), "3", 1:12)
+TulipaEnergyModel._parse_rp_partition(Val(:uniform), "3", 1:12)
 
 # output
 
@@ -276,7 +273,7 @@ TulipaEnergyModel._parse_time_intervals(Val(:uniform), "3", 1:12)
 
 ```jldoctest
 using TulipaEnergyModel
-TulipaEnergyModel._parse_time_intervals(Val(:explicit), "4;4;4", 1:12)
+TulipaEnergyModel._parse_rp_partition(Val(:explicit), "4;4;4", 1:12)
 
 # output
 
@@ -288,7 +285,7 @@ TulipaEnergyModel._parse_time_intervals(Val(:explicit), "4;4;4", 1:12)
 
 ```jldoctest
 using TulipaEnergyModel
-TulipaEnergyModel._parse_time_intervals(Val(:math), "2x3+1x4+1x2", 1:12)
+TulipaEnergyModel._parse_rp_partition(Val(:math), "2x3+1x4+1x2", 1:12)
 
 # output
 
@@ -299,75 +296,76 @@ TulipaEnergyModel._parse_time_intervals(Val(:math), "2x3+1x4+1x2", 1:12)
  11:12
 ```
 """
-function _parse_time_intervals end
+function _parse_rp_partition end
 
-function _parse_time_intervals(::Val{:uniform}, time_step_string, rp_time_steps)
+function _parse_rp_partition(::Val{:uniform}, time_step_string, rp_time_steps)
     duration = parse(Int, time_step_string)
-    intervals = [i:i+duration-1 for i = 1:duration:length(rp_time_steps)]
-    @assert intervals[end][end] == length(rp_time_steps)
-    return intervals
+    partition = [i:i+duration-1 for i = 1:duration:length(rp_time_steps)]
+    @assert partition[end][end] == length(rp_time_steps)
+    return partition
 end
 
-function _parse_time_intervals(::Val{:explicit}, time_step_string, rp_time_steps)
-    intervals = UnitRange{Int}[]
-    interval_begin = 1
-    interval_lengths = parse.(Int, split(time_step_string, ";"))
-    for interval_length in interval_lengths
-        interval_end = interval_begin + interval_length - 1
-        push!(intervals, interval_begin:interval_end)
-        interval_begin = interval_end + 1
+function _parse_rp_partition(::Val{:explicit}, time_step_string, rp_time_steps)
+    partition = UnitRange{Int}[]
+    block_begin = 1
+    block_lengths = parse.(Int, split(time_step_string, ";"))
+    for block_length in block_lengths
+        block_end = block_begin + block_length - 1
+        push!(partition, block_begin:block_end)
+        block_begin = block_end + 1
     end
-    @assert interval_begin - 1 == length(rp_time_steps)
-    return intervals
+    @assert block_begin - 1 == length(rp_time_steps)
+    return partition
 end
 
-function _parse_time_intervals(::Val{:math}, time_step_string, rp_time_steps)
-    intervals = UnitRange{Int}[]
-    interval_begin = 1
-    interval_instruction = split(time_step_string, "+")
-    for R in interval_instruction
+function _parse_rp_partition(::Val{:math}, time_step_string, rp_time_steps)
+    partition = UnitRange{Int}[]
+    block_begin = 1
+    block_instruction = split(time_step_string, "+")
+    for R in block_instruction
         num, len = parse.(Int, split(R, "x"))
         for _ = 1:num
-            interval = (1:len) .+ (interval_begin - 1)
-            interval_begin += len
-            push!(intervals, interval)
+            block = (1:len) .+ (block_begin - 1)
+            block_begin += len
+            push!(partition, block)
         end
     end
-    @assert interval_begin - 1 == length(rp_time_steps)
-    intervals
+    @assert block_begin - 1 == length(rp_time_steps)
+    partition
 end
 
 """
-    compute_time_intervals(df, elements, time_steps_per_rp)
+    compute_rp_partitions(df, elements, time_steps_per_rp)
 
-For each element in `elements` (assets or flows), parse the time intervals defined in `df`,
-a DataFrame of the file `assets-time-intervals.csv` or `flows-time-intervals.csv`.
+For each element in `elements` (assets or flows), parse the representative
+period partitions defined in `df`, a DataFrame of the file
+`assets-partitions.csv` or `flows-partitions.csv`.
 
-`time_steps_per_rp` must be a dictionary indexed by `rp` and its values are the time steps of
-that `rp`.
+`time_steps_per_rp` must be a dictionary indexed by `rp` and its values are the
+time steps of that `rp`.
 
-To obtain the time intervals, the columns `specification` and `time_intervals` from `df` are passed
-to the function [`_parse_time_intervals`](@ref).
+To obtain the partitions, the columns `specification` and `partition` from `df`
+are passed to the function [`_parse_rp_partition`](@ref).
 """
-function compute_time_intervals(df, elements, time_steps_per_rp)
-    time_resolution = Dict(
+function compute_rp_partitions(df, elements, time_steps_per_rp)
+    rp_partitions = Dict(
         (element, rp) => begin
-            N = length(time_steps)
+            N = length(rp_time_steps)
             # Look for index in df that matches this element and rp
             j = findfirst((df.id .== element_id) .& (df.rep_period_id .== rp))
             if j === nothing
-                # If there is no time interval specification, use default of 1
+                # If there is no time block specification, use default of 1
                 [k:k for k = 1:N]
             else
-                _parse_time_intervals(
+                _parse_rp_partition(
                     Val(df[j, :specification]),
-                    df[j, :time_intervals],
-                    time_steps,
+                    df[j, :partition],
+                    rp_time_steps,
                 )
             end
         end for (element_id, element) in enumerate(elements),
-        (rp, time_steps) in time_steps_per_rp
+        (rp, rp_time_steps) in time_steps_per_rp
     )
 
-    return time_resolution
+    return rp_partitions
 end
