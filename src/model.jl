@@ -190,9 +190,11 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         ) ≤ assets_profile_times_capacity[a, rp, B]
     )
 
-    # Constraints that define a lower bound for flows that are not transport assets
-    for f ∈ setdiff(F, Ft), rp ∈ RP, B_flow ∈ K_F[(f, rp)]
-        set_lower_bound(flow[f, rp, B_flow], 0.0)
+    # Define lower bounds for flows that are not transport assets
+    for f ∈ F, rp ∈ RP, B_flow ∈ K_F[(f, rp)]
+        if f ∉ Ft
+            set_lower_bound(flow[f, rp, B_flow], 0.0)
+        end
     end
 
     # Constraints that define bounds for a transport flow Ft
