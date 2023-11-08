@@ -6,7 +6,7 @@ end
 
 @testset "Tiny Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
-    _, _, _, solution = run_scenario(dir, OUTPUT_FOLDER)
+    _, _, _, solution = run_scenario(dir, OUTPUT_FOLDER; write_lp_file = true)
     @test solution.objective_value ≈ 269238.43825 atol = 1e-5
 end
 
