@@ -58,7 +58,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     flows_variable_cost = @expression(
         model,
         sum(
-            params.rep_weight[rp] * params.flows_variable_cost[f] * flow[f, rp, I] for
+            params.rp_weight[rp] * params.flows_variable_cost[f] * flow[f, rp, I] for
             f ∈ F, rp ∈ RP, I ∈ K_F[(f, rp)]
         )
     )
