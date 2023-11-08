@@ -126,6 +126,21 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         )
     )
 
+    @expression(
+        model,
+        energy_limit[a ∈ As∩Ai],
+        params.energy_to_power_ratio[a] *
+        params.assets_unit_capacity[a] *
+        assets_investment[a]
+    )
+
+    @expression(
+        model,
+        storage_inflows[a ∈ As, rp ∈ RP, T ∈ P[(a, rp)]],
+        sum(get(params.assets_profile, (a, rp, k), 0.0) for k ∈ T) *
+        (params.initial_storage_capacity[a] + (a ∈ Ai ? energy_limit[a] : 0.0))
+    )
+
     # Balance equations
     # - consumer balance equation
     @constraint(
@@ -136,12 +151,12 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     )
 
     # - storage balance equation
-    # TODO: Add p^{inflow}
     @constraint(
         model,
         storage_balance[a ∈ As, rp ∈ RP, (k, B) ∈ enumerate(P[(a, rp)])],
         storage_level[a, rp, B] ==
         (k > 1 ? storage_level[a, rp, P[(a, rp)][k-1]] : params.initial_storage_level[a]) +
+        storage_inflows[a, rp, B] +
         incoming_flow_w_efficiency[(a, rp, B)] - outgoing_flow_w_efficiency[(a, rp, B)]
     )
 
@@ -228,13 +243,6 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
 
     # Extra constraints
     # - upper bound constraints for storage level
-    @expression(
-        model,
-        energy_limit[a ∈ As∩Ai],
-        params.energy_to_power_ratio[a] *
-        params.assets_unit_capacity[a] *
-        assets_investment[a]
-    )
     @constraint(
         model,
         upper_bound_for_storage_level[a ∈ As, rp ∈ RP, B ∈ P[(a, rp)]],
