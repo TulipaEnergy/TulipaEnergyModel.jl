@@ -58,7 +58,7 @@ jobs:
                         owner: context.repo.owner,
                         repo: context.repo.repo,
                         issue_number: context.issue.number,
-                        body: Running benchmark...
+                        body: "Running benchmark..."
                       })
                       core.setOutput('id', comment.data.id)
             - uses: actions/checkout@v4
