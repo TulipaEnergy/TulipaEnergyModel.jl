@@ -141,7 +141,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         model,
         storage_balance[a ∈ As, rp ∈ RP, (k, B) ∈ enumerate(P[(a, rp)])],
         storage_level[a, rp, B] ==
-        (k > 1 ? storage_level[a, rp, P[(a, rp)][k-1]] : 0.0) +
+        (k > 1 ? storage_level[a, rp, P[(a, rp)][k-1]] : params.initial_storage_level[a]) +
         incoming_flow_w_efficiency[(a, rp, B)] - outgoing_flow_w_efficiency[(a, rp, B)]
     )
 
@@ -240,6 +240,13 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         upper_bound_for_storage_level[a ∈ As, rp ∈ RP, B ∈ P[(a, rp)]],
         storage_level[a, rp, B] ≤
         params.initial_storage_capacity[a] + (a ∈ Ai ? energy_limit[a] : 0.0)
+    )
+
+    # - cycling condition for storage level
+    @constraint(
+        model,
+        cycling_condition_for_storage_level[a ∈ As, rp ∈ RP, T ∈ P[(a, rp)]],
+        storage_level[a, rp, T] ≥ params.initial_storage_level[a]
     )
 
     if write_lp_file
