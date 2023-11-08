@@ -10,6 +10,7 @@ using MathOptInterface
 using MetaGraphsNext
 using TOML
 using Plots
+using GraphPlot
 
 include("input-tables.jl")
 include("structures.jl")

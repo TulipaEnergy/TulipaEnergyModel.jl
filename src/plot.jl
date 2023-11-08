@@ -1,4 +1,4 @@
-export plot_single_flow, plot_graph_with_flows, plot_assets_balance
+export plot_single_flow, plot_flow_graph, plot_assets_balance
 
 function plot_single_flow(
     solution::NamedTuple,
@@ -13,9 +13,11 @@ function plot_single_flow(
     plot(x, y; title = string("Flow from ", asset_from, " to ", asset_to), legend = false)
 end
 
-#function plot_graph_with_flows()
-
-#end
+function plot_flow_graph(graph, sets, solution)
+    #total_flow_capacity = parameters.flows_unit_capacity + solution.flows_investment       # Need help from Abel to unpack these gracefully
+    total_flow_capacity = 10
+    gplot(graph; nodelabel = sets.assets, edgelinewidth = total_flow_capacity)
+end
 
 #function plot_assets_balance()
 
