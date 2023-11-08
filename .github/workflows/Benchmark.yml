@@ -49,6 +49,18 @@ jobs:
                           core.setOutput('repo', '${{ inputs.repo }}')
                           core.setOutput('ref', '${{ inputs.ref }}')
                       }
+            - uses: actions/github-script@v6
+              if: github.event.issue.pull_request
+              id: comment-early
+              with:
+                  script: |
+                      const comment = await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: context.issue.number,
+                        body: Running benchmark...
+                      })
+                      core.setOutput('id', comment.data.id)
             - uses: actions/checkout@v4
               with:
                   repository: ${{ steps.find-ref.outputs.repo }}
@@ -71,6 +83,18 @@ jobs:
                   } >> result.txt
                   cat result.txt >> "$GITHUB_OUTPUT"
                   { echo '```'; sed -e '1d;$d' result.txt; echo '```'; } >> $GITHUB_STEP_SUMMARY
+            - uses: actions/github-script@v6
+              if: github.event.issue.pull_request
+              env:
+                  COMMENT_ID: ${{ steps.comment-early.outputs.id }}
+              with:
+                  script: |
+                      const { COMMENT_ID } = process.env
+                      github.rest.issues.deleteComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        comment_id: `${COMMENT_ID}`
+                      })
             - uses: actions/github-script@v6
               if: github.event.issue.pull_request
               with:
