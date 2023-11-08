@@ -345,7 +345,7 @@ period partitions defined in `df`, a DataFrame of the file
 time steps of that `rp`.
 
 To obtain the partitions, the columns `specification` and `partition` from `df`
-are passed to the function [`_parse_partitions`](@ref).
+are passed to the function [`_parse_rp_partition`](@ref).
 """
 function compute_rp_partitions(df, elements, time_steps_per_rp)
     rp_partitions = Dict(
