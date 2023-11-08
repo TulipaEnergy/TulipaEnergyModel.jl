@@ -49,9 +49,9 @@ struct RepPeriodData
     resolution::Float64         # Duration of each time steps (hours)
 end
 
-struct TimeIntervalsData
+struct PartitionData
     id::Int
     rep_period_id::Int
     specification::Symbol
-    time_intervals::String
+    partition::String
 end

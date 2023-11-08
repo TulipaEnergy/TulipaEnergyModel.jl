@@ -21,17 +21,17 @@ end
     end
 end
 
-@testset "Test parsing of time intervals" begin
-    @testset "compute_time_intervals manages all cases" begin
+@testset "Test parsing of partitions" begin
+    @testset "compute_partitions manages all cases" begin
         time_steps_per_rp = Dict(1 => 1:12, 2 => 1:24)
         df = DataFrame(
             :id => [1, 2, 2, 3],
             :rep_period_id => [1, 1, 2, 2],
             :specification => [:uniform, :explicit, :math, :math],
-            :time_intervals => ["3", "4;4;4", "3x4+4x3", "2x2+2x3+2x4+1x6"],
+            :partition => ["3", "4;4;4", "3x4+4x3", "2x2+2x3+2x4+1x6"],
         )
         elements = [1, 2, 3] # Doesn't matter if it is assets or flows for test
-        time_intervals = compute_time_intervals(df, elements, time_steps_per_rp)
+        partitions = compute_rp_partitions(df, elements, time_steps_per_rp)
         expected = Dict(
             (1, 1) => [1:3, 4:6, 7:9, 10:12],
             (2, 1) => [1:4, 5:8, 9:12],
@@ -41,31 +41,19 @@ end
             (3, 2) => [1:2, 3:4, 5:7, 8:10, 11:14, 15:18, 19:24],
         )
         for id = 1:3, rp = 1:2
-            @test time_intervals[(id, rp)] == expected[(id, rp)]
+            @test partitions[(id, rp)] == expected[(id, rp)]
         end
     end
 
     @testset "If the math doesn't match, raise exception" begin
         TEM = TulipaEnergyModel
-        @test_throws AssertionError TEM._parse_time_intervals(Val(:uniform), "3", 1:13)
-        @test_throws AssertionError TEM._parse_time_intervals(Val(:uniform), "3", 1:14)
-        @test_throws AssertionError TEM._parse_time_intervals(
-            Val(:explicit),
-            "3;3;3;3",
-            1:11,
-        )
-        @test_throws AssertionError TEM._parse_time_intervals(
-            Val(:explicit),
-            "3;3;3;3",
-            1:13,
-        )
-        @test_throws AssertionError TEM._parse_time_intervals(
-            Val(:explicit),
-            "3;3;3;3",
-            1:14,
-        )
-        @test_throws AssertionError TEM._parse_time_intervals(Val(:math), "3x4", 1:11)
-        @test_throws AssertionError TEM._parse_time_intervals(Val(:math), "3x4", 1:13)
-        @test_throws AssertionError TEM._parse_time_intervals(Val(:math), "3x4", 1:14)
+        @test_throws AssertionError TEM._parse_rp_partition(Val(:uniform), "3", 1:13)
+        @test_throws AssertionError TEM._parse_rp_partition(Val(:uniform), "3", 1:14)
+        @test_throws AssertionError TEM._parse_rp_partition(Val(:explicit), "3;3;3;3", 1:11)
+        @test_throws AssertionError TEM._parse_rp_partition(Val(:explicit), "3;3;3;3", 1:13)
+        @test_throws AssertionError TEM._parse_rp_partition(Val(:explicit), "3;3;3;3", 1:14)
+        @test_throws AssertionError TEM._parse_rp_partition(Val(:math), "3x4", 1:11)
+        @test_throws AssertionError TEM._parse_rp_partition(Val(:math), "3x4", 1:13)
+        @test_throws AssertionError TEM._parse_rp_partition(Val(:math), "3x4", 1:14)
     end
 end
