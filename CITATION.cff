@@ -13,34 +13,34 @@ authors:
     email: diego.tejadaarango@tno.nl
     affiliation: TNO
     orcid: 'https://orcid.org/0000-0002-3278-9283'
-  - orcid: 'https://orcid.org/0000-0002-6372-6197'
-    given-names: Germán
+  - given-names: Germán
     family-names: Morales-España
     email: german.morales@tno.nl
     affiliation: TNO
+    orcid: 'https://orcid.org/0000-0002-6372-6197'
   - given-names: Lauren
     family-names: Clisby
     email: lauren.clisby@tno.nl
     affiliation: TNO
-  - orcid: 'https://orcid.org/0000-0001-7037-7004'
-    given-names: Ni
+  - given-names: Ni
     family-names: Wang
     email: ni.wang@tno.nl
     affiliation: TNO
+    orcid: 'https://orcid.org/0000-0001-7037-7004'
   - given-names: Abel
     family-names: Soares Siqueira
     email: abel.siqueira@esciencecenter.nl
     affiliation: Netherlands eScience Center
     orcid: 'https://orcid.org/0000-0003-4451-281X'
-  - affiliation: Netherlands eScience Center
-    email: s.ali@esciencecenter.nl
-    given-names: Suvayu
+  - given-names: Suvayu
     family-names: Ali
+    email: s.ali@esciencecenter.nl
+    affiliation: Netherlands eScience Center
   - given-names: Laurent
     family-names: Soucasse
-    orcid: 'https://orcid.org/0000-0002-5422-8794'
     email: l.soucasse@esciencecenter.nl
     affiliation: Netherlands eScience Center
+    orcid: 'https://orcid.org/0000-0002-5422-8794'
   - given-names: Grigory
     family-names: Neustroev
     email: g.neustroev@tudelft.nl
