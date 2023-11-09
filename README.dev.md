@@ -305,13 +305,35 @@ git add <file_name>
 git diff --staged    # Another way to check changes, i.e., what you will see in the pull request.
 ```
 
+Once the conflicts are resolved, commit and push.
+
 ### Create a Pull Request
 
 When there are no more conflicts and all the test are passing, create a pull
-request to merge your remote branch into the org main.
+request to merge your remote branch into the org main. You can do this on
+GitHub by opening the branch in your fork and clicking "Compare & pull request".
 
-After pushing any changes, the pull request will be automatically updated.
-If a review was made, re-request a review.
+![Screenshot of Compare & pull request button on GitHub](docs/CompareAndPR.png)
+
+Fill in the pull request details:
+
+1. Describe the changes.
+2. List the issues that this pull request closes.
+3. Fill in the collaboration confirmation.
+4. Choose a reviewer.
+5. When all of the information is filled in, click "Create pull request".
+
+![Screenshot of the pull request information](docs/PRInfo.png)
+
+You pull request will apper in the list of pull requests in the
+TulipaEnergyModel.jl repository, where you can track the review process.
+
+Sometimes reviewers request changes. After pushing any changes,
+the pull request will be automatically updated. Do not forget to re-request a
+review.
+
+Once your reviewer approves the pull request, you need to merge it with the
+main branch.
 
 ## GitHub Rules of Engagement
 
