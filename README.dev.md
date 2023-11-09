@@ -1,15 +1,104 @@
 
 # Developer documentation
 
-## Git setup
+Welcome to TulipaEnergyModel.jl developer documentation. Here is how you can
+contribute to our Julia-based toolkit for modeling and optimization of electric
+energy systems.
 
-First we need to set some config variables so that the code is
-consistent across all operating systems - different OSs use different
-line-endings for text files (source code).
+## Before You Begin
 
-Disable any ambiguity in your global and current repository settings:
+Before you can start contributing, make sure that you have installed the
+required software, and that it is properly configured. You only need to do this
+once.
 
-```shell
+### Installing Software
+
+To contribute to TulipaEnergyModel.jl, you need the following:
+
+1. [Julia](https://julialang.org) programming language.
+2. [Git](https://git-scm.com) for version control.
+3. [VSCode](https://code.visualstudio.com) or any other editor. For VSCode, we recommend
+to install a few extensions. You can do it by pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> (or <kbd>⇧</kbd> + <kbd>⌘</kbd> + <kbd>X</kbd> on MacOS) and searching by the extension name.
+    - [Julia for Visual Studio Code](https://www.julia-vscode.org);
+    - [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph).
+4. [EditorConfig](https://editorconfig.org) for consistent code formatting.
+In VSCode, it is available as
+[an extension](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig).
+5. [pre-commit](https://pre-commit.com) to run the linters and formatters.
+
+    You can install `pre-commit` globally using
+
+    ```bash
+    pip install --user pre-commit
+    ```
+
+    If you prefer to create a local environment with it, do the following:
+
+    ```bash
+    python -m venv env
+    . env/bin/activate
+    pip install --upgrade pip setuptools pre-commit
+    ```
+
+    On Windows, you need to active the environment using the following command instead of the previous one:
+
+    ```bash
+    . env/Scrips/activate
+    ```
+
+6. [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
+formatting. To install it, open Julia REPL, for example, by typing in the
+command line:
+
+    ```bash
+    julia
+    ```
+
+    > **Note**:
+    > `julia` must be part of your environment variables to call it from the
+    > command line.
+
+    Then press <kbd>]</kbd> to enter the package mode.
+    In the package mode, enter the following:
+
+    ```julia
+    pkg> activate
+    pkg> add JuliaFormatter
+    ```
+
+    In VSCode, you can activate "Format on Save" for `JuliaFormatter`. To do so,
+    open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
+    Settings", type "Format on Save" and tick the first result:
+
+    ![Screenshot of Format on Save option](docs/FormatOnSave.png)
+
+7. [LocalCoverage](https://juliapackages.com/p/localcoverage) for coverage
+testing. You can install it the same way you installed `JuliaFormatter`,
+that is, by opening Julia REPL in the package mode and typing:
+
+    ```julia
+    pkg> activate
+    pkg> add LocalCoverage
+    ```
+
+### Forking the Repository
+
+Any changes should be done in a [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo). You can fork this repository directly on GitHub:
+
+![Screenshot of Fork button on GitHub](docs/Fork.png)
+
+After that, clone your fork and add this repository as upstream:
+
+```bash
+git clone https://github.com/your-name/TulipaEnergyModel.jl                   # use the fork URL
+git remote add upstream https://github.com/TulipaEnergy/TulipaEnergyModel.jl  # use the original repository URL
+```
+
+### Configuring Git
+
+Because operating systems use different line endings for text files, you need to configure Git to ensure code consistency across different platforms. You can do this with the following commands:
+
+```bash
 cd /path/to/TulipaEnergyModel.jl
 git config --unset core.autocrlf         # disable autocrlf in the EnergyModel repo
 git config --global core.autocrlf false  # explicitly disable autocrlf globally
@@ -17,46 +106,31 @@ git config --global --unset core.eol     # disable explicit file-ending globally
 git config core.eol lf                   # set Linux style file-endings in EnergyModel
 ```
 
-1. Fork this repository.
-2. Clone your fork.
-3. Add this repo as upstream with the following command:
+### Activating and Testing the Package
 
-   ```bash
-   git remote add upstream https://github.com/TulipaEnergy/TulipaEnergyModel.jl
-   ```
+Start Julia REPL either via the command line or in the editor.
 
-4. Open this project in your editor.
-5. On Julia, activate and instantiate the project under the package mode.
-6. Run the tests to make sure that everything is working as expected.
-
-## Linting and formatting
-
-Install a plugin to use [EditorConfig](https://editorconfig.org).
-
-We use [https://pre-commit.com](https://pre-commit.com) to run the linters and formatters.
-In particular, the Julia code is formatted using [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl).
-
-You need to install `JuliaFormatter`. Open Julia and press `]` to enter `pkg` mode. Then enter the following:
+In the terminal, do:
 
 ```bash
-pkg> activate
-pkg> add JuliaFormatter
+cd /path/to/TulipaEnergyModel.jl  # change the working directory to the repo directory if needed
+julia                             # start Julia REPL
 ```
 
-You can install `pre-commit` globally using `pip install --user pre-commit`.
-If you prefer to create a local environment with it, do the following:
+In VSCode, first open your cloned fork as a new project. Then open the command palette with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> (or <kbd>⇧</kbd> + <kbd>⌘</kbd> + <kbd>P</kbd> on MacOS) and use the command called `Julia: Start REPL`.
+
+In Julia REPL, enter the package mode by pressing <kbd>]</kbd>.
+
+In the package mode, first activate and instantiate the project, then run the
+tests to ensure that everything is working as expected:
 
 ```bash
-python -m venv env
-. env/bin/activate
-pip install --upgrade pip setuptools pre-commit
+pkg> activate .   # activate the project
+pkg> instantiate  # instantiate to install the required packages
+pkg> test         # run the tests
 ```
 
-On Windows, you need to active the environment using the following command instead of the previous one:
-
-```bash
-. env/Scrips/activate
-```
+### Configuring Linting and Formatting
 
 With `pre-commit` installed, activate it as a pre-commit hook:
 
@@ -74,66 +148,37 @@ Do it once now to make sure that everything works as expected.
 
 Now, you can only commit if all the pre-commit tests pass.
 
-**Note:** On subsequent occasions when you need to run pre-commit in a new shell, you will need to activate the Python virtual environment. If so, do the following:
+> **Note**:
+> On subsequent occasions when you need to run pre-commit in a new shell, you
+> will need to activate the Python virtual environment. If so, do the following:
+>
+> ```bash
+> . env/bin/activate  # for Windows the command is: . env/Scripts/activate
+> pre-commit run -a
+> ```
 
-```bash
-. env/bin/activate # for Windows the command is: . env/Scripts/activate
-pre-commit run -a
-```
+## Contributing Workflow
 
-In VSCode, you can activate "Format on Save" for the Julia Formatter.
+When the software is installed and configured, and you have forked the
+TulipaEnergyModel.jl repository, you can start contributing to it.
 
-1. Open VSCode Settings (CTRL + ,)
-2. In Search Settings, type "Format on Save"
-3. Tick the first result
+We use the following workflow for all contributions:
 
-![Screenshot of Format on Save option](docs/FormatOnSave.png)
+1. Make sure that your fork is up to date
+2. Create a new branch
+3. Implement the changes
+4. Run the tests
+5. Run the linter
+6. Commit the changes
+7. Repeat steps 3-6 until all necessary changes are done
+8. Make sure that your fork is still up to date
+9. Create a pull request
 
-## Contributing workflow
+Below you can find detailed instructions for each step.
 
-Our workflow is:
+### Make Sure That Your Fork Is Up to Date
 
-1. Fetch from org remote, fast-forward your local main
-2. Create a branch to address the issue (see below for naming) - *"Always branch from `main`."*
-3. Push the new local branch to your personal remote repository
-4. Create a pull request to merge your remote branch into the org main
-
-Creating a branch:
-
-- If there is an associated issue, add the issue number
-- If there is no associated issue, **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update
-- If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes
-
-Commit message:
-
-- Use imperative, present tense (Add feature, Fix bug)
-- Have informative titles
-- If necessary, add a body with details
-
-Before creating a pull request:
-
-- Try to create "atomic git commits" (recommended reading: [The Utopic Git History](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593))
-- Make sure the tests pass
-- Make sure the pre-commit tests pass
-- Rebase: Fetch any `main` updates from upstream and rebase your branch into `origin/main` if necessary
-- Then you can open a pull request and work with the reviewer to address any issues
-
-## GitHub Rules of Engagement
-
-- Assign only yourself to issues.
-- Assign yourself to issues you **want** to address. Consider if you will be able to work on it in the near future - if not, consider leaving it available for someone else to address.
-- Set the issue Status to "In Progress" when you have started working on it.
-  - Creating a PR for an issue (even if only a draft) will automatically set an issue as 'In Progress.' A good habit is creating a *draft* PR early, to take advantage of this automation and get feedback early.
-- When finalizing a PR, set the Status to "Ready for Review" - if someone specific **needs** to review it, you can assign them as the reviewer.
-- Once Issues have been addressed by merged PRs, they will automatically move to Done.
-- If you want to discuss an issue at the next group meeting, mark it with the "question" label.
-- Issues without updates for 60 days (and PRs without updates in 30 days) will be labelled as "stale" and filtered out of view. There is a Stale project board to view and revive these.
-
-## Most commonly used Git commands in the contributing flow
-
-Assuming `origin` is the upstream repository, i.e., not the fork.
-
-First, update your local main branch.
+Fetch from org remote, fast-forward your local main:
 
 ```bash
 git switch main
@@ -141,56 +186,45 @@ git fetch --all --prune
 git merge --ff-only origin/main
 ```
 
-> **Warning**
+> **Warning**:
+> If you have a conflict on your main, it will appear now. You can delete
+> your old `main` branch using
 >
-> If you have a conflict on your main, it will appear now. You can delete your old `main` branch using `git reset --hard origin/main`.
+> ```bash
+> git reset --hard origin/main
+> ```
 
-Then, create a new branch, work, commit, and push.
+### Create a New Branch
+
+Create a branch to address the issue:
 
 ```bash
 git switch -c <branch_name>
-# awesome coding...
-# run the tests and the linter (see end of this section).
-git commit -am "A short but descriptive commit message" # Equivalent to: git commit -a -m "commit msg"
-git push -u myfork <branch_name>
 ```
 
-Let's say upstream has updates while you are working on your local branch. You need to fetch the new changes because if you don't do conflict resolution locally, you will get conflicts in your PR. So you need to repeat the steps from the first code block in this section.
+- If there is an associated issue, add the issue number to the branch name,
+for example, `123-short-description` for issue \#123.
+- If there is no associated issue **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update.
+- If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes.
 
-Now, we are going to rebase our local feature branch on top of the updated `main`.
+> **Note**:
+> Always branch from `main`, i.e., your the main branch of your own fork.
 
-```bash
-git switch <branch_name>
-git rebase main <branch_name>
-```
+### Implement the Changes
 
-It will say you have conflicts. Open the file(s) and edit it to remove the conflicts, until the code looks correct to you.
+Implement your changes to address the issue associated with the branch.
 
-```bash
-git diff # Check that changes are correct.
-git add <file_name>
-git diff --staged # Another way to check changes, i.e., what you will see in the pull request.
-```
+### Run the Tests
 
-Run the tests and the linter.
-
-### Tests
-
-On Julia:
+In Julia:
 
 ```bash
 TulipaEnergyModel> test
 ```
 
-To run the tests with code coverage, you can use the `LocalCoverage` package.
-You can add it to and load it from your global environment to avoid polluting the package dependencies:
+To run the tests with code coverage, you can use the `LocalCoverage` package:
 
 ```julia
-julia>
-# ]
-pkg> activate           # activate the global environment
-pkg> add LocalCoverage  # if not yet added previously
-# <backspace>
 julia> using LocalCoverage
 # ]
 pkg> activate .
@@ -198,21 +232,24 @@ pkg> activate .
 julia> cov = generate_coverage()
 ```
 
-This will run the tests, track line coverage and print a report table as output. Note that we want to maintain 100% test coverage. If any file does not show 100% coverage, please add tests to cover the missing lines.
+This will run the tests, track line coverage and print a report table as output.
+Note that we want to maintain 100% test coverage. If any file does not show 100%
+coverage, please add tests to cover the missing lines.
 
-If you are having trouble reaching 100% test coverage, you can set your PR to 'draft' status and ask for help.
+If you are having trouble reaching 100% test coverage, you can set your pull
+request to 'draft' status and ask for help.
 
-### Linter
+### Run the Linter
 
-On the bash/git bash terminal, the pre-commit:
+In the bash/git bash terminal, run pre-commit:
 
 ```bash
 . env/bin/activate # if necessary (for Windows the command is: . env/Scripts/activate)
 pre-commit run -a
 ```
 
-If there are things to fix, do it.
-Then, add them again (`git add`), rerun the tests & linter, and commit.
+If any of the checks failed, find in the pre-commit log what the issues are and
+fix them. Then, add them again (`git add`), rerun the tests & linter, and commit.
 
 ```bash
 git status # Another way to show that all conflicts are fixed.
@@ -220,16 +257,80 @@ git rebase --continue
 git push --force myfork <branch_name>
 ```
 
-After pushing, the PR will be automatically updated.
+### Commit the Changes
+
+When the test are passing, commit the changes and push them to the remote
+repository. Use:
+
+```bash
+git commit -am "A short but descriptive commit message" # Equivalent to: git commit -a -m "commit msg"
+git push -u myfork <branch_name>
+```
+
+When writing the commit message:
+
+- use imperative, present tense (Add feature, Fix bug);
+- have informative titles;
+- if necessary, add a body with details.
+
+> **Note**:
+> Try to create "atomic git commits". Read
+> [*The Utopic Git History*](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593)
+> to learn more.
+
+### Make Sure That Your Fork Is Still Up to Date
+
+If necessary, fetch any `main` updates from upstream and rebase your branch into
+`origin/main`. For example, do this if it took some time to resolve the issue
+you have been working on. If you don't do conflict resolution locally, you will
+get conflicts in your pull request.
+
+Do the following steps:
+
+```bash
+git switch main                  # switch to the main branch
+git fetch --all --prune          # fetch the updates
+git merge --ff-only origin/main  # merge as a fast-forward
+git switch <branch_name>         # switch back to the issue branch
+git rebase main <branch_name>    # rebase it
+```
+
+If it says that you have conflicts, resolve them by opening the file(s) and
+editing them until the code looks correct to you. You can check the changes
+with:
+
+```bash
+git diff             # Check that changes are correct.
+git add <file_name>
+git diff --staged    # Another way to check changes, i.e., what you will see in the pull request.
+```
+
+### Create a Pull Request
+
+When there are no more conflicts and all the test are passing, create a pull
+request to merge your remote branch into the org main.
+
+After pushing any changes, the pull request will be automatically updated.
 If a review was made, re-request a review.
 
-## Performance considerations
+## GitHub Rules of Engagement
+
+- Assign only yourself to issues.
+- Assign yourself to issues you **want** to address. Consider if you will be able to work on it in the near future — if not, consider leaving it available for someone else to address.
+- Set the issue Status to "In Progress" when you have started working on it.
+  - Creating a pull request for an issue (even if only a draft) will automatically set an issue as 'In Progress.' A good habit is creating a *draft* pull request early, to take advantage of this automation and get feedback early.
+- When finalizing a pull request, set the Status to "Ready for Review" — if someone specific **needs** to review it, you can assign them as the reviewer.
+- Once Issues have been addressed by merged PRs, they will automatically move to Done.
+- If you want to discuss an issue at the next group meeting, mark it with the "question" label.
+- Issues without updates for 60 days (and PRs without updates in 30 days) will be labelled as "stale" and filtered out of view. There is a Stale project board to view and revive these.
+
+## Performance Considerations
 
 If you updated something that might impact the performance of the
-package, you can run the `Benchmark.yml` workflow from your PR.  To do
-that, add the command `/run-benchmark` as a comment in the PR.  This
+package, you can run the `Benchmark.yml` workflow from your pull request. To do
+that, add the command `/run-benchmark` as a comment in the pull request. This
 will trigger the workflow for your branch, and post the results as a
-comment in you PR.
+comment in you pull request.
 
 If you want to manually run the benchmarks, you can do the following:
 
@@ -246,9 +347,12 @@ If you want to manually run the benchmarks, you can do the following:
   results = run(SUITE, verbose=true)
   ```
 
-## Build and see the documentation locally
+## Building the Documentation Locally
 
-To build and see the documentation locally, first, navigate to the `docs` folder in your file explorer and open a terminal. Then, run `julia --project` (remember that `julia` must be part of your environment variables to call it from the command line). With the `julia` open, enter the `pkg` mode by pressing `]`. Check that the environment name is `docs`. The first time here, you have to run:
+To build and see the documentation locally, first, navigate to the `docs` folder
+in your file explorer and open a terminal. Then, run `julia --project`. With the
+`julia` open, enter the `pkg` mode by pressing `]`.
+Check that the environment name is `docs`. The first time here, you have to run:
 
 ```julia-pkg
 docs> dev ..
@@ -261,6 +365,9 @@ Then, to build the documentation, run
 julia> include("make.jl")
 ```
 
-If you intend to rerun the build step, ensure you have the package `Revise` installed in your global environment, and run `using Revise` before including `make.jl`. Alternatively, close `julia` and reopen it.
+If you intend to rerun the build step, ensure you have the package `Revise`
+installed in your global environment, and run `using Revise` before including
+`make.jl`. Alternatively, close `julia` and reopen it.
 
-After building, the documentation will be available in the folder `docs/build/`. Open the `index.html` file on the browser to see it.
+After building, the documentation will be available in the folder `docs/build/`.
+Open the `index.html` file on the browser to see it.
