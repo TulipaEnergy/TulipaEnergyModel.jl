@@ -13,11 +13,27 @@ function plot_single_flow(
     plot(x, y; title = string("Flow from ", asset_from, " to ", asset_to), legend = false)
 end
 
-#TODO Add more detail in graphics - scaling/coloring based on solution values
-function plot_flow_graph(graph, sets, solution)
-    #total_flow_capacity = parameters.flows_unit_capacity + solution.flows_investment       # Need help from Abel to unpack these gracefully
-    total_flow_capacity = 10
-    gplot(graph; nodelabel = sets.assets, edgelinewidth = total_flow_capacity)
+function plot_flow_graph(
+    graph,
+    sets::NamedTuple,
+    solution::NamedTuple,
+    parameters::NamedTuple,
+)
+
+    # Total the final flow capacity by adding initial plus investment
+    final_flow_cap = copy(parameters.flows_unit_capacity)
+    for f in sets.flows
+        if parameters.flows_investable[f]
+            final_flow_cap[f] += solution.flows_investment[f]
+        end
+    end
+    print(
+        "The TYPE of final_flow_cap is ",
+        typeof(final_flow_cap),
+        " which does not match the Vector that gplot expects.",
+    )
+
+    #gplot(graph; nodelabel = sets.assets, edgelabel = final_flow_cap)
 end
 
 #function plot_assets_balance(solution)
@@ -29,4 +45,12 @@ end
 #        xticks = (#:##, xlabel),
 #        label = ["" ""]
 #    )
+#end
+
+#function plot_all_flows(   ????
+#    solution::NamedTuple,
+#    sets::NamedTuple,
+#    rp::Int64,
+#)
+
 #end
