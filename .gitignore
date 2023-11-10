@@ -8,3 +8,4 @@
 env
 /.benchmarkci
 /benchmark/*.json
+coverage/
