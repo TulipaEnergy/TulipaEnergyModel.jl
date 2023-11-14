@@ -83,7 +83,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         incoming_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[f, rp, B_flow] for
-            f in F, B_flow ∈ sets.rp_partitions_flows[(f, rp)] if f[2] == a
+            f in F, B_flow ∈ sets.rp_partitions_flows[(f, rp)] if
+            f[2] == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
     @expression(
@@ -91,7 +92,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         outgoing_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[f, rp, B_flow] for
-            f in F, B_flow ∈ sets.rp_partitions_flows[(f, rp)] if f[1] == a
+            f in F, B_flow ∈ sets.rp_partitions_flows[(f, rp)] if
+            f[1] == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
     @expression(
@@ -99,7 +101,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         incoming_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[f, rp, B_flow] * params.flows_efficiency[f] for
-            f in F, B_flow ∈ sets.rp_partitions_flows[(f, rp)] if f[2] == a
+            f in F, B_flow ∈ sets.rp_partitions_flows[(f, rp)] if
+            f[2] == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
     @expression(
@@ -107,7 +110,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         outgoing_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[f, rp, B_flow] / params.flows_efficiency[f] for
-            f in F, B_flow ∈ sets.rp_partitions_flows[(f, rp)] if f[1] == a
+            f in F, B_flow ∈ sets.rp_partitions_flows[(f, rp)] if
+            f[1] == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
 
@@ -201,7 +205,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         ],
         sum(
             duration(B, B_flow, rp) * flow[f, rp, B_flow] for
-            B_flow ∈ sets.rp_partitions_flows[(f, rp)]
+            B_flow ∈ sets.rp_partitions_flows[(f, rp)] if
+            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         ) ≤ assets_profile_times_capacity[a, rp, B]
     )
 
