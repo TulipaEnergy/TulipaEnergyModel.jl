@@ -1,5 +1,7 @@
 export create_parameters_and_sets_from_file,
-    create_graph, save_solution_to_file, compute_rp_partitions
+    create_graph, save_solution_to_file, compute_rp_partitions, read_esdl, read_esdl_assets
+
+using EzXML
 
 """
     parameters, sets = create_parameters_and_sets_from_file(input_folder)
@@ -371,4 +373,71 @@ function compute_rp_partitions(df, elements, time_steps_per_rp)
     )
 
     return rp_partitions
+end
+
+"""
+    read_esdl(file_path; instance_name)
+
+Read an ESDL file to construct the flow graph and link the related
+assets and flows from the specification
+
+An ESDL file can contain multiple instances. If multiple instances
+are present in the file, a specific instance has to be selected.
+"""
+function read_esdl(file_path; instance_name = nothing)
+    esdl_assets = read_esdl_assets(file_path; instance_name = instance_name)
+
+    # Gather all in-ports
+    id_to_index = Dict{String,Int}()
+    for (to_id, asset) in enumerate(esdl_assets)
+        for port in eachelement(asset)
+            if port.name != "port" || port["xsi:type"] != "esdl:InPort"
+                continue
+            end
+            id_to_index[port["id"]] = to_id
+        end
+    end
+
+    # Create graph based on out-ports and previously gathered in-ports
+    graph = Graphs.DiGraph(length(esdl_assets))
+    for (from_id, asset) in enumerate(esdl_assets)
+        for port in eachelement(asset)
+            if port.name != "port" || port["xsi:type"] != "esdl:OutPort"
+                continue
+            end
+            flows = eachsplit(port["connectedTo"], " ")
+            for flow in flows
+                if !haskey(id_to_index, flow)
+                    # throw(ErrorException("No InPort with id '$flow' was found"))
+                    println("No InPort with id '$flow' was found, ignoring...")
+                    continue
+                end
+                to_id = id_to_index[flow]
+                Graphs.add_edge!(graph, from_id, to_id)
+            end
+        end
+    end
+
+    return graph
+end
+
+function read_esdl_assets(file_path; instance_name = nothing)
+    doc = readxml(file_path)
+    doc_root = root(doc)
+    if countelements(doc_root) == 0 || firstelement(doc_root).name != "instance"
+        throw(ErrorException("no instance was found in given ESDL file"))
+    elseif isnothing(instance_name)
+        if countelements(doc_root) > 1
+            throw(
+                ErrorException(
+                    "multiple instances found in file, but no instance_name was given",
+                ),
+            )
+        else
+            instance_name = firstelement(doc_root)["name"]
+        end
+    end
+
+    # Use XPath expression to find all assets under the instance with name `instance_name`
+    return findall("//instance[@name='$instance_name']//asset", doc)
 end

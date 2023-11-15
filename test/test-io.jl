@@ -57,3 +57,39 @@ end
         @test_throws AssertionError TEM._parse_rp_partition(Val(:math), "3x4", 1:14)
     end
 end
+
+@testset "ESDL parsing" begin
+    @testset "instance detection error handling" begin
+        @testset "no instance" begin
+            @test_throws ErrorException read_esdl_assets(
+                joinpath(ESDL_FOLDER, "no_instance.esdl"),
+            )
+        end
+
+        @testset "two instances" begin
+            @test_throws ErrorException read_esdl_assets(
+                joinpath(ESDL_FOLDER, "two_instances.esdl"),
+            )
+        end
+    end
+
+    @testset "instance asset parsing" begin
+        @testset "unnamed single instance" begin
+            assets = read_esdl_assets(joinpath(ESDL_FOLDER, "one_instance.esdl"))
+            @test length(assets) == 8
+        end
+
+        @testset "named instance out of multiple" begin
+            flat_assets = read_esdl_assets(
+                joinpath(ESDL_FOLDER, "two_instances.esdl");
+                instance_name = "Flat",
+            )
+            @test length(flat_assets) == 4
+            nested_assets = read_esdl_assets(
+                joinpath(ESDL_FOLDER, "two_instances.esdl");
+                instance_name = "Nested",
+            )
+            @test length(nested_assets) == 10
+        end
+    end
+end
