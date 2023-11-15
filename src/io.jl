@@ -1,5 +1,5 @@
 export create_parameters_and_sets_from_file,
-    create_graph, save_solution_to_file, compute_rp_partitions, read_esdl
+    create_graph, save_solution_to_file, compute_rp_partitions, read_esdl, read_esdl_assets
 
 using EzXML
 
@@ -385,6 +385,43 @@ An ESDL file can contain multiple instances. If multiple instances
 are present in the file, a specific instance has to be selected.
 """
 function read_esdl(file_path; instance_name = nothing)
+    esdl_assets = read_esdl_assets(file_path; instance_name = instance_name)
+
+    # Gather all in-ports
+    id_to_index = Dict{String,Int}()
+    for (to_id, asset) in enumerate(esdl_assets)
+        for port in eachelement(asset)
+            if port.name != "port" || port["xsi:type"] != "esdl:InPort"
+                continue
+            end
+            id_to_index[port["id"]] = to_id
+        end
+    end
+
+    # Create graph based on out-ports and previously gathered in-ports
+    graph = Graphs.DiGraph(length(esdl_assets))
+    for (from_id, asset) in enumerate(esdl_assets)
+        for port in eachelement(asset)
+            if port.name != "port" || port["xsi:type"] != "esdl:OutPort"
+                continue
+            end
+            flows = eachsplit(port["connectedTo"], " ")
+            for flow in flows
+                if !haskey(id_to_index, flow)
+                    # throw(ErrorException("No InPort with id '$flow' was found"))
+                    println("No InPort with id '$flow' was found, ignoring...")
+                    continue
+                end
+                to_id = id_to_index[flow]
+                Graphs.add_edge!(graph, from_id, to_id)
+            end
+        end
+    end
+
+    return graph
+end
+
+function read_esdl_assets(file_path; instance_name = nothing)
     doc = readxml(file_path)
     doc_root = root(doc)
     if countelements(doc_root) == 0 || firstelement(doc_root).name != "instance"
