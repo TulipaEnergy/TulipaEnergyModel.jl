@@ -20,18 +20,41 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     flows_partitions_df  = read_csv_with_schema(fillpath("flows-partitions.csv"), PartitionData)
 
     # Sets and subsets that depend on input data
-    assets               = assets_data_df[assets_data_df.active.==true, :].name        #assets in the energy system that are active
-    assets_producer      = assets_data_df[assets_data_df.type.=="producer", :].name    #producer assets in the energy system
-    assets_consumer      = assets_data_df[assets_data_df.type.=="consumer", :].name    #consumer assets in the energy system
-    assets_storage       = assets_data_df[assets_data_df.type.=="storage", :].name     #storage assets in the energy system
-    assets_hub           = assets_data_df[assets_data_df.type.=="hub", :].name         #hub assets in the energy system
-    assets_conversion    = assets_data_df[assets_data_df.type.=="conversion", :].name  #conversion assets in the energy system
-    assets_investment    = assets_data_df[assets_data_df.investable.==true, :].name    #assets with investment method in the energy system
-    rep_periods          = unique(assets_profiles_df.rep_period_id)                    #representative periods
-    rp_time_steps        = Dict(row.id => 1:row.num_time_steps for row in eachrow(rep_period_df))   #time steps in the RP (e.g., hours), that are dependent on RP
-    flows                = [(row.from_asset, row.to_asset) for row in eachrow(flows_data_df)]
-    rp_partitions_assets = compute_rp_partitions(assets_partitions_df, assets, rp_time_steps)
-    rp_partitions_flows  = compute_rp_partitions(flows_partitions_df, flows, rp_time_steps)
+    rep_periods   = rep_period_df.id
+    rp_time_steps = Dict(row.id => 1:row.num_time_steps for row in eachrow(rep_period_df))   #time steps in the RP (e.g., hours), that are dependent on RP
+
+    asset_data = [
+        row.name => GraphAssetData(
+            row.type,
+            row.investable,
+            row.investment_cost,
+            row.capacity,
+            row.initial_capacity,
+            row.peak_demand,
+            row.initial_storage_capacity,
+            row.initial_storage_level,
+            row.energy_to_power_ratio,
+        ) for row in eachrow(assets_data_df)
+    ]
+
+    flow_data = [
+        (row.from_asset, row.to_asset) => GraphFlowData(FlowData(row...)) for
+        row in eachrow(flows_data_df)
+    ]
+
+    num_assets = length(asset_data)
+    name_to_id = Dict(zip(assets_data_df.name, assets_data_df.id))
+
+    _graph = Graphs.DiGraph(num_assets)
+    for flow in flow_data
+        from_id, to_id = flow[1]
+        Graphs.add_edge!(_graph, name_to_id[from_id], name_to_id[to_id])
+    end
+
+    graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data)
+
+    rp_partitions_assets = compute_rp_partitions(assets_partitions_df, labels(graph), rp_time_steps)
+    rp_partitions_flows  = compute_rp_partitions(flows_partitions_df, edge_labels(graph), rp_time_steps)
 
     # From balance equations:
     # Every asset a ∈ A and every rp ∈ RP will define a collection of flows, and therefore the time steps
@@ -40,11 +63,14 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         (a, rp) => begin
             compute_rp_partition(
                 [
-                    [rp_partitions_flows[(f, rp)] for f in flows if f[1] == a || f[2] == a]
+                    [
+                        rp_partitions_flows[(f, rp)] for
+                        f in edge_labels(graph) if f[1] == a || f[2] == a
+                    ]
                     [rp_partitions_assets[(a, rp)]]
                 ],
             )
-        end for a in assets, rp in rep_periods
+        end for a in labels(graph), rp in rep_periods
     )
 
     # Parameters for system
@@ -53,111 +79,30 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
 
     # Parameter for profile of assets
     assets_profile = Dict(
-        (assets[row.id], row.rep_period_id, row.time_step) => row.value for
+        (label_for(graph, row.id), row.rep_period_id, row.time_step) => row.value for
         row in eachrow(assets_profiles_df)
     ) # asset profile [p.u.]
 
     # Parameter for profile of flow
     flows_profile = Dict(
-        (flows[row.id], row.rep_period_id, row.time_step) => row.value for
+        (flow_data[row.id][1], row.rep_period_id, row.time_step) => row.value for
         row in eachrow(flows_profiles_df)
     )
 
-    # Parameters for assets
-    assets_investment_cost = Dict{String,Float64}()
-    assets_unit_capacity = Dict{String,Float64}()
-    assets_init_capacity = Dict{String,Float64}()
-    for row in eachrow(assets_data_df)
-        if row.name in assets
-            assets_investment_cost[row.name] = row.investment_cost
-            assets_unit_capacity[row.name]   = row.capacity
-            assets_init_capacity[row.name]   = row.initial_capacity
-        end
-    end
-
-    # Parameters for consumers
-    peak_demand = Dict{String,Float64}()
-    for row in eachrow(assets_data_df)
-        if row.name in assets_consumer
-            peak_demand[row.name] = row.peak_demand
-        end
-    end
-
-    # Parameters for storage
-    initial_storage_capacity = Dict{String,Float64}()
-    initial_storage_level    = Dict{String,Float64}()
-    energy_to_power_ratio    = Dict{String,Float64}()
-    for row in eachrow(assets_data_df)
-        if row.name in assets_storage
-            initial_storage_capacity[row.name] = row.initial_storage_capacity
-            initial_storage_level[row.name]    = row.initial_storage_level
-            energy_to_power_ratio[row.name]    = row.energy_to_power_ratio
-        end
-    end
-
-    # Read from flows data
-    flows_variable_cost   = Dict{Tuple{String,String},Float64}()
-    flows_investment_cost = Dict{Tuple{String,String},Float64}()
-    flows_export_capacity = Dict{Tuple{String,String},Float64}()
-    flows_import_capacity = Dict{Tuple{String,String},Float64}()
-    flows_unit_capacity   = Dict{Tuple{String,String},Float64}()
-    flows_init_capacity   = Dict{Tuple{String,String},Float64}()
-    flows_efficiency      = Dict{Tuple{String,String},Float64}()
-    flows_investable      = Dict{Tuple{String,String},Bool}()
-    flows_is_transport    = Dict{Tuple{String,String},Bool}()
-    for row in eachrow(flows_data_df)
-        flows_variable_cost[(row.from_asset, row.to_asset)]   = row.variable_cost
-        flows_investment_cost[(row.from_asset, row.to_asset)] = row.investment_cost
-        flows_export_capacity[(row.from_asset, row.to_asset)] = row.export_capacity
-        flows_import_capacity[(row.from_asset, row.to_asset)] = row.import_capacity
-        flows_init_capacity[(row.from_asset, row.to_asset)]   = row.initial_capacity
-        flows_efficiency[(row.from_asset, row.to_asset)]      = row.efficiency
-        flows_investable[(row.from_asset, row.to_asset)]      = row.investable
-        flows_is_transport[(row.from_asset, row.to_asset)]    = row.is_transport
-        flows_unit_capacity[(row.from_asset, row.to_asset)]   = max(row.export_capacity, row.import_capacity)
-    end
-
     # Define parameters and sets
     params = (
-        assets_init_capacity = assets_init_capacity,
-        assets_investment_cost = assets_investment_cost,
         assets_profile = assets_profile,
-        assets_type = assets_data_df.type,
-        assets_unit_capacity = assets_unit_capacity,
-        flows_variable_cost = flows_variable_cost,
-        flows_init_capacity = flows_init_capacity,
-        flows_investment_cost = flows_investment_cost,
         flows_profile = flows_profile,
-        flows_export_capacity = flows_export_capacity,
-        flows_import_capacity = flows_import_capacity,
-        flows_unit_capacity = flows_unit_capacity,
-        flows_efficiency = flows_efficiency,
-        flows_investable = flows_investable,
-        flows_is_transport = flows_is_transport,
-        peak_demand = peak_demand,
-        initial_storage_capacity = initial_storage_capacity,
-        initial_storage_level = initial_storage_level,
-        energy_to_power_ratio = energy_to_power_ratio,
         rp_weight = rp_weight,
         rp_resolution = rp_resolution,
     )
     sets = (
-        assets = assets,
-        assets_consumer = assets_consumer,
-        assets_investment = assets_investment,
-        assets_producer = assets_producer,
-        assets_storage = assets_storage,
-        assets_hub = assets_hub,
-        assets_conversion = assets_conversion,
-        flows = flows,
         rep_periods = rep_periods,
-        rp_time_steps = rp_time_steps,
-        rp_partitions_assets = rp_partitions_assets,
         rp_partitions_flows = rp_partitions_flows,
         constraints_time_periods = constraints_time_periods,
     )
 
-    return params, sets
+    return graph, params, sets
 end
 
 """

@@ -1,5 +1,6 @@
 using BenchmarkTools
 using TulipaEnergyModel
+using MetaGraphsNext
 
 const SUITE = BenchmarkGroup()
 
@@ -12,18 +13,7 @@ const OUTPUT_FOLDER_BM = mktempdir()
 SUITE["io"]["input"] = @benchmarkable begin
     create_parameters_and_sets_from_file($INPUT_FOLDER_BM)
 end
-parameters, sets = create_parameters_and_sets_from_file(INPUT_FOLDER_BM)
-
-SUITE["io"]["graph"] = @benchmarkable begin
-    create_graph(
-        $(joinpath(INPUT_FOLDER_BM, "assets-data.csv")),
-        $(joinpath(INPUT_FOLDER_BM, "flows-data.csv")),
-    )
-end
-graph = create_graph(
-    joinpath(INPUT_FOLDER_BM, "assets-data.csv"),
-    joinpath(INPUT_FOLDER_BM, "flows-data.csv"),
-)
+graph, parameters, sets = create_parameters_and_sets_from_file(INPUT_FOLDER_BM)
 
 SUITE["model"]["create_model"] = @benchmarkable begin
     create_model($graph, $parameters, $sets)
@@ -40,8 +30,8 @@ solution = solve_model(model)
 SUITE["io"]["output"] = @benchmarkable begin
     save_solution_to_file(
         $OUTPUT_FOLDER_BM,
-        $(sets.assets_investment),
+        $([a for a in labels(graph) if graph[a].investable]),
         $(solution.assets_investment),
-        $(parameters.assets_unit_capacity),
+        $(Dict(a => graph[a].capacity for a in labels(graph))),
     )
 end

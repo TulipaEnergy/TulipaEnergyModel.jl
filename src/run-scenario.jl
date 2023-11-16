@@ -9,11 +9,7 @@ If the output_folder is specified, save the sets, parameters, and solution to th
 """
 
 function run_scenario(input_folder::AbstractString; write_lp_file = false)
-    parameters, sets = create_parameters_and_sets_from_file(input_folder)
-    graph = create_graph(
-        joinpath(input_folder, "assets-data.csv"),
-        joinpath(input_folder, "flows-data.csv"),
-    )
+    graph, parameters, sets = create_parameters_and_sets_from_file(input_folder)
     model = create_model(graph, parameters, sets; write_lp_file = write_lp_file)
     solution = solve_model(model)
     return sets, graph, parameters, solution
@@ -27,9 +23,9 @@ function run_scenario(
     sets, graph, parameters, solution = run_scenario(input_folder; write_lp_file)
     save_solution_to_file(
         output_folder,
-        sets.assets_investment,
+        [a for a in labels(graph) if graph[a].investable],
         solution.assets_investment,
-        parameters.assets_unit_capacity,
+        Dict(a => graph[a].capacity for a in labels(graph)),
     )
     return sets, graph, parameters, solution
 end

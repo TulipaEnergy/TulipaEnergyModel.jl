@@ -12,9 +12,8 @@ end
 
 @testset "Infeasible Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
-    parameters, sets = create_parameters_and_sets_from_file(dir)
-    parameters.peak_demand["demand"] = -1 # make it infeasible
-    graph = create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
+    graph, parameters, sets = create_parameters_and_sets_from_file(dir)
+    graph["demand"].peak_demand = -1 # make it infeasible
     model = create_model(graph, parameters, sets)
     @test_logs (:warn, "Model status different from optimal") solve_model(model)
 end
