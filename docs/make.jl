@@ -1,12 +1,7 @@
 using TulipaEnergyModel
 using Documenter
 
-DocMeta.setdocmeta!(
-    TulipaEnergyModel,
-    :DocTestSetup,
-    :(using TulipaEnergyModel);
-    recursive = true,
-)
+DocMeta.setdocmeta!(TulipaEnergyModel, :DocTestSetup, :(using TulipaEnergyModel); recursive = true)
 
 makedocs(;
     modules = [TulipaEnergyModel],

@@ -11,8 +11,7 @@ end
 @testset "Graph structure" begin
     @testset "Graph structure is correct" begin
         dir = joinpath(INPUT_FOLDER, "Tiny")
-        graph =
-            create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
+        graph = create_graph(joinpath(dir, "assets-data.csv"), joinpath(dir, "flows-data.csv"))
 
         @test Graphs.nv(graph) == 6
         @test Graphs.ne(graph) == 5

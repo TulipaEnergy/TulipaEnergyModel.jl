@@ -49,26 +49,20 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     flows_investment_cost = @expression(
         model,
         sum(
-            params.flows_investment_cost[f] *
-            params.flows_unit_capacity[f] *
-            flows_investment[f] for f ∈ Fi
+            params.flows_investment_cost[f] * params.flows_unit_capacity[f] * flows_investment[f] for f ∈ Fi
         )
     )
 
     flows_variable_cost = @expression(
         model,
         sum(
-            params.rp_weight[rp] * params.flows_variable_cost[f] * flow[f, rp, B_flow]
-            for f ∈ F, rp ∈ RP, B_flow ∈ K_F[(f, rp)]
+            params.rp_weight[rp] * params.flows_variable_cost[f] * flow[f, rp, B_flow] for
+            f ∈ F, rp ∈ RP, B_flow ∈ K_F[(f, rp)]
         )
     )
 
     # Objective function
-    @objective(
-        model,
-        Min,
-        assets_investment_cost + flows_investment_cost + flows_variable_cost
-    )
+    @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
 
     # Constraints
     # Computes the duration of the `block` that is within the `period`, and
@@ -133,9 +127,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @expression(
         model,
         energy_limit[a ∈ As∩Ai],
-        params.energy_to_power_ratio[a] *
-        params.assets_unit_capacity[a] *
-        assets_investment[a]
+        params.energy_to_power_ratio[a] * params.assets_unit_capacity[a] * assets_investment[a]
     )
 
     @expression(
@@ -205,8 +197,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         ],
         sum(
             duration(B, B_flow, rp) * flow[f, rp, B_flow] for
-            B_flow ∈ sets.rp_partitions_flows[(f, rp)] if
-            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            B_flow ∈ sets.rp_partitions_flows[(f, rp)] if B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         ) ≤ assets_profile_times_capacity[a, rp, B]
     )
 
@@ -256,10 +247,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
 
     # - cycling condition for storage level
     for a ∈ As, rp ∈ RP
-        set_lower_bound(
-            storage_level[a, rp, P[(a, rp)][end]],
-            params.initial_storage_level[a],
-        )
+        set_lower_bound(storage_level[a, rp, P[(a, rp)][end]], params.initial_storage_level[a])
     end
 
     if write_lp_file
