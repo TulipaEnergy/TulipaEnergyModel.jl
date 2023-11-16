@@ -6,6 +6,7 @@ conditional_to_if = true
 format_docstrings = true
 format_markdown = false
 indent = 4
+margin = 100
 normalize_line_endings = "unix"
 remove_extra_newlines = true
 separate_kwargs_with_semicolon = true

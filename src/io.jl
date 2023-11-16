@@ -189,12 +189,7 @@ Saves the solution variable v_investment to a file "investments.csv" inside `out
 The format of each row is `a,v,p*v`, where `a` is the asset indexing `v_investment`, `v`
 is corresponding `v_investment` value, and `p` is the corresponding `unit_capacity` value.
 """
-function save_solution_to_file(
-    output_folder,
-    assets_investment,
-    v_investment,
-    unit_capacity,
-)
+function save_solution_to_file(output_folder, assets_investment, v_investment, unit_capacity)
     # Writing the investment results to a CSV file
     output_file = joinpath(output_folder, "investments.csv")
     output_table = DataFrame(;
@@ -360,11 +355,7 @@ function compute_rp_partitions(df, elements, time_steps_per_rp)
                 # If there is no time block specification, use default of 1
                 [k:k for k = 1:N]
             else
-                _parse_rp_partition(
-                    Val(df[j, :specification]),
-                    df[j, :partition],
-                    rp_time_steps,
-                )
+                _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp_time_steps)
             end
         end for (element_id, element) in enumerate(elements),
         (rp, rp_time_steps) in time_steps_per_rp

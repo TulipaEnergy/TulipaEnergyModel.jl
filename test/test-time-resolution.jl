@@ -8,11 +8,8 @@
                 0.0 1.0 0.0
                 0.0 0.0 1.0
             ]
-            @test resolution_matrix(
-                rp_partition,
-                time_blocks;
-                rp_resolution = rp_resolution,
-            ) ≈ expected
+            @test resolution_matrix(rp_partition, time_blocks; rp_resolution = rp_resolution) ≈
+                  expected
 
             time_blocks = [1:3, 4:6, 7:9, 10:12]
             expected = rp_resolution * [
@@ -20,24 +17,17 @@
                 0.0 2/3 2/3 0.0
                 0.0 0.0 1/3 1.0
             ]
-            @test resolution_matrix(
-                rp_partition,
-                time_blocks;
-                rp_resolution = rp_resolution,
-            ) ≈ expected
+            @test resolution_matrix(rp_partition, time_blocks; rp_resolution = rp_resolution) ≈
+                  expected
 
             time_blocks = [1:6, 7:9, 10:10, 11:11, 12:12]
-            expected =
-                rp_resolution * [
-                    2/3 0.0 0.0 0.0 0.0
-                    1/3 2/3 0.0 0.0 0.0
-                    0.0 1/3 1.0 1.0 1.0
-                ]
-            @test resolution_matrix(
-                rp_partition,
-                time_blocks;
-                rp_resolution = rp_resolution,
-            ) ≈ expected
+            expected = rp_resolution * [
+                2/3 0.0 0.0 0.0 0.0
+                1/3 2/3 0.0 0.0 0.0
+                0.0 1/3 1.0 1.0 1.0
+            ]
+            @test resolution_matrix(rp_partition, time_blocks; rp_resolution = rp_resolution) ≈
+                  expected
         end
     end
 
@@ -56,12 +46,9 @@
         @testset "strategy all" begin
             @test compute_rp_partition([partition1, partition2]; strategy = :all) ==
                   [1:3, 4:4, 5:6, 7:8, 9:9, 10:12]
-            @test compute_rp_partition(
-                [partition1, partition2, partition3];
-                strategy = :all,
-            ) == partition3
-            @test compute_rp_partition([partition2, partition3]; strategy = :all) ==
+            @test compute_rp_partition([partition1, partition2, partition3]; strategy = :all) ==
                   partition3
+            @test compute_rp_partition([partition2, partition3]; strategy = :all) == partition3
         end
 
         # Irregular
