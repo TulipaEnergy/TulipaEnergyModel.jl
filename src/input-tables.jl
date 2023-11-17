@@ -36,7 +36,7 @@ struct FlowProfiles
 end
 
 struct AssetProfiles
-    asset::String                     # Asset ID
+    asset::String                   # Asset ID
     rep_period_id::Int          # Representative period ID
     time_step::Int              # Time step ID
     value::Float64              # p.u. (per unit)
