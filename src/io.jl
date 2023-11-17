@@ -1,5 +1,5 @@
 export create_parameters_and_sets_from_file,
-    create_graph, save_solution_to_file, compute_rp_partitions
+    create_graph, save_solution_to_file, compute_assets_partitions, compute_flows_partitions
 
 """
     parameters, sets = create_parameters_and_sets_from_file(input_folder)
@@ -16,8 +16,8 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     flows_data_df        = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
     flows_profiles_df    = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles)
     rep_period_df        = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
-    assets_partitions_df = read_csv_with_schema(fillpath("assets-partitions.csv"), PartitionData)
-    flows_partitions_df  = read_csv_with_schema(fillpath("flows-partitions.csv"), PartitionData)
+    assets_partitions_df = read_csv_with_schema(fillpath("assets-partitions.csv"), AssetPartitionData)
+    flows_partitions_df  = read_csv_with_schema(fillpath("flows-partitions.csv"), FlowPartitionData)
 
     # Sets and subsets that depend on input data
     rep_periods   = rep_period_df.id
@@ -43,7 +43,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     ]
 
     num_assets = length(asset_data)
-    name_to_id = Dict(zip(assets_data_df.name, assets_data_df.id))
+    name_to_id = Dict(name => i for (i, name) in enumerate(assets_data_df.name))
 
     _graph = Graphs.DiGraph(num_assets)
     for flow in flow_data
@@ -53,8 +53,8 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
 
     graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data)
 
-    rp_partitions_assets = compute_rp_partitions(assets_partitions_df, labels(graph), rp_time_steps)
-    rp_partitions_flows  = compute_rp_partitions(flows_partitions_df, edge_labels(graph), rp_time_steps)
+    rp_partitions_assets = compute_assets_partitions(assets_partitions_df, labels(graph), rp_time_steps)
+    rp_partitions_flows  = compute_flows_partitions(flows_partitions_df, edge_labels(graph), rp_time_steps)
 
     # From balance equations:
     # Every asset a ∈ A and every rp ∈ RP will define a collection of flows, and therefore the time steps
@@ -79,13 +79,13 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
 
     # Parameter for profile of assets
     assets_profile = Dict(
-        (label_for(graph, row.id), row.rep_period_id, row.time_step) => row.value for
+        (row.asset, row.rep_period_id, row.time_step) => row.value for
         row in eachrow(assets_profiles_df)
     ) # asset profile [p.u.]
 
     # Parameter for profile of flow
     flows_profile = Dict(
-        (flow_data[row.id][1], row.rep_period_id, row.time_step) => row.value for
+        ((row.from_asset, row.to_asset), row.rep_period_id, row.time_step) => row.value for
         row in eachrow(flows_profiles_df)
     )
 
@@ -157,7 +157,7 @@ function create_graph(assets_path, flows_path)
     flows_df = CSV.read(flows_path, DataFrames.DataFrame; header = 2)
 
     num_assets = DataFrames.nrow(assets_df)
-    name_to_id = Dict(zip(assets_df.name, assets_df.id))
+    name_to_id = Dict(name => i for (i, name) in enumerate(assets_df.name))
 
     graph = Graphs.DiGraph(num_assets)
     for row in eachrow(flows_df)
@@ -278,11 +278,11 @@ function _parse_rp_partition(::Val{:math}, time_step_string, rp_time_steps)
 end
 
 """
-    compute_rp_partitions(df, elements, time_steps_per_rp)
+    compute_assets_partitions(df, assets, time_steps_per_rp)
 
-For each element in `elements` (assets or flows), parse the representative
+For each asset in `assets`, parse the representative
 period partitions defined in `df`, a DataFrame of the file
-`assets-partitions.csv` or `flows-partitions.csv`.
+`assets-partitions.csv`.
 
 `time_steps_per_rp` must be a dictionary indexed by `rp` and its values are the
 time steps of that `rp`.
@@ -290,20 +290,52 @@ time steps of that `rp`.
 To obtain the partitions, the columns `specification` and `partition` from `df`
 are passed to the function [`_parse_rp_partition`](@ref).
 """
-function compute_rp_partitions(df, elements, time_steps_per_rp)
+function compute_assets_partitions(df, assets, time_steps_per_rp)
     rp_partitions = Dict(
-        (element, rp) => begin
+        (asset, rp) => begin
             N = length(rp_time_steps)
-            # Look for index in df that matches this element and rp
-            j = findfirst((df.id .== element_id) .& (df.rep_period_id .== rp))
+            # Look for index in df that matches this asset and rp
+            j = findfirst((df.asset .== asset) .& (df.rep_period_id .== rp))
             if j === nothing
                 # If there is no time block specification, use default of 1
                 [k:k for k = 1:N]
             else
                 _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp_time_steps)
             end
-        end for (element_id, element) in enumerate(elements),
-        (rp, rp_time_steps) in time_steps_per_rp
+        end for asset in assets, (rp, rp_time_steps) in time_steps_per_rp
+    )
+
+    return rp_partitions
+end
+
+"""
+    compute_flows_partitions(df, flows, time_steps_per_rp)
+
+For each flow in `flows`, parse the representative
+period partitions defined in `df`, a DataFrame of the file
+`flows-partitions.csv`.
+
+`time_steps_per_rp` must be a dictionary indexed by `rp` and its values are the
+time steps of that `rp`.
+
+To obtain the partitions, the columns `specification` and `partition` from `df`
+are passed to the function [`_parse_rp_partition`](@ref).
+"""
+function compute_flows_partitions(df, flows, time_steps_per_rp)
+    rp_partitions = Dict(
+        ((u, v), rp) => begin
+            N = length(rp_time_steps)
+            # Look for index in df that matches this asset and rp
+            j = findfirst(
+                (df.from_asset .== u) .& (df.to_asset .== v) .& (df.rep_period_id .== rp),
+            )
+            if j === nothing
+                # If there is no time block specification, use default of 1
+                [k:k for k = 1:N]
+            else
+                _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp_time_steps)
+            end
+        end for (u, v) in flows, (rp, rp_time_steps) in time_steps_per_rp
     )
 
     return rp_partitions

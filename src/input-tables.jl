@@ -1,5 +1,4 @@
 struct AssetData
-    id::Int                           # Asset ID
     name::String                      # Name of Asset (geographical?)
     type::String                      # Producer/Consumer - maybe an enum?
     active::Bool                      # Active or decomissioned
@@ -14,7 +13,6 @@ struct AssetData
 end
 
 struct FlowData
-    id::Int                     # Flow ID
     carrier::String             # (Optional?) Energy carrier
     from_asset::String          # Name of Asset
     to_asset::String            # Name of Asset
@@ -30,14 +28,15 @@ struct FlowData
 end
 
 struct FlowProfiles
-    id::Int                     # Flow ID
+    from_asset::String          # Name of Asset
+    to_asset::String            # Name of Asset
     rep_period_id::Int          # Representative period ID
     time_step::Int              # Time step ID
     value::Float64              # p.u. (per unit)
 end
 
 struct AssetProfiles
-    id::Int                     # Asset ID
+    asset::String                   # Asset ID
     rep_period_id::Int          # Representative period ID
     time_step::Int              # Time step ID
     value::Float64              # p.u. (per unit)
@@ -50,8 +49,16 @@ struct RepPeriodData
     resolution::Float64         # Duration of each time steps (hours)
 end
 
-struct PartitionData
-    id::Int
+struct AssetPartitionData
+    asset::String
+    rep_period_id::Int
+    specification::Symbol
+    partition::String
+end
+
+struct FlowPartitionData
+    from_asset::String          # Name of Asset
+    to_asset::String            # Name of Asset
     rep_period_id::Int
     specification::Symbol
     partition::String

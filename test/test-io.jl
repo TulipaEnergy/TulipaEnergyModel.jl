@@ -21,16 +21,16 @@ end
 end
 
 @testset "Test parsing of partitions" begin
-    @testset "compute_partitions manages all cases" begin
+    @testset "compute assets partitions" begin
         time_steps_per_rp = Dict(1 => 1:12, 2 => 1:24)
         df = DataFrame(
-            :id => [1, 2, 2, 3],
+            :asset => [1, 2, 2, 3],
             :rep_period_id => [1, 1, 2, 2],
             :specification => [:uniform, :explicit, :math, :math],
             :partition => ["3", "4;4;4", "3x4+4x3", "2x2+2x3+2x4+1x6"],
         )
-        elements = [1, 2, 3] # Doesn't matter if it is assets or flows for test
-        partitions = compute_rp_partitions(df, elements, time_steps_per_rp)
+        assets = [1, 2, 3]
+        partitions = compute_assets_partitions(df, assets, time_steps_per_rp)
         expected = Dict(
             (1, 1) => [1:3, 4:6, 7:9, 10:12],
             (2, 1) => [1:4, 5:8, 9:12],
@@ -39,8 +39,32 @@ end
             (2, 2) => [1:4, 5:8, 9:12, 13:15, 16:18, 19:21, 22:24],
             (3, 2) => [1:2, 3:4, 5:7, 8:10, 11:14, 15:18, 19:24],
         )
-        for id = 1:3, rp = 1:2
-            @test partitions[(id, rp)] == expected[(id, rp)]
+        for a = 1:3, rp = 1:2
+            @test partitions[(a, rp)] == expected[(a, rp)]
+        end
+    end
+
+    @testset "compute flows partitions" begin
+        time_steps_per_rp = Dict(1 => 1:12, 2 => 1:24)
+        df = DataFrame(
+            :from_asset => [1, 2, 2, 3],
+            :to_asset => [2, 3, 3, 4],
+            :rep_period_id => [1, 1, 2, 2],
+            :specification => [:uniform, :explicit, :math, :math],
+            :partition => ["3", "4;4;4", "3x4+4x3", "2x2+2x3+2x4+1x6"],
+        )
+        flows = [(1, 2), (2, 3), (3, 4)]
+        partitions = compute_flows_partitions(df, flows, time_steps_per_rp)
+        expected = Dict(
+            ((1, 2), 1) => [1:3, 4:6, 7:9, 10:12],
+            ((2, 3), 1) => [1:4, 5:8, 9:12],
+            ((3, 4), 1) => [i:i for i = 1:12],
+            ((1, 2), 2) => [i:i for i = 1:24],
+            ((2, 3), 2) => [1:4, 5:8, 9:12, 13:15, 16:18, 19:21, 22:24],
+            ((3, 4), 2) => [1:2, 3:4, 5:7, 8:10, 11:14, 15:18, 19:24],
+        )
+        for f in flows, rp = 1:2
+            @test partitions[(f, rp)] == expected[(f, rp)]
         end
     end
 
