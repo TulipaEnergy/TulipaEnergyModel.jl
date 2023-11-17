@@ -22,7 +22,8 @@ end
 
 @testset "Test parsing of partitions" begin
     @testset "compute assets partitions" begin
-        time_steps_per_rp = Dict(1 => 1:12, 2 => 1:24)
+        representative_periods =
+            [RepresentativePeriod(1.0, 12, 1.0), RepresentativePeriod(1.0, 24, 1.0)]
         df = DataFrame(
             :asset => [1, 2, 2, 3],
             :rep_period_id => [1, 1, 2, 2],
@@ -32,7 +33,7 @@ end
         assets = [1, 2, 3]
         dummy = Dict(a => Dict() for a in assets)
         for a in assets
-            compute_assets_partitions!(dummy[a], df, a, time_steps_per_rp)
+            compute_assets_partitions!(dummy[a], df, a, representative_periods)
         end
         expected = Dict(
             (1, 1) => [1:3, 4:6, 7:9, 10:12],
@@ -48,7 +49,8 @@ end
     end
 
     @testset "compute flows partitions" begin
-        time_steps_per_rp = Dict(1 => 1:12, 2 => 1:24)
+        representative_periods =
+            [RepresentativePeriod(1.0, 12, 1.0), RepresentativePeriod(1.0, 24, 1.0)]
         df = DataFrame(
             :from_asset => [1, 2, 2, 3],
             :to_asset => [2, 3, 3, 4],
@@ -59,7 +61,7 @@ end
         flows = [(1, 2), (2, 3), (3, 4)]
         dummy = Dict(f => Dict() for f in flows)
         for (u, v) in flows
-            compute_flows_partitions!(dummy[(u, v)], df, u, v, time_steps_per_rp)
+            compute_flows_partitions!(dummy[(u, v)], df, u, v, representative_periods)
         end
         expected = Dict(
             ((1, 2), 1) => [1:3, 4:6, 7:9, 10:12],

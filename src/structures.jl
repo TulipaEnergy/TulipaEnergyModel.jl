@@ -1,6 +1,16 @@
-export GraphFlowData
+export GraphAssetData, GraphFlowData, RepresentativePeriod, TimeBlock
 
 const TimeBlock = UnitRange{Int}
+
+struct RepresentativePeriod
+    weight::Float64
+    time_steps::TimeBlock
+    resolution::Float64
+
+    function RepresentativePeriod(weight, num_time_steps, resolution)
+        return new(weight, 1:num_time_steps, resolution)
+    end
+end
 
 mutable struct GraphAssetData
     type::String

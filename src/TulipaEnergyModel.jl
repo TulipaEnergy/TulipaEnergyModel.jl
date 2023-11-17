@@ -9,7 +9,7 @@ using HiGHS
 using JuMP
 
 include("input-tables.jl")
-include("graph-structure.jl")
+include("structures.jl")
 include("io.jl")
 include("model.jl")
 include("run-scenario.jl")
