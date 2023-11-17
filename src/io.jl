@@ -77,25 +77,31 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     rp_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
     rp_resolution = Dict(row.id => row.resolution for row in eachrow(rep_period_df))
 
-    # Parameter for profile of assets
-    assets_profile = Dict(
-        (row.asset, row.rep_period_id, row.time_step) => row.value for
-        row in eachrow(assets_profiles_df)
-    ) # asset profile [p.u.]
+    # Unique (asset, rp) combination on the profiles:
+    asset_and_rp_with_profiles = assets_profiles_df[:, [:asset, :rep_period_id]]
+    for (a, rp_id) in eachrow(asset_and_rp_with_profiles)
+        # Get all profile data for asset=id and rp=rp_id
+        matching = (assets_profiles_df.asset .== a) .& (assets_profiles_df.rep_period_id .== rp_id)
+        # Sort the matching data by time_step and get the values
+        profile_data = sort(assets_profiles_df[matching, :], :time_step).value
+        @assert length(profile_data) == length(rp_time_steps[rp_id])
+        graph[a].profiles[rp_id] = profile_data
+    end
 
-    # Parameter for profile of flow
-    flows_profile = Dict(
-        ((row.from_asset, row.to_asset), row.rep_period_id, row.time_step) => row.value for
-        row in eachrow(flows_profiles_df)
-    )
+    # Unique (flow, rp) combination on the profiles:
+    flow_and_rp_with_profiles = flows_profiles_df[:, [:from_asset, :to_asset, :rep_period_id]]
+    for (u, v, rp_id) in eachrow(flow_and_rp_with_profiles)
+        matching =
+            (flows_profiles_df.from_asset .== u) .&
+            (flows_profiles_df.to_asset .== v) .&
+            (flows_profiles_df.rep_period_id .== rp_id)
+        profile_data = sort(flows_profiles_df[matching, :], :time_step).value
+        @assert length(profile_data) == length(rp_time_steps[rp_id])
+        graph[u, v].profiles[rp_id] = profile_data
+    end
 
     # Define parameters and sets
-    params = (
-        assets_profile = assets_profile,
-        flows_profile = flows_profile,
-        rp_weight = rp_weight,
-        rp_resolution = rp_resolution,
-    )
+    params = (rp_weight = rp_weight, rp_resolution = rp_resolution)
     sets = (
         rep_periods = rep_periods,
         rp_partitions_flows = rp_partitions_flows,

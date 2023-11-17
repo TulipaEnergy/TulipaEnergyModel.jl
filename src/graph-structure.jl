@@ -10,6 +10,34 @@ mutable struct GraphAssetData
     initial_storage_capacity::Float64
     initial_storage_level::Float64
     energy_to_power_ratio::Float64
+    profiles::Dict{Int,Vector{Float64}}
+
+    # You don't need profiles to create the struct, so initiate it empty
+    function GraphAssetData(
+        type,
+        investable,
+        investment_cost,
+        capacity,
+        initial_capacity,
+        peak_demand,
+        initial_storage_capacity,
+        initial_storage_level,
+        energy_to_power_ratio,
+    )
+        profiles = Dict{Int,Vector{Float64}}()
+        return new(
+            type,
+            investable,
+            investment_cost,
+            capacity,
+            initial_capacity,
+            peak_demand,
+            initial_storage_capacity,
+            initial_storage_level,
+            energy_to_power_ratio,
+            profiles,
+        )
+    end
 end
 
 mutable struct GraphFlowData
@@ -24,6 +52,7 @@ mutable struct GraphFlowData
     unit_capacity::Float64
     initial_capacity::Float64
     efficiency::Float64
+    profiles::Dict{Int,Vector{Float64}}
 end
 
 function GraphFlowData(flow_data::FlowData)
@@ -39,5 +68,6 @@ function GraphFlowData(flow_data::FlowData)
         max(flow_data.export_capacity, flow_data.import_capacity),
         flow_data.initial_capacity,
         flow_data.efficiency,
+        Dict{Int,Vector{Float64}}(),
     )
 end

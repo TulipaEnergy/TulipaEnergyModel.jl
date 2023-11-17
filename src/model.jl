@@ -70,15 +70,23 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         return length(B1 ∩ B2) * params.rp_resolution[rp]
     end
 
-    # Sums the profile of asset a, representative period rp over the time block B
+    # Sums the profile of representative period rp over the time block B
     # Uses the default_value when that profile does not exist.
+    function profile_sum(profiles, rp, B, default_value)
+        if haskey(profiles, rp)
+            return sum(profiles[rp][B])
+        else
+            return length(B) * default_value
+        end
+    end
+
     function assets_profile_sum(a, rp, B, default_value)
-        sum(get(params.assets_profile, (a, rp, k), default_value) for k ∈ B)
+        return profile_sum(graph[a].profiles, rp, B, default_value)
     end
 
     # Same as above but for flow
     function flows_profile_sum(u, v, rp, B, default_value)
-        sum(get(params.flows_profile, ((u, v), rp, k), default_value) for k ∈ B)
+        return profile_sum(graph[u, v].profiles, rp, B, default_value)
     end
 
     @expression(
