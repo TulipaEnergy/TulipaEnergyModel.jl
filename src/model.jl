@@ -21,7 +21,6 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     Acv = filter_assets(:type, "conversion")
     Fi = filter_flows(:investable, true)
     Ft = filter_flows(:is_transport, true)
-    K_F = sets.rp_partitions_flows
     P = sets.constraints_time_periods
     RP = sets.rep_periods
 
@@ -30,7 +29,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     set_attribute(model, "output_flag", verbose)
 
     # Variables
-    @variable(model, flow[f ∈ F, rp ∈ RP, K_F[(f, rp)]])         #flow from asset a to asset aa [MW]
+    @variable(model, flow[(u, v) ∈ F, rp ∈ RP, graph[u, v].partitions[rp]])
     @variable(model, 0 ≤ assets_investment[Ai], Int)  #number of installed asset units [N]
     @variable(model, 0 ≤ flows_investment[Fi], Int)
     @variable(model, 0 ≤ storage_level[a ∈ As, rp ∈ RP, P[(a, rp)]])
@@ -55,7 +54,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         model,
         sum(
             params.rp_weight[rp] * graph[u, v].variable_cost * flow[(u, v), rp, B_flow] for
-            (u, v) ∈ F, rp ∈ RP, B_flow ∈ K_F[((u, v), rp)]
+            (u, v) ∈ F, rp ∈ RP, B_flow ∈ graph[u, v].partitions[rp]
         )
     )
 
@@ -93,18 +92,18 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         model,
         incoming_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[f, rp, B_flow] for
-            f in F, B_flow ∈ sets.rp_partitions_flows[(f, rp)] if
-            f[2] == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            duration(B, B_flow, rp) * flow[(u, v), rp, B_flow] for
+            (u, v) in F, B_flow ∈ graph[u, v].partitions[rp] if
+            v == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
     @expression(
         model,
         outgoing_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[f, rp, B_flow] for
-            f in F, B_flow ∈ sets.rp_partitions_flows[(f, rp)] if
-            f[1] == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            duration(B, B_flow, rp) * flow[(u, v), rp, B_flow] for
+            (u, v) in F, B_flow ∈ graph[u, v].partitions[rp] if
+            u == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
     @expression(
@@ -112,7 +111,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         incoming_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(u, v), rp, B_flow] * graph[u, v].efficiency for
-            (u, v) in F, B_flow ∈ sets.rp_partitions_flows[((u, v), rp)] if
+            (u, v) in F, B_flow ∈ graph[u, v].partitions[rp] if
             v == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
@@ -121,7 +120,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         outgoing_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(u, v), rp, B_flow] / graph[u, v].efficiency for
-            (u, v) in F, B_flow ∈ sets.rp_partitions_flows[((u, v), rp)] if
+            (u, v) in F, B_flow ∈ graph[u, v].partitions[rp] if
             u == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
@@ -199,19 +198,19 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         model,
         upper_bound_asset[
             a ∈ A,
-            f ∈ F,
+            (u, v) ∈ F,
             rp ∈ RP,
             B ∈ P[(a, rp)];
-            !(a ∈ Ah ∪ Ac) && f[1] == a && f ∉ Ft,
+            !(a ∈ Ah ∪ Ac) && u == a && (u, v) ∉ Ft,
         ],
         sum(
-            duration(B, B_flow, rp) * flow[f, rp, B_flow] for
-            B_flow ∈ sets.rp_partitions_flows[(f, rp)] if B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            duration(B, B_flow, rp) * flow[(u, v), rp, B_flow] for
+            B_flow ∈ graph[u, v].partitions[rp] if B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         ) ≤ assets_profile_times_capacity[a, rp, B]
     )
 
     # Define lower bounds for flows that are not transport assets
-    for f ∈ F, rp ∈ RP, B_flow ∈ K_F[(f, rp)]
+    for f ∈ F, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]
         if f ∉ Ft
             set_lower_bound(flow[f, rp, B_flow], 0.0)
         end
@@ -220,7 +219,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     # Constraints that define bounds for a transport flow Ft
     @expression(
         model,
-        upper_bound_transport_flow[(u, v) ∈ F, rp ∈ RP, B_flow ∈ K_F[((u, v), rp)]],
+        upper_bound_transport_flow[(u, v) ∈ F, rp ∈ RP, B_flow ∈ graph[u, v].partitions[rp]],
         flows_profile_sum(u, v, rp, B_flow, 1.0) * (
             graph[u, v].initial_capacity +
             (graph[u, v].investable ? graph[u, v].export_capacity * flows_investment[(u, v)] : 0.0)
@@ -228,12 +227,12 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     )
     @constraint(
         model,
-        transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, B_flow ∈ K_F[(f, rp)]],
+        transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]],
         flow[f, rp, B_flow] ≤ upper_bound_transport_flow[f, rp, B_flow]
     )
     @expression(
         model,
-        lower_bound_transport_flow[(u, v) ∈ F, rp ∈ RP, B_flow ∈ K_F[((u, v), rp)]],
+        lower_bound_transport_flow[(u, v) ∈ F, rp ∈ RP, B_flow ∈ graph[u, v].partitions[rp]],
         flows_profile_sum(u, v, rp, B_flow, 1.0) * (
             graph[u, v].initial_capacity +
             (graph[u, v].investable ? graph[u, v].import_capacity * flows_investment[(u, v)] : 0.0)
@@ -241,7 +240,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     )
     @constraint(
         model,
-        transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, B_flow ∈ K_F[(f, rp)]],
+        transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]],
         flow[f, rp, B_flow] ≥ -lower_bound_transport_flow[f, rp, B_flow]
     )
 

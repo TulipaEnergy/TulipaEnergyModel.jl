@@ -30,7 +30,10 @@ end
             :partition => ["3", "4;4;4", "3x4+4x3", "2x2+2x3+2x4+1x6"],
         )
         assets = [1, 2, 3]
-        partitions = compute_assets_partitions(df, assets, time_steps_per_rp)
+        dummy = Dict(a => Dict() for a in assets)
+        for a in assets
+            compute_assets_partitions!(dummy[a], df, a, time_steps_per_rp)
+        end
         expected = Dict(
             (1, 1) => [1:3, 4:6, 7:9, 10:12],
             (2, 1) => [1:4, 5:8, 9:12],
@@ -40,7 +43,7 @@ end
             (3, 2) => [1:2, 3:4, 5:7, 8:10, 11:14, 15:18, 19:24],
         )
         for a = 1:3, rp = 1:2
-            @test partitions[(a, rp)] == expected[(a, rp)]
+            @test dummy[a][rp] == expected[(a, rp)]
         end
     end
 
@@ -54,7 +57,10 @@ end
             :partition => ["3", "4;4;4", "3x4+4x3", "2x2+2x3+2x4+1x6"],
         )
         flows = [(1, 2), (2, 3), (3, 4)]
-        partitions = compute_flows_partitions(df, flows, time_steps_per_rp)
+        dummy = Dict(f => Dict() for f in flows)
+        for (u, v) in flows
+            compute_flows_partitions!(dummy[(u, v)], df, u, v, time_steps_per_rp)
+        end
         expected = Dict(
             ((1, 2), 1) => [1:3, 4:6, 7:9, 10:12],
             ((2, 3), 1) => [1:4, 5:8, 9:12],
@@ -64,7 +70,7 @@ end
             ((3, 4), 2) => [1:2, 3:4, 5:7, 8:10, 11:14, 15:18, 19:24],
         )
         for f in flows, rp = 1:2
-            @test partitions[(f, rp)] == expected[(f, rp)]
+            @test dummy[f][rp] == expected[(f, rp)]
         end
     end
 

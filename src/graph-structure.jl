@@ -1,5 +1,7 @@
 export GraphFlowData
 
+const TimeBlock = UnitRange{Int}
+
 mutable struct GraphAssetData
     type::String
     investable::Bool
@@ -11,6 +13,7 @@ mutable struct GraphAssetData
     initial_storage_level::Float64
     energy_to_power_ratio::Float64
     profiles::Dict{Int,Vector{Float64}}
+    partitions::Dict{Int,Vector{TimeBlock}}
 
     # You don't need profiles to create the struct, so initiate it empty
     function GraphAssetData(
@@ -25,6 +28,7 @@ mutable struct GraphAssetData
         energy_to_power_ratio,
     )
         profiles = Dict{Int,Vector{Float64}}()
+        partitions = Dict{Int,Vector{TimeBlock}}()
         return new(
             type,
             investable,
@@ -36,6 +40,7 @@ mutable struct GraphAssetData
             initial_storage_level,
             energy_to_power_ratio,
             profiles,
+            partitions,
         )
     end
 end
@@ -53,6 +58,7 @@ mutable struct GraphFlowData
     initial_capacity::Float64
     efficiency::Float64
     profiles::Dict{Int,Vector{Float64}}
+    partitions::Dict{Int,Vector{TimeBlock}}
 end
 
 function GraphFlowData(flow_data::FlowData)
@@ -69,5 +75,6 @@ function GraphFlowData(flow_data::FlowData)
         flow_data.initial_capacity,
         flow_data.efficiency,
         Dict{Int,Vector{Float64}}(),
+        Dict{Int,Vector{TimeBlock}}(),
     )
 end
