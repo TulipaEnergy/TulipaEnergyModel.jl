@@ -70,6 +70,17 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         return length(B1 ∩ B2) * params.rp_resolution[rp]
     end
 
+    # Sums the profile of asset a, representative period rp over the time block B
+    # Uses the default_value when that profile does not exist.
+    function assets_profile_sum(a, rp, B, default_value)
+        sum(get(params.assets_profile, (a, rp, k), default_value) for k ∈ B)
+    end
+
+    # Same as above but for flow
+    function flows_profile_sum(u, v, rp, B, default_value)
+        sum(get(params.flows_profile, ((u, v), rp, k), default_value) for k ∈ B)
+    end
+
     @expression(
         model,
         incoming_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
@@ -109,14 +120,8 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
 
     @expression(
         model,
-        assets_profile_sum[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
-        sum(get(params.assets_profile, (a, rp, k), 1.0) for k ∈ B)
-    )
-
-    @expression(
-        model,
         assets_profile_times_capacity[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
-        assets_profile_sum[a, rp, B] *
+        assets_profile_sum(a, rp, B, 1.0) *
         (graph[a].initial_capacity + (a ∈ Ai ? (graph[a].capacity * assets_investment[a]) : 0.0))
     )
 
@@ -129,7 +134,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @expression(
         model,
         storage_inflows[a ∈ As, rp ∈ RP, T ∈ P[(a, rp)]],
-        sum(get(params.assets_profile, (a, rp, k), 0.0) for k ∈ T) *
+        assets_profile_sum(a, rp, T, 0.0) *
         (graph[a].initial_storage_capacity + (a ∈ Ai ? energy_limit[a] : 0.0))
     )
 
@@ -139,7 +144,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
         model,
         consumer_balance[a ∈ Ac, rp ∈ RP, B ∈ P[(a, rp)]],
         incoming_flow[(a, rp, B)] - outgoing_flow[(a, rp, B)] ==
-        assets_profile_sum[a, rp, B] * graph[a].peak_demand
+        assets_profile_sum(a, rp, B, 1.0) * graph[a].peak_demand
     )
 
     # - storage balance equation
@@ -208,7 +213,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @expression(
         model,
         upper_bound_transport_flow[(u, v) ∈ F, rp ∈ RP, B_flow ∈ K_F[((u, v), rp)]],
-        get(params.flows_profile, ((u, v), rp, B_flow), 1.0) * (
+        flows_profile_sum(u, v, rp, B_flow, 1.0) * (
             graph[u, v].initial_capacity +
             (graph[u, v].investable ? graph[u, v].export_capacity * flows_investment[(u, v)] : 0.0)
         )
@@ -221,7 +226,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     @expression(
         model,
         lower_bound_transport_flow[(u, v) ∈ F, rp ∈ RP, B_flow ∈ K_F[((u, v), rp)]],
-        get(params.flows_profile, ((u, v), rp, B_flow), 1.0) * (
+        flows_profile_sum(u, v, rp, B_flow, 1.0) * (
             graph[u, v].initial_capacity +
             (graph[u, v].investable ? graph[u, v].import_capacity * flows_investment[(u, v)] : 0.0)
         )
