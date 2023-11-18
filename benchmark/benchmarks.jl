@@ -13,13 +13,13 @@ const OUTPUT_FOLDER_BM = mktempdir()
 SUITE["io"]["input"] = @benchmarkable begin
     create_parameters_and_sets_from_file($INPUT_FOLDER_BM)
 end
-graph, parameters, sets = create_parameters_and_sets_from_file(INPUT_FOLDER_BM)
+graph, representative_periods = create_parameters_and_sets_from_file(INPUT_FOLDER_BM)
 
 SUITE["model"]["create_model"] = @benchmarkable begin
-    create_model($graph, $parameters, $sets)
+    create_model($graph, $representative_periods)
 end
 
-model = create_model(graph, parameters, sets)
+model = create_model(graph, representative_periods)
 
 SUITE["model"]["solve_model"] = @benchmarkable begin
     solve_model($model)

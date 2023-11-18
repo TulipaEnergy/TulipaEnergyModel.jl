@@ -1,12 +1,12 @@
 export create_model, solve_model
 
 """
-    create_model(graph, params, sets; verbose = false)
+    create_model(graph, representative_periods; verbose = false)
 
-Create the model using the `graph` structure, the parameters and sets.
+Create the model using the `graph` structure and the `representative_periods`.
 """
 
-function create_model(graph, params, sets; verbose = false, write_lp_file = false)
+function create_model(graph, representative_periods; verbose = false, write_lp_file = false)
     # Sets unpacking
     A = labels(graph)
     F = edge_labels(graph)
@@ -21,8 +21,24 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     Acv = filter_assets(:type, "conversion")
     Fi = filter_flows(:investable, true)
     Ft = filter_flows(:is_transport, true)
-    P = sets.constraints_time_periods
-    RP = sets.rep_periods
+    RP = 1:length(representative_periods)
+
+    # For balance equations:
+    # Every asset a ∈ A and every rp ∈ RP will define a collection of flows, and therefore the time steps
+    # can be defined a priori.
+    P = Dict(
+        (a, rp) => begin
+            compute_rp_partition(
+                [
+                    [
+                        graph[u, v].partitions[rp] for
+                        (u, v) in edge_labels(graph) if u == a || v == a
+                    ]
+                    [graph[a].partitions[rp]]
+                ],
+            )
+        end for a in labels(graph), rp = 1:length(representative_periods)
+    )
 
     # Model
     model = Model(HiGHS.Optimizer)
@@ -53,8 +69,10 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     flows_variable_cost = @expression(
         model,
         sum(
-            params.rp_weight[rp] * graph[u, v].variable_cost * flow[(u, v), rp, B_flow] for
-            (u, v) ∈ F, rp ∈ RP, B_flow ∈ graph[u, v].partitions[rp]
+            representative_periods[rp].weight *
+            graph[u, v].variable_cost *
+            flow[(u, v), rp, B_flow] for (u, v) ∈ F, rp ∈ RP,
+            B_flow ∈ graph[u, v].partitions[rp]
         )
     )
 
@@ -66,7 +84,7 @@ function create_model(graph, params, sets; verbose = false, write_lp_file = fals
     # multiply by the resolution of the representative period `rp`.
     # It is equivalent to finding the indexes of these values in the matrix.
     function duration(B1, B2, rp)
-        return length(B1 ∩ B2) * params.rp_resolution[rp]
+        return length(B1 ∩ B2) * representative_periods[rp].resolution
     end
 
     # Sums the profile of representative period rp over the time block B

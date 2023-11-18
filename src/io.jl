@@ -20,8 +20,10 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     flows_partitions_df  = read_csv_with_schema(fillpath("flows-partitions.csv"), FlowPartitionData)
 
     # Sets and subsets that depend on input data
-    rep_periods   = rep_period_df.id
-    rp_time_steps = Dict(row.id => 1:row.num_time_steps for row in eachrow(rep_period_df))   #time steps in the RP (e.g., hours), that are dependent on RP
+    representative_periods = [
+        RepresentativePeriod(row.weight, row.num_time_steps, row.resolution) for
+        row in eachrow(rep_period_df)
+    ]
 
     asset_data = [
         row.name => GraphAssetData(
@@ -54,33 +56,23 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
     graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data)
 
     for a in labels(graph)
-        compute_assets_partitions!(graph[a].partitions, assets_partitions_df, a, rp_time_steps)
+        compute_assets_partitions!(
+            graph[a].partitions,
+            assets_partitions_df,
+            a,
+            representative_periods,
+        )
     end
 
     for (u, v) in edge_labels(graph)
-        compute_flows_partitions!(graph[u, v].partitions, flows_partitions_df, u, v, rp_time_steps)
+        compute_flows_partitions!(
+            graph[u, v].partitions,
+            flows_partitions_df,
+            u,
+            v,
+            representative_periods,
+        )
     end
-
-    # From balance equations:
-    # Every asset a ∈ A and every rp ∈ RP will define a collection of flows, and therefore the time steps
-    # can be defined a priori.
-    constraints_time_periods = Dict(
-        (a, rp) => begin
-            compute_rp_partition(
-                [
-                    [
-                        graph[u, v].partitions[rp] for
-                        (u, v) in edge_labels(graph) if u == a || v == a
-                    ]
-                    [graph[a].partitions[rp]]
-                ],
-            )
-        end for a in labels(graph), rp in rep_periods
-    )
-
-    # Parameters for system
-    rp_weight = Dict((row.id) => row.weight for row in eachrow(rep_period_df)) #representative period weight [h]
-    rp_resolution = Dict(row.id => row.resolution for row in eachrow(rep_period_df))
 
     # Unique (asset, rp) combination on the profiles:
     asset_and_rp_with_profiles = assets_profiles_df[:, [:asset, :rep_period_id]]
@@ -89,7 +81,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         matching = (assets_profiles_df.asset .== a) .& (assets_profiles_df.rep_period_id .== rp_id)
         # Sort the matching data by time_step and get the values
         profile_data = sort(assets_profiles_df[matching, :], :time_step).value
-        @assert length(profile_data) == length(rp_time_steps[rp_id])
+        @assert length(profile_data) == length(representative_periods[rp_id].time_steps)
         graph[a].profiles[rp_id] = profile_data
     end
 
@@ -101,15 +93,11 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
             (flows_profiles_df.to_asset .== v) .&
             (flows_profiles_df.rep_period_id .== rp_id)
         profile_data = sort(flows_profiles_df[matching, :], :time_step).value
-        @assert length(profile_data) == length(rp_time_steps[rp_id])
+        @assert length(profile_data) == length(representative_periods[rp_id].time_steps)
         graph[u, v].profiles[rp_id] = profile_data
     end
 
-    # Define parameters and sets
-    params = (rp_weight = rp_weight, rp_resolution = rp_resolution)
-    sets = (rep_periods = rep_periods, constraints_time_periods = constraints_time_periods)
-
-    return graph, params, sets
+    return graph, representative_periods
 end
 
 """
@@ -285,7 +273,7 @@ function _parse_rp_partition(::Val{:math}, time_step_string, rp_time_steps)
 end
 
 """
-    compute_assets_partitions!(partitions, df, a, time_steps_per_rp)
+    compute_assets_partitions!(partitions, df, a, representative_periods)
 
 Parses the time blocks in the DataFrame `df` for the asset `a` and every
 representative period in the `time_steps_per_rp` dictionary, modifying the
@@ -300,22 +288,22 @@ time steps of that `rp`.
 To obtain the partitions, the columns `specification` and `partition` from `df`
 are passed to the function [`_parse_rp_partition`](@ref).
 """
-function compute_assets_partitions!(partitions, df, a, time_steps_per_rp)
-    for (rp, rp_time_steps) in time_steps_per_rp
+function compute_assets_partitions!(partitions, df, a, representative_periods)
+    for (rp_id, rp) in enumerate(representative_periods)
         # Look for index in df that matches this asset and rp
-        j = findfirst((df.asset .== a) .& (df.rep_period_id .== rp))
-        partitions[rp] = if j === nothing
-            N = length(rp_time_steps)
+        j = findfirst((df.asset .== a) .& (df.rep_period_id .== rp_id))
+        partitions[rp_id] = if j === nothing
+            N = length(rp.time_steps)
             # If there is no time block specification, use default of 1
             [k:k for k = 1:N]
         else
-            _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp_time_steps)
+            _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp.time_steps)
         end
     end
 end
 
 """
-    compute_flows_partitions!(partitions, df, u, v, time_steps_per_rp)
+    compute_flows_partitions!(partitions, df, u, v, representative_periods)
 
 Parses the time blocks in the DataFrame `df` for the flow `(u, v)` and every
 representative period in the `time_steps_per_rp` dictionary, modifying the
@@ -330,16 +318,16 @@ time steps of that `rp`.
 To obtain the partitions, the columns `specification` and `partition` from `df`
 are passed to the function [`_parse_rp_partition`](@ref).
 """
-function compute_flows_partitions!(partitions, df, u, v, time_steps_per_rp)
-    for (rp, rp_time_steps) in time_steps_per_rp
+function compute_flows_partitions!(partitions, df, u, v, representative_periods)
+    for (rp_id, rp) in enumerate(representative_periods)
         # Look for index in df that matches this asset and rp
-        j = findfirst((df.from_asset .== u) .& (df.to_asset .== v) .& (df.rep_period_id .== rp))
-        partitions[rp] = if j === nothing
-            N = length(rp_time_steps)
+        j = findfirst((df.from_asset .== u) .& (df.to_asset .== v) .& (df.rep_period_id .== rp_id))
+        partitions[rp_id] = if j === nothing
+            N = length(rp.time_steps)
             # If there is no time block specification, use default of 1
             [k:k for k = 1:N]
         else
-            _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp_time_steps)
+            _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp.time_steps)
         end
     end
 end
