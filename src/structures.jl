@@ -2,6 +2,9 @@ export GraphAssetData, GraphFlowData, RepresentativePeriod, TimeBlock
 
 const TimeBlock = UnitRange{Int}
 
+"""
+Structure to hold the data of one representative period.
+"""
 struct RepresentativePeriod
     weight::Float64
     time_steps::TimeBlock
@@ -12,6 +15,9 @@ struct RepresentativePeriod
     end
 end
 
+"""
+Structure to hold the asset data in the graph.
+"""
 mutable struct GraphAssetData
     type::String
     investable::Bool
@@ -55,6 +61,9 @@ mutable struct GraphAssetData
     end
 end
 
+"""
+Structure to hold the flow data in the graph.
+"""
 mutable struct GraphFlowData
     carrier::String
     active::Bool
@@ -89,6 +98,9 @@ function GraphFlowData(flow_data::FlowData)
     )
 end
 
+"""
+Structure to hold all parts of an energy problem.
+"""
 mutable struct EnergyProblem
     graph::MetaGraph{
         Int,

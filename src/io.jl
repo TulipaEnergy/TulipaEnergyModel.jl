@@ -6,6 +6,28 @@ export create_energy_model_from_csv_folder,
 
 Returns the [`TulipaEnergyModel.EnergyProblem`](@ref) reading all data from CSV files
 in the `input_folder`.
+
+The following files are expected to exist in the input folder:
+
+  - `assets-data.csv`: Following the [`TulipaEnergyModel.AssetData`](@ref) specification.
+  - `assets-profiles.csv`: Following the [`TulipaEnergyModel.AssetProfiles`](@ref) specification.
+  - `assets-paritions.csv`: Following the [`TulipaEnergyModel.AssetPartitionData`](@ref) specification.
+  - `flows-data.csv`: Following the [`TulipaEnergyModel.FlowData`](@ref) specification.
+  - `flows-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification.
+  - `flows-paritions.csv`: Following the [`TulipaEnergyModel.FlowPartitionData`](@ref) specification.
+  - `rep-periods-data.csv`: Following the [`TulipaEnergyModel.RepPeriodData`](@ref) specification.
+
+The `energy_problem` contains:
+
+  - `graph`: a MetaGraph with the following information:
+
+      + `labels(graph)`: All assets.
+      + `edge_labels(graph)`: All flows, in pair format `(u, v)`, where `u` and `v` are assets.
+      + `graph[a]`: A [`TulipaEnergyModel.GraphAssetData`](@ref) structure for asset `a`.
+      + `graph[u, v]`: A [`TulipaEnergyModel.GraphFlowData`](@ref) structure for flow `(u, v)`.
+
+  - `representative_periods`: An array of
+    [`TulipaEnergyModel.RepresentativePeriod`](@ref) ordered by their IDs.
 """
 function create_energy_model_from_csv_folder(input_folder::AbstractString)
     # Read data
