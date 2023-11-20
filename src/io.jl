@@ -1,13 +1,35 @@
-export create_parameters_and_sets_from_file,
+export create_energy_model_from_csv_folder,
     create_graph, save_solution_to_file, compute_assets_partitions!, compute_flows_partitions!
 
 """
-    parameters, sets = create_parameters_and_sets_from_file(input_folder)
+    energy_problem = create_energy_model_from_csv_folder(input_folder)
 
-Returns two NamedTuples with all parameters and sets read and created from the
-input files in the `input_folder`.
+Returns the [`TulipaEnergyModel.EnergyProblem`](@ref) reading all data from CSV files
+in the `input_folder`.
+
+The following files are expected to exist in the input folder:
+
+  - `assets-data.csv`: Following the [`TulipaEnergyModel.AssetData`](@ref) specification.
+  - `assets-profiles.csv`: Following the [`TulipaEnergyModel.AssetProfiles`](@ref) specification.
+  - `assets-paritions.csv`: Following the [`TulipaEnergyModel.AssetPartitionData`](@ref) specification.
+  - `flows-data.csv`: Following the [`TulipaEnergyModel.FlowData`](@ref) specification.
+  - `flows-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification.
+  - `flows-paritions.csv`: Following the [`TulipaEnergyModel.FlowPartitionData`](@ref) specification.
+  - `rep-periods-data.csv`: Following the [`TulipaEnergyModel.RepPeriodData`](@ref) specification.
+
+The `energy_problem` contains:
+
+  - `graph`: a MetaGraph with the following information:
+
+      + `labels(graph)`: All assets.
+      + `edge_labels(graph)`: All flows, in pair format `(u, v)`, where `u` and `v` are assets.
+      + `graph[a]`: A [`TulipaEnergyModel.GraphAssetData`](@ref) structure for asset `a`.
+      + `graph[u, v]`: A [`TulipaEnergyModel.GraphFlowData`](@ref) structure for flow `(u, v)`.
+
+  - `representative_periods`: An array of
+    [`TulipaEnergyModel.RepresentativePeriod`](@ref) ordered by their IDs.
 """
-function create_parameters_and_sets_from_file(input_folder::AbstractString)
+function create_energy_model_from_csv_folder(input_folder::AbstractString)
     # Read data
     fillpath(filename) = joinpath(input_folder, filename)
 
@@ -53,7 +75,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         Graphs.add_edge!(_graph, name_to_id[from_id], name_to_id[to_id])
     end
 
-    graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data)
+    graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data, nothing, nothing, nothing)
 
     for a in labels(graph)
         compute_assets_partitions!(
@@ -97,7 +119,7 @@ function create_parameters_and_sets_from_file(input_folder::AbstractString)
         graph[u, v].profiles[rp_id] = profile_data
     end
 
-    return graph, representative_periods
+    return EnergyProblem(graph, representative_periods)
 end
 
 """

@@ -6,7 +6,11 @@ export create_model, solve_model
 Create the model using the `graph` structure and the `representative_periods`.
 """
 
-function create_model(graph, representative_periods; verbose = false, write_lp_file = false)
+function create_model(energy_model; verbose = false, write_lp_file = false)
+    # Unpacking
+    graph = energy_model.graph
+    representative_periods = energy_model.representative_periods
+
     # Sets unpacking
     A = labels(graph)
     F = edge_labels(graph)

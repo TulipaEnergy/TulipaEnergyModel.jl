@@ -9,10 +9,10 @@ If the output_folder is specified, save the sets, parameters, and solution to th
 """
 
 function run_scenario(input_folder::AbstractString; write_lp_file = false)
-    graph, representative_periods = create_parameters_and_sets_from_file(input_folder)
-    model = create_model(graph, representative_periods; write_lp_file = write_lp_file)
+    energy_problem = create_energy_model_from_csv_folder(input_folder)
+    model = create_model(energy_problem; write_lp_file = write_lp_file)
     solution = solve_model(model)
-    return graph, representative_periods, solution
+    return energy_problem, solution
 end
 
 function run_scenario(
@@ -20,12 +20,12 @@ function run_scenario(
     output_folder::AbstractString;
     write_lp_file = false,
 )
-    graph, representative_periods, solution = run_scenario(input_folder; write_lp_file)
+    energy_problem, solution = run_scenario(input_folder; write_lp_file)
     save_solution_to_file(
         output_folder,
-        [a for a in labels(graph) if graph[a].investable],
+        [a for a in labels(energy_problem.graph) if energy_problem.graph[a].investable],
         solution.assets_investment,
-        Dict(a => graph[a].capacity for a in labels(graph)),
+        Dict(a => energy_problem.graph[a].capacity for a in labels(energy_problem.graph)),
     )
-    return graph, representative_periods, solution
+    return energy_problem, solution
 end
