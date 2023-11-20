@@ -88,3 +88,19 @@ function GraphFlowData(flow_data::FlowData)
         Dict{Int,Vector{TimeBlock}}(),
     )
 end
+
+mutable struct EnergyProblem
+    graph::MetaGraph{
+        Int,
+        SimpleDiGraph{Int},
+        String,
+        GraphAssetData,
+        GraphFlowData,
+        Nothing, # Internal data
+        Nothing, # Edge weight function
+        Nothing, # Default edge weight
+    }
+    representative_periods::Vector{RepresentativePeriod}
+    # solver_parameters # Part of #246
+    # solved::Bool # Only makes sense after #268
+end
