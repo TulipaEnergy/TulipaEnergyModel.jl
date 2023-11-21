@@ -32,15 +32,17 @@ function create_model(
     filter_assets(key, value) = Iterators.filter(a -> getfield(graph[a], key) == value, A)
     filter_flows(key, value) = Iterators.filter(f -> getfield(graph[f...], key) == value, F)
 
-    Ac = filter_assets(:type, "consumer")
-    Ap = filter_assets(:type, "producer")
-    Ai = filter_assets(:investable, true)
-    As = filter_assets(:type, "storage")
-    Ah = filter_assets(:type, "hub")
-    Acv = filter_assets(:type, "conversion")
-    Fi = filter_flows(:investable, true)
-    Ft = filter_flows(:is_transport, true)
-    RP = 1:length(representative_periods)
+    Ac    = filter_assets(:type, "consumer")
+    Ap    = filter_assets(:type, "producer")
+    Ai    = filter_assets(:investable, true)
+    As    = filter_assets(:type, "storage")
+    As_st = filter_assets(:storage_type, "short-term")
+    As_lt = filter_assets(:storage_type, "long-term")
+    Ah    = filter_assets(:type, "hub")
+    Acv   = filter_assets(:type, "conversion")
+    Fi    = filter_flows(:investable, true)
+    Ft    = filter_flows(:is_transport, true)
+    RP    = 1:length(representative_periods)
     P = constraints_partitions
 
     # Model
@@ -51,9 +53,7 @@ function create_model(
     @variable(model, flow[(u, v) ∈ F, rp ∈ RP, graph[u, v].partitions[rp]])
     @variable(model, 0 ≤ assets_investment[Ai], Int)  #number of installed asset units [N]
     @variable(model, 0 ≤ flows_investment[Fi], Int)
-    @variable(model, 0 ≤ storage_level[a ∈ As, rp ∈ RP, P[(a, rp)]])
-
-    # TODO: Fix storage_level[As, RP, 0] = 0
+    @variable(model, 0 ≤ short_term_storage_level[a ∈ As∩As_st, rp ∈ RP, P[(a, rp)]])
 
     # Expressions
     assets_investment_cost = @expression(
@@ -179,9 +179,15 @@ function create_model(
     # - storage balance equation
     @constraint(
         model,
-        storage_balance[a ∈ As, rp ∈ RP, (k, B) ∈ enumerate(P[(a, rp)])],
-        storage_level[a, rp, B] ==
-        (k > 1 ? storage_level[a, rp, P[(a, rp)][k-1]] : graph[a].initial_storage_level) +
+        intra_rp_storage_balance[a ∈ As∩As_st, rp ∈ RP, (k, B) ∈ enumerate(P[(a, rp)])],
+        short_term_storage_level[a, rp, B] ==
+        (
+            if k > 1
+                short_term_storage_level[a, rp, P[(a, rp)][k-1]]
+            else
+                graph[a].initial_storage_level
+            end
+        ) +
         storage_inflows[a, rp, B] +
         incoming_flow_w_efficiency[(a, rp, B)] - outgoing_flow_w_efficiency[(a, rp, B)]
     )
@@ -266,18 +272,21 @@ function create_model(
         flow[f, rp, B_flow] ≥ -lower_bound_transport_flow[f, rp, B_flow]
     )
 
-    # Extra constraints
-    # - upper bound constraints for storage level
+    # Extra constraints for energy storage assets
+    # - upper bound constraint for short-term storage level
     @constraint(
         model,
-        upper_bound_for_storage_level[a ∈ As, rp ∈ RP, B ∈ P[(a, rp)]],
-        storage_level[a, rp, B] ≤
+        upper_bound_for_short_term_storage_level[a ∈ As∩As_st, rp ∈ RP, B ∈ P[(a, rp)]],
+        short_term_storage_level[a, rp, B] ≤
         graph[a].initial_storage_capacity + (a ∈ Ai ? energy_limit[a] : 0.0)
     )
 
-    # - cycling condition for storage level
-    for a ∈ As, rp ∈ RP
-        set_lower_bound(storage_level[a, rp, P[(a, rp)][end]], graph[a].initial_storage_level)
+    # - cycling condition for short-term storage level
+    for a ∈ As ∩ As_st, rp ∈ RP
+        set_lower_bound(
+            short_term_storage_level[a, rp, P[(a, rp)][end]],
+            graph[a].initial_storage_level,
+        )
     end
 
     # Investment limits
