@@ -15,8 +15,8 @@ end
         @test_throws Exception save_solution_to_file(output_dir, energy_problem)
         create_model!(energy_problem)
         @test_throws Exception save_solution_to_file(output_dir, energy_problem)
-        solution = solve_model!(energy_problem)
-        @test save_solution_to_file(output_dir, energy_problem.graph, solution) === nothing
+        solve_model!(energy_problem)
+        @test save_solution_to_file(output_dir, energy_problem) === nothing
     end
 end
 

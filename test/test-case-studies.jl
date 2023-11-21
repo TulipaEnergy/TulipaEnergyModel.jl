@@ -1,13 +1,13 @@
 @testset "Norse Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Norse")
-    _, solution = run_scenario(dir)
-    @test solution.objective_value ≈ 1.64494182205421e8 atol = 1e-5
+    energy_problem = run_scenario(dir)
+    @test energy_problem.objective_value ≈ 1.64494182205421e8 atol = 1e-5
 end
 
 @testset "Tiny Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
-    _, solution = run_scenario(dir, OUTPUT_FOLDER; write_lp_file = true)
-    @test solution.objective_value ≈ 269238.43825 atol = 1e-5
+    energy_problem = run_scenario(dir, OUTPUT_FOLDER; write_lp_file = true)
+    @test energy_problem.objective_value ≈ 269238.43825 atol = 1e-5
 end
 
 @testset "Infeasible Case Study" begin

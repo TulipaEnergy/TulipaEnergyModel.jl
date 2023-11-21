@@ -4,6 +4,6 @@
     @test !energy_problem.solved
     create_model!(energy_problem)
     @test !energy_problem.solved
-    solve_model!(energy_problem)
+    @test solve_model!(energy_problem) === energy_problem
     @test energy_problem.solved
 end
