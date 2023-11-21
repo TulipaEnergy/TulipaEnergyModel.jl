@@ -114,11 +114,26 @@ mutable struct EnergyProblem
     }
     representative_periods::Vector{RepresentativePeriod}
     constraints_partitions::Dict{Tuple{String,Int},Vector{TimeBlock}}
+    model::Union{JuMP.Model,Nothing}
+    solved::Bool
+    termination_status::JuMP.TerminationStatusCode
     # solver_parameters # Part of #246
-    # solved::Bool # Only makes sense after #268
 
+    """
+        EnergyProblem(graph, representative_periods)
+
+    Minimal constructor. The `constraints_partitions` are computed from the `representative_periods`,
+    and the other fields and nothing or set to default values.
+    """
     function EnergyProblem(graph, representative_periods)
         constraints_partitions = compute_constraints_partitions(graph, representative_periods)
-        return new(graph, representative_periods, constraints_partitions)
+        return new(
+            graph,
+            representative_periods,
+            constraints_partitions,
+            nothing,
+            false,
+            JuMP.OPTIMIZE_NOT_CALLED,
+        )
     end
 end

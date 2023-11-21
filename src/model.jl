@@ -1,17 +1,31 @@
-export create_model, solve_model
+export create_model!, solve_model!, create_model, solve_model
 
 """
-    create_model(graph, representative_periods; verbose = false)
+    create_model!(energy_problem; verbose = false)
 
-Create the model using the `graph` structure and the `representative_periods`.
+Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
-
-function create_model(energy_problem; verbose = false, write_lp_file = false)
-    # Unpacking
+function create_model!(energy_problem; kwargs...)
     graph = energy_problem.graph
     representative_periods = energy_problem.representative_periods
     constraints_partitions = energy_problem.constraints_partitions
+    energy_problem.model =
+        create_model(graph, representative_periods, constraints_partitions; kwargs...)
+    return energy_problem
+end
 
+"""
+    model = create_model(graph, representative_periods)
+
+Create the energy model given the graph and representative_periods.
+"""
+function create_model(
+    graph,
+    representative_periods,
+    constraints_partitions;
+    verbose = false,
+    write_lp_file = false,
+)
     # Sets unpacking
     A = labels(graph)
     F = edge_labels(graph)
@@ -273,12 +287,33 @@ function create_model(energy_problem; verbose = false, write_lp_file = false)
 end
 
 """
-    solve_model(model)
+    solve_model!(energy_problem)
 
-Solve the model.
+Solve the internal model of an energy_problem.
 """
-function solve_model(model)
+function solve_model!(energy_problem::EnergyProblem)
+    model = energy_problem.model
+    if model === nothing
+        error("Model is not created, run create_model(energy_problem) first.")
+    end
 
+    solution = solve_model(model)
+    energy_problem.termination_status = termination_status(model)
+    if solution === nothing
+        # Warning has been given at internal function
+        return
+    end
+    energy_problem.solved = true
+
+    return solution
+end
+
+"""
+    solution = solve_model(model)
+
+Solve the JuMP model and return the solution.
+"""
+function solve_model(model::JuMP.Model)
     # Solve model
     optimize!(model)
 

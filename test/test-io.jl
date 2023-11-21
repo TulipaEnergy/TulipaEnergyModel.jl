@@ -8,6 +8,18 @@
     end
 end
 
+@testset "Output validation" begin
+    @testset "Make sure that saving an unsolved energy problem fails" begin
+        energy_problem = create_energy_problem_from_csv_folder(joinpath(INPUT_FOLDER, "Tiny"))
+        output_dir = mktempdir()
+        @test_throws Exception save_solution_to_file(output_dir, energy_problem)
+        create_model!(energy_problem)
+        @test_throws Exception save_solution_to_file(output_dir, energy_problem)
+        solution = solve_model!(energy_problem)
+        @test save_solution_to_file(output_dir, energy_problem.graph, solution) === nothing
+    end
+end
+
 @testset "Graph structure" begin
     @testset "Graph structure is correct" begin
         dir = joinpath(INPUT_FOLDER, "Tiny")
