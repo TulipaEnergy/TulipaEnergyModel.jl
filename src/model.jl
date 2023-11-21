@@ -43,7 +43,7 @@ function create_model(
     Fi    = filter_flows(:investable, true)
     Ft    = filter_flows(:is_transport, true)
     RP    = 1:length(representative_periods)
-    P = constraints_partitions
+    P     = constraints_partitions
 
     # Model
     model = Model(HiGHS.Optimizer)
