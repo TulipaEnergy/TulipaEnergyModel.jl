@@ -1,8 +1,8 @@
-export create_energy_model_from_csv_folder,
+export create_energy_problem_from_csv_folder,
     create_graph, save_solution_to_file, compute_assets_partitions!, compute_flows_partitions!
 
 """
-    energy_problem = create_energy_model_from_csv_folder(input_folder)
+    energy_problem = create_energy_problem_from_csv_folder(input_folder)
 
 Returns the [`TulipaEnergyModel.EnergyProblem`](@ref) reading all data from CSV files
 in the `input_folder`.
@@ -29,7 +29,7 @@ The `energy_problem` contains:
   - `representative_periods`: An array of
     [`TulipaEnergyModel.RepresentativePeriod`](@ref) ordered by their IDs.
 """
-function create_energy_model_from_csv_folder(input_folder::AbstractString)
+function create_energy_problem_from_csv_folder(input_folder::AbstractString)
     # Read data
     fillpath(filename) = joinpath(input_folder, filename)
 

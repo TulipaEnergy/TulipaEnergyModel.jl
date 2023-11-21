@@ -9,7 +9,7 @@ If the output_folder is specified, save the sets, parameters, and solution to th
 """
 
 function run_scenario(input_folder::AbstractString; write_lp_file = false)
-    energy_problem = create_energy_model_from_csv_folder(input_folder)
+    energy_problem = create_energy_problem_from_csv_folder(input_folder)
     model = create_model(energy_problem; write_lp_file = write_lp_file)
     solution = solve_model(model)
     return energy_problem, solution
