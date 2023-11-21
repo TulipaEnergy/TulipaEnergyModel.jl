@@ -145,7 +145,19 @@ function read_csv_with_schema(file_path, schema; csvargs...)
 end
 
 """
-    save_solution_to_file(output_folder, graph, solution)
+    save_solution_to_file(output_folder, energy_problem)
+
+Saves the solution from `energy_problem` in CSV files inside `output_file`.
+"""
+function save_solution_to_file(output_folder, energy_problem::EnergyProblem)
+    if !energy_problem.solved
+        error("The energy_problem has not been solved yet.")
+    end
+    save_solution_to_file(output_folder, energy_problem.graph)
+end
+
+"""
+    save_solution_to_file(output_file, graph)
 
 Saves the solution in CSV files inside `output_folder`.
 
@@ -155,7 +167,7 @@ The following files are created:
     `v` is the corresponding asset investment value, and `p` is the corresponding
     capacity value. Only investable assets are included.
 """
-function save_solution_to_file(output_folder, graph, solution)
+function save_solution_to_file(output_folder, graph)
     # Writing the investment results to a CSV file
     output_file = joinpath(output_folder, "investments.csv")
     output_table = DataFrame(; a = String[], InstalUnits = Int[], InstalCap_MW = Float64[])
@@ -163,7 +175,7 @@ function save_solution_to_file(output_folder, graph, solution)
         if !graph[a].investable
             continue
         end
-        v = solution.assets_investment[a]
+        v = graph[a].investment
         p = graph[a].capacity
         push!(output_table, (a, v, p * v))
     end

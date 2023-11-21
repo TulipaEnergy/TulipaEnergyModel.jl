@@ -30,6 +30,9 @@ mutable struct GraphAssetData
     energy_to_power_ratio::Float64
     profiles::Dict{Int,Vector{Float64}}
     partitions::Dict{Int,Vector{TimeBlock}}
+    # Solution
+    investment::Int
+    storage_level::Dict{Tuple{Int,TimeBlock},Float64}
 
     # You don't need profiles to create the struct, so initiate it empty
     function GraphAssetData(
@@ -57,6 +60,8 @@ mutable struct GraphAssetData
             energy_to_power_ratio,
             profiles,
             partitions,
+            -1,
+            Dict{Tuple{Int,TimeBlock},Float64}(),
         )
     end
 end
@@ -78,6 +83,9 @@ mutable struct GraphFlowData
     efficiency::Float64
     profiles::Dict{Int,Vector{Float64}}
     partitions::Dict{Int,Vector{TimeBlock}}
+    # Solution
+    flow::Dict{Tuple{Int,TimeBlock},Float64}
+    investment::Int
 end
 
 function GraphFlowData(flow_data::FlowData)
@@ -95,6 +103,8 @@ function GraphFlowData(flow_data::FlowData)
         flow_data.efficiency,
         Dict{Int,Vector{Float64}}(),
         Dict{Int,Vector{TimeBlock}}(),
+        Dict{Tuple{Int,TimeBlock},Float64}(),
+        -1,
     )
 end
 
@@ -116,6 +126,7 @@ mutable struct EnergyProblem
     constraints_partitions::Dict{Tuple{String,Int},Vector{TimeBlock}}
     model::Union{JuMP.Model,Nothing}
     solved::Bool
+    objective_value::Float64
     termination_status::JuMP.TerminationStatusCode
     # solver_parameters # Part of #246
 
@@ -133,6 +144,7 @@ mutable struct EnergyProblem
             constraints_partitions,
             nothing,
             false,
+            NaN,
             JuMP.OPTIMIZE_NOT_CALLED,
         )
     end

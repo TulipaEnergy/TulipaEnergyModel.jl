@@ -304,8 +304,30 @@ function solve_model!(energy_problem::EnergyProblem)
         return
     end
     energy_problem.solved = true
+    energy_problem.objective_value = objective_value(model)
 
-    return solution
+    graph = energy_problem.graph
+    rps = energy_problem.representative_periods
+    for a in labels(graph)
+        if graph[a].investable
+            graph[a].investment = round(Int, solution.assets_investment[a])
+        end
+        if graph[a].type == "storage"
+            for rp_id = 1:length(rps), I in energy_problem.constraints_partitions[(a, rp_id)]
+                graph[a].storage_level[(rp_id, I)] = solution.storage_level[(a, rp_id, I)]
+            end
+        end
+    end
+    for (u, v) in edge_labels(graph)
+        if graph[u, v].investable
+            graph[u, v].investment = round(Int, solution.flows_investment[(u, v)])
+        end
+        for rp_id = 1:length(rps), I in graph[u, v].partitions[rp_id]
+            graph[u, v].flow[(rp_id, I)] = solution.flow[((u, v), rp_id, I)]
+        end
+    end
+
+    return energy_problem
 end
 
 """

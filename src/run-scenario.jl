@@ -11,8 +11,8 @@ If the output_folder is specified, save the sets, parameters, and solution to th
 function run_scenario(input_folder::AbstractString; write_lp_file = false)
     energy_problem = create_energy_problem_from_csv_folder(input_folder)
     create_model!(energy_problem; write_lp_file = write_lp_file)
-    solution = solve_model!(energy_problem)
-    return energy_problem, solution
+    solve_model!(energy_problem)
+    return energy_problem
 end
 
 function run_scenario(
@@ -20,7 +20,7 @@ function run_scenario(
     output_folder::AbstractString;
     write_lp_file = false,
 )
-    energy_problem, solution = run_scenario(input_folder; write_lp_file)
-    save_solution_to_file(output_folder, energy_problem.graph, solution)
-    return energy_problem, solution
+    energy_problem = run_scenario(input_folder; write_lp_file)
+    save_solution_to_file(output_folder, energy_problem)
+    return energy_problem
 end
