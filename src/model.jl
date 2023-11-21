@@ -345,9 +345,10 @@ function solve_model!(energy_problem::EnergyProblem)
         if graph[a].investable
             graph[a].investment = round(Int, solution.assets_investment[a])
         end
-        if graph[a].type == "storage"
+        if graph[a].type == "storage" && graph[a].storage_type == "short-term"
             for rp_id = 1:length(rps), I in energy_problem.constraints_partitions[(a, rp_id)]
-                graph[a].storage_level[(rp_id, I)] = solution.storage_level[(a, rp_id, I)]
+                graph[a].short_term_storage_level[(rp_id, I)] =
+                    solution.short_term_storage_level[(a, rp_id, I)]
             end
         end
     end
@@ -415,6 +416,6 @@ function solve_model(model::JuMP.Model)
         assets_investment = value.(model[:assets_investment]),
         flow = value.(model[:flow]),
         flows_investment = value.(model[:flows_investment]),
-        storage_level = value.(model[:storage_level]),
+        short_term_storage_level = value.(model[:short_term_storage_level]),
     )
 end

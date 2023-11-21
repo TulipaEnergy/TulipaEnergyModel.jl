@@ -34,7 +34,7 @@ mutable struct GraphAssetData
     partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
     investment::Int
-    storage_level::Dict{Tuple{Int,TimeBlock},Float64}
+    short_term_storage_level::Dict{Tuple{Int,TimeBlock},Float64}
 
     # You don't need profiles to create the struct, so initiate it empty
     function GraphAssetData(
