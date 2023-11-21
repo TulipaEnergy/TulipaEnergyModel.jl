@@ -11,6 +11,8 @@ $\mathcal{A}$           | Energy assets                           | $a \in \math
 $\mathcal{A}_c$         | Consumer energy assets                  | $\mathcal{A}_c        \subseteq \mathcal{A}$
 $\mathcal{A}_p$         | Producer energy assets                  | $\mathcal{A}_p        \subseteq \mathcal{A}$
 $\mathcal{A}_s$         | Storage energy assets                   | $\mathcal{A}_s        \subseteq \mathcal{A}$
+$\mathcal{A}_s^{st}$    | Short-term energy storage assets        | $\mathcal{A}_s^{st}   \subseteq \mathcal{A}_s$
+$\mathcal{A}_s^{lt}$    | Long-term energy storage assets         | $\mathcal{A}_s^{lt}   \subseteq \mathcal{A}_s$
 $\mathcal{A}_h$         | Hub energy assets (e.g., transshipment) | $\mathcal{A}_h        \subseteq \mathcal{A}$
 $\mathcal{A}_{cv}$      | Conversion energy assets                | $\mathcal{A}_{cv}     \subseteq \mathcal{A}$
 $\mathcal{A}_i$         | Energy assets with investment method    | $\mathcal{A}_i        \subseteq \mathcal{A}$
@@ -21,6 +23,7 @@ $\mathcal{F}_{in}(a)$   | Set of flows going into asset $a$       | $\mathcal{F}
 $\mathcal{F}_{out}(a)$  | Set of flows going out of asset $a$     | $\mathcal{F}_{out}(a) \subseteq \mathcal{F}$
 $\mathcal{RP}$          | Representative periods                  | $rp \in \mathcal{RP}$
 $\mathcal{K}$           | Time steps within the $rp$              | $k  \in \mathcal{K}$
+$\mathcal{X}$           | Time steps for long-term storage        | $x  \in \mathcal{X}$
 
 NOTE: Asset types are mutually exclusive.
 
@@ -51,10 +54,11 @@ $p^{eff}_f$                    | $\mathcal{F}$      | Flow efficiency           
 
 Name|Domain|Description|Units
  ---|---|---|---
-$v^{flow}_{f,rp,k}  \in \mathbb{R}$    | $\mathcal{F,RP,K}$    | Flow between two assets                      |[MW]
-$v^{investment}_{a} \in \mathbb{Z}^{+}$| $\mathcal{A}_i$       | Number of installed asset units              |[units]
-$v^{investment}_{f} \in \mathbb{Z}^{+}$| $\mathcal{F}_i$       | Number of installed units between two assets |[units]
-$s^{level}_{a,rp,k} \in \mathbb{R}$    | $\mathcal{A_s,RP,K}$  | Storage level                                |[MWh]
+$v^{flow}_{f,rp,k}  \in \mathbb{R}$    | $\mathcal{F,RP,K}$       | Flow between two assets                      |[MW]
+$v^{investment}_{a} \in \mathbb{Z}^{+}$| $\mathcal{A}_i$          | Number of installed asset units              |[units]
+$v^{investment}_{f} \in \mathbb{Z}^{+}$| $\mathcal{F}_i$          | Number of installed units between two assets |[units]
+$s^{st\_level}_{a,rp,k} \in \mathbb{R}$| $\mathcal{A_s^{st},RP,K}$| Short-term (or intra-rp) storage level       |[MWh]
+$s^{lt\_level}_{a,x} \in \mathbb{R}$   | $\mathcal{A_s^{lt},X}$   | Long-term (or inter-rp) storage level        |[MWh]
 
 ## [Objective Function](@id math-objective-function)
 
@@ -90,12 +94,21 @@ flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{rp \in \mathcal{RP}} \su
 \end{aligned}
 ```
 
-#### Constraints for Storage Energy Assets $\mathcal{A}_s$
+#### Constraints for Short-term Storage Energy Assets $\mathcal{A}_s^{st}$
 
 ```math
 \begin{aligned}
-s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f \in \mathcal{F}_{in}(a)} p^{eff}_f \cdot v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} \frac{1}{p^{eff}_f} \cdot v^{flow}_{f,rp,k} \quad
-\\ \\ \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+s_{a,rp,k}^{st\_level} = s_{a,rp,k-1}^{st\_level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f \in \mathcal{F}_{in}(a)} p^{eff}_f \cdot v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} \frac{1}{p^{eff}_f} \cdot v^{flow}_{f,rp,k} \quad
+\\ \\ \forall a \in \mathcal{A}_s^{st}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+\end{aligned}
+```
+
+#### Constraints for Long-term Storage Energy Assets $\mathcal{A}_s^{lt}$
+
+```math
+\begin{aligned}
+s_{a,x}^{lt\_level} = s_{a,x-1}^{lt\_level} + SumOfAllChargingDischargingInRPsThatAreMappedToX \quad
+\\ \\ \forall a \in \mathcal{A}_s^{lt}, \forall x \in \mathcal{X}
 \end{aligned}
 ```
 
@@ -174,18 +187,32 @@ v^{flow}_{f,rp,k} \geq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} +
 
 ### Extra Constraints for Energy Storage Assets $\mathcal{A}_s$
 
-#### Upper and Lower Bound Constraints for Storage Level
+#### Upper and Lower Bound Constraints for Short-term Storage Level
 
 ```math
-0 \leq s_{a,rp,k}^{level} \leq p^{init\_storage\_capacity}_{a} + p^{ene\_to\_pow\_ratio}_a \cdot p^{unit\_capacity}_a \cdot v^{investment}_a \quad
-\\ \\ \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
+0 \leq s_{a,rp,k}^{st\_level} \leq p^{init\_storage\_capacity}_{a} + p^{ene\_to\_pow\_ratio}_a \cdot p^{unit\_capacity}_a \cdot v^{investment}_a \quad
+\\ \\ \forall a \in \mathcal{A}_s^{st}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 ```
 
-#### Cycling Constraints for Storage Level
+#### Upper and Lower Bound Constraints for Long-term Storage Level
 
 ```math
-s_{a,rp,k=K}^{level} \geq p^{init\_storage\_level}_{a} \quad
-\\ \\ \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP}
+0 \leq s_{a,x}^{lt\_level} \leq p^{init\_storage\_capacity}_{a} + p^{ene\_to\_pow\_ratio}_a \cdot p^{unit\_capacity}_a \cdot v^{investment}_a \quad
+\\ \\ \forall a \in \mathcal{A}_s^{lt}, \forall x \in \mathcal{X}
+```
+
+#### Cycling Constraints for Short-term Storage Level
+
+```math
+s_{a,rp,k=K}^{st\_level} \geq p^{init\_storage\_level}_{a} \quad
+\\ \\ \forall a \in \mathcal{A}_s^{st}, \forall rp \in \mathcal{RP}
+```
+
+#### Cycling Constraints for Long-term Storage Level
+
+```math
+s_{a,x=X}^{lt\_level} \geq p^{init\_storage\_level}_{a} \quad
+\\ \\ \forall a \in \mathcal{A}_s^{lt}
 ```
 
 ### Extra Constraints for Investments
