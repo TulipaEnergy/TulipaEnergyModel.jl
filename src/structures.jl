@@ -113,6 +113,12 @@ mutable struct EnergyProblem
         Nothing, # Default edge weight
     }
     representative_periods::Vector{RepresentativePeriod}
+    constraints_partitions::Dict{Tuple{String,Int},Vector{TimeBlock}}
     # solver_parameters # Part of #246
     # solved::Bool # Only makes sense after #268
+
+    function EnergyProblem(graph, representative_periods)
+        constraints_partitions = compute_constraints_partitions(graph, representative_periods)
+        return new(graph, representative_periods, constraints_partitions)
+    end
 end

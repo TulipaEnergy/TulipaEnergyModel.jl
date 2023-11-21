@@ -10,6 +10,7 @@ function create_model(energy_problem; verbose = false, write_lp_file = false)
     # Unpacking
     graph = energy_problem.graph
     representative_periods = energy_problem.representative_periods
+    constraints_partitions = energy_problem.constraints_partitions
 
     # Sets unpacking
     A = labels(graph)
@@ -26,23 +27,7 @@ function create_model(energy_problem; verbose = false, write_lp_file = false)
     Fi = filter_flows(:investable, true)
     Ft = filter_flows(:is_transport, true)
     RP = 1:length(representative_periods)
-
-    # For balance equations:
-    # Every asset a ∈ A and every rp ∈ RP will define a collection of flows, and therefore the time steps
-    # can be defined a priori.
-    P = Dict(
-        (a, rp) => begin
-            compute_rp_partition(
-                [
-                    [
-                        graph[u, v].partitions[rp] for
-                        (u, v) in edge_labels(graph) if u == a || v == a
-                    ]
-                    [graph[a].partitions[rp]]
-                ],
-            )
-        end for a in labels(graph), rp = 1:length(representative_periods)
-    )
+    P = constraints_partitions
 
     # Model
     model = Model(HiGHS.Optimizer)

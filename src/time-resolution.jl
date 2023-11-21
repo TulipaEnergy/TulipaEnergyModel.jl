@@ -1,6 +1,29 @@
-export resolution_matrix, compute_rp_partition
+export resolution_matrix, compute_rp_partition, compute_constraints_partitions
 
 using SparseArrays
+
+"""
+    cons_partitions = compute_constraints_partitions(graph, representative_periods)
+
+Computes the constraints partitions using the assets and flows partitions stored in the graph,
+and the representative periods.
+"""
+function compute_constraints_partitions(graph, representative_periods)
+    constraints_partitions = Dict(
+        (a, rp) => begin
+            compute_rp_partition(
+                [
+                    [
+                        graph[u, v].partitions[rp] for
+                        (u, v) in edge_labels(graph) if u == a || v == a
+                    ]
+                    [graph[a].partitions[rp]]
+                ],
+            )
+        end for a in labels(graph), rp = 1:length(representative_periods)
+    )
+    return constraints_partitions
+end
 
 """
     M = resolution_matrix(rp_partition, time_blocks; rp_resolution = 1.0)
