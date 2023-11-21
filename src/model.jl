@@ -305,7 +305,9 @@ function solve_model(model)
 
     return (
         objective_value = objective_value(model),
-        flow = value.(model[:flow]),
         assets_investment = value.(model[:assets_investment]),
+        flow = value.(model[:flow]),
+        flows_investment = value.(model[:flows_investment]),
+        storage_level = value.(model[:storage_level]),
     )
 end
