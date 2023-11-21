@@ -145,20 +145,28 @@ function read_csv_with_schema(file_path, schema; csvargs...)
 end
 
 """
-    save_solution_to_file(output_file, v_investment, unit_capacity)
+    save_solution_to_file(output_folder, graph, solution)
 
-Saves the solution variable v_investment to a file "investments.csv" inside `output_file`.
-The format of each row is `a,v,p*v`, where `a` is the asset indexing `v_investment`, `v`
-is corresponding `v_investment` value, and `p` is the corresponding `unit_capacity` value.
+Saves the solution in CSV files inside `output_folder`.
+
+The following files are created:
+
+  - `investment.csv`: The format of each row is `a,v,p*v`, where `a` is the asset name,
+    `v` is the corresponding asset investment value, and `p` is the corresponding
+    capacity value. Only investable assets are included.
 """
-function save_solution_to_file(output_folder, assets_investment, v_investment, unit_capacity)
+function save_solution_to_file(output_folder, graph, solution)
     # Writing the investment results to a CSV file
     output_file = joinpath(output_folder, "investments.csv")
-    output_table = DataFrame(;
-        a = assets_investment,
-        InstalUnits = [v_investment[a] for a in assets_investment],
-        InstalCap_MW = [unit_capacity[a] * v_investment[a] for a in assets_investment],
-    )
+    output_table = DataFrame(; a = String[], InstalUnits = Int[], InstalCap_MW = Float64[])
+    for a in labels(graph)
+        if !graph[a].investable
+            continue
+        end
+        v = solution.assets_investment[a]
+        p = graph[a].capacity
+        push!(output_table, (a, v, p * v))
+    end
     CSV.write(output_file, output_table)
 
     return

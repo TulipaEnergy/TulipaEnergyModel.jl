@@ -28,10 +28,5 @@ end
 solution = solve_model(model)
 
 SUITE["io"]["output"] = @benchmarkable begin
-    save_solution_to_file(
-        $OUTPUT_FOLDER_BM,
-        $([a for a in labels(energy_problem.graph) if energy_problem.graph[a].investable]),
-        $(solution.assets_investment),
-        $(Dict(a => energy_problem.graph[a].capacity for a in labels(energy_problem.graph))),
-    )
+    save_solution_to_file($OUTPUT_FOLDER_BM, $(energy_problem.graph), $solution)
 end

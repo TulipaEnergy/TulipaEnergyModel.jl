@@ -21,11 +21,6 @@ function run_scenario(
     write_lp_file = false,
 )
     energy_problem, solution = run_scenario(input_folder; write_lp_file)
-    save_solution_to_file(
-        output_folder,
-        [a for a in labels(energy_problem.graph) if energy_problem.graph[a].investable],
-        solution.assets_investment,
-        Dict(a => energy_problem.graph[a].capacity for a in labels(energy_problem.graph)),
-    )
+    save_solution_to_file(output_folder, energy_problem.graph, solution)
     return energy_problem, solution
 end
