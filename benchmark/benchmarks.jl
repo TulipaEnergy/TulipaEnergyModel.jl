@@ -19,13 +19,13 @@ SUITE["model"]["create_model"] = @benchmarkable begin
     create_model($energy_problem)
 end
 
-model = create_model(energy_problem)
+create_model!(energy_problem)
 
 SUITE["model"]["solve_model"] = @benchmarkable begin
-    solve_model($model)
+    solve_model!($energy_problem)
 end
 
-solution = solve_model(model)
+solution = solve_model!(energy_problem)
 
 SUITE["io"]["output"] = @benchmarkable begin
     save_solution_to_file($OUTPUT_FOLDER_BM, $(energy_problem.graph), $solution)
