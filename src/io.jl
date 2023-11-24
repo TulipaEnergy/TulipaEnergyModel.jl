@@ -1,12 +1,28 @@
 export create_energy_problem_from_csv_folder,
-    create_graph, save_solution_to_file, compute_assets_partitions!, compute_flows_partitions!
+    create_graph_and_representative_periods_from_csv_folder,
+    create_graph,
+    save_solution_to_file,
+    compute_assets_partitions!,
+    compute_flows_partitions!
 
 """
     energy_problem = create_energy_problem_from_csv_folder(input_folder)
 
 Returns the [`TulipaEnergyModel.EnergyProblem`](@ref) reading all data from CSV files
 in the `input_folder`.
+This is a wrapper around `create_graph_and_representative_periods_from_csv_folder` that creates
+the `EnergyProblem` structure.
+"""
+function create_energy_problem_from_csv_folder(input_folder::AbstractString)
+    graph, representative_periods =
+        create_graph_and_representative_periods_from_csv_folder(input_folder)
+    return EnergyProblem(graph, representative_periods)
+end
 
+"""
+    graph, representative_periods = create_graph_and_representative_periods_from_csv_folder(input_folder)
+
+Returns the `graph` structure that holds all data, and the `representative_periods` array.
 The following files are expected to exist in the input folder:
 
   - `assets-data.csv`: Following the [`TulipaEnergyModel.AssetData`](@ref) specification.
@@ -17,7 +33,7 @@ The following files are expected to exist in the input folder:
   - `flows-paritions.csv`: Following the [`TulipaEnergyModel.FlowPartitionData`](@ref) specification.
   - `rep-periods-data.csv`: Following the [`TulipaEnergyModel.RepPeriodData`](@ref) specification.
 
-The `energy_problem` contains:
+The returned structures are:
 
   - `graph`: a MetaGraph with the following information:
 
@@ -29,7 +45,7 @@ The `energy_problem` contains:
   - `representative_periods`: An array of
     [`TulipaEnergyModel.RepresentativePeriod`](@ref) ordered by their IDs.
 """
-function create_energy_problem_from_csv_folder(input_folder::AbstractString)
+function create_graph_and_representative_periods_from_csv_folder(input_folder::AbstractString)
     # Read data
     fillpath(filename) = joinpath(input_folder, filename)
 
@@ -119,7 +135,7 @@ function create_energy_problem_from_csv_folder(input_folder::AbstractString)
         graph[u, v].profiles[rp_id] = profile_data
     end
 
-    return EnergyProblem(graph, representative_periods)
+    return graph, representative_periods
 end
 
 """

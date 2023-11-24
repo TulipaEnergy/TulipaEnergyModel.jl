@@ -7,7 +7,6 @@ export run_scenario
 Run the scenario in the given input_folder and return the sets, parameters, and solution.
 If the output_folder is specified, save the sets, parameters, and solution to the output_folder.
 """
-
 function run_scenario(input_folder::AbstractString; write_lp_file = false)
     energy_problem = create_energy_problem_from_csv_folder(input_folder)
     create_model!(energy_problem; write_lp_file = write_lp_file)
