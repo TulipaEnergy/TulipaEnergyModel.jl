@@ -1,8 +1,8 @@
-,{producer;consumer},{true;false},{true;false},kEUR/MW/year,MW,MW,MW,MWh,MWh,h
-name,type,active,investable,investment_cost,capacity,initial_capacity,peak_demand,initial_storage_capacity,initial_storage_level,energy_to_power_ratio
-ocgt,producer,true,true,25,100,0,0,0,0,0
-ccgt,producer,true,true,40,400,0,0,0,0,0
-wind,producer,true,true,70,50,0,0,0,0,0
-solar,producer,true,true,50,10,0,0,0,0,0
-ens,producer,true,false,0,0,1115,0,0,0,0
-demand,consumer,true,false,0,0,0,1115,0,0,0
+,{producer;consumer},{true;false},{true;false},kEUR/MW/year,MW,MW,MW,MW,MWh,MWh,h
+name,type,active,investable,investment_cost,investment_limit,capacity,initial_capacity,peak_demand,initial_storage_capacity,initial_storage_level,energy_to_power_ratio
+ocgt,producer,true,true,25,10000,100,0,0,0,0,0
+ccgt,producer,true,true,40,10000,400,0,0,0,0,0
+wind,producer,true,true,70,10000,50,0,0,0,0,0
+solar,producer,true,true,50,10000,10,0,0,0,0,0
+ens,producer,true,false,0,10000,0,1115,0,0,0,0
+demand,consumer,true,false,0,10000,0,0,1115,0,0,0

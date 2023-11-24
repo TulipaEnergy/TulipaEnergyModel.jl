@@ -68,6 +68,7 @@ function create_graph_and_representative_periods_from_csv_folder(input_folder::A
             row.type,
             row.investable,
             row.investment_cost,
+            row.investment_limit,
             row.capacity,
             row.initial_capacity,
             row.peak_demand,
