@@ -280,6 +280,28 @@ function create_model(
         set_lower_bound(storage_level[a, rp, P[(a, rp)][end]], graph[a].initial_storage_level)
     end
 
+    # Investment limits
+    for a ∈ Ai
+        if graph[a].capacity > 0
+            set_upper_bound(assets_investment[a], graph[a].investment_limit / graph[a].capacity)
+        end
+    end
+
+    @expression(
+        model,
+        flow_max_capacity[(u, v) ∈ F],
+        max(graph[u, v].export_capacity, graph[u, v].import_capacity)
+    )
+
+    for (u, v) ∈ Fi
+        if flow_max_capacity[(u, v)] > 0
+            set_upper_bound(
+                flows_investment[(u, v)],
+                graph[u, v].investment_limit / flow_max_capacity[(u, v)],
+            )
+        end
+    end
+
     if write_lp_file
         write_to_file(model, "model.lp")
     end
