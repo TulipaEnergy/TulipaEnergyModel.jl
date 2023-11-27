@@ -29,6 +29,7 @@ NOTE: Asset types are mutually exclusive.
 Name|Domain|Description|Units
  ---|---|---|---
 $p^{investment\_cost}_{a}$     | $\mathcal{A}_i$    | Investment cost  of asset units         | [kEUR/MW/year]
+$p^{investment\_limit}_{a}$    | $\mathcal{A}_i$    | Investment limit of asset units         | [MW]
 $p^{unit\_capacity}_{a}$       | $\mathcal{A}$      | Capacity of asset units                 | [MW]
 $p^{peak\_demand}_{a}$         | $\mathcal{A}_c$    | Peak demand                             | [MW]
 $p^{init\_capacity}_{a}$       | $\mathcal{A}$      | Initial capacity of asset units         | [MW]
@@ -185,4 +186,20 @@ v^{flow}_{f,rp,k} \geq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} +
 ```math
 s_{a,rp,k=K}^{level} \geq p^{init\_storage\_level}_{a} \quad
 \\ \\ \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP}
+```
+
+### Extra Constraints for Investments
+
+#### Upper Bound for $\mathcal{A}_i$
+
+```math
+v^{investment}_a \leq \frac{p^{investment\_limit}_a}{ p^{unit\_capacity}_a} \quad
+\\ \\ \forall a \in \mathcal{A}_i
+```
+
+#### Upper Bound for $\mathcal{F}_i$
+
+```math
+v^{investment}_f \leq \frac{p^{investment\_limit}_f}{\max\{p^{export\_capacity}_f,p^{import\_capacity}_f\}} \quad
+\\ \\ \forall f \in \mathcal{F}_i
 ```
