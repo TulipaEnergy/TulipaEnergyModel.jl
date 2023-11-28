@@ -74,7 +74,7 @@ function create_model(
         sum(
             representative_periods[rp].weight *
             graph[u, v].variable_cost *
-            flow[(u, v), rp, B_flow] for (u, v) ∈ F, rp ∈ RP,
+            flow[(u, v), rp, B_flow] * length(B_flow) for (u, v) ∈ F, rp ∈ RP,
             B_flow ∈ graph[u, v].partitions[rp]
         )
     )
