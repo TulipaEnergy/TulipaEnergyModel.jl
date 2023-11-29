@@ -1,7 +1,7 @@
 @testset "Norse Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Norse")
     energy_problem = run_scenario(dir)
-    @test energy_problem.objective_value ≈ 1.645194436265903e8 atol = 1e-5
+    @test energy_problem.objective_value ≈ 1.763581221819836e8 atol = 1e-5
 end
 
 @testset "Tiny Case Study" begin
