@@ -1,5 +1,2 @@
 ,,,
 asset,rep_period_id,specification,partition
-wind,1,uniform,2
-solar,1,math,1x5+14x1+1x5
-demand,1,explicit,1;2;3;1;2;3;1;2;3;1;2;3
