@@ -1,7 +1,8 @@
 export plot_single_flow, plot_flow_graph, plot_assets_balance
 
 function plot_single_flow(graph, asset_from::String, asset_to::String, rp::Int64)
-    plot(rp_time_thingy)
+    flow_data =
+        plot(x, y; title = string("Flow from ", asset_from, " to ", asset_to), legend = false)
 end
 
 #function plot_single_flow(
