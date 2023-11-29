@@ -287,12 +287,17 @@ function create_model(
         end
     end
 
+    @expression(
+        model,
+        flow_max_capacity[(u, v) ∈ F],
+        max(graph[u, v].export_capacity, graph[u, v].import_capacity)
+    )
+
     for (u, v) ∈ Fi
         if flow_max_capacity[(u, v)] > 0 && !ismissing(graph[u, v].investment_limit)
             set_upper_bound(
                 flows_investment[(u, v)],
-                graph[u, v].investment_limit /
-                max(graph[u, v].export_capacity, graph[u, v].import_capacity),
+                graph[u, v].investment_limit / flow_max_capacity[(u, v)],
             )
         end
     end
