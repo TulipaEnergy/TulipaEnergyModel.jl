@@ -289,7 +289,7 @@ function create_model(
 
     @expression(
         model,
-        flow_max_capacity[(u, v) ∈ F],
+        flow_max_capacity[(u, v) ∈ Fi],
         max(graph[u, v].export_capacity, graph[u, v].import_capacity)
     )
 
