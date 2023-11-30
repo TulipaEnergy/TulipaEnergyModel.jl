@@ -1,4 +1,0 @@
-,,,,
-from_asset,to_asset,rep_period_id,specification,partition
-solar,demand,1,uniform,3
-wind,demand,1,uniform,4
