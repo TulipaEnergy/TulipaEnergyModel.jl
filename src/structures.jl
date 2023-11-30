@@ -22,6 +22,7 @@ mutable struct GraphAssetData
     type::String
     investable::Bool
     investment_cost::Float64
+    investment_limit::Union{Missing,Float64}
     capacity::Float64
     initial_capacity::Float64
     peak_demand::Float64
@@ -39,6 +40,7 @@ mutable struct GraphAssetData
         type,
         investable,
         investment_cost,
+        investment_limit,
         capacity,
         initial_capacity,
         peak_demand,
@@ -52,6 +54,7 @@ mutable struct GraphAssetData
             type,
             investable,
             investment_cost,
+            investment_limit,
             capacity,
             initial_capacity,
             peak_demand,
@@ -76,6 +79,7 @@ mutable struct GraphFlowData
     investable::Bool
     variable_cost::Float64
     investment_cost::Float64
+    investment_limit::Union{Missing,Float64}
     import_capacity::Float64
     export_capacity::Float64
     unit_capacity::Float64
@@ -96,6 +100,7 @@ function GraphFlowData(flow_data::FlowData)
         flow_data.investable,
         flow_data.variable_cost,
         flow_data.investment_cost,
+        flow_data.investment_limit,
         flow_data.import_capacity,
         flow_data.export_capacity,
         max(flow_data.export_capacity, flow_data.import_capacity),

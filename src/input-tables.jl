@@ -2,17 +2,18 @@
 Schema for the assets-data.csv file.
 """
 struct AssetData
-    name::String                      # Name of Asset (geographical?)
-    type::String                      # Producer/Consumer - maybe an enum?
-    active::Bool                      # Active or decomissioned
-    investable::Bool                  # Whether able to invest
-    investment_cost::Float64          # kEUR/MW/year
-    capacity::Float64                 # MW
-    initial_capacity::Float64         # MW
-    peak_demand::Float64              # MW
-    initial_storage_capacity::Float64 # MWh
-    initial_storage_level::Float64    # MWh
-    energy_to_power_ratio::Float64    # Hours
+    name::String                                # Name of Asset (geographical?)
+    type::String                                # Producer/Consumer - maybe an enum?
+    active::Bool                                # Active or decomissioned
+    investable::Bool                            # Whether able to invest
+    investment_cost::Float64                    # kEUR/MW/year
+    investment_limit::Union{Missing,Float64}    # MW
+    capacity::Float64                           # MW
+    initial_capacity::Float64                   # MW
+    peak_demand::Float64                        # MW
+    initial_storage_capacity::Float64           # MWh
+    initial_storage_level::Float64              # MWh
+    energy_to_power_ratio::Float64              # Hours
 end
 
 """
@@ -39,18 +40,19 @@ end
 Schema for the flows-data.csv file.
 """
 struct FlowData
-    carrier::String             # (Optional?) Energy carrier
-    from_asset::String          # Name of Asset
-    to_asset::String            # Name of Asset
-    active::Bool                # Active or decomissioned
-    is_transport::Bool          # Whether a transport flow
-    investable::Bool            # Whether able to invest
-    variable_cost::Float64      # kEUR/MWh
-    investment_cost::Float64    # kEUR/MW/year
-    export_capacity::Float64    # MW
-    import_capacity::Float64    # MW
-    initial_capacity::Float64   # MW
-    efficiency::Float64         # p.u. (per unit)
+    carrier::String                             # (Optional?) Energy carrier
+    from_asset::String                          # Name of Asset
+    to_asset::String                            # Name of Asset
+    active::Bool                                # Active or decomissioned
+    is_transport::Bool                          # Whether a transport flow
+    investable::Bool                            # Whether able to invest
+    variable_cost::Float64                      # kEUR/MWh
+    investment_cost::Float64                    # kEUR/MW/year
+    investment_limit::Union{Missing,Float64}    # MW
+    export_capacity::Float64                    # MW
+    import_capacity::Float64                    # MW
+    initial_capacity::Float64                   # MW
+    efficiency::Float64                         # p.u. (per unit)
 end
 
 """
