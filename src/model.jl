@@ -73,7 +73,7 @@ function create_model(
     Fi = filter_flows(:investable, true)
     Ft = filter_flows(:is_transport, true)
     RP = 1:length(representative_periods)
-    P = constraints_partitions
+    P = constraints_partitions["lowest_resolution"]
 
     # Model
     model = Model(HiGHS.Optimizer)
@@ -343,7 +343,9 @@ function solve_model!(energy_problem::EnergyProblem)
             graph[a].investment = round(Int, solution.assets_investment[a])
         end
         if graph[a].type == "storage"
-            for rp_id = 1:length(rps), I in energy_problem.constraints_partitions[(a, rp_id)]
+            for rp_id = 1:length(rps),
+                I in energy_problem.constraints_partitions["lowest_resolution"][(a, rp_id)]
+
                 graph[a].storage_level[(rp_id, I)] = solution.storage_level[(a, rp_id, I)]
             end
         end
@@ -394,7 +396,7 @@ The `solution` object is a NamedTuple with the following fields:
     To create a vector with the all values of `storage_level` for a given `a` and `rp`, one can run
 
     ```
-    [solution.storage_level[a, rp, B] for B in constraints_partitions[(a, rp)]]
+    [solution.storage_level[a, rp, B] for B in constraints_partitions["lowest_resolution"][(a, rp)]]
     ```
 """
 function solve_model(model::JuMP.Model)

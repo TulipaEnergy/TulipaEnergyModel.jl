@@ -8,7 +8,7 @@ using SparseArrays
 Computes the constraints partitions using the assets and flows partitions stored in the graph,
 and the representative periods.
 """
-function compute_constraints_partitions(graph, representative_periods)
+function compute_constraints_partitions(graph, representative_periods; strategy = :greedy)
     constraints_partitions = Dict(
         (a, rp) => begin
             compute_rp_partition(
@@ -18,7 +18,8 @@ function compute_constraints_partitions(graph, representative_periods)
                         (u, v) in edge_labels(graph) if u == a || v == a
                     ]
                     [graph[a].partitions[rp]]
-                ],
+                ];
+                strategy = strategy,
             )
         end for a in labels(graph), rp = 1:length(representative_periods)
     )
