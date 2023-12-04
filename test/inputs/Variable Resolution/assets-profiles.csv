@@ -1,0 +1,14 @@
+,,,p.u.
+asset,rep_period_id,time_step,value
+wind,1,1,0.11
+wind,1,2,0.11
+wind,1,3,0.11
+wind,1,4,0.11
+wind,1,5,0.1
+wind,1,6,0.1
+demand,1,1,0.85
+demand,1,2,0.85
+demand,1,3,0.85
+demand,1,4,0.70
+demand,1,5,0.70
+demand,1,6,0.70

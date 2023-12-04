@@ -10,6 +10,12 @@ end
     @test energy_problem.objective_value ≈ 269238.43825 atol = 1e-5
 end
 
+@testset "Tiny Variable Resolution Case Study" begin
+    dir = joinpath(INPUT_FOLDER, "Variable Resolution")
+    energy_problem = run_scenario(dir)
+    @test energy_problem.objective_value ≈ 28.43650 atol = 1e-5
+end
+
 @testset "Infeasible Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
     energy_problem = create_energy_problem_from_csv_folder(dir)
