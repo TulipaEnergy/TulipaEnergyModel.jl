@@ -26,6 +26,38 @@ function create_model(
     verbose = false,
     write_lp_file = false,
 )
+
+    # Helper functions
+    # Computes the duration of the `block` that is within the `period`, and
+    # multiply by the resolution of the representative period `rp`.
+    # It is equivalent to finding the indexes of these values in the matrix.
+    function duration(B1, B2, rp)
+        return length(B1 ∩ B2) * representative_periods[rp].resolution
+    end
+
+    function duration(B, rp)
+        return length(B) * representative_periods[rp].resolution
+    end
+
+    # Sums the profile of representative period rp over the time block B
+    # Uses the default_value when that profile does not exist.
+    function profile_sum(profiles, rp, B, default_value)
+        if haskey(profiles, rp)
+            return sum(profiles[rp][B])
+        else
+            return length(B) * default_value
+        end
+    end
+
+    function assets_profile_sum(a, rp, B, default_value)
+        return profile_sum(graph[a].profiles, rp, B, default_value)
+    end
+
+    # Same as above but for flow
+    function flows_profile_sum(u, v, rp, B, default_value)
+        return profile_sum(graph[u, v].profiles, rp, B, default_value)
+    end
+
     # Sets unpacking
     A = labels(graph)
     F = edge_labels(graph)
@@ -55,7 +87,7 @@ function create_model(
 
     # TODO: Fix storage_level[As, RP, 0] = 0
 
-    # Expressions
+    # Expressions for the objective function
     assets_investment_cost = @expression(
         model,
         sum(graph[a].investment_cost * graph[a].capacity * assets_investment[a] for a ∈ Ai)
@@ -73,10 +105,10 @@ function create_model(
         model,
         sum(
             representative_periods[rp].weight *
-            representative_periods[rp].resolution *
+            duration(B_flow, rp) *
             graph[u, v].variable_cost *
-            flow[(u, v), rp, B_flow] *
-            length(B_flow) for (u, v) ∈ F, rp ∈ RP, B_flow ∈ graph[u, v].partitions[rp]
+            flow[(u, v), rp, B_flow] for (u, v) ∈ F, rp ∈ RP,
+            B_flow ∈ graph[u, v].partitions[rp]
         )
     )
 
@@ -84,32 +116,6 @@ function create_model(
     @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
 
     # Constraints
-    # Computes the duration of the `block` that is within the `period`, and
-    # multiply by the resolution of the representative period `rp`.
-    # It is equivalent to finding the indexes of these values in the matrix.
-    function duration(B1, B2, rp)
-        return length(B1 ∩ B2) * representative_periods[rp].resolution
-    end
-
-    # Sums the profile of representative period rp over the time block B
-    # Uses the default_value when that profile does not exist.
-    function profile_sum(profiles, rp, B, default_value)
-        if haskey(profiles, rp)
-            return sum(profiles[rp][B])
-        else
-            return length(B) * default_value
-        end
-    end
-
-    function assets_profile_sum(a, rp, B, default_value)
-        return profile_sum(graph[a].profiles, rp, B, default_value)
-    end
-
-    # Same as above but for flow
-    function flows_profile_sum(u, v, rp, B, default_value)
-        return profile_sum(graph[u, v].profiles, rp, B, default_value)
-    end
-
     @expression(
         model,
         incoming_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
@@ -250,7 +256,7 @@ function create_model(
     @constraint(
         model,
         transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]],
-        flow[f, rp, B_flow] ≤ upper_bound_transport_flow[f, rp, B_flow]
+        duration(B_flow, rp) * flow[f, rp, B_flow] ≤ upper_bound_transport_flow[f, rp, B_flow]
     )
     @expression(
         model,
@@ -263,7 +269,7 @@ function create_model(
     @constraint(
         model,
         transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]],
-        flow[f, rp, B_flow] ≥ -lower_bound_transport_flow[f, rp, B_flow]
+        duration(B_flow, rp) * flow[f, rp, B_flow] ≥ -lower_bound_transport_flow[f, rp, B_flow]
     )
 
     # Extra constraints
