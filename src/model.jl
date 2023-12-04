@@ -120,36 +120,36 @@ function create_model(
         model,
         incoming_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[(u, v), rp, B_flow] for
-            (u, v) in F, B_flow ∈ graph[u, v].partitions[rp] if
-            v == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] for
+            u in inneighbor_labels(graph, a), B_flow ∈ graph[u, a].partitions[rp] if
+            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
     @expression(
         model,
         outgoing_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[(u, v), rp, B_flow] for
-            (u, v) in F, B_flow ∈ graph[u, v].partitions[rp] if
-            u == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] for
+            v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp] if
+            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
     @expression(
         model,
         incoming_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[(u, v), rp, B_flow] * graph[u, v].efficiency for
-            (u, v) in F, B_flow ∈ graph[u, v].partitions[rp] if
-            v == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] * graph[u, a].efficiency for
+            u in inneighbor_labels(graph, a), B_flow ∈ graph[u, a].partitions[rp] if
+            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
     @expression(
         model,
         outgoing_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[(u, v), rp, B_flow] / graph[u, v].efficiency for
-            (u, v) in F, B_flow ∈ graph[u, v].partitions[rp] if
-            u == a && B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] / graph[a, v].efficiency for
+            v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp] if
+            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
 
@@ -226,14 +226,14 @@ function create_model(
         model,
         upper_bound_asset[
             a ∈ A,
-            (u, v) ∈ F,
+            v ∈ outneighbor_labels(graph, a),
             rp ∈ RP,
             B ∈ P[(a, rp)];
-            !(a ∈ Ah ∪ Ac) && u == a && (u, v) ∉ Ft,
+            !(a ∈ Ah ∪ Ac) && (a, v) ∉ Ft,
         ],
         sum(
-            duration(B, B_flow, rp) * flow[(u, v), rp, B_flow] for
-            B_flow ∈ graph[u, v].partitions[rp] if B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] for
+            B_flow ∈ graph[a, v].partitions[rp] if B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         ) ≤ assets_profile_times_capacity[a, rp, B]
     )
 
