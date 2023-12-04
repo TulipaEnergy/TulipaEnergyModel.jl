@@ -368,6 +368,19 @@ If you want to manually run the benchmarks, you can do the following:
   results = run(SUITE, verbose=true)
   ```
 
+### Profiling
+
+To profile the code in a more manual way, here are some tips:
+
+- Wrap your code into functions.
+- Call the function once to precompile it. This must be done after every change to the function.
+- Prefix the function call with `@time`. This is the most basic timing, part of Julia.
+- Prefix the function call with `@btime`. This is part of the BenchmarkTools package, which you might need to install. `@btime` will evaluate the function a few times to give a better estimate.
+- Prefix the function call with `@benchmark`. Also part of BenchmarkTools. This will produce a nice histogram of the times and give more information. `@btime` and `@benchmark` do the same thing in the background.
+- Call `@profview`. This needs to be done in VSCode, or using the ProfileView package. This will create a flame graph, where each function call is a block. The size of the block is proportional to the aggregate time it takes to run. The blocks below a block are functions called inside the function above.
+
+See the file <benchmark/profiling.jl> for an example of profiling code.
+
 ## Building the Documentation Locally
 
 To build and see the documentation locally, first, navigate to the `docs` folder
