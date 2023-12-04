@@ -142,7 +142,6 @@ mutable struct EnergyProblem
     and the other fields and nothing or set to default values.
     """
     function EnergyProblem(graph, representative_periods)
-
         constraints_partitions = Dict{String,Dict{Tuple{String,Int},Vector{TimeBlock}}}()
 
         constraints_partitions["lowest_resolution"] =
