@@ -91,6 +91,10 @@ function create_model(
         return length(B1 ∩ B2) * representative_periods[rp].resolution
     end
 
+    function duration(B, rp)
+        return length(B) * representative_periods[rp].resolution
+    end
+
     # Sums the profile of representative period rp over the time block B
     # Uses the default_value when that profile does not exist.
     function profile_sum(profiles, rp, B, default_value)
@@ -250,7 +254,7 @@ function create_model(
     @constraint(
         model,
         transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]],
-        flow[f, rp, B_flow] ≤ upper_bound_transport_flow[f, rp, B_flow]
+        duration(B_flow, rp) * flow[f, rp, B_flow] ≤ upper_bound_transport_flow[f, rp, B_flow]
     )
     @expression(
         model,
@@ -263,7 +267,7 @@ function create_model(
     @constraint(
         model,
         transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]],
-        flow[f, rp, B_flow] ≥ -lower_bound_transport_flow[f, rp, B_flow]
+        duration(B_flow, rp) * flow[f, rp, B_flow] ≥ -lower_bound_transport_flow[f, rp, B_flow]
     )
 
     # Extra constraints
