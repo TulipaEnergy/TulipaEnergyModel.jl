@@ -203,13 +203,20 @@ function compute_rp_partition(
     block_start = 1
     if strategy == :greedy
         while block_start ≤ rp_end
-            # The first range end larger than period_start for each range in each time_blocks.
-            breakpoints = (
-                first(r[end] for r in partition if r[end] ≥ block_start) for
-                partition in partitions
-            )
-            block_end = maximum(breakpoints)
-            @assert block_end ≥ block_start
+            # The next block end must be ≥ block start
+            block_end = block_start
+            for partition in partitions
+                # For this partition, find the first block that ends after block_start
+                for B in partition
+                    tentative_end = B[end]
+                    if tentative_end ≥ block_start
+                        if tentative_end > block_end # Better block
+                            block_end = tentative_end
+                        end
+                        break
+                    end
+                end
+            end
             push!(rp_partition, block_start:block_end)
             block_start = block_end + 1
         end
