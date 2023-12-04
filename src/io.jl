@@ -26,10 +26,10 @@ Returns the `graph` structure that holds all data, and the `representative_perio
 The following files are expected to exist in the input folder:
 
   - `assets-data.csv`: Following the [`TulipaEnergyModel.AssetData`](@ref) specification.
-  - `assets-profiles.csv`: Following the [`TulipaEnergyModel.AssetProfiles`](@ref) specification.
+  - `assets-profiles.csv`: Following the [`TulipaEnergyModel.AssetProfiles`](@ref) specification. The profiles should be ordered by time step.
   - `assets-paritions.csv`: Following the [`TulipaEnergyModel.AssetPartitionData`](@ref) specification.
   - `flows-data.csv`: Following the [`TulipaEnergyModel.FlowData`](@ref) specification.
-  - `flows-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification.
+  - `flows-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification. The profiles should be ordered by time step.
   - `flows-paritions.csv`: Following the [`TulipaEnergyModel.FlowPartitionData`](@ref) specification.
   - `rep-periods-data.csv`: Following the [`TulipaEnergyModel.RepPeriodData`](@ref) specification.
 
@@ -116,23 +116,21 @@ function create_graph_and_representative_periods_from_csv_folder(input_folder::A
     # Unique (asset, rp) combination on the profiles:
     asset_and_rp_with_profiles = assets_profiles_df[:, [:asset, :rep_period_id]]
     for (a, rp_id) in eachrow(asset_and_rp_with_profiles)
-        # Get all profile data for asset=id and rp=rp_id
+        # Get all profile data for asset=a and rp=rp_id
         matching = (assets_profiles_df.asset .== a) .& (assets_profiles_df.rep_period_id .== rp_id)
-        # Sort the matching data by time_step and get the values
-        profile_data = sort(assets_profiles_df[matching, :], :time_step).value
-        @assert length(profile_data) == length(representative_periods[rp_id].time_steps)
+        profile_data = assets_profiles_df[matching, :].value
         graph[a].profiles[rp_id] = profile_data
     end
 
     # Unique (flow, rp) combination on the profiles:
     flow_and_rp_with_profiles = flows_profiles_df[:, [:from_asset, :to_asset, :rep_period_id]]
     for (u, v, rp_id) in eachrow(flow_and_rp_with_profiles)
+        # Get all profile data for flow=(u,v) and rp=rp_id
         matching =
             (flows_profiles_df.from_asset .== u) .&
             (flows_profiles_df.to_asset .== v) .&
             (flows_profiles_df.rep_period_id .== rp_id)
-        profile_data = sort(flows_profiles_df[matching, :], :time_step).value
-        @assert length(profile_data) == length(representative_periods[rp_id].time_steps)
+        profile_data = flows_profiles_df[matching, :].value
         graph[u, v].profiles[rp_id] = profile_data
     end
 
