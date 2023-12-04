@@ -26,64 +26,8 @@ function create_model(
     verbose = false,
     write_lp_file = false,
 )
-    # Sets unpacking
-    A = labels(graph)
-    F = edge_labels(graph)
-    filter_assets(key, value) = Iterators.filter(a -> getfield(graph[a], key) == value, A)
-    filter_flows(key, value) = Iterators.filter(f -> getfield(graph[f...], key) == value, F)
 
-    Ac = filter_assets(:type, "consumer")
-    Ap = filter_assets(:type, "producer")
-    Ai = filter_assets(:investable, true)
-    As = filter_assets(:type, "storage")
-    Ah = filter_assets(:type, "hub")
-    Acv = filter_assets(:type, "conversion")
-    Fi = filter_flows(:investable, true)
-    Ft = filter_flows(:is_transport, true)
-    RP = 1:length(representative_periods)
-    P = constraints_partitions
-
-    # Model
-    model = Model(HiGHS.Optimizer)
-    set_attribute(model, "output_flag", verbose)
-
-    # Variables
-    @variable(model, flow[(u, v) ∈ F, rp ∈ RP, graph[u, v].partitions[rp]])
-    @variable(model, 0 ≤ assets_investment[Ai], Int)  #number of installed asset units [N]
-    @variable(model, 0 ≤ flows_investment[Fi], Int)
-    @variable(model, 0 ≤ storage_level[a ∈ As, rp ∈ RP, P[(a, rp)]])
-
-    # TODO: Fix storage_level[As, RP, 0] = 0
-
-    # Expressions
-    assets_investment_cost = @expression(
-        model,
-        sum(graph[a].investment_cost * graph[a].capacity * assets_investment[a] for a ∈ Ai)
-    )
-
-    flows_investment_cost = @expression(
-        model,
-        sum(
-            graph[u, v].investment_cost * graph[u, v].unit_capacity * flows_investment[(u, v)]
-            for (u, v) ∈ Fi
-        )
-    )
-
-    flows_variable_cost = @expression(
-        model,
-        sum(
-            representative_periods[rp].weight *
-            representative_periods[rp].resolution *
-            graph[u, v].variable_cost *
-            flow[(u, v), rp, B_flow] *
-            length(B_flow) for (u, v) ∈ F, rp ∈ RP, B_flow ∈ graph[u, v].partitions[rp]
-        )
-    )
-
-    # Objective function
-    @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
-
-    # Constraints
+    # Helper functions
     # Computes the duration of the `block` that is within the `period`, and
     # multiply by the resolution of the representative period `rp`.
     # It is equivalent to finding the indexes of these values in the matrix.
@@ -114,6 +58,64 @@ function create_model(
         return profile_sum(graph[u, v].profiles, rp, B, default_value)
     end
 
+    # Sets unpacking
+    A = labels(graph)
+    F = edge_labels(graph)
+    filter_assets(key, value) = Iterators.filter(a -> getfield(graph[a], key) == value, A)
+    filter_flows(key, value) = Iterators.filter(f -> getfield(graph[f...], key) == value, F)
+
+    Ac = filter_assets(:type, "consumer")
+    Ap = filter_assets(:type, "producer")
+    Ai = filter_assets(:investable, true)
+    As = filter_assets(:type, "storage")
+    Ah = filter_assets(:type, "hub")
+    Acv = filter_assets(:type, "conversion")
+    Fi = filter_flows(:investable, true)
+    Ft = filter_flows(:is_transport, true)
+    RP = 1:length(representative_periods)
+    P = constraints_partitions
+
+    # Model
+    model = Model(HiGHS.Optimizer)
+    set_attribute(model, "output_flag", verbose)
+
+    # Variables
+    @variable(model, flow[(u, v) ∈ F, rp ∈ RP, graph[u, v].partitions[rp]])
+    @variable(model, 0 ≤ assets_investment[Ai], Int)  #number of installed asset units [N]
+    @variable(model, 0 ≤ flows_investment[Fi], Int)
+    @variable(model, 0 ≤ storage_level[a ∈ As, rp ∈ RP, P[(a, rp)]])
+
+    # TODO: Fix storage_level[As, RP, 0] = 0
+
+    # Expressions for the objective function
+    assets_investment_cost = @expression(
+        model,
+        sum(graph[a].investment_cost * graph[a].capacity * assets_investment[a] for a ∈ Ai)
+    )
+
+    flows_investment_cost = @expression(
+        model,
+        sum(
+            graph[u, v].investment_cost * graph[u, v].unit_capacity * flows_investment[(u, v)]
+            for (u, v) ∈ Fi
+        )
+    )
+
+    flows_variable_cost = @expression(
+        model,
+        sum(
+            representative_periods[rp].weight *
+            duration(B_flow, rp) *
+            graph[u, v].variable_cost *
+            flow[(u, v), rp, B_flow] for (u, v) ∈ F, rp ∈ RP,
+            B_flow ∈ graph[u, v].partitions[rp]
+        )
+    )
+
+    # Objective function
+    @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
+
+    # Constraints
     @expression(
         model,
         incoming_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
