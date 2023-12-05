@@ -209,8 +209,9 @@ function create_model(
         model,
         incoming_flow_highest_resolution[a ∈ A, rp ∈ RP, B ∈ Ph[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] for u in inneighbor_labels(graph, a),
-            B_flow ∈ graph[u, a].partitions[rp]
+            duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] for
+            u in inneighbor_labels(graph, a), B_flow ∈ graph[u, a].partitions[rp] if
+            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
 
@@ -219,7 +220,8 @@ function create_model(
         outgoing_flow_highest_resolution[a ∈ A, rp ∈ RP, B ∈ Ph[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] for
-            v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp]
+            v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp] if
+            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
 
