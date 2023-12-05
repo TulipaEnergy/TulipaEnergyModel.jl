@@ -73,7 +73,7 @@ function create_model(
     Fi = filter_flows(:investable, true)
     Ft = filter_flows(:is_transport, true)
     RP = 1:length(representative_periods)
-    P = constraints_partitions["lowest_resolution"]
+    Pl = constraints_partitions["lowest_resolution"]
 
     # Model
     model = Model(HiGHS.Optimizer)
@@ -83,7 +83,7 @@ function create_model(
     @variable(model, flow[(u, v) ∈ F, rp ∈ RP, graph[u, v].partitions[rp]])
     @variable(model, 0 ≤ assets_investment[Ai], Int)  #number of installed asset units [N]
     @variable(model, 0 ≤ flows_investment[Fi], Int)
-    @variable(model, 0 ≤ storage_level[a ∈ As, rp ∈ RP, P[(a, rp)]])
+    @variable(model, 0 ≤ storage_level[a ∈ As, rp ∈ RP, Pl[(a, rp)]])
 
     # TODO: Fix storage_level[As, RP, 0] = 0
 
@@ -118,7 +118,7 @@ function create_model(
     # Constraints
     @expression(
         model,
-        incoming_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
+        incoming_flow[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] for
             u in inneighbor_labels(graph, a), B_flow ∈ graph[u, a].partitions[rp] if
@@ -127,7 +127,7 @@ function create_model(
     )
     @expression(
         model,
-        outgoing_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
+        outgoing_flow[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] for
             v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp] if
@@ -136,7 +136,7 @@ function create_model(
     )
     @expression(
         model,
-        incoming_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
+        incoming_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] * graph[u, a].efficiency for
             u in inneighbor_labels(graph, a), B_flow ∈ graph[u, a].partitions[rp] if
@@ -145,7 +145,7 @@ function create_model(
     )
     @expression(
         model,
-        outgoing_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
+        outgoing_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] / graph[a, v].efficiency for
             v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp] if
@@ -155,7 +155,7 @@ function create_model(
 
     @expression(
         model,
-        assets_profile_times_capacity[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
+        assets_profile_times_capacity[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         assets_profile_sum(a, rp, B, 1.0) *
         (graph[a].initial_capacity + (a ∈ Ai ? (graph[a].capacity * assets_investment[a]) : 0.0))
     )
@@ -168,7 +168,7 @@ function create_model(
 
     @expression(
         model,
-        storage_inflows[a ∈ As, rp ∈ RP, T ∈ P[(a, rp)]],
+        storage_inflows[a ∈ As, rp ∈ RP, T ∈ Pl[(a, rp)]],
         assets_profile_sum(a, rp, T, 0.0) *
         (graph[a].initial_storage_capacity + (a ∈ Ai ? energy_limit[a] : 0.0))
     )
@@ -177,7 +177,7 @@ function create_model(
     # - consumer balance equation
     @constraint(
         model,
-        consumer_balance[a ∈ Ac, rp ∈ RP, B ∈ P[(a, rp)]],
+        consumer_balance[a ∈ Ac, rp ∈ RP, B ∈ Pl[(a, rp)]],
         incoming_flow[(a, rp, B)] - outgoing_flow[(a, rp, B)] ==
         assets_profile_sum(a, rp, B, 1.0) * graph[a].peak_demand
     )
@@ -185,9 +185,9 @@ function create_model(
     # - storage balance equation
     @constraint(
         model,
-        storage_balance[a ∈ As, rp ∈ RP, (k, B) ∈ enumerate(P[(a, rp)])],
+        storage_balance[a ∈ As, rp ∈ RP, (k, B) ∈ enumerate(Pl[(a, rp)])],
         storage_level[a, rp, B] ==
-        (k > 1 ? storage_level[a, rp, P[(a, rp)][k-1]] : graph[a].initial_storage_level) +
+        (k > 1 ? storage_level[a, rp, Pl[(a, rp)][k-1]] : graph[a].initial_storage_level) +
         storage_inflows[a, rp, B] +
         incoming_flow_w_efficiency[(a, rp, B)] - outgoing_flow_w_efficiency[(a, rp, B)]
     )
@@ -195,14 +195,14 @@ function create_model(
     # - hub balance equation
     @constraint(
         model,
-        hub_balance[a ∈ Ah, rp ∈ RP, B ∈ P[(a, rp)]],
+        hub_balance[a ∈ Ah, rp ∈ RP, B ∈ Pl[(a, rp)]],
         incoming_flow[(a, rp, B)] == outgoing_flow[(a, rp, B)]
     )
 
     # - conversion balance equation
     @constraint(
         model,
-        conversion_balance[a ∈ Acv, rp ∈ RP, B ∈ P[(a, rp)]],
+        conversion_balance[a ∈ Acv, rp ∈ RP, B ∈ Pl[(a, rp)]],
         incoming_flow_w_efficiency[(a, rp, B)] == outgoing_flow_w_efficiency[(a, rp, B)]
     )
 
@@ -210,14 +210,14 @@ function create_model(
     # - overall output flows
     @constraint(
         model,
-        overall_output_flows[a ∈ Acv∪As∪Ap, rp ∈ RP, B ∈ P[(a, rp)]],
+        overall_output_flows[a ∈ Acv∪As∪Ap, rp ∈ RP, B ∈ Pl[(a, rp)]],
         outgoing_flow[(a, rp, B)] ≤ assets_profile_times_capacity[a, rp, B]
     )
     #
     # # - overall input flows
     @constraint(
         model,
-        overall_input_flows[a ∈ As, rp ∈ RP, B ∈ P[(a, rp)]],
+        overall_input_flows[a ∈ As, rp ∈ RP, B ∈ Pl[(a, rp)]],
         incoming_flow[(a, rp, B)] ≤ assets_profile_times_capacity[a, rp, B]
     )
     #
@@ -228,7 +228,7 @@ function create_model(
             a ∈ A,
             v ∈ outneighbor_labels(graph, a),
             rp ∈ RP,
-            B ∈ P[(a, rp)];
+            B ∈ Pl[(a, rp)];
             !(a ∈ Ah ∪ Ac) && (a, v) ∉ Ft,
         ],
         sum(
@@ -276,14 +276,14 @@ function create_model(
     # - upper bound constraints for storage level
     @constraint(
         model,
-        upper_bound_for_storage_level[a ∈ As, rp ∈ RP, B ∈ P[(a, rp)]],
+        upper_bound_for_storage_level[a ∈ As, rp ∈ RP, B ∈ Pl[(a, rp)]],
         storage_level[a, rp, B] ≤
         graph[a].initial_storage_capacity + (a ∈ Ai ? energy_limit[a] : 0.0)
     )
 
     # - cycling condition for storage level
     for a ∈ As, rp ∈ RP
-        set_lower_bound(storage_level[a, rp, P[(a, rp)][end]], graph[a].initial_storage_level)
+        set_lower_bound(storage_level[a, rp, Pl[(a, rp)][end]], graph[a].initial_storage_level)
     end
 
     # Investment limits
