@@ -264,13 +264,13 @@ cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 ### Values of constraints and expressions
 
 By accessing the model directly, we can query the values of constraints and expresions.
-For instance, we can get all incoming flow for a given asset at a given time block for a given representative periods with the following:
+For instance, we can get all incoming flow in the lowest resolution for a given asset at a given time block for a given representative periods with the following:
 
 ```@example solution
 using JuMP
 # a, rp, and cons_parts are defined above
 B = cons_parts[(a, rp)][1]
-value(energy_problem.model[:incoming_flow][a, rp, B])
+value(energy_problem.model[:incoming_flow_lowest_resolution][a, rp, B])
 ```
 
 The same can happen for constraints.
