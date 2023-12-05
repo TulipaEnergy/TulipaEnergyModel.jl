@@ -7,13 +7,18 @@ using SparseArrays
 
 Computes the constraints partitions using the assets and flows partitions stored in the graph,
 and the representative periods.
+
+The function computes the constraints partitions by iterating over the partition dictionary,
+which specifies the partition strategy for each resolution (i.e., lowest or highest).
+For each asset and representative period, it calls the `compute_rp_partition` function
+to compute the partition based on the strategy.
 """
 function compute_constraints_partitions(graph, representative_periods)
     constraints_partitions = Dict{Symbol,Dict{Tuple{String,Int},Vector{TimeBlock}}}()
 
     partition_dict = Dict(
         :lowest_resolution  => :greedy,   # used mainly for energy constraints
-        :highest_resolution => :all,       # used mainly for capacity constraints
+        :highest_resolution => :all,      # used mainly for capacity constraints
     )
 
     for (partition_name, strategy) in partition_dict
