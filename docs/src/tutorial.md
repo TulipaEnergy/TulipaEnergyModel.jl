@@ -223,7 +223,7 @@ To create a vector with the all values of `storage_level` for a given `a` and `r
 ```@example solution
 a = first(labels(graph))
 rp = 1
-cons_parts = energy_problem.constraints_partitions
+cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 [solution.storage_level[a, rp, B] for B in cons_parts[(a, rp)]]
 ```
 
@@ -252,7 +252,7 @@ To create a vector with the all values of `storage_level` for a given `a` and `r
 ```@example solution
 a = first(labels(graph))
 rp = 1
-cons_parts = energy_problem.constraints_partitions
+cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 [energy_problem.graph[a].storage_level[(rp, B)] for B in cons_parts[(a, rp)]]
 ```
 
