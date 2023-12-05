@@ -92,6 +92,8 @@ Creating an energy problem automatically computes this data, but since we are do
 constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 ```
 
+The `constraints_partitions` has two dictionaries with the keys `:lowest_resolution` and `:highest_resolution`. The lowest resolution dictionary is mainly used to create the constraints for energy balance, whereas the highest resolution dictionary is mainly used to create the capacity constraints in the model.
+
 Now we can compute the model.
 
 ```@example manual
@@ -226,6 +228,9 @@ rp = 1
 cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 [solution.storage_level[a, rp, B] for B in cons_parts[(a, rp)]]
 ```
+
+> **Note**
+> Make sure to specify `constraints_partitions[:lowest_resolution]` since the storage level is determined in the energy balance constraint for the storage assets. This constraint is defined in the lowest resolution of all assets and flows involved.
 
 ### The solution inside the graph
 
