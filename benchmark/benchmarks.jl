@@ -35,7 +35,7 @@ else
             end
         end
     end
-    new_input_folder
+    input_dir
 end
 
 const OUTPUT_FOLDER_BM = mktempdir()
