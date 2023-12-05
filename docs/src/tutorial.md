@@ -255,3 +255,81 @@ rp = 1
 cons_parts = energy_problem.constraints_partitions
 [energy_problem.graph[a].storage_level[(rp, B)] for B in cons_parts[(a, rp)]]
 ```
+
+### Values of constraints and expressions
+
+By accessing the model directly, we can query the values of constraints and expresions.
+For instance, we can get all incoming flow for a given asset at a given time block for a given representative periods with the following:
+
+```@example solution
+using JuMP
+# a, rp, and cons_parts are defined above
+B = cons_parts[(a, rp)][1]
+value(energy_problem.model[:incoming_flow][a, rp, B])
+```
+
+The same can happen for constraints.
+For instance, the code below gets the consumer balance:
+
+```@example solution
+a = "Asgard_E_demand"
+B = cons_parts[(a, rp)][1]
+value(energy_problem.model[:consumer_balance][a, rp, B])
+```
+
+The value of the constraint is obtained by looking only at the part with variables. So a constraint like `2x + 3y - 1 <= 4` would return the value of `2x + 3y`.
+
+### Writing the output to CSV
+
+The simplest way to save the output to CSV is to use packages CSV and DataFrames.
+Here is an example that saves the investment on the investable flows.
+
+```@example solution
+using CSV, DataFrames
+df = DataFrame(; asset_from = String[], asset_to = String[], investment = Float64[])
+for (u, v) in edge_labels(graph)
+    if graph[u, v].investable
+        push!(df, (u, v, solution.flows_investment[(u, v)]))
+    end
+end
+CSV.write("flows_investment.csv", df)
+```
+
+Reading it back to show the  result:
+
+```@example solution
+CSV.read("flows_investment.csv", DataFrame)
+```
+
+### Plotting
+
+The simplest thing to do is to create vectors.
+For instance, in the example below, we plot the flow solution for a given flow.
+
+```@example solution
+using Plots
+
+rp = 2
+(u, v) = ("Asgard_Solar", "Asgard_E_demand")
+
+domain = graph[u, v].partitions[rp]
+flow_value = [solution.flow[(u, v), rp, B] for B in domain]
+
+plot(1:length(domain), flow_value, leg=false)
+xticks!(1:length(domain), string.(domain))
+```
+
+Notice that the time domain for this flow is regular, so you might want to do some kind of processing.
+For instance, we can split the flow into every
+
+```@example solution
+domain = energy_problem.representative_periods[rp].time_steps
+flow_value = zeros(length(domain))
+for B in graph[u, v].partitions[rp]
+    flow_value[B] .= solution.flow[(u, v), rp, B] / length(B)
+end
+ticks = first.(graph[u, v].partitions[rp]) # Starting point of each time block
+
+plot(domain, flow_value, leg=false)
+xticks!(ticks)
+```
