@@ -306,14 +306,14 @@ function create_model(
     )
 
     ## Extra constraints for investment limits
-    # - potential investment limit for assets
+    # - maximum (i.e., potential) investment limit for assets
     for a ∈ Ai
         if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit)
             set_upper_bound(assets_investment[a], graph[a].investment_limit / graph[a].capacity)
         end
     end
 
-    # - potential investment limit for flows
+    # - maximum (i.e., potential) investment limit for flows
     for (u, v) ∈ Fi
         if flow_max_capacity[(u, v)] > 0 && !ismissing(graph[u, v].investment_limit)
             set_upper_bound(

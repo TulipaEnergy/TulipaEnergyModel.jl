@@ -1,7 +1,7 @@
 # [Mathematical Formulation](@id math-formulation)
 
-This section shows the mathematical formulation of the model.\
-The full mathematical formulation is also freely available in the [preprint](https://arxiv.org/abs/2309.07711).
+This section shows the mathematical formulation of the model assuming that the temporal definition of time steps is the same for all the elements in the model.\
+The full mathematical formulation considering variable temporal resolutions is also freely available in the [preprint](https://arxiv.org/abs/2309.07711).
 
 ## [Sets](@id math-sets)
 
@@ -85,7 +85,7 @@ flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{rp \in \mathcal{RP}} \su
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} \left\{\begin{array}{l} = \\ \geqslant \\ \leqslant \end{array}\right\} p^{profile}_{a,rp,k} \cdot p^{peak\_demand}_{a} \quad
+\sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} v^{flow}_{f,rp,k} = p^{profile}_{a,rp,k} \cdot p^{peak\_demand}_{a} \quad
 \\ \\ \forall a \in \mathcal{A}_c, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
@@ -94,7 +94,7 @@ flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{rp \in \mathcal{RP}} \su
 
 ```math
 \begin{aligned}
-s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f \in \mathcal{F}_{in}(a)} p^{eff}_f \cdot v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} \frac{1}{p^{eff}_f} \cdot v^{flow}_{f,rp,k} \quad
+s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \sum_{f \in \mathcal{F}_{in}(a)} p^{eff}_f \cdot v^{flow}_{f,rp,k} - \sum_{f \in \mathcal{F}_{out}(a)} \frac{1}{p^{eff}_f} \cdot v^{flow}_{f,rp,k} \quad
 \\ \\ \forall a \in \mathcal{A}_s, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
@@ -117,9 +117,9 @@ s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f 
 \end{aligned}
 ```
 
-### Constraints that Define Bounds of Flows Related to Energy Assets $\mathcal{A}$
+### Constraints that Define Capacity Limits of Flows Related to Energy Assets $\mathcal{A}$
 
-#### Contraint for the Overall Output Flows from an Asset
+#### Maximum Output Flows Limit
 
 ```math
 \begin{aligned}
@@ -128,21 +128,12 @@ s_{a,rp,k}^{level} = s_{a,rp,k-1}^{level} + p_{a,rp,k}^{inflow} + \cdot \sum_{f 
 \end{aligned}
 ```
 
-#### Contraint for the Overall Input Flows from an Asset
+#### Maximum Input Flows Limit
 
 ```math
 \begin{aligned}
 \sum_{f \in \mathcal{F}_{in}(a)} v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad
 \\ \\ \forall a \in \mathcal{A_{s}}, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
-\end{aligned}
-```
-
-#### Upper Bound Constraint for Associated with Asset
-
-```math
-\begin{aligned}
-v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} + p^{unit\_capacity}_a \cdot v^{investment}_a \right)  \quad \\ \\ \forall a \notin \mathcal{A}_h \cup \mathcal{A}_c,
-\forall f \in \mathcal{F}_{out}(a) \& \notin \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
 
@@ -152,9 +143,9 @@ v^{flow}_{f,rp,k} \leq p^{profile}_{a,rp,k} \cdot \left(p^{init\_capacity}_{a} +
 v^{flow}_{f,rp,k} \geq 0 \quad \forall f \notin \mathcal{F}_t, \forall rp \in \mathcal{RP}, \forall k \in \mathcal{k}
 ```
 
-### Constraints that Define Bounds for a Transport Flow $\mathcal{F}_t$
+### Constraints that Define Capacity Limits for a Transport Flow $\mathcal{F}_t$
 
-#### Upper Bound Constraint for Transport Flows
+#### Maximum Transport Flow Limit
 
 ```math
 \begin{aligned}
@@ -163,7 +154,7 @@ v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} +
 \end{aligned}
 ```
 
-#### Lower Bound Constraint for Transport Flows
+#### Minimum Transport Flow Limit
 
 ```math
 \begin{aligned}
@@ -174,7 +165,7 @@ v^{flow}_{f,rp,k} \geq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} +
 
 ### Extra Constraints for Energy Storage Assets $\mathcal{A}_s$
 
-#### Upper and Lower Bound Constraints for Storage Level
+#### Maximum Storage Level Limit
 
 ```math
 0 \leq s_{a,rp,k}^{level} \leq p^{init\_storage\_capacity}_{a} + p^{ene\_to\_pow\_ratio}_a \cdot p^{unit\_capacity}_a \cdot v^{investment}_a \quad
@@ -190,14 +181,14 @@ s_{a,rp,k=K}^{level} \geq p^{init\_storage\_level}_{a} \quad
 
 ### Extra Constraints for Investments
 
-#### Upper Bound for $\mathcal{A}_i$
+#### Maximum Investment Limit for $\mathcal{A}_i$
 
 ```math
 v^{investment}_a \leq \frac{p^{investment\_limit}_a}{ p^{unit\_capacity}_a} \quad
 \\ \\ \forall a \in \mathcal{A}_i
 ```
 
-#### Upper Bound for $\mathcal{F}_i$
+#### Maximum Investment Limit for $\mathcal{F}_i$
 
 ```math
 v^{investment}_f \leq \frac{p^{investment\_limit}_f}{\max\{p^{export\_capacity}_f,p^{import\_capacity}_f\}} \quad
