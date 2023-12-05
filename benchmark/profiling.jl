@@ -39,19 +39,10 @@ end
 # @profview create_graph_and_representative_periods_from_csv_folder(input_dir);
 
 #%%
-constraints_partitions = Dict{String,Dict{Tuple{String,Int},Vector{TimeBlock}}}()
 
-@time constraints_partitions["lowest_resolution"] =
-    compute_constraints_partitions(graph, representative_periods; strategy = :greedy);
-@benchmark compute_constraints_partitions($graph, $representative_periods; strategy = :greedy)
-# @profview compute_constraints_partitions(graph, representative_periods; strategy = :greedy);
-
-#%%
-
-@time constraints_partitions["highest_resolution"] =
-    compute_constraints_partitions(graph, representative_periods; strategy = :all);
-@benchmark compute_constraints_partitions($graph, $representative_periods; strategy = :all)
-# @profview compute_constraints_partitions(graph, representative_periods; strategy = :all);
+@time constraints_partitions = compute_constraints_partitions(graph, representative_periods);
+@benchmark compute_constraints_partitions($graph, $representative_periods)
+# @profview compute_constraints_partitions(graph, representative_periods);
 
 #%%
 

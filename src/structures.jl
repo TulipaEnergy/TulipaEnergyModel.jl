@@ -128,7 +128,7 @@ mutable struct EnergyProblem
         Nothing, # Default edge weight
     }
     representative_periods::Vector{RepresentativePeriod}
-    constraints_partitions::Dict{String,Dict{Tuple{String,Int},Vector{TimeBlock}}}
+    constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int},Vector{TimeBlock}}}
     model::Union{JuMP.Model,Nothing}
     solved::Bool
     objective_value::Float64
@@ -142,12 +142,7 @@ mutable struct EnergyProblem
     and the other fields and nothing or set to default values.
     """
     function EnergyProblem(graph, representative_periods)
-        constraints_partitions = Dict{String,Dict{Tuple{String,Int},Vector{TimeBlock}}}()
-
-        constraints_partitions["lowest_resolution"] =
-            compute_constraints_partitions(graph, representative_periods; strategy = :greedy) # used mainly for energy constraints
-        constraints_partitions["highest_resolution"] =
-            compute_constraints_partitions(graph, representative_periods; strategy = :all)    # used mainly for capacity constraints
+        constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 
         return new(
             graph,

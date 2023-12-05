@@ -8,21 +8,31 @@ using SparseArrays
 Computes the constraints partitions using the assets and flows partitions stored in the graph,
 and the representative periods.
 """
-function compute_constraints_partitions(graph, representative_periods; strategy = :greedy)
-    constraints_partitions = Dict(
-        (a, rp) => begin
-            compute_rp_partition(
-                [
-                    [
-                        graph[u, v].partitions[rp] for
-                        (u, v) in edge_labels(graph) if u == a || v == a
-                    ]
-                    [graph[a].partitions[rp]]
-                ];
-                strategy = strategy,
-            )
-        end for a in labels(graph), rp = 1:length(representative_periods)
+function compute_constraints_partitions(graph, representative_periods)
+    constraints_partitions = Dict{Symbol,Dict{Tuple{String,Int},Vector{TimeBlock}}}()
+
+    partition_dict = Dict(
+        :lowest_resolution  => :greedy,   # used mainly for energy constraints
+        :highest_resolution => :all,       # used mainly for capacity constraints
     )
+
+    for (partition_name, strategy) in partition_dict
+        constraints_partitions[partition_name] = Dict(
+            (a, rp) => begin
+                compute_rp_partition(
+                    [
+                        [
+                            graph[u, v].partitions[rp] for
+                            (u, v) in edge_labels(graph) if u == a || v == a
+                        ]
+                        [graph[a].partitions[rp]]
+                    ];
+                    strategy = strategy,
+                )
+            end for a in labels(graph), rp = 1:length(representative_periods)
+        )
+    end
+
     return constraints_partitions
 end
 

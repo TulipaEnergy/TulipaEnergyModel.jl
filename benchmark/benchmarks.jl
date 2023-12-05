@@ -47,19 +47,10 @@ end
 graph, representative_periods =
     create_graph_and_representative_periods_from_csv_folder(INPUT_FOLDER_BM)
 
-constraints_partitions = Dict{String,Dict{Tuple{String,Int},Vector{TimeBlock}}}()
-
-SUITE["direct_usage"]["constraints_partitions_lowest_resolution"] = @benchmarkable begin
-    compute_constraints_partitions($graph, $representative_periods; strategy = :greedy)
+SUITE["direct_usage"]["constraints_partitions"] = @benchmarkable begin
+    compute_constraints_partitions($graph, $representative_periods)
 end
-constraints_partitions["lowest_resolution"] =
-    compute_constraints_partitions(graph, representative_periods; strategy = :greedy)
-
-SUITE["direct_usage"]["constraints_partitions_highest_resolution"] = @benchmarkable begin
-    compute_constraints_partitions($graph, $representative_periods; strategy = :all)
-end
-constraints_partitions["highest_resolution"] =
-    compute_constraints_partitions(graph, representative_periods; strategy = :all)
+constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 
 SUITE["direct_usage"]["create_model"] = @benchmarkable begin
     create_model($graph, $representative_periods, $constraints_partitions)
