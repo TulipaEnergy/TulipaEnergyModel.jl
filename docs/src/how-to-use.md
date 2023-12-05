@@ -158,7 +158,7 @@ The fields of `EnergyProblem` are
 
 * `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
 * `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
-* `constraints_partitions`: A dictionary that connects pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
+* `constraints_partitions`: Dictionaries that connects pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
 * `model`: A JuMP model object. Initially `nothing`.
 * `solved`: A boolean indicating whether the `model` has been solved or not.
 * `objective_value`: After the model has been solved, this is the objective value at the solution.

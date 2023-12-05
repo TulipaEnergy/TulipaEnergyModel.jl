@@ -27,7 +27,7 @@ function create_model(
     write_lp_file = false,
 )
 
-    # Helper functions
+    ## Helper functions
     # Computes the duration of the `block` that is within the `period`, and
     # multiply by the resolution of the representative period `rp`.
     # It is equivalent to finding the indexes of these values in the matrix.
@@ -58,7 +58,7 @@ function create_model(
         return profile_sum(graph[u, v].profiles, rp, B, default_value)
     end
 
-    # Sets unpacking
+    ## Sets unpacking
     A = labels(graph)
     F = edge_labels(graph)
     filter_assets(key, value) = Iterators.filter(a -> getfield(graph[a], key) == value, A)
@@ -73,21 +73,22 @@ function create_model(
     Fi = filter_flows(:investable, true)
     Ft = filter_flows(:is_transport, true)
     RP = 1:length(representative_periods)
-    P = constraints_partitions
+    Pl = constraints_partitions[:lowest_resolution]
+    Ph = constraints_partitions[:highest_resolution]
 
-    # Model
+    ## Model
     model = Model(HiGHS.Optimizer)
     set_attribute(model, "output_flag", verbose)
 
-    # Variables
+    ## Variables
     @variable(model, flow[(u, v) ∈ F, rp ∈ RP, graph[u, v].partitions[rp]])
     @variable(model, 0 ≤ assets_investment[Ai], Int)  #number of installed asset units [N]
     @variable(model, 0 ≤ flows_investment[Fi], Int)
-    @variable(model, 0 ≤ storage_level[a ∈ As, rp ∈ RP, P[(a, rp)]])
+    @variable(model, 0 ≤ storage_level[a ∈ As, rp ∈ RP, Pl[(a, rp)]])
 
     # TODO: Fix storage_level[As, RP, 0] = 0
 
-    # Expressions for the objective function
+    ## Expressions for the objective function
     assets_investment_cost = @expression(
         model,
         sum(graph[a].investment_cost * graph[a].capacity * assets_investment[a] for a ∈ Ai)
@@ -112,31 +113,33 @@ function create_model(
         )
     )
 
-    # Objective function
+    ## Objective function
     @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
 
-    # Constraints
+    ## Expressions for balance constraints
     @expression(
         model,
-        incoming_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
+        incoming_flow_lowest_resolution[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] for
             u in inneighbor_labels(graph, a), B_flow ∈ graph[u, a].partitions[rp] if
             B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
+
     @expression(
         model,
-        outgoing_flow[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
+        outgoing_flow_lowest_resolution[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] for
             v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp] if
             B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
+
     @expression(
         model,
-        incoming_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
+        incoming_flow_lowest_resolution_w_efficiency[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] * graph[u, a].efficiency for
             u in inneighbor_labels(graph, a), B_flow ∈ graph[u, a].partitions[rp] if
@@ -145,19 +148,12 @@ function create_model(
     )
     @expression(
         model,
-        outgoing_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
+        outgoing_flow_lowest_resolution_w_efficiency[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] / graph[a, v].efficiency for
             v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp] if
             B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
-    )
-
-    @expression(
-        model,
-        assets_profile_times_capacity[a ∈ A, rp ∈ RP, B ∈ P[(a, rp)]],
-        assets_profile_sum(a, rp, B, 1.0) *
-        (graph[a].initial_capacity + (a ∈ Ai ? (graph[a].capacity * assets_investment[a]) : 0.0))
     )
 
     @expression(
@@ -168,83 +164,95 @@ function create_model(
 
     @expression(
         model,
-        storage_inflows[a ∈ As, rp ∈ RP, T ∈ P[(a, rp)]],
+        storage_inflows[a ∈ As, rp ∈ RP, T ∈ Pl[(a, rp)]],
         assets_profile_sum(a, rp, T, 0.0) *
         (graph[a].initial_storage_capacity + (a ∈ Ai ? energy_limit[a] : 0.0))
     )
 
-    # Balance equations
+    ## Balance constraints (using the lowest resolution)
     # - consumer balance equation
     @constraint(
         model,
-        consumer_balance[a ∈ Ac, rp ∈ RP, B ∈ P[(a, rp)]],
-        incoming_flow[(a, rp, B)] - outgoing_flow[(a, rp, B)] ==
+        consumer_balance[a ∈ Ac, rp ∈ RP, B ∈ Pl[(a, rp)]],
+        incoming_flow_lowest_resolution[(a, rp, B)] - outgoing_flow_lowest_resolution[(a, rp, B)] ==
         assets_profile_sum(a, rp, B, 1.0) * graph[a].peak_demand
     )
 
     # - storage balance equation
     @constraint(
         model,
-        storage_balance[a ∈ As, rp ∈ RP, (k, B) ∈ enumerate(P[(a, rp)])],
+        storage_balance[a ∈ As, rp ∈ RP, (k, B) ∈ enumerate(Pl[(a, rp)])],
         storage_level[a, rp, B] ==
-        (k > 1 ? storage_level[a, rp, P[(a, rp)][k-1]] : graph[a].initial_storage_level) +
+        (k > 1 ? storage_level[a, rp, Pl[(a, rp)][k-1]] : graph[a].initial_storage_level) +
         storage_inflows[a, rp, B] +
-        incoming_flow_w_efficiency[(a, rp, B)] - outgoing_flow_w_efficiency[(a, rp, B)]
+        incoming_flow_lowest_resolution_w_efficiency[(a, rp, B)] -
+        outgoing_flow_lowest_resolution_w_efficiency[(a, rp, B)]
     )
 
     # - hub balance equation
     @constraint(
         model,
-        hub_balance[a ∈ Ah, rp ∈ RP, B ∈ P[(a, rp)]],
-        incoming_flow[(a, rp, B)] == outgoing_flow[(a, rp, B)]
+        hub_balance[a ∈ Ah, rp ∈ RP, B ∈ Pl[(a, rp)]],
+        incoming_flow_lowest_resolution[(a, rp, B)] == outgoing_flow_lowest_resolution[(a, rp, B)]
     )
 
     # - conversion balance equation
     @constraint(
         model,
-        conversion_balance[a ∈ Acv, rp ∈ RP, B ∈ P[(a, rp)]],
-        incoming_flow_w_efficiency[(a, rp, B)] == outgoing_flow_w_efficiency[(a, rp, B)]
+        conversion_balance[a ∈ Acv, rp ∈ RP, B ∈ Pl[(a, rp)]],
+        incoming_flow_lowest_resolution_w_efficiency[(a, rp, B)] ==
+        outgoing_flow_lowest_resolution_w_efficiency[(a, rp, B)]
     )
 
-    # Constraints that define bounds of flows related to energy assets A
-    # - overall output flows
-    @constraint(
+    ## Expression for capacity limit constraints
+    @expression(
         model,
-        overall_output_flows[a ∈ Acv∪As∪Ap, rp ∈ RP, B ∈ P[(a, rp)]],
-        outgoing_flow[(a, rp, B)] ≤ assets_profile_times_capacity[a, rp, B]
+        incoming_flow_highest_resolution[a ∈ A, rp ∈ RP, B ∈ Ph[(a, rp)]],
+        sum(
+            duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] for u in inneighbor_labels(graph, a),
+            B_flow ∈ graph[u, a].partitions[rp]
+        )
     )
-    #
-    # # - overall input flows
-    @constraint(
+
+    @expression(
         model,
-        overall_input_flows[a ∈ As, rp ∈ RP, B ∈ P[(a, rp)]],
-        incoming_flow[(a, rp, B)] ≤ assets_profile_times_capacity[a, rp, B]
-    )
-    #
-    # # - upper bound associated with asset
-    @constraint(
-        model,
-        upper_bound_asset[
-            a ∈ A,
-            v ∈ outneighbor_labels(graph, a),
-            rp ∈ RP,
-            B ∈ P[(a, rp)];
-            !(a ∈ Ah ∪ Ac) && (a, v) ∉ Ft,
-        ],
+        outgoing_flow_highest_resolution[a ∈ A, rp ∈ RP, B ∈ Ph[(a, rp)]],
         sum(
             duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] for
-            B_flow ∈ graph[a, v].partitions[rp] if B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
-        ) ≤ assets_profile_times_capacity[a, rp, B]
+            v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp]
+        )
     )
 
-    # Define lower bounds for flows that are not transport assets
+    @expression(
+        model,
+        assets_profile_times_capacity[a ∈ A, rp ∈ RP, B ∈ Ph[(a, rp)]],
+        assets_profile_sum(a, rp, B, 1.0) *
+        (graph[a].initial_capacity + (a ∈ Ai ? (graph[a].capacity * assets_investment[a]) : 0.0))
+    )
+
+    ## Capacity limit constraints (using the highest resolution)
+    # - maximum output flows limit
+    @constraint(
+        model,
+        max_output_flows_limit[a ∈ Acv∪As∪Ap, rp ∈ RP, B ∈ Ph[(a, rp)]],
+        outgoing_flow_highest_resolution[(a, rp, B)] ≤ assets_profile_times_capacity[a, rp, B]
+    )
+
+    # - maximum input flows limit
+    @constraint(
+        model,
+        max_input_flows_limit[a ∈ As, rp ∈ RP, B ∈ Ph[(a, rp)]],
+        incoming_flow_highest_resolution[(a, rp, B)] ≤ assets_profile_times_capacity[a, rp, B]
+    )
+
+    # - define lower bounds for flows that are not transport assets
     for f ∈ F, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]
         if f ∉ Ft
             set_lower_bound(flow[f, rp, B_flow], 0.0)
         end
     end
 
-    # Constraints that define bounds for a transport flow Ft
+    ## Expressions for transport flow constraints
     @expression(
         model,
         upper_bound_transport_flow[(u, v) ∈ F, rp ∈ RP, B_flow ∈ graph[u, v].partitions[rp]],
@@ -253,11 +261,7 @@ function create_model(
             (graph[u, v].investable ? graph[u, v].export_capacity * flows_investment[(u, v)] : 0.0)
         )
     )
-    @constraint(
-        model,
-        transport_flow_upper_bound[f ∈ Ft, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]],
-        duration(B_flow, rp) * flow[f, rp, B_flow] ≤ upper_bound_transport_flow[f, rp, B_flow]
-    )
+
     @expression(
         model,
         lower_bound_transport_flow[(u, v) ∈ F, rp ∈ RP, B_flow ∈ graph[u, v].partitions[rp]],
@@ -266,39 +270,50 @@ function create_model(
             (graph[u, v].investable ? graph[u, v].import_capacity * flows_investment[(u, v)] : 0.0)
         )
     )
+
+    ## Constraints that define bounds for a transport flow Ft
     @constraint(
         model,
-        transport_flow_lower_bound[f ∈ Ft, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]],
+        max_transport_flow_limit[f ∈ Ft, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]],
+        duration(B_flow, rp) * flow[f, rp, B_flow] ≤ upper_bound_transport_flow[f, rp, B_flow]
+    )
+
+    @constraint(
+        model,
+        min_transport_flow_limit[f ∈ Ft, rp ∈ RP, B_flow ∈ graph[f...].partitions[rp]],
         duration(B_flow, rp) * flow[f, rp, B_flow] ≥ -lower_bound_transport_flow[f, rp, B_flow]
     )
 
-    # Extra constraints
-    # - upper bound constraints for storage level
+    ## Extra constraints for storage assets
+    # - maximum storage level limit
     @constraint(
         model,
-        upper_bound_for_storage_level[a ∈ As, rp ∈ RP, B ∈ P[(a, rp)]],
+        max_storage_level_limit[a ∈ As, rp ∈ RP, B ∈ Pl[(a, rp)]],
         storage_level[a, rp, B] ≤
         graph[a].initial_storage_capacity + (a ∈ Ai ? energy_limit[a] : 0.0)
     )
 
     # - cycling condition for storage level
     for a ∈ As, rp ∈ RP
-        set_lower_bound(storage_level[a, rp, P[(a, rp)][end]], graph[a].initial_storage_level)
+        set_lower_bound(storage_level[a, rp, Pl[(a, rp)][end]], graph[a].initial_storage_level)
     end
 
-    # Investment limits
-    for a ∈ Ai
-        if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit)
-            set_upper_bound(assets_investment[a], graph[a].investment_limit / graph[a].capacity)
-        end
-    end
-
+    ## Expressions for the extra constraints of investment limits
     @expression(
         model,
         flow_max_capacity[(u, v) ∈ Fi],
         max(graph[u, v].export_capacity, graph[u, v].import_capacity)
     )
 
+    ## Extra constraints for investment limits
+    # - maximum (i.e., potential) investment limit for assets
+    for a ∈ Ai
+        if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit)
+            set_upper_bound(assets_investment[a], graph[a].investment_limit / graph[a].capacity)
+        end
+    end
+
+    # - maximum (i.e., potential) investment limit for flows
     for (u, v) ∈ Fi
         if flow_max_capacity[(u, v)] > 0 && !ismissing(graph[u, v].investment_limit)
             set_upper_bound(
@@ -343,7 +358,9 @@ function solve_model!(energy_problem::EnergyProblem)
             graph[a].investment = round(Int, solution.assets_investment[a])
         end
         if graph[a].type == "storage"
-            for rp_id = 1:length(rps), I in energy_problem.constraints_partitions[(a, rp_id)]
+            for rp_id = 1:length(rps),
+                I in energy_problem.constraints_partitions[:lowest_resolution][(a, rp_id)]
+
                 graph[a].storage_level[(rp_id, I)] = solution.storage_level[(a, rp_id, I)]
             end
         end
@@ -394,7 +411,7 @@ The `solution` object is a NamedTuple with the following fields:
     To create a vector with the all values of `storage_level` for a given `a` and `rp`, one can run
 
     ```
-    [solution.storage_level[a, rp, B] for B in constraints_partitions[(a, rp)]]
+    [solution.storage_level[a, rp, B] for B in constraints_partitions[:lowest_resolution][(a, rp)]]
     ```
 """
 function solve_model(model::JuMP.Model)

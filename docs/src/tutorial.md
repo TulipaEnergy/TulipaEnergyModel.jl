@@ -92,6 +92,8 @@ Creating an energy problem automatically computes this data, but since we are do
 constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 ```
 
+The `constraints_partitions` has two dictionaries with the keys `:lowest_resolution` and `:highest_resolution`. The lowest resolution dictionary is mainly used to create the constraints for energy balance, whereas the highest resolution dictionary is mainly used to create the capacity constraints in the model.
+
 Now we can compute the model.
 
 ```@example manual
@@ -223,9 +225,12 @@ To create a vector with the all values of `storage_level` for a given `a` and `r
 ```@example solution
 a = first(labels(graph))
 rp = 1
-cons_parts = energy_problem.constraints_partitions
+cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 [solution.storage_level[a, rp, B] for B in cons_parts[(a, rp)]]
 ```
+
+> **Note**
+> Make sure to specify `constraints_partitions[:lowest_resolution]` since the storage level is determined in the energy balance constraint for the storage assets. This constraint is defined in the lowest resolution of all assets and flows involved.
 
 ### The solution inside the graph
 
@@ -252,20 +257,20 @@ To create a vector with the all values of `storage_level` for a given `a` and `r
 ```@example solution
 a = first(labels(graph))
 rp = 1
-cons_parts = energy_problem.constraints_partitions
+cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 [energy_problem.graph[a].storage_level[(rp, B)] for B in cons_parts[(a, rp)]]
 ```
 
 ### Values of constraints and expressions
 
 By accessing the model directly, we can query the values of constraints and expresions.
-For instance, we can get all incoming flow for a given asset at a given time block for a given representative periods with the following:
+For instance, we can get all incoming flow in the lowest resolution for a given asset at a given time block for a given representative periods with the following:
 
 ```@example solution
 using JuMP
 # a, rp, and cons_parts are defined above
 B = cons_parts[(a, rp)][1]
-value(energy_problem.model[:incoming_flow][a, rp, B])
+value(energy_problem.model[:incoming_flow_lowest_resolution][a, rp, B])
 ```
 
 The same can happen for constraints.
