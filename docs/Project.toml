@@ -1,3 +1,4 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+MetaGraphsNext = "fa8bd995-216d-47f1-8a91-f3b68fbeb377"
 TulipaEnergyModel = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
