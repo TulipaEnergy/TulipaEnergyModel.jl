@@ -74,6 +74,7 @@ function create_model(
     Ft = filter_flows(:is_transport, true)
     RP = 1:length(representative_periods)
     Pl = constraints_partitions["lowest_resolution"]
+    Ph = constraints_partitions["highest_resolution"]
 
     # Model
     model = Model(HiGHS.Optimizer)
@@ -134,6 +135,23 @@ function create_model(
             B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
         )
     )
+    # Constraints
+    @expression(
+        model,
+        incoming_flow_highest_resolution[a ∈ A, rp ∈ RP, B ∈ Ph[(a, rp)]],
+        sum(
+            duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] for u in inneighbor_labels(graph, a),
+            B_flow ∈ graph[u, a].partitions[rp]
+        )
+    )
+    @expression(
+        model,
+        outgoing_flow_highest_resolution[a ∈ A, rp ∈ RP, B ∈ Ph[(a, rp)]],
+        sum(
+            duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] for
+            v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp]
+        )
+    )
     @expression(
         model,
         incoming_flow_w_efficiency[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
@@ -156,6 +174,13 @@ function create_model(
     @expression(
         model,
         assets_profile_times_capacity[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
+        assets_profile_sum(a, rp, B, 1.0) *
+        (graph[a].initial_capacity + (a ∈ Ai ? (graph[a].capacity * assets_investment[a]) : 0.0))
+    )
+
+    @expression(
+        model,
+        assets_profile_times_capacity_highest_resolution[a ∈ A, rp ∈ RP, B ∈ Ph[(a, rp)]],
         assets_profile_sum(a, rp, B, 1.0) *
         (graph[a].initial_capacity + (a ∈ Ai ? (graph[a].capacity * assets_investment[a]) : 0.0))
     )
@@ -210,15 +235,17 @@ function create_model(
     # - overall output flows
     @constraint(
         model,
-        overall_output_flows[a ∈ Acv∪As∪Ap, rp ∈ RP, B ∈ Pl[(a, rp)]],
-        outgoing_flow[(a, rp, B)] ≤ assets_profile_times_capacity[a, rp, B]
+        overall_output_flows[a ∈ Acv∪As∪Ap, rp ∈ RP, B ∈ Ph[(a, rp)]],
+        outgoing_flow_highest_resolution[(a, rp, B)] ≤
+        assets_profile_times_capacity_highest_resolution[a, rp, B]
     )
     #
     # # - overall input flows
     @constraint(
         model,
-        overall_input_flows[a ∈ As, rp ∈ RP, B ∈ Pl[(a, rp)]],
-        incoming_flow[(a, rp, B)] ≤ assets_profile_times_capacity[a, rp, B]
+        overall_input_flows[a ∈ As, rp ∈ RP, B ∈ Ph[(a, rp)]],
+        incoming_flow_highest_resolution[(a, rp, B)] ≤
+        assets_profile_times_capacity_highest_resolution[a, rp, B]
     )
     #
     # # - upper bound associated with asset
@@ -228,13 +255,13 @@ function create_model(
             a ∈ A,
             v ∈ outneighbor_labels(graph, a),
             rp ∈ RP,
-            B ∈ Pl[(a, rp)];
+            B ∈ Ph[(a, rp)];
             !(a ∈ Ah ∪ Ac) && (a, v) ∉ Ft,
         ],
         sum(
             duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] for
             B_flow ∈ graph[a, v].partitions[rp] if B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
-        ) ≤ assets_profile_times_capacity[a, rp, B]
+        ) ≤ assets_profile_times_capacity_highest_resolution[a, rp, B]
     )
 
     # Define lower bounds for flows that are not transport assets
