@@ -15,6 +15,15 @@ Depth = 5
   * `instantiate` : Instantiate any packages you need according to the Project.toml
   * `test`: (Optional) Try running the tests to see if you're set up correctly - they should pass
 
+## Run Scenario
+
+To run a scenario, use the function:
+
+* [`run_scenario(input_folder)`](@ref)
+* [`run_scenario(input_folder, output_folder)`](@ref)
+
+The input_folder should contain CSV files as described below. The output_folder is optional, if the user wants to export the output.
+
 ## Input
 
 Currently, we only accept input from CSV files.
@@ -231,10 +240,6 @@ The solution object is a NamedTuple with the following fields:
 * `storage_level[a, rp, B]`: The storage level for the storage asset `a` for a representative period `rp` and a time block `B`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
 
 For tips on manipulating the solution, check the [tutorial](@ref solution-tutorial).
-
-> **Note**
->
-> A
 
 ### [Time Blocks](@id time-blocks)
 
