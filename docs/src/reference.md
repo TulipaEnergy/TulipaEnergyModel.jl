@@ -1,22 +1,15 @@
-# [Reference]
+# Reference
 
-​
-TODO
+​This is a comprehensive list of all of the functions in the model.\
+The function most pertinent to the user is: [`run_scenario`](@ref)
 
-## Contents
-
-​
-
-```@contents
-Pages = ["reference.md"]
-```
-
-​## Index
-​
+## Index
 
 ```@index
 Pages = ["reference.md"]
 ```
+
+## Contents
 
 ```@autodocs
 Modules = [TulipaEnergyModel]

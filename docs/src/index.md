@@ -20,4 +20,5 @@ If you want to ask a question unsuitable for a bug report, start a discussion [h
 ## Contents
 
 ```@contents
+Pages = ["index.md","api.md","how-to-use.md","mathematical-formulation.md","tutorial.md","reference.md"]
 ```
