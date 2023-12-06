@@ -130,7 +130,7 @@ For the hydrogen (H2) producer asset we have the following outgoing limit:
 
 #### Transport Capacity Constraints
 
-For the connection from the hub to the demand has associated a transmission capacity constraints like this:
+For the connection from the hub to the demand there are associated transmission capacity constraints:
 
 ```math
 \begin{aligned}
