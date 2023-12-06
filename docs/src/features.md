@@ -8,7 +8,7 @@ Tulipa can handle different time resolutions on the assets and the flows. Typica
 
 ![Hourly Time Resolution](./figs/variable-time-resolution-1.png)
 
-However, we can have a variable time resolution for each asset and flow to reduce the optimization problem size and approximate the hourly representation. The following figure shows a definition aiming to have less variables to represent the system in the model:
+However, we can have a variable time resolution for each asset and flow to reduce the optimization problem size and approximate the hourly representation. The following figure shows a definition aiming to have fewer variables to represent the system in the model:
 
 ![Variable Time Resolution](./figs/variable-time-resolution-2.png)
 
