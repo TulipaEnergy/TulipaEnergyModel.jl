@@ -19,6 +19,7 @@ makedocs(;
         "API" => "api.md",
         "How to Use" => "how-to-use.md",
         "Mathematical Formulation" => "mathematical-formulation.md",
+        "Features" => "features.md",
         "Tutorial" => "tutorial.md",
         "Reference" => "reference.md",
     ],

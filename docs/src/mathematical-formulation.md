@@ -1,7 +1,7 @@
 # [Mathematical Formulation](@id math-formulation)
 
 This section shows the mathematical formulation of the model assuming that the temporal definition of time steps is the same for all the elements in the model.\
-The full mathematical formulation considering variable temporal resolutions is also freely available in the [preprint](https://arxiv.org/abs/2309.07711).
+The full mathematical formulation considering variable temporal resolutions is also freely available in the [preprint](https://arxiv.org/abs/2309.07711). In addition, the feature section has an example on how the [`flexible time resolution`](@ref flex-time-res) is handled in the model.
 
 ## [Sets](@id math-sets)
 
