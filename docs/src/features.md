@@ -108,7 +108,7 @@ The constraints for the inputs of the storage are (i.e., charging capacity limit
 
 #### Producers Capacity Constraints
 
-For the wind producer asset we have two flows that outgoing, so:
+For the wind producer asset we have two flows that are outgoing:
 
 ```math
 \begin{aligned}
