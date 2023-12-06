@@ -113,23 +113,25 @@ function create_graph_and_representative_periods_from_csv_folder(input_folder::A
         )
     end
 
-    # Unique (asset, rp) combination on the profiles:
-    asset_and_rp_with_profiles = assets_profiles_df[:, [:asset, :rep_period_id]]
-    for (a, rp_id) in eachrow(asset_and_rp_with_profiles)
+    for rp_id = 1:length(representative_periods), a in labels(graph)
         # Get all profile data for asset=a and rp=rp_id
         matching = (assets_profiles_df.asset .== a) .& (assets_profiles_df.rep_period_id .== rp_id)
+        if sum(matching) == 0
+            continue
+        end
         profile_data = assets_profiles_df[matching, :].value
         graph[a].profiles[rp_id] = profile_data
     end
 
-    # Unique (flow, rp) combination on the profiles:
-    flow_and_rp_with_profiles = flows_profiles_df[:, [:from_asset, :to_asset, :rep_period_id]]
-    for (u, v, rp_id) in eachrow(flow_and_rp_with_profiles)
+    for rp_id = 1:length(representative_periods), (u, v) in edge_labels(graph)
         # Get all profile data for flow=(u,v) and rp=rp_id
         matching =
             (flows_profiles_df.from_asset .== u) .&
             (flows_profiles_df.to_asset .== v) .&
             (flows_profiles_df.rep_period_id .== rp_id)
+        if sum(matching) == 0
+            continue
+        end
         profile_data = flows_profiles_df[matching, :].value
         graph[u, v].profiles[rp_id] = profile_data
     end
