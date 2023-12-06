@@ -1,6 +1,5 @@
 export create_energy_problem_from_csv_folder,
     create_graph_and_representative_periods_from_csv_folder,
-    create_graph,
     save_solution_to_file,
     compute_assets_partitions!,
     compute_flows_partitions!
@@ -143,7 +142,7 @@ end
     read_csv_with_schema(file_path, schema)
 
 Reads the csv with file_name at location path validating the data using the schema.
-It is assumes that the file's header is at the second row.
+It assumes that the file's header is at the second row.
 The first row of the file contains some metadata information that is not used.
 """
 function read_csv_with_schema(file_path, schema; csvargs...)
@@ -199,28 +198,6 @@ function save_solution_to_file(output_folder, graph)
     CSV.write(output_file, output_table)
 
     return
-end
-
-"""
-    graph = create_graph(assets_path, flows_path)
-
-Read the assets and flows data CSVs and create a graph object.
-"""
-function create_graph(assets_path, flows_path)
-    assets_df = CSV.read(assets_path, DataFrames.DataFrame; header = 2)
-    flows_df = CSV.read(flows_path, DataFrames.DataFrame; header = 2)
-
-    num_assets = DataFrames.nrow(assets_df)
-    name_to_id = Dict(name => i for (i, name) in enumerate(assets_df.name))
-
-    graph = Graphs.DiGraph(num_assets)
-    for row in eachrow(flows_df)
-        from_id = name_to_id[row.from_asset]
-        to_id = name_to_id[row.to_asset]
-        Graphs.add_edge!(graph, from_id, to_id)
-    end
-
-    return graph
 end
 
 """
