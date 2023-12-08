@@ -158,7 +158,7 @@ v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} +
 
 ```math
 \begin{aligned}
-v^{flow}_{f,rp,k} \geq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{import\_capacity}_f \cdot v^{investment}_f \right)  \quad
+v^{flow}_{f,rp,k} \geq - p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{import\_capacity}_f \cdot v^{investment}_f \right)  \quad
 \\ \\ \forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
