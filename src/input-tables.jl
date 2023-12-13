@@ -49,9 +49,9 @@ struct FlowData
     variable_cost::Float64                      # kEUR/MWh
     investment_cost::Float64                    # kEUR/MW/year
     investment_limit::Union{Missing,Float64}    # MW
-    export_capacity::Float64                    # MW
-    import_capacity::Float64                    # MW
-    initial_capacity::Float64                   # MW
+    capacity::Float64                           # MW
+    initial_export_capacity::Float64            # MW
+    initial_import_capacity::Float64            # MW
     efficiency::Float64                         # p.u. (per unit)
 end
 

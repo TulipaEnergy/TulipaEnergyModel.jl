@@ -1,5 +1,5 @@
 ,asset_name,asset_name,{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,MW,p.u.
-carrier,from_asset,to_asset,active,is_transport,investable,variable_cost,investment_cost,investment_limit,export_capacity,import_capacity,initial_capacity,efficiency
+carrier,from_asset,to_asset,active,is_transport,investable,variable_cost,investment_cost,investment_limit,capacity,initial_export_capacity,initial_import_capacity,efficiency
 hydrogen,H2,ccgt,true,false,false,0.01,0,,0,0,0,1
 electricity,ccgt,balance,true,false,false,0.05,0,,0,0,0,0.5
 electricity,wind,balance,true,false,false,0.005,0,,0,0,0,0

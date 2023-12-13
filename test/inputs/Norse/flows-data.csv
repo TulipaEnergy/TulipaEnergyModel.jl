@@ -1,5 +1,5 @@
 ,asset_name,asset_name,{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,MW,p.u.
-carrier,from_asset,to_asset,active,is_transport,investable,variable_cost,investment_cost,investment_limit,export_capacity,import_capacity,initial_capacity,efficiency
+carrier,from_asset,to_asset,active,is_transport,investable,variable_cost,investment_cost,investment_limit,capacity,initial_export_capacity,initial_import_capacity,efficiency
 electricity,Asgard_Battery,Asgard_E_demand,true,false,false,0.003,0,0,0,0,0,0.95
 electricity,Asgard_Solar,Asgard_Battery,true,false,false,0.001,0,0,0,0,0,0.95
 electricity,Asgard_Solar,Asgard_E_demand,true,false,false,0.001,0,0,0,0,0,1
@@ -8,9 +8,9 @@ gas,G_imports,Asgard_CCGT,true,false,false,0.0015,0,0,0,0,0,1
 gas,G_imports,Midgard_CCGT,true,false,false,0.0015,0,0,0,0,0,1
 gas,G_imports,Valhalla_GT,true,false,false,0.0015,0,0,0,0,0,1
 gas,G_imports,Valhalla_H2_generator,true,false,false,0.0015,0,0,0,0,0,1
-electricity,Asgard_E_demand,Midgard_E_demand,true,true,true,0,2000,50000,1000,1000,0,1
+electricity,Asgard_E_demand,Midgard_E_demand,true,true,true,0,2000,50000,1000,0,0,1
 electricity,Asgard_E_demand,Valhalla_E_balance,true,true,true,0,5000,,1000,1000,1000,1
-electricity,Midgard_E_demand,Valhalla_E_balance,true,true,true,0,3500,,1000,1000,0,1
+electricity,Midgard_E_demand,Valhalla_E_balance,true,true,true,0,3500,,1000,0,0,1
 electricity,Midgard_Wind,Midgard_E_demand,true,false,false,0.002,0,0,0,0,0,0
 electricity,Midgard_Nuclear_SMR,Midgard_E_demand,true,false,false,0.015,0,0,0,0,0,1
 electricity,Midgard_E_imports,Midgard_E_demand,true,false,false,0.02,0,0,0,0,0,1

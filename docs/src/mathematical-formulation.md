@@ -28,24 +28,23 @@ NOTE: Asset types are mutually exclusive.
 
 Name|Domain|Description|Units
  ---|---|---|---
-$p^{investment\_cost}_{a}$     | $\mathcal{A}_i$    | Investment cost  of asset units         | [kEUR/MW/year]
-$p^{investment\_limit}_{a}$    | $\mathcal{A}_i$    | Investment limit of asset units         | [MW]
-$p^{unit\_capacity}_{a}$       | $\mathcal{A}$      | Capacity of asset units                 | [MW]
-$p^{peak\_demand}_{a}$         | $\mathcal{A}_c$    | Peak demand                             | [MW]
-$p^{init\_capacity}_{a}$       | $\mathcal{A}$      | Initial capacity of asset units         | [MW]
-$p^{investment\_cost}_{f}$     | $\mathcal{F}_i$    | Investment cost  of flow connections    | [kEUR/MW/year]
-$p^{variable\_cost}_{f}$       | $\mathcal{F}$      | Variable cost of flow connections       | [kEUR/MWh]
-$p^{unit\_capacity}_{f}$       | $\mathcal{F}$      | Capacity of flow connections            | [MW]
-$p^{init\_capacity}_{f}$       | $\mathcal{F}$      | Initial capacity of flow connections    | [MW]
-$p^{export\_capacity}_{f}$     | $\mathcal{F}_t$    | Export capacity of flow connections     | [MW]
-$p^{import\_capacity}_{f}$     | $\mathcal{F}_t$    | Import capacity of flow connections     | [MW]
-$p^{rp\_weight}_{rp}$          | $\mathcal{RP}$     | Representative period weight            | [h]
-$p^{profile}_{a,rp,k}$         | $\mathcal{A,RP,K}$ | Asset profile                           | [p.u.]
-$p^{profile}_{f,rp,k}$         | $\mathcal{F,RP,K}$ | Flow connections profile                | [p.u.]
-$p^{ene\_to\_pow\_ratio}_a$    | $\mathcal{A}_s$    | Energy to power ratio                   | [h]
-$p^{init\_storage\_level}_{a}$ | $\mathcal{A}_s$    | Initial storage level                   | [MWh]
-$p^{inflow}_{a}$               | $\mathcal{A}_s$    | Energy storage inflows                  | [MWh]
-$p^{eff}_f$                    | $\mathcal{F}$      | Flow efficiency                         | [p.u.]
+$p^{investment\_cost}_{a}$             | $\mathcal{A}_i$    | Investment cost  of asset units                                                        | [kEUR/MW/year]
+$p^{investment\_limit}_{a}$            | $\mathcal{A}_i$    | Investment limit of asset units                                                        | [MW]
+$p^{unit\_capacity}_{a}$               | $\mathcal{A}$      | Capacity of asset units                                                                | [MW]
+$p^{peak\_demand}_{a}$                 | $\mathcal{A}_c$    | Peak demand                                                                            | [MW]
+$p^{init\_capacity}_{a}$               | $\mathcal{A}$      | Initial capacity of asset units                                                        | [MW]
+$p^{investment\_cost}_{f}$             | $\mathcal{F}_i$    | Investment cost  of flow connections                                                   | [kEUR/MW/year]
+$p^{variable\_cost}_{f}$               | $\mathcal{F}$      | Variable cost of flow connections                                                      | [kEUR/MWh]
+$p^{unit\_capacity}_{f}$               | $\mathcal{F}_t$    | Capacity increment for flow connections investment (both exports and imports)          | [MW]
+$p^{init\_export\_capacity}_{f}$       | $\mathcal{F}_t$    | Initial export capacity of flow connections                                            | [MW]
+$p^{init\_import\_capacity}_{f}$       | $\mathcal{F}_t$    | Initial import capacity of flow connections                                            | [MW]
+$p^{rp\_weight}_{rp}$                  | $\mathcal{RP}$     | Representative period weight                                                           | [h]
+$p^{profile}_{a,rp,k}$                 | $\mathcal{A,RP,K}$ | Asset profile                                                                          | [p.u.]
+$p^{profile}_{f,rp,k}$                 | $\mathcal{F,RP,K}$ | Flow connections profile                                                               | [p.u.]
+$p^{ene\_to\_pow\_ratio}_a$            | $\mathcal{A}_s$    | Energy to power ratio                                                                  | [h]
+$p^{init\_storage\_level}_{a}$         | $\mathcal{A}_s$    | Initial storage level                                                                  | [MWh]
+$p^{inflow}_{a}$                       | $\mathcal{A}_s$    | Energy storage inflows                                                                 | [MWh]
+$p^{eff}_f$                            | $\mathcal{F}$      | Flow efficiency                                                                        | [p.u.]
 
 ## [Variables](@id math-variables)
 
@@ -149,7 +148,7 @@ v^{flow}_{f,rp,k} \geq 0 \quad \forall f \notin \mathcal{F}_t, \forall rp \in \m
 
 ```math
 \begin{aligned}
-v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{export\_capacity}_f \cdot v^{investment}_f \right)  \quad
+v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_export\_capacity}_{f} + p^{unit\_capacity}_f \cdot v^{investment}_f \right)  \quad
 \\ \\ \forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
@@ -158,7 +157,7 @@ v^{flow}_{f,rp,k} \leq p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} +
 
 ```math
 \begin{aligned}
-v^{flow}_{f,rp,k} \geq - p^{profile}_{f,rp,k} \cdot \left(p^{init\_capacity}_{f} + p^{import\_capacity}_f \cdot v^{investment}_f \right)  \quad
+v^{flow}_{f,rp,k} \geq - p^{profile}_{f,rp,k} \cdot \left(p^{init\_import\_capacity}_{f} + p^{unit\_capacity}_f \cdot v^{investment}_f \right)  \quad
 \\ \\ \forall f \in \mathcal{F}_t, \forall rp \in \mathcal{RP},\forall k \in \mathcal{K}
 \end{aligned}
 ```
@@ -191,6 +190,6 @@ v^{investment}_a \leq \frac{p^{investment\_limit}_a}{ p^{unit\_capacity}_a} \qua
 #### Maximum Investment Limit for $\mathcal{F}_i$
 
 ```math
-v^{investment}_f \leq \frac{p^{investment\_limit}_f}{\max\{p^{export\_capacity}_f,p^{import\_capacity}_f\}} \quad
+v^{investment}_f \leq \frac{p^{investment\_limit}_f}{p^{unit\_capacity}_f} \quad
 \\ \\ \forall f \in \mathcal{F}_i
 ```
