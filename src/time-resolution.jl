@@ -1,4 +1,4 @@
-export resolution_matrix, compute_rp_partition, compute_constraints_partitions
+export compute_rp_partition, compute_constraints_partitions
 
 using SparseArrays
 
@@ -39,58 +39,6 @@ function compute_constraints_partitions(graph, representative_periods)
     end
 
     return constraints_partitions
-end
-
-"""
-    M = resolution_matrix(rp_partition, time_blocks; rp_resolution = 1.0)
-
-Computes the resolution balance matrix using the array of `rp_partition` and the array of `time_blocks`.
-The `time_blocks` will normally be from an asset or flow, but there is nothing constraining it to that.
-The elements in these arrays must be ranges.
-
-The resulting matrix will be multiplied by `rp_resolution`.
-
-## Examples
-
-The following two examples are for two flows/assets with resolutions of 3h and 4h, so that the representative period has 4h periods.
-
-```jldoctest
-rp_partition = [1:4, 5:8, 9:12]
-time_blocks = [1:4, 5:8, 9:12]
-resolution_matrix(rp_partition, time_blocks)
-
-# output
-
-3×3 SparseArrays.SparseMatrixCSC{Float64, Int64} with 3 stored entries:
- 1.0   ⋅    ⋅
-  ⋅   1.0   ⋅
-  ⋅    ⋅   1.0
-```
-
-```jldoctest
-rp_partition = [1:4, 5:8, 9:12]
-time_blocks = [1:3, 4:6, 7:9, 10:12]
-resolution_matrix(rp_partition, time_blocks; rp_resolution = 1.5)
-
-# output
-
-3×4 SparseArrays.SparseMatrixCSC{Float64, Int64} with 6 stored entries:
- 1.5  0.5   ⋅    ⋅
-  ⋅   1.0  1.0   ⋅
-  ⋅    ⋅   0.5  1.5
-```
-"""
-function resolution_matrix(
-    rp_partition::AbstractVector{<:UnitRange{<:Integer}},
-    time_blocks::AbstractVector{<:UnitRange{<:Integer}};
-    rp_resolution = 1.0,
-)
-    matrix = sparse([
-        rp_resolution * length(period ∩ time_block) / length(time_block) for
-        period in rp_partition, time_block in time_blocks
-    ])
-
-    return matrix
 end
 
 """
