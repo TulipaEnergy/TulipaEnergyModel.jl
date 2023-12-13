@@ -1,23 +1,22 @@
-export plot_single_flow, plot_final_flow_graph #, plot_assets_balance
+export plot_single_flow, plot_final_flow_graph, plot_assets_capacity
 
-#%%
-# using TulipaEnergyModel
-# using MetaGraphsNext
-# using Plots
-# using GraphPlot
-# energy_problem = run_scenario("test/inputs/Norse")
-# graph = energy_problem.graph
-# rp = 1
+"""
+    plot_single_flow(graph::MetaGraph,              asset_from::String, asset_to::String, rp::Int64,)
+    plot_single_flow(energy_problem::EnergyProblem, asset_from::String, asset_to::String, rp::Int64,)
 
-#%%
+Plot a single flow over a single representative period,
+given a graph or energy problem, the "from" (exporting) asset, the "to" (importing) asset, and the representative period.
+"""
 function plot_single_flow(graph::MetaGraph, asset_from::String, asset_to::String, rp::Int64)
     rp_partition = graph[asset_from, asset_to].partitions[rp]
-    x = 1:length(rp_partition)  # time dimension
-    y = [graph[asset_from, asset_to].flow[(1, B)] for B in rp_partition] # flow value
+    time_dimension = 1:length(rp_partition)
+    flow_value = [graph[asset_from, asset_to].flow[(1, B)] for B in rp_partition]
+
     plot(
-        x,
-        y;
+        time_dimension,
+        flow_value;
         title = string("Flow from ", asset_from, " to ", asset_to, " for RP", rp),
+        titlefontsize = 10,
         legend = false,
     )
 end
@@ -31,8 +30,13 @@ function plot_single_flow(
     plot_single_flow(energy_problem.graph, asset_from, asset_to, rp)
 end
 
-# plot_single_flow(graph, "G_imports", "Midgard_CCGT", rp)
+"""
+    plot_final_flow_graph(graph::MetaGraph)
+    plot_final_flow_graph(energy_problem::EnergyProblem)
 
+Given a graph or energy problem, plot the graph with the "final" (initial + investment) flow capacities,
+represented by the thickness of the graph edges, as well as displayed values.
+"""
 function plot_final_flow_graph(graph::MetaGraph)
     node_labels = labels(graph) |> collect
     total_flow_cap = [
@@ -40,30 +44,50 @@ function plot_final_flow_graph(graph::MetaGraph)
         graph[a, b].investable * graph[a, b].investment * graph[a, b].unit_capacity for
         (a, b) in edge_labels(graph)
     ] # total = initial + investable * investment * unit_capacity
-    gplot(graph; nodelabel = node_labels, edgelabel = total_flow_cap)
+
+    gplot(
+        graph;
+        nodelabel = node_labels,
+        edgelabel = total_flow_cap,
+        nodelabelc = "gray",
+        edgelabelc = "orange",
+        NODELABELSIZE = 3.0,
+        EDGELABELSIZE = 3.0,
+        EDGELINEWIDTH = [x / maximum(total_flow_cap) + 0.1 for x in total_flow_cap],
+    )
 end
 
 function plot_final_flow_graph(energy_problem::EnergyProblem)
     plot_final_flow_graph(energy_problem.graph)
 end
 
-# plot_flow_graph(energy_problem.graph)
+"""
+    plot_assets_capacity(graph::MetaGraph)
+    plot_assets_capacity(energy_problem::EnergyProblem)
 
-#function plot_assets_balance(solution)
-#    plot_data = solution.assets_investment.data
-#xlabel =
-#    groupedbar(
-#        plot_data,
-#        bar_position = :stack,
-#        xticks = (#:##, xlabel),
-#        label = ["" ""]
-#    )
-#end
+Given a graph or energy problem, display a stacked bar graph of
+the initial and invested capacity of each asset (initial + invested = total).
+"""
+function plot_assets_capacity(graph::MetaGraph)
+    asset_labels = labels(graph) |> collect
+    total_asset_cap = [
+        graph[a].initial_capacity + graph[a].investable * graph[a].investment * graph[a].capacity for a in labels(graph)
+    ] # total = initial + investable * investement * capacity
+    initial_cap = [graph[a].initial_capacity for a in labels(graph)]
+    investment_cap =
+        [graph[a].investable * graph[a].investment * graph[a].capacity for a in labels(graph)]
 
-#function plot_all_flows(   ????
-#    solution::NamedTuple,
-#    sets::NamedTuple,
-#    rp::Int64,
-#)
+    plot(
+        [initial_cap, investment_cap];
+        seriestype = :bar,
+        xticks = (1:length(total_asset_cap), asset_labels),
+        xrotation = 90,
+        title = string("Total Capacity of Assets after Investment"),
+        titlefontsize = 10,
+        label = ["Initial Capacity" "Invested Capacity"],
+    )
+end
 
-#end
+function plot_assets_capacity(energy_problem::EnergyProblem)
+    plot_assets_capacity(energy_problem.graph)
+end
