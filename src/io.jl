@@ -53,12 +53,24 @@ function create_graph_and_representative_periods_from_csv_folder(input_folder::A
     flows_data_df        = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
     flows_profiles_df    = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles)
     rep_period_df        = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
+    rp_mapping_df        = read_csv_with_schema(fillpath("rep-periods-mapping.csv"), RepPeriodMapping)
     assets_partitions_df = read_csv_with_schema(fillpath("assets-partitions.csv"), AssetPartitionData)
     flows_partitions_df  = read_csv_with_schema(fillpath("flows-partitions.csv"), FlowPartitionData)
 
     # Sets and subsets that depend on input data
+
+    # TODO: Depending on the outcome of issue #294, this can be done more efficiently with DataFrames, e.g.,
+    # combine(groupby(rp_mapping_df, :rep_period), :weight => sum => :weight)
+
+    # Create a dictionary of weights and populate it.
+    weights = Dict{Int,Dict{Int,Float64}}()
+    for sub_df ∈ groupby(rp_mapping_df, :rep_period)
+        rp = first(sub_df.rep_period)
+        weights[rp] = Dict(Pair.(sub_df.period, sub_df.weight))
+    end
+
     representative_periods = [
-        RepresentativePeriod(row.weight, row.num_time_steps, row.resolution) for
+        RepresentativePeriod(weights[row.id], row.num_time_steps, row.resolution) for
         row in eachrow(rep_period_df)
     ]
 

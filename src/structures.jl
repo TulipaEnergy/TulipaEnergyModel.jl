@@ -6,12 +6,14 @@ const TimeBlock = UnitRange{Int}
 Structure to hold the data of one representative period.
 """
 struct RepresentativePeriod
+    base_periods::Union{Nothing,Dict{Int,Float64}}  # which periods in the full problem formulation does this RP stand for
     weight::Float64
     time_steps::TimeBlock
     resolution::Float64
 
-    function RepresentativePeriod(weight, num_time_steps, resolution)
-        return new(weight, 1:num_time_steps, resolution)
+    function RepresentativePeriod(base_periods, num_time_steps, resolution)
+        weight = sum(values(base_periods))
+        return new(base_periods, weight, 1:num_time_steps, resolution)
     end
 end
 

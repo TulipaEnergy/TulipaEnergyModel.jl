@@ -82,7 +82,15 @@ Schema for the rep-period-data.csv file.
 """
 struct RepPeriodData
     id::Int                     # Representative period ID
-    weight::Float64             # Hours
     num_time_steps::Int         # Numer of time steps
     resolution::Float64         # Duration of each time steps (hours)
+end
+
+"""
+Schema for the rep-periods-mapping.csv file.
+"""
+struct RepPeriodMapping
+    period::Int                 # Period ID
+    rep_period::Int             # Representative period ID
+    weight::Float64             # Hours
 end
