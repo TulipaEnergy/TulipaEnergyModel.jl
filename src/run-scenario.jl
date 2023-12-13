@@ -1,10 +1,10 @@
 export run_scenario
 
 """
-    run_scenario(input_folder, output_folder)
+    run_scenario(input_folder[, output_folder])
 
-Run the scenario in the given input_folder and return the sets, parameters, and solution.
-If the output_folder is specified, save the sets, parameters, and solution to the output_folder.
+Run the scenario in the given `input_folder` and return the sets, parameters, and solution.
+The `output_folder` is optional. If it is specified, save the sets, parameters, and solution to the `output_folder`.
 """
 function run_scenario(
     input_folder::AbstractString,
