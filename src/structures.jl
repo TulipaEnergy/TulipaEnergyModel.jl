@@ -82,10 +82,9 @@ mutable struct GraphFlowData
     variable_cost::Float64
     investment_cost::Float64
     investment_limit::Union{Missing,Float64}
-    import_capacity::Float64
-    export_capacity::Float64
-    unit_capacity::Float64
-    initial_capacity::Float64
+    capacity::Float64
+    initial_export_capacity::Float64
+    initial_import_capacity::Float64
     efficiency::Float64
     profiles::Dict{Int,Vector{Float64}}
     partitions::Dict{Int,Vector{TimeBlock}}
@@ -103,10 +102,9 @@ function GraphFlowData(flow_data::FlowData)
         flow_data.variable_cost,
         flow_data.investment_cost,
         flow_data.investment_limit,
-        flow_data.import_capacity,
-        flow_data.export_capacity,
-        max(flow_data.export_capacity, flow_data.import_capacity),
-        flow_data.initial_capacity,
+        flow_data.capacity,
+        flow_data.initial_export_capacity,
+        flow_data.initial_import_capacity,
         flow_data.efficiency,
         Dict{Int,Vector{Float64}}(),
         Dict{Int,Vector{TimeBlock}}(),

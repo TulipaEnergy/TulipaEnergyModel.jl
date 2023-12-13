@@ -97,8 +97,8 @@ function create_model(
     flows_investment_cost = @expression(
         model,
         sum(
-            graph[u, v].investment_cost * graph[u, v].unit_capacity * flows_investment[(u, v)]
-            for (u, v) ∈ Fi
+            graph[u, v].investment_cost * graph[u, v].capacity * flows_investment[(u, v)] for
+            (u, v) ∈ Fi
         )
     )
 
@@ -259,8 +259,8 @@ function create_model(
         model,
         upper_bound_transport_flow[(u, v) ∈ F, rp ∈ RP, B_flow ∈ graph[u, v].partitions[rp]],
         flows_profile_sum(u, v, rp, B_flow, 1.0) * (
-            graph[u, v].initial_capacity +
-            (graph[u, v].investable ? graph[u, v].export_capacity * flows_investment[(u, v)] : 0.0)
+            graph[u, v].initial_export_capacity +
+            (graph[u, v].investable ? graph[u, v].capacity * flows_investment[(u, v)] : 0.0)
         )
     )
 
@@ -268,8 +268,8 @@ function create_model(
         model,
         lower_bound_transport_flow[(u, v) ∈ F, rp ∈ RP, B_flow ∈ graph[u, v].partitions[rp]],
         flows_profile_sum(u, v, rp, B_flow, 1.0) * (
-            graph[u, v].initial_capacity +
-            (graph[u, v].investable ? graph[u, v].import_capacity * flows_investment[(u, v)] : 0.0)
+            graph[u, v].initial_import_capacity +
+            (graph[u, v].investable ? graph[u, v].capacity * flows_investment[(u, v)] : 0.0)
         )
     )
 
@@ -300,13 +300,6 @@ function create_model(
         set_lower_bound(storage_level[a, rp, Pl[(a, rp)][end]], graph[a].initial_storage_level)
     end
 
-    ## Expressions for the extra constraints of investment limits
-    @expression(
-        model,
-        flow_max_capacity[(u, v) ∈ Fi],
-        max(graph[u, v].export_capacity, graph[u, v].import_capacity)
-    )
-
     ## Extra constraints for investment limits
     # - maximum (i.e., potential) investment limit for assets
     for a ∈ Ai
@@ -317,10 +310,10 @@ function create_model(
 
     # - maximum (i.e., potential) investment limit for flows
     for (u, v) ∈ Fi
-        if flow_max_capacity[(u, v)] > 0 && !ismissing(graph[u, v].investment_limit)
+        if graph[u, v].capacity > 0 && !ismissing(graph[u, v].investment_limit)
             set_upper_bound(
                 flows_investment[(u, v)],
-                graph[u, v].investment_limit / flow_max_capacity[(u, v)],
+                graph[u, v].investment_limit / graph[u, v].capacity,
             )
         end
     end
