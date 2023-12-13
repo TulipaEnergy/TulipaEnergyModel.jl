@@ -17,6 +17,12 @@ end
         write_lp_file = true,
     )
     @test energy_problem.objective_value ≈ 269238.43825 atol = 1e-5
+
+    @testset "Codecov Demands Graphs" begin
+        plot_single_flow(energy_problem, "ocgt", "demand", 1)
+        plot_final_flow_graph(energy_problem)
+        plot_assets_capacity(energy_problem)
+    end
 end
 
 @testset "Tiny Variable Resolution Case Study" begin
