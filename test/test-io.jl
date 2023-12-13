@@ -34,8 +34,10 @@ end
 
 @testset "Test parsing of partitions" begin
     @testset "compute assets partitions" begin
-        representative_periods =
-            [RepresentativePeriod(1.0, 12, 1.0), RepresentativePeriod(1.0, 24, 1.0)]
+        representative_periods = [
+            RepresentativePeriod(Dict(1 => 1.0), 12, 1.0),
+            RepresentativePeriod(Dict(2 => 1.0), 24, 1.0),
+        ]
         df = DataFrame(
             :asset => [1, 2, 2, 3],
             :rep_period_id => [1, 1, 2, 2],
@@ -61,8 +63,10 @@ end
     end
 
     @testset "compute flows partitions" begin
-        representative_periods =
-            [RepresentativePeriod(1.0, 12, 1.0), RepresentativePeriod(1.0, 24, 1.0)]
+        representative_periods = [
+            RepresentativePeriod(Dict(1 => 1.0), 12, 1.0),
+            RepresentativePeriod(Dict(2 => 1.0), 24, 1.0),
+        ]
         df = DataFrame(
             :from_asset => [1, 2, 2, 3],
             :to_asset => [2, 3, 3, 4],
