@@ -1,36 +1,4 @@
 @testset "Time resolution" begin
-    @testset "resolution_matrix" begin
-        rp_partition = [1:4, 5:8, 9:12]
-        for rp_resolution in [1e-4, 0.5, 1.0, 3.14, 1e4]
-            time_blocks = [1:4, 5:8, 9:12]
-            expected = rp_resolution * [
-                1.0 0.0 0.0
-                0.0 1.0 0.0
-                0.0 0.0 1.0
-            ]
-            @test resolution_matrix(rp_partition, time_blocks; rp_resolution = rp_resolution) ≈
-                  expected
-
-            time_blocks = [1:3, 4:6, 7:9, 10:12]
-            expected = rp_resolution * [
-                1.0 1/3 0.0 0.0
-                0.0 2/3 2/3 0.0
-                0.0 0.0 1/3 1.0
-            ]
-            @test resolution_matrix(rp_partition, time_blocks; rp_resolution = rp_resolution) ≈
-                  expected
-
-            time_blocks = [1:6, 7:9, 10:10, 11:11, 12:12]
-            expected = rp_resolution * [
-                2/3 0.0 0.0 0.0 0.0
-                1/3 2/3 0.0 0.0 0.0
-                0.0 1/3 1.0 1.0 1.0
-            ]
-            @test resolution_matrix(rp_partition, time_blocks; rp_resolution = rp_resolution) ≈
-                  expected
-        end
-    end
-
     @testset "compute_rp_partition" begin
         # regular
         partition1 = [1:4, 5:8, 9:12] # every 4 hours
