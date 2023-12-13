@@ -1,5 +1,5 @@
 ,asset_name,asset_name,{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,MW,p.u.
-carrier,from_asset,to_asset,active,is_transport,investable,variable_cost,investment_cost,investment_limit,export_capacity,import_capacity,initial_capacity,efficiency
+carrier,from_asset,to_asset,active,is_transport,investable,variable_cost,investment_cost,investment_limit,capacity,initial_export_capacity,initial_import_capacity,efficiency
 electricity,NL_Battery,NL_E_Balance,true,false,true,0,0,,0,0,0,1
 electricity,NL_E_Balance,NL_Battery,true,false,true,0,0,,0,0,0,1
 electricity,NL_Wind_Onshore,NL_E_Balance,true,false,true,0.0023,0,,0,0,0,1
