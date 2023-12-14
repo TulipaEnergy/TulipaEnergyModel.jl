@@ -124,7 +124,7 @@ end
 Markdown.parse(out)
 ```
 
-#### `flows-partitions.csv`
+#### `flows-partitions.csv` (@id flow-partitions-definition)
 
 Similar to `assets-partitions.csv`, but for flows.
 
