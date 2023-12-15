@@ -214,6 +214,8 @@ The `wind` producer asset is interesting because the output flows are in differe
 \end{aligned}
 ```
 
+Since the flow variables `$flow_{(wind,balance),1:2}$` and `$flow_{(wind,balance),1:3}$` represent power, the first constraint sets the upper bound of the power for both time step 1 and 2, by assuming an average capacity across these two time steps. The same applies to the other two constraints.
+
 The hydrogen (H2) producer capacity limit is straightforward since both the asset and the flow definition are in the exact time resolution:
 
 ```math
