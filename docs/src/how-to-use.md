@@ -154,6 +154,21 @@ end
 Markdown.parse(out)
 ```
 
+#### `rep-periods-mapping.csv`
+
+Describes the [representative periods](@ref representative-periods).
+
+Required columns:
+
+```@eval
+using Markdown, TulipaEnergyModel
+out = ""
+for (f, t) in zip(fieldnames(TulipaEnergyModel.RepPeriodMapping), fieldtypes(TulipaEnergyModel.RepPeriodMapping))
+    global out *= "- `$f: $t`\n"
+end
+Markdown.parse(out)
+```
+
 ## Structures
 
 The list of relevant structures used in this package are listed below:
@@ -220,9 +235,10 @@ For instance, we could model the year into 3 days, by clustering all days of the
 Each one of these periods of time is called a representative period.
 They have been obtained by clustering through [TulipaClustering](https://github.com/TulipaEnergy/TulipaClustering.jl).
 
-A representative period was three fields:
+A representative period was four fields:
 
-* `weight`: indicates how many representative periods is contained in that year.
+* `base_periods`: indicates the periods of the full problem that map into this representative period, and the weight of the representative period in them.
+* `weight`: indicates how many representative periods is contained in that year; this is inferred automatically from `base_periods`.
 * `time_steps`: The number of time steps in that year.
 * `resolution`: The duration in time of a time step.
 
