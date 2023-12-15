@@ -22,3 +22,7 @@ end
     include(joinpath(@__DIR__, "..", "benchmark", "benchmarks.jl"))
     @test SUITE !== nothing
 end
+
+@testset "Ensuring EU data can be read" begin
+    create_graph_and_representative_periods_from_csv_folder(joinpath(@__DIR__, "../benchmark/EU/"))
+end
