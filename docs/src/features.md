@@ -16,7 +16,21 @@ The following sections explain the main features in the optimization model insid
 
 ## [Flexible Connection of Energy Assets](@id flex-asset-connection)
 
-The representation of the energy system in *TulipaEnergyModel.jl* is based on [Graph Theory](https://www.britannica.com/topic/graph-theory), which deals with connection amongst vertices by edges. This representation provides a more flexible framework to model *energy assets* in the system as *vertices* and *flows* between energy assets as *edges*. In addition, it poses some advantages from the modelling perspective. For instance, connecting assets directly to each other without having a node between them allows for a reduction of the number of variables and constraints to represent different configurations (e.g., co-location of energy storage and renewable units to model a hybrid operation).
+The representation of the energy system in *TulipaEnergyModel.jl* is based on [Graph Theory](https://www.britannica.com/topic/graph-theory), which deals with connection amongst vertices by edges. This representation provides a more flexible framework to model *energy assets* in the system as *vertices* and *flows* between energy assets as *edges*. In addition, it poses some advantages from the modeling perspective. For instance, connecting assets directly to each other without having a node between them allows for a reduction of the number of variables and constraints to represent different configurations (e.g., co-location of energy storage and renewable units to model a hybrid operation).
+
+Consider the following example to demonstrate the benefits of this approach. In the classic connection approach, the nodes play a crucial role in modeling. For example, every asset needs to be connected to a node that has balance constraints attached to it. Therefore, to include the co-location of a storage asset and a renewable asset, we must introduce a node between these assets and the external power grid, as shown in the following figure:
+
+![Classic connection](./figs/flexible-connection-1.png)
+
+In this system, the `phs` storage asset charges and discharges from the connection `node`, while the `wind` turbine produces power that also goes directly to the `node`. This `node` is connected to the external power grid through a transmission line that leads to the `balance` node. Essentially, the `node` acts as a balancing point for the assets in this hybrid operation. Furthermore, these hybrid operations impose an additional constraint to ensure that storage charges from the power grid are avoided. The section with [`comparison of different modeling approaches`](@ref comparison) shows the quantification of these reductions.
+
+Let's consider the modeling approach in *TulipaEnergyModel.jl*. As nodes are no longer needed to connect assets, we can connect them directly to each other as shown in the figure below:
+
+![Flexible connection](./figs/flexible-connection-2.png)
+
+By implementing this approach, we can reduce the number of variables and constraints involved in the process. For example, the balance constraint in the intermediate node is no longer needed, as well as the extra constraint to avoid the storage charging from the power grid.  Additionally, we can eliminate the variable that determines the flow between the intermediate node and the power grid.
+
+The example here shows the connection of a `phs` and a `wind` asset, illustrating the modeling approach's advantages and the example's reusability in the following sections. However, other applications of these co-location (or hybrid) combinations of assets are battery-solar, hydro-solar, and electrolyzer-wind.
 
 ## [Flexible Time Resolution](@id flex-time-res)
 
@@ -40,6 +54,8 @@ Depending on the input data and the level of detail you want to model, hourly re
 Let's explore the flexibility in the time resolution with the following examples. The following table shows the user input data for the asset time resolution definition. Please note that the values presented in this example are just for illustrative purposes and do not represent a realistic case.
 
 ```@example print-partitions
+using DataFrames # hide
+using CSV # hide
 input_asset_file = "../../test/inputs/Variable Resolution/assets-partitions.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
 assets = assets[assets.asset .!= "wind", :] # hide
@@ -52,8 +68,6 @@ If an asset is not specified in this file, the balance equation will be written 
 The same type of definition can be done for the flows, for example (again, the values are for illustrative purposes and do not represent a realistic case):
 
 ```@example print-partitions
-using DataFrames # hide
-using CSV # hide
 input_flow_file = "../../test/inputs/Variable Resolution/flows-partitions.csv" # hide
 flows_partitions = CSV.read(input_flow_file, DataFrame, header = 2) # hide
 ```
@@ -80,7 +94,7 @@ So, let's recap:
 - The flow from the phs to the balance (`phs,balance`) represents the discharge of the `phs`. This flow has a variable resolution of two blocks from hour 1 to 4 (i.e., `1:4`) and from hour 5 to 6 (i.e., `5:6`), which differs from the one defined for the charging flow from the `wind` asset.
 - The `demand` consumption has hourly input data with one connection to the `balance` hub:
   - The flow from the balance hub to the demand (`balance,demand`) has a uniform resolution of three hours; therefore, it has two blocks, one from hour 1 to 3 (i.e., `1:3`) and the other from hour 4 to 6 (i.e., `4:6`).
-- The `balance` hub integrates all the different assets with their different resolutions. The lowest resolution of all connections determines the balance equation for this asset. Therefore, the resulting resolution is into two blocks, one from hour 1 to 4 (i.e., `1:4`) and the other from hour 5 to 6 (i.e., `5:6`).
+- The `balance` hub integrates all the different assets with their different resolutions. The lowest resolution of all connections determines the balance equation for this asset. Therefore, the resulting resolution is into two blocks, one from hour 1 to 4 (i.e., `1:4`) and the other from hour 5 to 6 (i.e., `5:6`). Notice that the resulting resolution comes from using the function [`compute_rp_partition`](@ref), which applies a `:greedy` forward strategy to obtain the lowest resolution of all connecting assets. It is possible that other strategies, such as the backward strategy, could be helpful. However, these are outside the current scope of the model and may be the subject of future research.
 
 > **Note:**
 > This example demonstrates that different time resolutions can be assigned to each asset and flow in the model. Additionally, the resolutions do not need to be uniform and can vary throughout the horizon.
@@ -216,17 +230,57 @@ For the connection from the hub to the demand there are associated transmission 
 ```math
 \begin{aligned}
 & max\_transport\_flows\_limit_{(balance,demand),1:3}: \\
-& \qquad flow_{(balance,demand),1:3} \leq p^{export\_capacity}_{(balance,demand)} \\
+& \qquad flow_{(balance,demand),1:3} \leq p^{init\_export\_capacity}_{(balance,demand)} \\
 & max\_transport\_flows\_limit_{(balance,demand),4:6}: \\
-& \qquad flow_{(balance,demand),4:6} \leq p^{export\_capacity}_{(balance,demand)} \\
+& \qquad flow_{(balance,demand),4:6} \leq p^{init\_export\_capacity}_{(balance,demand)} \\
 \end{aligned}
 ```
 
 ```math
 \begin{aligned}
 & min\_transport\_flows\_limit_{(balance,demand),1:3}: \\
-& \qquad flow_{(balance,demand),1:3} \geq - p^{import\_capacity}_{(balance,demand)} \\
+& \qquad flow_{(balance,demand),1:3} \geq - p^{init\_import\_capacity}_{(balance,demand)} \\
 & min\_transport\_flows\_limit_{(balance,demand),4:6}: \\
-& \qquad flow_{(balance,demand),4:6} \geq - p^{import\_capacity}_{(balance,demand)} \\
+& \qquad flow_{(balance,demand),4:6} \geq - p^{init\_import\_capacity}_{(balance,demand)} \\
 \end{aligned}
 ```
+
+### Storage Level limits
+
+Since we have a storage asset in the system, we need to limit the maximum storage level. The `phs` time resolution is defined for each six hours, so we only have one constraint.
+
+```math
+\begin{aligned}
+& max\_storage\_level\_limit_{phs,1:6}: \\
+& \qquad storage\_level_{phs,1:6} = p^{init\_storage\_capacity}_{phs}
+\end{aligned}
+```
+
+## [Comparison of Different Modeling Approaches](@id comparison)
+
+This section quantifies the advantages of the [`flexible connection`](@ref flex-asset-connection) and [`flexible time resolution`](@ref flex-time-res) in the *TulipaEnergyModel.jl* modeling approach. So, let us consider three different approaches based on the same example:
+
+1. Classic approach with hourly resolution: This approach need and extra asset, called `node`, to create the hybrid operation of the `phs` and `wind` assets.
+2. Flexible connection with hourly resolution: This approach use the flexible connection to represent the hybrid operation of the  `phs` and `wind` assets.
+3. Flexible connection and time resolution: This approach use both features, the felxible connection and the flexible time resolution.
+
+> **Note:** *TulipaEnergyModel.jl* is flexible enough to allow any of these three approaches to the model through the input data.
+
+The table below shows the number of constraints and variables for each approach over a six-hour horizon. This highlights the potential of flexible time resolution in reducing the size of the optimization model.
+
+| Modeling approach                          | Nº Variables | Nº Constraints | Objective Function |
+|:-------------------------------------------|:------------ |:---------------|:------------------ |
+| Classic approach with hourly resolution    | 48           | 84             | 28.4365            |
+| Flexible connection with hourly resolution | 42           | 72             | 28.4365            |
+| Flexible connection and time resolution    | 16           | 25             | 28.4587            |
+
+By comparing the classic approach with the other methods, we can analyze their differences:
+
+- The flexible connection with hourly resolution reduces 6 variables ($12.5\%$) and 12 constraints ($\approx 14\%$). The objective function is the same since in both cases we use an hourly time resolution.
+- The combination of features reduces 32 variables ($\approx 67\%$) and 59 constraints ($\approx 70\%$) with an approximation error of $\approx 0.073\%$.
+
+The level of reduction and approximation error will depend on each case. The example demonstrates the potential for reduction and accuracy using the flexible time resolution feature in *TulipaEnergyModel.jl*. Some use cases for this feature include:
+
+- Coupling different energy sectors with different dynamics. For instance, methane, hydrogen, and heat sectors can be represented in energy models with lower resolutions (e.g. 4, 6, or 12h) than the electricity sector, usually modeled in higher resolutions (e.g., 1h, 30 min).
+
+- It may not be necessary to have highly detailed resolutions for all your assets in a large-scale electricity case study. For example, if you are analyzing a European case study that focuses on a specific country like The Netherlands, you may not require hourly details for distant countries. However, you would still want to consider their effect, such as Portugal and Spain. In such cases, flexible time resolution can help you maintain hourly details for assets in your focus country while reducing the detail in distant countries by increasing their resolution to two hours or more, depending on the desired level of accuracy. This will reduce the variables in the assets of the distant country.

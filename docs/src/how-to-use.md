@@ -92,7 +92,7 @@ end
 Markdown.parse(out)
 ```
 
-#### `assets-partitions.csv`
+#### [`assets-partitions.csv`](@id asset-partitions-definition)
 
 Contains a description of the [partition](@ref Partition) for each asset.
 If not specified, each asset will have the same time resolution as representative period.
@@ -124,7 +124,7 @@ end
 Markdown.parse(out)
 ```
 
-#### `flows-partitions.csv` (@id flow-partitions-definition)
+#### [`flows-partitions.csv`](@id flow-partitions-definition)
 
 Similar to `assets-partitions.csv`, but for flows.
 
@@ -149,21 +149,6 @@ Required columns:
 using Markdown, TulipaEnergyModel
 out = ""
 for (f, t) in zip(fieldnames(TulipaEnergyModel.RepPeriodData), fieldtypes(TulipaEnergyModel.RepPeriodData))
-    global out *= "- `$f: $t`\n"
-end
-Markdown.parse(out)
-```
-
-#### `rep-periods-mapping.csv`
-
-Describes the [representative periods](@ref representative-periods).
-
-Required columns:
-
-```@eval
-using Markdown, TulipaEnergyModel
-out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.RepPeriodMapping), fieldtypes(TulipaEnergyModel.RepPeriodMapping))
     global out *= "- `$f: $t`\n"
 end
 Markdown.parse(out)
@@ -235,10 +220,9 @@ For instance, we could model the year into 3 days, by clustering all days of the
 Each one of these periods of time is called a representative period.
 They have been obtained by clustering through [TulipaClustering](https://github.com/TulipaEnergy/TulipaClustering.jl).
 
-A representative period was four fields:
+A representative period was three fields:
 
-* `base_periods`: indicates the periods of the full problem that map into this representative period, and the weight of the representative period in them.
-* `weight`: indicates how many representative periods is contained in that year; this is inferred automatically from `base_periods`.
+* `weight`: indicates how many representative periods is contained in that year.
 * `time_steps`: The number of time steps in that year.
 * `resolution`: The duration in time of a time step.
 
