@@ -92,7 +92,7 @@ end
 Markdown.parse(out)
 ```
 
-#### `assets-partitions.csv`
+#### [`assets-partitions.csv`](@id asset-partitions-definition)
 
 Contains a description of the [partition](@ref Partition) for each asset.
 If not specified, each asset will have the same time resolution as representative period.
@@ -124,7 +124,7 @@ end
 Markdown.parse(out)
 ```
 
-#### `flows-partitions.csv`
+#### [`flows-partitions.csv`](@id flow-partitions-definition)
 
 Similar to `assets-partitions.csv`, but for flows.
 
