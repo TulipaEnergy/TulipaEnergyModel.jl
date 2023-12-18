@@ -3,6 +3,32 @@ export create_model!, create_model
 const TupleAssetRPTimeBlock = Tuple{String,Int,TimeBlock}
 const TupleDurationFlowTimeBlock = Tuple{Float64,Tuple{String,String},TimeBlock}
 
+function add_to_flow!(flow_sum_indices, graph, representative_periods, a, rp, P, f)
+    search_start_index = 1
+    flow_partitions = graph[f...].partitions[rp]
+    num_flow_partitions = length(flow_partitions)
+    for B ∈ P
+        # Update search_start_index
+        while last(flow_partitions[search_start_index]) < first(B)
+            search_start_index += 1
+            if search_start_index > num_flow_partitions
+                break
+            end
+        end
+        last_B = last(B)
+        for j = search_start_index:num_flow_partitions
+            B_flow = flow_partitions[j]
+            d = length(B ∩ B_flow) * representative_periods[rp].resolution
+            if d != 0
+                push!(flow_sum_indices[a, rp, B], (d, f, B_flow))
+            end
+            if first(B_flow) > last_B
+                break
+            end
+        end
+    end
+end
+
 """
     create_model!(energy_problem)
 
@@ -125,21 +151,6 @@ function create_model(graph, representative_periods, constraints_partitions; wri
     ## Objective function
     @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
 
-    function add_to_flow_sum_indices!(flow_sum_indices, a, rp, B, f)
-        for B_flow ∈ graph[f...].partitions[rp]
-            if B_flow[end] < B[1]
-                continue
-            end
-            d = duration(B, B_flow, rp)
-            if d != 0
-                push!(flow_sum_indices, (d, f, B_flow))
-            end
-            if B_flow[1] > B[end]
-                break
-            end
-        end
-    end
-
     flow_sum_indices_incoming_lowest =
         Dict{TupleAssetRPTimeBlock,Vector{TupleDurationFlowTimeBlock}}()
     flow_sum_indices_outgoing_lowest =
@@ -152,48 +163,52 @@ function create_model(graph, representative_periods, constraints_partitions; wri
         for B ∈ Pl[(a, rp)]
             flow_sum_indices_incoming_lowest[a, rp, B] = TupleDurationFlowTimeBlock[]
             flow_sum_indices_outgoing_lowest[a, rp, B] = TupleDurationFlowTimeBlock[]
-            for u ∈ inneighbor_labels(graph, a)
-                add_to_flow_sum_indices!(
-                    flow_sum_indices_incoming_lowest[a, rp, B],
-                    a,
-                    rp,
-                    B,
-                    (u, a),
-                )
-            end
-
-            for v ∈ outneighbor_labels(graph, a)
-                add_to_flow_sum_indices!(
-                    flow_sum_indices_outgoing_lowest[a, rp, B],
-                    a,
-                    rp,
-                    B,
-                    (a, v),
-                )
-            end
         end
         for B ∈ Ph[(a, rp)]
             flow_sum_indices_incoming_highest[a, rp, B] = TupleDurationFlowTimeBlock[]
             flow_sum_indices_outgoing_highest[a, rp, B] = TupleDurationFlowTimeBlock[]
-            for u ∈ inneighbor_labels(graph, a)
-                add_to_flow_sum_indices!(
-                    flow_sum_indices_incoming_highest[a, rp, B],
-                    a,
-                    rp,
-                    B,
-                    (u, a),
-                )
-            end
+        end
 
-            for v ∈ outneighbor_labels(graph, a)
-                add_to_flow_sum_indices!(
-                    flow_sum_indices_outgoing_highest[a, rp, B],
-                    a,
-                    rp,
-                    B,
-                    (a, v),
-                )
-            end
+        for u ∈ inneighbor_labels(graph, a)
+            add_to_flow!(
+                flow_sum_indices_incoming_lowest,
+                graph,
+                representative_periods,
+                a,
+                rp,
+                Pl[(a, rp)],
+                (u, a),
+            )
+            add_to_flow!(
+                flow_sum_indices_incoming_highest,
+                graph,
+                representative_periods,
+                a,
+                rp,
+                Ph[(a, rp)],
+                (u, a),
+            )
+        end
+
+        for v ∈ outneighbor_labels(graph, a)
+            add_to_flow!(
+                flow_sum_indices_outgoing_lowest,
+                graph,
+                representative_periods,
+                a,
+                rp,
+                Pl[(a, rp)],
+                (a, v),
+            )
+            add_to_flow!(
+                flow_sum_indices_outgoing_highest,
+                graph,
+                representative_periods,
+                a,
+                rp,
+                Ph[(a, rp)],
+                (a, v),
+            )
         end
     end
 
