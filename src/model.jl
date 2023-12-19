@@ -1,5 +1,8 @@
 export create_model!, solve_model!, create_model, solve_model
 
+const TupleAssetRPTimeBlock = Tuple{String,Int,TimeBlock}
+const TupleDurationFlowTimeBlock = Tuple{Float64,Tuple{String,String},TimeBlock}
+
 """
     create_model!(energy_problem; verbose = false)
 
@@ -30,7 +33,7 @@ function create_model(
     ## Helper functions
     # Computes the duration of the `block` that is within the `period`, and
     # multiply by the resolution of the representative period `rp`.
-    # It is equivalent to finding the indexes of these values in the matrix.
+    # It is equivalent to finding the indices of these values in the matrix.
     function duration(B1, B2, rp)
         return length(B1 ∩ B2) * representative_periods[rp].resolution
     end
@@ -59,10 +62,10 @@ function create_model(
     end
 
     ## Sets unpacking
-    A = labels(graph)
-    F = edge_labels(graph)
-    filter_assets(key, value) = Iterators.filter(a -> getfield(graph[a], key) == value, A)
-    filter_flows(key, value) = Iterators.filter(f -> getfield(graph[f...], key) == value, F)
+    A = labels(graph) |> collect
+    F = edge_labels(graph) |> collect
+    filter_assets(key, value) = filter(a -> getfield(graph[a], key) == value, A)
+    filter_flows(key, value) = filter(f -> getfield(graph[f...], key) == value, F)
 
     Ac = filter_assets(:type, "consumer")
     Ap = filter_assets(:type, "producer")
@@ -116,14 +119,86 @@ function create_model(
     ## Objective function
     @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
 
+    function add_to_flow_sum_indices!(flow_sum_indices, a, rp, B, f)
+        for B_flow ∈ graph[f...].partitions[rp]
+            if B_flow[end] < B[1]
+                continue
+            end
+            d = duration(B, B_flow, rp)
+            if d != 0
+                push!(flow_sum_indices, (d, f, B_flow))
+            end
+            if B_flow[1] > B[end]
+                break
+            end
+        end
+    end
+
+    function add_to_flow!(flow_sum_indices, a, rp, P, f)
+        search_start_index = 1
+        flow_partitions = graph[f...].partitions[rp]
+        num_flow_partitions = length(flow_partitions)
+        for B ∈ P
+            # Update search_start_index
+            while last(flow_partitions[search_start_index]) < first(B)
+                search_start_index += 1
+                if search_start_index > num_flow_partitions
+                    break
+                end
+            end
+            if search_start_index > num_flow_partitions
+                break
+            end
+            last_B = last(B)
+            for j = search_start_index:num_flow_partitions
+                B_flow = flow_partitions[j]
+                d = duration(B, B_flow, rp)
+                if d != 0
+                    push!(flow_sum_indices[a, rp, B], (d, f, B_flow))
+                end
+                if first(B_flow) > last_B
+                    break
+                end
+            end
+        end
+    end
+
+    flow_sum_indices_incoming_lowest =
+        Dict{TupleAssetRPTimeBlock,Vector{TupleDurationFlowTimeBlock}}()
+    flow_sum_indices_outgoing_lowest =
+        Dict{TupleAssetRPTimeBlock,Vector{TupleDurationFlowTimeBlock}}()
+    flow_sum_indices_incoming_highest =
+        Dict{TupleAssetRPTimeBlock,Vector{TupleDurationFlowTimeBlock}}()
+    flow_sum_indices_outgoing_highest =
+        Dict{TupleAssetRPTimeBlock,Vector{TupleDurationFlowTimeBlock}}()
+    for a ∈ A, rp ∈ RP
+        for B ∈ Pl[(a, rp)]
+            flow_sum_indices_incoming_lowest[a, rp, B] = TupleDurationFlowTimeBlock[]
+            flow_sum_indices_outgoing_lowest[a, rp, B] = TupleDurationFlowTimeBlock[]
+        end
+        for B ∈ Ph[(a, rp)]
+            flow_sum_indices_incoming_highest[a, rp, B] = TupleDurationFlowTimeBlock[]
+            flow_sum_indices_outgoing_highest[a, rp, B] = TupleDurationFlowTimeBlock[]
+        end
+
+        for u ∈ inneighbor_labels(graph, a)
+            add_to_flow!(flow_sum_indices_incoming_lowest, a, rp, Pl[(a, rp)], (u, a))
+            add_to_flow!(flow_sum_indices_incoming_highest, a, rp, Ph[(a, rp)], (u, a))
+        end
+
+        for v ∈ outneighbor_labels(graph, a)
+            add_to_flow!(flow_sum_indices_outgoing_lowest, a, rp, Pl[(a, rp)], (a, v))
+            add_to_flow!(flow_sum_indices_outgoing_highest, a, rp, Ph[(a, rp)], (a, v))
+        end
+    end
+
     ## Expressions for balance constraints
     @expression(
         model,
         incoming_flow_lowest_resolution[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] for
-            u in inneighbor_labels(graph, a), B_flow ∈ graph[u, a].partitions[rp] if
-            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            d * flow[f, rp, B_flow] for
+            (d, f, B_flow) ∈ flow_sum_indices_incoming_lowest[(a, rp, B)]
         )
     )
 
@@ -131,9 +206,8 @@ function create_model(
         model,
         outgoing_flow_lowest_resolution[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] for
-            v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp] if
-            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            d * flow[f, rp, B_flow] for
+            (d, f, B_flow) ∈ flow_sum_indices_outgoing_lowest[(a, rp, B)]
         )
     )
 
@@ -141,18 +215,17 @@ function create_model(
         model,
         incoming_flow_lowest_resolution_w_efficiency[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] * graph[u, a].efficiency for
-            u in inneighbor_labels(graph, a), B_flow ∈ graph[u, a].partitions[rp] if
-            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            d * flow[f, rp, B_flow] * graph[f...].efficiency for
+            (d, f, B_flow) ∈ flow_sum_indices_incoming_lowest[(a, rp, B)]
         )
     )
+
     @expression(
         model,
         outgoing_flow_lowest_resolution_w_efficiency[a ∈ A, rp ∈ RP, B ∈ Pl[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] / graph[a, v].efficiency for
-            v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp] if
-            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            d * flow[f, rp, B_flow] / graph[f...].efficiency for
+            (d, f, B_flow) ∈ flow_sum_indices_outgoing_lowest[(a, rp, B)]
         )
     )
 
@@ -209,9 +282,8 @@ function create_model(
         model,
         incoming_flow_highest_resolution[a ∈ A, rp ∈ RP, B ∈ Ph[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[(u, a), rp, B_flow] for
-            u in inneighbor_labels(graph, a), B_flow ∈ graph[u, a].partitions[rp] if
-            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            d * flow[f, rp, B_flow] for
+            (d, f, B_flow) in flow_sum_indices_incoming_highest[a, rp, B]
         )
     )
 
@@ -219,9 +291,8 @@ function create_model(
         model,
         outgoing_flow_highest_resolution[a ∈ A, rp ∈ RP, B ∈ Ph[(a, rp)]],
         sum(
-            duration(B, B_flow, rp) * flow[(a, v), rp, B_flow] for
-            v in outneighbor_labels(graph, a), B_flow ∈ graph[a, v].partitions[rp] if
-            B_flow[end] ≥ B[1] && B[end] ≥ B_flow[1]
+            d * flow[f, rp, B_flow] for
+            (d, f, B_flow) in flow_sum_indices_outgoing_highest[a, rp, B]
         )
     )
 
