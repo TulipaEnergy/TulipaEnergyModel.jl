@@ -16,7 +16,7 @@ function solve_model!(
         error("Model is not created, run create_model(energy_problem) first.")
     end
 
-    solution = solve_model(model, optimizer; parameters = parameters)
+    solution = solve_model!(energy_problem.dataframes, model, optimizer; parameters = parameters)
     energy_problem.termination_status = termination_status(model)
     if solution === nothing
         # Warning has been given at internal function
@@ -26,7 +26,7 @@ function solve_model!(
     energy_problem.objective_value = objective_value(model)
 
     graph = energy_problem.graph
-    rps = energy_problem.representative_periods
+    # rps = energy_problem.representative_periods
     for a in labels(graph)
         if graph[a].investable
             if graph[a].investment_integer
@@ -35,14 +35,13 @@ function solve_model!(
                 graph[a].investment = solution.assets_investment[a]
             end
         end
-        if graph[a].type == "storage"
-            for rp_id = 1:length(rps),
-                I in energy_problem.constraints_partitions[:lowest_resolution][(a, rp_id)]
-
-                graph[a].storage_level[(rp_id, I)] = solution.storage_level[(a, rp_id, I)]
-            end
-        end
     end
+
+    for row in eachrow(energy_problem.dataframes[:storage_level])
+        a, rp, time_block, value = row.asset, row.rp, row.time_block, row.solution
+        graph[a].storage_level[(rp, time_block)] = value
+    end
+
     for (u, v) in edge_labels(graph)
         if graph[u, v].investable
             if graph[u, v].investment_integer
@@ -51,10 +50,33 @@ function solve_model!(
                 graph[u, v].investment = solution.flows_investment[(u, v)]
             end
         end
-        for rp_id = 1:length(rps), I in graph[u, v].partitions[rp_id]
-            graph[u, v].flow[(rp_id, I)] = solution.flow[((u, v), rp_id, I)]
-        end
     end
+
+    for row in eachrow(energy_problem.dataframes[:flows])
+        u, v, rp, time_block, value = row.from, row.to, row.rp, row.time_block, row.solution
+        graph[u, v].flow[(rp, time_block)] = value
+    end
+
+    return solution
+end
+
+"""
+    solution = solve_model!(dataframes, model, ...)
+
+Solves the JuMP `model` and return the solution, and modifies some `dataframes` to include the solution.
+The modifications made to `dataframes` are:
+
+- `df_flows.solution = solution.flow`
+- `df_storage_level.solution = solution.storage_level`
+"""
+function solve_model!(dataframes, model, args...; kwargs...)
+    solution = solve_model(model, args...; kwargs...)
+    if isnothing(solution)
+        return nothing
+    end
+
+    dataframes[:flows].solution = solution.flow
+    dataframes[:storage_level].solution = solution.storage_level
 
     return solution
 end

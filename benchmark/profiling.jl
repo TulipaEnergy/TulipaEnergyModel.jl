@@ -11,9 +11,12 @@ input_dir = mktempdir()
 for file in readdir(NORSE_PATH; join = false)
     cp(joinpath(NORSE_PATH, file), joinpath(input_dir, file))
 end
-# Add another line to rep-periods-data.csv
+# Add another line to rep-periods-data.csv and rep-periods-mapping.csv
 open(joinpath(input_dir, "rep-periods-data.csv"), "a") do io
-    println(io, "3,1,$new_rp_length,0.1")
+    println(io, "3,$new_rp_length,0.1")
+end
+open(joinpath(input_dir, "rep-periods-mapping.csv"), "a") do io
+    println(io, "216,3,1")
 end
 # Add profiles to flow and asset
 open(joinpath(input_dir, "flows-profiles.csv"), "a") do io
@@ -46,6 +49,12 @@ end
 
 #%%
 
-@time model = create_model(graph, representative_periods, constraints_partitions);
-@benchmark create_model($graph, $representative_periods, $constraints_partitions)
-# @profview create_model(graph, representative_periods, constraints_partitions);
+@time dataframes = construct_dataframes(graph, representative_periods, constraints_partitions)
+@benchmark construct_dataframes($graph, $representative_periods, $constraints_partitions)
+# @profview construct_dataframes($graph, $representative_periods, $constraints_partitions)
+
+#%%
+
+@time model = create_model(graph, representative_periods, dataframes);
+@benchmark create_model($graph, $representative_periods, $dataframes)
+# @profview create_model(graph, representative_periods, dataframes);

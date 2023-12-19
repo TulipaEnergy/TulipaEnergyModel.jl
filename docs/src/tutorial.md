@@ -96,16 +96,28 @@ constraints_partitions = compute_constraints_partitions(graph, representative_pe
 
 The `constraints_partitions` has two dictionaries with the keys `:lowest_resolution` and `:highest_resolution`. The lowest resolution dictionary is mainly used to create the constraints for energy balance, whereas the highest resolution dictionary is mainly used to create the capacity constraints in the model.
 
+Finally, we also need dataframes that store the linearized indexes of the variables.
+
+```@example manual
+dataframes = construct_dataframes(graph, representative_periods, constraints_partitions)
+```
+
 Now we can compute the model.
 
 ```@example manual
-model = create_model(graph, representative_periods, constraints_partitions)
+model = create_model(graph, representative_periods, dataframes)
 ```
 
 Finally, we can compute the solution.
 
 ```@example manual
 solution = solve_model(model)
+```
+
+or, if we want to store the `flow` and `storage_level` optimal value in the dataframes:
+
+```@example manual
+solution = solve_model!(dataframes, model)
 ```
 
 This `solution` structure is exactly the same as the one returned when using an `EnergyProblem`.
@@ -268,21 +280,33 @@ To create a traditional array in the order given by the investable flows, one ca
 [solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]
 ```
 
+The `solution.flow` and `solution.storage_level` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows` and `:storage_level`, respectively.
+You need to query the data from these dataframes and then use the column `index` to select the appropriate value.
+
 To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
 
 ```@example solution
 (u, v) = first(edge_labels(graph))
 rp = 1
-[solution.flow[(u, v), rp, B] for B in graph[u, v].partitions[rp]]
+df = filter(
+    row -> row.rp == rp && row.from == u && row.to == v,
+    energy_problem.dataframes[:flows],
+    view = true,
+)
+[solution.flow[row.index] for row in eachrow(df)]
 ```
 
 To create a vector with the all values of `storage_level` for a given `a` and `rp`, one can run
 
 ```@example solution
-a = first(labels(graph))
+a = energy_problem.dataframes[:storage_level].asset[1]
 rp = 1
-cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
-[solution.storage_level[a, rp, B] for B in cons_parts[(a, rp)]]
+df = filter(
+    row -> row.asset == a && row.rp == rp,
+    energy_problem.dataframes[:storage_level],
+    view = true,
+)
+[solution.storage_level[row.index] for row in eachrow(df)]
 ```
 
 > **Note**
@@ -305,38 +329,105 @@ They can be accessed like any other value from [GraphAssetData](@ref) or [GraphF
 ```@example solution
 (u, v) = first(edge_labels(graph))
 rp = 1
-[energy_problem.graph[u, v].flow[(rp, B)] for B in graph[u, v].partitions[rp]]
+df = filter(
+    row -> row.rp == rp && row.from == u && row.to == v,
+    energy_problem.dataframes[:flows],
+    view = true,
+)
+[energy_problem.graph[u, v].flow[(rp, row.time_block)] for row in eachrow(df)]
 ```
 
 To create a vector with the all values of `storage_level` for a given `a` and `rp`, one can run
 
 ```@example solution
-a = first(labels(graph))
+a = energy_problem.dataframes[:storage_level].asset[1]
 rp = 1
-cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
-[energy_problem.graph[a].storage_level[(rp, B)] for B in cons_parts[(a, rp)]]
+df = filter(
+    row -> row.asset == a && row.rp == rp,
+    energy_problem.dataframes[:storage_level],
+    view = true,
+)
+[energy_problem.graph[a].storage_level[(rp, row.time_block)] for row in eachrow(df)]
+```
+
+### The solution inside the dataframes object
+
+In addition to being stored in the `solution` object, and in the `graph` object, the solution for the flow and the storage_level is also stored inside the corresponding DataFrame objects if `solve_model!` is called.
+
+The code below will do the same as in the two previous examples:
+
+```@example solution
+(u, v) = first(edge_labels(graph))
+rp = 1
+df = filter(
+    row -> row.rp == rp && row.from == u && row.to == v,
+    energy_problem.dataframes[:flows],
+    view = true,
+)
+df.solution
+```
+
+```@example solution
+a = energy_problem.dataframes[:storage_level].asset[1]
+rp = 1
+df = filter(
+    row -> row.asset == a && row.rp == rp,
+    energy_problem.dataframes[:storage_level],
+    view = true,
+)
+df.solution
 ```
 
 ### Values of constraints and expressions
 
 By accessing the model directly, we can query the values of constraints and expressions.
-For instance, we can get all incoming flow in the lowest resolution for a given asset at a given time block for a given representative periods with the following:
+We need to know the name of the constraint and how it is indexed, and for that you will need to check the model.
+
+For instance, we can get all incoming flow in the lowest resolution for a given asset for a given representative periods with the following:
 
 ```@example solution
 using JuMP
-# a, rp, and cons_parts are defined above
-B = cons_parts[(a, rp)][1]
-value(energy_problem.model[:incoming_flow_lowest_resolution][a, rp, B])
+# a and rp are defined above
+df = filter(
+    row -> row.asset == a && row.rp == rp,
+    energy_problem.dataframes[:cons_lowest],
+    view = true,
+)
+[value(energy_problem.model[:incoming_flow_lowest_resolution][row.index]) for row in eachrow(df)];
 ```
 
-The same can happen for constraints.
-For instance, the code below gets the consumer balance:
+The values of constraints can also be obtained, however they are frequently indexed in a subset, which means that their indexing is not straightforward.
+To know how they are indexed, it is necessary to look at the code of the model.
+For instance, to get the consumer balance, we first need to filter the `:cons_lowest` dataframes by consumers:
+
+```@example solution
+df_consumers = filter(
+    row -> graph[row.asset].type == "consumer",
+    energy_problem.dataframes[:cons_lowest],
+    view = false,
+);
+nothing # hide
+```
+
+We set `view = false` to create a copy of this DataFrame, so we can create our indexes:
+
+```@example solution
+df_consumers.index = 1:size(df_consumers, 1) # overwrites existing index
+```
+
+Now we can filter this DataFrame.
 
 ```@example solution
 a = "Asgard_E_demand"
-B = cons_parts[(a, rp)][1]
-value(energy_problem.model[:consumer_balance][a, rp, B])
+df = filter(
+    row -> row.asset == a && row.rp == rp,
+    df_consumers,
+    view = true,
+)
+value.(energy_problem.model[:consumer_balance][df.index]);
 ```
+
+Here `value.` (i.e., broadcasting) was used instead of the vector comprehension from previous examples just to show that it also works.
 
 The value of the constraint is obtained by looking only at the part with variables. So a constraint like `2x + 3y - 1 <= 4` would return the value of `2x + 3y`.
 

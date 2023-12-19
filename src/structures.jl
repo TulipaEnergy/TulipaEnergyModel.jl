@@ -134,6 +134,7 @@ mutable struct EnergyProblem
     }
     representative_periods::Vector{RepresentativePeriod}
     constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int},Vector{TimeBlock}}}
+    dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}
     solved::Bool
     objective_value::Float64
@@ -153,6 +154,7 @@ mutable struct EnergyProblem
             graph,
             representative_periods,
             constraints_partitions,
+            Dict(),
             nothing,
             false,
             NaN,
