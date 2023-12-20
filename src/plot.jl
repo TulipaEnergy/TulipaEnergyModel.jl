@@ -38,22 +38,42 @@ Given a graph or energy problem, plot the graph with the "final" (initial + inve
 represented by the thickness of the graph edges, as well as displayed values.
 """
 function plot_final_flow_graph(graph::MetaGraph)
-    node_labels = labels(graph) |> collect
-    total_flow_cap = [
-        graph[a, b].initial_capacity +
-        graph[a, b].investable * graph[a, b].investment * graph[a, b].unit_capacity for
+    # node_names = labels(graph) |> collect
+    node_labels = [
+        string(
+            a,
+            "  \n Capacity:  ",
+            (
+                graph[a].initial_capacity +
+                graph[a].investable * graph[a].investment * graph[a].capacity
+            ),
+        ) for (a) in labels(graph)
+    ] # "Node Name \n Capacity: ##"
+    # println(node_labels)
+
+    total_flowAtoB_cap = [
+        graph[a, b].initial_export_capacity +
+        graph[a, b].investable * graph[a, b].investment * graph[a, b].capacity for
         (a, b) in edge_labels(graph)
-    ] # total = initial + investable * investment * unit_capacity
+    ]
+
+    total_flowBtoA_cap = [
+        graph[a, b].initial_import_capacity +
+        graph[a, b].investable * graph[a, b].investment * graph[a, b].capacity for
+        (a, b) in edge_labels(graph)
+    ]
 
     gplot(
         graph;
+        arrows = false,
         nodelabel = node_labels,
-        edgelabel = total_flow_cap,
+        #edgelabel = total_flow_cap,
         nodelabelc = "gray",
         edgelabelc = "orange",
         NODELABELSIZE = 3.0,
         EDGELABELSIZE = 3.0,
-        EDGELINEWIDTH = [x / maximum(total_flow_cap) + 0.1 for x in total_flow_cap],
+        # linetype = "curve",
+        #EDGELINEWIDTH = [x / maximum(total_flow_cap) + 0.1 for x in total_flow_cap],
     )
 end
 
