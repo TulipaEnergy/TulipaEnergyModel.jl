@@ -1,4 +1,4 @@
-export plot_single_flow, plot_final_flow_graph, plot_assets_capacity
+export plot_single_flow, plot_graph, plot_assets_capacity
 
 """
     plot_single_flow(graph::MetaGraph,              asset_from::String, asset_to::String, rp::Int64,)
@@ -7,10 +7,11 @@ export plot_single_flow, plot_final_flow_graph, plot_assets_capacity
 Plot a single flow over a single representative period,
 given a graph or energy problem, the "from" (exporting) asset, the "to" (importing) asset, and the representative period.
 """
+#TODO Rework as Makie
 function plot_single_flow(graph::MetaGraph, asset_from::String, asset_to::String, rp::Int64)
     rp_partition = graph[asset_from, asset_to].partitions[rp]
     time_dimension = 1:length(rp_partition)
-    flow_value = [graph[asset_from, asset_to].flow[(1, B)] for B in rp_partition]
+    flow_value = [graph[asset_from, asset_to].flow[(rp, B)] for B in rp_partition]
 
     plot(
         time_dimension,
@@ -37,48 +38,92 @@ end
 Given a graph or energy problem, plot the graph with the "final" (initial + investment) flow capacities,
 represented by the thickness of the graph edges, as well as displayed values.
 """
-function plot_final_flow_graph(graph::MetaGraph)
-    # node_names = labels(graph) |> collect
-    node_labels = [
-        string(
-            a,
-            "  \n Capacity:  ",
-            (
-                graph[a].initial_capacity +
-                graph[a].investable * graph[a].investment * graph[a].capacity
-            ),
-        ) for (a) in labels(graph)
-    ] # "Node Name \n Capacity: ##"
-    # println(node_labels)
+function plot_graph(graph::MetaGraph)
+    nodelabelcolor = RGB(0.5, 0.5, 0.5)
+    exportflowcolor = RGB(0, 0.5, 0.5)
+    importflowcolor = RGB(0.5, 0, 0.5)
+    assetflowcolor = RGB(0.5, 0.5, 0.5)
+    nodecentercolor = RGBA(0, 0.4, 0.7, 0.5)
+    nodebordercolor = RGBA(0, 0.9, 1, 0.5)
 
-    total_flowAtoB_cap = [
-        graph[a, b].initial_export_capacity +
-        graph[a, b].investable * graph[a, b].investment * graph[a, b].capacity for
-        (a, b) in edge_labels(graph)
-    ]
+    node_names = labels(graph) |> collect
 
-    total_flowBtoA_cap = [
-        graph[a, b].initial_import_capacity +
-        graph[a, b].investable * graph[a, b].investment * graph[a, b].capacity for
-        (a, b) in edge_labels(graph)
-    ]
+    temp_graph = DiGraph(nv(graph))
+    for e in edges(graph)
+        add_edge!(temp_graph, e.src, e.dst)
+        if graph[node_names[e.src], node_names[e.dst]].is_transport
+            add_edge!(temp_graph, e.dst, e.src)
+        end
+    end
 
-    gplot(
-        graph;
-        arrows = false,
-        nodelabel = node_labels,
-        #edgelabel = total_flow_cap,
-        nodelabelc = "gray",
-        edgelabelc = "orange",
-        NODELABELSIZE = 3.0,
-        EDGELABELSIZE = 3.0,
-        # linetype = "curve",
-        #EDGELINEWIDTH = [x / maximum(total_flow_cap) + 0.1 for x in total_flow_cap],
+    node_size = []
+    node_labels = []
+    border_width = []
+    for a in labels(graph)
+        node_capacity = graph[a].initial_capacity
+        node_investment = graph[a].investable * graph[a].investment * graph[a].capacity
+        push!(node_labels, "$a \n $(node_capacity + node_investment)") # "Node Name \n Capacity: ##"
+        push!(node_size, node_capacity)
+        push!(border_width, node_investment)
+    end
+    node_size = node_size * 0.8 / maximum(node_size) .+ 0.2
+
+    edge_colors = []
+    edge_width = []
+    edge_labels = []
+    for e in edges(temp_graph)
+        from = node_names[e.src]
+        to = node_names[e.dst]
+        edge_data = has_edge(graph, e.src, e.dst) ? graph[from, to] : graph[to, from]
+
+        if edge_data.is_transport
+            push!(edge_colors, has_edge(graph, e.src, e.dst) ? exportflowcolor : importflowcolor)
+            ttc =
+                (
+                    if has_edge(graph, e.src, e.dst)
+                        edge_data.initial_export_capacity
+                    else
+                        edge_data.initial_import_capacity
+                    end
+                ) + edge_data.investable * edge_data.investment * edge_data.capacity
+            push!(edge_labels, string(ttc))
+            push!(edge_width, ttc)
+        else
+            push!(edge_colors, assetflowcolor)
+            push!(edge_labels, "")
+            push!(edge_width, 0)
+        end
+    end
+    edge_width = edge_width * 0.8 / maximum(edge_width) .+ 0.2 # Normalize edge_width with minimum of 0.2 (just visible)
+
+    #TODO Labels are cut off by edge of figure
+    #TODO Color scheme
+    #TODO Investment strokewidth
+
+    f, ax, p = graphplot(
+        temp_graph;
+        node_size = node_size * 100,                # Node center size (scaled)
+        # node_strokewidth = border_width * 100,    # Node border size #TODO Normalizing to self, should normalize to nodelabelsize
+        node_color = nodecentercolor,               # Node center color (initial capacity)
+        node_strokecolor = nodebordercolor,         # Node border color (invested capacity)
+        nlabels = node_labels,
+        nlabels_color = nodelabelcolor,
+        nlabels_fontsize = 10.0,
+        edge_width = edge_width * 10,
+        arrow_size = (edge_width .+ 2) * 10,
+        edge_color = edge_colors,                    # Edge color
+        elabels = edge_labels,
+        elabels_fontsize = 10.0,                     # Max edge label size
+        elabels_color = edge_colors,                 #
+        # layout = Spring(),
     )
+    hidedecorations!(ax)
+    hidespines!(ax)
+    return f
 end
 
-function plot_final_flow_graph(energy_problem::EnergyProblem)
-    plot_final_flow_graph(energy_problem.graph)
+function plot_graph(energy_problem::EnergyProblem)
+    plot_graph(energy_problem.graph)
 end
 
 """

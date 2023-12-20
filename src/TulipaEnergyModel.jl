@@ -10,7 +10,10 @@ using MathOptInterface
 using MetaGraphsNext
 using TOML
 using Plots
-using GraphPlot
+using Colors
+using GraphMakie
+using GraphMakie.NetworkLayout
+using CairoMakie
 
 include("input-tables.jl")
 include("structures.jl")
