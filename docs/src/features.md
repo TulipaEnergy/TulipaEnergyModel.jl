@@ -3,35 +3,35 @@
 *TulipaEnergyModel.jl* incorporates two fundamental concepts that serve as the foundation of the optimization model:
 
 - **Energy Assets**: representation of a physical asset that can produce, consume, store, balance, or convert energy. Some examples of what these assets can represent are:
-  - Producer: wind turbine, solar panel
-  - Consumer: electricity demand, heat demand
-  - Storage: battery, pumped-hydro storage
-  - Balancing Hub: electricity network that serves as a connection among other energy assets
-  - Conversion: power plants, electrolyzers
-- **Flows**: representation of the connections among assets, e.g., pipelines, transmission lines, or just simple the energy production that goes from one asset to another.
+  - Producer: e.g., wind turbine, solar panel
+  - Consumer: e.g., electricity demand, heat demand
+  - Storage: e.g., battery, pumped-hydro storage
+  - Balancing Hub: e.g., an electricity network that serves as a connection among other energy assets
+  - Conversion: e.g., power plants, electrolyzers
+- **Flows**: representation of the connections among assets, e.g., pipelines, transmission lines, or just simply the energy production that goes from one asset to another.
 
-The model guarantees a balance of energy for the various types of assets while considering the flow limits. The [`mathematical formulation`](@ref math-formulation) defines the flow variable ($v^{flow}_{f,rp,k}$) as the instantaneous value (e.g., power in MW) for each flow $f$ between two assets, representative period $rp$, and time step $k$. The time step $k$ can represent a single time step (e.g., 1, 2, 3...) or a range of time steps (e.g., 1:2, meaning that the variable represents the value of both time steps 1 and 2). For more examples and details on this topic, refer to the section on [flexible time resolution](@ref flex-time-res).
+The model guarantees a balance of energy for the various types of assets while considering the flow limits. The [`mathematical formulation`](@ref math-formulation) defines the flow variable ($v^{flow}_{f,rp,k}$) as the instantaneous value (e.g., power in MW) for each flow $f$ between two assets, representative period $rp$, and time step $k$. The time step $k$ can represent a single time step (e.g., 1, 2, 3...) or a range of time steps (e.g., 1:3, meaning that the variable represents the value of time steps 1, 2 and 3). For more examples and details on this topic, refer to the section on [flexible time resolution](@ref flex-time-res).
 
-The following sections explain the main features in the optimization model inside the model based on all these concepts and definitions.
+The following sections explain the main features of the optimization model based on all these concepts and definitions.
 
 ## [Flexible Connection of Energy Assets](@id flex-asset-connection)
 
-The representation of the energy system in *TulipaEnergyModel.jl* is based on [Graph Theory](https://www.britannica.com/topic/graph-theory), which deals with connection amongst vertices by edges. This representation provides a more flexible framework to model *energy assets* in the system as *vertices* and *flows* between energy assets as *edges*. In addition, it poses some advantages from the modeling perspective. For instance, connecting assets directly to each other without having a node between them allows for a reduction of the number of variables and constraints to represent different configurations. For instance, it is becoming more and more common to have hybrid assets like `storage + renewable` (e.g., battery + solar), `electrolyzer + renewable` (e.g., electrolyzer + wind), or `renewable + hydro` (e.g., solar + hydro) that are located in the same site and share a common connection point to the grid.
-In hybrid configurations, flows from the grid are typically not allowed as they either do not permit charging from the grid or require green hydrogen production depending on the configuration.
+The representation of the energy system in *TulipaEnergyModel.jl* is based on [Graph Theory](https://www.britannica.com/topic/graph-theory), which deals with the connection between vertices by edges. This representation provides a more flexible framework to model *energy assets* in the system as *vertices*, and to model *flows* between energy assets as *edges*. In addition, it reduces the model size. For instance, connecting assets directly to each other, without having a node in between, allows us to reduce the number of variables and constraints to represent different configurations. For instance, it is becoming more and more common to have hybrid assets like `storage + renewable` (e.g., battery + solar), `electrolyzer + renewable` (e.g., electrolyzer + wind), or `renewable + hydro` (e.g., solar + hydro) that are located in the same site and share a common connection point to the grid.
+In hybrid configurations, for example, flows from the grid are typically not allowed as they either avoid charging from the grid or require green hydrogen production.
 
-Consider the following example to demonstrate the benefits of this approach. In the classic connection approach, the nodes play a crucial role in modeling. For example, every asset needs to be connected to a node with balance constraints. When a storage asset and a renewable asset are in a hybrid connection like the one described before, a connection point is needed to connect the hybrid configuration to the rest of the system. Therefore, to consider the hybrid configuration of a storage asset and a renewable asset, we must introduce a node (i.e., a connection point) between these assets and the external power grid (i.e., a balance point), as shown in the following figure:
+Consider the following example to demonstrate the benefits of this approach. In the classic connection approach, the nodes play a crucial role in modelling. For example, every asset needs to be connected to a node with balance constraints. When a storage asset and a renewable asset are in a hybrid connection like the one described before, a connection point is needed to connect the hybrid configuration to the rest of the system. Therefore, to consider the hybrid configuration of a storage asset and a renewable asset, we must introduce a node (i.e., a connection point) between these assets and the external power grid (i.e., a balance point), as shown in the following figure:
 
 ![Classic connection](./figs/flexible-connection-1.png)
 
-In this system, the `phs` storage asset charges and discharges from the `connection point`, while the `wind` turbine produces power that also goes directly to the `connection point`. This `connection point` is connected to the external power grid through a transmission line that leads to a `balance` hub with/connecting to other assets. Essentially, the `connection point` acts as a balancing hub point for the assets in this hybrid configuration. Furthermore, these hybrid configuration impose an additional constraint to ensure that storage charges from the power grid are avoided. The section with [`comparison of different modeling approaches`](@ref comparison) shows the quantification of these reductions.
+In this system, the `phs` storage asset charges and discharges from the `connection point`, while the `wind` turbine produces power that also goes directly to the `connection point`. This `connection point` is connected to the external power grid through a transmission line that leads to a `balance` hub with/connecting to other assets. Essentially, the `connection point` acts as a balancing hub point for the assets in this hybrid configuration. Furthermore, these hybrid configurations impose an additional constraint to ensure that storage charges from the power grid are avoided. The section with [`comparison of different modeling approaches`](@ref comparison) shows the quantification of these reductions.
 
-Let's consider the modeling approach in *TulipaEnergyModel.jl*. As nodes are no longer needed to connect assets, we can connect them directly to each other as shown in the figure below:
+Let's consider the modelling approach in *TulipaEnergyModel.jl*. As nodes are no longer needed to connect assets, we can connect them directly to each other as shown in the figure below:
 
 ![Flexible connection](./figs/flexible-connection-2.png)
 
 By implementing this approach, we can reduce the number of variables and constraints involved in the process. For example, the balance constraint in the intermediate node is no longer needed, as well as the extra constraint to avoid the storage charging from the power grid.  Additionally, we can eliminate the variable that determines the flow between the intermediate node and the power grid because the flow from `phs` to `balance` can directly link to the external grid.
 
-The example here shows the connection of a `phs` and a `wind` asset, illustrating the modeling approach's advantages and the example's reusability in the following sections. However, other applications of these co-location (or hybrid) combinations of assets are battery-solar, hydro-solar, and electrolyzer-wind.
+The example here shows the connection of a `phs` and a `wind` asset, illustrating the modelling approach's advantages and the example's reusability in the following sections. However, other applications of these co-location (or hybrid) combinations of assets are battery-solar, hydro-solar, and electrolyzer-wind.
 
 ## [Flexible Time Resolution](@id flex-time-res)
 
@@ -261,11 +261,11 @@ Since we have a storage asset in the system, we need to limit the maximum storag
 
 ## [Comparison of Different Modeling Approaches](@id comparison)
 
-This section quantifies the advantages of the [`flexible connection`](@ref flex-asset-connection) and [`flexible time resolution`](@ref flex-time-res) in the *TulipaEnergyModel.jl* modeling approach. So, let us consider three different approaches based on the same example:
+This section quantifies the advantages of the [`flexible connection`](@ref flex-asset-connection) and [`flexible time resolution`](@ref flex-time-res) in the *TulipaEnergyModel.jl* modelling approach. So, let us consider three different approaches based on the same example:
 
-1. Classic approach with hourly resolution: This approach need and extra asset, called `node`, to create the hybrid operation of the `phs` and `wind` assets.
-2. Flexible connection with hourly resolution: This approach use the flexible connection to represent the hybrid operation of the  `phs` and `wind` assets.
-3. Flexible connection and time resolution: This approach use both features, the felxible connection and the flexible time resolution.
+1. Classic approach with hourly resolution: This approach needs an extra asset, called `node`, to create the hybrid operation of the `phs` and `wind` assets.
+2. Flexible connection with hourly resolution: This approach uses the flexible connection to represent the hybrid operation of the  `phs` and `wind` assets.
+3. Flexible connection and time resolution: This approach uses both features, the flexible connection and the flexible time resolution.
 
 > **Note:** *TulipaEnergyModel.jl* is flexible enough to allow any of these three approaches to the model through the input data.
 
