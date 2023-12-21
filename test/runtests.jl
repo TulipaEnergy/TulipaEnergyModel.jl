@@ -1,9 +1,11 @@
 using CSV
 using DataFrames
 using Graphs
+using HiGHS
 using JuMP
-using TulipaEnergyModel
+using MathOptInterface
 using Test
+using TulipaEnergyModel
 
 # Folders names
 const INPUT_FOLDER = joinpath(@__DIR__, "inputs")

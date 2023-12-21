@@ -1,7 +1,7 @@
 export create_model!, create_model
 
 """
-    create_model!(energy_problem; verbose = false)
+    create_model!(energy_problem)
 
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
@@ -15,17 +15,11 @@ function create_model!(energy_problem; kwargs...)
 end
 
 """
-    model = create_model(graph, representative_periods)
+    model = create_model(graph, representative_periods, constraints_partitions)
 
-Create the energy model given the graph and representative_periods.
+Create the energy model given the graph, representative_periods, and constraints_partitions.
 """
-function create_model(
-    graph,
-    representative_periods,
-    constraints_partitions;
-    verbose = false,
-    write_lp_file = false,
-)
+function create_model(graph, representative_periods, constraints_partitions; write_lp_file = false)
 
     ## Helper functions
     # Computes the duration of the `block` that is within the `period`, and
@@ -77,8 +71,7 @@ function create_model(
     Ph = constraints_partitions[:highest_resolution]
 
     ## Model
-    model = Model(HiGHS.Optimizer)
-    set_attribute(model, "output_flag", verbose)
+    model = Model()
 
     ## Variables
     @variable(model, flow[(u, v) ∈ F, rp ∈ RP, graph[u, v].partitions[rp]])
