@@ -6,7 +6,13 @@ end
 
 @testset "Tiny Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
-    energy_problem = run_scenario(dir, OUTPUT_FOLDER; verbose = true, write_lp_file = true)
+    energy_problem = run_scenario(
+        dir,
+        OUTPUT_FOLDER;
+        optimizer = HiGHS.Optimizer,
+        parameters = ["output_flag" => true],
+        write_lp_file = true,
+    )
     @test energy_problem.objective_value ≈ 269238.43825 atol = 1e-5
 end
 

@@ -1,18 +1,31 @@
 export solve_model!, solve_model
 
 """
-    solution = solve_model!(energy_problem)
+    default_parameters(optimizer)
+
+Returns the default parameters for a given JuMP optimizer.
+Falls back to `Dict()` for undefined solvers.
+"""
+default_parameters(::Type{T}) where {T<:MathOptInterface.AbstractOptimizer} = Dict{String,Any}()
+default_parameters(::Type{HiGHS.Optimizer}) = Dict{String,Any}("output_flag" => false)
+
+"""
+    solution = solve_model!(energy_problem[, optimizer; parameters])
 
 Solve the internal model of an energy_problem. The solution obtained by calling
 [`solve_model`](@ref) is returned.
 """
-function solve_model!(energy_problem::EnergyProblem)
+function solve_model!(
+    energy_problem::EnergyProblem,
+    optimizer = HiGHS.Optimizer;
+    parameters = default_parameters(optimizer),
+)
     model = energy_problem.model
     if model === nothing
         error("Model is not created, run create_model(energy_problem) first.")
     end
 
-    solution = solve_model(model)
+    solution = solve_model(model, optimizer; parameters = parameters)
     energy_problem.termination_status = termination_status(model)
     if solution === nothing
         # Warning has been given at internal function
@@ -48,9 +61,13 @@ function solve_model!(energy_problem::EnergyProblem)
 end
 
 """
-    solution = solve_model(model)
+    solution = solve_model(model[, optimizer; parameters])
 
-Solve the JuMP model and return the solution.
+Solve the JuMP model and return the solution. The `optimizer` argument should be a MILP solver from the JuMP
+list of [supported solvers](https://jump.dev/JuMP.jl/stable/installation/#Supported-solvers).
+By default we use HiGHS.
+
+The keyword argument `parameters` should be passed as a list of `key => value` pairs.
 
 The `solution` object is a NamedTuple with the following fields:
 
@@ -83,8 +100,24 @@ The `solution` object is a NamedTuple with the following fields:
     ```
     [solution.storage_level[a, rp, B] for B in constraints_partitions[:lowest_resolution][(a, rp)]]
     ```
+
+## Examples
+
+```julia
+parameters = ["presolve" => "on", "time_limit" => 60.0, "output_flag" => true]
+solution = solve_model(model, HiGHS.Optimizer; parameters = parameters)
+```
 """
-function solve_model(model::JuMP.Model)
+function solve_model(
+    model::JuMP.Model,
+    optimizer = HiGHS.Optimizer;
+    parameters = default_parameters(optimizer),
+)
+    # Set optimizer and its parameters
+    set_optimizer(model, optimizer)
+    for (k, v) in parameters
+        set_attribute(model, k, v)
+    end
     # Solve model
     optimize!(model)
 
