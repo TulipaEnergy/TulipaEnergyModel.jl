@@ -4,11 +4,12 @@ export plot_single_flow, plot_graph, plot_assets_capacity
     plot_single_flow(graph::MetaGraph,              asset_from::String, asset_to::String, rp::Int64,)
     plot_single_flow(energy_problem::EnergyProblem, asset_from::String, asset_to::String, rp::Int64,)
 
-Plot a single flow over a single representative period,
-given a graph or energy problem, the "from" (exporting) asset, the "to" (importing) asset, and the representative period.
+Plot a single flow over a single representative period, given a graph or energy problem,
+the "from" (exporting) asset, the "to" (importing) asset, and the representative period.
+
 """
 #TODO Rework using CairoMakie instead of Plots
-function plot_single_flow(graph::MetaGraph, asset_from::String, asset_to::String, rp::Int64)
+function plot_single_flow(graph, asset_from::String, asset_to::String, rp::Int64)
     rp_partition = graph[asset_from, asset_to].partitions[rp]
     time_dimension = 1:length(rp_partition)
     flow_value = [graph[asset_from, asset_to].flow[(rp, B)] for B in rp_partition]
@@ -38,13 +39,13 @@ end
 Given a graph or energy problem, plot the graph with the "final" (initial + investment) flow capacities,
 represented by the thickness of the graph edges, as well as displayed values.
 """
-function plot_graph(graph::MetaGraph)
+function plot_graph(graph)
     nodelabelcolor = RGB(0.345, 0.164, 0.376)
     transportflowcolor = RGB(1, 0.647, 0)
     assetflowcolor = RGB(0.988, 0.525, 0.110)
     nodecolor = RGBA(0.345, 0.164, 0.376, 0.5)
 
-    node_names = labels(graph) |> collect
+    node_labels = labels(graph) |> collect
 
     temp_graph = DiGraph(nv(graph))
     for e in edges(graph)
@@ -55,12 +56,12 @@ function plot_graph(graph::MetaGraph)
     end
 
     node_size = []
-    node_labels = []
-    for a in labels(graph)
+    node_names = []
+    for a in node_labels
         node_total_capacity =
             graph[a].initial_capacity +
             graph[a].investable * graph[a].investment * graph[a].capacity
-        push!(node_labels, "$a \n $(node_total_capacity)") # "Node Name \n Capacity: ##"
+        push!(node_names, "$a \n $(node_total_capacity)") # "Node Name \n Capacity: ##"
         push!(node_size, node_total_capacity)
     end
     node_size = node_size * 98 / maximum(node_size) .+ 5
@@ -99,7 +100,7 @@ function plot_graph(graph::MetaGraph)
         node_size = node_size,
         node_strokewidth = 0,
         node_color = nodecolor,
-        ilabels = node_labels,
+        ilabels = node_names,
         ilabels_color = nodelabelcolor,
         ilabels_fontsize = 10.0,
         edge_width = edge_width * 10,
@@ -119,7 +120,7 @@ function plot_graph(graph::MetaGraph)
     return f
 end
 
-function plot_graph(energy_problem::EnergyProblem)
+function plot_graph(energy_problem)
     plot_graph(energy_problem.graph)
 end
 
@@ -131,14 +132,14 @@ Given a graph or energy problem, display a stacked bar graph of
 the initial and invested capacity of each asset (initial + invested = total).
 """
 #TODO Rework using CairoMakie instead of Plots
-function plot_assets_capacity(graph::MetaGraph)
+function plot_assets_capacity(graph)
     asset_labels = labels(graph) |> collect
     total_asset_cap = [
-        graph[a].initial_capacity + graph[a].investable * graph[a].investment * graph[a].capacity for a in labels(graph)
+        graph[a].initial_capacity + graph[a].investable * graph[a].investment * graph[a].capacity for a in asset_labels
     ] # total = initial + investable * investement * capacity
-    initial_cap = [graph[a].initial_capacity for a in labels(graph)]
+    initial_cap = [graph[a].initial_capacity for a in asset_labels]
     investment_cap =
-        [graph[a].investable * graph[a].investment * graph[a].capacity for a in labels(graph)]
+        [graph[a].investable * graph[a].investment * graph[a].capacity for a in asset_labels]
 
     Plots.plot(
         [initial_cap, investment_cap];
@@ -151,6 +152,6 @@ function plot_assets_capacity(graph::MetaGraph)
     )
 end
 
-function plot_assets_capacity(energy_problem::EnergyProblem)
+function plot_assets_capacity(energy_problem)
     plot_assets_capacity(energy_problem.graph)
 end

@@ -20,7 +20,7 @@ end
 
     @testset "Codecov Demands Graphs" begin
         plot_single_flow(energy_problem, "ocgt", "demand", 1)
-        plot_final_flow_graph(energy_problem)
+        plot_graph(energy_problem)
         plot_assets_capacity(energy_problem)
     end
 end
