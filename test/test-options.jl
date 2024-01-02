@@ -15,9 +15,32 @@
     )
 end
 
-@testset "Test dummy solver" begin
-    struct DummySolver <: MathOptInterface.AbstractOptimizer end
-    @test TulipaEnergyModel.default_parameters(DummySolver) == Dict{String,Any}()
+@testset "Test default_parameters usage" begin
+    @testset "HiGHS" begin
+        expected = Dict{String,Any}("output_flag" => false)
+        @test default_parameters(Val(:HiGHS)) == expected
+        @test default_parameters(HiGHS.Optimizer) == expected
+        @test default_parameters(:HiGHS) == expected
+        @test default_parameters("HiGHS") == expected
+    end
+
+    @testset "Undefined values" begin
+        expected = Dict{String,Any}()
+        @test default_parameters(Val(:blah)) == expected
+        @test default_parameters(:blah) == expected
+        @test default_parameters("blah") == expected
+        struct DummySolver <: MathOptInterface.AbstractOptimizer end
+        @test default_parameters(Val(:DummySolver)) == expected
+    end
+
+    @testset "New definition" begin
+        expected = Dict{String,Any}("dummy" => true, "use" => :testing)
+        struct NewSolver <: MathOptInterface.AbstractOptimizer end
+        TulipaEnergyModel.default_parameters(::Val{:NewSolver}) = expected
+        @test TulipaEnergyModel.default_parameters(NewSolver) == expected
+        @test TulipaEnergyModel.default_parameters(:NewSolver) == expected
+        @test TulipaEnergyModel.default_parameters("NewSolver") == expected
+    end
 end
 
 @testset "Test that bad options throw errors" begin

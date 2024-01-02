@@ -8,9 +8,6 @@ using SCIP
 using Test
 using TulipaEnergyModel
 
-TulipaEnergyModel.default_parameters(::Type{SCIP.Optimizer}) =
-    Dict{String,Any}("display/verblevel" => 0)
-
 # Folders names
 const INPUT_FOLDER = joinpath(@__DIR__, "inputs")
 const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
