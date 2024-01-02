@@ -1,10 +1,11 @@
 using CSV
+using Cbc
 using DataFrames
+using GLPK
 using Graphs
 using HiGHS
 using JuMP
 using MathOptInterface
-using SCIP
 using Test
 using TulipaEnergyModel
 
