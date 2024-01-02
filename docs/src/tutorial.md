@@ -7,13 +7,14 @@ Here are some tutorials on how to use Tulipa.
 For our first example, let's use a very small existing dataset.
 Inside the code for this package, you can find the folder [`test/inputs/Tiny`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Tiny), which includes all the files necessary to create a TulipaEnergyModel and solve it.
 
-There are 8 files inside the "Tiny" folder. They define the assets and flows data, their profiles, and their time resolution.
-Furthermore, there are two files to define the representative periods and which periods in the full problem formulation they stand for.
-For more details on what are these files mean, see [Input](@ref)
+There are 8 relevant*files inside the "Tiny" folder. They define the assets and flows data, their profiles, and their time resolution, as well as two files to define the representative periods and which periods in the full problem formulation they stand for.\
+**Ignore the 9th file, bad-assets-data.csv, which is used for testing.*
+
+For more details about these files, see [Input](@ref).
 
 ### Run scenario
 
-To read all data from the Tiny folder, perform all necessary steps to create a model and solve it, use the following snippet:
+To read all data from the Tiny folder, perform all necessary steps to create a model, and solve the model, use the following snippet:
 
 ```@example
 using TulipaEnergyModel
@@ -115,7 +116,7 @@ Read about the graph structure in the [Graph](@ref) section first.
 We will use the `graph` created above for the "Tiny" dataset.
 
 The first thing that we can do is access all assets.
-They are the labels of the graph and can be access via the MetaGraphsNext API:
+They are the labels of the graph and can be accessed via the MetaGraphsNext API:
 
 ```@example manual
 using MetaGraphsNext
