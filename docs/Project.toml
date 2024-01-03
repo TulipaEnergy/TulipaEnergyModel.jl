@@ -1,5 +1,6 @@
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+Cbc = "9961bab8-2fa3-5c5a-9d89-47fab24efd76"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 HiGHS = "87dc4568-4c63-4d18-b0c0-bb2238e4078b"
