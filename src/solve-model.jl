@@ -37,16 +37,16 @@ Dict{String, Any} with 1 entry:
 This also
 
 ```jldoctest
-default_parameters(Val(:SCIP))
+default_parameters(Val(:Cbc))
 
 # output
 
 Dict{String, Any} with 1 entry:
-  "display/verblevel" => 0
+  "logLevel" => 0
 ```
 
 ```jldoctest
-default_parameters(:SCIP) == default_parameters("SCIP") == default_parameters(Val(:SCIP))
+default_parameters(:Cbc) == default_parameters("Cbc") == default_parameters(Val(:Cbc))
 
 # output
 
@@ -55,7 +55,8 @@ true
 """
 default_parameters(::Any) = Dict{String,Any}()
 default_parameters(::Val{:HiGHS}) = Dict{String,Any}("output_flag" => false)
-default_parameters(::Val{:SCIP}) = Dict{String,Any}("display/verblevel" => 0)
+default_parameters(::Val{:Cbc}) = Dict{String,Any}("logLevel" => 0)
+default_parameters(::Val{:GLPK}) = Dict{String,Any}("msg_lev" => 0)
 
 function default_parameters(::Type{T}) where {T<:MathOptInterface.AbstractOptimizer}
     solver_name = split(string(T), ".")[1]

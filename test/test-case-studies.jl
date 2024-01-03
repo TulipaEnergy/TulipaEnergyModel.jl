@@ -1,6 +1,7 @@
 @testset "Norse Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Norse")
-    for optimizer in [HiGHS.Optimizer, SCIP.Optimizer]
+    optimizer_list = [HiGHS.Optimizer, Cbc.Optimizer, GLPK.Optimizer]
+    for optimizer in optimizer_list
         energy_problem = run_scenario(dir; optimizer = optimizer)
         @test energy_problem.objective_value ≈ 1.791715212196092e8 atol = 1e-5
     end
