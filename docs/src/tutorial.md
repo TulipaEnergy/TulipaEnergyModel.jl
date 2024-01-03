@@ -139,7 +139,7 @@ using Cbc
 solution = solve_model(model, Cbc.Optimizer)
 ```
 
-Notice that, in any of these cases, we need explicitly add the Cbc package
+Notice that, in any of these cases, we need to explicitly add the Cbc package
 ourselves and add `using Cbc` before using `Cbc.Optimizer`.
 
 In any of these cases, default parameters for the `Cbc` optimizer are used,

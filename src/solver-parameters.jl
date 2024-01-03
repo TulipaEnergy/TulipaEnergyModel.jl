@@ -34,7 +34,7 @@ Dict{String, Any} with 1 entry:
   "output_flag" => false
 ```
 
-This also
+Another case
 
 ```jldoctest
 default_parameters(Val(:Cbc))
@@ -77,9 +77,9 @@ The file should contain a list of lines of the following type:
 key = value
 ```
 
-The file is parsed as [TOML](https://toml.io), which is very intuitive. See the examples below.
+The file is parsed as [TOML](https://toml.io), which is very intuitive. See the example below.
 
-## Examples
+## Example
 
 ```jldoctest
 # Creating file
