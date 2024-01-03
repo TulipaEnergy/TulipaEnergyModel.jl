@@ -43,6 +43,33 @@ end
     end
 end
 
+@testset "Test reading from file" begin
+    filepath, io = mktemp()
+    println(
+        io,
+        """
+            true_or_false = true
+            integer_number = 5
+            real_number1 = 3.14
+            big_number = 6.66E06
+            small_number = 1e-8
+            string = "something"
+        """,
+    )
+    close(io)
+
+    @test read_parameters_from_file(filepath) == Dict{String,Any}(
+        "string"         => "something",
+        "integer_number" => 5,
+        "small_number"   => 1.0e-8,
+        "true_or_false"  => true,
+        "real_number1"   => 3.14,
+        "big_number"     => 6.66e6,
+    )
+
+    @test_throws ArgumentError read_parameters_from_file("badfile")
+end
+
 @testset "Test that bad options throw errors" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
     @test_throws MathOptInterface.UnsupportedAttribute energy_problem = run_scenario(
