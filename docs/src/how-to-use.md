@@ -23,7 +23,7 @@ julia> using TulipaEnergyModel
 
 Optional (takes a minute or two):
 
-- Enter Tulipa package mode (press "]")
+- Enter package mode (press "]")
 
 ```julia-pkg
 (TulipaEnergyModel) pkg> test
