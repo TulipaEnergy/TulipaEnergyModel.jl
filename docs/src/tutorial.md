@@ -7,8 +7,9 @@ Here are some tutorials on how to use Tulipa.
 For our first example, let's use a very small existing dataset.
 Inside the code for this package, you can find the folder [`test/inputs/Tiny`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Tiny), which includes all the files necessary to create a TulipaEnergyModel and solve it.
 
-There are 8 relevant*files inside the "Tiny" folder. They define the assets and flows data, their profiles, and their time resolution, as well as two files to define the representative periods and which periods in the full problem formulation they stand for.\
-**Ignore the 9th file, bad-assets-data.csv, which is used for testing.*
+There are 8 relevant[^1] files inside the "Tiny" folder. They define the assets and flows data, their profiles, and their time resolution, as well as two files to define the representative periods and which periods in the full problem formulation they stand for.
+
+[^1]: Ignore the 9th file, bad-assets-data.csv, which is used for testing.
 
 For more details about these files, see [Input](@ref).
 
