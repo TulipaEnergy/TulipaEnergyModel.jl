@@ -26,7 +26,7 @@ Optional (takes a minute or two):
 - Enter package mode (press "]")
 
 ```julia-pkg
-(TulipaEnergyModel) pkg> test
+pkg> test TulipaEnergyModel
 ```
 
 (All tests should pass.)
