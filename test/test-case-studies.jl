@@ -3,6 +3,11 @@
     optimizer_list = [HiGHS.Optimizer, Cbc.Optimizer, GLPK.Optimizer]
     for optimizer in optimizer_list
         energy_problem = run_scenario(dir; optimizer = optimizer)
+        @testset "Codecov Demands Graphs" begin
+            plot_single_flow(energy_problem, "Asgard_Solar", "Asgard_Battery", 1)
+            plot_graph(energy_problem)
+            plot_assets_capacity(energy_problem)
+        end
         @test energy_problem.objective_value ≈ 1.791715212196092e8 atol = 1e-5
     end
 end
@@ -17,12 +22,6 @@ end
         write_lp_file = true,
     )
     @test energy_problem.objective_value ≈ 269238.43825 atol = 1e-5
-
-    @testset "Codecov Demands Graphs" begin
-        plot_single_flow(energy_problem, "ocgt", "demand", 1)
-        plot_graph(energy_problem)
-        plot_assets_capacity(energy_problem)
-    end
 end
 
 @testset "Tiny Variable Resolution Case Study" begin
