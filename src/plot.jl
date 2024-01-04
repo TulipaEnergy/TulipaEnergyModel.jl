@@ -52,7 +52,7 @@ function plot_graph(graph::MetaGraph)
     temp_graph = DiGraph(nv(graph))
     for e in edges(graph)
         add_edge!(temp_graph, e.src, e.dst)
-        if graph[node_names[e.src], node_names[e.dst]].is_transport
+        if graph[node_labels[e.src], node_labels[e.dst]].is_transport
             add_edge!(temp_graph, e.dst, e.src)
         end
     end
@@ -74,8 +74,8 @@ function plot_graph(graph::MetaGraph)
     edge_width = []
     edge_labels = []
     for e in edges(temp_graph)
-        from = node_names[e.src]
-        to = node_names[e.dst]
+        from = node_labels[e.src]
+        to = node_labels[e.dst]
         edge_data = has_edge(graph, e.src, e.dst) ? graph[from, to] : graph[to, from]
 
         if edge_data.is_transport
