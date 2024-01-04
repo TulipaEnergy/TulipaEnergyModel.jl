@@ -16,10 +16,7 @@ MathOptInterface = "b8f27783-ece8-5eb3-8dc8-9495eed66fee"
 MetaGraphsNext = "fa8bd995-216d-47f1-8a91-f3b68fbeb377"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
-<<<<<<< HEAD
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
-=======
->>>>>>> f3984f0 (Processed Abel's changes)
 
 [compat]
 CSV = "0.10"
