@@ -9,6 +9,11 @@ using JuMP
 using MathOptInterface
 using MetaGraphsNext
 using TOML
+using Plots
+using Colors
+using GraphMakie
+using GraphMakie.NetworkLayout
+using CairoMakie
 
 include("input-tables.jl")
 include("structures.jl")
@@ -18,5 +23,6 @@ include("solver-parameters.jl")
 include("solve-model.jl")
 include("run-scenario.jl")
 include("time-resolution.jl")
+include("plot.jl")
 
 end
