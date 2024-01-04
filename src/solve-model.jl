@@ -1,69 +1,4 @@
-export solve_model!, solve_model, default_parameters
-
-"""
-    default_parameters(Val(optimizer_name_symbol))
-    default_parameters(optimizer)
-    default_parameters(optimizer_name_symbol)
-    default_parameters(optimizer_name_string)
-
-Returns the default parameters for a given JuMP optimizer.
-Falls back to `Dict()` for undefined solvers.
-
-## Arguments
-
-There are four ways to use this function:
-
-  - `Val(optimizer_name_symbol)`: This uses type dispatch with the special `Val` type.
-    Just give the solver name as a Symbol (e.g., `Val(:HiGHS)`).
-  - `optimizer`: The JuMP optimizer type (e.g., `HiGHS.Optimizer`).
-  - `optimizer_name_symbol` or `optimizer_name_string`: Just give the name in Symbol
-    or String format and we will convert to `Val`.
-
-Using `Val` is necessary for the dispatch.
-All other cases will convert the argument and call the `Val` version, which might lead to some type instability.
-
-## Examples
-
-```jldoctest
-using HiGHS
-default_parameters(HiGHS.Optimizer)
-
-# output
-
-Dict{String, Any} with 1 entry:
-  "output_flag" => false
-```
-
-This also
-
-```jldoctest
-default_parameters(Val(:Cbc))
-
-# output
-
-Dict{String, Any} with 1 entry:
-  "logLevel" => 0
-```
-
-```jldoctest
-default_parameters(:Cbc) == default_parameters("Cbc") == default_parameters(Val(:Cbc))
-
-# output
-
-true
-```
-"""
-default_parameters(::Any) = Dict{String,Any}()
-default_parameters(::Val{:HiGHS}) = Dict{String,Any}("output_flag" => false)
-default_parameters(::Val{:Cbc}) = Dict{String,Any}("logLevel" => 0)
-default_parameters(::Val{:GLPK}) = Dict{String,Any}("msg_lev" => 0)
-
-function default_parameters(::Type{T}) where {T<:MathOptInterface.AbstractOptimizer}
-    solver_name = split(string(T), ".")[1]
-    return default_parameters(Val(Symbol(solver_name)))
-end
-
-default_parameters(optimizer::Union{String,Symbol}) = default_parameters(Val(Symbol(optimizer)))
+export solve_model!, solve_model
 
 """
     solution = solve_model!(energy_problem[, optimizer; parameters])
@@ -124,6 +59,8 @@ list of [supported solvers](https://jump.dev/JuMP.jl/stable/installation/#Suppor
 By default we use HiGHS.
 
 The keyword argument `parameters` should be passed as a list of `key => value` pairs.
+These can be created manually, obtained using [`default_parameters`](@ref), or read from a file
+using [`read_parameters_from_file`](@ref).
 
 The `solution` object is a NamedTuple with the following fields:
 
@@ -160,7 +97,7 @@ The `solution` object is a NamedTuple with the following fields:
 ## Examples
 
 ```julia
-parameters = ["presolve" => "on", "time_limit" => 60.0, "output_flag" => true]
+parameters = Dict{String,Any}("presolve" => "on", "time_limit" => 60.0, "output_flag" => true)
 solution = solve_model(model, HiGHS.Optimizer; parameters = parameters)
 ```
 """
