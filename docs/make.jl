@@ -12,7 +12,7 @@ makedocs(;
         prettyurls = get(ENV, "CI", "false") == "true",
         canonical = "https://TulipaEnergy.github.io/TulipaEnergyModel.jl",
         edit_link = "main",
-        assets = String[],
+        assets = ["assets/style.css"],
     ),
     pages = [
         "Home" => "index.md",
