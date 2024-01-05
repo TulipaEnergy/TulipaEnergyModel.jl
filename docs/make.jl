@@ -6,13 +6,12 @@ DocMeta.setdocmeta!(TulipaEnergyModel, :DocTestSetup, :(using TulipaEnergyModel)
 makedocs(;
     modules = [TulipaEnergyModel],
     authors = "Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors",
-    repo = "https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/{commit}{path}#{line}",
     sitename = "TulipaEnergyModel.jl",
     format = Documenter.HTML(;
         prettyurls = get(ENV, "CI", "false") == "true",
         canonical = "https://TulipaEnergy.github.io/TulipaEnergyModel.jl",
         edit_link = "main",
-        assets = String[],
+        assets = ["assets/style.css"],
     ),
     pages = [
         "Home" => "index.md",
