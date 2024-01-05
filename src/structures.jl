@@ -23,6 +23,7 @@ Structure to hold the asset data in the graph.
 mutable struct GraphAssetData
     type::String
     investable::Bool
+    investment_integer::Bool
     investment_cost::Float64
     investment_limit::Union{Missing,Float64}
     capacity::Float64
@@ -34,13 +35,14 @@ mutable struct GraphAssetData
     profiles::Dict{Int,Vector{Float64}}
     partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
-    investment::Int
+    investment::Float64
     storage_level::Dict{Tuple{Int,TimeBlock},Float64}
 
     # You don't need profiles to create the struct, so initiate it empty
     function GraphAssetData(
         type,
         investable,
+        investment_integer,
         investment_cost,
         investment_limit,
         capacity,
@@ -55,6 +57,7 @@ mutable struct GraphAssetData
         return new(
             type,
             investable,
+            investment_integer,
             investment_cost,
             investment_limit,
             capacity,
@@ -79,6 +82,7 @@ mutable struct GraphFlowData
     active::Bool
     is_transport::Bool
     investable::Bool
+    investment_integer::Bool
     variable_cost::Float64
     investment_cost::Float64
     investment_limit::Union{Missing,Float64}
@@ -90,7 +94,7 @@ mutable struct GraphFlowData
     partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
     flow::Dict{Tuple{Int,TimeBlock},Float64}
-    investment::Int
+    investment::Float64
 end
 
 function GraphFlowData(flow_data::FlowData)
@@ -99,6 +103,7 @@ function GraphFlowData(flow_data::FlowData)
         flow_data.active,
         flow_data.is_transport,
         flow_data.investable,
+        flow_data.investment_integer,
         flow_data.variable_cost,
         flow_data.investment_cost,
         flow_data.investment_limit,

@@ -78,6 +78,7 @@ function create_graph_and_representative_periods_from_csv_folder(input_folder::A
         row.name => GraphAssetData(
             row.type,
             row.investable,
+            row.investment_integer,
             row.investment_cost,
             row.investment_limit,
             row.capacity,

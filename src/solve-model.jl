@@ -29,7 +29,11 @@ function solve_model!(
     rps = energy_problem.representative_periods
     for a in labels(graph)
         if graph[a].investable
-            graph[a].investment = round(Int, solution.assets_investment[a])
+            if graph[a].investment_integer
+                graph[a].investment = round(Int, solution.assets_investment[a])
+            else
+                graph[a].investment = solution.assets_investment[a]
+            end
         end
         if graph[a].type == "storage"
             for rp_id = 1:length(rps),
@@ -41,7 +45,11 @@ function solve_model!(
     end
     for (u, v) in edge_labels(graph)
         if graph[u, v].investable
-            graph[u, v].investment = round(Int, solution.flows_investment[(u, v)])
+            if graph[u, v].investment_integer
+                graph[u, v].investment = round(Int, solution.flows_investment[(u, v)])
+            else
+                graph[u, v].investment = solution.flows_investment[(u, v)]
+            end
         end
         for rp_id = 1:length(rps), I in graph[u, v].partitions[rp_id]
             graph[u, v].flow[(rp_id, I)] = solution.flow[((u, v), rp_id, I)]
