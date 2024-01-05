@@ -1,8 +1,8 @@
-,asset_name,asset_name,{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,MW,p.u.
-carrier,from_asset,to_asset,active,is_transport,investable,variable_cost,investment_cost,investment_limit,capacity,initial_export_capacity,initial_import_capacity,efficiency
-hydrogen,H2,ccgt,true,false,false,0.01,0,,0,0,0,1
-electricity,ccgt,balance,true,false,false,0.05,0,,0,0,0,0.5
-electricity,wind,balance,true,false,false,0.005,0,,0,0,0,0
-electricity,wind,phs,true,false,false,0.002,0,,0,0,0,0.9
-electricity,phs,balance,true,false,false,0.001,0,,0,0,0,0.9
-electricity,balance,demand,true,true,false,0.0001,0,,200,200,200,0
+,asset_name,asset_name,{true;false},{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,MW,p.u.
+carrier,from_asset,to_asset,active,is_transport,investable,investment_integer,variable_cost,investment_cost,investment_limit,capacity,initial_export_capacity,initial_import_capacity,efficiency
+hydrogen,H2,ccgt,true,false,false,false,0.01,0,,0,0,0,1
+electricity,ccgt,balance,true,false,false,false,0.05,0,,0,0,0,0.5
+electricity,wind,balance,true,false,false,false,0.005,0,,0,0,0,0
+electricity,wind,phs,true,false,false,false,0.002,0,,0,0,0,0.9
+electricity,phs,balance,true,false,false,false,0.001,0,,0,0,0,0.9
+electricity,balance,demand,true,true,false,false,0.0001,0,,200,200,200,0
