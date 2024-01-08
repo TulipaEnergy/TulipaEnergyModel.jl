@@ -26,6 +26,7 @@ HiGHS = "1"
 JuMP = "1"
 MathOptInterface = "1"
 MetaGraphsNext = "0.6, 0.7"
+Plots = "1"
 SparseArrays = "1"
 julia = "1"
 
