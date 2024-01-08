@@ -6,6 +6,7 @@ struct AssetData
     type::String                                # Producer/Consumer - maybe an enum?
     active::Bool                                # Active or decomissioned
     investable::Bool                            # Whether able to invest
+    investment_integer::Bool                    # Whether investment is integer or continuous
     investment_cost::Float64                    # kEUR/MW/year
     investment_limit::Union{Missing,Float64}    # MW
     capacity::Float64                           # MW
@@ -46,6 +47,7 @@ struct FlowData
     active::Bool                                # Active or decomissioned
     is_transport::Bool                          # Whether a transport flow
     investable::Bool                            # Whether able to invest
+    investment_integer::Bool                    # Whether investment is integer or continuous
     variable_cost::Float64                      # kEUR/MWh
     investment_cost::Float64                    # kEUR/MW/year
     investment_limit::Union{Missing,Float64}    # MW

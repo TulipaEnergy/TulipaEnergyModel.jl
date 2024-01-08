@@ -75,9 +75,22 @@ function create_model(graph, representative_periods, constraints_partitions; wri
 
     ## Variables
     @variable(model, flow[(u, v) ∈ F, rp ∈ RP, graph[u, v].partitions[rp]])
-    @variable(model, 0 ≤ assets_investment[Ai], Int)  #number of installed asset units [N]
-    @variable(model, 0 ≤ flows_investment[Fi], Int)
+    @variable(model, 0 ≤ assets_investment[Ai])
+    @variable(model, 0 ≤ flows_investment[Fi])
     @variable(model, 0 ≤ storage_level[a ∈ As, rp ∈ RP, Pl[(a, rp)]])
+
+    ### Integer Investment Variables
+    for a ∈ Ai
+        if graph[a].investment_integer
+            set_integer(assets_investment[a])
+        end
+    end
+
+    for (u, v) ∈ Fi
+        if graph[u, v].investment_integer
+            set_integer(flows_investment[(u, v)])
+        end
+    end
 
     # TODO: Fix storage_level[As, RP, 0] = 0
 

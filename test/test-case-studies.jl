@@ -8,7 +8,7 @@
             plot_graph(energy_problem)
             plot_assets_capacity(energy_problem)
         end
-        @test energy_problem.objective_value ≈ 1.791715212196092e8 atol = 1e-5
+        @test energy_problem.objective_value ≈ 1.7913342401746374e8 atol = 1e-5
     end
 end
 
