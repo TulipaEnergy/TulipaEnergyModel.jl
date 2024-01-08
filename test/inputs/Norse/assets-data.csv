@@ -1,6 +1,6 @@
 ,{producer;consumer;storage;hub;conversion},{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,MW,MW/unit,MW/unit,MW,MW,MWh,MWh,h,kEUR/MW/year,year,0
 name,type,active,investable,investment_integer,variable_cost,investment_cost,investment_limit,capacity,initial_capacity,peak_demand,charging_capacity,discharging_capacity,initial_charging_capacity,initial_discharging_capacity,initial_storage_capacity,initial_storage_level,energy_to_power_ratio,fixed_cost,lifetime,efficiency
-Asgard_Battery,storage,true,true,true,0.003,300,,10,0,0,1,1,0,0,0,0,100,3,10,0
+Asgard_Battery,storage,true,true,true,0.003,300,,10,0,0,1,1,0,0,0,,100,3,10,0
 Asgard_Solar,producer,true,true,true,0.001,350,50000,100,0,0,0,0,0,0,0,0,0,8,25,0
 Asgard_E_demand,consumer,true,false,false,0,0,0,0,0,65787.17792,0,0,0,0,0,0,0,0,0,0
 Asgard_CCGT,conversion,true,true,true,0.0015,650,,500,0,0,0,0,0,0,0,0,0,10,30,0.6
