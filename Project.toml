@@ -21,6 +21,7 @@ TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 [compat]
 CSV = "0.10"
 DataFrames = "1"
+GraphMakie = "0.5"
 Graphs = "1.8"
 HiGHS = "1"
 JuMP = "1"
