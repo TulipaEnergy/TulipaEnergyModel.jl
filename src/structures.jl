@@ -30,7 +30,7 @@ mutable struct GraphAssetData
     initial_capacity::Float64
     peak_demand::Float64
     initial_storage_capacity::Float64
-    initial_storage_level::Float64
+    initial_storage_level::Union{Missing,Float64}
     energy_to_power_ratio::Float64
     profiles::Dict{Int,Vector{Float64}}
     partitions::Dict{Int,Vector{TimeBlock}}

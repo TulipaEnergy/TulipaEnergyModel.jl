@@ -189,7 +189,19 @@ function create_model(graph, representative_periods, constraints_partitions; wri
         model,
         storage_balance[a ∈ As, rp ∈ RP, (k, B) ∈ enumerate(Pl[(a, rp)])],
         storage_level[a, rp, B] ==
-        (k > 1 ? storage_level[a, rp, Pl[(a, rp)][k-1]] : graph[a].initial_storage_level) +
+        (
+            if k > 1
+                storage_level[a, rp, Pl[(a, rp)][k-1]]
+            else
+                (
+                    if ismissing(graph[a].initial_storage_level)
+                        storage_level[a, rp, Pl[(a, rp)][end]]
+                    else
+                        graph[a].initial_storage_level
+                    end
+                )
+            end
+        ) +
         storage_inflows[a, rp, B] +
         incoming_flow_lowest_resolution_w_efficiency[(a, rp, B)] -
         outgoing_flow_lowest_resolution_w_efficiency[(a, rp, B)]
@@ -303,7 +315,9 @@ function create_model(graph, representative_periods, constraints_partitions; wri
 
     # - cycling condition for storage level
     for a ∈ As, rp ∈ RP
-        set_lower_bound(storage_level[a, rp, Pl[(a, rp)][end]], graph[a].initial_storage_level)
+        if !ismissing(graph[a].initial_storage_level)
+            set_lower_bound(storage_level[a, rp, Pl[(a, rp)][end]], graph[a].initial_storage_level)
+        end
     end
 
     ## Extra constraints for investment limits
