@@ -169,7 +169,7 @@ labels(graph)</code></pre><pre class="documenter-example-output"><code class="no
  &quot;wind&quot;
  &quot;solar&quot;
  &quot;ens&quot;
- &quot;demand&quot;</code></pre><p>To access the asset data, we can index the graph with an asset label:</p><pre><code class="language-julia hljs">graph[&quot;ocgt&quot;]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">GraphAssetData(&quot;producer&quot;, true, 25.0, missing, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, Dict{Int64, Vector{Float64}}(), Dict{Int64, Vector{UnitRange{Int64}}}(2 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24], 3 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24], 1 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24]), -1, Dict{Tuple{Int64, UnitRange{Int64}}, Float64}())</code></pre><p>This is a Julia struct, or composite type, named <a href="../how-to-use/#GraphAssetData">GraphAssetData</a>. We can access its fields with <code>.</code>:</p><pre><code class="language-julia hljs">graph[&quot;ocgt&quot;].type</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">&quot;producer&quot;</code></pre><p>Since <code>labels</code> returns a generator, we can iterate over its contents without collecting it into a vector.</p><pre><code class="language-julia hljs">for a in labels(graph)
+ &quot;demand&quot;</code></pre><p>To access the asset data, we can index the graph with an asset label:</p><pre><code class="language-julia hljs">graph[&quot;ocgt&quot;]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">GraphAssetData(&quot;producer&quot;, true, true, 25.0, missing, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, Dict{Int64, Vector{Float64}}(), Dict{Int64, Vector{UnitRange{Int64}}}(2 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24], 3 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24], 1 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24]), -1.0, Dict{Tuple{Int64, UnitRange{Int64}}, Float64}())</code></pre><p>This is a Julia struct, or composite type, named <a href="../how-to-use/#GraphAssetData">GraphAssetData</a>. We can access its fields with <code>.</code>:</p><pre><code class="language-julia hljs">graph[&quot;ocgt&quot;].type</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">&quot;producer&quot;</code></pre><p>Since <code>labels</code> returns a generator, we can iterate over its contents without collecting it into a vector.</p><pre><code class="language-julia hljs">for a in labels(graph)
     println(&quot;Asset $a has type $(graph[a].type)&quot;)
 end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Asset ocgt has type producer
 Asset ccgt has type producer
@@ -181,7 +181,7 @@ Asset demand has type consumer</code></pre><p>To get all flows we can use <code>
  (&quot;ccgt&quot;, &quot;demand&quot;)
  (&quot;wind&quot;, &quot;demand&quot;)
  (&quot;solar&quot;, &quot;demand&quot;)
- (&quot;ens&quot;, &quot;demand&quot;)</code></pre><p>To access the flow data, we index with <code>graph[u, v]</code>:</p><pre><code class="language-julia hljs">graph[&quot;ocgt&quot;, &quot;demand&quot;]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">GraphFlowData(&quot;electricity&quot;, true, false, false, 0.07, 0.0, missing, 0.0, 0.0, 0.0, 0.0, Dict{Int64, Vector{Float64}}(), Dict{Int64, Vector{UnitRange{Int64}}}(2 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24], 3 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24], 1 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24]), Dict{Tuple{Int64, UnitRange{Int64}}, Float64}(), -1)</code></pre><p>The type of the flow struct is <a href="../how-to-use/#GraphFlowData">GraphFlowData</a>.</p><p>We can easily find all assets <code>v</code> for which a flow <code>(a, v)</code> exists:</p><pre><code class="language-julia hljs">inneighbor_labels(graph, &quot;demand&quot;) |&gt; collect</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">5-element Vector{String}:
+ (&quot;ens&quot;, &quot;demand&quot;)</code></pre><p>To access the flow data, we index with <code>graph[u, v]</code>:</p><pre><code class="language-julia hljs">graph[&quot;ocgt&quot;, &quot;demand&quot;]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">GraphFlowData(&quot;electricity&quot;, true, false, false, false, 0.07, 0.0, missing, 0.0, 0.0, 0.0, 0.0, Dict{Int64, Vector{Float64}}(), Dict{Int64, Vector{UnitRange{Int64}}}(2 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24], 3 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24], 1 =&gt; [1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10  …  15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24]), Dict{Tuple{Int64, UnitRange{Int64}}, Float64}(), -1.0)</code></pre><p>The type of the flow struct is <a href="../how-to-use/#GraphFlowData">GraphFlowData</a>.</p><p>We can easily find all assets <code>v</code> for which a flow <code>(a, v)</code> exists:</p><pre><code class="language-julia hljs">inneighbor_labels(graph, &quot;demand&quot;) |&gt; collect</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">5-element Vector{String}:
  &quot;ocgt&quot;
  &quot;ccgt&quot;
  &quot;wind&quot;
@@ -196,43 +196,43 @@ solution = solve_model!(energy_problem)</code></pre><p>To create a traditional a
 
 graph = energy_problem.graph
 [solution.assets_investment[a] for a in labels(graph) if graph[a].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">12-element Vector{Float64}:
-   904.0
+   921.0
    500.0
     83.0
- 19230.0
+ 18986.0
+     0.0012311394916389863
      0.0
+   107.0
+    34.0
      0.0
-   103.0
-    33.0
-     0.0
-    78.0
+    79.0
     32.0
      0.0</code></pre><p>To create a traditional array in the order given by the investable flows, one can run</p><pre><code class="language-julia hljs">[solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Float64}:
  9.0
- 3.0
+ 3.117101321445056
  3.0</code></pre><p>To create a vector with all values of <code>flow</code> for a given <code>(u, v)</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">(u, v) = first(edge_labels(graph))
 rp = 1
 [solution.flow[(u, v), rp, B] for B in graph[u, v].partitions[rp]]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">168-element Vector{Float64}:
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- ⋮
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0</code></pre><p>To create a vector with the all values of <code>storage_level</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = first(labels(graph))
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  ⋮
+  0.0
+  0.0
+  0.0
+  0.0
+ -0.0
+  0.0
+  0.0
+ -0.0
+  0.0</code></pre><p>To create a vector with the all values of <code>storage_level</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = first(labels(graph))
 rp = 1
 cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 [solution.storage_level[a, rp, B] for B in cons_parts[(a, rp)]]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">168-element Vector{Float64}:
@@ -244,7 +244,7 @@ cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
     0.0
     0.0
     0.0
- 2089.9999999999995
+ 2090.0
  8075.0
     ⋮
     0.0
@@ -253,46 +253,46 @@ cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
     0.0
     0.0
     0.0
-   -0.0
     0.0
-    0.0</code></pre><blockquote><p><strong>Note</strong> Make sure to specify <code>constraints_partitions[:lowest_resolution]</code> since the storage level is determined in the energy balance constraint for the storage assets. This constraint is defined in the lowest resolution of all assets and flows involved.</p></blockquote><h3 id="The-solution-inside-the-graph"><a class="docs-heading-anchor" href="#The-solution-inside-the-graph">The solution inside the graph</a><a id="The-solution-inside-the-graph-1"></a><a class="docs-heading-anchor-permalink" href="#The-solution-inside-the-graph" title="Permalink"></a></h3><p>In addition to the solution object, the solution is also stored by the individual assets and flows when <a href="../reference/#TulipaEnergyModel.solve_model!"><code>solve_model!</code></a> is called - i.e., when using a <a href="../how-to-use/#EnergyProblem">EnergyProblem</a> object.</p><p>They can be accessed like any other value from <a href="../how-to-use/#GraphAssetData">GraphAssetData</a> or <a href="../how-to-use/#GraphFlowData">GraphFlowData</a>, which means that we recreate the values from the previous section in a new way:</p><pre><code class="language-julia hljs">[energy_problem.graph[a].investment for a in labels(graph) if graph[a].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">12-element Vector{Int64}:
-   904
-   500
-    83
- 19230
-     0
-     0
-   103
-    33
-     0
-    78
-    32
-     0</code></pre><pre><code class="language-julia hljs">[energy_problem.graph[u, v].investment for (u, v) in edge_labels(graph) if graph[u, v].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Int64}:
- 9
- 3
- 3</code></pre><pre><code class="language-julia hljs">(u, v) = first(edge_labels(graph))
+    0.0
+    0.0</code></pre><blockquote><p><strong>Note</strong> Make sure to specify <code>constraints_partitions[:lowest_resolution]</code> since the storage level is determined in the energy balance constraint for the storage assets. This constraint is defined in the lowest resolution of all assets and flows involved.</p></blockquote><h3 id="The-solution-inside-the-graph"><a class="docs-heading-anchor" href="#The-solution-inside-the-graph">The solution inside the graph</a><a id="The-solution-inside-the-graph-1"></a><a class="docs-heading-anchor-permalink" href="#The-solution-inside-the-graph" title="Permalink"></a></h3><p>In addition to the solution object, the solution is also stored by the individual assets and flows when <a href="../reference/#TulipaEnergyModel.solve_model!"><code>solve_model!</code></a> is called - i.e., when using a <a href="../how-to-use/#EnergyProblem">EnergyProblem</a> object.</p><p>They can be accessed like any other value from <a href="../how-to-use/#GraphAssetData">GraphAssetData</a> or <a href="../how-to-use/#GraphFlowData">GraphFlowData</a>, which means that we recreate the values from the previous section in a new way:</p><pre><code class="language-julia hljs">[energy_problem.graph[a].investment for a in labels(graph) if graph[a].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">12-element Vector{Float64}:
+   921.0
+   500.0
+    83.0
+ 18986.0
+     0.0012311394916389863
+     0.0
+   107.0
+    34.0
+     0.0
+    79.0
+    32.0
+     0.0</code></pre><pre><code class="language-julia hljs">[energy_problem.graph[u, v].investment for (u, v) in edge_labels(graph) if graph[u, v].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Float64}:
+ 9.0
+ 3.117101321445056
+ 3.0</code></pre><pre><code class="language-julia hljs">(u, v) = first(edge_labels(graph))
 rp = 1
 [energy_problem.graph[u, v].flow[(rp, B)] for B in graph[u, v].partitions[rp]]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">168-element Vector{Float64}:
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- ⋮
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0
- 0.0</code></pre><p>To create a vector with the all values of <code>storage_level</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = first(labels(graph))
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  ⋮
+  0.0
+  0.0
+  0.0
+  0.0
+ -0.0
+  0.0
+  0.0
+ -0.0
+  0.0</code></pre><p>To create a vector with the all values of <code>storage_level</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = first(labels(graph))
 rp = 1
 cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 [energy_problem.graph[a].storage_level[(rp, B)] for B in cons_parts[(a, rp)]]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">168-element Vector{Float64}:
@@ -304,7 +304,7 @@ cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
     0.0
     0.0
     0.0
- 2089.9999999999995
+ 2090.0
  8075.0
     ⋮
     0.0
@@ -313,7 +313,7 @@ cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
     0.0
     0.0
     0.0
-   -0.0
+    0.0
     0.0
     0.0</code></pre><h3 id="Values-of-constraints-and-expressions"><a class="docs-heading-anchor" href="#Values-of-constraints-and-expressions">Values of constraints and expressions</a><a id="Values-of-constraints-and-expressions-1"></a><a class="docs-heading-anchor-permalink" href="#Values-of-constraints-and-expressions" title="Permalink"></a></h3><p>By accessing the model directly, we can query the values of constraints and expresions. For instance, we can get all incoming flow in the lowest resolution for a given asset at a given time block for a given representative periods with the following:</p><pre><code class="language-julia hljs">using JuMP
 # a, rp, and cons_parts are defined above
@@ -327,7 +327,7 @@ for (u, v) in edge_labels(graph)
         push!(df, (u, v, solution.flows_investment[(u, v)]))
     end
 end
-CSV.write(&quot;flows_investment.csv&quot;, df)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">&quot;flows_investment.csv&quot;</code></pre><p>Reading it back to show the  result:</p><pre><code class="language-julia hljs">CSV.read(&quot;flows_investment.csv&quot;, DataFrame)</code></pre><div><div style = "float: left;"><span>3×3 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">asset_from</th><th style = "text-align: left;">asset_to</th><th style = "text-align: left;">investment</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "InlineStrings.String31" style = "text-align: left;">String31</th><th title = "InlineStrings.String31" style = "text-align: left;">String31</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">Asgard_E_demand</td><td style = "text-align: left;">Midgard_E_demand</td><td style = "text-align: right;">9.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">Asgard_E_demand</td><td style = "text-align: left;">Valhalla_E_balance</td><td style = "text-align: right;">3.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">Midgard_E_demand</td><td style = "text-align: left;">Valhalla_E_balance</td><td style = "text-align: right;">3.0</td></tr></tbody></table></div><h3 id="Plotting"><a class="docs-heading-anchor" href="#Plotting">Plotting</a><a id="Plotting-1"></a><a class="docs-heading-anchor-permalink" href="#Plotting" title="Permalink"></a></h3><p>The simplest thing to do is to create vectors. For instance, in the example below, we plot the flow solution for a given flow.</p><pre><code class="language-julia hljs">using Plots
+CSV.write(&quot;flows_investment.csv&quot;, df)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">&quot;flows_investment.csv&quot;</code></pre><p>Reading it back to show the  result:</p><pre><code class="language-julia hljs">CSV.read(&quot;flows_investment.csv&quot;, DataFrame)</code></pre><div><div style = "float: left;"><span>3×3 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">asset_from</th><th style = "text-align: left;">asset_to</th><th style = "text-align: left;">investment</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "InlineStrings.String31" style = "text-align: left;">String31</th><th title = "InlineStrings.String31" style = "text-align: left;">String31</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">Asgard_E_demand</td><td style = "text-align: left;">Midgard_E_demand</td><td style = "text-align: right;">9.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">Asgard_E_demand</td><td style = "text-align: left;">Valhalla_E_balance</td><td style = "text-align: right;">3.1171</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">Midgard_E_demand</td><td style = "text-align: left;">Valhalla_E_balance</td><td style = "text-align: right;">3.0</td></tr></tbody></table></div><h3 id="Plotting"><a class="docs-heading-anchor" href="#Plotting">Plotting</a><a id="Plotting-1"></a><a class="docs-heading-anchor-permalink" href="#Plotting" title="Permalink"></a></h3><p>The simplest thing to do is to create vectors. For instance, in the example below, we plot the flow solution for a given flow.</p><pre><code class="language-julia hljs">using Plots
 
 rp = 2
 (u, v) = (&quot;Asgard_Solar&quot;, &quot;Asgard_E_demand&quot;)
@@ -336,7 +336,7 @@ domain = graph[u, v].partitions[rp]
 flow_value = [solution.flow[(u, v), rp, B] for B in domain]
 
 plot(1:length(domain), flow_value, leg=false)
-xticks!(1:length(domain), string.(domain))</code></pre><img src="cd5a655c.svg" alt="Example block output"/><p>Notice that the time domain for this flow is regular, so you might want to do some kind of processing. For instance, we can split the flow into every</p><pre><code class="language-julia hljs">domain = energy_problem.representative_periods[rp].time_steps
+xticks!(1:length(domain), string.(domain))</code></pre><img src="115c7afd.svg" alt="Example block output"/><p>Notice that the time domain for this flow is regular, so you might want to do some kind of processing. For instance, we can split the flow into every</p><pre><code class="language-julia hljs">domain = energy_problem.representative_periods[rp].time_steps
 flow_value = zeros(length(domain))
 for B in graph[u, v].partitions[rp]
     flow_value[B] .= solution.flow[(u, v), rp, B] / length(B)
@@ -344,4 +344,4 @@ end
 ticks = first.(graph[u, v].partitions[rp]) # Starting point of each time block
 
 plot(domain, flow_value, leg=false)
-xticks!(ticks)</code></pre><img src="d58ceb6f.svg" alt="Example block output"/><section class="footnotes is-size-7"><ul><li class="footnote" id="footnote-1"><a class="tag is-link" href="#citeref-1">1</a>Ignore the 9th file, bad-assets-data.csv, which is used for testing.</li></ul></section></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../how-to-use/">« How to Use</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="auto">Automatic (OS)</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.2.1 on <span class="colophon-date" title="Monday 8 January 2024 07:52">Monday 8 January 2024</span>. Using Julia version 1.10.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+xticks!(ticks)</code></pre><img src="debe9f9e.svg" alt="Example block output"/><section class="footnotes is-size-7"><ul><li class="footnote" id="footnote-1"><a class="tag is-link" href="#citeref-1">1</a>Ignore the 9th file, bad-assets-data.csv, which is used for testing.</li></ul></section></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../how-to-use/">« How to Use</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="auto">Automatic (OS)</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.2.1 on <span class="colophon-date" title="Monday 8 January 2024 08:57">Monday 8 January 2024</span>. Using Julia version 1.10.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
