@@ -20,6 +20,7 @@ TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 
 [compat]
 CSV = "0.10"
+Colors = "0.12"
 DataFrames = "1"
 Graphs = "1.8"
 HiGHS = "1"
