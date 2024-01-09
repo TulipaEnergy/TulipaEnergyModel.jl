@@ -3,39 +3,13 @@ using TulipaEnergyModel
 using MetaGraphsNext
 
 const SUITE = BenchmarkGroup()
-const NORSE_PATH = joinpath(@__DIR__, "../test/inputs/Norse")
 
 # The following lines are checking whether this is being called from the `test`.
-# If it is not, then we create a larger dataset
+# If it is not, then we use a larger dataset
 const INPUT_FOLDER_BM = if isdefined(Main, :Test)
-    NORSE_PATH
+    joinpath(@__DIR__, "../test/inputs/Norse")
 else
-    # Copy Norse
-    new_rp_length = 365 * 4
-    input_dir = mktempdir()
-    for file in readdir(NORSE_PATH; join = false)
-        cp(joinpath(NORSE_PATH, file), joinpath(input_dir, file))
-    end
-    # Add another line to rep-periods-data.csv
-    open(joinpath(input_dir, "rep-periods-data.csv"), "a") do io
-        println(io, "3,1,$new_rp_length,0.1")
-    end
-    # Add profiles to flow and asset
-    open(joinpath(input_dir, "flows-profiles.csv"), "a") do io
-        for (u, v) in [("Asgard_E_demand", "Valhalla_E_balance")]
-            for i = 1:new_rp_length
-                println(io, "$u,$v,3,$i,0.95")
-            end
-        end
-    end
-    open(joinpath(input_dir, "assets-profiles.csv"), "a") do io
-        for a in ["Asgard_E_demand"]
-            for i = 1:new_rp_length
-                println(io, "$a,3,$i,0.95")
-            end
-        end
-    end
-    input_dir
+    joinpath(@__DIR__, "EU")
 end
 
 const OUTPUT_FOLDER_BM = mktempdir()

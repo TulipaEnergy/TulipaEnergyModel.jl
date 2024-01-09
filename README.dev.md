@@ -348,11 +348,10 @@ main branch.
 
 ## Performance Considerations
 
-If you updated something that might impact the performance of the
-package, you can run the `Benchmark.yml` workflow from your pull request. To do
-that, add the command `/run-benchmark` as a comment in the pull request. This
-will trigger the workflow for your branch, and post the results as a
-comment in you pull request.
+If you updated something that might impact the performance of the package, you
+can run the `Benchmark.yml` workflow from your pull request. To do that, add
+the tag `benchmark` in the pull request. This will trigger the workflow and
+post the results as a comment in you pull request.
 
 If you want to manually run the benchmarks, you can do the following:
 
