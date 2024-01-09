@@ -63,6 +63,11 @@ end
 Markdown.parse(out)
 ```
 
+The `Missing` data meaning depends on the parameter, for instance:
+
+- `investment_limit`: there is no investment limit
+- `initial_storage_level`: the initial storage level is free (between the storage level limits), meaning that the optimization problem decides the best starting point for the storage asset. In addition, the first and last time blocks in a representative period are linked to create continuity in the storage level.
+
 #### `flows-data.csv`
 
 Similar to `assets-data.csv`, but for flows. Each flow is defined as a pair of assets.
@@ -77,6 +82,10 @@ for (f, t) in zip(fieldnames(TulipaEnergyModel.FlowData), fieldtypes(TulipaEnerg
 end
 Markdown.parse(out)
 ```
+
+The `Missing` data meaning depends on the parameter, for instance:
+
+- `investment_limit`: there is no investment limit
 
 #### `assets-profiles.csv`
 
