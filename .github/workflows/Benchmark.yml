@@ -1,17 +1,11 @@
 name: Run benchmarks
 on:
-    issue_comment:
-        types: [created, edited]
-    workflow_dispatch:
-        inputs:
-            repo:
-                description: Fork to benchmark "user/repo", empty denotes current repo
-                type: string
-                default: ""
-            ref:
-                description: Git branch/tag/reference to benchmark
-                type: string
-                default: ""
+    pull_request:
+        types:
+            - opened
+            - synchronize
+            - reopened
+            - labeled
 permissions:
     contents: write
     issues: write
@@ -23,85 +17,96 @@ concurrency:
     cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 jobs:
     benchmark:
-        if: |
-            (github.event.issue.pull_request && contains(github.event.comment.body, '/run-benchmark')) ||
-            github.event_name == 'workflow_dispatch'
+        if: contains(github.event.pull_request.labels.*.name, 'benchmark')
         runs-on: ubuntu-latest
+        env:
+            BASE: ${{ github.event.pull_request.base.sha }}
+            HEAD: ${{ github.event.pull_request.head.sha }}
         steps:
-            - name: Find PR repo and ref
-              uses: actions/github-script@v6
-              id: find-ref
+            - name: Find Comment (before benchmarks)
+              uses: peter-evans/find-comment@v2
+              id: fcbenchmark-early
               with:
-                  script: |
-                      if (context.eventName == 'pull_request') {
-                          const pr = await github.rest.pulls.get({
-                            owner: context.repo.owner,
-                            repo: context.repo.repo,
-                            pull_number: context.issue.number
-                          })
-                          core.setOutput('repo', pr.data.head.repo.full_name)
-                          core.setOutput('ref', pr.data.head.ref)
-                      }
-                      if (context.eventName == 'workflow_dispatch') {
-                          if ('${{inputs.repo}}' == "" && ["", "main"].includes('${{inputs.ref}}')) {
-                              core.setFailed("cannot run benchmark against current repo's main")
-                          }
-                          core.setOutput('repo', '${{ inputs.repo }}')
-                          core.setOutput('ref', '${{ inputs.ref }}')
-                      }
-            - uses: actions/github-script@v6
-              if: github.event.issue.pull_request
-              id: comment-early
+                  issue-number: ${{ github.event.pull_request.number }}
+                  comment-author: "github-actions[bot]"
+                  body-includes: Benchmark Results
+            - name: Early Comment on PR
+              uses: peter-evans/create-or-update-comment@v3
               with:
-                  script: |
-                      const comment = await github.rest.issues.createComment({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        issue_number: context.issue.number,
-                        body: "Running benchmark..."
-                      })
-                      core.setOutput('id', comment.data.id)
+                  comment-id: ${{ steps.fcbenchmark-early.outputs.comment-id }}
+                  issue-number: ${{ github.event.pull_request.number }}
+                  body: |
+                      ### Benchmark Results
+
+                      Benchmark in progress...
+                  edit-mode: replace
             - uses: actions/checkout@v4
-              with:
-                  repository: ${{ steps.find-ref.outputs.repo }}
-                  ref: ${{ steps.find-ref.outputs.ref }}
             - uses: julia-actions/setup-julia@latest
               with:
                   version: 1
-            - uses: julia-actions/julia-buildpkg@latest
-            - name: Install dependencies
-              run: julia -e 'using Pkg; pkg"add PkgBenchmark BenchmarkCI@0.1"'
-            - name: Run benchmarks
-              run: julia -e 'using BenchmarkCI; BenchmarkCI.judge(baseline="origin/main")'
-            - name: Results
-              id: benched
+            - uses: julia-actions/cache@v1
+            - name: Extract Package Name from Project.toml
+              id: extract-package-name
               run: |
-                  {
-                    echo 'RESULT<<EOF';
-                    julia -e 'using BenchmarkCI; BenchmarkCI.displayjudgement()';
-                    echo EOF;
-                  } >> result.txt
-                  cat result.txt >> "$GITHUB_OUTPUT"
-                  { echo '```'; sed -e '1d;$d' result.txt; echo '```'; } >> $GITHUB_STEP_SUMMARY
-            - uses: actions/github-script@v6
-              if: github.event.issue.pull_request
+                  PACKAGE_NAME=$(grep "^name" Project.toml | sed 's/^name = "\(.*\)"$/\1/')
+                  echo "::set-output name=package_name::$PACKAGE_NAME"
+            - name: Build AirspeedVelocity
               env:
-                  COMMENT_ID: ${{ steps.comment-early.outputs.id }}
+                  JULIA_NUM_THREADS: 2
+              run: |
+                  # Lightweight build step, as sometimes the runner runs out of memory:
+                  julia -e 'ENV["JULIA_PKG_PRECOMPILE_AUTO"]=0; import Pkg; Pkg.add(;url="https://github.com/MilesCranmer/AirspeedVelocity.jl.git")'
+                  julia -e 'ENV["JULIA_PKG_PRECOMPILE_AUTO"]=0; import Pkg; Pkg.build("AirspeedVelocity")'
+            - name: Add ~/.julia/bin to PATH
+              run: |
+                  echo "$HOME/.julia/bin" >> $GITHUB_PATH
+            - name: Run benchmarks
+              run: |
+                  echo $PATH
+                  ls -l ~/.julia/bin
+                  mkdir results
+                  benchpkg ${{ steps.extract-package-name.outputs.package_name }} \
+                    --rev="$BASE,$HEAD" \
+                    --url=${{ github.event.repository.clone_url }} \
+                    --bench-on="$BASE" \
+                    --output-dir=results/ \
+                    --tune
+            - name: Create plots from benchmarks
+              run: |
+                  mkdir -p plots
+                  benchpkgplot ${{ steps.extract-package-name.outputs.package_name }} \
+                    --rev="$BASE,$HEAD" \
+                    --npart=10 --format=png --input-dir=results/ --output-dir=plots/
+            - name: Upload plot as artifact
+              uses: actions/upload-artifact@v2
               with:
-                  script: |
-                      const { COMMENT_ID } = process.env
-                      github.rest.issues.deleteComment({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        comment_id: `${COMMENT_ID}`
-                      })
-            - uses: actions/github-script@v6
-              if: github.event.issue.pull_request
+                  name: plots
+                  path: plots
+            - name: Create markdown table from benchmarks
+              run: |
+                  benchpkgtable ${{ steps.extract-package-name.outputs.package_name }} \
+                    --rev="$BASE,$HEAD" \
+                    --input-dir=results/ --ratio > table.md
+                  echo '### Benchmark Results' > body.md
+                  echo '' >> body.md
+                  echo '' >> body.md
+                  cat table.md >> body.md
+                  echo '' >> body.md
+                  echo '' >> body.md
+                  echo '### Benchmark Plots' >> body.md
+                  echo 'A plot of the benchmark results have been uploaded as an artifact to the workflow run for this PR.' >> body.md
+                  echo 'Go to "Actions"->"Benchmark a pull request"->[the most recent run]->"Artifacts" (at the bottom).' >> body.md
+            - name: Find Comment
+              uses: peter-evans/find-comment@v2
+              id: fcbenchmark
               with:
-                  script: |
-                      github.rest.issues.createComment({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        issue_number: context.issue.number,
-                        body: `\`\`\`\n${{ steps.benched.outputs.RESULT }}\n\`\`\``
-                      })
+                  issue-number: ${{ github.event.pull_request.number }}
+                  comment-author: "github-actions[bot]"
+                  body-includes: Benchmark Results
+            - name: Comment on PR
+              uses: peter-evans/create-or-update-comment@v3
+              with:
+                  comment-id: ${{ steps.fcbenchmark.outputs.comment-id }}
+                  issue-number: ${{ github.event.pull_request.number }}
+                  body-path: body.md
+                  edit-mode: replace
