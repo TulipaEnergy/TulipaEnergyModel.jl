@@ -1,8 +1,14 @@
 @testset "Norse Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Norse")
     optimizer_list = [HiGHS.Optimizer, Cbc.Optimizer, GLPK.Optimizer]
+    parameters_dict = Dict(
+        HiGHS.Optimizer => Dict("mip_rel_gap" => 0.0),
+        Cbc.Optimizer   => Dict("ratioGap" => 0.0),
+        GLPK.Optimizer  => Dict("mip_gap" => 0.0),
+    )
     for optimizer in optimizer_list
-        energy_problem = run_scenario(dir; optimizer = optimizer)
+        energy_problem =
+            run_scenario(dir; optimizer = optimizer, parameters = parameters_dict[optimizer])
         @testset "Codecov Demands Graphs" begin
             plot_single_flow(energy_problem, "Asgard_Solar", "Asgard_Battery", 1)
             plot_graph(energy_problem)
