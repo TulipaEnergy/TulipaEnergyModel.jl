@@ -200,7 +200,7 @@ graph = energy_problem.graph
    500.0
     83.0
  18986.0
-     0.0012311394916389863
+     0.0012311394914290977
      0.0
    107.0
     34.0
@@ -209,7 +209,7 @@ graph = energy_problem.graph
     32.0
      0.0</code></pre><p>To create a traditional array in the order given by the investable flows, one can run</p><pre><code class="language-julia hljs">[solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Float64}:
  9.0
- 3.117101321445056
+ 3.1171013214450625
  3.0</code></pre><p>To create a vector with all values of <code>flow</code> for a given <code>(u, v)</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">(u, v) = first(edge_labels(graph))
 rp = 1
 [solution.flow[(u, v), rp, B] for B in graph[u, v].partitions[rp]]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">168-element Vector{Float64}:
@@ -228,11 +228,11 @@ rp = 1
   0.0
   0.0
   0.0
- -0.0
   0.0
   0.0
- -0.0
-  0.0</code></pre><p>To create a vector with the all values of <code>storage_level</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = first(labels(graph))
+  0.0
+  0.0
+ -0.0</code></pre><p>To create a vector with the all values of <code>storage_level</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = first(labels(graph))
 rp = 1
 cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 [solution.storage_level[a, rp, B] for B in cons_parts[(a, rp)]]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">168-element Vector{Float64}:
@@ -243,8 +243,8 @@ cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
     0.0
     0.0
     0.0
-    0.0
- 2090.0
+   -0.0
+ 2089.9999999999995
  8075.0
     ⋮
     0.0
@@ -260,7 +260,7 @@ cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
    500.0
     83.0
  18986.0
-     0.0012311394916389863
+     0.0012311394914290977
      0.0
    107.0
     34.0
@@ -269,7 +269,7 @@ cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
     32.0
      0.0</code></pre><pre><code class="language-julia hljs">[energy_problem.graph[u, v].investment for (u, v) in edge_labels(graph) if graph[u, v].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Float64}:
  9.0
- 3.117101321445056
+ 3.1171013214450625
  3.0</code></pre><pre><code class="language-julia hljs">(u, v) = first(edge_labels(graph))
 rp = 1
 [energy_problem.graph[u, v].flow[(rp, B)] for B in graph[u, v].partitions[rp]]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">168-element Vector{Float64}:
@@ -288,11 +288,11 @@ rp = 1
   0.0
   0.0
   0.0
- -0.0
   0.0
   0.0
- -0.0
-  0.0</code></pre><p>To create a vector with the all values of <code>storage_level</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = first(labels(graph))
+  0.0
+  0.0
+ -0.0</code></pre><p>To create a vector with the all values of <code>storage_level</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = first(labels(graph))
 rp = 1
 cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 [energy_problem.graph[a].storage_level[(rp, B)] for B in cons_parts[(a, rp)]]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">168-element Vector{Float64}:
@@ -303,8 +303,8 @@ cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
     0.0
     0.0
     0.0
-    0.0
- 2090.0
+   -0.0
+ 2089.9999999999995
  8075.0
     ⋮
     0.0
@@ -320,7 +320,7 @@ cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 B = cons_parts[(a, rp)][1]
 value(energy_problem.model[:incoming_flow_lowest_resolution][a, rp, B])</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.0</code></pre><p>The same can happen for constraints. For instance, the code below gets the consumer balance:</p><pre><code class="language-julia hljs">a = &quot;Asgard_E_demand&quot;
 B = cons_parts[(a, rp)][1]
-value(energy_problem.model[:consumer_balance][a, rp, B])</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">208418.81309332978</code></pre><p>The value of the constraint is obtained by looking only at the part with variables. So a constraint like <code>2x + 3y - 1 &lt;= 4</code> would return the value of <code>2x + 3y</code>.</p><h3 id="Writing-the-output-to-CSV"><a class="docs-heading-anchor" href="#Writing-the-output-to-CSV">Writing the output to CSV</a><a id="Writing-the-output-to-CSV-1"></a><a class="docs-heading-anchor-permalink" href="#Writing-the-output-to-CSV" title="Permalink"></a></h3><p>The simplest way to save the output to CSV is to use packages CSV and DataFrames. Here is an example that saves the investment on the investable flows.</p><pre><code class="language-julia hljs">using CSV, DataFrames
+value(energy_problem.model[:consumer_balance][a, rp, B])</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">208418.8130933298</code></pre><p>The value of the constraint is obtained by looking only at the part with variables. So a constraint like <code>2x + 3y - 1 &lt;= 4</code> would return the value of <code>2x + 3y</code>.</p><h3 id="Writing-the-output-to-CSV"><a class="docs-heading-anchor" href="#Writing-the-output-to-CSV">Writing the output to CSV</a><a id="Writing-the-output-to-CSV-1"></a><a class="docs-heading-anchor-permalink" href="#Writing-the-output-to-CSV" title="Permalink"></a></h3><p>The simplest way to save the output to CSV is to use packages CSV and DataFrames. Here is an example that saves the investment on the investable flows.</p><pre><code class="language-julia hljs">using CSV, DataFrames
 df = DataFrame(; asset_from = String[], asset_to = String[], investment = Float64[])
 for (u, v) in edge_labels(graph)
     if graph[u, v].investable
@@ -336,7 +336,7 @@ domain = graph[u, v].partitions[rp]
 flow_value = [solution.flow[(u, v), rp, B] for B in domain]
 
 plot(1:length(domain), flow_value, leg=false)
-xticks!(1:length(domain), string.(domain))</code></pre><img src="115c7afd.svg" alt="Example block output"/><p>Notice that the time domain for this flow is regular, so you might want to do some kind of processing. For instance, we can split the flow into every</p><pre><code class="language-julia hljs">domain = energy_problem.representative_periods[rp].time_steps
+xticks!(1:length(domain), string.(domain))</code></pre><img src="bcc51ad0.svg" alt="Example block output"/><p>Notice that the time domain for this flow is regular, so you might want to do some kind of processing. For instance, we can split the flow into every</p><pre><code class="language-julia hljs">domain = energy_problem.representative_periods[rp].time_steps
 flow_value = zeros(length(domain))
 for B in graph[u, v].partitions[rp]
     flow_value[B] .= solution.flow[(u, v), rp, B] / length(B)
@@ -344,4 +344,4 @@ end
 ticks = first.(graph[u, v].partitions[rp]) # Starting point of each time block
 
 plot(domain, flow_value, leg=false)
-xticks!(ticks)</code></pre><img src="debe9f9e.svg" alt="Example block output"/><section class="footnotes is-size-7"><ul><li class="footnote" id="footnote-1"><a class="tag is-link" href="#citeref-1">1</a>Ignore the 9th file, bad-assets-data.csv, which is used for testing.</li></ul></section></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../how-to-use/">« How to Use</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="auto">Automatic (OS)</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.2.1 on <span class="colophon-date" title="Monday 8 January 2024 08:57">Monday 8 January 2024</span>. Using Julia version 1.10.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+xticks!(ticks)</code></pre><img src="7ad4573a.svg" alt="Example block output"/><section class="footnotes is-size-7"><ul><li class="footnote" id="footnote-1"><a class="tag is-link" href="#citeref-1">1</a>Ignore the 9th file, bad-assets-data.csv, which is used for testing.</li></ul></section></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../how-to-use/">« How to Use</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="auto">Automatic (OS)</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.2.1 on <span class="colophon-date" title="Tuesday 9 January 2024 10:08">Tuesday 9 January 2024</span>. Using Julia version 1.10.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
