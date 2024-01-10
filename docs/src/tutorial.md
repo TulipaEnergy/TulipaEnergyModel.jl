@@ -7,11 +7,11 @@ Here are some tutorials on how to use Tulipa.
 For our first example, let's use a very small existing dataset.
 Inside the code for this package, you can find the folder [`test/inputs/Tiny`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Tiny), which includes all the files necessary to create a TulipaEnergyModel and solve it.
 
-There are 8 relevant[^1] files inside the "Tiny" folder. They define the assets and flows data, their profiles, and their time resolution, as well as two files to define the representative periods and which periods in the full problem formulation they stand for.
-
-[^1]: Ignore the 9th file, bad-assets-data.csv, which is used for testing.
+There are 8 relevant¹ files inside the "Tiny" folder. They define the assets and flows data, their profiles, and their time resolution, as well as two files to define the representative periods and which periods in the full problem formulation they stand for.
 
 For more details about these files, see [Input](@ref).
+
+¹ _Ignore the 9th file, bad-assets-data.csv, which is used for testing._
 
 ### Run scenario
 
@@ -319,7 +319,7 @@ cons_parts = energy_problem.constraints_partitions[:lowest_resolution]
 
 ### Values of constraints and expressions
 
-By accessing the model directly, we can query the values of constraints and expresions.
+By accessing the model directly, we can query the values of constraints and expressions.
 For instance, we can get all incoming flow in the lowest resolution for a given asset at a given time block for a given representative periods with the following:
 
 ```@example solution
@@ -364,33 +364,24 @@ CSV.read("flows_investment.csv", DataFrame)
 
 ### Plotting
 
-The simplest thing to do is to create vectors.
-For instance, in the example below, we plot the flow solution for a given flow.
+Tulipa has three functions for plotting: a time-series flows, a visualisation of the graph (with asset and flow capacities), and a bar graph of the initial and invested asset capacities.
+
+Plot a single flow for a single representative period:
 
 ```@example solution
-using Plots
-
-rp = 2
-(u, v) = ("Asgard_Solar", "Asgard_E_demand")
-
-domain = graph[u, v].partitions[rp]
-flow_value = [solution.flow[(u, v), rp, B] for B in domain]
-
-plot(1:length(domain), flow_value, leg=false)
-xticks!(1:length(domain), string.(domain))
+plot_single_flow(graph, "Asgard_Solar", "Asgard_E_demand", 1)
 ```
 
-Notice that the time domain for this flow is regular, so you might want to do some kind of processing.
-For instance, we can split the flow into every
+Plot the graph, with asset and flow capacities:
 
 ```@example solution
-domain = energy_problem.representative_periods[rp].time_steps
-flow_value = zeros(length(domain))
-for B in graph[u, v].partitions[rp]
-    flow_value[B] .= solution.flow[(u, v), rp, B] / length(B)
-end
-ticks = first.(graph[u, v].partitions[rp]) # Starting point of each time block
-
-plot(domain, flow_value, leg=false)
-xticks!(ticks)
+plot_graph(graph)
 ```
+
+Graph the final capacities of assets:
+
+```@example solution
+plot_assets_capacity(graph)
+```
+
+If you would like more custom plots, explore the code of [plot](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/plot.jl) for ideas.
