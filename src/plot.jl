@@ -8,12 +8,12 @@ Plot a single flow over a single representative period, given a graph or energy 
 the "from" (exporting) asset, the "to" (importing) asset, and the representative period.
 
 """
-#TODO Rework using CairoMakie instead of Plots
 function plot_single_flow(graph::MetaGraph, asset_from::String, asset_to::String, rp::Int64)
     rp_partition = graph[asset_from, asset_to].partitions[rp]
     time_dimension = 1:length(rp_partition)
     flow_value = [graph[asset_from, asset_to].flow[(rp, B)] for B in rp_partition]
 
+    #TODO Rework using CairoMakie instead of Plots
     Plots.plot(
         time_dimension,
         flow_value;
@@ -33,8 +33,8 @@ function plot_single_flow(
 end
 
 """
-    plot_final_flow_graph(graph)
-    plot_final_flow_graph(energy_problem)
+    plot_graph(graph)
+    plot_graph(energy_problem)
 
 Given a graph or energy problem, plot the graph with the "final" (initial + investment) flow capacities,
 represented by the thickness of the graph edges, as well as displayed values.
@@ -136,7 +136,6 @@ end
 Given a graph or energy problem, display a stacked bar graph of
 the initial and invested capacity of each asset (initial + invested = total).
 """
-#TODO Rework using CairoMakie instead of Plots
 function plot_assets_capacity(graph::MetaGraph)
     asset_labels = labels(graph) |> collect
 
@@ -147,6 +146,7 @@ function plot_assets_capacity(graph::MetaGraph)
     investment_cap =
         [graph[a].investable * graph[a].investment * graph[a].capacity for a in asset_labels]
 
+    #TODO Rework using CairoMakie instead of Plots
     Plots.plot(
         [initial_cap, investment_cap];
         seriestype = :bar,
