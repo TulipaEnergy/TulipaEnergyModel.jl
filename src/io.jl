@@ -66,7 +66,7 @@ function create_graph_and_representative_periods_from_csv_folder(
     # Error if partition data is missing assets (if strict)
     if strict
         missing_assets =
-            setdiff(Set(assets_data_df[!, "name"]), Set(assets_partitions_df[!, "asset"]))
+            setdiff(assets_data_df[!, "name"], assets_partitions_df[!, "asset"])
         if length(missing_assets) > 0
             msg = "Error: Partition data missing for these assets: \n"
             for a in missing_assets
