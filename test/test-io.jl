@@ -6,6 +6,14 @@
             TulipaEnergyModel.AssetData,
         )
     end
+
+    @testset "Check missing asset partition if strict" begin
+        dir = joinpath(INPUT_FOLDER, "Norse")
+        @test_throws Exception TulipaEnergyModel.create_energy_problem_from_csv_folder(
+            dir,
+            strict = true,
+        )
+    end
 end
 
 @testset "Output validation" begin
@@ -52,12 +60,12 @@ end
         expected = Dict(
             (1, 1) => [1:3, 4:6, 7:9, 10:12],
             (2, 1) => [1:4, 5:8, 9:12],
-            (3, 1) => [i:i for i = 1:12],
-            (1, 2) => [i:i for i = 1:24],
+            (3, 1) => [i:i for i ∈ 1:12],
+            (1, 2) => [i:i for i ∈ 1:24],
             (2, 2) => [1:4, 5:8, 9:12, 13:15, 16:18, 19:21, 22:24],
             (3, 2) => [1:2, 3:4, 5:7, 8:10, 11:14, 15:18, 19:24],
         )
-        for a = 1:3, rp = 1:2
+        for a ∈ 1:3, rp ∈ 1:2
             @test dummy[a][rp] == expected[(a, rp)]
         end
     end
@@ -82,12 +90,12 @@ end
         expected = Dict(
             ((1, 2), 1) => [1:3, 4:6, 7:9, 10:12],
             ((2, 3), 1) => [1:4, 5:8, 9:12],
-            ((3, 4), 1) => [i:i for i = 1:12],
-            ((1, 2), 2) => [i:i for i = 1:24],
+            ((3, 4), 1) => [i:i for i ∈ 1:12],
+            ((1, 2), 2) => [i:i for i ∈ 1:24],
             ((2, 3), 2) => [1:4, 5:8, 9:12, 13:15, 16:18, 19:21, 22:24],
             ((3, 4), 2) => [1:2, 3:4, 5:7, 8:10, 11:14, 15:18, 19:24],
         )
-        for f in flows, rp = 1:2
+        for f in flows, rp ∈ 1:2
             @test dummy[f][rp] == expected[(f, rp)]
         end
     end
