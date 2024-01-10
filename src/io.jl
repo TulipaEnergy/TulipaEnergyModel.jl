@@ -5,12 +5,13 @@ export create_energy_problem_from_csv_folder,
     compute_flows_partitions!
 
 """
-    energy_problem = create_energy_problem_from_csv_folder(input_folder)
+    energy_problem = create_energy_problem_from_csv_folder(input_folder; strict = false)
 
 Returns the [`TulipaEnergyModel.EnergyProblem`](@ref) reading all data from CSV files
 in the `input_folder`.
 This is a wrapper around `create_graph_and_representative_periods_from_csv_folder` that creates
 the `EnergyProblem` structure.
+Set strict = true to error if assets are missing from partition data.
 """
 function create_energy_problem_from_csv_folder(input_folder::AbstractString; strict = false)
     graph, representative_periods =
@@ -19,9 +20,11 @@ function create_energy_problem_from_csv_folder(input_folder::AbstractString; str
 end
 
 """
-    graph, representative_periods = create_graph_and_representative_periods_from_csv_folder(input_folder)
+    graph, representative_periods = create_graph_and_representative_periods_from_csv_folder(input_folder; strict = false)
 
 Returns the `graph` structure that holds all data, and the `representative_periods` array.
+Set strict = true to error if assets are missing from partition data.
+
 The following files are expected to exist in the input folder:
 
   - `assets-data.csv`: Following the [`TulipaEnergyModel.AssetData`](@ref) specification.
