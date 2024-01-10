@@ -17,6 +17,7 @@ MetaGraphsNext = "fa8bd995-216d-47f1-8a91-f3b68fbeb377"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+TimerOutputs = "a759f4b9-e2f1-59dc-863e-4aeb61b1ea8f"
 
 [compat]
 CSV = "0.10"

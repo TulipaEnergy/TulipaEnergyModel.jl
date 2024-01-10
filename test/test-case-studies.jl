@@ -22,8 +22,13 @@ end
     dir = joinpath(INPUT_FOLDER, "Tiny")
     optimizer_list = [HiGHS.Optimizer, Cbc.Optimizer, GLPK.Optimizer]
     for optimizer in optimizer_list
-        energy_problem =
-            run_scenario(dir, OUTPUT_FOLDER; optimizer = optimizer, write_lp_file = true)
+        energy_problem = run_scenario(
+            dir,
+            OUTPUT_FOLDER;
+            optimizer = optimizer,
+            write_lp_file = true,
+            log_file = "model.log",
+        )
         @test energy_problem.objective_value ≈ 269238.43825 atol = 1e-5
     end
 end

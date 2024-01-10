@@ -14,6 +14,7 @@ using Colors
 using GraphMakie
 using GraphMakie.NetworkLayout
 using CairoMakie
+using TimerOutputs
 
 include("input-tables.jl")
 include("structures.jl")

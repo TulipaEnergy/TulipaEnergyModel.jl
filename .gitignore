@@ -10,3 +10,4 @@ env
 /benchmark/*.json
 coverage/
 debugging/
+*.log
