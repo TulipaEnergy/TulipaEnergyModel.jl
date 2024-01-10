@@ -12,9 +12,9 @@ in the `input_folder`.
 This is a wrapper around `create_graph_and_representative_periods_from_csv_folder` that creates
 the `EnergyProblem` structure.
 """
-function create_energy_problem_from_csv_folder(input_folder::AbstractString)
+function create_energy_problem_from_csv_folder(input_folder::AbstractString; strict = false)
     graph, representative_periods =
-        create_graph_and_representative_periods_from_csv_folder(input_folder)
+        create_graph_and_representative_periods_from_csv_folder(input_folder; strict = strict)
     return EnergyProblem(graph, representative_periods)
 end
 
@@ -44,7 +44,10 @@ The returned structures are:
   - `representative_periods`: An array of
     [`TulipaEnergyModel.RepresentativePeriod`](@ref) ordered by their IDs.
 """
-function create_graph_and_representative_periods_from_csv_folder(input_folder::AbstractString)
+function create_graph_and_representative_periods_from_csv_folder(
+    input_folder::AbstractString;
+    strict = false,
+)
     # Read data
     fillpath(filename) = joinpath(input_folder, filename)
 
@@ -56,6 +59,21 @@ function create_graph_and_representative_periods_from_csv_folder(input_folder::A
     rp_mapping_df        = read_csv_with_schema(fillpath("rep-periods-mapping.csv"), RepPeriodMapping)
     assets_partitions_df = read_csv_with_schema(fillpath("assets-partitions.csv"), AssetPartitionData)
     flows_partitions_df  = read_csv_with_schema(fillpath("flows-partitions.csv"), FlowPartitionData)
+
+    # Error if partition data is missing assets (if strict)
+    if strict
+        missing_assets =
+            setdiff(Set(assets_data_df[!, "name"]), Set(assets_partitions_df[!, "asset"]))
+        if length(missing_assets) > 0
+            msg = "Error: Partition data missing for these assets: \n"
+            for a in missing_assets
+                msg *= "- $a\n"
+            end
+            msg *= "To assume missing asset resolutions follow the representative period's time resolution, set strict = false.\n"
+
+            error(msg)
+        end
+    end
 
     # Sets and subsets that depend on input data
 
@@ -125,7 +143,7 @@ function create_graph_and_representative_periods_from_csv_folder(input_folder::A
         )
     end
 
-    for rp_id = 1:length(representative_periods), a in labels(graph)
+    for rp_id ∈ 1:length(representative_periods), a in labels(graph)
         # Get all profile data for asset=a and rp=rp_id
         matching = (assets_profiles_df.asset .== a) .& (assets_profiles_df.rep_period_id .== rp_id)
         if sum(matching) == 0
@@ -135,7 +153,7 @@ function create_graph_and_representative_periods_from_csv_folder(input_folder::A
         graph[a].profiles[rp_id] = profile_data
     end
 
-    for rp_id = 1:length(representative_periods), (u, v) in edge_labels(graph)
+    for rp_id ∈ 1:length(representative_periods), (u, v) in edge_labels(graph)
         # Get all profile data for flow=(u,v) and rp=rp_id
         matching =
             (flows_profiles_df.from_asset .== u) .&
@@ -287,7 +305,7 @@ function _parse_rp_partition end
 
 function _parse_rp_partition(::Val{:uniform}, time_step_string, rp_time_steps)
     duration = parse(Int, time_step_string)
-    partition = [i:i+duration-1 for i = 1:duration:length(rp_time_steps)]
+    partition = [i:i+duration-1 for i ∈ 1:duration:length(rp_time_steps)]
     @assert partition[end][end] == length(rp_time_steps)
     return partition
 end
@@ -311,7 +329,7 @@ function _parse_rp_partition(::Val{:math}, time_step_string, rp_time_steps)
     block_instruction = split(time_step_string, "+")
     for R in block_instruction
         num, len = parse.(Int, split(R, "x"))
-        for _ = 1:num
+        for _ ∈ 1:num
             block = (1:len) .+ (block_begin - 1)
             block_begin += len
             push!(partition, block)
@@ -344,7 +362,7 @@ function compute_assets_partitions!(partitions, df, a, representative_periods)
         partitions[rp_id] = if j === nothing
             N = length(rp.time_steps)
             # If there is no time block specification, use default of 1
-            [k:k for k = 1:N]
+            [k:k for k ∈ 1:N]
         else
             _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp.time_steps)
         end
@@ -374,7 +392,7 @@ function compute_flows_partitions!(partitions, df, u, v, representative_periods)
         partitions[rp_id] = if j === nothing
             N = length(rp.time_steps)
             # If there is no time block specification, use default of 1
-            [k:k for k = 1:N]
+            [k:k for k ∈ 1:N]
         else
             _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp.time_steps)
         end
