@@ -15,12 +15,29 @@ function run_scenario(
     optimizer = HiGHS.Optimizer,
     parameters = default_parameters(optimizer),
     write_lp_file = false,
+    log_file = "",
+    show_log = true,
 )
-    energy_problem = create_energy_problem_from_csv_folder(input_folder)
-    create_model!(energy_problem; write_lp_file = write_lp_file)
-    solve_model!(energy_problem, optimizer; parameters = parameters)
+    to = TimerOutput()
 
-    output_folder == "" ? nothing : save_solution_to_file(output_folder, energy_problem)
+    energy_problem =
+        @timeit to "create_energy_problem_from_csv_folder" create_energy_problem_from_csv_folder(
+            input_folder,
+        )
+    @timeit to "create_model!" create_model!(energy_problem; write_lp_file = write_lp_file)
+    @timeit to "solve_model!" solve_model!(energy_problem, optimizer; parameters = parameters)
+
+    if output_folder != ""
+        @timeit to "save_solution_to_file" save_solution_to_file(output_folder, energy_problem)
+    end
+
+    show_log && show(to)
+
+    if log_file != ""
+        open(log_file, "w") do io
+            show(io, to)
+        end
+    end
 
     return energy_problem
 end
