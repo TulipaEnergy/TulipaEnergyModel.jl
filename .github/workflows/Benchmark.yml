@@ -17,7 +17,8 @@ concurrency:
     cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 jobs:
     benchmark:
-        if: contains(github.event.pull_request.labels.*.name, 'benchmark')
+        # Only runs if the PR originates from the repo itself and if the label 'benchmark' is assigned
+        if: contains(github.event.pull_request.labels.*.name, 'benchmark') && github.event.pull_request.head.repo.full_name == github.repository
         runs-on: ubuntu-latest
         env:
             BASE: ${{ github.event.pull_request.base.sha }}
