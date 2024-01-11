@@ -333,7 +333,9 @@ the pull request will be automatically updated. Do not forget to re-request a
 review.
 
 Once your reviewer approves the pull request, you need to merge it with the
-main branch.
+main branch using "Squash and Merge".
+You can also delete the branch that originated the pull request by clicking the button that appears after the merge.
+For branches that were pushed to the main repo, it is recommended that you do so.
 
 ## GitHub Rules of Engagement
 
@@ -352,6 +354,11 @@ If you updated something that might impact the performance of the package, you
 can run the `Benchmark.yml` workflow from your pull request. To do that, add
 the tag `benchmark` in the pull request. This will trigger the workflow and
 post the results as a comment in you pull request.
+
+> **Warning**:
+> This requires that your branch was pushed to the main repo.
+> If you have created a pull request from a fork, the Benchmark.yml workflow does not work.
+> Instead, close your pull request, push your branch to the main repo, and open a new pull request.
 
 If you want to manually run the benchmarks, you can do the following:
 
