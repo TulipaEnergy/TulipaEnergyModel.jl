@@ -7,7 +7,9 @@ energy systems.
 
 ## Before You Begin
 
-Before you can start contributing, make sure that you have installed the
+Before you can start contributing, please read our CONTRIBUTING.md.
+
+Also make sure that you have installed the
 required software, and that it is properly configured. You only need to do this
 once.
 
@@ -176,7 +178,7 @@ We use the following workflow for all contributions:
 
 Below you can find detailed instructions for each step.
 
-### Make Sure That Your Fork Is Up to Date
+### 1. Make Sure That Your Fork Is Up to Date
 
 Fetch from org remote, fast-forward your local main:
 
@@ -194,7 +196,7 @@ git merge --ff-only origin/main
 > git reset --hard origin/main
 > ```
 
-### Create a New Branch
+### 2. Create a New Branch
 
 Create a branch to address the issue:
 
@@ -208,13 +210,13 @@ for example, `123-short-description` for issue \#123.
 - If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes.
 
 > **Note**:
-> Always branch from `main`, i.e., your the main branch of your own fork.
+> Always branch from `main`, i.e., the main branch of your own fork.
 
-### Implement the Changes
+### 3. Implement the Changes
 
 Implement your changes to address the issue associated with the branch.
 
-### Run the Tests
+### 4. Run the Tests
 
 In Julia:
 
@@ -239,7 +241,7 @@ coverage, please add tests to cover the missing lines.
 If you are having trouble reaching 100% test coverage, you can set your pull
 request to 'draft' status and ask for help.
 
-### Run the Linter
+### 5. Run the Linter
 
 In the bash/git bash terminal, run pre-commit:
 
@@ -257,7 +259,7 @@ git rebase --continue
 git push --force myfork <branch_name>
 ```
 
-### Commit the Changes
+### 6. Commit the Changes
 
 When the test are passing, commit the changes and push them to the remote
 repository. Use:
@@ -278,11 +280,11 @@ When writing the commit message:
 > [*The Utopic Git History*](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593)
 > to learn more.
 
-### Make Sure That Your Fork Is Still Up to Date
+### 7. Make Sure That Your Fork Is Still Up to Date
 
 If necessary, fetch any `main` updates from upstream and rebase your branch into
 `origin/main`. For example, do this if it took some time to resolve the issue
-you have been working on. If you don't do conflict resolution locally, you will
+you have been working on. If you don't resolve conflicts locally, you will
 get conflicts in your pull request.
 
 Do the following steps:
@@ -307,7 +309,7 @@ git diff --staged    # Another way to check changes, i.e., what you will see in 
 
 Once the conflicts are resolved, commit and push.
 
-### Create a Pull Request
+### 8. Create a Pull Request
 
 When there are no more conflicts and all the test are passing, create a pull
 request to merge your remote branch into the org main. You can do this on
@@ -318,9 +320,9 @@ GitHub by opening the branch in your fork and clicking "Compare & pull request".
 Fill in the pull request details:
 
 1. Describe the changes.
-2. List the issues that this pull request closes.
+2. List the issue(s) that this pull request closes.
 3. Fill in the collaboration confirmation.
-4. Choose a reviewer.
+4. (Optional) Choose a reviewer.
 5. When all of the information is filled in, click "Create pull request".
 
 ![Screenshot of the pull request information](docs/PRInfo.png)
@@ -336,17 +338,6 @@ Once your reviewer approves the pull request, you need to merge it with the
 main branch using "Squash and Merge".
 You can also delete the branch that originated the pull request by clicking the button that appears after the merge.
 For branches that were pushed to the main repo, it is recommended that you do so.
-
-## GitHub Rules of Engagement
-
-- Assign only yourself to issues.
-- Assign yourself to issues you **want** to address. Consider if you will be able to work on it in the near future — if not, consider leaving it available for someone else to address.
-- Set the issue Status to "In Progress" when you have started working on it.
-  - Creating a pull request for an issue (even if only a draft) will automatically set an issue as 'In Progress.' A good habit is creating a *draft* pull request early, to take advantage of this automation and get feedback early.
-- When finalizing a pull request, set the Status to "Ready for Review" — if someone specific **needs** to review it, you can assign them as the reviewer.
-- Once Issues have been addressed by merged PRs, they will automatically move to Done.
-- If you want to discuss an issue at the next group meeting, mark it with the "question" label.
-- Issues without updates for 60 days (and PRs without updates in 30 days) will be labelled as "stale" and filtered out of view. There is a Stale project board to view and revive these.
 
 ## Performance Considerations
 
