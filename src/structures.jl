@@ -165,6 +165,7 @@ end
 Customize the display of EnergyProblem in the REPL.
 """
 function Base.show(io::IO, ep::EnergyProblem)
-    println(io, "Solved = ", ep.solved)
-    print(io, "Objective_value = ", ep.objective_value)
+    println(io, "Terminal status: ", ep.termination_status)
+    println(io, "Solved: ", ep.solved)
+    print(io, "Objective_value: ", ep.objective_value)
 end
