@@ -1,3 +1,3 @@
-,,hours
-id,num_time_steps,resolution
-1,8760,1.0
+,hours,,hours
+id,weight,num_time_steps,resolution
+1,1,8760,1.0
