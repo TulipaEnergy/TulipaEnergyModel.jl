@@ -29,6 +29,7 @@ end
             write_lp_file = true,
             log_file = "model.log",
         )
+        println(energy_problem)
         @test energy_problem.objective_value ≈ 269238.43825 atol = 1e-5
     end
 end

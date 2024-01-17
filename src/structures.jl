@@ -161,7 +161,10 @@ mutable struct EnergyProblem
     end
 end
 
+"""
+Customize the display of EnergyProblem in the REPL.
+"""
 function Base.show(io::IO, ep::EnergyProblem)
-    println(io, "Solved = ", ep.solved, "")
-    print(io, "Objective_value = ", ep.objective_value, "")
+    println(io, "Solved = ", ep.solved)
+    print(io, "Objective_value = ", ep.objective_value)
 end
