@@ -160,3 +160,8 @@ mutable struct EnergyProblem
         )
     end
 end
+
+function Base.show(io::IO, ep::EnergyProblem)
+    println(io, "Solved = ", ep.solved, "")
+    print(io, "Objective_value = ", ep.objective_value, "")
+end
