@@ -18,3 +18,6 @@ BE_Solar,BE_E_Balance,1,uniform,2
 BE_Gas,BE_E_Balance,1,uniform,2
 BE_OCGT,BE_E_Balance,1,uniform,2
 BE_E_Balance,BE_E_Demand,1,uniform,2
+BE_Hydro,BE_E_Balance,1,uniform,2
+BE_Pump_Hydro,BE_E_Balance,1,uniform,2
+BE_E_Balance,BE_Pump_Hydro,1,uniform,2

@@ -18,3 +18,4 @@ BE_Battery,1,uniform,2
 BE_OCGT,1,uniform,2
 BE_E_Balance,1,uniform,2
 BE_Pump_Hydro,1,uniform,2
+BE_Hydro,1,uniform,2
