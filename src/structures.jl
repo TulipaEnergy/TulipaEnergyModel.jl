@@ -160,3 +160,11 @@ mutable struct EnergyProblem
         )
     end
 end
+
+function Base.show(io::IO, ep::EnergyProblem)
+    println(io, "EnergyProblem:")
+    println(io, "  - Model created: ", !isnothing(ep.model))
+    println(io, "  - Solved: ", ep.solved)
+    println(io, "  - Termination status: ", ep.termination_status)
+    println(io, "  - Objective_value: ", ep.objective_value)
+end

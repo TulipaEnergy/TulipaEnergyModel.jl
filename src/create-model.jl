@@ -11,6 +11,9 @@ function create_model!(energy_problem; kwargs...)
     constraints_partitions = energy_problem.constraints_partitions
     energy_problem.model =
         create_model(graph, representative_periods, constraints_partitions; kwargs...)
+    energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
+    energy_problem.solved = false
+    energy_problem.objective_value = NaN
     return energy_problem
 end
 
