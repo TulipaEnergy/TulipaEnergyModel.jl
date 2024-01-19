@@ -166,5 +166,5 @@ function Base.show(io::IO, ep::EnergyProblem)
     println(io, "  - Model created: ", !isnothing(ep.model))
     println(io, "  - Solved: ", ep.solved)
     println(io, "  - Termination status: ", ep.termination_status)
-    println(io, "  - Objective_value: ", ep.objective_value)
+    println(io, "  - Objective value: ", ep.objective_value)
 end
