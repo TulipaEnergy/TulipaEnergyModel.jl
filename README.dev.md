@@ -253,12 +253,6 @@ pre-commit run -a
 If any of the checks failed, find in the pre-commit log what the issues are and
 fix them. Then, add them again (`git add`), rerun the tests & linter, and commit.
 
-```bash
-git status # Another way to show that all conflicts are fixed.
-git rebase --continue
-git push --force myfork <branch_name>
-```
-
 ### 6. Commit the Changes
 
 When the test are passing, commit the changes and push them to the remote
@@ -308,6 +302,12 @@ git diff --staged    # Another way to check changes, i.e., what you will see in 
 ```
 
 Once the conflicts are resolved, commit and push.
+
+```bash
+git status # Another way to show that all conflicts are fixed.
+git rebase --continue
+git push --force myfork <branch_name>
+```
 
 ### 8. Create a Pull Request
 
