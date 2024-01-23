@@ -1,19 +1,20 @@
 module TulipaEnergyModel
 
 # Packages
-using CSV
-using DataFrames
-using Graphs
-using HiGHS
-using JuMP
-using MathOptInterface
-using MetaGraphsNext
-using TOML
-using Plots
-using Colors
-using GraphMakie
-using GraphMakie.NetworkLayout
-using CairoMakie
+
+## Data
+using CSV, DataFrames, TOML
+
+## Graphs
+using Graphs, MetaGraphsNext
+
+## Optimization
+using HiGHS, JuMP, MathOptInterface
+
+## Plots
+using Plots, Colors, GraphMakie, GraphMakie.NetworkLayout, CairoMakie
+
+## Others
 using TimerOutputs
 
 include("input-tables.jl")
