@@ -31,7 +31,7 @@ If you want to ask a question unsuitable for a bug report, start a discussion [h
 
 ## Contribution
 
-If you want to contribute to the package, please follow the guidelines in the [README.dev.md](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/README.dev.md) file.
+If you want to contribute to the package, please read our [CONTRIBUTING.md](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/CONTRIBUTING.md) and follow the guidelines in the [README.dev.md](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/README.dev.md) file.
 
 ## License
 
