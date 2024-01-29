@@ -7,7 +7,7 @@ energy systems.
 
 ## Before You Begin
 
-Before you can start contributing, please read our CONTRIBUTING.md.
+Before you can start contributing, please read our [CONTRIBUTING.md](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/CONTRIBUTING.md).
 
 Also make sure that you have installed the
 required software, and that it is properly configured. You only need to do this
