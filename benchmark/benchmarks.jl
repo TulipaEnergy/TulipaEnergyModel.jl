@@ -26,10 +26,15 @@ const OUTPUT_FOLDER_BM = mktempdir()
 # end
 # constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 
-# SUITE["direct_usage"]["create_model"] = @benchmarkable begin
-#     create_model($graph, $representative_periods, $constraints_partitions)
+# SUITE["direct_usage"]["construct_dataframes"] = @benchmarkable begin
+#     construct_dataframes($graph, $representative_periods, $constraints_partitions)
 # end
-# model = create_model(graph, representative_periods, constraints_partitions)
+# dataframes = construct_dataframes(graph, representative_periods, constraints_partitions)
+#
+# SUITE["direct_usage"]["create_model"] = @benchmarkable begin
+#     create_model($graph, $representative_periods, $dataframes)
+# end
+# model = create_model(graph, representative_periods, dataframes)
 
 # SUITE["direct_usage"]["solve_model"] = @benchmarkable begin
 #     solve_model($model)
