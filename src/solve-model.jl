@@ -156,5 +156,35 @@ function solve_model(
         flow = value.(model[:flow]),
         flows_investment = value.(model[:flows_investment]),
         storage_level = value.(model[:storage_level]),
+        duals = compute_dual_variables(model),
     )
+end
+
+"""
+    compute_dual_variables(model)
+
+Compute the dual variables for the given model.
+
+If the model does not have dual variables, this function fixes the discrete variables, optimizes the model, and then computes the dual variables.
+
+## Arguments
+- `model`: The model for which to compute the dual variables.
+
+## Returns
+A named tuple containing the dual variables of selected constraints.
+"""
+function compute_dual_variables(model)
+    try
+        if !has_duals(model)
+            fix_discrete_variables(model)
+            optimize!(model)
+        end
+
+        return (
+            hub_balance = dual.(model[:hub_balance]),
+            consumer_balance = dual.(model[:consumer_balance]),
+        )
+    catch
+        return nothing
+    end
 end
