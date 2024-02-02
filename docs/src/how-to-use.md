@@ -43,14 +43,14 @@ The input_folder should contain CSV files as described below. The output_folder 
 ## Input
 
 Currently, we only accept input from CSV files.
-There should be 7 files, each following the specification of input structures.
+There should be 8 files, each following the specification of input structures.
 You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples.
 
 ### CSV
 
 #### `assets-data.csv`
 
-This files includes the list of assets and the data associate with each of them.
+This file includes the list of assets and the data associated with each of them.
 
 Required columns:
 
@@ -65,8 +65,8 @@ Markdown.parse(out)
 
 The `Missing` data meaning depends on the parameter, for instance:
 
-- `investment_limit`: there is no investment limit
-- `initial_storage_level`: the initial storage level is free (between the storage level limits), meaning that the optimization problem decides the best starting point for the storage asset. In addition, the first and last time blocks in a representative period are linked to create continuity in the storage level.
+- `investment_limit`: There is no investment limit.
+- `initial_storage_level`: The initial storage level is free (between the storage level limits), meaning that the optimization problem decides the best starting point for the storage asset. In addition, the first and last time blocks in a representative period are linked to create continuity in the storage level.
 
 #### `flows-data.csv`
 
@@ -85,7 +85,7 @@ Markdown.parse(out)
 
 The `Missing` data meaning depends on the parameter, for instance:
 
-- `investment_limit`: there is no investment limit
+- `investment_limit`: There is no investment limit.
 
 #### `assets-profiles.csv`
 
@@ -104,7 +104,7 @@ Markdown.parse(out)
 
 #### `flows-profiles.csv`
 
-Similar to `assets-profiels.csv`, but for flows.
+Similar to `assets-profiles.csv`, but for flows.
 
 Required columns:
 
@@ -126,7 +126,7 @@ To specify the desired resolution, there are currently three options, based on t
 The column `partition` serves to specify the partitions in the specification given by the column `specification`.
 
 - `specification = uniform`: Set the resolution to a uniform amount, i.e., a time block is made of X time steps. The number X is defined in the column `partition`. The number of time steps in the representative period must be divisible by `X`.
-- `specification = explicit`: Set the resolution acording to a list of numbers separated by `;` on the `partition`. Each number the list is the number of time steps for that time block. For instance, `2;3;4` means that there are three time blocks, the first has 2 time steps, the second has 3 time steps, and the last has 4 time steps. The sum of the number of time steps must be equal to the total number of time steps in that representative period.
+- `specification = explicit`: Set the resolution according to a list of numbers separated by `;` on the `partition`. Each number in the list is the number of time steps for that time block. For instance, `2;3;4` means that there are three time blocks, the first has 2 time steps, the second has 3 time steps, and the last has 4 time steps. The sum of the number of time steps must be equal to the total number of time steps in that representative period.
 - `specification = math`: Similar to explicit, but using `+` and `x` to give the number of time steps. The value of `partition` is a sequence of elements of the form `NxT` separated by `+`. `NxT` means `N` time blocks of length `T`.
 
 The table below shows various results for different formats for a representative period with 12 time steps.
@@ -207,10 +207,10 @@ The fields of `EnergyProblem` are
 
 - `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
 - `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
-- `constraints_partitions`: Dictionaries that connects pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
+- `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
 - `model`: A JuMP model object. Initially `nothing`.
 - `solved`: A boolean indicating whether the `model` has been solved or not.
-- `objective_value`: After the model has been solved, this is the objective value at the solution.
+- `objective_value`: After the model has been solved, this is the objective value of the solution.
 - `termination_status`: After the model has been solved, this is the termination status.
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
@@ -233,13 +233,13 @@ See how to use the graph in the [graph tutorial](@ref graph-tutorial).
 
 This structure holds all the information of a given asset.
 These are stored inside the [Graph](@ref).
-Given a graph `graph` and an asset `a`, it can be access through `graph[a]`.
+Given a graph `graph`, an asset `a` can be accessed through `graph[a]`.
 
 ### GraphFlowData
 
 This structure holds all the information of a given flow.
 These are stored inside the [Graph](@ref).
-Given a graph `graph` and a flow `(u, v)`, it can be access through `graph[u, v]`.
+Given a graph `graph`, a flow `(u, v)` can be accessed through `graph[u, v]`.
 
 ### Partition
 
@@ -260,11 +260,11 @@ For instance, we could model the year into 3 days, by clustering all days of the
 Each one of these periods of time is called a representative period.
 They have been obtained by clustering through [TulipaClustering](https://github.com/TulipaEnergy/TulipaClustering.jl).
 
-A representative period was four fields:
+A representative period has four fields:
 
-- `base_periods`: indicates the periods of the full problem that map into this representative period, and the weight of the representative period in them.
-- `weight`: indicates how many representative periods is contained in that year; this is inferred automatically from `base_periods`.
-- `time_steps`: The number of time steps in that year.
+- `base_periods`: Indicates the periods of the full problem that map into this representative period, and the weight of the representative period in them.
+- `weight`: Indicates how many representative periods are contained in the full problem; this is inferred automatically from `base_periods`.
+- `time_steps`: The number of time steps in the representative period.
 - `resolution`: The duration in time of a time step.
 
 The number of time steps and resolution work together to define the coarseness of the period.
