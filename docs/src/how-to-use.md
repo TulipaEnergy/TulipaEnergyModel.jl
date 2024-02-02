@@ -264,7 +264,7 @@ A representative period has four fields:
 
 - `base_periods`: Indicates the periods of the full problem that map into this representative period, and the weight of the representative period in them.
 - `weight`: Indicates how many representative periods are contained in the full problem; this is inferred automatically from `base_periods`.
-- `time_steps`: The number of time steps in the full problem.
+- `time_steps`: The number of time steps in the representative period.
 - `resolution`: The duration in time of a time step.
 
 The number of time steps and resolution work together to define the coarseness of the period.
