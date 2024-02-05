@@ -3,7 +3,7 @@ export solve_model!, solve_model
 """
     solution = solve_model!(energy_problem[, optimizer; parameters])
 
-Solve the internal model of an energy_problem. The solution obtained by calling
+Solve the internal model of an `energy_problem`. The solution obtained by calling
 [`solve_model`](@ref) is returned.
 """
 function solve_model!(
