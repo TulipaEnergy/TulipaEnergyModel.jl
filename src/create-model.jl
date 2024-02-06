@@ -167,7 +167,7 @@ end
 """
     model = create_model(graph, representative_periods, dataframes)
 
-Create the energy model given the graph, representative_periods, and dictionary of dataframes (created by [`construct_dataframes`](@ref)).
+Create the energy model given the `graph`, `representative_periods`, and dictionary of `dataframes` (created by [`construct_dataframes`](@ref)).
 """
 function create_model(graph, representative_periods, dataframes; write_lp_file = false)
 
