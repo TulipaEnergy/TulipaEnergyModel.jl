@@ -32,6 +32,7 @@ function run_scenario(
     end
 
     show_log && show(to)
+    println()
 
     if log_file != ""
         open(log_file, "w") do io
