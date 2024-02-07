@@ -1,6 +1,13 @@
-export GraphAssetData, GraphFlowData, RepresentativePeriod, TimeBlock
+export GraphAssetData, GraphFlowData, RepresentativePeriod, BasePeriod, TimeBlock
 
 const TimeBlock = UnitRange{Int}
+
+"""
+Structure to hold the data of the base periods.
+"""
+struct BasePeriod
+    num_base_periods::TimeBlock
+end
 
 """
 Structure to hold the data of one representative period.
@@ -137,6 +144,7 @@ mutable struct EnergyProblem
     }
     representative_periods::Vector{RepresentativePeriod}
     constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int},Vector{TimeBlock}}}
+    base_periods::BasePeriod
     dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}
     solved::Bool
@@ -149,13 +157,14 @@ mutable struct EnergyProblem
     Minimal constructor. The `constraints_partitions` are computed from the `representative_periods`,
     and the other fields and nothing or set to default values.
     """
-    function EnergyProblem(graph, representative_periods)
+    function EnergyProblem(graph, representative_periods, base_periods)
         constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 
         return new(
             graph,
             representative_periods,
             constraints_partitions,
+            base_periods,
             Dict(),
             nothing,
             false,

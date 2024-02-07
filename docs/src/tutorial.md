@@ -84,7 +84,7 @@ using TulipaEnergyModel
 
 input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny
-graph, representative_periods = create_graph_and_representative_periods_from_csv_folder(input_dir)
+graph, representative_periods, base_periods = create_graph_and_representative_periods_from_csv_folder(input_dir)
 ```
 
 To create the model we also need a time partition for the constraints.

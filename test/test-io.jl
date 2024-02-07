@@ -31,7 +31,8 @@ end
 @testset "Graph structure" begin
     @testset "Graph structure is correct" begin
         dir = joinpath(INPUT_FOLDER, "Tiny")
-        graph, representative_periods = create_graph_and_representative_periods_from_csv_folder(dir)
+        graph, representative_periods, base_periods =
+            create_graph_and_representative_periods_from_csv_folder(dir)
 
         @test Graphs.nv(graph) == 6
         @test Graphs.ne(graph) == 5

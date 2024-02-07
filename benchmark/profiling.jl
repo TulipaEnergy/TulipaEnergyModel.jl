@@ -36,7 +36,7 @@ end
 
 #%%
 
-@time graph, representative_periods =
+@time graph, representative_periods, base_periods =
     create_graph_and_representative_periods_from_csv_folder(input_dir);
 @benchmark create_graph_and_representative_periods_from_csv_folder($input_dir)
 # @profview create_graph_and_representative_periods_from_csv_folder(input_dir);

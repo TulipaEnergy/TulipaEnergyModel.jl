@@ -14,13 +14,13 @@ the `EnergyProblem` structure.
 Set strict = true to error if assets are missing from partition data.
 """
 function create_energy_problem_from_csv_folder(input_folder::AbstractString; strict = false)
-    graph, representative_periods =
+    graph, representative_periods, base_periods =
         create_graph_and_representative_periods_from_csv_folder(input_folder; strict = strict)
-    return EnergyProblem(graph, representative_periods)
+    return EnergyProblem(graph, representative_periods, base_periods)
 end
 
 """
-    graph, representative_periods = create_graph_and_representative_periods_from_csv_folder(input_folder; strict = false)
+    graph, representative_periods, base_periods = create_graph_and_representative_periods_from_csv_folder(input_folder; strict = false)
 
 Returns the `graph` structure that holds all data, and the `representative_periods` array.
 Set strict = true to error if assets are missing from partition data.
@@ -34,6 +34,7 @@ The following files are expected to exist in the input folder:
   - `flows-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification. The profiles should be ordered by time step.
   - `flows-paritions.csv`: Following the [`TulipaEnergyModel.FlowPartitionData`](@ref) specification.
   - `rep-periods-data.csv`: Following the [`TulipaEnergyModel.RepPeriodData`](@ref) specification.
+  - `rep-periods-mapping.csv`: Following the [`TulipaEnergyModel.RepPeriodMapping`](@ref) specification.
 
 The returned structures are:
 
@@ -46,6 +47,9 @@ The returned structures are:
 
   - `representative_periods`: An array of
     [`TulipaEnergyModel.RepresentativePeriod`](@ref) ordered by their IDs.
+
+    - `base_periods`: Information of
+    [`TulipaEnergyModel.BasePeriod`](@ref).
 """
 function create_graph_and_representative_periods_from_csv_folder(
     input_folder::AbstractString;
@@ -93,6 +97,8 @@ function create_graph_and_representative_periods_from_csv_folder(
         RepresentativePeriod(weights[row.id], row.num_time_steps, row.resolution) for
         row in eachrow(rep_period_df)
     ]
+
+    base_periods = BasePeriod(1:length(rp_mapping_df.period))
 
     asset_data = [
         row.name => GraphAssetData(
@@ -169,7 +175,7 @@ function create_graph_and_representative_periods_from_csv_folder(
         graph[u, v].profiles[rp_id] = profile_data
     end
 
-    return graph, representative_periods
+    return graph, representative_periods, base_periods
 end
 
 """
