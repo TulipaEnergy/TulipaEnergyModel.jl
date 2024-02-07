@@ -104,6 +104,7 @@ function create_graph_and_representative_periods_from_csv_folder(
             row.capacity,
             row.initial_capacity,
             row.peak_demand,
+            row.storage_type,
             row.initial_storage_capacity,
             row.initial_storage_level,
             row.energy_to_power_ratio,

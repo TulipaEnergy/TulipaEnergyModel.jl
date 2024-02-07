@@ -3,7 +3,7 @@ Schema for the assets-data.csv file.
 """
 struct AssetData
     name::String                                  # Name of Asset (geographical?)
-    type::String                                  # Producer/Consumer - maybe an enum?
+    type::String                                  # Producer/Consumer/Storage/Conversion
     active::Bool                                  # Active or decomissioned
     investable::Bool                              # Whether able to invest
     investment_integer::Bool                      # Whether investment is integer or continuous
@@ -12,6 +12,7 @@ struct AssetData
     capacity::Float64                             # MW
     initial_capacity::Float64                     # MW
     peak_demand::Float64                          # MW
+    storage_type::Union{Missing,String}           # short (e.g., battery), long (e.g., seasonal), missing -> for non-storage assets
     initial_storage_capacity::Float64             # MWh
     initial_storage_level::Union{Missing,Float64} # MWh (Missing -> free initial level)
     energy_to_power_ratio::Float64                # Hours
