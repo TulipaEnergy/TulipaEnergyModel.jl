@@ -6,14 +6,14 @@ const TimeBlock = UnitRange{Int}
 Structure to hold the data of one representative period.
 """
 struct RepresentativePeriod
-    base_periods::Union{Nothing,Dict{Int,Float64}}  # which periods in the full problem formulation does this RP stand for
+    mapping::Union{Nothing,Dict{Int,Float64}}  # which periods in the full problem formulation does this RP stand for
     weight::Float64
     time_steps::TimeBlock
     resolution::Float64
 
-    function RepresentativePeriod(base_periods, num_time_steps, resolution)
-        weight = sum(values(base_periods))
-        return new(base_periods, weight, 1:num_time_steps, resolution)
+    function RepresentativePeriod(mapping, num_time_steps, resolution)
+        weight = sum(values(mapping))
+        return new(mapping, weight, 1:num_time_steps, resolution)
     end
 end
 
@@ -142,7 +142,6 @@ mutable struct EnergyProblem
     solved::Bool
     objective_value::Float64
     termination_status::JuMP.TerminationStatusCode
-    # solver_parameters # Part of #246
 
     """
         EnergyProblem(graph, representative_periods)
