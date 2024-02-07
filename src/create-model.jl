@@ -67,15 +67,16 @@ function add_expression_terms!(
     df_cons,
     df_flows,
     workspace,
-    representative_periods;
-    add_efficiency = true,
+    representative_periods,
+    graph;
+    use_highest_resolution = true,
 )
-    if add_efficiency
-        df_cons[!, :incoming_w_efficiency_term] .= AffExpr(0.0)
-        df_cons[!, :outgoing_w_efficiency_term] .= AffExpr(0.0)
+    if !use_highest_resolution
+        df_cons[!, :incoming_flow_lowest] .= AffExpr(0.0)
+        df_cons[!, :outgoing_flow_lowest] .= AffExpr(0.0)
     else
-        df_cons[!, :incoming_term] .= AffExpr(0.0)
-        df_cons[!, :outgoing_term] .= AffExpr(0.0)
+        df_cons[!, :incoming_flow_highest] .= AffExpr(0.0)
+        df_cons[!, :outgoing_flow_highest] .= AffExpr(0.0)
     end
 
     grouped_cons = groupby(df_cons, [:rp, :asset])
@@ -93,21 +94,23 @@ function add_expression_terms!(
         # Store the corresponding flow in the workspace
         for row in eachrow(grouped_flows[(; rp, to)])
             for t ∈ row.time_block
-                if row.efficiency != 0 || !add_efficiency
-                    add_to_expression!(
-                        workspace[t],
-                        row.flow,
-                        (resolution * (add_efficiency ? row.efficiency : 1.0)),
-                    )
-                end
+                # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
+                # And when you want the highest resolution (which is asset type-agnostic)
+                selected_assets = ["hub", "consumer"]
+                flag = graph[row.to].type in selected_assets || use_highest_resolution
+                add_to_expression!(
+                    workspace[t],
+                    row.flow,
+                    (resolution * (flag ? 1.0 : row.efficiency)),
+                )
             end
         end
         # Sum the corresponding flows from the workspace
         for row in eachrow(sub_df)
-            if add_efficiency
-                row.incoming_w_efficiency_term = sum(@view workspace[row.time_block])
+            if !use_highest_resolution
+                row.incoming_flow_lowest = sum(@view workspace[row.time_block])
             else
-                row.incoming_term = sum(@view workspace[row.time_block])
+                row.incoming_flow_highest = sum(@view workspace[row.time_block])
             end
         end
     end
@@ -125,21 +128,23 @@ function add_expression_terms!(
         # Store the corresponding flow in the workspace
         for row in eachrow(grouped_flows[(; rp, from)])
             for t ∈ row.time_block
-                if row.efficiency != 0 || !add_efficiency
-                    add_to_expression!(
-                        workspace[t],
-                        row.flow,
-                        (resolution / (add_efficiency ? row.efficiency : 1.0)),
-                    )
-                end
+                # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
+                # And when you want the highest resolution (which is asset type-agnostic)
+                selected_assets = ["hub", "consumer", "producer"]
+                flag = graph[row.from].type in selected_assets || use_highest_resolution
+                add_to_expression!(
+                    workspace[t],
+                    row.flow,
+                    (resolution / (flag ? 1.0 : row.efficiency)),
+                )
             end
         end
         # Sum the corresponding flows from the workspace
         for row in eachrow(sub_df)
-            if add_efficiency
-                row.outgoing_w_efficiency_term = sum(@view workspace[row.time_block])
+            if !use_highest_resolution
+                row.outgoing_flow_lowest = sum(@view workspace[row.time_block])
             else
-                row.outgoing_term = sum(@view workspace[row.time_block])
+                row.outgoing_flow_highest = sum(@view workspace[row.time_block])
             end
         end
     end
@@ -260,43 +265,30 @@ function create_model(graph, representative_periods, dataframes; write_lp_file =
         df_constraints_lowest,
         df_flows,
         expression_workspace,
-        representative_periods;
-        add_efficiency = false,
-    )
-    add_expression_terms!(
-        df_constraints_lowest,
-        df_flows,
-        expression_workspace,
-        representative_periods;
-        add_efficiency = true,
+        representative_periods,
+        graph;
+        use_highest_resolution = false,
     )
     add_expression_terms!(
         df_constraints_highest,
         df_flows,
         expression_workspace,
-        representative_periods;
-        add_efficiency = false,
+        representative_periods,
+        graph;
+        use_highest_resolution = true,
     )
     incoming_flow_lowest_resolution =
-        model[:incoming_flow_lowest_resolution] = df_constraints_lowest.incoming_term
+        model[:incoming_flow_lowest_resolution] = df_constraints_lowest.incoming_flow_lowest
     outgoing_flow_lowest_resolution =
-        model[:outgoing_flow_lowest_resolution] = df_constraints_lowest.outgoing_term
-    incoming_flow_lowest_resolution_w_efficiency =
-        model[:incoming_flow_lowest_resolution_w_efficiency] =
-            df_constraints_lowest.incoming_w_efficiency_term
-    outgoing_flow_lowest_resolution_w_efficiency =
-        model[:outgoing_flow_lowest_resolution_w_efficiency] =
-            df_constraints_lowest.outgoing_w_efficiency_term
+        model[:outgoing_flow_lowest_resolution] = df_constraints_lowest.outgoing_flow_lowest
     incoming_flow_highest_resolution =
-        model[:incoming_flow_highest_resolution] = df_constraints_highest.incoming_term
+        model[:incoming_flow_highest_resolution] = df_constraints_highest.incoming_flow_highest
     outgoing_flow_highest_resolution =
-        model[:outgoing_flow_highest_resolution] = df_constraints_highest.outgoing_term
+        model[:outgoing_flow_highest_resolution] = df_constraints_highest.outgoing_flow_highest
     # Below, we drop zero coefficients, but probably we don't have any
     # (if the implementation is correct)
     drop_zeros!.(incoming_flow_lowest_resolution)
     drop_zeros!.(outgoing_flow_lowest_resolution)
-    drop_zeros!.(incoming_flow_lowest_resolution_w_efficiency)
-    drop_zeros!.(outgoing_flow_lowest_resolution_w_efficiency)
     drop_zeros!.(incoming_flow_highest_resolution)
     drop_zeros!.(outgoing_flow_highest_resolution)
 
@@ -373,8 +365,8 @@ function create_model(graph, representative_periods, dataframes; write_lp_file =
                     graph[a].initial_storage_capacity +
                     (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
                 ) +
-                incoming_flow_lowest_resolution_w_efficiency[row.cons_index] -
-                outgoing_flow_lowest_resolution_w_efficiency[row.cons_index],
+                incoming_flow_lowest_resolution[row.cons_index] -
+                outgoing_flow_lowest_resolution[row.cons_index],
                 base_name = "storage_balance[$a,$rp,$(row.time_block)]"
             ) for (k, row) ∈ enumerate(eachrow(sub_df))
         ]
@@ -396,8 +388,8 @@ function create_model(graph, representative_periods, dataframes; write_lp_file =
     model[:conversion_balance] = [
         @constraint(
             model,
-            incoming_flow_lowest_resolution_w_efficiency[row.index] ==
-            outgoing_flow_lowest_resolution_w_efficiency[row.index],
+            incoming_flow_lowest_resolution[row.index] ==
+            outgoing_flow_lowest_resolution[row.index],
             base_name = "conversion_balance[$(row.asset),$(row.rp),$(row.time_block)]"
         ) for row in eachrow(df)
     ]
