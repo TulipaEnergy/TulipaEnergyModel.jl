@@ -1,8 +1,8 @@
-,,{producer;consumer},{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,MW,{empty;short;long},MWh,h
-iid,name,type,active,investable,investment_integer,variable_cost,investment_cost,investment_limit,capacity,initial_capacity,peak_demand,storage_type,initial_storage_capacity,energy_to_power_ratio
-1,ocgt,producer,true,t,true,0.07,25,,100,0,t,,0,0
-2,ccgt,producer,true,true,true,0.05,40,,400,0,0,,0,0
-3,wind,producer,true,true,true,0.001,70,,50,0,0,,0,0
-4,solar,producer,true,true,true,0,50,,10,0,0,,0,0
-5,ens,producer,true,false,false,0.18,0,,0,0,0,,0,0
-6,demand,consumer,true,false,false,0,0,,0,0,1115,,0,0
+,,{producer;consumer},{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,MW,{empty;short;long},MWh,h,number_of_base_periods
+iid,name,type,active,investable,investment_integer,variable_cost,investment_cost,investment_limit,capacity,initial_capacity,peak_demand,storage_type,initial_storage_capacity,energy_to_power_ratio,moving_window_long_storage
+1,ocgt,producer,true,t,true,0.07,25,,100,0,t,,0,0,
+2,ccgt,producer,true,true,true,0.05,40,,400,0,0,,0,0,
+3,wind,producer,true,true,true,0.001,70,,50,0,0,,0,0,
+4,solar,producer,true,true,true,0,50,,10,0,0,,0,0,
+5,ens,producer,true,false,false,0.18,0,,0,0,0,,0,0,
+6,demand,consumer,true,false,false,0,0,,0,0,1115,,0,0,

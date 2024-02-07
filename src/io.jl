@@ -114,6 +114,7 @@ function create_graph_and_representative_periods_from_csv_folder(
             row.initial_storage_capacity,
             row.initial_storage_level,
             row.energy_to_power_ratio,
+            row.moving_window_long_storage,
         ) for row in eachrow(assets_data_df)
     ]
 

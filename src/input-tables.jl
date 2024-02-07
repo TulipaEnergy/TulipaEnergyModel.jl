@@ -16,6 +16,7 @@ struct AssetData
     initial_storage_capacity::Float64             # MWh
     initial_storage_level::Union{Missing,Float64} # MWh (Missing -> free initial level)
     energy_to_power_ratio::Float64                # Hours
+    moving_window_long_storage::Union{Missing,Int}# Hours (Missing -> no moving window)
 end
 
 """
