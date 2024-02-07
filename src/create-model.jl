@@ -211,14 +211,16 @@ function create_model(graph, representative_periods, dataframes; write_lp_file =
     )
     filter_flows(key, value) = filter(f -> getfield(graph[f...], key) == value, F)
 
-    Ac = filter_assets(:type, "consumer")
-    Ap = filter_assets(:type, "producer")
-    Ai = filter_assets(:investable, true)
-    As = filter_assets(:type, "storage")
-    Ah = filter_assets(:type, "hub")
+    Ac  = filter_assets(:type, "consumer")
+    Ap  = filter_assets(:type, "producer")
+    As  = filter_assets(:type, "storage")
+    Ah  = filter_assets(:type, "hub")
     Acv = filter_assets(:type, "conversion")
-    Fi = filter_flows(:investable, true)
-    Ft = filter_flows(:is_transport, true)
+    Ft  = filter_flows(:is_transport, true)
+
+    # Create subsets of assets by investable
+    Ai = intersect(union(Ac, Ap, As, Ah, Acv), filter_assets(:investable, true))
+    Fi = intersect(Ft, filter_flows(:investable, true))
 
     # Create subsets of storage assets by storage type
     As_short = intersect(As, filter_assets(:storage_type, "short"))
