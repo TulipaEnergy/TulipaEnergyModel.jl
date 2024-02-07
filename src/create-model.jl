@@ -72,11 +72,11 @@ function add_expression_terms!(
     use_highest_resolution = true,
 )
     if !use_highest_resolution
-        df_cons[!, :incoming_flow] .= AffExpr(0.0)
-        df_cons[!, :outgoing_flow] .= AffExpr(0.0)
+        df_cons[!, :incoming_flow_lowest] .= AffExpr(0.0)
+        df_cons[!, :outgoing_flow_lowest] .= AffExpr(0.0)
     else
-        df_cons[!, :incoming_term_highest] .= AffExpr(0.0)
-        df_cons[!, :outgoing_term_highest] .= AffExpr(0.0)
+        df_cons[!, :incoming_flow_highest] .= AffExpr(0.0)
+        df_cons[!, :outgoing_flow_highest] .= AffExpr(0.0)
     end
 
     grouped_cons = groupby(df_cons, [:rp, :asset])
@@ -96,10 +96,8 @@ function add_expression_terms!(
             for t ∈ row.time_block
                 # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
                 # And when you want the highest resolution (which is asset type-agnostic)
-                flag =
-                    graph[row.to].type == "hub" ||
-                    graph[row.to].type == "consumer" ||
-                    use_highest_resolution
+                selected_assets = ["hub", "consumer"]
+                flag = graph[row.to].type in selected_assets || use_highest_resolution
                 add_to_expression!(
                     workspace[t],
                     row.flow,
@@ -110,9 +108,9 @@ function add_expression_terms!(
         # Sum the corresponding flows from the workspace
         for row in eachrow(sub_df)
             if !use_highest_resolution
-                row.incoming_flow = sum(@view workspace[row.time_block])
+                row.incoming_flow_lowest = sum(@view workspace[row.time_block])
             else
-                row.incoming_term_highest = sum(@view workspace[row.time_block])
+                row.incoming_flow_highest = sum(@view workspace[row.time_block])
             end
         end
     end
@@ -132,11 +130,8 @@ function add_expression_terms!(
             for t ∈ row.time_block
                 # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
                 # And when you want the highest resolution (which is asset type-agnostic)
-                flag =
-                    graph[row.from].type == "hub" ||
-                    graph[row.from].type == "consumer" ||
-                    graph[row.from].type == "producer" ||
-                    use_highest_resolution
+                selected_assets = ["hub", "consumer", "producer"]
+                flag = graph[row.from].type in selected_assets || use_highest_resolution
                 add_to_expression!(
                     workspace[t],
                     row.flow,
@@ -147,9 +142,9 @@ function add_expression_terms!(
         # Sum the corresponding flows from the workspace
         for row in eachrow(sub_df)
             if !use_highest_resolution
-                row.outgoing_flow = sum(@view workspace[row.time_block])
+                row.outgoing_flow_lowest = sum(@view workspace[row.time_block])
             else
-                row.outgoing_term_highest = sum(@view workspace[row.time_block])
+                row.outgoing_flow_highest = sum(@view workspace[row.time_block])
             end
         end
     end
@@ -283,13 +278,13 @@ function create_model(graph, representative_periods, dataframes; write_lp_file =
         use_highest_resolution = true,
     )
     incoming_flow_lowest_resolution =
-        model[:incoming_flow_lowest_resolution] = df_constraints_lowest.incoming_flow
+        model[:incoming_flow_lowest_resolution] = df_constraints_lowest.incoming_flow_lowest
     outgoing_flow_lowest_resolution =
-        model[:outgoing_flow_lowest_resolution] = df_constraints_lowest.outgoing_flow
+        model[:outgoing_flow_lowest_resolution] = df_constraints_lowest.outgoing_flow_lowest
     incoming_flow_highest_resolution =
-        model[:incoming_flow_highest_resolution] = df_constraints_highest.incoming_term_highest
+        model[:incoming_flow_highest_resolution] = df_constraints_highest.incoming_flow_highest
     outgoing_flow_highest_resolution =
-        model[:outgoing_flow_highest_resolution] = df_constraints_highest.outgoing_term_highest
+        model[:outgoing_flow_highest_resolution] = df_constraints_highest.outgoing_flow_highest
     # Below, we drop zero coefficients, but probably we don't have any
     # (if the implementation is correct)
     drop_zeros!.(incoming_flow_lowest_resolution)
