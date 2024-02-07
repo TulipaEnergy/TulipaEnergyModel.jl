@@ -105,7 +105,7 @@ dataframes = construct_dataframes(graph, representative_periods, constraints_par
 Now we can compute the model.
 
 ```@example manual
-model = create_model(graph, representative_periods, dataframes)
+model = create_model(graph, representative_periods, dataframes, base_periods)
 ```
 
 Finally, we can compute the solution.
