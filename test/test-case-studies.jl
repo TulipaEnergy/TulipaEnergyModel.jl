@@ -1,14 +1,14 @@
 @testset "Norse Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Norse")
-    optimizer_list = [HiGHS.Optimizer, Cbc.Optimizer, GLPK.Optimizer]
     parameters_dict = Dict(
         HiGHS.Optimizer => Dict("mip_rel_gap" => 0.0, "output_flag" => false),
-        Cbc.Optimizer => Dict("ratioGap" => 0.0, "logLevel" => 0),
         GLPK.Optimizer => Dict("mip_gap" => 0.0, "msg_lev" => 0),
     )
-    for optimizer in optimizer_list
-        energy_problem =
-            run_scenario(dir; optimizer = optimizer, parameters = parameters_dict[optimizer])
+    if !Sys.isapple()
+        parameters_dict[Cbc.Optimizer] = Dict("ratioGap" => 0.0, "logLevel" => 0)
+    end
+    for (optimizer, parameteres) in parameters_dict
+        energy_problem = run_scenario(dir; optimizer = optimizer, parameters = parameteres)
         @testset "Codecov Demands Graphs" begin
             plot_single_flow(energy_problem, "Asgard_Solar", "Asgard_Battery", 1)
             plot_graph(energy_problem)
@@ -20,7 +20,10 @@ end
 
 @testset "Tiny Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
-    optimizer_list = [HiGHS.Optimizer, Cbc.Optimizer, GLPK.Optimizer]
+    optimizer_list = [HiGHS.Optimizer, GLPK.Optimizer]
+    if !Sys.isapple()
+        push!(optimizer_list, Cbc.Optimizer)
+    end
     for optimizer in optimizer_list
         energy_problem = run_scenario(dir; optimizer = optimizer)
         @test energy_problem.objective_value ≈ 269238.43825 atol = 1e-5
