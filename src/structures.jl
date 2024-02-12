@@ -37,6 +37,7 @@ mutable struct GraphAssetData
     initial_capacity::Float64
     peak_demand::Float64
     storage_type::Union{Missing,String}
+    storage_inflows::Union{Missing,Float64}
     initial_storage_capacity::Float64
     initial_storage_level::Union{Missing,Float64}
     energy_to_power_ratio::Float64
@@ -58,6 +59,7 @@ mutable struct GraphAssetData
         initial_capacity,
         peak_demand,
         storage_type,
+        storage_inflows,
         initial_storage_capacity,
         initial_storage_level,
         energy_to_power_ratio,
@@ -75,6 +77,7 @@ mutable struct GraphAssetData
             initial_capacity,
             peak_demand,
             storage_type,
+            storage_inflows,
             initial_storage_capacity,
             initial_storage_level,
             energy_to_power_ratio,

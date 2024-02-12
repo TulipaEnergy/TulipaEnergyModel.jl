@@ -13,6 +13,7 @@ struct AssetData
     initial_capacity::Float64                     # MW
     peak_demand::Float64                          # MW
     storage_type::Union{Missing,String}           # short (e.g., battery), long (e.g., seasonal), missing -> for non-storage assets
+    storage_inflows::Union{Missing,Float64}       # MWh/year
     initial_storage_capacity::Float64             # MWh
     initial_storage_level::Union{Missing,Float64} # MWh (Missing -> free initial level)
     energy_to_power_ratio::Float64                # Hours
