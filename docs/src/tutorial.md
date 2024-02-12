@@ -84,7 +84,7 @@ using TulipaEnergyModel
 
 input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny
-graph, representative_periods = create_graph_and_representative_periods_from_csv_folder(input_dir)
+graph, representative_periods, base_periods = create_graph_and_representative_periods_from_csv_folder(input_dir)
 ```
 
 To create the model we also need a time partition for the constraints.
@@ -105,7 +105,7 @@ dataframes = construct_dataframes(graph, representative_periods, constraints_par
 Now we can compute the model.
 
 ```@example manual
-model = create_model(graph, representative_periods, dataframes)
+model = create_model(graph, representative_periods, dataframes, base_periods)
 ```
 
 Finally, we can compute the solution.

@@ -159,10 +159,16 @@ function create_model!(energy_problem; kwargs...)
     graph = energy_problem.graph
     representative_periods = energy_problem.representative_periods
     constraints_partitions = energy_problem.constraints_partitions
+    base_periods = energy_problem.base_periods
     energy_problem.dataframes =
         construct_dataframes(graph, representative_periods, constraints_partitions)
-    energy_problem.model =
-        create_model(graph, representative_periods, energy_problem.dataframes; kwargs...)
+    energy_problem.model = create_model(
+        graph,
+        representative_periods,
+        energy_problem.dataframes,
+        base_periods;
+        kwargs...,
+    )
     energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
     energy_problem.solved = false
     energy_problem.objective_value = NaN
@@ -170,11 +176,17 @@ function create_model!(energy_problem; kwargs...)
 end
 
 """
-    model = create_model(graph, representative_periods, dataframes)
+    model = create_model(graph, representative_periods, dataframes, base_periods; write_lp_file = false)
 
-Create the energy model given the `graph`, `representative_periods`, and dictionary of `dataframes` (created by [`construct_dataframes`](@ref)).
+Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), and base_periods.
 """
-function create_model(graph, representative_periods, dataframes; write_lp_file = false)
+function create_model(
+    graph,
+    representative_periods,
+    dataframes,
+    base_periods;
+    write_lp_file = false,
+)
 
     ## Helper functions
     # Computes the duration of the `block` and multiply by the resolution of the
@@ -203,20 +215,29 @@ function create_model(graph, representative_periods, dataframes; write_lp_file =
     end
 
     ## Sets unpacking
+    P = 1:base_periods.num_base_periods
     A = labels(graph) |> collect
     F = edge_labels(graph) |> collect
-    filter_assets(key, value) = filter(a -> getfield(graph[a], key) == value, A)
+    filter_assets(key, value) =
+        filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == value, A)
     filter_flows(key, value) = filter(f -> getfield(graph[f...], key) == value, F)
 
-    Ac = filter_assets(:type, "consumer")
-    Ap = filter_assets(:type, "producer")
-    Ai = filter_assets(:investable, true)
-    As = filter_assets(:type, "storage")
-    Ah = filter_assets(:type, "hub")
+    Ac  = filter_assets(:type, "consumer")
+    Ap  = filter_assets(:type, "producer")
+    As  = filter_assets(:type, "storage")
+    Ah  = filter_assets(:type, "hub")
     Acv = filter_assets(:type, "conversion")
-    Fi = filter_flows(:investable, true)
-    Ft = filter_flows(:is_transport, true)
+    Ft  = filter_flows(:is_transport, true)
 
+    # Create subsets of assets by investable
+    Ai = filter_assets(:investable, true)
+    Fi = filter_flows(:investable, true)
+
+    # Create subsets of storage assets by storage type
+    As_long  = intersect(As, filter_assets(:storage_type, "long"))
+    As_short = setdiff(As, As_long) # if not long then it is short by default
+
+    # Maximum time step
     Tmax = maximum(last(rp.time_steps) for rp in representative_periods)
     expression_workspace = Vector{AffExpr}(undef, Tmax)
 

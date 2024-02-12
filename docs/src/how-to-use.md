@@ -262,8 +262,8 @@ They have been obtained by clustering through [TulipaClustering](https://github.
 
 A representative period has four fields:
 
-- `base_periods`: Indicates the periods of the full problem that map into this representative period, and the weight of the representative period in them.
-- `weight`: Indicates how many representative periods are contained in the full problem; this is inferred automatically from `base_periods`.
+- `mapping`: Indicates the periods of the full problem that map into this representative period, and the weight of the representative period in them.
+- `weight`: Indicates how many representative periods are contained in the full problem; this is inferred automatically from `mapping`.
 - `time_steps`: The number of time steps in the representative period.
 - `resolution`: The duration in time of a time step.
 

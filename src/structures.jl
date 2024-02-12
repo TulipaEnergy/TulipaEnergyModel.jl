@@ -1,19 +1,26 @@
-export GraphAssetData, GraphFlowData, RepresentativePeriod, TimeBlock
+export GraphAssetData, GraphFlowData, RepresentativePeriod, BasePeriod, TimeBlock
 
 const TimeBlock = UnitRange{Int}
+
+"""
+Structure to hold the data of the base periods.
+"""
+struct BasePeriod
+    num_base_periods::Int64
+end
 
 """
 Structure to hold the data of one representative period.
 """
 struct RepresentativePeriod
-    base_periods::Union{Nothing,Dict{Int,Float64}}  # which periods in the full problem formulation does this RP stand for
+    mapping::Union{Nothing,Dict{Int,Float64}}  # which periods in the full problem formulation does this RP stand for
     weight::Float64
     time_steps::TimeBlock
     resolution::Float64
 
-    function RepresentativePeriod(base_periods, num_time_steps, resolution)
-        weight = sum(values(base_periods))
-        return new(base_periods, weight, 1:num_time_steps, resolution)
+    function RepresentativePeriod(mapping, num_time_steps, resolution)
+        weight = sum(values(mapping))
+        return new(mapping, weight, 1:num_time_steps, resolution)
     end
 end
 
@@ -29,9 +36,12 @@ mutable struct GraphAssetData
     capacity::Float64
     initial_capacity::Float64
     peak_demand::Float64
+    storage_type::Union{Missing,String}
+    storage_inflows::Union{Missing,Float64}
     initial_storage_capacity::Float64
     initial_storage_level::Union{Missing,Float64}
     energy_to_power_ratio::Float64
+    moving_window_long_storage::Union{Missing,Int}
     profiles::Dict{Int,Vector{Float64}}
     partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
@@ -48,9 +58,12 @@ mutable struct GraphAssetData
         capacity,
         initial_capacity,
         peak_demand,
+        storage_type,
+        storage_inflows,
         initial_storage_capacity,
         initial_storage_level,
         energy_to_power_ratio,
+        moving_window_long_storage,
     )
         profiles = Dict{Int,Vector{Float64}}()
         partitions = Dict{Int,Vector{TimeBlock}}()
@@ -63,9 +76,12 @@ mutable struct GraphAssetData
             capacity,
             initial_capacity,
             peak_demand,
+            storage_type,
+            storage_inflows,
             initial_storage_capacity,
             initial_storage_level,
             energy_to_power_ratio,
+            moving_window_long_storage,
             profiles,
             partitions,
             -1,
@@ -134,12 +150,12 @@ mutable struct EnergyProblem
     }
     representative_periods::Vector{RepresentativePeriod}
     constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int},Vector{TimeBlock}}}
+    base_periods::BasePeriod
     dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}
     solved::Bool
     objective_value::Float64
     termination_status::JuMP.TerminationStatusCode
-    # solver_parameters # Part of #246
 
     """
         EnergyProblem(graph, representative_periods)
@@ -147,13 +163,14 @@ mutable struct EnergyProblem
     Minimal constructor. The `constraints_partitions` are computed from the `representative_periods`,
     and the other fields and nothing or set to default values.
     """
-    function EnergyProblem(graph, representative_periods)
+    function EnergyProblem(graph, representative_periods, base_periods)
         constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 
         return new(
             graph,
             representative_periods,
             constraints_partitions,
+            base_periods,
             Dict(),
             nothing,
             false,

@@ -36,7 +36,7 @@ end
 
 #%%
 
-@time graph, representative_periods =
+@time graph, representative_periods, base_periods =
     create_graph_and_representative_periods_from_csv_folder(input_dir);
 @benchmark create_graph_and_representative_periods_from_csv_folder($input_dir)
 # @profview create_graph_and_representative_periods_from_csv_folder(input_dir);
@@ -55,6 +55,6 @@ end
 
 #%%
 
-@time model = create_model(graph, representative_periods, dataframes);
-@benchmark create_model($graph, $representative_periods, $dataframes)
-# @profview create_model(graph, representative_periods, dataframes);
+@time model = create_model(graph, representative_periods, dataframes, base_periods);
+@benchmark create_model($graph, $representative_periods, $dataframes, $base_periods)
+# @profview create_model(graph, representative_periods, dataframes, base_periods);
