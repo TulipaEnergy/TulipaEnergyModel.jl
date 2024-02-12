@@ -6,7 +6,7 @@ const TimeBlock = UnitRange{Int}
 Structure to hold the data of the base periods.
 """
 struct BasePeriod
-    num_base_periods::TimeBlock
+    num_base_periods::Int64
 end
 
 """

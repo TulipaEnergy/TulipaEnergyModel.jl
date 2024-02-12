@@ -48,7 +48,7 @@ The returned structures are:
   - `representative_periods`: An array of
     [`TulipaEnergyModel.RepresentativePeriod`](@ref) ordered by their IDs.
 
-    - `base_periods`: Information of
+  - `base_periods`: Information of
     [`TulipaEnergyModel.BasePeriod`](@ref).
 """
 function create_graph_and_representative_periods_from_csv_folder(
@@ -98,7 +98,7 @@ function create_graph_and_representative_periods_from_csv_folder(
         row in eachrow(rep_period_df)
     ]
 
-    base_periods = BasePeriod(1:length(rp_mapping_df.period))
+    base_periods = BasePeriod(length(rp_mapping_df.period))
 
     asset_data = [
         row.name => GraphAssetData(
