@@ -215,13 +215,11 @@ function create_model(
     end
 
     ## Sets unpacking
-    P = base_periods.num_base_periods
+    P = 1:base_periods.num_base_periods
     A = labels(graph) |> collect
     F = edge_labels(graph) |> collect
-    filter_assets(key, value) = filter(
-        a -> getfield(graph[a], key) === missing ? false : getfield(graph[a], key) == value,
-        A,
-    )
+    filter_assets(key, value) =
+        filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == value, A)
     filter_flows(key, value) = filter(f -> getfield(graph[f...], key) == value, F)
 
     Ac  = filter_assets(:type, "consumer")
@@ -236,14 +234,8 @@ function create_model(
     Fi = intersect(Ft, filter_flows(:investable, true))
 
     # Create subsets of storage assets by storage type
-    As_short = intersect(As, filter_assets(:storage_type, "short"))
     As_long  = intersect(As, filter_assets(:storage_type, "long"))
-
-    # Check if all assets in As are in As_short and As_long, if not assign the missing ones to short by default
-    all_storage_assets_in_short_and_long = all(a -> a ∈ union(As_short, As_long), As)
-    if !all_storage_assets_in_short_and_long
-        As_short = union(As_short, setdiff(As, union(As_short, As_long)))
-    end
+    As_short = setdiff(As, As_long) # if not long then it is short by default
 
     # Maximum time step
     Tmax = maximum(last(rp.time_steps) for rp in representative_periods)
