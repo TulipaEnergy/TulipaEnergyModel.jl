@@ -230,8 +230,8 @@ function create_model(
     Ft  = filter_flows(:is_transport, true)
 
     # Create subsets of assets by investable
-    Ai = intersect(union(Ac, Ap, As, Ah, Acv), filter_assets(:investable, true))
-    Fi = intersect(Ft, filter_flows(:investable, true))
+    Ai = filter_assets(:investable, true)
+    Fi = filter_flows(:investable, true)
 
     # Create subsets of storage assets by storage type
     As_long  = intersect(As, filter_assets(:storage_type, "long"))
