@@ -1,4 +1,4 @@
-export GraphAssetData, GraphFlowData, RepresentativePeriod, BasePeriod, TimeBlock
+export GraphAssetData, GraphFlowData, EnergyProblem, RepresentativePeriod, BasePeriod, TimeBlock
 
 const TimeBlock = UnitRange{Int}
 
