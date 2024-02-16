@@ -631,7 +631,8 @@ function create_model(
             model,
             storage_level[row.index] ≤
             graph[row.asset].initial_storage_capacity +
-            (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
+            (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0),
+            base_name = "max_storage_level_limit[$(row.asset),$(row.rp),$(row.time_block)]"
         ) for row ∈ eachrow(dataframes[:lowest_storage_balance])
     ]
 
