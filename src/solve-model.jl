@@ -37,7 +37,7 @@ function solve_model!(
         end
     end
 
-    for row in eachrow(energy_problem.dataframes[:storage_level])
+    for row in eachrow(energy_problem.dataframes[:lowest_storage_balance])
         a, rp, time_block, value = row.asset, row.rp, row.time_block, row.solution
         graph[a].storage_level[(rp, time_block)] = value
     end
@@ -76,7 +76,7 @@ function solve_model!(dataframes, model, args...; kwargs...)
     end
 
     dataframes[:flows].solution = solution.flow
-    dataframes[:storage_level].solution = solution.storage_level
+    dataframes[:lowest_storage_balance].solution = solution.storage_level
 
     return solution
 end

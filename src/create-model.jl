@@ -246,11 +246,8 @@ function create_model(
 
     # Unpacking dataframes
     df_flows = dataframes[:flows]
-    df_constraints_lowest = dataframes[:cons_lowest]
-    df_constraints_highest = dataframes[:cons_highest]
-    df_storage_level = dataframes[:storage_level]
 
-    df_storage_level_grouped = groupby(df_storage_level, [:asset, :rp])
+    df_storage_level_grouped = groupby(dataframes[:lowest_storage_balance], [:asset, :rp])
 
     ## Model
     model = Model()
@@ -268,7 +265,7 @@ function create_model(
     @variable(model, 0 ≤ flows_investment[Fi])
     storage_level =
         model[:storage_level] = [
-            @variable(model, base_name = "storage_level[$(row.asset),$(row.rp),$(row.time_block)]") for row in eachrow(df_storage_level)
+            @variable(model, base_name = "storage_level[$(row.asset),$(row.rp),$(row.time_block)]") for row in eachrow(dataframes[:lowest_storage_balance])
         ]
 
     ### Integer Investment Variables
@@ -286,35 +283,77 @@ function create_model(
 
     # Creating the incoming and outgoing flow expressions
     add_expression_terms!(
-        df_constraints_lowest,
+        dataframes[:lowest],
         df_flows,
         expression_workspace,
         representative_periods,
         graph;
         use_highest_resolution = false,
+        multiply_by_duration = true,
     )
     add_expression_terms!(
-        df_constraints_highest,
+        dataframes[:lowest_storage_balance],
+        df_flows,
+        expression_workspace,
+        representative_periods,
+        graph;
+        use_highest_resolution = false,
+        multiply_by_duration = true,
+    )
+    add_expression_terms!(
+        dataframes[:highest_in_out],
         df_flows,
         expression_workspace,
         representative_periods,
         graph;
         use_highest_resolution = true,
+        multiply_by_duration = false,
     )
-    incoming_flow_lowest_resolution =
-        model[:incoming_flow_lowest_resolution] = df_constraints_lowest.incoming_flow_lowest
-    outgoing_flow_lowest_resolution =
-        model[:outgoing_flow_lowest_resolution] = df_constraints_lowest.outgoing_flow_lowest
-    incoming_flow_highest_resolution =
-        model[:incoming_flow_highest_resolution] = df_constraints_highest.incoming_flow_highest
-    outgoing_flow_highest_resolution =
-        model[:outgoing_flow_highest_resolution] = df_constraints_highest.outgoing_flow_highest
+    add_expression_terms!(
+        dataframes[:highest_in],
+        df_flows,
+        expression_workspace,
+        representative_periods,
+        graph;
+        use_highest_resolution = true,
+        multiply_by_duration = false,
+    )
+    add_expression_terms!(
+        dataframes[:highest_out],
+        df_flows,
+        expression_workspace,
+        representative_periods,
+        graph;
+        use_highest_resolution = true,
+        multiply_by_duration = false,
+    )
+    # incoming_flow_lowest_resolution =
+    #     model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow_lowest
+    # outgoing_flow_lowest_resolution =
+    #     model[:outgoing_flow_lowest_resolution] = dataframes[:lowest].outgoing_flow_lowest
+    incoming_flow_lowest_storage_resolution =
+        model[:incoming_flow_lowest_storage_resolution] =
+            dataframes[:lowest_storage_balance].incoming_flow_lowest
+    outgoing_flow_lowest_storage_resolution =
+        model[:outgoing_flow_lowest_storage_resolution] =
+            dataframes[:lowest_storage_balance].outgoing_flow_lowest
+    incoming_flow_highest_in_out_resolution =
+        model[:incoming_flow_highest_in_out_resolution] =
+            dataframes[:highest_in_out].incoming_flow_highest
+    outgoing_flow_highest_in_out_resolution =
+        model[:outgoing_flow_highest_in_out_resolution] =
+            dataframes[:highest_in_out].outgoing_flow_highest
+    incoming_flow_highest_in_resolution =
+        model[:incoming_flow_highest_in_resolution] = dataframes[:highest_in].incoming_flow_highest
+    outgoing_flow_highest_out_resolution =
+        model[:outgoing_flow_highest_out_resolution] =
+            dataframes[:highest_out].outgoing_flow_highest
     # Below, we drop zero coefficients, but probably we don't have any
     # (if the implementation is correct)
-    drop_zeros!.(incoming_flow_lowest_resolution)
-    drop_zeros!.(outgoing_flow_lowest_resolution)
-    drop_zeros!.(incoming_flow_highest_resolution)
-    drop_zeros!.(outgoing_flow_highest_resolution)
+    # drop_zeros!.(incoming_flow_lowest_resolution)
+    # drop_zeros!.(outgoing_flow_lowest_resolution)
+    # drop_zeros!.(incoming_flow_highest_resolution)
+    # drop_zeros!.(outgoing_flow_highest_resolution)
 
     ## Expressions for the objective function
     assets_investment_cost = @expression(
@@ -351,13 +390,13 @@ function create_model(
 
     ## Balance constraints (using the lowest resolution)
     # - consumer balance equation
-    df = filter(row -> row.asset ∈ Ac, df_constraints_lowest; view = true)
+    df = filter(row -> row.asset ∈ Ac, dataframes[:highest_in_out]; view = true)
     model[:consumer_balance] = [
         @constraint(
             model,
-            incoming_flow_lowest_resolution[row.index] -
-            outgoing_flow_lowest_resolution[row.index] ==
-            assets_profile_sum(row.asset, row.rp, row.time_block, 1.0) *
+            incoming_flow_highest_in_out_resolution[row.index] -
+            outgoing_flow_highest_in_out_resolution[row.index] ==
+            profile_aggregation(mean, graph[row.asset].profiles, row.rp, row.time_block, 1.0) *
             graph[row.asset].peak_demand,
             base_name = "consumer_balance[$(row.asset),$(row.rp),$(row.time_block)]"
         ) for row in eachrow(df)
@@ -385,45 +424,51 @@ function create_model(
                         )
                     end
                 ) +
-                assets_profile_sum(a, rp, row.time_block, 0.0) * (
+                profile_aggregation(sum, graph[a].profiles, rp, row.time_block, 0.0) * (
                     graph[a].initial_storage_capacity +
                     (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
                 ) +
-                incoming_flow_lowest_resolution[row.cons_index] -
-                outgoing_flow_lowest_resolution[row.cons_index],
+                incoming_flow_lowest_storage_resolution[row.index] -
+                outgoing_flow_lowest_storage_resolution[row.index],
                 base_name = "storage_balance[$a,$rp,$(row.time_block)]"
             ) for (k, row) ∈ enumerate(eachrow(sub_df))
         ]
     end
 
     # - hub balance equation
-    df = filter(row -> row.asset ∈ Ah, df_constraints_lowest; view = true)
+    df = filter(row -> row.asset ∈ Ah, dataframes[:highest_in_out]; view = true)
     model[:hub_balance] = [
         @constraint(
             model,
-            incoming_flow_lowest_resolution[row.index] ==
-            outgoing_flow_lowest_resolution[row.index],
+            incoming_flow_highest_in_out_resolution[row.index] ==
+            outgoing_flow_highest_in_out_resolution[row.index],
             base_name = "hub_balance[$(row.asset),$(row.rp),$(row.time_block)]"
         ) for row in eachrow(df)
     ]
 
     # - conversion balance equation
-    df = filter(row -> row.asset ∈ Acv, df_constraints_lowest; view = true)
+    df = filter(row -> row.asset ∈ Acv, dataframes[:highest_in_out]; view = true)
     model[:conversion_balance] = [
         @constraint(
             model,
-            incoming_flow_lowest_resolution[row.index] ==
-            outgoing_flow_lowest_resolution[row.index],
+            incoming_flow_highest_in_out_resolution[row.index] ==
+            outgoing_flow_highest_in_out_resolution[row.index],
             base_name = "conversion_balance[$(row.asset),$(row.rp),$(row.time_block)]"
         ) for row in eachrow(df)
     ]
 
-    assets_profile_times_capacity =
-        model[:assets_profile_times_capacity] = [
+    assets_profile_times_capacity_in =
+        model[:assets_profile_times_capacity_in] = [
             if row.asset ∈ Ai
                 @expression(
                     model,
-                    assets_profile_sum(row.asset, row.rp, row.time_block, 1.0) * (
+                    profile_aggregation(
+                        mean,
+                        graph[row.asset].profiles,
+                        row.rp,
+                        row.time_block,
+                        1.0,
+                    ) * (
                         graph[row.asset].initial_capacity +
                         graph[row.asset].capacity * assets_investment[row.asset]
                     )
@@ -431,35 +476,68 @@ function create_model(
             else
                 @expression(
                     model,
-                    assets_profile_sum(row.asset, row.rp, row.time_block, 1.0) *
-                    graph[row.asset].initial_capacity
+                    profile_aggregation(
+                        mean,
+                        graph[row.asset].profiles,
+                        row.rp,
+                        row.time_block,
+                        1.0,
+                    ) * graph[row.asset].initial_capacity
                 )
-            end for row in eachrow(df_constraints_highest)
+            end for row in eachrow(dataframes[:highest_in])
+        ]
+
+    assets_profile_times_capacity_out =
+        model[:assets_profile_times_capacity_out] = [
+            if row.asset ∈ Ai
+                @expression(
+                    model,
+                    profile_aggregation(
+                        mean,
+                        graph[row.asset].profiles,
+                        row.rp,
+                        row.time_block,
+                        1.0,
+                    ) * (
+                        graph[row.asset].initial_capacity +
+                        graph[row.asset].capacity * assets_investment[row.asset]
+                    )
+                )
+            else
+                @expression(
+                    model,
+                    profile_aggregation(
+                        mean,
+                        graph[row.asset].profiles,
+                        row.rp,
+                        row.time_block,
+                        1.0,
+                    ) * graph[row.asset].initial_capacity
+                )
+            end for row in eachrow(dataframes[:highest_out])
         ]
 
     ## Capacity limit constraints (using the highest resolution)
     # - maximum output flows limit
-    df = filter(
-        row -> row.asset ∈ Acv || row.asset ∈ As || row.asset ∈ Ap,
-        df_constraints_highest;
-        view = true,
-    )
     model[:max_output_flows_limit] = [
         @constraint(
             model,
-            outgoing_flow_highest_resolution[row.index] ≤ assets_profile_times_capacity[row.index],
+            outgoing_flow_highest_out_resolution[row.index] ≤
+            assets_profile_times_capacity_out[row.index],
             base_name = "max_output_flows_limit[$(row.asset),$(row.rp),$(row.time_block)]"
-        ) for row in eachrow(df) if outgoing_flow_highest_resolution[row.index] != 0
+        ) for row in eachrow(dataframes[:highest_out]) if
+        outgoing_flow_highest_out_resolution[row.index] != 0
     ]
 
     # - maximum input flows limit
-    df = filter(row -> row.asset ∈ As, df_constraints_highest; view = true)
     model[:max_input_flows_limit] = [
         @constraint(
             model,
-            incoming_flow_highest_resolution[row.index] ≤ assets_profile_times_capacity[row.index],
+            incoming_flow_highest_in_resolution[row.index] ≤
+            assets_profile_times_capacity_in[row.index],
             base_name = "max_input_flows_limit[$(row.asset),$(row.rp),$(row.time_block)]"
-        ) for row in eachrow(df)
+        ) for row in eachrow(dataframes[:highest_in]) if
+        incoming_flow_highest_in_resolution[row.index] != 0
     ]
 
     # - define lower bounds for flows that are not transport assets
@@ -474,7 +552,13 @@ function create_model(
         if graph[row.from, row.to].investable
             @expression(
                 model,
-                flows_profile_sum(row.from, row.to, row.rp, row.time_block, 1.0) * (
+                profile_aggregation(
+                    mean,
+                    graph[row.from, row.to].profiles,
+                    row.rp,
+                    row.time_block,
+                    1.0,
+                ) * (
                     graph[row.from, row.to].initial_export_capacity +
                     graph[row.from, row.to].capacity * flows_investment[(row.from, row.to)]
                 )
@@ -482,8 +566,13 @@ function create_model(
         else
             @expression(
                 model,
-                flows_profile_sum(row.from, row.to, row.rp, row.time_block, 1.0) *
-                graph[row.from, row.to].initial_export_capacity
+                profile_aggregation(
+                    mean,
+                    graph[row.from, row.to].profiles,
+                    row.rp,
+                    row.time_block,
+                    1.0,
+                ) * graph[row.from, row.to].initial_export_capacity
             )
         end for row in eachrow(df_flows)
     ]
@@ -492,7 +581,13 @@ function create_model(
         if graph[row.from, row.to].investable
             @expression(
                 model,
-                flows_profile_sum(row.from, row.to, row.rp, row.time_block, 1.0) * (
+                profile_aggregation(
+                    mean,
+                    graph[row.from, row.to].profiles,
+                    row.rp,
+                    row.time_block,
+                    1.0,
+                ) * (
                     graph[row.from, row.to].initial_import_capacity +
                     graph[row.from, row.to].capacity * flows_investment[(row.from, row.to)]
                 )
@@ -500,8 +595,13 @@ function create_model(
         else
             @expression(
                 model,
-                flows_profile_sum(row.from, row.to, row.rp, row.time_block, 1.0) *
-                graph[row.from, row.to].initial_import_capacity
+                profile_aggregation(
+                    mean,
+                    graph[row.from, row.to].profiles,
+                    row.rp,
+                    row.time_block,
+                    1.0,
+                ) * graph[row.from, row.to].initial_import_capacity
             )
         end for row in eachrow(df_flows)
     ]
@@ -511,8 +611,7 @@ function create_model(
     model[:max_transport_flow_limit] = [
         @constraint(
             model,
-            duration(row.time_block, row.rp) * flow[row.index] ≤
-            upper_bound_transport_flow[row.index],
+            flow[row.index] ≤ upper_bound_transport_flow[row.index],
             base_name = "max_transport_flow_limit[($(row.from),$(row.to)),$(row.rp),$(row.time_block)]"
         ) for row in eachrow(df)
     ]
@@ -520,8 +619,7 @@ function create_model(
     model[:min_transport_flow_limit] = [
         @constraint(
             model,
-            duration(row.time_block, row.rp) * flow[row.index] ≥
-            -lower_bound_transport_flow[row.index],
+            flow[row.index] ≥ -lower_bound_transport_flow[row.index],
             base_name = "min_transport_flow_limit[($(row.from),$(row.to)),$(row.rp),$(row.time_block)]"
         ) for row in eachrow(df)
     ]
@@ -534,7 +632,7 @@ function create_model(
             storage_level[row.index] ≤
             graph[row.asset].initial_storage_capacity +
             (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
-        ) for row ∈ eachrow(df_storage_level)
+        ) for row ∈ eachrow(dataframes[:lowest_storage_balance])
     ]
 
     # - cycling condition for storage level
