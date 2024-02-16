@@ -11,46 +11,46 @@ Computes the data frames used to linearize the variables and constraints. These 
 internally in the model only.
 """
 function construct_dataframes(graph, representative_periods, constraints_partitions)
-    A = labels(graph) |> collect
     F = edge_labels(graph) |> collect
     RP = 1:length(representative_periods)
-    Pl = constraints_partitions[:lowest_resolution]
-    Ph = constraints_partitions[:highest_resolution]
 
-    df_flows = DataFrame(
+    # Output object
+    dataframes = Dict{Symbol,DataFrame}()
+
+    # DataFrame to store the flow variables
+    dataframes[:flows] = DataFrame(
         (
             (
                 (from = u, to = v, rp = rp, time_block = B, efficiency = graph[u, v].efficiency) for B ∈ graph[u, v].partitions[rp]
             ) for (u, v) ∈ F, rp ∈ RP
         ) |> Iterators.flatten,
     )
-    df_flows.index = 1:size(df_flows, 1)
+    dataframes[:flows].index = 1:size(dataframes[:flows], 1)
 
-    # This construction should ensure the ordering of the time blocks for groups of (a, rp)
-    df_constraints_lowest = DataFrame(
-        (((asset = a, rp = rp, time_block = B) for B ∈ Pl[(a, rp)]) for a ∈ A, rp ∈ RP) |>
-        Iterators.flatten,
-    )
-    df_constraints_lowest.index = 1:size(df_constraints_lowest, 1)
+    for (key, partitions) in constraints_partitions
+        if length(partitions) == 0
+            # No data, but ensure schema is correct
+            dataframes[key] = DataFrame(;
+                asset = String[],
+                rp = Int[],
+                time_block = UnitRange{Int}[],
+                index = Int[],
+            )
+            continue
+        end
 
-    df_constraints_highest = DataFrame(
-        (((asset = a, rp = rp, time_block = B) for B ∈ Ph[(a, rp)]) for a ∈ A, rp ∈ RP) |>
-        Iterators.flatten,
-    )
-    df_constraints_highest.index = 1:size(df_constraints_highest, 1)
+        # This construction should ensure the ordering of the time blocks for groups of (a, rp)
+        df = DataFrame(
+            (
+                ((asset = a, rp = rp, time_block = time_block) for time_block ∈ partition) for
+                ((a, rp), partition) in partitions
+            ) |> Iterators.flatten,
+        )
+        df.index = 1:size(df, 1)
+        dataframes[key] = df
+    end
 
-    df_storage_level = rename(
-        filter(row -> graph[row.asset].type == "storage", df_constraints_lowest),
-        :index => :cons_index,
-    )
-    df_storage_level.index = 1:size(df_storage_level, 1)
-
-    return Dict(
-        :flows => df_flows,
-        :cons_lowest => df_constraints_lowest,
-        :cons_highest => df_constraints_highest,
-        :storage_level => df_storage_level,
-    )
+    return dataframes
 end
 
 """
