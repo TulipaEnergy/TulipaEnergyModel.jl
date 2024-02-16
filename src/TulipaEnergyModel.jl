@@ -15,7 +15,7 @@ using HiGHS, JuMP, MathOptInterface
 using Plots, Colors, GraphMakie, GraphMakie.NetworkLayout, CairoMakie
 
 ## Others
-using TimerOutputs
+using OrderedCollections, Statistics, TimerOutputs
 
 include("input-tables.jl")
 include("structures.jl")
