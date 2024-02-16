@@ -70,6 +70,7 @@ function add_expression_terms!(
     representative_periods,
     graph;
     use_highest_resolution = true,
+    multiply_by_duration = true,
 )
     if !use_highest_resolution
         df_cons[!, :incoming_flow_lowest] .= AffExpr(0.0)
@@ -79,6 +80,9 @@ function add_expression_terms!(
         df_cons[!, :outgoing_flow_highest] .= AffExpr(0.0)
     end
 
+    # Aggregating function: If the duration should NOT be taken into account, we have to compute unique appearances of the flows.
+    # Otherwise, just use the sum
+    agg = multiply_by_duration ? v -> sum(v) : v -> sum(unique(v))
     grouped_cons = groupby(df_cons, [:rp, :asset])
 
     # Incoming flows
@@ -87,7 +91,7 @@ function add_expression_terms!(
         if !haskey(grouped_flows, (; rp, to))
             continue
         end
-        resolution = representative_periods[rp].resolution
+        resolution = multiply_by_duration ? representative_periods[rp].resolution : 1.0
         for i in eachindex(workspace)
             workspace[i] = AffExpr(0.0)
         end
@@ -108,9 +112,9 @@ function add_expression_terms!(
         # Sum the corresponding flows from the workspace
         for row in eachrow(sub_df)
             if !use_highest_resolution
-                row.incoming_flow_lowest = sum(@view workspace[row.time_block])
+                row.incoming_flow_lowest = agg(@view workspace[row.time_block])
             else
-                row.incoming_flow_highest = sum(@view workspace[row.time_block])
+                row.incoming_flow_highest = agg(@view workspace[row.time_block])
             end
         end
     end
@@ -121,7 +125,7 @@ function add_expression_terms!(
         if !haskey(grouped_flows, (; rp, from))
             continue
         end
-        resolution = representative_periods[rp].resolution
+        resolution = multiply_by_duration ? representative_periods[rp].resolution : 1.0
         for i in eachindex(workspace)
             workspace[i] = AffExpr(0.0)
         end
@@ -142,9 +146,9 @@ function add_expression_terms!(
         # Sum the corresponding flows from the workspace
         for row in eachrow(sub_df)
             if !use_highest_resolution
-                row.outgoing_flow_lowest = sum(@view workspace[row.time_block])
+                row.outgoing_flow_lowest = agg(@view workspace[row.time_block])
             else
-                row.outgoing_flow_highest = sum(@view workspace[row.time_block])
+                row.outgoing_flow_highest = agg(@view workspace[row.time_block])
             end
         end
     end
@@ -197,21 +201,20 @@ function create_model(
 
     # Sums the profile of representative period rp over the time block B
     # Uses the default_value when that profile does not exist.
-    function profile_sum(profiles, rp, B, default_value)
+    """
+        profile_aggregation(agg, profiles, rp, time_block, default_value)
+
+    `profiles` should be a dictionary of profiles, for instance `graph[a].profiles` or `graph[u, v].profiles`.
+    If `profiles[rp]` exists, then this function computes the aggregation of `profiles[rp]`
+    over the range `time_block` using the aggregator `agg`, i.e., `agg(profiles[rp][time_block])`.
+    If `profiles[rp]` does not exist, then this substitutes it by a vector of `default_value`s.
+    """
+    function profile_aggregation(agg, profiles, rp, B, default_value)
         if haskey(profiles, rp)
-            return sum(profiles[rp][B])
+            return agg(profiles[rp][B])
         else
-            return length(B) * default_value
+            return agg(Iterators.repeated(default_value, length(B)))
         end
-    end
-
-    function assets_profile_sum(a, rp, B, default_value)
-        return profile_sum(graph[a].profiles, rp, B, default_value)
-    end
-
-    # Same as above but for flow
-    function flows_profile_sum(u, v, rp, B, default_value)
-        return profile_sum(graph[u, v].profiles, rp, B, default_value)
     end
 
     ## Sets unpacking
