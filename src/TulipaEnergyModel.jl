@@ -11,9 +11,6 @@ using Graphs, MetaGraphsNext
 ## Optimization
 using HiGHS, JuMP, MathOptInterface
 
-## Plots
-using Plots, Colors, GraphMakie, GraphMakie.NetworkLayout, CairoMakie
-
 ## Others
 using OrderedCollections, Statistics, TimerOutputs
 
@@ -25,6 +22,5 @@ include("solver-parameters.jl")
 include("solve-model.jl")
 include("run-scenario.jl")
 include("time-resolution.jl")
-include("plot.jl")
 
 end

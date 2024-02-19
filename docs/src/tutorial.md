@@ -452,24 +452,35 @@ CSV.read("flows_investment.csv", DataFrame)
 
 ### Plotting
 
-Tulipa has three functions for plotting: a time-series flows, a visualisation of the graph (with asset and flow capacities), and a bar graph of the initial and invested asset capacities.
-
-Plot a single flow for a single representative period:
-
-```@example solution
-plot_single_flow(graph, "Asgard_Solar", "Asgard_E_demand", 1)
-```
-
-Plot the graph, with asset and flow capacities:
+The simplest thing to do is to create vectors.
+For instance, in the example below, we plot the flow solution for a given flow.
 
 ```@example solution
-plot_graph(graph)
+using Plots
+
+rp = 2
+(u, v) = ("Asgard_Solar", "Asgard_E_demand")
+
+domain = graph[u, v].partitions[rp]
+flow_value = [solution.flow[(u, v), rp, B] for B in domain]
+
+plot(1:length(domain), flow_value, leg=false)
+xticks!(1:length(domain), string.(domain))
 ```
 
-Graph the final capacities of assets:
+Notice that the time domain for this flow is regular, so you might want to do some kind of processing.
+For instance, we can split the flow into every
 
 ```@example solution
-plot_assets_capacity(graph)
+domain = energy_problem.representative_periods[rp].time_steps
+flow_value = zeros(length(domain))
+for B in graph[u, v].partitions[rp]
+    flow_value[B] .= solution.flow[(u, v), rp, B] / length(B)
+end
+ticks = first.(graph[u, v].partitions[rp]) # Starting point of each time block
+
+plot(domain, flow_value, leg=false)
+xticks!(ticks)
 ```
 
-If you would like more custom plots, explore the code of [plot](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/plot.jl) for ideas.
+If you would like more custom plots, there is a separate repository [TulipaPlots.jl](https://github.com/TulipaEnergy/TulipaPlots.jl) under development which provides nicer plots. Check it out for inspirations.
