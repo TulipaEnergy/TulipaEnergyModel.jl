@@ -458,29 +458,18 @@ For instance, in the example below, we plot the flow solution for a given flow.
 ```@example solution
 using Plots
 
-rp = 2
-(u, v) = ("Asgard_Solar", "Asgard_E_demand")
+(u, v) = first(edge_labels(graph))
+rp = 1
+df = filter(
+    row -> row.rp == rp && row.from == u && row.to == v,
+    energy_problem.dataframes[:flows],
+    view = true,
+)
 
-domain = graph[u, v].partitions[rp]
-flow_value = [solution.flow[(u, v), rp, B] for B in domain]
+domain = energy_problem.graph[u, v].partitions[rp]
+flow_value = df.solution
 
 plot(1:length(domain), flow_value, leg=false)
-xticks!(1:length(domain), string.(domain))
-```
-
-Notice that the time domain for this flow is regular, so you might want to do some kind of processing.
-For instance, we can split the flow into every
-
-```@example solution
-domain = energy_problem.representative_periods[rp].time_steps
-flow_value = zeros(length(domain))
-for B in graph[u, v].partitions[rp]
-    flow_value[B] .= solution.flow[(u, v), rp, B] / length(B)
-end
-ticks = first.(graph[u, v].partitions[rp]) # Starting point of each time block
-
-plot(domain, flow_value, leg=false)
-xticks!(ticks)
 ```
 
 If you would like more custom plots, there is a separate repository [TulipaPlots.jl](https://github.com/TulipaEnergy/TulipaPlots.jl) under development which provides nicer plots. Check it out for inspirations.
