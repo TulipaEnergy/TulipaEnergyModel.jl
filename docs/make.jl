@@ -5,6 +5,7 @@ DocMeta.setdocmeta!(TulipaEnergyModel, :DocTestSetup, :(using TulipaEnergyModel)
 
 makedocs(;
     modules = [TulipaEnergyModel],
+    repo = "https://github.com/TulipaEnergy/TulipaEnergyModel.jl.git",
     authors = "Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors",
     sitename = "TulipaEnergyModel.jl",
     format = Documenter.HTML(;
