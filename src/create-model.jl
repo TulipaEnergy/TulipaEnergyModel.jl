@@ -447,7 +447,7 @@ function create_model(
     ]
 
     # - conversion balance equation
-    df = filter(row -> row.asset ∈ Acv, dataframes[:highest_in_out]; view = true)
+    df = filter(row -> row.asset ∈ Acv, dataframes[:lowest]; view = true)
     model[:conversion_balance] = [
         @constraint(
             model,

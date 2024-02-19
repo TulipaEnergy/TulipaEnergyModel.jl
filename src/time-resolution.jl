@@ -23,7 +23,12 @@ function compute_constraints_partitions(graph, representative_periods)
     _all(a, rp) = [_allflows(a, rp); _assets(a, rp)]
 
     partitions_cases = [
-        (name = :lowest, partitions = _allflows, strategy = :lowest, asset_types = ["producer"]),
+        (
+            name = :lowest,
+            partitions = _allflows,
+            strategy = :lowest,
+            asset_types = ["conversion", "producer"],
+        ),
         (
             name = :lowest_storage_balance,
             partitions = _all,
@@ -34,7 +39,7 @@ function compute_constraints_partitions(graph, representative_periods)
             name = :highest_in_out,
             partitions = _allflows,
             strategy = :highest,
-            asset_types = ["hub", "conversion", "consumer"],
+            asset_types = ["hub", "consumer"],
         ),
         (name = :highest_in, partitions = _inflows, strategy = :highest, asset_types = ["storage"]),
         (
