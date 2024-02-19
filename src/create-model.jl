@@ -451,8 +451,8 @@ function create_model(
     model[:conversion_balance] = [
         @constraint(
             model,
-            incoming_flow_highest_in_out_resolution[row.index] ==
-            outgoing_flow_highest_in_out_resolution[row.index],
+            incoming_flow_lowest_resolution[row.index] ==
+            outgoing_flow_lowest_resolution[row.index],
             base_name = "conversion_balance[$(row.asset),$(row.rp),$(row.time_block)]"
         ) for row in eachrow(df)
     ]
