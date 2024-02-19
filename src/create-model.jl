@@ -247,7 +247,7 @@ function create_model(
     # Unpacking dataframes
     df_flows = dataframes[:flows]
 
-    df_storage_level_grouped = groupby(dataframes[:lowest_storage_balance], [:asset, :rp])
+    df_storage_level_grouped = groupby(dataframes[:lowest_storage_level], [:asset, :rp])
 
     ## Model
     model = Model()
@@ -265,7 +265,7 @@ function create_model(
     @variable(model, 0 ≤ flows_investment[Fi])
     storage_level =
         model[:storage_level] = [
-            @variable(model, base_name = "storage_level[$(row.asset),$(row.rp),$(row.time_block)]") for row in eachrow(dataframes[:lowest_storage_balance])
+            @variable(model, base_name = "storage_level[$(row.asset),$(row.rp),$(row.time_block)]") for row in eachrow(dataframes[:lowest_storage_level])
         ]
 
     ### Integer Investment Variables
@@ -292,7 +292,7 @@ function create_model(
         multiply_by_duration = true,
     )
     add_expression_terms!(
-        dataframes[:lowest_storage_balance],
+        dataframes[:lowest_storage_level],
         df_flows,
         expression_workspace,
         representative_periods,
@@ -333,10 +333,10 @@ function create_model(
     #     model[:outgoing_flow_lowest_resolution] = dataframes[:lowest].outgoing_flow_lowest
     incoming_flow_lowest_storage_resolution =
         model[:incoming_flow_lowest_storage_resolution] =
-            dataframes[:lowest_storage_balance].incoming_flow_lowest
+            dataframes[:lowest_storage_level].incoming_flow_lowest
     outgoing_flow_lowest_storage_resolution =
         model[:outgoing_flow_lowest_storage_resolution] =
-            dataframes[:lowest_storage_balance].outgoing_flow_lowest
+            dataframes[:lowest_storage_level].outgoing_flow_lowest
     incoming_flow_highest_in_out_resolution =
         model[:incoming_flow_highest_in_out_resolution] =
             dataframes[:highest_in_out].incoming_flow_highest
@@ -633,7 +633,7 @@ function create_model(
             graph[row.asset].initial_storage_capacity +
             (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0),
             base_name = "max_storage_level_limit[$(row.asset),$(row.rp),$(row.time_block)]"
-        ) for row ∈ eachrow(dataframes[:lowest_storage_balance])
+        ) for row ∈ eachrow(dataframes[:lowest_storage_level])
     ]
 
     # - cycling condition for storage level

@@ -30,7 +30,7 @@ function compute_constraints_partitions(graph, representative_periods)
             asset_types = ["conversion", "producer"],
         ),
         (
-            name = :lowest_storage_balance,
+            name = :lowest_storage_level,
             partitions = _all,
             strategy = :lowest,
             asset_types = ["storage"],
