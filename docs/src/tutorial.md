@@ -452,24 +452,6 @@ CSV.read("flows_investment.csv", DataFrame)
 
 ### Plotting
 
-The simplest thing to do is to create vectors.
-For instance, in the example below, we plot the flow solution for a given flow.
-
-```@example solution
-using Plots
-
-(u, v) = first(edge_labels(graph))
-rp = 1
-df = filter(
-    row -> row.rp == rp && row.from == u && row.to == v,
-    energy_problem.dataframes[:flows],
-    view = true,
-)
-
-domain = energy_problem.graph[u, v].partitions[rp]
-flow_value = df.solution
-
-plot(1:length(domain), flow_value, leg=false)
-```
+In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you feel like.
 
 If you would like more custom plots, there is a separate repository [TulipaPlots.jl](https://github.com/TulipaEnergy/TulipaPlots.jl) under development which provides nicer plots. Check it out for inspirations.
