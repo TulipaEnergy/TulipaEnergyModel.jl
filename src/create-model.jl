@@ -155,6 +155,25 @@ function add_expression_terms!(
 end
 
 """
+    profile_aggregation(agg, profiles, rp, time_block, default_value)
+
+Aggregates the `profiles[rp]` over the `time_block` using the `agg` function.
+If the profile does not exist, uses `default_value` instead of **each** profile value.
+
+`profiles` should be a dictionary of profiles, for instance `graph[a].profiles` or `graph[u, v].profiles`.
+If `profiles[rp]` exists, then this function computes the aggregation of `profiles[rp]`
+over the range `time_block` using the aggregator `agg`, i.e., `agg(profiles[rp][time_block])`.
+If `profiles[rp]` does not exist, then this substitutes it by a vector of `default_value`s.
+"""
+function profile_aggregation(agg, profiles, rp, B, default_value)
+    if haskey(profiles, rp)
+        return agg(profiles[rp][B])
+    else
+        return agg(Iterators.repeated(default_value, length(B)))
+    end
+end
+
+"""
     create_model!(energy_problem; verbose = false)
 
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
@@ -197,24 +216,6 @@ function create_model(
     # representative period `rp`.
     function duration(B, rp)
         return length(B) * representative_periods[rp].resolution
-    end
-
-    # Sums the profile of representative period rp over the time block B
-    # Uses the default_value when that profile does not exist.
-    """
-        profile_aggregation(agg, profiles, rp, time_block, default_value)
-
-    `profiles` should be a dictionary of profiles, for instance `graph[a].profiles` or `graph[u, v].profiles`.
-    If `profiles[rp]` exists, then this function computes the aggregation of `profiles[rp]`
-    over the range `time_block` using the aggregator `agg`, i.e., `agg(profiles[rp][time_block])`.
-    If `profiles[rp]` does not exist, then this substitutes it by a vector of `default_value`s.
-    """
-    function profile_aggregation(agg, profiles, rp, B, default_value)
-        if haskey(profiles, rp)
-            return agg(profiles[rp][B])
-        else
-            return agg(Iterators.repeated(default_value, length(B)))
-        end
     end
 
     ## Sets unpacking
