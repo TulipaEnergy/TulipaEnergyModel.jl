@@ -452,24 +452,6 @@ CSV.read("flows_investment.csv", DataFrame)
 
 ### Plotting
 
-Tulipa has three functions for plotting: a time-series flows, a visualisation of the graph (with asset and flow capacities), and a bar graph of the initial and invested asset capacities.
+In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you feel like.
 
-Plot a single flow for a single representative period:
-
-```@example solution
-plot_single_flow(graph, "Asgard_Solar", "Asgard_E_demand", 1)
-```
-
-Plot the graph, with asset and flow capacities:
-
-```@example solution
-plot_graph(graph)
-```
-
-Graph the final capacities of assets:
-
-```@example solution
-plot_assets_capacity(graph)
-```
-
-If you would like more custom plots, explore the code of [plot](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/plot.jl) for ideas.
+If you would like more custom plots, there is a separate repository [TulipaPlots.jl](https://github.com/TulipaEnergy/TulipaPlots.jl) under development which provides nicer plots. Check it out for inspirations.

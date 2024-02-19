@@ -9,11 +9,6 @@
     end
     for (optimizer, parameteres) in parameters_dict
         energy_problem = run_scenario(dir; optimizer = optimizer, parameters = parameteres)
-        @testset "Codecov Demands Graphs" begin
-            plot_single_flow(energy_problem, "Asgard_Solar", "Asgard_Battery", 1)
-            plot_graph(energy_problem)
-            plot_assets_capacity(energy_problem)
-        end
         @test energy_problem.objective_value ≈ 2.0748685822e8 rtol = 1e-8
     end
 end
