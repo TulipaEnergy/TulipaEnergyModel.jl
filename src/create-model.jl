@@ -327,10 +327,10 @@ function create_model(
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
-    # incoming_flow_lowest_resolution =
-    #     model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow_lowest
-    # outgoing_flow_lowest_resolution =
-    #     model[:outgoing_flow_lowest_resolution] = dataframes[:lowest].outgoing_flow_lowest
+    incoming_flow_lowest_resolution =
+        model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow_lowest
+    outgoing_flow_lowest_resolution =
+        model[:outgoing_flow_lowest_resolution] = dataframes[:lowest].outgoing_flow_lowest
     incoming_flow_lowest_storage_resolution =
         model[:incoming_flow_lowest_storage_resolution] =
             dataframes[:lowest_storage_level].incoming_flow_lowest
