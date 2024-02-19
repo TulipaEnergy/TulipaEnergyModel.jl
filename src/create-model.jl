@@ -351,10 +351,14 @@ function create_model(
             dataframes[:highest_out].outgoing_flow_highest
     # Below, we drop zero coefficients, but probably we don't have any
     # (if the implementation is correct)
-    # drop_zeros!.(incoming_flow_lowest_resolution)
-    # drop_zeros!.(outgoing_flow_lowest_resolution)
-    # drop_zeros!.(incoming_flow_highest_resolution)
-    # drop_zeros!.(outgoing_flow_highest_resolution)
+    drop_zeros!.(incoming_flow_lowest_resolution)
+    drop_zeros!.(outgoing_flow_lowest_resolution)
+    drop_zeros!.(incoming_flow_lowest_storage_resolution)
+    drop_zeros!.(outgoing_flow_lowest_storage_resolution)
+    drop_zeros!.(incoming_flow_highest_in_out_resolution)
+    drop_zeros!.(outgoing_flow_highest_in_out_resolution)
+    drop_zeros!.(incoming_flow_highest_in_resolution)
+    drop_zeros!.(outgoing_flow_highest_out_resolution)
 
     ## Expressions for the objective function
     assets_investment_cost = @expression(
