@@ -280,7 +280,7 @@ To create a traditional array in the order given by the investable flows, one ca
 [solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]
 ```
 
-The `solution.flow` and `solution.storage_level` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows` and `:storage_level`, respectively.
+The `solution.flow` and `solution.storage_level` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows` and `:lowest_storage_level`, respectively.
 You need to query the data from these dataframes and then use the column `index` to select the appropriate value.
 
 To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
@@ -299,18 +299,15 @@ df = filter(
 To create a vector with the all values of `storage_level` for a given `a` and `rp`, one can run
 
 ```@example solution
-a = energy_problem.dataframes[:storage_level].asset[1]
+a = energy_problem.dataframes[:lowest_storage_level].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rp == rp,
-    energy_problem.dataframes[:storage_level],
+    energy_problem.dataframes[:lowest_storage_level],
     view = true,
 )
 [solution.storage_level[row.index] for row in eachrow(df)]
 ```
-
-> **Note**
-> Make sure to specify `constraints_partitions[:lowest_resolution]` since the storage level is determined in the energy balance constraint for the storage assets. This constraint is defined in the lowest resolution of all assets and flows involved.
 
 ### The solution inside the graph
 
@@ -340,11 +337,11 @@ df = filter(
 To create a vector with the all values of `storage_level` for a given `a` and `rp`, one can run
 
 ```@example solution
-a = energy_problem.dataframes[:storage_level].asset[1]
+a = energy_problem.dataframes[:lowest_storage_level].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rp == rp,
-    energy_problem.dataframes[:storage_level],
+    energy_problem.dataframes[:lowest_storage_level],
     view = true,
 )
 [energy_problem.graph[a].storage_level[(rp, row.time_block)] for row in eachrow(df)]
@@ -368,11 +365,11 @@ df.solution
 ```
 
 ```@example solution
-a = energy_problem.dataframes[:storage_level].asset[1]
+a = energy_problem.dataframes[:lowest_storage_level].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rp == rp,
-    energy_problem.dataframes[:storage_level],
+    energy_problem.dataframes[:lowest_storage_level],
     view = true,
 )
 df.solution
@@ -390,7 +387,7 @@ using JuMP
 # a and rp are defined above
 df = filter(
     row -> row.asset == a && row.rp == rp,
-    energy_problem.dataframes[:cons_lowest],
+    energy_problem.dataframes[:lowest],
     view = true,
 )
 [value(energy_problem.model[:incoming_flow_lowest_resolution][row.index]) for row in eachrow(df)];
@@ -398,12 +395,12 @@ df = filter(
 
 The values of constraints can also be obtained, however they are frequently indexed in a subset, which means that their indexing is not straightforward.
 To know how they are indexed, it is necessary to look at the code of the model.
-For instance, to get the consumer balance, we first need to filter the `:cons_lowest` dataframes by consumers:
+For instance, to get the consumer balance, we first need to filter the `:highest_in_out` dataframes by consumers:
 
 ```@example solution
 df_consumers = filter(
     row -> graph[row.asset].type == "consumer",
-    energy_problem.dataframes[:cons_lowest],
+    energy_problem.dataframes[:highest_in_out],
     view = false,
 );
 nothing # hide

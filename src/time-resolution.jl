@@ -16,25 +16,52 @@ to compute the partition based on the strategy.
 function compute_constraints_partitions(graph, representative_periods)
     constraints_partitions = Dict{Symbol,Dict{Tuple{String,Int},Vector{TimeBlock}}}()
 
-    partition_dict = Dict(
-        :lowest_resolution  => :greedy,   # used mainly for energy constraints
-        :highest_resolution => :all,      # used mainly for capacity constraints
-    )
+    _inflows(a, rp) = [graph[u, a].partitions[rp] for u in inneighbor_labels(graph, a)]
+    _outflows(a, rp) = [graph[a, v].partitions[rp] for v in outneighbor_labels(graph, a)]
+    _allflows(a, rp) = [_inflows(a, rp); _outflows(a, rp)]
+    _assets(a, rp) = [graph[a].partitions[rp]]
+    _all(a, rp) = [_allflows(a, rp); _assets(a, rp)]
 
-    for (partition_name, strategy) in partition_dict
-        constraints_partitions[partition_name] = Dict(
+    partitions_cases = [
+        (
+            name = :lowest,
+            partitions = _allflows,
+            strategy = :lowest,
+            asset_types = ["conversion", "producer"],
+        ),
+        (
+            name = :lowest_storage_level,
+            partitions = _all,
+            strategy = :lowest,
+            asset_types = ["storage"],
+        ),
+        (
+            name = :highest_in_out,
+            partitions = _allflows,
+            strategy = :highest,
+            asset_types = ["hub", "consumer"],
+        ),
+        (name = :highest_in, partitions = _inflows, strategy = :highest, asset_types = ["storage"]),
+        (
+            name = :highest_out,
+            partitions = _outflows,
+            strategy = :highest,
+            asset_types = ["producer", "storage", "conversion"],
+        ),
+    ]
+
+    num_rep_periods = length(representative_periods)
+
+    for (name, partitions, strategy, types) in partitions_cases
+        constraints_partitions[name] = OrderedDict(
             (a, rp) => begin
-                compute_rp_partition(
-                    [
-                        [
-                            graph[u, v].partitions[rp] for
-                            (u, v) in edge_labels(graph) if u == a || v == a
-                        ]
-                        [graph[a].partitions[rp]]
-                    ];
-                    strategy = strategy,
-                )
-            end for a in labels(graph), rp = 1:length(representative_periods)
+                P = partitions(a, rp)
+                if length(P) > 0
+                    compute_rp_partition(partitions(a, rp), strategy)
+                else
+                    Vector{TimeBlock}[]
+                end
+            end for a in labels(graph), rp = 1:num_rep_periods if graph[a].type in types
         )
     end
 
@@ -42,7 +69,7 @@ function compute_constraints_partitions(graph, representative_periods)
 end
 
 """
-    rp_partition = compute_rp_partition(partitions; strategy = :greedy)
+    rp_partition = compute_rp_partition(partitions, :lowest)
 
 Given the time steps of various flows/assets in the `partitions` input, compute the representative period partitions.
 
@@ -59,9 +86,9 @@ The output will also be a partition with the conditions above.
 
 ## Strategies
 
-### :greedy
+### :lowest
 
-If `strategy = :greedy` (default), then the output is constructed greedily,
+If `strategy = :lowest` (default), then the output is constructed greedily,
 i.e., it selects the next largest breakpoint following the algorithm below:
 
  0. Input: `Vᴵ₁, …, Vᴵₚ`, a list of time blocks. Each element of `Vᴵⱼ` is a range `r = r.start:r.end`. Output: `V`.
@@ -79,7 +106,7 @@ i.e., it selects the next largest breakpoint following the algorithm below:
 ```jldoctest
 partition1 = [1:4, 5:8, 9:12]
 partition2 = [1:3, 4:6, 7:9, 10:12]
-compute_rp_partition([partition1, partition2])
+compute_rp_partition([partition1, partition2], :lowest)
 
 # output
 
@@ -92,7 +119,7 @@ compute_rp_partition([partition1, partition2])
 ```jldoctest
 partition1 = [1:1, 2:3, 4:6, 7:10, 11:12]
 partition2 = [1:2, 3:4, 5:5, 6:7, 8:9, 10:12]
-compute_rp_partition([partition1, partition2])
+compute_rp_partition([partition1, partition2], :lowest)
 
 # output
 
@@ -104,17 +131,17 @@ compute_rp_partition([partition1, partition2])
  11:12
 ```
 
-### :all
+### :highest
 
-If `strategy = :all`, then the output selects includes all the breakpoints from the input.
-Another way of describing it, is to select the minimum end-point instead of the maximum end-point in the `:greedy` strategy.
+If `strategy = :highest`, then the output selects includes all the breakpoints from the input.
+Another way of describing it, is to select the minimum end-point instead of the maximum end-point in the `:lowest` strategy.
 
 #### Examples
 
 ```jldoctest
 partition1 = [1:4, 5:8, 9:12]
 partition2 = [1:3, 4:6, 7:9, 10:12]
-compute_rp_partition([partition1, partition2]; strategy = :all)
+compute_rp_partition([partition1, partition2], :highest)
 
 # output
 
@@ -130,7 +157,7 @@ compute_rp_partition([partition1, partition2]; strategy = :all)
 ```jldoctest
 partition1 = [1:1, 2:3, 4:6, 7:10, 11:12]
 partition2 = [1:2, 3:4, 5:5, 6:7, 8:9, 10:12]
-compute_rp_partition([partition1, partition2]; strategy = :all)
+compute_rp_partition([partition1, partition2], :highest)
 
 # output
 
@@ -148,10 +175,10 @@ compute_rp_partition([partition1, partition2]; strategy = :all)
 ```
 """
 function compute_rp_partition(
-    partitions::AbstractVector{<:AbstractVector{<:UnitRange{<:Integer}}};
-    strategy = :greedy,
+    partitions::AbstractVector{<:AbstractVector{<:UnitRange{<:Integer}}},
+    strategy,
 )
-    valid_strategies = [:greedy, :all]
+    valid_strategies = [:highest, :lowest]
     if !(strategy in valid_strategies)
         error("`strategy` should be one of $valid_strategies. See docs for more info.")
     end
@@ -165,7 +192,7 @@ function compute_rp_partition(
     rp_partition = UnitRange{Int}[] # List of ranges
 
     block_start = 1
-    if strategy == :greedy
+    if strategy == :lowest
         while block_start ≤ rp_end
             # The next block end must be ≥ block start
             block_end = block_start
@@ -184,7 +211,7 @@ function compute_rp_partition(
             push!(rp_partition, block_start:block_end)
             block_start = block_end + 1
         end
-    elseif strategy == :all
+    elseif strategy == :highest
         # We need all end points of each interval
         end_points_per_array = map(partitions) do x # For each partition
             last.(x) # Retrieve the last element of each interval

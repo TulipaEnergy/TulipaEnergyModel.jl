@@ -14,7 +14,7 @@
             plot_graph(energy_problem)
             plot_assets_capacity(energy_problem)
         end
-        @test energy_problem.objective_value ≈ 1.7913342401e8 rtol = 1e-8
+        @test energy_problem.objective_value ≈ 2.0748685822e8 rtol = 1e-8
     end
 end
 
@@ -26,7 +26,7 @@ end
     end
     for optimizer in optimizer_list
         energy_problem = run_scenario(dir; optimizer = optimizer)
-        @test energy_problem.objective_value ≈ 269238.43825 atol = 1e-5
+        @test energy_problem.objective_value ≈ 269238.43825 rtol = 1e-8
     end
 end
 
