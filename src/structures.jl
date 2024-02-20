@@ -148,7 +148,8 @@ It hides the complexity behind the energy problem, making the usage more friendl
 - `solved`: A boolean indicating whether the `model` has been solved or not.
 - `objective_value`: The objective value of the solved problem.
 - `termination_status`: The termination status of the optimization model.
-- `time_create_model`: Time taken for creating the model (in seconds), including the time for reading the data.
+- `time_read_data`: Time taken for reading the data (in seconds).
+- `time_create_model`: Time taken for creating the model (in seconds).
 - `time_solve_model`: Time taken for solving the model (in seconds).
 
 
