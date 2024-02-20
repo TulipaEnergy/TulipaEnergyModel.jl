@@ -181,6 +181,7 @@ mutable struct EnergyProblem
             JuMP.OPTIMIZE_NOT_CALLED,
             NaN,
             NaN,
+            NaN,
         )
     end
 end
