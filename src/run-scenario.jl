@@ -20,15 +20,28 @@ function run_scenario(
 )
     to = TimerOutput()
 
-    energy_problem =
-        @timeit to "create_energy_problem_from_csv_folder" create_energy_problem_from_csv_folder(
-            input_folder,
-        )
-    @timeit to "create_model!" create_model!(energy_problem; write_lp_file = write_lp_file)
-    @timeit to "solve_model!" solve_model!(energy_problem, optimizer; parameters = parameters)
+    elapsed_time_read_data = @elapsed begin
+        energy_problem =
+            @timeit to "create_energy_problem_from_csv_folder" create_energy_problem_from_csv_folder(
+                input_folder,
+            )
+    end
+
+    elapsed_time_create_model = @elapsed begin
+        @timeit to "create_model!" create_model!(energy_problem; write_lp_file = write_lp_file)
+    end
+
+    elapsed_time_solve_model = @elapsed begin
+        @timeit to "solve_model!" solve_model!(energy_problem, optimizer; parameters = parameters)
+    end
+
+    energy_problem.time_create_model = elapsed_time_read_data + elapsed_time_create_model
+    energy_problem.time_solve_model = elapsed_time_solve_model
 
     if output_folder != ""
-        @timeit to "save_solution_to_file" save_solution_to_file(output_folder, energy_problem)
+        elapsed_time = @elapsed begin
+            @timeit to "save_solution_to_file" save_solution_to_file(output_folder, energy_problem)
+        end
     end
 
     show_log && show(to)
