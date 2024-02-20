@@ -35,7 +35,8 @@ function run_scenario(
         @timeit to "solve_model!" solve_model!(energy_problem, optimizer; parameters = parameters)
     end
 
-    energy_problem.time_create_model = elapsed_time_read_data + elapsed_time_create_model
+    energy_problem.time_read_data    = elapsed_time_read_data
+    energy_problem.time_create_model = elapsed_time_create_model
     energy_problem.time_solve_model = elapsed_time_solve_model
 
     if output_folder != ""
