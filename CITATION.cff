@@ -51,6 +51,9 @@ identifiers:
   - type: other
     value: arXiv.2309.07711
     description: The ArXiv preprint of the mathematical formulation
+  - type: doi
+    value: 10.5281/zenodo.8363262
+    description: Concept DOI for Zenodo deposition
 repository-code: 'https://github.com/TulipaEnergy/TulipaEnergyModel.jl'
 abstract: >-
   The Tulipa Energy Model is a Julia package for energy
