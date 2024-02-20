@@ -192,6 +192,7 @@ function Base.show(io::IO, ep::EnergyProblem)
     println(io, "  - Solved: ", ep.solved)
     println(io, "  - Termination status: ", ep.termination_status)
     println(io, "  - Objective value: ", ep.objective_value)
+    println(io, "  - Time for reading the data (in seconds): ", ep.time_read_data)
     println(io, "  - Time for creating the model (in seconds): ", ep.time_create_model)
     println(io, "  - Time for solving the model (in seconds): ", ep.time_solve_model)
 end
