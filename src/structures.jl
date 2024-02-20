@@ -156,6 +156,7 @@ mutable struct EnergyProblem
     solved::Bool
     objective_value::Float64
     termination_status::JuMP.TerminationStatusCode
+    time_read_data::Float64
     time_create_model::Float64
     time_solve_model::Float64
 
