@@ -37,7 +37,7 @@ function run_scenario(
 
     energy_problem.time_read_data    = elapsed_time_read_data
     energy_problem.time_create_model = elapsed_time_create_model
-    energy_problem.time_solve_model = elapsed_time_solve_model
+    energy_problem.time_solve_model  = elapsed_time_solve_model
 
     if output_folder != ""
         @timeit to "save_solution_to_file" save_solution_to_file(output_folder, energy_problem)
