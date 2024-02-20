@@ -156,6 +156,9 @@ mutable struct EnergyProblem
     solved::Bool
     objective_value::Float64
     termination_status::JuMP.TerminationStatusCode
+    time_read_data::Float64
+    time_create_model::Float64
+    time_solve_model::Float64
 
     """
         EnergyProblem(graph, representative_periods)
@@ -176,6 +179,9 @@ mutable struct EnergyProblem
             false,
             NaN,
             JuMP.OPTIMIZE_NOT_CALLED,
+            NaN,
+            NaN,
+            NaN,
         )
     end
 end
@@ -186,4 +192,7 @@ function Base.show(io::IO, ep::EnergyProblem)
     println(io, "  - Solved: ", ep.solved)
     println(io, "  - Termination status: ", ep.termination_status)
     println(io, "  - Objective value: ", ep.objective_value)
+    println(io, "  - Time for reading the data (in seconds): ", ep.time_read_data)
+    println(io, "  - Time for creating the model (in seconds): ", ep.time_create_model)
+    println(io, "  - Time for solving the model (in seconds): ", ep.time_solve_model)
 end
