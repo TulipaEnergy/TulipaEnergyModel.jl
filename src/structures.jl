@@ -134,6 +134,15 @@ function GraphFlowData(flow_data::FlowData)
     )
 end
 
+mutable struct Solution
+    assets_investment::Dict{String,Float64}
+    flows_investment::Dict{Tuple{String,String},Float64}
+    storage_level::Vector{Float64}
+    flow::Vector{Float64}
+    objective_value::Float64
+    duals::Union{Nothing,Dict{Symbol,Vector{Float64}}}
+end
+
 """
 Structure to hold all parts of an energy problem. It is a wrapper around various other relevant structures.
 It hides the complexity behind the energy problem, making the usage more friendly, although more verbose.
@@ -174,6 +183,7 @@ mutable struct EnergyProblem
     base_periods::BasePeriod
     dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}
+    solution::Union{Solution,Nothing}
     solved::Bool
     objective_value::Float64
     termination_status::JuMP.TerminationStatusCode
@@ -196,6 +206,7 @@ mutable struct EnergyProblem
             constraints_partitions,
             base_periods,
             Dict(),
+            nothing,
             nothing,
             false,
             NaN,

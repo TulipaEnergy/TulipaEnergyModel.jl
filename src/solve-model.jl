@@ -16,9 +16,10 @@ function solve_model!(
         error("Model is not created, run create_model(energy_problem) first.")
     end
 
-    solution = solve_model!(energy_problem.dataframes, model, optimizer; parameters = parameters)
+    energy_problem.solution =
+        solve_model!(energy_problem.dataframes, model, optimizer; parameters = parameters)
     energy_problem.termination_status = termination_status(model)
-    if solution === nothing
+    if energy_problem.solution === nothing
         # Warning has been given at internal function
         return
     end
@@ -30,9 +31,9 @@ function solve_model!(
     for a in labels(graph)
         if graph[a].investable
             if graph[a].investment_integer
-                graph[a].investment = round(Int, solution.assets_investment[a])
+                graph[a].investment = round(Int, energy_problem.solution.assets_investment[a])
             else
-                graph[a].investment = solution.assets_investment[a]
+                graph[a].investment = energy_problem.solution.assets_investment[a]
             end
         end
     end
@@ -45,9 +46,10 @@ function solve_model!(
     for (u, v) in edge_labels(graph)
         if graph[u, v].investable
             if graph[u, v].investment_integer
-                graph[u, v].investment = round(Int, solution.flows_investment[(u, v)])
+                graph[u, v].investment =
+                    round(Int, energy_problem.solution.flows_investment[(u, v)])
             else
-                graph[u, v].investment = solution.flows_investment[(u, v)]
+                graph[u, v].investment = energy_problem.solution.flows_investment[(u, v)]
             end
         end
     end
@@ -57,7 +59,7 @@ function solve_model!(
         graph[u, v].flow[(rp, time_block)] = value
     end
 
-    return solution
+    return energy_problem.solution
 end
 
 """
@@ -150,13 +152,13 @@ function solve_model(
         return nothing
     end
 
-    return (
-        objective_value = objective_value(model),
-        assets_investment = value.(model[:assets_investment]),
-        flow = value.(model[:flow]),
-        flows_investment = value.(model[:flows_investment]),
-        storage_level = value.(model[:storage_level]),
-        duals = compute_dual_variables(model),
+    return Solution(
+        Dict(a => value(model[:assets_investment][a]) for a in model[:assets_investment].axes[1]),
+        Dict(uv => value(model[:flows_investment][uv]) for uv in model[:flows_investment].axes[1]),
+        value.(model[:storage_level]),
+        value.(model[:flow]),
+        objective_value(model),
+        compute_dual_variables(model),
     )
 end
 
@@ -180,9 +182,9 @@ function compute_dual_variables(model)
             optimize!(model)
         end
 
-        return (
-            hub_balance = dual.(model[:hub_balance]),
-            consumer_balance = dual.(model[:consumer_balance]),
+        return Dict(
+            :hub_balance => dual.(model[:hub_balance]),
+            :consumer_balance => dual.(model[:consumer_balance]),
         )
     catch
         return nothing
