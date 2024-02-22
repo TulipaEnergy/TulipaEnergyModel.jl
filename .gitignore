@@ -10,3 +10,4 @@ coverage/
 debugging/
 docs/build/
 env
+test/outputs

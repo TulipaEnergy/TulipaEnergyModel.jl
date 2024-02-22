@@ -12,6 +12,9 @@ using TulipaEnergyModel
 # Folders names
 const INPUT_FOLDER = joinpath(@__DIR__, "inputs")
 const OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
+if !isdir(OUTPUT_FOLDER)
+    mkdir(OUTPUT_FOLDER)
+end
 
 # Run all files in test folder starting with `test-` and ending with `.jl`
 test_files = filter(file -> startswith("test-")(file) && endswith(".jl")(file), readdir(@__DIR__))
