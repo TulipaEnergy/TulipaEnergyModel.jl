@@ -128,46 +128,46 @@ By default, the model is solved using the [HiGHS](https://github.com/jump-dev/Hi
 To change this, we can give the functions `run_scenario`, `solve_model`, or
 `solve_model!` a different optimizer.
 
-For instance, we run the [Cbc](https://github.com/jump-dev/Cbc.jl) optimizer below:
+For instance, we run the [GLPK](https://github.com/jump-dev/GLPK.jl) optimizer below:
 
 ```@example
-using TulipaEnergyModel, Cbc
+using TulipaEnergyModel, GLPK
 
 input_dir = "../../test/inputs/Tiny" # hide
-energy_problem = run_scenario(input_dir, optimizer = Cbc.Optimizer)
+energy_problem = run_scenario(input_dir, optimizer = GLPK.Optimizer)
 ```
 
 or
 
 ```@example manual-energy-problem
-using Cbc
+using GLPK
 
-solution = solve_model!(energy_problem, Cbc.Optimizer)
+solution = solve_model!(energy_problem, GLPK.Optimizer)
 ```
 
 or
 
 ```@example manual
-using Cbc
+using GLPK
 
-solution = solve_model(model, Cbc.Optimizer)
+solution = solve_model(model, GLPK.Optimizer)
 ```
 
-Notice that, in any of these cases, we need to explicitly add the Cbc package
-ourselves and add `using Cbc` before using `Cbc.Optimizer`.
+Notice that, in any of these cases, we need to explicitly add the GLPK package
+ourselves and add `using GLPK` before using `GLPK.Optimizer`.
 
-In any of these cases, default parameters for the `Cbc` optimizer are used,
+In any of these cases, default parameters for the `GLPK` optimizer are used,
 which you can query using [`default_parameters`](@ref).
 If you want to change these, you can pass a dictionary via the keyword argument `parameters`.
 For instance, in the example below, we change the maximum allowed runtime for
-Cbc to be 0.01 seconds, which causes it to fail to converge in time.
+GLPK to be 1 seconds, which will most likely cause it to fail to converge in time.
 
 ```@example
-using TulipaEnergyModel, Cbc
+using TulipaEnergyModel, GLPK
 
 input_dir = "../../test/inputs/Tiny" # hide
-parameters = Dict("seconds" => 0.01)
-energy_problem = run_scenario(input_dir, optimizer = Cbc.Optimizer, parameters = parameters)
+parameters = Dict("tm_lim" => 1)
+energy_problem = run_scenario(input_dir, optimizer = GLPK.Optimizer, parameters = parameters)
 energy_problem.termination_status
 ```
 
