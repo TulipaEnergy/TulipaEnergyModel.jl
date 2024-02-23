@@ -26,7 +26,7 @@ end
 end
 
 @testset "Test run_scenario arguments" begin
-    dir = joinpath(INPUT_FOLDER, "Tiny")
+    dir = joinpath(INPUT_FOLDER, "Norse")
     energy_problem = run_scenario(dir, OUTPUT_FOLDER; write_lp_file = true, log_file = "model.log")
     @testset "Test printing EnergyProblem" begin
         print(energy_problem)

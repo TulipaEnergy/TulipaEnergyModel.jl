@@ -211,33 +211,103 @@ function save_solution_to_file(output_folder, energy_problem::EnergyProblem)
     if !energy_problem.solved
         error("The energy_problem has not been solved yet.")
     end
-    save_solution_to_file(output_folder, energy_problem.graph)
+    save_solution_to_file(
+        output_folder,
+        energy_problem.graph,
+        energy_problem.dataframes,
+        energy_problem.solution,
+    )
 end
 
 """
-    save_solution_to_file(output_file, graph)
+    save_solution_to_file(output_file, graph, solution)
 
 Saves the solution in CSV files inside `output_folder`.
 
 The following files are created:
 
-  - `investment.csv`: The format of each row is `a,v,p*v`, where `a` is the asset name,
+  - `assets-investment.csv`: The format of each row is `a,v,p*v`, where `a` is the asset name,
     `v` is the corresponding asset investment value, and `p` is the corresponding
     capacity value. Only investable assets are included.
+  - `flows-investment.csv`: Similar to `assets-investment.csv`, but for flows.
+  - `flows.csv`: The value of each flow, per `(from, to)` flow, `rp` representative period
+    and `time_step`. Since the flow is in power, the value at a time step is equal to the value
+    at the corresponding time block, i.e., if flow[1:3] = 30, then flow[1] = flow[2] = flow[3] = 30.
+  - `storage-level.csv`: The value of each storage level, per `asset`, `rp` representative period,
+    and `time_step`. Since the storage level is in energy, the value at a time step is a
+    proportional fraction of the value at the corresponding time block, i.e., if level[1:3] = 30,
+    then level[1] = level[2] = level[3] = 10.
 """
-function save_solution_to_file(output_folder, graph)
-    # Writing the investment results to a CSV file
-    output_file = joinpath(output_folder, "investments.csv")
-    output_table = DataFrame(; a = String[], InstalUnits = Int[], InstalCap_MW = Float64[])
+function save_solution_to_file(output_folder, graph, dataframes, solution)
+    output_file = joinpath(output_folder, "assets-investments.csv")
+    output_table = DataFrame(; asset = String[], InstalUnits = Float64[], InstalCap_MW = Float64[])
     for a in labels(graph)
         if !graph[a].investable
             continue
         end
-        v = graph[a].investment
-        p = graph[a].capacity
-        push!(output_table, (a, v, p * v))
+        investment = solution.assets_investment[a]
+        capacity = graph[a].capacity
+        push!(output_table, (a, investment, capacity * investment))
     end
     CSV.write(output_file, output_table)
+
+    output_file = joinpath(output_folder, "flows-investments.csv")
+    output_table = DataFrame(;
+        asset_from = String[],
+        asset_to = String[],
+        InstalUnits = Float64[],
+        InstalCap_MW = Float64[],
+    )
+    for (u, v) in edge_labels(graph)
+        if !graph[u, v].investable
+            continue
+        end
+        investment = solution.flows_investment[(u, v)]
+        capacity = graph[u, v].capacity
+        push!(output_table, (u, v, investment, capacity * investment))
+    end
+    CSV.write(output_file, output_table)
+
+    #=
+    In both cases below, we select the relevant columns from the existing dataframes,
+    then, we append the solution column.
+    After that, we transform and flatten, by rows, the time block values into a long version.
+    I.e., if a row shows `time_block = 3:5` and `value = 30`, then we transform into
+    three rows with values `time_step = [3, 4, 5]` and `value` equal to 30 / 3 for storage,
+    or 30 for flows.
+    =#
+
+    output_file = joinpath(output_folder, "flows.csv")
+    output_table = select(dataframes[:flows], :from, :to, :rp, :time_block => :time_step)
+    output_table.value = solution.flow
+    output_table = flatten(
+        transform(
+            output_table,
+            [:time_step, :value] =>
+                ByRow((time_block, value) -> begin # transform each row using these two columns
+                    n = length(time_block)
+                    (time_block, Iterators.repeated(value, n)) # e.g., (3:5, [30, 30, 30])
+                end) => [:time_step, :value],
+        ),
+        [:time_step, :value], # flatten, e.g., [(3, 30), (4, 30), (5, 30)]
+    )
+    output_table |> CSV.write(output_file)
+
+    output_file = joinpath(output_folder, "storage-level.csv")
+    output_table = select(dataframes[:lowest_storage_level], :asset, :rp, :time_block => :time_step)
+    output_table.value = solution.storage_level
+    output_table = flatten(
+        transform(
+            output_table,
+            [:time_step, :value] =>
+                ByRow((time_block, value) -> begin
+                        n = length(time_block)
+                        (time_block, Iterators.repeated(value / n, n))
+                    end) => [:time_step, :value],
+        ),
+        [:time_step, :value],
+    )
+    output_table |> CSV.write(output_file)
 
     return
 end

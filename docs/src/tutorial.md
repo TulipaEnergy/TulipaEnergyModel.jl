@@ -430,24 +430,11 @@ The value of the constraint is obtained by looking only at the part with variabl
 
 ### Writing the output to CSV
 
-The simplest way to save the output to CSV is to use packages CSV and DataFrames.
-Here is an example that saves the investment on the investable flows.
+To save the solution to CSV files, you can use [`save_solution_to_file`](@ref):
 
 ```@example solution
-using CSV, DataFrames
-df = DataFrame(; asset_from = String[], asset_to = String[], investment = Float64[])
-for (u, v) in edge_labels(graph)
-    if graph[u, v].investable
-        push!(df, (u, v, solution.flows_investment[(u, v)]))
-    end
-end
-CSV.write("flows_investment.csv", df)
-```
-
-Reading it back to show the  result:
-
-```@example solution
-CSV.read("flows_investment.csv", DataFrame)
+mkdir("output")
+save_solution_to_file("output", energy_problem)
 ```
 
 ### Plotting
