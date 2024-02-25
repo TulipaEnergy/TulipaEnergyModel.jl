@@ -39,7 +39,8 @@ jobs:
             - uses: julia-actions/julia-runtest@v1
             - uses: julia-actions/julia-processcoverage@v1
               if: matrix.version == '1' && matrix.os == 'ubuntu-latest'
-            - uses: codecov/codecov-action@v3
+            - uses: codecov/codecov-action@v4
               if: matrix.version == '1' && matrix.os == 'ubuntu-latest'
               with:
                   files: lcov.info
+                  token: ${{ secrets.CODECOV_TOKEN }} # Defined in the organization secrets
