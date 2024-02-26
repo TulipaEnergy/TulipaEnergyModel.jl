@@ -407,8 +407,11 @@ function create_model(
         ) for row in eachrow(df)
     ]
 
-    # - storage balance equation
+    # - storage balance equation for short-term storage
     for ((a, rp), sub_df) ∈ pairs(df_storage_level_grouped)
+        if !(a in As_short)
+            continue
+        end
         # This assumes an ordering of the time blocks, that is guaranteed inside
         # construct_dataframes
         # The storage_inflows have been moved here
