@@ -98,7 +98,7 @@ function create_graph_and_representative_periods_from_csv_folder(
         row in eachrow(rep_period_df)
     ]
 
-    base_periods = BasePeriod(length(rp_mapping_df.period))
+    base_periods = BasePeriod(maximum(rp_mapping_df.period), rp_mapping_df)
 
     asset_data = [
         row.name => GraphAssetData(

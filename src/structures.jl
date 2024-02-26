@@ -7,6 +7,7 @@ Structure to hold the data of the base periods.
 """
 struct BasePeriod
     num_base_periods::Int64
+    rp_mapping_df::DataFrame
 end
 
 """

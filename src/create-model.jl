@@ -10,7 +10,8 @@ export create_model!, create_model, construct_dataframes
 Computes the data frames used to linearize the variables and constraints. These are used
 internally in the model only.
 """
-function construct_dataframes(graph, representative_periods, constraints_partitions)
+function construct_dataframes(graph, representative_periods, constraints_partitions, base_periods)
+    A = labels(graph) |> collect
     F = edge_labels(graph) |> collect
     RP = 1:length(representative_periods)
 
@@ -49,6 +50,27 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         df.index = 1:size(df, 1)
         dataframes[key] = df
     end
+
+    # Dataframe to store the storage level inter representative period variable (long-term storage)
+    # create base_periods_block_per_asset
+    base_periods_block_per_asset = Dict(
+        a => begin
+            n = base_periods.num_base_periods
+            m = graph[a].moving_window_long_storage
+            [(1+m*(j-1)):min(n, m * j) for j = 1:ceil(Int, n / m)]
+        end for a in A if graph[a].type == "storage" && graph[a].storage_type == "long"
+    )
+
+    dataframes[:storage_level_inter] = DataFrame(
+        (
+            (
+                (asset = a, base_period_block = base_period_block) for
+                base_period_block in base_period_blocks
+            ) for (a, base_period_blocks) in base_periods_block_per_asset
+        ) |> Iterators.flatten,
+    )
+
+    dataframes[:storage_level_inter].index = 1:size(dataframes[:storage_level_inter], 1)
 
     return dataframes
 end
@@ -155,6 +177,60 @@ function add_expression_terms!(
 end
 
 """
+    add_expression_terms_inter!(df_inter, df_flows, df_map)
+
+Computes the incoming and outgoing expressions per row of df_inter. This function
+is only used internally in the model.
+
+"""
+function add_expression_terms_inter!(
+    df_inter,
+    df_flows,
+    df_map,
+    energy_limit,
+    graph,
+    representative_periods,
+)
+    df_inter[!, :incoming_flow] .= AffExpr(0.0)
+    df_inter[!, :outgoing_flow] .= AffExpr(0.0)
+    df_inter[!, :profile_aggregation] .= AffExpr(0.0)
+
+    # Incoming and Outgoing flows
+    for row_inter in eachrow(df_inter)
+        sub_df_map = filter(row -> row.period in row_inter.base_period_block, df_map)
+
+        for row_map in eachrow(sub_df_map)
+            sub_df_flows =
+                filter(row -> row.to == row_inter.asset && row.rp == row_map.rep_period, df_flows)
+            row_inter.incoming_flow +=
+                dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
+            sub_df_flows =
+                filter(row -> row.from == row_inter.asset && row.rp == row_map.rep_period, df_flows)
+            row_inter.outgoing_flow +=
+                dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
+            row_inter.profile_aggregation +=
+                profile_aggregation(
+                    sum,
+                    graph[row_inter.asset].profiles,
+                    row_map.rep_period,
+                    representative_periods[row_map.rep_period].time_steps,
+                    0.0,
+                ) *
+                (
+                    graph[row_inter.asset].initial_storage_capacity + (
+                        if graph[row_inter.asset].investable
+                            energy_limit[row_inter.asset]
+                        else
+                            0.0
+                        end
+                    )
+                ) *
+                row_map.weight
+        end
+    end
+end
+
+"""
     profile_aggregation(agg, profiles, rp, time_block, default_value)
 
 Aggregates the `profiles[rp]` over the `time_block` using the `agg` function.
@@ -184,7 +260,7 @@ function create_model!(energy_problem; kwargs...)
     constraints_partitions = energy_problem.constraints_partitions
     base_periods = energy_problem.base_periods
     energy_problem.dataframes =
-        construct_dataframes(graph, representative_periods, constraints_partitions)
+        construct_dataframes(graph, representative_periods, constraints_partitions, base_periods)
     energy_problem.model = create_model(
         graph,
         representative_periods,
@@ -249,6 +325,7 @@ function create_model(
     df_flows = dataframes[:flows]
 
     df_storage_level_grouped = groupby(dataframes[:lowest_storage_level], [:asset, :rp])
+    df_storage_inter_balance_grouped = groupby(dataframes[:storage_level_inter], [:asset])
 
     ## Model
     model = Model()
@@ -266,9 +343,20 @@ function create_model(
     @variable(model, 0 ≤ flows_investment[Fi])
     storage_level =
         model[:storage_level] = [
-            @variable(model, base_name = "storage_level[$(row.asset),$(row.rp),$(row.time_block)]") for row in eachrow(dataframes[:lowest_storage_level])
+            @variable(
+                model,
+                lower_bound = 0.0,
+                base_name = "storage_level[$(row.asset),$(row.rp),$(row.time_block)]"
+            ) for row in eachrow(dataframes[:lowest_storage_level])
         ]
-
+    storage_level_inter =
+        model[:storage_level_inter] = [
+            @variable(
+                model,
+                lower_bound = 0.0,
+                base_name = "storage_level_inter[$(row.asset),$(row.base_period_block)]"
+            ) for row in eachrow(dataframes[:storage_level_inter])
+        ]
     ### Integer Investment Variables
     for a ∈ Ai
         if graph[a].investment_integer
@@ -281,6 +369,13 @@ function create_model(
             set_integer(flows_investment[(u, v)])
         end
     end
+
+    ## Expressions
+    @expression(
+        model,
+        energy_limit[a ∈ As∩Ai],
+        graph[a].energy_to_power_ratio * graph[a].capacity * assets_investment[a]
+    )
 
     # Creating the incoming and outgoing flow expressions
     add_expression_terms!(
@@ -328,6 +423,14 @@ function create_model(
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
+    add_expression_terms_inter!(
+        dataframes[:storage_level_inter],
+        df_flows,
+        base_periods.rp_mapping_df,
+        energy_limit,
+        graph,
+        representative_periods,
+    )
     incoming_flow_lowest_resolution =
         model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow_lowest
     outgoing_flow_lowest_resolution =
@@ -349,6 +452,10 @@ function create_model(
     outgoing_flow_highest_out_resolution =
         model[:outgoing_flow_highest_out_resolution] =
             dataframes[:highest_out].outgoing_flow_highest
+    incoming_flow_storage_inter =
+        model[:incoming_flow_storage_inter] = dataframes[:storage_level_inter].incoming_flow
+    outgoing_flow_storage_inter =
+        model[:outgoing_flow_storage_inter] = dataframes[:storage_level_inter].outgoing_flow
     # Below, we drop zero coefficients, but probably we don't have any
     # (if the implementation is correct)
     drop_zeros!.(incoming_flow_lowest_resolution)
@@ -359,6 +466,8 @@ function create_model(
     drop_zeros!.(outgoing_flow_highest_in_out_resolution)
     drop_zeros!.(incoming_flow_highest_in_resolution)
     drop_zeros!.(outgoing_flow_highest_out_resolution)
+    drop_zeros!.(incoming_flow_storage_inter)
+    drop_zeros!.(outgoing_flow_storage_inter)
 
     ## Expressions for the objective function
     assets_investment_cost = @expression(
@@ -386,12 +495,6 @@ function create_model(
 
     ## Objective function
     @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
-
-    @expression(
-        model,
-        energy_limit[a ∈ As∩Ai],
-        graph[a].energy_to_power_ratio * graph[a].capacity * assets_investment[a]
-    )
 
     ## Balance constraints (using the lowest resolution)
     # - consumer balance equation
@@ -439,6 +542,37 @@ function create_model(
                 incoming_flow_lowest_storage_resolution[row.index] -
                 outgoing_flow_lowest_storage_resolution[row.index],
                 base_name = "storage_balance[$a,$rp,$(row.time_block)]"
+            ) for (k, row) ∈ enumerate(eachrow(sub_df))
+        ]
+    end
+    # - storage balance equation for long-term storage
+    for ((a,), sub_df) ∈ pairs(df_storage_inter_balance_grouped)
+        if !(a in As_long)
+            continue
+        end
+        # This assumes an ordering of the time blocks, that is guaranteed inside
+        # construct_dataframes
+        # The storage_inflows have been moved here
+        model[Symbol("storage_inter_balance_$(a)")] = [
+            @constraint(
+                model,
+                storage_level_inter[row.index] ==
+                (
+                    if k > 1
+                        storage_level_inter[row.index-1] # This assumes contiguous index
+                    else
+                        (
+                            if ismissing(graph[a].initial_storage_level)
+                                storage_level_inter[last(sub_df.index)]
+                            else
+                                graph[a].initial_storage_level
+                            end
+                        )
+                    end
+                ) +
+                row.profile_aggregation +
+                incoming_flow_storage_inter[row.index] - outgoing_flow_storage_inter[row.index],
+                base_name = "storage_inter_balance[$a,$(row.base_period_block)]"
             ) for (k, row) ∈ enumerate(eachrow(sub_df))
         ]
     end
