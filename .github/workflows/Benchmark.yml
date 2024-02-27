@@ -18,7 +18,7 @@ concurrency:
 jobs:
     benchmark:
         # Only runs if the PR originates from the repo itself and if the label 'benchmark' is assigned
-        if: contains(github.event.pull_request.labels.*.name, 'benchmark') && github.event.pull_request.head.repo.full_name == github.repository
+        if: contains(github.event.pull_request.labels.*.name, 'benchmark')
         runs-on: ubuntu-latest
         env:
             BASE: ${{ github.event.pull_request.base.sha }}
@@ -87,6 +87,7 @@ jobs:
               run: |
                   benchpkgtable ${{ steps.extract-package-name.outputs.package_name }} \
                     --rev="$BASE,$HEAD" \
+                    --mode=time,memory \
                     --input-dir=results/ --ratio > table.md
                   echo '### Benchmark Results' > body.md
                   echo '' >> body.md
