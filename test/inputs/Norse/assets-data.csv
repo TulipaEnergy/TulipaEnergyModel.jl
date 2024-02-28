@@ -12,7 +12,7 @@ Midgard_E_imports,producer,true,false,false,0,0,0,500,0,,,0,0,0,
 Midgard_CCGT,conversion,true,true,true,650,,500,0,0,,,0,0,0,
 Midgard_E_demand,consumer,true,false,false,0,0,0,0,19604.76443,,,0,0,0,
 Valhalla_H2_generator,conversion,true,true,true,479,,100,0,0,,,0,0,0,
-Valhalla_H2_storage,storage,true,true,true,0.1,,500,0,0,long,,0,0,10000,14
+Valhalla_H2_storage,storage,true,true,true,0.1,,500,0,0,long,,0,,10000,14
 Valhalla_H2_demand,consumer,true,false,false,0,0,0,0,745.735,,,0,0,0,
 Valhalla_Electrolyser,conversion,true,true,true,1260,,100,500,0,,,0,0,0,
 Valhalla_E_balance,hub,true,false,false,0,0,0,0,0,,,0,0,0,

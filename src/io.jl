@@ -98,7 +98,7 @@ function create_graph_and_representative_periods_from_csv_folder(
         row in eachrow(rep_period_df)
     ]
 
-    base_periods = BasePeriod(length(rp_mapping_df.period))
+    base_periods = BasePeriod(maximum(rp_mapping_df.period), rp_mapping_df)
 
     asset_data = [
         row.name => GraphAssetData(
@@ -293,9 +293,10 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     )
     output_table |> CSV.write(output_file)
 
-    output_file = joinpath(output_folder, "storage-level.csv")
-    output_table = select(dataframes[:lowest_storage_level], :asset, :rp, :time_block => :time_step)
-    output_table.value = solution.storage_level
+    output_file = joinpath(output_folder, "storage-level-intra-rp.csv")
+    output_table =
+        select(dataframes[:lowest_storage_level_intra_rp], :asset, :rp, :time_block => :time_step)
+    output_table.value = solution.storage_level_intra_rp
     output_table = flatten(
         transform(
             output_table,

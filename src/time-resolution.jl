@@ -27,32 +27,39 @@ function compute_constraints_partitions(graph, representative_periods)
             name = :lowest,
             partitions = _allflows,
             strategy = :lowest,
-            asset_types = ["conversion", "producer"],
+            asset_filter = a -> graph[a].type in ["conversion", "producer"],
         ),
         (
-            name = :lowest_storage_level,
+            name = :lowest_storage_level_intra_rp,
             partitions = _all,
             strategy = :lowest,
-            asset_types = ["storage"],
+            asset_filter = a ->
+                graph[a].type in ["storage"] &&
+                    coalesce(graph[a].storage_type == "short", true),
         ),
         (
             name = :highest_in_out,
             partitions = _allflows,
             strategy = :highest,
-            asset_types = ["hub", "consumer"],
+            asset_filter = a -> graph[a].type in ["hub", "consumer"],
         ),
-        (name = :highest_in, partitions = _inflows, strategy = :highest, asset_types = ["storage"]),
+        (
+            name = :highest_in,
+            partitions = _inflows,
+            strategy = :highest,
+            asset_filter = a -> graph[a].type in ["storage"],
+        ),
         (
             name = :highest_out,
             partitions = _outflows,
             strategy = :highest,
-            asset_types = ["producer", "storage", "conversion"],
+            asset_filter = a -> graph[a].type in ["producer", "storage", "conversion"],
         ),
     ]
 
     num_rep_periods = length(representative_periods)
 
-    for (name, partitions, strategy, types) in partitions_cases
+    for (name, partitions, strategy, asset_filter) in partitions_cases
         constraints_partitions[name] = OrderedDict(
             (a, rp) => begin
                 P = partitions(a, rp)
@@ -61,7 +68,7 @@ function compute_constraints_partitions(graph, representative_periods)
                 else
                     Vector{TimeBlock}[]
                 end
-            end for a in labels(graph), rp = 1:num_rep_periods if graph[a].type in types
+            end for a in labels(graph), rp = 1:num_rep_periods if asset_filter(a)
         )
     end
 

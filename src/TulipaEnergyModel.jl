@@ -12,7 +12,7 @@ using Graphs, MetaGraphsNext
 using HiGHS, JuMP, MathOptInterface
 
 ## Others
-using OrderedCollections, Statistics, TimerOutputs
+using LinearAlgebra, OrderedCollections, Statistics, TimerOutputs
 
 include("input-tables.jl")
 include("structures.jl")

@@ -7,6 +7,7 @@ Structure to hold the data of the base periods.
 """
 struct BasePeriod
     num_base_periods::Int64
+    rp_mapping_df::DataFrame
 end
 
 """
@@ -46,7 +47,7 @@ mutable struct GraphAssetData
     partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
     investment::Float64
-    storage_level::Dict{Tuple{Int,TimeBlock},Float64}
+    storage_level_intra_rp::Dict{Tuple{Int,TimeBlock},Float64}
 
     # You don't need profiles to create the struct, so initiate it empty
     function GraphAssetData(
@@ -137,7 +138,7 @@ end
 mutable struct Solution
     assets_investment::Dict{String,Float64}
     flows_investment::Dict{Tuple{String,String},Float64}
-    storage_level::Vector{Float64}
+    storage_level_intra_rp::Vector{Float64}
     flow::Vector{Float64}
     objective_value::Float64
     duals::Union{Nothing,Dict{Symbol,Vector{Float64}}}
