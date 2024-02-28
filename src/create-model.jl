@@ -5,6 +5,7 @@ export create_model!, create_model, construct_dataframes
         graph,
         representative_periods,
         constraints_partitions,
+        base_periods,
     )
 
 Computes the data frames used to linearize the variables and constraints. These are used
