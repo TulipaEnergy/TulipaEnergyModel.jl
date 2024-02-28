@@ -61,16 +61,21 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         end for a in A if graph[a].type == "storage" && graph[a].storage_type == "long"
     )
 
-    dataframes[:storage_level_inter_rp] = DataFrame(
-        (
+    if !isempty(base_periods_block_per_asset)
+        dataframes[:storage_level_inter_rp] = DataFrame(
             (
-                (asset = a, base_period_block = base_period_block) for
-                base_period_block in base_period_blocks
-            ) for (a, base_period_blocks) in base_periods_block_per_asset
-        ) |> Iterators.flatten,
-    )
-
-    dataframes[:storage_level_inter_rp].index = 1:size(dataframes[:storage_level_inter_rp], 1)
+                (
+                    (asset = a, base_period_block = base_period_block) for
+                    base_period_block in base_period_blocks
+                ) for (a, base_period_blocks) in base_periods_block_per_asset
+            ) |> Iterators.flatten,
+        )
+        dataframes[:storage_level_inter_rp].index = 1:size(dataframes[:storage_level_inter_rp], 1)
+    else
+        # No data, but ensure schema is correct
+        dataframes[:storage_level_inter_rp] =
+            DataFrame(; asset = String[], base_period_block = Int[], index = Int[])
+    end
 
     return dataframes
 end
