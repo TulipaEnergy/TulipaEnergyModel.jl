@@ -30,7 +30,7 @@ function compute_constraints_partitions(graph, representative_periods)
             asset_filter = a -> graph[a].type in ["conversion", "producer"],
         ),
         (
-            name = :lowest_storage_level,
+            name = :lowest_storage_level_intra_rp,
             partitions = _all,
             strategy = :lowest,
             asset_filter = a ->

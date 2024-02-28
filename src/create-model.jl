@@ -51,7 +51,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         dataframes[key] = df
     end
 
-    # Dataframe to store the storage level inter representative period variable (long-term storage)
+    # Dataframe to store the storage level between (inter) representative period variable (a.k.a. long-term or seasonal storage)
     # create base_periods_block_per_asset
     base_periods_block_per_asset = Dict(
         a => begin
@@ -61,7 +61,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         end for a in A if graph[a].type == "storage" && graph[a].storage_type == "long"
     )
 
-    dataframes[:storage_level_inter] = DataFrame(
+    dataframes[:storage_level_inter_rp] = DataFrame(
         (
             (
                 (asset = a, base_period_block = base_period_block) for
@@ -70,22 +70,31 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         ) |> Iterators.flatten,
     )
 
-    dataframes[:storage_level_inter].index = 1:size(dataframes[:storage_level_inter], 1)
+    dataframes[:storage_level_inter_rp].index = 1:size(dataframes[:storage_level_inter_rp], 1)
 
     return dataframes
 end
 
 """
-    add_expression_terms!(df_cons, df_flows, workspace, representative_periods; add_efficiency)
+    add_expression_terms_intra_rp_constraints!(df_cons,
+                                               df_flows,
+                                               workspace,
+                                               representative_periods,
+                                               graph;
+                                               use_highest_resolution = true,
+                                               multiply_by_duration = true,
+                                               )
 
-Computes the incoming and outgoing expressions per row of df_cons. This function
-is only used internally in the model.
+Computes the incoming and outgoing expressions per row of df_cons for the constraints
+that are within (intra) the representative period.
+
+This function is only used internally in the model.
 
 This strategy is based on the replies in this discourse thread:
 
   - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
 """
-function add_expression_terms!(
+function add_expression_terms_intra_rp_constraints!(
     df_cons,
     df_flows,
     workspace,
@@ -177,13 +186,21 @@ function add_expression_terms!(
 end
 
 """
-    add_expression_terms_inter!(df_inter, df_flows, df_map)
+    add_expression_terms_inter_rp_constraints!(df_inter,
+                                               df_flows,
+                                               df_map,
+                                               energy_limit,
+                                               graph,
+                                               representative_periods,
+                                               )
 
-Computes the incoming and outgoing expressions per row of df_inter. This function
-is only used internally in the model.
+Computes the incoming and outgoing expressions per row of df_inter for the constraints
+that are between (inter) the representative period.
+
+This function is only used internally in the model.
 
 """
-function add_expression_terms_inter!(
+function add_expression_terms_inter_rp_constraints!(
     df_inter,
     df_flows,
     df_map,
@@ -195,7 +212,7 @@ function add_expression_terms_inter!(
     df_inter[!, :outgoing_flow] .= AffExpr(0.0)
     df_inter[!, :profile_aggregation] .= AffExpr(0.0)
 
-    # Incoming and Outgoing flows
+    # Incoming, outgoing flows, and profile aggregation
     for row_inter in eachrow(df_inter)
         sub_df_map = filter(row -> row.period in row_inter.base_period_block, df_map)
 
@@ -295,7 +312,6 @@ function create_model(
     end
 
     ## Sets unpacking
-    P = 1:base_periods.num_base_periods
     A = labels(graph) |> collect
     F = edge_labels(graph) |> collect
     filter_assets(key, value) =
@@ -324,8 +340,9 @@ function create_model(
     # Unpacking dataframes
     df_flows = dataframes[:flows]
 
-    df_storage_level_grouped = groupby(dataframes[:lowest_storage_level], [:asset, :rp])
-    df_storage_inter_balance_grouped = groupby(dataframes[:storage_level_inter], [:asset])
+    df_storage_intra_rp_balance_grouped =
+        groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rp])
+    df_storage_inter_rp_balance_grouped = groupby(dataframes[:storage_level_inter_rp], [:asset])
 
     ## Model
     model = Model()
@@ -341,21 +358,21 @@ function create_model(
             ]
     @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
     @variable(model, 0 ≤ flows_investment[Fi])
-    storage_level =
-        model[:storage_level] = [
+    storage_level_intra_rp =
+        model[:storage_level_intra_rp] = [
             @variable(
                 model,
                 lower_bound = 0.0,
-                base_name = "storage_level[$(row.asset),$(row.rp),$(row.time_block)]"
-            ) for row in eachrow(dataframes[:lowest_storage_level])
+                base_name = "storage_level_intra_rp[$(row.asset),$(row.rp),$(row.time_block)]"
+            ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
         ]
-    storage_level_inter =
-        model[:storage_level_inter] = [
+    storage_level_inter_rp =
+        model[:storage_level_inter_rp] = [
             @variable(
                 model,
                 lower_bound = 0.0,
-                base_name = "storage_level_inter[$(row.asset),$(row.base_period_block)]"
-            ) for row in eachrow(dataframes[:storage_level_inter])
+                base_name = "storage_level_inter_rp[$(row.asset),$(row.base_period_block)]"
+            ) for row in eachrow(dataframes[:storage_level_inter_rp])
         ]
     ### Integer Investment Variables
     for a ∈ Ai
@@ -378,7 +395,7 @@ function create_model(
     )
 
     # Creating the incoming and outgoing flow expressions
-    add_expression_terms!(
+    add_expression_terms_intra_rp_constraints!(
         dataframes[:lowest],
         df_flows,
         expression_workspace,
@@ -387,8 +404,8 @@ function create_model(
         use_highest_resolution = false,
         multiply_by_duration = true,
     )
-    add_expression_terms!(
-        dataframes[:lowest_storage_level],
+    add_expression_terms_intra_rp_constraints!(
+        dataframes[:lowest_storage_level_intra_rp],
         df_flows,
         expression_workspace,
         representative_periods,
@@ -396,7 +413,7 @@ function create_model(
         use_highest_resolution = false,
         multiply_by_duration = true,
     )
-    add_expression_terms!(
+    add_expression_terms_intra_rp_constraints!(
         dataframes[:highest_in_out],
         df_flows,
         expression_workspace,
@@ -405,7 +422,7 @@ function create_model(
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
-    add_expression_terms!(
+    add_expression_terms_intra_rp_constraints!(
         dataframes[:highest_in],
         df_flows,
         expression_workspace,
@@ -414,7 +431,7 @@ function create_model(
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
-    add_expression_terms!(
+    add_expression_terms_intra_rp_constraints!(
         dataframes[:highest_out],
         df_flows,
         expression_workspace,
@@ -423,8 +440,8 @@ function create_model(
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
-    add_expression_terms_inter!(
-        dataframes[:storage_level_inter],
+    add_expression_terms_inter_rp_constraints!(
+        dataframes[:storage_level_inter_rp],
         df_flows,
         base_periods.rp_mapping_df,
         energy_limit,
@@ -435,12 +452,12 @@ function create_model(
         model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow_lowest
     outgoing_flow_lowest_resolution =
         model[:outgoing_flow_lowest_resolution] = dataframes[:lowest].outgoing_flow_lowest
-    incoming_flow_lowest_storage_resolution =
-        model[:incoming_flow_lowest_storage_resolution] =
-            dataframes[:lowest_storage_level].incoming_flow_lowest
-    outgoing_flow_lowest_storage_resolution =
-        model[:outgoing_flow_lowest_storage_resolution] =
-            dataframes[:lowest_storage_level].outgoing_flow_lowest
+    incoming_flow_lowest_storage_resolution_intra_rp =
+        model[:incoming_flow_lowest_storage_resolution_intra_rp] =
+            dataframes[:lowest_storage_level_intra_rp].incoming_flow_lowest
+    outgoing_flow_lowest_storage_resolution_intra_rp =
+        model[:outgoing_flow_lowest_storage_resolution_intra_rp] =
+            dataframes[:lowest_storage_level_intra_rp].outgoing_flow_lowest
     incoming_flow_highest_in_out_resolution =
         model[:incoming_flow_highest_in_out_resolution] =
             dataframes[:highest_in_out].incoming_flow_highest
@@ -452,22 +469,24 @@ function create_model(
     outgoing_flow_highest_out_resolution =
         model[:outgoing_flow_highest_out_resolution] =
             dataframes[:highest_out].outgoing_flow_highest
-    incoming_flow_storage_inter =
-        model[:incoming_flow_storage_inter] = dataframes[:storage_level_inter].incoming_flow
-    outgoing_flow_storage_inter =
-        model[:outgoing_flow_storage_inter] = dataframes[:storage_level_inter].outgoing_flow
+    incoming_flow_storage_inter_rp_balance =
+        model[:incoming_flow_storage_inter_rp_balance] =
+            dataframes[:storage_level_inter_rp].incoming_flow
+    outgoing_flow_storage_inter_rp_balance =
+        model[:outgoing_flow_storage_inter_rp_balance] =
+            dataframes[:storage_level_inter_rp].outgoing_flow
     # Below, we drop zero coefficients, but probably we don't have any
     # (if the implementation is correct)
     drop_zeros!.(incoming_flow_lowest_resolution)
     drop_zeros!.(outgoing_flow_lowest_resolution)
-    drop_zeros!.(incoming_flow_lowest_storage_resolution)
-    drop_zeros!.(outgoing_flow_lowest_storage_resolution)
+    drop_zeros!.(incoming_flow_lowest_storage_resolution_intra_rp)
+    drop_zeros!.(outgoing_flow_lowest_storage_resolution_intra_rp)
     drop_zeros!.(incoming_flow_highest_in_out_resolution)
     drop_zeros!.(outgoing_flow_highest_in_out_resolution)
     drop_zeros!.(incoming_flow_highest_in_resolution)
     drop_zeros!.(outgoing_flow_highest_out_resolution)
-    drop_zeros!.(incoming_flow_storage_inter)
-    drop_zeros!.(outgoing_flow_storage_inter)
+    drop_zeros!.(incoming_flow_storage_inter_rp_balance)
+    drop_zeros!.(outgoing_flow_storage_inter_rp_balance)
 
     ## Expressions for the objective function
     assets_investment_cost = @expression(
@@ -510,25 +529,25 @@ function create_model(
         ) for row in eachrow(df)
     ]
 
-    # - storage balance equation for short-term storage
-    for ((a, rp), sub_df) ∈ pairs(df_storage_level_grouped)
+    # - intra representative period (rp) storage balance equation
+    for ((a, rp), sub_df) ∈ pairs(df_storage_intra_rp_balance_grouped)
         if !(a in As_short)
             continue
         end
         # This assumes an ordering of the time blocks, that is guaranteed inside
         # construct_dataframes
         # The storage_inflows have been moved here
-        model[Symbol("storage_balance_$(a)_$(rp)")] = [
+        model[Symbol("storage_intra_rp_balance_$(a)_$(rp)")] = [
             @constraint(
                 model,
-                storage_level[row.index] ==
+                storage_level_intra_rp[row.index] ==
                 (
                     if k > 1
-                        storage_level[row.index-1] # This assumes contiguous index
+                        storage_level_intra_rp[row.index-1] # This assumes contiguous index
                     else
                         (
                             if ismissing(graph[a].initial_storage_level)
-                                storage_level[last(sub_df.index)]
+                                storage_level_intra_rp[last(sub_df.index)]
                             else
                                 graph[a].initial_storage_level
                             end
@@ -539,31 +558,31 @@ function create_model(
                     graph[a].initial_storage_capacity +
                     (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
                 ) +
-                incoming_flow_lowest_storage_resolution[row.index] -
-                outgoing_flow_lowest_storage_resolution[row.index],
-                base_name = "storage_balance[$a,$rp,$(row.time_block)]"
+                incoming_flow_lowest_storage_resolution_intra_rp[row.index] -
+                outgoing_flow_lowest_storage_resolution_intra_rp[row.index],
+                base_name = "storage_intra_rp_balance[$a,$rp,$(row.time_block)]"
             ) for (k, row) ∈ enumerate(eachrow(sub_df))
         ]
     end
-    # - storage balance equation for long-term storage
-    for ((a,), sub_df) ∈ pairs(df_storage_inter_balance_grouped)
+    # - inter representative periods (rp) storage balance equation
+    for ((a,), sub_df) ∈ pairs(df_storage_inter_rp_balance_grouped)
         if !(a in As_long)
             continue
         end
         # This assumes an ordering of the time blocks, that is guaranteed inside
         # construct_dataframes
         # The storage_inflows have been moved here
-        model[Symbol("storage_inter_balance_$(a)")] = [
+        model[Symbol("storage_inter_rp_balance_$(a)")] = [
             @constraint(
                 model,
-                storage_level_inter[row.index] ==
+                storage_level_inter_rp[row.index] ==
                 (
                     if k > 1
-                        storage_level_inter[row.index-1] # This assumes contiguous index
+                        storage_level_inter_rp[row.index-1] # This assumes contiguous index
                     else
                         (
                             if ismissing(graph[a].initial_storage_level)
-                                storage_level_inter[last(sub_df.index)]
+                                storage_level_inter_rp[last(sub_df.index)]
                             else
                                 graph[a].initial_storage_level
                             end
@@ -571,8 +590,9 @@ function create_model(
                     end
                 ) +
                 row.profile_aggregation +
-                incoming_flow_storage_inter[row.index] - outgoing_flow_storage_inter[row.index],
-                base_name = "storage_inter_balance[$a,$(row.base_period_block)]"
+                incoming_flow_storage_inter_rp_balance[row.index] -
+                outgoing_flow_storage_inter_rp_balance[row.index],
+                base_name = "storage_inter_rp_balance[$a,$(row.base_period_block)]"
             ) for (k, row) ∈ enumerate(eachrow(sub_df))
         ]
     end
@@ -767,22 +787,25 @@ function create_model(
     ]
 
     ## Extra constraints for storage assets
-    # - maximum storage level limit
-    model[:max_storage_level_limit] = [
+    # - maximum storage level within (intra) a representative period
+    model[:max_storage_level_intra_rp_limit] = [
         @constraint(
             model,
-            storage_level[row.index] ≤
+            storage_level_intra_rp[row.index] ≤
             graph[row.asset].initial_storage_capacity +
             (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0),
-            base_name = "max_storage_level_limit[$(row.asset),$(row.rp),$(row.time_block)]"
-        ) for row ∈ eachrow(dataframes[:lowest_storage_level])
+            base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.time_block)]"
+        ) for row ∈ eachrow(dataframes[:lowest_storage_level_intra_rp])
     ]
 
-    # - cycling condition for storage level
-    for ((a, _), sub_df) ∈ pairs(df_storage_level_grouped)
+    # - cycling condition for storage level within (intra) a representative period
+    for ((a, _), sub_df) ∈ pairs(df_storage_intra_rp_balance_grouped)
         # Again, ordering is assume
         if !ismissing(graph[a].initial_storage_level)
-            set_lower_bound(storage_level[last(sub_df.index)], graph[a].initial_storage_level)
+            set_lower_bound(
+                storage_level_intra_rp[last(sub_df.index)],
+                graph[a].initial_storage_level,
+            )
         end
     end
 

@@ -38,9 +38,9 @@ function solve_model!(
         end
     end
 
-    for row in eachrow(energy_problem.dataframes[:lowest_storage_level])
+    for row in eachrow(energy_problem.dataframes[:lowest_storage_level_intra_rp])
         a, rp, time_block, value = row.asset, row.rp, row.time_block, row.solution
-        graph[a].storage_level[(rp, time_block)] = value
+        graph[a].storage_level_intra_rp[(rp, time_block)] = value
     end
 
     for (u, v) in edge_labels(graph)
@@ -69,7 +69,7 @@ Solves the JuMP `model` and return the solution, and modifies some `dataframes` 
 The modifications made to `dataframes` are:
 
 - `df_flows.solution = solution.flow`
-- `df_storage_level.solution = solution.storage_level`
+- `df_storage_level_intra_rp.solution = solution.storage_level_intra_rp`
 """
 function solve_model!(dataframes, model, args...; kwargs...)
     solution = solve_model(model, args...; kwargs...)
@@ -78,7 +78,7 @@ function solve_model!(dataframes, model, args...; kwargs...)
     end
 
     dataframes[:flows].solution = solution.flow
-    dataframes[:lowest_storage_level].solution = solution.storage_level
+    dataframes[:lowest_storage_level_intra_rp].solution = solution.storage_level_intra_rp
 
     return solution
 end
@@ -117,13 +117,13 @@ The `solution` object is a NamedTuple with the following fields:
     ```
     [solution.flow[(u, v), rp, B] for B in graph[u, v].partitions[rp]]
     ```
-  - `storage_level[a, rp, B]`: The storage level for the storage asset `a` for a representative period `rp`
+  - `storage_level_intra_rp[a, rp, B]`: The storage level for the storage asset `a` for a representative period `rp`
     and a time block `B`. The list of time blocks is defined by `constraints_partitions`, which was used
     to create the model.
-    To create a vector with the all values of `storage_level` for a given `a` and `rp`, one can run
+    To create a vector with the all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
 
     ```
-    [solution.storage_level[a, rp, B] for B in constraints_partitions[:lowest_resolution][(a, rp)]]
+    [solution.storage_level_intra_rp[a, rp, B] for B in constraints_partitions[:lowest_resolution][(a, rp)]]
     ```
 
 ## Examples
@@ -155,7 +155,7 @@ function solve_model(
     return Solution(
         Dict(a => value(model[:assets_investment][a]) for a in model[:assets_investment].axes[1]),
         Dict(uv => value(model[:flows_investment][uv]) for uv in model[:flows_investment].axes[1]),
-        value.(model[:storage_level]),
+        value.(model[:storage_level_intra_rp]),
         value.(model[:flow]),
         objective_value(model),
         compute_dual_variables(model),
