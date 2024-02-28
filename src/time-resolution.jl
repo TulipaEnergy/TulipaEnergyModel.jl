@@ -34,7 +34,8 @@ function compute_constraints_partitions(graph, representative_periods)
             partitions = _all,
             strategy = :lowest,
             asset_filter = a ->
-                graph[a].type in ["storage"] && graph[a].storage_type == "short",
+                graph[a].type in ["storage"] &&
+                    coalesce(graph[a].storage_type == "short", true),
         ),
         (
             name = :highest_in_out,

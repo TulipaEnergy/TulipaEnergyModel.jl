@@ -59,7 +59,8 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
             n = base_periods.num_base_periods
             m = graph[a].moving_window_long_storage
             [(1+m*(j-1)):min(n, m * j) for j = 1:ceil(Int, n / m)]
-        end for a in A if graph[a].type == "storage" && graph[a].storage_type == "long"
+        end for
+        a in A if graph[a].type == "storage" && coalesce(graph[a].storage_type == "long", false)
     )
 
     if !isempty(base_periods_block_per_asset)
