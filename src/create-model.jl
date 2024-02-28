@@ -538,9 +538,6 @@ function create_model(
 
     # - intra representative period (rp) storage balance equation
     for ((a, rp), sub_df) ∈ pairs(df_storage_intra_rp_balance_grouped)
-        if !(a in As_short)
-            continue
-        end
         # This assumes an ordering of the time blocks, that is guaranteed inside
         # construct_dataframes
         # The storage_inflows have been moved here
@@ -573,9 +570,6 @@ function create_model(
     end
     # - inter representative periods (rp) storage balance equation
     for ((a,), sub_df) ∈ pairs(df_storage_inter_rp_balance_grouped)
-        if !(a in As_long)
-            continue
-        end
         # This assumes an ordering of the time blocks, that is guaranteed inside
         # construct_dataframes
         # The storage_inflows have been moved here
