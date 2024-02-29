@@ -134,7 +134,7 @@ The `solution` object is a NamedTuple with the following fields:
     ```
 - `storage_level_inter_rp[a, bp]`: The storage level for the storage asset `a` for a base period `bp`.
     To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run
-    
+
     ```
     [solution.storage_level_inter_rp[a, bp] for bp in 1:base_periods]
     ```
