@@ -43,6 +43,11 @@ function solve_model!(
         graph[a].storage_level_intra_rp[(rp, time_block)] = value
     end
 
+    for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
+        a, bp, value = row.asset, row.base_period_block, row.solution
+        graph[a].storage_level_inter_rp[bp] = value
+    end
+
     for (u, v) in edge_labels(graph)
         if graph[u, v].investable
             if graph[u, v].investment_integer
@@ -70,6 +75,7 @@ The modifications made to `dataframes` are:
 
 - `df_flows.solution = solution.flow`
 - `df_storage_level_intra_rp.solution = solution.storage_level_intra_rp`
+- `df_storage_level_inter_rp.solution = solution.storage_level_inter_rp`
 """
 function solve_model!(dataframes, model, args...; kwargs...)
     solution = solve_model(model, args...; kwargs...)
@@ -79,6 +85,7 @@ function solve_model!(dataframes, model, args...; kwargs...)
 
     dataframes[:flows].solution = solution.flow
     dataframes[:lowest_storage_level_intra_rp].solution = solution.storage_level_intra_rp
+    dataframes[:storage_level_inter_rp].solution = solution.storage_level_inter_rp
 
     return solution
 end
@@ -125,6 +132,12 @@ The `solution` object is a NamedTuple with the following fields:
     ```
     [solution.storage_level_intra_rp[a, rp, B] for B in constraints_partitions[:lowest_resolution][(a, rp)]]
     ```
+- `storage_level_inter_rp[a, bp]`: The storage level for the storage asset `a` for a base period `bp`.
+    To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run
+
+    ```
+    [solution.storage_level_inter_rp[a, bp] for bp in 1:base_periods]
+    ```
 
 ## Examples
 
@@ -156,6 +169,7 @@ function solve_model(
         Dict(a => value(model[:assets_investment][a]) for a in model[:assets_investment].axes[1]),
         Dict(uv => value(model[:flows_investment][uv]) for uv in model[:flows_investment].axes[1]),
         value.(model[:storage_level_intra_rp]),
+        value.(model[:storage_level_inter_rp]),
         value.(model[:flow]),
         objective_value(model),
         compute_dual_variables(model),
