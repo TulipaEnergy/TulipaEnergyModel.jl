@@ -310,6 +310,22 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     )
     output_table |> CSV.write(output_file)
 
+    output_file = joinpath(output_folder, "storage-level-inter-rp.csv")
+    output_table = select(dataframes[:storage_level_inter_rp], :asset, :base_period_block => :time_step)
+    output_table.value = solution.storage_level_inter_rp
+    output_table = flatten(
+        transform(
+            output_table,
+            [:time_step, :value] =>
+                ByRow((base_period_block, value) -> begin
+                        n = length(base_period_block)
+                        (base_period_block, Iterators.repeated(value / n, n))
+                    end) => [:time_step, :value],
+        ),
+        [:time_step, :value],
+    )
+    output_table |> CSV.write(output_file)
+
     return
 end
 

@@ -48,6 +48,7 @@ mutable struct GraphAssetData
     # Solution
     investment::Float64
     storage_level_intra_rp::Dict{Tuple{Int,TimeBlock},Float64}
+    storage_level_inter_rp::Dict{TimeBlock,Float64}
 
     # You don't need profiles to create the struct, so initiate it empty
     function GraphAssetData(
@@ -87,6 +88,7 @@ mutable struct GraphAssetData
             partitions,
             -1,
             Dict{Tuple{Int,TimeBlock},Float64}(),
+            Dict{TimeBlock,Float64}(),
         )
     end
 end
@@ -139,6 +141,7 @@ mutable struct Solution
     assets_investment::Dict{String,Float64}
     flows_investment::Dict{Tuple{String,String},Float64}
     storage_level_intra_rp::Vector{Float64}
+    storage_level_inter_rp::Vector{Float64}
     flow::Vector{Float64}
     objective_value::Float64
     duals::Union{Nothing,Dict{Symbol,Vector{Float64}}}
