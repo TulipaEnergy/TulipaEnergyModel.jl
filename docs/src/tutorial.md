@@ -114,7 +114,7 @@ Finally, we can compute the solution.
 solution = solve_model(model)
 ```
 
-or, if we want to store the `flow` and `storage_level_intra_rp` optimal value in the dataframes:
+or, if we want to store the `flow`, `storage_level_intra_rp`, `storage_level_inter_rp` optimal value in the dataframes:
 
 ```@example manual
 solution = solve_model!(dataframes, model)
@@ -280,7 +280,7 @@ To create a traditional array in the order given by the investable flows, one ca
 [solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]
 ```
 
-The `solution.flow` and `solution.storage_level_intra_rp` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows` and `:lowest_storage_level_intra_rp`, respectively.
+The `solution.flow`, `solution.storage_level_intra_rp`, and `solution.storage_level_inter_rp` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows`, `:lowest_storage_level_intra_rp`, and `:storage_level_inter_rp`, respectively.
 You need to query the data from these dataframes and then use the column `index` to select the appropriate value.
 
 To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
@@ -307,6 +307,18 @@ df = filter(
     view = true,
 )
 [solution.storage_level_intra_rp[row.index] for row in eachrow(df)]
+```
+
+To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run
+
+```@example solution
+a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
+df = filter(
+    row -> row.asset == a,
+    energy_problem.dataframes[:storage_level_inter_rp],
+    view = true,
+)
+[solution.storage_level_inter_rp[row.index] for row in eachrow(df)]
 ```
 
 ### The solution inside the graph
@@ -347,9 +359,21 @@ df = filter(
 [energy_problem.graph[a].storage_level_intra_rp[(rp, row.time_block)] for row in eachrow(df)]
 ```
 
+To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run
+
+```@example solution
+a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
+df = filter(
+    row -> row.asset == a,
+    energy_problem.dataframes[:storage_level_inter_rp],
+    view = true,
+)
+[energy_problem.graph[a].storage_level_inter_rp[row.base_period_block] for row in eachrow(df)]
+```
+
 ### The solution inside the dataframes object
 
-In addition to being stored in the `solution` object, and in the `graph` object, the solution for the `flow` and the `storage_level_intra_rp` is also stored inside the corresponding DataFrame objects if `solve_model!` is called.
+In addition to being stored in the `solution` object, and in the `graph` object, the solution for the `flow`, `storage_level_intra_rp`, and `storage_level_inter_rp` is also stored inside the corresponding DataFrame objects if `solve_model!` is called.
 
 The code below will do the same as in the two previous examples:
 
@@ -370,6 +394,16 @@ rp = 1
 df = filter(
     row -> row.asset == a && row.rp == rp,
     energy_problem.dataframes[:lowest_storage_level_intra_rp],
+    view = true,
+)
+df.solution
+```
+
+```@example solution
+a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
+df = filter(
+    row -> row.asset == a,
+    energy_problem.dataframes[:storage_level_inter_rp],
     view = true,
 )
 df.solution
