@@ -104,11 +104,11 @@ The complete input data for this example can be found in the following [link](ht
 
 Due to the flexible resolution, we need to explicitly state how the constraints are constructed. For each constraint, three things need to be considered:
 
-- Whether it is a type *power* or type *energy*.
+- Whether it is type *power* or type *energy*.
   - type *power*: highest resolution
   - type *energy*: lowest resolution (multiplied by durations)
 - How the resolution (no matter it is highest or lowest) is determined. Sometimes it is determined by the incoming flows, sometimes the outgoing flows, or a combination of both.
-- How the related parameters are treated. We use two ways of aggregation, *summation* or *mean*.
+- How the related parameters are treated. We use two ways of aggregation, *sum* or *mean*.
 
 Below is the table outlining the details for each type of constraint. Note *min* means highest resolution, and *max* means lowest resolution.
 
@@ -164,17 +164,17 @@ The hub balance is quite interesting because it integrates several flow resoluti
 ```math
 \begin{aligned}
 & hub\_balance_{balance,1:1}: \\
-& flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 1:1} + flow_{(wind,balance),1:2} + flow_{(phs,balance),1:4} \\
+& \qquad flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 1:1} + flow_{(wind,balance),1:2} + flow_{(phs,balance),1:4} \\
 & hub\_balance_{balance,2:2}: \\
-& flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 2:2} + flow_{(wind,balance),1:2} + flow_{(phs,balance),1:4} \\
+& \qquad flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 2:2} + flow_{(wind,balance),1:2} + flow_{(phs,balance),1:4} \\
 & hub\_balance_{balance,3:3}: \\
-& flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 3:3} + flow_{(wind,balance),3:6} + flow_{(phs,balance),1:4} \\
+& \qquad flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 3:3} + flow_{(wind,balance),3:6} + flow_{(phs,balance),1:4} \\
 & hub\_balance_{balance,4:4}: \\
-& flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 4:4} + flow_{(wind,balance),3:6} + flow_{(phs,balance),1:4}\\
+& \qquad flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 4:4} + flow_{(wind,balance),3:6} + flow_{(phs,balance),1:4}\\
 & hub\_balance_{balance,5:5}: \\
-& flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 5:5} + flow_{(wind,balance),3:6} + flow_{(phs,balance),5:6} \\
+& \qquad flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 5:5} + flow_{(wind,balance),3:6} + flow_{(phs,balance),5:6} \\
 & hub\_balance_{balance,6:6}: \\
-& flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 6:6} + flow_{(wind,balance),3:6} + flow_{(phs,balance),5:6} \\
+& \qquad flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 6:6} + flow_{(wind,balance),3:6} + flow_{(phs,balance),5:6} \\
 
 \end{aligned}
 ```
@@ -186,7 +186,7 @@ The flows connected to the CCGT conversion unit have different resolutions, too.
 ```math
 \begin{aligned}
 & conversion\_balance_{ccgt,1:6}: \\
-& 6 \cdot p^{eff}_{(H2,ccgt)} \cdot flow_{(H2,ccgt),1:6} = \frac{1}{p^{eff}_{(ccgt,balance)}} \sum_{k=1}^{6} flow_{(ccgt,balance),k}  \\
+& \qquad 6 \cdot p^{eff}_{(H2,ccgt)} \cdot flow_{(H2,ccgt),1:6} = \frac{1}{p^{eff}_{(ccgt,balance)}} \sum_{k=1}^{6} flow_{(ccgt,balance),k}  \\
 \end{aligned}
 ```
 
@@ -305,12 +305,12 @@ The table below shows the number of constraints and variables for each approach 
 | :----------------------------------------- | :----------- | :------------- | :----------------- |
 | Classic approach with hourly resolution    | 48           | 84             | 28.4365            |
 | Flexible connection with hourly resolution | 42           | 72             | 28.4365            |
-| Flexible connection and time resolution    | 16           | 25             | 28.4587            |
+| Flexible connection and time resolution    | 16           | 29             | 28.4587            |
 
 By comparing the classic approach with the other methods, we can analyze their differences:
 
 - The flexible connection with hourly resolution reduces 6 variables ($12.5\%$) and 12 constraints ($\approx 14\%$). The objective function is the same since in both cases we use an hourly time resolution.
-- The combination of features reduces 32 variables ($\approx 67\%$) and 59 constraints ($\approx 70\%$) with an approximation error of $\approx 0.073\%$.
+- The combination of features reduces 32 variables ($\approx 67\%$) and 55 constraints ($\approx 65\%$) with an approximation error of $\approx 0.073\%$.
 
 The level of reduction and approximation error will depend on each case. The example demonstrates the potential for reduction and accuracy using the flexible time resolution feature in *TulipaEnergyModel.jl*. Some use cases for this feature include:
 
