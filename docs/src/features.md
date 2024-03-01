@@ -309,7 +309,7 @@ The table below shows the number of constraints and variables for each approach 
 
 By comparing the classic approach with the other methods, we can analyze their differences:
 
-- The flexible connection with hourly resolution reduces 6 variables ($12.5\%$) and 6 constraints ($\approx 8\%$). The objective function is the same since in both cases we use an hourly time resolution.
+- The flexible connection with hourly resolution reduces 6 variables ($12.5\%$) and 12 constraints ($\approx 14\%$). Notice that we include the 6 extra constraints related to not allowing charging from the grid, although these constraints can also be modelled as bounds. Finally, the objective function is the same since, in both cases, we use an hourly time resolution.
 - The combination of features reduces 32 variables ($\approx 67\%$) and 49 constraints ($\approx 63\%$) with an approximation error of $\approx 0.073\%$.
 
 The level of reduction and approximation error will depend on each case. The example demonstrates the potential for reduction and accuracy using the flexible time resolution feature in *TulipaEnergyModel.jl*. Some use cases for this feature include:
