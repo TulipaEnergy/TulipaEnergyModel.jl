@@ -102,51 +102,80 @@ So, let's recap:
 
 The complete input data for this example can be found in the following [link](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Variable%20Resolution).
 
+Due to the flexible resolution, we need to explicitly state how the constraints are constructed. For each constraint, three things need to be considered:
+
+- Whether it is type *power* or type *energy*.
+  - type *power*: highest resolution
+  - type *energy*: lowest resolution (multiplied by durations)
+- How the resolution (no matter it is highest or lowest) is determined. Sometimes it is determined by the incoming flows, sometimes the outgoing flows, or a combination of both.
+- How the related parameters are treated. We use two ways of aggregation, *sum* or *mean*.
+
+Below is the table outlining the details for each type of constraint. Note *min* means highest resolution, and *max* means lowest resolution.
+
+| name                                          | variables involved             | Parameters involved | Constraint type | Resolution of the constraints                                               | Parameter aggregation |
+| --------------------------------------------- | ------------------------------ | ------------------- | --------------- | --------------------------------------------------------------------------- | --------------------- |
+| Consumer Balance                              | inputs, outputs                | demand              | power           | min(incoming flows, outgoing flows)                                         | mean                  |
+| Storage Balance                               | inputs, outputs, storage level | inflows             | energy          | max(asset, min(incoming flows, outgoing flows))                             | sum                   |
+| Hub Balance                                   | inputs, outputs                | -                   | power           | min(incoming flows, outgoing flows)                                         | -                     |
+| Conversion Balance                            | inputs, outputs                | -                   | energy          | max(incoming flows, outgoing flows)                                         | -                     |
+| Producers Capacity Constraints                | outputs                        | production          | power           | min(outgoing flows)                                                         | mean                  |
+| Storage Capacity Constraints (outgoing)       | outputs                        | -                   | power           | min(outgoing flows)                                                         | -                     |
+| Conversion Capacity Constraints (outgoing)    | outputs                        | -                   | power           | min(outgoing flows)                                                         | -                     |
+| Conversion Capacity Constraints (incoming)    | inputs                         | -                   | power           | min(incoming flows)                                                         | -                     |
+| Storage Capacity Constraints (incoming)       | inputs                         | -                   | power           | min(incoming flows)                                                         | -                     |
+| Transport Capacity Constraints (upper bounds) | flow                           | capacity            | power           | if it connects two hubs or demands then max(hub a,hub b), otherwise its own | mean                  |
+| Transport Capacity Constraints (lower bounds) | flow                           | capacity            | power           | if it connects two hubs or demands then max(hub a,hub b), otherwise its own | mean                  |
+
 For this basic example, we can describe what the balance and capacity constraints in the model look like. For the sake of simplicity, the representative period index is dropped from the equations and there is no investment variables in the equations.
 
 ### Energy Balance Constraints
 
-All balancing equations are defined in the lowest resolution to reduce the number of constraints in the optimization model.
+We lay out all the balance constraints of this example.
 
 #### Storage Balance
 
-Since the storage asset has a resolution of six hours and both the charging and discharging flows are higher than this, the storage balance constraint is defined in the exact resolution for the storage asset (i.e., the one with the lowest resolution). The charging and discharging flows are multiply by their durations to account for the energy in the range `1:6`.
+As shown in the table, the resolution of the storage balance is energy, which is calculated by *max(asset, min(incoming flows, outgoing flows))*. The resolutions of the incoming and outgoing flows of the storage are `1:3`, `4:6`, `1:4`, and `5:6`, resulting in a minimum resolution of 2. The resolution of the storage is 6. Then, *max(asset, min(incoming flows, outgoing flows))* becomes *max(6, min(3, (4, 2)))* which results in 6, and thus this balance is written for every six hours. The charging and discharging flows are multiply by their durations to account for the energy in the range `1:6`.
 
 ```math
 \begin{aligned}
 & storage\_balance_{phs,1:6}: \\
-& \qquad storage\_level_{phs,1:6} = 3 \cdot p^{eff}_{(wind,phs)} \cdot flow_{(wind,phs),1:3} \\
-& \qquad \quad + 3 \cdot p^{eff}_{(wind,phs)} \cdot flow_{(wind,phs),4:6} - \frac{4}{p^{eff}_{(phs,balance)}} \cdot flow_{(phs,balance),1:4} \\
-& \qquad \quad - \frac{2}{p^{eff}_{(phs,balance)}} \cdot flow_{(phs,balance),5:6}
+& \qquad storage\_level_{phs,1:6} = 3 \cdot p^{eff}_{(wind,phs)} \cdot flow_{(wind,phs),1:3} + 3 \cdot p^{eff}_{(wind,phs)} \cdot flow_{(wind,phs),4:6} \\
+& \qquad \quad - \frac{4}{p^{eff}_{(phs,balance)}} \cdot flow_{(phs,balance),1:4} - \frac{2}{p^{eff}_{(phs,balance)}} \cdot flow_{(phs,balance),5:6} \\
 \end{aligned}
 ```
 
 #### Consumer Balance
 
-The flows coming from the balancing hub are defined every three hours. Therefore, the flows impose the lowest resolution and the balance at the demand is done every three hours. The input demand is aggregated as the sum of the hourly values in the input data. As in the storage balance, the flows are multiplied by their duration.
+The flows coming from the balancing hub are defined every three hours. Therefore, the flows impose the lowest resolution and the balance at the demand is done every three hours. The input demand is aggregated as the mean of the hourly values in the input data. As in the storage balance, the flows are multiplied by their duration.
 
 ```math
 \begin{aligned}
 & consumer\_balance_{demand,1:3}: \\
-& \qquad 3 \cdot flow_{(balance,demand),1:3} = p^{peak\_demand}_{demand} \cdot \sum_{k=1}^{3} p^{profile}_{demand,k} \\
+& \qquad dot flow_{(balance,demand),1:3} = p^{peak\_demand}_{demand} \cdot \frac{\sum_{k=1}^{3} p^{profile}_{demand,k}}{3} \\
 & consumer\_balance_{demand,4:6}: \\
-& \qquad 3 \cdot flow_{(balance,demand),4:6} = p^{peak\_demand}_{demand} \cdot \sum_{k=4}^{6} p^{profile}_{demand,k} \\
+& \qquad dot flow_{(balance,demand),4:6} = p^{peak\_demand}_{demand} \cdot \frac{\sum_{k=4}^{6} p^{profile}_{demand,k}}{3} \\
 \end{aligned}
 ```
 
 #### Hub Balance
 
-The hub balance is quite interesting because it integrates several flow resolutions. Remember that we didn't define any specific time resolution for this asset. Therefore, the lowest resolution of all incoming and outgoing flows in the horizon implies that the hub balance must be imposed for two blocks, `1:4` and `5:6`. The balance must account for each flow variable's duration in each block.
+The hub balance is quite interesting because it integrates several flow resolutions. Remember that we didn't define any specific time resolution for this asset. Therefore, the highest resolution of all incoming and outgoing flows in the horizon implies that the hub balance must be imposed for all the six blocks. The balance must account for each flow variable's duration in each block.
 
 ```math
 \begin{aligned}
-& hub\_balance_{balance,1:4}: \\
-& \qquad \sum_{k=1}^{4} flow_{(ccgt,balance),k} + 2 \cdot flow_{(wind,balance),1:2} \\
-& \qquad + 2 \cdot flow_{(wind,balance),3:6} + 4 \cdot flow_{(phs,balance),1:4} \\
-& \qquad - 3 \cdot flow_{(balance,demand),1:3} - 1 \cdot flow_{(balance,demand),4:6} = 0 \\
-& hub\_balance_{balance,5:6}: \\
-& \qquad \sum_{k=5}^{6} flow_{(ccgt,balance),k} + 2 \cdot flow_{(wind,balance),3:6} \\
-& \qquad + 2 \cdot flow_{(phs,balance),5:6} - 2 \cdot flow_{(balance,demand),4:6} = 0 \\
+& hub\_balance_{balance,1:1}: \\
+& \qquad flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 1:1} + flow_{(wind,balance),1:2} + flow_{(phs,balance),1:4} \\
+& hub\_balance_{balance,2:2}: \\
+& \qquad flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 2:2} + flow_{(wind,balance),1:2} + flow_{(phs,balance),1:4} \\
+& hub\_balance_{balance,3:3}: \\
+& \qquad flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 3:3} + flow_{(wind,balance),3:6} + flow_{(phs,balance),1:4} \\
+& hub\_balance_{balance,4:4}: \\
+& \qquad flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 4:4} + flow_{(wind,balance),3:6} + flow_{(phs,balance),1:4}\\
+& hub\_balance_{balance,5:5}: \\
+& \qquad flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 5:5} + flow_{(wind,balance),3:6} + flow_{(phs,balance),5:6} \\
+& hub\_balance_{balance,6:6}: \\
+& \qquad flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 6:6} + flow_{(wind,balance),3:6} + flow_{(phs,balance),5:6} \\
+
 \end{aligned}
 ```
 
@@ -157,7 +186,7 @@ The flows connected to the CCGT conversion unit have different resolutions, too.
 ```math
 \begin{aligned}
 & conversion\_balance_{ccgt,1:6}: \\
-& 6 \cdot p^{eff}_{(H2,ccgt)} \cdot flow_{(H2,ccgt),1:6} = \frac{1}{p^{eff}_{(ccgt,balance)}} \sum_{k=1}^{6} flow_{(ccgt,balance),k}  \\
+& \qquad 6 \cdot p^{eff}_{(H2,ccgt)} \cdot flow_{(H2,ccgt),1:6} = \frac{1}{p^{eff}_{(ccgt,balance)}} \sum_{k=1}^{6} flow_{(ccgt,balance),k}  \\
 \end{aligned}
 ```
 
@@ -171,10 +200,10 @@ Since the storage unit only has one input and output, the capacity limit constra
 
 ```math
 \begin{aligned}
-& max\_output\_flows\_limit_{phs,1:3}: \\
-& \qquad flow_{(phs,balance),1:3} \leq p^{init\_capacity}_{phs} \\
-& max\_output\_flows\_limit_{phs,4:6}: \\
-& \qquad flow_{(phs,balance),4:6} \leq p^{init\_capacity}_{phs} \\
+& max\_output\_flows\_limit_{phs,1:4}: \\
+& \qquad flow_{(phs,balance),1:4} \leq p^{init\_capacity}_{phs} \\
+& max\_output\_flows\_limit_{phs,5:6}: \\
+& \qquad flow_{(phs,balance),5:6} \leq p^{init\_capacity}_{phs} \\
 \end{aligned}
 ```
 
@@ -182,10 +211,10 @@ And, the constraints for the inputs of the storage are (i.e., charging capacity 
 
 ```math
 \begin{aligned}
-& max\_input\_flows\_limit_{phs,1:4}: \\
-& \qquad flow_{(phs,balance),1:4} \leq p^{init\_capacity}_{phs} \\
-& max\_input\_flows\_limit_{phs,5:6}: \\
-& \qquad flow_{(phs,balance),5:6} \leq p^{init\_capacity}_{phs} \\
+& max\_input\_flows\_limit_{phs,1:3}: \\
+& \qquad flow_{(phs,balance),1:3} \leq p^{init\_capacity}_{phs} \\
+& max\_input\_flows\_limit_{phs,4:6}: \\
+& \qquad flow_{(phs,balance),4:6} \leq p^{init\_capacity}_{phs} \\
 \end{aligned}
 ```
 
@@ -202,7 +231,8 @@ Similarly, each outflow is limited to the `ccgt` capacity for the conversion uni
 
 #### Producers Capacity Constraints
 
-The `wind` producer asset is interesting because the output flows are in different resolutions. Therefore, the highest resolution rule imposes that we have three constraints as follows:
+The `wind` producer asset is interesting because the output flows are in different resolutions, i.e., `1:2`, `3:6`, `1:3`, and `4:6`. The highest resolution is `1:2`, `3`, and `4:6`.
+Therefore, the constraints are as follows:
 
 ```math
 \begin{aligned}
@@ -215,7 +245,7 @@ The `wind` producer asset is interesting because the output flows are in differe
 \end{aligned}
 ```
 
-Since the flow variables `$flow_{(wind,balance),1:2}$` and `$flow_{(wind,balance),1:3}$` represent power, the first constraint sets the upper bound of the power for both time step 1 and 2, by assuming an average capacity across these two time steps. The same applies to the other two constraints.
+Since the flow variables $flow_{(wind,balance),1:2}$ and $flow_{(wind,balance),1:3}$ represent power, the first constraint sets the upper bound of the power for both time step 1 and 2, by assuming an average capacity across these two time steps. The same applies to the other two constraints.
 
 The hydrogen (H2) producer capacity limit is straightforward since both the asset and the flow definition are in the exact time resolution:
 
@@ -272,15 +302,15 @@ This section quantifies the advantages of the [`flexible connection`](@ref flex-
 The table below shows the number of constraints and variables for each approach over a six-hour horizon. This highlights the potential of flexible time resolution in reducing the size of the optimization model.
 
 | Modeling approach                          | Nº Variables | Nº Constraints | Objective Function |
-|:-------------------------------------------|:------------ |:---------------|:------------------ |
+| :----------------------------------------- | :----------- | :------------- | :----------------- |
 | Classic approach with hourly resolution    | 48           | 84             | 28.4365            |
 | Flexible connection with hourly resolution | 42           | 72             | 28.4365            |
-| Flexible connection and time resolution    | 16           | 25             | 28.4587            |
+| Flexible connection and time resolution    | 16           | 29             | 28.4587            |
 
 By comparing the classic approach with the other methods, we can analyze their differences:
 
-- The flexible connection with hourly resolution reduces 6 variables ($12.5\%$) and 12 constraints ($\approx 14\%$). The objective function is the same since in both cases we use an hourly time resolution.
-- The combination of features reduces 32 variables ($\approx 67\%$) and 59 constraints ($\approx 70\%$) with an approximation error of $\approx 0.073\%$.
+- The flexible connection with hourly resolution reduces 6 variables ($12.5\%$) and 12 constraints ($\approx 14\%$). Notice that we include the 6 extra constraints related to not allowing charging from the grid, although these constraints can also be modelled as bounds. Finally, the objective function is the same since, in both cases, we use an hourly time resolution.
+- The combination of features reduces 32 variables ($\approx 67\%$) and 55 constraints ($\approx 65\%$) with an approximation error of $\approx 0.073\%$.
 
 The level of reduction and approximation error will depend on each case. The example demonstrates the potential for reduction and accuracy using the flexible time resolution feature in *TulipaEnergyModel.jl*. Some use cases for this feature include:
 
