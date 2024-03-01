@@ -37,7 +37,7 @@ mutable struct GraphAssetData
     capacity::Float64
     initial_capacity::Float64
     peak_demand::Float64
-    storage_type::Union{Missing,String}
+    is_seasonal::Bool
     storage_inflows::Union{Missing,Float64}
     initial_storage_capacity::Float64
     initial_storage_level::Union{Missing,Float64}
@@ -60,7 +60,7 @@ mutable struct GraphAssetData
         capacity,
         initial_capacity,
         peak_demand,
-        storage_type,
+        is_seasonal,
         storage_inflows,
         initial_storage_capacity,
         initial_storage_level,
@@ -78,7 +78,7 @@ mutable struct GraphAssetData
             capacity,
             initial_capacity,
             peak_demand,
-            storage_type,
+            is_seasonal,
             storage_inflows,
             initial_storage_capacity,
             initial_storage_level,

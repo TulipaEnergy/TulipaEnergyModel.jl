@@ -59,8 +59,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
             n = base_periods.num_base_periods
             m = graph[a].moving_window_long_storage
             [(1+m*(j-1)):min(n, m * j) for j = 1:ceil(Int, n / m)]
-        end for
-        a in A if graph[a].type == "storage" && coalesce(graph[a].storage_type == "long", false)
+        end for a in A if graph[a].type == "storage" && graph[a].is_seasonal == true
     )
 
     if !isempty(base_periods_block_per_asset)
@@ -337,7 +336,7 @@ function create_model(
     Fi = filter_flows(:investable, true)
 
     # Create subsets of storage assets by storage type
-    As_long  = intersect(As, filter_assets(:storage_type, "long"))
+    As_long  = intersect(As, filter_assets(:is_seasonal, true))
     As_short = setdiff(As, As_long) # if not long then it is short by default
 
     # Maximum time step
