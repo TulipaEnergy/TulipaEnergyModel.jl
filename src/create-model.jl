@@ -335,10 +335,6 @@ function create_model(
     Ai = filter_assets(:investable, true)
     Fi = filter_flows(:investable, true)
 
-    # Create subsets of storage assets by storage type
-    As_long  = intersect(As, filter_assets(:is_seasonal, true))
-    As_short = setdiff(As, As_long) # if not long then it is short by default
-
     # Maximum time step
     Tmax = maximum(last(rp.time_steps) for rp in representative_periods)
     expression_workspace = Vector{AffExpr}(undef, Tmax)
