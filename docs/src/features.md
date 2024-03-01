@@ -303,7 +303,7 @@ The table below shows the number of constraints and variables for each approach 
 
 | Modeling approach                          | Nº Variables | Nº Constraints | Objective Function |
 | :----------------------------------------- | :----------- | :------------- | :----------------- |
-| Classic approach with hourly resolution    | 48           | 78             | 28.4365            |
+| Classic approach with hourly resolution    | 48           | 84             | 28.4365            |
 | Flexible connection with hourly resolution | 42           | 72             | 28.4365            |
 | Flexible connection and time resolution    | 16           | 29             | 28.4587            |
 
