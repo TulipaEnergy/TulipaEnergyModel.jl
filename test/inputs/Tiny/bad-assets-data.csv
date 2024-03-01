@@ -1,5 +1,5 @@
 ,,{producer;consumer},{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,MW,{true;false},MWh/year,MWh,h,number_of_base_periods
-iid,name,type,active,investable,investment_integer,variable_cost,investment_cost,investment_limit,capacity,initial_capacity,peak_demand,is_seasonal,storage_inflows,initial_storage_capacity,energy_to_power_ratio,moving_window_long_storage
+iid,name,type,active,investable,investment_integer,variable_cost,investment_cost,investment_limit,capacity,initial_capacity,peak_demand,is_seasonal,storage_inflows,initial_storage_capacity,energy_to_power_ratio,moving_window_seasonal_storage
 1,ocgt,producer,true,t,true,0.07,25,,100,0,t,false,,0,0,
 2,ccgt,producer,true,true,true,0.05,40,,400,0,0,false,,0,0,
 3,wind,producer,true,true,true,0.001,70,,50,0,0,false,,0,0,

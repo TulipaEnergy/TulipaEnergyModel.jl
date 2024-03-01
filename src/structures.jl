@@ -42,7 +42,7 @@ mutable struct GraphAssetData
     initial_storage_capacity::Float64
     initial_storage_level::Union{Missing,Float64}
     energy_to_power_ratio::Float64
-    moving_window_long_storage::Union{Missing,Int}
+    moving_window_seasonal_storage::Union{Missing,Int}
     profiles::Dict{Int,Vector{Float64}}
     partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
@@ -65,7 +65,7 @@ mutable struct GraphAssetData
         initial_storage_capacity,
         initial_storage_level,
         energy_to_power_ratio,
-        moving_window_long_storage,
+        moving_window_seasonal_storage,
     )
         profiles = Dict{Int,Vector{Float64}}()
         partitions = Dict{Int,Vector{TimeBlock}}()
@@ -83,7 +83,7 @@ mutable struct GraphAssetData
             initial_storage_capacity,
             initial_storage_level,
             energy_to_power_ratio,
-            moving_window_long_storage,
+            moving_window_seasonal_storage,
             profiles,
             partitions,
             -1,
