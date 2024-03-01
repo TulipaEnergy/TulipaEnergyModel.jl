@@ -33,9 +33,7 @@ function compute_constraints_partitions(graph, representative_periods)
             name = :lowest_storage_level_intra_rp,
             partitions = _all,
             strategy = :lowest,
-            asset_filter = a ->
-                graph[a].type in ["storage"] &&
-                    coalesce(graph[a].storage_type == "short", true),
+            asset_filter = a -> graph[a].type == "storage" && !graph[a].is_seasonal,
         ),
         (
             name = :highest_in_out,

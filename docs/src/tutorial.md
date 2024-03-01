@@ -114,7 +114,7 @@ Finally, we can compute the solution.
 solution = solve_model(model)
 ```
 
-or, if we want to store the `flow`, `storage_level_intra_rp`, `storage_level_inter_rp` optimal value in the dataframes:
+or, if we want to store the `flow`, `storage_level_intra_rp`, and `storage_level_inter_rp` optimal value in the dataframes:
 
 ```@example manual
 solution = solve_model!(dataframes, model)

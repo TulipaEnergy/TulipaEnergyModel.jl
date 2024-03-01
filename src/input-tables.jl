@@ -2,22 +2,22 @@
 Schema for the assets-data.csv file.
 """
 struct AssetData
-    name::String                                  # Name of Asset (geographical?)
-    type::String                                  # Producer/Consumer/Storage/Conversion
-    active::Bool                                  # Active or decomissioned
-    investable::Bool                              # Whether able to invest
-    investment_integer::Bool                      # Whether investment is integer or continuous
-    investment_cost::Float64                      # kEUR/MW/year
-    investment_limit::Union{Missing,Float64}      # MW (Missing -> no limit)
-    capacity::Float64                             # MW
-    initial_capacity::Float64                     # MW
-    peak_demand::Float64                          # MW
-    storage_type::Union{Missing,String}           # short (e.g., battery), long (e.g., seasonal), missing -> for non-storage assets
-    storage_inflows::Union{Missing,Float64}       # MWh/year
-    initial_storage_capacity::Float64             # MWh
-    initial_storage_level::Union{Missing,Float64} # MWh (Missing -> free initial level)
-    energy_to_power_ratio::Float64                # Hours
-    moving_window_long_storage::Union{Missing,Int}# Hours (Missing -> no moving window)
+    name::String                                       # Name of Asset (geographical?)
+    type::String                                       # Producer/Consumer/Storage/Conversion
+    active::Bool                                       # Active or decomissioned
+    investable::Bool                                   # Whether able to invest
+    investment_integer::Bool                           # Whether investment is integer or continuous
+    investment_cost::Float64                           # kEUR/MW/year
+    investment_limit::Union{Missing,Float64}           # MW (Missing -> no limit)
+    capacity::Float64                                  # MW
+    initial_capacity::Float64                          # MW
+    peak_demand::Float64                               # MW
+    is_seasonal::Bool                                  # Whether seasonal storage (e.g. hydro) or not (e.g. battery)
+    storage_inflows::Union{Missing,Float64}            # MWh/year
+    initial_storage_capacity::Float64                  # MWh
+    initial_storage_level::Union{Missing,Float64}      # MWh (Missing -> free initial level)
+    energy_to_power_ratio::Float64                     # Hours
+    moving_window_seasonal_storage::Union{Missing,Int} # number of base period (Missing -> no moving window)
 end
 
 """

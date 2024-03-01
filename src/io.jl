@@ -110,12 +110,12 @@ function create_graph_and_representative_periods_from_csv_folder(
             row.capacity,
             row.initial_capacity,
             row.peak_demand,
-            row.storage_type,
+            row.is_seasonal,
             row.storage_inflows,
             row.initial_storage_capacity,
             row.initial_storage_level,
             row.energy_to_power_ratio,
-            row.moving_window_long_storage,
+            row.moving_window_seasonal_storage,
         ) for row in eachrow(assets_data_df)
     ]
 

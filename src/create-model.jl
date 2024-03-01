@@ -52,15 +52,14 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         dataframes[key] = df
     end
 
-    # Dataframe to store the storage level between (inter) representative period variable (a.k.a. long-term or seasonal storage)
+    # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
     # create base_periods_block_per_asset
     base_periods_block_per_asset = Dict(
         a => begin
             n = base_periods.num_base_periods
-            m = graph[a].moving_window_long_storage
+            m = graph[a].moving_window_seasonal_storage
             [(1+m*(j-1)):min(n, m * j) for j = 1:ceil(Int, n / m)]
-        end for
-        a in A if graph[a].type == "storage" && coalesce(graph[a].storage_type == "long", false)
+        end for a in A if graph[a].type == "storage" && graph[a].is_seasonal == true
     )
 
     if !isempty(base_periods_block_per_asset)
@@ -335,10 +334,6 @@ function create_model(
     # Create subsets of assets by investable
     Ai = filter_assets(:investable, true)
     Fi = filter_flows(:investable, true)
-
-    # Create subsets of storage assets by storage type
-    As_long  = intersect(As, filter_assets(:storage_type, "long"))
-    As_short = setdiff(As, As_long) # if not long then it is short by default
 
     # Maximum time step
     Tmax = maximum(last(rp.time_steps) for rp in representative_periods)
