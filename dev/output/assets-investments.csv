@@ -1,13 +1,13 @@
 asset,InstalUnits,InstalCap_MW
-Asgard_Battery,1262.0,12620.0
+Asgard_Battery,1242.0,12420.0
 Asgard_Solar,500.0,50000.0
 Asgard_CCGT,83.0,41500.0
-Midgard_Wind,14710.0,44130.0
+Midgard_Wind,14708.0,44124.0
 Midgard_Nuclear_SMR,0.0,0.0
 Midgard_CCGT,-0.0,-0.0
 Valhalla_H2_generator,80.0,8000.0
 Valhalla_H2_storage,67.0,33500.0
 Valhalla_Electrolyser,0.0,0.0
 Valhalla_Fuel_cell,163.0,16300.0
-Valhalla_Heat_pump,33.0,3300.0
-Valhalla_GT,-0.0,-0.0
+Valhalla_Heat_pump,32.99999999999976,3299.999999999976
+Valhalla_GT,0.0,0.0
