@@ -29,12 +29,13 @@ The following files are expected to exist in the input folder:
 
   - `assets-data.csv`: Following the [`TulipaEnergyModel.AssetData`](@ref) specification.
   - `assets-profiles.csv`: Following the [`TulipaEnergyModel.AssetProfiles`](@ref) specification. The profiles should be ordered by time step.
-  - `assets-paritions.csv`: Following the [`TulipaEnergyModel.AssetPartitionData`](@ref) specification.
+  - `assets-partitions.csv`: Following the [`TulipaEnergyModel.AssetPartitionData`](@ref) specification.
   - `flows-data.csv`: Following the [`TulipaEnergyModel.FlowData`](@ref) specification.
   - `flows-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification. The profiles should be ordered by time step.
-  - `flows-paritions.csv`: Following the [`TulipaEnergyModel.FlowPartitionData`](@ref) specification.
+  - `flows-partitions.csv`: Following the [`TulipaEnergyModel.FlowPartitionData`](@ref) specification.
   - `rep-periods-data.csv`: Following the [`TulipaEnergyModel.RepPeriodData`](@ref) specification.
   - `rep-periods-mapping.csv`: Following the [`TulipaEnergyModel.RepPeriodMapping`](@ref) specification.
+  - `profiles-<type>.csv`: Following the [`TulipaEnergyModel.ProfilesData`](@ref) specification.
 
 The returned structures are:
 
@@ -451,7 +452,7 @@ function _parse_rp_partition(::Val{:math}, time_step_string, rp_time_steps)
         end
     end
     @assert block_begin - 1 == length(rp_time_steps)
-    partition
+    return partition
 end
 
 """
