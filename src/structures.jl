@@ -232,6 +232,25 @@ end
 function Base.show(io::IO, ep::EnergyProblem)
     println(io, "EnergyProblem:")
     println(io, "  - Model created: ", !isnothing(ep.model))
+    println(io, "  - Number of variables: ", !isnothing(ep.model) ? num_variables(ep.model) : NaN)
+    println(
+        io,
+        "  - Number of constraints (excluding bounds): ",
+        if !isnothing(ep.model)
+            num_constraints(ep.model; count_variable_in_set_constraints = false)
+        else
+            NaN
+        end,
+    )
+    println(
+        io,
+        "  - Number of constraints (including bounds): ",
+        if !isnothing(ep.model)
+            num_constraints(ep.model; count_variable_in_set_constraints = true)
+        else
+            NaN
+        end,
+    )
     println(io, "  - Solved: ", ep.solved)
     println(io, "  - Termination status: ", ep.termination_status)
     println(io, "  - Objective value: ", ep.objective_value)
