@@ -9,7 +9,7 @@
     end
     for (optimizer, parameteres) in parameters_dict
         energy_problem = run_scenario(dir; optimizer = optimizer, parameters = parameteres)
-        @test energy_problem.objective_value ≈ 1.9851574759e8 rtol = 1e-8
+        @test energy_problem.objective_value ≈ 1.9842318436e8 rtol = 1e-8
     end
 end
 

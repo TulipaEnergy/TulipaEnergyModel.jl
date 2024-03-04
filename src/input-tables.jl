@@ -25,9 +25,8 @@ Schema for the assets-profiles.csv file.
 """
 struct AssetProfiles
     asset::String               # Asset ID
-    rep_period_id::Int          # Representative period ID
-    time_step::Int              # Time step ID
-    value::Float64              # p.u. (per unit)
+    profile_type::String        # Type of profile, used to determine dataframe with source profile
+    profile_name::String        # Name of profile, used to determine data inside the dataframe
 end
 
 """
@@ -66,9 +65,8 @@ Schema for the flows-profiles file.
 struct FlowProfiles
     from_asset::String          # Name of Asset
     to_asset::String            # Name of Asset
-    rep_period_id::Int          # Representative period ID
-    time_step::Int              # Time step ID
-    value::Float64              # p.u. (per unit)
+    profile_type::String        # Type of profile, used to determine dataframe with source profile
+    profile_name::String        # Name of profile, used to determine data inside the dataframe
 end
 
 """
@@ -98,4 +96,14 @@ struct RepPeriodMapping
     period::Int                 # Period ID
     rep_period::Int             # Representative period ID
     weight::Float64             # Hours
+end
+
+"""
+Schema for the profiles-<type>.csv file.
+"""
+struct ProfilesData
+    profile_name::String        # Asset ID
+    rep_period::Int             # Representative period ID
+    time_step::Int              # Time step ID
+    value::Float64              # p.u. (per unit)
 end

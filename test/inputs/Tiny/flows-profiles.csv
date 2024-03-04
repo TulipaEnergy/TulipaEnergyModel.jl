@@ -1,2 +1,2 @@
-,,,,p.u.
-from_asset,to_asset,rep_period_id,time_step,value
+,,,
+from_asset,to_asset,profile_type,profile_name

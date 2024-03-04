@@ -235,6 +235,7 @@ function add_expression_terms_inter_rp_constraints!(
                 profile_aggregation(
                     sum,
                     graph[row_inter.asset].profiles,
+                    "inflows",
                     row_map.rep_period,
                     representative_periods[row_map.rep_period].time_steps,
                     0.0,
@@ -254,19 +255,19 @@ function add_expression_terms_inter_rp_constraints!(
 end
 
 """
-    profile_aggregation(agg, profiles, rp, time_block, default_value)
+    profile_aggregation(agg, profiles, profile_type, rp, time_block, default_value)
 
-Aggregates the `profiles[rp]` over the `time_block` using the `agg` function.
+Aggregates the `profiles[(profile_type, rp)]` over the `time_block` using the `agg` function.
 If the profile does not exist, uses `default_value` instead of **each** profile value.
 
 `profiles` should be a dictionary of profiles, for instance `graph[a].profiles` or `graph[u, v].profiles`.
-If `profiles[rp]` exists, then this function computes the aggregation of `profiles[rp]`
-over the range `time_block` using the aggregator `agg`, i.e., `agg(profiles[rp][time_block])`.
-If `profiles[rp]` does not exist, then this substitutes it by a vector of `default_value`s.
+If `profiles[(profile_type, rp)]` exists, then this function computes the aggregation of `profiles[(profile_type, rp)]`
+over the range `time_block` using the aggregator `agg`, i.e., `agg(profiles[(profile_type, rp)][time_block])`.
+If `profiles[(profile_type, rp)]` does not exist, then this substitutes it by a vector of `default_value`s.
 """
-function profile_aggregation(agg, profiles, rp, B, default_value)
-    if haskey(profiles, rp)
-        return agg(profiles[rp][B])
+function profile_aggregation(agg, profiles, profile_type, rp, B, default_value)
+    if haskey(profiles, (profile_type, rp))
+        return agg(profiles[(profile_type, rp)][B])
     else
         return agg(Iterators.repeated(default_value, length(B)))
     end
@@ -525,8 +526,14 @@ function create_model(
             model,
             incoming_flow_highest_in_out_resolution[row.index] -
             outgoing_flow_highest_in_out_resolution[row.index] ==
-            profile_aggregation(mean, graph[row.asset].profiles, row.rp, row.time_block, 1.0) *
-            graph[row.asset].peak_demand,
+            profile_aggregation(
+                mean,
+                graph[row.asset].profiles,
+                "demand",
+                row.rp,
+                row.time_block,
+                1.0,
+            ) * graph[row.asset].peak_demand,
             base_name = "consumer_balance[$(row.asset),$(row.rp),$(row.time_block)]"
         ) for row in eachrow(df)
     ]
@@ -553,7 +560,7 @@ function create_model(
                         )
                     end
                 ) +
-                profile_aggregation(sum, graph[a].profiles, rp, row.time_block, 0.0) * (
+                profile_aggregation(sum, graph[a].profiles, "inflows", rp, row.time_block, 0.0) * (
                     graph[a].initial_storage_capacity +
                     (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
                 ) +
@@ -623,6 +630,7 @@ function create_model(
                     profile_aggregation(
                         mean,
                         graph[row.asset].profiles,
+                        "availability",
                         row.rp,
                         row.time_block,
                         1.0,
@@ -637,6 +645,7 @@ function create_model(
                     profile_aggregation(
                         mean,
                         graph[row.asset].profiles,
+                        "availability",
                         row.rp,
                         row.time_block,
                         1.0,
@@ -653,6 +662,7 @@ function create_model(
                     profile_aggregation(
                         mean,
                         graph[row.asset].profiles,
+                        "availability",
                         row.rp,
                         row.time_block,
                         1.0,
@@ -667,6 +677,7 @@ function create_model(
                     profile_aggregation(
                         mean,
                         graph[row.asset].profiles,
+                        "availability",
                         row.rp,
                         row.time_block,
                         1.0,
@@ -713,6 +724,7 @@ function create_model(
                 profile_aggregation(
                     mean,
                     graph[row.from, row.to].profiles,
+                    "availability",
                     row.rp,
                     row.time_block,
                     1.0,
@@ -727,6 +739,7 @@ function create_model(
                 profile_aggregation(
                     mean,
                     graph[row.from, row.to].profiles,
+                    "availability",
                     row.rp,
                     row.time_block,
                     1.0,
@@ -742,6 +755,7 @@ function create_model(
                 profile_aggregation(
                     mean,
                     graph[row.from, row.to].profiles,
+                    "availability",
                     row.rp,
                     row.time_block,
                     1.0,
@@ -756,6 +770,7 @@ function create_model(
                 profile_aggregation(
                     mean,
                     graph[row.from, row.to].profiles,
+                    "availability",
                     row.rp,
                     row.time_block,
                     1.0,
