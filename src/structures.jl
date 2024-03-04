@@ -43,7 +43,7 @@ mutable struct GraphAssetData
     initial_storage_level::Union{Missing,Float64}
     energy_to_power_ratio::Float64
     moving_window_seasonal_storage::Union{Missing,Int}
-    profiles::Dict{Int,Vector{Float64}}
+    profiles::Dict{Tuple{String,Int},Vector{Float64}}
     partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
     investment::Float64
@@ -67,7 +67,7 @@ mutable struct GraphAssetData
         energy_to_power_ratio,
         moving_window_seasonal_storage,
     )
-        profiles = Dict{Int,Vector{Float64}}()
+        profiles = Dict{Tuple{String,Int},Vector{Float64}}()
         partitions = Dict{Int,Vector{TimeBlock}}()
         return new(
             type,
@@ -109,7 +109,7 @@ mutable struct GraphFlowData
     initial_export_capacity::Float64
     initial_import_capacity::Float64
     efficiency::Float64
-    profiles::Dict{Int,Vector{Float64}}
+    profiles::Dict{Tuple{String,Int},Vector{Float64}}
     partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
     flow::Dict{Tuple{Int,TimeBlock},Float64}
@@ -130,7 +130,7 @@ function GraphFlowData(flow_data::FlowData)
         flow_data.initial_export_capacity,
         flow_data.initial_import_capacity,
         flow_data.efficiency,
-        Dict{Int,Vector{Float64}}(),
+        Dict{Tuple{String,Int},Vector{Float64}}(),
         Dict{Int,Vector{TimeBlock}}(),
         Dict{Tuple{Int,TimeBlock},Float64}(),
         -1,

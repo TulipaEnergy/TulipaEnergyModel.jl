@@ -67,6 +67,14 @@ function create_graph_and_representative_periods_from_csv_folder(
     assets_partitions_df = read_csv_with_schema(fillpath("assets-partitions.csv"), AssetPartitionData)
     flows_partitions_df  = read_csv_with_schema(fillpath("flows-partitions.csv"), FlowPartitionData)
 
+    profiles_dfs = Dict(
+        begin
+            key = match(r"profiles-(.*).csv", filename)[1]
+            value = read_csv_with_schema(fillpath(filename), ProfilesData)
+            key => value
+        end for filename in readdir(input_folder) if startswith("profiles-")(filename)
+    )
+
     # Error if partition data is missing assets (if strict)
     if strict
         missing_assets = setdiff(assets_data_df[!, "name"], assets_partitions_df[!, "asset"])
@@ -154,27 +162,33 @@ function create_graph_and_representative_periods_from_csv_folder(
         )
     end
 
-    for rp_id ∈ 1:length(representative_periods), a in labels(graph)
-        # Get all profile data for asset=a and rp=rp_id
-        matching = (assets_profiles_df.asset .== a) .& (assets_profiles_df.rep_period_id .== rp_id)
-        if sum(matching) == 0
-            continue
+    for asset_profile_row in eachrow(assets_profiles_df) # row = asset, profile_type, profile_name
+        gp = groupby( # group by RP
+            filter(
+                row -> row.profile_name == asset_profile_row.profile_name, # Filter profile_name
+                profiles_dfs[asset_profile_row.profile_type], # Get the profile of given time
+            ),
+            :rep_period,
+        )
+        for ((rp,), df) in pairs(gp) # Loop over filtered DFs by RP
+            graph[asset_profile_row.asset].profiles[(asset_profile_row.profile_type, rp)] = df.value
         end
-        profile_data = assets_profiles_df[matching, :].value
-        graph[a].profiles[rp_id] = profile_data
     end
 
-    for rp_id ∈ 1:length(representative_periods), (u, v) in edge_labels(graph)
-        # Get all profile data for flow=(u,v) and rp=rp_id
-        matching =
-            (flows_profiles_df.from_asset .== u) .&
-            (flows_profiles_df.to_asset .== v) .&
-            (flows_profiles_df.rep_period_id .== rp_id)
-        if sum(matching) == 0
-            continue
+    for flow_profile_row in eachrow(flows_profiles_df)
+        gp = groupby(
+            filter(
+                row -> row.profile_name == flow_profile_row.profile_name,
+                profiles_dfs[flow_profile_row.profile_type],
+            ),
+            :rep_period,
+        )
+        for ((rp,), df) in pairs(gp)
+            graph[flow_profile_row.from_asset, flow_profile_row.to_asset].profiles[(
+                flow_profile_row.profile_type,
+                rp,
+            )] = df.value
         end
-        profile_data = flows_profiles_df[matching, :].value
-        graph[u, v].profiles[rp_id] = profile_data
     end
 
     return graph, representative_periods, base_periods
