@@ -230,31 +230,37 @@ mutable struct EnergyProblem
 end
 
 function Base.show(io::IO, ep::EnergyProblem)
+    status_model_creation = !isnothing(ep.model)
+    status_model_solved = ep.solved
+
     println(io, "EnergyProblem:")
-    println(io, "  - Model created: ", !isnothing(ep.model))
-    println(io, "  - Number of variables: ", !isnothing(ep.model) ? num_variables(ep.model) : NaN)
-    println(
-        io,
-        "  - Number of constraints (excluding bounds): ",
-        if !isnothing(ep.model)
-            num_constraints(ep.model; count_variable_in_set_constraints = false)
-        else
-            NaN
-        end,
-    )
-    println(
-        io,
-        "  - Number of constraints (including bounds): ",
-        if !isnothing(ep.model)
-            num_constraints(ep.model; count_variable_in_set_constraints = true)
-        else
-            NaN
-        end,
-    )
-    println(io, "  - Solved: ", ep.solved)
-    println(io, "  - Termination status: ", ep.termination_status)
-    println(io, "  - Objective value: ", ep.objective_value)
     println(io, "  - Time for reading the data (in seconds): ", ep.time_read_data)
-    println(io, "  - Time for creating the model (in seconds): ", ep.time_create_model)
-    println(io, "  - Time for solving the model (in seconds): ", ep.time_solve_model)
+    if status_model_creation
+        println(io, "  - Model created!")
+        println(io, "    - Time for creating the model (in seconds): ", ep.time_create_model)
+        println(io, "    - Number of variables: ", num_variables(ep.model))
+        println(
+            io,
+            "    - Number of constraints for variable bounds: ",
+            num_constraints(ep.model; count_variable_in_set_constraints = true) -
+            num_constraints(ep.model; count_variable_in_set_constraints = false),
+        )
+        println(
+            io,
+            "    - Number of structual constraints: ",
+            num_constraints(ep.model; count_variable_in_set_constraints = false),
+        )
+    else
+        println(io, "  - Model not created!")
+    end
+    if status_model_solved
+        println(io, "  - Model solved! ")
+        println(io, "    - Time for solving the model (in seconds): ", ep.time_solve_model)
+        println(io, "    - Termination status: ", ep.termination_status)
+        println(io, "    - Objective value: ", ep.objective_value)
+    else
+        println(io, "  - Model not solved!")
+        println(io, "    - Time for solving the model (in seconds): ", ep.time_solve_model)
+        println(io, "    - Termination status: ", ep.termination_status)
+    end
 end
