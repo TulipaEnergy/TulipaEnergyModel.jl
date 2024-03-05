@@ -258,9 +258,9 @@ function Base.show(io::IO, ep::EnergyProblem)
         println(io, "    - Time for solving the model (in seconds): ", ep.time_solve_model)
         println(io, "    - Termination status: ", ep.termination_status)
         println(io, "    - Objective value: ", ep.objective_value)
+    elseif !status_model_solved && ep.termination_status == JuMP.INFEASIBLE
+        println(io, "  - Model is infeasible!")
     else
         println(io, "  - Model not solved!")
-        println(io, "    - Time for solving the model (in seconds): ", ep.time_solve_model)
-        println(io, "    - Termination status: ", ep.termination_status)
     end
 end
