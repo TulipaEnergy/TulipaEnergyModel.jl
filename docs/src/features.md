@@ -57,23 +57,23 @@ Let's explore the flexibility in the time resolution with the following examples
 ```@example print-partitions
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../test/inputs/Variable Resolution/assets-partitions.csv" # hide
+input_asset_file = "../../test/inputs/Variable Resolution/assets-rep-periods-partitions.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
 assets = assets[assets.asset .!= "wind", :] # hide
 ```
 
-The definitions for the assets are determined in a file called [`assets-partitions.csv`](@ref asset-partitions-definition). For instance, the example in the file shows that both the `H2` producer and the `phs` storage have a `uniform` definition of 6 hours. This means that we want to represent the `H2` production profile and the storage level of the `phs` every six hours.
+The definitions for the assets are determined in a file called [`assets-rep-periods-partitions.csv`](@ref asset-rep-periods-partitions-definition). For instance, the example in the file shows that both the `H2` producer and the `phs` storage have a `uniform` definition of 6 hours. This means that we want to represent the `H2` production profile and the storage level of the `phs` every six hours.
 
 If an asset is not specified in this file, the balance equation will be written in the lowest resolution of both incoming and outgoing flows to the asset. For example, the incoming and outgoing flows to the hub asset (`balance`) will determine how often the balance constraint is written.
 
 The same type of definition can be done for the flows, for example (again, the values are for illustrative purposes and do not represent a realistic case):
 
 ```@example print-partitions
-input_flow_file = "../../test/inputs/Variable Resolution/flows-partitions.csv" # hide
+input_flow_file = "../../test/inputs/Variable Resolution/flows-rep-periods-partitions.csv" # hide
 flows_partitions = CSV.read(input_flow_file, DataFrame, header = 2) # hide
 ```
 
-These definitions are determined in the [`flows-partitions.csv`](@ref flow-partitions-definition) file. The example shows a `uniform` definition for the flow from the hydrogen producer (`H2`) to the conversion asset (`ccgt`) of six hours, from the wind producer (`wind`) to the storage (`phs`) of three hours, and from the balance hub (`balance`) to the consumer (`demand`) of three hours, too. In addition, the flow from the wind producer (`wind`) to the balance hub (`balance`) is defined using the `math` specification of `1x2+1x4`, meaning that there are two time blocks, one of two hours (i.e., `1:2`) and another of four hours (i.e., `3:6`). Finally, the flow from the storage (`phs`) to the balance hub (`balance`) is defined using the `math` specification of `1x4+1x2`, meaning that there are two time blocks, one of four hours (i.e., `1:4`) and another of two hours (i.e., `5:6`).
+These definitions are determined in the [`flows-rep-periods-partitions.csv`](@ref flow-rep-periods-partitions-definition) file. The example shows a `uniform` definition for the flow from the hydrogen producer (`H2`) to the conversion asset (`ccgt`) of six hours, from the wind producer (`wind`) to the storage (`phs`) of three hours, and from the balance hub (`balance`) to the consumer (`demand`) of three hours, too. In addition, the flow from the wind producer (`wind`) to the balance hub (`balance`) is defined using the `math` specification of `1x2+1x4`, meaning that there are two time blocks, one of two hours (i.e., `1:2`) and another of four hours (i.e., `3:6`). Finally, the flow from the storage (`phs`) to the balance hub (`balance`) is defined using the `math` specification of `1x4+1x2`, meaning that there are two time blocks, one of four hours (i.e., `1:4`) and another of two hours (i.e., `5:6`).
 
 If a flow is not specified in this file, the flow time resolution will be for each time step by default (e.g., hourly). For instance, the flow from the `ccgt` to the hub `balance` will be written hourly in this example.
 
