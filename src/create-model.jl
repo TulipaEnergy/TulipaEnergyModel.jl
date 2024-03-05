@@ -62,6 +62,10 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
             ) for a in A
         ) |> Iterators.flatten,
     )
+    if size(dataframes[:storage_level_inter_rp], 1) == 0
+        dataframes[:storage_level_inter_rp] =
+            DataFrame(; asset = String[], base_period_block = UnitRange{Int}[])
+    end
     dataframes[:storage_level_inter_rp].index = 1:size(dataframes[:storage_level_inter_rp], 1)
 
     return dataframes
