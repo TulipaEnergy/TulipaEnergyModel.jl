@@ -28,14 +28,19 @@ Set strict = true to error if assets are missing from partition data.
 The following files are expected to exist in the input folder:
 
   - `assets-data.csv`: Following the [`TulipaEnergyModel.AssetData`](@ref) specification.
-  - `assets-profiles.csv`: Following the [`TulipaEnergyModel.AssetProfiles`](@ref) specification. The profiles should be ordered by time step.
-  - `assets-partitions.csv`: Following the [`TulipaEnergyModel.AssetPartitionData`](@ref) specification.
+  - `assets-base-periods-profiles.csv`: Following the [`TulipaEnergyModel.AssetProfiles`](@ref) specification.
+  - `assets-rep-periods-profiles.csv`: Following the [`TulipaEnergyModel.AssetProfiles`](@ref) specification.
+  - `assets-base-periods-partitions.csv`: Following the [`TulipaEnergyModel.AssetBasePeriodPartitionData`](@ref) specification.
+  - `assets-rep-periods-partitions.csv`: Following the [`TulipaEnergyModel.AssetRepPeriodPartitionData`](@ref) specification.
   - `flows-data.csv`: Following the [`TulipaEnergyModel.FlowData`](@ref) specification.
-  - `flows-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification. The profiles should be ordered by time step.
-  - `flows-partitions.csv`: Following the [`TulipaEnergyModel.FlowPartitionData`](@ref) specification.
+  - `flows-base-periods-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification.
+  - `flows-rep-periods-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification.
+  - `flows-base-periods-partitions.csv`: Following the [`TulipaEnergyModel.FlowBasePeriodPartitionData`](@ref) specification.
+  - `flows-rep-periods-partitions.csv`: Following the [`TulipaEnergyModel.FlowRepPeriodPartitionData`](@ref) specification.
   - `rep-periods-data.csv`: Following the [`TulipaEnergyModel.RepPeriodData`](@ref) specification.
   - `rep-periods-mapping.csv`: Following the [`TulipaEnergyModel.RepPeriodMapping`](@ref) specification.
-  - `profiles-<type>.csv`: Following the [`TulipaEnergyModel.ProfilesData`](@ref) specification.
+  - `profiles-base-periods-<type>.csv`: Following the [`TulipaEnergyModel.BasePeriodsProfilesData`](@ref) specification.
+  - `profiles-rep-periods-<type>.csv`: Following the [`TulipaEnergyModel.RepPeriodsProfilesData`](@ref) specification.
 
 The returned structures are:
 
@@ -59,26 +64,64 @@ function create_graph_and_representative_periods_from_csv_folder(
     # Read data
     fillpath(filename) = joinpath(input_folder, filename)
 
-    assets_data_df       = read_csv_with_schema(fillpath("assets-data.csv"), AssetData)
-    assets_profiles_df   = read_csv_with_schema(fillpath("assets-profiles.csv"), AssetProfiles)
-    flows_data_df        = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
-    flows_profiles_df    = read_csv_with_schema(fillpath("flows-profiles.csv"), FlowProfiles)
-    rep_period_df        = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
-    rp_mapping_df        = read_csv_with_schema(fillpath("rep-periods-mapping.csv"), RepPeriodMapping)
-    assets_partitions_df = read_csv_with_schema(fillpath("assets-partitions.csv"), AssetPartitionData)
-    flows_partitions_df  = read_csv_with_schema(fillpath("flows-partitions.csv"), FlowPartitionData)
+    assets_data_df = read_csv_with_schema(fillpath("assets-data.csv"), AssetData)
+    flows_data_df  = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
+    rep_period_df  = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
+    rp_mapping_df  = read_csv_with_schema(fillpath("rep-periods-mapping.csv"), RepPeriodMapping)
+
+    assets_profiles_df = Dict(
+        profile_type => read_csv_with_schema(
+            fillpath("assets-$profile_type-periods-profiles.csv"),
+            AssetProfiles,
+        ) for profile_type in ["base", "rep"]
+    )
+    flows_profiles_df = Dict(
+        profile_type => read_csv_with_schema(
+            fillpath("flows-$profile_type-periods-profiles.csv"),
+            FlowProfiles,
+        ) for profile_type in ["base", "rep"]
+    )
+    assets_partitions_df = Dict(
+        "base" => read_csv_with_schema(
+            fillpath("assets-base-periods-partitions.csv"),
+            AssetBasePeriodPartitionData,
+        ),
+        "rep" => read_csv_with_schema(
+            fillpath("assets-rep-periods-partitions.csv"),
+            AssetRepPeriodPartitionData,
+        ),
+    )
+    flows_partitions_df = Dict(
+        "base" => read_csv_with_schema(
+            fillpath("flows-base-periods-partitions.csv"),
+            FlowBasePeriodPartitionData,
+        ),
+        "rep" => read_csv_with_schema(
+            fillpath("flows-rep-periods-partitions.csv"),
+            FlowRepPeriodPartitionData,
+        ),
+    )
+
+    profile_input_data_type =
+        Dict("base" => BasePeriodsProfilesData, "rep" => RepPeriodsProfilesData)
 
     profiles_dfs = Dict(
-        begin
-            key = match(r"profiles-(.*).csv", filename)[1]
-            value = read_csv_with_schema(fillpath(filename), ProfilesData)
-            key => value
-        end for filename in readdir(input_folder) if startswith("profiles-")(filename)
+        period_type => Dict(
+            begin
+                key = match(Regex("profiles-$(period_type)-periods-(.*).csv"), filename)[1]
+                value = read_csv_with_schema(
+                    fillpath(filename),
+                    profile_input_data_type[period_type],
+                )
+                key => value
+            end for filename in readdir(input_folder) if
+            startswith("profiles-$period_type-periods-")(filename)
+        ) for period_type in ["rep", "base"]
     )
 
     # Error if partition data is missing assets (if strict)
     if strict
-        missing_assets = setdiff(assets_data_df[!, "name"], assets_partitions_df[!, "asset"])
+        missing_assets = setdiff(assets_data_df[!, "name"], assets_partitions_df["rep"][!, "asset"])
         if length(missing_assets) > 0
             msg = "Error: Partition data missing for these assets: \n"
             for a in missing_assets
@@ -146,8 +189,8 @@ function create_graph_and_representative_periods_from_csv_folder(
 
     for a in labels(graph)
         compute_assets_partitions!(
-            graph[a].partitions,
-            assets_partitions_df,
+            graph[a].rep_periods_partitions,
+            assets_partitions_df["rep"],
             a,
             representative_periods,
         )
@@ -155,43 +198,82 @@ function create_graph_and_representative_periods_from_csv_folder(
 
     for (u, v) in edge_labels(graph)
         compute_flows_partitions!(
-            graph[u, v].partitions,
-            flows_partitions_df,
+            graph[u, v].rep_periods_partitions,
+            flows_partitions_df["rep"],
             u,
             v,
             representative_periods,
         )
     end
 
-    for asset_profile_row in eachrow(assets_profiles_df) # row = asset, profile_type, profile_name
-        gp = groupby( # group by RP
+    # For base periods, only the explicitly mentioned assets and flows have partitions defined
+    for row in eachrow(assets_partitions_df["base"])
+        @show row
+        @show base_periods.num_base_periods
+        graph[row.asset].base_periods_partitions = _parse_rp_partition(
+            Val(row.specification),
+            row.partition,
+            1:base_periods.num_base_periods,
+        )
+    end
+
+    for row in eachrow(flows_partitions_df["base"])
+        graph[row.from_asset, row.to_asset].base_periods_partitions = _parse_rp_partition(
+            Val(row.specification),
+            row.partition,
+            1:base_periods.num_base_periods,
+        )
+    end
+
+    for asset_profile_row in eachrow(assets_profiles_df["rep"]) # row = asset, profile_type, profile_name
+        gp = groupby( # 3. group by RP
             filter(
-                row -> row.profile_name == asset_profile_row.profile_name, # Filter profile_name
-                profiles_dfs[asset_profile_row.profile_type], # Get the profile of given time
+                row -> row.profile_name == asset_profile_row.profile_name, # 2. Filter profile_name
+                profiles_dfs["rep"][asset_profile_row.profile_type], # 1. Get the profile of given type
             ),
             :rep_period,
         )
         for ((rp,), df) in pairs(gp) # Loop over filtered DFs by RP
-            graph[asset_profile_row.asset].profiles[(asset_profile_row.profile_type, rp)] = df.value
+            graph[asset_profile_row.asset].rep_periods_profiles[(
+                asset_profile_row.profile_type,
+                rp,
+            )] = df.value
         end
     end
 
-    for flow_profile_row in eachrow(flows_profiles_df)
+    for flow_profile_row in eachrow(flows_profiles_df["rep"])
         gp = groupby(
             filter(
                 row -> row.profile_name == flow_profile_row.profile_name,
-                profiles_dfs[flow_profile_row.profile_type],
+                profiles_dfs["rep"][flow_profile_row.profile_type],
             ),
             :rep_period,
         )
         for ((rp,), df) in pairs(gp)
-            graph[flow_profile_row.from_asset, flow_profile_row.to_asset].profiles[(
+            graph[flow_profile_row.from_asset, flow_profile_row.to_asset].rep_periods_profiles[(
                 flow_profile_row.profile_type,
                 rp,
             )] = df.value
         end
     end
 
+    for asset_profile_row in eachrow(assets_profiles_df["base"]) # row = asset, profile_type, profile_name
+        df = filter(
+            row -> row.profile_name == asset_profile_row.profile_name, # 2. Filter profile_name
+            profiles_dfs["base"][asset_profile_row.profile_type], # 1. Get the profile of given type
+        )
+        graph[asset_profile_row.asset].base_periods_profiles[asset_profile_row.profile_type] =
+            df.value
+    end
+
+    for flow_profile_row in eachrow(flows_profiles_df["base"]) # row = flow, profile_type, profile_name
+        df = filter(
+            row -> row.profile_name == flow_profile_row.profile_name, # 2. Filter profile_name
+            profiles_dfs["base"][flow_profile_row.profile_type], # 1. Get the profile of given type
+        )
+        graph[flow_profile_row.asset_from, flow_profile_row.asset_to].base_periods_profiles[flow_profile_row.profile_type] =
+            df.value
+    end
     return graph, representative_periods, base_periods
 end
 
@@ -474,7 +556,7 @@ are passed to the function [`_parse_rp_partition`](@ref).
 function compute_assets_partitions!(partitions, df, a, representative_periods)
     for (rp_id, rp) in enumerate(representative_periods)
         # Look for index in df that matches this asset and rp
-        j = findfirst((df.asset .== a) .& (df.rep_period_id .== rp_id))
+        j = findfirst((df.asset .== a) .& (df.rep_period .== rp_id))
         partitions[rp_id] = if j === nothing
             N = length(rp.time_steps)
             # If there is no time block specification, use default of 1
@@ -504,7 +586,7 @@ are passed to the function [`_parse_rp_partition`](@ref).
 function compute_flows_partitions!(partitions, df, u, v, representative_periods)
     for (rp_id, rp) in enumerate(representative_periods)
         # Look for index in df that matches this asset and rp
-        j = findfirst((df.from_asset .== u) .& (df.to_asset .== v) .& (df.rep_period_id .== rp_id))
+        j = findfirst((df.from_asset .== u) .& (df.to_asset .== v) .& (df.rep_period .== rp_id))
         partitions[rp_id] = if j === nothing
             N = length(rp.time_steps)
             # If there is no time block specification, use default of 1
