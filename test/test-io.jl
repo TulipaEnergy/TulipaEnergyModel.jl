@@ -49,7 +49,7 @@ end
         ]
         df = DataFrame(
             :asset => [1, 2, 2, 3],
-            :rep_period_id => [1, 1, 2, 2],
+            :rep_period => [1, 1, 2, 2],
             :specification => [:uniform, :explicit, :math, :math],
             :partition => ["3", "4;4;4", "3x4+4x3", "2x2+2x3+2x4+1x6"],
         )
@@ -79,7 +79,7 @@ end
         df = DataFrame(
             :from_asset => [1, 2, 2, 3],
             :to_asset => [2, 3, 3, 4],
-            :rep_period_id => [1, 1, 2, 2],
+            :rep_period => [1, 1, 2, 2],
             :specification => [:uniform, :explicit, :math, :math],
             :partition => ["3", "4;4;4", "3x4+4x3", "2x2+2x3+2x4+1x6"],
         )
