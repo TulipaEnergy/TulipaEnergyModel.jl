@@ -269,7 +269,7 @@ function create_graph_and_representative_periods_from_csv_folder(
             row -> row.profile_name == flow_profile_row.profile_name, # 2. Filter profile_name
             profiles_dfs["base"][flow_profile_row.profile_type], # 1. Get the profile of given type
         )
-        graph[flow_profile_row.asset_from, flow_profile_row.asset_to].base_periods_profiles[flow_profile_row.profile_type] =
+        graph[flow_profile_row.from_asset, flow_profile_row.to_asset].base_periods_profiles[flow_profile_row.profile_type] =
             df.value
     end
     return graph, representative_periods, base_periods
@@ -348,8 +348,8 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
 
     output_file = joinpath(output_folder, "flows-investments.csv")
     output_table = DataFrame(;
-        asset_from = String[],
-        asset_to = String[],
+        from_asset = String[],
+        to_asset = String[],
         InstalUnits = Float64[],
         InstalCap_MW = Float64[],
     )
