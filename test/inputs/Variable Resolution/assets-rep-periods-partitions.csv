@@ -1,4 +1,4 @@
-,,,
+,,{uniform;explicit;math},
 asset,rep_period,specification,partition
 H2,1,uniform,6
 wind,1,uniform,6

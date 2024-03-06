@@ -1,4 +1,4 @@
-,,,
+,,{uniform;explicit;math},
 asset,rep_period,specification,partition
 Asgard_Solar,1,uniform,4
 Asgard_E_demand,1,explicit,7;7;7;21;21;21;21;21;21;21

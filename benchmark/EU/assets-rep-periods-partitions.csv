@@ -1,4 +1,4 @@
-,,,
+,,{uniform;explicit;math},
 asset,rep_period,specification,partition
 NL_E_Demand,1,uniform,1
 NL_Wind_Onshore,1,uniform,1

@@ -1,4 +1,4 @@
-,,,,
+,,,{uniform;explicit;math},
 from_asset,to_asset,rep_period,specification,partition
 H2,ccgt,1,uniform,6
 wind,balance,1,math,1x2+1x4

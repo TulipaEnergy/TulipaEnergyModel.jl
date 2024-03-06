@@ -1,4 +1,4 @@
-,,,,
+,,,{uniform;explicit;math},
 from_asset,to_asset,rep_period,specification,partition
 NL_Battery,NL_E_Balance,1,uniform,1
 NL_E_Balance,NL_Battery,1,uniform,1
