@@ -208,8 +208,6 @@ function create_graph_and_representative_periods_from_csv_folder(
 
     # For base periods, only the explicitly mentioned assets and flows have partitions defined
     for row in eachrow(assets_partitions_df["base"])
-        @show row
-        @show base_periods.num_base_periods
         graph[row.asset].base_periods_partitions = _parse_rp_partition(
             Val(row.specification),
             row.partition,
