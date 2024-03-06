@@ -1,4 +1,4 @@
 ,{uniform;explicit;math},
 asset,specification,partition
-Midgard_Hydro,math,30x7+1x5
+Midgard_Hydro,math,20x7+25x1+6x7+1x8
 Valhalla_H2_storage,math,15x14+1x5
