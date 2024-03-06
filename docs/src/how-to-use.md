@@ -87,9 +87,9 @@ The `Missing` data meaning depends on the parameter, for instance:
 
 - `investment_limit`: There is no investment limit.
 
-#### `assets-profiles.csv`
+#### `assets-base-periods-profiles.csv` and `asset-rep-periods-profiles.csv`
 
-This file contains the profiles for each asset.
+These files contain the profiles for each asset at each base period step, or at each representative period.
 
 Required columns:
 
@@ -102,24 +102,24 @@ end
 Markdown.parse(out)
 ```
 
-#### `flows-profiles.csv`
+#### `flows-base-periods-profiles.csv` and `flows-rep-periods-profiles.csv`
 
-Similar to `assets-profiles.csv`, but for flows.
+Similar to their `asset` counterparts.
 
 Required columns:
 
 ```@eval
 using Markdown, TulipaEnergyModel
 out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.FlowProfiles), fieldtypes(TulipaEnergyModel.FlowData))
+for (f, t) in zip(fieldnames(TulipaEnergyModel.FlowProfiles), fieldtypes(TulipaEnergyModel.FlowProfiles))
     global out *= "- `$f: $t`\n"
 end
 Markdown.parse(out)
 ```
 
-#### [`assets-partitions.csv`](@id asset-partitions-definition)
+#### [`assets-rep-periods-partitions.csv`](@id asset-rep-periods-partitions-definition)
 
-Contains a description of the [partition](@ref Partition) for each asset.
+Contains a description of the [partition](@ref Partition) for each asset with respect to representative periods.
 If not specified, each asset will have the same time resolution as representative period.
 
 To specify the desired resolution, there are currently three options, based on the value of the column `specification`.
@@ -143,22 +143,48 @@ Required columns:
 ```@eval
 using Markdown, TulipaEnergyModel
 out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.AssetPartitionData), fieldtypes(TulipaEnergyModel.AssetPartitionData))
+for (f, t) in zip(fieldnames(TulipaEnergyModel.AssetRepPeriodPartitionData), fieldtypes(TulipaEnergyModel.AssetRepPeriodPartitionData))
     global out *= "- `$f: $t`\n"
 end
 Markdown.parse(out)
 ```
 
-#### [`flows-partitions.csv`](@id flow-partitions-definition)
+#### [`flows-rep-periods-partitions.csv`](@id flow-rep-periods-partitions-definition)
 
-Similar to `assets-partitions.csv`, but for flows.
+Similar to `assets-rep-periods-partitions.csv`, but for flows.
 
 Required columns:
 
 ```@eval
 using Markdown, TulipaEnergyModel
 out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.FlowPartitionData), fieldtypes(TulipaEnergyModel.FlowPartitionData))
+for (f, t) in zip(fieldnames(TulipaEnergyModel.FlowRepPeriodPartitionData), fieldtypes(TulipaEnergyModel.FlowRepPeriodPartitionData))
+    global out *= "- `$f: $t`\n"
+end
+Markdown.parse(out)
+```
+
+#### `assets-base-periods-partitions.csv` and `flows-base-periods-profiles`
+
+Similar to their `rep-periods` counterparts, but for the base periods.
+
+Required columns for assets:
+
+```@eval
+using Markdown, TulipaEnergyModel
+out = ""
+for (f, t) in zip(fieldnames(TulipaEnergyModel.AssetBasePeriodPartitionData), fieldtypes(TulipaEnergyModel.AssetBasePeriodPartitionData))
+    global out *= "- `$f: $t`\n"
+end
+Markdown.parse(out)
+```
+
+Required columns for flows:
+
+```@eval
+using Markdown, TulipaEnergyModel
+out = ""
+for (f, t) in zip(fieldnames(TulipaEnergyModel.FlowBasePeriodPartitionData), fieldtypes(TulipaEnergyModel.FlowBasePeriodPartitionData))
     global out *= "- `$f: $t`\n"
 end
 Markdown.parse(out)

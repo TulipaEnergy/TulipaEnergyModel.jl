@@ -1,5 +1,0 @@
-,,,
-asset,rep_period_id,specification,partition
-Asgard_Solar,1,uniform,4
-Asgard_E_demand,1,explicit,7;7;7;21;21;21;21;21;21;21
-Midgard_Wind,1,math,20x1+16x2+12x3+10x4+8x5

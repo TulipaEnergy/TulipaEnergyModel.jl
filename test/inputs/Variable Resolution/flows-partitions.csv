@@ -1,7 +1,0 @@
-,,,,
-from_asset,to_asset,rep_period_id,specification,partition
-H2,ccgt,1,uniform,6
-wind,balance,1,math,1x2+1x4
-wind,phs,1,uniform,3
-phs,balance,1,math,1x4+1x2
-balance,demand,1,uniform,3

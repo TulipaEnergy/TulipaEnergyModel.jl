@@ -1,5 +1,0 @@
-,,,
-asset,rep_period_id,specification,partition
-H2,1,uniform,6
-wind,1,uniform,6
-phs,1,uniform,6

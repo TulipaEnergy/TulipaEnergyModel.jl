@@ -16,10 +16,11 @@ to compute the partition based on the strategy.
 function compute_constraints_partitions(graph, representative_periods)
     constraints_partitions = Dict{Symbol,Dict{Tuple{String,Int},Vector{TimeBlock}}}()
 
-    _inflows(a, rp) = [graph[u, a].partitions[rp] for u in inneighbor_labels(graph, a)]
-    _outflows(a, rp) = [graph[a, v].partitions[rp] for v in outneighbor_labels(graph, a)]
+    _inflows(a, rp) = [graph[u, a].rep_periods_partitions[rp] for u in inneighbor_labels(graph, a)]
+    _outflows(a, rp) =
+        [graph[a, v].rep_periods_partitions[rp] for v in outneighbor_labels(graph, a)]
     _allflows(a, rp) = [_inflows(a, rp); _outflows(a, rp)]
-    _assets(a, rp) = [graph[a].partitions[rp]]
+    _assets(a, rp) = [graph[a].rep_periods_partitions[rp]]
     _all(a, rp) = [_allflows(a, rp); _assets(a, rp)]
 
     partitions_cases = [

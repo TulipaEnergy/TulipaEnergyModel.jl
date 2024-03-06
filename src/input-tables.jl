@@ -17,7 +17,6 @@ struct AssetData
     initial_storage_capacity::Float64                  # MWh
     initial_storage_level::Union{Missing,Float64}      # MWh (Missing -> free initial level)
     energy_to_power_ratio::Float64                     # Hours
-    moving_window_seasonal_storage::Union{Missing,Int} # number of base period (Missing -> no moving window)
 end
 
 """
@@ -30,11 +29,20 @@ struct AssetProfiles
 end
 
 """
-Schema for the assets-partitions.csv file.
+Schema for the assets-rep-periods-partitions.csv file.
 """
-struct AssetPartitionData
+struct AssetRepPeriodPartitionData
     asset::String
-    rep_period_id::Int
+    rep_period::Int
+    specification::Symbol
+    partition::String
+end
+
+"""
+Schema for the assets-base-periods-partitions.csv file.
+"""
+struct AssetBasePeriodPartitionData
+    asset::String
     specification::Symbol
     partition::String
 end
@@ -70,12 +78,22 @@ struct FlowProfiles
 end
 
 """
-Schema for the flows-partitions.csv file.
+Schema for the flows-rep-periods-partitions.csv file.
 """
-struct FlowPartitionData
+struct FlowRepPeriodPartitionData
     from_asset::String          # Name of Asset
     to_asset::String            # Name of Asset
-    rep_period_id::Int
+    rep_period::Int
+    specification::Symbol
+    partition::String
+end
+
+"""
+Schema for the flows-base-periods-partitions.csv file.
+"""
+struct FlowBasePeriodPartitionData
+    from_asset::String          # Name of Asset
+    to_asset::String            # Name of Asset
     specification::Symbol
     partition::String
 end
@@ -99,9 +117,18 @@ struct RepPeriodMapping
 end
 
 """
-Schema for the profiles-<type>.csv file.
+Schema for the profiles-base-periods-<type>.csv file.
 """
-struct ProfilesData
+struct BasePeriodsProfilesData
+    profile_name::String        # Asset ID
+    base_period::Int            # Base period ID
+    value::Float64              # p.u. (per unit)
+end
+
+"""
+Schema for the profiles-rep-period-<type>.csv file.
+"""
+struct RepPeriodsProfilesData
     profile_name::String        # Asset ID
     rep_period::Int             # Representative period ID
     time_step::Int              # Time step ID

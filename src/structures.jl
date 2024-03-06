@@ -42,9 +42,10 @@ mutable struct GraphAssetData
     initial_storage_capacity::Float64
     initial_storage_level::Union{Missing,Float64}
     energy_to_power_ratio::Float64
-    moving_window_seasonal_storage::Union{Missing,Int}
-    profiles::Dict{Tuple{String,Int},Vector{Float64}}
-    partitions::Dict{Int,Vector{TimeBlock}}
+    base_periods_profiles::Dict{String,Vector{Float64}}
+    rep_periods_profiles::Dict{Tuple{String,Int},Vector{Float64}}
+    base_periods_partitions::Vector{TimeBlock}
+    rep_periods_partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
     investment::Float64
     storage_level_intra_rp::Dict{Tuple{Int,TimeBlock},Float64}
@@ -65,10 +66,11 @@ mutable struct GraphAssetData
         initial_storage_capacity,
         initial_storage_level,
         energy_to_power_ratio,
-        moving_window_seasonal_storage,
     )
-        profiles = Dict{Tuple{String,Int},Vector{Float64}}()
-        partitions = Dict{Int,Vector{TimeBlock}}()
+        base_periods_profiles = Dict{String,Vector{Float64}}()
+        rep_periods_profiles = Dict{Tuple{String,Int},Vector{Float64}}()
+        base_periods_partitions = TimeBlock[]
+        rep_periods_partitions = Dict{Int,Vector{TimeBlock}}()
         return new(
             type,
             investable,
@@ -83,9 +85,10 @@ mutable struct GraphAssetData
             initial_storage_capacity,
             initial_storage_level,
             energy_to_power_ratio,
-            moving_window_seasonal_storage,
-            profiles,
-            partitions,
+            base_periods_profiles,
+            rep_periods_profiles,
+            base_periods_partitions,
+            rep_periods_partitions,
             -1,
             Dict{Tuple{Int,TimeBlock},Float64}(),
             Dict{TimeBlock,Float64}(),
@@ -109,8 +112,10 @@ mutable struct GraphFlowData
     initial_export_capacity::Float64
     initial_import_capacity::Float64
     efficiency::Float64
-    profiles::Dict{Tuple{String,Int},Vector{Float64}}
-    partitions::Dict{Int,Vector{TimeBlock}}
+    base_periods_profiles::Dict{String,Vector{Float64}}
+    rep_periods_profiles::Dict{Tuple{String,Int},Vector{Float64}}
+    base_periods_partitions::Vector{TimeBlock}
+    rep_periods_partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
     flow::Dict{Tuple{Int,TimeBlock},Float64}
     investment::Float64
@@ -130,7 +135,9 @@ function GraphFlowData(flow_data::FlowData)
         flow_data.initial_export_capacity,
         flow_data.initial_import_capacity,
         flow_data.efficiency,
+        Dict{String,Vector{Float64}}(),
         Dict{Tuple{String,Int},Vector{Float64}}(),
+        TimeBlock[],
         Dict{Int,Vector{TimeBlock}}(),
         Dict{Tuple{Int,TimeBlock},Float64}(),
         -1,
