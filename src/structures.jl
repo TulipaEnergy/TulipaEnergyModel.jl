@@ -42,7 +42,6 @@ mutable struct GraphAssetData
     initial_storage_capacity::Float64
     initial_storage_level::Union{Missing,Float64}
     energy_to_power_ratio::Float64
-    moving_window_seasonal_storage::Union{Missing,Int}
     base_periods_profiles::Dict{String,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{String,Int},Vector{Float64}}
     base_periods_partitions::Vector{TimeBlock}
@@ -67,7 +66,6 @@ mutable struct GraphAssetData
         initial_storage_capacity,
         initial_storage_level,
         energy_to_power_ratio,
-        moving_window_seasonal_storage,
     )
         base_periods_profiles = Dict{String,Vector{Float64}}()
         rep_periods_profiles = Dict{Tuple{String,Int},Vector{Float64}}()
@@ -87,7 +85,6 @@ mutable struct GraphAssetData
             initial_storage_capacity,
             initial_storage_level,
             energy_to_power_ratio,
-            moving_window_seasonal_storage,
             base_periods_profiles,
             rep_periods_profiles,
             base_periods_partitions,

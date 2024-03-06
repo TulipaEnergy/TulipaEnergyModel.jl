@@ -17,7 +17,6 @@ struct AssetData
     initial_storage_capacity::Float64                  # MWh
     initial_storage_level::Union{Missing,Float64}      # MWh (Missing -> free initial level)
     energy_to_power_ratio::Float64                     # Hours
-    moving_window_seasonal_storage::Union{Missing,Int} # number of base period (Missing -> no moving window)
 end
 
 """
