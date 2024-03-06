@@ -206,7 +206,7 @@ function add_expression_terms_inter_rp_constraints!(
 )
     df_inter[!, :incoming_flow] .= AffExpr(0.0)
     df_inter[!, :outgoing_flow] .= AffExpr(0.0)
-    df_inter[!, :profile_aggregation] .= AffExpr(0.0)
+    df_inter[!, :inflows_profile_aggregation] .= AffExpr(0.0)
 
     # Incoming, outgoing flows, and profile aggregation
     for row_inter in eachrow(df_inter)
@@ -221,7 +221,7 @@ function add_expression_terms_inter_rp_constraints!(
                 filter(row -> row.from == row_inter.asset && row.rp == row_map.rep_period, df_flows)
             row_inter.outgoing_flow +=
                 dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
-            row_inter.profile_aggregation +=
+            row_inter.inflows_profile_aggregation +=
                 profile_aggregation(
                     sum,
                     graph[row_inter.asset].rep_periods_profiles,
@@ -230,13 +230,11 @@ function add_expression_terms_inter_rp_constraints!(
                     0.0,
                 ) *
                 (
-                    graph[row_inter.asset].initial_storage_capacity + (
-                        if graph[row_inter.asset].investable
-                            energy_limit[row_inter.asset]
-                        else
-                            0.0
-                        end
-                    )
+                    if !ismissing(graph[row_inter.asset].storage_inflows)
+                        graph[row_inter.asset].storage_inflows
+                    else
+                        0.0
+                    end
                 ) *
                 row_map.weight
         end
@@ -555,8 +553,11 @@ function create_model(
                     row.time_block,
                     0.0,
                 ) * (
-                    graph[a].initial_storage_capacity +
-                    (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
+                    if !ismissing(graph[a].storage_inflows)
+                        graph[a].storage_inflows
+                    else
+                        0.0
+                    end
                 ) +
                 incoming_flow_lowest_storage_resolution_intra_rp[row.index] -
                 outgoing_flow_lowest_storage_resolution_intra_rp[row.index],
@@ -586,7 +587,7 @@ function create_model(
                         )
                     end
                 ) +
-                row.profile_aggregation +
+                row.inflows_profile_aggregation +
                 incoming_flow_storage_inter_rp_balance[row.index] -
                 outgoing_flow_storage_inter_rp_balance[row.index],
                 base_name = "storage_inter_rp_balance[$a,$(row.base_period_block)]"
