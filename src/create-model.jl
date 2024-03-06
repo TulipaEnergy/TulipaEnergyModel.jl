@@ -265,7 +265,7 @@ end
 """
     create_model!(energy_problem; verbose = false)
 
-55eate the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
+Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
     graph = energy_problem.graph
