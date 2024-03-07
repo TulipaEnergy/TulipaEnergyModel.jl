@@ -185,7 +185,6 @@ end
     add_expression_terms_inter_rp_constraints!(df_inter,
                                                df_flows,
                                                df_map,
-                                               energy_limit,
                                                graph,
                                                representative_periods,
                                                )
@@ -200,7 +199,6 @@ function add_expression_terms_inter_rp_constraints!(
     df_inter,
     df_flows,
     df_map,
-    energy_limit,
     graph,
     representative_periods,
 )
@@ -428,7 +426,6 @@ function create_model(
         dataframes[:storage_level_inter_rp],
         df_flows,
         base_periods.rp_mapping_df,
-        energy_limit,
         graph,
         representative_periods,
     )
