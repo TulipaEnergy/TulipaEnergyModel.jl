@@ -28,6 +28,17 @@ end
     end
 end
 
+@testset "Printing EnergyProblem validation" begin
+    @testset "Check the missing cases of printing the EnergyProblem" begin # model infeasible is covered in testset "Infeasible Case Study".
+        energy_problem = create_energy_problem_from_csv_folder(joinpath(INPUT_FOLDER, "Tiny"))
+        print(energy_problem)
+        create_model!(energy_problem)
+        print(energy_problem)
+        solve_model!(energy_problem)
+        print(energy_problem)
+    end
+end
+
 @testset "Graph structure" begin
     @testset "Graph structure is correct" begin
         dir = joinpath(INPUT_FOLDER, "Tiny")
