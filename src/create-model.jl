@@ -229,13 +229,7 @@ function add_expression_terms_inter_rp_constraints!(
                     representative_periods[row_map.rep_period].time_steps,
                     0.0,
                 ) *
-                (
-                    if !ismissing(graph[row_inter.asset].storage_inflows)
-                        graph[row_inter.asset].storage_inflows
-                    else
-                        0.0
-                    end
-                ) *
+                graph[row_inter.asset].storage_inflows *
                 row_map.weight
         end
     end
@@ -552,13 +546,7 @@ function create_model(
                     ("inflows", rp),
                     row.time_block,
                     0.0,
-                ) * (
-                    if !ismissing(graph[a].storage_inflows)
-                        graph[a].storage_inflows
-                    else
-                        0.0
-                    end
-                ) +
+                ) * graph[a].storage_inflows +
                 incoming_flow_lowest_storage_resolution_intra_rp[row.index] -
                 outgoing_flow_lowest_storage_resolution_intra_rp[row.index],
                 base_name = "storage_intra_rp_balance[$a,$rp,$(row.time_block)]"

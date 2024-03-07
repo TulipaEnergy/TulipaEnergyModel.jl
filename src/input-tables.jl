@@ -13,7 +13,7 @@ struct AssetData
     initial_capacity::Float64                          # MW
     peak_demand::Float64                               # MW
     is_seasonal::Bool                                  # Whether seasonal storage (e.g. hydro) or not (e.g. battery)
-    storage_inflows::Union{Missing,Float64}            # MWh/year
+    storage_inflows::Float64                           # MWh/year
     initial_storage_capacity::Float64                  # MWh
     initial_storage_level::Union{Missing,Float64}      # MWh (Missing -> free initial level)
     energy_to_power_ratio::Float64                     # Hours
