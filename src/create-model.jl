@@ -185,7 +185,6 @@ end
     add_expression_terms_inter_rp_constraints!(df_inter,
                                                df_flows,
                                                df_map,
-                                               energy_limit,
                                                graph,
                                                representative_periods,
                                                )
@@ -200,13 +199,12 @@ function add_expression_terms_inter_rp_constraints!(
     df_inter,
     df_flows,
     df_map,
-    energy_limit,
     graph,
     representative_periods,
 )
     df_inter[!, :incoming_flow] .= AffExpr(0.0)
     df_inter[!, :outgoing_flow] .= AffExpr(0.0)
-    df_inter[!, :profile_aggregation] .= AffExpr(0.0)
+    df_inter[!, :inflows_profile_aggregation] .= AffExpr(0.0)
 
     # Incoming, outgoing flows, and profile aggregation
     for row_inter in eachrow(df_inter)
@@ -221,7 +219,7 @@ function add_expression_terms_inter_rp_constraints!(
                 filter(row -> row.from == row_inter.asset && row.rp == row_map.rep_period, df_flows)
             row_inter.outgoing_flow +=
                 dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
-            row_inter.profile_aggregation +=
+            row_inter.inflows_profile_aggregation +=
                 profile_aggregation(
                     sum,
                     graph[row_inter.asset].rep_periods_profiles,
@@ -229,15 +227,7 @@ function add_expression_terms_inter_rp_constraints!(
                     representative_periods[row_map.rep_period].time_steps,
                     0.0,
                 ) *
-                (
-                    graph[row_inter.asset].initial_storage_capacity + (
-                        if graph[row_inter.asset].investable
-                            energy_limit[row_inter.asset]
-                        else
-                            0.0
-                        end
-                    )
-                ) *
+                graph[row_inter.asset].storage_inflows *
                 row_map.weight
         end
     end
@@ -436,7 +426,6 @@ function create_model(
         dataframes[:storage_level_inter_rp],
         df_flows,
         base_periods.rp_mapping_df,
-        energy_limit,
         graph,
         representative_periods,
     )
@@ -554,10 +543,7 @@ function create_model(
                     ("inflows", rp),
                     row.time_block,
                     0.0,
-                ) * (
-                    graph[a].initial_storage_capacity +
-                    (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
-                ) +
+                ) * graph[a].storage_inflows +
                 incoming_flow_lowest_storage_resolution_intra_rp[row.index] -
                 outgoing_flow_lowest_storage_resolution_intra_rp[row.index],
                 base_name = "storage_intra_rp_balance[$a,$rp,$(row.time_block)]"
@@ -586,7 +572,7 @@ function create_model(
                         )
                     end
                 ) +
-                row.profile_aggregation +
+                row.inflows_profile_aggregation +
                 incoming_flow_storage_inter_rp_balance[row.index] -
                 outgoing_flow_storage_inter_rp_balance[row.index],
                 base_name = "storage_inter_rp_balance[$a,$(row.base_period_block)]"
@@ -789,9 +775,36 @@ function create_model(
         @constraint(
             model,
             storage_level_intra_rp[row.index] ≤
-            graph[row.asset].initial_storage_capacity +
-            (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0),
+            profile_aggregation(
+                mean,
+                graph[row.asset].rep_periods_profiles,
+                ("max-storage-level", row.rp),
+                row.time_block,
+                1.0,
+            ) * (
+                graph[row.asset].initial_storage_capacity +
+                (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
+            ),
             base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.time_block)]"
+        ) for row ∈ eachrow(dataframes[:lowest_storage_level_intra_rp])
+    ]
+
+    # - minimum storage level within (intra) a representative period
+    model[:min_storage_level_intra_rp_limit] = [
+        @constraint(
+            model,
+            storage_level_intra_rp[row.index] ≥
+            profile_aggregation(
+                mean,
+                graph[row.asset].rep_periods_profiles,
+                ("min-storage-level", row.rp),
+                row.time_block,
+                0.0,
+            ) * (
+                graph[row.asset].initial_storage_capacity +
+                (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
+            ),
+            base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.time_block)]"
         ) for row ∈ eachrow(dataframes[:lowest_storage_level_intra_rp])
     ]
 
@@ -801,6 +814,55 @@ function create_model(
         if !ismissing(graph[a].initial_storage_level)
             set_lower_bound(
                 storage_level_intra_rp[last(sub_df.index)],
+                graph[a].initial_storage_level,
+            )
+        end
+    end
+
+    # - maximum storage level between (inter) representative periods
+    model[:max_storage_level_inter_rp_limit] = [
+        @constraint(
+            model,
+            storage_level_inter_rp[row.index] ≤
+            profile_aggregation(
+                mean,
+                graph[row.asset].base_periods_profiles,
+                "max-storage-level",
+                row.base_period_block,
+                1.0,
+            ) * (
+                graph[row.asset].initial_storage_capacity +
+                (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
+            ),
+            base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.base_period_block)]"
+        ) for row ∈ eachrow(dataframes[:storage_level_inter_rp])
+    ]
+
+    # - minimum storage level between (inter) representative periods
+    model[:min_storage_level_inter_rp_limit] = [
+        @constraint(
+            model,
+            storage_level_inter_rp[row.index] ≥
+            profile_aggregation(
+                mean,
+                graph[row.asset].base_periods_profiles,
+                "min-storage-level",
+                row.base_period_block,
+                0.0,
+            ) * (
+                graph[row.asset].initial_storage_capacity +
+                (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
+            ),
+            base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.base_period_block)]"
+        ) for row ∈ eachrow(dataframes[:storage_level_inter_rp])
+    ]
+
+    # - cycling condition for storage between (inter) representative periods
+    for ((a,), sub_df) ∈ pairs(df_storage_inter_rp_balance_grouped)
+        # Again, ordering is assume
+        if !ismissing(graph[a].initial_storage_level)
+            set_lower_bound(
+                storage_level_inter_rp[last(sub_df.index)],
                 graph[a].initial_storage_level,
             )
         end
