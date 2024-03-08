@@ -99,13 +99,8 @@ function add_expression_terms_intra_rp_constraints!(
     use_highest_resolution = true,
     multiply_by_duration = true,
 )
-    if !use_highest_resolution
-        df_cons[!, :incoming_flow_lowest] .= AffExpr(0.0)
-        df_cons[!, :outgoing_flow_lowest] .= AffExpr(0.0)
-    else
-        df_cons[!, :incoming_flow_highest] .= AffExpr(0.0)
-        df_cons[!, :outgoing_flow_highest] .= AffExpr(0.0)
-    end
+    df_cons[!, :incoming_flow] .= AffExpr(0.0)
+    df_cons[!, :outgoing_flow] .= AffExpr(0.0)
 
     # Aggregating function: If the duration should NOT be taken into account, we have to compute unique appearances of the flows.
     # Otherwise, just use the sum
@@ -138,11 +133,7 @@ function add_expression_terms_intra_rp_constraints!(
         end
         # Sum the corresponding flows from the workspace
         for row in eachrow(sub_df)
-            if !use_highest_resolution
-                row.incoming_flow_lowest = agg(@view workspace[row.time_block])
-            else
-                row.incoming_flow_highest = agg(@view workspace[row.time_block])
-            end
+            row.incoming_flow = agg(@view workspace[row.time_block])
         end
     end
 
@@ -172,11 +163,7 @@ function add_expression_terms_intra_rp_constraints!(
         end
         # Sum the corresponding flows from the workspace
         for row in eachrow(sub_df)
-            if !use_highest_resolution
-                row.outgoing_flow_lowest = agg(@view workspace[row.time_block])
-            else
-                row.outgoing_flow_highest = agg(@view workspace[row.time_block])
-            end
+            row.outgoing_flow = agg(@view workspace[row.time_block])
         end
     end
 end
@@ -430,26 +417,23 @@ function create_model(
         representative_periods,
     )
     incoming_flow_lowest_resolution =
-        model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow_lowest
+        model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow
     outgoing_flow_lowest_resolution =
-        model[:outgoing_flow_lowest_resolution] = dataframes[:lowest].outgoing_flow_lowest
+        model[:outgoing_flow_lowest_resolution] = dataframes[:lowest].outgoing_flow
     incoming_flow_lowest_storage_resolution_intra_rp =
         model[:incoming_flow_lowest_storage_resolution_intra_rp] =
-            dataframes[:lowest_storage_level_intra_rp].incoming_flow_lowest
+            dataframes[:lowest_storage_level_intra_rp].incoming_flow
     outgoing_flow_lowest_storage_resolution_intra_rp =
         model[:outgoing_flow_lowest_storage_resolution_intra_rp] =
-            dataframes[:lowest_storage_level_intra_rp].outgoing_flow_lowest
+            dataframes[:lowest_storage_level_intra_rp].outgoing_flow
     incoming_flow_highest_in_out_resolution =
-        model[:incoming_flow_highest_in_out_resolution] =
-            dataframes[:highest_in_out].incoming_flow_highest
+        model[:incoming_flow_highest_in_out_resolution] = dataframes[:highest_in_out].incoming_flow
     outgoing_flow_highest_in_out_resolution =
-        model[:outgoing_flow_highest_in_out_resolution] =
-            dataframes[:highest_in_out].outgoing_flow_highest
+        model[:outgoing_flow_highest_in_out_resolution] = dataframes[:highest_in_out].outgoing_flow
     incoming_flow_highest_in_resolution =
-        model[:incoming_flow_highest_in_resolution] = dataframes[:highest_in].incoming_flow_highest
+        model[:incoming_flow_highest_in_resolution] = dataframes[:highest_in].incoming_flow
     outgoing_flow_highest_out_resolution =
-        model[:outgoing_flow_highest_out_resolution] =
-            dataframes[:highest_out].outgoing_flow_highest
+        model[:outgoing_flow_highest_out_resolution] = dataframes[:highest_out].outgoing_flow
     incoming_flow_storage_inter_rp_balance =
         model[:incoming_flow_storage_inter_rp_balance] =
             dataframes[:storage_level_inter_rp].incoming_flow
