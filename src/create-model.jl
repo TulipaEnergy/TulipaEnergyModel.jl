@@ -23,7 +23,13 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     dataframes[:flows] = DataFrame(
         (
             (
-                (from = u, to = v, rp = rp, time_block = B, efficiency = graph[u, v].efficiency) for B ∈ graph[u, v].rep_periods_partitions[rp]
+                (
+                    from = u,
+                    to = v,
+                    rp = rp,
+                    time_block = time_block,
+                    efficiency = graph[u, v].efficiency,
+                ) for time_block ∈ graph[u, v].rep_periods_partitions[rp]
             ) for (u, v) ∈ F, rp ∈ RP
         ) |> Iterators.flatten,
     )
@@ -231,11 +237,11 @@ If `profiles[key]` exists, then this function computes the aggregation of `profi
 over the range `time_block` using the aggregator `agg`, i.e., `agg(profiles[key][time_block])`.
 If `profiles[key]` does not exist, then this substitutes it by a vector of `default_value`s.
 """
-function profile_aggregation(agg, profiles, key, B, default_value)
+function profile_aggregation(agg, profiles, key, time_block, default_value)
     if haskey(profiles, key)
-        return agg(profiles[key][B])
+        return agg(profiles[key][time_block])
     else
-        return agg(Iterators.repeated(default_value, length(B)))
+        return agg(Iterators.repeated(default_value, length(time_block)))
     end
 end
 
@@ -280,8 +286,8 @@ function create_model(
     ## Helper functions
     # Computes the duration of the `block` and multiply by the resolution of the
     # representative period `rp`.
-    function duration(B, rp)
-        return length(B) * representative_periods[rp].resolution
+    function duration(time_block, rp)
+        return length(time_block) * representative_periods[rp].resolution
     end
 
     ## Sets unpacking

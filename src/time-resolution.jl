@@ -204,8 +204,8 @@ function compute_rp_partition(
             block_end = block_start
             for partition in partitions
                 # For this partition, find the first block that ends after block_start
-                for B in partition
-                    tentative_end = B[end]
+                for time_block in partition
+                    tentative_end = time_block[end]
                     if tentative_end ≥ block_start
                         if tentative_end > block_end # Better block
                             block_end = tentative_end
