@@ -105,71 +105,58 @@ function add_expression_terms_intra_rp_constraints!(
     use_highest_resolution = true,
     multiply_by_duration = true,
 )
-    df_cons[!, :incoming_flow] .= AffExpr(0.0)
-    df_cons[!, :outgoing_flow] .= AffExpr(0.0)
-
     # Aggregating function: If the duration should NOT be taken into account, we have to compute unique appearances of the flows.
     # Otherwise, just use the sum
     agg = multiply_by_duration ? v -> sum(v) : v -> sum(unique(v))
+
     grouped_cons = groupby(df_cons, [:rp, :asset])
 
-    # Incoming flows
-    grouped_flows = groupby(df_flows, [:rp, :to])
-    for ((rp, to), sub_df) in pairs(grouped_cons)
-        if !haskey(grouped_flows, (; rp, to))
-            continue
-        end
-        resolution = multiply_by_duration ? representative_periods[rp].resolution : 1.0
-        for i in eachindex(workspace)
-            workspace[i] = AffExpr(0.0)
-        end
-        # Store the corresponding flow in the workspace
-        for row in eachrow(grouped_flows[(; rp, to)])
-            for t ∈ row.time_block
-                # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
-                # And when you want the highest resolution (which is asset type-agnostic)
-                selected_assets = ["hub", "consumer"]
-                flag = graph[row.to].type in selected_assets || use_highest_resolution
-                add_to_expression!(
-                    workspace[t],
-                    row.flow,
-                    (resolution * (flag ? 1.0 : row.efficiency)),
-                )
-            end
-        end
-        # Sum the corresponding flows from the workspace
-        for row in eachrow(sub_df)
-            row.incoming_flow = agg(@view workspace[row.time_block])
-        end
-    end
+    # grouped_cons' asset will be matched with either to or from, depending on whether
+    # we are filling incoming or outgoing flows
+    cases = [
+        (col_name = :incoming_flow, asset_match = :to, selected_assets = ["hub", "consumer"]),
+        (
+            col_name = :outgoing_flow,
+            asset_match = :from,
+            selected_assets = ["hub", "consumer", "producer"],
+        ),
+    ]
 
-    # Outgoing flows
-    grouped_flows = groupby(df_flows, [:rp, :from])
-    for ((rp, from), sub_df) in pairs(grouped_cons)
-        if !haskey(grouped_flows, (; rp, from))
-            continue
-        end
-        resolution = multiply_by_duration ? representative_periods[rp].resolution : 1.0
-        for i in eachindex(workspace)
-            workspace[i] = AffExpr(0.0)
-        end
-        # Store the corresponding flow in the workspace
-        for row in eachrow(grouped_flows[(; rp, from)])
-            for t ∈ row.time_block
-                # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
-                # And when you want the highest resolution (which is asset type-agnostic)
-                selected_assets = ["hub", "consumer", "producer"]
-                flag = graph[row.from].type in selected_assets || use_highest_resolution
-                add_to_expression!(
-                    workspace[t],
-                    row.flow,
-                    (resolution / (flag ? 1.0 : row.efficiency)),
-                )
+    for case in cases
+        df_cons[!, case.col_name] .= AffExpr(0.0)
+        grouped_flows = groupby(df_flows, [:rp, case.asset_match])
+        for ((rp, asset), sub_df) in pairs(grouped_cons)
+            if !haskey(grouped_flows, (rp, asset))
+                continue
             end
-        end
-        # Sum the corresponding flows from the workspace
-        for row in eachrow(sub_df)
-            row.outgoing_flow = agg(@view workspace[row.time_block])
+            resolution = multiply_by_duration ? representative_periods[rp].resolution : 1.0
+            for i in eachindex(workspace)
+                workspace[i] = AffExpr(0.0)
+            end
+            # Store the corresponding flow in the workspace
+            for row in eachrow(grouped_flows[(rp, asset)])
+                asset = row[case.asset_match]
+                for t ∈ row.time_block
+                    # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
+                    # And when you want the highest resolution (which is asset type-agnostic)
+                    efficiency_coefficient =
+                        if graph[asset].type in case.selected_assets || use_highest_resolution
+                            1.0
+                        else
+                            if case.col_name == :incoming_flow
+                                row.efficiency
+                            else
+                                # Divide by efficiency for outgoing flows
+                                1.0 / row.efficiency
+                            end
+                        end
+                    add_to_expression!(workspace[t], row.flow, resolution * efficiency_coefficient)
+                end
+            end
+            # Sum the corresponding flows from the workspace
+            for row in eachrow(sub_df)
+                row[case.col_name] = agg(@view workspace[row.time_block])
+            end
         end
     end
 end
