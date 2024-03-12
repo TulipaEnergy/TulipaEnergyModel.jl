@@ -402,3 +402,18 @@ installed in your global environment, and run `using Revise` before including
 
 After building, the documentation will be available in the folder `docs/build/`.
 Open the `index.html` file on the browser to see it.
+
+## Code format and guidelines
+
+This section will list the guidelines for code formatting **not enforced** by [JuliaFormatter](.JuliaFormatter.toml).
+We will try to follow these developing and reviewing.
+
+- Naming
+  - `CamelCase` for classes and modules,
+  - `snake_case` for functions and variables, and
+  - `kebab-case` for file names.
+- Use `using` instead of `import`, in the following way:
+  - Don't use pure `using Package`, always list all necessary objects with `using Package: A, B, C`.
+  - List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context, or `using Graph: SimpleDiGraph`, because it's a constructor with an obvious name.
+  - For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `DataFrames.groupby`.
+  - List all `using` in <src/TulipaEnergyModel.jl>.

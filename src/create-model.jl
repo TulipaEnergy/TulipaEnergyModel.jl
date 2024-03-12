@@ -12,8 +12,8 @@ Computes the data frames used to linearize the variables and constraints. These 
 internally in the model only.
 """
 function construct_dataframes(graph, representative_periods, constraints_partitions, base_periods)
-    A = labels(graph) |> collect
-    F = edge_labels(graph) |> collect
+    A = MetaGraphsNext.labels(graph) |> collect
+    F = MetaGraphsNext.edge_labels(graph) |> collect
     RP = 1:length(representative_periods)
 
     # Output object
@@ -109,7 +109,7 @@ function add_expression_terms_intra_rp_constraints!(
     # Otherwise, just use the sum
     agg = multiply_by_duration ? v -> sum(v) : v -> sum(unique(v))
 
-    grouped_cons = groupby(df_cons, [:rp, :asset])
+    grouped_cons = DataFrames.groupby(df_cons, [:rp, :asset])
 
     # grouped_cons' asset will be matched with either to or from, depending on whether
     # we are filling incoming or outgoing flows
@@ -123,15 +123,15 @@ function add_expression_terms_intra_rp_constraints!(
     ]
 
     for case in cases
-        df_cons[!, case.col_name] .= AffExpr(0.0)
-        grouped_flows = groupby(df_flows, [:rp, case.asset_match])
+        df_cons[!, case.col_name] .= JuMP.AffExpr(0.0)
+        grouped_flows = DataFrames.groupby(df_flows, [:rp, case.asset_match])
         for ((rp, asset), sub_df) in pairs(grouped_cons)
             if !haskey(grouped_flows, (rp, asset))
                 continue
             end
             resolution = multiply_by_duration ? representative_periods[rp].resolution : 1.0
             for i in eachindex(workspace)
-                workspace[i] = AffExpr(0.0)
+                workspace[i] = JuMP.AffExpr(0.0)
             end
             # Store the corresponding flow in the workspace
             for row in eachrow(grouped_flows[(rp, asset)])
@@ -150,7 +150,11 @@ function add_expression_terms_intra_rp_constraints!(
                                 1.0 / row.efficiency
                             end
                         end
-                    add_to_expression!(workspace[t], row.flow, resolution * efficiency_coefficient)
+                    JuMP.add_to_expression!(
+                        workspace[t],
+                        row.flow,
+                        resolution * efficiency_coefficient,
+                    )
                 end
             end
             # Sum the corresponding flows from the workspace
@@ -182,9 +186,9 @@ function add_expression_terms_inter_rp_constraints!(
     graph,
     representative_periods,
 )
-    df_inter[!, :incoming_flow] .= AffExpr(0.0)
-    df_inter[!, :outgoing_flow] .= AffExpr(0.0)
-    df_inter[!, :inflows_profile_aggregation] .= AffExpr(0.0)
+    df_inter[!, :incoming_flow] .= JuMP.AffExpr(0.0)
+    df_inter[!, :outgoing_flow] .= JuMP.AffExpr(0.0)
+    df_inter[!, :inflows_profile_aggregation] .= JuMP.AffExpr(0.0)
 
     # Incoming, outgoing flows, and profile aggregation
     for row_inter in eachrow(df_inter)
@@ -194,11 +198,11 @@ function add_expression_terms_inter_rp_constraints!(
             sub_df_flows =
                 filter(row -> row.to == row_inter.asset && row.rp == row_map.rep_period, df_flows)
             row_inter.incoming_flow +=
-                dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
+                LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
             sub_df_flows =
                 filter(row -> row.from == row_inter.asset && row.rp == row_map.rep_period, df_flows)
             row_inter.outgoing_flow +=
-                dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
+                LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
             row_inter.inflows_profile_aggregation +=
                 profile_aggregation(
                     sum,
@@ -278,8 +282,8 @@ function create_model(
     end
 
     ## Sets unpacking
-    A = labels(graph) |> collect
-    F = edge_labels(graph) |> collect
+    A = MetaGraphsNext.labels(graph) |> collect
+    F = MetaGraphsNext.edge_labels(graph) |> collect
     filter_assets(key, value) =
         filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == value, A)
     filter_flows(key, value) = filter(f -> getfield(graph[f...], key) == value, F)
@@ -297,17 +301,18 @@ function create_model(
 
     # Maximum time step
     Tmax = maximum(last(rp.time_steps) for rp in representative_periods)
-    expression_workspace = Vector{AffExpr}(undef, Tmax)
+    expression_workspace = Vector{JuMP.AffExpr}(undef, Tmax)
 
     # Unpacking dataframes
     df_flows = dataframes[:flows]
 
     df_storage_intra_rp_balance_grouped =
-        groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rp])
-    df_storage_inter_rp_balance_grouped = groupby(dataframes[:storage_level_inter_rp], [:asset])
+        DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rp])
+    df_storage_inter_rp_balance_grouped =
+        DataFrames.groupby(dataframes[:storage_level_inter_rp], [:asset])
 
     ## Model
-    model = Model()
+    model = JuMP.Model()
 
     ## Variables
     flow =
@@ -339,13 +344,13 @@ function create_model(
     ### Integer Investment Variables
     for a ∈ Ai
         if graph[a].investment_integer
-            set_integer(assets_investment[a])
+            JuMP.set_integer(assets_investment[a])
         end
     end
 
     for (u, v) ∈ Fi
         if graph[u, v].investment_integer
-            set_integer(flows_investment[(u, v)])
+            JuMP.set_integer(flows_investment[(u, v)])
         end
     end
 
@@ -435,16 +440,16 @@ function create_model(
             dataframes[:storage_level_inter_rp].outgoing_flow
     # Below, we drop zero coefficients, but probably we don't have any
     # (if the implementation is correct)
-    drop_zeros!.(incoming_flow_lowest_resolution)
-    drop_zeros!.(outgoing_flow_lowest_resolution)
-    drop_zeros!.(incoming_flow_lowest_storage_resolution_intra_rp)
-    drop_zeros!.(outgoing_flow_lowest_storage_resolution_intra_rp)
-    drop_zeros!.(incoming_flow_highest_in_out_resolution)
-    drop_zeros!.(outgoing_flow_highest_in_out_resolution)
-    drop_zeros!.(incoming_flow_highest_in_resolution)
-    drop_zeros!.(outgoing_flow_highest_out_resolution)
-    drop_zeros!.(incoming_flow_storage_inter_rp_balance)
-    drop_zeros!.(outgoing_flow_storage_inter_rp_balance)
+    JuMP.drop_zeros!.(incoming_flow_lowest_resolution)
+    JuMP.drop_zeros!.(outgoing_flow_lowest_resolution)
+    JuMP.drop_zeros!.(incoming_flow_lowest_storage_resolution_intra_rp)
+    JuMP.drop_zeros!.(outgoing_flow_lowest_storage_resolution_intra_rp)
+    JuMP.drop_zeros!.(incoming_flow_highest_in_out_resolution)
+    JuMP.drop_zeros!.(outgoing_flow_highest_in_out_resolution)
+    JuMP.drop_zeros!.(incoming_flow_highest_in_resolution)
+    JuMP.drop_zeros!.(outgoing_flow_highest_out_resolution)
+    JuMP.drop_zeros!.(incoming_flow_storage_inter_rp_balance)
+    JuMP.drop_zeros!.(outgoing_flow_storage_inter_rp_balance)
 
     ## Expressions for the objective function
     assets_investment_cost = @expression(
@@ -482,7 +487,7 @@ function create_model(
             incoming_flow_highest_in_out_resolution[row.index] -
             outgoing_flow_highest_in_out_resolution[row.index] ==
             profile_aggregation(
-                mean,
+                Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
                 ("demand", row.rp),
                 row.time_block,
@@ -585,7 +590,7 @@ function create_model(
                 @expression(
                     model,
                     profile_aggregation(
-                        mean,
+                        Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
                         ("availability", row.rp),
                         row.time_block,
@@ -599,7 +604,7 @@ function create_model(
                 @expression(
                     model,
                     profile_aggregation(
-                        mean,
+                        Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
                         ("availability", row.rp),
                         row.time_block,
@@ -615,7 +620,7 @@ function create_model(
                 @expression(
                     model,
                     profile_aggregation(
-                        mean,
+                        Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
                         ("availability", row.rp),
                         row.time_block,
@@ -629,7 +634,7 @@ function create_model(
                 @expression(
                     model,
                     profile_aggregation(
-                        mean,
+                        Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
                         ("availability", row.rp),
                         row.time_block,
@@ -665,7 +670,7 @@ function create_model(
     # - define lower bounds for flows that are not transport assets
     for row in eachrow(df_flows)
         if !graph[row.from, row.to].is_transport
-            set_lower_bound(flow[row.index], 0.0)
+            JuMP.set_lower_bound(flow[row.index], 0.0)
         end
     end
 
@@ -675,7 +680,7 @@ function create_model(
             @expression(
                 model,
                 profile_aggregation(
-                    mean,
+                    Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
                     ("availability", row.rp),
                     row.time_block,
@@ -689,7 +694,7 @@ function create_model(
             @expression(
                 model,
                 profile_aggregation(
-                    mean,
+                    Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
                     ("availability", row.rp),
                     row.time_block,
@@ -704,7 +709,7 @@ function create_model(
             @expression(
                 model,
                 profile_aggregation(
-                    mean,
+                    Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
                     ("availability", row.rp),
                     row.time_block,
@@ -718,7 +723,7 @@ function create_model(
             @expression(
                 model,
                 profile_aggregation(
-                    mean,
+                    Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
                     ("availability", row.rp),
                     row.time_block,
@@ -753,7 +758,7 @@ function create_model(
             model,
             storage_level_intra_rp[row.index] ≤
             profile_aggregation(
-                mean,
+                Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
                 ("max-storage-level", row.rp),
                 row.time_block,
@@ -772,7 +777,7 @@ function create_model(
             model,
             storage_level_intra_rp[row.index] ≥
             profile_aggregation(
-                mean,
+                Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
                 ("min-storage-level", row.rp),
                 row.time_block,
@@ -789,7 +794,7 @@ function create_model(
     for ((a, _), sub_df) ∈ pairs(df_storage_intra_rp_balance_grouped)
         # Again, ordering is assume
         if !ismissing(graph[a].initial_storage_level)
-            set_lower_bound(
+            JuMP.set_lower_bound(
                 storage_level_intra_rp[last(sub_df.index)],
                 graph[a].initial_storage_level,
             )
@@ -802,7 +807,7 @@ function create_model(
             model,
             storage_level_inter_rp[row.index] ≤
             profile_aggregation(
-                mean,
+                Statistics.mean,
                 graph[row.asset].base_periods_profiles,
                 "max-storage-level",
                 row.base_period_block,
@@ -821,7 +826,7 @@ function create_model(
             model,
             storage_level_inter_rp[row.index] ≥
             profile_aggregation(
-                mean,
+                Statistics.mean,
                 graph[row.asset].base_periods_profiles,
                 "min-storage-level",
                 row.base_period_block,
@@ -838,7 +843,7 @@ function create_model(
     for ((a,), sub_df) ∈ pairs(df_storage_inter_rp_balance_grouped)
         # Again, ordering is assume
         if !ismissing(graph[a].initial_storage_level)
-            set_lower_bound(
+            JuMP.set_lower_bound(
                 storage_level_inter_rp[last(sub_df.index)],
                 graph[a].initial_storage_level,
             )
@@ -849,14 +854,17 @@ function create_model(
     # - maximum (i.e., potential) investment limit for assets
     for a ∈ Ai
         if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit)
-            set_upper_bound(assets_investment[a], graph[a].investment_limit / graph[a].capacity)
+            JuMP.set_upper_bound(
+                assets_investment[a],
+                graph[a].investment_limit / graph[a].capacity,
+            )
         end
     end
 
     # - maximum (i.e., potential) investment limit for flows
     for (u, v) ∈ Fi
         if graph[u, v].capacity > 0 && !ismissing(graph[u, v].investment_limit)
-            set_upper_bound(
+            JuMP.set_upper_bound(
                 flows_investment[(u, v)],
                 graph[u, v].investment_limit / graph[u, v].capacity,
             )
@@ -864,7 +872,7 @@ function create_model(
     end
 
     if write_lp_file
-        write_to_file(model, "model.lp")
+        JuMP.write_to_file(model, "model.lp")
     end
 
     return model
