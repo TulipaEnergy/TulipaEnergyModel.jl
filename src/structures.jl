@@ -238,17 +238,17 @@ function Base.show(io::IO, ep::EnergyProblem)
     if status_model_creation
         println(io, "  - Model created!")
         println(io, "    - Time for creating the model (in seconds): ", ep.time_create_model)
-        println(io, "    - Number of variables: ", num_variables(ep.model))
+        println(io, "    - Number of variables: ", JuMP.num_variables(ep.model))
         println(
             io,
             "    - Number of constraints for variable bounds: ",
-            num_constraints(ep.model; count_variable_in_set_constraints = true) -
-            num_constraints(ep.model; count_variable_in_set_constraints = false),
+            JuMP.num_constraints(ep.model; count_variable_in_set_constraints = true) -
+            JuMP.num_constraints(ep.model; count_variable_in_set_constraints = false),
         )
         println(
             io,
             "    - Number of structual constraints: ",
-            num_constraints(ep.model; count_variable_in_set_constraints = false),
+            JuMP.num_constraints(ep.model; count_variable_in_set_constraints = false),
         )
     else
         println(io, "  - Model not created!")

@@ -5,6 +5,7 @@ align_struct_field = true
 conditional_to_if = true
 format_docstrings = false
 format_markdown = false
+import_to_using = true
 indent = 4
 margin = 100
 normalize_line_endings = "unix"

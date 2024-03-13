@@ -3,16 +3,24 @@ module TulipaEnergyModel
 # Packages
 
 ## Data
-using CSV, DataFrames, TOML
+using CSV: CSV
+using DataFrames: DataFrames, DataFrame
+using TOML: TOML
 
-## Graphs
-using Graphs, MetaGraphsNext
+## Graph
+using Graphs: Graphs, SimpleDiGraph
+using MetaGraphsNext: MetaGraphsNext, MetaGraph
 
 ## Optimization
-using HiGHS, JuMP, MathOptInterface
+using HiGHS: HiGHS
+using JuMP: JuMP, @constraint, @expression, @objective, @variable
+using MathOptInterface: MathOptInterface
 
 ## Others
-using LinearAlgebra, OrderedCollections, Statistics, TimerOutputs
+using LinearAlgebra: LinearAlgebra
+using OrderedCollections: OrderedDict
+using Statistics: Statistics
+using TimerOutputs: TimerOutput, @timeit
 
 include("input-tables.jl")
 include("structures.jl")

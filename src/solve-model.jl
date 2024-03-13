@@ -18,17 +18,17 @@ function solve_model!(
 
     energy_problem.solution =
         solve_model!(energy_problem.dataframes, model, optimizer; parameters = parameters)
-    energy_problem.termination_status = termination_status(model)
+    energy_problem.termination_status = JuMP.termination_status(model)
     if energy_problem.solution === nothing
         # Warning has been given at internal function
         return
     end
     energy_problem.solved = true
-    energy_problem.objective_value = objective_value(model)
+    energy_problem.objective_value = JuMP.objective_value(model)
 
     graph = energy_problem.graph
     # rps = energy_problem.representative_periods
-    for a in labels(graph)
+    for a in MetaGraphsNext.labels(graph)
         if graph[a].investable
             if graph[a].investment_integer
                 graph[a].investment = round(Int, energy_problem.solution.assets_investment[a])
@@ -48,7 +48,7 @@ function solve_model!(
         graph[a].storage_level_inter_rp[bp] = value
     end
 
-    for (u, v) in edge_labels(graph)
+    for (u, v) in MetaGraphsNext.edge_labels(graph)
         if graph[u, v].investable
             if graph[u, v].investment_integer
                 graph[u, v].investment =
@@ -152,26 +152,31 @@ function solve_model(
     parameters = default_parameters(optimizer),
 )
     # Set optimizer and its parameters
-    set_optimizer(model, optimizer)
+    JuMP.set_optimizer(model, optimizer)
     for (k, v) in parameters
-        set_attribute(model, k, v)
+        JuMP.set_attribute(model, k, v)
     end
     # Solve model
-    optimize!(model)
+    JuMP.optimize!(model)
 
     # Check solution status
-    if termination_status(model) != OPTIMAL
+    if JuMP.termination_status(model) != JuMP.OPTIMAL
         @warn("Model status different from optimal")
         return nothing
     end
 
     return Solution(
-        Dict(a => value(model[:assets_investment][a]) for a in model[:assets_investment].axes[1]),
-        Dict(uv => value(model[:flows_investment][uv]) for uv in model[:flows_investment].axes[1]),
-        value.(model[:storage_level_intra_rp]),
-        value.(model[:storage_level_inter_rp]),
-        value.(model[:flow]),
-        objective_value(model),
+        Dict(
+            a => JuMP.value(model[:assets_investment][a]) for a in model[:assets_investment].axes[1]
+        ),
+        Dict(
+            uv => JuMP.value(model[:flows_investment][uv]) for
+            uv in model[:flows_investment].axes[1]
+        ),
+        JuMP.value.(model[:storage_level_intra_rp]),
+        JuMP.value.(model[:storage_level_inter_rp]),
+        JuMP.value.(model[:flow]),
+        JuMP.objective_value(model),
         compute_dual_variables(model),
     )
 end
@@ -191,14 +196,14 @@ A named tuple containing the dual variables of selected constraints.
 """
 function compute_dual_variables(model)
     try
-        if !has_duals(model)
-            fix_discrete_variables(model)
-            optimize!(model)
+        if !JuMP.has_duals(model)
+            JuMP.fix_discrete_variables(model)
+            JuMP.optimize!(model)
         end
 
         return Dict(
-            :hub_balance => dual.(model[:hub_balance]),
-            :consumer_balance => dual.(model[:consumer_balance]),
+            :hub_balance => JuMP.dual.(model[:hub_balance]),
+            :consumer_balance => JuMP.dual.(model[:consumer_balance]),
         )
     catch
         return nothing

@@ -140,7 +140,7 @@ function create_graph_and_representative_periods_from_csv_folder(
 
     # Create a dictionary of weights and populate it.
     weights = Dict{Int,Dict{Int,Float64}}()
-    for sub_df ∈ groupby(rp_mapping_df, :rep_period)
+    for sub_df ∈ DataFrames.groupby(rp_mapping_df, :rep_period)
         rp = first(sub_df.rep_period)
         weights[rp] = Dict(Pair.(sub_df.period, sub_df.weight))
     end
@@ -186,7 +186,7 @@ function create_graph_and_representative_periods_from_csv_folder(
 
     graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data, nothing, nothing, nothing)
 
-    for a in labels(graph)
+    for a in MetaGraphsNext.labels(graph)
         compute_assets_partitions!(
             graph[a].rep_periods_partitions,
             assets_partitions_df["rep"],
@@ -195,7 +195,7 @@ function create_graph_and_representative_periods_from_csv_folder(
         )
     end
 
-    for (u, v) in edge_labels(graph)
+    for (u, v) in MetaGraphsNext.edge_labels(graph)
         compute_flows_partitions!(
             graph[u, v].rep_periods_partitions,
             flows_partitions_df["rep"],
@@ -223,7 +223,7 @@ function create_graph_and_representative_periods_from_csv_folder(
     end
 
     for asset_profile_row in eachrow(assets_profiles_df["rep"]) # row = asset, profile_type, profile_name
-        gp = groupby( # 3. group by RP
+        gp = DataFrames.groupby( # 3. group by RP
             filter(
                 row -> row.profile_name == asset_profile_row.profile_name, # 2. Filter profile_name
                 profiles_dfs["rep"][asset_profile_row.profile_type], # 1. Get the profile of given type
@@ -239,7 +239,7 @@ function create_graph_and_representative_periods_from_csv_folder(
     end
 
     for flow_profile_row in eachrow(flows_profiles_df["rep"])
-        gp = groupby(
+        gp = DataFrames.groupby(
             filter(
                 row -> row.profile_name == flow_profile_row.profile_name,
                 profiles_dfs["rep"][flow_profile_row.profile_type],
@@ -284,14 +284,7 @@ The first row of the file contains some metadata information that is not used.
 function read_csv_with_schema(file_path, schema; csvargs...)
     # Get the schema names and types in the form of Dictionaries
     col_types = zip(fieldnames(schema), fieldtypes(schema)) |> Dict
-    df = CSV.read(
-        file_path,
-        DataFrames.DataFrame;
-        header = 2,
-        types = col_types,
-        strict = true,
-        csvargs...,
-    )
+    df = CSV.read(file_path, DataFrame; header = 2, types = col_types, strict = true, csvargs...)
 
     return df
 end
@@ -335,7 +328,7 @@ The following files are created:
 function save_solution_to_file(output_folder, graph, dataframes, solution)
     output_file = joinpath(output_folder, "assets-investments.csv")
     output_table = DataFrame(; asset = String[], InstalUnits = Float64[], InstalCap_MW = Float64[])
-    for a in labels(graph)
+    for a in MetaGraphsNext.labels(graph)
         if !graph[a].investable
             continue
         end
@@ -352,7 +345,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
         InstalUnits = Float64[],
         InstalCap_MW = Float64[],
     )
-    for (u, v) in edge_labels(graph)
+    for (u, v) in MetaGraphsNext.edge_labels(graph)
         if !graph[u, v].investable
             continue
         end
@@ -372,47 +365,58 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     =#
 
     output_file = joinpath(output_folder, "flows.csv")
-    output_table = select(dataframes[:flows], :from, :to, :rp, :time_block => :time_step)
+    output_table = DataFrames.select(dataframes[:flows], :from, :to, :rp, :time_block => :time_step)
     output_table.value = solution.flow
-    output_table = flatten(
-        transform(
+    output_table = DataFrames.flatten(
+        DataFrames.transform(
             output_table,
             [:time_step, :value] =>
-                ByRow((time_block, value) -> begin # transform each row using these two columns
-                    n = length(time_block)
-                    (time_block, Iterators.repeated(value, n)) # e.g., (3:5, [30, 30, 30])
-                end) => [:time_step, :value],
+                DataFrames.ByRow(
+                    (time_block, value) -> begin # transform each row using these two columns
+                        n = length(time_block)
+                        (time_block, Iterators.repeated(value, n)) # e.g., (3:5, [30, 30, 30])
+                    end,
+                ) => [:time_step, :value],
         ),
         [:time_step, :value], # flatten, e.g., [(3, 30), (4, 30), (5, 30)]
     )
     output_table |> CSV.write(output_file)
 
     output_file = joinpath(output_folder, "storage-level-intra-rp.csv")
-    output_table =
-        select(dataframes[:lowest_storage_level_intra_rp], :asset, :rp, :time_block => :time_step)
+    output_table = DataFrames.select(
+        dataframes[:lowest_storage_level_intra_rp],
+        :asset,
+        :rp,
+        :time_block => :time_step,
+    )
     output_table.value = solution.storage_level_intra_rp
-    output_table = flatten(
-        transform(
+    output_table = DataFrames.flatten(
+        DataFrames.transform(
             output_table,
             [:time_step, :value] =>
-                ByRow((time_block, value) -> begin
+                DataFrames.ByRow(
+                    (time_block, value) -> begin
                         n = length(time_block)
                         (time_block, Iterators.repeated(value / n, n))
-                    end) => [:time_step, :value],
+                    end,
+                ) => [:time_step, :value],
         ),
         [:time_step, :value],
     )
     output_table |> CSV.write(output_file)
 
     output_file = joinpath(output_folder, "storage-level-inter-rp.csv")
-    output_table =
-        select(dataframes[:storage_level_inter_rp], :asset, :base_period_block => :time_step)
+    output_table = DataFrames.select(
+        dataframes[:storage_level_inter_rp],
+        :asset,
+        :base_period_block => :time_step,
+    )
     output_table.value = solution.storage_level_inter_rp
-    output_table = flatten(
-        transform(
+    output_table = DataFrames.flatten(
+        DataFrames.transform(
             output_table,
             [:time_step, :value] =>
-                ByRow(
+                DataFrames.ByRow(
                     (base_period_block, value) -> begin
                         n = length(base_period_block)
                         (base_period_block, Iterators.repeated(value / n, n))
