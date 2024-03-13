@@ -70,8 +70,7 @@ jobs:
                     --rev="$BASE,$HEAD" \
                     --url=${{ github.event.repository.clone_url }} \
                     --bench-on="$BASE" \
-                    --output-dir=results/ \
-                    --tune
+                    --output-dir=results/
             - name: Create plots from benchmarks
               run: |
                   mkdir -p plots

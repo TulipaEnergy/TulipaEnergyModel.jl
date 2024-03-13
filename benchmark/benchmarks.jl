@@ -48,12 +48,12 @@ const OUTPUT_FOLDER_BM = mktempdir()
 SUITE["energy_problem"] = BenchmarkGroup()
 SUITE["energy_problem"]["input_and_constructor"] = @benchmarkable begin
     create_energy_problem_from_csv_folder($INPUT_FOLDER_BM)
-end
+end samples = 3 evals = 1 seconds = Inf
 energy_problem = create_energy_problem_from_csv_folder(INPUT_FOLDER_BM)
 
 SUITE["energy_problem"]["create_model"] = @benchmarkable begin
     create_model!($energy_problem)
-end
+end samples = 3 evals = 1 seconds = Inf
 create_model!(energy_problem)
 
 # SUITE["energy_problem"]["solve_model"] = @benchmarkable begin
