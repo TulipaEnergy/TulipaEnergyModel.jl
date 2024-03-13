@@ -406,7 +406,7 @@ Open the `index.html` file on the browser to see it.
 ## Code format and guidelines
 
 This section will list the guidelines for code formatting **not enforced** by [JuliaFormatter](.JuliaFormatter.toml).
-We will try to follow these developing and reviewing.
+We will try to follow these during development and reviews.
 
 - Naming
   - `CamelCase` for classes and modules,
