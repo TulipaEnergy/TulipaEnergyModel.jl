@@ -102,9 +102,9 @@ end
 Markdown.parse(out)
 ```
 
-#### `flows-base-periods-profiles.csv` and `flows-rep-periods-profiles.csv`
+#### `flows-rep-periods-profiles.csv`
 
-Similar to their `asset` counterparts.
+Similar to their `asset` counterpart.
 
 Required columns:
 
@@ -164,9 +164,9 @@ end
 Markdown.parse(out)
 ```
 
-#### `assets-base-periods-partitions.csv` and `flows-base-periods-profiles`
+#### `assets-base-periods-partitions.csv`
 
-Similar to their `rep-periods` counterparts, but for the base periods.
+Similar to their `rep-periods` counterpart, but for the base periods.
 
 Required columns for assets:
 
@@ -174,17 +174,6 @@ Required columns for assets:
 using Markdown, TulipaEnergyModel
 out = ""
 for (f, t) in zip(fieldnames(TulipaEnergyModel.AssetBasePeriodPartitionData), fieldtypes(TulipaEnergyModel.AssetBasePeriodPartitionData))
-    global out *= "- `$f: $t`\n"
-end
-Markdown.parse(out)
-```
-
-Required columns for flows:
-
-```@eval
-using Markdown, TulipaEnergyModel
-out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.FlowBasePeriodPartitionData), fieldtypes(TulipaEnergyModel.FlowBasePeriodPartitionData))
     global out *= "- `$f: $t`\n"
 end
 Markdown.parse(out)
