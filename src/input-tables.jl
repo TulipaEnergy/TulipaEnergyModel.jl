@@ -89,16 +89,6 @@ struct FlowRepPeriodPartitionData
 end
 
 """
-Schema for the flows-base-periods-partitions.csv file.
-"""
-struct FlowBasePeriodPartitionData
-    from_asset::String          # Name of Asset
-    to_asset::String            # Name of Asset
-    specification::Symbol
-    partition::String
-end
-
-"""
 Schema for the rep-period-data.csv file.
 """
 struct RepPeriodData

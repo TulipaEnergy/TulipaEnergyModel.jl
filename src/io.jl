@@ -33,9 +33,7 @@ The following files are expected to exist in the input folder:
   - `assets-base-periods-partitions.csv`: Following the [`TulipaEnergyModel.AssetBasePeriodPartitionData`](@ref) specification.
   - `assets-rep-periods-partitions.csv`: Following the [`TulipaEnergyModel.AssetRepPeriodPartitionData`](@ref) specification.
   - `flows-data.csv`: Following the [`TulipaEnergyModel.FlowData`](@ref) specification.
-  - `flows-base-periods-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification.
   - `flows-rep-periods-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification.
-  - `flows-base-periods-partitions.csv`: Following the [`TulipaEnergyModel.FlowBasePeriodPartitionData`](@ref) specification.
   - `flows-rep-periods-partitions.csv`: Following the [`TulipaEnergyModel.FlowRepPeriodPartitionData`](@ref) specification.
   - `rep-periods-data.csv`: Following the [`TulipaEnergyModel.RepPeriodData`](@ref) specification.
   - `rep-periods-mapping.csv`: Following the [`TulipaEnergyModel.RepPeriodMapping`](@ref) specification.
@@ -75,12 +73,8 @@ function create_graph_and_representative_periods_from_csv_folder(
             AssetProfiles,
         ) for profile_type in ["base", "rep"]
     )
-    flows_profiles_df = Dict(
-        profile_type => read_csv_with_schema(
-            fillpath("flows-$profile_type-periods-profiles.csv"),
-            FlowProfiles,
-        ) for profile_type in ["base", "rep"]
-    )
+    flows_profiles_df =
+        read_csv_with_schema(fillpath("flows-rep-periods-profiles.csv"), FlowProfiles)
     assets_partitions_df = Dict(
         "base" => read_csv_with_schema(
             fillpath("assets-base-periods-partitions.csv"),
@@ -91,15 +85,9 @@ function create_graph_and_representative_periods_from_csv_folder(
             AssetRepPeriodPartitionData,
         ),
     )
-    flows_partitions_df = Dict(
-        "base" => read_csv_with_schema(
-            fillpath("flows-base-periods-partitions.csv"),
-            FlowBasePeriodPartitionData,
-        ),
-        "rep" => read_csv_with_schema(
-            fillpath("flows-rep-periods-partitions.csv"),
-            FlowRepPeriodPartitionData,
-        ),
+    flows_partitions_df = read_csv_with_schema(
+        fillpath("flows-rep-periods-partitions.csv"),
+        FlowRepPeriodPartitionData,
     )
 
     profile_input_data_type =
@@ -198,7 +186,7 @@ function create_graph_and_representative_periods_from_csv_folder(
     for (u, v) in MetaGraphsNext.edge_labels(graph)
         compute_flows_partitions!(
             graph[u, v].rep_periods_partitions,
-            flows_partitions_df["rep"],
+            flows_partitions_df,
             u,
             v,
             representative_periods,
@@ -208,14 +196,6 @@ function create_graph_and_representative_periods_from_csv_folder(
     # For base periods, only the explicitly mentioned assets and flows have partitions defined
     for row in eachrow(assets_partitions_df["base"])
         graph[row.asset].base_periods_partitions = _parse_rp_partition(
-            Val(row.specification),
-            row.partition,
-            1:base_periods.num_base_periods,
-        )
-    end
-
-    for row in eachrow(flows_partitions_df["base"])
-        graph[row.from_asset, row.to_asset].base_periods_partitions = _parse_rp_partition(
             Val(row.specification),
             row.partition,
             1:base_periods.num_base_periods,
@@ -238,7 +218,7 @@ function create_graph_and_representative_periods_from_csv_folder(
         end
     end
 
-    for flow_profile_row in eachrow(flows_profiles_df["rep"])
+    for flow_profile_row in eachrow(flows_profiles_df)
         gp = DataFrames.groupby(
             filter(
                 row -> row.profile_name == flow_profile_row.profile_name,
@@ -263,14 +243,6 @@ function create_graph_and_representative_periods_from_csv_folder(
             df.value
     end
 
-    for flow_profile_row in eachrow(flows_profiles_df["base"]) # row = flow, profile_type, profile_name
-        df = filter(
-            row -> row.profile_name == flow_profile_row.profile_name, # 2. Filter profile_name
-            profiles_dfs["base"][flow_profile_row.profile_type], # 1. Get the profile of given type
-        )
-        graph[flow_profile_row.from_asset, flow_profile_row.to_asset].base_periods_profiles[flow_profile_row.profile_type] =
-            df.value
-    end
     return graph, representative_periods, base_periods
 end
 
