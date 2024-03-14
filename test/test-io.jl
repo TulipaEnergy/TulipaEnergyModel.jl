@@ -124,3 +124,24 @@ end
         @test_throws AssertionError TEM._parse_rp_partition(Val(:math), "3x4", 1:14)
     end
 end
+
+@testset "is_seasonal asset without entry in partitions file should use :uniform,1" begin
+    # Copy Norse and delete a row of the partitions file
+    dir = mktempdir()
+    for (root, _, files) in walkdir(joinpath(INPUT_FOLDER, "Norse"))
+        for file in files
+            cp(joinpath(root, file), joinpath(dir, file))
+        end
+    end
+    filename = joinpath(dir, "assets-base-periods-partitions.csv")
+    lines = readlines(filename)
+    open(filename, "w") do io
+        for line in lines[1:end-1]
+            println(io, line)
+        end
+    end
+    missing_asset = Symbol(split(lines[end], ",")[1]) # The asset the was not included
+
+    graph, rps, bps = create_graph_and_representative_periods_from_csv_folder(dir)
+    @test graph[missing_asset].base_periods_partitions == [i:i for i = 1:bps.num_base_periods]
+end

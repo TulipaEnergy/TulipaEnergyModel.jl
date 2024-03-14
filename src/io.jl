@@ -194,13 +194,27 @@ function create_graph_and_representative_periods_from_csv_folder(
         )
     end
 
-    # For base periods, only the explicitly mentioned assets and flows have partitions defined
-    for row in eachrow(assets_partitions_df[:base])
-        graph[row.asset].base_periods_partitions = _parse_rp_partition(
-            Val(row.specification),
-            row.partition,
-            1:base_periods.num_base_periods,
-        )
+    # For base periods, only the assets where is_seasonal is true are selected
+    for row in eachrow(assets_data_df)
+        if row.is_seasonal
+            # Search for this row in the assets_partitions_df and error if it is not found
+            found = false
+            for partition_row in eachrow(assets_partitions_df[:base])
+                if row.name == partition_row.asset
+                    graph[row.name].base_periods_partitions = _parse_rp_partition(
+                        Val(partition_row.specification),
+                        partition_row.partition,
+                        1:base_periods.num_base_periods,
+                    )
+                    found = true
+                    break
+                end
+            end
+            if !found
+                graph[row.name].base_periods_partitions =
+                    _parse_rp_partition(Val(:uniform), "1", 1:base_periods.num_base_periods)
+            end
+        end
     end
 
     for asset_profile_row in eachrow(assets_profiles_df[:rep]) # row = asset, profile_type, profile_name
