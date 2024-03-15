@@ -3,7 +3,7 @@
         dir = joinpath(INPUT_FOLDER, "Tiny")
         @test_throws ArgumentError TulipaEnergyModel.read_csv_with_schema(
             joinpath(dir, "bad-assets-data.csv"),
-            TulipaEnergyModel.AssetData,
+            TulipaEnergyModel.schemas.assets.data,
         )
     end
 

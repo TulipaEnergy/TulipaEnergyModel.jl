@@ -27,18 +27,18 @@ Set strict = true to error if assets are missing from partition data.
 
 The following files are expected to exist in the input folder:
 
-  - `assets-data.csv`: Following the [`TulipaEnergyModel.AssetData`](@ref) specification.
-  - `assets-base-periods-profiles.csv`: Following the [`TulipaEnergyModel.AssetProfiles`](@ref) specification.
-  - `assets-rep-periods-profiles.csv`: Following the [`TulipaEnergyModel.AssetProfiles`](@ref) specification.
-  - `assets-base-periods-partitions.csv`: Following the [`TulipaEnergyModel.AssetBasePeriodPartitionData`](@ref) specification.
-  - `assets-rep-periods-partitions.csv`: Following the [`TulipaEnergyModel.AssetRepPeriodPartitionData`](@ref) specification.
-  - `flows-data.csv`: Following the [`TulipaEnergyModel.FlowData`](@ref) specification.
-  - `flows-rep-periods-profiles.csv`: Following the [`TulipaEnergyModel.FlowProfiles`](@ref) specification.
-  - `flows-rep-periods-partitions.csv`: Following the [`TulipaEnergyModel.FlowRepPeriodPartitionData`](@ref) specification.
-  - `rep-periods-data.csv`: Following the [`TulipaEnergyModel.RepPeriodData`](@ref) specification.
-  - `rep-periods-mapping.csv`: Following the [`TulipaEnergyModel.RepPeriodMapping`](@ref) specification.
-  - `profiles-base-periods-<type>.csv`: Following the [`TulipaEnergyModel.BasePeriodsProfilesData`](@ref) specification.
-  - `profiles-rep-periods-<type>.csv`: Following the [`TulipaEnergyModel.RepPeriodsProfilesData`](@ref) specification.
+  - `assets-base-periods-partitions.csv`: Following the schema `schemas.assets.base_periods_partition`.
+  - `assets-data.csv`: Following the schema `schemas.assets.data`.
+  - `assets-base-periods-profiles.csv`: Following the schema `schemas.assets.profiles_reference`.
+  - `assets-rep-periods-profiles.csv`: Following the schema `schemas.assets.profiles_reference`.
+  - `assets-rep-periods-partitions.csv`: Following the schema `schemas.assets.rep_periods_partition`.
+  - `flows-data.csv`: Following the schema `schemas.flows.data`.
+  - `flows-rep-periods-profiles.csv`: Following the schema `schemas.flows.profiles_reference`.
+  - `flows-rep-periods-partitions.csv`: Following the schema `schemas.flows.rep_periods_partition`.
+  - `profiles-base-periods-<type>.csv`: Following the schema `schemas.base_periods.profiles_data`.
+  - `profiles-rep-periods-<type>.csv`: Following the schema `schemas.rep_periods.profiles_data`.
+  - `rep-periods-data.csv`: Following the schema `schemas.rep_periods.data`.
+  - `rep-periods-mapping.csv`: Following the schema `schemas.rep_periods.mapping`.
 
 The returned structures are:
 
@@ -59,38 +59,27 @@ function create_graph_and_representative_periods_from_csv_folder(
     input_folder::AbstractString;
     strict = false,
 )
-    # Read data
-    fillpath(filename) = joinpath(input_folder, filename)
-
-    assets_data_df = read_csv_with_schema(fillpath("assets-data.csv"), AssetData)
-    flows_data_df  = read_csv_with_schema(fillpath("flows-data.csv"), FlowData)
-    rep_period_df  = read_csv_with_schema(fillpath("rep-periods-data.csv"), RepPeriodData)
-    rp_mapping_df  = read_csv_with_schema(fillpath("rep-periods-mapping.csv"), RepPeriodMapping)
+    assets_data_df = read_csv_with_implicit_schema(input_folder, "assets-data.csv")
+    flows_data_df  = read_csv_with_implicit_schema(input_folder, "flows-data.csv")
+    rep_period_df  = read_csv_with_implicit_schema(input_folder, "rep-periods-data.csv")
+    rp_mapping_df  = read_csv_with_implicit_schema(input_folder, "rep-periods-mapping.csv")
 
     assets_profiles_df = Dict(
-        profile_type => read_csv_with_schema(
-            fillpath("assets-$profile_type-periods-profiles.csv"),
-            AssetProfiles,
+        profile_type => read_csv_with_implicit_schema(
+            input_folder,
+            "assets-$profile_type-periods-profiles.csv",
         ) for profile_type in [:base, :rep]
     )
     flows_profiles_df =
-        read_csv_with_schema(fillpath("flows-rep-periods-profiles.csv"), FlowProfiles)
+        read_csv_with_implicit_schema(input_folder, "flows-rep-periods-profiles.csv")
     assets_partitions_df = Dict(
-        :base => read_csv_with_schema(
-            fillpath("assets-base-periods-partitions.csv"),
-            AssetBasePeriodPartitionData,
-        ),
-        :rep => read_csv_with_schema(
-            fillpath("assets-rep-periods-partitions.csv"),
-            AssetRepPeriodPartitionData,
-        ),
+        :base =>
+            read_csv_with_implicit_schema(input_folder, "assets-base-periods-partitions.csv"),
+        :rep =>
+            read_csv_with_implicit_schema(input_folder, "assets-rep-periods-partitions.csv"),
     )
-    flows_partitions_df = read_csv_with_schema(
-        fillpath("flows-rep-periods-partitions.csv"),
-        FlowRepPeriodPartitionData,
-    )
-
-    profile_input_data_type = Dict(:base => BasePeriodsProfilesData, :rep => RepPeriodsProfilesData)
+    flows_partitions_df =
+        read_csv_with_implicit_schema(input_folder, "flows-rep-periods-partitions.csv")
 
     profiles_dfs = Dict(
         period_type => Dict(
@@ -98,10 +87,7 @@ function create_graph_and_representative_periods_from_csv_folder(
                 regex = "profiles-$(period_type)-periods-(.*).csv"
                 # Sanitized key: Spaces and dashes convert to underscore
                 key = Symbol(replace(match(Regex(regex), filename)[1], r"[ -]" => "_"))
-                value = read_csv_with_schema(
-                    fillpath(filename),
-                    profile_input_data_type[period_type],
-                )
+                value = read_csv_with_implicit_schema(input_folder, filename)
                 key => value
             end for filename in readdir(input_folder) if
             startswith("profiles-$period_type-periods-")(filename)
@@ -160,8 +146,20 @@ function create_graph_and_representative_periods_from_csv_folder(
     ]
 
     flow_data = [
-        (row.from_asset, row.to_asset) => GraphFlowData(FlowData(row...)) for
-        row in eachrow(flows_data_df)
+        (row.from_asset, row.to_asset) => GraphFlowData(
+            row.carrier,
+            row.active,
+            row.is_transport,
+            row.investable,
+            row.investment_integer,
+            row.variable_cost,
+            row.investment_cost,
+            row.investment_limit,
+            row.capacity,
+            row.initial_export_capacity,
+            row.initial_import_capacity,
+            row.efficiency,
+        ) for row in eachrow(flows_data_df)
     ]
 
     num_assets = length(asset_data)
@@ -248,18 +246,40 @@ function create_graph_and_representative_periods_from_csv_folder(
 end
 
 """
-    read_csv_with_schema(file_path, schema)
+    read_csv_with_schema(file_path, schema; csvargs...)
 
-Reads the csv with file_name at location path validating the data using the schema.
+Reads the csv at `file_path` validating the data using the `schema`.
 It assumes that the file's header is at the second row.
 The first row of the file contains some metadata information that is not used.
+Additional keywords arguments can be passed to `CSV.read`.
 """
 function read_csv_with_schema(file_path, schema; csvargs...)
-    # Get the schema names and types in the form of Dictionaries
-    col_types = zip(fieldnames(schema), fieldtypes(schema)) |> Dict
-    df = CSV.read(file_path, DataFrame; header = 2, types = col_types, strict = true, csvargs...)
+    df = CSV.read(file_path, DataFrame; header = 2, types = schema, strict = true, csvargs...)
 
     return df
+end
+
+"""
+    read_csv_with_implicit_schema(dir, filename; csvargs...)
+
+Reads the csv at direcory `dir` named `filename` validating the data using a schema
+chosen based on `filename`.
+The function [`read_csv_with_schema`](@ref) is responsible for actually reading the file.
+Additional keywords arguments can be passed to `CSV.read`.
+"""
+function read_csv_with_implicit_schema(dir, filename; csvargs...)
+    schema = if haskey(schema_per_file, filename)
+        schema_per_file[filename]
+    else
+        if startswith("profiles-base-periods")(filename)
+            schema_per_file["profiles-base-periods-<type>.csv"]
+        elseif startswith("profiles-rep-periods")(filename)
+            schema_per_file["profiles-rep-periods-<type>.csv"]
+        else
+            error("No implicit schema for file $filename")
+        end
+    end
+    read_csv_with_schema(joinpath(dir, filename), schema)
 end
 
 """

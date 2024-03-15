@@ -43,25 +43,17 @@ The input_folder should contain CSV files as described below. The output_folder 
 ## Input
 
 Currently, we only accept input from CSV files.
-There should be 8 files, each following the specification of input structures.
+There should be many, each following the specification of input structures.
 You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples.
 
 ### CSV
 
+Below we have a description of the files.
+At the end, in [Schemas](@ref), we have the expected columns in these CSVs.
+
 #### `assets-data.csv`
 
 This file includes the list of assets and the data associated with each of them.
-
-Required columns:
-
-```@eval
-using Markdown, TulipaEnergyModel
-out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.AssetData), fieldtypes(TulipaEnergyModel.AssetData))
-    global out *= "- `$f: $t`\n"
-end
-Markdown.parse(out)
-```
 
 The `Missing` data meaning depends on the parameter, for instance:
 
@@ -72,50 +64,22 @@ The `Missing` data meaning depends on the parameter, for instance:
 
 Similar to `assets-data.csv`, but for flows. Each flow is defined as a pair of assets.
 
-Required columns:
-
-```@eval
-using Markdown, TulipaEnergyModel
-out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.FlowData), fieldtypes(TulipaEnergyModel.FlowData))
-    global out *= "- `$f: $t`\n"
-end
-Markdown.parse(out)
-```
-
 The `Missing` data meaning depends on the parameter, for instance:
 
 - `investment_limit`: There is no investment limit.
 
-#### `assets-base-periods-profiles.csv` and `asset-rep-periods-profiles.csv`
+#### `assets-base-periods-profiles.csv` and `assets-rep-periods-profiles.csv`
 
-These files contain the profiles for each asset at each base period step, or at each representative period.
-
-Required columns:
-
-```@eval
-using Markdown, TulipaEnergyModel
-out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.AssetProfiles), fieldtypes(TulipaEnergyModel.AssetProfiles))
-    global out *= "- `$f: $t`\n"
-end
-Markdown.parse(out)
-```
+These files contain the reference to profiles for each asset at each base period step, or at each representative period.
 
 #### `flows-rep-periods-profiles.csv`
 
 Similar to their `asset` counterpart.
 
-Required columns:
+#### `profiles-base-periods-<type>.csv` and `profiles-rep-periods-<type>.csv`
 
-```@eval
-using Markdown, TulipaEnergyModel
-out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.FlowProfiles), fieldtypes(TulipaEnergyModel.FlowProfiles))
-    global out *= "- `$f: $t`\n"
-end
-Markdown.parse(out)
-```
+For each `type` defined in either `assets-*-periods-profiles` or `flows-rep-periods-profiles`, one of these files must exist.
+They store the profile data as indexed by a profile name.
 
 #### [`assets-rep-periods-partitions.csv`](@id asset-rep-periods-partitions-definition)
 
@@ -138,75 +102,35 @@ The table below shows various results for different formats for a representative
 | 1:1, 2:2, …, 12:12    | 1        | 1;1;1;1;1;1;1;1;1;1;1;1 | 12x1        |
 | 1:3, 4:6, 7:10, 11:12 | NA       | 3;3;4;2                 | 2x3+1x4+1x2 |
 
-Required columns:
-
-```@eval
-using Markdown, TulipaEnergyModel
-out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.AssetRepPeriodPartitionData), fieldtypes(TulipaEnergyModel.AssetRepPeriodPartitionData))
-    global out *= "- `$f: $t`\n"
-end
-Markdown.parse(out)
-```
-
 #### [`flows-rep-periods-partitions.csv`](@id flow-rep-periods-partitions-definition)
 
 Similar to `assets-rep-periods-partitions.csv`, but for flows.
-
-Required columns:
-
-```@eval
-using Markdown, TulipaEnergyModel
-out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.FlowRepPeriodPartitionData), fieldtypes(TulipaEnergyModel.FlowRepPeriodPartitionData))
-    global out *= "- `$f: $t`\n"
-end
-Markdown.parse(out)
-```
 
 #### `assets-base-periods-partitions.csv`
 
 Similar to their `rep-periods` counterpart, but for the base periods.
 
-Required columns for assets:
-
-```@eval
-using Markdown, TulipaEnergyModel
-out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.AssetBasePeriodPartitionData), fieldtypes(TulipaEnergyModel.AssetBasePeriodPartitionData))
-    global out *= "- `$f: $t`\n"
-end
-Markdown.parse(out)
-```
-
 #### `rep-periods-data.csv`
 
 Describes the [representative periods](@ref representative-periods).
-
-Required columns:
-
-```@eval
-using Markdown, TulipaEnergyModel
-out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.RepPeriodData), fieldtypes(TulipaEnergyModel.RepPeriodData))
-    global out *= "- `$f: $t`\n"
-end
-Markdown.parse(out)
-```
 
 #### `rep-periods-mapping.csv`
 
 Describes the [representative periods](@ref representative-periods).
 
-Required columns:
+#### Schemas
 
 ```@eval
 using Markdown, TulipaEnergyModel
-out = ""
-for (f, t) in zip(fieldnames(TulipaEnergyModel.RepPeriodMapping), fieldtypes(TulipaEnergyModel.RepPeriodMapping))
-    global out *= "- `$f: $t`\n"
-end
-Markdown.parse(out)
+
+Markdown.parse(
+    join(["- **$filename**\n" *
+        join(
+            ["  - `$f: $t`" for (f, t) in schema],
+            "\n",
+        ) for (filename, schema) in TulipaEnergyModel.schema_per_file
+    ] |> sort, "\n")
+)
 ```
 
 ## Structures
