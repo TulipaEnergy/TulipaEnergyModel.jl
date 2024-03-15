@@ -2,8 +2,8 @@
 Schema for the assets-data.csv file.
 """
 struct AssetData
-    name::String                                       # Name of Asset (geographical?)
-    type::String                                       # Producer/Consumer/Storage/Conversion
+    name::Symbol                                       # Name of Asset (geographical?)
+    type::Symbol                                       # Producer/Consumer/Storage/Conversion
     active::Bool                                       # Active or decomissioned
     investable::Bool                                   # Whether able to invest
     investment_integer::Bool                           # Whether investment is integer or continuous
@@ -23,16 +23,16 @@ end
 Schema for the assets-profiles.csv file.
 """
 struct AssetProfiles
-    asset::String               # Asset ID
-    profile_type::String        # Type of profile, used to determine dataframe with source profile
-    profile_name::String        # Name of profile, used to determine data inside the dataframe
+    asset::Symbol               # Asset ID
+    profile_type::Symbol        # Type of profile, used to determine dataframe with source profile
+    profile_name::Symbol        # Name of profile, used to determine data inside the dataframe
 end
 
 """
 Schema for the assets-rep-periods-partitions.csv file.
 """
 struct AssetRepPeriodPartitionData
-    asset::String
+    asset::Symbol
     rep_period::Int
     specification::Symbol
     partition::String
@@ -42,7 +42,7 @@ end
 Schema for the assets-base-periods-partitions.csv file.
 """
 struct AssetBasePeriodPartitionData
-    asset::String
+    asset::Symbol
     specification::Symbol
     partition::String
 end
@@ -51,9 +51,9 @@ end
 Schema for the flows-data.csv file.
 """
 struct FlowData
-    carrier::String                             # (Optional?) Energy carrier
-    from_asset::String                          # Name of Asset
-    to_asset::String                            # Name of Asset
+    carrier::Symbol                             # (Optional?) Energy carrier
+    from_asset::Symbol                          # Name of Asset
+    to_asset::Symbol                            # Name of Asset
     active::Bool                                # Active or decomissioned
     is_transport::Bool                          # Whether a transport flow
     investable::Bool                            # Whether able to invest
@@ -71,18 +71,18 @@ end
 Schema for the flows-profiles file.
 """
 struct FlowProfiles
-    from_asset::String          # Name of Asset
-    to_asset::String            # Name of Asset
-    profile_type::String        # Type of profile, used to determine dataframe with source profile
-    profile_name::String        # Name of profile, used to determine data inside the dataframe
+    from_asset::Symbol          # Name of Asset
+    to_asset::Symbol            # Name of Asset
+    profile_type::Symbol        # Type of profile, used to determine dataframe with source profile
+    profile_name::Symbol        # Name of profile, used to determine data inside the dataframe
 end
 
 """
 Schema for the flows-rep-periods-partitions.csv file.
 """
 struct FlowRepPeriodPartitionData
-    from_asset::String          # Name of Asset
-    to_asset::String            # Name of Asset
+    from_asset::Symbol          # Name of Asset
+    to_asset::Symbol            # Name of Asset
     rep_period::Int
     specification::Symbol
     partition::String
@@ -110,7 +110,7 @@ end
 Schema for the profiles-base-periods-<type>.csv file.
 """
 struct BasePeriodsProfilesData
-    profile_name::String        # Asset ID
+    profile_name::Symbol        # Asset ID
     base_period::Int            # Base period ID
     value::Float64              # p.u. (per unit)
 end
@@ -119,7 +119,7 @@ end
 Schema for the profiles-rep-period-<type>.csv file.
 """
 struct RepPeriodsProfilesData
-    profile_name::String        # Asset ID
+    profile_name::Symbol        # Asset ID
     rep_period::Int             # Representative period ID
     time_step::Int              # Time step ID
     value::Float64              # p.u. (per unit)
