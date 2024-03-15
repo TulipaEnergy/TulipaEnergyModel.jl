@@ -1,4 +1,4 @@
 from_asset,to_asset,InstalUnits,InstalCap_MW
 Asgard_E_demand,Midgard_E_demand,5.0,5000.0
-Asgard_E_demand,Valhalla_E_balance,8.510447821994173,8510.447821994174
+Asgard_E_demand,Valhalla_E_balance,8.51044782199418,8510.447821994181
 Midgard_E_demand,Valhalla_E_balance,6.0,6000.0
