@@ -22,7 +22,7 @@ using OrderedCollections: OrderedDict
 using Statistics: Statistics
 using TimerOutputs: TimerOutput, @timeit
 
-include("input-tables.jl")
+include("input-schemas.jl")
 include("structures.jl")
 include("io.jl")
 include("create-model.jl")
