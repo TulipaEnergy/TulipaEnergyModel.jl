@@ -29,7 +29,7 @@ end
 Structure to hold the asset data in the graph.
 """
 mutable struct GraphAssetData
-    type::String
+    type::Symbol
     investable::Bool
     investment_integer::Bool
     investment_cost::Float64
@@ -42,8 +42,8 @@ mutable struct GraphAssetData
     initial_storage_capacity::Float64
     initial_storage_level::Union{Missing,Float64}
     energy_to_power_ratio::Float64
-    base_periods_profiles::Dict{String,Vector{Float64}}
-    rep_periods_profiles::Dict{Tuple{String,Int},Vector{Float64}}
+    base_periods_profiles::Dict{Symbol,Vector{Float64}}
+    rep_periods_profiles::Dict{Tuple{Symbol,Int},Vector{Float64}}
     base_periods_partitions::Vector{TimeBlock}
     rep_periods_partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
@@ -67,8 +67,8 @@ mutable struct GraphAssetData
         initial_storage_level,
         energy_to_power_ratio,
     )
-        base_periods_profiles = Dict{String,Vector{Float64}}()
-        rep_periods_profiles = Dict{Tuple{String,Int},Vector{Float64}}()
+        base_periods_profiles = Dict{Symbol,Vector{Float64}}()
+        rep_periods_profiles = Dict{Tuple{Symbol,Int},Vector{Float64}}()
         base_periods_partitions = TimeBlock[]
         rep_periods_partitions = Dict{Int,Vector{TimeBlock}}()
         return new(
@@ -100,7 +100,7 @@ end
 Structure to hold the flow data in the graph.
 """
 mutable struct GraphFlowData
-    carrier::String
+    carrier::Symbol
     active::Bool
     is_transport::Bool
     investable::Bool
@@ -112,8 +112,8 @@ mutable struct GraphFlowData
     initial_export_capacity::Float64
     initial_import_capacity::Float64
     efficiency::Float64
-    base_periods_profiles::Dict{String,Vector{Float64}}
-    rep_periods_profiles::Dict{Tuple{String,Int},Vector{Float64}}
+    base_periods_profiles::Dict{Symbol,Vector{Float64}}
+    rep_periods_profiles::Dict{Tuple{Symbol,Int},Vector{Float64}}
     base_periods_partitions::Vector{TimeBlock}
     rep_periods_partitions::Dict{Int,Vector{TimeBlock}}
     # Solution
@@ -135,8 +135,8 @@ function GraphFlowData(flow_data::FlowData)
         flow_data.initial_export_capacity,
         flow_data.initial_import_capacity,
         flow_data.efficiency,
-        Dict{String,Vector{Float64}}(),
-        Dict{Tuple{String,Int},Vector{Float64}}(),
+        Dict{Symbol,Vector{Float64}}(),
+        Dict{Tuple{Symbol,Int},Vector{Float64}}(),
         TimeBlock[],
         Dict{Int,Vector{TimeBlock}}(),
         Dict{Tuple{Int,TimeBlock},Float64}(),
@@ -145,8 +145,8 @@ function GraphFlowData(flow_data::FlowData)
 end
 
 mutable struct Solution
-    assets_investment::Dict{String,Float64}
-    flows_investment::Dict{Tuple{String,String},Float64}
+    assets_investment::Dict{Symbol,Float64}
+    flows_investment::Dict{Tuple{Symbol,Symbol},Float64}
     storage_level_intra_rp::Vector{Float64}
     storage_level_inter_rp::Vector{Float64}
     flow::Vector{Float64}
@@ -182,7 +182,7 @@ mutable struct EnergyProblem
     graph::MetaGraph{
         Int,
         SimpleDiGraph{Int},
-        String,
+        Symbol,
         GraphAssetData,
         GraphFlowData,
         Nothing, # Internal data
@@ -190,7 +190,7 @@ mutable struct EnergyProblem
         Nothing, # Default edge weight
     }
     representative_periods::Vector{RepresentativePeriod}
-    constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int},Vector{TimeBlock}}}
+    constraints_partitions::Dict{Symbol,Dict{Tuple{Symbol,Int},Vector{TimeBlock}}}
     base_periods::BasePeriod
     dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}

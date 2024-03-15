@@ -71,16 +71,16 @@ function create_graph_and_representative_periods_from_csv_folder(
         profile_type => read_csv_with_schema(
             fillpath("assets-$profile_type-periods-profiles.csv"),
             AssetProfiles,
-        ) for profile_type in ["base", "rep"]
+        ) for profile_type in [:base, :rep]
     )
     flows_profiles_df =
         read_csv_with_schema(fillpath("flows-rep-periods-profiles.csv"), FlowProfiles)
     assets_partitions_df = Dict(
-        "base" => read_csv_with_schema(
+        :base => read_csv_with_schema(
             fillpath("assets-base-periods-partitions.csv"),
             AssetBasePeriodPartitionData,
         ),
-        "rep" => read_csv_with_schema(
+        :rep => read_csv_with_schema(
             fillpath("assets-rep-periods-partitions.csv"),
             AssetRepPeriodPartitionData,
         ),
@@ -90,13 +90,14 @@ function create_graph_and_representative_periods_from_csv_folder(
         FlowRepPeriodPartitionData,
     )
 
-    profile_input_data_type =
-        Dict("base" => BasePeriodsProfilesData, "rep" => RepPeriodsProfilesData)
+    profile_input_data_type = Dict(:base => BasePeriodsProfilesData, :rep => RepPeriodsProfilesData)
 
     profiles_dfs = Dict(
         period_type => Dict(
             begin
-                key = match(Regex("profiles-$(period_type)-periods-(.*).csv"), filename)[1]
+                regex = "profiles-$(period_type)-periods-(.*).csv"
+                # Sanitized key: Spaces and dashes convert to underscore
+                key = Symbol(replace(match(Regex(regex), filename)[1], r"[ -]" => "_"))
                 value = read_csv_with_schema(
                     fillpath(filename),
                     profile_input_data_type[period_type],
@@ -104,12 +105,12 @@ function create_graph_and_representative_periods_from_csv_folder(
                 key => value
             end for filename in readdir(input_folder) if
             startswith("profiles-$period_type-periods-")(filename)
-        ) for period_type in ["rep", "base"]
+        ) for period_type in [:rep, :base]
     )
 
     # Error if partition data is missing assets (if strict)
     if strict
-        missing_assets = setdiff(assets_data_df[!, "name"], assets_partitions_df["rep"][!, "asset"])
+        missing_assets = setdiff(assets_data_df[!, :name], assets_partitions_df[:rep][!, :asset])
         if length(missing_assets) > 0
             msg = "Error: Partition data missing for these assets: \n"
             for a in missing_assets
@@ -177,7 +178,7 @@ function create_graph_and_representative_periods_from_csv_folder(
     for a in MetaGraphsNext.labels(graph)
         compute_assets_partitions!(
             graph[a].rep_periods_partitions,
-            assets_partitions_df["rep"],
+            assets_partitions_df[:rep],
             a,
             representative_periods,
         )
@@ -194,7 +195,7 @@ function create_graph_and_representative_periods_from_csv_folder(
     end
 
     # For base periods, only the explicitly mentioned assets and flows have partitions defined
-    for row in eachrow(assets_partitions_df["base"])
+    for row in eachrow(assets_partitions_df[:base])
         graph[row.asset].base_periods_partitions = _parse_rp_partition(
             Val(row.specification),
             row.partition,
@@ -202,11 +203,11 @@ function create_graph_and_representative_periods_from_csv_folder(
         )
     end
 
-    for asset_profile_row in eachrow(assets_profiles_df["rep"]) # row = asset, profile_type, profile_name
+    for asset_profile_row in eachrow(assets_profiles_df[:rep]) # row = asset, profile_type, profile_name
         gp = DataFrames.groupby( # 3. group by RP
             filter(
                 row -> row.profile_name == asset_profile_row.profile_name, # 2. Filter profile_name
-                profiles_dfs["rep"][asset_profile_row.profile_type], # 1. Get the profile of given type
+                profiles_dfs[:rep][asset_profile_row.profile_type], # 1. Get the profile of given type
             ),
             :rep_period,
         )
@@ -222,7 +223,7 @@ function create_graph_and_representative_periods_from_csv_folder(
         gp = DataFrames.groupby(
             filter(
                 row -> row.profile_name == flow_profile_row.profile_name,
-                profiles_dfs["rep"][flow_profile_row.profile_type],
+                profiles_dfs[:rep][flow_profile_row.profile_type],
             ),
             :rep_period,
         )
@@ -234,10 +235,10 @@ function create_graph_and_representative_periods_from_csv_folder(
         end
     end
 
-    for asset_profile_row in eachrow(assets_profiles_df["base"]) # row = asset, profile_type, profile_name
+    for asset_profile_row in eachrow(assets_profiles_df[:base]) # row = asset, profile_type, profile_name
         df = filter(
             row -> row.profile_name == asset_profile_row.profile_name, # 2. Filter profile_name
-            profiles_dfs["base"][asset_profile_row.profile_type], # 1. Get the profile of given type
+            profiles_dfs[:base][asset_profile_row.profile_type], # 1. Get the profile of given type
         )
         graph[asset_profile_row.asset].base_periods_profiles[asset_profile_row.profile_type] =
             df.value
@@ -299,7 +300,7 @@ The following files are created:
 """
 function save_solution_to_file(output_folder, graph, dataframes, solution)
     output_file = joinpath(output_folder, "assets-investments.csv")
-    output_table = DataFrame(; asset = String[], InstalUnits = Float64[], InstalCap_MW = Float64[])
+    output_table = DataFrame(; asset = Symbol[], InstalUnits = Float64[], InstalCap_MW = Float64[])
     for a in MetaGraphsNext.labels(graph)
         if !graph[a].investable
             continue
@@ -312,8 +313,8 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
 
     output_file = joinpath(output_folder, "flows-investments.csv")
     output_table = DataFrame(;
-        from_asset = String[],
-        to_asset = String[],
+        from_asset = Symbol[],
+        to_asset = Symbol[],
         InstalUnits = Float64[],
         InstalCap_MW = Float64[],
     )

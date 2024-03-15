@@ -39,7 +39,7 @@ end
 @testset "Infeasible Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
     energy_problem = create_energy_problem_from_csv_folder(dir)
-    energy_problem.graph["demand"].peak_demand = -1 # make it infeasible
+    energy_problem.graph[:demand].peak_demand = -1 # make it infeasible
     create_model!(energy_problem)
     @test_logs (:warn, "Model status different from optimal") solve_model!(energy_problem)
     @test energy_problem.termination_status == JuMP.INFEASIBLE

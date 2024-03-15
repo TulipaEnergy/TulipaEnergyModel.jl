@@ -200,14 +200,14 @@ labels(graph) |> collect
 To access the asset data, we can index the graph with an asset label:
 
 ```@example manual
-graph["ocgt"]
+graph[:ocgt]
 ```
 
 This is a Julia struct, or composite type, named [GraphAssetData](@ref).
 We can access its fields with `.`:
 
 ```@example manual
-graph["ocgt"].type
+graph[:ocgt].type
 ```
 
 Since `labels` returns a generator, we can iterate over its contents without collecting it into a vector.
@@ -227,7 +227,7 @@ edge_labels(graph) |> collect
 To access the flow data, we index with `graph[u, v]`:
 
 ```@example manual
-graph["ocgt", "demand"]
+graph[:ocgt, :demand]
 ```
 
 The type of the flow struct is [GraphFlowData](@ref).
@@ -235,13 +235,13 @@ The type of the flow struct is [GraphFlowData](@ref).
 We can easily find all assets `v` for which a flow `(a, v)` exists:
 
 ```@example manual
-inneighbor_labels(graph, "demand") |> collect
+inneighbor_labels(graph, :demand) |> collect
 ```
 
 Similarly, all assets `u` for which a flow `(u, a)` exists:
 
 ```@example manual
-outneighbor_labels(graph, "ocgt") |> collect
+outneighbor_labels(graph, :ocgt) |> collect
 ```
 
 ## [Manipulating the solution](@id solution-tutorial)
@@ -433,7 +433,7 @@ For instance, to get the consumer balance, we first need to filter the `:highest
 
 ```@example solution
 df_consumers = filter(
-    row -> graph[row.asset].type == "consumer",
+    row -> graph[row.asset].type == :consumer,
     energy_problem.dataframes[:highest_in_out],
     view = false,
 );

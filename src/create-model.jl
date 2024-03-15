@@ -39,7 +39,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         if length(partitions) == 0
             # No data, but ensure schema is correct
             dataframes[key] = DataFrame(;
-                asset = String[],
+                asset = Symbol[],
                 rp = Int[],
                 time_block = UnitRange{Int}[],
                 index = Int[],
@@ -70,7 +70,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     )
     if size(dataframes[:storage_level_inter_rp], 1) == 0
         dataframes[:storage_level_inter_rp] =
-            DataFrame(; asset = String[], base_period_block = UnitRange{Int}[])
+            DataFrame(; asset = Symbol[], base_period_block = UnitRange{Int}[])
     end
     dataframes[:storage_level_inter_rp].index = 1:size(dataframes[:storage_level_inter_rp], 1)
 
@@ -114,11 +114,11 @@ function add_expression_terms_intra_rp_constraints!(
     # grouped_cons' asset will be matched with either to or from, depending on whether
     # we are filling incoming or outgoing flows
     cases = [
-        (col_name = :incoming_flow, asset_match = :to, selected_assets = ["hub", "consumer"]),
+        (col_name = :incoming_flow, asset_match = :to, selected_assets = [:hub, :consumer]),
         (
             col_name = :outgoing_flow,
             asset_match = :from,
-            selected_assets = ["hub", "consumer", "producer"],
+            selected_assets = [:hub, :consumer, :producer],
         ),
     ]
 
@@ -207,7 +207,7 @@ function add_expression_terms_inter_rp_constraints!(
                 profile_aggregation(
                     sum,
                     graph[row_inter.asset].rep_periods_profiles,
-                    ("inflows", row_map.rep_period),
+                    (:inflows, row_map.rep_period),
                     representative_periods[row_map.rep_period].time_steps,
                     0.0,
                 ) *
@@ -288,11 +288,11 @@ function create_model(
         filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == value, A)
     filter_flows(key, value) = filter(f -> getfield(graph[f...], key) == value, F)
 
-    Ac  = filter_assets(:type, "consumer")
-    Ap  = filter_assets(:type, "producer")
-    As  = filter_assets(:type, "storage")
-    Ah  = filter_assets(:type, "hub")
-    Acv = filter_assets(:type, "conversion")
+    Ac  = filter_assets(:type, :consumer)
+    Ap  = filter_assets(:type, :producer)
+    As  = filter_assets(:type, :storage)
+    Ah  = filter_assets(:type, :hub)
+    Acv = filter_assets(:type, :conversion)
     Ft  = filter_flows(:is_transport, true)
 
     # Create subsets of assets by investable
@@ -489,7 +489,7 @@ function create_model(
             profile_aggregation(
                 Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
-                ("demand", row.rp),
+                (:demand, row.rp),
                 row.time_block,
                 1.0,
             ) * graph[row.asset].peak_demand,
@@ -522,7 +522,7 @@ function create_model(
                 profile_aggregation(
                     sum,
                     graph[a].rep_periods_profiles,
-                    ("inflows", rp),
+                    (:inflows, rp),
                     row.time_block,
                     0.0,
                 ) * graph[a].storage_inflows +
@@ -592,7 +592,7 @@ function create_model(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        ("availability", row.rp),
+                        (:availability, row.rp),
                         row.time_block,
                         1.0,
                     ) * (
@@ -606,7 +606,7 @@ function create_model(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        ("availability", row.rp),
+                        (:availability, row.rp),
                         row.time_block,
                         1.0,
                     ) * graph[row.asset].initial_capacity
@@ -622,7 +622,7 @@ function create_model(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        ("availability", row.rp),
+                        (:availability, row.rp),
                         row.time_block,
                         1.0,
                     ) * (
@@ -636,7 +636,7 @@ function create_model(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        ("availability", row.rp),
+                        (:availability, row.rp),
                         row.time_block,
                         1.0,
                     ) * graph[row.asset].initial_capacity
@@ -682,7 +682,7 @@ function create_model(
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    ("availability", row.rp),
+                    (:availability, row.rp),
                     row.time_block,
                     1.0,
                 ) * (
@@ -696,7 +696,7 @@ function create_model(
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    ("availability", row.rp),
+                    (:availability, row.rp),
                     row.time_block,
                     1.0,
                 ) * graph[row.from, row.to].initial_export_capacity
@@ -711,7 +711,7 @@ function create_model(
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    ("availability", row.rp),
+                    (:availability, row.rp),
                     row.time_block,
                     1.0,
                 ) * (
@@ -725,7 +725,7 @@ function create_model(
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    ("availability", row.rp),
+                    (:availability, row.rp),
                     row.time_block,
                     1.0,
                 ) * graph[row.from, row.to].initial_import_capacity
@@ -779,7 +779,7 @@ function create_model(
             profile_aggregation(
                 Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
-                ("min-storage-level", row.rp),
+                (:min_storage_level, row.rp),
                 row.time_block,
                 0.0,
             ) * (
@@ -809,7 +809,7 @@ function create_model(
             profile_aggregation(
                 Statistics.mean,
                 graph[row.asset].base_periods_profiles,
-                "max-storage-level",
+                :max_storage_level,
                 row.base_period_block,
                 1.0,
             ) * (
@@ -828,7 +828,7 @@ function create_model(
             profile_aggregation(
                 Statistics.mean,
                 graph[row.asset].base_periods_profiles,
-                "min-storage-level",
+                :min_storage_level,
                 row.base_period_block,
                 0.0,
             ) * (
