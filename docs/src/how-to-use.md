@@ -43,7 +43,7 @@ The input_folder should contain CSV files as described below. The output_folder 
 ## Input
 
 Currently, we only accept input from CSV files.
-There should be many, each following the specification of input structures.
+They should each follow the specification of input structures.
 You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples.
 
 ### CSV
