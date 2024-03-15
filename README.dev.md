@@ -164,6 +164,21 @@ Now, you can only commit if all the pre-commit tests pass.
 > pre-commit run -a
 > ```
 
+## Code format and guidelines
+
+This section will list the guidelines for code formatting **not enforced** by [JuliaFormatter](.JuliaFormatter.toml).
+We will try to follow these during development and reviews.
+
+-   Naming
+    -   `CamelCase` for classes and modules,
+    -   `snake_case` for functions and variables, and
+    -   `kebab-case` for file names.
+-   Use `using` instead of `import`, in the following way:
+    -   Don't use pure `using Package`, always list all necessary objects with `using Package: A, B, C`.
+    -   List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context, or `using Graph: SimpleDiGraph`, because it's a constructor with an obvious name.
+    -   For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `DataFrames.groupby`.
+    -   List all `using` in <src/TulipaEnergyModel.jl>.
+
 ## Contributing Workflow
 
 When the software is installed and configured, and you have forked the
@@ -343,6 +358,29 @@ Once your reviewer approves the pull request, you need to merge it with the
 main branch using "Squash and Merge".
 You can also delete the branch that originated the pull request by clicking the button that appears after the merge.
 For branches that were pushed to the main repo, it is recommended that you do so.
+
+## Julia Register Release Procedure
+
+When publishing a new version of the model to the Julia Register, follow this procedure:
+
+**Note**:
+To be able to register, you need to be a member of the organisation TulipaEnergy and have your visibility set to public:
+![Screenshot of public members of TulipaEnergy on GitHub]()
+
+1. Click on the `Project.toml` file on GitHub
+2. Edit the file and change the version number according to [semantic versioning](https://semver.org/): Major.Minor.Patch
+   ![Screenshot of editing Project.toml on GitHub]()
+3. Commit the changes in a new branch and open a pull request. Change the commit message according to the version number
+   ![Screenshot of PR with commit message "Release 0.6.1"]()
+4. Create the pull request and squash & merge it after teh review and testing process. Delete the branch after the squash the merge
+   ![Screenshot of full PR template on GitHub]()
+5. Then go to the main page of repo and click in the commit
+   ![Screenshot of how to access commit on GitHub]()
+6. Add the following comment to the commit: `@JuliaRegistrator register`
+   ![Screenshot of calling JuliaRegistrator in commit comments]()
+7. Then the bot should start the registration process
+   ![Screenshot of JuliaRegistrator bot message]()
+8. After approval, the bot will take care ofthe PR at the Julia Registry and automatically create the release for the new version
 
 ## Performance Considerations
 
