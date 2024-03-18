@@ -49,27 +49,27 @@ To contribute to TulipaEnergyModel.jl, you need the following:
     formatting. To install it, open Julia REPL, for example, by typing in the
     command line:
 
-        ```bash
-        julia
-        ```
+    ```bash
+    julia
+    ```
 
-        > **Note**:
-        > `julia` must be part of your environment variables to call it from the
-        > command line.
+    > **Note**:
+    > `julia` must be part of your environment variables to call it from the
+    > command line.
 
-        Then press <kbd>]</kbd> to enter the package mode.
-        In the package mode, enter the following:
+    Then press <kbd>]</kbd> to enter the package mode.
+    In the package mode, enter the following:
 
-        ```julia
-        pkg> activate
-        pkg> add JuliaFormatter
-        ```
+    ```julia
+    pkg> activate
+    pkg> add JuliaFormatter
+    ```
 
-        In VSCode, you can activate "Format on Save" for `JuliaFormatter`. To do so,
-        open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
-        Settings", type "Format on Save" and tick the first result:
+    In VSCode, you can activate "Format on Save" for `JuliaFormatter`. To do so,
+    open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
+    Settings", type "Format on Save" and tick the first result:
 
-        ![Screenshot of Format on Save option](docs/FormatOnSave.png)
+    ![Screenshot of Format on Save option](docs/FormatOnSave.png)
 
 7.  [Prettier](https://prettier.io/) for markdown formatting.
     In VSCode, it is available as
