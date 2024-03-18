@@ -1,4 +1,3 @@
-
 # Developer documentation
 
 Welcome to TulipaEnergyModel.jl developer documentation. Here is how you can
@@ -17,16 +16,14 @@ once.
 
 To contribute to TulipaEnergyModel.jl, you need the following:
 
-1. [Julia](https://julialang.org) programming language.
-2. [Git](https://git-scm.com) for version control.
-3. [VSCode](https://code.visualstudio.com) or any other editor. For VSCode, we recommend
-to install a few extensions. You can do it by pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> (or <kbd>⇧</kbd> + <kbd>⌘</kbd> + <kbd>X</kbd> on MacOS) and searching by the extension name.
-    - [Julia for Visual Studio Code](https://www.julia-vscode.org);
-    - [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph).
-4. [EditorConfig](https://editorconfig.org) for consistent code formatting.
-In VSCode, it is available as
-[an extension](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig).
-5. [pre-commit](https://pre-commit.com) to run the linters and formatters.
+1.  [Julia](https://julialang.org) programming language.
+2.  [Git](https://git-scm.com) for version control.
+3.  [VSCode](https://code.visualstudio.com) or any other editor. For VSCode, we recommend
+    to install a few extensions. You can do it by pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> (or <kbd>⇧</kbd> + <kbd>⌘</kbd> + <kbd>X</kbd> on MacOS) and searching by the extension name. - [Julia for Visual Studio Code](https://www.julia-vscode.org); - [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph).
+4.  [EditorConfig](https://editorconfig.org) for consistent code formatting.
+    In VSCode, it is available as
+    [an extension](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig).
+5.  [pre-commit](https://pre-commit.com) to run the linters and formatters.
 
     You can install `pre-commit` globally using
 
@@ -48,40 +45,46 @@ In VSCode, it is available as
     . env/Scrips/activate
     ```
 
-6. [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
-formatting. To install it, open Julia REPL, for example, by typing in the
-command line:
+6.  [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
+    formatting. To install it, open Julia REPL, for example, by typing in the
+    command line:
 
-    ```bash
-    julia
-    ```
+        ```bash
+        julia
+        ```
 
-    > **Note**:
-    > `julia` must be part of your environment variables to call it from the
-    > command line.
+        > **Note**:
+        > `julia` must be part of your environment variables to call it from the
+        > command line.
 
-    Then press <kbd>]</kbd> to enter the package mode.
-    In the package mode, enter the following:
+        Then press <kbd>]</kbd> to enter the package mode.
+        In the package mode, enter the following:
 
-    ```julia
-    pkg> activate
-    pkg> add JuliaFormatter
-    ```
+        ```julia
+        pkg> activate
+        pkg> add JuliaFormatter
+        ```
 
-    In VSCode, you can activate "Format on Save" for `JuliaFormatter`. To do so,
-    open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
-    Settings", type "Format on Save" and tick the first result:
+        In VSCode, you can activate "Format on Save" for `JuliaFormatter`. To do so,
+        open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
+        Settings", type "Format on Save" and tick the first result:
 
-    ![Screenshot of Format on Save option](docs/FormatOnSave.png)
+        ![Screenshot of Format on Save option](docs/FormatOnSave.png)
 
-7. [LocalCoverage](https://juliapackages.com/p/localcoverage) for coverage
-testing. You can install it the same way you installed `JuliaFormatter`,
-that is, by opening Julia REPL in the package mode and typing:
+7.  [Prettier](https://prettier.io/) for markdown formatting.
+    In VSCode, it is available as
+    [an extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
 
-    ```julia
-    pkg> activate
-    pkg> add LocalCoverage
-    ```
+    Having enabled "Format on Save" for `JuliaFormatter` in the previous step will also enable "Format on Save" for `Prettier`, provided that `Prettier` is set as the default formatter for markdown files. To do so, in VSCode, right-click on any area of a markdown file, choose "Format Document With...", and choose `Prettier` as the default formatter.
+
+8.  [LocalCoverage](https://juliapackages.com/p/localcoverage) for coverage
+    testing. You can install it the same way you installed `JuliaFormatter`,
+    that is, by opening Julia REPL in the package mode and typing:
+
+        ```julia
+        pkg> activate
+        pkg> add LocalCoverage
+        ```
 
 ### Forking the Repository
 
@@ -204,10 +207,10 @@ Create a branch to address the issue:
 git switch -c <branch_name>
 ```
 
-- If there is an associated issue, add the issue number to the branch name,
-for example, `123-short-description` for issue \#123.
-- If there is no associated issue **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update.
-- If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes.
+-   If there is an associated issue, add the issue number to the branch name,
+    for example, `123-short-description` for issue \#123.
+-   If there is no associated issue **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update.
+-   If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes.
 
 > **Note**:
 > Always branch from `main`, i.e., the main branch of your own fork.
@@ -265,13 +268,13 @@ git push -u myfork <branch_name>
 
 When writing the commit message:
 
-- use imperative, present tense (Add feature, Fix bug);
-- have informative titles;
-- if necessary, add a body with details.
+-   use imperative, present tense (Add feature, Fix bug);
+-   have informative titles;
+-   if necessary, add a body with details.
 
 > **Note**:
 > Try to create "atomic git commits". Read
-> [*The Utopic Git History*](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593)
+> [_The Utopic Git History_](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593)
 > to learn more.
 
 ### 7. Make Sure That Your Fork Is Still Up to Date
@@ -353,28 +356,28 @@ post the results as a comment in you pull request.
 
 If you want to manually run the benchmarks, you can do the following:
 
-- Navigate to the benchmark folder
-- Run `julia --project=.`
-- Enter `pkg` mode by pressing `]`
-- Run `dev ..` to add the development version of TulipaEnergyModel
-- Now run
+-   Navigate to the benchmark folder
+-   Run `julia --project=.`
+-   Enter `pkg` mode by pressing `]`
+-   Run `dev ..` to add the development version of TulipaEnergyModel
+-   Now run
 
-  ```julia
-  include("benchmarks.jl")
-  tune!(SUITE)
-  results = run(SUITE, verbose=true)
-  ```
+    ```julia
+    include("benchmarks.jl")
+    tune!(SUITE)
+    results = run(SUITE, verbose=true)
+    ```
 
 ### Profiling
 
 To profile the code in a more manual way, here are some tips:
 
-- Wrap your code into functions.
-- Call the function once to precompile it. This must be done after every change to the function.
-- Prefix the function call with `@time`. This is the most basic timing, part of Julia.
-- Prefix the function call with `@btime`. This is part of the BenchmarkTools package, which you might need to install. `@btime` will evaluate the function a few times to give a better estimate.
-- Prefix the function call with `@benchmark`. Also part of BenchmarkTools. This will produce a nice histogram of the times and give more information. `@btime` and `@benchmark` do the same thing in the background.
-- Call `@profview`. This needs to be done in VSCode, or using the ProfileView package. This will create a flame graph, where each function call is a block. The size of the block is proportional to the aggregate time it takes to run. The blocks below a block are functions called inside the function above.
+-   Wrap your code into functions.
+-   Call the function once to precompile it. This must be done after every change to the function.
+-   Prefix the function call with `@time`. This is the most basic timing, part of Julia.
+-   Prefix the function call with `@btime`. This is part of the BenchmarkTools package, which you might need to install. `@btime` will evaluate the function a few times to give a better estimate.
+-   Prefix the function call with `@benchmark`. Also part of BenchmarkTools. This will produce a nice histogram of the times and give more information. `@btime` and `@benchmark` do the same thing in the background.
+-   Call `@profview`. This needs to be done in VSCode, or using the ProfileView package. This will create a flame graph, where each function call is a block. The size of the block is proportional to the aggregate time it takes to run. The blocks below a block are functions called inside the function above.
 
 See the file <benchmark/profiling.jl> for an example of profiling code.
 
@@ -408,12 +411,12 @@ Open the `index.html` file on the browser to see it.
 This section will list the guidelines for code formatting **not enforced** by [JuliaFormatter](.JuliaFormatter.toml).
 We will try to follow these during development and reviews.
 
-- Naming
-  - `CamelCase` for classes and modules,
-  - `snake_case` for functions and variables, and
-  - `kebab-case` for file names.
-- Use `using` instead of `import`, in the following way:
-  - Don't use pure `using Package`, always list all necessary objects with `using Package: A, B, C`.
-  - List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context, or `using Graph: SimpleDiGraph`, because it's a constructor with an obvious name.
-  - For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `DataFrames.groupby`.
-  - List all `using` in <src/TulipaEnergyModel.jl>.
+-   Naming
+    -   `CamelCase` for classes and modules,
+    -   `snake_case` for functions and variables, and
+    -   `kebab-case` for file names.
+-   Use `using` instead of `import`, in the following way:
+    -   Don't use pure `using Package`, always list all necessary objects with `using Package: A, B, C`.
+    -   List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context, or `using Graph: SimpleDiGraph`, because it's a constructor with an obvious name.
+    -   For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `DataFrames.groupby`.
+    -   List all `using` in <src/TulipaEnergyModel.jl>.

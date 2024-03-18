@@ -9,13 +9,13 @@ Depth = 5
 
 In Julia:
 
-- Enter package mode (press "]")
+-   Enter package mode (press "]")
 
 ```julia-pkg
 pkg> add TulipaEnergyModel
 ```
 
-- Return to Julia mode (backspace)
+-   Return to Julia mode (backspace)
 
 ```julia
 julia> using TulipaEnergyModel
@@ -23,7 +23,7 @@ julia> using TulipaEnergyModel
 
 Optional (takes a minute or two):
 
-- Enter package mode (press "]")
+-   Enter package mode (press "]")
 
 ```julia-pkg
 pkg> test TulipaEnergyModel
@@ -35,8 +35,8 @@ pkg> test TulipaEnergyModel
 
 To run a scenario, use the function:
 
-- [`run_scenario(input_folder)`](@ref)
-- [`run_scenario(input_folder, output_folder)`](@ref)
+-   [`run_scenario(input_folder)`](@ref)
+-   [`run_scenario(input_folder, output_folder)`](@ref)
 
 The input_folder should contain CSV files as described below. The output_folder is optional, if the user wants to export the output.
 
@@ -57,8 +57,8 @@ This file includes the list of assets and the data associated with each of them.
 
 The `Missing` data meaning depends on the parameter, for instance:
 
-- `investment_limit`: There is no investment limit.
-- `initial_storage_level`: The initial storage level is free (between the storage level limits), meaning that the optimization problem decides the best starting point for the storage asset. In addition, the first and last time blocks in a representative period are linked to create continuity in the storage level.
+-   `investment_limit`: There is no investment limit.
+-   `initial_storage_level`: The initial storage level is free (between the storage level limits), meaning that the optimization problem decides the best starting point for the storage asset. In addition, the first and last time blocks in a representative period are linked to create continuity in the storage level.
 
 #### `flows-data.csv`
 
@@ -66,7 +66,7 @@ Similar to `assets-data.csv`, but for flows. Each flow is defined as a pair of a
 
 The `Missing` data meaning depends on the parameter, for instance:
 
-- `investment_limit`: There is no investment limit.
+-   `investment_limit`: There is no investment limit.
 
 #### `assets-base-periods-profiles.csv` and `assets-rep-periods-profiles.csv`
 
@@ -89,14 +89,14 @@ If not specified, each asset will have the same time resolution as representativ
 To specify the desired resolution, there are currently three options, based on the value of the column `specification`.
 The column `partition` serves to specify the partitions in the specification given by the column `specification`.
 
-- `specification = uniform`: Set the resolution to a uniform amount, i.e., a time block is made of X time steps. The number X is defined in the column `partition`. The number of time steps in the representative period must be divisible by `X`.
-- `specification = explicit`: Set the resolution according to a list of numbers separated by `;` on the `partition`. Each number in the list is the number of time steps for that time block. For instance, `2;3;4` means that there are three time blocks, the first has 2 time steps, the second has 3 time steps, and the last has 4 time steps. The sum of the number of time steps must be equal to the total number of time steps in that representative period.
-- `specification = math`: Similar to explicit, but using `+` and `x` to give the number of time steps. The value of `partition` is a sequence of elements of the form `NxT` separated by `+`. `NxT` means `N` time blocks of length `T`.
+-   `specification = uniform`: Set the resolution to a uniform amount, i.e., a time block is made of X time steps. The number X is defined in the column `partition`. The number of time steps in the representative period must be divisible by `X`.
+-   `specification = explicit`: Set the resolution according to a list of numbers separated by `;` on the `partition`. Each number in the list is the number of time steps for that time block. For instance, `2;3;4` means that there are three time blocks, the first has 2 time steps, the second has 3 time steps, and the last has 4 time steps. The sum of the number of time steps must be equal to the total number of time steps in that representative period.
+-   `specification = math`: Similar to explicit, but using `+` and `x` to give the number of time steps. The value of `partition` is a sequence of elements of the form `NxT` separated by `+`. `NxT` means `N` time blocks of length `T`.
 
 The table below shows various results for different formats for a representative period with 12 time steps.
 
 | Time Block            | :uniform | :explicit               | :math       |
-|:--------------------- |:-------- |:----------------------- |:----------- |
+| :-------------------- | :------- | :---------------------- | :---------- |
 | 1:3, 4:6, 7:9, 10:12  | 3        | 3;3;3;3                 | 4x3         |
 | 1:4, 5:8, 9:12        | 4        | 4;4;4                   | 3x4         |
 | 1:1, 2:2, …, 12:12    | 1        | 1;1;1;1;1;1;1;1;1;1;1;1 | 12x1        |
@@ -144,24 +144,24 @@ It hides the complexity behind the energy problem, making the usage more friendl
 
 #### Fields
 
-- `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
-- `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
-- `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition).
-- `base_periods`: The number of periods of the `representative_periods`.
-- `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
-- `model`: A JuMP.Model object representing the optimization model.
-- `solved`: A boolean indicating whether the `model` has been solved or not.
-- `objective_value`: The objective value of the solved problem.
-- `termination_status`: The termination status of the optimization model.
-- `time_read_data`: Time taken for reading the data (in seconds).
-- `time_create_model`: Time taken for creating the model (in seconds).
-- `time_solve_model`: Time taken for solving the model (in seconds).
+-   `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
+-   `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
+-   `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition).
+-   `base_periods`: The number of periods of the `representative_periods`.
+-   `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
+-   `model`: A JuMP.Model object representing the optimization model.
+-   `solved`: A boolean indicating whether the `model` has been solved or not.
+-   `objective_value`: The objective value of the solved problem.
+-   `termination_status`: The termination status of the optimization model.
+-   `time_read_data`: Time taken for reading the data (in seconds).
+-   `time_create_model`: Time taken for creating the model (in seconds).
+-   `time_solve_model`: Time taken for solving the model (in seconds).
 
 #### Constructor
 
 The `EnergyProblem` can also be constructed using the minimal constructor below.
 
-- `EnergyProblem(graph, representative_periods, base_periods)`: Constructs a new `EnergyProblem` object with the given graph, representative periods, and base periods. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
+-   `EnergyProblem(graph, representative_periods, base_periods)`: Constructs a new `EnergyProblem` object with the given graph, representative periods, and base periods. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 
@@ -199,9 +199,9 @@ Some variables and constraints are defined over every time block in a partition.
 
 For instance, for a representative period with 12 time steps, all sets below are partitions:
 
-- ``\{\{1, 2, 3\}, \{4, 5, 6\}, \{7, 8, 9\}, \{10, 11, 12\}\}``
-- ``\{\{1, 2, 3, 4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}``
-- ``\{\{1\}, \{2, 3\}, \{4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}``
+-   `\{\{1, 2, 3\}, \{4, 5, 6\}, \{7, 8, 9\}, \{10, 11, 12\}\}`
+-   `\{\{1, 2, 3, 4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}`
+-   `\{\{1\}, \{2, 3\}, \{4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}`
 
 ### [Representative Periods](@id representative-periods)
 
@@ -212,10 +212,10 @@ They have been obtained by clustering through [TulipaClustering](https://github.
 
 A representative period has four fields:
 
-- `mapping`: Indicates the periods of the full problem that map into this representative period, and the weight of the representative period in them.
-- `weight`: Indicates how many representative periods are contained in the full problem; this is inferred automatically from `mapping`.
-- `time_steps`: The number of time steps in the representative period.
-- `resolution`: The duration in time of a time step.
+-   `mapping`: Indicates the periods of the full problem that map into this representative period, and the weight of the representative period in them.
+-   `weight`: Indicates how many representative periods are contained in the full problem; this is inferred automatically from `mapping`.
+-   `time_steps`: The number of time steps in the representative period.
+-   `resolution`: The duration in time of a time step.
 
 The number of time steps and resolution work together to define the coarseness of the period.
 Nothing is defined outside of these time steps, so, for instance, if the representative period represents a day, and you want to define a variable or constraint with coarseness of 30 minutes, then you need to define the number of time steps to 48 and the resolution to `0.5`.
@@ -224,12 +224,12 @@ Nothing is defined outside of these time steps, so, for instance, if the represe
 
 The solution object is a NamedTuple with the following fields:
 
-- `objective_value`: A Float64 with the objective value at the solution.
-- `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
-- `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
-- `flow[(u, v), rp, time_block]`: The flow value for a given flow `(u, v)` at a given representative period `rp`, and time block `time_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
-- `storage_level_intra_rp[a, rp, time_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `time_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
-- `storage_level_inter_rp[a, bp]`: The storage level for the storage asset `a` between (inter) representative periods in the base periods `bp`.
+-   `objective_value`: A Float64 with the objective value at the solution.
+-   `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
+-   `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
+-   `flow[(u, v), rp, time_block]`: The flow value for a given flow `(u, v)` at a given representative period `rp`, and time block `time_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
+-   `storage_level_intra_rp[a, rp, time_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `time_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
+-   `storage_level_inter_rp[a, bp]`: The storage level for the storage asset `a` between (inter) representative periods in the base periods `bp`.
 
 For tips on manipulating the solution, check the [tutorial](@ref solution-tutorial).
 

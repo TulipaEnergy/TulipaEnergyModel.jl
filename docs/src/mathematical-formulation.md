@@ -5,55 +5,55 @@ The full mathematical formulation considering variable temporal resolutions is a
 
 ## [Sets](@id math-sets)
 
-Name|Description|Elements
- ---|---|---
-$\mathcal{A}$           | Energy assets                           | $a \in \mathcal{A}$
-$\mathcal{A}_c$         | Consumer energy assets                  | $\mathcal{A}_c        \subseteq \mathcal{A}$
-$\mathcal{A}_p$         | Producer energy assets                  | $\mathcal{A}_p        \subseteq \mathcal{A}$
-$\mathcal{A}_s$         | Storage energy assets                   | $\mathcal{A}_s        \subseteq \mathcal{A}$
-$\mathcal{A}_h$         | Hub energy assets (e.g., transshipment) | $\mathcal{A}_h        \subseteq \mathcal{A}$
-$\mathcal{A}_{cv}$      | Conversion energy assets                | $\mathcal{A}_{cv}     \subseteq \mathcal{A}$
-$\mathcal{A}_i$         | Energy assets with investment method    | $\mathcal{A}_i        \subseteq \mathcal{A}$
-$\mathcal{F}$           | Flow connections between two assets     | $f \in \mathcal{F}$
-$\mathcal{F}_t$         | Transport flow between two assets       | $\mathcal{F}_t        \subseteq \mathcal{F}$
-$\mathcal{F}_i$         | Transport flow with investment method   | $\mathcal{F}_i        \subseteq \mathcal{F}_t$
-$\mathcal{F}_{in}(a)$   | Set of flows going into asset $a$       | $\mathcal{F}_{in}(a)  \subseteq \mathcal{F}$
-$\mathcal{F}_{out}(a)$  | Set of flows going out of asset $a$     | $\mathcal{F}_{out}(a) \subseteq \mathcal{F}$
-$\mathcal{RP}$          | Representative periods                  | $rp \in \mathcal{RP}$
-$\mathcal{K}$           | Time steps within the $rp$              | $k  \in \mathcal{K}$
+| Name                   | Description                             | Elements                                       |
+| ---------------------- | --------------------------------------- | ---------------------------------------------- |
+| $\mathcal{A}$          | Energy assets                           | $a \in \mathcal{A}$                            |
+| $\mathcal{A}_c$        | Consumer energy assets                  | $\mathcal{A}_c        \subseteq \mathcal{A}$   |
+| $\mathcal{A}_p$        | Producer energy assets                  | $\mathcal{A}_p        \subseteq \mathcal{A}$   |
+| $\mathcal{A}_s$        | Storage energy assets                   | $\mathcal{A}_s        \subseteq \mathcal{A}$   |
+| $\mathcal{A}_h$        | Hub energy assets (e.g., transshipment) | $\mathcal{A}_h        \subseteq \mathcal{A}$   |
+| $\mathcal{A}_{cv}$     | Conversion energy assets                | $\mathcal{A}_{cv}     \subseteq \mathcal{A}$   |
+| $\mathcal{A}_i$        | Energy assets with investment method    | $\mathcal{A}_i        \subseteq \mathcal{A}$   |
+| $\mathcal{F}$          | Flow connections between two assets     | $f \in \mathcal{F}$                            |
+| $\mathcal{F}_t$        | Transport flow between two assets       | $\mathcal{F}_t        \subseteq \mathcal{F}$   |
+| $\mathcal{F}_i$        | Transport flow with investment method   | $\mathcal{F}_i        \subseteq \mathcal{F}_t$ |
+| $\mathcal{F}_{in}(a)$  | Set of flows going into asset $a$       | $\mathcal{F}_{in}(a)  \subseteq \mathcal{F}$   |
+| $\mathcal{F}_{out}(a)$ | Set of flows going out of asset $a$     | $\mathcal{F}_{out}(a) \subseteq \mathcal{F}$   |
+| $\mathcal{RP}$         | Representative periods                  | $rp \in \mathcal{RP}$                          |
+| $\mathcal{K}$          | Time steps within the $rp$              | $k  \in \mathcal{K}$                           |
 
 NOTE: Asset types are mutually exclusive.
 
 ## [Parameters](@id math-parameters)
 
-Name|Domain|Description|Units
- ---|---|---|---
-$p^{investment\_cost}_{a}$             | $\mathcal{A}_i$    | Investment cost  of asset units                                                        | [kEUR/MW/year]
-$p^{investment\_limit}_{a}$            | $\mathcal{A}_i$    | Investment limit of asset units                                                        | [MW]
-$p^{unit\_capacity}_{a}$               | $\mathcal{A}$      | Capacity of asset units                                                                | [MW]
-$p^{peak\_demand}_{a}$                 | $\mathcal{A}_c$    | Peak demand                                                                            | [MW]
-$p^{init\_capacity}_{a}$               | $\mathcal{A}$      | Initial capacity of asset units                                                        | [MW]
-$p^{investment\_cost}_{f}$             | $\mathcal{F}_i$    | Investment cost  of flow connections                                                   | [kEUR/MW/year]
-$p^{variable\_cost}_{f}$               | $\mathcal{F}$      | Variable cost of flow connections                                                      | [kEUR/MWh]
-$p^{unit\_capacity}_{f}$               | $\mathcal{F}_t$    | Capacity increment for flow connections investment (both exports and imports)          | [MW]
-$p^{init\_export\_capacity}_{f}$       | $\mathcal{F}_t$    | Initial export capacity of flow connections                                            | [MW]
-$p^{init\_import\_capacity}_{f}$       | $\mathcal{F}_t$    | Initial import capacity of flow connections                                            | [MW]
-$p^{rp\_weight}_{rp}$                  | $\mathcal{RP}$     | Representative period weight                                                           | [h]
-$p^{profile}_{a,rp,k}$                 | $\mathcal{A,RP,K}$ | Asset profile                                                                          | [p.u.]
-$p^{profile}_{f,rp,k}$                 | $\mathcal{F,RP,K}$ | Flow connections profile                                                               | [p.u.]
-$p^{ene\_to\_pow\_ratio}_a$            | $\mathcal{A}_s$    | Energy to power ratio                                                                  | [h]
-$p^{init\_storage\_level}_{a}$         | $\mathcal{A}_s$    | Initial storage level                                                                  | [MWh]
-$p^{inflow}_{a}$                       | $\mathcal{A}_s$    | Energy storage inflows                                                                 | [MWh]
-$p^{eff}_f$                            | $\mathcal{F}$      | Flow efficiency                                                                        | [p.u.]
+| Name                             | Domain             | Description                                                                   | Units          |
+| -------------------------------- | ------------------ | ----------------------------------------------------------------------------- | -------------- |
+| $p^{investment\_cost}_{a}$       | $\mathcal{A}_i$    | Investment cost of asset units                                                | [kEUR/MW/year] |
+| $p^{investment\_limit}_{a}$      | $\mathcal{A}_i$    | Investment limit of asset units                                               | [MW]           |
+| $p^{unit\_capacity}_{a}$         | $\mathcal{A}$      | Capacity of asset units                                                       | [MW]           |
+| $p^{peak\_demand}_{a}$           | $\mathcal{A}_c$    | Peak demand                                                                   | [MW]           |
+| $p^{init\_capacity}_{a}$         | $\mathcal{A}$      | Initial capacity of asset units                                               | [MW]           |
+| $p^{investment\_cost}_{f}$       | $\mathcal{F}_i$    | Investment cost of flow connections                                           | [kEUR/MW/year] |
+| $p^{variable\_cost}_{f}$         | $\mathcal{F}$      | Variable cost of flow connections                                             | [kEUR/MWh]     |
+| $p^{unit\_capacity}_{f}$         | $\mathcal{F}_t$    | Capacity increment for flow connections investment (both exports and imports) | [MW]           |
+| $p^{init\_export\_capacity}_{f}$ | $\mathcal{F}_t$    | Initial export capacity of flow connections                                   | [MW]           |
+| $p^{init\_import\_capacity}_{f}$ | $\mathcal{F}_t$    | Initial import capacity of flow connections                                   | [MW]           |
+| $p^{rp\_weight}_{rp}$            | $\mathcal{RP}$     | Representative period weight                                                  | [h]            |
+| $p^{profile}_{a,rp,k}$           | $\mathcal{A,RP,K}$ | Asset profile                                                                 | [p.u.]         |
+| $p^{profile}_{f,rp,k}$           | $\mathcal{F,RP,K}$ | Flow connections profile                                                      | [p.u.]         |
+| $p^{ene\_to\_pow\_ratio}_a$      | $\mathcal{A}_s$    | Energy to power ratio                                                         | [h]            |
+| $p^{init\_storage\_level}_{a}$   | $\mathcal{A}_s$    | Initial storage level                                                         | [MWh]          |
+| $p^{inflow}_{a}$                 | $\mathcal{A}_s$    | Energy storage inflows                                                        | [MWh]          |
+| $p^{eff}_f$                      | $\mathcal{F}$      | Flow efficiency                                                               | [p.u.]         |
 
 ## [Variables](@id math-variables)
 
-Name|Domain|Description|Units
- ---|---|---|---
-$v^{flow}_{f,rp,k}  \in \mathbb{R}$    | $\mathcal{F,RP,K}$    | Flow between two assets                      |[MW]
-$v^{investment}_{a} \in \mathbb{Z}^{+}$| $\mathcal{A}_i$       | Number of installed asset units              |[units]
-$v^{investment}_{f} \in \mathbb{Z}^{+}$| $\mathcal{F}_i$       | Number of installed units between two assets |[units]
-$s^{level}_{a,rp,k} \in \mathbb{R}$    | $\mathcal{A_s,RP,K}$  | Storage level                                |[MWh]
+| Name                                    | Domain               | Description                                  | Units   |
+| --------------------------------------- | -------------------- | -------------------------------------------- | ------- |
+| $v^{flow}_{f,rp,k}  \in \mathbb{R}$     | $\mathcal{F,RP,K}$   | Flow between two assets                      | [MW]    |
+| $v^{investment}_{a} \in \mathbb{Z}^{+}$ | $\mathcal{A}_i$      | Number of installed asset units              | [units] |
+| $v^{investment}_{f} \in \mathbb{Z}^{+}$ | $\mathcal{F}_i$      | Number of installed units between two assets | [units] |
+| $s^{level}_{a,rp,k} \in \mathbb{R}$     | $\mathcal{A_s,RP,K}$ | Storage level                                | [MWh]   |
 
 ## [Objective Function](@id math-objective-function)
 
