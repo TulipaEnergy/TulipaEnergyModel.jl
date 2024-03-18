@@ -92,7 +92,7 @@ const schemas = (
     rep_periods = (
         data = OrderedDict(
             :id => Int,                     # Representative period ID
-            :num_time_steps => Int,         # Numer of time steps
+            :num_timesteps => Int,         # Numer of time steps
             :resolution => Float64,         # Duration of each time steps (hours)
         ),
 
@@ -107,7 +107,7 @@ const schemas = (
         profiles_data = OrderedDict(
             :profile_name => Symbol,        # Asset ID
             :rep_period => Int,             # Representative period ID
-            :time_step => Int,              # Time step ID
+            :timestep => Int,              # Time step ID
             :value => Float64,              # p.u. (per unit)
         ),
     ),

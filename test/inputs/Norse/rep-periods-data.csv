@@ -1,4 +1,4 @@
 ,,hours
-id,num_time_steps,resolution
+id,num_timesteps,resolution
 1,168,1.0
 2,24,1.0

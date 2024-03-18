@@ -14,7 +14,7 @@ For each asset and representative period, it calls the `compute_rp_partition` fu
 to compute the partition based on the strategy.
 """
 function compute_constraints_partitions(graph, representative_periods)
-    constraints_partitions = Dict{Symbol,Dict{Tuple{Symbol,Int},Vector{TimeBlock}}}()
+    constraints_partitions = Dict{Symbol,Dict{Tuple{Symbol,Int},Vector{TimestepsBlock}}}()
 
     _inflows(a, rp) =
         [graph[u, a].rep_periods_partitions[rp] for u in MetaGraphsNext.inneighbor_labels(graph, a)]
@@ -67,7 +67,7 @@ function compute_constraints_partitions(graph, representative_periods)
                 if length(P) > 0
                     compute_rp_partition(partitions(a, rp), strategy)
                 else
-                    Vector{TimeBlock}[]
+                    Vector{TimestepsBlock}[]
                 end
             end for a in MetaGraphsNext.labels(graph), rp = 1:num_rep_periods if asset_filter(a)
         )

@@ -208,7 +208,7 @@ function add_expression_terms_inter_rp_constraints!(
                     sum,
                     graph[row_inter.asset].rep_periods_profiles,
                     (:inflows, row_map.rep_period),
-                    representative_periods[row_map.rep_period].time_steps,
+                    representative_periods[row_map.rep_period].timesteps,
                     0.0,
                 ) *
                 graph[row_inter.asset].storage_inflows *
@@ -300,7 +300,7 @@ function create_model(
     Fi = filter_flows(:investable, true)
 
     # Maximum time step
-    Tmax = maximum(last(rp.time_steps) for rp in representative_periods)
+    Tmax = maximum(last(rp.timesteps) for rp in representative_periods)
     expression_workspace = Vector{JuMP.AffExpr}(undef, Tmax)
 
     # Unpacking dataframes
