@@ -36,7 +36,7 @@ end
 
 #%%
 
-@time graph, representative_periods, base_periods =
+@time graph, representative_periods, timeframe =
     create_graph_and_representative_periods_from_csv_folder(input_dir);
 @benchmark create_graph_and_representative_periods_from_csv_folder($input_dir)
 # @profview create_graph_and_representative_periods_from_csv_folder(input_dir);
@@ -50,17 +50,17 @@ end
 #%%
 
 @time dataframes =
-    construct_dataframes(graph, representative_periods, constraints_partitions, base_periods)
+    construct_dataframes(graph, representative_periods, constraints_partitions, timeframe)
 @benchmark construct_dataframes(
     $graph,
     $representative_periods,
     $constraints_partitions,
-    $base_periods,
+    $timeframe,
 )
-# @profview construct_dataframes($graph, $representative_periods, $constraints_partitions, $base_periods)
+# @profview construct_dataframes($graph, $representative_periods, $constraints_partitions, $timeframe)
 
 #%%
 
-@time model = create_model(graph, representative_periods, dataframes, base_periods);
-@benchmark create_model($graph, $representative_periods, $dataframes, $base_periods)
-# @profview create_model(graph, representative_periods, dataframes, base_periods);
+@time model = create_model(graph, representative_periods, dataframes, timeframe);
+@benchmark create_model($graph, $representative_periods, $dataframes, $timeframe)
+# @profview create_model(graph, representative_periods, dataframes, timeframe);

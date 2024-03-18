@@ -1,13 +1,15 @@
-export GraphAssetData, GraphFlowData, EnergyProblem, RepresentativePeriod, BasePeriod, TimeBlock
+export GraphAssetData,
+    GraphFlowData, EnergyProblem, RepresentativePeriod, PeriodsBlock, TimestepsBlock, Timeframe
 
-const TimeBlock = UnitRange{Int}
+const TimestepsBlock = UnitRange{Int}
+const PeriodsBlock = UnitRange{Int}
 
 """
-Structure to hold the data of the base periods.
+Structure to hold the data of the timeframe.
 """
-struct BasePeriod
-    num_base_periods::Int64
-    rp_mapping_df::DataFrame
+struct Timeframe
+    num_periods::Int64
+    map_periods_to_rp::DataFrame
 end
 
 """
@@ -16,12 +18,12 @@ Structure to hold the data of one representative period.
 struct RepresentativePeriod
     mapping::Union{Nothing,Dict{Int,Float64}}  # which periods in the full problem formulation does this RP stand for
     weight::Float64
-    time_steps::TimeBlock
+    timesteps::TimestepsBlock
     resolution::Float64
 
-    function RepresentativePeriod(mapping, num_time_steps, resolution)
+    function RepresentativePeriod(mapping, num_timesteps, resolution)
         weight = sum(values(mapping))
-        return new(mapping, weight, 1:num_time_steps, resolution)
+        return new(mapping, weight, 1:num_timesteps, resolution)
     end
 end
 
@@ -42,14 +44,14 @@ mutable struct GraphAssetData
     initial_storage_capacity::Float64
     initial_storage_level::Union{Missing,Float64}
     energy_to_power_ratio::Float64
-    base_periods_profiles::Dict{Symbol,Vector{Float64}}
+    timeframe_profiles::Dict{Symbol,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{Symbol,Int},Vector{Float64}}
-    base_periods_partitions::Vector{TimeBlock}
-    rep_periods_partitions::Dict{Int,Vector{TimeBlock}}
+    timeframe_partitions::Vector{PeriodsBlock}
+    rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
     # Solution
     investment::Float64
-    storage_level_intra_rp::Dict{Tuple{Int,TimeBlock},Float64}
-    storage_level_inter_rp::Dict{TimeBlock,Float64}
+    storage_level_intra_rp::Dict{Tuple{Int,TimestepsBlock},Float64}
+    storage_level_inter_rp::Dict{PeriodsBlock,Float64}
 
     # You don't need profiles to create the struct, so initiate it empty
     function GraphAssetData(
@@ -67,10 +69,10 @@ mutable struct GraphAssetData
         initial_storage_level,
         energy_to_power_ratio,
     )
-        base_periods_profiles = Dict{Symbol,Vector{Float64}}()
+        timeframe_profiles = Dict{Symbol,Vector{Float64}}()
         rep_periods_profiles = Dict{Tuple{Symbol,Int},Vector{Float64}}()
-        base_periods_partitions = TimeBlock[]
-        rep_periods_partitions = Dict{Int,Vector{TimeBlock}}()
+        timeframe_partitions = PeriodsBlock[]
+        rep_periods_partitions = Dict{Int,Vector{TimestepsBlock}}()
         return new(
             type,
             investable,
@@ -85,13 +87,13 @@ mutable struct GraphAssetData
             initial_storage_capacity,
             initial_storage_level,
             energy_to_power_ratio,
-            base_periods_profiles,
+            timeframe_profiles,
             rep_periods_profiles,
-            base_periods_partitions,
+            timeframe_partitions,
             rep_periods_partitions,
             -1,
-            Dict{Tuple{Int,TimeBlock},Float64}(),
-            Dict{TimeBlock,Float64}(),
+            Dict{Tuple{Int,TimestepsBlock},Float64}(),
+            Dict{TimestepsBlock,Float64}(),
         )
     end
 end
@@ -112,12 +114,12 @@ mutable struct GraphFlowData
     initial_export_capacity::Float64
     initial_import_capacity::Float64
     efficiency::Float64
-    base_periods_profiles::Dict{Symbol,Vector{Float64}}
+    timeframe_profiles::Dict{Symbol,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{Symbol,Int},Vector{Float64}}
-    base_periods_partitions::Vector{TimeBlock}
-    rep_periods_partitions::Dict{Int,Vector{TimeBlock}}
+    timeframe_partitions::Vector{PeriodsBlock}
+    rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
     # Solution
-    flow::Dict{Tuple{Int,TimeBlock},Float64}
+    flow::Dict{Tuple{Int,TimestepsBlock},Float64}
     investment::Float64
 end
 
@@ -150,9 +152,9 @@ function GraphFlowData(
         efficiency,
         Dict{Symbol,Vector{Float64}}(),
         Dict{Tuple{Symbol,Int},Vector{Float64}}(),
-        TimeBlock[],
-        Dict{Int,Vector{TimeBlock}}(),
-        Dict{Tuple{Int,TimeBlock},Float64}(),
+        PeriodsBlock[],
+        Dict{Int,Vector{TimestepsBlock}}(),
+        Dict{Tuple{Int,TimestepsBlock},Float64}(),
         -1,
     )
 end
@@ -175,7 +177,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 - `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
 - `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
 - `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
-- `base_periods`: The number of periods of the `representative_periods`.
+- `timeframe`: The number of periods of the `representative_periods`.
 - `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
 - `model`: A JuMP.Model object representing the optimization model.
 - `solved`: A boolean indicating whether the `model` has been solved or not.
@@ -187,7 +189,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 
 
 # Constructor
-- `EnergyProblem(graph, representative_periods, base_periods)`: Constructs a new `EnergyProblem` object with the given graph, representative periods, and base periods. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
+- `EnergyProblem(graph, representative_periods, timeframe)`: Constructs a new `EnergyProblem` object with the given graph, representative periods, and timeframe. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 """
@@ -203,8 +205,8 @@ mutable struct EnergyProblem
         Nothing, # Default edge weight
     }
     representative_periods::Vector{RepresentativePeriod}
-    constraints_partitions::Dict{Symbol,Dict{Tuple{Symbol,Int},Vector{TimeBlock}}}
-    base_periods::BasePeriod
+    constraints_partitions::Dict{Symbol,Dict{Tuple{Symbol,Int},Vector{TimestepsBlock}}}
+    timeframe::Timeframe
     dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}
     solution::Union{Solution,Nothing}
@@ -216,19 +218,19 @@ mutable struct EnergyProblem
     time_solve_model::Float64
 
     """
-        EnergyProblem(graph, representative_periods, base_periods)
+        EnergyProblem(graph, representative_periods, timeframe)
 
-    Constructs a new EnergyProblem object with the given graph, representative periods, and base periods. The `constraints_partitions` field is computed from the `representative_periods`,
+    Constructs a new EnergyProblem object with the given graph, representative periods, and timeframe. The `constraints_partitions` field is computed from the `representative_periods`,
     and the other fields and nothing or set to default values.
     """
-    function EnergyProblem(graph, representative_periods, base_periods)
+    function EnergyProblem(graph, representative_periods, timeframe)
         constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 
         return new(
             graph,
             representative_periods,
             constraints_partitions,
-            base_periods,
+            timeframe,
             Dict(),
             nothing,
             nothing,

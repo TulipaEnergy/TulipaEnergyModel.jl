@@ -39,13 +39,13 @@ function solve_model!(
     end
 
     for row in eachrow(energy_problem.dataframes[:lowest_storage_level_intra_rp])
-        a, rp, time_block, value = row.asset, row.rp, row.time_block, row.solution
-        graph[a].storage_level_intra_rp[(rp, time_block)] = value
+        a, rp, timesteps_block, value = row.asset, row.rp, row.timesteps_block, row.solution
+        graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
     end
 
     for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
-        a, bp, value = row.asset, row.base_period_block, row.solution
-        graph[a].storage_level_inter_rp[bp] = value
+        a, pb, value = row.asset, row.periods_block, row.solution
+        graph[a].storage_level_inter_rp[pb] = value
     end
 
     for (u, v) in MetaGraphsNext.edge_labels(graph)
@@ -60,8 +60,9 @@ function solve_model!(
     end
 
     for row in eachrow(energy_problem.dataframes[:flows])
-        u, v, rp, time_block, value = row.from, row.to, row.rp, row.time_block, row.solution
-        graph[u, v].flow[(rp, time_block)] = value
+        u, v, rp, timesteps_block, value =
+            row.from, row.to, row.rp, row.timesteps_block, row.solution
+        graph[u, v].flow[(rp, timesteps_block)] = value
     end
 
     return energy_problem.solution
@@ -117,26 +118,26 @@ The `solution` object is a NamedTuple with the following fields:
     ```
     [solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]
     ```
-  - `flow[(u, v), rp, time_block]`: The flow value for a given flow `(u, v)` at a given representative period
-    `rp`, and time block `time_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
+  - `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period
+    `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
     To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
 
     ```
-    [solution.flow[(u, v), rp, time_block] for time_block in graph[u, v].partitions[rp]]
+    [solution.flow[(u, v), rp, timesteps_block] for timesteps_block in graph[u, v].partitions[rp]]
     ```
-  - `storage_level_intra_rp[a, rp, time_block]`: The storage level for the storage asset `a` for a representative period `rp`
-    and a time block `time_block`. The list of time blocks is defined by `constraints_partitions`, which was used
+  - `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` for a representative period `rp`
+    and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used
     to create the model.
     To create a vector with the all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
 
     ```
-    [solution.storage_level_intra_rp[a, rp, time_block] for time_block in constraints_partitions[:lowest_resolution][(a, rp)]]
+    [solution.storage_level_intra_rp[a, rp, timesteps_block] for timesteps_block in constraints_partitions[:lowest_resolution][(a, rp)]]
     ```
-- `storage_level_inter_rp[a, bp]`: The storage level for the storage asset `a` for a base period `bp`.
+- `storage_level_inter_rp[a, pb]`: The storage level for the storage asset `a` for a periods block `pb`.
     To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run
 
     ```
-    [solution.storage_level_inter_rp[a, bp] for bp in 1:base_periods]
+    [solution.storage_level_inter_rp[a, bp] for bp in graph[a].timeframe_partitions[a]]
     ```
 
 ## Examples

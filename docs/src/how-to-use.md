@@ -68,15 +68,15 @@ The `Missing` data meaning depends on the parameter, for instance:
 
 -   `investment_limit`: There is no investment limit.
 
-#### `assets-base-periods-profiles.csv` and `assets-rep-periods-profiles.csv`
+#### `assets-timeframe-profiles.csv` and `assets-rep-periods-profiles.csv`
 
-These files contain the reference to profiles for each asset at each base period step, or at each representative period.
+These files contain the reference to profiles for each asset at each period, or at each representative period.
 
 #### `flows-rep-periods-profiles.csv`
 
 Similar to their `asset` counterpart.
 
-#### `profiles-base-periods-<type>.csv` and `profiles-rep-periods-<type>.csv`
+#### `profiles-timeframe-<type>.csv` and `profiles-rep-periods-<type>.csv`
 
 For each `type` defined in either `assets-*-periods-profiles` or `flows-rep-periods-profiles`, one of these files must exist.
 They store the profile data as indexed by a profile name.
@@ -106,9 +106,9 @@ The table below shows various results for different formats for a representative
 
 Similar to `assets-rep-periods-partitions.csv`, but for flows.
 
-#### `assets-base-periods-partitions.csv`
+#### `assets-timeframe-partitions.csv`
 
-Similar to their `rep-periods` counterpart, but for the base periods.
+Similar to their `rep-periods` counterpart, but for the timeframe.
 
 #### `rep-periods-data.csv`
 
@@ -147,7 +147,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 -   `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
 -   `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
 -   `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition).
--   `base_periods`: The number of periods of the `representative_periods`.
+-   `timeframe`: The number of periods of the `representative_periods`.
 -   `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
 -   `model`: A JuMP.Model object representing the optimization model.
 -   `solved`: A boolean indicating whether the `model` has been solved or not.
@@ -161,7 +161,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 
 The `EnergyProblem` can also be constructed using the minimal constructor below.
 
--   `EnergyProblem(graph, representative_periods, base_periods)`: Constructs a new `EnergyProblem` object with the given graph, representative periods, and base periods. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
+-   `EnergyProblem(graph, representative_periods, timeframe)`: Constructs a new `EnergyProblem` object with the given graph, representative periods, and timeframe. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 
@@ -227,9 +227,9 @@ The solution object is a NamedTuple with the following fields:
 -   `objective_value`: A Float64 with the objective value at the solution.
 -   `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
 -   `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
--   `flow[(u, v), rp, time_block]`: The flow value for a given flow `(u, v)` at a given representative period `rp`, and time block `time_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
--   `storage_level_intra_rp[a, rp, time_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `time_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
--   `storage_level_inter_rp[a, bp]`: The storage level for the storage asset `a` between (inter) representative periods in the base periods `bp`.
+-   `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
+-   `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
+-   `storage_level_inter_rp[a, pb]`: The storage level for the storage asset `a` between (inter) representative periods in the periods block `pb`.
 
 For tips on manipulating the solution, check the [tutorial](@ref solution-tutorial).
 

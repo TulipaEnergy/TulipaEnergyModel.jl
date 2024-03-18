@@ -84,7 +84,7 @@ using TulipaEnergyModel
 
 input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny
-graph, representative_periods, base_periods = create_graph_and_representative_periods_from_csv_folder(input_dir)
+graph, representative_periods, timeframe = create_graph_and_representative_periods_from_csv_folder(input_dir)
 ```
 
 To create the model we also need a time partition for the constraints.
@@ -99,13 +99,13 @@ The `constraints_partitions` has two dictionaries with the keys `:lowest_resolut
 Finally, we also need dataframes that store the linearized indexes of the variables.
 
 ```@example manual
-dataframes = construct_dataframes(graph, representative_periods, constraints_partitions, base_periods)
+dataframes = construct_dataframes(graph, representative_periods, constraints_partitions, timeframe)
 ```
 
 Now we can compute the model.
 
 ```@example manual
-model = create_model(graph, representative_periods, dataframes, base_periods)
+model = create_model(graph, representative_periods, dataframes, timeframe)
 ```
 
 Finally, we can compute the solution.
@@ -343,7 +343,7 @@ df = filter(
     energy_problem.dataframes[:flows],
     view = true,
 )
-[energy_problem.graph[u, v].flow[(rp, row.time_block)] for row in eachrow(df)]
+[energy_problem.graph[u, v].flow[(rp, row.timesteps_block)] for row in eachrow(df)]
 ```
 
 To create a vector with the all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
@@ -356,7 +356,7 @@ df = filter(
     energy_problem.dataframes[:lowest_storage_level_intra_rp],
     view = true,
 )
-[energy_problem.graph[a].storage_level_intra_rp[(rp, row.time_block)] for row in eachrow(df)]
+[energy_problem.graph[a].storage_level_intra_rp[(rp, row.timesteps_block)] for row in eachrow(df)]
 ```
 
 To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run
@@ -368,7 +368,7 @@ df = filter(
     energy_problem.dataframes[:storage_level_inter_rp],
     view = true,
 )
-[energy_problem.graph[a].storage_level_inter_rp[row.base_period_block] for row in eachrow(df)]
+[energy_problem.graph[a].storage_level_inter_rp[row.periods_block] for row in eachrow(df)]
 ```
 
 ### The solution inside the dataframes object

@@ -1,5 +1,5 @@
 ,,,p.u.
-profile_name,rep_period,time_step,value
+profile_name,rep_period,timestep,value
 Asgard_Solar,1,1,0.0
 Asgard_Solar,1,2,0.0
 Asgard_Solar,1,3,0.0
