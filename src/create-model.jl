@@ -731,6 +731,54 @@ function create_model(
     ]
 
     # - minimum storage level within (intra) a representative period
+    # function min_storage_level(
+    #     model,
+    #     graph,
+    #     storage_level_rp,
+    #     which_profiles,
+    #     storage_arg,
+    #     which_block,
+    #     which_name,
+    # )
+    #     [
+    #         @constraint(
+    #             model,
+    #             storage_level_rp[row.index] ≥
+    #             profile_aggregation(
+    #                 Statistics.mean,
+    #                 getfield(graph[row.asset].rep_periods_profiles, which_profiles),
+    #                 storage_arg,
+    #                 getfield(row, which_block),
+    #                 0.0,
+    #             ) * (
+    #                 graph[row.asset].initial_storage_capacity +
+    #                 (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
+    #             ),
+    #             base_name = which_name * "[$(row.asset),$(row.rp),$(getfield(row, which_block))]"
+    #         ) for row ∈ eachrow(dataframes[:lowest_storage_level_intra_rp])
+    #     ]
+    # end
+
+    # model[:min_storage_level_intra_rp_limit] = min_storage_level(
+    #     model,
+    #     graph,
+    #     storage_level_intra_rp,
+    #     :rep_periods_profiles,
+    #     (:min_storage_level, row.rp),
+    #     :time_block,
+    #     "min_storage_level_intra_rp_limit",
+    # )
+
+    # model[:min_storage_level_inter_rp_limit] = min_storage_level(
+    #     model,
+    #     graph,
+    #     storage_level_inter_rp,
+    #     :base_periods_profiles,
+    #     :mins_storage_level,
+    #     :base_period_block,
+    #     "min_storage_level_inter_rp_limit",
+    # )
+
     model[:min_storage_level_intra_rp_limit] = [
         @constraint(
             model,
