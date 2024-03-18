@@ -227,8 +227,8 @@ The solution object is a NamedTuple with the following fields:
 -   `objective_value`: A Float64 with the objective value at the solution.
 -   `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
 -   `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
--   `flow[(u, v), rp, time_block]`: The flow value for a given flow `(u, v)` at a given representative period `rp`, and time block `time_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
--   `storage_level_intra_rp[a, rp, time_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `time_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
+-   `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
+-   `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
 -   `storage_level_inter_rp[a, pb]`: The storage level for the storage asset `a` between (inter) representative periods in the periods block `pb`.
 
 For tips on manipulating the solution, check the [tutorial](@ref solution-tutorial).

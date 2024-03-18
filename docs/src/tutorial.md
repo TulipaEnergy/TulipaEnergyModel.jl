@@ -343,7 +343,7 @@ df = filter(
     energy_problem.dataframes[:flows],
     view = true,
 )
-[energy_problem.graph[u, v].flow[(rp, row.time_block)] for row in eachrow(df)]
+[energy_problem.graph[u, v].flow[(rp, row.timesteps_block)] for row in eachrow(df)]
 ```
 
 To create a vector with the all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
@@ -356,7 +356,7 @@ df = filter(
     energy_problem.dataframes[:lowest_storage_level_intra_rp],
     view = true,
 )
-[energy_problem.graph[a].storage_level_intra_rp[(rp, row.time_block)] for row in eachrow(df)]
+[energy_problem.graph[a].storage_level_intra_rp[(rp, row.timesteps_block)] for row in eachrow(df)]
 ```
 
 To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run

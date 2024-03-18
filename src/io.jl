@@ -365,22 +365,23 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     In both cases below, we select the relevant columns from the existing dataframes,
     then, we append the solution column.
     After that, we transform and flatten, by rows, the time block values into a long version.
-    I.e., if a row shows `time_block = 3:5` and `value = 30`, then we transform into
+    I.e., if a row shows `timesteps_block = 3:5` and `value = 30`, then we transform into
     three rows with values `timestep = [3, 4, 5]` and `value` equal to 30 / 3 for storage,
     or 30 for flows.
     =#
 
     output_file = joinpath(output_folder, "flows.csv")
-    output_table = DataFrames.select(dataframes[:flows], :from, :to, :rp, :time_block => :timestep)
+    output_table =
+        DataFrames.select(dataframes[:flows], :from, :to, :rp, :timesteps_block => :timestep)
     output_table.value = solution.flow
     output_table = DataFrames.flatten(
         DataFrames.transform(
             output_table,
             [:timestep, :value] =>
                 DataFrames.ByRow(
-                    (time_block, value) -> begin # transform each row using these two columns
-                        n = length(time_block)
-                        (time_block, Iterators.repeated(value, n)) # e.g., (3:5, [30, 30, 30])
+                    (timesteps_block, value) -> begin # transform each row using these two columns
+                        n = length(timesteps_block)
+                        (timesteps_block, Iterators.repeated(value, n)) # e.g., (3:5, [30, 30, 30])
                     end,
                 ) => [:timestep, :value],
         ),
@@ -393,7 +394,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
         dataframes[:lowest_storage_level_intra_rp],
         :asset,
         :rp,
-        :time_block => :timestep,
+        :timesteps_block => :timestep,
     )
     output_table.value = solution.storage_level_intra_rp
     output_table = DataFrames.flatten(
@@ -401,9 +402,9 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
             output_table,
             [:timestep, :value] =>
                 DataFrames.ByRow(
-                    (time_block, value) -> begin
-                        n = length(time_block)
-                        (time_block, Iterators.repeated(value, n))
+                    (timesteps_block, value) -> begin
+                        n = length(timesteps_block)
+                        (timesteps_block, Iterators.repeated(value, n))
                     end,
                 ) => [:timestep, :value],
         ),

@@ -27,9 +27,9 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
                     from = u,
                     to = v,
                     rp = rp,
-                    time_block = time_block,
+                    timesteps_block = timesteps_block,
                     efficiency = graph[u, v].efficiency,
-                ) for time_block ∈ graph[u, v].rep_periods_partitions[rp]
+                ) for timesteps_block ∈ graph[u, v].rep_periods_partitions[rp]
             ) for (u, v) ∈ F, rp ∈ RP
         ) |> Iterators.flatten,
     )
@@ -41,7 +41,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
             dataframes[key] = DataFrame(;
                 asset = Symbol[],
                 rp = Int[],
-                time_block = UnitRange{Int}[],
+                timesteps_block = UnitRange{Int}[],
                 index = Int[],
             )
             continue
@@ -50,8 +50,10 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         # This construction should ensure the ordering of the time blocks for groups of (a, rp)
         df = DataFrame(
             (
-                ((asset = a, rp = rp, time_block = time_block) for time_block ∈ partition) for
-                ((a, rp), partition) in partitions
+                (
+                    (asset = a, rp = rp, timesteps_block = timesteps_block) for
+                    timesteps_block ∈ partition
+                ) for ((a, rp), partition) in partitions
             ) |> Iterators.flatten,
         )
         df.index = 1:size(df, 1)
@@ -136,7 +138,7 @@ function add_expression_terms_intra_rp_constraints!(
             # Store the corresponding flow in the workspace
             for row in eachrow(grouped_flows[(rp, asset)])
                 asset = row[case.asset_match]
-                for t ∈ row.time_block
+                for t ∈ row.timesteps_block
                     # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
                     # And when you want the highest resolution (which is asset type-agnostic)
                     efficiency_coefficient =
@@ -159,7 +161,7 @@ function add_expression_terms_intra_rp_constraints!(
             end
             # Sum the corresponding flows from the workspace
             for row in eachrow(sub_df)
-                row[case.col_name] = agg(@view workspace[row.time_block])
+                row[case.col_name] = agg(@view workspace[row.timesteps_block])
             end
         end
     end
@@ -218,21 +220,21 @@ function add_expression_terms_inter_rp_constraints!(
 end
 
 """
-    profile_aggregation(agg, profiles, key, time_block, default_value)
+    profile_aggregation(agg, profiles, key, block, default_value)
 
-Aggregates the `profiles[key]` over the `time_block` using the `agg` function.
+Aggregates the `profiles[key]` over the `block` using the `agg` function.
 If the profile does not exist, uses `default_value` instead of **each** profile value.
 
 `profiles` should be a dictionary of profiles, for instance `graph[a].profiles` or `graph[u, v].profiles`.
 If `profiles[key]` exists, then this function computes the aggregation of `profiles[key]`
-over the range `time_block` using the aggregator `agg`, i.e., `agg(profiles[key][time_block])`.
+over the range `block` using the aggregator `agg`, i.e., `agg(profiles[key][block])`.
 If `profiles[key]` does not exist, then this substitutes it by a vector of `default_value`s.
 """
-function profile_aggregation(agg, profiles, key, time_block, default_value)
+function profile_aggregation(agg, profiles, key, block, default_value)
     if haskey(profiles, key)
-        return agg(profiles[key][time_block])
+        return agg(profiles[key][block])
     else
-        return agg(Iterators.repeated(default_value, length(time_block)))
+        return agg(Iterators.repeated(default_value, length(block)))
     end
 end
 
@@ -266,8 +268,8 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     ## Helper functions
     # Computes the duration of the `block` and multiply by the resolution of the
     # representative period `rp`.
-    function duration(time_block, rp)
-        return length(time_block) * representative_periods[rp].resolution
+    function duration(timesteps_block, rp)
+        return length(timesteps_block) * representative_periods[rp].resolution
     end
 
     ## Sets unpacking
@@ -309,7 +311,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             df_flows.flow = [
                 @variable(
                     model,
-                    base_name = "flow[($(row.from), $(row.to)), $(row.rp), $(row.time_block)]"
+                    base_name = "flow[($(row.from), $(row.to)), $(row.rp), $(row.timesteps_block)]"
                 ) for row in eachrow(df_flows)
             ]
     @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
@@ -319,7 +321,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             @variable(
                 model,
                 lower_bound = 0.0,
-                base_name = "storage_level_intra_rp[$(row.asset),$(row.rp),$(row.time_block)]"
+                base_name = "storage_level_intra_rp[$(row.asset),$(row.rp),$(row.timesteps_block)]"
             ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
         ]
     storage_level_inter_rp =
@@ -458,7 +460,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         model,
         sum(
             representative_periods[row.rp].weight *
-            duration(row.time_block, row.rp) *
+            duration(row.timesteps_block, row.rp) *
             graph[row.from, row.to].variable_cost *
             row.flow for row in eachrow(df_flows)
         )
@@ -479,10 +481,10 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                 Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
                 (:demand, row.rp),
-                row.time_block,
+                row.timesteps_block,
                 1.0,
             ) * graph[row.asset].peak_demand,
-            base_name = "consumer_balance[$(row.asset),$(row.rp),$(row.time_block)]"
+            base_name = "consumer_balance[$(row.asset),$(row.rp),$(row.timesteps_block)]"
         ) for row in eachrow(df)
     ]
 
@@ -512,12 +514,12 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                     sum,
                     graph[a].rep_periods_profiles,
                     (:inflows, rp),
-                    row.time_block,
+                    row.timesteps_block,
                     0.0,
                 ) * graph[a].storage_inflows +
                 incoming_flow_lowest_storage_resolution_intra_rp[row.index] -
                 outgoing_flow_lowest_storage_resolution_intra_rp[row.index],
-                base_name = "storage_intra_rp_balance[$a,$rp,$(row.time_block)]"
+                base_name = "storage_intra_rp_balance[$a,$rp,$(row.timesteps_block)]"
             ) for (k, row) ∈ enumerate(eachrow(sub_df))
         ]
     end
@@ -558,7 +560,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             model,
             incoming_flow_highest_in_out_resolution[row.index] ==
             outgoing_flow_highest_in_out_resolution[row.index],
-            base_name = "hub_balance[$(row.asset),$(row.rp),$(row.time_block)]"
+            base_name = "hub_balance[$(row.asset),$(row.rp),$(row.timesteps_block)]"
         ) for row in eachrow(df)
     ]
 
@@ -569,7 +571,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             model,
             incoming_flow_lowest_resolution[row.index] ==
             outgoing_flow_lowest_resolution[row.index],
-            base_name = "conversion_balance[$(row.asset),$(row.rp),$(row.time_block)]"
+            base_name = "conversion_balance[$(row.asset),$(row.rp),$(row.timesteps_block)]"
         ) for row in eachrow(df)
     ]
 
@@ -582,7 +584,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
                         (:availability, row.rp),
-                        row.time_block,
+                        row.timesteps_block,
                         1.0,
                     ) * (
                         graph[row.asset].initial_capacity +
@@ -596,7 +598,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
                         (:availability, row.rp),
-                        row.time_block,
+                        row.timesteps_block,
                         1.0,
                     ) * graph[row.asset].initial_capacity
                 )
@@ -612,7 +614,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
                         (:availability, row.rp),
-                        row.time_block,
+                        row.timesteps_block,
                         1.0,
                     ) * (
                         graph[row.asset].initial_capacity +
@@ -626,7 +628,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
                         (:availability, row.rp),
-                        row.time_block,
+                        row.timesteps_block,
                         1.0,
                     ) * graph[row.asset].initial_capacity
                 )
@@ -640,7 +642,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             model,
             outgoing_flow_highest_out_resolution[row.index] ≤
             assets_profile_times_capacity_out[row.index],
-            base_name = "max_output_flows_limit[$(row.asset),$(row.rp),$(row.time_block)]"
+            base_name = "max_output_flows_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:highest_out]) if
         outgoing_flow_highest_out_resolution[row.index] != 0
     ]
@@ -651,7 +653,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             model,
             incoming_flow_highest_in_resolution[row.index] ≤
             assets_profile_times_capacity_in[row.index],
-            base_name = "max_input_flows_limit[$(row.asset),$(row.rp),$(row.time_block)]"
+            base_name = "max_input_flows_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:highest_in]) if
         incoming_flow_highest_in_resolution[row.index] != 0
     ]
@@ -672,7 +674,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
                     (:availability, row.rp),
-                    row.time_block,
+                    row.timesteps_block,
                     1.0,
                 ) * (
                     graph[row.from, row.to].initial_export_capacity +
@@ -686,7 +688,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
                     (:availability, row.rp),
-                    row.time_block,
+                    row.timesteps_block,
                     1.0,
                 ) * graph[row.from, row.to].initial_export_capacity
             )
@@ -701,7 +703,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
                     (:availability, row.rp),
-                    row.time_block,
+                    row.timesteps_block,
                     1.0,
                 ) * (
                     graph[row.from, row.to].initial_import_capacity +
@@ -715,7 +717,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
                     (:availability, row.rp),
-                    row.time_block,
+                    row.timesteps_block,
                     1.0,
                 ) * graph[row.from, row.to].initial_import_capacity
             )
@@ -728,7 +730,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         @constraint(
             model,
             flow[row.index] ≤ upper_bound_transport_flow[row.index],
-            base_name = "max_transport_flow_limit[($(row.from),$(row.to)),$(row.rp),$(row.time_block)]"
+            base_name = "max_transport_flow_limit[($(row.from),$(row.to)),$(row.rp),$(row.timesteps_block)]"
         ) for row in eachrow(df)
     ]
 
@@ -736,7 +738,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         @constraint(
             model,
             flow[row.index] ≥ -lower_bound_transport_flow[row.index],
-            base_name = "min_transport_flow_limit[($(row.from),$(row.to)),$(row.rp),$(row.time_block)]"
+            base_name = "min_transport_flow_limit[($(row.from),$(row.to)),$(row.rp),$(row.timesteps_block)]"
         ) for row in eachrow(df)
     ]
 
@@ -750,13 +752,13 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                 Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
                 ("max-storage-level", row.rp),
-                row.time_block,
+                row.timesteps_block,
                 1.0,
             ) * (
                 graph[row.asset].initial_storage_capacity +
                 (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
             ),
-            base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.time_block)]"
+            base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
         ) for row ∈ eachrow(dataframes[:lowest_storage_level_intra_rp])
     ]
 
@@ -769,13 +771,13 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                 Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
                 (:min_storage_level, row.rp),
-                row.time_block,
+                row.timesteps_block,
                 0.0,
             ) * (
                 graph[row.asset].initial_storage_capacity +
                 (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
             ),
-            base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.time_block)]"
+            base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
         ) for row ∈ eachrow(dataframes[:lowest_storage_level_intra_rp])
     ]
 
