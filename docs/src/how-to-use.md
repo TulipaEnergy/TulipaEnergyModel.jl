@@ -150,6 +150,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 -   `timeframe`: The number of periods of the `representative_periods`.
 -   `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
 -   `model`: A JuMP.Model object representing the optimization model.
+-   `solution`: A structure of the variable values (investments, flows, etc) in the solution.
 -   `solved`: A boolean indicating whether the `model` has been solved or not.
 -   `objective_value`: The objective value of the solved problem.
 -   `termination_status`: The termination status of the optimization model.
@@ -222,7 +223,7 @@ Nothing is defined outside of these time steps, so, for instance, if the represe
 
 ### Solution
 
-The solution object is a NamedTuple with the following fields:
+The solution object `energy_problem.solution` is a mutable struct with the following fields:
 
 -   `objective_value`: A Float64 with the objective value at the solution.
 -   `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.

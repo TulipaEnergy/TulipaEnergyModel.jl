@@ -102,9 +102,7 @@ The keyword argument `parameters` should be passed as a list of `key => value` p
 These can be created manually, obtained using [`default_parameters`](@ref), or read from a file
 using [`read_parameters_from_file`](@ref).
 
-The `solution` object is a NamedTuple with the following fields:
-
-  - `objective_value`: A Float64 with the objective value at the solution.
+The `solution` object is a mutable struct with the following fields:
 
   - `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
     To create a traditional array in the order given by the investable assets, one can run
@@ -137,7 +135,18 @@ The `solution` object is a NamedTuple with the following fields:
     To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run
 
     ```
-    [solution.storage_level_inter_rp[a, bp] for bp in graph[a].timeframe_partitions[a]]
+    d[solution.storage_level_inter_rp[a, bp] for bp in graph[a].timeframe_partitions[a]]
+    ```
+- `flow[(u, v), rp, time_block]`: The flow value for a given flow `(u, v)` at a given representative period
+    `rp`, and time block `time_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
+    To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
+
+    ```
+    [solution.flow[(u, v), rp, time_block] for time_block in graph[u, v].partitions[rp]]
+    ```
+- `objective_value`: A Float64 with the objective value at the solution.
+    ```
+- `duals`: A NamedTuple containing the dual variables of selected constraints.
     ```
 
 ## Examples
