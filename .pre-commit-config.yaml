@@ -19,7 +19,7 @@ repos:
       rev: "v3.0.2" # Use the sha or tag you want to point at
       hooks:
           - id: prettier
-            types_or: [yaml, json]
+            types_or: [yaml, json, markdown]
     - repo: https://github.com/adrienverge/yamllint
       rev: v1.32.0
       hooks:
