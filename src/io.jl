@@ -404,7 +404,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
                 DataFrames.ByRow(
                     (time_block, value) -> begin
                         n = length(time_block)
-                        (time_block, Iterators.repeated(value / n, n))
+                        (time_block, Iterators.repeated(value, n))
                     end,
                 ) => [:time_step, :value],
         ),
@@ -426,7 +426,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
                 DataFrames.ByRow(
                     (base_period_block, value) -> begin
                         n = length(base_period_block)
-                        (base_period_block, Iterators.repeated(value / n, n))
+                        (base_period_block, Iterators.repeated(value, n))
                     end,
                 ) => [:time_step, :value],
         ),
