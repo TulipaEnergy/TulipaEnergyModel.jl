@@ -44,8 +44,8 @@ function solve_model!(
     end
 
     for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
-        a, bp, value = row.asset, row.base_period_block, row.solution
-        graph[a].storage_level_inter_rp[bp] = value
+        a, pb, value = row.asset, row.periods_block, row.solution
+        graph[a].storage_level_inter_rp[pb] = value
     end
 
     for (u, v) in MetaGraphsNext.edge_labels(graph)
@@ -132,11 +132,11 @@ The `solution` object is a NamedTuple with the following fields:
     ```
     [solution.storage_level_intra_rp[a, rp, time_block] for time_block in constraints_partitions[:lowest_resolution][(a, rp)]]
     ```
-- `storage_level_inter_rp[a, bp]`: The storage level for the storage asset `a` for a base period `bp`.
+- `storage_level_inter_rp[a, pb]`: The storage level for the storage asset `a` for a periods block `pb`.
     To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run
 
     ```
-    [solution.storage_level_inter_rp[a, bp] for bp in 1:base_periods]
+    [solution.storage_level_inter_rp[a, bp] for bp in graph[a].timeframe_partitions[a]]
     ```
 
 ## Examples

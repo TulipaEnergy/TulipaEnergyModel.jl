@@ -5,13 +5,13 @@ export create_model!, create_model, construct_dataframes
         graph,
         representative_periods,
         constraints_partitions,
-        base_periods,
+        timeframe,
     )
 
 Computes the data frames used to linearize the variables and constraints. These are used
 internally in the model only.
 """
-function construct_dataframes(graph, representative_periods, constraints_partitions, base_periods)
+function construct_dataframes(graph, representative_periods, constraints_partitions, timeframe)
     A = MetaGraphsNext.labels(graph) |> collect
     F = MetaGraphsNext.edge_labels(graph) |> collect
     RP = 1:length(representative_periods)
@@ -63,14 +63,14 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     dataframes[:storage_level_inter_rp] = DataFrame(
         (
             (
-                (asset = a, base_period_block = time_block) for
-                time_block in graph[a].base_periods_partitions
+                (asset = a, periods_block = periods_block) for
+                periods_block in graph[a].timeframe_partitions
             ) for a in A
         ) |> Iterators.flatten,
     )
     if size(dataframes[:storage_level_inter_rp], 1) == 0
         dataframes[:storage_level_inter_rp] =
-            DataFrame(; asset = Symbol[], base_period_block = UnitRange{Int}[])
+            DataFrame(; asset = Symbol[], periods_block = PeriodsBlock[])
     end
     dataframes[:storage_level_inter_rp].index = 1:size(dataframes[:storage_level_inter_rp], 1)
 
@@ -192,7 +192,7 @@ function add_expression_terms_inter_rp_constraints!(
 
     # Incoming, outgoing flows, and profile aggregation
     for row_inter in eachrow(df_inter)
-        sub_df_map = filter(row -> row.period in row_inter.base_period_block, df_map)
+        sub_df_map = filter(row -> row.period in row_inter.periods_block, df_map)
 
         for row_map in eachrow(sub_df_map)
             sub_df_flows =
@@ -245,16 +245,11 @@ function create_model!(energy_problem; kwargs...)
     graph = energy_problem.graph
     representative_periods = energy_problem.representative_periods
     constraints_partitions = energy_problem.constraints_partitions
-    base_periods = energy_problem.base_periods
+    timeframe = energy_problem.timeframe
     energy_problem.dataframes =
-        construct_dataframes(graph, representative_periods, constraints_partitions, base_periods)
-    energy_problem.model = create_model(
-        graph,
-        representative_periods,
-        energy_problem.dataframes,
-        base_periods;
-        kwargs...,
-    )
+        construct_dataframes(graph, representative_periods, constraints_partitions, timeframe)
+    energy_problem.model =
+        create_model(graph, representative_periods, energy_problem.dataframes, timeframe; kwargs...)
     energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
     energy_problem.solved = false
     energy_problem.objective_value = NaN
@@ -262,17 +257,11 @@ function create_model!(energy_problem; kwargs...)
 end
 
 """
-    model = create_model(graph, representative_periods, dataframes, base_periods; write_lp_file = false)
+    model = create_model(graph, representative_periods, dataframes, timeframe; write_lp_file = false)
 
-Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), and base_periods.
+Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), and timeframe.
 """
-function create_model(
-    graph,
-    representative_periods,
-    dataframes,
-    base_periods;
-    write_lp_file = false,
-)
+function create_model(graph, representative_periods, dataframes, timeframe; write_lp_file = false)
 
     ## Helper functions
     # Computes the duration of the `block` and multiply by the resolution of the
@@ -338,7 +327,7 @@ function create_model(
             @variable(
                 model,
                 lower_bound = 0.0,
-                base_name = "storage_level_inter_rp[$(row.asset),$(row.base_period_block)]"
+                base_name = "storage_level_inter_rp[$(row.asset),$(row.periods_block)]"
             ) for row in eachrow(dataframes[:storage_level_inter_rp])
         ]
     ### Integer Investment Variables
@@ -410,7 +399,7 @@ function create_model(
     add_expression_terms_inter_rp_constraints!(
         dataframes[:storage_level_inter_rp],
         df_flows,
-        base_periods.rp_mapping_df,
+        timeframe.map_periods_to_rp,
         graph,
         representative_periods,
     )
@@ -557,7 +546,7 @@ function create_model(
                 row.inflows_profile_aggregation +
                 incoming_flow_storage_inter_rp_balance[row.index] -
                 outgoing_flow_storage_inter_rp_balance[row.index],
-                base_name = "storage_inter_rp_balance[$a,$(row.base_period_block)]"
+                base_name = "storage_inter_rp_balance[$a,$(row.periods_block)]"
             ) for (k, row) ∈ enumerate(eachrow(sub_df))
         ]
     end
@@ -808,15 +797,15 @@ function create_model(
             storage_level_inter_rp[row.index] ≤
             profile_aggregation(
                 Statistics.mean,
-                graph[row.asset].base_periods_profiles,
+                graph[row.asset].timeframe_profiles,
                 :max_storage_level,
-                row.base_period_block,
+                row.periods_block,
                 1.0,
             ) * (
                 graph[row.asset].initial_storage_capacity +
                 (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
             ),
-            base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.base_period_block)]"
+            base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.periods_block)]"
         ) for row ∈ eachrow(dataframes[:storage_level_inter_rp])
     ]
 
@@ -827,15 +816,15 @@ function create_model(
             storage_level_inter_rp[row.index] ≥
             profile_aggregation(
                 Statistics.mean,
-                graph[row.asset].base_periods_profiles,
+                graph[row.asset].timeframe_profiles,
                 :min_storage_level,
-                row.base_period_block,
+                row.periods_block,
                 0.0,
             ) * (
                 graph[row.asset].initial_storage_capacity +
                 (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
             ),
-            base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.base_period_block)]"
+            base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.periods_block)]"
         ) for row ∈ eachrow(dataframes[:storage_level_inter_rp])
     ]
 

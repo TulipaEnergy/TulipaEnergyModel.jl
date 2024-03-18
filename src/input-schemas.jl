@@ -28,8 +28,8 @@ const schemas = (
             :profile_name => Symbol,        # Name of profile, used to determine data inside the dataframe
         ),
 
-        # Schema for the assets-base-periods-partitions.csv file.
-        base_periods_partition = OrderedDict(
+        # Schema for the assets-timeframe-partitions.csv file.
+        timeframe_partition = OrderedDict(
             :asset => Symbol,
             :specification => Symbol,
             :partition => String,
@@ -79,11 +79,11 @@ const schemas = (
             :partition => String,
         ),
     ),
-    base_periods = (
-        # Schema for the profiles-base-periods-<type>.csv file.
+    timeframe = (
+        # Schema for the profiles-timeframe-<type>.csv file.
         profiles_data = OrderedDict(
             :profile_name => Symbol,        # Asset ID
-            :base_period => Int,            # Base period ID
+            :period => Int,                 # Period
             :value => Float64,              # p.u. (per unit)
         ),
     ),
@@ -114,15 +114,15 @@ const schemas = (
 )
 
 const schema_per_file = OrderedDict(
-    "assets-base-periods-partitions.csv" => schemas.assets.base_periods_partition,
+    "assets-timeframe-partitions.csv" => schemas.assets.timeframe_partition,
     "assets-data.csv" => schemas.assets.data,
-    "assets-base-periods-profiles.csv" => schemas.assets.profiles_reference,
+    "assets-timeframe-profiles.csv" => schemas.assets.profiles_reference,
     "assets-rep-periods-profiles.csv" => schemas.assets.profiles_reference,
     "assets-rep-periods-partitions.csv" => schemas.assets.rep_periods_partition,
     "flows-data.csv" => schemas.flows.data,
     "flows-rep-periods-profiles.csv" => schemas.flows.profiles_reference,
     "flows-rep-periods-partitions.csv" => schemas.flows.rep_periods_partition,
-    "profiles-base-periods-<type>.csv" => schemas.base_periods.profiles_data,
+    "profiles-timeframe-<type>.csv" => schemas.timeframe.profiles_data,
     "profiles-rep-periods-<type>.csv" => schemas.rep_periods.profiles_data,
     "rep-periods-data.csv" => schemas.rep_periods.data,
     "rep-periods-mapping.csv" => schemas.rep_periods.mapping,

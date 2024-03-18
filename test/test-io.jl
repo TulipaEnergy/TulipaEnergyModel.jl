@@ -42,8 +42,7 @@ end
 @testset "Graph structure" begin
     @testset "Graph structure is correct" begin
         dir = joinpath(INPUT_FOLDER, "Tiny")
-        graph, representative_periods, base_periods =
-            create_graph_and_representative_periods_from_csv_folder(dir)
+        graph, _, _ = create_graph_and_representative_periods_from_csv_folder(dir)
 
         @test Graphs.nv(graph) == 6
         @test Graphs.ne(graph) == 5
@@ -133,7 +132,7 @@ end
             cp(joinpath(root, file), joinpath(dir, file))
         end
     end
-    filename = joinpath(dir, "assets-base-periods-partitions.csv")
+    filename = joinpath(dir, "assets-timeframe-partitions.csv")
     lines = readlines(filename)
     open(filename, "w") do io
         for line in lines[1:end-1]
@@ -142,6 +141,6 @@ end
     end
     missing_asset = Symbol(split(lines[end], ",")[1]) # The asset the was not included
 
-    graph, rps, bps = create_graph_and_representative_periods_from_csv_folder(dir)
-    @test graph[missing_asset].base_periods_partitions == [i:i for i = 1:bps.num_base_periods]
+    graph, rps, tf = create_graph_and_representative_periods_from_csv_folder(dir)
+    @test graph[missing_asset].timeframe_partitions == [i:i for i = 1:tf.num_periods]
 end
