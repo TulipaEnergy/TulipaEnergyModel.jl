@@ -658,63 +658,39 @@ function create_model(
     end
 
     ## Expressions for transport flow constraints
-    upper_bound_transport_flow = [
-        if graph[row.from, row.to].investable
-            @expression(
-                model,
-                profile_aggregation(
-                    Statistics.mean,
-                    graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
-                    row.time_block,
-                    1.0,
-                ) * (
-                    graph[row.from, row.to].initial_export_capacity +
-                    graph[row.from, row.to].capacity * flows_investment[(row.from, row.to)]
+    function find_bound_transport_flow(model, graph, init_capacity)
+        [
+            if graph[row.from, row.to].investable
+                @expression(
+                    model,
+                    profile_aggregation(
+                        Statistics.mean,
+                        graph[row.from, row.to].rep_periods_profiles,
+                        (:availability, row.rp),
+                        row.time_block,
+                        1.0,
+                    ) * (
+                        getfield(graph[row.from, row.to], init_capacity) +
+                        graph[row.from, row.to].capacity * flows_investment[(row.from, row.to)]
+                    )
                 )
-            )
-        else
-            @expression(
-                model,
-                profile_aggregation(
-                    Statistics.mean,
-                    graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
-                    row.time_block,
-                    1.0,
-                ) * graph[row.from, row.to].initial_export_capacity
-            )
-        end for row in eachrow(df_flows)
-    ]
+            else
+                @expression(
+                    model,
+                    profile_aggregation(
+                        Statistics.mean,
+                        graph[row.from, row.to].rep_periods_profiles,
+                        (:availability, row.rp),
+                        row.time_block,
+                        1.0,
+                    ) * getfield(graph[row.from, row.to], init_capacity)
+                )
+            end for row in eachrow(df_flows)
+        ]
+    end
 
-    lower_bound_transport_flow = [
-        if graph[row.from, row.to].investable
-            @expression(
-                model,
-                profile_aggregation(
-                    Statistics.mean,
-                    graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
-                    row.time_block,
-                    1.0,
-                ) * (
-                    graph[row.from, row.to].initial_import_capacity +
-                    graph[row.from, row.to].capacity * flows_investment[(row.from, row.to)]
-                )
-            )
-        else
-            @expression(
-                model,
-                profile_aggregation(
-                    Statistics.mean,
-                    graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
-                    row.time_block,
-                    1.0,
-                ) * graph[row.from, row.to].initial_import_capacity
-            )
-        end for row in eachrow(df_flows)
-    ]
+    upper_bound_transport_flow = find_bound_transport_flow(model, graph, :initial_export_capacity)
+    lower_bound_transport_flow = find_bound_transport_flow(model, graph, :initial_import_capacity)
 
     ## Constraints that define bounds for a transport flow Ft
     df = filter(row -> (row.from, row.to) ∈ Ft, df_flows)
@@ -775,7 +751,7 @@ function create_model(
 
     # - cycling condition for storage level within (intra) a representative period
     for ((a, _), sub_df) ∈ pairs(df_storage_intra_rp_balance_grouped)
-        # Again, ordering is assume
+        # Again, ordering is assumed
         if !ismissing(graph[a].initial_storage_level)
             JuMP.set_lower_bound(
                 storage_level_intra_rp[last(sub_df.index)],
@@ -824,7 +800,7 @@ function create_model(
 
     # - cycling condition for storage between (inter) representative periods
     for ((a,), sub_df) ∈ pairs(df_storage_inter_rp_balance_grouped)
-        # Again, ordering is assume
+        # Again, ordering is assumed
         if !ismissing(graph[a].initial_storage_level)
             JuMP.set_lower_bound(
                 storage_level_inter_rp[last(sub_df.index)],
