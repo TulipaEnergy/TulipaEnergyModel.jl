@@ -584,8 +584,8 @@ function create_model(
         ) for row in eachrow(df)
     ]
 
-    assets_profile_times_capacity_in =
-        model[:assets_profile_times_capacity_in] = [
+    function assets_profile_times_capacity(model, graph, aptc_in_or_out, highest_in_or_out)
+        model[aptc_in_or_out] = [
             if row.asset ∈ Ai
                 @expression(
                     model,
@@ -611,38 +611,21 @@ function create_model(
                         1.0,
                     ) * graph[row.asset].initial_capacity
                 )
-            end for row in eachrow(dataframes[:highest_in])
+            end for row in eachrow(dataframes[highest_in_or_out])
         ]
 
-    assets_profile_times_capacity_out =
-        model[:assets_profile_times_capacity_out] = [
-            if row.asset ∈ Ai
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rp),
-                        row.time_block,
-                        1.0,
-                    ) * (
-                        graph[row.asset].initial_capacity +
-                        graph[row.asset].capacity * assets_investment[row.asset]
-                    )
-                )
-            else
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rp),
-                        row.time_block,
-                        1.0,
-                    ) * graph[row.asset].initial_capacity
-                )
-            end for row in eachrow(dataframes[:highest_out])
-        ]
+        return model[aptc_in_or_out]
+    end
+
+    assets_profile_times_capacity_in =
+        assets_profile_times_capacity(model, graph, :assets_profile_times_capacity_in, :highest_in)
+
+    assets_profile_times_capacity_out = assets_profile_times_capacity(
+        model,
+        graph,
+        :assets_profile_times_capacity_out,
+        :highest_out,
+    )
 
     ## Capacity limit constraints (using the highest resolution)
     # - maximum output flows limit
