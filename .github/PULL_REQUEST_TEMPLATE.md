@@ -12,7 +12,7 @@ Closes #ISSUE_NUMBER
 
 As a contributor I confirm
 
-- [ ] I read and followed the instructions in README.dev.md
-- [ ] The documentation is up to date with the changes introduced in this Pull Request (or NA)
-- [ ] Tests are passing
-- [ ] Lint is passing
+-   [ ] I read and followed the instructions in README.dev.md
+-   [ ] The documentation is up to date with the changes introduced in this Pull Request (or NA)
+-   [ ] Tests are passing
+-   [ ] Lint is passing
