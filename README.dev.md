@@ -46,36 +46,38 @@ To contribute to TulipaEnergyModel.jl, you need the following:
     ```
 
 6.  [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
-    formatting. To install it, open Julia REPL, for example, by typing in the
+    formatting.
+
+    To install it, open Julia REPL, for example, by typing in the
     command line:
 
-        ```bash
-        julia
-        ```
+    ```bash
+    julia
+    ```
 
-        > **Note**:
-        > `julia` must be part of your environment variables to call it from the
-        > command line.
+    > **Note**:
+    > `julia` must be part of your environment variables to call it from the
+    > command line.
 
-        Then press <kbd>]</kbd> to enter the package mode.
-        In the package mode, enter the following:
+    Then press <kbd>]</kbd> to enter the package mode.
+    In the package mode, enter the following:
 
-        ```julia
-        pkg> activate
-        pkg> add JuliaFormatter
-        ```
+    ```julia
+    pkg> activate
+    pkg> add JuliaFormatter
+    ```
 
-        In VSCode, you can activate "Format on Save" for `JuliaFormatter`. To do so,
-        open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
-        Settings", type "Format on Save" and tick the first result:
+    In VSCode, you can activate "Format on Save" for `JuliaFormatter`. To do so,
+    open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
+    Settings", type "Format on Save" and tick the first result:
 
-        ![Screenshot of Format on Save option](docs/FormatOnSave.png)
+    ![Screenshot of Format on Save option](docs/FormatOnSave.png)
 
 7.  [Prettier](https://prettier.io/) for markdown formatting.
     In VSCode, it is available as
     [an extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
 
-    Having enabled "Format on Save" for `JuliaFormatter` in the previous step will also enable "Format on Save" for `Prettier`, provided that `Prettier` is set as the default formatter for markdown files. To do so, in VSCode, right-click on any area of a markdown file, choose "Format Document With...", and choose `Prettier` as the default formatter.
+    Having enabled "Format on Save" for `JuliaFormatter` in the previous step will also enable "Format on Save" for `Prettier`, provided that `Prettier` is set as the default formatter for markdown files. To do so, in VSCode, open any markdown file, right-click on any area of the file, choose "Format Document With...", click "Configure Default Formatter..." situated at the bottom of the drop-list list at the top of the screen, and then choose `Prettier - Code formatter` as the default formatter. Once you are done, you can double-check it by again right-clicking on any area of the file and choosing "Format Document With...", and you should see `Prettier - Code formatter (default)`.
 
 8.  [LocalCoverage](https://juliapackages.com/p/localcoverage) for coverage
     testing. You can install it the same way you installed `JuliaFormatter`,
