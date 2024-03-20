@@ -150,6 +150,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 -   `timeframe`: The number of periods of the `representative_periods`.
 -   `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
 -   `model`: A JuMP.Model object representing the optimization model.
+-   `solution`: A structure of the variable values (investments, flows, etc) in the solution.
 -   `solved`: A boolean indicating whether the `model` has been solved or not.
 -   `objective_value`: The objective value of the solved problem.
 -   `termination_status`: The termination status of the optimization model.
@@ -222,14 +223,15 @@ Nothing is defined outside of these time steps, so, for instance, if the represe
 
 ### Solution
 
-The solution object is a NamedTuple with the following fields:
+The solution object `energy_problem.solution` is a mutable struct with the following fields:
 
--   `objective_value`: A Float64 with the objective value at the solution.
 -   `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
 -   `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
--   `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
 -   `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
 -   `storage_level_inter_rp[a, pb]`: The storage level for the storage asset `a` between (inter) representative periods in the periods block `pb`.
+-   `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period. `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
+-   `objective_value`: A Float64 with the objective value at the solution.
+-   `duals`: A Dict containing the dual variables of selected constraints.
 
 For tips on manipulating the solution, check the [tutorial](@ref solution-tutorial).
 

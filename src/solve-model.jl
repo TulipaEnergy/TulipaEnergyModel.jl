@@ -102,9 +102,7 @@ The keyword argument `parameters` should be passed as a list of `key => value` p
 These can be created manually, obtained using [`default_parameters`](@ref), or read from a file
 using [`read_parameters_from_file`](@ref).
 
-The `solution` object is a NamedTuple with the following fields:
-
-  - `objective_value`: A Float64 with the objective value at the solution.
+The `solution` object is a mutable struct with the following fields:
 
   - `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
     To create a traditional array in the order given by the investable assets, one can run
@@ -117,13 +115,6 @@ The `solution` object is a NamedTuple with the following fields:
 
     ```
     [solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]
-    ```
-  - `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period
-    `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
-    To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
-
-    ```
-    [solution.flow[(u, v), rp, timesteps_block] for timesteps_block in graph[u, v].partitions[rp]]
     ```
   - `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` for a representative period `rp`
     and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used
@@ -138,6 +129,17 @@ The `solution` object is a NamedTuple with the following fields:
 
     ```
     [solution.storage_level_inter_rp[a, bp] for bp in graph[a].timeframe_partitions[a]]
+    ```
+- `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period
+    `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
+    To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
+
+    ```
+    [solution.flow[(u, v), rp, timesteps_block] for timesteps_block in graph[u, v].partitions[rp]]
+    ```
+- `objective_value`: A Float64 with the objective value at the solution.
+    ```
+- `duals`: A NamedTuple containing the dual variables of selected constraints.
     ```
 
 ## Examples
