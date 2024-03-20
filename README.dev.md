@@ -367,20 +367,20 @@ When publishing a new version of the model to the Julia Register, follow this pr
 To be able to register, you need to be a member of the organisation TulipaEnergy and have your visibility set to public:
 ![Screenshot of public members of TulipaEnergy on GitHub]()
 
-1. Click on the `Project.toml` file on GitHub
+1. Click on the `Project.toml` file on GitHub.
 2. Edit the file and change the version number according to [semantic versioning](https://semver.org/): Major.Minor.Patch
-   ![Screenshot of editing Project.toml on GitHub]()
-3. Commit the changes in a new branch and open a pull request. Change the commit message according to the version number
+   ![Screenshot of editing Project.toml on GitHub](docs/images/UpdateVersion.png)
+3. Commit the changes in a new branch and open a pull request. Change the commit message according to the version number.
    ![Screenshot of PR with commit message "Release 0.6.1"]()
-4. Create the pull request and squash & merge it after teh review and testing process. Delete the branch after the squash the merge
+4. Create the pull request and squash & merge it after teh review and testing process. Delete the branch after the squash and merge.
    ![Screenshot of full PR template on GitHub]()
-5. Then go to the main page of repo and click in the commit
+5. Then go to the main page of repo and click in the commit.
    ![Screenshot of how to access commit on GitHub]()
 6. Add the following comment to the commit: `@JuliaRegistrator register`
    ![Screenshot of calling JuliaRegistrator in commit comments]()
-7. Then the bot should start the registration process
+7. Then the bot should start the registration process.
    ![Screenshot of JuliaRegistrator bot message]()
-8. After approval, the bot will take care ofthe PR at the Julia Registry and automatically create the release for the new version
+8. After approval, the bot will take care ofthe PR at the Julia Registry and automatically create the release for the new version.
 
 ## Performance Considerations
 
