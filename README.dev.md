@@ -71,7 +71,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
     open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
     Settings", type "Format on Save" and tick the first result:
 
-    ![Screenshot of Format on Save option](docs/FormatOnSave.png)
+    ![Screenshot of Format on Save option](docs/images/FormatOnSave.png)
 
 7.  [Prettier](https://prettier.io/) for markdown formatting.
     In VSCode, it is available as
@@ -92,7 +92,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
 
 Any changes should be done in a [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo). You can fork this repository directly on GitHub:
 
-![Screenshot of Fork button on GitHub](docs/Fork.png)
+![Screenshot of Fork button on GitHub](docs/images/Fork.png)
 
 After that, clone your fork and add this repository as upstream:
 
@@ -320,7 +320,7 @@ When there are no more conflicts and all the test are passing, create a pull
 request to merge your remote branch into the org main. You can do this on
 GitHub by opening the branch in your fork and clicking "Compare & pull request".
 
-![Screenshot of Compare & pull request button on GitHub](docs/CompareAndPR.png)
+![Screenshot of Compare & pull request button on GitHub](docs/images/CompareAndPR.png)
 
 Fill in the pull request details:
 
@@ -330,7 +330,7 @@ Fill in the pull request details:
 4. (Optional) Choose a reviewer.
 5. When all of the information is filled in, click "Create pull request".
 
-![Screenshot of the pull request information](docs/PRInfo.png)
+![Screenshot of the pull request information](docs/images/PRInfo.png)
 
 You pull request will apper in the list of pull requests in the
 TulipaEnergyModel.jl repository, where you can track the review process.
