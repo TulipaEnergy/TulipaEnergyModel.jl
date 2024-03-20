@@ -59,28 +59,28 @@ function create_graph_and_representative_periods_from_csv_folder(
     input_folder::AbstractString;
     strict = false,
 )
-    assets_data_df = read_csv_with_implicit_schema(input_folder, "assets-data.csv")
-    flows_data_df  = read_csv_with_implicit_schema(input_folder, "flows-data.csv")
-    rep_period_df  = read_csv_with_implicit_schema(input_folder, "rep-periods-data.csv")
-    rp_mapping_df  = read_csv_with_implicit_schema(input_folder, "rep-periods-mapping.csv")
+    df_assets_data = read_csv_with_implicit_schema(input_folder, "assets-data.csv")
+    df_flows_data  = read_csv_with_implicit_schema(input_folder, "flows-data.csv")
+    df_rep_period  = read_csv_with_implicit_schema(input_folder, "rep-periods-data.csv")
+    df_rp_mapping  = read_csv_with_implicit_schema(input_folder, "rep-periods-mapping.csv")
 
-    assets_profiles_df = Dict(
+    df_assets_profiles = Dict(
         profile_type =>
             read_csv_with_implicit_schema(input_folder, "assets-$profile_type-profiles.csv") for
         profile_type in ["timeframe", "rep-periods"]
     )
-    flows_profiles_df =
+    df_flows_profiles =
         read_csv_with_implicit_schema(input_folder, "flows-rep-periods-profiles.csv")
-    assets_partitions_df = Dict(
+    df_assets_partitions = Dict(
         "timeframe" =>
             read_csv_with_implicit_schema(input_folder, "assets-timeframe-partitions.csv"),
         "rep-periods" =>
             read_csv_with_implicit_schema(input_folder, "assets-rep-periods-partitions.csv"),
     )
-    flows_partitions_df =
+    df_flows_partitions =
         read_csv_with_implicit_schema(input_folder, "flows-rep-periods-partitions.csv")
 
-    profiles_dfs = Dict(
+    df_profiles = Dict(
         period_type => Dict(
             begin
                 regex = "profiles-$(period_type)-(.*).csv"
@@ -96,7 +96,7 @@ function create_graph_and_representative_periods_from_csv_folder(
     # Error if partition data is missing assets (if strict)
     if strict
         missing_assets =
-            setdiff(assets_data_df[!, :name], assets_partitions_df["rep-periods"][!, :asset])
+            setdiff(df_assets_data[!, :name], df_assets_partitions["rep-periods"][!, :asset])
         if length(missing_assets) > 0
             msg = "Error: Partition data missing for these assets: \n"
             for a in missing_assets
@@ -111,21 +111,21 @@ function create_graph_and_representative_periods_from_csv_folder(
     # Sets and subsets that depend on input data
 
     # TODO: Depending on the outcome of issue #294, this can be done more efficiently with DataFrames, e.g.,
-    # combine(groupby(rp_mapping_df, :rep_period), :weight => sum => :weight)
+    # combine(groupby(df_rp_mapping, :rep_period), :weight => sum => :weight)
 
     # Create a dictionary of weights and populate it.
     weights = Dict{Int,Dict{Int,Float64}}()
-    for sub_df ∈ DataFrames.groupby(rp_mapping_df, :rep_period)
+    for sub_df ∈ DataFrames.groupby(df_rp_mapping, :rep_period)
         rp = first(sub_df.rep_period)
         weights[rp] = Dict(Pair.(sub_df.period, sub_df.weight))
     end
 
     representative_periods = [
         RepresentativePeriod(weights[row.id], row.num_timesteps, row.resolution) for
-        row in eachrow(rep_period_df)
+        row in eachrow(df_rep_period)
     ]
 
-    timeframe = Timeframe(maximum(rp_mapping_df.period), rp_mapping_df)
+    timeframe = Timeframe(maximum(df_rp_mapping.period), df_rp_mapping)
 
     asset_data = [
         row.name => GraphAssetData(
@@ -142,7 +142,7 @@ function create_graph_and_representative_periods_from_csv_folder(
             row.initial_storage_capacity,
             row.initial_storage_level,
             row.energy_to_power_ratio,
-        ) for row in eachrow(assets_data_df)
+        ) for row in eachrow(df_assets_data)
     ]
 
     flow_data = [
@@ -159,11 +159,11 @@ function create_graph_and_representative_periods_from_csv_folder(
             row.initial_export_capacity,
             row.initial_import_capacity,
             row.efficiency,
-        ) for row in eachrow(flows_data_df)
+        ) for row in eachrow(df_flows_data)
     ]
 
     num_assets = length(asset_data)
-    name_to_id = Dict(name => i for (i, name) in enumerate(assets_data_df.name))
+    name_to_id = Dict(name => i for (i, name) in enumerate(df_assets_data.name))
 
     _graph = Graphs.DiGraph(num_assets)
     for flow in flow_data
@@ -176,7 +176,7 @@ function create_graph_and_representative_periods_from_csv_folder(
     for a in MetaGraphsNext.labels(graph)
         compute_assets_partitions!(
             graph[a].rep_periods_partitions,
-            assets_partitions_df["rep-periods"],
+            df_assets_partitions["rep-periods"],
             a,
             representative_periods,
         )
@@ -185,7 +185,7 @@ function create_graph_and_representative_periods_from_csv_folder(
     for (u, v) in MetaGraphsNext.edge_labels(graph)
         compute_flows_partitions!(
             graph[u, v].rep_periods_partitions,
-            flows_partitions_df,
+            df_flows_partitions,
             u,
             v,
             representative_periods,
@@ -193,11 +193,11 @@ function create_graph_and_representative_periods_from_csv_folder(
     end
 
     # For timeframe, only the assets where is_seasonal is true are selected
-    for row in eachrow(assets_data_df)
+    for row in eachrow(df_assets_data)
         if row.is_seasonal
-            # Search for this row in the assets_partitions_df and error if it is not found
+            # Search for this row in the df_assets_partitions and error if it is not found
             found = false
-            for partition_row in eachrow(assets_partitions_df["timeframe"])
+            for partition_row in eachrow(df_assets_partitions["timeframe"])
                 if row.name == partition_row.asset
                     graph[row.name].timeframe_partitions = _parse_rp_partition(
                         Val(partition_row.specification),
@@ -215,11 +215,11 @@ function create_graph_and_representative_periods_from_csv_folder(
         end
     end
 
-    for asset_profile_row in eachrow(assets_profiles_df["rep-periods"]) # row = asset, profile_type, profile_name
+    for asset_profile_row in eachrow(df_assets_profiles["rep-periods"]) # row = asset, profile_type, profile_name
         gp = DataFrames.groupby( # 3. group by RP
             filter(
                 row -> row.profile_name == asset_profile_row.profile_name, # 2. Filter profile_name
-                profiles_dfs["rep-periods"][asset_profile_row.profile_type], # 1. Get the profile of given type
+                df_profiles["rep-periods"][asset_profile_row.profile_type], # 1. Get the profile of given type
             ),
             :rep_period,
         )
@@ -231,11 +231,11 @@ function create_graph_and_representative_periods_from_csv_folder(
         end
     end
 
-    for flow_profile_row in eachrow(flows_profiles_df)
+    for flow_profile_row in eachrow(df_flows_profiles)
         gp = DataFrames.groupby(
             filter(
                 row -> row.profile_name == flow_profile_row.profile_name,
-                profiles_dfs["rep-periods"][flow_profile_row.profile_type],
+                df_profiles["rep-periods"][flow_profile_row.profile_type],
             ),
             :rep_period,
         )
@@ -247,10 +247,10 @@ function create_graph_and_representative_periods_from_csv_folder(
         end
     end
 
-    for asset_profile_row in eachrow(assets_profiles_df["timeframe"]) # row = asset, profile_type, profile_name
+    for asset_profile_row in eachrow(df_assets_profiles["timeframe"]) # row = asset, profile_type, profile_name
         df = filter(
             row -> row.profile_name == asset_profile_row.profile_name, # 2. Filter profile_name
-            profiles_dfs["timeframe"][asset_profile_row.profile_type], # 1. Get the profile of given type
+            df_profiles["timeframe"][asset_profile_row.profile_type], # 1. Get the profile of given type
         )
         graph[asset_profile_row.asset].timeframe_profiles[asset_profile_row.profile_type] = df.value
     end
