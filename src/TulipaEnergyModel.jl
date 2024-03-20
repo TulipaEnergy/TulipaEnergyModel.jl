@@ -31,5 +31,6 @@ include("solve-model.jl")
 include("run-scenario.jl")
 include("time-resolution.jl")
 include("constraints/balance.jl")
+include("constraints/capacity.jl")
 
 end
