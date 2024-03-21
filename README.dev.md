@@ -359,28 +359,47 @@ main branch using "Squash and Merge".
 You can also delete the branch that originated the pull request by clicking the button that appears after the merge.
 For branches that were pushed to the main repo, it is recommended that you do so.
 
-## Julia Register Release Procedure
+## Code format and guidelines
 
-When publishing a new version of the model to the Julia Register, follow this procedure:
+This section will list the guidelines for code formatting **not enforced** by [JuliaFormatter](.JuliaFormatter.toml).
+We will try to follow these during development and reviews.
 
-**Note**:
-To be able to register, you need to be a member of the organisation TulipaEnergy and have your visibility set to public:
-![Screenshot of public members of TulipaEnergy on GitHub]()
+-   Naming
+    -   `CamelCase` for classes and modules,
+    -   `snake_case` for functions and variables, and
+    -   `kebab-case` for file names.
+-   Use `using` instead of `import`, in the following way:
 
-1. Click on the `Project.toml` file on GitHub.
-2. Edit the file and change the version number according to [semantic versioning](https://semver.org/): Major.Minor.Patch
-   ![Screenshot of editing Project.toml on GitHub](docs/images/UpdateVersion.png)
-3. Commit the changes in a new branch and open a pull request. Change the commit message according to the version number.
-   ![Screenshot of PR with commit message "Release 0.6.1"]()
-4. Create the pull request and squash & merge it after teh review and testing process. Delete the branch after the squash and merge.
-   ![Screenshot of full PR template on GitHub]()
-5. Then go to the main page of repo and click in the commit.
-   ![Screenshot of how to access commit on GitHub]()
-6. Add the following comment to the commit: `@JuliaRegistrator register`
-   ![Screenshot of calling JuliaRegistrator in commit comments]()
-7. Then the bot should start the registration process.
-   ![Screenshot of JuliaRegistrator bot message]()
-8. After approval, the bot will take care ofthe PR at the Julia Registry and automatically create the release for the new version.
+    -   Don't use pure `using Package`, always list all necessary objects with `using Package: A, B, C`.
+    -   List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context, or `using Graph: SimpleDiGraph`, because it's a constructor with an obvious name.
+    -   For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `DataFrames.groupby`.
+    -   List all `using` in <src/TulipaEnergyModel.jl>.
+
+## Building the Documentation Locally
+
+To build and view the documentation locally, first, navigate to the `docs` folder
+in your file explorer and open a terminal. Then, run `julia --project`. With the
+`julia` open, enter the `pkg` mode by pressing `]`.
+Check that the environment name is `docs`. The first time here, you have to run:
+
+```julia-pkg
+docs> dev ..
+docs> update
+```
+
+**Note:**
+If you intend to rerun the build step, ensure you have the package `Revise`
+installed in your global environment, and run `using Revise` before including
+`make.jl`. Alternatively, close `julia` and reopen it.
+
+Then, to build the documentation, run in Julia:
+
+```julia
+julia> include("make.jl")
+```
+
+After building, the documentation will be available in the folder `docs/build/`.
+Open the `index.html` file on the browser to see it.
 
 ## Performance Considerations
 
@@ -421,42 +440,35 @@ To profile the code in a more manual way, here are some tips:
 
 See the file <benchmark/profiling.jl> for an example of profiling code.
 
-## Building the Documentation Locally
+## Procedure for Releasing a New Version (Julia Registry)
 
-To build and see the documentation locally, first, navigate to the `docs` folder
-in your file explorer and open a terminal. Then, run `julia --project`. With the
-`julia` open, enter the `pkg` mode by pressing `]`.
-Check that the environment name is `docs`. The first time here, you have to run:
+When publishing a new version of the model to the Julia Registry, follow this procedure:
 
-```julia-pkg
-docs> dev ..
-docs> update
-```
+**Note**:
+To be able to register, you need to be a member of the organisation TulipaEnergy and have your visibility set to public:
+![Screenshot of public members of TulipaEnergy on GitHub](docs/images/PublicMember.png)
 
-Then, to build the documentation, run
+1. Click on the `Project.toml` file on GitHub.
 
-```julia
-julia> include("make.jl")
-```
+2. Edit the file and change the version number according to [semantic versioning](https://semver.org/): Major.Minor.Patch
+   ![Screenshot of editing Project.toml on GitHub](docs/images/UpdateVersion.png)
 
-If you intend to rerun the build step, ensure you have the package `Revise`
-installed in your global environment, and run `using Revise` before including
-`make.jl`. Alternatively, close `julia` and reopen it.
+3. Commit the changes in a new branch and open a pull request. Change the commit message according to the version number.
+   ![Screenshot of PR with commit message "Release 0.6.1"](docs/images/CommitMessage.png)
 
-After building, the documentation will be available in the folder `docs/build/`.
-Open the `index.html` file on the browser to see it.
+4. Create the pull request and squash & merge it after the review and testing process. Delete the branch after the squash and merge.
+   ![Screenshot of full PR template on GitHub](docs/images/PullRequest.png)
 
-## Code format and guidelines
+5. Go to the main page of repo and click in the commit.
+   ![Screenshot of how to access commit on GitHub](docs/images/AccessCommit.png)
 
-This section will list the guidelines for code formatting **not enforced** by [JuliaFormatter](.JuliaFormatter.toml).
-We will try to follow these during development and reviews.
+6. Add the following comment to the commit: `@JuliaRegistrator register`
+   ![Screenshot of calling JuliaRegistrator in commit comments](docs/images/JuliaRegistrator.png)
 
--   Naming
-    -   `CamelCase` for classes and modules,
-    -   `snake_case` for functions and variables, and
-    -   `kebab-case` for file names.
--   Use `using` instead of `import`, in the following way:
-    -   Don't use pure `using Package`, always list all necessary objects with `using Package: A, B, C`.
-    -   List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context, or `using Graph: SimpleDiGraph`, because it's a constructor with an obvious name.
-    -   For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `DataFrames.groupby`.
-    -   List all `using` in <src/TulipaEnergyModel.jl>.
+7. The bot should start the registration process.
+   ![Screenshot of JuliaRegistrator bot message](docs/images/BotProcess.png)
+
+8. After approval, the bot will take care of the PR at the Julia Registry and automatically create the release for the new version.
+   ![Screenshot of new version on registry](docs/images/NewRelease.png)
+
+    Thank you for helping make frequent releases!
