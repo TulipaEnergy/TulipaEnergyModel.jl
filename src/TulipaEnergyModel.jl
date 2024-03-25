@@ -30,5 +30,12 @@ include("solver-parameters.jl")
 include("solve-model.jl")
 include("run-scenario.jl")
 include("time-resolution.jl")
+include("constraints/capacity.jl")
+include("constraints/consumer.jl")
+include("constraints/conversion.jl")
+include("constraints/hub.jl")
+include("constraints/investment.jl")
+include("constraints/storage.jl")
+include("constraints/transport.jl")
 
 end
