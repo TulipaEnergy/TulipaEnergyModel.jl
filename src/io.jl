@@ -397,9 +397,11 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
         :timesteps_block => :timestep,
     )
     output_table.value = solution.storage_level_intra_rp
-    output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
-        _check_initial_storage_level!(subgroup, graph)
-        _interpolate_storage_level!(subgroup, :timestep)
+    if !isempty(output_table.asset)
+        output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
+            _check_initial_storage_level!(subgroup, graph)
+            _interpolate_storage_level!(subgroup, :timestep)
+        end
     end
     output_table |> CSV.write(output_file)
 
@@ -407,9 +409,11 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     output_table =
         DataFrames.select(dataframes[:storage_level_inter_rp], :asset, :periods_block => :period)
     output_table.value = solution.storage_level_inter_rp
-    output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
-        _check_initial_storage_level!(subgroup, graph)
-        _interpolate_storage_level!(subgroup, :period)
+    if !isempty(output_table.asset)
+        output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
+            _check_initial_storage_level!(subgroup, graph)
+            _interpolate_storage_level!(subgroup, :period)
+        end
     end
     output_table |> CSV.write(output_file)
     return
