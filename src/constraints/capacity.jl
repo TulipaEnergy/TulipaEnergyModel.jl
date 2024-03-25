@@ -2,16 +2,81 @@ export add_capacity_constraints!
 
 function add_capacity_constraints!(
     model,
-    dataframes,
-    outgoing_flow_highest_out_resolution,
-    assets_profile_times_capacity_out,
-    incoming_flow_highest_in_resolution,
-    assets_profile_times_capacity_in,
-    df_flows,
     graph,
+    dataframes,
+    df_flows,
     flow,
+    Ai,
+    assets_investment,
+    outgoing_flow_highest_out_resolution,
+    incoming_flow_highest_in_resolution,
 )
-    # - maximum output flows limit
+
+    ## Expressions used by capacity constraints
+    # - Create capacity limit for outgoing flows
+    assets_profile_times_capacity_out =
+        model[:assets_profile_times_capacity_out] = [
+            if row.asset ∈ Ai
+                @expression(
+                    model,
+                    profile_aggregation(
+                        Statistics.mean,
+                        graph[row.asset].rep_periods_profiles,
+                        (:availability, row.rp),
+                        row.timesteps_block,
+                        1.0,
+                    ) * (
+                        graph[row.asset].initial_capacity +
+                        graph[row.asset].capacity * assets_investment[row.asset]
+                    )
+                )
+            else
+                @expression(
+                    model,
+                    profile_aggregation(
+                        Statistics.mean,
+                        graph[row.asset].rep_periods_profiles,
+                        (:availability, row.rp),
+                        row.timesteps_block,
+                        1.0,
+                    ) * graph[row.asset].initial_capacity
+                )
+            end for row in eachrow(dataframes[:highest_out])
+        ]
+
+    # - Create capacity limit for incoming flows
+    assets_profile_times_capacity_in =
+        model[:assets_profile_times_capacity_in] = [
+            if row.asset ∈ Ai
+                @expression(
+                    model,
+                    profile_aggregation(
+                        Statistics.mean,
+                        graph[row.asset].rep_periods_profiles,
+                        (:availability, row.rp),
+                        row.timesteps_block,
+                        1.0,
+                    ) * (
+                        graph[row.asset].initial_capacity +
+                        graph[row.asset].capacity * assets_investment[row.asset]
+                    )
+                )
+            else
+                @expression(
+                    model,
+                    profile_aggregation(
+                        Statistics.mean,
+                        graph[row.asset].rep_periods_profiles,
+                        (:availability, row.rp),
+                        row.timesteps_block,
+                        1.0,
+                    ) * graph[row.asset].initial_capacity
+                )
+            end for row in eachrow(dataframes[:highest_in])
+        ]
+
+    ## Capacity limit constraints (using the highest resolution)
+    # - Maximum output flows limit
     model[:max_output_flows_limit] = [
         @constraint(
             model,
@@ -22,7 +87,7 @@ function add_capacity_constraints!(
         outgoing_flow_highest_out_resolution[row.index] != 0
     ]
 
-    # - maximum input flows limit
+    # - Maximum input flows limit
     model[:max_input_flows_limit] = [
         @constraint(
             model,
@@ -33,7 +98,7 @@ function add_capacity_constraints!(
         incoming_flow_highest_in_resolution[row.index] != 0
     ]
 
-    # - define lower bounds for flows that are not transport assets
+    # - Lower limit for flows that are not transport assets
     for row in eachrow(df_flows)
         if !graph[row.from, row.to].is_transport
             JuMP.set_lower_bound(flow[row.index], 0.0)

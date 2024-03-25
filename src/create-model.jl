@@ -469,16 +469,34 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     ## Objective function
     @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
 
-    ## Balance constraints (using the lowest resolution)
-    add_balance_constraints!(
+    ## Constraints
+    add_capacity_constraints!(
+        model,
+        graph,
+        dataframes,
+        df_flows,
+        flow,
+        Ai,
+        assets_investment,
+        outgoing_flow_highest_out_resolution,
+        incoming_flow_highest_in_resolution,
+    )
+
+    add_consumer_constraints!(
         model,
         graph,
         dataframes,
         Ac,
-        Ah,
-        Acv,
         incoming_flow_highest_in_out_resolution,
         outgoing_flow_highest_in_out_resolution,
+    )
+
+    add_storage_constraints!(
+        model,
+        graph,
+        dataframes,
+        Ai,
+        energy_limit,
         incoming_flow_lowest_storage_resolution_intra_rp,
         outgoing_flow_lowest_storage_resolution_intra_rp,
         df_storage_intra_rp_balance_grouped,
@@ -487,279 +505,27 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         storage_level_inter_rp,
         incoming_flow_storage_inter_rp_balance,
         outgoing_flow_storage_inter_rp_balance,
+    )
+
+    add_hub_constraints!(
+        model,
+        dataframes,
+        Ah,
+        incoming_flow_highest_in_out_resolution,
+        outgoing_flow_highest_in_out_resolution,
+    )
+
+    add_conversion_constraints!(
+        model,
+        dataframes,
+        Acv,
         incoming_flow_lowest_resolution,
         outgoing_flow_lowest_resolution,
     )
 
-    assets_profile_times_capacity_in =
-        model[:assets_profile_times_capacity_in] = [
-            if row.asset ∈ Ai
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rp),
-                        row.timesteps_block,
-                        1.0,
-                    ) * (
-                        graph[row.asset].initial_capacity +
-                        graph[row.asset].capacity * assets_investment[row.asset]
-                    )
-                )
-            else
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rp),
-                        row.timesteps_block,
-                        1.0,
-                    ) * graph[row.asset].initial_capacity
-                )
-            end for row in eachrow(dataframes[:highest_in])
-        ]
+    add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_investment)
 
-    assets_profile_times_capacity_out =
-        model[:assets_profile_times_capacity_out] = [
-            if row.asset ∈ Ai
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rp),
-                        row.timesteps_block,
-                        1.0,
-                    ) * (
-                        graph[row.asset].initial_capacity +
-                        graph[row.asset].capacity * assets_investment[row.asset]
-                    )
-                )
-            else
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rp),
-                        row.timesteps_block,
-                        1.0,
-                    ) * graph[row.asset].initial_capacity
-                )
-            end for row in eachrow(dataframes[:highest_out])
-        ]
-
-    ## Capacity limit constraints (using the highest resolution)
-    add_capacity_constraints!(
-        model,
-        dataframes,
-        outgoing_flow_highest_out_resolution,
-        assets_profile_times_capacity_out,
-        incoming_flow_highest_in_resolution,
-        assets_profile_times_capacity_in,
-        df_flows,
-        graph,
-        flow,
-    )
-
-    ## Expressions for transport flow constraints
-    upper_bound_transport_flow = [
-        if graph[row.from, row.to].investable
-            @expression(
-                model,
-                profile_aggregation(
-                    Statistics.mean,
-                    graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
-                    row.timesteps_block,
-                    1.0,
-                ) * (
-                    graph[row.from, row.to].initial_export_capacity +
-                    graph[row.from, row.to].capacity * flows_investment[(row.from, row.to)]
-                )
-            )
-        else
-            @expression(
-                model,
-                profile_aggregation(
-                    Statistics.mean,
-                    graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
-                    row.timesteps_block,
-                    1.0,
-                ) * graph[row.from, row.to].initial_export_capacity
-            )
-        end for row in eachrow(df_flows)
-    ]
-
-    lower_bound_transport_flow = [
-        if graph[row.from, row.to].investable
-            @expression(
-                model,
-                profile_aggregation(
-                    Statistics.mean,
-                    graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
-                    row.timesteps_block,
-                    1.0,
-                ) * (
-                    graph[row.from, row.to].initial_import_capacity +
-                    graph[row.from, row.to].capacity * flows_investment[(row.from, row.to)]
-                )
-            )
-        else
-            @expression(
-                model,
-                profile_aggregation(
-                    Statistics.mean,
-                    graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
-                    row.timesteps_block,
-                    1.0,
-                ) * graph[row.from, row.to].initial_import_capacity
-            )
-        end for row in eachrow(df_flows)
-    ]
-
-    ## Constraints that define bounds for a transport flow Ft
-    df = filter(row -> (row.from, row.to) ∈ Ft, df_flows)
-    model[:max_transport_flow_limit] = [
-        @constraint(
-            model,
-            flow[row.index] ≤ upper_bound_transport_flow[row.index],
-            base_name = "max_transport_flow_limit[($(row.from),$(row.to)),$(row.rp),$(row.timesteps_block)]"
-        ) for row in eachrow(df)
-    ]
-
-    model[:min_transport_flow_limit] = [
-        @constraint(
-            model,
-            flow[row.index] ≥ -lower_bound_transport_flow[row.index],
-            base_name = "min_transport_flow_limit[($(row.from),$(row.to)),$(row.rp),$(row.timesteps_block)]"
-        ) for row in eachrow(df)
-    ]
-
-    ## Extra constraints for storage assets
-    # - maximum storage level within (intra) a representative period
-    model[:max_storage_level_intra_rp_limit] = [
-        @constraint(
-            model,
-            storage_level_intra_rp[row.index] ≤
-            profile_aggregation(
-                Statistics.mean,
-                graph[row.asset].rep_periods_profiles,
-                ("max-storage-level", row.rp),
-                row.timesteps_block,
-                1.0,
-            ) * (
-                graph[row.asset].initial_storage_capacity +
-                (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
-            ),
-            base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-        ) for row ∈ eachrow(dataframes[:lowest_storage_level_intra_rp])
-    ]
-
-    # - minimum storage level within (intra) a representative period
-    model[:min_storage_level_intra_rp_limit] = [
-        @constraint(
-            model,
-            storage_level_intra_rp[row.index] ≥
-            profile_aggregation(
-                Statistics.mean,
-                graph[row.asset].rep_periods_profiles,
-                (:min_storage_level, row.rp),
-                row.timesteps_block,
-                0.0,
-            ) * (
-                graph[row.asset].initial_storage_capacity +
-                (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
-            ),
-            base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-        ) for row ∈ eachrow(dataframes[:lowest_storage_level_intra_rp])
-    ]
-
-    # - cycling condition for storage level within (intra) a representative period
-    for ((a, _), sub_df) ∈ pairs(df_storage_intra_rp_balance_grouped)
-        # Again, ordering is assume
-        if !ismissing(graph[a].initial_storage_level)
-            JuMP.set_lower_bound(
-                storage_level_intra_rp[last(sub_df.index)],
-                graph[a].initial_storage_level,
-            )
-        end
-    end
-
-    # - maximum storage level between (inter) representative periods
-    model[:max_storage_level_inter_rp_limit] = [
-        @constraint(
-            model,
-            storage_level_inter_rp[row.index] ≤
-            profile_aggregation(
-                Statistics.mean,
-                graph[row.asset].timeframe_profiles,
-                :max_storage_level,
-                row.periods_block,
-                1.0,
-            ) * (
-                graph[row.asset].initial_storage_capacity +
-                (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
-            ),
-            base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.periods_block)]"
-        ) for row ∈ eachrow(dataframes[:storage_level_inter_rp])
-    ]
-
-    # - minimum storage level between (inter) representative periods
-    model[:min_storage_level_inter_rp_limit] = [
-        @constraint(
-            model,
-            storage_level_inter_rp[row.index] ≥
-            profile_aggregation(
-                Statistics.mean,
-                graph[row.asset].timeframe_profiles,
-                :min_storage_level,
-                row.periods_block,
-                0.0,
-            ) * (
-                graph[row.asset].initial_storage_capacity +
-                (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
-            ),
-            base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.periods_block)]"
-        ) for row ∈ eachrow(dataframes[:storage_level_inter_rp])
-    ]
-
-    # - cycling condition for storage between (inter) representative periods
-    for ((a,), sub_df) ∈ pairs(df_storage_inter_rp_balance_grouped)
-        # Again, ordering is assume
-        if !ismissing(graph[a].initial_storage_level)
-            JuMP.set_lower_bound(
-                storage_level_inter_rp[last(sub_df.index)],
-                graph[a].initial_storage_level,
-            )
-        end
-    end
-
-    ## Extra constraints for investment limits
-    # - maximum (i.e., potential) investment limit for assets
-    for a ∈ Ai
-        if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit)
-            JuMP.set_upper_bound(
-                assets_investment[a],
-                graph[a].investment_limit / graph[a].capacity,
-            )
-        end
-    end
-
-    # - maximum (i.e., potential) investment limit for flows
-    for (u, v) ∈ Fi
-        if graph[u, v].capacity > 0 && !ismissing(graph[u, v].investment_limit)
-            JuMP.set_upper_bound(
-                flows_investment[(u, v)],
-                graph[u, v].investment_limit / graph[u, v].capacity,
-            )
-        end
-    end
+    add_investment_constraints!(graph, Ai, Fi, assets_investment, flows_investment)
 
     if write_lp_file
         JuMP.write_to_file(model, "model.lp")
