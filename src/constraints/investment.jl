@@ -1,5 +1,11 @@
 export add_investment_constraints!
 
+"""
+add_investment_constraints!(graph, Ai, Fi, assets_investment, flows_investment)
+
+Adds the investment constraints for all asset types and transport flows to the model
+"""
+
 function add_investment_constraints!(graph, Ai, Fi, assets_investment, flows_investment)
 
     # - Maximum (i.e., potential) investment limit for assets

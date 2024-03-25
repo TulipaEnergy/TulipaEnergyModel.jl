@@ -1,5 +1,16 @@
 export add_conversion_constraints!
 
+"""
+add_conversion_constraints!(model,
+                            dataframes,
+                            Acv,
+                            incoming_flow_lowest_resolution,
+                            outgoing_flow_lowest_resolution,
+                            )
+
+Adds the conversion asset constraints to the model.
+"""
+
 function add_conversion_constraints!(
     model,
     dataframes,

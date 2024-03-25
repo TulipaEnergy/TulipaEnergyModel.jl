@@ -1,5 +1,20 @@
 export add_capacity_constraints!
 
+"""
+add_capacity_constraints!(model,
+                          graph,
+                          dataframes,
+                          df_flows,
+                          flow,
+                          Ai,
+                          assets_investment,
+                          outgoing_flow_highest_out_resolution,
+                          incoming_flow_highest_in_resolution
+                          )
+
+Adds the capacity constraints for all asset types to the model
+"""
+
 function add_capacity_constraints!(
     model,
     graph,

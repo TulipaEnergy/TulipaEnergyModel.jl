@@ -1,5 +1,11 @@
 export add_transport_constraints!
 
+"""
+add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_investment)
+
+Adds the transport flow constraints to the model.
+"""
+
 function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_investment)
 
     ## Expressions used by transport flow constraints

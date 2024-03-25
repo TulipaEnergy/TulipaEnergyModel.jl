@@ -1,5 +1,16 @@
 export add_hub_constraints!
 
+"""
+add_hub_constraints!(model,
+                     dataframes,
+                     Ah,
+                     incoming_flow_highest_in_out_resolution,
+                     outgoing_flow_highest_in_out_resolution,
+                     )
+
+Adds the hub asset constraints to the model.
+"""
+
 function add_hub_constraints!(
     model,
     dataframes,

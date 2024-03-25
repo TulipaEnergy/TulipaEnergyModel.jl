@@ -1,5 +1,24 @@
 export add_storage_constraints!
 
+"""
+add_storage_constraints!(model,
+                         graph,
+                         dataframes,
+                         Ai,
+                         energy_limit,
+                         incoming_flow_lowest_storage_resolution_intra_rp,
+                         outgoing_flow_lowest_storage_resolution_intra_rp,
+                         df_storage_intra_rp_balance_grouped,
+                         df_storage_inter_rp_balance_grouped,
+                         storage_level_intra_rp,
+                         storage_level_inter_rp,
+                         incoming_flow_storage_inter_rp_balance,
+                         outgoing_flow_storage_inter_rp_balance,
+                         )
+
+Adds the storage asset constraints to the model.
+"""
+
 function add_storage_constraints!(
     model,
     graph,
