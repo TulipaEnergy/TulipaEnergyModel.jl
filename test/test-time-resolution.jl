@@ -3,7 +3,7 @@
         # regular
         partition1 = [1:4, 5:8, 9:12] # every 4 hours
         partition2 = [1:3, 4:6, 7:9, 10:12] # every 3 hours
-        partition3 = [i:i for i ∈ 1:12] # hourly
+        partition3 = [i:i for i in 1:12] # hourly
 
         @testset "strategy greedy (default)" begin
             @test compute_rp_partition([partition1, partition2], :lowest) == partition1

@@ -21,14 +21,14 @@ end
 # Add profiles to flow and asset
 open(joinpath(input_dir, "flows-profiles.csv"), "a") do io
     for (u, v) in [("Asgard_E_demand", "Valhalla_E_balance")]
-        for i = 1:new_rp_length
+        for i in 1:new_rp_length
             println(io, "$u,$v,3,$i,0.95")
         end
     end
 end
 open(joinpath(input_dir, "assets-profiles.csv"), "a") do io
     for a in ["Asgard_E_demand"]
-        for i = 1:new_rp_length
+        for i in 1:new_rp_length
             println(io, "$a,3,$i,0.95")
         end
     end

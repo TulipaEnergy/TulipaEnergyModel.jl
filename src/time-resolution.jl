@@ -69,7 +69,8 @@ function compute_constraints_partitions(graph, representative_periods)
                 else
                     Vector{TimestepsBlock}[]
                 end
-            end for a in MetaGraphsNext.labels(graph), rp = 1:num_rep_periods if asset_filter(a)
+            end for
+            a in MetaGraphsNext.labels(graph), rp in 1:num_rep_periods if asset_filter(a)
         )
     end
 
