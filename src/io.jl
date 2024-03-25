@@ -450,7 +450,8 @@ function _interpolate_storage_level!(df, time_column::Symbol)
                 DataFrames.ByRow(
                     (period, value, start_value) -> begin
                         n = length(period)
-                        interpolated_values = range(start_value, value, n + 1)
+                        interpolated_values =
+                            range(; start = start_value, stop = value, length = n + 1)
                         (period, value, interpolated_values[2:end])
                     end,
                 ) => [time_column, :value, :processed_value],
