@@ -71,12 +71,12 @@ end
         expected = Dict(
             (1, 1) => [1:3, 4:6, 7:9, 10:12],
             (2, 1) => [1:4, 5:8, 9:12],
-            (3, 1) => [i:i for i ∈ 1:12],
-            (1, 2) => [i:i for i ∈ 1:24],
+            (3, 1) => [i:i for i in 1:12],
+            (1, 2) => [i:i for i in 1:24],
             (2, 2) => [1:4, 5:8, 9:12, 13:15, 16:18, 19:21, 22:24],
             (3, 2) => [1:2, 3:4, 5:7, 8:10, 11:14, 15:18, 19:24],
         )
-        for a ∈ 1:3, rp ∈ 1:2
+        for a in 1:3, rp in 1:2
             @test dummy[a][rp] == expected[(a, rp)]
         end
     end
@@ -101,12 +101,12 @@ end
         expected = Dict(
             ((1, 2), 1) => [1:3, 4:6, 7:9, 10:12],
             ((2, 3), 1) => [1:4, 5:8, 9:12],
-            ((3, 4), 1) => [i:i for i ∈ 1:12],
-            ((1, 2), 2) => [i:i for i ∈ 1:24],
+            ((3, 4), 1) => [i:i for i in 1:12],
+            ((1, 2), 2) => [i:i for i in 1:24],
             ((2, 3), 2) => [1:4, 5:8, 9:12, 13:15, 16:18, 19:21, 22:24],
             ((3, 4), 2) => [1:2, 3:4, 5:7, 8:10, 11:14, 15:18, 19:24],
         )
-        for f in flows, rp ∈ 1:2
+        for f in flows, rp in 1:2
             @test dummy[f][rp] == expected[(f, rp)]
         end
     end
@@ -142,5 +142,5 @@ end
     missing_asset = Symbol(split(lines[end], ",")[1]) # The asset the was not included
 
     graph, rps, tf = create_graph_and_representative_periods_from_csv_folder(dir)
-    @test graph[missing_asset].timeframe_partitions == [i:i for i = 1:tf.num_periods]
+    @test graph[missing_asset].timeframe_partitions == [i:i for i in 1:tf.num_periods]
 end

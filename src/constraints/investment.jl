@@ -9,7 +9,7 @@ Adds the investment constraints for all asset types and transport flows to the m
 function add_investment_constraints!(graph, Ai, Fi, assets_investment, flows_investment)
 
     # - Maximum (i.e., potential) investment limit for assets
-    for a ∈ Ai
+    for a in Ai
         if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit)
             JuMP.set_upper_bound(
                 assets_investment[a],
@@ -19,7 +19,7 @@ function add_investment_constraints!(graph, Ai, Fi, assets_investment, flows_inv
     end
 
     # - Maximum (i.e., potential) investment limit for flows
-    for (u, v) ∈ Fi
+    for (u, v) in Fi
         if graph[u, v].capacity > 0 && !ismissing(graph[u, v].investment_limit)
             JuMP.set_upper_bound(
                 flows_investment[(u, v)],

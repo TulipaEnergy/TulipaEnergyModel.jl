@@ -38,7 +38,7 @@ function add_storage_constraints!(
     ## INTRA-TEMPORAL CONSTRAINTS (within a representative period)
 
     # - Balance constraint (using the lowest temporal resolution)
-    for ((a, rp), sub_df) ∈ pairs(df_storage_intra_rp_balance_grouped)
+    for ((a, rp), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
         # This assumes an ordering of the time blocks, that is guaranteed inside
         # construct_dataframes
         # The storage_inflows have been moved here
@@ -69,7 +69,7 @@ function add_storage_constraints!(
                 incoming_flow_lowest_storage_resolution_intra_rp[row.index] -
                 outgoing_flow_lowest_storage_resolution_intra_rp[row.index],
                 base_name = "storage_intra_rp_balance[$a,$rp,$(row.timesteps_block)]"
-            ) for (k, row) ∈ enumerate(eachrow(sub_df))
+            ) for (k, row) in enumerate(eachrow(sub_df))
         ]
     end
 
@@ -89,7 +89,7 @@ function add_storage_constraints!(
                 (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
             ),
             base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-        ) for row ∈ eachrow(dataframes[:lowest_storage_level_intra_rp])
+        ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
     ]
 
     # - Minimum storage level
@@ -108,11 +108,11 @@ function add_storage_constraints!(
                 (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
             ),
             base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-        ) for row ∈ eachrow(dataframes[:lowest_storage_level_intra_rp])
+        ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
     ]
 
     # - Cycling condition
-    for ((a, _), sub_df) ∈ pairs(df_storage_intra_rp_balance_grouped)
+    for ((a, _), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
         # Ordering is assumed
         if !ismissing(graph[a].initial_storage_level)
             JuMP.set_lower_bound(
@@ -125,7 +125,7 @@ function add_storage_constraints!(
     ## INTER-TEMPORAL CONSTRAINTS (between representative periods)
 
     # - Balance constraint (using the lowest temporal resolution)
-    for ((a,), sub_df) ∈ pairs(df_storage_inter_rp_balance_grouped)
+    for ((a,), sub_df) in pairs(df_storage_inter_rp_balance_grouped)
         # This assumes an ordering of the time blocks, that is guaranteed inside
         # construct_dataframes
         # The storage_inflows have been moved here
@@ -150,7 +150,7 @@ function add_storage_constraints!(
                 incoming_flow_storage_inter_rp_balance[row.index] -
                 outgoing_flow_storage_inter_rp_balance[row.index],
                 base_name = "storage_inter_rp_balance[$a,$(row.periods_block)]"
-            ) for (k, row) ∈ enumerate(eachrow(sub_df))
+            ) for (k, row) in enumerate(eachrow(sub_df))
         ]
     end
 
@@ -170,7 +170,7 @@ function add_storage_constraints!(
                 (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
             ),
             base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.periods_block)]"
-        ) for row ∈ eachrow(dataframes[:storage_level_inter_rp])
+        ) for row in eachrow(dataframes[:storage_level_inter_rp])
     ]
 
     # - Minimum storage level
@@ -189,11 +189,11 @@ function add_storage_constraints!(
                 (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
             ),
             base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.periods_block)]"
-        ) for row ∈ eachrow(dataframes[:storage_level_inter_rp])
+        ) for row in eachrow(dataframes[:storage_level_inter_rp])
     ]
 
     # - Cycling condition
-    for ((a,), sub_df) ∈ pairs(df_storage_inter_rp_balance_grouped)
+    for ((a,), sub_df) in pairs(df_storage_inter_rp_balance_grouped)
         # Ordering is assumed
         if !ismissing(graph[a].initial_storage_level)
             JuMP.set_lower_bound(

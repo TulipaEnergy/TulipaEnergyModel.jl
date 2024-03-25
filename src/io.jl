@@ -115,7 +115,7 @@ function create_graph_and_representative_periods_from_csv_folder(
 
     # Create a dictionary of weights and populate it.
     weights = Dict{Int,Dict{Int,Float64}}()
-    for sub_df ∈ DataFrames.groupby(df_rp_mapping, :rep_period)
+    for sub_df in DataFrames.groupby(df_rp_mapping, :rep_period)
         rp = first(sub_df.rep_period)
         weights[rp] = Dict(Pair.(sub_df.period, sub_df.weight))
     end
@@ -506,7 +506,7 @@ function _parse_rp_partition end
 
 function _parse_rp_partition(::Val{:uniform}, timestep_string, rp_timesteps)
     duration = parse(Int, timestep_string)
-    partition = [i:i+duration-1 for i ∈ 1:duration:length(rp_timesteps)]
+    partition = [i:i+duration-1 for i in 1:duration:length(rp_timesteps)]
     @assert partition[end][end] == length(rp_timesteps)
     return partition
 end
@@ -530,7 +530,7 @@ function _parse_rp_partition(::Val{:math}, timestep_string, rp_timesteps)
     block_instruction = split(timestep_string, "+")
     for R in block_instruction
         num, len = parse.(Int, split(R, "x"))
-        for _ ∈ 1:num
+        for _ in 1:num
             block = (1:len) .+ (block_begin - 1)
             block_begin += len
             push!(partition, block)
@@ -563,7 +563,7 @@ function compute_assets_partitions!(partitions, df, a, representative_periods)
         partitions[rp_id] = if j === nothing
             N = length(rp.timesteps)
             # If there is no time block specification, use default of 1
-            [k:k for k ∈ 1:N]
+            [k:k for k in 1:N]
         else
             _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp.timesteps)
         end
@@ -593,7 +593,7 @@ function compute_flows_partitions!(partitions, df, u, v, representative_periods)
         partitions[rp_id] = if j === nothing
             N = length(rp.timesteps)
             # If there is no time block specification, use default of 1
-            [k:k for k ∈ 1:N]
+            [k:k for k in 1:N]
         else
             _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp.timesteps)
         end

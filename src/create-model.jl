@@ -29,8 +29,8 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
                     rp = rp,
                     timesteps_block = timesteps_block,
                     efficiency = graph[u, v].efficiency,
-                ) for timesteps_block ∈ graph[u, v].rep_periods_partitions[rp]
-            ) for (u, v) ∈ F, rp ∈ RP
+                ) for timesteps_block in graph[u, v].rep_periods_partitions[rp]
+            ) for (u, v) in F, rp in RP
         ) |> Iterators.flatten,
     )
     dataframes[:flows].index = 1:size(dataframes[:flows], 1)
@@ -52,7 +52,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
             (
                 (
                     (asset = a, rp = rp, timesteps_block = timesteps_block) for
-                    timesteps_block ∈ partition
+                    timesteps_block in partition
                 ) for ((a, rp), partition) in partitions
             ) |> Iterators.flatten,
         )
@@ -138,7 +138,7 @@ function add_expression_terms_intra_rp_constraints!(
             # Store the corresponding flow in the workspace
             for row in eachrow(grouped_flows[(rp, asset)])
                 asset = row[case.asset_match]
-                for t ∈ row.timesteps_block
+                for t in row.timesteps_block
                     # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
                     # And when you want the highest resolution (which is asset type-agnostic)
                     efficiency_coefficient =
@@ -333,13 +333,13 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             ) for row in eachrow(dataframes[:storage_level_inter_rp])
         ]
     ### Integer Investment Variables
-    for a ∈ Ai
+    for a in Ai
         if graph[a].investment_integer
             JuMP.set_integer(assets_investment[a])
         end
     end
 
-    for (u, v) ∈ Fi
+    for (u, v) in Fi
         if graph[u, v].investment_integer
             JuMP.set_integer(flows_investment[(u, v)])
         end
@@ -445,14 +445,14 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     ## Expressions for the objective function
     assets_investment_cost = @expression(
         model,
-        sum(graph[a].investment_cost * graph[a].capacity * assets_investment[a] for a ∈ Ai)
+        sum(graph[a].investment_cost * graph[a].capacity * assets_investment[a] for a in Ai)
     )
 
     flows_investment_cost = @expression(
         model,
         sum(
             graph[u, v].investment_cost * graph[u, v].capacity * flows_investment[(u, v)] for
-            (u, v) ∈ Fi
+            (u, v) in Fi
         )
     )
 
