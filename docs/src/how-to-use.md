@@ -239,3 +239,15 @@ For tips on manipulating the solution, check the [tutorial](@ref solution-tutori
 
 A time block is a quantity of time for which a variable or constraint is defined.
 Currently, it is a range of numbers, i.e., all integer numbers inside an interval.
+
+## [Exploring infeasibility](@id infeasible)
+
+If your model is infeasible:
+
+```julia
+if energy_problem.termination_status == INFEASIBLE
+```
+
+You can try exploring the infeasibility with [JuMP.compute_conflict!](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.compute_conflict!) and [JuMP.copy_conflict](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.copy_conflict). Use `energy_problem.model` for the model argument.
+
+**Note:** Not all solvers support this functionality.
