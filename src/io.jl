@@ -442,7 +442,7 @@ Tranform the storage level dataframe from grouped timesteps or periods to increm
 The starting value is the value of the previous grouped timesteps or periods or the initial value.
 The ending value is the value for the grouped timesteps or periods.
 """
-function _interpolate_storage_level!(df, time_column::Symbol)
+function _interpolate_storage_level!(df, time_column)
     DataFrames.flatten(
         DataFrames.transform(
             df,
