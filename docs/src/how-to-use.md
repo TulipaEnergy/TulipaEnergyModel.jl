@@ -38,7 +38,7 @@ To run a scenario, use the function:
 -   [`run_scenario(input_folder)`](@ref)
 -   [`run_scenario(input_folder, output_folder)`](@ref)
 
-The input_folder should contain CSV files as described below. The output_folder is optional, if the user wants to export the output.
+The input_folder should contain CSV files as described below. The output_folder is optional if the user wants to export the output.
 
 ## Input
 
@@ -48,7 +48,7 @@ You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/Tu
 
 ### CSV
 
-Below we have a description of the files.
+Below, we have a description of the files.
 At the end, in [Schemas](@ref), we have the expected columns in these CSVs.
 
 #### `assets-data.csv`
@@ -70,7 +70,7 @@ The `Missing` data meaning depends on the parameter, for instance:
 
 #### `assets-timeframe-profiles.csv` and `assets-rep-periods-profiles.csv`
 
-These files contain the reference to profiles for each asset at each period, or at each representative period.
+These files contain information about assets and their associated profiles. Each row lists an asset, the type of profile (e.g., availability, demand, maximum or minimum storage level), and the profile's name. The timeframe profiles are used in the inter-temporal constraints, whereas the representative periods profiles are used in the intra-temporal constraints.
 
 #### `flows-rep-periods-profiles.csv`
 
@@ -78,16 +78,15 @@ Similar to their `asset` counterpart.
 
 #### `profiles-timeframe-<type>.csv` and `profiles-rep-periods-<type>.csv`
 
-For each `type` defined in either `assets-*-periods-profiles` or `flows-rep-periods-profiles`, one of these files must exist.
-They store the profile data as indexed by a profile name.
+One of these files must exist for each `type` defined in either `assets-*-periods-profiles` or `flows-rep-periods-profiles`. For example, if the file `assets-rep-periods-profiles.csv` defines an availability profile, the file `profiles-rep-periods-availability.csv` includes the profile data. The files store the profile data as indexed by a profile name.
 
 #### [`assets-rep-periods-partitions.csv`](@id asset-rep-periods-partitions-definition)
 
 Contains a description of the [partition](@ref Partition) for each asset with respect to representative periods.
-If not specified, each asset will have the same time resolution as representative period.
+If not specified, each asset will have the exact time resolution as the representative period.
 
 To specify the desired resolution, there are currently three options, based on the value of the column `specification`.
-The column `partition` serves to specify the partitions in the specification given by the column `specification`.
+The column `partition` serves to define the partitions in the specification given by the column `specification`.
 
 -   `specification = uniform`: Set the resolution to a uniform amount, i.e., a time block is made of X time steps. The number X is defined in the column `partition`. The number of time steps in the representative period must be divisible by `X`.
 -   `specification = explicit`: Set the resolution according to a list of numbers separated by `;` on the `partition`. Each number in the list is the number of time steps for that time block. For instance, `2;3;4` means that there are three time blocks, the first has 2 time steps, the second has 3 time steps, and the last has 4 time steps. The sum of the number of time steps must be equal to the total number of time steps in that representative period.
@@ -106,17 +105,17 @@ The table below shows various results for different formats for a representative
 
 Similar to `assets-rep-periods-partitions.csv`, but for flows.
 
-#### `assets-timeframe-partitions.csv`
+#### [`assets-timeframe-partitions.csv`](@id assets-timeframe-partitions)
 
-Similar to their `rep-periods` counterpart, but for the timeframe.
+Similar to their `rep-periods` counterpart, but for the periods in the [timeframe](@ref timeframe) of the model.
 
 #### `rep-periods-data.csv`
 
 Describes the [representative periods](@ref representative-periods).
 
-#### `rep-periods-mapping.csv`
+#### [`rep-periods-mapping.csv`](@id rep-periods-mapping)
 
-Describes the [representative periods](@ref representative-periods).
+Describes the periods of the [timeframe](@ref timeframe) that map into a [representative period](@ref representative-periods) and the weight of the representative period in them.
 
 #### Schemas
 
@@ -169,10 +168,10 @@ See the [basic example tutorial](@ref basic-example) to see how these can be use
 ### Graph
 
 The energy problem is defined using a graph.
-Each vertex is an asset and each edge is a flow.
+Each vertex is an asset, and each edge is a flow.
 
 We use [MetaGraphsNext.jl](https://github.com/JuliaGraphs/MetaGraphsNext.jl) to define the graph and its objects.
-Using MetaGraphsNext we can define a graph with metadata, i.e., we can associate data to each asset and each flow.
+Using MetaGraphsNext we can define a graph with metadata, i.e., associate data with each asset and flow.
 Furthermore, we can define the labels of each asset as keys to access the elements of the graph.
 The assets in the graph are of type [GraphAssetData](@ref), and the flows are of type [GraphFlowData](@ref).
 
@@ -204,22 +203,26 @@ For instance, for a representative period with 12 time steps, all sets below are
 -   `\{\{1, 2, 3, 4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}`
 -   `\{\{1\}, \{2, 3\}, \{4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}`
 
+### [Timeframe](@id timeframe)
+
+The timeframe is the total period we want to analyze with the model, usually a year, but it can be any other time definition. A timeframe has two fields:
+
+-   `num_periods`: The timeframe is defined by a certain number of periods. For instance, a year can be defined by 365 periods, each describing a day.
+-   `map_periods_to_rp`: Indicates the periods of the timeframe that map into a [representative period](@ref representative-periods) and the weight of the representative period in them.
+
 ### [Representative Periods](@id representative-periods)
 
-The full year is represented by a few periods of time, for instance, days or weeks, that nicely summarize other similar periods.
-For instance, we could model the year into 3 days, by clustering all days of the year into 3 representative days.
-Each one of these periods of time is called a representative period.
-They have been obtained by clustering through [TulipaClustering](https://github.com/TulipaEnergy/TulipaClustering.jl).
+The [timeframe](@ref timeframe) (e.g., a full year) is described by a selection of representative periods, for instance, days or weeks, that nicely summarize other similar periods. For example, we could model the year into 3 days, by clustering all days of the year into 3 representative days. Each one of these days is called a representative period. _TulipaEnergyModel.jl_ has the flexibility to consider representative periods of different lengths for the same timeframe (e.g., a year can be represented by a set of 4 days and 2 weeks). To obtain the representative periods, we recommend using [TulipaClustering](https://github.com/TulipaEnergy/TulipaClustering.jl).
 
 A representative period has four fields:
 
--   `mapping`: Indicates the periods of the full problem that map into this representative period, and the weight of the representative period in them.
--   `weight`: Indicates how many representative periods are contained in the full problem; this is inferred automatically from `mapping`.
--   `time_steps`: The number of time steps in the representative period.
+-   `mapping`: Indicates the periods of the [timeframe](@ref timeframe) that map into a representative period and the weight of the representative period in them.
+-   `weight`: Indicates how many representative periods are contained in the [timeframe](@ref timeframe); this is inferred automatically from `mapping`.
+-   `timesteps`: The number of timesteps blocks in the representative period.
 -   `resolution`: The duration in time of a time step.
 
 The number of time steps and resolution work together to define the coarseness of the period.
-Nothing is defined outside of these time steps, so, for instance, if the representative period represents a day, and you want to define a variable or constraint with coarseness of 30 minutes, then you need to define the number of time steps to 48 and the resolution to `0.5`.
+Nothing is defined outside of these time steps, so, for instance, if the representative period represents a day and you want to specify a variable or constraint with a coarseness of 30 minutes. You need to define the number of time steps to 48 and the resolution to `0.5`.
 
 ### Solution
 
@@ -233,12 +236,12 @@ The solution object `energy_problem.solution` is a mutable struct with the follo
 -   `objective_value`: A Float64 with the objective value at the solution.
 -   `duals`: A Dict containing the dual variables of selected constraints.
 
-For tips on manipulating the solution, check the [tutorial](@ref solution-tutorial).
+Check the [tutorial](@ref solution-tutorial) for tips on manipulating the solution.
 
 ### [Time Blocks](@id time-blocks)
 
-A time block is a quantity of time for which a variable or constraint is defined.
-Currently, it is a range of numbers, i.e., all integer numbers inside an interval.
+A time block is a range for which a variable or constraint is defined.
+It is a range of numbers, i.e., all integer numbers inside an interval.
 
 ## [Exploring infeasibility](@id infeasible)
 
@@ -253,3 +256,4 @@ end
 ```
 
 **Note:** Not all solvers support this functionality.
+Time blocks are used for the periods in the [timeframe](@ref timeframe) and the timesteps in the [representative period](@ref representative-periods).
