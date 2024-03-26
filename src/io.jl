@@ -397,39 +397,66 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
         :timesteps_block => :timestep,
     )
     output_table.value = solution.storage_level_intra_rp
-    output_table = DataFrames.flatten(
-        DataFrames.transform(
-            output_table,
-            [:timestep, :value] =>
-                DataFrames.ByRow(
-                    (timesteps_block, value) -> begin
-                        n = length(timesteps_block)
-                        (timesteps_block, Iterators.repeated(value, n))
-                    end,
-                ) => [:timestep, :value],
-        ),
-        [:timestep, :value],
-    )
+    if !isempty(output_table.asset)
+        output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
+            _check_initial_storage_level!(subgroup, graph)
+            _interpolate_storage_level!(subgroup, :timestep)
+        end
+    end
     output_table |> CSV.write(output_file)
 
     output_file = joinpath(output_folder, "storage-level-inter-rp.csv")
     output_table =
         DataFrames.select(dataframes[:storage_level_inter_rp], :asset, :periods_block => :period)
     output_table.value = solution.storage_level_inter_rp
-    output_table = DataFrames.flatten(
-        DataFrames.transform(
-            output_table,
-            [:period, :value] =>
-                DataFrames.ByRow((period, value) -> begin
-                        n = length(period)
-                        (period, Iterators.repeated(value, n))
-                    end) => [:period, :value],
-        ),
-        [:period, :value],
-    )
+    if !isempty(output_table.asset)
+        output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
+            _check_initial_storage_level!(subgroup, graph)
+            _interpolate_storage_level!(subgroup, :period)
+        end
+    end
     output_table |> CSV.write(output_file)
-
     return
+end
+
+"""
+    _check_initial_storage_level!(df)
+
+Determine the starting value for the initial storage level for interpolating the storage level.
+If there is no initial storage level given, we will use the final storage level.
+Otherwise, we use the given initial storage level.
+"""
+function _check_initial_storage_level!(df, graph)
+    initial_storage_level = graph[unique(df.asset)[1]].initial_storage_level
+    if ismissing(initial_storage_level)
+        df[!, :processed_value] = [df.value[end]; df[1:end-1, :value]]
+    else
+        df[!, :processed_value] = [initial_storage_level; df[1:end-1, :value]]
+    end
+end
+
+"""
+    _interpolate_storage_level!(df, time_column::Symbol)
+
+Tranform the storage level dataframe from grouped timesteps or periods to incremental ones by interpolation.
+The starting value is the value of the previous grouped timesteps or periods or the initial value.
+The ending value is the value for the grouped timesteps or periods.
+"""
+function _interpolate_storage_level!(df, time_column)
+    DataFrames.flatten(
+        DataFrames.transform(
+            df,
+            [time_column, :value, :processed_value] =>
+                DataFrames.ByRow(
+                    (period, value, start_value) -> begin
+                        n = length(period)
+                        interpolated_values = range(start_value; stop = value, length = n + 1)
+                        (period, value, interpolated_values[2:end])
+                    end,
+                ) => [time_column, :value, :processed_value],
+        ),
+        [time_column, :processed_value],
+    )
 end
 
 """
