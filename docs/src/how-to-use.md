@@ -252,5 +252,4 @@ if energy_problem.termination_status == INFEASIBLE
 end
 ```
 
-
 **Note:** Not all solvers support this functionality.
