@@ -1,6 +1,11 @@
-# [Tutorial](@id tutorial)
+# [Tutorials](@id tutorials)
 
 Here are some tutorials on how to use Tulipa.
+
+```@contents
+Pages = ["tutorials.md"]
+Depth = 5
+```
 
 ## [Basic example](@id basic-example)
 
@@ -176,7 +181,7 @@ For the full list of parameters, check your chosen optimizer.
 These parameters can also be passed via a file. See the
 [`read_parameters_from_file`](@ref) function for more details.
 
-## [Using the graph structure](@id graph-tutorial)
+### [Using the graph structure](@id graph-tutorial)
 
 Read about the graph structure in the [Graph](@ref) section first.
 
@@ -244,13 +249,13 @@ Similarly, all assets `u` for which a flow `(u, a)` exists:
 outneighbor_labels(graph, :ocgt) |> collect
 ```
 
-## [Manipulating the solution](@id solution-tutorial)
+### [Manipulating the solution](@id solution-tutorial)
 
 First, see the description of the [solution](@ref Solution) object.
 
 Let's consider the larger dataset "Norse" in this section. And let's talk about two ways to access the solution.
 
-### The solution returned by solve_model
+#### The solution returned by solve_model
 
 The solution, as shown before, can be obtained when calling [`solve_model`](@ref) or [`solve_model!`](@ref).
 
@@ -321,7 +326,7 @@ df = filter(
 [solution.storage_level_inter_rp[row.index] for row in eachrow(df)]
 ```
 
-### The solution inside the graph
+#### The solution inside the graph
 
 In addition to the solution object, the solution is also stored by the individual assets and flows when [`solve_model!`](@ref) is called - i.e., when using a [EnergyProblem](@ref) object.
 
@@ -371,7 +376,7 @@ df = filter(
 [energy_problem.graph[a].storage_level_inter_rp[row.periods_block] for row in eachrow(df)]
 ```
 
-### The solution inside the dataframes object
+#### The solution inside the dataframes object
 
 In addition to being stored in the `solution` object, and in the `graph` object, the solution for the `flow`, `storage_level_intra_rp`, and `storage_level_inter_rp` is also stored inside the corresponding DataFrame objects if `solve_model!` is called.
 
@@ -409,7 +414,7 @@ df = filter(
 df.solution
 ```
 
-### Values of constraints and expressions
+#### Values of constraints and expressions
 
 By accessing the model directly, we can query the values of constraints and expressions.
 We need to know the name of the constraint and how it is indexed, and for that you will need to check the model.
@@ -462,7 +467,7 @@ Here `value.` (i.e., broadcasting) was used instead of the vector comprehension 
 
 The value of the constraint is obtained by looking only at the part with variables. So a constraint like `2x + 3y - 1 <= 4` would return the value of `2x + 3y`.
 
-### Writing the output to CSV
+#### Writing the output to CSV
 
 To save the solution to CSV files, you can use [`save_solution_to_file`](@ref):
 
@@ -471,8 +476,10 @@ mkdir("output")
 save_solution_to_file("output", energy_problem)
 ```
 
-### Plotting
+#### Plotting
 
 In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you feel like.
 
 If you would like more custom plots, there is a separate repository [TulipaPlots.jl](https://github.com/TulipaEnergy/TulipaPlots.jl) under development which provides nicer plots. Check it out for inspirations.
+
+## [Hydro power plant example](@id hydro-example)
