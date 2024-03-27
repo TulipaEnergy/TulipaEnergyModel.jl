@@ -252,6 +252,5 @@ if energy_problem.termination_status == INFEASIBLE
 end
 ```
 
-You can try exploring the infeasibility with [JuMP.compute_conflict!](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.compute_conflict!) and [JuMP.copy_conflict](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.copy_conflict). Use `energy_problem.model` for the model argument.
 
 **Note:** Not all solvers support this functionality.
