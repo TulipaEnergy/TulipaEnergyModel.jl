@@ -17,9 +17,9 @@ makedocs(;
     pages = [
         "Home" => "index.md",
         "Features" => "features.md",
-        "Mathematical Formulation" => "mathematical-formulation.md",
+        "Mathematical Formulation" => "formulation.md",
         "How to Use" => "how-to-use.md",
-        "Tutorial" => "tutorial.md",
+        "Tutorials" => "tutorials.md",
         "API" => "api.md",
         "Reference" => "reference.md",
     ],
