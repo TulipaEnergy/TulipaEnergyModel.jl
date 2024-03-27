@@ -20,5 +20,5 @@ Start a discussion [here](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/d
 ## Contents
 
 ```@contents
-Pages = ["index.md","features.md","mathematical-formulation.md","how-to-use.md","tutorial.md","api.md","reference.md"]
+Pages = ["index.md","features.md","formulation.md","how-to-use.md","tutorials.md","api.md","reference.md"]
 ```
