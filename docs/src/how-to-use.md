@@ -51,7 +51,7 @@ You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/Tu
 Below, we have a description of the files.
 At the end, in [Schemas](@ref), we have the expected columns in these CSVs.
 
-#### `assets-data.csv`
+#### [`assets-data.csv`](@id assets-data)
 
 This file includes the list of assets and the data associated with each of them.
 
@@ -60,7 +60,7 @@ The `Missing` data meaning depends on the parameter, for instance:
 -   `investment_limit`: There is no investment limit.
 -   `initial_storage_level`: The initial storage level is free (between the storage level limits), meaning that the optimization problem decides the best starting point for the storage asset. In addition, the first and last time blocks in a representative period are linked to create continuity in the storage level.
 
-#### `flows-data.csv`
+#### [`flows-data.csv`](@id flows-data)
 
 Similar to `assets-data.csv`, but for flows. Each flow is defined as a pair of assets.
 
@@ -242,6 +242,7 @@ Check the [tutorial](@ref solution-tutorial) for tips on manipulating the soluti
 
 A time block is a range for which a variable or constraint is defined.
 It is a range of numbers, i.e., all integer numbers inside an interval.
+Time blocks are used for the periods in the [timeframe](@ref timeframe) and the timesteps in the [representative period](@ref representative-periods).
 
 ## [Exploring infeasibility](@id infeasible)
 
@@ -255,5 +256,4 @@ if energy_problem.termination_status == INFEASIBLE
 end
 ```
 
-**Note:** Not all solvers support this functionality.
-Time blocks are used for the periods in the [timeframe](@ref timeframe) and the timesteps in the [representative period](@ref representative-periods).
+> **Note:** Not all solvers support this functionality.
