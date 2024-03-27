@@ -246,6 +246,10 @@ If your model is infeasible:
 
 ```julia
 if energy_problem.termination_status == INFEASIBLE
+ compute_conflict!(energy_problem.model)
+ iis_model, reference_map = copy_conflict(energy_problem.model)
+ print(iis_model)
+end
 ```
 
 You can try exploring the infeasibility with [JuMP.compute_conflict!](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.compute_conflict!) and [JuMP.copy_conflict](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.copy_conflict). Use `energy_problem.model` for the model argument.
