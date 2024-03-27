@@ -1,10 +1,15 @@
-# [Tutorial](@id tutorial)
+# [Tutorials](@id tutorials)
 
 Here are some tutorials on how to use Tulipa.
 
+```@contents
+Pages = ["tutorials.md"]
+Depth = 5
+```
+
 ## [Basic example](@id basic-example)
 
-For our first example, let's use a very small existing dataset.
+For our first example, let's use a tiny existing dataset.
 Inside the code for this package, you can find the folder [`test/inputs/Tiny`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Tiny), which includes all the files necessary to create a TulipaEnergyModel and solve it.
 
 There are 8 relevant¹ files inside the "Tiny" folder. They define the assets and flows data, their profiles, and their time resolution, as well as two files to define the representative periods and which periods in the full problem formulation they stand for.
@@ -26,7 +31,7 @@ energy_problem = run_scenario(input_dir)
 ```
 
 The `energy_problem` variable is of type `EnergyProblem`.
-For more details, see the [documentation for that type](@ref TulipaEnergyModel.EnergyProblem), or the section [Structures](@ref).
+For more details, see the [documentation for that type](@ref TulipaEnergyModel.EnergyProblem) or the section [Structures](@ref).
 
 ### Manually running each step
 
@@ -76,7 +81,7 @@ energy_problem.objective_value, energy_problem.termination_status
 ### Manually creating all structures without EnergyProblem
 
 For additional control, it might be desirable to use the internal structures of `EnergyProblem` directly.
-This can be error prone, but it is slightly more efficient.
+This can be error-prone, but it is slightly more efficient.
 The full description for these structures can be found in [Structures](@ref).
 
 ```@example manual
@@ -87,8 +92,8 @@ input_dir = "../../test/inputs/Tiny" # hide
 graph, representative_periods, timeframe = create_graph_and_representative_periods_from_csv_folder(input_dir)
 ```
 
-To create the model we also need a time partition for the constraints.
-Creating an energy problem automatically computes this data, but since we are doing it manually, we need to compute it ourselves.
+We also need a time partition for the constraints to create the model.
+Creating an energy problem automatically computes this data, but since we are doing it manually, we need to calculate it ourselves.
 
 ```@example manual
 constraints_partitions = compute_constraints_partitions(graph, representative_periods)
@@ -120,7 +125,7 @@ or, if we want to store the `flow`, `storage_level_intra_rp`, and `storage_level
 solution = solve_model!(dataframes, model)
 ```
 
-This `solution` structure is exactly the same as the one returned when using an `EnergyProblem`.
+This `solution` structure is the same as the one returned when using an `EnergyProblem`.
 
 ### Change optimizer and specify parameters
 
@@ -158,7 +163,7 @@ ourselves and add `using GLPK` before using `GLPK.Optimizer`.
 
 In any of these cases, default parameters for the `GLPK` optimizer are used,
 which you can query using [`default_parameters`](@ref).
-If you want to change these, you can pass a dictionary via the keyword argument `parameters`.
+You can pass a dictionary using the keyword argument `parameters` to change the defaults.
 For instance, in the example below, we change the maximum allowed runtime for
 GLPK to be 1 seconds, which will most likely cause it to fail to converge in time.
 
@@ -171,12 +176,12 @@ energy_problem = run_scenario(input_dir, optimizer = GLPK.Optimizer, parameters 
 energy_problem.termination_status
 ```
 
-For the full list of parameters, check your chosen optimizer.
+For the complete list of parameters, check your chosen optimizer.
 
 These parameters can also be passed via a file. See the
 [`read_parameters_from_file`](@ref) function for more details.
 
-## [Using the graph structure](@id graph-tutorial)
+### [Using the graph structure](@id graph-tutorial)
 
 Read about the graph structure in the [Graph](@ref) section first.
 
@@ -244,13 +249,13 @@ Similarly, all assets `u` for which a flow `(u, a)` exists:
 outneighbor_labels(graph, :ocgt) |> collect
 ```
 
-## [Manipulating the solution](@id solution-tutorial)
+### [Manipulating the solution](@id solution-tutorial)
 
 First, see the description of the [solution](@ref Solution) object.
 
 Let's consider the larger dataset "Norse" in this section. And let's talk about two ways to access the solution.
 
-### The solution returned by solve_model
+#### The solution returned by solve_model
 
 The solution, as shown before, can be obtained when calling [`solve_model`](@ref) or [`solve_model!`](@ref).
 
@@ -321,7 +326,7 @@ df = filter(
 [solution.storage_level_inter_rp[row.index] for row in eachrow(df)]
 ```
 
-### The solution inside the graph
+#### The solution inside the graph
 
 In addition to the solution object, the solution is also stored by the individual assets and flows when [`solve_model!`](@ref) is called - i.e., when using a [EnergyProblem](@ref) object.
 
@@ -346,7 +351,7 @@ df = filter(
 [energy_problem.graph[u, v].flow[(rp, row.timesteps_block)] for row in eachrow(df)]
 ```
 
-To create a vector with the all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
+To create a vector with all the values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
 
 ```@example solution
 a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
@@ -359,7 +364,7 @@ df = filter(
 [energy_problem.graph[a].storage_level_intra_rp[(rp, row.timesteps_block)] for row in eachrow(df)]
 ```
 
-To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run
+To create a vector with all the values of `storage_level_inter_rp` for a given `a`, one can run
 
 ```@example solution
 a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
@@ -371,7 +376,7 @@ df = filter(
 [energy_problem.graph[a].storage_level_inter_rp[row.periods_block] for row in eachrow(df)]
 ```
 
-### The solution inside the dataframes object
+#### The solution inside the dataframes object
 
 In addition to being stored in the `solution` object, and in the `graph` object, the solution for the `flow`, `storage_level_intra_rp`, and `storage_level_inter_rp` is also stored inside the corresponding DataFrame objects if `solve_model!` is called.
 
@@ -409,12 +414,12 @@ df = filter(
 df.solution
 ```
 
-### Values of constraints and expressions
+#### Values of constraints and expressions
 
 By accessing the model directly, we can query the values of constraints and expressions.
-We need to know the name of the constraint and how it is indexed, and for that you will need to check the model.
+We need to know the name of the constraint and how it is indexed, and for that, you will need to check the model.
 
-For instance, we can get all incoming flow in the lowest resolution for a given asset for a given representative periods with the following:
+For instance, we can get all incoming flow in the lowest resolution for a given asset for a given representative period with the following:
 
 ```@example solution
 using JuMP
@@ -427,8 +432,8 @@ df = filter(
 [value(energy_problem.model[:incoming_flow_lowest_resolution][row.index]) for row in eachrow(df)];
 ```
 
-The values of constraints can also be obtained, however they are frequently indexed in a subset, which means that their indexing is not straightforward.
-To know how they are indexed, it is necessary to look at the code of the model.
+The values of constraints can also be obtained, however, they are frequently indexed in a subset, which means that their indexing is not straightforward.
+To know how they are indexed, it is necessary to look at the model code.
 For instance, to get the consumer balance, we first need to filter the `:highest_in_out` dataframes by consumers:
 
 ```@example solution
@@ -440,7 +445,7 @@ df_consumers = filter(
 nothing # hide
 ```
 
-We set `view = false` to create a copy of this DataFrame, so we can create our indexes:
+We set `view = false` to create a copy of this DataFrame so we can make our indexes:
 
 ```@example solution
 df_consumers.index = 1:size(df_consumers, 1) # overwrites existing index
@@ -462,7 +467,7 @@ Here `value.` (i.e., broadcasting) was used instead of the vector comprehension 
 
 The value of the constraint is obtained by looking only at the part with variables. So a constraint like `2x + 3y - 1 <= 4` would return the value of `2x + 3y`.
 
-### Writing the output to CSV
+#### Writing the output to CSV
 
 To save the solution to CSV files, you can use [`save_solution_to_file`](@ref):
 
@@ -471,8 +476,12 @@ mkdir("output")
 save_solution_to_file("output", energy_problem)
 ```
 
-### Plotting
+#### Plotting
 
-In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you feel like.
+In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you like.
 
-If you would like more custom plots, there is a separate repository [TulipaPlots.jl](https://github.com/TulipaEnergy/TulipaPlots.jl) under development which provides nicer plots. Check it out for inspirations.
+If you would like more custom plots, there is a separate repository [TulipaPlots[.jl](https://github.com/TulipaEnergy/TulipaPlots.jl), under development, which provides tailored-made plots for _TulipaEnergyModel.jl_. Check it out for inspiration.
+
+## [Hydrothermal Dispatch example](@id hydrothermal-example)
+
+Under development!
