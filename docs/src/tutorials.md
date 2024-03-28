@@ -249,13 +249,13 @@ Similarly, all assets `u` for which a flow `(u, a)` exists:
 outneighbor_labels(graph, :ocgt) |> collect
 ```
 
-### [Manipulating the solution](@id solution-tutorial)
+## [Manipulating the solution](@id solution-tutorial)
 
 First, see the description of the [solution](@ref Solution) object.
 
 Let's consider the larger dataset "Norse" in this section. And let's talk about two ways to access the solution.
 
-#### The solution returned by solve_model
+### The solution returned by solve_model
 
 The solution, as shown before, can be obtained when calling [`solve_model`](@ref) or [`solve_model!`](@ref).
 
@@ -326,7 +326,7 @@ df = filter(
 [solution.storage_level_inter_rp[row.index] for row in eachrow(df)]
 ```
 
-#### The solution inside the graph
+### The solution inside the graph
 
 In addition to the solution object, the solution is also stored by the individual assets and flows when [`solve_model!`](@ref) is called - i.e., when using a [EnergyProblem](@ref) object.
 
@@ -376,7 +376,7 @@ df = filter(
 [energy_problem.graph[a].storage_level_inter_rp[row.periods_block] for row in eachrow(df)]
 ```
 
-#### The solution inside the dataframes object
+### The solution inside the dataframes object
 
 In addition to being stored in the `solution` object, and in the `graph` object, the solution for the `flow`, `storage_level_intra_rp`, and `storage_level_inter_rp` is also stored inside the corresponding DataFrame objects if `solve_model!` is called.
 
@@ -394,6 +394,16 @@ df.solution
 ```
 
 ```@example solution
+a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
+df = filter(
+    row -> row.asset == a,
+    energy_problem.dataframes[:storage_level_inter_rp],
+    view = true,
+)
+df.solution
+```
+
+```@example solution
 a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
 rp = 1
 df = filter(
@@ -404,17 +414,7 @@ df = filter(
 df.solution
 ```
 
-```@example solution
-a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
-df = filter(
-    row -> row.asset == a,
-    energy_problem.dataframes[:storage_level_inter_rp],
-    view = true,
-)
-df.solution
-```
-
-#### Values of constraints and expressions
+### Values of constraints and expressions
 
 By accessing the model directly, we can query the values of constraints and expressions.
 We need to know the name of the constraint and how it is indexed, and for that, you will need to check the model.
@@ -423,13 +423,14 @@ For instance, we can get all incoming flow in the lowest resolution for a given 
 
 ```@example solution
 using JuMP
-# a and rp are defined above
+a = energy_problem.dataframes[:lowest].asset[end]
+rp = 1
 df = filter(
     row -> row.asset == a && row.rp == rp,
     energy_problem.dataframes[:lowest],
     view = true,
 )
-[value(energy_problem.model[:incoming_flow_lowest_resolution][row.index]) for row in eachrow(df)];
+[value(energy_problem.model[:incoming_flow_lowest_resolution][row.index]) for row in eachrow(df)]
 ```
 
 The values of constraints can also be obtained, however, they are frequently indexed in a subset, which means that their indexing is not straightforward.
@@ -451,10 +452,10 @@ We set `view = false` to create a copy of this DataFrame so we can make our inde
 df_consumers.index = 1:size(df_consumers, 1) # overwrites existing index
 ```
 
-Now we can filter this DataFrame.
+Now we can filter this DataFrame. Note that the names in the stored dataframes are defined as Symbol.
 
 ```@example solution
-a = "Asgard_E_demand"
+a = :Asgard_E_demand
 df = filter(
     row -> row.asset == a && row.rp == rp,
     df_consumers,
@@ -467,7 +468,7 @@ Here `value.` (i.e., broadcasting) was used instead of the vector comprehension 
 
 The value of the constraint is obtained by looking only at the part with variables. So a constraint like `2x + 3y - 1 <= 4` would return the value of `2x + 3y`.
 
-#### Writing the output to CSV
+### Writing the output to CSV
 
 To save the solution to CSV files, you can use [`save_solution_to_file`](@ref):
 
@@ -476,7 +477,7 @@ mkdir("output")
 save_solution_to_file("output", energy_problem)
 ```
 
-#### Plotting
+### Plotting
 
 In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you like.
 
