@@ -1,4 +1,11 @@
-# [Basic Concepts](@id features)
+# [Features](@id features)
+
+```@contents
+Pages = ["features.md"]
+Depth = 3
+```
+
+## [Basic Concepts](@id basic-concepts)
 
 _TulipaEnergyModel.jl_ incorporates two fundamental concepts that serve as the foundation of the optimization model:
 
@@ -20,11 +27,6 @@ The [`mathematical formulation`](@ref formulation) shows a general overview of t
 Another essential concept in the model is the [flexible time resolution](@ref flex-time-res), which allows for each asset to be considered in a single time step (e.g., 1, 2, 3...) or in a range of time steps (e.g., 1:3, meaning that the asset's variable represents the value of time steps 1, 2, and 3). This concept allows the model of different dynamics depending on the asset; for instance, electricity assets can be modeled hourly, whereas hydrogen assets can be modeled in a 6-hour resolution (avoiding creating unnecessary constraints and variables).
 
 The following sections explain the main features of the optimization model based on all these concepts and definitions.
-
-```@contents
-Pages = ["features.md"]
-Depth = 3
-```
 
 ## [Flexible Connection of Energy Assets](@id flex-asset-connection)
 
@@ -331,7 +333,7 @@ The level of reduction and approximation error will depend on each case. The exa
 
 ## [Seasonal Storage Modeling](@id seasonal-storage)
 
-The inter-temporal constraints in the [`mathematical formulation`](@ref formulation) for energy storage assets allow us to model the seasonal storage in the model. To better understand how this feature works in _TulipaEnergyModel.jl_, there is an example inside the code for this package in the folder [`test/inputs/Storage`].
+The inter-temporal constraints in the [`mathematical formulation`](@ref formulation) for energy storage assets allow us to model the seasonal storage in the model. To better understand how this feature works in _TulipaEnergyModel.jl_, there is an example inside the code for this package in the folder [`test/inputs/Storage`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Storage).
 
 Let's first look at this feature's most relevant input data, starting with the `assets-data` file. Here, we show only the storage assets in the file with the appropriate columns for this example, but all the input data can be found in the previously mentioned folder.
 
@@ -360,6 +362,8 @@ The `rep-periods-mapping` relates each representative period with the periods in
 map_file = "../../test/inputs/Storage/rep-periods-mapping.csv" # hide
 map = CSV.read(map_file, DataFrame, header = 2) # hide
 unstacked_map = unstack(map, :period, :rep_period, :weight) # hide
+rename!(unstacked_map, ["period", "k=1", "k=2", "k=3"]) # hide
+unstacked_map[!,["k=1", "k=2", "k=3"]] = convert.(Float64, unstacked_map[!,["k=1", "k=2", "k=3"]]) # hide
 ```
 
 The file `assets-timeframe-partitions` has the information on how often we want to consider the inter-temporal constraints that combine the information of the representative periods. In this example, we define a uniform distribution of one period, meaning that we will check the inter-storage level every day of the week in the timeframe.
