@@ -5,54 +5,78 @@ The complete mathematical formulation considering variable temporal resolutions 
 
 ## [Sets](@id math-sets)
 
-| Name                         | Description                                         | Elements                  | Superset                                                   | Notes                                                                                                  |
-| ---------------------------- | --------------------------------------------------- | ------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| $\mathcal{A}$                | Energy assets                                       | $a \in \mathcal{A}$       |                                                            | The Energy asset types (i.e., consumer, producer, storage, hub, and conversion) are mutually exclusive |
-| $\mathcal{A}^{\text{c}}$     | Consumer energy assets                              |                           | $\mathcal{A}^{\text{c}}  \subseteq \mathcal{A}$            |                                                                                                        |
-| $\mathcal{A}^{\text{p}}$     | Producer energy assets                              |                           | $\mathcal{A}^{\text{p}}  \subseteq \mathcal{A}$            |                                                                                                        |
-| $\mathcal{A}^{\text{s}}$     | Storage energy assets                               |                           | $\mathcal{A}^{\text{s}}  \subseteq \mathcal{A}$            |                                                                                                        |
-| $\mathcal{A}^{\text{ss}}$    | Seaonal Storage energy assets                       |                           | $\mathcal{A}^{\text{ss}} \subseteq \mathcal{A}^{\text{s}}$ |                                                                                                        |
-| $\mathcal{A}^{\text{h}}$     | Hub energy assets (e.g., transshipment)             |                           | $\mathcal{A}^{\text{h}}  \subseteq \mathcal{A}$            |                                                                                                        |
-| $\mathcal{A}^{\text{cv}}$    | Conversion energy assets                            |                           | $\mathcal{A}^{\text{cv}} \subseteq \mathcal{A}$            |                                                                                                        |
-| $\mathcal{A}^{\text{i}}$     | Energy assets with investment method                |                           | $\mathcal{A}^{\text{i}}  \subseteq \mathcal{A}$            |                                                                                                        |
-| $\mathcal{F}$                | Flow connections between two assets                 | $f \in \mathcal{F}$       |                                                            |                                                                                                        |
-| $\mathcal{F}^{\text{t}}$     | Transport flow between two assets                   |                           | $\mathcal{F}^{\text{t}} \subseteq \mathcal{F}$             |                                                                                                        |
-| $\mathcal{F}^{\text{ti}}$    | Transport flow with investment method               |                           | $\mathcal{F}^{\text{ti}} \subseteq \mathcal{F}^{\text{t}}$ |                                                                                                        |
-| $\mathcal{F}^{\text{in}}_a$  | Set of flows going into asset $a$                   |                           | $\mathcal{F}^{\text{in}}_a  \subseteq \mathcal{F}$         |                                                                                                        |
-| $\mathcal{F}^{\text{out}}_a$ | Set of flows going out of asset $a$                 |                           | $\mathcal{F}^{\text{out}}_a \subseteq \mathcal{F}$         |                                                                                                        |
-| $\mathcal{P}$                | Periods in the timeframe                            | $p \in \mathcal{P}$       | $\mathcal{P} \subset \mathbb{N}$                           |                                                                                                        |
-| $\mathcal{K}$                | Representative periods (rp)                         | $k \in \mathcal{K}$       | $\mathcal{K} \subset \mathbb{N}$                           | $\mathcal{K}$ does not have to be a subset of $\mathcal{P}$                                            |
-| $\mathcal{B}_{k}$            | Timesteps blocks within a representative period $k$ | $b_{k} \in \mathcal{B}_k$ |                                                            | $\mathcal{B}_k$ is a partition of timesteps in a representative period $k$                             |
+### Sets for Assets
+
+| Name                      | Description                             | Elements            | Superset                                                   | Notes                                                                                                  |
+| ------------------------- | --------------------------------------- | ------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| $\mathcal{A}$             | Energy assets                           | $a \in \mathcal{A}$ |                                                            | The Energy asset types (i.e., consumer, producer, storage, hub, and conversion) are mutually exclusive |
+| $\mathcal{A}^{\text{c}}$  | Consumer energy assets                  |                     | $\mathcal{A}^{\text{c}}  \subseteq \mathcal{A}$            |                                                                                                        |
+| $\mathcal{A}^{\text{p}}$  | Producer energy assets                  |                     | $\mathcal{A}^{\text{p}}  \subseteq \mathcal{A}$            |                                                                                                        |
+| $\mathcal{A}^{\text{s}}$  | Storage energy assets                   |                     | $\mathcal{A}^{\text{s}}  \subseteq \mathcal{A}$            |                                                                                                        |
+| $\mathcal{A}^{\text{ss}}$ | Seaonal Storage energy assets           |                     | $\mathcal{A}^{\text{ss}} \subseteq \mathcal{A}^{\text{s}}$ |                                                                                                        |
+| $\mathcal{A}^{\text{h}}$  | Hub energy assets (e.g., transshipment) |                     | $\mathcal{A}^{\text{h}}  \subseteq \mathcal{A}$            |                                                                                                        |
+| $\mathcal{A}^{\text{cv}}$ | Conversion energy assets                |                     | $\mathcal{A}^{\text{cv}} \subseteq \mathcal{A}$            |                                                                                                        |
+| $\mathcal{A}^{\text{i}}$  | Energy assets with investment method    |                     | $\mathcal{A}^{\text{i}}  \subseteq \mathcal{A}$            |                                                                                                        |
+
+### Sets for Flows
+
+| Name                         | Description                           | Elements            | Superset                                                   | Notes |
+| ---------------------------- | ------------------------------------- | ------------------- | ---------------------------------------------------------- | ----- |
+| $\mathcal{F}$                | Flow connections between two assets   | $f \in \mathcal{F}$ |                                                            |       |
+| $\mathcal{F}^{\text{t}}$     | Transport flow between two assets     |                     | $\mathcal{F}^{\text{t}} \subseteq \mathcal{F}$             |       |
+| $\mathcal{F}^{\text{ti}}$    | Transport flow with investment method |                     | $\mathcal{F}^{\text{ti}} \subseteq \mathcal{F}^{\text{t}}$ |       |
+| $\mathcal{F}^{\text{in}}_a$  | Set of flows going into asset $a$     |                     | $\mathcal{F}^{\text{in}}_a  \subseteq \mathcal{F}$         |       |
+| $\mathcal{F}^{\text{out}}_a$ | Set of flows going out of asset $a$   |                     | $\mathcal{F}^{\text{out}}_a \subseteq \mathcal{F}$         |       |
+
+### Sets for Temporal Structures
+
+| Name              | Description                                         | Elements                  | Superset                         | Notes                                                                      |
+| ----------------- | --------------------------------------------------- | ------------------------- | -------------------------------- | -------------------------------------------------------------------------- |
+| $\mathcal{P}$     | Periods in the timeframe                            | $p \in \mathcal{P}$       | $\mathcal{P} \subset \mathbb{N}$ |                                                                            |
+| $\mathcal{K}$     | Representative periods (rp)                         | $k \in \mathcal{K}$       | $\mathcal{K} \subset \mathbb{N}$ | $\mathcal{K}$ does not have to be a subset of $\mathcal{P}$                |
+| $\mathcal{B}_{k}$ | Timesteps blocks within a representative period $k$ | $b_{k} \in \mathcal{B}_k$ |                                  | $\mathcal{B}_k$ is a partition of timesteps in a representative period $k$ |
 
 ## [Parameters](@id math-parameters)
+
+### Parameter for Assets
 
 | Name                                        | Domain           | Domains of Indices                                                           | Description                                                                                                    | Units          |
 | ------------------------------------------- | ---------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------- |
 | $p^{\text{investment cost}}_{a}$            | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                                          | Investment cost of a unit of asset $a$                                                                         | [kEUR/MW/year] |
 | $p^{\text{investment limit}}_{a}$           | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                                          | Investment limit of a unit of asset $a$                                                                        | [MW]           |
 | $p^{\text{unit capacity}}_{a}$              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                                          | Capacity per unit of asset $a$                                                                                 | [MW]           |
-| $p^{\text{peak demand}}_{a}$                | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{c}}$                                               | Peak demand of consumer asset $a$                                                                              | [MW]           |
 | $p^{\text{init capacity}}_{a}$              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                                          | Initial capacity of asset $a$                                                                                  | [MW]           |
-| $p^{\text{variable cost}}_{f}$              | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$                                                          | Variable cost of flow $f$                                                                                      | [kEUR/MWh]     |
-| $p^{\text{eff}}_f$                          | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$                                                          | Efficiency of flow $f$                                                                                         | [p.u.]         |
-| $p^{\text{investment cost}}_{f}$            | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                               | Investment cost of transport flow $f$                                                                          | [kEUR/MW/year] |
-| $p^{\text{investment limit}}_{f}$           | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                               | Investment limit of a unit of flow $f$                                                                         | [MW]           |
-| $p^{\text{capacity increment}}_{f}$         | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                               | Capacity increment for investments of transport flow $f$ (both exports and imports)                            | [MW]           |
-| $p^{\text{init export capacity}}_{f}$       | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                               | Initial export capacity of transport flow $f$                                                                  | [MW]           |
-| $p^{\text{init import capacity}}_{f}$       | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                               | Initial import capacity of transport flow $f$                                                                  | [MW]           |
-| $p^{\text{rp weight}}_{k}$                  | $\mathbb{R}_{+}$ | $k \in \mathcal{K}$                                                          | Weight of representative period $k$                                                                            | [-]            |
+| $p^{\text{peak demand}}_{a}$                | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{c}}$                                               | Peak demand of consumer asset $a$                                                                              | [MW]           |
+| $p^{\text{energy to power ratio}}_a$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$                                               | Energy to power ratio of storage asset $a$                                                                     | [h]            |
+| $p^{\text{init storage capacity}}_{a}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$                                               | Initial storage capacity of storage asset $a$                                                                  | [MWh]          |
+| $p^{\text{init storage level}}_{a}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$                                               | Initial storage level of storage asset $a$                                                                     | [MWh]          |
 | $p^{\text{availability profile}}_{a,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$            | Availability profile of asset $a$ in the representative period $k$ and timestep block $b_k$                    | [p.u.]         |
-| $p^{\text{availability profile}}_{f,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{F}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$            | Availability profile of flow $f$ in the representative period $k$ and timestep block $b_k$                     | [p.u.]         |
 | $p^{\text{demand profile}}_{a,k,b_k}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{c}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Demand profile of consumer asset $a$ in the representative period $k$ and timestep block $b_k$                 | [p.u.]         |
 | $p^{\text{inflows}}_{a,k,b_k}$              | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Inflows of storage asset $a$ in the representative period $k$ and timestep block $b_k$                         | [MWh]          |
 | $p^{\text{max intra level}}_{a,k,b_k}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Maximum intra-storage level profile of storage asset $a$ in representative period $k$ and timestep block $b_k$ | [p.u.]         |
 | $p^{\text{min intra level}}_{a,k,b_k}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Minimum intra-storage level profile of storage asset $a$ in representative period $k$ and timestep block $b_k$ | [p.u.]         |
 | $p^{\text{max inter level}}_{a,p}$          | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $p \in \mathcal{P}$                          | Maximum inter-storage level profile of storage asset $a$ in the period $p$ of the timeframe                    | [p.u.]         |
 | $p^{\text{min inter level}}_{a,p}$          | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $p \in \mathcal{P}$                          | Minimum inter-storage level profile of storage asset $a$ in the period $p$ of the timeframe                    | [p.u.]         |
-| $p^{\text{energy to power ratio}}_a$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$                                               | Energy to power ratio of storage asset $a$                                                                     | [h]            |
-| $p^{\text{init storage capacity}}_{a}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$                                               | Initial storage capacity of storage asset $a$                                                                  | [MWh]          |
-| $p^{\text{init storage level}}_{a}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$                                               | Initial storage level of storage asset $a$                                                                     | [MWh]          |
-| $p^{\text{map}}_{p,k}$                      | $\mathbb{R}_{+}$ | $p \in \mathcal{P}$, $k \in \mathcal{K}$                                     | Map with the weight of representative period $k$ in period $p$                                                 | [-]            |
+
+### Parameter for Flows
+
+| Name                                        | Domain           | Domains of Indices                                                | Description                                                                                | Units          |
+| ------------------------------------------- | ---------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------- |
+| $p^{\text{variable cost}}_{f}$              | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$                                               | Variable cost of flow $f$                                                                  | [kEUR/MWh]     |
+| $p^{\text{eff}}_f$                          | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$                                               | Efficiency of flow $f$                                                                     | [p.u.]         |
+| $p^{\text{investment cost}}_{f}$            | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                    | Investment cost of transport flow $f$                                                      | [kEUR/MW/year] |
+| $p^{\text{investment limit}}_{f}$           | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                    | Investment limit of a unit of flow $f$                                                     | [MW]           |
+| $p^{\text{capacity increment}}_{f}$         | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                    | Capacity increment for investments of transport flow $f$ (both exports and imports)        | [MW]           |
+| $p^{\text{init export capacity}}_{f}$       | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                    | Initial export capacity of transport flow $f$                                              | [MW]           |
+| $p^{\text{init import capacity}}_{f}$       | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                    | Initial import capacity of transport flow $f$                                              | [MW]           |
+| $p^{\text{availability profile}}_{f,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{F}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Availability profile of flow $f$ in the representative period $k$ and timestep block $b_k$ | [p.u.]         |
+
+### Parameter for Temporal Structures
+
+| Name                       | Domain           | Domains of Indices                       | Description                                                    | Units |
+| -------------------------- | ---------------- | ---------------------------------------- | -------------------------------------------------------------- | ----- |
+| $p^{\text{rp weight}}_{k}$ | $\mathbb{R}_{+}$ | $k \in \mathcal{K}$                      | Weight of representative period $k$                            | [-]   |
+| $p^{\text{map}}_{p,k}$     | $\mathbb{R}_{+}$ | $p \in \mathcal{P}$, $k \in \mathcal{K}$ | Map with the weight of representative period $k$ in period $p$ | [-]   |
 
 ## [Variables](@id math-variables)
 
