@@ -481,7 +481,7 @@ save_solution_to_file("output", energy_problem)
 
 In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you like.
 
-If you would like more custom plots, there is a separate repository [TulipaPlots[.jl](https://github.com/TulipaEnergy/TulipaPlots.jl), under development, which provides tailored-made plots for _TulipaEnergyModel.jl_. Check it out for inspiration.
+If you would like more custom plots, check out [TulipaPlots.jl](https://github.com/TulipaEnergy/TulipaPlots.jl), under development, which provides tailored-made plots for _TulipaEnergyModel.jl_.
 
 ## [Hydrothermal Dispatch example](@id hydrothermal-example)
 

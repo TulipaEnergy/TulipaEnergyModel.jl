@@ -69,7 +69,7 @@ The meaning of `Missing` data depends on the parameter, for instance:
 
 #### [`assets-timeframe-profiles.csv` and `assets-rep-periods-profiles.csv`] (@id assets-profiles-definition)
 
-These files contain information about assets and their associated profiles. Each row lists an asset, the type of profile (e.g., availability, demand, maximum or minimum storage level), and the profile's name. The timeframe profiles are used in the inter-temporal constraints, whereas the representative periods profiles are used in the intra-temporal constraints.
+These files contain information about assets and their associated profiles. Each row lists an asset, the type of profile (e.g., availability, demand, maximum or minimum storage level), and the profile's name. The timeframe profiles are used in the [inter-temporal constraints](@ref concepts-temporal-constraints), whereas the representative periods profiles are used in the [intra-temporal constraints](@ref concepts-temporal-constraints).
 
 #### [`flows-rep-periods-profiles.csv`](@id flows-profiles-definition)
 
@@ -88,7 +88,7 @@ There are currently three ways to specify the desired resolution, indicated in t
 The column `partition` serves to define the partitions in the specified style.
 
 -   `specification = uniform`: Set the resolution to a uniform amount, i.e., a time block is made of `X` time steps. The number `X` is defined in the column `partition`. The number of time steps in the representative period must be divisible by `X`.
--   `specification = explicit`: Set the resolution according to a list of numbers separated by `;` on the `partition`. Each number in the list is the number of time steps for that time block. For instance, `2;3;4` means that there are three time blocks, the first has 2 time steps, the second has 3 time steps, and the last has 4 time steps. The sum of the number of time steps must be equal to the total number of time steps in that representative period.
+-   `specification = explicit`: Set the resolution according to a list of numbers separated by `;` on the `partition`. Each number in the list is the number of time steps for that time block. For instance, `2;3;4` means that there are three time blocks, the first has 2 time steps, the second has 3 time steps, and the last has 4 time steps. The sum of the list must be equal to the total number of time steps in that representative period, as specified in `num_timesteps` of [`rep-periods-data.csv`](@ref rep-periods-data).
 -   `specification = math`: Similar to explicit, but using `+` and `x` for simplification. The value of `partition` is a sequence of elements of the form `NxT` separated by `+`, indicating `N` time blocks of length `T`. For instance, `2x3+3x6` is 2 time blocks of 3 time steps, followed by 3 time blocks of 6 time steps, for a total of 24 time steps in the representative period.
 
 The table below shows various results for different formats for a representative period with 12 time steps.
@@ -100,21 +100,25 @@ The table below shows various results for different formats for a representative
 | 1:1, 2:2, …, 12:12    | 1        | 1;1;1;1;1;1;1;1;1;1;1;1 | 12x1        |
 | 1:3, 4:6, 7:10, 11:12 | NA       | 3;3;4;2                 | 2x3+1x4+1x2 |
 
+Note: If an asset is not specified in this file, the balance equation will be written in the lowest resolution of both the incoming and outgoing flows to the asset.
+
 #### [`flows-rep-periods-partitions.csv`](@id flow-rep-periods-partitions-definition)
 
 The same as [`assets-rep-periods-partitions.csv`](@ref asset-rep-periods-partitions-definition), but for flows.
+
+If a flow is not specified in this file, the flow time resolution will be for each time step by default (e.g., hourly).
 
 #### [`assets-timeframe-partitions.csv`](@id assets-timeframe-partitions)
 
 The same as their [`assets-rep-periods-partitions.csv`](@ref asset-rep-periods-partitions-definition) counterpart, but for the periods in the [timeframe](@ref timeframe) of the model.
 
-#### `rep-periods-data.csv`
+#### [`rep-periods-data.csv`](@id rep-periods-data)
 
-Describes the [representative periods](@ref representative-periods).
+Describes the [representative periods](@ref representative-periods) by their unique ID, the number of time steps per representative period, and the resolution per time step. Note that in the test files the resolution units are given as hours for understandability, but the resolution is technically unitless.
 
 #### [`rep-periods-mapping.csv`](@id rep-periods-mapping)
 
-Describes the periods of the [timeframe](@ref timeframe) that map into a [representative period](@ref representative-periods) and the weight of the representative period in them.
+Describes the periods of the [timeframe](@ref timeframe) that map into a [representative period](@ref representative-periods) and the weight of the representative periods that construct a period. Note that each weight is a decimal between 0 and 1, and that the sum of weights for a given period must also be between 0 and 1 (but do not have to sum to 1).
 
 #### Schemas
 
@@ -144,9 +148,9 @@ It hides the complexity behind the energy problem, making the usage more friendl
 
 -   `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
 -   `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
--   `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition).
--   `timeframe`: The number of periods of the `representative_periods`.
--   `dataframes`: A Dictionary of data frames used to linearize the variables and constraints. These are used internally in the model only.
+-   `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions](@ref Partition) (vectors of time blocks).
+-   `timeframe`: The number of periods in the `representative_periods`.
+-   `dataframes`: A Dictionary of dataframes used to linearize the variables and constraints. These are used internally in the model only.
 -   `model`: A JuMP.Model object representing the optimization model.
 -   `solution`: A structure of the variable values (investments, flows, etc) in the solution.
 -   `solved`: A boolean indicating whether the `model` has been solved or not.
@@ -198,16 +202,16 @@ Some variables and constraints are defined over every time block in a partition.
 
 For instance, for a representative period with 12 time steps, all sets below are partitions:
 
--   `\{\{1, 2, 3\}, \{4, 5, 6\}, \{7, 8, 9\}, \{10, 11, 12\}\}`
--   `\{\{1, 2, 3, 4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}`
--   `\{\{1\}, \{2, 3\}, \{4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}`
+-   $\{\{1, 2, 3\}, \{4, 5, 6\}, \{7, 8, 9\}, \{10, 11, 12\}\}$
+-   $\{\{1, 2, 3, 4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}$
+-   $\{\{1\}, \{2, 3\}, \{4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}$
 
 ### [Timeframe](@id timeframe)
 
 The timeframe is the total period we want to analyze with the model. Usually this is a year, but it can be any length of time. A timeframe has two fields:
 
 -   `num_periods`: The timeframe is defined by a certain number of periods. For instance, a year can be defined by 365 periods, each describing a day.
--   `map_periods_to_rp`: Indicates the periods of the timeframe that map into a [representative period](@ref representative-periods) and the weight of the representative period in them.
+-   `map_periods_to_rp`: Indicates the periods of the timeframe that map into a [representative period](@ref representative-periods) and the weight of the representative period to construct that period.
 
 ### [Representative Periods](@id representative-periods)
 
