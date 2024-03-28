@@ -16,10 +16,10 @@ makedocs(;
     ),
     pages = [
         "Home" => "index.md",
-        "Features" => "features.md",
-        "Mathematical Formulation" => "formulation.md",
         "How to Use" => "how-to-use.md",
         "Tutorials" => "tutorials.md",
+        "Concepts" => "concepts.md",
+        "Mathematical Formulation" => "formulation.md",
         "API" => "api.md",
         "Reference" => "reference.md",
     ],

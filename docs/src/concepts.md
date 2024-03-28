@@ -1,11 +1,11 @@
-# [Features](@id features)
+# [Concepts](@id concepts)
 
 ```@contents
-Pages = ["features.md"]
+Pages = ["concepts.md"]
 Depth = 3
 ```
 
-## [Basic Concepts](@id basic-concepts)
+## [Summary](@id concepts-summary)
 
 _TulipaEnergyModel.jl_ incorporates two fundamental concepts that serve as the foundation of the optimization model:
 
@@ -15,47 +15,47 @@ _TulipaEnergyModel.jl_ incorporates two fundamental concepts that serve as the f
     -   Storage: e.g., battery, pumped-hydro storage
     -   Balancing Hub: e.g., an electricity network that serves as a connection among other energy assets
     -   Conversion: e.g., power plants, electrolyzers
--   **Flows**: representation of the connections among assets, e.g., pipelines, transmission lines, or just simply the energy production that goes from one asset to another.
+-   **Flows**: representation of the connections among assets, e.g., pipelines, transmission lines, or simply the energy production that goes from one asset to another.
 
-In a nutshell, the model guarantees a balance of energy for the various types of assets while considering the flow limits. It considers a set of [representative periods](@ref representative-periods) (e.g., days or weeks) for a given [timeframe](@ref timeframe) (e.g., a year) the user wants to analyze. Therefore, the model has two types of temporal constraints to consider the different chronology characteristics of the assets:
+In a nutshell, the model guarantees a balance of energy for the various types of assets while considering the flow limits. It considers a set of [representative periods](@ref representative-periods) (e.g., days or weeks) for a given [timeframe](@ref timeframe) (e.g., a year) the user wants to analyze. Therefore, the model has two types of temporal (time) constraints to consider the different chronology characteristics of the assets:
 
--   **Intra-temporal Constraints**: These constraints limit the asset within a representative period. The intra-temporal constraints help to characterize the short-term operational dynamics of the assets. So far, the model considers balance and flow limitations within the representative period, but future developments will include unit commitment, ramping, and reserve constraints.
--   **Inter-temporal Constraints**: These constraints combine the information of the representative periods and create limitations between them to recover chronological information across the defined timeframe. The inter-temporal constraints help to characterize the long-term operational dynamics of the assets. So far, the model uses this type of constraint to model seasonal storage, but future developments will include, for example, maximum or minimum production/consumption in a year.
+-   **[Intra-temporal Constraints](@id concepts-temporal-constraints)**: These constraints limit the asset or flow within a representative period. The intra-temporal constraints help to characterize the short-term operational dynamics of the assets. So far, the model considers balance and flow limitations within the representative period, but future developments will include unit commitment, ramping, and reserve constraints.
+-   **Inter-temporal Constraints**: These constraints combine the information of the representative periods and create limitations between them to recover chronological information across the full timeframe. The inter-temporal constraints help to characterize the long-term operational dynamics of the assets. So far, the model uses this type of constraint to model seasonal storage, but future developments will include, for example, maximum or minimum production/consumption for a year (or any timeframe).
 
-The [`mathematical formulation`](@ref formulation) shows a general overview of these constraints and the variables involved in the model.
+The [`mathematical formulation`](@ref formulation) shows an overview of these constraints and the variables in the model.
 
-Another essential concept in the model is the [flexible time resolution](@ref flex-time-res), which allows for each asset to be considered in a single time step (e.g., 1, 2, 3...) or in a range of time steps (e.g., 1:3, meaning that the asset's variable represents the value of time steps 1, 2, and 3). This concept allows the model of different dynamics depending on the asset; for instance, electricity assets can be modeled hourly, whereas hydrogen assets can be modeled in a 6-hour resolution (avoiding creating unnecessary constraints and variables).
+Another essential concept in the model is the [flexible time resolution](@ref flex-time-res), which allows for each asset to be considered in a single time step (e.g., 1, 2, 3...) or in a range of time steps (e.g., 1:3, meaning that the asset's variable represents the value of time steps 1, 2, and 3). This concept allows the modelling of different dynamics depending on the asset; for instance, electricity assets can be modeled hourly, whereas hydrogen assets can be modeled in a 6-hour resolution (avoiding creating unnecessary constraints and variables).
 
-The following sections explain the main features of the optimization model based on all these concepts and definitions.
+The following sections explain these concepts in more detail.
 
 ## [Flexible Connection of Energy Assets](@id flex-asset-connection)
 
-The representation of the energy system in _TulipaEnergyModel.jl_ is based on [Graph Theory](https://en.wikipedia.org/wiki/Graph_theory), which deals with the connection between vertices by edges. This representation provides a more flexible framework to model _energy assets_ in the system as _vertices_ and _flows_ between energy assets as _edges_. In addition, it can potentially reduce the model size. For instance, connecting assets directly to each other (i.e., without having a node in between) allows us to reduce the number of variables and constraints to represent different configurations. For instance, it is becoming more and more common to have hybrid assets like `storage + renewable` (e.g., battery + solar), `electrolyzer + renewable` (e.g., electrolyzer + wind), or `renewable + hydro` (e.g., solar + hydro) that are located in the same site and share a common connection point to the grid. In hybrid configurations, for example, flows from the grid are typically not allowed as they either avoid charging from the grid or require green hydrogen production.
+The representation of the energy system in _TulipaEnergyModel.jl_ is based on [Graph Theory](https://en.wikipedia.org/wiki/Graph_theory), which deals with the connection between vertices by edges. This representation provides a more flexible framework to model energy _assets_ in the system as _vertices_ and _flows_ between energy assets as _edges_. In addition, it can potentially reduce the model size. For instance, connecting assets directly to each other (i.e., without having a node in between) allows us to reduce the number of variables and constraints to represent different configurations. For instance, it is becoming more and more common to have hybrid assets like `storage + renewable` (e.g., battery + solar), `electrolyzer + renewable` (e.g., electrolyzer + wind), or `renewable + hydro` (e.g., solar + hydro) that are located at the same site and share a common connection point to the grid. In hybrid configurations, for example, flows from the grid are typically not allowed, as they either avoid charging from the grid or require green hydrogen production.
 
-Consider the following example to demonstrate the benefits of this approach. In the classic connection approach, the nodes play a crucial role in modeling. For instance, every asset must be connected to a node with balance constraints. When a storage asset and a renewable asset are in a hybrid connection like the one described before, a connection point is needed to connect the hybrid configuration to the rest of the system. Therefore, to consider the hybrid configuration of a storage asset and a renewable asset, we must introduce a node (i.e., a connection point) between these assets and the external power grid (i.e., a balance point), as shown in the following figure:
+Consider the following example to demonstrate the benefits of using a graph theory approach. In the classic connection approach, the nodes play a crucial role in modeling. For instance, every asset must be connected to a node with balance constraints. When a storage asset and a renewable asset are in a hybrid connection like the one described before, a connection point is needed to connect the hybrid configuration to the rest of the system. Therefore, to consider the hybrid configuration of a storage asset and a renewable asset, we must introduce a node (i.e., a connection point) between these assets and the external power grid (i.e., a balance point), as shown in the following figure:
 
 ![Classic connection](./figs/flexible-connection-1.png)
 
-In this system, the `phs` storage asset charges and discharges from the `connection point`, while the `wind` turbine produces power that goes directly to the `connection point`. This `connection point` is connected to the external power grid through a transmission line that leads to a `balance` hub with/connecting to other assets. Essentially, the `connection point` acts as a balancing hub point for the assets in this hybrid configuration. Furthermore, these hybrid configurations impose an additional constraint to avoid storage charges from the power grid. The section [`comparison of different modeling approaches`](@ref comparison) shows the quantification of these reductions.
+In this system, the `phs` storage asset charges and discharges from the `connection point`, while the `wind` turbine produces power that goes directly to the `connection point`. This `connection point` is connected to the external power grid through a transmission line that leads to a `balance` hub that connects to other assets. Essentially, the `connection point` acts as a balancing hub point for the assets in this hybrid configuration. Furthermore, these hybrid configurations impose an extra constraint to avoid storage charges from the power grid. The section [`comparison of different modeling approaches`](@ref comparison) shows the quantification of these reductions.
 
 Let's consider the modeling approach in _TulipaEnergyModel.jl_. As nodes are no longer needed to connect assets, we can connect them directly to each other, as shown in the figure below:
 
 ![Flexible connection](./figs/flexible-connection-2.png)
 
-By implementing this approach, we can reduce the number of variables and constraints involved. For example, the balance constraint in the intermediate node and the extra constraint to avoid the storage charging from the power grid are no longer needed. Additionally, we can eliminate the variable determining the flow between the intermediate node and the power grid because the flow from `phs` to `balance` can directly link to the external grid.
+By implementing this approach, we can reduce the number of variables and constraints involved. For example, the balance constraint in the intermediate node and the extra constraint to avoid the storage charging from the power grid are no longer needed. Additionally, we can eliminate the variable determining the flow between the intermediate node and the power grid, because the flow from `phs` to `balance` can directly link to the external grid.
 
-The example here shows the connection of a `phs` and a `wind` asset, illustrating the modeling approach's advantages and the example's reusability in the following sections. However, other applications of these co-location (or hybrid) combinations of assets are battery-solar, hydro-solar, and electrolyzer-wind.
+This example of a `phs` and a `wind` asset is useful for illustrating the advantages of this modeling approach and will be reused in the following sections. However, there are other applications of these co-location (or hybrid) combinations of assets, such as battery-solar, hydro-solar, and electrolyzer-wind.
 
 ## [Flexible Time Resolution](@id flex-time-res)
 
-One of the core features of _TulipaEnergyModel.jl_ is that it can handle different time resolutions on the assets and the flows. Typically, the time resolution in an energy model is hourly, like in the following figure where we have a six-hour energy system:
+One of the core features of _TulipaEnergyModel.jl_ is that it can handle different time resolutions on the assets and the flows. Typically, the time resolution in an energy model is hourly, like in the following figure where we have a 6-hour energy system:
 
 ![Hourly Time Resolution](./figs/variable-time-resolution-1.png)
 
 Therefore, for this simple example, we can determine the number of constraints and variables in the optimization problem:
 
--   _Number of variables_: 42 since we have six connections among assets (i.e., 6 flows x 6 hours = 36 variables) and one storage asset (i.e., 6 storage level x 6 h = 6 variables)
--   _Number of constraints_: 72, where:
+-   _Number of variables_: 42 since we have six connections among assets (i.e., 6 flows x 6 hours = 36 variables) and one storage asset (i.e., 1 storage level x 6 h = 6 variables)
+-   _Number of constraints_: 72, which are:
 
     -   24 from the maximum output limit of the assets that produce, convert, or discharge energy (i.e., `H2`, `wind`, `ccgt`, and `phs`) for each hour (i.e., 4 assets x 6 h = 24 constraints)
     -   6 from the maximum input limit of the storage or charging limit for the `phs`
@@ -63,9 +63,11 @@ Therefore, for this simple example, we can determine the number of constraints a
     -   12 from the import and export limits for the transmission line between the `balance` hub and the `demand`
     -   24 from the energy balance on the consumer, hub, conversion, and storage assets (i.e., `demand`, `balance`, `ccgt`, and `phs`) for each hour (i.e., 4 assets x 6 h = 24 constraints)
 
-Depending on the input data and the level of detail you want to model, hourly resolution in all the variables might not be necessary. _TulipaEnergyModel_.jl\_ can have different time resolutions for each asset and flow to simplify the optimization problem and approximate hourly representation. This feature is handy for large-scale energy systems that involve other sectors, as detailed granularity is not always necessary due to the unique temporal dynamics of each sector. For instance, we can use hourly resolution for the electricity sector and six-hour resolution for the hydrogen sector. We can couple multiple sectors, each with its temporal resolution.
+Depending on the input data and the level of detail you want to model, hourly resolution in all the variables might not be necessary. _TulipaEnergyModel.jl_ can have different time resolutions for each asset and flow to simplify the optimization problem and approximate hourly representation. This feature is useful for large-scale energy systems that involve multiple sectors, as detailed granularity is not always necessary due to the unique temporal dynamics of each sector. For instance, we can use hourly resolution for the electricity sector and six-hour resolution for the hydrogen sector. We can couple multiple sectors, each with its own temporal resolution.
 
-Let's explore the flexibility of time resolution with the following examples. The following table shows the user input data for the definition of asset time resolution. Please note that the values presented in this example are just for illustrative purposes and do not represent a realistic case.
+Let's explore the flexibility of time resolution with a few examples.
+
+The following table shows the user input data for the definition of asset time resolution. Please note that the values presented in this example are just for illustrative purposes and do not represent a realistic case.
 
 ```@example print-partitions
 using DataFrames # hide
@@ -75,40 +77,36 @@ assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
 assets = assets[assets.asset .!= "wind", :] # hide
 ```
 
-The asset definitions are determined in a file called [`assets-rep-periods-partitions.csv`](@ref asset-rep-periods-partitions-definition). For instance, the example in the file shows that the `H2` producer and the `phs` storage have a `uniform` definition of 6 hours. This definition means we want to represent the `H2` production profile and the storage level of the `phs` every six hours.
+The table shows that the `H2` producer and the `phs` storage have a `uniform` definition of 6 hours. This definition means we want to represent the `H2` production profile and the storage level of the `phs` every six hours.
 
-If an asset is not specified in this file, the balance equation will be written in the lowest resolution of both incoming and outgoing flows to the asset. For example, the incoming and outgoing flows to the hub asset (`balance`) will determine how often the balance constraint is written.
-
-The same type of definition can be done for the flows, for example (again, the values are for illustrative purposes and do not represent a realistic case):
+The same time resolution can be specified for the flows, for example (again, the values are for illustrative purposes and do not represent a realistic case):
 
 ```@example print-partitions
 input_flow_file = "../../test/inputs/Variable Resolution/flows-rep-periods-partitions.csv" # hide
 flows_partitions = CSV.read(input_flow_file, DataFrame, header = 2) # hide
 ```
 
-These definitions are determined in the [`flows-rep-periods-partitions.csv`](@ref flow-rep-periods-partitions-definition) file. The example shows a `uniform` definition for the flow from the hydrogen producer (`H2`) to the conversion asset (`ccgt`) of six hours, from the wind producer (`wind`) to the storage (`phs`) of three hours, and from the balance hub (`balance`) to the consumer (`demand`) of three hours, too. In addition, the flow from the wind producer (`wind`) to the balance hub (`balance`) is defined using the `math` specification of `1x2+1x4`, meaning that there are two time blocks, one of two hours (i.e., `1:2`) and another of four hours (i.e., `3:6`). Finally, the flow from the storage (`phs`) to the balance hub (`balance`) is defined using the `math` specification of `1x4+1x2`, meaning that there are two time blocks, one of four hours (i.e., `1:4`) and another of two hours (i.e., `5:6`).
+The table shows a `uniform` definition for the flow from the hydrogen producer (`H2`) to the conversion asset (`ccgt`) of 6 hours, from the wind producer (`wind`) to the storage (`phs`) of 3 hours, and from the balance hub (`balance`) to the consumer (`demand`) of 3 hours, too. In addition, the flow from the wind producer (`wind`) to the balance hub (`balance`) is defined using the `math` specification of `1x2+1x4`, meaning that there are two time blocks, one of two hours (i.e., `1:2`) and another of four hours (i.e., `3:6`). Finally, the flow from the storage (`phs`) to the balance hub (`balance`) is defined using the `math` specification of `1x4+1x2`, meaning that there are two time blocks, one of four hours (i.e., `1:4`) and another of two hours (i.e., `5:6`).
 
-If a flow is not specified in this file, the flow time resolution will be for each time step by default (e.g., hourly). For instance, the flow from the `ccgt` to the hub `balance` will be written hourly in this example.
-
-The following figure illustrates these definition on the example.
+The following figure illustrates these definitions on the example system.
 
 ![Variable Time Resolution](./figs/variable-time-resolution-2.png)
 
 So, let's recap:
 
--   The hydrogen producer (`H2`) is in a six-hour resolution represented by the range `1:6`, meaning that the balance of the hydrogen produced is for every six hours.
--   The flow from the hydrogen producer to the ccgt power plant (`H2,ccgt`) is also in a six-hour resolution `1:6`.
+-   The hydrogen producer (`H2`) is in a 6-hour resolution represented by the range `1:6`, meaning that the balance of the hydrogen produced is for every 6 hours.
+-   The flow from the hydrogen producer to the ccgt power plant (`H2,ccgt`) is also in a 6-hour resolution `1:6`.
 -   The flow from the ccgt power plant to the balance hub (`ccgt, balance`) has hourly resolution `[1,2,3,4,5,6]`.
--   The `ccgt` is a conversion plant that takes hydrogen to produce electricity. Since both sectors have different time resolutions. The energy balance in the conversion asset is defined in the lowest resolution connecting to the asset. In this case, the energy balance in the `ccgt` is defined every six hours, i.e., in the range `1:6`.
--   The `wind` producer has an hourly profile of electricity production, so the resolution of the asset is still hourly.
+-   The `ccgt` is a conversion plant that takes hydrogen to produce electricity. Since both sectors have different time resolutions, the energy balance in the conversion asset is defined in the lowest resolution connecting to the asset. In this case, the energy balance in the `ccgt` is defined every 6 hours, i.e., in the range `1:6`.
+-   The `wind` producer has an hourly profile of electricity production, so the resolution of the asset is hourly.
 -   The `wind` producer output has two connections, one to the `balance` hub and the other to the pumped-hydro storage (`phs`) with different resolutions:
-    -   The flow from the wind producer to the phs storage (`wind, phs`) has a uniform resolution of two blocks from hour 1 to 3 (i.e., `1:3`) and from hour 4 to 6 (i.e., `4:6`).
-    -   The flow from the wind producer to the balance hub (`wind, balance`) has a variable resolution of two blocks, too, but from hour 1 to 2 (i.e., `1:2`) and from hour 3 to 6 (i.e., `3:6`).
--   The `phs` is in a six-hour resolution represented by the range `1:6`, meaning the storage balance is determined every six hours.
--   The flow from the phs to the balance (`phs, balance`) represents the discharge of the `phs`. This flow has a variable resolution of two blocks from hour 1 to 4 (i.e., `1:4`) and from hour 5 to 6 (i.e., `5:6`), which differs from the one defined for the charging flow from the `wind` asset.
+    -   The flow from the wind producer to the phs storage (`wind, phs`) has a uniform resolution of two blocks from hours 1 to 3 (i.e., `1:3`) and from hours 4 to 6 (i.e., `4:6`).
+    -   The flow from the wind producer to the balance hub (`wind, balance`) has a variable resolution of two blocks, too, but from hours 1 to 2 (i.e., `1:2`) and from hours 3 to 6 (i.e., `3:6`).
+-   The `phs` is in a 6-hour resolution represented by the range `1:6`, meaning the storage balance is determined every 6 hours.
+-   The flow from the phs to the balance (`phs, balance`) represents the discharge of the `phs`. This flow has a variable resolution of two blocks from hours 1 to 4 (i.e., `1:4`) and from hours 5 to 6 (i.e., `5:6`), which differs from the one defined for the charging flow from the `wind` asset.
 -   The `demand` consumption has hourly input data with one connection to the `balance` hub:
-    -   The flow from the balance hub to the demand (`balance, demand`) has a uniform resolution of three hours; therefore, it has two blocks, one from hour 1 to 3 (i.e., `1:3`) and the other from hour 4 to 6 (i.e., `4:6`).
--   The `balance` hub integrates all the different assets with their different resolutions. The lowest resolution of all connections determines the balance equation for this asset. Therefore, the resulting resolution is into two blocks, one from hour 1 to 4 (i.e., `1:4`) and the other from hour 5 to 6 (i.e., `5:6`). Notice that the resulting resolution comes from using the function [`compute_rp_partition`](@ref), which applies a `:greedy` forward strategy to obtain the lowest resolution of all connecting assets. It is possible that other strategies, such as the backward strategy, could be helpful. However, these are outside the current scope of the model and may be the subject of future research.
+    -   The flow from the balance hub to the demand (`balance, demand`) has a uniform resolution of 3 hours; therefore, it has two blocks, one from hours 1 to 3 (i.e., `1:3`) and the other from hours 4 to 6 (i.e., `4:6`).
+-   The `balance` hub integrates all the different assets with their different resolutions. The lowest resolution of all connections determines the balance equation for this asset. Therefore, the resulting resolution is into two blocks, one from hours 1 to 4 (i.e., `1:4`) and the other from hours 5 to 6 (i.e., `5:6`).
 
 > **Note:**
 > This example demonstrates that different time resolutions can be assigned to each asset and flow in the model. Additionally, the resolutions do not need to be uniform and can vary throughout the horizon.
