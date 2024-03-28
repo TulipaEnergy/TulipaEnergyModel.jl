@@ -30,6 +30,12 @@ end
     energy_problem = run_scenario(dir, OUTPUT_FOLDER; write_lp_file = true, log_file = "model.log")
 end
 
+@testset "Storage Assets Case Study" begin
+    dir = joinpath(INPUT_FOLDER, "Storage")
+    energy_problem = run_scenario(dir)
+    @test energy_problem.objective_value ≈ 2359.439239 atol = 1e-5
+end
+
 @testset "Tiny Variable Resolution Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Variable Resolution")
     energy_problem = run_scenario(dir)
