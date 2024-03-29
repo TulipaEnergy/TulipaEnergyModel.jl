@@ -90,7 +90,7 @@ end
                                                )
 
 Computes the incoming and outgoing expressions per row of df_cons for the constraints
-that are within (intra) the representative period.
+that are within (intra) the representative periods.
 
 This function is only used internally in the model.
 
@@ -176,7 +176,7 @@ end
                                                )
 
 Computes the incoming and outgoing expressions per row of df_inter for the constraints
-that are between (inter) the representative period.
+that are between (inter) the representative periods.
 
 This function is only used internally in the model.
 
@@ -228,7 +228,7 @@ If the profile does not exist, uses `default_value` instead of **each** profile 
 `profiles` should be a dictionary of profiles, for instance `graph[a].profiles` or `graph[u, v].profiles`.
 If `profiles[key]` exists, then this function computes the aggregation of `profiles[key]`
 over the range `block` using the aggregator `agg`, i.e., `agg(profiles[key][block])`.
-If `profiles[key]` does not exist, then this substitutes it by a vector of `default_value`s.
+If `profiles[key]` does not exist, then this substitutes it with a vector of `default_value`s.
 """
 function profile_aggregation(agg, profiles, key, block, default_value)
     if haskey(profiles, key)
@@ -290,7 +290,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     Ai = filter_assets(:investable, true)
     Fi = filter_flows(:investable, true)
 
-    # Maximum time step
+    # Maximum timestep
     Tmax = maximum(last(rp.timesteps) for rp in representative_periods)
     expression_workspace = Vector{JuMP.AffExpr}(undef, Tmax)
 

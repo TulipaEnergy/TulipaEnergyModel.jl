@@ -10,28 +10,30 @@ Depth = 5
 ## [Basic example](@id basic-example)
 
 For our first example, let's use a tiny existing dataset.
-Inside the code for this package, you can find the folder [`test/inputs/Tiny`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Tiny), which includes all the files necessary to create a TulipaEnergyModel and solve it.
+Inside the code for this package, you can find the folder [`test/inputs/Tiny`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Tiny), which includes all the files necessary to create a model and solve it.
 
-There are 8 relevant¹ files inside the "Tiny" folder. They define the assets and flows data, their profiles, and their time resolution, as well as two files to define the representative periods and which periods in the full problem formulation they stand for.
+The files inside the "Tiny" folder define the assets and flows data, their profiles, and their time resolution, as well as define the representative periods and which periods in the full problem formulation they represent.¹
 
-For more details about these files, see [Input](@ref).
+For more details about these files, see [Input](@ref input).
 
-¹ _Ignore the 9th file, bad-assets-data.csv, which is used for testing._
+¹ _Ignore bad-assets-data.csv, which is used for testing._
 
 ### Run scenario
 
-To read all data from the Tiny folder, perform all necessary steps to create a model, and solve the model, use the following snippet:
+To read all data from the Tiny folder, perform all necessary steps to create a model, and solve the model, run the following in a Julia terminal:
 
 ```@example
 using TulipaEnergyModel
 
 input_dir = "../../test/inputs/Tiny" # hide
-# input_dir should be the path to Tiny
+# input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
 energy_problem = run_scenario(input_dir)
 ```
 
 The `energy_problem` variable is of type `EnergyProblem`.
 For more details, see the [documentation for that type](@ref TulipaEnergyModel.EnergyProblem) or the section [Structures](@ref).
+
+That's all it takes to run a scenario! To learn about the data required to run your own scenario, see the [Input section](@ref input) of [How to Use](@ref how-to-use).
 
 ### Manually running each step
 
@@ -237,13 +239,13 @@ graph[:ocgt, :demand]
 
 The type of the flow struct is [GraphFlowData](@ref).
 
-We can easily find all assets `v` for which a flow `(a, v)` exists:
+We can easily find all assets `v` for which a flow `(a, v)` exists for a given asset `a` (in this case, demand):
 
 ```@example manual
 inneighbor_labels(graph, :demand) |> collect
 ```
 
-Similarly, all assets `u` for which a flow `(u, a)` exists:
+Similarly, all assets `u` for which a flow `(u, a)` exists for a given asset `a` (in this case, ocgt):
 
 ```@example manual
 outneighbor_labels(graph, :ocgt) |> collect
@@ -328,7 +330,7 @@ df = filter(
 
 ### The solution inside the graph
 
-In addition to the solution object, the solution is also stored by the individual assets and flows when [`solve_model!`](@ref) is called - i.e., when using a [EnergyProblem](@ref) object.
+In addition to the solution object, the solution is also stored by the individual assets and flows when [`solve_model!`](@ref) is called (i.e., when using an [EnergyProblem](@ref) object).
 
 They can be accessed like any other value from [GraphAssetData](@ref) or [GraphFlowData](@ref), which means that we recreate the values from the previous section in a new way:
 
@@ -419,7 +421,7 @@ df.solution
 By accessing the model directly, we can query the values of constraints and expressions.
 We need to know the name of the constraint and how it is indexed, and for that, you will need to check the model.
 
-For instance, we can get all incoming flow in the lowest resolution for a given asset for a given representative period with the following:
+For instance, we can get all incoming flows in the lowest resolution for a given asset for a given representative period with the following:
 
 ```@example solution
 using JuMP
@@ -461,7 +463,7 @@ df = filter(
     df_consumers,
     view = true,
 )
-value.(energy_problem.model[:consumer_balance][df.index]);
+value.(energy_problem.model[:consumer_balance][df.index])
 ```
 
 Here `value.` (i.e., broadcasting) was used instead of the vector comprehension from previous examples just to show that it also works.
@@ -473,15 +475,15 @@ The value of the constraint is obtained by looking only at the part with variabl
 To save the solution to CSV files, you can use [`save_solution_to_file`](@ref):
 
 ```@example solution
-mkdir("output")
-save_solution_to_file("output", energy_problem)
+mkdir("outputs")
+save_solution_to_file("outputs", energy_problem)
 ```
 
 ### Plotting
 
 In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you like.
 
-If you would like more custom plots, there is a separate repository [TulipaPlots[.jl](https://github.com/TulipaEnergy/TulipaPlots.jl), under development, which provides tailored-made plots for _TulipaEnergyModel.jl_. Check it out for inspiration.
+If you would like more custom plots, check out [TulipaPlots.jl](https://github.com/TulipaEnergy/TulipaPlots.jl), under development, which provides tailor-made plots for _TulipaEnergyModel.jl_.
 
 ## [Hydrothermal Dispatch example](@id hydrothermal-example)
 

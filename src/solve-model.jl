@@ -71,7 +71,7 @@ end
 """
     solution = solve_model!(dataframes, model, ...)
 
-Solves the JuMP `model` and return the solution, and modifies some `dataframes` to include the solution.
+Solves the JuMP `model`, returns the solution, and modifies `dataframes` to include the solution.
 The modifications made to `dataframes` are:
 
 - `df_flows.solution = solution.flow`
@@ -94,7 +94,7 @@ end
 """
     solution = solve_model(model[, optimizer; parameters])
 
-Solve the JuMP model and return the solution. The `optimizer` argument should be a MILP solver from the JuMP
+Solve the JuMP model and return the solution. The `optimizer` argument should be an MILP solver from the JuMP
 list of [supported solvers](https://jump.dev/JuMP.jl/stable/installation/#Supported-solvers).
 By default we use HiGHS.
 
@@ -119,13 +119,13 @@ The `solution` object is a mutable struct with the following fields:
   - `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` for a representative period `rp`
     and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used
     to create the model.
-    To create a vector with the all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
+    To create a vector with all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
 
     ```
     [solution.storage_level_intra_rp[a, rp, timesteps_block] for timesteps_block in constraints_partitions[:lowest_resolution][(a, rp)]]
     ```
 - `storage_level_inter_rp[a, pb]`: The storage level for the storage asset `a` for a periods block `pb`.
-    To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run
+    To create a vector with all values of `storage_level_inter_rp` for a given `a`, one can run
 
     ```
     [solution.storage_level_inter_rp[a, bp] for bp in graph[a].timeframe_partitions[a]]
@@ -138,9 +138,7 @@ The `solution` object is a mutable struct with the following fields:
     [solution.flow[(u, v), rp, timesteps_block] for timesteps_block in graph[u, v].partitions[rp]]
     ```
 - `objective_value`: A Float64 with the objective value at the solution.
-    ```
 - `duals`: A NamedTuple containing the dual variables of selected constraints.
-    ```
 
 ## Examples
 

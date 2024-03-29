@@ -12,8 +12,7 @@ This content is released under the [Apache License 2.0](https://www.apache.org/l
 
 ## [Bug reports and discussions](@id bugs-and-discussions)
 
-If you think you found a bug, feel free to open an [issue](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues).
-Focused suggestions and requests can also be opened as issues. Before opening a pull request, please start an issue or a discussion on the topic.
+If you think you have found a bug, feel free to open an [issue](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues). Before opening a pull request, please read our [CONTRIBUTING.md](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/CONTRIBUTING.md) and follow the guidelines in the [README.dev.md](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/README.dev.md) file.
 
 Start a discussion [here](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/discussions) if you want to ask a question unsuitable for a bug report. This forum is for general discussion about the repository [TulipaEnergyModel](https://github.com/TulipaEnergy/TulipaEnergyModel.jl).
 

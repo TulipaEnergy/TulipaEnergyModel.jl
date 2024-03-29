@@ -262,7 +262,7 @@ function Base.show(io::IO, ep::EnergyProblem)
         )
         println(
             io,
-            "    - Number of structual constraints: ",
+            "    - Number of structural constraints: ",
             JuMP.num_constraints(ep.model; count_variable_in_set_constraints = false),
         )
     else

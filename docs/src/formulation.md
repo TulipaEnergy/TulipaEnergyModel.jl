@@ -1,7 +1,7 @@
 # [Mathematical Formulation](@id formulation)
 
-This section shows the mathematical formulation of _TulipaEnergyModel.jl_, assuming that the temporal definition of time steps is the same for all the elements in the model.\
-The complete mathematical formulation, including variable temporal resolutions, is also freely available in the [preprint](https://arxiv.org/abs/2309.07711). In addition, the feature section has an example of how the model handles the [`flexible time resolution`](@ref flex-time-res).
+This section shows the mathematical formulation of _TulipaEnergyModel.jl_, assuming that the temporal definition of timesteps is the same for all the elements in the model.\
+The complete mathematical formulation, including variable temporal resolutions, is also freely available in the [preprint](https://arxiv.org/abs/2309.07711). In addition, the [concepts section](@ref seasonal-storage) has an example of how the model handles the [`flexible time resolution`](@ref flex-time-res).
 
 ## [Sets](@id math-sets)
 
@@ -160,7 +160,7 @@ v^{\text{flow}}_{f,k,b_k} \geq 0 \quad \forall f \notin \mathcal{F}^{\text{t}}, 
 
 ### Constraints for Energy Storage Assets
 
-There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits within the representative periods, while inter-temporal constraints restrict storage between representative periods. Inter-temporal constraints allow us to model seasonal storage by mapping the representative periods $\mathcal{K}$ to the periods $\mathcal{P}$ in the model's timeframe. For more information on this topic, refer to [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
+There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits within the representative periods, while inter-temporal constraints restrict storage between representative periods. Inter-temporal constraints allow us to model seasonal storage by mapping the representative periods $\mathcal{K}$ to the periods $\mathcal{P}$ in the model's timeframe. For more information on this topic, refer to the [concepts section](@ref seasonal-storage) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
 
 #### [Intra-temporal Constraint for Storage Balance](@id intra-storage-balance)
 
@@ -185,7 +185,7 @@ v^{\text{intra-storage}}_{a,k,b_k} \geq p^{\text{min intra level}}_{a,k,b_k} \cd
 \\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
-#### Intra-temporal Constraint for Cycling Constraint
+#### Intra-temporal Cycling Constraint
 
 The cycling constraint for the intra-temporal constraints links the first timestep block ($b^{\text{first}}_k$) and the last one ($b^{\text{last}}_k$) in each representative period. The parameter $p^{\text{init storage level}}_{a}$ determines the considered equations in the model for this constraint:
 
@@ -241,7 +241,7 @@ v^{\text{inter-storage}}_{a,p} \geq p^{\text{min inter level}}_{a,p} \cdot (p^{\
 \\ \\ \forall a \in \mathcal{A}^{\text{ss}}, \forall p \in \mathcal{P}
 ```
 
-#### Inter-temporal Constraint for Cycling Constraint
+#### Inter-temporal Cycling Constraint
 
 The cycling constraint for the inter-temporal constraints links the first-period block ($p^{\text{first}}$) and the last one ($p^{\text{last}}$) in the timeframe. The parameter $p^{\text{init storage level}}_{a}$ determines the considered equations in the model for this constraint:
 

@@ -14,13 +14,13 @@ Falls back to `Dict()` for undefined solvers.
 There are four ways to use this function:
 
   - `Val(optimizer_name_symbol)`: This uses type dispatch with the special `Val` type.
-    Just give the solver name as a Symbol (e.g., `Val(:HiGHS)`).
+    Pass the solver name as a Symbol (e.g., `Val(:HiGHS)`).
   - `optimizer`: The JuMP optimizer type (e.g., `HiGHS.Optimizer`).
-  - `optimizer_name_symbol` or `optimizer_name_string`: Just give the name in Symbol
-    or String format and we will convert to `Val`.
+  - `optimizer_name_symbol` or `optimizer_name_string`: Pass the name in Symbol
+    or String format and it will be converted to `Val`.
 
 Using `Val` is necessary for the dispatch.
-All other cases will convert the argument and call the `Val` version, which might lead to some type instability.
+All other cases will convert the argument and call the `Val` version, which might lead to type instability.
 
 ## Examples
 
@@ -77,7 +77,7 @@ The file should contain a list of lines of the following type:
 key = value
 ```
 
-The file is parsed as [TOML](https://toml.io), which is very intuitive. See the example below.
+The file is parsed as [TOML](https://toml.io), which is intuitive. See the example below.
 
 ## Example
 

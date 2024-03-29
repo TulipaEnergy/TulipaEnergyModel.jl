@@ -6,8 +6,8 @@ export run_scenario
 Run the scenario in the given `input_folder` and return the energy problem.
 The `output_folder` is optional. If it is specified, save the sets, parameters, and solution to the `output_folder`.
 
-The `optimizer` and `parameters` keyword arguments can be used to change the default optimizer
-(which is HiGHS) and its parameters. The variables are passed to the [`solve_model`](@ref) function.
+The `optimizer` and `parameters` keyword arguments can be used to change the optimizer
+(the default is HiGHS) and its parameters. The variables are passed to the [`solve_model`](@ref) function.
 """
 function run_scenario(
     input_folder::AbstractString,
