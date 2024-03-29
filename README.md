@@ -20,7 +20,7 @@ If you use TulipaEnergyModel.jl in your work, please cite using the format given
 pkg> add TulipaEnergyModel
 ```
 
-See the [documentation](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/) for details on the model and the package.
+See the [documentation](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/) for details on the model and the package.
 
 ## Bug reports and discussions
 
