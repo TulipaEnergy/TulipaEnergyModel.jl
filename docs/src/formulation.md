@@ -241,7 +241,7 @@ v^{\text{inter-storage}}_{a,p} \geq p^{\text{min inter level}}_{a,p} \cdot (p^{\
 \\ \\ \forall a \in \mathcal{A}^{\text{ss}}, \forall p \in \mathcal{P}
 ```
 
-#### Inter-temporal Constraint for Cycling Constraint
+#### Inter-temporal Cycling Constraint
 
 The cycling constraint for the inter-temporal constraints links the first-period block ($p^{\text{first}}$) and the last one ($p^{\text{last}}$) in the timeframe. The parameter $p^{\text{init storage level}}_{a}$ determines the considered equations in the model for this constraint:
 
