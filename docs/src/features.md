@@ -151,9 +151,9 @@ As shown in the table, the resolution of the storage balance is energy, which is
 
 ```math
 \begin{aligned}
-& storage\_balance_{phs,1:6}: \\
-& \qquad storage\_level_{phs,1:6} = 3 \cdot p^{eff}_{(wind,phs)} \cdot flow_{(wind,phs),1:3} + 3 \cdot p^{eff}_{(wind,phs)} \cdot flow_{(wind,phs),4:6} \\
-& \qquad \quad - \frac{4}{p^{eff}_{(phs,balance)}} \cdot flow_{(phs,balance),1:4} - \frac{2}{p^{eff}_{(phs,balance)}} \cdot flow_{(phs,balance),5:6} \\
+& \text{storage\_balance}_{\text{phs},1:6}: \\
+& \qquad v^{\text{intra-storage}}_{\text{phs},1:6} = 3 \cdot p^{\text{eff}}_{(\text{wind},\text{phs})} \cdot v^{\text{flow}}_{(\text{wind},\text{phs}),1:3} + 3 \cdot p^{\text{eff}}_{(\text{wind},\text{phs})} \cdot v^{\text{flow}}_{(\text{wind},\text{phs}),4:6} \\
+& \qquad \quad - \frac{4}{p^{\text{eff}}_{(\text{phs},\text{balance})}} \cdot v^{\text{flow}}_{(\text{phs},\text{balance}),1:4} - \frac{2}{p^{\text{eff}}_{(\text{phs},\text{balance})}} \cdot v^{\text{flow}}_{(\text{phs},\text{balance}),5:6} \\
 \end{aligned}
 ```
 
@@ -163,10 +163,10 @@ The flows coming from the balancing hub are defined every three hours. Therefore
 
 ```math
 \begin{aligned}
-& consumer\_balance_{demand,1:3}: \\
-& \qquad flow_{(balance,demand),1:3} = p^{peak\_demand}_{demand} \cdot \frac{\sum_{k=1}^{3} p^{profile}_{demand,k}}{3} \\
-& consumer\_balance_{demand,4:6}: \\
-& \qquad flow_{(balance,demand),4:6} = p^{peak\_demand}_{demand} \cdot \frac{\sum_{k=4}^{6} p^{profile}_{demand,k}}{3} \\
+& \text{consumer\_balance}_{\text{demand},1:3}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),1:3} = p^{\text{peak demand}}_{\text{demand}} \cdot \frac{\sum_{b=1}^{3} p^{\text{demand profile}}_{\text{demand},b}}{3} \\
+& \text{consumer\_balance}_{\text{demand},4:6}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),4:6} = p^{\text{peak demand}}_{\text{demand}} \cdot \frac{\sum_{b=4}^{6} p^{\text{demand profile}}_{\text{demand},b}}{3} \\
 \end{aligned}
 ```
 
@@ -176,19 +176,18 @@ The hub balance is quite interesting because it integrates several flow resoluti
 
 ```math
 \begin{aligned}
-& hub\_balance_{balance,1:1}: \\
-& \qquad flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 1:1} + flow_{(wind,balance),1:2} + flow_{(phs,balance),1:4} \\
-& hub\_balance_{balance,2:2}: \\
-& \qquad flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 2:2} + flow_{(wind,balance),1:2} + flow_{(phs,balance),1:4} \\
-& hub\_balance_{balance,3:3}: \\
-& \qquad flow_{(balance,demand),1:3} = flow_{(ccgt,balance), 3:3} + flow_{(wind,balance),3:6} + flow_{(phs,balance),1:4} \\
-& hub\_balance_{balance,4:4}: \\
-& \qquad flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 4:4} + flow_{(wind,balance),3:6} + flow_{(phs,balance),1:4}\\
-& hub\_balance_{balance,5:5}: \\
-& \qquad flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 5:5} + flow_{(wind,balance),3:6} + flow_{(phs,balance),5:6} \\
-& hub\_balance_{balance,6:6}: \\
-& \qquad flow_{(balance,demand),4:6} = flow_{(ccgt,balance), 6:6} + flow_{(wind,balance),3:6} + flow_{(phs,balance),5:6} \\
-
+& \text{hub\_balance}_{\text{balance},1:1}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),1:3} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 1:1} + v^{\text{flow}}_{(\text{wind},\text{balance}),1:2} + v^{\text{flow}}_{(\text{phs},\text{balance}),1:4} \\
+& \text{hub\_balance}_{\text{balance},2:2}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),1:3} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 2:2} + v^{\text{flow}}_{(\text{wind},\text{balance}),1:2} + v^{\text{flow}}_{(\text{phs},\text{balance}),1:4} \\
+& \text{hub\_balance}_{\text{balance},3:3}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),1:3} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 3:3} + v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{phs},\text{balance}),1:4} \\
+& \text{hub\_balance}_{\text{balance},4:4}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),4:6} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 4:4} + v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{phs},\text{balance}),1:4}\\
+& \text{hub\_balance}_{\text{balance},5:5}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),4:6} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 5:5} + v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{phs},\text{balance}),5:6} \\
+& \text{hub\_balance}_{\text{balance},6:6}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),4:6} = v^{\text{flow}}_{(\text{ccgt},\text{balance}), 6:6} + v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{phs},\text{balance}),5:6} \\
 \end{aligned}
 ```
 
@@ -198,8 +197,8 @@ The flows connected to the CCGT conversion unit have different resolutions, too.
 
 ```math
 \begin{aligned}
-& conversion\_balance_{ccgt,1:6}: \\
-& \qquad 6 \cdot p^{eff}_{(H2,ccgt)} \cdot flow_{(H2,ccgt),1:6} = \frac{1}{p^{eff}_{(ccgt,balance)}} \sum_{k=1}^{6} flow_{(ccgt,balance),k}  \\
+& \text{conversion\_balance}_{\text{ccgt},1:6}: \\
+& \qquad 6 \cdot p^{\text{eff}}_{(\text{H2},\text{ccgt})} \cdot v^{\text{flow}}_{(\text{H2},\text{ccgt}),1:6} = \frac{1}{p^{\text{eff}}_{(\text{ccgt},\text{balance})}} \sum_{b=1}^{6} v^{\text{flow}}_{(\text{ccgt},\text{balance}),b}  \\
 \end{aligned}
 ```
 
@@ -213,10 +212,10 @@ Since the storage unit only has one input and output, the capacity limit constra
 
 ```math
 \begin{aligned}
-& max\_output\_flows\_limit_{phs,1:4}: \\
-& \qquad flow_{(phs,balance),1:4} \leq p^{init\_capacity}_{phs} \\
-& max\_output\_flows\_limit_{phs,5:6}: \\
-& \qquad flow_{(phs,balance),5:6} \leq p^{init\_capacity}_{phs} \\
+& \text{max\_output\_flows\_limit}_{\text{phs},1:4}: \\
+& \qquad v^{\text{flow}}_{(\text{phs},\text{balance}),1:4} \leq p^{\text{init capacity}}_{\text{phs}} \\
+& \text{max\_output\_flows\_limit}_{\text{phs},5:6}: \\
+& \qquad v^{\text{flow}}_{(\text{phs},\text{balance}),5:6} \leq p^{\text{init capacity}}_{\text{phs}} \\
 \end{aligned}
 ```
 
@@ -224,10 +223,10 @@ And the constraints for the inputs of the storage are (i.e., charging capacity l
 
 ```math
 \begin{aligned}
-& max\_input\_flows\_limit_{phs,1:3}: \\
-& \qquad flow_{(phs,balance),1:3} \leq p^{init\_capacity}_{phs} \\
-& max\_input\_flows\_limit_{phs,4:6}: \\
-& \qquad flow_{(phs,balance),4:6} \leq p^{init\_capacity}_{phs} \\
+& \text{max\_input\_flows\_limit}_{\text{phs},1:3}: \\
+& \qquad v^{\text{flow}}_{(\text{wind},\text{phs}),1:3} \leq p^{\text{init capacity}}_{\text{phs}} \\
+& \text{max\_input\_flows\_limit}_{\text{phs},4:6}: \\
+& \qquad v^{\text{flow}}_{(\text{wind},\text{phs}),4:6} \leq p^{\text{init capacity}}_{\text{phs}} \\
 \end{aligned}
 ```
 
@@ -237,8 +236,8 @@ Similarly, each outflow is limited to the `ccgt` capacity for the conversion uni
 
 ```math
 \begin{aligned}
-& max\_output\_flows\_limit_{ccgt,k}: \\
-& \qquad flow_{(ccgt,balance),k} \leq p^{init\_capacity}_{ccgt} \quad \forall k \in [1,6] \\
+& \text{max\_output\_flows\_limit}_{\text{ccgt},b}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{balance}),b} \leq p^{\text{init capacity}}_{\text{ccgt}} \quad \forall b \in [1,6] \\
 \end{aligned}
 ```
 
@@ -249,23 +248,23 @@ Therefore, the constraints are as follows:
 
 ```math
 \begin{aligned}
-& max\_output\_flows\_limit_{wind,1:2}: \\
-& \qquad flow_{(wind,balance),1:2} + flow_{(wind,phs),1:3} \leq \frac{p^{init\_capacity}_{wind}}{2} \cdot \sum_{k=1}^{2} p^{profile}_{wind,k} \\
-& max\_output\_flows\_limit_{wind,3}: \\
-& \qquad flow_{(wind,balance),3:6} + flow_{(wind,phs),1:3} \leq p^{init\_capacity}_{wind} \cdot p^{profile}_{wind,3} \\
-& max\_output\_flows\_limit_{wind,4:6}: \\
-& \qquad flow_{(wind,balance),3:6} + flow_{(wind,phs),4:6} \leq \frac{p^{init\_capacity}_{wind}}{2} \cdot \sum_{k=5}^{6} p^{profile}_{wind,k} \\
+& \text{max\_output\_flows\_limit}_{\text{wind},1:2}: \\
+& \qquad v^{\text{flow}}_{(\text{wind},\text{balance}),1:2} + v^{\text{flow}}_{(\text{wind},\text{phs}),1:3} \leq \frac{p^{\text{init capacity}}_{\text{wind}}}{2} \cdot \sum_{b=1}^{2} p^{\text{availability profile}}_{\text{wind},b} \\
+& \text{max\_output\_flows\_limit}_{\text{wind},3}: \\
+& \qquad v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{wind},\text{phs}),1:3} \leq p^{\text{init capacity}}_{\text{wind}} \cdot p^{\text{availability profile}}_{\text{wind},3} \\
+& \text{max\_output\_flows\_limit}_{\text{wind},4:6}: \\
+& \qquad v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{wind},\text{phs}),4:6} \leq \frac{p^{\text{init capacity}}_{\text{wind}}}{2} \cdot \sum_{b=5}^{6} p^{\text{availability profile}}_{\text{wind},b} \\
 \end{aligned}
 ```
 
-Since the flow variables $flow_{(wind, balance),1:2}$ and $flow_{(wind, balance),1:3}$ represent power, the first constraint sets the upper bound of the power for both time step 1 and 2, by assuming an average capacity across these two time steps. The same applies to the other two constraints.
+Since the flow variables $v^{\text{flow}}_{(\text{wind}, \text{balance}),1:2}$ and $v^{\text{flow}}_{(\text{wind}, \text{balance}),1:3}$ represent power, the first constraint sets the upper bound of the power for both time step 1 and 2, by assuming an average capacity across these two time steps. The same applies to the other two constraints.
 
 The hydrogen (H2) producer capacity limit is straightforward since both the asset and the flow definition are in the exact time resolution:
 
 ```math
 \begin{aligned}
-& max\_output\_flows\_limit_{H2,1:6}: \\
-& \qquad flow_{(H2,ccgt),1:6} \leq p^{init\_capacity}_{wind} \cdot p^{profile}_{H2,1:6} \\
+& \text{max\_output\_flows\_limit}_{\text{H2},1:6}: \\
+& \qquad v^{\text{flow}}_{(\text{H2},\text{ccgt}),1:6} \leq p^{\text{init capacity}}_{\text{H2}} \cdot p^{\text{availability profile}}_{\text{H2},1:6} \\
 \end{aligned}
 ```
 
@@ -275,19 +274,19 @@ For the connection from the hub to the demand, there are associated transmission
 
 ```math
 \begin{aligned}
-& max\_transport\_flows\_limit_{(balance,demand),1:3}: \\
-& \qquad flow_{(balance,demand),1:3} \leq p^{init\_export\_capacity}_{(balance,demand)} \\
-& max\_transport\_flows\_limit_{(balance,demand),4:6}: \\
-& \qquad flow_{(balance,demand),4:6} \leq p^{init\_export\_capacity}_{(balance,demand)} \\
+& \text{max\_transport\_flows\_limit}_{(\text{balance},\text{demand}),1:3}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),1:3} \leq p^{\text{init export capacity}}_{(\text{balance},\text{demand})} \\
+& \text{max\_transport\_flows\_limit}_{(\text{balance},\text{demand}),4:6}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),4:6} \leq p^{\text{init export capacity}}_{(\text{balance},\text{demand})} \\
 \end{aligned}
 ```
 
 ```math
 \begin{aligned}
-& min\_transport\_flows\_limit_{(balance,demand),1:3}: \\
-& \qquad flow_{(balance,demand),1:3} \geq - p^{init\_import\_capacity}_{(balance,demand)} \\
-& min\_transport\_flows\_limit_{(balance,demand),4:6}: \\
-& \qquad flow_{(balance,demand),4:6} \geq - p^{init\_import\_capacity}_{(balance,demand)} \\
+& \text{min\_transport\_flows\_limit}_{(\text{balance},\text{demand}),1:3}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),1:3} \geq - p^{\text{init import capacity}}_{(\text{balance},\text{demand})} \\
+& \text{min\_transport\_flows\_limit}_{(\text{balance},\text{demand}),4:6}: \\
+& \qquad v^{\text{flow}}_{(\text{balance},\text{demand}),4:6} \geq - p^{\text{init import capacity}}_{(\text{balance},\text{demand})} \\
 \end{aligned}
 ```
 
@@ -297,8 +296,8 @@ Since the system has a storage asset, we must limit the maximum storage level. T
 
 ```math
 \begin{aligned}
-& max\_storage\_level\_limit_{phs,1:6}: \\
-& \qquad storage\_level_{phs,1:6} = p^{init\_storage\_capacity}_{phs}
+& \text{max\_storage\_level\_limit}_{\text{phs},1:6}: \\
+& \qquad v^{\text{intra-storage}}_{\text{phs},1:6} \leq p^{\text{init storage capacity}}_{\text{phs}}
 \end{aligned}
 ```
 
@@ -364,6 +363,7 @@ map = CSV.read(map_file, DataFrame, header = 2) # hide
 unstacked_map = unstack(map, :period, :rep_period, :weight) # hide
 rename!(unstacked_map, ["period", "k=1", "k=2", "k=3"]) # hide
 unstacked_map[!,["k=1", "k=2", "k=3"]] = convert.(Float64, unstacked_map[!,["k=1", "k=2", "k=3"]]) # hide
+unstacked_map # hide
 ```
 
 The file `assets-timeframe-partitions` has the information on how often we want to consider the inter-temporal constraints that combine the information of the representative periods. In this example, we define a uniform distribution of one period, meaning that we will check the inter-storage level every day of the week in the timeframe.
