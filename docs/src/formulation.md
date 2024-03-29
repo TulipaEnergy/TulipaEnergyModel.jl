@@ -160,7 +160,7 @@ v^{\text{flow}}_{f,k,b_k} \geq 0 \quad \forall f \notin \mathcal{F}^{\text{t}}, 
 
 ### Constraints for Energy Storage Assets
 
-There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits within the representative periods, while inter-temporal constraints restrict storage between representative periods. Inter-temporal constraints allow us to model seasonal storage by mapping the representative periods $\mathcal{K}$ to the periods $\mathcal{P}$ in the model's timeframe. For more information on this topic, refer to the [concepts section](@ref modeling-seasonal-storage) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
+There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits within the representative periods, while inter-temporal constraints restrict storage between representative periods. Inter-temporal constraints allow us to model seasonal storage by mapping the representative periods $\mathcal{K}$ to the periods $\mathcal{P}$ in the model's timeframe. For more information on this topic, refer to the [concepts section](@ref seasonal-storage) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
 
 #### [Intra-temporal Constraint for Storage Balance](@id intra-storage-balance)
 
@@ -185,22 +185,11 @@ v^{\text{intra-storage}}_{a,k,b_k} \geq p^{\text{min intra level}}_{a,k,b_k} \cd
 \\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
-#### Intra-temporal Constraint for Cycling Constraint
+#### Intra-temporal Cycling Constraint
 
 The cycling constraint for the intra-temporal constraints links the first timestep block ($b^{\text{first}}_k$) and the last one ($b^{\text{last}}_k$) in each representative period. The parameter $p^{\text{init storage level}}_{a}$ determines the considered equations in the model for this constraint:
 
--   # If parameter $p^{\text{init storage level}}_{a}$ is not defined, the intra-storage level of the last timestep block ($b^{\text{last}}_k$) is used as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance).
-
-```math
-s^{\text{intra}}_{a,k,B_k} \geq p^{\text{init storage level}}_{a} \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K}
-```
-
-#### Inter-temporal Constraint for Storage Balance
-
-This constraint allows us to consider the storage's seasonality throughout the model's timeframe (e.g., a year). The parameter $p^{\text{map}}_{p,k}$ determines how much of the representative period $k$ is in the period $p$, and you can use a clustering technique to calculate it. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their mapping.
-
-For the sake of simplicity, we show the constraint assuming that we are calculating the inter-storage level between two consecutive periods $p$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the file [`assets-timeframe-partitions.csv`](@ref assets-timeframe-partitions).
+-   If parameter $p^{\text{init storage level}}_{a}$ is not defined, the intra-storage level of the last timestep block ($b^{\text{last}}_k$) is used as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance).
 
 ```math
 \begin{aligned}
