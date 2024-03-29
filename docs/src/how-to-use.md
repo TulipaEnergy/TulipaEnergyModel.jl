@@ -40,7 +40,7 @@ To run a scenario, use the function:
 
 The `input_folder` should contain CSV files as described below. The `output_folder` is optional if the user wants to export the output.
 
-## Input
+## Input(@id input)
 
 Currently, we only accept input from CSV files that follow the [Schemas](@ref).
 You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples.
