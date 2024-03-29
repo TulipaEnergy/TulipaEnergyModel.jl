@@ -11,7 +11,7 @@ Returns the [`TulipaEnergyModel.EnergyProblem`](@ref) reading all data from CSV 
 in the `input_folder`.
 This is a wrapper around `create_graph_and_representative_periods_from_csv_folder` that creates
 the `EnergyProblem` structure.
-Set strict = true to error if assets are missing from partition data.
+Set `strict = true` to error if assets are missing from partition data.
 """
 function create_energy_problem_from_csv_folder(input_folder::AbstractString; strict = false)
     graph, representative_periods, timeframe =
@@ -23,7 +23,7 @@ end
     graph, representative_periods, timeframe = create_graph_and_representative_periods_from_csv_folder(input_folder; strict = false)
 
 Returns the `graph` structure that holds all data, and the `representative_periods` array.
-Set strict = true to error if assets are missing from partition data.
+Set `strict = true` to error if assets are missing from partition data.
 
 The following files are expected to exist in the input folder:
 
@@ -261,7 +261,7 @@ end
 """
     read_csv_with_schema(file_path, schema; csvargs...)
 
-Reads the csv at `file_path` validating the data using the `schema`.
+Reads the csv at `file_path` and validates the data using the `schema`.
 It assumes that the file's header is at the second row.
 The first row of the file contains some metadata information that is not used.
 Additional keywords arguments can be passed to `CSV.read`.
@@ -275,9 +275,9 @@ end
 """
     read_csv_with_implicit_schema(dir, filename; csvargs...)
 
-Reads the csv at direcory `dir` named `filename` validating the data using a schema
-chosen based on `filename`.
-The function [`read_csv_with_schema`](@ref) is responsible for actually reading the file.
+Reads the csv at direcory `dir` named `filename` and validates the data using a schema
+based on `filename`.
+The function [`read_csv_with_schema`](@ref) reads the file.
 Additional keywords arguments can be passed to `CSV.read`.
 """
 function read_csv_with_implicit_schema(dir, filename; csvargs...)
@@ -438,7 +438,7 @@ end
 """
     _interpolate_storage_level!(df, time_column::Symbol)
 
-Tranform the storage level dataframe from grouped timesteps or periods to incremental ones by interpolation.
+Transform the storage level dataframe from grouped timesteps or periods to incremental ones by interpolation.
 The starting value is the value of the previous grouped timesteps or periods or the initial value.
 The ending value is the value for the grouped timesteps or periods.
 """
@@ -462,7 +462,7 @@ end
 """
     _parse_rp_partition(Val(specification), timestep_string, rp_timesteps)
 
-Parses the timestep_string according to the specification.
+Parses the `timestep_string` according to the specification.
 The representative period timesteps (`rp_timesteps`) might not be used in the computation,
 but it will be used for validation.
 
