@@ -324,10 +324,10 @@ The following files are created:
     capacity value. Only investable assets are included.
   - `flows-investment.csv`: Similar to `assets-investment.csv`, but for flows.
   - `flows.csv`: The value of each flow, per `(from, to)` flow, `rp` representative period
-    and `timestep`. Since the flow is in power, the value at a time step is equal to the value
+    and `timestep`. Since the flow is in power, the value at a timestep is equal to the value
     at the corresponding time block, i.e., if flow[1:3] = 30, then flow[1] = flow[2] = flow[3] = 30.
   - `storage-level.csv`: The value of each storage level, per `asset`, `rp` representative period,
-    and `timestep`. Since the storage level is in energy, the value at a time step is a
+    and `timestep`. Since the storage level is in energy, the value at a timestep is a
     proportional fraction of the value at the corresponding time block, i.e., if level[1:3] = 30,
     then level[1] = level[2] = level[3] = 10.
 """
@@ -463,7 +463,7 @@ end
     _parse_rp_partition(Val(specification), timestep_string, rp_timesteps)
 
 Parses the timestep_string according to the specification.
-The representative period time steps (`rp_timesteps`) might not be used in the computation,
+The representative period timesteps (`rp_timesteps`) might not be used in the computation,
 but it will be used for validation.
 
 The specification defines what is expected from the `timestep_string`:
@@ -578,7 +578,7 @@ input `partitions`.
 possibly empty.
 
 `timesteps_per_rp` must be a dictionary indexed by `rp` and its values are the
-time steps of that `rp`.
+timesteps of that `rp`.
 
 To obtain the partitions, the columns `specification` and `partition` from `df`
 are passed to the function [`_parse_rp_partition`](@ref).
@@ -608,7 +608,7 @@ input `partitions`.
 possibly empty.
 
 `timesteps_per_rp` must be a dictionary indexed by `rp` and its values are the
-time steps of that `rp`.
+timesteps of that `rp`.
 
 To obtain the partitions, the columns `specification` and `partition` from `df`
 are passed to the function [`_parse_rp_partition`](@ref).

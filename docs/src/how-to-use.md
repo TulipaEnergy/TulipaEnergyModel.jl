@@ -54,6 +54,13 @@ At the end, in [Schemas](@ref), we have the expected columns in these CSVs.
 
 This file contains the list of assets and the data associated with each of them.
 
+The investment parameters are as follows:
+
+-   The `investable` parameter determines whether there is an investment decision for the asset or flow.
+-   The `investment_integer` parameter determines if the investment decision is integer or continuous.
+-   The `investment_cost` parameter represents the cost in the defined [timeframe](@ref timeframe). Thus, if the timeframe is a year, the investment cost is the annualized cost of the asset.
+-   The `investment_limit` parameter limits the total investment capacity of the asset or flow. This limit represents the potential of that particular asset or flow. Without data in this parameter, the model assumes no investment limit.
+
 The meaning of `Missing` data depends on the parameter, for instance:
 
 -   `investment_limit`: There is no investment limit.
@@ -87,11 +94,11 @@ If not specified, each asset will have the exact time resolution as the represen
 There are currently three ways to specify the desired resolution, indicated in the column `specification`.
 The column `partition` serves to define the partitions in the specified style.
 
--   `specification = uniform`: Set the resolution to a uniform amount, i.e., a time block is made of `X` time steps. The number `X` is defined in the column `partition`. The number of time steps in the representative period must be divisible by `X`.
--   `specification = explicit`: Set the resolution according to a list of numbers separated by `;` on the `partition`. Each number in the list is the number of time steps for that time block. For instance, `2;3;4` means that there are three time blocks, the first has 2 time steps, the second has 3 time steps, and the last has 4 time steps. The sum of the list must be equal to the total number of time steps in that representative period, as specified in `num_timesteps` of [`rep-periods-data.csv`](@ref rep-periods-data).
--   `specification = math`: Similar to explicit, but using `+` and `x` for simplification. The value of `partition` is a sequence of elements of the form `NxT` separated by `+`, indicating `N` time blocks of length `T`. For instance, `2x3+3x6` is 2 time blocks of 3 time steps, followed by 3 time blocks of 6 time steps, for a total of 24 time steps in the representative period.
+-   `specification = uniform`: Set the resolution to a uniform amount, i.e., a time block is made of `X` timesteps. The number `X` is defined in the column `partition`. The number of timesteps in the representative period must be divisible by `X`.
+-   `specification = explicit`: Set the resolution according to a list of numbers separated by `;` on the `partition`. Each number in the list is the number of timesteps for that time block. For instance, `2;3;4` means that there are three time blocks, the first has 2 timesteps, the second has 3 timesteps, and the last has 4 timesteps. The sum of the list must be equal to the total number of timesteps in that representative period, as specified in `num_timesteps` of [`rep-periods-data.csv`](@ref rep-periods-data).
+-   `specification = math`: Similar to explicit, but using `+` and `x` for simplification. The value of `partition` is a sequence of elements of the form `NxT` separated by `+`, indicating `N` time blocks of length `T`. For instance, `2x3+3x6` is 2 time blocks of 3 timesteps, followed by 3 time blocks of 6 timesteps, for a total of 24 timesteps in the representative period.
 
-The table below shows various results for different formats for a representative period with 12 time steps.
+The table below shows various results for different formats for a representative period with 12 timesteps.
 
 | Time Block            | :uniform | :explicit               | :math       |
 | :-------------------- | :------- | :---------------------- | :---------- |
@@ -106,7 +113,7 @@ Note: If an asset is not specified in this file, the balance equation will be wr
 
 The same as [`assets-rep-periods-partitions.csv`](@ref asset-rep-periods-partitions-definition), but for flows.
 
-If a flow is not specified in this file, the flow time resolution will be for each time step by default (e.g., hourly).
+If a flow is not specified in this file, the flow time resolution will be for each timestep by default (e.g., hourly).
 
 #### [`assets-timeframe-partitions.csv`](@id assets-timeframe-partitions)
 
@@ -114,7 +121,7 @@ The same as their [`assets-rep-periods-partitions.csv`](@ref asset-rep-periods-p
 
 #### [`rep-periods-data.csv`](@id rep-periods-data)
 
-Describes the [representative periods](@ref representative-periods) by their unique ID, the number of time steps per representative period, and the resolution per time step. Note that in the test files the resolution units are given as hours for understandability, but the resolution is technically unitless.
+Describes the [representative periods](@ref representative-periods) by their unique ID, the number of timesteps per representative period, and the resolution per timestep. Note that in the test files the resolution units are given as hours for understandability, but the resolution is technically unitless.
 
 #### [`rep-periods-mapping.csv`](@id rep-periods-mapping)
 
@@ -196,11 +203,11 @@ Given a graph `graph`, a flow from asset `u` to asset `v` can be accessed throug
 
 ### Partition
 
-A [representative period](@ref representative-periods) will be defined with a number of time steps.
-A partition is a division of these time steps into [time blocks](@ref time-blocks) such that the time blocks are disjunct (not overlapping) and that all time steps belong to some time block.
+A [representative period](@ref representative-periods) will be defined with a number of timesteps.
+A partition is a division of these timesteps into [time blocks](@ref time-blocks) such that the time blocks are disjunct (not overlapping) and that all timesteps belong to some time block.
 Some variables and constraints are defined over every time block in a partition.
 
-For instance, for a representative period with 12 time steps, all sets below are partitions:
+For instance, for a representative period with 12 timesteps, all sets below are partitions:
 
 -   $\{\{1, 2, 3\}, \{4, 5, 6\}, \{7, 8, 9\}, \{10, 11, 12\}\}$
 -   $\{\{1, 2, 3, 4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}$
@@ -221,11 +228,11 @@ A representative period has four fields:
 
 -   `mapping`: Indicates the periods of the [timeframe](@ref timeframe) that map into a representative period and the weight of the representative period in them.
 -   `weight`: Indicates how many representative periods are contained in the [timeframe](@ref timeframe); this is inferred automatically from `mapping`.
--   `timesteps`: The number of time steps blocks in the representative period.
--   `resolution`: The duration in time of each time step.
+-   `timesteps`: The number of timesteps blocks in the representative period.
+-   `resolution`: The duration in time of each timestep.
 
-The number of time steps and resolution work together to define the coarseness of the period.
-Nothing is defined outside of these time steps; for instance, if the representative period represents a day and you want to specify a variable or constraint with a coarseness of 30 minutes. You need to define the number of time steps to 48 and the resolution to `0.5`.
+The number of timesteps and resolution work together to define the coarseness of the period.
+Nothing is defined outside of these timesteps; for instance, if the representative period represents a day and you want to specify a variable or constraint with a coarseness of 30 minutes. You need to define the number of timesteps to 48 and the resolution to `0.5`.
 
 ### Solution
 

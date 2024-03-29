@@ -80,7 +80,7 @@ end
 """
     rp_partition = compute_rp_partition(partitions, :lowest)
 
-Given the time steps of various flows/assets in the `partitions` input, compute the representative period partitions.
+Given the timesteps of various flows/assets in the `partitions` input, compute the representative period partitions.
 
 Each element of `partitions` is a partition with the following assumptions:
 

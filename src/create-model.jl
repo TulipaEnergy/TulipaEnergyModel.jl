@@ -290,7 +290,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     Ai = filter_assets(:investable, true)
     Fi = filter_flows(:investable, true)
 
-    # Maximum time step
+    # Maximum timestep
     Tmax = maximum(last(rp.timesteps) for rp in representative_periods)
     expression_workspace = Vector{JuMP.AffExpr}(undef, Tmax)
 
