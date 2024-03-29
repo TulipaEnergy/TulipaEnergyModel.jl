@@ -40,7 +40,7 @@ To run a scenario, use the function:
 
 The `input_folder` should contain CSV files as described below. The `output_folder` is optional if the user wants to export the output.
 
-## Input(@id input)
+## [Input](@id input)
 
 Currently, we only accept input from CSV files that follow the [Schemas](@ref).
 You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples.
@@ -76,7 +76,7 @@ The meaning of `Missing` data depends on the parameter, for instance:
 
 #### [`assets-timeframe-profiles.csv` and `assets-rep-periods-profiles.csv`] (@id assets-profiles-definition)
 
-These files contain information about assets and their associated profiles. Each row lists an asset, the type of profile (e.g., availability, demand, maximum or minimum storage level), and the profile's name. The timeframe profiles are used in the [inter-temporal constraints](@ref concepts-temporal-constraints), whereas the representative periods profiles are used in the [intra-temporal constraints](@ref concepts-temporal-constraints).
+These files contain information about assets and their associated profiles. Each row lists an asset, the type of profile (e.g., availability, demand, maximum or minimum storage level), and the profile's name. The timeframe profiles are used in the [inter-temporal constraints](@ref concepts-summary), whereas the representative periods profiles are used in the [intra-temporal constraints](@ref concepts-summary).
 
 #### [`flows-rep-periods-profiles.csv`](@id flows-profiles-definition)
 
@@ -111,13 +111,13 @@ Note: If an asset is not specified in this file, the balance equation will be wr
 
 #### [`flows-rep-periods-partitions.csv`](@id flow-rep-periods-partitions-definition)
 
-The same as [`assets-rep-periods-partitions.csv`](@ref asset-rep-periods-partitions-definition), but for flows.
+The same as [`assets-rep-periods-partitions.csv`](@ref assets-rep-periods-partitions-definition), but for flows.
 
 If a flow is not specified in this file, the flow time resolution will be for each timestep by default (e.g., hourly).
 
 #### [`assets-timeframe-partitions.csv`](@id assets-timeframe-partitions)
 
-The same as their [`assets-rep-periods-partitions.csv`](@ref asset-rep-periods-partitions-definition) counterpart, but for the periods in the [timeframe](@ref timeframe) of the model.
+The same as their [`assets-rep-periods-partitions.csv`](@ref assets-rep-periods-partitions-definition) counterpart, but for the periods in the [timeframe](@ref timeframe) of the model.
 
 #### [`rep-periods-data.csv`](@id rep-periods-data)
 

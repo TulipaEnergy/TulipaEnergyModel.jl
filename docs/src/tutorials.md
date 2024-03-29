@@ -14,7 +14,7 @@ Inside the code for this package, you can find the folder [`test/inputs/Tiny`](h
 
 The files inside the "Tiny" folder define the assets and flows data, their profiles, and their time resolution, as well as define the representative periods and which periods in the full problem formulation they represent.¹
 
-For more details about these files, see [Input](@ref).
+For more details about these files, see [Input](@ref input).
 
 ¹ _Ignore bad-assets-data.csv, which is used for testing._
 
