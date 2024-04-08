@@ -13,7 +13,11 @@ function add_investment_constraints!(graph, Ai, Fi, assets_investment, flows_inv
         if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit)
             JuMP.set_upper_bound(
                 assets_investment[a],
-                graph[a].investment_limit / graph[a].capacity,
+                if graph[a].investment_integer
+                    floor(graph[a].investment_limit / graph[a].capacity)
+                else
+                    graph[a].investment_limit / graph[a].capacity
+                end,
             )
         end
     end
@@ -23,7 +27,11 @@ function add_investment_constraints!(graph, Ai, Fi, assets_investment, flows_inv
         if graph[u, v].capacity > 0 && !ismissing(graph[u, v].investment_limit)
             JuMP.set_upper_bound(
                 flows_investment[(u, v)],
-                graph[u, v].investment_limit / graph[u, v].capacity,
+                if graph[u, v].investment_integer
+                    floor(graph[u, v].investment_limit / graph[u, v].capacity)
+                else
+                    graph[u, v].investment_limit / graph[u, v].capacity
+                end,
             )
         end
     end
