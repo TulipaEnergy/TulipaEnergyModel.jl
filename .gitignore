@@ -11,3 +11,4 @@ debugging/
 docs/build/
 env
 test/outputs
+.vscode/
