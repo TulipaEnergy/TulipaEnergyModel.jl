@@ -83,10 +83,11 @@ In addition, the following flow sets represent methods for incorporating additio
 
 ### Parameter for Temporal Structures
 
-| Name                       | Domain           | Domains of Indices                       | Description                                                    | Units |
-| -------------------------- | ---------------- | ---------------------------------------- | -------------------------------------------------------------- | ----- |
-| $p^{\text{rp weight}}_{k}$ | $\mathbb{R}_{+}$ | $k \in \mathcal{K}$                      | Weight of representative period $k$                            | [-]   |
-| $p^{\text{map}}_{p,k}$     | $\mathbb{R}_{+}$ | $p \in \mathcal{P}$, $k \in \mathcal{K}$ | Map with the weight of representative period $k$ in period $p$ | [-]   |
+| Name                        | Domain           | Domains of Indices                       | Description                                                    | Units |
+| --------------------------- | ---------------- | ---------------------------------------- | -------------------------------------------------------------- | ----- |
+| $p^{\text{duration}}_{b_k}$ | $\mathbb{R}_{+}$ | $b_k \in \mathcal{B_k}$                  | Duration of the timestep blocks $b_k$                          | [h]   |
+| $p^{\text{rp weight}}_{k}$  | $\mathbb{R}_{+}$ | $k \in \mathcal{K}$                      | Weight of representative period $k$                            | [-]   |
+| $p^{\text{map}}_{p,k}$      | $\mathbb{R}_{+}$ | $p \in \mathcal{P}$, $k \in \mathcal{K}$ | Map with the weight of representative period $k$ in period $p$ | [-]   |
 
 ## [Variables](@id math-variables)
 
@@ -115,7 +116,7 @@ Where:
 \begin{aligned}
 assets\_investment\_cost &= \sum_{a \in \mathcal{A}^{\text{i}}} p^{\text{inv cost}}_{a} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \\
 flows\_investment\_cost &= \sum_{f \in \mathcal{F}^{\text{ti}}} p^{\text{inv cost}}_{f} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \\
-flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{k \in \mathcal{K}} \sum_{b_k \in \mathcal{B_k}} p^{\text{rp weight}}_{k} \cdot p^{\text{variable cost}}_{f} \cdot v^{\text{flow}}_{f,k,b_k}
+flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{k \in \mathcal{K}} \sum_{b_k \in \mathcal{B_k}} p^{\text{rp weight}}_{k} \cdot p^{\text{variable cost}}_{f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
 \end{aligned}
 ```
 
@@ -160,13 +161,13 @@ v^{\text{flow}}_{f,k,b_k} \geq 0 \quad \forall f \notin \mathcal{F}^{\text{t}}, 
 
 ### Constraints for Energy Storage Assets
 
-There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits within the representative periods, while inter-temporal constraints restrict storage between representative periods. Inter-temporal constraints allow us to model seasonal storage by mapping the representative periods $\mathcal{K}$ to the periods $\mathcal{P}$ in the model's timeframe. For more information on this topic, refer to the [concepts section](@ref seasonal-storage) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
+There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref seasonal-storage) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
 
 #### [Intra-temporal Constraint for Storage Balance](@id intra-storage-balance)
 
 ```math
 \begin{aligned}
-v^{\text{intra-storage}}_{a,k,b_k} = v^{\text{intra-storage}}_{a,k,b_k-1}  + p^{\text{inflows}}_{a,k,b_k} + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \cdot v^{\text{flow}}_{f,k,b_k} \quad
+v^{\text{intra-storage}}_{a,k,b_k} = v^{\text{intra-storage}}_{a,k,b_k-1}  + p^{\text{inflows}}_{a,k,b_k} + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \quad
 \\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
@@ -193,7 +194,7 @@ The cycling constraint for the intra-temporal constraints links the first timest
 
 ```math
 \begin{aligned}
-v^{\text{intra-storage}}_{a,k,b^{\text{first}}_k} = v^{\text{intra-storage}}_{a,k,b^{\text{last}}_k}  + p^{\text{inflows}}_{a,k,b^{\text{first}}_k} + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} \quad
+v^{\text{intra-storage}}_{a,k,b^{\text{first}}_k} = v^{\text{intra-storage}}_{a,k,b^{\text{last}}_k}  + p^{\text{inflows}}_{a,k,b^{\text{first}}_k} + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} \quad
 \\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K}
 \end{aligned}
 ```
@@ -202,7 +203,7 @@ v^{\text{intra-storage}}_{a,k,b^{\text{first}}_k} = v^{\text{intra-storage}}_{a,
 
 ```math
 \begin{aligned}
-v^{\text{intra-storage}}_{a,k,b^{\text{first}}_k} = p^{\text{init storage level}}_{a}  + p^{\text{inflows}}_{a,k,b^{\text{first}}_k} + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} \quad
+v^{\text{intra-storage}}_{a,k,b^{\text{first}}_k} = p^{\text{init storage level}}_{a}  + p^{\text{inflows}}_{a,k,b^{\text{first}}_k} + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} \quad
 \\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K}
 \end{aligned}
 ```
@@ -221,8 +222,8 @@ For the sake of simplicity, we show the constraint assuming the inter-storage le
 ```math
 \begin{aligned}
 v^{\text{inter-storage}}_{a,p} = & v^{\text{inter-storage}}_{a,p-1} + \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{inflows}}_{a,k,b_k} \\
-& + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} v^{\text{flow}}_{f,k,b_k} \\
-& - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} v^{\text{flow}}_{f,k,b_k}
+& + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \\
+& - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
 \\ \\ & \forall a \in \mathcal{A}^{\text{ss}}, \forall p \in \mathcal{P}
 \end{aligned}
 ```
@@ -250,8 +251,8 @@ The cycling constraint for the inter-temporal constraints links the first-period
 ```math
 \begin{aligned}
 v^{\text{inter-storage}}_{a,p^{\text{first}}} = & v^{\text{inter-storage}}_{a,p^{\text{last}}} + \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{inflows}}_{a,k,b_k} \\
-& + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} v^{\text{flow}}_{f,k,b_k} \\
-& - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} v^{\text{flow}}_{f,k,b_k}
+& + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \\
+& - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
 \\ \\ & \forall a \in \mathcal{A}^{\text{ss}}
 \end{aligned}
 ```
@@ -261,8 +262,8 @@ v^{\text{inter-storage}}_{a,p^{\text{first}}} = & v^{\text{inter-storage}}_{a,p^
 ```math
 \begin{aligned}
 v^{\text{inter-storage}}_{a,p^{\text{first}}} = & p^{\text{init storage level}}_{a} + \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{inflows}}_{a,k,b_k} \\
-& + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} v^{\text{flow}}_{f,k,b_k} \\
-& - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} v^{\text{flow}}_{f,k,b_k}
+& + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \\
+& - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
 \\ \\ & \forall a \in \mathcal{A}^{\text{ss}}
 \end{aligned}
 ```
