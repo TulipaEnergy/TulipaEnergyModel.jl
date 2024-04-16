@@ -137,6 +137,7 @@ function create_graph_and_representative_periods_from_csv_folder(
             row.capacity,
             row.initial_capacity,
             row.peak_demand,
+            row.consumer_balance_sense,
             row.is_seasonal,
             row.storage_inflows,
             row.initial_storage_capacity,
