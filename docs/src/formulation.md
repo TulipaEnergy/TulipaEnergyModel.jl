@@ -152,9 +152,11 @@ v^{\text{flow}}_{f,k,b_k} \geq 0 \quad \forall f \notin \mathcal{F}^{\text{t}}, 
 
 #### Balance Constraint for Consumers
 
+The balance constraint sense depends on the method selected in the asset file's parameter [`consumer_balance_sense`](@ref assets-data). The default value is $=$, but the user can choose $\geq$ as an option.
+
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} = p^{\text{demand profile}}_{a,k,b_k} \cdot p^{\text{peak demand}}_{a} \quad
+\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \left\{\begin{array}{l} = \\ \geq \end{array}\right\} p^{\text{demand profile}}_{a,k,b_k} \cdot p^{\text{peak demand}}_{a} \quad
 \\ \\ \forall a \in \mathcal{A}^{\text{c}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
