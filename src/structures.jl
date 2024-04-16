@@ -40,8 +40,6 @@ mutable struct GraphAssetData
     initial_capacity::Float64
     peak_demand::Float64
     consumer_balance_sense::Union{
-        Missing,
-        Symbol,
         MathOptInterface.EqualTo,
         MathOptInterface.GreaterThan,
     }

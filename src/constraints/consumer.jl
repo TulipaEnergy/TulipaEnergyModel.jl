@@ -21,15 +21,6 @@ function add_consumer_constraints!(
     outgoing_flow_highest_in_out_resolution,
 )
 
-    # Update the consumer balance constraint sense
-    for a in Ac
-        if !ismissing(graph[a].consumer_balance_sense) && graph[a].consumer_balance_sense == :>=
-            graph[a].consumer_balance_sense = MathOptInterface.GreaterThan(0.0)
-        else
-            graph[a].consumer_balance_sense = MathOptInterface.EqualTo(0.0)
-        end
-    end
-
     # - Balance constraint (using the lowest temporal resolution)
     df = filter(row -> row.asset ∈ Ac, dataframes[:highest_in_out]; view = true)
     model[:consumer_balance] = [
