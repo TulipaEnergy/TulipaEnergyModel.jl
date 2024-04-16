@@ -39,10 +39,7 @@ mutable struct GraphAssetData
     capacity::Float64
     initial_capacity::Float64
     peak_demand::Float64
-    consumer_balance_sense::Union{
-        MathOptInterface.EqualTo,
-        MathOptInterface.GreaterThan,
-    }
+    consumer_balance_sense::Union{MathOptInterface.EqualTo,MathOptInterface.GreaterThan}
     is_seasonal::Bool
     storage_inflows::Union{Missing,Float64}
     initial_storage_capacity::Float64
