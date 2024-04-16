@@ -69,7 +69,7 @@ jobs:
                   benchpkg ${{ steps.extract-package-name.outputs.package_name }} \
                     --rev="$BASE,$HEAD" \
                     --url=${{ github.event.repository.clone_url }} \
-                    --bench-on="$BASE" \
+                    --bench-on="$HEAD" \
                     --output-dir=results/
             - name: Create plots from benchmarks
               run: |
