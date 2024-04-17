@@ -1,7 +1,7 @@
 # [Mathematical Formulation](@id formulation)
 
 This section shows the mathematical formulation of _TulipaEnergyModel.jl_, assuming that the temporal definition of timesteps is the same for all the elements in the model.\
-The complete mathematical formulation, including variable temporal resolutions, is also freely available in the [preprint](https://arxiv.org/abs/2309.07711). In addition, the [concepts section](@ref seasonal-storage) has an example of how the model handles the [`flexible time resolution`](@ref flex-time-res).
+The complete mathematical formulation, including variable temporal resolutions, is also freely available in the [preprint](https://arxiv.org/pdf/2309.07711.pdf). In addition, the [concepts section](@ref seasonal-storage) has an example of how the model handles the [`flexible time resolution`](@ref flex-time-res).
 
 ## [Sets](@id math-sets)
 
