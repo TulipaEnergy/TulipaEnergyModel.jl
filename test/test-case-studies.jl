@@ -9,7 +9,7 @@
     end
     for (optimizer, parameteres) in parameters_dict
         energy_problem = run_scenario(dir; optimizer = optimizer, parameters = parameteres)
-        @test JuMP.is_solved_and_feasible(energy_problem.model) == true
+        @test JuMP.is_solved_and_feasible(energy_problem.model)
     end
 end
 
