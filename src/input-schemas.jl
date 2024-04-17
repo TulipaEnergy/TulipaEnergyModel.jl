@@ -14,6 +14,7 @@ const schemas = (
             :capacity => Float64,                                  # MW
             :initial_capacity => Float64,                          # MW
             :peak_demand => Float64,                               # MW
+            :consumer_balance_sense => Union{Missing,Symbol},      # Sense of the consumer balance constraint (default ==)
             :is_seasonal => Bool,                                  # Whether seasonal storage (e.g. hydro) or not (e.g. battery)
             :storage_inflows => Float64,                           # MWh/year
             :initial_storage_capacity => Float64,                  # MWh

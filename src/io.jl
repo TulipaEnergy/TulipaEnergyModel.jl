@@ -137,6 +137,11 @@ function create_graph_and_representative_periods_from_csv_folder(
             row.capacity,
             row.initial_capacity,
             row.peak_demand,
+            if !ismissing(row.consumer_balance_sense) && row.consumer_balance_sense == :>=
+                MathOptInterface.GreaterThan(0.0)
+            else
+                MathOptInterface.EqualTo(0.0)
+            end,
             row.is_seasonal,
             row.storage_inflows,
             row.initial_storage_capacity,
