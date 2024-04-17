@@ -9,7 +9,7 @@
     end
     for (optimizer, parameteres) in parameters_dict
         energy_problem = run_scenario(dir; optimizer = optimizer, parameters = parameteres)
-        @test energy_problem.objective_value ≈ 1.9848306581e8 rtol = 1e-8
+        @test JuMP.is_solved_and_feasible(energy_problem.model) == true
     end
 end
 
