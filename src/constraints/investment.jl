@@ -11,20 +11,23 @@ function add_investment_constraints!(graph, Ai, Fi, assets_investment, flows_inv
     # - Maximum (i.e., potential) investment limit for assets
     for a in Ai
         if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit)
-            JuMP.set_upper_bound(
-                assets_investment[a],
-                graph[a].investment_limit / graph[a].capacity,
-            )
+            bound_value = _find_upper_bound(graph, a)
+            JuMP.set_upper_bound(assets_investment[a], bound_value)
         end
     end
 
     # - Maximum (i.e., potential) investment limit for flows
     for (u, v) in Fi
         if graph[u, v].capacity > 0 && !ismissing(graph[u, v].investment_limit)
-            JuMP.set_upper_bound(
-                flows_investment[(u, v)],
-                graph[u, v].investment_limit / graph[u, v].capacity,
-            )
+            bound_value = _find_upper_bound(graph, u, v)
+            JuMP.set_upper_bound(flows_investment[(u, v)], bound_value)
         end
+    end
+end
+
+function _find_upper_bound(graph, investments...)
+    bound_value = graph[investments...].investment_limit / graph[investments...].capacity
+    if graph[investments...].investment_integer
+        bound_value = floor(bound_value)
     end
 end
