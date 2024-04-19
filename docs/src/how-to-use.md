@@ -42,13 +42,13 @@ The `input_folder` should contain CSV files as described below. The `output_fold
 
 ## [Input](@id input)
 
-Currently, we only accept input from CSV files that follow the [Schemas](@ref).
+Currently, we only accept input from CSV files that follow the [Schemas](@ref schemas).
 You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples.
 
 ### CSV
 
 Below, we have a description of the files.
-At the end, in [Schemas](@ref), we have the expected columns in these CSVs.
+At the end, in [Schemas](@ref schemas), we have the expected columns in these CSVs.
 
 #### [`assets-data.csv`](@id assets-data)
 
@@ -127,7 +127,7 @@ Describes the [representative periods](@ref representative-periods) by their uni
 
 Describes the periods of the [timeframe](@ref timeframe) that map into a [representative period](@ref representative-periods) and the weight of the representative periods that construct a period. Note that each weight is a decimal between 0 and 1, and that the sum of weights for a given period must also be between 0 and 1 (but do not have to sum to 1).
 
-#### Schemas
+#### [Schemas](@id schemas)
 
 ```@eval
 using Markdown, TulipaEnergyModel

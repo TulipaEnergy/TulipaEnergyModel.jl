@@ -1,7 +1,7 @@
 # [Mathematical Formulation](@id formulation)
 
 This section shows the mathematical formulation of _TulipaEnergyModel.jl_, assuming that the temporal definition of timesteps is the same for all the elements in the model.\
-The complete mathematical formulation, including variable temporal resolutions, is also freely available in the [preprint](https://arxiv.org/pdf/2309.07711.pdf). In addition, the [concepts section](@ref seasonal-storage) has an example of how the model handles the [`flexible time resolution`](@ref flex-time-res).
+The complete mathematical formulation, including variable temporal resolutions, is also freely available in the [preprint](https://arxiv.org/pdf/2309.07711.pdf). In addition, the [concepts section](@ref concepts) also shows how the model handles the [`flexible time resolution`](@ref flex-time-res).
 
 ## [Sets](@id math-sets)
 
@@ -152,7 +152,7 @@ v^{\text{flow}}_{f,k,b_k} \geq 0 \quad \forall f \notin \mathcal{F}^{\text{t}}, 
 
 #### Balance Constraint for Consumers
 
-The balance constraint sense depends on the method selected in the asset file's parameter [`consumer_balance_sense`](@ref assets-data). The default value is $=$, but the user can choose $\geq$ as an option.
+The balance constraint sense depends on the method selected in the asset file's parameter [`consumer_balance_sense`](@ref schemas). The default value is $=$, but the user can choose $\geq$ as an option.
 
 ```math
 \begin{aligned}
@@ -163,7 +163,7 @@ The balance constraint sense depends on the method selected in the asset file's 
 
 ### Constraints for Energy Storage Assets
 
-There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref seasonal-storage) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
+There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
 
 #### [Intra-temporal Constraint for Storage Balance](@id intra-storage-balance)
 
