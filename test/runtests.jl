@@ -29,5 +29,5 @@ end
 end
 
 @testset "Ensuring EU data can be read" begin
-    create_graph_and_representative_periods_from_csv_folder(joinpath(@__DIR__, "../benchmark/EU/"))
+    create_input_dataframes_from_csv_folder(joinpath(@__DIR__, "../benchmark/EU/"))
 end

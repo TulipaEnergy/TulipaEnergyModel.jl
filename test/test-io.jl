@@ -42,7 +42,8 @@ end
 @testset "Graph structure" begin
     @testset "Graph structure is correct" begin
         dir = joinpath(INPUT_FOLDER, "Tiny")
-        graph, _, _ = create_graph_and_representative_periods_from_csv_folder(dir)
+        table_tree = create_input_dataframes_from_csv_folder(dir)
+        graph, _, _ = create_internal_structures(table_tree)
 
         @test Graphs.nv(graph) == 6
         @test Graphs.ne(graph) == 5
@@ -141,6 +142,7 @@ end
     end
     missing_asset = Symbol(split(lines[end], ",")[1]) # The asset the was not included
 
-    graph, rps, tf = create_graph_and_representative_periods_from_csv_folder(dir)
+    table_tree = create_input_dataframes_from_csv_folder(dir)
+    graph, rps, tf = create_internal_structures(table_tree)
     @test graph[missing_asset].timeframe_partitions == [i:i for i in 1:tf.num_periods]
 end
