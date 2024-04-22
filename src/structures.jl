@@ -273,17 +273,17 @@ mutable struct EnergyProblem
     time_solve_model::Float64
 
     """
-        EnergyProblem(dfs_input)
+        EnergyProblem(table_tree)
 
     Constructs a new EnergyProblem object from the input dataframes.
     This will call [`create_internal_structures`](@ref).
     """
-    function EnergyProblem(dfs_input)
-        graph, representative_periods, timeframe = create_internal_structures(dfs_input)
+    function EnergyProblem(table_tree)
+        graph, representative_periods, timeframe = create_internal_structures(table_tree)
         constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 
         return new(
-            dfs_input,
+            table_tree,
             graph,
             representative_periods,
             constraints_partitions,
