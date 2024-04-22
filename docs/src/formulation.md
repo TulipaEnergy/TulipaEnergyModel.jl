@@ -335,7 +335,7 @@ v^{\text{inv}}_{f} \leq \frac{p^{\text{inv limit}}_{f}}{p^{\text{capacity}}_{f}}
 \\ \\ \forall f \in \mathcal{F}^{\text{ti}}
 ```
 
-If the parameter `investment_integer` in the [`flows-data.csv`](@ref flows-data) file is set to true, then the RHS of this constraint uses a least integer function (ceiling function) to guarantee that the limit is integer.
+If the parameter `investment_integer` in the [`flows-data.csv`](@ref flows-data) file is set to true, then the RHS of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
 
 ## [References](@id math-references)
 
