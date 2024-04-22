@@ -297,6 +297,9 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     Ai = filter_assets(:investable, true)
     Fi = filter_flows(:investable, true)
 
+    # Create subsets of assets by storage_method_energy
+    Ase = filter_assets(:storage_method_energy, true)
+
     # Maximum timestep
     Tmax = maximum(last(rp.timesteps) for rp in representative_periods)
     expression_workspace = Vector{JuMP.AffExpr}(undef, Tmax)
@@ -323,6 +326,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             ]
     @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
     @variable(model, 0 ≤ flows_investment[Fi])
+    @variable(model, 0 ≤ assets_investment_energy[Ase∩Ai])  #number of installed asset units for storage energy [N]
     storage_level_intra_rp =
         model[:storage_level_intra_rp] = [
             @variable(
@@ -356,7 +360,11 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     @expression(
         model,
         energy_limit[a ∈ As∩Ai],
-        graph[a].energy_to_power_ratio * graph[a].capacity * assets_investment[a]
+        if storage_method_energy
+            graph[a].capacity_storage_energy * assets_investment[a]
+        else
+            graph[a].energy_to_power_ratio * graph[a].capacity * assets_investment[a]
+        end
     )
 
     # Creating the incoming and outgoing flow expressions
