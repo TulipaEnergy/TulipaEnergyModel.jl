@@ -349,6 +349,12 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         end
     end
 
+    for a in Ase ∩ Ai
+        if graph[a].investment_integer_storage_energy
+            JuMP.set_integer(assets_investment_energy[a])
+        end
+    end
+
     ## Expressions
     @expression(
         model,
