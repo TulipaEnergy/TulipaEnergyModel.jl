@@ -81,6 +81,11 @@ mutable struct GraphAssetData
     initial_storage_capacity::Float64
     initial_storage_level::Union{Missing,Float64}
     energy_to_power_ratio::Float64
+    storage_method_energy::Bool
+    investment_cost_storage_energy::Float64
+    investment_limit_storage_energy::Union{Missing,Float64}
+    capacity_storage_energy::Float64
+    investment_integer_storage_energy::Bool
     timeframe_profiles::Dict{Symbol,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{Symbol,Int},Vector{Float64}}
     timeframe_partitions::Vector{PeriodsBlock}
@@ -106,6 +111,11 @@ mutable struct GraphAssetData
         initial_storage_capacity,
         initial_storage_level,
         energy_to_power_ratio,
+        storage_method_energy,
+        investment_cost_storage_energy,
+        investment_limit_storage_energy,
+        capacity_storage_energy,
+        investment_integer_storage_energy,
     )
         timeframe_profiles = Dict{Symbol,Vector{Float64}}()
         rep_periods_profiles = Dict{Tuple{Symbol,Int},Vector{Float64}}()
@@ -126,6 +136,11 @@ mutable struct GraphAssetData
             initial_storage_capacity,
             initial_storage_level,
             energy_to_power_ratio,
+            storage_method_energy,
+            investment_cost_storage_energy,
+            investment_limit_storage_energy,
+            capacity_storage_energy,
+            investment_integer_storage_energy,
             timeframe_profiles,
             rep_periods_profiles,
             timeframe_partitions,
