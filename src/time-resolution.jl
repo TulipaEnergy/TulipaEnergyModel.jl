@@ -3,6 +3,178 @@ export compute_rp_partition, compute_constraints_partitions
 using SparseArrays
 
 """
+    compute_constraints_partitions!(energy_problem)
+
+Computes the constraints partitions using `energy_problem.table_tree`.
+"""
+function compute_constraints_partitions!(energy_problem::EnergyProblem)
+    compute_constraints_partitions!(energy_problem.table_tree)
+
+    return energy_problem
+end
+
+"""
+    compute_constraints_partitions!(table_tree)
+
+Parses `table_tree.partitions` to create unrolled partitions and then creates the constraints partitions.
+Both values are stored inside `table_tree` in `table_tree.unrolled_partitions` and `table_tree.constraints`.
+"""
+function compute_constraints_partitions!(table_tree::TableTree)
+    # Compute expanded partitions
+    df_unrolled_partitions = (
+        assets = Dict(
+            "rep-periods" => DataFrames.flatten(
+                DataFrames.combine(
+                    table_tree.partitions.assets["rep-periods"],
+                    [:asset, :rep_period],
+                    [:rep_period, :specification, :partition] =>
+                        DataFrames.ByRow(
+                            (rp, spec, p) -> _parse_rp_partition(
+                                Val(spec),
+                                p,
+                                1:table_tree.periods.rep_periods[rp, :num_timesteps],
+                            ),
+                        ) => :timesteps_block,
+                ),
+                :timesteps_block,
+            ),
+            "timeframe" => DataFrames.flatten(
+                DataFrames.combine(
+                    table_tree.partitions.assets["timeframe"],
+                    :asset,
+                    [:specification, :partition] =>
+                        DataFrames.ByRow(
+                            (spec, p) -> _parse_rp_partition(
+                                Val(spec),
+                                p,
+                                1:maximum(table_tree.periods.mapping.period),
+                            ),
+                        ) => :timesteps_block,
+                ),
+                :timesteps_block,
+            ),
+        ),
+        flows = DataFrames.flatten(
+            DataFrames.combine(
+                table_tree.partitions.flows,
+                [:from_asset, :to_asset, :rep_period],
+                [:rep_period, :specification, :partition] =>
+                    DataFrames.ByRow(
+                        (rp, spec, p) -> _parse_rp_partition(
+                            Val(spec),
+                            p,
+                            1:table_tree.periods.rep_periods[rp, :num_timesteps],
+                        ),
+                    ) => :timesteps_block,
+            ),
+            :timesteps_block,
+        ),
+    )
+
+    # Helper df
+    grouped_assets =
+        DataFrames.groupby(df_unrolled_partitions.assets["rep-periods"], [:asset, :rep_period])
+
+    grouped_incoming_flows(asset, rep_period) = DataFrames.groupby(
+        DataFrames.subset(
+            df_unrolled_partitions.flows,
+            [:to_asset, :rep_period] =>
+                DataFrames.ByRow((a, rp) -> a == asset && rp == rep_period),
+        ),
+        :from_asset,
+    )
+    grouped_outgoing_flows(asset, rep_period) = DataFrames.groupby(
+        DataFrames.subset(
+            df_unrolled_partitions.flows,
+            [:from_asset, :rep_period] =>
+                DataFrames.ByRow((a, rp) -> a == asset && rp == rep_period),
+        ),
+        :to_asset,
+    )
+    df_expanded_assets = DataFrames.leftjoin(
+        table_tree.partitions.assets["rep-periods"][!, [:asset, :rep_period]],
+        table_tree.static.assets[!, [:name, :type, :is_seasonal]];
+        on = :asset => :name,
+    )
+
+    typecheck(t) = :type => DataFrames.ByRow(x -> x in t)
+    constraints_cases = [
+        (
+            name = :lowest,
+            partitions = [:incoming, :outgoing],
+            strategy = :lowest,
+            asset_filter = typecheck([:conversion, :producer]),
+        ),
+        (
+            name = :lowest_storage_level_intra_rp,
+            partitions = [:asset, :incoming, :outgoing],
+            strategy = :lowest,
+            asset_filter = [:type, :is_seasonal] =>
+                DataFrames.ByRow((t, is_seasonal) -> t == :storage && !is_seasonal),
+        ),
+        (
+            name = :highest_in_out,
+            partitions = [:incoming, :outgoing],
+            strategy = :highest,
+            asset_filter = typecheck([:hub, :consumer]),
+        ),
+        (
+            name = :highest_in,
+            partitions = [:incoming],
+            strategy = :highest,
+            asset_filter = typecheck([:storage]),
+        ),
+        (
+            name = :highest_out,
+            partitions = [:outgoing],
+            strategy = :highest,
+            asset_filter = typecheck([:producer, :storage, :conversion]),
+        ),
+    ]
+
+    ### lowest
+    table_tree.constraints = Dict(
+        name => DataFrames.select(
+            DataFrames.flatten(
+                DataFrames.transform!(
+                    DataFrames.subset(df_expanded_assets, asset_filter),
+                    [:asset, :rep_period] =>
+                        DataFrames.ByRow(
+                            (a, rp) -> begin
+                                A = if :assets in partitions
+                                    [grouped_assets[(a, rp)].timesteps_block]
+                                else
+                                    UnitRange{Int}[]
+                                end
+                                Fin = if :incoming in partitions
+                                    [g.timesteps_block for g in grouped_incoming_flows(a, rp)]
+                                else
+                                    UnitRange{Int}[]
+                                end
+                                Fout = if :outgoing in partitions
+                                    [g.timesteps_block for g in grouped_outgoing_flows(a, rp)]
+                                else
+                                    UnitRange{Int}[]
+                                end
+                                compute_rp_partition(
+                                    Vector{UnitRange{Int}}[A; Fin; Fout],
+                                    strategy,
+                                )
+                            end,
+                        ) => :timesteps_block,
+                ),
+                :timesteps_block,
+            ),
+            [:asset, :rep_period, :timesteps_block],
+        ) for (name, partitions, strategy, asset_filter) in constraints_cases
+    )
+
+    table_tree.unrolled_partitions = df_unrolled_partitions
+
+    return table_tree
+end
+
+"""
     cons_partitions = compute_constraints_partitions(graph, representative_periods)
 
 Computes the constraints partitions using the assets and flows partitions stored in the graph,
@@ -187,6 +359,10 @@ function compute_rp_partition(
     partitions::AbstractVector{<:AbstractVector{<:UnitRange{<:Integer}}},
     strategy,
 )
+    rp_partition = UnitRange{Int}[] # List of ranges
+    if length(partitions) == 0
+        return rp_partition
+    end
     valid_strategies = [:highest, :lowest]
     if !(strategy in valid_strategies)
         error("`strategy` should be one of $valid_strategies. See docs for more info.")
@@ -198,7 +374,6 @@ function compute_rp_partition(
         @assert partition[1][1] == 1
         @assert rp_end == partition[end][end]
     end
-    rp_partition = UnitRange{Int}[] # List of ranges
 
     block_start = 1
     if strategy == :lowest

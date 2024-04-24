@@ -89,6 +89,44 @@ function create_input_dataframes_from_csv_folder(input_folder::AbstractString; s
 
             error(msg)
         end
+    else
+        dfs_assets_partitions["rep-periods"] = DataFrames.leftjoin(
+            DataFrames.crossjoin(
+                df_assets_data[!, [:name]],
+                DataFrame(; rep_period = 1:size(df_rep_periods, 1)),
+            ),
+            dfs_assets_partitions["rep-periods"];
+            on = [:name => :asset, :rep_period],
+        )
+        dfs_assets_partitions["timeframe"] = DataFrames.leftjoin(
+            df_assets_data[!, [:name]],
+            dfs_assets_partitions["timeframe"];
+            on = :name => :asset,
+        )
+
+        for period_type in ["rep-periods", "timeframe"]
+            DataFrames.rename!(dfs_assets_partitions[period_type], :name => :asset)
+            DataFrames.transform!(
+                dfs_assets_partitions[period_type],
+                :specification =>
+                    DataFrames.ByRow(c -> ismissing(c) ? :uniform : c) => :specification,
+                :partition => DataFrames.ByRow(c -> ismissing(c) ? "1" : c) => :partition,
+            )
+        end
+
+        df_flows_partitions = DataFrames.leftjoin(
+            DataFrames.crossjoin(
+                df_flows_data[!, [:from_asset, :to_asset]],
+                DataFrame(; rep_period = 1:size(df_rep_periods, 1)),
+            ),
+            df_flows_partitions;
+            on = [:from_asset, :to_asset, :rep_period],
+        )
+        DataFrames.transform!(
+            df_flows_partitions,
+            :specification => DataFrames.ByRow(c -> ismissing(c) ? :uniform : c) => :specification,
+            :partition => DataFrames.ByRow(c -> ismissing(c) ? "1" : c) => :partition,
+        )
     end
 
     table_tree = TableTree(
@@ -123,7 +161,7 @@ The details of these structures are:
 """
 function create_internal_structures(table_tree::TableTree)
     # TODO: Depending on the outcome of issue #294, this can be done more efficiently with DataFrames, e.g.,
-    # combine(groupby(input_df_periods.mapping, :rep_period), :weight => sum => :weight)
+    # combine(groupby(input_tf_periods.mapping, :rep_period), :weight => sum => :weight)
 
     # Create a dictionary of weights and populate it.
     weights = Dict{Int,Dict{Int,Float64}}()

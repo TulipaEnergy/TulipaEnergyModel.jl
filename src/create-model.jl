@@ -1,5 +1,13 @@
 export create_model!, create_model, construct_dataframes
 
+function construct_dataframes(table_tree)
+    graph, rps, tf = create_internal_structures(table_tree)
+    cps = compute_constraints_partitions(graph, rps)
+    dataframes = construct_dataframes(graph, rps, cps, tf)
+
+    return dataframes
+end
+
 """
     dataframes = construct_dataframes(
         graph,
