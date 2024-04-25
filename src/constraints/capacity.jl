@@ -37,7 +37,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rp),
+                        (:availability, row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) * (
@@ -51,7 +51,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rp),
+                        (:availability, row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) * graph[row.asset].initial_capacity
@@ -68,7 +68,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rp),
+                        (:availability, row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) * (
@@ -82,7 +82,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rp),
+                        (:availability, row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) * graph[row.asset].initial_capacity
@@ -97,7 +97,7 @@ function add_capacity_constraints!(
             model,
             outgoing_flow_highest_out_resolution[row.index] ≤
             assets_profile_times_capacity_out[row.index],
-            base_name = "max_output_flows_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+            base_name = "max_output_flows_limit[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:highest_out]) if
         outgoing_flow_highest_out_resolution[row.index] != 0
     ]
@@ -108,14 +108,14 @@ function add_capacity_constraints!(
             model,
             incoming_flow_highest_in_resolution[row.index] ≤
             assets_profile_times_capacity_in[row.index],
-            base_name = "max_input_flows_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+            base_name = "max_input_flows_limit[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:highest_in]) if
         incoming_flow_highest_in_resolution[row.index] != 0
     ]
 
     # - Lower limit for flows that are not transport assets
     for row in eachrow(df_flows)
-        if !graph[row.from, row.to].is_transport
+        if !graph[row.from_asset, row.to_asset].is_transport
             JuMP.set_lower_bound(flow[row.index], 0.0)
         end
     end

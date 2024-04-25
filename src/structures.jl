@@ -243,7 +243,6 @@ It hides the complexity behind the energy problem, making the usage more friendl
 - `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
 - `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
 - `timeframe`: The number of periods of the `representative_periods`.
-- `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
 - `model`: A JuMP.Model object representing the optimization model.
 - `solved`: A boolean indicating whether the `model` has been solved or not.
 - `objective_value`: The objective value of the solved problem.
@@ -273,7 +272,6 @@ mutable struct EnergyProblem
     representative_periods::Vector{RepresentativePeriod}
     constraints_partitions::Dict{Symbol,Dict{Tuple{Symbol,Int},Vector{TimestepsBlock}}}
     timeframe::Timeframe
-    dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}
     solution::Union{Solution,Nothing}
     solved::Bool
@@ -299,7 +297,6 @@ mutable struct EnergyProblem
             representative_periods,
             constraints_partitions,
             timeframe,
-            Dict(),
             nothing,
             nothing,
             false,

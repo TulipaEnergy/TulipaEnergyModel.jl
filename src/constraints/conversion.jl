@@ -26,7 +26,7 @@ function add_conversion_constraints!(
             model,
             incoming_flow_lowest_resolution[row.index] ==
             outgoing_flow_lowest_resolution[row.index],
-            base_name = "conversion_balance[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+            base_name = "conversion_balance[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df)
     ]
 end

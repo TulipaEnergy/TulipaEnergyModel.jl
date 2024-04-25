@@ -370,7 +370,7 @@ function save_solution_to_file(output_folder, energy_problem::EnergyProblem)
     save_solution_to_file(
         output_folder,
         energy_problem.graph,
-        energy_problem.dataframes,
+        energy_problem.table_tree.variables_and_constraints,
         energy_problem.solution,
     )
 end
@@ -434,8 +434,13 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     =#
 
     output_file = joinpath(output_folder, "flows.csv")
-    output_table =
-        DataFrames.select(dataframes[:flows], :from, :to, :rp, :timesteps_block => :timestep)
+    output_table = DataFrames.select(
+        dataframes[:flows],
+        :from_asset,
+        :to_asset,
+        :rep_period,
+        :timesteps_block => :timestep,
+    )
     output_table.value = solution.flow
     output_table = DataFrames.flatten(
         DataFrames.transform(
@@ -456,7 +461,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     output_table = DataFrames.select(
         dataframes[:lowest_storage_level_intra_rp],
         :asset,
-        :rp,
+        :rep_period,
         :timesteps_block => :timestep,
     )
     output_table.value = solution.storage_level_intra_rp

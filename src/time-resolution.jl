@@ -188,14 +188,19 @@ function compute_constraints_partitions!(table_tree::TableTree)
                 ),
                 :asset =>
                     DataFrames.ByRow(a -> grouped_assets["timeframe"][(a,)].timesteps_block) =>
-                        :timesteps_block,
+                        :periods_block,
             ),
-            :timesteps_block,
+            :periods_block,
         ),
-        [:asset, :timesteps_block],
+        [:asset, :periods_block],
     )
     # Flows is just linked
     table_tree.variables_and_constraints[:flows] = df_unrolled_partitions.flows
+    DataFrames.leftjoin!(
+        table_tree.variables_and_constraints[:flows],
+        table_tree.static.flows[!, [:from_asset, :to_asset, :efficiency]];
+        on = [:from_asset, :to_asset],
+    )
 
     # Add index column
     for df in values(table_tree.variables_and_constraints)

@@ -1,4 +1,4 @@
-export create_model!, create_model, construct_dataframes
+export create_model!, create_model
 
 function construct_variables_dataframes!(table_tree)
     grouped_assets = DataFrames.groupby(
@@ -66,85 +66,6 @@ function construct_variables_dataframes!(table_tree)
 end
 
 """
-    dataframes = construct_dataframes(
-        graph,
-        representative_periods,
-        constraints_partitions,
-        timeframe,
-    )
-
-Computes the data frames used to linearize the variables and constraints. These are used
-internally in the model only.
-"""
-function construct_dataframes(graph, representative_periods, constraints_partitions, timeframe)
-    A = MetaGraphsNext.labels(graph) |> collect
-    F = MetaGraphsNext.edge_labels(graph) |> collect
-    RP = 1:length(representative_periods)
-
-    # Output object
-    dataframes = Dict{Symbol,DataFrame}()
-
-    # DataFrame to store the flow variables
-    dataframes[:flows] = DataFrame(
-        (
-            (
-                (
-                    from = u,
-                    to = v,
-                    rp = rp,
-                    timesteps_block = timesteps_block,
-                    efficiency = graph[u, v].efficiency,
-                ) for timesteps_block in graph[u, v].rep_periods_partitions[rp]
-            ) for (u, v) in F, rp in RP
-        ) |> Iterators.flatten,
-    )
-    dataframes[:flows].index = 1:size(dataframes[:flows], 1)
-
-    for (key, partitions) in constraints_partitions
-        if length(partitions) == 0
-            # No data, but ensure schema is correct
-            dataframes[key] = DataFrame(;
-                asset = Symbol[],
-                rp = Int[],
-                timesteps_block = UnitRange{Int}[],
-                index = Int[],
-            )
-            continue
-        end
-
-        # This construction should ensure the ordering of the time blocks for groups of (a, rp)
-        df = DataFrame(
-            (
-                (
-                    (asset = a, rp = rp, timesteps_block = timesteps_block) for
-                    timesteps_block in partition
-                ) for ((a, rp), partition) in partitions
-            ) |> Iterators.flatten,
-        )
-        df.index = 1:size(df, 1)
-        dataframes[key] = df
-    end
-
-    # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
-    #
-    dataframes[:storage_level_inter_rp] = DataFrame(
-        (
-            (
-                (asset = a, periods_block = periods_block) for
-                periods_block in graph[a].timeframe_partitions
-            ) for a in A
-        ) |> Iterators.flatten,
-    )
-    if size(dataframes[:storage_level_inter_rp], 1) == 0
-        dataframes[:storage_level_inter_rp] =
-            DataFrame(; asset = Symbol[], periods_block = PeriodsBlock[])
-    end
-    dataframes[:storage_level_inter_rp].index = 1:size(dataframes[:storage_level_inter_rp], 1)
-
-    return dataframes
-end
-
-"""
     add_expression_terms_intra_rp_constraints!(df_cons,
                                                df_flows,
                                                workspace,
@@ -176,22 +97,22 @@ function add_expression_terms_intra_rp_constraints!(
     # Otherwise, just use the sum
     agg = multiply_by_duration ? v -> sum(v) : v -> sum(unique(v))
 
-    grouped_cons = DataFrames.groupby(df_cons, [:rp, :asset])
+    grouped_cons = DataFrames.groupby(df_cons, [:rep_period, :asset])
 
     # grouped_cons' asset will be matched with either to or from, depending on whether
     # we are filling incoming or outgoing flows
     cases = [
-        (col_name = :incoming_flow, asset_match = :to, selected_assets = [:hub, :consumer]),
+        (col_name = :incoming_flow, asset_match = :to_asset, selected_assets = [:hub, :consumer]),
         (
             col_name = :outgoing_flow,
-            asset_match = :from,
+            asset_match = :from_asset,
             selected_assets = [:hub, :consumer, :producer],
         ),
     ]
 
     for case in cases
         df_cons[!, case.col_name] .= JuMP.AffExpr(0.0)
-        grouped_flows = DataFrames.groupby(df_flows, [:rp, case.asset_match])
+        grouped_flows = DataFrames.groupby(df_flows, [:rep_period, case.asset_match])
         for ((rp, asset), sub_df) in pairs(grouped_cons)
             if !haskey(grouped_flows, (rp, asset))
                 continue
@@ -263,14 +184,15 @@ function add_expression_terms_inter_rp_constraints!(
 
         for row_map in eachrow(sub_df_map)
             sub_df_flows = filter(
-                [:to, :rp] => (to, rp) -> to == row_inter.asset && rp == row_map.rep_period,
+                [:to_asset, :rep_period] =>
+                    (to, rp) -> to == row_inter.asset && rp == row_map.rep_period,
                 df_flows;
                 view = true,
             )
             row_inter.incoming_flow +=
                 LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
             sub_df_flows = filter(
-                [:from, :rp] =>
+                [:from_asset, :rep_period] =>
                     (from, rp) -> from == row_inter.asset && rp == row_map.rep_period,
                 df_flows;
                 view = true,
@@ -316,14 +238,17 @@ end
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
+    compute_constraints_partitions!(energy_problem)
     graph = energy_problem.graph
     representative_periods = energy_problem.representative_periods
-    constraints_partitions = energy_problem.constraints_partitions
     timeframe = energy_problem.timeframe
-    energy_problem.dataframes =
-        construct_dataframes(graph, representative_periods, constraints_partitions, timeframe)
-    energy_problem.model =
-        create_model(graph, representative_periods, energy_problem.dataframes, timeframe; kwargs...)
+    energy_problem.model = create_model(
+        graph,
+        representative_periods,
+        energy_problem.table_tree.variables_and_constraints,
+        timeframe;
+        kwargs...,
+    )
     energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
     energy_problem.solved = false
     energy_problem.objective_value = NaN
@@ -333,7 +258,7 @@ end
 """
     model = create_model(graph, representative_periods, dataframes, timeframe; write_lp_file = false)
 
-Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), and timeframe.
+Create the energy model given the `graph`, `representative_periods`, dictionary of variables and constraints `dataframes`, and timeframe.
 """
 function create_model(graph, representative_periods, dataframes, timeframe; write_lp_file = false)
 
@@ -370,7 +295,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     df_flows = dataframes[:flows]
 
     df_storage_intra_rp_balance_grouped =
-        DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rp])
+        DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rep_period])
     df_storage_inter_rp_balance_grouped =
         DataFrames.groupby(dataframes[:storage_level_inter_rp], [:asset])
 
@@ -383,7 +308,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             df_flows.flow = [
                 @variable(
                     model,
-                    base_name = "flow[($(row.from), $(row.to)), $(row.rp), $(row.timesteps_block)]"
+                    base_name = "flow[($(row.from_asset), $(row.to_asset)), $(row.rep_period), $(row.timesteps_block)]"
                 ) for row in eachrow(df_flows)
             ]
     @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
@@ -393,7 +318,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             @variable(
                 model,
                 lower_bound = 0.0,
-                base_name = "storage_level_intra_rp[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+                base_name = "storage_level_intra_rp[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
             ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
         ]
     storage_level_inter_rp =
@@ -531,9 +456,9 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     flows_variable_cost = @expression(
         model,
         sum(
-            representative_periods[row.rp].weight *
-            duration(row.timesteps_block, row.rp) *
-            graph[row.from, row.to].variable_cost *
+            representative_periods[row.rep_period].weight *
+            duration(row.timesteps_block, row.rep_period) *
+            graph[row.from_asset, row.to_asset].variable_cost *
             row.flow for row in eachrow(df_flows)
         )
     )

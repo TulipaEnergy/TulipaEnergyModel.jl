@@ -17,7 +17,7 @@ function solve_model!(
     end
 
     energy_problem.solution =
-        solve_model!(energy_problem.dataframes, model, optimizer; parameters = parameters)
+        solve_model!(energy_problem.table_tree, model, optimizer; parameters = parameters)
     energy_problem.termination_status = JuMP.termination_status(model)
     if energy_problem.solution === nothing
         # Warning has been given at internal function
@@ -38,12 +38,13 @@ function solve_model!(
         end
     end
 
-    for row in eachrow(energy_problem.dataframes[:lowest_storage_level_intra_rp])
-        a, rp, timesteps_block, value = row.asset, row.rp, row.timesteps_block, row.solution
+    for row in
+        eachrow(energy_problem.table_tree.variables_and_constraints[:lowest_storage_level_intra_rp])
+        a, rp, timesteps_block, value = row.asset, row.rep_period, row.timesteps_block, row.solution
         graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
     end
 
-    for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
+    for row in eachrow(energy_problem.table_tree.variables_and_constraints[:storage_level_inter_rp])
         a, pb, value = row.asset, row.periods_block, row.solution
         graph[a].storage_level_inter_rp[pb] = value
     end
@@ -59,9 +60,9 @@ function solve_model!(
         end
     end
 
-    for row in eachrow(energy_problem.dataframes[:flows])
+    for row in eachrow(energy_problem.table_tree.variables_and_constraints[:flows])
         u, v, rp, timesteps_block, value =
-            row.from, row.to, row.rp, row.timesteps_block, row.solution
+            row.from_asset, row.to_asset, row.rep_period, row.timesteps_block, row.solution
         graph[u, v].flow[(rp, timesteps_block)] = value
     end
 
@@ -69,24 +70,26 @@ function solve_model!(
 end
 
 """
-    solution = solve_model!(dataframes, model, ...)
+    solution = solve_model!(table_tree.variables_and_constraints, model, ...)
 
-Solves the JuMP `model`, returns the solution, and modifies `dataframes` to include the solution.
-The modifications made to `dataframes` are:
+Solves the JuMP `model`, returns the solution, and modifies `table_tree.variables_and_constraints` to include the solution.
+The modifications made to `table_tree.variables_and_constraints` are:
 
 - `df_flows.solution = solution.flow`
 - `df_storage_level_intra_rp.solution = solution.storage_level_intra_rp`
 - `df_storage_level_inter_rp.solution = solution.storage_level_inter_rp`
 """
-function solve_model!(dataframes, model, args...; kwargs...)
+function solve_model!(table_tree::TableTree, model, args...; kwargs...)
     solution = solve_model(model, args...; kwargs...)
     if isnothing(solution)
         return nothing
     end
 
-    dataframes[:flows].solution = solution.flow
-    dataframes[:lowest_storage_level_intra_rp].solution = solution.storage_level_intra_rp
-    dataframes[:storage_level_inter_rp].solution = solution.storage_level_inter_rp
+    table_tree.variables_and_constraints[:flows].solution = solution.flow
+    table_tree.variables_and_constraints[:lowest_storage_level_intra_rp].solution =
+        solution.storage_level_intra_rp
+    table_tree.variables_and_constraints[:storage_level_inter_rp].solution =
+        solution.storage_level_inter_rp
 
     return solution
 end
