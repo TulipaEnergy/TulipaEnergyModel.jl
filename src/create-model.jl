@@ -1,11 +1,68 @@
 export create_model!, create_model, construct_dataframes
 
-function construct_dataframes(table_tree)
-    graph, rps, tf = create_internal_structures(table_tree)
-    cps = compute_constraints_partitions(graph, rps)
-    dataframes = construct_dataframes(graph, rps, cps, tf)
+function construct_variables_dataframes!(table_tree)
+    grouped_assets = DataFrames.groupby(
+        table_tree.unrolled_partitions.assets["rep-periods"],
+        [:asset, :rep_period],
+    )
 
-    return dataframes
+    grouped_incoming_flows(asset, rep_period) = DataFrames.groupby(
+        DataFrames.subset(
+            table_tree.unrolled_partitions.flows,
+            [:to_asset, :rep_period] =>
+                DataFrames.ByRow((a, rp) -> a == asset && rp == rep_period),
+        ),
+        :from_asset,
+    )
+    grouped_outgoing_flows(asset, rep_period) = DataFrames.groupby(
+        DataFrames.subset(
+            table_tree.unrolled_partitions.flows,
+            [:from_asset, :rep_period] =>
+                DataFrames.ByRow((a, rp) -> a == asset && rp == rep_period),
+        ),
+        :to_asset,
+    )
+
+    table_tree.variables = (
+        storage_level = Dict(
+            "intra-rp" => DataFrames.select(
+                DataFrames.flatten(
+                    DataFrames.transform!(
+                        DataFrames.subset(
+                            table_tree.partitions.assets["rep-periods"],
+                            [:type, :is_seasonal] => DataFrames.ByRow(
+                                (t, is_seasonal) -> t == :storage && !is_seasonal,
+                            ),
+                        ),
+                        [:asset, :rep_period] =>
+                            DataFrames.ByRow(
+                                (a, rp) -> begin
+                                    compute_rp_partition(
+                                        Vector{UnitRange{Int}}[
+                                            [grouped_assets[(a, rp)].timesteps_block]
+                                            [
+                                                g.timesteps_block for
+                                                g in grouped_incoming_flows(a, rp)
+                                            ]
+                                            [
+                                                g.timesteps_block for
+                                                g in grouped_outgoing_flows(a, rp)
+                                            ]
+                                        ],
+                                        :lowest,
+                                    )
+                                end,
+                            ) => :timesteps_block,
+                    ),
+                    :timesteps_block,
+                ),
+                [:asset, :rep_period, :timesteps_block],
+            ),
+        ),
+        flows = table_tree.unrolled_partitions.flows,
+    )
+
+    return table_tree
 end
 
 """

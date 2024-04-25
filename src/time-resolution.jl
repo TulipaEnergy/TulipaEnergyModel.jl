@@ -1,4 +1,4 @@
-export compute_rp_partition, compute_constraints_partitions
+export compute_rp_partition, compute_constraints_partitions, compute_constraints_partitions!
 
 using SparseArrays
 
@@ -71,10 +71,14 @@ function compute_constraints_partitions!(table_tree::TableTree)
         ),
     )
 
-    # Helper df
-    grouped_assets =
-        DataFrames.groupby(df_unrolled_partitions.assets["rep-periods"], [:asset, :rep_period])
-
+    # Helper dfs
+    grouped_assets = Dict(
+        "rep-periods" => DataFrames.groupby(
+            df_unrolled_partitions.assets["rep-periods"],
+            [:asset, :rep_period],
+        ),
+        "timeframe" => DataFrames.groupby(df_unrolled_partitions.assets["timeframe"], [:asset]),
+    )
     grouped_incoming_flows(asset, rep_period) = DataFrames.groupby(
         DataFrames.subset(
             df_unrolled_partitions.flows,
@@ -91,11 +95,17 @@ function compute_constraints_partitions!(table_tree::TableTree)
         ),
         :to_asset,
     )
-    df_expanded_assets = DataFrames.leftjoin(
-        table_tree.partitions.assets["rep-periods"][!, [:asset, :rep_period]],
-        table_tree.static.assets[!, [:name, :type, :is_seasonal]];
-        on = :asset => :name,
-    )
+    for period_type in ["rep-periods", "timeframe"]
+        if ("type" in names(table_tree.partitions.assets[period_type]))
+            @warn "Extension of partitions is already present. Ignore this if this is the second call to this function"
+            continue
+        end
+        DataFrames.leftjoin!(
+            table_tree.partitions.assets[period_type],
+            table_tree.static.assets[!, [:name, :type, :is_seasonal]];
+            on = :asset => :name,
+        )
+    end
 
     typecheck(t) = :type => DataFrames.ByRow(x -> x in t)
     constraints_cases = [
@@ -104,13 +114,6 @@ function compute_constraints_partitions!(table_tree::TableTree)
             partitions = [:incoming, :outgoing],
             strategy = :lowest,
             asset_filter = typecheck([:conversion, :producer]),
-        ),
-        (
-            name = :lowest_storage_level_intra_rp,
-            partitions = [:asset, :incoming, :outgoing],
-            strategy = :lowest,
-            asset_filter = [:type, :is_seasonal] =>
-                DataFrames.ByRow((t, is_seasonal) -> t == :storage && !is_seasonal),
         ),
         (
             name = :highest_in_out,
@@ -130,19 +133,25 @@ function compute_constraints_partitions!(table_tree::TableTree)
             strategy = :highest,
             asset_filter = typecheck([:producer, :storage, :conversion]),
         ),
+        (
+            name = :lowest_storage_level_intra_rp,
+            partitions = [:asset, :incoming, :outgoing],
+            strategy = :lowest,
+            asset_filter = [:type, :is_seasonal] =>
+                DataFrames.ByRow((t, is_seasonal) -> t == :storage && !is_seasonal),
+        ),
     ]
 
-    ### lowest
     table_tree.constraints = Dict(
         name => DataFrames.select(
             DataFrames.flatten(
                 DataFrames.transform!(
-                    DataFrames.subset(df_expanded_assets, asset_filter),
+                    DataFrames.subset(table_tree.partitions.assets["rep-periods"], asset_filter),
                     [:asset, :rep_period] =>
                         DataFrames.ByRow(
                             (a, rp) -> begin
                                 A = if :assets in partitions
-                                    [grouped_assets[(a, rp)].timesteps_block]
+                                    [grouped_assets["rep-periods"][(a, rp)].timesteps_block]
                                 else
                                     UnitRange{Int}[]
                                 end
@@ -167,6 +176,22 @@ function compute_constraints_partitions!(table_tree::TableTree)
             ),
             [:asset, :rep_period, :timesteps_block],
         ) for (name, partitions, strategy, asset_filter) in constraints_cases
+    )
+    table_tree.constraints[:storage_level_inter_rp] = DataFrames.select(
+        DataFrames.flatten(
+            DataFrames.transform!(
+                DataFrames.subset(
+                    table_tree.partitions.assets["timeframe"],
+                    [:type, :is_seasonal] =>
+                        DataFrames.ByRow((t, is_seasonal) -> t == :storage && is_seasonal),
+                ),
+                :asset =>
+                    DataFrames.ByRow(a -> grouped_assets["timeframe"][(a,)].timesteps_block) =>
+                        :timesteps_block,
+            ),
+            :timesteps_block,
+        ),
+        [:asset, :timesteps_block],
     )
 
     table_tree.unrolled_partitions = df_unrolled_partitions
