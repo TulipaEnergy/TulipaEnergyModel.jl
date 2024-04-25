@@ -108,7 +108,7 @@ function compute_constraints_partitions!(table_tree::TableTree)
     end
 
     typecheck(t) = :type => DataFrames.ByRow(x -> x in t)
-    constraints_cases = [
+    rep_periods_cases = [
         (
             name = :lowest,
             partitions = [:incoming, :outgoing],
@@ -142,7 +142,7 @@ function compute_constraints_partitions!(table_tree::TableTree)
         ),
     ]
 
-    table_tree.constraints = Dict(
+    table_tree.variables_and_constraints = Dict(
         name => DataFrames.select(
             DataFrames.flatten(
                 DataFrames.transform!(
@@ -175,9 +175,10 @@ function compute_constraints_partitions!(table_tree::TableTree)
                 :timesteps_block,
             ),
             [:asset, :rep_period, :timesteps_block],
-        ) for (name, partitions, strategy, asset_filter) in constraints_cases
+        ) for (name, partitions, strategy, asset_filter) in rep_periods_cases
     )
-    table_tree.constraints[:storage_level_inter_rp] = DataFrames.select(
+    # :storage_level_inter_rp follow timeframe, so it can't be easily automated with the rest
+    table_tree.variables_and_constraints[:storage_level_inter_rp] = DataFrames.select(
         DataFrames.flatten(
             DataFrames.transform!(
                 DataFrames.subset(
@@ -193,6 +194,13 @@ function compute_constraints_partitions!(table_tree::TableTree)
         ),
         [:asset, :timesteps_block],
     )
+    # Flows is just linked
+    table_tree.variables_and_constraints[:flows] = df_unrolled_partitions.flows
+
+    # Add index column
+    for df in values(table_tree.variables_and_constraints)
+        df.index = 1:size(df, 1)
+    end
 
     table_tree.unrolled_partitions = df_unrolled_partitions
 

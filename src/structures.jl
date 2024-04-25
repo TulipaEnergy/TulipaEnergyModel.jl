@@ -15,8 +15,7 @@ const TableNodePartitions = @NamedTuple{assets::Dict{PeriodType,DataFrame}, flow
 const TableNodePeriods = @NamedTuple{rep_periods::DataFrame, mapping::DataFrame}
 const TableNodeUnrolledPartitions =
     @NamedTuple{assets::Dict{PeriodType,DataFrame}, flows::DataFrame}
-const TableNodeConstraints = Dict{Symbol,DataFrame}
-const TableNodeVariables = @NamedTuple{storage_level::Dict{PeriodType,DataFrame}}
+const TableNodeVariablesAndConstraints = Dict{Symbol,DataFrame}
 
 """
 Structure to hold the tabular data.
@@ -37,7 +36,7 @@ Structure to hold the tabular data.
   - `rep_periods`: Representative periods.
   - `timeframe`: Timeframe periods.
 - `unrolled_partitions`: Stores the unrolled partitions data, i.e., expands the `partitions`. The fields are the same as in `partitions`.
-- `constraints`: Stores the constraints partitions and expressions that are used throughout the model. See `compute_constraints_partitions` for more information.
+- `variables_and_constraints`: Stores the variables and constraints partitions and expressions that are used throughout the model. See `compute_constraints_partitions!` for more information.
 """
 mutable struct TableTree
     static::TableNodeStatic
@@ -45,11 +44,10 @@ mutable struct TableTree
     partitions::TableNodePartitions
     periods::TableNodePeriods
     unrolled_partitions::Union{TableNodeUnrolledPartitions,Nothing}
-    constraints::Union{TableNodeConstraints,Nothing}
-    variables::Union{TableNodeVariables,Nothing}
+    variables_and_constraints::Union{TableNodeVariablesAndConstraints,Nothing}
 
     function TableTree(static, profiles, partitions, periods)
-        return new(static, profiles, partitions, periods, nothing, nothing, nothing)
+        return new(static, profiles, partitions, periods, nothing, nothing)
     end
 end
 
