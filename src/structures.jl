@@ -4,6 +4,42 @@ export GraphAssetData,
 const TimestepsBlock = UnitRange{Int}
 const PeriodsBlock = UnitRange{Int}
 
+const PeriodType = String
+const TableNodeStatic = @NamedTuple{assets::DataFrame, flows::DataFrame}
+const TableNodeProfiles = @NamedTuple{
+    assets::Dict{PeriodType,DataFrame},
+    flows::DataFrame,
+    data::Dict{PeriodType,Dict{Symbol,DataFrame}},
+}
+const TableNodePartitions = @NamedTuple{assets::Dict{PeriodType,DataFrame}, flows::DataFrame}
+const TableNodePeriods = @NamedTuple{rep_periods::DataFrame, mapping::DataFrame}
+
+"""
+Structure to hold the tabular data.
+
+## Fields
+
+- `static`: Stores the data that does not vary inside a year. Its fields are
+  - `assets`: Assets data.
+  - `flows`: Flows data.
+- `profiles`: Stores the profile data indexed by:
+  - `assets`: Dictionary with the reference to assets' profiles indexed by periods (`"rep-periods"` or `"timeframe"`).
+  - `flows`: Reference to flows' profiles for representative periods.
+  - `profiles`: Actual profile data. Dictionary of dictionary indexed by periods and then by the profile name.
+- `partitions`: Stores the partitions data indexed by:
+  - `assets`: Dictionary with the specification of the assets' partitions indexed by periods.
+  - `flows`: Specification of the flows' partitions for representative periods.
+- `periods`: Stores the periods data, indexed by:
+  - `rep_periods`: Representative periods.
+  - `timeframe`: Timeframe periods.
+"""
+struct TableTree
+    static::TableNodeStatic
+    profiles::TableNodeProfiles
+    partitions::TableNodePartitions
+    periods::TableNodePeriods
+end
+
 """
 Structure to hold the data of the timeframe.
 """
@@ -197,6 +233,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 """
 mutable struct EnergyProblem
+    table_tree::TableTree
     graph::MetaGraph{
         Int,
         SimpleDiGraph{Int},
@@ -221,15 +258,17 @@ mutable struct EnergyProblem
     time_solve_model::Float64
 
     """
-        EnergyProblem(graph, representative_periods, timeframe)
+        EnergyProblem(dfs_input)
 
-    Constructs a new EnergyProblem object with the given graph, representative periods, and timeframe. The `constraints_partitions` field is computed from the `representative_periods`,
-    and the other fields and nothing or set to default values.
+    Constructs a new EnergyProblem object from the input dataframes.
+    This will call [`create_internal_structures`](@ref).
     """
-    function EnergyProblem(graph, representative_periods, timeframe)
+    function EnergyProblem(dfs_input)
+        graph, representative_periods, timeframe = create_internal_structures(dfs_input)
         constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 
         return new(
+            dfs_input,
             graph,
             representative_periods,
             constraints_partitions,

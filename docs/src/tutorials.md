@@ -83,7 +83,7 @@ energy_problem.objective_value, energy_problem.termination_status
 ### Manually creating all structures without EnergyProblem
 
 For additional control, it might be desirable to use the internal structures of `EnergyProblem` directly.
-This can be error-prone, but it is slightly more efficient.
+This can be error-prone, so use it with care.
 The full description for these structures can be found in [Structures](@ref).
 
 ```@example manual
@@ -91,7 +91,13 @@ using TulipaEnergyModel
 
 input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny
-graph, representative_periods, timeframe = create_graph_and_representative_periods_from_csv_folder(input_dir)
+table_tree = create_input_dataframes_from_csv_folder(input_dir)
+```
+
+The `table_tree` contains all tables in the folder, which are then processed into the internal structures below:
+
+```@example manual
+graph, representative_periods, timeframe = create_internal_structures(table_tree)
 ```
 
 We also need a time partition for the constraints to create the model.
