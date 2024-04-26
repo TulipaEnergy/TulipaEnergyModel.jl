@@ -173,14 +173,14 @@ end
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
-    compute_constraints_partitions!(energy_problem)
+    compute_variables_and_constraints_dataframes!(energy_problem)
     graph = energy_problem.graph
     representative_periods = energy_problem.representative_periods
     timeframe = energy_problem.timeframe
     energy_problem.model = create_model(
         graph,
         representative_periods,
-        energy_problem.table_tree.variables_and_constraints,
+        energy_problem.table_tree.variables_and_constraints_dataframes,
         timeframe;
         kwargs...,
     )

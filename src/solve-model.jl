@@ -38,13 +38,16 @@ function solve_model!(
         end
     end
 
-    for row in
-        eachrow(energy_problem.table_tree.variables_and_constraints[:lowest_storage_level_intra_rp])
+    for row in eachrow(
+        energy_problem.table_tree.variables_and_constraints_dataframes[:lowest_storage_level_intra_rp],
+    )
         a, rp, timesteps_block, value = row.asset, row.rep_period, row.timesteps_block, row.solution
         graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
     end
 
-    for row in eachrow(energy_problem.table_tree.variables_and_constraints[:storage_level_inter_rp])
+    for row in eachrow(
+        energy_problem.table_tree.variables_and_constraints_dataframes[:storage_level_inter_rp],
+    )
         a, pb, value = row.asset, row.periods_block, row.solution
         graph[a].storage_level_inter_rp[pb] = value
     end
@@ -60,7 +63,7 @@ function solve_model!(
         end
     end
 
-    for row in eachrow(energy_problem.table_tree.variables_and_constraints[:flows])
+    for row in eachrow(energy_problem.table_tree.variables_and_constraints_dataframes[:flows])
         u, v, rp, timesteps_block, value =
             row.from_asset, row.to_asset, row.rep_period, row.timesteps_block, row.solution
         graph[u, v].flow[(rp, timesteps_block)] = value
@@ -70,10 +73,10 @@ function solve_model!(
 end
 
 """
-    solution = solve_model!(table_tree.variables_and_constraints, model, ...)
+    solution = solve_model!(table_tree.variables_and_constraints_dataframes, model, ...)
 
-Solves the JuMP `model`, returns the solution, and modifies `table_tree.variables_and_constraints` to include the solution.
-The modifications made to `table_tree.variables_and_constraints` are:
+Solves the JuMP `model`, returns the solution, and modifies `table_tree.variables_and_constraints_dataframes` to include the solution.
+The modifications made to `table_tree.variables_and_constraints_dataframes` are:
 
 - `df_flows.solution = solution.flow`
 - `df_storage_level_intra_rp.solution = solution.storage_level_intra_rp`
@@ -85,10 +88,10 @@ function solve_model!(table_tree::TableTree, model, args...; kwargs...)
         return nothing
     end
 
-    table_tree.variables_and_constraints[:flows].solution = solution.flow
-    table_tree.variables_and_constraints[:lowest_storage_level_intra_rp].solution =
+    table_tree.variables_and_constraints_dataframes[:flows].solution = solution.flow
+    table_tree.variables_and_constraints_dataframes[:lowest_storage_level_intra_rp].solution =
         solution.storage_level_intra_rp
-    table_tree.variables_and_constraints[:storage_level_inter_rp].solution =
+    table_tree.variables_and_constraints_dataframes[:storage_level_inter_rp].solution =
         solution.storage_level_inter_rp
 
     return solution
@@ -120,12 +123,12 @@ The `solution` object is a mutable struct with the following fields:
     [solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]
     ```
   - `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` for a representative period `rp`
-    and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used
+    and a time block `timesteps_block`. The list of time blocks is defined by `variables_and_constraints_dataframes`, which was used
     to create the model.
     To create a vector with all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
 
     ```
-    [solution.storage_level_intra_rp[a, rp, timesteps_block] for timesteps_block in constraints_partitions[:lowest_resolution][(a, rp)]]
+    [solution.storage_level_intra_rp[a, rp, timesteps_block] for timesteps_block in variables_and_constraints_dataframes[:lowest_resolution][(a, rp)]]
     ```
 - `storage_level_inter_rp[a, pb]`: The storage level for the storage asset `a` for a periods block `pb`.
     To create a vector with all values of `storage_level_inter_rp` for a given `a`, one can run

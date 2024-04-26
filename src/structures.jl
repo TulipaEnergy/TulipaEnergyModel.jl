@@ -36,7 +36,7 @@ Structure to hold the tabular data.
   - `rep_periods`: Representative periods.
   - `timeframe`: Timeframe periods.
 - `unrolled_partitions`: Stores the unrolled partitions data, i.e., expands the `partitions`. The fields are the same as in `partitions`.
-- `variables_and_constraints`: Stores the variables and constraints partitions and expressions that are used throughout the model. See `compute_constraints_partitions!` for more information.
+- `variables_and_constraints_dataframes`: Stores the variables and constraints partitions and expressions that are used throughout the model. See `compute_variables_and_constraints_dataframes!` for more information.
 """
 mutable struct TableTree
     static::TableNodeStatic
@@ -44,7 +44,7 @@ mutable struct TableTree
     partitions::TableNodePartitions
     periods::TableNodePeriods
     unrolled_partitions::Union{TableNodeUnrolledPartitions,Nothing}
-    variables_and_constraints::Union{TableNodeVariablesAndConstraints,Nothing}
+    variables_and_constraints_dataframes::Union{TableNodeVariablesAndConstraints,Nothing}
 
     function TableTree(static, profiles, partitions, periods)
         return new(static, profiles, partitions, periods, nothing, nothing)

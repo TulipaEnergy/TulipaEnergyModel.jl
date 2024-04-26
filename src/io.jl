@@ -370,7 +370,7 @@ function save_solution_to_file(output_folder, energy_problem::EnergyProblem)
     save_solution_to_file(
         output_folder,
         energy_problem.graph,
-        energy_problem.table_tree.variables_and_constraints,
+        energy_problem.table_tree.variables_and_constraints_dataframes,
         energy_problem.solution,
     )
 end

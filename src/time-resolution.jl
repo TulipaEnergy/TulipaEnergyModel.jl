@@ -1,25 +1,26 @@
-export compute_rp_partition, compute_constraints_partitions, compute_constraints_partitions!
+export compute_rp_partition,
+    compute_variables_and_constraints_dataframes, compute_variables_and_constraints_dataframes!
 
 using SparseArrays
 
 """
-    compute_constraints_partitions!(energy_problem)
+    compute_variables_and_constraints_dataframes!(energy_problem)
 
 Computes the constraints partitions using `energy_problem.table_tree`.
 """
-function compute_constraints_partitions!(energy_problem::EnergyProblem)
-    compute_constraints_partitions!(energy_problem.table_tree)
+function compute_variables_and_constraints_dataframes!(energy_problem::EnergyProblem)
+    compute_variables_and_constraints_dataframes!(energy_problem.table_tree)
 
     return energy_problem
 end
 
 """
-    compute_constraints_partitions!(table_tree)
+    compute_variables_and_constraints_dataframes!(table_tree)
 
 Parses `table_tree.partitions` to create unrolled partitions and then creates the constraints partitions.
 Both values are stored inside `table_tree` in `table_tree.unrolled_partitions` and `table_tree.constraints`.
 """
-function compute_constraints_partitions!(table_tree::TableTree)
+function compute_variables_and_constraints_dataframes!(table_tree::TableTree)
     # Compute expanded partitions
     df_unrolled_partitions = (
         assets = Dict(
@@ -142,7 +143,7 @@ function compute_constraints_partitions!(table_tree::TableTree)
         ),
     ]
 
-    table_tree.variables_and_constraints = Dict(
+    table_tree.variables_and_constraints_dataframes = Dict(
         name => DataFrames.select(
             DataFrames.flatten(
                 DataFrames.transform!(
@@ -178,7 +179,7 @@ function compute_constraints_partitions!(table_tree::TableTree)
         ) for (name, partitions, strategy, asset_filter) in rep_periods_cases
     )
     # :storage_level_inter_rp follow timeframe, so it can't be easily automated with the rest
-    table_tree.variables_and_constraints[:storage_level_inter_rp] = DataFrames.select(
+    table_tree.variables_and_constraints_dataframes[:storage_level_inter_rp] = DataFrames.select(
         DataFrames.flatten(
             DataFrames.transform!(
                 DataFrames.subset(
@@ -195,15 +196,15 @@ function compute_constraints_partitions!(table_tree::TableTree)
         [:asset, :periods_block],
     )
     # Flows is just linked
-    table_tree.variables_and_constraints[:flows] = df_unrolled_partitions.flows
+    table_tree.variables_and_constraints_dataframes[:flows] = df_unrolled_partitions.flows
     DataFrames.leftjoin!(
-        table_tree.variables_and_constraints[:flows],
+        table_tree.variables_and_constraints_dataframes[:flows],
         table_tree.static.flows[!, [:from_asset, :to_asset, :efficiency]];
         on = [:from_asset, :to_asset],
     )
 
     # Add index column
-    for df in values(table_tree.variables_and_constraints)
+    for df in values(table_tree.variables_and_constraints_dataframes)
         df.index = 1:size(df, 1)
     end
 
