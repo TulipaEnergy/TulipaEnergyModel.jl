@@ -241,7 +241,6 @@ It hides the complexity behind the energy problem, making the usage more friendl
 # Fields
 - `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
 - `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
-- `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
 - `timeframe`: The number of periods of the `representative_periods`.
 - `model`: A JuMP.Model object representing the optimization model.
 - `solved`: A boolean indicating whether the `model` has been solved or not.
@@ -253,7 +252,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 
 
 # Constructor
-- `EnergyProblem(graph, representative_periods, timeframe)`: Constructs a new `EnergyProblem` object with the given graph, representative periods, and timeframe. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
+- `EnergyProblem(graph, representative_periods, timeframe)`: Constructs a new `EnergyProblem` object with the given graph, representative periods, and timeframe. The other fields are initialized with default values.
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 """
@@ -270,7 +269,6 @@ mutable struct EnergyProblem
         Nothing, # Default edge weight
     }
     representative_periods::Vector{RepresentativePeriod}
-    constraints_partitions::Dict{Symbol,Dict{Tuple{Symbol,Int},Vector{TimestepsBlock}}}
     timeframe::Timeframe
     model::Union{JuMP.Model,Nothing}
     solution::Union{Solution,Nothing}
@@ -289,13 +287,11 @@ mutable struct EnergyProblem
     """
     function EnergyProblem(table_tree)
         graph, representative_periods, timeframe = create_internal_structures(table_tree)
-        constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 
         return new(
             table_tree,
             graph,
             representative_periods,
-            constraints_partitions,
             timeframe,
             nothing,
             nothing,
