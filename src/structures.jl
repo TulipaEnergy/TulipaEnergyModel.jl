@@ -287,6 +287,7 @@ mutable struct EnergyProblem
     """
     function EnergyProblem(table_tree)
         graph, representative_periods, timeframe = create_internal_structures(table_tree)
+        compute_variables_and_constraints_dataframes!(table_tree)
 
         return new(
             table_tree,
