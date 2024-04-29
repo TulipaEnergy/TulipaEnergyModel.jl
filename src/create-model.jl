@@ -546,7 +546,15 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
     add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_investment)
 
-    add_investment_constraints!(graph, Ai, Ase, Fi, assets_investment, flows_investment)
+    add_investment_constraints!(
+        graph,
+        Ai,
+        Ase,
+        Fi,
+        assets_investment,
+        assets_investment_energy,
+        flows_investment,
+    )
 
     if write_lp_file
         JuMP.write_to_file(model, "model.lp")

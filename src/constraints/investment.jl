@@ -1,12 +1,20 @@
 export add_investment_constraints!
 
 """
-add_investment_constraints!(graph, Ai, Fi, assets_investment, flows_investment)
+add_investment_constraints!(graph, Ai, Ase, Fi, assets_investment, assets_investment_energy, flows_investment)
 
 Adds the investment constraints for all asset types and transport flows to the model
 """
 
-function add_investment_constraints!(graph, Ai, Ase, Fi, assets_investment, flows_investment)
+function add_investment_constraints!(
+    graph,
+    Ai,
+    Ase,
+    Fi,
+    assets_investment,
+    assets_investment_energy,
+    flows_investment,
+)
 
     # - Maximum (i.e., potential) investment limit for assets
     for a in Ai
@@ -34,10 +42,11 @@ function add_investment_constraints!(graph, Ai, Ase, Fi, assets_investment, flow
 end
 
 function _find_upper_bound(graph, Ai, Ase, investments...)
-    if investments in Ai ∩ Ase # for investments in Ase, i.e., storage assets with energy method
+    # note that investments is a tuple
+    if issubset(investments, Ai ∩ Ase) # for investments in Ase, i.e., storage assets with energy method
         bound_value =
             graph[investments...].investment_limit_storage_energy /
-            graph[investments...].capacity_strorage_energy
+            graph[investments...].capacity_storage_energy
         if graph[investments...].investment_integer_storage_energy
             bound_value = floor(bound_value)
         end
