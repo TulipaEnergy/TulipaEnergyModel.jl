@@ -159,6 +159,11 @@ function create_internal_structures(table_tree::TableTree)
             row.initial_storage_capacity,
             row.initial_storage_level,
             row.energy_to_power_ratio,
+            row.storage_method_energy,
+            row.investment_cost_storage_energy,
+            row.investment_limit_storage_energy,
+            row.capacity_storage_energy,
+            row.investment_integer_storage_energy,
         ) for row in eachrow(table_tree.static.assets)
     ]
 

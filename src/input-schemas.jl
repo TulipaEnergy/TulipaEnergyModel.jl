@@ -4,22 +4,27 @@ const schemas = (
     assets = (
         # Schema for the assets-data.csv file.
         data = OrderedDict(
-            :name => Symbol,                                       # Name of Asset (geographical?)
-            :type => Symbol,                                       # Producer/Consumer/Storage/Conversion
-            :active => Bool,                                       # Active or decomissioned
-            :investable => Bool,                                   # Whether able to invest
-            :investment_integer => Bool,                           # Whether investment is integer or continuous
-            :investment_cost => Float64,                           # kEUR/MW/year
-            :investment_limit => Union{Missing,Float64},           # MW (Missing -> no limit)
-            :capacity => Float64,                                  # MW
-            :initial_capacity => Float64,                          # MW
-            :peak_demand => Float64,                               # MW
-            :consumer_balance_sense => Union{Missing,Symbol},      # Sense of the consumer balance constraint (default ==)
-            :is_seasonal => Bool,                                  # Whether seasonal storage (e.g. hydro) or not (e.g. battery)
-            :storage_inflows => Float64,                           # MWh/year
-            :initial_storage_capacity => Float64,                  # MWh
-            :initial_storage_level => Union{Missing,Float64},      # MWh (Missing -> free initial level)
-            :energy_to_power_ratio => Float64,                     # Hours
+            :name => Symbol,                                            # Name of Asset (geographical?)
+            :type => Symbol,                                            # Producer/Consumer/Storage/Conversion
+            :active => Bool,                                            # Active or decomissioned
+            :investable => Bool,                                        # Whether able to invest
+            :investment_integer => Bool,                                # Whether investment is integer or continuous
+            :investment_cost => Float64,                                # kEUR/MW/year
+            :investment_limit => Union{Missing,Float64},                # MW (Missing -> no limit)
+            :capacity => Float64,                                       # MW
+            :initial_capacity => Float64,                               # MW
+            :peak_demand => Float64,                                    # MW
+            :consumer_balance_sense => Union{Missing,Symbol},           # Sense of the consumer balance constraint (default ==)
+            :is_seasonal => Bool,                                       # Whether seasonal storage (e.g. hydro) or not (e.g. battery)
+            :storage_inflows => Float64,                                # MWh/year
+            :initial_storage_capacity => Float64,                       # MWh
+            :initial_storage_level => Union{Missing,Float64},           # MWh (Missing -> free initial level)
+            :energy_to_power_ratio => Float64,                          # Hours
+            :storage_method_energy => Bool,                             # Whether storage method is energy or not (i.e., fixed_ratio)
+            :investment_cost_storage_energy => Float64,                 # kEUR/MWh/year
+            :investment_limit_storage_energy => Union{Missing,Float64}, # MWh (Missing -> no limit)
+            :capacity_storage_energy => Float64,                        # MWh
+            :investment_integer_storage_energy => Bool,                 # Whether investment for storage energy is integer or continuous
         ),
 
         # Schema for the assets-profiles.csv file.
