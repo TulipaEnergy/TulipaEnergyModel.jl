@@ -18,6 +18,15 @@ end
 open(joinpath(input_dir, "rep-periods-mapping.csv"), "a") do io
     println(io, "216,3,1")
 end
+# Add another partition to timeframe partitions to match the new size
+lines = readlines(joinpath(input_dir, "assets-timeframe-partitions.csv"))
+open(joinpath(input_dir, "assets-timeframe-partitions.csv"), "w") do io
+    println(io, lines[1])
+    println(io, lines[2])
+    for line in lines[3:end]
+        println(io, "$line+1x1")
+    end
+end
 # Add profiles to flow and asset
 open(joinpath(input_dir, "flows-profiles.csv"), "a") do io
     for (u, v) in [("Asgard_E_demand", "Valhalla_E_balance")]
@@ -34,33 +43,31 @@ open(joinpath(input_dir, "assets-profiles.csv"), "a") do io
     end
 end
 
-#%%
-
-@time graph, representative_periods, timeframe =
-    create_graph_and_representative_periods_from_csv_folder(input_dir);
-@benchmark create_graph_and_representative_periods_from_csv_folder($input_dir)
-# @profview create_graph_and_representative_periods_from_csv_folder(input_dir);
+input_dir = joinpath(@__DIR__, "EU")
 
 #%%
 
-@time constraints_partitions = compute_constraints_partitions(graph, representative_periods);
-@benchmark compute_constraints_partitions($graph, $representative_periods)
-# @profview compute_constraints_partitions(graph, representative_periods);
+@time table_tree = create_input_dataframes_from_csv_folder(input_dir);
+@benchmark create_input_dataframes_from_csv_folder($input_dir)
+# @profview create_input_dataframes_from_csv_folder(input_dir)
 
 #%%
 
-@time dataframes =
-    construct_dataframes(graph, representative_periods, constraints_partitions, timeframe)
-@benchmark construct_dataframes(
-    $graph,
-    $representative_periods,
-    $constraints_partitions,
-    $timeframe,
-)
-# @profview construct_dataframes($graph, $representative_periods, $constraints_partitions, $timeframe)
+@time graph, representative_periods, timeframe = create_internal_structures(table_tree);
+@benchmark create_internal_structures($table_tree)
+# @profview create_internal_structures(table_tree);
+
+#%%
+@time compute_variables_and_constraints_dataframes!(table_tree)
+@benchmark compute_variables_and_constraints_dataframes!(table_tree)
+@profview compute_variables_and_constraints_dataframes!(table_tree)
 
 #%%
 
 @time model = create_model(graph, representative_periods, dataframes, timeframe);
 @benchmark create_model($graph, $representative_periods, $dataframes, $timeframe)
 # @profview create_model(graph, representative_periods, dataframes, timeframe);
+
+#%%
+
+@profview create_energy_problem_from_csv_folder(joinpath(@__DIR__, "EU"))
