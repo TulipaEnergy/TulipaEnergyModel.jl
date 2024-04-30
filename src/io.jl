@@ -233,48 +233,6 @@ function create_internal_structures(table_tree::TableTree)
 
     graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data, nothing, nothing, nothing)
 
-    for a in MetaGraphsNext.labels(graph)
-        compute_assets_partitions!(
-            graph[a].rep_periods_partitions,
-            table_tree.partitions.assets["rep-periods"],
-            a,
-            representative_periods,
-        )
-    end
-
-    for (u, v) in MetaGraphsNext.edge_labels(graph)
-        compute_flows_partitions!(
-            graph[u, v].rep_periods_partitions,
-            table_tree.partitions.flows,
-            u,
-            v,
-            representative_periods,
-        )
-    end
-
-    # For timeframe, only the assets where is_seasonal is true are selected
-    for row in eachrow(table_tree.static.assets)
-        if row.is_seasonal
-            # Search for this row in the table_tree.partitions.assets and error if it is not found
-            found = false
-            for partition_row in eachrow(table_tree.partitions.assets["timeframe"])
-                if row.name == partition_row.asset
-                    graph[row.name].timeframe_partitions = _parse_rp_partition(
-                        Val(partition_row.specification),
-                        partition_row.partition,
-                        1:timeframe.num_periods,
-                    )
-                    found = true
-                    break
-                end
-            end
-            if !found
-                graph[row.name].timeframe_partitions =
-                    _parse_rp_partition(Val(:uniform), "1", 1:timeframe.num_periods)
-            end
-        end
-    end
-
     for asset_profile_row in eachrow(table_tree.profiles.assets["rep-periods"]) # row = asset, profile_type, profile_name
         gp = DataFrames.groupby( # 3. group by RP
             filter(

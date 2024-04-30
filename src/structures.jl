@@ -99,8 +99,6 @@ mutable struct GraphAssetData
     investment_integer_storage_energy::Bool
     timeframe_profiles::Dict{Symbol,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{Symbol,Int},Vector{Float64}}
-    timeframe_partitions::Vector{PeriodsBlock}
-    rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
     # Solution
     investment::Float64
     storage_level_intra_rp::Dict{Tuple{Int,TimestepsBlock},Float64}
@@ -130,8 +128,6 @@ mutable struct GraphAssetData
     )
         timeframe_profiles = Dict{Symbol,Vector{Float64}}()
         rep_periods_profiles = Dict{Tuple{Symbol,Int},Vector{Float64}}()
-        timeframe_partitions = PeriodsBlock[]
-        rep_periods_partitions = Dict{Int,Vector{TimestepsBlock}}()
         return new(
             type,
             investable,
@@ -154,8 +150,6 @@ mutable struct GraphAssetData
             investment_integer_storage_energy,
             timeframe_profiles,
             rep_periods_profiles,
-            timeframe_partitions,
-            rep_periods_partitions,
             -1,
             Dict{Tuple{Int,TimestepsBlock},Float64}(),
             Dict{TimestepsBlock,Float64}(),
@@ -181,8 +175,6 @@ mutable struct GraphFlowData
     efficiency::Float64
     timeframe_profiles::Dict{Symbol,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{Symbol,Int},Vector{Float64}}
-    timeframe_partitions::Vector{PeriodsBlock}
-    rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
     # Solution
     flow::Dict{Tuple{Int,TimestepsBlock},Float64}
     investment::Float64
@@ -217,8 +209,6 @@ function GraphFlowData(
         efficiency,
         Dict{Symbol,Vector{Float64}}(),
         Dict{Tuple{Symbol,Int},Vector{Float64}}(),
-        PeriodsBlock[],
-        Dict{Int,Vector{TimestepsBlock}}(),
         Dict{Tuple{Int,TimestepsBlock},Float64}(),
         -1,
     )
