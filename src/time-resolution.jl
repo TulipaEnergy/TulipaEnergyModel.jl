@@ -81,18 +81,16 @@ function compute_variables_and_constraints_dataframes!(table_tree::TableTree)
         "timeframe" => DataFrames.groupby(df_unrolled_partitions.assets["timeframe"], [:asset]),
     )
     grouped_incoming_flows(asset, rep_period) = DataFrames.groupby(
-        DataFrames.subset(
+        filter(
+            [:to_asset, :rep_period] => (a, rp) -> a == asset && rp == rep_period,
             df_unrolled_partitions.flows,
-            [:to_asset, :rep_period] =>
-                DataFrames.ByRow((a, rp) -> a == asset && rp == rep_period),
         ),
         :from_asset,
     )
     grouped_outgoing_flows(asset, rep_period) = DataFrames.groupby(
-        DataFrames.subset(
+        filter(
+            [:from_asset, :rep_period] => (a, rp) -> a == asset && rp == rep_period,
             df_unrolled_partitions.flows,
-            [:from_asset, :rep_period] =>
-                DataFrames.ByRow((a, rp) -> a == asset && rp == rep_period),
         ),
         :to_asset,
     )
@@ -108,38 +106,37 @@ function compute_variables_and_constraints_dataframes!(table_tree::TableTree)
         )
     end
 
-    typecheck(t) = :type => DataFrames.ByRow(x -> x in t)
     rep_periods_cases = [
         (
             name = :lowest,
             partitions = [:incoming, :outgoing],
             strategy = :lowest,
-            asset_filter = typecheck([:conversion, :producer]),
+            asset_filter = :type => in([:conversion, :producer]),
         ),
         (
             name = :highest_in_out,
             partitions = [:incoming, :outgoing],
             strategy = :highest,
-            asset_filter = typecheck([:hub, :consumer]),
+            asset_filter = :type => in([:hub, :consumer]),
         ),
         (
             name = :highest_in,
             partitions = [:incoming],
             strategy = :highest,
-            asset_filter = typecheck([:storage]),
+            asset_filter = :type => in([:storage]),
         ),
         (
             name = :highest_out,
             partitions = [:outgoing],
             strategy = :highest,
-            asset_filter = typecheck([:producer, :storage, :conversion]),
+            asset_filter = :type => in([:producer, :storage, :conversion]),
         ),
         (
             name = :lowest_storage_level_intra_rp,
             partitions = [:asset, :incoming, :outgoing],
             strategy = :lowest,
             asset_filter = [:type, :is_seasonal] =>
-                DataFrames.ByRow((t, is_seasonal) -> t == :storage && !is_seasonal),
+                (t, is_seasonal) -> t == :storage && !is_seasonal,
         ),
     ]
 
@@ -147,7 +144,7 @@ function compute_variables_and_constraints_dataframes!(table_tree::TableTree)
         name => DataFrames.select(
             DataFrames.flatten(
                 DataFrames.transform!(
-                    DataFrames.subset(table_tree.partitions.assets["rep-periods"], asset_filter),
+                    filter(asset_filter, table_tree.partitions.assets["rep-periods"]),
                     [:asset, :rep_period] =>
                         DataFrames.ByRow(
                             (a, rp) -> begin
@@ -182,10 +179,9 @@ function compute_variables_and_constraints_dataframes!(table_tree::TableTree)
     table_tree.variables_and_constraints_dataframes[:storage_level_inter_rp] = DataFrames.select(
         DataFrames.flatten(
             DataFrames.transform!(
-                DataFrames.subset(
+                filter(
+                    [:type, :is_seasonal] => (t, is_seasonal) -> t == :storage && is_seasonal,
                     table_tree.partitions.assets["timeframe"],
-                    [:type, :is_seasonal] =>
-                        DataFrames.ByRow((t, is_seasonal) -> t == :storage && is_seasonal),
                 ),
                 :asset =>
                     DataFrames.ByRow(a -> grouped_assets["timeframe"][(a,)].timesteps_block) =>
