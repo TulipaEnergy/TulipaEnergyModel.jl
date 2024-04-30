@@ -20,7 +20,7 @@ _TulipaEnergyModel.jl_ incorporates two fundamental concepts that serve as the f
 In a nutshell, the model guarantees a balance of energy for the various types of assets while considering the flow limits. It considers a set of [representative periods](@ref representative-periods) (e.g., days or weeks) for a given [timeframe](@ref timeframe) (e.g., a year) the user wants to analyze. Therefore, the model has two types of temporal (time) constraints to consider the different chronology characteristics of the assets:
 
 -   **Intra-temporal Constraints**: These constraints limit the asset or flow within a representative period. The intra-temporal constraints help to characterize the short-term operational dynamics of the assets. So far, the model considers balance and flow limitations within the representative period, but future developments will include unit commitment, ramping, and reserve constraints.
--   **Inter-temporal Constraints**: These constraints combine the information of the representative periods and create limitations between them to recover chronological information across the whole timeframe. The inter-temporal constraints help to characterize the long-term operational dynamics of the assets. So far, the model uses this type of constraint to model seasonal storage. Still, future developments will include, for example, maximum or minimum production/consumption for a year (or any timeframe).
+-   **Inter-temporal Constraints**: These constraints combine the information of the representative periods and create limitations between them to recover chronological information across the whole timeframe. The inter-temporal constraints help to characterize the long-term operational dynamics of the assets (e.g., seasonality). So far, the model uses this type of constraint to model seasonal storage. Still, future developments will include, for example, maximum or minimum production/consumption for a year (or any timeframe).
 
 The [`mathematical formulation`](@ref formulation) shows an overview of these constraints and the variables in the model.
 
@@ -336,13 +336,10 @@ Energy storage systems can be broadly classified into two categories: seasonal a
 
 Both storage categories can be represented in _TulipaEnergyModel.jl_ using the representative periods approach:
 
--   _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, like in the case of a battery with a storage capacity of 4 hours and representative periods of 24-hour timesteps, intra-temporal constraints should be applied. To apply these constraints, you need to set the input parameter `is_seasonal` to `false` in the [`assets-data.csv`](@ref schemas).
--   _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, like in the case of a hydroplant with a storage capacity of a month and representative periods of 24-hour timesteps, inter-temporal constraints should be applied. To apply these constraints, you need to set the input parameter `is_seasonal` to `true` in the [`assets-data.csv`](@ref schemas).
+-   _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, like in the case of a battery with a storage capacity of 4 hours and representative periods of 24-hour timesteps, intra-temporal constraints should be applied.
+-   _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, like in the case of a hydroplant with a storage capacity of a month and representative periods of 24-hour timesteps, inter-temporal constraints should be applied.
 
-The equations of both intra- and inter-temporal constraints for energy storage is available in the [`mathematical formulation`](@ref formulation). An example is shown in the following section to explain these concepts.
-
-> **Note:**
-> If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
+The equations of intra- and inter-temporal constraints for energy storage are available in the [`mathematical formulation`](@ref formulation). An example is shown in the following section to explain these concepts. In addition, the section [`seasonal and non-seasonal storage setup`](@ref seasonal-setup) shows how to set the parameters in the model to consider each type in the storage assets.
 
 ### Example to Model Seasonal and Non-seasonal Storage
 
