@@ -194,15 +194,22 @@ function add_expression_terms_inter_rp_constraints!(
 
     # Incoming, outgoing flows, and profile aggregation
     for row_inter in eachrow(df_inter)
-        sub_df_map = filter(row -> row.period in row_inter.periods_block, df_map)
+        sub_df_map = filter(:period => in(row_inter.periods_block), df_map; view = true)
 
         for row_map in eachrow(sub_df_map)
-            sub_df_flows =
-                filter(row -> row.to == row_inter.asset && row.rp == row_map.rep_period, df_flows)
+            sub_df_flows = filter(
+                [:to, :rp] => (to, rp) -> to == row_inter.asset && rp == row_map.rep_period,
+                df_flows;
+                view = true,
+            )
             row_inter.incoming_flow +=
                 LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
-            sub_df_flows =
-                filter(row -> row.from == row_inter.asset && row.rp == row_map.rep_period, df_flows)
+            sub_df_flows = filter(
+                [:from, :rp] =>
+                    (from, rp) -> from == row_inter.asset && rp == row_map.rep_period,
+                df_flows;
+                view = true,
+            )
             row_inter.outgoing_flow +=
                 LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
             row_inter.inflows_profile_aggregation +=

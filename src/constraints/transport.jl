@@ -70,7 +70,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
     ]
 
     ## Constraints that define bounds for a transport flow Ft
-    df = filter(row -> (row.from, row.to) ∈ Ft, df_flows)
+    df = filter([:from, :to] => (from, to) -> (from, to) ∈ Ft, df_flows; view = true)
 
     # - Max transport flow limit
     model[:max_transport_flow_limit] = [
