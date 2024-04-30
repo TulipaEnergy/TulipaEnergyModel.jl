@@ -240,8 +240,9 @@ function create_internal_structures(table_tree::TableTree)
     for asset_profile_row in eachrow(table_tree.profiles.assets["rep-periods"]) # row = asset, profile_type, profile_name
         gp = DataFrames.groupby( # 3. group by RP
             filter(
-                row -> row.profile_name == asset_profile_row.profile_name, # 2. Filter profile_name
-                table_tree.profiles.data["rep-periods"][asset_profile_row.profile_type], # 1. Get the profile of given type
+                :profile_name => ==(asset_profile_row.profile_name), # 2. Filter profile_name
+                table_tree.profiles.data["rep-periods"][asset_profile_row.profile_type]; # 1. Get the profile of given type
+                view = true,
             ),
             :rep_period,
         )
@@ -256,10 +257,11 @@ function create_internal_structures(table_tree::TableTree)
     for flow_profile_row in eachrow(table_tree.profiles.flows)
         gp = DataFrames.groupby(
             filter(
-                row -> row.profile_name == flow_profile_row.profile_name,
-                table_tree.profiles.data["rep-periods"][flow_profile_row.profile_type],
+                :profile_name => ==(flow_profile_row.profile_name),
+                table_tree.profiles.data["rep-periods"][flow_profile_row.profile_type];
+                view = true,
             ),
-            :rep_period,
+            :rep_period;
         )
         for ((rp,), df) in pairs(gp)
             graph[flow_profile_row.from_asset, flow_profile_row.to_asset].rep_periods_profiles[(
@@ -271,8 +273,9 @@ function create_internal_structures(table_tree::TableTree)
 
     for asset_profile_row in eachrow(table_tree.profiles.assets["timeframe"]) # row = asset, profile_type, profile_name
         df = filter(
-            row -> row.profile_name == asset_profile_row.profile_name, # 2. Filter profile_name
-            table_tree.profiles.data["timeframe"][asset_profile_row.profile_type], # 1. Get the profile of given type
+            :profile_name => ==(asset_profile_row.profile_name), # 2. Filter profile_name
+            table_tree.profiles.data["timeframe"][asset_profile_row.profile_type]; # 1. Get the profile of given type
+            view = true,
         )
         graph[asset_profile_row.asset].timeframe_profiles[asset_profile_row.profile_type] = df.value
     end

@@ -20,7 +20,7 @@ function add_hub_constraints!(
 )
 
     # - Balance constraint (using the lowest temporal resolution)
-    df = filter(row -> row.asset ∈ Ah, dataframes[:highest_in_out]; view = true)
+    df = filter(:asset => ∈(Ah), dataframes[:highest_in_out]; view = true)
     model[:hub_balance] = [
         @constraint(
             model,

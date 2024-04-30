@@ -22,7 +22,7 @@ function add_consumer_constraints!(
 )
 
     # - Balance constraint (using the lowest temporal resolution)
-    df = filter(row -> row.asset ∈ Ac, dataframes[:highest_in_out]; view = true)
+    df = filter(:asset => ∈(Ac), dataframes[:highest_in_out]; view = true)
     model[:consumer_balance] = [
         @constraint(
             model,

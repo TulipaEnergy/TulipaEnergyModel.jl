@@ -20,7 +20,7 @@ function add_conversion_constraints!(
 )
 
     # - Balance constraint (using the lowest temporal resolution)
-    df = filter(row -> row.asset ∈ Acv, dataframes[:lowest]; view = true)
+    df = filter(:asset => ∈(Acv), dataframes[:lowest]; view = true)
     model[:conversion_balance] = [
         @constraint(
             model,
