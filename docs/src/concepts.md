@@ -20,11 +20,11 @@ _TulipaEnergyModel.jl_ incorporates two fundamental concepts that serve as the f
 In a nutshell, the model guarantees a balance of energy for the various types of assets while considering the flow limits. It considers a set of [representative periods](@ref representative-periods) (e.g., days or weeks) for a given [timeframe](@ref timeframe) (e.g., a year) the user wants to analyze. Therefore, the model has two types of temporal (time) constraints to consider the different chronology characteristics of the assets:
 
 -   **Intra-temporal Constraints**: These constraints limit the asset or flow within a representative period. The intra-temporal constraints help to characterize the short-term operational dynamics of the assets. So far, the model considers balance and flow limitations within the representative period, but future developments will include unit commitment, ramping, and reserve constraints.
--   **Inter-temporal Constraints**: These constraints combine the information of the representative periods and create limitations between them to recover chronological information across the full timeframe. The inter-temporal constraints help to characterize the long-term operational dynamics of the assets. So far, the model uses this type of constraint to model seasonal storage, but future developments will include, for example, maximum or minimum production/consumption for a year (or any timeframe).
+-   **Inter-temporal Constraints**: These constraints combine the information of the representative periods and create limitations between them to recover chronological information across the whole timeframe. The inter-temporal constraints help to characterize the long-term operational dynamics of the assets (e.g., seasonality). So far, the model uses this type of constraint to model seasonal storage. Still, future developments will include, for example, maximum or minimum production/consumption for a year (or any timeframe).
 
 The [`mathematical formulation`](@ref formulation) shows an overview of these constraints and the variables in the model.
 
-Another essential concept in the model is the [flexible time resolution](@ref flex-time-res), which allows for each asset to be considered in a single timestep (e.g., 1, 2, 3...) or in a range of timesteps (e.g., 1:3, meaning that the asset's variable represents the value of timesteps 1, 2, and 3). This concept allows the modelling of different dynamics depending on the asset; for instance, electricity assets can be modeled hourly, whereas hydrogen assets can be modeled in a 6-hour resolution (avoiding creating unnecessary constraints and variables).
+Another essential concept in the model is the [flexible time resolution](@ref flex-time-res), which allows for each asset to be considered in a single timestep (e.g., 1, 2, 3...) or in a range of timesteps (e.g., 1:3, meaning that the asset's variable represents the value of timesteps 1, 2, and 3). This concept allows the modeling of different dynamics depending on the asset; for instance, electricity assets can be modeled hourly, whereas hydrogen assets can be modeled in a 6-hour resolution (avoiding creating unnecessary constraints and variables).
 
 The following sections explain these concepts in more detail.
 
@@ -330,9 +330,20 @@ The level of reduction and approximation error will depend on the case study. So
 
 -   Having high resolutions for all assets in a large-scale case study may not be necessary. For example, if analyzing a European case study focusing on a specific country like The Netherlands, hourly details for distant countries (such as Portugal and Spain) may not be required. However, one would still want to consider their effect on The Netherlands without causing too much computational burden. In such cases, flexible time resolution can maintain hourly details in the focus country, while reducing the detail in distant countries by increasing their resolution (to two hours or more). This reduction allows a broader scope without over-burdening computation.
 
-## [Seasonal Storage Modeling](@id seasonal-storage)
+## [Storage Modeling](@id storage-modeling)
 
-The inter-temporal constraints in the [`mathematical formulation`](@ref formulation) for energy storage assets allow us to model seasonal storage. To better understand how this feature works in _TulipaEnergyModel.jl_, there is an example in the folder [`test/inputs/Storage`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Storage).
+Energy storage systems can be broadly classified into two categories: seasonal and non-seasonal storage. Seasonal storage refers to assets that can store energy for more extended periods, usually spanning months or even years. Examples of such assets include hydro reservoirs, hydrogen storage in salt caverns, or empty gas fields. On the other hand, non-seasonal storage refers to assets that can store energy only for a few hours, such as batteries or small pumped-hydro storage units.
+
+Both storage categories can be represented in _TulipaEnergyModel.jl_ using the representative periods approach:
+
+-   _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, like in the case of a battery with a storage capacity of 4 hours and representative periods of 24-hour timesteps, intra-temporal constraints should be applied.
+-   _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, like in the case of a hydroplant with a storage capacity of a month and representative periods of 24-hour timesteps, inter-temporal constraints should be applied.
+
+The equations of intra- and inter-temporal constraints for energy storage are available in the [`mathematical formulation`](@ref formulation). An example is shown in the following section to explain these concepts. In addition, the section [`seasonal and non-seasonal storage setup`](@ref seasonal-setup) shows how to set the parameters in the model to consider each type in the storage assets.
+
+### Example to Model Seasonal and Non-seasonal Storage
+
+We use the example in the folder [`test/inputs/Storage`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Storage) to explain how all these concepts come together in _TulipaEnergyModel.jl_.
 
 Let's first look at this feature's most relevant input data, starting with the `assets-data` file. Here, we show only the storage assets and the appropriate columns for this example, but all the input data can be found in the previously mentioned folder.
 
@@ -344,7 +355,7 @@ assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
 filtered_assets = assets[assets.type .== "storage", ["name", "type", "initial_capacity", "is_seasonal", "initial_storage_capacity", "initial_storage_level"]] # hide
 ```
 
-The `is_seasonal` parameter determines whether or not the storage asset uses the inter-temporal constraints. The `phs` is the only storage asset with this type of constraint and inter-storage level variable (i.e., $s^{\text{inter}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` will only consider intra-temporal constraints with intra-storage level variables (i.e., $s^{\text{intra}}_{\text{battery},k,b_k}$), and has 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration).
+The `is_seasonal` parameter determines whether or not the storage asset uses the inter-temporal constraints. The `phs` is the only storage asset with this type of constraint and inter-storage level variable (i.e., $v^{\text{inter-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` will only consider intra-temporal constraints with intra-storage level variables (i.e., $v^{\text{intra-storage}}_{\text{battery},k,b_k}$), and has 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration).
 
 The `rep-periods-data` file has information on the representative periods in the example. We have three representative periods, each with 24 timesteps and hourly resolution, representing a day. The figure below shows the availability profile of the renewable energy sources in the example.
 
@@ -395,5 +406,3 @@ Since the `phs` is defined as seasonal, it has results for only the inter-storag
 ![PHS-inter-storage-level](./figs/inter-storage-level.png)
 
 In this example, we have demonstrated how to partially recover the chronological information of a storage asset with a longer discharge duration (such as 48 hours) than the representative period length (24 hours). This feature enables us to model both short- and long-term storage in _TulipaEnergyModel.jl_.
-
-You can follow the [hydrothermal dispatch tutorial](@ref hydrothermal-example) for a more comprehensive example of seasonal storage use in the model.

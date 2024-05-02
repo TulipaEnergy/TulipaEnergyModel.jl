@@ -42,13 +42,13 @@ The `input_folder` should contain CSV files as described below. The `output_fold
 
 ## [Input](@id input)
 
-Currently, we only accept input from CSV files that follow the [Schemas](@ref).
+Currently, we only accept input from CSV files that follow the [Schemas](@ref schemas).
 You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples.
 
 ### CSV
 
 Below, we have a description of the files.
-At the end, in [Schemas](@ref), we have the expected columns in these CSVs.
+At the end, in [Schemas](@ref schemas), we have the expected columns in these CSVs.
 
 #### [`assets-data.csv`](@id assets-data)
 
@@ -127,7 +127,7 @@ Describes the [representative periods](@ref representative-periods) by their uni
 
 Describes the periods of the [timeframe](@ref timeframe) that map into a [representative period](@ref representative-periods) and the weight of the representative periods that construct a period. Note that each weight is a decimal between 0 and 1, and that the sum of weights for a given period must also be between 0 and 1 (but do not have to sum to 1).
 
-#### Schemas
+#### [Schemas](@id schemas)
 
 ```@eval
 using Markdown, TulipaEnergyModel
@@ -288,3 +288,13 @@ if energy_problem.termination_status == INFEASIBLE
  print(iis_model)
 end
 ```
+
+## [Seasonal and non-seasonal storage setup](@id seasonal-setup)
+
+Section [Storage Modeling](@ref storage-modeling) explains the main concepts for modeling seasonal and non-seasonal storage in _TulipaEnergyModel.jl_. To define if an asset is one type or the other then consider the following:
+
+-   _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, we recommend using the inter-temporal constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `true` in the [`assets-data.csv`](@ref schemas).
+-   _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the intra-temporal constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `false` in the [`assets-data.csv`](@ref schemas).
+
+> **Note:**
+> If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
