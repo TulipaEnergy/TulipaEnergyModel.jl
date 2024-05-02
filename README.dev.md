@@ -44,6 +44,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
     ```bash
     env/Scripts/activate
     ```
+
     Note that there is no leading dot (`. `) in the above command.
 
 6.  [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
