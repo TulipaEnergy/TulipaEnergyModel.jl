@@ -42,8 +42,9 @@ To contribute to TulipaEnergyModel.jl, you need the following:
     On Windows, you need to active the environment using the following command instead of the previous one:
 
     ```bash
-    . env/Scripts/activate
+    env/Scripts/activate
     ```
+    Note that there is no leading dot (`. `) in the above command.
 
 6.  [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
     formatting.
