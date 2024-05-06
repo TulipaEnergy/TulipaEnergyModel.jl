@@ -466,10 +466,8 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     ## Expressions for the objective function
     assets_investment_cost = @expression(
         model,
+        sum(graph[a].investment_cost * graph[a].capacity * assets_investment[a] for a in Ai) +
         sum(
-            graph[a].investment_cost * graph[a].capacity * assets_investment[a] for
-            a in Ai if !(a in Ase)
-        ) + sum(
             graph[a].investment_cost_storage_energy *
             graph[a].capacity_storage_energy *
             assets_investment_energy[a] for a in Ase

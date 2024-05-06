@@ -18,17 +18,15 @@ function add_investment_constraints!(
 
     # - Maximum (i.e., potential) investment limit for assets
     for a in Ai
-        if !(a in Ase)
-            if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit)
-                bound_value = _find_upper_bound(graph, Ai, Ase, a)
-                JuMP.set_upper_bound(assets_investment[a], bound_value)
-            end
-        else # for a in Ase, i.e., storage assets with energy method
-            if graph[a].capacity_storage_energy > 0 &&
-               !ismissing(graph[a].investment_limit_storage_energy)
-                bound_value = _find_upper_bound(graph, Ai, Ase, a)
-                JuMP.set_upper_bound(assets_investment_energy[a], bound_value)
-            end
+        if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit)
+            bound_value = _find_upper_bound(graph, Ai, Ase, a)
+            JuMP.set_upper_bound(assets_investment[a], bound_value)
+        end
+        if (a in Ase) && # for a in Ase, i.e., storage assets with energy method
+           graph[a].capacity_storage_energy > 0 &&
+           !ismissing(graph[a].investment_limit_storage_energy)
+            bound_value = _find_upper_bound(graph, Ai, Ase, a)
+            JuMP.set_upper_bound(assets_investment_energy[a], bound_value)
         end
     end
 
