@@ -25,7 +25,7 @@ function add_investment_constraints!(
         if (a in Ase) && # for a in Ase, i.e., storage assets with energy method
            graph[a].capacity_storage_energy > 0 &&
            !ismissing(graph[a].investment_limit_storage_energy)
-            bound_value = _find_upper_bound(graph, Ai, Ase, a)
+            bound_value = _find_upper_bound(graph, Ai, Ase, a; is_bound_for_energy = true)
             JuMP.set_upper_bound(assets_investment_energy[a], bound_value)
         end
     end
@@ -39,19 +39,26 @@ function add_investment_constraints!(
     end
 end
 
-function _find_upper_bound(graph, Ai, Ase, investments...)
-    # note that investments is a tuple
-    if issubset(investments, Ai ∩ Ase) # for investments in Ase, i.e., storage assets with energy method
-        bound_value =
-            graph[investments...].investment_limit_storage_energy /
-            graph[investments...].capacity_storage_energy
-        if graph[investments...].investment_integer_storage_energy
+function _find_upper_bound(
+    graph,
+    asset_indices,
+    storage_asset_indices,
+    investments...;
+    is_bound_for_energy = false,
+)
+    graph_investment = graph[investments...]
+    if !is_bound_for_energy
+        bound_value = graph_investment.investment_limit / graph_investment.capacity
+        if graph_investment.investment_integer
             bound_value = floor(bound_value)
         end
     else
-        bound_value = graph[investments...].investment_limit / graph[investments...].capacity
-        if graph[investments...].investment_integer
+        bound_value =
+            graph_investment.investment_limit_storage_energy /
+            graph_investment.capacity_storage_energy
+        if graph_investment.investment_integer_storage_energy
             bound_value = floor(bound_value)
         end
     end
+    return bound_value
 end
