@@ -26,7 +26,7 @@ function add_hub_constraints!(
             model,
             incoming_flow_highest_in_out_resolution[row.index] ==
             outgoing_flow_highest_in_out_resolution[row.index],
-            base_name = "hub_balance[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+            base_name = "hub_balance[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df)
     ]
 end

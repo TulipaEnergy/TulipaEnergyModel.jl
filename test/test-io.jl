@@ -125,7 +125,7 @@ end
     end
 end
 
-@testset "is_seasonal asset without entry in partitions file should use :uniform,1" begin
+@testset "assets and flows without entry in partitions file should use :uniform,1" begin
     # Copy Norse and delete a row of the partitions file
     dir = mktempdir()
     for (root, _, files) in walkdir(joinpath(INPUT_FOLDER, "Norse"))
@@ -133,16 +133,17 @@ end
             cp(joinpath(root, file), joinpath(dir, file))
         end
     end
-    filename = joinpath(dir, "assets-timeframe-partitions.csv")
-    lines = readlines(filename)
-    open(filename, "w") do io
-        for line in lines[1:end-1]
-            println(io, line)
-        end
-    end
-    missing_asset = Symbol(split(lines[end], ",")[1]) # The asset the was not included
 
     table_tree = create_input_dataframes_from_csv_folder(dir)
-    graph, rps, tf = create_internal_structures(table_tree)
-    @test graph[missing_asset].timeframe_partitions == [i:i for i in 1:tf.num_periods]
+
+    for (prefix, on_key, df_processed) in [
+        ("assets-rep-periods", :asset, table_tree.partitions.assets["rep-periods"]),
+        ("assets-timeframe", :asset, table_tree.partitions.assets["timeframe"]),
+        ("flows-rep-periods", [:from_asset, :to_asset], table_tree.partitions.flows),
+    ]
+        df = TulipaEnergyModel.read_csv_with_implicit_schema(dir, "$prefix-partitions.csv")
+        df_diff = antijoin(df_processed, df; on = on_key)
+        @test all(df_diff.specification .== :uniform)
+        @test all(df_diff.partition .== "1")
+    end
 end

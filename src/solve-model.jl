@@ -17,7 +17,7 @@ function solve_model!(
     end
 
     energy_problem.solution =
-        solve_model!(energy_problem.dataframes, model, optimizer; parameters = parameters)
+        solve_model!(energy_problem.table_tree, model, optimizer; parameters = parameters)
     energy_problem.termination_status = JuMP.termination_status(model)
     if energy_problem.solution === nothing
         # Warning has been given at internal function
@@ -38,12 +38,16 @@ function solve_model!(
         end
     end
 
-    for row in eachrow(energy_problem.dataframes[:lowest_storage_level_intra_rp])
-        a, rp, timesteps_block, value = row.asset, row.rp, row.timesteps_block, row.solution
+    for row in eachrow(
+        energy_problem.table_tree.variables_and_constraints_dataframes[:lowest_storage_level_intra_rp],
+    )
+        a, rp, timesteps_block, value = row.asset, row.rep_period, row.timesteps_block, row.solution
         graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
     end
 
-    for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
+    for row in eachrow(
+        energy_problem.table_tree.variables_and_constraints_dataframes[:storage_level_inter_rp],
+    )
         a, pb, value = row.asset, row.periods_block, row.solution
         graph[a].storage_level_inter_rp[pb] = value
     end
@@ -59,9 +63,9 @@ function solve_model!(
         end
     end
 
-    for row in eachrow(energy_problem.dataframes[:flows])
+    for row in eachrow(energy_problem.table_tree.variables_and_constraints_dataframes[:flows])
         u, v, rp, timesteps_block, value =
-            row.from, row.to, row.rp, row.timesteps_block, row.solution
+            row.from_asset, row.to_asset, row.rep_period, row.timesteps_block, row.solution
         graph[u, v].flow[(rp, timesteps_block)] = value
     end
 
@@ -69,24 +73,26 @@ function solve_model!(
 end
 
 """
-    solution = solve_model!(dataframes, model, ...)
+    solution = solve_model!(table_tree.variables_and_constraints_dataframes, model, ...)
 
-Solves the JuMP `model`, returns the solution, and modifies `dataframes` to include the solution.
-The modifications made to `dataframes` are:
+Solves the JuMP `model`, returns the solution, and modifies `table_tree.variables_and_constraints_dataframes` to include the solution.
+The modifications made to `table_tree.variables_and_constraints_dataframes` are:
 
 - `df_flows.solution = solution.flow`
 - `df_storage_level_intra_rp.solution = solution.storage_level_intra_rp`
 - `df_storage_level_inter_rp.solution = solution.storage_level_inter_rp`
 """
-function solve_model!(dataframes, model, args...; kwargs...)
+function solve_model!(table_tree::TableTree, model, args...; kwargs...)
     solution = solve_model(model, args...; kwargs...)
     if isnothing(solution)
         return nothing
     end
 
-    dataframes[:flows].solution = solution.flow
-    dataframes[:lowest_storage_level_intra_rp].solution = solution.storage_level_intra_rp
-    dataframes[:storage_level_inter_rp].solution = solution.storage_level_inter_rp
+    table_tree.variables_and_constraints_dataframes[:flows].solution = solution.flow
+    table_tree.variables_and_constraints_dataframes[:lowest_storage_level_intra_rp].solution =
+        solution.storage_level_intra_rp
+    table_tree.variables_and_constraints_dataframes[:storage_level_inter_rp].solution =
+        solution.storage_level_inter_rp
 
     return solution
 end
@@ -102,43 +108,7 @@ The keyword argument `parameters` should be passed as a list of `key => value` p
 These can be created manually, obtained using [`default_parameters`](@ref), or read from a file
 using [`read_parameters_from_file`](@ref).
 
-The `solution` object is a mutable struct with the following fields:
-
-  - `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
-    To create a traditional array in the order given by the investable assets, one can run
-
-    ```
-    [solution.assets_investment[a] for a in labels(graph) if graph[a].investable]
-    ```
-  - `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
-    To create a traditional array in the order given by the investable flows, one can run
-
-    ```
-    [solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]
-    ```
-  - `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` for a representative period `rp`
-    and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used
-    to create the model.
-    To create a vector with all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
-
-    ```
-    [solution.storage_level_intra_rp[a, rp, timesteps_block] for timesteps_block in constraints_partitions[:lowest_resolution][(a, rp)]]
-    ```
-- `storage_level_inter_rp[a, pb]`: The storage level for the storage asset `a` for a periods block `pb`.
-    To create a vector with all values of `storage_level_inter_rp` for a given `a`, one can run
-
-    ```
-    [solution.storage_level_inter_rp[a, bp] for bp in graph[a].timeframe_partitions[a]]
-    ```
-- `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period
-    `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
-    To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
-
-    ```
-    [solution.flow[(u, v), rp, timesteps_block] for timesteps_block in graph[u, v].partitions[rp]]
-    ```
-- `objective_value`: A Float64 with the objective value at the solution.
-- `duals`: A NamedTuple containing the dual variables of selected constraints.
+The `solution` object is a mutable struct. See [`Solution`](@ref) for more information.
 
 ## Examples
 

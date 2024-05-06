@@ -89,6 +89,44 @@ function create_input_dataframes_from_csv_folder(input_folder::AbstractString; s
 
             error(msg)
         end
+    else
+        dfs_assets_partitions["rep-periods"] = DataFrames.leftjoin(
+            DataFrames.crossjoin(
+                df_assets_data[!, [:name]],
+                DataFrame(; rep_period = 1:size(df_rep_periods, 1)),
+            ),
+            dfs_assets_partitions["rep-periods"];
+            on = [:name => :asset, :rep_period],
+        )
+        dfs_assets_partitions["timeframe"] = DataFrames.leftjoin(
+            df_assets_data[!, [:name]],
+            dfs_assets_partitions["timeframe"];
+            on = :name => :asset,
+        )
+
+        for period_type in ["rep-periods", "timeframe"]
+            DataFrames.rename!(dfs_assets_partitions[period_type], :name => :asset)
+            DataFrames.transform!(
+                dfs_assets_partitions[period_type],
+                :specification =>
+                    DataFrames.ByRow(c -> ismissing(c) ? :uniform : c) => :specification,
+                :partition => DataFrames.ByRow(c -> ismissing(c) ? "1" : c) => :partition,
+            )
+        end
+
+        df_flows_partitions = DataFrames.leftjoin(
+            DataFrames.crossjoin(
+                df_flows_data[!, [:from_asset, :to_asset]],
+                DataFrame(; rep_period = 1:size(df_rep_periods, 1)),
+            ),
+            df_flows_partitions;
+            on = [:from_asset, :to_asset, :rep_period],
+        )
+        DataFrames.transform!(
+            df_flows_partitions,
+            :specification => DataFrames.ByRow(c -> ismissing(c) ? :uniform : c) => :specification,
+            :partition => DataFrames.ByRow(c -> ismissing(c) ? "1" : c) => :partition,
+        )
     end
 
     table_tree = TableTree(
@@ -123,7 +161,7 @@ The details of these structures are:
 """
 function create_internal_structures(table_tree::TableTree)
     # TODO: Depending on the outcome of issue #294, this can be done more efficiently with DataFrames, e.g.,
-    # combine(groupby(input_df_periods.mapping, :rep_period), :weight => sum => :weight)
+    # combine(groupby(input_tf_periods.mapping, :rep_period), :weight => sum => :weight)
 
     # Create a dictionary of weights and populate it.
     weights = Dict{Int,Dict{Int,Float64}}()
@@ -194,48 +232,6 @@ function create_internal_structures(table_tree::TableTree)
     end
 
     graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data, nothing, nothing, nothing)
-
-    for a in MetaGraphsNext.labels(graph)
-        compute_assets_partitions!(
-            graph[a].rep_periods_partitions,
-            table_tree.partitions.assets["rep-periods"],
-            a,
-            representative_periods,
-        )
-    end
-
-    for (u, v) in MetaGraphsNext.edge_labels(graph)
-        compute_flows_partitions!(
-            graph[u, v].rep_periods_partitions,
-            table_tree.partitions.flows,
-            u,
-            v,
-            representative_periods,
-        )
-    end
-
-    # For timeframe, only the assets where is_seasonal is true are selected
-    for row in eachrow(table_tree.static.assets)
-        if row.is_seasonal
-            # Search for this row in the table_tree.partitions.assets and error if it is not found
-            found = false
-            for partition_row in eachrow(table_tree.partitions.assets["timeframe"])
-                if row.name == partition_row.asset
-                    graph[row.name].timeframe_partitions = _parse_rp_partition(
-                        Val(partition_row.specification),
-                        partition_row.partition,
-                        1:timeframe.num_periods,
-                    )
-                    found = true
-                    break
-                end
-            end
-            if !found
-                graph[row.name].timeframe_partitions =
-                    _parse_rp_partition(Val(:uniform), "1", 1:timeframe.num_periods)
-            end
-        end
-    end
 
     for asset_profile_row in eachrow(table_tree.profiles.assets["rep-periods"]) # row = asset, profile_type, profile_name
         gp = DataFrames.groupby( # 3. group by RP
@@ -332,7 +328,7 @@ function save_solution_to_file(output_folder, energy_problem::EnergyProblem)
     save_solution_to_file(
         output_folder,
         energy_problem.graph,
-        energy_problem.dataframes,
+        energy_problem.table_tree.variables_and_constraints_dataframes,
         energy_problem.solution,
     )
 end
@@ -396,8 +392,13 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     =#
 
     output_file = joinpath(output_folder, "flows.csv")
-    output_table =
-        DataFrames.select(dataframes[:flows], :from, :to, :rp, :timesteps_block => :timestep)
+    output_table = DataFrames.select(
+        dataframes[:flows],
+        :from_asset,
+        :to_asset,
+        :rep_period,
+        :timesteps_block => :timestep,
+    )
     output_table.value = solution.flow
     output_table = DataFrames.flatten(
         DataFrames.transform(
@@ -418,7 +419,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     output_table = DataFrames.select(
         dataframes[:lowest_storage_level_intra_rp],
         :asset,
-        :rp,
+        :rep_period,
         :timesteps_block => :timestep,
     )
     output_table.value = solution.storage_level_intra_rp

@@ -13,6 +13,9 @@ const TableNodeProfiles = @NamedTuple{
 }
 const TableNodePartitions = @NamedTuple{assets::Dict{PeriodType,DataFrame}, flows::DataFrame}
 const TableNodePeriods = @NamedTuple{rep_periods::DataFrame, mapping::DataFrame}
+const TableNodeUnrolledPartitions =
+    @NamedTuple{assets::Dict{PeriodType,DataFrame}, flows::DataFrame}
+const TableNodeVariablesAndConstraints = Dict{Symbol,DataFrame}
 
 """
 Structure to hold the tabular data.
@@ -32,12 +35,20 @@ Structure to hold the tabular data.
 - `periods`: Stores the periods data, indexed by:
   - `rep_periods`: Representative periods.
   - `timeframe`: Timeframe periods.
+- `unrolled_partitions`: Stores the unrolled partitions data, i.e., expands the `partitions`. The fields are the same as in `partitions`.
+- `variables_and_constraints_dataframes`: Stores the variables and constraints partitions and expressions that are used throughout the model. See `compute_variables_and_constraints_dataframes!` for more information.
 """
-struct TableTree
+mutable struct TableTree
     static::TableNodeStatic
     profiles::TableNodeProfiles
     partitions::TableNodePartitions
     periods::TableNodePeriods
+    unrolled_partitions::Union{TableNodeUnrolledPartitions,Nothing}
+    variables_and_constraints_dataframes::Union{TableNodeVariablesAndConstraints,Nothing}
+
+    function TableTree(static, profiles, partitions, periods)
+        return new(static, profiles, partitions, periods, nothing, nothing)
+    end
 end
 
 """
@@ -88,8 +99,6 @@ mutable struct GraphAssetData
     investment_integer_storage_energy::Bool
     timeframe_profiles::Dict{Symbol,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{Symbol,Int},Vector{Float64}}
-    timeframe_partitions::Vector{PeriodsBlock}
-    rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
     # Solution
     investment::Float64
     storage_level_intra_rp::Dict{Tuple{Int,TimestepsBlock},Float64}
@@ -119,8 +128,6 @@ mutable struct GraphAssetData
     )
         timeframe_profiles = Dict{Symbol,Vector{Float64}}()
         rep_periods_profiles = Dict{Tuple{Symbol,Int},Vector{Float64}}()
-        timeframe_partitions = PeriodsBlock[]
-        rep_periods_partitions = Dict{Int,Vector{TimestepsBlock}}()
         return new(
             type,
             investable,
@@ -143,8 +150,6 @@ mutable struct GraphAssetData
             investment_integer_storage_energy,
             timeframe_profiles,
             rep_periods_profiles,
-            timeframe_partitions,
-            rep_periods_partitions,
             -1,
             Dict{Tuple{Int,TimestepsBlock},Float64}(),
             Dict{TimestepsBlock,Float64}(),
@@ -170,8 +175,6 @@ mutable struct GraphFlowData
     efficiency::Float64
     timeframe_profiles::Dict{Symbol,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{Symbol,Int},Vector{Float64}}
-    timeframe_partitions::Vector{PeriodsBlock}
-    rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
     # Solution
     flow::Dict{Tuple{Int,TimestepsBlock},Float64}
     investment::Float64
@@ -206,8 +209,6 @@ function GraphFlowData(
         efficiency,
         Dict{Symbol,Vector{Float64}}(),
         Dict{Tuple{Symbol,Int},Vector{Float64}}(),
-        PeriodsBlock[],
-        Dict{Int,Vector{TimestepsBlock}}(),
         Dict{Tuple{Int,TimestepsBlock},Float64}(),
         -1,
     )
@@ -230,9 +231,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 # Fields
 - `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
 - `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
-- `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
 - `timeframe`: The number of periods of the `representative_periods`.
-- `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
 - `model`: A JuMP.Model object representing the optimization model.
 - `solved`: A boolean indicating whether the `model` has been solved or not.
 - `objective_value`: The objective value of the solved problem.
@@ -243,7 +242,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 
 
 # Constructor
-- `EnergyProblem(graph, representative_periods, timeframe)`: Constructs a new `EnergyProblem` object with the given graph, representative periods, and timeframe. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
+- `EnergyProblem(graph, representative_periods, timeframe)`: Constructs a new `EnergyProblem` object with the given graph, representative periods, and timeframe. The other fields are initialized with default values.
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 """
@@ -260,9 +259,7 @@ mutable struct EnergyProblem
         Nothing, # Default edge weight
     }
     representative_periods::Vector{RepresentativePeriod}
-    constraints_partitions::Dict{Symbol,Dict{Tuple{Symbol,Int},Vector{TimestepsBlock}}}
     timeframe::Timeframe
-    dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}
     solution::Union{Solution,Nothing}
     solved::Bool
@@ -273,22 +270,20 @@ mutable struct EnergyProblem
     time_solve_model::Float64
 
     """
-        EnergyProblem(dfs_input)
+        EnergyProblem(table_tree)
 
     Constructs a new EnergyProblem object from the input dataframes.
     This will call [`create_internal_structures`](@ref).
     """
-    function EnergyProblem(dfs_input)
-        graph, representative_periods, timeframe = create_internal_structures(dfs_input)
-        constraints_partitions = compute_constraints_partitions(graph, representative_periods)
+    function EnergyProblem(table_tree)
+        graph, representative_periods, timeframe = create_internal_structures(table_tree)
+        compute_variables_and_constraints_dataframes!(table_tree)
 
         return new(
-            dfs_input,
+            table_tree,
             graph,
             representative_periods,
-            constraints_partitions,
             timeframe,
-            Dict(),
             nothing,
             nothing,
             false,

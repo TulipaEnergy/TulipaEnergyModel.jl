@@ -81,14 +81,14 @@ function add_storage_constraints!(
             profile_aggregation(
                 Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
-                ("max-storage-level", row.rp),
+                ("max-storage-level", row.rep_period),
                 row.timesteps_block,
                 1.0,
             ) * (
                 graph[row.asset].initial_storage_capacity +
                 (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
             ),
-            base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+            base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
     ]
 
@@ -100,14 +100,14 @@ function add_storage_constraints!(
             profile_aggregation(
                 Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
-                (:min_storage_level, row.rp),
+                (:min_storage_level, row.rep_period),
                 row.timesteps_block,
                 0.0,
             ) * (
                 graph[row.asset].initial_storage_capacity +
                 (row.asset ∈ Ai ? energy_limit[row.asset] : 0.0)
             ),
-            base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+            base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
     ]
 
