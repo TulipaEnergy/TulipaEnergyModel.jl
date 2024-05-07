@@ -142,6 +142,49 @@ Markdown.parse(
 )
 ```
 
+## [Output](@id output)
+
+After running [`run_scenario(input_folder, output_folder)`](@ref), the output will be available in the specified folder.
+
+The output data follows this format:
+
+-   asset-investments.csv
+
+    -   `asset`: The unique name of the asset being invested in.
+    -   `InstalUnits`: The number of additional units of the `asset` through investment.
+    -   `InstalCap_MW`: The total capacity in MW of the additional units of the `asset`.
+
+-   flows-investments.csv
+
+    -   `from_asset`: The asset where the flow originates (together with to_asset creates the unique ID)
+    -   `to_asset`: The asset where the flow terminates(together with from_asset creates the unique ID)
+    -   `InstalUnits`:The number of additional flow units added through investment.
+    -   `InstalCap_MW`: The total capacity in MW of the additional units of the flow.
+
+-   flows.csv
+
+    -   `from`: The asset where the flow originates.
+    -   `to`: The asset where the flow terminates.
+    -   `rp`: The representative period.
+    -   `timestep`: The timestep within the representative period.
+    -   `value`: The (energy) flow in MW along the connection between `from` and `to` for the specified `rp` and `timestep.`
+
+-   storage-level-inter-rp.csv
+
+    -   `asset`: The unique name of the storage asset.
+    -   `period`: The period in time.
+    -   `value`: The level of energy in MWh in the storage `asset` at time `period`.
+
+-   storage-level-intra-rp.csv
+    -   `asset`: The unique name of the storage asset.
+    -   `rp`: The representative period.
+    -   `timestep`: The timestep within the representative period.
+    -   `value`: The level of energy in MWh in the storage `asset` for the specified `rp` and `timestep`.
+
+For more information about the difference between inter-rp (non-seasonal) and intra-rp (seasonal) storage, see [Concepts](@ref storage-modelling).
+
+For information about the structure of the solution inside the model, see the [solution structure](@ref structure-solution).
+
 ## Structures
 
 The list of relevant structures used in this package are listed below:
@@ -253,7 +296,7 @@ A representative period has four fields:
 The number of timesteps and resolution work together to define the coarseness of the period.
 Nothing is defined outside of these timesteps; for instance, if the representative period represents a day and you want to specify a variable or constraint with a coarseness of 30 minutes. You need to define the number of timesteps to 48 and the resolution to `0.5`.
 
-### Solution
+### [Solution](@id structure-solution)
 
 The solution object `energy_problem.solution` is a mutable struct with the following fields:
 
