@@ -1,5 +1,7 @@
 export create_energy_problem_from_csv_folder,
     create_input_dataframes_from_csv_folder,
+    create_connection_and_import_from_csv_folder,
+    create_input_dataframes,
     create_internal_structures,
     save_solution_to_file,
     compute_assets_partitions!,
@@ -7,7 +9,7 @@ export create_energy_problem_from_csv_folder,
 
 """
     energy_problem = create_energy_problem_from_csv_folder(input_folder; strict = false)
-
+, DBInterface
 Returns the [`TulipaEnergyModel.EnergyProblem`](@ref) reading all data from CSV files
 in the `input_folder`.
 This is a wrapper around `create_graph_and_representative_periods_from_csv_folder` that creates
@@ -15,8 +17,8 @@ the `EnergyProblem` structure.
 Set `strict = true` to error if assets are missing from partition data.
 """
 function create_energy_problem_from_csv_folder(input_folder::AbstractString; strict = false)
-    table_tree = create_input_dataframes_from_csv_folder(input_folder; strict = strict)
-    return EnergyProblem(table_tree)
+    connection = create_connection_and_import_from_csv_folder(input_folder)
+    return EnergyProblem(connection; strict = strict)
 end
 
 """
@@ -25,61 +27,109 @@ end
 Returns the `table_tree::TableTree` structure that holds all data.
 Set `strict = true` to error if assets are missing from partition data.
 
-The following files are expected to exist in the input folder:
-
-  - `assets-timeframe-partitions.csv`: Following the schema `schemas.assets.timeframe_partition`.
-  - `assets-data.csv`: Following the schema `schemas.assets.data`.
-  - `assets-timeframe-profiles.csv`: Following the schema `schemas.assets.profiles_reference`.
-  - `assets-rep-periods-profiles.csv`: Following the schema `schemas.assets.profiles_reference`.
-  - `assets-rep-periods-partitions.csv`: Following the schema `schemas.assets.rep_periods_partition`.
-  - `flows-data.csv`: Following the schema `schemas.flows.data`.
-  - `flows-rep-periods-profiles.csv`: Following the schema `schemas.flows.profiles_reference`.
-  - `flows-rep-periods-partitions.csv`: Following the schema `schemas.flows.rep_periods_partition`.
-  - `profiles-timeframe-<type>.csv`: Following the schema `schemas.timeframe.profiles_data`.
-  - `profiles-rep-periods-<type>.csv`: Following the schema `schemas.rep_periods.profiles_data`.
-  - `rep-periods-data.csv`: Following the schema `schemas.rep_periods.data`.
-  - `rep-periods-mapping.csv`: Following the schema `schemas.rep_periods.mapping`.
+This is a convenience function calling [`create_input_dataframes_from_csv_folder`](@ref) and
+[`create_input_dataframes`](@ref).
 """
 function create_input_dataframes_from_csv_folder(input_folder::AbstractString; strict = false)
-    df_assets_data = read_csv_with_implicit_schema(input_folder, "assets-data.csv")
-    df_flows_data  = read_csv_with_implicit_schema(input_folder, "flows-data.csv")
-    df_rep_periods = read_csv_with_implicit_schema(input_folder, "rep-periods-data.csv")
-    df_rp_mapping  = read_csv_with_implicit_schema(input_folder, "rep-periods-mapping.csv")
+    connection = create_connection_and_import_from_csv_folder(input_folder)
 
-    period_types = ["rep-periods", "timeframe"]
+    return create_input_dataframes(connection; strict = strict)
+end
+
+"""
+    connection = create_connection_and_import_from_csv_folder(input_folder)
+
+Creates a DuckDB connection and reads the CSVs in the `input_folder` into the DB.
+The names of the tables will be the names of the files, except that `-` will be converted
+into `_`, and the extension will be ignored.
+"""
+function create_connection_and_import_from_csv_folder(input_folder::AbstractString)
+    connection = DBInterface.connect(DuckDB.DB)
+
+    for filename in readdir(input_folder)
+        if !endswith(".csv")(filename)
+            continue
+        end
+        table_name, _ = splitext(filename)
+        table_name = replace(table_name, "-" => "_")
+        TulipaIO.create_tbl(connection, joinpath(input_folder, filename); name = table_name)
+    end
+
+    return connection
+end
+
+"""
+    table_tree = create_input_dataframes(connection)
+
+Returns the `table_tree::TableTree` structure that holds all data using a DB `connection` that
+has loaded all the relevant tables.
+Set `strict = true` to error if assets are missing from partition data.
+
+The following tables are expected to exist in the DB.
+
+> !!! warn
+>
+> The schemas are currently being ignored, see issue
+[#636](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues/636) for more information.
+
+  _ `assets_timeframe_partitions`: Following the schema `schemas.assets.timeframe_partition`.
+  _ `assets_data`: Following the schema `schemas.assets.data`.
+  _ `assets_timeframe_profiles`: Following the schema `schemas.assets.profiles_reference`.
+  _ `assets_rep_periods_profiles`: Following the schema `schemas.assets.profiles_reference`.
+  _ `assets_rep_periods_partitions`: Following the schema `schemas.assets.rep_periods_partition`.
+  _ `flows_data`: Following the schema `schemas.flows.data`.
+  _ `flows_rep_periods_profiles`: Following the schema `schemas.flows.profiles_reference`.
+  _ `flows_rep_periods_partitions`: Following the schema `schemas.flows.rep_periods_partition`.
+  _ `profiles_timeframe_<type>`: Following the schema `schemas.timeframe.profiles_data`.
+  _ `profiles_rep_periods_<type>`: Following the schema `schemas.rep_periods.profiles_data`.
+  _ `rep_periods_data`: Following the schema `schemas.rep_periods.data`.
+  _ `rep_periods_mapping`: Following the schema `schemas.rep_periods.mapping`.
+"""
+function create_input_dataframes(connection::DuckDB.DB; strict = false)
+    function read_table(table_name)
+        schema = get_schema(table_name)
+        df = DataFrame(DBInterface.execute(connection, "SELECT * FROM $table_name"))
+        for (key, value) in schema
+            if value <: Union{Missing,Symbol}
+                df[!, key] = [ismissing(x) ? x : Symbol(x) for x in df[!, key]]
+            end
+            if value <: Union{Missing,String} && !(eltype(df[!, key]) <: Union{Missing,String})
+                df[!, key] = [ismissing(x) ? x : string(x) for x in df[!, key]]
+            end
+        end
+        return df
+    end
+    df_assets_data = read_table("assets_data")
+    df_flows_data  = read_table("flows_data")
+    df_rep_periods = read_table("rep_periods_data")
+    df_rp_mapping  = read_table("rep_periods_mapping")
 
     dfs_assets_profiles = Dict(
-        period_type =>
-            read_csv_with_implicit_schema(input_folder, "assets-$period_type-profiles.csv") for
-        period_type in period_types
+        period_type => read_table("assets_$(period_type)_profiles") for period_type in PERIOD_TYPES
     )
-    df_flows_profiles =
-        read_csv_with_implicit_schema(input_folder, "flows-rep-periods-profiles.csv")
+    df_flows_profiles = read_table("flows_rep_periods_profiles")
     dfs_assets_partitions = Dict(
-        period_type =>
-            read_csv_with_implicit_schema(input_folder, "assets-$period_type-partitions.csv")
-        for period_type in period_types
+        period_type => read_table("assets_$(period_type)_partitions") for
+        period_type in PERIOD_TYPES
     )
-    df_flows_partitions =
-        read_csv_with_implicit_schema(input_folder, "flows-rep-periods-partitions.csv")
+    df_flows_partitions = read_table("flows_rep_periods_partitions")
 
+    tables_list = DBInterface.execute(connection, "SHOW TABLES")
     dfs_profiles = Dict(
         period_type => Dict(
             begin
-                regex = "profiles-$(period_type)-(.*).csv"
-                # Sanitized key: Spaces and dashes convert to underscore
-                key = Symbol(replace(match(Regex(regex), filename)[1], r"[ -]" => "_"))
-                value = read_csv_with_implicit_schema(input_folder, filename)
+                regex = "profiles_$(period_type)_(.*)"
+                key = Symbol(match(Regex(regex), row.name)[1])
+                value = read_table(row.name)
                 key => value
-            end for filename in readdir(input_folder) if
-            startswith("profiles-$period_type-")(filename)
-        ) for period_type in period_types
+            end for row in tables_list if startswith("profiles_$period_type")(row.name)
+        ) for period_type in PERIOD_TYPES
     )
 
     # Error if partition data is missing assets (if strict)
     if strict
         missing_assets =
-            setdiff(df_assets_data[!, :name], dfs_assets_partitions["rep-periods"][!, :asset])
+            setdiff(df_assets_data[!, :name], dfs_assets_partitions[:rep_periods][!, :asset])
         if length(missing_assets) > 0
             msg = "Error: Partition data missing for these assets: \n"
             for a in missing_assets
@@ -198,7 +248,7 @@ function create_internal_structures(table_tree::TableTree)
     for a in MetaGraphsNext.labels(graph)
         compute_assets_partitions!(
             graph[a].rep_periods_partitions,
-            table_tree.partitions.assets["rep-periods"],
+            table_tree.partitions.assets[:rep_periods],
             a,
             representative_periods,
         )
@@ -219,7 +269,7 @@ function create_internal_structures(table_tree::TableTree)
         if row.is_seasonal
             # Search for this row in the table_tree.partitions.assets and error if it is not found
             found = false
-            for partition_row in eachrow(table_tree.partitions.assets["timeframe"])
+            for partition_row in eachrow(table_tree.partitions.assets[:timeframe])
                 if row.name == partition_row.asset
                     graph[row.name].timeframe_partitions = _parse_rp_partition(
                         Val(partition_row.specification),
@@ -237,11 +287,11 @@ function create_internal_structures(table_tree::TableTree)
         end
     end
 
-    for asset_profile_row in eachrow(table_tree.profiles.assets["rep-periods"]) # row = asset, profile_type, profile_name
+    for asset_profile_row in eachrow(table_tree.profiles.assets[:rep_periods]) # row = asset, profile_type, profile_name
         gp = DataFrames.groupby( # 3. group by RP
             filter(
                 :profile_name => ==(asset_profile_row.profile_name), # 2. Filter profile_name
-                table_tree.profiles.data["rep-periods"][asset_profile_row.profile_type]; # 1. Get the profile of given type
+                table_tree.profiles.data[:rep_periods][asset_profile_row.profile_type]; # 1. Get the profile of given type
                 view = true,
             ),
             :rep_period,
@@ -258,7 +308,7 @@ function create_internal_structures(table_tree::TableTree)
         gp = DataFrames.groupby(
             filter(
                 :profile_name => ==(flow_profile_row.profile_name),
-                table_tree.profiles.data["rep-periods"][flow_profile_row.profile_type];
+                table_tree.profiles.data[:rep_periods][flow_profile_row.profile_type];
                 view = true,
             ),
             :rep_period;
@@ -271,10 +321,10 @@ function create_internal_structures(table_tree::TableTree)
         end
     end
 
-    for asset_profile_row in eachrow(table_tree.profiles.assets["timeframe"]) # row = asset, profile_type, profile_name
+    for asset_profile_row in eachrow(table_tree.profiles.assets[:timeframe]) # row = asset, profile_type, profile_name
         df = filter(
             :profile_name => ==(asset_profile_row.profile_name), # 2. Filter profile_name
-            table_tree.profiles.data["timeframe"][asset_profile_row.profile_type]; # 1. Get the profile of given type
+            table_tree.profiles.data[:timeframe][asset_profile_row.profile_type]; # 1. Get the profile of given type
             view = true,
         )
         graph[asset_profile_row.asset].timeframe_profiles[asset_profile_row.profile_type] = df.value
@@ -297,6 +347,20 @@ function read_csv_with_schema(file_path, schema; csvargs...)
     return df
 end
 
+function get_schema(tablename)
+    if haskey(schema_per_file, tablename)
+        return schema_per_file[tablename]
+    else
+        if startswith("profiles_timeframe")(tablename)
+            return schema_per_file["profiles_timeframe_<type>"]
+        elseif startswith("profiles_rep_periods")(tablename)
+            return schema_per_file["profiles_rep_periods_<type>"]
+        else
+            error("No implicit schema for file $tablename")
+        end
+    end
+end
+
 """
     read_csv_with_implicit_schema(dir, filename; csvargs...)
 
@@ -306,17 +370,6 @@ The function [`read_csv_with_schema`](@ref) reads the file.
 Additional keywords arguments can be passed to `CSV.read`.
 """
 function read_csv_with_implicit_schema(dir, filename; csvargs...)
-    schema = if haskey(schema_per_file, filename)
-        schema_per_file[filename]
-    else
-        if startswith("profiles-timeframe")(filename)
-            schema_per_file["profiles-timeframe-<type>.csv"]
-        elseif startswith("profiles-rep-periods")(filename)
-            schema_per_file["profiles-rep-periods-<type>.csv"]
-        else
-            error("No implicit schema for file $filename")
-        end
-    end
     read_csv_with_schema(joinpath(dir, filename), schema)
 end
 

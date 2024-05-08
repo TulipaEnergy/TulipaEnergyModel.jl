@@ -91,7 +91,11 @@ using TulipaEnergyModel
 
 input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny
-table_tree = create_input_dataframes_from_csv_folder(input_dir)
+connection = create_connection_and_import_from_csv_folder(input_dir)
+```
+
+```@example manual
+table_tree = create_input_dataframes(connection)
 ```
 
 The `table_tree` contains all tables in the folder, which are then processed into the internal structures below:
