@@ -120,16 +120,16 @@ const schemas = (
 )
 
 const schema_per_file = OrderedDict(
-    "assets-timeframe-partitions.csv" => schemas.assets.timeframe_partition,
-    "assets-data.csv" => schemas.assets.data,
-    "assets-timeframe-profiles.csv" => schemas.assets.profiles_reference,
-    "assets-rep-periods-profiles.csv" => schemas.assets.profiles_reference,
-    "assets-rep-periods-partitions.csv" => schemas.assets.rep_periods_partition,
-    "flows-data.csv" => schemas.flows.data,
-    "flows-rep-periods-profiles.csv" => schemas.flows.profiles_reference,
-    "flows-rep-periods-partitions.csv" => schemas.flows.rep_periods_partition,
-    "profiles-timeframe-<type>.csv" => schemas.timeframe.profiles_data,
-    "profiles-rep-periods-<type>.csv" => schemas.rep_periods.profiles_data,
-    "rep-periods-data.csv" => schemas.rep_periods.data,
-    "rep-periods-mapping.csv" => schemas.rep_periods.mapping,
+    "assets_timeframe_partitions" => schemas.assets.timeframe_partition,
+    "assets_data" => schemas.assets.data,
+    "assets_timeframe_profiles" => schemas.assets.profiles_reference,
+    "assets_rep_periods_profiles" => schemas.assets.profiles_reference,
+    "assets_rep_periods_partitions" => schemas.assets.rep_periods_partition,
+    "flows_data" => schemas.flows.data,
+    "flows_rep_periods_profiles" => schemas.flows.profiles_reference,
+    "flows_rep_periods_partitions" => schemas.flows.rep_periods_partition,
+    "profiles_timeframe_<type>" => schemas.timeframe.profiles_data,
+    "profiles_rep_periods_<type>" => schemas.rep_periods.profiles_data,
+    "rep_periods_data" => schemas.rep_periods.data,
+    "rep_periods_mapping" => schemas.rep_periods.mapping,
 )

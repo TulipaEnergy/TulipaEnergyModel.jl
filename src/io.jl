@@ -7,7 +7,7 @@ export create_energy_problem_from_csv_folder,
 
 """
     energy_problem = create_energy_problem_from_csv_folder(input_folder; strict = false)
-
+, DBInterface
 Returns the [`TulipaEnergyModel.EnergyProblem`](@ref) reading all data from CSV files
 in the `input_folder`.
 This is a wrapper around `create_graph_and_representative_periods_from_csv_folder` that creates
@@ -15,8 +15,8 @@ the `EnergyProblem` structure.
 Set `strict = true` to error if assets are missing from partition data.
 """
 function create_energy_problem_from_csv_folder(input_folder::AbstractString; strict = false)
-    table_tree = create_input_dataframes_from_csv_folder(input_folder; strict = strict)
-    return EnergyProblem(table_tree)
+    connection = create_connection_and_import_from_csv_folder(input_folder)
+    return EnergyProblem(connection; strict = strict)
 end
 
 """
@@ -41,38 +41,65 @@ The following files are expected to exist in the input folder:
   - `rep-periods-mapping.csv`: Following the schema `schemas.rep_periods.mapping`.
 """
 function create_input_dataframes_from_csv_folder(input_folder::AbstractString; strict = false)
-    df_assets_data = read_csv_with_implicit_schema(input_folder, "assets-data.csv")
-    df_flows_data  = read_csv_with_implicit_schema(input_folder, "flows-data.csv")
-    df_rep_periods = read_csv_with_implicit_schema(input_folder, "rep-periods-data.csv")
-    df_rp_mapping  = read_csv_with_implicit_schema(input_folder, "rep-periods-mapping.csv")
+    connection = create_connection_and_import_from_csv_folder(input_folder)
 
-    period_types = ["rep-periods", "timeframe"]
+    return create_input_dataframes(connection; strict = strict)
+end
+
+function create_connection_and_import_from_csv_folder(input_folder::AbstractString)
+    # TODO: Add an argument to allow a name for the database file
+    connection = DBInterface.connect(DuckDB.DB)
+
+    for filename in readdir(input_folder)
+        if !endswith(".csv")(filename)
+            continue
+        end
+        table_name, _ = splitext(filename)
+        table_name = replace(table_name, "-" => "_")
+        TulipaIO.create_tbl(connection, joinpath(input_folder, filename); name = table_name)
+    end
+
+    return connection
+end
+
+function create_input_dataframes(connection::DuckDB.DB; strict = false)
+    # TODO: Use the input schema
+    function read_table(table_name)
+        schema = get_schema(table_name)
+        df = DataFrame(DBInterface.execute(connection, "SELECT * FROM $table_name"))
+        for (key, value) in schema
+            if value <: Union{Missing,Symbol}
+                df[!, key] = [ismissing(x) ? x : Symbol(x) for x in df[!, key]]
+            end
+        end
+        return df
+    end
+    df_assets_data = read_table("assets_data")
+    df_flows_data  = read_table("flows_data")
+    df_rep_periods = read_table("rep_periods_data")
+    df_rp_mapping  = read_table("rep_periods_mapping")
+
+    period_types = ["rep_periods", "timeframe"]
 
     dfs_assets_profiles = Dict(
-        period_type =>
-            read_csv_with_implicit_schema(input_folder, "assets-$period_type-profiles.csv") for
+        period_type => read_table("assets_$(period_type)_profiles") for period_type in period_types
+    )
+    df_flows_profiles = read_table("flows_rep_periods_profiles")
+    dfs_assets_partitions = Dict(
+        period_type => read_table("assets_$(period_type)_partitions") for
         period_type in period_types
     )
-    df_flows_profiles =
-        read_csv_with_implicit_schema(input_folder, "flows-rep-periods-profiles.csv")
-    dfs_assets_partitions = Dict(
-        period_type =>
-            read_csv_with_implicit_schema(input_folder, "assets-$period_type-partitions.csv")
-        for period_type in period_types
-    )
-    df_flows_partitions =
-        read_csv_with_implicit_schema(input_folder, "flows-rep-periods-partitions.csv")
+    df_flows_partitions = read_table("flows_rep_periods_partitions")
 
+    tables_list = DBInterface.execute(connection, "SHOW TABLES")
     dfs_profiles = Dict(
         period_type => Dict(
             begin
-                regex = "profiles-$(period_type)-(.*).csv"
-                # Sanitized key: Spaces and dashes convert to underscore
-                key = Symbol(replace(match(Regex(regex), filename)[1], r"[ -]" => "_"))
-                value = read_csv_with_implicit_schema(input_folder, filename)
+                regex = "profiles_$(period_type)_(.*)"
+                key = Symbol(match(Regex(regex), row.name)[1])
+                value = read_table(row.name)
                 key => value
-            end for filename in readdir(input_folder) if
-            startswith("profiles-$period_type-")(filename)
+            end for row in tables_list if startswith("profiles_$period_type")(row.name)
         ) for period_type in period_types
     )
 
@@ -297,6 +324,20 @@ function read_csv_with_schema(file_path, schema; csvargs...)
     return df
 end
 
+function get_schema(tablename)
+    if haskey(schema_per_file, tablename)
+        return schema_per_file[tablename]
+    else
+        if startswith("profiles_timeframe")(tablename)
+            return schema_per_file["profiles_timeframe_<type>"]
+        elseif startswith("profiles_rep_periods")(tablename)
+            return schema_per_file["profiles_rep_periods_<type>"]
+        else
+            error("No implicit schema for file $tablename")
+        end
+    end
+end
+
 """
     read_csv_with_implicit_schema(dir, filename; csvargs...)
 
@@ -306,17 +347,6 @@ The function [`read_csv_with_schema`](@ref) reads the file.
 Additional keywords arguments can be passed to `CSV.read`.
 """
 function read_csv_with_implicit_schema(dir, filename; csvargs...)
-    schema = if haskey(schema_per_file, filename)
-        schema_per_file[filename]
-    else
-        if startswith("profiles-timeframe")(filename)
-            schema_per_file["profiles-timeframe-<type>.csv"]
-        elseif startswith("profiles-rep-periods")(filename)
-            schema_per_file["profiles-rep-periods-<type>.csv"]
-        else
-            error("No implicit schema for file $filename")
-        end
-    end
     read_csv_with_schema(joinpath(dir, filename), schema)
 end
 

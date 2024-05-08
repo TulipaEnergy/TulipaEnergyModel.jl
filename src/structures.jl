@@ -248,6 +248,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 """
 mutable struct EnergyProblem
+    db_connection::DuckDB.DB
     table_tree::TableTree
     graph::MetaGraph{
         Int,
@@ -273,17 +274,19 @@ mutable struct EnergyProblem
     time_solve_model::Float64
 
     """
-        EnergyProblem(dfs_input)
+        EnergyProblem(connection)
 
-    Constructs a new EnergyProblem object from the input dataframes.
+    Constructs a new EnergyProblem object using the `connection`.
     This will call [`create_internal_structures`](@ref).
     """
-    function EnergyProblem(dfs_input)
-        graph, representative_periods, timeframe = create_internal_structures(dfs_input)
+    function EnergyProblem(connection; strict = false)
+        table_tree = create_input_dataframes(connection; strict = strict)
+        graph, representative_periods, timeframe = create_internal_structures(table_tree)
         constraints_partitions = compute_constraints_partitions(graph, representative_periods)
 
         return new(
-            dfs_input,
+            connection,
+            table_tree,
             graph,
             representative_periods,
             constraints_partitions,
