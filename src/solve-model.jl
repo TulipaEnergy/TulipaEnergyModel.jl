@@ -27,13 +27,21 @@ function solve_model!(
     energy_problem.objective_value = JuMP.objective_value(model)
 
     graph = energy_problem.graph
-    # rps = energy_problem.representative_periods
     for a in MetaGraphsNext.labels(graph)
-        if graph[a].investable
-            if graph[a].investment_integer
-                graph[a].investment = round(Int, energy_problem.solution.assets_investment[a])
+        asset = graph[a]
+        if asset.investable
+            if asset.investment_integer
+                asset.investment = round(Int, energy_problem.solution.assets_investment[a])
             else
-                graph[a].investment = energy_problem.solution.assets_investment[a]
+                asset.investment = energy_problem.solution.assets_investment[a]
+            end
+            if asset.storage_method_energy
+                if asset.investment_integer_storage_energy
+                    asset.investment_energy =
+                        round(Int, energy_problem.solution.assets_investment_energy[a])
+                else
+                    asset.investment_energy = energy_problem.solution.assets_investment_energy[a]
+                end
             end
         end
     end
@@ -110,6 +118,12 @@ The `solution` object is a mutable struct with the following fields:
     ```
     [solution.assets_investment[a] for a in labels(graph) if graph[a].investable]
     ```
+    - `assets_investment_energy[a]`: The investment on energy component for each asset, indexed on the investable asset `a` with a `storage_method_energy` set to `true`.
+    To create a traditional array in the order given by the investable assets, one can run
+
+    ```
+    [solution.assets_investment_energy[a] for a in labels(graph) if graph[a].investable && graph[a].storage_method_energy
+    ```
   - `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
     To create a traditional array in the order given by the investable flows, one can run
 
@@ -169,6 +183,10 @@ function solve_model(
     return Solution(
         Dict(
             a => JuMP.value(model[:assets_investment][a]) for a in model[:assets_investment].axes[1]
+        ),
+        Dict(
+            a => JuMP.value(model[:assets_investment_energy][a]) for
+            a in model[:assets_investment_energy].axes[1]
         ),
         Dict(
             uv => JuMP.value(model[:flows_investment][uv]) for

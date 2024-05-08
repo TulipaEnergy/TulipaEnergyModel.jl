@@ -347,6 +347,9 @@ The following files are created:
   - `assets-investment.csv`: The format of each row is `a,v,p*v`, where `a` is the asset name,
     `v` is the corresponding asset investment value, and `p` is the corresponding
     capacity value. Only investable assets are included.
+  - `assets-investments-energy.csv`: The format of each row is `a,v,p*v`, where `a` is the asset name,
+    `v` is the corresponding asset investment value on energy, and `p` is the corresponding
+    energy capacity value. Only investable assets with a `storage_method_energy` set to `true` are included.
   - `flows-investment.csv`: Similar to `assets-investment.csv`, but for flows.
   - `flows.csv`: The value of each flow, per `(from, to)` flow, `rp` representative period
     and `timestep`. Since the flow is in power, the value at a timestep is equal to the value
@@ -366,6 +369,25 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
         investment = solution.assets_investment[a]
         capacity = graph[a].capacity
         push!(output_table, (a, investment, capacity * investment))
+    end
+    CSV.write(output_file, output_table)
+
+    output_file = joinpath(output_folder, "assets-investments-energy.csv")
+    output_table = DataFrame(;
+        asset = Symbol[],
+        InstalEnergyUnits = Float64[],
+        InstalEnergyCap_MWh = Float64[],
+    )
+    for a in MetaGraphsNext.labels(graph)
+        if !graph[a].investable || !graph[a].storage_method_energy
+            continue
+        end
+        energy_units_investmented = solution.assets_investment_energy[a]
+        energy_capacity = graph[a].capacity_storage_energy
+        push!(
+            output_table,
+            (a, energy_units_investmented, energy_capacity * energy_units_investmented),
+        )
     end
     CSV.write(output_file, output_table)
 

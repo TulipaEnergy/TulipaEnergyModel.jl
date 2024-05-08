@@ -92,6 +92,7 @@ mutable struct GraphAssetData
     rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
     # Solution
     investment::Float64
+    investment_energy::Float64 # for storage assets with energy method
     storage_level_intra_rp::Dict{Tuple{Int,TimestepsBlock},Float64}
     storage_level_inter_rp::Dict{PeriodsBlock,Float64}
 
@@ -145,6 +146,7 @@ mutable struct GraphAssetData
             rep_periods_profiles,
             timeframe_partitions,
             rep_periods_partitions,
+            -1,
             -1,
             Dict{Tuple{Int,TimestepsBlock},Float64}(),
             Dict{TimestepsBlock,Float64}(),
@@ -215,6 +217,7 @@ end
 
 mutable struct Solution
     assets_investment::Dict{Symbol,Float64}
+    assets_investment_energy::Dict{Symbol,Float64} # for storage assets with energy method
     flows_investment::Dict{Tuple{Symbol,Symbol},Float64}
     storage_level_intra_rp::Vector{Float64}
     storage_level_inter_rp::Vector{Float64}
