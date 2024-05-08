@@ -18,10 +18,11 @@ The complete mathematical formulation, including variable temporal resolutions, 
 
 In addition, the following asset sets represent methods for incorporating additional variables and constraints in the model.
 
-| Name                      | Description                                | Elements | Superset                                                   | Notes |
-| ------------------------- | ------------------------------------------ | -------- | ---------------------------------------------------------- | ----- |
-| $\mathcal{A}^{\text{i}}$  | Energy assets with investment method       |          | $\mathcal{A}^{\text{i}}  \subseteq \mathcal{A}$            |       |
-| $\mathcal{A}^{\text{ss}}$ | Storage energy assets with seasonal method |          | $\mathcal{A}^{\text{ss}} \subseteq \mathcal{A}^{\text{s}}$ |       |
+| Name                      | Description                                | Elements | Superset                                                   | Notes                                                                                                                                                                                                        |
+| ------------------------- | ------------------------------------------ | -------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| $\mathcal{A}^{\text{i}}$  | Energy assets with investment method       |          | $\mathcal{A}^{\text{i}}  \subseteq \mathcal{A}$            |                                                                                                                                                                                                              |
+| $\mathcal{A}^{\text{ss}}$ | Storage energy assets with seasonal method |          | $\mathcal{A}^{\text{ss}} \subseteq \mathcal{A}^{\text{s}}$ |                                                                                                                                                                                                              |
+| $\mathcal{A}^{\text{se}}$ | Storage energy assets with energy method   |          | $\mathcal{A}^{\text{se}} \subseteq \mathcal{A}^{\text{s}}$ | This set contains storage assets that use investment energy method (`storage_method_energy = true` in the file [`assets-data.csv`](@ref assets-data)). Otherwise fixed energy-to-power ratio method is used. |
 
 ### Sets for Flows
 
@@ -50,23 +51,38 @@ In addition, the following flow sets represent methods for incorporating additio
 
 ### Parameter for Assets
 
-| Name                                        | Domain           | Domains of Indices                                                           | Description                                                                                                    | Units          |
-| ------------------------------------------- | ---------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------- |
-| $p^{\text{inv cost}}_{a}$                   | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                                          | Investment cost of a unit of asset $a$                                                                         | [kEUR/MW/year] |
-| $p^{\text{inv limit}}_{a}$                  | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                                          | Investment potential of asset $a$                                                                              | [MW]           |
-| $p^{\text{capacity}}_{a}$                   | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                                          | Capacity per unit of asset $a$                                                                                 | [MW]           |
-| $p^{\text{init capacity}}_{a}$              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                                          | Initial capacity of asset $a$                                                                                  | [MW]           |
-| $p^{\text{peak demand}}_{a}$                | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{c}}$                                               | Peak demand of consumer asset $a$                                                                              | [MW]           |
-| $p^{\text{energy to power ratio}}_a$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$                                               | Energy to power ratio of storage asset $a$                                                                     | [h]            |
-| $p^{\text{init storage capacity}}_{a}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$                                               | Initial storage capacity of storage asset $a$                                                                  | [MWh]          |
-| $p^{\text{init storage level}}_{a}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$                                               | Initial storage level of storage asset $a$                                                                     | [MWh]          |
-| $p^{\text{availability profile}}_{a,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$            | Availability profile of asset $a$ in the representative period $k$ and timestep block $b_k$                    | [p.u.]         |
-| $p^{\text{demand profile}}_{a,k,b_k}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{c}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Demand profile of consumer asset $a$ in the representative period $k$ and timestep block $b_k$                 | [p.u.]         |
-| $p^{\text{inflows}}_{a,k,b_k}$              | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Inflows of storage asset $a$ in the representative period $k$ and timestep block $b_k$                         | [MWh]          |
-| $p^{\text{max intra level}}_{a,k,b_k}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Maximum intra-storage level profile of storage asset $a$ in representative period $k$ and timestep block $b_k$ | [p.u.]         |
-| $p^{\text{min intra level}}_{a,k,b_k}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Minimum intra-storage level profile of storage asset $a$ in representative period $k$ and timestep block $b_k$ | [p.u.]         |
-| $p^{\text{max inter level}}_{a,p}$          | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $p \in \mathcal{P}$                          | Maximum inter-storage level profile of storage asset $a$ in the period $p$ of the timeframe                    | [p.u.]         |
-| $p^{\text{min inter level}}_{a,p}$          | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $p \in \mathcal{P}$                          | Minimum inter-storage level profile of storage asset $a$ in the period $p$ of the timeframe                    | [p.u.]         |
+#### General Parameters for Assets
+
+| Name                                        | Domain           | Domains of Indices                                                | Description                                                                                 | Units          |
+| ------------------------------------------- | ---------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
+| $p^{\text{inv cost}}_{a}$                   | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                               | Investment cost of a unit of asset $a$                                                      | [kEUR/MW/year] |
+| $p^{\text{inv limit}}_{a}$                  | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                               | Investment potential of asset $a$                                                           | [MW]           |
+| $p^{\text{capacity}}_{a}$                   | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                               | Capacity per unit of asset $a$                                                              | [MW]           |
+| $p^{\text{init capacity}}_{a}$              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                               | Initial capacity of asset $a$                                                               | [MW]           |
+| $p^{\text{availability profile}}_{a,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Availability profile of asset $a$ in the representative period $k$ and timestep block $b_k$ | [p.u.]         |
+
+#### Extra Parameters for Consumer Assets
+
+| Name                                  | Domain           | Domains of Indices                                                           | Description                                                                                    | Units  |
+| ------------------------------------- | ---------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------ |
+| $p^{\text{peak demand}}_{a}$          | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{c}}$                                               | Peak demand of consumer asset $a$                                                              | [MW]   |
+| $p^{\text{demand profile}}_{a,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{c}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Demand profile of consumer asset $a$ in the representative period $k$ and timestep block $b_k$ | [p.u.] |
+
+#### Extra Parameters for Storage Assets
+
+| Name                                   | Domain           | Domains of Indices                                                                                             | Description                                                                                                    | Units           |
+| -------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------- |
+| $p^{\text{init storage capacity}}_{a}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$                                                                                 | Initial storage capacity of storage asset $a$                                                                  | [MWh]           |
+| $p^{\text{init storage level}}_{a}$    | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$                                                                                 | Initial storage level of storage asset $a$                                                                     | [MWh]           |
+| $p^{\text{inflows}}_{a,k,b_k}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$                                   | Inflows of storage asset $a$ in the representative period $k$ and timestep block $b_k$                         | [MWh]           |
+| $p^{\text{inv cost energy}}_{a}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$                                                                                | Investment cost of a energy unit of asset $a$                                                                  | [kEUR/MWh/year] |
+| $p^{\text{inv limit energy}}_{a}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$                                                                                | Investment energy potential of asset $a$                                                                       | [MWh]           |
+| $p^{\text{energy capacity}}_{a}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$                                                                                | Energy capacity of a unit of investment of the asset $a$                                                       | [MWh]           |
+| $p^{\text{energy to power ratio}}_a$   | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}}$                                               | Energy to power ratio of storage asset $a$                                                                     | [h]             |
+| $p^{\text{max intra level}}_{a,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Maximum intra-storage level profile of storage asset $a$ in representative period $k$ and timestep block $b_k$ | [p.u.]          |
+| $p^{\text{min intra level}}_{a,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Minimum intra-storage level profile of storage asset $a$ in representative period $k$ and timestep block $b_k$ | [p.u.]          |
+| $p^{\text{max inter level}}_{a,p}$     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$                                                           | Maximum inter-storage level profile of storage asset $a$ in the period $p$ of the timeframe                    | [p.u.]          |
+| $p^{\text{min inter level}}_{a,p}$     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$                                                           | Minimum inter-storage level profile of storage asset $a$ in the period $p$ of the timeframe                    | [p.u.]          |
 
 ### Parameter for Flows
 
@@ -95,6 +111,7 @@ In addition, the following flow sets represent methods for incorporating additio
 | ------------------------------------ | ---------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | $v^{\text{flow}}_{f,k,b_k}$          | $\mathbb{R}$     | $f \in \mathcal{F}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$                                              | Flow $f$ between two assets in representative period $k$ and timestep block $b_k$                                               | [MW]    |
 | $v^{\text{inv}}_{a}$                 | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}$                                                                                 | Number of invested units of asset $a$                                                                                           | [units] |
+| $v^{\text{inv energy}}_{a}$          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}} \cap \mathcal{A}^{\text{se}}$                                                    | Number of invested units of the energy component of the storage asset $a$ that use energy method                                | [units] |
 | $v^{\text{inv}}_{f}$                 | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}$                                                                                | Number of invested units of capacity increment of transport flow $f$                                                            | [units] |
 | $v^{\text{intra-storage}}_{a,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Intra storage level (within a representative period) for storage asset $a$, representative period $k$, and timestep block $b_k$ | [MWh]   |
 | $v^{\text{inter-storage}}_{a,p}$     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$                                                           | Inter storage level (between representative periods) for storage asset $a$ and period $p$                                       | [MWh]   |
@@ -114,7 +131,7 @@ Where:
 
 ```math
 \begin{aligned}
-assets\_investment\_cost &= \sum_{a \in \mathcal{A}^{\text{i}}} p^{\text{inv cost}}_{a} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \\
+assets\_investment\_cost &= \sum_{a \in \mathcal{A}^{\text{i}} } p^{\text{inv cost}}_{a} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \\ &+  \sum_{a \in \mathcal{A}^{\text{se}} } p^{\text{inv cost energy}}_{a} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{inv energy}}_{a}   \\
 flows\_investment\_cost &= \sum_{f \in \mathcal{F}^{\text{ti}}} p^{\text{inv cost}}_{f} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \\
 flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{k \in \mathcal{K}} \sum_{b_k \in \mathcal{B_k}} p^{\text{rp weight}}_{k} \cdot p^{\text{variable cost}}_{f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
 \end{aligned}
@@ -137,8 +154,7 @@ flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{k \in \mathcal{K}} \sum_
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)  \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{s}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)  \quad \forall a \in \mathcal{A}^{\text{s}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
 
@@ -156,14 +172,27 @@ The balance constraint sense depends on the method selected in the asset file's 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \left\{\begin{array}{l} = \\ \geq \end{array}\right\} p^{\text{demand profile}}_{a,k,b_k} \cdot p^{\text{peak demand}}_{a} \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{c}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \left\{\begin{array}{l} = \\ \geq \end{array}\right\} p^{\text{demand profile}}_{a,k,b_k} \cdot p^{\text{peak demand}}_{a} \quad \forall a \in \mathcal{A}^{\text{c}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
 
 ### Constraints for Energy Storage Assets
 
 There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
+
+In addition, we define the following expression to determine the energy investment limit of the storage assets. This expression takes two different forms depending on whether the storage asset belongs to the set $\mathcal{A}^{\text{se}}$ or not.
+
+-   Investment energy method:
+
+```math
+e^{\text{energy inv limit}}_{a} = p^{\text{energy capacity}}_a \cdot v^{\text{inv energy}}_{a} \quad \forall a \in \mathcal{A}^{\text{i}} \cap \mathcal{A}^{\text{se}}
+```
+
+-   Fixed energy-to-power ratio method:
+
+```math
+e^{\text{energy inv limit}}_{a} = p^{\text{energy to power ratio}}_a \cdot p^{\text{capacity}}_a \cdot v^{\text{inv}}_{a} \quad \forall a \in \mathcal{A}^{\text{i}} \cap (\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}})
+```
 
 #### [Intra-temporal Constraint for Storage Balance](@id intra-storage-balance)
 
@@ -177,15 +206,13 @@ v^{\text{intra-storage}}_{a,k,b_k} = v^{\text{intra-storage}}_{a,k,b_k-1}  + p^{
 #### Intra-temporal Constraint for Maximum Storage Level Limit
 
 ```math
-v^{\text{intra-storage}}_{a,k,b_k} \leq p^{\text{max intra level}}_{a,k,b_k} \cdot (p^{\text{init storage capacity}}_{a} + p^{\text{energy to power ratio}}_a \cdot p^{\text{init capacity}}_{a} \cdot v^{\text{inv}}_{a}) \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+v^{\text{intra-storage}}_{a,k,b_k} \leq p^{\text{max intra level}}_{a,k,b_k} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a}) \quad \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
 #### Intra-temporal Constraint for Minimum Storage Level Limit
 
 ```math
-v^{\text{intra-storage}}_{a,k,b_k} \geq p^{\text{min intra level}}_{a,k,b_k} \cdot (p^{\text{init storage capacity}}_{a} + p^{\text{energy to power ratio}}_a \cdot p^{\text{init capacity}}_{a} \cdot v^{\text{inv}}_{a}) \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+v^{\text{intra-storage}}_{a,k,b_k} \geq p^{\text{min intra level}}_{a,k,b_k} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a}) \quad \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
 #### Intra-temporal Cycling Constraint
@@ -233,15 +260,13 @@ v^{\text{inter-storage}}_{a,p} = & v^{\text{inter-storage}}_{a,p-1} + \sum_{k \i
 #### Inter-temporal Constraint for Maximum Storage Level Limit
 
 ```math
-v^{\text{inter-storage}}_{a,p} \leq p^{\text{max inter level}}_{a,p} \cdot (p^{\text{init storage capacity}}_{a} + p^{\text{energy to power ratio}}_a \cdot p^{\text{init capacity}}_{a} \cdot v^{\text{inv}}_{a}) \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{ss}}, \forall p \in \mathcal{P}
+v^{\text{inter-storage}}_{a,p} \leq p^{\text{max inter level}}_{a,p} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a}) \quad \forall a \in \mathcal{A}^{\text{ss}}, \forall p \in \mathcal{P}
 ```
 
 #### Inter-temporal Constraint for Minimum Storage Level Limit
 
 ```math
-v^{\text{inter-storage}}_{a,p} \geq p^{\text{min inter level}}_{a,p} \cdot (p^{\text{init storage capacity}}_{a} + p^{\text{energy to power ratio}}_a \cdot p^{\text{init capacity}}_{a} \cdot v^{\text{inv}}_{a}) \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{ss}}, \forall p \in \mathcal{P}
+v^{\text{inter-storage}}_{a,p} \geq p^{\text{min inter level}}_{a,p} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a}) \quad \forall a \in \mathcal{A}^{\text{ss}}, \forall p \in \mathcal{P}
 ```
 
 #### Inter-temporal Cycling Constraint
@@ -281,8 +306,7 @@ v^{\text{inter-storage}}_{a,p^{\text{last}}} \geq p^{\text{init storage level}}_
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} = \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{h}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} = \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \quad \forall a \in \mathcal{A}^{\text{h}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
 
@@ -292,8 +316,7 @@ v^{\text{inter-storage}}_{a,p^{\text{last}}} \geq p^{\text{init storage level}}_
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot v^{\text{flow}}_{f,k,b_k} = \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{v^{\text{flow}}_{f,k,b_k}}{p^{\text{eff}}_f} \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{cv}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot v^{\text{flow}}_{f,k,b_k} = \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{v^{\text{flow}}_{f,k,b_k}}{p^{\text{eff}}_f} \quad \forall a \in \mathcal{A}^{\text{cv}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
 
@@ -303,8 +326,7 @@ v^{\text{inter-storage}}_{a,p^{\text{last}}} \geq p^{\text{init storage level}}_
 
 ```math
 \begin{aligned}
-v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{f,k,b_k} \cdot \left(p^{\text{init export capacity}}_{f} + p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \right)  \quad
-\\ \\ \forall f \in \mathcal{F}^{\text{t}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{f,k,b_k} \cdot \left(p^{\text{init export capacity}}_{f} + p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \right)  \quad \forall f \in \mathcal{F}^{\text{t}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
 
@@ -312,8 +334,7 @@ v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{f,k,b_k} \cdot \
 
 ```math
 \begin{aligned}
-v^{\text{flow}}_{f,k,b_k} \geq - p^{\text{availability profile}}_{f,k,b_k} \cdot \left(p^{\text{init import capacity}}_{f} + p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \right)  \quad
-\\ \\ \forall f \in \mathcal{F}^{\text{t}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+v^{\text{flow}}_{f,k,b_k} \geq - p^{\text{availability profile}}_{f,k,b_k} \cdot \left(p^{\text{init import capacity}}_{f} + p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \right)  \quad \forall f \in \mathcal{F}^{\text{t}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
 
@@ -322,17 +343,23 @@ v^{\text{flow}}_{f,k,b_k} \geq - p^{\text{availability profile}}_{f,k,b_k} \cdot
 #### Maximum Investment Limit for Assets
 
 ```math
-v^{\text{inv}}_{a} \leq \frac{p^{\text{inv limit}}_{a}}{p^{\text{capacity}}_{a}} \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{i}}
+v^{\text{inv}}_{a} \leq \frac{p^{\text{inv limit}}_{a}}{p^{\text{capacity}}_{a}} \quad \forall a \in \mathcal{A}^{\text{i}}
 ```
 
 If the parameter `investment_integer` in the [`assets-data.csv`](@ref assets-data) file is set to true, then the RHS of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
 
+#### Maximum Energy Investment Limit for Assets
+
+```math
+v^{\text{inv energy}}_{a} \leq \frac{p^{\text{inv limit energy}}_{a}}{p^{\text{energy capacity}}_{a}} \quad \forall a \in \mathcal{A}^{\text{i}} \cap \mathcal{A}^{\text{se}}
+```
+
+If the parameter `investment_integer_storage_energy` in the [`assets-data.csv`](@ref assets-data) file is set to true, then the RHS of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
+
 #### Maximum Investment Limit for Flows
 
 ```math
-v^{\text{inv}}_{f} \leq \frac{p^{\text{inv limit}}_{f}}{p^{\text{capacity}}_{f}} \quad
-\\ \\ \forall f \in \mathcal{F}^{\text{ti}}
+v^{\text{inv}}_{f} \leq \frac{p^{\text{inv limit}}_{f}}{p^{\text{capacity}}_{f}} \quad \forall f \in \mathcal{F}^{\text{ti}}
 ```
 
 If the parameter `investment_integer` in the [`flows-data.csv`](@ref flows-data) file is set to true, then the RHS of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
