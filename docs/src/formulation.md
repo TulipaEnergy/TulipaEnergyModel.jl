@@ -18,11 +18,12 @@ The complete mathematical formulation, including variable temporal resolutions, 
 
 In addition, the following asset sets represent methods for incorporating additional variables and constraints in the model.
 
-| Name                      | Description                                | Elements | Superset                                                   | Notes                                                                                                                                                                                                    |
-| ------------------------- | ------------------------------------------ | -------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| $\mathcal{A}^{\text{i}}$  | Energy assets with investment method       |          | $\mathcal{A}^{\text{i}}  \subseteq \mathcal{A}$            |                                                                                                                                                                                                          |
-| $\mathcal{A}^{\text{ss}}$ | Storage energy assets with seasonal method |          | $\mathcal{A}^{\text{ss}} \subseteq \mathcal{A}^{\text{s}}$ |                                                                                                                                                                                                          |
-| $\mathcal{A}^{\text{se}}$ | Storage energy assets with energy method   |          | $\mathcal{A}^{\text{se}} \subseteq \mathcal{A}^{\text{s}}$ | This set contains storage assets that use investment energy method (`storage_method_energy = true` in the file [`assets-data.csv`](@ref schemas)). Otherwise fixed energy-to-power ratio method is used. |
+| Name                      | Description                                | Elements | Superset                                                                                     | Notes                                                                                                                                                                                                                                |
+| ------------------------- | ------------------------------------------ | -------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| $\mathcal{A}^{\text{i}}$  | Energy assets with investment method       |          | $\mathcal{A}^{\text{i}}  \subseteq \mathcal{A}$                                              |                                                                                                                                                                                                                                      |
+| $\mathcal{A}^{\text{ss}}$ | Storage energy assets with seasonal method |          | $\mathcal{A}^{\text{ss}} \subseteq \mathcal{A}^{\text{s}}$                                   |                                                                                                                                                                                                                                      |
+| $\mathcal{A}^{\text{se}}$ | Storage energy assets with energy method   |          | $\mathcal{A}^{\text{se}} \subseteq \mathcal{A}^{\text{s}}$                                   | This set contains storage assets that use investment energy method (`storage_method_energy = true` in the file [`assets-data.csv`](@ref schemas)). Otherwise fixed energy-to-power ratio method is used.                             |
+| $\mathcal{A}^{\text{sb}}$ | Storage energy assets with binary method   |          | $\mathcal{A}^{\text{sb}} \subseteq \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}$ | This set contains storage assets that use an extra binary variable to avoid charging and discharging simultaneously (`use_binary_storage_method` set to `binary` or `relaxed_binary` in the file [`assets-data.csv`](@ref schemas)). |
 
 ### Sets for Flows
 
@@ -115,6 +116,7 @@ In addition, the following flow sets represent methods for incorporating additio
 | $v^{\text{inv}}_{f}$                 | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}$                                                                                | Number of invested units of capacity increment of transport flow $f$                                                            | [units] |
 | $v^{\text{intra-storage}}_{a,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Intra storage level (within a representative period) for storage asset $a$, representative period $k$, and timestep block $b_k$ | [MWh]   |
 | $v^{\text{inter-storage}}_{a,p}$     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$                                                           | Inter storage level (between representative periods) for storage asset $a$ and period $p$                                       | [MWh]   |
+| $v^{\text{charging}}_{a,k,b_k}$      | $\{0, 1\}$       | $a \in \mathcal{A}^{\text{sb}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$                                  | If an storage asset $a$ is charging or not in representative period $k$ and timestep block $b_k$                                | [-]     |
 
 ## [Objective Function](@id math-objective-function)
 
@@ -139,7 +141,7 @@ flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{k \in \mathcal{K}} \sum_
 
 ## [Constraints](@id math-constraints)
 
-### Capacity Constraints
+### [Capacity Constraints](@id cap-constraints)
 
 #### Maximum Output Flows Limit
 
@@ -150,11 +152,49 @@ flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{k \in \mathcal{K}} \sum_
 \end{aligned}
 ```
 
+Storage assets can have the following !!!!¿¿extra??!!!! constraints depending on whether they use the method to include a binary variable to avoid charging and discharging simultaneously, i.e., $a \in \mathcal{A}^{\text{sb}}$
+
+```math
+\begin{aligned}
+\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{inv limit}}_{a} \right) \cdot \left(1 - v^{\text{charging}}_{a,k,b_k} \right) \quad
+\\ \\ \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\end{aligned}
+```
+
+```math
+\begin{aligned}
+\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} \cdot \left(1 - v^{\text{charging}}_{a,k,b_k} \right) + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right) \quad
+\\ \\ \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\end{aligned}
+```
+
 #### Maximum Input Flows Limit
 
 ```math
 \begin{aligned}
 \sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)  \quad \forall a \in \mathcal{A}^{\text{s}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\end{aligned}
+```
+
+Storage assets can have the following !!!!¿¿extra??!!!! constraints depending on whether they use the method to include a binary variable to avoid charging and discharging simultaneously, i.e., $a \in \mathcal{A}^{\text{sb}}$
+
+```math
+\begin{aligned}
+\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{inv limit}}_{a} \right)  \cdot v^{\text{charging}}_{a,k,b_k} \quad \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\end{aligned}
+```
+
+```math
+\begin{aligned}
+\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} \cdot v^{\text{charging}}_{a,k,b_k} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)   \quad \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\end{aligned}
+```
+
+```math
+\begin{aligned}
+\sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \leq & \left(MaxE - MinE - p^{\text{inflows}}_{a,k,b_k} \right) \cdot v^{\text{charging}}_{a,k,b_k}
+\\ & + \left( p^{\text{max intra level}}_{a,k,b_k} - p^{\text{min intra level}}_{a,k,b_k} \right) \cdot e^{\text{energy inv limit}}_{a} \quad
+\\ \\ & \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
 
@@ -209,10 +249,42 @@ v^{\text{intra-storage}}_{a,k,b_k} = v^{\text{intra-storage}}_{a,k,b_k-1}  + p^{
 v^{\text{intra-storage}}_{a,k,b_k} \leq p^{\text{max intra level}}_{a,k,b_k} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a}) \quad \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
+Storage assets can have the following extra constraint depending on whether they use the method to include a binary variable to avoid charging and discharging simultaneously, i.e., $a \in \mathcal{A}^{\text{sb}}$
+
+```math
+\begin{aligned}
+v^{\text{intra-storage}}_{a,k,b_k} & \leq p^{\text{max intra level}}_{a,k,b_k} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a})
+\\ & - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
+\\ & + p^{\text{inflows}}_{a,k,b_k} \cdot \left(1-v^{\text{charging}}_{a,k,b_k} \right) \quad
+\\ \\ & \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\end{aligned}
+```
+
 #### Intra-temporal Constraint for Minimum Storage Level Limit
 
 ```math
 v^{\text{intra-storage}}_{a,k,b_k} \geq p^{\text{min intra level}}_{a,k,b_k} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a}) \quad \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+```
+
+Storage assets can have the following ¡¡¿¿extra??!! constraint depending on whether they use the method to include a binary variable to avoid charging and discharging simultaneously, i.e., $a \in \mathcal{A}^{\text{sb}}$
+
+```math
+\begin{aligned}
+v^{\text{intra-storage}}_{a,k,b_k} & \geq p^{\text{min intra level}}_{a,k,b_k} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a})
+\\ & + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
+\\ & + p^{\text{inflows}}_{a,k,b_k} \cdot v^{\text{charging}}
+\\ \\ & \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\end{aligned}
+```
+
+```math
+\begin{aligned}
+v^{\text{intra-storage}}_{a,k,b_k} & \geq p^{\text{min intra level}}_{a,k,b_k} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a})
+\\ & + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
+\\ & - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
+\\ & + p^{\text{inflows}}_{a,k,b_k}
+\\ \\ & \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\end{aligned}
 ```
 
 #### Intra-temporal Cycling Constraint
