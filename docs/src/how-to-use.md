@@ -298,3 +298,18 @@ Section [Storage Modeling](@ref storage-modeling) explains the main concepts for
 
 > **Note:**
 > If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
+
+## [Storage investment method setup](@id storage-investment-setup)
+
+Energy storage assets have a unique characteristic wherein the investment is not solely based on the capacity to charge and discharge, but also on the energy capacity. Some storage asset types have a fixed duration for a given capacity, which means that there is a predefined ratio between energy and power. For instance, a battery of 10MW/unit and 4h duration implies that the energy capacity is 40MWh. Conversely, other storage asset types don't have a fixed ratio between the investment of capacity and storage capacity. Therefore, the energy capacity can be optimized independently of the capacity investment, such as hydrogen storage in salt caverns. To define if an energy asset is one type or the other then consider the following parameter setting in the file [`assets-data.csv`](@ref schemas):
+
+-   _Investment energy method_: To use this method, set the parameter `storage_method_energy` to `true`. In addition, it is necessary to define:
+
+    -   `investment_cost_storage_energy`: To establish the cost of investing in the storage capacity (e.g., kEUR/MWh/unit).
+    -   `investment_limit_storage_energy`: To define the potential of the energy capacity investment (e.g., MWh). `Missing` values mean that there is no limit.
+    -   `capacity_storage_energy`: To define the energy per unit of storage capacity invested in (e.g., MWh/unit).
+    -   `investment_integer_storage_energy`: To determine whether the investment variables of storage capacity are integers of continuous.
+
+-   _Fixed energy-to-power ratio method_: To use this method, set the parameter `storage_method_energy` to `false`. In addition, it is necessary to define the parameter `energy_to_power_ratio` to establish the predefined duration of the storage asset or ratio between energy and power. Note that all the investment costs should be allocated in the parameter `investment_cost`.
+
+For more details of the constraints that apply when selecting one method or the other, please visit the [`mathematical formulation`](@ref formulation) section.
