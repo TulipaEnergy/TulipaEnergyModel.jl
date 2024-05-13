@@ -25,6 +25,7 @@ const schemas = (
             :investment_limit_storage_energy => Union{Missing,Float64}, # MWh (Missing -> no limit)
             :capacity_storage_energy => Float64,                        # MWh
             :investment_integer_storage_energy => Bool,                 # Whether investment for storage energy is integer or continuous
+            :use_binary_storage_method => Union{Symbol,Missing},                       # Whether to use an extra binary variable for the storage assets to avoid charging and discharging simultaneously (missing;binary;relaxed_binary)
         ),
 
         # Schema for the assets-profiles.csv file.
