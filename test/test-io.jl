@@ -1,10 +1,6 @@
 @testset "Input validation" begin
-    @testset "Make sure that input validation fails for bad files" begin
-        dir = joinpath(INPUT_FOLDER, "Tiny")
-        @test_throws ArgumentError TulipaEnergyModel.read_csv_with_schema(
-            joinpath(dir, "bad-assets-data.csv"),
-            TulipaEnergyModel.schemas.assets.data,
-        )
+    @testset "Test that missing schemas throw correctly" begin
+        @test_throws ErrorException TulipaEnergyModel.get_schema("bad_assets_data")
     end
 
     @testset "Check missing asset partition if strict" begin

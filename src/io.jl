@@ -333,20 +333,6 @@ function create_internal_structures(table_tree::TableTree)
     return graph, representative_periods, timeframe
 end
 
-"""
-    read_csv_with_schema(file_path, schema; csvargs...)
-
-Reads the csv at `file_path` and validates the data using the `schema`.
-It assumes that the file's header is at the second row.
-The first row of the file contains some metadata information that is not used.
-Additional keywords arguments can be passed to `CSV.read`.
-"""
-function read_csv_with_schema(file_path, schema; csvargs...)
-    df = CSV.read(file_path, DataFrame; header = 2, types = schema, strict = true, csvargs...)
-
-    return df
-end
-
 function get_schema(tablename)
     if haskey(schema_per_file, tablename)
         return schema_per_file[tablename]
@@ -356,21 +342,9 @@ function get_schema(tablename)
         elseif startswith("profiles_rep_periods")(tablename)
             return schema_per_file["profiles_rep_periods_<type>"]
         else
-            error("No implicit schema for file $tablename")
+            error("No implicit schema for table named $tablename")
         end
     end
-end
-
-"""
-    read_csv_with_implicit_schema(dir, filename; csvargs...)
-
-Reads the csv at direcory `dir` named `filename` and validates the data using a schema
-based on `filename`.
-The function [`read_csv_with_schema`](@ref) reads the file.
-Additional keywords arguments can be passed to `CSV.read`.
-"""
-function read_csv_with_implicit_schema(dir, filename; csvargs...)
-    read_csv_with_schema(joinpath(dir, filename), schema)
 end
 
 """
