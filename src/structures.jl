@@ -86,7 +86,7 @@ mutable struct GraphAssetData
     investment_limit_storage_energy::Union{Missing,Float64}
     capacity_storage_energy::Float64
     investment_integer_storage_energy::Bool
-    use_binary_storage_method::Symbol
+    use_binary_storage_method::Union{Missing,Symbol}
     timeframe_profiles::Dict{Symbol,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{Symbol,Int},Vector{Float64}}
     timeframe_partitions::Vector{PeriodsBlock}
