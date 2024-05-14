@@ -88,6 +88,7 @@ function create_input_dataframes(connection::DuckDB.DB; strict = false)
     function read_table(table_name)
         schema = get_schema(table_name)
         df = DataFrame(DBInterface.execute(connection, "SELECT * FROM $table_name"))
+        # enforcing schema to match what Tulipa expects; DuckDB string -> symbol, int -> string
         for (key, value) in schema
             if value <: Union{Missing,Symbol}
                 df[!, key] = [ismissing(x) ? x : Symbol(x) for x in df[!, key]]
