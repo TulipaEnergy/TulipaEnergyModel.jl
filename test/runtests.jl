@@ -1,6 +1,7 @@
 using CSV
 using Cbc
 using DataFrames
+using DuckDB: DBInterface
 using GLPK
 using Graphs
 using HiGHS

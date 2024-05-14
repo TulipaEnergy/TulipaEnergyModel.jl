@@ -1,10 +1,6 @@
 @testset "Input validation" begin
-    @testset "Make sure that input validation fails for bad files" begin
-        dir = joinpath(INPUT_FOLDER, "Tiny")
-        @test_throws ArgumentError TulipaEnergyModel.read_csv_with_schema(
-            joinpath(dir, "bad-assets-data.csv"),
-            TulipaEnergyModel.schemas.assets.data,
-        )
+    @testset "Test that missing schemas throw correctly" begin
+        @test_throws ErrorException TulipaEnergyModel.get_schema("bad_assets_data")
     end
 
     @testset "Check missing asset partition if strict" begin
@@ -145,4 +141,23 @@ end
     table_tree = create_input_dataframes_from_csv_folder(dir)
     graph, rps, tf = create_internal_structures(table_tree)
     @test graph[missing_asset].timeframe_partitions == [i:i for i in 1:tf.num_periods]
+end
+
+@testset "Test that non-csv files are ignored when reading csv from a folder" begin
+    dir = mktempdir()
+    for (root, _, files) in walkdir(joinpath(INPUT_FOLDER, "Norse"))
+        for file in files
+            cp(joinpath(root, file), joinpath(dir, file))
+        end
+    end
+
+    connection1 = create_connection_and_import_from_csv_folder(dir)
+    open(joinpath(dir, "some-file.xyz"), "w") do io
+        println(io, "nothing here")
+    end
+    connection2 = create_connection_and_import_from_csv_folder(dir)
+
+    table_list(con) = [x.name for x in DBInterface.execute(con, "SHOW TABLES")]
+
+    @test table_list(connection1) == table_list(connection2)
 end
