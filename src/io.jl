@@ -9,7 +9,6 @@ export create_energy_problem_from_csv_folder,
 
 """
     energy_problem = create_energy_problem_from_csv_folder(input_folder; strict = false)
-, DBInterface
 Returns the [`TulipaEnergyModel.EnergyProblem`](@ref) reading all data from CSV files
 in the `input_folder`.
 This is a wrapper around `create_graph_and_representative_periods_from_csv_folder` that creates
