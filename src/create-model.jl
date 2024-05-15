@@ -307,6 +307,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
     # Unpacking dataframes
     df_flows = dataframes[:flows]
+    df_is_charging = dataframes[:lowest_in_out]
 
     df_storage_intra_rp_balance_grouped =
         DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rp])
@@ -346,13 +347,13 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         ]
     is_charging =
         model[:is_charging] =
-            dataframes[:lowest_in_out].is_charging = [
+            df_is_charging.is_charging = [
                 @variable(
                     model,
                     lower_bound = 0.0,
                     upper_bound = 1.0,
                     base_name = "is_charging[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-                ) for row in eachrow(dataframes[:lowest_in_out])
+                ) for row in eachrow(df_is_charging)
             ]
 
     ### Integer Investment Variables
@@ -376,7 +377,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
     sub_df_is_charging_binary = filter(
         row -> row[:asset] in [a for a in Asb if graph[a].use_binary_storage_method == :binary],
-        dataframes[:lowest_in_out];
+        df_is_charging;
         view = true,
     )
 
