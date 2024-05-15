@@ -345,14 +345,15 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             ) for row in eachrow(dataframes[:storage_level_inter_rp])
         ]
     is_charging =
-        model[:is_charging] = [
-            @variable(
-                model,
-                lower_bound = 0.0,
-                upper_bound = 1.0,
-                base_name = "is_charging[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-            ) for row in eachrow(dataframes[:lowest_in_out])
-        ]
+        model[:is_charging] =
+            dataframes[:lowest_in_out].is_charging = [
+                @variable(
+                    model,
+                    lower_bound = 0.0,
+                    upper_bound = 1.0,
+                    base_name = "is_charging[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+                ) for row in eachrow(dataframes[:lowest_in_out])
+            ]
 
     ### Integer Investment Variables
     for a in Ai
