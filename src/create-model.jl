@@ -344,6 +344,16 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                 base_name = "storage_level_inter_rp[$(row.asset),$(row.periods_block)]"
             ) for row in eachrow(dataframes[:storage_level_inter_rp])
         ]
+    is_charging =
+        model[:is_charging] = [
+            @variable(
+                model,
+                lower_bound = 0.0,
+                upper_bound = 1.0,
+                base_name = "is_charging[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+            ) for row in eachrow(dataframes[:lowest_in_out])
+        ]
+
     ### Integer Investment Variables
     for a in Ai
         if graph[a].investment_integer
@@ -361,6 +371,16 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         if graph[a].investment_integer_storage_energy
             JuMP.set_integer(assets_investment_energy[a])
         end
+    end
+
+    sub_df_is_charging_binary = filter(
+        row -> row[:asset] in [a for a in Asb if graph[a].use_binary_storage_method == :binary],
+        dataframes[:lowest_in_out];
+        view = true,
+    )
+
+    for row in eachrow(sub_df_is_charging_binary)
+        JuMP.set_binary(is_charging[row.index])
     end
 
     ## Expressions
