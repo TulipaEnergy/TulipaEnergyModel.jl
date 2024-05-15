@@ -39,6 +39,13 @@ function compute_constraints_partitions(graph, representative_periods)
             asset_filter = a -> graph[a].type == :storage && !graph[a].is_seasonal,
         ),
         (
+            name = :lowest_in_out,
+            partitions = _allflows,
+            strategy = :lowest,
+            asset_filter = a ->
+                graph[a].type == :storage && !ismissing(graph[a].use_binary_storage_method),
+        ),
+        (
             name = :highest_in_out,
             partitions = _allflows,
             strategy = :highest,
