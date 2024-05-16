@@ -168,6 +168,51 @@ function add_expression_terms_intra_rp_constraints!(
 end
 
 """
+add_expression_terms_intra_rp_constraints!(df_cons,
+                                           df_is_charging,
+                                           workspace
+                                           )
+
+Computes the is_charging expressions per row of df_cons for the constraints
+that are within (intra) the representative periods.
+
+This function is only used internally in the model.
+
+This strategy is based on the replies in this discourse thread:
+
+  - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
+"""
+function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_charging, workspace)
+    # Aggregating function: We have to compute unique appearances of the is_charging.
+    agg = v -> sum(unique(v))
+
+    grouped_cons = DataFrames.groupby(df_cons, [:rp, :asset])
+
+    df_cons[!, :is_charging] .= JuMP.AffExpr(0.0)
+    grouped_is_charging = DataFrames.groupby(df_is_charging, [:rp, :asset])
+    for ((rp, asset), sub_df) in pairs(grouped_cons)
+        if !haskey(grouped_is_charging, (rp, asset))
+            continue
+        end
+
+        for i in eachindex(workspace)
+            workspace[i] = JuMP.AffExpr(0.0)
+        end
+        # Store the corresponding flow in the workspace
+        for row in eachrow(grouped_is_charging[(rp, asset)])
+            asset = row[:asset]
+            for t in row.timesteps_block
+                JuMP.add_to_expression!(workspace[t], row.is_charging)
+            end
+        end
+        # Sum the corresponding flows from the workspace
+        for row in eachrow(sub_df)
+            row[:is_charging] = agg(@view workspace[row.timesteps_block])
+        end
+    end
+end
+
+"""
     add_expression_terms_inter_rp_constraints!(df_inter,
                                                df_flows,
                                                df_map,
@@ -449,6 +494,17 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         graph,
         representative_periods,
     )
+    add_expression_is_charging_terms_intra_rp_constraints!(
+        dataframes[:highest_in],
+        df_is_charging,
+        expression_workspace,
+    )
+    add_expression_is_charging_terms_intra_rp_constraints!(
+        dataframes[:highest_out],
+        df_is_charging,
+        expression_workspace,
+    )
+
     incoming_flow_lowest_resolution =
         model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow
     outgoing_flow_lowest_resolution =
@@ -526,6 +582,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         df_flows,
         flow,
         Ai,
+        Asb,
         assets_investment,
         outgoing_flow_highest_out_resolution,
         incoming_flow_highest_in_resolution,
