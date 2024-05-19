@@ -328,22 +328,24 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     A = MetaGraphsNext.labels(graph) |> collect
     F = MetaGraphsNext.edge_labels(graph) |> collect
     filter_assets(key, values) =
+        filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == values, A)
+    filter_assets(key, values::Vector{Symbol}) =
         filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) in values, A)
-    filter_flows(key, values) = filter(f -> getfield(graph[f...], key) in values, F)
+    filter_flows(key, values) = filter(f -> getfield(graph[f...], key) == values, F)
 
-    Ac  = filter_assets(:type, [:consumer])
-    Ap  = filter_assets(:type, [:producer])
-    As  = filter_assets(:type, [:storage])
-    Ah  = filter_assets(:type, [:hub])
-    Acv = filter_assets(:type, [:conversion])
-    Ft  = filter_flows(:is_transport, [true])
+    Ac  = filter_assets(:type, :consumer)
+    Ap  = filter_assets(:type, :producer)
+    As  = filter_assets(:type, :storage)
+    Ah  = filter_assets(:type, :hub)
+    Acv = filter_assets(:type, :conversion)
+    Ft  = filter_flows(:is_transport, true)
 
     # Create subsets of assets by investable
-    Ai = filter_assets(:investable, [true])
-    Fi = filter_flows(:investable, [true])
+    Ai = filter_assets(:investable, true)
+    Fi = filter_flows(:investable, true)
 
     # Create subsets of storage assets
-    Ase = As ∩ filter_assets(:storage_method_energy, [true])
+    Ase = As ∩ filter_assets(:storage_method_energy, true)
     Asb = As ∩ filter_assets(:use_binary_storage_method, [:binary, :relaxed_binary])
 
     # Maximum timestep
