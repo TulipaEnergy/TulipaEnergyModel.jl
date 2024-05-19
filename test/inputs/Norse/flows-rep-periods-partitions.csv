@@ -2,3 +2,5 @@
 from_asset,to_asset,rep_period,specification,partition
 Asgard_Solar,Asgard_Battery,2,math,4x3+3x4
 Asgard_Solar,Asgard_E_demand,2,math,3x4+4x3
+Asgard_Solar,Asgard_Battery,1,uniform,2
+Asgard_Solar,Asgard_E_demand,1,uniform,3
