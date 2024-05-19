@@ -64,7 +64,7 @@ function add_capacity_constraints!(
     # - Create capacity limit for outgoing flows with binary is_charging for storage assets
     assets_profile_times_capacity_out_with_binary_part1 =
         model[:assets_profile_times_capacity_out_with_binary_part1] = [
-            if !ismissing(graph[row.asset].investment_limit) && row.asset ∈ Asb
+            if row.asset ∈ Ai && row.asset ∈ Asb
                 @expression(
                     model,
                     profile_aggregation(
@@ -78,13 +78,24 @@ function add_capacity_constraints!(
                     (1 - row.is_charging)
                 )
             else
-                0.0
+                @expression(
+                    model,
+                    profile_aggregation(
+                        Statistics.mean,
+                        graph[row.asset].rep_periods_profiles,
+                        (:availability, row.rp),
+                        row.timesteps_block,
+                        1.0,
+                    ) *
+                    (graph[row.asset].initial_capacity) *
+                    (1 - row.is_charging)
+                )
             end for row in eachrow(dataframes[:highest_out])
         ]
 
     assets_profile_times_capacity_out_with_binary_part2 =
         model[:assets_profile_times_capacity_out_with_binary_part2] = [
-            if !ismissing(graph[row.asset].investment_limit) && row.asset ∈ Asb
+            if row.asset ∈ Ai && row.asset ∈ Asb
                 @expression(
                     model,
                     profile_aggregation(
@@ -98,8 +109,6 @@ function add_capacity_constraints!(
                         graph[row.asset].capacity * assets_investment[row.asset]
                     )
                 )
-            else
-                0.0
             end for row in eachrow(dataframes[:highest_out])
         ]
 
@@ -137,7 +146,7 @@ function add_capacity_constraints!(
     # - Create capacity limit for incoming flows with binary is_charging for storage assets
     assets_profile_times_capacity_in_with_binary_part1 =
         model[:assets_profile_times_capacity_in_with_binary_part1] = [
-            if !ismissing(graph[row.asset].investment_limit) && row.asset ∈ Asb
+            if row.asset ∈ Ai && row.asset ∈ Asb
                 @expression(
                     model,
                     profile_aggregation(
@@ -151,13 +160,24 @@ function add_capacity_constraints!(
                     row.is_charging
                 )
             else
-                0.0
+                @expression(
+                    model,
+                    profile_aggregation(
+                        Statistics.mean,
+                        graph[row.asset].rep_periods_profiles,
+                        (:availability, row.rp),
+                        row.timesteps_block,
+                        1.0,
+                    ) *
+                    (graph[row.asset].initial_capacity) *
+                    row.is_charging
+                )
             end for row in eachrow(dataframes[:highest_in])
         ]
 
     assets_profile_times_capacity_in_with_binary_part2 =
         model[:assets_profile_times_capacity_in_with_binary_part2] = [
-            if !ismissing(graph[row.asset].investment_limit) && row.asset ∈ Asb
+            if row.asset ∈ Ai && row.asset ∈ Asb
                 @expression(
                     model,
                     profile_aggregation(
@@ -171,8 +191,6 @@ function add_capacity_constraints!(
                         graph[row.asset].capacity * assets_investment[row.asset]
                     )
                 )
-            else
-                0.0
             end for row in eachrow(dataframes[:highest_in])
         ]
 
@@ -218,7 +236,7 @@ function add_capacity_constraints!(
     ]
 
     model[:max_output_flows_limit_with_binary_part2] = [
-        if row.asset ∈ Asb
+        if row.asset ∈ Ai && row.asset ∈ Asb
             @constraint(
                 model,
                 outgoing_flow_highest_out_resolution[row.index] ≤
@@ -242,7 +260,7 @@ function add_capacity_constraints!(
         incoming_flow_highest_in_resolution[row.index] != 0
     ]
     model[:max_input_flows_limit_with_binary_part2] = [
-        if row.asset ∈ Asb
+        if row.asset ∈ Ai && row.asset ∈ Asb
             @constraint(
                 model,
                 incoming_flow_highest_in_resolution[row.index] ≤
