@@ -7,7 +7,7 @@ Asgard_CCGT,conversion,true,true,true,650,,500,0,0,,false,0,0,0,0,false,0,,0,fal
 G_imports,producer,true,false,false,0,0,0,75000,0,,false,0,0,0,0,false,0,,0,false,
 Midgard_Wind,producer,true,true,true,1300,80000,3,0,0,,false,0,0,0,0,false,0,,0,false,
 Midgard_Hydro,storage,true,false,false,1600,0,0,250,0,,true,10000,50000,25000,0,false,0,,0,false,
-Midgard_PHS,storage,true,true,true,800,5000,200,0,0,,false,0,0,,1,true,500,1000,100,false,relaxed_binary
+Midgard_PHS,storage,true,true,true,800,5000,200,350,0,,false,0,0,,1,true,500,1000,100,false,relaxed_binary
 Midgard_Nuclear_SMR,producer,true,true,false,6000,,150,1000,0,,false,0,0,0,0,false,0,,0,false,
 Midgard_E_imports,producer,true,false,false,0,0,0,500,0,,false,0,0,0,0,false,0,,0,false,
 Midgard_CCGT,conversion,true,true,true,650,,500,0,0,,false,0,0,0,0,false,0,,0,false,
