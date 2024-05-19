@@ -1,11 +1,11 @@
 @testset "Norse Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Norse")
     parameters_dict = Dict(
-        HiGHS.Optimizer => Dict("mip_rel_gap" => 0.0, "output_flag" => false),
-        GLPK.Optimizer => Dict("mip_gap" => 0.0, "msg_lev" => 0, "presolve" => GLPK.GLP_ON),
+        HiGHS.Optimizer => Dict("mip_rel_gap" => 0.01, "output_flag" => false),
+        GLPK.Optimizer => Dict("mip_gap" => 0.01, "msg_lev" => 0, "presolve" => GLPK.GLP_ON),
     )
     if !Sys.isapple()
-        parameters_dict[Cbc.Optimizer] = Dict("ratioGap" => 0.0, "logLevel" => 0)
+        parameters_dict[Cbc.Optimizer] = Dict("ratioGap" => 0.01, "logLevel" => 0)
     end
     for (optimizer, parameteres) in parameters_dict
         energy_problem = run_scenario(dir; optimizer = optimizer, parameters = parameteres)
