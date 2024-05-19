@@ -168,10 +168,10 @@ function add_expression_terms_intra_rp_constraints!(
 end
 
 """
-add_expression_terms_intra_rp_constraints!(df_cons,
-                                           df_is_charging,
-                                           workspace
-                                           )
+add_expression_is_charging_terms_intra_rp_constraints!(df_cons,
+                                                       df_is_charging,
+                                                       workspace
+                                                       )
 
 Computes the is_charging expressions per row of df_cons for the constraints
 that are within (intra) the representative periods.
@@ -183,8 +183,8 @@ This strategy is based on the replies in this discourse thread:
   - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
 """
 function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_charging, workspace)
-    # Aggregating function: We have to compute unique appearances of the is_charging.
-    agg = v -> sum(unique(v))
+    # Aggregating function: We have to compute the proportion of each variable is_charging in the constraint timesteps_block.
+    agg = v -> sum(v) / length(v)
 
     grouped_cons = DataFrames.groupby(df_cons, [:rp, :asset])
 
@@ -198,14 +198,14 @@ function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_c
         for i in eachindex(workspace)
             workspace[i] = JuMP.AffExpr(0.0)
         end
-        # Store the corresponding flow in the workspace
+        # Store the corresponding variables in the workspace
         for row in eachrow(grouped_is_charging[(rp, asset)])
             asset = row[:asset]
             for t in row.timesteps_block
                 JuMP.add_to_expression!(workspace[t], row.is_charging)
             end
         end
-        # Sum the corresponding flows from the workspace
+        # Apply the agg funtion to the corresponding variables from the workspace
         for row in eachrow(sub_df)
             row[:is_charging] = agg(@view workspace[row.timesteps_block])
         end
