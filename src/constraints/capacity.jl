@@ -197,78 +197,67 @@ function add_capacity_constraints!(
     ## Capacity limit constraints (using the highest resolution)
     # - Maximum output flows limit
     model[:max_output_flows_limit] = [
-        if row.asset ∉ Asb
-            @constraint(
-                model,
-                outgoing_flow_highest_out_resolution[row.index] ≤
-                assets_profile_times_capacity_out[row.index],
-                base_name = "max_output_flows_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-            )
-        end for row in eachrow(dataframes[:highest_out]) if
-        outgoing_flow_highest_out_resolution[row.index] != 0
+        @constraint(
+            model,
+            outgoing_flow_highest_out_resolution[row.index] ≤
+            assets_profile_times_capacity_out[row.index],
+            base_name = "max_output_flows_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+        ) for row in eachrow(dataframes[:highest_out]) if
+        row.asset ∉ Asb && outgoing_flow_highest_out_resolution[row.index] != 0
     ]
 
     # - Maximum input flows limit
     model[:max_input_flows_limit] = [
-        if row.asset ∉ Asb
-            @constraint(
-                model,
-                incoming_flow_highest_in_resolution[row.index] ≤
-                assets_profile_times_capacity_in[row.index],
-                base_name = "max_input_flows_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-            )
-        end for row in eachrow(dataframes[:highest_in]) if
-        incoming_flow_highest_in_resolution[row.index] != 0
+        @constraint(
+            model,
+            incoming_flow_highest_in_resolution[row.index] ≤
+            assets_profile_times_capacity_in[row.index],
+            base_name = "max_input_flows_limit[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+        ) for row in eachrow(dataframes[:highest_in]) if
+        row.asset ∉ Asb && incoming_flow_highest_in_resolution[row.index] != 0
     ]
 
     ## Capacity limit constraints (using the highest resolution) for storage assets using binary to avoid charging and discharging at the same time
     # - Maximum output flows limit with is_charging binary for storage assets
     model[:max_output_flows_limit_with_binary_part1] = [
-        if row.asset ∈ Asb
-            @constraint(
-                model,
-                outgoing_flow_highest_out_resolution[row.index] ≤
-                assets_profile_times_capacity_out_with_binary_part1[row.index],
-                base_name = "max_output_flows_limit_with_binary_part1[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-            )
-        end for row in eachrow(dataframes[:highest_out]) if
-        outgoing_flow_highest_out_resolution[row.index] != 0
+        @constraint(
+            model,
+            outgoing_flow_highest_out_resolution[row.index] ≤
+            assets_profile_times_capacity_out_with_binary_part1[row.index],
+            base_name = "max_output_flows_limit_with_binary_part1[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+        ) for row in eachrow(dataframes[:highest_out]) if
+        row.asset ∈ Asb && outgoing_flow_highest_out_resolution[row.index] != 0
     ]
 
     model[:max_output_flows_limit_with_binary_part2] = [
-        if row.asset ∈ Ai && row.asset ∈ Asb
-            @constraint(
-                model,
-                outgoing_flow_highest_out_resolution[row.index] ≤
-                assets_profile_times_capacity_out_with_binary_part2[row.index],
-                base_name = "max_output_flows_limit_with_binary_part2[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-            )
-        end for row in eachrow(dataframes[:highest_out]) if
+        @constraint(
+            model,
+            outgoing_flow_highest_out_resolution[row.index] ≤
+            assets_profile_times_capacity_out_with_binary_part2[row.index],
+            base_name = "max_output_flows_limit_with_binary_part2[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+        ) for row in eachrow(dataframes[:highest_out]) if row.asset ∈ Ai &&
+        row.asset ∈ Asb &&
         outgoing_flow_highest_out_resolution[row.index] != 0
     ]
 
     # - Maximum input flows limit with is_charging binary for storage assets
     model[:max_input_flows_limit_with_binary_part1] = [
-        if row.asset ∈ Asb
-            @constraint(
-                model,
-                incoming_flow_highest_in_resolution[row.index] ≤
-                assets_profile_times_capacity_in_with_binary_part1[row.index],
-                base_name = "max_input_flows_limit_with_binary_part1[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-            )
-        end for row in eachrow(dataframes[:highest_in]) if
-        incoming_flow_highest_in_resolution[row.index] != 0
+        @constraint(
+            model,
+            incoming_flow_highest_in_resolution[row.index] ≤
+            assets_profile_times_capacity_in_with_binary_part1[row.index],
+            base_name = "max_input_flows_limit_with_binary_part1[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+        ) for row in eachrow(dataframes[:highest_in]) if
+        row.asset ∈ Asb && incoming_flow_highest_in_resolution[row.index] != 0
     ]
     model[:max_input_flows_limit_with_binary_part2] = [
-        if row.asset ∈ Ai && row.asset ∈ Asb
-            @constraint(
-                model,
-                incoming_flow_highest_in_resolution[row.index] ≤
-                assets_profile_times_capacity_in_with_binary_part2[row.index],
-                base_name = "max_input_flows_limit_with_binary_part2[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-            )
-        end for row in eachrow(dataframes[:highest_in]) if
-        incoming_flow_highest_in_resolution[row.index] != 0
+        @constraint(
+            model,
+            incoming_flow_highest_in_resolution[row.index] ≤
+            assets_profile_times_capacity_in_with_binary_part2[row.index],
+            base_name = "max_input_flows_limit_with_binary_part2[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+        ) for row in eachrow(dataframes[:highest_in]) if
+        row.asset ∈ Ai && row.asset ∈ Asb && incoming_flow_highest_in_resolution[row.index] != 0
     ]
 
     # - Lower limit for flows that are not transport assets

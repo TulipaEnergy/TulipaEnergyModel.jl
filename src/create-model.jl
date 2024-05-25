@@ -184,7 +184,7 @@ This strategy is based on the replies in this discourse thread:
 """
 function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_charging, workspace)
     # Aggregating function: We have to compute the proportion of each variable is_charging in the constraint timesteps_block.
-    agg = v -> sum(v) / length(v)
+    agg = Statistics.mean
 
     grouped_cons = DataFrames.groupby(df_cons, [:rp, :asset])
 
@@ -422,9 +422,12 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         end
     end
 
-    sub_df_is_charging_binary = filter(
-        row -> row[:asset] in [a for a in Asb if graph[a].use_binary_storage_method == :binary],
-        df_is_charging;
+    df_is_charging.use_binary_storage_method =
+        [graph[a].use_binary_storage_method for a in df_is_charging.asset]
+    sub_df_is_charging_binary = DataFrames.subset(
+        df_is_charging,
+        :asset => DataFrames.ByRow(in(Asb)),
+        :use_binary_storage_method => DataFrames.ByRow(==(:binary));
         view = true,
     )
 
