@@ -168,6 +168,51 @@ function add_expression_terms_intra_rp_constraints!(
 end
 
 """
+add_expression_is_charging_terms_intra_rp_constraints!(df_cons,
+                                                       df_is_charging,
+                                                       workspace
+                                                       )
+
+Computes the is_charging expressions per row of df_cons for the constraints
+that are within (intra) the representative periods.
+
+This function is only used internally in the model.
+
+This strategy is based on the replies in this discourse thread:
+
+  - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
+"""
+function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_charging, workspace)
+    # Aggregating function: We have to compute the proportion of each variable is_charging in the constraint timesteps_block.
+    agg = Statistics.mean
+
+    grouped_cons = DataFrames.groupby(df_cons, [:rp, :asset])
+
+    df_cons[!, :is_charging] .= JuMP.AffExpr(0.0)
+    grouped_is_charging = DataFrames.groupby(df_is_charging, [:rp, :asset])
+    for ((rp, asset), sub_df) in pairs(grouped_cons)
+        if !haskey(grouped_is_charging, (rp, asset))
+            continue
+        end
+
+        for i in eachindex(workspace)
+            workspace[i] = JuMP.AffExpr(0.0)
+        end
+        # Store the corresponding variables in the workspace
+        for row in eachrow(grouped_is_charging[(rp, asset)])
+            asset = row[:asset]
+            for t in row.timesteps_block
+                JuMP.add_to_expression!(workspace[t], row.is_charging)
+            end
+        end
+        # Apply the agg funtion to the corresponding variables from the workspace
+        for row in eachrow(sub_df)
+            row[:is_charging] = agg(@view workspace[row.timesteps_block])
+        end
+    end
+end
+
+"""
     add_expression_terms_inter_rp_constraints!(df_inter,
                                                df_flows,
                                                df_map,
@@ -282,9 +327,11 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     ## Sets unpacking
     A = MetaGraphsNext.labels(graph) |> collect
     F = MetaGraphsNext.edge_labels(graph) |> collect
-    filter_assets(key, value) =
-        filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == value, A)
-    filter_flows(key, value) = filter(f -> getfield(graph[f...], key) == value, F)
+    filter_assets(key, values) =
+        filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == values, A)
+    filter_assets(key, values::Vector{Symbol}) =
+        filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) in values, A)
+    filter_flows(key, values) = filter(f -> getfield(graph[f...], key) == values, F)
 
     Ac  = filter_assets(:type, :consumer)
     Ap  = filter_assets(:type, :producer)
@@ -297,8 +344,9 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     Ai = filter_assets(:investable, true)
     Fi = filter_flows(:investable, true)
 
-    # Create subsets of assets by storage_method_energy
-    Ase = filter_assets(:storage_method_energy, true)
+    # Create subsets of storage assets
+    Ase = As ∩ filter_assets(:storage_method_energy, true)
+    Asb = As ∩ filter_assets(:use_binary_storage_method, [:binary, :relaxed_binary])
 
     # Maximum timestep
     Tmax = maximum(last(rp.timesteps) for rp in representative_periods)
@@ -306,6 +354,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
     # Unpacking dataframes
     df_flows = dataframes[:flows]
+    df_is_charging = dataframes[:lowest_in_out]
 
     df_storage_intra_rp_balance_grouped =
         DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rp])
@@ -343,6 +392,17 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                 base_name = "storage_level_inter_rp[$(row.asset),$(row.periods_block)]"
             ) for row in eachrow(dataframes[:storage_level_inter_rp])
         ]
+    is_charging =
+        model[:is_charging] =
+            df_is_charging.is_charging = [
+                @variable(
+                    model,
+                    lower_bound = 0.0,
+                    upper_bound = 1.0,
+                    base_name = "is_charging[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+                ) for row in eachrow(df_is_charging)
+            ]
+
     ### Integer Investment Variables
     for a in Ai
         if graph[a].investment_integer
@@ -360,6 +420,19 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         if graph[a].investment_integer_storage_energy
             JuMP.set_integer(assets_investment_energy[a])
         end
+    end
+
+    df_is_charging.use_binary_storage_method =
+        [graph[a].use_binary_storage_method for a in df_is_charging.asset]
+    sub_df_is_charging_binary = DataFrames.subset(
+        df_is_charging,
+        :asset => DataFrames.ByRow(in(Asb)),
+        :use_binary_storage_method => DataFrames.ByRow(==(:binary));
+        view = true,
+    )
+
+    for row in eachrow(sub_df_is_charging_binary)
+        JuMP.set_binary(is_charging[row.index])
     end
 
     ## Expressions
@@ -426,6 +499,17 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         graph,
         representative_periods,
     )
+    add_expression_is_charging_terms_intra_rp_constraints!(
+        dataframes[:highest_in],
+        df_is_charging,
+        expression_workspace,
+    )
+    add_expression_is_charging_terms_intra_rp_constraints!(
+        dataframes[:highest_out],
+        df_is_charging,
+        expression_workspace,
+    )
+
     incoming_flow_lowest_resolution =
         model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow
     outgoing_flow_lowest_resolution =
@@ -503,6 +587,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         df_flows,
         flow,
         Ai,
+        Asb,
         assets_investment,
         outgoing_flow_highest_out_resolution,
         incoming_flow_highest_in_resolution,
