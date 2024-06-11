@@ -554,7 +554,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         sum(
             graph[a].investment_cost_storage_energy *
             graph[a].capacity_storage_energy *
-            assets_investment_energy[a] for a in Ase
+            assets_investment_energy[a] for a in Ase ∩ Ai
         )
     )
 
