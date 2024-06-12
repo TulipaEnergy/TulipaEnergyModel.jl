@@ -133,7 +133,7 @@ Where:
 
 ```math
 \begin{aligned}
-assets\_investment\_cost &= \sum_{a \in \mathcal{A}^{\text{i}} } p^{\text{inv cost}}_{a} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \\ &+  \sum_{a \in \mathcal{A}^{\text{se}} } p^{\text{inv cost energy}}_{a} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{inv energy}}_{a}   \\
+assets\_investment\_cost &= \sum_{a \in \mathcal{A}^{\text{i}} } p^{\text{inv cost}}_{a} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \\ &+  \sum_{a \in \mathcal{A}^{\text{se}} \cap \mathcal{A}^{\text{i}} } p^{\text{inv cost energy}}_{a} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{inv energy}}_{a}   \\
 flows\_investment\_cost &= \sum_{f \in \mathcal{F}^{\text{ti}}} p^{\text{inv cost}}_{f} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \\
 flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{k \in \mathcal{K}} \sum_{b_k \in \mathcal{B_k}} p^{\text{rp weight}}_{k} \cdot p^{\text{variable cost}}_{f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
 \end{aligned}
