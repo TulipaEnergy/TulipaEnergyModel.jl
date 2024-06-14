@@ -209,6 +209,10 @@ The balance constraint sense depends on the method selected in the asset file's 
 \end{aligned}
 ```
 
+### Constraints for Energy Producers Assets
+
+The following constraints describe the minimum and maximum limits for producers assets.
+
 ### Constraints for Energy Storage Assets
 
 There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
