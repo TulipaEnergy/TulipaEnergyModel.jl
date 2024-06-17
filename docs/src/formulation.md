@@ -85,6 +85,15 @@ In addition, the following flow sets represent methods for incorporating additio
 | $p^{\text{max inter level}}_{a,p}$     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$                                                           | Maximum inter-storage level profile of storage asset $a$ in the period $p$ of the timeframe                    | [p.u.]          |
 | $p^{\text{min inter level}}_{a,p}$     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$                                                           | Minimum inter-storage level profile of storage asset $a$ in the period $p$ of the timeframe                    | [p.u.]          |
 
+#### Extra Parameters for Producers Assets
+
+| Name                                 | Domain           | Domains of Indices                                   | Description                                                                           | Units  |
+| ------------------------------------ | ---------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------- | ------ |
+| $p^{\text{max inter profile}}_{a,p}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$ | Maximum inter-energy profile of producer asset $a$ in the period $p$ of the timeframe | [p.u.] |
+| $p^{\text{min inter profile}}_{a,p}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$ | Minimum inter-energy profile of producer asset $a$ in the period $p$ of the timeframe | [p.u.] |
+| $p^{\text{max energy}}_{a,p}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$                      | Maximum inter-energy value of producer asset $a$                                      | [MWh]  |
+| $p^{\text{min energy}}_{a,p}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$                      | Minimum inter-energy value of producer asset $a$                                      | [MWh]  |
+
 ### Parameter for Flows
 
 | Name                                        | Domain           | Domains of Indices                                                | Description                                                                                | Units          |
@@ -209,10 +218,6 @@ The balance constraint sense depends on the method selected in the asset file's 
 \end{aligned}
 ```
 
-### Constraints for Energy Producers Assets
-
-The following constraints describe the minimum and maximum limits for producers assets.
-
 ### Constraints for Energy Storage Assets
 
 There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
@@ -335,6 +340,24 @@ v^{\text{inter-storage}}_{a,p^{\text{first}}} = & p^{\text{init storage level}}_
 ```math
 v^{\text{inter-storage}}_{a,p^{\text{last}}} \geq p^{\text{init storage level}}_{a} \quad
 \\ \\ \forall a \in \mathcal{A}^{\text{ss}}
+```
+
+### Constraints for Energy Producers Assets
+
+The following constraints describe the minimum and maximum energy limits for producers assets in the inter-temporal constraints.
+
+```math
+\begin{aligned}
+\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \leq  p^{\text{max inter profile}}_{a,p} \cdot p^{\text{max energy}}_{a}
+\\ \\ & \forall a \in \mathcal{A}^{\text{p}}, \forall p \in \mathcal{P}
+\end{aligned}
+```
+
+```math
+\begin{aligned}
+\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \geq  p^{\text{min inter profile}}_{a,p} \cdot p^{\text{min energy}}_{a}
+\\ \\ & \forall a \in \mathcal{A}^{\text{p}}, \forall p \in \mathcal{P}
+\end{aligned}
 ```
 
 ### Constraints for Energy Hub Assets
