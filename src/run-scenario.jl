@@ -18,8 +18,6 @@ function run_scenario(
     log_file = "",
     show_log = true,
 )
-    to = TimerOutput()
-
     elapsed_time_read_data = @elapsed begin
         energy_problem =
             @timeit to "create_energy_problem_from_csv_folder" create_energy_problem_from_csv_folder(
@@ -32,7 +30,11 @@ function run_scenario(
     end
 
     elapsed_time_solve_model = @elapsed begin
-        @timeit to "solve_model!" solve_model!(energy_problem, optimizer; parameters = parameters)
+        @timeit to "solve and store solution" solve_model!(
+            energy_problem,
+            optimizer;
+            parameters = parameters,
+        )
     end
 
     energy_problem.time_read_data    = elapsed_time_read_data

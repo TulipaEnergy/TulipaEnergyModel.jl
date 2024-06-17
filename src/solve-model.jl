@@ -172,7 +172,7 @@ function solve_model(
         JuMP.set_attribute(model, k, v)
     end
     # Solve model
-    JuMP.optimize!(model)
+    @timeit to "total solver time" JuMP.optimize!(model)
 
     # Check solution status
     if JuMP.termination_status(model) != JuMP.OPTIMAL

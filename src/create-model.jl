@@ -300,10 +300,19 @@ function create_model!(energy_problem; kwargs...)
     representative_periods = energy_problem.representative_periods
     constraints_partitions = energy_problem.constraints_partitions
     timeframe = energy_problem.timeframe
-    energy_problem.dataframes =
-        construct_dataframes(graph, representative_periods, constraints_partitions, timeframe)
-    energy_problem.model =
-        create_model(graph, representative_periods, energy_problem.dataframes, timeframe; kwargs...)
+    energy_problem.dataframes = @timeit to "construct_dataframes" construct_dataframes(
+        graph,
+        representative_periods,
+        constraints_partitions,
+        timeframe,
+    )
+    energy_problem.model = @timeit to "create_model" create_model(
+        graph,
+        representative_periods,
+        energy_problem.dataframes,
+        timeframe;
+        kwargs...,
+    )
     energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
     energy_problem.solved = false
     energy_problem.objective_value = NaN
@@ -323,264 +332,274 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     function duration(timesteps_block, rp)
         return length(timesteps_block) * representative_periods[rp].resolution
     end
-
-    ## Sets unpacking
-    A = MetaGraphsNext.labels(graph) |> collect
-    F = MetaGraphsNext.edge_labels(graph) |> collect
-    filter_assets(key, values) =
-        filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == values, A)
-    filter_assets(key, values::Vector{Symbol}) =
-        filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) in values, A)
-    filter_flows(key, values) = filter(f -> getfield(graph[f...], key) == values, F)
-
-    Ac  = filter_assets(:type, :consumer)
-    Ap  = filter_assets(:type, :producer)
-    As  = filter_assets(:type, :storage)
-    Ah  = filter_assets(:type, :hub)
-    Acv = filter_assets(:type, :conversion)
-    Ft  = filter_flows(:is_transport, true)
-
-    # Create subsets of assets by investable
-    Ai = filter_assets(:investable, true)
-    Fi = filter_flows(:investable, true)
-
-    # Create subsets of storage assets
-    Ase = As ∩ filter_assets(:storage_method_energy, true)
-    Asb = As ∩ filter_assets(:use_binary_storage_method, [:binary, :relaxed_binary])
-
     # Maximum timestep
     Tmax = maximum(last(rp.timesteps) for rp in representative_periods)
     expression_workspace = Vector{JuMP.AffExpr}(undef, Tmax)
 
-    # Unpacking dataframes
-    df_flows = dataframes[:flows]
-    df_is_charging = dataframes[:lowest_in_out]
+    ## Sets unpacking
+    @timeit to "unpacking and creating sets" begin
+        A = MetaGraphsNext.labels(graph) |> collect
+        F = MetaGraphsNext.edge_labels(graph) |> collect
+        filter_assets(key, values) =
+            filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == values, A)
+        filter_assets(key, values::Vector{Symbol}) =
+            filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) in values, A)
+        filter_flows(key, values) = filter(f -> getfield(graph[f...], key) == values, F)
 
-    df_storage_intra_rp_balance_grouped =
-        DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rp])
-    df_storage_inter_rp_balance_grouped =
-        DataFrames.groupby(dataframes[:storage_level_inter_rp], [:asset])
+        Ac  = filter_assets(:type, :consumer)
+        Ap  = filter_assets(:type, :producer)
+        As  = filter_assets(:type, :storage)
+        Ah  = filter_assets(:type, :hub)
+        Acv = filter_assets(:type, :conversion)
+        Ft  = filter_flows(:is_transport, true)
+
+        # Create subsets of assets by investable
+        Ai = filter_assets(:investable, true)
+        Fi = filter_flows(:investable, true)
+
+        # Create subsets of storage assets
+        Ase = As ∩ filter_assets(:storage_method_energy, true)
+        Asb = As ∩ filter_assets(:use_binary_storage_method, [:binary, :relaxed_binary])
+    end
+
+    # Unpacking dataframes
+    @timeit to "unpacking dataframes" begin
+        df_flows = dataframes[:flows]
+        df_is_charging = dataframes[:lowest_in_out]
+
+        df_storage_intra_rp_balance_grouped =
+            DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rp])
+        df_storage_inter_rp_balance_grouped =
+            DataFrames.groupby(dataframes[:storage_level_inter_rp], [:asset])
+    end
 
     ## Model
     model = JuMP.Model()
 
     ## Variables
-    flow =
-        model[:flow] =
-            df_flows.flow = [
-                @variable(
-                    model,
-                    base_name = "flow[($(row.from), $(row.to)), $(row.rp), $(row.timesteps_block)]"
-                ) for row in eachrow(df_flows)
-            ]
-    @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
-    @variable(model, 0 ≤ flows_investment[Fi])
-    @variable(model, 0 ≤ assets_investment_energy[Ase∩Ai])  #number of installed asset units for storage energy [N]
-    storage_level_intra_rp =
-        model[:storage_level_intra_rp] = [
-            @variable(
-                model,
-                lower_bound = 0.0,
-                base_name = "storage_level_intra_rp[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-            ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
-        ]
-    storage_level_inter_rp =
-        model[:storage_level_inter_rp] = [
-            @variable(
-                model,
-                lower_bound = 0.0,
-                base_name = "storage_level_inter_rp[$(row.asset),$(row.periods_block)]"
-            ) for row in eachrow(dataframes[:storage_level_inter_rp])
-        ]
-    is_charging =
-        model[:is_charging] =
-            df_is_charging.is_charging = [
+    @timeit to "create variables" begin
+        flow =
+            model[:flow] =
+                df_flows.flow = [
+                    @variable(
+                        model,
+                        base_name = "flow[($(row.from), $(row.to)), $(row.rp), $(row.timesteps_block)]"
+                    ) for row in eachrow(df_flows)
+                ]
+        @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
+        @variable(model, 0 ≤ flows_investment[Fi])
+        @variable(model, 0 ≤ assets_investment_energy[Ase∩Ai])  #number of installed asset units for storage energy [N]
+        storage_level_intra_rp =
+            model[:storage_level_intra_rp] = [
                 @variable(
                     model,
                     lower_bound = 0.0,
-                    upper_bound = 1.0,
-                    base_name = "is_charging[$(row.asset),$(row.rp),$(row.timesteps_block)]"
-                ) for row in eachrow(df_is_charging)
+                    base_name = "storage_level_intra_rp[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+                ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
             ]
+        storage_level_inter_rp =
+            model[:storage_level_inter_rp] = [
+                @variable(
+                    model,
+                    lower_bound = 0.0,
+                    base_name = "storage_level_inter_rp[$(row.asset),$(row.periods_block)]"
+                ) for row in eachrow(dataframes[:storage_level_inter_rp])
+            ]
+        is_charging =
+            model[:is_charging] =
+                df_is_charging.is_charging = [
+                    @variable(
+                        model,
+                        lower_bound = 0.0,
+                        upper_bound = 1.0,
+                        base_name = "is_charging[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+                    ) for row in eachrow(df_is_charging)
+                ]
 
-    ### Integer Investment Variables
-    for a in Ai
-        if graph[a].investment_integer
-            JuMP.set_integer(assets_investment[a])
+        ### Integer Investment Variables
+        for a in Ai
+            if graph[a].investment_integer
+                JuMP.set_integer(assets_investment[a])
+            end
         end
-    end
 
-    for (u, v) in Fi
-        if graph[u, v].investment_integer
-            JuMP.set_integer(flows_investment[(u, v)])
+        for (u, v) in Fi
+            if graph[u, v].investment_integer
+                JuMP.set_integer(flows_investment[(u, v)])
+            end
         end
-    end
 
-    for a in Ase ∩ Ai
-        if graph[a].investment_integer_storage_energy
-            JuMP.set_integer(assets_investment_energy[a])
+        for a in Ase ∩ Ai
+            if graph[a].investment_integer_storage_energy
+                JuMP.set_integer(assets_investment_energy[a])
+            end
         end
-    end
 
-    df_is_charging.use_binary_storage_method =
-        [graph[a].use_binary_storage_method for a in df_is_charging.asset]
-    sub_df_is_charging_binary = DataFrames.subset(
-        df_is_charging,
-        :asset => DataFrames.ByRow(in(Asb)),
-        :use_binary_storage_method => DataFrames.ByRow(==(:binary));
-        view = true,
-    )
+        df_is_charging.use_binary_storage_method =
+            [graph[a].use_binary_storage_method for a in df_is_charging.asset]
+        sub_df_is_charging_binary = DataFrames.subset(
+            df_is_charging,
+            :asset => DataFrames.ByRow(in(Asb)),
+            :use_binary_storage_method => DataFrames.ByRow(==(:binary));
+            view = true,
+        )
 
-    for row in eachrow(sub_df_is_charging_binary)
-        JuMP.set_binary(is_charging[row.index])
+        for row in eachrow(sub_df_is_charging_binary)
+            JuMP.set_binary(is_charging[row.index])
+        end
     end
 
     ## Expressions
-    @expression(
-        model,
-        energy_limit[a ∈ As∩Ai],
-        if graph[a].storage_method_energy
-            graph[a].capacity_storage_energy * assets_investment_energy[a]
-        else
-            graph[a].energy_to_power_ratio * graph[a].capacity * assets_investment[a]
-        end
-    )
+    @timeit to "add_expression_terms" begin
+        @expression(
+            model,
+            energy_limit[a ∈ As∩Ai],
+            if graph[a].storage_method_energy
+                graph[a].capacity_storage_energy * assets_investment_energy[a]
+            else
+                graph[a].energy_to_power_ratio * graph[a].capacity * assets_investment[a]
+            end
+        )
 
-    # Creating the incoming and outgoing flow expressions
-    add_expression_terms_intra_rp_constraints!(
-        dataframes[:lowest],
-        df_flows,
-        expression_workspace,
-        representative_periods,
-        graph;
-        use_highest_resolution = false,
-        multiply_by_duration = true,
-    )
-    add_expression_terms_intra_rp_constraints!(
-        dataframes[:lowest_storage_level_intra_rp],
-        df_flows,
-        expression_workspace,
-        representative_periods,
-        graph;
-        use_highest_resolution = false,
-        multiply_by_duration = true,
-    )
-    add_expression_terms_intra_rp_constraints!(
-        dataframes[:highest_in_out],
-        df_flows,
-        expression_workspace,
-        representative_periods,
-        graph;
-        use_highest_resolution = true,
-        multiply_by_duration = false,
-    )
-    add_expression_terms_intra_rp_constraints!(
-        dataframes[:highest_in],
-        df_flows,
-        expression_workspace,
-        representative_periods,
-        graph;
-        use_highest_resolution = true,
-        multiply_by_duration = false,
-    )
-    add_expression_terms_intra_rp_constraints!(
-        dataframes[:highest_out],
-        df_flows,
-        expression_workspace,
-        representative_periods,
-        graph;
-        use_highest_resolution = true,
-        multiply_by_duration = false,
-    )
-    add_expression_terms_inter_rp_constraints!(
-        dataframes[:storage_level_inter_rp],
-        df_flows,
-        timeframe.map_periods_to_rp,
-        graph,
-        representative_periods,
-    )
-    add_expression_is_charging_terms_intra_rp_constraints!(
-        dataframes[:highest_in],
-        df_is_charging,
-        expression_workspace,
-    )
-    add_expression_is_charging_terms_intra_rp_constraints!(
-        dataframes[:highest_out],
-        df_is_charging,
-        expression_workspace,
-    )
+        # Creating the incoming and outgoing flow expressions
+        add_expression_terms_intra_rp_constraints!(
+            dataframes[:lowest],
+            df_flows,
+            expression_workspace,
+            representative_periods,
+            graph;
+            use_highest_resolution = false,
+            multiply_by_duration = true,
+        )
+        add_expression_terms_intra_rp_constraints!(
+            dataframes[:lowest_storage_level_intra_rp],
+            df_flows,
+            expression_workspace,
+            representative_periods,
+            graph;
+            use_highest_resolution = false,
+            multiply_by_duration = true,
+        )
+        add_expression_terms_intra_rp_constraints!(
+            dataframes[:highest_in_out],
+            df_flows,
+            expression_workspace,
+            representative_periods,
+            graph;
+            use_highest_resolution = true,
+            multiply_by_duration = false,
+        )
+        add_expression_terms_intra_rp_constraints!(
+            dataframes[:highest_in],
+            df_flows,
+            expression_workspace,
+            representative_periods,
+            graph;
+            use_highest_resolution = true,
+            multiply_by_duration = false,
+        )
+        add_expression_terms_intra_rp_constraints!(
+            dataframes[:highest_out],
+            df_flows,
+            expression_workspace,
+            representative_periods,
+            graph;
+            use_highest_resolution = true,
+            multiply_by_duration = false,
+        )
+        add_expression_terms_inter_rp_constraints!(
+            dataframes[:storage_level_inter_rp],
+            df_flows,
+            timeframe.map_periods_to_rp,
+            graph,
+            representative_periods,
+        )
+        add_expression_is_charging_terms_intra_rp_constraints!(
+            dataframes[:highest_in],
+            df_is_charging,
+            expression_workspace,
+        )
+        add_expression_is_charging_terms_intra_rp_constraints!(
+            dataframes[:highest_out],
+            df_is_charging,
+            expression_workspace,
+        )
 
-    incoming_flow_lowest_resolution =
-        model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow
-    outgoing_flow_lowest_resolution =
-        model[:outgoing_flow_lowest_resolution] = dataframes[:lowest].outgoing_flow
-    incoming_flow_lowest_storage_resolution_intra_rp =
-        model[:incoming_flow_lowest_storage_resolution_intra_rp] =
-            dataframes[:lowest_storage_level_intra_rp].incoming_flow
-    outgoing_flow_lowest_storage_resolution_intra_rp =
-        model[:outgoing_flow_lowest_storage_resolution_intra_rp] =
-            dataframes[:lowest_storage_level_intra_rp].outgoing_flow
-    incoming_flow_highest_in_out_resolution =
-        model[:incoming_flow_highest_in_out_resolution] = dataframes[:highest_in_out].incoming_flow
-    outgoing_flow_highest_in_out_resolution =
-        model[:outgoing_flow_highest_in_out_resolution] = dataframes[:highest_in_out].outgoing_flow
-    incoming_flow_highest_in_resolution =
-        model[:incoming_flow_highest_in_resolution] = dataframes[:highest_in].incoming_flow
-    outgoing_flow_highest_out_resolution =
-        model[:outgoing_flow_highest_out_resolution] = dataframes[:highest_out].outgoing_flow
-    incoming_flow_storage_inter_rp_balance =
-        model[:incoming_flow_storage_inter_rp_balance] =
-            dataframes[:storage_level_inter_rp].incoming_flow
-    outgoing_flow_storage_inter_rp_balance =
-        model[:outgoing_flow_storage_inter_rp_balance] =
-            dataframes[:storage_level_inter_rp].outgoing_flow
-    # Below, we drop zero coefficients, but probably we don't have any
-    # (if the implementation is correct)
-    JuMP.drop_zeros!.(incoming_flow_lowest_resolution)
-    JuMP.drop_zeros!.(outgoing_flow_lowest_resolution)
-    JuMP.drop_zeros!.(incoming_flow_lowest_storage_resolution_intra_rp)
-    JuMP.drop_zeros!.(outgoing_flow_lowest_storage_resolution_intra_rp)
-    JuMP.drop_zeros!.(incoming_flow_highest_in_out_resolution)
-    JuMP.drop_zeros!.(outgoing_flow_highest_in_out_resolution)
-    JuMP.drop_zeros!.(incoming_flow_highest_in_resolution)
-    JuMP.drop_zeros!.(outgoing_flow_highest_out_resolution)
-    JuMP.drop_zeros!.(incoming_flow_storage_inter_rp_balance)
-    JuMP.drop_zeros!.(outgoing_flow_storage_inter_rp_balance)
+        incoming_flow_lowest_resolution =
+            model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow
+        outgoing_flow_lowest_resolution =
+            model[:outgoing_flow_lowest_resolution] = dataframes[:lowest].outgoing_flow
+        incoming_flow_lowest_storage_resolution_intra_rp =
+            model[:incoming_flow_lowest_storage_resolution_intra_rp] =
+                dataframes[:lowest_storage_level_intra_rp].incoming_flow
+        outgoing_flow_lowest_storage_resolution_intra_rp =
+            model[:outgoing_flow_lowest_storage_resolution_intra_rp] =
+                dataframes[:lowest_storage_level_intra_rp].outgoing_flow
+        incoming_flow_highest_in_out_resolution =
+            model[:incoming_flow_highest_in_out_resolution] =
+                dataframes[:highest_in_out].incoming_flow
+        outgoing_flow_highest_in_out_resolution =
+            model[:outgoing_flow_highest_in_out_resolution] =
+                dataframes[:highest_in_out].outgoing_flow
+        incoming_flow_highest_in_resolution =
+            model[:incoming_flow_highest_in_resolution] = dataframes[:highest_in].incoming_flow
+        outgoing_flow_highest_out_resolution =
+            model[:outgoing_flow_highest_out_resolution] = dataframes[:highest_out].outgoing_flow
+        incoming_flow_storage_inter_rp_balance =
+            model[:incoming_flow_storage_inter_rp_balance] =
+                dataframes[:storage_level_inter_rp].incoming_flow
+        outgoing_flow_storage_inter_rp_balance =
+            model[:outgoing_flow_storage_inter_rp_balance] =
+                dataframes[:storage_level_inter_rp].outgoing_flow
+        # Below, we drop zero coefficients, but probably we don't have any
+        # (if the implementation is correct)
+        JuMP.drop_zeros!.(incoming_flow_lowest_resolution)
+        JuMP.drop_zeros!.(outgoing_flow_lowest_resolution)
+        JuMP.drop_zeros!.(incoming_flow_lowest_storage_resolution_intra_rp)
+        JuMP.drop_zeros!.(outgoing_flow_lowest_storage_resolution_intra_rp)
+        JuMP.drop_zeros!.(incoming_flow_highest_in_out_resolution)
+        JuMP.drop_zeros!.(outgoing_flow_highest_in_out_resolution)
+        JuMP.drop_zeros!.(incoming_flow_highest_in_resolution)
+        JuMP.drop_zeros!.(outgoing_flow_highest_out_resolution)
+        JuMP.drop_zeros!.(incoming_flow_storage_inter_rp_balance)
+        JuMP.drop_zeros!.(outgoing_flow_storage_inter_rp_balance)
+    end
 
     ## Expressions for the objective function
-    assets_investment_cost = @expression(
-        model,
-        sum(graph[a].investment_cost * graph[a].capacity * assets_investment[a] for a in Ai) +
-        sum(
-            graph[a].investment_cost_storage_energy *
-            graph[a].capacity_storage_energy *
-            assets_investment_energy[a] for a in Ase ∩ Ai
+    @timeit to "objective" begin
+        assets_investment_cost = @expression(
+            model,
+            sum(graph[a].investment_cost * graph[a].capacity * assets_investment[a] for a in Ai) + sum(
+                graph[a].investment_cost_storage_energy *
+                graph[a].capacity_storage_energy *
+                assets_investment_energy[a] for a in Ase ∩ Ai
+            )
         )
-    )
 
-    flows_investment_cost = @expression(
-        model,
-        sum(
-            graph[u, v].investment_cost * graph[u, v].capacity * flows_investment[(u, v)] for
-            (u, v) in Fi
+        flows_investment_cost = @expression(
+            model,
+            sum(
+                graph[u, v].investment_cost * graph[u, v].capacity * flows_investment[(u, v)]
+                for (u, v) in Fi
+            )
         )
-    )
 
-    flows_variable_cost = @expression(
-        model,
-        sum(
-            representative_periods[row.rp].weight *
-            duration(row.timesteps_block, row.rp) *
-            graph[row.from, row.to].variable_cost *
-            row.flow for row in eachrow(df_flows)
+        flows_variable_cost = @expression(
+            model,
+            sum(
+                representative_periods[row.rp].weight *
+                duration(row.timesteps_block, row.rp) *
+                graph[row.from, row.to].variable_cost *
+                row.flow for row in eachrow(df_flows)
+            )
         )
-    )
 
-    ## Objective function
-    @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
+        ## Objective function
+        @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
+    end
 
     ## Constraints
-    add_capacity_constraints!(
+    @timeit to "add_capacity_constraints!" add_capacity_constraints!(
         model,
         graph,
         dataframes,
@@ -593,7 +612,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         incoming_flow_highest_in_resolution,
     )
 
-    add_consumer_constraints!(
+    @timeit to "add_consumer_constraints!" add_consumer_constraints!(
         model,
         graph,
         dataframes,
@@ -602,7 +621,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         outgoing_flow_highest_in_out_resolution,
     )
 
-    add_storage_constraints!(
+    @timeit to "add_storage_constraints!" add_storage_constraints!(
         model,
         graph,
         dataframes,
@@ -618,7 +637,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         outgoing_flow_storage_inter_rp_balance,
     )
 
-    add_hub_constraints!(
+    @timeit to "add_hub_constraints!" add_hub_constraints!(
         model,
         dataframes,
         Ah,
@@ -626,7 +645,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         outgoing_flow_highest_in_out_resolution,
     )
 
-    add_conversion_constraints!(
+    @timeit to "add_conversion_constraints!" add_conversion_constraints!(
         model,
         dataframes,
         Acv,
@@ -634,9 +653,16 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         outgoing_flow_lowest_resolution,
     )
 
-    add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_investment)
+    @timeit to "add_transport_constraints!" add_transport_constraints!(
+        model,
+        graph,
+        df_flows,
+        flow,
+        Ft,
+        flows_investment,
+    )
 
-    add_investment_constraints!(
+    @timeit to "add_investment_constraints!" add_investment_constraints!(
         graph,
         Ai,
         Ase,
@@ -647,7 +673,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     )
 
     if write_lp_file
-        JuMP.write_to_file(model, "model.lp")
+        @timeit to "write lp file" JuMP.write_to_file(model, "model.lp")
     end
 
     return model
