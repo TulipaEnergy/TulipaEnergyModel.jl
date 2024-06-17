@@ -24,6 +24,8 @@ using OrderedCollections: OrderedDict
 using Statistics: Statistics
 using TimerOutputs: TimerOutput, @timeit
 
+const to = TimerOutput()
+
 include("input-schemas.jl")
 include("structures.jl")
 include("io.jl")
