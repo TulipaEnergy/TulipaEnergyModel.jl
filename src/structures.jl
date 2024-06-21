@@ -89,6 +89,8 @@ mutable struct GraphAssetData
     capacity_storage_energy::Float64
     investment_integer_storage_energy::Bool
     use_binary_storage_method::Union{Missing,Symbol}
+    maximum_energy_within_timeframe::Union{Missing,Float64}
+    minimum_energy_within_timeframe::Union{Missing,Float64}
     timeframe_profiles::Dict{Symbol,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{Symbol,Int},Vector{Float64}}
     timeframe_partitions::Vector{PeriodsBlock}
@@ -121,6 +123,8 @@ mutable struct GraphAssetData
         capacity_storage_energy,
         investment_integer_storage_energy,
         use_binary_storage_method,
+        maximum_energy_within_timeframe,
+        minimum_energy_within_timeframe,
     )
         timeframe_profiles = Dict{Symbol,Vector{Float64}}()
         rep_periods_profiles = Dict{Tuple{Symbol,Int},Vector{Float64}}()
@@ -147,6 +151,8 @@ mutable struct GraphAssetData
             capacity_storage_energy,
             investment_integer_storage_energy,
             use_binary_storage_method,
+            maximum_energy_within_timeframe,
+            minimum_energy_within_timeframe,
             timeframe_profiles,
             rep_periods_profiles,
             timeframe_partitions,
