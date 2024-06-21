@@ -215,8 +215,8 @@ function create_internal_structures(table_tree::TableTree)
             row.capacity_storage_energy,
             row.investment_integer_storage_energy,
             row.use_binary_storage_method,
-            row.maximum_energy_within_timeframe,
-            row.minimum_energy_within_timeframe,
+            row.max_energy_timeframe_partition,
+            row.min_energy_timeframe_partition,
         ) for row in eachrow(table_tree.static.assets)
     ]
 
