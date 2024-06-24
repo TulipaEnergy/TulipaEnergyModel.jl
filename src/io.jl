@@ -493,6 +493,19 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
         end
     end
     output_table |> CSV.write(output_file)
+
+    output_file = joinpath(output_folder, "max-energy-inter-rp.csv")
+    output_table =
+        DataFrames.select(dataframes[:max_energy_inter_rp], :asset, :periods_block => :period)
+    output_table.value = solution.max_energy_inter_rp
+    output_table |> CSV.write(output_file)
+
+    output_file = joinpath(output_folder, "min-energy-inter-rp.csv")
+    output_table =
+        DataFrames.select(dataframes[:min_energy_inter_rp], :asset, :periods_block => :period)
+    output_table.value = solution.min_energy_inter_rp
+    output_table |> CSV.write(output_file)
+
     return
 end
 
