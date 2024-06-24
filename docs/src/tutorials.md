@@ -116,7 +116,7 @@ The `constraints_partitions` has two dictionaries with the keys `:lowest_resolut
 Finally, we also need dataframes that store the linearized indexes of the variables.
 
 ```@example manual
-dataframes = construct_dataframes(graph, representative_periods, constraints_partitions, timeframe)
+dataframes = construct_dataframes(graph, representative_periods, constraints_partitions)
 ```
 
 Now we can compute the model.
