@@ -1,4 +1,6 @@
 ,{uniform;explicit;math},
 asset,specification,partition
+Midgard_Wind,math,5x28+4x6+1x1+1x28+1x22
+Midgard_Nuclear_SMR,math,1x215
 Midgard_Hydro,math,20x7+25x1+6x7+1x8
 Valhalla_H2_storage,math,15x14+1x5

@@ -2,3 +2,4 @@
 asset,profile_type,profile_name
 Midgard_Hydro,max_storage_level,Midgard_Hydro
 Midgard_Hydro,min_storage_level,Midgard_Hydro
+Midgard_Wind,max_energy,Midgard_Wind
