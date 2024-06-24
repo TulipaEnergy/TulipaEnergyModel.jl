@@ -669,6 +669,8 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         incoming_flow_highest_in_resolution,
     )
 
+    @timeit to "add_energy_constraints!" add_energy_constraints!(model, graph, dataframes)
+
     @timeit to "add_consumer_constraints!" add_consumer_constraints!(
         model,
         graph,
