@@ -283,11 +283,16 @@ function add_expression_terms_inter_rp_constraints!(
                 df_flows;
                 view = true,
             )
+            sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
             if is_storage_level
                 row_inter.outgoing_flow +=
-                    LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
+                    LinearAlgebra.dot(
+                        sub_df_flows.flow,
+                        sub_df_flows.duration .* sub_df_flows.efficiency,
+                    ) * row_map.weight
             else
-                row_inter.outgoing_flow += sum(sub_df_flows.flow) * row_map.weight
+                row_inter.outgoing_flow +=
+                    LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.duration) * row_map.weight
             end
 
             if is_storage_level
@@ -296,8 +301,12 @@ function add_expression_terms_inter_rp_constraints!(
                     df_flows;
                     view = true,
                 )
+                sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
                 row_inter.incoming_flow +=
-                    LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.efficiency) * row_map.weight
+                    LinearAlgebra.dot(
+                        sub_df_flows.flow,
+                        sub_df_flows.duration .* sub_df_flows.efficiency,
+                    ) * row_map.weight
 
                 row_inter.inflows_profile_aggregation +=
                     profile_aggregation(
