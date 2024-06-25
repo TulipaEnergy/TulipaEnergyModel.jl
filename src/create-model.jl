@@ -288,7 +288,7 @@ function add_expression_terms_inter_rp_constraints!(
                 row_inter.outgoing_flow +=
                     LinearAlgebra.dot(
                         sub_df_flows.flow,
-                        sub_df_flows.duration .* sub_df_flows.efficiency,
+                        sub_df_flows.duration ./ sub_df_flows.efficiency,
                     ) * row_map.weight
             else
                 row_inter.outgoing_flow +=

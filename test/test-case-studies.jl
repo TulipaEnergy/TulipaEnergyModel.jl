@@ -33,7 +33,7 @@ end
 @testset "Storage Assets Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Storage")
     energy_problem = run_scenario(dir)
-    @test energy_problem.objective_value ≈ 2359.439239 atol = 1e-5
+    @test energy_problem.objective_value ≈ 2409.384029 atol = 1e-5
 end
 
 @testset "Tiny Variable Resolution Case Study" begin
