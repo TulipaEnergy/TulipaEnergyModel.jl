@@ -49,15 +49,9 @@ end
 
 #%%
 
-@time dataframes =
-    construct_dataframes(graph, representative_periods, constraints_partitions, timeframe)
-@benchmark construct_dataframes(
-    $graph,
-    $representative_periods,
-    $constraints_partitions,
-    $timeframe,
-)
-# @profview construct_dataframes($graph, $representative_periods, $constraints_partitions, $timeframe)
+@time dataframes = construct_dataframes(graph, representative_periods, constraints_partitions)
+@benchmark construct_dataframes($graph, $representative_periods, $constraints_partitions)
+# @profview construct_dataframes($graph, $representative_periods, $constraints_partitions)
 
 #%%
 

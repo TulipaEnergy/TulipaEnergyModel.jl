@@ -56,6 +56,16 @@ function solve_model!(
         graph[a].storage_level_inter_rp[pb] = value
     end
 
+    for row in eachrow(energy_problem.dataframes[:max_energy_inter_rp])
+        a, pb, value = row.asset, row.periods_block, row.solution
+        graph[a].max_energy_inter_rp[pb] = value
+    end
+
+    for row in eachrow(energy_problem.dataframes[:min_energy_inter_rp])
+        a, pb, value = row.asset, row.periods_block, row.solution
+        graph[a].min_energy_inter_rp[pb] = value
+    end
+
     for (u, v) in MetaGraphsNext.edge_labels(graph)
         if graph[u, v].investable
             if graph[u, v].investment_integer
@@ -95,6 +105,8 @@ function solve_model!(dataframes, model, args...; kwargs...)
     dataframes[:flows].solution = solution.flow
     dataframes[:lowest_storage_level_intra_rp].solution = solution.storage_level_intra_rp
     dataframes[:storage_level_inter_rp].solution = solution.storage_level_inter_rp
+    dataframes[:max_energy_inter_rp].solution = solution.max_energy_inter_rp
+    dataframes[:min_energy_inter_rp].solution = solution.min_energy_inter_rp
 
     return solution
 end
@@ -194,6 +206,8 @@ function solve_model(
         ),
         JuMP.value.(model[:storage_level_intra_rp]),
         JuMP.value.(model[:storage_level_inter_rp]),
+        JuMP.value.(model[:max_energy_inter_rp]),
+        JuMP.value.(model[:min_energy_inter_rp]),
         JuMP.value.(model[:flow]),
         JuMP.objective_value(model),
         compute_dual_variables(model),
