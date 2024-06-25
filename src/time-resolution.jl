@@ -16,14 +16,17 @@ to compute the partition based on the strategy.
 function compute_constraints_partitions(graph, representative_periods)
     constraints_partitions = Dict{Symbol,Dict{Tuple{Symbol,Int},Vector{TimestepsBlock}}}()
 
-    _inflows(a, rp) =
-        [graph[u, a].rep_periods_partitions[rp] for u in MetaGraphsNext.inneighbor_labels(graph, a)]
-    _outflows(a, rp) = [
-        graph[a, v].rep_periods_partitions[rp] for v in MetaGraphsNext.outneighbor_labels(graph, a)
+    _inflows(a, rep_period) = [
+        graph[u, a].rep_periods_partitions[rep_period] for
+        u in MetaGraphsNext.inneighbor_labels(graph, a)
     ]
-    _allflows(a, rp) = [_inflows(a, rp); _outflows(a, rp)]
-    _assets(a, rp) = [graph[a].rep_periods_partitions[rp]]
-    _all(a, rp) = [_allflows(a, rp); _assets(a, rp)]
+    _outflows(a, rep_period) = [
+        graph[a, v].rep_periods_partitions[rep_period] for
+        v in MetaGraphsNext.outneighbor_labels(graph, a)
+    ]
+    _allflows(a, rep_period) = [_inflows(a, rep_period); _outflows(a, rep_period)]
+    _assets(a, rep_period) = [graph[a].rep_periods_partitions[rep_period]]
+    _all(a, rep_period) = [_allflows(a, rep_period); _assets(a, rep_period)]
 
     partitions_cases = [
         (
@@ -69,15 +72,15 @@ function compute_constraints_partitions(graph, representative_periods)
 
     for (name, partitions, strategy, asset_filter) in partitions_cases
         constraints_partitions[name] = OrderedDict(
-            (a, rp) => begin
-                P = partitions(a, rp)
+            (a, rep_period) => begin
+                P = partitions(a, rep_period)
                 if length(P) > 0
-                    compute_rp_partition(partitions(a, rp), strategy)
+                    compute_rp_partition(partitions(a, rep_period), strategy)
                 else
                     Vector{TimestepsBlock}[]
                 end
-            end for
-            a in MetaGraphsNext.labels(graph), rp in 1:num_rep_periods if asset_filter(a)
+            end for a in MetaGraphsNext.labels(graph), rep_period in 1:num_rep_periods if
+            asset_filter(a)
         )
     end
 

@@ -25,11 +25,11 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
                 (
                     from = u,
                     to = v,
-                    rp = rp,
+                    rep_period = rep_period,
                     timesteps_block = timesteps_block,
                     efficiency = graph[u, v].efficiency,
-                ) for timesteps_block in graph[u, v].rep_periods_partitions[rp]
-            ) for (u, v) in F, rp in RP
+                ) for timesteps_block in graph[u, v].rep_periods_partitions[rep_period]
+            ) for (u, v) in F, rep_period in RP
         ) |> Iterators.flatten,
     )
     dataframes[:flows].index = 1:size(dataframes[:flows], 1)
@@ -39,20 +39,20 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
             # No data, but ensure schema is correct
             dataframes[key] = DataFrame(;
                 asset = Symbol[],
-                rp = Int[],
+                rep_period = Int[],
                 timesteps_block = UnitRange{Int}[],
                 index = Int[],
             )
             continue
         end
 
-        # This construction should ensure the ordering of the time blocks for groups of (a, rp)
+        # This construction should ensure the ordering of the time blocks for groups of (a, rep_period)
         df = DataFrame(
             (
                 (
-                    (asset = a, rp = rp, timesteps_block = timesteps_block) for
+                    (asset = a, rep_period = rep_period, timesteps_block = timesteps_block) for
                     timesteps_block in partition
-                ) for ((a, rp), partition) in partitions
+                ) for ((a, rep_period), partition) in partitions
             ) |> Iterators.flatten,
         )
         df.index = 1:size(df, 1)
@@ -142,7 +142,7 @@ function add_expression_terms_intra_rp_constraints!(
     # Otherwise, just use the sum
     agg = multiply_by_duration ? v -> sum(v) : v -> sum(unique(v))
 
-    grouped_cons = DataFrames.groupby(df_cons, [:rp, :asset])
+    grouped_cons = DataFrames.groupby(df_cons, [:rep_period, :asset])
 
     # grouped_cons' asset will be matched with either to or from, depending on whether
     # we are filling incoming or outgoing flows
@@ -157,17 +157,17 @@ function add_expression_terms_intra_rp_constraints!(
 
     for case in cases
         df_cons[!, case.col_name] .= JuMP.AffExpr(0.0)
-        grouped_flows = DataFrames.groupby(df_flows, [:rp, case.asset_match])
-        for ((rp, asset), sub_df) in pairs(grouped_cons)
-            if !haskey(grouped_flows, (rp, asset))
+        grouped_flows = DataFrames.groupby(df_flows, [:rep_period, case.asset_match])
+        for ((rep_period, asset), sub_df) in pairs(grouped_cons)
+            if !haskey(grouped_flows, (rep_period, asset))
                 continue
             end
-            resolution = multiply_by_duration ? representative_periods[rp].resolution : 1.0
+            resolution = multiply_by_duration ? representative_periods[rep_period].resolution : 1.0
             for i in eachindex(workspace)
                 workspace[i] = JuMP.AffExpr(0.0)
             end
             # Store the corresponding flow in the workspace
-            for row in eachrow(grouped_flows[(rp, asset)])
+            for row in eachrow(grouped_flows[(rep_period, asset)])
                 asset = row[case.asset_match]
                 for t in row.timesteps_block
                     # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
@@ -217,12 +217,12 @@ function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_c
     # Aggregating function: We have to compute the proportion of each variable is_charging in the constraint timesteps_block.
     agg = Statistics.mean
 
-    grouped_cons = DataFrames.groupby(df_cons, [:rp, :asset])
+    grouped_cons = DataFrames.groupby(df_cons, [:rep_period, :asset])
 
     df_cons[!, :is_charging] .= JuMP.AffExpr(0.0)
-    grouped_is_charging = DataFrames.groupby(df_is_charging, [:rp, :asset])
-    for ((rp, asset), sub_df) in pairs(grouped_cons)
-        if !haskey(grouped_is_charging, (rp, asset))
+    grouped_is_charging = DataFrames.groupby(df_is_charging, [:rep_period, :asset])
+    for ((rep_period, asset), sub_df) in pairs(grouped_cons)
+        if !haskey(grouped_is_charging, (rep_period, asset))
             continue
         end
 
@@ -230,7 +230,7 @@ function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_c
             workspace[i] = JuMP.AffExpr(0.0)
         end
         # Store the corresponding variables in the workspace
-        for row in eachrow(grouped_is_charging[(rp, asset)])
+        for row in eachrow(grouped_is_charging[(rep_period, asset)])
             asset = row[:asset]
             for t in row.timesteps_block
                 JuMP.add_to_expression!(workspace[t], row.is_charging)
@@ -278,8 +278,9 @@ function add_expression_terms_inter_rp_constraints!(
 
         for row_map in eachrow(sub_df_map)
             sub_df_flows = filter(
-                [:from, :rp] =>
-                    (from, rp) -> from == row_inter.asset && rp == row_map.rep_period,
+                [:from, :rep_period] =>
+                    (from, rep_period) ->
+                        from == row_inter.asset && rep_period == row_map.rep_period,
                 df_flows;
                 view = true,
             )
@@ -297,7 +298,9 @@ function add_expression_terms_inter_rp_constraints!(
 
             if is_storage_level
                 sub_df_flows = filter(
-                    [:to, :rp] => (to, rp) -> to == row_inter.asset && rp == row_map.rep_period,
+                    [:to, :rep_period] =>
+                        (to, rep_period) ->
+                            to == row_inter.asset && rep_period == row_map.rep_period,
                     df_flows;
                     view = true,
                 )
@@ -379,12 +382,12 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
     ## Helper functions
     # Computes the duration of the `block` and multiply by the resolution of the
-    # representative period `rp`.
-    function duration(timesteps_block, rp)
-        return length(timesteps_block) * representative_periods[rp].resolution
+    # representative period `rep_period`.
+    function duration(timesteps_block, rep_period)
+        return length(timesteps_block) * representative_periods[rep_period].resolution
     end
     # Maximum timestep
-    Tmax = maximum(last(rp.timesteps) for rp in representative_periods)
+    Tmax = maximum(last(rep_period.timesteps) for rep_period in representative_periods)
     expression_workspace = Vector{JuMP.AffExpr}(undef, Tmax)
 
     ## Sets unpacking
@@ -419,7 +422,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         df_is_charging = dataframes[:lowest_in_out]
 
         df_storage_intra_rp_balance_grouped =
-            DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rp])
+            DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rep_period])
         df_storage_inter_rp_balance_grouped =
             DataFrames.groupby(dataframes[:storage_level_inter_rp], [:asset])
     end
@@ -434,7 +437,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                 df_flows.flow = [
                     @variable(
                         model,
-                        base_name = "flow[($(row.from), $(row.to)), $(row.rp), $(row.timesteps_block)]"
+                        base_name = "flow[($(row.from), $(row.to)), $(row.rep_period), $(row.timesteps_block)]"
                     ) for row in eachrow(df_flows)
                 ]
         @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
@@ -445,7 +448,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                 @variable(
                     model,
                     lower_bound = 0.0,
-                    base_name = "storage_level_intra_rp[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+                    base_name = "storage_level_intra_rp[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
                 ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
             ]
         storage_level_inter_rp =
@@ -463,7 +466,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                         model,
                         lower_bound = 0.0,
                         upper_bound = 1.0,
-                        base_name = "is_charging[$(row.asset),$(row.rp),$(row.timesteps_block)]"
+                        base_name = "is_charging[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
                     ) for row in eachrow(df_is_charging)
                 ]
 
@@ -653,8 +656,8 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         flows_variable_cost = @expression(
             model,
             sum(
-                representative_periods[row.rp].weight *
-                duration(row.timesteps_block, row.rp) *
+                representative_periods[row.rep_period].weight *
+                duration(row.timesteps_block, row.rep_period) *
                 graph[row.from, row.to].variable_cost *
                 row.flow for row in eachrow(df_flows)
             )

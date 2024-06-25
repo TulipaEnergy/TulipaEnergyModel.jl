@@ -47,8 +47,9 @@ function solve_model!(
     end
 
     for row in eachrow(energy_problem.dataframes[:lowest_storage_level_intra_rp])
-        a, rp, timesteps_block, value = row.asset, row.rp, row.timesteps_block, row.solution
-        graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
+        a, rep_period, timesteps_block, value =
+            row.asset, row.rep_period, row.timesteps_block, row.solution
+        graph[a].storage_level_intra_rp[(rep_period, timesteps_block)] = value
     end
 
     for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
@@ -78,9 +79,9 @@ function solve_model!(
     end
 
     for row in eachrow(energy_problem.dataframes[:flows])
-        u, v, rp, timesteps_block, value =
-            row.from, row.to, row.rp, row.timesteps_block, row.solution
-        graph[u, v].flow[(rp, timesteps_block)] = value
+        u, v, rep_period, timesteps_block, value =
+            row.from, row.to, row.rep_period, row.timesteps_block, row.solution
+        graph[u, v].flow[(rep_period, timesteps_block)] = value
     end
 
     return energy_problem.solution
@@ -142,13 +143,13 @@ The `solution` object is a mutable struct with the following fields:
     ```
     [solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]
     ```
-  - `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` for a representative period `rp`
+  - `storage_level_intra_rp[a, rep_period, timesteps_block]`: The storage level for the storage asset `a` for a representative period `rep_period`
     and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used
     to create the model.
-    To create a vector with all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
+    To create a vector with all values of `storage_level_intra_rp` for a given `a` and `rep_period`, one can run
 
     ```
-    [solution.storage_level_intra_rp[a, rp, timesteps_block] for timesteps_block in constraints_partitions[:lowest_resolution][(a, rp)]]
+    [solution.storage_level_intra_rp[a, rep_period, timesteps_block] for timesteps_block in constraints_partitions[:lowest_resolution][(a, rep_period)]]
     ```
 - `storage_level_inter_rp[a, pb]`: The storage level for the storage asset `a` for a periods block `pb`.
     To create a vector with all values of `storage_level_inter_rp` for a given `a`, one can run
@@ -156,12 +157,12 @@ The `solution` object is a mutable struct with the following fields:
     ```
     [solution.storage_level_inter_rp[a, bp] for bp in graph[a].timeframe_partitions[a]]
     ```
-- `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period
-    `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
-    To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
+- `flow[(u, v), rep_period, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period
+    `rep_period`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rep_period]`.
+    To create a vector with all values of `flow` for a given `(u, v)` and `rep_period`, one can run
 
     ```
-    [solution.flow[(u, v), rp, timesteps_block] for timesteps_block in graph[u, v].partitions[rp]]
+    [solution.flow[(u, v), rep_period, timesteps_block] for timesteps_block in graph[u, v].partitions[rep_period]]
     ```
 - `objective_value`: A Float64 with the objective value at the solution.
 - `duals`: A NamedTuple containing the dual variables of selected constraints.

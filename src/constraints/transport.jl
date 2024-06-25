@@ -17,7 +17,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
+                    (:availability, row.rep_period),
                     row.timesteps_block,
                     1.0,
                 ) * (
@@ -31,7 +31,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
+                    (:availability, row.rep_period),
                     row.timesteps_block,
                     1.0,
                 ) * graph[row.from, row.to].initial_export_capacity
@@ -47,7 +47,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
+                    (:availability, row.rep_period),
                     row.timesteps_block,
                     1.0,
                 ) * (
@@ -61,7 +61,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rp),
+                    (:availability, row.rep_period),
                     row.timesteps_block,
                     1.0,
                 ) * graph[row.from, row.to].initial_import_capacity
@@ -77,7 +77,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
         @constraint(
             model,
             flow[row.index] ≤ upper_bound_transport_flow[row.index],
-            base_name = "max_transport_flow_limit[($(row.from),$(row.to)),$(row.rp),$(row.timesteps_block)]"
+            base_name = "max_transport_flow_limit[($(row.from),$(row.to)),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df)
     ]
 
@@ -86,7 +86,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
         @constraint(
             model,
             flow[row.index] ≥ -lower_bound_transport_flow[row.index],
-            base_name = "min_transport_flow_limit[($(row.from),$(row.to)),$(row.rp),$(row.timesteps_block)]"
+            base_name = "min_transport_flow_limit[($(row.from),$(row.to)),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df)
     ]
 end

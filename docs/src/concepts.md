@@ -360,8 +360,8 @@ The `is_seasonal` parameter determines whether or not the storage asset uses the
 The `rep-periods-data` file has information on the representative periods in the example. We have three representative periods, each with 24 timesteps and hourly resolution, representing a day. The figure below shows the availability profile of the renewable energy sources in the example.
 
 ```@example seasonal-storage
-rp_file = "../../test/inputs/Storage/rep-periods-data.csv" # hide
-rp = CSV.read(rp_file, DataFrame, header = 2) # hide
+rep_periods_file = "../../test/inputs/Storage/rep-periods-data.csv" # hide
+rep_periods = CSV.read(rep_periods_file, DataFrame, header = 2) # hide
 ```
 
 ![availability-profiles](./figs/availability-profiles.png)

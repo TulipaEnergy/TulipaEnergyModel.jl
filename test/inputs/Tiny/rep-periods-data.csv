@@ -1,5 +1,5 @@
 ,,hours
-id,num_timesteps,resolution
+rep_period,num_timesteps,resolution
 1,24,1.0
 2,24,1.0
 3,24,1.0
