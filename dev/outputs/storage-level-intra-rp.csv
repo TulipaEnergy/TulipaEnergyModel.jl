@@ -1,4 +1,4 @@
-asset,rp,timestep,value,processed_value
+asset,rep_period,timestep,value,processed_value
 Midgard_PHS,2,1,647.0588235294118,647.0588235294118
 Midgard_PHS,2,2,-0.0,0.0
 Midgard_PHS,2,3,-0.0,0.0
