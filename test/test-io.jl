@@ -73,8 +73,8 @@ end
             (2, 2) => [1:4, 5:8, 9:12, 13:15, 16:18, 19:21, 22:24],
             (3, 2) => [1:2, 3:4, 5:7, 8:10, 11:14, 15:18, 19:24],
         )
-        for a in 1:3, rep_period in 1:2
-            @test dummy[a][rep_period] == expected[(a, rep_period)]
+        for a in 1:3, rp in 1:2
+            @test dummy[a][rp] == expected[(a, rp)]
         end
     end
 
@@ -103,8 +103,8 @@ end
             ((2, 3), 2) => [1:4, 5:8, 9:12, 13:15, 16:18, 19:21, 22:24],
             ((3, 4), 2) => [1:2, 3:4, 5:7, 8:10, 11:14, 15:18, 19:24],
         )
-        for f in flows, rep_period in 1:2
-            @test dummy[f][rep_period] == expected[(f, rep_period)]
+        for f in flows, rp in 1:2
+            @test dummy[f][rp] == expected[(f, rp)]
         end
     end
 

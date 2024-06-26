@@ -25,11 +25,11 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
                 (
                     from = u,
                     to = v,
-                    rep_period = rep_period,
+                    rep_period = rp,
                     timesteps_block = timesteps_block,
                     efficiency = graph[u, v].efficiency,
-                ) for timesteps_block in graph[u, v].rep_periods_partitions[rep_period]
-            ) for (u, v) in F, rep_period in RP
+                ) for timesteps_block in graph[u, v].rep_periods_partitions[rp]
+            ) for (u, v) in F, rp in RP
         ) |> Iterators.flatten,
     )
     dataframes[:flows].index = 1:size(dataframes[:flows], 1)
@@ -46,13 +46,13 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
             continue
         end
 
-        # This construction should ensure the ordering of the time blocks for groups of (a, rep_period)
+        # This construction should ensure the ordering of the time blocks for groups of (a, rp)
         df = DataFrame(
             (
                 (
-                    (asset = a, rep_period = rep_period, timesteps_block = timesteps_block) for
+                    (asset = a, rep_period = rp, timesteps_block = timesteps_block) for
                     timesteps_block in partition
-                ) for ((a, rep_period), partition) in partitions
+                ) for ((a, rp), partition) in partitions
             ) |> Iterators.flatten,
         )
         df.index = 1:size(df, 1)
@@ -279,8 +279,7 @@ function add_expression_terms_inter_rp_constraints!(
         for row_map in eachrow(sub_df_map)
             sub_df_flows = filter(
                 [:from, :rep_period] =>
-                    (from, rep_period) ->
-                        from == row_inter.asset && rep_period == row_map.rep_period,
+                    (from, rp) -> from == row_inter.asset && rp == row_map.rep_period,
                 df_flows;
                 view = true,
             )
@@ -299,8 +298,7 @@ function add_expression_terms_inter_rp_constraints!(
             if is_storage_level
                 sub_df_flows = filter(
                     [:to, :rep_period] =>
-                        (to, rep_period) ->
-                            to == row_inter.asset && rep_period == row_map.rep_period,
+                        (to, rp) -> to == row_inter.asset && rp == row_map.rep_period,
                     df_flows;
                     view = true,
                 )
@@ -382,12 +380,12 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
     ## Helper functions
     # Computes the duration of the `block` and multiply by the resolution of the
-    # representative period `rep_period`.
-    function duration(timesteps_block, rep_period)
-        return length(timesteps_block) * representative_periods[rep_period].resolution
+    # representative period `rp`.
+    function duration(timesteps_block, rp)
+        return length(timesteps_block) * representative_periods[rp].resolution
     end
     # Maximum timestep
-    Tmax = maximum(last(rep_period.timesteps) for rep_period in representative_periods)
+    Tmax = maximum(last(rp.timesteps) for rp in representative_periods)
     expression_workspace = Vector{JuMP.AffExpr}(undef, Tmax)
 
     ## Sets unpacking

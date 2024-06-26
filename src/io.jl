@@ -178,8 +178,8 @@ function create_internal_structures(table_tree::TableTree)
     # Create a dictionary of weights and populate it.
     weights = Dict{Int,Dict{Int,Float64}}()
     for sub_df in DataFrames.groupby(table_tree.periods.mapping, :rep_period)
-        rep_period = first(sub_df.rep_period)
-        weights[rep_period] = Dict(Pair.(sub_df.period, sub_df.weight))
+        rp = first(sub_df.rep_period)
+        weights[rp] = Dict(Pair.(sub_df.period, sub_df.weight))
     end
 
     representative_periods = [
