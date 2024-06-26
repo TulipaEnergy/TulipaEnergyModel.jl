@@ -11,77 +11,83 @@ function solve_model!(
     optimizer = HiGHS.Optimizer;
     parameters = default_parameters(optimizer),
 )
-    model = energy_problem.model
-    if model === nothing
-        error("Model is not created, run create_model(energy_problem) first.")
-    end
+    elapsed_time_solve_model = @elapsed begin
+        model = energy_problem.model
+        if model === nothing
+            error("Model is not created, run create_model(energy_problem) first.")
+        end
 
-    energy_problem.solution =
-        solve_model!(energy_problem.dataframes, model, optimizer; parameters = parameters)
-    energy_problem.termination_status = JuMP.termination_status(model)
-    if energy_problem.solution === nothing
-        # Warning has been given at internal function
-        return
-    end
-    energy_problem.solved = true
-    energy_problem.objective_value = JuMP.objective_value(model)
+        energy_problem.solution =
+            solve_model!(energy_problem.dataframes, model, optimizer; parameters = parameters)
+        energy_problem.termination_status = JuMP.termination_status(model)
+        if energy_problem.solution === nothing
+            # Warning has been given at internal function
+            return
+        end
+        energy_problem.solved = true
+        energy_problem.objective_value = JuMP.objective_value(model)
 
-    graph = energy_problem.graph
-    for a in MetaGraphsNext.labels(graph)
-        asset = graph[a]
-        if asset.investable
-            if asset.investment_integer
-                asset.investment = round(Int, energy_problem.solution.assets_investment[a])
-            else
-                asset.investment = energy_problem.solution.assets_investment[a]
-            end
-            if asset.storage_method_energy
-                if asset.investment_integer_storage_energy
-                    asset.investment_energy =
-                        round(Int, energy_problem.solution.assets_investment_energy[a])
+        graph = energy_problem.graph
+        for a in MetaGraphsNext.labels(graph)
+            asset = graph[a]
+            if asset.investable
+                if asset.investment_integer
+                    asset.investment = round(Int, energy_problem.solution.assets_investment[a])
                 else
-                    asset.investment_energy = energy_problem.solution.assets_investment_energy[a]
+                    asset.investment = energy_problem.solution.assets_investment[a]
+                end
+                if asset.storage_method_energy
+                    if asset.investment_integer_storage_energy
+                        asset.investment_energy =
+                            round(Int, energy_problem.solution.assets_investment_energy[a])
+                    else
+                        asset.investment_energy =
+                            energy_problem.solution.assets_investment_energy[a]
+                    end
                 end
             end
         end
-    end
 
-    for row in eachrow(energy_problem.dataframes[:lowest_storage_level_intra_rp])
-        a, rp, timesteps_block, value = row.asset, row.rep_period, row.timesteps_block, row.solution
-        graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
-    end
+        for row in eachrow(energy_problem.dataframes[:lowest_storage_level_intra_rp])
+            a, rp, timesteps_block, value =
+                row.asset, row.rep_period, row.timesteps_block, row.solution
+            graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
+        end
 
-    for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
-        a, pb, value = row.asset, row.periods_block, row.solution
-        graph[a].storage_level_inter_rp[pb] = value
-    end
+        for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
+            a, pb, value = row.asset, row.periods_block, row.solution
+            graph[a].storage_level_inter_rp[pb] = value
+        end
 
-    for row in eachrow(energy_problem.dataframes[:max_energy_inter_rp])
-        a, pb, value = row.asset, row.periods_block, row.solution
-        graph[a].max_energy_inter_rp[pb] = value
-    end
+        for row in eachrow(energy_problem.dataframes[:max_energy_inter_rp])
+            a, pb, value = row.asset, row.periods_block, row.solution
+            graph[a].max_energy_inter_rp[pb] = value
+        end
 
-    for row in eachrow(energy_problem.dataframes[:min_energy_inter_rp])
-        a, pb, value = row.asset, row.periods_block, row.solution
-        graph[a].min_energy_inter_rp[pb] = value
-    end
+        for row in eachrow(energy_problem.dataframes[:min_energy_inter_rp])
+            a, pb, value = row.asset, row.periods_block, row.solution
+            graph[a].min_energy_inter_rp[pb] = value
+        end
 
-    for (u, v) in MetaGraphsNext.edge_labels(graph)
-        if graph[u, v].investable
-            if graph[u, v].investment_integer
-                graph[u, v].investment =
-                    round(Int, energy_problem.solution.flows_investment[(u, v)])
-            else
-                graph[u, v].investment = energy_problem.solution.flows_investment[(u, v)]
+        for (u, v) in MetaGraphsNext.edge_labels(graph)
+            if graph[u, v].investable
+                if graph[u, v].investment_integer
+                    graph[u, v].investment =
+                        round(Int, energy_problem.solution.flows_investment[(u, v)])
+                else
+                    graph[u, v].investment = energy_problem.solution.flows_investment[(u, v)]
+                end
             end
+        end
+
+        for row in eachrow(energy_problem.dataframes[:flows])
+            u, v, rp, timesteps_block, value =
+                row.from, row.to, row.rep_period, row.timesteps_block, row.solution
+            graph[u, v].flow[(rp, timesteps_block)] = value
         end
     end
 
-    for row in eachrow(energy_problem.dataframes[:flows])
-        u, v, rp, timesteps_block, value =
-            row.from, row.to, row.rep_period, row.timesteps_block, row.solution
-        graph[u, v].flow[(rp, timesteps_block)] = value
-    end
+    energy_problem.time_solve_model = elapsed_time_solve_model
 
     return energy_problem.solution
 end

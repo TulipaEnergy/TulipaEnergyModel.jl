@@ -18,28 +18,18 @@ function run_scenario(
     log_file = "",
     show_log = true,
 )
-    elapsed_time_read_data = @elapsed begin
-        energy_problem =
-            @timeit to "create_energy_problem_from_csv_folder" create_energy_problem_from_csv_folder(
-                input_folder,
-            )
-    end
-
-    elapsed_time_create_model = @elapsed begin
-        @timeit to "create_model!" create_model!(energy_problem; write_lp_file = write_lp_file)
-    end
-
-    elapsed_time_solve_model = @elapsed begin
-        @timeit to "solve and store solution" solve_model!(
-            energy_problem,
-            optimizer;
-            parameters = parameters,
+    energy_problem =
+        @timeit to "create_energy_problem_from_csv_folder" create_energy_problem_from_csv_folder(
+            input_folder,
         )
-    end
 
-    energy_problem.time_read_data    = elapsed_time_read_data
-    energy_problem.time_create_model = elapsed_time_create_model
-    energy_problem.time_solve_model  = elapsed_time_solve_model
+    @timeit to "create_model!" create_model!(energy_problem; write_lp_file = write_lp_file)
+
+    @timeit to "solve and store solution" solve_model!(
+        energy_problem,
+        optimizer;
+        parameters = parameters,
+    )
 
     if output_folder != ""
         @timeit to "save_solution_to_file" save_solution_to_file(output_folder, energy_problem)

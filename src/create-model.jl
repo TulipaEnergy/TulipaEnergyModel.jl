@@ -349,25 +349,30 @@ end
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
-    graph = energy_problem.graph
-    representative_periods = energy_problem.representative_periods
-    constraints_partitions = energy_problem.constraints_partitions
-    timeframe = energy_problem.timeframe
-    energy_problem.dataframes = @timeit to "construct_dataframes" construct_dataframes(
-        graph,
-        representative_periods,
-        constraints_partitions,
-    )
-    energy_problem.model = @timeit to "create_model" create_model(
-        graph,
-        representative_periods,
-        energy_problem.dataframes,
-        timeframe;
-        kwargs...,
-    )
-    energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
-    energy_problem.solved = false
-    energy_problem.objective_value = NaN
+    elapsed_time_create_model = @elapsed begin
+        graph = energy_problem.graph
+        representative_periods = energy_problem.representative_periods
+        constraints_partitions = energy_problem.constraints_partitions
+        timeframe = energy_problem.timeframe
+        energy_problem.dataframes = @timeit to "construct_dataframes" construct_dataframes(
+            graph,
+            representative_periods,
+            constraints_partitions,
+        )
+        energy_problem.model = @timeit to "create_model" create_model(
+            graph,
+            representative_periods,
+            energy_problem.dataframes,
+            timeframe;
+            kwargs...,
+        )
+        energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
+        energy_problem.solved = false
+        energy_problem.objective_value = NaN
+    end
+
+    energy_problem.time_create_model = elapsed_time_create_model
+
     return energy_problem
 end
 
