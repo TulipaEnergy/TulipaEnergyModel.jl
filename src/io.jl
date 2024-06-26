@@ -16,8 +16,12 @@ the `EnergyProblem` structure.
 Set `strict = true` to error if assets are missing from partition data.
 """
 function create_energy_problem_from_csv_folder(input_folder::AbstractString; strict = false)
-    connection = create_connection_and_import_from_csv_folder(input_folder)
-    return EnergyProblem(connection; strict = strict)
+    elapsed_time_read_data = @elapsed begin
+        connection = create_connection_and_import_from_csv_folder(input_folder)
+        energy_problem = EnergyProblem(connection; strict = strict)
+    end
+    energy_problem.time_read_data = elapsed_time_read_data
+    return energy_problem
 end
 
 """
