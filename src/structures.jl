@@ -54,7 +54,7 @@ end
 Structure to hold the data of one representative period.
 """
 struct RepresentativePeriod
-    mapping::Union{Nothing,Dict{Int,Float64}}  # which periods in the full problem formulation does this RP stand for
+    mapping::Union{Nothing,Dict{Int,Float64}}  # which periods in the full problem formulation does this rep_period stand for
     weight::Float64
     timesteps::TimestepsBlock
     resolution::Float64

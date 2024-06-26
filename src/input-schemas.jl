@@ -32,7 +32,7 @@ const schemas = (
 
         # Schema for the assets-profiles.csv file.
         profiles_reference = OrderedDict(
-            :asset => Symbol,               # Asset ID
+            :asset => Symbol,               # Asset name
             :profile_type => Symbol,        # Type of profile, used to determine dataframe with source profile
             :profile_name => Symbol,        # Name of profile, used to determine data inside the dataframe
         ),
@@ -91,7 +91,7 @@ const schemas = (
     timeframe = (
         # Schema for the profiles-timeframe-<type>.csv file.
         profiles_data = OrderedDict(
-            :profile_name => Symbol,        # Asset ID
+            :profile_name => Symbol,        # Profile name
             :period => Int,                 # Period
             :value => Float64,              # p.u. (per unit)
         ),
@@ -100,23 +100,23 @@ const schemas = (
     # Schema for the rep-periods-data.csv file.
     rep_periods = (
         data = OrderedDict(
-            :id => Int,                     # Representative period ID
+            :rep_period => Int,             # Representative period number
             :num_timesteps => Int,          # Numer of timesteps
             :resolution => Float64,         # Duration of each timestep (hours)
         ),
 
         # Schema for the rep-periods-mapping.csv file.
         mapping = OrderedDict(
-            :period => Int,                 # Period ID
-            :rep_period => Int,             # Representative period ID
+            :period => Int,                 # Period number
+            :rep_period => Int,             # Representative period number
             :weight => Float64,             # Hours
         ),
 
         # Schema for the profiles-rep-periods-<type>.csv file.
         profiles_data = OrderedDict(
-            :profile_name => Symbol,        # Asset ID
-            :rep_period => Int,             # Representative period ID
-            :timestep => Int,               # Timestep ID
+            :profile_name => Symbol,        # Profile name
+            :rep_period => Int,             # Representative period number
+            :timestep => Int,               # Timestep number
             :value => Float64,              # p.u. (per unit)
         ),
     ),

@@ -306,7 +306,7 @@ To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one 
 (u, v) = first(edge_labels(graph))
 rp = 1
 df = filter(
-    row -> row.rp == rp && row.from == u && row.to == v,
+    row -> row.rep_period == rp && row.from == u && row.to == v,
     energy_problem.dataframes[:flows],
     view = true,
 )
@@ -319,7 +319,7 @@ To create a vector with the all values of `storage_level_intra_rp` for a given `
 a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
 rp = 1
 df = filter(
-    row -> row.asset == a && row.rp == rp,
+    row -> row.asset == a && row.rep_period == rp,
     energy_problem.dataframes[:lowest_storage_level_intra_rp],
     view = true,
 )
@@ -356,7 +356,7 @@ They can be accessed like any other value from [GraphAssetData](@ref) or [GraphF
 (u, v) = first(edge_labels(graph))
 rp = 1
 df = filter(
-    row -> row.rp == rp && row.from == u && row.to == v,
+    row -> row.rep_period == rp && row.from == u && row.to == v,
     energy_problem.dataframes[:flows],
     view = true,
 )
@@ -369,7 +369,7 @@ To create a vector with all the values of `storage_level_intra_rp` for a given `
 a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
 rp = 1
 df = filter(
-    row -> row.asset == a && row.rp == rp,
+    row -> row.asset == a && row.rep_period == rp,
     energy_problem.dataframes[:lowest_storage_level_intra_rp],
     view = true,
 )
@@ -398,7 +398,7 @@ The code below will do the same as in the two previous examples:
 (u, v) = first(edge_labels(graph))
 rp = 1
 df = filter(
-    row -> row.rp == rp && row.from == u && row.to == v,
+    row -> row.rep_period == rp && row.from == u && row.to == v,
     energy_problem.dataframes[:flows],
     view = true,
 )
@@ -419,7 +419,7 @@ df.solution
 a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
 rp = 1
 df = filter(
-    row -> row.asset == a && row.rp == rp,
+    row -> row.asset == a && row.rep_period == rp,
     energy_problem.dataframes[:lowest_storage_level_intra_rp],
     view = true,
 )
@@ -438,7 +438,7 @@ using JuMP
 a = energy_problem.dataframes[:lowest].asset[end]
 rp = 1
 df = filter(
-    row -> row.asset == a && row.rp == rp,
+    row -> row.asset == a && row.rep_period == rp,
     energy_problem.dataframes[:lowest],
     view = true,
 )
@@ -469,7 +469,7 @@ Now we can filter this DataFrame. Note that the names in the stored dataframes a
 ```@example solution
 a = :Asgard_E_demand
 df = filter(
-    row -> row.asset == a && row.rp == rp,
+    row -> row.asset == a && row.rep_period == rp,
     df_consumers,
     view = true,
 )

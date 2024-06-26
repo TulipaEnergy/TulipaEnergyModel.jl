@@ -183,7 +183,7 @@ function create_internal_structures(table_tree::TableTree)
     end
 
     representative_periods = [
-        RepresentativePeriod(weights[row.id], row.num_timesteps, row.resolution) for
+        RepresentativePeriod(weights[row.rep_period], row.num_timesteps, row.resolution) for
         row in eachrow(table_tree.periods.rep_periods)
     ]
 
@@ -291,7 +291,7 @@ function create_internal_structures(table_tree::TableTree)
     end
 
     for asset_profile_row in eachrow(table_tree.profiles.assets[:rep_periods]) # row = asset, profile_type, profile_name
-        gp = DataFrames.groupby( # 3. group by RP
+        gp = DataFrames.groupby( # 3. group by rep_period
             filter(
                 :profile_name => ==(asset_profile_row.profile_name), # 2. Filter profile_name
                 table_tree.profiles.data[:rep_periods][asset_profile_row.profile_type]; # 1. Get the profile of given type
@@ -299,10 +299,10 @@ function create_internal_structures(table_tree::TableTree)
             ),
             :rep_period,
         )
-        for ((rp,), df) in pairs(gp) # Loop over filtered DFs by RP
+        for ((rep_period,), df) in pairs(gp) # Loop over filtered DFs by rep_period
             graph[asset_profile_row.asset].rep_periods_profiles[(
                 asset_profile_row.profile_type,
-                rp,
+                rep_period,
             )] = df.value
         end
     end
@@ -316,10 +316,10 @@ function create_internal_structures(table_tree::TableTree)
             ),
             :rep_period;
         )
-        for ((rp,), df) in pairs(gp)
+        for ((rep_period,), df) in pairs(gp)
             graph[flow_profile_row.from_asset, flow_profile_row.to_asset].rep_periods_profiles[(
                 flow_profile_row.profile_type,
-                rp,
+                rep_period,
             )] = df.value
         end
     end
@@ -448,8 +448,13 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     =#
 
     output_file = joinpath(output_folder, "flows.csv")
-    output_table =
-        DataFrames.select(dataframes[:flows], :from, :to, :rp, :timesteps_block => :timestep)
+    output_table = DataFrames.select(
+        dataframes[:flows],
+        :from,
+        :to,
+        :rep_period,
+        :timesteps_block => :timestep,
+    )
     output_table.value = solution.flow
     output_table = DataFrames.flatten(
         DataFrames.transform(
@@ -470,7 +475,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     output_table = DataFrames.select(
         dataframes[:lowest_storage_level_intra_rp],
         :asset,
-        :rp,
+        :rep_period,
         :timesteps_block => :timestep,
     )
     output_table.value = solution.storage_level_intra_rp
@@ -667,22 +672,22 @@ input `partitions`.
 `partitions` must be a dictionary indexed by the representative periods,
 possibly empty.
 
-`timesteps_per_rp` must be a dictionary indexed by `rp` and its values are the
-timesteps of that `rp`.
+`timesteps_per_rp` must be a dictionary indexed by `rep_period` and its values are the
+timesteps of that `rep_period`.
 
 To obtain the partitions, the columns `specification` and `partition` from `df`
 are passed to the function [`_parse_rp_partition`](@ref).
 """
 function compute_assets_partitions!(partitions, df, a, representative_periods)
-    for (rp_id, rp) in enumerate(representative_periods)
-        # Look for index in df that matches this asset and rp
-        j = findfirst((df.asset .== a) .& (df.rep_period .== rp_id))
-        partitions[rp_id] = if j === nothing
-            N = length(rp.timesteps)
+    for (rep_period_index, rep_period) in enumerate(representative_periods)
+        # Look for index in df that matches this asset and rep_period
+        j = findfirst((df.asset .== a) .& (df.rep_period .== rep_period_index))
+        partitions[rep_period_index] = if j === nothing
+            N = length(rep_period.timesteps)
             # If there is no time block specification, use default of 1
             [k:k for k in 1:N]
         else
-            _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp.timesteps)
+            _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rep_period.timesteps)
         end
     end
 end
@@ -697,22 +702,24 @@ input `partitions`.
 `partitions` must be a dictionary indexed by the representative periods,
 possibly empty.
 
-`timesteps_per_rp` must be a dictionary indexed by `rp` and its values are the
-timesteps of that `rp`.
+`timesteps_per_rp` must be a dictionary indexed by `rep_period` and its values are the
+timesteps of that `rep_period`.
 
 To obtain the partitions, the columns `specification` and `partition` from `df`
 are passed to the function [`_parse_rp_partition`](@ref).
 """
 function compute_flows_partitions!(partitions, df, u, v, representative_periods)
-    for (rp_id, rp) in enumerate(representative_periods)
-        # Look for index in df that matches this asset and rp
-        j = findfirst((df.from_asset .== u) .& (df.to_asset .== v) .& (df.rep_period .== rp_id))
-        partitions[rp_id] = if j === nothing
-            N = length(rp.timesteps)
+    for (rep_period_index, rep_period) in enumerate(representative_periods)
+        # Look for index in df that matches this asset and rep_period
+        j = findfirst(
+            (df.from_asset .== u) .& (df.to_asset .== v) .& (df.rep_period .== rep_period_index),
+        )
+        partitions[rep_period_index] = if j === nothing
+            N = length(rep_period.timesteps)
             # If there is no time block specification, use default of 1
             [k:k for k in 1:N]
         else
-            _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rp.timesteps)
+            _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rep_period.timesteps)
         end
     end
 end

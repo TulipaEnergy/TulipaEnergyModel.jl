@@ -47,7 +47,7 @@ function solve_model!(
     end
 
     for row in eachrow(energy_problem.dataframes[:lowest_storage_level_intra_rp])
-        a, rp, timesteps_block, value = row.asset, row.rp, row.timesteps_block, row.solution
+        a, rp, timesteps_block, value = row.asset, row.rep_period, row.timesteps_block, row.solution
         graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
     end
 
@@ -79,7 +79,7 @@ function solve_model!(
 
     for row in eachrow(energy_problem.dataframes[:flows])
         u, v, rp, timesteps_block, value =
-            row.from, row.to, row.rp, row.timesteps_block, row.solution
+            row.from, row.to, row.rep_period, row.timesteps_block, row.solution
         graph[u, v].flow[(rp, timesteps_block)] = value
     end
 
