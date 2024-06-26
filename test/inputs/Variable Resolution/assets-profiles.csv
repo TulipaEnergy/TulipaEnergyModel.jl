@@ -1,4 +1,4 @@
-,,type,name
+,type,name
 asset,profile_type,profile_name
-wind,availability,wind
-demand,demand,demand
+wind,availability,availability-wind
+demand,demand,demand-demand

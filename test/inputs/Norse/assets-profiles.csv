@@ -1,9 +1,9 @@
 ,type,name
 asset,profile_type,profile_name
-Asgard_Solar,availability,Asgard_Solar
-Asgard_E_demand,demand,Asgard_E_demand
-Midgard_Wind,availability,Midgard_Wind
-Midgard_Hydro,inflows,Midgard_Hydro
-Midgard_E_demand,demand,Midgard_E_demand
-Valhalla_H2_demand,demand,Valhalla_H2_demand
-Valhalla_Heat_demand,demand,Valhalla_Heat_demand
+Asgard_Solar,availability,availability-Asgard_Solar
+Asgard_E_demand,demand,demand-Asgard_E_demand
+Midgard_Wind,availability,availability-Midgard_Wind
+Midgard_Hydro,inflows,inflows-Midgard_Hydro
+Midgard_E_demand,demand,demand-Midgard_E_demand
+Valhalla_H2_demand,demand,demand-Valhalla_H2_demand
+Valhalla_Heat_demand,demand,demand-Valhalla_Heat_demand

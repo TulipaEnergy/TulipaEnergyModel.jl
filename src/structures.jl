@@ -11,7 +11,7 @@ const TableNodeStatic = @NamedTuple{assets::DataFrame, flows::DataFrame}
 const TableNodeProfiles = @NamedTuple{
     assets::Dict{PeriodType,DataFrame},
     flows::DataFrame,
-    data::Dict{PeriodType,Dict{Symbol,DataFrame}},
+    data::Dict{PeriodType,DataFrame},
 }
 const TableNodePartitions = @NamedTuple{assets::Dict{PeriodType,DataFrame}, flows::DataFrame}
 const TableNodePeriods = @NamedTuple{rep_periods::DataFrame, mapping::DataFrame}

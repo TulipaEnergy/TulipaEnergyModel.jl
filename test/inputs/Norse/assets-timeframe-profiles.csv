@@ -1,5 +1,5 @@
 ,type,name
 asset,profile_type,profile_name
-Midgard_Hydro,max_storage_level,Midgard_Hydro
-Midgard_Hydro,min_storage_level,Midgard_Hydro
-Midgard_Wind,max_energy,Midgard_Wind
+Midgard_Hydro,max_storage_level,max_storage_level-Midgard_Hydro
+Midgard_Hydro,min_storage_level,min_storage_level-Midgard_Hydro
+Midgard_Wind,max_energy,max_energy-Midgard_Wind
