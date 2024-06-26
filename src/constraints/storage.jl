@@ -38,11 +38,11 @@ function add_storage_constraints!(
     ## INTRA-TEMPORAL CONSTRAINTS (within a representative period)
 
     # - Balance constraint (using the lowest temporal resolution)
-    for ((a, rep_period), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
+    for ((a, rp), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
         # This assumes an ordering of the time blocks, that is guaranteed inside
         # construct_dataframes
         # The storage_inflows have been moved here
-        model[Symbol("storage_intra_rp_balance_$(a)_$(rep_period)")] = [
+        model[Symbol("storage_intra_rp_balance_$(a)_$(rp)")] = [
             @constraint(
                 model,
                 storage_level_intra_rp[row.index] ==
@@ -62,13 +62,13 @@ function add_storage_constraints!(
                 profile_aggregation(
                     sum,
                     graph[a].rep_periods_profiles,
-                    (:inflows, rep_period),
+                    (:inflows, rp),
                     row.timesteps_block,
                     0.0,
                 ) * graph[a].storage_inflows +
                 incoming_flow_lowest_storage_resolution_intra_rp[row.index] -
                 outgoing_flow_lowest_storage_resolution_intra_rp[row.index],
-                base_name = "storage_intra_rp_balance[$a,$rep_period,$(row.timesteps_block)]"
+                base_name = "storage_intra_rp_balance[$a,$rp,$(row.timesteps_block)]"
             ) for (k, row) in enumerate(eachrow(sub_df))
         ]
     end
