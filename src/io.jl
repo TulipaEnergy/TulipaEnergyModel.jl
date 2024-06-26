@@ -74,10 +74,10 @@ The following tables are expected to exist in the DB.
   _ `assets_timeframe_partitions`: Following the schema `schemas.assets.timeframe_partition`.
   _ `assets_data`: Following the schema `schemas.assets.data`.
   _ `assets_timeframe_profiles`: Following the schema `schemas.assets.profiles_reference`.
-  _ `assets_rep_periods_profiles`: Following the schema `schemas.assets.profiles_reference`.
+  _ `assets_profiles`: Following the schema `schemas.assets.profiles_reference`.
   _ `assets_rep_periods_partitions`: Following the schema `schemas.assets.rep_periods_partition`.
   _ `flows_data`: Following the schema `schemas.flows.data`.
-  _ `flows_rep_periods_profiles`: Following the schema `schemas.flows.profiles_reference`.
+  _ `flows_profiles`: Following the schema `schemas.flows.profiles_reference`.
   _ `flows_rep_periods_partitions`: Following the schema `schemas.flows.rep_periods_partition`.
   _ `profiles_timeframe_<type>`: Following the schema `schemas.timeframe.profiles_data`.
   _ `profiles_rep_periods_<type>`: Following the schema `schemas.rep_periods.profiles_data`.
@@ -105,9 +105,10 @@ function create_input_dataframes(connection::DuckDB.DB; strict = false)
     df_rp_mapping  = read_table("rep_periods_mapping")
 
     dfs_assets_profiles = Dict(
-        period_type => read_table("assets_$(period_type)_profiles") for period_type in PERIOD_TYPES
+        :rep_periods => read_table("assets_profiles"),
+        :timeframe => read_table("assets_timeframe_profiles"),
     )
-    df_flows_profiles = read_table("flows_rep_periods_profiles")
+    df_flows_profiles = read_table("flows_profiles")
     dfs_assets_partitions = Dict(
         period_type => read_table("assets_$(period_type)_partitions") for
         period_type in PERIOD_TYPES
