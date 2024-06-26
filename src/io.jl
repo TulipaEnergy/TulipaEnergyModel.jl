@@ -105,11 +105,8 @@ function create_input_dataframes(connection::DuckDB.DB; strict = false)
     df_rp_mapping  = read_table("rep_periods_mapping")
 
     dfs_assets_profiles = Dict(
-        period_type => read_table(if period_type == :rep_periods
-            "assets_profiles"
-        else
-            "assets_$(period_type)_profiles"
-        end) for period_type in PERIOD_TYPES
+        :rep_periods => read_table("assets_profiles"),
+        :timeframe => read_table("assets_timeframe_profiles"),
     )
     df_flows_profiles = read_table("flows_profiles")
     dfs_assets_partitions = Dict(
