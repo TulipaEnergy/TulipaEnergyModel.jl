@@ -1,5 +1,5 @@
 ,type,name
 asset,profile_type,profile_name
-wind,availability,wind
-solar,availability,solar
-demand,demand,demand
+wind,availability,availability-wind
+solar,availability,availability-solar
+demand,demand,demand-demand

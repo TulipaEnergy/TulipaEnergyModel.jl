@@ -116,16 +116,8 @@ function create_input_dataframes(connection::DuckDB.DB; strict = false)
     df_flows_partitions = read_table("flows_rep_periods_partitions")
 
     tables_list = DBInterface.execute(connection, "SHOW TABLES")
-    dfs_profiles = Dict(
-        period_type => Dict(
-            begin
-                regex = "profiles_$(period_type)_(.*)"
-                key = Symbol(match(Regex(regex), row.name)[1])
-                value = read_table(row.name)
-                key => value
-            end for row in tables_list if startswith("profiles_$period_type")(row.name)
-        ) for period_type in PERIOD_TYPES
-    )
+    dfs_profiles =
+        Dict(period_type => read_table("profiles_$period_type") for period_type in PERIOD_TYPES)
 
     # Error if partition data is missing assets (if strict)
     if strict
@@ -292,10 +284,10 @@ function create_internal_structures(table_tree::TableTree)
     end
 
     for asset_profile_row in eachrow(table_tree.profiles.assets[:rep_periods]) # row = asset, profile_type, profile_name
-        gp = DataFrames.groupby( # 3. group by rep_period
-            filter(
-                :profile_name => ==(asset_profile_row.profile_name), # 2. Filter profile_name
-                table_tree.profiles.data[:rep_periods][asset_profile_row.profile_type]; # 1. Get the profile of given type
+        gp = DataFrames.groupby( # 2. group by rep_period
+            filter( # 1. Filter on profile_name
+                :profile_name => ==(asset_profile_row.profile_name),
+                table_tree.profiles.data[:rep_periods];
                 view = true,
             ),
             :rep_period,
@@ -312,7 +304,7 @@ function create_internal_structures(table_tree::TableTree)
         gp = DataFrames.groupby(
             filter(
                 :profile_name => ==(flow_profile_row.profile_name),
-                table_tree.profiles.data[:rep_periods][flow_profile_row.profile_type];
+                table_tree.profiles.data[:rep_periods];
                 view = true,
             ),
             :rep_period;
@@ -327,8 +319,8 @@ function create_internal_structures(table_tree::TableTree)
 
     for asset_profile_row in eachrow(table_tree.profiles.assets[:timeframe]) # row = asset, profile_type, profile_name
         df = filter(
-            :profile_name => ==(asset_profile_row.profile_name), # 2. Filter profile_name
-            table_tree.profiles.data[:timeframe][asset_profile_row.profile_type]; # 1. Get the profile of given type
+            :profile_name => ==(asset_profile_row.profile_name),
+            table_tree.profiles.data[:timeframe];
             view = true,
         )
         graph[asset_profile_row.asset].timeframe_profiles[asset_profile_row.profile_type] = df.value

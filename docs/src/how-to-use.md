@@ -82,9 +82,13 @@ These files contain information about assets and their associated profiles. Each
 
 This file contains information about flows and their representative period profiles for intra-temporal constraints. Each flow is defined as a pair of assets.
 
-#### `profiles-timeframe-<type>.csv` and `profiles-rep-periods-<type>.csv`
+#### `profiles-timeframe.csv` and `profiles-rep-periods.csv`
 
-One of these files must exist for each `type` defined in either [`assets-profiles`](@ref assets-profiles-definition) or [`flows-profiles`](@ref flows-profiles-definition). For example, if the file [`assets-profiles`](@ref assets-profiles-definition) defines an availability profile, the file `profiles-rep-periods-availability.csv` includes the profile data. The files store the profile data as indexed by a profile name.
+Define all the profiles for the `rep-periods` and `timeframe`.
+The `profile_name` is a unique identifier, the `period` and `value` define the profile.
+For the `rep-periods` case, the `rep_period` field informs the representative period.
+
+The profiles are linked to assets and flows in the files [`assets-profiles`](@ref assets-profiles-definition), [`assets-timeframe-profiles`](@ref assets-profiles-definition), and [`flows-profiles`](@ref flows-profiles-definition).
 
 #### [`assets-rep-periods-partitions.csv`](@id assets-rep-periods-partitions-definition)
 
