@@ -78,13 +78,13 @@ The meaning of `Missing` data depends on the parameter, for instance:
 
 These files contain information about assets and their associated profiles. Each row lists an asset, the type of profile (e.g., availability, demand, maximum or minimum storage level), and the profile's name. The timeframe profiles are used in the [inter-temporal constraints](@ref concepts-summary), whereas the representative periods profiles are used in the [intra-temporal constraints](@ref concepts-summary).
 
-#### [`flows-rep-periods-profiles.csv`](@id flows-profiles-definition)
+#### [`flows-profiles.csv`](@id flows-profiles-definition)
 
 This file contains information about flows and their representative period profiles for intra-temporal constraints. Each flow is defined as a pair of assets.
 
 #### `profiles-timeframe-<type>.csv` and `profiles-rep-periods-<type>.csv`
 
-One of these files must exist for each `type` defined in either [`assets-profiles`](@ref assets-profiles-definition) or [`flows-rep-periods-profiles`](@ref flows-profiles-definition). For example, if the file [`assets-profiles`](@ref assets-profiles-definition) defines an availability profile, the file `profiles-rep-periods-availability.csv` includes the profile data. The files store the profile data as indexed by a profile name.
+One of these files must exist for each `type` defined in either [`assets-profiles`](@ref assets-profiles-definition) or [`flows-profiles`](@ref flows-profiles-definition). For example, if the file [`assets-profiles`](@ref assets-profiles-definition) defines an availability profile, the file `profiles-rep-periods-availability.csv` includes the profile data. The files store the profile data as indexed by a profile name.
 
 #### [`assets-rep-periods-partitions.csv`](@id assets-rep-periods-partitions-definition)
 
