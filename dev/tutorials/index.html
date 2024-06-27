@@ -3,21 +3,21 @@
 
 # input_dir should be the path to Tiny as a string (something like &quot;test/inputs/Tiny&quot;)
 energy_problem = run_scenario(input_dir)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
-  - Time for reading the data (in seconds): 0.140853669
+  - Time for reading the data (in seconds): 0.131487175
   - Model created!
-    - Time for creating the model (in seconds): 0.340359852
+    - Time for creating the model (in seconds): 0.294813078
     - Number of variables: 364
     - Number of constraints for variable bounds: 364
     - Number of structural constraints: 432
   - Model solved! 
-    - Time for solving the model (in seconds): 0.698111698
+    - Time for solving the model (in seconds): 0.685253468
     - Termination status: OPTIMAL
     - Objective value: 269238.4382375954
 </code></pre><p>The <code>energy_problem</code> variable is of type <code>EnergyProblem</code>. For more details, see the <a href="../reference/#TulipaEnergyModel.EnergyProblem">documentation for that type</a> or the section <a href="../how-to-use/#Structures">Structures</a>.</p><p>That&#39;s all it takes to run a scenario! To learn about the data required to run your own scenario, see the <a href="../how-to-use/#input">Input section</a> of <a href="../how-to-use/#how-to-use">How to Use</a>.</p><h3 id="Manually-running-each-step"><a class="docs-heading-anchor" href="#Manually-running-each-step">Manually running each step</a><a id="Manually-running-each-step-1"></a><a class="docs-heading-anchor-permalink" href="#Manually-running-each-step" title="Permalink"></a></h3><p>If we need more control, we can create the energy problem first, then the optimization model inside it, and finally ask for it to be solved.</p><pre><code class="language-julia hljs">using TulipaEnergyModel
 
 # input_dir should be the path to Tiny
 energy_problem = create_energy_problem_from_csv_folder(input_dir)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
-  - Time for reading the data (in seconds): 0.045069471
+  - Time for reading the data (in seconds): 0.044096289
   - Model not created!
   - Model not solved!
 </code></pre><p>The energy problem does not have a model yet:</p><pre><code class="language-julia hljs">energy_problem.model === nothing</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre><p>To create the internal model, we call the function <a href="../reference/#TulipaEnergyModel.create_model!-Tuple{Any}"><code>create_model!</code></a>.</p><pre><code class="language-julia hljs">create_model!(energy_problem)
@@ -176,21 +176,21 @@ Solver name: No optimizer attached.
 Names registered in the model: assets_investment, assets_investment_energy, assets_profile_times_capacity_in, assets_profile_times_capacity_in_with_binary_part1, assets_profile_times_capacity_in_with_binary_part2, assets_profile_times_capacity_out, assets_profile_times_capacity_out_with_binary_part1, assets_profile_times_capacity_out_with_binary_part2, consumer_balance, conversion_balance, energy_limit, flow, flows_investment, hub_balance, incoming_flow_highest_in_out_resolution, incoming_flow_highest_in_resolution, incoming_flow_lowest_resolution, incoming_flow_lowest_storage_resolution_intra_rp, incoming_flow_storage_inter_rp_balance, is_charging, max_energy_inter_rp, max_input_flows_limit, max_input_flows_limit_with_binary_part1, max_input_flows_limit_with_binary_part2, max_output_flows_limit, max_output_flows_limit_with_binary_part1, max_output_flows_limit_with_binary_part2, max_storage_level_inter_rp_limit, max_storage_level_intra_rp_limit, max_transport_flow_limit, min_energy_inter_rp, min_storage_level_inter_rp_limit, min_storage_level_intra_rp_limit, min_transport_flow_limit, outgoing_flow_highest_in_out_resolution, outgoing_flow_highest_out_resolution, outgoing_flow_lowest_resolution, outgoing_flow_lowest_storage_resolution_intra_rp, outgoing_flow_storage_inter_rp_balance, storage_level_inter_rp, storage_level_intra_rp</code></pre><p>Finally, we can compute the solution.</p><pre><code class="language-julia hljs">solution = solve_model(model)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">TulipaEnergyModel.Solution(Dict(:ocgt =&gt; 1.1368683772161603e-15, :wind =&gt; 35.0, :ccgt =&gt; 2.0, :solar =&gt; 44.99999994237288), Dict{Symbol, Float64}(), Dict{Tuple{Symbol, Symbol}, Float64}(), Float64[], Float64[], Float64[], Float64[], [0.0, 1.1368683772161603e-13, 1.1368683772161603e-12, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  …  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 269238.4382388837, Dict(:hub_balance =&gt; [], :consumer_balance =&gt; [3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004  …  9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125]))</code></pre><p>or, if we want to store the <code>flow</code>, <code>storage_level_intra_rp</code>, and <code>storage_level_inter_rp</code> optimal value in the dataframes:</p><pre><code class="language-julia hljs">solution = solve_model!(dataframes, model)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">TulipaEnergyModel.Solution(Dict(:ocgt =&gt; 1.1368683772161603e-15, :wind =&gt; 35.0, :ccgt =&gt; 2.0, :solar =&gt; 44.99999994237288), Dict{Symbol, Float64}(), Dict{Tuple{Symbol, Symbol}, Float64}(), Float64[], Float64[], Float64[], Float64[], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  …  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 269238.4382375954, Dict(:hub_balance =&gt; [], :consumer_balance =&gt; [3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004  …  9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125]))</code></pre><p>This <code>solution</code> structure is the same as the one returned when using an <code>EnergyProblem</code>.</p><h3 id="Change-optimizer-and-specify-parameters"><a class="docs-heading-anchor" href="#Change-optimizer-and-specify-parameters">Change optimizer and specify parameters</a><a id="Change-optimizer-and-specify-parameters-1"></a><a class="docs-heading-anchor-permalink" href="#Change-optimizer-and-specify-parameters" title="Permalink"></a></h3><p>By default, the model is solved using the <a href="https://github.com/jump-dev/HiGHS.jl">HiGHS</a> optimizer (or solver). To change this, we can give the functions <code>run_scenario</code>, <code>solve_model</code>, or <code>solve_model!</code> a different optimizer.</p><p>For instance, we run the <a href="https://github.com/jump-dev/GLPK.jl">GLPK</a> optimizer below:</p><pre><code class="language-julia hljs">using TulipaEnergyModel, GLPK
 
 energy_problem = run_scenario(input_dir, optimizer = GLPK.Optimizer)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
-  - Time for reading the data (in seconds): 0.045520327
+  - Time for reading the data (in seconds): 0.044852063
   - Model created!
-    - Time for creating the model (in seconds): 0.00622219
+    - Time for creating the model (in seconds): 0.006078774
     - Number of variables: 364
     - Number of constraints for variable bounds: 364
     - Number of structural constraints: 432
   - Model solved! 
-    - Time for solving the model (in seconds): 1.786662702
+    - Time for solving the model (in seconds): 1.613692783
     - Termination status: OPTIMAL
     - Objective value: 269238.4382417078
 </code></pre><p>or</p><pre><code class="language-julia hljs">using GLPK
 
-solution = solve_model!(energy_problem, GLPK.Optimizer)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">TulipaEnergyModel.Solution(Dict(:ocgt =&gt; 1.1368683772161603e-15, :wind =&gt; 35.0, :ccgt =&gt; 2.0, :solar =&gt; 44.99999994237288), Dict{Symbol, Float64}(), Dict{Tuple{Symbol, Symbol}, Float64}(), Float64[], Float64[], Float64[], Float64[], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  …  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 269238.4382375952, Dict(:hub_balance =&gt; [], :consumer_balance =&gt; [3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004  …  9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125]))</code></pre><p>or</p><pre><code class="language-julia hljs">using GLPK
+solution = solve_model!(energy_problem, GLPK.Optimizer)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">TulipaEnergyModel.Solution(Dict(:ocgt =&gt; 1.1368683772161603e-15, :wind =&gt; 35.0, :ccgt =&gt; 2.0, :solar =&gt; 44.99999994237288), Dict{Symbol, Float64}(), Dict{Tuple{Symbol, Symbol}, Float64}(), Float64[], Float64[], Float64[], Float64[], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  …  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 269238.4382375954, Dict(:hub_balance =&gt; [], :consumer_balance =&gt; [3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004  …  9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125]))</code></pre><p>or</p><pre><code class="language-julia hljs">using GLPK
 
-solution = solve_model(model, GLPK.Optimizer)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">TulipaEnergyModel.Solution(Dict(:ocgt =&gt; 1.1368683772161603e-15, :wind =&gt; 35.0, :ccgt =&gt; 2.0, :solar =&gt; 44.99999994237288), Dict{Symbol, Float64}(), Dict{Tuple{Symbol, Symbol}, Float64}(), Float64[], Float64[], Float64[], Float64[], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  …  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 269238.4382375952, Dict(:hub_balance =&gt; [], :consumer_balance =&gt; [3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004  …  9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125]))</code></pre><p>Notice that, in any of these cases, we need to explicitly add the GLPK package ourselves and add <code>using GLPK</code> before using <code>GLPK.Optimizer</code>.</p><p>In any of these cases, default parameters for the <code>GLPK</code> optimizer are used, which you can query using <a href="../reference/#TulipaEnergyModel.default_parameters-Tuple{Any}"><code>default_parameters</code></a>. You can pass a dictionary using the keyword argument <code>parameters</code> to change the defaults. For instance, in the example below, we change the maximum allowed runtime for GLPK to be 1 seconds, which will most likely cause it to fail to converge in time.</p><pre><code class="language-julia hljs">using TulipaEnergyModel, GLPK
+solution = solve_model(model, GLPK.Optimizer)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">TulipaEnergyModel.Solution(Dict(:ocgt =&gt; 1.1368683772161603e-15, :wind =&gt; 35.0, :ccgt =&gt; 2.0, :solar =&gt; 44.99999994237288), Dict{Symbol, Float64}(), Dict{Tuple{Symbol, Symbol}, Float64}(), Float64[], Float64[], Float64[], Float64[], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0  …  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 269238.4382375954, Dict(:hub_balance =&gt; [], :consumer_balance =&gt; [3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004, 3.6500000000000004  …  9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125, 9.125]))</code></pre><p>Notice that, in any of these cases, we need to explicitly add the GLPK package ourselves and add <code>using GLPK</code> before using <code>GLPK.Optimizer</code>.</p><p>In any of these cases, default parameters for the <code>GLPK</code> optimizer are used, which you can query using <a href="../reference/#TulipaEnergyModel.default_parameters-Tuple{Any}"><code>default_parameters</code></a>. You can pass a dictionary using the keyword argument <code>parameters</code> to change the defaults. For instance, in the example below, we change the maximum allowed runtime for GLPK to be 1 seconds, which will most likely cause it to fail to converge in time.</p><pre><code class="language-julia hljs">using TulipaEnergyModel, GLPK
 
 parameters = Dict(&quot;tm_lim&quot; =&gt; 1)
 energy_problem = run_scenario(input_dir, optimizer = GLPK.Optimizer, parameters = parameters)
@@ -230,20 +230,20 @@ solution = solve_model!(energy_problem)</code></pre><p>To create a traditional a
 graph = energy_problem.graph
 [solution.assets_investment[a] for a in labels(graph) if graph[a].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">13-element Vector{Float64}:
      0.0
-    10.0
+    11.0
     83.0
- 16287.0
+ 16314.0
      1.0
-     0.0012640065866293161
+     0.0
     -0.0
-   104.0
+   103.0
    110.0
      0.0
    269.0
     33.0
      0.0</code></pre><p>To create a traditional array in the order given by the investable flows, one can run</p><pre><code class="language-julia hljs">[solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Float64}:
   6.0
- 18.037030544697423
+ 18.020615145685426
   7.0</code></pre><p>The <code>solution.flow</code>, <code>solution.storage_level_intra_rp</code>, and <code>solution.storage_level_inter_rp</code> values are linearized according to the dataframes in the dictionary <code>energy_problem.dataframes</code> with keys <code>:flows</code>, <code>:lowest_storage_level_intra_rp</code>, and <code>:storage_level_inter_rp</code>, respectively. You need to query the data from these dataframes and then use the column <code>index</code> to select the appropriate value.</p><p>To create a vector with all values of <code>flow</code> for a given <code>(u, v)</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">(u, v) = first(edge_labels(graph))
 rp = 1
 df = filter(
@@ -268,7 +268,7 @@ df = filter(
    0.0
    0.0
    0.0
- 451.99890253745986
+ 467.5935315988463
    0.0
    0.0
    0.0</code></pre><p>To create a vector with the all values of <code>storage_level_intra_rp</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
@@ -296,8 +296,8 @@ df = filter(
   0.0
   0.0
   0.0
-  0.0
-  0.0
+ -0.0
+ -0.0
  -0.0</code></pre><p>To create a vector with the all values of <code>storage_level_inter_rp</code> for a given <code>a</code>, one can run</p><pre><code class="language-julia hljs">a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
 df = filter(
     row -&gt; row.asset == a,
@@ -319,27 +319,27 @@ df = filter(
  28300.000000000004
  27500.000000000004
  28625.000000000007
- 29750.000000000015
- 30875.000000000022
- 32000.00000000003
+ 29750.00000000001
+ 30875.00000000002
+ 32000.000000000025
  33125.00000000004
  34250.000000000044
  35535.71428571434</code></pre><h3 id="The-solution-inside-the-graph"><a class="docs-heading-anchor" href="#The-solution-inside-the-graph">The solution inside the graph</a><a id="The-solution-inside-the-graph-1"></a><a class="docs-heading-anchor-permalink" href="#The-solution-inside-the-graph" title="Permalink"></a></h3><p>In addition to the solution object, the solution is also stored by the individual assets and flows when <a href="../reference/#TulipaEnergyModel.solve_model!"><code>solve_model!</code></a> is called (i.e., when using an <a href="../how-to-use/#EnergyProblem">EnergyProblem</a> object).</p><p>They can be accessed like any other value from <a href="../how-to-use/#GraphAssetData">GraphAssetData</a> or <a href="../how-to-use/#GraphFlowData">GraphFlowData</a>, which means that we recreate the values from the previous section in a new way:</p><pre><code class="language-julia hljs">[energy_problem.graph[a].investment for a in labels(graph) if graph[a].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">13-element Vector{Float64}:
      0.0
-    10.0
+    11.0
     83.0
- 16287.0
+ 16314.0
      1.0
-     0.0012640065866293161
      0.0
-   104.0
+     0.0
+   103.0
    110.0
      0.0
    269.0
     33.0
      0.0</code></pre><pre><code class="language-julia hljs">[energy_problem.graph[u, v].investment for (u, v) in edge_labels(graph) if graph[u, v].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Float64}:
   6.0
- 18.037030544697423
+ 18.020615145685426
   7.0</code></pre><pre><code class="language-julia hljs">(u, v) = first(edge_labels(graph))
 rp = 1
 df = filter(
@@ -364,7 +364,7 @@ df = filter(
    0.0
    0.0
    0.0
- 451.99890253745986
+ 467.5935315988463
    0.0
    0.0
    0.0</code></pre><p>To create a vector with all the values of <code>storage_level_intra_rp</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
@@ -392,8 +392,8 @@ df = filter(
   0.0
   0.0
   0.0
-  0.0
-  0.0
+ -0.0
+ -0.0
  -0.0</code></pre><p>To create a vector with all the values of <code>storage_level_inter_rp</code> for a given <code>a</code>, one can run</p><pre><code class="language-julia hljs">a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
 df = filter(
     row -&gt; row.asset == a,
@@ -415,9 +415,9 @@ df = filter(
  28300.000000000004
  27500.000000000004
  28625.000000000007
- 29750.000000000015
- 30875.000000000022
- 32000.00000000003
+ 29750.00000000001
+ 30875.00000000002
+ 32000.000000000025
  33125.00000000004
  34250.000000000044
  35535.71428571434</code></pre><h3 id="The-solution-inside-the-dataframes-object"><a class="docs-heading-anchor" href="#The-solution-inside-the-dataframes-object">The solution inside the dataframes object</a><a id="The-solution-inside-the-dataframes-object-1"></a><a class="docs-heading-anchor-permalink" href="#The-solution-inside-the-dataframes-object" title="Permalink"></a></h3><p>In addition to being stored in the <code>solution</code> object, and in the <code>graph</code> object, the solution for the <code>flow</code>, <code>storage_level_intra_rp</code>, and <code>storage_level_inter_rp</code> is also stored inside the corresponding DataFrame objects if <code>solve_model!</code> is called.</p><p>The code below will do the same as in the two previous examples:</p><pre><code class="language-julia hljs">(u, v) = first(edge_labels(graph))
@@ -444,7 +444,7 @@ df.solution</code></pre><pre class="documenter-example-output"><code class="nohi
    0.0
    0.0
    0.0
- 451.99890253745986
+ 467.5935315988463
    0.0
    0.0
    0.0</code></pre><pre><code class="language-julia hljs">a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
@@ -468,9 +468,9 @@ df.solution</code></pre><pre class="documenter-example-output"><code class="nohi
  28300.000000000004
  27500.000000000004
  28625.000000000007
- 29750.000000000015
- 30875.000000000022
- 32000.00000000003
+ 29750.00000000001
+ 30875.00000000002
+ 32000.000000000025
  33125.00000000004
  34250.000000000044
  35535.71428571434</code></pre><pre><code class="language-julia hljs">a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
@@ -498,8 +498,8 @@ df.solution</code></pre><pre class="documenter-example-output"><code class="nohi
   0.0
   0.0
   0.0
-  0.0
-  0.0
+ -0.0
+ -0.0
  -0.0</code></pre><h3 id="Values-of-constraints-and-expressions"><a class="docs-heading-anchor" href="#Values-of-constraints-and-expressions">Values of constraints and expressions</a><a id="Values-of-constraints-and-expressions-1"></a><a class="docs-heading-anchor-permalink" href="#Values-of-constraints-and-expressions" title="Permalink"></a></h3><p>By accessing the model directly, we can query the values of constraints and expressions. We need to know the name of the constraint and how it is indexed, and for that, you will need to check the model.</p><p>For instance, we can get all incoming flows in the lowest resolution for a given asset for a given representative period with the following:</p><pre><code class="language-julia hljs">using JuMP
 a = energy_problem.dataframes[:lowest].asset[end]
 rp = 1
@@ -559,4 +559,4 @@ value.(energy_problem.model[:consumer_balance][df.index])</code></pre><pre class
  54777.52475361511
  52128.801264625705
  46907.046645223265</code></pre><p>Here <code>value.</code> (i.e., broadcasting) was used instead of the vector comprehension from previous examples just to show that it also works.</p><p>The value of the constraint is obtained by looking only at the part with variables. So a constraint like <code>2x + 3y - 1 &lt;= 4</code> would return the value of <code>2x + 3y</code>.</p><h3 id="Writing-the-output-to-CSV"><a class="docs-heading-anchor" href="#Writing-the-output-to-CSV">Writing the output to CSV</a><a id="Writing-the-output-to-CSV-1"></a><a class="docs-heading-anchor-permalink" href="#Writing-the-output-to-CSV" title="Permalink"></a></h3><p>To save the solution to CSV files, you can use <a href="../reference/#TulipaEnergyModel.save_solution_to_file-NTuple{4, Any}"><code>save_solution_to_file</code></a>:</p><pre><code class="language-julia hljs">mkdir(&quot;outputs&quot;)
-save_solution_to_file(&quot;outputs&quot;, energy_problem)</code></pre><h3 id="Plotting"><a class="docs-heading-anchor" href="#Plotting">Plotting</a><a id="Plotting-1"></a><a class="docs-heading-anchor-permalink" href="#Plotting" title="Permalink"></a></h3><p>In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you like.</p><p>If you would like more custom plots, check out <a href="https://github.com/TulipaEnergy/TulipaPlots.jl">TulipaPlots.jl</a>, under development, which provides tailor-made plots for <em>TulipaEnergyModel.jl</em>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../how-to-use/">« How to Use</a><a class="docs-footer-nextpage" href="../concepts/">Concepts »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Wednesday 26 June 2024 19:00">Wednesday 26 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+save_solution_to_file(&quot;outputs&quot;, energy_problem)</code></pre><h3 id="Plotting"><a class="docs-heading-anchor" href="#Plotting">Plotting</a><a id="Plotting-1"></a><a class="docs-heading-anchor-permalink" href="#Plotting" title="Permalink"></a></h3><p>In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you like.</p><p>If you would like more custom plots, check out <a href="https://github.com/TulipaEnergy/TulipaPlots.jl">TulipaPlots.jl</a>, under development, which provides tailor-made plots for <em>TulipaEnergyModel.jl</em>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../how-to-use/">« How to Use</a><a class="docs-footer-nextpage" href="../concepts/">Concepts »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Thursday 27 June 2024 06:39">Thursday 27 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
