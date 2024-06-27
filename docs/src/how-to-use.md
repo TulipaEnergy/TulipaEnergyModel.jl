@@ -74,9 +74,10 @@ The meaning of `Missing` data depends on the parameter, for instance:
 
 -   `investment_limit`: There is no investment limit.
 
-#### [`assets-timeframe-profiles.csv` and `assets-profiles.csv`] (@id assets-profiles-definition)
+#### [`assets-profiles.csv`] (@id assets-profiles-definition)
 
-These files contain information about assets and their associated profiles. Each row lists an asset, the type of profile (e.g., availability, demand, maximum or minimum storage level), and the profile's name. The timeframe profiles are used in the [inter-temporal constraints](@ref concepts-summary), whereas the representative periods profiles are used in the [intra-temporal constraints](@ref concepts-summary).
+These files contain information about assets and their associated profiles. Each row lists an asset, the type of profile (e.g., availability, demand, maximum or minimum storage level), and the profile's name.
+These profiles are used in the [intra-temporal constraints](@ref concepts-summary).
 
 #### [`flows-profiles.csv`](@id flows-profiles-definition)
 
@@ -96,6 +97,10 @@ Define all the profiles for the `rep-periods`.
 The `profile_name` is a unique identifier, the `period` and `value` define the profile, and the `rep_period` field informs the representative period.
 
 The profiles are linked to assets and flows in the files [`assets-profiles`](@ref assets-profiles-definition), [`assets-timeframe-profiles`](@ref assets-profiles-definition), and [`flows-profiles`](@ref flows-profiles-definition).
+
+#### `assets-timeframe-profiles.csv`
+
+Like the [`assets-profiles.csv`](@ref assets-profiles-definition), but for the [inter-temporal constraints](@ref concepts-summary).
 
 #### `profiles-timeframe.csv` (optional)
 

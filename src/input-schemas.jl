@@ -131,8 +131,8 @@ const schema_per_file = OrderedDict(
     "flows_data" => schemas.flows.data,
     "flows_profiles" => schemas.flows.profiles_reference,
     "flows_rep_periods_partitions" => schemas.flows.rep_periods_partition,
-    "profiles_timeframe_<type>" => schemas.timeframe.profiles_data,
-    "profiles_rep_periods_<type>" => schemas.rep_periods.profiles_data,
+    "profiles_timeframe" => schemas.timeframe.profiles_data,
+    "profiles_rep_periods" => schemas.rep_periods.profiles_data,
     "rep_periods_data" => schemas.rep_periods.data,
     "rep_periods_mapping" => schemas.rep_periods.mapping,
 )
