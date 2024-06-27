@@ -83,8 +83,8 @@ The following tables are expected to exist in the DB.
   _ `flows_data`: Following the schema `schemas.flows.data`.
   _ `flows_profiles`: Following the schema `schemas.flows.profiles_reference`.
   _ `flows_rep_periods_partitions`: Following the schema `schemas.flows.rep_periods_partition`.
-  _ `profiles_timeframe_<type>`: Following the schema `schemas.timeframe.profiles_data`.
-  _ `profiles_rep_periods_<type>`: Following the schema `schemas.rep_periods.profiles_data`.
+  _ `profiles_timeframe`: Following the schema `schemas.timeframe.profiles_data`.
+  _ `profiles_rep_periods`: Following the schema `schemas.rep_periods.profiles_data`.
   _ `rep_periods_data`: Following the schema `schemas.rep_periods.data`.
   _ `rep_periods_mapping`: Following the schema `schemas.rep_periods.mapping`.
 """
@@ -127,11 +127,12 @@ function create_input_dataframes(connection::DuckDB.DB; strict = false)
             read_table("assets_$(period_type)_partitions"; allow_missing_table = true) for
         period_type in PERIOD_TYPES
     )
-    df_flows_partitions = read_table("flows_rep_periods_partitions")
+    df_flows_partitions = read_table("flows_rep_periods_partitions"; allow_missing_table = true)
 
-    tables_list = DBInterface.execute(connection, "SHOW TABLES")
-    dfs_profiles =
-        Dict(period_type => read_table("profiles_$period_type") for period_type in PERIOD_TYPES)
+    dfs_profiles = Dict(
+        :rep_periods => read_table("profiles_rep_periods"),
+        :timeframe => read_table("profiles_timeframe"; allow_missing_table = true),
+    )
 
     # Error if partition data is missing assets (if strict)
     if strict
@@ -347,13 +348,7 @@ function get_schema(tablename)
     if haskey(schema_per_file, tablename)
         return schema_per_file[tablename]
     else
-        if startswith("profiles_timeframe")(tablename)
-            return schema_per_file["profiles_timeframe_<type>"]
-        elseif startswith("profiles_rep_periods")(tablename)
-            return schema_per_file["profiles_rep_periods_<type>"]
-        else
-            error("No implicit schema for table named $tablename")
-        end
+        error("No implicit schema for table named $tablename")
     end
 end
 
