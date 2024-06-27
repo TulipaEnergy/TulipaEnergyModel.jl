@@ -82,18 +82,30 @@ These files contain information about assets and their associated profiles. Each
 
 This file contains information about flows and their representative period profiles for intra-temporal constraints. Each flow is defined as a pair of assets.
 
-#### `profiles-timeframe.csv` and `profiles-rep-periods.csv`
+#### [`rep-periods-data.csv`](@id rep-periods-data)
 
-Define all the profiles for the `rep-periods` and `timeframe`.
-The `profile_name` is a unique identifier, the `period` and `value` define the profile.
-For the `rep-periods` case, the `rep_period` field informs the representative period.
+Describes the [representative periods](@ref representative-periods) by their unique ID, the number of timesteps per representative period, and the resolution per timestep. Note that in the test files the resolution units are given as hours for understandability, but the resolution is technically unitless.
+
+#### [`rep-periods-mapping.csv`](@id rep-periods-mapping)
+
+Describes the periods of the [timeframe](@ref timeframe) that map into a [representative period](@ref representative-periods) and the weight of the representative periods that construct a period. Note that each weight is a decimal between 0 and 1, and that the sum of weights for a given period must also be between 0 and 1 (but do not have to sum to 1).
+
+#### `profiles-rep-periods.csv`
+
+Define all the profiles for the `rep-periods`.
+The `profile_name` is a unique identifier, the `period` and `value` define the profile, and the `rep_period` field informs the representative period.
 
 The profiles are linked to assets and flows in the files [`assets-profiles`](@ref assets-profiles-definition), [`assets-timeframe-profiles`](@ref assets-profiles-definition), and [`flows-profiles`](@ref flows-profiles-definition).
 
-#### [`assets-rep-periods-partitions.csv`](@id assets-rep-periods-partitions-definition)
+#### `profiles-timeframe.csv` (optional)
+
+Define all the profiles for the `timeframe`.
+This is similar to the [`profiles-rep-periods.csv`](@ref) except that it doesn't have a `rep-period` field and if this is not passed, default values are used in the timeframe constraints.
+
+#### [`assets-rep-periods-partitions.csv` (optional)](@id assets-rep-periods-partitions-definition)
 
 Contains a description of the [partition](@ref Partition) for each asset with respect to representative periods.
-If not specified, each asset will have the exact time resolution as the representative period.
+If not specified, each asset will have the same time resolution as the representative period, which is hourly by default.
 
 There are currently three ways to specify the desired resolution, indicated in the column `specification`.
 The column `partition` serves to define the partitions in the specified style.
@@ -113,23 +125,15 @@ The table below shows various results for different formats for a representative
 
 Note: If an asset is not specified in this file, the balance equation will be written in the lowest resolution of both the incoming and outgoing flows to the asset.
 
-#### [`flows-rep-periods-partitions.csv`](@id flow-rep-periods-partitions-definition)
+#### [`flows-rep-periods-partitions.csv` (optional)](@id flow-rep-periods-partitions-definition)
 
 The same as [`assets-rep-periods-partitions.csv`](@ref assets-rep-periods-partitions-definition), but for flows.
 
 If a flow is not specified in this file, the flow time resolution will be for each timestep by default (e.g., hourly).
 
-#### [`assets-timeframe-partitions.csv`](@id assets-timeframe-partitions)
+#### [`assets-timeframe-partitions.csv` (optional)](@id assets-timeframe-partitions)
 
 The same as their [`assets-rep-periods-partitions.csv`](@ref assets-rep-periods-partitions-definition) counterpart, but for the periods in the [timeframe](@ref timeframe) of the model.
-
-#### [`rep-periods-data.csv`](@id rep-periods-data)
-
-Describes the [representative periods](@ref representative-periods) by their unique ID, the number of timesteps per representative period, and the resolution per timestep. Note that in the test files the resolution units are given as hours for understandability, but the resolution is technically unitless.
-
-#### [`rep-periods-mapping.csv`](@id rep-periods-mapping)
-
-Describes the periods of the [timeframe](@ref timeframe) that map into a [representative period](@ref representative-periods) and the weight of the representative periods that construct a period. Note that each weight is a decimal between 0 and 1, and that the sum of weights for a given period must also be between 0 and 1 (but do not have to sum to 1).
 
 #### [Schemas](@id schemas)
 
