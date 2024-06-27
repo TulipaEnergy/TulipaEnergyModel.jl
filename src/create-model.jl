@@ -62,23 +62,23 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
     # Only for storage assets
     dataframes[:storage_level_inter_rp] =
-        construct_inter_rp_dataframes(A, graph, a -> a.type == :storage)
+        _construct_inter_rp_dataframes(A, graph, a -> a.type == :storage)
 
     # Dataframe to store the constraints for assets with maximum energy between (inter) representative periods
     # Only for assets with max energy limit
     dataframes[:max_energy_inter_rp] =
-        construct_inter_rp_dataframes(A, graph, a -> !ismissing(a.max_energy_timeframe_partition))
+        _construct_inter_rp_dataframes(A, graph, a -> !ismissing(a.max_energy_timeframe_partition))
 
     # Dataframe to store the constraints for assets with minimum energy between (inter) representative periods
     # Only for assets with min energy limit
     dataframes[:min_energy_inter_rp] =
-        construct_inter_rp_dataframes(A, graph, a -> !ismissing(a.min_energy_timeframe_partition))
+        _construct_inter_rp_dataframes(A, graph, a -> !ismissing(a.min_energy_timeframe_partition))
 
     return dataframes
 end
 
 """
-    construct_inter_rp_dataframes(assets, graph, asset_filter)
+    df = _construct_inter_rp_dataframes(assets, graph, asset_filter)
 
 Constructs dataframes for inter representative period constraints.
 
@@ -91,7 +91,7 @@ Constructs dataframes for inter representative period constraints.
 A dataframe containing the constructed dataframe for constraints.
 
 """
-function construct_inter_rp_dataframes(assets, graph, asset_filter)
+function _construct_inter_rp_dataframes(assets, graph, asset_filter)
     df = DataFrame(
         (
             (
