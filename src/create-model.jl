@@ -61,53 +61,50 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
 
     # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
     # Only for storage assets
-    dataframes[:storage_level_inter_rp] = DataFrame(
-        (
-            (
-                (asset = a, periods_block = periods_block) for
-                periods_block in graph[a].timeframe_partitions
-            ) for a in A if graph[a].type == :storage
-        ) |> Iterators.flatten,
-    )
-    if size(dataframes[:storage_level_inter_rp], 1) == 0
-        dataframes[:storage_level_inter_rp] =
-            DataFrame(; asset = Symbol[], periods_block = PeriodsBlock[])
-    end
-    dataframes[:storage_level_inter_rp].index = 1:size(dataframes[:storage_level_inter_rp], 1)
+    dataframes[:storage_level_inter_rp] =
+        _construct_inter_rp_dataframes(A, graph, a -> a.type == :storage)
 
     # Dataframe to store the constraints for assets with maximum energy between (inter) representative periods
     # Only for assets with max energy limit
-    dataframes[:max_energy_inter_rp] = DataFrame(
-        (
-            (
-                (asset = a, periods_block = periods_block) for
-                periods_block in graph[a].timeframe_partitions
-            ) for a in A if !ismissing(graph[a].max_energy_timeframe_partition)
-        ) |> Iterators.flatten,
-    )
-    if size(dataframes[:max_energy_inter_rp], 1) == 0
-        dataframes[:max_energy_inter_rp] =
-            DataFrame(; asset = Symbol[], periods_block = PeriodsBlock[])
-    end
-    dataframes[:max_energy_inter_rp].index = 1:size(dataframes[:max_energy_inter_rp], 1)
+    dataframes[:max_energy_inter_rp] =
+        _construct_inter_rp_dataframes(A, graph, a -> !ismissing(a.max_energy_timeframe_partition))
 
     # Dataframe to store the constraints for assets with minimum energy between (inter) representative periods
     # Only for assets with min energy limit
-    dataframes[:min_energy_inter_rp] = DataFrame(
+    dataframes[:min_energy_inter_rp] =
+        _construct_inter_rp_dataframes(A, graph, a -> !ismissing(a.min_energy_timeframe_partition))
+
+    return dataframes
+end
+
+"""
+    df = _construct_inter_rp_dataframes(assets, graph, asset_filter)
+
+Constructs dataframes for inter representative period constraints.
+
+# Arguments
+- `assets`: An array of assets.
+- `graph`: The energy problem graph with the assets data.
+- `asset_filter`: A function that filters assets based on certain criteria.
+
+# Returns
+A dataframe containing the constructed dataframe for constraints.
+
+"""
+function _construct_inter_rp_dataframes(assets, graph, asset_filter)
+    df = DataFrame(
         (
             (
                 (asset = a, periods_block = periods_block) for
                 periods_block in graph[a].timeframe_partitions
-            ) for a in A if !ismissing(graph[a].min_energy_timeframe_partition)
+            ) for a in assets if asset_filter(graph[a])
         ) |> Iterators.flatten,
     )
-    if size(dataframes[:min_energy_inter_rp], 1) == 0
-        dataframes[:min_energy_inter_rp] =
-            DataFrame(; asset = Symbol[], periods_block = PeriodsBlock[])
+    if size(df, 1) == 0
+        df = DataFrame(; asset = Symbol[], periods_block = PeriodsBlock[])
     end
-    dataframes[:min_energy_inter_rp].index = 1:size(dataframes[:min_energy_inter_rp], 1)
-
-    return dataframes
+    df.index = 1:size(df, 1)
+    return df
 end
 
 """
