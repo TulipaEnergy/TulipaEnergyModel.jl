@@ -87,7 +87,7 @@ function solve_model!(
         end
     end
 
-    energy_problem.time_solve_model = elapsed_time_solve_model
+    energy_problem.timings["solving the model"] = elapsed_time_solve_model
 
     return energy_problem.solution
 end
