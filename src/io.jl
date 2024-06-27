@@ -89,8 +89,17 @@ The following tables are expected to exist in the DB.
   _ `rep_periods_mapping`: Following the schema `schemas.rep_periods.mapping`.
 """
 function create_input_dataframes(connection::DuckDB.DB; strict = false)
-    function read_table(table_name)
+    function read_table(table_name; allow_missing_table = false)
         schema = get_schema(table_name)
+        if allow_missing_table
+            existence_query = DBInterface.execute(
+                connection,
+                "SELECT table_name FROM information_schema.tables WHERE table_name = '$table_name'",
+            )
+            if length(collect(existence_query)) == 0
+                return DataFrame([key => value[] for (key, value) in schema]...)
+            end
+        end
         df = DataFrame(DBInterface.execute(connection, "SELECT * FROM $table_name"))
         # enforcing schema to match what Tulipa expects; DuckDB string -> symbol, int -> string
         for (key, value) in schema
@@ -110,11 +119,12 @@ function create_input_dataframes(connection::DuckDB.DB; strict = false)
 
     dfs_assets_profiles = Dict(
         :rep_periods => read_table("assets_profiles"),
-        :timeframe => read_table("assets_timeframe_profiles"),
+        :timeframe => read_table("assets_timeframe_profiles"; allow_missing_table = true),
     )
     df_flows_profiles = read_table("flows_profiles")
     dfs_assets_partitions = Dict(
-        period_type => read_table("assets_$(period_type)_partitions") for
+        period_type =>
+            read_table("assets_$(period_type)_partitions"; allow_missing_table = true) for
         period_type in PERIOD_TYPES
     )
     df_flows_partitions = read_table("flows_rep_periods_partitions")
