@@ -368,7 +368,7 @@ function create_model!(energy_problem; kwargs...)
         energy_problem.objective_value = NaN
     end
 
-    energy_problem.time_create_model = elapsed_time_create_model
+    energy_problem.timings["creating the model"] = elapsed_time_create_model
 
     return energy_problem
 end
