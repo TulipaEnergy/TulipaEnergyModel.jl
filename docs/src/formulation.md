@@ -18,12 +18,14 @@ The complete mathematical formulation, including variable temporal resolutions, 
 
 In addition, the following asset sets represent methods for incorporating additional variables and constraints in the model.
 
-| Name                      | Description                                | Elements | Superset                                                                                     | Notes                                                                                                                                                                                                                                |
-| ------------------------- | ------------------------------------------ | -------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| $\mathcal{A}^{\text{i}}$  | Energy assets with investment method       |          | $\mathcal{A}^{\text{i}}  \subseteq \mathcal{A}$                                              |                                                                                                                                                                                                                                      |
-| $\mathcal{A}^{\text{ss}}$ | Storage energy assets with seasonal method |          | $\mathcal{A}^{\text{ss}} \subseteq \mathcal{A}^{\text{s}}$                                   |                                                                                                                                                                                                                                      |
-| $\mathcal{A}^{\text{se}}$ | Storage energy assets with energy method   |          | $\mathcal{A}^{\text{se}} \subseteq \mathcal{A}^{\text{s}}$                                   | This set contains storage assets that use investment energy method (`storage_method_energy = true` in the file [`assets-data.csv`](@ref schemas)). Otherwise fixed energy-to-power ratio method is used.                             |
-| $\mathcal{A}^{\text{sb}}$ | Storage energy assets with binary method   |          | $\mathcal{A}^{\text{sb}} \subseteq \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}$ | This set contains storage assets that use an extra binary variable to avoid charging and discharging simultaneously (`use_binary_storage_method` set to `binary` or `relaxed_binary` in the file [`assets-data.csv`](@ref schemas)). |
+| Name                         | Description                                       | Elements | Superset                                                                                     | Notes                                                                                                                                                                                                                                |
+| ---------------------------- | ------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| $\mathcal{A}^{\text{i}}$     | Energy assets with investment method              |          | $\mathcal{A}^{\text{i}}  \subseteq \mathcal{A}$                                              |                                                                                                                                                                                                                                      |
+| $\mathcal{A}^{\text{ss}}$    | Storage energy assets with seasonal method        |          | $\mathcal{A}^{\text{ss}} \subseteq \mathcal{A}^{\text{s}}$                                   |                                                                                                                                                                                                                                      |
+| $\mathcal{A}^{\text{se}}$    | Storage energy assets with energy method          |          | $\mathcal{A}^{\text{se}} \subseteq \mathcal{A}^{\text{s}}$                                   | This set contains storage assets that use investment energy method (`storage_method_energy = true` in the file [`assets-data.csv`](@ref schemas)). Otherwise fixed energy-to-power ratio method is used.                             |
+| $\mathcal{A}^{\text{sb}}$    | Storage energy assets with binary method          |          | $\mathcal{A}^{\text{sb}} \subseteq \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}$ | This set contains storage assets that use an extra binary variable to avoid charging and discharging simultaneously (`use_binary_storage_method` set to `binary` or `relaxed_binary` in the file [`assets-data.csv`](@ref schemas)). |
+| $\mathcal{A}^{\text{max e}}$ | Energy assets with maximum outgoing energy method |          | $\mathcal{A}^{\text{max e}} \subseteq \mathcal{A}$                                           | This set contains assets that use the maximum outgoing energy method (`is_seasonal = true` and `max_energy_timeframe_partition` $\neq$ `missing` in the file [`assets-data.csv`](@ref schemas)).                                     |
+| $\mathcal{A}^{\text{min e}}$ | Energy assets with minimum outgoing energy method |          | $\mathcal{A}^{\text{min e}} \subseteq \mathcal{A}$                                           | This set contains assets that use the minimum outgoing energy method (`is_seasonal = true` and `min_energy_timeframe_partition` $\neq$ `missing` in the file [`assets-data.csv`](@ref schemas)).                                     |
 
 ### Sets for Flows
 
@@ -85,14 +87,14 @@ In addition, the following flow sets represent methods for incorporating additio
 | $p^{\text{max inter level}}_{a,p}$     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$                                                           | Maximum inter-storage level profile of storage asset $a$ in the period $p$ of the timeframe                    | [p.u.]          |
 | $p^{\text{min inter level}}_{a,p}$     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$                                                           | Minimum inter-storage level profile of storage asset $a$ in the period $p$ of the timeframe                    | [p.u.]          |
 
-#### Extra Parameters for Producers Assets
+#### Extra Parameters for Energy Constraints
 
-| Name                                 | Domain           | Domains of Indices                                   | Description                                                                           | Units  |
-| ------------------------------------ | ---------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------- | ------ |
-| $p^{\text{max inter profile}}_{a,p}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$ | Maximum inter-energy profile of producer asset $a$ in the period $p$ of the timeframe | [p.u.] |
-| $p^{\text{min inter profile}}_{a,p}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$ | Minimum inter-energy profile of producer asset $a$ in the period $p$ of the timeframe | [p.u.] |
-| $p^{\text{max energy}}_{a,p}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$                      | Maximum inter-energy value of producer asset $a$                                      | [MWh]  |
-| $p^{\text{min energy}}_{a,p}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$                      | Minimum inter-energy value of producer asset $a$                                      | [MWh]  |
+| Name                                 | Domain           | Domains of Indices                                      | Description                                                                                    | Units  |
+| ------------------------------------ | ---------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------ |
+| $p^{\text{min inter profile}}_{a,p}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}$, $p \in \mathcal{P}$ | Minimum outgoing inter-temporal energy profile of asset $a$ in the period $p$ of the timeframe | [p.u.] |
+| $p^{\text{max inter profile}}_{a,p}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}$, $p \in \mathcal{P}$ | Maximum outgoing inter-temporal energy profile of asset $a$ in the period $p$ of the timeframe | [p.u.] |
+| $p^{\text{max energy}}_{a,p}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}$                      | Maximum outgoing inter-temporal energy value of asset $a$                                      | [MWh]  |
+| $p^{\text{min energy}}_{a,p}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}$                      | Minimum outgoing inter-temporal energy value of asset $a$                                      | [MWh]  |
 
 ### Parameter for Flows
 
@@ -342,24 +344,6 @@ v^{\text{inter-storage}}_{a,p^{\text{last}}} \geq p^{\text{init storage level}}_
 \\ \\ \forall a \in \mathcal{A}^{\text{ss}}
 ```
 
-### Constraints for Energy Producers Assets
-
-The following constraints describe the minimum and maximum energy limits for producers assets in the inter-temporal constraints.
-
-```math
-\begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \leq  p^{\text{max inter profile}}_{a,p} \cdot p^{\text{max energy}}_{a}
-\\ \\ & \forall a \in \mathcal{A}^{\text{p}}, \forall p \in \mathcal{P}
-\end{aligned}
-```
-
-```math
-\begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \geq  p^{\text{min inter profile}}_{a,p} \cdot p^{\text{min energy}}_{a}
-\\ \\ & \forall a \in \mathcal{A}^{\text{p}}, \forall p \in \mathcal{P}
-\end{aligned}
-```
-
 ### Constraints for Energy Hub Assets
 
 #### Balance Constraint for Hubs
@@ -423,6 +407,28 @@ v^{\text{inv}}_{f} \leq \frac{p^{\text{inv limit}}_{f}}{p^{\text{capacity}}_{f}}
 ```
 
 If the parameter `investment_integer` in the [`flows-data.csv`](@ref flows-data) file is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
+
+### [Inter-temporal Energy Constraints](@id inter-temporal-energy-constraints)
+
+These constraints allow us to consider a maximum or minimum energy limit for an asset throughout the model's timeframe (e.g., a year). It uses the same principle explained in the [inter-temporal constraint for storage balance](@ref inter-storage-balance) and in the [Storage Modeling](@ref storage-modeling) section.
+
+#### Maximum Outgoing Energy During the Timeframe
+
+```math
+\begin{aligned}
+\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \leq  p^{\text{max inter profile}}_{a,p} \cdot p^{\text{max energy}}_{a}
+\\ \\ & \forall a \in \mathcal{A}^{\text{max e}}, \forall p \in \mathcal{P}
+\end{aligned}
+```
+
+#### Minimum Outgoing Energy During the Timeframe
+
+```math
+\begin{aligned}
+\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \geq  p^{\text{min inter profile}}_{a,p} \cdot p^{\text{min energy}}_{a}
+\\ \\ & \forall a \in \mathcal{A}^{\text{min e}}, \forall p \in \mathcal{P}
+\end{aligned}
+```
 
 ## [References](@id math-references)
 
