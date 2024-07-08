@@ -16,7 +16,7 @@ function add_energy_constraints!(model, graph, dataframes)
             model,
             dataframes[:max_energy_inter_rp].outgoing_flow[row.index] ≤
             profile_aggregation(
-                Statistics.mean,
+                sum,
                 graph[row.asset].timeframe_profiles,
                 :max_energy,
                 row.periods_block,
@@ -32,7 +32,7 @@ function add_energy_constraints!(model, graph, dataframes)
             model,
             dataframes[:min_energy_inter_rp].outgoing_flow[row.index] ≥
             profile_aggregation(
-                Statistics.mean,
+                sum,
                 graph[row.asset].timeframe_profiles,
                 :min_energy,
                 row.periods_block,
