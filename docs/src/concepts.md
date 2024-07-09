@@ -125,19 +125,21 @@ Due to the flexible resolution, we must explicitly state how the constraints are
 
 Below is the table outlining the details for each type of constraint. Note _min_ means highest resolution, and _max_ means lowest resolution.
 
-| Name                                          | Variables involved             | Parameters involved | Constraint type | Resolution of the constraints                                               | Parameter aggregation |
-| --------------------------------------------- | ------------------------------ | ------------------- | --------------- | --------------------------------------------------------------------------- | --------------------- |
-| Consumer Balance                              | inputs, outputs                | demand              | power           | min(incoming flows, outgoing flows)                                         | mean                  |
-| Storage Balance                               | inputs, outputs, storage level | inflows             | energy          | max(asset, min(incoming flows, outgoing flows))                             | sum                   |
-| Hub Balance                                   | inputs, outputs                | -                   | power           | min(incoming flows, outgoing flows)                                         | -                     |
-| Conversion Balance                            | inputs, outputs                | -                   | energy          | max(incoming flows, outgoing flows)                                         | -                     |
-| Producers Capacity Constraints                | outputs                        | production          | power           | min(outgoing flows)                                                         | mean                  |
-| Storage Capacity Constraints (outgoing)       | outputs                        | -                   | power           | min(outgoing flows)                                                         | -                     |
-| Conversion Capacity Constraints (outgoing)    | outputs                        | -                   | power           | min(outgoing flows)                                                         | -                     |
-| Conversion Capacity Constraints (incoming)    | inputs                         | -                   | power           | min(incoming flows)                                                         | -                     |
-| Storage Capacity Constraints (incoming)       | inputs                         | -                   | power           | min(incoming flows)                                                         | -                     |
-| Transport Capacity Constraints (upper bounds) | flow                           | capacity            | power           | if it connects two hubs or demands then max(hub a,hub b), otherwise its own | mean                  |
-| Transport Capacity Constraints (lower bounds) | flow                           | capacity            | power           | if it connects two hubs or demands then max(hub a,hub b), otherwise its own | mean                  |
+| Name                                          | Variables involved             | Profile involved | Constraint type | Resolution of the constraints                                                            | Profile aggregation |
+| --------------------------------------------- | ------------------------------ | ---------------- | --------------- | ---------------------------------------------------------------------------------------- | ------------------- |
+| Consumer Balance                              | inputs, outputs                | demand           | power           | min(incoming flows, outgoing flows)                                                      | mean                |
+| Storage Balance                               | inputs, outputs, storage level | inflows          | energy          | max(asset, min(incoming flows, outgoing flows))                                          | sum                 |
+| Hub Balance                                   | inputs, outputs                | -                | power           | min(incoming flows, outgoing flows)                                                      | -                   |
+| Conversion Balance                            | inputs, outputs                | -                | energy          | max(incoming flows, outgoing flows)                                                      | -                   |
+| Producers Capacity Constraints                | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |
+| Storage Capacity Constraints (outgoing)       | outputs                        | -                | power           | min(outgoing flows)                                                                      | -                   |
+| Conversion Capacity Constraints (outgoing)    | outputs                        | -                | power           | min(outgoing flows)                                                                      | -                   |
+| Conversion Capacity Constraints (incoming)    | inputs                         | -                | power           | min(incoming flows)                                                                      | -                   |
+| Storage Capacity Constraints (incoming)       | inputs                         | -                | power           | min(incoming flows)                                                                      | -                   |
+| Transport Capacity Constraints (upper bounds) | flow                           | availability     | power           | if it connects two hubs or demands then max(hub a,hub b), otherwise its own              | mean                |
+| Transport Capacity Constraints (lower bounds) | flow                           | availability     | power           | if it connects two hubs or demands then max(hub a,hub b), otherwise its own              | mean                |
+| Maximum Energy Limits (outgoing)              | outputs                        | max_energy       | energy          | Determine by timeframe partitions. The default value is for each period in the timeframe | sum                 |
+| Minumum Energy Limits (outgoing)              | outputs                        | min_energy       | energy          | Determine by timeframe partitions. The default value is for each period in the timeframe | sum                 |
 
 For this basic example, we can describe the balance and capacity constraints in the model. For the sake of simplicity, we consider only the intra-temporal constraints, the representative period index is dropped from the equations, and there are no investment variables in the equations.
 
