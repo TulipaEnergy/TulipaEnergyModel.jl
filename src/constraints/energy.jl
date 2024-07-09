@@ -1,4 +1,4 @@
-export add_storage_constraints!
+export add_energy_constraints!
 
 """
 function add_energy_constraints!(model, graph, dataframes)
