@@ -337,3 +337,24 @@ Depending on the configuration of the energy storage assets, it may or may not b
 If no value is set in the parameter `use_binary_storage_method`, i.e., `missing` value, the storage asset can charge and discharge simultaneously.
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
+
+## [Setup a maximum or minimum outgoing energy limit](@id max-min-outgoing-energy-setup)
+
+For the model to add constraints for a [maximum or minimum energy limit](@ref inter-temporal-energy-constraints) for an asset throughout the model's timeframe (e.g., a year), we need to establish a couple of parameters:
+
+-   `is_seasonal = true` in the [`assets-data.csv`](@ref schemas). This parameter enables the model to use the inter-temporal constraints.
+-   `max_energy_timeframe_partition` $\neq$ `missing` or `min_energy_timeframe_partition` $\neq$ `missing` in the [`assets-data.csv`](@ref schemas). This value represents the peak energy that will be then multiplied by the profile for each period in the timeframe.
+-   (optional) `profile_type` and `profile_name` in the [`assets-timeframe-profiles.csv`](@ref schemas) and the profile values in the [`profiles-timeframe.csv`](@ref schemas). If there is no profile defined, then by default it is assumed to be 1.0 p.u. for all periods in the timeframe.
+-   (optional) define a period partition in [`assets-timeframe-partitions.csv`](@ref schemas). If there is no partition defined, then by default the constraint is created for each period in the timeframe, otherwise, it will consider the partition definition in the file.
+
+For example, let's assume we have a year divided into 365 days because we are using days as periods in the representatives from the [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl). In addition, we define the `max_energy_timeframe_partition = 10 MWh`, meaning that the peak energy we want to have is 10MWh for each period or period partition. So, depending on the optional information we can have:
+
+-   _No definition of profile and period partitions_: The default profile is 1.p.u. for each period and since there are no period partitions then constraints will be for each period (i.e., daily). So, the outgoing energy of the asset for each day must be less than or equal to 10MWh.
+-   _Profile definition, but no definition of period partitions_: The profile definition and value will be in the [`assets-timeframe-profiles.csv`](@ref schemas) and [`profiles-timeframe.csv`](@ref schemas) files. For example, we define a profile that has the following first four values: 0.6 p.u., 1.0 p.u., 0.8 p.u., and 0.4 p.u. There are no period partitions, so constraints will be for each period (i.e., daily). Therefore the outgoing energy of the asset for the first four days must be less than or equal to 6MWh, 10MWh, 8MWh, and 4MWh, respectively.
+-   _Profile and period partitions definition_: Using the same profile as above, we now define a period partition in the [`assets-timeframe-partitions.csv`](@ref schemas) file as `uniform` with a value of 2. This value means that we will aggregate every two periods (i.e., every two days). So, instead of having 365 constraints, we will have 183 constraints (182 every two days and one last constraint of 1 day). Then the profile is aggregated with the sum of the values inside the periods within the partition. Thus, the outgoing energy of the asset for the first two partitions (i.e., every two days) must be less than or equal to 16MWh and 12MWh, respectively.
+
+> **Note:**
+> The parameters `max_energy_timeframe_partition` and `min_energy_timeframe_partition` are defined per period. In addition, the default values for profiles are 1.0 p.u. per period. If the periods are determined daily, the energy limit for the whole year will be 365 times `max_energy_timeframe_partition` or 365 times `min_energy_timeframe_partition`.
+
+!!! tip
+If you want to set a limit on the maximum or minimum outgoing energy for a year with representative days, you can use the partition definition to create a single partition for the entire year to combine the profile.
