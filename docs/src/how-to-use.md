@@ -357,4 +357,4 @@ For example, let's assume we have a year divided into 365 days because we are us
 > The parameters `max_energy_timeframe_partition` and `min_energy_timeframe_partition` are defined per period. In addition, the default values for profiles are 1.0 p.u. per period. If the periods are determined daily, the energy limit for the whole year will be 365 times `max_energy_timeframe_partition` or 365 times `min_energy_timeframe_partition`.
 
 !!! tip
-If you want to set a limit on the maximum or minimum outgoing energy for a year with representative days, you can use the partition definition to create a single partition for the entire year to combine the profile.
+    If you want to set a limit on the maximum or minimum outgoing energy for a year with representative days, you can use the partition definition to create a single partition for the entire year to combine the profile.
