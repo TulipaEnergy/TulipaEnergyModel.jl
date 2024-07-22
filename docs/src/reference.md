@@ -1,4 +1,4 @@
-# Reference
+# [Reference](@id reference)
 
 ​This is a comprehensive list of all of the functions in the model.\
 The function most pertinent to the user is: [`run_scenario`](@ref)

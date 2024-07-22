@@ -31,7 +31,7 @@ energy_problem = run_scenario(input_dir)
 ```
 
 The `energy_problem` variable is of type `EnergyProblem`.
-For more details, see the [documentation for that type](@ref TulipaEnergyModel.EnergyProblem) or the section [Structures](@ref).
+For more details, see the [documentation for that type](@ref TulipaEnergyModel.EnergyProblem) or the section [Structures](@ref structures).
 
 That's all it takes to run a scenario! To learn about the data required to run your own scenario, see the [Input section](@ref input) of [How to Use](@ref how-to-use).
 

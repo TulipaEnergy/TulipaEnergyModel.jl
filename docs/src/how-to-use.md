@@ -170,7 +170,7 @@ Markdown.parse(
 )
 ```
 
-## Structures
+## [Structures](@id structures)
 
 The list of relevant structures used in this package are listed below:
 
