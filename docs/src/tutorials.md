@@ -72,7 +72,7 @@ Finally, we can solve the model:
 solution = solve_model!(energy_problem)
 ```
 
-The solution is included in the individual assets and flows, but for completeness, we return the full `solution` object, also defined in the [Structures](@ref) section.
+The solution is included in the individual assets and flows, but for completeness, we return the full `solution` object, also defined in the [Structures](@ref structures) section.
 
 In particular, the objective value and the termination status are also included in the energy problem:
 
@@ -84,7 +84,7 @@ energy_problem.objective_value, energy_problem.termination_status
 
 For additional control, it might be desirable to use the internal structures of `EnergyProblem` directly.
 This can be error-prone, so use it with care.
-The full description for these structures can be found in [Structures](@ref).
+The full description for these structures can be found in [Structures](@ref structures).
 
 ```@example manual
 using TulipaEnergyModel
