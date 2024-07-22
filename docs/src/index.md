@@ -8,9 +8,9 @@ CurrentModule = TulipaEnergyModel
 
 ## Getting Started
 
-To start using Tulipa for your research, check out our [How to Use](@ref) section and [Tutorials](@ref).
+To start using Tulipa for your research, check out our [How to Use](@ref how-to-use) section and [Tutorials](@ref tutorials).
 
-For a more technical explanation, check out the [Concepts](@ref) section, or dive into the [Mathematical Formulation](@ref).
+For a more technical explanation, check out the [Concepts](@ref concepts) section, or dive into the [Mathematical Formulation](@ref formulation).
 
 ## [License](@id license)
 
