@@ -6,6 +6,12 @@ CurrentModule = TulipaEnergyModel
 
 [TulipaEnergyModel.jl](https://github.com/TulipaEnergy/TulipaEnergyModel.jl) is an optimization model for the electricity market that can be coupled with other energy sectors (e.g., hydrogen, heat, natural gas, etc.). The optimization model determines the optimal investment and operation decisions for different types of assets (e.g., producers, consumers, conversion, storage, and transport). _TulipaEnergyModel.jl_ is developed in [Julia](https://julialang.org/) and depends on the [JuMP.jl](https://github.com/jump-dev/JuMP.jl) package.
 
+## Getting Started
+
+To start using Tulipa for your research, check out our [How to Use](@ref) section and [Tutorials](@ref).
+
+For a more technical explanation, check out the [Concepts](@ref) section, or dive into the [Mathematical Formulation](@ref).
+
 ## [License](@id license)
 
 This content is released under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) License.
