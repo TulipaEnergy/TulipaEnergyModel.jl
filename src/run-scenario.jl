@@ -66,31 +66,42 @@ function run_scenario(
     log_file = "",
     show_log = true,
 )
-    energy_problem =
-        @timeit to "create_energy_problem_from_csv_folder" create_energy_problem_from_csv_folder(
-            input_folder,
-        )
+    connection = create_connection_and_import_from_csv_folder(input_folder)
 
-    @timeit to "create_model!" create_model!(energy_problem; write_lp_file = write_lp_file)
-
-    @timeit to "solve and store solution" solve_model!(
-        energy_problem,
-        optimizer;
+    run_scenario(
+        connection;
+        optimizer = HiGHS.Optimizer,
         parameters = parameters,
+        write_lp_file = write_lp_file,
+        log_file = log_file,
+        show_log = show_log,
     )
 
-    if output_folder != ""
-        @timeit to "save_solution_to_file" save_solution_to_file(output_folder, energy_problem)
-    end
+    # energy_problem =
+    #     @timeit to "create_energy_problem_from_csv_folder" create_energy_problem_from_csv_folder(
+    #         input_folder,
+    #     )
 
-    show_log && show(to)
-    println()
+    # @timeit to "create_model!" create_model!(energy_problem; write_lp_file = write_lp_file)
 
-    if log_file != ""
-        open(log_file, "w") do io
-            show(io, to)
-        end
-    end
+    # @timeit to "solve and store solution" solve_model!(
+    #     energy_problem,
+    #     optimizer;
+    #     parameters = parameters,
+    # )
 
-    return energy_problem
+    # if output_folder != ""
+    #     @timeit to "save_solution_to_file" save_solution_to_file(output_folder, energy_problem)
+    # end
+
+    # show_log && show(to)
+    # println()
+
+    # if log_file != ""
+    #     open(log_file, "w") do io
+    #         show(io, to)
+    #     end
+    # end
+
+    # return energy_problem
 end
