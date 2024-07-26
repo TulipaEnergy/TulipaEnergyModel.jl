@@ -31,7 +31,7 @@ energy_problem = run_scenario(input_dir)
 ```
 
 The `energy_problem` variable is of type `EnergyProblem`.
-For more details, see the [documentation for that type](@ref TulipaEnergyModel.EnergyProblem) or the section [Structures](@ref).
+For more details, see the [documentation for that type](@ref TulipaEnergyModel.EnergyProblem) or the section [Structures](@ref structures).
 
 That's all it takes to run a scenario! To learn about the data required to run your own scenario, see the [Input section](@ref input) of [How to Use](@ref how-to-use).
 
@@ -72,7 +72,7 @@ Finally, we can solve the model:
 solution = solve_model!(energy_problem)
 ```
 
-The solution is included in the individual assets and flows, but for completeness, we return the full `solution` object, also defined in the [Structures](@ref) section.
+The solution is included in the individual assets and flows, but for completeness, we return the full `solution` object, also defined in the [Structures](@ref structures) section.
 
 In particular, the objective value and the termination status are also included in the energy problem:
 
@@ -84,7 +84,7 @@ energy_problem.objective_value, energy_problem.termination_status
 
 For additional control, it might be desirable to use the internal structures of `EnergyProblem` directly.
 This can be error-prone, so use it with care.
-The full description for these structures can be found in [Structures](@ref).
+The full description for these structures can be found in [Structures](@ref structures).
 
 ```@example manual
 using TulipaEnergyModel

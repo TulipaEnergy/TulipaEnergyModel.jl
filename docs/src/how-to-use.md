@@ -7,6 +7,19 @@ Depth = 5
 
 ## Install
 
+To use Tulipa, you first need to install the opensource [Julia](https://julialang.org) programming language.
+
+Then consider installing a user-friendly code editor, such as [VSCode](https://code.visualstudio.com). Otherwise you will be running from the terminal/command prompt.
+
+### Starting Julia
+
+Choose one:
+
+-   In VSCode: Press CTRL+Shift+P and hit Enter to start a Julia REPL.
+-   In the terminal: Type `julia` and press Enter
+
+### Adding TulipaEnergyModel
+
 In Julia:
 
 -   Enter package mode (press "]")
@@ -21,7 +34,9 @@ pkg> add TulipaEnergyModel
 julia> using TulipaEnergyModel
 ```
 
-Optional (takes a minute or two):
+### (Optional) Running automatic tests
+
+It is nice to check that tests are passing to make sure your environment is working. (This takes a minute or two.)
 
 -   Enter package mode (press "]")
 
@@ -29,7 +44,7 @@ Optional (takes a minute or two):
 pkg> test TulipaEnergyModel
 ```
 
-(All tests should pass.)
+All tests should pass.
 
 ## Run Scenario
 
@@ -155,7 +170,7 @@ Markdown.parse(
 )
 ```
 
-## Structures
+## [Structures](@id structures)
 
 The list of relevant structures used in this package are listed below:
 
