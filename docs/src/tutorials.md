@@ -24,10 +24,14 @@ To read all data from the Tiny folder, perform all necessary steps to create a m
 
 ```@example
 using TulipaEnergyModel
+using TulipaIO
+using DuckDB
 
 input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
-energy_problem = run_scenario(input_dir)
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir)
+energy_problem = run_scenario(connection)
 ```
 
 The `energy_problem` variable is of type `EnergyProblem`.
@@ -41,10 +45,14 @@ If we need more control, we can create the energy problem first, then the optimi
 
 ```@example manual-energy-problem
 using TulipaEnergyModel
+using TulipaIO
+using DuckDB
 
 input_dir = "../../test/inputs/Tiny" # hide
-# input_dir should be the path to Tiny
-energy_problem = create_energy_problem_from_csv_folder(input_dir)
+# input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir)
+energy_problem = EnergyProblem(connection)
 ```
 
 The energy problem does not have a model yet:
@@ -88,10 +96,13 @@ The full description for these structures can be found in [Structures](@ref stru
 
 ```@example manual
 using TulipaEnergyModel
+using TulipaIO
+using DuckDB
 
 input_dir = "../../test/inputs/Tiny" # hide
-# input_dir should be the path to Tiny
-connection = create_connection_and_import_from_csv_folder(input_dir)
+# input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir)
 ```
 
 ```@example manual
@@ -273,10 +284,14 @@ The solution, as shown before, can be obtained when calling [`solve_model`](@ref
 
 ```@example solution
 using TulipaEnergyModel
+using TulipaIO
+using DuckDB
 
 input_dir = "../../test/inputs/Norse" # hide
-# input_dir should be the path to Norse
-energy_problem = create_energy_problem_from_csv_folder(input_dir)
+# input_dir should be the path to Norse as a string (something like "test/inputs/Norse")
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir)
+energy_problem = EnergyProblem(connection)
 create_model!(energy_problem)
 solution = solve_model!(energy_problem)
 nothing # hide

@@ -1,7 +1,7 @@
 using CSV
 using Cbc
 using DataFrames
-using DuckDB: DBInterface
+using DuckDB
 using GLPK
 using Graphs
 using HiGHS
@@ -9,6 +9,7 @@ using JuMP
 using MathOptInterface
 using Test
 using TulipaEnergyModel
+using TulipaIO
 
 # Folders names
 const INPUT_FOLDER = joinpath(@__DIR__, "inputs")
@@ -29,6 +30,8 @@ end
     @test SUITE !== nothing
 end
 
-@testset "Ensuring EU data can be read" begin
-    create_input_dataframes_from_csv_folder(joinpath(@__DIR__, "../benchmark/EU/"))
+@testset "Ensuring data can be read and create dataframes" begin
+    connection = DBInterface.connect(DuckDB.DB)
+    read_csv_folder(connection, joinpath(@__DIR__, "../benchmark/EU/"))
+    create_input_dataframes(connection)
 end
