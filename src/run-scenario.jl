@@ -21,15 +21,11 @@ function run_scenario(
     log_file = "",
     show_log = true,
 )
-    energy_problem = @timeit to "create_energy_problem_from_csv_folder" EnergyProblem(connection)
+    energy_problem = @timeit to "create EnergyProblem from connection" EnergyProblem(connection)
 
-    @timeit to "create_model!" create_model!(energy_problem; write_lp_file = write_lp_file)
+    @timeit to "create_model!" create_model!(energy_problem; write_lp_file)
 
-    @timeit to "solve and store solution" solve_model!(
-        energy_problem,
-        optimizer;
-        parameters = parameters,
-    )
+    @timeit to "solve and store solution" solve_model!(energy_problem, optimizer; parameters)
 
     if output_folder != ""
         @timeit to "save_solution_to_file" save_solution_to_file(output_folder, energy_problem)
