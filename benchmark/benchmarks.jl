@@ -1,6 +1,8 @@
 using BenchmarkTools
 using TulipaEnergyModel
 using MetaGraphsNext
+using TulipaIO
+using DuckDB
 
 const SUITE = BenchmarkGroup()
 
