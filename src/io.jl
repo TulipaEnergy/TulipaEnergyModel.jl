@@ -1,61 +1,8 @@
-export create_energy_problem_from_csv_folder,
-    create_input_dataframes_from_csv_folder,
-    create_connection_and_import_from_csv_folder,
-    create_input_dataframes,
+export create_input_dataframes,
     create_internal_structures,
     save_solution_to_file,
     compute_assets_partitions!,
     compute_flows_partitions!
-
-"""
-    energy_problem = create_energy_problem_from_csv_folder(input_folder; strict = false)
-Returns the [`TulipaEnergyModel.EnergyProblem`](@ref) reading all data from CSV files
-in the `input_folder`.
-This is a wrapper around `create_graph_and_representative_periods_from_csv_folder` that creates
-the `EnergyProblem` structure.
-Set `strict = true` to error if assets are missing from partition data.
-"""
-function create_energy_problem_from_csv_folder(input_folder::AbstractString; strict = false)
-    connection = create_connection_and_import_from_csv_folder(input_folder)
-    return EnergyProblem(connection; strict = strict)
-end
-
-"""
-    table_tree = create_input_dataframes_from_csv_folder(input_folder; strict = false)
-
-Returns the `table_tree::TableTree` structure that holds all data.
-Set `strict = true` to error if assets are missing from partition data.
-
-This is a convenience function calling [`create_input_dataframes_from_csv_folder`](@ref) and
-[`create_input_dataframes`](@ref).
-"""
-function create_input_dataframes_from_csv_folder(input_folder::AbstractString; strict = false)
-    connection = create_connection_and_import_from_csv_folder(input_folder)
-
-    return create_input_dataframes(connection; strict = strict)
-end
-
-"""
-    connection = create_connection_and_import_from_csv_folder(input_folder)
-
-Creates a DuckDB connection and reads the CSVs in the `input_folder` into the DB.
-The names of the tables will be the names of the files, except that `-` will be converted
-into `_`, and the extension will be ignored.
-"""
-function create_connection_and_import_from_csv_folder(input_folder::AbstractString)
-    connection = DBInterface.connect(DuckDB.DB)
-
-    for filename in readdir(input_folder)
-        if !endswith(".csv")(filename)
-            continue
-        end
-        table_name, _ = splitext(filename)
-        table_name = replace(table_name, "-" => "_")
-        TulipaIO.create_tbl(connection, joinpath(input_folder, filename); name = table_name)
-    end
-
-    return connection
-end
 
 """
     table_tree = create_input_dataframes(connection)

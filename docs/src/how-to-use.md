@@ -50,10 +50,12 @@ All tests should pass.
 
 To run a scenario, use the function:
 
--   [`run_scenario(input_folder)`](@ref)
--   [`run_scenario(input_folder, output_folder)`](@ref)
+-   [`run_scenario(connection)`](@ref)
+-   [`run_scenario(connection; output_folder)`](@ref)
 
-The `input_folder` should contain CSV files as described below. The `output_folder` is optional if the user wants to export the output.
+The `connection` should have been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl).
+See the [tutorials](@ref tutorials) for a complete guide on how to achieve this.
+The `output_folder` is optional if the user wants to export the output.
 
 ## [Input](@id input)
 

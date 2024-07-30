@@ -23,11 +23,13 @@ For more details about these files, see [Input](@ref input).
 To read all data from the Tiny folder, perform all necessary steps to create a model, and solve the model, run the following in a Julia terminal:
 
 ```@example
-using TulipaEnergyModel
+using DuckDB, TulipaIO, TulipaEnergyModel
 
 input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
-energy_problem = run_scenario(input_dir)
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir)
+energy_problem = run_scenario(connection)
 ```
 
 The `energy_problem` variable is of type `EnergyProblem`.
@@ -40,11 +42,13 @@ That's all it takes to run a scenario! To learn about the data required to run y
 If we need more control, we can create the energy problem first, then the optimization model inside it, and finally ask for it to be solved.
 
 ```@example manual-energy-problem
-using TulipaEnergyModel
+using DuckDB, TulipaIO, TulipaEnergyModel
 
 input_dir = "../../test/inputs/Tiny" # hide
-# input_dir should be the path to Tiny
-energy_problem = create_energy_problem_from_csv_folder(input_dir)
+# input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir)
+energy_problem = EnergyProblem(connection)
 ```
 
 The energy problem does not have a model yet:
@@ -87,11 +91,12 @@ This can be error-prone, so use it with care.
 The full description for these structures can be found in [Structures](@ref structures).
 
 ```@example manual
-using TulipaEnergyModel
+using DuckDB, TulipaIO, TulipaEnergyModel
 
 input_dir = "../../test/inputs/Tiny" # hide
-# input_dir should be the path to Tiny
-connection = create_connection_and_import_from_csv_folder(input_dir)
+# input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir)
 ```
 
 ```@example manual
@@ -148,10 +153,12 @@ To change this, we can give the functions `run_scenario`, `solve_model`, or
 For instance, we run the [GLPK](https://github.com/jump-dev/GLPK.jl) optimizer below:
 
 ```@example
-using TulipaEnergyModel, GLPK
+using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
 
 input_dir = "../../test/inputs/Tiny" # hide
-energy_problem = run_scenario(input_dir, optimizer = GLPK.Optimizer)
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir)
+energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer)
 ```
 
 or
@@ -180,11 +187,13 @@ For instance, in the example below, we change the maximum allowed runtime for
 GLPK to be 1 seconds, which will most likely cause it to fail to converge in time.
 
 ```@example
-using TulipaEnergyModel, GLPK
+using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
 
 input_dir = "../../test/inputs/Tiny" # hide
 parameters = Dict("tm_lim" => 1)
-energy_problem = run_scenario(input_dir, optimizer = GLPK.Optimizer, parameters = parameters)
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir)
+energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer, parameters = parameters)
 energy_problem.termination_status
 ```
 
@@ -272,11 +281,13 @@ Let's consider the larger dataset "Norse" in this section. And let's talk about 
 The solution, as shown before, can be obtained when calling [`solve_model`](@ref) or [`solve_model!`](@ref).
 
 ```@example solution
-using TulipaEnergyModel
+using DuckDB, TulipaIO, TulipaEnergyModel
 
 input_dir = "../../test/inputs/Norse" # hide
-# input_dir should be the path to Norse
-energy_problem = create_energy_problem_from_csv_folder(input_dir)
+# input_dir should be the path to Norse as a string (something like "test/inputs/Norse")
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir)
+energy_problem = EnergyProblem(connection)
 create_model!(energy_problem)
 solution = solve_model!(energy_problem)
 nothing # hide

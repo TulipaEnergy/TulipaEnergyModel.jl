@@ -392,11 +392,13 @@ phs_partitions = CSV.read(phs_partitions_file, DataFrame, header = 2) # hide
 Now let's solve the example and explore the results:
 
 ```@example seasonal-storage
-using TulipaEnergyModel
+using DuckDB, TulipaIO, TulipaEnergyModel
 
 input_dir = "../../test/inputs/Storage" # hide
 # input_dir should be the path to the Storage example
-energy_problem = run_scenario(input_dir)
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir)
+energy_problem = run_scenario(connection)
 ```
 
 Since the `battery` is not seasonal, it only has results for the intra-storage level of each representative period, as shown in the following figure:

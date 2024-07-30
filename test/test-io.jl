@@ -4,17 +4,17 @@
     end
 
     @testset "Check missing asset partition if strict" begin
-        dir = joinpath(INPUT_FOLDER, "Norse")
-        @test_throws Exception TulipaEnergyModel.create_energy_problem_from_csv_folder(
-            dir,
-            strict = true,
-        )
+        connection = DBInterface.connect(DuckDB.DB)
+        read_csv_folder(connection, joinpath(INPUT_FOLDER, "Norse"))
+        @test_throws Exception EnergyProblem(connection, strict = true)
     end
 end
 
 @testset "Output validation" begin
     @testset "Make sure that saving an unsolved energy problem fails" begin
-        energy_problem = create_energy_problem_from_csv_folder(joinpath(INPUT_FOLDER, "Tiny"))
+        connection = DBInterface.connect(DuckDB.DB)
+        read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
+        energy_problem = EnergyProblem(connection)
         output_dir = mktempdir()
         @test_throws Exception save_solution_to_file(output_dir, energy_problem)
         create_model!(energy_problem)
@@ -26,7 +26,9 @@ end
 
 @testset "Printing EnergyProblem validation" begin
     @testset "Check the missing cases of printing the EnergyProblem" begin # model infeasible is covered in testset "Infeasible Case Study".
-        energy_problem = create_energy_problem_from_csv_folder(joinpath(INPUT_FOLDER, "Tiny"))
+        connection = DBInterface.connect(DuckDB.DB)
+        read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
+        energy_problem = EnergyProblem(connection)
         print(energy_problem)
         create_model!(energy_problem)
         print(energy_problem)
@@ -37,8 +39,9 @@ end
 
 @testset "Graph structure" begin
     @testset "Graph structure is correct" begin
-        dir = joinpath(INPUT_FOLDER, "Tiny")
-        table_tree = create_input_dataframes_from_csv_folder(dir)
+        connection = DBInterface.connect(DuckDB.DB)
+        read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
+        table_tree = create_input_dataframes(connection)
         graph, _, _ = create_internal_structures(table_tree)
 
         @test Graphs.nv(graph) == 6
@@ -138,26 +141,9 @@ end
     end
     missing_asset = Symbol(split(lines[end], ",")[1]) # The asset the was not included
 
-    table_tree = create_input_dataframes_from_csv_folder(dir)
+    connection = DBInterface.connect(DuckDB.DB)
+    read_csv_folder(connection, dir)
+    table_tree = create_input_dataframes(connection)
     graph, rps, tf = create_internal_structures(table_tree)
     @test graph[missing_asset].timeframe_partitions == [i:i for i in 1:tf.num_periods]
-end
-
-@testset "Test that non-csv files are ignored when reading csv from a folder" begin
-    dir = mktempdir()
-    for (root, _, files) in walkdir(joinpath(INPUT_FOLDER, "Norse"))
-        for file in files
-            cp(joinpath(root, file), joinpath(dir, file))
-        end
-    end
-
-    connection1 = create_connection_and_import_from_csv_folder(dir)
-    open(joinpath(dir, "some-file.xyz"), "w") do io
-        println(io, "nothing here")
-    end
-    connection2 = create_connection_and_import_from_csv_folder(dir)
-
-    table_list(con) = [x.name for x in DBInterface.execute(con, "SHOW TABLES")]
-
-    @test table_list(connection1) == table_list(connection2)
 end

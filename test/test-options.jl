@@ -1,8 +1,9 @@
 @testset "Test some HiGHS options" begin
-    dir = joinpath(INPUT_FOLDER, "Tiny")
+    connection = DBInterface.connect(DuckDB.DB)
+    read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
     energy_problem = run_scenario(
-        dir,
-        OUTPUT_FOLDER;
+        connection;
+        output_folder = OUTPUT_FOLDER,
         optimizer = HiGHS.Optimizer,
         parameters = Dict(
             "output_flag" => false,
@@ -71,10 +72,11 @@ end
 end
 
 @testset "Test that bad options throw errors" begin
-    dir = joinpath(INPUT_FOLDER, "Tiny")
+    connection = DBInterface.connect(DuckDB.DB)
+    read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
     @test_throws MathOptInterface.UnsupportedAttribute energy_problem = run_scenario(
-        dir,
-        OUTPUT_FOLDER;
+        connection;
+        output_folder = OUTPUT_FOLDER,
         optimizer = HiGHS.Optimizer,
         parameters = Dict("bad_param" => 1.0),
     )
