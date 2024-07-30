@@ -54,14 +54,12 @@ end
 Structure to hold the data of one representative period.
 """
 struct RepresentativePeriod
-    mapping::Union{Nothing,Dict{Int,Float64}}  # which periods in the full problem formulation does this rep_period stand for
     weight::Float64
     timesteps::TimestepsBlock
     resolution::Float64
 
-    function RepresentativePeriod(mapping, num_timesteps, resolution)
-        weight = sum(values(mapping))
-        return new(mapping, weight, 1:num_timesteps, resolution)
+    function RepresentativePeriod(weight, num_timesteps, resolution)
+        return new(weight, 1:num_timesteps, resolution)
     end
 end
 
@@ -299,7 +297,8 @@ mutable struct EnergyProblem
             table_tree = create_input_dataframes(connection; strict = strict)
         end
         elapsed_time_internal = @elapsed begin
-            graph, representative_periods, timeframe = create_internal_structures(table_tree)
+            graph, representative_periods, timeframe =
+                create_internal_structures(table_tree, connection)
         end
         elapsed_time_cons = @elapsed begin
             constraints_partitions = compute_constraints_partitions(graph, representative_periods)

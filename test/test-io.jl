@@ -42,7 +42,7 @@ end
         connection = DBInterface.connect(DuckDB.DB)
         read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
         table_tree = create_input_dataframes(connection)
-        graph, _, _ = create_internal_structures(table_tree)
+        graph, _, _ = create_internal_structures(table_tree, connection)
 
         @test Graphs.nv(graph) == 6
         @test Graphs.ne(graph) == 5
@@ -53,10 +53,8 @@ end
 
 @testset "Test parsing of partitions" begin
     @testset "compute assets partitions" begin
-        representative_periods = [
-            RepresentativePeriod(Dict(1 => 1.0), 12, 1.0),
-            RepresentativePeriod(Dict(2 => 1.0), 24, 1.0),
-        ]
+        representative_periods =
+            [RepresentativePeriod(1.0, 12, 1.0), RepresentativePeriod(1.0, 24, 1.0)]
         df = DataFrame(
             :asset => [1, 2, 2, 3],
             :rep_period => [1, 1, 2, 2],
@@ -82,10 +80,8 @@ end
     end
 
     @testset "compute flows partitions" begin
-        representative_periods = [
-            RepresentativePeriod(Dict(1 => 1.0), 12, 1.0),
-            RepresentativePeriod(Dict(2 => 1.0), 24, 1.0),
-        ]
+        representative_periods =
+            [RepresentativePeriod(1.0, 12, 1.0), RepresentativePeriod(1.0, 24, 1.0)]
         df = DataFrame(
             :from_asset => [1, 2, 2, 3],
             :to_asset => [2, 3, 3, 4],
@@ -144,6 +140,6 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     read_csv_folder(connection, dir)
     table_tree = create_input_dataframes(connection)
-    graph, rps, tf = create_internal_structures(table_tree)
+    graph, rps, tf = create_internal_structures(table_tree, connection)
     @test graph[missing_asset].timeframe_partitions == [i:i for i in 1:tf.num_periods]
 end

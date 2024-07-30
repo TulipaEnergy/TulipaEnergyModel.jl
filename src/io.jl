@@ -122,20 +122,23 @@ The details of these structures are:
   - `timeframe`: Information of
     [`TulipaEnergyModel.Timeframe`](@ref).
 """
-function create_internal_structures(table_tree::TableTree)
-    # TODO: Depending on the outcome of issue #294, this can be done more efficiently with DataFrames, e.g.,
-    # combine(groupby(input_df_periods.mapping, :rep_period), :weight => sum => :weight)
+function create_internal_structures(table_tree::TableTree, connection)
 
-    # Create a dictionary of weights and populate it.
-    weights = Dict{Int,Dict{Int,Float64}}()
-    for sub_df in DataFrames.groupby(table_tree.periods.mapping, :rep_period)
-        rp = first(sub_df.rep_period)
-        weights[rp] = Dict(Pair.(sub_df.period, sub_df.weight))
-    end
+    # Calculate the weights from the "rep_periods_mapping" table in the connection
+    weights =
+        DBInterface.execute(
+            connection,
+            "SELECT rep_period, SUM(weight) AS weight
+                FROM rep_periods_mapping
+                GROUP BY rep_period
+                ORDER BY rep_period",
+        ) |>
+        DataFrame |>
+        df -> df.weight
 
     representative_periods = [
         RepresentativePeriod(weights[row.rep_period], row.num_timesteps, row.resolution) for
-        row in eachrow(table_tree.periods.rep_periods)
+        row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data")
     ]
 
     timeframe = Timeframe(maximum(table_tree.periods.mapping.period), table_tree.periods.mapping)
