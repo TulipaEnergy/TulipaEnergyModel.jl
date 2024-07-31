@@ -106,7 +106,7 @@ table_tree = create_input_dataframes(connection)
 The `table_tree` contains all tables in the folder, which are then processed into the internal structures below:
 
 ```@example manual
-graph, representative_periods, timeframe = create_internal_structures(table_tree)
+graph, representative_periods, timeframe = create_internal_structures(table_tree, connection)
 ```
 
 We also need a time partition for the constraints to create the model.
