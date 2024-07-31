@@ -39,7 +39,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rep_period),
+                        ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) * (
@@ -53,7 +53,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rep_period),
+                        ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) * graph[row.asset].initial_capacity
@@ -70,7 +70,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rep_period),
+                        ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) *
@@ -83,7 +83,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rep_period),
+                        ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) *
@@ -101,7 +101,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rep_period),
+                        ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) * (
@@ -121,7 +121,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rep_period),
+                        ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) * (
@@ -135,7 +135,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rep_period),
+                        ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) * graph[row.asset].initial_capacity
@@ -152,7 +152,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rep_period),
+                        ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) *
@@ -165,7 +165,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rep_period),
+                        ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) *
@@ -183,7 +183,7 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
-                        (:availability, row.rep_period),
+                        ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) * (

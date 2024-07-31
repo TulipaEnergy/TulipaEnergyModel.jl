@@ -44,11 +44,8 @@ function create_input_dataframes(connection::DuckDB.DB; strict = false)
             end
         end
         df = DataFrame(DBInterface.execute(connection, "SELECT * FROM $table_name"))
-        # enforcing schema to match what Tulipa expects; DuckDB string -> symbol, int -> string
+        # enforcing schema to match what Tulipa expects; int -> string
         for (key, value) in schema
-            if value <: Union{Missing,Symbol}
-                df[!, key] = [ismissing(x) ? x : Symbol(x) for x in df[!, key]]
-            end
             if value <: Union{Missing,String} && !(eltype(df[!, key]) <: Union{Missing,String})
                 df[!, key] = [ismissing(x) ? x : string(x) for x in df[!, key]]
             end
@@ -229,7 +226,7 @@ function create_internal_structures(table_tree::TableTree, connection)
             for partition_row in eachrow(table_tree.partitions.assets[:timeframe])
                 if row.name == partition_row.asset
                     graph[row.name].timeframe_partitions = _parse_rp_partition(
-                        Val(partition_row.specification),
+                        Val(Symbol(partition_row.specification)),
                         partition_row.partition,
                         1:timeframe.num_periods,
                     )
@@ -339,7 +336,7 @@ The following files are created:
 """
 function save_solution_to_file(output_folder, graph, dataframes, solution)
     output_file = joinpath(output_folder, "assets-investments.csv")
-    output_table = DataFrame(; asset = Symbol[], InstalUnits = Float64[], InstalCap_MW = Float64[])
+    output_table = DataFrame(; asset = String[], InstalUnits = Float64[], InstalCap_MW = Float64[])
     for a in MetaGraphsNext.labels(graph)
         if !graph[a].investable
             continue
@@ -352,7 +349,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
 
     output_file = joinpath(output_folder, "assets-investments-energy.csv")
     output_table = DataFrame(;
-        asset = Symbol[],
+        asset = String[],
         InstalEnergyUnits = Float64[],
         InstalEnergyCap_MWh = Float64[],
     )
@@ -371,8 +368,8 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
 
     output_file = joinpath(output_folder, "flows-investments.csv")
     output_table = DataFrame(;
-        from_asset = Symbol[],
-        to_asset = Symbol[],
+        from_asset = String[],
+        to_asset = String[],
         InstalUnits = Float64[],
         InstalCap_MW = Float64[],
     )
@@ -635,7 +632,11 @@ function compute_assets_partitions!(partitions, df, a, representative_periods)
             # If there is no time block specification, use default of 1
             [k:k for k in 1:N]
         else
-            _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rep_period.timesteps)
+            _parse_rp_partition(
+                Val(Symbol(df[j, :specification])),
+                df[j, :partition],
+                rep_period.timesteps,
+            )
         end
     end
 end
@@ -667,7 +668,11 @@ function compute_flows_partitions!(partitions, df, u, v, representative_periods)
             # If there is no time block specification, use default of 1
             [k:k for k in 1:N]
         else
-            _parse_rp_partition(Val(df[j, :specification]), df[j, :partition], rep_period.timesteps)
+            _parse_rp_partition(
+                Val(Symbol(df[j, :specification])),
+                df[j, :partition],
+                rep_period.timesteps,
+            )
         end
     end
 end

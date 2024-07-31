@@ -38,7 +38,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         if length(partitions) == 0
             # No data, but ensure schema is correct
             dataframes[key] = DataFrame(;
-                asset = Symbol[],
+                asset = String[],
                 rep_period = Int[],
                 timesteps_block = UnitRange{Int}[],
                 index = Int[],
@@ -62,7 +62,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
     # Only for storage assets
     dataframes[:storage_level_inter_rp] =
-        _construct_inter_rp_dataframes(A, graph, a -> a.type == :storage)
+        _construct_inter_rp_dataframes(A, graph, a -> a.type == "storage")
 
     # Dataframe to store the constraints for assets with maximum energy between (inter) representative periods
     # Only for assets with max energy limit
@@ -101,7 +101,7 @@ function _construct_inter_rp_dataframes(assets, graph, asset_filter)
         ) |> Iterators.flatten,
     )
     if size(df, 1) == 0
-        df = DataFrame(; asset = Symbol[], periods_block = PeriodsBlock[])
+        df = DataFrame(; asset = String[], periods_block = PeriodsBlock[])
     end
     df.index = 1:size(df, 1)
     return df
@@ -144,11 +144,11 @@ function add_expression_terms_intra_rp_constraints!(
     # grouped_cons' asset will be matched with either to or from, depending on whether
     # we are filling incoming or outgoing flows
     cases = [
-        (col_name = :incoming_flow, asset_match = :to, selected_assets = [:hub, :consumer]),
+        (col_name = :incoming_flow, asset_match = :to, selected_assets = ["hub", "consumer"]),
         (
             col_name = :outgoing_flow,
             asset_match = :from,
-            selected_assets = [:hub, :consumer, :producer],
+            selected_assets = ["hub", "consumer", "producer"],
         ),
     ]
 
@@ -310,7 +310,7 @@ function add_expression_terms_inter_rp_constraints!(
                     profile_aggregation(
                         sum,
                         graph[row_inter.asset].rep_periods_profiles,
-                        (:inflows, row_map.rep_period),
+                        ("inflows", row_map.rep_period),
                         representative_periods[row_map.rep_period].timesteps,
                         0.0,
                     ) *
@@ -396,15 +396,15 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         F = MetaGraphsNext.edge_labels(graph) |> collect
         filter_assets(key, values) =
             filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == values, A)
-        filter_assets(key, values::Vector{Symbol}) =
+        filter_assets(key, values::Vector{String}) =
             filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) in values, A)
         filter_flows(key, values) = filter(f -> getfield(graph[f...], key) == values, F)
 
-        Ac  = filter_assets(:type, :consumer)
-        Ap  = filter_assets(:type, :producer)
-        As  = filter_assets(:type, :storage)
-        Ah  = filter_assets(:type, :hub)
-        Acv = filter_assets(:type, :conversion)
+        Ac  = filter_assets(:type, "consumer")
+        Ap  = filter_assets(:type, "producer")
+        As  = filter_assets(:type, "storage")
+        Ah  = filter_assets(:type, "hub")
+        Acv = filter_assets(:type, "conversion")
         Ft  = filter_flows(:is_transport, true)
 
         # Create subsets of assets by investable
@@ -413,7 +413,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
         # Create subsets of storage assets
         Ase = As ∩ filter_assets(:storage_method_energy, true)
-        Asb = As ∩ filter_assets(:use_binary_storage_method, [:binary, :relaxed_binary])
+        Asb = As ∩ filter_assets(:use_binary_storage_method, ["binary", "relaxed_binary"])
     end
 
     # Unpacking dataframes
@@ -494,7 +494,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         sub_df_is_charging_binary = DataFrames.subset(
             df_is_charging,
             :asset => DataFrames.ByRow(in(Asb)),
-            :use_binary_storage_method => DataFrames.ByRow(==(:binary));
+            :use_binary_storage_method => DataFrames.ByRow(==("binary"));
             view = true,
         )
 

@@ -14,7 +14,7 @@ For each asset and representative period, it calls the `compute_rp_partition` fu
 to compute the partition based on the strategy.
 """
 function compute_constraints_partitions(graph, representative_periods)
-    constraints_partitions = Dict{Symbol,Dict{Tuple{Symbol,Int},Vector{TimestepsBlock}}}()
+    constraints_partitions = Dict{Symbol,Dict{Tuple{String,Int},Vector{TimestepsBlock}}}()
 
     _inflows(a, rp) =
         [graph[u, a].rep_periods_partitions[rp] for u in MetaGraphsNext.inneighbor_labels(graph, a)]
@@ -30,38 +30,38 @@ function compute_constraints_partitions(graph, representative_periods)
             name = :lowest,
             partitions = _allflows,
             strategy = :lowest,
-            asset_filter = a -> graph[a].type in [:conversion, :producer],
+            asset_filter = a -> graph[a].type in ["conversion", "producer"],
         ),
         (
             name = :lowest_storage_level_intra_rp,
             partitions = _all,
             strategy = :lowest,
-            asset_filter = a -> graph[a].type == :storage && !graph[a].is_seasonal,
+            asset_filter = a -> graph[a].type == "storage" && !graph[a].is_seasonal,
         ),
         (
             name = :lowest_in_out,
             partitions = _allflows,
             strategy = :lowest,
             asset_filter = a ->
-                graph[a].type == :storage && !ismissing(graph[a].use_binary_storage_method),
+                graph[a].type == "storage" && !ismissing(graph[a].use_binary_storage_method),
         ),
         (
             name = :highest_in_out,
             partitions = _allflows,
             strategy = :highest,
-            asset_filter = a -> graph[a].type in [:hub, :consumer],
+            asset_filter = a -> graph[a].type in ["hub", "consumer"],
         ),
         (
             name = :highest_in,
             partitions = _inflows,
             strategy = :highest,
-            asset_filter = a -> graph[a].type in [:storage],
+            asset_filter = a -> graph[a].type in ["storage"],
         ),
         (
             name = :highest_out,
             partitions = _outflows,
             strategy = :highest,
-            asset_filter = a -> graph[a].type in [:producer, :storage, :conversion],
+            asset_filter = a -> graph[a].type in ["producer", "storage", "conversion"],
         ),
     ]
 
