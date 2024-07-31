@@ -17,7 +17,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rep_period),
+                    ("availability", row.rep_period),
                     row.timesteps_block,
                     1.0,
                 ) * (
@@ -31,7 +31,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rep_period),
+                    ("availability", row.rep_period),
                     row.timesteps_block,
                     1.0,
                 ) * graph[row.from, row.to].initial_export_capacity
@@ -47,7 +47,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rep_period),
+                    ("availability", row.rep_period),
                     row.timesteps_block,
                     1.0,
                 ) * (
@@ -61,7 +61,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.from, row.to].rep_periods_profiles,
-                    (:availability, row.rep_period),
+                    ("availability", row.rep_period),
                     row.timesteps_block,
                     1.0,
                 ) * graph[row.from, row.to].initial_import_capacity
