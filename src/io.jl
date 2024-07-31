@@ -150,7 +150,7 @@ function create_internal_structures(table_tree::TableTree, connection)
             row.capacity,
             row.initial_capacity,
             row.peak_demand,
-            if !ismissing(row.consumer_balance_sense) && row.consumer_balance_sense == :>=
+            if !ismissing(row.consumer_balance_sense) && row.consumer_balance_sense == ">="
                 MathOptInterface.GreaterThan(0.0)
             else
                 MathOptInterface.EqualTo(0.0)
