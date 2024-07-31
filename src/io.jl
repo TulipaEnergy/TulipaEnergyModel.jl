@@ -138,7 +138,17 @@ function create_internal_structures(table_tree::TableTree, connection)
         row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data")
     ]
 
-    timeframe = Timeframe(maximum(table_tree.periods.mapping.period), table_tree.periods.mapping)
+    # Calculate the total number of periods and then pipe into a Dataframe to get the first value of the df with the num_periods
+    num_periods =
+        DBInterface.execute(
+            connection,
+            "SELECT MAX(period) AS period
+                FROM rep_periods_mapping",
+        ) |>
+        DataFrame |>
+        df -> df.period |> only
+
+    timeframe = Timeframe(num_periods, TulipaIO.get_table(connection, "rep_periods_mapping"))
 
     asset_data = [
         row.name => GraphAssetData(
@@ -168,7 +178,7 @@ function create_internal_structures(table_tree::TableTree, connection)
             row.use_binary_storage_method,
             row.max_energy_timeframe_partition,
             row.min_energy_timeframe_partition,
-        ) for row in eachrow(table_tree.static.assets)
+        ) for row in TulipaIO.get_table(Val(:raw), connection, "assets_data")
     ]
 
     flow_data = [
@@ -185,11 +195,14 @@ function create_internal_structures(table_tree::TableTree, connection)
             row.initial_export_capacity,
             row.initial_import_capacity,
             row.efficiency,
-        ) for row in eachrow(table_tree.static.flows)
+        ) for row in TulipaIO.get_table(Val(:raw), connection, "flows_data")
     ]
 
     num_assets = length(asset_data)
-    name_to_id = Dict(name => i for (i, name) in enumerate(table_tree.static.assets.name))
+    name_to_id = Dict(
+        row.name => i for
+        (i, row) in enumerate(TulipaIO.get_table(Val(:raw), connection, "assets_data"))
+    )
 
     _graph = Graphs.DiGraph(num_assets)
     for flow in flow_data
@@ -219,9 +232,9 @@ function create_internal_structures(table_tree::TableTree, connection)
     end
 
     # For timeframe, only the assets where is_seasonal is true are selected
-    for row in eachrow(table_tree.static.assets)
+    for row in TulipaIO.get_table(Val(:raw), connection, "assets_data")
         if row.is_seasonal
-            # Search for this row in the table_tree.partitions.assets and error if it is not found
+            # Search for this row in the TulipaIO.get_table(Val(:raw), connection, "assets_data") and error if it is not found
             found = false
             for partition_row in eachrow(table_tree.partitions.assets[:timeframe])
                 if row.name == partition_row.asset
