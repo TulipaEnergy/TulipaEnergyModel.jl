@@ -15,7 +15,7 @@ Then consider installing a user-friendly code editor, such as [VSCode](https://c
 
 Choose one:
 
--   In VSCode: Press CTRL+Shift+P and hit Enter to start a Julia REPL.
+-   In VSCode: Press CTRL+Shift+P and press Enter to start a Julia REPL.
 -   In the terminal: Type `julia` and press Enter
 
 ### Adding TulipaEnergyModel
@@ -46,7 +46,7 @@ pkg> test TulipaEnergyModel
 
 All tests should pass.
 
-## Run Scenario
+## Running a Scenario
 
 To run a scenario, use the function:
 
@@ -318,7 +318,9 @@ if energy_problem.termination_status == INFEASIBLE
 end
 ```
 
-## [Setup seasonal and non-seasonal storage](@id seasonal-setup)
+## Storage specifics
+
+### [Seasonal and non-seasonal storage](@id seasonal-setup)
 
 Section [Storage Modeling](@ref storage-modeling) explains the main concepts for modeling seasonal and non-seasonal storage in _TulipaEnergyModel.jl_. To define if an asset is one type or the other then consider the following:
 
@@ -328,9 +330,9 @@ Section [Storage Modeling](@ref storage-modeling) explains the main concepts for
 > **Note:**
 > If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
 
-## [Setup the energy storage investment method](@id storage-investment-setup)
+## [The energy storage investment method](@id storage-investment-setup)
 
-Energy storage assets have a unique characteristic wherein the investment is not solely based on the capacity to charge and discharge, but also on the energy capacity. Some storage asset types have a fixed duration for a given capacity, which means that there is a predefined ratio between energy and power. For instance, a battery of 10MW/unit and 4h duration implies that the energy capacity is 40MWh. Conversely, other storage asset types don't have a fixed ratio between the investment of capacity and storage capacity. Therefore, the energy capacity can be optimized independently of the capacity investment, such as hydrogen storage in salt caverns. To define if an energy asset is one type or the other then consider the following parameter setting in the file [`assets-data.csv`](@ref schemas):
+Energy storage assets have a unique characteristic wherein the investment is based not solely on the capacity to charge and discharge, but also on the energy capacity. Some storage asset types have a fixed duration for a given capacity, which means that there is a predefined ratio between energy and power. For instance, a battery of 10MW/unit and 4h duration implies that the energy capacity is 40MWh. Conversely, other storage asset types don't have a fixed ratio between the investment of capacity and storage capacity. Therefore, the energy capacity can be optimized independently of the capacity investment, such as hydrogen storage in salt caverns. To define if an energy asset is one type or the other then consider the following parameter setting in the file [`assets-data.csv`](@ref schemas):
 
 -   _Investment energy method_: To use this method, set the parameter `storage_method_energy` to `true`. In addition, it is necessary to define:
 
@@ -343,34 +345,39 @@ Energy storage assets have a unique characteristic wherein the investment is not
 
 For more details on the constraints that apply when selecting one method or the other, please visit the [`mathematical formulation`](@ref formulation) section.
 
-## [Setup the energy storage asset to avoid charging and discharging simultaneously](@id storage-binary-method-setup)
+## [Control simultaneous charging and discharging](@id storage-binary-method-setup)
 
 Depending on the configuration of the energy storage assets, it may or may not be possible to charge and discharge them simultaneously. For instance, a single battery cannot charge and discharge at the same time, but some pumped hydro storage technologies have separate components for charging (pump) and discharging (turbine) that can function independently, allowing them to charge and discharge simultaneously. To account for these differences, the model provides users with three options for the `use_binary_storage_method` parameter in the [`assets-data.csv`](@ref schemas) file:
 
 -   `binary`: the model adds a binary variable to prevent charging and discharging simultaneously.
 -   `relaxed_binary`: the model adds a binary variable that allows values between 0 and 1, reducing the likelihood of charging and discharging simultaneously. This option uses a tighter set of constraints close to the convex hull of the full formulation, resulting in fewer instances of simultaneous charging and discharging in the results.
-
-If no value is set in the parameter `use_binary_storage_method`, i.e., `missing` value, the storage asset can charge and discharge simultaneously.
+-   If no value is set, i.e., `missing` value, the storage asset can charge and discharge simultaneously.
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
-## [Setup a maximum or minimum outgoing energy limit](@id max-min-outgoing-energy-setup)
+## [Setting up a maximum or minimum outgoing energy limit](@id max-min-outgoing-energy-setup)
 
 For the model to add constraints for a [maximum or minimum energy limit](@ref inter-temporal-energy-constraints) for an asset throughout the model's timeframe (e.g., a year), we need to establish a couple of parameters:
 
 -   `is_seasonal = true` in the [`assets-data.csv`](@ref schemas). This parameter enables the model to use the inter-temporal constraints.
 -   `max_energy_timeframe_partition` $\neq$ `missing` or `min_energy_timeframe_partition` $\neq$ `missing` in the [`assets-data.csv`](@ref schemas). This value represents the peak energy that will be then multiplied by the profile for each period in the timeframe.
--   (optional) `profile_type` and `profile_name` in the [`assets-timeframe-profiles.csv`](@ref schemas) and the profile values in the [`profiles-timeframe.csv`](@ref schemas). If there is no profile defined, then by default it is assumed to be 1.0 p.u. for all periods in the timeframe.
+    > **Note:**
+    > These parameters are defined per period, and the default values for profiles are 1.0 p.u. per period. If the periods are determined daily, the energy limit for the whole year will be 365 times `max`or `min_energy_timeframe_partition`.
+-   (optional) `profile_type` and `profile_name` in the [`assets-timeframe-profiles.csv`](@ref schemas) and the profile values in the [`profiles-timeframe.csv`](@ref schemas). If there is no profile defined, then by default it is 1.0 p.u. for all periods in the timeframe.
 -   (optional) define a period partition in [`assets-timeframe-partitions.csv`](@ref schemas). If there is no partition defined, then by default the constraint is created for each period in the timeframe, otherwise, it will consider the partition definition in the file.
-
-For example, let's assume we have a year divided into 365 days because we are using days as periods in the representatives from the [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl). In addition, we define the `max_energy_timeframe_partition = 10 MWh`, meaning that the peak energy we want to have is 10MWh for each period or period partition. So, depending on the optional information we can have:
-
--   _No definition of profile and period partitions_: The default profile is 1.p.u. for each period and since there are no period partitions then constraints will be for each period (i.e., daily). So, the outgoing energy of the asset for each day must be less than or equal to 10MWh.
--   _Profile definition, but no definition of period partitions_: The profile definition and value will be in the [`assets-timeframe-profiles.csv`](@ref schemas) and [`profiles-timeframe.csv`](@ref schemas) files. For example, we define a profile that has the following first four values: 0.6 p.u., 1.0 p.u., 0.8 p.u., and 0.4 p.u. There are no period partitions, so constraints will be for each period (i.e., daily). Therefore the outgoing energy of the asset for the first four days must be less than or equal to 6MWh, 10MWh, 8MWh, and 4MWh, respectively.
--   _Profile and period partitions definition_: Using the same profile as above, we now define a period partition in the [`assets-timeframe-partitions.csv`](@ref schemas) file as `uniform` with a value of 2. This value means that we will aggregate every two periods (i.e., every two days). So, instead of having 365 constraints, we will have 183 constraints (182 every two days and one last constraint of 1 day). Then the profile is aggregated with the sum of the values inside the periods within the partition. Thus, the outgoing energy of the asset for the first two partitions (i.e., every two days) must be less than or equal to 16MWh and 12MWh, respectively.
-
-> **Note:**
-> The parameters `max_energy_timeframe_partition` and `min_energy_timeframe_partition` are defined per period. In addition, the default values for profiles are 1.0 p.u. per period. If the periods are determined daily, the energy limit for the whole year will be 365 times `max_energy_timeframe_partition` or 365 times `min_energy_timeframe_partition`.
 
 > **Tip:**
 > If you want to set a limit on the maximum or minimum outgoing energy for a year with representative days, you can use the partition definition to create a single partition for the entire year to combine the profile.
+
+#### Example
+
+Let's assume we have a year divided into 365 days because we are using days as periods in the representatives from [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl). Also, we define the `max_energy_timeframe_partition = 10 MWh`, meaning the peak energy we want to have is 10MWh for each period or period partition. So depending on the optional information, we can have:
+
+<!-- prettier-ignore -->
+| Profile | Period Partitions | Example |
+| ------- | ----------------- | ------- |
+| None    | None              | The default profile is 1.p.u. for each period and since there are no period partitions, the constraints will be for each period (i.e., daily). So the outgoing energy of the asset for each day must be less than or equal to 10MWh. |
+| Defined | None              | The profile definition and value will be in the [`assets-timeframe-profiles.csv`](@ref schemas) and [`profiles-timeframe.csv`](@ref schemas) files. For example, we define a profile that has the following first four values: 0.6 p.u., 1.0 p.u., 0.8 p.u., and 0.4 p.u. There are no period partitions, so constraints will be for each period (i.e., daily). Therefore the outgoing energy of the asset for the first four days must be less than or equal to 6MWh, 10MWh, 8MWh, and 4MWh. |
+| Defined | Defined           | Using the same profile as above, we now define a period partition in the [`assets-timeframe-partitions.csv`](@ref schemas) file as `uniform` with a value of 2. This value means that we will aggregate every two periods (i.e., every two days). So, instead of having 365 constraints, we will have 183 constraints (182 every two days and one last constraint of 1 day). Then the profile is aggregated with the sum of the values inside the periods within the partition. Thus, the outgoing energy of the asset for the first two partitions (i.e., every two days) must be less than or equal to 16MWh and 12MWh, respectively. |
+
+<!-- prettier-ignore-end -->
