@@ -62,7 +62,7 @@ function add_storage_constraints!(
                 profile_aggregation(
                     sum,
                     graph[a].rep_periods_profiles,
-                    ("inflows", rp),
+                    (:inflows, rp),
                     row.timesteps_block,
                     0.0,
                 ) * graph[a].storage_inflows +
@@ -100,7 +100,7 @@ function add_storage_constraints!(
             profile_aggregation(
                 Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
-                ("min_storage_level", row.rep_period),
+                (:min_storage_level, row.rep_period),
                 row.timesteps_block,
                 0.0,
             ) * (
@@ -162,7 +162,7 @@ function add_storage_constraints!(
             profile_aggregation(
                 Statistics.mean,
                 graph[row.asset].timeframe_profiles,
-                "max_storage_level",
+                :max_storage_level,
                 row.periods_block,
                 1.0,
             ) * (
@@ -181,7 +181,7 @@ function add_storage_constraints!(
             profile_aggregation(
                 Statistics.mean,
                 graph[row.asset].timeframe_profiles,
-                "min_storage_level",
+                :min_storage_level,
                 row.periods_block,
                 0.0,
             ) * (
