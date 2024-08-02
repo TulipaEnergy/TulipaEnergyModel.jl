@@ -139,16 +139,9 @@ function create_internal_structures(table_tree::TableTree, connection)
     ]
 
     # Calculate the total number of periods and then pipe into a Dataframe to get the first value of the df with the num_periods
-    num_periods =
-        DBInterface.execute(
-            connection,
-            "SELECT MAX(period) AS period
-                FROM rep_periods_mapping",
-        ) |>
-        DataFrame |>
-        df -> df.period |> only
+    num_periods, = DuckDB.query(connection, "SELECT MAX(period) AS period FROM rep_periods_mapping")
 
-    timeframe = Timeframe(num_periods, TulipaIO.get_table(connection, "rep_periods_mapping"))
+    timeframe = Timeframe(num_periods.period, TulipaIO.get_table(connection, "rep_periods_mapping"))
 
     asset_data = [
         row.name => GraphAssetData(
