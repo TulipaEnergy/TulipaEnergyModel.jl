@@ -28,6 +28,8 @@ const schemas = (
             :use_binary_storage_method => Union{String,Missing},        # Whether to use an extra binary variable for the storage assets to avoid charging and discharging simultaneously (missing;binary;relaxed_binary)
             :max_energy_timeframe_partition => Union{Missing,Float64},  # MWh (Missing -> no limit)
             :min_energy_timeframe_partition => Union{Missing,Float64},  # MWh (Missing -> no limit)
+            :unit_commitment => Bool,                                   # Whether asset has unit commitment constraints
+            :unit_commitment_method => Union{Missing,String},           # Which unit commitment method to use (i.e., basic)
         ),
 
         # Schema for the assets-profiles.csv file.
