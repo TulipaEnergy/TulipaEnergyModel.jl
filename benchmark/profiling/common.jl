@@ -1,5 +1,5 @@
 # This file should be common for all benchmark scripts
-using DuckDB, TulipaIO, TulipaEnergyModel
+using BenchmarkTools, DuckDB, TulipaIO, TulipaEnergyModel
 
 norse_dir = joinpath(@__DIR__, "..", "..", "test", "inputs", "Norse")
 eu_dir = joinpath(@__DIR__, "..", "EU")
