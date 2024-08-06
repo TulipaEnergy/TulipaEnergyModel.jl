@@ -456,6 +456,7 @@ function create_model(
         @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
         @variable(model, 0 ≤ flows_investment[Fi])
         @variable(model, 0 ≤ assets_investment_energy[Ase∩Ai])  #number of installed asset units for storage energy [N]
+        @variable(model, 0 ≤ units_on)
         storage_level_intra_rp =
             model[:storage_level_intra_rp] = [
                 @variable(

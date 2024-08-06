@@ -61,6 +61,9 @@ mutable struct GraphAssetData
     use_binary_storage_method::Union{Missing,String}
     max_energy_timeframe_partition::Union{Missing,Float64}
     min_energy_timeframe_partition::Union{Missing,Float64}
+    min_oper_point::Union{Missing,Float64}
+    max_ramp_up::Union{Missing,Float64}
+    max_ramp_down::Union{Missing,Float64}
     timeframe_profiles::Dict{String,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{String,Int},Vector{Float64}}
     timeframe_partitions::Vector{PeriodsBlock}
@@ -98,6 +101,9 @@ mutable struct GraphAssetData
         use_binary_storage_method,
         max_energy_timeframe_partition,
         min_energy_timeframe_partition,
+        min_oper_point,
+        max_ramp_up,
+        max_ramp_down,
     )
         timeframe_profiles = Dict{String,Vector{Float64}}()
         rep_periods_profiles = Dict{Tuple{String,Int},Vector{Float64}}()
@@ -127,6 +133,9 @@ mutable struct GraphAssetData
             use_binary_storage_method,
             max_energy_timeframe_partition,
             min_energy_timeframe_partition,
+            min_oper_point,
+            max_ramp_up,
+            max_ramp_down,
             timeframe_profiles,
             rep_periods_profiles,
             timeframe_partitions,
