@@ -40,6 +40,7 @@ include("constraints/conversion.jl")
 include("constraints/energy.jl")
 include("constraints/hub.jl")
 include("constraints/investment.jl")
+include("constraints/ramping-and-unit-commitment.jl")
 include("constraints/storage.jl")
 include("constraints/transport.jl")
 

@@ -417,7 +417,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
         # Create subsets of assets for unit commitment
         Auc = filter_assets(:unit_commitment, true)
-        Auc_basic = Auc ∩ filter_assets(:unit_commitment_method, basic)
+        Auc_basic = Auc ∩ filter_assets(:unit_commitment_method, "basic")
     end
 
     # Unpacking dataframes
@@ -746,6 +746,17 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         assets_investment,
         assets_investment_energy,
         flows_investment,
+    )
+
+    @timeit to "add_ramping_constraints!" add_ramping_constraints!(
+        model,
+        graph,
+        df_flows,
+        flow,
+        F,
+        Auc,
+        units_on,
+        dataframes,
     )
 
     if write_lp_file

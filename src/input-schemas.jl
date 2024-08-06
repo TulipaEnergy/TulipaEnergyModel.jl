@@ -30,9 +30,9 @@ const schemas = (
             :min_energy_timeframe_partition => Union{Missing,Float64},  # MWh (Missing -> no limit)
             :unit_commitment => Bool,                                   # Whether asset has unit commitment constraints
             :unit_commitment_method => Union{Missing,String},           # Which unit commitment method to use (i.e., basic)
-            :min_oper_point => Float64,                                 # Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset [p.u.]
-            :max_ramp_up => Float64,                                    # Maximum ramping up rate as a portion of the capacity of asset [p.u.]
-            :max_ramp_down => Float64,                                  # Maximum ramping down rate as a portion of the capacity of asset [p.u.]
+            :min_oper_point => Union{Missing,Float64},                  # Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset [p.u.]
+            :max_ramp_up => Union{Missing,Float64},                     # Maximum ramping up rate as a portion of the capacity of asset [p.u.]
+            :max_ramp_down => Union{Missing,Float64},                   # Maximum ramping down rate as a portion of the capacity of asset [p.u.]
         ),
 
         # Schema for the assets-profiles.csv file.
