@@ -89,6 +89,11 @@ function create_internal_structures(connection)
             row.use_binary_storage_method,
             row.max_energy_timeframe_partition,
             row.min_energy_timeframe_partition,
+            row.unit_commitment,
+            row.unit_commitment_method,
+            row.min_oper_point,
+            row.max_ramp_up,
+            row.max_ramp_down,
         ) for row in TulipaIO.get_table(Val(:raw), connection, "assets_data")
     ]
 
