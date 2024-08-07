@@ -1,103 +1,5 @@
-export create_input_dataframes,
-    create_internal_structures,
-    save_solution_to_file,
-    compute_assets_partitions!,
-    compute_flows_partitions!
-
-"""
-    table_tree = create_input_dataframes(connection)
-
-Returns the `table_tree::TableTree` structure that holds all data using a DB `connection` that
-has loaded all the relevant tables.
-Set `strict = true` to error if assets are missing from partition data.
-
-The following tables are expected to exist in the DB.
-
-> !!! warn
->
-> The schemas are currently being ignored, see issue
-[#636](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues/636) for more information.
-
-  _ `assets_timeframe_partitions`: Following the schema `schemas.assets.timeframe_partition`.
-  _ `assets_data`: Following the schema `schemas.assets.data`.
-  _ `assets_timeframe_profiles`: Following the schema `schemas.assets.profiles_reference`.
-  _ `assets_profiles`: Following the schema `schemas.assets.profiles_reference`.
-  _ `assets_rep_periods_partitions`: Following the schema `schemas.assets.rep_periods_partition`.
-  _ `flows_data`: Following the schema `schemas.flows.data`.
-  _ `flows_profiles`: Following the schema `schemas.flows.profiles_reference`.
-  _ `flows_rep_periods_partitions`: Following the schema `schemas.flows.rep_periods_partition`.
-  _ `profiles_timeframe`: Following the schema `schemas.timeframe.profiles_data`.
-  _ `profiles_rep_periods`: Following the schema `schemas.rep_periods.profiles_data`.
-  _ `rep_periods_data`: Following the schema `schemas.rep_periods.data`.
-  _ `rep_periods_mapping`: Following the schema `schemas.rep_periods.mapping`.
-"""
-function create_input_dataframes(connection::DuckDB.DB; strict = false)
-    function read_table(table_name; allow_missing_table = false)
-        schema = get_schema(table_name)
-        if allow_missing_table
-            existence_query = DBInterface.execute(
-                connection,
-                "SELECT table_name FROM information_schema.tables WHERE table_name = '$table_name'",
-            )
-            if length(collect(existence_query)) == 0
-                return DataFrame([key => value[] for (key, value) in schema]...)
-            end
-        end
-        df = DataFrame(DBInterface.execute(connection, "SELECT * FROM $table_name"))
-        # enforcing schema to match what Tulipa expects; int -> string
-        for (key, value) in schema
-            if value <: Union{Missing,String} && !(eltype(df[!, key]) <: Union{Missing,String})
-                df[!, key] = [ismissing(x) ? x : string(x) for x in df[!, key]]
-            end
-        end
-        return df
-    end
-    df_assets_data = read_table("assets_data")
-    df_flows_data  = read_table("flows_data")
-    df_rep_periods = read_table("rep_periods_data")
-    df_rp_mapping  = read_table("rep_periods_mapping")
-
-    dfs_assets_profiles = Dict(
-        :rep_periods => read_table("assets_profiles"),
-        :timeframe => read_table("assets_timeframe_profiles"; allow_missing_table = true),
-    )
-    df_flows_profiles = read_table("flows_profiles")
-    dfs_assets_partitions = Dict(
-        period_type =>
-            read_table("assets_$(period_type)_partitions"; allow_missing_table = true) for
-        period_type in PERIOD_TYPES
-    )
-    df_flows_partitions = read_table("flows_rep_periods_partitions"; allow_missing_table = true)
-
-    dfs_profiles = Dict(
-        :rep_periods => read_table("profiles_rep_periods"),
-        :timeframe => read_table("profiles_timeframe"; allow_missing_table = true),
-    )
-
-    # Error if partition data is missing assets (if strict)
-    if strict
-        missing_assets =
-            setdiff(df_assets_data[!, :name], dfs_assets_partitions[:rep_periods][!, :asset])
-        if length(missing_assets) > 0
-            msg = "Error: Partition data missing for these assets: \n"
-            for a in missing_assets
-                msg *= "- $a\n"
-            end
-            msg *= "To assume missing asset resolutions follow the representative period's time resolution, set strict = false.\n"
-
-            error(msg)
-        end
-    end
-
-    table_tree = TableTree(
-        (assets = df_assets_data, flows = df_flows_data),
-        (assets = dfs_assets_profiles, flows = df_flows_profiles, data = dfs_profiles),
-        (assets = dfs_assets_partitions, flows = df_flows_partitions),
-        (rep_periods = df_rep_periods, mapping = df_rp_mapping),
-    )
-
-    return table_tree
-end
+export create_internal_structures,
+    save_solution_to_file, compute_assets_partitions!, compute_flows_partitions!
 
 """
     graph, representative_periods, timeframe  = create_internal_structures(table_tree)
@@ -119,7 +21,7 @@ The details of these structures are:
   - `timeframe`: Information of
     [`TulipaEnergyModel.Timeframe`](@ref).
 """
-function create_internal_structures(table_tree::TableTree, connection)
+function create_internal_structures(connection)
 
     # Calculate the weights from the "rep_periods_mapping" table in the connection
     weights =
@@ -208,7 +110,7 @@ function create_internal_structures(table_tree::TableTree, connection)
     for a in MetaGraphsNext.labels(graph)
         compute_assets_partitions!(
             graph[a].rep_periods_partitions,
-            table_tree.partitions.assets[:rep_periods],
+            TulipaIO.get_table(connection, "assets_rep_periods_partitions"),
             a,
             representative_periods,
         )
@@ -217,41 +119,41 @@ function create_internal_structures(table_tree::TableTree, connection)
     for (u, v) in MetaGraphsNext.edge_labels(graph)
         compute_flows_partitions!(
             graph[u, v].rep_periods_partitions,
-            table_tree.partitions.flows,
+            TulipaIO.get_table(connection, "flows_rep_periods_partitions"),
             u,
             v,
             representative_periods,
         )
     end
 
-    # For timeframe, only the assets where is_seasonal is true are selected
-    for row in TulipaIO.get_table(Val(:raw), connection, "assets_data")
-        if row.is_seasonal
-            # Search for this row in the TulipaIO.get_table(Val(:raw), connection, "assets_data") and error if it is not found
-            found = false
-            for partition_row in eachrow(table_tree.partitions.assets[:timeframe])
-                if row.name == partition_row.asset
-                    graph[row.name].timeframe_partitions = _parse_rp_partition(
-                        Val(Symbol(partition_row.specification)),
-                        partition_row.partition,
-                        1:timeframe.num_periods,
-                    )
-                    found = true
-                    break
-                end
-            end
-            if !found
-                graph[row.name].timeframe_partitions =
-                    _parse_rp_partition(Val(:uniform), "1", 1:timeframe.num_periods)
-            end
-        end
+    #=
+    For timeframe, This SQL query retrieves the names of assets from the `assets_data` table
+    along with their corresponding partition specifications from the `assets_timeframe_partitions` table,
+    if they exist. If a specification or partition is not available, it defaults to 'uniform' and '1' respectively.
+    The query only includes assets marked as seasonal (`is_seasonal` column) in the `assets_data` table.
+    =#
+    find_assets_partitions_query = """
+         SELECT assets_data.name,
+                 IFNULL(assets_timeframe_partitions.specification, 'uniform') AS specification,
+                 IFNULL(assets_timeframe_partitions.partition, '1') AS partition
+         FROM assets_data
+         LEFT JOIN assets_timeframe_partitions
+             ON assets_data.name = assets_timeframe_partitions.asset
+             WHERE assets_data.is_seasonal
+         """
+    for row in DuckDB.query(connection, find_assets_partitions_query)
+        graph[row.name].timeframe_partitions = _parse_rp_partition(
+            Val(Symbol(row.specification)),
+            row.partition,
+            1:timeframe.num_periods,
+        )
     end
 
-    for asset_profile_row in eachrow(table_tree.profiles.assets[:rep_periods]) # row = asset, profile_type, profile_name
+    for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_profiles") # row = asset, profile_type, profile_name
         gp = DataFrames.groupby( # 2. group by rep_period
             filter( # 1. Filter on profile_name
                 :profile_name => ==(asset_profile_row.profile_name),
-                table_tree.profiles.data[:rep_periods];
+                TulipaIO.get_table(connection, "profiles_rep_periods");
                 view = true,
             ),
             :rep_period,
@@ -264,11 +166,11 @@ function create_internal_structures(table_tree::TableTree, connection)
         end
     end
 
-    for flow_profile_row in eachrow(table_tree.profiles.flows)
+    for flow_profile_row in TulipaIO.get_table(Val(:raw), connection, "flows_profiles")
         gp = DataFrames.groupby(
             filter(
                 :profile_name => ==(flow_profile_row.profile_name),
-                table_tree.profiles.data[:rep_periods];
+                TulipaIO.get_table(connection, "profiles_rep_periods");
                 view = true,
             ),
             :rep_period;
@@ -281,10 +183,10 @@ function create_internal_structures(table_tree::TableTree, connection)
         end
     end
 
-    for asset_profile_row in eachrow(table_tree.profiles.assets[:timeframe]) # row = asset, profile_type, profile_name
+    for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_timeframe_profiles") # row = asset, profile_type, profile_name
         df = filter(
             :profile_name => ==(asset_profile_row.profile_name),
-            table_tree.profiles.data[:timeframe];
+            TulipaIO.get_table(connection, "profiles_timeframe");
             view = true,
         )
         graph[asset_profile_row.asset].timeframe_profiles[asset_profile_row.profile_type] = df.value
