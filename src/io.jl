@@ -23,6 +23,18 @@ The details of these structures are:
 """
 function create_internal_structures(connection)
 
+    # Create tables that are allowed to be missing
+    tables_allowed_to_be_missing = [
+        "assets_rep_periods_partitions"
+        "assets_timeframe_partitions"
+        "assets_timeframe_profiles"
+        "flows_rep_periods_partitions"
+        "profiles_timeframe"
+    ]
+    for table in tables_allowed_to_be_missing
+        _check_if_table_exist(connection, table)
+    end
+
     # Calculate the weights from the "rep_periods_mapping" table in the connection
     weights =
         DBInterface.execute(
@@ -201,6 +213,21 @@ function get_schema(tablename)
     else
         error("No implicit schema for table named $tablename")
     end
+end
+
+function _check_if_table_exist(connection, table_name)
+    schema = get_schema(table_name)
+
+    existence_query = DBInterface.execute(
+        connection,
+        "SELECT table_name FROM information_schema.tables WHERE table_name = '$table_name'",
+    )
+    if length(collect(existence_query)) == 0
+        columns_in_table = join(("$key $value" for (key, value) in schema), ",")
+        create_table_query =
+            DuckDB.query(connection, "CREATE TABLE $table_name ($columns_in_table)")
+    end
+    return nothing
 end
 
 """
