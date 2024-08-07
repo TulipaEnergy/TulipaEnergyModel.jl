@@ -770,10 +770,10 @@ function create_model(
         graph,
         df_flows,
         flow,
-        F,
         Auc,
+        Auc_basic,
         units_on,
-        dataframes,
+        Ai,
     )
 
     if write_lp_file
