@@ -414,6 +414,10 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         # Create subsets of storage assets
         Ase = As ∩ filter_assets(:storage_method_energy, true)
         Asb = As ∩ filter_assets(:use_binary_storage_method, ["binary", "relaxed_binary"])
+
+        # Create subsets of assets for unit commitment
+        Auc = filter_assets(:unit_commitment, true)
+        Auc_basic = Auc ∩ filter_assets(:unit_commitment_method, "basic")
     end
 
     # Unpacking dataframes
@@ -443,6 +447,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
         @variable(model, 0 ≤ flows_investment[Fi])
         @variable(model, 0 ≤ assets_investment_energy[Ase∩Ai])  #number of installed asset units for storage energy [N]
+        @variable(model, 0 ≤ units_on)
         storage_level_intra_rp =
             model[:storage_level_intra_rp] = [
                 @variable(
@@ -741,6 +746,17 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         assets_investment,
         assets_investment_energy,
         flows_investment,
+    )
+
+    @timeit to "add_ramping_constraints!" add_ramping_constraints!(
+        model,
+        graph,
+        df_flows,
+        flow,
+        Auc,
+        Auc_basic,
+        units_on,
+        Ai,
     )
 
     if write_lp_file
