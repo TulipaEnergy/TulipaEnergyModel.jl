@@ -135,7 +135,7 @@ end
             println(io, line)
         end
     end
-    missing_asset = split(lines[end], ",")[1] # The asset that was not included
+    missing_asset = Symbol(split(lines[end], ",")[1]) # The asset the was not included
 
     connection = DBInterface.connect(DuckDB.DB)
     read_csv_folder(connection, dir)
