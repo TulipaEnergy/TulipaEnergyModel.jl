@@ -2,18 +2,16 @@
     @testset "Test that missing schemas throw correctly" begin
         @test_throws ErrorException TulipaEnergyModel.get_schema("bad_assets_data")
     end
-
-    @testset "Check missing asset partition if strict" begin
-        connection = DBInterface.connect(DuckDB.DB)
-        read_csv_folder(connection, joinpath(INPUT_FOLDER, "Norse"))
-        @test_throws Exception EnergyProblem(connection, strict = true)
-    end
 end
 
 @testset "Output validation" begin
     @testset "Make sure that saving an unsolved energy problem fails" begin
         connection = DBInterface.connect(DuckDB.DB)
-        read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
+        read_csv_folder(
+            connection,
+            joinpath(INPUT_FOLDER, "Tiny");
+            schemas = TulipaEnergyModel.schema_per_file,
+        )
         energy_problem = EnergyProblem(connection)
         output_dir = mktempdir()
         @test_throws Exception save_solution_to_file(output_dir, energy_problem)
@@ -27,7 +25,11 @@ end
 @testset "Printing EnergyProblem validation" begin
     @testset "Check the missing cases of printing the EnergyProblem" begin # model infeasible is covered in testset "Infeasible Case Study".
         connection = DBInterface.connect(DuckDB.DB)
-        read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
+        read_csv_folder(
+            connection,
+            joinpath(INPUT_FOLDER, "Tiny");
+            schemas = TulipaEnergyModel.schema_per_file,
+        )
         energy_problem = EnergyProblem(connection)
         print(energy_problem)
         create_model!(energy_problem)
@@ -40,9 +42,12 @@ end
 @testset "Graph structure" begin
     @testset "Graph structure is correct" begin
         connection = DBInterface.connect(DuckDB.DB)
-        read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
-        table_tree = create_input_dataframes(connection)
-        graph, _, _ = create_internal_structures(table_tree, connection)
+        read_csv_folder(
+            connection,
+            joinpath(INPUT_FOLDER, "Tiny");
+            schemas = TulipaEnergyModel.schema_per_file,
+        )
+        graph, _, _ = create_internal_structures(connection)
 
         @test Graphs.nv(graph) == 6
         @test Graphs.ne(graph) == 5
@@ -138,8 +143,7 @@ end
     missing_asset = split(lines[end], ",")[1] # The asset that was not included
 
     connection = DBInterface.connect(DuckDB.DB)
-    read_csv_folder(connection, dir)
-    table_tree = create_input_dataframes(connection)
-    graph, rps, tf = create_internal_structures(table_tree, connection)
+    read_csv_folder(connection, dir; schemas = TulipaEnergyModel.schema_per_file)
+    graph, rps, tf = create_internal_structures(connection)
     @test graph[missing_asset].timeframe_partitions == [i:i for i in 1:tf.num_periods]
 end

@@ -1,6 +1,10 @@
 @testset "Test some HiGHS options" begin
     connection = DBInterface.connect(DuckDB.DB)
-    read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
+    read_csv_folder(
+        connection,
+        joinpath(INPUT_FOLDER, "Tiny");
+        schemas = TulipaEnergyModel.schema_per_file,
+    )
     energy_problem = run_scenario(
         connection;
         output_folder = OUTPUT_FOLDER,
@@ -73,7 +77,11 @@ end
 
 @testset "Test that bad options throw errors" begin
     connection = DBInterface.connect(DuckDB.DB)
-    read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
+    read_csv_folder(
+        connection,
+        joinpath(INPUT_FOLDER, "Tiny");
+        schemas = TulipaEnergyModel.schema_per_file,
+    )
     @test_throws MathOptInterface.UnsupportedAttribute energy_problem = run_scenario(
         connection;
         output_folder = OUTPUT_FOLDER,

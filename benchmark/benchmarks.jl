@@ -17,7 +17,7 @@ end
 const OUTPUT_FOLDER_BM = mktempdir()
 
 connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, INPUT_FOLDER_BM)
+read_csv_folder(connection, INPUT_FOLDER_BM; schemas = TulipaEnergyModel.schema_per_file)
 
 SUITE["energy_problem"] = BenchmarkGroup()
 SUITE["energy_problem"]["input_and_constructor"] = @benchmarkable begin

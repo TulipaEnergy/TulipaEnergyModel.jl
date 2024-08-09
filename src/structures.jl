@@ -256,7 +256,7 @@ mutable struct EnergyProblem
     Constructs a new EnergyProblem object using the `connection`.
     This will call relevant functions to generate all input that is required for the model creation.
     """
-    function EnergyProblem(connection; strict = false)
+    function EnergyProblem(connection)
         elapsed_time_internal = @elapsed begin
             graph, representative_periods, timeframe = create_internal_structures(connection)
         end

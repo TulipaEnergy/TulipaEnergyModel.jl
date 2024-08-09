@@ -201,28 +201,9 @@ It hides the complexity behind the energy problem, making the usage more friendl
 
 The `EnergyProblem` can also be constructed using the minimal constructor below.
 
--   `EnergyProblem(table_tree)`: Constructs a new `EnergyProblem` object with the given [`table_tree`](@ref TableTree) object. The `graph`, `representative_periods`, and `timeframe` are computed using `create_internal_structures`. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
+-   `EnergyProblem(connection)`: Constructs a new `EnergyProblem` object with the given `connection` that has been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl). The `graph`, `representative_periods`, and `timeframe` are computed using `create_internal_structures`. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
-
-### TableTree
-
-To move and keep data, we use [DataFrames](https://dataframes.juliadata.org) and a tree-like structure to link to these structures.
-Each field in this structure is a NamedTuple. Below, you will find its fields:
-
--   `static`: Stores the data that does not vary inside a year. Its fields are
-    -   `assets`: Assets data.
-    -   `flows`: Flows data.
--   `profiles`: Stores the profile data indexed by:
-    -   `assets`: Dictionary with the reference to assets' profiles indexed by periods (`"rep-periods"` or `"timeframe"`).
-    -   `flows`: Reference to flows' profiles for representative periods.
-    -   `profiles`: Actual profile data. Dictionary of dictionary indexed by periods and then by the profile name.
--   `partitions`: Stores the partitions data indexed by:
-    -   `assets`: Dictionary with the specification of the assets' partitions indexed by periods.
-    -   `flows`: Specification of the flows' partitions for representative periods.
--   `periods`: Stores the periods data, indexed by:
-    -   `rep_periods`: Representative periods.
-    -   `timeframe`: Timeframe periods.
 
 ### Graph
 

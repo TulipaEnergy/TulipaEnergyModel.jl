@@ -27,8 +27,9 @@ using DuckDB, TulipaIO, TulipaEnergyModel
 
 input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
+# TulipaEnergyModel.schema_per_file contains the schema with columns and types the file must have
 connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir)
+read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_file)
 energy_problem = run_scenario(connection)
 ```
 
@@ -47,7 +48,7 @@ using DuckDB, TulipaIO, TulipaEnergyModel
 input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
 connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir)
+read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_file)
 energy_problem = EnergyProblem(connection)
 ```
 
@@ -96,17 +97,8 @@ using DuckDB, TulipaIO, TulipaEnergyModel
 input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
 connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir)
-```
-
-```@example manual
-table_tree = create_input_dataframes(connection)
-```
-
-The `table_tree` contains all tables in the folder, which are then processed into the internal structures below:
-
-```@example manual
-graph, representative_periods, timeframe = create_internal_structures(table_tree, connection)
+read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_file)
+graph, representative_periods, timeframe = create_internal_structures(connection)
 ```
 
 We also need a time partition for the constraints to create the model.
@@ -157,7 +149,7 @@ using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
 
 input_dir = "../../test/inputs/Tiny" # hide
 connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir)
+read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_file)
 energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer)
 ```
 
@@ -192,7 +184,7 @@ using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
 input_dir = "../../test/inputs/Tiny" # hide
 parameters = Dict("tm_lim" => 1)
 connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir)
+read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_file)
 energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer, parameters = parameters)
 energy_problem.termination_status
 ```
@@ -286,7 +278,7 @@ using DuckDB, TulipaIO, TulipaEnergyModel
 input_dir = "../../test/inputs/Norse" # hide
 # input_dir should be the path to Norse as a string (something like "test/inputs/Norse")
 connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir)
+read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_file)
 energy_problem = EnergyProblem(connection)
 create_model!(energy_problem)
 solution = solve_model!(energy_problem)

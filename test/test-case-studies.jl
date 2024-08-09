@@ -9,7 +9,7 @@
     end
     for (optimizer, parameters) in parameters_dict
         connection = DBInterface.connect(DuckDB.DB)
-        read_csv_folder(connection, dir)
+        read_csv_folder(connection, dir; schemas = TulipaEnergyModel.schema_per_file)
         energy_problem = run_scenario(connection; optimizer, parameters)
         @test JuMP.is_solved_and_feasible(energy_problem.model)
     end
@@ -23,7 +23,7 @@ end
     end
     for optimizer in optimizer_list
         connection = DBInterface.connect(DuckDB.DB)
-        read_csv_folder(connection, dir)
+        read_csv_folder(connection, dir; schemas = TulipaEnergyModel.schema_per_file)
         energy_problem = run_scenario(connection; optimizer)
         @test energy_problem.objective_value ≈ 269238.43825 rtol = 1e-8
     end
@@ -32,7 +32,7 @@ end
 @testset "Test run_scenario arguments" begin
     dir = joinpath(INPUT_FOLDER, "Norse")
     connection = DBInterface.connect(DuckDB.DB)
-    read_csv_folder(connection, dir)
+    read_csv_folder(connection, dir; schemas = TulipaEnergyModel.schema_per_file)
     energy_problem = run_scenario(
         connection;
         output_folder = OUTPUT_FOLDER,
@@ -44,7 +44,7 @@ end
 @testset "Storage Assets Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Storage")
     connection = DBInterface.connect(DuckDB.DB)
-    read_csv_folder(connection, dir)
+    read_csv_folder(connection, dir; schemas = TulipaEnergyModel.schema_per_file)
     energy_problem = run_scenario(connection)
     @test energy_problem.objective_value ≈ 2409.384029 atol = 1e-5
 end
@@ -52,7 +52,7 @@ end
 @testset "Tiny Variable Resolution Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Variable Resolution")
     connection = DBInterface.connect(DuckDB.DB)
-    read_csv_folder(connection, dir)
+    read_csv_folder(connection, dir; schemas = TulipaEnergyModel.schema_per_file)
     energy_problem = run_scenario(connection)
     @test energy_problem.objective_value ≈ 28.45872 atol = 1e-5
 end
@@ -60,7 +60,7 @@ end
 @testset "Infeasible Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
     connection = DBInterface.connect(DuckDB.DB)
-    read_csv_folder(connection, dir)
+    read_csv_folder(connection, dir; schemas = TulipaEnergyModel.schema_per_file)
     energy_problem = EnergyProblem(connection)
     energy_problem.graph["demand"].peak_demand = -1 # make it infeasible
     create_model!(energy_problem)
