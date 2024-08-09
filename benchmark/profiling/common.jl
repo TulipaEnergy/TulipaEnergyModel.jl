@@ -7,7 +7,7 @@ dir = norse_dir
 
 function _read_dir_and_return_connection(dir)
     con = DBInterface.connect(DuckDB.DB)
-    TulipaIO.read_csv_folder(con, dir; schemas = TulipaEnergyModel.schema_per_file)
+    TulipaIO.read_csv_folder(con, dir; schemas = TulipaEnergyModel.schema_per_table_name)
 
     return con
 end
