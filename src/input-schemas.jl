@@ -122,7 +122,7 @@ const schemas = (
     ),
 )
 
-const schema_per_table_name = OrderedDict(
+const schema_per_file = OrderedDict(
     "assets_timeframe_partitions" => schemas.assets.timeframe_partition,
     "assets_data" => schemas.assets.data,
     "assets_timeframe_profiles" => schemas.assets.profiles_reference,
