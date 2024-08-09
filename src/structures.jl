@@ -223,7 +223,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 - `timings`: Dictionary of elapsed time for various parts of the code (in seconds).
 
 # Constructor
-- `EnergyProblem(graph, representative_periods, timeframe)`: Constructs a new `EnergyProblem` object with the given graph, representative periods, and timeframe. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
+- `EnergyProblem(connection)`: Constructs a new `EnergyProblem` object with the given connection. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 """
