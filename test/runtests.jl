@@ -32,10 +32,6 @@ end
 
 @testset "Ensuring data can be read and create the internal structures" begin
     connection = DBInterface.connect(DuckDB.DB)
-    read_csv_folder(
-        connection,
-        joinpath(@__DIR__, "../benchmark/EU/");
-        schemas = TulipaEnergyModel.schema_per_file,
-    )
+    _read_csv_folder(connection, joinpath(@__DIR__, "../benchmark/EU/"))
     create_internal_structures(connection)
 end

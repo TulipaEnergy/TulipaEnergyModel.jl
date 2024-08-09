@@ -7,11 +7,7 @@ end
 @testset "Output validation" begin
     @testset "Make sure that saving an unsolved energy problem fails" begin
         connection = DBInterface.connect(DuckDB.DB)
-        read_csv_folder(
-            connection,
-            joinpath(INPUT_FOLDER, "Tiny");
-            schemas = TulipaEnergyModel.schema_per_file,
-        )
+        _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny");)
         energy_problem = EnergyProblem(connection)
         output_dir = mktempdir()
         @test_throws Exception save_solution_to_file(output_dir, energy_problem)
@@ -25,11 +21,7 @@ end
 @testset "Printing EnergyProblem validation" begin
     @testset "Check the missing cases of printing the EnergyProblem" begin # model infeasible is covered in testset "Infeasible Case Study".
         connection = DBInterface.connect(DuckDB.DB)
-        read_csv_folder(
-            connection,
-            joinpath(INPUT_FOLDER, "Tiny");
-            schemas = TulipaEnergyModel.schema_per_file,
-        )
+        _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
         energy_problem = EnergyProblem(connection)
         print(energy_problem)
         create_model!(energy_problem)
@@ -42,11 +34,7 @@ end
 @testset "Graph structure" begin
     @testset "Graph structure is correct" begin
         connection = DBInterface.connect(DuckDB.DB)
-        read_csv_folder(
-            connection,
-            joinpath(INPUT_FOLDER, "Tiny");
-            schemas = TulipaEnergyModel.schema_per_file,
-        )
+        _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
         graph, _, _ = create_internal_structures(connection)
 
         @test Graphs.nv(graph) == 6
@@ -143,7 +131,7 @@ end
     missing_asset = split(lines[end], ",")[1] # The asset that was not included
 
     connection = DBInterface.connect(DuckDB.DB)
-    read_csv_folder(connection, dir; schemas = TulipaEnergyModel.schema_per_file)
+    _read_csv_folder(connection, dir)
     graph, rps, tf = create_internal_structures(connection)
     @test graph[missing_asset].timeframe_partitions == [i:i for i in 1:tf.num_periods]
 end
