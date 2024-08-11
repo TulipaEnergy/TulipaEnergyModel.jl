@@ -35,32 +35,55 @@ function create_internal_structures(connection)
         _check_if_table_exist(connection, table)
     end
 
-    # Calculate the weights from the "rep_periods_mapping" table in the connection
-    weights =
+    years =
         DBInterface.execute(
             connection,
-            "SELECT rep_period, SUM(weight) AS weight
-                FROM rep_periods_mapping
-                GROUP BY rep_period
-                ORDER BY rep_period",
+            "SELECT DISTINCT year FROM rep_periods_mapping ORDER BY year",
         ) |>
         DataFrame |>
-        df -> df.weight
+        df -> df.year
 
-    representative_periods = [
-        RepresentativePeriod(weights[row.rep_period], row.num_timesteps, row.resolution) for
-        row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data")
-    ]
+    # Calculate the weights from the "rep_periods_mapping" table in the connection
+    weights = Dict(
+        year =>
+            DBInterface.execute(
+                connection,
+                "SELECT rep_period, SUM(weight) AS weight
+                    FROM rep_periods_mapping
+                    WHERE year = $year
+                    GROUP BY rep_period
+                    ORDER BY rep_period",
+            ) |>
+            DataFrame |>
+            df -> df.weight for year in years
+    )
+
+    representative_periods = Dict{Int,Vector{RepresentativePeriod}}(
+        year => [
+            RepresentativePeriod(weights[year][row.rep_period], row.num_timesteps, row.resolution) for row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data") if
+            row.year == year
+        ] for year in years
+    )
 
     # Calculate the total number of periods and then pipe into a Dataframe to get the first value of the df with the num_periods
     num_periods, = DuckDB.query(connection, "SELECT MAX(period) AS period FROM rep_periods_mapping")
 
     timeframe = Timeframe(num_periods.period, TulipaIO.get_table(connection, "rep_periods_mapping"))
 
+    unique_asset_names = Dict{String,Bool}()
     asset_data = [
         row.name => GraphAssetData(
             row.type,
-            row.investable,
+            Dict(
+                repeated_row.year => repeated_row.active for
+                repeated_row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
+                repeated_row.name == row.name
+            ),
+            Dict(
+                repeated_row.year => repeated_row.investable for
+                repeated_row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
+                repeated_row.name == row.name
+            ),
             row.investment_integer,
             row.investment_cost,
             row.investment_limit,
@@ -77,7 +100,11 @@ function create_internal_structures(connection)
             row.initial_storage_capacity,
             row.initial_storage_level,
             row.energy_to_power_ratio,
-            row.storage_method_energy,
+            Dict(
+                repeated_row.year => repeated_row.storage_method_energy for
+                repeated_row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
+                repeated_row.name == row.name
+            ),
             row.investment_cost_storage_energy,
             row.investment_limit_storage_energy,
             row.capacity_storage_energy,
@@ -85,15 +112,25 @@ function create_internal_structures(connection)
             row.use_binary_storage_method,
             row.max_energy_timeframe_partition,
             row.min_energy_timeframe_partition,
-        ) for row in TulipaIO.get_table(Val(:raw), connection, "assets_data")
+        ) for row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
+        !haskey(unique_asset_names, row.name) && (unique_asset_names[row.name] = true)
     ]
 
+    unique_flow_names = Dict{Tuple{String,String},Int}()
     flow_data = [
         (row.from_asset, row.to_asset) => GraphFlowData(
             row.carrier,
-            row.active,
+            Dict(
+                repeated_row.year => repeated_row.active for
+                repeated_row in TulipaIO.get_table(Val(:raw), connection, "flows_data") if
+                (repeated_row.from_asset, repeated_row.to_asset) == (row.from_asset, row.to_asset)
+            ),
             row.is_transport,
-            row.investable,
+            Dict(
+                repeated_row.year => repeated_row.investable for
+                repeated_row in TulipaIO.get_table(Val(:raw), connection, "flows_data") if
+                (repeated_row.from_asset, repeated_row.to_asset) == (row.from_asset, row.to_asset)
+            ),
             row.investment_integer,
             row.variable_cost,
             row.investment_cost,
@@ -102,14 +139,22 @@ function create_internal_structures(connection)
             row.initial_export_capacity,
             row.initial_import_capacity,
             row.efficiency,
-        ) for row in TulipaIO.get_table(Val(:raw), connection, "flows_data")
+        ) for row in TulipaIO.get_table(Val(:raw), connection, "flows_data") if
+        !haskey(unique_flow_names, (row.from_asset, row.to_asset)) &&
+        (unique_flow_names[(row.from_asset, row.to_asset)] = true)
     ]
 
     num_assets = length(asset_data)
-    name_to_id = Dict(
-        row.name => i for
-        (i, row) in enumerate(TulipaIO.get_table(Val(:raw), connection, "assets_data"))
-    )
+
+    unique_names = Dict{String,Bool}()
+    name_to_id = Dict{String,Int}()
+
+    for (i, row) in enumerate(TulipaIO.get_table(Val(:raw), connection, "assets_data"))
+        if !haskey(unique_names, row.name)
+            name_to_id[row.name] = i
+            unique_names[row.name] = true
+        end
+    end
 
     _graph = Graphs.DiGraph(num_assets)
     for flow in flow_data
@@ -121,8 +166,30 @@ function create_internal_structures(connection)
 
     _df = TulipaIO.get_table(connection, "assets_rep_periods_partitions")
     for a in MetaGraphsNext.labels(graph)
-        compute_assets_partitions!(graph[a].rep_periods_partitions, _df, a, representative_periods)
+        compute_assets_partitions!(
+            graph[a].rep_periods_partitions,
+            table_tree.partitions.assets[:rep_periods],
+            a,
+            representative_periods,
+        )
     end
+    # for a in MetaGraphsNext.labels(graph)
+    graph[a].rep_periods_partitions = Dict(
+        year =>
+            graph[a].rep_periods_partitions =
+                Dict(year => Dict{Int,Vector{TimestepsBlock}} for year in years) for
+        year in years
+    )
+    #     for year in years
+    #  graph[a].rep_periods_partitions[year] = Dict{Int, Vector{TimestepsBlock}}()
+    #         compute_assets_partitions!(
+    #             graph[a].rep_periods_partitions[year],
+    #             table_tree.partitions.assets[:rep_periods][year],
+    #             a,
+    #             representative_periods[year],
+    #         )
+    #     end
+    # end
 
     _df = TulipaIO.get_table(connection, "flows_rep_periods_partitions")
     for (u, v) in MetaGraphsNext.edge_labels(graph)

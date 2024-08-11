@@ -1,0 +1,12 @@
+,asset_name,asset_name,,{true;false},{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,MW,p.u.
+carrier,from_asset,to_asset,year,active,is_transport,investable,investment_integer,variable_cost,investment_cost,investment_limit,capacity,initial_export_capacity,initial_import_capacity,efficiency
+electricity,ocgt2030,demand2030,2030,TRUE,FALSE,FALSE,FALSE,0.07,0,,0,0,0,0
+electricity,wind2030,demand2030,2030,TRUE,FALSE,FALSE,FALSE,0.001,0,,0,0,0,0
+electricity,wind2050,demand2030,2030,FALSE,FALSE,FALSE,FALSE,0.001,0,,0,0,0,0
+electricity,solar2030,demand2030,2030,TRUE,FALSE,FALSE,FALSE,0,0,,0,0,0,0
+electricity,ens2030,demand2030,2030,TRUE,FALSE,FALSE,FALSE,0.18,0,,0,0,0,0
+electricity,ocgt2030,demand2050,2050,TRUE,FALSE,FALSE,FALSE,0.07,0,,0,0,0,0
+electricity,wind2030,demand2050,2050,TRUE,FALSE,FALSE,FALSE,0.001,0,,0,0,0,0
+electricity,wind2050,demand2050,2050,TRUE,FALSE,FALSE,FALSE,0.001,0,,0,0,0,0
+electricity,solar2030,demand2050,2050,TRUE,FALSE,FALSE,FALSE,0,0,,0,0,0,0
+electricity,ens2050,demand2050,2050,TRUE,FALSE,FALSE,FALSE,0.18,0,,0,0,0,0

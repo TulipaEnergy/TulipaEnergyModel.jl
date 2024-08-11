@@ -33,7 +33,8 @@ Structure to hold the asset data in the graph.
 """
 mutable struct GraphAssetData
     type::String
-    investable::Bool
+    active::Dict{Int,Bool}
+    investable::Dict{Int,Bool}
     investment_integer::Bool
     investment_cost::Float64
     investment_limit::Union{Missing,Float64}
@@ -46,7 +47,7 @@ mutable struct GraphAssetData
     initial_storage_capacity::Float64
     initial_storage_level::Union{Missing,Float64}
     energy_to_power_ratio::Float64
-    storage_method_energy::Bool
+    storage_method_energy::Dict{Int,Bool}
     investment_cost_storage_energy::Float64
     investment_limit_storage_energy::Union{Missing,Float64}
     capacity_storage_energy::Float64
@@ -57,7 +58,7 @@ mutable struct GraphAssetData
     timeframe_profiles::Dict{String,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{String,Int},Vector{Float64}}
     timeframe_partitions::Vector{PeriodsBlock}
-    rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
+    rep_periods_partitions::Dict{Int,Dict{Int,Vector{TimestepsBlock}}}
     # Solution
     investment::Float64
     investment_energy::Float64 # for storage assets with energy method
@@ -69,6 +70,7 @@ mutable struct GraphAssetData
     # You don't need profiles to create the struct, so initiate it empty
     function GraphAssetData(
         type,
+        active,
         investable,
         investment_integer,
         investment_cost,
@@ -94,9 +96,10 @@ mutable struct GraphAssetData
         timeframe_profiles = Dict{String,Vector{Float64}}()
         rep_periods_profiles = Dict{Tuple{String,Int},Vector{Float64}}()
         timeframe_partitions = PeriodsBlock[]
-        rep_periods_partitions = Dict{Int,Vector{TimestepsBlock}}()
+        rep_periods_partitions = Dict{Int,Dict{Int,Vector{TimestepsBlock}}}()
         return new(
             type,
+            active,
             investable,
             investment_integer,
             investment_cost,
@@ -137,9 +140,9 @@ Structure to hold the flow data in the graph.
 """
 mutable struct GraphFlowData
     carrier::String
-    active::Bool
+    active::Dict{Int,Bool}
     is_transport::Bool
-    investable::Bool
+    investable::Dict{Int,Bool}
     investment_integer::Bool
     variable_cost::Float64
     investment_cost::Float64
