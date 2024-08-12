@@ -41,8 +41,7 @@ end
     @testset "Graph structure is correct" begin
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
-        table_tree = create_input_dataframes(connection)
-        graph, _, _ = create_internal_structures(table_tree, connection)
+        graph, _, _ = create_internal_structures(connection)
 
         @test Graphs.nv(graph) == 6
         @test Graphs.ne(graph) == 5
@@ -139,7 +138,6 @@ end
 
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    table_tree = create_input_dataframes(connection)
-    graph, rps, tf = create_internal_structures(table_tree, connection)
+    graph, rps, tf = create_internal_structures(connection)
     @test graph[missing_asset].timeframe_partitions == [i:i for i in 1:tf.num_periods]
 end

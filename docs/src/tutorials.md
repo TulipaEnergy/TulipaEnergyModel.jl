@@ -98,16 +98,7 @@ input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
-```
-
-```@example manual
-table_tree = create_input_dataframes(connection)
-```
-
-The `table_tree` contains all tables in the folder, which are then processed into the internal structures below:
-
-```@example manual
-graph, representative_periods, timeframe = create_internal_structures(table_tree, connection)
+graph, representative_periods, timeframe = create_internal_structures(connection)
 ```
 
 We also need a time partition for the constraints to create the model.
