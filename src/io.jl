@@ -147,7 +147,7 @@ function create_internal_structures(connection)
     find_assets_partitions_query = """
          SELECT assets_data.name,
                  IFNULL(assets_timeframe_partitions.specification, 'uniform') AS specification,
-                 IFNULL(assets_timeframe_partitions.partition, '1') AS partition
+                 IFNULL(assets_timeframe_partitions.partition, 1) AS partition
          FROM assets_data
          LEFT JOIN assets_timeframe_partitions
              ON assets_data.name = assets_timeframe_partitions.asset
@@ -223,7 +223,7 @@ function _check_if_table_exist(connection, table_name)
         "SELECT table_name FROM information_schema.tables WHERE table_name = '$table_name'",
     )
     if length(collect(existence_query)) == 0
-        columns_in_table = join(("$key $value" for (key, value) in schema), ",")
+        columns_in_table = join(("$col $col_type" for (col, col_type) in schema), ",")
         create_table_query =
             DuckDB.query(connection, "CREATE TABLE $table_name ($columns_in_table)")
     end
