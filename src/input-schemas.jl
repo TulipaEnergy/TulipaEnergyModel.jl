@@ -4,125 +4,125 @@ const schemas = (
     assets = (
         # Schema for the assets-data.csv file.
         data = OrderedDict(
-            :name => String,                                            # Name of Asset (geographical?)
-            :type => String,                                            # Producer/Consumer/Storage/Conversion
-            :active => Bool,                                            # Active or decomissioned
-            :investable => Bool,                                        # Whether able to invest
-            :investment_integer => Bool,                                # Whether investment is integer or continuous
-            :investment_cost => Float64,                                # kEUR/MW/year
-            :investment_limit => Union{Missing,Float64},                # MW (Missing -> no limit)
-            :capacity => Float64,                                       # MW
-            :initial_capacity => Float64,                               # MW
-            :peak_demand => Float64,                                    # MW
-            :consumer_balance_sense => Union{Missing,String},           # Sense of the consumer balance constraint (default ==)
-            :is_seasonal => Bool,                                       # Whether seasonal storage (e.g. hydro) or not (e.g. battery)
-            :storage_inflows => Float64,                                # MWh/year
-            :initial_storage_capacity => Float64,                       # MWh
-            :initial_storage_level => Union{Missing,Float64},           # MWh (Missing -> free initial level)
-            :energy_to_power_ratio => Float64,                          # Hours
-            :storage_method_energy => Bool,                             # Whether storage method is energy or not (i.e., fixed_ratio)
-            :investment_cost_storage_energy => Float64,                 # kEUR/MWh/year
-            :investment_limit_storage_energy => Union{Missing,Float64}, # MWh (Missing -> no limit)
-            :capacity_storage_energy => Float64,                        # MWh
-            :investment_integer_storage_energy => Bool,                 # Whether investment for storage energy is integer or continuous
-            :use_binary_storage_method => Union{String,Missing},        # Whether to use an extra binary variable for the storage assets to avoid charging and discharging simultaneously (missing;binary;relaxed_binary)
-            :max_energy_timeframe_partition => Union{Missing,Float64},  # MWh (Missing -> no limit)
-            :min_energy_timeframe_partition => Union{Missing,Float64},  # MWh (Missing -> no limit)
+            :name => "VARCHAR",                              # Name of Asset (geographical?)
+            :type => "VARCHAR",                              # Producer/Consumer/Storage/Conversion
+            :active => "BOOLEAN",                            # Active or decomissioned
+            :investable => "BOOLEAN",                        # Whether able to invest
+            :investment_integer => "BOOLEAN",                # Whether investment is integer or continuous
+            :investment_cost => "DOUBLE",                    # kEUR/MW/year
+            :investment_limit => "DOUBLE",                   # MW (Missing -> no limit)
+            :capacity => "DOUBLE",                           # MW
+            :initial_capacity => "DOUBLE",                   # MW
+            :peak_demand => "DOUBLE",                        # MW
+            :consumer_balance_sense => "VARCHAR",            # Sense of the consumer balance constraint (default ==)
+            :is_seasonal => "BOOLEAN",                       # Whether seasonal storage (e.g. hydro) or not (e.g. battery)
+            :storage_inflows => "DOUBLE",                    # MWh/year
+            :initial_storage_capacity => "DOUBLE",           # MWh
+            :initial_storage_level => "DOUBLE",              # MWh (Missing -> free initial level)
+            :energy_to_power_ratio => "DOUBLE",              # Hours
+            :storage_method_energy => "BOOLEAN",             # Whether storage method is energy or not (i.e., fixed_ratio)
+            :investment_cost_storage_energy => "DOUBLE",     # kEUR/MWh/year
+            :investment_limit_storage_energy => "DOUBLE",    # MWh (Missing -> no limit)
+            :capacity_storage_energy => "DOUBLE",            # MWh
+            :investment_integer_storage_energy => "BOOLEAN", # Whether investment for storage energy is integer or continuous
+            :use_binary_storage_method => "VARCHAR",         # Whether to use an extra binary variable for the storage assets to avoid charging and discharging simultaneously (missing;binary;relaxed_binary)
+            :max_energy_timeframe_partition => "DOUBLE",     # MWh (Missing -> no limit)
+            :min_energy_timeframe_partition => "DOUBLE",     # MWh (Missing -> no limit)
         ),
 
         # Schema for the assets-profiles.csv file.
         profiles_reference = OrderedDict(
-            :asset => String,               # Asset name
-            :profile_type => String,        # Type of profile, used to determine dataframe with source profile
-            :profile_name => String,        # Name of profile, used to determine data inside the dataframe
+            :asset => "VARCHAR",               # Asset name
+            :profile_type => "VARCHAR",        # Type of profile, used to determine dataframe with source profile
+            :profile_name => "VARCHAR",        # Name of profile, used to determine data inside the dataframe
         ),
 
         # Schema for the assets-timeframe-partitions.csv file.
         timeframe_partition = OrderedDict(
-            :asset => String,
-            :specification => String,
-            :partition => String,
+            :asset => "VARCHAR",
+            :specification => "VARCHAR",
+            :partition => "VARCHAR",
         ),
 
         # Schema for the assets-rep-periods-partitions.csv file.
         rep_periods_partition = OrderedDict(
-            :asset => String,
-            :rep_period => Int,
-            :specification => String,
-            :partition => String,
+            :asset => "VARCHAR",
+            :rep_period => "INTEGER",
+            :specification => "VARCHAR",
+            :partition => "VARCHAR",
         ),
     ),
     flows = (
         # Schema for the flows-data.csv file.
         data = OrderedDict(
-            :carrier => String,                             # (Optional?) Energy carrier
-            :from_asset => String,                          # Name of Asset
-            :to_asset => String,                            # Name of Asset
-            :active => Bool,                                # Active or decomissioned
-            :is_transport => Bool,                          # Whether a transport flow
-            :investable => Bool,                            # Whether able to invest
-            :investment_integer => Bool,                    # Whether investment is integer or continuous
-            :variable_cost => Float64,                      # kEUR/MWh
-            :investment_cost => Float64,                    # kEUR/MW/year
-            :investment_limit => Union{Missing,Float64},    # MW
-            :capacity => Float64,                           # MW
-            :initial_export_capacity => Float64,            # MW
-            :initial_import_capacity => Float64,            # MW
-            :efficiency => Float64,                         # p.u. (per unit)
+            :carrier => "VARCHAR",                  # (Optional?) Energy carrier
+            :from_asset => "VARCHAR",               # Name of Asset
+            :to_asset => "VARCHAR",                 # Name of Asset
+            :active => "BOOLEAN",                   # Active or decomissioned
+            :is_transport => "BOOLEAN",             # Whether a transport flow
+            :investable => "BOOLEAN",               # Whether able to invest
+            :investment_integer => "BOOLEAN",       # Whether investment is integer or continuous
+            :variable_cost => "DOUBLE",             # kEUR/MWh
+            :investment_cost => "DOUBLE",           # kEUR/MW/year
+            :investment_limit => "DOUBLE",          # MW
+            :capacity => "DOUBLE",                  # MW
+            :initial_export_capacity => "DOUBLE",   # MW
+            :initial_import_capacity => "DOUBLE",   # MW
+            :efficiency => "DOUBLE",                # p.u. (per unit)
         ),
 
         # Schema for the flows-profiles file.
         profiles_reference = OrderedDict(
-            :from_asset => String,          # Name of Asset
-            :to_asset => String,            # Name of Asset
-            :profile_type => String,        # Type of profile, used to determine dataframe with source profile
-            :profile_name => String,        # Name of profile, used to determine data inside the dataframe
+            :from_asset => "VARCHAR",          # Name of Asset
+            :to_asset => "VARCHAR",            # Name of Asset
+            :profile_type => "VARCHAR",        # Type of profile, used to determine dataframe with source profile
+            :profile_name => "VARCHAR",        # Name of profile, used to determine data inside the dataframe
         ),
 
         # Schema for the flows-rep-periods-partitions.csv file.
         rep_periods_partition = OrderedDict(
-            :from_asset => String,          # Name of Asset
-            :to_asset => String,            # Name of Asset
-            :rep_period => Int,
-            :specification => String,
-            :partition => String,
+            :from_asset => "VARCHAR",          # Name of Asset
+            :to_asset => "VARCHAR",            # Name of Asset
+            :rep_period => "INTEGER",
+            :specification => "VARCHAR",
+            :partition => "VARCHAR",
         ),
     ),
     timeframe = (
         # Schema for the profiles-timeframe-<type>.csv file.
         profiles_data = OrderedDict(
-            :profile_name => String,        # Profile name
-            :period => Int,                 # Period
-            :value => Float64,              # p.u. (per unit)
+            :profile_name => "VARCHAR",      # Profile name
+            :period => "INTEGER",            # Period
+            :value => "DOUBLE",              # p.u. (per unit)
         ),
     ),
 
     # Schema for the rep-periods-data.csv file.
     rep_periods = (
         data = OrderedDict(
-            :rep_period => Int,             # Representative period number
-            :num_timesteps => Int,          # Numer of timesteps
-            :resolution => Float64,         # Duration of each timestep (hours)
+            :rep_period => "INTEGER",        # Representative period number
+            :num_timesteps => "INTEGER",     # Numer of timesteps
+            :resolution => "DOUBLE",         # Duration of each timestep (hours)
         ),
 
         # Schema for the rep-periods-mapping.csv file.
         mapping = OrderedDict(
-            :period => Int,                 # Period number
-            :rep_period => Int,             # Representative period number
-            :weight => Float64,             # Hours
+            :period => "INTEGER",            # Period number
+            :rep_period => "INTEGER",        # Representative period number
+            :weight => "DOUBLE",             # Hours
         ),
 
         # Schema for the profiles-rep-periods-<type>.csv file.
         profiles_data = OrderedDict(
-            :profile_name => String,        # Profile name
-            :rep_period => Int,             # Representative period number
-            :timestep => Int,               # Timestep number
-            :value => Float64,              # p.u. (per unit)
+            :profile_name => "VARCHAR",  # Profile name
+            :rep_period => "INTEGER",    # Representative period number
+            :timestep => "INTEGER",      # Timestep number
+            :value => "DOUBLE",          # p.u. (per unit)
         ),
     ),
 )
 
-const schema_per_file = OrderedDict(
+const schema_per_table_name = OrderedDict(
     "assets_timeframe_partitions" => schemas.assets.timeframe_partition,
     "assets_data" => schemas.assets.data,
     "assets_timeframe_profiles" => schemas.assets.profiles_reference,

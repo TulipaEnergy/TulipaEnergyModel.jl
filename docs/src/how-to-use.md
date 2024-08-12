@@ -167,7 +167,7 @@ Markdown.parse(
         join(
             ["  - `$f: $t`" for (f, t) in schema],
             "\n",
-        ) for (filename, schema) in TulipaEnergyModel.schema_per_file
+        ) for (filename, schema) in TulipaEnergyModel.schema_per_table_name
     ] |> sort, "\n")
 )
 ```

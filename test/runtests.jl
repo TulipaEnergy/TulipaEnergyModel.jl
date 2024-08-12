@@ -32,6 +32,6 @@ end
 
 @testset "Ensuring data can be read and create dataframes" begin
     connection = DBInterface.connect(DuckDB.DB)
-    read_csv_folder(connection, joinpath(@__DIR__, "../benchmark/EU/"))
+    _read_csv_folder(connection, joinpath(@__DIR__, "../benchmark/EU/"))
     create_input_dataframes(connection)
 end

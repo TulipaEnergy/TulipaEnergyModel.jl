@@ -397,7 +397,7 @@ using DuckDB, TulipaIO, TulipaEnergyModel
 input_dir = "../../test/inputs/Storage" # hide
 # input_dir should be the path to the Storage example
 connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir)
+read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
 energy_problem = run_scenario(connection)
 ```
 
