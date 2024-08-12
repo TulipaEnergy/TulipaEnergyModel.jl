@@ -147,7 +147,7 @@ function create_internal_structures(connection)
     find_assets_partitions_query = """
          SELECT assets_data.name,
                  IFNULL(assets_timeframe_partitions.specification, 'uniform') AS specification,
-                 IFNULL(assets_timeframe_partitions.partition, 1) AS partition
+                 IFNULL(assets_timeframe_partitions.partition, '1') AS partition
          FROM assets_data
          LEFT JOIN assets_timeframe_partitions
              ON assets_data.name = assets_timeframe_partitions.asset
