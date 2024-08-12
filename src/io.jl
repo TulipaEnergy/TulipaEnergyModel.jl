@@ -119,19 +119,16 @@ function create_internal_structures(connection)
 
     graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data, nothing, nothing, nothing)
 
+    _df = TulipaIO.get_table(connection, "assets_rep_periods_partitions")
     for a in MetaGraphsNext.labels(graph)
-        compute_assets_partitions!(
-            graph[a].rep_periods_partitions,
-            TulipaIO.get_table(connection, "assets_rep_periods_partitions"),
-            a,
-            representative_periods,
-        )
+        compute_assets_partitions!(graph[a].rep_periods_partitions, _df, a, representative_periods)
     end
 
+    _df = TulipaIO.get_table(connection, "flows_rep_periods_partitions")
     for (u, v) in MetaGraphsNext.edge_labels(graph)
         compute_flows_partitions!(
             graph[u, v].rep_periods_partitions,
-            TulipaIO.get_table(connection, "flows_rep_periods_partitions"),
+            _df,
             u,
             v,
             representative_periods,
@@ -161,11 +158,12 @@ function create_internal_structures(connection)
         )
     end
 
+    _df = TulipaIO.get_table(connection, "profiles_rep_periods")
     for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_profiles") # row = asset, profile_type, profile_name
         gp = DataFrames.groupby( # 2. group by rep_period
             filter( # 1. Filter on profile_name
                 :profile_name => ==(asset_profile_row.profile_name),
-                TulipaIO.get_table(connection, "profiles_rep_periods");
+                _df;
                 view = true,
             ),
             :rep_period,
@@ -180,11 +178,7 @@ function create_internal_structures(connection)
 
     for flow_profile_row in TulipaIO.get_table(Val(:raw), connection, "flows_profiles")
         gp = DataFrames.groupby(
-            filter(
-                :profile_name => ==(flow_profile_row.profile_name),
-                TulipaIO.get_table(connection, "profiles_rep_periods");
-                view = true,
-            ),
+            filter(:profile_name => ==(flow_profile_row.profile_name), _df; view = true),
             :rep_period;
         )
         for ((rep_period,), df) in pairs(gp)
@@ -195,12 +189,9 @@ function create_internal_structures(connection)
         end
     end
 
+    _df = TulipaIO.get_table(connection, "profiles_timeframe")
     for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_timeframe_profiles") # row = asset, profile_type, profile_name
-        df = filter(
-            :profile_name => ==(asset_profile_row.profile_name),
-            TulipaIO.get_table(connection, "profiles_timeframe");
-            view = true,
-        )
+        df = filter(:profile_name => ==(asset_profile_row.profile_name), _df; view = true)
         graph[asset_profile_row.asset].timeframe_profiles[asset_profile_row.profile_type] = df.value
     end
 
