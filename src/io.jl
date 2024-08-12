@@ -53,9 +53,9 @@ function create_input_dataframes(connection::DuckDB.DB; strict = false)
         return df
     end
     df_assets_data = read_table("assets_data")
-    df_flows_data  = read_table("flows_data")
+    df_flows_data = read_table("flows_data")
     df_rep_periods = read_table("rep_periods_data")
-    df_rp_mapping  = read_table("rep_periods_mapping")
+    df_rp_mapping = read_table("rep_periods_mapping")
 
     dfs_assets_profiles = Dict(
         :rep_periods => read_table("assets_profiles"),
@@ -146,6 +146,7 @@ function create_internal_structures(table_tree::TableTree, connection)
     asset_data = [
         row.name => GraphAssetData(
             row.type,
+            row.group,
             row.investable,
             row.investment_integer,
             row.investment_cost,

@@ -7,6 +7,7 @@ Adds the investment constraints for all asset types and transport flows to the m
 """
 
 function add_investment_constraints!(
+    model,
     graph,
     Ai,
     Ase,
@@ -15,6 +16,18 @@ function add_investment_constraints!(
     assets_investment_energy,
     flows_investment,
 )
+
+    # - Maximum (i.e., potential) investment limit for asset groups
+    model[:max_investment_potential_group] = [
+        @constraint(
+            model,
+            sum(
+                assets_investment[a] for
+                a in Ai if !ismissing(graph[a].group) && graph[a].group == group_name
+            ) ≤ _find_upper_bound(graph, Ai, Ase, group_name),
+            base_name = "max_investment_potential_group[($(group_name)]"
+        ) for group_name in unique(graph[a].group for a in Ai if !ismissing(graph[a].group))
+    ]
 
     # - Maximum (i.e., potential) investment limit for assets
     for a in Ai

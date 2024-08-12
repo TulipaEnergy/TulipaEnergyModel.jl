@@ -734,6 +734,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     )
 
     @timeit to "add_investment_constraints!" add_investment_constraints!(
+        model,
         graph,
         Ai,
         Ase,
