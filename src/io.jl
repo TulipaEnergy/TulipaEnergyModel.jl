@@ -208,8 +208,8 @@ function create_internal_structures(connection)
 end
 
 function get_schema(tablename)
-    if haskey(schema_per_file, tablename)
-        return schema_per_file[tablename]
+    if haskey(schema_per_table_name, tablename)
+        return schema_per_table_name[tablename]
     else
         error("No implicit schema for table named $tablename")
     end
