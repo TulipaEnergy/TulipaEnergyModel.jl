@@ -33,6 +33,8 @@ The following tables are expected to exist in the DB.
 """
 function create_input_dataframes(connection::DuckDB.DB; strict = false)
     function read_table(table_name; allow_missing_table = false)
+        sql_to_julia_type =
+            Dict("BOOLEAN" => Bool, "DOUBLE" => Float64, "INTEGER" => Int, "VARCHAR" => String)
         schema = get_schema(table_name)
         if allow_missing_table
             existence_query = DBInterface.execute(
@@ -40,17 +42,10 @@ function create_input_dataframes(connection::DuckDB.DB; strict = false)
                 "SELECT table_name FROM information_schema.tables WHERE table_name = '$table_name'",
             )
             if length(collect(existence_query)) == 0
-                return DataFrame([key => value[] for (key, value) in schema]...)
+                return DataFrame([key => sql_to_julia_type[value][] for (key, value) in schema]...)
             end
         end
-        df = DataFrame(DBInterface.execute(connection, "SELECT * FROM $table_name"))
-        # enforcing schema to match what Tulipa expects; int -> string
-        for (key, value) in schema
-            if value <: Union{Missing,String} && !(eltype(df[!, key]) <: Union{Missing,String})
-                df[!, key] = [ismissing(x) ? x : string(x) for x in df[!, key]]
-            end
-        end
-        return df
+        return DataFrame(DBInterface.execute(connection, "SELECT * FROM $table_name"))
     end
     df_assets_data = read_table("assets_data")
     df_flows_data  = read_table("flows_data")
@@ -294,8 +289,8 @@ function create_internal_structures(table_tree::TableTree, connection)
 end
 
 function get_schema(tablename)
-    if haskey(schema_per_file, tablename)
-        return schema_per_file[tablename]
+    if haskey(schema_per_table_name, tablename)
+        return schema_per_table_name[tablename]
     else
         error("No implicit schema for table named $tablename")
     end
