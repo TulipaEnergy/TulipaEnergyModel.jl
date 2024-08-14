@@ -14,7 +14,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     A = MetaGraphsNext.labels(graph) |> collect
     F = MetaGraphsNext.edge_labels(graph) |> collect
 
-    years = [2030, 2050] # either from scenario data or from the graph
+    years = collect(keys(representative_periods))
 
     function filter_flows(key, year::Int, values)
         filter(f -> begin
@@ -28,7 +28,6 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     F_active = Dict(y => filter_flows(:active, y, true) for y in years)
     F_active_all = vcat(values(F_active)...)
 
-    # RP = 1:length(representative_periods)
     RP = Dict{Int,UnitRange{Int}}(year => 1:length(representative_periods[year]) for year in years)
 
     # Output object
@@ -47,7 +46,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
                     rep_period = rp,
                     timesteps_block = timesteps_block,
                     efficiency = graph[u, v].efficiency,
-                    # variable_cost = graph[row.from, row.to].variable_cost[oy],
+                    variable_cost = graph[row.from, row.to].variable_cost[y],
                 ) for iyf in (
                     if any(graph[u].investable[iyf] for iyf in years)
                         filter(iyf -> graph[u].investable[iyf], years)
@@ -66,19 +65,6 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
             ) for (u, v) in F_active_all
         ) |> Iterators.flatten,
     )
-    # dataframes[:flows] = DataFrame(
-    #     (
-    #         (
-    #             (
-    #                 from = u,
-    #                 to = v,
-    #                 rep_period = rp,
-    #                 timesteps_block = timesteps_block,
-    #                 efficiency = graph[u, v].efficiency,
-    #             ) for timesteps_block in graph[u, v].rep_periods_partitions[rp]
-    #         ) for (u, v) in F, rp in RP
-    #     ) |> Iterators.flatten,
-    # )
 
     dataframes[:flows].index = 1:size(dataframes[:flows], 1)
 
@@ -114,6 +100,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         dataframes[key] = df
     end
 
+    #!!!
     # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
     # Only for storage assets
     dataframes[:storage_level_inter_rp] =
@@ -446,7 +433,9 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     function duration(timesteps_block, rp)
         return length(timesteps_block) * representative_periods[rp].resolution
     end
-    years = [2030, 2050]
+
+    years = collect(keys(representative_periods)) # need to decide where to get the years
+
     # Maximum timestep
     Tmax = Dict(
         year => maximum(last(rp.timesteps) for rp in representative_periods[year]) for
@@ -472,21 +461,21 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         )
 
         filter_flows(key, values) = filter(f -> getfield(graph[f...], key) == values, F)
+        filter_flows(key, year::Int, values) =
+            filter(f -> getfield(graph[f...], key)[year] == values, F)
 
         Ac = filter_assets(:type, "consumer")
         Ap = filter_assets(:type, "producer")
         As = filter_assets(:type, "storage")
-        # As_y = Dict(y => filter_assets(:type, y, "storage") for y in Y) # this is not needed, type will not change. But for consistency, we can add it.
         Ah = filter_assets(:type, "hub")
         Acv = filter_assets(:type, "conversion")
         Ft = filter_flows(:is_transport, true)
 
-        Y = [2030, 2050] # either from scenario data or from the graph
-
         # Create subsets of assets by investable
         # Ai = filter_assets(:investable, true)
         Ai_y = Dict(y => filter_assets(:investable, y, true) for y in Y)
-        Fi = filter_flows(:investable, true)
+        # Fi = filter_flows(:investable, true)
+        Fi_y = Dict(y => filter_flows(:investable, y, true) for y in Y)
 
         # Create subsets of storage assets
         Ase_y = Dict(y => As ∩ filter_assets(:storage_method_energy, y, true) for y in Y)
@@ -518,7 +507,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                     ) for row in eachrow(df_flows)
                 ]
         @variable(model, 0 ≤ assets_investment[y ∈ Y, a ∈ Ai_y[y]])
-        @variable(model, 0 ≤ flows_investment[Fi])
+        @variable(model, 0 ≤ flows_investment[y ∈ Y, f ∈ Fi_y[y]])
         @variable(model, 0 ≤ assets_investment_energy[y ∈ Y, a ∈ Ase_y[y]∩Ai_y[y]])  #number of installed asset units for storage energy [N]
         storage_level_intra_rp =
             model[:storage_level_intra_rp] = [
@@ -556,9 +545,11 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             end
         end
 
-        for (u, v) in Fi
-            if graph[u, v].investment_integer
-                JuMP.set_integer(flows_investment[(u, v)])
+        for y in Y
+            for (u, v) in Fi_y[y]
+                if graph[u, v].investment_integer
+                    JuMP.set_integer(flows_investment[y, (u, v)])
+                end
             end
         end
 
@@ -588,11 +579,11 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     @timeit to "add_expression_terms" begin
         @expression(
             model,
-            energy_limit[a ∈ As∩Ai],
-            if graph[a].storage_method_energy
-                graph[a].capacity_storage_energy * assets_investment_energy[a]
+            energy_limit[y ∈ Y, a ∈ As∩Ai_y[y]],
+            if graph[a].storage_method_energy[y]
+                graph[a].capacity_storage_energy[y] * assets_investment_energy[y, a]
             else
-                graph[a].energy_to_power_ratio * graph[a].capacity * assets_investment[a]
+                graph[a].energy_to_power_ratio[y] * graph[a].capacity[y] * assets_investment[y, a]
             end
         )
 
@@ -721,19 +712,18 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         assets_investment_cost = @expression(
             model,
             sum(
-                graph[a].investment_cost * graph[a].capacity[y] * assets_investment[y, a] for # make used properties Dict
+                graph[a].investment_cost[y] * graph[a].capacity[y] * assets_investment[y, a] for
                 y in Y for a in Ai_y[y]
+            ) + sum(
+                graph[a].investment_cost_storage_energy[y] *
+                graph[a].capacity_storage_energy[y] *
+                assets_investment_energy[y, a] for y in Y for a in Ase_y[y] ∩ Ai_y[y]
             )
-            # + sum(
-            #     graph[a].investment_cost_storage_energy *
-            #     graph[a].capacity_storage_energy *
-            #     assets_investment_energy[y, a] for y in Y for a in Ase_y[y] ∩ Ai_y[y]
-            # )
         )
 
         Y_y = Dict(y => [i for i in Y if i <= y] for y in Y)
         Ai = vcat(values(Ai_y)...) # all investable assets
-        Y_investment =
+        Y_a_investment =
             Dict(a => year for a in Ai for year in years if graph[a].investable[year] == true)
 
         Y_a = Dict(a => [y for y in Y if graph[a].active[y]] for a in Ai) # get all the active years for all investable assets
@@ -743,11 +733,10 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                 push!(investable_assets_with_active_years, (a, y))
             end
         end
-        unregister(model, :assets_investment_accumulated)
 
         @expression(
             model,
-            assets_investment_accumulated[a in Ai, y in Y_a[a], v in Y_investment[a]], # note we use Y_investment because we only want to get the investment year
+            assets_investment_accumulated[a in Ai, y in Y_a[a], v in Y_a_investment[a]], # note we use Y_investment because we only want to get the investment year
             assets_investment[v, a]
         )
 
@@ -757,31 +746,62 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         #     assets_investment_accumulated[a in Ai, y in Y_a[a]],
         #     sum(assets_investment[v, a] for v in Y_y[y] if graph[a].investable[v])
         # )
-
         # for yy in Y_y[y] if graph[a].active[y] && graph[a].investable[yy] # graph[a].investable[yy] makes sure this variable exists; graph[a].active[y] makes sure it is still active
 
         assets_fixed_costs = @expression(
             model,
             sum(
                 assets_investment_accumulated[a, y, v] for
-                (a, y) in investable_assets_with_active_years for v in Y_investment[a] # note v in Y_investment[a] because we only want to get the investment year
+                (a, y) in investable_assets_with_active_years for v in Y_a_investment[a] # note v in Y_investment[a] because we only want to get the investment year
             )
         )
 
         flows_investment_cost = @expression(
             model,
             sum(
-                graph[u, v].investment_cost * graph[u, v].capacity * flows_investment[(u, v)]
-                for (u, v) in Fi
+                graph[u, v].investment_cost[y] *
+                graph[u, v].capacity[y] *
+                flows_investment[y, (u, v)] for (u, v) in Fi_y[y] for y in Y
+            )
+        )
+
+        Fi = vcat(values(Fi_y)...)
+        Y_f = Dict((u, v) => [y for y in Y if graph[u, v].active[y]] for f in Fi)
+        Y_f_investment = Dict(
+            (u, v) => year for (u, v) in Fi for
+            year in years if graph[u, v].investable[year] == true
+        )
+        investable_flows_with_active_years = []
+        for (u, v) in Y_f
+            for y in Y_f[(u, v)]
+                push!(investable_flows_with_active_years, (u, v, y))
+            end
+        end
+        @expression(
+            model,
+            flows_investment_accumulated[
+                (u, v) in Fi,
+                y in Y_f[(u, v)],
+                vintage in Y_f_investment[(u, v)],
+            ], # note we use Y_investment because we only want to get the investment year
+            flows_investment[vintage, (u, v)]
+        )
+
+        flows_fixed_costs = @expression(
+            model,
+            sum(
+                flows_investment_accumulated[u, v, y, vintage] for
+                (u, v, y) in investable_flows_with_active_years for
+                vintage in Y_f_investment[(u, v)] # note v in Y_investment[a] because we only want to get the investment year
             )
         )
 
         flows_variable_cost = @expression(
             model,
             sum(
-                representative_periods[row.rep_period].weight * # use row.rp_weight after changing the df
+                representative_periods[row.year][row.rep_period].weight *
                 duration(row.timesteps_block, row.rep_period) *
-                graph[row.from, row.to].variable_cost * # use row.variable_cost after changing the df
+                graph[row.from, row.to].variable_cost[row.year] *
                 row.flow for row in eachrow(df_flows)
             )
         )
@@ -793,6 +813,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             assets_investment_cost +
             assets_fixed_costs +
             flows_investment_cost +
+            flows_fixed_costs +
             flows_variable_cost
         )
     end
@@ -865,9 +886,10 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
     @timeit to "add_investment_constraints!" add_investment_constraints!(
         graph,
-        Ai,
+        Y,
+        Ai_y,
         Ase,
-        Fi,
+        Fi_y,
         assets_investment,
         assets_investment_energy,
         flows_investment,

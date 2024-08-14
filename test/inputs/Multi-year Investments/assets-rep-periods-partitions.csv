@@ -1,0 +1,4 @@
+,,,{uniform;explicit;math},
+asset,year,rep_period,specification,partition
+wind2030,2030,1,uniform,4
+wind2030,2050,1,uniform,6

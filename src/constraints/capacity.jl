@@ -46,7 +46,6 @@ function add_capacity_constraints!(
                     ) * (
                         graph[row.asset].initial_capacity[row.year] + # this does not matter for now
                         graph[row.asset].capacity[row.investment_year] *
-                        # assets_investment[row.year, row.asset]
                         assets_investment_accumulated[row.asset, row.year, row.investment_year]
                     )
                 )

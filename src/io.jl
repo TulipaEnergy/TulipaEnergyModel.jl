@@ -35,7 +35,7 @@ function create_internal_structures(connection)
         _check_if_table_exist(connection, table)
     end
 
-    years =
+    years_rep_periods =
         DBInterface.execute(
             connection,
             "SELECT DISTINCT year FROM rep_periods_mapping ORDER BY year",
@@ -55,129 +55,385 @@ function create_internal_structures(connection)
                     ORDER BY rep_period",
             ) |>
             DataFrame |>
-            df -> df.weight for year in years
+            df -> df.weight for year in years_rep_periods
     )
-
-    # weights =
-    #     DBInterface.execute(
-    #         connection,
-    #         "SELECT rep_period, SUM(weight) AS weight
-    #             FROM rep_periods_mapping
-    #             GROUP BY rep_period
-    #             ORDER BY rep_period",
-    #     ) |>
-    #     DataFrame |>
-    #     df -> df.weight
 
     representative_periods = Dict{Int,Vector{RepresentativePeriod}}(
         year => [
             RepresentativePeriod(weights[year][row.rep_period], row.num_timesteps, row.resolution) for row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data") if
             row.year == year
-        ] for year in years
+        ] for year in years_rep_periods
     )
-
-    # representative_periods = [
-    #     RepresentativePeriod(weights[row.rep_period], row.num_timesteps, row.resolution) for
-    #     row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data")
-    # ]
 
     # Calculate the total number of periods and then pipe into a Dataframe to get the first value of the df with the num_periods
     num_periods, = DuckDB.query(connection, "SELECT MAX(period) AS period FROM rep_periods_mapping")
 
     timeframe = Timeframe(num_periods.period, TulipaIO.get_table(connection, "rep_periods_mapping"))
 
+    filter_rows_by_name(connection, table_name, row_name) = filter(
+        row -> row.name == row_name,
+        collect(TulipaIO.get_table(Val(:raw), connection, table_name)),
+    )
+
+    years_assets =
+        DBInterface.execute(connection, "SELECT DISTINCT year FROM assets_data ORDER BY year") |>
+        DataFrame |>
+        df -> df.year
+
     unique_asset_names = Dict{String,Bool}()
     asset_data = [
         row.name => GraphAssetData(
             row.type,
             Dict(
-                repeated_row.year => repeated_row.active for
-                repeated_row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
-                repeated_row.name == row.name
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.active for repeated_row in
+                        filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
             ),
             Dict(
-                repeated_row.year => repeated_row.investable for
-                repeated_row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
-                repeated_row.name == row.name
-            ),
-            row.investment_integer,
-            row.investment_cost,
-            row.investment_limit,
-            Dict(
-                repeated_row.year => repeated_row.capacity for
-                repeated_row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
-                repeated_row.name == row.name
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.investable for repeated_row in
+                        filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
             ),
             Dict(
-                repeated_row.year => repeated_row.initial_capacity for
-                repeated_row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
-                repeated_row.name == row.name
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.investment_integer for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
             ),
-            row.peak_demand,
-            if !ismissing(row.consumer_balance_sense) && row.consumer_balance_sense == ">="
-                MathOptInterface.GreaterThan(0.0)
-            else
-                MathOptInterface.EqualTo(0.0)
-            end,
-            row.is_seasonal,
-            row.storage_inflows,
-            row.initial_storage_capacity,
-            row.initial_storage_level,
-            row.energy_to_power_ratio,
             Dict(
-                repeated_row.year => repeated_row.storage_method_energy for
-                repeated_row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
-                repeated_row.name == row.name
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.investment_cost for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
             ),
-            row.investment_cost_storage_energy,
-            row.investment_limit_storage_energy,
-            row.capacity_storage_energy,
-            row.investment_integer_storage_energy,
-            row.use_binary_storage_method,
-            row.max_energy_timeframe_partition,
-            row.min_energy_timeframe_partition,
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.investment_limit for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    missing,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.capacity for repeated_row in
+                        filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.initial_capacity for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.peak_demand for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year =>
+                            if !ismissing(repeated_row.consumer_balance_sense) &&
+                               repeated_row.consumer_balance_sense == ">="
+                                MathOptInterface.GreaterThan(0.0)
+                            else
+                                MathOptInterface.EqualTo(0.0)
+                            end for repeated_row in
+                        filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    MathOptInterface.EqualTo(0.0),
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.is_seasonal for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.storage_inflows for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    missing,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.initial_storage_capacity for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.initial_storage_level for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    missing,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.energy_to_power_ratio for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.storage_method_energy for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.investment_cost_storage_energy for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.investment_limit_storage_energy for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    missing,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.capacity_storage_energy for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.investment_integer_storage_energy for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.use_binary_storage_method for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    missing,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.max_energy_timeframe_partition for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    missing,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.min_energy_timeframe_partition for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    missing,
+                ) for year in years_assets
+            ),
         ) for row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
         !haskey(unique_asset_names, row.name) && (unique_asset_names[row.name] = true)
     ]
 
-    years = [2030, 2050]
-    unique_flow_names = Dict{Tuple{String,String},Int}()
+    years_flows =
+        DBInterface.execute(connection, "SELECT DISTINCT year FROM flows_data ORDER BY year") |>
+        DataFrame |>
+        df -> df.year
 
-    function ensure_all_years(dict, years)
-        for year in years
-            if !haskey(dict, year)
-                dict[year] = 0
-            end
-        end
-        return dict
-    end
+    unique_flow_names = Dict{Tuple{String,String},Int}()
 
     flow_data = [
         (row.from_asset, row.to_asset) => GraphFlowData(
             row.carrier,
-            ensure_all_years(
-                Dict(
-                    repeated_row.year => repeated_row.active for
-                    repeated_row in TulipaIO.get_table(Val(:raw), connection, "flows_data") if
-                    (repeated_row.from_asset, repeated_row.to_asset) ==
-                    (row.from_asset, row.to_asset)
-                ),
-                years,
-            ),
-            row.is_transport,
             Dict(
-                repeated_row.year => repeated_row.investable for
-                repeated_row in TulipaIO.get_table(Val(:raw), connection, "flows_data") if
-                (repeated_row.from_asset, repeated_row.to_asset) == (row.from_asset, row.to_asset)
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.active for repeated_row in
+                        filter_rows_by_name(connection, "flows_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_flows
             ),
-            row.investment_integer,
-            row.variable_cost,
-            row.investment_cost,
-            row.investment_limit,
-            row.capacity,
-            row.initial_export_capacity,
-            row.initial_import_capacity,
-            row.efficiency,
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.is_transport for
+                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_flows
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.investable for repeated_row in
+                        filter_rows_by_name(connection, "flows_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_flows
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.investment_integer for
+                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_flows
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.variable_cost for
+                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_flows
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.investment_cost for
+                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_flows
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.investment_limit for
+                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                    ),
+                    year,
+                    missing,
+                ) for year in years_flows
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.capacity for repeated_row in
+                        filter_rows_by_name(connection, "flows_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_flows
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.initial_export_capacity for
+                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_flows
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.initial_import_capacity for
+                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_flows
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.efficiency for repeated_row in
+                        filter_rows_by_name(connection, "flows_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_flows
+            ),
         ) for row in TulipaIO.get_table(Val(:raw), connection, "flows_data") if
         !haskey(unique_flow_names, (row.from_asset, row.to_asset)) &&
         (unique_flow_names[(row.from_asset, row.to_asset)] = true)
@@ -205,41 +461,21 @@ function create_internal_structures(connection)
 
     _df = TulipaIO.get_table(connection, "assets_rep_periods_partitions")
     for a in MetaGraphsNext.labels(graph)
-        compute_assets_partitions!(
-            graph[a].rep_periods_partitions[year],
-            table_tree.partitions.assets[:rep_periods][year],
-            a,
-            representative_periods[year],
-        )
+        for year in years
+            graph[a].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
+            compute_assets_partitions!( # fix this, type error
+                graph[a].rep_periods_partitions[year],
+                _df,
+                a,
+                representative_periods[year],
+            )
+        end
     end
-
-    # for a in MetaGraphsNext.labels(graph)
-    graph[a].rep_periods_partitions = Dict(
-        year =>
-            graph[a].rep_periods_partitions =
-                Dict(year => Dict{Int,Vector{TimestepsBlock}} for year in years) for
-        year in years
-    )
-    #     for year in years
-    #  graph[a].rep_periods_partitions[year] = Dict{Int, Vector{TimestepsBlock}}()
-    #         compute_assets_partitions!(
-    #             graph[a].rep_periods_partitions[year],
-    #             table_tree.partitions.assets[:rep_periods][year],
-    #             a,
-    #             representative_periods[year],
-    #         )
-    #     end
-    # end
 
     _df = TulipaIO.get_table(connection, "flows_rep_periods_partitions")
     for (u, v) in MetaGraphsNext.edge_labels(graph)
         for year in years
             graph[u, v].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
-        end
-    end
-
-    for (u, v) in MetaGraphsNext.edge_labels(graph)
-        for year in years
             if graph[u, v].active[year]
                 compute_flows_partitions!(
                     graph[u, v].rep_periods_partitions[year],
@@ -268,7 +504,7 @@ function create_internal_structures(connection)
              WHERE assets_data.is_seasonal
          """
     for row in DuckDB.query(connection, find_assets_partitions_query)
-        graph[row.name].timeframe_partitions = _parse_rp_partition(
+        graph[row.name].timeframe_partitions = _parse_rp_partition( # !!!
             Val(Symbol(row.specification)),
             row.partition,
             1:timeframe.num_periods,
@@ -276,8 +512,8 @@ function create_internal_structures(connection)
     end
 
     _df = TulipaIO.get_table(connection, "profiles_rep_periods")
-    for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_profiles") # row = asset, profile_type, profile_name
-        gp = DataFrames.groupby( # 2. group by rep_period
+    for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_profiles")  # row = asset, profile_type, profile_name
+        gp = DataFrames.groupby( # 2. group by rep_period, year
             filter( # 1. Filter on profile_name
                 :profile_name => ==(asset_profile_row.profile_name),
                 _df;
@@ -285,7 +521,9 @@ function create_internal_structures(connection)
             ),
             [:rep_period, :year],
         )
-        for ((rep_period, year), df) in pairs(gp) # Loop over filtered DFs by rep_period
+        for ((rep_period, year), df) in pairs(gp) # Loop over filtered DFs by rep_period, year
+            graph[asset_profile_row.asset].rep_periods_profiles[year] =
+                Dict{Tuple{Symbol,Int},Vector{Float64}}()
             graph[asset_profile_row.asset].rep_periods_profiles[year][(
                 asset_profile_row.profile_type,
                 rep_period,
@@ -296,16 +534,19 @@ function create_internal_structures(connection)
     for flow_profile_row in TulipaIO.get_table(Val(:raw), connection, "flows_profiles")
         gp = DataFrames.groupby(
             filter(:profile_name => ==(flow_profile_row.profile_name), _df; view = true),
-            :rep_period;
+            [:rep_period, :year];
         )
-        for ((rep_period,), df) in pairs(gp)
-            graph[flow_profile_row.from_asset, flow_profile_row.to_asset].rep_periods_profiles[(
+        for ((rep_period, year), df) in pairs(gp)
+            graph[flow_profile_row.from_asset, flow_profile_row.to_asset].rep_periods_profiles[year] =
+                Dict{Tuple{Symbol,Int},Vector{Float64}}()
+            graph[flow_profile_row.from_asset, flow_profile_row.to_asset].rep_periods_profiles[year][(
                 flow_profile_row.profile_type,
                 rep_period,
             )] = df.value
         end
     end
 
+    #!!!
     _df = TulipaIO.get_table(connection, "profiles_timeframe")
     for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_timeframe_profiles") # row = asset, profile_type, profile_name
         df = filter(:profile_name => ==(asset_profile_row.profile_name), _df; view = true)
