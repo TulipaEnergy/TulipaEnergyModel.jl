@@ -38,8 +38,8 @@ mutable struct GraphAssetData
     investment_integer::Bool
     investment_cost::Float64
     investment_limit::Union{Missing,Float64}
-    capacity::Float64
-    initial_capacity::Float64
+    capacity::Dict{Int,Float64}
+    initial_capacity::Dict{Int,Float64}
     peak_demand::Float64
     consumer_balance_sense::Union{MathOptInterface.EqualTo,MathOptInterface.GreaterThan}
     is_seasonal::Bool
@@ -56,9 +56,10 @@ mutable struct GraphAssetData
     max_energy_timeframe_partition::Union{Missing,Float64}
     min_energy_timeframe_partition::Union{Missing,Float64}
     timeframe_profiles::Dict{String,Vector{Float64}}
-    rep_periods_profiles::Dict{Tuple{String,Int},Vector{Float64}}
+    rep_periods_profiles::Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}
     timeframe_partitions::Vector{PeriodsBlock}
     rep_periods_partitions::Dict{Int,Dict{Int,Vector{TimestepsBlock}}}
+    # rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
     # Solution
     investment::Float64
     investment_energy::Float64 # for storage assets with energy method
@@ -94,9 +95,10 @@ mutable struct GraphAssetData
         min_energy_timeframe_partition,
     )
         timeframe_profiles = Dict{String,Vector{Float64}}()
-        rep_periods_profiles = Dict{Tuple{String,Int},Vector{Float64}}()
+        rep_periods_profiles = Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}()
         timeframe_partitions = PeriodsBlock[]
         rep_periods_partitions = Dict{Int,Dict{Int,Vector{TimestepsBlock}}}()
+        # rep_periods_partitions = Dict{Int,Vector{TimestepsBlock}}()
         return new(
             type,
             active,
@@ -154,7 +156,7 @@ mutable struct GraphFlowData
     timeframe_profiles::Dict{String,Vector{Float64}}
     rep_periods_profiles::Dict{Tuple{String,Int},Vector{Float64}}
     timeframe_partitions::Vector{PeriodsBlock}
-    rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
+    rep_periods_partitions::Dict{Int,Dict{Int,Vector{TimestepsBlock}}}
     # Solution
     flow::Dict{Tuple{Int,TimestepsBlock},Float64}
     investment::Float64
@@ -190,7 +192,7 @@ function GraphFlowData(
         Dict{String,Vector{Float64}}(),
         Dict{Tuple{String,Int},Vector{Float64}}(),
         PeriodsBlock[],
-        Dict{Int,Vector{TimestepsBlock}}(),
+        Dict{Int,Dict{Int,Vector{TimestepsBlock}}}(),
         Dict{Tuple{Int,TimestepsBlock},Float64}(),
         -1,
     )
@@ -242,8 +244,8 @@ mutable struct EnergyProblem
         Nothing, # Edge weight function
         Nothing, # Default edge weight
     }
-    representative_periods::Vector{RepresentativePeriod}
-    constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int},Vector{TimestepsBlock}}}
+    representative_periods::Dict{Int,Vector{RepresentativePeriod}}
+    constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int,Int},Vector{TimestepsBlock}}}
     timeframe::Timeframe
     dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}

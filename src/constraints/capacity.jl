@@ -39,12 +39,15 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
+                        row.year,
                         ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
                     ) * (
-                        graph[row.asset].initial_capacity +
-                        graph[row.asset].capacity * assets_investment[row.asset]
+                        graph[row.asset].initial_capacity[row.year] + # this does not matter for now
+                        graph[row.asset].capacity[row.investment_year] *
+                        # assets_investment[row.year, row.asset]
+                        assets_investment_accumulated[row.asset, row.year, row.investment_year]
                     )
                 )
             else
@@ -53,10 +56,11 @@ function add_capacity_constraints!(
                     profile_aggregation(
                         Statistics.mean,
                         graph[row.asset].rep_periods_profiles,
+                        row.year,
                         ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
-                    ) * graph[row.asset].initial_capacity
+                    ) * graph[row.asset].initial_capacity[row.year]
                 )
             end for row in eachrow(dataframes[:highest_out])
         ]
@@ -199,9 +203,9 @@ function add_capacity_constraints!(
     model[:max_output_flows_limit] = [
         @constraint(
             model,
-            outgoing_flow_highest_out_resolution[row.index] ≤
-            assets_profile_times_capacity_out[row.index],
-            base_name = "max_output_flows_limit[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
+            outgoing_flow_highest_out_resolution[row.index] ≤ # this df has been changed to include years, so no need to change here.
+            assets_profile_times_capacity_out[row.index], # this df has been changed to include years, so no need to change here.
+            base_name = "max_output_flows_limit[$(row.asset), $(row.investment_year), $(row.year), $(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:highest_out]) if
         row.asset ∉ Asb && outgoing_flow_highest_out_resolution[row.index] != 0
     ]

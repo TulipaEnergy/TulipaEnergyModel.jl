@@ -14,16 +14,19 @@ For each asset and representative period, it calls the `compute_rp_partition` fu
 to compute the partition based on the strategy.
 """
 function compute_constraints_partitions(graph, representative_periods)
-    constraints_partitions = Dict{Symbol,Dict{Tuple{String,Int},Vector{TimestepsBlock}}}()
-
-    _inflows(a, rp) =
-        [graph[u, a].rep_periods_partitions[rp] for u in MetaGraphsNext.inneighbor_labels(graph, a)]
-    _outflows(a, rp) = [
-        graph[a, v].rep_periods_partitions[rp] for v in MetaGraphsNext.outneighbor_labels(graph, a)
+    constraints_partitions = Dict{Symbol,Dict{Tuple{String,Int,Int,Int},Vector{TimestepsBlock}}}()
+    years = [2030, 2050]
+    _inflows(a, iy, y, rp) = [
+        graph[u, a].rep_periods_partitions[y][rp] for
+        u in MetaGraphsNext.inneighbor_labels(graph, a) if graph[u, a].active[y]
     ]
-    _allflows(a, rp) = [_inflows(a, rp); _outflows(a, rp)]
-    _assets(a, rp) = [graph[a].rep_periods_partitions[rp]]
-    _all(a, rp) = [_allflows(a, rp); _assets(a, rp)]
+    _outflows(a, iy, y, rp) = [
+        graph[a, v].rep_periods_partitions[y][rp] for
+        v in MetaGraphsNext.outneighbor_labels(graph, a) if graph[a, v].active[y]
+    ]
+    _allflows(a, iy, y, rp) = [_inflows(a, iy, y, rp); _outflows(a, iy, y, rp)]
+    _assets(a, iy, y, rp) = [graph[a].rep_periods_partitions[y][rp]]
+    _all(a, iy, y, rp) = [_allflows(a, iy, y, rp); _assets(a, iy, y, rp)]
 
     partitions_cases = [
         (
@@ -65,19 +68,31 @@ function compute_constraints_partitions(graph, representative_periods)
         ),
     ]
 
-    num_rep_periods = length(representative_periods)
+    RP = Dict{Int,UnitRange{Int}}(year => 1:length(representative_periods[year]) for year in years)
+
+    active_years = Dict{String,Vector{Int}}(
+        a => [year for year in years if graph[a].active[year]] for
+        a in MetaGraphsNext.labels(graph)
+    )
 
     for (name, partitions, strategy, asset_filter) in partitions_cases
         constraints_partitions[name] = OrderedDict(
-            (a, rp) => begin
-                P = partitions(a, rp)
+            (a, iy, y, rp) => begin
+                P = partitions(a, iy, y, rp)
                 if length(P) > 0
-                    compute_rp_partition(partitions(a, rp), strategy)
+                    result = compute_rp_partition(partitions(a, iy, y, rp), strategy)
+                    result
                 else
                     Vector{TimestepsBlock}[]
                 end
-            end for
-            a in MetaGraphsNext.labels(graph), rp in 1:num_rep_periods if asset_filter(a)
+            end for a in MetaGraphsNext.labels(graph) if asset_filter(a) for
+            y in active_years[a] for iy in (
+                if any(graph[a].investable[iy] for iy in years)
+                    filter(iy -> graph[a].investable[iy], years)
+                else
+                    [0]
+                end
+            ) for rp in RP[y]
         )
     end
 
@@ -190,10 +205,7 @@ compute_rp_partition([partition1, partition2], :highest)
  11:12
 ```
 """
-function compute_rp_partition(
-    partitions::AbstractVector{<:AbstractVector{<:UnitRange{<:Integer}}},
-    strategy,
-)
+function compute_rp_partition(partitions, strategy)
     valid_strategies = [:highest, :lowest]
     if !(strategy in valid_strategies)
         error("`strategy` should be one of $valid_strategies. See docs for more info.")

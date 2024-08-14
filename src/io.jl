@@ -58,12 +58,28 @@ function create_internal_structures(connection)
             df -> df.weight for year in years
     )
 
+    # weights =
+    #     DBInterface.execute(
+    #         connection,
+    #         "SELECT rep_period, SUM(weight) AS weight
+    #             FROM rep_periods_mapping
+    #             GROUP BY rep_period
+    #             ORDER BY rep_period",
+    #     ) |>
+    #     DataFrame |>
+    #     df -> df.weight
+
     representative_periods = Dict{Int,Vector{RepresentativePeriod}}(
         year => [
             RepresentativePeriod(weights[year][row.rep_period], row.num_timesteps, row.resolution) for row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data") if
             row.year == year
         ] for year in years
     )
+
+    # representative_periods = [
+    #     RepresentativePeriod(weights[row.rep_period], row.num_timesteps, row.resolution) for
+    #     row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data")
+    # ]
 
     # Calculate the total number of periods and then pipe into a Dataframe to get the first value of the df with the num_periods
     num_periods, = DuckDB.query(connection, "SELECT MAX(period) AS period FROM rep_periods_mapping")
@@ -87,8 +103,16 @@ function create_internal_structures(connection)
             row.investment_integer,
             row.investment_cost,
             row.investment_limit,
-            row.capacity,
-            row.initial_capacity,
+            Dict(
+                repeated_row.year => repeated_row.capacity for
+                repeated_row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
+                repeated_row.name == row.name
+            ),
+            Dict(
+                repeated_row.year => repeated_row.initial_capacity for
+                repeated_row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
+                repeated_row.name == row.name
+            ),
             row.peak_demand,
             if !ismissing(row.consumer_balance_sense) && row.consumer_balance_sense == ">="
                 MathOptInterface.GreaterThan(0.0)
@@ -116,14 +140,29 @@ function create_internal_structures(connection)
         !haskey(unique_asset_names, row.name) && (unique_asset_names[row.name] = true)
     ]
 
+    years = [2030, 2050]
     unique_flow_names = Dict{Tuple{String,String},Int}()
+
+    function ensure_all_years(dict, years)
+        for year in years
+            if !haskey(dict, year)
+                dict[year] = 0
+            end
+        end
+        return dict
+    end
+
     flow_data = [
         (row.from_asset, row.to_asset) => GraphFlowData(
             row.carrier,
-            Dict(
-                repeated_row.year => repeated_row.active for
-                repeated_row in TulipaIO.get_table(Val(:raw), connection, "flows_data") if
-                (repeated_row.from_asset, repeated_row.to_asset) == (row.from_asset, row.to_asset)
+            ensure_all_years(
+                Dict(
+                    repeated_row.year => repeated_row.active for
+                    repeated_row in TulipaIO.get_table(Val(:raw), connection, "flows_data") if
+                    (repeated_row.from_asset, repeated_row.to_asset) ==
+                    (row.from_asset, row.to_asset)
+                ),
+                years,
             ),
             row.is_transport,
             Dict(
@@ -167,12 +206,13 @@ function create_internal_structures(connection)
     _df = TulipaIO.get_table(connection, "assets_rep_periods_partitions")
     for a in MetaGraphsNext.labels(graph)
         compute_assets_partitions!(
-            graph[a].rep_periods_partitions,
-            table_tree.partitions.assets[:rep_periods],
+            graph[a].rep_periods_partitions[year],
+            table_tree.partitions.assets[:rep_periods][year],
             a,
-            representative_periods,
+            representative_periods[year],
         )
     end
+
     # for a in MetaGraphsNext.labels(graph)
     graph[a].rep_periods_partitions = Dict(
         year =>
@@ -193,13 +233,23 @@ function create_internal_structures(connection)
 
     _df = TulipaIO.get_table(connection, "flows_rep_periods_partitions")
     for (u, v) in MetaGraphsNext.edge_labels(graph)
-        compute_flows_partitions!(
-            graph[u, v].rep_periods_partitions,
-            _df,
-            u,
-            v,
-            representative_periods,
-        )
+        for year in years
+            graph[u, v].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
+        end
+    end
+
+    for (u, v) in MetaGraphsNext.edge_labels(graph)
+        for year in years
+            if graph[u, v].active[year]
+                compute_flows_partitions!(
+                    graph[u, v].rep_periods_partitions[year],
+                    _df,
+                    u,
+                    v,
+                    representative_periods[year],
+                )
+            end
+        end
     end
 
     #=
@@ -233,10 +283,10 @@ function create_internal_structures(connection)
                 _df;
                 view = true,
             ),
-            :rep_period,
+            [:rep_period, :year],
         )
-        for ((rep_period,), df) in pairs(gp) # Loop over filtered DFs by rep_period
-            graph[asset_profile_row.asset].rep_periods_profiles[(
+        for ((rep_period, year), df) in pairs(gp) # Loop over filtered DFs by rep_period
+            graph[asset_profile_row.asset].rep_periods_profiles[year][(
                 asset_profile_row.profile_type,
                 rep_period,
             )] = df.value
