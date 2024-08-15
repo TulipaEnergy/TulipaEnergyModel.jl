@@ -75,6 +75,11 @@ function create_internal_structures(connection)
         collect(TulipaIO.get_table(Val(:raw), connection, table_name)),
     )
 
+    filter_rows_by_name(connection, table_name, row_name_from_asset, row_name_to_asset) = filter(
+        row -> (row.from_asset, row.to_asset) == (row_name_from_asset, row_name_to_asset),
+        collect(TulipaIO.get_table(Val(:raw), connection, table_name)),
+    )
+
     years_assets =
         DBInterface.execute(connection, "SELECT DISTINCT year FROM assets_data ORDER BY year") |>
         DataFrame |>
@@ -91,7 +96,7 @@ function create_internal_structures(connection)
                         filter_rows_by_name(connection, "assets_data", row.name)
                     ),
                     year,
-                    0,
+                    false,
                 ) for year in years_assets
             ),
             Dict(
@@ -101,7 +106,7 @@ function create_internal_structures(connection)
                         filter_rows_by_name(connection, "assets_data", row.name)
                     ),
                     year,
-                    0,
+                    false,
                 ) for year in years_assets
             ),
             Dict(
@@ -111,7 +116,7 @@ function create_internal_structures(connection)
                         repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
                     ),
                     year,
-                    0,
+                    false,
                 ) for year in years_assets
             ),
             Dict(
@@ -177,7 +182,7 @@ function create_internal_structures(connection)
                         filter_rows_by_name(connection, "assets_data", row.name)
                     ),
                     year,
-                    MathOptInterface.EqualTo(0.0),
+                    MathOptInterface.EqualTo(0.0), # default value
                 ) for year in years_assets
             ),
             Dict(
@@ -187,7 +192,7 @@ function create_internal_structures(connection)
                         repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
                     ),
                     year,
-                    0,
+                    false,
                 ) for year in years_assets
             ),
             Dict(
@@ -227,7 +232,7 @@ function create_internal_structures(connection)
                         repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
                     ),
                     year,
-                    0,
+                    1, # default value
                 ) for year in years_assets
             ),
             Dict(
@@ -237,7 +242,7 @@ function create_internal_structures(connection)
                         repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
                     ),
                     year,
-                    0,
+                    false,
                 ) for year in years_assets
             ),
             Dict(
@@ -277,7 +282,7 @@ function create_internal_structures(connection)
                         repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
                     ),
                     year,
-                    0,
+                    false,
                 ) for year in years_assets
             ),
             Dict(
@@ -327,48 +332,73 @@ function create_internal_structures(connection)
             Dict(
                 year => get(
                     Dict(
-                        repeated_row.year => repeated_row.active for repeated_row in
-                        filter_rows_by_name(connection, "flows_data", row.name)
+                        repeated_row.year => repeated_row.active for
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
                     ),
                     year,
-                    0,
+                    false,
                 ) for year in years_flows
             ),
             Dict(
                 year => get(
                     Dict(
                         repeated_row.year => repeated_row.is_transport for
-                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
                     ),
                     year,
-                    0,
+                    false,
                 ) for year in years_flows
             ),
             Dict(
                 year => get(
                     Dict(
-                        repeated_row.year => repeated_row.investable for repeated_row in
-                        filter_rows_by_name(connection, "flows_data", row.name)
+                        repeated_row.year => repeated_row.investable for
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
                     ),
                     year,
-                    0,
+                    false,
                 ) for year in years_flows
             ),
             Dict(
                 year => get(
                     Dict(
                         repeated_row.year => repeated_row.investment_integer for
-                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
                     ),
                     year,
-                    0,
+                    false,
                 ) for year in years_flows
             ),
             Dict(
                 year => get(
                     Dict(
                         repeated_row.year => repeated_row.variable_cost for
-                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
                     ),
                     year,
                     0,
@@ -378,7 +408,12 @@ function create_internal_structures(connection)
                 year => get(
                     Dict(
                         repeated_row.year => repeated_row.investment_cost for
-                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
                     ),
                     year,
                     0,
@@ -388,7 +423,12 @@ function create_internal_structures(connection)
                 year => get(
                     Dict(
                         repeated_row.year => repeated_row.investment_limit for
-                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
                     ),
                     year,
                     missing,
@@ -397,8 +437,13 @@ function create_internal_structures(connection)
             Dict(
                 year => get(
                     Dict(
-                        repeated_row.year => repeated_row.capacity for repeated_row in
-                        filter_rows_by_name(connection, "flows_data", row.name)
+                        repeated_row.year => repeated_row.capacity for
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
                     ),
                     year,
                     0,
@@ -408,7 +453,12 @@ function create_internal_structures(connection)
                 year => get(
                     Dict(
                         repeated_row.year => repeated_row.initial_export_capacity for
-                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
                     ),
                     year,
                     0,
@@ -418,7 +468,12 @@ function create_internal_structures(connection)
                 year => get(
                     Dict(
                         repeated_row.year => repeated_row.initial_import_capacity for
-                        repeated_row in filter_rows_by_name(connection, "flows_data", row.name)
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
                     ),
                     year,
                     0,
@@ -427,11 +482,16 @@ function create_internal_structures(connection)
             Dict(
                 year => get(
                     Dict(
-                        repeated_row.year => repeated_row.efficiency for repeated_row in
-                        filter_rows_by_name(connection, "flows_data", row.name)
+                        repeated_row.year => repeated_row.efficiency for
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
                     ),
                     year,
-                    0,
+                    1, # default value
                 ) for year in years_flows
             ),
         ) for row in TulipaIO.get_table(Val(:raw), connection, "flows_data") if
@@ -439,17 +499,10 @@ function create_internal_structures(connection)
         (unique_flow_names[(row.from_asset, row.to_asset)] = true)
     ]
 
-    num_assets = length(asset_data)
+    num_assets = length(asset_data) # we only look at unique asset names
 
-    unique_names = Dict{String,Bool}()
-    name_to_id = Dict{String,Int}()
-
-    for (i, row) in enumerate(TulipaIO.get_table(Val(:raw), connection, "assets_data"))
-        if !haskey(unique_names, row.name)
-            name_to_id[row.name] = i
-            unique_names[row.name] = true
-        end
-    end
+    asset_names = [asset[1] for asset in asset_data] # to make sure the order is the same as in asset_data
+    name_to_id = Dict(value => number for (number, value) in enumerate(asset_names))
 
     _graph = Graphs.DiGraph(num_assets)
     for flow in flow_data

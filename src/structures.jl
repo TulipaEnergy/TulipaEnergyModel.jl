@@ -59,7 +59,6 @@ mutable struct GraphAssetData
     rep_periods_profiles::Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}
     timeframe_partitions::Dict{Int,Vector{PeriodsBlock}}
     rep_periods_partitions::Dict{Int,Dict{Int,Vector{TimestepsBlock}}}
-    # rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
     # Solution
     investment::Float64
     investment_energy::Float64 # for storage assets with energy method
@@ -96,7 +95,7 @@ mutable struct GraphAssetData
     )
         timeframe_profiles = Dict{Int,Dict{String,Vector{Float64}}}()
         rep_periods_profiles = Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}()
-        timeframe_partitions = Dict{Int,PeriodsBlock}()
+        timeframe_partitions = Dict{Int,Vector{TimestepsBlock}}()
         rep_periods_partitions = Dict{Int,Dict{Int,Vector{TimestepsBlock}}}()
         return new(
             type,
