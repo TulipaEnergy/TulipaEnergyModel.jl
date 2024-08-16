@@ -1,5 +1,11 @@
 export GraphAssetData,
-    GraphFlowData, EnergyProblem, RepresentativePeriod, PeriodsBlock, TimestepsBlock, Timeframe
+    GraphFlowData,
+    EnergyProblem,
+    RepresentativePeriod,
+    PeriodsBlock,
+    TimestepsBlock,
+    Timeframe,
+    Group
 
 const TimestepsBlock = UnitRange{Int}
 const PeriodsBlock = UnitRange{Int}
@@ -193,6 +199,20 @@ function GraphFlowData(
     )
 end
 
+"""
+Structure to hold the group data
+"""
+struct Group
+    name::String
+    invest_method::Bool
+    min_investment_limit::Union{Missing,Float64}
+    max_investment_limit::Union{Missing,Float64}
+
+    function Group(name, invest_method, min_investment_limit, max_investment_limit)
+        return new(name, invest_method, min_investment_limit, max_investment_limit)
+    end
+end
+
 mutable struct Solution
     assets_investment::Dict{String,Float64}
     assets_investment_energy::Dict{String,Float64} # for storage assets with energy method
@@ -216,6 +236,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 - `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
 - `timeframe`: The number of periods of the `representative_periods`.
 - `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
+- `groups`: The input data of the groups to create constraints that are common to a set of assets in the model.
 - `model`: A JuMP.Model object representing the optimization model.
 - `solved`: A boolean indicating whether the `model` has been solved or not.
 - `objective_value`: The objective value of the solved problem.
@@ -242,6 +263,7 @@ mutable struct EnergyProblem
     representative_periods::Vector{RepresentativePeriod}
     constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int},Vector{TimestepsBlock}}}
     timeframe::Timeframe
+    groups::Vector{Group}
     dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}
     solution::Union{Solution,Nothing}
@@ -258,7 +280,8 @@ mutable struct EnergyProblem
     """
     function EnergyProblem(connection)
         elapsed_time_internal = @elapsed begin
-            graph, representative_periods, timeframe = create_internal_structures(connection)
+            graph, representative_periods, timeframe, groups =
+                create_internal_structures(connection)
         end
         elapsed_time_cons = @elapsed begin
             constraints_partitions = compute_constraints_partitions(graph, representative_periods)
@@ -270,6 +293,7 @@ mutable struct EnergyProblem
             representative_periods,
             constraints_partitions,
             timeframe,
+            groups,
             Dict(),
             nothing,
             nothing,

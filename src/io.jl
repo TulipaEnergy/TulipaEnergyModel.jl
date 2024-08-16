@@ -29,6 +29,7 @@ function create_internal_structures(connection)
         "assets_timeframe_partitions"
         "assets_timeframe_profiles"
         "flows_rep_periods_partitions"
+        "groups_data"
         "profiles_timeframe"
     ]
     for table in tables_allowed_to_be_missing
@@ -56,6 +57,11 @@ function create_internal_structures(connection)
     num_periods, = DuckDB.query(connection, "SELECT MAX(period) AS period FROM rep_periods_mapping")
 
     timeframe = Timeframe(num_periods.period, TulipaIO.get_table(connection, "rep_periods_mapping"))
+
+    groups = [
+        Group(row.name, row.invest_method, row.min_investment_limit, row.max_investment_limit)
+        for row in TulipaIO.get_table(Val(:raw), connection, "groups_data")
+    ]
 
     asset_data = [
         row.name => GraphAssetData(
@@ -195,7 +201,7 @@ function create_internal_structures(connection)
         graph[asset_profile_row.asset].timeframe_profiles[asset_profile_row.profile_type] = df.value
     end
 
-    return graph, representative_periods, timeframe
+    return graph, representative_periods, timeframe, groups
 end
 
 function get_schema(tablename)

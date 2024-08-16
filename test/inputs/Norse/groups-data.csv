@@ -1,2 +1,2 @@
 group_name,{false; true},MW,MW
-name,group_invest_method,min_group_invest_capacity,max_group_invest_capacity
+name,invest_method,min_investment_limit,max_investment_limit

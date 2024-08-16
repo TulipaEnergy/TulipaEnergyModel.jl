@@ -55,10 +55,10 @@ const schemas = (
     groups = (
         # Schema for the groups-data.csv file.
         data = OrderedDict(
-            :name => "VARCHAR",                     # Name of the Group
-            :group_invest_method => "BOOLEAN",      # true -> activate group constraints; false -> no group investment constraints
-            :min_group_invest_capacity => "DOUBLE", # MW (Missing -> no limit)
-            :max_group_invest_capacity => "DOUBLE", # MW (Missing -> no limit)
+            :name => "VARCHAR",                # Name of the Group
+            :invest_method => "BOOLEAN",       # true -> activate group constraints; false -> no group investment constraints
+            :min_investment_limit => "DOUBLE", # MW (Missing -> no limit)
+            :max_investment_limit => "DOUBLE", # MW (Missing -> no limit)
         ),
     ),
     flows = (
