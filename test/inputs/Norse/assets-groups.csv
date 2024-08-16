@@ -1,0 +1,2 @@
+group_name,{no_limits; limit_total_capacity},MW,MW
+name,unit_invest_method,min_limit_total_capacity,max_limit_total_capacity
