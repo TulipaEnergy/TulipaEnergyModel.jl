@@ -512,13 +512,14 @@ function create_internal_structures(connection)
 
     graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data, nothing, nothing, nothing)
 
+    years = [2030, 2050]
     _df = TulipaIO.get_table(connection, "assets_rep_periods_partitions")
     for a in MetaGraphsNext.labels(graph)
         for year in years
             graph[a].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
-            compute_assets_partitions!( # fix this, type error
+            compute_assets_partitions!(
                 graph[a].rep_periods_partitions[year],
-                _df,
+                _df, # this is good if there is no data, don't need to change the table to include years.
                 a,
                 representative_periods[year],
             )
@@ -528,8 +529,10 @@ function create_internal_structures(connection)
     _df = TulipaIO.get_table(connection, "flows_rep_periods_partitions")
     for (u, v) in MetaGraphsNext.edge_labels(graph)
         for year in years
+            # we only compute partitions for active flows, but we initialize all years. If we don't want the all the years as keys, we should not do this.
             graph[u, v].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
             if graph[u, v].active[year]
+                # we only compute partitions for active flows.
                 compute_flows_partitions!(
                     graph[u, v].rep_periods_partitions[year],
                     _df,
@@ -557,13 +560,16 @@ function create_internal_structures(connection)
              WHERE assets_data.is_seasonal
          """
     for row in DuckDB.query(connection, find_assets_partitions_query)
-        graph[row.name].timeframe_partitions = _parse_rp_partition( # !!!
-            Val(Symbol(row.specification)),
-            row.partition,
-            1:timeframe.num_periods,
-        )
+        for year in years
+            graph[row.name].timeframe_partitions[year] = _parse_rp_partition(
+                Val(Symbol(row.specification)),
+                row.partition,
+                1:timeframe.num_periods, # check if this is correct
+            )
+        end
     end
 
+    # this works
     _df = TulipaIO.get_table(connection, "profiles_rep_periods")
     for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_profiles")  # row = asset, profile_type, profile_name
         gp = DataFrames.groupby( # 2. group by rep_period, year
@@ -584,6 +590,7 @@ function create_internal_structures(connection)
         end
     end
 
+    # this should work because it is the same as the previous one
     for flow_profile_row in TulipaIO.get_table(Val(:raw), connection, "flows_profiles")
         gp = DataFrames.groupby(
             filter(:profile_name => ==(flow_profile_row.profile_name), _df; view = true),
@@ -599,7 +606,7 @@ function create_internal_structures(connection)
         end
     end
 
-    #!!!
+    # assets_timeframe_profiles is the same as assets_profiles, no year column is needed, year is in the profile_name
     _df = TulipaIO.get_table(connection, "profiles_timeframe")
     for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_timeframe_profiles") # row = asset, profile_type, profile_name
         df = filter(:profile_name => ==(asset_profile_row.profile_name), _df; view = true)

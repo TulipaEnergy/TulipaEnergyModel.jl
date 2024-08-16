@@ -8,7 +8,7 @@ add_capacity_constraints!(model,
                           flow,
                           Ai,
                           Asb,
-                          assets_investment,
+                          assets_investment_accumulated,
                           outgoing_flow_highest_out_resolution,
                           incoming_flow_highest_in_resolution
                           )
@@ -24,7 +24,7 @@ function add_capacity_constraints!(
     flow,
     Ai,
     Asb,
-    assets_investment,
+    assets_investment_accumulated,
     outgoing_flow_highest_out_resolution,
     incoming_flow_highest_in_resolution,
 )
@@ -77,8 +77,11 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) *
-                    (graph[row.asset].initial_capacity + graph[row.asset].investment_limit) *
-                    (1 - row.is_charging)
+                    (
+                        graph[row.asset].initial_capacity[row.investment_year] +
+                        graph[row.asset].investment_limit[row.investment_year]
+                    ) * # fix this
+                    (1 - row.is_charging[row.year])
                 )
             else
                 @expression(
@@ -90,7 +93,7 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) *
-                    (graph[row.asset].initial_capacity) *
+                    (graph[row.asset].initial_capacity[row.year]) * # check this,
                     (1 - row.is_charging)
                 )
             end for row in eachrow(dataframes[:highest_out])
@@ -108,8 +111,10 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) * (
-                        graph[row.asset].initial_capacity * (1 - row.is_charging) +
-                        graph[row.asset].capacity * assets_investment[row.asset]
+                        graph[row.asset].initial_capacity[row.investment_year] *
+                        (1 - row.is_charging) +
+                        graph[row.asset].capacity[row.investment_year] *
+                        assets_investment_accumulated[row.asset, row.year, row.investment_year]
                     )
                 )
             end for row in eachrow(dataframes[:highest_out])
@@ -128,8 +133,9 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) * (
-                        graph[row.asset].initial_capacity +
-                        graph[row.asset].capacity * assets_investment[row.asset]
+                        graph[row.asset].initial_capacity[row.investment_year] +
+                        graph[row.asset].capacity[row.investment_year] *
+                        assets_investment_accumulated[row.asset, row.year, row.investment_year]
                     )
                 )
             else
@@ -141,7 +147,7 @@ function add_capacity_constraints!(
                         ("availability", row.rep_period),
                         row.timesteps_block,
                         1.0,
-                    ) * graph[row.asset].initial_capacity
+                    ) * graph[row.asset].initial_capacity[row.year]
                 )
             end for row in eachrow(dataframes[:highest_in])
         ]
@@ -159,7 +165,10 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) *
-                    (graph[row.asset].initial_capacity + graph[row.asset].investment_limit) *
+                    (
+                        graph[row.asset].initial_capacity[row.investment_year] +
+                        graph[row.asset].investment_limit[row.investment_year]
+                    ) *
                     row.is_charging
                 )
             else
@@ -172,7 +181,7 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) *
-                    (graph[row.asset].initial_capacity) *
+                    (graph[row.asset].initial_capacity[row.investment_year]) *
                     row.is_charging
                 )
             end for row in eachrow(dataframes[:highest_in])
@@ -190,8 +199,9 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) * (
-                        graph[row.asset].initial_capacity * row.is_charging +
-                        graph[row.asset].capacity * assets_investment[row.asset]
+                        graph[row.asset].initial_capacity[row.investment_year] * row.is_charging +
+                        graph[row.asset].capacity[row.investment_year] *
+                        assets_investment_accumulated[row.asset, row.year, row.investment_year]
                     )
                 )
             end for row in eachrow(dataframes[:highest_in])
@@ -265,7 +275,7 @@ function add_capacity_constraints!(
 
     # - Lower limit for flows that are not transport assets
     for row in eachrow(df_flows)
-        if !graph[row.from, row.to].is_transport
+        if !graph[row.from, row.to].is_transport[row.year]
             JuMP.set_lower_bound(flow[row.index], 0.0)
         end
     end

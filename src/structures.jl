@@ -243,7 +243,7 @@ mutable struct EnergyProblem
         Nothing, # Default edge weight
     }
     representative_periods::Dict{Int,Vector{RepresentativePeriod}}
-    constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int,Int},Vector{TimestepsBlock}}}
+    constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int,Int,Int},Vector{TimestepsBlock}}}
     timeframe::Timeframe
     dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}

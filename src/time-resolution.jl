@@ -33,38 +33,38 @@ function compute_constraints_partitions(graph, representative_periods)
             name = :lowest,
             partitions = _allflows,
             strategy = :lowest,
-            asset_filter = a -> graph[a].type in ["conversion", "producer"],
+            asset_filter = (a, y) -> graph[a].type in ["conversion", "producer"],
         ),
         (
             name = :lowest_storage_level_intra_rp,
             partitions = _all,
             strategy = :lowest,
-            asset_filter = a -> graph[a].type == "storage" && !graph[a].is_seasonal,
+            asset_filter = (a, y) -> graph[a].type == "storage" && !graph[a].is_seasonal[y],
         ),
         (
             name = :lowest_in_out,
             partitions = _allflows,
             strategy = :lowest,
-            asset_filter = a ->
-                graph[a].type == "storage" && !ismissing(graph[a].use_binary_storage_method),
+            asset_filter = (a, y) ->
+                graph[a].type == "storage" && !ismissing(graph[a].use_binary_storage_method[y]),
         ),
         (
             name = :highest_in_out,
             partitions = _allflows,
             strategy = :highest,
-            asset_filter = a -> graph[a].type in ["hub", "consumer"],
+            asset_filter = (a, y) -> graph[a].type in ["hub", "consumer"],
         ),
         (
             name = :highest_in,
             partitions = _inflows,
             strategy = :highest,
-            asset_filter = a -> graph[a].type in ["storage"],
+            asset_filter = (a, y) -> graph[a].type in ["storage"],
         ),
         (
             name = :highest_out,
             partitions = _outflows,
             strategy = :highest,
-            asset_filter = a -> graph[a].type in ["producer", "storage", "conversion"],
+            asset_filter = (a, y) -> graph[a].type in ["producer", "storage", "conversion"],
         ),
     ]
 
@@ -85,8 +85,8 @@ function compute_constraints_partitions(graph, representative_periods)
                 else
                     Vector{TimestepsBlock}[]
                 end
-            end for a in MetaGraphsNext.labels(graph) if asset_filter(a) for
-            y in active_years[a] for iy in (
+            end for a in MetaGraphsNext.labels(graph) for # check this further: I think I need y everywhere besides investment variables
+            y in active_years[a] if asset_filter(a, y) for iy in (
                 if any(graph[a].investable[iy] for iy in years)
                     filter(iy -> graph[a].investable[iy], years)
                 else

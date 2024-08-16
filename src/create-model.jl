@@ -45,8 +45,8 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
                     year = y,
                     rep_period = rp,
                     timesteps_block = timesteps_block,
-                    efficiency = graph[u, v].efficiency,
-                    variable_cost = graph[row.from, row.to].variable_cost[y],
+                    efficiency = graph[u, v].efficiency[y],
+                    variable_cost = graph[u, v].variable_cost[y],
                 ) for iyf in (
                     if any(graph[u].investable[iyf] for iyf in years)
                         filter(iyf -> graph[u].investable[iyf], years)
@@ -60,6 +60,9 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
                         [0]
                     end
                 ) for y in years for
+                # here graph[u, v].rep_periods_partitions[y] with all years are initialized, but rp can be missing
+                # we will not use the initialized graph[u, v].rep_periods_partitions[y] alone if rp is missing
+                # so this is not generating extra rows, i.e., variables
                 rp in RP[y] if haskey(graph[u, v].rep_periods_partitions[y], rp) for
                 timesteps_block in graph[u, v].rep_periods_partitions[y][rp]
             ) for (u, v) in F_active_all
@@ -100,7 +103,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         dataframes[key] = df
     end
 
-    #!!!
+    #!!! check these
     # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
     # Only for storage assets
     dataframes[:storage_level_inter_rp] =
@@ -375,6 +378,14 @@ If `profiles[key]` exists, then this function computes the aggregation of `profi
 over the range `block` using the aggregator `agg`, i.e., `agg(profiles[key][block])`.
 If `profiles[key]` does not exist, then this substitutes it with a vector of `default_value`s.
 """
+function profile_aggregation(agg, profiles, key, block, default_value)
+    if haskey(profiles, key)
+        return agg(profiles[key][block])
+    else
+        return agg(Iterators.repeated(default_value, length(block)))
+    end
+end
+
 function profile_aggregation(agg, profiles, year, key, block, default_value)
     if haskey(profiles, year)
         if haskey(profiles[year], key)
@@ -430,16 +441,15 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
     ## Helper functions
     # Computes the duration of the `block` and multiply by the resolution of the
     # representative period `rp`.
-    function duration(timesteps_block, rp)
+    function duration(timesteps_block, rp, representative_periods)
         return length(timesteps_block) * representative_periods[rp].resolution
     end
 
-    years = collect(keys(representative_periods)) # need to decide where to get the years
+    Y = years = collect(keys(representative_periods)) # need to decide where to get the years
 
     # Maximum timestep
     Tmax = Dict(
-        year => maximum(last(rp.timesteps) for rp in representative_periods[year]) for
-        year in years
+        year => maximum(last(rp.timesteps) for rp in representative_periods[year]) for year in Y
     )
 
     expression_workspace = Dict(year => Vector{JuMP.AffExpr}(undef, Tmax[year]) for year in years)
@@ -487,6 +497,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         df_flows = dataframes[:flows]
         df_is_charging = dataframes[:lowest_in_out]
 
+        # this need to add years
         df_storage_intra_rp_balance_grouped =
             DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rep_period])
         df_storage_inter_rp_balance_grouped =
@@ -539,7 +550,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         ### Integer Investment Variables
         for y in Y
             for a in Ai_y[y]
-                if graph[a].investment_integer
+                if graph[a].investment_integer[y]
                     JuMP.set_integer(assets_investment[y, a])
                 end
             end
@@ -547,7 +558,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
         for y in Y
             for (u, v) in Fi_y[y]
-                if graph[u, v].investment_integer
+                if graph[u, v].investment_integer[y]
                     JuMP.set_integer(flows_investment[y, (u, v)])
                 end
             end
@@ -555,12 +566,13 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
         for y in Y
             for a in Ase_y[y] ∩ Ai_y[y]
-                if graph[a].investment_integer_storage_energy
+                if graph[a].investment_integer_storage_energy[y]
                     JuMP.set_integer(assets_investment_energy[a])
                 end
             end
         end
 
+        # check years
         df_is_charging.use_binary_storage_method =
             [graph[a].use_binary_storage_method for a in df_is_charging.asset]
         sub_df_is_charging_binary = DataFrames.subset(
@@ -624,7 +636,6 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             use_highest_resolution = true,
             multiply_by_duration = false,
         )
-
         add_expression_terms_intra_rp_constraints!(
             dataframes[:highest_out],
             df_flows,
@@ -761,7 +772,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             sum(
                 graph[u, v].investment_cost[y] *
                 graph[u, v].capacity[y] *
-                flows_investment[y, (u, v)] for (u, v) in Fi_y[y] for y in Y
+                flows_investment[y, (u, v)] for y in Y for (u, v) in Fi_y[y]
             )
         )
 
@@ -800,7 +811,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             model,
             sum(
                 representative_periods[row.year][row.rep_period].weight *
-                duration(row.timesteps_block, row.rep_period) *
+                duration(row.timesteps_block, row.rep_period, representative_periods[row.year]) *
                 graph[row.from, row.to].variable_cost[row.year] *
                 row.flow for row in eachrow(df_flows)
             )
@@ -825,14 +836,14 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         dataframes,
         df_flows,
         flow,
-        Ai_y,
+        Ai,
         Asb,
-        assets_investment,
+        assets_investment_accumulated,
         outgoing_flow_highest_out_resolution,
         incoming_flow_highest_in_resolution,
     )
 
-    @timeit to "add_energy_constraints!" add_energy_constraints!(model, graph, dataframes)
+    # @timeit to "add_energy_constraints!" add_energy_constraints!(model, graph, dataframes)
 
     @timeit to "add_consumer_constraints!" add_consumer_constraints!(
         model,
@@ -843,21 +854,21 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         outgoing_flow_highest_in_out_resolution,
     )
 
-    @timeit to "add_storage_constraints!" add_storage_constraints!(
-        model,
-        graph,
-        dataframes,
-        Ai,
-        energy_limit,
-        incoming_flow_lowest_storage_resolution_intra_rp,
-        outgoing_flow_lowest_storage_resolution_intra_rp,
-        df_storage_intra_rp_balance_grouped,
-        df_storage_inter_rp_balance_grouped,
-        storage_level_intra_rp,
-        storage_level_inter_rp,
-        incoming_flow_storage_inter_rp_balance,
-        outgoing_flow_storage_inter_rp_balance,
-    )
+    # @timeit to "add_storage_constraints!" add_storage_constraints!(
+    #     model,
+    #     graph,
+    #     dataframes,
+    #     Ai,
+    #     energy_limit,
+    #     incoming_flow_lowest_storage_resolution_intra_rp,
+    #     outgoing_flow_lowest_storage_resolution_intra_rp,
+    #     df_storage_intra_rp_balance_grouped,
+    #     df_storage_inter_rp_balance_grouped,
+    #     storage_level_intra_rp,
+    #     storage_level_inter_rp,
+    #     incoming_flow_storage_inter_rp_balance,
+    #     outgoing_flow_storage_inter_rp_balance,
+    # )
 
     @timeit to "add_hub_constraints!" add_hub_constraints!(
         model,
@@ -888,7 +899,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         graph,
         Y,
         Ai_y,
-        Ase,
+        Ase_y,
         Fi_y,
         assets_investment,
         assets_investment_energy,
