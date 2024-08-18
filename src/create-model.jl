@@ -103,7 +103,6 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         dataframes[key] = df
     end
 
-    #!!! check these
     # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
     # Only for storage assets
     dataframes[:storage_level_inter_rp] =
@@ -111,13 +110,19 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
 
     # Dataframe to store the constraints for assets with maximum energy between (inter) representative periods
     # Only for assets with max energy limit
-    dataframes[:max_energy_inter_rp] =
-        _construct_inter_rp_dataframes(A, graph, a -> !ismissing(a.max_energy_timeframe_partition))
+    dataframes[:max_energy_inter_rp] = _construct_inter_rp_dataframes(
+        A,
+        graph,
+        a -> any(!ismissing, values(a.max_energy_timeframe_partition)),
+    )
 
     # Dataframe to store the constraints for assets with minimum energy between (inter) representative periods
     # Only for assets with min energy limit
-    dataframes[:min_energy_inter_rp] =
-        _construct_inter_rp_dataframes(A, graph, a -> !ismissing(a.min_energy_timeframe_partition))
+    dataframes[:min_energy_inter_rp] = _construct_inter_rp_dataframes(
+        A,
+        graph,
+        a -> any(!ismissing, values(a.min_energy_timeframe_partition)),
+    )
 
     return dataframes
 end
@@ -137,16 +142,27 @@ A dataframe containing the constructed dataframe for constraints.
 
 """
 function _construct_inter_rp_dataframes(assets, graph, asset_filter)
+    years = [2030, 2050]
+    active_years = Dict{String,Vector{Int}}(
+        a => [year for year in years if graph[a].active[year]] for
+        a in MetaGraphsNext.labels(graph)
+    )
     df = DataFrame(
         (
             (
-                (asset = a, periods_block = periods_block) for
-                periods_block in graph[a].timeframe_partitions
-            ) for a in assets if asset_filter(graph[a])
+                (asset = a, investment_year = iy, year = y, periods_block = periods_block) for
+                periods_block in graph[a].timeframe_partitions[y]
+            ) for a in assets if asset_filter(graph[a]) for y in active_years[a] for
+            iy in filter(iy -> graph[a].investable[iy], keys(graph[a].timeframe_partitions)) # here I want get the investable years
         ) |> Iterators.flatten,
     )
     if size(df, 1) == 0
-        df = DataFrame(; asset = String[], periods_block = PeriodsBlock[])
+        df = DataFrame(;
+            asset = String[],
+            investment_year = Int[],
+            year = Int[],
+            periods_block = PeriodsBlock[],
+        )
     end
     df.index = 1:size(df, 1)
     return df
@@ -260,12 +276,12 @@ function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_c
     # Aggregating function: We have to compute the proportion of each variable is_charging in the constraint timesteps_block.
     agg = Statistics.mean
 
-    grouped_cons = DataFrames.groupby(df_cons, [:rep_period, :asset])
+    grouped_cons = DataFrames.groupby(df_cons, [:year, :rep_period, :asset])
 
     df_cons[!, :is_charging] .= JuMP.AffExpr(0.0)
-    grouped_is_charging = DataFrames.groupby(df_is_charging, [:rep_period, :asset])
-    for ((rep_period, asset), sub_df) in pairs(grouped_cons)
-        if !haskey(grouped_is_charging, (rep_period, asset))
+    grouped_is_charging = DataFrames.groupby(df_is_charging, [:year, :rep_period, :asset])
+    for ((year, rep_period, asset), sub_df) in pairs(grouped_cons)
+        if !haskey(grouped_is_charging, (year, rep_period, asset))
             continue
         end
 
@@ -273,7 +289,7 @@ function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_c
             workspace[i] = JuMP.AffExpr(0.0)
         end
         # Store the corresponding variables in the workspace
-        for row in eachrow(grouped_is_charging[(rep_period, asset)])
+        for row in eachrow(grouped_is_charging[(year, rep_period, asset)])
             asset = row[:asset]
             for t in row.timesteps_block
                 JuMP.add_to_expression!(workspace[t], row.is_charging)
@@ -315,53 +331,66 @@ function add_expression_terms_inter_rp_constraints!(
         df_inter[!, :inflows_profile_aggregation] .= JuMP.AffExpr(0.0)
     end
 
+    years = [2030, 2050]
     # Incoming, outgoing flows, and profile aggregation
     for row_inter in eachrow(df_inter)
-        sub_df_map = filter(:period => in(row_inter.periods_block), df_map; view = true)
-
-        for row_map in eachrow(sub_df_map)
-            sub_df_flows = filter(
-                [:from, :rep_period] =>
-                    (from, rp) -> from == row_inter.asset && rp == row_map.rep_period,
-                df_flows;
-                view = true,
-            )
-            sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
-            if is_storage_level
-                row_inter.outgoing_flow +=
-                    LinearAlgebra.dot(
-                        sub_df_flows.flow,
-                        sub_df_flows.duration ./ sub_df_flows.efficiency,
-                    ) * row_map.weight
-            else
-                row_inter.outgoing_flow +=
-                    LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.duration) * row_map.weight
-            end
-
-            if is_storage_level
+        sub_df_map = Dict(
+            year => filter(:period => in(row_inter.periods_block), df_map; view = true) for
+            year in years
+        )
+        for year in years
+            for row_map in eachrow(sub_df_map[year])
                 sub_df_flows = filter(
-                    [:to, :rep_period] =>
-                        (to, rp) -> to == row_inter.asset && rp == row_map.rep_period,
+                    [:from, :rep_period, :year] =>
+                        (from, rp, y) ->
+                            from == row_inter.asset &&
+                                rp == row_map.rep_period &&
+                                y == row_map.year,
                     df_flows;
                     view = true,
                 )
-                sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
-                row_inter.incoming_flow +=
-                    LinearAlgebra.dot(
-                        sub_df_flows.flow,
-                        sub_df_flows.duration .* sub_df_flows.efficiency,
-                    ) * row_map.weight
 
-                row_inter.inflows_profile_aggregation +=
-                    profile_aggregation(
-                        sum,
-                        graph[row_inter.asset].rep_periods_profiles,
-                        ("inflows", row_map.rep_period),
-                        representative_periods[row_map.rep_period].timesteps,
-                        0.0,
-                    ) *
-                    graph[row_inter.asset].storage_inflows *
-                    row_map.weight
+                sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
+                if is_storage_level
+                    row_inter.outgoing_flow +=
+                        LinearAlgebra.dot(
+                            sub_df_flows.flow,
+                            sub_df_flows.duration ./ sub_df_flows.efficiency,
+                        ) * row_map.weight
+                else
+                    row_inter.outgoing_flow +=
+                        LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.duration) * row_map.weight
+                end
+
+                if !is_storage_level # got an error here, that's why I modified this condition
+                    sub_df_flows = filter(
+                        [:to, :rep_period, :year] =>
+                            (to, rp, y) ->
+                                to == row_inter.asset &&
+                                    rp == row_map.rep_period &&
+                                    y == row_map.year,
+                        df_flows;
+                        view = true,
+                    )
+                    sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
+                    row_inter.incoming_flow +=
+                        LinearAlgebra.dot(
+                            sub_df_flows.flow,
+                            sub_df_flows.duration .* sub_df_flows.efficiency,
+                        ) * row_map.weight
+
+                    row_inter.inflows_profile_aggregation +=
+                        profile_aggregation(
+                            sum,
+                            graph[row_inter.asset].rep_periods_profiles,
+                            row_map.year,
+                            ("inflows", row_map.rep_period),
+                            representative_periods[row_map.year][row_map.rep_period].timesteps,
+                            0.0,
+                        ) *
+                        graph[row_inter.asset].storage_inflows[row_map.year] *
+                        row_map.weight
+                end
             end
         end
     end
@@ -497,11 +526,15 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         df_flows = dataframes[:flows]
         df_is_charging = dataframes[:lowest_in_out]
 
-        # this need to add years
-        df_storage_intra_rp_balance_grouped =
-            DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rep_period])
-        df_storage_inter_rp_balance_grouped =
-            DataFrames.groupby(dataframes[:storage_level_inter_rp], [:asset])
+        df_storage_intra_rp_balance_grouped = DataFrames.groupby(
+            dataframes[:lowest_storage_level_intra_rp],
+            [:asset, :rep_period, :year, :investment_year],
+        )
+
+        df_storage_inter_rp_balance_grouped = DataFrames.groupby(
+            dataframes[:storage_level_inter_rp],
+            [:asset, :year, :investment_year],
+        )
     end
 
     ## Model
@@ -525,7 +558,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                 @variable(
                     model,
                     lower_bound = 0.0,
-                    base_name = "storage_level_intra_rp[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
+                    base_name = "storage_level_intra_rp[$(row.asset), $(row.investment_year), $(row.year), $(row.rep_period),$(row.timesteps_block)]"
                 ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
             ]
         storage_level_inter_rp =
@@ -533,19 +566,9 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
                 @variable(
                     model,
                     lower_bound = 0.0,
-                    base_name = "storage_level_inter_rp[$(row.asset),$(row.periods_block)]"
+                    base_name = "storage_level_inter_rp[$(row.asset),$(row.investment_year), $(row.year), $(row.periods_block)]"
                 ) for row in eachrow(dataframes[:storage_level_inter_rp])
             ]
-        is_charging =
-            model[:is_charging] =
-                df_is_charging.is_charging = [
-                    @variable(
-                        model,
-                        lower_bound = 0.0,
-                        upper_bound = 1.0,
-                        base_name = "is_charging[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
-                    ) for row in eachrow(df_is_charging)
-                ]
 
         ### Integer Investment Variables
         for y in Y
@@ -572,9 +595,10 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             end
         end
 
-        # check years
-        df_is_charging.use_binary_storage_method =
-            [graph[a].use_binary_storage_method for a in df_is_charging.asset]
+        df_is_charging.use_binary_storage_method = [
+            graph[row.asset].use_binary_storage_method[row.year] for row in eachrow(df_is_charging)
+        ]
+
         sub_df_is_charging_binary = DataFrames.subset(
             df_is_charging,
             :asset => DataFrames.ByRow(in(Asb)),
@@ -589,15 +613,6 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
 
     ## Expressions
     @timeit to "add_expression_terms" begin
-        @expression(
-            model,
-            energy_limit[y ∈ Y, a ∈ As∩Ai_y[y]],
-            if graph[a].storage_method_energy[y]
-                graph[a].capacity_storage_energy[y] * assets_investment_energy[y, a]
-            else
-                graph[a].energy_to_power_ratio[y] * graph[a].capacity[y] * assets_investment[y, a]
-            end
-        )
 
         # Creating the incoming and outgoing flow expressions
         add_expression_terms_intra_rp_constraints!(
@@ -735,9 +750,9 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         Y_y = Dict(y => [i for i in Y if i <= y] for y in Y)
         Ai = vcat(values(Ai_y)...) # all investable assets
         Y_a_investment =
-            Dict(a => year for a in Ai for year in years if graph[a].investable[year] == true)
+            Dict(a => year for a in Ai for year in years if graph[a].investable[year] == true) # get investment years for investable assets
 
-        Y_a = Dict(a => [y for y in Y if graph[a].active[y]] for a in Ai) # get all the active years for all investable assets
+        Y_a = Dict(a => [y for y in Y if graph[a].active[y]] for a in Ai) # get active years for investable assets
         investable_assets_with_active_years = []
         for a in Ai
             for y in Y_a[a]
@@ -751,6 +766,13 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             assets_investment[v, a]
         )
 
+        Ase = unique(vcat(values(Ase_y)...)) # all Ase assets
+        @expression(
+            model,
+            assets_investment_energy_accumulated[a in Ase∩Ai, y in Y_a[a], v in Y_a_investment[a]], # note we use Y_investment because we only want to get the investment year
+            assets_investment_energy[v, a]
+        )
+
         # an alternative way to write the above expression,
         # @expression(
         #     model,
@@ -759,11 +781,42 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         # )
         # for yy in Y_y[y] if graph[a].active[y] && graph[a].investable[yy] # graph[a].investable[yy] makes sure this variable exists; graph[a].active[y] makes sure it is still active
 
+        @expression(
+            model,
+            energy_limit[a ∈ As∩Ai, y in Y_a[a], v in Y_a_investment[a]],
+            if graph[a].storage_method_energy[y]
+                graph[a].capacity_storage_energy[y] * assets_investment_energy_accumulated[a, y, v]
+            else
+                graph[a].energy_to_power_ratio[y] *
+                graph[a].capacity[y] *
+                assets_investment_accumulated[a, y, v]
+            end
+        )
+
         assets_fixed_costs = @expression(
             model,
             sum(
+                graph[a].fixed_cost[y] *
+                graph[a].capacity[v] *
                 assets_investment_accumulated[a, y, v] for
                 (a, y) in investable_assets_with_active_years for v in Y_a_investment[a] # note v in Y_investment[a] because we only want to get the investment year
+            )
+        )
+
+        investable_assets_energy_with_active_years = []
+        for a in Ai ∩ Ase
+            for y in Y_a[a]
+                push!(investable_assets_energy_with_active_years, (a, y))
+            end
+        end
+
+        assets_energy_fixed_costs = @expression(
+            model,
+            sum(
+                graph[a].fixed_cost_storage_energy[y] *
+                graph[a].capacity_storage_energy[v] *
+                assets_investment_energy_accumulated[a, y, v] for
+                (a, y) in investable_assets_energy_with_active_years for v in Y_a_investment[a] # note v in Y_investment[a] because we only want to get the investment year
             )
         )
 
@@ -801,6 +854,8 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         flows_fixed_costs = @expression(
             model,
             sum(
+                graph[u, v].fixed_cost[y] *
+                graph[u, v].capacity[vintage] *
                 flows_investment_accumulated[u, v, y, vintage] for
                 (u, v, y) in investable_flows_with_active_years for
                 vintage in Y_f_investment[(u, v)] # note v in Y_investment[a] because we only want to get the investment year
@@ -823,6 +878,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
             Min,
             assets_investment_cost +
             assets_fixed_costs +
+            assets_energy_fixed_costs +
             flows_investment_cost +
             flows_fixed_costs +
             flows_variable_cost
@@ -843,7 +899,7 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         incoming_flow_highest_in_resolution,
     )
 
-    # @timeit to "add_energy_constraints!" add_energy_constraints!(model, graph, dataframes)
+    @timeit to "add_energy_constraints!" add_energy_constraints!(model, graph, dataframes)
 
     @timeit to "add_consumer_constraints!" add_consumer_constraints!(
         model,
@@ -854,21 +910,21 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         outgoing_flow_highest_in_out_resolution,
     )
 
-    # @timeit to "add_storage_constraints!" add_storage_constraints!(
-    #     model,
-    #     graph,
-    #     dataframes,
-    #     Ai,
-    #     energy_limit,
-    #     incoming_flow_lowest_storage_resolution_intra_rp,
-    #     outgoing_flow_lowest_storage_resolution_intra_rp,
-    #     df_storage_intra_rp_balance_grouped,
-    #     df_storage_inter_rp_balance_grouped,
-    #     storage_level_intra_rp,
-    #     storage_level_inter_rp,
-    #     incoming_flow_storage_inter_rp_balance,
-    #     outgoing_flow_storage_inter_rp_balance,
-    # )
+    @timeit to "add_storage_constraints!" add_storage_constraints!(
+        model,
+        graph,
+        dataframes,
+        Ai,
+        energy_limit,
+        incoming_flow_lowest_storage_resolution_intra_rp,
+        outgoing_flow_lowest_storage_resolution_intra_rp,
+        df_storage_intra_rp_balance_grouped,
+        df_storage_inter_rp_balance_grouped,
+        storage_level_intra_rp,
+        storage_level_inter_rp,
+        incoming_flow_storage_inter_rp_balance,
+        outgoing_flow_storage_inter_rp_balance,
+    )
 
     @timeit to "add_hub_constraints!" add_hub_constraints!(
         model,

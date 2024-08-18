@@ -18,11 +18,12 @@ function add_energy_constraints!(model, graph, dataframes)
             profile_aggregation(
                 sum,
                 graph[row.asset].timeframe_profiles,
+                row.year,
                 "max_energy",
                 row.periods_block,
                 1.0,
-            ) * (graph[row.asset].max_energy_timeframe_partition),
-            base_name = "max_energy_inter_rp_limit[$(row.asset),$(row.periods_block)]"
+            ) * (graph[row.asset].max_energy_timeframe_partition[row.year]),
+            base_name = "max_energy_inter_rp_limit[$(row.asset), $(row.year), $(row.investment_year), $(row.periods_block)]"
         ) for row in eachrow(dataframes[:max_energy_inter_rp])
     ]
 
@@ -34,11 +35,12 @@ function add_energy_constraints!(model, graph, dataframes)
             profile_aggregation(
                 sum,
                 graph[row.asset].timeframe_profiles,
+                row.year,
                 "min_energy",
                 row.periods_block,
                 1.0,
-            ) * (graph[row.asset].min_energy_timeframe_partition),
-            base_name = "min_energy_inter_rp_limit[$(row.asset),$(row.periods_block)]"
+            ) * (graph[row.asset].min_energy_timeframe_partition[row.year]),
+            base_name = "min_energy_inter_rp_limit[$(row.asset),$(row.year), $(row.investment_year),$(row.periods_block)]"
         ) for row in eachrow(dataframes[:min_energy_inter_rp])
     ]
 end

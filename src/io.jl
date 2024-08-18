@@ -132,6 +132,16 @@ function create_internal_structures(connection)
             Dict(
                 year => get(
                     Dict(
+                        repeated_row.year => repeated_row.fixed_cost for repeated_row in
+                        filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
                         repeated_row.year => repeated_row.investment_limit for
                         repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
                     ),
@@ -249,6 +259,16 @@ function create_internal_structures(connection)
                 year => get(
                     Dict(
                         repeated_row.year => repeated_row.investment_cost_storage_energy for
+                        repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
+                    ),
+                    year,
+                    0,
+                ) for year in years_assets
+            ),
+            Dict(
+                year => get(
+                    Dict(
+                        repeated_row.year => repeated_row.fixed_cost_storage_energy for
                         repeated_row in filter_rows_by_name(connection, "assets_data", row.name)
                     ),
                     year,
@@ -422,6 +442,21 @@ function create_internal_structures(connection)
             Dict(
                 year => get(
                     Dict(
+                        repeated_row.year => repeated_row.fixed_cost for
+                        repeated_row in filter_rows_by_name(
+                            connection,
+                            "flows_data",
+                            row.from_asset,
+                            row.to_asset,
+                        )
+                    ),
+                    year,
+                    0,
+                ) for year in years_flows
+            ),
+            Dict(
+                year => get(
+                    Dict(
                         repeated_row.year => repeated_row.investment_limit for
                         repeated_row in filter_rows_by_name(
                             connection,
@@ -519,7 +554,7 @@ function create_internal_structures(connection)
             graph[a].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
             compute_assets_partitions!(
                 graph[a].rep_periods_partitions[year],
-                _df, # this is good if there is no data, don't need to change the table to include years.
+                filter(row -> row.asset == a && row.year == year, _df),
                 a,
                 representative_periods[year],
             )
@@ -535,7 +570,10 @@ function create_internal_structures(connection)
                 # we only compute partitions for active flows.
                 compute_flows_partitions!(
                     graph[u, v].rep_periods_partitions[year],
-                    _df,
+                    filter(
+                        row -> (row.from_asset, row.to_asset) == (u, v) && row.year == year,
+                        _df,
+                    ),
                     u,
                     v,
                     representative_periods[year],
@@ -564,7 +602,7 @@ function create_internal_structures(connection)
             graph[row.name].timeframe_partitions[year] = _parse_rp_partition(
                 Val(Symbol(row.specification)),
                 row.partition,
-                1:timeframe.num_periods, # check if this is correct
+                1:timeframe.num_periods,
             )
         end
     end
@@ -581,8 +619,10 @@ function create_internal_structures(connection)
             [:rep_period, :year],
         )
         for ((rep_period, year), df) in pairs(gp) # Loop over filtered DFs by rep_period, year
-            graph[asset_profile_row.asset].rep_periods_profiles[year] =
-                Dict{Tuple{Symbol,Int},Vector{Float64}}()
+            if !haskey(graph[asset_profile_row.asset].rep_periods_profiles, year)
+                graph[asset_profile_row.asset].rep_periods_profiles[year] =
+                    Dict{Tuple{Symbol,Int},Vector{Float64}}()
+            end
             graph[asset_profile_row.asset].rep_periods_profiles[year][(
                 asset_profile_row.profile_type,
                 rep_period,
@@ -597,8 +637,16 @@ function create_internal_structures(connection)
             [:rep_period, :year];
         )
         for ((rep_period, year), df) in pairs(gp)
-            graph[flow_profile_row.from_asset, flow_profile_row.to_asset].rep_periods_profiles[year] =
-                Dict{Tuple{Symbol,Int},Vector{Float64}}()
+            if !haskey(
+                graph[flow_profile_row.from_asset, flow_profile_row.to_asset].rep_periods_profiles,
+                year,
+            )
+                graph[
+                    flow_profile_row.from_asset,
+                    flow_profile_row.to_asset,
+                ].rep_periods_profiles[year] = Dict{Tuple{Symbol,Int},Vector{Float64}}()
+            end
+
             graph[flow_profile_row.from_asset, flow_profile_row.to_asset].rep_periods_profiles[year][(
                 flow_profile_row.profile_type,
                 rep_period,

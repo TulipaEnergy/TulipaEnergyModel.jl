@@ -1,7 +1,6 @@
 ,type,name
 asset,profile_type,profile_name
 wind2030,availability,availability-wind2030
-wind2050,availability,availability-wind2050
 solar2030,availability,availability-solar2030
 demand2030,demand,demand-demand2030
 wind2030,availability,availability-wind2050

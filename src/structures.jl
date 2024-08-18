@@ -37,6 +37,7 @@ mutable struct GraphAssetData
     investable::Dict{Int,Bool}
     investment_integer::Dict{Int,Bool}
     investment_cost::Dict{Int,Float64}
+    fixed_cost::Dict{Int,Float64}
     investment_limit::Dict{Int,Union{Missing,Float64}}
     capacity::Dict{Int,Float64}
     initial_capacity::Dict{Int,Float64}
@@ -49,6 +50,7 @@ mutable struct GraphAssetData
     energy_to_power_ratio::Dict{Int,Float64}
     storage_method_energy::Dict{Int,Bool}
     investment_cost_storage_energy::Dict{Int,Float64}
+    fixed_cost_storage_energy::Dict{Int,Float64}
     investment_limit_storage_energy::Dict{Int,Union{Missing,Float64}}
     capacity_storage_energy::Dict{Int,Float64}
     investment_integer_storage_energy::Dict{Int,Bool}
@@ -74,6 +76,7 @@ mutable struct GraphAssetData
         investable,
         investment_integer,
         investment_cost,
+        fixed_cost,
         investment_limit,
         capacity,
         initial_capacity,
@@ -86,6 +89,7 @@ mutable struct GraphAssetData
         energy_to_power_ratio,
         storage_method_energy,
         investment_cost_storage_energy,
+        fixed_cost_storage_energy,
         investment_limit_storage_energy,
         capacity_storage_energy,
         investment_integer_storage_energy,
@@ -103,6 +107,7 @@ mutable struct GraphAssetData
             investable,
             investment_integer,
             investment_cost,
+            fixed_cost,
             investment_limit,
             capacity,
             initial_capacity,
@@ -115,6 +120,7 @@ mutable struct GraphAssetData
             energy_to_power_ratio,
             storage_method_energy,
             investment_cost_storage_energy,
+            fixed_cost_storage_energy,
             investment_limit_storage_energy,
             capacity_storage_energy,
             investment_integer_storage_energy,
@@ -146,6 +152,7 @@ mutable struct GraphFlowData
     investment_integer::Dict{Int,Bool}
     variable_cost::Dict{Int,Float64}
     investment_cost::Dict{Int,Float64}
+    fixed_cost::Dict{Int,Float64}
     investment_limit::Dict{Int,Union{Missing,Float64}}
     capacity::Dict{Int,Float64}
     initial_export_capacity::Dict{Int,Float64}
@@ -168,6 +175,7 @@ function GraphFlowData(
     investment_integer,
     variable_cost,
     investment_cost,
+    fixed_cost,
     investment_limit,
     capacity,
     initial_export_capacity,
@@ -182,6 +190,7 @@ function GraphFlowData(
         investment_integer,
         variable_cost,
         investment_cost,
+        fixed_cost,
         investment_limit,
         capacity,
         initial_export_capacity,
