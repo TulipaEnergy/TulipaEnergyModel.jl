@@ -1,3 +1,4 @@
 group_name,{false; true},MW,MW
 name,invest_method,min_investment_limit,max_investment_limit
 renewables,true,,40000
+ccgt,true,10000,
