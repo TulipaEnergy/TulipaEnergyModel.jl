@@ -35,7 +35,7 @@ include("solve-model.jl")
 include("run-scenario.jl")
 include("time-resolution.jl")
 
-constraints_folder_path = joinpath(pwd(), "src/constraints")
+constraints_folder_path = joinpath(joinpath(dirname(@__DIR__), "src/constraints"))
 constraints_files = filter(f -> endswith(f, ".jl"), readdir(constraints_folder_path))
 for file in constraints_files
     include(joinpath(constraints_folder_path, file))
