@@ -58,10 +58,7 @@ function create_internal_structures(connection)
 
     timeframe = Timeframe(num_periods.period, TulipaIO.get_table(connection, "rep_periods_mapping"))
 
-    groups = [
-        Group(row...)
-        for row in TulipaIO.get_table(Val(:raw), connection, "groups_data")
-    ]
+    groups = [Group(row...) for row in TulipaIO.get_table(Val(:raw), connection, "groups_data")]
 
     asset_data = [
         row.name => GraphAssetData(
