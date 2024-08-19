@@ -16,7 +16,7 @@ function add_group_constraints!(model, graph, Ai, assets_investment, groups)
         investment_group[group in groups],
         if group.invest_method == true
             sum(
-                assets_investment[a] for
+                graph[a].capacity * assets_investment[a] for
                 a in Ai if !ismissing(graph[a].group) && graph[a].group == group.name
             )
         end
@@ -31,7 +31,7 @@ function add_group_constraints!(model, graph, Ai, assets_investment, groups)
     model[:investment_group_min_limit] = [
         @constraint(
             model,
-            investment_group[group] ≤ group.min_investment_limit,
+            investment_group[group] ≥ group.min_investment_limit,
             base_name = "investment_group_min_limit[$(group.name)]"
         ) for group in groups if !ismissing(group.min_investment_limit)
     ]
