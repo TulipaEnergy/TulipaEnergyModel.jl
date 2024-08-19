@@ -59,7 +59,7 @@ function create_internal_structures(connection)
     timeframe = Timeframe(num_periods.period, TulipaIO.get_table(connection, "rep_periods_mapping"))
 
     groups = [
-        Group(row.name, row.invest_method, row.min_investment_limit, row.max_investment_limit)
+        Group(row...)
         for row in TulipaIO.get_table(Val(:raw), connection, "groups_data")
     ]
 
