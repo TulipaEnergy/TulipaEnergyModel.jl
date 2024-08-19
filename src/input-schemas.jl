@@ -7,6 +7,7 @@ const schemas = (
             :name => "VARCHAR",                              # Name of Asset (geographical?)
             :type => "VARCHAR",                              # Producer/Consumer/Storage/Conversion
             :active => "BOOLEAN",                            # Active or decomissioned
+            :group => "VARCHAR",                             # Group to which the asset belongs to (missing -> no group)
             :investable => "BOOLEAN",                        # Whether able to invest
             :investment_integer => "BOOLEAN",                # Whether investment is integer or continuous
             :investment_cost => "DOUBLE",                    # kEUR/MW/year

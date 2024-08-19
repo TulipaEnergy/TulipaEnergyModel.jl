@@ -39,6 +39,7 @@ Structure to hold the asset data in the graph.
 """
 mutable struct GraphAssetData
     type::String
+    group::Union{Missing,String}
     investable::Bool
     investment_integer::Bool
     investment_cost::Float64
@@ -75,6 +76,7 @@ mutable struct GraphAssetData
     # You don't need profiles to create the struct, so initiate it empty
     function GraphAssetData(
         type,
+        group,
         investable,
         investment_integer,
         investment_cost,
@@ -103,6 +105,7 @@ mutable struct GraphAssetData
         rep_periods_partitions = Dict{Int,Vector{TimestepsBlock}}()
         return new(
             type,
+            group,
             investable,
             investment_integer,
             investment_cost,

@@ -66,6 +66,7 @@ function create_internal_structures(connection)
     asset_data = [
         row.name => GraphAssetData(
             row.type,
+            row.group,
             row.investable,
             row.investment_integer,
             row.investment_cost,
