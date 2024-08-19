@@ -351,6 +351,7 @@ function create_model!(energy_problem; kwargs...)
         representative_periods = energy_problem.representative_periods
         constraints_partitions = energy_problem.constraints_partitions
         timeframe = energy_problem.timeframe
+        groups = energy_problem.groups
         energy_problem.dataframes = @timeit to "construct_dataframes" construct_dataframes(
             graph,
             representative_periods,
@@ -360,7 +361,8 @@ function create_model!(energy_problem; kwargs...)
             graph,
             representative_periods,
             energy_problem.dataframes,
-            timeframe;
+            timeframe,
+            groups;
             kwargs...,
         )
         energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
@@ -374,11 +376,18 @@ function create_model!(energy_problem; kwargs...)
 end
 
 """
-    model = create_model(graph, representative_periods, dataframes, timeframe; write_lp_file = false)
+    model = create_model(graph, representative_periods, dataframes, timeframe, groups; write_lp_file = false)
 
-Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), and timeframe.
+Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), timeframe, and groups.
 """
-function create_model(graph, representative_periods, dataframes, timeframe; write_lp_file = false)
+function create_model(
+    graph,
+    representative_periods,
+    dataframes,
+    timeframe,
+    groups;
+    write_lp_file = false,
+)
 
     ## Helper functions
     # Computes the duration of the `block` and multiply by the resolution of the
@@ -741,6 +750,14 @@ function create_model(graph, representative_periods, dataframes, timeframe; writ
         assets_investment,
         assets_investment_energy,
         flows_investment,
+    )
+
+    @timeit to "add_group_constraints!" add_group_constraints!(
+        model,
+        graph,
+        Ai,
+        assets_investment,
+        groups,
     )
 
     if write_lp_file
