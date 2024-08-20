@@ -50,19 +50,32 @@ In addition, the following flow sets represent methods for incorporating additio
 | $\mathcal{K}$     | Representative periods (rp)                         | $k \in \mathcal{K}$       | $\mathcal{K} \subset \mathbb{N}$ | $\mathcal{K}$ does not have to be a subset of $\mathcal{P}$                |
 | $\mathcal{B}_{k}$ | Timesteps blocks within a representative period $k$ | $b_{k} \in \mathcal{B}_k$ |                                  | $\mathcal{B}_k$ is a partition of timesteps in a representative period $k$ |
 
+### Sets for Groups
+
+| Name                     | Description             | Elements                       | Superset | Notes |
+| ------------------------ | ----------------------- | ------------------------------ | -------- | ----- |
+| $\mathcal{G}^{\text{a}}$ | Groups of energy assets | $g \in \mathcal{G}^{\text{a}}$ |          |       |
+
+In addition, the following subsets represent methods for incorporating additional constraints in the model.
+
+| Name                      | Description                                         | Elements | Superset                                                   | Notes                                                                                                                                                                          |
+| ------------------------- | --------------------------------------------------- | -------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| $\mathcal{G}^{\text{ai}}$ | Group of assets that share min/max investment limit |          | $\mathcal{G}^{\text{ai}} \subseteq \mathcal{G}^{\text{a}}$ | This set contains a group of investment assets that use investment method. Please visit the [how-to section](@ref investment-group-setup) to learn how to set up this feature. |
+
 ## [Parameters](@id math-parameters)
 
 ### Parameter for Assets
 
 #### General Parameters for Assets
 
-| Name                                        | Domain           | Domains of Indices                                                | Description                                                                                 | Units          |
-| ------------------------------------------- | ---------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
-| $p^{\text{inv cost}}_{a}$                   | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                               | Investment cost of a unit of asset $a$                                                      | [kEUR/MW/year] |
-| $p^{\text{inv limit}}_{a}$                  | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                               | Investment potential of asset $a$                                                           | [MW]           |
-| $p^{\text{capacity}}_{a}$                   | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                               | Capacity per unit of asset $a$                                                              | [MW]           |
-| $p^{\text{init capacity}}_{a}$              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$                                               | Initial capacity of asset $a$                                                               | [MW]           |
-| $p^{\text{availability profile}}_{a,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Availability profile of asset $a$ in the representative period $k$ and timestep block $b_k$ | [p.u.]         |
+| Name                                        | Domain                   | Domains of Indices                                                | Description                                                                                 | Units          |
+| ------------------------------------------- | ------------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
+| $p^{\text{inv cost}}_{a}$                   | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                               | Investment cost of a unit of asset $a$                                                      | [kEUR/MW/year] |
+| $p^{\text{inv limit}}_{a}$                  | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                               | Investment potential of asset $a$                                                           | [MW]           |
+| $p^{\text{capacity}}_{a}$                   | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                               | Capacity per unit of asset $a$                                                              | [MW]           |
+| $p^{\text{init capacity}}_{a}$              | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                               | Initial capacity of asset $a$                                                               | [MW]           |
+| $p^{\text{availability profile}}_{a,k,b_k}$ | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Availability profile of asset $a$ in the representative period $k$ and timestep block $b_k$ | [p.u.]         |
+| $p^{\text{group}}_{a}$                      | $\mathcal{G}^{\text{a}}$ | $a \in \mathcal{A}$                                               | Group $g$ to which the asset $a$ belongs                                                    | [-]            |
 
 #### Extra Parameters for Consumer Assets
 
@@ -116,6 +129,13 @@ In addition, the following flow sets represent methods for incorporating additio
 | $p^{\text{duration}}_{b_k}$ | $\mathbb{R}_{+}$ | $b_k \in \mathcal{B_k}$                  | Duration of the timestep blocks $b_k$                          | [h]   |
 | $p^{\text{rp weight}}_{k}$  | $\mathbb{R}_{+}$ | $k \in \mathcal{K}$                      | Weight of representative period $k$                            | [-]   |
 | $p^{\text{map}}_{p,k}$      | $\mathbb{R}_{+}$ | $p \in \mathcal{P}$, $k \in \mathcal{K}$ | Map with the weight of representative period $k$ in period $p$ | [-]   |
+
+### Parameter for Groups
+
+| Name                              | Domain           | Domains of Indices              | Description                                       | Units |
+| --------------------------------- | ---------------- | ------------------------------- | ------------------------------------------------- | ----- |
+| $p^{\text{min invest limit}}_{g}$ | $\mathbb{R}_{+}$ | $g \in \mathcal{G}^{\text{ai}}$ | Mininum investment limit (potential) of group $g$ | [MW]  |
+| $p^{\text{max invest limit}}_{g}$ | $\mathbb{R}_{+}$ | $g \in \mathcal{G}^{\text{ai}}$ | Maximum investment limit (potential) of group $g$ | [MW]  |
 
 ## [Variables](@id math-variables)
 
@@ -427,6 +447,32 @@ These constraints allow us to consider a maximum or minimum energy limit for an 
 \begin{aligned}
 \sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \geq  p^{\text{min inter profile}}_{a,p} \cdot p^{\text{min energy}}_{a}
 \\ \\ & \forall a \in \mathcal{A}^{\text{min e}}, \forall p \in \mathcal{P}
+\end{aligned}
+```
+
+### [Constraints for Groups](@id group-constraints)
+
+The following constraints aggregate variables of different assets depending on the method that applies to the group.
+
+#### [Investment Limits of a Group](@id investment-group-constraints)
+
+These constraints apply to assets in a group using the investment method $\mathcal{G}^{\text{ai}}$. They help impose an investment potential of a spatial area commonly shared by several assets that can be invested there.
+
+##### Minimum Investment Limit of a Group
+
+```math
+\begin{aligned}
+\sum_{a \in \mathcal{A}^{\text{i}} | p^{\text{group}}_{a} = g} p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \geq  p^{\text{min invest limit}}_{g}
+\\ \\ & \forall g \in \mathcal{G}^{\text{ai}}
+\end{aligned}
+```
+
+##### Maximum Investment Limit of a Group
+
+```math
+\begin{aligned}
+\sum_{a \in \mathcal{A}^{\text{i}} | p^{\text{group}}_{a} = g} p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \leq  p^{\text{max invest limit}}_{g}
+\\ \\ & \forall g \in \mathcal{G}^{\text{ai}}
 \end{aligned}
 ```
 

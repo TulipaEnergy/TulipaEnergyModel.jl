@@ -80,6 +80,7 @@ The investment parameters are as follows:
 
 The meaning of `Missing` data depends on the parameter, for instance:
 
+-   `group`: No group assigned to the asset.
 -   `investment_limit`: There is no investment limit.
 -   `initial_storage_level`: The initial storage level is free (between the storage level limits), meaning that the optimization problem decides the best starting point for the storage asset. In addition, the first and last time blocks in a representative period are linked to create continuity in the storage level.
 
@@ -118,6 +119,10 @@ The profiles are linked to assets and flows in the files [`assets-profiles`](@re
 #### `assets-timeframe-profiles.csv`
 
 Like the [`assets-profiles.csv`](@ref assets-profiles-definition), but for the [inter-temporal constraints](@ref concepts-summary).
+
+#### `groups-data.csv` (optional)
+
+This file contains the list of groups and the methods that apply to each group, along with their respective parameters.
 
 #### `profiles-timeframe.csv` (optional)
 
@@ -188,6 +193,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 -   `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions](@ref Partition) (vectors of time blocks).
 -   `timeframe`: The number of periods in the `representative_periods`.
 -   `dataframes`: A Dictionary of dataframes used to linearize the variables and constraints. These are used internally in the model only.
+-   `groups`: A vector of [Groups](@ref group).
 -   `model`: A JuMP.Model object representing the optimization model.
 -   `solution`: A structure of the variable values (investments, flows, etc) in the solution.
 -   `solved`: A boolean indicating whether the `model` has been solved or not.
@@ -283,6 +289,15 @@ A time block is a range for which a variable or constraint is defined.
 It is a range of numbers, i.e., all integer numbers inside an interval.
 Time blocks are used for the periods in the [timeframe](@ref timeframe) and the timesteps in the [representative period](@ref representative-periods). Time blocks are disjunct (not overlapping), but do not have to be sequential.
 
+### [Group](@id group)
+
+This structure holds all the information of a given group with the following fields:
+
+-   `name`: The name of the group.
+-   `invest_method`: Boolean value to indicate whether or not the group has an investment method.
+-   `min_investment_limit`: A minimum investment limit in MW is imposed on the total investments of the assets belonging to the group.
+-   `max_investment_limit`: A maximum investment limit in MW is imposed on the total investments of the assets belonging to the group.
+
 ## [Exploring infeasibility](@id infeasible)
 
 If your model is infeasible, you can try exploring the infeasibility with [JuMP.compute_conflict!](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.compute_conflict!) and [JuMP.copy_conflict](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.copy_conflict).
@@ -354,11 +369,58 @@ For the model to add constraints for a [maximum or minimum energy limit](@ref in
 
 Let's assume we have a year divided into 365 days because we are using days as periods in the representatives from [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl). Also, we define the `max_energy_timeframe_partition = 10 MWh`, meaning the peak energy we want to have is 10MWh for each period or period partition. So depending on the optional information, we can have:
 
-<!-- prettier-ignore -->
-| Profile | Period Partitions | Example |
-| ------- | ----------------- | ------- |
-| None    | None              | The default profile is 1.p.u. for each period and since there are no period partitions, the constraints will be for each period (i.e., daily). So the outgoing energy of the asset for each day must be less than or equal to 10MWh. |
-| Defined | None              | The profile definition and value will be in the [`assets-timeframe-profiles.csv`](@ref schemas) and [`profiles-timeframe.csv`](@ref schemas) files. For example, we define a profile that has the following first four values: 0.6 p.u., 1.0 p.u., 0.8 p.u., and 0.4 p.u. There are no period partitions, so constraints will be for each period (i.e., daily). Therefore the outgoing energy of the asset for the first four days must be less than or equal to 6MWh, 10MWh, 8MWh, and 4MWh. |
+| Profile | Period Partitions | Example                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| None    | None              | The default profile is 1.p.u. for each period and since there are no period partitions, the constraints will be for each period (i.e., daily). So the outgoing energy of the asset for each day must be less than or equal to 10MWh.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Defined | None              | The profile definition and value will be in the [`assets-timeframe-profiles.csv`](@ref schemas) and [`profiles-timeframe.csv`](@ref schemas) files. For example, we define a profile that has the following first four values: 0.6 p.u., 1.0 p.u., 0.8 p.u., and 0.4 p.u. There are no period partitions, so constraints will be for each period (i.e., daily). Therefore the outgoing energy of the asset for the first four days must be less than or equal to 6MWh, 10MWh, 8MWh, and 4MWh.                                                                                                                                           |
 | Defined | Defined           | Using the same profile as above, we now define a period partition in the [`assets-timeframe-partitions.csv`](@ref schemas) file as `uniform` with a value of 2. This value means that we will aggregate every two periods (i.e., every two days). So, instead of having 365 constraints, we will have 183 constraints (182 every two days and one last constraint of 1 day). Then the profile is aggregated with the sum of the values inside the periods within the partition. Thus, the outgoing energy of the asset for the first two partitions (i.e., every two days) must be less than or equal to 16MWh and 12MWh, respectively. |
 
-<!-- prettier-ignore-end -->
+## [Defining a group of assets](@id group-setup)
+
+A group of assets refers to a set of assets that share certain constraints. For example, the investments of a group of assets may be capped at a maximum value, which represents the potential of a specific area that is restricted in terms of the maximum allowable MW due to limitations on building licenses.
+
+In order to define the groups in the model, the following steps are necessary:
+
+1. Create a group in the [`groups-data.csv`](@ref schemas) file by defining the `name` property and its parameters.
+2. In the file [`assets-data.csv`](@ref schemas), assign to the assets that belong to the group the `name` of the group they belong in the `group` parameter/column.
+
+    > **Note:**
+    > A missing value in the parameter `group` in the [`assets-data.csv`](@ref schemas) means that the asset does not belong to any group.
+
+Groups are useful to represent several common constraints, the following group constraints are the ones available in the model.
+
+### [Setting up a maximum or minimum investment limit for a group](@id investment-group-setup)
+
+The mathematical formulation of the maximum and minimum investment limit for group constraints is available [here](@ref investment-group-constraints). The parameters to set up these constraints in the model are in the [`groups-data.csv`](@ref schemas) file.
+
+-   `invest_method = true`. This parameter enables the model to use the investment group constraints.
+-   `min_investment_limit` $\neq$ `missing` or `max_investment_limit` $\neq$ `missing`. This value represents the limits that will be imposed on the investment that belongs to the group.
+
+    > **Note:**
+    > A missing value in the parameters `min_investment_limit` and `max_investment_limit` means that there is no investment limit.
+
+#### Example
+
+Let's explore how the groups are set up in the test case called [Norse](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Norse). First, let's take a look at the groups-data.csv file:
+
+```@example display-group-setup
+using DataFrames # hide
+using CSV # hide
+input_asset_file = "../../test/inputs/Norse/groups-data.csv" # hide
+assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
+```
+
+In the given data, there are two groups: `renewables` and `ccgt`. Both groups have the `invest_method` parameter set to `true`, indicating that investment group constraints apply to both. For the `renewables` group, the `min_investment_limit` parameter is missing, signifying that there is no minimum limit imposed on the group. However, the `max_investment_limit` parameter is set to 40000 MW, indicating that the total investments of assets in the group must be less than or equal to this value. In contrast, the `ccgt` group has a missing value in the `max_investment_limit` parameter, indicating no maximum limit, while the `min_investment_limit` is set to 10000 MW for the total investments in that group.
+
+Let's now explore which assets are in each group. To do so, we can take a look at the assets-data.csv file:
+
+```@example display-group-setup
+input_asset_file = "../../test/inputs/Norse/assets-data.csv" # hide
+assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
+assets = assets[.!ismissing.(assets.group), [:name, :type, :group, :investable]] # hide
+```
+
+Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
+
+> **Note:**
+> Remember, if the `invest_method` is set to `true` for the groups, then the assets must also have the `investable` parameter set to `true`. This is necessary for formulating the group constraints correctly. If the assets in the group are not investable but the group has a minimum limit to fulfill, it can lead to an infeasible model. For example, if there are no investable assets in the group and the group has a minimum investment constraint, it would be impossible to meet the constraint without any available investments.
