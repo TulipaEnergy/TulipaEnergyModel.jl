@@ -7,6 +7,7 @@ const schemas = (
             :name => "VARCHAR",                              # Name of Asset (geographical?)
             :type => "VARCHAR",                              # Producer/Consumer/Storage/Conversion
             :active => "BOOLEAN",                            # Active or decomissioned
+            :group => "VARCHAR",                             # Group to which the asset belongs to (missing -> no group)
             :investable => "BOOLEAN",                        # Whether able to invest
             :investment_integer => "BOOLEAN",                # Whether investment is integer or continuous
             :investment_cost => "DOUBLE",                    # kEUR/MW/year
@@ -50,6 +51,15 @@ const schemas = (
             :rep_period => "INTEGER",
             :specification => "VARCHAR",
             :partition => "VARCHAR",
+        ),
+    ),
+    groups = (
+        # Schema for the groups-data.csv file.
+        data = OrderedDict(
+            :name => "VARCHAR",                # Name of the Group
+            :invest_method => "BOOLEAN",       # true -> activate group constraints; false -> no group investment constraints
+            :min_investment_limit => "DOUBLE", # MW (Missing -> no limit)
+            :max_investment_limit => "DOUBLE", # MW (Missing -> no limit)
         ),
     ),
     flows = (
@@ -131,6 +141,7 @@ const schema_per_table_name = OrderedDict(
     "flows_data" => schemas.flows.data,
     "flows_profiles" => schemas.flows.profiles_reference,
     "flows_rep_periods_partitions" => schemas.flows.rep_periods_partition,
+    "groups_data" => schemas.groups.data,
     "profiles_timeframe" => schemas.timeframe.profiles_data,
     "profiles_rep_periods" => schemas.rep_periods.profiles_data,
     "rep_periods_data" => schemas.rep_periods.data,

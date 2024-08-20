@@ -34,13 +34,11 @@ include("solver-parameters.jl")
 include("solve-model.jl")
 include("run-scenario.jl")
 include("time-resolution.jl")
-include("constraints/capacity.jl")
-include("constraints/consumer.jl")
-include("constraints/conversion.jl")
-include("constraints/energy.jl")
-include("constraints/hub.jl")
-include("constraints/investment.jl")
-include("constraints/storage.jl")
-include("constraints/transport.jl")
+
+constraints_folder_path = joinpath(@__DIR__, "constraints")
+constraints_files = filter(f -> endswith(f, ".jl"), readdir(constraints_folder_path))
+for file in constraints_files
+    include(joinpath(constraints_folder_path, file))
+end
 
 end
