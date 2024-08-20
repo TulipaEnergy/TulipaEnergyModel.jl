@@ -382,12 +382,12 @@ A group of assets refers to a set of assets that share certain constraints. For 
 In order to define the groups in the model, the following steps are necessary:
 
 1. Create a group in the [`groups-data.csv`](@ref schemas) file by defining the `name` property and its parameters.
-2. In the file [`assets-data.csv`](@ref schemas), assign to the assets that belong to the group the `name` of the group they belong in the `group` parameter/column.
+2. In the file [`assets-data.csv`](@ref schemas), assign assets to the group by setting the `name` in the `group` parameter/column.
 
     > **Note:**
     > A missing value in the parameter `group` in the [`assets-data.csv`](@ref schemas) means that the asset does not belong to any group.
 
-Groups are useful to represent several common constraints, the following group constraints are the ones available in the model.
+Groups are useful to represent several common constraints, the following group constraints are available.
 
 ### [Setting up a maximum or minimum investment limit for a group](@id investment-group-setup)
 
@@ -423,4 +423,4 @@ assets = assets[.!ismissing.(assets.group), [:name, :type, :group, :investable]]
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
 
 > **Note:**
-> Remember, if the `invest_method` is set to `true` for the groups, then the assets must also have the `investable` parameter set to `true`. This is necessary for formulating the group constraints correctly. If the assets in the group are not investable but the group has a minimum limit to fulfill, it can lead to an infeasible model. For example, if there are no investable assets in the group and the group has a minimum investment constraint, it would be impossible to meet the constraint without any available investments.
+> If the group has a `min_investment_limit`, then assets in the group have to allow investment (`investable = true`) for the model to be feasible. If the assets are not `investable` then they cannot satisfy the minimum constraint.
