@@ -224,6 +224,10 @@ function create_internal_structures(connection)
     _df = TulipaIO.get_table(connection, "assets_rep_periods_partitions")
     for a in MetaGraphsNext.labels(graph)
         for year in years
+            is_active = get(graph[a].active, year, false)
+            if !is_active
+                continue
+            end
             graph[a].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
             compute_assets_partitions!(
                 graph[a].rep_periods_partitions[year],
@@ -237,6 +241,10 @@ function create_internal_structures(connection)
     _df = TulipaIO.get_table(connection, "flows_rep_periods_partitions")
     for (u, v) in MetaGraphsNext.edge_labels(graph)
         for year in years
+            is_active = get(graph[u, v].active, year, false)
+            if !is_active
+                continue
+            end
             # we only compute partitions for active flows, but we initialize all years. If we don't want the all the years as keys, we should not do this.
             graph[u, v].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
             if haskey(graph[u, v].active, year) && graph[u, v].active[year]

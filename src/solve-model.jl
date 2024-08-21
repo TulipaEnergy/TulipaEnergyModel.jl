@@ -200,15 +200,17 @@ function solve_model(
 
     return Solution(
         Dict(
-            a => JuMP.value(model[:assets_investment][a]) for a in model[:assets_investment].axes[1]
+            (y, a) => JuMP.value(model[:assets_investment][y, a]) for
+            y in model[:assets_investment].axes[1], a in model[:assets_investment].axes[2]
         ),
         Dict(
-            a => JuMP.value(model[:assets_investment_energy][a]) for
-            a in model[:assets_investment_energy].axes[1]
+            (y, a) => JuMP.value(model[:assets_investment_energy][a]) for
+            y in model[:assets_investment_energy].axes[1],
+            a in model[:assets_investment_energy].axes[2]
         ),
         Dict(
-            uv => JuMP.value(model[:flows_investment][uv]) for
-            uv in model[:flows_investment].axes[1]
+            (y, uv) => JuMP.value(model[:flows_investment][uv]) for
+            y in model[:flows_investment].axes[1], uv in model[:flows_investment].axes[2]
         ),
         JuMP.value.(model[:storage_level_intra_rp]),
         JuMP.value.(model[:storage_level_inter_rp]),

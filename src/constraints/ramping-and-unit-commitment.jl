@@ -27,11 +27,13 @@ function add_ramping_constraints!(
             profile_aggregation(
                 Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
+                row.year,
                 ("availability", row.rep_period),
                 row.timesteps_block,
                 1.0,
-            ) * graph[row.asset].capacity
-        ) for row in eachrow(df_units_on_and_outflows)
+            ) * graph[row.asset].capacity[row.year]
+        ) for row in eachrow(df_units_on_and_outflows) if
+        get(graph[row.asset].active, row.year, false)
     ]
 
     # - Flow that is above the minimum operating point of the asset
@@ -41,32 +43,31 @@ function add_ramping_constraints!(
                 model,
                 row.outgoing_flow -
                 profile_times_capacity[row.index] *
-                graph[row.asset].min_operating_point *
+                graph[row.asset].min_operating_point[row.year] *
                 row.units_on
             ) for row in eachrow(df_units_on_and_outflows)
         ]
 
     ## Unit Commitment Constraints (basic implementation - more advanced will be added in 2025)
     # - Limit to the units on (i.e. commitment) variable with investment
-    df = filter([:asset] => asset -> asset ∈ Ai, df_units_on; view = true)
     model[:limit_units_on_with_investment] = [
         @constraint(
             model,
-            graph[row.asset].capacity * row.units_on ≤
-            graph[row.asset].initial_capacity +
-            graph[row.asset].capacity * assets_investment[row.asset],
-            base_name = "limit_units_on_with_investment[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(df)
+            graph[row.asset].capacity[row.year] * row.units_on ≤
+            graph[row.asset].initial_capacity[row.year] +
+            graph[row.asset].capacity[row.year] * assets_investment[row.year, row.asset],
+            base_name = "limit_units_on_with_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
+        ) for row in eachrow(df_units_on) if row.asset in Ai[row.year]
     ]
 
     # - Limit to the units on (i.e. commitment) variable without investment (TODO: depending on the input parameter definition, this could be a bound)
-    df = filter([:asset] => asset -> asset ∉ Ai, df_units_on; view = true)
     model[:limit_units_on_without_investment] = [
         @constraint(
             model,
-            graph[row.asset].capacity * row.units_on ≤ graph[row.asset].initial_capacity,
-            base_name = "limit_units_on_without_investment[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(df)
+            graph[row.asset].capacity[row.year] * row.units_on ≤
+            graph[row.asset].initial_capacity[row.year],
+            base_name = "limit_units_on_without_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
+        ) for row in eachrow(df_units_on) if row.asset in Ai[row.year]
     ]
 
     # - Minimum output flow above the minimum operating point
@@ -74,52 +75,59 @@ function add_ramping_constraints!(
         @constraint(
             model,
             flow_above_min_operating_point[row.index] ≥ 0,
-            base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
+            base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df_units_on_and_outflows)
     ]
 
     # - Maximum output flow above the minimum operating point
-    df = filter([:asset] => asset -> asset ∈ Auc_basic, df_units_on_and_outflows; view = true)
     model[:max_output_flow_with_basic_unit_commitment] = [
         @constraint(
             model,
             flow_above_min_operating_point[row.index] ≤
-            (1 - graph[row.asset].min_operating_point) *
+            (1 - graph[row.asset].min_operating_point[row.year]) *
             profile_times_capacity[row.index] *
             row.units_on,
-            base_name = "max_output_flow_with_basic_unit_commitment[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(df)
+            base_name = "max_output_flow_with_basic_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
+        ) for row in eachrow(df_units_on_and_outflows) if row.asset ∈ Auc_basic[row.year]
     ]
 
     ## Ramping Constraints with unit commitment
     # Note: We start ramping constraints from the second timesteps_block
     # We filter and group the dataframe per asset and representative period
-    df =
-        filter([:asset] => asset -> asset ∈ (Ar ∩ Auc_basic), df_units_on_and_outflows; view = true)
-    df_grouped = DataFrames.groupby(df, [:asset, :rep_period])
+    df_grouped = DataFrames.groupby(df_units_on_and_outflows, [:asset, :year, :rep_period])
 
     #- Maximum ramp-up rate limit to the flow above the operating point when having unit commitment variables
-    for ((a, rp), sub_df) in pairs(df_grouped)
-        model[Symbol("max_ramp_up_with_unit_commitment_$(a)_$(rp)")] = [
+    for ((a, y, rp), sub_df) in pairs(df_grouped)
+        if !(a ∈ Ar[y] && a ∈ Auc_basic[y])
+            continue
+        end
+        model[Symbol("max_ramp_up_with_unit_commitment_$(a)_$(y)_$(rp)")] = [
             @constraint(
                 model,
                 flow_above_min_operating_point[row.index] -
                 flow_above_min_operating_point[row.index-1] ≤
-                graph[row.asset].max_ramp_up * profile_times_capacity[row.index] * row.units_on,
+                graph[row.asset].max_ramp_up[row.year] *
+                profile_times_capacity[row.index] *
+                row.units_on,
                 base_name = "max_ramp_up_with_unit_commitment[$a,$rp,$(row.timesteps_block)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if k > 1
         ]
     end
 
     # - Maximum ramp-down rate limit to the flow above the operating point when having unit commitment variables
-    for ((a, rp), sub_df) in pairs(df_grouped)
-        model[Symbol("max_ramp_down_with_unit_commitment_$(a)_$(rp)")] = [
+    for ((a, y, rp), sub_df) in pairs(df_grouped)
+        if !(a ∈ Ar[y] && a ∈ Auc_basic[y])
+            continue
+        end
+        model[Symbol("max_ramp_down_with_unit_commitment_$(a)_$(y)_$(rp)")] = [
             @constraint(
                 model,
                 flow_above_min_operating_point[row.index] -
                 flow_above_min_operating_point[row.index-1] ≥
-                -graph[row.asset].max_ramp_down * profile_times_capacity[row.index] * row.units_on,
-                base_name = "max_ramp_down_with_unit_commitment[$a,$rp,$(row.timesteps_block)]"
+                -graph[row.asset].max_ramp_down[row.year] *
+                profile_times_capacity[row.index] *
+                row.units_on,
+                base_name = "max_ramp_down_with_unit_commitment[$a,$y,$rp,$(row.timesteps_block)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if k > 1
         ]
     end
@@ -127,35 +135,42 @@ function add_ramping_constraints!(
     ## Ramping Constraints without unit commitment
     # Note: We start ramping constraints from the second timesteps_block
     # We filter and group the dataframe per asset and representative period that does not have the unit_commitment methods
-    df = filter([:asset] => asset -> asset ∈ setdiff(Ar, Auc), df_highest_out; view = true)
-    df_grouped = DataFrames.groupby(df, [:asset, :rep_period])
+    df_grouped = DataFrames.groupby(df_highest_out, [:asset, :year, :rep_period])
 
     # get the expression from the capacity constraints for the highest_out
     assets_profile_times_capacity_out = model[:assets_profile_times_capacity_out]
 
     # - Maximum ramp-up rate limit to the flow (no unit commitment variables)
-    for ((a, rp), sub_df) in pairs(df_grouped)
-        model[Symbol("max_ramp_up_without_unit_commitment_$(a)_$(rp)")] = [
+    for ((a, y, rp), sub_df) in pairs(df_grouped)
+        if !(a ∈ Ar[y]) || a ∈ Auc[y] # !(a ∈ Ar[y] \ Auc[y]) = !(a ∈ Ar[y] ∩ Auc[y]ᶜ) = !(a ∈ Ar[y] && a ∉ Auc[y]) = a ∉ Ar[y] || a ∈ Auc[y]
+            continue
+        end
+        model[Symbol("max_ramp_up_without_unit_commitment_$(a)_$(y)_$(rp)")] = [
             @constraint(
                 model,
                 outgoing_flow_highest_out_resolution[row.index] -
                 outgoing_flow_highest_out_resolution[row.index-1] ≤
-                graph[row.asset].max_ramp_up * assets_profile_times_capacity_out[row.index],
-                base_name = "max_ramp_up_without_unit_commitment[$a,$rp,$(row.timesteps_block)]"
+                graph[row.asset].max_ramp_up[row.year] *
+                assets_profile_times_capacity_out[row.index],
+                base_name = "max_ramp_up_without_unit_commitment[$a,$y,$rp,$(row.timesteps_block)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if
             k > 1 && outgoing_flow_highest_out_resolution[row.index] != 0
         ]
     end
 
     # - Maximum ramp-down rate limit to the flow (no unit commitment variables)
-    for ((a, rp), sub_df) in pairs(df_grouped)
-        model[Symbol("max_ramp_down_without_unit_commitment_$(a)_$(rp)")] = [
+    for ((a, y, rp), sub_df) in pairs(df_grouped)
+        if !(a ∈ Ar[y]) || a ∈ Auc[y] # !(a ∈ Ar[y] \ Auc[y]) = !(a ∈ Ar[y] ∩ Auc[y]ᶜ) = !(a ∈ Ar[y] && a ∉ Auc[y]) = a ∉ Ar[y] || a ∈ Auc[y]
+            continue
+        end
+        model[Symbol("max_ramp_down_without_unit_commitment_$(a)_$(y)_$(rp)")] = [
             @constraint(
                 model,
                 outgoing_flow_highest_out_resolution[row.index] -
                 outgoing_flow_highest_out_resolution[row.index-1] ≥
-                -graph[row.asset].max_ramp_down * assets_profile_times_capacity_out[row.index],
-                base_name = "max_ramp_down_without_unit_commitment[$a,$rp,$(row.timesteps_block)]"
+                -graph[row.asset].max_ramp_down[row.year] *
+                assets_profile_times_capacity_out[row.index],
+                base_name = "max_ramp_down_without_unit_commitment[$a,$y,$rp,$(row.timesteps_block)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if
             k > 1 && outgoing_flow_highest_out_resolution[row.index] != 0
         ]

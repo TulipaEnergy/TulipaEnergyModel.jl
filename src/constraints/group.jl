@@ -5,7 +5,7 @@ export add_group_constraints!
 
 Adds group constraints for assets that share a common limits or bounds
 """
-function add_group_constraints!(model, graph, Ai, assets_investment, groups)
+function add_group_constraints!(model, graph, Y, Ai, assets_investment, groups)
 
     # - Investment group constraints
     @expression(
@@ -13,8 +13,8 @@ function add_group_constraints!(model, graph, Ai, assets_investment, groups)
         investment_group[group in groups],
         if group.invest_method
             sum(
-                graph[a].capacity * assets_investment[a] for
-                a in Ai if !ismissing(graph[a].group) && graph[a].group == group.name
+                graph[a].capacity[y] * assets_investment[y, a] for y in Y for
+                a in Ai[y] if !ismissing(graph[a].group) && graph[a].group == group.name
             )
         end
     )
