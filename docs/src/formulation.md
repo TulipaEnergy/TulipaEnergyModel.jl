@@ -58,9 +58,9 @@ In addition, the following flow sets represent methods for incorporating additio
 
 In addition, the following subsets represent methods for incorporating additional constraints in the model.
 
-| Name                      | Description                                         | Elements | Superset                                                   | Notes                                                                                                                                                                          |
-| ------------------------- | --------------------------------------------------- | -------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| $\mathcal{G}^{\text{ai}}$ | Group of assets that share min/max investment limit |          | $\mathcal{G}^{\text{ai}} \subseteq \mathcal{G}^{\text{a}}$ | This set contains a group of investment assets that use investment method. Please visit the [how-to section](@ref investment-group-setup) to learn how to set up this feature. |
+| Name                      | Description                                         | Elements | Superset                                                   | Notes                                                                                                                                                            |
+| ------------------------- | --------------------------------------------------- | -------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| $\mathcal{G}^{\text{ai}}$ | Group of assets that share min/max investment limit |          | $\mathcal{G}^{\text{ai}} \subseteq \mathcal{G}^{\text{a}}$ | This set contains assets that have a group investment limit. Please visit the [how-to section](@ref investment-group-setup) to learn how to set up this feature. |
 
 ## [Parameters](@id math-parameters)
 
@@ -134,7 +134,7 @@ In addition, the following subsets represent methods for incorporating additiona
 
 | Name                              | Domain           | Domains of Indices              | Description                                       | Units |
 | --------------------------------- | ---------------- | ------------------------------- | ------------------------------------------------- | ----- |
-| $p^{\text{min invest limit}}_{g}$ | $\mathbb{R}_{+}$ | $g \in \mathcal{G}^{\text{ai}}$ | Mininum investment limit (potential) of group $g$ | [MW]  |
+| $p^{\text{min invest limit}}_{g}$ | $\mathbb{R}_{+}$ | $g \in \mathcal{G}^{\text{ai}}$ | Minimum investment limit (potential) of group $g$ | [MW]  |
 | $p^{\text{max invest limit}}_{g}$ | $\mathbb{R}_{+}$ | $g \in \mathcal{G}^{\text{ai}}$ | Maximum investment limit (potential) of group $g$ | [MW]  |
 
 ## [Variables](@id math-variables)
