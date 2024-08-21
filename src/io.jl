@@ -412,32 +412,32 @@ The following files are created:
 """
 function save_solution_to_file(output_folder, graph, dataframes, solution)
     output_file = joinpath(output_folder, "assets-investments.csv")
-    output_table = DataFrame(; asset = String[], InstalUnits = Float64[], InstalCap_MW = Float64[])
-    for a in MetaGraphsNext.labels(graph)
-        if !graph[a].investable
-            continue
-        end
-        investment = solution.assets_investment[a]
-        capacity = graph[a].capacity
-        push!(output_table, (a, investment, capacity * investment))
+    output_table = DataFrame(;
+        asset = String[],
+        year = Int[],
+        InstalUnits = Float64[],
+        InstalCap_MW = Float64[],
+    )
+
+    for ((y, a), investment) in solution.assets_investment
+        capacity = graph[a].capacity[y]
+        push!(output_table, (a, y, investment, capacity * investment))
     end
     CSV.write(output_file, output_table)
 
     output_file = joinpath(output_folder, "assets-investments-energy.csv")
     output_table = DataFrame(;
         asset = String[],
+        year = Int[],
         InstalEnergyUnits = Float64[],
         InstalEnergyCap_MWh = Float64[],
     )
-    for a in MetaGraphsNext.labels(graph)
-        if !graph[a].investable || !graph[a].storage_method_energy
-            continue
-        end
-        energy_units_investmented = solution.assets_investment_energy[a]
-        energy_capacity = graph[a].capacity_storage_energy
+
+    for ((y, a), energy_units_investmented) in solution.assets_investment_energy
+        energy_capacity = graph[a].capacity_storage_energy[y]
         push!(
             output_table,
-            (a, energy_units_investmented, energy_capacity * energy_units_investmented),
+            (a, y, energy_units_investmented, energy_capacity * energy_units_investmented),
         )
     end
     CSV.write(output_file, output_table)
@@ -446,16 +446,14 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     output_table = DataFrame(;
         from_asset = String[],
         to_asset = String[],
+        year = Int[],
         InstalUnits = Float64[],
         InstalCap_MW = Float64[],
     )
-    for (u, v) in MetaGraphsNext.edge_labels(graph)
-        if !graph[u, v].investable
-            continue
-        end
-        investment = solution.flows_investment[(u, v)]
-        capacity = graph[u, v].capacity
-        push!(output_table, (u, v, investment, capacity * investment))
+
+    for ((y, (u, v)), investment) in solution.flows_investment
+        capacity = graph[u, v].capacity[y]
+        push!(output_table, (u, v, y, investment, capacity * investment))
     end
     CSV.write(output_file, output_table)
 
@@ -473,6 +471,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
         dataframes[:flows],
         :from,
         :to,
+        :year,
         :rep_period,
         :timesteps_block => :timestep,
     )
@@ -543,11 +542,13 @@ If there is no initial storage level given, we will use the final storage level.
 Otherwise, we use the given initial storage level.
 """
 function _check_initial_storage_level!(df, graph)
-    initial_storage_level = graph[unique(df.asset)[1]].initial_storage_level
-    if ismissing(initial_storage_level)
-        df[!, :processed_value] = [df.value[end]; df[1:end-1, :value]]
-    else
-        df[!, :processed_value] = [initial_storage_level; df[1:end-1, :value]]
+    initial_storage_level_dict = graph[unique(df.asset)[1]].initial_storage_level
+    for (_, initial_storage_level) in initial_storage_level_dict
+        if ismissing(initial_storage_level)
+            df[!, :processed_value] = [df.value[end]; df[1:end-1, :value]]
+        else
+            df[!, :processed_value] = [initial_storage_level; df[1:end-1, :value]]
+        end
     end
 end
 

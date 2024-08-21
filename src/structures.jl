@@ -75,8 +75,8 @@ mutable struct GraphAssetData
     timeframe_partitions::Dict{Int,Vector{PeriodsBlock}}
     rep_periods_partitions::Dict{Int,Dict{Int,Vector{TimestepsBlock}}}
     # Solution
-    investment::Float64
-    investment_energy::Float64 # for storage assets with energy method
+    investment::Dict{Int,Float64}
+    investment_energy::Dict{Int,Float64} # for storage assets with energy method
     storage_level_intra_rp::Dict{Tuple{Int,TimestepsBlock},Float64}
     storage_level_inter_rp::Dict{PeriodsBlock,Float64}
     max_energy_inter_rp::Dict{PeriodsBlock,Float64}
@@ -158,8 +158,8 @@ mutable struct GraphAssetData
             rep_periods_profiles,
             timeframe_partitions,
             rep_periods_partitions,
-            -1,
-            -1,
+            Dict{Int,Float64}(),
+            Dict{Int,Float64}(),
             Dict{Tuple{Int,TimestepsBlock},Float64}(),
             Dict{TimestepsBlock,Float64}(),
             Dict{TimestepsBlock,Float64}(),
@@ -190,7 +190,7 @@ mutable struct GraphFlowData
     rep_periods_partitions::Dict{Int,Dict{Int,Vector{TimestepsBlock}}}
     # Solution
     flow::Dict{Tuple{Int,TimestepsBlock},Float64}
-    investment::Float64
+    investment::Dict{Int,Float64}
 end
 
 function GraphFlowData(
@@ -225,7 +225,7 @@ function GraphFlowData(
         Dict{Int,Vector{PeriodsBlock}}(),
         Dict{Int,Dict{Int,Vector{TimestepsBlock}}}(),
         Dict{Int,Dict{Int,Vector{TimestepsBlock}}}(),
-        -1,
+        Dict{Int,Float64}(),
     )
 end
 
@@ -245,9 +245,9 @@ struct Group
 end
 
 mutable struct Solution
-    assets_investment::Dict{String,Float64}
-    assets_investment_energy::Dict{String,Float64} # for storage assets with energy method
-    flows_investment::Dict{Tuple{String,String},Float64}
+    assets_investment::Dict{Tuple{Int,String},Float64}
+    assets_investment_energy::Dict{Tuple{Int,String},Float64} # for storage assets with energy method
+    flows_investment::Dict{Tuple{Int,Tuple{String,String}},Float64}
     storage_level_intra_rp::Vector{Float64}
     storage_level_inter_rp::Vector{Float64}
     max_energy_inter_rp::Vector{Float64}
