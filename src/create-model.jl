@@ -424,7 +424,8 @@ function create_model(
         Ase = As ∩ filter_assets(:storage_method_energy, true)
         Asb = As ∩ filter_assets(:use_binary_storage_method, ["binary", "relaxed_binary"])
 
-        # Create subsets of assets for unit commitment
+        # Create subsets of assets for ramping and unit commitment
+        Ar = filter_assets(:ramping, true)
         Auc = filter_assets(:unit_commitment, true)
         Auc_basic = Auc ∩ filter_assets(:unit_commitment_method, "basic")
     end
@@ -456,7 +457,7 @@ function create_model(
         @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
         @variable(model, 0 ≤ flows_investment[Fi])
         @variable(model, 0 ≤ assets_investment_energy[Ase∩Ai])  #number of installed asset units for storage energy [N]
-        @variable(model, 0 ≤ units_on)
+        @variable(model, 0 ≤ units_on[Ap∪Acv]) # TODO: Is this the correct index?
         storage_level_intra_rp =
             model[:storage_level_intra_rp] = [
                 @variable(
