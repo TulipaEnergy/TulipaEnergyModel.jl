@@ -766,16 +766,16 @@ function create_model(
         groups,
     )
 
-    @timeit to "add_ramping_constraints!" add_ramping_constraints!(
-        model,
-        graph,
-        df_flows,
-        flow,
-        Auc,
-        Auc_basic,
-        units_on,
-        Ai,
-    )
+    # @timeit to "add_ramping_constraints!" add_ramping_constraints!(
+    #     model,
+    #     graph,
+    #     df_flows,
+    #     flow,
+    #     Auc,
+    #     Auc_basic,
+    #     units_on,
+    #     Ai,
+    # )
 
     if write_lp_file
         @timeit to "write lp file" JuMP.write_to_file(model, "model.lp")

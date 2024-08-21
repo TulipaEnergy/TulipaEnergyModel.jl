@@ -64,6 +64,7 @@ mutable struct GraphAssetData
     unit_commitment::Bool
     unit_commitment_method::Union{Missing,String}
     min_oper_point::Union{Missing,Float64}
+    ramping::Bool
     max_ramp_up::Union{Missing,Float64}
     max_ramp_down::Union{Missing,Float64}
     timeframe_profiles::Dict{String,Vector{Float64}}
@@ -106,6 +107,7 @@ mutable struct GraphAssetData
         unit_commitment,
         unit_commitment_method,
         min_oper_point,
+        ramping,
         max_ramp_up,
         max_ramp_down,
     )
@@ -140,6 +142,7 @@ mutable struct GraphAssetData
             unit_commitment,
             unit_commitment_method,
             min_oper_point,
+            ramping,
             max_ramp_up,
             max_ramp_down,
             timeframe_profiles,
