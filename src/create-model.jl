@@ -423,6 +423,10 @@ function create_model(
         # Create subsets of storage assets
         Ase = As ∩ filter_assets(:storage_method_energy, true)
         Asb = As ∩ filter_assets(:use_binary_storage_method, ["binary", "relaxed_binary"])
+
+        # Create subsets of assets for unit commitment
+        Auc = filter_assets(:unit_commitment, true)
+        Auc_basic = Auc ∩ filter_assets(:unit_commitment_method, basic)
     end
 
     # Unpacking dataframes
