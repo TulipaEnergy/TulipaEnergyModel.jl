@@ -4,66 +4,66 @@
 cff-version: 1.2.0
 title: Tulipa Energy Model
 message: >-
-  If you use this software, please cite it using the
-  metadata from this file.
+    If you use this software, please cite it using the
+    metadata from this file.
 type: software
 authors:
-  - given-names: Diego A.
-    family-names: Tejada-Arango
-    email: diego.tejadaarango@tno.nl
-    affiliation: TNO
-    orcid: 'https://orcid.org/0000-0002-3278-9283'
-  - given-names: Germán
-    family-names: Morales-España
-    email: german.morales@tno.nl
-    affiliation: TNO
-    orcid: 'https://orcid.org/0000-0002-6372-6197'
-  - given-names: Lauren
-    family-names: Clisby
-    email: lauren.clisby@tno.nl
-    affiliation: TNO
-    orcid: 'https://orcid.org/0009-0008-7848-4144'
-  - given-names: Ni
-    family-names: Wang
-    email: ni.wang@tno.nl
-    affiliation: TNO
-    orcid: 'https://orcid.org/0000-0001-7037-7004'
-  - given-names: Abel
-    family-names: Soares Siqueira
-    email: abel.siqueira@esciencecenter.nl
-    affiliation: Netherlands eScience Center
-    orcid: 'https://orcid.org/0000-0003-4451-281X'
-  - given-names: Suvayu
-    family-names: Ali
-    email: s.ali@esciencecenter.nl
-    affiliation: Netherlands eScience Center
-  - given-names: Laurent
-    family-names: Soucasse
-    email: l.soucasse@esciencecenter.nl
-    affiliation: Netherlands eScience Center
-    orcid: 'https://orcid.org/0000-0002-5422-8794'
-  - given-names: Grigory
-    family-names: Neustroev
-    email: g.neustroev@tudelft.nl
-    affiliation: Delft University of Technology
-    orcid: 'https://orcid.org/0000-0002-7706-7778'
+    - given-names: Abel
+      family-names: Soares Siqueira
+      email: abel.siqueira@esciencecenter.nl
+      affiliation: Netherlands eScience Center
+      orcid: "https://orcid.org/0000-0003-4451-281X"
+    - given-names: Diego A.
+      family-names: Tejada-Arango
+      email: diego.tejadaarango@tno.nl
+      affiliation: TNO
+      orcid: "https://orcid.org/0000-0002-3278-9283"
+    - given-names: Germán
+      family-names: Morales-España
+      email: german.morales@tno.nl
+      affiliation: TNO
+      orcid: "https://orcid.org/0000-0002-6372-6197"
+    - given-names: Grigory
+      family-names: Neustroev
+      email: g.neustroev@tudelft.nl
+      affiliation: Delft University of Technology
+      orcid: "https://orcid.org/0000-0002-7706-7778"
+    - given-names: Lauren
+      family-names: Clisby
+      email: lauren.clisby@tno.nl
+      affiliation: TNO
+      orcid: "https://orcid.org/0009-0008-7848-4144"
+    - given-names: Laurent
+      family-names: Soucasse
+      email: l.soucasse@esciencecenter.nl
+      affiliation: Netherlands eScience Center
+      orcid: "https://orcid.org/0000-0002-5422-8794"
+    - given-names: Ni
+      family-names: Wang
+      email: ni.wang@tno.nl
+      affiliation: TNO
+      orcid: "https://orcid.org/0000-0001-7037-7004"
+    - given-names: Suvayu
+      family-names: Ali
+      email: s.ali@esciencecenter.nl
+      affiliation: Netherlands eScience Center
 identifiers:
-  - type: other
-    value: arXiv.2309.07711
-    description: The ArXiv preprint of the mathematical formulation
-  - type: doi
-    value: 10.5281/zenodo.8363262
-    description: Concept DOI for Zenodo deposition
-repository-code: 'https://github.com/TulipaEnergy/TulipaEnergyModel.jl'
+    - type: other
+      value: arXiv.2309.07711
+      description: The ArXiv preprint of the mathematical formulation
+    - type: doi
+      value: 10.5281/zenodo.8363262
+      description: Concept DOI for Zenodo deposition
+repository-code: "https://github.com/TulipaEnergy/TulipaEnergyModel.jl"
 abstract: >-
-  The Tulipa Energy Model is a Julia package for energy
-  planning that considers the electricity market and sector
-  couplings.
+    The Tulipa Energy Model is a Julia package for energy
+    planning that considers the electricity market and sector
+    couplings.
 keywords:
-  - Open source tool
-  - Energy system modelling
-  - Energy system analysis
-  - Integrated energy systems
-  - Investment planning
-  - Sector coupling
+    - Open source tool
+    - Energy system modelling
+    - Energy system analysis
+    - Integrated energy systems
+    - Investment planning
+    - Sector coupling
 license: Apache-2.0
