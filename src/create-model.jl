@@ -1,4 +1,17 @@
-export create_model!, create_model, construct_dataframes
+export create_model!, create_model, construct_dataframes, filter_assets, filter_flows
+
+"""
+    Helper function to filter assets in the graph given a key and value
+"""
+filter_assets(graph, assets, key, values) =
+    filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == values, assets)
+filter_assets(key, values::Vector{String}) =
+    filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) in values, assets)
+
+"""
+    Helper function to filter flows in the graph given a key and value
+"""
+filter_flows(graph, flows, key, values) = filter(f -> getfield(graph[f...], key) == values, flows)
 
 """
     dataframes = construct_dataframes(
@@ -15,24 +28,13 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     F = MetaGraphsNext.edge_labels(graph) |> collect
     RP = 1:length(representative_periods)
 
+    # Create subsets of assets
+    Ap  = filter_assets(graph, A, :type, "producer")
+    Acv = filter_assets(graph, A, :type, "conversion")
+    Auc = (Ap ∪ Acv) ∩ filter_assets(graph, A, :unit_commitment, true)
+
     # Output object
     dataframes = Dict{Symbol,DataFrame}()
-
-    # DataFrame to store the flow variables
-    dataframes[:flows] = DataFrame(
-        (
-            (
-                (
-                    from = u,
-                    to = v,
-                    rep_period = rp,
-                    timesteps_block = timesteps_block,
-                    efficiency = graph[u, v].efficiency,
-                ) for timesteps_block in graph[u, v].rep_periods_partitions[rp]
-            ) for (u, v) in F, rp in RP
-        ) |> Iterators.flatten,
-    )
-    dataframes[:flows].index = 1:size(dataframes[:flows], 1)
 
     for (key, partitions) in constraints_partitions
         if length(partitions) == 0
@@ -58,6 +60,33 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         df.index = 1:size(df, 1)
         dataframes[key] = df
     end
+
+    # DataFrame to store the flow variables
+    dataframes[:flows] = DataFrame(
+        (
+            (
+                (
+                    from = u,
+                    to = v,
+                    rep_period = rp,
+                    timesteps_block = timesteps_block,
+                    efficiency = graph[u, v].efficiency,
+                ) for timesteps_block in graph[u, v].rep_periods_partitions[rp]
+            ) for (u, v) in F, rp in RP
+        ) |> Iterators.flatten,
+    )
+    dataframes[:flows].index = 1:size(dataframes[:flows], 1)
+
+    # DataFrame to store the units_on variables
+    dataframes[:units_on] = DataFrame(
+        (
+            (
+                (asset = a, rep_period = rp, timesteps_block = timesteps_block) for
+                timesteps_block in graph[a].rep_periods_partitions[rp]
+            ) for a in Auc, rp in RP
+        ) |> Iterators.flatten,
+    )
+    dataframes[:units_on].index = 1:size(dataframes[:units_on], 1)
 
     # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
     # Only for storage assets
@@ -403,38 +432,32 @@ function create_model(
     @timeit to "unpacking and creating sets" begin
         A = MetaGraphsNext.labels(graph) |> collect
         F = MetaGraphsNext.edge_labels(graph) |> collect
-        filter_assets(key, values) =
-            filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == values, A)
-        filter_assets(key, values::Vector{String}) =
-            filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) in values, A)
-        filter_flows(key, values) = filter(f -> getfield(graph[f...], key) == values, F)
 
-        Ac  = filter_assets(:type, "consumer")
-        Ap  = filter_assets(:type, "producer")
-        As  = filter_assets(:type, "storage")
-        Ah  = filter_assets(:type, "hub")
-        Acv = filter_assets(:type, "conversion")
-        Ft  = filter_flows(:is_transport, true)
+        Ac  = filter_assets(graph, A, :type, "consumer")
+        Ap  = filter_assets(graph, A, :type, "producer")
+        As  = filter_assets(graph, A, :type, "storage")
+        Ah  = filter_assets(graph, A, :type, "hub")
+        Acv = filter_assets(graph, A, :type, "conversion")
+        Ft  = filter_flows(graph, F, :is_transport, true)
 
         # Create subsets of assets by investable
-        Ai = filter_assets(:investable, true)
-        Fi = filter_flows(:investable, true)
+        Ai = filter_assets(graph, A, :investable, true)
+        Fi = filter_flows(graph, F, :investable, true)
 
         # Create subsets of storage assets
-        Ase = As ∩ filter_assets(:storage_method_energy, true)
-        Asb = As ∩ filter_assets(:use_binary_storage_method, ["binary", "relaxed_binary"])
+        Ase = As ∩ filter_assets(graph, A, :storage_method_energy, true)
+        Asb = As ∩ filter_assets(graph, A, :use_binary_storage_method, ["binary", "relaxed_binary"])
 
-        # Create subsets of assets for ramping and unit commitment
-        Ar = filter_assets(:ramping, true)
-        Auc = filter_assets(:unit_commitment, true)
-        Auc_basic = Auc ∩ filter_assets(:unit_commitment_method, "basic")
+        # Create subsets of assets for ramping and unit commitment for producers and conversion assets
+        Ar = (Ap ∪ Acv) ∩ filter_assets(graph, A, :ramping, true)
+        Auc = (Ap ∪ Acv) ∩ filter_assets(graph, A, :unit_commitment, true)
+        Auc_basic = Auc ∩ filter_assets(graph, A, :unit_commitment_method, "basic")
     end
-
     # Unpacking dataframes
     @timeit to "unpacking dataframes" begin
         df_flows = dataframes[:flows]
         df_is_charging = dataframes[:lowest_in_out]
-
+        df_units_on = dataframes[:units_on]
         df_storage_intra_rp_balance_grouped =
             DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rep_period])
         df_storage_inter_rp_balance_grouped =
@@ -457,7 +480,16 @@ function create_model(
         @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
         @variable(model, 0 ≤ flows_investment[Fi])
         @variable(model, 0 ≤ assets_investment_energy[Ase∩Ai])  #number of installed asset units for storage energy [N]
-        @variable(model, 0 ≤ units_on[Ap∪Acv]) # TODO: Is this the correct index?
+        @variable(model, 0 ≤ units_on[Auc]) # TODO: Is this the correct index?
+
+        units_on =
+            model[:units_on] =
+                df_units_on.units_on = [
+                    @variable(
+                        model,
+                        base_name = "units_on[$(row.asset), $(row.rep_period), $(row.timesteps_block)]"
+                    ) for row in eachrow(df_units_on)
+                ]
         storage_level_intra_rp =
             model[:storage_level_intra_rp] = [
                 @variable(

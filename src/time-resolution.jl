@@ -63,6 +63,13 @@ function compute_constraints_partitions(graph, representative_periods)
             strategy = :highest,
             asset_filter = a -> graph[a].type in ["producer", "storage", "conversion"],
         ),
+        (
+            name = :units_on,
+            partitions = _assets,
+            strategy = :highest,
+            asset_filter = a ->
+                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment,
+        ),
     ]
 
     num_rep_periods = length(representative_periods)
