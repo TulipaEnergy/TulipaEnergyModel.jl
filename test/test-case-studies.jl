@@ -57,6 +57,14 @@ end
     @test energy_problem.objective_value ≈ 28.45872 atol = 1e-5
 end
 
+@testset "Multi-year Case Study" begin
+    dir = joinpath(INPUT_FOLDER, "Multi-year Investments")
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, dir)
+    energy_problem = run_scenario(connection)
+    # @test energy_problem.objective_value ≈ 28.45872 atol = 1e-5
+end
+
 @testset "Infeasible Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
     connection = DBInterface.connect(DuckDB.DB)
