@@ -10,7 +10,7 @@ Midgard_Hydro,storage,true,,false,false,1600,0,0,250,0,,true,10000,50000,25000,0
 Midgard_PHS,storage,true,,true,true,800,5000,200,350,0,,false,0,0,,1,true,500,1000,100,false,,,,false,,,false,,,
 Midgard_Nuclear_SMR,producer,true,,true,false,6000,,150,1000,0,,true,0,0,0,0,false,0,,0,false,,,4.5e3,false,,,false,,,
 Midgard_E_imports,producer,true,,false,false,0,0,0,500,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,,
-Midgard_CCGT,conversion,true,ccgt,true,true,650,,500,0,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,,
+Midgard_CCGT,conversion,true,ccgt,false,false,650,,500,2500,0,,false,0,0,0,0,false,0,,0,false,,,,true,basic,0.4,false,,,
 Midgard_E_demand,consumer,true,,false,false,0,0,0,0,19604.76443,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,,
 Valhalla_H2_generator,conversion,true,,true,true,479,,100,0,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,,
 Valhalla_H2_storage,storage,true,,true,true,0.1,,500,0,0,,true,0,0,,10000,false,10,,100,true,,,,false,,,false,,,
