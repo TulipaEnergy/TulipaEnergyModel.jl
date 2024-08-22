@@ -3,7 +3,7 @@ name,type,active,group,investable,investment_integer,investment_cost,investment_
 Asgard_Battery,storage,true,,true,true,300,25000,100,725,0,,false,0,0,,100,true,30,1000,10,true,binary,,,false,,,false,,,
 Asgard_Solar,producer,true,renewables,true,true,350,50000,100,0,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,,
 Asgard_E_demand,consumer,true,,false,false,0,0,0,0,65787.17792,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,,
-Asgard_CCGT,conversion,true,ccgt,true,true,650,,500,0,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,,
+Asgard_CCGT,conversion,true,ccgt,true,true,650,,500,0,0,,false,0,0,0,0,false,0,,0,false,,,,true,basic,0.25,true,0.5,0.3,
 G_imports,producer,true,,false,false,0,0,0,75000,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,,
 Midgard_Wind,producer,true,renewables,true,true,1300,80000,3,0,0,,true,0,0,0,0,false,0,,0,false,,4.5e6,,false,,,false,,,
 Midgard_Hydro,storage,true,,false,false,1600,0,0,250,0,,true,10000,50000,25000,0,false,0,,0,false,relaxed_binary,,,false,,,false,,,
