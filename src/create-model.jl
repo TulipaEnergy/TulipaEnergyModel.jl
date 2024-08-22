@@ -77,7 +77,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     )
     dataframes[:flows].index = 1:size(dataframes[:flows], 1)
 
-    # DataFrame to store the units_on variables
+    # DataFrame to store the constraints that are in the units_on resolution
     dataframes[:units_on] = DataFrame(
         (
             (
@@ -87,6 +87,17 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         ) |> Iterators.flatten,
     )
     dataframes[:units_on].index = 1:size(dataframes[:units_on], 1)
+
+    # DataFrame to store the constraints that are in the highest resolution between units_on and the outgoing_flows
+    dataframes[:units_on_and_outflows] = DataFrame(
+        (
+            (
+                (asset = a, rep_period = rp, timesteps_block = timesteps_block) for
+                timesteps_block in graph[a].rep_periods_partitions[rp]
+            ) for a in Auc, rp in RP
+        ) |> Iterators.flatten,
+    )
+    dataframes[:units_on_and_outflows].index = 1:size(dataframes[:units_on_and_outflows], 1)
 
     # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
     # Only for storage assets
@@ -265,6 +276,51 @@ function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_c
         # Apply the agg funtion to the corresponding variables from the workspace
         for row in eachrow(sub_df)
             row[:is_charging] = agg(@view workspace[row.timesteps_block])
+        end
+    end
+end
+
+"""
+add_expression_is_charging_terms_intra_rp_constraints!(df_cons,
+                                                       df_is_charging,
+                                                       workspace
+                                                       )
+
+Computes the is_charging expressions per row of df_cons for the constraints
+that are within (intra) the representative periods.
+
+This function is only used internally in the model.
+
+This strategy is based on the replies in this discourse thread:
+
+  - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
+"""
+function add_expression_units_on_terms_intra_rp_constraints!(df_cons, df_units_on, workspace)
+    # Aggregating function: since the constraint is in the highest resolution we can aggregate with unique.
+    agg = v -> sum(unique(v))
+
+    grouped_cons = DataFrames.groupby(df_cons, [:rep_period, :asset])
+
+    df_cons[!, :units_on] .= JuMP.AffExpr(0.0)
+    grouped_units_on = DataFrames.groupby(df_units_on, [:rep_period, :asset])
+    for ((rep_period, asset), sub_df) in pairs(grouped_cons)
+        if !haskey(grouped_units_on, (rep_period, asset))
+            continue
+        end
+
+        for i in eachindex(workspace)
+            workspace[i] = JuMP.AffExpr(0.0)
+        end
+        # Store the corresponding variables in the workspace
+        for row in eachrow(grouped_units_on[(rep_period, asset)])
+            asset = row[:asset]
+            for t in row.timesteps_block
+                JuMP.add_to_expression!(workspace[t], row.units_on)
+            end
+        end
+        # Apply the agg funtion to the corresponding variables from the workspace
+        for row in eachrow(sub_df)
+            row[:units_on] = agg(@view workspace[row.timesteps_block])
         end
     end
 end
@@ -458,6 +514,7 @@ function create_model(
         df_flows = dataframes[:flows]
         df_is_charging = dataframes[:lowest_in_out]
         df_units_on = dataframes[:units_on]
+        df_units_on_and_outflows = dataframes[:units_on_and_outflows]
         df_storage_intra_rp_balance_grouped =
             DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rep_period])
         df_storage_inter_rp_balance_grouped =
@@ -608,6 +665,17 @@ function create_model(
             use_highest_resolution = true,
             multiply_by_duration = false,
         )
+        if !isempty(dataframes[:units_on_and_outflows])
+            add_expression_terms_intra_rp_constraints!(
+                dataframes[:units_on_and_outflows],
+                df_flows,
+                expression_workspace,
+                representative_periods,
+                graph;
+                use_highest_resolution = true,
+                multiply_by_duration = false,
+            )
+        end
         add_expression_terms_inter_rp_constraints!(
             dataframes[:storage_level_inter_rp],
             df_flows,
@@ -640,6 +708,13 @@ function create_model(
             df_is_charging,
             expression_workspace,
         )
+        if !isempty(dataframes[:units_on_and_outflows])
+            add_expression_units_on_terms_intra_rp_constraints!(
+                dataframes[:units_on_and_outflows],
+                df_units_on,
+                expression_workspace,
+            )
+        end
 
         incoming_flow_lowest_resolution =
             model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow
@@ -798,16 +873,18 @@ function create_model(
         groups,
     )
 
-    # @timeit to "add_ramping_constraints!" add_ramping_constraints!(
-    #     model,
-    #     graph,
-    #     df_flows,
-    #     flow,
-    #     Auc,
-    #     Auc_basic,
-    #     units_on,
-    #     Ai,
-    # )
+    if !isempty(dataframes[:units_on_and_outflows])
+        @timeit to "add_ramping_constraints!" add_ramping_constraints!(
+            model,
+            graph,
+            df_units_on_and_outflows,
+            df_units_on,
+            assets_investment,
+            Ai,
+            Auc_basic,
+            Ar,
+        )
+    end
 
     if write_lp_file
         @timeit to "write lp file" JuMP.write_to_file(model, "model.lp")
