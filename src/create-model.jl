@@ -5,7 +5,7 @@ export create_model!, create_model, construct_dataframes, filter_assets, filter_
 """
 filter_assets(graph, assets, key, values) =
     filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == values, assets)
-filter_assets(key, values::Vector{String}) =
+filter_assets(graph, assets, key, values::Vector{String}) =
     filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) in values, assets)
 
 """
