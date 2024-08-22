@@ -304,9 +304,7 @@ function add_expression_units_on_terms_intra_rp_constraints!(df_cons, df_units_o
     df_cons[!, :units_on] .= JuMP.AffExpr(0.0)
     grouped_units_on = DataFrames.groupby(df_units_on, [:rep_period, :asset])
     for ((rep_period, asset), sub_df) in pairs(grouped_cons)
-        if !haskey(grouped_units_on, (rep_period, asset))
-            continue
-        end
+        haskey(grouped_units_on, (rep_period, asset)) || continue
 
         for i in eachindex(workspace)
             workspace[i] = JuMP.AffExpr(0.0)
