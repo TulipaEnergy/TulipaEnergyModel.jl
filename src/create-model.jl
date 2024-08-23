@@ -877,8 +877,11 @@ function create_model(
             graph,
             df_units_on_and_outflows,
             df_units_on,
+            dataframes[:highest_out],
+            outgoing_flow_highest_out_resolution,
             assets_investment,
             Ai,
+            Auc,
             Auc_basic,
             Ar,
         )
