@@ -281,10 +281,11 @@ function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_c
 end
 
 """
-add_expression_is_charging_terms_intra_rp_constraints!(df_cons,
-                                                       df_is_charging,
-                                                       workspace
-                                                       )
+    add_expression_is_charging_terms_intra_rp_constraints!(
+        df_cons,
+        df_is_charging,
+        workspace,
+    )
 
 Computes the is_charging expressions per row of df_cons for the constraints
 that are within (intra) the representative periods.
@@ -311,7 +312,6 @@ function add_expression_units_on_terms_intra_rp_constraints!(df_cons, df_units_o
         end
         # Store the corresponding variables in the workspace
         for row in eachrow(grouped_units_on[(rep_period, asset)])
-            asset = row[:asset]
             for t in row.timesteps_block
                 JuMP.add_to_expression!(workspace[t], row.units_on)
             end
