@@ -23,6 +23,7 @@ function compute_constraints_partitions(graph, representative_periods)
     ]
     _allflows(a, rp) = [_inflows(a, rp); _outflows(a, rp)]
     _assets(a, rp) = [graph[a].rep_periods_partitions[rp]]
+    _assets_and_outflows(a, rp) = [_assets(a, rp); _outflows(a, rp)]
     _all(a, rp) = [_allflows(a, rp); _assets(a, rp)]
 
     partitions_cases = [
@@ -62,6 +63,20 @@ function compute_constraints_partitions(graph, representative_periods)
             partitions = _outflows,
             strategy = :highest,
             asset_filter = a -> graph[a].type in ["producer", "storage", "conversion"],
+        ),
+        (
+            name = :units_on,
+            partitions = _assets,
+            strategy = :highest,
+            asset_filter = a ->
+                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment,
+        ),
+        (
+            name = :units_on_and_outflows,
+            partitions = _assets_and_outflows,
+            strategy = :highest,
+            asset_filter = a ->
+                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment,
         ),
     ]
 

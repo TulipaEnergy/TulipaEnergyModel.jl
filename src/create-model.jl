@@ -1,4 +1,17 @@
-export create_model!, create_model, construct_dataframes
+export create_model!, create_model, construct_dataframes, filter_assets, filter_flows
+
+"""
+    Helper function to filter assets in the graph given a key and value
+"""
+filter_assets(graph, assets, key, values) =
+    filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == values, assets)
+filter_assets(graph, assets, key, values::Vector{String}) =
+    filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) in values, assets)
+
+"""
+    Helper function to filter flows in the graph given a key and value
+"""
+filter_flows(graph, flows, key, values) = filter(f -> getfield(graph[f...], key) == values, flows)
 
 """
     dataframes = construct_dataframes(
@@ -15,24 +28,13 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     F = MetaGraphsNext.edge_labels(graph) |> collect
     RP = 1:length(representative_periods)
 
+    # Create subsets of assets
+    Ap  = filter_assets(graph, A, :type, "producer")
+    Acv = filter_assets(graph, A, :type, "conversion")
+    Auc = (Ap ∪ Acv) ∩ filter_assets(graph, A, :unit_commitment, true)
+
     # Output object
     dataframes = Dict{Symbol,DataFrame}()
-
-    # DataFrame to store the flow variables
-    dataframes[:flows] = DataFrame(
-        (
-            (
-                (
-                    from = u,
-                    to = v,
-                    rep_period = rp,
-                    timesteps_block = timesteps_block,
-                    efficiency = graph[u, v].efficiency,
-                ) for timesteps_block in graph[u, v].rep_periods_partitions[rp]
-            ) for (u, v) in F, rp in RP
-        ) |> Iterators.flatten,
-    )
-    dataframes[:flows].index = 1:size(dataframes[:flows], 1)
 
     for (key, partitions) in constraints_partitions
         if length(partitions) == 0
@@ -58,6 +60,44 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         df.index = 1:size(df, 1)
         dataframes[key] = df
     end
+
+    # DataFrame to store the flow variables
+    dataframes[:flows] = DataFrame(
+        (
+            (
+                (
+                    from = u,
+                    to = v,
+                    rep_period = rp,
+                    timesteps_block = timesteps_block,
+                    efficiency = graph[u, v].efficiency,
+                ) for timesteps_block in graph[u, v].rep_periods_partitions[rp]
+            ) for (u, v) in F, rp in RP
+        ) |> Iterators.flatten,
+    )
+    dataframes[:flows].index = 1:size(dataframes[:flows], 1)
+
+    # DataFrame to store the constraints that are in the units_on resolution
+    dataframes[:units_on] = DataFrame(
+        (
+            (
+                (asset = a, rep_period = rp, timesteps_block = timesteps_block) for
+                timesteps_block in graph[a].rep_periods_partitions[rp]
+            ) for a in Auc, rp in RP
+        ) |> Iterators.flatten,
+    )
+    dataframes[:units_on].index = 1:size(dataframes[:units_on], 1)
+
+    # DataFrame to store the constraints that are in the highest resolution between units_on and the outgoing_flows
+    dataframes[:units_on_and_outflows] = DataFrame(
+        (
+            (
+                (asset = a, rep_period = rp, timesteps_block = timesteps_block) for
+                timesteps_block in graph[a].rep_periods_partitions[rp]
+            ) for a in Auc, rp in RP
+        ) |> Iterators.flatten,
+    )
+    dataframes[:units_on_and_outflows].index = 1:size(dataframes[:units_on_and_outflows], 1)
 
     # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
     # Only for storage assets
@@ -241,6 +281,49 @@ function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_c
 end
 
 """
+    add_expression_is_charging_terms_intra_rp_constraints!(
+        df_cons,
+        df_is_charging,
+        workspace,
+    )
+
+Computes the is_charging expressions per row of df_cons for the constraints
+that are within (intra) the representative periods.
+
+This function is only used internally in the model.
+
+This strategy is based on the replies in this discourse thread:
+
+  - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
+"""
+function add_expression_units_on_terms_intra_rp_constraints!(df_cons, df_units_on, workspace)
+    # Aggregating function: since the constraint is in the highest resolution we can aggregate with unique.
+    agg = v -> sum(unique(v))
+
+    grouped_cons = DataFrames.groupby(df_cons, [:rep_period, :asset])
+
+    df_cons[!, :units_on] .= JuMP.AffExpr(0.0)
+    grouped_units_on = DataFrames.groupby(df_units_on, [:rep_period, :asset])
+    for ((rep_period, asset), sub_df) in pairs(grouped_cons)
+        haskey(grouped_units_on, (rep_period, asset)) || continue
+
+        for i in eachindex(workspace)
+            workspace[i] = JuMP.AffExpr(0.0)
+        end
+        # Store the corresponding variables in the workspace
+        for row in eachrow(grouped_units_on[(rep_period, asset)])
+            for t in row.timesteps_block
+                JuMP.add_to_expression!(workspace[t], row.units_on)
+            end
+        end
+        # Apply the agg funtion to the corresponding variables from the workspace
+        for row in eachrow(sub_df)
+            row[:units_on] = agg(@view workspace[row.timesteps_block])
+        end
+    end
+end
+
+"""
     add_expression_terms_inter_rp_constraints!(df_inter,
                                                df_flows,
                                                df_map,
@@ -403,33 +486,34 @@ function create_model(
     @timeit to "unpacking and creating sets" begin
         A = MetaGraphsNext.labels(graph) |> collect
         F = MetaGraphsNext.edge_labels(graph) |> collect
-        filter_assets(key, values) =
-            filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) == values, A)
-        filter_assets(key, values::Vector{String}) =
-            filter(a -> !ismissing(getfield(graph[a], key)) && getfield(graph[a], key) in values, A)
-        filter_flows(key, values) = filter(f -> getfield(graph[f...], key) == values, F)
 
-        Ac  = filter_assets(:type, "consumer")
-        Ap  = filter_assets(:type, "producer")
-        As  = filter_assets(:type, "storage")
-        Ah  = filter_assets(:type, "hub")
-        Acv = filter_assets(:type, "conversion")
-        Ft  = filter_flows(:is_transport, true)
+        Ac  = filter_assets(graph, A, :type, "consumer")
+        Ap  = filter_assets(graph, A, :type, "producer")
+        As  = filter_assets(graph, A, :type, "storage")
+        Ah  = filter_assets(graph, A, :type, "hub")
+        Acv = filter_assets(graph, A, :type, "conversion")
+        Ft  = filter_flows(graph, F, :is_transport, true)
 
         # Create subsets of assets by investable
-        Ai = filter_assets(:investable, true)
-        Fi = filter_flows(:investable, true)
+        Ai = filter_assets(graph, A, :investable, true)
+        Fi = filter_flows(graph, F, :investable, true)
 
         # Create subsets of storage assets
-        Ase = As ∩ filter_assets(:storage_method_energy, true)
-        Asb = As ∩ filter_assets(:use_binary_storage_method, ["binary", "relaxed_binary"])
-    end
+        Ase = As ∩ filter_assets(graph, A, :storage_method_energy, true)
+        Asb = As ∩ filter_assets(graph, A, :use_binary_storage_method, ["binary", "relaxed_binary"])
 
+        # Create subsets of assets for ramping and unit commitment for producers and conversion assets
+        Ar = (Ap ∪ Acv) ∩ filter_assets(graph, A, :ramping, true)
+        Auc = (Ap ∪ Acv) ∩ filter_assets(graph, A, :unit_commitment, true)
+        Auc_integer = Auc ∩ filter_assets(graph, A, :unit_commitment_integer, true)
+        Auc_basic = Auc ∩ filter_assets(graph, A, :unit_commitment_method, "basic")
+    end
     # Unpacking dataframes
     @timeit to "unpacking dataframes" begin
         df_flows = dataframes[:flows]
         df_is_charging = dataframes[:lowest_in_out]
-
+        df_units_on = dataframes[:units_on]
+        df_units_on_and_outflows = dataframes[:units_on_and_outflows]
         df_storage_intra_rp_balance_grouped =
             DataFrames.groupby(dataframes[:lowest_storage_level_intra_rp], [:asset, :rep_period])
         df_storage_inter_rp_balance_grouped =
@@ -452,6 +536,17 @@ function create_model(
         @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
         @variable(model, 0 ≤ flows_investment[Fi])
         @variable(model, 0 ≤ assets_investment_energy[Ase∩Ai])  #number of installed asset units for storage energy [N]
+        @variable(model, 0 ≤ units_on[Auc]) # TODO: Is this the correct index?
+
+        units_on =
+            model[:units_on] =
+                df_units_on.units_on = [
+                    @variable(
+                        model,
+                        lower_bound = 0.0,
+                        base_name = "units_on[$(row.asset), $(row.rep_period), $(row.timesteps_block)]"
+                    ) for row in eachrow(df_units_on)
+                ]
         storage_level_intra_rp =
             model[:storage_level_intra_rp] = [
                 @variable(
@@ -498,6 +593,7 @@ function create_model(
             end
         end
 
+        ### Binary Charging Variables
         df_is_charging.use_binary_storage_method =
             [graph[a].use_binary_storage_method for a in df_is_charging.asset]
         sub_df_is_charging_binary = DataFrames.subset(
@@ -509,6 +605,19 @@ function create_model(
 
         for row in eachrow(sub_df_is_charging_binary)
             JuMP.set_binary(is_charging[row.index])
+        end
+
+        ### Integer Unit Commitment Variables
+        if !isempty(Auc_integer)
+            sub_df_units_on_integer = DataFrames.subset(
+                df_units_on,
+                :asset => DataFrames.ByRow(in(Auc_integer));
+                view = true,
+            )
+
+            for row in eachrow(sub_df_units_on_integer)
+                JuMP.set_integer(units_on[row.index])
+            end
         end
     end
 
@@ -570,6 +679,17 @@ function create_model(
             use_highest_resolution = true,
             multiply_by_duration = false,
         )
+        if !isempty(dataframes[:units_on_and_outflows])
+            add_expression_terms_intra_rp_constraints!(
+                dataframes[:units_on_and_outflows],
+                df_flows,
+                expression_workspace,
+                representative_periods,
+                graph;
+                use_highest_resolution = true,
+                multiply_by_duration = false,
+            )
+        end
         add_expression_terms_inter_rp_constraints!(
             dataframes[:storage_level_inter_rp],
             df_flows,
@@ -602,6 +722,13 @@ function create_model(
             df_is_charging,
             expression_workspace,
         )
+        if !isempty(dataframes[:units_on_and_outflows])
+            add_expression_units_on_terms_intra_rp_constraints!(
+                dataframes[:units_on_and_outflows],
+                df_units_on,
+                expression_workspace,
+            )
+        end
 
         incoming_flow_lowest_resolution =
             model[:incoming_flow_lowest_resolution] = dataframes[:lowest].incoming_flow
@@ -759,6 +886,22 @@ function create_model(
         assets_investment,
         groups,
     )
+
+    if !isempty(dataframes[:units_on_and_outflows])
+        @timeit to "add_ramping_constraints!" add_ramping_constraints!(
+            model,
+            graph,
+            df_units_on_and_outflows,
+            df_units_on,
+            dataframes[:highest_out],
+            outgoing_flow_highest_out_resolution,
+            assets_investment,
+            Ai,
+            Auc,
+            Auc_basic,
+            Ar,
+        )
+    end
 
     if write_lp_file
         @timeit to "write lp file" JuMP.write_to_file(model, "model.lp")

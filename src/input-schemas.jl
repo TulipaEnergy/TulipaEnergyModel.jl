@@ -29,6 +29,13 @@ const schemas = (
             :use_binary_storage_method => "VARCHAR",         # Whether to use an extra binary variable for the storage assets to avoid charging and discharging simultaneously (missing;binary;relaxed_binary)
             :max_energy_timeframe_partition => "DOUBLE",     # MWh (Missing -> no limit)
             :min_energy_timeframe_partition => "DOUBLE",     # MWh (Missing -> no limit)
+            :unit_commitment => "BOOLEAN",                   # Whether asset has unit commitment constraints
+            :unit_commitment_method => "VARCHAR",            # Which unit commitment method to use (i.e., basic)
+            :unit_commitment_integer => "BOOLEAN",           # Whether the unit commitment variables are integer or not
+            :min_operating_point => "DOUBLE",                # Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset [p.u.]
+            :ramping => "BOOLEAN",                           # Whether asset has ramping constraints
+            :max_ramp_up => "DOUBLE",                        # Maximum ramping up rate as a portion of the capacity of asset [p.u.]
+            :max_ramp_down => "DOUBLE",                      # Maximum ramping down rate as a portion of the capacity of asset [p.u.]
         ),
 
         # Schema for the assets-profiles.csv file.
