@@ -63,6 +63,7 @@ mutable struct GraphAssetData
     min_energy_timeframe_partition::Union{Missing,Float64}
     unit_commitment::Bool
     unit_commitment_method::Union{Missing,String}
+    unit_commitment_integer::Bool
     min_oper_point::Union{Missing,Float64}
     ramping::Bool
     max_ramp_up::Union{Missing,Float64}
@@ -106,6 +107,7 @@ mutable struct GraphAssetData
         min_energy_timeframe_partition,
         unit_commitment,
         unit_commitment_method,
+        unit_commitment_integer,
         min_oper_point,
         ramping,
         max_ramp_up,
@@ -141,6 +143,7 @@ mutable struct GraphAssetData
             min_energy_timeframe_partition,
             unit_commitment,
             unit_commitment_method,
+            unit_commitment_integer,
             min_oper_point,
             ramping,
             max_ramp_up,
