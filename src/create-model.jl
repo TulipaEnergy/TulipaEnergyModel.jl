@@ -505,6 +505,7 @@ function create_model(
         # Create subsets of assets for ramping and unit commitment for producers and conversion assets
         Ar = (Ap ∪ Acv) ∩ filter_assets(graph, A, :ramping, true)
         Auc = (Ap ∪ Acv) ∩ filter_assets(graph, A, :unit_commitment, true)
+        Auc_integer = Auc ∩ filter_assets(graph, A, :unit_commitment_integer, true)
         Auc_basic = Auc ∩ filter_assets(graph, A, :unit_commitment_method, "basic")
     end
     # Unpacking dataframes
@@ -542,6 +543,7 @@ function create_model(
                 df_units_on.units_on = [
                     @variable(
                         model,
+                        lower_bound = 0.0,
                         base_name = "units_on[$(row.asset), $(row.rep_period), $(row.timesteps_block)]"
                     ) for row in eachrow(df_units_on)
                 ]
@@ -591,6 +593,7 @@ function create_model(
             end
         end
 
+        ### Binary Charging Variables
         df_is_charging.use_binary_storage_method =
             [graph[a].use_binary_storage_method for a in df_is_charging.asset]
         sub_df_is_charging_binary = DataFrames.subset(
@@ -602,6 +605,19 @@ function create_model(
 
         for row in eachrow(sub_df_is_charging_binary)
             JuMP.set_binary(is_charging[row.index])
+        end
+
+        ### Integer Unit Commitment Variables
+        if !isempty(Auc_integer)
+            sub_df_units_on_integer = DataFrames.subset(
+                df_units_on,
+                :asset => DataFrames.ByRow(in(Auc_integer));
+                view = true,
+            )
+
+            for row in eachrow(sub_df_units_on_integer)
+                JuMP.set_integer(units_on[row.index])
+            end
         end
     end
 
