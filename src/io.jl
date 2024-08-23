@@ -92,7 +92,7 @@ function create_internal_structures(connection)
             row.unit_commitment,
             row.unit_commitment_method,
             row.unit_commitment_integer,
-            row.min_oper_point,
+            row.min_operating_point,
             row.ramping,
             row.max_ramp_up,
             row.max_ramp_down,

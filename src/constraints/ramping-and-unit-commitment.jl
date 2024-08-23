@@ -35,12 +35,14 @@ function add_ramping_constraints!(
     ]
 
     # - Flow that is above the minimum operating point of the asset
-    flow_above_min_oper_point =
-        model[:flow_above_min_oper_point] = [
+    flow_above_min_operating_point =
+        model[:flow_above_min_operating_point] = [
             @expression(
                 model,
                 row.outgoing_flow -
-                profile_times_capacity[row.index] * graph[row.asset].min_oper_point * row.units_on
+                profile_times_capacity[row.index] *
+                graph[row.asset].min_operating_point *
+                row.units_on
             ) for row in eachrow(df_units_on_and_outflows)
         ]
 
@@ -71,7 +73,7 @@ function add_ramping_constraints!(
     model[:min_output_flow_with_unit_commitment] = [
         @constraint(
             model,
-            flow_above_min_oper_point[row.index] ≥ 0,
+            flow_above_min_operating_point[row.index] ≥ 0,
             base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df_units_on_and_outflows)
     ]
@@ -81,8 +83,8 @@ function add_ramping_constraints!(
     model[:max_output_flow_with_basic_unit_commitment] = [
         @constraint(
             model,
-            flow_above_min_oper_point[row.index] ≤
-            (1 - graph[row.asset].min_oper_point) *
+            flow_above_min_operating_point[row.index] ≤
+            (1 - graph[row.asset].min_operating_point) *
             profile_times_capacity[row.index] *
             row.units_on,
             base_name = "max_output_flow_with_basic_unit_commitment[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
@@ -101,7 +103,8 @@ function add_ramping_constraints!(
         model[Symbol("max_ramp_up_with_unit_commitment_$(a)_$(rp)")] = [
             @constraint(
                 model,
-                flow_above_min_oper_point[row.index] - flow_above_min_oper_point[row.index-1] ≤
+                flow_above_min_operating_point[row.index] -
+                flow_above_min_operating_point[row.index-1] ≤
                 graph[row.asset].max_ramp_up * profile_times_capacity[row.index] * row.units_on,
                 base_name = "max_ramp_up_with_unit_commitment[$a,$rp,$(row.timesteps_block)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if k > 1
@@ -113,7 +116,8 @@ function add_ramping_constraints!(
         model[Symbol("max_ramp_down_with_unit_commitment_$(a)_$(rp)")] = [
             @constraint(
                 model,
-                flow_above_min_oper_point[row.index] - flow_above_min_oper_point[row.index-1] ≥
+                flow_above_min_operating_point[row.index] -
+                flow_above_min_operating_point[row.index-1] ≥
                 -graph[row.asset].max_ramp_down * profile_times_capacity[row.index] * row.units_on,
                 base_name = "max_ramp_down_with_unit_commitment[$a,$rp,$(row.timesteps_block)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if k > 1

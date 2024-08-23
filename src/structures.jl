@@ -64,7 +64,7 @@ mutable struct GraphAssetData
     unit_commitment::Bool
     unit_commitment_method::Union{Missing,String}
     unit_commitment_integer::Bool
-    min_oper_point::Union{Missing,Float64}
+    min_operating_point::Union{Missing,Float64}
     ramping::Bool
     max_ramp_up::Union{Missing,Float64}
     max_ramp_down::Union{Missing,Float64}
@@ -108,7 +108,7 @@ mutable struct GraphAssetData
         unit_commitment,
         unit_commitment_method,
         unit_commitment_integer,
-        min_oper_point,
+        min_operating_point,
         ramping,
         max_ramp_up,
         max_ramp_down,
@@ -144,7 +144,7 @@ mutable struct GraphAssetData
             unit_commitment,
             unit_commitment_method,
             unit_commitment_integer,
-            min_oper_point,
+            min_operating_point,
             ramping,
             max_ramp_up,
             max_ramp_down,
