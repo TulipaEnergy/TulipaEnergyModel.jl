@@ -536,7 +536,6 @@ function create_model(
         @variable(model, 0 ≤ assets_investment[Ai])  #number of installed asset units [N]
         @variable(model, 0 ≤ flows_investment[Fi])
         @variable(model, 0 ≤ assets_investment_energy[Ase∩Ai])  #number of installed asset units for storage energy [N]
-        @variable(model, 0 ≤ units_on[Auc]) # TODO: Is this the correct index?
 
         units_on =
             model[:units_on] =
@@ -799,8 +798,23 @@ function create_model(
             )
         )
 
+        units_on_cost = @expression(
+            model,
+            sum(
+                representative_periods[row.rep_period].weight *
+                duration(row.timesteps_block, row.rep_period) *
+                graph[row.asset].units_on_cost *
+                row.units_on for
+                row in eachrow(df_units_on) if !ismissing(graph[row.asset].units_on_cost)
+            )
+        )
+
         ## Objective function
-        @objective(model, Min, assets_investment_cost + flows_investment_cost + flows_variable_cost)
+        @objective(
+            model,
+            Min,
+            assets_investment_cost + flows_investment_cost + flows_variable_cost + units_on_cost
+        )
     end
 
     ## Constraints

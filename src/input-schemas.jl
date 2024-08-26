@@ -32,6 +32,7 @@ const schemas = (
             :min_energy_timeframe_partition => "DOUBLE",     # MWh (Missing -> no limit)
             :unit_commitment => "BOOLEAN",                   # Whether asset has unit commitment constraints
             :unit_commitment_method => "VARCHAR",            # Which unit commitment method to use (i.e., basic)
+            :units_on_cost => "DOUBLE",                      # Objective function coefficient on `units_on` variable. e.g., no-load cost or idling cost
             :unit_commitment_integer => "BOOLEAN",           # Whether the unit commitment variables are integer or not
             :min_operating_point => "DOUBLE",                # Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset [p.u.]
             :ramping => "BOOLEAN",                           # Whether asset has ramping constraints

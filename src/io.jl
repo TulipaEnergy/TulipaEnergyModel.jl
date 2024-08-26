@@ -91,6 +91,7 @@ function create_internal_structures(connection)
             row.min_energy_timeframe_partition,
             row.unit_commitment,
             row.unit_commitment_method,
+            row.units_on_cost,
             row.unit_commitment_integer,
             row.min_operating_point,
             row.ramping,
