@@ -1,7 +1,7 @@
 # This file defines functions to help update CSV files.
 using CSV, DataFrames, TulipaEnergyModel
 
-struct TulipaCSV
+mutable struct TulipaCSV
     units::Vector{String}
     csv::DataFrame
 end
@@ -21,6 +21,10 @@ function TulipaCSV(path)
 
     units = split(readline(path), ",")
     csv = CSV.read(path, DataFrame; header = 2, types = String)
+
+    if size(csv) == (0, 0)
+        units = String[]
+    end
 
     @assert length(units) == size(csv, 2)
 
@@ -53,7 +57,7 @@ If `position` is not specified, the column is added to the rightmost place.
 The `content` can be a value or a vector of proper size.
 """
 function add_column(tulipa_csv::TulipaCSV, unit::String, colname, content, position::Int)
-    @info "Adding column $colname ($unit) at $position"
+    @debug "Adding column $colname ($unit) at $position"
     insert!(tulipa_csv.units, position, unit)
     insertcols!(tulipa_csv.csv, position, colname => content)
 end
@@ -119,10 +123,10 @@ end
 
 input_files_folders = [
     [
-        joinpath("test", "inputs", test_input) for
+        joinpath(@__DIR__, "..", "test", "inputs", test_input) for
         test_input in ["Norse", "Storage", "Tiny", "Variable Resolution"]
     ]
-    joinpath("benchmark", "EU")
+    joinpath(@__DIR__, "..", "benchmark", "EU")
 ]
 
 """
@@ -144,13 +148,19 @@ apply_to_files_named("assets-data.csv") do path
     end
 end
 ```
+
+## Keyword arguments
+
+- `include_missing (default = false)`: If `true`, applies the function even if `isfile(path)` is `false`.
+
 """
-function apply_to_files_named(f, filename)
-    for path in (joinpath(folder, filename) for folder in folders)
-        if isfile(path)
+function apply_to_files_named(f, filename; include_missing = false)
+    for path in (joinpath(folder, filename) for folder in input_files_folders)
+        if isfile(path) || include_missing
+            @debug "Applying to file $path"
             f(path)
         else
-            @info "No file $path"
+            @warn "No file $path"
         end
     end
 end
