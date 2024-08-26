@@ -228,12 +228,13 @@ Structure to hold the group data
 """
 struct Group
     name::String
+    year::Int
     invest_method::Bool
     min_investment_limit::Union{Missing,Float64}
     max_investment_limit::Union{Missing,Float64}
 
-    function Group(name, invest_method, min_investment_limit, max_investment_limit)
-        return new(name, invest_method, min_investment_limit, max_investment_limit)
+    function Group(name, year, invest_method, min_investment_limit, max_investment_limit)
+        return new(name, year, invest_method, min_investment_limit, max_investment_limit)
     end
 end
 

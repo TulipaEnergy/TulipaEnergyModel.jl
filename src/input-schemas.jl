@@ -8,6 +8,7 @@ const schemas = (
             :type => "VARCHAR",                              # Producer/Consumer/Storage/Conversion
             :active => "BOOLEAN",                            # Active or decomissioned
             :group => "VARCHAR",                             # Group to which the asset belongs to (missing -> no group)
+            :year => "INTEGER",                              # Year
             :investable => "BOOLEAN",                        # Whether able to invest
             :investment_integer => "BOOLEAN",                # Whether investment is integer or continuous
             :investment_cost => "DOUBLE",                    # kEUR/MW/year
@@ -41,6 +42,7 @@ const schemas = (
         # Schema for the assets-profiles.csv file.
         profiles_reference = OrderedDict(
             :asset => "VARCHAR",               # Asset name
+            :year => "INTEGER",
             :profile_type => "VARCHAR",        # Type of profile, used to determine dataframe with source profile
             :profile_name => "VARCHAR",        # Name of profile, used to determine data inside the dataframe
         ),
@@ -48,6 +50,7 @@ const schemas = (
         # Schema for the assets-timeframe-partitions.csv file.
         timeframe_partition = OrderedDict(
             :asset => "VARCHAR",
+            :year => "INTEGER",
             :specification => "VARCHAR",
             :partition => "VARCHAR",
         ),
@@ -55,6 +58,7 @@ const schemas = (
         # Schema for the assets-rep-periods-partitions.csv file.
         rep_periods_partition = OrderedDict(
             :asset => "VARCHAR",
+            :year => "INTEGER",
             :rep_period => "INTEGER",
             :specification => "VARCHAR",
             :partition => "VARCHAR",
@@ -64,6 +68,7 @@ const schemas = (
         # Schema for the groups-data.csv file.
         data = OrderedDict(
             :name => "VARCHAR",                # Name of the Group
+            :year => "INTEGER",
             :invest_method => "BOOLEAN",       # true -> activate group constraints; false -> no group investment constraints
             :min_investment_limit => "DOUBLE", # MW (Missing -> no limit)
             :max_investment_limit => "DOUBLE", # MW (Missing -> no limit)
@@ -75,6 +80,7 @@ const schemas = (
             :carrier => "VARCHAR",                  # (Optional?) Energy carrier
             :from_asset => "VARCHAR",               # Name of Asset
             :to_asset => "VARCHAR",                 # Name of Asset
+            :year => "INTEGER",
             :active => "BOOLEAN",                   # Active or decomissioned
             :is_transport => "BOOLEAN",             # Whether a transport flow
             :investable => "BOOLEAN",               # Whether able to invest
@@ -92,6 +98,7 @@ const schemas = (
         profiles_reference = OrderedDict(
             :from_asset => "VARCHAR",          # Name of Asset
             :to_asset => "VARCHAR",            # Name of Asset
+            :year => "INTEGER",
             :profile_type => "VARCHAR",        # Type of profile, used to determine dataframe with source profile
             :profile_name => "VARCHAR",        # Name of profile, used to determine data inside the dataframe
         ),
@@ -100,6 +107,7 @@ const schemas = (
         rep_periods_partition = OrderedDict(
             :from_asset => "VARCHAR",          # Name of Asset
             :to_asset => "VARCHAR",            # Name of Asset
+            :year => "INTEGER",
             :rep_period => "INTEGER",
             :specification => "VARCHAR",
             :partition => "VARCHAR",
@@ -109,6 +117,7 @@ const schemas = (
         # Schema for the profiles-timeframe-<type>.csv file.
         profiles_data = OrderedDict(
             :profile_name => "VARCHAR",      # Profile name
+            :year => "INTEGER",
             :period => "INTEGER",            # Period
             :value => "DOUBLE",              # p.u. (per unit)
         ),
@@ -117,6 +126,7 @@ const schemas = (
     # Schema for the rep-periods-data.csv file.
     rep_periods = (
         data = OrderedDict(
+            :year => "INTEGER",
             :rep_period => "INTEGER",        # Representative period number
             :num_timesteps => "INTEGER",     # Numer of timesteps
             :resolution => "DOUBLE",         # Duration of each timestep (hours)
@@ -124,6 +134,7 @@ const schemas = (
 
         # Schema for the rep-periods-mapping.csv file.
         mapping = OrderedDict(
+            :year => "INTEGER",
             :period => "INTEGER",            # Period number
             :rep_period => "INTEGER",        # Representative period number
             :weight => "DOUBLE",             # Hours
@@ -132,6 +143,7 @@ const schemas = (
         # Schema for the profiles-rep-periods-<type>.csv file.
         profiles_data = OrderedDict(
             :profile_name => "VARCHAR",  # Profile name
+            :year => "INTEGER",
             :rep_period => "INTEGER",    # Representative period number
             :timestep => "INTEGER",      # Timestep number
             :value => "DOUBLE",          # p.u. (per unit)
