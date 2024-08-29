@@ -49,6 +49,17 @@ end
     @test energy_problem.objective_value ≈ 2409.384029 atol = 1e-5
 end
 
+@testset "UC ramping Case Study" begin
+    dir = joinpath(INPUT_FOLDER, "UC-ramping")
+    optimizer = HiGHS.Optimizer
+    parameters =
+        Dict("output_flag" => false, "mip_rel_gap" => 0.0, "mip_feasibility_tolerance" => 1e-5)
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, dir)
+    energy_problem = run_scenario(connection; optimizer = optimizer, parameters = parameters)
+    @test energy_problem.objective_value ≈ 297314.921927 atol = 1e-5
+end
+
 @testset "Tiny Variable Resolution Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Variable Resolution")
     connection = DBInterface.connect(DuckDB.DB)
