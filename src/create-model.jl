@@ -36,6 +36,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     # Output object
     dataframes = Dict{Symbol,DataFrame}()
 
+    # Create all the dataframes for the constraints considering the constraints_partitions
     for (key, partitions) in constraints_partitions
         if length(partitions) == 0
             # No data, but ensure schema is correct
@@ -77,7 +78,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     )
     dataframes[:flows].index = 1:size(dataframes[:flows], 1)
 
-    # DataFrame to store the constraints that are in the units_on resolution
+    # DataFrame to store the units_on variables
     dataframes[:units_on] = DataFrame(
         (
             (
@@ -88,18 +89,7 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     )
     dataframes[:units_on].index = 1:size(dataframes[:units_on], 1)
 
-    # DataFrame to store the constraints that are in the highest resolution between units_on and the outgoing_flows
-    dataframes[:units_on_and_outflows] = DataFrame(
-        (
-            (
-                (asset = a, rep_period = rp, timesteps_block = timesteps_block) for
-                timesteps_block in graph[a].rep_periods_partitions[rp]
-            ) for a in Auc, rp in RP
-        ) |> Iterators.flatten,
-    )
-    dataframes[:units_on_and_outflows].index = 1:size(dataframes[:units_on_and_outflows], 1)
-
-    # Dataframe to store the storage level between (inter) representative period variable (e.g., seasonal storage)
+    # Dataframe to store the storage level variable between (inter) representative period (e.g., seasonal storage)
     # Only for storage assets
     dataframes[:storage_level_inter_rp] =
         _construct_inter_rp_dataframes(A, graph, a -> a.type == "storage")
