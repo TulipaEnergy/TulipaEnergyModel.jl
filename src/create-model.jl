@@ -20,21 +20,10 @@ We also check if `graph[graph_key].active[year]` is true if the `year` is passed
 """
 function get_graph_value_or_missing(graph, graph_key, field_key)
     g = _get_graph_asset_or_flow(graph, graph_key)
-    # This is not missing in the tests
-    # if g === missing
-    #     return missing
-    # end
-    # if !hasproperty(g, field_key)
-    #     return missing
-    # end
     return getproperty(g, field_key)
 end
 function get_graph_value_or_missing(graph, graph_key, field_key, year)
     g = get_graph_value_or_missing(graph, graph_key, field_key)
-    # This is not missing in the tests
-    # if ismissing(g)
-    #     return missing
-    # end
     if !_get_graph_asset_or_flow(graph, graph_key).active[year]
         return missing
     end

@@ -210,7 +210,10 @@ compute_rp_partition([partition1, partition2], :highest)
  11:12
 ```
 """
-function compute_rp_partition(partitions, strategy)
+function compute_rp_partition(
+    partitions::AbstractVector{<:AbstractVector{<:UnitRange{<:Integer}}},
+    strategy,
+)
     valid_strategies = [:highest, :lowest]
     if !(strategy in valid_strategies)
         error("`strategy` should be one of $valid_strategies. See docs for more info.")

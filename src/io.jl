@@ -246,19 +246,13 @@ function create_internal_structures(connection)
                 continue
             end
             graph[u, v].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
-            if haskey(graph[u, v].active, year) && graph[u, v].active[year]
-                # we only compute partitions for active flows.
-                compute_flows_partitions!(
-                    graph[u, v].rep_periods_partitions[year],
-                    filter(
-                        row -> (row.from_asset, row.to_asset) == (u, v) && row.year == year,
-                        _df,
-                    ),
-                    u,
-                    v,
-                    representative_periods[year],
-                )
-            end
+            compute_flows_partitions!(
+                graph[u, v].rep_periods_partitions[year],
+                filter(row -> (row.from_asset, row.to_asset) == (u, v) && row.year == year, _df),
+                u,
+                v,
+                representative_periods[year],
+            )
         end
     end
 
