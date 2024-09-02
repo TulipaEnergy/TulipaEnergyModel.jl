@@ -712,8 +712,9 @@ function create_model(
         end
 
         ### Integer Unit Commitment Variables
+        @show Auc_integer
         for row in eachrow(df_units_on)
-            if row.asset in Auc_integer[row.year]
+            if !(row.asset in Auc_integer[row.year])
                 continue
             end
 
