@@ -6,15 +6,15 @@
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
 energy_problem = run_scenario(connection)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
-  - Time creating internal structures (in seconds): 0.073635528
-  - Time computing constraints partitions (in seconds): 0.000198282
+  - Time creating internal structures (in seconds): 0.072040244
+  - Time computing constraints partitions (in seconds): 0.000180728
   - Model created!
-    - Time for  creating the model (in seconds): 0.3070768
+    - Time for  creating the model (in seconds): 0.278091276
     - Number of variables: 364
     - Number of constraints for variable bounds: 364
     - Number of structural constraints: 432
   - Model solved! 
-    - Time for  solving the model (in seconds): 0.685857997
+    - Time for  solving the model (in seconds): 0.708802954
     - Termination status: OPTIMAL
     - Objective value: 269238.4382375953
 </code></pre><p>The <code>energy_problem</code> variable is of type <code>EnergyProblem</code>. For more details, see the <a href="../reference/#TulipaEnergyModel.EnergyProblem">documentation for that type</a> or the section <a href="../how-to-use/#structures">Structures</a>.</p><p>That&#39;s all it takes to run a scenario! To learn about the data required to run your own scenario, see the <a href="../how-to-use/#input">Input section</a> of <a href="../how-to-use/#how-to-use">How to Use</a>.</p><h3 id="Manually-running-each-step"><a class="docs-heading-anchor" href="#Manually-running-each-step">Manually running each step</a><a id="Manually-running-each-step-1"></a><a class="docs-heading-anchor-permalink" href="#Manually-running-each-step" title="Permalink"></a></h3><p>If we need more control, we can create the energy problem first, then the optimization model inside it, and finally ask for it to be solved.</p><pre><code class="language-julia hljs">using DuckDB, TulipaIO, TulipaEnergyModel
@@ -23,8 +23,8 @@ energy_problem = run_scenario(connection)</code></pre><pre class="documenter-exa
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
 energy_problem = EnergyProblem(connection)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
-  - Time creating internal structures (in seconds): 0.048128358
-  - Time computing constraints partitions (in seconds): 0.000189676
+  - Time creating internal structures (in seconds): 0.048845729
+  - Time computing constraints partitions (in seconds): 0.000183383
   - Model not created!
   - Model not solved!
 </code></pre><p>The energy problem does not have a model yet:</p><pre><code class="language-julia hljs">energy_problem.model === nothing</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre><p>To create the internal model, we call the function <a href="../reference/#TulipaEnergyModel.create_model!-Tuple{Any}"><code>create_model!</code></a>.</p><pre><code class="language-julia hljs">create_model!(energy_problem)
@@ -85,7 +85,7 @@ graph, representative_periods, timeframe, groups = create_internal_structures(co
   :min_energy_inter_rp           =&gt; <span class="sgr1">0×3 DataFrame</span>…
   :lowest_storage_level_intra_rp =&gt; <span class="sgr1">0×4 DataFrame</span>…
   :highest_out                   =&gt; <span class="sgr1">360×4 DataFrame</span>…
-  :units_on_and_outflows         =&gt; <span class="sgr1">0×1 DataFrame</span>…</code></pre><p>Now we can compute the model.</p><pre><code class="language-julia hljs">model = create_model(graph, representative_periods, dataframes, timeframe, groups)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">A JuMP Model
+  :units_on_and_outflows         =&gt; <span class="sgr1">0×4 DataFrame</span>…</code></pre><p>Now we can compute the model.</p><pre><code class="language-julia hljs">model = create_model(graph, representative_periods, dataframes, timeframe, groups)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">A JuMP Model
 ├ solver: none
 ├ objective_sense: MIN_SENSE
 │ └ objective_function_type: JuMP.AffExpr
@@ -102,15 +102,15 @@ graph, representative_periods, timeframe, groups = create_internal_structures(co
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
 energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
-  - Time creating internal structures (in seconds): 0.047755619
-  - Time computing constraints partitions (in seconds): 0.000205987
+  - Time creating internal structures (in seconds): 0.049356054
+  - Time computing constraints partitions (in seconds): 0.000178564
   - Model created!
-    - Time for  creating the model (in seconds): 0.006897768
+    - Time for  creating the model (in seconds): 0.005953804
     - Number of variables: 364
     - Number of constraints for variable bounds: 364
     - Number of structural constraints: 432
   - Model solved! 
-    - Time for  solving the model (in seconds): 1.608610837
+    - Time for  solving the model (in seconds): 1.594949277
     - Termination status: OPTIMAL
     - Objective value: 269238.4382417078
 </code></pre><p>or</p><pre><code class="language-julia hljs">using GLPK
@@ -165,15 +165,15 @@ graph = energy_problem.graph
     83.0
  13000.0
      1.0
-    20.46662336541502
+    20.466623365415032
    126.0
    106.0
      0.0
    259.0
     32.0
-    -0.0</code></pre><p>To create a traditional array in the order given by the investable flows, one can run</p><pre><code class="language-julia hljs">[solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Float64}:
+     0.0</code></pre><p>To create a traditional array in the order given by the investable flows, one can run</p><pre><code class="language-julia hljs">[solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Float64}:
   7.0
- 16.98873164087317
+ 16.98873164087318
   7.0</code></pre><p>The <code>solution.flow</code>, <code>solution.storage_level_intra_rp</code>, and <code>solution.storage_level_inter_rp</code> values are linearized according to the dataframes in the dictionary <code>energy_problem.dataframes</code> with keys <code>:flows</code>, <code>:lowest_storage_level_intra_rp</code>, and <code>:storage_level_inter_rp</code>, respectively. You need to query the data from these dataframes and then use the column <code>index</code> to select the appropriate value.</p><p>To create a vector with all values of <code>flow</code> for a given <code>(u, v)</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">(u, v) = first(edge_labels(graph))
 rp = 1
 df = filter(
@@ -198,7 +198,7 @@ df = filter(
    0.0
    0.0
    0.0
- 447.8828611704903
+ 447.8828611704795
    0.0
    0.0
    0.0</code></pre><p>To create a vector with the all values of <code>storage_level_intra_rp</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
@@ -220,12 +220,12 @@ df = filter(
  720.1
  720.1
    ⋮
- 529.6612866747165
- 529.6612866747165
- 529.6612866747165
- 529.6612866747165
- 786.1612866747164
- 942.9112866747164
+ 529.6612866746932
+ 529.6612866746932
+ 529.6612866746932
+ 529.6612866746932
+ 786.1612866746932
+ 942.9112866746937
    0.0
    0.0
    0.0</code></pre><p>To create a vector with the all values of <code>storage_level_inter_rp</code> for a given <code>a</code>, one can run</p><pre><code class="language-julia hljs">a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
@@ -260,7 +260,7 @@ df = filter(
     83.0
  13000.0
      1.0
-    20.46662336541502
+    20.466623365415032
    126.0
    106.0
      0.0
@@ -268,7 +268,7 @@ df = filter(
     32.0
      0.0</code></pre><pre><code class="language-julia hljs">[energy_problem.graph[u, v].investment for (u, v) in edge_labels(graph) if graph[u, v].investable]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3-element Vector{Float64}:
   7.0
- 16.98873164087317
+ 16.98873164087318
   7.0</code></pre><pre><code class="language-julia hljs">(u, v) = first(edge_labels(graph))
 rp = 1
 df = filter(
@@ -293,7 +293,7 @@ df = filter(
    0.0
    0.0
    0.0
- 447.8828611704903
+ 447.8828611704795
    0.0
    0.0
    0.0</code></pre><p>To create a vector with all the values of <code>storage_level_intra_rp</code> for a given <code>a</code> and <code>rp</code>, one can run</p><pre><code class="language-julia hljs">a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
@@ -315,12 +315,12 @@ df = filter(
  720.1
  720.1
    ⋮
- 529.6612866747165
- 529.6612866747165
- 529.6612866747165
- 529.6612866747165
- 786.1612866747164
- 942.9112866747164
+ 529.6612866746932
+ 529.6612866746932
+ 529.6612866746932
+ 529.6612866746932
+ 786.1612866746932
+ 942.9112866746937
    0.0
    0.0
    0.0</code></pre><p>To create a vector with all the values of <code>storage_level_inter_rp</code> for a given <code>a</code>, one can run</p><pre><code class="language-julia hljs">a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
@@ -373,7 +373,7 @@ df.solution</code></pre><pre class="documenter-example-output"><code class="nohi
    0.0
    0.0
    0.0
- 447.8828611704903
+ 447.8828611704795
    0.0
    0.0
    0.0</code></pre><pre><code class="language-julia hljs">a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
@@ -421,12 +421,12 @@ df.solution</code></pre><pre class="documenter-example-output"><code class="nohi
  720.1
  720.1
    ⋮
- 529.6612866747165
- 529.6612866747165
- 529.6612866747165
- 529.6612866747165
- 786.1612866747164
- 942.9112866747164
+ 529.6612866746932
+ 529.6612866746932
+ 529.6612866746932
+ 529.6612866746932
+ 786.1612866746932
+ 942.9112866746937
    0.0
    0.0
    0.0</code></pre><h3 id="Values-of-constraints-and-expressions"><a class="docs-heading-anchor" href="#Values-of-constraints-and-expressions">Values of constraints and expressions</a><a id="Values-of-constraints-and-expressions-1"></a><a class="docs-heading-anchor-permalink" href="#Values-of-constraints-and-expressions" title="Permalink"></a></h3><p>By accessing the model directly, we can query the values of constraints and expressions. We need to know the name of the constraint and how it is indexed, and for that, you will need to check the model.</p><p>For instance, we can get all incoming flows in the lowest resolution for a given asset for a given representative period with the following:</p><pre><code class="language-julia hljs">using JuMP
@@ -488,4 +488,4 @@ value.(energy_problem.model[:consumer_balance][df.index])</code></pre><pre class
  54777.52475361511
  52128.801264625705
  46907.046645223265</code></pre><p>Here <code>value.</code> (i.e., broadcasting) was used instead of the vector comprehension from previous examples just to show that it also works.</p><p>The value of the constraint is obtained by looking only at the part with variables. So a constraint like <code>2x + 3y - 1 &lt;= 4</code> would return the value of <code>2x + 3y</code>.</p><h3 id="Writing-the-output-to-CSV"><a class="docs-heading-anchor" href="#Writing-the-output-to-CSV">Writing the output to CSV</a><a id="Writing-the-output-to-CSV-1"></a><a class="docs-heading-anchor-permalink" href="#Writing-the-output-to-CSV" title="Permalink"></a></h3><p>To save the solution to CSV files, you can use <a href="../reference/#TulipaEnergyModel.save_solution_to_file-NTuple{4, Any}"><code>save_solution_to_file</code></a>:</p><pre><code class="language-julia hljs">mkdir(&quot;outputs&quot;)
-save_solution_to_file(&quot;outputs&quot;, energy_problem)</code></pre><h3 id="Plotting"><a class="docs-heading-anchor" href="#Plotting">Plotting</a><a id="Plotting-1"></a><a class="docs-heading-anchor-permalink" href="#Plotting" title="Permalink"></a></h3><p>In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you like.</p><p>If you would like more custom plots, check out <a href="https://github.com/TulipaEnergy/TulipaPlots.jl">TulipaPlots.jl</a>, under development, which provides tailor-made plots for <em>TulipaEnergyModel.jl</em>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../how-to-use/">« How to Use</a><a class="docs-footer-nextpage" href="../concepts/">Concepts »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.6.0 on <span class="colophon-date" title="Monday 26 August 2024 15:01">Monday 26 August 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+save_solution_to_file(&quot;outputs&quot;, energy_problem)</code></pre><h3 id="Plotting"><a class="docs-heading-anchor" href="#Plotting">Plotting</a><a id="Plotting-1"></a><a class="docs-heading-anchor-permalink" href="#Plotting" title="Permalink"></a></h3><p>In the previous sections, we have shown how to create vectors such as the one for flows. If you want simple plots, you can plot the vectors directly using any package you like.</p><p>If you would like more custom plots, check out <a href="https://github.com/TulipaEnergy/TulipaPlots.jl">TulipaPlots.jl</a>, under development, which provides tailor-made plots for <em>TulipaEnergyModel.jl</em>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../how-to-use/">« How to Use</a><a class="docs-footer-nextpage" href="../concepts/">Concepts »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.6.0 on <span class="colophon-date" title="Monday 2 September 2024 11:10">Monday 2 September 2024</span>. Using Julia version 1.10.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
