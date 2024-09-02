@@ -139,5 +139,5 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     graph, rps, tf = create_internal_structures(connection)
-    @test graph[missing_asset].timeframe_partitions == [i:i for i in 1:tf.num_periods]
+    @test graph[missing_asset].timeframe_partitions == Dict(2030 => [i:i for i in 1:tf.num_periods])
 end

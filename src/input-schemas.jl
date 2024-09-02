@@ -123,9 +123,8 @@ const schemas = (
             :value => "DOUBLE",              # p.u. (per unit)
         ),
     ),
-
-    # Schema for the rep-periods-data.csv file.
     rep_periods = (
+        # Schema for the rep-periods-data.csv file.
         data = OrderedDict(
             :year => "INTEGER",
             :rep_period => "INTEGER",        # Representative period number

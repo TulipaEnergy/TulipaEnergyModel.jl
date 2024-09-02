@@ -36,22 +36,36 @@ function create_internal_structures(connection)
         _check_if_table_exist(connection, table)
     end
 
-    # Calculate the weights from the "rep_periods_mapping" table in the connection
-    weights =
-        DBInterface.execute(
-            connection,
-            "SELECT rep_period, SUM(weight) AS weight
-                FROM rep_periods_mapping
-                GROUP BY rep_period
-                ORDER BY rep_period",
-        ) |>
-        DataFrame |>
-        df -> df.weight
-
-    representative_periods = [
-        RepresentativePeriod(weights[row.rep_period], row.num_timesteps, row.resolution) for
-        row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data")
+    years_assets = [
+        row.year for
+        row in DuckDB.query(connection, "SELECT DISTINCT year FROM assets_data ORDER BY year")
     ]
+    years_flows = [
+        row.year for
+        row in DuckDB.query(connection, "SELECT DISTINCT year FROM assets_data ORDER BY year")
+    ]
+    years = sort(years_assets ∪ years_flows)
+
+    # Calculate the weights from the "rep_periods_mapping" table in the connection
+    weights = Dict(
+        year => [
+            row.weight for row in DBInterface.execute(
+                connection,
+                "SELECT rep_period, SUM(weight) AS weight
+                    FROM rep_periods_mapping
+                    WHERE year = $year
+                    GROUP BY rep_period
+                    ORDER BY rep_period",
+            )
+        ] for year in years
+    )
+
+    representative_periods = Dict{Int,Vector{RepresentativePeriod}}(
+        year => [
+            RepresentativePeriod(weights[year][row.rep_period], row.num_timesteps, row.resolution) for row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data") if
+            row.year == year
+        ] for year in years
+    )
 
     # Calculate the total number of periods and then pipe into a Dataframe to get the first value of the df with the num_periods
     num_periods, = DuckDB.query(connection, "SELECT MAX(period) AS period FROM rep_periods_mapping")
@@ -60,68 +74,144 @@ function create_internal_structures(connection)
 
     groups = [Group(row...) for row in TulipaIO.get_table(Val(:raw), connection, "groups_data")]
 
+    _query(table_name, col; where_pairs...) = begin
+        _q = "SELECT year, $col FROM $table_name"
+        if length(where_pairs) > 0
+            _q *=
+                " WHERE " *
+                join(("$k=$(TulipaIO.FmtSQL.fmt_quote(v))" for (k, v) in where_pairs), " AND ")
+        end
+        DuckDB.query(connection, _q)
+    end
+    function _get_stuff(table_name, col; where_pairs...)
+        result = _query(table_name, col; where_pairs...)
+        Dict(row.year => getproperty(row, Symbol(col)) for row in result)
+    end
+
+    unique_asset_names = Dict{String,Bool}()
     asset_data = [
         row.name => GraphAssetData(
             row.type,
             row.group,
-            row.investable,
-            row.investment_integer,
-            row.investment_cost,
-            row.investment_limit,
-            row.capacity,
-            row.initial_capacity,
-            row.peak_demand,
-            if !ismissing(row.consumer_balance_sense) && row.consumer_balance_sense == ">="
-                MathOptInterface.GreaterThan(0.0)
-            else
-                MathOptInterface.EqualTo(0.0)
-            end,
-            row.is_seasonal,
-            row.storage_inflows,
-            row.initial_storage_capacity,
-            row.initial_storage_level,
-            row.energy_to_power_ratio,
-            row.storage_method_energy,
-            row.investment_cost_storage_energy,
-            row.investment_limit_storage_energy,
-            row.capacity_storage_energy,
-            row.investment_integer_storage_energy,
-            row.use_binary_storage_method,
-            row.max_energy_timeframe_partition,
-            row.min_energy_timeframe_partition,
-            row.unit_commitment,
-            row.unit_commitment_method,
-            row.units_on_cost,
-            row.unit_commitment_integer,
-            row.min_operating_point,
-            row.ramping,
-            row.max_ramp_up,
-            row.max_ramp_down,
-        ) for row in TulipaIO.get_table(Val(:raw), connection, "assets_data")
+            _get_stuff("assets_data", "active"; name = row.name),
+            _get_stuff("assets_data", "investable"; name = row.name),
+            _get_stuff("assets_data", "investment_integer"; name = row.name),
+            _get_stuff("assets_data", "investment_cost"; name = row.name),
+            _get_stuff("assets_data", "investment_limit"; name = row.name),
+            _get_stuff("assets_data", "capacity"; name = row.name),
+            _get_stuff("assets_data", "initial_capacity"; name = row.name),
+            _get_stuff("assets_data", "peak_demand"; name = row.name),
+            Dict(
+                year => if ismissing(value)
+                    MathOptInterface.EqualTo(0.0)
+                else
+                    MathOptInterface.GreaterThan(0.0)
+                end for (year, value) in
+                _get_stuff("assets_data", "consumer_balance_sense"; name = row.name)
+            ),
+            _get_stuff("assets_data", "is_seasonal"; name = row.name),
+            _get_stuff("assets_data", "storage_inflows"; name = row.name),
+            _get_stuff("assets_data", "initial_storage_capacity"; name = row.name),
+            _get_stuff("assets_data", "initial_storage_level"; name = row.name),
+            _get_stuff("assets_data", "energy_to_power_ratio"; name = row.name),
+            _get_stuff("assets_data", "storage_method_energy"; name = row.name),
+            _get_stuff("assets_data", "investment_cost_storage_energy"; name = row.name),
+            _get_stuff("assets_data", "investment_limit_storage_energy"; name = row.name),
+            _get_stuff("assets_data", "capacity_storage_energy"; name = row.name),
+            _get_stuff("assets_data", "investment_integer_storage_energy"; name = row.name),
+            _get_stuff("assets_data", "use_binary_storage_method"; name = row.name),
+            _get_stuff("assets_data", "max_energy_timeframe_partition"; name = row.name),
+            _get_stuff("assets_data", "min_energy_timeframe_partition"; name = row.name),
+            _get_stuff("assets_data", "unit_commitment"; name = row.name),
+            _get_stuff("assets_data", "unit_commitment_method"; name = row.name),
+            _get_stuff("assets_data", "units_on_cost"; name = row.name),
+            _get_stuff("assets_data", "unit_commitment_integer"; name = row.name),
+            _get_stuff("assets_data", "min_operating_point"; name = row.name),
+            _get_stuff("assets_data", "ramping"; name = row.name),
+            _get_stuff("assets_data", "max_ramp_up"; name = row.name),
+            _get_stuff("assets_data", "max_ramp_down"; name = row.name),
+        ) for row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
+        !haskey(unique_asset_names, row.name) && (unique_asset_names[row.name] = true)
     ]
 
+    unique_flow_names = Dict{Tuple{String,String},Int}()
     flow_data = [
         (row.from_asset, row.to_asset) => GraphFlowData(
             row.carrier,
-            row.active,
-            row.is_transport,
-            row.investable,
-            row.investment_integer,
-            row.variable_cost,
-            row.investment_cost,
-            row.investment_limit,
-            row.capacity,
-            row.initial_export_capacity,
-            row.initial_import_capacity,
-            row.efficiency,
-        ) for row in TulipaIO.get_table(Val(:raw), connection, "flows_data")
+            _get_stuff(
+                "flows_data",
+                "active";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+            _get_stuff(
+                "flows_data",
+                "is_transport";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+            _get_stuff(
+                "flows_data",
+                "investable";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+            _get_stuff(
+                "flows_data",
+                "investment_integer";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+            _get_stuff(
+                "flows_data",
+                "variable_cost";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+            _get_stuff(
+                "flows_data",
+                "investment_cost";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+            _get_stuff(
+                "flows_data",
+                "investment_limit";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+            _get_stuff(
+                "flows_data",
+                "capacity";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+            _get_stuff(
+                "flows_data",
+                "initial_export_capacity";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+            _get_stuff(
+                "flows_data",
+                "initial_import_capacity";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+            _get_stuff(
+                "flows_data",
+                "efficiency";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+        ) for row in TulipaIO.get_table(Val(:raw), connection, "flows_data") if
+        !haskey(unique_flow_names, (row.from_asset, row.to_asset)) &&
+        (unique_flow_names[(row.from_asset, row.to_asset)] = true)
     ]
 
-    num_assets = length(asset_data)
-    name_to_id = Dict(
-        row.name => i for
-        (i, row) in enumerate(TulipaIO.get_table(Val(:raw), connection, "assets_data"))
-    )
+    num_assets = length(asset_data) # we only look at unique asset names
+
+    name_to_id = Dict(value.first => idx for (idx, value) in enumerate(asset_data))
 
     _graph = Graphs.DiGraph(num_assets)
     for flow in flow_data
@@ -133,18 +223,37 @@ function create_internal_structures(connection)
 
     _df = TulipaIO.get_table(connection, "assets_rep_periods_partitions")
     for a in MetaGraphsNext.labels(graph)
-        compute_assets_partitions!(graph[a].rep_periods_partitions, _df, a, representative_periods)
+        for year in years
+            is_active = get(graph[a].active, year, false)
+            if !is_active
+                continue
+            end
+            graph[a].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
+            compute_assets_partitions!(
+                graph[a].rep_periods_partitions[year],
+                filter(row -> row.asset == a && row.year == year, _df),
+                a,
+                representative_periods[year],
+            )
+        end
     end
 
     _df = TulipaIO.get_table(connection, "flows_rep_periods_partitions")
     for (u, v) in MetaGraphsNext.edge_labels(graph)
-        compute_flows_partitions!(
-            graph[u, v].rep_periods_partitions,
-            _df,
-            u,
-            v,
-            representative_periods,
-        )
+        for year in years
+            is_active = get(graph[u, v].active, year, false)
+            if !is_active
+                continue
+            end
+            graph[u, v].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
+            compute_flows_partitions!(
+                graph[u, v].rep_periods_partitions[year],
+                filter(row -> (row.from_asset, row.to_asset) == (u, v) && row.year == year, _df),
+                u,
+                v,
+                representative_periods[year],
+            )
+        end
     end
 
     #=
@@ -163,51 +272,69 @@ function create_internal_structures(connection)
              WHERE assets_data.is_seasonal
          """
     for row in DuckDB.query(connection, find_assets_partitions_query)
-        graph[row.name].timeframe_partitions = _parse_rp_partition(
-            Val(Symbol(row.specification)),
-            row.partition,
-            1:timeframe.num_periods,
-        )
+        for year in years
+            graph[row.name].timeframe_partitions[year] = _parse_rp_partition(
+                Val(Symbol(row.specification)),
+                row.partition,
+                1:timeframe.num_periods,
+            )
+        end
     end
 
     _df = TulipaIO.get_table(connection, "profiles_rep_periods")
-    for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_profiles") # row = asset, profile_type, profile_name
-        gp = DataFrames.groupby( # 2. group by rep_period
+    for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_profiles")  # row = asset, profile_type, profile_name
+        gp = DataFrames.groupby( # 2. group by rep_period, year
             filter( # 1. Filter on profile_name
                 :profile_name => ==(asset_profile_row.profile_name),
                 _df;
                 view = true,
             ),
-            :rep_period,
+            [:rep_period, :year],
         )
-        for ((rep_period,), df) in pairs(gp) # Loop over filtered DFs by rep_period
-            graph[asset_profile_row.asset].rep_periods_profiles[(
-                asset_profile_row.profile_type,
-                rep_period,
-            )] = df.value
+        for ((rep_period, year), df) in pairs(gp) # Loop over filtered DFs by rep_period, year
+            profiles = graph[asset_profile_row.asset].rep_periods_profiles
+            if !haskey(profiles, year)
+                profiles[year] = Dict{Tuple{Symbol,Int},Vector{Float64}}()
+            end
+            profiles[year][(asset_profile_row.profile_type, rep_period)] = df.value
         end
     end
 
     for flow_profile_row in TulipaIO.get_table(Val(:raw), connection, "flows_profiles")
         gp = DataFrames.groupby(
             filter(:profile_name => ==(flow_profile_row.profile_name), _df; view = true),
-            :rep_period;
+            [:rep_period, :year];
         )
-        for ((rep_period,), df) in pairs(gp)
-            graph[flow_profile_row.from_asset, flow_profile_row.to_asset].rep_periods_profiles[(
-                flow_profile_row.profile_type,
-                rep_period,
-            )] = df.value
+        for ((rep_period, year), df) in pairs(gp)
+            profiles =
+                graph[flow_profile_row.from_asset, flow_profile_row.to_asset].rep_periods_profiles
+            if !haskey(profiles, year)
+                profiles[year] = Dict{Tuple{Symbol,Int},Vector{Float64}}()
+            end
+            profiles[year][(flow_profile_row.profile_type, rep_period)] = df.value
         end
     end
 
     _df = TulipaIO.get_table(connection, "profiles_timeframe")
     for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_timeframe_profiles") # row = asset, profile_type, profile_name
-        df = filter(:profile_name => ==(asset_profile_row.profile_name), _df; view = true)
-        graph[asset_profile_row.asset].timeframe_profiles[asset_profile_row.profile_type] = df.value
+        gp = DataFrames.groupby(
+            filter( # Filter
+                :profile_name => ==(asset_profile_row.profile_name),
+                _df;
+                view = true,
+            ),
+            [:year],
+        )
+        for ((year,), df) in pairs(gp)
+            profiles = graph[asset_profile_row.asset].timeframe_profiles
+            if !haskey(profiles, year)
+                profiles[year] = Dict{String,Vector{Float64}}()
+            end
+            profiles[year][asset_profile_row.profile_type] = df.value
+        end
     end
 
-    return graph, representative_periods, timeframe, groups
+    return graph, representative_periods, timeframe, groups, years
 end
 
 function get_schema(tablename)
@@ -274,32 +401,32 @@ The following files are created:
 """
 function save_solution_to_file(output_folder, graph, dataframes, solution)
     output_file = joinpath(output_folder, "assets-investments.csv")
-    output_table = DataFrame(; asset = String[], InstalUnits = Float64[], InstalCap_MW = Float64[])
-    for a in MetaGraphsNext.labels(graph)
-        if !graph[a].investable
-            continue
-        end
-        investment = solution.assets_investment[a]
-        capacity = graph[a].capacity
-        push!(output_table, (a, investment, capacity * investment))
+    output_table = DataFrame(;
+        asset = String[],
+        year = Int[],
+        InstalUnits = Float64[],
+        InstalCap_MW = Float64[],
+    )
+
+    for ((y, a), investment) in solution.assets_investment
+        capacity = graph[a].capacity[y]
+        push!(output_table, (a, y, investment, capacity * investment))
     end
     CSV.write(output_file, output_table)
 
     output_file = joinpath(output_folder, "assets-investments-energy.csv")
     output_table = DataFrame(;
         asset = String[],
+        year = Int[],
         InstalEnergyUnits = Float64[],
         InstalEnergyCap_MWh = Float64[],
     )
-    for a in MetaGraphsNext.labels(graph)
-        if !graph[a].investable || !graph[a].storage_method_energy
-            continue
-        end
-        energy_units_investmented = solution.assets_investment_energy[a]
-        energy_capacity = graph[a].capacity_storage_energy
+
+    for ((y, a), energy_units_investmented) in solution.assets_investment_energy
+        energy_capacity = graph[a].capacity_storage_energy[y]
         push!(
             output_table,
-            (a, energy_units_investmented, energy_capacity * energy_units_investmented),
+            (a, y, energy_units_investmented, energy_capacity * energy_units_investmented),
         )
     end
     CSV.write(output_file, output_table)
@@ -308,16 +435,14 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     output_table = DataFrame(;
         from_asset = String[],
         to_asset = String[],
+        year = Int[],
         InstalUnits = Float64[],
         InstalCap_MW = Float64[],
     )
-    for (u, v) in MetaGraphsNext.edge_labels(graph)
-        if !graph[u, v].investable
-            continue
-        end
-        investment = solution.flows_investment[(u, v)]
-        capacity = graph[u, v].capacity
-        push!(output_table, (u, v, investment, capacity * investment))
+
+    for ((y, (u, v)), investment) in solution.flows_investment
+        capacity = graph[u, v].capacity[y]
+        push!(output_table, (u, v, y, investment, capacity * investment))
     end
     CSV.write(output_file, output_table)
 
@@ -335,6 +460,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
         dataframes[:flows],
         :from,
         :to,
+        :year,
         :rep_period,
         :timesteps_block => :timestep,
     )
@@ -405,11 +531,13 @@ If there is no initial storage level given, we will use the final storage level.
 Otherwise, we use the given initial storage level.
 """
 function _check_initial_storage_level!(df, graph)
-    initial_storage_level = graph[unique(df.asset)[1]].initial_storage_level
-    if ismissing(initial_storage_level)
-        df[!, :processed_value] = [df.value[end]; df[1:end-1, :value]]
-    else
-        df[!, :processed_value] = [initial_storage_level; df[1:end-1, :value]]
+    initial_storage_level_dict = graph[unique(df.asset)[1]].initial_storage_level
+    for (_, initial_storage_level) in initial_storage_level_dict
+        if ismissing(initial_storage_level)
+            df[!, :processed_value] = [df.value[end]; df[1:end-1, :value]]
+        else
+            df[!, :processed_value] = [initial_storage_level; df[1:end-1, :value]]
+        end
     end
 end
 

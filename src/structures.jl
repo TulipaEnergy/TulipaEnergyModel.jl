@@ -40,42 +40,43 @@ Structure to hold the asset data in the graph.
 mutable struct GraphAssetData
     type::String
     group::Union{Missing,String}
-    investable::Bool
-    investment_integer::Bool
-    investment_cost::Float64
-    investment_limit::Union{Missing,Float64}
-    capacity::Float64
-    initial_capacity::Float64
-    peak_demand::Float64
-    consumer_balance_sense::Union{MathOptInterface.EqualTo,MathOptInterface.GreaterThan}
-    is_seasonal::Bool
-    storage_inflows::Union{Missing,Float64}
-    initial_storage_capacity::Float64
-    initial_storage_level::Union{Missing,Float64}
-    energy_to_power_ratio::Float64
-    storage_method_energy::Bool
-    investment_cost_storage_energy::Float64
-    investment_limit_storage_energy::Union{Missing,Float64}
-    capacity_storage_energy::Float64
-    investment_integer_storage_energy::Bool
-    use_binary_storage_method::Union{Missing,String}
-    max_energy_timeframe_partition::Union{Missing,Float64}
-    min_energy_timeframe_partition::Union{Missing,Float64}
-    unit_commitment::Bool
-    unit_commitment_method::Union{Missing,String}
-    units_on_cost::Union{Missing,Float64}
-    unit_commitment_integer::Bool
-    min_operating_point::Union{Missing,Float64}
-    ramping::Bool
-    max_ramp_up::Union{Missing,Float64}
-    max_ramp_down::Union{Missing,Float64}
-    timeframe_profiles::Dict{String,Vector{Float64}}
-    rep_periods_profiles::Dict{Tuple{String,Int},Vector{Float64}}
-    timeframe_partitions::Vector{PeriodsBlock}
-    rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
+    active::Dict{Int,Bool}
+    investable::Dict{Int,Bool}
+    investment_integer::Dict{Int,Bool}
+    investment_cost::Dict{Int,Float64}
+    investment_limit::Dict{Int,Union{Missing,Float64}}
+    capacity::Dict{Int,Float64}
+    initial_capacity::Dict{Int,Float64}
+    peak_demand::Dict{Int,Float64}
+    consumer_balance_sense::Dict{Int,Union{MathOptInterface.EqualTo,MathOptInterface.GreaterThan}}
+    is_seasonal::Dict{Int,Bool}
+    storage_inflows::Dict{Int,Union{Missing,Float64}}
+    initial_storage_capacity::Dict{Int,Float64}
+    initial_storage_level::Dict{Int,Union{Missing,Float64}}
+    energy_to_power_ratio::Dict{Int,Float64}
+    storage_method_energy::Dict{Int,Bool}
+    investment_cost_storage_energy::Dict{Int,Float64}
+    investment_limit_storage_energy::Dict{Int,Union{Missing,Float64}}
+    capacity_storage_energy::Dict{Int,Float64}
+    investment_integer_storage_energy::Dict{Int,Bool}
+    use_binary_storage_method::Dict{Int,Union{Missing,String}}
+    max_energy_timeframe_partition::Dict{Int,Union{Missing,Float64}}
+    min_energy_timeframe_partition::Dict{Int,Union{Missing,Float64}}
+    unit_commitment::Dict{Int,Bool}
+    unit_commitment_method::Dict{Int,Union{Missing,String}}
+    units_on_cost::Dict{Int,Union{Missing,Float64}}
+    unit_commitment_integer::Dict{Int,Bool}
+    min_operating_point::Dict{Int,Union{Missing,Float64}}
+    ramping::Dict{Int,Bool}
+    max_ramp_up::Dict{Int,Union{Missing,Float64}}
+    max_ramp_down::Dict{Int,Union{Missing,Float64}}
+    timeframe_profiles::Dict{Int,Dict{String,Vector{Float64}}}
+    rep_periods_profiles::Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}
+    timeframe_partitions::Dict{Int,Vector{PeriodsBlock}}
+    rep_periods_partitions::Dict{Int,Dict{Int,Vector{TimestepsBlock}}}
     # Solution
-    investment::Float64
-    investment_energy::Float64 # for storage assets with energy method
+    investment::Dict{Int,Float64}
+    investment_energy::Dict{Int,Float64} # for storage assets with energy method
     storage_level_intra_rp::Dict{Tuple{Int,TimestepsBlock},Float64}
     storage_level_inter_rp::Dict{PeriodsBlock,Float64}
     max_energy_inter_rp::Dict{PeriodsBlock,Float64}
@@ -85,6 +86,7 @@ mutable struct GraphAssetData
     function GraphAssetData(
         type,
         group,
+        active,
         investable,
         investment_integer,
         investment_cost,
@@ -115,13 +117,14 @@ mutable struct GraphAssetData
         max_ramp_up,
         max_ramp_down,
     )
-        timeframe_profiles = Dict{String,Vector{Float64}}()
-        rep_periods_profiles = Dict{Tuple{String,Int},Vector{Float64}}()
-        timeframe_partitions = PeriodsBlock[]
-        rep_periods_partitions = Dict{Int,Vector{TimestepsBlock}}()
+        timeframe_profiles = Dict{Int,Dict{String,Vector{Float64}}}()
+        rep_periods_profiles = Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}()
+        timeframe_partitions = Dict{Int,Vector{TimestepsBlock}}()
+        rep_periods_partitions = Dict{Int,Dict{Int,Vector{TimestepsBlock}}}()
         return new(
             type,
             group,
+            active,
             investable,
             investment_integer,
             investment_cost,
@@ -155,8 +158,8 @@ mutable struct GraphAssetData
             rep_periods_profiles,
             timeframe_partitions,
             rep_periods_partitions,
-            -1,
-            -1,
+            Dict{Int,Float64}(),
+            Dict{Int,Float64}(),
             Dict{Tuple{Int,TimestepsBlock},Float64}(),
             Dict{TimestepsBlock,Float64}(),
             Dict{TimestepsBlock,Float64}(),
@@ -170,24 +173,24 @@ Structure to hold the flow data in the graph.
 """
 mutable struct GraphFlowData
     carrier::String
-    active::Bool
-    is_transport::Bool
-    investable::Bool
-    investment_integer::Bool
-    variable_cost::Float64
-    investment_cost::Float64
-    investment_limit::Union{Missing,Float64}
-    capacity::Float64
-    initial_export_capacity::Float64
-    initial_import_capacity::Float64
-    efficiency::Float64
-    timeframe_profiles::Dict{String,Vector{Float64}}
-    rep_periods_profiles::Dict{Tuple{String,Int},Vector{Float64}}
-    timeframe_partitions::Vector{PeriodsBlock}
-    rep_periods_partitions::Dict{Int,Vector{TimestepsBlock}}
+    active::Dict{Int,Bool}
+    is_transport::Dict{Int,Bool}
+    investable::Dict{Int,Bool}
+    investment_integer::Dict{Int,Bool}
+    variable_cost::Dict{Int,Float64}
+    investment_cost::Dict{Int,Float64}
+    investment_limit::Dict{Int,Union{Missing,Float64}}
+    capacity::Dict{Int,Float64}
+    initial_export_capacity::Dict{Int,Float64}
+    initial_import_capacity::Dict{Int,Float64}
+    efficiency::Dict{Int,Float64}
+    timeframe_profiles::Dict{Int,Dict{String,Vector{Float64}}}
+    rep_periods_profiles::Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}
+    timeframe_partitions::Dict{Int,Vector{PeriodsBlock}}
+    rep_periods_partitions::Dict{Int,Dict{Int,Vector{TimestepsBlock}}}
     # Solution
     flow::Dict{Tuple{Int,TimestepsBlock},Float64}
-    investment::Float64
+    investment::Dict{Int,Float64}
 end
 
 function GraphFlowData(
@@ -217,12 +220,12 @@ function GraphFlowData(
         initial_export_capacity,
         initial_import_capacity,
         efficiency,
-        Dict{String,Vector{Float64}}(),
-        Dict{Tuple{String,Int},Vector{Float64}}(),
-        PeriodsBlock[],
-        Dict{Int,Vector{TimestepsBlock}}(),
-        Dict{Tuple{Int,TimestepsBlock},Float64}(),
-        -1,
+        Dict{Int,Dict{String,Vector{Float64}}}(),
+        Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}(),
+        Dict{Int,Vector{PeriodsBlock}}(),
+        Dict{Int,Dict{Int,Vector{TimestepsBlock}}}(),
+        Dict{Int,Dict{Int,Vector{TimestepsBlock}}}(),
+        Dict{Int,Float64}(),
     )
 end
 
@@ -242,9 +245,9 @@ struct Group
 end
 
 mutable struct Solution
-    assets_investment::Dict{String,Float64}
-    assets_investment_energy::Dict{String,Float64} # for storage assets with energy method
-    flows_investment::Dict{Tuple{String,String},Float64}
+    assets_investment::Dict{Tuple{Int,String},Float64}
+    assets_investment_energy::Dict{Tuple{Int,String},Float64} # for storage assets with energy method
+    flows_investment::Dict{Tuple{Int,Tuple{String,String}},Float64}
     storage_level_intra_rp::Vector{Float64}
     storage_level_inter_rp::Vector{Float64}
     max_energy_inter_rp::Vector{Float64}
@@ -288,10 +291,11 @@ mutable struct EnergyProblem
         Nothing, # Edge weight function
         Nothing, # Default edge weight
     }
-    representative_periods::Vector{RepresentativePeriod}
-    constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int},Vector{TimestepsBlock}}}
+    representative_periods::Dict{Int,Vector{RepresentativePeriod}}
+    constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int,Int},Vector{TimestepsBlock}}}
     timeframe::Timeframe
     groups::Vector{Group}
+    years::Vector{Int}
     dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}
     solution::Union{Solution,Nothing}
@@ -308,11 +312,12 @@ mutable struct EnergyProblem
     """
     function EnergyProblem(connection)
         elapsed_time_internal = @elapsed begin
-            graph, representative_periods, timeframe, groups =
+            graph, representative_periods, timeframe, groups, years =
                 create_internal_structures(connection)
         end
         elapsed_time_cons = @elapsed begin
-            constraints_partitions = compute_constraints_partitions(graph, representative_periods)
+            constraints_partitions =
+                compute_constraints_partitions(graph, representative_periods, years)
         end
 
         energy_problem = new(
@@ -322,6 +327,7 @@ mutable struct EnergyProblem
             constraints_partitions,
             timeframe,
             groups,
+            years,
             Dict(),
             nothing,
             nothing,

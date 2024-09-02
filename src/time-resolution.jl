@@ -13,86 +13,91 @@ which specifies the partition strategy for each resolution (i.e., lowest or high
 For each asset and representative period, it calls the `compute_rp_partition` function
 to compute the partition based on the strategy.
 """
-function compute_constraints_partitions(graph, representative_periods)
-    constraints_partitions = Dict{Symbol,Dict{Tuple{String,Int},Vector{TimestepsBlock}}}()
-
-    _inflows(a, rp) =
-        [graph[u, a].rep_periods_partitions[rp] for u in MetaGraphsNext.inneighbor_labels(graph, a)]
-    _outflows(a, rp) = [
-        graph[a, v].rep_periods_partitions[rp] for v in MetaGraphsNext.outneighbor_labels(graph, a)
+function compute_constraints_partitions(graph, representative_periods, years)
+    constraints_partitions = Dict{Symbol,Dict{Tuple{String,Int,Int},Vector{TimestepsBlock}}}()
+    _inflows(a, y, rp) = [
+        graph[u, a].rep_periods_partitions[y][rp] for
+        u in MetaGraphsNext.inneighbor_labels(graph, a) if get(graph[u, a].active, y, false)
     ]
-    _allflows(a, rp) = [_inflows(a, rp); _outflows(a, rp)]
-    _assets(a, rp) = [graph[a].rep_periods_partitions[rp]]
-    _assets_and_outflows(a, rp) = [_assets(a, rp); _outflows(a, rp)]
-    _all(a, rp) = [_allflows(a, rp); _assets(a, rp)]
+    _outflows(a, y, rp) = [
+        graph[a, v].rep_periods_partitions[y][rp] for
+        v in MetaGraphsNext.outneighbor_labels(graph, a) if get(graph[a, v].active, y, false)
+    ]
+
+    _allflows(a, y, rp) = [_inflows(a, y, rp); _outflows(a, y, rp)]
+    _assets(a, y, rp) = [graph[a].rep_periods_partitions[y][rp]]
+    _assets_and_outflows(a, y, rp) = [_assets(a, y, rp); _outflows(a, y, rp)]
+    _all(a, y, rp) = [_allflows(a, y, rp); _assets(a, y, rp)]
 
     partitions_cases = [
         (
             name = :lowest,
             partitions = _allflows,
             strategy = :lowest,
-            asset_filter = a -> graph[a].type in ["conversion", "producer"],
+            asset_filter = (a, y) -> graph[a].type in ["conversion", "producer"],
         ),
         (
             name = :lowest_storage_level_intra_rp,
             partitions = _all,
             strategy = :lowest,
-            asset_filter = a -> graph[a].type == "storage" && !graph[a].is_seasonal,
+            asset_filter = (a, y) ->
+                graph[a].type == "storage" && !get(graph[a].is_seasonal, y, false),
         ),
         (
             name = :lowest_in_out,
             partitions = _allflows,
             strategy = :lowest,
-            asset_filter = a ->
-                graph[a].type == "storage" && !ismissing(graph[a].use_binary_storage_method),
+            asset_filter = (a, y) ->
+                graph[a].type == "storage" &&
+                    !ismissing(get(graph[a].use_binary_storage_method, y, missing)),
         ),
         (
             name = :highest_in_out,
             partitions = _allflows,
             strategy = :highest,
-            asset_filter = a -> graph[a].type in ["hub", "consumer"],
+            asset_filter = (a, y) -> graph[a].type in ["hub", "consumer"],
         ),
         (
             name = :highest_in,
             partitions = _inflows,
             strategy = :highest,
-            asset_filter = a -> graph[a].type in ["storage"],
+            asset_filter = (a, y) -> graph[a].type in ["storage"],
         ),
         (
             name = :highest_out,
             partitions = _outflows,
             strategy = :highest,
-            asset_filter = a -> graph[a].type in ["producer", "storage", "conversion"],
+            asset_filter = (a, y) -> graph[a].type in ["producer", "storage", "conversion"],
         ),
         (
             name = :units_on,
             partitions = _assets,
             strategy = :highest,
-            asset_filter = a ->
-                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment,
+            asset_filter = (a, y) ->
+                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment[y],
         ),
         (
             name = :units_on_and_outflows,
             partitions = _assets_and_outflows,
             strategy = :highest,
-            asset_filter = a ->
-                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment,
+            asset_filter = (a, y) ->
+                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment[y],
         ),
     ]
 
-    num_rep_periods = length(representative_periods)
+    RP = Dict(year => 1:length(representative_periods[year]) for year in years)
 
     for (name, partitions, strategy, asset_filter) in partitions_cases
         constraints_partitions[name] = OrderedDict(
-            (a, rp) => begin
-                P = partitions(a, rp)
+            (a, y, rp) => begin
+                P = partitions(a, y, rp)
                 if length(P) > 0
-                    compute_rp_partition(partitions(a, rp), strategy)
+                    compute_rp_partition(partitions(a, y, rp), strategy)
                 else
                     Vector{TimestepsBlock}[]
                 end
-            end for
-            a in MetaGraphsNext.labels(graph), rp in 1:num_rep_periods if asset_filter(a)
+            end for a in MetaGraphsNext.labels(graph), y in years if
+            get(graph[a].active, y, false) && asset_filter(a, y) for rp in RP[y]
         )
     end
 

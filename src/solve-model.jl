@@ -28,24 +28,13 @@ function solve_model!(
         energy_problem.objective_value = JuMP.objective_value(model)
 
         graph = energy_problem.graph
-        for a in MetaGraphsNext.labels(graph)
-            asset = graph[a]
-            if asset.investable
-                if asset.investment_integer
-                    asset.investment = round(Int, energy_problem.solution.assets_investment[a])
-                else
-                    asset.investment = energy_problem.solution.assets_investment[a]
-                end
-                if asset.storage_method_energy
-                    if asset.investment_integer_storage_energy
-                        asset.investment_energy =
-                            round(Int, energy_problem.solution.assets_investment_energy[a])
-                    else
-                        asset.investment_energy =
-                            energy_problem.solution.assets_investment_energy[a]
-                    end
-                end
-            end
+        for ((y, a), value) in energy_problem.solution.assets_investment
+            graph[a].investment[y] = graph[a].investment_integer[y] ? round(Int, value) : value
+        end
+
+        for ((y, a), value) in energy_problem.solution.assets_investment_energy
+            graph[a].investment_energy[y] =
+                graph[a].investment_integer_storage_energy[y] ? round(Int, value) : value
         end
 
         for row in eachrow(energy_problem.dataframes[:lowest_storage_level_intra_rp])
@@ -69,15 +58,9 @@ function solve_model!(
             graph[a].min_energy_inter_rp[pb] = value
         end
 
-        for (u, v) in MetaGraphsNext.edge_labels(graph)
-            if graph[u, v].investable
-                if graph[u, v].investment_integer
-                    graph[u, v].investment =
-                        round(Int, energy_problem.solution.flows_investment[(u, v)])
-                else
-                    graph[u, v].investment = energy_problem.solution.flows_investment[(u, v)]
-                end
-            end
+        for ((y, (u, v)), value) in energy_problem.solution.flows_investment
+            graph[u, v].investment[y] =
+                graph[u, v].investment_integer[y] ? round(Int, value) : value
         end
 
         for row in eachrow(energy_problem.dataframes[:flows])
@@ -199,17 +182,9 @@ function solve_model(
     end
 
     return Solution(
-        Dict(
-            a => JuMP.value(model[:assets_investment][a]) for a in model[:assets_investment].axes[1]
-        ),
-        Dict(
-            a => JuMP.value(model[:assets_investment_energy][a]) for
-            a in model[:assets_investment_energy].axes[1]
-        ),
-        Dict(
-            uv => JuMP.value(model[:flows_investment][uv]) for
-            uv in model[:flows_investment].axes[1]
-        ),
+        JuMP.value.(model[:assets_investment]).data,   # .data returns a OrderedDict since variable is SparseAxisArray
+        JuMP.value.(model[:assets_investment_energy]).data,
+        JuMP.value.(model[:flows_investment]).data,
         JuMP.value.(model[:storage_level_intra_rp]),
         JuMP.value.(model[:storage_level_inter_rp]),
         JuMP.value.(model[:max_energy_inter_rp]),

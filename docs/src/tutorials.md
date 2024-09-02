@@ -98,14 +98,14 @@ input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
-graph, representative_periods, timeframe, groups = create_internal_structures(connection)
+graph, representative_periods, timeframe, groups, years = create_internal_structures(connection)
 ```
 
 We also need a time partition for the constraints to create the model.
 Creating an energy problem automatically computes this data, but since we are doing it manually, we need to calculate it ourselves.
 
 ```@example manual
-constraints_partitions = compute_constraints_partitions(graph, representative_periods)
+constraints_partitions = compute_constraints_partitions(graph, representative_periods, years)
 ```
 
 The `constraints_partitions` has two dictionaries with the keys `:lowest_resolution` and `:highest_resolution`. The lowest resolution dictionary is mainly used to create the constraints for energy balance, whereas the highest resolution dictionary is mainly used to create the capacity constraints in the model.
@@ -113,7 +113,7 @@ The `constraints_partitions` has two dictionaries with the keys `:lowest_resolut
 Finally, we also need dataframes that store the linearized indexes of the variables.
 
 ```@example manual
-dataframes = construct_dataframes(graph, representative_periods, constraints_partitions)
+dataframes = construct_dataframes(graph, representative_periods, constraints_partitions, years)
 ```
 
 Now we can compute the model.
@@ -287,25 +287,15 @@ nothing # hide
 
 To create a traditional array in the order given by the investable assets, one can run
 
-```@example solution
-using MetaGraphsNext
-
-graph = energy_problem.graph
-[solution.assets_investment[a] for a in labels(graph) if graph[a].investable]
-```
-
-To create a traditional array in the order given by the investable flows, one can run
-
-```@example solution
-[solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]
-```
-
 The `solution.flow`, `solution.storage_level_intra_rp`, and `solution.storage_level_inter_rp` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows`, `:lowest_storage_level_intra_rp`, and `:storage_level_inter_rp`, respectively.
 You need to query the data from these dataframes and then use the column `index` to select the appropriate value.
 
 To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
 
 ```@example solution
+using MetaGraphsNext
+graph = energy_problem.graph
+
 (u, v) = first(edge_labels(graph))
 rp = 1
 df = filter(
@@ -348,11 +338,20 @@ In addition to the solution object, the solution is also stored by the individua
 They can be accessed like any other value from [GraphAssetData](@ref) or [GraphFlowData](@ref), which means that we recreate the values from the previous section in a new way:
 
 ```@example solution
-[energy_problem.graph[a].investment for a in labels(graph) if graph[a].investable]
+years = energy_problem.years
+Dict(
+    (y, a) => [
+        energy_problem.graph[a].investment[y]
+    ] for y in years for a in labels(graph) if graph[a].investable[y]
+)
 ```
 
 ```@example solution
-[energy_problem.graph[u, v].investment for (u, v) in edge_labels(graph) if graph[u, v].investable]
+Dict(
+    (y, a) => [
+        energy_problem.graph[u, v].investment[y]
+    ] for y in years for (u, v) in edge_labels(graph) if graph[u, v].investable[y]
+)
 ```
 
 ```@example solution
