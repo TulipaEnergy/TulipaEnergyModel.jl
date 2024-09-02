@@ -1,0 +1,3 @@
+,,,,{uniform;explicit;math},
+from_asset,to_asset,year,rep_period,specification,partition
+ccgt,demand,2030,1,uniform,2
