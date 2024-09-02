@@ -245,7 +245,6 @@ function create_internal_structures(connection)
             if !is_active
                 continue
             end
-            # we only compute partitions for active flows, but we initialize all years. If we don't want the all the years as keys, we should not do this.
             graph[u, v].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
             if haskey(graph[u, v].active, year) && graph[u, v].active[year]
                 # we only compute partitions for active flows.
@@ -288,7 +287,6 @@ function create_internal_structures(connection)
         end
     end
 
-    # this works
     _df = TulipaIO.get_table(connection, "profiles_rep_periods")
     for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_profiles")  # row = asset, profile_type, profile_name
         gp = DataFrames.groupby( # 2. group by rep_period, year
@@ -308,7 +306,6 @@ function create_internal_structures(connection)
         end
     end
 
-    # this should work because it is the same as the previous one
     for flow_profile_row in TulipaIO.get_table(Val(:raw), connection, "flows_profiles")
         gp = DataFrames.groupby(
             filter(:profile_name => ==(flow_profile_row.profile_name), _df; view = true),
@@ -320,12 +317,10 @@ function create_internal_structures(connection)
             if !haskey(profiles, year)
                 profiles[year] = Dict{Tuple{Symbol,Int},Vector{Float64}}()
             end
-
             profiles[year][(flow_profile_row.profile_type, rep_period)] = df.value
         end
     end
 
-    # TODO: After figuring out interaction between year and timeframe, come back here
     _df = TulipaIO.get_table(connection, "profiles_timeframe")
     for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_timeframe_profiles") # row = asset, profile_type, profile_name
         gp = DataFrames.groupby(
