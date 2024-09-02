@@ -1,3 +1,3 @@
-asset,InstalEnergyUnits,InstalEnergyCap_MWh
-Asgard_Battery,100.0,1000.0
-Midgard_PHS,10.0,1000.0
+asset,year,InstalEnergyUnits,InstalEnergyCap_MWh
+Midgard_PHS,2030,9.875678062588193,987.5678062588192
+Asgard_Battery,2030,100.0,1000.0
