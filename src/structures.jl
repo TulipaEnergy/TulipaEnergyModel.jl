@@ -5,13 +5,23 @@ export GraphAssetData,
     PeriodsBlock,
     TimestepsBlock,
     Timeframe,
-    Group
+    Group,
+    Year
 
 const TimestepsBlock = UnitRange{Int}
 const PeriodsBlock = UnitRange{Int}
 
 const PeriodType = Symbol
 const PERIOD_TYPES = [:rep_periods, :timeframe]
+
+"""
+Structure to hold the data of the year.
+"""
+struct Year
+    id::Int
+    length::Int
+    is_milestone::Bool
+end
 
 """
 Structure to hold the data of the timeframe.
@@ -295,7 +305,7 @@ mutable struct EnergyProblem
     constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int,Int},Vector{TimestepsBlock}}}
     timeframe::Timeframe
     groups::Vector{Group}
-    years::Vector{Int}
+    years::Vector{Year}
     dataframes::Dict{Symbol,DataFrame}
     model::Union{JuMP.Model,Nothing}
     solution::Union{Solution,Nothing}

@@ -36,15 +36,11 @@ function create_internal_structures(connection)
         _check_if_table_exist(connection, table)
     end
 
-    years_assets = [
-        row.year for
-        row in DuckDB.query(connection, "SELECT DISTINCT year FROM assets_data ORDER BY year")
+    years = [
+        Year(row.year, row.length, row.is_milestone) for
+        row in TulipaIO.get_table(Val(:raw), connection, "year_data")
     ]
-    years_flows = [
-        row.year for
-        row in DuckDB.query(connection, "SELECT DISTINCT year FROM assets_data ORDER BY year")
-    ]
-    years = sort(years_assets ∪ years_flows)
+    years_vector = [year.id for year in years]
 
     # Calculate the weights from the "rep_periods_mapping" table in the connection
     weights = Dict(
@@ -57,14 +53,14 @@ function create_internal_structures(connection)
                     GROUP BY rep_period
                     ORDER BY rep_period",
             )
-        ] for year in years
+        ] for year in years_vector
     )
 
     representative_periods = Dict{Int,Vector{RepresentativePeriod}}(
         year => [
             RepresentativePeriod(weights[year][row.rep_period], row.num_timesteps, row.resolution) for row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data") if
             row.year == year
-        ] for year in years
+        ] for year in years_vector
     )
 
     # Calculate the total number of periods and then pipe into a Dataframe to get the first value of the df with the num_periods
@@ -130,8 +126,7 @@ function create_internal_structures(connection)
             _get_stuff("assets_data", "ramping"; name = row.name),
             _get_stuff("assets_data", "max_ramp_up"; name = row.name),
             _get_stuff("assets_data", "max_ramp_down"; name = row.name),
-        ) for row in TulipaIO.get_table(Val(:raw), connection, "assets_data") if
-        !haskey(unique_asset_names, row.name) && (unique_asset_names[row.name] = true)
+        ) for row in TulipaIO.get_table(Val(:raw), connection, "graph_assets_data")
     ]
 
     unique_flow_names = Dict{Tuple{String,String},Int}()
@@ -204,9 +199,7 @@ function create_internal_structures(connection)
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-        ) for row in TulipaIO.get_table(Val(:raw), connection, "flows_data") if
-        !haskey(unique_flow_names, (row.from_asset, row.to_asset)) &&
-        (unique_flow_names[(row.from_asset, row.to_asset)] = true)
+        ) for row in TulipaIO.get_table(Val(:raw), connection, "graph_flows_data")
     ]
 
     num_assets = length(asset_data) # we only look at unique asset names
@@ -223,7 +216,7 @@ function create_internal_structures(connection)
 
     _df = TulipaIO.get_table(connection, "assets_rep_periods_partitions")
     for a in MetaGraphsNext.labels(graph)
-        for year in years
+        for year in years_vector
             is_active = get(graph[a].active, year, false)
             if !is_active
                 continue
@@ -240,7 +233,7 @@ function create_internal_structures(connection)
 
     _df = TulipaIO.get_table(connection, "flows_rep_periods_partitions")
     for (u, v) in MetaGraphsNext.edge_labels(graph)
-        for year in years
+        for year in years_vector
             is_active = get(graph[u, v].active, year, false)
             if !is_active
                 continue
@@ -272,7 +265,7 @@ function create_internal_structures(connection)
              WHERE assets_data.is_seasonal
          """
     for row in DuckDB.query(connection, find_assets_partitions_query)
-        for year in years
+        for year in years_vector
             graph[row.name].timeframe_partitions[year] = _parse_rp_partition(
                 Val(Symbol(row.specification)),
                 row.partition,

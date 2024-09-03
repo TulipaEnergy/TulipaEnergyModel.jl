@@ -123,8 +123,14 @@ end
 
 input_files_folders = [
     [
-        joinpath(@__DIR__, "..", "test", "inputs", test_input) for
-        test_input in ["Norse", "Storage", "Tiny", "Variable Resolution"]
+        joinpath(@__DIR__, "..", "test", "inputs", test_input) for test_input in [
+            "Multi-year Investments",
+            "Norse",
+            "Storage",
+            "Tiny",
+            "UC-ramping",
+            "Variable Resolution",
+        ]
     ]
     joinpath(@__DIR__, "..", "benchmark", "EU")
 ]

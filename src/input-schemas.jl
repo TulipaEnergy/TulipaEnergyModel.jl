@@ -1,13 +1,24 @@
 # At the end of the file, there is a reference relating schemas and files
 
 const schemas = (
+    graph = (
+        assets = (
+            :name => "VARCHAR",                              # Name of Asset (geographical?)
+            :type => "VARCHAR",                              # Producer/Consumer/Storage/Conversion
+            :group => "VARCHAR",                             # Group to which the asset belongs to (missing -> no group)
+            :investment_method => "VARCHAR",                 # Which method of investment (simple/compact)
+        ),
+        flows = (
+            :from_asset => "VARCHAR",                        # Name of Asset
+            :to_asset => "VARCHAR",                          # Name of Asset
+            :carrier => "VARCHAR",                           # (Optional?) Energy carrier
+        ),
+    ),
     assets = (
         # Schema for the assets-data.csv file.
         data = OrderedDict(
             :name => "VARCHAR",                              # Name of Asset (geographical?)
-            :type => "VARCHAR",                              # Producer/Consumer/Storage/Conversion
             :active => "BOOLEAN",                            # Active or decomissioned
-            :group => "VARCHAR",                             # Group to which the asset belongs to (missing -> no group)
             :year => "INTEGER",                              # Year
             :investable => "BOOLEAN",                        # Whether able to invest
             :investment_integer => "BOOLEAN",                # Whether investment is integer or continuous
@@ -78,7 +89,6 @@ const schemas = (
     flows = (
         # Schema for the flows-data.csv file.
         data = OrderedDict(
-            :carrier => "VARCHAR",                  # (Optional?) Energy carrier
             :from_asset => "VARCHAR",               # Name of Asset
             :to_asset => "VARCHAR",                 # Name of Asset
             :year => "INTEGER",
@@ -112,6 +122,14 @@ const schemas = (
             :rep_period => "INTEGER",
             :specification => "VARCHAR",
             :partition => "VARCHAR",
+        ),
+    ),
+    year = (
+        # Schema for year-data.csv
+        data = (
+            :year => "INTEGER",                       # Unique identifier (currently, the year itself)
+            :length => "INTEGER",
+            :is_milestone => "BOOLEAN",             # Whether the year is a milestone year of a vintage year
         ),
     ),
     timeframe = (
@@ -160,9 +178,12 @@ const schema_per_table_name = OrderedDict(
     "flows_data" => schemas.flows.data,
     "flows_profiles" => schemas.flows.profiles_reference,
     "flows_rep_periods_partitions" => schemas.flows.rep_periods_partition,
+    "graph_assets_data" => schemas.graph.assets,
+    "graph_flows_data" => schemas.graph.flows,
     "groups_data" => schemas.groups.data,
     "profiles_timeframe" => schemas.timeframe.profiles_data,
     "profiles_rep_periods" => schemas.rep_periods.profiles_data,
     "rep_periods_data" => schemas.rep_periods.data,
     "rep_periods_mapping" => schemas.rep_periods.mapping,
+    "year_data" => schemas.year.data,
 )

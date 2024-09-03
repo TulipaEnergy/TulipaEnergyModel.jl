@@ -1,0 +1,8 @@
+asset_name,asset_name,
+from_asset,to_asset,carrier
+H2,ccgt,hydrogen
+ccgt,balance,electricity
+wind,balance,electricity
+wind,phs,electricity
+phs,balance,electricity
+balance,demand,electricity

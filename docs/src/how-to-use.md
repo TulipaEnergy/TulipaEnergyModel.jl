@@ -67,9 +67,21 @@ You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/Tu
 Below, we have a description of the files.
 At the end, in [Schemas](@ref schemas), we have the expected columns in these CSVs.
 
+#### [`graph-assets-data.csv`](@id graph-assets-data)
+
+This file contains the list of assets and the static data associated with each of them.
+
+The meaning of `Missing` data depends on the parameter, for instance:
+
+-   `group`: No group assigned to the asset.
+
+#### [`graph-flows-data.csv`](@id graph-flows-data)
+
+The same as [`graph-assets-data.csv`](@ref graph-assets-data), but for flows. Each flow is defined as a pair of assets.
+
 #### [`assets-data.csv`](@id assets-data)
 
-This file contains the list of assets and the data associated with each of them.
+This file contains the yearly data of each asset.
 
 The investment parameters are as follows:
 
@@ -80,7 +92,6 @@ The investment parameters are as follows:
 
 The meaning of `Missing` data depends on the parameter, for instance:
 
--   `group`: No group assigned to the asset.
 -   `investment_limit`: There is no investment limit.
 -   `initial_storage_level`: The initial storage level is free (between the storage level limits), meaning that the optimization problem decides the best starting point for the storage asset. In addition, the first and last time blocks in a representative period are linked to create continuity in the storage level.
 
@@ -382,10 +393,10 @@ A group of assets refers to a set of assets that share certain constraints. For 
 In order to define the groups in the model, the following steps are necessary:
 
 1. Create a group in the [`groups-data.csv`](@ref schemas) file by defining the `name` property and its parameters.
-2. In the file [`assets-data.csv`](@ref schemas), assign assets to the group by setting the `name` in the `group` parameter/column.
+2. In the file [`graph-assets-data.csv`](@ref schemas), assign assets to the group by setting the `name` in the `group` parameter/column.
 
     > **Note:**
-    > A missing value in the parameter `group` in the [`assets-data.csv`](@ref schemas) means that the asset does not belong to any group.
+    > A missing value in the parameter `group` in the [`graph-assets-data.csv`](@ref schemas) means that the asset does not belong to any group.
 
 Groups are useful to represent several common constraints, the following group constraints are available.
 
@@ -412,12 +423,12 @@ assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
 
 In the given data, there are two groups: `renewables` and `ccgt`. Both groups have the `invest_method` parameter set to `true`, indicating that investment group constraints apply to both. For the `renewables` group, the `min_investment_limit` parameter is missing, signifying that there is no minimum limit imposed on the group. However, the `max_investment_limit` parameter is set to 40000 MW, indicating that the total investments of assets in the group must be less than or equal to this value. In contrast, the `ccgt` group has a missing value in the `max_investment_limit` parameter, indicating no maximum limit, while the `min_investment_limit` is set to 10000 MW for the total investments in that group.
 
-Let's now explore which assets are in each group. To do so, we can take a look at the assets-data.csv file:
+Let's now explore which assets are in each group. To do so, we can take a look at the graph-assets-data.csv file:
 
 ```@example display-group-setup
-input_asset_file = "../../test/inputs/Norse/assets-data.csv" # hide
+input_asset_file = "../../test/inputs/Norse/graph-assets-data.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
-assets = assets[.!ismissing.(assets.group), [:name, :type, :group, :investable]] # hide
+assets = assets[.!ismissing.(assets.group), [:name, :type, :group]] # hide
 ```
 
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
