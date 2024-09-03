@@ -89,7 +89,8 @@ filter_graph(graph, elements, values::Vector, args...) =
 Computes the data frames used to linearize the variables and constraints. These are used
 internally in the model only.
 """
-function construct_dataframes(graph, representative_periods, constraints_partitions, years)
+function construct_dataframes(graph, representative_periods, constraints_partitions, years_struct)
+    years = getfield.(years_struct, :id)
     A = MetaGraphsNext.labels(graph) |> collect
     F = MetaGraphsNext.edge_labels(graph) |> collect
     RP = Dict(year => 1:length(representative_periods[year]) for year in years)
@@ -530,6 +531,7 @@ function create_model!(energy_problem; kwargs...)
             graph,
             representative_periods,
             energy_problem.dataframes,
+            years,
             timeframe,
             groups;
             kwargs...,
@@ -553,6 +555,7 @@ function create_model(
     graph,
     representative_periods,
     dataframes,
+    years,
     timeframe,
     groups;
     write_lp_file = false,
@@ -565,7 +568,7 @@ function create_model(
         return length(timesteps_block) * representative_periods[rp].resolution
     end
 
-    Y = years = collect(keys(representative_periods)) # need to decide where to get the years
+    Y = [year.id for year in years]
 
     # Maximum timestep
     Tmax = maximum(last(rp.timesteps) for year in Y for rp in representative_periods[year])

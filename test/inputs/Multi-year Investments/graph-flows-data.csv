@@ -1,0 +1,7 @@
+asset_name,asset_name,
+from_asset,to_asset,carrier
+ocgt,demand,electricity
+ccgt,demand,electricity
+wind,demand,electricity
+solar,demand,electricity
+ens,demand,electricity

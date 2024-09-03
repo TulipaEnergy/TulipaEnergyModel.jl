@@ -85,7 +85,7 @@ function compute_constraints_partitions(graph, representative_periods, years)
         ),
     ]
 
-    RP = Dict(year => 1:length(representative_periods[year]) for year in years)
+    RP = Dict(year => 1:length(representative_periods[year]) for year in getfield.(years, :id))
 
     for (name, partitions, strategy, asset_filter) in partitions_cases
         constraints_partitions[name] = OrderedDict(
@@ -96,7 +96,7 @@ function compute_constraints_partitions(graph, representative_periods, years)
                 else
                     Vector{TimestepsBlock}[]
                 end
-            end for a in MetaGraphsNext.labels(graph), y in years if
+            end for a in MetaGraphsNext.labels(graph), y in getfield.(years, :id) if
             get(graph[a].active, y, false) && asset_filter(a, y) for rp in RP[y]
         )
     end
