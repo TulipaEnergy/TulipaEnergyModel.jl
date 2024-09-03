@@ -119,7 +119,7 @@ dataframes = construct_dataframes(graph, representative_periods, constraints_par
 Now we can compute the model.
 
 ```@example manual
-model = create_model(graph, representative_periods, dataframes, timeframe, groups)
+model = create_model(graph, representative_periods, dataframes, years, timeframe, groups)
 ```
 
 Finally, we can compute the solution.
@@ -338,7 +338,7 @@ In addition to the solution object, the solution is also stored by the individua
 They can be accessed like any other value from [GraphAssetData](@ref) or [GraphFlowData](@ref), which means that we recreate the values from the previous section in a new way:
 
 ```@example solution
-years = energy_problem.years
+years = [year.id for year in energy_problem.years]
 Dict(
     (y, a) => [
         energy_problem.graph[a].investment[y]

@@ -412,12 +412,12 @@ assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
 
 In the given data, there are two groups: `renewables` and `ccgt`. Both groups have the `invest_method` parameter set to `true`, indicating that investment group constraints apply to both. For the `renewables` group, the `min_investment_limit` parameter is missing, signifying that there is no minimum limit imposed on the group. However, the `max_investment_limit` parameter is set to 40000 MW, indicating that the total investments of assets in the group must be less than or equal to this value. In contrast, the `ccgt` group has a missing value in the `max_investment_limit` parameter, indicating no maximum limit, while the `min_investment_limit` is set to 10000 MW for the total investments in that group.
 
-Let's now explore which assets are in each group. To do so, we can take a look at the assets-data.csv file:
+Let's now explore which assets are in each group. To do so, we can take a look at the graph-assets-data.csv file:
 
 ```@example display-group-setup
-input_asset_file = "../../test/inputs/Norse/assets-data.csv" # hide
+input_asset_file = "../../test/inputs/Norse/graph-assets-data.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
-assets = assets[.!ismissing.(assets.group), [:name, :type, :group, :investable]] # hide
+assets = assets[.!ismissing.(assets.group), [:name, :type, :group]] # hide
 ```
 
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.

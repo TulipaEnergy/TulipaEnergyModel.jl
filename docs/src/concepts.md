@@ -352,8 +352,10 @@ Let's first look at this feature's most relevant input data, starting with the `
 ```@example seasonal-storage
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../test/inputs/Storage/assets-data.csv" # hide
-assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
+input_dir = "../../test/inputs/Storage" # hide
+assets_data = CSV.read(joinpath(input_dir, "assets-data.csv"), DataFrame, header = 2) # hide
+graph_assets = CSV.read(joinpath(input_dir, "graph-assets-data.csv"), DataFrame, header = 2) # hide
+assets = leftjoin(graph_assets, assets_data, on=:name)
 filtered_assets = assets[assets.type .== "storage", ["name", "type", "initial_capacity", "is_seasonal", "initial_storage_capacity", "initial_storage_level"]] # hide
 ```
 
