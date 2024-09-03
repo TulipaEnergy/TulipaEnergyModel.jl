@@ -67,7 +67,7 @@ function add_ramping_constraints!(
             graph[row.asset].capacity[row.year] * row.units_on ≤
             graph[row.asset].initial_capacity[row.year],
             base_name = "limit_units_on_without_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(df_units_on) if row.asset in Ai[row.year]
+        ) for row in eachrow(df_units_on) if !(row.asset in Ai[row.year])
     ]
 
     # - Minimum output flow above the minimum operating point
