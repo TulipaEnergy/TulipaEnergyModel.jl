@@ -1,4 +1,4 @@
-,{producer;consumer;storage;hub;conversion},{group name},{simple,compact}
+,{producer;consumer;storage;hub;conversion},{group name},{simple;compact}
 name,type,group,investment_method
 NL_E_Demand,consumer,,simple
 NL_Wind_Onshore,producer,,simple

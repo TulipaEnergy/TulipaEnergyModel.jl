@@ -1,4 +1,4 @@
-,{producer;consumer},{group name},{simple,compact}
+,{producer;consumer},{group name},{simple;compact}
 name,type,group,investment_method
 gas,producer,,simple
 ocgt,conversion,,simple
