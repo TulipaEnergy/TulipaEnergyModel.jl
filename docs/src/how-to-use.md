@@ -67,7 +67,7 @@ You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/Tu
 Below, we have a description of the files.
 At the end, in [Schemas](@ref schemas), we have the expected columns in these CSVs.
 
-#### [`graph-assets-data.csv`](@id assets-data)
+#### [`graph-assets-data.csv`](@id graph-assets-data)
 
 This file contains the list of assets and the static data associated with each of them.
 
@@ -75,7 +75,7 @@ The meaning of `Missing` data depends on the parameter, for instance:
 
 -   `group`: No group assigned to the asset.
 
-#### [`graph-flows-data.csv`](@id flows-data)
+#### [`graph-flows-data.csv`](@id graph-flows-data)
 
 The same as [`graph-assets-data.csv`](@ref graph-assets-data), but for flows. Each flow is defined as a pair of assets.
 
