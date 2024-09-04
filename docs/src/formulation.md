@@ -1,7 +1,7 @@
 # [Mathematical Formulation](@id formulation)
 
 This section shows the mathematical formulation of _TulipaEnergyModel.jl_, assuming that the temporal definition of timesteps is the same for all the elements in the model.\
-The complete mathematical formulation, including variable temporal resolutions, is also freely available in the [preprint](https://arxiv.org/pdf/2309.07711). In addition, the [concepts section](@ref concepts) also shows how the model handles the [`flexible time resolution`](@ref flex-time-res).
+The [concepts section](@ref concepts) shows how the model handles the [`flexible temporal resolution`](@ref flex-time-res) of assets and flows in the model.
 
 ## [Sets](@id math-sets)
 
@@ -18,14 +18,17 @@ The complete mathematical formulation, including variable temporal resolutions, 
 
 In addition, the following asset sets represent methods for incorporating additional variables and constraints in the model.
 
-| Name                         | Description                                       | Elements | Superset                                                                                     | Notes                                                                                                                                                                                                                         |
-| ---------------------------- | ------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| $\mathcal{A}^{\text{i}}$     | Energy assets with investment method              |          | $\mathcal{A}^{\text{i}}  \subseteq \mathcal{A}$                                              |                                                                                                                                                                                                                               |
-| $\mathcal{A}^{\text{ss}}$    | Storage energy assets with seasonal method        |          | $\mathcal{A}^{\text{ss}} \subseteq \mathcal{A}^{\text{s}}$                                   |                                                                                                                                                                                                                               |
-| $\mathcal{A}^{\text{se}}$    | Storage energy assets with energy method          |          | $\mathcal{A}^{\text{se}} \subseteq \mathcal{A}^{\text{s}}$                                   | This set contains storage assets that use investment energy method. Please visit the [how-to section](@ref storage-investment-setup) to learn how to set up this feature.                                                     |
-| $\mathcal{A}^{\text{sb}}$    | Storage energy assets with binary method          |          | $\mathcal{A}^{\text{sb}} \subseteq \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}$ | This set contains storage assets that use an extra binary variable to avoid charging and discharging simultaneously. Please visit the [how-to section](@ref storage-binary-method-setup) to learn how to set up this feature. |
-| $\mathcal{A}^{\text{max e}}$ | Energy assets with maximum outgoing energy method |          | $\mathcal{A}^{\text{max e}} \subseteq \mathcal{A}$                                           | This set contains assets that use the maximum outgoing energy method. Please visit the [how-to section](@ref max-min-outgoing-energy-setup) to learn how to set up this feature.                                              |
-| $\mathcal{A}^{\text{min e}}$ | Energy assets with minimum outgoing energy method |          | $\mathcal{A}^{\text{min e}} \subseteq \mathcal{A}$                                           | This set contains assets that use the minimum outgoing energy method. Please visit the [how-to section](@ref max-min-outgoing-energy-setup) to learn how to set up this feature.                                              |
+| Name                            | Description                                       | Elements | Superset                                                                                     | Notes                                                                                                                                                                                                                                                           |
+| ------------------------------- | ------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| $\mathcal{A}^{\text{i}}$        | Energy assets with investment method              |          | $\mathcal{A}^{\text{i}}  \subseteq \mathcal{A}$                                              |                                                                                                                                                                                                                                                                 |
+| $\mathcal{A}^{\text{ss}}$       | Energy assets with seasonal method                |          | $\mathcal{A}^{\text{ss}} \subseteq \mathcal{A}$                                              | This set contains assets that use the seasonal method method. Please visit the how-to sections for [seasonal storage](@ref seasonal-setup) and [maximum/minimum outgoing energy limit](@ref max-min-outgoing-energy-setup) to learn how to set up this feature. |
+| $\mathcal{A}^{\text{se}}$       | Storage energy assets with energy method          |          | $\mathcal{A}^{\text{se}} \subseteq \mathcal{A}^{\text{s}}$                                   | This set contains storage assets that use investment energy method. Please visit the [how-to section](@ref storage-investment-setup) to learn how to set up this feature.                                                                                       |
+| $\mathcal{A}^{\text{sb}}$       | Storage energy assets with binary method          |          | $\mathcal{A}^{\text{sb}} \subseteq \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}$ | This set contains storage assets that use an extra binary variable to avoid charging and discharging simultaneously. Please visit the [how-to section](@ref storage-binary-method-setup) to learn how to set up this feature.                                   |
+| $\mathcal{A}^{\text{max e}}$    | Energy assets with maximum outgoing energy method |          | $\mathcal{A}^{\text{max e}} \subseteq \mathcal{A}$                                           | This set contains assets that use the maximum outgoing energy method. Please visit the [how-to section](@ref max-min-outgoing-energy-setup) to learn how to set up this feature.                                                                                |
+| $\mathcal{A}^{\text{min e}}$    | Energy assets with minimum outgoing energy method |          | $\mathcal{A}^{\text{min e}} \subseteq \mathcal{A}$                                           | This set contains assets that use the minimum outgoing energy method. Please visit the [how-to section](@ref max-min-outgoing-energy-setup) to learn how to set up this feature.                                                                                |
+| $\mathcal{A}^{\text{uc}}$       | Energy assets with unit commitment method         |          | $\mathcal{A}^{\text{uc}}  \subseteq \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{p}}$     | This set contains conversion and production assets that have a unit commitment method. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                                                       |
+| $\mathcal{A}^{\text{uc basic}}$ | Energy assets with a basic unit commitment method |          | $\mathcal{A}^{\text{uc basic}}  \subseteq \mathcal{A}^{\text{uc}}$                           | This set contains the assets that have a basic unit commitment method. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                                                                       |
+| $\mathcal{A}^{\text{ramp}}$     | Energy assets with ramping method                 |          | $\mathcal{A}^{\text{ramp}}  \subseteq \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{p}}$   | This set contains conversion and production assets that have a ramping method. Please visit the [how-to section](@ref ramping-setup) to learn how to set up this feature.                                                                                       |
 
 ### Sets for Flows
 
@@ -109,6 +112,16 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{max energy}}_{a,p}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}$                      | Maximum outgoing inter-temporal energy value of asset $a$                                      | [MWh]  |
 | $p^{\text{min energy}}_{a,p}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}$                      | Minimum outgoing inter-temporal energy value of asset $a$                                      | [MWh]  |
 
+#### Extra Parameters for Producers and Conversion Assets
+
+| Name                                 | Domain           | Domains of Indices                | Description                                                                                                  | Units          |
+| ------------------------------------ | ---------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------ | -------------- |
+| $p^{\text{min operating point}}_{a}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset $a$ | [p.u.]         |
+| $p^{\text{units on cost}}_{a}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Objective function coefficient on `units_on` variable. e.g., no-load cost or idling cost of asset $a$        | [kEUR/h/units] |
+| $p^{\text{init units}}_{a}$          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Initial number of units of asset $a$                                                                         | [units]        |
+| $p^{\text{max ramp up}}_{a}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}$ | Maximum ramping up rate as a portion of the capacity of asset $a$                                            | [p.u./h]       |
+| $p^{\text{max ramp down}}_{a}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}$ | Maximum ramping down rate as a portion of the capacity of asset $a$                                          | [p.u./h]       |
+
 ### Parameter for Flows
 
 | Name                                        | Domain           | Domains of Indices                                                | Description                                                                                | Units          |
@@ -148,6 +161,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | $v^{\text{intra-storage}}_{a,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Intra storage level (within a representative period) for storage asset $a$, representative period $k$, and timestep block $b_k$ | [MWh]   |
 | $v^{\text{inter-storage}}_{a,p}$     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}$, $p \in \mathcal{P}$                                                           | Inter storage level (between representative periods) for storage asset $a$ and period $p$                                       | [MWh]   |
 | $v^{\text{is charging}}_{a,k,b_k}$   | $\{0, 1\}$       | $a \in \mathcal{A}^{\text{sb}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$                                  | If an storage asset $a$ is charging or not in representative period $k$ and timestep block $b_k$                                | [-]     |
+| $v^{\text{units on}}_{a,k,b_k}$      | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc}}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$                                  | Number of units ON of asset $a$ in representative period $k$ and timestep block $b_k$                                           | [units] |
 
 ## [Objective Function](@id math-objective-function)
 
@@ -156,7 +170,7 @@ Objective function:
 ```math
 \begin{aligned}
 \text{{minimize}} \quad & assets\_investment\_cost + flows\_investment\_cost \\
-                        & + flows\_variable\_cost
+                        & + flows\_variable\_cost + unit\_on\_cost
 \end{aligned}
 ```
 
@@ -166,7 +180,8 @@ Where:
 \begin{aligned}
 assets\_investment\_cost &= \sum_{a \in \mathcal{A}^{\text{i}} } p^{\text{inv cost}}_{a} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \\ &+  \sum_{a \in \mathcal{A}^{\text{se}} \cap \mathcal{A}^{\text{i}} } p^{\text{inv cost energy}}_{a} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{inv energy}}_{a}   \\
 flows\_investment\_cost &= \sum_{f \in \mathcal{F}^{\text{ti}}} p^{\text{inv cost}}_{f} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \\
-flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{k \in \mathcal{K}} \sum_{b_k \in \mathcal{B_k}} p^{\text{rp weight}}_{k} \cdot p^{\text{variable cost}}_{f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
+flows\_variable\_cost &= \sum_{f \in \mathcal{F}} \sum_{k \in \mathcal{K}} \sum_{b_k \in \mathcal{B_k}} p^{\text{rp weight}}_{k} \cdot p^{\text{variable cost}}_{f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \\
+unit\_on\_cost &= \sum_{a \in \mathcal{A}^{\text{uc}}} \sum_{k \in \mathcal{K}} \sum_{b_k \in \mathcal{B_k}} p^{\text{rp weight}}_{k} \cdot p^{\text{units on cost}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{units on}}_{a,k,b_k}
 \end{aligned}
 ```
 
@@ -226,6 +241,74 @@ Storage assets using the method to avoid charging and discharging simultaneously
 
 ```math
 v^{\text{flow}}_{f,k,b_k} \geq 0 \quad \forall f \notin \mathcal{F}^{\text{t}}, \forall k \in \mathcal{K}, \forall b_k \in \mathcal{B_k}
+```
+
+### [Unit Commitment Constraints](@id uc-constraints)
+
+Production and conversion assets within the set $\mathcal{A}^{\text{uc}}$ will contain the unit commitment constraints in the model. These constraints are based on the work of [Morales-España et al. (2013)](https://ieeexplore.ieee.org/document/6485014) and [Morales-España et al. (2014)](https://ieeexplore.ieee.org/document/6514884).
+
+The current version of the code only incorporates a basic unit commitment version of the constraints (i.e., utilizing only the unit commitment variable $v^{\text{units on}}$). However, upcoming versions will include more detailed constraints, incorporating startup and shutdown variables.
+
+For the unit commitment constraints, we define the following expression for the flow that is above the minimum operating point of the asset:
+
+```math
+e^{\text{flow above min}}_{a,k,b_k} = \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{min operating point}}_{a} \cdot v^{\text{on}}_{a,k,b_k}  \quad
+\\ \\ \forall a \in \mathcal{A}^{\text{uc}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+```
+
+#### Limit to the units on variable
+
+```math
+v^{\text{on}}_{a,k,b_k} \leq p^{\text{init units}}_{a} + v^{\text{inv}}_{a}  \quad
+\\ \\ \forall a \in \mathcal{A}^{\text{uc}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+```
+
+#### Maximum output flow above the minimum operating point
+
+```math
+e^{\text{flow above min}}_{a,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(1 - p^{\text{min operating point}}_{a} \right) \cdot v^{\text{on}}_{a,k,b_k}  \quad
+\\ \\ \forall a \in \mathcal{A}^{\text{uc basic}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+```
+
+#### Minimum output flow above the minimum operating point
+
+```math
+e^{\text{flow above min}}_{a,k,b_k} \geq 0  \quad
+\\ \\ \forall a \in \mathcal{A}^{\text{uc basic}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+```
+
+### [Ramping Constraints](@id ramp-constraints)
+
+Ramping constraints restrict the rate at which the output flow of a production or conversion asset can change. If the asset is part of the unit commitment set (e.g., $\mathcal{A}^{\text{uc}}$), the ramping limits apply to the flow above the minimum output, but if it is not, the ramping limits apply to the total output flow.
+
+Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](https://link.springer.com/article/10.1007/s10107-015-0919-9). Also, please note that since the current version of the code only handles the basic unit commitment implementation, the ramping constraints are applied to the assets in the set $\mathcal{A}^{\text{uc basic}}$.
+
+#### Maximum ramp-up rate limit with unit commitment method
+
+```math
+e^{\text{flow above min}}_{a,k,b_k} - e^{\text{flow above min}}_{a,k,b_k-1} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp up}}_{a} \cdot v^{\text{on}}_{a,k,b_k}  \quad
+\\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \cap \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+```
+
+#### Maximum ramp-down rate limit with unit commitment method
+
+```math
+e^{\text{flow above min}}_{a,k,b_k} - e^{\text{flow above min}}_{a,k,b_k-1} \geq - p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp down}}_{a} \cdot v^{\text{on}}_{a,k,b_k}  \quad
+\\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \cap \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+```
+
+#### Maximum ramp-up rate limit without unit commitment method
+
+```math
+\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \leq p^{\text{max ramp up}}_{a} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)  \quad
+\\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \setminus \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+```
+
+#### Maximum ramp-down rate limit without unit commitment method
+
+```math
+\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \geq - p^{\text{max ramp down}}_{a} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)  \quad
+\\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \setminus \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
 ### Constraints for Energy Consumer Assets
@@ -477,6 +560,12 @@ These constraints apply to assets in a group using the investment method $\mathc
 ```
 
 ## [References](@id math-references)
+
+Damcı-Kurt, P., Küçükyavuz, S., Rajan, D., Atamtürk, A., 2016. A polyhedral study of production ramping. Math. Program. 158, 175–205. doi: 10.1007/s10107-015-0919-9.
+
+Morales-España, G., Ramos, A., García-González, J., 2014. An MIP Formulation for Joint Market-Clearing of Energy and Reserves Based on Ramp Scheduling. IEEE Transactions on Power Systems 29, 476-488. doi: 10.1109/TPWRS.2013.2259601.
+
+Morales-España, G., Latorre, J. M., Ramos, A., 2013. Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem. IEEE Transactions on Power Systems 28, 4897-4908. doi: 10.1109/TPWRS.2013.2251373.
 
 Tejada-Arango, D.A., Domeshek, M., Wogrin, S., Centeno, E., 2018. Enhanced representative days and system states modeling for energy storage investment analysis. IEEE Transactions on Power Systems 33, 6534–6544. doi:10.1109/TPWRS.2018.2819578.
 
