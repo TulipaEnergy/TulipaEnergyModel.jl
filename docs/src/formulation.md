@@ -1,7 +1,7 @@
 # [Mathematical Formulation](@id formulation)
 
 This section shows the mathematical formulation of _TulipaEnergyModel.jl_, assuming that the temporal definition of timesteps is the same for all the elements in the model.\
-The complete mathematical formulation, including variable temporal resolutions, is also freely available in the [preprint](https://arxiv.org/pdf/2309.07711). In addition, the [concepts section](@ref concepts) also shows how the model handles the [`flexible time resolution`](@ref flex-time-res).
+The [concepts section](@ref concepts) shows how the model handles the [`flexible temporal resolution`](@ref flex-time-res) of assets and flows in the model.
 
 ## [Sets](@id math-sets)
 
@@ -114,13 +114,13 @@ In addition, the following subsets represent methods for incorporating additiona
 
 #### Extra Parameters for Producers and Conversion Assets
 
-| Name                                 | Domain           | Domains of Indices                | Description                                                                                                  | Units            |
-| ------------------------------------ | ---------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------- |
-| $p^{\text{min operating point}}_{a}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset $a$ | [p.u.]           |
-| $p^{\text{units on cost}}_{a}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Objective function coefficient on `units_on` variable. e.g., no-load cost or idling cost of asset $a$        | [kEUR/h/unit_on] |
-| $p^{\text{init units}}_{a}$          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Initial number of units of asset $a$                                                                         | [units]          |
-| $p^{\text{max ramp up}}_{a}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}$ | Maximum ramping up rate as a portion of the capacity of asset $a$                                            | [p.u.]           |
-| $p^{\text{max ramp down}}_{a}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}$ | Maximum ramping down rate as a portion of the capacity of asset $a$                                          | [p.u.]           |
+| Name                                 | Domain           | Domains of Indices                | Description                                                                                                  | Units          |
+| ------------------------------------ | ---------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------ | -------------- |
+| $p^{\text{min operating point}}_{a}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset $a$ | [p.u.]         |
+| $p^{\text{units on cost}}_{a}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Objective function coefficient on `units_on` variable. e.g., no-load cost or idling cost of asset $a$        | [kEUR/h/units] |
+| $p^{\text{init units}}_{a}$          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Initial number of units of asset $a$                                                                         | [units]        |
+| $p^{\text{max ramp up}}_{a}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}$ | Maximum ramping up rate as a portion of the capacity of asset $a$                                            | [p.u./h]       |
+| $p^{\text{max ramp down}}_{a}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}$ | Maximum ramping down rate as a portion of the capacity of asset $a$                                          | [p.u./h]       |
 
 ### Parameter for Flows
 
@@ -245,6 +245,10 @@ v^{\text{flow}}_{f,k,b_k} \geq 0 \quad \forall f \notin \mathcal{F}^{\text{t}}, 
 
 ### [Unit Commitment Constraints](@id uc-constraints)
 
+Production and conversion assets within the set $\mathcal{A}^{\text{uc}}$ will contain the unit commitment constraints in the model. These constraints are based on the work of [Morales-España et al. (2013)](https://ieeexplore.ieee.org/document/6485014) and [Morales-España et al. (2014)](https://ieeexplore.ieee.org/document/6514884).
+
+The current version of the code only incorporates a basic unit commitment version of the constraints (i.e., utilizing only the unit commitment variable $v^{\text{units on}}$). However, upcoming versions will include more detailed constraints, incorporating startup and shutdown variables.
+
 For the unit commitment constraints, we define the following expression for the flow that is above the minimum operating point of the asset:
 
 ```math
@@ -275,9 +279,11 @@ e^{\text{flow above min}}_{a,k,b_k} \geq 0  \quad
 
 ### [Ramping Constraints](@id ramp-constraints)
 
-#### Maximum ramp-up rate limit with unit commitment method
+Ramping constraints restrict the rate at which the output flow of a production or conversion asset can change. If the asset is part of the unit commitment set (e.g., $\mathcal{A}^{\text{uc}}$), the ramping limits apply to the flow above the minimum output, but if it is not, the ramping limits apply to the total output flow.
 
-to the flow above the operating point
+Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](https://link.springer.com/article/10.1007/s10107-015-0919-9). Also, please note that since the current version of the code only handles the basic unit commitment implementation, the ramping constraints are applied to the assets in the set $\mathcal{A}^{\text{uc basic}}$.
+
+#### Maximum ramp-up rate limit with unit commitment method
 
 ```math
 e^{\text{flow above min}}_{a,k,b_k} - e^{\text{flow above min}}_{a,k,b_k-1} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp up}}_{a} \cdot v^{\text{on}}_{a,k,b_k}  \quad
@@ -286,8 +292,6 @@ e^{\text{flow above min}}_{a,k,b_k} - e^{\text{flow above min}}_{a,k,b_k-1} \leq
 
 #### Maximum ramp-down rate limit with unit commitment method
 
-to the flow above the operating point
-
 ```math
 e^{\text{flow above min}}_{a,k,b_k} - e^{\text{flow above min}}_{a,k,b_k-1} \geq - p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp down}}_{a} \cdot v^{\text{on}}_{a,k,b_k}  \quad
 \\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \cap \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
@@ -295,16 +299,12 @@ e^{\text{flow above min}}_{a,k,b_k} - e^{\text{flow above min}}_{a,k,b_k-1} \geq
 
 #### Maximum ramp-up rate limit without unit commitment method
 
-to the flow above the operating point
-
 ```math
 \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \leq p^{\text{max ramp up}}_{a} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)  \quad
 \\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \setminus \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
 #### Maximum ramp-down rate limit without unit commitment method
-
-to the flow above the operating point
 
 ```math
 \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \geq - p^{\text{max ramp down}}_{a} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)  \quad
@@ -560,6 +560,12 @@ These constraints apply to assets in a group using the investment method $\mathc
 ```
 
 ## [References](@id math-references)
+
+Damcı-Kurt, P., Küçükyavuz, S., Rajan, D., Atamtürk, A., 2016. A polyhedral study of production ramping. Math. Program. 158, 175–205. doi: 10.1007/s10107-015-0919-9.
+
+Morales-España, G., Ramos, A., García-González, J., 2014. An MIP Formulation for Joint Market-Clearing of Energy and Reserves Based on Ramp Scheduling. IEEE Transactions on Power Systems 29, 476-488. doi: 10.1109/TPWRS.2013.2259601.
+
+Morales-España, G., Latorre, J. M., Ramos, A., 2013. Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem. IEEE Transactions on Power Systems 28, 4897-4908. doi: 10.1109/TPWRS.2013.2251373.
 
 Tejada-Arango, D.A., Domeshek, M., Wogrin, S., Centeno, E., 2018. Enhanced representative days and system states modeling for energy storage investment analysis. IEEE Transactions on Power Systems 33, 6534–6544. doi:10.1109/TPWRS.2018.2819578.
 
