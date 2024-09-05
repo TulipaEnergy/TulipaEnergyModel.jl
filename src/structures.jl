@@ -80,7 +80,7 @@ mutable struct GraphAssetData
     ramping::Dict{Int,Bool}
     max_ramp_up::Dict{Int,Union{Missing,Float64}}
     max_ramp_down::Dict{Int,Union{Missing,Float64}}
-    timeframe_profiles::Dict{Int,Dict{String,Vector{Float64}}}
+    timeframe_profiles::Dict{Int,Dict{Int,Dict{String,Vector{Float64}}}}
     rep_periods_profiles::Dict{Int,Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}}
     timeframe_partitions::Dict{Int,Vector{PeriodsBlock}}
     rep_periods_partitions::Dict{Int,Dict{Int,Vector{TimestepsBlock}}}
@@ -127,7 +127,7 @@ mutable struct GraphAssetData
         max_ramp_up,
         max_ramp_down,
     )
-        timeframe_profiles = Dict{Int,Dict{String,Vector{Float64}}}()
+        timeframe_profiles = Dict{Int,Dict{Int,Dict{String,Vector{Float64}}}}()
         rep_periods_profiles = Dict{Int,Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}}()
         timeframe_partitions = Dict{Int,Vector{TimestepsBlock}}()
         rep_periods_partitions = Dict{Int,Dict{Int,Vector{TimestepsBlock}}}()

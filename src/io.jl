@@ -329,9 +329,13 @@ function create_internal_structures(connection)
         for ((year,), df) in pairs(gp)
             profiles = graph[asset_profile_row.asset].timeframe_profiles
             if !haskey(profiles, year)
-                profiles[year] = Dict{String,Vector{Float64}}()
+                profiles[year] = Dict{Int,Dict{String,Vector{Float64}}}()
             end
-            profiles[year][asset_profile_row.profile_type] = df.value
+            if !haskey(profiles[year], asset_profile_row.commission_year)
+                profiles[year][asset_profile_row.commission_year] = Dict{String,Vector{Float64}}()
+            end
+            profiles[year][asset_profile_row.commission_year][asset_profile_row.profile_type] =
+                df.value
         end
     end
 
