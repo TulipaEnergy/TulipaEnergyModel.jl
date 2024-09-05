@@ -1,5 +1,5 @@
 ,,type,name
-asset,year,profile_type,profile_name
+asset,commission_year,profile_type,profile_name
 NL_E_Demand,2030,demand,demand-NL_E_Demand
 NL_Wind_Onshore,2030,availability,availability-NL_Wind_Onshore
 NL_Wind_Offshore,2030,availability,availability-NL_Wind_Offshore

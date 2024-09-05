@@ -52,7 +52,7 @@ const schemas = (
             :max_ramp_down => "DOUBLE",                      # Maximum ramping down rate as a portion of the capacity of asset [p.u.]
         ),
 
-        # Schema for the assets-profiles.csv file.
+        # Schema for the assets-profiles.csv and assets-timeframe-profiles.csv file.
         profiles_reference = OrderedDict(
             :asset => "VARCHAR",               # Asset name
             :commission_year => "INTEGER",
