@@ -20,13 +20,13 @@ const schemas = (
             :name => "VARCHAR",                              # Name of Asset (geographical?)
             :active => "BOOLEAN",                            # Active or decomissioned
             :year => "INTEGER",                              # Year
+            :commission_year => "INTEGER",                   # Year of commissioning
             :investable => "BOOLEAN",                        # Whether able to invest
             :investment_integer => "BOOLEAN",                # Whether investment is integer or continuous
             :investment_cost => "DOUBLE",                    # kEUR/MW/year
             :investment_limit => "DOUBLE",                   # MW (Missing -> no limit)
             :capacity => "DOUBLE",                           # MW
             :initial_capacity => "DOUBLE",                   # MW
-            :commission_year => "INTEGER",                   # Year of commissioning
             :peak_demand => "DOUBLE",                        # MW
             :consumer_balance_sense => "VARCHAR",            # Sense of the consumer balance constraint (default ==)
             :is_seasonal => "BOOLEAN",                       # Whether seasonal storage (e.g. hydro) or not (e.g. battery)
