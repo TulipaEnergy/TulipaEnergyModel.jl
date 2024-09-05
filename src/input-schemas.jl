@@ -26,6 +26,7 @@ const schemas = (
             :investment_limit => "DOUBLE",                   # MW (Missing -> no limit)
             :capacity => "DOUBLE",                           # MW
             :initial_capacity => "DOUBLE",                   # MW
+            :commission_year => "INTEGER",                   # Year of commissioning
             :peak_demand => "DOUBLE",                        # MW
             :consumer_balance_sense => "VARCHAR",            # Sense of the consumer balance constraint (default ==)
             :is_seasonal => "BOOLEAN",                       # Whether seasonal storage (e.g. hydro) or not (e.g. battery)
@@ -54,7 +55,7 @@ const schemas = (
         # Schema for the assets-profiles.csv file.
         profiles_reference = OrderedDict(
             :asset => "VARCHAR",               # Asset name
-            :year => "INTEGER",
+            :commission_year => "INTEGER",
             :profile_type => "VARCHAR",        # Type of profile, used to determine dataframe with source profile
             :profile_name => "VARCHAR",        # Name of profile, used to determine data inside the dataframe
         ),

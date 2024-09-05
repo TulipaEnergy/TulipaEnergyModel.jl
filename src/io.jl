@@ -38,9 +38,9 @@ function create_internal_structures(connection)
 
     years = [
         Year(row.year, row.length, row.is_milestone) for
-        row in TulipaIO.get_table(Val(:raw), connection, "year_data")
+        row in TulipaIO.get_table(Val(:raw), connection, "year_data") if row.is_milestone
     ]
-    years_vector = [year.id for year in years]
+    milestone_years = [year.id for year in years if year.is_milestone]
 
     # Calculate the weights from the "rep_periods_mapping" table in the connection
     weights = Dict(
@@ -53,14 +53,14 @@ function create_internal_structures(connection)
                     GROUP BY rep_period
                     ORDER BY rep_period",
             )
-        ] for year in years_vector
+        ] for year in milestone_years
     )
 
     representative_periods = Dict{Int,Vector{RepresentativePeriod}}(
         year => [
             RepresentativePeriod(weights[year][row.rep_period], row.num_timesteps, row.resolution) for row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data") if
             row.year == year
-        ] for year in years_vector
+        ] for year in milestone_years
     )
 
     # Calculate the total number of periods and then pipe into a Dataframe to get the first value of the df with the num_periods
@@ -79,6 +79,7 @@ function create_internal_structures(connection)
         end
         DuckDB.query(connection, _q)
     end
+
     function _get_stuff(table_name, col; where_pairs...)
         result = _query(table_name, col; where_pairs...)
         Dict(row.year => getproperty(row, Symbol(col)) for row in result)
@@ -216,7 +217,7 @@ function create_internal_structures(connection)
 
     _df = TulipaIO.get_table(connection, "assets_rep_periods_partitions")
     for a in MetaGraphsNext.labels(graph)
-        for year in years_vector
+        for year in milestone_years
             is_active = get(graph[a].active, year, false)
             if !is_active
                 continue
@@ -233,7 +234,7 @@ function create_internal_structures(connection)
 
     _df = TulipaIO.get_table(connection, "flows_rep_periods_partitions")
     for (u, v) in MetaGraphsNext.edge_labels(graph)
-        for year in years_vector
+        for year in milestone_years
             is_active = get(graph[u, v].active, year, false)
             if !is_active
                 continue
@@ -265,7 +266,7 @@ function create_internal_structures(connection)
              WHERE assets_data.is_seasonal
          """
     for row in DuckDB.query(connection, find_assets_partitions_query)
-        for year in years_vector
+        for year in milestone_years
             graph[row.name].timeframe_partitions[year] = _parse_rp_partition(
                 Val(Symbol(row.specification)),
                 row.partition,
@@ -287,9 +288,16 @@ function create_internal_structures(connection)
         for ((rep_period, year), df) in pairs(gp) # Loop over filtered DFs by rep_period, year
             profiles = graph[asset_profile_row.asset].rep_periods_profiles
             if !haskey(profiles, year)
-                profiles[year] = Dict{Tuple{Symbol,Int},Vector{Float64}}()
+                profiles[year] = Dict{Int,Dict{Tuple{Symbol,Int},Vector{Float64}}}()
             end
-            profiles[year][(asset_profile_row.profile_type, rep_period)] = df.value
+            if !haskey(profiles[year], asset_profile_row.commission_year)
+                profiles[year][asset_profile_row.commission_year] =
+                    Dict{Tuple{Symbol,Int},Vector{Float64}}()
+            end
+            profiles[year][asset_profile_row.commission_year][(
+                asset_profile_row.profile_type,
+                rep_period,
+            )] = df.value
         end
     end
 

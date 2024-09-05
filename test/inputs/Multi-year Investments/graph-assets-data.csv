@@ -4,5 +4,5 @@ ocgt,producer,,simple
 ccgt,producer,,simple
 wind,producer,,simple
 solar,producer,,simple
-ens,producer,,simple
-demand,consumer,,simple
+ens,producer,,
+demand,consumer,,

@@ -1,8 +1,9 @@
 ,,type,name
-asset,year,profile_type,profile_name
-wind,2030,availability,availability-wind
-solar,2030,availability,availability-solar
+asset,commission_year,profile_type,profile_name
+wind,2020,availability,availability-wind2020
+wind,2030,availability,availability-wind2030
+solar,2030,availability,availability-solar2030
 demand,2030,demand,demand-demand
-wind,2050,availability,availability-wind
-solar,2050,availability,availability-solar
+wind,2050,availability,availability-wind2050
+solar,2050,availability,availability-solar2050
 demand,2050,demand,demand-demand
