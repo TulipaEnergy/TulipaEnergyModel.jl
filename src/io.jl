@@ -40,7 +40,7 @@ function create_internal_structures(connection)
         Year(row.year, row.length, row.is_milestone) for
         row in TulipaIO.get_table(Val(:raw), connection, "year_data")
     ]
-    years_vector = [year.id for year in years]
+    milestone_years = [year.id for year in years]
 
     # Calculate the weights from the "rep_periods_mapping" table in the connection
     weights = Dict(
@@ -53,14 +53,14 @@ function create_internal_structures(connection)
                     GROUP BY rep_period
                     ORDER BY rep_period",
             )
-        ] for year in years_vector
+        ] for year in milestone_years
     )
 
     representative_periods = Dict{Int,Vector{RepresentativePeriod}}(
         year => [
             RepresentativePeriod(weights[year][row.rep_period], row.num_timesteps, row.resolution) for row in TulipaIO.get_table(Val(:raw), connection, "rep_periods_data") if
             row.year == year
-        ] for year in years_vector
+        ] for year in milestone_years
     )
 
     # Calculate the total number of periods and then pipe into a Dataframe to get the first value of the df with the num_periods
@@ -71,14 +71,17 @@ function create_internal_structures(connection)
     groups = [Group(row...) for row in TulipaIO.get_table(Val(:raw), connection, "groups_data")]
 
     _query(table_name, col; where_pairs...) = begin
+        extra_check = table_name == "assets_data" ? "commission_year = year AND " : ""
         _q = "SELECT year, $col FROM $table_name"
         if length(where_pairs) > 0
             _q *=
                 " WHERE " *
+                extra_check *
                 join(("$k=$(TulipaIO.FmtSQL.fmt_quote(v))" for (k, v) in where_pairs), " AND ")
         end
         DuckDB.query(connection, _q)
     end
+
     function _get_stuff(table_name, col; where_pairs...)
         result = _query(table_name, col; where_pairs...)
         Dict(row.year => getproperty(row, Symbol(col)) for row in result)
@@ -216,7 +219,7 @@ function create_internal_structures(connection)
 
     _df = TulipaIO.get_table(connection, "assets_rep_periods_partitions")
     for a in MetaGraphsNext.labels(graph)
-        for year in years_vector
+        for year in milestone_years
             is_active = get(graph[a].active, year, false)
             if !is_active
                 continue
@@ -233,7 +236,7 @@ function create_internal_structures(connection)
 
     _df = TulipaIO.get_table(connection, "flows_rep_periods_partitions")
     for (u, v) in MetaGraphsNext.edge_labels(graph)
-        for year in years_vector
+        for year in milestone_years
             is_active = get(graph[u, v].active, year, false)
             if !is_active
                 continue
@@ -265,7 +268,7 @@ function create_internal_structures(connection)
              WHERE assets_data.is_seasonal
          """
     for row in DuckDB.query(connection, find_assets_partitions_query)
-        for year in years_vector
+        for year in milestone_years
             graph[row.name].timeframe_partitions[year] = _parse_rp_partition(
                 Val(Symbol(row.specification)),
                 row.partition,
@@ -277,8 +280,11 @@ function create_internal_structures(connection)
     _df = TulipaIO.get_table(connection, "profiles_rep_periods")
     for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_profiles")  # row = asset, profile_type, profile_name
         gp = DataFrames.groupby( # 2. group by rep_period, year
-            filter( # 1. Filter on profile_name
-                :profile_name => ==(asset_profile_row.profile_name),
+            filter( # 1. Filter on profile_name, year
+                [:profile_name, :year] =>
+                    (name, year) ->
+                        name == asset_profile_row.profile_name &&
+                            year == asset_profile_row.commission_year,
                 _df;
                 view = true,
             ),
@@ -312,7 +318,10 @@ function create_internal_structures(connection)
     for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_timeframe_profiles") # row = asset, profile_type, profile_name
         gp = DataFrames.groupby(
             filter( # Filter
-                :profile_name => ==(asset_profile_row.profile_name),
+                [:profile_name, :year] =>
+                    (name, year) ->
+                        name == asset_profile_row.profile_name &&
+                            year == asset_profile_row.commission_year,
                 _df;
                 view = true,
             ),

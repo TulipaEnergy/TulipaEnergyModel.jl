@@ -20,6 +20,7 @@ const schemas = (
             :name => "VARCHAR",                              # Name of Asset (geographical?)
             :active => "BOOLEAN",                            # Active or decomissioned
             :year => "INTEGER",                              # Year
+            :commission_year => "INTEGER",                   # Year of commissioning
             :investable => "BOOLEAN",                        # Whether able to invest
             :investment_integer => "BOOLEAN",                # Whether investment is integer or continuous
             :investment_cost => "DOUBLE",                    # kEUR/MW/year
@@ -51,10 +52,10 @@ const schemas = (
             :max_ramp_down => "DOUBLE",                      # Maximum ramping down rate as a portion of the capacity of asset [p.u.]
         ),
 
-        # Schema for the assets-profiles.csv file.
+        # Schema for the assets-profiles.csv and assets-timeframe-profiles.csv file.
         profiles_reference = OrderedDict(
             :asset => "VARCHAR",               # Asset name
-            :year => "INTEGER",
+            :commission_year => "INTEGER",
             :profile_type => "VARCHAR",        # Type of profile, used to determine dataframe with source profile
             :profile_name => "VARCHAR",        # Name of profile, used to determine data inside the dataframe
         ),
