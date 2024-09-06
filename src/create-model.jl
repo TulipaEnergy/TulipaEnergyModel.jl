@@ -282,9 +282,7 @@ function add_expression_terms_intra_rp_constraints!(
             for i in eachindex(workspace)
                 workspace[i] = JuMP.AffExpr(0.0)
             end
-            if conditions_to_add_min_outgoing_flow_duration
-                outgoing_flow_durations = Vector()
-            end
+            outgoing_flow_durations = LARGE_NUMBER
             # Store the corresponding flow in the workspace
             for row in eachrow(grouped_flows[(year, rep_period, asset)])
                 asset = row[case.asset_match]
@@ -308,7 +306,7 @@ function add_expression_terms_intra_rp_constraints!(
                         resolution * efficiency_coefficient,
                     )
                     if conditions_to_add_min_outgoing_flow_duration
-                        push!(outgoing_flow_durations, length(row.timesteps_block))
+                        outgoing_flow_durations = min(outgoing_flow_durations, length(row.timesteps_block))
                     end
                 end
             end
@@ -316,7 +314,7 @@ function add_expression_terms_intra_rp_constraints!(
             for row in eachrow(sub_df)
                 row[case.col_name] = agg(@view workspace[row.timesteps_block])
                 if conditions_to_add_min_outgoing_flow_duration
-                    row[:min_outgoing_flow_duration] = minimum(outgoing_flow_durations)
+                    row[:min_outgoing_flow_duration] = outgoing_flow_durations
                 end
             end
         end
