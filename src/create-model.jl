@@ -246,6 +246,7 @@ function add_expression_terms_intra_rp_constraints!(
     graph;
     use_highest_resolution = true,
     multiply_by_duration = true,
+    add_min_outgoing_flow_duration = false,
 )
     # Aggregating function: If the duration should NOT be taken into account, we have to compute unique appearances of the flows.
     # Otherwise, just use the sum
@@ -266,6 +267,11 @@ function add_expression_terms_intra_rp_constraints!(
 
     for case in cases
         df_cons[!, case.col_name] .= JuMP.AffExpr(0.0)
+        conditions_to_add_min_outgoing_flow_duration =
+            add_min_outgoing_flow_duration && case.col_name == :outgoing_flow
+        if conditions_to_add_min_outgoing_flow_duration
+            df_cons[!, :min_outgoing_flow_duration] .= 1
+        end
         grouped_flows = DataFrames.groupby(df_flows, [:year, :rep_period, case.asset_match])
         for ((year, rep_period, asset), sub_df) in pairs(grouped_cons)
             if !haskey(grouped_flows, (year, rep_period, asset))
@@ -275,6 +281,9 @@ function add_expression_terms_intra_rp_constraints!(
                 multiply_by_duration ? representative_periods[year][rep_period].resolution : 1.0
             for i in eachindex(workspace)
                 workspace[i] = JuMP.AffExpr(0.0)
+            end
+            if conditions_to_add_min_outgoing_flow_duration
+                outgoing_flow_durations = Vector()
             end
             # Store the corresponding flow in the workspace
             for row in eachrow(grouped_flows[(year, rep_period, asset)])
@@ -298,11 +307,17 @@ function add_expression_terms_intra_rp_constraints!(
                         row.flow,
                         resolution * efficiency_coefficient,
                     )
+                    if conditions_to_add_min_outgoing_flow_duration
+                        push!(outgoing_flow_durations, length(row.timesteps_block))
+                    end
                 end
             end
             # Sum the corresponding flows from the workspace
             for row in eachrow(sub_df)
                 row[case.col_name] = agg(@view workspace[row.timesteps_block])
+                if conditions_to_add_min_outgoing_flow_duration
+                    row[:min_outgoing_flow_duration] = minimum(outgoing_flow_durations)
+                end
             end
         end
     end
@@ -781,6 +796,7 @@ function create_model(
             graph;
             use_highest_resolution = true,
             multiply_by_duration = false,
+            add_min_outgoing_flow_duration = true,
         )
         if !isempty(dataframes[:units_on_and_outflows])
             add_expression_terms_intra_rp_constraints!(
@@ -791,6 +807,7 @@ function create_model(
                 graph;
                 use_highest_resolution = true,
                 multiply_by_duration = false,
+                add_min_outgoing_flow_duration = true,
             )
         end
         add_expression_terms_inter_rp_constraints!(

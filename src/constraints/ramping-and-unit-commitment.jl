@@ -96,6 +96,9 @@ function add_ramping_constraints!(
     # We filter and group the dataframe per asset and representative period
     df_grouped = DataFrames.groupby(df_units_on_and_outflows, [:asset, :year, :rep_period])
 
+    # get the units on column to get easier the index - 1, i.e., the previous one
+    units_on = df_units_on_and_outflows.units_on
+
     #- Maximum ramp-up rate limit to the flow above the operating point when having unit commitment variables
     for ((a, y, rp), sub_df) in pairs(df_grouped)
         if !(a ∈ Ar[y] && a ∈ Auc_basic[y])
@@ -107,9 +110,10 @@ function add_ramping_constraints!(
                 flow_above_min_operating_point[row.index] -
                 flow_above_min_operating_point[row.index-1] ≤
                 graph[row.asset].max_ramp_up[row.year] *
+                row.min_outgoing_flow_duration *
                 profile_times_capacity[row.index] *
-                row.units_on,
-                base_name = "max_ramp_up_with_unit_commitment[$a,$rp,$(row.timesteps_block)]"
+                units_on[row.index],
+                base_name = "max_ramp_up_with_unit_commitment[$a,$y,$rp,$(row.timesteps_block)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if k > 1
         ]
     end
@@ -125,8 +129,9 @@ function add_ramping_constraints!(
                 flow_above_min_operating_point[row.index] -
                 flow_above_min_operating_point[row.index-1] ≥
                 -graph[row.asset].max_ramp_down[row.year] *
+                row.min_outgoing_flow_duration *
                 profile_times_capacity[row.index] *
-                row.units_on,
+                units_on[row.index-1],
                 base_name = "max_ramp_down_with_unit_commitment[$a,$y,$rp,$(row.timesteps_block)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if k > 1
         ]
@@ -151,6 +156,7 @@ function add_ramping_constraints!(
                 outgoing_flow_highest_out_resolution[row.index] -
                 outgoing_flow_highest_out_resolution[row.index-1] ≤
                 graph[row.asset].max_ramp_up[row.year] *
+                row.min_outgoing_flow_duration *
                 assets_profile_times_capacity_out[row.index],
                 base_name = "max_ramp_up_without_unit_commitment[$a,$y,$rp,$(row.timesteps_block)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if
@@ -169,6 +175,7 @@ function add_ramping_constraints!(
                 outgoing_flow_highest_out_resolution[row.index] -
                 outgoing_flow_highest_out_resolution[row.index-1] ≥
                 -graph[row.asset].max_ramp_down[row.year] *
+                row.min_outgoing_flow_duration *
                 assets_profile_times_capacity_out[row.index],
                 base_name = "max_ramp_down_without_unit_commitment[$a,$y,$rp,$(row.timesteps_block)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if
