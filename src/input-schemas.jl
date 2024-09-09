@@ -48,8 +48,8 @@ const schemas = (
             :unit_commitment_integer => "BOOLEAN",           # Whether the unit commitment variables are integer or not
             :min_operating_point => "DOUBLE",                # Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset [p.u.]
             :ramping => "BOOLEAN",                           # Whether asset has ramping constraints
-            :max_ramp_up => "DOUBLE",                        # Maximum ramping up rate as a portion of the capacity of asset [p.u.]
-            :max_ramp_down => "DOUBLE",                      # Maximum ramping down rate as a portion of the capacity of asset [p.u.]
+            :max_ramp_up => "DOUBLE",                        # Maximum ramping up rate as a portion of the capacity of asset [p.u./h]
+            :max_ramp_down => "DOUBLE",                      # Maximum ramping down rate as a portion of the capacity of asset [p.u./h]
         ),
 
         # Schema for the assets-profiles.csv and assets-timeframe-profiles.csv file.

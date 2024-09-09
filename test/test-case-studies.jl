@@ -57,7 +57,7 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     energy_problem = run_scenario(connection; optimizer = optimizer, parameters = parameters)
-    @test energy_problem.objective_value ≈ 297314.921927 atol = 1e-5
+    @test energy_problem.objective_value ≈ 293074.923309 atol = 1e-5
 end
 
 @testset "Tiny Variable Resolution Case Study" begin
