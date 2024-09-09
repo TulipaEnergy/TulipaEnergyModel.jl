@@ -53,7 +53,9 @@ mutable struct GraphAssetData
     active::Dict{Int,Bool}
     investable::Dict{Int,Bool}
     investment_integer::Dict{Int,Bool}
+    technical_lifetime::Dict{Int,Float64}
     investment_cost::Dict{Int,Float64}
+    fixed_cost::Dict{Int,Float64}
     investment_limit::Dict{Int,Union{Missing,Float64}}
     capacity::Dict{Int,Float64}
     initial_capacity::Dict{Int,Float64}
@@ -99,7 +101,9 @@ mutable struct GraphAssetData
         active,
         investable,
         investment_integer,
+        technical_lifetime,
         investment_cost,
+        fixed_cost,
         investment_limit,
         capacity,
         initial_capacity,
@@ -137,7 +141,9 @@ mutable struct GraphAssetData
             active,
             investable,
             investment_integer,
+            technical_lifetime,
             investment_cost,
+            fixed_cost,
             investment_limit,
             capacity,
             initial_capacity,
