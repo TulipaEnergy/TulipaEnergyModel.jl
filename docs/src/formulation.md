@@ -75,7 +75,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{inv cost}}_{a}$                   | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                               | Investment cost of a unit of asset $a$                                                      | [kEUR/MW/year] |
 | $p^{\text{inv limit}}_{a}$                  | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                               | Investment potential of asset $a$                                                           | [MW]           |
 | $p^{\text{capacity}}_{a}$                   | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                               | Capacity per unit of asset $a$                                                              | [MW]           |
-| $p^{\text{init capacity}}_{a}$              | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                               | Initial capacity of asset $a$                                                               | [MW]           |
+| $p^{\text{init units}}_{a}$                 | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$                                               | Initial number of units of asset $a$                                                        | [units]        |
 | $p^{\text{availability profile}}_{a,k,b_k}$ | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Availability profile of asset $a$ in the representative period $k$ and timestep block $b_k$ | [p.u.]         |
 | $p^{\text{group}}_{a}$                      | $\mathcal{G}^{\text{a}}$ | $a \in \mathcal{A}$                                               | Group $g$ to which the asset $a$ belongs                                                    | [-]            |
 
@@ -117,7 +117,6 @@ In addition, the following subsets represent methods for incorporating additiona
 | ------------------------------------ | ---------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------ | -------------- |
 | $p^{\text{min operating point}}_{a}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset $a$ | [p.u.]         |
 | $p^{\text{units on cost}}_{a}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Objective function coefficient on `units_on` variable. e.g., no-load cost or idling cost of asset $a$        | [kEUR/h/units] |
-| $p^{\text{init units}}_{a}$          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A^{\text{uc}}}$   | Initial number of units of asset $a$                                                                         | [units]        |
 | $p^{\text{max ramp up}}_{a}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}$ | Maximum ramping up rate as a portion of the capacity of asset $a$                                            | [p.u./h]       |
 | $p^{\text{max ramp down}}_{a}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}$ | Maximum ramping down rate as a portion of the capacity of asset $a$                                          | [p.u./h]       |
 
@@ -192,7 +191,7 @@ unit\_on\_cost &= \sum_{a \in \mathcal{A}^{\text{uc}}} \sum_{k \in \mathcal{K}} 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)  \quad
+\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} + v^{\text{inv}}_{a} \right)  \quad
 \\ \\ \forall a \in \mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}} \right) \cup \mathcal{A}^{\text{p}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
@@ -201,14 +200,14 @@ Storage assets using the method to avoid charging and discharging simultaneously
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{inv limit}}_{a} \right) \cdot \left(1 - v^{\text{is charging}}_{a,k,b_k} \right) \quad
+\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a} + p^{\text{inv limit}}_{a} \right) \cdot \left(1 - v^{\text{is charging}}_{a,k,b_k} \right) \quad
 \\ \\ \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} \cdot \left(1 - v^{\text{is charging}}_{a,k,b_k} \right) + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right) \quad
+\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} \cdot \left(1 - v^{\text{is charging}}_{a,k,b_k} \right) + v^{\text{inv}}_{a} \right) \quad
 \\ \\ \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
@@ -217,7 +216,7 @@ Storage assets using the method to avoid charging and discharging simultaneously
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)  \quad
+\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} + v^{\text{inv}}_{a} \right)  \quad
 \\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
@@ -226,13 +225,13 @@ Storage assets using the method to avoid charging and discharging simultaneously
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{inv limit}}_{a} \right)  \cdot v^{\text{is charging}}_{a,k,b_k} \quad \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a} + p^{\text{inv limit}}_{a} \right)  \cdot v^{\text{is charging}}_{a,k,b_k} \quad \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} \cdot v^{\text{is charging}}_{a,k,b_k} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)   \quad \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} \cdot v^{\text{is charging}}_{a,k,b_k} + v^{\text{inv}}_{a} \right)   \quad \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
 
@@ -301,14 +300,14 @@ e^{\text{flow above min}}_{a,k,b_k} - e^{\text{flow above min}}_{a,k,b_k-1} \geq
 #### Maximum ramp-up rate limit without unit commitment method
 
 ```math
-\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \leq p^{\text{max ramp up}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)  \quad
+\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \leq p^{\text{max ramp up}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} + v^{\text{inv}}_{a} \right)  \quad
 \\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \setminus \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
 #### Maximum ramp-down rate limit without unit commitment method
 
 ```math
-\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \geq - p^{\text{max ramp down}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{init capacity}}_{a} + p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \right)  \quad
+\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \geq - p^{\text{max ramp down}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} + v^{\text{inv}}_{a} \right)  \quad
 \\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \setminus \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
