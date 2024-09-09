@@ -100,7 +100,7 @@ function create_internal_structures(connection)
             _get_stuff("assets_data", "fixed_cost"; name = row.name),
             _get_stuff("assets_data", "investment_limit"; name = row.name),
             _get_stuff("assets_data", "capacity"; name = row.name),
-            _get_stuff("assets_data", "initial_capacity"; name = row.name),
+            _get_stuff("assets_data", "initial_units"; name = row.name),
             _get_stuff("assets_data", "peak_demand"; name = row.name),
             Dict(
                 year => if ismissing(value)

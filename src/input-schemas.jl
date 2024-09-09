@@ -26,7 +26,7 @@ const schemas = (
             :investment_cost => "DOUBLE",                    # kEUR/MW/year
             :investment_limit => "DOUBLE",                   # MW (Missing -> no limit)
             :capacity => "DOUBLE",                           # MW
-            :initial_capacity => "DOUBLE",                   # MW
+            :initial_units => "DOUBLE",                      # units
             :peak_demand => "DOUBLE",                        # MW
             :consumer_balance_sense => "VARCHAR",            # Sense of the consumer balance constraint (default ==)
             :is_seasonal => "BOOLEAN",                       # Whether seasonal storage (e.g. hydro) or not (e.g. battery)
