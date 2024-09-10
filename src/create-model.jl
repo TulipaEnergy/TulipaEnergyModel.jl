@@ -901,7 +901,7 @@ function create_model(
         @expression(
             model,
             accumulate_capacity_simple[y ∈ Y, a ∈ Ai[y]],
-            sum(assets_investment[i, a] for i in Yi[a] if starting_year[(y, a)] ≤ i ≤ y)
+            sum(assets_investment[yi, a] for yi in Yi[a] if starting_year[(y, a)] ≤ yi ≤ y)
         )
     end
 
