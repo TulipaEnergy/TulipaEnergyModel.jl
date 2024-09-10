@@ -58,7 +58,7 @@ mutable struct GraphAssetData
     fixed_cost::Dict{Int,Float64}
     investment_limit::Dict{Int,Union{Missing,Float64}}
     capacity::Dict{Int,Float64}
-    initial_capacity::Dict{Int,Float64}
+    initial_units::Dict{Int,Float64}
     peak_demand::Dict{Int,Float64}
     consumer_balance_sense::Dict{Int,Union{MathOptInterface.EqualTo,MathOptInterface.GreaterThan}}
     is_seasonal::Dict{Int,Bool}
@@ -106,7 +106,7 @@ mutable struct GraphAssetData
         fixed_cost,
         investment_limit,
         capacity,
-        initial_capacity,
+        initial_units,
         peak_demand,
         consumer_balance_sense,
         is_seasonal,
@@ -146,7 +146,7 @@ mutable struct GraphAssetData
             fixed_cost,
             investment_limit,
             capacity,
-            initial_capacity,
+            initial_units,
             peak_demand,
             consumer_balance_sense,
             is_seasonal,

@@ -53,9 +53,8 @@ function add_ramping_constraints!(
     model[:limit_units_on_with_investment] = [
         @constraint(
             model,
-            graph[row.asset].capacity[row.year] * row.units_on ≤
-            graph[row.asset].initial_capacity[row.year] +
-            graph[row.asset].capacity[row.year] * assets_investment[row.year, row.asset],
+            row.units_on ≤
+            graph[row.asset].initial_units[row.year] + assets_investment[row.year, row.asset],
             base_name = "limit_units_on_with_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df_units_on) if row.asset in Ai[row.year]
     ]
@@ -64,8 +63,7 @@ function add_ramping_constraints!(
     model[:limit_units_on_without_investment] = [
         @constraint(
             model,
-            graph[row.asset].capacity[row.year] * row.units_on ≤
-            graph[row.asset].initial_capacity[row.year],
+            row.units_on ≤ graph[row.asset].initial_units[row.year],
             base_name = "limit_units_on_without_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df_units_on) if !(row.asset in Ai[row.year])
     ]
