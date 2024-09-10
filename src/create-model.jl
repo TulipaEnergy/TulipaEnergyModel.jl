@@ -604,6 +604,13 @@ function create_model(
         Ai = Dict(y => filter_graph(graph, A, true, :investable, y) for y in Y)
         Fi = Dict(y => filter_graph(graph, F, true, :investable, y) for y in Y)
 
+        Yi = Dict(
+            a => [y for y in Y if a in Ai[y]] for a in A if any(graph[a].investable[y] for y in Y)
+        )
+
+        starting_year =
+            Dict((y, a) => y - graph[a].technical_lifetime[y] + 1 for y in Y for a in Ai[y])
+
         # Create subsets of storage assets
         Ase = Dict(y => As ∩ filter_graph(graph, A, true, :storage_method_energy, y) for y in Y)
         Asb = Dict(
@@ -738,7 +745,7 @@ function create_model(
         end
     end
 
-    ## Expressions
+    ## Add expressions to dataframes
     @timeit to "add_expression_terms" begin
         @expression(
             model,
@@ -887,6 +894,15 @@ function create_model(
         JuMP.drop_zeros!.(outgoing_flow_highest_out_resolution)
         JuMP.drop_zeros!.(incoming_flow_storage_inter_rp_balance)
         JuMP.drop_zeros!.(outgoing_flow_storage_inter_rp_balance)
+    end
+
+    ## Expressions for multi-year investment
+    @timeit to "multi-year investment" begin
+        @expression(
+            model,
+            accumulate_capacity_simple[y ∈ Y, a ∈ Ai[y]],
+            sum(assets_investment[i, a] for i in Yi[a] if starting_year[(y, a)] ≤ i ≤ y)
+        )
     end
 
     ## Expressions for the objective function
