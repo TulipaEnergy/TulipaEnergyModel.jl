@@ -582,7 +582,8 @@ function create_model(
         return length(timesteps_block) * representative_periods[rp].resolution
     end
 
-    Y = [year.id for year in years]
+    Y = [year.id for year in years if year.is_milestone]
+    V = [year.id for year in years]
 
     # Maximum timestep
     Tmax = maximum(last(rp.timesteps) for year in Y for rp in representative_periods[year])
@@ -625,6 +626,9 @@ function create_model(
             (y, a) => y - graph[a].technical_lifetime[y] + 1 for y in Y for
             a in decommissionable_assets_using_simple_method
         )
+
+        starting_year_compact =
+            Dict((y, a) => y - graph[a].technical_lifetime[y] + 1 for y in Y for a in A) # needs to be modified, because we want a that is either investable or existing
 
         # Create subsets of storage assets
         Ase = Dict(y => As ∩ filter_graph(graph, A, true, :storage_method_energy, y) for y in Y)
@@ -676,6 +680,17 @@ function create_model(
                         base_name = "flow[($(row.from), $(row.to)), $(row.year), $(row.rep_period), $(row.timesteps_block)]"
                     ) for row in eachrow(df_flows)
                 ]
+        @variable(model, 0 ≤ assets_investment[y in Y, a in Ai[y]])  #number of installed asset units [N]
+        unregister(model, :assets_decommission_compact)
+        @variable(
+            model,
+            0 <= assets_decommission_compact[
+                a in A, # we need a new set A, we don't want e.g., demand
+                y in Y,
+                v in V;
+                starting_year_compact[y, a] ≤ v < y, # double-check formulation; this is the domain, different from the sum
+            ]
+        )
         @variable(model, 0 ≤ flows_investment[y in Y, (u, v) in Fi[y]])
 
         ### Investment variables
@@ -947,7 +962,25 @@ function create_model(
                 yy in Y if starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
             )
         )
+
+        @expression(
+            model,
+            accumulate_capacity_compact[
+                a in A,
+                y in Y,
+                v in V;
+                starting_year_compact[(y, a)] ≤ v ≤ y,
+            ],
+            graph[a].initial_units[y] + # need extra v index
+            (haskey(assets_investment, (v, a)) ? assets_investment[v, a] : 0) - sum(
+                assets_decommission_compact[a, i, v] for
+                i in Y if starting_year_compact[(y, a)] < i ≤ y &&
+                haskey(assets_decommission_compact, (a, i, v))
+            )
+        )
     end
+
+    unregister(model, :accumulate_capacity_compact)
 
     ## Expressions for the objective function
     @timeit to "objective" begin
