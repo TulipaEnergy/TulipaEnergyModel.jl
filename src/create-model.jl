@@ -681,7 +681,6 @@ function create_model(
                     ) for row in eachrow(df_flows)
                 ]
         @variable(model, 0 ≤ assets_investment[y in Y, a in Ai[y]])  #number of installed asset units [N]
-        unregister(model, :assets_decommission_compact)
         @variable(
             model,
             0 <= assets_decommission_compact[
@@ -979,8 +978,6 @@ function create_model(
             )
         )
     end
-
-    unregister(model, :accumulate_capacity_compact)
 
     ## Expressions for the objective function
     @timeit to "objective" begin
