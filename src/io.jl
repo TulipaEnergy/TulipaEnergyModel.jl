@@ -92,6 +92,7 @@ function create_internal_structures(connection)
         row.name => GraphAssetData(
             row.type,
             row.group,
+            row.investment_method,
             _get_stuff("assets_data", "active"; name = row.name),
             _get_stuff("assets_data", "investable"; name = row.name),
             _get_stuff("assets_data", "investment_integer"; name = row.name),
