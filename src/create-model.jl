@@ -914,7 +914,12 @@ function create_model(
             sum(
                 graph[a].investment_cost[y] * graph[a].capacity[y] * assets_investment[y, a] for
                 y in Y for a in Ai[y]
-            ) + sum(
+            )
+        )
+
+        storage_assets_energy_investment_cost = @expression(
+            model,
+            sum(
                 graph[a].investment_cost_storage_energy[y] *
                 graph[a].capacity_storage_energy[y] *
                 assets_investment_energy[y, a] for y in Y for a in Ase[y] ∩ Ai[y]
@@ -955,7 +960,11 @@ function create_model(
         @objective(
             model,
             Min,
-            assets_investment_cost + flows_investment_cost + flows_variable_cost + units_on_cost
+            assets_investment_cost +
+            storage_assets_energy_investment_cost +
+            flows_investment_cost +
+            flows_variable_cost +
+            units_on_cost
         )
     end
 
