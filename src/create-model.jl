@@ -609,9 +609,6 @@ function create_model(
             a => [y for y in Y if a in Ai[y]] for a in A if any(graph[a].investable[y] for y in Y)
         )
 
-        # Create subsets of investable assets by investment method
-        #Ai_simple_method
-
         # Create a Dict for the start year of investments that are accumulated in year y
         starting_year =
             Dict((y, a) => y - graph[a].technical_lifetime[y] + 1 for y in Y for a in Ai[y])
