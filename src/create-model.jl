@@ -609,9 +609,17 @@ function create_model(
             a => [y for y in Y if a in Ai[y]] for a in A if any(graph[a].investable[y] for y in Y)
         )
 
+        # Create subsets of investable assets by investment method
+        investable_assets_using_simple_method =
+            Dict(y => Ai[y] ∩ filter_graph(graph, A, "simple", :investment_method) for y in Y)
+        investable_assets_using_compact_method =
+            Dict(y => Ai[y] ∩ filter_graph(graph, A, "compact", :investment_method) for y in Y)
+
         # Create a Dict for the start year of investments that are accumulated in year y
-        starting_year =
-            Dict((y, a) => y - graph[a].technical_lifetime[y] + 1 for y in Y for a in Ai[y])
+        starting_year = Dict(
+            (y, a) => y - graph[a].technical_lifetime[y] + 1 for y in Y for
+            a in investable_assets_using_simple_method[y]
+        )
 
         # Create subsets of storage assets
         Ase = Dict(y => As ∩ filter_graph(graph, A, true, :storage_method_energy, y) for y in Y)
@@ -654,6 +662,7 @@ function create_model(
 
     ## Variables
     @timeit to "create variables" begin
+        ### Flow variables
         flow =
             model[:flow] =
                 df_flows.flow = [
@@ -662,10 +671,20 @@ function create_model(
                         base_name = "flow[($(row.from), $(row.to)), $(row.year), $(row.rep_period), $(row.timesteps_block)]"
                     ) for row in eachrow(df_flows)
                 ]
-        @variable(model, 0 ≤ assets_investment[y in Y, a in Ai[y]])  #number of installed asset units [N]
         @variable(model, 0 ≤ flows_investment[y in Y, (u, v) in Fi[y]])
+
+        ### Investment variables
+        @variable(model, 0 ≤ assets_investment[y in Y, a in Ai[y]])  #number of installed asset units [N]
+        @variable(
+            model,
+            0 ≤ assets_decommission_simple_method[
+                y in Y,
+                a in investable_assets_using_simple_method[y],
+            ]
+        )  #number of decommission asset units [N]
         @variable(model, 0 ≤ assets_investment_energy[y in Y, a in Ase[y]∩Ai[y]])  #number of installed asset units for storage energy [N]
 
+        ### Unit commitment variables
         units_on =
             model[:units_on] =
                 df_units_on.units_on = [
@@ -675,6 +694,8 @@ function create_model(
                         base_name = "units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
                     ) for row in eachrow(df_units_on)
                 ]
+
+        ### Variables for storage assets
         storage_level_intra_rp =
             model[:storage_level_intra_rp] = [
                 @variable(
@@ -706,6 +727,9 @@ function create_model(
         for y in Y, a in Ai[y]
             if graph[a].investment_integer[y]
                 JuMP.set_integer(assets_investment[y, a])
+                if a in investable_assets_using_simple_method[y]
+                    JuMP.set_integer(assets_decommission_simple_method[y, a])
+                end
             end
         end
 
@@ -902,8 +926,12 @@ function create_model(
     @timeit to "multi-year investment" begin
         @expression(
             model,
-            accumulate_capacity_simple[y ∈ Y, a ∈ Ai[y]],
-            sum(assets_investment[yi, a] for yi in Yi[a] if starting_year[(y, a)] ≤ yi ≤ y)
+            accumulate_capacity_simple_method[y ∈ Y, a ∈ investable_assets_using_simple_method[y]],
+            graph[a].initial_units[y] +
+            sum(assets_investment[yi, a] for yi in Yi[a] if starting_year[(y, a)] ≤ yi ≤ y) - sum(
+                assets_decommission_simple_method[yi, a] for
+                yi in Yi[a] if starting_year[(y, a)] ≤ yi ≤ y
+            )
         )
     end
 
@@ -914,6 +942,16 @@ function create_model(
             sum(
                 graph[a].investment_cost[y] * graph[a].capacity[y] * assets_investment[y, a] for
                 y in Y for a in Ai[y]
+            )
+        )
+
+        assets_fixed_cost = @expression(
+            model,
+            sum(
+                graph[a].fixed_cost[y] *
+                graph[a].capacity[y] *
+                accumulate_capacity_simple_method[y, a] for y in Y for
+                a in investable_assets_using_simple_method[y]
             )
         )
 
@@ -961,6 +999,7 @@ function create_model(
             model,
             Min,
             assets_investment_cost +
+            assets_fixed_cost +
             storage_assets_energy_investment_cost +
             flows_investment_cost +
             flows_variable_cost +
@@ -976,8 +1015,10 @@ function create_model(
         df_flows,
         flow,
         Ai,
+        investable_assets_using_simple_method,
         Asb,
         assets_investment,
+        accumulate_capacity_simple_method,
         outgoing_flow_highest_out_resolution,
         incoming_flow_highest_in_resolution,
     )
@@ -1038,9 +1079,11 @@ function create_model(
         graph,
         Y,
         Ai,
+        investable_assets_using_simple_method,
         Ase,
         Fi,
         assets_investment,
+        assets_decommission_simple_method,
         assets_investment_energy,
         flows_investment,
     )
