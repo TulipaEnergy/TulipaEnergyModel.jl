@@ -50,6 +50,7 @@ Structure to hold the asset data in the graph.
 mutable struct GraphAssetData
     type::String
     group::Union{Missing,String}
+    investment_method::Union{Missing,String}
     active::Dict{Int,Bool}
     investable::Dict{Int,Bool}
     investment_integer::Dict{Int,Bool}
@@ -98,6 +99,7 @@ mutable struct GraphAssetData
     function GraphAssetData(
         type,
         group,
+        investment_method,
         active,
         investable,
         investment_integer,
@@ -138,6 +140,7 @@ mutable struct GraphAssetData
         return new(
             type,
             group,
+            investment_method,
             active,
             investable,
             investment_integer,
