@@ -1,8 +1,8 @@
-,{producer;consumer},{group name},{simple;compact}
+,{producer;consumer},{group name},{none;simple;compact}
 name,type,group,investment_method
-H2,producer,,simple
-ccgt,conversion,,simple
-wind,producer,,simple
-phs,storage,,simple
-demand,consumer,,simple
-balance,hub,,simple
+H2,producer,,none
+ccgt,conversion,,none
+wind,producer,,none
+phs,storage,,none
+demand,consumer,,none
+balance,hub,,none

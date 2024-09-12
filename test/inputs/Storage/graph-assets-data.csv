@@ -1,10 +1,10 @@
-,{producer;consumer;storage;hub;conversion},{group name},{simple;compact}
+,{producer;consumer;storage;hub;conversion},{group name},{none;simple;compact}
 name,type,group,investment_method
-ocgt,producer,,simple
-ccgt,producer,,simple
-wind,producer,,simple
-solar,producer,,simple
-ens,producer,,simple
-battery,storage,,simple
-phs,storage,,simple
-demand,consumer,,simple
+ocgt,producer,,none
+ccgt,producer,,none
+wind,producer,,none
+solar,producer,,none
+ens,producer,,none
+battery,storage,,none
+phs,storage,,none
+demand,consumer,,none

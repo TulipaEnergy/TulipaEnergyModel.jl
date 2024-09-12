@@ -1,25 +1,25 @@
-,{producer;consumer;storage;hub;conversion},{group name},{simple;compact}
+,{producer;consumer;storage;hub;conversion},{group name},{none;simple;compact}
 name,type,group,investment_method
 Asgard_Battery,storage,,simple
 Asgard_Solar,producer,renewables,simple
-Asgard_E_demand,consumer,,simple
+Asgard_E_demand,consumer,,none
 Asgard_CCGT,conversion,ccgt,simple
-G_imports,producer,,simple
+G_imports,producer,,none
 Midgard_Wind,producer,renewables,simple
-Midgard_Hydro,storage,,simple
+Midgard_Hydro,storage,,none
 Midgard_PHS,storage,,simple
 Midgard_Nuclear_SMR,producer,,simple
-Midgard_E_imports,producer,,simple
-Midgard_CCGT,conversion,ccgt,simple
-Midgard_E_demand,consumer,,simple
+Midgard_E_imports,producer,,none
+Midgard_CCGT,conversion,ccgt,none
+Midgard_E_demand,consumer,,none
 Valhalla_H2_generator,conversion,,simple
 Valhalla_H2_storage,storage,,simple
-Valhalla_H2_demand,consumer,,simple
+Valhalla_H2_demand,consumer,,none
 Valhalla_Electrolyser,conversion,,simple
-Valhalla_E_balance,hub,,simple
-Valhalla_E_exports,consumer,,simple
+Valhalla_E_balance,hub,,none
+Valhalla_E_exports,consumer,,none
 Valhalla_Fuel_cell,conversion,,simple
 Valhalla_Heat_pump,conversion,,simple
-Valhalla_Waste_heat,producer,,simple
-Valhalla_Heat_demand,consumer,,simple
+Valhalla_Waste_heat,producer,,none
+Valhalla_Heat_demand,consumer,,none
 Valhalla_GT,conversion,,simple

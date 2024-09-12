@@ -1,8 +1,8 @@
-,{producer;consumer},{group name},{simple;compact}
+,{producer;consumer},{group name},{none;simple;compact}
 name,type,group,investment_method
 ocgt,producer,,simple
 ccgt,producer,,simple
 wind,producer,,simple
 solar,producer,,simple
-ens,producer,,
-demand,consumer,,
+ens,producer,,none
+demand,consumer,,none

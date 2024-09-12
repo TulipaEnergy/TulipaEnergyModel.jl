@@ -1,10 +1,10 @@
-,{producer;consumer},{group name},{simple;compact}
+,{producer;consumer},{group name},{none;simple;compact}
 name,type,group,investment_method
-gas,producer,,simple
+gas,producer,,none
 ocgt,conversion,,simple
 ccgt,conversion,,simple
-smr,producer,,simple
+smr,producer,,none
 wind,producer,,simple
 solar,producer,,simple
-ens,producer,,simple
-demand,consumer,,simple
+ens,producer,,none
+demand,consumer,,none
