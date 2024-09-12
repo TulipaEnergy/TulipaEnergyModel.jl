@@ -37,25 +37,7 @@ function add_capacity_constraints!(
     # - Create capacity limit for outgoing flows
     assets_profile_times_capacity_out =
         model[:assets_profile_times_capacity_out] = [
-            if row.asset ∈ Ai[row.year] &&
-               row.asset ∉ investable_assets_using_simple_method[row.year]
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        ("availability", row.rep_period),
-                        row.timesteps_block,
-                        1.0,
-                    ) * (
-                        graph[row.asset].capacity[row.year] * (
-                            graph[row.asset].initial_units[row.year] +
-                            assets_investment[row.year, row.asset]
-                        )
-                    )
-                )
-            elseif row.asset ∈ investable_assets_using_simple_method[row.year]
+            if row.asset ∈ investable_assets_using_simple_method[row.year]
                 @expression(
                     model,
                     profile_aggregation(
