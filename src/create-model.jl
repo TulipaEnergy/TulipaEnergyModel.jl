@@ -927,9 +927,8 @@ function create_model(
         @expression(
             model,
             accumulate_capacity_simple_method[y ∈ Y, a ∈ investable_assets_using_simple_method[y]],
-            graph[a].initial_units[y] +
-            sum(assets_investment[yi, a] for yi in Yi[a] if starting_year[(y, a)] ≤ yi ≤ y) - sum(
-                assets_decommission_simple_method[yi, a] for
+            graph[a].initial_units[y] + sum(
+                assets_investment[yi, a] - assets_decommission_simple_method[yi, a] for
                 yi in Yi[a] if starting_year[(y, a)] ≤ yi ≤ y
             )
         )
