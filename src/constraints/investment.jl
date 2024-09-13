@@ -10,7 +10,6 @@ function add_investment_constraints!(
     graph,
     Y,
     Ai,
-    decommissionable_assets_using_simple_method,
     Ase,
     Fi,
     assets_investment,
