@@ -583,7 +583,8 @@ function create_model(
     end
 
     Y = [year.id for year in years if year.is_milestone]
-    V = [year.id for year in years]
+    V_all = [year.id for year in years]
+    V_non_milestone = [year.id for year in years if !year.is_milestone]
 
     # Maximum timestep
     Tmax = maximum(last(rp.timesteps) for year in Y for rp in representative_periods[year])
@@ -627,8 +628,27 @@ function create_model(
             a in decommissionable_assets_using_simple_method
         )
 
-        starting_year_compact =
-            Dict((y, a) => y - graph[a].technical_lifetime[y] + 1 for y in Y for a in A) # needs to be modified, because we want a that is either investable or existing
+        starting_year_using_compact_method = Dict(
+            (y, a) => y - graph[a].technical_lifetime[y] + 1 for y in Y for
+            a in decommissionable_assets_using_compact_method
+        )
+
+        # existing_assets_with_compact_method =
+        #     [filter_graph(graph, A, v, :commission_year) for v in V_non_milestone] ∩ decommissionable_assets_using_compact_method
+
+        existing_assets_with_compact_method = ["wind"]
+
+        decommission_set_using_compact_method = [
+            (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
+            v in V if starting_year_using_compact_method[y, a] ≤ v < y &&
+            (((v in V_non_milestone && a in existing_assets_with_compact_method) || (v in Y)))
+        ]
+
+        accumulated_set_using_compact_method = [
+            (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
+            v in V if starting_year_using_compact_method[y, a] ≤ v ≤ y &&
+            (((v in V_non_milestone && a in existing_assets_with_compact_method) || (v in Y)))
+        ]
 
         # Create subsets of storage assets
         Ase = Dict(y => As ∩ filter_graph(graph, A, true, :storage_method_energy, y) for y in Y)
@@ -680,16 +700,7 @@ function create_model(
                         base_name = "flow[($(row.from), $(row.to)), $(row.year), $(row.rep_period), $(row.timesteps_block)]"
                     ) for row in eachrow(df_flows)
                 ]
-        @variable(model, 0 ≤ assets_investment[y in Y, a in Ai[y]])  #number of installed asset units [N]
-        @variable(
-            model,
-            0 <= assets_decommission_compact[
-                a in A, # we need a new set A, we don't want e.g., demand
-                y in Y,
-                v in V;
-                starting_year_compact[y, a] ≤ v < y, # double-check formulation; this is the domain, different from the sum
-            ]
-        )
+
         @variable(model, 0 ≤ flows_investment[y in Y, (u, v) in Fi[y]])
 
         ### Investment variables
@@ -701,6 +712,12 @@ function create_model(
                 a in decommissionable_assets_using_simple_method,
             ]
         )  #number of decommission asset units [N]
+        @variable(
+            model,
+            0 <=
+            assets_decommission_compact_method[(a, y, v) in decommission_set_using_compact_method]
+        )
+
         @variable(model, 0 ≤ assets_investment_energy[y in Y, a in Ase[y]∩Ai[y]])  #number of installed asset units for storage energy [N]
 
         ### Unit commitment variables
@@ -964,17 +981,12 @@ function create_model(
 
         @expression(
             model,
-            accumulate_capacity_compact[
-                a in A,
-                y in Y,
-                v in V;
-                starting_year_compact[(y, a)] ≤ v ≤ y,
-            ],
+            accumulate_capacity_compact[(a, y, v) in accumulated_set_using_compact_method],
             graph[a].initial_units[y] + # need extra v index
-            (haskey(assets_investment, (v, a)) ? assets_investment[v, a] : 0) - sum(
-                assets_decommission_compact[a, i, v] for
-                i in Y if starting_year_compact[(y, a)] < i ≤ y &&
-                haskey(assets_decommission_compact, (a, i, v))
+            sum(assets_investment[v, a] for a in investable_assets_using_simple_method) - sum(
+                assets_decommission_compact_method[a, i, v] for
+                i in Y if starting_year_using_compact_method[(y, a)] ≤ i ≤ y &&
+                a in decommissionable_assets_using_compact_method
             )
         )
     end
@@ -996,6 +1008,11 @@ function create_model(
                 graph[a].capacity[y] *
                 accumulate_capacity_simple_method[y, a] for y in Y for
                 a in decommissionable_assets_using_simple_method
+            ) + sum(
+                graph[a].fixed_cost[y] * # need extra v index
+                graph[a].capacity[y] *
+                accumulate_capacity_compact_method[a, y, v] for
+                (a, y, v) in accumulated_set_using_compact_methods
             )
         )
 
