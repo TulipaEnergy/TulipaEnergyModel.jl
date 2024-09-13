@@ -625,7 +625,6 @@ function create_model(
             (y, a) => y - graph[a].technical_lifetime[y] + 1 for y in Y for
             a in decommissionable_assets_using_simple_method
         )
-        @show starting_year_using_simple_method
 
         # Create subsets of storage assets
         Ase = Dict(y => As ∩ filter_graph(graph, A, true, :storage_method_energy, y) for y in Y)
