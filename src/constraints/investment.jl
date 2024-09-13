@@ -24,9 +24,6 @@ function add_investment_constraints!(
         if graph[a].capacity[y] > 0 && !ismissing(graph[a].investment_limit[y])
             bound_value = _find_upper_bound(graph, y, a)
             JuMP.set_upper_bound(assets_investment[y, a], bound_value)
-            if a in decommissionable_assets_using_simple_method
-                JuMP.set_upper_bound(assets_decommission_simple_method[y, a], bound_value)
-            end
         end
         if (a in Ase[y]) && # for a in Ase, i.e., storage assets with energy method
            graph[a].capacity_storage_energy[y] > 0 &&
