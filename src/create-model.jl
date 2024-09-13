@@ -1097,7 +1097,6 @@ function create_model(
         Ase,
         Fi,
         assets_investment,
-        assets_decommission_simple_method,
         assets_investment_energy,
         flows_investment,
     )
