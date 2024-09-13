@@ -637,24 +637,28 @@ function create_model(
         )
 
         # Create a subset of decommissionable_assets_using_compact_method: existing assets invested in non-milestone years
-        existing_assets_with_compact_method = [
-            a for a in decommissionable_assets_using_compact_method if any(
-                k in V_non_milestone for inner_dict in values(graph[a].initial_units) for
-                k in keys(inner_dict)
-            )
-        ]
+        existing_assets_by_year_using_compact_method = Dict(
+            y =>
+                [
+                    a for a in decommissionable_assets_using_compact_method for
+                    inner_dict in values(graph[a].initial_units) for
+                    k in keys(inner_dict) if k == y && inner_dict[k] != 0
+                ] |> unique for y in V_all
+        )
 
         # Create sets of tuples for decommission variables/accumulated capacity of compact method
         decommission_set_using_compact_method = [
             (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
-            v in V_all if starting_year_using_compact_method[y, a] ≤ v < y &&
-            (((v in V_non_milestone && a in existing_assets_with_compact_method) || (v in Y)))
+            v in V_all if starting_year_using_compact_method[y, a] ≤ v < y && ((
+                (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v]) || (v in Y)
+            ))
         ]
 
         accumulated_set_using_compact_method = [
             (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
-            v in V_all if starting_year_using_compact_method[y, a] ≤ v ≤ y &&
-            (((v in V_non_milestone && a in existing_assets_with_compact_method) || (v in Y)))
+            v in V_all if starting_year_using_compact_method[y, a] ≤ v ≤ y && ((
+                (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v]) || (v in Y)
+            ))
         ]
 
         # Create subsets of storage assets
@@ -781,7 +785,7 @@ function create_model(
 
         for (a, y, v) in decommission_set_using_compact_method
             # We don't do anything with existing units (because it can be integers or non-integers)
-            if !(v in V_non_milestone && a in existing_assets_with_compact_method) &&
+            if !(v in V_non_milestone && a in existing_assets_by_year_using_compact_method[y]) &&
                graph[a].investment_integer[y]
                 JuMP.set_integer(assets_decommission_compact_method[(a, y, v)])
             end
@@ -996,8 +1000,11 @@ function create_model(
         @expression(
             model,
             accumulate_capacity_compact_method[(a, y, v) in accumulated_set_using_compact_method],
-            graph[a].initial_units[y][v] +
-            if a in investable_assets_using_compact_method[y] && v in Y
+            if v in V_all && a in existing_assets_by_year_using_compact_method[v]
+                graph[a].initial_units[y][v]
+            else
+                0
+            end + if a in investable_assets_using_compact_method[y] && v in Y
                 assets_investment[v, a]
             else
                 0
@@ -1018,6 +1025,15 @@ function create_model(
             )
         )
 
+        fixed_cost = Dict((a, y, v) => 0 for (a, y, v) in accumulated_set_using_compact_method)
+        for (a, y, v) in accumulated_set_using_compact_method
+            if haskey(graph[a].fixed_cost, y) && haskey(graph[a].fixed_cost[y], v)
+                fixed_cost[(a, y, v)] = graph[a].fixed_cost[y][v]
+            else
+                fixed_cost[(a, y, v)] = graph[a].fixed_cost[v][v]
+            end
+        end
+
         assets_fixed_cost = @expression(
             model,
             sum(
@@ -1026,7 +1042,7 @@ function create_model(
                 accumulate_capacity_simple_method[y, a] for y in Y for
                 a in decommissionable_assets_using_simple_method
             ) + sum(
-                graph[a].fixed_cost[y][v] *
+                fixed_cost[(a, y, v)] *
                 graph[a].capacity[y] *
                 accumulate_capacity_compact_method[(a, y, v)] for
                 (a, y, v) in accumulated_set_using_compact_method
