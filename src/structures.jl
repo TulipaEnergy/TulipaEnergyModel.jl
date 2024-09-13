@@ -56,10 +56,10 @@ mutable struct GraphAssetData
     investment_integer::Dict{Int,Bool}
     technical_lifetime::Dict{Int,Float64}
     investment_cost::Dict{Int,Float64}
-    fixed_cost::Dict{Int,Float64}
+    fixed_cost::Dict{Int,Dict{Int,Float64}}
     investment_limit::Dict{Int,Union{Missing,Float64}}
     capacity::Dict{Int,Float64}
-    initial_units::Dict{Int,Float64}
+    initial_units::Dict{Int,Dict{Int,Float64}}
     peak_demand::Dict{Int,Float64}
     consumer_balance_sense::Dict{Int,Union{MathOptInterface.EqualTo,MathOptInterface.GreaterThan}}
     is_seasonal::Dict{Int,Bool}
@@ -83,8 +83,8 @@ mutable struct GraphAssetData
     ramping::Dict{Int,Bool}
     max_ramp_up::Dict{Int,Union{Missing,Float64}}
     max_ramp_down::Dict{Int,Union{Missing,Float64}}
-    timeframe_profiles::Dict{Int,Dict{String,Vector{Float64}}}
-    rep_periods_profiles::Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}
+    timeframe_profiles::Dict{Int,Dict{Int,Dict{String,Vector{Float64}}}}
+    rep_periods_profiles::Dict{Int,Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}}
     timeframe_partitions::Dict{Int,Vector{PeriodsBlock}}
     rep_periods_partitions::Dict{Int,Dict{Int,Vector{TimestepsBlock}}}
     # Solution
@@ -133,8 +133,8 @@ mutable struct GraphAssetData
         max_ramp_up,
         max_ramp_down,
     )
-        timeframe_profiles = Dict{Int,Dict{String,Vector{Float64}}}()
-        rep_periods_profiles = Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}()
+        timeframe_profiles = Dict{Int,Dict{Int,Dict{String,Vector{Float64}}}}()
+        rep_periods_profiles = Dict{Int,Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}}()
         timeframe_partitions = Dict{Int,Vector{TimestepsBlock}}()
         rep_periods_partitions = Dict{Int,Dict{Int,Vector{TimestepsBlock}}}()
         return new(

@@ -70,7 +70,7 @@ function create_internal_structures(connection)
 
     groups = [Group(row...) for row in TulipaIO.get_table(Val(:raw), connection, "groups_data")]
 
-    _query(table_name, col; where_pairs...) = begin
+    _query_year(table_name, col; where_pairs...) = begin
         extra_check = table_name == "assets_data" ? "commission_year = year AND " : ""
         _q = "SELECT year, $col FROM $table_name"
         if length(where_pairs) > 0
@@ -82,9 +82,31 @@ function create_internal_structures(connection)
         DuckDB.query(connection, _q)
     end
 
-    function _get_stuff(table_name, col; where_pairs...)
-        result = _query(table_name, col; where_pairs...)
+    function _get_stuff_year(table_name, col; where_pairs...)
+        result = _query_year(table_name, col; where_pairs...)
         Dict(row.year => getproperty(row, Symbol(col)) for row in result)
+    end
+
+    _query_commission_year(table_name, col; where_pairs...) = begin
+        _q = "SELECT year, commission_year, $col FROM $table_name"
+        if length(where_pairs) > 0
+            _q *=
+                " WHERE " *
+                join(("$k=$(TulipaIO.FmtSQL.fmt_quote(v))" for (k, v) in where_pairs), " AND ")
+        end
+        DuckDB.query(connection, _q)
+    end
+
+    function _get_stuff_commission_year(table_name, col; where_pairs...)
+        result = _query_commission_year(table_name, col; where_pairs...)
+        result_dict = Dict{Int,Dict{Int,Float64}}()
+        for row in result
+            if !haskey(result_dict, row.year)
+                result_dict[row.year] = Dict{Int,Float64}()
+            end
+            result_dict[row.year][row.commission_year] = getproperty(row, Symbol(col))
+        end
+        return result_dict
     end
 
     unique_asset_names = Dict{String,Bool}()
@@ -93,45 +115,45 @@ function create_internal_structures(connection)
             row.type,
             row.group,
             row.investment_method,
-            _get_stuff("assets_data", "active"; name = row.name),
-            _get_stuff("assets_data", "investable"; name = row.name),
-            _get_stuff("assets_data", "investment_integer"; name = row.name),
-            _get_stuff("assets_data", "technical_lifetime"; name = row.name),
-            _get_stuff("assets_data", "investment_cost"; name = row.name),
-            _get_stuff("assets_data", "fixed_cost"; name = row.name),
-            _get_stuff("assets_data", "investment_limit"; name = row.name),
-            _get_stuff("assets_data", "capacity"; name = row.name),
-            _get_stuff("assets_data", "initial_units"; name = row.name),
-            _get_stuff("assets_data", "peak_demand"; name = row.name),
+            _get_stuff_year("assets_data", "active"; name = row.name),
+            _get_stuff_year("assets_data", "investable"; name = row.name),
+            _get_stuff_year("assets_data", "investment_integer"; name = row.name),
+            _get_stuff_year("assets_data", "technical_lifetime"; name = row.name),
+            _get_stuff_year("assets_data", "investment_cost"; name = row.name),
+            _get_stuff_commission_year("assets_data", "fixed_cost"; name = row.name),
+            _get_stuff_year("assets_data", "investment_limit"; name = row.name),
+            _get_stuff_year("assets_data", "capacity"; name = row.name),
+            _get_stuff_commission_year("assets_data", "initial_units"; name = row.name),
+            _get_stuff_year("assets_data", "peak_demand"; name = row.name),
             Dict(
                 year => if ismissing(value)
                     MathOptInterface.EqualTo(0.0)
                 else
                     MathOptInterface.GreaterThan(0.0)
                 end for (year, value) in
-                _get_stuff("assets_data", "consumer_balance_sense"; name = row.name)
+                _get_stuff_year("assets_data", "consumer_balance_sense"; name = row.name)
             ),
-            _get_stuff("assets_data", "is_seasonal"; name = row.name),
-            _get_stuff("assets_data", "storage_inflows"; name = row.name),
-            _get_stuff("assets_data", "initial_storage_capacity"; name = row.name),
-            _get_stuff("assets_data", "initial_storage_level"; name = row.name),
-            _get_stuff("assets_data", "energy_to_power_ratio"; name = row.name),
-            _get_stuff("assets_data", "storage_method_energy"; name = row.name),
-            _get_stuff("assets_data", "investment_cost_storage_energy"; name = row.name),
-            _get_stuff("assets_data", "investment_limit_storage_energy"; name = row.name),
-            _get_stuff("assets_data", "capacity_storage_energy"; name = row.name),
-            _get_stuff("assets_data", "investment_integer_storage_energy"; name = row.name),
-            _get_stuff("assets_data", "use_binary_storage_method"; name = row.name),
-            _get_stuff("assets_data", "max_energy_timeframe_partition"; name = row.name),
-            _get_stuff("assets_data", "min_energy_timeframe_partition"; name = row.name),
-            _get_stuff("assets_data", "unit_commitment"; name = row.name),
-            _get_stuff("assets_data", "unit_commitment_method"; name = row.name),
-            _get_stuff("assets_data", "units_on_cost"; name = row.name),
-            _get_stuff("assets_data", "unit_commitment_integer"; name = row.name),
-            _get_stuff("assets_data", "min_operating_point"; name = row.name),
-            _get_stuff("assets_data", "ramping"; name = row.name),
-            _get_stuff("assets_data", "max_ramp_up"; name = row.name),
-            _get_stuff("assets_data", "max_ramp_down"; name = row.name),
+            _get_stuff_year("assets_data", "is_seasonal"; name = row.name),
+            _get_stuff_year("assets_data", "storage_inflows"; name = row.name),
+            _get_stuff_year("assets_data", "initial_storage_capacity"; name = row.name),
+            _get_stuff_year("assets_data", "initial_storage_level"; name = row.name),
+            _get_stuff_year("assets_data", "energy_to_power_ratio"; name = row.name),
+            _get_stuff_year("assets_data", "storage_method_energy"; name = row.name),
+            _get_stuff_year("assets_data", "investment_cost_storage_energy"; name = row.name),
+            _get_stuff_year("assets_data", "investment_limit_storage_energy"; name = row.name),
+            _get_stuff_year("assets_data", "capacity_storage_energy"; name = row.name),
+            _get_stuff_year("assets_data", "investment_integer_storage_energy"; name = row.name),
+            _get_stuff_year("assets_data", "use_binary_storage_method"; name = row.name),
+            _get_stuff_year("assets_data", "max_energy_timeframe_partition"; name = row.name),
+            _get_stuff_year("assets_data", "min_energy_timeframe_partition"; name = row.name),
+            _get_stuff_year("assets_data", "unit_commitment"; name = row.name),
+            _get_stuff_year("assets_data", "unit_commitment_method"; name = row.name),
+            _get_stuff_year("assets_data", "units_on_cost"; name = row.name),
+            _get_stuff_year("assets_data", "unit_commitment_integer"; name = row.name),
+            _get_stuff_year("assets_data", "min_operating_point"; name = row.name),
+            _get_stuff_year("assets_data", "ramping"; name = row.name),
+            _get_stuff_year("assets_data", "max_ramp_up"; name = row.name),
+            _get_stuff_year("assets_data", "max_ramp_down"; name = row.name),
         ) for row in TulipaIO.get_table(Val(:raw), connection, "graph_assets_data")
     ]
 
@@ -139,67 +161,67 @@ function create_internal_structures(connection)
     flow_data = [
         (row.from_asset, row.to_asset) => GraphFlowData(
             row.carrier,
-            _get_stuff(
+            _get_stuff_year(
                 "flows_data",
                 "active";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff(
+            _get_stuff_year(
                 "flows_data",
                 "is_transport";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff(
+            _get_stuff_year(
                 "flows_data",
                 "investable";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff(
+            _get_stuff_year(
                 "flows_data",
                 "investment_integer";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff(
+            _get_stuff_year(
                 "flows_data",
                 "variable_cost";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff(
+            _get_stuff_year(
                 "flows_data",
                 "investment_cost";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff(
+            _get_stuff_year(
                 "flows_data",
                 "investment_limit";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff(
+            _get_stuff_year(
                 "flows_data",
                 "capacity";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff(
+            _get_stuff_year(
                 "flows_data",
                 "initial_export_capacity";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff(
+            _get_stuff_year(
                 "flows_data",
                 "initial_import_capacity";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff(
+            _get_stuff_year(
                 "flows_data",
                 "efficiency";
                 from_asset = row.from_asset,
@@ -280,28 +302,29 @@ function create_internal_structures(connection)
         end
     end
 
-    _df = TulipaIO.get_table(connection, "profiles_rep_periods")
-    for asset_profile_row in TulipaIO.get_table(Val(:raw), connection, "assets_profiles")  # row = asset, profile_type, profile_name
-        gp = DataFrames.groupby( # 2. group by rep_period, year
-            filter( # 1. Filter on profile_name, year
-                [:profile_name, :year] =>
-                    (name, year) ->
-                        name == asset_profile_row.profile_name &&
-                            year == asset_profile_row.commission_year,
-                _df;
-                view = true,
-            ),
-            [:rep_period, :year],
-        )
-        for ((rep_period, year), df) in pairs(gp) # Loop over filtered DFs by rep_period, year
-            profiles = graph[asset_profile_row.asset].rep_periods_profiles
-            if !haskey(profiles, year)
-                profiles[year] = Dict{Tuple{Symbol,Int},Vector{Float64}}()
-            end
-            profiles[year][(asset_profile_row.profile_type, rep_period)] = df.value
+    _df =
+        DuckDB.execute(
+            connection,
+            "SELECT asset, commission_year, profile_type, year, rep_period, value
+            FROM assets_profiles
+            JOIN profiles_rep_periods
+            ON assets_profiles.profile_name=profiles_rep_periods.profile_name",
+        ) |> DataFrame
+
+    gp = DataFrames.groupby(_df, [:asset, :commission_year, :profile_type, :year, :rep_period])
+
+    for ((asset, commission_year, profile_type, year, rep_period), df) in pairs(gp)
+        profiles = graph[asset].rep_periods_profiles
+        if !haskey(profiles, year)
+            profiles[year] = Dict{Int,Dict{Tuple{Symbol,Int},Vector{Float64}}}()
         end
+        if !haskey(profiles[year], commission_year)
+            profiles[year][commission_year] = Dict{Tuple{Symbol,Int},Vector{Float64}}()
+        end
+        profiles[year][commission_year][(profile_type, rep_period)] = df.value
     end
 
+    _df = TulipaIO.get_table(connection, "profiles_rep_periods")
     for flow_profile_row in TulipaIO.get_table(Val(:raw), connection, "flows_profiles")
         gp = DataFrames.groupby(
             filter(:profile_name => ==(flow_profile_row.profile_name), _df; view = true),
@@ -333,9 +356,10 @@ function create_internal_structures(connection)
         for ((year,), df) in pairs(gp)
             profiles = graph[asset_profile_row.asset].timeframe_profiles
             if !haskey(profiles, year)
-                profiles[year] = Dict{String,Vector{Float64}}()
+                profiles[year] = Dict{Int,Dict{String,Vector{Float64}}}()
+                profiles[year][year] = Dict{String,Vector{Float64}}()
             end
-            profiles[year][asset_profile_row.profile_type] = df.value
+            profiles[year][year][asset_profile_row.profile_type] = df.value
         end
     end
 

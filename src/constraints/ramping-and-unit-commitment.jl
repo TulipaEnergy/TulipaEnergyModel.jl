@@ -28,6 +28,7 @@ function add_ramping_constraints!(
                 Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
                 row.year,
+                row.year,
                 ("availability", row.rep_period),
                 row.timesteps_block,
                 1.0,
@@ -54,7 +55,8 @@ function add_ramping_constraints!(
         @constraint(
             model,
             row.units_on ≤
-            graph[row.asset].initial_units[row.year] + assets_investment[row.year, row.asset],
+            graph[row.asset].initial_units[row.year][row.year] +
+            assets_investment[row.year, row.asset],
             base_name = "limit_units_on_with_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df_units_on) if row.asset in Ai[row.year]
     ]
@@ -63,7 +65,7 @@ function add_ramping_constraints!(
     model[:limit_units_on_without_investment] = [
         @constraint(
             model,
-            row.units_on ≤ graph[row.asset].initial_units[row.year],
+            row.units_on ≤ graph[row.asset].initial_units[row.year][row.year],
             base_name = "limit_units_on_without_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df_units_on) if !(row.asset in Ai[row.year])
     ]

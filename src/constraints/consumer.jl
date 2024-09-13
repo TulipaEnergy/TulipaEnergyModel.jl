@@ -32,6 +32,7 @@ function add_consumer_constraints!(
                 Statistics.mean,
                 graph[row.asset].rep_periods_profiles,
                 row.year,
+                row.year,
                 ("demand", row.rep_period),
                 row.timesteps_block,
                 1.0,
