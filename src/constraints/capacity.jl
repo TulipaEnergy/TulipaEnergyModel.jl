@@ -25,7 +25,7 @@ function add_capacity_constraints!(
     df_flows,
     flow,
     Ai,
-    investable_assets_using_simple_method,
+    decommissionable_assets_using_simple_method,
     Asb,
     assets_investment,
     accumulate_capacity_simple_method,
@@ -37,7 +37,7 @@ function add_capacity_constraints!(
     # - Create capacity limit for outgoing flows
     assets_profile_times_capacity_out =
         model[:assets_profile_times_capacity_out] = [
-            if row.asset ∈ investable_assets_using_simple_method[row.year]
+            if row.asset ∈ decommissionable_assets_using_simple_method
                 @expression(
                     model,
                     profile_aggregation(
