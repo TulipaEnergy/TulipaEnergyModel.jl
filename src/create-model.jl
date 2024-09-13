@@ -733,9 +733,12 @@ function create_model(
         for y in Y, a in Ai[y]
             if graph[a].investment_integer[y]
                 JuMP.set_integer(assets_investment[y, a])
-                if a in investable_assets_using_simple_method[y]
-                    JuMP.set_integer(assets_decommission_simple_method[y, a])
-                end
+            end
+        end
+
+        for y in Y, a in decommissionable_assets_using_simple_method
+            if graph[a].investment_integer[y]
+                JuMP.set_integer(assets_decommission_simple_method[y, a])
             end
         end
 
