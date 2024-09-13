@@ -332,6 +332,52 @@ The level of reduction and approximation error will depend on the case study. So
 
 -   Having high resolutions for all assets in a large-scale case study may not be necessary. For example, if analyzing a European case study focusing on a specific country like The Netherlands, hourly details for distant countries (such as Portugal and Spain) may not be required. However, one would still want to consider their effect on The Netherlands without causing too much computational burden. In such cases, flexible time resolution can maintain hourly details in the focus country, while reducing the detail in distant countries by increasing their resolution (to two hours or more). This reduction allows a broader scope without over-burdening computation.
 
+## [Flexible Time Resolution in the Unit Commitment and Ramping Constraints](@id flex-time-res-uc)
+
+![unit-commitment-case-study](./figs/unit-commitment-case-study.png)
+
+```@example unit-commitment
+using DataFrames # hide
+using CSV # hide
+input_dir = "../../test/inputs/UC-ramping" # hide
+assets_data = CSV.read(joinpath(input_dir, "assets-data.csv"), DataFrame, header = 2) # hide
+graph_assets = CSV.read(joinpath(input_dir, "graph-assets-data.csv"), DataFrame, header = 2) # hide
+assets = leftjoin(graph_assets, assets_data, on=:name) # hide
+filtered_assets = assets[assets.type .== "producer" .|| assets.type .== "conversion", ["name", "type", "capacity", "initial_units", "unit_commitment",  "ramping"]] # hide
+```
+
+```@example unit-commitment
+assets_partitions_data = CSV.read(joinpath(input_dir, "assets-rep-periods-partitions.csv"), DataFrame, header = 2) # hide
+filtered_assets_partitions = assets_partitions_data[!, ["asset", "specification", "partition"]] # hide
+```
+
+```@example unit-commitment
+flows_partitions_data = CSV.read(joinpath(input_dir, "flows-rep-periods-partitions.csv"), DataFrame, header = 2) # hide
+filtered_flows_partitions = flows_partitions_data[!, ["from_asset", "to_asset", "specification", "partition"]] # hide
+```
+
+### Ramping in Assets with Multiple Outputs
+
+gas
+
+### Unit Commitment in Assets with Constant Time Resolution
+
+ocgt
+
+### Unit Commitment and Ramping in Assets with Flexible Time Resolution that are Multiple of Each Other
+
+smr
+
+### Unit Commitment and Ramping in Assets with Flexible Time Resolution that are not Multiple of Each Other
+
+ccgt
+
+### Unit Commitment and Ramping Case Study Results
+
+![unit-commitment-results](./figs/unit-commitment-results.png)
+
+![unit-commitment-balance](./figs/unit-commitment-balance.png)
+
 ## [Storage Modeling](@id storage-modeling)
 
 Energy storage systems can be broadly classified into two categories: seasonal and non-seasonal storage. Seasonal storage refers to assets that can store energy for more extended periods, usually spanning months or even years. Examples of such assets include hydro reservoirs, hydrogen storage in salt caverns, or empty gas fields. On the other hand, non-seasonal storage refers to assets that can store energy only for a few hours, such as batteries or small pumped-hydro storage units.
@@ -355,7 +401,7 @@ using CSV # hide
 input_dir = "../../test/inputs/Storage" # hide
 assets_data = CSV.read(joinpath(input_dir, "assets-data.csv"), DataFrame, header = 2) # hide
 graph_assets = CSV.read(joinpath(input_dir, "graph-assets-data.csv"), DataFrame, header = 2) # hide
-assets = leftjoin(graph_assets, assets_data, on=:name)
+assets = leftjoin(graph_assets, assets_data, on=:name) # hide
 filtered_assets = assets[assets.type .== "storage", ["name", "type", "capacity", "is_seasonal", "initial_storage_capacity", "initial_storage_level"]] # hide
 ```
 
