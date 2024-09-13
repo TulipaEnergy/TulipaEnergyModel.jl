@@ -10,7 +10,7 @@ function add_investment_constraints!(
     graph,
     Y,
     Ai,
-    investable_assets_using_simple_method,
+    decommissionable_assets_using_simple_method,
     Ase,
     Fi,
     assets_investment,
@@ -24,7 +24,7 @@ function add_investment_constraints!(
         if graph[a].capacity[y] > 0 && !ismissing(graph[a].investment_limit[y])
             bound_value = _find_upper_bound(graph, y, a)
             JuMP.set_upper_bound(assets_investment[y, a], bound_value)
-            if a in investable_assets_using_simple_method[y]
+            if a in decommissionable_assets_using_simple_method
                 JuMP.set_upper_bound(assets_decommission_simple_method[y, a], bound_value)
             end
         end

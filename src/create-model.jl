@@ -1093,7 +1093,7 @@ function create_model(
         graph,
         Y,
         Ai,
-        investable_assets_using_simple_method,
+        decommissionable_assets_using_simple_method,
         Ase,
         Fi,
         assets_investment,
