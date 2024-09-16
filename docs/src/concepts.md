@@ -125,21 +125,27 @@ Due to the flexible resolution, we must explicitly state how the constraints are
 
 Below is the table outlining the details for each type of constraint. Note _min_ means highest resolution, and _max_ means lowest resolution.
 
-| Name                                          | Variables involved             | Profile involved | Constraint type | Resolution of the constraints                                                            | Profile aggregation |
-| --------------------------------------------- | ------------------------------ | ---------------- | --------------- | ---------------------------------------------------------------------------------------- | ------------------- |
-| Consumer Balance                              | inputs, outputs                | demand           | power           | min(incoming flows, outgoing flows)                                                      | mean                |
-| Storage Balance                               | inputs, outputs, storage level | inflows          | energy          | max(asset, min(incoming flows, outgoing flows))                                          | sum                 |
-| Hub Balance                                   | inputs, outputs                | -                | power           | min(incoming flows, outgoing flows)                                                      | -                   |
-| Conversion Balance                            | inputs, outputs                | -                | energy          | max(incoming flows, outgoing flows)                                                      | -                   |
-| Producers Capacity Constraints                | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |
-| Storage Capacity Constraints (outgoing)       | outputs                        | -                | power           | min(outgoing flows)                                                                      | -                   |
-| Conversion Capacity Constraints (outgoing)    | outputs                        | -                | power           | min(outgoing flows)                                                                      | -                   |
-| Conversion Capacity Constraints (incoming)    | inputs                         | -                | power           | min(incoming flows)                                                                      | -                   |
-| Storage Capacity Constraints (incoming)       | inputs                         | -                | power           | min(incoming flows)                                                                      | -                   |
-| Transport Capacity Constraints (upper bounds) | flow                           | availability     | power           | if it connects two hubs or demands then max(hub a,hub b), otherwise its own              | mean                |
-| Transport Capacity Constraints (lower bounds) | flow                           | availability     | power           | if it connects two hubs or demands then max(hub a,hub b), otherwise its own              | mean                |
-| Maximum Energy Limits (outgoing)              | outputs                        | max_energy       | energy          | Determine by timeframe partitions. The default value is for each period in the timeframe | sum                 |
-| Minumum Energy Limits (outgoing)              | outputs                        | min_energy       | energy          | Determine by timeframe partitions. The default value is for each period in the timeframe | sum                 |
+| Name                                           | Variables involved             | Profile involved | Constraint type | Resolution of the constraints                                                            | Profile aggregation |
+| ---------------------------------------------- | ------------------------------ | ---------------- | --------------- | ---------------------------------------------------------------------------------------- | ------------------- |
+| Consumer Balance                               | inputs, outputs                | demand           | power           | min(incoming flows, outgoing flows)                                                      | mean                |
+| Storage Balance                                | inputs, outputs, storage level | inflows          | energy          | max(asset, min(incoming flows, outgoing flows))                                          | sum                 |
+| Hub Balance                                    | inputs, outputs                | -                | power           | min(incoming flows, outgoing flows)                                                      | -                   |
+| Conversion Balance                             | inputs, outputs                | -                | energy          | max(incoming flows, outgoing flows)                                                      | -                   |
+| Producers Capacity Constraints                 | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |
+| Storage Capacity Constraints (outgoing)        | outputs                        | -                | power           | min(outgoing flows)                                                                      | -                   |
+| Conversion Capacity Constraints (outgoing)     | outputs                        | -                | power           | min(outgoing flows)                                                                      | -                   |
+| Conversion Capacity Constraints (incoming)     | inputs                         | -                | power           | min(incoming flows)                                                                      | -                   |
+| Storage Capacity Constraints (incoming)        | inputs                         | -                | power           | min(incoming flows)                                                                      | -                   |
+| Transport Capacity Constraints (upper bounds)  | flow                           | availability     | power           | if it connects two hubs or demands then max(hub a,hub b), otherwise its own              | mean                |
+| Transport Capacity Constraints (lower bounds)  | flow                           | availability     | power           | if it connects two hubs or demands then max(hub a,hub b), otherwise its own              | mean                |
+| Maximum Energy Limits (outgoing)               | outputs                        | max_energy       | energy          | Determine by timeframe partitions. The default value is for each period in the timeframe | sum                 |
+| Minimum Energy Limits (outgoing)               | outputs                        | min_energy       | energy          | Determine by timeframe partitions. The default value is for each period in the timeframe | sum                 |
+| Maximum Output Flow with Unit Commitment       | outputs, units_on              | availability     | power           | min(outgoing flows, units_on)                                                            | mean                |
+| Minimum Output Flow with Unit Commitment       | outputs, units_on              | availability     | power           | min(outgoing flows, units_on)                                                            | mean                |
+| Maximum Ramp Up Flow with Unit Commitment      | outputs, units_on              | availability     | power           | min(outgoing flows, units_on)                                                            | mean                |
+| Maximum Ramp Down Flow with Unit Commitment    | outputs, units_on              | availability     | power           | min(outgoing flows, units_on)                                                            | mean                |
+| Maximum Ramp Up Flow without Unit Commitment   | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |
+| Maximum Ramp Down Flow without Unit Commitment | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |
 
 For this basic example, we can describe the balance and capacity constraints in the model. For the sake of simplicity, we consider only the intra-temporal constraints, the representative period index is dropped from the equations, and there are no investment variables in the equations.
 
@@ -334,7 +340,11 @@ The level of reduction and approximation error will depend on the case study. So
 
 ## [Flexible Time Resolution in the Unit Commitment and Ramping Constraints](@id flex-time-res-uc)
 
+In the previous section, we have seen how the flexible temporal resolution is handled for the model's flow capacity and balance constraints. Here, we show how flexible time resolution is applied when considering the model's unit commitment and ramping constraints. Let's consider the example in the folder [`test/inputs/UC-ramping`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/UC-ramping) to explain how all these constraints are created in _TulipaEnergyModel.jl_ when having the flexible time resolution.
+
 ![unit-commitment-case-study](./figs/unit-commitment-case-study.png)
+
+The example demonstrates various assets that supply demand. Each asset has different input data in the `assets-data` file, which activates different sets of constraints based on the method. For example, the `gas` producer has ramping constraints but not unit commitment constraints, while the `ocgt` conversion has unit commitment constraints but not ramping constraints. Lastly, the `ccgt` and `smr` assets both have unit commitment and ramping constraints.
 
 ```@example unit-commitment
 using DataFrames # hide
@@ -346,37 +356,155 @@ assets = leftjoin(graph_assets, assets_data, on=:name) # hide
 filtered_assets = assets[assets.type .== "producer" .|| assets.type .== "conversion", ["name", "type", "capacity", "initial_units", "unit_commitment",  "ramping"]] # hide
 ```
 
+The `assets-rep-periods-partitions` file defines the time resolution for the assets in the `partition` column. For instance, here we can see that the time resolutions are 3h for the `ccgt` and 6h for the `smr`. These values mean that the unit commitment variables in the model have three and six hours resolution, respectively.
+
 ```@example unit-commitment
 assets_partitions_data = CSV.read(joinpath(input_dir, "assets-rep-periods-partitions.csv"), DataFrame, header = 2) # hide
 filtered_assets_partitions = assets_partitions_data[!, ["asset", "specification", "partition"]] # hide
 ```
+
+The `flows-rep-periods-partitions` file defines the time resolution for the flows. In this example, we have that the flows from the `gas` asset to the `ccgt` and from the `ccgt` asset to the `demand` are in a 2h resolution.
 
 ```@example unit-commitment
 flows_partitions_data = CSV.read(joinpath(input_dir, "flows-rep-periods-partitions.csv"), DataFrame, header = 2) # hide
 filtered_flows_partitions = flows_partitions_data[!, ["from_asset", "to_asset", "specification", "partition"]] # hide
 ```
 
+The default value for the assets and flows partitions is 1 hour. This means that assets and flows not in the previous tables are considered on an hourly basis in the model.
+
+Remember that the section [`mathematical formulation`](@ref formulation) shows the unit commitment and ramping constraints in the model considering an uniform time resolution as a reference.
+
+With this information, we can analyze the constraints in each of the following cases:
+
+-   Ramping in assets with multiple outputs
+-   Unit commitment in assets with constant time resolution
+-   Unit commitment and ramping in assets with flexible time resolution that are multiple of each other
+-   Unit commitment and ramping in assets with flexible time resolution that are not multiple of each other
+
+We will analyze each case in the following sections, considering the constraints resolution defined in the summary table in the [flexible time resolution](@ref flex-time-res) section.
+
 ### Ramping in Assets with Multiple Outputs
 
 gas
+
+max_ramp_up_gas:
+
+-   `b_k` = 2:2: -1 flow(gas,ocgt),1,1:1 + 1 flow(gas,ocgt),1,2:2 <= 1494
+-   `b_k` = 3:3: -1 flow(gas,ocgt),1,2:2 + 1 flow(gas,ocgt),1,3:3 - 1 flow(gas,ccgt),1:2 + 1 flow(gas,ccgt),1,3:4 <= 1494
+-   `b_k` = 4:4: -1 flow(gas,ocgt),1,3:3 + 1 flow(gas,ocgt),1,4:4 <= 1494
+-   `b_k` = 5:5: -1 flow(gas,ocgt),1,4:4 + 1 flow(gas,ocgt),1,5:5 - 1 flow(gas,ccgt),1,3:4 + 1 flow(gas,ccgt),1,5:6 <= 1494
+
+For the maximum ramp down we have similiar constraints as the ones shown above.
 
 ### Unit Commitment in Assets with Constant Time Resolution
 
 ocgt
 
+limit_units_on_ocgt:
+
+-   `b_k` = 1:1: -1 assets_investment(ocgt) + 1 units_on_ocgt,1,1:1 <= 0
+-   `b_k` = 2:2: -1 assets_investment(ocgt) + 1 units_on_ocgt,1,2:2 <= 0
+-   `b_k` = 3:3: -1 assets_investment(ocgt) + 1 units_on_ocgt,1,3:3 <= 0
+
+min_output_flow_ocgt:
+
+-   `b_k` = 1:1: 1 flow(ocgt,demand),1,1:1 - 10 units_on_ocgt,1,1:1 >= 0
+-   `b_k` = 2:2: 1 flow(ocgt,demand),1,2:2 - 10 units_on_ocgt,1,2:2 >= 0
+-   `b_k` = 3:3: 1 flow(ocgt,demand),1,3:3 - 10 units_on_ocgt,1,3:3 >= 0
+
+max_output_flow_ocgt:
+
+-   `b_k` = 1:1: 1 flow(ocgt,demand),1,1:1 - 100 units_on_ocgt,1,1:1 <= 0
+-   `b_k` = 2:2: 1 flow(ocgt,demand),1,2:2 - 100 units_on_ocgt,1,2:2 <= 0
+-   `b_k` = 3:3: 1 flow(ocgt,demand),1,3:3 - 100 units_on_ocgt,1,3:3 <= 0
+
 ### Unit Commitment and Ramping in Assets with Flexible Time Resolution that are Multiple of Each Other
 
 smr
+
+limit_units_on_smr:
+
+-   `b_k` = 1:6: 1 units_on_smr,1,1:6 <= 1
+-   `b_k` = 7:12: 1 units_on_smr,1,7:12 <= 1
+-   `b_k` = 13:18: 1 units_on_smr,1,13:18 <= 1
+-   `b_k` = 19:24: 1 units_on_smr,1,19:24 <= 1
+
+min_output_flow_smr:
+
+-   `b_k` = 1:1: 1 flow(smr,demand),1,1:1 - 150 units_on_smr,1,1:6 >= 0
+-   `b_k` = 2:2: 1 flow(smr,demand),1,2:2 - 150 units_on_smr,1,1:6 >= 0
+-   `b_k` = 3:3: 1 flow(smr,demand),1,3:3 - 150 units_on_smr,1,1:6 >= 0
+-   `b_k` = 4:4: 1 flow(smr,demand),1,4:4 - 150 units_on_smr,1,1:6 >= 0
+-   `b_k` = 5:5: 1 flow(smr,demand),1,5:5 - 150 units_on_smr,1,1:6 >= 0
+-   `b_k` = 6:6: 1 flow(smr,demand),1,6:6 - 150 units_on_smr,1,1:6 >= 0
+-   `b_k` = 7:7: 1 flow(smr,demand),1,7:7 - 150 units_on_smr,1,7:12 >= 0
+-   `b_k` = 8:8: 1 flow(smr,demand),1,8:8 - 150 units_on_smr,1,7:12 >= 0
+
+max_output_flow_smr:
+
+-   `b_k` = 1:1: 1 flow(smr,demand),1,1:1 - 200 units_on_smr,1,1:6 <= 0
+-   `b_k` = 2:2: 1 flow(smr,demand),1,2:2 - 200 units_on_smr,1,1:6 <= 0
+-   `b_k` = 3:3: 1 flow(smr,demand),1,3:3 - 200 units_on_smr,1,1:6 <= 0
+-   `b_k` = 4:4: 1 flow(smr,demand),1,4:4 - 200 units_on_smr,1,1:6 <= 0
+-   `b_k` = 5:5: 1 flow(smr,demand),1,5:5 - 200 units_on_smr,1,1:6 <= 0
+-   `b_k` = 6:6: 1 flow(smr,demand),1,6:6 - 200 units_on_smr,1,1:6 <= 0
+-   `b_k` = 7:7: 1 flow(smr,demand),1,7:7 - 200 units_on_smr,1,7:12 <= 0
+-   `b_k` = 8:8: 1 flow(smr,demand),1,8:8 - 200 units_on_smr,1,7:12 <= 0
+
+max_ramp_up_smr:
+
+-   `b_k` 2:2: -1 flow(smr,demand),1,1:1 + 1 flow(smr,demand),1,2:2 - 20 units_on_smr,1,1:6 <= 0
+-   `b_k` 3:3: -1 flow(smr,demand),1,2:2 + 1 flow(smr,demand),1,3:3 - 20 units_on_smr,1,1:6 <= 0
+-   `b_k` 4:4: -1 flow(smr,demand),1,3:3 + 1 flow(smr,demand),1,4:4 - 20 units_on_smr,1,1:6 <= 0
+-   `b_k` 5:5: -1 flow(smr,demand),1,4:4 + 1 flow(smr,demand),1,5:5 - 20 units_on_smr,1,1:6 <= 0
+-   `b_k` 6:6: -1 flow(smr,demand),1,5:5 + 1 flow(smr,demand),1,6:6 - 20 units_on_smr,1,1:6 <= 0
+-   `b_k` 7:7: -1 flow(smr,demand),1,6:6 + 1 flow(smr,demand),1,7:7 + 150 units_on_smr,1,1:6 - 170 units_on_smr,1,7:12 <= 0
+-   `b_k` 8:8: -1 flow(smr,demand),1,7:7 + 1 flow(smr,demand),1,8:8 - 20 units_on_smr,1,7:12 <= 0
+-   `b_k` 9:9: -1 flow(smr,demand),1,8:8 + 1 flow(smr,demand),1,9:9 - 20 units_on_smr,1,7:12 <= 0
 
 ### Unit Commitment and Ramping in Assets with Flexible Time Resolution that are not Multiple of Each Other
 
 ccgt
 
+limit_units_on_ccgt:
+
+-   `b_k` = 1:3: -1 assets_investment(ccgt) + 1 units_on_ccgt,1,1:3 <= 1
+-   `b_k` = 4:6: -1 assets_investment(ccgt) + 1 units_on_ccgt,1,4:6 <= 1
+-   `b_k` = 7:9: -1 assets_investment(ccgt) + 1 units_on_ccgt,1,7:9 <= 1
+
+min_output_flow_ccgt:
+
+-   `b_k` = 1:2: 1 flow(ccgt,demand),1,1:2 - 50 units_on_ccgt,1,1*3* >= 0
+-   `b_k` = 3:3: 1 flow(ccgt,demand),1,3:4 - 50 units_on_ccgt,1,1*3* >= 0
+-   `b_k` = 4:4: 1 flow(ccgt,demand),1,3:4 - 50 units_on_ccgt,1,4*6* >= 0
+-   `b_k` = 5:6: 1 flow(ccgt,demand),1,5:6 - 50 units_on_ccgt,1,4*6* >= 0
+
+max_output_flows_ccgt:
+
+-   `b_k` = 1:2: 1 flow(ccgt,demand),1,1:2 - 200 units_on_ccgt,1,1:3 <= 0
+-   `b_k` = 3:3: 1 flow(ccgt,demand),1,3:4 - 200 units_on_ccgt,1,1:3 <= 0
+-   `b_k` = 4:4: 1 flow(ccgt,demand),1,3:4 - 200 units_on_ccgt,1,4:6 <= 0
+-   `b_k` = 5:6: 1 flow(ccgt,demand),1,5:6 - 200 units_on_ccgt,1,4:6 <= 0
+
+max_ramp_up_ccgt:
+
+-   `b_k`= 3:3: -1 flow(ccgt,demand),1,1:2 + 1 flow(ccgt,demand),1,3:4 - 120 units_on_ccgt,1,1:3 <= 0
+-   `b_k`= 4:4: 50 units_on_ccgt,1,1:3 - 170 units_on_ccgt,1,4:6\_ <= 0
+-   `b_k`= 5:6: -1 flow(ccgt,demand),2030,1,3:4 + 1 flow(ccgt,demand),1,5:6 - 120 units_on_ccgt,1,4:6 <= 0
+-   `b_k`= 7:8: -1 flow(ccgt,demand),2030,1,5:6 + 1 flow(ccgt,demand),1,7:8 + 50 units_on_ccgt,1,4:6 - 170 units_on_ccgt,1,7:9 <= 0
+-   `b_k`= 9:9: -1 flow(ccgt,demand),2030,1,7:8 + 1 flow(ccgt,demand),1,9:10 - 120 units_on_ccgt,1,7:9 <= 0
+
 ### Unit Commitment and Ramping Case Study Results
+
+Let's now optimize the model for the data in the example [`test/inputs/UC-ramping`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/UC-ramping) and explore the results. The first result is the unit commitment of the assets with this method, i.e., `ocgt`, `ccgt`, and `smr`. One of the characteristics of having flexible time resolution on the unit commitment variables (e.g., `units_on`) is that it allows us to consider implicitly minimum up/down times in a simplified manner. For instance, the `ccgt` asset can only increase the number of units every 3h, and the `smr` can only start up again after 6h.
 
 ![unit-commitment-results](./figs/unit-commitment-results.png)
 
+Let's now examine the hourly production balance in the results. We can see that the assets with a unit commitment method only produce electricity (e.g., flow to the demand asset) when they are on (`units_on >= 1`). In addition, the `smr` has a slow flow change due to its ramping limits.
+
 ![unit-commitment-balance](./figs/unit-commitment-balance.png)
+
+In this example, we demonstrated the use of unit commitment and ramping constraints with flexible time resolution in the model, and we illustrated what the results look like. The flexible time resolution applied to the unit commitment variables aids in minimizing the number of binary/integer variables in the model and simplifies the representation of the assets' minimum up and down times.
 
 ## [Storage Modeling](@id storage-modeling)
 
