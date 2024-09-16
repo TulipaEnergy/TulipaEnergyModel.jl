@@ -997,23 +997,37 @@ function create_model(
                 yy in Y if starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
             )
         )
+        cond1(a, y, v) = a in existing_assets_by_year_using_compact_method[v]
+        cond2(a, y, v) = a in investable_assets_using_compact_method[y] && v in Y
         accumulate_capacity_compact_method =
             model[:accumulate_capacity_compact_method] = [
-                @expression(
-                    model,
-                    if v in V_all && a in existing_assets_by_year_using_compact_method[v]
-                        graph[a].initial_units[y][v]
-                    else
-                        0
-                    end + if a in investable_assets_using_compact_method[y] && v in Y
-                        assets_investment[v, a]
-                    else
-                        0
-                    end - sum(
-                        assets_decommission_compact_method[(a, yy, v)] for yy in Y if
-                        v ≤ yy ≤ y && (a, yy, v) in decommission_set_using_compact_method
+                if cond1(a, y, v) && cond2(a, y, v)
+                    @expression(
+                        model,
+                        graph[a].initial_units[y][v] + assets_investment[v, a] - sum(
+                            assets_decommission_compact_method[(a, yy, v)] for yy in Y if
+                            v ≤ yy ≤ y && (a, yy, v) in decommission_set_using_compact_method
+                        )
                     )
-                ) for (a, y, v) in accumulated_set_using_compact_method
+                elseif cond1(a, y, v) && !cond2(a, y, v)
+                    @expression(
+                        model,
+                        graph[a].initial_units[y][v] - sum(
+                            assets_decommission_compact_method[(a, yy, v)] for yy in Y if
+                            v ≤ yy ≤ y && (a, yy, v) in decommission_set_using_compact_method
+                        )
+                    )
+                elseif !cond1(a, y, v) && cond2(a, y, v)
+                    @expression(
+                        model,
+                        assets_investment[v, a] - sum(
+                            assets_decommission_compact_method[(a, yy, v)] for yy in Y if
+                            v ≤ yy ≤ y && (a, yy, v) in decommission_set_using_compact_method
+                        )
+                    )
+                else
+                    0.0
+                end for (a, y, v) in accumulated_set_using_compact_method
             ]
     end
 
