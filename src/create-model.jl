@@ -998,7 +998,7 @@ function create_model(
             )
         )
         cond1(a, y, v) = a in existing_assets_by_year_using_compact_method[v]
-        cond2(a, y, v) = a in investable_assets_using_compact_method[y] && v in Y
+        cond2(a, y, v) = v in Y && a in investable_assets_using_compact_method[v]
         accumulate_capacity_compact_method =
             model[:accumulate_capacity_compact_method] = JuMP.AffExpr[
                 if cond1(a, y, v) && cond2(a, y, v)
