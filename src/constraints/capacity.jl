@@ -36,6 +36,9 @@ function add_capacity_constraints!(
     outgoing_flow_highest_out_resolution,
     incoming_flow_highest_in_resolution,
 )
+    compact_set_lookup = Dict(
+        (a, y, v) => idx for (idx, (a, y, v)) in enumerate(accumulated_set_using_compact_method)
+    )
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
@@ -69,8 +72,11 @@ function add_capacity_constraints!(
                             ("availability", row.rep_period),
                             row.timesteps_block,
                             1.0,
-                        ) * accumulate_capacity_compact_method[(row.asset, row.year, v)] for
-                        v in V_all if
+                        ) * accumulate_capacity_compact_method[compact_set_lookup[(
+                            row.asset,
+                            row.year,
+                            v,
+                        )]] for v in V_all if
                         (row.asset, row.year, v) in accumulated_set_using_compact_method
                     )
                 )

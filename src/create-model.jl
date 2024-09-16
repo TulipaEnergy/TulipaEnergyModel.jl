@@ -997,22 +997,24 @@ function create_model(
                 yy in Y if starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
             )
         )
-        @expression(
-            model,
-            accumulate_capacity_compact_method[(a, y, v) in accumulated_set_using_compact_method],
-            if v in V_all && a in existing_assets_by_year_using_compact_method[v]
-                graph[a].initial_units[y][v]
-            else
-                0
-            end + if a in investable_assets_using_compact_method[y] && v in Y
-                assets_investment[v, a]
-            else
-                0
-            end - sum(
-                assets_decommission_compact_method[(a, yy, v)] for
-                yy in Y if v ≤ yy ≤ y && (a, yy, v) in decommission_set_using_compact_method
-            )
-        )
+        accumulate_capacity_compact_method =
+            model[:accumulate_capacity_compact_method] = [
+                @expression(
+                    model,
+                    if v in V_all && a in existing_assets_by_year_using_compact_method[v]
+                        graph[a].initial_units[y][v]
+                    else
+                        0
+                    end + if a in investable_assets_using_compact_method[y] && v in Y
+                        assets_investment[v, a]
+                    else
+                        0
+                    end - sum(
+                        assets_decommission_compact_method[(a, yy, v)] for yy in Y if
+                        v ≤ yy ≤ y && (a, yy, v) in decommission_set_using_compact_method
+                    )
+                ) for (a, y, v) in accumulated_set_using_compact_method
+            ]
     end
 
     ## Expressions for the objective function
@@ -1042,10 +1044,8 @@ function create_model(
                 accumulate_capacity_simple_method[y, a] for y in Y for
                 a in decommissionable_assets_using_simple_method
             ) + sum(
-                fixed_cost[(a, y, v)] *
-                graph[a].capacity[y] *
-                accumulate_capacity_compact_method[(a, y, v)] for
-                (a, y, v) in accumulated_set_using_compact_method
+                fixed_cost[(a, y, v)] * graph[a].capacity[y] * accm for (accm, (a, y, v)) in
+                zip(accumulate_capacity_compact_method, accumulated_set_using_compact_method)
             )
         )
 
