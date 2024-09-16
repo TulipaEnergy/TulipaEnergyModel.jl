@@ -59,7 +59,7 @@ The `content` can be a value or a vector of proper size.
 function add_column(tulipa_csv::TulipaCSV, unit::String, colname, content, position::Int)
     @debug "Adding column $colname ($unit) at $position"
     insert!(tulipa_csv.units, position, unit)
-    insertcols!(tulipa_csv.csv, position, colname => content)
+    insertcols!(tulipa_csv.csv, position, Symbol(colname) => content)
 end
 
 function add_column(
@@ -81,17 +81,17 @@ Removes column `colname` or column at position `position`.
 If both are passed, we check that `colname` happens at `position`.
 """
 function remove_column(tulipa_csv::TulipaCSV, colname, position)
-    @assert colname == names(tulipa_csv.csv)[position]
+    @assert string(colname) == names(tulipa_csv.csv)[position]
     content = tulipa_csv.csv[:, position]
 
-    unit = deleteat!(tulipa_csv.units, position)
-    select!(tulipa_csv.csv, Not(colname))
+    unit = popat!(tulipa_csv.units, position)
+    select!(tulipa_csv.csv, Not(Symbol(colname)))
 
     return unit, content
 end
 
 function remove_column(tulipa_csv::TulipaCSV, colname)
-    position = columnindex(tulipa_csv.csv, colname)
+    position = columnindex(tulipa_csv.csv, Symbol(colname))
     return remove_column(tulipa_csv, colname, position)
 end
 

@@ -54,11 +54,12 @@ mutable struct GraphAssetData
     active::Dict{Int,Bool}
     investable::Dict{Int,Bool}
     investment_integer::Dict{Int,Bool}
-    technical_lifetime::Dict{Int,Float64}
+    technical_lifetime::Float64
+    discount_rate::Float64
     investment_cost::Dict{Int,Float64}
-    fixed_cost::Dict{Int,Dict{Int,Float64}}
+    fixed_cost::Dict{Int,Float64}
     investment_limit::Dict{Int,Union{Missing,Float64}}
-    capacity::Dict{Int,Float64}
+    capacity::Float64
     initial_units::Dict{Int,Dict{Int,Float64}}
     peak_demand::Dict{Int,Float64}
     consumer_balance_sense::Dict{Int,Union{MathOptInterface.EqualTo,MathOptInterface.GreaterThan}}
@@ -104,6 +105,7 @@ mutable struct GraphAssetData
         investable,
         investment_integer,
         technical_lifetime,
+        discount_rate,
         investment_cost,
         fixed_cost,
         investment_limit,
@@ -145,6 +147,7 @@ mutable struct GraphAssetData
             investable,
             investment_integer,
             technical_lifetime,
+            discount_rate,
             investment_cost,
             fixed_cost,
             investment_limit,
@@ -199,7 +202,7 @@ mutable struct GraphFlowData
     variable_cost::Dict{Int,Float64}
     investment_cost::Dict{Int,Float64}
     investment_limit::Dict{Int,Union{Missing,Float64}}
-    capacity::Dict{Int,Float64}
+    capacity::Float64
     initial_export_capacity::Dict{Int,Float64}
     initial_import_capacity::Dict{Int,Float64}
     efficiency::Dict{Int,Float64}

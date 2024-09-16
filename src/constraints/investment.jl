@@ -19,7 +19,7 @@ function add_investment_constraints!(
 
     # - Maximum (i.e., potential) investment limit for assets
     for y in Y, a in Ai[y]
-        if graph[a].capacity[y] > 0 && !ismissing(graph[a].investment_limit[y])
+        if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit[y])
             bound_value = _find_upper_bound(graph, y, a)
             JuMP.set_upper_bound(assets_investment[y, a], bound_value)
         end
@@ -33,7 +33,7 @@ function add_investment_constraints!(
 
     # - Maximum (i.e., potential) investment limit for flows
     for y in Y, (u, v) in Fi[y]
-        if graph[u, v].capacity[y] > 0 && !ismissing(graph[u, v].investment_limit[y])
+        if graph[u, v].capacity > 0 && !ismissing(graph[u, v].investment_limit[y])
             bound_value = _find_upper_bound(graph, y, u, v)
             JuMP.set_upper_bound(flows_investment[y, (u, v)], bound_value)
         end
@@ -43,7 +43,7 @@ end
 function _find_upper_bound(graph, year, investments...; is_bound_for_energy = false)
     graph_investment = graph[investments...]
     if !is_bound_for_energy
-        bound_value = graph_investment.investment_limit[year] / graph_investment.capacity[year]
+        bound_value = graph_investment.investment_limit[year] / graph_investment.capacity
         if graph_investment.investment_integer[year]
             bound_value = floor(bound_value)
         end

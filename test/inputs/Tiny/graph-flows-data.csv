@@ -1,7 +1,7 @@
-asset_name,asset_name,
-from_asset,to_asset,carrier
-ocgt,demand,electricity
-ccgt,demand,electricity
-wind,demand,electricity
-solar,demand,electricity
-ens,demand,electricity
+asset_name,asset_name,,MW
+from_asset,to_asset,carrier,capacity
+ocgt,demand,electricity,0
+ccgt,demand,electricity,0
+wind,demand,electricity,0
+solar,demand,electricity,0
+ens,demand,electricity,0

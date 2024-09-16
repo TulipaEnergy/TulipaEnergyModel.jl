@@ -109,6 +109,21 @@ function create_internal_structures(connection)
         return result_dict
     end
 
+    _query_vintage_year(col; where_pairs...) = begin
+        _q = "SELECT commission_year, $col FROM vintage_assets_data"
+        if length(where_pairs) > 0
+            _q *=
+                " WHERE " *
+                join(("$k=$(TulipaIO.FmtSQL.fmt_quote(v))" for (k, v) in where_pairs), " AND ")
+        end
+        DuckDB.query(connection, _q)
+    end
+
+    function _get_stuff_vintage_year(col; where_pairs...)
+        result = _query_vintage_year(col; where_pairs...)
+        Dict(row.commission_year => getproperty(row, Symbol(col)) for row in result)
+    end
+
     unique_asset_names = Dict{String,Bool}()
     asset_data = [
         row.name => GraphAssetData(
@@ -118,11 +133,12 @@ function create_internal_structures(connection)
             _get_stuff_year("assets_data", "active"; name = row.name),
             _get_stuff_year("assets_data", "investable"; name = row.name),
             _get_stuff_year("assets_data", "investment_integer"; name = row.name),
-            _get_stuff_year("assets_data", "technical_lifetime"; name = row.name),
-            _get_stuff_year("assets_data", "investment_cost"; name = row.name),
-            _get_stuff_commission_year("assets_data", "fixed_cost"; name = row.name),
+            row.technical_lifetime,
+            row.discount_rate,
+            _get_stuff_vintage_year("investment_cost"; name = row.name),
+            _get_stuff_vintage_year("fixed_cost"; name = row.name),
             _get_stuff_year("assets_data", "investment_limit"; name = row.name),
-            _get_stuff_year("assets_data", "capacity"; name = row.name),
+            row.capacity,
             _get_stuff_commission_year("assets_data", "initial_units"; name = row.name),
             _get_stuff_year("assets_data", "peak_demand"; name = row.name),
             Dict(
@@ -203,12 +219,7 @@ function create_internal_structures(connection)
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff_year(
-                "flows_data",
-                "capacity";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
+            row.capacity,
             _get_stuff_year(
                 "flows_data",
                 "initial_export_capacity";
@@ -438,7 +449,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     )
 
     for ((y, a), investment) in solution.assets_investment
-        capacity = graph[a].capacity[y]
+        capacity = graph[a].capacity
         push!(output_table, (a, y, investment, capacity * investment))
     end
     CSV.write(output_file, output_table)
@@ -470,7 +481,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     )
 
     for ((y, (u, v)), investment) in solution.flows_investment
-        capacity = graph[u, v].capacity[y]
+        capacity = graph[u, v].capacity
         push!(output_table, (u, v, y, investment, capacity * investment))
     end
     CSV.write(output_file, output_table)

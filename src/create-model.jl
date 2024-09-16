@@ -627,12 +627,12 @@ function create_model(
 
         # Create dicts for the start year of investments that are accumulated in year y
         starting_year_using_simple_method = Dict(
-            (y, a) => y - graph[a].technical_lifetime[y] + 1 for y in Y for
+            (y, a) => y - graph[a].technical_lifetime + 1 for y in Y for
             a in decommissionable_assets_using_simple_method
         )
 
         starting_year_using_compact_method = Dict(
-            (y, a) => y - graph[a].technical_lifetime[y] + 1 for y in Y for
+            (y, a) => y - graph[a].technical_lifetime + 1 for y in Y for
             a in decommissionable_assets_using_compact_method
         )
 
@@ -837,7 +837,7 @@ function create_model(
             if graph[a].storage_method_energy[y]
                 graph[a].capacity_storage_energy[y] * assets_investment_energy[y, a]
             else
-                graph[a].energy_to_power_ratio[y] * graph[a].capacity[y] * assets_investment[y, a]
+                graph[a].energy_to_power_ratio[y] * graph[a].capacity * assets_investment[y, a]
             end
         )
 
@@ -1036,29 +1036,20 @@ function create_model(
         assets_investment_cost = @expression(
             model,
             sum(
-                graph[a].investment_cost[y] * graph[a].capacity[y] * assets_investment[y, a] for
+                graph[a].investment_cost[y] * graph[a].capacity * assets_investment[y, a] for
                 y in Y for a in Ai[y]
             )
         )
 
-        fixed_cost = Dict((a, y, v) => 0 for (a, y, v) in accumulated_set_using_compact_method)
-        for (a, y, v) in accumulated_set_using_compact_method
-            if haskey(graph[a].fixed_cost, y) && haskey(graph[a].fixed_cost[y], v)
-                fixed_cost[(a, y, v)] = graph[a].fixed_cost[y][v]
-            else
-                fixed_cost[(a, y, v)] = graph[a].fixed_cost[v][v]
-            end
-        end
-
         assets_fixed_cost = @expression(
             model,
             sum(
-                graph[a].fixed_cost[y][y] *
-                graph[a].capacity[y] *
+                graph[a].fixed_cost[y] *
+                graph[a].capacity *
                 accumulate_capacity_simple_method[y, a] for y in Y for
                 a in decommissionable_assets_using_simple_method
             ) + sum(
-                fixed_cost[(a, y, v)] * graph[a].capacity[y] * accm for (accm, (a, y, v)) in
+                graph[a].fixed_cost[v] * graph[a].capacity * accm for (accm, (a, y, v)) in
                 zip(accumulate_capacity_compact_method, accumulated_set_using_compact_method)
             )
         )
@@ -1075,9 +1066,7 @@ function create_model(
         flows_investment_cost = @expression(
             model,
             sum(
-                graph[u, v].investment_cost[y] *
-                graph[u, v].capacity[y] *
-                flows_investment[y, (u, v)] for y in Y for (u, v) in Fi[y]
+                graph[u, v].investment_cost[y] * graph[u, v].capacity * flows_investment[y, (u, v)] for y in Y for (u, v) in Fi[y]
             )
         )
 

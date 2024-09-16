@@ -56,14 +56,14 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) * (
-                        graph[row.asset].capacity[row.year] *
+                        graph[row.asset].capacity *
                         accumulate_capacity_simple_method[row.year, row.asset]
                     )
                 )
             elseif row.asset ∈ decommissionable_assets_using_compact_method
                 @expression(
                     model,
-                    graph[row.asset].capacity[row.year] * sum(
+                    graph[row.asset].capacity * sum(
                         profile_aggregation(
                             Statistics.mean,
                             graph[row.asset].rep_periods_profiles,
@@ -92,7 +92,7 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) *
-                    graph[row.asset].capacity[row.year] *
+                    graph[row.asset].capacity *
                     graph[row.asset].initial_units[row.year][row.year]
                 )
             end for row in eachrow(dataframes[:highest_out])
@@ -114,7 +114,7 @@ function add_capacity_constraints!(
                         1.0,
                     ) *
                     (
-                        graph[row.asset].capacity[row.year] *
+                        graph[row.asset].capacity *
                         graph[row.asset].initial_units[row.year][row.year] +
                         graph[row.asset].investment_limit[row.year]
                     ) *
@@ -133,7 +133,7 @@ function add_capacity_constraints!(
                         1.0,
                     ) *
                     (
-                        graph[row.asset].capacity[row.year] *
+                        graph[row.asset].capacity *
                         graph[row.asset].initial_units[row.year][row.year]
                     ) *
                     (1 - row.is_charging)
@@ -155,7 +155,7 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) * (
-                        graph[row.asset].capacity[row.year] * (
+                        graph[row.asset].capacity * (
                             graph[row.asset].initial_units[row.year][row.year] *
                             (1 - row.is_charging) + assets_investment[row.year, row.asset]
                         )
@@ -179,7 +179,7 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) * (
-                        graph[row.asset].capacity[row.year] * (
+                        graph[row.asset].capacity * (
                             graph[row.asset].initial_units[row.year][row.year] +
                             assets_investment[row.year, row.asset]
                         )
@@ -197,7 +197,7 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) *
-                    graph[row.asset].capacity[row.year] *
+                    graph[row.asset].capacity *
                     graph[row.asset].initial_units[row.year][row.year]
                 )
             end for row in eachrow(dataframes[:highest_in])
@@ -219,7 +219,7 @@ function add_capacity_constraints!(
                         1.0,
                     ) *
                     (
-                        graph[row.asset].capacity[row.year] *
+                        graph[row.asset].capacity *
                         graph[row.asset].initial_units[row.year][row.year] +
                         graph[row.asset].investment_limit[row.year]
                     ) *
@@ -238,7 +238,7 @@ function add_capacity_constraints!(
                         1.0,
                     ) *
                     (
-                        graph[row.asset].capacity[row.year] *
+                        graph[row.asset].capacity *
                         graph[row.asset].initial_units[row.year][row.year]
                     ) *
                     row.is_charging
@@ -260,7 +260,7 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) * (
-                        graph[row.asset].capacity[row.year] * (
+                        graph[row.asset].capacity * (
                             graph[row.asset].initial_units[row.year][row.year] * row.is_charging + assets_investment[row.year, row.asset]
                         )
                     )

@@ -1,8 +1,8 @@
-,{producer;consumer},{group name},{none;simple;compact}
-name,type,group,investment_method
-ocgt,producer,,compact
-ccgt,producer,,compact
-wind,producer,,compact
-solar,producer,,compact
-ens,producer,,none
-demand,consumer,,none
+,{producer;consumer},{group name},{none;simple;compact},MW,year,
+name,type,group,investment_method,capacity,technical_lifetime,discount_rate
+ocgt,producer,,compact,100,15,0.05
+ccgt,producer,,compact,400,25,0.05
+wind,producer,,compact,50,30,0.05
+solar,producer,,compact,10,15,0.05
+ens,producer,,none,1115,15,0.05
+demand,consumer,,none,0,15,0.05

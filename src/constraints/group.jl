@@ -13,7 +13,7 @@ function add_group_constraints!(model, graph, Y, Ai, assets_investment, groups)
         investment_group[group in groups],
         if group.invest_method
             sum(
-                graph[a].capacity[y] * assets_investment[y, a] for y in Y for
+                graph[a].capacity * assets_investment[y, a] for y in Y for
                 a in Ai[y] if !ismissing(graph[a].group) && graph[a].group == group.name
             )
         end

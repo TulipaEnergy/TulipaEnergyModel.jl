@@ -7,11 +7,15 @@ const schemas = (
             :type => "VARCHAR",                              # Producer/Consumer/Storage/Conversion
             :group => "VARCHAR",                             # Group to which the asset belongs to (missing -> no group)
             :investment_method => "VARCHAR",                 # Which method of investment (simple/compact)
+            :capacity => "DOUBLE",                           # MW
+            :technical_lifetime => "INTEGER",
+            :discount_rate => "DOUBLE",
         ),
         flows = (
             :from_asset => "VARCHAR",                        # Name of Asset
             :to_asset => "VARCHAR",                          # Name of Asset
             :carrier => "VARCHAR",                           # (Optional?) Energy carrier
+            :capacity => "DOUBLE",                           # MW
         ),
     ),
     assets = (
@@ -23,9 +27,7 @@ const schemas = (
             :commission_year => "INTEGER",                   # Year of commissioning
             :investable => "BOOLEAN",                        # Whether able to invest
             :investment_integer => "BOOLEAN",                # Whether investment is integer or continuous
-            :investment_cost => "DOUBLE",                    # kEUR/MW/year
             :investment_limit => "DOUBLE",                   # MW (Missing -> no limit)
-            :capacity => "DOUBLE",                           # MW
             :initial_units => "DOUBLE",                      # units
             :peak_demand => "DOUBLE",                        # MW
             :consumer_balance_sense => "VARCHAR",            # Sense of the consumer balance constraint (default ==)
@@ -50,6 +52,14 @@ const schemas = (
             :ramping => "BOOLEAN",                           # Whether asset has ramping constraints
             :max_ramp_up => "DOUBLE",                        # Maximum ramping up rate as a portion of the capacity of asset [p.u./h]
             :max_ramp_down => "DOUBLE",                      # Maximum ramping down rate as a portion of the capacity of asset [p.u./h]
+        ),
+
+        # Schema for the vintage-assets-data.csv
+        vintage_data = OrderedDict(
+            :name => "VARCHAR",
+            :commission_year => "INTEGER",                   # Year of commissioning
+            :fixed_cost => "DOUBLE",
+            :investment_cost => "DOUBLE",                    # kEUR/MW/year
         ),
 
         # Schema for the assets-profiles.csv and assets-timeframe-profiles.csv file.
@@ -100,7 +110,6 @@ const schemas = (
             :variable_cost => "DOUBLE",             # kEUR/MWh
             :investment_cost => "DOUBLE",           # kEUR/MW/year
             :investment_limit => "DOUBLE",          # MW
-            :capacity => "DOUBLE",                  # MW
             :initial_export_capacity => "DOUBLE",   # MW
             :initial_import_capacity => "DOUBLE",   # MW
             :efficiency => "DOUBLE",                # p.u. (per unit)
@@ -186,5 +195,6 @@ const schema_per_table_name = OrderedDict(
     "profiles_rep_periods" => schemas.rep_periods.profiles_data,
     "rep_periods_data" => schemas.rep_periods.data,
     "rep_periods_mapping" => schemas.rep_periods.mapping,
+    "vintage_assets_data" => schemas.assets.vintage_data,
     "year_data" => schemas.year.data,
 )

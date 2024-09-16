@@ -24,7 +24,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                     1.0,
                 ) * (
                     graph[row.from, row.to].initial_export_capacity[row.year] +
-                    graph[row.from, row.to].capacity[row.year] *
+                    graph[row.from, row.to].capacity *
                     flows_investment[row.year, (row.from, row.to)]
                 )
             )
@@ -59,7 +59,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                     1.0,
                 ) * (
                     graph[row.from, row.to].initial_import_capacity[row.year] +
-                    graph[row.from, row.to].capacity[row.year] *
+                    graph[row.from, row.to].capacity *
                     flows_investment[row.year, (row.from, row.to)]
                 )
             )
