@@ -19,6 +19,7 @@ function add_energy_constraints!(model, graph, dataframes)
                 sum,
                 graph[row.asset].timeframe_profiles,
                 row.year,
+                row.year,
                 "max_energy",
                 row.periods_block,
                 1.0,
@@ -35,6 +36,7 @@ function add_energy_constraints!(model, graph, dataframes)
             profile_aggregation(
                 sum,
                 graph[row.asset].timeframe_profiles,
+                row.year,
                 row.year,
                 "min_energy",
                 row.periods_block,
