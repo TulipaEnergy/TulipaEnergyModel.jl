@@ -1,0 +1,16 @@
+,,kEUR/MW/year,kEUR/MW/year
+name,commission_year,fixed_cost,investment_cost
+ocgt,2030,20,25
+ccgt,2028,20,40
+ccgt,2030,20,40
+wind,2020,20,70
+wind,2030,20,70
+solar,2030,20,50
+ens,2030,20,0
+demand,2030,20,0
+ocgt,2050,20,25
+ccgt,2050,20,40
+wind,2050,20,70
+solar,2050,20,50
+ens,2050,20,0
+demand,2050,20,0

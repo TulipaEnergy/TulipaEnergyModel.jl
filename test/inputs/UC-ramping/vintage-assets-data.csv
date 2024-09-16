@@ -1,0 +1,10 @@
+,,kEUR/MW/year,kEUR/MW/year
+name,commission_year,fixed_cost,investment_cost
+gas,2030,0,0
+ocgt,2030,0,25
+ccgt,2030,0,40
+smr,2030,0,0
+wind,2030,0,100
+solar,2030,0,15
+ens,2030,0,0
+demand,2030,0,0

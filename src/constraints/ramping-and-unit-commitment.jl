@@ -32,7 +32,7 @@ function add_ramping_constraints!(
                 ("availability", row.rep_period),
                 row.timesteps_block,
                 1.0,
-            ) * graph[row.asset].capacity[row.year]
+            ) * graph[row.asset].capacity
         ) for row in eachrow(df_units_on_and_outflows) if
         get(graph[row.asset].active, row.year, false)
     ]
