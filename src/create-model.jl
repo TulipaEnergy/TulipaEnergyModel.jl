@@ -990,10 +990,7 @@ function create_model(
     @timeit to "multi-year investment" begin
         @expression(
             model,
-            accumulate_capacity_simple_method[
-                y ∈ Y,
-                a ∈ decommissionable_assets_using_simple_method,
-            ],
+            accumulated_units_simple_method[y ∈ Y, a ∈ decommissionable_assets_using_simple_method],
             sum(values(graph[a].initial_units[y])) + sum(
                 assets_investment[yy, a] for
                 yy in Y if a ∈ investable_assets_using_simple_method[yy] &&
@@ -1005,8 +1002,8 @@ function create_model(
         )
         cond1(a, y, v) = a in existing_assets_by_year_using_compact_method[v]
         cond2(a, y, v) = v in Y && a in investable_assets_using_compact_method[v]
-        accumulate_capacity_compact_method =
-            model[:accumulate_capacity_compact_method] = JuMP.AffExpr[
+        accumulated_units_compact_method =
+            model[:accumulated_units_compact_method] = JuMP.AffExpr[
                 if cond1(a, y, v) && cond2(a, y, v)
                     @expression(
                         model,
@@ -1037,15 +1034,15 @@ function create_model(
             ]
         @expression(
             model,
-            accumulate_capacity[
+            accumulated_units[
                 y ∈ Y,
                 a ∈ decommissionable_assets_using_simple_method∪decommissionable_assets_using_compact_method,
             ],
             if a in decommissionable_assets_using_simple_method
-                accumulate_capacity_simple_method[y, a]
+                accumulated_units_simple_method[y, a]
             else
                 sum(
-                    accumulate_capacity_compact_method[accumulated_set_using_compact_method_lookup[(
+                    accumulated_units_compact_method[accumulated_set_using_compact_method_lookup[(
                         a,
                         y,
                         v,
@@ -1068,13 +1065,11 @@ function create_model(
         assets_fixed_cost = @expression(
             model,
             sum(
-                graph[a].fixed_cost[y] *
-                graph[a].capacity *
-                accumulate_capacity_simple_method[y, a] for y in Y for
+                graph[a].fixed_cost[y] * graph[a].capacity * accumulated_units_simple_method[y, a] for y in Y for
                 a in decommissionable_assets_using_simple_method
             ) + sum(
                 graph[a].fixed_cost[v] * graph[a].capacity * accm for (accm, (a, y, v)) in
-                zip(accumulate_capacity_compact_method, accumulated_set_using_compact_method)
+                zip(accumulated_units_compact_method, accumulated_set_using_compact_method)
             )
         )
 
@@ -1142,8 +1137,8 @@ function create_model(
         accumulated_set_using_compact_method_lookup,
         Asb,
         assets_investment,
-        accumulate_capacity_simple_method,
-        accumulate_capacity_compact_method,
+        accumulated_units_simple_method,
+        accumulated_units_compact_method,
         accumulated_set_using_compact_method,
         outgoing_flow_highest_out_resolution,
         incoming_flow_highest_in_resolution,

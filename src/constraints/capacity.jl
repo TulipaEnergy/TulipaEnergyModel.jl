@@ -10,7 +10,7 @@ add_capacity_constraints!(model,
                           investable_assets_using_simple_method,
                           Asb,
                           assets_investment,
-                          accumulate_capacity_simple_method,
+                          accumulated_units_simple_method,
                           outgoing_flow_highest_out_resolution,
                           incoming_flow_highest_in_resolution
                           )
@@ -31,8 +31,8 @@ function add_capacity_constraints!(
     accumulated_set_using_compact_method_lookup,
     Asb,
     assets_investment,
-    accumulate_capacity_simple_method,
-    accumulate_capacity_compact_method,
+    accumulated_units_simple_method,
+    accumulated_units_compact_method,
     accumulated_set_using_compact_method,
     outgoing_flow_highest_out_resolution,
     incoming_flow_highest_in_resolution,
@@ -55,7 +55,7 @@ function add_capacity_constraints!(
                         1.0,
                     ) * (
                         graph[row.asset].capacity *
-                        accumulate_capacity_simple_method[row.year, row.asset]
+                        accumulated_units_simple_method[row.year, row.asset]
                     )
                 )
             elseif row.asset ∈ decommissionable_assets_using_compact_method
@@ -71,7 +71,7 @@ function add_capacity_constraints!(
                             row.timesteps_block,
                             1.0,
                         ) *
-                        accumulate_capacity_compact_method[accumulated_set_using_compact_method_lookup[(
+                        accumulated_units_compact_method[accumulated_set_using_compact_method_lookup[(
                             row.asset,
                             row.year,
                             v,
