@@ -28,6 +28,7 @@ function add_capacity_constraints!(
     decommissionable_assets_using_simple_method,
     decommissionable_assets_using_compact_method,
     V_all,
+    accumulated_set_using_compact_method_lookup,
     Asb,
     assets_investment,
     accumulate_capacity_simple_method,
@@ -36,9 +37,6 @@ function add_capacity_constraints!(
     outgoing_flow_highest_out_resolution,
     incoming_flow_highest_in_resolution,
 )
-    compact_set_lookup = Dict(
-        (a, y, v) => idx for (idx, (a, y, v)) in enumerate(accumulated_set_using_compact_method)
-    )
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
@@ -72,7 +70,8 @@ function add_capacity_constraints!(
                             ("availability", row.rep_period),
                             row.timesteps_block,
                             1.0,
-                        ) * accumulate_capacity_compact_method[compact_set_lookup[(
+                        ) *
+                        accumulate_capacity_compact_method[accumulated_set_using_compact_method_lookup[(
                             row.asset,
                             row.year,
                             v,

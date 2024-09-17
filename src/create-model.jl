@@ -661,6 +661,12 @@ function create_model(
             ))
         ]
 
+        # Create a lookup set for compact method
+        accumulated_set_using_compact_method_lookup = Dict(
+            (a, y, v) => idx for
+            (idx, (a, y, v)) in enumerate(accumulated_set_using_compact_method)
+        )
+
         # Create subsets of storage assets
         Ase = Dict(y => As ∩ filter_graph(graph, A, true, :storage_method_energy, y) for y in Y)
         Asb = Dict(
@@ -988,7 +994,7 @@ function create_model(
                 y ∈ Y,
                 a ∈ decommissionable_assets_using_simple_method,
             ],
-            graph[a].initial_units[y][y] + sum(
+            sum(values(graph[a].initial_units[y])) + sum(
                 assets_investment[yy, a] for
                 yy in Y if a ∈ investable_assets_using_simple_method[yy] &&
                 starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
@@ -1029,6 +1035,24 @@ function create_model(
                     @expression(model, 0.0)
                 end for (a, y, v) in accumulated_set_using_compact_method
             ]
+        @expression(
+            model,
+            accumulate_capacity[
+                y ∈ Y,
+                a ∈ decommissionable_assets_using_simple_method∪decommissionable_assets_using_compact_method,
+            ],
+            if a in decommissionable_assets_using_simple_method
+                accumulate_capacity_simple_method[y, a]
+            else
+                sum(
+                    accumulate_capacity_compact_method[accumulated_set_using_compact_method_lookup[(
+                        a,
+                        y,
+                        v,
+                    )]] for v in V_all if (a, y, v) in accumulated_set_using_compact_method
+                )
+            end
+        )
     end
 
     ## Expressions for the objective function
@@ -1115,6 +1139,7 @@ function create_model(
         decommissionable_assets_using_simple_method,
         decommissionable_assets_using_compact_method,
         V_all,
+        accumulated_set_using_compact_method_lookup,
         Asb,
         assets_investment,
         accumulate_capacity_simple_method,
