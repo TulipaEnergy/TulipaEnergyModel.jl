@@ -356,7 +356,7 @@ assets = leftjoin(graph_assets, assets_data, on=:name) # hide
 filtered_assets = assets[assets.type .== "producer" .|| assets.type .== "conversion", ["name", "type", "capacity", "initial_units", "unit_commitment",  "ramping"]] # hide
 ```
 
-The `assets-rep-periods-partitions` file defines the time resolution for the assets in the `partition` column. For instance, here we can see that the time resolutions are 3h for the `ccgt` and 6h for the `smr`. These values mean that the unit commitment variables in the model have three and six hours resolution, respectively.
+The `assets-rep-periods-partitions` file defines the time resolution for the assets in the `partition` column. For instance, here we can see that the time resolutions are 3h for the `ccgt` and 6h for the `smr`. These values mean that the unit commitment variables (e.g., `units_on`) in the model have three and six hours resolution, respectively.
 
 ```@example unit-commitment
 assets_partitions_data = CSV.read(joinpath(input_dir, "assets-rep-periods-partitions.csv"), DataFrame, header = 2) # hide
@@ -372,6 +372,8 @@ filtered_flows_partitions = flows_partitions_data[!, ["from_asset", "to_asset", 
 
 The default value for the assets and flows partitions is 1 hour. This means that assets and flows not in the previous tables are considered on an hourly basis in the model.
 
+> **Important**: It's not recommended to set up the input data `partitions` in such a way that the `flow` variables have a lower resolution than the `units_on`. This is because doing so will result in constraints that fix the value of the `units_on` in the timestep block where the `flow` is defined, leading to unnecessary extra variable constraints in the model. For instance, if the `units_on` are hourly and the `flow` is every two hours, then a non-zero `flow` in the timestep block 1:2 will require the `units_on` in timestep blocks 1:1 and 2:2 to be the same and equal to one. Therefore, the time resolution of the `units_on` should always be lower than or equal to the resolution of the `flow` in the asset.
+
 Remember that the section [`mathematical formulation`](@ref formulation) shows the unit commitment and ramping constraints in the model considering an uniform time resolution as a reference.
 
 With this information, we can analyze the constraints in each of the following cases:
@@ -381,118 +383,142 @@ With this information, we can analyze the constraints in each of the following c
 -   Unit commitment and ramping in assets with flexible time resolution that are multiple of each other
 -   Unit commitment and ramping in assets with flexible time resolution that are not multiple of each other
 
-We will analyze each case in the following sections, considering the constraints resolution defined in the summary table in the [flexible time resolution](@ref flex-time-res) section.
+We will analyze each case in the following sections, considering the constraints resolution defined in the summary table in the [flexible time resolution](@ref flex-time-res) section. For the sake of simplicity, we only show the asset $a$ and timestep block $b_k$ index and the constraints as they appear in the .lp file of the example, i.e., with all the coefficients and RHS values calculated from the input parameters. The .lp file can be exported using the keyword argument `write_lp_file = true` in the [`run_scenario`](@ref) function.
 
 ### Ramping in Assets with Multiple Outputs
 
-gas
+In the case of the `gas` asset, there are two output flows above the minimum operating point with different time resolutions. The ramping constraints follow the highest time resolution of the two flows at each timestep block. Since the highest resolution is always defined by the hourly output of the `flow(gas,ocgt)`, the ramping constraints are also hourly. The figure below illustrates this situation.
 
-max_ramp_up_gas:
+![unit-commitment-gas-asset](./figs/unit-commitment-gas.png)
 
--   `b_k` = 2:2: -1 flow(gas,ocgt),1,1:1 + 1 flow(gas,ocgt),1,2:2 <= 1494
--   `b_k` = 3:3: -1 flow(gas,ocgt),1,2:2 + 1 flow(gas,ocgt),1,3:3 - 1 flow(gas,ccgt),1:2 + 1 flow(gas,ccgt),1,3:4 <= 1494
--   `b_k` = 4:4: -1 flow(gas,ocgt),1,3:3 + 1 flow(gas,ocgt),1,4:4 <= 1494
--   `b_k` = 5:5: -1 flow(gas,ocgt),1,4:4 + 1 flow(gas,ocgt),1,5:5 - 1 flow(gas,ccgt),1,3:4 + 1 flow(gas,ccgt),1,5:6 <= 1494
+Let's now take a look at the resulting constraints in the model.
+
+`max_ramp_up(gas)`: The first constraint starts in the second timestep block and takes the difference between the output flows above the minimum operating point from $b_k =$ `2:2` and $b_k =$ `1:1`. Note that since the `flow(gas,ccgt)` is the same in both timestep blocks, the only variables that appear in this first constraint are the ones associated with the `flow(gas,ocgt)`. The second constraint takes the difference between the output flows from $b_k =$ `3:3` and $b_k =$ `2:2`; in this case, there is a change in the `flow(gas, ocgt)`; therefore, the constraint considers both changes in the output flows of the asset. In addition, the ramping parameter is multiplied by the flow duration with the highest resolution, i.e., one hour, which is the duration of the `flow(gas,ocgt)`.
+
+-   $b_k =$ `2:2`: -1 `flow(gas,ocgt,1:1)` + 1 `flow(gas,ocgt,2:2)` <= 1494
+-   $b_k =$ `3:3`: -1 `flow(gas,ocgt,2:2)` + 1 `flow(gas,ocgt,3:3)` - 1 `flow(gas,ccgt,1:2)` + 1 `flow(gas,ccgt,3:4)` <= 1494
+-   $b_k =$ `4:4`: -1 `flow(gas,ocgt,3:3)` + 1 `flow(gas,ocgt,4:4)` <= 1494
+-   $b_k =$ `5:5`: -1 `flow(gas,ocgt,4:4)` + 1 `flow(gas,ocgt,5:5)` - 1 `flow(gas,ccgt,3:4)` + 1 `flow(gas,ccgt,5:6)` <= 1494
 
 For the maximum ramp down we have similiar constraints as the ones shown above.
 
 ### Unit Commitment in Assets with Constant Time Resolution
 
-ocgt
+The `ocgt` asset includes both the `flow(oct,demand)` and the asset time resolution, which defines the resolution of the `units_on` variable, with a default setting of one hour. As a result, the unit commitment constraints are also set on an hourly basis. This is the conventional method for representing these types of constraints in power system models. The figure below illustrates this situation.
 
-limit_units_on_ocgt:
+![unit-commitment-ocgt-asset](./figs/unit-commitment-ocgt.png)
 
--   `b_k` = 1:1: -1 assets_investment(ocgt) + 1 units_on_ocgt,1,1:1 <= 0
--   `b_k` = 2:2: -1 assets_investment(ocgt) + 1 units_on_ocgt,1,2:2 <= 0
--   `b_k` = 3:3: -1 assets_investment(ocgt) + 1 units_on_ocgt,1,3:3 <= 0
+Let's now take a look at the resulting constraints in the model. Because everything is based on an hourly timestep, the equations are simple and easy to understand.
 
-min_output_flow_ocgt:
+`limit_units_on(ocgt)`: The upper bound of the `units_o`n is the investment variable of the `asset`
 
--   `b_k` = 1:1: 1 flow(ocgt,demand),1,1:1 - 10 units_on_ocgt,1,1:1 >= 0
--   `b_k` = 2:2: 1 flow(ocgt,demand),1,2:2 - 10 units_on_ocgt,1,2:2 >= 0
--   `b_k` = 3:3: 1 flow(ocgt,demand),1,3:3 - 10 units_on_ocgt,1,3:3 >= 0
+-   $b_k =$ `1:1`: -1 `assets_investment(ocgt)` + 1 `units_on(ocgt,1:1)` <= 0
+-   $b_k =$ `2:2`: -1 `assets_investment(ocgt)` + 1 `units_on(ocgt,2:2)` <= 0
+-   $b_k =$ `3:3`: -1 `assets_investment(ocgt)` + 1 `units_on(ocgt,3:3)` <= 0
 
-max_output_flow_ocgt:
+`min_output_flow(ocgt)`: The minimum operating point is 10 MW, so the asset must produce an output flow greater than this value when the unit is online.
 
--   `b_k` = 1:1: 1 flow(ocgt,demand),1,1:1 - 100 units_on_ocgt,1,1:1 <= 0
--   `b_k` = 2:2: 1 flow(ocgt,demand),1,2:2 - 100 units_on_ocgt,1,2:2 <= 0
--   `b_k` = 3:3: 1 flow(ocgt,demand),1,3:3 - 100 units_on_ocgt,1,3:3 <= 0
+-   $b_k =$ `1:1`: 1 `flow(ocgt,demand,1:1)` - 10 `units_on(ocgt,1:1)` >= 0
+-   $b_k =$ `2:2`: 1 `flow(ocgt,demand,2:2)` - 10 `units_on(ocgt,2:2)` >= 0
+-   $b_k =$ `3:3`: 1 `flow(ocgt,demand,3:3)` - 10 `units_on(ocgt,3:3)` >= 0
+
+`max_output_flow(ocgt)`: The capacity is 100 MW, so the asset must produce an output flow lower than this value when the unit is online.
+
+-   $b_k =$ `1:1`: 1 `flow(ocgt,demand,1:1)` - 100 `units_on(ocgt,1:1)` <= 0
+-   $b_k =$ `2:2`: 1 `flow(ocgt,demand,2:2)` - 100 `units_on(ocgt,2:2)` <= 0
+-   $b_k =$ `3:3`: 1 `flow(ocgt,demand,3:3)` - 100 `units_on(ocgt,3:3)` <= 0
+
+For the maximum ramp down we have similiar constraints as the ones shown above.
 
 ### Unit Commitment and Ramping in Assets with Flexible Time Resolution that are Multiple of Each Other
 
-smr
+In this case, the `smr` asset has an output `flow(smr,demand)` in a hourly basis, but its time resolution (i.e., partition) is every six hours. Therefore, the `unist_on` variables are defined in timestep block of every six hours. As a result, the unit commitment and ramping constraints are set on highest resolution of both, i.e., the hourly resolution of the `flow(smr,demand)`. The figure below illustrates this situation.
 
-limit_units_on_smr:
+![unit-commitment-smr-asset](./figs/unit-commitment-smr.png)
 
--   `b_k` = 1:6: 1 units_on_smr,1,1:6 <= 1
--   `b_k` = 7:12: 1 units_on_smr,1,7:12 <= 1
--   `b_k` = 13:18: 1 units_on_smr,1,13:18 <= 1
--   `b_k` = 19:24: 1 units_on_smr,1,19:24 <= 1
+Let's now take a look at the resulting constraints in the model.
 
-min_output_flow_smr:
+`limit_units_on(smr)`: The `units_on` variables are defined every 6h; therefore, the upper bound of the variable is also every 6h. In addition, the `smr` is not investable and has one existing unit that limits the commitment variables.
 
--   `b_k` = 1:1: 1 flow(smr,demand),1,1:1 - 150 units_on_smr,1,1:6 >= 0
--   `b_k` = 2:2: 1 flow(smr,demand),1,2:2 - 150 units_on_smr,1,1:6 >= 0
--   `b_k` = 3:3: 1 flow(smr,demand),1,3:3 - 150 units_on_smr,1,1:6 >= 0
--   `b_k` = 4:4: 1 flow(smr,demand),1,4:4 - 150 units_on_smr,1,1:6 >= 0
--   `b_k` = 5:5: 1 flow(smr,demand),1,5:5 - 150 units_on_smr,1,1:6 >= 0
--   `b_k` = 6:6: 1 flow(smr,demand),1,6:6 - 150 units_on_smr,1,1:6 >= 0
--   `b_k` = 7:7: 1 flow(smr,demand),1,7:7 - 150 units_on_smr,1,7:12 >= 0
--   `b_k` = 8:8: 1 flow(smr,demand),1,8:8 - 150 units_on_smr,1,7:12 >= 0
+-   $b_k =$ `1:6`: 1 `units_on(smr,1:6)` <= 1
+-   $b_k =$ `7:12`: 1 `units_on(smr,7:12)` <= 1
+-   $b_k =$ `13:18`: 1 `units_on(smr,13:18)` <= 1
+-   $b_k =$ `19:24`: 1 `units_on(smr,19:24)` <= 1
 
-max_output_flow_smr:
+`min_output_flow(smr)`: The minimum operating point is 150 MW, so the asset must produce an output flow greater than this value when the unit is online. Since the `units_on` variables are defined every 6h, the first six constraints show that the minimum operating point is multiplied by the variable in block `1:6`. The next six constraints are multiplied by the `units_on` in block `7:12`, and so on.
 
--   `b_k` = 1:1: 1 flow(smr,demand),1,1:1 - 200 units_on_smr,1,1:6 <= 0
--   `b_k` = 2:2: 1 flow(smr,demand),1,2:2 - 200 units_on_smr,1,1:6 <= 0
--   `b_k` = 3:3: 1 flow(smr,demand),1,3:3 - 200 units_on_smr,1,1:6 <= 0
--   `b_k` = 4:4: 1 flow(smr,demand),1,4:4 - 200 units_on_smr,1,1:6 <= 0
--   `b_k` = 5:5: 1 flow(smr,demand),1,5:5 - 200 units_on_smr,1,1:6 <= 0
--   `b_k` = 6:6: 1 flow(smr,demand),1,6:6 - 200 units_on_smr,1,1:6 <= 0
--   `b_k` = 7:7: 1 flow(smr,demand),1,7:7 - 200 units_on_smr,1,7:12 <= 0
--   `b_k` = 8:8: 1 flow(smr,demand),1,8:8 - 200 units_on_smr,1,7:12 <= 0
+-   $b_k =$ `1:1`: 1 `flow(smr,demand,1:1)` - 150 `units_on(smr,1:6)` >= 0
+-   $b_k =$ `2:2`: 1 `flow(smr,demand,2:2)` - 150 `units_on(smr,1:6)` >= 0
+-   $b_k =$ `3:3`: 1 `flow(smr,demand,3:3)` - 150 `units_on(smr,1:6)` >= 0
+-   $b_k =$ `4:4`: 1 `flow(smr,demand,4:4)` - 150 `units_on(smr,1:6)` >= 0
+-   $b_k =$ `5:5`: 1 `flow(smr,demand,5:5)` - 150 `units_on(smr,1:6)` >= 0
+-   $b_k =$ `6:6`: 1 `flow(smr,demand,6:6)` - 150 `units_on(smr,1:6)` >= 0
+-   $b_k =$ `7:7`: 1 `flow(smr,demand,7:7)` - 150 `units_on(smr,7:12)` >= 0
+-   $b_k =$ `8:8`: 1 `flow(smr,demand,8:8)` - 150 `units_on(smr,7:12)` >= 0
 
-max_ramp_up_smr:
+`max_output_flow(smr)`: The capacity is 200 MW, so the asset must produce an output flow lower than this value when the unit is online. Similiar to the minimum operating point constraint, here the `units_on` for the timestep block `1:6` are used in the first six constraints, the `units_on` for the timestep block `7:12` are used in the next six constraints, and so on.
 
--   `b_k` 2:2: -1 flow(smr,demand),1,1:1 + 1 flow(smr,demand),1,2:2 - 20 units_on_smr,1,1:6 <= 0
--   `b_k` 3:3: -1 flow(smr,demand),1,2:2 + 1 flow(smr,demand),1,3:3 - 20 units_on_smr,1,1:6 <= 0
--   `b_k` 4:4: -1 flow(smr,demand),1,3:3 + 1 flow(smr,demand),1,4:4 - 20 units_on_smr,1,1:6 <= 0
--   `b_k` 5:5: -1 flow(smr,demand),1,4:4 + 1 flow(smr,demand),1,5:5 - 20 units_on_smr,1,1:6 <= 0
--   `b_k` 6:6: -1 flow(smr,demand),1,5:5 + 1 flow(smr,demand),1,6:6 - 20 units_on_smr,1,1:6 <= 0
--   `b_k` 7:7: -1 flow(smr,demand),1,6:6 + 1 flow(smr,demand),1,7:7 + 150 units_on_smr,1,1:6 - 170 units_on_smr,1,7:12 <= 0
--   `b_k` 8:8: -1 flow(smr,demand),1,7:7 + 1 flow(smr,demand),1,8:8 - 20 units_on_smr,1,7:12 <= 0
--   `b_k` 9:9: -1 flow(smr,demand),1,8:8 + 1 flow(smr,demand),1,9:9 - 20 units_on_smr,1,7:12 <= 0
+-   $b_k =$ `1:1`: 1 `flow(smr,demand,1:1)` - 200 `units_on(smr,1:6)` <= 0
+-   $b_k =$ `2:2`: 1 `flow(smr,demand,2:2)` - 200 `units_on(smr,1:6)` <= 0
+-   $b_k =$ `3:3`: 1 `flow(smr,demand,3:3)` - 200 `units_on(smr,1:6)` <= 0
+-   $b_k =$ `4:4`: 1 `flow(smr,demand,4:4)` - 200 `units_on(smr,1:6)` <= 0
+-   $b_k =$ `5:5`: 1 `flow(smr,demand,5:5)` - 200 `units_on(smr,1:6)` <= 0
+-   $b_k =$ `6:6`: 1 `flow(smr,demand,6:6)` - 200 `units_on(smr,1:6)` <= 0
+-   $b_k =$ `7:7`: 1 `flow(smr,demand,7:7)` - 200 `units_on(smr,7:12)` <= 0
+-   $b_k =$ `8:8`: 1 `flow(smr,demand,8:8)` - 200 `units_on(smr,7:12)` <= 0
+
+`max_ramp_up(smr)`: The ramping capacity is 20MW, so the change in the output flow above the minimum operating point needs to be below that value when the asset is online. For constraints from `2:2` to `6:6`, the `units_on` variable is the same, i.e., `units_on` at timestep block `1:6`. The ramping constraint at timestep block `7:7` shows the `units_on` from the timestep block `1:6` and `7:12` since the change in the flow includes both variables. Note that if the `units_on` variable is zero in the timestep block `1:6`, then the ramping constraint at timestep block `7:7` allows the asset to go from zero flow to the minimum operating point plus the ramping capacity (i.e., 150 + 20 = 170).
+
+-   $b_k =$ `2:2`: -1 `flow(smr,demand,1:1)` + 1 `flow(smr,demand,2:2)` - 20 `units_on(smr,1:6)` <= 0
+-   $b_k =$ `3:3`: -1 `flow(smr,demand,2:2)` + 1 `flow(smr,demand,3:3)` - 20 `units_on(smr,1:6)` <= 0
+-   $b_k =$ `4:4`: -1 `flow(smr,demand,3:3)` + 1 `flow(smr,demand,4:4)` - 20 `units_on(smr,1:6)` <= 0
+-   $b_k =$ `5:5`: -1 `flow(smr,demand,4:4)` + 1 `flow(smr,demand,5:5)` - 20 `units_on(smr,1:6)` <= 0
+-   $b_k =$ `6:6`: -1 `flow(smr,demand,5:5)` + 1 `flow(smr,demand,6:6)` - 20 `units_on(smr,1:6)` <= 0
+-   $b_k =$ `7:7`: -1 `flow(smr,demand,6:6)` + 1 `flow(smr,demand,7:7)` + 150 `units_on(smr,1:6)` - 170 `units_on(smr,7:12)` <= 0
+-   $b_k =$ `8:8`: -1 `flow(smr,demand,7:7)` + 1 `flow(smr,demand,8:8)` - 20 `units_on(smr,7:12)` <= 0
+-   $b_k =$ `9:9`: -1 `flow(smr,demand,8:8)` + 1 `flow(smr,demand,9:9)` - 20 `units_on(smr,7:12)` <= 0
+
+For the maximum ramp down we have similiar constraints as the ones shown above.
 
 ### Unit Commitment and Ramping in Assets with Flexible Time Resolution that are not Multiple of Each Other
 
-ccgt
+In this case, the `ccgt` asset has an output `flow(ccgt,demand)` on a two-hour basis, but its time resolution (i.e., partition) is every three hours. Therefore, the `unist_on` variables are defined in a timestep block every three hours. This setup means that the flow and unit commitment variables are not multiples of each other. As a result, the unit commitment and ramping constraints are defined on the highest resolution, meaning that we also need the intersections of both resolutions. The figure below illustrates this situation.
 
-limit_units_on_ccgt:
+![unit-commitment-ccgt-asset](./figs/unit-commitment-ccgt.png)
 
--   `b_k` = 1:3: -1 assets_investment(ccgt) + 1 units_on_ccgt,1,1:3 <= 1
--   `b_k` = 4:6: -1 assets_investment(ccgt) + 1 units_on_ccgt,1,4:6 <= 1
--   `b_k` = 7:9: -1 assets_investment(ccgt) + 1 units_on_ccgt,1,7:9 <= 1
+Let's now take a look at the resulting constraints in the model.
 
-min_output_flow_ccgt:
+`limit_units_on(ccgt)`: The `units_on` variables are defined every 3h; therefore, the upper bound of the variable is also every 3h. In addition, the `ccgt` is investable and has one existing unit that limits the commitment variables.
 
--   `b_k` = 1:2: 1 flow(ccgt,demand),1,1:2 - 50 units_on_ccgt,1,1*3* >= 0
--   `b_k` = 3:3: 1 flow(ccgt,demand),1,3:4 - 50 units_on_ccgt,1,1*3* >= 0
--   `b_k` = 4:4: 1 flow(ccgt,demand),1,3:4 - 50 units_on_ccgt,1,4*6* >= 0
--   `b_k` = 5:6: 1 flow(ccgt,demand),1,5:6 - 50 units_on_ccgt,1,4*6* >= 0
+-   $b_k =$ `1:3`: -1 `assets_investment(ccgt)` + 1 `units_on(ccgt,1:3)` <= 1
+-   $b_k =$ `4:6`: -1 `assets_investment(ccgt)` + 1 `units_on(ccgt,4:6)` <= 1
+-   $b_k =$ `7:9`: -1 `assets_investment(ccgt)` + 1 `units_on(ccgt,7:9)` <= 1
 
-max_output_flows_ccgt:
+`min_output_flow(ccgt)`: The minimum operating point is 50 MW, so the asset must produce an output flow greater than this value when the unit is online. Here, we can see the impact of the constraints of having different temporal resolutions that are not multiple of each other. For instance, the constraint is defined for all the intersections, so `1:2`, `3:3`, `4:4`, `5:6`, etc., to ensure that the minimum operating point is correctly defined considering all the timestep blocks of the `flow` and the `units_on` variables.
 
--   `b_k` = 1:2: 1 flow(ccgt,demand),1,1:2 - 200 units_on_ccgt,1,1:3 <= 0
--   `b_k` = 3:3: 1 flow(ccgt,demand),1,3:4 - 200 units_on_ccgt,1,1:3 <= 0
--   `b_k` = 4:4: 1 flow(ccgt,demand),1,3:4 - 200 units_on_ccgt,1,4:6 <= 0
--   `b_k` = 5:6: 1 flow(ccgt,demand),1,5:6 - 200 units_on_ccgt,1,4:6 <= 0
+-   $b_k =$ `1:2`: 1 `flow(ccgt,demand,1:2)` - 50 `units_on(ccgt,1:3)` >= 0
+-   $b_k =$ `3:3`: 1 `flow(ccgt,demand,3:4)` - 50 `units_on(ccgt,1:3)` >= 0
+-   $b_k =$ `4:4`: 1 `flow(ccgt,demand,3:4)` - 50 `units_on(ccgt,4:6)` >= 0
+-   $b_k =$ `5:6`: 1 `flow(ccgt,demand,5:6)` - 50 `units_on(ccgt,4:6)` >= 0
 
-max_ramp_up_ccgt:
+`max_output_flows(ccgt)`: The capacity is 200 MW, so the asset must produce an output flow lower than this value when the unit is online. The situation is similar as in the minimum operating point constraint, we have constraints for all the intersections of the resolutions to ensure the correct definition of the maximum capacity.
 
--   `b_k`= 3:3: -1 flow(ccgt,demand),1,1:2 + 1 flow(ccgt,demand),1,3:4 - 120 units_on_ccgt,1,1:3 <= 0
--   `b_k`= 4:4: 50 units_on_ccgt,1,1:3 - 170 units_on_ccgt,1,4:6\_ <= 0
--   `b_k`= 5:6: -1 flow(ccgt,demand),2030,1,3:4 + 1 flow(ccgt,demand),1,5:6 - 120 units_on_ccgt,1,4:6 <= 0
--   `b_k`= 7:8: -1 flow(ccgt,demand),2030,1,5:6 + 1 flow(ccgt,demand),1,7:8 + 50 units_on_ccgt,1,4:6 - 170 units_on_ccgt,1,7:9 <= 0
--   `b_k`= 9:9: -1 flow(ccgt,demand),2030,1,7:8 + 1 flow(ccgt,demand),1,9:10 - 120 units_on_ccgt,1,7:9 <= 0
+-   $b_k =$ `1:2`: 1 `flow(ccgt,demand,1:2)` - 200 `units_on(ccgt,1:3)` <= 0
+-   $b_k =$ `3:3`: 1 `flow(ccgt,demand,3:4)` - 200 `units_on(ccgt,1:3)` <= 0
+-   $b_k =$ `4:4`: 1 `flow(ccgt,demand,3:4)` - 200 `units_on(ccgt,4:6)` <= 0
+-   $b_k =$ `5:6`: 1 `flow(ccgt,demand,5:6)` - 200 `units_on(ccgt,4:6)` <= 0
+
+`max_ramp_up(ccgt)`: The ramping capacity is 120MW, so the change in the output flow above the minimum operating point needs to be below that value when the asset is online. When the time resolutions of the flow and `units_on` are not multiples of each other, we encounter some counterintuitive constraints. For example, consider the constraint at timestep block `4:4`. This constraint only involves `units_on` variables because the flow above the minimum operating point at timestep block `4:4` differs from the previous timestep block `3:3` only in terms of the `units_on` variables. As a result, the ramping-up constraint establishes a relationship between the `units_on` variable at `1:3` and `4:6`. This means that if the unit is on at timestep `1:3`, then it must also be on at timestep `4:6`. However, this is redundant because there is already a flow variable defined for `3:4` that ensures this, thanks to the minimum operating point and maximum capacity constraints. Therefore, although this constraint is not incorrect, it is unnecessary due to the flexible time resolutions that are not multiples of each other.
+
+-   $b_k =$ `3:3`: -1 `flow(ccgt,demand,1:2)` + 1 `flow(ccgt,demand,3:4)` - 120 `units_on(ccgt,1:3)` <= 0
+-   $b_k =$ `4:4`: 50 `units_on(ccgt,1:3)` - 170 `units_on(ccgt,4:6)` <= 0
+-   $b_k =$ `5:6`: -1 `flow(ccgt,demand,3:4)` + 1 `flow(ccgt,demand,5:6)` - 120 `units_on(ccgt,4:6)` <= 0
+-   $b_k =$ `7:8`: -1 `flow(ccgt,demand,5:6)` + 1 `flow(ccgt,demand,7:8)` + 50 `units_on(ccgt,4:6)` - 170 `units_on(ccgt,7:9)` <= 0
+-   $b_k =$ `9:9`: -1 `flow(ccgt,demand,7:8)` + 1 `flow(ccgt,demand,9:10)` - 120 `units_on(ccgt,7:9)` <= 0
+
+For the maximum ramp down we have similiar constraints as the ones shown above.
+
+> **Important**: The time resolutions of the unit commitment constraints do not have to be multiples of each other. However, using multiples of each other can help avoid extra redundant constraints.
 
 ### Unit Commitment and Ramping Case Study Results
 
