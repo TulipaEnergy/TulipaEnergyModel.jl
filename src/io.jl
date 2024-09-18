@@ -2,9 +2,9 @@ export create_internal_structures,
     save_solution_to_file, compute_assets_partitions!, compute_flows_partitions!
 
 """
-    graph, representative_periods, timeframe  = create_internal_structures(connection)
+    graph, representative_periods, timeframe, parameters  = create_internal_structures(connection, filepath)
 
-Return the `graph`, `representative_periods`, and `timeframe` structures given the input dataframes structure.
+Return the `graph`, `representative_periods`, `timeframe` structures, and parameters given the input dataframes structure.
 
 The details of these structures are:
 
@@ -20,8 +20,10 @@ The details of these structures are:
 
   - `timeframe`: Information of
     [`TulipaEnergyModel.Timeframe`](@ref).
+
+`parameters` reads in parameters from a toml file.
 """
-function create_internal_structures(connection)
+function create_internal_structures(connection, filepath)
 
     # Create tables that are allowed to be missing
     tables_allowed_to_be_missing = [
@@ -374,7 +376,9 @@ function create_internal_structures(connection)
         end
     end
 
-    return graph, representative_periods, timeframe, groups, years
+    parameters = read_parameters_from_file(filepath)
+
+    return graph, representative_periods, timeframe, groups, years, parameters
 end
 
 function get_schema(tablename)
