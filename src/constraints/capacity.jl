@@ -1,19 +1,7 @@
 export add_capacity_constraints!
 
 """
-add_capacity_constraints!(model,
-                          graph,
-                          dataframes,
-                          df_flows,
-                          flow,
-                          Ai,
-                          investable_assets_using_simple_method,
-                          Asb,
-                          assets_investment,
-                          accumulated_units_simple_method,
-                          outgoing_flow_highest_out_resolution,
-                          incoming_flow_highest_in_resolution
-                          )
+add_capacity_constraints!(model, graph,...)
 
 Adds the capacity constraints for all asset types to the model
 """
@@ -28,10 +16,11 @@ function add_capacity_constraints!(
     decommissionable_assets_using_simple_method,
     decommissionable_assets_using_compact_method,
     V_all,
+    accumulated_units_lookup,
     accumulated_set_using_compact_method_lookup,
     Asb,
     assets_investment,
-    accumulated_units_simple_method,
+    accumulated_units,
     accumulated_units_compact_method,
     accumulated_set_using_compact_method,
     outgoing_flow_highest_out_resolution,
@@ -42,23 +31,7 @@ function add_capacity_constraints!(
     # - Create capacity limit for outgoing flows
     assets_profile_times_capacity_out =
         model[:assets_profile_times_capacity_out] = [
-            if row.asset ∈ decommissionable_assets_using_simple_method
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
-                        row.timesteps_block,
-                        1.0,
-                    ) * (
-                        graph[row.asset].capacity *
-                        accumulated_units_simple_method[row.year, row.asset]
-                    )
-                )
-            elseif row.asset ∈ decommissionable_assets_using_compact_method
+            if row.asset ∈ decommissionable_assets_using_compact_method
                 @expression(
                     model,
                     graph[row.asset].capacity * sum(
@@ -92,7 +65,7 @@ function add_capacity_constraints!(
                         1.0,
                     ) *
                     graph[row.asset].capacity *
-                    graph[row.asset].initial_units[row.year][row.year]
+                    accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
                 )
             end for row in eachrow(dataframes[:highest_out])
         ]
