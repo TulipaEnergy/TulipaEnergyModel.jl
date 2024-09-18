@@ -1136,7 +1136,7 @@ function create_model(
         accumulated_set_using_compact_method_lookup,
         Asb,
         assets_investment,
-        accumulated_units_simple_method,
+        accumulated_units,
         accumulated_units_compact_method,
         accumulated_set_using_compact_method,
         outgoing_flow_highest_out_resolution,
