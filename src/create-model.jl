@@ -1224,7 +1224,7 @@ function create_model(
             df_units_on,
             dataframes[:highest_out],
             outgoing_flow_highest_out_resolution,
-            assets_investment,
+            accumulated_units,
             Ai,
             Auc,
             Auc_basic,

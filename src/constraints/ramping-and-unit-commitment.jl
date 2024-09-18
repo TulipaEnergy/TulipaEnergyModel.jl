@@ -12,7 +12,7 @@ function add_ramping_constraints!(
     df_units_on,
     df_highest_out,
     outgoing_flow_highest_out_resolution,
-    assets_investment,
+    accumulated_units,
     Ai,
     Auc,
     Auc_basic,
@@ -54,9 +54,7 @@ function add_ramping_constraints!(
     model[:limit_units_on_with_investment] = [
         @constraint(
             model,
-            row.units_on ≤
-            graph[row.asset].initial_units[row.year][row.year] +
-            assets_investment[row.year, row.asset],
+            row.units_on ≤ accumulated_units[row.year, row.asset],
             base_name = "limit_units_on_with_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df_units_on) if row.asset in Ai[row.year]
     ]
