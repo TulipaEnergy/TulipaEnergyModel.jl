@@ -1034,13 +1034,10 @@ function create_model(
             ]
         @expression(
             model,
-            accumulated_units[
-                y ∈ Y,
-                a ∈ decommissionable_assets_using_simple_method∪decommissionable_assets_using_compact_method,
-            ],
+            accumulated_units[y ∈ Y, a ∈ A],
             if a in decommissionable_assets_using_simple_method
                 accumulated_units_simple_method[y, a]
-            else
+            elseif a in decommissionable_assets_using_compact_method
                 sum(
                     accumulated_units_compact_method[accumulated_set_using_compact_method_lookup[(
                         a,
@@ -1048,6 +1045,8 @@ function create_model(
                         v,
                     )]] for v in V_all if (a, y, v) in accumulated_set_using_compact_method
                 )
+            else
+                sum(values(graph[a].initial_units[y]))
             end
         )
     end

@@ -50,22 +50,13 @@ function add_ramping_constraints!(
         ]
 
     ## Unit Commitment Constraints (basic implementation - more advanced will be added in 2025)
-    # - Limit to the units on (i.e. commitment) variable with investment
-    model[:limit_units_on_with_investment] = [
+    # - Limit to the units on (i.e. commitment)
+    model[:limit_units_on] = [
         @constraint(
             model,
             row.units_on ≤ accumulated_units[row.year, row.asset],
-            base_name = "limit_units_on_with_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(df_units_on) if row.asset in Ai[row.year]
-    ]
-
-    # - Limit to the units on (i.e. commitment) variable without investment (TODO: depending on the input parameter definition, this could be a bound)
-    model[:limit_units_on_without_investment] = [
-        @constraint(
-            model,
-            row.units_on ≤ graph[row.asset].initial_units[row.year][row.year],
-            base_name = "limit_units_on_without_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(df_units_on) if !(row.asset in Ai[row.year])
+            base_name = "limit_units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
+        ) for row in eachrow(df_units_on)
     ]
 
     # - Minimum output flow above the minimum operating point
