@@ -1032,23 +1032,31 @@ function create_model(
                     @expression(model, 0.0)
                 end for (a, y, v) in accumulated_set_using_compact_method
             ]
-        @expression(
-            model,
-            accumulated_units[y ∈ Y, a ∈ A],
-            if a in decommissionable_assets_using_simple_method
-                accumulated_units_simple_method[y, a]
-            elseif a in decommissionable_assets_using_compact_method
-                sum(
-                    accumulated_units_compact_method[accumulated_set_using_compact_method_lookup[(
-                        a,
-                        y,
-                        v,
-                    )]] for v in V_all if (a, y, v) in accumulated_set_using_compact_method
-                )
-            else
-                sum(values(graph[a].initial_units[y]))
-            end
-        )
+
+        # Create a lookup set for accumulated units
+        accumulated_units_lookup =
+            Dict((a, y) => idx for (idx, (a, y)) in enumerate((aa, yy) for aa in A for yy in Y))
+
+        accumulated_units =
+            model[:accumulated_units] = JuMP.AffExpr[
+                if a in decommissionable_assets_using_simple_method
+                    @expression(model, accumulated_units_simple_method[y, a])
+                elseif a in decommissionable_assets_using_compact_method
+                    @expression(
+                        model,
+                        sum(
+                            accumulated_units_compact_method[accumulated_set_using_compact_method_lookup[(
+                                a,
+                                y,
+                                v,
+                            )]] for
+                            v in V_all if (a, y, v) in accumulated_set_using_compact_method
+                        )
+                    )
+                else
+                    @expression(model, sum(values(graph[a].initial_units[y])))
+                end for a in A for y in Y
+            ]
     end
 
     ## Expressions for the objective function
@@ -1133,6 +1141,7 @@ function create_model(
         decommissionable_assets_using_simple_method,
         decommissionable_assets_using_compact_method,
         V_all,
+        accumulated_units_lookup,
         accumulated_set_using_compact_method_lookup,
         Asb,
         assets_investment,
@@ -1223,6 +1232,7 @@ function create_model(
             df_units_on,
             dataframes[:highest_out],
             outgoing_flow_highest_out_resolution,
+            accumulated_units_lookup,
             accumulated_units,
             Ai,
             Auc,

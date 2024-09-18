@@ -1,19 +1,7 @@
 export add_capacity_constraints!
 
 """
-add_capacity_constraints!(model,
-                          graph,
-                          dataframes,
-                          df_flows,
-                          flow,
-                          Ai,
-                          investable_assets_using_simple_method,
-                          Asb,
-                          assets_investment,
-                          accumulated_units,
-                          outgoing_flow_highest_out_resolution,
-                          incoming_flow_highest_in_resolution
-                          )
+add_capacity_constraints!(model, graph,...)
 
 Adds the capacity constraints for all asset types to the model
 """
@@ -28,6 +16,7 @@ function add_capacity_constraints!(
     decommissionable_assets_using_simple_method,
     decommissionable_assets_using_compact_method,
     V_all,
+    accumulated_units_lookup,
     accumulated_set_using_compact_method_lookup,
     Asb,
     assets_investment,
@@ -76,7 +65,7 @@ function add_capacity_constraints!(
                         1.0,
                     ) *
                     graph[row.asset].capacity *
-                    accumulated_units[row.year, row.asset]
+                    accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
                 )
             end for row in eachrow(dataframes[:highest_out])
         ]

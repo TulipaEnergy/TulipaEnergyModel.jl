@@ -1,7 +1,7 @@
 export add_ramping_and_unit_commitment_constraints!
 
 """
-    add_ramping_and_unit_commitment_constraints!(graph, ...)
+    add_ramping_and_unit_commitment_constraints!(model, graph, ...)
 
 Adds the ramping constraints for producer and conversion assets where ramping = true in assets_data
 """
@@ -12,6 +12,7 @@ function add_ramping_constraints!(
     df_units_on,
     df_highest_out,
     outgoing_flow_highest_out_resolution,
+    accumulated_units_lookup,
     accumulated_units,
     Ai,
     Auc,
@@ -54,7 +55,7 @@ function add_ramping_constraints!(
     model[:limit_units_on] = [
         @constraint(
             model,
-            row.units_on ≤ accumulated_units[row.year, row.asset],
+            row.units_on ≤ accumulated_units[accumulated_units_lookup[(row.asset, row.year)]],
             base_name = "limit_units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df_units_on)
     ]
