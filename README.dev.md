@@ -103,6 +103,21 @@ git clone https://github.com/your-name/TulipaEnergyModel.jl                   # 
 git remote add upstream https://github.com/TulipaEnergy/TulipaEnergyModel.jl  # use the original repository URL
 ```
 
+Check that your origin and upstream are correct:
+
+```bash
+git remote -v
+```
+
+You should see something similar to:
+![Screenshot of remote names, showing origin and upstream](docs/images/Remotes.png)
+
+Otherwise, use this with the relevant names to correct it:
+
+```bash
+git remote set-url [name] [url]
+```
+
 ### Configuring Git
 
 Because operating systems use different line endings for text files, you need to configure Git to ensure code consistency across different platforms. You can do this with the following commands:
