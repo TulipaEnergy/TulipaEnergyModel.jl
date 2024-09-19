@@ -427,8 +427,10 @@ The mathematical formulation of the maximum and minimum investment limit for gro
 -   `invest_method = true`. This parameter enables the model to use the investment group constraints.
 -   `min_investment_limit` $\neq$ `missing` or `max_investment_limit` $\neq$ `missing`. This value represents the limits that will be imposed on the investment that belongs to the group.
 
-    > **Note:**
-    > A missing value in the parameters `min_investment_limit` and `max_investment_limit` means that there is no investment limit.
+    > **Notes:**
+    >
+    > 1. A missing value in the parameters `min_investment_limit` and `max_investment_limit` means that there is no investment limit.
+    > 2. These constraints are applied to the investments each year. The model does not yet have investment limits to a group's accumulated invested capacity.
 
 #### Example
 
