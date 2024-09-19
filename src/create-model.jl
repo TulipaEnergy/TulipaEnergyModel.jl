@@ -1215,14 +1215,16 @@ function create_model(
         flows_investment,
     )
 
-    @timeit to "add_group_constraints!" add_group_constraints!(
-        model,
-        graph,
-        Y,
-        Ai,
-        assets_investment,
-        groups,
-    )
+    if !isempty(groups)
+        @timeit to "add_group_constraints!" add_group_constraints!(
+            model,
+            graph,
+            Y,
+            Ai,
+            assets_investment,
+            groups,
+        )
+    end
 
     if !isempty(dataframes[:units_on_and_outflows])
         @timeit to "add_ramping_constraints!" add_ramping_constraints!(

@@ -541,6 +541,8 @@ The following constraints aggregate variables of different assets depending on t
 
 These constraints apply to assets in a group using the investment method $\mathcal{G}^{\text{ai}}$. They help impose an investment potential of a spatial area commonly shared by several assets that can be invested there.
 
+> **Note**: These constraints are applied to the investments each year. The model does not yet have investment limits to a group's accumulated invested capacity.
+
 ##### Minimum Investment Limit of a Group
 
 ```math
