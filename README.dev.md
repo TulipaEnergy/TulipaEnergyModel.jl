@@ -207,7 +207,7 @@ Fetch from org remote, fast-forward your local main:
 ```bash
 git switch main
 git fetch --all --prune
-git merge --ff-only origin/main
+git merge --ff-only upstream/main
 ```
 
 > **Warning**:
@@ -215,7 +215,7 @@ git merge --ff-only origin/main
 > your old `main` branch using
 >
 > ```bash
-> git reset --hard origin/main
+> git reset --hard upstream/main
 > ```
 
 ### 2. Create a New Branch
@@ -282,7 +282,7 @@ repository. Use:
 
 ```bash
 git commit -am "A short but descriptive commit message" # Equivalent to: git commit -a -m "commit msg"
-git push -u myfork <branch_name>
+git push -u origin <branch_name>
 ```
 
 When writing the commit message:
@@ -308,7 +308,7 @@ Do the following steps:
 ```bash
 git switch main                  # switch to the main branch
 git fetch --all --prune          # fetch the updates
-git merge --ff-only origin/main  # merge as a fast-forward
+git merge --ff-only upstream/main  # merge as a fast-forward
 git switch <branch_name>         # switch back to the issue branch
 git rebase main <branch_name>    # rebase it
 ```
@@ -328,7 +328,7 @@ Once the conflicts are resolved, commit and push.
 ```bash
 git status # Another way to show that all conflicts are fixed.
 git rebase --continue
-git push --force myfork <branch_name>
+git push --force origin <branch_name>
 ```
 
 ### 8. Create a Pull Request
