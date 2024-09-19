@@ -349,7 +349,7 @@ Fill in the pull request details:
 
 ![Screenshot of the pull request information](docs/images/PRInfo.png)
 
-You pull request will apper in the list of pull requests in the
+You pull request will appear in the list of pull requests in the
 TulipaEnergyModel.jl repository, where you can track the review process.
 
 Sometimes reviewers request changes. After pushing any changes,

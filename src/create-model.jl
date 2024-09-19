@@ -323,12 +323,12 @@ function add_expression_terms_intra_rp_constraints!(
 end
 
 """
-add_expression_is_charging_terms_intra_rp_constraints!(df_cons,
+    add_expression_is_charging_terms_intra_rp_constraints!(df_cons,
                                                        df_is_charging,
                                                        workspace
                                                        )
 
-Computes the is_charging expressions per row of df_cons for the constraints
+Computes the `is_charging` expressions per row of `df_cons` for the constraints
 that are within (intra) the representative periods.
 
 This function is only used internally in the model.
@@ -370,11 +370,11 @@ end
 """
     add_expression_is_charging_terms_intra_rp_constraints!(
         df_cons,
-        df_is_charging,
+        df_units_on,
         workspace,
     )
 
-Computes the is_charging expressions per row of df_cons for the constraints
+Computes the `is_charging` expressions per row of `df_cons` for the constraints
 that are within (intra) the representative periods.
 
 This function is only used internally in the model.
