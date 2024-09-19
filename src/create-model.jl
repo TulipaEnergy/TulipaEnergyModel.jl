@@ -544,17 +544,13 @@ function create_model!(energy_problem; kwargs...)
             constraints_partitions,
             years,
         )
-        model_parameters_for_multi_year = read_parameters_from_file(
-            joinpath(@__DIR__, "..", "test/inputs/Multi-year Investments/model_parameters.toml"),
-        )
         energy_problem.model = @timeit to "create_model" create_model(
             graph,
             representative_periods,
             energy_problem.dataframes,
             years,
             timeframe,
-            groups,
-            model_parameters_for_multi_year;
+            groups;
             kwargs...,
         )
         energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
@@ -578,8 +574,7 @@ function create_model(
     dataframes,
     years,
     timeframe,
-    groups,
-    model_parameters_for_multi_year;
+    groups;
     write_lp_file = false,
 )
 
@@ -593,6 +588,10 @@ function create_model(
     Y = [year.id for year in years if year.is_milestone]
     V_all = [year.id for year in years]
     V_non_milestone = [year.id for year in years if !year.is_milestone]
+
+    model_parameters_for_multi_year = read_parameters_from_file(
+        joinpath(@__DIR__, "..", "test/inputs/Multi-year Investments/model_parameters.toml"),
+    )
 
     # Maximum timestep
     Tmax = maximum(last(rp.timesteps) for year in Y for rp in representative_periods[year])
