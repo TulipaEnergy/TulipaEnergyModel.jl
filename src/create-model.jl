@@ -544,13 +544,17 @@ function create_model!(energy_problem; kwargs...)
             constraints_partitions,
             years,
         )
+        model_parameters_for_multi_year = read_parameters_from_file(
+            joinpath(@__DIR__, "..", "test/inputs/Multi-year Investments/model_parameters.toml"),
+        )
         energy_problem.model = @timeit to "create_model" create_model(
             graph,
             representative_periods,
             energy_problem.dataframes,
             years,
             timeframe,
-            groups;
+            groups,
+            model_parameters_for_multi_year;
             kwargs...,
         )
         energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
@@ -574,7 +578,8 @@ function create_model(
     dataframes,
     years,
     timeframe,
-    groups;
+    groups,
+    model_parameters_for_multi_year;
     write_lp_file = false,
 )
 

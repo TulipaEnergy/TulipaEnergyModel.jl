@@ -23,7 +23,7 @@ The details of these structures are:
 
 `parameters` reads in parameters from a toml file.
 """
-function create_internal_structures(connection, filepath)
+function create_internal_structures(connection)
 
     # Create tables that are allowed to be missing
     tables_allowed_to_be_missing = [
@@ -376,9 +376,7 @@ function create_internal_structures(connection, filepath)
         end
     end
 
-    parameters = read_parameters_from_file(filepath)
-
-    return graph, representative_periods, timeframe, groups, years, parameters
+    return graph, representative_periods, timeframe, groups, years
 end
 
 function get_schema(tablename)
