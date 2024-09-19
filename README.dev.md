@@ -110,9 +110,9 @@ git remote -v
 ```
 
 You should see something similar to:
-![Screenshot of remote names, showing origin and upstream](docs/images/Remotes.png)
+![Screenshot of remote names, showing origin and upstream](docs/images/Remotes.PNG)
 
-Otherwise, use this with the relevant names to correct it:
+If your names are wrong, use this command (with the relevant names) to correct it:
 
 ```bash
 git remote set-url [name] [url]
