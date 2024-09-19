@@ -2,9 +2,9 @@ export create_internal_structures,
     save_solution_to_file, compute_assets_partitions!, compute_flows_partitions!
 
 """
-    graph, representative_periods, timeframe, parameters  = create_internal_structures(connection, filepath)
+    graph, representative_periods, timeframe  = create_internal_structures(connection)
 
-Return the `graph`, `representative_periods`, `timeframe` structures, and parameters given the input dataframes structure.
+Return the `graph`, `representative_periods`, and `timeframe` structures given the input dataframes structure.
 
 The details of these structures are:
 
@@ -20,8 +20,6 @@ The details of these structures are:
 
   - `timeframe`: Information of
     [`TulipaEnergyModel.Timeframe`](@ref).
-
-`parameters` reads in parameters from a toml file.
 """
 function create_internal_structures(connection)
 
