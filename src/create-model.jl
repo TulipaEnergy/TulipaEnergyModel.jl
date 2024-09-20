@@ -537,6 +537,7 @@ function create_model!(energy_problem; kwargs...)
         constraints_partitions = energy_problem.constraints_partitions
         timeframe = energy_problem.timeframe
         groups = energy_problem.groups
+        model_parameters = energy_problem.model_parameters
         years = energy_problem.years
         energy_problem.dataframes = @timeit to "construct_dataframes" construct_dataframes(
             graph,
@@ -550,7 +551,8 @@ function create_model!(energy_problem; kwargs...)
             energy_problem.dataframes,
             years,
             timeframe,
-            groups;
+            groups,
+            model_parameters;
             kwargs...,
         )
         energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
@@ -574,7 +576,8 @@ function create_model(
     dataframes,
     years,
     timeframe,
-    groups;
+    groups,
+    model_parameters;
     write_lp_file = false,
 )
 
