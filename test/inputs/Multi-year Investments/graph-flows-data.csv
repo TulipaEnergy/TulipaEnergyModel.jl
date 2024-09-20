@@ -2,6 +2,8 @@ asset_name,asset_name,,MW
 from_asset,to_asset,carrier,capacity
 ocgt,demand,electricity,0
 ccgt,demand,electricity,0
+battery,demand,electricity,0
+demand,battery,electricity,0
 wind,demand,electricity,0
 solar,demand,electricity,0
 ens,demand,electricity,0
