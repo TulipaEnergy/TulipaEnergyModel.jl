@@ -67,6 +67,8 @@ You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/Tu
 Below, we have a description of the files.
 At the end, in [Schemas](@ref schemas), we have the expected columns in these CSVs.
 
+> **Tip:** You can compare two CSV files with `git diff --no-index --word-diff-regex="[^[:space:],]+" file1 file2`.
+
 #### [`graph-assets-data.csv`](@id graph-assets-data)
 
 This file contains the list of assets and the static data associated with each of them.

@@ -57,8 +57,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
     julia
     ```
 
-    > **Note**:
-    > `julia` must be part of your environment variables to call it from the
+    > **Note:** > `julia` must be part of your environment variables to call it from the
     > command line.
 
     Then press <kbd>]</kbd> to enter the package mode.
@@ -172,7 +171,7 @@ Do it once now to make sure that everything works as expected.
 
 Now, you can only commit if all the pre-commit tests pass.
 
-> **Note**:
+> **Note:**
 > On subsequent occasions when you need to run pre-commit in a new shell, you
 > will need to activate the Python virtual environment. If so, do the following:
 >
@@ -246,7 +245,7 @@ git switch -c <branch_name>
 -   If there is no associated issue **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update.
 -   If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes.
 
-> **Note**:
+> **Note:**
 > Always branch from `main`, i.e., the main branch of your own fork.
 
 ### 3. Implement the Changes
@@ -306,7 +305,7 @@ When writing the commit message:
 -   have informative titles;
 -   if necessary, add a body with details.
 
-> **Note**:
+> **Note:**
 > Try to create "atomic git commits". Read
 > [_The Utopic Git History_](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593)
 > to learn more.
@@ -388,10 +387,10 @@ docs> dev ..
 docs> update
 ```
 
-**Note:**
-If you intend to rerun the build step, ensure you have the package `Revise`
-installed in your global environment, and run `using Revise` before including
-`make.jl`. Alternatively, close `julia` and reopen it.
+> **Note**:
+> If you intend to rerun the build step, ensure you have the package `Revise`
+> installed in your global environment, and run `using Revise` before including
+> `make.jl`. Alternatively, close `julia` and reopen it.
 
 Then, to build the documentation, run in Julia:
 
@@ -445,9 +444,9 @@ See the file <benchmark/profiling.jl> for an example of profiling code.
 
 When publishing a new version of the model to the Julia Registry, follow this procedure:
 
-**Note**:
-To be able to register, you need to be a member of the organisation TulipaEnergy and have your visibility set to public:
-![Screenshot of public members of TulipaEnergy on GitHub](docs/images/PublicMember.png)
+> **Note:**
+> To be able to register, you need to be a member of the organisation TulipaEnergy and have your visibility set to public:
+> ![Screenshot of public members of TulipaEnergy on GitHub](docs/images/PublicMember.png)
 
 1. Click on the `Project.toml` file on GitHub.
 
