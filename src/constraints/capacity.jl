@@ -19,7 +19,7 @@ function add_capacity_constraints!(
     accumulated_units_lookup,
     accumulated_set_using_compact_method_lookup,
     Asb,
-    assets_investment,
+    accumulated_initial_units,
     accumulated_units,
     accumulated_units_compact_method,
     accumulated_set_using_compact_method,
@@ -86,8 +86,7 @@ function add_capacity_constraints!(
                         1.0,
                     ) *
                     (
-                        graph[row.asset].capacity *
-                        graph[row.asset].initial_units[row.year][row.year] +
+                        graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
                         graph[row.asset].investment_limit[row.year]
                     ) *
                     (1 - row.is_charging)
@@ -104,10 +103,7 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) *
-                    (
-                        graph[row.asset].capacity *
-                        graph[row.asset].initial_units[row.year][row.year]
-                    ) *
+                    (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
                     (1 - row.is_charging)
                 )
             end for row in eachrow(dataframes[:highest_out])
@@ -128,8 +124,8 @@ function add_capacity_constraints!(
                         1.0,
                     ) * (
                         graph[row.asset].capacity * (
-                            graph[row.asset].initial_units[row.year][row.year] *
-                            (1 - row.is_charging) + assets_investment[row.year, row.asset]
+                            accumulated_units[accumulated_units_lookup[(row.asset, row.year)]] -
+                            accumulated_initial_units[row.asset, row.year] * row.is_charging
                         )
                     )
                 )
@@ -139,22 +135,25 @@ function add_capacity_constraints!(
     # - Create capacity limit for incoming flows
     assets_profile_times_capacity_in =
         model[:assets_profile_times_capacity_in] = [
-            if row.asset ∈ Ai[row.year]
+            if row.asset ∈ decommissionable_assets_using_compact_method
                 @expression(
                     model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
-                        row.timesteps_block,
-                        1.0,
-                    ) * (
-                        graph[row.asset].capacity * (
-                            graph[row.asset].initial_units[row.year][row.year] +
-                            assets_investment[row.year, row.asset]
-                        )
+                    graph[row.asset].capacity * sum(
+                        profile_aggregation(
+                            Statistics.mean,
+                            graph[row.asset].rep_periods_profiles,
+                            row.year,
+                            v,
+                            ("availability", row.rep_period),
+                            row.timesteps_block,
+                            1.0,
+                        ) *
+                        accumulated_units_compact_method[accumulated_set_using_compact_method_lookup[(
+                            row.asset,
+                            row.year,
+                            v,
+                        )]] for v in V_all if
+                        (row.asset, row.year, v) in accumulated_set_using_compact_method
                     )
                 )
             else
@@ -170,7 +169,7 @@ function add_capacity_constraints!(
                         1.0,
                     ) *
                     graph[row.asset].capacity *
-                    graph[row.asset].initial_units[row.year][row.year]
+                    accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
                 )
             end for row in eachrow(dataframes[:highest_in])
         ]
@@ -191,8 +190,7 @@ function add_capacity_constraints!(
                         1.0,
                     ) *
                     (
-                        graph[row.asset].capacity *
-                        graph[row.asset].initial_units[row.year][row.year] +
+                        graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
                         graph[row.asset].investment_limit[row.year]
                     ) *
                     row.is_charging
@@ -209,10 +207,7 @@ function add_capacity_constraints!(
                         row.timesteps_block,
                         1.0,
                     ) *
-                    (
-                        graph[row.asset].capacity *
-                        graph[row.asset].initial_units[row.year][row.year]
-                    ) *
+                    (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
                     row.is_charging
                 )
             end for row in eachrow(dataframes[:highest_in])
@@ -233,7 +228,8 @@ function add_capacity_constraints!(
                         1.0,
                     ) * (
                         graph[row.asset].capacity * (
-                            graph[row.asset].initial_units[row.year][row.year] * row.is_charging + assets_investment[row.year, row.asset]
+                            accumulated_units[accumulated_units_lookup[(row.asset, row.year)]] -
+                            accumulated_initial_units[row.asset, row.year] * (1 - row.is_charging)
                         )
                     )
                 )
