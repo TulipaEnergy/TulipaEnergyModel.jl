@@ -3,3 +3,6 @@ name,active,year,commission_year,investable,investment_integer,investment_cost,i
 wind,true,2020,2020,false,false,0,,50,0.07,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
 wind,true,2030,2030,false,false,70,,50,0.02,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
 wind,true,2035,2020,false,false,0,,50,-0.02,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
+battery,true,2020,2020,false,false,0,,50,0.07,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
+battery,true,2030,2030,false,false,70,,50,0.02,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
+battery,true,2035,2020,false,false,0,,50,-0.02,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,

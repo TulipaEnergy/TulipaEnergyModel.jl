@@ -991,6 +991,11 @@ function create_model(
 
     ## Expressions for multi-year investment
     @timeit to "multi-year investment" begin
+        accumulated_initial_units = @expression(
+            model,
+            accumulated_initial_units[a in A, y in Y],
+            sum(values(graph[a].initial_units[y]))
+        )
         @expression(
             model,
             accumulated_units_simple_method[y ∈ Y, a ∈ decommissionable_assets_using_simple_method],
@@ -1147,7 +1152,7 @@ function create_model(
         accumulated_units_lookup,
         accumulated_set_using_compact_method_lookup,
         Asb,
-        assets_investment,
+        accumulated_initial_units,
         accumulated_units,
         accumulated_units_compact_method,
         accumulated_set_using_compact_method,
