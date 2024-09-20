@@ -16,12 +16,16 @@ function run_scenario(
     connection;
     output_folder = "",
     optimizer = HiGHS.Optimizer,
+    model_parameters_file = "",
     parameters = default_parameters(optimizer),
     write_lp_file = false,
     log_file = "",
     show_log = true,
 )
-    energy_problem = @timeit to "create EnergyProblem from connection" EnergyProblem(connection)
+    energy_problem = @timeit to "create EnergyProblem from connection" EnergyProblem(
+        connection;
+        model_parameters_file,
+    )
 
     @timeit to "create_model!" create_model!(energy_problem; write_lp_file)
 

@@ -290,6 +290,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 - `timeframe`: The number of periods of the `representative_periods`.
 - `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
 - `groups`: The input data of the groups to create constraints that are common to a set of assets in the model.
+- `model_parameters`: The model parameters.
 - `model`: A JuMP.Model object representing the optimization model.
 - `solved`: A boolean indicating whether the `model` has been solved or not.
 - `objective_value`: The objective value of the solved problem.
@@ -319,6 +320,7 @@ mutable struct EnergyProblem
     groups::Vector{Group}
     years::Vector{Year}
     dataframes::Dict{Symbol,DataFrame}
+    model_parameters::ModelParameters
     model::Union{JuMP.Model,Nothing}
     solution::Union{Solution,Nothing}
     solved::Bool
@@ -327,12 +329,12 @@ mutable struct EnergyProblem
     timings::Dict{String,Float64}
 
     """
-        EnergyProblem(connection)
+        EnergyProblem(connection; model_parameters_file = "")
 
     Constructs a new EnergyProblem object using the `connection`.
     This will call relevant functions to generate all input that is required for the model creation.
     """
-    function EnergyProblem(connection)
+    function EnergyProblem(connection; model_parameters_file = "")
         elapsed_time_internal = @elapsed begin
             graph, representative_periods, timeframe, groups, years =
                 create_internal_structures(connection)
@@ -351,6 +353,7 @@ mutable struct EnergyProblem
             groups,
             years,
             Dict(),
+            ModelParameters(connection, model_parameters_file),
             nothing,
             nothing,
             false,

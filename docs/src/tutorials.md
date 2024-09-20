@@ -98,6 +98,7 @@ input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
+model_parameters = ModelParameters(connection)
 graph, representative_periods, timeframe, groups, years = create_internal_structures(connection)
 ```
 
@@ -119,7 +120,7 @@ dataframes = construct_dataframes(graph, representative_periods, constraints_par
 Now we can compute the model.
 
 ```@example manual
-model = create_model(graph, representative_periods, dataframes, years, timeframe, groups)
+model = create_model(graph, representative_periods, dataframes, years, timeframe, groups, model_parameters)
 ```
 
 Finally, we can compute the solution.

@@ -8,6 +8,7 @@ using HiGHS
 using JuMP
 using MathOptInterface
 using Test
+using TOML
 using TulipaEnergyModel
 using TulipaIO
 

@@ -27,6 +27,7 @@ using TimerOutputs: TimerOutput, @timeit
 const to = TimerOutput()
 
 include("input-schemas.jl")
+include("model-parameters.jl")
 include("structures.jl")
 include("io.jl")
 include("create-model.jl")
