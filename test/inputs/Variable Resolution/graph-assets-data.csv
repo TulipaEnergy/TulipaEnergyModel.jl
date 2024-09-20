@@ -1,8 +1,8 @@
 ,{producer;consumer},{group name},{none;simple;compact},MW,year,year,
 name,type,group,investment_method,capacity,technical_lifetime,economic_lifetime,discount_rate
-H2,producer,,none,400,15,10,0.05
-ccgt,conversion,,none,100,15,10,0.05
-wind,producer,,none,50,15,10,0.05
-phs,storage,,none,25,15,10,0.05
-demand,consumer,,none,0,15,10,0.05
-balance,hub,,none,0,15,10,0.05
+H2,producer,,none,400,15,1,0.05
+ccgt,conversion,,none,100,15,1,0.05
+wind,producer,,none,50,15,1,0.05
+phs,storage,,none,25,15,1,0.05
+demand,consumer,,none,0,15,1,0.05
+balance,hub,,none,0,15,1,0.05
