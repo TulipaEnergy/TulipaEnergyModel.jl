@@ -202,6 +202,9 @@ mutable struct GraphFlowData
     is_transport::Dict{Int,Bool}
     investable::Dict{Int,Bool}
     investment_integer::Dict{Int,Bool}
+    technical_lifetime::Float64
+    economic_lifetime::Float64
+    discount_rate::Float64
     variable_cost::Dict{Int,Float64}
     investment_cost::Dict{Int,Float64}
     investment_limit::Dict{Int,Union{Missing,Float64}}
@@ -224,6 +227,9 @@ function GraphFlowData(
     is_transport,
     investable,
     investment_integer,
+    technical_lifetime,
+    economic_lifetime,
+    discount_rate,
     variable_cost,
     investment_cost,
     investment_limit,
@@ -238,6 +244,9 @@ function GraphFlowData(
         is_transport,
         investable,
         investment_integer,
+        technical_lifetime,
+        economic_lifetime,
+        discount_rate,
         variable_cost,
         investment_cost,
         investment_limit,

@@ -17,7 +17,10 @@ const schemas = (
             :from_asset => "VARCHAR",                        # Name of Asset
             :to_asset => "VARCHAR",                          # Name of Asset
             :carrier => "VARCHAR",                           # (Optional?) Energy carrier
-            :capacity => "DOUBLE",                           # MW
+            :capacity => "DOUBLE",
+            :technical_lifetime => "INTEGER",
+            :economic_lifetime => "INTEGER",
+            :discount_rate => "DOUBLE",
         ),
     ),
     assets = (
