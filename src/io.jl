@@ -37,8 +37,8 @@ function create_internal_structures(connection)
     end
 
     years = [
-        Year(row.year, row.length, row.is_milestone) for
-        row in TulipaIO.get_table(Val(:raw), connection, "year_data")
+        Year(row.year, row.length, row.is_milestone) for row in
+        TulipaIO.get_table(Val(:raw), connection, "SELECT * FROM year_data ORDER BY year")
     ]
     milestone_years = [year.id for year in years]
 
