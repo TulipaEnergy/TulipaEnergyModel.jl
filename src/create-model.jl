@@ -1159,13 +1159,16 @@ function create_model(
             )
         )
 
+        # Create a dict of intervals for milestone years
         intervals_for_milestone_years = create_intervals_for_years(Y)
 
+        # Create a dict of operation discounts only for milestone years
         operation_discounts_for_milestone_years = Dict(
             y => 1 / (1 + model_parameters.discount_rate)^(y - model_parameters.discount_year)
             for y in Y
         )
 
+        # Create a dict of operation discounts for milestone years including in-between years
         weight_for_operation_discounts = Dict(
             y => operation_discounts_for_milestone_years[y] * intervals_for_milestone_years[y]
             for y in Y
