@@ -207,6 +207,7 @@ mutable struct GraphFlowData
     discount_rate::Float64
     variable_cost::Dict{Int,Float64}
     investment_cost::Dict{Int,Float64}
+    fixed_cost::Dict{Int,Float64}
     investment_limit::Dict{Int,Union{Missing,Float64}}
     capacity::Float64
     initial_export_capacity::Dict{Int,Float64}
@@ -232,6 +233,7 @@ function GraphFlowData(
     discount_rate,
     variable_cost,
     investment_cost,
+    fixed_cost,
     investment_limit,
     capacity,
     initial_export_capacity,
@@ -249,6 +251,7 @@ function GraphFlowData(
         discount_rate,
         variable_cost,
         investment_cost,
+        fixed_cost,
         investment_limit,
         capacity,
         initial_export_capacity,

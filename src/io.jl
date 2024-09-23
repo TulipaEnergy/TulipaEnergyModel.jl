@@ -115,8 +115,8 @@ function create_internal_structures(connection)
         return result_dict
     end
 
-    _query_vintage_year(col; where_pairs...) = begin
-        _q = "SELECT commission_year, $col FROM vintage_assets_data"
+    _query_vintage_year(table_name, col; where_pairs...) = begin
+        _q = "SELECT commission_year, $col FROM $table_name"
         if length(where_pairs) > 0
             _q *=
                 " WHERE " *
@@ -125,8 +125,8 @@ function create_internal_structures(connection)
         DuckDB.query(connection, _q)
     end
 
-    function _get_stuff_vintage_year(col; where_pairs...)
-        result = _query_vintage_year(col; where_pairs...)
+    function _get_stuff_vintage_year(table_name, col; where_pairs...)
+        result = _query_vintage_year(table_name, col; where_pairs...)
         Dict(row.commission_year => getproperty(row, Symbol(col)) for row in result)
     end
 
@@ -142,8 +142,8 @@ function create_internal_structures(connection)
             row.technical_lifetime,
             row.economic_lifetime,
             row.discount_rate,
-            _get_stuff_vintage_year("investment_cost"; name = row.name),
-            _get_stuff_vintage_year("fixed_cost"; name = row.name),
+            _get_stuff_vintage_year("assets_data", "investment_cost"; name = row.name),
+            _get_stuff_vintage_year("assets_data", "fixed_cost"; name = row.name),
             _get_stuff_year("assets_data", "investment_limit"; name = row.name),
             row.capacity,
             _get_stuff_commission_year("assets_data", "initial_units"; name = row.name),
@@ -208,15 +208,24 @@ function create_internal_structures(connection)
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
+            row.technical_lifetime,
+            row.economic_lifetime,
+            row.discount_rate,
             _get_stuff_year(
                 "flows_data",
                 "variable_cost";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff_year(
+            _get_stuff_vintage_year(
                 "flows_data",
                 "investment_cost";
+                from_asset = row.from_asset,
+                to_asset = row.to_asset,
+            ),
+            _get_stuff_vintage_year(
+                "flows_data",
+                "fixed_cost";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),

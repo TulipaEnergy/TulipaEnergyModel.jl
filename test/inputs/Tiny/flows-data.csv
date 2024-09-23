@@ -1,7 +1,7 @@
-asset_name,asset_name,{true;false},,{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,p.u.
-from_asset,to_asset,active,year,is_transport,investable,investment_integer,variable_cost,investment_cost,investment_limit,initial_export_capacity,initial_import_capacity,efficiency
-ocgt,demand,true,2030,false,false,false,0.07,0,,0,0,0
-ccgt,demand,true,2030,false,false,false,0.05,0,,0,0,0
-wind,demand,true,2030,false,false,false,0.001,0,,0,0,0
-solar,demand,true,2030,false,false,false,0,0,,0,0,0
-ens,demand,true,2030,false,false,false,0.18,0,,0,0,0
+asset_name,asset_name,{true;false},,year,{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,kEUR/MW/year,MW,MW,MW,p.u.
+from_asset,to_asset,active,year,commission_year,is_transport,investable,investment_integer,variable_cost,investment_cost,fixed_cost,investment_limit,initial_export_capacity,initial_import_capacity,efficiency
+ocgt,demand,true,2030,2030,false,false,false,0.07,0,0.1,,0,0,0
+ccgt,demand,true,2030,2030,false,false,false,0.05,0,0.1,,0,0,0
+wind,demand,true,2030,2030,false,false,false,0.001,0,0.1,,0,0,0
+solar,demand,true,2030,2030,false,false,false,0,0,0.1,,0,0,0
+ens,demand,true,2030,2030,false,false,false,0.18,0,0.1,,0,0,0

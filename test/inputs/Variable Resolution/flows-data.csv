@@ -1,8 +1,8 @@
-asset_name,asset_name,{true;false},,{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,MW,MW,MW,p.u.
-from_asset,to_asset,active,year,is_transport,investable,investment_integer,variable_cost,investment_cost,investment_limit,initial_export_capacity,initial_import_capacity,efficiency
-H2,ccgt,true,2030,false,false,false,0.01,0,,0,0,1
-ccgt,balance,true,2030,false,false,false,0.05,0,,0,0,0.5
-wind,balance,true,2030,false,false,false,0.005,0,,0,0,0
-wind,phs,true,2030,false,false,false,0.002,0,,0,0,0.9
-phs,balance,true,2030,false,false,false,0.001,0,,0,0,0.9
-balance,demand,true,2030,true,false,false,0.0001,0,,200,200,0
+asset_name,asset_name,{true;false},,year,{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,kEUR/MW/year,MW,MW,MW,p.u.
+from_asset,to_asset,active,year,commission_year,is_transport,investable,investment_integer,variable_cost,investment_cost,fixed_cost,investment_limit,initial_export_capacity,initial_import_capacity,efficiency
+H2,ccgt,true,2030,2030,false,false,false,0.01,0,0.1,,0,0,1
+ccgt,balance,true,2030,2030,false,false,false,0.05,0,0.1,,0,0,0.5
+wind,balance,true,2030,2030,false,false,false,0.005,0,0.1,,0,0,0
+wind,phs,true,2030,2030,false,false,false,0.002,0,0.1,,0,0,0.9
+phs,balance,true,2030,2030,false,false,false,0.001,0,0.1,,0,0,0.9
+balance,demand,true,2030,2030,true,false,false,0.0001,0,0.1,,200,200,0
