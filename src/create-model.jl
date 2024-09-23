@@ -534,6 +534,7 @@ The last interval is 1.
 function create_intervals_for_years(years)
     intervals = Dict()
 
+    # This assumes that `years` is ordered
     for i in 1:length(years)-1
         intervals[years[i]] = years[i+1] - years[i]
     end
