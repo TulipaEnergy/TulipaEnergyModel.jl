@@ -36,10 +36,16 @@ function create_internal_structures(connection)
         _check_if_table_exist(connection, table)
     end
 
+    # Get the years struct ordered by year
     years = [
-        Year(row.year, row.length, row.is_milestone) for
-        row in TulipaIO.get_table(Val(:raw), connection, "year_data")
+        Year(row.year, row.length, row.is_milestone) for row in DBInterface.execute(
+            connection,
+            "SELECT *
+             FROM year_data
+             ORDER BY year",
+        )
     ]
+
     milestone_years = [year.id for year in years]
 
     # Calculate the weights from the "rep_periods_mapping" table in the connection

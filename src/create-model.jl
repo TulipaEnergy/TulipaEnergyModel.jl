@@ -526,6 +526,25 @@ function profile_aggregation(agg, profiles, year, commission_year, key, block, d
 end
 
 """
+    create_intervals(years)
+
+Create a dictionary of intervals for `years`. The interval is assigned to the its starting year.
+The last interval is 1.
+"""
+function create_intervals_for_years(years)
+    intervals = Dict()
+
+    # This assumes that `years` is ordered
+    for i in 1:length(years)-1
+        intervals[years[i]] = years[i+1] - years[i]
+    end
+
+    intervals[years[end]] = 1
+
+    return intervals
+end
+
+"""
     create_model!(energy_problem; verbose = false)
 
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
@@ -1141,9 +1160,25 @@ function create_model(
             )
         )
 
+        # Create a dict of intervals for milestone years
+        intervals_for_milestone_years = create_intervals_for_years(Y)
+
+        # Create a dict of operation discounts only for milestone years
+        operation_discounts_for_milestone_years = Dict(
+            y => 1 / (1 + model_parameters.discount_rate)^(y - model_parameters.discount_year)
+            for y in Y
+        )
+
+        # Create a dict of operation discounts for milestone years including in-between years
+        weight_for_operation_discounts = Dict(
+            y => operation_discounts_for_milestone_years[y] * intervals_for_milestone_years[y]
+            for y in Y
+        )
+
         flows_variable_cost = @expression(
             model,
             sum(
+                weight_for_operation_discounts[row.year] *
                 representative_periods[row.year][row.rep_period].weight *
                 duration(row.timesteps_block, row.rep_period, representative_periods[row.year]) *
                 graph[row.from, row.to].variable_cost[row.year] *
@@ -1154,6 +1189,7 @@ function create_model(
         units_on_cost = @expression(
             model,
             sum(
+                weight_for_operation_discounts[row.year] *
                 representative_periods[row.year][row.rep_period].weight *
                 duration(row.timesteps_block, row.rep_period, representative_periods[row.year]) *
                 graph[row.asset].units_on_cost[row.year] *
