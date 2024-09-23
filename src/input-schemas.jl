@@ -9,6 +9,7 @@ const schemas = (
             :investment_method => "VARCHAR",                 # Which method of investment (simple/compact)
             :capacity => "DOUBLE",                           # MW
             :technical_lifetime => "INTEGER",
+            :economic_lifetime => "INTEGER",
             :discount_rate => "DOUBLE",
         ),
         flows = (

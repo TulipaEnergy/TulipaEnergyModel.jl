@@ -134,6 +134,7 @@ function create_internal_structures(connection)
             _get_stuff_year("assets_data", "investable"; name = row.name),
             _get_stuff_year("assets_data", "investment_integer"; name = row.name),
             row.technical_lifetime,
+            row.economic_lifetime,
             row.discount_rate,
             _get_stuff_vintage_year("investment_cost"; name = row.name),
             _get_stuff_vintage_year("fixed_cost"; name = row.name),

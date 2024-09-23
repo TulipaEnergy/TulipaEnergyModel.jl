@@ -1,10 +1,10 @@
-,{producer;consumer;storage;hub;conversion},{group name},{none;simple;compact},MW,year,
-name,type,group,investment_method,capacity,technical_lifetime,discount_rate
-ocgt,producer,,none,100,15,0.05
-ccgt,producer,,none,400,15,0.05
-wind,producer,,none,50,15,0.05
-solar,producer,,none,10,15,0.05
-ens,producer,,none,1240,15,0.05
-battery,storage,,none,10,15,0.05
-phs,storage,,none,100,15,0.05
-demand,consumer,,none,0,15,0.05
+,{producer;consumer;storage;hub;conversion},{group name},{none;simple;compact},MW,year,year,
+name,type,group,investment_method,capacity,technical_lifetime,economic_lifetime,discount_rate
+ocgt,producer,,none,100,15,1,0.05
+ccgt,producer,,none,400,15,1,0.05
+wind,producer,,none,50,15,1,0.05
+solar,producer,,none,10,15,1,0.05
+ens,producer,,none,1240,15,1,0.05
+battery,storage,,none,10,15,1,0.05
+phs,storage,,none,100,15,1,0.05
+demand,consumer,,none,0,15,1,0.05
