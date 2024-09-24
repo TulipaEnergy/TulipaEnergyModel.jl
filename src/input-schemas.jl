@@ -42,7 +42,6 @@ const schemas = (
             :initial_storage_level => "DOUBLE",              # MWh (Missing -> free initial level)
             :energy_to_power_ratio => "DOUBLE",              # Hours
             :storage_method_energy => "BOOLEAN",             # Whether storage method is energy or not (i.e., fixed_ratio)
-            :investment_cost_storage_energy => "DOUBLE",     # kEUR/MWh/year
             :investment_limit_storage_energy => "DOUBLE",    # MWh (Missing -> no limit)
             :investment_integer_storage_energy => "BOOLEAN", # Whether investment for storage energy is integer or continuous
             :use_binary_storage_method => "VARCHAR",         # Whether to use an extra binary variable for the storage assets to avoid charging and discharging simultaneously (missing;binary;relaxed_binary)
@@ -62,8 +61,10 @@ const schemas = (
         vintage_assets_data = OrderedDict(
             :name => "VARCHAR",
             :commission_year => "INTEGER",                   # Year of commissioning
-            :fixed_cost => "DOUBLE",
-            :investment_cost => "DOUBLE",                    # kEUR/MW/year
+            :fixed_cost => "DOUBLE",                         # kEUR/MW/year
+            :investment_cost => "DOUBLE",                    # kEUR/MW
+            :fixed_cost_storage_energy => "DOUBLE",          # kEUR/MWh/year
+            :investment_cost_storage_energy => "DOUBLE",     # kEUR/MWh
         ),
 
         # Schema for the vintage-flows-data.csv
@@ -71,8 +72,8 @@ const schemas = (
             :from_asset => "VARCHAR",                        # Name of Asset
             :to_asset => "VARCHAR",                          # Name of Asset
             :commission_year => "INTEGER",                   # Year of commissioning
-            :fixed_cost => "DOUBLE",
-            :investment_cost => "DOUBLE",                    # kEUR/MW/year
+            :fixed_cost => "DOUBLE",                         # kEUR/MWh/year
+            :investment_cost => "DOUBLE",                    # kEUR/MW
         ),
 
         # Schema for the assets-profiles.csv and assets-timeframe-profiles.csv file.
