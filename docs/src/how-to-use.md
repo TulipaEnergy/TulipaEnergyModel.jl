@@ -345,10 +345,11 @@ Energy storage assets have a unique characteristic wherein the investment is bas
 
     -   `investment_cost_storage_energy`: To establish the cost of investing in the storage capacity (e.g., kEUR/MWh/unit).
     -   `investment_limit_storage_energy`: To define the potential of the energy capacity investment (e.g., MWh). `Missing` values mean that there is no limit.
-    -   `capacity_storage_energy`: To define the energy per unit of storage capacity invested in (e.g., MWh/unit).
     -   `investment_integer_storage_energy`: To determine whether the investment variables of storage capacity are integers of continuous.
 
 -   _Fixed energy-to-power ratio method_: To use this method, set the parameter `storage_method_energy` to `false`. In addition, it is necessary to define the parameter `energy_to_power_ratio` to establish the predefined duration of the storage asset or ratio between energy and power. Note that all the investment costs should be allocated in the parameter `investment_cost`.
+
+In addition, the parameter `capacity_storage_energy` in the [`graph-assets-data.csv`](@ref schemas) defines the energy per unit of storage capacity invested in (e.g., MWh/unit).
 
 For more details on the constraints that apply when selecting one method or the other, please visit the [`mathematical formulation`](@ref formulation) section.
 
