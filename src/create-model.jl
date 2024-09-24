@@ -863,7 +863,7 @@ function create_model(
             model,
             energy_limit[y ∈ Y, a ∈ As∩Ai[y]],
             if graph[a].storage_method_energy[y]
-                graph[a].capacity_storage_energy[y] * assets_investment_energy[y, a]
+                graph[a].capacity_storage_energy * assets_investment_energy[y, a]
             else
                 graph[a].energy_to_power_ratio[y] * graph[a].capacity * assets_investment[y, a]
             end
@@ -1148,7 +1148,7 @@ function create_model(
             model,
             sum(
                 graph[a].investment_cost_storage_energy[y] *
-                graph[a].capacity_storage_energy[y] *
+                graph[a].capacity_storage_energy *
                 assets_investment_energy[y, a] for y in Y for a in Ase[y] ∩ Ai[y]
             )
         )

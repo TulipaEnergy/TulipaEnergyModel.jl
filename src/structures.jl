@@ -66,13 +66,13 @@ mutable struct GraphAssetData
     consumer_balance_sense::Dict{Int,Union{MathOptInterface.EqualTo,MathOptInterface.GreaterThan}}
     is_seasonal::Dict{Int,Bool}
     storage_inflows::Dict{Int,Union{Missing,Float64}}
-    initial_storage_capacity::Dict{Int,Float64}
+    initial_storage_units::Dict{Int,Float64}
     initial_storage_level::Dict{Int,Union{Missing,Float64}}
     energy_to_power_ratio::Dict{Int,Float64}
     storage_method_energy::Dict{Int,Bool}
     investment_cost_storage_energy::Dict{Int,Float64}
     investment_limit_storage_energy::Dict{Int,Union{Missing,Float64}}
-    capacity_storage_energy::Dict{Int,Float64}
+    capacity_storage_energy::Float64
     investment_integer_storage_energy::Dict{Int,Bool}
     use_binary_storage_method::Dict{Int,Union{Missing,String}}
     max_energy_timeframe_partition::Dict{Int,Union{Missing,Float64}}
@@ -117,7 +117,7 @@ mutable struct GraphAssetData
         consumer_balance_sense,
         is_seasonal,
         storage_inflows,
-        initial_storage_capacity,
+        initial_storage_units,
         initial_storage_level,
         energy_to_power_ratio,
         storage_method_energy,
@@ -160,7 +160,7 @@ mutable struct GraphAssetData
             consumer_balance_sense,
             is_seasonal,
             storage_inflows,
-            initial_storage_capacity,
+            initial_storage_units,
             initial_storage_level,
             energy_to_power_ratio,
             storage_method_energy,
