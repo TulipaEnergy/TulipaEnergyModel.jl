@@ -135,43 +135,20 @@ function add_capacity_constraints!(
     # - Create capacity limit for incoming flows
     assets_profile_times_capacity_in =
         model[:assets_profile_times_capacity_in] = [
-            if row.asset ∈ decommissionable_assets_using_compact_method
-                @expression(
-                    model,
-                    graph[row.asset].capacity * sum(
-                        profile_aggregation(
-                            Statistics.mean,
-                            graph[row.asset].rep_periods_profiles,
-                            row.year,
-                            v,
-                            ("availability", row.rep_period),
-                            row.timesteps_block,
-                            1.0,
-                        ) *
-                        accumulated_units_compact_method[accumulated_set_using_compact_method_lookup[(
-                            row.asset,
-                            row.year,
-                            v,
-                        )]] for v in V_all if
-                        (row.asset, row.year, v) in accumulated_set_using_compact_method
-                    )
-                )
-            else
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
-                        row.timesteps_block,
-                        1.0,
-                    ) *
-                    graph[row.asset].capacity *
-                    accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
-                )
-            end for row in eachrow(dataframes[:highest_in])
+            @expression(
+                model,
+                profile_aggregation(
+                    Statistics.mean,
+                    graph[row.asset].rep_periods_profiles,
+                    row.year,
+                    row.year,
+                    ("availability", row.rep_period),
+                    row.timesteps_block,
+                    1.0,
+                ) *
+                graph[row.asset].capacity *
+                accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
+            ) for row in eachrow(dataframes[:highest_in])
         ]
 
     # - Create capacity limit for incoming flows with binary is_charging for storage assets
