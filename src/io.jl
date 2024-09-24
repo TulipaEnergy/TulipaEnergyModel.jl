@@ -238,13 +238,13 @@ function create_internal_structures(connection)
             row.capacity,
             _get_stuff_year(
                 "flows_data",
-                "initial_export_capacity";
+                "initial_export_units";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
             _get_stuff_year(
                 "flows_data",
-                "initial_import_capacity";
+                "initial_import_units";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),

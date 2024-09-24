@@ -1,7 +1,7 @@
 asset_name,asset_name,,MW,year,year,
 from_asset,to_asset,carrier,capacity,technical_lifetime,economic_lifetime,discount_rate
 ocgt,demand,electricity,0,10,1,0.02
-ccgt,demand,electricity,0,10,1,0.02
+ccgt,demand,electricity,100,10,1,0.02
 battery,demand,electricity,0,10,1,0.02
 demand,battery,electricity,0,10,1,0.02
 wind,demand,electricity,0,10,1,0.02

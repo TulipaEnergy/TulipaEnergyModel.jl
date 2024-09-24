@@ -210,8 +210,8 @@ mutable struct GraphFlowData
     fixed_cost::Dict{Int,Float64}
     investment_limit::Dict{Int,Union{Missing,Float64}}
     capacity::Float64
-    initial_export_capacity::Dict{Int,Float64}
-    initial_import_capacity::Dict{Int,Float64}
+    initial_export_units::Dict{Int,Float64}
+    initial_import_units::Dict{Int,Float64}
     efficiency::Dict{Int,Float64}
     timeframe_profiles::Dict{Int,Dict{String,Vector{Float64}}}
     rep_periods_profiles::Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}
@@ -236,8 +236,8 @@ function GraphFlowData(
     fixed_cost,
     investment_limit,
     capacity,
-    initial_export_capacity,
-    initial_import_capacity,
+    initial_export_units,
+    initial_import_units,
     efficiency,
 )
     return GraphFlowData(
@@ -254,8 +254,8 @@ function GraphFlowData(
         fixed_cost,
         investment_limit,
         capacity,
-        initial_export_capacity,
-        initial_import_capacity,
+        initial_export_units,
+        initial_import_units,
         efficiency,
         Dict{Int,Dict{String,Vector{Float64}}}(),
         Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}(),

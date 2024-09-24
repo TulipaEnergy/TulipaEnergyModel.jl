@@ -1,5 +1,5 @@
 asset_name,asset_name,{true;false},,year,{true;false},{true;false},{true;false},kEUR/MWh,kEUR/MW/year,kEUR/MW/year,MW,MW,MW,p.u.
-from_asset,to_asset,active,year,commission_year,is_transport,investable,investment_integer,variable_cost,investment_cost,fixed_cost,investment_limit,initial_export_capacity,initial_import_capacity,efficiency
+from_asset,to_asset,active,year,commission_year,is_transport,investable,investment_integer,variable_cost,investment_cost,fixed_cost,investment_limit,initial_export_units,initial_import_units,efficiency
 Asgard_Battery,Asgard_E_demand,true,2030,2030,false,false,false,0.003,0,0.1,0,0,0,0.95
 Asgard_Solar,Asgard_Battery,true,2030,2030,false,false,false,0.001,0,0.1,0,0,0,0.95
 Asgard_Solar,Asgard_E_demand,true,2030,2030,false,false,false,0.001,0,0.1,0,0,0,1

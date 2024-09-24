@@ -123,8 +123,8 @@ const schemas = (
             :variable_cost => "DOUBLE",             # kEUR/MWh
             :investment_cost => "DOUBLE",           # kEUR/MW/year
             :investment_limit => "DOUBLE",          # MW
-            :initial_export_capacity => "DOUBLE",   # MW
-            :initial_import_capacity => "DOUBLE",   # MW
+            :initial_export_units => "DOUBLE",   # MW
+            :initial_import_units => "DOUBLE",   # MW
             :efficiency => "DOUBLE",                # p.u. (per unit)
         ),
 
