@@ -556,7 +556,7 @@ input_dir = "../../test/inputs/Storage" # hide
 assets_data = CSV.read(joinpath(input_dir, "assets-data.csv"), DataFrame, header = 2) # hide
 graph_assets = CSV.read(joinpath(input_dir, "graph-assets-data.csv"), DataFrame, header = 2) # hide
 assets = leftjoin(graph_assets, assets_data, on=:name) # hide
-filtered_assets = assets[assets.type .== "storage", ["name", "type", "capacity", "is_seasonal", "initial_storage_capacity", "initial_storage_level"]] # hide
+filtered_assets = assets[assets.type .== "storage", ["name", "type", "capacity", "capacity_storage_energy", "initial_storage_units", "initial_storage_level", "is_seasonal"]] # hide
 ```
 
 The `is_seasonal` parameter determines whether or not the storage asset uses the inter-temporal constraints. The `phs` is the only storage asset with this type of constraint and inter-storage level variable (i.e., $v^{\text{inter-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` will only consider intra-temporal constraints with intra-storage level variables (i.e., $v^{\text{intra-storage}}_{\text{battery},k,b_k}$), and has 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration).

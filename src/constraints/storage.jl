@@ -89,7 +89,8 @@ function add_storage_constraints!(
                 row.timesteps_block,
                 1.0,
             ) * (
-                graph[row.asset].initial_storage_capacity[row.year] +
+                graph[row.asset].capacity_storage_energy *
+                graph[row.asset].initial_storage_units[row.year] +
                 (row.asset ∈ Ai[row.year] ? energy_limit[row.year, row.asset] : 0.0)
             ),
             base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
@@ -110,7 +111,8 @@ function add_storage_constraints!(
                 row.timesteps_block,
                 0.0,
             ) * (
-                graph[row.asset].initial_storage_capacity[row.year] +
+                graph[row.asset].capacity_storage_energy *
+                graph[row.asset].initial_storage_units[row.year] +
                 (row.asset ∈ Ai[row.year] ? energy_limit[row.year, row.asset] : 0.0)
             ),
             base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
@@ -174,7 +176,8 @@ function add_storage_constraints!(
                 row.periods_block,
                 1.0,
             ) * (
-                graph[row.asset].initial_storage_capacity[row.year] +
+                graph[row.asset].capacity_storage_energy *
+                graph[row.asset].initial_storage_units[row.year] +
                 (row.asset ∈ Ai[row.year] ? energy_limit[row.year, row.asset] : 0.0)
             ),
             base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.periods_block)]"
@@ -195,7 +198,8 @@ function add_storage_constraints!(
                 row.periods_block,
                 0.0,
             ) * (
-                graph[row.asset].initial_storage_capacity[row.year] +
+                graph[row.asset].capacity_storage_energy *
+                graph[row.asset].initial_storage_units[row.year] +
                 (row.asset ∈ Ai[row.year] ? energy_limit[row.year, row.asset] : 0.0)
             ),
             base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.periods_block)]"

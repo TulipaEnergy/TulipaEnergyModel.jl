@@ -158,13 +158,13 @@ function create_internal_structures(connection)
             ),
             _get_stuff_year("assets_data", "is_seasonal"; name = row.name),
             _get_stuff_year("assets_data", "storage_inflows"; name = row.name),
-            _get_stuff_year("assets_data", "initial_storage_capacity"; name = row.name),
+            _get_stuff_year("assets_data", "initial_storage_units"; name = row.name),
             _get_stuff_year("assets_data", "initial_storage_level"; name = row.name),
             _get_stuff_year("assets_data", "energy_to_power_ratio"; name = row.name),
             _get_stuff_year("assets_data", "storage_method_energy"; name = row.name),
             _get_stuff_year("assets_data", "investment_cost_storage_energy"; name = row.name),
             _get_stuff_year("assets_data", "investment_limit_storage_energy"; name = row.name),
-            _get_stuff_year("assets_data", "capacity_storage_energy"; name = row.name),
+            row.capacity_storage_energy,
             _get_stuff_year("assets_data", "investment_integer_storage_energy"; name = row.name),
             _get_stuff_year("assets_data", "use_binary_storage_method"; name = row.name),
             _get_stuff_year("assets_data", "max_energy_timeframe_partition"; name = row.name),
@@ -470,7 +470,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     )
 
     for ((y, a), energy_units_investmented) in solution.assets_investment_energy
-        energy_capacity = graph[a].capacity_storage_energy[y]
+        energy_capacity = graph[a].capacity_storage_energy
         push!(
             output_table,
             (a, y, energy_units_investmented, energy_capacity * energy_units_investmented),

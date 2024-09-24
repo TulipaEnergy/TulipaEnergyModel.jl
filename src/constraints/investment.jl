@@ -24,7 +24,7 @@ function add_investment_constraints!(
             JuMP.set_upper_bound(assets_investment[y, a], bound_value)
         end
         if (a in Ase[y]) && # for a in Ase, i.e., storage assets with energy method
-           graph[a].capacity_storage_energy[y] > 0 &&
+           graph[a].capacity_storage_energy > 0 &&
            !ismissing(graph[a].investment_limit_storage_energy[y])
             bound_value = _find_upper_bound(graph, y, a; is_bound_for_energy = true)
             JuMP.set_upper_bound(assets_investment_energy[y, a], bound_value)
@@ -50,7 +50,7 @@ function _find_upper_bound(graph, year, investments...; is_bound_for_energy = fa
     else
         bound_value =
             graph_investment.investment_limit_storage_energy[year] /
-            graph_investment.capacity_storage_energy[year]
+            graph_investment.capacity_storage_energy
         if graph_investment.investment_integer_storage_energy[year]
             bound_value = floor(bound_value)
         end
