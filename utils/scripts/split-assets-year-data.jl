@@ -38,6 +38,22 @@ apply_to_files_named("graph-assets-data.csv") do path
     end
 end
 
+# Creating new file
+apply_to_files_named("vintage-flows-data.csv"; include_missing = true) do path
+    # Cleaning
+    if isfile(path)
+        rm(path)
+    end
+    # Creating empty
+    touch(path)
+
+    t_assets_data = TulipaCSV(joinpath(dirname(path), "flows-data.csv"))
+    change_file(path) do tcsv
+        tcsv.units = ["asset_name", "asset_name", "kEUR/MW"]
+        tcsv.csv = t_assets_data.csv[:, [:from_asset, :to_asset, :investment_cost]] |> unique
+    end
+end
+
 # Changes to the graph-assets-data file
 apply_to_files_named("graph-flows-data.csv") do path
     change_file(path) do tcsv

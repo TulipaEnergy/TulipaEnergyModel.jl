@@ -1,0 +1,8 @@
+asset_name,asset_name,year,kEUR/MW/year,kEUR/MW
+from_asset,to_asset,commission_year,fixed_cost,investment_cost
+H2,ccgt,2030,0.1,0
+ccgt,balance,2030,0.1,0
+wind,balance,2030,0.1,0
+wind,phs,2030,0.1,0
+phs,balance,2030,0.1,0
+balance,demand,2030,0.1,0

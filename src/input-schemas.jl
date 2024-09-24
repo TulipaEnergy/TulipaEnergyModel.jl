@@ -17,7 +17,10 @@ const schemas = (
             :from_asset => "VARCHAR",                        # Name of Asset
             :to_asset => "VARCHAR",                          # Name of Asset
             :carrier => "VARCHAR",                           # (Optional?) Energy carrier
-            :capacity => "DOUBLE",                           # MW
+            :capacity => "DOUBLE",
+            :technical_lifetime => "INTEGER",
+            :economic_lifetime => "INTEGER",
+            :discount_rate => "DOUBLE",
         ),
     ),
     assets = (
@@ -56,8 +59,17 @@ const schemas = (
         ),
 
         # Schema for the vintage-assets-data.csv
-        vintage_data = OrderedDict(
+        vintage_assets_data = OrderedDict(
             :name => "VARCHAR",
+            :commission_year => "INTEGER",                   # Year of commissioning
+            :fixed_cost => "DOUBLE",
+            :investment_cost => "DOUBLE",                    # kEUR/MW/year
+        ),
+
+        # Schema for the vintage-flows-data.csv
+        vintage_flows_data = OrderedDict(
+            :from_asset => "VARCHAR",                        # Name of Asset
+            :to_asset => "VARCHAR",                          # Name of Asset
             :commission_year => "INTEGER",                   # Year of commissioning
             :fixed_cost => "DOUBLE",
             :investment_cost => "DOUBLE",                    # kEUR/MW/year
@@ -111,8 +123,8 @@ const schemas = (
             :variable_cost => "DOUBLE",             # kEUR/MWh
             :investment_cost => "DOUBLE",           # kEUR/MW/year
             :investment_limit => "DOUBLE",          # MW
-            :initial_export_capacity => "DOUBLE",   # MW
-            :initial_import_capacity => "DOUBLE",   # MW
+            :initial_export_units => "DOUBLE",   # MW
+            :initial_import_units => "DOUBLE",   # MW
             :efficiency => "DOUBLE",                # p.u. (per unit)
         ),
 
@@ -196,6 +208,7 @@ const schema_per_table_name = OrderedDict(
     "profiles_rep_periods" => schemas.rep_periods.profiles_data,
     "rep_periods_data" => schemas.rep_periods.data,
     "rep_periods_mapping" => schemas.rep_periods.mapping,
-    "vintage_assets_data" => schemas.assets.vintage_data,
+    "vintage_assets_data" => schemas.assets.vintage_assets_data,
+    "vintage_flows_data" => schemas.assets.vintage_flows_data,
     "year_data" => schemas.year.data,
 )

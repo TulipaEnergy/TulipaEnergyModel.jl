@@ -22,9 +22,10 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                     ("availability", row.rep_period),
                     row.timesteps_block,
                     1.0,
-                ) * (
-                    graph[row.from, row.to].initial_export_capacity[row.year] +
-                    graph[row.from, row.to].capacity *
+                ) *
+                graph[row.from, row.to].capacity *
+                (
+                    graph[row.from, row.to].initial_export_units[row.year] +
                     flows_investment[row.year, (row.from, row.to)]
                 )
             )
@@ -39,7 +40,9 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                     ("availability", row.rep_period),
                     row.timesteps_block,
                     1.0,
-                ) * graph[row.from, row.to].initial_export_capacity[row.year]
+                ) *
+                graph[row.from, row.to].capacity *
+                graph[row.from, row.to].initial_export_units[row.year]
             )
         end for row in eachrow(df_flows)
     ]
@@ -57,9 +60,10 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                     ("availability", row.rep_period),
                     row.timesteps_block,
                     1.0,
-                ) * (
-                    graph[row.from, row.to].initial_import_capacity[row.year] +
-                    graph[row.from, row.to].capacity *
+                ) *
+                graph[row.from, row.to].capacity *
+                (
+                    graph[row.from, row.to].initial_import_units[row.year] +
                     flows_investment[row.year, (row.from, row.to)]
                 )
             )
@@ -74,7 +78,9 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                     ("availability", row.rep_period),
                     row.timesteps_block,
                     1.0,
-                ) * graph[row.from, row.to].initial_import_capacity[row.year]
+                ) *
+                graph[row.from, row.to].capacity *
+                graph[row.from, row.to].initial_import_units[row.year]
             )
         end for row in eachrow(df_flows)
     ]

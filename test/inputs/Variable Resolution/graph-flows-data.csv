@@ -1,8 +1,8 @@
-asset_name,asset_name,,MW
-from_asset,to_asset,carrier,capacity
-H2,ccgt,hydrogen,0
-ccgt,balance,electricity,0
-wind,balance,electricity,0
-wind,phs,electricity,0
-phs,balance,electricity,0
-balance,demand,electricity,200
+asset_name,asset_name,,MW,year,year,
+from_asset,to_asset,carrier,capacity,technical_lifetime,economic_lifetime,discount_rate
+H2,ccgt,hydrogen,0,10,1,0.02
+ccgt,balance,electricity,0,10,1,0.02
+wind,balance,electricity,0,10,1,0.02
+wind,phs,electricity,0,10,1,0.02
+phs,balance,electricity,0,10,1,0.02
+balance,demand,electricity,200,10,1,0.02
