@@ -67,7 +67,20 @@ You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/Tu
 Below, we have a description of the files.
 At the end, in [Schemas](@ref schemas), we have the expected columns in these CSVs.
 
-> **Tip:** You can compare two CSV files with `git diff --no-index --word-diff-regex="[^[:space:],]+" file1 file2`.
+> **Tip:**
+> If you modify CSV files and want to see your modifications, the normal `git diff` command will not be informative.
+> Instead, you can use
+>
+> ```bash
+> git diff --word-diff-regex="[^[:space:],]+"
+> ```
+>
+> to make `git` treat the `,` as word separators.
+> You can also compare two CSV files with
+>
+> ```bash
+> git diff --no-index --word-diff-regex="[^[:space:],]+" file1 file2
+> ```
 
 #### [`graph-assets-data.csv`](@id graph-assets-data)
 

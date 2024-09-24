@@ -57,8 +57,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
     julia
     ```
 
-    > **Note:** > `julia` must be part of your environment variables to call it from the
-    > command line.
+    > **Note:** `julia` must be part of your environment variables to call it from the command line.
 
     Then press <kbd>]</kbd> to enter the package mode.
     In the package mode, enter the following:
@@ -109,7 +108,7 @@ git remote -v
 ```
 
 You should see something similar to:
-![Screenshot of remote names, showing origin and upstream](docs/images/Remotes.PNG)
+![Screenshot of remote names, showing origin and upstream](docs/images/Remotes.png)
 
 If your names are wrong, use this command (with the relevant names) to correct it:
 
