@@ -71,6 +71,7 @@ mutable struct GraphAssetData
     energy_to_power_ratio::Dict{Int,Float64}
     storage_method_energy::Dict{Int,Bool}
     investment_cost_storage_energy::Dict{Int,Float64}
+    fixed_cost_storage_energy::Dict{Int,Float64}
     investment_limit_storage_energy::Dict{Int,Union{Missing,Float64}}
     capacity_storage_energy::Float64
     investment_integer_storage_energy::Dict{Int,Bool}
@@ -122,6 +123,7 @@ mutable struct GraphAssetData
         energy_to_power_ratio,
         storage_method_energy,
         investment_cost_storage_energy,
+        fixed_cost_storage_energy,
         investment_limit_storage_energy,
         capacity_storage_energy,
         investment_integer_storage_energy,
@@ -165,6 +167,7 @@ mutable struct GraphAssetData
             energy_to_power_ratio,
             storage_method_energy,
             investment_cost_storage_energy,
+            fixed_cost_storage_energy,
             investment_limit_storage_energy,
             capacity_storage_energy,
             investment_integer_storage_energy,

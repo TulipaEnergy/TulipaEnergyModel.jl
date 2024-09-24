@@ -344,6 +344,7 @@ Energy storage assets have a unique characteristic wherein the investment is bas
 -   _Investment energy method_: To use this method, set the parameter `storage_method_energy` to `true`. In addition, it is necessary to define:
 
     -   `investment_cost_storage_energy`: To establish the cost of investing in the storage capacity (e.g., kEUR/MWh/unit).
+    -   `fixed_cost_storage_energy`: To establish the fixed cost of energy storage capacity (e.g., kEUR/MWh/unit).
     -   `investment_limit_storage_energy`: To define the potential of the energy capacity investment (e.g., MWh). `Missing` values mean that there is no limit.
     -   `investment_integer_storage_energy`: To determine whether the investment variables of storage capacity are integers of continuous.
 
