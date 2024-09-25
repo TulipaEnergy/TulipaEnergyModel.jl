@@ -1032,7 +1032,7 @@ function create_model(
                 starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
             )
         )
-        accumulated_decommission_units_using_simple_method = @expression(
+       @expression(
             model,
             accumulated_decommission_units_using_simple_method[
                 a ∈ decommissionable_assets_using_simple_method,
@@ -1052,7 +1052,7 @@ function create_model(
         )
 
         ### Expressions for multi-year investment compact method
-        accumulated_decommission_units_using_compact_method = @expression(
+        @expression(
             model,
             accumulated_decommission_units_using_compact_method[(
                 a,
