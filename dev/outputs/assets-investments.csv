@@ -1,7 +1,7 @@
 asset,year,InstalUnits,InstalCap_MW
 Valhalla_Fuel_cell,2030,260.0,26000.0
 Valhalla_Electrolyser,2030,0.0,0.0
-Midgard_Nuclear_SMR,2030,21.193589583404876,3179.0384375107315
+Midgard_Nuclear_SMR,2030,21.193589583404883,3179.0384375107324
 Valhalla_GT,2030,0.0,0.0
 Valhalla_H2_storage,2030,106.0,53000.0
 Asgard_Solar,2030,0.0,0.0
