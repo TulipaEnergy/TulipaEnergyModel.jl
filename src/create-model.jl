@@ -758,6 +758,13 @@ function create_model(
         )  #number of decommission asset units [N]
 
         @variable(model, 0 ≤ assets_investment_energy[y in Y, a in Ase[y]∩Ai[y]])  #number of installed asset units for storage energy [N]
+        @variable(
+            model,
+            0 ≤ assets_decommission_energy_simple_method[
+                y in Y,
+                a in Ase[y]∩decommissionable_assets_using_simple_method,
+            ]
+        )  #number of decommission asset energy units [N]
 
         ### Unit commitment variables
         units_on =
@@ -831,6 +838,12 @@ function create_model(
             end
         end
 
+        for y in Y, a in Ase[y] ∩ decommissionable_assets_using_simple_method
+            if graph[a].investment_integer_storage_energy[y]
+                JuMP.set_integer(assets_decommission_energy_simple_method[y, a])
+            end
+        end
+
         ### Binary Charging Variables
         df_is_charging.use_binary_storage_method = [
             graph[row.asset].use_binary_storage_method[row.year] for row in eachrow(df_is_charging)
@@ -858,17 +871,7 @@ function create_model(
     end
 
     ## Add expressions to dataframes
-    @timeit to "add_expression_terms" begin
-        @expression(
-            model,
-            energy_limit[y ∈ Y, a ∈ As∩Ai[y]],
-            if graph[a].storage_method_energy[y]
-                graph[a].capacity_storage_energy * assets_investment_energy[y, a]
-            else
-                graph[a].energy_to_power_ratio[y] * graph[a].capacity * assets_investment[y, a]
-            end
-        )
-
+    @timeit to "add_expression_terms_to_df" begin
         # Creating the incoming and outgoing flow expressions
         add_expression_terms_intra_rp_constraints!(
             dataframes[:lowest],
@@ -1018,7 +1021,7 @@ function create_model(
         @expression(
             model,
             accumulated_units_simple_method[y ∈ Y, a ∈ decommissionable_assets_using_simple_method],
-            sum(values(graph[a].initial_units[y])) + sum(
+            accumulated_initial_units[a, y] + sum(
                 assets_investment[yy, a] for
                 yy in Y if a ∈ investable_assets_using_simple_method[yy] &&
                 starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
@@ -1084,6 +1087,45 @@ function create_model(
                     @expression(model, sum(values(graph[a].initial_units[y])))
                 end for a in A for y in Y
             ]
+    end
+
+    ## Expressions for storage assets
+    @timeit to "add_expressions_for_storage" begin
+        @expression(
+            model,
+            accumulated_energy_units_simple_method[
+                y ∈ Y,
+                a ∈ Ase[y]∩decommissionable_assets_using_simple_method,
+            ],
+            sum(values(graph[a].initial_storage_units[y])) + sum(
+                assets_investment_energy[yy, a] for
+                yy in Y if a ∈ (Ase[yy] ∩ investable_assets_using_simple_method[yy]) &&
+                starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
+            ) - sum(
+                assets_decommission_energy_simple_method[yy, a] for
+                yy in Y if a ∈ Ase[yy] && starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
+            )
+        )
+        @expression(
+            model,
+            accumulated_energy_capacity[y ∈ Y, a ∈ As],
+            if graph[a].storage_method_energy[y] &&
+               a ∈ Ase[y] ∩ decommissionable_assets_using_simple_method
+                graph[a].capacity_storage_energy * accumulated_energy_units_simple_method[y, a]
+            else
+                (
+                    graph[a].capacity_storage_energy *
+                    sum(values(graph[a].initial_storage_units[y])) +
+                    if a ∈ Ai[y] ∩ decommissionable_assets_using_simple_method
+                        graph[a].energy_to_power_ratio[y] *
+                        graph[a].capacity *
+                        (accumulated_units_simple_method[y, a] - accumulated_initial_units[a, y])
+                    else
+                        0.0
+                    end
+                )
+            end
+        )
     end
 
     ## Expressions for the objective function
@@ -1153,6 +1195,16 @@ function create_model(
             )
         )
 
+        storage_assets_energy_fixed_cost = @expression(
+            model,
+            sum(
+                graph[a].fixed_cost_storage_energy[y] *
+                graph[a].capacity_storage_energy *
+                accumulated_energy_units_simple_method[y, a] for y in Y for
+                a in Ase[y] ∩ decommissionable_assets_using_simple_method
+            )
+        )
+
         flows_investment_cost = @expression(
             model,
             sum(
@@ -1205,6 +1257,7 @@ function create_model(
             assets_investment_cost +
             assets_fixed_cost +
             storage_assets_energy_investment_cost +
+            storage_assets_energy_fixed_cost +
             flows_investment_cost +
             flows_variable_cost +
             units_on_cost
@@ -1249,7 +1302,7 @@ function create_model(
         graph,
         dataframes,
         Ai,
-        energy_limit,
+        accumulated_energy_capacity,
         incoming_flow_lowest_storage_resolution_intra_rp,
         outgoing_flow_lowest_storage_resolution_intra_rp,
         df_storage_intra_rp_balance_grouped,

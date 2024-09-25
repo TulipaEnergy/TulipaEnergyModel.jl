@@ -1,20 +1,7 @@
 export add_storage_constraints!
 
 """
-add_storage_constraints!(model,
-                         graph,
-                         dataframes,
-                         Ai,
-                         energy_limit,
-                         incoming_flow_lowest_storage_resolution_intra_rp,
-                         outgoing_flow_lowest_storage_resolution_intra_rp,
-                         df_storage_intra_rp_balance_grouped,
-                         df_storage_inter_rp_balance_grouped,
-                         storage_level_intra_rp,
-                         storage_level_inter_rp,
-                         incoming_flow_storage_inter_rp_balance,
-                         outgoing_flow_storage_inter_rp_balance,
-                         )
+add_storage_constraints!(model, graph,...)
 
 Adds the storage asset constraints to the model.
 """
@@ -24,7 +11,7 @@ function add_storage_constraints!(
     graph,
     dataframes,
     Ai,
-    energy_limit,
+    accumulated_energy_capacity,
     incoming_flow_lowest_storage_resolution_intra_rp,
     outgoing_flow_lowest_storage_resolution_intra_rp,
     df_storage_intra_rp_balance_grouped,
@@ -88,11 +75,7 @@ function add_storage_constraints!(
                 ("max-storage-level", row.rep_period),
                 row.timesteps_block,
                 1.0,
-            ) * (
-                graph[row.asset].capacity_storage_energy *
-                graph[row.asset].initial_storage_units[row.year] +
-                (row.asset ∈ Ai[row.year] ? energy_limit[row.year, row.asset] : 0.0)
-            ),
+            ) * accumulated_energy_capacity[row.year, row.asset],
             base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
     ]
@@ -110,11 +93,7 @@ function add_storage_constraints!(
                 ("min_storage_level", row.rep_period),
                 row.timesteps_block,
                 0.0,
-            ) * (
-                graph[row.asset].capacity_storage_energy *
-                graph[row.asset].initial_storage_units[row.year] +
-                (row.asset ∈ Ai[row.year] ? energy_limit[row.year, row.asset] : 0.0)
-            ),
+            ) * accumulated_energy_capacity[row.year, row.asset],
             base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
     ]
@@ -175,11 +154,7 @@ function add_storage_constraints!(
                 "max_storage_level",
                 row.periods_block,
                 1.0,
-            ) * (
-                graph[row.asset].capacity_storage_energy *
-                graph[row.asset].initial_storage_units[row.year] +
-                (row.asset ∈ Ai[row.year] ? energy_limit[row.year, row.asset] : 0.0)
-            ),
+            ) * accumulated_energy_capacity[row.year, row.asset],
             base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.periods_block)]"
         ) for row in eachrow(dataframes[:storage_level_inter_rp])
     ]
@@ -197,11 +172,7 @@ function add_storage_constraints!(
                 "min_storage_level",
                 row.periods_block,
                 0.0,
-            ) * (
-                graph[row.asset].capacity_storage_energy *
-                graph[row.asset].initial_storage_units[row.year] +
-                (row.asset ∈ Ai[row.year] ? energy_limit[row.year, row.asset] : 0.0)
-            ),
+            ) * accumulated_energy_capacity[row.year, row.asset],
             base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.periods_block)]"
         ) for row in eachrow(dataframes[:storage_level_inter_rp])
     ]
