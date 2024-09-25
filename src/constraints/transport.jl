@@ -6,7 +6,16 @@ add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_investment)
 Adds the transport flow constraints to the model.
 """
 
-function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_investment)
+function add_transport_constraints!(
+    model,
+    graph,
+    df_flows,
+    flow,
+    Ft,
+    accumulated_flows_export_units,
+    accumulated_flows_import_units,
+    flows_investment,
+)
 
     ## Expressions used by transport flow constraints
     # - Create upper limit of transport flow
@@ -24,10 +33,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                     1.0,
                 ) *
                 graph[row.from, row.to].capacity *
-                (
-                    graph[row.from, row.to].initial_export_units[row.year] +
-                    flows_investment[row.year, (row.from, row.to)]
-                )
+                accumulated_flows_export_units[row.year, (row.from, row.to)]
             )
         else
             @expression(
@@ -62,10 +68,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
                     1.0,
                 ) *
                 graph[row.from, row.to].capacity *
-                (
-                    graph[row.from, row.to].initial_import_units[row.year] +
-                    flows_investment[row.year, (row.from, row.to)]
-                )
+                accumulated_flows_import_units[row.year, (row.from, row.to)]
             )
         else
             @expression(
@@ -86,7 +89,7 @@ function add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_inve
     ]
 
     ## Constraints that define bounds for a transport flow Ft
-    df = filter([:from, :to, :year] => (from, to, y) -> (from, to) ∈ Ft[y], df_flows; view = true)
+    df = filter([:from, :to, :year] => (from, to, y) -> (from, to) ∈ Ft, df_flows; view = true)
 
     # - Max transport flow limit
     model[:max_transport_flow_limit] = [
