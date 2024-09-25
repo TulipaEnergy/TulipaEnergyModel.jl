@@ -1018,16 +1018,50 @@ function create_model(
             accumulated_initial_units[a in A, y in Y],
             sum(values(graph[a].initial_units[y]))
         )
-        @expression(
+
+        ### Expressions for multi-year investment simple method
+        accumulated_investment_units_using_simple_method = @expression(
             model,
-            accumulated_units_simple_method[y ∈ Y, a ∈ decommissionable_assets_using_simple_method],
-            accumulated_initial_units[a, y] + sum(
+            accumulated_investment_units_using_simple_method[
+                a ∈ decommissionable_assets_using_simple_method,
+                y in Y,
+            ],
+            sum(
                 assets_investment[yy, a] for
                 yy in Y if a ∈ investable_assets_using_simple_method[yy] &&
                 starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
-            ) - sum(
+            )
+        )
+        accumulated_decommission_units_using_simple_method = @expression(
+            model,
+            accumulated_decommission_units_using_simple_method[
+                a ∈ decommissionable_assets_using_simple_method,
+                y in Y,
+            ],
+            sum(
                 assets_decommission_simple_method[yy, a] for
                 yy in Y if starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
+            )
+        )
+        @expression(
+            model,
+            accumulated_units_simple_method[a ∈ decommissionable_assets_using_simple_method, y ∈ Y],
+            accumulated_initial_units[a, y] +
+            accumulated_investment_units_using_simple_method[a, y] -
+            accumulated_decommission_units_using_simple_method[a, y]
+        )
+
+        ### Expressions for multi-year investment compact method
+        accumulated_decommission_units_using_compact_method = @expression(
+            model,
+            accumulated_decommission_units_using_compact_method[(
+                a,
+                y,
+                v,
+            ) in accumulated_set_using_compact_method],
+            sum(
+                assets_decommission_compact_method[(a, yy, v)] for
+                yy in Y if v ≤ yy ≤ y && (a, yy, v) in decommission_set_using_compact_method
             )
         )
         cond1(a, y, v) = a in existing_assets_by_year_using_compact_method[v]
@@ -1037,40 +1071,34 @@ function create_model(
                 if cond1(a, y, v) && cond2(a, y, v)
                     @expression(
                         model,
-                        graph[a].initial_units[y][v] + assets_investment[v, a] - sum(
-                            assets_decommission_compact_method[(a, yy, v)] for yy in Y if
-                            v ≤ yy ≤ y && (a, yy, v) in decommission_set_using_compact_method
-                        )
+                        graph[a].initial_units[y][v] + assets_investment[v, a] -
+                        accumulated_decommission_units_using_compact_method[(a, y, v)]
                     )
                 elseif cond1(a, y, v) && !cond2(a, y, v)
                     @expression(
                         model,
-                        graph[a].initial_units[y][v] - sum(
-                            assets_decommission_compact_method[(a, yy, v)] for yy in Y if
-                            v ≤ yy ≤ y && (a, yy, v) in decommission_set_using_compact_method
-                        )
+                        graph[a].initial_units[y][v] -
+                        accumulated_decommission_units_using_compact_method[(a, y, v)]
                     )
                 elseif !cond1(a, y, v) && cond2(a, y, v)
                     @expression(
                         model,
-                        assets_investment[v, a] - sum(
-                            assets_decommission_compact_method[(a, yy, v)] for yy in Y if
-                            v ≤ yy ≤ y && (a, yy, v) in decommission_set_using_compact_method
-                        )
+                        assets_investment[v, a] -
+                        accumulated_decommission_units_using_compact_method[(a, y, v)]
                     )
                 else
                     @expression(model, 0.0)
                 end for (a, y, v) in accumulated_set_using_compact_method
             ]
 
-        # Create a lookup set for accumulated units
+        ### Expressions for multi-year investment for accumulated units no matter the method
         accumulated_units_lookup =
             Dict((a, y) => idx for (idx, (a, y)) in enumerate((aa, yy) for aa in A for yy in Y))
 
         accumulated_units =
             model[:accumulated_units] = JuMP.AffExpr[
                 if a in decommissionable_assets_using_simple_method
-                    @expression(model, accumulated_units_simple_method[y, a])
+                    @expression(model, accumulated_units_simple_method[a, y])
                 elseif a in decommissionable_assets_using_compact_method
                     @expression(
                         model,
@@ -1119,7 +1147,10 @@ function create_model(
                     if a ∈ Ai[y] ∩ decommissionable_assets_using_simple_method
                         graph[a].energy_to_power_ratio[y] *
                         graph[a].capacity *
-                        (accumulated_units_simple_method[y, a] - accumulated_initial_units[a, y])
+                        (
+                            accumulated_investment_units_using_simple_method[a, y] -
+                            accumulated_decommission_units_using_simple_method[a, y]
+                        )
                     else
                         0.0
                     end
@@ -1178,7 +1209,7 @@ function create_model(
         assets_fixed_cost = @expression(
             model,
             sum(
-                graph[a].fixed_cost[y] * graph[a].capacity * accumulated_units_simple_method[y, a] for y in Y for
+                graph[a].fixed_cost[y] * graph[a].capacity * accumulated_units_simple_method[a, y] for y in Y for
                 a in decommissionable_assets_using_simple_method
             ) + sum(
                 graph[a].fixed_cost[v] * graph[a].capacity * accm for (accm, (a, y, v)) in
