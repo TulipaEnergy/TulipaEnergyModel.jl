@@ -9,7 +9,7 @@ G_imports,Midgard_CCGT,true,2030,2030,false,false,false,0.0015,0,0.1,0,0,0,1
 G_imports,Valhalla_GT,true,2030,2030,false,false,false,0.0015,0,0.1,0,0,0,1
 G_imports,Valhalla_H2_generator,true,2030,2030,false,false,false,0.0015,0,0.1,0,0,0,1
 Asgard_E_demand,Midgard_E_demand,true,2030,2030,true,true,true,0,2000,0.1,50000,0,0,1
-Asgard_E_demand,Valhalla_E_balance,true,2030,2030,true,true,false,0,5000,0.1,,1000,1000,1
+Asgard_E_demand,Valhalla_E_balance,true,2030,2030,true,true,false,0,5000,0.1,,1,1,1
 Midgard_E_demand,Valhalla_E_balance,true,2030,2030,true,true,true,0,3500,0.1,,0,0,1
 Midgard_Wind,Midgard_E_demand,true,2030,2030,false,false,false,0.002,0,0.1,0,0,0,0
 Midgard_Nuclear_SMR,Midgard_E_demand,true,2030,2030,false,false,false,0.015,0,0.1,0,0,0,1
