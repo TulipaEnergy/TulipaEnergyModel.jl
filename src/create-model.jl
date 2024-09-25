@@ -1032,7 +1032,7 @@ function create_model(
                 starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
             )
         )
-       @expression(
+        @expression(
             model,
             accumulated_decommission_units_using_simple_method[
                 a ∈ decommissionable_assets_using_simple_method,
