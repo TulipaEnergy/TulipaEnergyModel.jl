@@ -20,6 +20,7 @@ function add_capacity_constraints!(
     accumulated_set_using_compact_method_lookup,
     Asb,
     accumulated_initial_units,
+    accumulated_investment_units_using_simple_method,
     accumulated_units,
     accumulated_units_compact_method,
     accumulated_set_using_compact_method,
@@ -124,8 +125,8 @@ function add_capacity_constraints!(
                         1.0,
                     ) * (
                         graph[row.asset].capacity * (
-                            accumulated_units[accumulated_units_lookup[(row.asset, row.year)]] -
-                            accumulated_initial_units[row.asset, row.year] * row.is_charging
+                            accumulated_initial_units[row.asset, row.year] * (1 - row.is_charging) +
+                            accumulated_investment_units_using_simple_method[row.asset, row.year]
                         )
                     )
                 )
@@ -205,8 +206,8 @@ function add_capacity_constraints!(
                         1.0,
                     ) * (
                         graph[row.asset].capacity * (
-                            accumulated_units[accumulated_units_lookup[(row.asset, row.year)]] -
-                            accumulated_initial_units[row.asset, row.year] * (1 - row.is_charging)
+                            accumulated_initial_units[row.asset, row.year] * row.is_charging +
+                            accumulated_investment_units_using_simple_method[row.asset, row.year]
                         )
                     )
                 )
@@ -222,7 +223,7 @@ function add_capacity_constraints!(
             assets_profile_times_capacity_out[row.index],
             base_name = "max_output_flows_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:highest_out]) if
-        row.asset ∉ Asb[row.year] && outgoing_flow_highest_out_resolution[row.index] != 0
+        outgoing_flow_highest_out_resolution[row.index] != 0
     ]
 
     # - Maximum input flows limit
@@ -233,7 +234,7 @@ function add_capacity_constraints!(
             assets_profile_times_capacity_in[row.index],
             base_name = "max_input_flows_limit[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:highest_in]) if
-        row.asset ∉ Asb[row.year] && incoming_flow_highest_in_resolution[row.index] != 0
+        incoming_flow_highest_in_resolution[row.index] != 0
     ]
 
     ## Capacity limit constraints (using the highest resolution) for storage assets using binary to avoid charging and discharging at the same time

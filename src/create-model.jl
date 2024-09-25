@@ -1310,6 +1310,7 @@ function create_model(
         accumulated_set_using_compact_method_lookup,
         Asb,
         accumulated_initial_units,
+        accumulated_investment_units_using_simple_method,
         accumulated_units,
         accumulated_units_compact_method,
         accumulated_set_using_compact_method,
