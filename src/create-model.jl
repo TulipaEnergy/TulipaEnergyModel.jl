@@ -663,7 +663,7 @@ function create_model(
             a in decommissionable_assets_using_compact_method
         )
 
-        starting_year_flows =
+        starting_year_flows_using_simple_method =
             Dict((y, (u, v)) => y - graph[u, v].technical_lifetime + 1 for y in Y for (u, v) in Ft)
 
         # Create a subset of decommissionable_assets_using_compact_method: existing assets invested in non-milestone years
@@ -764,7 +764,7 @@ function create_model(
             0 <=
             assets_decommission_compact_method[(a, y, v) in decommission_set_using_compact_method]
         )  #number of decommission asset units [N]
-        @variable(model, 0 ≤ flows_decommission[y in Y, (u, v) in Ft])  #number of decommission flow units [N]
+        @variable(model, 0 ≤ flows_decommission_using_simple_method[y in Y, (u, v) in Ft])  #number of decommission flow units [N]
 
         @variable(model, 0 ≤ assets_investment_energy[y in Y, a in Ase[y]∩Ai[y]])  #number of installed asset units for storage energy [N]
         @variable(
@@ -1124,28 +1124,36 @@ function create_model(
                     @expression(model, sum(values(graph[a].initial_units[y])))
                 end for a in A for y in Y
             ]
-
+        ## Expressions for transport assets
         @expression(
             model,
-            accumulated_flows_export_units[y ∈ Y, (u, v) ∈ Ft],
-            sum(values(graph[u, v].initial_export_units[y])) + sum(
-                flows_investment[yy, (u, v)] for
-                yy in Y if (u, v) ∈ Fi[yy] && starting_year_flows[(y, (u, v))] ≤ yy ≤ y
-            ) - sum(
-                flows_decommission[yy, (u, v)] for
-                yy in Y if starting_year_flows[(y, (u, v))] ≤ yy ≤ y
+            accumulated_investment_units_transport_using_simple_method[y ∈ Y, (u, v) ∈ Ft],
+            sum(
+                flows_investment[yy, (u, v)] for yy in Y if
+                (u, v) ∈ Fi[yy] && starting_year_flows_using_simple_method[(y, (u, v))] ≤ yy ≤ y
             )
         )
         @expression(
             model,
-            accumulated_flows_import_units[y ∈ Y, (u, v) ∈ Ft],
-            sum(values(graph[u, v].initial_import_units[y])) + sum(
-                flows_investment[yy, (u, v)] for
-                yy in Y if (u, v) ∈ Fi[yy] && starting_year_flows[(y, (u, v))] ≤ yy ≤ y
-            ) - sum(
-                flows_decommission[yy, (u, v)] for
-                yy in Y if starting_year_flows[(y, (u, v))] ≤ yy ≤ y
+            accumulated_decommission_units_transport_using_simple_method[y ∈ Y, (u, v) ∈ Ft],
+            sum(
+                flows_decommission_using_simple_method[yy, (u, v)] for
+                yy in Y if starting_year_flows_using_simple_method[(y, (u, v))] ≤ yy ≤ y
             )
+        )
+        @expression(
+            model,
+            accumulated_flows_export_units[y ∈ Y, (u, v) ∈ Ft],
+            sum(values(graph[u, v].initial_export_units[y])) +
+            accumulated_investment_units_transport_using_simple_method[y, (u, v)] -
+            accumulated_decommission_units_transport_using_simple_method[y, (u, v)]
+        )
+        @expression(
+            model,
+            accumulated_flows_import_units[y ∈ Y, (u, v) ∈ Ft],
+            sum(values(graph[u, v].initial_import_units[y])) +
+            accumulated_investment_units_transport_using_simple_method[y, (u, v)] -
+            accumulated_decommission_units_transport_using_simple_method[y, (u, v)]
         )
     end
 
@@ -1278,7 +1286,7 @@ function create_model(
         flows_fixed_cost = @expression(
             model,
             sum(
-                graph[u, v].fixed_cost[y] *
+                graph[u, v].fixed_cost[y] / 2 *
                 graph[u, v].capacity *
                 (
                     accumulated_flows_export_units[y, (u, v)] +

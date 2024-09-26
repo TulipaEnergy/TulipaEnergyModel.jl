@@ -18,9 +18,10 @@ function add_transport_constraints!(
 )
 
     ## Expressions used by transport flow constraints
+
     # - Create upper limit of transport flow
     upper_bound_transport_flow = [
-        if graph[row.from, row.to].investable[row.year]
+        if (row.from, row.to) in Ft
             @expression(
                 model,
                 profile_aggregation(
@@ -35,27 +36,12 @@ function add_transport_constraints!(
                 graph[row.from, row.to].capacity *
                 accumulated_flows_export_units[row.year, (row.from, row.to)]
             )
-        else
-            @expression(
-                model,
-                profile_aggregation(
-                    Statistics.mean,
-                    graph[row.from, row.to].rep_periods_profiles,
-                    row.year,
-                    row.year,
-                    ("availability", row.rep_period),
-                    row.timesteps_block,
-                    1.0,
-                ) *
-                graph[row.from, row.to].capacity *
-                graph[row.from, row.to].initial_export_units[row.year]
-            )
         end for row in eachrow(df_flows)
     ]
 
     # Create lower limit of transport flow
     lower_bound_transport_flow = [
-        if graph[row.from, row.to].investable[row.year]
+        if (row.from, row.to) in Ft
             @expression(
                 model,
                 profile_aggregation(
@@ -70,26 +56,11 @@ function add_transport_constraints!(
                 graph[row.from, row.to].capacity *
                 accumulated_flows_import_units[row.year, (row.from, row.to)]
             )
-        else
-            @expression(
-                model,
-                profile_aggregation(
-                    Statistics.mean,
-                    graph[row.from, row.to].rep_periods_profiles,
-                    row.year,
-                    row.year,
-                    ("availability", row.rep_period),
-                    row.timesteps_block,
-                    1.0,
-                ) *
-                graph[row.from, row.to].capacity *
-                graph[row.from, row.to].initial_import_units[row.year]
-            )
         end for row in eachrow(df_flows)
     ]
 
     ## Constraints that define bounds for a transport flow Ft
-    df = filter([:from, :to, :year] => (from, to, y) -> (from, to) ∈ Ft, df_flows; view = true)
+    df = filter([:from, :to] => (from, to) -> (from, to) ∈ Ft, df_flows; view = true)
 
     # - Max transport flow limit
     model[:max_transport_flow_limit] = [
