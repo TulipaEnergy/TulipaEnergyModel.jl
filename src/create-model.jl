@@ -1161,14 +1161,14 @@ function create_model(
 
     ## Expressions for the objective function
     @timeit to "objective" begin
+        # Calculate the economic parameters
+        discount_rate     = Dict((y, a) => graph[a].discount_rate for y in Y for a in Ai[y])
+        economic_lifetime = Dict((y, a) => graph[a].economic_lifetime for y in Y for a in Ai[y])
+        investment_cost   = Dict((y, a) => graph[a].investment_cost[y] for y in Y for a in Ai[y])
+
         # Create a dict of the annualized cost for asset a invested in year y
-        annualized_cost = Dict(
-            (y, a) =>
-                graph[a].discount_rate / (
-                    (1 + graph[a].discount_rate) *
-                    (1 - 1 / (1 + graph[a].discount_rate)^graph[a].economic_lifetime)
-                ) * graph[a].investment_cost[y] for y in Y for a in Ai[y]
-        )
+        annualized_cost =
+            calculate_annualized_cost(discount_rate, economic_lifetime, investment_cost, Y, Ai)
 
         # Create a dict of the years beyond the last milestone year
         end_of_horizon = maximum(Y)
