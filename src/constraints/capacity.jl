@@ -283,7 +283,7 @@ function add_capacity_constraints!(
 
     # - Lower limit for flows that are not transport assets
     for row in eachrow(df_flows)
-        if !graph[row.from, row.to].is_transport[row.year]
+        if !graph[row.from, row.to].is_transport
             JuMP.set_lower_bound(flow[row.index], 0.0)
         end
     end

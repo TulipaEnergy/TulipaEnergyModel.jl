@@ -199,12 +199,7 @@ function create_internal_structures(connection)
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
-            _get_stuff_year(
-                "flows_data",
-                "is_transport";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
+            row.is_transport,
             _get_stuff_year(
                 "flows_data",
                 "investable";
