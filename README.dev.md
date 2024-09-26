@@ -57,9 +57,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
     julia
     ```
 
-    > **Note**:
-    > `julia` must be part of your environment variables to call it from the
-    > command line.
+    > **Note:** `julia` must be part of your environment variables to call it from the command line.
 
     Then press <kbd>]</kbd> to enter the package mode.
     In the package mode, enter the following:
@@ -101,6 +99,21 @@ After that, clone your fork and add this repository as upstream:
 ```bash
 git clone https://github.com/your-name/TulipaEnergyModel.jl                   # use the fork URL
 git remote add upstream https://github.com/TulipaEnergy/TulipaEnergyModel.jl  # use the original repository URL
+```
+
+Check that your origin and upstream are correct:
+
+```bash
+git remote -v
+```
+
+You should see something similar to:
+![Screenshot of remote names, showing origin and upstream](docs/images/Remotes.png)
+
+If your names are wrong, use this command (with the relevant names) to correct it:
+
+```bash
+git remote set-url [name] [url]
 ```
 
 ### Configuring Git
@@ -157,7 +170,7 @@ Do it once now to make sure that everything works as expected.
 
 Now, you can only commit if all the pre-commit tests pass.
 
-> **Note**:
+> **Note:**
 > On subsequent occasions when you need to run pre-commit in a new shell, you
 > will need to activate the Python virtual environment. If so, do the following:
 >
@@ -207,7 +220,7 @@ Fetch from org remote, fast-forward your local main:
 ```bash
 git switch main
 git fetch --all --prune
-git merge --ff-only origin/main
+git merge --ff-only upstream/main
 ```
 
 > **Warning**:
@@ -215,7 +228,7 @@ git merge --ff-only origin/main
 > your old `main` branch using
 >
 > ```bash
-> git reset --hard origin/main
+> git reset --hard upstream/main
 > ```
 
 ### 2. Create a New Branch
@@ -231,7 +244,7 @@ git switch -c <branch_name>
 -   If there is no associated issue **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update.
 -   If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes.
 
-> **Note**:
+> **Note:**
 > Always branch from `main`, i.e., the main branch of your own fork.
 
 ### 3. Implement the Changes
@@ -282,7 +295,7 @@ repository. Use:
 
 ```bash
 git commit -am "A short but descriptive commit message" # Equivalent to: git commit -a -m "commit msg"
-git push -u myfork <branch_name>
+git push -u origin <branch_name>
 ```
 
 When writing the commit message:
@@ -291,7 +304,7 @@ When writing the commit message:
 -   have informative titles;
 -   if necessary, add a body with details.
 
-> **Note**:
+> **Note:**
 > Try to create "atomic git commits". Read
 > [_The Utopic Git History_](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593)
 > to learn more.
@@ -308,7 +321,7 @@ Do the following steps:
 ```bash
 git switch main                  # switch to the main branch
 git fetch --all --prune          # fetch the updates
-git merge --ff-only origin/main  # merge as a fast-forward
+git merge --ff-only upstream/main  # merge as a fast-forward
 git switch <branch_name>         # switch back to the issue branch
 git rebase main <branch_name>    # rebase it
 ```
@@ -328,7 +341,7 @@ Once the conflicts are resolved, commit and push.
 ```bash
 git status # Another way to show that all conflicts are fixed.
 git rebase --continue
-git push --force myfork <branch_name>
+git push --force origin <branch_name>
 ```
 
 ### 8. Create a Pull Request
@@ -349,7 +362,7 @@ Fill in the pull request details:
 
 ![Screenshot of the pull request information](docs/images/PRInfo.png)
 
-You pull request will apper in the list of pull requests in the
+You pull request will appear in the list of pull requests in the
 TulipaEnergyModel.jl repository, where you can track the review process.
 
 Sometimes reviewers request changes. After pushing any changes,
@@ -373,10 +386,10 @@ docs> dev ..
 docs> update
 ```
 
-**Note:**
-If you intend to rerun the build step, ensure you have the package `Revise`
-installed in your global environment, and run `using Revise` before including
-`make.jl`. Alternatively, close `julia` and reopen it.
+> **Note**:
+> If you intend to rerun the build step, ensure you have the package `Revise`
+> installed in your global environment, and run `using Revise` before including
+> `make.jl`. Alternatively, close `julia` and reopen it.
 
 Then, to build the documentation, run in Julia:
 
@@ -430,9 +443,9 @@ See the file <benchmark/profiling.jl> for an example of profiling code.
 
 When publishing a new version of the model to the Julia Registry, follow this procedure:
 
-**Note**:
-To be able to register, you need to be a member of the organisation TulipaEnergy and have your visibility set to public:
-![Screenshot of public members of TulipaEnergy on GitHub](docs/images/PublicMember.png)
+> **Note:**
+> To be able to register, you need to be a member of the organisation TulipaEnergy and have your visibility set to public:
+> ![Screenshot of public members of TulipaEnergy on GitHub](docs/images/PublicMember.png)
 
 1. Click on the `Project.toml` file on GitHub.
 
