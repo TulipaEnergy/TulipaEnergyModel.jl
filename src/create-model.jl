@@ -626,12 +626,6 @@ function create_model(
         Ah  = filter_graph(graph, A, "hub", :type)
         Acv = filter_graph(graph, A, "conversion", :type)
         Ft  = filter_graph(graph, F, true, :is_transport)
-        # Ft  = Dict(y => filter_graph(graph, F, true, :is_transport, y) for y in Y) # do I need the year index?
-
-        # Ft = filter(!isempty, collect(values(Ft))) |> collect
-        # if !isempty(Ft)
-        #     Ft = Ft[1]
-        # end
 
         # Create subsets of assets by investable
         Ai = Dict(y => filter_graph(graph, A, true, :investable, y) for y in Y)
