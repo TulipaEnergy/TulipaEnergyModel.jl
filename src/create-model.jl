@@ -1337,6 +1337,7 @@ function create_model(
             storage_assets_energy_investment_cost +
             storage_assets_energy_fixed_cost +
             flows_investment_cost +
+            flows_fixed_cost +
             flows_variable_cost +
             units_on_cost
         )
