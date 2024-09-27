@@ -744,13 +744,13 @@ function create_model(
 
         ### Investment variables
         @variable(model, 0 ≤ assets_investment[y in Y, a in Ai[y]])  #number of installed asset units [N]
-        @variable(
-            model,
-            0 ≤ assets_decommission_simple_method[
-                y in Y,
-                a in decommissionable_assets_using_simple_method,
-            ]
-        )  #number of decommission asset units [N]
+        # @variable(
+        #     model,
+        #     0 ≤ assets_decommission_simple_method[
+        #         y in Y,
+        #         a in decommissionable_assets_using_simple_method,
+        #     ]
+        # )  #number of decommission asset units [N]
         @variable(
             model,
             0 <=
@@ -812,11 +812,11 @@ function create_model(
             end
         end
 
-        for y in Y, a in decommissionable_assets_using_simple_method
-            if graph[a].investment_integer[y]
-                JuMP.set_integer(assets_decommission_simple_method[y, a])
-            end
-        end
+        # for y in Y, a in decommissionable_assets_using_simple_method
+        #     if graph[a].investment_integer[y]
+        #         JuMP.set_integer(assets_decommission_simple_method[y, a])
+        #     end
+        # end
 
         for (a, y, v) in decommission_set_using_compact_method
             # We don't do anything with existing units (because it can be integers or non-integers)
@@ -1032,14 +1032,39 @@ function create_model(
                 starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
             )
         )
+
+        # Definitions for decommission simple method
+        condition_domain_assets_decommission_simple_method(a, y) =
+            accumulated_initial_units[a, y] != 0 ||
+            !isempty(accumulated_investment_units_using_simple_method[a, y])
+        domain_assets_decommission_simple_method = [
+            (y, a) for y in Y for a in decommissionable_assets_using_simple_method if
+            condition_domain_assets_decommission_simple_method(a, y)
+        ]
+
+        @variable(
+            model,
+            0 ≤
+            assets_decommission_simple_method[(y, a) in domain_assets_decommission_simple_method]
+        )
+        for (y, a) in domain_assets_decommission_simple_method
+            if graph[a].investment_integer[y]
+                JuMP.set_integer(assets_decommission_simple_method[(y, a)])
+            end
+        end
+
+        domain_accumulated_decommission_units_using_simple_method = [
+            (a, y) for y in Y for a in decommissionable_assets_using_simple_method if
+            (y, a) in domain_assets_decommission_simple_method
+        ]
         @expression(
             model,
-            accumulated_decommission_units_using_simple_method[
-                a ∈ decommissionable_assets_using_simple_method,
-                y in Y,
-            ],
+            accumulated_decommission_units_using_simple_method[(
+                a,
+                y,
+            ) in domain_accumulated_decommission_units_using_simple_method],
             sum(
-                assets_decommission_simple_method[yy, a] for
+                assets_decommission_simple_method[(yy, a)] for
                 yy in Y if starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
             )
         )
@@ -1048,8 +1073,45 @@ function create_model(
             accumulated_units_simple_method[a ∈ decommissionable_assets_using_simple_method, y ∈ Y],
             accumulated_initial_units[a, y] +
             accumulated_investment_units_using_simple_method[a, y] -
-            accumulated_decommission_units_using_simple_method[a, y]
+            if condition_domain_assets_decommission_simple_method(a, y)
+                accumulated_decommission_units_using_simple_method[(a, y)]
+            else
+                0.0
+            end
         )
+        # for y in Y, a in decommissionable_assets_using_simple_method
+        #     @show y, a
+        #     @show condition_domain_assets_decommission_simple_method(a, y)
+        #     if condition_domain_assets_decommission_simple_method(a, y)
+        #         @variable(model, 0 ≤ assets_decommission_simple_method[y, a])
+        #         @show model[:assets_decommission_simple_method]
+        #         if graph[a].investment_integer[y]
+        #             JuMP.set_integer(assets_decommission_simple_method[y, a])
+        #         end
+        #         @expression(
+        #             model,
+        #             accumulated_decommission_units_using_simple_method[a, y],
+        #             sum(
+        #                 assets_decommission_simple_method[yy, a] for
+        #                 yy in Y if starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
+        #             )
+        #         )
+        #         @expression(
+        #             model,
+        #             accumulated_units_simple_method[a, y],
+        #             accumulated_initial_units[a, y] +
+        #             accumulated_investment_units_using_simple_method[a, y] -
+        #             accumulated_decommission_units_using_simple_method[a, y]
+        #         )
+        #     else
+        #         @expression(
+        #             model,
+        #             accumulated_units_simple_method[a, y],
+        #             accumulated_initial_units[a, y] +
+        #             accumulated_investment_units_using_simple_method[a, y]
+        #         )
+        #     end
+        # end
 
         ### Expressions for multi-year investment compact method
         @expression(
@@ -1149,7 +1211,11 @@ function create_model(
                         graph[a].capacity *
                         (
                             accumulated_investment_units_using_simple_method[a, y] -
-                            accumulated_decommission_units_using_simple_method[a, y]
+                            if condition_domain_assets_decommission_simple_method(a, y)
+                                accumulated_decommission_units_using_simple_method[(a, y)]
+                            else
+                                0.0
+                            end
                         )
                     else
                         0.0
