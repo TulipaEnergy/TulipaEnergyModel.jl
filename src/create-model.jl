@@ -668,27 +668,6 @@ function create_model(
                 ] |> unique for y in V_all
         )
 
-        # Create sets of tuples for decommission variables/accumulated capacity of compact method
-        decommission_set_using_compact_method = [
-            (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
-            v in V_all if starting_year_using_compact_method[y, a] ≤ v < y && ((
-                (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v]) || (v in Y)
-            ))
-        ]
-
-        accumulated_set_using_compact_method = [
-            (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
-            v in V_all if starting_year_using_compact_method[y, a] ≤ v ≤ y && ((
-                (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v]) || (v in Y)
-            ))
-        ]
-
-        # Create a lookup set for compact method
-        accumulated_set_using_compact_method_lookup = Dict(
-            (a, y, v) => idx for
-            (idx, (a, y, v)) in enumerate(accumulated_set_using_compact_method)
-        )
-
         # Create subsets of storage assets
         Ase = Dict(y => As ∩ filter_graph(graph, A, true, :storage_method_energy, y) for y in Y)
         Asb = Dict(
@@ -751,11 +730,11 @@ function create_model(
         #         a in decommissionable_assets_using_simple_method,
         #     ]
         # )  #number of decommission asset units [N]
-        @variable(
-            model,
-            0 <=
-            assets_decommission_compact_method[(a, y, v) in decommission_set_using_compact_method]
-        )  #number of decommission asset units [N]
+        # @variable(
+        #     model,
+        #     0 <=
+        #     assets_decommission_compact_method[(a, y, v) in decommission_set_using_compact_method]
+        # )  #number of decommission asset units [N]
 
         @variable(model, 0 ≤ assets_investment_energy[y in Y, a in Ase[y]∩Ai[y]])  #number of installed asset units for storage energy [N]
         @variable(
@@ -818,13 +797,13 @@ function create_model(
         #     end
         # end
 
-        for (a, y, v) in decommission_set_using_compact_method
-            # We don't do anything with existing units (because it can be integers or non-integers)
-            if !(v in V_non_milestone && a in existing_assets_by_year_using_compact_method[y]) &&
-               graph[a].investment_integer[y]
-                JuMP.set_integer(assets_decommission_compact_method[(a, y, v)])
-            end
-        end
+        # for (a, y, v) in decommission_set_using_compact_method
+        #     # We don't do anything with existing units (because it can be integers or non-integers)
+        #     if !(v in V_non_milestone && a in existing_assets_by_year_using_compact_method[y]) &&
+        #        graph[a].investment_integer[y]
+        #         JuMP.set_integer(assets_decommission_compact_method[(a, y, v)])
+        #     end
+        # end
 
         for y in Y, (u, v) in Fi[y]
             if graph[u, v].investment_integer[y]
@@ -1114,6 +1093,53 @@ function create_model(
         # end
 
         ### Expressions for multi-year investment compact method
+
+        # Definitions for decommission compact method
+
+        cond1(a, y, v) = a in existing_assets_by_year_using_compact_method[v]
+        cond2(a, y, v) = v in Y && a in investable_assets_using_compact_method[v]
+
+        # This extra conditions ensures decommission only exists when there is either initial capacity or investments
+        condition_domain_assets_decommission_compact_method(a, y, v) =
+            !cond1(a, y, v) || !cond2(a, y, v)
+
+        # Create sets of tuples for decommission variables/accumulated capacity of compact method
+        decommission_set_using_compact_method = [
+            (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
+            v in V_all if starting_year_using_compact_method[y, a] ≤ v < y &&
+            ((
+                (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v]) || (v in Y)
+            )) &&
+            condition_domain_assets_decommission_compact_method(a, y, v)
+        ]
+
+        accumulated_set_using_compact_method = [
+            (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
+            v in V_all if starting_year_using_compact_method[y, a] ≤ v ≤ y && ((
+                (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v]) || (v in Y)
+            ))
+        ]
+
+        # Create a lookup set for compact method
+        accumulated_set_using_compact_method_lookup = Dict(
+            (a, y, v) => idx for
+            (idx, (a, y, v)) in enumerate(accumulated_set_using_compact_method)
+        )
+
+        @variable(
+            model,
+            0 <=
+            assets_decommission_compact_method[(a, y, v) in decommission_set_using_compact_method]
+        )
+
+        for (a, y, v) in decommission_set_using_compact_method
+            # We don't do anything with existing units (because it can be integers or non-integers)
+            if !(v in V_non_milestone && a in existing_assets_by_year_using_compact_method[y]) &&
+               graph[a].investment_integer[y]
+                JuMP.set_integer(assets_decommission_compact_method[(a, y, v)])
+            end
+        end
+
         @expression(
             model,
             accumulated_decommission_units_using_compact_method[(
@@ -1126,8 +1152,7 @@ function create_model(
                 yy in Y if v ≤ yy ≤ y && (a, yy, v) in decommission_set_using_compact_method
             )
         )
-        cond1(a, y, v) = a in existing_assets_by_year_using_compact_method[v]
-        cond2(a, y, v) = v in Y && a in investable_assets_using_compact_method[v]
+
         accumulated_units_compact_method =
             model[:accumulated_units_compact_method] = JuMP.AffExpr[
                 if cond1(a, y, v) && cond2(a, y, v)
