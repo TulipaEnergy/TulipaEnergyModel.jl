@@ -737,13 +737,13 @@ function create_model(
         # )  #number of decommission asset units [N]
 
         @variable(model, 0 ≤ assets_investment_energy[y in Y, a in Ase[y]∩Ai[y]])  #number of installed asset units for storage energy [N]
-        @variable(
-            model,
-            0 ≤ assets_decommission_energy_simple_method[
-                y in Y,
-                a in Ase[y]∩decommissionable_assets_using_simple_method,
-            ]
-        )  #number of decommission asset energy units [N]
+        # @variable(
+        #     model,
+        #     0 ≤ assets_decommission_energy_simple_method[
+        #         y in Y,
+        #         a in Ase[y]∩decommissionable_assets_using_simple_method,
+        #     ]
+        # )  #number of decommission asset energy units [N]
 
         ### Unit commitment variables
         units_on =
@@ -817,11 +817,11 @@ function create_model(
             end
         end
 
-        for y in Y, a in Ase[y] ∩ decommissionable_assets_using_simple_method
-            if graph[a].investment_integer_storage_energy[y]
-                JuMP.set_integer(assets_decommission_energy_simple_method[y, a])
-            end
-        end
+        # for y in Y, a in Ase[y] ∩ decommissionable_assets_using_simple_method
+        #     if graph[a].investment_integer_storage_energy[y]
+        #         JuMP.set_integer(assets_decommission_energy_simple_method[y, a])
+        #     end
+        # end
 
         ### Binary Charging Variables
         df_is_charging.use_binary_storage_method = [
@@ -1206,19 +1206,62 @@ function create_model(
 
     ## Expressions for storage assets
     @timeit to "add_expressions_for_storage" begin
+        accumulated_initial_storage_units = @expression(
+            model,
+            accumulated_initial_storage_units[
+                y ∈ Y,
+                a ∈ Ase[y]∩decommissionable_assets_using_simple_method,
+            ],
+            sum(values(graph[a].initial_storage_units[y]))
+        )
+
+        ### Expressions for multi-year investment simple method
+        accumulated_investment_storage_units_using_simple_method = @expression(
+            model,
+            accumulated_investment_storage_units_using_simple_method[
+                y ∈ Y,
+                a ∈ Ase[y]∩decommissionable_assets_using_simple_method,
+            ],
+            sum(
+                assets_investment_energy[yy, a] for
+                yy in Y if a ∈ (Ase[yy] ∩ investable_assets_using_simple_method[yy]) &&
+                starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
+            )
+        )
+
+        # Definitions for decommission energy simple method
+        condition_domain_storage_decommission_simple_method(a, y) =
+            accumulated_initial_storage_units[y, a] != 0 ||
+            !isempty(accumulated_investment_storage_units_using_simple_method[y, a])
+        domain_storage_decommission_simple_method = [
+            (y, a) for y in Y for a in Ase[y] ∩ decommissionable_assets_using_simple_method if
+            condition_domain_storage_decommission_simple_method(a, y)
+        ]
+        @variable(
+            model,
+            0 ≤ assets_decommission_energy_simple_method[(
+                y,
+                a,
+            ) in domain_storage_decommission_simple_method]
+        )
+
+        for (y, a) in domain_storage_decommission_simple_method
+            if graph[a].investment_integer_storage_energy[y]
+                JuMP.set_integer(assets_decommission_energy_simple_method[(y, a)])
+            end
+        end
+
         @expression(
             model,
             accumulated_energy_units_simple_method[
                 y ∈ Y,
                 a ∈ Ase[y]∩decommissionable_assets_using_simple_method,
             ],
-            sum(values(graph[a].initial_storage_units[y])) + sum(
-                assets_investment_energy[yy, a] for
-                yy in Y if a ∈ (Ase[yy] ∩ investable_assets_using_simple_method[yy]) &&
+            accumulated_initial_storage_units[y, a] +
+            accumulated_investment_units_using_simple_method[a, y] - sum(
+                assets_decommission_energy_simple_method[(yy, a)] for
+                yy in Y if (yy, a) in domain_storage_decommission_simple_method &&
                 starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
-            ) - sum(
-                assets_decommission_energy_simple_method[yy, a] for
-                yy in Y if a ∈ Ase[yy] && starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
             )
         )
         @expression(
@@ -1236,7 +1279,7 @@ function create_model(
                         graph[a].capacity *
                         (
                             accumulated_investment_units_using_simple_method[a, y] -
-                            if condition_domain_assets_decommission_simple_method(a, y)
+                            if (y, a) in domain_assets_decommission_simple_method
                                 accumulated_decommission_units_using_simple_method[(a, y)]
                             else
                                 0.0
