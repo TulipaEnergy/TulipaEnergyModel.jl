@@ -97,7 +97,7 @@ end
                             investable_assets,
                             )
 
-Calculates the salvage value for each asset, both energy assets and transport assets, in each year using provided AAA.
+Calculates the salvage value for each asset, both energy assets and transport assets.
 
 # Arguments
 - `discount_rate::Dict`: A dictionary where the key is an `asset` or a pair of assets `(asset1, asset2)` for transport assets, and the value is the discount rate.
