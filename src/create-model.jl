@@ -1210,13 +1210,36 @@ function create_model(
             calculate_salvage_value(discount_rate, economic_lifetime, annualized_cost, Y, Ai)
 
         # Create a dict of weights for assets_investment_cost
-        weight_for_investment_discounts = calculate_weight_for_investment_discounts(
+        weight_for_assets_investment_discounts = calculate_weight_for_investment_discounts(
             model_parameters.discount_rate,
             model_parameters.discount_year,
             salvage_value,
             investment_cost,
             Y,
             Ai,
+        )
+
+        # Calculate the economic parameters
+        discount_rate     = Dict((u, v) => graph[u, v].discount_rate for (u, v) in Ft)
+        economic_lifetime = Dict((u, v) => graph[u, v].economic_lifetime for (u, v) in Ft)
+        investment_cost   = Dict((y, (u, v)) => graph[u, v].investment_cost[y] for y in Y for (u, v) in Fi[y])
+
+        # Create a dict of the annualized cost for asset a invested in year y
+        annualized_cost =
+            calculate_annualized_cost(discount_rate, economic_lifetime, investment_cost, Y, Fi)
+
+        # Create a dict of salvage values
+        salvage_value =
+            calculate_salvage_value(discount_rate, economic_lifetime, annualized_cost, Y, Fi)
+
+        # Create a dict of weights for assets_investment_cost
+        weight_for_flows_investment_discounts = calculate_weight_for_investment_discounts(
+            model_parameters.discount_rate,
+            model_parameters.discount_year,
+            salvage_value,
+            investment_cost,
+            Y,
+            Fi,
         )
 
         # Create a dict of intervals for milestone years
@@ -1237,7 +1260,7 @@ function create_model(
         assets_investment_cost = @expression(
             model,
             sum(
-                weight_for_investment_discounts[(y, a)] *
+                weight_for_assets_investment_discounts[(y, a)] *
                 graph[a].investment_cost[y] *
                 graph[a].capacity *
                 assets_investment[y, a] for y in Y for a in Ai[y]
@@ -1264,7 +1287,7 @@ function create_model(
         storage_assets_energy_investment_cost = @expression(
             model,
             sum(
-                weight_for_investment_discounts[(y, a)] *
+                weight_for_assets_investment_discounts[(y, a)] *
                 graph[a].investment_cost_storage_energy[y] *
                 graph[a].capacity_storage_energy *
                 assets_investment_energy[y, a] for y in Y for a in Ase[y] ∩ Ai[y]
@@ -1285,7 +1308,7 @@ function create_model(
         flows_investment_cost = @expression(
             model,
             sum(
-                weight_for_investment_discounts[(y, (u, v))] *
+                weight_for_flows_investment_discounts[(y, (u, v))] *
                 graph[u, v].investment_cost[y] *
                 graph[u, v].capacity *
                 flows_investment[y, (u, v)] for y in Y for (u, v) in Fi[y]
