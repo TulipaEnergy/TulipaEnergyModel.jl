@@ -1,4 +1,4 @@
 from_asset,to_asset,year,InstalUnits,InstalCap_MW
-Asgard_E_demand,Midgard_E_demand,2030,9.0,9000.0
-Asgard_E_demand,Valhalla_E_balance,2030,0.0,0.0
-Midgard_E_demand,Valhalla_E_balance,2030,0.0,0.0
+Asgard_E_demand,Midgard_E_demand,2030,6.0,6000.0
+Asgard_E_demand,Valhalla_E_balance,2030,17.062177920000003,17062.177920000002
+Midgard_E_demand,Valhalla_E_balance,2030,7.0,7000.0
