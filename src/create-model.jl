@@ -1219,6 +1219,21 @@ function create_model(
             Ai,
         )
 
+        # Create a dict of intervals for milestone years
+        intervals_for_milestone_years = create_intervals_for_years(Y)
+
+        # Create a dict of operation discounts only for milestone years
+        operation_discounts_for_milestone_years = Dict(
+            y => 1 / (1 + model_parameters.discount_rate)^(y - model_parameters.discount_year)
+            for y in Y
+        )
+
+        # Create a dict of operation discounts for milestone years including in-between years
+        weight_for_operation_discounts = Dict(
+            y => operation_discounts_for_milestone_years[y] * intervals_for_milestone_years[y]
+            for y in Y
+        )
+
         assets_investment_cost = @expression(
             model,
             sum(
@@ -1232,10 +1247,16 @@ function create_model(
         assets_fixed_cost = @expression(
             model,
             sum(
-                graph[a].fixed_cost[y] * graph[a].capacity * accumulated_units_simple_method[a, y] for y in Y for
+                weight_for_operation_discounts[y] *
+                graph[a].fixed_cost[y] *
+                graph[a].capacity *
+                accumulated_units_simple_method[a, y] for y in Y for
                 a in decommissionable_assets_using_simple_method
             ) + sum(
-                graph[a].fixed_cost[v] * graph[a].capacity * accm for (accm, (a, y, v)) in
+                weight_for_operation_discounts[y] *
+                graph[a].fixed_cost[v] *
+                graph[a].capacity *
+                accm for (accm, (a, y, v)) in
                 zip(accumulated_units_compact_method, accumulated_set_using_compact_method)
             )
         )
@@ -1253,6 +1274,7 @@ function create_model(
         storage_assets_energy_fixed_cost = @expression(
             model,
             sum(
+                weight_for_operation_discounts[y] *
                 graph[a].fixed_cost_storage_energy[y] *
                 graph[a].capacity_storage_energy *
                 accumulated_energy_units_simple_method[y, a] for y in Y for
@@ -1273,28 +1295,13 @@ function create_model(
         flows_fixed_cost = @expression(
             model,
             sum(
-                graph[u, v].fixed_cost[y] / 2 *
+                weight_for_operation_discounts[y] * graph[u, v].fixed_cost[y] / 2 *
                 graph[u, v].capacity *
                 (
                     accumulated_flows_export_units[y, (u, v)] +
                     accumulated_flows_import_units[y, (u, v)]
                 ) for y in Y for (u, v) in Fi[y]
             )
-        )
-
-        # Create a dict of intervals for milestone years
-        intervals_for_milestone_years = create_intervals_for_years(Y)
-
-        # Create a dict of operation discounts only for milestone years
-        operation_discounts_for_milestone_years = Dict(
-            y => 1 / (1 + model_parameters.discount_rate)^(y - model_parameters.discount_year)
-            for y in Y
-        )
-
-        # Create a dict of operation discounts for milestone years including in-between years
-        weight_for_operation_discounts = Dict(
-            y => operation_discounts_for_milestone_years[y] * intervals_for_milestone_years[y]
-            for y in Y
         )
 
         flows_variable_cost = @expression(
