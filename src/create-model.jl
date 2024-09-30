@@ -1338,6 +1338,7 @@ function create_model(
         dataframes,
         df_flows,
         flow,
+        Y,
         Ai,
         decommissionable_assets_using_simple_method,
         decommissionable_assets_using_compact_method,

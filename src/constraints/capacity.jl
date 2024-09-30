@@ -12,6 +12,7 @@ function add_capacity_constraints!(
     dataframes,
     df_flows,
     flow,
+    Y,
     Ai,
     decommissionable_assets_using_simple_method,
     decommissionable_assets_using_compact_method,
@@ -71,6 +72,13 @@ function add_capacity_constraints!(
             end for row in eachrow(dataframes[:highest_out])
         ]
 
+    # - Create accumulated investment limit for the use of binary storage method with investments
+    accumulated_investment_limit = @expression(
+        model,
+        accumulated_investment_limit[y in Y, a in Ai[y]∩Asb[y]],
+        sum(values(graph[a].investment_limit[y]))
+    )
+
     # - Create capacity limit for outgoing flows with binary is_charging for storage assets
     assets_profile_times_capacity_out_with_binary_part1 =
         model[:assets_profile_times_capacity_out_with_binary_part1] = [
@@ -88,7 +96,7 @@ function add_capacity_constraints!(
                     ) *
                     (
                         graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
-                        graph[row.asset].investment_limit[row.year]
+                        accumulated_investment_limit[row.year, row.asset]
                     ) *
                     (1 - row.is_charging)
                 )
@@ -169,7 +177,7 @@ function add_capacity_constraints!(
                     ) *
                     (
                         graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
-                        graph[row.asset].investment_limit[row.year]
+                        accumulated_investment_limit[row.year, row.asset]
                     ) *
                     row.is_charging
                 )
