@@ -625,7 +625,7 @@ function create_model(
         As  = filter_graph(graph, A, "storage", :type)
         Ah  = filter_graph(graph, A, "hub", :type)
         Acv = filter_graph(graph, A, "conversion", :type)
-        Ft  = Dict(y => filter_graph(graph, F, true, :is_transport, y) for y in Y)
+        Ft  = filter_graph(graph, F, true, :is_transport)
 
         # Create subsets of assets by investable
         Ai = Dict(y => filter_graph(graph, A, true, :investable, y) for y in Y)
@@ -657,6 +657,9 @@ function create_model(
             (y, a) => y - graph[a].technical_lifetime + 1 for y in Y for
             a in decommissionable_assets_using_compact_method
         )
+
+        starting_year_flows_using_simple_method =
+            Dict((y, (u, v)) => y - graph[u, v].technical_lifetime + 1 for y in Y for (u, v) in Ft)
 
         # Create a subset of decommissionable_assets_using_compact_method: existing assets invested in non-milestone years
         existing_assets_by_year_using_compact_method = Dict(
@@ -756,6 +759,7 @@ function create_model(
             0 <=
             assets_decommission_compact_method[(a, y, v) in decommission_set_using_compact_method]
         )  #number of decommission asset units [N]
+        @variable(model, 0 ≤ flows_decommission_using_simple_method[y in Y, (u, v) in Ft])  #number of decommission flow units [N]
 
         @variable(model, 0 ≤ assets_investment_energy[y in Y, a in Ase[y]∩Ai[y]])  #number of installed asset units for storage energy [N]
         @variable(
@@ -1115,6 +1119,37 @@ function create_model(
                     @expression(model, sum(values(graph[a].initial_units[y])))
                 end for a in A for y in Y
             ]
+        ## Expressions for transport assets
+        @expression(
+            model,
+            accumulated_investment_units_transport_using_simple_method[y ∈ Y, (u, v) ∈ Ft],
+            sum(
+                flows_investment[yy, (u, v)] for yy in Y if
+                (u, v) ∈ Fi[yy] && starting_year_flows_using_simple_method[(y, (u, v))] ≤ yy ≤ y
+            )
+        )
+        @expression(
+            model,
+            accumulated_decommission_units_transport_using_simple_method[y ∈ Y, (u, v) ∈ Ft],
+            sum(
+                flows_decommission_using_simple_method[yy, (u, v)] for
+                yy in Y if starting_year_flows_using_simple_method[(y, (u, v))] ≤ yy ≤ y
+            )
+        )
+        @expression(
+            model,
+            accumulated_flows_export_units[y ∈ Y, (u, v) ∈ Ft],
+            sum(values(graph[u, v].initial_export_units[y])) +
+            accumulated_investment_units_transport_using_simple_method[y, (u, v)] -
+            accumulated_decommission_units_transport_using_simple_method[y, (u, v)]
+        )
+        @expression(
+            model,
+            accumulated_flows_import_units[y ∈ Y, (u, v) ∈ Ft],
+            sum(values(graph[u, v].initial_import_units[y])) +
+            accumulated_investment_units_transport_using_simple_method[y, (u, v)] -
+            accumulated_decommission_units_transport_using_simple_method[y, (u, v)]
+        )
     end
 
     ## Expressions for storage assets
@@ -1243,6 +1278,18 @@ function create_model(
             )
         )
 
+        flows_fixed_cost = @expression(
+            model,
+            sum(
+                graph[u, v].fixed_cost[y] / 2 *
+                graph[u, v].capacity *
+                (
+                    accumulated_flows_export_units[y, (u, v)] +
+                    accumulated_flows_import_units[y, (u, v)]
+                ) for y in Y for (u, v) in Fi[y]
+            )
+        )
+
         # Create a dict of intervals for milestone years
         intervals_for_milestone_years = create_intervals_for_years(Y)
 
@@ -1290,6 +1337,7 @@ function create_model(
             storage_assets_energy_investment_cost +
             storage_assets_energy_fixed_cost +
             flows_investment_cost +
+            flows_fixed_cost +
             flows_variable_cost +
             units_on_cost
         )
@@ -1367,6 +1415,8 @@ function create_model(
         df_flows,
         flow,
         Ft,
+        accumulated_flows_export_units,
+        accumulated_flows_import_units,
         flows_investment,
     )
 

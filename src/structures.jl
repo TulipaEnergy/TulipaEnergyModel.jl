@@ -202,7 +202,7 @@ Structure to hold the flow data in the graph.
 mutable struct GraphFlowData
     carrier::String
     active::Dict{Int,Bool}
-    is_transport::Dict{Int,Bool}
+    is_transport::Bool
     investable::Dict{Int,Bool}
     investment_integer::Dict{Int,Bool}
     technical_lifetime::Float64
