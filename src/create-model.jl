@@ -1196,39 +1196,27 @@ function create_model(
 
     ## Expressions for the objective function
     @timeit to "objective" begin
-        # Create a dict of the annualized cost for asset a invested in year y
-        annualized_cost = Dict(
-            (y, a) =>
-                graph[a].discount_rate / (
-                    (1 + graph[a].discount_rate) *
-                    (1 - 1 / (1 + graph[a].discount_rate)^graph[a].economic_lifetime)
-                ) * graph[a].investment_cost[y] for y in Y for a in Ai[y]
-        )
+        # Calculate the economic parameters
+        discount_rate     = Dict(a => graph[a].discount_rate for a in A)
+        economic_lifetime = Dict(a => graph[a].economic_lifetime for a in A)
+        investment_cost   = Dict((y, a) => graph[a].investment_cost[y] for y in Y for a in Ai[y])
 
-        # Create a dict of the years beyond the last milestone year
-        end_of_horizon = maximum(Y)
-        salvage_value_set = Dict(
-            (y, a) => collect(end_of_horizon+1:y+graph[a].economic_lifetime-1) for y in Y for
-            a in Ai[y] if y + graph[a].economic_lifetime - 1 ≥ end_of_horizon + 1
-        )
+        # Create a dict of the annualized cost for asset a invested in year y
+        annualized_cost =
+            calculate_annualized_cost(discount_rate, economic_lifetime, investment_cost, Y, Ai)
 
         # Create a dict of salvage values
-        salvage_value = Dict(
-            (y, a) => if (y, a) in keys(salvage_value_set)
-                annualized_cost[(y, a)] * sum(
-                    1 / (1 + graph[a].discount_rate)^(yy - y) for yy in salvage_value_set[(y, a)]
-                )
-            else
-                0
-            end for y in Y for a in Ai[y]
-        )
+        salvage_value =
+            calculate_salvage_value(discount_rate, economic_lifetime, annualized_cost, Y, Ai)
 
         # Create a dict of weights for assets_investment_cost
-        weight_for_investment_discounts = Dict(
-            (y, a) =>
-                1 / (1 + model_parameters.discount_rate)^(y - model_parameters.discount_year) *
-                (1 - salvage_value[(y, a)] / graph[a].investment_cost[y]) for y in Y for
-            a in Ai[y]
+        weight_for_investment_discounts = calculate_weight_for_investment_discounts(
+            model_parameters.discount_rate,
+            model_parameters.discount_year,
+            salvage_value,
+            investment_cost,
+            Y,
+            Ai,
         )
 
         assets_investment_cost = @expression(
