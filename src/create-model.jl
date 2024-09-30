@@ -1175,11 +1175,13 @@ function create_model(
             calculate_salvage_value(discount_rate, economic_lifetime, annualized_cost, Y, Ai)
 
         # Create a dict of weights for assets_investment_cost
-        weight_for_investment_discounts = Dict(
-            (y, a) =>
-                1 / (1 + model_parameters.discount_rate)^(y - model_parameters.discount_year) *
-                (1 - salvage_value[(y, a)] / graph[a].investment_cost[y]) for y in Y for
-            a in Ai[y]
+        weight_for_investment_discounts = calculate_weight_for_investment_discounts(
+            model_parameters.discount_rate,
+            model_parameters.discount_year,
+            salvage_value,
+            investment_cost,
+            Y,
+            Ai,
         )
 
         assets_investment_cost = @expression(
