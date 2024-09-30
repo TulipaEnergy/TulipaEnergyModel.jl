@@ -1196,87 +1196,13 @@ function create_model(
 
     ## Expressions for the objective function
     @timeit to "objective" begin
-        # Calculate the economic parameters
-        discount_rate     = Dict(a => graph[a].discount_rate for a in A)
-        economic_lifetime = Dict(a => graph[a].economic_lifetime for a in A)
-        investment_cost   = Dict((y, a) => graph[a].investment_cost[y] for y in Y for a in Ai[y])
+        # Create a dict of weights for assets investment discounts
+        weight_for_assets_investment_discounts =
+            calculate_weight_for_investment_discounts(graph, Y, Ai, A, model_parameters)
 
-        # Create a dict of the annualized cost for asset a invested in year y
-        annualized_cost =
-            calculate_annualized_cost(discount_rate, economic_lifetime, investment_cost, Y, Ai)
-
-        # Create a dict of salvage values
-        salvage_value =
-            calculate_salvage_value(discount_rate, economic_lifetime, annualized_cost, Y, Ai)
-
-        # Create a dict of weights for assets_investment_cost
-        weight_for_investment_discounts = calculate_weight_for_investment_discounts(
-            model_parameters.discount_rate,
-            model_parameters.discount_year,
-            salvage_value,
-            investment_cost,
-            Y,
-            Ai,
-        )
-
-        assets_investment_cost = @expression(
-            model,
-            sum(
-                weight_for_investment_discounts[(y, a)] *
-                graph[a].investment_cost[y] *
-                graph[a].capacity *
-                assets_investment[y, a] for y in Y for a in Ai[y]
-            )
-        )
-
-        assets_fixed_cost = @expression(
-            model,
-            sum(
-                graph[a].fixed_cost[y] * graph[a].capacity * accumulated_units_simple_method[a, y] for y in Y for
-                a in decommissionable_assets_using_simple_method
-            ) + sum(
-                graph[a].fixed_cost[v] * graph[a].capacity * accm for (accm, (a, y, v)) in
-                zip(accumulated_units_compact_method, accumulated_set_using_compact_method)
-            )
-        )
-
-        storage_assets_energy_investment_cost = @expression(
-            model,
-            sum(
-                graph[a].investment_cost_storage_energy[y] *
-                graph[a].capacity_storage_energy *
-                assets_investment_energy[y, a] for y in Y for a in Ase[y] ∩ Ai[y]
-            )
-        )
-
-        storage_assets_energy_fixed_cost = @expression(
-            model,
-            sum(
-                graph[a].fixed_cost_storage_energy[y] *
-                graph[a].capacity_storage_energy *
-                accumulated_energy_units_simple_method[y, a] for y in Y for
-                a in Ase[y] ∩ decommissionable_assets_using_simple_method
-            )
-        )
-
-        flows_investment_cost = @expression(
-            model,
-            sum(
-                graph[u, v].investment_cost[y] * graph[u, v].capacity * flows_investment[y, (u, v)] for y in Y for (u, v) in Fi[y]
-            )
-        )
-
-        flows_fixed_cost = @expression(
-            model,
-            sum(
-                graph[u, v].fixed_cost[y] / 2 *
-                graph[u, v].capacity *
-                (
-                    accumulated_flows_export_units[y, (u, v)] +
-                    accumulated_flows_import_units[y, (u, v)]
-                ) for y in Y for (u, v) in Fi[y]
-            )
-        )
+        # Create a dict of weights for flows investment discounts
+        weight_for_flows_investment_discounts =
+            calculate_weight_for_investment_discounts(graph, Y, Fi, Ft, model_parameters)
 
         # Create a dict of intervals for milestone years
         intervals_for_milestone_years = create_intervals_for_years(Y)
@@ -1291,6 +1217,76 @@ function create_model(
         weight_for_operation_discounts = Dict(
             y => operation_discounts_for_milestone_years[y] * intervals_for_milestone_years[y]
             for y in Y
+        )
+
+        assets_investment_cost = @expression(
+            model,
+            sum(
+                weight_for_assets_investment_discounts[(y, a)] *
+                graph[a].investment_cost[y] *
+                graph[a].capacity *
+                assets_investment[y, a] for y in Y for a in Ai[y]
+            )
+        )
+
+        assets_fixed_cost = @expression(
+            model,
+            sum(
+                weight_for_operation_discounts[y] *
+                graph[a].fixed_cost[y] *
+                graph[a].capacity *
+                accumulated_units_simple_method[a, y] for y in Y for
+                a in decommissionable_assets_using_simple_method
+            ) + sum(
+                weight_for_operation_discounts[y] *
+                graph[a].fixed_cost[v] *
+                graph[a].capacity *
+                accm for (accm, (a, y, v)) in
+                zip(accumulated_units_compact_method, accumulated_set_using_compact_method)
+            )
+        )
+
+        storage_assets_energy_investment_cost = @expression(
+            model,
+            sum(
+                weight_for_assets_investment_discounts[(y, a)] *
+                graph[a].investment_cost_storage_energy[y] *
+                graph[a].capacity_storage_energy *
+                assets_investment_energy[y, a] for y in Y for a in Ase[y] ∩ Ai[y]
+            )
+        )
+
+        storage_assets_energy_fixed_cost = @expression(
+            model,
+            sum(
+                weight_for_operation_discounts[y] *
+                graph[a].fixed_cost_storage_energy[y] *
+                graph[a].capacity_storage_energy *
+                accumulated_energy_units_simple_method[y, a] for y in Y for
+                a in Ase[y] ∩ decommissionable_assets_using_simple_method
+            )
+        )
+
+        flows_investment_cost = @expression(
+            model,
+            sum(
+                weight_for_flows_investment_discounts[(y, (u, v))] *
+                graph[u, v].investment_cost[y] *
+                graph[u, v].capacity *
+                flows_investment[y, (u, v)] for y in Y for (u, v) in Fi[y]
+            )
+        )
+
+        flows_fixed_cost = @expression(
+            model,
+            sum(
+                weight_for_operation_discounts[y] * graph[u, v].fixed_cost[y] / 2 *
+                graph[u, v].capacity *
+                (
+                    accumulated_flows_export_units[y, (u, v)] +
+                    accumulated_flows_import_units[y, (u, v)]
+                ) for y in Y for (u, v) in Fi[y]
+            )
         )
 
         flows_variable_cost = @expression(
