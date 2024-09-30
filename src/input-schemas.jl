@@ -122,7 +122,6 @@ const schemas = (
             :investable => "BOOLEAN",               # Whether able to invest
             :investment_integer => "BOOLEAN",       # Whether investment is integer or continuous
             :variable_cost => "DOUBLE",             # kEUR/MWh
-            :investment_cost => "DOUBLE",           # kEUR/MW/year
             :investment_limit => "DOUBLE",          # MW
             :initial_export_units => "DOUBLE",   # MW
             :initial_import_units => "DOUBLE",   # MW
