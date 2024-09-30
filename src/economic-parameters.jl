@@ -331,3 +331,66 @@ function calculate_weight_for_investment_discounts(
     )
     return weight_for_investment_discounts
 end
+
+"""
+    calculate_weight_for_investment_discounts(graph::MetaGraph,
+                                              years,
+                                              investable_assets,
+                                              assets,
+                                              model_parameters,
+                                             )
+
+Calculates the weight for investment discounts for each asset, both energy assets and transport assets.
+Internally calls [`calculate_annualized_cost`](@ref), [`calculate_salvage_value`](@ref), [`calculate_weight_for_investment_discounts`](@ref).
+
+# Arguments
+- `graph::MetaGraph`: A graph
+- `years::Array`: An array of years to be considered.
+- `investable_assets::Dict`: A dictionary where the key is a year, and the value is an array of assets that are relevant for that year.
+- `assets::Array`: An array of assets.
+- `model_parameters::ModelParameters`: A model parameters structure.
+
+# Returns
+- A `Dict` where the keys are tuples `(year, asset)` representing the year and the asset, and the values are the weights for investment discounts.
+"""
+function calculate_weight_for_investment_discounts(
+    graph::MetaGraph,
+    years,
+    investable_assets,
+    assets,
+    model_parameters,
+)
+
+    # Calculate the economic parameters
+    discount_rate     = Dict(asset => get_graph_value_or_missing(graph, asset, :discount_rate) for asset in assets)
+    economic_lifetime = Dict(asset => get_graph_value_or_missing(graph, asset, :economic_lifetime) for asset in assets)
+    investment_cost   = Dict((year, asset) => get_graph_value_or_missing(graph, asset, :investment_cost, year) for year in years for asset in investable_assets[year])
+
+    # Create a dict of the annualized cost for asset invested in year
+    annualized_cost = calculate_annualized_cost(
+        discount_rate,
+        economic_lifetime,
+        investment_cost,
+        years,
+        investable_assets,
+    )
+
+    # Create a dict of salvage values
+    salvage_value = calculate_salvage_value(
+        discount_rate,
+        economic_lifetime,
+        annualized_cost,
+        years,
+        investable_assets,
+    )
+
+    # Return a dict of weights for investment discounts
+    return calculate_weight_for_investment_discounts(
+        model_parameters.discount_rate,
+        model_parameters.discount_year,
+        salvage_value,
+        investment_cost,
+        years,
+        investable_assets,
+    )
+end

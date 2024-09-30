@@ -1196,51 +1196,13 @@ function create_model(
 
     ## Expressions for the objective function
     @timeit to "objective" begin
-        # Calculate the economic parameters
-        discount_rate     = Dict(a => graph[a].discount_rate for a in A)
-        economic_lifetime = Dict(a => graph[a].economic_lifetime for a in A)
-        investment_cost   = Dict((y, a) => graph[a].investment_cost[y] for y in Y for a in Ai[y])
+        # Create a dict of weights for assets investment discounts
+        weight_for_assets_investment_discounts =
+            calculate_weight_for_investment_discounts(graph, Y, Ai, A, model_parameters)
 
-        # Create a dict of the annualized cost for asset a invested in year y
-        annualized_cost =
-            calculate_annualized_cost(discount_rate, economic_lifetime, investment_cost, Y, Ai)
-
-        # Create a dict of salvage values
-        salvage_value =
-            calculate_salvage_value(discount_rate, economic_lifetime, annualized_cost, Y, Ai)
-
-        # Create a dict of weights for assets_investment_cost
-        weight_for_assets_investment_discounts = calculate_weight_for_investment_discounts(
-            model_parameters.discount_rate,
-            model_parameters.discount_year,
-            salvage_value,
-            investment_cost,
-            Y,
-            Ai,
-        )
-
-        # Calculate the economic parameters
-        discount_rate     = Dict((u, v) => graph[u, v].discount_rate for (u, v) in Ft)
-        economic_lifetime = Dict((u, v) => graph[u, v].economic_lifetime for (u, v) in Ft)
-        investment_cost   = Dict((y, (u, v)) => graph[u, v].investment_cost[y] for y in Y for (u, v) in Fi[y])
-
-        # Create a dict of the annualized cost for asset a invested in year y
-        annualized_cost =
-            calculate_annualized_cost(discount_rate, economic_lifetime, investment_cost, Y, Fi)
-
-        # Create a dict of salvage values
-        salvage_value =
-            calculate_salvage_value(discount_rate, economic_lifetime, annualized_cost, Y, Fi)
-
-        # Create a dict of weights for assets_investment_cost
-        weight_for_flows_investment_discounts = calculate_weight_for_investment_discounts(
-            model_parameters.discount_rate,
-            model_parameters.discount_year,
-            salvage_value,
-            investment_cost,
-            Y,
-            Fi,
-        )
+        # Create a dict of weights for flows investment discounts
+        weight_for_flows_investment_discounts =
+            calculate_weight_for_investment_discounts(graph, Y, Fi, Ft, model_parameters)
 
         # Create a dict of intervals for milestone years
         intervals_for_milestone_years = create_intervals_for_years(Y)
