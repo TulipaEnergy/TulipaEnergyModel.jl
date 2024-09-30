@@ -1,17 +1,7 @@
 @testset "calculate_annualized_cost tests" begin
-    discount_rate = Dict(
-        (2021, "asset1") => 0.05,
-        (2021, "asset2") => 0.07,
-        (2022, "asset1") => 0.06,
-        (2022, "asset2") => 0.08,
-    )
+    discount_rate = Dict("asset1" => 0.05, "asset2" => 0.07)
 
-    economic_lifetime = Dict(
-        (2021, "asset1") => 10,
-        (2021, "asset2") => 15,
-        (2022, "asset1") => 12,
-        (2022, "asset2") => 20,
-    )
+    economic_lifetime = Dict("asset1" => 10, "asset2" => 15)
 
     investment_cost = Dict(
         (2021, "asset1") => 1000,
@@ -21,13 +11,12 @@
     )
     years = [2021, 2022]
 
-    investable_assets = Dict(2021 => ["asset1", "asset2"], 2022 => ["asset1", "asset2"])
+    investable_assets = Dict(2021 => ["asset1", "asset2"], 2022 => ["asset1"])
 
     expected_output = Dict(
-        (2022, "asset2") => 150.89216121948235,
-        (2021, "asset1") => 123.33769044329202,
-        (2021, "asset2") => 153.91769817898106,
-        (2022, "asset1") => 123.77804935729239,
+        (2021, "asset1") => 123.3376904,
+        (2021, "asset2") => 153.9176982,
+        (2022, "asset1") => 135.6714595,
     )
 
     result = calculate_annualized_cost(

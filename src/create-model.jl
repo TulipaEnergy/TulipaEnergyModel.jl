@@ -1162,8 +1162,8 @@ function create_model(
     ## Expressions for the objective function
     @timeit to "objective" begin
         # Calculate the economic parameters
-        discount_rate     = Dict((y, a) => graph[a].discount_rate for y in Y for a in Ai[y])
-        economic_lifetime = Dict((y, a) => graph[a].economic_lifetime for y in Y for a in Ai[y])
+        discount_rate     = Dict(a => graph[a].discount_rate for y in Y for a in Ai[y])
+        economic_lifetime = Dict(a => graph[a].economic_lifetime for y in Y for a in Ai[y])
         investment_cost   = Dict((y, a) => graph[a].investment_cost[y] for y in Y for a in Ai[y])
 
         # Create a dict of the annualized cost for asset a invested in year y
