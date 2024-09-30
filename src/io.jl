@@ -142,8 +142,8 @@ function create_internal_structures(connection)
             row.technical_lifetime,
             row.economic_lifetime,
             row.discount_rate,
-            _get_stuff_vintage_year("assets_data", "investment_cost"; name = row.name),
-            _get_stuff_vintage_year("assets_data", "fixed_cost"; name = row.name),
+            _get_stuff_vintage_year("vintage_assets_data", "investment_cost"; name = row.name),
+            _get_stuff_vintage_year("vintage_assets_data", "fixed_cost"; name = row.name),
             _get_stuff_year("assets_data", "investment_limit"; name = row.name),
             row.capacity,
             _get_stuff_commission_year("assets_data", "initial_units"; name = row.name),
@@ -163,11 +163,15 @@ function create_internal_structures(connection)
             _get_stuff_year("assets_data", "energy_to_power_ratio"; name = row.name),
             _get_stuff_year("assets_data", "storage_method_energy"; name = row.name),
             _get_stuff_vintage_year(
-                "assets_data",
+                "vintage_assets_data",
                 "investment_cost_storage_energy";
                 name = row.name,
             ),
-            _get_stuff_vintage_year("assets_data", "fixed_cost_storage_energy"; name = row.name),
+            _get_stuff_vintage_year(
+                "vintage_assets_data",
+                "fixed_cost_storage_energy";
+                name = row.name,
+            ),
             _get_stuff_year("assets_data", "investment_limit_storage_energy"; name = row.name),
             row.capacity_storage_energy,
             _get_stuff_year("assets_data", "investment_integer_storage_energy"; name = row.name),
@@ -223,13 +227,13 @@ function create_internal_structures(connection)
                 to_asset = row.to_asset,
             ),
             _get_stuff_vintage_year(
-                "flows_data",
+                "vintage_flows_data",
                 "investment_cost";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
             ),
             _get_stuff_vintage_year(
-                "flows_data",
+                "vintage_flows_data",
                 "fixed_cost";
                 from_asset = row.from_asset,
                 to_asset = row.to_asset,
