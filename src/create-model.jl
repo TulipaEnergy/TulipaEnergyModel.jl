@@ -1243,6 +1243,7 @@ function create_model(
         storage_assets_energy_investment_cost = @expression(
             model,
             sum(
+                weight_for_investment_discounts[(y, a)] *
                 graph[a].investment_cost_storage_energy[y] *
                 graph[a].capacity_storage_energy *
                 assets_investment_energy[y, a] for y in Y for a in Ase[y] ∩ Ai[y]
@@ -1262,7 +1263,10 @@ function create_model(
         flows_investment_cost = @expression(
             model,
             sum(
-                graph[u, v].investment_cost[y] * graph[u, v].capacity * flows_investment[y, (u, v)] for y in Y for (u, v) in Fi[y]
+                weight_for_investment_discounts[(y, (u, v))] *
+                graph[u, v].investment_cost[y] *
+                graph[u, v].capacity *
+                flows_investment[y, (u, v)] for y in Y for (u, v) in Fi[y]
             )
         )
 
