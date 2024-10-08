@@ -692,7 +692,6 @@ function create_model(
                 cond3_domain_decommission_variables(a, v)
             )
         ]
-        @show decommission_set_using_compact_method
 
         # Create conditions for accumulated units compact method
         # Cond1: asset a invested in year v has to be operational at milestone year y
@@ -709,7 +708,6 @@ function create_model(
                 cond3_domain_decommission_variables(a, v)
             )
         ]
-        @show accumulated_set_using_compact_method
 
         # Create a lookup set for compact method
         accumulated_set_using_compact_method_lookup = Dict(
