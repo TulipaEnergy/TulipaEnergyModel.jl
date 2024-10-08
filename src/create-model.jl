@@ -675,31 +675,41 @@ function create_model(
 
         # Create conditions for decommission variables
         # Cond1: asset a invested in year v has to be operational at milestone year y
-        # Cond2: either invested in non-milestone years (i.e., initial units), or invested in investable milestone years
+        # Cond2: invested in non-milestone years (i.e., initial units from non-milestone years), or
+        # Cond3: invested in investable milestone years, or initial units from milestone years
         cond1_domain_decommission_variables(a, y, v) =
             starting_year_using_compact_method[y, a] ≤ v < y
         cond2_domain_decommission_variables(a, v) =
-            (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v]) ||
-            (v in Y && a in investable_assets_using_compact_method[v])
+            (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v])
+        cond3_domain_decommission_variables(a, v) =
+            v in Y &&
+            (a in investable_assets_using_compact_method[v] || (graph[a].initial_units[v][v] != 0))
 
         decommission_set_using_compact_method = [
             (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
-            v in V_all if cond1_domain_decommission_variables(a, y, v) &&
-            cond2_domain_decommission_variables(a, v)
+            v in V_all if cond1_domain_decommission_variables(a, y, v) && (
+                cond2_domain_decommission_variables(a, v) ||
+                cond3_domain_decommission_variables(a, v)
+            )
         ]
+        @show decommission_set_using_compact_method
 
         # Create conditions for accumulated units compact method
         # Cond1: asset a invested in year v has to be operational at milestone year y
         # Note it is different from cond1_domain_decommission_variables because here, we allow accumulation at the year of investment
         # Cond2: same as cond2_domain_decommission_variables(a, v)
+        # Cond3: same as cond3_domain_decommission_variables(a, v)
         cond1_domain_accumulated_units_using_compact_method(a, y, v) =
             starting_year_using_compact_method[y, a] ≤ v ≤ y
 
         accumulated_set_using_compact_method = [
             (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
-            v in V_all if cond1_domain_accumulated_units_using_compact_method(a, y, v) &&
-            cond2_domain_decommission_variables(a, v)
+            v in V_all if cond1_domain_accumulated_units_using_compact_method(a, y, v) && (
+                cond2_domain_decommission_variables(a, v) ||
+                cond3_domain_decommission_variables(a, v)
+            )
         ]
+        @show accumulated_set_using_compact_method
 
         # Create a lookup set for compact method
         accumulated_set_using_compact_method_lookup = Dict(
