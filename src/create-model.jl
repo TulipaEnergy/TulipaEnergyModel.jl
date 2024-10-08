@@ -672,11 +672,20 @@ function create_model(
         )
 
         # Create sets of tuples for decommission variables/accumulated capacity of compact method
+
+        # Create conditions for decommission variables
+        # Cond1: asset a invested in year v has to be operational at milestone year y
+        # Cond2: either invested in non-milestone years (i.e., initial units), or invested in investable milestone years
+        cond1_domain_decommission_variables(a, y, v) =
+            starting_year_using_compact_method[y, a] ≤ v < y
+        cond2_domain_decommission_variables(a, v) =
+            (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v]) ||
+            (v in Y && a in investable_assets_using_compact_method[v])
+
         decommission_set_using_compact_method = [
             (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
-            v in V_all if starting_year_using_compact_method[y, a] ≤ v < y && ((
-                (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v]) || (v in Y)
-            ))
+            v in V_all if cond1_domain_decommission_variables(a, y, v) &&
+            cond2_domain_decommission_variables(a, v)
         ]
 
         accumulated_set_using_compact_method = [
