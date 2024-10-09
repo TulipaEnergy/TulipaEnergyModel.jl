@@ -1,18 +1,31 @@
-# Pull request details
+<!--
+Thanks for making a pull request to TulipaEnergyModel.jl.
+We have added this PR template to help you help us.
 
-## Describe the changes made in this pull request
+Make sure to read the contributing guidelines.
 
-<!-- include screenshots if that helps the review -->
+See the comments below, fill the required fields, and check the items.
+-->
 
-## List of related issues or pull requests
+## Related issues
 
-Closes #ISSUE_NUMBER
+<!-- We normally work with (i) create issue; (ii) discussion if necessary; (iii) create PR. So, at least one of the following should be true:-->
 
-## Collaboration confirmation
+<!-- Option 1, this closes an existing issue. Fill the number below-->
+Closes #
 
-As a contributor I confirm
+<!-- Option 2, this is a small fix that arguably won't need an issue. Uncomment below -->
+<!--
+There is no related issue.
+-->
 
--   [ ] I read and followed the instructions in README.dev.md
--   [ ] The documentation is up to date with the changes introduced in this Pull Request (or NA)
--   [ ] Tests are passing
--   [ ] Lint is passing
+## Checklist
+
+<!-- mark true if NA -->
+<!-- leave PR as draft until all is checked -->
+
+- [ ] I am following the [contributing guidelines](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/docs/src/90-contributing.md)
+
+- [ ] Tests are passing
+- [ ] Lint workflow is passing
+- [ ] Docs were updated and workflow is passing

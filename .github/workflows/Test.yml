@@ -1,55 +1,33 @@
 name: Test
+
 on:
-    push:
-        branches:
-            - main
-        paths:
-            - "src/**"
-            - "test/**"
-            - "*.toml"
-        tags: ["*"]
-    # These lines were commented out because of issue #133 (run tests faster on PRs)
-    # pull_request:
-    #     paths:
-    #         - "src/**"
-    #         - "test/**"
-    #         - "*.toml"
-concurrency:
-    # Skip intermediate builds: always.
-    # Cancel intermediate builds: only if it is a pull request build.
-    group: ${{ github.workflow }}-${{ github.ref }}
-    cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
-permissions:
-    contents: read
+  push:
+    branches:
+      - main
+    tags: ["*"]
+  workflow_dispatch:
+
 jobs:
-    test:
-        name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
-        runs-on: ${{ matrix.os }}
-        strategy:
-            fail-fast: false
-            matrix:
-                version:
-                    - "1.6"
-                    - "1"
-                os:
-                    - ubuntu-latest
-                    - macos-latest
-                    - windows-latest
-                arch:
-                    - x64
-        steps:
-            - uses: actions/checkout@v3
-            - uses: julia-actions/setup-julia@v1
-              with:
-                  version: ${{ matrix.version }}
-                  arch: ${{ matrix.arch }}
-            - uses: julia-actions/cache@v1
-            - uses: julia-actions/julia-buildpkg@v1
-            - uses: julia-actions/julia-runtest@v1
-            - uses: julia-actions/julia-processcoverage@v1
-              if: matrix.version == '1' && matrix.os == 'ubuntu-latest'
-            - uses: codecov/codecov-action@v4
-              if: matrix.version == '1' && matrix.os == 'ubuntu-latest'
-              with:
-                  files: lcov.info
-                  token: ${{ secrets.CODECOV_TOKEN }} # Defined in the organization secrets
+  test:
+    uses: ./.github/workflows/ReusableTest.yml
+    with:
+      os: ${{ matrix.os }}
+      version: ${{ matrix.version }}
+      arch: ${{ matrix.arch }}
+      allow_failure: ${{ matrix.allow_failure }}
+      run_codecov: ${{ matrix.version == '1' && matrix.os == 'ubuntu-latest' }}
+    secrets:
+      codecov_token: ${{ secrets.CODECOV_TOKEN }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - "lts"
+          - "1"
+        os:
+          - ubuntu-latest
+          - macOS-latest
+          - windows-latest
+        arch:
+          - x64
+        allow_failure: [false]

@@ -325,17 +325,17 @@ The balance constraint sense depends on the method selected in the asset file's 
 
 ### Constraints for Energy Storage Assets
 
-There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0360544219317748).
+There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://doi.org/10.1016/j.energy.2019.116079).
 
 In addition, we define the following expression to determine the energy investment limit of the storage assets. This expression takes two different forms depending on whether the storage asset belongs to the set $\mathcal{A}^{\text{se}}$ or not.
 
--   Investment energy method:
+- Investment energy method:
 
 ```math
 e^{\text{energy inv limit}}_{a} = p^{\text{energy capacity}}_a \cdot v^{\text{inv energy}}_{a} \quad \forall a \in \mathcal{A}^{\text{i}} \cap \mathcal{A}^{\text{se}}
 ```
 
--   Fixed energy-to-power ratio method:
+- Fixed energy-to-power ratio method:
 
 ```math
 e^{\text{energy inv limit}}_{a} = p^{\text{energy to power ratio}}_a \cdot p^{\text{capacity}}_a \cdot v^{\text{inv}}_{a} \quad \forall a \in \mathcal{A}^{\text{i}} \cap (\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}})
@@ -366,7 +366,7 @@ v^{\text{intra-storage}}_{a,k,b_k} \geq p^{\text{min intra level}}_{a,k,b_k} \cd
 
 The cycling constraint for the intra-temporal constraints links the first timestep block ($b^{\text{first}}_k$) and the last one ($b^{\text{last}}_k$) in each representative period. The parameter $p^{\text{init storage level}}_{a}$ determines the considered equations in the model for this constraint:
 
--   If parameter $p^{\text{init storage level}}_{a}$ is not defined, the intra-storage level of the last timestep block ($b^{\text{last}}_k$) is used as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance).
+- If parameter $p^{\text{init storage level}}_{a}$ is not defined, the intra-storage level of the last timestep block ($b^{\text{last}}_k$) is used as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance).
 
 ```math
 \begin{aligned}
@@ -375,7 +375,7 @@ v^{\text{intra-storage}}_{a,k,b^{\text{first}}_k} = v^{\text{intra-storage}}_{a,
 \end{aligned}
 ```
 
--   If parameter $p^{\text{init storage level}}_{a}$ is defined, we use it as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance). In addition, the intra-storage level of the last timestep block ($b^{\text{last}}_k$) in each representative period must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a}$ is defined, we use it as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance). In addition, the intra-storage level of the last timestep block ($b^{\text{last}}_k$) in each representative period must be greater than this initial value.
 
 ```math
 \begin{aligned}
@@ -420,7 +420,7 @@ v^{\text{inter-storage}}_{a,p} \geq p^{\text{min inter level}}_{a,p} \cdot (p^{\
 
 The cycling constraint for the inter-temporal constraints links the first-period block ($p^{\text{first}}$) and the last one ($p^{\text{last}}$) in the timeframe. The parameter $p^{\text{init storage level}}_{a}$ determines the considered equations in the model for this constraint:
 
--   If parameter $p^{\text{init storage level}}_{a}$ is not defined, the inter-storage level of the last period block ($p^{\text{last}}$) is used as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance).
+- If parameter $p^{\text{init storage level}}_{a}$ is not defined, the inter-storage level of the last period block ($p^{\text{last}}$) is used as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance).
 
 ```math
 \begin{aligned}
@@ -431,7 +431,7 @@ v^{\text{inter-storage}}_{a,p^{\text{first}}} = & v^{\text{inter-storage}}_{a,p^
 \end{aligned}
 ```
 
--   If parameter $p^{\text{init storage level}}_{a}$ is defined, we use it as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance). In addition, the inter-storage level of the last period block ($p^{\text{last}}$) in the timeframe must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a}$ is defined, we use it as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance). In addition, the inter-storage level of the last period block ($p^{\text{last}}$) in the timeframe must be greater than this initial value.
 
 ```math
 \begin{aligned}
