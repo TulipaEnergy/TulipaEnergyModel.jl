@@ -27,3 +27,16 @@ Start a discussion [here](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/d
 ```@contents
 Pages = ["index.md","features.md","formulation.md","how-to-use.md","tutorials.md","api.md","reference.md"]
 ```
+
+## Contributors
+
+```@raw html
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+```
