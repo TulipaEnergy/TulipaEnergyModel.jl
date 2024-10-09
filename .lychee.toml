@@ -1,0 +1,9 @@
+exclude = [
+  "@ref",
+  "^https://github.com/.*/releases/tag/v.*$",
+  "^https://code.visualstudio.com$",
+]
+
+exclude_path = [
+  "docs/build"
+]

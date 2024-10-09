@@ -1,0 +1,23 @@
+name: "Epic issue"
+description: Create a new Epic issue to collect smaller issues that are part of a larger feature or goal.
+labels: ["Type: epic"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "Description"
+      description: Please enter an explicit description of the large feature or goal
+    validations:
+      required: true
+  - type: textarea
+    id: issues
+    attributes:
+      label: "Sub issues"
+      description: List all tasks that need to be accomplished and convert them to issues as you work on them
+      value: |
+        - [ ]
+        - [ ]
+        - [ ]
+        ...
+    validations:
+      required: false
