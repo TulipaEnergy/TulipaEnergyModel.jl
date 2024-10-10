@@ -16,14 +16,14 @@ once.
 
 To contribute to TulipaEnergyModel.jl, you need the following:
 
-1.  [Julia](https://julialang.org) programming language.
-2.  [Git](https://git-scm.com) for version control.
-3.  [VSCode](https://code.visualstudio.com) or any other editor. For VSCode, we recommend
+1. [Julia](https://julialang.org) programming language.
+2. [Git](https://git-scm.com) for version control.
+3. [VSCode](https://code.visualstudio.com) or any other editor. For VSCode, we recommend
     to install a few extensions. You can do it by pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> (or <kbd>⇧</kbd> + <kbd>⌘</kbd> + <kbd>X</kbd> on MacOS) and searching by the extension name. - [Julia for Visual Studio Code](https://www.julia-vscode.org); - [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph).
-4.  [EditorConfig](https://editorconfig.org) for consistent code formatting.
+4. [EditorConfig](https://editorconfig.org) for consistent code formatting.
     In VSCode, it is available as
     [an extension](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig).
-5.  [pre-commit](https://pre-commit.com) to run the linters and formatters.
+5. [pre-commit](https://pre-commit.com) to run the linters and formatters.
 
     You can install `pre-commit` globally using
 
@@ -45,9 +45,9 @@ To contribute to TulipaEnergyModel.jl, you need the following:
     env/Scripts/activate
     ```
 
-    Note that there is no leading dot (`. `) in the above command.
+    Note that there is no leading dot (`.`) in the above command.
 
-6.  [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
+6. [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
     formatting.
 
     To install it, open Julia REPL, for example, by typing in the
@@ -71,28 +71,28 @@ To contribute to TulipaEnergyModel.jl, you need the following:
     open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
     Settings", type "Format on Save" and tick the first result:
 
-    ![Screenshot of Format on Save option](docs/images/FormatOnSave.png)
+    ![Screenshot of Format on Save option](./images/FormatOnSave.png)
 
-7.  [Prettier](https://prettier.io/) for markdown formatting.
+7. [Prettier](https://prettier.io/) for markdown formatting.
     In VSCode, it is available as
     [an extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
 
     Having enabled "Format on Save" for `JuliaFormatter` in the previous step will also enable "Format on Save" for `Prettier`, provided that `Prettier` is set as the default formatter for markdown files. To do so, in VSCode, open any markdown file, right-click on any area of the file, choose "Format Document With...", click "Configure Default Formatter..." situated at the bottom of the drop-list list at the top of the screen, and then choose `Prettier - Code formatter` as the default formatter. Once you are done, you can double-check it by again right-clicking on any area of the file and choosing "Format Document With...", and you should see `Prettier - Code formatter (default)`.
 
-8.  [LocalCoverage](https://github.com/JuliaCI/LocalCoverage.jl) for coverage
+8. [LocalCoverage](https://github.com/JuliaCI/LocalCoverage.jl) for coverage
     testing. You can install it the same way you installed `JuliaFormatter`,
     that is, by opening Julia REPL in the package mode and typing:
 
-        ```julia
-        pkg> activate
-        pkg> add LocalCoverage
-        ```
+    ```julia
+    pkg> activate
+    pkg> add LocalCoverage
+    ```
 
 ### Forking the Repository
 
 Any changes should be done in a [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo). You can fork this repository directly on GitHub:
 
-![Screenshot of Fork button on GitHub](docs/images/Fork.png)
+![Screenshot of Fork button on GitHub](./images/Fork.png)
 
 After that, clone your fork and add this repository as upstream:
 
@@ -108,7 +108,7 @@ git remote -v
 ```
 
 You should see something similar to:
-![Screenshot of remote names, showing origin and upstream](docs/images/Remotes.png)
+![Screenshot of remote names, showing origin and upstream](./images/Remotes.png)
 
 If your names are wrong, use this command (with the relevant names) to correct it:
 
@@ -181,18 +181,18 @@ Now, you can only commit if all the pre-commit tests pass.
 
 ## Code format and guidelines
 
-This section will list the guidelines for code formatting **not enforced** by [JuliaFormatter](.JuliaFormatter.toml).
+This section will list the guidelines for code formatting **not enforced** by JuliaFormatter.
 We will try to follow these during development and reviews.
 
--   Naming
-    -   `CamelCase` for classes and modules,
-    -   `snake_case` for functions and variables, and
-    -   `kebab-case` for file names.
--   Use `using` instead of `import`, in the following way:
-    -   Don't use pure `using Package`, always list all necessary objects with `using Package: A, B, C`.
-    -   List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context, or `using Graph: SimpleDiGraph`, because it's a constructor with an obvious name.
-    -   For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `DataFrames.groupby`.
-    -   List all `using` in <src/TulipaEnergyModel.jl>.
+- Naming
+  - `CamelCase` for classes and modules,
+  - `snake_case` for functions and variables, and
+  - `kebab-case` for file names.
+- Use `using` instead of `import`, in the following way:
+  - Don't use pure `using Package`, always list all necessary objects with `using Package: A, B, C`.
+  - List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context, or `using Graph: SimpleDiGraph`, because it's a constructor with an obvious name.
+  - For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `DataFrames.groupby`.
+  - List all `using` in <src/TulipaEnergyModel.jl>.
 
 ## Contributing Workflow
 
@@ -239,10 +239,10 @@ Create a branch to address the issue:
 git switch -c <branch_name>
 ```
 
--   If there is an associated issue, add the issue number to the branch name,
+- If there is an associated issue, add the issue number to the branch name,
     for example, `123-short-description` for issue \#123.
--   If there is no associated issue **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update.
--   If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes.
+- If there is no associated issue **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update.
+- If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes.
 
 > **Note:**
 > Always branch from `main`, i.e., the main branch of your own fork.
@@ -300,9 +300,9 @@ git push -u origin <branch_name>
 
 When writing the commit message:
 
--   use imperative, present tense (Add feature, Fix bug);
--   have informative titles;
--   if necessary, add a body with details.
+- use imperative, present tense (Add feature, Fix bug);
+- have informative titles;
+- if necessary, add a body with details.
 
 > **Note:**
 > Try to create "atomic git commits". Read
@@ -350,7 +350,7 @@ When there are no more conflicts and all the test are passing, create a pull
 request to merge your remote branch into the org main. You can do this on
 GitHub by opening the branch in your fork and clicking "Compare & pull request".
 
-![Screenshot of Compare & pull request button on GitHub](docs/images/CompareAndPR.png)
+![Screenshot of Compare & pull request button on GitHub](./images/CompareAndPR.png)
 
 Fill in the pull request details:
 
@@ -360,7 +360,7 @@ Fill in the pull request details:
 4. (Optional) Choose a reviewer.
 5. When all of the information is filled in, click "Create pull request".
 
-![Screenshot of the pull request information](docs/images/PRInfo.png)
+![Screenshot of the pull request information](./images/PRInfo.png)
 
 You pull request will appear in the list of pull requests in the
 TulipaEnergyModel.jl repository, where you can track the review process.
@@ -376,29 +376,21 @@ For branches that were pushed to the main repo, it is recommended that you do so
 
 ## Building the Documentation Locally
 
-To build and view the documentation locally, first, navigate to the `docs` folder
-in your file explorer and open a terminal. Then, run `julia --project`. With the
-`julia` open, enter the `pkg` mode by pressing `]`.
-Check that the environment name is `docs`. The first time here, you have to run:
-
-```julia-pkg
-docs> dev ..
-docs> update
-```
+Following the latest suggestions, we recommend using `LiveServer` to build the documentation.
 
 > **Note**:
-> If you intend to rerun the build step, ensure you have the package `Revise`
-> installed in your global environment, and run `using Revise` before including
-> `make.jl`. Alternatively, close `julia` and reopen it.
+> Ensure you have the package `Revise` installed in your global environment
+> before running `servedocs`.
 
-Then, to build the documentation, run in Julia:
+Here is how you do it:
 
-```julia
-julia> include("make.jl")
-```
-
-After building, the documentation will be available in the folder `docs/build/`.
-Open the `index.html` file on the browser to see it.
+1. Run `julia --project=docs` in the package root to open Julia in the environment of the docs.
+1. If this is the first time building the docs
+   1. Press `]` to enter `pkg` mode
+   1. Run `pkg> dev .` to use the development version of your package
+   1. Press backspace to leave `pkg` mode
+1. Run `julia> using LiveServer`
+1. Run `julia> servedocs()`
 
 ## Performance Considerations
 
@@ -414,11 +406,11 @@ post the results as a comment in you pull request.
 
 If you want to manually run the benchmarks, you can do the following:
 
--   Navigate to the benchmark folder
--   Run `julia --project=.`
--   Enter `pkg` mode by pressing `]`
--   Run `dev ..` to add the development version of TulipaEnergyModel
--   Now run
+- Navigate to the benchmark folder
+- Run `julia --project=.`
+- Enter `pkg` mode by pressing `]`
+- Run `dev ..` to add the development version of TulipaEnergyModel
+- Now run
 
     ```julia
     include("benchmarks.jl")
@@ -430,12 +422,12 @@ If you want to manually run the benchmarks, you can do the following:
 
 To profile the code in a more manual way, here are some tips:
 
--   Wrap your code into functions.
--   Call the function once to precompile it. This must be done after every change to the function.
--   Prefix the function call with `@time`. This is the most basic timing, part of Julia.
--   Prefix the function call with `@btime`. This is part of the BenchmarkTools package, which you might need to install. `@btime` will evaluate the function a few times to give a better estimate.
--   Prefix the function call with `@benchmark`. Also part of BenchmarkTools. This will produce a nice histogram of the times and give more information. `@btime` and `@benchmark` do the same thing in the background.
--   Call `@profview`. This needs to be done in VSCode, or using the ProfileView package. This will create a flame graph, where each function call is a block. The size of the block is proportional to the aggregate time it takes to run. The blocks below a block are functions called inside the function above.
+- Wrap your code into functions.
+- Call the function once to precompile it. This must be done after every change to the function.
+- Prefix the function call with `@time`. This is the most basic timing, part of Julia.
+- Prefix the function call with `@btime`. This is part of the BenchmarkTools package, which you might need to install. `@btime` will evaluate the function a few times to give a better estimate.
+- Prefix the function call with `@benchmark`. Also part of BenchmarkTools. This will produce a nice histogram of the times and give more information. `@btime` and `@benchmark` do the same thing in the background.
+- Call `@profview`. This needs to be done in VSCode, or using the ProfileView package. This will create a flame graph, where each function call is a block. The size of the block is proportional to the aggregate time it takes to run. The blocks below a block are functions called inside the function above.
 
 See the file <benchmark/profiling.jl> for an example of profiling code.
 
@@ -445,29 +437,29 @@ When publishing a new version of the model to the Julia Registry, follow this pr
 
 > **Note:**
 > To be able to register, you need to be a member of the organisation TulipaEnergy and have your visibility set to public:
-> ![Screenshot of public members of TulipaEnergy on GitHub](docs/images/PublicMember.png)
+> ![Screenshot of public members of TulipaEnergy on GitHub](./images/PublicMember.png)
 
 1. Click on the `Project.toml` file on GitHub.
 
 2. Edit the file and change the version number according to [semantic versioning](https://semver.org/): Major.Minor.Patch
-   ![Screenshot of editing Project.toml on GitHub](docs/images/UpdateVersion.png)
+   ![Screenshot of editing Project.toml on GitHub](./images/UpdateVersion.png)
 
 3. Commit the changes in a new branch and open a pull request. Change the commit message according to the version number.
-   ![Screenshot of PR with commit message "Release 0.6.1"](docs/images/CommitMessage.png)
+   ![Screenshot of PR with commit message "Release 0.6.1"](./images/CommitMessage.png)
 
 4. Create the pull request and squash & merge it after the review and testing process. Delete the branch after the squash and merge.
-   ![Screenshot of full PR template on GitHub](docs/images/PullRequest.png)
+   ![Screenshot of full PR template on GitHub](./images/PullRequest.png)
 
 5. Go to the main page of repo and click in the commit.
-   ![Screenshot of how to access commit on GitHub](docs/images/AccessCommit.png)
+   ![Screenshot of how to access commit on GitHub](./images/AccessCommit.png)
 
 6. Add the following comment to the commit: `@JuliaRegistrator register`
-   ![Screenshot of calling JuliaRegistrator in commit comments](docs/images/JuliaRegistrator.png)
+   ![Screenshot of calling JuliaRegistrator in commit comments](./images/JuliaRegistrator.png)
 
 7. The bot should start the registration process.
-   ![Screenshot of JuliaRegistrator bot message](docs/images/BotProcess.png)
+   ![Screenshot of JuliaRegistrator bot message](./images/BotProcess.png)
 
 8. After approval, the bot will take care of the PR at the Julia Registry and automatically create the release for the new version.
-   ![Screenshot of new version on registry](docs/images/NewRelease.png)
+   ![Screenshot of new version on registry](./images/NewRelease.png)
 
     Thank you for helping make frequent releases!

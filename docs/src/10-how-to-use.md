@@ -15,20 +15,20 @@ Then consider installing a user-friendly code editor, such as [VSCode](https://c
 
 Choose one:
 
--   In VSCode: Press CTRL+Shift+P and press Enter to start a Julia REPL.
--   In the terminal: Type `julia` and press Enter
+- In VSCode: Press CTRL+Shift+P and press Enter to start a Julia REPL.
+- In the terminal: Type `julia` and press Enter
 
 ### Adding TulipaEnergyModel
 
 In Julia:
 
--   Enter package mode (press "]")
+- Enter package mode (press "]")
 
 ```julia-pkg
 pkg> add TulipaEnergyModel
 ```
 
--   Return to Julia mode (backspace)
+- Return to Julia mode (backspace)
 
 ```julia
 julia> using TulipaEnergyModel
@@ -38,7 +38,7 @@ julia> using TulipaEnergyModel
 
 It is nice to check that tests are passing to make sure your environment is working. (This takes a minute or two.)
 
--   Enter package mode (press "]")
+- Enter package mode (press "]")
 
 ```julia-pkg
 pkg> test TulipaEnergyModel
@@ -50,8 +50,8 @@ All tests should pass.
 
 To run a scenario, use the function:
 
--   [`run_scenario(connection)`](@ref)
--   [`run_scenario(connection; output_folder)`](@ref)
+- [`run_scenario(connection)`](@ref)
+- [`run_scenario(connection; output_folder)`](@ref)
 
 The `connection` should have been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl).
 See the [tutorials](@ref tutorials) for a complete guide on how to achieve this.
@@ -88,7 +88,7 @@ This file contains the list of assets and the static data associated with each o
 
 The meaning of `Missing` data depends on the parameter, for instance:
 
--   `group`: No group assigned to the asset.
+- `group`: No group assigned to the asset.
 
 #### [`graph-flows-data.csv`](@id graph-flows-data)
 
@@ -100,15 +100,15 @@ This file contains the yearly data of each asset.
 
 The investment parameters are as follows:
 
--   The `investable` parameter determines whether there is an investment decision for the asset or flow.
--   The `investment_integer` parameter determines if the investment decision is integer or continuous.
--   The `investment_cost` parameter represents the cost in the defined [timeframe](@ref timeframe). Thus, if the timeframe is a year, the investment cost is the annualized cost of the asset.
--   The `investment_limit` parameter limits the total investment capacity of the asset or flow. This limit represents the potential of that particular asset or flow. Without data in this parameter, the model assumes no investment limit.
+- The `investable` parameter determines whether there is an investment decision for the asset or flow.
+- The `investment_integer` parameter determines if the investment decision is integer or continuous.
+- The `investment_cost` parameter represents the cost in the defined [timeframe](@ref timeframe). Thus, if the timeframe is a year, the investment cost is the annualized cost of the asset.
+- The `investment_limit` parameter limits the total investment capacity of the asset or flow. This limit represents the potential of that particular asset or flow. Without data in this parameter, the model assumes no investment limit.
 
 The meaning of `Missing` data depends on the parameter, for instance:
 
--   `investment_limit`: There is no investment limit.
--   `initial_storage_level`: The initial storage level is free (between the storage level limits), meaning that the optimization problem decides the best starting point for the storage asset. In addition, the first and last time blocks in a representative period are linked to create continuity in the storage level.
+- `investment_limit`: There is no investment limit.
+- `initial_storage_level`: The initial storage level is free (between the storage level limits), meaning that the optimization problem decides the best starting point for the storage asset. In addition, the first and last time blocks in a representative period are linked to create continuity in the storage level.
 
 #### [`flows-data.csv`](@id flows-data)
 
@@ -116,7 +116,7 @@ The same as [`assets-data.csv`](@ref assets-data), but for flows. Each flow is d
 
 The meaning of `Missing` data depends on the parameter, for instance:
 
--   `investment_limit`: There is no investment limit.
+- `investment_limit`: There is no investment limit.
 
 #### [`assets-profiles.csv`] (@id assets-profiles-definition)
 
@@ -163,9 +163,9 @@ If not specified, each asset will have the same time resolution as the represent
 There are currently three ways to specify the desired resolution, indicated in the column `specification`.
 The column `partition` serves to define the partitions in the specified style.
 
--   `specification = uniform`: Set the resolution to a uniform amount, i.e., a time block is made of `X` timesteps. The number `X` is defined in the column `partition`. The number of timesteps in the representative period must be divisible by `X`.
--   `specification = explicit`: Set the resolution according to a list of numbers separated by `;` on the `partition`. Each number in the list is the number of timesteps for that time block. For instance, `2;3;4` means that there are three time blocks, the first has 2 timesteps, the second has 3 timesteps, and the last has 4 timesteps. The sum of the list must be equal to the total number of timesteps in that representative period, as specified in `num_timesteps` of [`rep-periods-data.csv`](@ref rep-periods-data).
--   `specification = math`: Similar to explicit, but using `+` and `x` for simplification. The value of `partition` is a sequence of elements of the form `NxT` separated by `+`, indicating `N` time blocks of length `T`. For instance, `2x3+3x6` is 2 time blocks of 3 timesteps, followed by 3 time blocks of 6 timesteps, for a total of 24 timesteps in the representative period.
+- `specification = uniform`: Set the resolution to a uniform amount, i.e., a time block is made of `X` timesteps. The number `X` is defined in the column `partition`. The number of timesteps in the representative period must be divisible by `X`.
+- `specification = explicit`: Set the resolution according to a list of numbers separated by `;` on the `partition`. Each number in the list is the number of timesteps for that time block. For instance, `2;3;4` means that there are three time blocks, the first has 2 timesteps, the second has 3 timesteps, and the last has 4 timesteps. The sum of the list must be equal to the total number of timesteps in that representative period, as specified in `num_timesteps` of [`rep-periods-data.csv`](@ref rep-periods-data).
+- `specification = math`: Similar to explicit, but using `+` and `x` for simplification. The value of `partition` is a sequence of elements of the form `NxT` separated by `+`, indicating `N` time blocks of length `T`. For instance, `2x3+3x6` is 2 time blocks of 3 timesteps, followed by 3 time blocks of 6 timesteps, for a total of 24 timesteps in the representative period.
 
 The table below shows various results for different formats for a representative period with 12 timesteps.
 
@@ -214,26 +214,26 @@ It hides the complexity behind the energy problem, making the usage more friendl
 
 #### Fields
 
--   `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
--   `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
--   `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions](@ref Partition) (vectors of time blocks).
--   `timeframe`: The number of periods in the `representative_periods`.
--   `dataframes`: A Dictionary of dataframes used to linearize the variables and constraints. These are used internally in the model only.
--   `groups`: A vector of [Groups](@ref group).
--   `model`: A JuMP.Model object representing the optimization model.
--   `solution`: A structure of the variable values (investments, flows, etc) in the solution.
--   `solved`: A boolean indicating whether the `model` has been solved or not.
--   `objective_value`: The objective value of the solved problem (Float64).
--   `termination_status`: The termination status of the optimization model.
--   `time_read_data`: Time taken (in seconds) for reading the data (Float64).
--   `time_create_model`: Time taken (in seconds) for creating the model (Float64).
--   `time_solve_model`: Time taken (in seconds) for solving the model (Float64).
+- `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
+- `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
+- `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions](@ref Partition) (vectors of time blocks).
+- `timeframe`: The number of periods in the `representative_periods`.
+- `dataframes`: A Dictionary of dataframes used to linearize the variables and constraints. These are used internally in the model only.
+- `groups`: A vector of [Groups](@ref group).
+- `model`: A JuMP.Model object representing the optimization model.
+- `solution`: A structure of the variable values (investments, flows, etc) in the solution.
+- `solved`: A boolean indicating whether the `model` has been solved or not.
+- `objective_value`: The objective value of the solved problem (Float64).
+- `termination_status`: The termination status of the optimization model.
+- `time_read_data`: Time taken (in seconds) for reading the data (Float64).
+- `time_create_model`: Time taken (in seconds) for creating the model (Float64).
+- `time_solve_model`: Time taken (in seconds) for solving the model (Float64).
 
 #### Constructor
 
 The `EnergyProblem` can also be constructed using the minimal constructor below.
 
--   `EnergyProblem(connection)`: Constructs a new `EnergyProblem` object with the given `connection` that has been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl). The `graph`, `representative_periods`, and `timeframe` are computed using `create_internal_structures`. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
+- `EnergyProblem(connection)`: Constructs a new `EnergyProblem` object with the given `connection` that has been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl). The `graph`, `representative_periods`, and `timeframe` are computed using `create_internal_structures`. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 
@@ -271,16 +271,16 @@ Some variables and constraints are defined over every time block in a partition.
 
 For instance, for a representative period with 12 timesteps, all sets below are partitions:
 
--   $\{\{1, 2, 3\}, \{4, 5, 6\}, \{7, 8, 9\}, \{10, 11, 12\}\}$
--   $\{\{1, 2, 3, 4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}$
--   $\{\{1\}, \{2, 3\}, \{4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}$
+- $\{\{1, 2, 3\}, \{4, 5, 6\}, \{7, 8, 9\}, \{10, 11, 12\}\}$
+- $\{\{1, 2, 3, 4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}$
+- $\{\{1\}, \{2, 3\}, \{4\}, \{5, 6, 7, 8\}, \{9, 10, 11, 12\}\}$
 
 ### [Timeframe](@id timeframe)
 
 The timeframe is the total period we want to analyze with the model. Usually this is a year, but it can be any length of time. A timeframe has two fields:
 
--   `num_periods`: The timeframe is defined by a certain number of periods. For instance, a year can be defined by 365 periods, each describing a day.
--   `map_periods_to_rp`: Indicates the periods of the timeframe that map into a [representative period](@ref representative-periods) and the weight of the representative period to construct that period.
+- `num_periods`: The timeframe is defined by a certain number of periods. For instance, a year can be defined by 365 periods, each describing a day.
+- `map_periods_to_rp`: Indicates the periods of the timeframe that map into a [representative period](@ref representative-periods) and the weight of the representative period to construct that period.
 
 ### [Representative Periods](@id representative-periods)
 
@@ -288,9 +288,9 @@ The [timeframe](@ref timeframe) (e.g., a full year) is described by a selection 
 
 A representative period has three fields:
 
--   `weight`: Indicates how many representative periods are contained in the [timeframe](@ref timeframe); this is inferred automatically from `map_periods_to_rp` in the [timeframe](@ref timeframe).
--   `timesteps`: The number of timesteps blocks in the representative period.
--   `resolution`: The duration in time of each timestep.
+- `weight`: Indicates how many representative periods are contained in the [timeframe](@ref timeframe); this is inferred automatically from `map_periods_to_rp` in the [timeframe](@ref timeframe).
+- `timesteps`: The number of timesteps blocks in the representative period.
+- `resolution`: The duration in time of each timestep.
 
 The number of timesteps and resolution work together to define the coarseness of the period.
 Nothing is defined outside of these timesteps; for instance, if the representative period represents a day and you want to specify a variable or constraint with a coarseness of 30 minutes. You need to define the number of timesteps to 48 and the resolution to `0.5`.
@@ -299,13 +299,13 @@ Nothing is defined outside of these timesteps; for instance, if the representati
 
 The solution object `energy_problem.solution` is a mutable struct with the following fields:
 
--   `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
--   `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
--   `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
--   `storage_level_inter_rp[a, periods_block]`: The storage level for the storage asset `a` between (inter) representative periods in the periods block `periods_block`.
--   `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
--   `objective_value`: A Float64 with the objective value at the solution.
--   `duals`: A Dictionary containing the dual variables of selected constraints.
+- `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
+- `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
+- `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
+- `storage_level_inter_rp[a, periods_block]`: The storage level for the storage asset `a` between (inter) representative periods in the periods block `periods_block`.
+- `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
+- `objective_value`: A Float64 with the objective value at the solution.
+- `duals`: A Dictionary containing the dual variables of selected constraints.
 
 Check the [tutorial](@ref solution-tutorial) for tips on manipulating the solution.
 
@@ -319,10 +319,10 @@ Time blocks are used for the periods in the [timeframe](@ref timeframe) and the 
 
 This structure holds all the information of a given group with the following fields:
 
--   `name`: The name of the group.
--   `invest_method`: Boolean value to indicate whether or not the group has an investment method.
--   `min_investment_limit`: A minimum investment limit in MW is imposed on the total investments of the assets belonging to the group.
--   `max_investment_limit`: A maximum investment limit in MW is imposed on the total investments of the assets belonging to the group.
+- `name`: The name of the group.
+- `invest_method`: Boolean value to indicate whether or not the group has an investment method.
+- `min_investment_limit`: A minimum investment limit in MW is imposed on the total investments of the assets belonging to the group.
+- `max_investment_limit`: A maximum investment limit in MW is imposed on the total investments of the assets belonging to the group.
 
 ## [Exploring infeasibility](@id infeasible)
 
@@ -346,8 +346,8 @@ end
 
 Section [Storage Modeling](@ref storage-modeling) explains the main concepts for modeling seasonal and non-seasonal storage in _TulipaEnergyModel.jl_. To define if an asset is one type or the other then consider the following:
 
--   _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, we recommend using the inter-temporal constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `true` in the [`assets-data.csv`](@ref schemas).
--   _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the intra-temporal constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `false` in the [`assets-data.csv`](@ref schemas).
+- _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, we recommend using the inter-temporal constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `true` in the [`assets-data.csv`](@ref schemas).
+- _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the intra-temporal constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `false` in the [`assets-data.csv`](@ref schemas).
 
 > **Note:**
 > If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
@@ -356,14 +356,14 @@ Section [Storage Modeling](@ref storage-modeling) explains the main concepts for
 
 Energy storage assets have a unique characteristic wherein the investment is based not solely on the capacity to charge and discharge, but also on the energy capacity. Some storage asset types have a fixed duration for a given capacity, which means that there is a predefined ratio between energy and power. For instance, a battery of 10MW/unit and 4h duration implies that the energy capacity is 40MWh. Conversely, other storage asset types don't have a fixed ratio between the investment of capacity and storage capacity. Therefore, the energy capacity can be optimized independently of the capacity investment, such as hydrogen storage in salt caverns. To define if an energy asset is one type or the other then consider the following parameter setting in the file [`assets-data.csv`](@ref schemas):
 
--   _Investment energy method_: To use this method, set the parameter `storage_method_energy` to `true`. In addition, it is necessary to define:
+- _Investment energy method_: To use this method, set the parameter `storage_method_energy` to `true`. In addition, it is necessary to define:
 
-    -   `investment_cost_storage_energy`: To establish the cost of investing in the storage capacity (e.g., kEUR/MWh/unit).
-    -   `fixed_cost_storage_energy`: To establish the fixed cost of energy storage capacity (e.g., kEUR/MWh/unit).
-    -   `investment_limit_storage_energy`: To define the potential of the energy capacity investment (e.g., MWh). `Missing` values mean that there is no limit.
-    -   `investment_integer_storage_energy`: To determine whether the investment variables of storage capacity are integers of continuous.
+  - `investment_cost_storage_energy`: To establish the cost of investing in the storage capacity (e.g., kEUR/MWh/unit).
+  - `fixed_cost_storage_energy`: To establish the fixed cost of energy storage capacity (e.g., kEUR/MWh/unit).
+  - `investment_limit_storage_energy`: To define the potential of the energy capacity investment (e.g., MWh). `Missing` values mean that there is no limit.
+  - `investment_integer_storage_energy`: To determine whether the investment variables of storage capacity are integers of continuous.
 
--   _Fixed energy-to-power ratio method_: To use this method, set the parameter `storage_method_energy` to `false`. In addition, it is necessary to define the parameter `energy_to_power_ratio` to establish the predefined duration of the storage asset or ratio between energy and power. Note that all the investment costs should be allocated in the parameter `investment_cost`.
+- _Fixed energy-to-power ratio method_: To use this method, set the parameter `storage_method_energy` to `false`. In addition, it is necessary to define the parameter `energy_to_power_ratio` to establish the predefined duration of the storage asset or ratio between energy and power. Note that all the investment costs should be allocated in the parameter `investment_cost`.
 
 In addition, the parameter `capacity_storage_energy` in the [`graph-assets-data.csv`](@ref schemas) defines the energy per unit of storage capacity invested in (e.g., MWh/unit).
 
@@ -373,9 +373,9 @@ For more details on the constraints that apply when selecting one method or the 
 
 Depending on the configuration of the energy storage assets, it may or may not be possible to charge and discharge them simultaneously. For instance, a single battery cannot charge and discharge at the same time, but some pumped hydro storage technologies have separate components for charging (pump) and discharging (turbine) that can function independently, allowing them to charge and discharge simultaneously. To account for these differences, the model provides users with three options for the `use_binary_storage_method` parameter in the [`assets-data.csv`](@ref schemas) file:
 
--   `binary`: the model adds a binary variable to prevent charging and discharging simultaneously.
--   `relaxed_binary`: the model adds a binary variable that allows values between 0 and 1, reducing the likelihood of charging and discharging simultaneously. This option uses a tighter set of constraints close to the convex hull of the full formulation, resulting in fewer instances of simultaneous charging and discharging in the results.
--   If no value is set, i.e., `missing` value, the storage asset can charge and discharge simultaneously.
+- `binary`: the model adds a binary variable to prevent charging and discharging simultaneously.
+- `relaxed_binary`: the model adds a binary variable that allows values between 0 and 1, reducing the likelihood of charging and discharging simultaneously. This option uses a tighter set of constraints close to the convex hull of the full formulation, resulting in fewer instances of simultaneous charging and discharging in the results.
+- If no value is set, i.e., `missing` value, the storage asset can charge and discharge simultaneously.
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
@@ -383,10 +383,10 @@ For more details on the constraints that apply when selecting this method, pleas
 
 The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter must be set to `true` to include the constraints in the [`assets-data.csv`](@ref schemas). Additionally, the following parameters should be set in that same file:
 
--   `unit_commitment_method`: It determines which unit commitment method to use. The current version of the code only includes the basic version. Future versions will add more detailed constraints as additional options.
--   `units_on_cost`: Objective function coefficient on `units_on` variable. (e.g., no-load cost or idling cost in kEUR/h/unit)
--   `unit_commitment_integer`: It determines whether the unit commitment variables are considered as integer or not (`true` or `false`)
--   `min_operating_point`: Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset (p.u.)
+- `unit_commitment_method`: It determines which unit commitment method to use. The current version of the code only includes the basic version. Future versions will add more detailed constraints as additional options.
+- `units_on_cost`: Objective function coefficient on `units_on` variable. (e.g., no-load cost or idling cost in kEUR/h/unit)
+- `unit_commitment_integer`: It determines whether the unit commitment variables are considered as integer or not (`true` or `false`)
+- `min_operating_point`: Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset (p.u.)
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
@@ -394,8 +394,8 @@ For more details on the constraints that apply when selecting this method, pleas
 
 The ramping constraints are only applied to producer and conversion assets. The `ramping` parameter must be set to `true` to include the constraints in the [`assets-data.csv`](@ref schemas). Additionally, the following parameters should be set in that same file:
 
--   `max_ramp_up`: Maximum ramping up rate as a portion of the capacity of asset (p.u./h)
--   `max_ramp_down:`Maximum ramping down rate as a portion of the capacity of asset (p.u./h)
+- `max_ramp_up`: Maximum ramping up rate as a portion of the capacity of asset (p.u./h)
+- `max_ramp_down:`Maximum ramping down rate as a portion of the capacity of asset (p.u./h)
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
@@ -403,17 +403,17 @@ For more details on the constraints that apply when selecting this method, pleas
 
 For the model to add constraints for a [maximum or minimum energy limit](@ref inter-temporal-energy-constraints) for an asset throughout the model's timeframe (e.g., a year), we need to establish a couple of parameters:
 
--   `is_seasonal = true` in the [`assets-data.csv`](@ref schemas). This parameter enables the model to use the inter-temporal constraints.
--   `max_energy_timeframe_partition` $\neq$ `missing` or `min_energy_timeframe_partition` $\neq$ `missing` in the [`assets-data.csv`](@ref schemas). This value represents the peak energy that will be then multiplied by the profile for each period in the timeframe.
+- `is_seasonal = true` in the [`assets-data.csv`](@ref schemas). This parameter enables the model to use the inter-temporal constraints.
+- `max_energy_timeframe_partition` $\neq$ `missing` or `min_energy_timeframe_partition` $\neq$ `missing` in the [`assets-data.csv`](@ref schemas). This value represents the peak energy that will be then multiplied by the profile for each period in the timeframe.
     > **Note:**
     > These parameters are defined per period, and the default values for profiles are 1.0 p.u. per period. If the periods are determined daily, the energy limit for the whole year will be 365 times `max`or `min_energy_timeframe_partition`.
--   (optional) `profile_type` and `profile_name` in the [`assets-timeframe-profiles.csv`](@ref schemas) and the profile values in the [`profiles-timeframe.csv`](@ref schemas). If there is no profile defined, then by default it is 1.0 p.u. for all periods in the timeframe.
--   (optional) define a period partition in [`assets-timeframe-partitions.csv`](@ref schemas). If there is no partition defined, then by default the constraint is created for each period in the timeframe, otherwise, it will consider the partition definition in the file.
+- (optional) `profile_type` and `profile_name` in the [`assets-timeframe-profiles.csv`](@ref schemas) and the profile values in the [`profiles-timeframe.csv`](@ref schemas). If there is no profile defined, then by default it is 1.0 p.u. for all periods in the timeframe.
+- (optional) define a period partition in [`assets-timeframe-partitions.csv`](@ref schemas). If there is no partition defined, then by default the constraint is created for each period in the timeframe, otherwise, it will consider the partition definition in the file.
 
 > **Tip:**
 > If you want to set a limit on the maximum or minimum outgoing energy for a year with representative days, you can use the partition definition to create a single partition for the entire year to combine the profile.
 
-#### Example
+### Example: Setting Energy Limits
 
 Let's assume we have a year divided into 365 days because we are using days as periods in the representatives from [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl). Also, we define the `max_energy_timeframe_partition = 10 MWh`, meaning the peak energy we want to have is 10MWh for each period or period partition. So depending on the optional information, we can have:
 
@@ -441,15 +441,15 @@ Groups are useful to represent several common constraints, the following group c
 
 The mathematical formulation of the maximum and minimum investment limit for group constraints is available [here](@ref investment-group-constraints). The parameters to set up these constraints in the model are in the [`groups-data.csv`](@ref schemas) file.
 
--   `invest_method = true`. This parameter enables the model to use the investment group constraints.
--   `min_investment_limit` $\neq$ `missing` or `max_investment_limit` $\neq$ `missing`. This value represents the limits that will be imposed on the investment that belongs to the group.
+- `invest_method = true`. This parameter enables the model to use the investment group constraints.
+- `min_investment_limit` $\neq$ `missing` or `max_investment_limit` $\neq$ `missing`. This value represents the limits that will be imposed on the investment that belongs to the group.
 
     > **Notes:**
     >
     > 1. A missing value in the parameters `min_investment_limit` and `max_investment_limit` means that there is no investment limit.
     > 2. These constraints are applied to the investments each year. The model does not yet have investment limits to a group's accumulated invested capacity.
 
-#### Example
+### Example: Group of Assets
 
 Let's explore how the groups are set up in the test case called [Norse](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Norse). First, let's take a look at the groups-data.csv file:
 
