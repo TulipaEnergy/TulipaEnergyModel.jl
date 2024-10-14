@@ -24,7 +24,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
 1. [Julia](https://julialang.org) programming language.
 2. [Git](https://git-scm.com) for version control.
 3. [VSCode](https://code.visualstudio.com) or any other editor. For VSCode, we recommend
-   to install a few extensions. You can do it by pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> (or <kbd>⇧</kbd> + <kbd>⌘</kbd> + <kbd>X</kbd> on MacOS) and searching by the extension name. - [Julia for Visual Studio Code](https://www.julia-vscode.org); - [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph).
+   to install a few extensions. You can do it by pressing `Ctrl + Shift + X` (or `⇧ + ⌘ + X` on MacOS) and searching by the extension name. - [Julia for Visual Studio Code](https://www.julia-vscode.org); - [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph).
 4. [EditorConfig](https://editorconfig.org) for consistent code formatting.
    In VSCode, it is available as
    [an extension](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig).
