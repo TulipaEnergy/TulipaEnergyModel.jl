@@ -1,14 +1,10 @@
 # Changes here will be overwritten by Copier
 AnswerStrategy: recommended
-Authors: Diego A. Tejada-Arango <diego.tejadaarango@tno.nl>,Germán Morales-España
-    <german.morales@tno.nl>,Lauren Clisby <lauren.clisby@tno.nl>,Ni Wang <ni.wang@tno.nl>,Abel
-    Soares Siqueira <abel.s.siqueira@gmail.com>,Suvayu Ali <s.ali@esciencecenter.nl>,Laurent
-    Soucasse <l.soucasse@esciencecenter.nl>,Greg Neustroev <G.Neustroev@tudelft.nl>
+Authors: Abel Soares Siqueira <abel.s.siqueira@gmail.com>,Diego A. Tejada-Arango <diego.tejadaarango@tno.nl>,Germán Morales-España <german.morales@tno.nl>,Grigory Neustroev <G.Neustroev@tudelft.nl>,Juha Kiviluoma <Juha.Kiviluoma@vtt.fi>,Lauren Clisby <lauren.clisby@tno.nl>,Maikke Elgersma <m.b.elgersma@tudelft.nl>,Ni Wang <ni.wang@tno.nl>,Suvayu Ali <s.ali@esciencecenter.nl>,Zhi Gao <z.gao1@uu.nl>
 JuliaIndentation: 4
 JuliaMinVersion: '1.10'
 License: Apache-2.0
-LicenseCopyrightHolders: Diego A. Tejada-Arango, Germán Morales-España, Lauren Clisby,
-    Ni Wang, Abel Soares Siqueira, Suvayu Ali, Laurent Soucasse, Greg Neustroev
+LicenseCopyrightHolders: Abel Soares Siqueira, Germán Morales-España, Grigory Neustroev, Juha Kiviluoma, Lauren Clisby, Maikke Elgersma, Ni Wang, Suvayu Ali, Zhi Gao
 PackageName: TulipaEnergyModel
 PackageOwner: TulipaEnergy
 PackageUUID: 5d7bd171-d18e-45a5-9111-f1f11ac5d04d
