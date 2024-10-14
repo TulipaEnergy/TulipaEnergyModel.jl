@@ -194,7 +194,7 @@ The same as their [`assets-rep-periods-partitions.csv`](@ref assets-rep-periods-
 using Markdown, TulipaEnergyModel
 
 Markdown.parse(
-    join(["- **$filename**\n" *
+    join(["- **`$filename`**\n" *
         join(
             ["  - `$f: $t`" for (f, t) in schema],
             "\n",
