@@ -1,6 +1,6 @@
 {
   "contributorsSortAlphabetically": true,
-  "files": ["README.md", "docs/src/index.md"]
+  "files": ["README.md", "docs/src/index.md"],
   "projectName": "TulipaEnergyModel",
-  "projectOwner": "TulipaEnergy",
+  "projectOwner": "TulipaEnergy"
 }
