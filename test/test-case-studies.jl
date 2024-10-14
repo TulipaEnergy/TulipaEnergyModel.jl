@@ -76,7 +76,7 @@ end
         connection;
         model_parameters_file = joinpath(@__DIR__, "inputs", "model-parameters-example.toml"),
     )
-    @test energy_problem.objective_value ≈ 1844506.781181 atol = 1e-5
+    @test energy_problem.objective_value ≈ 2318866.768000 atol = 1e-5
 end
 
 @testset "Infeasible Case Study" begin
