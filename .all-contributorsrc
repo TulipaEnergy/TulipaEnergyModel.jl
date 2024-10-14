@@ -78,6 +78,16 @@
         "fundingFinding",
         "projectManagement"
       ]
+    },
+    {
+      "login": "jkiviluo",
+      "name": "Juha Kiviluoma",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40472544?v=4",
+      "profile": "https://cris.vtt.fi/en/persons/juha-kiviluoma",
+      "contributions": [
+        "ideas",
+        "research"
+      ]
     }
   ]
 }
