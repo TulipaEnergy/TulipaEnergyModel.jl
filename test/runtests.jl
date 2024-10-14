@@ -19,6 +19,8 @@ if !isdir(OUTPUT_FOLDER)
     mkdir(OUTPUT_FOLDER)
 end
 
+include("utils.jl")
+
 #=
 Don't add your tests to runtests.jl. Instead, create files named
 

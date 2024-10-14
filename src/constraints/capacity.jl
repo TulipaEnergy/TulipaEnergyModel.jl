@@ -9,6 +9,9 @@ Adds the capacity constraints for all asset types to the model
 function add_capacity_constraints!(
     model,
     graph,
+    Ap,
+    Acv,
+    As,
     dataframes,
     df_flows,
     flow,
@@ -289,9 +292,12 @@ function add_capacity_constraints!(
         incoming_flow_highest_in_resolution[row.index] != 0
     ]
 
-    # - Lower limit for flows that are not transport assets
+    # - Lower limit for flows associated with assets
+    assets_with_non_negative_outgoing_flows = Ap ∪ Acv ∪ As
+    assets_with_non_negative_incoming_flows = Acv ∪ As
     for row in eachrow(df_flows)
-        if !graph[row.from, row.to].is_transport
+        if row.from in assets_with_non_negative_outgoing_flows ||
+           row.to in assets_with_non_negative_incoming_flows
             JuMP.set_lower_bound(flow[row.index], 0.0)
         end
     end

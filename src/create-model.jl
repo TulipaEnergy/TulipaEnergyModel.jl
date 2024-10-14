@@ -1331,6 +1331,9 @@ function create_model(
     @timeit to "add_capacity_constraints!" add_capacity_constraints!(
         model,
         graph,
+        Ap,
+        Acv,
+        As,
         dataframes,
         df_flows,
         flow,
