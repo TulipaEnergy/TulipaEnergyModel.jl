@@ -1,6 +1,6 @@
-# [Contributing guidelines](@id contributing)
+# [Contributing Guidelines](@id contributing)
 
-Great that you want to contribute to the development of Tulipa! Please read these guidelines and our [developer documentation](91-developer.md) to get you started.
+Great that you want to contribute to the development of Tulipa! Please read these guidelines and our [Developer Documentation](@ref developer) to get you started.
 
 ## GitHub Rules of Engagement
 
@@ -25,6 +25,6 @@ Fork → Branch → Code → Push → Pull → Squash & Merge
 5. Create a pull request from your fork to the main repository
 6. (After review) Squash and merge
 
-For a step-by-step guide to these steps, see our [developer documentation](91-developer.md).
+For a step-by-step guide to these steps, see our [Developer Documentation](@ref developer).
 
 We use this workflow in our quest to achieve the [Utopic Git History](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593).

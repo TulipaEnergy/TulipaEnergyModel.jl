@@ -2,6 +2,11 @@
 
 This section shows the mathematical formulation of _TulipaEnergyModel.jl_, assuming that the temporal definition of timesteps is the same for all the elements in the model (e.g., hourly). The [concepts section](@ref concepts) shows how the model handles the [`flexible temporal resolution`](@ref flex-time-res) of assets and flows in the model.
 
+```@contents
+Pages = ["40-formulation.md"]
+Depth = 3
+```
+
 ## [Sets](@id math-sets)
 
 ### Sets for Assets
@@ -66,7 +71,7 @@ In addition, the following subsets represent methods for incorporating additiona
 
 ## [Parameters](@id math-parameters)
 
-### Parameter for Assets
+### Parameters for Assets
 
 #### General Parameters for Assets
 
@@ -120,7 +125,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{max ramp up}}_{a}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}$ | Maximum ramping up rate as a portion of the capacity of asset $a$                                            | [p.u./h]       |
 | $p^{\text{max ramp down}}_{a}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ramp}}}$ | Maximum ramping down rate as a portion of the capacity of asset $a$                                          | [p.u./h]       |
 
-### Parameter for Flows
+### Parameters for Flows
 
 | Name                                        | Domain           | Domains of Indices                                                | Description                                                                                | Units          |
 | ------------------------------------------- | ---------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------- |
@@ -133,7 +138,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{init import capacity}}_{f}$       | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                    | Initial import capacity of transport flow $f$                                              | [MW]           |
 | $p^{\text{availability profile}}_{f,k,b_k}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{F}$, $k \in \mathcal{K}$, $b_k \in \mathcal{B_k}$ | Availability profile of flow $f$ in the representative period $k$ and timestep block $b_k$ | [p.u.]         |
 
-### Parameter for Temporal Structures
+### Parameters for Temporal Structures
 
 | Name                        | Domain           | Domains of Indices                       | Description                                                    | Units |
 | --------------------------- | ---------------- | ---------------------------------------- | -------------------------------------------------------------- | ----- |
@@ -141,7 +146,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{rp weight}}_{k}$  | $\mathbb{R}_{+}$ | $k \in \mathcal{K}$                      | Weight of representative period $k$                            | [-]   |
 | $p^{\text{map}}_{p,k}$      | $\mathbb{R}_{+}$ | $p \in \mathcal{P}$, $k \in \mathcal{K}$ | Map with the weight of representative period $k$ in period $p$ | [-]   |
 
-### Parameter for Groups
+### Parameters for Groups
 
 | Name                              | Domain           | Domains of Indices              | Description                                       | Units |
 | --------------------------------- | ---------------- | ------------------------------- | ------------------------------------------------- | ----- |
@@ -235,7 +240,7 @@ Storage assets using the method to avoid charging and discharging simultaneously
 \end{aligned}
 ```
 
-#### Lower Limit for Flows that are not Transport Assets
+#### Lower Limit for Flows that are Not Transport Assets
 
 ```math
 v^{\text{flow}}_{f,k,b_k} \geq 0 \quad \forall f \notin \mathcal{F}^{\text{t}}, \forall k \in \mathcal{K}, \forall b_k \in \mathcal{B_k}
@@ -254,21 +259,21 @@ e^{\text{flow above min}}_{a,k,b_k} = \sum_{f \in \mathcal{F}^{\text{out}}_a} v^
 \\ \\ \forall a \in \mathcal{A}^{\text{uc}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
-#### Limit to the units on variable
+#### Limit to the Units On Variable
 
 ```math
 v^{\text{on}}_{a,k,b_k} \leq p^{\text{init units}}_{a} + v^{\text{inv}}_{a}  \quad
 \\ \\ \forall a \in \mathcal{A}^{\text{uc}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
-#### Maximum output flow above the minimum operating point
+#### Maximum Output Flow Above the Minimum Operating Point
 
 ```math
 e^{\text{flow above min}}_{a,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(1 - p^{\text{min operating point}}_{a} \right) \cdot v^{\text{on}}_{a,k,b_k}  \quad
 \\ \\ \forall a \in \mathcal{A}^{\text{uc basic}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
-#### Minimum output flow above the minimum operating point
+#### Minimum Output Flow Above the Minimum Operating Point
 
 ```math
 e^{\text{flow above min}}_{a,k,b_k} \geq 0  \quad
@@ -283,28 +288,28 @@ Ramping constraints that take into account unit commitment variables are based o
 
 > **Duration parameter**: The following constraints are multiplied by $p^{\text{duration}}_{b_k}$ on the right-hand side to adjust for the duration of the timesteps since the ramp parameters are defined as rates. This assumption is based on the idea that all timesteps are the same in this section, which simplifies the formulation. However, in a flexible temporal resolution context, this may not hold true, and the duration needs to be the minimum duration of all the outgoing flows at the timestep block $b_k$. For more information, please visit the concept section on flexible time resolution.
 
-#### Maximum ramp-up rate limit with unit commitment method
+#### Maximum Ramp-Up Rate Limit WITH Unit Commitment Method
 
 ```math
 e^{\text{flow above min}}_{a,k,b_k} - e^{\text{flow above min}}_{a,k,b_k-1} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp up}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{on}}_{a,k,b_k}  \quad
 \\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \cap \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
-#### Maximum ramp-down rate limit with unit commitment method
+#### Maximum Ramp-Down Rate Limit WITH Unit Commmitment Method
 
 ```math
 e^{\text{flow above min}}_{a,k,b_k} - e^{\text{flow above min}}_{a,k,b_k-1} \geq - p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp down}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{on}}_{a,k,b_k-1}  \quad
 \\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \cap \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
-#### Maximum ramp-up rate limit without unit commitment method
+#### Maximum Ramp-Up Rate Limit WITHOUT Unit Commitment Method
 
 ```math
 \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \leq p^{\text{max ramp up}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} + v^{\text{inv}}_{a} \right)  \quad
 \\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \setminus \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 ```
 
-#### Maximum ramp-down rate limit without unit commitment method
+#### Maximum Ramp-Down Rate Limit WITHOUT Unit Commitment Method
 
 ```math
 \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \geq - p^{\text{max ramp down}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} + v^{\text{inv}}_{a} \right)  \quad

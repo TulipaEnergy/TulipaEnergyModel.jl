@@ -1,8 +1,8 @@
 # [How to Use](@id how-to-use)
 
 ```@contents
-Pages = ["how-to-use.md"]
-Depth = 5
+Pages = ["10-how-to-use.md"]
+Depth = 3
 ```
 
 ## Install
@@ -59,10 +59,10 @@ The `output_folder` is optional if the user wants to export the output.
 
 ## [Input](@id input)
 
-Currently, we only accept input from CSV files that follow the [Schemas](@ref schemas).
+Currently, we only accept input from [CSV files](@ref csv-files) that follow the [Schemas](@ref schemas).
 You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples.
 
-### CSV
+### [CSV Files](@id csv-files)
 
 Below, we have a description of the files.
 At the end, in [Schemas](@ref schemas), we have the expected columns in these CSVs.
@@ -188,7 +188,7 @@ If a flow is not specified in this file, the flow time resolution will be for ea
 
 The same as their [`assets-rep-periods-partitions.csv`](@ref assets-rep-periods-partitions-definition) counterpart, but for the periods in the [timeframe](@ref timeframe) of the model.
 
-#### [Schemas](@id schemas)
+### [Schemas](@id schemas)
 
 ```@eval
 using Markdown, TulipaEnergyModel
@@ -405,8 +405,8 @@ For the model to add constraints for a [maximum or minimum energy limit](@ref in
 
 - `is_seasonal = true` in the [`assets-data.csv`](@ref schemas). This parameter enables the model to use the inter-temporal constraints.
 - `max_energy_timeframe_partition` $\neq$ `missing` or `min_energy_timeframe_partition` $\neq$ `missing` in the [`assets-data.csv`](@ref schemas). This value represents the peak energy that will be then multiplied by the profile for each period in the timeframe.
-    > **Note:**
-    > These parameters are defined per period, and the default values for profiles are 1.0 p.u. per period. If the periods are determined daily, the energy limit for the whole year will be 365 times `max`or `min_energy_timeframe_partition`.
+  > **Note:**
+  > These parameters are defined per period, and the default values for profiles are 1.0 p.u. per period. If the periods are determined daily, the energy limit for the whole year will be 365 times `max`or `min_energy_timeframe_partition`.
 - (optional) `profile_type` and `profile_name` in the [`assets-timeframe-profiles.csv`](@ref schemas) and the profile values in the [`profiles-timeframe.csv`](@ref schemas). If there is no profile defined, then by default it is 1.0 p.u. for all periods in the timeframe.
 - (optional) define a period partition in [`assets-timeframe-partitions.csv`](@ref schemas). If there is no partition defined, then by default the constraint is created for each period in the timeframe, otherwise, it will consider the partition definition in the file.
 
@@ -432,8 +432,8 @@ In order to define the groups in the model, the following steps are necessary:
 1. Create a group in the [`groups-data.csv`](@ref schemas) file by defining the `name` property and its parameters.
 2. In the file [`graph-assets-data.csv`](@ref schemas), assign assets to the group by setting the `name` in the `group` parameter/column.
 
-    > **Note:**
-    > A missing value in the parameter `group` in the [`graph-assets-data.csv`](@ref schemas) means that the asset does not belong to any group.
+   > **Note:**
+   > A missing value in the parameter `group` in the [`graph-assets-data.csv`](@ref schemas) means that the asset does not belong to any group.
 
 Groups are useful to represent several common constraints, the following group constraints are available.
 
@@ -444,10 +444,10 @@ The mathematical formulation of the maximum and minimum investment limit for gro
 - `invest_method = true`. This parameter enables the model to use the investment group constraints.
 - `min_investment_limit` $\neq$ `missing` or `max_investment_limit` $\neq$ `missing`. This value represents the limits that will be imposed on the investment that belongs to the group.
 
-    > **Notes:**
-    >
-    > 1. A missing value in the parameters `min_investment_limit` and `max_investment_limit` means that there is no investment limit.
-    > 2. These constraints are applied to the investments each year. The model does not yet have investment limits to a group's accumulated invested capacity.
+  > **Notes:**
+  >
+  > 1. A missing value in the parameters `min_investment_limit` and `max_investment_limit` means that there is no investment limit.
+  > 2. These constraints are applied to the investments each year. The model does not yet have investment limits to a group's accumulated invested capacity.
 
 ### Example: Group of Assets
 

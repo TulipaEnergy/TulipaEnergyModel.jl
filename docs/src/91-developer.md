@@ -1,12 +1,17 @@
-# Developer documentation
+# [Developer Documentation](@id developer)
 
 Welcome to TulipaEnergyModel.jl developer documentation. Here is how you can
 contribute to our Julia-based toolkit for modeling and optimization of electric
 energy systems.
 
+```@contents
+Pages = ["91-developer.md"]
+Depth = 3
+```
+
 ## Before You Begin
 
-Before you can start contributing, please read our [CONTRIBUTING.md](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/CONTRIBUTING.md).
+Before you can start contributing, please read our [Contributing Guidelines](@ref contributing).
 
 Also make sure that you have installed the
 required software, and that it is properly configured. You only need to do this
@@ -19,74 +24,74 @@ To contribute to TulipaEnergyModel.jl, you need the following:
 1. [Julia](https://julialang.org) programming language.
 2. [Git](https://git-scm.com) for version control.
 3. [VSCode](https://code.visualstudio.com) or any other editor. For VSCode, we recommend
-    to install a few extensions. You can do it by pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> (or <kbd>⇧</kbd> + <kbd>⌘</kbd> + <kbd>X</kbd> on MacOS) and searching by the extension name. - [Julia for Visual Studio Code](https://www.julia-vscode.org); - [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph).
+   to install a few extensions. You can do it by pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> (or <kbd>⇧</kbd> + <kbd>⌘</kbd> + <kbd>X</kbd> on MacOS) and searching by the extension name. - [Julia for Visual Studio Code](https://www.julia-vscode.org); - [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph).
 4. [EditorConfig](https://editorconfig.org) for consistent code formatting.
-    In VSCode, it is available as
-    [an extension](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig).
+   In VSCode, it is available as
+   [an extension](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig).
 5. [pre-commit](https://pre-commit.com) to run the linters and formatters.
 
-    You can install `pre-commit` globally using
+   You can install `pre-commit` globally using
 
-    ```bash
-    pip install --user pre-commit
-    ```
+   ```bash
+   pip install --user pre-commit
+   ```
 
-    If you prefer to create a local environment with it, do the following:
+   If you prefer to create a local environment with it, do the following:
 
-    ```bash
-    python -m venv env
-    . env/bin/activate
-    pip install --upgrade pip setuptools pre-commit
-    ```
+   ```bash
+   python -m venv env
+   . env/bin/activate
+   pip install --upgrade pip setuptools pre-commit
+   ```
 
-    On Windows, you need to activate the environment using the following command instead of the previous one:
+   On Windows, you need to activate the environment using the following command instead of the previous one:
 
-    ```bash
-    env/Scripts/activate
-    ```
+   ```bash
+   env/Scripts/activate
+   ```
 
-    Note that there is no leading dot (`.`) in the above command.
+   Note that there is no leading dot (`.`) in the above command.
 
 6. [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
-    formatting.
+   formatting.
 
-    To install it, open Julia REPL, for example, by typing in the
-    command line:
+   To install it, open Julia REPL, for example, by typing in the
+   command line:
 
-    ```bash
-    julia
-    ```
+   ```bash
+   julia
+   ```
 
-    > **Note:** `julia` must be part of your environment variables to call it from the command line.
+   > **Note:** `julia` must be part of your environment variables to call it from the command line.
 
-    Then press <kbd>]</kbd> to enter the package mode.
-    In the package mode, enter the following:
+   Then press <kbd>]</kbd> to enter the package mode.
+   In the package mode, enter the following:
 
-    ```julia
-    pkg> activate
-    pkg> add JuliaFormatter
-    ```
+   ```julia
+   pkg> activate
+   pkg> add JuliaFormatter
+   ```
 
-    In VSCode, you can activate "Format on Save" for `JuliaFormatter`. To do so,
-    open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
-    Settings", type "Format on Save" and tick the first result:
+   In VSCode, you can activate "Format on Save" for `JuliaFormatter`. To do so,
+   open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
+   Settings", type "Format on Save" and tick the first result:
 
-    ![Screenshot of Format on Save option](./images/FormatOnSave.png)
+   ![Screenshot of Format on Save option](./images/FormatOnSave.png)
 
 7. [Prettier](https://prettier.io/) for markdown formatting.
-    In VSCode, it is available as
-    [an extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
+   In VSCode, it is available as
+   [an extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
 
-    Having enabled "Format on Save" for `JuliaFormatter` in the previous step will also enable "Format on Save" for `Prettier`, provided that `Prettier` is set as the default formatter for markdown files. To do so, in VSCode, open any markdown file, right-click on any area of the file, choose "Format Document With...", click "Configure Default Formatter..." situated at the bottom of the drop-list list at the top of the screen, and then choose `Prettier - Code formatter` as the default formatter. Once you are done, you can double-check it by again right-clicking on any area of the file and choosing "Format Document With...", and you should see `Prettier - Code formatter (default)`.
+   Having enabled "Format on Save" for `JuliaFormatter` in the previous step will also enable "Format on Save" for `Prettier`, provided that `Prettier` is set as the default formatter for markdown files. To do so, in VSCode, open any markdown file, right-click on any area of the file, choose "Format Document With...", click "Configure Default Formatter..." situated at the bottom of the drop-list list at the top of the screen, and then choose `Prettier - Code formatter` as the default formatter. Once you are done, you can double-check it by again right-clicking on any area of the file and choosing "Format Document With...", and you should see `Prettier - Code formatter (default)`.
 
 8. [LocalCoverage](https://github.com/JuliaCI/LocalCoverage.jl) for coverage
-    testing. You can install it the same way you installed `JuliaFormatter`,
-    that is, by opening Julia REPL in the package mode and typing:
+   testing. You can install it the same way you installed `JuliaFormatter`,
+   that is, by opening Julia REPL in the package mode and typing:
 
-    ```julia
-    pkg> activate
-    pkg> add LocalCoverage
-    ```
+   ```julia
+   pkg> activate
+   pkg> add LocalCoverage
+   ```
 
 ### Forking the Repository
 
@@ -240,7 +245,7 @@ git switch -c <branch_name>
 ```
 
 - If there is an associated issue, add the issue number to the branch name,
-    for example, `123-short-description` for issue \#123.
+  for example, `123-short-description` for issue \#123.
 - If there is no associated issue **and the changes are small**, add a prefix such as "typo", "hotfix", "small-refactor", according to the type of update.
 - If the changes are not small and there is no associated issue, then create the issue first, so we can properly discuss the changes.
 
@@ -390,7 +395,7 @@ Here is how you do it:
    1. Run `pkg> dev .` to use the development version of your package
    1. Press backspace to leave `pkg` mode
 1. Run `julia> using LiveServer`
-1. Run `julia> servedocs()`
+1. Run `julia> servedocs(launch_browser=true)`
 
 ## Performance Considerations
 
@@ -412,11 +417,11 @@ If you want to manually run the benchmarks, you can do the following:
 - Run `dev ..` to add the development version of TulipaEnergyModel
 - Now run
 
-    ```julia
-    include("benchmarks.jl")
-    tune!(SUITE)
-    results = run(SUITE, verbose=true)
-    ```
+  ```julia
+  include("benchmarks.jl")
+  tune!(SUITE)
+  results = run(SUITE, verbose=true)
+  ```
 
 ### Profiling
 
@@ -462,4 +467,4 @@ When publishing a new version of the model to the Julia Registry, follow this pr
 8. After approval, the bot will take care of the PR at the Julia Registry and automatically create the release for the new version.
    ![Screenshot of new version on registry](./images/NewRelease.png)
 
-    Thank you for helping make frequent releases!
+   Thank you for helping make frequent releases!

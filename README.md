@@ -29,22 +29,20 @@ See the [documentation](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stab
 
 ## Bug reports and discussions
 
-If you think you found a bug, feel free to open an [issue](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues).
-Focused suggestions and requests can also be opened as issues. Before opening a pull request, please start an issue or a discussion on the topic.
+If you think you have found a bug, feel free to open an [issue](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues).
+If you have a general question or idea, start a discussion [here](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/discussions).
 
-If you want to ask a question unsuitable for a bug report, start a discussion [here](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/discussions). This forum is for general discussion about the repository [TulipaEnergyModel](https://github.com/TulipaEnergy/TulipaEnergyModel.jl).
+## Contributing
+
+If you want to contribute (awesome!), please read our [Contributing Guidelines](@ref contributing) and follow the setup in our [Developer Documentation](@ref developer).
 
 ## License
 
 This content is released under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) License.
 
-## Contributing
-
-If you want to make contributions of any kind, please first that a look into our [contributing guide directly on GitHub](docs/src/90-contributing.md) or the [contributing page on the website](https://TulipaEnergy.github.io/TulipaEnergyModel.jl/dev/90-contributing/).
-
 ---
 
-### Contributors
+## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
