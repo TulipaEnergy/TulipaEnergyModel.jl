@@ -1,6 +1,24 @@
 {
   "contributorsSortAlphabetically": true,
-  "files": ["README.md", "docs/src/index.md"],
-  "projectName": "TulipaEnergyModel",
-  "projectOwner": "TulipaEnergy"
+  "files": [
+    "README.md",
+    "docs/src/index.md"
+  ],
+  "projectName": "TulipaEnergyModel.jl",
+  "projectOwner": "TulipaEnergy",
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "abelsiqueira",
+      "name": "Abel Soares Siqueira",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1068752?v=4",
+      "profile": "https://abelsiqueira.com",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    }
+  ]
 }
