@@ -3,8 +3,8 @@
 Here are some tutorials on how to use Tulipa.
 
 ```@contents
-Pages = ["tutorials.md"]
-Depth = 5
+Pages = ["20-tutorials.md"]
+Depth = 3
 ```
 
 ## [Basic example](@id basic-example)
