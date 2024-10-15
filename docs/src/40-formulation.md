@@ -240,10 +240,10 @@ Storage assets using the method to avoid charging and discharging simultaneously
 \end{aligned}
 ```
 
-#### Lower Limit for Flows that are Not Transport Assets
+#### Lower Limit for Flows that are Associated with Assets
 
 ```math
-v^{\text{flow}}_{f,k,b_k} \geq 0 \quad \forall f \notin \mathcal{F}^{\text{t}}, \forall k \in \mathcal{K}, \forall b_k \in \mathcal{B_k}
+v^{\text{flow}}_{f,k,b_k} \geq 0 \quad \forall f \in \left( \mathcal{F}^{\text{out}}_a | a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} \right) \cup \left(\mathcal{F}^{\text{in}}_a | a \in \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} \right), \forall k \in \mathcal{K}, \forall b_k \in \mathcal{B_k}
 ```
 
 ### [Unit Commitment Constraints](@id uc-constraints)
