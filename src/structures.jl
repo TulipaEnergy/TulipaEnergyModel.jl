@@ -1,6 +1,7 @@
 export GraphAssetData,
     GraphFlowData,
     EnergyProblem,
+    TulipaVariable,
     RepresentativePeriod,
     PeriodsBlock,
     TimestepsBlock,
@@ -29,6 +30,18 @@ Structure to hold the data of the timeframe.
 struct Timeframe
     num_periods::Int64
     map_periods_to_rp::DataFrame
+end
+
+"""
+Structure to hold the JuMP variables for the TulipaEnergyModel
+"""
+struct TulipaVariable
+    indices::DataFrame
+    variable::Vector{JuMP.VariableRef}
+
+    function TulipaVariable(indices, variable)
+        return new(indices, variable)
+    end
 end
 
 """
@@ -332,6 +345,7 @@ mutable struct EnergyProblem
         Nothing, # Edge weight function
         Nothing, # Default edge weight
     }
+    variables::Dict{Symbol,TulipaVariable}
     representative_periods::Dict{Int,Vector{RepresentativePeriod}}
     constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int,Int},Vector{TimestepsBlock}}}
     timeframe::Timeframe
@@ -353,6 +367,8 @@ mutable struct EnergyProblem
     This will call relevant functions to generate all input that is required for the model creation.
     """
     function EnergyProblem(connection; model_parameters_file = "")
+        model = JuMP.Model()
+
         elapsed_time_internal = @elapsed begin
             graph, representative_periods, timeframe, groups, years =
                 create_internal_structures(connection)
@@ -362,17 +378,31 @@ mutable struct EnergyProblem
                 compute_constraints_partitions(graph, representative_periods, years)
         end
 
+        elapsed_time_construct_dataframes = @elapsed begin
+            dataframes = construct_dataframes(
+                graph,
+                representative_periods,
+                constraints_partitions,
+                years,
+            )
+        end
+
+        elapsed_time_vars = @elapsed begin
+            variables = create_variables(model, dataframes)
+        end
+
         energy_problem = new(
             connection,
             graph,
+            variables,
             representative_periods,
             constraints_partitions,
             timeframe,
             groups,
             years,
-            Dict(),
+            dataframes,
             ModelParameters(connection, model_parameters_file),
-            nothing,
+            model,
             nothing,
             false,
             NaN,
@@ -380,6 +410,8 @@ mutable struct EnergyProblem
             Dict(
                 "creating internal structures" => elapsed_time_internal,
                 "computing constraints partitions" => elapsed_time_cons,
+                "creating dataframes" => elapsed_time_construct_dataframes,
+                "creating model variables" => elapsed_time_vars,
             ),
         )
 

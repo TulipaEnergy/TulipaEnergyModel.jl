@@ -7,6 +7,7 @@ Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
     elapsed_time_create_model = @elapsed begin
+        model = energy_problem.model
         graph = energy_problem.graph
         representative_periods = energy_problem.representative_periods
         constraints_partitions = energy_problem.constraints_partitions
@@ -14,18 +15,14 @@ function create_model!(energy_problem; kwargs...)
         groups = energy_problem.groups
         model_parameters = energy_problem.model_parameters
         years = energy_problem.years
-        energy_problem.dataframes = @timeit to "construct_dataframes" construct_dataframes(
-            graph,
-            representative_periods,
-            constraints_partitions,
-            years,
-        )
+        dataframes = energy_problem.dataframes
         sets = create_sets(graph, years)
         energy_problem.model = @timeit to "create_model" create_model(
+            model,
             graph,
             sets,
             representative_periods,
-            energy_problem.dataframes,
+            dataframes,
             years,
             timeframe,
             groups,
@@ -48,6 +45,7 @@ end
 Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), timeframe, and groups.
 """
 function create_model(
+    model,
     graph,
     sets,
     representative_periods,
@@ -76,9 +74,6 @@ function create_model(
         df_storage_inter_rp_balance_grouped =
             DataFrames.groupby(dataframes[:storage_level_inter_rp], [:asset, :year])
     end
-
-    ## Model
-    model = JuMP.Model()
 
     ## Variables
     create_variables!(model, graph, dataframes, sets)
