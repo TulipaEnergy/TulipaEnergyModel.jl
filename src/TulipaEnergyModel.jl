@@ -26,9 +26,11 @@ using TimerOutputs: TimerOutput, @timeit
 
 const to = TimerOutput()
 
+include("utils.jl")
 include("input-schemas.jl")
 include("model-parameters.jl")
 include("structures.jl")
+include("model-preparation.jl")
 include("io.jl")
 include("create-model.jl")
 include("solver-parameters.jl")
