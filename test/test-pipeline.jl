@@ -25,10 +25,12 @@ end
     constraints_partitions = compute_constraints_partitions(graph, representative_periods, years)
     dataframes = construct_dataframes(graph, representative_periods, constraints_partitions, years)
     model_parameters = ModelParameters(connection)
+    sets = create_sets(graph, years)
 
     # Create model
     model = create_model(
         graph,
+        sets,
         representative_periods,
         dataframes,
         years,
