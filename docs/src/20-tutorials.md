@@ -117,10 +117,16 @@ Finally, we also need dataframes that store the linearized indexes of the variab
 dataframes = construct_dataframes(graph, representative_periods, constraints_partitions, years)
 ```
 
+And we need the sets.
+
+```@example manual
+sets = create_sets(graph, years)
+```
+
 Now we can compute the model.
 
 ```@example manual
-model = create_model(graph, representative_periods, dataframes, years, timeframe, groups, model_parameters)
+model = create_model(graph, sets, representative_periods, dataframes, years, timeframe, groups, model_parameters)
 ```
 
 Finally, we can compute the solution.
