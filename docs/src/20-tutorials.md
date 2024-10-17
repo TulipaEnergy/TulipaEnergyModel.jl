@@ -111,22 +111,23 @@ constraints_partitions = compute_constraints_partitions(graph, representative_pe
 
 The `constraints_partitions` has two dictionaries with the keys `:lowest_resolution` and `:highest_resolution`. The lowest resolution dictionary is mainly used to create the constraints for energy balance, whereas the highest resolution dictionary is mainly used to create the capacity constraints in the model.
 
-Finally, we also need dataframes that store the linearized indexes of the variables.
+We also need dataframes that store the linearized indexes of the variables.
 
 ```@example manual
 dataframes = construct_dataframes(graph, representative_periods, constraints_partitions, years)
 ```
 
-And we need the sets.
+We need the sets and the variables indices.
 
 ```@example manual
 sets = create_sets(graph, years)
+variables = compute_variables_indices(dataframes)
 ```
 
 Now we can compute the model.
 
 ```@example manual
-model = create_model(graph, sets, representative_periods, dataframes, years, timeframe, groups, model_parameters)
+model = create_model(graph, sets, variables, representative_periods, dataframes, years, timeframe, groups, model_parameters)
 ```
 
 Finally, we can compute the solution.
