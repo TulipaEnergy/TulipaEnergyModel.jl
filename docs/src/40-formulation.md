@@ -243,7 +243,7 @@ unit\_on\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y
 \begin{aligned}
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units simple method}}_{a,y}  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{decom simple}} \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}} \right)  \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\ \\
-\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units compact method}}_{a,y,v}  \quad
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{capacity}}_{a} \cdot \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{accumulated units compact method}}_{a,y,v}  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{decom compact}} \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}} \right) \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
@@ -277,13 +277,13 @@ Storage assets using the method to avoid charging and discharging simultaneously
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a,y} + p^{\text{inv limit}}_{a,y} \right)  \cdot v^{\text{is charging}}_{a,k_y,b_{k_y}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y, \forall k_y \in \mathcal{K_y},\forall b_{k_y} \in \mathcal{B_{k_y}}
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a,y} + p^{\text{inv limit}}_{a,y} \right)  \cdot v^{\text{is charging}}_{a,k_y,b_{k_y}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y, \forall k_y \in \mathcal{K_y},\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot \left(v^{\text{accumulated units}}_{a,y} - p^{\text{init units}}_{a,y} \cdot (1-v^{\text{is charging}}_{a,k_y,b_{k_y}}) \right)  \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot \left(v^{\text{accumulated units}}_{a,y} - p^{\text{init units}}_{a,y} \cdot (1-v^{\text{is charging}}_{a,k_y,b_{k_y}}) \right)  \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -329,38 +329,42 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} \geq 0  \quad
 
 ### [Ramping Constraints](@id ramp-constraints)
 
-Ramping constraints restrict the rate at which the output flow of a production or conversion asset can change. If the asset is part of the unit commitment set (e.g., $\mathcal{A}^{\text{uc}}$), the ramping limits apply to the flow above the minimum output, but if it is not, the ramping limits apply to the total output flow.
+Ramping constraints restrict the rate at which the output flow of a production or conversion asset can change. If the asset is part of the unit commitment set (e.g., $\mathcal{A}^{\text{uc}}_y$), the ramping limits apply to the flow above the minimum output, but if it is not, the ramping limits apply to the total output flow.
 
-Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](https://link.springer.com/article/10.1007/s10107-015-0919-9). Also, please note that since the current version of the code only handles the basic unit commitment implementation, the ramping constraints are applied to the assets in the set $\mathcal{A}^{\text{uc basic}}$.
+Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](https://link.springer.com/article/10.1007/s10107-015-0919-9). Also, please note that since the current version of the code only handles the basic unit commitment implementation, the ramping constraints are applied to the assets in the set $\mathcal{A}^{\text{uc basic}}_y$.
 
-> **Duration parameter**: The following constraints are multiplied by $p^{\text{duration}}_{b_k}$ on the right-hand side to adjust for the duration of the timesteps since the ramp parameters are defined as rates. This assumption is based on the idea that all timesteps are the same in this section, which simplifies the formulation. However, in a flexible temporal resolution context, this may not hold true, and the duration needs to be the minimum duration of all the outgoing flows at the timestep block $b_k$. For more information, please visit the concept section on flexible time resolution.
+> **Duration parameter**: The following constraints are multiplied by $p^{\text{duration}}_{b_{k_y}}$ on the right-hand side to adjust for the duration of the timesteps since the ramp parameters are defined as rates. This assumption is based on the idea that all timesteps are the same in this section, which simplifies the formulation. However, in a flexible temporal resolution context, this may not hold true, and the duration needs to be the minimum duration of all the outgoing flows at the timestep block $b_{k_y}$. For more information, please visit the concept section on flexible time resolution.
 
 #### Maximum Ramp-Up Rate Limit WITH Unit Commitment Method
 
 ```math
-e^{\text{flow above min}}_{a,k,b_k} - e^{\text{flow above min}}_{a,k,b_k-1} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp up}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{on}}_{a,k,b_k}  \quad
-\\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \cap \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+e^{\text{flow above min}}_{a,k_y,b_{k_y}} - e^{\text{flow above min}}_{a,k_y,b_{k_y}-1} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp up}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{on}}_{a,k_y,b_{k_y}}  \quad
+\\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}}_y \cap \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Maximum Ramp-Down Rate Limit WITH Unit Commmitment Method
 
 ```math
-e^{\text{flow above min}}_{a,k,b_k} - e^{\text{flow above min}}_{a,k,b_k-1} \geq - p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp down}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{on}}_{a,k,b_k-1}  \quad
-\\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \cap \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+e^{\text{flow above min}}_{a,k_y,b_{k_y}} - e^{\text{flow above min}}_{a,k_y,b_{k_y}-1} \geq - p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{on}}_{a,k_y,b_{k_y}-1}  \quad
+\\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}}_y \cap \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Maximum Ramp-Up Rate Limit WITHOUT Unit Commitment Method
 
 ```math
-\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \leq p^{\text{max ramp up}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} + v^{\text{inv}}_{a} \right)  \quad
-\\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \setminus \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \leq p^{\text{max ramp up}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units simple method}}_{a,y}  \quad
+\\ \\ \forall a \in  \mathcal{A}^{\text{decom simple}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \leq p^{\text{max ramp up}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot  \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{accumulated units compact method}}_{a,y,v}  \quad
+\\ \\ \forall a \in  \mathcal{A}^{\text{decom compact}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Maximum Ramp-Down Rate Limit WITHOUT Unit Commitment Method
 
 ```math
-\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k-1} \geq - p^{\text{max ramp down}}_{a} \cdot p^{\text{duration}}_{b_k} \cdot p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} + v^{\text{inv}}_{a} \right)  \quad
-\\ \\ \forall a \in \left(\mathcal{A}^{\text{ramp}} \setminus \mathcal{A}^{\text{uc basic}} \right), \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \geq - p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units simple method}}_{a,y}  \quad
+\\ \\ \forall a \in  \mathcal{A}^{\text{decom simple}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \geq - p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot  \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{accumulated units compact method}}_{a,y,v}  \quad
+\\ \\ \forall a \in  \mathcal{A}^{\text{decom compact}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ### Constraints for Energy Consumer Assets
