@@ -388,7 +388,7 @@ mutable struct EnergyProblem
         end
 
         elapsed_time_vars = @elapsed begin
-            variables = create_variables_indices(dataframes)
+            variables = compute_variables_indices(dataframes)
         end
 
         energy_problem = new(
@@ -431,6 +431,8 @@ function Base.show(io::IO, ep::EnergyProblem)
     println(io, "EnergyProblem:")
     println(io, "  - ", timing_str("Time", "creating internal structures"))
     println(io, "  - ", timing_str("Time", "computing constraints partitions"))
+    println(io, "  - ", timing_str("Time", "creating dataframes"))
+    println(io, "  - ", timing_str("Time", "creating variables indices"))
     if status_model_creation
         println(io, "  - Model created!")
         println(io, "    - ", timing_str("Time for ", "creating the model"))

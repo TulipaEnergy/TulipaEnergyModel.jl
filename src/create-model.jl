@@ -1,4 +1,4 @@
-export create_model!, create_model, create_variables_indices
+export create_model!, create_model
 
 """
     create_model!(energy_problem; verbose = false)

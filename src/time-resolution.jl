@@ -1,4 +1,4 @@
-export compute_rp_partition, compute_constraints_partitions
+export compute_rp_partition, compute_constraints_partitions, compute_variables_indices
 
 using SparseArrays
 
@@ -260,4 +260,10 @@ function compute_rp_partition(
         end
     end
     return rp_partition
+end
+
+function compute_variables_indices(dataframes)
+    variables = Dict(:dummy => TulipaVariable(DataFrame(), Vector()))
+
+    return variables
 end
