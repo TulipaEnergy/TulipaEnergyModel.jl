@@ -388,7 +388,7 @@ mutable struct EnergyProblem
         end
 
         elapsed_time_vars = @elapsed begin
-            variables = create_variables(model, dataframes)
+            variables = create_variables_indices(dataframes)
         end
 
         energy_problem = new(
@@ -402,7 +402,7 @@ mutable struct EnergyProblem
             years,
             dataframes,
             ModelParameters(connection, model_parameters_file),
-            model,
+            nothing,
             nothing,
             false,
             NaN,
@@ -411,7 +411,7 @@ mutable struct EnergyProblem
                 "creating internal structures" => elapsed_time_internal,
                 "computing constraints partitions" => elapsed_time_cons,
                 "creating dataframes" => elapsed_time_construct_dataframes,
-                "creating model variables" => elapsed_time_vars,
+                "creating variables indices" => elapsed_time_vars,
             ),
         )
 
