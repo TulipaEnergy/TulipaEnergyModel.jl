@@ -76,7 +76,15 @@ function create_model(
     model = JuMP.Model()
 
     ## Variables
-    create_variables!(model, graph, dataframes, sets)
+    @timeit to "add_flow_variables!" add_flow_variables!(model, dataframes)
+    @timeit to "add_investment_variables!" add_investment_variables!(model, graph, sets)
+    @timeit to "add_unit_commitment_variables!" add_unit_commitment_variables!(
+        model,
+        dataframes,
+        sets,
+    )
+    @timeit to "add_storage_variables!" add_storage_variables!(model, graph, dataframes, sets)
+
     # TODO: This should change heavily, so I just moved things to the function and unpack them here from model
     assets_decommission_compact_method = model[:assets_decommission_compact_method]
     assets_decommission_simple_method = model[:assets_decommission_simple_method]
@@ -570,10 +578,4 @@ function create_model(
     end
 
     return model
-end
-
-function create_variables_indices(dataframes)
-    variables = Dict(:dummy => TulipaVariable(DataFrame(), Vector()))
-
-    return variables
 end

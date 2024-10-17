@@ -127,3 +127,25 @@ representative period `rp`.
 function duration(timesteps_block, rp, representative_periods)
     return length(timesteps_block) * representative_periods[rp].resolution
 end
+
+"""
+    include_julia_files(folder_name::String)
+
+Reads all `.jl` files from the specified folder and includes them in the current environment.
+
+# Arguments
+- `folder_name::String`: The name of the folder containing the `.jl` files relative to the current directory.
+
+# Example
+```julia
+include_julia_files("variables")
+include_julia_files("constraints")
+
+"""
+function include_julia_files(folder_name)
+    folder_path = joinpath(@__DIR__, folder_name)
+    files = filter(f -> endswith(f, ".jl"), readdir(folder_path))
+    for file in files
+        include(joinpath(folder_path, file))
+    end
+end
