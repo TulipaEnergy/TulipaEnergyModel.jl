@@ -39,7 +39,15 @@ include("run-scenario.jl")
 include("time-resolution.jl")
 include("economic-parameters.jl")
 
-include_julia_files("variables")
-include_julia_files("constraints")
+function _include_julia_files(folder_name)
+    folder_path = joinpath(@__DIR__, folder_name)
+    files = filter(f -> endswith(f, ".jl"), readdir(folder_path))
+    for file in files
+        include(joinpath(folder_path, file))
+    end
+end
+
+_include_julia_files("variables")
+_include_julia_files("constraints")
 
 end
