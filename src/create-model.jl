@@ -9,7 +9,7 @@ function create_model!(energy_problem; kwargs...)
     elapsed_time_create_model = @elapsed begin
         graph = energy_problem.graph
         representative_periods = energy_problem.representative_periods
-        constraints_partitions = energy_problem.constraints_partitions
+        variables = energy_problem.variables
         timeframe = energy_problem.timeframe
         groups = energy_problem.groups
         model_parameters = energy_problem.model_parameters
@@ -19,6 +19,7 @@ function create_model!(energy_problem; kwargs...)
         energy_problem.model = @timeit to "create_model" create_model(
             graph,
             sets,
+            variables,
             representative_periods,
             dataframes,
             years,
@@ -45,6 +46,7 @@ Create the energy model given the `graph`, `representative_periods`, dictionary 
 function create_model(
     graph,
     sets,
+    variables,
     representative_periods,
     dataframes,
     years,
@@ -61,13 +63,19 @@ function create_model(
     # Unpacking dataframes
     @timeit to "unpacking dataframes" begin
         df_flows = dataframes[:flows]
-        df_is_charging = dataframes[:lowest_in_out]
         df_units_on = dataframes[:units_on]
         df_units_on_and_outflows = dataframes[:units_on_and_outflows]
         df_storage_intra_rp_balance_grouped =
             DataFrames.groupby(dataframes[:storage_level_intra_rp], [:asset, :rep_period, :year])
         df_storage_inter_rp_balance_grouped =
             DataFrames.groupby(dataframes[:storage_level_inter_rp], [:asset, :year])
+    end
+
+    # Unpacking dataframes with variable indices
+    @timeit to "unpacking variable indices" begin
+        storage_level_intra_rp_indices = variables[:storage_level_intra_rp].indices
+        storage_level_inter_rp_indices = variables[:storage_level_inter_rp].indices
+        is_charging_indices = variables[:is_charging].indices
     end
 
     ## Model
@@ -81,7 +89,14 @@ function create_model(
         dataframes,
         sets,
     )
-    @timeit to "add_storage_variables!" add_storage_variables!(model, graph, dataframes, sets)
+    @timeit to "add_storage_variables!" add_storage_variables!(
+        model,
+        graph,
+        sets,
+        storage_level_intra_rp_indices,
+        storage_level_inter_rp_indices,
+        is_charging_indices,
+    )
 
     # TODO: This should change heavily, so I just moved things to the function and unpack them here from model
     assets_decommission_compact_method = model[:assets_decommission_compact_method]
@@ -115,6 +130,7 @@ function create_model(
         representative_periods,
         timeframe,
         graph,
+        is_charging_indices,
     )
 
     ## Expressions for multi-year investment

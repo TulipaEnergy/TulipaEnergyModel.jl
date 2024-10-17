@@ -247,7 +247,7 @@ end
 
 """
     add_expression_is_charging_terms_intra_rp_constraints!(df_cons,
-                                                       df_is_charging,
+                                                       is_charging_indices,
                                                        workspace
                                                        )
 
@@ -260,14 +260,18 @@ This strategy is based on the replies in this discourse thread:
 
   - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
 """
-function add_expression_is_charging_terms_intra_rp_constraints!(df_cons, df_is_charging, workspace)
+function add_expression_is_charging_terms_intra_rp_constraints!(
+    df_cons,
+    is_charging_indices,
+    workspace,
+)
     # Aggregating function: We have to compute the proportion of each variable is_charging in the constraint timesteps_block.
     agg = Statistics.mean
 
     grouped_cons = DataFrames.groupby(df_cons, [:year, :rep_period, :asset])
 
     df_cons[!, :is_charging] .= JuMP.AffExpr(0.0)
-    grouped_is_charging = DataFrames.groupby(df_is_charging, [:year, :rep_period, :asset])
+    grouped_is_charging = DataFrames.groupby(is_charging_indices, [:year, :rep_period, :asset])
     for ((year, rep_period, asset), sub_df) in pairs(grouped_cons)
         if !haskey(grouped_is_charging, (year, rep_period, asset))
             continue
@@ -434,10 +438,9 @@ function add_expressions_to_dataframe!(
     representative_periods,
     timeframe,
     graph,
+    is_charging_indices,
 )
     @timeit to "add_expression_terms_to_df" begin
-        df_is_charging = dataframes[:lowest_in_out] # This is explicitly marked because the df name and the variable name differ
-        # This should be fixed after #884
 
         # Creating the incoming and outgoing flow expressions
         add_expression_terms_intra_rp_constraints!(
@@ -522,12 +525,12 @@ function add_expressions_to_dataframe!(
         )
         add_expression_is_charging_terms_intra_rp_constraints!(
             dataframes[:highest_in],
-            df_is_charging,
+            is_charging_indices,
             expression_workspace,
         )
         add_expression_is_charging_terms_intra_rp_constraints!(
             dataframes[:highest_out],
-            df_is_charging,
+            is_charging_indices,
             expression_workspace,
         )
         if !isempty(dataframes[:units_on_and_outflows])
@@ -754,158 +757,4 @@ function create_sets(graph, years)
         starting_year_flows_using_simple_method,
         starting_year_using_simple_method,
     )
-end
-
-function create_variables!(model, graph, dataframes, sets)
-    @timeit to "create variables" begin
-        df_flows = dataframes[:flows]
-        df_units_on = dataframes[:units_on]
-        df_is_charging = dataframes[:lowest_in_out]
-        ### Flow variables
-        flow =
-            model[:flow] =
-                df_flows.flow = [
-                    @variable(
-                        model,
-                        base_name = "flow[($(row.from), $(row.to)), $(row.year), $(row.rep_period), $(row.timesteps_block)]"
-                    ) for row in eachrow(df_flows)
-                ]
-
-        @variable(model, 0 ≤ flows_investment[y in sets.Y, (u, v) in sets.Fi[y]])
-
-        ### Investment variables
-        @variable(model, 0 ≤ assets_investment[y in sets.Y, a in sets.Ai[y]])  #number of installed asset units [N]
-        @variable(
-            model,
-            0 ≤ assets_decommission_simple_method[
-                y in sets.Y,
-                a in sets.decommissionable_assets_using_simple_method,
-            ]
-        )  #number of decommission asset units [N]
-        @variable(
-            model,
-            0 <= assets_decommission_compact_method[(
-                a,
-                y,
-                v,
-            ) in sets.decommission_set_using_compact_method]
-        )  #number of decommission asset units [N]
-        @variable(model, 0 ≤ flows_decommission_using_simple_method[y in sets.Y, (u, v) in sets.Ft])  #number of decommission flow units [N]
-
-        @variable(model, 0 ≤ assets_investment_energy[y in sets.Y, a in sets.Ase[y]∩sets.Ai[y]])  #number of installed asset units for storage energy [N]
-        @variable(
-            model,
-            0 ≤ assets_decommission_energy_simple_method[
-                y in sets.Y,
-                a in sets.Ase[y]∩sets.decommissionable_assets_using_simple_method,
-            ]
-        )  #number of decommission asset energy units [N]
-
-        ### Unit commitment variables
-        units_on =
-            model[:units_on] =
-                df_units_on.units_on = [
-                    @variable(
-                        model,
-                        lower_bound = 0.0,
-                        base_name = "units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-                    ) for row in eachrow(df_units_on)
-                ]
-
-        ### Variables for storage assets
-        storage_level_intra_rp =
-            model[:storage_level_intra_rp] = [
-                @variable(
-                    model,
-                    lower_bound = 0.0,
-                    base_name = "storage_level_intra_rp[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-                ) for row in eachrow(dataframes[:storage_level_intra_rp])
-            ]
-        storage_level_inter_rp =
-            model[:storage_level_inter_rp] = [
-                @variable(
-                    model,
-                    lower_bound = 0.0,
-                    base_name = "storage_level_inter_rp[$(row.asset),$(row.year),$(row.periods_block)]"
-                ) for row in eachrow(dataframes[:storage_level_inter_rp])
-            ]
-        is_charging =
-            model[:is_charging] =
-                df_is_charging.is_charging = [
-                    @variable(
-                        model,
-                        lower_bound = 0.0,
-                        upper_bound = 1.0,
-                        base_name = "is_charging[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-                    ) for row in eachrow(df_is_charging)
-                ]
-
-        ### Integer Investment Variables
-        for y in sets.Y, a in sets.Ai[y]
-            if graph[a].investment_integer[y]
-                JuMP.set_integer(assets_investment[y, a])
-            end
-        end
-
-        for y in sets.Y, a in sets.decommissionable_assets_using_simple_method
-            if graph[a].investment_integer[y]
-                JuMP.set_integer(assets_decommission_simple_method[y, a])
-            end
-        end
-
-        for (a, y, v) in sets.decommission_set_using_compact_method
-            # We don't do anything with existing units (because it can be integers or non-integers)
-            if !(
-                v in sets.V_non_milestone &&
-                a in sets.existing_assets_by_year_using_compact_method[y]
-            ) && graph[a].investment_integer[y]
-                JuMP.set_integer(assets_decommission_compact_method[(a, y, v)])
-            end
-        end
-
-        for y in sets.Y, (u, v) in sets.Fi[y]
-            if graph[u, v].investment_integer[y]
-                JuMP.set_integer(flows_investment[y, (u, v)])
-            end
-        end
-
-        for y in sets.Y, a in sets.Ase[y] ∩ sets.Ai[y]
-            if graph[a].investment_integer_storage_energy[y]
-                JuMP.set_integer(assets_investment_energy[y, a])
-            end
-        end
-
-        for y in sets.Y, a in sets.Ase[y] ∩ sets.decommissionable_assets_using_simple_method
-            if graph[a].investment_integer_storage_energy[y]
-                JuMP.set_integer(assets_decommission_energy_simple_method[y, a])
-            end
-        end
-
-        ### Binary Charging Variables
-        df_is_charging.use_binary_storage_method = [
-            graph[row.asset].use_binary_storage_method[row.year] for row in eachrow(df_is_charging)
-        ]
-
-        sub_df_is_charging_binary = DataFrames.subset(
-            df_is_charging,
-            [:asset, :year] => DataFrames.ByRow((a, y) -> a in sets.Asb[y]),
-            :use_binary_storage_method => DataFrames.ByRow(==("binary"));
-            view = true,
-        )
-
-        for row in eachrow(sub_df_is_charging_binary)
-            JuMP.set_binary(is_charging[row.index])
-        end
-
-        ### Integer Unit Commitment Variables
-        for row in eachrow(df_units_on)
-            if !(row.asset in sets.Auc_integer[row.year])
-                continue
-            end
-
-            JuMP.set_integer(units_on[row.index])
-        end
-    end
-
-    return
 end
