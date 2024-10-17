@@ -130,7 +130,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | Name                                        | Domain           | Domains of Indices                                                | Description                                                                                | Units          |
 | ------------------------------------------- | ---------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------- |
 | $p^{\text{variable cost}}_{f}$              | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$                                               | Variable cost of flow $f$                                                                  | [kEUR/MWh]     |
-| $p^{\text{eff}}_f$                          | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$                                               | Efficiency of flow $f$                                                                     | [p.u.]         |
+| $p^{\text{eff}}_{f,y}$                      | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$                                               | Efficiency of flow $f$                                                                     | [p.u.]         |
 | $p^{\text{inv cost}}_{f}$                   | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                    | Investment cost of transport flow $f$                                                      | [kEUR/MW/year] |
 | $p^{\text{inv limit}}_{f}$                  | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                    | Investment potential of flow $f$                                                           | [MW]           |
 | $p^{\text{capacity}}_{f}$                   | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                    | Capacity per unit of investment of transport flow $f$ (both exports and imports)           | [MW]           |
@@ -179,7 +179,10 @@ For accumulated units across years, we define the following expresssions:
     v^{\text{accumulated units compact method}}_{a,y,v} & = p^{\text{initial units}}_{a,y,v} + v^{\text{inv}}_{a,v} - \sum_{i \in \{\mathcal{Y}: v < i \le y\} | (a,i,v) \in \mathcal{D}^{\text{decom units compact}}} v^{\text{decom compact}}_{a,i,v}
  \\
     & \forall (a,y,v) \in \mathcal{D}^{\text{accumulated units compact}} \\
-    v^{\text{accumulated units simple method}}_{f,y} & = p^{\text{initial units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i}
+    v^{\text{accumulated energy units simple method}}_{a,y} & = p^{\text{initial storage units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv energy}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom energy units simple}}_{a,i} \\
+    & \forall a \in \mathcal{A}^{\text{se}}_y, \forall y \in \mathcal{Y} \\
+    v^{\text{accumulated units simple method}}_{f,y} & = p^{\text{initial units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
+    & \forall f \in \mathcal{F}^{\text{ti}}_y, \forall y \in \mathcal{Y} \\
 \end{aligned}
 ```
 
@@ -198,6 +201,14 @@ In addition, we define the following expressions to determine the accumulated un
 ```math
 \begin{aligned}
     v^{\text{accumulated units}}_{a,y} & = \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{decom units compact}}} v^{\text{accumulated units compact method}}_{a,y,v} \quad \forall a \in \mathcal{A}, \forall y \in \mathcal{Y}
+\end{aligned}
+```
+
+- Storage assets with energy method always use _simple_ investment method
+
+```math
+\begin{aligned}
+    v^{\text{accumulated energy units}}_{a,y} & = v^{\text{accumulated energy units simple method}}_{a,y} \quad \forall a \in \mathcal{A}^{\text{se}}_y, \forall y \in \mathcal{Y}
 \end{aligned}
 ```
 
@@ -226,6 +237,7 @@ Where:
 assets\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{i}}_y } p^{\text{inv cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \\ &+  \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{i}}_y } p^{\text{inv cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{inv energy}}_{a,y}   \\
 assets\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{decom simple}} } p^{\text{fixed cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units simple method}}_{a,y} \\
 & + \sum_{(a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p^{\text{fixed cost}}_{a,v} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units compact method}}_{a,y,v} \\
+& + \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{decom simple}}} p^{\text{fixed cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{accumulated energy capacity simple method}}_{a,y} \\
 flows\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p^{\text{inv cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f,y} \\
 flows\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{accumulated units}}_{f,y} \\
 flows\_variable\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{rp weight}}_{k_y} \cdot p^{\text{variable cost}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
@@ -401,119 +413,127 @@ In addition, we define the following expression to determine the energy investme
 - Investment energy method:
 
 ```math
-e^{\text{energy inv limit}}_{a} = p^{\text{energy capacity}}_a \cdot v^{\text{inv energy}}_{a} \quad \forall a \in \mathcal{A}^{\text{i}} \cap \mathcal{A}^{\text{se}}
+e^{\text{accumulated energy inv limit}}_{a,y} = p^{\text{energy capacity}}_a \cdot v^{\text{accumulated energy units}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{i}} \cap \mathcal{A}^{\text{se}}_y
 ```
 
 - Fixed energy-to-power ratio method:
 
 ```math
-e^{\text{energy inv limit}}_{a} = p^{\text{energy to power ratio}}_a \cdot p^{\text{capacity}}_a \cdot v^{\text{inv}}_{a} \quad \forall a \in \mathcal{A}^{\text{i}} \cap (\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}})
+e^{\text{accumulated energy inv limit}}_{a,y} = p^{\text{capacity storage energy}}_a \cdot p^{\text{initial storage units}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}}_y)
+```
+
+```math
+\begin{aligned}
+e^{\text{accumulated energy inv limit}}_{a,y}
+& = p^{\text{capacity storage energy}}_a \cdot p^{\text{initial storage units}}_{a,y} \\
+& + p^{\text{energy to power ratio}}_{a,y} \cdot p^{\text{capacity}}_a \cdot v^{\text{accumulated units}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{i}} \cap (\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}}_y)
+\end{aligned}
 ```
 
 #### [Intra-temporal Constraint for Storage Balance](@id intra-storage-balance)
 
 ```math
 \begin{aligned}
-v^{\text{intra-storage}}_{a,k,b_k} = v^{\text{intra-storage}}_{a,k,b_k-1}  + p^{\text{inflows}}_{a,k,b_k} + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+v^{\text{intra-storage}}_{a,k_y,b_{k_y}} = v^{\text{intra-storage}}_{a,k_y,b_{k_y}-1}  + p^{\text{inflows}}_{a,k_y,b_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
 #### Intra-temporal Constraint for Maximum Storage Level Limit
 
 ```math
-v^{\text{intra-storage}}_{a,k,b_k} \leq p^{\text{max intra level}}_{a,k,b_k} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a}) \quad \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+v^{\text{intra-storage}}_{a,k_y,b_{k_y}} \leq p^{\text{max intra level}}_{a,k_y,b_{k_y}} \cdot e^{\text{accumulated energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Intra-temporal Constraint for Minimum Storage Level Limit
 
 ```math
-v^{\text{intra-storage}}_{a,k,b_k} \geq p^{\text{min intra level}}_{a,k,b_k} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a}) \quad \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+v^{\text{intra-storage}}_{a,k_y,b_{k_y}} \geq p^{\text{min intra level}}_{a,k_y,b_{k_y}} \cdot e^{\text{accumulated energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Intra-temporal Cycling Constraint
 
-The cycling constraint for the intra-temporal constraints links the first timestep block ($b^{\text{first}}_k$) and the last one ($b^{\text{last}}_k$) in each representative period. The parameter $p^{\text{init storage level}}_{a}$ determines the considered equations in the model for this constraint:
+The cycling constraint for the intra-temporal constraints links the first timestep block ($b^{\text{first}}_{k_y}$) and the last one ($b^{\text{last}}_{k_y}$) in each representative period. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
 
-- If parameter $p^{\text{init storage level}}_{a}$ is not defined, the intra-storage level of the last timestep block ($b^{\text{last}}_k$) is used as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance).
-
-```math
-\begin{aligned}
-v^{\text{intra-storage}}_{a,k,b^{\text{first}}_k} = v^{\text{intra-storage}}_{a,k,b^{\text{last}}_k}  + p^{\text{inflows}}_{a,k,b^{\text{first}}_k} + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K}
-\end{aligned}
-```
-
-- If parameter $p^{\text{init storage level}}_{a}$ is defined, we use it as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance). In addition, the intra-storage level of the last timestep block ($b^{\text{last}}_k$) in each representative period must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the intra-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) is used as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance).
 
 ```math
 \begin{aligned}
-v^{\text{intra-storage}}_{a,k,b^{\text{first}}_k} = p^{\text{init storage level}}_{a}  + p^{\text{inflows}}_{a,k,b^{\text{first}}_k} + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \cdot p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b^{\text{first}}_k} \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K}
+v^{\text{intra-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{intra-storage}}_{a,k_y,b^{\text{last}}_{k_y}}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
+\end{aligned}
+```
+
+- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance). In addition, the intra-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) in each representative period must be greater than this initial value.
+
+```math
+\begin{aligned}
+v^{\text{intra-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = p^{\text{init storage level}}_{a,y}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
 
 ```math
-v^{\text{intra-storage}}_{a,k,b^{\text{first}}_k} \geq p^{\text{init storage level}}_{a} \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k \in \mathcal{K}
+v^{\text{intra-storage}}_{a,k_y,b^{\text{first}}_{k_y}} \geq p^{\text{init storage level}}_{a,y} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 ```
 
 #### [Inter-temporal Constraint for Storage Balance](@id inter-storage-balance)
 
-This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year). The parameter $p^{\text{map}}_{p,k}$ determines how much of the representative period $k$ is in the period $p$, and you can use a clustering technique to calculate it. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
+This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year). The parameter $p^{\text{map}}_{p_y,k_y}$ determines how much of the representative period $k_y$ is in the period $p_y$, and you can use a clustering technique to calculate it. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
 
 For the sake of simplicity, we show the constraint assuming the inter-storage level between two consecutive periods $p$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the file [`assets-timeframe-partitions.csv`](@ref assets-timeframe-partitions).
 
 ```math
 \begin{aligned}
-v^{\text{inter-storage}}_{a,p} = & v^{\text{inter-storage}}_{a,p-1} + \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{inflows}}_{a,k,b_k} \\
-& + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \\
-& - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
-\\ \\ & \forall a \in \mathcal{A}^{\text{ss}}, \forall p \in \mathcal{P}
+v^{\text{inter-storage}}_{a,p_y} = & v^{\text{inter-storage}}_{a,p_y-1} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+& + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
+\\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
 
 #### Inter-temporal Constraint for Maximum Storage Level Limit
 
 ```math
-v^{\text{inter-storage}}_{a,p} \leq p^{\text{max inter level}}_{a,p} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a}) \quad \forall a \in \mathcal{A}^{\text{ss}}, \forall p \in \mathcal{P}
+v^{\text{inter-storage}}_{a,p_y} \leq p^{\text{max inter level}}_{a,p_y} \cdot e^{\text{accumulated energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 ```
 
 #### Inter-temporal Constraint for Minimum Storage Level Limit
 
 ```math
-v^{\text{inter-storage}}_{a,p} \geq p^{\text{min inter level}}_{a,p} \cdot (p^{\text{init storage capacity}}_{a} + e^{\text{energy inv limit}}_{a}) \quad \forall a \in \mathcal{A}^{\text{ss}}, \forall p \in \mathcal{P}
+v^{\text{inter-storage}}_{a,p_y} \geq p^{\text{min inter level}}_{a,p_y} \cdot e^{\text{accumulated energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 ```
 
 #### Inter-temporal Cycling Constraint
 
-The cycling constraint for the inter-temporal constraints links the first-period block ($p^{\text{first}}$) and the last one ($p^{\text{last}}$) in the timeframe. The parameter $p^{\text{init storage level}}_{a}$ determines the considered equations in the model for this constraint:
+The cycling constraint for the inter-temporal constraints links the first-period block ($p^{\text{first}}_y$) and the last one ($p^{\text{last}}_y$) in the timeframe. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
 
-- If parameter $p^{\text{init storage level}}_{a}$ is not defined, the inter-storage level of the last period block ($p^{\text{last}}$) is used as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance).
-
-```math
-\begin{aligned}
-v^{\text{inter-storage}}_{a,p^{\text{first}}} = & v^{\text{inter-storage}}_{a,p^{\text{last}}} + \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{inflows}}_{a,k,b_k} \\
-& + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \\
-& - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
-\\ \\ & \forall a \in \mathcal{A}^{\text{ss}}
-\end{aligned}
-```
-
-- If parameter $p^{\text{init storage level}}_{a}$ is defined, we use it as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance). In addition, the inter-storage level of the last period block ($p^{\text{last}}$) in the timeframe must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the inter-storage level of the last period block ($p^{\text{last}}_y$) is used as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance).
 
 ```math
 \begin{aligned}
-v^{\text{inter-storage}}_{a,p^{\text{first}}} = & p^{\text{init storage level}}_{a} + \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{inflows}}_{a,k,b_k} \\
-& + \sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \\
-& - \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{1}{p^{\text{eff}}_f} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p^{\text{first}},k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k}
-\\ \\ & \forall a \in \mathcal{A}^{\text{ss}}
+v^{\text{inter-storage}}_{a,p^{\text{first}}_y} = & v^{\text{inter-storage}}_{a,p^{\text{last}}_y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+& + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
+\\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
+\end{aligned}
+```
+
+- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance). In addition, the inter-storage level of the last period block ($p^{\text{last}}_y$) in the timeframe must be greater than this initial value.
+
+```math
+\begin{aligned}
+v^{\text{inter-storage}}_{a,p^{\text{first}}_y} = & p^{\text{init storage level}}_{a,y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+& + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
+\\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
 \end{aligned}
 ```
 
 ```math
-v^{\text{inter-storage}}_{a,p^{\text{last}}} \geq p^{\text{init storage level}}_{a} \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{ss}}
+v^{\text{inter-storage}}_{a,p^{\text{last}}_y} \geq p^{\text{init storage level}}_{a,y} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
 ```
 
 ### Constraints for Energy Hub Assets
@@ -532,7 +552,7 @@ v^{\text{inter-storage}}_{a,p^{\text{last}}} \geq p^{\text{init storage level}}_
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot v^{\text{flow}}_{f,k,b_k} = \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{v^{\text{flow}}_{f,k,b_k}}{p^{\text{eff}}_f} \quad \forall a \in \mathcal{A}^{\text{cv}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot v^{\text{flow}}_{f,k,b_k} = \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{v^{\text{flow}}_{f,k,b_k}}{p^{\text{eff}}_{f,y}} \quad \forall a \in \mathcal{A}^{\text{cv}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
 \end{aligned}
 ```
 
@@ -588,8 +608,8 @@ These constraints allow us to consider a maximum or minimum energy limit for an 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \leq  p^{\text{max inter profile}}_{a,p} \cdot p^{\text{max energy}}_{a}
-\\ \\ & \forall a \in \mathcal{A}^{\text{max e}}, \forall p \in \mathcal{P}
+\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p_y,k_y} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \leq  p^{\text{max inter profile}}_{a,p_y} \cdot p^{\text{max energy}}_{a}
+\\ \\ & \forall a \in \mathcal{A}^{\text{max e}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
 
@@ -597,8 +617,8 @@ These constraints allow us to consider a maximum or minimum energy limit for an 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p,k} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \geq  p^{\text{min inter profile}}_{a,p} \cdot p^{\text{min energy}}_{a}
-\\ \\ & \forall a \in \mathcal{A}^{\text{min e}}, \forall p \in \mathcal{P}
+\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p_y,k_y} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \geq  p^{\text{min inter profile}}_{a,p_y} \cdot p^{\text{min energy}}_{a}
+\\ \\ & \forall a \in \mathcal{A}^{\text{min e}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
 
