@@ -302,29 +302,29 @@ The current version of the code only incorporates a basic unit commitment versio
 For the unit commitment constraints, we define the following expression for the flow that is above the minimum operating point of the asset:
 
 ```math
-e^{\text{flow above min}}_{a,k,b_k} = \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} - p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{min operating point}}_{a} \cdot v^{\text{on}}_{a,k,b_k}  \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{uc}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+e^{\text{flow above min}}_{a,k_y,b_{k_y}} = \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{min operating point}}_{a,y} \cdot v^{\text{on}}_{a,k_y,b_{k_y}}  \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
-#### Limit to the Units On Variable
+#### Limit to the units on variable
 
 ```math
-v^{\text{on}}_{a,k,b_k} \leq p^{\text{init units}}_{a} + v^{\text{inv}}_{a}  \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{uc}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+v^{\text{on}}_{a,k_y,b_{k_y}} \leq v^{\text{accumulated units}}_{a,y}  \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
 ```
 
-#### Maximum Output Flow Above the Minimum Operating Point
+#### Maximum output flow above the minimum operating point
 
 ```math
-e^{\text{flow above min}}_{a,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(1 - p^{\text{min operating point}}_{a} \right) \cdot v^{\text{on}}_{a,k,b_k}  \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{uc basic}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+e^{\text{flow above min}}_{a,y,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot \left(1 - p^{\text{min operating point}}_{a,y} \right) \cdot v^{\text{on}}_{a,k_y,b_{k_y}}  \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc basic}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
 ```
 
-#### Minimum Output Flow Above the Minimum Operating Point
+#### Minimum output flow above the minimum operating point
 
 ```math
-e^{\text{flow above min}}_{a,k,b_k} \geq 0  \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{uc basic}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+e^{\text{flow above min}}_{a,k_y,b_{k_y}} \geq 0  \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc basic}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
 ```
 
 ### [Ramping Constraints](@id ramp-constraints)
