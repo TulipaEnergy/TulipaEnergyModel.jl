@@ -294,7 +294,7 @@ nothing # hide
 
 To create a traditional array in the order given by the investable assets, one can run
 
-The `solution.flow`, `solution.storage_level_intra_rp`, and `solution.storage_level_inter_rp` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows`, `:lowest_storage_level_intra_rp`, and `:storage_level_inter_rp`, respectively.
+The `solution.flow`, `solution.storage_level_intra_rp`, and `solution.storage_level_inter_rp` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows`, `:storage_level_intra_rp`, and `:storage_level_inter_rp`, respectively.
 You need to query the data from these dataframes and then use the column `index` to select the appropriate value.
 
 To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
@@ -316,11 +316,11 @@ df = filter(
 To create a vector with the all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
 
 ```@example solution
-a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_intra_rp].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rep_period == rp,
-    energy_problem.dataframes[:lowest_storage_level_intra_rp],
+    energy_problem.dataframes[:storage_level_intra_rp],
     view = true,
 )
 [solution.storage_level_intra_rp[row.index] for row in eachrow(df)]
@@ -375,11 +375,11 @@ df = filter(
 To create a vector with all the values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
 
 ```@example solution
-a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_intra_rp].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rep_period == rp,
-    energy_problem.dataframes[:lowest_storage_level_intra_rp],
+    energy_problem.dataframes[:storage_level_intra_rp],
     view = true,
 )
 [energy_problem.graph[a].storage_level_intra_rp[(rp, row.timesteps_block)] for row in eachrow(df)]
@@ -425,11 +425,11 @@ df.solution
 ```
 
 ```@example solution
-a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_intra_rp].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rep_period == rp,
-    energy_problem.dataframes[:lowest_storage_level_intra_rp],
+    energy_problem.dataframes[:storage_level_intra_rp],
     view = true,
 )
 df.solution

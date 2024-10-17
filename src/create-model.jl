@@ -64,10 +64,8 @@ function create_model(
         df_is_charging = dataframes[:lowest_in_out]
         df_units_on = dataframes[:units_on]
         df_units_on_and_outflows = dataframes[:units_on_and_outflows]
-        df_storage_intra_rp_balance_grouped = DataFrames.groupby(
-            dataframes[:lowest_storage_level_intra_rp],
-            [:asset, :rep_period, :year],
-        )
+        df_storage_intra_rp_balance_grouped =
+            DataFrames.groupby(dataframes[:storage_level_intra_rp], [:asset, :rep_period, :year])
         df_storage_inter_rp_balance_grouped =
             DataFrames.groupby(dataframes[:storage_level_inter_rp], [:asset, :year])
     end

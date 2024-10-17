@@ -8,7 +8,7 @@ The function also optionally sets binary constraints for certain charging variab
 
 """
 function add_storage_variables!(model, graph, dataframes, sets)
-    df_intra_rp = dataframes[:lowest_storage_level_intra_rp]
+    df_intra_rp = dataframes[:storage_level_intra_rp]
     df_inter_rp = dataframes[:storage_level_inter_rp]
     df_is_charging = dataframes[:lowest_in_out]
 

@@ -450,7 +450,7 @@ function add_expressions_to_dataframe!(
             multiply_by_duration = true,
         )
         add_expression_terms_intra_rp_constraints!(
-            dataframes[:lowest_storage_level_intra_rp],
+            dataframes[:storage_level_intra_rp],
             dataframes[:flows],
             expression_workspace,
             representative_periods,
@@ -544,10 +544,10 @@ function add_expressions_to_dataframe!(
             model[:outgoing_flow_lowest_resolution] = dataframes[:lowest].outgoing_flow
         incoming_flow_lowest_storage_resolution_intra_rp =
             model[:incoming_flow_lowest_storage_resolution_intra_rp] =
-                dataframes[:lowest_storage_level_intra_rp].incoming_flow
+                dataframes[:storage_level_intra_rp].incoming_flow
         outgoing_flow_lowest_storage_resolution_intra_rp =
             model[:outgoing_flow_lowest_storage_resolution_intra_rp] =
-                dataframes[:lowest_storage_level_intra_rp].outgoing_flow
+                dataframes[:storage_level_intra_rp].outgoing_flow
         incoming_flow_highest_in_out_resolution =
             model[:incoming_flow_highest_in_out_resolution] =
                 dataframes[:highest_in_out].incoming_flow
@@ -819,7 +819,7 @@ function create_variables!(model, graph, dataframes, sets)
                     model,
                     lower_bound = 0.0,
                     base_name = "storage_level_intra_rp[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-                ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
+                ) for row in eachrow(dataframes[:storage_level_intra_rp])
             ]
         storage_level_inter_rp =
             model[:storage_level_inter_rp] = [
