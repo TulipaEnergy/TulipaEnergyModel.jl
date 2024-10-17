@@ -241,8 +241,10 @@ unit\_on\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} + v^{\text{inv}}_{a} \right)  \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}} \right) \cup \mathcal{A}^{\text{p}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units simple method}}_{a,y}  \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{decom simple}} \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}} \right)  \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\ \\
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units compact method}}_{a,y,v}  \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{decom compact}} \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}} \right) \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -250,15 +252,15 @@ Storage assets using the method to avoid charging and discharging simultaneously
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a} + p^{\text{inv limit}}_{a} \right) \cdot \left(1 - v^{\text{is charging}}_{a,k,b_k} \right) \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a,y} + p^{\text{inv limit}}_{a,y} \right) \cdot \left(1 - v^{\text{is charging}}_{a,k_y,b_{k_y}} \right) \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} \cdot \left(1 - v^{\text{is charging}}_{a,k,b_k} \right) + v^{\text{inv}}_{a} \right) \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot \left(v^{\text{accumulated units}}_{a,y} - p^{\text{init units}}_{a,y} \cdot v^{\text{is charging}}_{a,k_y,b_{k_y}} \right)
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -266,8 +268,8 @@ Storage assets using the method to avoid charging and discharging simultaneously
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} + v^{\text{inv}}_{a} \right)  \quad
-\\ \\ \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units}}_{a,y}   \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -275,20 +277,20 @@ Storage assets using the method to avoid charging and discharging simultaneously
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a} + p^{\text{inv limit}}_{a} \right)  \cdot v^{\text{is charging}}_{a,k,b_k} \quad \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a,y} + p^{\text{inv limit}}_{a,y} \right)  \cdot v^{\text{is charging}}_{a,k_y,b_{k_y}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y, \forall k_y \in \mathcal{K_y},\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{a,k,b_k} \cdot p^{\text{capacity}}_{a} \cdot \left(p^{\text{init units}}_{a} \cdot v^{\text{is charging}}_{a,k,b_k} + v^{\text{inv}}_{a} \right)   \quad \forall a \in \mathcal{A}^{\text{sb}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot \left(v^{\text{accumulated units}}_{a,y} - p^{\text{init units}}_{a,y} \cdot (1-v^{\text{is charging}}_{a,k_y,b_{k_y}}) \right)  \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
 #### Lower Limit for Flows that are Associated with Assets
 
 ```math
-v^{\text{flow}}_{f,k,b_k} \geq 0 \quad \forall f \in \left( \mathcal{F}^{\text{out}}_a | a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} \right) \cup \left(\mathcal{F}^{\text{in}}_a | a \in \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} \right), \forall k \in \mathcal{K}, \forall b_k \in \mathcal{B_k}
+v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \in \left( \mathcal{F}^{\text{out}}_{a,y} | a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} \right) \cup \left(\mathcal{F}^{\text{in}}_{a,y} | a \in \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} \right), \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ### [Unit Commitment Constraints](@id uc-constraints)
