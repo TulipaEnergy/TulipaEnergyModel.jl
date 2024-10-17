@@ -263,7 +263,15 @@ function compute_rp_partition(
 end
 
 function compute_variables_indices(dataframes)
-    variables = Dict(:dummy => TulipaVariable(DataFrame(), Vector()))
+    variables = Dict(
+        :flow => TulipaVariable(dataframes[:flows], Vector()),
+        :units_on => TulipaVariable(dataframes[:units_on], Vector()),
+        :storage_level_intra_rp =>
+            TulipaVariable(dataframes[:lowest_storage_level_intra_rp], Vector()),
+        :storage_level_inter_rp =>
+            TulipaVariable(dataframes[:storage_level_inter_rp], Vector()),
+        :is_charging => TulipaVariable(dataframes[:lowest_in_out], Vector()),
+    )
 
     return variables
 end
