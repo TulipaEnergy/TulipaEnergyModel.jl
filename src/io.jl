@@ -542,7 +542,7 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
 
     output_file = joinpath(output_folder, "storage-level-intra-rp.csv")
     output_table = DataFrames.select(
-        dataframes[:lowest_storage_level_intra_rp],
+        dataframes[:storage_level_intra_rp],
         :asset,
         :rep_period,
         :timesteps_block => :timestep,

@@ -77,7 +77,7 @@ function add_storage_constraints!(
                 1.0,
             ) * accumulated_energy_capacity[row.year, row.asset],
             base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
+        ) for row in eachrow(dataframes[:storage_level_intra_rp])
     ]
 
     # - Minimum storage level
@@ -95,7 +95,7 @@ function add_storage_constraints!(
                 0.0,
             ) * accumulated_energy_capacity[row.year, row.asset],
             base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(dataframes[:lowest_storage_level_intra_rp])
+        ) for row in eachrow(dataframes[:storage_level_intra_rp])
     ]
 
     # - Cycling condition

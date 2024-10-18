@@ -37,7 +37,7 @@ function solve_model!(
                 graph[a].investment_integer_storage_energy[y] ? round(Int, value) : value
         end
 
-        for row in eachrow(energy_problem.dataframes[:lowest_storage_level_intra_rp])
+        for row in eachrow(energy_problem.dataframes[:storage_level_intra_rp])
             a, rp, timesteps_block, value =
                 row.asset, row.rep_period, row.timesteps_block, row.solution
             graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
@@ -92,7 +92,7 @@ function solve_model!(dataframes, model, args...; kwargs...)
     end
 
     dataframes[:flows].solution = solution.flow
-    dataframes[:lowest_storage_level_intra_rp].solution = solution.storage_level_intra_rp
+    dataframes[:storage_level_intra_rp].solution = solution.storage_level_intra_rp
     dataframes[:storage_level_inter_rp].solution = solution.storage_level_inter_rp
     dataframes[:max_energy_inter_rp].solution = solution.max_energy_inter_rp
     dataframes[:min_energy_inter_rp].solution = solution.min_energy_inter_rp

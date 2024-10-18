@@ -111,22 +111,23 @@ constraints_partitions = compute_constraints_partitions(graph, representative_pe
 
 The `constraints_partitions` has two dictionaries with the keys `:lowest_resolution` and `:highest_resolution`. The lowest resolution dictionary is mainly used to create the constraints for energy balance, whereas the highest resolution dictionary is mainly used to create the capacity constraints in the model.
 
-Finally, we also need dataframes that store the linearized indexes of the variables.
+We also need dataframes that store the linearized indexes of the variables.
 
 ```@example manual
 dataframes = construct_dataframes(graph, representative_periods, constraints_partitions, years)
 ```
 
-And we need the sets.
+We need the sets and the variables indices.
 
 ```@example manual
 sets = create_sets(graph, years)
+variables = compute_variables_indices(dataframes)
 ```
 
 Now we can compute the model.
 
 ```@example manual
-model = create_model(graph, sets, representative_periods, dataframes, years, timeframe, groups, model_parameters)
+model = create_model(graph, sets, variables, representative_periods, dataframes, years, timeframe, groups, model_parameters)
 ```
 
 Finally, we can compute the solution.
@@ -294,7 +295,7 @@ nothing # hide
 
 To create a traditional array in the order given by the investable assets, one can run
 
-The `solution.flow`, `solution.storage_level_intra_rp`, and `solution.storage_level_inter_rp` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows`, `:lowest_storage_level_intra_rp`, and `:storage_level_inter_rp`, respectively.
+The `solution.flow`, `solution.storage_level_intra_rp`, and `solution.storage_level_inter_rp` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows`, `:storage_level_intra_rp`, and `:storage_level_inter_rp`, respectively.
 You need to query the data from these dataframes and then use the column `index` to select the appropriate value.
 
 To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
@@ -316,11 +317,11 @@ df = filter(
 To create a vector with the all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
 
 ```@example solution
-a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_intra_rp].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rep_period == rp,
-    energy_problem.dataframes[:lowest_storage_level_intra_rp],
+    energy_problem.dataframes[:storage_level_intra_rp],
     view = true,
 )
 [solution.storage_level_intra_rp[row.index] for row in eachrow(df)]
@@ -375,11 +376,11 @@ df = filter(
 To create a vector with all the values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
 
 ```@example solution
-a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_intra_rp].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rep_period == rp,
-    energy_problem.dataframes[:lowest_storage_level_intra_rp],
+    energy_problem.dataframes[:storage_level_intra_rp],
     view = true,
 )
 [energy_problem.graph[a].storage_level_intra_rp[(rp, row.timesteps_block)] for row in eachrow(df)]
@@ -425,11 +426,11 @@ df.solution
 ```
 
 ```@example solution
-a = energy_problem.dataframes[:lowest_storage_level_intra_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_intra_rp].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rep_period == rp,
-    energy_problem.dataframes[:lowest_storage_level_intra_rp],
+    energy_problem.dataframes[:storage_level_intra_rp],
     view = true,
 )
 df.solution

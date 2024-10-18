@@ -26,11 +26,13 @@ end
     dataframes = construct_dataframes(graph, representative_periods, constraints_partitions, years)
     model_parameters = ModelParameters(connection)
     sets = create_sets(graph, years)
+    variables = compute_variables_indices(dataframes)
 
     # Create model
     model = create_model(
         graph,
         sets,
+        variables,
         representative_periods,
         dataframes,
         years,

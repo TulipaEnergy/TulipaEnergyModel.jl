@@ -39,10 +39,12 @@ include("run-scenario.jl")
 include("time-resolution.jl")
 include("economic-parameters.jl")
 
-constraints_folder_path = joinpath(@__DIR__, "constraints")
-constraints_files = filter(f -> endswith(f, ".jl"), readdir(constraints_folder_path))
-for file in constraints_files
-    include(joinpath(constraints_folder_path, file))
+for folder_name in ["variables", "constraints"]
+    folder_path = joinpath(@__DIR__, folder_name)
+    files = filter(f -> endswith(f, ".jl"), readdir(folder_path))
+    for file in files
+        include(joinpath(folder_path, file))
+    end
 end
 
 end

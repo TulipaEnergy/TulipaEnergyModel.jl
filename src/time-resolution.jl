@@ -1,4 +1,4 @@
-export compute_rp_partition, compute_constraints_partitions
+export compute_rp_partition, compute_constraints_partitions, compute_variables_indices
 
 using SparseArrays
 
@@ -37,7 +37,7 @@ function compute_constraints_partitions(graph, representative_periods, years)
             asset_filter = (a, y) -> graph[a].type in ["conversion", "producer"],
         ),
         (
-            name = :lowest_storage_level_intra_rp,
+            name = :storage_level_intra_rp,
             partitions = _all,
             strategy = :lowest,
             asset_filter = (a, y) ->
@@ -260,4 +260,18 @@ function compute_rp_partition(
         end
     end
     return rp_partition
+end
+
+function compute_variables_indices(dataframes)
+    variables = Dict(
+        :flow => TulipaVariable(dataframes[:flows], Vector()),
+        :units_on => TulipaVariable(dataframes[:units_on], Vector()),
+        :storage_level_intra_rp =>
+            TulipaVariable(dataframes[:storage_level_intra_rp], Vector()),
+        :storage_level_inter_rp =>
+            TulipaVariable(dataframes[:storage_level_inter_rp], Vector()),
+        :is_charging => TulipaVariable(dataframes[:lowest_in_out], Vector()),
+    )
+
+    return variables
 end
