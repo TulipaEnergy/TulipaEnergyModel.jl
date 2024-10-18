@@ -584,7 +584,7 @@ v^{\text{flow}}_{f,k_y,b_{k_y}} \geq - p^{\text{availability profile}}_{f,y,k_y,
 #### Maximum Investment Limit for Assets
 
 ```math
-v^{\text{inv}}_{a} \leq \frac{p^{\text{inv limit}}_{a}}{p^{\text{capacity}}_{a}} \quad \forall a \in \mathcal{A}^{\text{i}}
+v^{\text{inv}}_{a,y} \leq \frac{p^{\text{inv limit}}_{a,y}}{p^{\text{capacity}}_{a}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{i}}_y
 ```
 
 If the parameter `investment_integer` in the [`assets-data.csv`](@ref assets-data) file is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
@@ -592,7 +592,7 @@ If the parameter `investment_integer` in the [`assets-data.csv`](@ref assets-dat
 #### Maximum Energy Investment Limit for Assets
 
 ```math
-v^{\text{inv energy}}_{a} \leq \frac{p^{\text{inv limit energy}}_{a}}{p^{\text{energy capacity}}_{a}} \quad \forall a \in \mathcal{A}^{\text{i}} \cap \mathcal{A}^{\text{se}}
+v^{\text{inv energy}}_{a,y} \leq \frac{p^{\text{inv limit energy}}_{a,y}}{p^{\text{energy capacity}}_{a}} \quad \forall y \in \mathcal{Y},  \forall a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y
 ```
 
 If the parameter `investment_integer_storage_energy` in the [`assets-data.csv`](@ref assets-data) file is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
@@ -600,7 +600,7 @@ If the parameter `investment_integer_storage_energy` in the [`assets-data.csv`](
 #### Maximum Investment Limit for Flows
 
 ```math
-v^{\text{inv}}_{f} \leq \frac{p^{\text{inv limit}}_{f}}{p^{\text{capacity}}_{f}} \quad \forall f \in \mathcal{F}^{\text{ti}}
+v^{\text{inv}}_{f,y} \leq \frac{p^{\text{inv limit}}_{f,y}}{p^{\text{capacity}}_{f}} \quad \forall y \in \mathcal{Y}, \forall f \in \mathcal{F}^{\text{ti}}_y
 ```
 
 If the parameter `investment_integer` in the [`flows-data.csv`](@ref flows-data) file is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
