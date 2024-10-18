@@ -542,7 +542,8 @@ v^{\text{inter-storage}}_{a,p^{\text{last}}_y} \geq p^{\text{init storage level}
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} v^{\text{flow}}_{f,k,b_k} = \sum_{f \in \mathcal{F}^{\text{out}}_a} v^{\text{flow}}_{f,k,b_k} \quad \forall a \in \mathcal{A}^{\text{h}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} = \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}}
+\quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{h}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -552,7 +553,8 @@ v^{\text{inter-storage}}_{a,p^{\text{last}}_y} \geq p^{\text{init storage level}
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_a} p^{\text{eff}}_f \cdot v^{\text{flow}}_{f,k,b_k} = \sum_{f \in \mathcal{F}^{\text{out}}_a} \frac{v^{\text{flow}}_{f,k,b_k}}{p^{\text{eff}}_{f,y}} \quad \forall a \in \mathcal{A}^{\text{cv}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} = \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{v^{\text{flow}}_{f,k_y,b_{k_y}}}{p^{\text{eff}}_{f,y}}
+\quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{cv}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -562,7 +564,7 @@ v^{\text{inter-storage}}_{a,p^{\text{last}}_y} \geq p^{\text{init storage level}
 
 ```math
 \begin{aligned}
-v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{f,k,b_k} \cdot \left(p^{\text{init export capacity}}_{f} + p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \right)  \quad \forall f \in \mathcal{F}^{\text{t}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{f,k,b_k} \cdot \left(p^{\text{init export capacity}}_{f} + p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \right)  \quad \forall f \in \mathcal{F}^{\text{t}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -570,7 +572,7 @@ v^{\text{flow}}_{f,k,b_k} \leq p^{\text{availability profile}}_{f,k,b_k} \cdot \
 
 ```math
 \begin{aligned}
-v^{\text{flow}}_{f,k,b_k} \geq - p^{\text{availability profile}}_{f,k,b_k} \cdot \left(p^{\text{init import capacity}}_{f} + p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \right)  \quad \forall f \in \mathcal{F}^{\text{t}}, \forall k \in \mathcal{K},\forall b_k \in \mathcal{B_k}
+v^{\text{flow}}_{f,k_y,b_{k_y}} \geq - p^{\text{availability profile}}_{f,k,b_k} \cdot \left(p^{\text{init import capacity}}_{f} + p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \right)  \quad \forall f \in \mathcal{F}^{\text{t}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -608,7 +610,7 @@ These constraints allow us to consider a maximum or minimum energy limit for an 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p_y,k_y} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \leq  p^{\text{max inter profile}}_{a,p_y} \cdot p^{\text{max energy}}_{a}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p_y,k_y} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq  p^{\text{max inter profile}}_{a,p_y} \cdot p^{\text{max energy}}_{a}
 \\ \\ & \forall a \in \mathcal{A}^{\text{max e}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
@@ -617,7 +619,7 @@ These constraints allow us to consider a maximum or minimum energy limit for an 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_a} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p_y,k_y} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k,b_k} \geq  p^{\text{min inter profile}}_{a,p_y} \cdot p^{\text{min energy}}_{a}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p_y,k_y} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq  p^{\text{min inter profile}}_{a,p_y} \cdot p^{\text{min energy}}_{a}
 \\ \\ & \forall a \in \mathcal{A}^{\text{min e}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
