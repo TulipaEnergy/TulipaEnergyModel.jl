@@ -613,8 +613,8 @@ These constraints allow us to consider a maximum or minimum energy limit for an 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p_y,k_y} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq  p^{\text{max inter profile}}_{a,p_y} \cdot p^{\text{max energy}}_{a}
-\\ \\ & \forall a \in \mathcal{A}^{\text{max e}}, \forall p_y \in \mathcal{P}_y
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq  p^{\text{max inter profile}}_{a,p_y} \cdot p^{\text{max energy}}_{a,y}
+\\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{max e}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
 
@@ -622,8 +622,8 @@ These constraints allow us to consider a maximum or minimum energy limit for an 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k \in \mathcal{K}} p^{\text{map}}_{p_y,k_y} \sum_{b_k \in \mathcal{B_K}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq  p^{\text{min inter profile}}_{a,p_y} \cdot p^{\text{min energy}}_{a}
-\\ \\ & \forall a \in \mathcal{A}^{\text{min e}}, \forall p_y \in \mathcal{P}_y
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq  p^{\text{min inter profile}}_{a,p_y} \cdot p^{\text{min energy}}_{a,y}
+\\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{min e}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
 
@@ -633,7 +633,7 @@ The following constraints aggregate variables of different assets depending on t
 
 #### [Investment Limits of a Group](@id investment-group-constraints)
 
-These constraints apply to assets in a group using the investment method $\mathcal{G}^{\text{ai}}$. They help impose an investment potential of a spatial area commonly shared by several assets that can be invested there.
+These constraints apply to assets in a group using the investment method $\mathcal{G}^{\text{ai}}_y$. They help impose an investment potential of a spatial area commonly shared by several assets that can be invested there.
 
 > **Note**: These constraints are applied to the investments each year. The model does not yet have investment limits to a group's accumulated invested capacity.
 
@@ -641,8 +641,8 @@ These constraints apply to assets in a group using the investment method $\mathc
 
 ```math
 \begin{aligned}
-\sum_{a \in \mathcal{A}^{\text{i}} | p^{\text{group}}_{a} = g} p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \geq  p^{\text{min invest limit}}_{g}
-\\ \\ & \forall g \in \mathcal{G}^{\text{ai}}
+\sum_{a \in \mathcal{A}^{\text{i}}_y | p^{\text{group}}_{a} = g} p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \geq  p^{\text{min invest limit}}_{g,y}
+\\ \\ & \forall y \in \mathcal{Y}, \forall g \in \mathcal{G}^{\text{ai}}_y
 \end{aligned}
 ```
 
@@ -650,8 +650,8 @@ These constraints apply to assets in a group using the investment method $\mathc
 
 ```math
 \begin{aligned}
-\sum_{a \in \mathcal{A}^{\text{i}} | p^{\text{group}}_{a} = g} p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a} \leq  p^{\text{max invest limit}}_{g}
-\\ \\ & \forall g \in \mathcal{G}^{\text{ai}}
+\sum_{a \in \mathcal{A}^{\text{i}}_y | p^{\text{group}}_{a} = g} p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \leq  p^{\text{max invest limit}}_{g,y}
+\\ \\ & \forall y \in \mathcal{Y}, \forall g \in \mathcal{G}^{\text{ai}}_y
 \end{aligned}
 ```
 
