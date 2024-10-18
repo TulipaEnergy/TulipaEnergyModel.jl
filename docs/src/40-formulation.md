@@ -181,7 +181,9 @@ For accumulated units across years, we define the following expresssions:
     & \forall (a,y,v) \in \mathcal{D}^{\text{accumulated units compact}} \\
     v^{\text{accumulated energy units simple method}}_{a,y} & = p^{\text{initial storage units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv energy}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom energy units simple}}_{a,i} \\
     & \forall a \in \mathcal{A}^{\text{se}}_y, \forall y \in \mathcal{Y} \\
-    v^{\text{accumulated units simple method}}_{f,y} & = p^{\text{initial units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
+    v^{\text{accumulated export units simple method}}_{f,y} & = p^{\text{initial export units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
+    & \forall f \in \mathcal{F}^{\text{ti}}_y, \forall y \in \mathcal{Y} \\
+    v^{\text{accumulated import units simple method}}_{f,y} & = p^{\text{initial import units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
     & \forall f \in \mathcal{F}^{\text{ti}}_y, \forall y \in \mathcal{Y} \\
 \end{aligned}
 ```
@@ -216,7 +218,8 @@ In addition, we define the following expressions to determine the accumulated un
 
 ```math
 \begin{aligned}
-    v^{\text{accumulated units}}_{f,y} & = v^{\text{accumulated units simple method}}_{f,y} \quad \forall f \in \mathcal{F}^{\text{ti}}_y, \forall y \in \mathcal{Y}
+    v^{\text{accumulated export units}}_{f,y} & = v^{\text{accumulated export units simple method}}_{f,y} \quad \forall f \in \mathcal{F}^{\text{ti}}_y, \forall y \in \mathcal{Y} \\
+    v^{\text{accumulated import units}}_{f,y} & = v^{\text{accumulated import units simple method}}_{f,y} \quad \forall f \in \mathcal{F}^{\text{ti}}_y, \forall y \in \mathcal{Y}
 \end{aligned}
 ```
 
@@ -239,7 +242,7 @@ assets\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{d
 & + \sum_{(a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p^{\text{fixed cost}}_{a,v} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units compact method}}_{a,y,v} \\
 & + \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{decom simple}}} p^{\text{fixed cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{accumulated energy capacity simple method}}_{a,y} \\
 flows\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p^{\text{inv cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f,y} \\
-flows\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{accumulated units}}_{f,y} \\
+flows\_fixed\_cost &= \frac{1}{2} \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot \left( v^{\text{accumulated export units}}_{f,y} + v^{\text{accumulated import units}}_{f,y} \right) \\
 flows\_variable\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{rp weight}}_{k_y} \cdot p^{\text{variable cost}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 unit\_on\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{rp weight}}_{k_y} \cdot p^{\text{units on cost}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{units on}}_{a,k_y,b_{k_y}}
 \end{aligned}
@@ -564,7 +567,7 @@ v^{\text{inter-storage}}_{a,p^{\text{last}}_y} \geq p^{\text{init storage level}
 
 ```math
 \begin{aligned}
-v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{f,k,b_k} \cdot \left(p^{\text{init export capacity}}_{f} + p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \right)  \quad \forall f \in \mathcal{F}^{\text{t}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{f,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{accumulated export units}}_{f,y}  \quad \forall y \in \mathcal{Y}, \forall f \in \mathcal{F}^{\text{t}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -572,7 +575,7 @@ v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{f,k,b_k} \
 
 ```math
 \begin{aligned}
-v^{\text{flow}}_{f,k_y,b_{k_y}} \geq - p^{\text{availability profile}}_{f,k,b_k} \cdot \left(p^{\text{init import capacity}}_{f} + p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f} \right)  \quad \forall f \in \mathcal{F}^{\text{t}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+v^{\text{flow}}_{f,k_y,b_{k_y}} \geq - p^{\text{availability profile}}_{f,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{accumulated import units}}_{f,y}  \quad \forall y \in \mathcal{Y}, \forall f \in \mathcal{F}^{\text{t}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
