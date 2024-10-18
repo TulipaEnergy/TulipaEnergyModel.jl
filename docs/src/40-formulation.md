@@ -79,16 +79,21 @@ In addition, the following subsets represent methods for incorporating additiona
 
 #### General Parameters for Assets
 
-| Name                                                | Domain                   | Domains of Indices                                                                                 | Description                                                                                                            | Units          |
-| --------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------- |
-| $p^{\text{inv cost}}_{a,y}$                         | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Overnight cost of a unit of asset $a$ at year $y$                                                                      | [kEUR/MW]      |
-| $p^{\text{fixed cost}}_{a,y}$                       | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Fixed cost of a unit of asset $a$ at year $y$                                                                          | [kEUR/MW/year] |
-| $p^{\text{inv limit}}_{a,y}$                        | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Investment potential of asset $a$ at year $y$                                                                          | [MW]           |
-| $p^{\text{capacity}}_{a}$                           | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                | Capacity per unit of asset $a$                                                                                         | [MW]           |
-| $p^{\text{technical lifetime}}_{a}$                 | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                | Technical lifetime of asset $a$                                                                                        | [year]         |
-| $p^{\text{init units}}_{a,y}$                       | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Initial number of units of asset $a$ accumulated at year $y$                                                           | [units]        |
-| $p^{\text{availability profile}}_{a,v,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Availability profile of asset $a$ invested in year $v$ in the representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]         |
-| $p^{\text{group}}_{a}$                              | $\mathcal{G}^{\text{a}}$ | $a \in \mathcal{A}$                                                                                | Group $g$ to which the asset $a$ belongs                                                                               | [-]            |
+| Name                                                 | Domain                   | Domains of Indices                                                                                 | Description                                                                                                            | Units          |
+| ---------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------- |
+| $p^{\text{inv cost}}_{a,y}$                          | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Overnight cost of a unit of asset $a$ at year $y$                                                                      | [kEUR/MW]      |
+| $p^{\text{annualized inv cost}}_{a,y}$               | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Annualized investment cost of a unit of asset $a$ at year $y$                                                          | [kEUR/MW/year] |
+| $p^{\text{salvage value}}_{a,y}$                     | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Salvage value of a unit of asset $a$ at year $y$                                                                       | [kEUR/MW]      |
+| $p^{\text{discounting factor asset inv cost}}_{a,y}$ | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Discounting factor for investment cost of a unit of asset $a$ at year $y$                                              | [-]            |
+| $p^{\text{fixed cost}}_{a,y}$                        | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Fixed cost of a unit of asset $a$ at year $y$                                                                          | [kEUR/MW/year] |
+| $p^{\text{inv limit}}_{a,y}$                         | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Investment potential of asset $a$ at year $y$                                                                          | [MW]           |
+| $p^{\text{capacity}}_{a}$                            | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                | Capacity per unit of asset $a$                                                                                         | [MW]           |
+| $p^{\text{technical lifetime}}_{a}$                  | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$                                                                                | Technical lifetime of asset $a$                                                                                        | [year]         |
+| $p^{\text{economic lifetime}}_{a}$                   | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$                                                                                | Economic lifetime of asset $a$                                                                                         | [year]         |
+| $p^{\text{technology-specific discount rate}}_{a}$   | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                | Technology-specific discount rate of asset $a$                                                                         | [year]         |
+| $p^{\text{init units}}_{a,y}$                        | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Initial number of units of asset $a$ accumulated at year $y$                                                           | [units]        |
+| $p^{\text{availability profile}}_{a,v,k_y,b_{k_y}}$  | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Availability profile of asset $a$ invested in year $v$ in the representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]         |
+| $p^{\text{group}}_{a}$                               | $\mathcal{G}^{\text{a}}$ | $a \in \mathcal{A}$                                                                                | Group $g$ to which the asset $a$ belongs                                                                               | [-]            |
 
 #### Extra Parameters for Consumer Assets
 
@@ -139,10 +144,15 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{variable cost}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Variable cost of flow $f$ at year $y$                                                                                 | [kEUR/MWh]     |
 | $p^{\text{eff}}_{f,y}$                              | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Efficiency of flow $f$ at year $y$                                                                                    | [p.u.]         |
 | $p^{\text{inv cost}}_{f,y}$                         | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Overnight cost of transport flow $f$ at year $y$                                                                      | [kEUR/MW]      |
+| $p^{\text{annualized inv cost}}_{f,y}$              | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Annualized investment cost of transport flow $f$ at year $y$                                                          | [kEUR/MW/year] |
+| $p^{\text{salvage value}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Salvage value of transport flow $f$ at year $y$                                                                       | [kEUR/MW]      |
+| $p^{\text{discounting factor flow inv cost}}_{f,y}$ | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Discounting factor for investment cost of transport flow $f$ at year $y$                                              | [-]            |
 | $p^{\text{fixed cost}}_{f,y}$                       | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Fixed cost of transport flow $f$ at year $y$                                                                          | [kEUR/MW/year] |
 | $p^{\text{inv limit}}_{f,y}$                        | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Investment potential of flow $f$ at year $y$                                                                          | [MW]           |
 | $p^{\text{capacity}}_{f}$                           | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Capacity per unit of investment of transport flow $f$ (both exports and imports)                                      | [MW]           |
-| $p^{\text{technical lifetime}}_{f}$                 | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Technical lifetime of investment of transport flow $f$ (both exports and imports)                                     | [year]         |
+| $p^{\text{technical lifetime}}_{f}$                 | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Technical lifetime of investment of transport flow $f$ (both exports and imports)                                     | [year]         |
+| $p^{\text{economic lifetime}}_{f}$                  | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Economic lifetime of investment of transport flow $f$ (both exports and imports)                                      | [year]         |
+| $p^{\text{technology-specific discount rate}}_{f}$  | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Technology-specific discount rate of investment of transport flow $f$ (both exports and imports)                      | [year]         |
 | $p^{\text{init export units}}_{f,y}$                | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Initial export units of transport flow $f$ accumulated at year $y$                                                    | [MW]           |
 | $p^{\text{init import units}}_{f,y}$                | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Initial import units of transport flow $f$ accumulated at year $y$                                                    | [MW]           |
 | $p^{\text{availability profile}}_{f,v,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{F}$, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Availability profile of flow $f$ invested in year $v$ in the representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]         |
@@ -161,6 +171,19 @@ In addition, the following subsets represent methods for incorporating additiona
 | ----------------------------------- | ---------------- | ---------------------------------------------------- | ------------------------------------------------------------- | ----- |
 | $p^{\text{min invest limit}}_{g,y}$ | $\mathbb{R}_{+}$ | $g \in \mathcal{G}^{\text{ai}}$, $y \in \mathcal{Y}$ | Minimum investment limit (potential) of group $g$ at year $y$ | [MW]  |
 | $p^{\text{max invest limit}}_{g,y}$ | $\mathbb{R}_{+}$ | $g \in \mathcal{G}^{\text{ai}}$, $y \in \mathcal{Y}$ | Maximum investment limit (potential) of group $g$ at year $y$ | [MW]  |
+
+### Parameters for the Model
+
+| Name                              | Domain           | Description          | Units  |
+| --------------------------------- | ---------------- | -------------------- | ------ |
+| $p^{\text{social discount rate}}$ | $\mathbb{R}_{+}$ | Social discount rate | [-]    |
+| $p^{\text{discount year}}$        | $\mathbb{Z}_{+}$ | Discount year        | [year] |
+
+### Extra Parameters for Discounting
+
+| Name                                               | Domain           | Domains of Indices  | Description                                                              | Units |
+| -------------------------------------------------- | ---------------- | ------------------- | ------------------------------------------------------------------------ | ----- |
+| $p^{\text{discounting factor operation cost}}_{y}$ | $\mathbb{R}_{+}$ | $y \in \mathcal{Y}$ | Discounting factor for investment cost of transport flow $f$ at year $y$ | [-]   |
 
 ## [Variables](@id math-variables)
 
@@ -236,6 +259,50 @@ In addition, we define the following expressions to determine the accumulated un
 \end{aligned}
 ```
 
+### Economic Representation for the Objective Function
+
+#### Discounting Factor for Asset Investment Costs
+
+```math
+p_{a, y}^{\text{discounting factor asset inv cost}}=\frac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}}(1-\frac{p_{a, y}^{\text{salvage value}}}{p_{a, y}^{\text{inv cost}}}) \quad \forall a \in \mathcal{A}_y^{\text{i}}, \forall y \in \mathcal{Y}
+```
+
+where salvage value is
+
+```math
+p^{\text{salvage value}}_{a, y} = p^{\text{annualized inv cost}}_{a, y} \sum_{i=y^{\text{last}}+1}^{y + p^{\text{economic lifetime}}_{a, y} - 1} \frac{1}{(1 + p^{\text{technology-specific discount rate}}_{a, y})^{i - y} } \quad \forall a \in \mathcal{A}_y^{\text{i}}, \forall y \in \mathcal{Y}
+```
+
+and where annualized cost is
+
+```math
+p^{\text{annualized inv cost}}_{a, y} = \frac{p^{\text{technology-specific discount rate}}_{a, y}}{ (1+p^{\text{technology-specific discount rate}}_{a, y}) \cdot \bigg( 1 - \frac{1}{ (1+p^{\text{technology-specific discount rate}}_{a, y})^{p^{\text{economic lifetime}}_{a, y}} } \bigg) } p^{\text{inv cost}}_{a, y} \quad \forall a \in \mathcal{A}_y^{\text{i}}, \forall y \in \mathcal{Y}
+```
+
+#### Discounting Factor for Flow Investment Costs
+
+```math
+p_{f, y}^{\text{discounting factor flow inv cost}}=\frac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}}(1-\frac{p_{f, y}^{\text{salvage value}}}{p_{f, y}^{\text{inv cost}}}) \quad \forall f \in \mathcal{F}_y^{\text{ti}}, \forall y \in \mathcal{Y}
+```
+
+where salvage value is
+
+```math
+p^{\text{salvage value}}_{f, y} = p^{\text{annualized inv cost}}_{f, y} \sum_{i=y^{\text{last}}+1}^{y + p^{\text{economic lifetime}}_{f, y} - 1} \frac{1}{(1 + p^{\text{technology-specific discount rate}}_{f, y})^{i - y} } \quad \forall f \in \mathcal{F}_y^{\text{ti}}, \forall y \in \mathcal{Y}
+```
+
+and where annualized cost is
+
+```math
+p^{\text{annualized inv cost}}_{f, y} = \frac{p^{\text{technology-specific discount rate}}_{f, y}}{ (1+p^{\text{technology-specific discount rate}}_{f, y}) \cdot \bigg( 1 - \frac{1}{ (1+p^{\text{technology-specific discount rate}}_{f, y})^{p^{\text{economic lifetime}}_{f, y}} } \bigg) } p^{\text{inv cost}}_{f, y} \quad \forall f \in \mathcal{F}_y^{\text{ti}}, \forall y \in \mathcal{Y}
+```
+
+#### Discounting Factor for Operation Costs
+
+```math
+p_{y}^{\text{discounting factor operation cost}}=\frac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}} p^{\text{milestone weight}}_{y}\quad \forall y \in \mathcal{Y}
+```
+
 ### Objective Function
 
 ```math
@@ -250,14 +317,14 @@ Where:
 
 ```math
 \begin{aligned}
-assets\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{i}}_y } p^{\text{inv cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \\ &+  \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{i}}_y } p^{\text{inv cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{inv energy}}_{a,y}   \\
-assets\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{decom simple}} } p^{\text{fixed cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units simple method}}_{a,y} \\
-& + \sum_{(a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p^{\text{fixed cost}}_{a,v} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units compact method}}_{a,y,v} \\
-& + \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{decom simple}}} p^{\text{fixed cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{accumulated energy capacity simple method}}_{a,y} \\
-flows\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p^{\text{inv cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f,y} \\
-flows\_fixed\_cost &= \frac{1}{2} \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot \left( v^{\text{accumulated export units}}_{f,y} + v^{\text{accumulated import units}}_{f,y} \right) \\
-flows\_variable\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{rp weight}}_{k_y} \cdot p^{\text{variable cost}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-unit\_on\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{rp weight}}_{k_y} \cdot p^{\text{units on cost}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{units on}}_{a,k_y,b_{k_y}}
+assets\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset inv cost}} \cdot p^{\text{inv cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \\ &+  \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset inv cost}} \cdotp^{\text{inv cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{inv energy}}_{a,y}   \\
+assets\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{decom simple}} } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units simple method}}_{a,y} \\
+& + \sum_{(a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,v} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{accumulated units compact method}}_{a,y,v} \\
+& + \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{decom simple}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{accumulated energy capacity simple method}}_{a,y} \\
+flows\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p_{f, y}^{\text{discounting factor flow inv cost}} \cdot p^{\text{inv cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f,y} \\
+flows\_fixed\_cost &= \frac{1}{2} \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot \left( v^{\text{accumulated export units}}_{f,y} + v^{\text{accumulated import units}}_{f,y} \right) \\
+flows\_variable\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{k_y} \cdot p^{\text{variable cost}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+unit\_on\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{k_y} \cdot p^{\text{units on cost}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{units on}}_{a,k_y,b_{k_y}}
 \end{aligned}
 ```
 
