@@ -50,6 +50,7 @@ for folder_name in ["variables", "constraints", "expressions"]
 end
 include("expressions.jl")
 include("economic-parameters.jl")
+include("objective.jl")
 include("create-model.jl")
 
 # Solution
