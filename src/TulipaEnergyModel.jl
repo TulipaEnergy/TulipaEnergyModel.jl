@@ -41,7 +41,7 @@ include("io.jl")
 include("model-preparation.jl")
 
 # Model creation
-for folder_name in ["variables", "constraints"]
+for folder_name in ["variables", "constraints", "expressions"]
     folder_path = joinpath(@__DIR__, folder_name)
     files = filter(endswith(".jl"), readdir(folder_path))
     for file in files
