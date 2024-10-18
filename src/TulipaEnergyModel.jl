@@ -26,25 +26,34 @@ using TimerOutputs: TimerOutput, @timeit
 
 const to = TimerOutput()
 
+# Definitions and auxiliary files
 include("utils.jl")
-include("input-schemas.jl")
+include("time-resolution.jl")
+include("run-scenario.jl")
 include("model-parameters.jl")
 include("structures.jl")
-include("model-preparation.jl")
-include("io.jl")
-include("create-model.jl")
-include("solver-parameters.jl")
-include("solve-model.jl")
-include("run-scenario.jl")
-include("time-resolution.jl")
-include("economic-parameters.jl")
 
-for folder_name in ["variables", "constraints"]
+# Data
+include("input-schemas.jl")
+include("io.jl")
+
+# Data massage and model preparation
+include("model-preparation.jl")
+
+# Model creation
+for folder_name in ["variables", "constraints", "expressions"]
     folder_path = joinpath(@__DIR__, folder_name)
-    files = filter(f -> endswith(f, ".jl"), readdir(folder_path))
+    files = filter(endswith(".jl"), readdir(folder_path))
     for file in files
         include(joinpath(folder_path, file))
     end
 end
+include("economic-parameters.jl")
+include("objective.jl")
+include("create-model.jl")
+
+# Solution
+include("solver-parameters.jl")
+include("solve-model.jl")
 
 end

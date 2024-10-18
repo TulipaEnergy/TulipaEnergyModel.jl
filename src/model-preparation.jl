@@ -723,6 +723,10 @@ function create_sets(graph, years)
         Auc_basic = Dict(
             y => Auc[y] ∩ filter_graph(graph, A, "basic", :unit_commitment_method, y) for y in Y
         )
+
+        ### Sets for expressions in multi-year investment for accumulated units no matter the method
+        accumulated_units_lookup =
+            Dict((a, y) => idx for (idx, (a, y)) in enumerate((aa, yy) for aa in A for yy in Y))
     end
 
     # TODO: Create a better structure if this is still necessary later
@@ -748,12 +752,13 @@ function create_sets(graph, years)
         Y,
         accumulated_set_using_compact_method,
         accumulated_set_using_compact_method_lookup,
+        accumulated_units_lookup,
         decommission_set_using_compact_method,
         decommissionable_assets_using_compact_method,
         decommissionable_assets_using_simple_method,
         existing_assets_by_year_using_compact_method,
-        investable_assets_using_simple_method,
         investable_assets_using_compact_method,
+        investable_assets_using_simple_method,
         starting_year_flows_using_simple_method,
         starting_year_using_simple_method,
     )
