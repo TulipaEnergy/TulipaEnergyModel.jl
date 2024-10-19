@@ -134,337 +134,23 @@ function create_model(
     )
 
     ## Expressions for multi-year investment
-    @timeit to "multi-year investment" begin
-        accumulated_initial_units = @expression(
-            model,
-            accumulated_initial_units[a in sets.A, y in sets.Y],
-            sum(values(graph[a].initial_units[y]))
-        )
-
-        ### Expressions for multi-year investment simple method
-        accumulated_investment_units_using_simple_method = @expression(
-            model,
-            accumulated_investment_units_using_simple_method[
-                a ∈ sets.decommissionable_assets_using_simple_method,
-                y in sets.Y,
-            ],
-            sum(
-                assets_investment[yy, a] for
-                yy in sets.Y if a ∈ sets.investable_assets_using_simple_method[yy] &&
-                sets.starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
-            )
-        )
-        @expression(
-            model,
-            accumulated_decommission_units_using_simple_method[
-                a ∈ sets.decommissionable_assets_using_simple_method,
-                y in sets.Y,
-            ],
-            sum(
-                assets_decommission_simple_method[yy, a] for
-                yy in sets.Y if sets.starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
-            )
-        )
-        @expression(
-            model,
-            accumulated_units_simple_method[
-                a ∈ sets.decommissionable_assets_using_simple_method,
-                y ∈ sets.Y,
-            ],
-            accumulated_initial_units[a, y] +
-            accumulated_investment_units_using_simple_method[a, y] -
-            accumulated_decommission_units_using_simple_method[a, y]
-        )
-
-        ### Expressions for multi-year investment compact method
-        @expression(
-            model,
-            accumulated_decommission_units_using_compact_method[(
-                a,
-                y,
-                v,
-            ) in sets.accumulated_set_using_compact_method],
-            sum(
-                assets_decommission_compact_method[(a, yy, v)] for yy in sets.Y if
-                v ≤ yy ≤ y && (a, yy, v) in sets.decommission_set_using_compact_method
-            )
-        )
-        cond1(a, y, v) = a in sets.existing_assets_by_year_using_compact_method[v]
-        cond2(a, y, v) = v in sets.Y && a in sets.investable_assets_using_compact_method[v]
-        accumulated_units_compact_method =
-            model[:accumulated_units_compact_method] = JuMP.AffExpr[
-                if cond1(a, y, v) && cond2(a, y, v)
-                    @expression(
-                        model,
-                        graph[a].initial_units[y][v] + assets_investment[v, a] -
-                        accumulated_decommission_units_using_compact_method[(a, y, v)]
-                    )
-                elseif cond1(a, y, v) && !cond2(a, y, v)
-                    @expression(
-                        model,
-                        graph[a].initial_units[y][v] -
-                        accumulated_decommission_units_using_compact_method[(a, y, v)]
-                    )
-                elseif !cond1(a, y, v) && cond2(a, y, v)
-                    @expression(
-                        model,
-                        assets_investment[v, a] -
-                        accumulated_decommission_units_using_compact_method[(a, y, v)]
-                    )
-                else
-                    @expression(model, 0.0)
-                end for (a, y, v) in sets.accumulated_set_using_compact_method
-            ]
-
-        ### Expressions for multi-year investment for accumulated units no matter the method
-        accumulated_units_lookup = Dict(
-            (a, y) => idx for
-            (idx, (a, y)) in enumerate((aa, yy) for aa in sets.A for yy in sets.Y)
-        )
-
-        accumulated_units =
-            model[:accumulated_units] = JuMP.AffExpr[
-                if a in sets.decommissionable_assets_using_simple_method
-                    @expression(model, accumulated_units_simple_method[a, y])
-                elseif a in sets.decommissionable_assets_using_compact_method
-                    @expression(
-                        model,
-                        sum(
-                            accumulated_units_compact_method[sets.accumulated_set_using_compact_method_lookup[(
-                                a,
-                                y,
-                                v,
-                            )]] for v in sets.V_all if
-                            (a, y, v) in sets.accumulated_set_using_compact_method
-                        )
-                    )
-                else
-                    @expression(model, sum(values(graph[a].initial_units[y])))
-                end for a in sets.A for y in sets.Y
-            ]
-        ## Expressions for transport assets
-        @expression(
-            model,
-            accumulated_investment_units_transport_using_simple_method[
-                y ∈ sets.Y,
-                (u, v) ∈ sets.Ft,
-            ],
-            sum(
-                flows_investment[yy, (u, v)] for yy in sets.Y if (u, v) ∈ sets.Fi[yy] &&
-                sets.starting_year_flows_using_simple_method[(y, (u, v))] ≤ yy ≤ y
-            )
-        )
-        @expression(
-            model,
-            accumulated_decommission_units_transport_using_simple_method[
-                y ∈ sets.Y,
-                (u, v) ∈ sets.Ft,
-            ],
-            sum(
-                flows_decommission_using_simple_method[yy, (u, v)] for
-                yy in sets.Y if sets.starting_year_flows_using_simple_method[(y, (u, v))] ≤ yy ≤ y
-            )
-        )
-        @expression(
-            model,
-            accumulated_flows_export_units[y ∈ sets.Y, (u, v) ∈ sets.Ft],
-            sum(values(graph[u, v].initial_export_units[y])) +
-            accumulated_investment_units_transport_using_simple_method[y, (u, v)] -
-            accumulated_decommission_units_transport_using_simple_method[y, (u, v)]
-        )
-        @expression(
-            model,
-            accumulated_flows_import_units[y ∈ sets.Y, (u, v) ∈ sets.Ft],
-            sum(values(graph[u, v].initial_import_units[y])) +
-            accumulated_investment_units_transport_using_simple_method[y, (u, v)] -
-            accumulated_decommission_units_transport_using_simple_method[y, (u, v)]
-        )
-    end
+    create_multi_year_expressions!(model, graph, sets)
+    accumulated_flows_export_units = model[:accumulated_flows_export_units]
+    accumulated_flows_import_units = model[:accumulated_flows_import_units]
+    accumulated_initial_units = model[:accumulated_initial_units]
+    accumulated_investment_units_using_simple_method =
+        model[:accumulated_investment_units_using_simple_method]
+    accumulated_units = model[:accumulated_units]
+    accumulated_units_compact_method = model[:accumulated_units_compact_method]
+    accumulated_units_simple_method = model[:accumulated_units_simple_method]
 
     ## Expressions for storage assets
-    @timeit to "add_expressions_for_storage" begin
-        @expression(
-            model,
-            accumulated_energy_units_simple_method[
-                y ∈ sets.Y,
-                a ∈ sets.Ase[y]∩sets.decommissionable_assets_using_simple_method,
-            ],
-            sum(values(graph[a].initial_storage_units[y])) + sum(
-                assets_investment_energy[yy, a] for yy in sets.Y if
-                a ∈ (sets.Ase[yy] ∩ sets.investable_assets_using_simple_method[yy]) &&
-                sets.starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
-            ) - sum(
-                assets_decommission_energy_simple_method[yy, a] for yy in sets.Y if
-                a ∈ sets.Ase[yy] && sets.starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
-            )
-        )
-        @expression(
-            model,
-            accumulated_energy_capacity[y ∈ sets.Y, a ∈ sets.As],
-            if graph[a].storage_method_energy[y] &&
-               a ∈ sets.Ase[y] ∩ sets.decommissionable_assets_using_simple_method
-                graph[a].capacity_storage_energy * accumulated_energy_units_simple_method[y, a]
-            else
-                (
-                    graph[a].capacity_storage_energy *
-                    sum(values(graph[a].initial_storage_units[y])) +
-                    if a ∈ sets.Ai[y] ∩ sets.decommissionable_assets_using_simple_method
-                        graph[a].energy_to_power_ratio[y] *
-                        graph[a].capacity *
-                        (
-                            accumulated_investment_units_using_simple_method[a, y] -
-                            accumulated_decommission_units_using_simple_method[a, y]
-                        )
-                    else
-                        0.0
-                    end
-                )
-            end
-        )
-    end
+    add_storage_expressions!(model, graph, sets)
+    accumulated_energy_units_simple_method = model[:accumulated_energy_units_simple_method]
+    accumulated_energy_capacity = model[:accumulated_energy_capacity]
 
     ## Expressions for the objective function
-    @timeit to "objective" begin
-        # Create a dict of weights for assets investment discounts
-        weight_for_assets_investment_discounts = calculate_weight_for_investment_discounts(
-            graph,
-            sets.Y,
-            sets.Ai,
-            sets.A,
-            model_parameters,
-        )
-
-        # Create a dict of weights for flows investment discounts
-        weight_for_flows_investment_discounts = calculate_weight_for_investment_discounts(
-            graph,
-            sets.Y,
-            sets.Fi,
-            sets.Ft,
-            model_parameters,
-        )
-
-        # Create a dict of intervals for milestone years
-        intervals_for_milestone_years = create_intervals_for_years(sets.Y)
-
-        # Create a dict of operation discounts only for milestone years
-        operation_discounts_for_milestone_years = Dict(
-            y => 1 / (1 + model_parameters.discount_rate)^(y - model_parameters.discount_year)
-            for y in sets.Y
-        )
-
-        # Create a dict of operation discounts for milestone years including in-between years
-        weight_for_operation_discounts = Dict(
-            y => operation_discounts_for_milestone_years[y] * intervals_for_milestone_years[y]
-            for y in sets.Y
-        )
-
-        assets_investment_cost = @expression(
-            model,
-            sum(
-                weight_for_assets_investment_discounts[(y, a)] *
-                graph[a].investment_cost[y] *
-                graph[a].capacity *
-                assets_investment[y, a] for y in sets.Y for a in sets.Ai[y]
-            )
-        )
-
-        assets_fixed_cost = @expression(
-            model,
-            sum(
-                weight_for_operation_discounts[y] *
-                graph[a].fixed_cost[y] *
-                graph[a].capacity *
-                accumulated_units_simple_method[a, y] for y in sets.Y for
-                a in sets.decommissionable_assets_using_simple_method
-            ) + sum(
-                weight_for_operation_discounts[y] *
-                graph[a].fixed_cost[v] *
-                graph[a].capacity *
-                accm for (accm, (a, y, v)) in
-                zip(accumulated_units_compact_method, sets.accumulated_set_using_compact_method)
-            )
-        )
-
-        storage_assets_energy_investment_cost = @expression(
-            model,
-            sum(
-                weight_for_assets_investment_discounts[(y, a)] *
-                graph[a].investment_cost_storage_energy[y] *
-                graph[a].capacity_storage_energy *
-                assets_investment_energy[y, a] for y in sets.Y for a in sets.Ase[y] ∩ sets.Ai[y]
-            )
-        )
-
-        storage_assets_energy_fixed_cost = @expression(
-            model,
-            sum(
-                weight_for_operation_discounts[y] *
-                graph[a].fixed_cost_storage_energy[y] *
-                graph[a].capacity_storage_energy *
-                accumulated_energy_units_simple_method[y, a] for y in sets.Y for
-                a in sets.Ase[y] ∩ sets.decommissionable_assets_using_simple_method
-            )
-        )
-
-        flows_investment_cost = @expression(
-            model,
-            sum(
-                weight_for_flows_investment_discounts[(y, (u, v))] *
-                graph[u, v].investment_cost[y] *
-                graph[u, v].capacity *
-                flows_investment[y, (u, v)] for y in sets.Y for (u, v) in sets.Fi[y]
-            )
-        )
-
-        flows_fixed_cost = @expression(
-            model,
-            sum(
-                weight_for_operation_discounts[y] * graph[u, v].fixed_cost[y] / 2 *
-                graph[u, v].capacity *
-                (
-                    accumulated_flows_export_units[y, (u, v)] +
-                    accumulated_flows_import_units[y, (u, v)]
-                ) for y in sets.Y for (u, v) in sets.Fi[y]
-            )
-        )
-
-        flows_variable_cost = @expression(
-            model,
-            sum(
-                weight_for_operation_discounts[row.year] *
-                representative_periods[row.year][row.rep_period].weight *
-                duration(row.timesteps_block, row.rep_period, representative_periods[row.year]) *
-                graph[row.from, row.to].variable_cost[row.year] *
-                row.flow for row in eachrow(df_flows)
-            )
-        )
-
-        units_on_cost = @expression(
-            model,
-            sum(
-                weight_for_operation_discounts[row.year] *
-                representative_periods[row.year][row.rep_period].weight *
-                duration(row.timesteps_block, row.rep_period, representative_periods[row.year]) *
-                graph[row.asset].units_on_cost[row.year] *
-                row.units_on for row in eachrow(df_units_on) if
-                !ismissing(graph[row.asset].units_on_cost[row.year])
-            )
-        )
-
-        ## Objective function
-        @objective(
-            model,
-            Min,
-            assets_investment_cost +
-            assets_fixed_cost +
-            storage_assets_energy_investment_cost +
-            storage_assets_energy_fixed_cost +
-            flows_investment_cost +
-            flows_fixed_cost +
-            flows_variable_cost +
-            units_on_cost
-        )
-    end
+    add_objective!(model, graph, dataframes, representative_periods, sets, model_parameters)
 
     # TODO: Pass sets instead of the explicit values
     ## Constraints
@@ -482,7 +168,7 @@ function create_model(
         sets.decommissionable_assets_using_simple_method,
         sets.decommissionable_assets_using_compact_method,
         sets.V_all,
-        accumulated_units_lookup,
+        sets.accumulated_units_lookup,
         sets.accumulated_set_using_compact_method_lookup,
         sets.Asb,
         accumulated_initial_units,
@@ -578,7 +264,7 @@ function create_model(
             df_units_on,
             dataframes[:highest_out],
             outgoing_flow_highest_out_resolution,
-            accumulated_units_lookup,
+            sets.accumulated_units_lookup,
             accumulated_units,
             sets.Ai,
             sets.Auc,
