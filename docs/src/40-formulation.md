@@ -355,7 +355,7 @@ Storage assets using the method to avoid charging and discharging simultaneously
 ```math
 \begin{aligned}
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a,y} \cdot \left(1 - v^{\text{is charging}}_{a,k_y,b_{k_y}} \right) \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -385,7 +385,7 @@ Storage assets using the method to avoid charging and discharging simultaneously
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a,y}  \cdot v^{\text{is charging}}_{a,k_y,b_{k_y}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}, \forall k_y \in \mathcal{K_y},\forall b_{k_y} \in \mathcal{B_{k_y}}
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a,y}  \cdot v^{\text{is charging}}_{a,k_y,b_{k_y}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y, \forall k_y \in \mathcal{K_y},\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
