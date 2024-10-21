@@ -14,7 +14,6 @@ function add_transport_constraints!(
     sets,
     accumulated_flows_export_units,
     accumulated_flows_import_units,
-    flows_investment,
 )
     Ft = sets[:Ft]
     ## Expressions used by transport flow constraints

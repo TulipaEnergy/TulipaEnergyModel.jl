@@ -219,7 +219,6 @@ function create_model(
         sets,
         accumulated_flows_export_units,
         accumulated_flows_import_units,
-        flows_investment,
     )
 
     @timeit to "add_investment_constraints!" add_investment_constraints!(
