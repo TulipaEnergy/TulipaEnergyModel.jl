@@ -10,7 +10,6 @@ function add_storage_constraints!(
     model,
     graph,
     dataframes,
-    Ai,
     accumulated_energy_capacity,
     incoming_flow_lowest_storage_resolution_intra_rp,
     outgoing_flow_lowest_storage_resolution_intra_rp,

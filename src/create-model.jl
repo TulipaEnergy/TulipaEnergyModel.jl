@@ -157,25 +157,14 @@ function create_model(
     @timeit to "add_capacity_constraints!" add_capacity_constraints!(
         model,
         graph,
-        sets.Ap,
-        sets.Acv,
-        sets.As,
         dataframes,
         df_flows,
         flow,
-        sets.Y,
-        sets.Ai,
-        sets.decommissionable_assets_using_simple_method,
-        sets.decommissionable_assets_using_compact_method,
-        sets.V_all,
-        sets.accumulated_units_lookup,
-        sets.accumulated_set_using_compact_method_lookup,
-        sets.Asb,
+        sets,
         accumulated_initial_units,
         accumulated_investment_units_using_simple_method,
         accumulated_units,
         accumulated_units_compact_method,
-        sets.accumulated_set_using_compact_method,
         outgoing_flow_highest_out_resolution,
         incoming_flow_highest_in_resolution,
     )
@@ -186,7 +175,7 @@ function create_model(
         model,
         graph,
         dataframes,
-        sets.Ac,
+        sets,
         incoming_flow_highest_in_out_resolution,
         outgoing_flow_highest_in_out_resolution,
     )
@@ -195,7 +184,6 @@ function create_model(
         model,
         graph,
         dataframes,
-        sets.Ai,
         accumulated_energy_capacity,
         incoming_flow_lowest_storage_resolution_intra_rp,
         outgoing_flow_lowest_storage_resolution_intra_rp,
@@ -210,7 +198,7 @@ function create_model(
     @timeit to "add_hub_constraints!" add_hub_constraints!(
         model,
         dataframes,
-        sets.Ah,
+        sets,
         incoming_flow_highest_in_out_resolution,
         outgoing_flow_highest_in_out_resolution,
     )
@@ -218,7 +206,7 @@ function create_model(
     @timeit to "add_conversion_constraints!" add_conversion_constraints!(
         model,
         dataframes,
-        sets.Acv,
+        sets,
         incoming_flow_lowest_resolution,
         outgoing_flow_lowest_resolution,
     )
@@ -228,18 +216,14 @@ function create_model(
         graph,
         df_flows,
         flow,
-        sets.Ft,
+        sets,
         accumulated_flows_export_units,
         accumulated_flows_import_units,
-        flows_investment,
     )
 
     @timeit to "add_investment_constraints!" add_investment_constraints!(
         graph,
-        sets.Y,
-        sets.Ai,
-        sets.Ase,
-        sets.Fi,
+        sets,
         assets_investment,
         assets_investment_energy,
         flows_investment,
@@ -249,8 +233,7 @@ function create_model(
         @timeit to "add_group_constraints!" add_group_constraints!(
             model,
             graph,
-            sets.Y,
-            sets.Ai,
+            sets,
             assets_investment,
             groups,
         )
@@ -264,12 +247,8 @@ function create_model(
             df_units_on,
             dataframes[:highest_out],
             outgoing_flow_highest_out_resolution,
-            sets.accumulated_units_lookup,
             accumulated_units,
-            sets.Ai,
-            sets.Auc,
-            sets.Auc_basic,
-            sets.Ar,
+            sets,
         )
     end
 

@@ -12,13 +12,14 @@ function add_ramping_constraints!(
     df_units_on,
     df_highest_out,
     outgoing_flow_highest_out_resolution,
-    accumulated_units_lookup,
     accumulated_units,
-    Ai,
-    Auc,
-    Auc_basic,
-    Ar,
+    sets,
 )
+    # unpack from sets
+    Ar = sets[:Ar]
+    Auc = sets[:Auc]
+    Auc_basic = sets[:Auc_basic]
+    accumulated_units_lookup = sets[:accumulated_units_lookup]
 
     ## Expressions used by the ramping and unit commitment constraints
     # - Expression to have the product of the profile and the capacity paramters

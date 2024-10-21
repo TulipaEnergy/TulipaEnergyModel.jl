@@ -8,14 +8,16 @@ Adds the investment constraints for all asset types and transport flows to the m
 
 function add_investment_constraints!(
     graph,
-    Y,
-    Ai,
-    Ase,
-    Fi,
+    sets,
     assets_investment,
     assets_investment_energy,
     flows_investment,
 )
+    # unpack from sets
+    Ai = sets[:Ai]
+    Ase = sets[:Ase]
+    Fi = sets[:Fi]
+    Y = sets[:Y]
 
     # - Maximum (i.e., potential) investment limit for assets
     for y in Y, a in Ai[y]

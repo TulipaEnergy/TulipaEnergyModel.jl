@@ -5,7 +5,10 @@ export add_group_constraints!
 
 Adds group constraints for assets that share a common limits or bounds
 """
-function add_group_constraints!(model, graph, Y, Ai, assets_investment, groups)
+function add_group_constraints!(model, graph, sets, assets_investment, groups)
+    # unpack from sets
+    Ai = sets[:Ai]
+    Y = sets[:Y]
 
     # - Group constraints for investments at each year
     assets_at_year_in_group = Dict(

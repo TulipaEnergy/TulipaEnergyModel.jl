@@ -14,11 +14,11 @@ Adds the conversion asset constraints to the model.
 function add_conversion_constraints!(
     model,
     dataframes,
-    Acv,
+    sets,
     incoming_flow_lowest_resolution,
     outgoing_flow_lowest_resolution,
 )
-
+    Acv = sets[:Acv]
     # - Balance constraint (using the lowest temporal resolution)
     df = filter(:asset => ∈(Acv), dataframes[:lowest]; view = true)
     model[:conversion_balance] = [
