@@ -9,28 +9,31 @@ Adds the capacity constraints for all asset types to the model
 function add_capacity_constraints!(
     model,
     graph,
-    Ap,
-    Acv,
-    As,
     dataframes,
     df_flows,
     flow,
-    Y,
-    Ai,
-    decommissionable_assets_using_simple_method,
-    decommissionable_assets_using_compact_method,
-    V_all,
-    accumulated_units_lookup,
-    accumulated_set_using_compact_method_lookup,
-    Asb,
+    sets,
     accumulated_initial_units,
     accumulated_investment_units_using_simple_method,
     accumulated_units,
     accumulated_units_compact_method,
-    accumulated_set_using_compact_method,
     outgoing_flow_highest_out_resolution,
     incoming_flow_highest_in_resolution,
 )
+    ## unpack from sets
+    Acv = sets[:Acv]
+    Ai = sets[:Ai]
+    Ap = sets[:Ap]
+    As = sets[:As]
+    Asb = sets[:Asb]
+    V_all = sets[:V_all]
+    Y = sets[:Y]
+    accumulated_set_using_compact_method = sets[:accumulated_set_using_compact_method]
+    accumulated_set_using_compact_method_lookup = sets[:accumulated_set_using_compact_method_lookup]
+    accumulated_units_lookup = sets[:accumulated_units_lookup]
+    decommissionable_assets_using_compact_method =
+        sets[:decommissionable_assets_using_compact_method]
+    decommissionable_assets_using_simple_method = sets[:decommissionable_assets_using_simple_method]
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows

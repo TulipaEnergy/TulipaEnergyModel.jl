@@ -11,12 +11,12 @@ function add_transport_constraints!(
     graph,
     df_flows,
     flow,
-    Ft,
+    sets,
     accumulated_flows_export_units,
     accumulated_flows_import_units,
     flows_investment,
 )
-
+    Ft = sets[:Ft]
     ## Expressions used by transport flow constraints
     # Filter df_flows to flows only for transport assets
     df = filter([:from, :to] => (from, to) -> (from, to) ∈ Ft, df_flows; view = true)
