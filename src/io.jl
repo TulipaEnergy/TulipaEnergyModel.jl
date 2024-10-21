@@ -273,38 +273,27 @@ function create_internal_structures(connection)
 
     graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data, nothing, nothing, nothing)
 
-    _df = TulipaIO.get_table(connection, "assets_rep_periods_partitions")
-    for a in MetaGraphsNext.labels(graph)
-        for year in milestone_years
-            is_active = get(graph[a].active, year, false)
-            if !is_active
-                continue
-            end
+    tmp_create_partition_tables(connection)
+    df = TulipaIO.get_table(connection, "asset_time_resolution")
+    gdf = DataFrames.groupby(df, [:asset, :year, :rep_period])
+    for ((a, year, rp), _df) in pairs(gdf)
+        if !haskey(graph[a].rep_periods_partitions, year)
             graph[a].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
-            compute_assets_partitions!(
-                graph[a].rep_periods_partitions[year],
-                filter(row -> row.asset == a && row.year == year, _df),
-                a,
-                representative_periods[year],
-            )
         end
+        graph[a].rep_periods_partitions[year][rp] =
+            map(r -> r[1]:r[2], zip(_df.time_block_start, _df.time_block_end))
     end
-
-    _df = TulipaIO.get_table(connection, "flows_rep_periods_partitions")
-    for (u, v) in MetaGraphsNext.edge_labels(graph)
-        for year in milestone_years
-            is_active = get(graph[u, v].active, year, false)
-            if !is_active
-                continue
-            end
+    df = TulipaIO.get_table(connection, "flow_time_resolution")
+    gdf = DataFrames.groupby(df, [:from_asset, :to_asset, :year, :rep_period])
+    for ((u, v, year, rp), _df) in pairs(gdf)
+        if !haskey(graph[u, v].rep_periods_partitions, year)
             graph[u, v].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
-            compute_flows_partitions!(
-                graph[u, v].rep_periods_partitions[year],
-                filter(row -> (row.from_asset, row.to_asset) == (u, v) && row.year == year, _df),
-                u,
-                v,
-                representative_periods[year],
-            )
+        end
+        graph[u, v].rep_periods_partitions[year][rp] =
+            map(r -> r[1]:r[2], zip(_df.time_block_start, _df.time_block_end))
+        P = graph[u, v].rep_periods_partitions[year][rp]
+        if maximum(P) != P[end]
+            @show u, v, year, rp, P
         end
     end
 
