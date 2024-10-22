@@ -10,9 +10,8 @@ function add_capacity_constraints!(
     model,
     graph,
     dataframes,
-    df_flows,
-    flow,
     sets,
+    variables,
     accumulated_initial_units,
     accumulated_investment_units_using_simple_method,
     accumulated_units,
@@ -34,6 +33,10 @@ function add_capacity_constraints!(
     decommissionable_assets_using_compact_method =
         sets[:decommissionable_assets_using_compact_method]
     decommissionable_assets_using_simple_method = sets[:decommissionable_assets_using_simple_method]
+
+    ## unpack from variables
+    flows_indices = variables[:flow].indices
+    flow = variables[:flow].container
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
@@ -296,12 +299,15 @@ function add_capacity_constraints!(
     ]
 
     # - Lower limit for flows associated with assets
-    assets_with_non_negative_outgoing_flows = Ap ∪ Acv ∪ As
-    assets_with_non_negative_incoming_flows = Acv ∪ As
-    for row in eachrow(df_flows)
-        if row.from in assets_with_non_negative_outgoing_flows ||
-           row.to in assets_with_non_negative_incoming_flows
-            JuMP.set_lower_bound(flow[row.index], 0.0)
-        end
+    assets_with_non_negative_outgoing_flows_indices =
+        filter(:from => in(Ap ∪ Acv ∪ As), flows_indices; view = true)
+    for row in eachrow(assets_with_non_negative_outgoing_flows_indices)
+        JuMP.set_lower_bound(flow[row.index], 0.0)
+    end
+
+    assets_with_non_negative_incoming_flows_indices =
+        filter(:to => in(Acv ∪ As), flows_indices; view = true)
+    for row in eachrow(assets_with_non_negative_incoming_flows_indices)
+        JuMP.set_lower_bound(flow[row.index], 0.0)
     end
 end

@@ -35,12 +35,12 @@ end
 """
 Structure to hold the JuMP variables for the TulipaEnergyModel
 """
-struct TulipaVariable
+mutable struct TulipaVariable
     indices::DataFrame
-    variable::Vector{JuMP.VariableRef}
+    container::Vector{JuMP.VariableRef}
 
-    function TulipaVariable(indices, variable)
-        return new(indices, variable)
+    function TulipaVariable(indices, container)
+        return new(indices, container)
     end
 end
 

@@ -9,16 +9,22 @@ Adds the transport flow constraints to the model.
 function add_transport_constraints!(
     model,
     graph,
-    df_flows,
-    flow,
     sets,
+    variables,
     accumulated_flows_export_units,
     accumulated_flows_import_units,
 )
+    ## unpack from sets
     Ft = sets[:Ft]
+
+    ## unpack from variables
+    flows_indices = variables[:flow].indices
+    flow = variables[:flow].container
+
     ## Expressions used by transport flow constraints
-    # Filter df_flows to flows only for transport assets
-    df = filter([:from, :to] => (from, to) -> (from, to) ∈ Ft, df_flows; view = true)
+    # Filter flows_indices to flows only for transport assets
+    transport_flows_indices =
+        filter([:from, :to] => (from, to) -> (from, to) ∈ Ft, flows_indices; view = true)
 
     # - Create upper limit of transport flow
     upper_bound_transport_flow = [
@@ -35,7 +41,7 @@ function add_transport_constraints!(
             ) *
             graph[row.from, row.to].capacity *
             accumulated_flows_export_units[row.year, (row.from, row.to)]
-        ) for row in eachrow(df)
+        ) for row in eachrow(transport_flows_indices)
     ]
 
     # - Create lower limit of transport flow
@@ -53,7 +59,7 @@ function add_transport_constraints!(
             ) *
             graph[row.from, row.to].capacity *
             accumulated_flows_import_units[row.year, (row.from, row.to)]
-        ) for row in eachrow(df)
+        ) for row in eachrow(transport_flows_indices)
     ]
 
     ## Constraints that define bounds for a transport flow Ft
@@ -64,7 +70,7 @@ function add_transport_constraints!(
             model,
             flow[row.index] ≤ upper_bound_transport_flow[idx],
             base_name = "max_transport_flow_limit[($(row.from),$(row.to)),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-        ) for (idx, row) in enumerate(eachrow(df))
+        ) for (idx, row) in enumerate(eachrow(transport_flows_indices))
     ]
 
     # - Min transport flow limit
@@ -73,6 +79,6 @@ function add_transport_constraints!(
             model,
             flow[row.index] ≥ -lower_bound_transport_flow[idx],
             base_name = "min_transport_flow_limit[($(row.from),$(row.to)),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-        ) for (idx, row) in enumerate(eachrow(df))
+        ) for (idx, row) in enumerate(eachrow(transport_flows_indices))
     ]
 end
