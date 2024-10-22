@@ -474,3 +474,92 @@ Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the 
 
 > **Note:**
 > If the group has a `min_investment_limit`, then assets in the group have to allow investment (`investable = true`) for the model to be feasible. If the assets are not `investable` then they cannot satisfy the minimum constraint.
+
+## [Setting up multi-year investments](@id multi-year-setup)
+
+It is possible to simutaneously model different years, which is especially relevant for modeling multi-year investments. Multi-year investments refer to making investment decisions at different points in time, such that a pathway of investments can be modeled. This is particularly useful when long-term scenarios are modeled, but modeling each year is not practical. Or in a business case, investment decisions are supposed to be made in different years which has an impact on the cash flow.
+
+In order to set up a model with year information, the following steps are necessary.
+
+- Fill in all the years in [`year-data.csv`](@ref schemas) file by defining the `year` property and its parameters.
+
+  Differentiate milestone years and non-milestone years.
+
+  - Milestone years are the years you would like to model, e.g., if you want to model operation and/or investments (it is possibile to not allow investments) in 2030, 2040, and 2050. These 3 years are then milestone years.
+  - Non-milestone years are the investment years of existing units. For example, you want to consider a existing wind unit that is invested in 2020, then 2020 is a non-milestone year.
+    > **Note:** A year can both be a year that you want to model and that there are existing units invested, then this year is a milestone year.
+
+- Fill in the parameters in [`vintage-assets-data.csv`](@ref schemas) and [`vintage-flows-data.csv`](@ref schemas). Here you need to fill in parameters that are only related to the investment year (`commission_year` in the data) of the asset, i.e., investment costs and fixed costs.
+
+- Fill in the parameters in [`graph-assets-data.csv`](@ref schemas) and [`graph-flows-data.csv`](@ref schemas). These parameters are for the assets across all the years, i.e., not dependent on years. Examples are lifetime (both `technical_lifetime` and `economic_lifetime`) and capacity of a unit.
+
+  You also have to choose a `investment_method` for the asset, between `none`, `simple`, and `compact`. The below tables shows what happens to the activation of the investment and decommission variable for certain investment methods and the `investable` parameter.
+
+  Consider you only want to model operation without investments, then you would need to set `investable_method` to `none`. Neither investment variables and decommission variables are activated. And here the `investable_method` overrules `investable`, because the latter does not matter.
+
+  > **Note:** Although it is called `investment_method`, you can see from the table that, actually, it controls directly the activation of the decommission variable. The investment variable is controlled by `investable`, which is overruled by `investable_method` in case of a conflict (i.e., for the `none` method).
+
+  | investment_method | investable | investment variable | decommission variable |
+  | ----------------- | ---------- | ------------------- | --------------------- |
+  | none              | true       | false               | false                 |
+  | none              | false      | false               | false                 |
+  | simple            | true       | true                | true                  |
+  | simple            | false      | false               | true                  |
+  | compact           | true       | true                | true                  |
+  | compact           | false      | false               | true                  |
+
+  For more details on the constraints that apply when selecting these methods, please visit the [`mathematical formulation`](@ref formulation) section.
+
+  > **Note:** `compact` method can only be applied to producer assets and conversion assets. Transport assets and storage assets can only use `simple` method.
+
+  - Fill in the assets and flows information in [`assets-data.csv`](@ref schemas) and [`flows-data.csv`](@ref schemas).
+
+    - In the `year` column, fill in all the milestone years. In the `commission_year` column, fill in the investment years of the existing assets that are still available in this `year`.
+      - If the `commission_year` is a non-milestone year, then it means the row is for an existing unit. The `investable` has to be set to `false`, and you put the existing units in the column `initial_units`.
+      - If the `commission_year` is a milestone year, then you put the existing units in the column `initial_units`. Depending on whether you want to model investments or not, you put the `investable` to either `true` or `false`.
+
+    Let's explain further using an example. To do so, we can take a look at the assets-data.csv file:
+
+    ```@example multi-year-setup
+    using DataFrames # hide
+    using CSV # hide
+    input_asset_file = "../../test/inputs/Multi-year investments/assets-data.csv" # hide
+    assets_data = CSV.read(input_asset_file, DataFrame, header = 2) # hide
+    assets_data = assets_data[1:10, [:name, :year, :commission_year, :investable, :initial_units]] # hide
+    ```
+
+    We allow investments of `ocgt`, `ccgt`, `battery`, `wind`, and `solar` in 2030.
+
+    - `ocgt` has no existing units.
+    - `ccgt` has 1 existing units, invested in 2028, and still available in 2030.
+    - `ccgt` has 0.07 existing units, invested in 2020, and still available in 2030. Another 0.02 existing units, invested in 2030.
+    - `wind` has 0.07 existing units, invested in 2020, and still available in 2030. Another 0.02 existing units, invested in 2030.
+    - `solar` has no existing units.
+
+    > **Note:** We only consider the existing units which are still available in the milestone years.
+
+- Fill in relevant profiles in [`assets-profiles.csv`](@ref schemas), [`flows-profiles.csv`](@ref schemas), and [`profiles-rep-periods.csv`](@ref schemas). Important to know that you can use different profiles for assets that are invested in different years. You fill in the profile names in `assets-profiles.csv` for relevant years. In `profiles-rep-periods.csv`, you relate the profile names with the modeled years.
+
+  Let's explain further using an example. To do so, we can take a look at the `assets-profiles.csv` file:
+
+  ```@example multi-year-setup
+  input_asset_file = "../../test/inputs/Multi-year investments/assets-profiles.csv" # hide
+  assets_profiles = CSV.read(input_asset_file, DataFrame, header = 2) # hide
+  assets_profiles = assets_profiles[1:2, :] # hide
+  ```
+
+  We have two profiles for `wind` invested in 2020 and 2030. Imagine these are two wind turbines with different efficiencies due to the year of manufacture. These are reflected in the profiles for the model year 2030, which are defined in the `profiles-rep-periods.csv` file.
+
+  ### Economic representation
+
+  For economic representation, the following parameters need to be set up:
+
+  - [optional] `discount year` and `discount rate` in the `model-parameters-example.toml` file: model-wide discount year and rate. By default, the model will use a discount rate of 0, and a discount year of the first milestone year. In other words, the costs will be discounted to the cost of the first milestone year.
+
+  - `discount_rate` in [`graph-assets-data.csv`](@ref schemas) and [`graph-flows-data.csv`](@ref schemas): technology-specific discount rates.
+
+  - `economic_lifetime` in [`graph-assets-data.csv`](@ref schemas) and [`graph-flows-data.csv`](@ref schemas): used for discounting the costs.
+
+  > **Note:** Since the model explicitly discounts, all the inputs for costs should be given in the costs of the relevant year. For example, to model investments in 2030 and 2050, the `investment_cost` should be given in 2030 costs and 2050 costs, respectively.
+
+  For more details on the formulas for economic representation, please visit the [`mathematical formulation`](@ref formulation) section.
