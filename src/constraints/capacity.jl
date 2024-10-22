@@ -301,7 +301,7 @@ function add_capacity_constraints!(
     # - Lower limit for flows associated with assets
     assets_with_non_negative_flows_indices = DataFrames.subset(
         flows_indices,
-        [:from, :to] => ByRow(
+        [:from, :to] => DataFrames.ByRow(
             (from, to) -> from in Ap || from in Acv || from in As || to in Acv || to in As,
         ),
     )
