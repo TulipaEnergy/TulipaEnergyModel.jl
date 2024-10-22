@@ -103,18 +103,19 @@ function tmp_create_partition_tables(connection)
     appender = DuckDB.Appender(connection, "asset_time_resolution")
     for row in TulipaIO.get_table(Val(:raw), connection, "explicit_assets_rep_periods_partitions")
         durations = if row.specification == "uniform"
-            step = Meta.parse(row.partition)
-            durations = fill(step, div(row.num_timesteps, step))
+            step = parse(Int, row.partition)
+            durations = Iterators.repeated(step, div(row.num_timesteps, step))
         elseif row.specification == "explicit"
-            durations = Meta.parse.(split(row.partition, ";"))
+            durations = parse.(Int, split(row.partition, ";"))
         elseif row.specification == "math"
             atoms = split(row.partition, "+")
-            durations = vcat([
-                begin
-                    r, d = Meta.parse.(split(atom, "x"))
-                    fill(d, r)
-                end for atom in atoms
-            ]...)
+            durations =
+                (
+                    begin
+                        r, d = parse.(Int, split(atom, "x"))
+                        Iterators.repeated(d, r)
+                    end for atom in atoms
+                ) |> Iterators.flatten
         else
             error("Row specification '$(row.specification)' is not valid")
         end
@@ -138,18 +139,19 @@ function tmp_create_partition_tables(connection)
     appender = DuckDB.Appender(connection, "flow_time_resolution")
     for row in TulipaIO.get_table(Val(:raw), connection, "explicit_flows_rep_periods_partitions")
         durations = if row.specification == "uniform"
-            step = Meta.parse(row.partition)
-            durations = fill(step, div(row.num_timesteps, step))
+            step = parse(Int, row.partition)
+            durations = Iterators.repeated(step, div(row.num_timesteps, step))
         elseif row.specification == "explicit"
-            durations = Meta.parse.(split(row.partition, ";"))
+            durations = parse.(Int, split(row.partition, ";"))
         elseif row.specification == "math"
             atoms = split(row.partition, "+")
-            durations = vcat([
-                begin
-                    r, d = Meta.parse.(split(atom, "x"))
-                    fill(d, r)
-                end for atom in atoms
-            ]...)
+            durations =
+                (
+                    begin
+                        r, d = parse.(Int, split(atom, "x"))
+                        Iterators.repeated(d, r)
+                    end for atom in atoms
+                ) |> Iterators.flatten
         else
             error("Row specification '$(row.specification)' is not valid")
         end
