@@ -299,15 +299,13 @@ function add_capacity_constraints!(
     ]
 
     # - Lower limit for flows associated with assets
-    assets_with_non_negative_outgoing_flows_indices =
-        filter(:from => in(Ap ∪ Acv ∪ As), flows_indices; view = true)
-    for row in eachrow(assets_with_non_negative_outgoing_flows_indices)
-        JuMP.set_lower_bound(flow[row.index], 0.0)
-    end
-
-    assets_with_non_negative_incoming_flows_indices =
-        filter(:to => in(Acv ∪ As), flows_indices; view = true)
-    for row in eachrow(assets_with_non_negative_incoming_flows_indices)
+    assets_with_non_negative_flows_indices = DataFrames.subset(
+        flows_indices,
+        [:from, :to] => ByRow(
+            (from, to) -> from in Ap || from in Acv || from in As || to in Acv || to in As,
+        ),
+    )
+    for row in eachrow(assets_with_non_negative_flows_indices)
         JuMP.set_lower_bound(flow[row.index], 0.0)
     end
 end
