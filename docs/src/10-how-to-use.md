@@ -523,7 +523,7 @@ In order to set up a model with year information, the following steps are necess
     ```@example multi-year-setup
     using DataFrames # hide
     using CSV # hide
-    input_asset_file = "../../test/inputs/Multi-year investments/assets-data.csv" # hide
+    input_asset_file = "../../test/inputs/Multi-year Investments/assets-data.csv" # hide
     assets_data = CSV.read(input_asset_file, DataFrame, header = 2) # hide
     assets_data = assets_data[1:10, [:name, :year, :commission_year, :investable, :initial_units]] # hide
     ```
@@ -543,7 +543,7 @@ In order to set up a model with year information, the following steps are necess
   Let's explain further using an example. To do so, we can take a look at the `assets-profiles.csv` file:
 
   ```@example multi-year-setup
-  input_asset_file = "../../test/inputs/Multi-year investments/assets-profiles.csv" # hide
+  input_asset_file = "../../test/inputs/Multi-year Investments/assets-profiles.csv" # hide
   assets_profiles = CSV.read(input_asset_file, DataFrame, header = 2) # hide
   assets_profiles = assets_profiles[1:2, :] # hide
   ```
