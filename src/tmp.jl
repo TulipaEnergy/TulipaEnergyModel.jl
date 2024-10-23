@@ -210,7 +210,6 @@ function tmp_create_constraints_indexes(connection)
             main.asset,
             main.year,
             main.rep_period,
-            sub.rep_period,
             sub.time_block_start,
             lead(sub.time_block_start - 1, 1, main.num_timesteps)
                 OVER (PARTITION BY main.asset, main.year, main.rep_period ORDER BY time_block_start)
@@ -232,4 +231,41 @@ function tmp_create_constraints_indexes(connection)
         WHERE main.type in ('hub', 'consumer')
         ",
     )
+end
+
+"""
+    connection, ep = tmp_example_of_flow_expression_problem()
+"""
+function tmp_example_of_flow_expression_problem()
+    connection = DBInterface.connect(DuckDB.DB)
+    schemas = TulipaEnergyModel.schema_per_table_name
+    TulipaIO.read_csv_folder(connection, "test/inputs/Norse"; schemas)
+    ep = EnergyProblem(connection)
+    create_model!(ep)
+
+    @info """# Example of flow expression problem
+
+    ref: see $(@__FILE__):$(@__LINE__)
+
+    The desired incoming and outgoing flows are:
+    - ep.dataframes[:highest_in_out].incoming_flow
+    - ep.dataframes[:highest_in_out].outgoing_flow
+
+    The DuckDB relevant tables (created in this file) are
+    - `asset_time_resolution`: Each asset and their unrolled time partitions
+    - `flow_time_resolution`: Each flow and their unrolled time partitions
+      Note: This is the equivalent to `ep.dataframes[:flows]`.
+    - `cons_indexes_highest_in_out`: The indexes of the balance constraints.
+
+    Objectives:
+    - For each row in `cons_indexes_highest_in_out`, find all incoming/outgoing
+      flows that **match** (asset,year,rep_period) and with intersecting time
+      block
+    - Find a way to store this information to use when creating the model in a
+      way that doesn't slow down when creating constraints/expressions in JuMP.
+      This normally implies not having conditionals on the expresion/constraints.
+      See, e.g., https://jump.dev/JuMP.jl/stable/tutorials/getting_started/sum_if/
+    """
+
+    return connection, ep
 end
