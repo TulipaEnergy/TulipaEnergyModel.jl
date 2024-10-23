@@ -248,6 +248,7 @@ end
 """
     add_expression_is_charging_terms_intra_rp_constraints!(df_cons,
                                                        is_charging_indices,
+                                                       is_charging_variables,
                                                        workspace
                                                        )
 
@@ -263,6 +264,7 @@ This strategy is based on the replies in this discourse thread:
 function add_expression_is_charging_terms_intra_rp_constraints!(
     df_cons,
     is_charging_indices,
+    is_charging_variables,
     workspace,
 )
     # Aggregating function: We have to compute the proportion of each variable is_charging in the constraint timesteps_block.
@@ -284,7 +286,7 @@ function add_expression_is_charging_terms_intra_rp_constraints!(
         for row in eachrow(grouped_is_charging[(year, rep_period, asset)])
             asset = row[:asset]
             for t in row.timesteps_block
-                JuMP.add_to_expression!(workspace[t], row.is_charging)
+                JuMP.add_to_expression!(workspace[t], is_charging_variables[row.index])
             end
         end
         # Apply the agg funtion to the corresponding variables from the workspace
@@ -433,14 +435,17 @@ end
 
 function add_expressions_to_dataframe!(
     dataframes,
+    variables,
     model,
     expression_workspace,
     representative_periods,
     timeframe,
     graph,
-    is_charging_indices,
 )
     @timeit to "add_expression_terms_to_df" begin
+        # Unpack variables
+        is_charging_indices = variables[:is_charging].indices
+        is_charging_variables = variables[:is_charging].container
 
         # Creating the incoming and outgoing flow expressions
         add_expression_terms_intra_rp_constraints!(
@@ -526,11 +531,13 @@ function add_expressions_to_dataframe!(
         add_expression_is_charging_terms_intra_rp_constraints!(
             dataframes[:highest_in],
             is_charging_indices,
+            is_charging_variables,
             expression_workspace,
         )
         add_expression_is_charging_terms_intra_rp_constraints!(
             dataframes[:highest_out],
             is_charging_indices,
+            is_charging_variables,
             expression_workspace,
         )
         if !isempty(dataframes[:units_on_and_outflows])
