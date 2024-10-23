@@ -182,74 +182,54 @@ function tmp_create_constraints_indexes(connection)
         ",
     )
 
-    #= Replacing the following example:
-        (
+    # -- The previous attempt used
+    # The idea below is to find all unique time_block_start values because
+    # this is uses strategy 'highest'. By ordering them, and making
+    # time_block_end[i] = time_block_start[i+1] - 1, we have all ranges.
+    # We use the `lead` function from SQL to get `time_block_start[i+1]`
+    # and row.num_timesteps is the maximum value for when i+1 > length
+    #
+    # The query below is trying to replace the following constraints_partitions example:
+    #= (
             name = :highest_in_out,
             partitions = _allflows,
             strategy = :highest,
             asset_filter = (a, y) -> graph[a].type in ["hub", "consumer"],
         ),
     =#
-    DBInterface.execute(
+    # The **highest** strategy is obtained simply by computing the union of all
+    # time_block_starts, since it consists of "all breakpoints".
+    # The time_block_end is computed a posteriori using the next time_block_start.
+    # The query below will use the WINDOW FUNCTION `lead` to compute the time
+    # block end.
+    # This query uses the assets, incoming flows and outgoing flows to compute partitions
+    DuckDB.execute(
         connection,
-        "CREATE OR REPLACE TABLE cons_indexes_highest_in_out(
-            asset STRING,
-            year INT,
-            rep_period INT,
-            time_block_start INT,
-            time_block_end INT,
-        )",
+        "CREATE OR REPLACE TABLE cons_indexes_highest_in_out AS
+        SELECT
+            main.asset,
+            main.year,
+            main.rep_period,
+            sub.rep_period,
+            sub.time_block_start,
+            lead(sub.time_block_start - 1, 1, main.num_timesteps)
+                OVER (PARTITION BY main.asset, main.year, main.rep_period ORDER BY time_block_start)
+                AS time_block_end,
+        FROM t_cons_indexes AS main
+        LEFT JOIN (
+            SELECT asset, year, rep_period, time_block_start
+            FROM asset_time_resolution
+            UNION
+            SELECT to_asset, year, rep_period, time_block_start
+            FROM flow_time_resolution
+            UNION
+            SELECT from_asset, year, rep_period, time_block_start
+            FROM flow_time_resolution
+        ) AS sub
+            ON main.asset=sub.asset
+                AND main.year=sub.year
+                AND main.rep_period=sub.rep_period
+        WHERE main.type in ('hub', 'consumer')
+        ",
     )
-
-    # appender = DuckDB.Appender(connection, "cons_indexes_highest_in_out")
-    # The query below selects the filtered assets
-    for row in DuckDB.query(
-        connection,
-        "SELECT *
-        FROM t_cons_indexes
-        WHERE type in ('hub', 'consumer')",
-    )
-        # The query below uses the assets, inflows, and outflows
-        # -- The previous attempt used
-        # The idea below is to find all unique time_block_start values because
-        # this is uses strategy 'highest'. By ordering them, and making
-        # time_block_end[i] = time_block_start[i+1] - 1, we have all ranges.
-        # We use the `lead` function from SQL to get `time_block_start[i+1]`
-        # and row.num_timesteps is the maximum value for when i+1 > length
-        # TODO: Should be possible to do in a single SQL statement
-        DuckDB.execute(
-            connection,
-            "INSERT INTO cons_indexes_highest_in_out
-                SELECT
-                    '$(row.asset)',
-                    $(row.year),
-                    $(row.rep_period),
-                    time_block_start,
-                    lead(time_block_start - 1, 1, $(row.num_timesteps))
-                OVER (ORDER BY time_block_start)
-                FROM (
-                    SELECT time_block_start
-                    FROM asset_time_resolution
-                    WHERE
-                        asset='$(row.asset)'
-                        AND year=$(row.year)
-                        AND rep_period=$(row.rep_period)
-                    UNION
-                    SELECT time_block_start
-                    FROM flow_time_resolution
-                    WHERE
-                        to_asset='$(row.asset)'
-                        AND year=$(row.year)
-                        AND rep_period=$(row.rep_period)
-                    UNION
-                    SELECT time_block_start
-                    FROM flow_time_resolution
-                    WHERE
-                        from_asset='$(row.asset)'
-                        AND year=$(row.year)
-                        AND rep_period=$(row.rep_period)
-                )
-                ",
-        )
-    end
 end
