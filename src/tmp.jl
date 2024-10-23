@@ -159,3 +159,96 @@ function tmp_create_partition_tables(connection)
     end
     DuckDB.close(appender)
 end
+
+function tmp_create_constraints_indexes(connection)
+    # Create a list of all (asset, year, rp) and also data used in filtering
+    DBInterface.execute(
+        connection,
+        "CREATE OR REPLACE TABLE t_cons_indexes AS
+        SELECT DISTINCT
+            assets_data.name as asset,
+            assets_data.year,
+            rep_periods_data.rep_period,
+            graph_assets_data.type,
+            rep_periods_data.num_timesteps,
+            assets_data.unit_commitment,
+        FROM assets_data
+        LEFT JOIN graph_assets_data
+            ON assets_data.name=graph_assets_data.name
+        LEFT JOIN rep_periods_data
+            ON assets_data.year=rep_periods_data.year
+        WHERE assets_data.active=true
+        ORDER BY assets_data.year,rep_periods_data.rep_period
+        ",
+    )
+
+    #= Replacing the following example:
+        (
+            name = :highest_in_out,
+            partitions = _allflows,
+            strategy = :highest,
+            asset_filter = (a, y) -> graph[a].type in ["hub", "consumer"],
+        ),
+    =#
+    DBInterface.execute(
+        connection,
+        "CREATE OR REPLACE TABLE cons_indexes_highest_in_out(
+            asset STRING,
+            year INT,
+            rep_period INT,
+            time_block_start INT,
+            time_block_end INT,
+        )",
+    )
+
+    appender = DuckDB.Appender(connection, "cons_indexes_highest_in_out")
+    # The query below selects the filtered assets
+    for row in DuckDB.query(
+        connection,
+        "SELECT *
+        FROM t_cons_indexes
+        WHERE type in ('hub', 'consumer')",
+    )
+        # The query below uses the assets, inflows, and outflows
+        # The idea below is to find all unique time_block_start values because this is uses strategy 'highest'
+        # By ordering them, and making time_block_end[i] = time_block_start[i+1] - 1, we have all ranges
+        # However, we are doing this is a less than ideal way because we allocate everything
+        time_block_start_list = [
+            row.time_block_start for row in DuckDB.query(
+                connection,
+                "SELECT time_block_start
+                FROM asset_time_resolution
+                WHERE
+                   asset='$(row.asset)'
+                   AND year=$(row.year)
+                   AND rep_period=$(row.rep_period)
+                UNION
+                SELECT time_block_start
+                FROM flow_time_resolution
+                WHERE
+                   to_asset='$(row.asset)'
+                   AND year=$(row.year)
+                   AND rep_period=$(row.rep_period)
+                UNION
+                SELECT time_block_start
+                FROM flow_time_resolution
+                WHERE
+                   from_asset='$(row.asset)'
+                   AND year=$(row.year)
+                   AND rep_period=$(row.rep_period)
+                ORDER BY time_block_start ASC
+                ",
+            )
+        ]
+        time_block_end_list = [time_block_start_list[2:end]; row.num_timesteps]
+        for (s, e) in zip(time_block_start_list, time_block_end_list)
+            DuckDB.append(appender, row.asset)
+            DuckDB.append(appender, row.year)
+            DuckDB.append(appender, row.rep_period)
+            DuckDB.append(appender, s)
+            DuckDB.append(appender, e)
+            DuckDB.end_row(appender)
+        end
+    end
+    DuckDB.close(appender)
+end
