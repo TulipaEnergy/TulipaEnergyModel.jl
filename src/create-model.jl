@@ -71,13 +71,6 @@ function create_model(
             DataFrames.groupby(dataframes[:storage_level_inter_rp], [:asset, :year])
     end
 
-    # Unpacking dataframes with variable indices
-    @timeit to "unpacking variable indices" begin
-        storage_level_intra_rp_indices = variables[:storage_level_intra_rp].indices
-        storage_level_inter_rp_indices = variables[:storage_level_inter_rp].indices
-        is_charging_indices = variables[:is_charging].indices
-    end
-
     ## Model
     model = JuMP.Model()
 
@@ -89,14 +82,7 @@ function create_model(
         sets,
         variables,
     )
-    @timeit to "add_storage_variables!" add_storage_variables!(
-        model,
-        graph,
-        sets,
-        storage_level_intra_rp_indices,
-        storage_level_inter_rp_indices,
-        is_charging_indices,
-    )
+    @timeit to "add_storage_variables!" add_storage_variables!(model, graph, sets, variables)
 
     # TODO: This should change heavily, so I just moved things to the function and unpack them here from model
     assets_decommission_compact_method = model[:assets_decommission_compact_method]
@@ -106,12 +92,14 @@ function create_model(
     assets_investment_energy = model[:assets_investment_energy]
     flows_decommission_using_simple_method = model[:flows_decommission_using_simple_method]
     flows_investment = model[:flows_investment]
-    storage_level_inter_rp = model[:storage_level_inter_rp]
-    storage_level_intra_rp = model[:storage_level_intra_rp]
 
     # TODO: This should disapear after the changes on add_expressions_to_dataframe! and storing the solution
     model[:flow] = df_flows.flow = variables[:flow].container
     model[:units_on] = df_units_on.units_on = variables[:units_on].container
+    storage_level_intra_rp =
+        model[:storage_level_intra_rp] = variables[:storage_level_intra_rp].container
+    storage_level_inter_rp =
+        model[:storage_level_inter_rp] = variables[:storage_level_inter_rp].container
 
     ## Add expressions to dataframes
     # TODO: What will improve this? Variables (#884)?, Constraints?
@@ -128,12 +116,12 @@ function create_model(
         outgoing_flow_storage_inter_rp_balance,
     ) = add_expressions_to_dataframe!(
         dataframes,
+        variables,
         model,
         expression_workspace,
         representative_periods,
         timeframe,
         graph,
-        is_charging_indices,
     )
 
     ## Expressions for multi-year investment
