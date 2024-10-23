@@ -51,12 +51,12 @@ function compute_constraints_partitions(graph, representative_periods, years)
                 graph[a].type == "storage" &&
                     !ismissing(get(graph[a].use_binary_storage_method, y, missing)),
         ),
-        (
-            name = :highest_in_out,
-            partitions = _allflows,
-            strategy = :highest,
-            asset_filter = (a, y) -> graph[a].type in ["hub", "consumer"],
-        ),
+        # ( # WIP: Testing removing this in favor of using table cons_indexes_highest_in_out
+        #     name = :highest_in_out,
+        #     partitions = _allflows,
+        #     strategy = :highest,
+        #     asset_filter = (a, y) -> graph[a].type in ["hub", "consumer"],
+        # ),
         (
             name = :highest_in,
             partitions = _inflows,

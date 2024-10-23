@@ -240,7 +240,7 @@ function tmp_create_constraints_indexes(connection)
                 ",
             )
         ]
-        time_block_end_list = [time_block_start_list[2:end]; row.num_timesteps]
+        time_block_end_list = [time_block_start_list[2:end] .- 1; row.num_timesteps]
         for (s, e) in zip(time_block_start_list, time_block_end_list)
             DuckDB.append(appender, row.asset)
             DuckDB.append(appender, row.year)
