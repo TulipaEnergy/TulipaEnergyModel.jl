@@ -23,7 +23,13 @@ end
     # Internal data and structures pre-model
     graph, representative_periods, timeframe, groups, years = create_internal_structures(connection)
     constraints_partitions = compute_constraints_partitions(graph, representative_periods, years)
-    dataframes = construct_dataframes(graph, representative_periods, constraints_partitions, years)
+    dataframes = construct_dataframes(
+        connection,
+        graph,
+        representative_periods,
+        constraints_partitions,
+        years,
+    )
     model_parameters = ModelParameters(connection)
     sets = create_sets(graph, years)
     variables = compute_variables_indices(dataframes)

@@ -114,7 +114,7 @@ The `constraints_partitions` has two dictionaries with the keys `:lowest_resolut
 We also need dataframes that store the linearized indexes of the variables.
 
 ```@example manual
-dataframes = construct_dataframes(graph, representative_periods, constraints_partitions, years)
+dataframes = construct_dataframes(connection, graph, representative_periods, constraints_partitions, years)
 ```
 
 We need the sets and the variables indices.

@@ -380,6 +380,7 @@ mutable struct EnergyProblem
 
         elapsed_time_construct_dataframes = @elapsed begin
             dataframes = construct_dataframes(
+                connection,
                 graph,
                 representative_periods,
                 constraints_partitions,
