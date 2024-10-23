@@ -89,14 +89,7 @@ function create_model(
         sets,
         variables,
     )
-    @timeit to "add_storage_variables!" add_storage_variables!(
-        model,
-        graph,
-        sets,
-        storage_level_intra_rp_indices,
-        storage_level_inter_rp_indices,
-        is_charging_indices,
-    )
+    @timeit to "add_storage_variables!" add_storage_variables!(model, graph, sets, variables)
 
     # TODO: This should change heavily, so I just moved things to the function and unpack them here from model
     assets_decommission_compact_method = model[:assets_decommission_compact_method]

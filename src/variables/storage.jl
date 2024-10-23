@@ -7,14 +7,11 @@ Adds storage-related variables to the optimization `model`, including storage le
 The function also optionally sets binary constraints for certain charging variables based on storage methods.
 
 """
-function add_storage_variables!(
-    model,
-    graph,
-    sets,
-    storage_level_intra_rp_indices,
-    storage_level_inter_rp_indices,
-    is_charging_indices,
-)
+function add_storage_variables!(model, graph, sets, variables)
+    storage_level_intra_rp_indices = variables[:storage_level_intra_rp].indices
+    storage_level_inter_rp_indices = variables[:storage_level_inter_rp].indices
+    is_charging_indices = variables[:is_charging].indices
+
     model[:storage_level_intra_rp] = [
         @variable(
             model,
