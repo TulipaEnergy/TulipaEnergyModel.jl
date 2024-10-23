@@ -82,7 +82,7 @@ function create_model(
     model = JuMP.Model()
 
     ## Variables
-    @timeit to "add_flow_variables!" add_flow_variables!(model, dataframes)
+    @timeit to "add_flow_variables!" add_flow_variables!(model, variables)
     @timeit to "add_investment_variables!" add_investment_variables!(model, graph, sets)
     @timeit to "add_unit_commitment_variables!" add_unit_commitment_variables!(
         model,
@@ -104,11 +104,13 @@ function create_model(
     assets_decommission_energy_simple_method = model[:assets_decommission_energy_simple_method]
     assets_investment = model[:assets_investment]
     assets_investment_energy = model[:assets_investment_energy]
-    flow = model[:flow]
     flows_decommission_using_simple_method = model[:flows_decommission_using_simple_method]
     flows_investment = model[:flows_investment]
     storage_level_inter_rp = model[:storage_level_inter_rp]
     storage_level_intra_rp = model[:storage_level_intra_rp]
+
+    # TODO: This should disapear after the changes on add_expressions_to_dataframe! and storing the solution
+    model[:flow] = df_flows.flow = variables[:flow].container
 
     ## Add expressions to dataframes
     # TODO: What will improve this? Variables (#884)?, Constraints?
@@ -158,9 +160,8 @@ function create_model(
         model,
         graph,
         dataframes,
-        df_flows,
-        flow,
         sets,
+        variables,
         accumulated_initial_units,
         accumulated_investment_units_using_simple_method,
         accumulated_units,
@@ -214,9 +215,8 @@ function create_model(
     @timeit to "add_transport_constraints!" add_transport_constraints!(
         model,
         graph,
-        df_flows,
-        flow,
         sets,
+        variables,
         accumulated_flows_export_units,
         accumulated_flows_import_units,
     )
