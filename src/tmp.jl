@@ -201,7 +201,7 @@ function tmp_create_constraints_indexes(connection)
         )",
     )
 
-    appender = DuckDB.Appender(connection, "cons_indexes_highest_in_out")
+    # appender = DuckDB.Appender(connection, "cons_indexes_highest_in_out")
     # The query below selects the filtered assets
     for row in DuckDB.query(
         connection,
@@ -210,45 +210,46 @@ function tmp_create_constraints_indexes(connection)
         WHERE type in ('hub', 'consumer')",
     )
         # The query below uses the assets, inflows, and outflows
-        # The idea below is to find all unique time_block_start values because this is uses strategy 'highest'
-        # By ordering them, and making time_block_end[i] = time_block_start[i+1] - 1, we have all ranges
-        # However, we are doing this is a less than ideal way because we allocate everything
-        time_block_start_list = [
-            row.time_block_start for row in DuckDB.query(
-                connection,
-                "SELECT time_block_start
-                FROM asset_time_resolution
-                WHERE
-                   asset='$(row.asset)'
-                   AND year=$(row.year)
-                   AND rep_period=$(row.rep_period)
-                UNION
-                SELECT time_block_start
-                FROM flow_time_resolution
-                WHERE
-                   to_asset='$(row.asset)'
-                   AND year=$(row.year)
-                   AND rep_period=$(row.rep_period)
-                UNION
-                SELECT time_block_start
-                FROM flow_time_resolution
-                WHERE
-                   from_asset='$(row.asset)'
-                   AND year=$(row.year)
-                   AND rep_period=$(row.rep_period)
-                ORDER BY time_block_start ASC
+        # -- The previous attempt used
+        # The idea below is to find all unique time_block_start values because
+        # this is uses strategy 'highest'. By ordering them, and making
+        # time_block_end[i] = time_block_start[i+1] - 1, we have all ranges.
+        # We use the `lead` function from SQL to get `time_block_start[i+1]`
+        # and row.num_timesteps is the maximum value for when i+1 > length
+        # TODO: Should be possible to do in a single SQL statement
+        DuckDB.execute(
+            connection,
+            "INSERT INTO cons_indexes_highest_in_out
+                SELECT
+                    '$(row.asset)',
+                    $(row.year),
+                    $(row.rep_period),
+                    time_block_start,
+                    lead(time_block_start - 1, 1, $(row.num_timesteps))
+                OVER (ORDER BY time_block_start)
+                FROM (
+                    SELECT time_block_start
+                    FROM asset_time_resolution
+                    WHERE
+                        asset='$(row.asset)'
+                        AND year=$(row.year)
+                        AND rep_period=$(row.rep_period)
+                    UNION
+                    SELECT time_block_start
+                    FROM flow_time_resolution
+                    WHERE
+                        to_asset='$(row.asset)'
+                        AND year=$(row.year)
+                        AND rep_period=$(row.rep_period)
+                    UNION
+                    SELECT time_block_start
+                    FROM flow_time_resolution
+                    WHERE
+                        from_asset='$(row.asset)'
+                        AND year=$(row.year)
+                        AND rep_period=$(row.rep_period)
+                )
                 ",
-            )
-        ]
-        time_block_end_list = [time_block_start_list[2:end] .- 1; row.num_timesteps]
-        for (s, e) in zip(time_block_start_list, time_block_end_list)
-            DuckDB.append(appender, row.asset)
-            DuckDB.append(appender, row.year)
-            DuckDB.append(appender, row.rep_period)
-            DuckDB.append(appender, s)
-            DuckDB.append(appender, e)
-            DuckDB.end_row(appender)
-        end
+        )
     end
-    DuckDB.close(appender)
 end
