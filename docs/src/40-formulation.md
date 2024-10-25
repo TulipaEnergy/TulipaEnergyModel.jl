@@ -181,9 +181,9 @@ In addition, the following subsets represent methods for incorporating additiona
 
 ### Extra Parameters for Discounting
 
-| Name                                               | Domain           | Domains of Indices  | Description                                                              | Units |
-| -------------------------------------------------- | ---------------- | ------------------- | ------------------------------------------------------------------------ | ----- |
-| $p^{\text{discounting factor operation cost}}_{y}$ | $\mathbb{R}_{+}$ | $y \in \mathcal{Y}$ | Discounting factor for investment cost of transport flow $f$ at year $y$ | [-]   |
+| Name                                               | Domain           | Domains of Indices  | Description                                       | Units |
+| -------------------------------------------------- | ---------------- | ------------------- | ------------------------------------------------- | ----- |
+| $p^{\text{discounting factor operation cost}}_{y}$ | $\mathbb{R}_{+}$ | $y \in \mathcal{Y}$ | Discounting factor for operation cost at year $y$ | [-]   |
 
 ## [Variables](@id math-variables)
 
