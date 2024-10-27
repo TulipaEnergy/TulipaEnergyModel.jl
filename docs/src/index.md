@@ -35,7 +35,7 @@ For modellers, here is a brief summary of Tulipa's scope and features. More deta
 
 ## Getting Started
 
-To start using Tulipa for your research, check out our [How to Use](@ref how-to-use) section and [Tutorials](@ref tutorials).
+To start using TulipaEnergyModel for your research, check out our [How to Use](@ref how-to-use) section and [Tutorials](@ref tutorials).
 
 For a more technical explanation, check out the [Concepts](@ref concepts) section, or dive into the [Mathematical Formulation](@ref formulation).
 
