@@ -16,7 +16,7 @@ Tulipa can answer questions such as:
 - How will different investment decisions impact the balance and generation mix of the energy system?
 - Where will there be grid congestion in the future? How would placing [technology] at [location] impact congestion?
 - How will [national/international] policy targets influence investment and dispatch?
-- How will a future energy system handle different weather events (such as dunkelflaute)?
+- How will a future energy system handle different weather patterns and extreme events (such as dunkelflaute)?
 
 Not sure if Tulipa is right for your research? Feel free to ask in our [Discussions](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/discussions/categories/q-a)!
 
