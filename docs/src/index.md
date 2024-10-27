@@ -30,7 +30,7 @@ For modellers, here is a brief summary of Tulipa's scope and features. More deta
 - Timespan: Any - Usually Yearly or Multi-year
 - Time resolution: [Fully-flexible](@ref flex-time-res) - even mixing different resolutions (1-hr, 2-hr, 3-hr, etc) within a scenario
 - Temporal aggregation: Time series aggregation using blended representative periods
-- Storage: [Short- and Long-term storage](@ref storage-modeling) constraints, even while using representative periods
+- Storage representation: [Short- and Long-term storage](@ref storage-modeling) constraints, even while using representative periods
 - Solutions: Optimal & Near-optimal alternatives, using modelling to generate alternatives (MGA)
 
 ## Getting Started
