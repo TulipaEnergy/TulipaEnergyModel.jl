@@ -111,7 +111,7 @@ constraints_partitions = compute_constraints_partitions(graph, representative_pe
 
 The `constraints_partitions` has two dictionaries with the keys `:lowest_resolution` and `:highest_resolution`. The lowest resolution dictionary is mainly used to create the constraints for energy balance, whereas the highest resolution dictionary is mainly used to create the capacity constraints in the model.
 
-We also need dataframes that store the linearized indexes of the variables.
+We also need dataframes that store the linearized indices of the variables.
 
 ```@example manual
 dataframes = construct_dataframes(connection, graph, representative_periods, constraints_partitions, years)
@@ -468,7 +468,7 @@ df_consumers = filter(
 nothing # hide
 ```
 
-We set `view = false` to create a copy of this DataFrame so we can make our indexes:
+We set `view = false` to create a copy of this DataFrame so we can make our indices:
 
 ```@example solution
 df_consumers.index = 1:size(df_consumers, 1) # overwrites existing index

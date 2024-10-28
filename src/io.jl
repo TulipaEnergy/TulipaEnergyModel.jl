@@ -292,9 +292,6 @@ function create_internal_structures(connection)
         graph[u, v].rep_periods_partitions[year][rp] =
             map(r -> r[1]:r[2], zip(_df.time_block_start, _df.time_block_end))
         P = graph[u, v].rep_periods_partitions[year][rp]
-        if maximum(P) != P[end]
-            @show u, v, year, rp, P
-        end
     end
 
     #=

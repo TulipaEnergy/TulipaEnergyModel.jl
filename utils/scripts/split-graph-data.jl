@@ -20,18 +20,18 @@ apply_to_files_named("assets-data.csv") do path
         touch(new_file_path)
         change_file(new_file_path) do tcsv
             cols = [:name; static_cols]
-            indexes = columnindex.(Ref(old_tcsv.csv), cols)
+            indices = columnindex.(Ref(old_tcsv.csv), cols)
 
-            tcsv.units = old_tcsv.units[indexes]
-            tcsv.csv = unique(old_tcsv.csv[:, indexes])
+            tcsv.units = old_tcsv.units[indices]
+            tcsv.csv = unique(old_tcsv.csv[:, indices])
 
             idx = findfirst(names(tcsv.csv) .== "investment_cost")
             add_column(tcsv, "investment_method", "simple"; unit = "{none;simple;compact}")
         end
 
-        indexes = setdiff(1:length(old_tcsv.units), columnindex.(Ref(old_tcsv.csv), static_cols))
-        old_tcsv.units = old_tcsv.units[indexes]
-        old_tcsv.csv = old_tcsv.csv[:, indexes]
+        indices = setdiff(1:length(old_tcsv.units), columnindex.(Ref(old_tcsv.csv), static_cols))
+        old_tcsv.units = old_tcsv.units[indices]
+        old_tcsv.csv = old_tcsv.csv[:, indices]
     end
 end
 
@@ -47,15 +47,15 @@ apply_to_files_named("flows-data.csv") do path
         touch(new_file_path)
         change_file(new_file_path) do tcsv
             cols = [:from_asset; :to_asset; static_cols]
-            indexes = columnindex.(Ref(old_tcsv.csv), cols)
+            indices = columnindex.(Ref(old_tcsv.csv), cols)
 
-            tcsv.units = old_tcsv.units[indexes]
-            tcsv.csv = unique(old_tcsv.csv[:, indexes])
+            tcsv.units = old_tcsv.units[indices]
+            tcsv.csv = unique(old_tcsv.csv[:, indices])
         end
 
-        indexes = setdiff(1:length(old_tcsv.units), columnindex.(Ref(old_tcsv.csv), static_cols))
-        old_tcsv.units = old_tcsv.units[indexes]
-        old_tcsv.csv = old_tcsv.csv[:, indexes]
+        indices = setdiff(1:length(old_tcsv.units), columnindex.(Ref(old_tcsv.csv), static_cols))
+        old_tcsv.units = old_tcsv.units[indices]
+        old_tcsv.csv = old_tcsv.csv[:, indices]
     end
 end
 

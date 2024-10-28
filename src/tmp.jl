@@ -56,15 +56,13 @@ function tmp_create_partition_tables(connection)
             ON t_rp.year=t_assets.year
         LEFT JOIN assets_rep_periods_partitions as t_partition
             ON t_assets.name=t_partition.asset
+                AND t_rp.year=t_partition.year
                 AND t_rp.rep_period=t_partition.rep_period
         WHERE t_assets.active=true
         ORDER BY year, rep_period
         ",
     )
 
-    # TODO: Bug: If you don't set t_rp.rep_period=t_partition.rep_period, then
-    # it creates at least one wrong entry with a wrong rep_period.
-    # If you set it, then many entries are missing because t_partition.rep_period is not always defined
     DBInterface.execute(
         connection,
         "CREATE OR REPLACE TABLE explicit_flows_rep_periods_partitions AS
@@ -83,6 +81,7 @@ function tmp_create_partition_tables(connection)
         LEFT JOIN flows_rep_periods_partitions as t_partition
             ON t_flows.from_asset=t_partition.from_asset
                 AND t_flows.to_asset=t_partition.to_asset
+                AND t_rp.year=t_partition.year
                 AND t_rp.rep_period=t_partition.rep_period
         WHERE t_flows.active=true
         ORDER BY year, rep_period
@@ -160,11 +159,11 @@ function tmp_create_partition_tables(connection)
     DuckDB.close(appender)
 end
 
-function tmp_create_constraints_indexes(connection)
+function tmp_create_constraints_indices(connection)
     # Create a list of all (asset, year, rp) and also data used in filtering
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE t_cons_indexes AS
+        "CREATE OR REPLACE TABLE t_cons_indices AS
         SELECT DISTINCT
             assets_data.name as asset,
             assets_data.year,
@@ -178,7 +177,7 @@ function tmp_create_constraints_indexes(connection)
         LEFT JOIN rep_periods_data
             ON assets_data.year=rep_periods_data.year
         WHERE assets_data.active=true
-        ORDER BY assets_data.year,rep_periods_data.rep_period
+        ORDER BY assets_data.year, rep_periods_data.rep_period
         ",
     )
 
@@ -203,9 +202,13 @@ function tmp_create_constraints_indexes(connection)
     # The query below will use the WINDOW FUNCTION `lead` to compute the time
     # block end.
     # This query uses the assets, incoming flows and outgoing flows to compute partitions
+    # This will be useful when we have other `partitions` instead of `_allflows`
+    # SELECT asset, year, rep_period, time_block_start
+    # FROM asset_time_resolution
+    # UNION
     DuckDB.execute(
         connection,
-        "CREATE OR REPLACE TABLE cons_indexes_highest_in_out AS
+        "CREATE OR REPLACE TABLE cons_indices_highest_in_out AS
         SELECT
             main.asset,
             main.year,
@@ -214,15 +217,12 @@ function tmp_create_constraints_indexes(connection)
             lead(sub.time_block_start - 1, 1, main.num_timesteps)
                 OVER (PARTITION BY main.asset, main.year, main.rep_period ORDER BY time_block_start)
                 AS time_block_end,
-        FROM t_cons_indexes AS main
+        FROM t_cons_indices AS main
         LEFT JOIN (
-            SELECT asset, year, rep_period, time_block_start
-            FROM asset_time_resolution
-            UNION
-            SELECT to_asset, year, rep_period, time_block_start
+            SELECT to_asset as asset, year, rep_period, time_block_start
             FROM flow_time_resolution
             UNION
-            SELECT from_asset, year, rep_period, time_block_start
+            SELECT from_asset as asset, year, rep_period, time_block_start
             FROM flow_time_resolution
         ) AS sub
             ON main.asset=sub.asset
@@ -255,10 +255,10 @@ function tmp_example_of_flow_expression_problem()
     - `asset_time_resolution`: Each asset and their unrolled time partitions
     - `flow_time_resolution`: Each flow and their unrolled time partitions
       Note: This is the equivalent to `ep.dataframes[:flows]`.
-    - `cons_indexes_highest_in_out`: The indexes of the balance constraints.
+    - `cons_indices_highest_in_out`: The indices of the balance constraints.
 
     Objectives:
-    - For each row in `cons_indexes_highest_in_out`, find all incoming/outgoing
+    - For each row in `cons_indices_highest_in_out`, find all incoming/outgoing
       flows that **match** (asset,year,rep_period) and with intersecting time
       block
     - Find a way to store this information to use when creating the model in a

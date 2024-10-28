@@ -61,8 +61,8 @@ function construct_dataframes(
     end
 
     # WIP: highest_in_out is not included in constraints_partition anymore
-    tmp_create_constraints_indexes(connection)
-    dataframes[:highest_in_out] = TulipaIO.get_table(connection, "cons_indexes_highest_in_out")
+    tmp_create_constraints_indices(connection)
+    dataframes[:highest_in_out] = TulipaIO.get_table(connection, "cons_indices_highest_in_out")
     dataframes[:highest_in_out].timesteps_block = map(
         r -> r[1]:r[2],
         zip(
