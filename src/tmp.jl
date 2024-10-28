@@ -231,6 +231,53 @@ function tmp_create_constraints_indices(connection)
         WHERE main.type in ('hub', 'consumer')
         ",
     )
+
+    # -- The previous attempt used
+    # The idea below is to find all unique time_block_start values because
+    # this is uses strategy 'highest'. By ordering them, and making
+    # time_block_end[i] = time_block_start[i+1] - 1, we have all ranges.
+    # We use the `lead` function from SQL to get `time_block_start[i+1]`
+    # and row.num_timesteps is the maximum value for when i+1 > length
+    #
+    # The query below is trying to replace the following constraints_partitions example:
+    #= (
+    #     name = :highest_in,
+    #     partitions = _inflows,
+    #     strategy = :highest,
+    #     asset_filter = (a, y) -> graph[a].type in ["storage"],
+    # ),
+    =#
+    # The **highest** strategy is obtained simply by computing the union of all
+    # time_block_starts, since it consists of "all breakpoints".
+    # The time_block_end is computed a posteriori using the next time_block_start.
+    # The query below will use the WINDOW FUNCTION `lead` to compute the time
+    # block end.
+    # This query uses the assets and incoming flows to compute partitions
+    # SELECT asset, year, rep_period, time_block_start
+    # FROM asset_time_resolution
+    # UNION
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TABLE cons_indices_highest_in AS
+        SELECT
+            main.asset,
+            main.year,
+            main.rep_period,
+            sub.time_block_start,
+            lead(sub.time_block_start - 1, 1, main.num_timesteps)
+                OVER (PARTITION BY main.asset, main.year, main.rep_period ORDER BY time_block_start)
+                AS time_block_end,
+        FROM t_cons_indices AS main
+        LEFT JOIN (
+            SELECT to_asset as asset, year, rep_period, time_block_start
+            FROM flow_time_resolution
+        ) AS sub
+            ON main.asset=sub.asset
+                AND main.year=sub.year
+                AND main.rep_period=sub.rep_period
+        WHERE main.type in ('storage')
+        ",
+    )
 end
 
 """
