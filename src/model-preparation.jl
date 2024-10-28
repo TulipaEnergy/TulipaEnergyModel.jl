@@ -108,7 +108,6 @@ function construct_dataframes(
                 ON assets_data.name=graph_assets_data.name
             WHERE graph_assets_data.type IN ('producer','conversion')
             AND assets_data.unit_commitment=true",
-            #     Auc = Dict(year => (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :unit_commitment, year) for year in years)
         ) |> DataFrame
 
     dataframes[:units_on].timesteps_block = map(
