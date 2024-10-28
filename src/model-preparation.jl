@@ -3,6 +3,7 @@ export create_sets, construct_dataframes
 
 """
     dataframes = construct_dataframes(
+        connection,
         graph,
         representative_periods,
         constraints_partitions,, IteratorSize
@@ -12,7 +13,13 @@ export create_sets, construct_dataframes
 Computes the data frames used to linearize the variables and constraints. These are used
 internally in the model only.
 """
-function construct_dataframes(graph, representative_periods, constraints_partitions, years_struct)
+function construct_dataframes(
+    connection,
+    graph,
+    representative_periods,
+    constraints_partitions,
+    years_struct,
+)
     years = [year.id for year in years_struct if year.is_milestone]
     A = MetaGraphsNext.labels(graph) |> collect
     F = MetaGraphsNext.edge_labels(graph) |> collect
@@ -53,20 +60,34 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
         dataframes[key] = df
     end
 
+    # WIP: highest_in_out is not included in constraints_partition anymore
+    tmp_create_constraints_indices(connection)
+    dataframes[:highest_in_out] = TulipaIO.get_table(connection, "cons_indices_highest_in_out")
+    dataframes[:highest_in_out].timesteps_block = map(
+        r -> r[1]:r[2],
+        zip(
+            dataframes[:highest_in_out].time_block_start,
+            dataframes[:highest_in_out].time_block_end,
+        ),
+    )
+    dataframes[:highest_in_out].index = 1:size(dataframes[:highest_in_out], 1)
+
     # DataFrame to store the flow variables
-    dataframes[:flows] = DataFrame(
-        (
-            (
-                (
-                    from = u,
-                    to = v,
-                    year = y,
-                    rep_period = rp,
-                    timesteps_block = timesteps_block,
-                    efficiency = graph[u, v].efficiency[y],
-                ) for timesteps_block in graph[u, v].rep_periods_partitions[y][rp]
-            ) for (u, v) in F, y in years for rp in RP[y] if get(graph[u, v].active, y, false)
-        ) |> Iterators.flatten,
+    dataframes[:flows] = DuckDB.query(
+        connection,
+        "SELECT
+            from_asset as from,
+            to_asset as to,
+            year,
+            rep_period,
+            efficiency,
+            time_block_start,
+            time_block_end
+        FROM flow_time_resolution",
+    ) |> DataFrame
+    dataframes[:flows].timesteps_block = map(
+        r -> r[1]:r[2],
+        zip(dataframes[:flows].time_block_start, dataframes[:flows].time_block_end),
     )
     dataframes[:flows].index = 1:size(dataframes[:flows], 1)
 
