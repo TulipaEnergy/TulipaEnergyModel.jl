@@ -92,14 +92,30 @@ function construct_dataframes(
     dataframes[:flows].index = 1:size(dataframes[:flows], 1)
 
     # DataFrame to store the units_on variables
-    dataframes[:units_on] = DataFrame(
-        (
-            (
-                (asset = a, year = y, rep_period = rp, timesteps_block = timesteps_block) for
-                timesteps_block in graph[a].rep_periods_partitions[y][rp]
-            ) for y in years for a in Auc[y], rp in RP[y] if get(graph[a].active, y, false)
-        ) |> Iterators.flatten,
+    dataframes[:units_on] =
+        DuckDB.query(
+            connection,
+            "SELECT
+                atr.asset,
+                atr.year,
+                atr.rep_period,
+                atr.time_block_start,
+                atr.time_block_end
+            FROM asset_time_resolution AS atr
+            LEFT JOIN assets_data
+                ON atr.asset=assets_data.name
+            LEFT JOIN graph_assets_data
+                ON assets_data.name=graph_assets_data.name
+            WHERE graph_assets_data.type IN ('producer','conversion')
+            AND assets_data.unit_commitment=true",
+            #     Auc = Dict(year => (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :unit_commitment, year) for year in years)
+        ) |> DataFrame
+
+    dataframes[:units_on].timesteps_block = map(
+        r -> r[1]:r[2],
+        zip(dataframes[:units_on].time_block_start, dataframes[:units_on].time_block_end),
     )
+
     dataframes[:units_on].index = 1:size(dataframes[:units_on], 1)
 
     # Dataframe to store the storage level variable between (inter) representative period (e.g., seasonal storage)
