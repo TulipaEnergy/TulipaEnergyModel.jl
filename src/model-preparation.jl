@@ -62,8 +62,14 @@ function construct_dataframes(
 
     tmp_create_constraints_indices(connection)
 
+    # WIP: Can these queries be left undordered by the end of the refactor?
     # WIP: highest_in_out is not included in constraints_partition anymore
-    dataframes[:highest_in_out] = TulipaIO.get_table(connection, "cons_indices_highest_in_out")
+    dataframes[:highest_in_out] =
+        DuckDB.query(
+            connection,
+            "SELECT * FROM cons_indices_highest_in_out
+            ORDER BY asset, year, rep_period, time_block_start",
+        ) |> DataFrame
     dataframes[:highest_in_out].timesteps_block = map(
         r -> r[1]:r[2],
         zip(
@@ -74,7 +80,12 @@ function construct_dataframes(
     dataframes[:highest_in_out].index = 1:size(dataframes[:highest_in_out], 1)
 
     # WIP: highest_in is not included in constraints_partition anymore
-    dataframes[:highest_in] = TulipaIO.get_table(connection, "cons_indices_highest_in")
+    dataframes[:highest_in] =
+        DuckDB.query(
+            connection,
+            "SELECT * FROM cons_indices_highest_in
+            ORDER BY asset, year, rep_period, time_block_start",
+        ) |> DataFrame
     dataframes[:highest_in].timesteps_block = map(
         r -> r[1]:r[2],
         zip(dataframes[:highest_in].time_block_start, dataframes[:highest_in].time_block_end),
@@ -479,6 +490,7 @@ function add_expression_terms_inter_rp_constraints!(
 end
 
 function add_expressions_to_dataframe!(
+    connection,
     dataframes,
     variables,
     model,
@@ -511,15 +523,38 @@ function add_expressions_to_dataframe!(
             use_highest_resolution = false,
             multiply_by_duration = true,
         )
-        add_expression_terms_intra_rp_constraints!(
-            dataframes[:highest_in_out],
-            dataframes[:flows],
-            expression_workspace,
-            representative_periods,
-            graph;
-            use_highest_resolution = true,
-            multiply_by_duration = false,
-        )
+        # WIP: Changing the function below
+        # add_expression_terms_intra_rp_constraints!(
+        #     dataframes[:highest_in_out],
+        #     dataframes[:flows],
+        #     expression_workspace,
+        #     representative_periods,
+        #     graph;
+        #     use_highest_resolution = true,
+        #     multiply_by_duration = false,
+        # )
+        dataframes[:highest_in_out].incoming_flow = JuMP.AffExpr[
+            if length(row.indices) > 0
+                sum(unique(variables[:flow].container[row.indices]))
+            else
+                JuMP.AffExpr(0.0)
+            end for row in DuckDB.query(
+                connection,
+                "SELECT * FROM highest_in_out_incoming
+                ORDER BY asset, year, rep_period, time_block_start",
+            )
+        ]
+        dataframes[:highest_in_out].outgoing_flow = JuMP.AffExpr[
+            if length(row.indices) > 0
+                sum(unique(variables[:flow].container[row.indices]))
+            else
+                JuMP.AffExpr(0.0)
+            end for row in DuckDB.query(
+                connection,
+                "SELECT * FROM highest_in_out_outgoing
+                ORDER BY asset, year, rep_period, time_block_start",
+            )
+        ]
         add_expression_terms_intra_rp_constraints!(
             dataframes[:highest_in],
             dataframes[:flows],

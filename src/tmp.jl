@@ -124,7 +124,7 @@ function tmp_create_partition_tables(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE flow_time_resolution(
+        "CREATE OR REPLACE TEMP TABLE t_flow_time_resolution(
             from_asset STRING,
             to_asset STRING,
             year INT,
@@ -135,7 +135,7 @@ function tmp_create_partition_tables(connection)
         )",
     )
 
-    appender = DuckDB.Appender(connection, "flow_time_resolution")
+    appender = DuckDB.Appender(connection, "t_flow_time_resolution")
     for row in TulipaIO.get_table(Val(:raw), connection, "explicit_flows_rep_periods_partitions")
         durations = if row.specification == "uniform"
             step = parse(Int, row.partition)
@@ -157,6 +157,17 @@ function tmp_create_partition_tables(connection)
         _append_given_durations(appender, row, durations)
     end
     DuckDB.close(appender)
+
+    DBInterface.execute(
+        connection,
+        "CREATE OR REPLACE TABLE flow_time_resolution
+        AS
+            SELECT
+                *,
+                row_number() OVER (ORDER BY from_asset, to_asset, year, rep_period, time_block_start) AS variable_index
+            FROM t_flow_time_resolution
+        ",
+    )
 end
 
 function tmp_create_constraints_indices(connection)
@@ -265,6 +276,9 @@ function tmp_create_constraints_indices(connection)
         WHERE main.type in ('storage')
         ",
     )
+
+    # WIP: For now, the incoming and outgoing expressions are being computed here
+    tmp_create_expressions(connection)
 end
 
 """
@@ -302,4 +316,100 @@ function tmp_example_of_flow_expression_problem()
     """
 
     return connection, ep
+end
+
+function tmp_create_expressions(connection)
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TABLE t_incoming_nonzero AS
+            SELECT
+                t_flows.from_asset,
+                t_flows.to_asset,
+                t_flows.year,
+                t_flows.rep_period,
+                t_flows.variable_index,
+                t_cons.time_block_start,
+                greatest(0, 1 +
+                    least(t_flows.time_block_end,t_cons.time_block_end)
+                    - greatest(t_flows.time_block_start,t_cons.time_block_start)) AS duration
+            FROM flow_time_resolution AS t_flows
+            INNER JOIN cons_indices_highest_in_out AS t_cons
+                ON t_flows.to_asset=t_cons.asset
+                    AND t_flows.year=t_cons.year
+                    AND t_flows.rep_period=t_cons.rep_period
+            WHERE duration > 0",
+    )
+
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TABLE t_outgoing_nonzero AS
+            SELECT
+                t_flows.from_asset,
+                t_flows.to_asset,
+                t_flows.year,
+                t_flows.rep_period,
+                t_flows.variable_index,
+                t_cons.time_block_start,
+                greatest(0, 1 +
+                    least(t_flows.time_block_end,t_cons.time_block_end)
+                    - greatest(t_flows.time_block_start,t_cons.time_block_start)) AS duration
+            FROM flow_time_resolution AS t_flows
+            INNER JOIN cons_indices_highest_in_out AS t_cons
+                ON t_flows.from_asset=t_cons.asset
+                    AND t_flows.year=t_cons.year
+                    AND t_flows.rep_period=t_cons.rep_period
+            WHERE duration > 0",
+    )
+
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TABLE highest_in_out_incoming AS
+        SELECT
+            t1.asset, t1.year, t1.rep_period, t1.time_block_start,
+            COALESCE(indices, []) AS indices,
+            COALESCE(durations, []) AS durations,
+        FROM cons_indices_highest_in_out AS t1
+        LEFT JOIN (
+            SELECT
+                to_asset as asset,
+                year,
+                rep_period,
+                time_block_start,
+                array_agg(variable_index) AS indices,
+                array_agg(duration) AS durations,
+            FROM t_incoming_nonzero
+            GROUP BY to_asset, year, rep_period, time_block_start
+        ) AS t2
+        ON t1.asset=t2.asset
+            AND t1.year=t2.year
+            AND t1.rep_period=t2.rep_period
+            AND t1.time_block_start=t2.time_block_start
+        ",
+    )
+
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TABLE highest_in_out_outgoing AS
+        SELECT
+            t1.asset, t1.year, t1.rep_period, t1.time_block_start,
+            COALESCE(indices, []) AS indices,
+            COALESCE(durations, []) AS durations,
+        FROM cons_indices_highest_in_out AS t1
+        LEFT JOIN (
+            SELECT
+                from_asset as asset,
+                year,
+                rep_period,
+                time_block_start,
+                array_agg(variable_index) AS indices,
+                array_agg(duration) AS durations,
+            FROM t_outgoing_nonzero
+            GROUP BY from_asset, year, rep_period, time_block_start
+        ) AS t2
+        ON t1.asset=t2.asset
+            AND t1.year=t2.year
+            AND t1.rep_period=t2.rep_period
+            AND t1.time_block_start=t2.time_block_start
+        ",
+    )
 end
