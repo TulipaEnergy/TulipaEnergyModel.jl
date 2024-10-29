@@ -60,8 +60,9 @@ function construct_dataframes(
         dataframes[key] = df
     end
 
-    # WIP: highest_in_out is not included in constraints_partition anymore
     tmp_create_constraints_indices(connection)
+
+    # WIP: highest_in_out is not included in constraints_partition anymore
     dataframes[:highest_in_out] = TulipaIO.get_table(connection, "cons_indices_highest_in_out")
     dataframes[:highest_in_out].timesteps_block = map(
         r -> r[1]:r[2],
@@ -71,6 +72,15 @@ function construct_dataframes(
         ),
     )
     dataframes[:highest_in_out].index = 1:size(dataframes[:highest_in_out], 1)
+
+    # WIP: highest_in is not included in constraints_partition anymore
+    tmp_create_constraints_indices(connection)
+    dataframes[:highest_in] = TulipaIO.get_table(connection, "cons_indices_highest_in")
+    dataframes[:highest_in].timesteps_block = map(
+        r -> r[1]:r[2],
+        zip(dataframes[:highest_in].time_block_start, dataframes[:highest_in].time_block_end),
+    )
+    dataframes[:highest_in].index = 1:size(dataframes[:highest_in], 1)
 
     # DataFrame to store the flow variables
     dataframes[:flows] = DuckDB.query(
