@@ -127,7 +127,7 @@ variables = compute_variables_indices(dataframes)
 Now we can compute the model.
 
 ```@example manual
-model = create_model(graph, sets, variables, representative_periods, dataframes, years, timeframe, groups, model_parameters)
+model = create_model(connection, graph, sets, variables, representative_periods, dataframes, years, timeframe, groups, model_parameters)
 ```
 
 Finally, we can compute the solution.
