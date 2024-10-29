@@ -74,7 +74,6 @@ function construct_dataframes(
     dataframes[:highest_in_out].index = 1:size(dataframes[:highest_in_out], 1)
 
     # WIP: highest_in is not included in constraints_partition anymore
-    tmp_create_constraints_indices(connection)
     dataframes[:highest_in] = TulipaIO.get_table(connection, "cons_indices_highest_in")
     dataframes[:highest_in].timesteps_block = map(
         r -> r[1]:r[2],
