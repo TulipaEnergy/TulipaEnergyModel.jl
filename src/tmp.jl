@@ -232,12 +232,8 @@ function tmp_create_constraints_indices(connection)
         ",
     )
 
-    # -- The previous attempt used
-    # The idea below is to find all unique time_block_start values because
-    # this is uses strategy 'highest'. By ordering them, and making
-    # time_block_end[i] = time_block_start[i+1] - 1, we have all ranges.
-    # We use the `lead` function from SQL to get `time_block_start[i+1]`
-    # and row.num_timesteps is the maximum value for when i+1 > length
+    # This follows the same implementation as highest_in_out above, but using
+    # only the incoming flows.
     #
     # The query below is trying to replace the following constraints_partitions example:
     #= (
@@ -247,15 +243,6 @@ function tmp_create_constraints_indices(connection)
     #     asset_filter = (a, y) -> graph[a].type in ["storage"],
     # ),
     =#
-    # The **highest** strategy is obtained simply by computing the union of all
-    # time_block_starts, since it consists of "all breakpoints".
-    # The time_block_end is computed a posteriori using the next time_block_start.
-    # The query below will use the WINDOW FUNCTION `lead` to compute the time
-    # block end.
-    # This query uses the assets and incoming flows to compute partitions
-    # SELECT asset, year, rep_period, time_block_start
-    # FROM asset_time_resolution
-    # UNION
     DuckDB.execute(
         connection,
         "CREATE OR REPLACE TABLE cons_indices_highest_in AS
