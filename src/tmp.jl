@@ -213,7 +213,7 @@ function tmp_create_constraints_indices(connection)
             main.asset,
             main.year,
             main.rep_period,
-            sub.time_block_start,
+            COALESCE(sub.time_block_start, 1) AS time_block_start,
             lead(sub.time_block_start - 1, 1, main.num_timesteps)
                 OVER (PARTITION BY main.asset, main.year, main.rep_period ORDER BY time_block_start)
                 AS time_block_end,
@@ -250,7 +250,7 @@ function tmp_create_constraints_indices(connection)
             main.asset,
             main.year,
             main.rep_period,
-            sub.time_block_start,
+            COALESCE(sub.time_block_start, 1) AS time_block_start,
             lead(sub.time_block_start - 1, 1, main.num_timesteps)
                 OVER (PARTITION BY main.asset, main.year, main.rep_period ORDER BY time_block_start)
                 AS time_block_end,
