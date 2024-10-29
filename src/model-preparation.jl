@@ -60,7 +60,7 @@ function construct_dataframes(
         dataframes[key] = df
     end
 
-    tmp_create_constraints_indices(connection)
+    @timeit to "Create constraints indices" tmp_create_constraints_indices(connection)
 
     # WIP: Can these queries be left undordered by the end of the refactor?
     # WIP: highest_in_out is not included in constraints_partition anymore

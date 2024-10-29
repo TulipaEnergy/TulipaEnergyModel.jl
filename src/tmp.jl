@@ -319,7 +319,7 @@ function tmp_example_of_flow_expression_problem()
 end
 
 function tmp_create_expressions(connection)
-    DuckDB.execute(
+    @timeit to "Create t_incoming_nonzero" DuckDB.execute(
         connection,
         "CREATE OR REPLACE TABLE t_incoming_nonzero AS
             SELECT
@@ -340,7 +340,7 @@ function tmp_create_expressions(connection)
             WHERE duration > 0",
     )
 
-    DuckDB.execute(
+    @timeit to "Create t_outgoing_nonzero" DuckDB.execute(
         connection,
         "CREATE OR REPLACE TABLE t_outgoing_nonzero AS
             SELECT
@@ -361,7 +361,7 @@ function tmp_create_expressions(connection)
             WHERE duration > 0",
     )
 
-    DuckDB.execute(
+    @timeit to "Create highest_in_out_incoming" DuckDB.execute(
         connection,
         "CREATE OR REPLACE TABLE highest_in_out_incoming AS
         SELECT
@@ -387,7 +387,7 @@ function tmp_create_expressions(connection)
         ",
     )
 
-    DuckDB.execute(
+    @timeit to "Create highest_in_out_outgoing" DuckDB.execute(
         connection,
         "CREATE OR REPLACE TABLE highest_in_out_outgoing AS
         SELECT
