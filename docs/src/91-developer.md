@@ -446,32 +446,25 @@ When publishing a new version of the model to the Julia Registry, follow this pr
 
 1. Click on the `Project.toml` file on GitHub.
 
-1. Edit the file and change the version number according to [semantic versioning](https://semver.org/): Major.Minor.Patch
-   
+1. Edit the file and change the version number according to [semantic versioning](https://semver.org/): Major.Minor.Patch<br>
    ![Screenshot of editing Project.toml on GitHub](./images/UpdateVersion.png)
 
-1. Commit the changes in a new branch and open a pull request. Change the commit message according to the version number.
-   
+1. Commit the changes in a new branch and open a pull request. Change the commit message according to the version number.<br>
    ![Screenshot of PR with commit message "Release 0.6.1"](./images/CommitMessage.png)
 
-1. Create the pull request and squash & merge it after the review and testing process. Delete the branch after the squash and merge.
-   
+1. Create the pull request and squash & merge it after the review and testing process. Delete the branch after the squash and merge.<br>
    ![Screenshot of full PR template on GitHub](./images/PullRequest.png)
 
-1. Go to the main page of repo and click in the commit.
-   
+1. Go to the main page of repo and click in the commit.<br>
    ![Screenshot of how to access commit on GitHub](./images/AccessCommit.png)
 
-1. Add the following comment to the commit: `@JuliaRegistrator register`
-   
+1. Add the following comment to the commit: `@JuliaRegistrator register`<br>
    ![Screenshot of calling JuliaRegistrator in commit comments](./images/JuliaRegistrator.png)
 
-1. The bot should start the registration process.
-   
+1. The bot should start the registration process.<br>
    ![Screenshot of JuliaRegistrator bot message](./images/BotProcess.png)
 
-1. After approval, the bot will take care of the PR at the Julia Registry and automatically create the release for the new version.
-   
+1. After approval, the bot will take care of the PR at the Julia Registry and automatically create the release for the new version.<br>
    ![Screenshot of new version on registry](./images/NewRelease.png)
 
    Thank you for helping make frequent releases!
