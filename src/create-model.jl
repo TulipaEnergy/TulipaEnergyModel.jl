@@ -17,6 +17,7 @@ function create_model!(energy_problem; kwargs...)
         dataframes = energy_problem.dataframes
         sets = create_sets(graph, years)
         energy_problem.model = @timeit to "create_model" create_model(
+            energy_problem.db_connection,
             graph,
             sets,
             variables,
@@ -44,6 +45,7 @@ end
 Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), timeframe, and groups.
 """
 function create_model(
+    connection,
     graph,
     sets,
     variables,
@@ -115,6 +117,7 @@ function create_model(
         incoming_flow_storage_inter_rp_balance,
         outgoing_flow_storage_inter_rp_balance,
     ) = add_expressions_to_dataframe!(
+        connection,
         dataframes,
         variables,
         model,

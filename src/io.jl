@@ -273,7 +273,7 @@ function create_internal_structures(connection)
 
     graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data, nothing, nothing, nothing)
 
-    tmp_create_partition_tables(connection)
+    @timeit to "Create partition tables" tmp_create_partition_tables(connection)
     df = TulipaIO.get_table(connection, "asset_time_resolution")
     gdf = DataFrames.groupby(df, [:asset, :year, :rep_period])
     for ((a, year, rp), _df) in pairs(gdf)
