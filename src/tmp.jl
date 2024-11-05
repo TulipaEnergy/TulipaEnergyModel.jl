@@ -337,6 +337,8 @@ function tmp_create_expressions(connection)
                 ON t_flows.to_asset=t_cons.asset
                     AND t_flows.year=t_cons.year
                     AND t_flows.rep_period=t_cons.rep_period
+                    AND t_flows.time_block_start <= t_cons.time_block_end
+                    AND t_cons.time_block_start <= t_cons.time_block_end
             WHERE duration > 0",
     )
 
@@ -358,6 +360,8 @@ function tmp_create_expressions(connection)
                 ON t_flows.from_asset=t_cons.asset
                     AND t_flows.year=t_cons.year
                     AND t_flows.rep_period=t_cons.rep_period
+                    AND t_flows.time_block_start <= t_cons.time_block_end
+                    AND t_cons.time_block_start <= t_cons.time_block_end
             WHERE duration > 0",
     )
 
