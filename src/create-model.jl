@@ -76,7 +76,7 @@ function create_model(
 
     ## Variables
     @timeit to "add_flow_variables!" add_flow_variables!(model, variables)
-    @timeit to "add_investment_variables!" add_investment_variables!(model, graph, sets)
+    @timeit to "add_investment_variables!" add_investment_variables!(model, graph, sets, variables)
     @timeit to "add_unit_commitment_variables!" add_unit_commitment_variables!(
         model,
         sets,
@@ -125,7 +125,7 @@ function create_model(
     )
 
     ## Expressions for multi-year investment
-    create_multi_year_expressions!(model, graph, sets)
+    create_multi_year_expressions!(model, graph, sets, variables)
     accumulated_flows_export_units = model[:accumulated_flows_export_units]
     accumulated_flows_import_units = model[:accumulated_flows_import_units]
     accumulated_initial_units = model[:accumulated_initial_units]
@@ -216,6 +216,7 @@ function create_model(
         assets_investment,
         assets_investment_energy,
         flows_investment,
+        variables,
     )
 
     if !isempty(groups)

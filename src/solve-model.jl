@@ -58,10 +58,11 @@ function solve_model!(
             graph[a].min_energy_inter_rp[pb] = value
         end
 
-        for ((y, (u, v)), value) in energy_problem.solution.flows_investment
-            graph[u, v].investment[y] =
-                graph[u, v].investment_integer[y] ? round(Int, value) : value
-        end
+        # TODO: Re-enable this
+        # for ((y, (u, v)), value) in energy_problem.solution.flows_investment
+        #     graph[u, v].investment[y] =
+        #         graph[u, v].investment_integer[y] ? round(Int, value) : value
+        # end
 
         for row in eachrow(energy_problem.dataframes[:flows])
             u, v, rp, timesteps_block, value =
@@ -184,7 +185,7 @@ function solve_model(
     return Solution(
         JuMP.value.(model[:assets_investment]).data,   # .data returns a OrderedDict since variable is SparseAxisArray
         JuMP.value.(model[:assets_investment_energy]).data,
-        JuMP.value.(model[:flows_investment]).data,
+        JuMP.value.(model[:flows_investment]),
         JuMP.value.(model[:storage_level_intra_rp]),
         JuMP.value.(model[:storage_level_inter_rp]),
         JuMP.value.(model[:max_energy_inter_rp]),

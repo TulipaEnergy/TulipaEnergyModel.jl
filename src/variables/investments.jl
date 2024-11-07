@@ -7,8 +7,15 @@ Adds investment, decommission, and energy-related variables to the optimization 
 and sets integer constraints on selected variables based on the `graph` data.
 
 """
-function add_investment_variables!(model, graph, sets)
-    @variable(model, 0 ≤ flows_investment[y in sets.Y, (u, v) in sets.Fi[y]])
+function add_investment_variables!(model, graph, sets, variables)
+    model[:flows_investment] = [
+        @variable(
+            model,
+            lower_bound = 0.0,
+            integer = row.investment_integer,
+            base_name = "flows_investment[$(row.from_asset),$(row.to_asset),$(row.year)]"
+        ) for row in eachrow(variables[:flows_investment].indices)
+    ]
 
     @variable(model, 0 ≤ assets_investment[y in sets.Y, a in sets.Ai[y]])
 
@@ -57,12 +64,6 @@ function add_investment_variables!(model, graph, sets)
             v in sets.V_non_milestone && a in sets.existing_assets_by_year_using_compact_method[y]
         ) && graph[a].investment_integer[y]
             JuMP.set_integer(assets_decommission_compact_method[(a, y, v)])
-        end
-    end
-
-    for y in sets.Y, (u, v) in sets.Fi[y]
-        if graph[u, v].investment_integer[y]
-            JuMP.set_integer(flows_investment[y, (u, v)])
         end
     end
 

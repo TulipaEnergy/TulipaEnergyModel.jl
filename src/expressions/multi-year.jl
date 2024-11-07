@@ -1,4 +1,4 @@
-function create_multi_year_expressions!(model, graph, sets)
+function create_multi_year_expressions!(model, graph, sets, variables)
     @timeit to "multi-year investment expressions" begin
         # Unpacking
         assets_investment = model[:assets_investment]
@@ -109,6 +109,7 @@ function create_multi_year_expressions!(model, graph, sets)
             end for a in sets.A for y in sets.Y
         ]
         ## Expressions for transport assets
+        # TODO: Remove conditional from sum
         @expression(
             model,
             accumulated_investment_units_transport_using_simple_method[
@@ -116,8 +117,10 @@ function create_multi_year_expressions!(model, graph, sets)
                 (u, v) ∈ sets.Ft,
             ],
             sum(
-                flows_investment[yy, (u, v)] for yy in sets.Y if (u, v) ∈ sets.Fi[yy] &&
-                sets.starting_year_flows_using_simple_method[(y, (u, v))] ≤ yy ≤ y
+                flows_investment[i] for
+                (i, row) in enumerate(eachrow(variables[:flows_investment].indices)) if
+                (u, v) == (row.from_asset, row.to_asset) &&
+                sets.starting_year_flows_using_simple_method[(y, (u, v))] ≤ row.year ≤ y
             )
         )
         @expression(

@@ -300,7 +300,7 @@ end
 mutable struct Solution
     assets_investment::Dict{Tuple{Int,String},Float64}
     assets_investment_energy::Dict{Tuple{Int,String},Float64} # for storage assets with energy method
-    flows_investment::Dict{Tuple{Int,Tuple{String,String}},Float64}
+    flows_investment::Any # TODO: Fix this type
     storage_level_intra_rp::Vector{Float64}
     storage_level_inter_rp::Vector{Float64}
     max_energy_inter_rp::Vector{Float64}

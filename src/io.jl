@@ -477,20 +477,21 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     end
     CSV.write(output_file, output_table)
 
-    output_file = joinpath(output_folder, "flows-investments.csv")
-    output_table = DataFrame(;
-        from_asset = String[],
-        to_asset = String[],
-        year = Int[],
-        InstalUnits = Float64[],
-        InstalCap_MW = Float64[],
-    )
-
-    for ((y, (u, v)), investment) in solution.flows_investment
-        capacity = graph[u, v].capacity
-        push!(output_table, (u, v, y, investment, capacity * investment))
-    end
-    CSV.write(output_file, output_table)
+    # TODO: Re-enable this output
+    # output_file = joinpath(output_folder, "flows-investments.csv")
+    # output_table = DataFrame(;
+    #     from_asset = String[],
+    #     to_asset = String[],
+    #     year = Int[],
+    #     InstalUnits = Float64[],
+    #     InstalCap_MW = Float64[],
+    # )
+    #
+    # for ((y, (u, v)), investment) in solution.flows_investment
+    #     capacity = graph[u, v].capacity
+    #     push!(output_table, (u, v, y, investment, capacity * investment))
+    # end
+    # CSV.write(output_file, output_table)
 
     #=
     In both cases below, we select the relevant columns from the existing dataframes,

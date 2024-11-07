@@ -93,10 +93,11 @@ function add_objective!(model, graph, dataframes, representative_periods, sets, 
         flows_investment_cost = @expression(
             model,
             sum(
-                weight_for_flows_investment_discounts[(y, (u, v))] *
-                graph[u, v].investment_cost[y] *
-                graph[u, v].capacity *
-                flows_investment[y, (u, v)] for y in sets.Y for (u, v) in sets.Fi[y]
+                weight_for_flows_investment_discounts[(row.year, (row.from_asset, row.to_asset))] *
+                graph[row.from_asset, row.to_asset].investment_cost[row.year] *
+                graph[row.from_asset, row.to_asset].capacity *
+                flows_investment[i] for
+                (i, row) in enumerate(eachrow(dataframes[:flows_investment]))
             )
         )
 

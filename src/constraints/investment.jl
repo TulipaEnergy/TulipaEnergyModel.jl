@@ -12,6 +12,7 @@ function add_investment_constraints!(
     assets_investment,
     assets_investment_energy,
     flows_investment,
+    variables,
 )
     # unpack from sets
     Ai = sets[:Ai]
@@ -34,10 +35,13 @@ function add_investment_constraints!(
     end
 
     # - Maximum (i.e., potential) investment limit for flows
-    for y in Y, (u, v) in Fi[y]
+    for (i, row) in enumerate(eachrow(variables[:flows_investment].indices))
+        y = row.year
+        u, v = row.from_asset, row.to_asset
+
         if graph[u, v].capacity > 0 && !ismissing(graph[u, v].investment_limit[y])
             bound_value = _find_upper_bound(graph, y, u, v)
-            JuMP.set_upper_bound(flows_investment[y, (u, v)], bound_value)
+            JuMP.set_upper_bound(flows_investment[i], bound_value)
         end
     end
 end

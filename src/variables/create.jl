@@ -12,9 +12,10 @@ function compute_variables_indices(connection, dataframes)
     variables[:flows_investment] = TulipaVariable(
         DuckDB.query(
             connection,
-            "SELECT from_asset, to_asset, year, FROM flows_data WHERE investable=true",
+            "SELECT from_asset, to_asset, year, investment_integer FROM flows_data WHERE investable=true",
         ) |> DataFrame,
     )
+    dataframes[:flows_investment] = variables[:flows_investment].indices
 
     variables[:assets_investment] = TulipaVariable(
         DuckDB.query(connection, "SELECT name, year FROM assets_data WHERE investable=true") |>
