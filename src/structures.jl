@@ -39,7 +39,7 @@ mutable struct TulipaVariable
     indices::DataFrame
     container::Vector{JuMP.VariableRef}
 
-    function TulipaVariable(indices, container)
+    function TulipaVariable(indices, container = JuMP.VariableRef[])
         return new(indices, container)
     end
 end
@@ -389,7 +389,7 @@ mutable struct EnergyProblem
         end
 
         elapsed_time_vars = @elapsed begin
-            variables = compute_variables_indices(dataframes)
+            variables = compute_variables_indices(connection, dataframes)
         end
 
         energy_problem = new(

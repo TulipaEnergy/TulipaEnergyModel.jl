@@ -121,7 +121,7 @@ We need the sets and the variables indices.
 
 ```@example manual
 sets = create_sets(graph, years)
-variables = compute_variables_indices(dataframes)
+variables = compute_variables_indices(connection, dataframes)
 ```
 
 Now we can compute the model.

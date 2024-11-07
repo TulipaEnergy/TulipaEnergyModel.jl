@@ -32,7 +32,7 @@ end
     )
     model_parameters = ModelParameters(connection)
     sets = create_sets(graph, years)
-    variables = compute_variables_indices(dataframes)
+    variables = compute_variables_indices(connection, dataframes)
 
     # Create model
     model = create_model(
