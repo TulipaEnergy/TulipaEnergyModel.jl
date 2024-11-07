@@ -265,6 +265,40 @@ function tmp_create_constraints_indices(connection)
         WHERE main.type in ('storage')
         ",
     )
+
+    # This follows the same implementation as highest_in_out above, but using
+    # only the outgoing flows.
+    #
+    # The query below is trying to replace the following constraints_partitions example:
+    #= (
+    #     name = :highest_out,
+    #     partitions = _outflows,
+    #     strategy = :highest,
+    #     asset_filter = (a, y) -> graph[a].type in ["producer", "storage", "conversion"],
+    # ),
+    =#
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TABLE cons_indices_highest_out AS
+        SELECT
+            main.asset,
+            main.year,
+            main.rep_period,
+            COALESCE(sub.time_block_start, 1) AS time_block_start,
+            lead(sub.time_block_start - 1, 1, main.num_timesteps)
+                OVER (PARTITION BY main.asset, main.year, main.rep_period ORDER BY time_block_start)
+                AS time_block_end,
+        FROM t_cons_indices AS main
+        LEFT JOIN (
+            SELECT from_asset as asset, year, rep_period, time_block_start
+            FROM flow_time_resolution
+        ) AS sub
+            ON main.asset=sub.asset
+                AND main.year=sub.year
+                AND main.rep_period=sub.rep_period
+        WHERE main.type in ('producer', 'storage', 'conversion')
+        ",
+    )
 end
 
 """

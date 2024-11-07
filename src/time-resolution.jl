@@ -63,12 +63,12 @@ function compute_constraints_partitions(graph, representative_periods, years)
         #     strategy = :highest,
         #     asset_filter = (a, y) -> graph[a].type in ["storage"],
         # ),
-        (
-            name = :highest_out,
-            partitions = _outflows,
-            strategy = :highest,
-            asset_filter = (a, y) -> graph[a].type in ["producer", "storage", "conversion"],
-        ),
+        # (  # WIP: Testing removing this in favor of using table cons_indices_highest_out
+        #     name = :highest_out,
+        #     partitions = _outflows,
+        #     strategy = :highest,
+        #     asset_filter = (a, y) -> graph[a].type in ["producer", "storage", "conversion"],
+        # ),
         (
             name = :units_on,
             partitions = _assets,
