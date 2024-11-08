@@ -76,22 +76,13 @@ function create_model(
 
     ## Variables
     @timeit to "add_flow_variables!" add_flow_variables!(model, variables)
-    @timeit to "add_investment_variables!" add_investment_variables!(model, graph, sets)
+    @timeit to "add_investment_variables!" add_investment_variables!(model, graph, sets, variables)
     @timeit to "add_unit_commitment_variables!" add_unit_commitment_variables!(
         model,
         sets,
         variables,
     )
     @timeit to "add_storage_variables!" add_storage_variables!(model, graph, sets, variables)
-
-    # TODO: This should change heavily, so I just moved things to the function and unpack them here from model
-    assets_decommission_compact_method = model[:assets_decommission_compact_method]
-    assets_decommission_simple_method = model[:assets_decommission_simple_method]
-    assets_decommission_energy_simple_method = model[:assets_decommission_energy_simple_method]
-    assets_investment = model[:assets_investment]
-    assets_investment_energy = model[:assets_investment_energy]
-    flows_decommission_using_simple_method = model[:flows_decommission_using_simple_method]
-    flows_investment = model[:flows_investment]
 
     # TODO: This should disapear after the changes on add_expressions_to_dataframe! and storing the solution
     model[:flow] = df_flows.flow = variables[:flow].container
@@ -125,7 +116,7 @@ function create_model(
     )
 
     ## Expressions for multi-year investment
-    create_multi_year_expressions!(model, graph, sets)
+    create_multi_year_expressions!(model, graph, sets, variables)
     accumulated_flows_export_units = model[:accumulated_flows_export_units]
     accumulated_flows_import_units = model[:accumulated_flows_import_units]
     accumulated_initial_units = model[:accumulated_initial_units]
@@ -136,12 +127,20 @@ function create_model(
     accumulated_units_simple_method = model[:accumulated_units_simple_method]
 
     ## Expressions for storage assets
-    add_storage_expressions!(model, graph, sets)
+    add_storage_expressions!(model, graph, sets, variables)
     accumulated_energy_units_simple_method = model[:accumulated_energy_units_simple_method]
     accumulated_energy_capacity = model[:accumulated_energy_capacity]
 
     ## Expressions for the objective function
-    add_objective!(model, graph, dataframes, representative_periods, sets, model_parameters)
+    add_objective!(
+        model,
+        variables,
+        graph,
+        dataframes,
+        representative_periods,
+        sets,
+        model_parameters,
+    )
 
     # TODO: Pass sets instead of the explicit values
     ## Constraints
@@ -210,20 +209,14 @@ function create_model(
         accumulated_flows_import_units,
     )
 
-    @timeit to "add_investment_constraints!" add_investment_constraints!(
-        graph,
-        sets,
-        assets_investment,
-        assets_investment_energy,
-        flows_investment,
-    )
+    @timeit to "add_investment_constraints!" add_investment_constraints!(graph, sets, variables)
 
     if !isempty(groups)
         @timeit to "add_group_constraints!" add_group_constraints!(
             model,
+            variables,
             graph,
             sets,
-            assets_investment,
             groups,
         )
     end

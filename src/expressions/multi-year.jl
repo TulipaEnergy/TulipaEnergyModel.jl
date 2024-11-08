@@ -1,11 +1,12 @@
-function create_multi_year_expressions!(model, graph, sets)
+function create_multi_year_expressions!(model, graph, sets, variables)
     @timeit to "multi-year investment expressions" begin
         # Unpacking
-        assets_investment = model[:assets_investment]
-        assets_decommission_simple_method = model[:assets_decommission_simple_method]
-        assets_decommission_compact_method = model[:assets_decommission_compact_method]
-        flows_investment = model[:flows_investment]
-        flows_decommission_using_simple_method = model[:flows_decommission_using_simple_method]
+        assets_investment = variables[:assets_investment].lookup
+        assets_decommission_simple_method = variables[:assets_decommission_simple_method].lookup
+        assets_decommission_compact_method = variables[:assets_decommission_compact_method].lookup
+        flows_investment = variables[:flows_investment].lookup
+        flows_decommission_using_simple_method =
+            variables[:flows_decommission_using_simple_method].lookup
 
         accumulated_initial_units = @expression(
             model,

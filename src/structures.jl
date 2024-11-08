@@ -38,9 +38,10 @@ Structure to hold the JuMP variables for the TulipaEnergyModel
 mutable struct TulipaVariable
     indices::DataFrame
     container::Vector{JuMP.VariableRef}
+    lookup::OrderedDict # TODO: This is probably not type stable so it's only used for strangling
 
-    function TulipaVariable(indices, container)
-        return new(indices, container)
+    function TulipaVariable(indices, container = JuMP.VariableRef[])
+        return new(indices, container, Dict())
     end
 end
 
@@ -218,7 +219,7 @@ end
 mutable struct Solution
     assets_investment::Dict{Tuple{Int,String},Float64}
     assets_investment_energy::Dict{Tuple{Int,String},Float64} # for storage assets with energy method
-    flows_investment::Dict{Tuple{Int,Tuple{String,String}},Float64}
+    flows_investment::Any # TODO: Fix this type
     storage_level_intra_rp::Vector{Float64}
     storage_level_inter_rp::Vector{Float64}
     max_energy_inter_rp::Vector{Float64}
@@ -307,7 +308,7 @@ mutable struct EnergyProblem
         end
 
         elapsed_time_vars = @elapsed begin
-            variables = compute_variables_indices(dataframes)
+            variables = compute_variables_indices(connection, dataframes)
         end
 
         energy_problem = new(

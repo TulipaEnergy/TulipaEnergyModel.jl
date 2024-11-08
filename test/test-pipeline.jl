@@ -32,7 +32,7 @@ end
     )
     model_parameters = ModelParameters(connection)
     sets = create_sets(graph, years)
-    variables = compute_variables_indices(dataframes)
+    variables = compute_variables_indices(connection, dataframes)
 
     # Create model
     model = create_model(
@@ -48,6 +48,6 @@ end
     )
 
     # Solve model
-    solution = solve_model(model, HiGHS.Optimizer)
+    solution = solve_model(model, variables, HiGHS.Optimizer)
     save_solution_to_file(mktempdir(), graph, dataframes, solution)
 end

@@ -1,6 +1,7 @@
-function add_storage_expressions!(model, graph, sets)
-    assets_investment_energy = model[:assets_investment_energy]
-    assets_decommission_energy_simple_method = model[:assets_decommission_energy_simple_method]
+function add_storage_expressions!(model, graph, sets, variables)
+    assets_investment_energy = variables[:assets_investment_energy].lookup
+    assets_decommission_energy_simple_method =
+        variables[:assets_decommission_energy_simple_method].lookup
     accumulated_investment_units_using_simple_method =
         model[:accumulated_investment_units_using_simple_method]
     accumulated_decommission_units_using_simple_method =
