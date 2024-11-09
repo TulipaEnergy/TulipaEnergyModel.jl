@@ -36,7 +36,7 @@ function add_transport_constraints!(
                 row.year,
                 row.year,
                 ("availability", row.rep_period),
-                row.timesteps_block,
+                row.time_block_start:row.time_block_end,
                 1.0,
             ) *
             graph[row.from, row.to].capacity *
@@ -54,7 +54,7 @@ function add_transport_constraints!(
                 row.year,
                 row.year,
                 ("availability", row.rep_period),
-                row.timesteps_block,
+                row.time_block_start:row.time_block_end,
                 1.0,
             ) *
             graph[row.from, row.to].capacity *
@@ -69,7 +69,7 @@ function add_transport_constraints!(
         @constraint(
             model,
             flow[row.index] ≤ upper_bound_transport_flow[idx],
-            base_name = "max_transport_flow_limit[($(row.from),$(row.to)),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
+            base_name = "max_transport_flow_limit[($(row.from),$(row.to)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
         ) for (idx, row) in enumerate(eachrow(transport_flows_indices))
     ]
 
@@ -78,7 +78,7 @@ function add_transport_constraints!(
         @constraint(
             model,
             flow[row.index] ≥ -lower_bound_transport_flow[idx],
-            base_name = "min_transport_flow_limit[($(row.from),$(row.to)),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
+            base_name = "min_transport_flow_limit[($(row.from),$(row.to)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
         ) for (idx, row) in enumerate(eachrow(transport_flows_indices))
     ]
 end

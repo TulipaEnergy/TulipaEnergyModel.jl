@@ -16,7 +16,7 @@ function add_storage_variables!(model, graph, sets, variables)
         @variable(
             model,
             lower_bound = 0.0,
-            base_name = "storage_level_intra_rp[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
+            base_name = "storage_level_intra_rp[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
         ) for row in eachrow(storage_level_intra_rp_indices)
     ]
 
@@ -24,7 +24,7 @@ function add_storage_variables!(model, graph, sets, variables)
         @variable(
             model,
             lower_bound = 0.0,
-            base_name = "storage_level_inter_rp[$(row.asset),$(row.year),$(row.periods_block)]"
+            base_name = "storage_level_inter_rp[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
         ) for row in eachrow(storage_level_inter_rp_indices)
     ]
 

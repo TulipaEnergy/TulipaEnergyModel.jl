@@ -308,7 +308,7 @@ mutable struct EnergyProblem
         end
 
         elapsed_time_vars = @elapsed begin
-            variables = compute_variables_indices(connection, dataframes)
+            variables = compute_variables_indices(connection)
         end
 
         energy_problem = new(

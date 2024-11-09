@@ -7,9 +7,9 @@ Adds the ramping constraints for producer and conversion assets where ramping = 
 """
 function add_ramping_constraints!(
     model,
+    variables,
     graph,
     df_units_on_and_outflows,
-    df_units_on,
     df_highest_out,
     outgoing_flow_highest_out_resolution,
     accumulated_units,
@@ -55,9 +55,10 @@ function add_ramping_constraints!(
     model[:limit_units_on] = [
         @constraint(
             model,
-            row.units_on ≤ accumulated_units[accumulated_units_lookup[(row.asset, row.year)]],
-            base_name = "limit_units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(df_units_on)
+            units_on ≤ accumulated_units[accumulated_units_lookup[(row.asset, row.year)]],
+            base_name = "limit_units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+        ) for (units_on, row) in
+        zip(variables[:units_on].container, eachrow(variables[:units_on].indices))
     ]
 
     # - Minimum output flow above the minimum operating point

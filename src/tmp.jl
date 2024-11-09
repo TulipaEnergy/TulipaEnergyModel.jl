@@ -11,7 +11,9 @@ function _append_given_durations(appender, row, durations)
             DuckDB.append(appender, row.to_asset)
         end
         DuckDB.append(appender, row.year)
-        DuckDB.append(appender, row.rep_period)
+        if haskey(row, :rep_period)
+            DuckDB.append(appender, row.rep_period)
+        end
         if haskey(row, :efficiency)
             DuckDB.append(appender, row.efficiency)
         end
@@ -188,6 +190,148 @@ function tmp_create_partition_tables(connection)
         _append_given_durations(appender, row, durations)
     end
     DuckDB.close(appender)
+
+    DBInterface.execute(
+        connection,
+        "CREATE OR REPLACE TABLE asset_timeframe_time_resolution(
+            asset STRING,
+            year INT,
+            period_block_start INT,
+            period_block_end INT
+        )",
+    )
+
+    appender = DuckDB.Appender(connection, "asset_timeframe_time_resolution")
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset, sub.year, specification, partition, num_periods AS num_periods
+        FROM assets_timeframe_partitions AS main
+        LEFT JOIN (
+            SELECT year, MAX(period) AS num_periods
+            FROM timeframe_data
+            GROUP BY year
+        ) AS sub
+            ON main.year = sub.year
+        ",
+    )
+        durations = if row.specification == "uniform"
+            step = parse(Int, row.partition)
+            durations = Iterators.repeated(step, div(row.num_periods, step))
+        elseif row.specification == "explicit"
+            durations = parse.(Int, split(row.partition, ";"))
+        elseif row.specification == "math"
+            atoms = split(row.partition, "+")
+            durations =
+                (
+                    begin
+                        r, d = parse.(Int, split(atom, "x"))
+                        Iterators.repeated(d, r)
+                    end for atom in atoms
+                ) |> Iterators.flatten
+        else
+            error("Row specification '$(row.specification)' is not valid")
+        end
+        _append_given_durations(appender, row, durations)
+    end
+    DuckDB.close(appender)
+end
+
+function tmp_create_union_tables(connection)
+    # These are equivalent to the partitions in time-resolution.jl
+    # But computed in a more general context to be used by variables as well
+
+    # Union of all incoming and outgoing flows
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TEMP TABLE t_union_all_flows AS
+        SELECT from_asset as asset, year, rep_period, time_block_start, time_block_end
+        FROM flow_time_resolution
+        UNION
+        SELECT to_asset as asset, year, rep_period, time_block_start, time_block_end
+        FROM flow_time_resolution
+        ",
+    )
+
+    # Union of all assets, and incoming and outgoing flows
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TEMP TABLE t_union_all AS
+        SELECT asset, year, rep_period, time_block_start, time_block_end
+        FROM asset_time_resolution
+        UNION
+        SELECT asset, year, rep_period, time_block_start, time_block_end
+        FROM t_union_all_flows
+        ",
+    )
+end
+
+function _append_lowest_helper(appender, group, s, e)
+    for x in group
+        DuckDB.append(appender, x)
+    end
+    DuckDB.append(appender, s)
+    DuckDB.append(appender, e)
+    DuckDB.end_row(appender)
+end
+
+function tmp_create_lowest_resolution_table(connection)
+    # These are generic tables to be used to create some variables and constraints
+
+    # The logic:
+    # - t_union has groups in order, then s:e ordered by s increasing and e decreasing
+    # - in a group (asset, year, rep_period) we can take the first range then
+    # - continue in the sequence selecting the next largest e
+
+    for union_table in ("t_union_all_flows", "t_union_all")
+        table_name = replace(union_table, "t_union" => "t_lowest")
+        DuckDB.execute(
+            connection,
+            "CREATE OR REPLACE TABLE $table_name(
+                asset STRING,
+                year INT,
+                rep_period INT,
+                time_block_start INT,
+                time_block_end INT
+            )",
+        )
+        appender = DuckDB.Appender(connection, table_name)
+        s = 0
+        e_candidate = 0
+        current_group = ("", 0, 0)
+        @timeit to "append $table_name rows" for row in DuckDB.query(
+            connection,
+            "SELECT * FROM $union_table
+            ORDER BY asset, year, rep_period, time_block_start, time_block_end DESC
+            ",
+        )
+            if (row.asset, row.year, row.rep_period) != current_group
+                # New group, create the last entry
+                # Except for the initial case and when it was already added
+                if s != 0 && s <= e_candidate
+                    _append_lowest_helper(appender, current_group, s, e_candidate)
+                end
+                # Start of a new group
+                current_group = (row.asset, row.year, row.rep_period)
+                e_candidate = row.time_block_end
+                s = 1
+            end
+            if row.time_block_start > s
+                # Since it's ordered, we ran out of candidates, so this marks the beginning of a new section
+                # Then, let's append and update
+                _append_lowest_helper(appender, current_group, s, e_candidate)
+                s = e_candidate + 1
+                e_candidate = row.time_block_end
+            else
+                # This row has a candidate
+                e_candidate = max(e_candidate, row.time_block_end)
+            end
+        end
+        # Add the last entry
+        if s > 0 && s <= e_candidate # Being safe
+            _append_lowest_helper(appender, current_group, s, e_candidate)
+        end
+        DuckDB.close(appender)
+    end
 end
 
 function tmp_create_constraints_indices(connection)
