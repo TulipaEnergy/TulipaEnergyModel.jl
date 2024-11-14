@@ -2,6 +2,7 @@ export GraphAssetData,
     GraphFlowData,
     EnergyProblem,
     TulipaVariable,
+    TulipaConstraint,
     RepresentativePeriod,
     PeriodsBlock,
     TimestepsBlock,
@@ -42,6 +43,15 @@ mutable struct TulipaVariable
 
     function TulipaVariable(indices, container = JuMP.VariableRef[])
         return new(indices, container, Dict())
+    end
+end
+
+mutable struct TulipaConstraint
+    indices::DataFrame
+    expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
+
+    function TulipaConstraint(indices)
+        return new(indices, Dict())
     end
 end
 
@@ -265,12 +275,11 @@ mutable struct EnergyProblem
         Nothing, # Default edge weight
     }
     variables::Dict{Symbol,TulipaVariable}
+    constraints::Dict{Symbol,TulipaConstraint}
     representative_periods::Dict{Int,Vector{RepresentativePeriod}}
-    constraints_partitions::Dict{Symbol,Dict{Tuple{String,Int,Int},Vector{TimestepsBlock}}}
     timeframe::Timeframe
     groups::Vector{Group}
     years::Vector{Year}
-    dataframes::Dict{Symbol,DataFrame}
     model_parameters::ModelParameters
     model::Union{JuMP.Model,Nothing}
     solution::Union{Solution,Nothing}
@@ -292,35 +301,22 @@ mutable struct EnergyProblem
             graph, representative_periods, timeframe, groups, years =
                 create_internal_structures(connection)
         end
-        elapsed_time_cons = @elapsed begin
-            constraints_partitions =
-                compute_constraints_partitions(graph, representative_periods, years)
-        end
-
-        elapsed_time_construct_dataframes = @elapsed begin
-            dataframes = construct_dataframes(
-                connection,
-                graph,
-                representative_periods,
-                constraints_partitions,
-                years,
-            )
-        end
 
         elapsed_time_vars = @elapsed begin
             variables = compute_variables_indices(connection)
         end
 
+        constraints = compute_constraints_indices(connection)
+
         energy_problem = new(
             connection,
             graph,
             variables,
+            constraints,
             representative_periods,
-            constraints_partitions,
             timeframe,
             groups,
             years,
-            dataframes,
             ModelParameters(connection, model_parameters_file),
             nothing,
             nothing,
@@ -329,8 +325,6 @@ mutable struct EnergyProblem
             JuMP.OPTIMIZE_NOT_CALLED,
             Dict(
                 "creating internal structures" => elapsed_time_internal,
-                "computing constraints partitions" => elapsed_time_cons,
-                "creating dataframes" => elapsed_time_construct_dataframes,
                 "creating variables indices" => elapsed_time_vars,
             ),
         )

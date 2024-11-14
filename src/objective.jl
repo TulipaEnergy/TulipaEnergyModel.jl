@@ -1,12 +1,4 @@
-function add_objective!(
-    model,
-    variables,
-    graph,
-    dataframes,
-    representative_periods,
-    sets,
-    model_parameters,
-)
+function add_objective!(model, variables, graph, representative_periods, sets, model_parameters)
     assets_investment = variables[:assets_investment].lookup
     accumulated_units_simple_method = model[:accumulated_units_simple_method]
     accumulated_units_compact_method = model[:accumulated_units_compact_method]

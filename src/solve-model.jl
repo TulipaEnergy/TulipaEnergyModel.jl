@@ -17,13 +17,8 @@ function solve_model!(
             error("Model is not created, run create_model(energy_problem) first.")
         end
 
-        energy_problem.solution = solve_model!(
-            energy_problem.dataframes,
-            model,
-            energy_problem.variables,
-            optimizer;
-            parameters = parameters,
-        )
+        energy_problem.solution =
+            solve_model!(model, energy_problem.variables, optimizer; parameters = parameters)
         energy_problem.termination_status = JuMP.termination_status(model)
         if energy_problem.solution === nothing
             # Warning has been given at internal function
@@ -94,7 +89,7 @@ The modifications made to `dataframes` are:
 - `df_storage_level_intra_rp.solution = solution.storage_level_intra_rp`
 - `df_storage_level_inter_rp.solution = solution.storage_level_inter_rp`
 """
-function solve_model!(dataframes, model, args...; kwargs...)
+function solve_model!(model, args...; kwargs...)
     solution = solve_model(model, args...; kwargs...)
     if isnothing(solution)
         return nothing

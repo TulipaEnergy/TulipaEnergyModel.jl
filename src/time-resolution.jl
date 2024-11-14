@@ -30,12 +30,12 @@ function compute_constraints_partitions(graph, representative_periods, years)
     _all(a, y, rp) = [_allflows(a, y, rp); _assets(a, y, rp)]
 
     partitions_cases = [
-        (
-            name = :lowest,
-            partitions = _allflows,
-            strategy = :lowest,
-            asset_filter = (a, y) -> graph[a].type in ["conversion", "producer"],
-        ),
+        # (
+        #     name = :lowest,
+        #     partitions = _allflows,
+        #     strategy = :lowest,
+        #     asset_filter = (a, y) -> graph[a].type in ["conversion", "producer"],
+        # ),
         # (
         #     name = :storage_level_intra_rp,
         #     partitions = _all,

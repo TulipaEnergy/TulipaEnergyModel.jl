@@ -6,17 +6,7 @@ add_storage_constraints!(model, graph,...)
 Adds the storage asset constraints to the model.
 """
 
-function add_storage_constraints!(
-    model,
-    variables,
-    graph,
-    dataframes,
-    accumulated_energy_capacity,
-    incoming_flow_lowest_storage_resolution_intra_rp,
-    outgoing_flow_lowest_storage_resolution_intra_rp,
-    incoming_flow_storage_inter_rp_balance,
-    outgoing_flow_storage_inter_rp_balance,
-)
+function add_storage_constraints!(model, variables, constraints, graph)
 
     ## INTRA-TEMPORAL CONSTRAINTS (within a representative period)
     storage_level_intra_rp = variables[:storage_level_intra_rp]
@@ -26,6 +16,16 @@ function add_storage_constraints!(
     storage_level_inter_rp = variables[:storage_level_inter_rp]
     df_storage_inter_rp_balance_grouped =
         DataFrames.groupby(storage_level_inter_rp.indices, [:asset, :year])
+
+    accumulated_energy_capacity = model[:accumulated_energy_capacity]
+    incoming_flow_lowest_storage_resolution_intra_rp =
+        constraints[:storage_level_intra_rp].expressions[:incoming]
+    outgoing_flow_lowest_storage_resolution_intra_rp =
+        constraints[:storage_level_intra_rp].expressions[:outgoing]
+    incoming_flow_storage_inter_rp_balance =
+        constraints[:storage_level_inter_rp].expressions[:incoming]
+    outgoing_flow_storage_inter_rp_balance =
+        constraints[:storage_level_inter_rp].expressions[:outgoing]
 
     # - Balance constraint (using the lowest temporal resolution)
     for ((a, y, rp), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
@@ -136,7 +136,7 @@ function add_storage_constraints!(
                         )
                     end
                 ) +
-                row.inflows_profile_aggregation +
+                constraints[:storage_level_inter_rp].expressions[:inflows_profile_aggregation][row.index] +
                 incoming_flow_storage_inter_rp_balance[row.index] -
                 outgoing_flow_storage_inter_rp_balance[row.index],
                 base_name = "storage_inter_rp_balance[$a,$(row.year),$(row.period_block_start):$(row.period_block_end)]"

@@ -234,6 +234,7 @@ function create_internal_structures(connection)
     tmp_create_partition_tables(connection)
     tmp_create_union_tables(connection)
     tmp_create_lowest_resolution_table(connection)
+    tmp_create_highest_resolution_table(connection)
 
     df = TulipaIO.get_table(connection, "asset_time_resolution")
     gdf = DataFrames.groupby(df, [:asset, :year, :rep_period])
@@ -378,12 +379,7 @@ function save_solution_to_file(output_folder, energy_problem::EnergyProblem)
     if !energy_problem.solved
         error("The energy_problem has not been solved yet.")
     end
-    save_solution_to_file(
-        output_folder,
-        energy_problem.graph,
-        energy_problem.dataframes,
-        energy_problem.solution,
-    )
+    save_solution_to_file(output_folder, energy_problem.graph, energy_problem.solution)
 end
 
 """
@@ -408,7 +404,7 @@ The following files are created:
     proportional fraction of the value at the corresponding time block, i.e., if level[1:3] = 30,
     then level[1] = level[2] = level[3] = 10.
 """
-function save_solution_to_file(output_folder, graph, dataframes, solution)
+function save_solution_to_file(output_folder, graph, solution)
     output_file = joinpath(output_folder, "assets-investments.csv")
     output_table = DataFrame(;
         asset = String[],
