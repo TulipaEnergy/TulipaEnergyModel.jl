@@ -73,6 +73,24 @@ function add_column(
 end
 
 """
+    unit, content = get_column(tulipa_csv, colname)
+    unit, content = get_column(tulipa_csv, position)
+
+Returns column `colname` or column at position `position`.
+"""
+function get_column(tulipa_csv::TulipaCSV, position::Int)
+    unit = tulipa_csv.units[position]
+    content = tulipa_csv.csv[:, position]
+
+    return unit, content
+end
+
+function get_column(tulipa_csv::TulipaCSV, colname)
+    position = columnindex(tulipa_csv.csv, Symbol(colname))
+    return get_column(tulipa_csv, position)
+end
+
+"""
     unit, content = remove_column(tulipa_csv, colname, position)
     unit, content = remove_column(tulipa_csv, colname)
     unit, content = remove_column(tulipa_csv, position)
