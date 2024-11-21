@@ -47,6 +47,7 @@ const schemas = (
             :commission_year => "INTEGER",                   # Year of commissioning
             :fixed_cost => "DOUBLE",                         # kEUR/MW/year
             :investment_cost => "DOUBLE",                    # kEUR/MW
+            :investment_limit => "DOUBLE",                   # MWh (Missing -> no limit)
             :fixed_cost_storage_energy => "DOUBLE",          # kEUR/MWh/year
             :investment_cost_storage_energy => "DOUBLE",     # kEUR/MWh
             :investment_limit_storage_energy => "DOUBLE",    # MWh (Missing -> no limit)

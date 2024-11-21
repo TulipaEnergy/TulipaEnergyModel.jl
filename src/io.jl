@@ -76,25 +76,13 @@ function create_internal_structures(connection)
 
     groups = [Group(row...) for row in TulipaIO.get_table(Val(:raw), connection, "groups_data")]
 
-    _query_year(table_name, col; where_pairs...) = begin
-        extra_check = table_name == "assets_data" ? "commission_year = year AND " : ""
-        _q = "SELECT year, $col FROM $table_name"
-        if length(where_pairs) > 0
-            _q *=
-                " WHERE " *
-                extra_check *
-                join(("$k=$(TulipaIO.FmtSQL.fmt_quote(v))" for (k, v) in where_pairs), " AND ")
-        end
-        DuckDB.query(connection, _q)
-    end
-
-    function _get_stuff_year(table_name, col; where_pairs...)
-        result = _query_year(table_name, col; where_pairs...)
-        Dict(row.year => getproperty(row, Symbol(col)) for row in result)
-    end
-
-    _query_commission_year(table_name, col; where_pairs...) = begin
-        _q = "SELECT year, commission_year, $col FROM $table_name"
+    _query_data_per_year(table_name, col, year_col; where_pairs...) = begin
+        # Make sure valid year columns are used
+        @assert year_col in ("milestone_year", "commission_year")
+        year_prefix = replace(year_col, "_year" => "")
+        # Make sure we are at the right table
+        @assert table_name in ("asset_$year_prefix", "flow_$year_prefix")
+        _q = "SELECT $year_col, $col FROM $table_name"
         if length(where_pairs) > 0
             _q *=
                 " WHERE " *
@@ -103,162 +91,131 @@ function create_internal_structures(connection)
         DuckDB.query(connection, _q)
     end
 
-    function _get_stuff_commission_year(table_name, col; where_pairs...)
-        result = _query_commission_year(table_name, col; where_pairs...)
-        result_dict = Dict{Int,Dict{Int,Float64}}()
+    function _get_data_per_year(table_name, col; where_pairs...)
+        year_prefix = replace(table_name, "asset_" => "", "flow_" => "")
+        @assert year_prefix in ("milestone", "commission")
+        year_col = year_prefix * "_year"
+        @assert table_name in ("asset_$year_prefix", "flow_$year_prefix")
+
+        result = _query_data_per_year(table_name, col, year_col; where_pairs...)
+        Dict(row[Symbol(year_col)] => getproperty(row, Symbol(col)) for row in result)
+    end
+
+    _query_data_per_both_years(table_name, col; where_pairs...) = begin
+        _q = "SELECT $col, milestone_year, commission_year FROM $table_name"
+        if length(where_pairs) > 0
+            _q *=
+                " WHERE " *
+                join(("$k=$(TulipaIO.FmtSQL.fmt_quote(v))" for (k, v) in where_pairs), " AND ")
+        end
+        DuckDB.query(connection, _q)
+    end
+
+    function _get_data_per_both_years(table_name, col; where_pairs...)
+        result = _query_data_per_both_years(table_name, col; where_pairs...)
+        T = result.types[1] # First column is the one with out query
+        result_dict = Dict{Int,Dict{Int,T}}()
         for row in result
-            if !haskey(result_dict, row.year)
-                result_dict[row.year] = Dict{Int,Float64}()
+            if !haskey(result_dict, row.milestone_year)
+                result_dict[row.milestone_year] = Dict{Int,T}()
             end
-            result_dict[row.year][row.commission_year] = getproperty(row, Symbol(col))
+            result_dict[row.milestone_year][row.commission_year] = getproperty(row, Symbol(col))
         end
         return result_dict
     end
 
-    _query_vintage_year(table_name, col; where_pairs...) = begin
-        _q = "SELECT commission_year, $col FROM $table_name"
-        if length(where_pairs) > 0
-            _q *=
-                " WHERE " *
-                join(("$k=$(TulipaIO.FmtSQL.fmt_quote(v))" for (k, v) in where_pairs), " AND ")
-        end
-        DuckDB.query(connection, _q)
-    end
-
-    function _get_stuff_vintage_year(table_name, col; where_pairs...)
-        result = _query_vintage_year(table_name, col; where_pairs...)
-        Dict(row.commission_year => getproperty(row, Symbol(col)) for row in result)
-    end
-
-    unique_asset_names = Dict{String,Bool}()
     asset_data = [
-        row.name => GraphAssetData(
-            row.type,
-            row.group,
-            row.investment_method,
-            _get_stuff_year("assets_data", "active"; name = row.name),
-            _get_stuff_year("assets_data", "investable"; name = row.name),
-            _get_stuff_year("assets_data", "investment_integer"; name = row.name),
-            row.technical_lifetime,
-            row.economic_lifetime,
-            row.discount_rate,
-            _get_stuff_vintage_year("vintage_assets_data", "investment_cost"; name = row.name),
-            _get_stuff_vintage_year("vintage_assets_data", "fixed_cost"; name = row.name),
-            _get_stuff_year("assets_data", "investment_limit"; name = row.name),
-            row.capacity,
-            _get_stuff_commission_year("assets_data", "initial_units"; name = row.name),
-            _get_stuff_year("assets_data", "peak_demand"; name = row.name),
-            Dict(
-                year => if ismissing(value)
+        row.asset => begin
+            _where = (asset = row.asset,)
+            GraphAssetData(
+                # From asset table
+                row.type,
+                row.group,
+                row.capacity,
+                row.min_operating_point,
+                row.investment_method,
+                row.investment_integer,
+                row.technical_lifetime,
+                row.economic_lifetime,
+                row.discount_rate,
+                if ismissing(row.consumer_balance_sense)
                     MathOptInterface.EqualTo(0.0)
                 else
                     MathOptInterface.GreaterThan(0.0)
-                end for (year, value) in
-                _get_stuff_year("assets_data", "consumer_balance_sense"; name = row.name)
-            ),
-            _get_stuff_year("assets_data", "is_seasonal"; name = row.name),
-            _get_stuff_year("assets_data", "storage_inflows"; name = row.name),
-            _get_stuff_year("assets_data", "initial_storage_units"; name = row.name),
-            _get_stuff_year("assets_data", "initial_storage_level"; name = row.name),
-            _get_stuff_year("assets_data", "energy_to_power_ratio"; name = row.name),
-            _get_stuff_year("assets_data", "storage_method_energy"; name = row.name),
-            _get_stuff_vintage_year(
-                "vintage_assets_data",
-                "investment_cost_storage_energy";
-                name = row.name,
-            ),
-            _get_stuff_vintage_year(
-                "vintage_assets_data",
-                "fixed_cost_storage_energy";
-                name = row.name,
-            ),
-            _get_stuff_year("assets_data", "investment_limit_storage_energy"; name = row.name),
-            row.capacity_storage_energy,
-            _get_stuff_year("assets_data", "investment_integer_storage_energy"; name = row.name),
-            _get_stuff_year("assets_data", "use_binary_storage_method"; name = row.name),
-            _get_stuff_year("assets_data", "max_energy_timeframe_partition"; name = row.name),
-            _get_stuff_year("assets_data", "min_energy_timeframe_partition"; name = row.name),
-            _get_stuff_year("assets_data", "unit_commitment"; name = row.name),
-            _get_stuff_year("assets_data", "unit_commitment_method"; name = row.name),
-            _get_stuff_year("assets_data", "units_on_cost"; name = row.name),
-            _get_stuff_year("assets_data", "unit_commitment_integer"; name = row.name),
-            _get_stuff_year("assets_data", "min_operating_point"; name = row.name),
-            _get_stuff_year("assets_data", "ramping"; name = row.name),
-            _get_stuff_year("assets_data", "max_ramp_up"; name = row.name),
-            _get_stuff_year("assets_data", "max_ramp_down"; name = row.name),
-        ) for row in TulipaIO.get_table(Val(:raw), connection, "graph_assets_data")
+                end,
+                row.capacity_storage_energy,
+                row.is_seasonal,
+                row.use_binary_storage_method,
+                row.unit_commitment,
+                row.unit_commitment_method,
+                row.unit_commitment_integer,
+                row.ramping,
+                row.storage_method_energy,
+                row.energy_to_power_ratio,
+                row.investment_integer_storage_energy,
+                row.max_ramp_up,
+                row.max_ramp_down,
+
+                # From asset_milestone table
+                _get_data_per_year("asset_milestone", "investable"; _where...),
+                _get_data_per_year("asset_milestone", "peak_demand"; _where...),
+                _get_data_per_year("asset_milestone", "storage_inflows"; _where...),
+                _get_data_per_year("asset_milestone", "initial_storage_level"; _where...),
+                _get_data_per_year("asset_milestone", "min_energy_timeframe_partition"; _where...),
+                _get_data_per_year("asset_milestone", "max_energy_timeframe_partition"; _where...),
+
+                # From asset_commission table
+                _get_data_per_year("asset_commission", "fixed_cost"; _where...),
+                _get_data_per_year("asset_commission", "investment_cost"; _where...),
+                _get_data_per_year("asset_commission", "investment_limit"; _where...),
+                _get_data_per_year("asset_commission", "fixed_cost_storage_energy"; _where...),
+                _get_data_per_year("asset_commission", "investment_cost_storage_energy"; _where...),
+                _get_data_per_year(
+                    "asset_commission",
+                    "investment_limit_storage_energy";
+                    _where...,
+                ),
+
+                # From asset_both
+                _get_data_per_both_years("asset_both", "active"; _where...),
+                _get_data_per_both_years("asset_both", "decommissionable"; _where...),
+                _get_data_per_both_years("asset_both", "initial_units"; _where...),
+                _get_data_per_both_years("asset_both", "initial_storage_units"; _where...),
+                _get_data_per_both_years("asset_both", "units_on_cost"; _where...),
+            )
+        end for row in TulipaIO.get_table(Val(:raw), connection, "asset")
     ]
 
-    unique_flow_names = Dict{Tuple{String,String},Int}()
     flow_data = [
-        (row.from_asset, row.to_asset) => GraphFlowData(
-            row.carrier,
-            _get_stuff_year(
-                "flows_data",
-                "active";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
-            row.is_transport,
-            _get_stuff_year(
-                "flows_data",
-                "investable";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
-            _get_stuff_year(
-                "flows_data",
-                "investment_integer";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
-            row.technical_lifetime,
-            row.economic_lifetime,
-            row.discount_rate,
-            _get_stuff_year(
-                "flows_data",
-                "variable_cost";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
-            _get_stuff_vintage_year(
-                "vintage_flows_data",
-                "investment_cost";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
-            _get_stuff_vintage_year(
-                "vintage_flows_data",
-                "fixed_cost";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
-            _get_stuff_year(
-                "flows_data",
-                "investment_limit";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
-            row.capacity,
-            _get_stuff_year(
-                "flows_data",
-                "initial_export_units";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
-            _get_stuff_year(
-                "flows_data",
-                "initial_import_units";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
-            _get_stuff_year(
-                "flows_data",
-                "efficiency";
-                from_asset = row.from_asset,
-                to_asset = row.to_asset,
-            ),
-        ) for row in TulipaIO.get_table(Val(:raw), connection, "graph_flows_data")
+        (row.from_asset, row.to_asset) => begin
+            _where = (from_asset = row.from_asset, to_asset = row.to_asset)
+            GraphFlowData(
+                # flow
+                row.carrier,
+                row.is_transport,
+                row.capacity,
+                row.technical_lifetime,
+                row.economic_lifetime,
+                row.discount_rate,
+                row.investment_integer,
+
+                # flow_milestone
+                _get_data_per_year("flow_milestone", "investable"; _where...),
+
+                # flow_commission
+                _get_data_per_year("flow_commission", "fixed_cost"; _where...),
+                _get_data_per_year("flow_commission", "investment_cost"; _where...),
+                _get_data_per_year("flow_commission", "efficiency"; _where...),
+                _get_data_per_year("flow_commission", "investment_limit"; _where...),
+
+                # flow_both
+                _get_data_per_both_years("flow_both", "active"; _where...),
+                _get_data_per_both_years("flow_both", "decommissionable"; _where...),
+                _get_data_per_both_years("flow_both", "variable_cost"; _where...),
+                _get_data_per_both_years("flow_both", "initial_export_units"; _where...),
+                _get_data_per_both_years("flow_both", "initial_import_units"; _where...),
+            )
+        end for row in TulipaIO.get_table(Val(:raw), connection, "flow")
     ]
 
     num_assets = length(asset_data) # we only look at unique asset names
@@ -301,13 +258,15 @@ function create_internal_structures(connection)
     The query only includes assets marked as seasonal (`is_seasonal` column) in the `assets_data` table.
     =#
     find_assets_partitions_query = """
-         SELECT assets_data.name,
+         SELECT asset_both.asset,
                  IFNULL(assets_timeframe_partitions.specification, 'uniform') AS specification,
                  IFNULL(assets_timeframe_partitions.partition, '1') AS partition
-         FROM assets_data
+         FROM asset_both
+         LEFT JOIN asset
+            ON asset.asset = asset_both.asset
          LEFT JOIN assets_timeframe_partitions
-             ON assets_data.name = assets_timeframe_partitions.asset
-             WHERE assets_data.is_seasonal
+             ON asset_both.asset = assets_timeframe_partitions.asset
+         WHERE asset.is_seasonal
          """
     for row in DuckDB.query(connection, find_assets_partitions_query)
         for year in milestone_years

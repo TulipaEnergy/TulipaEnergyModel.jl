@@ -119,12 +119,11 @@ function construct_dataframes(
                 atr.time_block_start,
                 atr.time_block_end
             FROM asset_time_resolution AS atr
-            LEFT JOIN assets_data
-                ON atr.asset=assets_data.name
-            LEFT JOIN graph_assets_data
-                ON assets_data.name=graph_assets_data.name
-            WHERE graph_assets_data.type IN ('producer','conversion')
-            AND assets_data.unit_commitment=true",
+            LEFT JOIN asset
+                ON asset.asset = atr.asset
+            WHERE
+                asset.type IN ('producer','conversion')
+                AND asset.unit_commitment = true",
         ) |> DataFrame
 
     dataframes[:units_on].timesteps_block = map(
@@ -176,9 +175,7 @@ A dataframe containing the constructed dataframe for constraints.
 """
 function _construct_inter_rp_dataframes(assets, graph, years, asset_filter)
     local_filter(a, y) =
-        get(graph[a].active, y, false) &&
-        haskey(graph[a].timeframe_partitions, y) &&
-        asset_filter(graph[a])
+        is_active(graph, a, y) && haskey(graph[a].timeframe_partitions, y) && asset_filter(graph[a])
 
     df = DataFrame(
         (
@@ -764,25 +761,13 @@ function create_sets(graph, years)
 
         # Create subsets of storage assets
         Ase = Dict(y => As ∩ filter_graph(graph, A, true, :storage_method_energy, y) for y in Y)
-        Asb = Dict(
-            y =>
-                As ∩ filter_graph(
-                    graph,
-                    A,
-                    ["binary", "relaxed_binary"],
-                    :use_binary_storage_method,
-                    y,
-                ) for y in Y
-        )
+        Asb = As ∩ filter_graph(graph, A, ["binary", "relaxed_binary"], :use_binary_storage_method)
 
         # Create subsets of assets for ramping and unit commitment for producers and conversion assets
-        Ar = Dict(y => (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :ramping, y) for y in Y)
-        Auc = Dict(y => (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :unit_commitment, y) for y in Y)
-        Auc_integer =
-            Dict(y => Auc[y] ∩ filter_graph(graph, A, true, :unit_commitment_integer, y) for y in Y)
-        Auc_basic = Dict(
-            y => Auc[y] ∩ filter_graph(graph, A, "basic", :unit_commitment_method, y) for y in Y
-        )
+        Ar = (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :ramping)
+        Auc = (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :unit_commitment)
+        Auc_integer = Auc ∩ filter_graph(graph, A, true, :unit_commitment_integer)
+        Auc_basic = Auc ∩ filter_graph(graph, A, "basic", :unit_commitment_method)
 
         ### Sets for expressions in multi-year investment for accumulated units no matter the method
         accumulated_units_lookup =

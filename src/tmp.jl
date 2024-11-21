@@ -45,17 +45,17 @@ function tmp_create_partition_tables(connection)
         connection,
         "CREATE OR REPLACE TABLE explicit_assets_rep_periods_partitions AS
         SELECT DISTINCT
-            t_assets.name AS asset,
-            t_assets.year AS year,
+            t_assets.asset AS asset,
+            t_assets.milestone_year AS year,
             t_rp.rep_period AS rep_period,
             COALESCE(t_partition.specification, 'uniform') AS specification,
             COALESCE(t_partition.partition, '1') AS partition,
             t_rp.num_timesteps,
-        FROM assets_data AS t_assets
+        FROM asset_both AS t_assets
         LEFT JOIN rep_periods_data as t_rp
-            ON t_rp.year=t_assets.year
+            ON t_rp.year=t_assets.milestone_year
         LEFT JOIN assets_rep_periods_partitions as t_partition
-            ON t_assets.name=t_partition.asset
+            ON t_assets.asset=t_partition.asset
                 AND t_rp.year=t_partition.year
                 AND t_rp.rep_period=t_partition.rep_period
         WHERE t_assets.active=true
@@ -69,15 +69,17 @@ function tmp_create_partition_tables(connection)
         SELECT DISTINCT
             t_flows.from_asset,
             t_flows.to_asset,
-            t_flows.year AS year,
+            t_flows.milestone_year AS year,
             t_rp.rep_period AS rep_period,
             COALESCE(t_partition.specification, 'uniform') AS specification,
             COALESCE(t_partition.partition, '1') AS partition,
-            t_flows.efficiency,
+            flow_commission.efficiency,
             t_rp.num_timesteps,
-        FROM flows_data AS t_flows
+        FROM flow_both AS t_flows
+        LEFT JOIN flow_commission
+            ON t_flows.commission_year = flow_commission.commission_year
         LEFT JOIN rep_periods_data as t_rp
-            ON t_rp.year=t_flows.year
+            ON t_rp.year=t_flows.milestone_year
         LEFT JOIN flows_rep_periods_partitions as t_partition
             ON t_flows.from_asset=t_partition.from_asset
                 AND t_flows.to_asset=t_partition.to_asset
@@ -165,19 +167,19 @@ function tmp_create_constraints_indices(connection)
         connection,
         "CREATE OR REPLACE TABLE t_cons_indices AS
         SELECT DISTINCT
-            assets_data.name as asset,
-            assets_data.year,
+            asset_both.asset as asset,
+            asset_both.milestone_year as year,
             rep_periods_data.rep_period,
-            graph_assets_data.type,
+            asset.type,
             rep_periods_data.num_timesteps,
-            assets_data.unit_commitment,
-        FROM assets_data
-        LEFT JOIN graph_assets_data
-            ON assets_data.name=graph_assets_data.name
+            asset.unit_commitment,
+        FROM asset_both
+        LEFT JOIN asset
+            ON asset_both.asset=asset.asset
         LEFT JOIN rep_periods_data
-            ON assets_data.year=rep_periods_data.year
-        WHERE assets_data.active=true
-        ORDER BY assets_data.year, rep_periods_data.rep_period
+            ON asset_both.milestone_year=rep_periods_data.year
+        WHERE asset_both.active=true
+        ORDER BY asset_both.milestone_year, rep_periods_data.rep_period
         ",
     )
 
