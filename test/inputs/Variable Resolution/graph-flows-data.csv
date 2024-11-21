@@ -1,8 +1,0 @@
-asset_name,asset_name,,{true;false},MW,year,year,
-from_asset,to_asset,carrier,is_transport,capacity,technical_lifetime,economic_lifetime,discount_rate
-H2,ccgt,hydrogen,false,0,10,1,0.02
-ccgt,balance,electricity,false,0,10,1,0.02
-wind,balance,electricity,false,0,10,1,0.02
-wind,phs,electricity,false,0,10,1,0.02
-phs,balance,electricity,false,0,10,1,0.02
-balance,demand,electricity,true,200,10,1,0.02

@@ -1,0 +1,11 @@
+,,,
+from_asset,to_asset,milestone_year,investable
+wind,demand,2030,false
+battery,demand,2030,false
+phs,demand,2030,false
+ccgt,demand,2030,false
+ocgt,demand,2030,false
+demand,phs,2030,false
+demand,battery,2030,false
+solar,demand,2030,false
+ens,demand,2030,false

@@ -1,9 +1,0 @@
-,{producer;consumer;storage;hub;conversion},{group name},{none;simple;compact},MW,year,year,,MWh/unit
-name,type,group,investment_method,capacity,technical_lifetime,economic_lifetime,discount_rate,capacity_storage_energy
-ocgt,producer,,simple,100,15,10,0.05,0
-ccgt,producer,,compact,400,25,10,0.05,0
-battery,storage,,simple,50,30,10,0.05,100
-wind,producer,,compact,50,30,10,0.05,0
-solar,producer,,simple,10,15,10,0.05,0
-ens,producer,,none,1115,15,10,0.05,0
-demand,consumer,,none,0,15,10,0.05,0

@@ -1,0 +1,10 @@
+,,,
+from_asset,to_asset,milestone_year,investable
+wind,demand,2030,false
+ccgt,demand,2030,false
+gas,ocgt,2030,false
+ocgt,demand,2030,false
+smr,demand,2030,false
+gas,ccgt,2030,false
+solar,demand,2030,false
+ens,demand,2030,false

@@ -1,0 +1,8 @@
+,,,
+from_asset,to_asset,milestone_year,investable
+H2,ccgt,2030,false
+wind,phs,2030,false
+ccgt,balance,2030,false
+balance,demand,2030,false
+wind,balance,2030,false
+phs,balance,2030,false
