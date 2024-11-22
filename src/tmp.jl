@@ -60,6 +60,19 @@ function tmp_create_partition_tables(connection)
             ON asset.asset = arpp.asset
             AND rep_periods_data.year = arpp.year
             AND rep_periods_data.rep_period = arpp.rep_period
+        LEFT JOIN (
+            SELECT
+                asset,
+                milestone_year,
+                MIN(active) AS active,
+            FROM asset_both
+            GROUP BY
+                asset, milestone_year
+        ) AS t
+            ON asset.asset = t.asset
+            AND rep_periods_data.year = t.milestone_year
+        WHERE
+            t.active = true
         ORDER BY rep_periods_data.year, rep_periods_data.rep_period
         ",
     )
@@ -87,6 +100,21 @@ function tmp_create_partition_tables(connection)
             AND flow.to_asset = frpp.to_asset
             AND rep_periods_data.year = frpp.year
             AND rep_periods_data.rep_period = frpp.rep_period
+        LEFT JOIN (
+            SELECT
+                from_asset,
+                to_asset,
+                milestone_year,
+                MIN(active) AS active,
+            FROM flow_both
+            GROUP BY
+                from_asset, to_asset, milestone_year
+        ) AS t
+            ON flow.from_asset = t.from_asset
+            AND flow.to_asset = t.to_asset
+            AND rep_periods_data.year = t.milestone_year
+        WHERE
+            t.active = true
         ORDER BY rep_periods_data.year, rep_periods_data.rep_period
         ",
     )
