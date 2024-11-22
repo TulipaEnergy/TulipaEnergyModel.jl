@@ -44,49 +44,50 @@ function tmp_create_partition_tables(connection)
     DBInterface.execute(
         connection,
         "CREATE OR REPLACE TABLE explicit_assets_rep_periods_partitions AS
-        SELECT DISTINCT
-            t_assets.asset AS asset,
-            t_assets.milestone_year AS year,
-            t_rp.rep_period AS rep_period,
-            COALESCE(t_partition.specification, 'uniform') AS specification,
-            COALESCE(t_partition.partition, '1') AS partition,
-            t_rp.num_timesteps,
-        FROM asset_both AS t_assets
-        LEFT JOIN rep_periods_data as t_rp
-            ON t_rp.year=t_assets.milestone_year
-        LEFT JOIN assets_rep_periods_partitions as t_partition
-            ON t_assets.asset=t_partition.asset
-                AND t_rp.year=t_partition.year
-                AND t_rp.rep_period=t_partition.rep_period
-        WHERE t_assets.active=true
-        ORDER BY year, rep_period
+        SELECT
+            asset.asset,
+            rep_periods_data.year,
+            rep_periods_data.rep_period,
+            COALESCE(arpp.specification, 'uniform') AS specification,
+            COALESCE(arpp.partition, '1') AS partition,
+            rep_periods_data.num_timesteps,
+        FROM asset
+        CROSS JOIN rep_periods_data
+        LEFT JOIN asset_commission
+            ON asset.asset = asset_commission.asset
+            AND rep_periods_data.year = asset_commission.commission_year
+        LEFT JOIN assets_rep_periods_partitions as arpp
+            ON asset.asset = arpp.asset
+            AND rep_periods_data.year = arpp.year
+            AND rep_periods_data.rep_period = arpp.rep_period
+        ORDER BY rep_periods_data.year, rep_periods_data.rep_period
         ",
     )
 
     DBInterface.execute(
         connection,
         "CREATE OR REPLACE TABLE explicit_flows_rep_periods_partitions AS
-        SELECT DISTINCT
-            t_flows.from_asset,
-            t_flows.to_asset,
-            t_flows.milestone_year AS year,
-            t_rp.rep_period AS rep_period,
-            COALESCE(t_partition.specification, 'uniform') AS specification,
-            COALESCE(t_partition.partition, '1') AS partition,
+        SELECT
+            flow.from_asset,
+            flow.to_asset,
+            rep_periods_data.year,
+            rep_periods_data.rep_period,
+            COALESCE(frpp.specification, 'uniform') AS specification,
+            COALESCE(frpp.partition, '1') AS partition,
             flow_commission.efficiency,
-            t_rp.num_timesteps,
-        FROM flow_both AS t_flows
+            rep_periods_data.num_timesteps,
+        FROM flow
+        CROSS JOIN rep_periods_data
         LEFT JOIN flow_commission
-            ON t_flows.commission_year = flow_commission.commission_year
-        LEFT JOIN rep_periods_data as t_rp
-            ON t_rp.year=t_flows.milestone_year
-        LEFT JOIN flows_rep_periods_partitions as t_partition
-            ON t_flows.from_asset=t_partition.from_asset
-                AND t_flows.to_asset=t_partition.to_asset
-                AND t_rp.year=t_partition.year
-                AND t_rp.rep_period=t_partition.rep_period
-        WHERE t_flows.active=true
-        ORDER BY year, rep_period
+            ON flow.from_asset = flow_commission.from_asset
+            AND flow.to_asset = flow_commission.to_asset
+            AND rep_periods_data.year = flow_commission.commission_year
+        LEFT JOIN flows_rep_periods_partitions as frpp
+            ON flow.from_asset = frpp.from_asset
+            AND flow.to_asset = frpp.to_asset
+            AND rep_periods_data.year = frpp.year
+            AND rep_periods_data.rep_period = frpp.rep_period
+        ORDER BY rep_periods_data.year, rep_periods_data.rep_period
         ",
     )
 

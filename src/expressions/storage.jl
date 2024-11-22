@@ -25,15 +25,15 @@ function add_storage_expressions!(model, graph, sets)
         @expression(
             model,
             accumulated_energy_capacity[y ∈ sets.Y, a ∈ sets.As],
-            if graph[a].storage_method_energy[y] &&
-               a ∈ sets.Ase[y] ∩ sets.decommissionable_assets_using_simple_method
+            if graph[a].storage_method_energy &&
+               a ∈ sets.Ase ∩ sets.decommissionable_assets_using_simple_method
                 graph[a].capacity_storage_energy * accumulated_energy_units_simple_method[y, a]
             else
                 (
                     graph[a].capacity_storage_energy *
                     sum(values(graph[a].initial_storage_units[y])) +
                     if a ∈ sets.Ai[y] ∩ sets.decommissionable_assets_using_simple_method
-                        graph[a].energy_to_power_ratio[y] *
+                        graph[a].energy_to_power_ratio *
                         graph[a].capacity *
                         (
                             accumulated_investment_units_using_simple_method[a, y] -

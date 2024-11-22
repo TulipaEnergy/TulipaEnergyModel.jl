@@ -84,14 +84,14 @@ function add_capacity_constraints!(
     # - Create accumulated investment limit for the use of binary storage method with investments
     accumulated_investment_limit = @expression(
         model,
-        accumulated_investment_limit[y in Y, a in Ai[y]∩Asb[y]],
-        sum(values(graph[a].investment_limit[y]))
+        accumulated_investment_limit[y in Y, a in Ai[y]∩Asb],
+        graph[a].investment_limit[y]
     )
 
     # - Create capacity limit for outgoing flows with binary is_charging for storage assets
     assets_profile_times_capacity_out_with_binary_part1 =
         model[:assets_profile_times_capacity_out_with_binary_part1] = [
-            if row.asset ∈ Ai[row.year] && row.asset ∈ Asb[row.year]
+            if row.asset ∈ Ai[row.year] && row.asset ∈ Asb
                 @expression(
                     model,
                     profile_aggregation(
@@ -129,7 +129,7 @@ function add_capacity_constraints!(
 
     assets_profile_times_capacity_out_with_binary_part2 =
         model[:assets_profile_times_capacity_out_with_binary_part2] = [
-            if row.asset ∈ Ai[row.year] && row.asset ∈ Asb[row.year]
+            if row.asset ∈ Ai[row.year] && row.asset ∈ Asb
                 @expression(
                     model,
                     profile_aggregation(
@@ -172,7 +172,7 @@ function add_capacity_constraints!(
     # - Create capacity limit for incoming flows with binary is_charging for storage assets
     assets_profile_times_capacity_in_with_binary_part1 =
         model[:assets_profile_times_capacity_in_with_binary_part1] = [
-            if row.asset ∈ Ai[row.year] && row.asset ∈ Asb[row.year]
+            if row.asset ∈ Ai[row.year] && row.asset ∈ Asb
                 @expression(
                     model,
                     profile_aggregation(
@@ -210,7 +210,7 @@ function add_capacity_constraints!(
 
     assets_profile_times_capacity_in_with_binary_part2 =
         model[:assets_profile_times_capacity_in_with_binary_part2] = [
-            if row.asset ∈ Ai[row.year] && row.asset ∈ Asb[row.year]
+            if row.asset ∈ Ai[row.year] && row.asset ∈ Asb
                 @expression(
                     model,
                     profile_aggregation(
@@ -263,7 +263,7 @@ function add_capacity_constraints!(
             assets_profile_times_capacity_out_with_binary_part1[row.index],
             base_name = "max_output_flows_limit_with_binary_part1[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:highest_out]) if
-        row.asset ∈ Asb[row.year] && outgoing_flow_highest_out_resolution[row.index] != 0
+        row.asset ∈ Asb && outgoing_flow_highest_out_resolution[row.index] != 0
     ]
 
     model[:max_output_flows_limit_with_binary_part2] = [
@@ -273,7 +273,7 @@ function add_capacity_constraints!(
             assets_profile_times_capacity_out_with_binary_part2[row.index],
             base_name = "max_output_flows_limit_with_binary_part2[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:highest_out]) if row.asset ∈ Ai[row.year] &&
-        row.asset ∈ Asb[row.year] &&
+        row.asset ∈ Asb &&
         outgoing_flow_highest_out_resolution[row.index] != 0
     ]
 
@@ -285,7 +285,7 @@ function add_capacity_constraints!(
             assets_profile_times_capacity_in_with_binary_part1[row.index],
             base_name = "max_input_flows_limit_with_binary_part1[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:highest_in]) if
-        row.asset ∈ Asb[row.year] && incoming_flow_highest_in_resolution[row.index] != 0
+        row.asset ∈ Asb && incoming_flow_highest_in_resolution[row.index] != 0
     ]
     model[:max_input_flows_limit_with_binary_part2] = [
         @constraint(
@@ -294,7 +294,7 @@ function add_capacity_constraints!(
             assets_profile_times_capacity_in_with_binary_part2[row.index],
             base_name = "max_input_flows_limit_with_binary_part2[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(dataframes[:highest_in]) if row.asset ∈ Ai[row.year] &&
-        row.asset ∈ Asb[row.year] &&
+        row.asset ∈ Asb &&
         incoming_flow_highest_in_resolution[row.index] != 0
     ]
 

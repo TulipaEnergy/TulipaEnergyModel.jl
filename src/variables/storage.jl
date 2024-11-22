@@ -38,13 +38,12 @@ function add_storage_variables!(model, graph, sets, variables)
     ]
 
     ### Binary Charging Variables
-    is_charging_indices.use_binary_storage_method = [
-        graph[row.asset].use_binary_storage_method[row.year] for row in eachrow(is_charging_indices)
-    ]
+    is_charging_indices.use_binary_storage_method =
+        [graph[row.asset].use_binary_storage_method for row in eachrow(is_charging_indices)]
 
     sub_df_is_charging_indices = DataFrames.subset(
         is_charging_indices,
-        [:asset, :year] => DataFrames.ByRow((a, y) -> a in sets.Asb[y]),
+        :asset => DataFrames.ByRow(a -> a in sets.Asb),
         :use_binary_storage_method => DataFrames.ByRow(==("binary"));
         view = true,
     )

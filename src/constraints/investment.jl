@@ -46,14 +46,14 @@ function _find_upper_bound(graph, year, investments...; is_bound_for_energy = fa
     graph_investment = graph[investments...]
     if !is_bound_for_energy
         bound_value = graph_investment.investment_limit[year] / graph_investment.capacity
-        if graph_investment.investment_integer[year]
+        if graph_investment.investment_integer
             bound_value = floor(bound_value)
         end
     else
         bound_value =
             graph_investment.investment_limit_storage_energy[year] /
             graph_investment.capacity_storage_energy
-        if graph_investment.investment_integer_storage_energy[year]
+        if graph_investment.investment_integer_storage_energy
             bound_value = floor(bound_value)
         end
     end

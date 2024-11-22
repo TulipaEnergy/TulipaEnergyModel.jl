@@ -1,5 +1,6 @@
 # Auxiliary functions to create the model
 
+# FIXME: Ugly hack applied
 """
     is_active(graph, a, y)
     is_active(graph, (u, v), y)

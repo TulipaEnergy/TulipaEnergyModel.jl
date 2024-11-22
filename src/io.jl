@@ -270,7 +270,7 @@ function create_internal_structures(connection)
          """
     for row in DuckDB.query(connection, find_assets_partitions_query)
         for year in milestone_years
-            graph[row.name].timeframe_partitions[year] = _parse_rp_partition(
+            graph[row.asset].timeframe_partitions[year] = _parse_rp_partition(
                 Val(Symbol(row.specification)),
                 row.partition,
                 1:timeframe.num_periods,

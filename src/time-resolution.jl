@@ -40,8 +40,7 @@ function compute_constraints_partitions(graph, representative_periods, years)
             name = :storage_level_intra_rp,
             partitions = _all,
             strategy = :lowest,
-            asset_filter = (a, y) ->
-                graph[a].type == "storage" && !get(graph[a].is_seasonal, y, false),
+            asset_filter = (a, y) -> graph[a].type == "storage" && !graph[a].is_seasonal,
         ),
         (
             name = :lowest_in_out,
