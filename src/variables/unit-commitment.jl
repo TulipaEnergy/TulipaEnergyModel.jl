@@ -19,11 +19,7 @@ function add_unit_commitment_variables!(model, sets, variables)
     ]
 
     ### Integer Unit Commitment Variables
-    integer_units_on_indices = filter(
-        row ->
-            (row.year in keys(sets.Auc_integer)) && (row.asset in sets.Auc_integer[row.year]),
-        units_on_indices,
-    )
+    integer_units_on_indices = filter(row -> row.asset in sets.Auc_integer, units_on_indices)
     for row in eachrow(integer_units_on_indices)
         JuMP.set_integer(variables[:units_on].container[row.index])
     end
