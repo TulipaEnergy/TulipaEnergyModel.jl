@@ -46,7 +46,7 @@ end
         @test Graphs.nv(graph) == 6
         @test Graphs.ne(graph) == 5
         @test collect(Graphs.edges(graph)) ==
-              [Graphs.Edge(e) for e in [(1, 6), (2, 6), (3, 6), (4, 6), (5, 6)]]
+              [Graphs.Edge(e) for e in [(1, 2), (3, 2), (4, 2), (5, 2), (6, 2)]]
     end
 end
 
