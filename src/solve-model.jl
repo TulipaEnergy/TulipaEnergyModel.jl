@@ -42,36 +42,41 @@ function solve_model!(
                 graph[a].investment_integer_storage_energy ? round(Int, value) : value
         end
 
-        for row in eachrow(energy_problem.dataframes[:storage_level_intra_rp])
-            a, rp, timesteps_block, value =
-                row.asset, row.rep_period, row.timesteps_block, row.solution
-            graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
-        end
-
-        for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
-            a, pb, value = row.asset, row.periods_block, row.solution
-            graph[a].storage_level_inter_rp[pb] = value
-        end
-
-        for row in eachrow(energy_problem.dataframes[:max_energy_inter_rp])
-            a, pb, value = row.asset, row.periods_block, row.solution
-            graph[a].max_energy_inter_rp[pb] = value
-        end
-
-        for row in eachrow(energy_problem.dataframes[:min_energy_inter_rp])
-            a, pb, value = row.asset, row.periods_block, row.solution
-            graph[a].min_energy_inter_rp[pb] = value
-        end
+        # TODO: fix this
+        # for row in eachrow(energy_problem.dataframes[:storage_level_intra_rp])
+        #     a, rp, timesteps_block, value =
+        #         row.asset, row.rep_period, row.timesteps_block, row.solution
+        #     graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
+        # end
+        #
+        # for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
+        #     a, pb, value = row.asset, row.periods_block, row.solution
+        #     graph[a].storage_level_inter_rp[pb] = value
+        # end
+        #
+        # for row in eachrow(energy_problem.dataframes[:max_energy_inter_rp])
+        #     a, pb, value = row.asset, row.periods_block, row.solution
+        #     graph[a].max_energy_inter_rp[pb] = value
+        # end
+        #
+        # for row in eachrow(energy_problem.dataframes[:min_energy_inter_rp])
+        #     a, pb, value = row.asset, row.periods_block, row.solution
+        #     graph[a].min_energy_inter_rp[pb] = value
+        # end
 
         for ((y, (u, v)), value) in energy_problem.solution.flows_investment
             graph[u, v].investment[y] = graph[u, v].investment_integer ? round(Int, value) : value
         end
 
-        for row in eachrow(energy_problem.dataframes[:flows])
-            u, v, rp, timesteps_block, value =
-                row.from, row.to, row.rep_period, row.timesteps_block, row.solution
-            graph[u, v].flow[(rp, timesteps_block)] = value
-        end
+        # TODO: Fix this
+        # for row in eachrow(energy_problem.variables[:flow].indices)
+        #     u, v, rp, timesteps_block, value = row.from,
+        #     row.to,
+        #     row.rep_period,
+        #     row.time_block_start:row.time_block_end,
+        #     row.solution
+        #     graph[u, v].flow[(rp, timesteps_block)] = value
+        # end
     end
 
     energy_problem.timings["solving the model"] = elapsed_time_solve_model
@@ -95,11 +100,12 @@ function solve_model!(dataframes, model, args...; kwargs...)
         return nothing
     end
 
-    dataframes[:flows].solution = solution.flow
-    dataframes[:storage_level_intra_rp].solution = solution.storage_level_intra_rp
-    dataframes[:storage_level_inter_rp].solution = solution.storage_level_inter_rp
-    dataframes[:max_energy_inter_rp].solution = solution.max_energy_inter_rp
-    dataframes[:min_energy_inter_rp].solution = solution.min_energy_inter_rp
+    # TODO: fix this later
+    # dataframes[:flow].solution = solution.flow
+    # dataframes[:storage_level_intra_rp].solution = solution.storage_level_intra_rp
+    # dataframes[:storage_level_inter_rp].solution = solution.storage_level_inter_rp
+    # dataframes[:max_energy_inter_rp].solution = solution.max_energy_inter_rp
+    # dataframes[:min_energy_inter_rp].solution = solution.min_energy_inter_rp
 
     return solution
 end
@@ -190,11 +196,11 @@ function solve_model(
         Dict(k => JuMP.value(v) for (k, v) in variables[:assets_investment].lookup),
         Dict(k => JuMP.value(v) for (k, v) in variables[:assets_investment_energy].lookup),
         Dict(k => JuMP.value(v) for (k, v) in variables[:flows_investment].lookup),
-        JuMP.value.(model[:storage_level_intra_rp]),
-        JuMP.value.(model[:storage_level_inter_rp]),
+        JuMP.value.(variables[:storage_level_intra_rp].container),
+        JuMP.value.(variables[:storage_level_inter_rp].container),
         JuMP.value.(model[:max_energy_inter_rp]),
         JuMP.value.(model[:min_energy_inter_rp]),
-        JuMP.value.(model[:flow]),
+        JuMP.value.(variables[:flow].container),
         JuMP.objective_value(model),
         compute_dual_variables(model),
     )

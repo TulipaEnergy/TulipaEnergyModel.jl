@@ -36,19 +36,19 @@ function compute_constraints_partitions(graph, representative_periods, years)
             strategy = :lowest,
             asset_filter = (a, y) -> graph[a].type in ["conversion", "producer"],
         ),
-        (
-            name = :storage_level_intra_rp,
-            partitions = _all,
-            strategy = :lowest,
-            asset_filter = (a, y) -> graph[a].type == "storage" && !graph[a].is_seasonal,
-        ),
-        (
-            name = :lowest_in_out,
-            partitions = _allflows,
-            strategy = :lowest,
-            asset_filter = (a, y) ->
-                graph[a].type == "storage" && !ismissing(graph[a].use_binary_storage_method),
-        ),
+        # (
+        #     name = :storage_level_intra_rp,
+        #     partitions = _all,
+        #     strategy = :lowest,
+        #     asset_filter = (a, y) -> graph[a].type == "storage" && !graph[a].is_seasonal,
+        # ),
+        # (
+        #     name = :lowest_in_out,
+        #     partitions = _allflows,
+        #     strategy = :lowest,
+        #     asset_filter = (a, y) ->
+        #         graph[a].type == "storage" && !ismissing(graph[a].use_binary_storage_method),
+        # ),
         # ( # WIP: Testing removing this in favor of using table cons_indices_highest_in_out
         #     name = :highest_in_out,
         #     partitions = _allflows,
@@ -67,13 +67,13 @@ function compute_constraints_partitions(graph, representative_periods, years)
         #     strategy = :highest,
         #     asset_filter = (a, y) -> graph[a].type in ["producer", "storage", "conversion"],
         # ),
-        (
-            name = :units_on,
-            partitions = _assets,
-            strategy = :highest,
-            asset_filter = (a, y) ->
-                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment,
-        ),
+        # (
+        #     name = :units_on,
+        #     partitions = _assets,
+        #     strategy = :highest,
+        #     asset_filter = (a, y) ->
+        #         graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment,
+        # ),
         (
             name = :units_on_and_outflows,
             partitions = _assets_and_outflows,

@@ -2,13 +2,108 @@ export compute_variables_indices
 
 # TODO: Allow changing table names to make unit tests possible
 # The signature should be something like `...(connection; assets_data="t_assets_data", ...)`
-function compute_variables_indices(connection, dataframes)
-    variables = Dict(
-        :flow => TulipaVariable(dataframes[:flows]),
-        :units_on => TulipaVariable(dataframes[:units_on]),
-        :storage_level_intra_rp => TulipaVariable(dataframes[:storage_level_intra_rp]),
-        :storage_level_inter_rp => TulipaVariable(dataframes[:storage_level_inter_rp]),
-        :is_charging => TulipaVariable(dataframes[:lowest_in_out]),
+function compute_variables_indices(connection)
+    # TODO: Format SQL queries consistently (is there a way to add a linter/formatter?)
+    variables = Dict{Symbol,TulipaVariable}()
+
+    variables[:flow] = TulipaVariable(
+        DuckDB.query(
+            connection,
+            "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+            SELECT
+                nextval('id') as index,
+                from_asset as from,
+                to_asset as to,
+                year,
+                rep_period,
+                efficiency,
+                time_block_start,
+                time_block_end
+            FROM flow_time_resolution
+            ",
+        ) |> DataFrame,
+    )
+
+    variables[:units_on] = TulipaVariable(
+        DuckDB.query(
+            connection,
+            "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+            SELECT
+                nextval('id') as index,
+                atr.asset,
+                atr.year,
+                atr.rep_period,
+                atr.time_block_start,
+                atr.time_block_end
+            FROM asset_time_resolution AS atr
+            LEFT JOIN asset
+                ON asset.asset = atr.asset
+            WHERE
+                asset.type IN ('producer','conversion')
+                AND asset.unit_commitment = true
+            ",
+        ) |> DataFrame,
+    )
+
+    variables[:is_charging] = TulipaVariable(
+        DuckDB.query(
+            connection,
+            "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+            SELECT
+                nextval('id') as index,
+                t_low.asset,
+                t_low.year,
+                t_low.rep_period,
+                t_low.time_block_start,
+                t_low.time_block_end
+            FROM t_lowest_all_flows AS t_low
+            LEFT JOIN asset
+                ON t_low.asset = asset.asset
+            WHERE
+                asset.type = 'storage'
+                AND asset.use_binary_storage_method = true
+            ",
+        ) |> DataFrame,
+    )
+
+    variables[:storage_level_intra_rp] = TulipaVariable(
+        DuckDB.query(
+            connection,
+            "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+            SELECT
+                nextval('id') as index,
+                t_low.asset,
+                t_low.year,
+                t_low.rep_period,
+                t_low.time_block_start,
+                t_low.time_block_end
+            FROM t_lowest_all AS t_low
+            LEFT JOIN asset
+                ON t_low.asset = asset.asset
+            WHERE
+                asset.type = 'storage'
+                AND asset.is_seasonal = false
+            ",
+        ) |> DataFrame,
+    )
+
+    variables[:storage_level_inter_rp] = TulipaVariable(
+        DuckDB.query(
+            connection,
+            "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+            SELECT
+                nextval('id') as index,
+                asset.asset,
+                attr.year,
+                attr.period_block_start,
+                attr.period_block_end,
+            FROM asset_timeframe_time_resolution AS attr
+            LEFT JOIN asset
+                ON attr.asset = asset.asset
+            WHERE
+                asset.type = 'storage'
+            ",
+        ) |> DataFrame,
     )
 
     variables[:flows_investment] = TulipaVariable(
@@ -27,7 +122,6 @@ function compute_variables_indices(connection, dataframes)
                 flow_milestone.investable = true",
         ) |> DataFrame,
     )
-    dataframes[:flows_investment] = variables[:flows_investment].indices
 
     variables[:assets_investment] = TulipaVariable(
         DuckDB.query(
@@ -43,7 +137,6 @@ function compute_variables_indices(connection, dataframes)
                 asset_milestone.investable = true",
         ) |> DataFrame,
     )
-    dataframes[:assets_investment] = variables[:assets_investment].indices
 
     variables[:assets_decommission_simple_method] = TulipaVariable(
         DuckDB.query(

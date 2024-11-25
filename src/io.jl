@@ -230,7 +230,11 @@ function create_internal_structures(connection)
 
     graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data, nothing, nothing, nothing)
 
+    # TODO: Move these function calls to the correct place
     tmp_create_partition_tables(connection)
+    tmp_create_union_tables(connection)
+    tmp_create_lowest_resolution_table(connection)
+
     df = TulipaIO.get_table(connection, "asset_time_resolution")
     gdf = DataFrames.groupby(df, [:asset, :year, :rep_period])
     for ((a, year, rp), _df) in pairs(gdf)
@@ -460,70 +464,71 @@ function save_solution_to_file(output_folder, graph, dataframes, solution)
     or 30 for flows.
     =#
 
-    output_file = joinpath(output_folder, "flows.csv")
-    output_table = DataFrames.select(
-        dataframes[:flows],
-        :from,
-        :to,
-        :year,
-        :rep_period,
-        :timesteps_block => :timestep,
-    )
-    output_table.value = solution.flow
-    output_table = DataFrames.flatten(
-        DataFrames.transform(
-            output_table,
-            [:timestep, :value] =>
-                DataFrames.ByRow(
-                    (timesteps_block, value) -> begin # transform each row using these two columns
-                        n = length(timesteps_block)
-                        (timesteps_block, Iterators.repeated(value, n)) # e.g., (3:5, [30, 30, 30])
-                    end,
-                ) => [:timestep, :value],
-        ),
-        [:timestep, :value], # flatten, e.g., [(3, 30), (4, 30), (5, 30)]
-    )
-    output_table |> CSV.write(output_file)
+    # TODO: Fix all output
+    # output_file = joinpath(output_folder, "flows.csv")
+    # output_table = DataFrames.select(
+    #     dataframes[:flows],
+    #     :from,
+    #     :to,
+    #     :year,
+    #     :rep_period,
+    #     :timesteps_block => :timestep,
+    # )
+    # output_table.value = solution.flow
+    # output_table = DataFrames.flatten(
+    #     DataFrames.transform(
+    #         output_table,
+    #         [:timestep, :value] =>
+    #             DataFrames.ByRow(
+    #                 (timesteps_block, value) -> begin # transform each row using these two columns
+    #                     n = length(timesteps_block)
+    #                     (timesteps_block, Iterators.repeated(value, n)) # e.g., (3:5, [30, 30, 30])
+    #                 end,
+    #             ) => [:timestep, :value],
+    #     ),
+    #     [:timestep, :value], # flatten, e.g., [(3, 30), (4, 30), (5, 30)]
+    # )
+    # output_table |> CSV.write(output_file)
 
-    output_file = joinpath(output_folder, "storage-level-intra-rp.csv")
-    output_table = DataFrames.select(
-        dataframes[:storage_level_intra_rp],
-        :asset,
-        :rep_period,
-        :timesteps_block => :timestep,
-    )
-    output_table.value = solution.storage_level_intra_rp
-    if !isempty(output_table.asset)
-        output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
-            _check_initial_storage_level!(subgroup, graph)
-            _interpolate_storage_level!(subgroup, :timestep)
-        end
-    end
-    output_table |> CSV.write(output_file)
+    # output_file = joinpath(output_folder, "storage-level-intra-rp.csv")
+    # output_table = DataFrames.select(
+    #     dataframes[:storage_level_intra_rp],
+    #     :asset,
+    #     :rep_period,
+    #     :timesteps_block => :timestep,
+    # )
+    # output_table.value = solution.storage_level_intra_rp
+    # if !isempty(output_table.asset)
+    #     output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
+    #         _check_initial_storage_level!(subgroup, graph)
+    #         _interpolate_storage_level!(subgroup, :timestep)
+    #     end
+    # end
+    # output_table |> CSV.write(output_file)
 
-    output_file = joinpath(output_folder, "storage-level-inter-rp.csv")
-    output_table =
-        DataFrames.select(dataframes[:storage_level_inter_rp], :asset, :periods_block => :period)
-    output_table.value = solution.storage_level_inter_rp
-    if !isempty(output_table.asset)
-        output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
-            _check_initial_storage_level!(subgroup, graph)
-            _interpolate_storage_level!(subgroup, :period)
-        end
-    end
-    output_table |> CSV.write(output_file)
-
-    output_file = joinpath(output_folder, "max-energy-inter-rp.csv")
-    output_table =
-        DataFrames.select(dataframes[:max_energy_inter_rp], :asset, :periods_block => :period)
-    output_table.value = solution.max_energy_inter_rp
-    output_table |> CSV.write(output_file)
-
-    output_file = joinpath(output_folder, "min-energy-inter-rp.csv")
-    output_table =
-        DataFrames.select(dataframes[:min_energy_inter_rp], :asset, :periods_block => :period)
-    output_table.value = solution.min_energy_inter_rp
-    output_table |> CSV.write(output_file)
+    # output_file = joinpath(output_folder, "storage-level-inter-rp.csv")
+    # output_table =
+    #     DataFrames.select(dataframes[:storage_level_inter_rp], :asset, :periods_block => :period)
+    # output_table.value = solution.storage_level_inter_rp
+    # if !isempty(output_table.asset)
+    #     output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
+    #         _check_initial_storage_level!(subgroup, graph)
+    #         _interpolate_storage_level!(subgroup, :period)
+    #     end
+    # end
+    # output_table |> CSV.write(output_file)
+    #
+    # output_file = joinpath(output_folder, "max-energy-inter-rp.csv")
+    # output_table =
+    #     DataFrames.select(dataframes[:max_energy_inter_rp], :asset, :periods_block => :period)
+    # output_table.value = solution.max_energy_inter_rp
+    # output_table |> CSV.write(output_file)
+    #
+    # output_file = joinpath(output_folder, "min-energy-inter-rp.csv")
+    # output_table =
+    #     DataFrames.select(dataframes[:min_energy_inter_rp], :asset, :periods_block => :period)
+    # output_table.value = solution.min_energy_inter_rp
+    # output_table |> CSV.write(output_file)
 
     return
 end

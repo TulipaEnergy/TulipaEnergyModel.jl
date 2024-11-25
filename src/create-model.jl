@@ -62,13 +62,7 @@ function create_model(
 
     # Unpacking dataframes
     @timeit to "unpacking dataframes" begin
-        df_flows = dataframes[:flows]
-        df_units_on = dataframes[:units_on]
         df_units_on_and_outflows = dataframes[:units_on_and_outflows]
-        df_storage_intra_rp_balance_grouped =
-            DataFrames.groupby(dataframes[:storage_level_intra_rp], [:asset, :rep_period, :year])
-        df_storage_inter_rp_balance_grouped =
-            DataFrames.groupby(dataframes[:storage_level_inter_rp], [:asset, :year])
     end
 
     ## Model
@@ -83,14 +77,6 @@ function create_model(
         variables,
     )
     @timeit to "add_storage_variables!" add_storage_variables!(model, graph, sets, variables)
-
-    # TODO: This should disapear after the changes on add_expressions_to_dataframe! and storing the solution
-    model[:flow] = df_flows.flow = variables[:flow].container
-    model[:units_on] = df_units_on.units_on = variables[:units_on].container
-    storage_level_intra_rp =
-        model[:storage_level_intra_rp] = variables[:storage_level_intra_rp].container
-    storage_level_inter_rp =
-        model[:storage_level_inter_rp] = variables[:storage_level_inter_rp].container
 
     ## Add expressions to dataframes
     # TODO: What will improve this? Variables (#884)?, Constraints?
@@ -171,15 +157,12 @@ function create_model(
 
     @timeit to "add_storage_constraints!" add_storage_constraints!(
         model,
+        variables,
         graph,
         dataframes,
         accumulated_energy_capacity,
         incoming_flow_lowest_storage_resolution_intra_rp,
         outgoing_flow_lowest_storage_resolution_intra_rp,
-        df_storage_intra_rp_balance_grouped,
-        df_storage_inter_rp_balance_grouped,
-        storage_level_intra_rp,
-        storage_level_inter_rp,
         incoming_flow_storage_inter_rp_balance,
         outgoing_flow_storage_inter_rp_balance,
     )
@@ -224,9 +207,9 @@ function create_model(
     if !isempty(dataframes[:units_on_and_outflows])
         @timeit to "add_ramping_constraints!" add_ramping_constraints!(
             model,
+            variables,
             graph,
             df_units_on_and_outflows,
-            df_units_on,
             dataframes[:highest_out],
             outgoing_flow_highest_out_resolution,
             accumulated_units,

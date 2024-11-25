@@ -125,9 +125,14 @@ function add_objective!(
             sum(
                 weight_for_operation_discounts[row.year] *
                 representative_periods[row.year][row.rep_period].weight *
-                duration(row.timesteps_block, row.rep_period, representative_periods[row.year]) *
+                duration(
+                    row.time_block_start:row.time_block_end,
+                    row.rep_period,
+                    representative_periods[row.year],
+                ) *
                 graph[row.from, row.to].variable_cost[row.year] *
-                row.flow for row in eachrow(dataframes[:flows])
+                flow for (flow, row) in
+                zip(variables[:flow].container, eachrow(variables[:flow].indices))
             )
         )
 
@@ -136,9 +141,14 @@ function add_objective!(
             sum(
                 weight_for_operation_discounts[row.year] *
                 representative_periods[row.year][row.rep_period].weight *
-                duration(row.timesteps_block, row.rep_period, representative_periods[row.year]) *
+                duration(
+                    row.time_block_start:row.time_block_end,
+                    row.rep_period,
+                    representative_periods[row.year],
+                ) *
                 graph[row.asset].units_on_cost[row.year] *
-                row.units_on for row in eachrow(dataframes[:units_on]) if
+                units_on for (units_on, row) in
+                zip(variables[:units_on].container, eachrow(variables[:units_on].indices)) if
                 !ismissing(graph[row.asset].units_on_cost[row.year])
             )
         )

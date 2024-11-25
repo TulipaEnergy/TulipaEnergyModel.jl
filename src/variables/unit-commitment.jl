@@ -10,11 +10,12 @@ Additionally, variables are constrained to be integers based on the `sets` struc
 function add_unit_commitment_variables!(model, sets, variables)
     units_on_indices = variables[:units_on].indices
 
+    # TODO: Add integer = ...
     variables[:units_on].container = [
         @variable(
             model,
             lower_bound = 0.0,
-            base_name = "units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
+            base_name = "units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
         ) for row in eachrow(units_on_indices)
     ]
 

@@ -89,55 +89,6 @@ function construct_dataframes(
     )
     dataframes[:highest_out].index = 1:size(dataframes[:highest_out], 1)
 
-    # DataFrame to store the flow variables
-    dataframes[:flows] = DuckDB.query(
-        connection,
-        "SELECT
-            from_asset as from,
-            to_asset as to,
-            year,
-            rep_period,
-            efficiency,
-            time_block_start,
-            time_block_end
-        FROM flow_time_resolution",
-    ) |> DataFrame
-    dataframes[:flows].timesteps_block = map(
-        r -> r[1]:r[2],
-        zip(dataframes[:flows].time_block_start, dataframes[:flows].time_block_end),
-    )
-    dataframes[:flows].index = 1:size(dataframes[:flows], 1)
-
-    # DataFrame to store the units_on variables
-    dataframes[:units_on] =
-        DuckDB.query(
-            connection,
-            "SELECT
-                atr.asset,
-                atr.year,
-                atr.rep_period,
-                atr.time_block_start,
-                atr.time_block_end
-            FROM asset_time_resolution AS atr
-            LEFT JOIN asset
-                ON asset.asset = atr.asset
-            WHERE
-                asset.type IN ('producer','conversion')
-                AND asset.unit_commitment = true",
-        ) |> DataFrame
-
-    dataframes[:units_on].timesteps_block = map(
-        r -> r[1]:r[2],
-        zip(dataframes[:units_on].time_block_start, dataframes[:units_on].time_block_end),
-    )
-
-    dataframes[:units_on].index = 1:size(dataframes[:units_on], 1)
-
-    # Dataframe to store the storage level variable between (inter) representative period (e.g., seasonal storage)
-    # Only for storage assets
-    dataframes[:storage_level_inter_rp] =
-        _construct_inter_rp_dataframes(A, graph, years, a -> a.type == "storage")
-
     # Dataframe to store the constraints for assets with maximum energy between (inter) representative periods
     # Only for assets with max energy limit
     dataframes[:max_energy_inter_rp] = _construct_inter_rp_dataframes(
@@ -213,7 +164,7 @@ This strategy is based on the replies in this discourse thread:
 """
 function add_expression_terms_intra_rp_constraints!(
     df_cons,
-    df_flows,
+    flow::TulipaVariable,
     workspace,
     representative_periods,
     graph;
@@ -245,7 +196,7 @@ function add_expression_terms_intra_rp_constraints!(
         if conditions_to_add_min_outgoing_flow_duration
             df_cons[!, :min_outgoing_flow_duration] .= 1
         end
-        grouped_flows = DataFrames.groupby(df_flows, [:year, :rep_period, case.asset_match])
+        grouped_flows = DataFrames.groupby(flow.indices, [:year, :rep_period, case.asset_match])
         for ((year, rep_period, asset), sub_df) in pairs(grouped_cons)
             if !haskey(grouped_flows, (year, rep_period, asset))
                 continue
@@ -259,7 +210,7 @@ function add_expression_terms_intra_rp_constraints!(
             # Store the corresponding flow in the workspace
             for row in eachrow(grouped_flows[(year, rep_period, asset)])
                 asset = row[case.asset_match]
-                for t in row.timesteps_block
+                for t in row.time_block_start:row.time_block_end
                     # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
                     # And when you want the highest resolution (which is asset type-agnostic)
                     efficiency_coefficient =
@@ -275,18 +226,27 @@ function add_expression_terms_intra_rp_constraints!(
                         end
                     JuMP.add_to_expression!(
                         workspace[t],
-                        row.flow,
+                        flow.container[row.index],
                         resolution * efficiency_coefficient,
                     )
                     if conditions_to_add_min_outgoing_flow_duration
-                        outgoing_flow_durations =
-                            min(outgoing_flow_durations, length(row.timesteps_block))
+                        outgoing_flow_durations = min(
+                            outgoing_flow_durations,
+                            row.time_block_end - row.time_block_start + 1,
+                        )
                     end
                 end
             end
             # Sum the corresponding flows from the workspace
             for row in eachrow(sub_df)
-                row[case.col_name] = agg(@view workspace[row.timesteps_block])
+                # TODO: This is a hack to handle constraint tables that still have timesteps_block
+                # In particular, storage_level_intra_rp
+                if haskey(row, :timesteps_block)
+                    row[case.col_name] = agg(@view workspace[row.timesteps_block])
+                else
+                    row[case.col_name] =
+                        agg(@view workspace[row.time_block_start:row.time_block_end])
+                end
                 if conditions_to_add_min_outgoing_flow_duration
                     row[:min_outgoing_flow_duration] = outgoing_flow_durations
                 end
@@ -362,14 +322,18 @@ This strategy is based on the replies in this discourse thread:
 
   - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
 """
-function add_expression_units_on_terms_intra_rp_constraints!(df_cons, df_units_on, workspace)
+function add_expression_units_on_terms_intra_rp_constraints!(
+    df_cons,
+    units_on::TulipaVariable,
+    workspace,
+)
     # Aggregating function: since the constraint is in the highest resolution we can aggregate with unique.
     agg = v -> sum(unique(v))
 
     grouped_cons = DataFrames.groupby(df_cons, [:rep_period, :asset])
 
     df_cons[!, :units_on] .= JuMP.AffExpr(0.0)
-    grouped_units_on = DataFrames.groupby(df_units_on, [:rep_period, :asset])
+    grouped_units_on = DataFrames.groupby(units_on.indices, [:rep_period, :asset])
     for ((rep_period, asset), sub_df) in pairs(grouped_cons)
         haskey(grouped_units_on, (rep_period, asset)) || continue
 
@@ -378,8 +342,8 @@ function add_expression_units_on_terms_intra_rp_constraints!(df_cons, df_units_o
         end
         # Store the corresponding variables in the workspace
         for row in eachrow(grouped_units_on[(rep_period, asset)])
-            for t in row.timesteps_block
-                JuMP.add_to_expression!(workspace[t], row.units_on)
+            for t in row.time_block_start:row.time_block_end
+                JuMP.add_to_expression!(workspace[t], units_on.container[row.index])
             end
         end
         # Apply the agg funtion to the corresponding variables from the workspace
@@ -405,7 +369,7 @@ This function is only used internally in the model.
 """
 function add_expression_terms_inter_rp_constraints!(
     df_inter,
-    df_flows,
+    flow::TulipaVariable,
     df_map,
     graph,
     representative_periods;
@@ -423,7 +387,11 @@ function add_expression_terms_inter_rp_constraints!(
 
     # Incoming, outgoing flows, and profile aggregation
     for row_inter in eachrow(df_inter)
-        sub_df_map = filter(:period => in(row_inter.periods_block), df_map; view = true)
+        sub_df_map = filter(
+            :period => p -> row_inter.period_block_start <= p <= row_inter.period_block_end,
+            df_map;
+            view = true,
+        )
 
         for row_map in eachrow(sub_df_map)
             # Skip inactive row_inter or undefined for that year
@@ -436,33 +404,36 @@ function add_expression_terms_inter_rp_constraints!(
                 [:from, :year, :rep_period] =>
                     (from, y, rp) ->
                         (from, y, rp) == (row_inter.asset, row_map.year, row_map.rep_period),
-                df_flows;
+                flow.indices;
                 view = true,
             )
-            sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
+            sub_df_flows.duration = sub_df_flows.time_block_end - sub_df_flows.time_block_start .+ 1
             if is_storage_level
                 row_inter.outgoing_flow +=
                     LinearAlgebra.dot(
-                        sub_df_flows.flow,
+                        flow.container[sub_df_flows.index],
                         sub_df_flows.duration ./ sub_df_flows.efficiency,
                     ) * row_map.weight
             else
                 row_inter.outgoing_flow +=
-                    LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.duration) * row_map.weight
+                    LinearAlgebra.dot(flow.container[sub_df_flows.index], sub_df_flows.duration) *
+                    row_map.weight
             end
 
             if is_storage_level
+                # TODO: There is some repetition here or am I missing something?
                 sub_df_flows = filter(
                     [:to, :year, :rep_period] =>
                         (to, y, rp) ->
                             (to, y, rp) == (row_inter.asset, row_map.year, row_map.rep_period),
-                    df_flows;
+                    flow.indices;
                     view = true,
                 )
-                sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
+                sub_df_flows.duration =
+                    sub_df_flows.time_block_end - sub_df_flows.time_block_start .+ 1
                 row_inter.incoming_flow +=
                     LinearAlgebra.dot(
-                        sub_df_flows.flow,
+                        flow.container[sub_df_flows.index],
                         sub_df_flows.duration .* sub_df_flows.efficiency,
                     ) * row_map.weight
 
@@ -500,16 +471,20 @@ function add_expressions_to_dataframe!(
         # Creating the incoming and outgoing flow expressions
         add_expression_terms_intra_rp_constraints!(
             dataframes[:lowest],
-            dataframes[:flows],
+            variables[:flow],
             expression_workspace,
             representative_periods,
             graph;
             use_highest_resolution = false,
             multiply_by_duration = true,
         )
+        # TODO: storage_level_intra_rp is serving as a constraints indices
+        # This should be fixed when:
+        # - the constraint is separate from the variable
+        # - the incoming and outgoing flows are stored outside the DF
         add_expression_terms_intra_rp_constraints!(
-            dataframes[:storage_level_intra_rp],
-            dataframes[:flows],
+            variables[:storage_level_intra_rp].indices,
+            variables[:flow],
             expression_workspace,
             representative_periods,
             graph;
@@ -518,7 +493,7 @@ function add_expressions_to_dataframe!(
         )
         add_expression_terms_intra_rp_constraints!(
             dataframes[:highest_in_out],
-            dataframes[:flows],
+            variables[:flow],
             expression_workspace,
             representative_periods,
             graph;
@@ -527,7 +502,7 @@ function add_expressions_to_dataframe!(
         )
         add_expression_terms_intra_rp_constraints!(
             dataframes[:highest_in],
-            dataframes[:flows],
+            variables[:flow],
             expression_workspace,
             representative_periods,
             graph;
@@ -536,7 +511,7 @@ function add_expressions_to_dataframe!(
         )
         add_expression_terms_intra_rp_constraints!(
             dataframes[:highest_out],
-            dataframes[:flows],
+            variables[:flow],
             expression_workspace,
             representative_periods,
             graph;
@@ -547,7 +522,7 @@ function add_expressions_to_dataframe!(
         if !isempty(dataframes[:units_on_and_outflows])
             add_expression_terms_intra_rp_constraints!(
                 dataframes[:units_on_and_outflows],
-                dataframes[:flows],
+                variables[:flow],
                 expression_workspace,
                 representative_periods,
                 graph;
@@ -557,23 +532,30 @@ function add_expressions_to_dataframe!(
             )
         end
         add_expression_terms_inter_rp_constraints!(
-            dataframes[:storage_level_inter_rp],
-            dataframes[:flows],
+            variables[:storage_level_inter_rp].indices,
+            variables[:flow],
             timeframe.map_periods_to_rp,
             graph,
             representative_periods;
             is_storage_level = true,
         )
+        # TODO: This hack allows changing the function to use period_block_start and period_block_end
+        # This can be removed after the max_energy_inter_rp and min_energy_inter_rp are moved to TulipaVariable
+        for name in (:max_energy_inter_rp, :min_energy_inter_rp)
+            df = dataframes[name]
+            df.period_block_start = first.(df.periods_block)
+            df.period_block_end = last.(df.periods_block)
+        end
         add_expression_terms_inter_rp_constraints!(
             dataframes[:max_energy_inter_rp],
-            dataframes[:flows],
+            variables[:flow],
             timeframe.map_periods_to_rp,
             graph,
             representative_periods,
         )
         add_expression_terms_inter_rp_constraints!(
             dataframes[:min_energy_inter_rp],
-            dataframes[:flows],
+            variables[:flow],
             timeframe.map_periods_to_rp,
             graph,
             representative_periods,
@@ -593,7 +575,7 @@ function add_expressions_to_dataframe!(
         if !isempty(dataframes[:units_on_and_outflows])
             add_expression_units_on_terms_intra_rp_constraints!(
                 dataframes[:units_on_and_outflows],
-                dataframes[:units_on],
+                variables[:units_on],
                 expression_workspace,
             )
         end
@@ -604,10 +586,10 @@ function add_expressions_to_dataframe!(
             model[:outgoing_flow_lowest_resolution] = dataframes[:lowest].outgoing_flow
         incoming_flow_lowest_storage_resolution_intra_rp =
             model[:incoming_flow_lowest_storage_resolution_intra_rp] =
-                dataframes[:storage_level_intra_rp].incoming_flow
+                variables[:storage_level_intra_rp].indices.incoming_flow
         outgoing_flow_lowest_storage_resolution_intra_rp =
             model[:outgoing_flow_lowest_storage_resolution_intra_rp] =
-                dataframes[:storage_level_intra_rp].outgoing_flow
+                variables[:storage_level_intra_rp].indices.outgoing_flow
         incoming_flow_highest_in_out_resolution =
             model[:incoming_flow_highest_in_out_resolution] =
                 dataframes[:highest_in_out].incoming_flow
@@ -620,10 +602,10 @@ function add_expressions_to_dataframe!(
             model[:outgoing_flow_highest_out_resolution] = dataframes[:highest_out].outgoing_flow
         incoming_flow_storage_inter_rp_balance =
             model[:incoming_flow_storage_inter_rp_balance] =
-                dataframes[:storage_level_inter_rp].incoming_flow
+                variables[:storage_level_inter_rp].indices.incoming_flow
         outgoing_flow_storage_inter_rp_balance =
             model[:outgoing_flow_storage_inter_rp_balance] =
-                dataframes[:storage_level_inter_rp].outgoing_flow
+                variables[:storage_level_inter_rp].indices.outgoing_flow
         # Below, we drop zero coefficients, but probably we don't have any
         # (if the implementation is correct)
         JuMP.drop_zeros!.(incoming_flow_lowest_resolution)

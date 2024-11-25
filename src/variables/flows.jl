@@ -14,7 +14,7 @@ function add_flow_variables!(model, variables)
     variables[:flow].container = [
         @variable(
             model,
-            base_name = "flow[($(row.from), $(row.to)), $(row.year), $(row.rep_period), $(row.timesteps_block)]"
+            base_name = "flow[($(row.from), $(row.to)), $(row.year), $(row.rep_period), $(row.time_block_start):$(row.time_block_end)]"
         ) for row in eachrow(flows_indices)
     ]
 
