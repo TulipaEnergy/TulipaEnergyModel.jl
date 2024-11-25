@@ -29,7 +29,6 @@ function compute_variables_indices(connection, dataframes)
     )
     dataframes[:flows_investment] = variables[:flows_investment].indices
 
-    # TODO: Verify that year=commission_year is the correct approach. Alternative is creating a table where (name, year) is the key
     variables[:assets_investment] = TulipaVariable(
         DuckDB.query(
             connection,
