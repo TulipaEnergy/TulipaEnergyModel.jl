@@ -1,7 +1,7 @@
-,,,
-from_asset,to_asset,milestone_year,investable
-wind,demand,2030,false
-ccgt,demand,2030,false
-ocgt,demand,2030,false
-solar,demand,2030,false
-ens,demand,2030,false
+,,,,
+from_asset,to_asset,milestone_year,investable,variable_cost
+wind,demand,2030,false,0.001
+ccgt,demand,2030,false,0.05
+ocgt,demand,2030,false,0.07
+solar,demand,2030,false,0.0
+ens,demand,2030,false,0.18

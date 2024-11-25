@@ -112,28 +112,26 @@ function add_objective!(model, graph, dataframes, representative_periods, sets, 
             )
         )
 
-        # FIXME: Ugly hack applied
         flows_variable_cost = @expression(
             model,
             sum(
                 weight_for_operation_discounts[row.year] *
                 representative_periods[row.year][row.rep_period].weight *
                 duration(row.timesteps_block, row.rep_period, representative_periods[row.year]) *
-                (graph[row.from, row.to].variable_cost[row.year] |> values |> first) *
+                graph[row.from, row.to].variable_cost[row.year] *
                 row.flow for row in eachrow(dataframes[:flows])
             )
         )
 
-        # FIXME: Ugly hack applied
         units_on_cost = @expression(
             model,
             sum(
                 weight_for_operation_discounts[row.year] *
                 representative_periods[row.year][row.rep_period].weight *
                 duration(row.timesteps_block, row.rep_period, representative_periods[row.year]) *
-                graph[row.asset].units_on_cost[row.year][row.year] *
+                graph[row.asset].units_on_cost[row.year] *
                 row.units_on for row in eachrow(dataframes[:units_on]) if
-                !ismissing(graph[row.asset].units_on_cost[row.year][row.year])
+                !ismissing(graph[row.asset].units_on_cost[row.year])
             )
         )
 

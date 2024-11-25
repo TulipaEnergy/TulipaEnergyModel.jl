@@ -39,6 +39,7 @@ const schemas = (
             :initial_storage_level => "DOUBLE",              # MWh (Missing -> free initial level)
             :min_energy_timeframe_partition => "DOUBLE",     # MWh (Missing -> no limit)
             :max_energy_timeframe_partition => "DOUBLE",     # MWh (Missing -> no limit)
+            :units_on_cost => "DOUBLE",                      # Objective function coefficient on `units_on` variable. e.g., no-load cost or idling cost
         ),
 
         # Schema for the asset-commission.csv
@@ -62,7 +63,6 @@ const schemas = (
             :decommissionable => "BOOLEAN",
             :initial_units => "DOUBLE",                      # units
             :initial_storage_units => "DOUBLE",              # units
-            :units_on_cost => "DOUBLE",                      # Objective function coefficient on `units_on` variable. e.g., no-load cost or idling cost
         ),
 
         # Schema for the assets-profiles.csv and assets-timeframe-profiles.csv file.
@@ -120,6 +120,7 @@ const schemas = (
             :to_asset => "VARCHAR",                          # Name of Asset
             :milestone_year => "INTEGER",                   # Year of commissioning
             :investable => "BOOLEAN",               # Whether able to invest
+            :variable_cost => "DOUBLE",             # kEUR/MWh
         ),
 
         # Schema for the flow-commission.csv
@@ -141,7 +142,6 @@ const schemas = (
             :commission_year => "INTEGER",          # Year of commissioning
             :active => "BOOLEAN",                   # Active or decomissioned
             :decommissionable => "BOOLEAN",
-            :variable_cost => "DOUBLE",             # kEUR/MWh
             :initial_export_units => "DOUBLE",   # MW
             :initial_import_units => "DOUBLE",   # MW
         ),

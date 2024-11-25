@@ -163,6 +163,7 @@ function create_internal_structures(connection)
                 _get_data_per_year("asset_milestone", "initial_storage_level"; _where...),
                 _get_data_per_year("asset_milestone", "min_energy_timeframe_partition"; _where...),
                 _get_data_per_year("asset_milestone", "max_energy_timeframe_partition"; _where...),
+                _get_data_per_year("asset_milestone", "units_on_cost"; _where...),
 
                 # From asset_commission table
                 _get_data_per_year("asset_commission", "fixed_cost"; _where...),
@@ -181,7 +182,6 @@ function create_internal_structures(connection)
                 _get_data_per_both_years("asset_both", "decommissionable"; _where...),
                 _get_data_per_both_years("asset_both", "initial_units"; _where...),
                 _get_data_per_both_years("asset_both", "initial_storage_units"; _where...),
-                _get_data_per_both_years("asset_both", "units_on_cost"; _where...),
             )
         end for row in TulipaIO.get_table(Val(:raw), connection, "asset")
     ]
@@ -201,6 +201,7 @@ function create_internal_structures(connection)
 
                 # flow_milestone
                 _get_data_per_year("flow_milestone", "investable"; _where...),
+                _get_data_per_year("flow_milestone", "variable_cost"; _where...),
 
                 # flow_commission
                 _get_data_per_year("flow_commission", "fixed_cost"; _where...),
@@ -211,7 +212,6 @@ function create_internal_structures(connection)
                 # flow_both
                 _get_data_per_both_years("flow_both", "active"; _where...),
                 _get_data_per_both_years("flow_both", "decommissionable"; _where...),
-                _get_data_per_both_years("flow_both", "variable_cost"; _where...),
                 _get_data_per_both_years("flow_both", "initial_export_units"; _where...),
                 _get_data_per_both_years("flow_both", "initial_import_units"; _where...),
             )

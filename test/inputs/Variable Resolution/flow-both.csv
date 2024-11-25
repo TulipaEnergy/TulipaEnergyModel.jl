@@ -1,8 +1,8 @@
-,,,,,,,,
-from_asset,to_asset,milestone_year,commission_year,active,decommissionable,variable_cost,initial_export_units,initial_import_units
-H2,ccgt,2030,2030,true,true,0.01,0.0,0.0
-ccgt,balance,2030,2030,true,true,0.05,0.0,0.0
-wind,balance,2030,2030,true,true,0.005,0.0,0.0
-wind,phs,2030,2030,true,true,0.002,0.0,0.0
-phs,balance,2030,2030,true,true,0.001,0.0,0.0
-balance,demand,2030,2030,true,true,0.0001,1.0,1.0
+,,,,,,,
+from_asset,to_asset,milestone_year,commission_year,active,decommissionable,initial_export_units,initial_import_units
+H2,ccgt,2030,2030,true,true,0.0,0.0
+ccgt,balance,2030,2030,true,true,0.0,0.0
+wind,balance,2030,2030,true,true,0.0,0.0
+wind,phs,2030,2030,true,true,0.0,0.0
+phs,balance,2030,2030,true,true,0.0,0.0
+balance,demand,2030,2030,true,true,1.0,1.0

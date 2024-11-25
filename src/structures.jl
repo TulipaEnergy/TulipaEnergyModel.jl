@@ -92,6 +92,7 @@ mutable struct GraphAssetData
     initial_storage_level::Dict{Int,Union{Missing,Float64}}
     min_energy_timeframe_partition::Dict{Int,Union{Missing,Float64}}
     max_energy_timeframe_partition::Dict{Int,Union{Missing,Float64}}
+    units_on_cost::Dict{Int,Union{Missing,Float64}}
 
     # asset_commission
     fixed_cost::Dict{Int,Float64}
@@ -106,7 +107,6 @@ mutable struct GraphAssetData
     decommissionable::Dict{Int,Dict{Int,Bool}}
     initial_units::Dict{Int,Dict{Int,Float64}}
     initial_storage_units::Dict{Int,Dict{Int,Float64}}
-    units_on_cost::Dict{Int,Dict{Int,Union{Missing,Float64}}}
 
     # profiles
     timeframe_profiles::Dict{Int,Dict{Int,Dict{String,Vector{Float64}}}}
@@ -161,6 +161,7 @@ mutable struct GraphFlowData
 
     # flow_milestone
     investable::Dict{Int,Bool}
+    variable_cost::Dict{Int,Float64}
 
     # flow_commission
     fixed_cost::Dict{Int,Float64}
@@ -171,7 +172,6 @@ mutable struct GraphFlowData
     # flow_both
     active::Dict{Int,Dict{Int,Bool}}
     decommissionable::Dict{Int,Dict{Int,Bool}}
-    variable_cost::Dict{Int,Dict{Int,Float64}}
     initial_export_units::Dict{Int,Dict{Int,Float64}}
     initial_import_units::Dict{Int,Dict{Int,Float64}}
 
