@@ -121,7 +121,7 @@ We need the sets and the variables indices.
 
 ```@example manual
 sets = create_sets(graph, years)
-variables = compute_variables_indices(dataframes)
+variables = compute_variables_indices(connection, dataframes)
 ```
 
 Now we can compute the model.
@@ -133,13 +133,13 @@ model = create_model(graph, sets, variables, representative_periods, dataframes,
 Finally, we can compute the solution.
 
 ```@example manual
-solution = solve_model(model)
+solution = solve_model(model, variables)
 ```
 
 or, if we want to store the `flow`, `storage_level_intra_rp`, and `storage_level_inter_rp` optimal value in the dataframes:
 
 ```@example manual
-solution = solve_model!(dataframes, model)
+solution = solve_model!(dataframes, model, variables)
 ```
 
 This `solution` structure is the same as the one returned when using an `EnergyProblem`.
@@ -174,7 +174,7 @@ or
 ```@example manual
 using GLPK
 
-solution = solve_model(model, GLPK.Optimizer)
+solution = solve_model(model, variables, GLPK.Optimizer)
 ```
 
 Notice that, in any of these cases, we need to explicitly add the GLPK package

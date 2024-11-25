@@ -1,10 +1,18 @@
-function add_objective!(model, graph, dataframes, representative_periods, sets, model_parameters)
-    assets_investment = model[:assets_investment]
+function add_objective!(
+    model,
+    variables,
+    graph,
+    dataframes,
+    representative_periods,
+    sets,
+    model_parameters,
+)
+    assets_investment = variables[:assets_investment].lookup
     accumulated_units_simple_method = model[:accumulated_units_simple_method]
     accumulated_units_compact_method = model[:accumulated_units_compact_method]
-    assets_investment_energy = model[:assets_investment_energy]
+    assets_investment_energy = variables[:assets_investment_energy].lookup
     accumulated_energy_units_simple_method = model[:accumulated_energy_units_simple_method]
-    flows_investment = model[:flows_investment]
+    flows_investment = variables[:flows_investment].lookup
     accumulated_flows_export_units = model[:accumulated_flows_export_units]
     accumulated_flows_import_units = model[:accumulated_flows_import_units]
 

@@ -2,7 +2,9 @@
     dir = joinpath(INPUT_FOLDER, "Norse")
     parameters_dict = Dict(
         HiGHS.Optimizer => Dict("mip_rel_gap" => 0.01, "output_flag" => false),
-        GLPK.Optimizer => Dict("mip_gap" => 0.01, "msg_lev" => 0, "presolve" => GLPK.GLP_ON),
+        # TODO: Find a different way to test parameters of GLPK
+        # Removing because it's finding bad bases (ill-conditioned) randomly
+        # GLPK.Optimizer => Dict("mip_gap" => 0.01, "msg_lev" => 0, "presolve" => GLPK.GLP_ON),
     )
     if !Sys.isapple()
         parameters_dict[Cbc.Optimizer] = Dict("ratioGap" => 0.01, "logLevel" => 0)

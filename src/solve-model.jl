@@ -17,8 +17,13 @@ function solve_model!(
             error("Model is not created, run create_model(energy_problem) first.")
         end
 
-        energy_problem.solution =
-            solve_model!(energy_problem.dataframes, model, optimizer; parameters = parameters)
+        energy_problem.solution = solve_model!(
+            energy_problem.dataframes,
+            model,
+            energy_problem.variables,
+            optimizer;
+            parameters = parameters,
+        )
         energy_problem.termination_status = JuMP.termination_status(model)
         if energy_problem.solution === nothing
             # Warning has been given at internal function
@@ -34,7 +39,7 @@ function solve_model!(
 
         for ((y, a), value) in energy_problem.solution.assets_investment_energy
             graph[a].investment_energy[y] =
-                graph[a].investment_integer_storage_energy[y] ? round(Int, value) : value
+                graph[a].investment_integer_storage_energy ? round(Int, value) : value
         end
 
         for row in eachrow(energy_problem.dataframes[:storage_level_intra_rp])
@@ -158,11 +163,12 @@ The `solution` object is a mutable struct with the following fields:
 
 ```julia
 parameters = Dict{String,Any}("presolve" => "on", "time_limit" => 60.0, "output_flag" => true)
-solution = solve_model(model, HiGHS.Optimizer; parameters = parameters)
+solution = solve_model(model, variables, HiGHS.Optimizer; parameters = parameters)
 ```
 """
 function solve_model(
     model::JuMP.Model,
+    variables,
     optimizer = HiGHS.Optimizer;
     parameters = default_parameters(optimizer),
 )
@@ -181,9 +187,9 @@ function solve_model(
     end
 
     return Solution(
-        JuMP.value.(model[:assets_investment]).data,   # .data returns a OrderedDict since variable is SparseAxisArray
-        JuMP.value.(model[:assets_investment_energy]).data,
-        JuMP.value.(model[:flows_investment]).data,
+        Dict(k => JuMP.value(v) for (k, v) in variables[:assets_investment].lookup),
+        Dict(k => JuMP.value(v) for (k, v) in variables[:assets_investment_energy].lookup),
+        Dict(k => JuMP.value(v) for (k, v) in variables[:flows_investment].lookup),
         JuMP.value.(model[:storage_level_intra_rp]),
         JuMP.value.(model[:storage_level_inter_rp]),
         JuMP.value.(model[:max_energy_inter_rp]),

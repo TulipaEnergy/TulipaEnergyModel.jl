@@ -12,7 +12,8 @@ ens,2030,2030,true,true,1.0,0.0
 demand,2030,2030,true,true,0.0,0.0
 ocgt,2050,2050,true,false,0.0,0.0
 ccgt,2050,2028,true,true,1.0,0.0
-ccgt,2050,2050,true,true,0.0,0.0
+ccgt,2050,2030,true,true,0.0,0.0
+ccgt,2050,2050,true,false,0.0,0.0
 battery,2050,2030,true,true,0.02,0.0
 battery,2050,2050,true,false,0.0,0.0
 wind,2050,2030,true,true,0.02,0.0
