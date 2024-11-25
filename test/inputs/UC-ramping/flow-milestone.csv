@@ -1,0 +1,10 @@
+,,,,
+from_asset,to_asset,milestone_year,investable,variable_cost
+wind,demand,2030,false,0.001
+ccgt,demand,2030,false,0.05
+gas,ocgt,2030,false,0.0
+ocgt,demand,2030,false,0.07
+smr,demand,2030,false,0.01
+gas,ccgt,2030,false,0.0
+solar,demand,2030,false,0.0
+ens,demand,2030,false,0.5

@@ -17,11 +17,11 @@ function compute_constraints_partitions(graph, representative_periods, years)
     constraints_partitions = Dict{Symbol,Dict{Tuple{String,Int,Int},Vector{TimestepsBlock}}}()
     _inflows(a, y, rp) = [
         graph[u, a].rep_periods_partitions[y][rp] for
-        u in MetaGraphsNext.inneighbor_labels(graph, a) if get(graph[u, a].active, y, false)
+        u in MetaGraphsNext.inneighbor_labels(graph, a) if is_active(graph, (u, a), y)
     ]
     _outflows(a, y, rp) = [
         graph[a, v].rep_periods_partitions[y][rp] for
-        v in MetaGraphsNext.outneighbor_labels(graph, a) if get(graph[a, v].active, y, false)
+        v in MetaGraphsNext.outneighbor_labels(graph, a) if is_active(graph, (a, v), y)
     ]
 
     _allflows(a, y, rp) = [_inflows(a, y, rp); _outflows(a, y, rp)]
@@ -40,16 +40,14 @@ function compute_constraints_partitions(graph, representative_periods, years)
             name = :storage_level_intra_rp,
             partitions = _all,
             strategy = :lowest,
-            asset_filter = (a, y) ->
-                graph[a].type == "storage" && !get(graph[a].is_seasonal, y, false),
+            asset_filter = (a, y) -> graph[a].type == "storage" && !graph[a].is_seasonal,
         ),
         (
             name = :lowest_in_out,
             partitions = _allflows,
             strategy = :lowest,
             asset_filter = (a, y) ->
-                graph[a].type == "storage" &&
-                    !ismissing(get(graph[a].use_binary_storage_method, y, missing)),
+                graph[a].type == "storage" && !ismissing(graph[a].use_binary_storage_method),
         ),
         # ( # WIP: Testing removing this in favor of using table cons_indices_highest_in_out
         #     name = :highest_in_out,
@@ -74,14 +72,14 @@ function compute_constraints_partitions(graph, representative_periods, years)
             partitions = _assets,
             strategy = :highest,
             asset_filter = (a, y) ->
-                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment[y],
+                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment,
         ),
         (
             name = :units_on_and_outflows,
             partitions = _assets_and_outflows,
             strategy = :highest,
             asset_filter = (a, y) ->
-                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment[y],
+                graph[a].type in ["producer", "conversion"] && graph[a].unit_commitment,
         ),
     ]
 
@@ -97,7 +95,7 @@ function compute_constraints_partitions(graph, representative_periods, years)
                     Vector{TimestepsBlock}[]
                 end
             end for a in MetaGraphsNext.labels(graph), y in getfield.(years, :id) if
-            get(graph[a].active, y, false) && asset_filter(a, y) for rp in RP[y]
+            is_active(graph, a, y) && asset_filter(a, y) for rp in RP[y]
         )
     end
 

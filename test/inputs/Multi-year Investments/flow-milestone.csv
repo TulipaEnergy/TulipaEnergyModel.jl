@@ -1,0 +1,16 @@
+,,,,
+from_asset,to_asset,milestone_year,investable,variable_cost
+battery,demand,2030,false,0.0
+wind,demand,2030,false,0.001
+ens,demand,2050,false,0.18
+ccgt,demand,2030,false,0.05
+ocgt,demand,2030,false,0.07
+solar,demand,2050,false,0.0
+demand,battery,2050,false,0.0
+demand,battery,2030,false,0.0
+solar,demand,2030,false,0.0
+ocgt,demand,2050,false,0.07
+ccgt,demand,2050,true,0.05
+ens,demand,2030,false,0.18
+battery,demand,2050,false,0.0
+wind,demand,2050,false,0.001

@@ -1,7 +1,0 @@
-asset_name,asset_name,year,kEUR/MW/year,kEUR/MW
-from_asset,to_asset,commission_year,fixed_cost,investment_cost
-ocgt,demand,2030,0,0
-ccgt,demand,2030,0,0
-wind,demand,2030,0,0
-solar,demand,2030,0,0
-ens,demand,2030,0,0

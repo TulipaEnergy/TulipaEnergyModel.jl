@@ -1,5 +1,22 @@
 # Auxiliary functions to create the model
 
+# FIXME: Ugly hack applied
+"""
+    is_active(graph, a, y)
+    is_active(graph, (u, v), y)
+
+Returns `graph[a].active[y][y]` or `graph[u, v].active[y][y]` or `false` if intermediary values are
+missing.
+"""
+function is_active(graph, graph_key, y)
+    active_dict = _get_graph_asset_or_flow(graph, graph_key).active # graph[...].active
+    if !haskey(active_dict, y)
+        return false
+    else
+        return get(active_dict[y], y, false)
+    end
+end
+
 """
     _get_graph_asset_or_flow(graph, a)
     _get_graph_asset_or_flow(graph, (u, v))
@@ -23,10 +40,10 @@ function get_graph_value_or_missing(graph, graph_key, field_key)
     return getproperty(g, field_key)
 end
 function get_graph_value_or_missing(graph, graph_key, field_key, year)
-    g = get_graph_value_or_missing(graph, graph_key, field_key)
-    if !_get_graph_asset_or_flow(graph, graph_key).active[year]
+    if !is_active(graph, graph_key, year)
         return missing
     end
+    g = get_graph_value_or_missing(graph, graph_key, field_key)
     return get(g, year, missing)
 end
 

@@ -44,47 +44,78 @@ function tmp_create_partition_tables(connection)
     DBInterface.execute(
         connection,
         "CREATE OR REPLACE TABLE explicit_assets_rep_periods_partitions AS
-        SELECT DISTINCT
-            t_assets.name AS asset,
-            t_assets.year AS year,
-            t_rp.rep_period AS rep_period,
-            COALESCE(t_partition.specification, 'uniform') AS specification,
-            COALESCE(t_partition.partition, '1') AS partition,
-            t_rp.num_timesteps,
-        FROM assets_data AS t_assets
-        LEFT JOIN rep_periods_data as t_rp
-            ON t_rp.year=t_assets.year
-        LEFT JOIN assets_rep_periods_partitions as t_partition
-            ON t_assets.name=t_partition.asset
-                AND t_rp.year=t_partition.year
-                AND t_rp.rep_period=t_partition.rep_period
-        WHERE t_assets.active=true
-        ORDER BY year, rep_period
+        SELECT
+            asset.asset,
+            rep_periods_data.year,
+            rep_periods_data.rep_period,
+            COALESCE(arpp.specification, 'uniform') AS specification,
+            COALESCE(arpp.partition, '1') AS partition,
+            rep_periods_data.num_timesteps,
+        FROM asset
+        CROSS JOIN rep_periods_data
+        LEFT JOIN asset_commission
+            ON asset.asset = asset_commission.asset
+            AND rep_periods_data.year = asset_commission.commission_year
+        LEFT JOIN assets_rep_periods_partitions as arpp
+            ON asset.asset = arpp.asset
+            AND rep_periods_data.year = arpp.year
+            AND rep_periods_data.rep_period = arpp.rep_period
+        LEFT JOIN (
+            SELECT
+                asset,
+                milestone_year,
+                MIN(active) AS active,
+            FROM asset_both
+            GROUP BY
+                asset, milestone_year
+        ) AS t
+            ON asset.asset = t.asset
+            AND rep_periods_data.year = t.milestone_year
+        WHERE
+            t.active = true
+        ORDER BY rep_periods_data.year, rep_periods_data.rep_period
         ",
     )
 
     DBInterface.execute(
         connection,
         "CREATE OR REPLACE TABLE explicit_flows_rep_periods_partitions AS
-        SELECT DISTINCT
-            t_flows.from_asset,
-            t_flows.to_asset,
-            t_flows.year AS year,
-            t_rp.rep_period AS rep_period,
-            COALESCE(t_partition.specification, 'uniform') AS specification,
-            COALESCE(t_partition.partition, '1') AS partition,
-            t_flows.efficiency,
-            t_rp.num_timesteps,
-        FROM flows_data AS t_flows
-        LEFT JOIN rep_periods_data as t_rp
-            ON t_rp.year=t_flows.year
-        LEFT JOIN flows_rep_periods_partitions as t_partition
-            ON t_flows.from_asset=t_partition.from_asset
-                AND t_flows.to_asset=t_partition.to_asset
-                AND t_rp.year=t_partition.year
-                AND t_rp.rep_period=t_partition.rep_period
-        WHERE t_flows.active=true
-        ORDER BY year, rep_period
+        SELECT
+            flow.from_asset,
+            flow.to_asset,
+            rep_periods_data.year,
+            rep_periods_data.rep_period,
+            COALESCE(frpp.specification, 'uniform') AS specification,
+            COALESCE(frpp.partition, '1') AS partition,
+            flow_commission.efficiency,
+            rep_periods_data.num_timesteps,
+        FROM flow
+        CROSS JOIN rep_periods_data
+        LEFT JOIN flow_commission
+            ON flow.from_asset = flow_commission.from_asset
+            AND flow.to_asset = flow_commission.to_asset
+            AND rep_periods_data.year = flow_commission.commission_year
+        LEFT JOIN flows_rep_periods_partitions as frpp
+            ON flow.from_asset = frpp.from_asset
+            AND flow.to_asset = frpp.to_asset
+            AND rep_periods_data.year = frpp.year
+            AND rep_periods_data.rep_period = frpp.rep_period
+        LEFT JOIN (
+            SELECT
+                from_asset,
+                to_asset,
+                milestone_year,
+                MIN(active) AS active,
+            FROM flow_both
+            GROUP BY
+                from_asset, to_asset, milestone_year
+        ) AS t
+            ON flow.from_asset = t.from_asset
+            AND flow.to_asset = t.to_asset
+            AND rep_periods_data.year = t.milestone_year
+        WHERE
+            t.active = true
+        ORDER BY rep_periods_data.year, rep_periods_data.rep_period
         ",
     )
 
@@ -165,19 +196,19 @@ function tmp_create_constraints_indices(connection)
         connection,
         "CREATE OR REPLACE TABLE t_cons_indices AS
         SELECT DISTINCT
-            assets_data.name as asset,
-            assets_data.year,
+            asset_both.asset as asset,
+            asset_both.milestone_year as year,
             rep_periods_data.rep_period,
-            graph_assets_data.type,
+            asset.type,
             rep_periods_data.num_timesteps,
-            assets_data.unit_commitment,
-        FROM assets_data
-        LEFT JOIN graph_assets_data
-            ON assets_data.name=graph_assets_data.name
+            asset.unit_commitment,
+        FROM asset_both
+        LEFT JOIN asset
+            ON asset_both.asset=asset.asset
         LEFT JOIN rep_periods_data
-            ON assets_data.year=rep_periods_data.year
-        WHERE assets_data.active=true
-        ORDER BY assets_data.year, rep_periods_data.rep_period
+            ON asset_both.milestone_year=rep_periods_data.year
+        WHERE asset_both.active=true
+        ORDER BY asset_both.milestone_year, rep_periods_data.rep_period
         ",
     )
 

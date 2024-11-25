@@ -37,7 +37,7 @@ function add_consumer_constraints!(
                 row.timesteps_block,
                 1.0,
             ) * graph[row.asset].peak_demand[row.year] in
-            graph[row.asset].consumer_balance_sense[row.year],
+            graph[row.asset].consumer_balance_sense,
             base_name = "consumer_balance[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
         ) for row in eachrow(df)
     ]

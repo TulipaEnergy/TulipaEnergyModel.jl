@@ -29,7 +29,7 @@ function solve_model!(
 
         graph = energy_problem.graph
         for ((y, a), value) in energy_problem.solution.assets_investment
-            graph[a].investment[y] = graph[a].investment_integer[y] ? round(Int, value) : value
+            graph[a].investment[y] = graph[a].investment_integer ? round(Int, value) : value
         end
 
         for ((y, a), value) in energy_problem.solution.assets_investment_energy
@@ -59,8 +59,7 @@ function solve_model!(
         end
 
         for ((y, (u, v)), value) in energy_problem.solution.flows_investment
-            graph[u, v].investment[y] =
-                graph[u, v].investment_integer[y] ? round(Int, value) : value
+            graph[u, v].investment[y] = graph[u, v].investment_integer ? round(Int, value) : value
         end
 
         for row in eachrow(energy_problem.dataframes[:flows])

@@ -40,13 +40,13 @@ function add_investment_variables!(model, graph, sets)
 
     ### Integer Investment Variables
     for y in sets.Y, a in sets.Ai[y]
-        if graph[a].investment_integer[y]
+        if graph[a].investment_integer
             JuMP.set_integer(assets_investment[y, a])
         end
     end
 
     for y in sets.Y, a in sets.decommissionable_assets_using_simple_method
-        if graph[a].investment_integer[y]
+        if graph[a].investment_integer
             JuMP.set_integer(assets_decommission_simple_method[y, a])
         end
     end
@@ -55,13 +55,13 @@ function add_investment_variables!(model, graph, sets)
         # We don't do anything with existing units (because it can be integers or non-integers)
         if !(
             v in sets.V_non_milestone && a in sets.existing_assets_by_year_using_compact_method[y]
-        ) && graph[a].investment_integer[y]
+        ) && graph[a].investment_integer
             JuMP.set_integer(assets_decommission_compact_method[(a, y, v)])
         end
     end
 
     for y in sets.Y, (u, v) in sets.Fi[y]
-        if graph[u, v].investment_integer[y]
+        if graph[u, v].investment_integer
             JuMP.set_integer(flows_investment[y, (u, v)])
         end
     end
