@@ -15,6 +15,8 @@
 
 This package provides an optimization model for the electricity market and its coupling with other energy sectors (e.g., hydrogen, heat, natural gas, etc.). The main objective is to determine the optimal investment and operation decisions for different types of assets (e.g., producers, consumers, conversions, storages, and transports).
 
+Tulipa supports the United Nations' [Sustainable Development Goals](https://sdgs.un.org/goals), specifically Climate Action.
+
 ## How to Cite
 
 If you use TulipaEnergyModel.jl in your work, please cite using the reference given in [CITATION.cff](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/CITATION.cff).
