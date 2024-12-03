@@ -319,7 +319,7 @@ function add_expression_terms_inter_rp_constraints!(
     end
 end
 
-function add_expressions_to_dataframe!(
+function add_expressions_to_constraints!(
     variables,
     constraints,
     model,

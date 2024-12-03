@@ -75,7 +75,7 @@ function create_model(
 
     ## Add expressions to dataframes
     # TODO: What will improve this? Variables (#884)?, Constraints?
-    add_expressions_to_dataframe!(
+    add_expressions_to_constraints!(
         variables,
         constraints,
         model,
