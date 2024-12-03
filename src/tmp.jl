@@ -305,9 +305,56 @@ function tmp_create_lowest_resolution_table(connection)
     # Following the lowest resolution merge strategy
 
     # The logic:
-    # - order t_union such that groups come first, then s:e ordered by s increasing and e decreasing
-    # - in a group (asset, year, rep_period) we can take the first range then
-    # - continue in the sequence selecting the next largest e
+    # - t_union is ordered by groups (asset, year, rep_period), so every new group starts the same way
+    # - Inside a group, time blocks (TBs) are ordered by time_block_start, so the
+    #   first row of every group starts at time_block_start = 1
+    # - The objective of the lowest resolution is to iteratively find the
+    #   smallest interval [s, e] that covers all blocks that (i) haven't been
+    #   covered yet; and (ii) start at s or earlier.
+    # - We start with an interval [1, e], then use use s = e + 1 for the next intervals
+    # - To cover all blocks, we use e as the largest time_block_end of the relevant blocks
+    # - Since the TBs are in order, we can simply loop over them until we find
+    #   the first that starts later than s. That will be the beginning of a new TB
+
+    # Example:
+    # Consider a group with two assets/flows with the following time resolutions:
+    #
+    # 1: 1:3 4:6 7:9 10:12
+    # 2: 1:2 3:7 8:8 9:11 12:12
+    #
+    # The expected lowest resolution is: 1:3 4:7 8:9 10:12
+    #
+    # This will be translated into the following rows (TBS ordered, not
+    # necessarily TBE ordered), and ROW is the row number only for our example
+    #
+    # ROW TBS  TBE
+    #   1   1    3
+    #   2   1    2
+    #   3   3    7
+    #   4   4    6
+    #   5   7    9
+    #   6   8    8
+    #   7   9   11
+    #   8  10   12
+    #   9  12   12
+    #
+    # Here's how the algorithm behaves:
+    #
+    # - BEGINNING OF GROUP, set s = 1, e = 0
+    # - ROW 1, TB =  [1,  3]: TBS = 1 ≤ 1 = s, so e = max(e, TBE) = max(0, 3) = 3
+    # - ROW 2, TB =  [1,  2]: TBS = 1 ≤ 1 = s, so e = max(e, TBE) = max(3, 2) = 3
+    # - ROW 3, TB =  [3,  7]: TBS = 3 > 1 = s, so the first block is created: [s, e] = [1, 3].
+    #       Start a new block with s = 3 + 1 = 4 and e = TBE = 7
+    # - ROW 4, TB =  [4,  6]: TBS = 4 ≤ 4 = s, so e = max(e, TBE) = max(7, 6) = 7
+    # - ROW 5, TB =  [7,  9]: TBS = 7 > 4 = s, so the second block is created: [s, e] = [4, 7].
+    #       Start a new block with s = 7 + 1 = 8 and e = TBE = 9
+    # - ROW 6, TB =  [8,  8]: TBS = 8 ≤ 8 = s, so e = max(e, TBE) = max(9, 8) = 9
+    # - ROW 7, TB =  [9, 11]: TBS = 9 > 8 = s, so the third block is created: [s, e] = [8, 9].
+    #       Start a new block with s = 9 + 1 = 10 and e = TBE = 11
+    # - ROW 8, TB = [10, 12]: TBS = 10 ≤ 10 = s, so e = max(e, TBE) = max(11, 12) = 12
+    # - ROW 9, TB = [12, 12]: TBS = 12 > 10 = s, so the fourth block is created: [s, e] = [10, 12].
+    #       Start a new block with s = 12 + 1 = 13 and e = TBE = 12
+    # - END OF GROUP: Is 1 ≤ s ≤ e? No, so this is not a valid block
 
     for union_table in ("t_union_all_flows", "t_union_all")
         table_name = replace(union_table, "t_union" => "t_lowest")
@@ -322,13 +369,14 @@ function tmp_create_lowest_resolution_table(connection)
             )",
         )
         appender = DuckDB.Appender(connection, table_name)
+        # Dummy starting values
         s = 0
         e_candidate = 0
         current_group = ("", 0, 0)
         @timeit to "append $table_name rows" for row in DuckDB.query(
             connection,
             "SELECT * FROM $union_table
-            ORDER BY asset, year, rep_period, time_block_start, time_block_end DESC
+            ORDER BY asset, year, rep_period, time_block_start
             ",
         )
             if (row.asset, row.year, row.rep_period) != current_group
