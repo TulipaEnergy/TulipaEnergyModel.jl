@@ -236,53 +236,6 @@ function create_internal_structures(connection)
     tmp_create_lowest_resolution_table(connection)
     tmp_create_highest_resolution_table(connection)
 
-    df = TulipaIO.get_table(connection, "asset_time_resolution")
-    gdf = DataFrames.groupby(df, [:asset, :year, :rep_period])
-    for ((a, year, rp), _df) in pairs(gdf)
-        if !haskey(graph[a].rep_periods_partitions, year)
-            graph[a].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
-        end
-        graph[a].rep_periods_partitions[year][rp] =
-            map(r -> r[1]:r[2], zip(_df.time_block_start, _df.time_block_end))
-    end
-    df = TulipaIO.get_table(connection, "flow_time_resolution")
-    gdf = DataFrames.groupby(df, [:from_asset, :to_asset, :year, :rep_period])
-    for ((u, v, year, rp), _df) in pairs(gdf)
-        if !haskey(graph[u, v].rep_periods_partitions, year)
-            graph[u, v].rep_periods_partitions[year] = Dict{Int,Vector{TimestepsBlock}}()
-        end
-        graph[u, v].rep_periods_partitions[year][rp] =
-            map(r -> r[1]:r[2], zip(_df.time_block_start, _df.time_block_end))
-        P = graph[u, v].rep_periods_partitions[year][rp]
-    end
-
-    #=
-    For timeframe, This SQL query retrieves the names of assets from the `assets_data` table
-    along with their corresponding partition specifications from the `assets_timeframe_partitions` table,
-    if they exist. If a specification or partition is not available, it defaults to 'uniform' and '1' respectively.
-    The query only includes assets marked as seasonal (`is_seasonal` column) in the `assets_data` table.
-    =#
-    find_assets_partitions_query = """
-         SELECT asset_both.asset,
-                 IFNULL(assets_timeframe_partitions.specification, 'uniform') AS specification,
-                 IFNULL(assets_timeframe_partitions.partition, '1') AS partition
-         FROM asset_both
-         LEFT JOIN asset
-            ON asset.asset = asset_both.asset
-         LEFT JOIN assets_timeframe_partitions
-             ON asset_both.asset = assets_timeframe_partitions.asset
-         WHERE asset.is_seasonal
-         """
-    for row in DuckDB.query(connection, find_assets_partitions_query)
-        for year in milestone_years
-            graph[row.asset].timeframe_partitions[year] = _parse_rp_partition(
-                Val(Symbol(row.specification)),
-                row.partition,
-                1:timeframe.num_periods,
-            )
-        end
-    end
-
     _df =
         DuckDB.execute(
             connection,
