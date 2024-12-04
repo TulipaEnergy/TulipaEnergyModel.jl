@@ -40,7 +40,7 @@ function create_model!(energy_problem; kwargs...)
 end
 
 """
-    model = create_model(graph, representative_periods, dataframes, timeframe, groups; write_lp_file = false, enable_names = true)
+    model = create_model(connection, graph, representative_periods, dataframes, timeframe, groups; write_lp_file = false, enable_names = true)
 
 Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), timeframe, and groups.
 """
@@ -114,12 +114,7 @@ function create_model(
 
     @timeit to "add_energy_constraints!" add_energy_constraints!(model, constraints, graph)
 
-    @timeit to "add_consumer_constraints!" add_consumer_constraints!(
-        model,
-        constraints,
-        graph,
-        sets,
-    )
+    @timeit to "add_consumer_constraints!" add_consumer_constraints!(connection, model, constraints)
 
     @timeit to "add_storage_constraints!" add_storage_constraints!(
         model,
