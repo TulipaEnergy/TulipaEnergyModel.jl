@@ -134,6 +134,10 @@ function compute_variables_indices(connection)
                 asset.asset,
                 asset_milestone.milestone_year,
                 asset.investment_integer,
+                asset.capacity,
+                --asset.investment_limit,
+                asset.capacity_storage_energy,
+                --asset.investment_limit_storage_energy,
             FROM asset_milestone
             LEFT JOIN asset
                 ON asset.asset = asset_milestone.asset

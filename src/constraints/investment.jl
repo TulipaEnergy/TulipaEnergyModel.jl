@@ -21,16 +21,22 @@ function add_investment_constraints!(graph, sets, variables)
     flows_investment = variables[:flows_investment].lookup
 
     # - Maximum (i.e., potential) investment limit for assets
-    for y in Y, a in Ai[y]
-        if graph[a].capacity > 0 && !ismissing(graph[a].investment_limit[y])
-            bound_value = _find_upper_bound(graph, y, a)
-            JuMP.set_upper_bound(assets_investment[y, a], bound_value)
+    sub_df = filter(row -> row.capacity > 0, variables[:assets_investment].indices)
+    for (assets_investment, row) in zip(variables[:assets_investment].container, eachrow(sub_df))
+        if !ismissing(graph[row.asset].investment_limit[row.milestone_year])
+            bound_value = _find_upper_bound(graph, row.milestone_year, row.asset)
+            JuMP.set_upper_bound(assets_investment, bound_value)
         end
-        if (a in Ase[y]) && # for a in Ase, i.e., storage assets with energy method
-           graph[a].capacity_storage_energy > 0 &&
-           !ismissing(graph[a].investment_limit_storage_energy[y])
-            bound_value = _find_upper_bound(graph, y, a; is_bound_for_energy = true)
-            JuMP.set_upper_bound(assets_investment_energy[y, a], bound_value)
+    end
+
+    # - Maximum (i.e., potential) investment limit for storage assets with energy method
+    sub_df = filter(row -> row.capacity_storage_energy > 0, variables[:assets_investment].indices)
+    for (assets_investment_energy, row) in
+        zip(variables[:assets_investment_energy].container, eachrow(sub_df))
+        if !ismissing(graph[row.asset].investment_limit_storage_energy[row.milestone_year])
+            bound_value =
+                _find_upper_bound(graph, row.milestone_year, row.asset; is_bound_for_energy = true)
+            JuMP.set_upper_bound(assets_investment_energy, bound_value)
         end
     end
 
