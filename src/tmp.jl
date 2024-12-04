@@ -240,15 +240,42 @@ function tmp_create_union_tables(connection)
     # These are equivalent to the partitions in time-resolution.jl
     # But computed in a more general context to be used by variables as well
 
+    # Incoming flows
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TEMP TABLE t_union_in_flows AS
+        SELECT DISTINCT to_asset as asset, year, rep_period, time_block_start, time_block_end
+        FROM flow_time_resolution
+        ",
+    )
+
+    # Outgoing flows
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TEMP TABLE t_union_out_flows AS
+        SELECT DISTINCT from_asset as asset, year, rep_period, time_block_start, time_block_end
+        FROM flow_time_resolution
+        ",
+    )
+
+    # Union of all assets and outgoing flows
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TEMP TABLE t_union_assets_and_out_flows AS
+        SELECT DISTINCT asset, year, rep_period, time_block_start, time_block_end
+        FROM asset_time_resolution
+        UNION
+        FROM t_union_out_flows
+        ",
+    )
+
     # Union of all incoming and outgoing flows
     DuckDB.execute(
         connection,
         "CREATE OR REPLACE TEMP TABLE t_union_all_flows AS
-        SELECT from_asset as asset, year, rep_period, time_block_start, time_block_end
-        FROM flow_time_resolution
+        FROM t_union_in_flows
         UNION
-        SELECT to_asset as asset, year, rep_period, time_block_start, time_block_end
-        FROM flow_time_resolution
+        FROM t_union_out_flows
         ",
     )
 
@@ -256,10 +283,9 @@ function tmp_create_union_tables(connection)
     DuckDB.execute(
         connection,
         "CREATE OR REPLACE TEMP TABLE t_union_all AS
-        SELECT asset, year, rep_period, time_block_start, time_block_end
+        SELECT DISTINCT asset, year, rep_period, time_block_start, time_block_end
         FROM asset_time_resolution
         UNION
-        SELECT asset, year, rep_period, time_block_start, time_block_end
         FROM t_union_all_flows
         ",
     )
@@ -276,11 +302,59 @@ end
 
 function tmp_create_lowest_resolution_table(connection)
     # These are generic tables to be used to create some variables and constraints
+    # Following the lowest resolution merge strategy
 
     # The logic:
-    # - t_union has groups in order, then s:e ordered by s increasing and e decreasing
-    # - in a group (asset, year, rep_period) we can take the first range then
-    # - continue in the sequence selecting the next largest e
+    # - t_union is ordered by groups (asset, year, rep_period), so every new group starts the same way
+    # - Inside a group, time blocks (TBs) are ordered by time_block_start, so the
+    #   first row of every group starts at time_block_start = 1
+    # - The objective of the lowest resolution is to iteratively find the
+    #   smallest interval [s, e] that covers all blocks that (i) haven't been
+    #   covered yet; and (ii) start at s or earlier.
+    # - We start with an interval [1, e], then use use s = e + 1 for the next intervals
+    # - To cover all blocks, we use e as the largest time_block_end of the relevant blocks
+    # - Since the TBs are in order, we can simply loop over them until we find
+    #   the first that starts later than s. That will be the beginning of a new TB
+
+    # Example:
+    # Consider a group with two assets/flows with the following time resolutions:
+    #
+    # 1: 1:3 4:6 7:9 10:12
+    # 2: 1:2 3:7 8:8 9:11 12:12
+    #
+    # The expected lowest resolution is: 1:3 4:7 8:9 10:12
+    #
+    # This will be translated into the following rows (TBS ordered, not
+    # necessarily TBE ordered), and ROW is the row number only for our example
+    #
+    # ROW TBS  TBE
+    #   1   1    3
+    #   2   1    2
+    #   3   3    7
+    #   4   4    6
+    #   5   7    9
+    #   6   8    8
+    #   7   9   11
+    #   8  10   12
+    #   9  12   12
+    #
+    # Here's how the algorithm behaves:
+    #
+    # - BEGINNING OF GROUP, set s = 1, e = 0
+    # - ROW 1, TB =  [1,  3]: TBS = 1 ≤ 1 = s, so e = max(e, TBE) = max(0, 3) = 3
+    # - ROW 2, TB =  [1,  2]: TBS = 1 ≤ 1 = s, so e = max(e, TBE) = max(3, 2) = 3
+    # - ROW 3, TB =  [3,  7]: TBS = 3 > 1 = s, so the first block is created: [s, e] = [1, 3].
+    #       Start a new block with s = 3 + 1 = 4 and e = TBE = 7
+    # - ROW 4, TB =  [4,  6]: TBS = 4 ≤ 4 = s, so e = max(e, TBE) = max(7, 6) = 7
+    # - ROW 5, TB =  [7,  9]: TBS = 7 > 4 = s, so the second block is created: [s, e] = [4, 7].
+    #       Start a new block with s = 7 + 1 = 8 and e = TBE = 9
+    # - ROW 6, TB =  [8,  8]: TBS = 8 ≤ 8 = s, so e = max(e, TBE) = max(9, 8) = 9
+    # - ROW 7, TB =  [9, 11]: TBS = 9 > 8 = s, so the third block is created: [s, e] = [8, 9].
+    #       Start a new block with s = 9 + 1 = 10 and e = TBE = 11
+    # - ROW 8, TB = [10, 12]: TBS = 10 ≤ 10 = s, so e = max(e, TBE) = max(11, 12) = 12
+    # - ROW 9, TB = [12, 12]: TBS = 12 > 10 = s, so the fourth block is created: [s, e] = [10, 12].
+    #       Start a new block with s = 12 + 1 = 13 and e = TBE = 12
+    # - END OF GROUP: Is 1 ≤ s ≤ e? No, so this is not a valid block
 
     for union_table in ("t_union_all_flows", "t_union_all")
         table_name = replace(union_table, "t_union" => "t_lowest")
@@ -295,13 +369,14 @@ function tmp_create_lowest_resolution_table(connection)
             )",
         )
         appender = DuckDB.Appender(connection, table_name)
+        # Dummy starting values
         s = 0
         e_candidate = 0
         current_group = ("", 0, 0)
         @timeit to "append $table_name rows" for row in DuckDB.query(
             connection,
             "SELECT * FROM $union_table
-            ORDER BY asset, year, rep_period, time_block_start, time_block_end DESC
+            ORDER BY asset, year, rep_period, time_block_start
             ",
         )
             if (row.asset, row.year, row.rep_period) != current_group
@@ -334,146 +409,40 @@ function tmp_create_lowest_resolution_table(connection)
     end
 end
 
-function tmp_create_constraints_indices(connection)
-    # Create a list of all (asset, year, rp) and also data used in filtering
-    DBInterface.execute(
-        connection,
-        "CREATE OR REPLACE TABLE t_cons_indices AS
-        SELECT DISTINCT
-            asset_both.asset as asset,
-            asset_both.milestone_year as year,
-            rep_periods_data.rep_period,
-            asset.type,
-            rep_periods_data.num_timesteps,
-            asset.unit_commitment,
-        FROM asset_both
-        LEFT JOIN asset
-            ON asset_both.asset=asset.asset
-        LEFT JOIN rep_periods_data
-            ON asset_both.milestone_year=rep_periods_data.year
-        WHERE asset_both.active=true
-        ORDER BY asset_both.milestone_year, rep_periods_data.rep_period
-        ",
-    )
+function tmp_create_highest_resolution_table(connection)
+    # These are generic tables to be used to create some variables and constraints
+    # Following the highest resolution merge strategy
 
-    # -- The previous attempt used
-    # The idea below is to find all unique time_block_start values because
-    # this is uses strategy 'highest'. By ordering them, and making
-    # time_block_end[i] = time_block_start[i+1] - 1, we have all ranges.
-    # We use the `lead` function from SQL to get `time_block_start[i+1]`
-    # and row.num_timesteps is the maximum value for when i+1 > length
-    #
-    # The query below is trying to replace the following constraints_partitions example:
-    #= (
-            name = :highest_in_out,
-            partitions = _allflows,
-            strategy = :highest,
-            asset_filter = (a, y) -> graph[a].type in ["hub", "consumer"],
-        ),
-    =#
-    # The **highest** strategy is obtained simply by computing the union of all
-    # time_block_starts, since it consists of "all breakpoints".
-    # The time_block_end is computed a posteriori using the next time_block_start.
-    # The query below will use the WINDOW FUNCTION `lead` to compute the time
-    # block end.
-    # This query uses the assets, incoming flows and outgoing flows to compute partitions
-    # This will be useful when we have other `partitions` instead of `_allflows`
-    # SELECT asset, year, rep_period, time_block_start
-    # FROM asset_time_resolution
-    # UNION
-    DuckDB.execute(
-        connection,
-        "CREATE OR REPLACE TABLE cons_indices_highest_in_out AS
-        SELECT
-            main.asset,
-            main.year,
-            main.rep_period,
-            COALESCE(sub.time_block_start, 1) AS time_block_start,
-            lead(sub.time_block_start - 1, 1, main.num_timesteps)
-                OVER (PARTITION BY main.asset, main.year, main.rep_period ORDER BY time_block_start)
-                AS time_block_end,
-        FROM t_cons_indices AS main
-        LEFT JOIN (
-            SELECT to_asset as asset, year, rep_period, time_block_start
-            FROM flow_time_resolution
-            UNION
-            SELECT from_asset as asset, year, rep_period, time_block_start
-            FROM flow_time_resolution
-        ) AS sub
-            ON main.asset=sub.asset
-                AND main.year=sub.year
-                AND main.rep_period=sub.rep_period
-        WHERE main.type in ('hub', 'consumer')
-        ",
-    )
+    # The logic:
+    # - for each group (asset, year, rep_period) in t_union
+    # - keep all unique time_block_start
+    # - create corresponing time_block_end
 
-    # This follows the same implementation as highest_in_out above, but using
-    # only the incoming flows.
-    #
-    # The query below is trying to replace the following constraints_partitions example:
-    #= (
-    #     name = :highest_in,
-    #     partitions = _inflows,
-    #     strategy = :highest,
-    #     asset_filter = (a, y) -> graph[a].type in ["storage"],
-    # ),
-    =#
-    DuckDB.execute(
-        connection,
-        "CREATE OR REPLACE TABLE cons_indices_highest_in AS
-        SELECT
-            main.asset,
-            main.year,
-            main.rep_period,
-            COALESCE(sub.time_block_start, 1) AS time_block_start,
-            lead(sub.time_block_start - 1, 1, main.num_timesteps)
-                OVER (PARTITION BY main.asset, main.year, main.rep_period ORDER BY time_block_start)
-                AS time_block_end,
-        FROM t_cons_indices AS main
-        LEFT JOIN (
-            SELECT to_asset as asset, year, rep_period, time_block_start
-            FROM flow_time_resolution
-        ) AS sub
-            ON main.asset=sub.asset
-                AND main.year=sub.year
-                AND main.rep_period=sub.rep_period
-        WHERE main.type in ('storage')
-        ",
-    )
-
-    # This follows the same implementation as highest_in_out above, but using
-    # only the outgoing flows.
-    #
-    # The query below is trying to replace the following constraints_partitions example:
-    #= (
-    #     name = :highest_out,
-    #     partitions = _outflows,
-    #     strategy = :highest,
-    #     asset_filter = (a, y) -> graph[a].type in ["producer", "storage", "conversion"],
-    # ),
-    =#
-    DuckDB.execute(
-        connection,
-        "CREATE OR REPLACE TABLE cons_indices_highest_out AS
-        SELECT
-            main.asset,
-            main.year,
-            main.rep_period,
-            COALESCE(sub.time_block_start, 1) AS time_block_start,
-            lead(sub.time_block_start - 1, 1, main.num_timesteps)
-                OVER (PARTITION BY main.asset, main.year, main.rep_period ORDER BY time_block_start)
-                AS time_block_end,
-        FROM t_cons_indices AS main
-        LEFT JOIN (
-            SELECT from_asset as asset, year, rep_period, time_block_start
-            FROM flow_time_resolution
-        ) AS sub
-            ON main.asset=sub.asset
-                AND main.year=sub.year
-                AND main.rep_period=sub.rep_period
-        WHERE main.type in ('producer', 'storage', 'conversion')
-        ",
-    )
+    for union_table in
+        ("t_union_" * x for x in ("in_flows", "out_flows", "assets_and_out_flows", "all_flows"))
+        table_name = replace(union_table, "t_union" => "t_highest")
+        DuckDB.execute(
+            connection,
+            "CREATE OR REPLACE TABLE $table_name AS
+            SELECT
+                asset,
+                t_union.year,
+                t_union.rep_period,
+                time_block_start,
+                lead(time_block_start - 1, 1, rep_periods_data.num_timesteps)
+                    OVER (PARTITION BY asset, t_union.year, t_union.rep_period ORDER BY time_block_start)
+                    AS time_block_end
+            FROM (
+                SELECT DISTINCT asset, year, rep_period, time_block_start
+                FROM $union_table
+            ) AS t_union
+            LEFT JOIN rep_periods_data
+                ON t_union.year = rep_periods_data.year
+                    AND t_union.rep_period = rep_periods_data.rep_period
+            ORDER BY asset, t_union.year, t_union.rep_period, time_block_start
+            ",
+        )
+    end
 end
 
 """

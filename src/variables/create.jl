@@ -70,6 +70,7 @@ function compute_variables_indices(connection)
         DuckDB.query(
             connection,
             "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+            CREATE OR REPLACE TABLE storage_level_intra_rp AS
             SELECT
                 nextval('id') as index,
                 t_low.asset,
@@ -82,7 +83,8 @@ function compute_variables_indices(connection)
                 ON t_low.asset = asset.asset
             WHERE
                 asset.type = 'storage'
-                AND asset.is_seasonal = false
+                AND asset.is_seasonal = false;
+            SELECT * FROM storage_level_intra_rp
             ",
         ) |> DataFrame,
     )
@@ -91,6 +93,7 @@ function compute_variables_indices(connection)
         DuckDB.query(
             connection,
             "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+            CREATE OR REPLACE TABLE storage_level_inter_rp AS
             SELECT
                 nextval('id') as index,
                 asset.asset,
@@ -101,7 +104,8 @@ function compute_variables_indices(connection)
             LEFT JOIN asset
                 ON attr.asset = asset.asset
             WHERE
-                asset.type = 'storage'
+                asset.type = 'storage';
+            SELECT * FROM storage_level_inter_rp
             ",
         ) |> DataFrame,
     )

@@ -6,16 +6,13 @@ add_transport_constraints!(model, graph, df_flows, flow, Ft, flows_investment)
 Adds the transport flow constraints to the model.
 """
 
-function add_transport_constraints!(
-    model,
-    graph,
-    sets,
-    variables,
-    accumulated_flows_export_units,
-    accumulated_flows_import_units,
-)
+function add_transport_constraints!(model, variables, graph, sets)
     ## unpack from sets
     Ft = sets[:Ft]
+
+    ## unpack from model
+    accumulated_flows_export_units = model[:accumulated_flows_export_units]
+    accumulated_flows_import_units = model[:accumulated_flows_import_units]
 
     ## unpack from variables
     flows_indices = variables[:flow].indices

@@ -6,19 +6,7 @@ add_capacity_constraints!(model, graph,...)
 Adds the capacity constraints for all asset types to the model
 """
 
-function add_capacity_constraints!(
-    model,
-    graph,
-    dataframes,
-    sets,
-    variables,
-    accumulated_initial_units,
-    accumulated_investment_units_using_simple_method,
-    accumulated_units,
-    accumulated_units_compact_method,
-    outgoing_flow_highest_out_resolution,
-    incoming_flow_highest_in_resolution,
-)
+function add_capacity_constraints!(model, variables, constraints, graph, sets)
     ## unpack from sets
     Acv = sets[:Acv]
     Ai = sets[:Ai]
@@ -34,9 +22,20 @@ function add_capacity_constraints!(
         sets[:decommissionable_assets_using_compact_method]
     decommissionable_assets_using_simple_method = sets[:decommissionable_assets_using_simple_method]
 
+    ## unpack from model
+    accumulated_initial_units = model[:accumulated_initial_units]
+    accumulated_investment_units_using_simple_method =
+        model[:accumulated_investment_units_using_simple_method]
+    accumulated_units = model[:accumulated_units]
+    accumulated_units_compact_method = model[:accumulated_units_compact_method]
+
     ## unpack from variables
     flows_indices = variables[:flow].indices
     flow = variables[:flow].container
+
+    ## unpack from constraints
+    incoming_flow_highest_in_resolution = constraints[:highest_in].expressions[:incoming]
+    outgoing_flow_highest_out_resolution = constraints[:highest_out].expressions[:outgoing]
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
@@ -52,7 +51,7 @@ function add_capacity_constraints!(
                             row.year,
                             v,
                             ("availability", row.rep_period),
-                            row.timesteps_block,
+                            row.time_block_start:row.time_block_end,
                             1.0,
                         ) *
                         accumulated_units_compact_method[accumulated_set_using_compact_method_lookup[(
@@ -72,13 +71,13 @@ function add_capacity_constraints!(
                         row.year,
                         row.year,
                         ("availability", row.rep_period),
-                        row.timesteps_block,
+                        row.time_block_start:row.time_block_end,
                         1.0,
                     ) *
                     graph[row.asset].capacity *
                     accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
                 )
-            end for row in eachrow(dataframes[:highest_out])
+            end for row in eachrow(constraints[:highest_out].indices)
         ]
 
     # - Create accumulated investment limit for the use of binary storage method with investments
@@ -100,14 +99,14 @@ function add_capacity_constraints!(
                         row.year,
                         row.year,
                         ("availability", row.rep_period),
-                        row.timesteps_block,
+                        row.time_block_start:row.time_block_end,
                         1.0,
                     ) *
                     (
                         graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
                         accumulated_investment_limit[row.year, row.asset]
                     ) *
-                    (1 - row.is_charging)
+                    (1 - is_charging)
                 )
             else
                 @expression(
@@ -118,13 +117,16 @@ function add_capacity_constraints!(
                         row.year,
                         row.year,
                         ("availability", row.rep_period),
-                        row.timesteps_block,
+                        row.time_block_start:row.time_block_end,
                         1.0,
                     ) *
                     (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
-                    (1 - row.is_charging)
+                    (1 - is_charging)
                 )
-            end for row in eachrow(dataframes[:highest_out])
+            end for (row, is_charging) in zip(
+                eachrow(constraints[:highest_out].indices),
+                constraints[:highest_out].expressions[:is_charging],
+            )
         ]
 
     assets_profile_times_capacity_out_with_binary_part2 =
@@ -138,16 +140,19 @@ function add_capacity_constraints!(
                         row.year,
                         row.year,
                         ("availability", row.rep_period),
-                        row.timesteps_block,
+                        row.time_block_start:row.time_block_end,
                         1.0,
                     ) * (
                         graph[row.asset].capacity * (
-                            accumulated_initial_units[row.asset, row.year] * (1 - row.is_charging) +
+                            accumulated_initial_units[row.asset, row.year] * (1 - is_charging) +
                             accumulated_investment_units_using_simple_method[row.asset, row.year]
                         )
                     )
                 )
-            end for row in eachrow(dataframes[:highest_out])
+            end for (row, is_charging) in zip(
+                eachrow(constraints[:highest_out].indices),
+                constraints[:highest_out].expressions[:is_charging],
+            )
         ]
 
     # - Create capacity limit for incoming flows
@@ -161,12 +166,12 @@ function add_capacity_constraints!(
                     row.year,
                     row.year,
                     ("availability", row.rep_period),
-                    row.timesteps_block,
+                    row.time_block_start:row.time_block_end,
                     1.0,
                 ) *
                 graph[row.asset].capacity *
                 accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
-            ) for row in eachrow(dataframes[:highest_in])
+            ) for row in eachrow(constraints[:highest_in].indices)
         ]
 
     # - Create capacity limit for incoming flows with binary is_charging for storage assets
@@ -181,14 +186,14 @@ function add_capacity_constraints!(
                         row.year,
                         row.year,
                         ("availability", row.rep_period),
-                        row.timesteps_block,
+                        row.time_block_start:row.time_block_end,
                         1.0,
                     ) *
                     (
                         graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
                         accumulated_investment_limit[row.year, row.asset]
                     ) *
-                    row.is_charging
+                    is_charging
                 )
             else
                 @expression(
@@ -199,13 +204,16 @@ function add_capacity_constraints!(
                         row.year,
                         row.year,
                         ("availability", row.rep_period),
-                        row.timesteps_block,
+                        row.time_block_start:row.time_block_end,
                         1.0,
                     ) *
                     (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
-                    row.is_charging
+                    is_charging
                 )
-            end for row in eachrow(dataframes[:highest_in])
+            end for (row, is_charging) in zip(
+                eachrow(constraints[:highest_in].indices),
+                constraints[:highest_in].expressions[:is_charging],
+            )
         ]
 
     assets_profile_times_capacity_in_with_binary_part2 =
@@ -219,16 +227,19 @@ function add_capacity_constraints!(
                         row.year,
                         row.year,
                         ("availability", row.rep_period),
-                        row.timesteps_block,
+                        row.time_block_start:row.time_block_end,
                         1.0,
                     ) * (
                         graph[row.asset].capacity * (
-                            accumulated_initial_units[row.asset, row.year] * row.is_charging +
+                            accumulated_initial_units[row.asset, row.year] * is_charging +
                             accumulated_investment_units_using_simple_method[row.asset, row.year]
                         )
                     )
                 )
-            end for row in eachrow(dataframes[:highest_in])
+            end for (row, is_charging) in zip(
+                eachrow(constraints[:highest_in].indices),
+                constraints[:highest_in].expressions[:is_charging],
+            )
         ]
 
     ## Capacity limit constraints (using the highest resolution)
@@ -238,8 +249,8 @@ function add_capacity_constraints!(
             model,
             outgoing_flow_highest_out_resolution[row.index] ≤
             assets_profile_times_capacity_out[row.index],
-            base_name = "max_output_flows_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(dataframes[:highest_out]) if
+            base_name = "max_output_flows_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+        ) for row in eachrow(constraints[:highest_out].indices) if
         outgoing_flow_highest_out_resolution[row.index] != 0
     ]
 
@@ -249,8 +260,8 @@ function add_capacity_constraints!(
             model,
             incoming_flow_highest_in_resolution[row.index] ≤
             assets_profile_times_capacity_in[row.index],
-            base_name = "max_input_flows_limit[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(dataframes[:highest_in]) if
+            base_name = "max_input_flows_limit[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+        ) for row in eachrow(constraints[:highest_in].indices) if
         incoming_flow_highest_in_resolution[row.index] != 0
     ]
 
@@ -261,8 +272,8 @@ function add_capacity_constraints!(
             model,
             outgoing_flow_highest_out_resolution[row.index] ≤
             assets_profile_times_capacity_out_with_binary_part1[row.index],
-            base_name = "max_output_flows_limit_with_binary_part1[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(dataframes[:highest_out]) if
+            base_name = "max_output_flows_limit_with_binary_part1[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+        ) for row in eachrow(constraints[:highest_out].indices) if
         row.asset ∈ Asb && outgoing_flow_highest_out_resolution[row.index] != 0
     ]
 
@@ -271,8 +282,8 @@ function add_capacity_constraints!(
             model,
             outgoing_flow_highest_out_resolution[row.index] ≤
             assets_profile_times_capacity_out_with_binary_part2[row.index],
-            base_name = "max_output_flows_limit_with_binary_part2[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(dataframes[:highest_out]) if row.asset ∈ Ai[row.year] &&
+            base_name = "max_output_flows_limit_with_binary_part2[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+        ) for row in eachrow(constraints[:highest_out].indices) if row.asset ∈ Ai[row.year] &&
         row.asset ∈ Asb &&
         outgoing_flow_highest_out_resolution[row.index] != 0
     ]
@@ -283,8 +294,8 @@ function add_capacity_constraints!(
             model,
             incoming_flow_highest_in_resolution[row.index] ≤
             assets_profile_times_capacity_in_with_binary_part1[row.index],
-            base_name = "max_input_flows_limit_with_binary_part1[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(dataframes[:highest_in]) if
+            base_name = "max_input_flows_limit_with_binary_part1[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+        ) for row in eachrow(constraints[:highest_in].indices) if
         row.asset ∈ Asb && incoming_flow_highest_in_resolution[row.index] != 0
     ]
     model[:max_input_flows_limit_with_binary_part2] = [
@@ -292,8 +303,8 @@ function add_capacity_constraints!(
             model,
             incoming_flow_highest_in_resolution[row.index] ≤
             assets_profile_times_capacity_in_with_binary_part2[row.index],
-            base_name = "max_input_flows_limit_with_binary_part2[$(row.asset),$(row.rep_period),$(row.timesteps_block)]"
-        ) for row in eachrow(dataframes[:highest_in]) if row.asset ∈ Ai[row.year] &&
+            base_name = "max_input_flows_limit_with_binary_part2[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+        ) for row in eachrow(constraints[:highest_in].indices) if row.asset ∈ Ai[row.year] &&
         row.asset ∈ Asb &&
         incoming_flow_highest_in_resolution[row.index] != 0
     ]

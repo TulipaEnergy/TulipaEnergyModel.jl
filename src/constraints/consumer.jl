@@ -12,17 +12,13 @@ add_consumer_constraints!(model,
 Adds the consumer asset constraints to the model.
 """
 
-function add_consumer_constraints!(
-    model,
-    graph,
-    dataframes,
-    sets,
-    incoming_flow_highest_in_out_resolution,
-    outgoing_flow_highest_in_out_resolution,
-)
+function add_consumer_constraints!(model, constraints, graph, sets)
     Ac = sets[:Ac]
+    incoming_flow_highest_in_out_resolution = constraints[:highest_in_out].expressions[:incoming]
+    outgoing_flow_highest_in_out_resolution = constraints[:highest_in_out].expressions[:outgoing]
+
     # - Balance constraint (using the lowest temporal resolution)
-    df = filter(:asset => ∈(Ac), dataframes[:highest_in_out]; view = true)
+    df = filter(:asset => ∈(Ac), constraints[:highest_in_out].indices; view = true)
     model[:consumer_balance] = [
         @constraint(
             model,
@@ -34,11 +30,11 @@ function add_consumer_constraints!(
                 row.year,
                 row.year,
                 ("demand", row.rep_period),
-                row.timesteps_block,
+                row.time_block_start:row.time_block_end,
                 1.0,
             ) * graph[row.asset].peak_demand[row.year] in
             graph[row.asset].consumer_balance_sense,
-            base_name = "consumer_balance[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
+            base_name = "consumer_balance[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
         ) for row in eachrow(df)
     ]
 end
