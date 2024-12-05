@@ -29,6 +29,7 @@ end
 
     # Create model
     model = create_model(
+        connection,
         graph,
         sets,
         variables,
