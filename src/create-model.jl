@@ -1,12 +1,13 @@
 export create_model!, create_model
 
 """
-    create_model!(connection, energy_problem; verbose = false)
+    create_model!(energy_problem; verbose = false)
 
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
-function create_model!(connection, energy_problem; kwargs...)
+function create_model!(energy_problem; kwargs...)
     elapsed_time_create_model = @elapsed begin
+        connection = energy_problem.db_connection
         graph = energy_problem.graph
         representative_periods = energy_problem.representative_periods
         variables = energy_problem.variables

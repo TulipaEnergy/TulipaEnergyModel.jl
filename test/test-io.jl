@@ -17,7 +17,7 @@ end
         energy_problem = EnergyProblem(connection)
         output_dir = mktempdir()
         @test_throws Exception save_solution_to_file(output_dir, energy_problem)
-        create_model!(connection, energy_problem)
+        create_model!(energy_problem)
         @test_throws Exception save_solution_to_file(output_dir, energy_problem)
         solve_model!(energy_problem)
         @test save_solution_to_file(output_dir, energy_problem) === nothing
@@ -30,7 +30,7 @@ end
         _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
         energy_problem = EnergyProblem(connection)
         print(energy_problem)
-        create_model!(connection, energy_problem)
+        create_model!(energy_problem)
         print(energy_problem)
         solve_model!(energy_problem)
         print(energy_problem)
