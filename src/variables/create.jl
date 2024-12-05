@@ -113,7 +113,8 @@ function compute_variables_indices(connection)
     variables[:flows_investment] = TulipaVariable(
         DuckDB.query(
             connection,
-            "SELECT
+            "CREATE OR REPLACE TABLE indices_for_flows_investment AS
+            SELECT
                 flow.from_asset,
                 flow.to_asset,
                 flow_milestone.milestone_year,
@@ -123,26 +124,25 @@ function compute_variables_indices(connection)
                 ON flow.from_asset = flow_milestone.from_asset
                 AND flow.to_asset = flow_milestone.to_asset
             WHERE
-                flow_milestone.investable = true",
+                flow_milestone.investable = true;
+                SELECT * FROM indices_for_flows_investment",
         ) |> DataFrame,
     )
 
     variables[:assets_investment] = TulipaVariable(
         DuckDB.query(
             connection,
-            "SELECT
+            "CREATE OR REPLACE TABLE indices_for_assets_investment AS
+             SELECT
                 asset.asset,
                 asset_milestone.milestone_year,
                 asset.investment_integer,
-                asset.capacity,
-                --asset.investment_limit,
-                asset.capacity_storage_energy,
-                --asset.investment_limit_storage_energy,
             FROM asset_milestone
             LEFT JOIN asset
                 ON asset.asset = asset_milestone.asset
             WHERE
-                asset_milestone.investable = true",
+                asset_milestone.investable = true;
+            SELECT * FROM indices_for_assets_investment",
         ) |> DataFrame,
     )
 
@@ -200,7 +200,8 @@ function compute_variables_indices(connection)
     variables[:assets_investment_energy] = TulipaVariable(
         DuckDB.query(
             connection,
-            "SELECT
+            "CREATE OR REPLACE TABLE indices_for_assets_investment_energy AS
+            SELECT
                 asset.asset,
                 asset_milestone.milestone_year,
                 asset.investment_integer_storage_energy,
@@ -211,7 +212,8 @@ function compute_variables_indices(connection)
                 asset.storage_method_energy = true
                 AND asset_milestone.investable = true
                 AND asset.type = 'storage'
-                AND asset.investment_method = 'simple'
+                AND asset.investment_method = 'simple';
+            SELECT * FROM indices_for_assets_investment_energy
             ",
         ) |> DataFrame,
     )

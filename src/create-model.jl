@@ -136,12 +136,7 @@ function create_model(
         sets,
     )
 
-    @timeit to "add_investment_constraints!" add_investment_constraints!(
-        connection,
-        graph,
-        sets,
-        variables,
-    )
+    @timeit to "add_investment_constraints!" add_investment_constraints!(connection, variables)
 
     if !isempty(groups)
         @timeit to "add_group_constraints!" add_group_constraints!(
