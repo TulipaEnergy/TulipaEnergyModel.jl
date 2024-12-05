@@ -38,20 +38,31 @@ Structure to hold the JuMP variables for the TulipaEnergyModel
 """
 mutable struct TulipaVariable
     indices::DataFrame
+    table_name::String
     container::Vector{JuMP.VariableRef}
     lookup::OrderedDict # TODO: This is probably not type stable so it's only used for strangling
 
-    function TulipaVariable(indices, container = JuMP.VariableRef[])
-        return new(indices, container, Dict())
+    function TulipaVariable(connection, table_name::String)
+        return new(
+            DuckDB.query(connection, "SELECT * FROM $table_name") |> DataFrame,
+            table_name,
+            JuMP.VariableRef[],
+            Dict(),
+        )
     end
 end
 
 mutable struct TulipaConstraint
     indices::DataFrame
+    table_name::String
     expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
 
-    function TulipaConstraint(indices)
-        return new(indices, Dict())
+    function TulipaConstraint(connection, table_name::String)
+        return new(
+            DuckDB.query(connection, "SELECT * FROM $table_name") |> DataFrame,
+            table_name,
+            Dict(),
+        )
     end
 end
 

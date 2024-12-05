@@ -17,6 +17,7 @@ function create_model!(energy_problem; kwargs...)
         years = energy_problem.years
         sets = create_sets(graph, years)
         energy_problem.model = @timeit to "create_model" create_model(
+            energy_problem.db_connection,
             graph,
             sets,
             variables,
@@ -44,6 +45,7 @@ end
 Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), timeframe, and groups.
 """
 function create_model(
+    connection,
     graph,
     sets,
     variables,
@@ -57,7 +59,10 @@ function create_model(
     enable_names = true,
 )
     # Maximum timestep
-    Tmax = maximum(last(rp.timesteps) for year in sets.Y for rp in representative_periods[year])
+    Tmax = only(
+        row[1] for
+        row in DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM rep_periods_data")
+    )
 
     expression_workspace = Vector{JuMP.AffExpr}(undef, Tmax)
 
