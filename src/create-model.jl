@@ -1,11 +1,11 @@
 export create_model!, create_model
 
 """
-    create_model!(energy_problem; verbose = false)
+    create_model!(connection, energy_problem; verbose = false)
 
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
-function create_model!(energy_problem; kwargs...)
+function create_model!(connection, energy_problem; kwargs...)
     elapsed_time_create_model = @elapsed begin
         graph = energy_problem.graph
         representative_periods = energy_problem.representative_periods
@@ -17,6 +17,7 @@ function create_model!(energy_problem; kwargs...)
         years = energy_problem.years
         sets = create_sets(graph, years)
         energy_problem.model = @timeit to "create_model" create_model(
+            connection,
             graph,
             sets,
             variables,
@@ -44,6 +45,7 @@ end
 Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), timeframe, and groups.
 """
 function create_model(
+    connection,
     graph,
     sets,
     variables,
@@ -134,7 +136,12 @@ function create_model(
         sets,
     )
 
-    @timeit to "add_investment_constraints!" add_investment_constraints!(graph, sets, variables)
+    @timeit to "add_investment_constraints!" add_investment_constraints!(
+        connection,
+        graph,
+        sets,
+        variables,
+    )
 
     if !isempty(groups)
         @timeit to "add_group_constraints!" add_group_constraints!(

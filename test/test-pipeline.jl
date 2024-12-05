@@ -3,7 +3,7 @@
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     energy_problem = EnergyProblem(connection)
-    create_model!(energy_problem)
+    create_model!(connection, energy_problem)
     solve_model!(energy_problem, HiGHS.Optimizer)
     save_solution_to_file(mktempdir(), energy_problem)
 end
@@ -29,6 +29,7 @@ end
 
     # Create model
     model = create_model(
+        connection,
         graph,
         sets,
         variables,

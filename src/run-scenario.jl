@@ -27,7 +27,7 @@ function run_scenario(
         model_parameters_file,
     )
 
-    @timeit to "create_model!" create_model!(energy_problem; write_lp_file)
+    @timeit to "create_model!" create_model!(connection, energy_problem; write_lp_file)
 
     @timeit to "solve and store solution" solve_model!(energy_problem, optimizer; parameters)
 

@@ -30,9 +30,9 @@ end samples = 3 evals = 1 seconds = 86400
 energy_problem = EnergyProblem(connection)
 
 SUITE["energy_problem"]["create_model"] = @benchmarkable begin
-    create_model!($energy_problem)
+    create_model!($connection, $energy_problem)
 end samples = 3 evals = 1 seconds = 86400
-create_model!(energy_problem)
+create_model!(connection, energy_problem)
 
 # SUITE["energy_problem"]["output"] = @benchmarkable begin
 #     save_solution_to_file($OUTPUT_FOLDER_BM, $energy_problem)

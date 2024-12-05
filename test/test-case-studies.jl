@@ -87,7 +87,7 @@ end
     _read_csv_folder(connection, dir)
     energy_problem = EnergyProblem(connection)
     energy_problem.graph["demand"].peak_demand[2030] = -1 # make it infeasible
-    create_model!(energy_problem)
+    create_model!(connection, energy_problem)
     @test_logs (:warn, "Model status different from optimal") solve_model!(energy_problem)
     @test energy_problem.termination_status == JuMP.INFEASIBLE
     print(energy_problem)

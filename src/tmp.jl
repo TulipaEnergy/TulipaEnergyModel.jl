@@ -453,7 +453,7 @@ function tmp_example_of_flow_expression_problem()
     schemas = TulipaEnergyModel.schema_per_table_name
     TulipaIO.read_csv_folder(connection, "test/inputs/Norse"; schemas)
     ep = EnergyProblem(connection)
-    create_model!(ep)
+    create_model!(connection, ep)
 
     @info """# Example of flow expression problem
 

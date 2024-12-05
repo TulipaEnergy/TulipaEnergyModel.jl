@@ -4,7 +4,7 @@
     energy_problem = EnergyProblem(connection)
     @test_throws Exception solve_model!(energy_problem)
     @test !energy_problem.solved
-    create_model!(energy_problem)
+    create_model!(connection, energy_problem)
     @test !energy_problem.solved
     solution = solve_model!(energy_problem)
     @test energy_problem.solved

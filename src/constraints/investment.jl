@@ -1,11 +1,11 @@
 export add_investment_constraints!
 
 """
-    add_investment_constraints!(graph, Ai, Ase, Fi, assets_investment, assets_investment_energy, flows_investment)
+    add_investment_constraints!(connection, graph, Ai, Ase, Fi, assets_investment, assets_investment_energy, flows_investment)
 
 Adds the investment constraints for all asset types and transport flows to the model
 """
-function add_investment_constraints!(graph, sets, variables)
+function add_investment_constraints!(connection, graph, sets, variables)
     # TODO: Since this function is defining bound constraints, it doesn't need the `model`
     # When we refactor the signatures to look the same, we should consider naming it differently
     # TODO: Verify if it's possible and reasonable to move the bound definition to when the

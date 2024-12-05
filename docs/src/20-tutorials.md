@@ -61,7 +61,7 @@ energy_problem.model === nothing
 To create the internal model, we call the function [`create_model!`](@ref).
 
 ```@example manual-energy-problem
-create_model!(energy_problem)
+create_model!(connection, energy_problem)
 energy_problem.model
 ```
 
@@ -127,7 +127,7 @@ variables = compute_variables_indices(connection, dataframes)
 Now we can compute the model.
 
 ```@example manual
-model = create_model(graph, sets, variables, representative_periods, dataframes, years, timeframe, groups, model_parameters)
+model = create_model(connection, graph, sets, variables, representative_periods, dataframes, years, timeframe, groups, model_parameters)
 ```
 
 Finally, we can compute the solution.
@@ -288,7 +288,7 @@ input_dir = "../../test/inputs/Norse" # hide
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
 energy_problem = EnergyProblem(connection)
-create_model!(energy_problem)
+create_model!(connection, energy_problem)
 solution = solve_model!(energy_problem)
 nothing # hide
 ```
