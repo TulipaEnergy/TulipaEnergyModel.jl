@@ -368,7 +368,7 @@ function add_expressions_to_constraints!(
             multiply_by_duration = false,
         )
         add_expression_terms_intra_rp_constraints!(
-            constraints[:highest_in],
+            constraints[:capacity_incoming],
             variables[:flow],
             expression_workspace,
             representative_periods,
@@ -421,7 +421,7 @@ function add_expressions_to_constraints!(
             representative_periods,
         )
         add_expression_is_charging_terms_intra_rp_constraints!(
-            constraints[:highest_in],
+            constraints[:capacity_incoming],
             variables[:is_charging],
             expression_workspace,
         )
