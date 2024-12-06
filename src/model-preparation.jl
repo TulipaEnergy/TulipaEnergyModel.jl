@@ -377,7 +377,17 @@ function add_expressions_to_constraints!(
             multiply_by_duration = false,
         )
         add_expression_terms_intra_rp_constraints!(
-            constraints[:highest_out],
+            constraints[:capacity_outgoing],
+            variables[:flow],
+            expression_workspace,
+            representative_periods,
+            graph;
+            use_highest_resolution = true,
+            multiply_by_duration = false,
+            add_min_outgoing_flow_duration = true,
+        )
+        add_expression_terms_intra_rp_constraints!(
+            constraints[:ramping_without_unit_commitment],
             variables[:flow],
             expression_workspace,
             representative_periods,
@@ -426,7 +436,7 @@ function add_expressions_to_constraints!(
             expression_workspace,
         )
         add_expression_is_charging_terms_intra_rp_constraints!(
-            constraints[:highest_out],
+            constraints[:capacity_outgoing],
             variables[:is_charging],
             expression_workspace,
         )
@@ -434,6 +444,13 @@ function add_expressions_to_constraints!(
             add_expression_units_on_terms_intra_rp_constraints!(
                 constraints[:units_on_and_outflows],
                 variables[:units_on],
+                expression_workspace,
+            )
+        end
+        if !isempty(constraints[:ramping_without_unit_commitment].indices)
+            add_expression_is_charging_terms_intra_rp_constraints!(
+                constraints[:ramping_without_unit_commitment],
+                variables[:is_charging], # TODO: Is this correct?
                 expression_workspace,
             )
         end
