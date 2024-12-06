@@ -14,8 +14,8 @@ function compute_constraints_indices(connection)
             :units_on_and_outflows,
             :storage_level_intra_rp,
             :storage_level_inter_rp,
-            :min_energy_inter_rp,
-            :max_energy_inter_rp,
+            :min_energy_over_clustered_year,
+            :max_energy_over_clustered_year,
         )
     )
 
@@ -163,7 +163,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_min_energy_inter_rp AS
+        CREATE OR REPLACE TABLE cons_min_energy_over_clustered_year AS
         SELECT
             nextval('id') AS index,
             attr.asset,
@@ -184,7 +184,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_max_energy_inter_rp AS
+        CREATE OR REPLACE TABLE cons_max_energy_over_clustered_year AS
         SELECT
             nextval('id') AS index,
             attr.asset,
