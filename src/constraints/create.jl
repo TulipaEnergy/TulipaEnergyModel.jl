@@ -12,8 +12,8 @@ function compute_constraints_indices(connection)
             :highest_in,
             :highest_out,
             :units_on_and_outflows,
-            :storage_level_intra_rp,
-            :storage_level_inter_rp,
+            :balance_storage_rep_period,
+            :balance_storage_over_clustered_year,
             :min_energy_over_clustered_year,
             :max_energy_over_clustered_year,
         )
@@ -148,14 +148,14 @@ function _create_constraints_tables(connection)
 
     DuckDB.query(
         connection,
-        "CREATE OR REPLACE TABLE cons_storage_level_intra_rp AS
+        "CREATE OR REPLACE TABLE cons_balance_storage_rep_period AS
         SELECT * FROM var_storage_level_intra_rp
         ",
     )
 
     DuckDB.query(
         connection,
-        "CREATE OR REPLACE TABLE cons_storage_level_inter_rp AS
+        "CREATE OR REPLACE TABLE cons_balance_storage_over_clustered_year AS
         SELECT * FROM var_storage_level_inter_rp
         ",
     )
