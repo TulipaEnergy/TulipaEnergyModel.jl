@@ -10,8 +10,9 @@ function compute_constraints_indices(connection)
             :balance_consumer,
             :balance_hub,
             :capacity_incoming,
-            :highest_out,
+            :capacity_outgoing,
             :units_on_and_outflows,
+            :ramping_without_unit_commitment,
             :balance_storage_rep_period,
             :balance_storage_over_clustered_year,
             :min_energy_over_clustered_year,
@@ -109,7 +110,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_highest_out AS
+        CREATE OR REPLACE TABLE cons_capacity_outgoing AS
         SELECT
             nextval('id') AS index,
             t_high.*
@@ -144,6 +145,25 @@ function _create_constraints_tables(connection)
             AND asset.type in ('producer', 'conversion')
             AND asset.unit_commitment = true;
         ",
+    )
+
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE cons_ramping_without_unit_commitment AS
+        SELECT
+            nextval('id') AS index,
+            t_high.*
+        FROM t_highest_out_flows AS t_high
+        LEFT JOIN asset
+            ON t_high.asset = asset.asset
+        LEFT JOIN asset_both
+            ON t_high.asset = asset_both.asset
+            AND t_high.year = asset_both.milestone_year
+            AND t_high.year = asset_both.commission_year
+        WHERE
+            asset_both.active = true
+            AND asset.type in ('producer', 'storage', 'conversion')",
     )
 
     DuckDB.query(
