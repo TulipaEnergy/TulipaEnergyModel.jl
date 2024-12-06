@@ -17,7 +17,7 @@ function add_conversion_constraints!(model, constraints, sets)
     df = filter(:asset => ∈(Acv), constraints[:lowest].indices; view = true)
     incoming = constraints[:lowest].expressions[:incoming]
     outgoing = constraints[:lowest].expressions[:outgoing]
-    model[:conversion_balance] = [
+    return model[:conversion_balance] = [
         @constraint(
             model,
             incoming[row.index] == outgoing[row.index],

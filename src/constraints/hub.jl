@@ -17,7 +17,7 @@ function add_hub_constraints!(model, constraints, sets)
     outgoing_flow_highest_in_out_resolution = constraints[:highest_in_out].expressions[:outgoing]
     # - Balance constraint (using the lowest temporal resolution)
     df = filter(:asset => ∈(Ah), constraints[:highest_in_out].indices; view = true)
-    model[:hub_balance] = [
+    return model[:hub_balance] = [
         @constraint(
             model,
             incoming_flow_highest_in_out_resolution[row.index] ==

@@ -13,10 +13,10 @@ for file in readdir(NORSE_PATH; join = false)
 end
 # Add another line to rep-periods-data.csv and rep-periods-mapping.csv
 open(joinpath(input_dir, "rep-periods-data.csv"), "a") do io
-    println(io, "3,$new_rp_length,0.1")
+    return println(io, "3,$new_rp_length,0.1")
 end
 open(joinpath(input_dir, "rep-periods-mapping.csv"), "a") do io
-    println(io, "216,3,1")
+    return println(io, "216,3,1")
 end
 # Add profiles to flow and asset
 open(joinpath(input_dir, "flows-profiles.csv"), "a") do io

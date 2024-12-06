@@ -41,9 +41,9 @@ Saves the CSV file at `path`.
 """
 function write_tulipa_csv(tulipa_csv::TulipaCSV, path)
     open(path, "w") do io
-        println(io, join(tulipa_csv.units, ","))
+        return println(io, join(tulipa_csv.units, ","))
     end
-    CSV.write(path, tulipa_csv.csv; append = true, writeheader = true)
+    return CSV.write(path, tulipa_csv.csv; append = true, writeheader = true)
 end
 
 """
@@ -59,7 +59,7 @@ The `content` can be a value or a vector of proper size.
 function add_column(tulipa_csv::TulipaCSV, unit::String, colname, content, position::Int)
     @debug "Adding column $colname ($unit) at $position"
     insert!(tulipa_csv.units, position, unit)
-    insertcols!(tulipa_csv.csv, position, Symbol(colname) => content)
+    return insertcols!(tulipa_csv.csv, position, Symbol(colname) => content)
 end
 
 function add_column(
@@ -69,7 +69,7 @@ function add_column(
     unit = "",
     position = size(tulipa_csv.csv, 2) + 1,
 )
-    add_column(tulipa_csv, unit, colname, content, position)
+    return add_column(tulipa_csv, unit, colname, content, position)
 end
 
 """
@@ -136,7 +136,7 @@ end
 function change_file(f, path)
     tulipa_csv = TulipaCSV(path)
     f(tulipa_csv)
-    write_tulipa_csv(tulipa_csv, path)
+    return write_tulipa_csv(tulipa_csv, path)
 end
 
 input_files_folders = [
