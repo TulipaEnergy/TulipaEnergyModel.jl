@@ -147,9 +147,14 @@ function _create_variables_tables(connection)
             asset.asset,
             asset_milestone.milestone_year,
             asset.investment_integer,
+            asset.capacity,
+            asset_commission.investment_limit,
         FROM asset_milestone
         LEFT JOIN asset
             ON asset.asset = asset_milestone.asset
+        LEFT JOIN asset_commission
+            ON asset_commission.asset = asset_milestone.asset
+                AND asset_commission.commission_year = asset_milestone.milestone_year
         WHERE
             asset_milestone.investable = true",
     )
