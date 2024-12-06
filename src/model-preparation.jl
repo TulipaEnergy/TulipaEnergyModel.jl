@@ -396,9 +396,9 @@ function add_expressions_to_constraints!(
             multiply_by_duration = false,
             add_min_outgoing_flow_duration = true,
         )
-        if !isempty(constraints[:units_on_and_outflows].indices)
+        if !isempty(constraints[:ramping_with_unit_commitment].indices)
             add_expression_terms_intra_rp_constraints!(
-                constraints[:units_on_and_outflows],
+                constraints[:ramping_with_unit_commitment],
                 variables[:flow],
                 expression_workspace,
                 representative_periods,
@@ -440,9 +440,9 @@ function add_expressions_to_constraints!(
             variables[:is_charging],
             expression_workspace,
         )
-        if !isempty(constraints[:units_on_and_outflows].indices)
+        if !isempty(constraints[:ramping_with_unit_commitment].indices)
             add_expression_units_on_terms_intra_rp_constraints!(
-                constraints[:units_on_and_outflows],
+                constraints[:ramping_with_unit_commitment],
                 variables[:units_on],
                 expression_workspace,
             )
