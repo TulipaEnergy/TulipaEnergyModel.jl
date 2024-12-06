@@ -6,15 +6,17 @@ function compute_constraints_indices(connection)
 
     constraints = Dict{Symbol,TulipaConstraint}(
         key => TulipaConstraint(connection, "cons_$key") for key in (
-            :lowest,
-            :highest_in_out,
-            :highest_in,
-            :highest_out,
-            :units_on_and_outflows,
-            :storage_level_intra_rp,
-            :storage_level_inter_rp,
-            :min_energy_inter_rp,
-            :max_energy_inter_rp,
+            :balance_conversion,
+            :balance_consumer,
+            :balance_hub,
+            :capacity_incoming,
+            :capacity_outgoing,
+            :ramping_with_unit_commitment,
+            :ramping_without_unit_commitment,
+            :balance_storage_rep_period,
+            :balance_storage_over_clustered_year,
+            :min_energy_over_clustered_year,
+            :max_energy_over_clustered_year,
         )
     )
 
@@ -25,7 +27,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_lowest AS
+        CREATE OR REPLACE TABLE cons_balance_conversion AS
         SELECT
             nextval('id') AS index,
             asset.asset,
@@ -37,7 +39,7 @@ function _create_constraints_tables(connection)
         LEFT JOIN asset
             ON t_low.asset = asset.asset
         WHERE
-            asset.type in ('conversion', 'producer')
+            asset.type in ('conversion')
         ORDER BY
             asset.asset,
             t_low.year,
@@ -49,7 +51,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_highest_in_out AS
+        CREATE OR REPLACE TABLE cons_balance_consumer AS
         SELECT
             nextval('id') AS index,
             t_high.*
@@ -62,13 +64,34 @@ function _create_constraints_tables(connection)
             AND t_high.year = asset_both.commission_year
         WHERE
             asset_both.active = true
-            AND asset.type in ('hub', 'consumer')",
+            AND asset.type = 'consumer';
+        ",
     )
 
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_highest_in AS
+        CREATE OR REPLACE TABLE cons_balance_hub AS
+        SELECT
+            nextval('id') AS index,
+            t_high.*
+        FROM t_highest_all_flows AS t_high
+        LEFT JOIN asset
+            ON t_high.asset = asset.asset
+        LEFT JOIN asset_both
+            ON t_high.asset = asset_both.asset
+            AND t_high.year = asset_both.milestone_year
+            AND t_high.year = asset_both.commission_year
+        WHERE
+            asset_both.active = true
+            AND asset.type = 'hub';
+        ",
+    )
+
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE cons_capacity_incoming AS
         SELECT
             nextval('id') AS index,
             t_high.*
@@ -87,7 +110,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_highest_out AS
+        CREATE OR REPLACE TABLE cons_capacity_outgoing AS
         SELECT
             nextval('id') AS index,
             t_high.*
@@ -106,7 +129,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_units_on_and_outflows AS
+        CREATE OR REPLACE TABLE cons_ramping_with_unit_commitment AS
         SELECT
             nextval('id') AS index,
             t_high.*
@@ -126,14 +149,33 @@ function _create_constraints_tables(connection)
 
     DuckDB.query(
         connection,
-        "CREATE OR REPLACE TABLE cons_storage_level_intra_rp AS
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE cons_ramping_without_unit_commitment AS
+        SELECT
+            nextval('id') AS index,
+            t_high.*
+        FROM t_highest_out_flows AS t_high
+        LEFT JOIN asset
+            ON t_high.asset = asset.asset
+        LEFT JOIN asset_both
+            ON t_high.asset = asset_both.asset
+            AND t_high.year = asset_both.milestone_year
+            AND t_high.year = asset_both.commission_year
+        WHERE
+            asset_both.active = true
+            AND asset.type in ('producer', 'storage', 'conversion')",
+    )
+
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TABLE cons_balance_storage_rep_period AS
         SELECT * FROM var_storage_level_intra_rp
         ",
     )
 
     DuckDB.query(
         connection,
-        "CREATE OR REPLACE TABLE cons_storage_level_inter_rp AS
+        "CREATE OR REPLACE TABLE cons_balance_storage_over_clustered_year AS
         SELECT * FROM var_storage_level_inter_rp
         ",
     )
@@ -141,7 +183,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_min_energy_inter_rp AS
+        CREATE OR REPLACE TABLE cons_min_energy_over_clustered_year AS
         SELECT
             nextval('id') AS index,
             attr.asset,
@@ -162,7 +204,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_max_energy_inter_rp AS
+        CREATE OR REPLACE TABLE cons_max_energy_over_clustered_year AS
         SELECT
             nextval('id') AS index,
             attr.asset,
