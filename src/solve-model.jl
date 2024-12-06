@@ -48,14 +48,14 @@ function solve_model!(
     #     graph[a].storage_level_inter_rp[pb] = value
     # end
     #
-    # for row in eachrow(energy_problem.dataframes[:max_energy_inter_rp])
+    # for row in eachrow(energy_problem.dataframes[:max_energy_over_clustered_year])
     #     a, pb, value = row.asset, row.periods_block, row.solution
-    #     graph[a].max_energy_inter_rp[pb] = value
+    #     graph[a].max_energy_over_clustered_year[pb] = value
     # end
     #
-    # for row in eachrow(energy_problem.dataframes[:min_energy_inter_rp])
+    # for row in eachrow(energy_problem.dataframes[:max_energy_over_clustered_year])
     #     a, pb, value = row.asset, row.periods_block, row.solution
-    #     graph[a].min_energy_inter_rp[pb] = value
+    #     graph[a].max_energy_over_clustered_year[pb] = value
     # end
 
     for ((y, (u, v)), value) in energy_problem.solution.flows_investment
@@ -95,8 +95,8 @@ function solve_model!(model, args...; kwargs...)
     # dataframes[:flow].solution = solution.flow
     # dataframes[:storage_level_intra_rp].solution = solution.storage_level_intra_rp
     # dataframes[:storage_level_inter_rp].solution = solution.storage_level_inter_rp
-    # dataframes[:max_energy_inter_rp].solution = solution.max_energy_inter_rp
-    # dataframes[:min_energy_inter_rp].solution = solution.min_energy_inter_rp
+    # dataframes[:max_energy_over_clustered_year].solution = solution.max_energy_over_clustered_year
+    # dataframes[:min_energy_over_clustered_year].solution = solution.min_energy_over_clustered_year
 
     return solution
 end
@@ -191,8 +191,8 @@ function solve_model(
         Dict(k => JuMP.value(v) for (k, v) in variables[:flows_investment].lookup),
         JuMP.value.(variables[:storage_level_intra_rp].container),
         JuMP.value.(variables[:storage_level_inter_rp].container),
-        JuMP.value.(model[:max_energy_inter_rp]),
-        JuMP.value.(model[:min_energy_inter_rp]),
+        JuMP.value.(model[:max_energy_over_clustered_year]),
+        JuMP.value.(model[:min_energy_over_clustered_year]),
         JuMP.value.(variables[:flow].container),
         JuMP.objective_value(model),
         dual_variables,

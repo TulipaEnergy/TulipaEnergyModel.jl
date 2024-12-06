@@ -407,14 +407,14 @@ function add_expressions_to_constraints!(
         is_storage_level = true,
     )
     @timeit to "add_expression_terms_inter_rp_constraints!" add_expression_terms_inter_rp_constraints!(
-        constraints[:max_energy_inter_rp],
+        constraints[:max_energy_over_clustered_year],
         variables[:flow],
         timeframe.map_periods_to_rp,
         graph,
         representative_periods,
     )
     @timeit to "add_expression_terms_inter_rp_constraints!" add_expression_terms_inter_rp_constraints!(
-        constraints[:min_energy_inter_rp],
+        constraints[:min_energy_over_clustered_year],
         variables[:flow],
         timeframe.map_periods_to_rp,
         graph,
