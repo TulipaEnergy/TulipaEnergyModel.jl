@@ -31,7 +31,7 @@ apply_to_files_named("asset-both.csv") do path
 
             # Remove from asset-both
             df = t_both_csv.csv
-            unit, _ = remove_column(t_both_csv, "units_on_cost")
+            return unit, _ = remove_column(t_both_csv, "units_on_cost")
         end
     end
 end
@@ -54,7 +54,7 @@ apply_to_files_named("flow-both.csv") do path
 
             # Remove from flow-both
             df = t_both_csv.csv
-            unit, _ = remove_column(t_both_csv, "variable_cost")
+            return unit, _ = remove_column(t_both_csv, "variable_cost")
         end
     end
 end

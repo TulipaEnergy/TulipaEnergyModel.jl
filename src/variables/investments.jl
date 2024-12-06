@@ -17,7 +17,7 @@ function _create_investment_variable!(
             base_name = "$name[" * join(keys_from_row(row), ",") * "]"
         ) for row in eachrow(this_var.indices)
     ]
-    this_var.lookup = OrderedDict(
+    return this_var.lookup = OrderedDict(
         keys_from_row(row) => var for
         (var, row) in zip(this_var.container, eachrow(this_var.indices))
     )

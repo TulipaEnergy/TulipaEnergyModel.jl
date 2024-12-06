@@ -233,7 +233,7 @@ function tmp_create_partition_tables(connection)
         end
         _append_given_durations(appender, row, durations)
     end
-    DuckDB.close(appender)
+    return DuckDB.close(appender)
 end
 
 function tmp_create_union_tables(connection)
@@ -280,7 +280,7 @@ function tmp_create_union_tables(connection)
     )
 
     # Union of all assets, and incoming and outgoing flows
-    DuckDB.execute(
+    return DuckDB.execute(
         connection,
         "CREATE OR REPLACE TEMP TABLE t_union_all AS
         SELECT DISTINCT asset, year, rep_period, time_block_start, time_block_end
@@ -297,7 +297,7 @@ function _append_lowest_helper(appender, group, s, e)
     end
     DuckDB.append(appender, s)
     DuckDB.append(appender, e)
-    DuckDB.end_row(appender)
+    return DuckDB.end_row(appender)
 end
 
 function tmp_create_lowest_resolution_table(connection)
