@@ -3,6 +3,7 @@ align_matrix = true
 align_pair_arrow = true
 align_struct_field = true
 always_for_in = true
+always_use_return = true
 conditional_to_if = true
 for_in_replacement = "in"
 format_docstrings = false
