@@ -38,7 +38,8 @@ function add_investment_variables!(model, graph, sets, variables)
             :flows_investment,
             row -> (row.milestone_year, (row.from_asset, row.to_asset)),
             _ -> 0.0,
-            _ -> Inf,
+            row ->
+                _find_var_upper_bound(row.investment_limit, row.capacity, row.investment_integer),
             row -> row.investment_integer,
         ),
         (

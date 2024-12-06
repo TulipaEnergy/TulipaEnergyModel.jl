@@ -19,14 +19,6 @@ function add_investment_constraints!(graph, sets, variables)
     assets_investment = variables[:assets_investment].lookup
     assets_investment_energy = variables[:assets_investment_energy].lookup
     flows_investment = variables[:flows_investment].lookup
-
-    # - Maximum (i.e., potential) investment limit for flows
-    for y in Y, (u, v) in Fi[y]
-        if graph[u, v].capacity > 0 && !ismissing(graph[u, v].investment_limit[y])
-            bound_value = _find_upper_bound(graph, y, u, v)
-            JuMP.set_upper_bound(flows_investment[y, (u, v)], bound_value)
-        end
-    end
 end
 
 function _find_upper_bound(graph, year, investments...; is_bound_for_energy = false)

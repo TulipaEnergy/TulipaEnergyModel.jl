@@ -131,10 +131,16 @@ function _create_variables_tables(connection)
             flow.to_asset,
             flow_milestone.milestone_year,
             flow.investment_integer,
+            flow.capacity,
+            flow_commission.investment_limit,
         FROM flow_milestone
         LEFT JOIN flow
             ON flow.from_asset = flow_milestone.from_asset
             AND flow.to_asset = flow_milestone.to_asset
+        LEFT JOIN flow_commission
+            ON flow_commission.from_asset = flow_milestone.from_asset
+                AND flow_commission.to_asset = flow_milestone.to_asset
+                AND flow_commission.commission_year = flow_milestone.milestone_year
         WHERE
             flow_milestone.investable = true",
     )
