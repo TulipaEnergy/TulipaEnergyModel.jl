@@ -218,9 +218,14 @@ function _create_variables_tables(connection)
             asset.asset,
             asset_milestone.milestone_year,
             asset.investment_integer_storage_energy,
+            asset.capacity_storage_energy,
+            asset_commission.investment_limit_storage_energy,
         FROM asset_milestone
         LEFT JOIN asset
             ON asset.asset = asset_milestone.asset
+        LEFT JOIN asset_commission
+            ON asset_commission.asset = asset_milestone.asset
+                AND asset_commission.commission_year = asset_milestone.milestone_year
         WHERE
             asset.storage_method_energy = true
             AND asset_milestone.investable = true

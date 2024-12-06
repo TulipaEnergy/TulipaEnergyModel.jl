@@ -74,7 +74,11 @@ function add_investment_variables!(model, graph, sets, variables)
             :assets_investment_energy,
             row -> (row.milestone_year, row.asset),
             _ -> 0.0,
-            _ -> Inf,
+            row -> _find_var_upper_bound(
+                row.investment_limit_storage_energy,
+                row.capacity_storage_energy,
+                row.investment_integer_storage_energy,
+            ),
             row -> row.investment_integer_storage_energy,
         ),
         (
