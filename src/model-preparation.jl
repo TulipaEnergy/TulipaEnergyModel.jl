@@ -331,7 +331,7 @@ function add_expressions_to_constraints!(
     # Unpack variables
     # Creating the incoming and outgoing flow expressions
     @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
-        constraints[:lowest],
+        constraints[:balance_conversion],
         variables[:flow],
         expression_workspace,
         representative_periods,

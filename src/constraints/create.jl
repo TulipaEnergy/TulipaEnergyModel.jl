@@ -6,7 +6,7 @@ function compute_constraints_indices(connection)
 
     constraints = Dict{Symbol,TulipaConstraint}(
         key => TulipaConstraint(connection, "cons_$key") for key in (
-            :lowest,
+            :balance_conversion,
             :highest_in_out,
             :highest_in,
             :highest_out,
@@ -25,7 +25,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_lowest AS
+        CREATE OR REPLACE TABLE cons_balance_conversion AS
         SELECT
             nextval('id') AS index,
             asset.asset,
@@ -37,7 +37,7 @@ function _create_constraints_tables(connection)
         LEFT JOIN asset
             ON t_low.asset = asset.asset
         WHERE
-            asset.type in ('conversion', 'producer')
+            asset.type in ('conversion')
         ORDER BY
             asset.asset,
             t_low.year,
