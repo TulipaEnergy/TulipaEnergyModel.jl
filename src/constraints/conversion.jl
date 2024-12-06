@@ -28,4 +28,6 @@ function add_conversion_constraints!(model, constraints)
             ],
         )
     end
+
+    return
 end

@@ -17,7 +17,7 @@ apply_to_files_named("vintage-assets-data.csv"; include_missing = true) do path
     t_assets_data = TulipaCSV(joinpath(dirname(path), "assets-data.csv"))
     change_file(path) do tcsv
         tcsv.units = ["", "", "kEUR/MW/year", "kEUR/MW/year"]
-        tcsv.csv =
+        return tcsv.csv =
             t_assets_data.csv[:, [:name, :commission_year, :fixed_cost, :investment_cost]] |> unique
     end
 end
@@ -33,7 +33,7 @@ apply_to_files_named("graph-assets-data.csv") do path
             add_column(tcsv, "discount_rate", 0.05)
 
             remove_column(t_assets_data, :capacity)
-            remove_column(t_assets_data, :technical_lifetime)
+            return remove_column(t_assets_data, :technical_lifetime)
         end
     end
 end
@@ -50,7 +50,7 @@ apply_to_files_named("vintage-flows-data.csv"; include_missing = true) do path
     t_assets_data = TulipaCSV(joinpath(dirname(path), "flows-data.csv"))
     change_file(path) do tcsv
         tcsv.units = ["asset_name", "asset_name", "kEUR/MW"]
-        tcsv.csv = t_assets_data.csv[:, [:from_asset, :to_asset, :investment_cost]] |> unique
+        return tcsv.csv = t_assets_data.csv[:, [:from_asset, :to_asset, :investment_cost]] |> unique
     end
 end
 
@@ -63,7 +63,7 @@ apply_to_files_named("graph-flows-data.csv") do path
             append!(tcsv.units, ["MW"])
             leftjoin!(tcsv.csv, df; on = [:from_asset, :to_asset])
 
-            remove_column(t_flows_data, :capacity)
+            return remove_column(t_flows_data, :capacity)
         end
     end
 end

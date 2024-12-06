@@ -234,6 +234,7 @@ function tmp_create_partition_tables(connection)
         _append_given_durations(appender, row, durations)
     end
     DuckDB.close(appender)
+    return
 end
 
 function tmp_create_union_tables(connection)
@@ -289,6 +290,7 @@ function tmp_create_union_tables(connection)
         FROM t_union_all_flows
         ",
     )
+    return
 end
 
 function _append_lowest_helper(appender, group, s, e)
@@ -298,6 +300,7 @@ function _append_lowest_helper(appender, group, s, e)
     DuckDB.append(appender, s)
     DuckDB.append(appender, e)
     DuckDB.end_row(appender)
+    return
 end
 
 function tmp_create_lowest_resolution_table(connection)

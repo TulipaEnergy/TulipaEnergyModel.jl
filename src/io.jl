@@ -97,7 +97,7 @@ function create_internal_structures(connection)
         @assert table_name in ("asset_$year_prefix", "flow_$year_prefix")
 
         result = _query_data_per_year(table_name, col, year_col; where_pairs...)
-        Dict(row[Symbol(year_col)] => getproperty(row, Symbol(col)) for row in result)
+        return Dict(row[Symbol(year_col)] => getproperty(row, Symbol(col)) for row in result)
     end
 
     _query_data_per_both_years(table_name, col; where_pairs...) = begin
@@ -319,7 +319,7 @@ function _check_if_table_exist(connection, table_name)
         create_table_query =
             DuckDB.query(connection, "CREATE TABLE $table_name ($columns_in_table)")
     end
-    return nothing
+    return
 end
 
 """
@@ -332,6 +332,7 @@ function save_solution_to_file(output_folder, energy_problem::EnergyProblem)
         error("The energy_problem has not been solved yet.")
     end
     save_solution_to_file(output_folder, energy_problem.graph, energy_problem.solution)
+    return
 end
 
 """
@@ -507,7 +508,7 @@ The starting value is the value of the previous grouped timesteps or periods or 
 The ending value is the value for the grouped timesteps or periods.
 """
 function _interpolate_storage_level!(df, time_column)
-    DataFrames.flatten(
+    return DataFrames.flatten(
         DataFrames.transform(
             df,
             [time_column, :value, :processed_value] =>

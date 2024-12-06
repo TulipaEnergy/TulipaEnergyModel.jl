@@ -9,7 +9,7 @@ run(`git restore test/inputs/ benchmark/EU/`)
 for filename in ["assets-data.csv", "flows-data.csv"]
     apply_to_files_named(filename) do path
         change_file(path) do tcsv
-            add_column(tcsv, "year", 2030; position = 5)
+            return add_column(tcsv, "year", 2030; position = 5)
         end
     end
 end
@@ -24,7 +24,7 @@ apply_to_files_named("year-data.csv"; include_missing = true) do path
     touch(path)
     change_file(path) do tcsv
         tcsv.units = ["", "h"]
-        tcsv.csv = DataFrame(:year => [2030], :length => [8760])
+        return tcsv.csv = DataFrame(:year => [2030], :length => [8760])
     end
 end
 
@@ -53,7 +53,7 @@ apply_to_files_named("timeframe-data.csv"; include_missing = true) do path
             ),
         )
         tcsv.units = ["", ""]
-        add_column(tcsv, "year", 2030; position = 1)
+        return add_column(tcsv, "year", 2030; position = 1)
     end
 end
 
@@ -69,7 +69,7 @@ for filename in [
         change_file(path) do tcsv
             idx = findfirst(==("rep_period"), names(tcsv.csv))
             @assert idx !== nothing
-            add_column(tcsv, "year", 2030; position = idx)
+            return add_column(tcsv, "year", 2030; position = idx)
         end
     end
 end
@@ -81,7 +81,7 @@ for filename in ["profiles-timeframe.csv", "rep-periods-mapping.csv"]
         change_file(path) do tcsv
             idx = findfirst(==("period"), names(tcsv.csv))
             @assert idx !== nothing
-            add_column(tcsv, "year", 2030; position = idx)
+            return add_column(tcsv, "year", 2030; position = idx)
         end
     end
 end
@@ -99,7 +99,7 @@ for filename in [
         change_file(path) do tcsv
             idx = findfirst(==("profile_type"), names(tcsv.csv))
             @assert idx !== nothing
-            add_column(tcsv, "year", 2030; position = idx)
+            return add_column(tcsv, "year", 2030; position = idx)
         end
     end
 end
@@ -108,13 +108,13 @@ end
 # Maybe this should be renamed to `assets-year-partitions.csv`?
 apply_to_files_named("assets-timeframe-partitions.csv") do path
     change_file(path) do tcsv
-        add_column(tcsv, "year", 2030; position = 2)
+        return add_column(tcsv, "year", 2030; position = 2)
     end
 end
 
 # And don't forget groups
 apply_to_files_named("group-asset.csv") do path
     change_file(path) do tcsv
-        add_column(tcsv, "year", 2030; position = 2)
+        return add_column(tcsv, "year", 2030; position = 2)
     end
 end
