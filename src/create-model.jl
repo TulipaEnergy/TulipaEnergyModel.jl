@@ -152,7 +152,7 @@ function create_model(
         )
     end
 
-    if !isempty(constraints[:units_on_and_outflows].indices)
+    if !isempty(constraints[:ramping_with_unit_commitment].indices)
         @timeit to "add_ramping_constraints!" add_ramping_constraints!(
             model,
             variables,
