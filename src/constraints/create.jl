@@ -11,7 +11,7 @@ function compute_constraints_indices(connection)
             :balance_hub,
             :capacity_incoming,
             :capacity_outgoing,
-            :units_on_and_outflows,
+            :ramping_with_unit_commitment,
             :ramping_without_unit_commitment,
             :balance_storage_rep_period,
             :balance_storage_over_clustered_year,
@@ -129,7 +129,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_units_on_and_outflows AS
+        CREATE OR REPLACE TABLE cons_ramping_with_unit_commitment AS
         SELECT
             nextval('id') AS index,
             t_high.*
