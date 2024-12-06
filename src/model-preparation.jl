@@ -340,7 +340,7 @@ function add_expressions_to_constraints!(
         multiply_by_duration = true,
     )
     @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
-        constraints[:storage_level_intra_rp],
+        constraints[:balance_storage_rep_period],
         variables[:flow],
         expression_workspace,
         representative_periods,
@@ -399,7 +399,7 @@ function add_expressions_to_constraints!(
         )
     end
     @timeit to "add_expression_terms_inter_rp_constraints!" add_expression_terms_inter_rp_constraints!(
-        constraints[:storage_level_inter_rp],
+        constraints[:balance_storage_over_clustered_year],
         variables[:flow],
         timeframe.map_periods_to_rp,
         graph,
