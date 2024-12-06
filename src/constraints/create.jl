@@ -7,7 +7,8 @@ function compute_constraints_indices(connection)
     constraints = Dict{Symbol,TulipaConstraint}(
         key => TulipaConstraint(connection, "cons_$key") for key in (
             :balance_conversion,
-            :highest_in_out,
+            :balance_consumer,
+            :balance_hub,
             :highest_in,
             :highest_out,
             :units_on_and_outflows,
@@ -49,7 +50,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_highest_in_out AS
+        CREATE OR REPLACE TABLE cons_balance_consumer AS
         SELECT
             nextval('id') AS index,
             t_high.*
@@ -62,7 +63,28 @@ function _create_constraints_tables(connection)
             AND t_high.year = asset_both.commission_year
         WHERE
             asset_both.active = true
-            AND asset.type in ('hub', 'consumer')",
+            AND asset.type = 'consumer';
+        ",
+    )
+
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE cons_balance_hub AS
+        SELECT
+            nextval('id') AS index,
+            t_high.*
+        FROM t_highest_all_flows AS t_high
+        LEFT JOIN asset
+            ON t_high.asset = asset.asset
+        LEFT JOIN asset_both
+            ON t_high.asset = asset_both.asset
+            AND t_high.year = asset_both.milestone_year
+            AND t_high.year = asset_both.commission_year
+        WHERE
+            asset_both.active = true
+            AND asset.type = 'hub';
+        ",
     )
 
     DuckDB.query(

@@ -348,8 +348,18 @@ function add_expressions_to_constraints!(
         use_highest_resolution = false,
         multiply_by_duration = true,
     )
+    @timeit to "add_expression_terms_intra_rp_constraints!"
+    add_expression_terms_intra_rp_constraints!(
+        constraints[:balance_consumer],
+        variables[:flow],
+        expression_workspace,
+        representative_periods,
+        graph;
+        use_highest_resolution = true,
+        multiply_by_duration = false,
+    )
     @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
-        constraints[:highest_in_out],
+        constraints[:balance_hub],
         variables[:flow],
         expression_workspace,
         representative_periods,
