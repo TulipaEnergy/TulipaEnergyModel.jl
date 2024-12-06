@@ -9,7 +9,7 @@ function compute_constraints_indices(connection)
             :balance_conversion,
             :balance_consumer,
             :balance_hub,
-            :highest_in,
+            :capacity_incoming,
             :highest_out,
             :units_on_and_outflows,
             :balance_storage_rep_period,
@@ -90,7 +90,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_highest_in AS
+        CREATE OR REPLACE TABLE cons_capacity_incoming AS
         SELECT
             nextval('id') AS index,
             t_high.*
