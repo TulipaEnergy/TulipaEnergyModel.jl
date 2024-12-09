@@ -97,7 +97,7 @@ function create_internal_structures(connection)
         @assert table_name in ("asset_$year_prefix", "flow_$year_prefix")
 
         result = _query_data_per_year(table_name, col, year_col; where_pairs...)
-        Dict(row[Symbol(year_col)] => getproperty(row, Symbol(col)) for row in result)
+        return Dict(row[Symbol(year_col)] => getproperty(row, Symbol(col)) for row in result)
     end
 
     _query_data_per_both_years(table_name, col; where_pairs...) = begin
@@ -331,7 +331,7 @@ function save_solution_to_file(output_folder, energy_problem::EnergyProblem)
     if !energy_problem.solved
         error("The energy_problem has not been solved yet.")
     end
-    save_solution_to_file(output_folder, energy_problem.graph, energy_problem.solution)
+    return save_solution_to_file(output_folder, energy_problem.graph, energy_problem.solution)
 end
 
 """
@@ -507,7 +507,7 @@ The starting value is the value of the previous grouped timesteps or periods or 
 The ending value is the value for the grouped timesteps or periods.
 """
 function _interpolate_storage_level!(df, time_column)
-    DataFrames.flatten(
+    return DataFrames.flatten(
         DataFrames.transform(
             df,
             [time_column, :value, :processed_value] =>

@@ -79,7 +79,7 @@ apply_to_files_named("asset.csv"; include_missing = true) do path
                 ",
             ) |> DataFrame
 
-        tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
+        return tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
     end
 end
 
@@ -115,7 +115,7 @@ apply_to_files_named("flow.csv"; include_missing = true) do path
                 ",
             ) |> DataFrame
 
-        tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
+        return tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
     end
 end
 
@@ -157,7 +157,7 @@ apply_to_files_named("asset-milestone.csv"; include_missing = true) do path
                 ",
             ) |> DataFrame
 
-        tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
+        return tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
     end
 end
 
@@ -190,7 +190,7 @@ apply_to_files_named("flow-milestone.csv"; include_missing = true) do path
             ",
         ) |> DataFrame
 
-        tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
+        return tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
     end
 end
 
@@ -235,7 +235,7 @@ apply_to_files_named("asset-commission.csv"; include_missing = true) do path
                 ",
             ) |> DataFrame
 
-        tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
+        return tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
     end
 end
 
@@ -275,7 +275,7 @@ apply_to_files_named("flow-commission.csv"; include_missing = true) do path
                 ",
             ) |> DataFrame
 
-        tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
+        return tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
     end
 end
 
@@ -319,7 +319,7 @@ apply_to_files_named("asset-both.csv"; include_missing = true) do path
             ",
         ) |> DataFrame
 
-        tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
+        return tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
     end
 end
 
@@ -362,7 +362,7 @@ apply_to_files_named("flow-both.csv"; include_missing = true) do path
             ",
         ) |> DataFrame
 
-        tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
+        return tcsv.units = ["" for _ in 1:size(tcsv.csv, 2)]
     end
 end
 

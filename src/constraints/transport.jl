@@ -71,7 +71,7 @@ function add_transport_constraints!(model, variables, graph, sets)
     ]
 
     # - Min transport flow limit
-    model[:min_transport_flow_limit] = [
+    return model[:min_transport_flow_limit] = [
         @constraint(
             model,
             flow[row.index] ≥ -lower_bound_transport_flow[idx],
