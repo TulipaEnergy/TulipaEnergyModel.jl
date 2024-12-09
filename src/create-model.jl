@@ -114,12 +114,7 @@ function create_model(
 
     @timeit to "add_energy_constraints!" add_energy_constraints!(model, constraints, graph)
 
-    @timeit to "add_consumer_constraints!" add_consumer_constraints!(
-        model,
-        constraints,
-        graph,
-        sets,
-    )
+    @timeit to "add_consumer_constraints!" add_consumer_constraints!(model, constraints, graph)
 
     @timeit to "add_storage_constraints!" add_storage_constraints!(
         model,
@@ -128,9 +123,9 @@ function create_model(
         graph,
     )
 
-    @timeit to "add_hub_constraints!" add_hub_constraints!(model, constraints, sets)
+    @timeit to "add_hub_constraints!" add_hub_constraints!(model, constraints)
 
-    @timeit to "add_conversion_constraints!" add_conversion_constraints!(model, constraints, sets)
+    @timeit to "add_conversion_constraints!" add_conversion_constraints!(model, constraints)
 
     @timeit to "add_transport_constraints!" add_transport_constraints!(
         model,
@@ -149,7 +144,7 @@ function create_model(
         )
     end
 
-    if !isempty(constraints[:units_on_and_outflows].indices)
+    if !isempty(constraints[:ramping_with_unit_commitment].indices)
         @timeit to "add_ramping_constraints!" add_ramping_constraints!(
             model,
             variables,
