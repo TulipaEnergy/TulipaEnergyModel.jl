@@ -123,7 +123,7 @@ function create_internal_structures(connection)
         return result_dict
     end
 
-    asset_data = [
+    asset_data = @timeit to "asset_data" [
         row.asset => begin
             _where = (asset = row.asset,)
             GraphAssetData(
@@ -185,7 +185,7 @@ function create_internal_structures(connection)
         end for row in TulipaIO.get_table(Val(:raw), connection, "asset")
     ]
 
-    flow_data = [
+    flow_data = @timeit to "flow_data" [
         (row.from_asset, row.to_asset) => begin
             _where = (from_asset = row.from_asset, to_asset = row.to_asset)
             GraphFlowData(
@@ -230,10 +230,10 @@ function create_internal_structures(connection)
     graph = MetaGraphsNext.MetaGraph(_graph, asset_data, flow_data, nothing, nothing, nothing)
 
     # TODO: Move these function calls to the correct place
-    tmp_create_partition_tables(connection)
-    tmp_create_union_tables(connection)
-    tmp_create_lowest_resolution_table(connection)
-    tmp_create_highest_resolution_table(connection)
+    @timeit to "tmp_create_partition_tables" tmp_create_partition_tables(connection)
+    @timeit to "tmp_create_union_tables" tmp_create_union_tables(connection)
+    @timeit to "tmp_create_lowest_resolution_table" tmp_create_lowest_resolution_table(connection)
+    @timeit to "tmp_create_highest_resolution_table" tmp_create_highest_resolution_table(connection)
 
     _df =
         DuckDB.execute(

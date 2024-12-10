@@ -6,35 +6,31 @@ export create_model!, create_model
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
-    elapsed_time_create_model = @elapsed begin
-        graph = energy_problem.graph
-        representative_periods = energy_problem.representative_periods
-        variables = energy_problem.variables
-        constraints = energy_problem.constraints
-        timeframe = energy_problem.timeframe
-        groups = energy_problem.groups
-        model_parameters = energy_problem.model_parameters
-        years = energy_problem.years
-        sets = create_sets(graph, years)
-        energy_problem.model = @timeit to "create_model" create_model(
-            energy_problem.db_connection,
-            graph,
-            sets,
-            variables,
-            constraints,
-            representative_periods,
-            years,
-            timeframe,
-            groups,
-            model_parameters;
-            kwargs...,
-        )
-        energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
-        energy_problem.solved = false
-        energy_problem.objective_value = NaN
-    end
-
-    energy_problem.timings["creating the model"] = elapsed_time_create_model
+    graph = energy_problem.graph
+    representative_periods = energy_problem.representative_periods
+    variables = energy_problem.variables
+    constraints = energy_problem.constraints
+    timeframe = energy_problem.timeframe
+    groups = energy_problem.groups
+    model_parameters = energy_problem.model_parameters
+    years = energy_problem.years
+    sets = @timeit to "create_sets" create_sets(graph, years)
+    energy_problem.model = @timeit to "create_model" create_model(
+        energy_problem.db_connection,
+        graph,
+        sets,
+        variables,
+        constraints,
+        representative_periods,
+        years,
+        timeframe,
+        groups,
+        model_parameters;
+        kwargs...,
+    )
+    energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
+    energy_problem.solved = false
+    energy_problem.objective_value = NaN
 
     return energy_problem
 end
@@ -83,7 +79,7 @@ function create_model(
 
     ## Add expressions to dataframes
     # TODO: What will improve this? Variables (#884)?, Constraints?
-    add_expressions_to_constraints!(
+    @timeit to "add_expressions_to_constraints!" add_expressions_to_constraints!(
         variables,
         constraints,
         model,
@@ -94,13 +90,25 @@ function create_model(
     )
 
     ## Expressions for multi-year investment
-    create_multi_year_expressions!(model, graph, sets, variables)
+    @timeit to "create_multi_year_expressions!" create_multi_year_expressions!(
+        model,
+        graph,
+        sets,
+        variables,
+    )
 
     ## Expressions for storage assets
-    add_storage_expressions!(model, graph, sets, variables)
+    @timeit to "add_storage_expressions!" add_storage_expressions!(model, graph, sets, variables)
 
     ## Expressions for the objective function
-    add_objective!(model, variables, graph, representative_periods, sets, model_parameters)
+    @timeit to "add_objective!" add_objective!(
+        model,
+        variables,
+        graph,
+        representative_periods,
+        sets,
+        model_parameters,
+    )
 
     # TODO: Pass sets instead of the explicit values
     ## Constraints

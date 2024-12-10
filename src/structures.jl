@@ -252,7 +252,6 @@ It hides the complexity behind the energy problem, making the usage more friendl
 - `solved`: A boolean indicating whether the `model` has been solved or not.
 - `objective_value`: The objective value of the solved problem.
 - `termination_status`: The termination status of the optimization model.
-- `timings`: Dictionary of elapsed time for various parts of the code (in seconds).
 
 # Constructor
 - `EnergyProblem(connection)`: Constructs a new `EnergyProblem` object with the given connection. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.
@@ -283,7 +282,6 @@ mutable struct EnergyProblem
     solved::Bool
     objective_value::Float64
     termination_status::JuMP.TerminationStatusCode
-    timings::Dict{String,Float64}
 
     """
         EnergyProblem(connection; model_parameters_file = "")
@@ -294,16 +292,13 @@ mutable struct EnergyProblem
     function EnergyProblem(connection; model_parameters_file = "")
         model = JuMP.Model()
 
-        elapsed_time_internal = @elapsed begin
-            graph, representative_periods, timeframe, groups, years =
-                create_internal_structures(connection)
-        end
+        graph, representative_periods, timeframe, groups, years =
+            @timeit to "create_internal_structure" create_internal_structures(connection)
 
-        elapsed_time_vars = @elapsed begin
-            variables = compute_variables_indices(connection)
-        end
+        variables = @timeit to "compute_variables_indices" compute_variables_indices(connection)
 
-        constraints = compute_constraints_indices(connection)
+        constraints =
+            @timeit to "compute_constraints_indices" compute_constraints_indices(connection)
 
         energy_problem = new(
             connection,
@@ -320,10 +315,6 @@ mutable struct EnergyProblem
             false,
             NaN,
             JuMP.OPTIMIZE_NOT_CALLED,
-            Dict(
-                "creating internal structures" => elapsed_time_internal,
-                "creating variables indices" => elapsed_time_vars,
-            ),
         )
 
         return energy_problem
@@ -334,19 +325,9 @@ function Base.show(io::IO, ep::EnergyProblem)
     status_model_creation = !isnothing(ep.model)
     status_model_solved = ep.solved
 
-    timing_str(prefix, field) = begin
-        t = get(ep.timings, field, "-")
-        "$prefix $field (in seconds): $t"
-    end
-
     println(io, "EnergyProblem:")
-    println(io, "  - ", timing_str("Time", "creating internal structures"))
-    println(io, "  - ", timing_str("Time", "computing constraints partitions"))
-    println(io, "  - ", timing_str("Time", "creating dataframes"))
-    println(io, "  - ", timing_str("Time", "creating variables indices"))
     if status_model_creation
         println(io, "  - Model created!")
-        println(io, "    - ", timing_str("Time for ", "creating the model"))
         println(io, "    - Number of variables: ", JuMP.num_variables(ep.model))
         println(
             io,
@@ -364,7 +345,6 @@ function Base.show(io::IO, ep::EnergyProblem)
     end
     if status_model_solved
         println(io, "  - Model solved! ")
-        println(io, "    - ", timing_str("Time for ", "solving the model"))
         println(io, "    - Termination status: ", ep.termination_status)
         println(io, "    - Objective value: ", ep.objective_value)
     elseif !status_model_solved && ep.termination_status == JuMP.INFEASIBLE
