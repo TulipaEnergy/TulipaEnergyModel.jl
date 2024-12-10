@@ -183,6 +183,8 @@ function solve_model(
         return nothing
     end
 
+    dual_variables = @timeit to "compute_dual_variables" compute_dual_variables(model)
+
     return Solution(
         Dict(k => JuMP.value(v) for (k, v) in variables[:assets_investment].lookup),
         Dict(k => JuMP.value(v) for (k, v) in variables[:assets_investment_energy].lookup),
@@ -193,7 +195,7 @@ function solve_model(
         JuMP.value.(model[:min_energy_inter_rp]),
         JuMP.value.(variables[:flow].container),
         JuMP.objective_value(model),
-        compute_dual_variables(model),
+        dual_variables,
     )
 end
 

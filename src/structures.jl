@@ -293,11 +293,12 @@ mutable struct EnergyProblem
         model = JuMP.Model()
 
         graph, representative_periods, timeframe, groups, years =
-            create_internal_structures(connection)
+            @timeit to "create_internal_structure" create_internal_structures(connection)
 
-        variables = compute_variables_indices(connection)
+        variables = @timeit to "compute_variables_indices" compute_variables_indices(connection)
 
-        constraints = compute_constraints_indices(connection)
+        constraints =
+            @timeit to "compute_constraints_indices" compute_constraints_indices(connection)
 
         energy_problem = new(
             connection,

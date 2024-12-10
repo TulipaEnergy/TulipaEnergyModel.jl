@@ -328,47 +328,57 @@ function add_expressions_to_constraints!(
     timeframe,
     graph,
 )
-    @timeit to "add_expression_terms_to_df" begin
-        # Unpack variables
-        # Creating the incoming and outgoing flow expressions
-        add_expression_terms_intra_rp_constraints!(
-            constraints[:lowest],
-            variables[:flow],
-            expression_workspace,
-            representative_periods,
-            graph;
-            use_highest_resolution = false,
-            multiply_by_duration = true,
-        )
-        add_expression_terms_intra_rp_constraints!(
-            constraints[:storage_level_intra_rp],
-            variables[:flow],
-            expression_workspace,
-            representative_periods,
-            graph;
-            use_highest_resolution = false,
-            multiply_by_duration = true,
-        )
-        add_expression_terms_intra_rp_constraints!(
-            constraints[:highest_in_out],
-            variables[:flow],
-            expression_workspace,
-            representative_periods,
-            graph;
-            use_highest_resolution = true,
-            multiply_by_duration = false,
-        )
-        add_expression_terms_intra_rp_constraints!(
-            constraints[:highest_in],
-            variables[:flow],
-            expression_workspace,
-            representative_periods,
-            graph;
-            use_highest_resolution = true,
-            multiply_by_duration = false,
-        )
-        add_expression_terms_intra_rp_constraints!(
-            constraints[:highest_out],
+    # Unpack variables
+    # Creating the incoming and outgoing flow expressions
+    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
+        constraints[:lowest],
+        variables[:flow],
+        expression_workspace,
+        representative_periods,
+        graph;
+        use_highest_resolution = false,
+        multiply_by_duration = true,
+    )
+    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
+        constraints[:storage_level_intra_rp],
+        variables[:flow],
+        expression_workspace,
+        representative_periods,
+        graph;
+        use_highest_resolution = false,
+        multiply_by_duration = true,
+    )
+    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
+        constraints[:highest_in_out],
+        variables[:flow],
+        expression_workspace,
+        representative_periods,
+        graph;
+        use_highest_resolution = true,
+        multiply_by_duration = false,
+    )
+    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
+        constraints[:highest_in],
+        variables[:flow],
+        expression_workspace,
+        representative_periods,
+        graph;
+        use_highest_resolution = true,
+        multiply_by_duration = false,
+    )
+    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
+        constraints[:highest_out],
+        variables[:flow],
+        expression_workspace,
+        representative_periods,
+        graph;
+        use_highest_resolution = true,
+        multiply_by_duration = false,
+        add_min_outgoing_flow_duration = true,
+    )
+    if !isempty(constraints[:units_on_and_outflows].indices)
+        @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
+            constraints[:units_on_and_outflows],
             variables[:flow],
             expression_workspace,
             representative_periods,
@@ -377,57 +387,45 @@ function add_expressions_to_constraints!(
             multiply_by_duration = false,
             add_min_outgoing_flow_duration = true,
         )
-        if !isempty(constraints[:units_on_and_outflows].indices)
-            add_expression_terms_intra_rp_constraints!(
-                constraints[:units_on_and_outflows],
-                variables[:flow],
-                expression_workspace,
-                representative_periods,
-                graph;
-                use_highest_resolution = true,
-                multiply_by_duration = false,
-                add_min_outgoing_flow_duration = true,
-            )
-        end
-        add_expression_terms_inter_rp_constraints!(
-            constraints[:storage_level_inter_rp],
-            variables[:flow],
-            timeframe.map_periods_to_rp,
-            graph,
-            representative_periods;
-            is_storage_level = true,
-        )
-        add_expression_terms_inter_rp_constraints!(
-            constraints[:max_energy_inter_rp],
-            variables[:flow],
-            timeframe.map_periods_to_rp,
-            graph,
-            representative_periods,
-        )
-        add_expression_terms_inter_rp_constraints!(
-            constraints[:min_energy_inter_rp],
-            variables[:flow],
-            timeframe.map_periods_to_rp,
-            graph,
-            representative_periods,
-        )
-        add_expression_is_charging_terms_intra_rp_constraints!(
-            constraints[:highest_in],
-            variables[:is_charging],
+    end
+    @timeit to "add_expression_terms_inter_rp_constraints!" add_expression_terms_inter_rp_constraints!(
+        constraints[:storage_level_inter_rp],
+        variables[:flow],
+        timeframe.map_periods_to_rp,
+        graph,
+        representative_periods;
+        is_storage_level = true,
+    )
+    @timeit to "add_expression_terms_inter_rp_constraints!" add_expression_terms_inter_rp_constraints!(
+        constraints[:max_energy_inter_rp],
+        variables[:flow],
+        timeframe.map_periods_to_rp,
+        graph,
+        representative_periods,
+    )
+    @timeit to "add_expression_terms_inter_rp_constraints!" add_expression_terms_inter_rp_constraints!(
+        constraints[:min_energy_inter_rp],
+        variables[:flow],
+        timeframe.map_periods_to_rp,
+        graph,
+        representative_periods,
+    )
+    @timeit to "add_expression_is_charging_terms_intra_rp_constraints!" add_expression_is_charging_terms_intra_rp_constraints!(
+        constraints[:highest_in],
+        variables[:is_charging],
+        expression_workspace,
+    )
+    @timeit to "add_expression_is_charging_terms_intra_rp_constraints!" add_expression_is_charging_terms_intra_rp_constraints!(
+        constraints[:highest_out],
+        variables[:is_charging],
+        expression_workspace,
+    )
+    if !isempty(constraints[:units_on_and_outflows].indices)
+        @timeit to "add_expression_units_on_terms_intra_rp_constraints!" add_expression_units_on_terms_intra_rp_constraints!(
+            constraints[:units_on_and_outflows],
+            variables[:units_on],
             expression_workspace,
         )
-        add_expression_is_charging_terms_intra_rp_constraints!(
-            constraints[:highest_out],
-            variables[:is_charging],
-            expression_workspace,
-        )
-        if !isempty(constraints[:units_on_and_outflows].indices)
-            add_expression_units_on_terms_intra_rp_constraints!(
-                constraints[:units_on_and_outflows],
-                variables[:units_on],
-                expression_workspace,
-            )
-        end
     end
 
     return
@@ -438,122 +436,113 @@ function create_sets(graph, years)
     # create other sets or conditions In the near future we might change these
     # to create the set here beforehand and don't export the additional things,
     # only sets (which is what makes the code more efficient, anyway)
-    @timeit to "unpacking and creating sets" begin
-        A = MetaGraphsNext.labels(graph) |> collect
-        F = MetaGraphsNext.edge_labels(graph) |> collect
-        Ac = filter_graph(graph, A, "consumer", :type)
-        Ap = filter_graph(graph, A, "producer", :type)
-        As = filter_graph(graph, A, "storage", :type)
-        Ah = filter_graph(graph, A, "hub", :type)
-        Acv = filter_graph(graph, A, "conversion", :type)
-        Ft = filter_graph(graph, F, true, :is_transport)
+    A = MetaGraphsNext.labels(graph) |> collect
+    F = MetaGraphsNext.edge_labels(graph) |> collect
+    Ac = filter_graph(graph, A, "consumer", :type)
+    Ap = filter_graph(graph, A, "producer", :type)
+    As = filter_graph(graph, A, "storage", :type)
+    Ah = filter_graph(graph, A, "hub", :type)
+    Acv = filter_graph(graph, A, "conversion", :type)
+    Ft = filter_graph(graph, F, true, :is_transport)
 
-        Y = [year.id for year in years if year.is_milestone]
-        V_all = [year.id for year in years]
-        V_non_milestone = [year.id for year in years if !year.is_milestone]
+    Y = [year.id for year in years if year.is_milestone]
+    V_all = [year.id for year in years]
+    V_non_milestone = [year.id for year in years if !year.is_milestone]
 
-        # Create subsets of assets by investable
-        Ai = Dict(y => filter_graph(graph, A, true, :investable, y) for y in Y)
-        Fi = Dict(y => filter_graph(graph, F, true, :investable, y) for y in Y)
+    # Create subsets of assets by investable
+    Ai = Dict(y => filter_graph(graph, A, true, :investable, y) for y in Y)
+    Fi = Dict(y => filter_graph(graph, F, true, :investable, y) for y in Y)
 
-        # Create a subset of years by investable assets, i.e., inverting Ai
-        Yi = Dict(
-            a => [y for y in Y if a in Ai[y]] for a in A if any(graph[a].investable[y] for y in Y)
-        )
+    # Create a subset of years by investable assets, i.e., inverting Ai
+    Yi =
+        Dict(a => [y for y in Y if a in Ai[y]] for a in A if any(graph[a].investable[y] for y in Y))
 
-        # Create subsets of investable/decommissionable assets by investment method
-        investable_assets_using_simple_method =
-            Dict(y => Ai[y] ∩ filter_graph(graph, A, "simple", :investment_method) for y in Y)
-        decommissionable_assets_using_simple_method =
-            filter_graph(graph, A, "simple", :investment_method)
+    # Create subsets of investable/decommissionable assets by investment method
+    investable_assets_using_simple_method =
+        Dict(y => Ai[y] ∩ filter_graph(graph, A, "simple", :investment_method) for y in Y)
+    decommissionable_assets_using_simple_method =
+        filter_graph(graph, A, "simple", :investment_method)
 
-        investable_assets_using_compact_method =
-            Dict(y => Ai[y] ∩ filter_graph(graph, A, "compact", :investment_method) for y in Y)
-        decommissionable_assets_using_compact_method =
-            filter_graph(graph, A, "compact", :investment_method)
+    investable_assets_using_compact_method =
+        Dict(y => Ai[y] ∩ filter_graph(graph, A, "compact", :investment_method) for y in Y)
+    decommissionable_assets_using_compact_method =
+        filter_graph(graph, A, "compact", :investment_method)
 
-        # Create dicts for the start year of investments that are accumulated in year y
-        starting_year_using_simple_method = Dict(
-            (y, a) => y - graph[a].technical_lifetime + 1 for y in Y for
-            a in decommissionable_assets_using_simple_method
-        )
+    # Create dicts for the start year of investments that are accumulated in year y
+    starting_year_using_simple_method = Dict(
+        (y, a) => y - graph[a].technical_lifetime + 1 for y in Y for
+        a in decommissionable_assets_using_simple_method
+    )
 
-        starting_year_using_compact_method = Dict(
-            (y, a) => y - graph[a].technical_lifetime + 1 for y in Y for
-            a in decommissionable_assets_using_compact_method
-        )
+    starting_year_using_compact_method = Dict(
+        (y, a) => y - graph[a].technical_lifetime + 1 for y in Y for
+        a in decommissionable_assets_using_compact_method
+    )
 
-        starting_year_flows_using_simple_method =
-            Dict((y, (u, v)) => y - graph[u, v].technical_lifetime + 1 for y in Y for (u, v) in Ft)
+    starting_year_flows_using_simple_method =
+        Dict((y, (u, v)) => y - graph[u, v].technical_lifetime + 1 for y in Y for (u, v) in Ft)
 
-        # Create a subset of decommissionable_assets_using_compact_method: existing assets invested in non-milestone years
-        existing_assets_by_year_using_compact_method = Dict(
-            y =>
-                [
-                    a for a in decommissionable_assets_using_compact_method for
-                    inner_dict in values(graph[a].initial_units) for
-                    k in keys(inner_dict) if k == y && inner_dict[k] != 0
-                ] |> unique for y in V_all
-        )
+    # Create a subset of decommissionable_assets_using_compact_method: existing assets invested in non-milestone years
+    existing_assets_by_year_using_compact_method = Dict(
+        y =>
+            [
+                a for a in decommissionable_assets_using_compact_method for
+                inner_dict in values(graph[a].initial_units) for
+                k in keys(inner_dict) if k == y && inner_dict[k] != 0
+            ] |> unique for y in V_all
+    )
 
-        # Create sets of tuples for decommission variables/accumulated capacity of compact method
+    # Create sets of tuples for decommission variables/accumulated capacity of compact method
 
-        # Create conditions for decommission variables
-        # Cond1: asset a invested in year v has to be operational at milestone year y
-        # Cond2: invested in non-milestone years (i.e., initial units from non-milestone years), or
-        # Cond3: invested in investable milestone years, or initial units from milestone years
-        cond1_domain_decommission_variables(a, y, v) =
-            starting_year_using_compact_method[y, a] ≤ v < y
-        cond2_domain_decommission_variables(a, v) =
-            (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v])
-        cond3_domain_decommission_variables(a, v) =
-            v in Y &&
-            (a in investable_assets_using_compact_method[v] || (graph[a].initial_units[v][v] != 0))
+    # Create conditions for decommission variables
+    # Cond1: asset a invested in year v has to be operational at milestone year y
+    # Cond2: invested in non-milestone years (i.e., initial units from non-milestone years), or
+    # Cond3: invested in investable milestone years, or initial units from milestone years
+    cond1_domain_decommission_variables(a, y, v) = starting_year_using_compact_method[y, a] ≤ v < y
+    cond2_domain_decommission_variables(a, v) =
+        (v in V_non_milestone && a in existing_assets_by_year_using_compact_method[v])
+    cond3_domain_decommission_variables(a, v) =
+        v in Y &&
+        (a in investable_assets_using_compact_method[v] || (graph[a].initial_units[v][v] != 0))
 
-        decommission_set_using_compact_method = [
-            (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
-            v in V_all if cond1_domain_decommission_variables(a, y, v) && (
-                cond2_domain_decommission_variables(a, v) ||
-                cond3_domain_decommission_variables(a, v)
-            )
-        ]
+    decommission_set_using_compact_method = [
+        (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
+        v in V_all if cond1_domain_decommission_variables(a, y, v) &&
+        (cond2_domain_decommission_variables(a, v) || cond3_domain_decommission_variables(a, v))
+    ]
 
-        # Create conditions for accumulated units compact method
-        # Cond1: asset a invested in year v has to be operational at milestone year y
-        # Note it is different from cond1_domain_decommission_variables because here, we allow accumulation at the year of investment
-        # Cond2: same as cond2_domain_decommission_variables(a, v)
-        # Cond3: same as cond3_domain_decommission_variables(a, v)
-        cond1_domain_accumulated_units_using_compact_method(a, y, v) =
-            starting_year_using_compact_method[y, a] ≤ v ≤ y
+    # Create conditions for accumulated units compact method
+    # Cond1: asset a invested in year v has to be operational at milestone year y
+    # Note it is different from cond1_domain_decommission_variables because here, we allow accumulation at the year of investment
+    # Cond2: same as cond2_domain_decommission_variables(a, v)
+    # Cond3: same as cond3_domain_decommission_variables(a, v)
+    cond1_domain_accumulated_units_using_compact_method(a, y, v) =
+        starting_year_using_compact_method[y, a] ≤ v ≤ y
 
-        accumulated_set_using_compact_method = [
-            (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
-            v in V_all if cond1_domain_accumulated_units_using_compact_method(a, y, v) && (
-                cond2_domain_decommission_variables(a, v) ||
-                cond3_domain_decommission_variables(a, v)
-            )
-        ]
+    accumulated_set_using_compact_method = [
+        (a, y, v) for a in decommissionable_assets_using_compact_method for y in Y for
+        v in V_all if cond1_domain_accumulated_units_using_compact_method(a, y, v) &&
+        (cond2_domain_decommission_variables(a, v) || cond3_domain_decommission_variables(a, v))
+    ]
 
-        # Create a lookup set for compact method
-        accumulated_set_using_compact_method_lookup = Dict(
-            (a, y, v) => idx for
-            (idx, (a, y, v)) in enumerate(accumulated_set_using_compact_method)
-        )
+    # Create a lookup set for compact method
+    accumulated_set_using_compact_method_lookup = Dict(
+        (a, y, v) => idx for (idx, (a, y, v)) in enumerate(accumulated_set_using_compact_method)
+    )
 
-        # Create subsets of storage assets
-        Ase = Dict(y => As ∩ filter_graph(graph, A, true, :storage_method_energy, y) for y in Y)
-        Asb = As ∩ filter_graph(graph, A, ["binary", "relaxed_binary"], :use_binary_storage_method)
+    # Create subsets of storage assets
+    Ase = Dict(y => As ∩ filter_graph(graph, A, true, :storage_method_energy, y) for y in Y)
+    Asb = As ∩ filter_graph(graph, A, ["binary", "relaxed_binary"], :use_binary_storage_method)
 
-        # Create subsets of assets for ramping and unit commitment for producers and conversion assets
-        Ar = (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :ramping)
-        Auc = (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :unit_commitment)
-        Auc_integer = Auc ∩ filter_graph(graph, A, true, :unit_commitment_integer)
-        Auc_basic = Auc ∩ filter_graph(graph, A, "basic", :unit_commitment_method)
+    # Create subsets of assets for ramping and unit commitment for producers and conversion assets
+    Ar = (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :ramping)
+    Auc = (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :unit_commitment)
+    Auc_integer = Auc ∩ filter_graph(graph, A, true, :unit_commitment_integer)
+    Auc_basic = Auc ∩ filter_graph(graph, A, "basic", :unit_commitment_method)
 
-        ### Sets for expressions in multi-year investment for accumulated units no matter the method
-        accumulated_units_lookup =
-            Dict((a, y) => idx for (idx, (a, y)) in enumerate((aa, yy) for aa in A for yy in Y))
-    end
+    ### Sets for expressions in multi-year investment for accumulated units no matter the method
+    accumulated_units_lookup =
+        Dict((a, y) => idx for (idx, (a, y)) in enumerate((aa, yy) for aa in A for yy in Y))
 
     # TODO: Create a better structure if this is still necessary later
     return (; # This is a NamedTuple

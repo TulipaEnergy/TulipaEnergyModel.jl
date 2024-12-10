@@ -14,7 +14,7 @@ function create_model!(energy_problem; kwargs...)
     groups = energy_problem.groups
     model_parameters = energy_problem.model_parameters
     years = energy_problem.years
-    sets = create_sets(graph, years)
+    sets = @timeit to "create_sets" create_sets(graph, years)
     energy_problem.model = @timeit to "create_model" create_model(
         energy_problem.db_connection,
         graph,
@@ -79,7 +79,7 @@ function create_model(
 
     ## Add expressions to dataframes
     # TODO: What will improve this? Variables (#884)?, Constraints?
-    add_expressions_to_constraints!(
+    @timeit to "add_expressions_to_constraints!" add_expressions_to_constraints!(
         variables,
         constraints,
         model,
@@ -90,13 +90,25 @@ function create_model(
     )
 
     ## Expressions for multi-year investment
-    create_multi_year_expressions!(model, graph, sets, variables)
+    @timeit to "create_multi_year_expressions!" create_multi_year_expressions!(
+        model,
+        graph,
+        sets,
+        variables,
+    )
 
     ## Expressions for storage assets
-    add_storage_expressions!(model, graph, sets, variables)
+    @timeit to "add_storage_expressions!" add_storage_expressions!(model, graph, sets, variables)
 
     ## Expressions for the objective function
-    add_objective!(model, variables, graph, representative_periods, sets, model_parameters)
+    @timeit to "add_objective!" add_objective!(
+        model,
+        variables,
+        graph,
+        representative_periods,
+        sets,
+        model_parameters,
+    )
 
     # TODO: Pass sets instead of the explicit values
     ## Constraints
