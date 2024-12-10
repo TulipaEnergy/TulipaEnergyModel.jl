@@ -11,70 +11,66 @@ function solve_model!(
     optimizer = HiGHS.Optimizer;
     parameters = default_parameters(optimizer),
 )
-    elapsed_time_solve_model = @elapsed begin
-        model = energy_problem.model
-        if model === nothing
-            error("Model is not created, run create_model(energy_problem) first.")
-        end
-
-        energy_problem.solution =
-            solve_model!(model, energy_problem.variables, optimizer; parameters = parameters)
-        energy_problem.termination_status = JuMP.termination_status(model)
-        if energy_problem.solution === nothing
-            # Warning has been given at internal function
-            return
-        end
-        energy_problem.solved = true
-        energy_problem.objective_value = JuMP.objective_value(model)
-
-        graph = energy_problem.graph
-        for ((y, a), value) in energy_problem.solution.assets_investment
-            graph[a].investment[y] = graph[a].investment_integer ? round(Int, value) : value
-        end
-
-        for ((y, a), value) in energy_problem.solution.assets_investment_energy
-            graph[a].investment_energy[y] =
-                graph[a].investment_integer_storage_energy ? round(Int, value) : value
-        end
-
-        # TODO: fix this
-        # for row in eachrow(energy_problem.dataframes[:storage_level_intra_rp])
-        #     a, rp, timesteps_block, value =
-        #         row.asset, row.rep_period, row.timesteps_block, row.solution
-        #     graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
-        # end
-        #
-        # for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
-        #     a, pb, value = row.asset, row.periods_block, row.solution
-        #     graph[a].storage_level_inter_rp[pb] = value
-        # end
-        #
-        # for row in eachrow(energy_problem.dataframes[:max_energy_inter_rp])
-        #     a, pb, value = row.asset, row.periods_block, row.solution
-        #     graph[a].max_energy_inter_rp[pb] = value
-        # end
-        #
-        # for row in eachrow(energy_problem.dataframes[:min_energy_inter_rp])
-        #     a, pb, value = row.asset, row.periods_block, row.solution
-        #     graph[a].min_energy_inter_rp[pb] = value
-        # end
-
-        for ((y, (u, v)), value) in energy_problem.solution.flows_investment
-            graph[u, v].investment[y] = graph[u, v].investment_integer ? round(Int, value) : value
-        end
-
-        # TODO: Fix this
-        # for row in eachrow(energy_problem.variables[:flow].indices)
-        #     u, v, rp, timesteps_block, value = row.from,
-        #     row.to,
-        #     row.rep_period,
-        #     row.time_block_start:row.time_block_end,
-        #     row.solution
-        #     graph[u, v].flow[(rp, timesteps_block)] = value
-        # end
+    model = energy_problem.model
+    if model === nothing
+        error("Model is not created, run create_model(energy_problem) first.")
     end
 
-    energy_problem.timings["solving the model"] = elapsed_time_solve_model
+    energy_problem.solution =
+        solve_model!(model, energy_problem.variables, optimizer; parameters = parameters)
+    energy_problem.termination_status = JuMP.termination_status(model)
+    if energy_problem.solution === nothing
+        # Warning has been given at internal function
+        return
+    end
+    energy_problem.solved = true
+    energy_problem.objective_value = JuMP.objective_value(model)
+
+    graph = energy_problem.graph
+    for ((y, a), value) in energy_problem.solution.assets_investment
+        graph[a].investment[y] = graph[a].investment_integer ? round(Int, value) : value
+    end
+
+    for ((y, a), value) in energy_problem.solution.assets_investment_energy
+        graph[a].investment_energy[y] =
+            graph[a].investment_integer_storage_energy ? round(Int, value) : value
+    end
+
+    # TODO: fix this
+    # for row in eachrow(energy_problem.dataframes[:storage_level_intra_rp])
+    #     a, rp, timesteps_block, value =
+    #         row.asset, row.rep_period, row.timesteps_block, row.solution
+    #     graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
+    # end
+    #
+    # for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
+    #     a, pb, value = row.asset, row.periods_block, row.solution
+    #     graph[a].storage_level_inter_rp[pb] = value
+    # end
+    #
+    # for row in eachrow(energy_problem.dataframes[:max_energy_inter_rp])
+    #     a, pb, value = row.asset, row.periods_block, row.solution
+    #     graph[a].max_energy_inter_rp[pb] = value
+    # end
+    #
+    # for row in eachrow(energy_problem.dataframes[:min_energy_inter_rp])
+    #     a, pb, value = row.asset, row.periods_block, row.solution
+    #     graph[a].min_energy_inter_rp[pb] = value
+    # end
+
+    for ((y, (u, v)), value) in energy_problem.solution.flows_investment
+        graph[u, v].investment[y] = graph[u, v].investment_integer ? round(Int, value) : value
+    end
+
+    # TODO: Fix this
+    # for row in eachrow(energy_problem.variables[:flow].indices)
+    #     u, v, rp, timesteps_block, value = row.from,
+    #     row.to,
+    #     row.rep_period,
+    #     row.time_block_start:row.time_block_end,
+    #     row.solution
+    #     graph[u, v].flow[(rp, timesteps_block)] = value
+    # end
 
     return energy_problem.solution
 end

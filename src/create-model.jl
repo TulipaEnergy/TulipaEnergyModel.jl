@@ -6,35 +6,31 @@ export create_model!, create_model
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
-    elapsed_time_create_model = @elapsed begin
-        graph = energy_problem.graph
-        representative_periods = energy_problem.representative_periods
-        variables = energy_problem.variables
-        constraints = energy_problem.constraints
-        timeframe = energy_problem.timeframe
-        groups = energy_problem.groups
-        model_parameters = energy_problem.model_parameters
-        years = energy_problem.years
-        sets = create_sets(graph, years)
-        energy_problem.model = @timeit to "create_model" create_model(
-            energy_problem.db_connection,
-            graph,
-            sets,
-            variables,
-            constraints,
-            representative_periods,
-            years,
-            timeframe,
-            groups,
-            model_parameters;
-            kwargs...,
-        )
-        energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
-        energy_problem.solved = false
-        energy_problem.objective_value = NaN
-    end
-
-    energy_problem.timings["creating the model"] = elapsed_time_create_model
+    graph = energy_problem.graph
+    representative_periods = energy_problem.representative_periods
+    variables = energy_problem.variables
+    constraints = energy_problem.constraints
+    timeframe = energy_problem.timeframe
+    groups = energy_problem.groups
+    model_parameters = energy_problem.model_parameters
+    years = energy_problem.years
+    sets = create_sets(graph, years)
+    energy_problem.model = @timeit to "create_model" create_model(
+        energy_problem.db_connection,
+        graph,
+        sets,
+        variables,
+        constraints,
+        representative_periods,
+        years,
+        timeframe,
+        groups,
+        model_parameters;
+        kwargs...,
+    )
+    energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
+    energy_problem.solved = false
+    energy_problem.objective_value = NaN
 
     return energy_problem
 end
