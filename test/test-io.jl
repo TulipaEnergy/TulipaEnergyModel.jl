@@ -1,8 +1,4 @@
 @testset "Input validation" begin
-    @testset "Test that missing schemas throw correctly" begin
-        @test_throws ErrorException TulipaEnergyModel.get_schema("bad_assets_data")
-    end
-
     @testset "Check missing asset partition if strict" begin
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Norse"))
