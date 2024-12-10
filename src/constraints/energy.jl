@@ -29,7 +29,7 @@ function add_energy_constraints!(model, constraints, graph)
     ]
 
     # - Minimum outgoing energy within each period block
-    model[:min_energy_inter_rp] = [
+    return model[:min_energy_inter_rp] = [
         @constraint(
             model,
             constraints[:min_energy_inter_rp].expressions[:outgoing][row.index] ≥

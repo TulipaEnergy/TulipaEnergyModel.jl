@@ -42,7 +42,7 @@ function add_group_constraints!(model, variables, graph, sets, groups)
 
     groups_with_min_investment_limit =
         (group for group in groups if !ismissing(group.min_investment_limit))
-    model[:investment_group_min_limit] = [
+    return model[:investment_group_min_limit] = [
         @constraint(
             model,
             investment_group[group] ≥ group.min_investment_limit,

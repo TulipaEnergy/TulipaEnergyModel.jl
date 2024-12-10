@@ -31,15 +31,15 @@ cd(multiyear_folder) do
         change_file(filename) do tcsv
             df_2050 = copy(tcsv.csv)
             df_2050.year .= 2050
-            tcsv.csv = [tcsv.csv; df_2050]
+            return tcsv.csv = [tcsv.csv; df_2050]
         end
     end
 
     change_file("assets-data.csv") do tcsv
-        tcsv.csv[end, :active] = "false"
+        return tcsv.csv[end, :active] = "false"
     end
 
     change_file("flows-data.csv") do tcsv
-        tcsv.csv[end, :active] = "false"
+        return tcsv.csv[end, :active] = "false"
     end
 end
