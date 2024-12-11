@@ -55,15 +55,76 @@ end
 mutable struct TulipaConstraint
     indices::DataFrame
     table_name::String
+    num_rows::Int
+    containers::Dict{Symbol,Vector{JuMP.ConstraintRef}}
     expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
+    duals::Dict{Symbol,Vector{Float64}}
 
     function TulipaConstraint(connection, table_name::String)
         return new(
             DuckDB.query(connection, "SELECT * FROM $table_name") |> DataFrame,
             table_name,
+            only([ # only makes sure that a single value is returned
+                row.num_rows for
+                row in DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM $table_name")
+            ]), # This loop is required to access the query resulted, because it's a lazy struct
+            Dict(),
+            Dict(),
             Dict(),
         )
     end
+end
+
+"""
+    attach_constraint!(cons, name, container)
+    attach_constraint!(model, cons, name, container)
+
+Attach a constraint named `name` stored in `container`, and optionally set `model[name] = container`.
+This checks that the `container` length matches the stored `indices` number of rows.
+"""
+function attach_constraint!(
+    cons::TulipaConstraint,
+    name::Symbol,
+    container::Vector{JuMP.ConstraintRef},
+)
+    @assert length(container) == cons.num_rows
+    cons.containers[name] = container
+    return nothing
+end
+
+function attach_constraint!(
+    model::JuMP.Model,
+    cons::TulipaConstraint,
+    name::Symbol,
+    container::Vector{JuMP.ConstraintRef},
+)
+    attach_constraint!(cons, name, container)
+    model[name] = container
+    return nothing
+end
+
+"""
+    attach_expression!(cons, name, container)
+    attach_expression!(model, cons, name, container)
+
+Attach a expression named `name` stored in `container`, and optionally set `model[name] = container`.
+This checks that the `container` length matches the stored `indices` number of rows.
+"""
+function attach_expression!(cons::TulipaConstraint, name::Symbol, container::Vector{JuMP.AffExpr})
+    @assert length(container) = cons.num_rows
+    cons.expressions[name] = container
+    return nothing
+end
+
+function attach_expression!(
+    cons::TulipaConstraint,
+    name::Symbol,
+    container::Vector{JuMP.AffExpr},
+    model::JuMP.Model,
+)
+    attach_expression!(cons, name, container)
+    model[name] = container
+    return nothing
 end
 
 """
