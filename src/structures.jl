@@ -110,21 +110,22 @@ Attach a expression named `name` stored in `container`, and optionally set `mode
 This checks that the `container` length matches the stored `indices` number of rows.
 """
 function attach_expression!(cons::TulipaConstraint, name::Symbol, container::Vector{JuMP.AffExpr})
-    @assert length(container) = cons.num_rows
+    @assert length(container) == cons.num_rows
     cons.expressions[name] = container
     return nothing
 end
 
-function attach_expression!(
-    cons::TulipaConstraint,
-    name::Symbol,
-    container::Vector{JuMP.AffExpr},
-    model::JuMP.Model,
-)
-    attach_expression!(cons, name, container)
-    model[name] = container
-    return nothing
-end
+# Not used at the moment, but might be useful by the end of #642
+# function attach_expression!(
+#     model::JuMP.Model,
+#     cons::TulipaConstraint,
+#     name::Symbol,
+#     container::Vector{JuMP.AffExpr},
+# )
+#     attach_expression!(cons, name, container)
+#     model[name] = container
+#     return nothing
+# end
 
 """
 Structure to hold the data of one representative period.

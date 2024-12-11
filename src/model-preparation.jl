@@ -49,7 +49,7 @@ function add_expression_terms_intra_rp_constraints!(
     num_rows = size(cons.indices, 1)
 
     for case in cases
-        cons.expressions[case.expr_key] = Vector{JuMP.AffExpr}(undef, num_rows)
+        attach_expression!(cons, case.expr_key, Vector{JuMP.AffExpr}(undef, num_rows))
         cons.expressions[case.expr_key] .= JuMP.AffExpr(0.0)
         conditions_to_add_min_outgoing_flow_duration =
             add_min_outgoing_flow_duration && case.expr_key == :outgoing
