@@ -245,8 +245,7 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
         [
             @constraint(
                 model,
-                outgoing_flow_highest_out_resolution[row.index] ≤
-                assets_profile_times_capacity_out[row.index],
+                outgoing_flow[row.index] ≤ assets_profile_times_capacity_out[row.index],
                 base_name = "max_output_flows_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
             ) for row in eachrow(cons_outgoing.indices)
         ],

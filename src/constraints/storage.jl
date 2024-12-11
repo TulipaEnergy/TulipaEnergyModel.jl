@@ -68,7 +68,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
     # - Maximum storage level
     attach_constraint!(
         model,
-        constraints[:storage_level_intra_rp],
+        constraints[:balance_storage_rep_period],
         :max_storage_level_intra_rp_limit,
         [
             @constraint(
@@ -91,7 +91,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
     # - Minimum storage level
     attach_constraint!(
         model,
-        constraints[:storage_level_intra_rp],
+        constraints[:balance_storage_rep_period],
         :min_storage_level_intra_rp_limit,
         [
             @constraint(
@@ -157,7 +157,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
     # - Maximum storage level
     attach_constraint!(
         model,
-        constraints[:storage_level_inter_rp],
+        constraints[:balance_storage_over_clustered_year],
         :max_storage_level_inter_rp_limit,
         [
             @constraint(
@@ -180,7 +180,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
     # - Minimum storage level
     attach_constraint!(
         model,
-        constraints[:storage_level_inter_rp],
+        constraints[:balance_storage_over_clustered_year],
         :min_storage_level_inter_rp_limit,
         [
             @constraint(
