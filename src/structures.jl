@@ -55,16 +55,89 @@ end
 mutable struct TulipaConstraint
     indices::DataFrame
     table_name::String
+    num_rows::Int
+    constraint_names::Vector{Symbol}
     expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
+    duals::Dict{Symbol,Vector{Float64}}
 
     function TulipaConstraint(connection, table_name::String)
         return new(
             DuckDB.query(connection, "SELECT * FROM $table_name") |> DataFrame,
             table_name,
+            only([ # only makes sure that a single value is returned
+                row.num_rows for
+                row in DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM $table_name")
+            ]), # This loop is required to access the query resulted, because it's a lazy struct
+            Symbol[],
+            Dict(),
             Dict(),
         )
     end
 end
+
+"""
+    attach_constraint!(model, cons, name, container)
+
+Attach a constraint named `name` stored in `container`, and set `model[name] = container`.
+This checks that the `container` length matches the stored `indices` number of rows.
+"""
+function attach_constraint!(
+    model::JuMP.Model,
+    cons::TulipaConstraint,
+    name::Symbol,
+    container::Vector{<:JuMP.ConstraintRef},
+)
+    if length(container) != cons.num_rows
+        error("The number of constraints does not match the number of rows in the indices of $name")
+    end
+    push!(cons.constraint_names, name)
+    model[name] = container
+    return nothing
+end
+
+function attach_constraint!(model::JuMP.Model, cons::TulipaConstraint, name::Symbol, container)
+    # This should be the empty case container = Any[] that happens when the
+    # indices table in empty in [@constraint(...) for row in eachrow(indices)].
+    # It resolves to [] so the element type cannot be inferred
+    if length(container) > 0
+        error(
+            "This variant is supposed to capture empty containers. This container is not empty for $name",
+        )
+    end
+    if cons.num_rows > 0
+        error("The number of rows in indices table should be 0 for $name")
+    end
+    empty_container = JuMP.ConstraintRef{JuMP.Model,Missing,JuMP.ScalarShape}[]
+    model[name] = empty_container
+    return nothing
+end
+
+"""
+    attach_expression!(cons, name, container)
+    attach_expression!(model, cons, name, container)
+
+Attach a expression named `name` stored in `container`, and optionally set `model[name] = container`.
+This checks that the `container` length matches the stored `indices` number of rows.
+"""
+function attach_expression!(cons::TulipaConstraint, name::Symbol, container::Vector{JuMP.AffExpr})
+    if length(container) != cons.num_rows
+        error("The number of expressions does not match the number of rows in the indices of $name")
+    end
+    cons.expressions[name] = container
+    return nothing
+end
+
+# Not used at the moment, but might be useful by the end of #642
+# function attach_expression!(
+#     model::JuMP.Model,
+#     cons::TulipaConstraint,
+#     name::Symbol,
+#     container::Vector{JuMP.AffExpr},
+# )
+#     attach_expression!(cons, name, container)
+#     model[name] = container
+#     return nothing
+# end
 
 """
 Structure to hold the data of one representative period.
