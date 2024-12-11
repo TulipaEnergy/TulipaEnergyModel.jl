@@ -88,7 +88,7 @@ function attach_constraint!(
     container::Vector{<:JuMP.ConstraintRef},
 )
     if length(container) != cons.num_rows
-        error("The number of constraints does not match the number of rows in the indices")
+        error("The number of constraints does not match the number of rows in the indices of $name")
     end
     push!(cons.constraint_names, name)
     model[name] = container
