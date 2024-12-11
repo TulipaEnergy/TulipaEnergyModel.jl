@@ -85,8 +85,8 @@ function attach_constraint!(
     model::JuMP.Model,
     cons::TulipaConstraint,
     name::Symbol,
-    container::Vector{JuMP.ConstraintRef{JuMP.Model,T1,T2}},
-) where {T1,T2}
+    container::Vector{<:JuMP.ConstraintRef},
+)
     @assert length(container) == cons.num_rows
     push!(cons.constraint_names, name)
     model[name] = container
