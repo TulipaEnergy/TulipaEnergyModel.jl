@@ -119,7 +119,7 @@ This checks that the `container` length matches the stored `indices` number of r
 """
 function attach_expression!(cons::TulipaConstraint, name::Symbol, container::Vector{JuMP.AffExpr})
     if length(container) != cons.num_rows
-        error("The number of expressions does not match the number of rows in the indices")
+        error("The number of expressions does not match the number of rows in the indices of $name")
     end
     cons.expressions[name] = container
     return nothing
