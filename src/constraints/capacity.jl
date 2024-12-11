@@ -244,26 +244,34 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
 
     ## Capacity limit constraints (using the highest resolution)
     # - Maximum output flows limit
-    model[:max_output_flows_limit] = [
-        @constraint(
-            model,
-            outgoing_flow_highest_out_resolution[row.index] ≤
-            assets_profile_times_capacity_out[row.index],
-            base_name = "max_output_flows_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(constraints[:highest_out].indices) if
-        outgoing_flow_highest_out_resolution[row.index] != 0
-    ]
+    attach_constraint!(
+        model,
+        constraints[:highest_out],
+        :max_output_flows_limit,
+        [
+            @constraint(
+                model,
+                outgoing_flow_highest_out_resolution[row.index] ≤
+                assets_profile_times_capacity_out[row.index],
+                base_name = "max_output_flows_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+            ) for row in eachrow(constraints[:highest_out].indices)
+        ],
+    )
 
     # - Maximum input flows limit
-    model[:max_input_flows_limit] = [
-        @constraint(
-            model,
-            incoming_flow_highest_in_resolution[row.index] ≤
-            assets_profile_times_capacity_in[row.index],
-            base_name = "max_input_flows_limit[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(constraints[:highest_in].indices) if
-        incoming_flow_highest_in_resolution[row.index] != 0
-    ]
+    attach_constraint!(
+        model,
+        constraints[:highest_in],
+        :max_input_flows_limit,
+        [
+            @constraint(
+                model,
+                incoming_flow_highest_in_resolution[row.index] ≤
+                assets_profile_times_capacity_in[row.index],
+                base_name = "max_input_flows_limit[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+            ) for row in eachrow(constraints[:highest_in].indices)
+        ],
+    )
 
     ## Capacity limit constraints (using the highest resolution) for storage assets using binary to avoid charging and discharging at the same time
     # - Maximum output flows limit with is_charging binary for storage assets

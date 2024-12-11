@@ -50,6 +50,7 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
 
     ## Unit Commitment Constraints (basic implementation - more advanced will be added in 2025)
     # - Limit to the units on (i.e. commitment)
+    # TODO: When this becomes a TulipaConstraint, attach `:limit_units_on`
     model[:limit_units_on] = [
         @constraint(
             model,
@@ -60,26 +61,36 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
     ]
 
     # - Minimum output flow above the minimum operating point
-    model[:min_output_flow_with_unit_commitment] = [
-        @constraint(
-            model,
-            flow_above_min_operating_point[row.index] ≥ 0,
-            base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(constraints[:units_on_and_outflows].indices)
-    ]
+    attach_constraint!(
+        model,
+        constraints[:units_on_and_outflows],
+        :min_output_flow_with_unit_commitment,
+        [
+            @constraint(
+                model,
+                flow_above_min_operating_point[row.index] ≥ 0,
+                base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+            ) for row in eachrow(constraints[:units_on_and_outflows].indices)
+        ],
+    )
 
     # - Maximum output flow above the minimum operating point
-    model[:max_output_flow_with_basic_unit_commitment] = [
-        @constraint(
-            model,
-            flow_above_min_operating_point[row.index] ≤
-            (1 - graph[row.asset].min_operating_point) *
-            profile_times_capacity[row.index] *
-            constraints[:units_on_and_outflows].expressions[:units_on][row.index],
-            base_name = "max_output_flow_with_basic_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for
-        row in eachrow(constraints[:units_on_and_outflows].indices) if row.asset ∈ Auc_basic
-    ]
+    attach_constraint!(
+        model,
+        constraints[:units_on_and_outflows],
+        :max_output_flow_with_unit_commitment,
+        [
+            @constraint(
+                model,
+                flow_above_min_operating_point[row.index] ≤
+                (1 - graph[row.asset].min_operating_point) *
+                profile_times_capacity[row.index] *
+                constraints[:units_on_and_outflows].expressions[:units_on][row.index],
+                base_name = "max_output_flow_with_basic_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+            ) for
+            row in eachrow(constraints[:units_on_and_outflows].indices) if row.asset ∈ Auc_basic
+        ],
+    )
 
     ## Ramping Constraints with unit commitment
     # Note: We start ramping constraints from the second timesteps_block

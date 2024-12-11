@@ -66,40 +66,50 @@ function add_storage_constraints!(model, variables, constraints, graph)
     end
 
     # - Maximum storage level
-    model[:max_storage_level_intra_rp_limit] = [
-        @constraint(
-            model,
-            storage_level_intra_rp.container[row.index] ≤
-            profile_aggregation(
-                Statistics.mean,
-                graph[row.asset].rep_periods_profiles,
-                row.year,
-                row.year,
-                ("max-storage-level", row.rep_period),
-                row.time_block_start:row.time_block_end,
-                1.0,
-            ) * accumulated_energy_capacity[row.year, row.asset],
-            base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(storage_level_intra_rp.indices)
-    ]
+    attach_constraint!(
+        model,
+        constraints[:storage_level_intra_rp],
+        :max_storage_level_intra_rp_limit,
+        [
+            @constraint(
+                model,
+                storage_level_intra_rp.container[row.index] ≤
+                profile_aggregation(
+                    Statistics.mean,
+                    graph[row.asset].rep_periods_profiles,
+                    row.year,
+                    row.year,
+                    ("max-storage-level", row.rep_period),
+                    row.time_block_start:row.time_block_end,
+                    1.0,
+                ) * accumulated_energy_capacity[row.year, row.asset],
+                base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+            ) for row in eachrow(storage_level_intra_rp.indices)
+        ],
+    )
 
     # - Minimum storage level
-    model[:min_storage_level_intra_rp_limit] = [
-        @constraint(
-            model,
-            storage_level_intra_rp.container[row.index] ≥
-            profile_aggregation(
-                Statistics.mean,
-                graph[row.asset].rep_periods_profiles,
-                row.year,
-                row.year,
-                ("min_storage_level", row.rep_period),
-                row.time_block_start:row.time_block_end,
-                0.0,
-            ) * accumulated_energy_capacity[row.year, row.asset],
-            base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(storage_level_intra_rp.indices)
-    ]
+    attach_constraint!(
+        model,
+        constraints[:storage_level_intra_rp],
+        :min_storage_level_intra_rp_limit,
+        [
+            @constraint(
+                model,
+                storage_level_intra_rp.container[row.index] ≥
+                profile_aggregation(
+                    Statistics.mean,
+                    graph[row.asset].rep_periods_profiles,
+                    row.year,
+                    row.year,
+                    ("min_storage_level", row.rep_period),
+                    row.time_block_start:row.time_block_end,
+                    0.0,
+                ) * accumulated_energy_capacity[row.year, row.asset],
+                base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+            ) for row in eachrow(storage_level_intra_rp.indices)
+        ],
+    )
 
     # - Cycling condition
     for ((a, y, _), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
@@ -145,40 +155,50 @@ function add_storage_constraints!(model, variables, constraints, graph)
     end
 
     # - Maximum storage level
-    model[:max_storage_level_inter_rp_limit] = [
-        @constraint(
-            model,
-            storage_level_inter_rp.container[row.index] ≤
-            profile_aggregation(
-                Statistics.mean,
-                graph[row.asset].timeframe_profiles,
-                row.year,
-                row.year,
-                "max_storage_level",
-                row.period_block_start:row.period_block_end,
-                1.0,
-            ) * accumulated_energy_capacity[row.year, row.asset],
-            base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-        ) for row in eachrow(storage_level_inter_rp.indices)
-    ]
+    attach_constraint!(
+        model,
+        constraints[:storage_level_inter_rp],
+        :max_storage_level_inter_rp_limit,
+        [
+            @constraint(
+                model,
+                storage_level_inter_rp.container[row.index] ≤
+                profile_aggregation(
+                    Statistics.mean,
+                    graph[row.asset].timeframe_profiles,
+                    row.year,
+                    row.year,
+                    "max_storage_level",
+                    row.period_block_start:row.period_block_end,
+                    1.0,
+                ) * accumulated_energy_capacity[row.year, row.asset],
+                base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+            ) for row in eachrow(storage_level_inter_rp.indices)
+        ],
+    )
 
     # - Minimum storage level
-    model[:min_storage_level_inter_rp_limit] = [
-        @constraint(
-            model,
-            storage_level_inter_rp.container[row.index] ≥
-            profile_aggregation(
-                Statistics.mean,
-                graph[row.asset].timeframe_profiles,
-                row.year,
-                row.year,
-                "min_storage_level",
-                row.period_block_start:row.period_block_end,
-                0.0,
-            ) * accumulated_energy_capacity[row.year, row.asset],
-            base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-        ) for row in eachrow(storage_level_inter_rp.indices)
-    ]
+    attach_constraint!(
+        model,
+        constraints[:storage_level_inter_rp],
+        :min_storage_level_inter_rp_limit,
+        [
+            @constraint(
+                model,
+                storage_level_inter_rp.container[row.index] ≥
+                profile_aggregation(
+                    Statistics.mean,
+                    graph[row.asset].timeframe_profiles,
+                    row.year,
+                    row.year,
+                    "min_storage_level",
+                    row.period_block_start:row.period_block_end,
+                    0.0,
+                ) * accumulated_energy_capacity[row.year, row.asset],
+                base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+            ) for row in eachrow(storage_level_inter_rp.indices)
+        ],
+    )
 
     # - Cycling condition
     for ((a, y), sub_df) in pairs(df_storage_inter_rp_balance_grouped)
