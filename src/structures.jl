@@ -56,7 +56,7 @@ mutable struct TulipaConstraint
     indices::DataFrame
     table_name::String
     num_rows::Int
-    containers::Dict{Symbol,Vector{JuMP.ConstraintRef}}
+    containers::Dict{Symbol,Vector{JuMP.ConstraintRef}} # TODO: There are possible type instability here
     expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
     duals::Dict{Symbol,Vector{Float64}}
 
@@ -85,8 +85,8 @@ This checks that the `container` length matches the stored `indices` number of r
 function attach_constraint!(
     cons::TulipaConstraint,
     name::Symbol,
-    container::Vector{JuMP.ConstraintRef},
-)
+    container::Vector{JuMP.ConstraintRef{JuMP.Model,T1,T2}},
+) where {T1,T2}
     @assert length(container) == cons.num_rows
     cons.containers[name] = container
     return nothing
@@ -96,10 +96,20 @@ function attach_constraint!(
     model::JuMP.Model,
     cons::TulipaConstraint,
     name::Symbol,
-    container::Vector{JuMP.ConstraintRef},
-)
+    container::Vector{JuMP.ConstraintRef{JuMP.Model,T1,T2}},
+) where {T1,T2}
     attach_constraint!(cons, name, container)
     model[name] = container
+    return nothing
+end
+
+function attach_constraint!(model::JuMP.Model, cons::TulipaConstraint, name::Symbol, container)
+    # This should be the empty case container = Any[]
+    @assert length(container) == 0
+    @assert cons.num_rows == 0
+    empty_container = JuMP.ConstraintRef{JuMP.Model,Missing,JuMP.ScalarShape}[]
+    attach_constraint!(cons, name, empty_container)
+    model[name] = empty_container
     return nothing
 end
 
