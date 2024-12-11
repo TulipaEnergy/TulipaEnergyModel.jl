@@ -87,7 +87,9 @@ function attach_constraint!(
     name::Symbol,
     container::Vector{<:JuMP.ConstraintRef},
 )
-    @assert length(container) == cons.num_rows
+    if length(container) != cons.num_rows
+        error("The number of constraints does not match the number of rows in the indices")
+    end
     push!(cons.constraint_names, name)
     model[name] = container
     return nothing
@@ -97,8 +99,12 @@ function attach_constraint!(model::JuMP.Model, cons::TulipaConstraint, name::Sym
     # This should be the empty case container = Any[] that happens when the
     # indices table in empty in [@constraint(...) for row in eachrow(indices)].
     # It resolves to [] so the element type cannot be inferred
-    @assert length(container) == 0
-    @assert cons.num_rows == 0
+    if length(container) > 0
+        error("This variant is supposed to capture empty containers. This container is not empty")
+    end
+    if cons.num_rows > 0
+        error("The number of rows in indices table should be 0")
+    end
     empty_container = JuMP.ConstraintRef{JuMP.Model,Missing,JuMP.ScalarShape}[]
     model[name] = empty_container
     return nothing
