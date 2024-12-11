@@ -100,7 +100,9 @@ function attach_constraint!(model::JuMP.Model, cons::TulipaConstraint, name::Sym
     # indices table in empty in [@constraint(...) for row in eachrow(indices)].
     # It resolves to [] so the element type cannot be inferred
     if length(container) > 0
-        error("This variant is supposed to capture empty containers. This container is not empty for $name")
+        error(
+            "This variant is supposed to capture empty containers. This container is not empty for $name",
+        )
     end
     if cons.num_rows > 0
         error("The number of rows in indices table should be 0 for $name")
