@@ -58,13 +58,8 @@ function _create_constraints_tables(connection)
         FROM t_highest_all_flows AS t_high
         LEFT JOIN asset
             ON t_high.asset = asset.asset
-        LEFT JOIN asset_both
-            ON t_high.asset = asset_both.asset
-            AND t_high.year = asset_both.milestone_year
-            AND t_high.year = asset_both.commission_year
         WHERE
-            asset_both.active = true
-            AND asset.type = 'consumer';
+            asset.type = 'consumer';
         ",
     )
 
@@ -78,13 +73,8 @@ function _create_constraints_tables(connection)
         FROM t_highest_all_flows AS t_high
         LEFT JOIN asset
             ON t_high.asset = asset.asset
-        LEFT JOIN asset_both
-            ON t_high.asset = asset_both.asset
-            AND t_high.year = asset_both.milestone_year
-            AND t_high.year = asset_both.commission_year
         WHERE
-            asset_both.active = true
-            AND asset.type = 'hub';
+            asset.type = 'hub';
         ",
     )
 
@@ -98,13 +88,8 @@ function _create_constraints_tables(connection)
         FROM t_highest_in_flows AS t_high
         LEFT JOIN asset
             ON t_high.asset = asset.asset
-        LEFT JOIN asset_both
-            ON t_high.asset = asset_both.asset
-            AND t_high.year = asset_both.milestone_year
-            AND t_high.year = asset_both.commission_year
         WHERE
-            asset_both.active = true
-            AND asset.type in ('storage')",
+            asset.type in ('storage')",
     )
 
     DuckDB.query(
@@ -117,13 +102,8 @@ function _create_constraints_tables(connection)
         FROM t_highest_out_flows AS t_high
         LEFT JOIN asset
             ON t_high.asset = asset.asset
-        LEFT JOIN asset_both
-            ON t_high.asset = asset_both.asset
-            AND t_high.year = asset_both.milestone_year
-            AND t_high.year = asset_both.commission_year
         WHERE
-            asset_both.active = true
-            AND asset.type in ('producer', 'storage', 'conversion')",
+            asset.type in ('producer', 'storage', 'conversion')",
     )
 
     DuckDB.query(
@@ -136,13 +116,8 @@ function _create_constraints_tables(connection)
         FROM t_highest_assets_and_out_flows AS t_high
         LEFT JOIN asset
             ON t_high.asset = asset.asset
-        LEFT JOIN asset_both
-            ON t_high.asset = asset_both.asset
-            AND t_high.year = asset_both.milestone_year
-            AND t_high.year = asset_both.commission_year
         WHERE
-            asset_both.active = true
-            AND asset.type in ('producer', 'conversion')
+            asset.type in ('producer', 'conversion')
             AND asset.unit_commitment = true;
         ",
     )
@@ -157,13 +132,8 @@ function _create_constraints_tables(connection)
         FROM t_highest_out_flows AS t_high
         LEFT JOIN asset
             ON t_high.asset = asset.asset
-        LEFT JOIN asset_both
-            ON t_high.asset = asset_both.asset
-            AND t_high.year = asset_both.milestone_year
-            AND t_high.year = asset_both.commission_year
         WHERE
-            asset_both.active = true
-            AND asset.type in ('producer', 'storage', 'conversion')",
+            asset.type in ('producer', 'storage', 'conversion')",
     )
 
     DuckDB.query(
