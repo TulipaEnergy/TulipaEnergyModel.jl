@@ -212,8 +212,8 @@ mutable struct GraphAssetData
     investment_energy::Dict{Int,Float64} # for storage assets with energy method
     storage_level_intra_rp::Dict{Tuple{Int,TimestepsBlock},Float64}
     storage_level_inter_rp::Dict{PeriodsBlock,Float64}
-    max_energy_inter_rp::Dict{PeriodsBlock,Float64}
-    min_energy_inter_rp::Dict{PeriodsBlock,Float64}
+    max_energy_over_clustered_year::Dict{PeriodsBlock,Float64}
+    min_energy_over_clustered_year::Dict{PeriodsBlock,Float64}
 
     # You don't need profiles to create the struct, so initiate it empty
     function GraphAssetData(args...)
@@ -302,8 +302,8 @@ mutable struct Solution
     flows_investment::Any # TODO: Fix this type
     storage_level_intra_rp::Vector{Float64}
     storage_level_inter_rp::Vector{Float64}
-    max_energy_inter_rp::Vector{Float64}
-    min_energy_inter_rp::Vector{Float64}
+    max_energy_over_clustered_year::Vector{Float64}
+    min_energy_over_clustered_year::Vector{Float64}
     flow::Vector{Float64}
     objective_value::Float64
     duals::Union{Nothing,Dict{Symbol,Vector{Float64}}}

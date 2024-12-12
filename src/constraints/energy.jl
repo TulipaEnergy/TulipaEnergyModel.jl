@@ -11,10 +11,10 @@ function add_energy_constraints!(model, constraints, graph)
     ## INTER-TEMPORAL CONSTRAINTS (between representative periods)
 
     # - Maximum outgoing energy within each period block
-    model[:max_energy_inter_rp] = [
+    model[:max_energy_over_clustered_year] = [
         @constraint(
             model,
-            constraints[:max_energy_inter_rp].expressions[:outgoing][row.index] ≤
+            constraints[:max_energy_over_clustered_year].expressions[:outgoing][row.index] ≤
             profile_aggregation(
                 sum,
                 graph[row.asset].timeframe_profiles,
@@ -24,15 +24,15 @@ function add_energy_constraints!(model, constraints, graph)
                 row.period_block_start:row.period_block_end,
                 1.0,
             ) * (graph[row.asset].max_energy_timeframe_partition[row.year]),
-            base_name = "max_energy_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-        ) for row in eachrow(constraints[:max_energy_inter_rp].indices)
+            base_name = "max_energy_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+        ) for row in eachrow(constraints[:max_energy_over_clustered_year].indices)
     ]
 
     # - Minimum outgoing energy within each period block
-    model[:min_energy_inter_rp] = [
+    model[:min_energy_over_clustered_year] = [
         @constraint(
             model,
-            constraints[:min_energy_inter_rp].expressions[:outgoing][row.index] ≥
+            constraints[:min_energy_over_clustered_year].expressions[:outgoing][row.index] ≥
             profile_aggregation(
                 sum,
                 graph[row.asset].timeframe_profiles,
@@ -42,7 +42,7 @@ function add_energy_constraints!(model, constraints, graph)
                 row.period_block_start:row.period_block_end,
                 1.0,
             ) * (graph[row.asset].min_energy_timeframe_partition[row.year]),
-            base_name = "min_energy_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-        ) for row in eachrow(constraints[:min_energy_inter_rp].indices)
+            base_name = "min_energy_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+        ) for row in eachrow(constraints[:min_energy_over_clustered_year].indices)
     ]
 end

@@ -19,13 +19,13 @@ function add_storage_constraints!(model, variables, constraints, graph)
 
     accumulated_energy_capacity = model[:accumulated_energy_capacity]
     incoming_flow_lowest_storage_resolution_intra_rp =
-        constraints[:storage_level_intra_rp].expressions[:incoming]
+        constraints[:balance_storage_rep_period].expressions[:incoming]
     outgoing_flow_lowest_storage_resolution_intra_rp =
-        constraints[:storage_level_intra_rp].expressions[:outgoing]
+        constraints[:balance_storage_rep_period].expressions[:outgoing]
     incoming_flow_storage_inter_rp_balance =
-        constraints[:storage_level_inter_rp].expressions[:incoming]
+        constraints[:balance_storage_over_clustered_year].expressions[:incoming]
     outgoing_flow_storage_inter_rp_balance =
-        constraints[:storage_level_inter_rp].expressions[:outgoing]
+        constraints[:balance_storage_over_clustered_year].expressions[:outgoing]
 
     # - Balance constraint (using the lowest temporal resolution)
     for ((a, y, rp), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
@@ -68,7 +68,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
     # - Maximum storage level
     attach_constraint!(
         model,
-        constraints[:storage_level_intra_rp],
+        constraints[:balance_storage_rep_period],
         :max_storage_level_intra_rp_limit,
         [
             @constraint(
@@ -91,7 +91,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
     # - Minimum storage level
     attach_constraint!(
         model,
-        constraints[:storage_level_intra_rp],
+        constraints[:balance_storage_rep_period],
         :min_storage_level_intra_rp_limit,
         [
             @constraint(
@@ -146,7 +146,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
                         )
                     end
                 ) +
-                constraints[:storage_level_inter_rp].expressions[:inflows_profile_aggregation][row.index] +
+                constraints[:balance_storage_over_clustered_year].expressions[:inflows_profile_aggregation][row.index] +
                 incoming_flow_storage_inter_rp_balance[row.index] -
                 outgoing_flow_storage_inter_rp_balance[row.index],
                 base_name = "storage_inter_rp_balance[$a,$(row.year),$(row.period_block_start):$(row.period_block_end)]"
@@ -157,7 +157,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
     # - Maximum storage level
     attach_constraint!(
         model,
-        constraints[:storage_level_inter_rp],
+        constraints[:balance_storage_over_clustered_year],
         :max_storage_level_inter_rp_limit,
         [
             @constraint(
@@ -180,7 +180,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
     # - Minimum storage level
     attach_constraint!(
         model,
-        constraints[:storage_level_inter_rp],
+        constraints[:balance_storage_over_clustered_year],
         :min_storage_level_inter_rp_limit,
         [
             @constraint(

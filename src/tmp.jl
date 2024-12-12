@@ -459,6 +459,7 @@ function tmp_example_of_flow_expression_problem()
 
     ref: see $(@__FILE__):$(@__LINE__)
 
+    # TODO: This is outdated
     The desired incoming and outgoing flows are:
     - ep.dataframes[:highest_in_out].incoming_flow
     - ep.dataframes[:highest_in_out].outgoing_flow

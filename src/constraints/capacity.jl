@@ -34,8 +34,10 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
     flow = variables[:flow].container
 
     ## unpack from constraints
-    incoming_flow_highest_in_resolution = constraints[:highest_in].expressions[:incoming]
-    outgoing_flow_highest_out_resolution = constraints[:highest_out].expressions[:outgoing]
+    cons_incoming = constraints[:capacity_incoming]
+    cons_outgoing = constraints[:capacity_outgoing]
+    incoming_flow = cons_incoming.expressions[:incoming]
+    outgoing_flow = cons_outgoing.expressions[:outgoing]
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
@@ -77,7 +79,7 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
                     graph[row.asset].capacity *
                     accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
                 )
-            end for row in eachrow(constraints[:highest_out].indices)
+            end for row in eachrow(cons_outgoing.indices)
         ]
 
     # - Create accumulated investment limit for the use of binary storage method with investments
@@ -123,10 +125,8 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
                     (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
                     (1 - is_charging)
                 )
-            end for (row, is_charging) in zip(
-                eachrow(constraints[:highest_out].indices),
-                constraints[:highest_out].expressions[:is_charging],
-            )
+            end for (row, is_charging) in
+            zip(eachrow(cons_outgoing.indices), cons_outgoing.expressions[:is_charging])
         ]
 
     assets_profile_times_capacity_out_with_binary_part2 =
@@ -149,10 +149,8 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
                         )
                     )
                 )
-            end for (row, is_charging) in zip(
-                eachrow(constraints[:highest_out].indices),
-                constraints[:highest_out].expressions[:is_charging],
-            )
+            end for (row, is_charging) in
+            zip(eachrow(cons_outgoing.indices), cons_outgoing.expressions[:is_charging])
         ]
 
     # - Create capacity limit for incoming flows
@@ -171,7 +169,7 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
                 ) *
                 graph[row.asset].capacity *
                 accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
-            ) for row in eachrow(constraints[:highest_in].indices)
+            ) for row in eachrow(cons_incoming.indices)
         ]
 
     # - Create capacity limit for incoming flows with binary is_charging for storage assets
@@ -210,10 +208,8 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
                     (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
                     is_charging
                 )
-            end for (row, is_charging) in zip(
-                eachrow(constraints[:highest_in].indices),
-                constraints[:highest_in].expressions[:is_charging],
-            )
+            end for (row, is_charging) in
+            zip(eachrow(cons_incoming.indices), cons_incoming.expressions[:is_charging])
         ]
 
     assets_profile_times_capacity_in_with_binary_part2 =
@@ -236,40 +232,36 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
                         )
                     )
                 )
-            end for (row, is_charging) in zip(
-                eachrow(constraints[:highest_in].indices),
-                constraints[:highest_in].expressions[:is_charging],
-            )
+            end for (row, is_charging) in
+            zip(eachrow(cons_incoming.indices), cons_incoming.expressions[:is_charging])
         ]
 
     ## Capacity limit constraints (using the highest resolution)
     # - Maximum output flows limit
     attach_constraint!(
         model,
-        constraints[:highest_out],
+        cons_outgoing,
         :max_output_flows_limit,
         [
             @constraint(
                 model,
-                outgoing_flow_highest_out_resolution[row.index] ≤
-                assets_profile_times_capacity_out[row.index],
+                outgoing_flow[row.index] ≤ assets_profile_times_capacity_out[row.index],
                 base_name = "max_output_flows_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-            ) for row in eachrow(constraints[:highest_out].indices)
+            ) for row in eachrow(cons_outgoing.indices)
         ],
     )
 
     # - Maximum input flows limit
     attach_constraint!(
         model,
-        constraints[:highest_in],
+        cons_incoming,
         :max_input_flows_limit,
         [
             @constraint(
                 model,
-                incoming_flow_highest_in_resolution[row.index] ≤
-                assets_profile_times_capacity_in[row.index],
+                incoming_flow[row.index] ≤ assets_profile_times_capacity_in[row.index],
                 base_name = "max_input_flows_limit[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-            ) for row in eachrow(constraints[:highest_in].indices)
+            ) for row in eachrow(cons_incoming.indices)
         ],
     )
 
@@ -278,43 +270,41 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
     model[:max_output_flows_limit_with_binary_part1] = [
         @constraint(
             model,
-            outgoing_flow_highest_out_resolution[row.index] ≤
+            outgoing_flow[row.index] ≤
             assets_profile_times_capacity_out_with_binary_part1[row.index],
             base_name = "max_output_flows_limit_with_binary_part1[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(constraints[:highest_out].indices) if
-        row.asset ∈ Asb && outgoing_flow_highest_out_resolution[row.index] != 0
+        ) for row in eachrow(cons_outgoing.indices) if
+        row.asset ∈ Asb && outgoing_flow[row.index] != 0
     ]
 
     model[:max_output_flows_limit_with_binary_part2] = [
         @constraint(
             model,
-            outgoing_flow_highest_out_resolution[row.index] ≤
+            outgoing_flow[row.index] ≤
             assets_profile_times_capacity_out_with_binary_part2[row.index],
             base_name = "max_output_flows_limit_with_binary_part2[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(constraints[:highest_out].indices) if row.asset ∈ Ai[row.year] &&
-        row.asset ∈ Asb &&
-        outgoing_flow_highest_out_resolution[row.index] != 0
+        ) for row in eachrow(cons_outgoing.indices) if
+        row.asset ∈ Ai[row.year] && row.asset ∈ Asb && outgoing_flow[row.index] != 0
     ]
 
     # - Maximum input flows limit with is_charging binary for storage assets
     model[:max_input_flows_limit_with_binary_part1] = [
         @constraint(
             model,
-            incoming_flow_highest_in_resolution[row.index] ≤
+            incoming_flow[row.index] ≤
             assets_profile_times_capacity_in_with_binary_part1[row.index],
             base_name = "max_input_flows_limit_with_binary_part1[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(constraints[:highest_in].indices) if
-        row.asset ∈ Asb && incoming_flow_highest_in_resolution[row.index] != 0
+        ) for row in eachrow(cons_incoming.indices) if
+        row.asset ∈ Asb && incoming_flow[row.index] != 0
     ]
     model[:max_input_flows_limit_with_binary_part2] = [
         @constraint(
             model,
-            incoming_flow_highest_in_resolution[row.index] ≤
+            incoming_flow[row.index] ≤
             assets_profile_times_capacity_in_with_binary_part2[row.index],
             base_name = "max_input_flows_limit_with_binary_part2[$(row.asset),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(constraints[:highest_in].indices) if row.asset ∈ Ai[row.year] &&
-        row.asset ∈ Asb &&
-        incoming_flow_highest_in_resolution[row.index] != 0
+        ) for row in eachrow(cons_incoming.indices) if
+        row.asset ∈ Ai[row.year] && row.asset ∈ Asb && incoming_flow[row.index] != 0
     ]
 
     # - Lower limit for flows associated with assets
