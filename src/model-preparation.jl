@@ -366,25 +366,30 @@ function add_expressions_to_constraints!(
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
-    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
-        constraints[:capacity_incoming],
-        variables[:flow],
-        expression_workspace,
-        representative_periods,
-        graph;
-        use_highest_resolution = true,
-        multiply_by_duration = false,
+    for table_name in (
+        :capacity_incoming,
+        :capacity_incoming_binary,
+        :capacity_incoming_binary_investable,
+        :capacity_outgoing,
+        :capacity_outgoing_binary,
+        :capacity_outgoing_binary_investable,
     )
-    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
-        constraints[:capacity_outgoing],
-        variables[:flow],
-        expression_workspace,
-        representative_periods,
-        graph;
-        use_highest_resolution = true,
-        multiply_by_duration = false,
-        add_min_outgoing_flow_duration = true,
-    )
+        @timeit to "add_expression_terms_intra_rp_constraints! for $table_name" add_expression_terms_intra_rp_constraints!(
+            constraints[table_name],
+            variables[:flow],
+            expression_workspace,
+            representative_periods,
+            graph;
+            use_highest_resolution = true,
+            multiply_by_duration = false,
+        )
+
+        @timeit to "add_expression_is_charging_terms_intra_rp_constraints! for $table_name" add_expression_is_charging_terms_intra_rp_constraints!(
+            constraints[table_name],
+            variables[:is_charging],
+            expression_workspace,
+        )
+    end
     @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
         constraints[:ramping_without_unit_commitment],
         variables[:flow],
@@ -431,11 +436,6 @@ function add_expressions_to_constraints!(
     )
     @timeit to "add_expression_is_charging_terms_intra_rp_constraints!" add_expression_is_charging_terms_intra_rp_constraints!(
         constraints[:capacity_incoming],
-        variables[:is_charging],
-        expression_workspace,
-    )
-    @timeit to "add_expression_is_charging_terms_intra_rp_constraints!" add_expression_is_charging_terms_intra_rp_constraints!(
-        constraints[:capacity_outgoing],
         variables[:is_charging],
         expression_workspace,
     )

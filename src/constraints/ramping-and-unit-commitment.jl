@@ -22,20 +22,23 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
 
     ## Expressions used by the ramping and unit commitment constraints
     # - Expression to have the product of the profile and the capacity paramters
-    profile_times_capacity = [
-        @expression(
-            model,
-            profile_aggregation(
-                Statistics.mean,
-                graph[row.asset].rep_periods_profiles,
-                row.year,
-                row.year,
-                ("availability", row.rep_period),
-                row.time_block_start:row.time_block_end,
-                1.0,
-            ) * graph[row.asset].capacity
-        ) for row in eachrow(cons_with.indices) if is_active(graph, row.asset, row.year)
-    ]
+    profile_times_capacity = Dict(
+        key => begin
+            table_name = Symbol("ramping_$(key)_unit_commitment")
+            cons = constraints[table_name]
+            [
+                profile_aggregation(
+                    Statistics.mean,
+                    graph[row.asset].rep_periods_profiles,
+                    row.year,
+                    row.year,
+                    ("availability", row.rep_period),
+                    row.time_block_start:row.time_block_end,
+                    1.0,
+                ) * graph[row.asset].capacity for row in eachrow(cons.indices)
+            ]
+        end for key in (:with, :without)
+    )
 
     # - Flow that is above the minimum operating point of the asset
     flow_above_min_operating_point =
@@ -43,7 +46,7 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
             @expression(
                 model,
                 cons_with.expressions[:outgoing][row.index] -
-                profile_times_capacity[row.index] *
+                profile_times_capacity[:with][row.index] *
                 graph[row.asset].min_operating_point *
                 cons_with.expressions[:units_on][row.index]
             ) for row in eachrow(cons_with.indices)
@@ -85,7 +88,7 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
                 model,
                 flow_above_min_operating_point[row.index] ≤
                 (1 - graph[row.asset].min_operating_point) *
-                profile_times_capacity[row.index] *
+                profile_times_capacity[:with][row.index] *
                 cons_with.expressions[:units_on][row.index],
                 base_name = "max_output_flow_with_basic_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
             ) for row in eachrow(cons_with.indices) if row.asset ∈ Auc_basic
@@ -112,7 +115,7 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
                 flow_above_min_operating_point[row.index-1] ≤
                 graph[row.asset].max_ramp_up *
                 row.min_outgoing_flow_duration *
-                profile_times_capacity[row.index] *
+                profile_times_capacity[:with][row.index] *
                 units_on[row.index],
                 base_name = "max_ramp_up_with_unit_commitment[$a,$y,$rp,$(row.time_block_start):$(row.time_block_end)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if k > 1
@@ -131,7 +134,7 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
                 flow_above_min_operating_point[row.index-1] ≥
                 -graph[row.asset].max_ramp_down *
                 row.min_outgoing_flow_duration *
-                profile_times_capacity[row.index] *
+                profile_times_capacity[:with][row.index] *
                 units_on[row.index-1],
                 base_name = "max_ramp_down_with_unit_commitment[$a,$y,$rp,$(row.time_block_start):$(row.time_block_end)]"
             ) for (k, row) in enumerate(eachrow(sub_df)) if k > 1
@@ -142,9 +145,6 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
     # Note: We start ramping constraints from the second timesteps_block
     # We filter and group the dataframe per asset and representative period that does not have the unit_commitment methods
     df_grouped = DataFrames.groupby(cons_without.indices, [:asset, :year, :rep_period])
-
-    # get the expression from the capacity constraints for the highest_out
-    assets_profile_times_capacity_out = model[:assets_profile_times_capacity_out]
 
     # - Maximum ramp-up rate limit to the flow (no unit commitment variables)
     for ((a, y, rp), sub_df) in pairs(df_grouped)
@@ -157,7 +157,7 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
                 outgoing_flow[row.index] - outgoing_flow[row.index-1] ≤
                 graph[row.asset].max_ramp_up *
                 row.min_outgoing_flow_duration *
-                assets_profile_times_capacity_out[row.index],
+                profile_times_capacity[:without][row.index],
                 base_name = "max_ramp_up_without_unit_commitment[$a,$y,$rp,$(row.time_block_start):$(row.time_block_end)]"
             ) for
             (k, row) in enumerate(eachrow(sub_df)) if k > 1 && outgoing_flow[row.index] != 0
@@ -175,7 +175,7 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
                 outgoing_flow[row.index] - outgoing_flow[row.index-1] ≥
                 -graph[row.asset].max_ramp_down *
                 row.min_outgoing_flow_duration *
-                assets_profile_times_capacity_out[row.index],
+                profile_times_capacity[:without][row.index],
                 base_name = "max_ramp_down_without_unit_commitment[$a,$y,$rp,$(row.time_block_start):$(row.time_block_end)]"
             ) for
             (k, row) in enumerate(eachrow(sub_df)) if k > 1 && outgoing_flow[row.index] != 0
