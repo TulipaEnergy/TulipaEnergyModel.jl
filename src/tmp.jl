@@ -375,8 +375,17 @@ function tmp_create_lowest_resolution_table(connection)
         current_group = ("", 0, 0)
         @timeit to "append $table_name rows" for row in DuckDB.query(
             connection,
-            "SELECT * FROM $union_table
-            ORDER BY asset, year, rep_period, time_block_start
+            "SELECT t_union.* FROM $union_table AS t_union
+            LEFT JOIN asset_both
+                ON asset_both.asset = t_union.asset
+                AND asset_both.milestone_year = t_union.year
+                AND asset_both.commission_year = t_union.year
+            WHERE asset_both.active = true
+            ORDER BY
+                t_union.asset,
+                t_union.year,
+                t_union.rep_period,
+                t_union.time_block_start
             ",
         )
             if (row.asset, row.year, row.rep_period) != current_group
@@ -418,6 +427,7 @@ function tmp_create_highest_resolution_table(connection)
     # - keep all unique time_block_start
     # - create corresponing time_block_end
 
+    # filtering by active
     for union_table in
         ("t_union_" * x for x in ("in_flows", "out_flows", "assets_and_out_flows", "all_flows"))
         table_name = replace(union_table, "t_union" => "t_highest")
@@ -425,21 +435,26 @@ function tmp_create_highest_resolution_table(connection)
             connection,
             "CREATE OR REPLACE TABLE $table_name AS
             SELECT
-                asset,
+                t_union.asset,
                 t_union.year,
                 t_union.rep_period,
-                time_block_start,
-                lead(time_block_start - 1, 1, rep_periods_data.num_timesteps)
-                    OVER (PARTITION BY asset, t_union.year, t_union.rep_period ORDER BY time_block_start)
+                t_union.time_block_start,
+                lead(t_union.time_block_start - 1, 1, rep_periods_data.num_timesteps)
+                    OVER (PARTITION BY t_union.asset, t_union.year, t_union.rep_period ORDER BY t_union.time_block_start)
                     AS time_block_end
             FROM (
                 SELECT DISTINCT asset, year, rep_period, time_block_start
                 FROM $union_table
             ) AS t_union
+            LEFT JOIN asset_both
+                ON asset_both.asset = t_union.asset
+                AND asset_both.milestone_year = t_union.year
+                AND asset_both.commission_year = t_union.year
             LEFT JOIN rep_periods_data
                 ON t_union.year = rep_periods_data.year
                     AND t_union.rep_period = rep_periods_data.rep_period
-            ORDER BY asset, t_union.year, t_union.rep_period, time_block_start
+            WHERE asset_both.active = true
+            ORDER BY t_union.asset, t_union.year, t_union.rep_period, time_block_start
             ",
         )
     end
