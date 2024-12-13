@@ -10,13 +10,11 @@ function compute_constraints_indices(connection)
             :balance_consumer,
             :balance_hub,
             :capacity_incoming,
-            :capacity_incoming_storage_with_binary,
+            :capacity_incoming_non_investable_storage_with_binary,
             :capacity_incoming_investable_storage_with_binary,
-            :capacity_incoming_investable_storage_limit_with_binary,
             :capacity_outgoing,
-            :capacity_outgoing_storage_with_binary,
+            :capacity_outgoing_non_investable_storage_with_binary,
             :capacity_outgoing_investable_storage_with_binary,
-            :capacity_outgoing_investable_storage_limit_with_binary,
             :ramping_with_unit_commitment,
             :ramping_without_unit_commitment,
             :balance_storage_rep_period,
@@ -101,23 +99,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_capacity_incoming_storage_with_binary AS
-        SELECT
-            nextval('id') AS index,
-            t_high.*
-        FROM t_highest_in_flows AS t_high
-        LEFT JOIN asset
-            ON t_high.asset = asset.asset
-        WHERE
-            asset.type in ('storage')
-            AND asset.use_binary_storage_method in ('binary', 'relaxed_binary')
-        ",
-    )
-
-    DuckDB.query(
-        connection,
-        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_capacity_incoming_investable_storage_with_binary AS
+        CREATE OR REPLACE TABLE cons_capacity_incoming_non_investable_storage_with_binary AS
         SELECT
             nextval('id') AS index,
             t_high.*
@@ -130,14 +112,14 @@ function _create_constraints_tables(connection)
         WHERE
             asset.type in ('storage')
             AND asset.use_binary_storage_method in ('binary', 'relaxed_binary')
-            AND asset_milestone.investable
+            AND NOT asset_milestone.investable
         ",
     )
 
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_capacity_incoming_investable_storage_limit_with_binary AS
+        CREATE OR REPLACE TABLE cons_capacity_incoming_investable_storage_with_binary AS
         SELECT
             nextval('id') AS index,
             t_high.*
@@ -171,23 +153,7 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_capacity_outgoing_storage_with_binary AS
-        SELECT
-            nextval('id') AS index,
-            t_high.*
-        FROM t_highest_out_flows AS t_high
-        LEFT JOIN asset
-            ON t_high.asset = asset.asset
-        WHERE
-            asset.type in ('storage')
-            AND asset.use_binary_storage_method in ('binary', 'relaxed_binary')
-        ",
-    )
-
-    DuckDB.query(
-        connection,
-        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_capacity_outgoing_investable_storage_with_binary AS
+        CREATE OR REPLACE TABLE cons_capacity_outgoing_non_investable_storage_with_binary AS
         SELECT
             nextval('id') AS index,
             t_high.*
@@ -200,14 +166,14 @@ function _create_constraints_tables(connection)
         WHERE
             asset.type in ('storage')
             AND asset.use_binary_storage_method in ('binary', 'relaxed_binary')
-            AND asset_milestone.investable
+            AND NOT asset_milestone.investable
         ",
     )
 
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE cons_capacity_outgoing_investable_storage_limit_with_binary AS
+        CREATE OR REPLACE TABLE cons_capacity_outgoing_investable_storage_with_binary AS
         SELECT
             nextval('id') AS index,
             t_high.*
