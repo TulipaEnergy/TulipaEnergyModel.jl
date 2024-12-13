@@ -368,11 +368,11 @@ function add_expressions_to_constraints!(
     )
     for table_name in (
         :capacity_incoming,
-        :capacity_incoming_binary,
-        :capacity_incoming_binary_investable,
+        :capacity_incoming_storage_with_binary,
+        :capacity_incoming_investable_storage_with_binary,
         :capacity_outgoing,
-        :capacity_outgoing_binary,
-        :capacity_outgoing_binary_investable,
+        :capacity_outgoing_storage_with_binary,
+        :capacity_outgoing_investable_storage_with_binary,
     )
         @timeit to "add_expression_terms_intra_rp_constraints! for $table_name" add_expression_terms_intra_rp_constraints!(
             constraints[table_name],
