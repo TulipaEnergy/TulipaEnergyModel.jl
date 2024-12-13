@@ -50,11 +50,12 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
             [
                 @expression(
                     model,
-                    cons.expressions[:outgoing][row.index] -
+                    outgoing_flow -
                     profile_times_capacity[table_name][row.index] *
                     graph[row.asset].min_operating_point *
-                    cons.expressions[:units_on][row.index]
-                ) for row in eachrow(cons.indices)
+                    units_on
+                ) for (row, outgoing_flow, units_on) in
+                zip(eachrow(cons.indices), cons.expressions[:outgoing], cons.expressions[:units_on])
             ],
         )
     end
@@ -108,12 +109,16 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
             [
                 @constraint(
                     model,
-                    cons.expressions[:flow_above_min_operating_point][row.index] ≤
+                    flow_above_min_operating_point ≤
                     (1 - graph[row.asset].min_operating_point) *
                     profile_times_capacity[table_name][row.index] *
-                    cons.expressions[:units_on][row.index],
+                    units_on,
                     base_name = "max_output_flow_with_basic_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                ) for row in eachrow(cons.indices)
+                ) for (row, flow_above_min_operating_point, units_on) in zip(
+                    eachrow(cons.indices),
+                    cons.expressions[:flow_above_min_operating_point],
+                    cons.expressions[:units_on],
+                )
             ],
         )
     end
@@ -133,21 +138,19 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
             constraints[table_name],
             :max_ramp_up_with_unit_commitment,
             [
-                begin
-                    if row.time_block_start == 1
-                        @constraint(model, 0 == 0) # Placeholder for case k = 1
-                    else
-                        @constraint(
-                            model,
-                            cons.expressions[:flow_above_min_operating_point][row.index] -
-                            cons.expressions[:flow_above_min_operating_point][row.index-1] ≤
-                            graph[row.asset].max_ramp_up *
-                            row.min_outgoing_flow_duration *
-                            profile_times_capacity[table_name][row.index] *
-                            units_on[row.index],
-                            base_name = "max_ramp_up_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                        )
-                    end
+                if row.time_block_start == 1
+                    @constraint(model, 0 == 0) # Placeholder for case k = 1
+                else
+                    @constraint(
+                        model,
+                        cons.expressions[:flow_above_min_operating_point][row.index] -
+                        cons.expressions[:flow_above_min_operating_point][row.index-1] ≤
+                        graph[row.asset].max_ramp_up *
+                        row.min_outgoing_flow_duration *
+                        profile_times_capacity[table_name][row.index] *
+                        units_on[row.index],
+                        base_name = "max_ramp_up_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    )
                 end for row in eachrow(cons.indices)
             ],
         )
@@ -158,21 +161,19 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
             constraints[table_name],
             :max_ramp_down_with_unit_commitment,
             [
-                begin
-                    if row.time_block_start == 1
-                        @constraint(model, 0 == 0) # Placeholder for case k = 1
-                    else
-                        @constraint(
-                            model,
-                            cons.expressions[:flow_above_min_operating_point][row.index] -
-                            cons.expressions[:flow_above_min_operating_point][row.index-1] ≥
-                            -graph[row.asset].max_ramp_down *
-                            row.min_outgoing_flow_duration *
-                            profile_times_capacity[table_name][row.index] *
-                            units_on[row.index-1],
-                            base_name = "max_ramp_down_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                        )
-                    end
+                if row.time_block_start == 1
+                    @constraint(model, 0 == 0) # Placeholder for case k = 1
+                else
+                    @constraint(
+                        model,
+                        cons.expressions[:flow_above_min_operating_point][row.index] -
+                        cons.expressions[:flow_above_min_operating_point][row.index-1] ≥
+                        -graph[row.asset].max_ramp_down *
+                        row.min_outgoing_flow_duration *
+                        profile_times_capacity[table_name][row.index] *
+                        units_on[row.index-1],
+                        base_name = "max_ramp_down_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    )
                 end for row in eachrow(cons.indices)
             ],
         )
@@ -191,20 +192,18 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
             constraints[table_name],
             :max_ramp_up_without_unit_commitment,
             [
-                begin
-                    if row.time_block_start == 1
-                        @constraint(model, 0 == 0) # Placeholder for case k = 1
-                    else
-                        @constraint(
-                            model,
-                            cons.expressions[:outgoing][row.index] -
-                            cons.expressions[:outgoing][row.index-1] ≤
-                            graph[row.asset].max_ramp_up *
-                            row.min_outgoing_flow_duration *
-                            profile_times_capacity[table_name][row.index],
-                            base_name = "max_ramp_up_without_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                        )
-                    end
+                if row.time_block_start == 1
+                    @constraint(model, 0 == 0) # Placeholder for case k = 1
+                else
+                    @constraint(
+                        model,
+                        cons.expressions[:outgoing][row.index] -
+                        cons.expressions[:outgoing][row.index-1] ≤
+                        graph[row.asset].max_ramp_up *
+                        row.min_outgoing_flow_duration *
+                        profile_times_capacity[table_name][row.index],
+                        base_name = "max_ramp_up_without_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    )
                 end for row in eachrow(cons.indices)
             ],
         )
@@ -215,20 +214,18 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
             constraints[table_name],
             :max_ramp_up_without_unit_commitment,
             [
-                begin
-                    if row.time_block_start == 1
-                        @constraint(model, 0 == 0) # Placeholder for case k = 1
-                    else
-                        @constraint(
-                            model,
-                            cons.expressions[:outgoing][row.index] -
-                            cons.expressions[:outgoing][row.index-1] ≥
-                            -graph[row.asset].max_ramp_down *
-                            row.min_outgoing_flow_duration *
-                            profile_times_capacity[table_name][row.index],
-                            base_name = "max_ramp_down_without_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                        )
-                    end
+                if row.time_block_start == 1
+                    @constraint(model, 0 == 0) # Placeholder for case k = 1
+                else
+                    @constraint(
+                        model,
+                        cons.expressions[:outgoing][row.index] -
+                        cons.expressions[:outgoing][row.index-1] ≥
+                        -graph[row.asset].max_ramp_down *
+                        row.min_outgoing_flow_duration *
+                        profile_times_capacity[table_name][row.index],
+                        base_name = "max_ramp_down_without_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    )
                 end for row in eachrow(cons.indices)
             ],
         )
