@@ -62,9 +62,7 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
 
     ## Unit Commitment Constraints (basic implementation - more advanced will be added in 2025)
     # - Limit to the units on (i.e. commitment)
-    let
-        table_name = :limit_units_on
-        cons = constraints[table_name]
+    let table_name = :limit_units_on, cons = constraints[table_name]
         attach_constraint!(
             model,
             cons,
@@ -80,9 +78,7 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
     end
 
     # - Minimum output flow above the minimum operating point
-    let
-        table_name = :ramping_with_unit_commitment
-        cons = constraints[table_name]
+    let table_name = :ramping_with_unit_commitment, cons = constraints[table_name]
         attach_constraint!(
             model,
             cons,
@@ -99,9 +95,7 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
     end
 
     # - Maximum output flow above the minimum operating point
-    let
-        table_name = :max_output_flow_with_basic_unit_commitment
-        cons = constraints[table_name]
+    let table_name = :max_output_flow_with_basic_unit_commitment, cons = constraints[table_name]
         attach_constraint!(
             model,
             cons,
@@ -123,12 +117,10 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
         )
     end
 
-    let
+    let table_name = :max_ramp_with_unit_commitment, cons = constraints[table_name]
         ## Ramping Constraints with unit commitment
         # Note: We start ramping constraints from the second timesteps_block
         # We filter and group the dataframe per asset and representative period
-        table_name = :max_ramp_with_unit_commitment
-        cons = constraints[table_name]
         # get the units on column to get easier the index - 1, i.e., the previous one
         units_on = cons.expressions[:units_on]
 
@@ -179,9 +171,7 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
         )
     end
 
-    let
-        table_name = :max_ramp_without_unit_commitment
-        cons = constraints[table_name]
+    let table_name = :max_ramp_without_unit_commitment, cons = constraints[table_name]
         ## Ramping Constraints without unit commitment
         # Note: We start ramping constraints from the second timesteps_block
         # We filter and group the dataframe per asset and representative period that does not have the unit_commitment methods
