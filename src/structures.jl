@@ -91,6 +91,9 @@ function attach_constraint!(
         error("The number of constraints does not match the number of rows in the indices of $name")
     end
     push!(cons.constraint_names, name)
+    if haskey(model, name)
+        error("model already has a constraint named $name")
+    end
     model[name] = container
     return nothing
 end
@@ -127,6 +130,22 @@ function attach_expression!(cons::TulipaConstraint, name::Symbol, container::Vec
     return nothing
 end
 
+function attach_expression!(cons::TulipaConstraint, name::Symbol, container)
+    # This should be the empty case container = Any[] that happens when the
+    # indices table in empty in [@constraint(...) for row in eachrow(indices)].
+    # It resolves to [] so the element type cannot be inferred
+    if length(container) > 0
+        error(
+            "This variant is supposed to capture empty containers. This container is not empty for $name",
+        )
+    end
+    if cons.num_rows > 0
+        error("The number of rows in indices table should be 0 for $name")
+    end
+    cons.expressions[name] = JuMP.AffExpr[]
+    return nothing
+end
+
 # Not used at the moment, but might be useful by the end of #642
 # function attach_expression!(
 #     model::JuMP.Model,
@@ -135,6 +154,9 @@ end
 #     container::Vector{JuMP.AffExpr},
 # )
 #     attach_expression!(cons, name, container)
+#     if haskey(model, name)
+#         error("model already has an expression named $name")
+#     end
 #     model[name] = container
 #     return nothing
 # end
