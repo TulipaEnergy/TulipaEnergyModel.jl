@@ -264,7 +264,9 @@ function _create_constraints_tables(connection)
         LEFT JOIN asset
             ON t_high.asset = asset.asset
         WHERE
-            asset.type in ('producer', 'storage', 'conversion')",
+            asset.type in ('producer', 'storage', 'conversion')
+            AND NOT asset.unit_commitment
+        ",
     )
 
     DuckDB.query(
@@ -280,6 +282,7 @@ function _create_constraints_tables(connection)
         WHERE
             asset.type in ('producer', 'storage', 'conversion')
             AND asset.ramping
+            AND NOT asset.unit_commitment
             AND asset.unit_commitment_method != 'basic'
         ",
     )
