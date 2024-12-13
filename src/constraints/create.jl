@@ -252,7 +252,6 @@ function _create_constraints_tables(connection)
         ",
     )
 
-    # TODO: Should there be a `AND NOT asset.unit_commitment` in the WHERE here?
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
