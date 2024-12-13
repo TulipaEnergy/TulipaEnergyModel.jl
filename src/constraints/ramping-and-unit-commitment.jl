@@ -7,18 +7,10 @@ Adds the ramping constraints for producer and conversion assets where ramping = 
 """
 function add_ramping_constraints!(model, variables, constraints, graph, sets)
     # unpack from sets
-    Ar = sets[:Ar]
-    Auc = sets[:Auc]
-    Auc_basic = sets[:Auc_basic]
     accumulated_units_lookup = sets[:accumulated_units_lookup]
 
     ## unpack from model
     accumulated_units = model[:accumulated_units]
-
-    ## unpack from constraints
-    cons_with = constraints[:ramping_with_unit_commitment]
-    cons_without = constraints[:ramping_without_unit_commitment]
-    # outgoing_flow = cons_without.expressions[:outgoing]
 
     ## Expressions used by the ramping and unit commitment constraints
     # - Expression to have the product of the profile and the capacity paramters
@@ -69,33 +61,41 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
 
     ## Unit Commitment Constraints (basic implementation - more advanced will be added in 2025)
     # - Limit to the units on (i.e. commitment)
-    attach_constraint!(
-        model,
-        constraints[:limit_units_on],
-        :limit_units_on,
-        [
-            @constraint(
-                model,
-                units_on ≤ accumulated_units[accumulated_units_lookup[(row.asset, row.year)]],
-                base_name = "limit_units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-            ) for (units_on, row) in
-            zip(variables[:units_on].container, eachrow(constraints[:limit_units_on].indices))
-        ],
-    )
+    let
+        table_name = :limit_units_on
+        cons = constraints[table_name]
+        attach_constraint!(
+            model,
+            cons,
+            :limit_units_on,
+            [
+                @constraint(
+                    model,
+                    units_on ≤ accumulated_units[accumulated_units_lookup[(row.asset, row.year)]],
+                    base_name = "limit_units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                ) for (units_on, row) in zip(variables[:units_on].container, eachrow(cons.indices))
+            ],
+        )
+    end
 
     # - Minimum output flow above the minimum operating point
-    attach_constraint!(
-        model,
-        cons_with,
-        :min_output_flow_with_unit_commitment,
-        [
-            @constraint(
-                model,
-                cons_with.expressions[:flow_above_min_operating_point][row.index] ≥ 0,
-                base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-            ) for row in eachrow(cons_with.indices)
-        ],
-    )
+    let
+        table_name = :ramping_with_unit_commitment
+        cons = constraints[table_name]
+        attach_constraint!(
+            model,
+            cons,
+            :min_output_flow_with_unit_commitment,
+            [
+                @constraint(
+                    model,
+                    flow_above_min_operating_point ≥ 0,
+                    base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                ) for (row, flow_above_min_operating_point) in
+                zip(eachrow(cons.indices), cons.expressions[:flow_above_min_operating_point])
+            ],
+        )
+    end
 
     # - Maximum output flow above the minimum operating point
     let
