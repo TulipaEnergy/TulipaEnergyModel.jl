@@ -28,41 +28,58 @@ function add_storage_constraints!(model, variables, constraints, graph)
         constraints[:balance_storage_over_clustered_year].expressions[:outgoing]
 
     # - Balance constraint (using the lowest temporal resolution)
-    for ((a, y, rp), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
-        # This assumes an ordering of the time blocks, that is guaranteed inside
-        # construct_dataframes
-        # The storage_inflows have been moved here
-        model[Symbol("storage_intra_rp_balance_$(a)_$(y)_$(rp)")] = [
-            @constraint(
-                model,
-                storage_level_intra_rp.container[row.index] ==
-                (
-                    if k > 1
-                        storage_level_intra_rp.container[row.index-1] # This assumes contiguous index
+    let table_name = :balance_storage_rep_period, cons = constraints[table_name]
+        var_storage_level = variables[:storage_level_intra_rp].container
+        attach_constraint!(
+            model,
+            cons,
+            :balance_storage_rep_period,
+            [
+                begin
+                    profile_agg = profile_aggregation(
+                        sum,
+                        graph[row.asset].rep_periods_profiles,
+                        row.year,
+                        row.year,
+                        ("inflows", row.rep_period),
+                        row.time_block_start:row.time_block_end,
+                        0.0,
+                    )
+                    # TODO: Does this aux_value has a more significant name
+                    previous_level = if row.time_block_start == 1
+                        # Find last index of this group
+                        if ismissing(graph[row.asset].initial_storage_level[row.year])
+                            # TODO: Replace by DuckDB call when working on #955
+                            last_index = last(
+                                DataFrames.subset(
+                                    cons.indices,
+                                    [:asset, :year, :rep_period] =>
+                                        (a, y, rp) ->
+                                            a .== row.asset .&&
+                                            y .== row.year .&&
+                                            rp .== row.rep_period;
+                                    view = true,
+                                ).index,
+                            )
+                            var_storage_level[last_index]
+                        else
+                            graph[row.asset].initial_storage_level[row.year]
+                        end
                     else
-                        (
-                            if ismissing(graph[a].initial_storage_level[row.year])
-                                storage_level_intra_rp.container[last(sub_df.index)]
-                            else
-                                graph[a].initial_storage_level[row.year]
-                            end
-                        )
+                        var_storage_level[row.index-1]
                     end
-                ) +
-                profile_aggregation(
-                    sum,
-                    graph[a].rep_periods_profiles,
-                    row.year,
-                    row.year,
-                    ("inflows", rp),
-                    row.time_block_start:row.time_block_end,
-                    0.0,
-                ) * graph[a].storage_inflows[row.year] +
-                incoming_flow_lowest_storage_resolution_intra_rp[row.index] -
-                outgoing_flow_lowest_storage_resolution_intra_rp[row.index],
-                base_name = "storage_intra_rp_balance[$a,$y,$rp,$(row.time_block_start:row.time_block_end)]"
-            ) for (k, row) in enumerate(eachrow(sub_df))
-        ]
+                    @constraint(
+                        model,
+                        var_storage_level[row.index] ==
+                        previous_level +
+                        profile_agg * graph[row.asset].storage_inflows[row.year] +
+                        incoming_flow - outgoing_flow,
+                        base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    )
+                end for (row, incoming_flow, outgoing_flow) in
+                zip(eachrow(cons.indices), cons.expressions[:incoming], cons.expressions[:outgoing])
+            ],
+        )
     end
 
     # - Maximum storage level
