@@ -91,40 +91,20 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
         constraints[:capacity_outgoing_storage_with_binary],
         :profile_times_capacity,
         [
-            if row.asset ∈ Ai[row.year]
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
-                        row.time_block_start:row.time_block_end,
-                        1.0,
-                    ) *
-                    (
-                        graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
-                        accumulated_investment_limit[row.year, row.asset]
-                    ) *
-                    (1 - is_charging)
-                )
-            else
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
-                        row.time_block_start:row.time_block_end,
-                        1.0,
-                    ) *
-                    (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
-                    (1 - is_charging)
-                )
-            end for (row, is_charging) in zip(
+            @expression(
+                model,
+                profile_aggregation(
+                    Statistics.mean,
+                    graph[row.asset].rep_periods_profiles,
+                    row.year,
+                    row.year,
+                    ("availability", row.rep_period),
+                    row.time_block_start:row.time_block_end,
+                    1.0,
+                ) *
+                (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
+                (1 - is_charging)
+            ) for (row, is_charging) in zip(
                 eachrow(constraints[:capacity_outgoing_storage_with_binary].indices),
                 constraints[:capacity_outgoing_storage_with_binary].expressions[:is_charging],
             )
@@ -158,6 +138,35 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
         ],
     )
 
+    attach_expression!(
+        constraints[:capacity_outgoing_investable_storage_limit_with_binary],
+        :profile_times_capacity,
+        [
+            @expression(
+                model,
+                profile_aggregation(
+                    Statistics.mean,
+                    graph[row.asset].rep_periods_profiles,
+                    row.year,
+                    row.year,
+                    ("availability", row.rep_period),
+                    row.time_block_start:row.time_block_end,
+                    1.0,
+                ) *
+                (
+                    graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
+                    accumulated_investment_limit[row.year, row.asset]
+                ) *
+                (1 - is_charging)
+            ) for (row, is_charging) in zip(
+                eachrow(
+                    constraints[:capacity_outgoing_investable_storage_limit_with_binary].indices,
+                ),
+                constraints[:capacity_outgoing_investable_storage_limit_with_binary].expressions[:is_charging],
+            )
+        ],
+    )
+
     # - Create capacity limit for incoming flows
     attach_expression!(
         constraints[:capacity_incoming],
@@ -185,40 +194,20 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
         constraints[:capacity_incoming_storage_with_binary],
         :profile_times_capacity,
         [
-            if row.asset ∈ Ai[row.year]
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
-                        row.time_block_start:row.time_block_end,
-                        1.0,
-                    ) *
-                    (
-                        graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
-                        accumulated_investment_limit[row.year, row.asset]
-                    ) *
-                    is_charging
-                )
-            else
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
-                        row.time_block_start:row.time_block_end,
-                        1.0,
-                    ) *
-                    (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
-                    is_charging
-                )
-            end for (row, is_charging) in zip(
+            @expression(
+                model,
+                profile_aggregation(
+                    Statistics.mean,
+                    graph[row.asset].rep_periods_profiles,
+                    row.year,
+                    row.year,
+                    ("availability", row.rep_period),
+                    row.time_block_start:row.time_block_end,
+                    1.0,
+                ) *
+                (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
+                is_charging
+            ) for (row, is_charging) in zip(
                 eachrow(constraints[:capacity_incoming_storage_with_binary].indices),
                 constraints[:capacity_incoming_storage_with_binary].expressions[:is_charging],
             )
@@ -252,11 +241,45 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
         ],
     )
 
+    attach_expression!(
+        constraints[:capacity_incoming_investable_storage_limit_with_binary],
+        :profile_times_capacity,
+        [
+            @expression(
+                model,
+                profile_aggregation(
+                    Statistics.mean,
+                    graph[row.asset].rep_periods_profiles,
+                    row.year,
+                    row.year,
+                    ("availability", row.rep_period),
+                    row.time_block_start:row.time_block_end,
+                    1.0,
+                ) *
+                (
+                    graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
+                    accumulated_investment_limit[row.year, row.asset]
+                ) *
+                is_charging
+            ) for (row, is_charging) in zip(
+                eachrow(
+                    constraints[:capacity_incoming_investable_storage_limit_with_binary].indices,
+                ),
+                constraints[:capacity_incoming_investable_storage_limit_with_binary].expressions[:is_charging],
+            )
+        ],
+    )
+
     ## Capacity limit constraints (using the highest resolution) for the basic
     # version and the version using binary to avoid charging and discharging at
     # the same time
 
-    for suffix in ("", "_storage_with_binary", "_investable_storage_with_binary")
+    for suffix in (
+        "",
+        "_storage_with_binary",
+        "_investable_storage_with_binary",
+        "_investable_storage_limit_with_binary",
+    )
         cons_name = Symbol("max_output_flows_limit$suffix")
         table_name = Symbol("capacity_outgoing$suffix")
 
@@ -279,7 +302,12 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
         )
     end
 
-    for suffix in ("", "_storage_with_binary", "_investable_storage_with_binary")
+    for suffix in (
+        "",
+        "_storage_with_binary",
+        "_investable_storage_with_binary",
+        "_investable_storage_limit_with_binary",
+    )
         cons_name = Symbol("max_input_flows_limit$suffix")
         table_name = Symbol("capacity_incoming$suffix")
 
