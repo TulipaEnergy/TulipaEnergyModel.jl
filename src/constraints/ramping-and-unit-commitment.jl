@@ -197,7 +197,6 @@ function add_ramping_constraints!(model, variables, constraints, graph, sets)
                 end for row in eachrow(cons.indices)
             ],
         )
-        #base_name = "max_ramp_down_without_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
 
         attach_constraint!(
             model,
