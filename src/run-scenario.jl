@@ -9,6 +9,7 @@ The `optimizer` and `parameters` keyword arguments can be used to change the opt
 (the default is HiGHS) and its parameters. The variables are passed to the [`solve_model`](@ref) function.
 
 Set `write_lp_file = true` to export the problem that is sent to the solver to a file for viewing.
+Set `enable_names = false` to turn off variable and constraint names (faster model creation).
 Set `show_log = false` to silence printing the log while running.
 Specify a `log_file` name to export the log to a file.
 """
@@ -19,6 +20,7 @@ function run_scenario(
     model_parameters_file = "",
     parameters = default_parameters(optimizer),
     write_lp_file = false,
+    enable_names = true,
     log_file = "",
     show_log = true,
 )
@@ -27,7 +29,7 @@ function run_scenario(
         model_parameters_file,
     )
 
-    @timeit to "create_model!" create_model!(energy_problem; write_lp_file)
+    @timeit to "create_model!" create_model!(energy_problem; write_lp_file, enable_names)
 
     @timeit to "solve and store solution" solve_model!(energy_problem, optimizer; parameters)
 
