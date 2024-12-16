@@ -52,5 +52,32 @@ function add_storage_variables!(model, graph, sets, variables)
         JuMP.set_binary(variables[:is_charging].container[row.index])
     end
 
+    ### Cycling conditions
+    df_storage_intra_rp_balance_grouped =
+        DataFrames.groupby(storage_level_intra_rp_indices, [:asset, :year, :rep_period])
+
+    df_storage_inter_rp_balance_grouped =
+        DataFrames.groupby(storage_level_inter_rp_indices, [:asset, :year])
+
+    for ((a, y, _), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
+        # Ordering is assumed
+        if !ismissing(graph[a].initial_storage_level[y])
+            JuMP.set_lower_bound(
+                variables[:storage_level_intra_rp].container[last(sub_df.index)],
+                graph[a].initial_storage_level[y],
+            )
+        end
+    end
+
+    for ((a, y), sub_df) in pairs(df_storage_inter_rp_balance_grouped)
+        # Ordering is assumed
+        if !ismissing(graph[a].initial_storage_level[y])
+            JuMP.set_lower_bound(
+                variables[:storage_level_inter_rp].container[last(sub_df.index)],
+                graph[a].initial_storage_level[y],
+            )
+        end
+    end
+
     return
 end

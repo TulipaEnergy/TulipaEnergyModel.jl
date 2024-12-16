@@ -7,18 +7,12 @@ Adds the storage asset constraints to the model.
 """
 
 function add_storage_constraints!(model, variables, constraints, graph)
-
-    ## INTRA-TEMPORAL CONSTRAINTS (within a representative period)
-    storage_level_intra_rp = variables[:storage_level_intra_rp]
-    df_storage_intra_rp_balance_grouped =
-        DataFrames.groupby(storage_level_intra_rp.indices, [:asset, :year, :rep_period])
-
-    storage_level_inter_rp = variables[:storage_level_inter_rp]
-    df_storage_inter_rp_balance_grouped =
-        DataFrames.groupby(storage_level_inter_rp.indices, [:asset, :year])
+    var_storage_level_intra_rp = variables[:storage_level_intra_rp]
+    var_storage_level_inter_rp = variables[:storage_level_inter_rp]
 
     accumulated_energy_capacity = model[:accumulated_energy_capacity]
 
+    ## INTRA-TEMPORAL CONSTRAINTS (within a representative period)
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_rep_period, cons = constraints[table_name]
         var_storage_level = variables[:storage_level_intra_rp].container
@@ -81,7 +75,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
         [
             @constraint(
                 model,
-                storage_level_intra_rp.container[row.index] ≤
+                var_storage_level_intra_rp.container[row.index] ≤
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.asset].rep_periods_profiles,
@@ -92,7 +86,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
                     1.0,
                 ) * accumulated_energy_capacity[row.year, row.asset],
                 base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-            ) for row in eachrow(storage_level_intra_rp.indices)
+            ) for row in eachrow(var_storage_level_intra_rp.indices)
         ],
     )
 
@@ -104,7 +98,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
         [
             @constraint(
                 model,
-                storage_level_intra_rp.container[row.index] ≥
+                var_storage_level_intra_rp.container[row.index] ≥
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.asset].rep_periods_profiles,
@@ -115,20 +109,9 @@ function add_storage_constraints!(model, variables, constraints, graph)
                     0.0,
                 ) * accumulated_energy_capacity[row.year, row.asset],
                 base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-            ) for row in eachrow(storage_level_intra_rp.indices)
+            ) for row in eachrow(var_storage_level_intra_rp.indices)
         ],
     )
-
-    # - Cycling condition
-    for ((a, y, _), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
-        # Ordering is assumed
-        if !ismissing(graph[a].initial_storage_level[y])
-            JuMP.set_lower_bound(
-                storage_level_intra_rp.container[last(sub_df.index)],
-                graph[a].initial_storage_level[y],
-            )
-        end
-    end
 
     ## INTER-TEMPORAL CONSTRAINTS (between representative periods)
 
@@ -165,7 +148,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
                     # The storage_inflows have been moved here
                     @constraint(
                         model,
-                        storage_level_inter_rp.container[row.index] ==
+                        var_storage_level_inter_rp.container[row.index] ==
                         previous_level + inflows_agg + incoming_flow - outgoing_flow,
                         base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                     )
@@ -187,7 +170,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
         [
             @constraint(
                 model,
-                storage_level_inter_rp.container[row.index] ≤
+                var_storage_level_inter_rp.container[row.index] ≤
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.asset].timeframe_profiles,
@@ -198,7 +181,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
                     1.0,
                 ) * accumulated_energy_capacity[row.year, row.asset],
                 base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-            ) for row in eachrow(storage_level_inter_rp.indices)
+            ) for row in eachrow(var_storage_level_inter_rp.indices)
         ],
     )
 
@@ -210,7 +193,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
         [
             @constraint(
                 model,
-                storage_level_inter_rp.container[row.index] ≥
+                var_storage_level_inter_rp.container[row.index] ≥
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.asset].timeframe_profiles,
@@ -221,18 +204,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
                     0.0,
                 ) * accumulated_energy_capacity[row.year, row.asset],
                 base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-            ) for row in eachrow(storage_level_inter_rp.indices)
+            ) for row in eachrow(var_storage_level_inter_rp.indices)
         ],
     )
-
-    # - Cycling condition
-    for ((a, y), sub_df) in pairs(df_storage_inter_rp_balance_grouped)
-        # Ordering is assumed
-        if !ismissing(graph[a].initial_storage_level[y])
-            JuMP.set_lower_bound(
-                storage_level_inter_rp.container[last(sub_df.index)],
-                graph[a].initial_storage_level[y],
-            )
-        end
-    end
 end
