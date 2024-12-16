@@ -29,9 +29,28 @@ function add_consumer_constraints!(connection, model, constraints)
                 else
                     MathOptInterface.GreaterThan(0.0)
                 end
+                # On demand computation of the mean
+                demand_array = Float64[
+                    row.value for row in DuckDB.query(
+                        connection,
+                        "SELECT profile.value
+                        FROM profiles_rep_periods AS profile
+                        LEFT JOIN assets_profiles
+                            ON assets_profiles.profile_name = profile.profile_name
+                            AND assets_profiles.commission_year = profile.year
+                        WHERE profile_type = 'demand'
+                            AND assets_profiles.asset='$(row.asset)'
+                            AND profile.year=$(row.year)
+                            AND profile.rep_period=$(row.rep_period)
+                            AND profile.timestep >= $(row.time_block_start)
+                            AND profile.timestep <= $(row.time_block_end)
+                        ",
+                    )
+                ]
+                demand_agg = length(demand_array) > 0 ? Statistics.mean(demand_array) : 1.0
                 @constraint(
                     model,
-                    incoming_flow - outgoing_flow - row.demand_agg * row.peak_demand in
+                    incoming_flow - outgoing_flow - demand_agg * row.peak_demand in
                     consumer_balance_sense,
                     base_name = "consumer_balance[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 )
@@ -48,27 +67,15 @@ function _create_consumer_table(connection, cons::String)
         connection,
         "SELECT
             cons.*,
-            ANY_VALUE(asset.type) AS type,
-            ANY_VALUE(asset.consumer_balance_sense) AS consumer_balance_sense,
-            ANY_VALUE(asset_milestone.peak_demand) AS peak_demand,
-            COALESCE(MEAN(profile.value), 1) AS demand_agg
+            asset.type,
+            asset.consumer_balance_sense,
+            asset_milestone.peak_demand,
         FROM $cons AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
         LEFT JOIN asset_milestone
             ON cons.asset = asset_milestone.asset
             AND cons.year = asset_milestone.milestone_year
-        LEFT JOIN assets_profiles
-            ON cons.asset = assets_profiles.asset
-            AND cons.year = assets_profiles.commission_year
-            AND assets_profiles.profile_type = 'demand'
-        LEFT JOIN profiles_rep_periods AS profile
-            ON profile.profile_name = assets_profiles.profile_name
-            AND cons.year = profile.year
-            AND cons.rep_period = profile.rep_period
-            AND cons.time_block_start <= profile.timestep
-            AND profile.timestep <= cons.time_block_end
-        GROUP BY cons.*
         ORDER BY cons.index -- order is important
         ",
     )
