@@ -25,6 +25,7 @@ function compute_constraints_indices(connection)
             :balance_storage_over_clustered_year,
             :min_energy_over_clustered_year,
             :max_energy_over_clustered_year,
+            :transport_flow_limit,
         )
     )
 
@@ -337,6 +338,28 @@ function _create_constraints_tables(connection)
             AND attr.year = asset_milestone.milestone_year
         WHERE
             asset_milestone.max_energy_timeframe_partition IS NOT NULL
+        ",
+    )
+
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE cons_transport_flow_limit AS
+        SELECT
+           nextval('id') AS index,
+           var_flow.from,
+           var_flow.to,
+           var_flow.year,
+           var_flow.rep_period,
+           var_flow.time_block_start,
+           var_flow.time_block_end,
+           var_flow.index AS var_flow_index
+        FROM var_flow
+        LEFT JOIN flow
+            ON flow.from_asset = var_flow.from
+            AND flow.to_asset = var_flow.to
+        WHERE
+            flow.is_transport
         ",
     )
 

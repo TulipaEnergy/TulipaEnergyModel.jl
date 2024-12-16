@@ -138,8 +138,8 @@ function create_model(
     @timeit to "add_transport_constraints!" add_transport_constraints!(
         model,
         variables,
+        constraints,
         graph,
-        sets,
     )
 
     if !isempty(groups)
