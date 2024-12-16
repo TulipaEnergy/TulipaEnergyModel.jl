@@ -15,8 +15,12 @@ function compute_constraints_indices(connection)
             :capacity_outgoing,
             :capacity_outgoing_non_investable_storage_with_binary,
             :capacity_outgoing_investable_storage_with_binary,
+            :limit_units_on,
             :ramping_with_unit_commitment,
+            :max_output_flow_with_basic_unit_commitment,
+            :max_ramp_with_unit_commitment,
             :ramping_without_unit_commitment,
+            :max_ramp_without_unit_commitment,
             :balance_storage_rep_period,
             :balance_storage_over_clustered_year,
             :min_energy_over_clustered_year,
@@ -192,6 +196,13 @@ function _create_constraints_tables(connection)
 
     DuckDB.query(
         connection,
+        "CREATE OR REPLACE TABLE cons_limit_units_on AS
+        SELECT * FROM var_units_on
+        ",
+    )
+
+    DuckDB.query(
+        connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_ramping_with_unit_commitment AS
         SELECT
@@ -202,7 +213,42 @@ function _create_constraints_tables(connection)
             ON t_high.asset = asset.asset
         WHERE
             asset.type in ('producer', 'conversion')
-            AND asset.unit_commitment = true;
+            AND asset.unit_commitment
+        ",
+    )
+
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE cons_max_output_flow_with_basic_unit_commitment AS
+        SELECT
+            nextval('id') AS index,
+            t_high.*
+        FROM t_highest_assets_and_out_flows AS t_high
+        LEFT JOIN asset
+            ON t_high.asset = asset.asset
+        WHERE
+            asset.type in ('producer', 'conversion')
+            AND asset.unit_commitment
+            AND asset.unit_commitment_method = 'basic'
+        ",
+    )
+
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE cons_max_ramp_with_unit_commitment AS
+        SELECT
+           nextval('id') AS index,
+           t_high.*
+        FROM t_highest_assets_and_out_flows AS t_high
+        LEFT JOIN asset
+            ON t_high.asset = asset.asset
+        WHERE
+            asset.type in ('producer', 'conversion')
+            AND asset.ramping
+            AND asset.unit_commitment
+            AND asset.unit_commitment_method = 'basic'
         ",
     )
 
@@ -217,7 +263,27 @@ function _create_constraints_tables(connection)
         LEFT JOIN asset
             ON t_high.asset = asset.asset
         WHERE
-            asset.type in ('producer', 'storage', 'conversion')",
+            asset.type in ('producer', 'storage', 'conversion')
+            AND NOT asset.unit_commitment
+        ",
+    )
+
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE cons_max_ramp_without_unit_commitment AS
+        SELECT
+           nextval('id') AS index,
+           t_high.*
+        FROM t_highest_out_flows AS t_high
+        LEFT JOIN asset
+            ON t_high.asset = asset.asset
+        WHERE
+            asset.type in ('producer', 'storage', 'conversion')
+            AND asset.ramping
+            AND NOT asset.unit_commitment
+            AND asset.unit_commitment_method != 'basic'
+        ",
     )
 
     DuckDB.query(

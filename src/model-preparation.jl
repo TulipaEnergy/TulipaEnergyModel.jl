@@ -366,6 +366,7 @@ function add_expressions_to_constraints!(
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
+
     for table_name in (
         :capacity_incoming,
         :capacity_incoming_non_investable_storage_with_binary,
@@ -390,19 +391,16 @@ function add_expressions_to_constraints!(
             expression_workspace,
         )
     end
-    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
-        constraints[:ramping_without_unit_commitment],
-        variables[:flow],
-        expression_workspace,
-        representative_periods,
-        graph;
-        use_highest_resolution = true,
-        multiply_by_duration = false,
-        add_min_outgoing_flow_duration = true,
+
+    for table_name in (
+        :ramping_without_unit_commitment,
+        :ramping_with_unit_commitment,
+        :max_ramp_with_unit_commitment,
+        :max_ramp_without_unit_commitment,
+        :max_output_flow_with_basic_unit_commitment,
     )
-    if !isempty(constraints[:ramping_with_unit_commitment].indices)
         @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
-            constraints[:ramping_with_unit_commitment],
+            constraints[table_name],
             variables[:flow],
             expression_workspace,
             representative_periods,
@@ -439,16 +437,14 @@ function add_expressions_to_constraints!(
         variables[:is_charging],
         expression_workspace,
     )
-    if !isempty(constraints[:ramping_with_unit_commitment].indices)
+    for table_name in (
+        :ramping_without_unit_commitment,
+        :ramping_with_unit_commitment,
+        :max_output_flow_with_basic_unit_commitment,
+        :max_ramp_with_unit_commitment,
+    )
         @timeit to "add_expression_units_on_terms_intra_rp_constraints!" add_expression_units_on_terms_intra_rp_constraints!(
-            constraints[:ramping_with_unit_commitment],
-            variables[:units_on],
-            expression_workspace,
-        )
-    end
-    if !isempty(constraints[:ramping_without_unit_commitment].indices)
-        @timeit to "add_expression_units_on_terms_intra_rp_constraints!" add_expression_units_on_terms_intra_rp_constraints!(
-            constraints[:ramping_without_unit_commitment],
+            constraints[table_name],
             variables[:units_on],
             expression_workspace,
         )
