@@ -146,7 +146,7 @@ The profiles are linked to assets and flows in the files [`assets-profiles`](@re
 
 Like the [`assets-profiles.csv`](@ref assets-profiles-definition), but for the [inter-temporal constraints](@ref concepts-summary).
 
-#### `groups-data.csv` (optional)
+#### `group-asset.csv` (optional)
 
 This file contains the list of groups and the methods that apply to each group, along with their respective parameters.
 
@@ -443,7 +443,7 @@ A group of assets refers to a set of assets that share certain constraints. For 
 
 In order to define the groups in the model, the following steps are necessary:
 
-1. Create a group in the [`groups-data.csv`](@ref schemas) file by defining the `name` property and its parameters.
+1. Create a group in the [`group-asset.csv`](@ref schemas) file by defining the `name` property and its parameters.
 2. In the file [`graph-assets-data.csv`](@ref schemas), assign assets to the group by setting the `name` in the `group` parameter/column.
 
    > **Note:**
@@ -453,7 +453,7 @@ Groups are useful to represent several common constraints, the following group c
 
 ### [Setting up a maximum or minimum investment limit for a group](@id investment-group-setup)
 
-The mathematical formulation of the maximum and minimum investment limit for group constraints is available [here](@ref investment-group-constraints). The parameters to set up these constraints in the model are in the [`groups-data.csv`](@ref schemas) file.
+The mathematical formulation of the maximum and minimum investment limit for group constraints is available [here](@ref investment-group-constraints). The parameters to set up these constraints in the model are in the [`group-asset.csv`](@ref schemas) file.
 
 - `invest_method = true`. This parameter enables the model to use the investment group constraints.
 - `min_investment_limit` $\neq$ `missing` or `max_investment_limit` $\neq$ `missing`. This value represents the limits that will be imposed on the investment that belongs to the group.
@@ -465,12 +465,12 @@ The mathematical formulation of the maximum and minimum investment limit for gro
 
 ### Example: Group of Assets
 
-Let's explore how the groups are set up in the test case called [Norse](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Norse). First, let's take a look at the groups-data.csv file:
+Let's explore how the groups are set up in the test case called [Norse](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Norse). First, let's take a look at the group-asset.csv file:
 
 ```@example display-group-setup
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../test/inputs/Norse/groups-data.csv" # hide
+input_asset_file = "../../test/inputs/Norse/group-asset.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
 ```
 

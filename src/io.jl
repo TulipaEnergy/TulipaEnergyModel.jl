@@ -28,7 +28,7 @@ function create_internal_structures(connection)
         "assets_timeframe_partitions"
         "assets_timeframe_profiles"
         "flows_rep_periods_partitions"
-        "groups_data"
+        "group_asset"
         "profiles_timeframe"
     ]
     for table in tables_allowed_to_be_missing
@@ -73,7 +73,7 @@ function create_internal_structures(connection)
 
     timeframe = Timeframe(num_periods.period, TulipaIO.get_table(connection, "rep_periods_mapping"))
 
-    groups = [Group(row...) for row in TulipaIO.get_table(Val(:raw), connection, "groups_data")]
+    groups = [Group(row...) for row in TulipaIO.get_table(Val(:raw), connection, "group_asset")]
 
     _query_data_per_year(table_name, col, year_col; where_pairs...) = begin
         # Make sure valid year columns are used

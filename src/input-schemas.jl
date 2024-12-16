@@ -91,7 +91,7 @@ const schemas = (
         ),
     ),
     groups = (
-        # Schema for the groups-data.csv file.
+        # Schema for the group-asset.csv file.
         data = OrderedDict(
             :name => "VARCHAR",                # Name of the Group
             :year => "INTEGER",
@@ -225,7 +225,7 @@ const schema_per_table_name = OrderedDict(
     "flow_milestone" => schemas.flows.milestone,
     "flows_profiles" => schemas.flows.profiles_reference,
     "flows_rep_periods_partitions" => schemas.flows.rep_periods_partition,
-    "groups_data" => schemas.groups.data,
+    "group_asset" => schemas.groups.data,
     "profiles_rep_periods" => schemas.rep_periods.profiles_data,
     "profiles_timeframe" => schemas.timeframe.profiles_data,
     "rep_periods_data" => schemas.rep_periods.data,

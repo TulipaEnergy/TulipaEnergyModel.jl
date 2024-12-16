@@ -113,7 +113,7 @@ apply_to_files_named("assets-timeframe-partitions.csv") do path
 end
 
 # And don't forget groups
-apply_to_files_named("groups-data.csv") do path
+apply_to_files_named("group-asset.csv") do path
     change_file(path) do tcsv
         add_column(tcsv, "year", 2030; position = 2)
     end
