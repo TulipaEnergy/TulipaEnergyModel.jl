@@ -7,62 +7,75 @@ Adds the storage asset constraints to the model.
 """
 
 function add_storage_constraints!(model, variables, constraints, graph)
-
-    ## INTRA-TEMPORAL CONSTRAINTS (within a representative period)
-    storage_level_intra_rp = variables[:storage_level_intra_rp]
-    df_storage_intra_rp_balance_grouped =
-        DataFrames.groupby(storage_level_intra_rp.indices, [:asset, :year, :rep_period])
-
-    storage_level_inter_rp = variables[:storage_level_inter_rp]
-    df_storage_inter_rp_balance_grouped =
-        DataFrames.groupby(storage_level_inter_rp.indices, [:asset, :year])
+    var_storage_level_intra_rp = variables[:storage_level_intra_rp]
+    var_storage_level_inter_rp = variables[:storage_level_inter_rp]
 
     accumulated_energy_capacity = model[:accumulated_energy_capacity]
-    incoming_flow_lowest_storage_resolution_intra_rp =
-        constraints[:balance_storage_rep_period].expressions[:incoming]
-    outgoing_flow_lowest_storage_resolution_intra_rp =
-        constraints[:balance_storage_rep_period].expressions[:outgoing]
-    incoming_flow_storage_inter_rp_balance =
-        constraints[:balance_storage_over_clustered_year].expressions[:incoming]
-    outgoing_flow_storage_inter_rp_balance =
-        constraints[:balance_storage_over_clustered_year].expressions[:outgoing]
 
+    ## INTRA-TEMPORAL CONSTRAINTS (within a representative period)
     # - Balance constraint (using the lowest temporal resolution)
-    for ((a, y, rp), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
-        # This assumes an ordering of the time blocks, that is guaranteed inside
-        # construct_dataframes
-        # The storage_inflows have been moved here
-        model[Symbol("storage_intra_rp_balance_$(a)_$(y)_$(rp)")] = [
-            @constraint(
-                model,
-                storage_level_intra_rp.container[row.index] ==
-                (
-                    if k > 1
-                        storage_level_intra_rp.container[row.index-1] # This assumes contiguous index
+    let table_name = :balance_storage_rep_period, cons = constraints[table_name]
+        var_storage_level = variables[:storage_level_intra_rp].container
+        attach_constraint!(
+            model,
+            cons,
+            :balance_storage_rep_period,
+            [
+                begin
+                    profile_agg = profile_aggregation(
+                        sum,
+                        graph[row.asset].rep_periods_profiles,
+                        row.year,
+                        row.year,
+                        ("inflows", row.rep_period),
+                        row.time_block_start:row.time_block_end,
+                        0.0,
+                    )
+                    initial_storage_level = graph[row.asset].initial_storage_level[row.year]
+
+                    if row.time_block_start == 1 && !ismissing(initial_storage_level)
+                        # Initial storage is a Float64
+                        @constraint(
+                            model,
+                            var_storage_level[row.index] ==
+                            initial_storage_level +
+                            profile_agg * graph[row.asset].storage_inflows[row.year] +
+                            incoming_flow - outgoing_flow,
+                            base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        )
                     else
-                        (
-                            if ismissing(graph[a].initial_storage_level[row.year])
-                                storage_level_intra_rp.container[last(sub_df.index)]
-                            else
-                                graph[a].initial_storage_level[row.year]
-                            end
+                        # Initial storage is the previous level (a JuMP variable)
+                        previous_level::JuMP.VariableRef = if row.time_block_start > 1
+                            var_storage_level[row.index-1]
+                        else
+                            # Find last index of this group
+                            # TODO: Replace by DuckDB call when working on #955
+                            last_index = last(
+                                DataFrames.subset(
+                                    cons.indices,
+                                    [:asset, :year, :rep_period] =>
+                                        (a, y, rp) ->
+                                            a .== row.asset .&&
+                                            y .== row.year .&&
+                                            rp .== row.rep_period;
+                                    view = true,
+                                ).index,
+                            )
+                            var_storage_level[last_index]
+                        end
+                        @constraint(
+                            model,
+                            var_storage_level[row.index] ==
+                            previous_level +
+                            profile_agg * graph[row.asset].storage_inflows[row.year] +
+                            incoming_flow - outgoing_flow,
+                            base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                         )
                     end
-                ) +
-                profile_aggregation(
-                    sum,
-                    graph[a].rep_periods_profiles,
-                    row.year,
-                    row.year,
-                    ("inflows", rp),
-                    row.time_block_start:row.time_block_end,
-                    0.0,
-                ) * graph[a].storage_inflows[row.year] +
-                incoming_flow_lowest_storage_resolution_intra_rp[row.index] -
-                outgoing_flow_lowest_storage_resolution_intra_rp[row.index],
-                base_name = "storage_intra_rp_balance[$a,$y,$rp,$(row.time_block_start:row.time_block_end)]"
-            ) for (k, row) in enumerate(eachrow(sub_df))
-        ]
+                end for (row, incoming_flow, outgoing_flow) in
+                zip(eachrow(cons.indices), cons.expressions[:incoming], cons.expressions[:outgoing])
+            ],
+        )
     end
 
     # - Maximum storage level
@@ -73,7 +86,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
         [
             @constraint(
                 model,
-                storage_level_intra_rp.container[row.index] ≤
+                var_storage_level_intra_rp.container[row.index] ≤
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.asset].rep_periods_profiles,
@@ -84,7 +97,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
                     1.0,
                 ) * accumulated_energy_capacity[row.year, row.asset],
                 base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-            ) for row in eachrow(storage_level_intra_rp.indices)
+            ) for row in eachrow(var_storage_level_intra_rp.indices)
         ],
     )
 
@@ -96,7 +109,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
         [
             @constraint(
                 model,
-                storage_level_intra_rp.container[row.index] ≥
+                var_storage_level_intra_rp.container[row.index] ≥
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.asset].rep_periods_profiles,
@@ -107,51 +120,67 @@ function add_storage_constraints!(model, variables, constraints, graph)
                     0.0,
                 ) * accumulated_energy_capacity[row.year, row.asset],
                 base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-            ) for row in eachrow(storage_level_intra_rp.indices)
+            ) for row in eachrow(var_storage_level_intra_rp.indices)
         ],
     )
-
-    # - Cycling condition
-    for ((a, y, _), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
-        # Ordering is assumed
-        if !ismissing(graph[a].initial_storage_level[y])
-            JuMP.set_lower_bound(
-                storage_level_intra_rp.container[last(sub_df.index)],
-                graph[a].initial_storage_level[y],
-            )
-        end
-    end
 
     ## INTER-TEMPORAL CONSTRAINTS (between representative periods)
 
     # - Balance constraint (using the lowest temporal resolution)
-    for ((a, y), sub_df) in pairs(df_storage_inter_rp_balance_grouped)
+    let table_name = :balance_storage_over_clustered_year, cons = constraints[table_name]
+        var_storage_level = variables[:storage_level_inter_rp].container
+
         # This assumes an ordering of the time blocks, that is guaranteed inside
         # construct_dataframes
         # The storage_inflows have been moved here
-        model[Symbol("storage_inter_rp_balance_$(a)_$(y)")] = [
-            @constraint(
-                model,
-                storage_level_inter_rp.container[row.index] ==
-                (
-                    if k > 1
-                        storage_level_inter_rp.container[row.index-1] # This assumes contiguous index
+        attach_constraint!(
+            model,
+            cons,
+            :balance_storage_over_clustered_year,
+            [
+                begin
+                    initial_storage_level = graph[row.asset].initial_storage_level[row.year]
+
+                    if row.period_block_start == 1 && !ismissing(initial_storage_level)
+                        # Initial storage is a Float64
+                        @constraint(
+                            model,
+                            var_storage_level_inter_rp.container[row.index] ==
+                            initial_storage_level + inflows_agg + incoming_flow - outgoing_flow,
+                            base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+                        )
                     else
-                        (
-                            if ismissing(graph[a].initial_storage_level[row.year])
-                                storage_level_inter_rp.container[last(sub_df.index)]
-                            else
-                                graph[a].initial_storage_level[row.year]
-                            end
+                        # Initial storage is the previous level (a JuMP variable)
+                        previous_level::JuMP.VariableRef = if row.period_block_start > 1
+                            var_storage_level[row.index-1]
+                        else
+                            # TODO: Replace by DuckDB call when working on #955
+                            last_index = last(
+                                DataFrames.subset(
+                                    cons.indices,
+                                    [:asset, :year] =>
+                                        (a, y) -> a .== row.asset .&& y .== row.year;
+                                    view = true,
+                                ).index,
+                            )
+                            var_storage_level[last_index]
+                        end
+
+                        @constraint(
+                            model,
+                            var_storage_level_inter_rp.container[row.index] ==
+                            previous_level + inflows_agg + incoming_flow - outgoing_flow,
+                            base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     end
-                ) +
-                constraints[:balance_storage_over_clustered_year].expressions[:inflows_profile_aggregation][row.index] +
-                incoming_flow_storage_inter_rp_balance[row.index] -
-                outgoing_flow_storage_inter_rp_balance[row.index],
-                base_name = "storage_inter_rp_balance[$a,$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-            ) for (k, row) in enumerate(eachrow(sub_df))
-        ]
+                end for (row, incoming_flow, outgoing_flow, inflows_agg) in zip(
+                    eachrow(cons.indices),
+                    cons.expressions[:incoming],
+                    cons.expressions[:outgoing],
+                    cons.expressions[:inflows_profile_aggregation],
+                )
+            ],
+        )
     end
 
     # - Maximum storage level
@@ -162,7 +191,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
         [
             @constraint(
                 model,
-                storage_level_inter_rp.container[row.index] ≤
+                var_storage_level_inter_rp.container[row.index] ≤
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.asset].timeframe_profiles,
@@ -173,7 +202,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
                     1.0,
                 ) * accumulated_energy_capacity[row.year, row.asset],
                 base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-            ) for row in eachrow(storage_level_inter_rp.indices)
+            ) for row in eachrow(var_storage_level_inter_rp.indices)
         ],
     )
 
@@ -185,7 +214,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
         [
             @constraint(
                 model,
-                storage_level_inter_rp.container[row.index] ≥
+                var_storage_level_inter_rp.container[row.index] ≥
                 profile_aggregation(
                     Statistics.mean,
                     graph[row.asset].timeframe_profiles,
@@ -196,18 +225,7 @@ function add_storage_constraints!(model, variables, constraints, graph)
                     0.0,
                 ) * accumulated_energy_capacity[row.year, row.asset],
                 base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-            ) for row in eachrow(storage_level_inter_rp.indices)
+            ) for row in eachrow(var_storage_level_inter_rp.indices)
         ],
     )
-
-    # - Cycling condition
-    for ((a, y), sub_df) in pairs(df_storage_inter_rp_balance_grouped)
-        # Ordering is assumed
-        if !ismissing(graph[a].initial_storage_level[y])
-            JuMP.set_lower_bound(
-                storage_level_inter_rp.container[last(sub_df.index)],
-                graph[a].initial_storage_level[y],
-            )
-        end
-    end
 end
