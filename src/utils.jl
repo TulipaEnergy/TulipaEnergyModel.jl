@@ -116,6 +116,14 @@ function profile_aggregation(agg, profiles, year, commission_year, key, block, d
     end
 end
 
+function _profile_aggregate(profiles, tuple_key, time_block, agg_function, default_value)
+    if !haskey(profiles, tuple_key)
+        return agg_function(Iterators.repeated(default_value, length(time_block)))
+    end
+    profile_value = profiles[tuple_key]
+    return agg_function(skipmissing(profile_value[time_block]))
+end
+
 """
     create_intervals(years)
 

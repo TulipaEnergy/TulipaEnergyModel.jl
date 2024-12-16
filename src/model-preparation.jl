@@ -1,5 +1,5 @@
 # Tools to prepare data and structures to the model creation
-export create_sets
+export create_sets, prepare_profiles_structure
 
 """
     add_expression_terms_intra_rp_constraints!(df_cons,
@@ -598,5 +598,30 @@ function create_sets(graph, years)
         investable_assets_using_simple_method,
         starting_year_flows_using_simple_method,
         starting_year_using_simple_method,
+    )
+end
+
+function prepare_profiles_structure(connection)
+    return Dict(
+        (row.profile_name, row.year, row.rep_period) => [
+            row.value for row in DuckDB.query(
+                connection,
+                "SELECT profile.value
+                FROM profiles_rep_periods AS profile
+                WHERE
+                    profile.profile_name = '$(row.profile_name)'
+                    AND profile.year = $(row.year)
+                    AND profile.rep_period = $(row.rep_period)
+                ",
+            )
+        ] for row in DuckDB.query(
+            connection,
+            "SELECT DISTINCT
+                profiles.profile_name,
+                profiles.year,
+                profiles.rep_period
+            FROM profiles_rep_periods AS profiles
+            ",
+        )
     )
 end

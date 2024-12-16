@@ -367,6 +367,8 @@ mutable struct EnergyProblem
     }
     variables::Dict{Symbol,TulipaVariable}
     constraints::Dict{Symbol,TulipaConstraint}
+    #profiles::Dict{Tuple{Symbol,Int64,Int64},Vector{Float64}} # (profile_name, year, rep_period) => values
+    profiles::Any
     representative_periods::Dict{Int,Vector{RepresentativePeriod}}
     timeframe::Timeframe
     groups::Vector{Group}
@@ -395,11 +397,14 @@ mutable struct EnergyProblem
         constraints =
             @timeit to "compute_constraints_indices" compute_constraints_indices(connection)
 
+        profiles = @timeit to "prepare_profiles_structure" prepare_profiles_structure(connection)
+
         energy_problem = new(
             connection,
             graph,
             variables,
             constraints,
+            profiles,
             representative_periods,
             timeframe,
             groups,

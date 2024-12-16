@@ -6,26 +6,19 @@ export create_model!, create_model
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
-    graph = energy_problem.graph
-    representative_periods = energy_problem.representative_periods
-    variables = energy_problem.variables
-    constraints = energy_problem.constraints
-    timeframe = energy_problem.timeframe
-    groups = energy_problem.groups
-    model_parameters = energy_problem.model_parameters
-    years = energy_problem.years
-    sets = @timeit to "create_sets" create_sets(graph, years)
+    sets = @timeit to "create_sets" create_sets(energy_problem.graph, energy_problem.years)
     energy_problem.model = @timeit to "create_model" create_model(
         energy_problem.db_connection,
-        graph,
+        energy_problem.graph,
         sets,
-        variables,
-        constraints,
-        representative_periods,
-        years,
-        timeframe,
-        groups,
-        model_parameters;
+        energy_problem.variables,
+        energy_problem.constraints,
+        energy_problem.profiles,
+        energy_problem.representative_periods,
+        energy_problem.years,
+        energy_problem.timeframe,
+        energy_problem.groups,
+        energy_problem.model_parameters;
         kwargs...,
     )
     energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
@@ -46,6 +39,7 @@ function create_model(
     sets,
     variables,
     constraints,
+    profiles,
     representative_periods,
     years,
     timeframe,
@@ -122,7 +116,12 @@ function create_model(
 
     @timeit to "add_energy_constraints!" add_energy_constraints!(model, constraints, graph)
 
-    @timeit to "add_consumer_constraints!" add_consumer_constraints!(connection, model, constraints)
+    @timeit to "add_consumer_constraints!" add_consumer_constraints!(
+        connection,
+        model,
+        constraints,
+        profiles,
+    )
 
     @timeit to "add_storage_constraints!" add_storage_constraints!(
         model,
