@@ -31,9 +31,24 @@ function add_storage_constraints!(model, variables, constraints, graph)
                         row.time_block_start:row.time_block_end,
                         0.0,
                     )
-                    previous_level = if row.time_block_start == 1
-                        # Find last index of this group
-                        if ismissing(graph[row.asset].initial_storage_level[row.year])
+                    initial_storage_level = graph[row.asset].initial_storage_level[row.year]
+
+                    if row.time_block_start == 1 && !ismissing(initial_storage_level)
+                        # Initial storage is a Float64
+                        @constraint(
+                            model,
+                            var_storage_level[row.index] ==
+                            initial_storage_level +
+                            profile_agg * graph[row.asset].storage_inflows[row.year] +
+                            incoming_flow - outgoing_flow,
+                            base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        )
+                    else
+                        # Initial storage is the previous level (a JuMP variable)
+                        previous_level::JuMP.VariableRef = if row.time_block_start > 1
+                            var_storage_level[row.index-1]
+                        else
+                            # Find last index of this group
                             # TODO: Replace by DuckDB call when working on #955
                             last_index = last(
                                 DataFrames.subset(
@@ -47,20 +62,16 @@ function add_storage_constraints!(model, variables, constraints, graph)
                                 ).index,
                             )
                             var_storage_level[last_index]
-                        else
-                            graph[row.asset].initial_storage_level[row.year]
                         end
-                    else
-                        var_storage_level[row.index-1]
+                        @constraint(
+                            model,
+                            var_storage_level[row.index] ==
+                            previous_level +
+                            profile_agg * graph[row.asset].storage_inflows[row.year] +
+                            incoming_flow - outgoing_flow,
+                            base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        )
                     end
-                    @constraint(
-                        model,
-                        var_storage_level[row.index] ==
-                        previous_level +
-                        profile_agg * graph[row.asset].storage_inflows[row.year] +
-                        incoming_flow - outgoing_flow,
-                        base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                    )
                 end for (row, incoming_flow, outgoing_flow) in
                 zip(eachrow(cons.indices), cons.expressions[:incoming], cons.expressions[:outgoing])
             ],
@@ -118,16 +129,31 @@ function add_storage_constraints!(model, variables, constraints, graph)
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_over_clustered_year, cons = constraints[table_name]
         var_storage_level = variables[:storage_level_inter_rp].container
+
+        # This assumes an ordering of the time blocks, that is guaranteed inside
+        # construct_dataframes
+        # The storage_inflows have been moved here
         attach_constraint!(
             model,
             cons,
             :balance_storage_over_clustered_year,
             [
                 begin
-                    previous_level = if row.period_block_start > 1
-                        var_storage_level[row.index-1]
+                    initial_storage_level = graph[row.asset].initial_storage_level[row.year]
+
+                    if row.period_block_start == 1 && !ismissing(initial_storage_level)
+                        # Initial storage is a Float64
+                        @constraint(
+                            model,
+                            var_storage_level_inter_rp.container[row.index] ==
+                            initial_storage_level + inflows_agg + incoming_flow - outgoing_flow,
+                            base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+                        )
                     else
-                        if ismissing(graph[row.asset].initial_storage_level[row.year])
+                        # Initial storage is the previous level (a JuMP variable)
+                        previous_level::JuMP.VariableRef = if row.period_block_start > 1
+                            var_storage_level[row.index-1]
+                        else
                             # TODO: Replace by DuckDB call when working on #955
                             last_index = last(
                                 DataFrames.subset(
@@ -138,20 +164,15 @@ function add_storage_constraints!(model, variables, constraints, graph)
                                 ).index,
                             )
                             var_storage_level[last_index]
-                        else
-                            graph[row.asset].initial_storage_level[row.year]
                         end
-                    end
 
-                    # This assumes an ordering of the time blocks, that is guaranteed inside
-                    # construct_dataframes
-                    # The storage_inflows have been moved here
-                    @constraint(
-                        model,
-                        var_storage_level_inter_rp.container[row.index] ==
-                        previous_level + inflows_agg + incoming_flow - outgoing_flow,
-                        base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-                    )
+                        @constraint(
+                            model,
+                            var_storage_level_inter_rp.container[row.index] ==
+                            previous_level + inflows_agg + incoming_flow - outgoing_flow,
+                            base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+                        )
+                    end
                 end for (row, incoming_flow, outgoing_flow, inflows_agg) in zip(
                     eachrow(cons.indices),
                     cons.expressions[:incoming],
