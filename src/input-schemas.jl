@@ -93,8 +93,8 @@ const schemas = (
     groups = (
         # Schema for the group-asset.csv file.
         data = OrderedDict(
-            :name => "VARCHAR",                # Name of the Group
-            :year => "INTEGER",
+            :group => "VARCHAR",               # Name of the Group
+            :milestone_year => "INTEGER",
             :invest_method => "BOOLEAN",       # true -> activate group constraints; false -> no group investment constraints
             :min_investment_limit => "DOUBLE", # MW (Missing -> no limit)
             :max_investment_limit => "DOUBLE", # MW (Missing -> no limit)
