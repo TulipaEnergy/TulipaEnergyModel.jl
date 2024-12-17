@@ -12,11 +12,9 @@ Depth = 3
 For our first example, let's use a tiny existing dataset.
 Inside the code for this package, you can find the folder [`test/inputs/Tiny`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Tiny), which includes all the files necessary to create a model and solve it.
 
-The files inside the "Tiny" folder define the assets and flows data, their profiles, and their time resolution, as well as define the representative periods and which periods in the full problem formulation they represent.¹
+The files inside the "Tiny" folder define the assets and flows data, their profiles, and their time resolution, as well as define the representative periods and which periods in the full problem formulation they represent.
 
 For more details about these files, see [Input](@ref input).
-
-¹ _Ignore bad-assets-data.csv, which is used for testing._
 
 ### Run scenario
 

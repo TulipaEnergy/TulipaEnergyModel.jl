@@ -340,6 +340,20 @@ if energy_problem.termination_status == INFEASIBLE
 end
 ```
 
+## [Speed improvements in the model creation](@id need-for-speed)
+
+If you want to speed-up model creation, consider disabling the naming of variables and constraints. Of course, removing the names will make debugging difficult (or impossible) - so enable/disable naming as needed for your analysis.
+
+```julia
+# Disable names while using run_scenario
+run_scenario(connection; enable_names = false)
+
+# OR while using create_model!
+create_model!(energy_problem; enable_names = false)
+```
+
+For more information, see the [JuMP documentation](https://jump.dev/JuMP.jl/stable/tutorials/getting_started/performance_tips/#Disable-string-names).
+
 ## Storage specific setups
 
 ### [Seasonal and non-seasonal storage](@id seasonal-setup)
