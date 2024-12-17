@@ -146,6 +146,7 @@ function create_model(
         @timeit to "add_group_constraints!" add_group_constraints!(
             model,
             variables,
+            constraints,
             graph,
             sets,
             groups,
