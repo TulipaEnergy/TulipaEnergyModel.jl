@@ -107,9 +107,11 @@ function create_model(
     # TODO: Pass sets instead of the explicit values
     ## Constraints
     @timeit to "add_capacity_constraints!" add_capacity_constraints!(
+        connection,
         model,
         variables,
         constraints,
+        profiles,
         graph,
         sets,
     )
