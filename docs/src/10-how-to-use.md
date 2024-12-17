@@ -352,7 +352,7 @@ run_scenario(connection; enable_names = false)
 create_model!(energy_problem; enable_names = false)
 ```
 
-For more information, see the [JuMP documentation](https://jump.dev/JuMP.jl/stable/api/JuMP/#set_string_names_on_creation).
+For more information, see the [JuMP documentation](https://jump.dev/JuMP.jl/stable/tutorials/getting_started/performance_tips/#Disable-string-names).
 
 ## Storage specific setups
 
