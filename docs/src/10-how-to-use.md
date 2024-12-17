@@ -340,7 +340,7 @@ if energy_problem.termination_status == INFEASIBLE
 end
 ```
 
-## [Speed improvements](@id need-for-speed)
+## [Speed improvements in the model creation](@id need-for-speed)
 
 If you want to speed-up model creation, consider disabling the naming of variables and constraints. Of course, removing the names will make debugging difficult (or impossible) - so enable/disable naming as needed for your analysis.
 
