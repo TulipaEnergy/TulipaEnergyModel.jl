@@ -32,7 +32,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
     let table_name = :capacity_outgoing, cons = constraints[table_name]
-        indices = _append_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices(connection, table_name)
         attach_expression!(
             cons,
             :profile_times_capacity,
@@ -81,7 +81,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     let table_name = :capacity_outgoing_non_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _append_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices(connection, table_name)
 
         attach_expression!(
             cons,
@@ -110,7 +110,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     let table_name = :capacity_outgoing_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _append_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices(connection, table_name)
 
         attach_expression!(
             cons,
@@ -165,7 +165,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
 
     # - Create capacity limit for incoming flows
     let table_name = :capacity_incoming, cons = constraints[table_name]
-        indices = _append_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices(connection, table_name)
         attach_expression!(
             cons,
             :profile_times_capacity,
@@ -193,7 +193,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     let table_name = :capacity_incoming_non_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _append_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices(connection, table_name)
 
         attach_expression!(
             cons,
@@ -222,7 +222,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     let table_name = :capacity_incoming_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _append_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices(connection, table_name)
 
         attach_expression!(
             cons,
@@ -372,7 +372,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     end
 end
 
-function _append_data_to_indices(connection, table_name)
+function _append_capacity_data_to_indices(connection, table_name)
     return DuckDB.query(
         connection,
         "SELECT
