@@ -331,6 +331,16 @@ mutable struct Solution
     duals::Union{Nothing,Dict{Symbol,Vector{Float64}}}
 end
 
+mutable struct ProfileLookup
+    # The integers here are Int32 because they are obtained directly from DuckDB
+    #
+    # rep_period[(asset, year, rep_period)]
+    rep_period::Dict{Tuple{String,Int32,Int32},Vector{Float64}}
+
+    # over_clustered_year[(asset, year)]
+    over_clustered_year::Dict{Tuple{String,Int32},Vector{Float64}}
+end
+
 """
 Structure to hold all parts of an energy problem. It is a wrapper around various other relevant structures.
 It hides the complexity behind the energy problem, making the usage more friendly, although more verbose.
@@ -367,8 +377,7 @@ mutable struct EnergyProblem
     }
     variables::Dict{Symbol,TulipaVariable}
     constraints::Dict{Symbol,TulipaConstraint}
-    #profiles::Dict{Tuple{Symbol,Int64,Int64},Vector{Float64}} # (profile_name, year, rep_period) => values
-    profiles::Any
+    profiles::ProfileLookup
     representative_periods::Dict{Int,Vector{RepresentativePeriod}}
     timeframe::Timeframe
     groups::Vector{Group}

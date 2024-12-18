@@ -602,7 +602,7 @@ function create_sets(graph, years)
 end
 
 function prepare_profiles_structure(connection)
-    return Dict(
+    rep_period = Dict(
         (row.profile_name, row.year, row.rep_period) => [
             row.value for row in DuckDB.query(
                 connection,
@@ -624,4 +624,27 @@ function prepare_profiles_structure(connection)
             ",
         )
     )
+
+    over_clustered_year = Dict(
+        (row.profile_name, row.year) => [
+            row.value for row in DuckDB.query(
+                connection,
+                "SELECT profile.value
+                FROM profiles_timeframe AS profile
+                WHERE
+                    profile.profile_name = '$(row.profile_name)'
+                    AND profile.year = $(row.year)
+                ",
+            )
+        ] for row in DuckDB.query(
+            connection,
+            "SELECT DISTINCT
+                profiles.profile_name,
+                profiles.year
+            FROM profiles_timeframe AS profiles
+            ",
+        )
+    )
+
+    return ProfileLookup(rep_period, over_clustered_year)
 end

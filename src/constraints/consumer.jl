@@ -14,14 +14,13 @@ Adds the consumer asset constraints to the model.
 function add_consumer_constraints!(connection, model, constraints, profiles)
     cons = constraints[:balance_consumer]
 
-    # TODO: Store the name of the table in the TulipaConstraint
-    table = _create_consumer_table(connection, "cons_balance_consumer")
+    table = _create_consumer_table(connection)
 
     # - Balance constraint (using the lowest temporal resolution)
     attach_constraint!(
         model,
         cons,
-        :consumer_balance,
+        :balance_consumer,
         [
             begin
                 consumer_balance_sense = if ismissing(row.consumer_balance_sense)
@@ -31,7 +30,7 @@ function add_consumer_constraints!(connection, model, constraints, profiles)
                 end
                 # On demand computation of the mean
                 demand_agg = _profile_aggregate(
-                    profiles,
+                    profiles.rep_period,
                     (row.profile_name, row.year, row.rep_period),
                     row.time_block_start:row.time_block_end,
                     Statistics.mean,
@@ -51,7 +50,7 @@ function add_consumer_constraints!(connection, model, constraints, profiles)
     return
 end
 
-function _create_consumer_table(connection, cons::String)
+function _create_consumer_table(connection)
     #=
         In the query below, the "filtering" by profile_type = 'demand' must
         happen at the join clause, i.e., in the ON ... AND ... list. This is
@@ -72,7 +71,7 @@ function _create_consumer_table(connection, cons::String)
             asset.consumer_balance_sense,
             asset_milestone.peak_demand,
             assets_profiles.profile_name,
-        FROM $cons AS cons
+        FROM cons_balance_consumer AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
         LEFT JOIN asset_milestone
