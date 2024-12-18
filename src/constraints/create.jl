@@ -26,6 +26,8 @@ function compute_constraints_indices(connection)
             :min_energy_over_clustered_year,
             :max_energy_over_clustered_year,
             :transport_flow_limit,
+            :group_max_investment_limit,
+            :group_min_investment_limit,
         )
     )
 
@@ -360,6 +362,38 @@ function _create_constraints_tables(connection)
             AND flow.to_asset = var_flow.to
         WHERE
             flow.is_transport
+        ",
+    )
+
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE cons_group_max_investment_limit AS
+        SELECT
+            nextval('id') AS index,
+            ga.name,
+            ga.milestone_year,
+            ga.max_investment_limit,
+        FROM group_asset AS ga
+        WHERE
+            ga.invest_method AND
+            ga.max_investment_limit IS NOT NULL
+        ",
+    )
+
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE cons_group_min_investment_limit AS
+        SELECT
+            nextval('id') AS index,
+            ga.name,
+            ga.milestone_year,
+            ga.min_investment_limit,
+        FROM group_asset AS ga
+        WHERE
+            ga.invest_method AND
+            ga.min_investment_limit IS NOT NULL
         ",
     )
 
