@@ -358,15 +358,4 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
             ],
         )
     end
-
-    # - Lower limit for flows associated with assets
-    assets_with_non_negative_flows_indices = DataFrames.subset(
-        flows_indices,
-        [:from, :to] => DataFrames.ByRow(
-            (from, to) -> from in Ap || from in Acv || from in As || to in Acv || to in As,
-        ),
-    )
-    for row in eachrow(assets_with_non_negative_flows_indices)
-        JuMP.set_lower_bound(flow[row.index], 0.0)
-    end
 end

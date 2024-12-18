@@ -7,16 +7,43 @@ Adds flow variables to the optimization `model` based on data from the `variable
 The flow variables are created using the `@variable` macro for each row in the `:flows` dataframe.
 
 """
-function add_flow_variables!(model, variables)
+function add_flow_variables!(connection, model, variables)
     # Unpacking the variable indices
     flows_indices = variables[:flow].indices
+    indices = _create_flow_table(connection)
+
+    lower_bound(row) =
+        if row.from_asset_type in ("producer", "conversion", "storage") ||
+           row.to_asset_type in ("conversion", "storage")
+            0.0
+        else
+            -Inf
+        end
 
     variables[:flow].container = [
         @variable(
             model,
+            lower_bound = lower_bound(row),
             base_name = "flow[($(row.from), $(row.to)), $(row.year), $(row.rep_period), $(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(flows_indices)
+        ) for row in indices
     ]
 
     return
+end
+
+function _create_flow_table(connection)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            var_flow.*,
+            from_asset.type AS from_asset_type,
+            to_asset.type AS to_asset_type,
+        FROM var_flow
+        LEFT JOIN asset AS from_asset
+            ON var_flow.from = from_asset.asset
+        LEFT JOIN asset AS to_asset
+            ON var_flow.to = to_asset.asset
+        ORDER BY var_flow.index
+        ",
+    )
 end
