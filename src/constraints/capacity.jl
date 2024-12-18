@@ -32,7 +32,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
     let table_name = :capacity_outgoing, cons = constraints[table_name]
-        indices = _attach_profile_name(connection, table_name)
+        indices = _append_data_to_indices(connection, table_name)
         attach_expression!(
             cons,
             :profile_times_capacity,
@@ -40,7 +40,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
                 if row.asset ∈ decommissionable_assets_using_compact_method
                     @expression(
                         model,
-                        graph[row.asset].capacity * sum(
+                        row.capacity * sum(
                             profile_aggregation(
                                 Statistics.mean,
                                 graph[row.asset].rep_periods_profiles,
@@ -69,7 +69,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
                     @expression(
                         model,
                         availability_agg *
-                        graph[row.asset].capacity *
+                        row.capacity *
                         accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
                     )
                 end for row in indices
@@ -81,7 +81,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     let table_name = :capacity_outgoing_non_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _attach_profile_name(connection, table_name)
+        indices = _append_data_to_indices(connection, table_name)
 
         attach_expression!(
             cons,
@@ -98,7 +98,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
                     @expression(
                         model,
                         availability_agg *
-                        graph[row.asset].capacity *
+                        row.capacity *
                         accumulated_initial_units[row.asset, row.year] *
                         (1 - is_charging)
                     )
@@ -110,7 +110,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     let table_name = :capacity_outgoing_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _attach_profile_name(connection, table_name)
+        indices = _append_data_to_indices(connection, table_name)
 
         attach_expression!(
             cons,
@@ -127,7 +127,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
                     @expression(
                         model,
                         availability_agg *
-                        graph[row.asset].capacity *
+                        row.capacity *
                         (
                             accumulated_initial_units[row.asset, row.year] * (1 - is_charging) +
                             accumulated_investment_units_using_simple_method[row.asset, row.year]
@@ -153,9 +153,8 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
                         model,
                         availability_agg *
                         (
-                            graph[row.asset].capacity *
-                            accumulated_initial_units[row.asset, row.year] +
-                            graph[row.asset].investment_limit[row.year]
+                            row.capacity * accumulated_initial_units[row.asset, row.year] +
+                            row.investment_limit
                         ) *
                         (1 - is_charging)
                     )
@@ -166,7 +165,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
 
     # - Create capacity limit for incoming flows
     let table_name = :capacity_incoming, cons = constraints[table_name]
-        indices = _attach_profile_name(connection, table_name)
+        indices = _append_data_to_indices(connection, table_name)
         attach_expression!(
             cons,
             :profile_times_capacity,
@@ -182,7 +181,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
                     @expression(
                         model,
                         availability_agg *
-                        graph[row.asset].capacity *
+                        row.capacity *
                         accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
                     )
                 end for row in indices
@@ -194,7 +193,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     let table_name = :capacity_incoming_non_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _attach_profile_name(connection, table_name)
+        indices = _append_data_to_indices(connection, table_name)
 
         attach_expression!(
             cons,
@@ -211,7 +210,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
                     @expression(
                         model,
                         availability_agg *
-                        graph[row.asset].capacity *
+                        row.capacity *
                         accumulated_initial_units[row.asset, row.year] *
                         is_charging
                     )
@@ -223,7 +222,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     let table_name = :capacity_incoming_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _attach_profile_name(connection, table_name)
+        indices = _append_data_to_indices(connection, table_name)
 
         attach_expression!(
             cons,
@@ -240,7 +239,7 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
                     @expression(
                         model,
                         availability_agg *
-                        graph[row.asset].capacity *
+                        row.capacity *
                         (
                             accumulated_initial_units[row.asset, row.year] * is_charging +
                             accumulated_investment_units_using_simple_method[row.asset, row.year]
@@ -266,9 +265,8 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
                         model,
                         availability_agg *
                         (
-                            graph[row.asset].capacity *
-                            accumulated_initial_units[row.asset, row.year] +
-                            graph[row.asset].investment_limit[row.year]
+                            row.capacity * accumulated_initial_units[row.asset, row.year] +
+                            row.investment_limit
                         ) *
                         is_charging
                     )
@@ -374,13 +372,20 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     end
 end
 
-function _attach_profile_name(connection, table_name)
+function _append_data_to_indices(connection, table_name)
     return DuckDB.query(
         connection,
         "SELECT
             cons.*,
+            asset.capacity,
+            asset_commission.investment_limit,
             assets_profiles.profile_name
         FROM cons_$table_name AS cons
+        LEFT JOIN asset
+            ON cons.asset = asset.asset
+        LEFT JOIN asset_commission
+            ON cons.asset = asset_commission.asset
+            AND cons.year = asset_commission.commission_year
         LEFT OUTER JOIN assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
