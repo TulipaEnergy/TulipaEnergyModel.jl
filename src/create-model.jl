@@ -142,10 +142,11 @@ function create_model(
     @timeit to "add_conversion_constraints!" add_conversion_constraints!(model, constraints)
 
     @timeit to "add_transport_constraints!" add_transport_constraints!(
+        connection,
         model,
         variables,
         constraints,
-        graph,
+        profiles,
     )
 
     if !isempty(groups)
