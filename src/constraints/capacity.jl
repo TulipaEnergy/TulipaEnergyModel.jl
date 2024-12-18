@@ -9,18 +9,14 @@ Adds the capacity constraints for all asset types to the model
 function add_capacity_constraints!(model, variables, constraints, graph, sets)
     ## unpack from sets
     Acv = sets[:Acv]
-    Ai = sets[:Ai]
     Ap = sets[:Ap]
     As = sets[:As]
-    Asb = sets[:Asb]
     V_all = sets[:V_all]
-    Y = sets[:Y]
     accumulated_set_using_compact_method = sets[:accumulated_set_using_compact_method]
     accumulated_set_using_compact_method_lookup = sets[:accumulated_set_using_compact_method_lookup]
     accumulated_units_lookup = sets[:accumulated_units_lookup]
     decommissionable_assets_using_compact_method =
         sets[:decommissionable_assets_using_compact_method]
-    decommissionable_assets_using_simple_method = sets[:decommissionable_assets_using_simple_method]
 
     ## unpack from model
     accumulated_initial_units = model[:accumulated_initial_units]
@@ -80,13 +76,6 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
             ],
         )
     end
-
-    # - Create accumulated investment limit for the use of binary storage method with investments
-    accumulated_investment_limit = @expression(
-        model,
-        accumulated_investment_limit[y in Y, a in Ai[y]∩Asb],
-        graph[a].investment_limit[y]
-    )
 
     # - Create capacity limit for outgoing flows with binary is_charging for storage assets
     let table_name = :capacity_outgoing_non_investable_storage_with_binary,
@@ -160,7 +149,7 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
                     ) *
                     (
                         graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
-                        accumulated_investment_limit[row.year, row.asset]
+                        graph[row.asset].investment_limit[row.year]
                     ) *
                     (1 - is_charging)
                 ) for
@@ -265,7 +254,7 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
                     ) *
                     (
                         graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
-                        accumulated_investment_limit[row.year, row.asset]
+                        graph[row.asset].investment_limit[row.year]
                     ) *
                     is_charging
                 ) for
@@ -368,16 +357,5 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
                 )
             ],
         )
-    end
-
-    # - Lower limit for flows associated with assets
-    assets_with_non_negative_flows_indices = DataFrames.subset(
-        flows_indices,
-        [:from, :to] => DataFrames.ByRow(
-            (from, to) -> from in Ap || from in Acv || from in As || to in Acv || to in As,
-        ),
-    )
-    for row in eachrow(assets_with_non_negative_flows_indices)
-        JuMP.set_lower_bound(flow[row.index], 0.0)
     end
 end

@@ -68,7 +68,7 @@ function create_model(
     JuMP.set_string_names_on_creation(model, enable_names)
 
     ## Variables
-    @timeit to "add_flow_variables!" add_flow_variables!(model, variables)
+    @timeit to "add_flow_variables!" add_flow_variables!(connection, model, variables)
     @timeit to "add_investment_variables!" add_investment_variables!(model, graph, sets, variables)
     @timeit to "add_unit_commitment_variables!" add_unit_commitment_variables!(
         model,
