@@ -116,7 +116,12 @@ function create_model(
         sets,
     )
 
-    @timeit to "add_energy_constraints!" add_energy_constraints!(model, constraints, graph)
+    @timeit to "add_energy_constraints!" add_energy_constraints!(
+        connection,
+        model,
+        constraints,
+        profiles,
+    )
 
     @timeit to "add_consumer_constraints!" add_consumer_constraints!(
         connection,
