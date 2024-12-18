@@ -26,6 +26,7 @@ end
     sets = create_sets(graph, years)
     variables = compute_variables_indices(connection)
     constraints = compute_constraints_indices(connection)
+    profiles = prepare_profiles_structure(connection)
 
     # Create model
     model = create_model(
@@ -34,6 +35,7 @@ end
         sets,
         variables,
         constraints,
+        profiles,
         representative_periods,
         years,
         timeframe,
