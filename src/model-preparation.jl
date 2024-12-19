@@ -54,8 +54,15 @@ function add_expression_terms_intra_rp_constraints!(
         conditions_to_add_min_outgoing_flow_duration =
             add_min_outgoing_flow_duration && case.expr_key == :outgoing
         if conditions_to_add_min_outgoing_flow_duration
-            # TODO: What to do about this?
-            cons.indices[!, :min_outgoing_flow_duration] .= 1
+            # TODO: Evaluate what to do with this
+            # Originally, this was a column attach to the indices Assuming the
+            # indices will be DuckDB tables, that would be problematic,
+            # although possible However, that would be the only place that
+            # DuckDB tables are changed after creation - notice that
+            # constraints create new tables when a new column is necessary The
+            # current solution is to attach as a coefficient, a new field of
+            # TulipaConstraint created just for this purpose
+            attach_coefficient!(cons, :min_outgoing_flow_duration, ones(num_rows))
         end
         grouped_flows = DataFrames.groupby(flow.indices, [:year, :rep_period, case.asset_match])
         for ((year, rep_period, asset), sub_df) in pairs(grouped_cons)
@@ -105,7 +112,8 @@ function add_expression_terms_intra_rp_constraints!(
                 cons.expressions[case.expr_key][row.index] =
                     agg(@view workspace[row.time_block_start:row.time_block_end])
                 if conditions_to_add_min_outgoing_flow_duration
-                    row[:min_outgoing_flow_duration] = outgoing_flow_durations
+                    cons.coefficients[:min_outgoing_flow_duration][row.index] =
+                        outgoing_flow_durations
                 end
             end
         end
