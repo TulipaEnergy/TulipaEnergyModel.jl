@@ -131,10 +131,11 @@ function create_model(
     )
 
     @timeit to "add_storage_constraints!" add_storage_constraints!(
+        connection,
         model,
         variables,
         constraints,
-        graph,
+        profiles,
     )
 
     @timeit to "add_hub_constraints!" add_hub_constraints!(model, constraints)
