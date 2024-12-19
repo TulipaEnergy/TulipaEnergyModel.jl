@@ -58,6 +58,7 @@ mutable struct TulipaConstraint
     num_rows::Int
     constraint_names::Vector{Symbol}
     expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
+    coefficients::Dict{Symbol,Vector{Float64}} # TODO: This was created only because of min_outgoing_flow_duration
     duals::Dict{Symbol,Vector{Float64}}
 
     function TulipaConstraint(connection, table_name::String)
@@ -69,6 +70,7 @@ mutable struct TulipaConstraint
                 row in DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM $table_name")
             ]), # This loop is required to access the query resulted, because it's a lazy struct
             Symbol[],
+            Dict(),
             Dict(),
             Dict(),
         )
@@ -160,6 +162,22 @@ end
 #     model[name] = container
 #     return nothing
 # end
+
+"""
+    attach_coefficient!(cons, name, container)
+
+Attach a coefficient named `name` stored in `container`.
+This checks that the `container` length matches the stored `indices` number of rows.
+"""
+function attach_coefficient!(cons::TulipaConstraint, name::Symbol, container)
+    if length(container) != cons.num_rows
+        error(
+            "The number of coefficients does not match the number of rows in the indices of $name",
+        )
+    end
+    cons.coefficients[name] = container
+    return nothing
+end
 
 """
 Structure to hold the data of one representative period.
