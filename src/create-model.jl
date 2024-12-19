@@ -17,7 +17,6 @@ function create_model!(energy_problem; kwargs...)
         energy_problem.representative_periods,
         energy_problem.years,
         energy_problem.timeframe,
-        energy_problem.groups,
         energy_problem.model_parameters;
         kwargs...,
     )
@@ -29,9 +28,9 @@ function create_model!(energy_problem; kwargs...)
 end
 
 """
-    model = create_model(connection, graph, representative_periods, dataframes, timeframe, groups; write_lp_file = false, enable_names = true)
+    model = create_model(connection, graph, representative_periods, dataframes, timeframe; write_lp_file = false, enable_names = true)
 
-Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), timeframe, and groups.
+Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), and timeframe.
 """
 function create_model(
     connection,
@@ -43,7 +42,6 @@ function create_model(
     representative_periods,
     years,
     timeframe,
-    groups,
     model_parameters;
     write_lp_file = false,
     enable_names = true,
@@ -150,16 +148,12 @@ function create_model(
         profiles,
     )
 
-    if !isempty(groups)
-        @timeit to "add_group_constraints!" add_group_constraints!(
-            model,
-            variables,
-            constraints,
-            graph,
-            sets,
-            groups,
-        )
-    end
+    @timeit to "add_group_constraints!" add_group_constraints!(
+        connection,
+        model,
+        variables,
+        constraints,
+    )
 
     if !isempty(constraints[:ramping_with_unit_commitment].indices)
         @timeit to "add_ramping_constraints!" add_ramping_constraints!(

@@ -21,7 +21,7 @@ end
     _read_csv_folder(connection, dir)
 
     # Internal data and structures pre-model
-    graph, representative_periods, timeframe, groups, years = create_internal_structures(connection)
+    graph, representative_periods, timeframe, years = create_internal_structures(connection)
     model_parameters = ModelParameters(connection)
     sets = create_sets(graph, years)
     variables = compute_variables_indices(connection)
@@ -39,7 +39,6 @@ end
         representative_periods,
         years,
         timeframe,
-        groups,
         model_parameters,
     )
 

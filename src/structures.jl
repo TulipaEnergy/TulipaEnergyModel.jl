@@ -7,7 +7,6 @@ export GraphAssetData,
     PeriodsBlock,
     TimestepsBlock,
     Timeframe,
-    Group,
     Year
 
 const TimestepsBlock = UnitRange{Int}
@@ -321,21 +320,6 @@ function GraphFlowData(args...)
     )
 end
 
-"""
-Structure to hold the group data
-"""
-struct Group
-    name::String
-    year::Int
-    invest_method::Bool
-    min_investment_limit::Union{Missing,Float64}
-    max_investment_limit::Union{Missing,Float64}
-
-    function Group(name, year, invest_method, min_investment_limit, max_investment_limit)
-        return new(name, year, invest_method, min_investment_limit, max_investment_limit)
-    end
-end
-
 mutable struct Solution
     assets_investment::Dict{Tuple{Int,String},Float64}
     assets_investment_energy::Dict{Tuple{Int,String},Float64} # for storage assets with energy method
@@ -369,7 +353,6 @@ It hides the complexity behind the energy problem, making the usage more friendl
 - `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
 - `timeframe`: The number of periods of the `representative_periods`.
 - `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
-- `groups`: The input data of the groups to create constraints that are common to a set of assets in the model.
 - `model_parameters`: The model parameters.
 - `model`: A JuMP.Model object representing the optimization model.
 - `solved`: A boolean indicating whether the `model` has been solved or not.
@@ -398,7 +381,6 @@ mutable struct EnergyProblem
     profiles::ProfileLookup
     representative_periods::Dict{Int,Vector{RepresentativePeriod}}
     timeframe::Timeframe
-    groups::Vector{Group}
     years::Vector{Year}
     model_parameters::ModelParameters
     model::Union{JuMP.Model,Nothing}
@@ -416,7 +398,7 @@ mutable struct EnergyProblem
     function EnergyProblem(connection; model_parameters_file = "")
         model = JuMP.Model()
 
-        graph, representative_periods, timeframe, groups, years =
+        graph, representative_periods, timeframe, years =
             @timeit to "create_internal_structure" create_internal_structures(connection)
 
         variables = @timeit to "compute_variables_indices" compute_variables_indices(connection)
@@ -434,7 +416,6 @@ mutable struct EnergyProblem
             profiles,
             representative_periods,
             timeframe,
-            groups,
             years,
             ModelParameters(connection, model_parameters_file),
             nothing,
