@@ -26,12 +26,12 @@ apply_to_files_named("assets-data.csv") do path
             tcsv.csv = unique(old_tcsv.csv[:, indices])
 
             idx = findfirst(names(tcsv.csv) .== "investment_cost")
-            add_column(tcsv, "investment_method", "simple"; unit = "{none;simple;compact}")
+            return add_column(tcsv, "investment_method", "simple"; unit = "{none;simple;compact}")
         end
 
         indices = setdiff(1:length(old_tcsv.units), columnindex.(Ref(old_tcsv.csv), static_cols))
         old_tcsv.units = old_tcsv.units[indices]
-        old_tcsv.csv = old_tcsv.csv[:, indices]
+        return old_tcsv.csv = old_tcsv.csv[:, indices]
     end
 end
 
@@ -50,17 +50,17 @@ apply_to_files_named("flows-data.csv") do path
             indices = columnindex.(Ref(old_tcsv.csv), cols)
 
             tcsv.units = old_tcsv.units[indices]
-            tcsv.csv = unique(old_tcsv.csv[:, indices])
+            return tcsv.csv = unique(old_tcsv.csv[:, indices])
         end
 
         indices = setdiff(1:length(old_tcsv.units), columnindex.(Ref(old_tcsv.csv), static_cols))
         old_tcsv.units = old_tcsv.units[indices]
-        old_tcsv.csv = old_tcsv.csv[:, indices]
+        return old_tcsv.csv = old_tcsv.csv[:, indices]
     end
 end
 
 apply_to_files_named("year-data.csv") do path
     change_file(path) do tcsv
-        add_column(tcsv, "is_milestone", true; unit = "{true;false}")
+        return add_column(tcsv, "is_milestone", true; unit = "{true;false}")
     end
 end

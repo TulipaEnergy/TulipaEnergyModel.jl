@@ -71,4 +71,5 @@ function add_group_constraints!(model, variables, constraints, graph, sets, grou
 
     # - TODO: More group constraints e.g., limits on the accumulated investments of a group
 
+    return
 end

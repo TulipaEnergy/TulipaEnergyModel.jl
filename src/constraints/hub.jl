@@ -28,4 +28,6 @@ function add_hub_constraints!(model, constraints)
             ],
         )
     end
+
+    return
 end

@@ -60,6 +60,8 @@ function add_energy_constraints!(connection, model, constraints, profiles)
             ],
         )
     end
+
+    return
 end
 
 function _append_energy_data_to_indices(connection, table_name, min_or_max)

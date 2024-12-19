@@ -198,6 +198,7 @@ We will try to follow these during development and reviews.
   - List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context, or `using Graph: SimpleDiGraph`, because it's a constructor with an obvious name.
   - For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `DataFrames.groupby`.
   - List all `using` in <src/TulipaEnergyModel.jl>.
+- Explicitly state what a function will `return`; if returning nothing, simply use `return`.
 
 ## Contributing Workflow
 
@@ -441,8 +442,7 @@ See the file <benchmark/profiling.jl> for an example of profiling code.
 When publishing a new version of the model to the Julia Registry, follow this procedure:
 
 > **Note:**
-> To be able to register, you need to be a member of the organisation TulipaEnergy and have your visibility set to public:<br>
-> ![Screenshot of public members of TulipaEnergy on GitHub](./images/PublicMember.png)
+> To be able to register, you need to be a member of the organisation TulipaEnergy and have your visibility set to public:<br> > ![Screenshot of public members of TulipaEnergy on GitHub](./images/PublicMember.png)
 
 1. Click on the `Project.toml` file on GitHub.
 

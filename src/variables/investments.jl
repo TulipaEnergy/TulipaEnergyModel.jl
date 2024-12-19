@@ -23,6 +23,7 @@ function _create_investment_variable!(
         keys_from_row(row) => var for
         (var, row) in zip(this_var.container, eachrow(this_var.indices))
     )
+    return
 end
 
 """

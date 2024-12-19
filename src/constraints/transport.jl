@@ -84,6 +84,8 @@ function add_transport_constraints!(connection, model, variables, constraints, p
             ],
         )
     end
+
+    return
 end
 
 function _append_transport_data_to_indices(connection)
