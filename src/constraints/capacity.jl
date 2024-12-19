@@ -6,7 +6,7 @@ add_capacity_constraints!(model, graph,...)
 Adds the capacity constraints for all asset types to the model
 """
 
-function add_capacity_constraints!(model, variables, constraints, graph, sets)
+function add_capacity_constraints!(connection, model, variables, constraints, profiles, graph, sets)
     ## unpack from sets
     Acv = sets[:Acv]
     Ap = sets[:Ap]
@@ -32,6 +32,7 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
     let table_name = :capacity_outgoing, cons = constraints[table_name]
+        indices = _append_capacity_data_to_indices(connection, table_name)
         attach_expression!(
             cons,
             :profile_times_capacity,
@@ -39,7 +40,7 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
                 if row.asset ∈ decommissionable_assets_using_compact_method
                     @expression(
                         model,
-                        graph[row.asset].capacity * sum(
+                        row.capacity * sum(
                             profile_aggregation(
                                 Statistics.mean,
                                 graph[row.asset].rep_periods_profiles,
@@ -58,21 +59,20 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
                         )
                     )
                 else
+                    availability_agg = _profile_aggregate(
+                        profiles.rep_period,
+                        (row.profile_name, row.year, row.rep_period),
+                        row.time_block_start:row.time_block_end,
+                        Statistics.mean,
+                        1.0,
+                    )
                     @expression(
                         model,
-                        profile_aggregation(
-                            Statistics.mean,
-                            graph[row.asset].rep_periods_profiles,
-                            row.year,
-                            row.year,
-                            ("availability", row.rep_period),
-                            row.time_block_start:row.time_block_end,
-                            1.0,
-                        ) *
-                        graph[row.asset].capacity *
+                        availability_agg *
+                        row.capacity *
                         accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
                     )
-                end for row in eachrow(cons.indices)
+                end for row in indices
             ],
         )
     end
@@ -81,25 +81,28 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
     let table_name = :capacity_outgoing_non_investable_storage_with_binary,
         cons = constraints[table_name]
 
+        indices = _append_capacity_data_to_indices(connection, table_name)
+
         attach_expression!(
             cons,
             :profile_times_capacity,
             [
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
+                begin
+                    availability_agg = _profile_aggregate(
+                        profiles.rep_period,
+                        (row.profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
+                        Statistics.mean,
                         1.0,
-                    ) *
-                    (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
-                    (1 - is_charging)
-                ) for
-                (row, is_charging) in zip(eachrow(cons.indices), cons.expressions[:is_charging])
+                    )
+                    @expression(
+                        model,
+                        availability_agg *
+                        row.capacity *
+                        accumulated_initial_units[row.asset, row.year] *
+                        (1 - is_charging)
+                    )
+                end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
             ],
         )
     end
@@ -107,28 +110,30 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
     let table_name = :capacity_outgoing_investable_storage_with_binary,
         cons = constraints[table_name]
 
+        indices = _append_capacity_data_to_indices(connection, table_name)
+
         attach_expression!(
             cons,
             :profile_times_capacity_with_investment_variable,
             [
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
+                begin
+                    availability_agg = _profile_aggregate(
+                        profiles.rep_period,
+                        (row.profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
+                        Statistics.mean,
                         1.0,
-                    ) * (
-                        graph[row.asset].capacity * (
+                    )
+                    @expression(
+                        model,
+                        availability_agg *
+                        row.capacity *
+                        (
                             accumulated_initial_units[row.asset, row.year] * (1 - is_charging) +
                             accumulated_investment_units_using_simple_method[row.asset, row.year]
                         )
                     )
-                ) for
-                (row, is_charging) in zip(eachrow(cons.indices), cons.expressions[:is_charging])
+                end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
             ],
         )
 
@@ -136,48 +141,50 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
             cons,
             :profile_times_capacity_with_investment_limit,
             [
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
+                begin
+                    availability_agg = _profile_aggregate(
+                        profiles.rep_period,
+                        (row.profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
+                        Statistics.mean,
                         1.0,
-                    ) *
-                    (
-                        graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
-                        graph[row.asset].investment_limit[row.year]
-                    ) *
-                    (1 - is_charging)
-                ) for
-                (row, is_charging) in zip(eachrow(cons.indices), cons.expressions[:is_charging])
+                    )
+                    @expression(
+                        model,
+                        availability_agg *
+                        (
+                            row.capacity * accumulated_initial_units[row.asset, row.year] +
+                            row.investment_limit
+                        ) *
+                        (1 - is_charging)
+                    )
+                end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
             ],
         )
     end
 
     # - Create capacity limit for incoming flows
     let table_name = :capacity_incoming, cons = constraints[table_name]
+        indices = _append_capacity_data_to_indices(connection, table_name)
         attach_expression!(
             cons,
             :profile_times_capacity,
             [
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
+                begin
+                    availability_agg = _profile_aggregate(
+                        profiles.rep_period,
+                        (row.profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
+                        Statistics.mean,
                         1.0,
-                    ) *
-                    graph[row.asset].capacity *
-                    accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
-                ) for row in eachrow(cons.indices)
+                    )
+                    @expression(
+                        model,
+                        availability_agg *
+                        row.capacity *
+                        accumulated_units[accumulated_units_lookup[(row.asset, row.year)]]
+                    )
+                end for row in indices
             ],
         )
     end
@@ -186,25 +193,28 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
     let table_name = :capacity_incoming_non_investable_storage_with_binary,
         cons = constraints[table_name]
 
+        indices = _append_capacity_data_to_indices(connection, table_name)
+
         attach_expression!(
             cons,
             :profile_times_capacity,
             [
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
+                begin
+                    availability_agg = _profile_aggregate(
+                        profiles.rep_period,
+                        (row.profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
+                        Statistics.mean,
                         1.0,
-                    ) *
-                    (graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year]) *
-                    is_charging
-                ) for
-                (row, is_charging) in zip(eachrow(cons.indices), cons.expressions[:is_charging])
+                    )
+                    @expression(
+                        model,
+                        availability_agg *
+                        row.capacity *
+                        accumulated_initial_units[row.asset, row.year] *
+                        is_charging
+                    )
+                end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
             ],
         )
     end
@@ -212,28 +222,30 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
     let table_name = :capacity_incoming_investable_storage_with_binary,
         cons = constraints[table_name]
 
+        indices = _append_capacity_data_to_indices(connection, table_name)
+
         attach_expression!(
             cons,
             :profile_times_capacity_with_investment_variable,
             [
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
+                begin
+                    availability_agg = _profile_aggregate(
+                        profiles.rep_period,
+                        (row.profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
+                        Statistics.mean,
                         1.0,
-                    ) * (
-                        graph[row.asset].capacity * (
+                    )
+                    @expression(
+                        model,
+                        availability_agg *
+                        row.capacity *
+                        (
                             accumulated_initial_units[row.asset, row.year] * is_charging +
                             accumulated_investment_units_using_simple_method[row.asset, row.year]
                         )
                     )
-                ) for
-                (row, is_charging) in zip(eachrow(cons.indices), cons.expressions[:is_charging])
+                end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
             ],
         )
 
@@ -241,24 +253,24 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
             cons,
             :profile_times_capacity_with_investment_limit,
             [
-                @expression(
-                    model,
-                    profile_aggregation(
-                        Statistics.mean,
-                        graph[row.asset].rep_periods_profiles,
-                        row.year,
-                        row.year,
-                        ("availability", row.rep_period),
+                begin
+                    availability_agg = _profile_aggregate(
+                        profiles.rep_period,
+                        (row.profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
+                        Statistics.mean,
                         1.0,
-                    ) *
-                    (
-                        graph[row.asset].capacity * accumulated_initial_units[row.asset, row.year] +
-                        graph[row.asset].investment_limit[row.year]
-                    ) *
-                    is_charging
-                ) for
-                (row, is_charging) in zip(eachrow(cons.indices), cons.expressions[:is_charging])
+                    )
+                    @expression(
+                        model,
+                        availability_agg *
+                        (
+                            row.capacity * accumulated_initial_units[row.asset, row.year] +
+                            row.investment_limit
+                        ) *
+                        is_charging
+                    )
+                end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
             ],
         )
     end
@@ -358,4 +370,27 @@ function add_capacity_constraints!(model, variables, constraints, graph, sets)
             ],
         )
     end
+end
+
+function _append_capacity_data_to_indices(connection, table_name)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            cons.*,
+            asset.capacity,
+            asset_commission.investment_limit,
+            assets_profiles.profile_name
+        FROM cons_$table_name AS cons
+        LEFT JOIN asset
+            ON cons.asset = asset.asset
+        LEFT JOIN asset_commission
+            ON cons.asset = asset_commission.asset
+            AND cons.year = asset_commission.commission_year
+        LEFT OUTER JOIN assets_profiles
+            ON cons.asset = assets_profiles.asset
+            AND cons.year = assets_profiles.commission_year
+            AND assets_profiles.profile_type = 'availability'
+        ORDER BY cons.index
+        ",
+    )
 end
