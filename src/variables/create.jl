@@ -11,8 +11,8 @@ function compute_variables_indices(connection)
             :flow,
             :units_on,
             :is_charging,
-            :storage_level_intra_rp,
-            :storage_level_inter_rp,
+            :storage_level_rep_period,
+            :storage_level_over_clustered_year,
             :flows_investment,
             :assets_investment,
             :assets_decommission_simple_method,
@@ -87,7 +87,7 @@ function _create_variables_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE var_storage_level_intra_rp AS
+        CREATE OR REPLACE TABLE var_storage_level_rep_period AS
         SELECT
             nextval('id') as index,
             t_low.asset,
@@ -107,7 +107,7 @@ function _create_variables_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE var_storage_level_inter_rp AS
+        CREATE OR REPLACE TABLE var_storage_level_over_clustered_year AS
         SELECT
             nextval('id') as index,
             asset.asset,

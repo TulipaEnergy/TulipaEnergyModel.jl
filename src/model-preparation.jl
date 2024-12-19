@@ -2,7 +2,7 @@
 export create_sets, prepare_profiles_structure
 
 """
-    add_expression_terms_intra_rp_constraints!(df_cons,
+    add_expression_terms_rep_period_constraints!(df_cons,
                                                df_flows,
                                                workspace,
                                                representative_periods,
@@ -20,7 +20,7 @@ This strategy is based on the replies in this discourse thread:
 
   - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
 """
-function add_expression_terms_intra_rp_constraints!(
+function add_expression_terms_rep_period_constraints!(
     cons::TulipaConstraint,
     flow::TulipaVariable,
     workspace,
@@ -108,7 +108,7 @@ function add_expression_terms_intra_rp_constraints!(
             # Sum the corresponding flows from the workspace
             for row in eachrow(sub_df)
                 # TODO: This is a hack to handle constraint tables that still have timesteps_block
-                # In particular, storage_level_intra_rp
+                # In particular, storage_level_rep_period
                 cons.expressions[case.expr_key][row.index] =
                     agg(@view workspace[row.time_block_start:row.time_block_end])
                 if conditions_to_add_min_outgoing_flow_duration
@@ -121,7 +121,7 @@ function add_expression_terms_intra_rp_constraints!(
 end
 
 """
-    add_expression_is_charging_terms_intra_rp_constraints!(df_cons,
+    add_expression_is_charging_terms_rep_period_constraints!(df_cons,
                                                        is_charging_indices,
                                                        is_charging_variables,
                                                        workspace
@@ -136,7 +136,7 @@ This strategy is based on the replies in this discourse thread:
 
   - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
 """
-function add_expression_is_charging_terms_intra_rp_constraints!(
+function add_expression_is_charging_terms_rep_period_constraints!(
     cons::TulipaConstraint,
     is_charging::TulipaVariable,
     workspace,
@@ -173,7 +173,7 @@ function add_expression_is_charging_terms_intra_rp_constraints!(
 end
 
 """
-    add_expression_units_on_terms_intra_rp_constraints!(
+    add_expression_units_on_terms_rep_period_constraints!(
         df_cons,
         df_units_on,
         workspace,
@@ -188,7 +188,7 @@ This strategy is based on the replies in this discourse thread:
 
   - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
 """
-function add_expression_units_on_terms_intra_rp_constraints!(
+function add_expression_units_on_terms_rep_period_constraints!(
     cons::TulipaConstraint,
     units_on::TulipaVariable,
     workspace,
@@ -222,7 +222,7 @@ function add_expression_units_on_terms_intra_rp_constraints!(
 end
 
 """
-    add_expression_terms_inter_rp_constraints!(df_inter,
+    add_expression_terms_over_clustered_year_constraints!(df_inter,
                                                df_flows,
                                                df_map,
                                                graph,
@@ -235,7 +235,7 @@ that are between (inter) the representative periods.
 This function is only used internally in the model.
 
 """
-function add_expression_terms_inter_rp_constraints!(
+function add_expression_terms_over_clustered_year_constraints!(
     cons::TulipaConstraint,
     flow::TulipaVariable,
     df_map, # TODO: Figure out how to handle this
@@ -338,7 +338,7 @@ function add_expressions_to_constraints!(
 )
     # Unpack variables
     # Creating the incoming and outgoing flow expressions
-    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
+    @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         constraints[:balance_conversion],
         variables[:flow],
         expression_workspace,
@@ -347,7 +347,7 @@ function add_expressions_to_constraints!(
         use_highest_resolution = false,
         multiply_by_duration = true,
     )
-    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
+    @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         constraints[:balance_storage_rep_period],
         variables[:flow],
         expression_workspace,
@@ -356,7 +356,7 @@ function add_expressions_to_constraints!(
         use_highest_resolution = false,
         multiply_by_duration = true,
     )
-    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
+    @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         constraints[:balance_consumer],
         variables[:flow],
         expression_workspace,
@@ -365,7 +365,7 @@ function add_expressions_to_constraints!(
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
-    @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
+    @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         constraints[:balance_hub],
         variables[:flow],
         expression_workspace,
@@ -383,7 +383,7 @@ function add_expressions_to_constraints!(
         :capacity_outgoing_non_investable_storage_with_binary,
         :capacity_outgoing_investable_storage_with_binary,
     )
-        @timeit to "add_expression_terms_intra_rp_constraints! for $table_name" add_expression_terms_intra_rp_constraints!(
+        @timeit to "add_expression_terms_rep_period_constraints! for $table_name" add_expression_terms_rep_period_constraints!(
             constraints[table_name],
             variables[:flow],
             expression_workspace,
@@ -393,7 +393,7 @@ function add_expressions_to_constraints!(
             multiply_by_duration = false,
         )
 
-        @timeit to "add_expression_is_charging_terms_intra_rp_constraints! for $table_name" add_expression_is_charging_terms_intra_rp_constraints!(
+        @timeit to "add_expression_is_charging_terms_rep_period_constraints! for $table_name" add_expression_is_charging_terms_rep_period_constraints!(
             constraints[table_name],
             variables[:is_charging],
             expression_workspace,
@@ -407,7 +407,7 @@ function add_expressions_to_constraints!(
         :max_ramp_without_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
     )
-        @timeit to "add_expression_terms_intra_rp_constraints!" add_expression_terms_intra_rp_constraints!(
+        @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
             constraints[table_name],
             variables[:flow],
             expression_workspace,
@@ -418,7 +418,7 @@ function add_expressions_to_constraints!(
             add_min_outgoing_flow_duration = true,
         )
     end
-    @timeit to "add_expression_terms_inter_rp_constraints!" add_expression_terms_inter_rp_constraints!(
+    @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
         constraints[:balance_storage_over_clustered_year],
         variables[:flow],
         timeframe.map_periods_to_rp,
@@ -426,21 +426,21 @@ function add_expressions_to_constraints!(
         representative_periods;
         is_storage_level = true,
     )
-    @timeit to "add_expression_terms_inter_rp_constraints!" add_expression_terms_inter_rp_constraints!(
+    @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
         constraints[:max_energy_over_clustered_year],
         variables[:flow],
         timeframe.map_periods_to_rp,
         graph,
         representative_periods,
     )
-    @timeit to "add_expression_terms_inter_rp_constraints!" add_expression_terms_inter_rp_constraints!(
+    @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
         constraints[:min_energy_over_clustered_year],
         variables[:flow],
         timeframe.map_periods_to_rp,
         graph,
         representative_periods,
     )
-    @timeit to "add_expression_is_charging_terms_intra_rp_constraints!" add_expression_is_charging_terms_intra_rp_constraints!(
+    @timeit to "add_expression_is_charging_terms_rep_period_constraints!" add_expression_is_charging_terms_rep_period_constraints!(
         constraints[:capacity_incoming],
         variables[:is_charging],
         expression_workspace,
@@ -451,7 +451,7 @@ function add_expressions_to_constraints!(
         :max_output_flow_with_basic_unit_commitment,
         :max_ramp_with_unit_commitment,
     )
-        @timeit to "add_expression_units_on_terms_intra_rp_constraints!" add_expression_units_on_terms_intra_rp_constraints!(
+        @timeit to "add_expression_units_on_terms_rep_period_constraints!" add_expression_units_on_terms_rep_period_constraints!(
             constraints[table_name],
             variables[:units_on],
             expression_workspace,

@@ -292,14 +292,14 @@ function _create_constraints_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TABLE cons_balance_storage_rep_period AS
-        SELECT * FROM var_storage_level_intra_rp
+        SELECT * FROM var_storage_level_rep_period
         ",
     )
 
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TABLE cons_balance_storage_over_clustered_year AS
-        SELECT * FROM var_storage_level_inter_rp
+        SELECT * FROM var_storage_level_over_clustered_year
         ",
     )
 

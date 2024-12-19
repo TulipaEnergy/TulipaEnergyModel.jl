@@ -250,8 +250,8 @@ mutable struct GraphAssetData
     # Solution
     investment::Dict{Int,Float64}
     investment_energy::Dict{Int,Float64} # for storage assets with energy method
-    storage_level_intra_rp::Dict{Tuple{Int,TimestepsBlock},Float64}
-    storage_level_inter_rp::Dict{PeriodsBlock,Float64}
+    storage_level_rep_period::Dict{Tuple{Int,TimestepsBlock},Float64}
+    storage_level_over_clustered_year::Dict{PeriodsBlock,Float64}
     max_energy_over_clustered_year::Dict{PeriodsBlock,Float64}
     min_energy_over_clustered_year::Dict{PeriodsBlock,Float64}
 
@@ -340,8 +340,8 @@ mutable struct Solution
     assets_investment::Dict{Tuple{Int,String},Float64}
     assets_investment_energy::Dict{Tuple{Int,String},Float64} # for storage assets with energy method
     flows_investment::Any # TODO: Fix this type
-    storage_level_intra_rp::Vector{Float64}
-    storage_level_inter_rp::Vector{Float64}
+    storage_level_rep_period::Vector{Float64}
+    storage_level_over_clustered_year::Vector{Float64}
     max_energy_over_clustered_year::Vector{Float64}
     min_energy_over_clustered_year::Vector{Float64}
     flow::Vector{Float64}

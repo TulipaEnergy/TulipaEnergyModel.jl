@@ -37,15 +37,15 @@ function solve_model!(
     end
 
     # TODO: fix this
-    # for row in eachrow(energy_problem.dataframes[:storage_level_intra_rp])
+    # for row in eachrow(energy_problem.dataframes[:storage_level_rep_period])
     #     a, rp, timesteps_block, value =
     #         row.asset, row.rep_period, row.timesteps_block, row.solution
-    #     graph[a].storage_level_intra_rp[(rp, timesteps_block)] = value
+    #     graph[a].storage_level_rep_period[(rp, timesteps_block)] = value
     # end
     #
-    # for row in eachrow(energy_problem.dataframes[:storage_level_inter_rp])
+    # for row in eachrow(energy_problem.dataframes[:storage_level_over_clustered_year])
     #     a, pb, value = row.asset, row.periods_block, row.solution
-    #     graph[a].storage_level_inter_rp[pb] = value
+    #     graph[a].storage_level_over_clustered_year[pb] = value
     # end
     #
     # for row in eachrow(energy_problem.dataframes[:max_energy_over_clustered_year])
@@ -82,8 +82,8 @@ Solves the JuMP `model`, returns the solution, and modifies `dataframes` to incl
 The modifications made to `dataframes` are:
 
 - `df_flows.solution = solution.flow`
-- `df_storage_level_intra_rp.solution = solution.storage_level_intra_rp`
-- `df_storage_level_inter_rp.solution = solution.storage_level_inter_rp`
+- `df_storage_level_rep_period.solution = solution.storage_level_rep_period`
+- `df_storage_level_over_clustered_year.solution = solution.storage_level_over_clustered_year`
 """
 function solve_model!(model, args...; kwargs...)
     solution = solve_model(model, args...; kwargs...)
@@ -93,8 +93,8 @@ function solve_model!(model, args...; kwargs...)
 
     # TODO: fix this later
     # dataframes[:flow].solution = solution.flow
-    # dataframes[:storage_level_intra_rp].solution = solution.storage_level_intra_rp
-    # dataframes[:storage_level_inter_rp].solution = solution.storage_level_inter_rp
+    # dataframes[:storage_level_rep_period].solution = solution.storage_level_rep_period
+    # dataframes[:storage_level_over_clustered_year].solution = solution.storage_level_over_clustered_year
     # dataframes[:max_energy_over_clustered_year].solution = solution.max_energy_over_clustered_year
     # dataframes[:min_energy_over_clustered_year].solution = solution.min_energy_over_clustered_year
 
@@ -132,19 +132,19 @@ The `solution` object is a mutable struct with the following fields:
     ```
     [solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]
     ```
-  - `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` for a representative period `rp`
+  - `storage_level_rep_period[a, rp, timesteps_block]`: The storage level for the storage asset `a` for a representative period `rp`
     and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used
     to create the model.
-    To create a vector with all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
+    To create a vector with all values of `storage_level_rep_period` for a given `a` and `rp`, one can run
 
     ```
-    [solution.storage_level_intra_rp[a, rp, timesteps_block] for timesteps_block in constraints_partitions[:lowest_resolution][(a, rp)]]
+    [solution.storage_level_rep_period[a, rp, timesteps_block] for timesteps_block in constraints_partitions[:lowest_resolution][(a, rp)]]
     ```
-- `storage_level_inter_rp[a, pb]`: The storage level for the storage asset `a` for a periods block `pb`.
-    To create a vector with all values of `storage_level_inter_rp` for a given `a`, one can run
+- `storage_level_over_clustered_year[a, pb]`: The storage level for the storage asset `a` for a periods block `pb`.
+    To create a vector with all values of `storage_level_over_clustered_year` for a given `a`, one can run
 
     ```
-    [solution.storage_level_inter_rp[a, bp] for bp in graph[a].timeframe_partitions[a]]
+    [solution.storage_level_over_clustered_year[a, bp] for bp in graph[a].timeframe_partitions[a]]
     ```
 - `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period
     `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
@@ -189,8 +189,8 @@ function solve_model(
         Dict(k => JuMP.value(v) for (k, v) in variables[:assets_investment].lookup),
         Dict(k => JuMP.value(v) for (k, v) in variables[:assets_investment_energy].lookup),
         Dict(k => JuMP.value(v) for (k, v) in variables[:flows_investment].lookup),
-        JuMP.value.(variables[:storage_level_intra_rp].container),
-        JuMP.value.(variables[:storage_level_inter_rp].container),
+        JuMP.value.(variables[:storage_level_rep_period].container),
+        JuMP.value.(variables[:storage_level_over_clustered_year].container),
         JuMP.value.(model[:max_energy_over_clustered_year]),
         JuMP.value.(model[:min_energy_over_clustered_year]),
         JuMP.value.(variables[:flow].container),
