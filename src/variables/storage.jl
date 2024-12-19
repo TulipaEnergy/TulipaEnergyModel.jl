@@ -8,24 +8,25 @@ The function also optionally sets binary constraints for certain charging variab
 
 """
 function add_storage_variables!(model, graph, sets, variables)
-    storage_level_intra_rp_indices = variables[:storage_level_intra_rp].indices
-    storage_level_inter_rp_indices = variables[:storage_level_inter_rp].indices
+    storage_level_rep_period_indices = variables[:storage_level_rep_period].indices
+    storage_level_over_clustered_year_indices =
+        variables[:storage_level_over_clustered_year].indices
     is_charging_indices = variables[:is_charging].indices
 
-    variables[:storage_level_intra_rp].container = [
+    variables[:storage_level_rep_period].container = [
         @variable(
             model,
             lower_bound = 0.0,
-            base_name = "storage_level_intra_rp[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(storage_level_intra_rp_indices)
+            base_name = "storage_level_rep_period[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+        ) for row in eachrow(storage_level_rep_period_indices)
     ]
 
-    variables[:storage_level_inter_rp].container = [
+    variables[:storage_level_over_clustered_year].container = [
         @variable(
             model,
             lower_bound = 0.0,
-            base_name = "storage_level_inter_rp[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-        ) for row in eachrow(storage_level_inter_rp_indices)
+            base_name = "storage_level_over_clustered_year[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+        ) for row in eachrow(storage_level_over_clustered_year_indices)
     ]
 
     variables[:is_charging].container = [
@@ -53,27 +54,27 @@ function add_storage_variables!(model, graph, sets, variables)
     end
 
     ### Cycling conditions
-    df_storage_intra_rp_balance_grouped =
-        DataFrames.groupby(storage_level_intra_rp_indices, [:asset, :year, :rep_period])
+    df_storage_rep_period_balance_grouped =
+        DataFrames.groupby(storage_level_rep_period_indices, [:asset, :year, :rep_period])
 
-    df_storage_inter_rp_balance_grouped =
-        DataFrames.groupby(storage_level_inter_rp_indices, [:asset, :year])
+    df_storage_over_clustered_year_balance_grouped =
+        DataFrames.groupby(storage_level_over_clustered_year_indices, [:asset, :year])
 
-    for ((a, y, _), sub_df) in pairs(df_storage_intra_rp_balance_grouped)
+    for ((a, y, _), sub_df) in pairs(df_storage_rep_period_balance_grouped)
         # Ordering is assumed
         if !ismissing(graph[a].initial_storage_level[y])
             JuMP.set_lower_bound(
-                variables[:storage_level_intra_rp].container[last(sub_df.index)],
+                variables[:storage_level_rep_period].container[last(sub_df.index)],
                 graph[a].initial_storage_level[y],
             )
         end
     end
 
-    for ((a, y), sub_df) in pairs(df_storage_inter_rp_balance_grouped)
+    for ((a, y), sub_df) in pairs(df_storage_over_clustered_year_balance_grouped)
         # Ordering is assumed
         if !ismissing(graph[a].initial_storage_level[y])
             JuMP.set_lower_bound(
-                variables[:storage_level_inter_rp].container[last(sub_df.index)],
+                variables[:storage_level_over_clustered_year].container[last(sub_df.index)],
                 graph[a].initial_storage_level[y],
             )
         end

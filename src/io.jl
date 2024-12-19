@@ -440,12 +440,12 @@ function save_solution_to_file(output_folder, graph, solution)
 
     # output_file = joinpath(output_folder, "storage-level-intra-rp.csv")
     # output_table = DataFrames.select(
-    #     dataframes[:storage_level_intra_rp],
+    #     dataframes[:storage_level_rep_period],
     #     :asset,
     #     :rep_period,
     #     :timesteps_block => :timestep,
     # )
-    # output_table.value = solution.storage_level_intra_rp
+    # output_table.value = solution.storage_level_rep_period
     # if !isempty(output_table.asset)
     #     output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
     #         _check_initial_storage_level!(subgroup, graph)
@@ -456,8 +456,8 @@ function save_solution_to_file(output_folder, graph, solution)
 
     # output_file = joinpath(output_folder, "storage-level-inter-rp.csv")
     # output_table =
-    #     DataFrames.select(dataframes[:storage_level_inter_rp], :asset, :periods_block => :period)
-    # output_table.value = solution.storage_level_inter_rp
+    #     DataFrames.select(dataframes[:storage_level_over_clustered_year], :asset, :periods_block => :period)
+    # output_table.value = solution.storage_level_over_clustered_year
     # if !isempty(output_table.asset)
     #     output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
     #         _check_initial_storage_level!(subgroup, graph)

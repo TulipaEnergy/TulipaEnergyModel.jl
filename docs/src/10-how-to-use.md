@@ -301,8 +301,8 @@ The solution object `energy_problem.solution` is a mutable struct with the follo
 
 - `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
 - `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
-- `storage_level_intra_rp[a, rp, timesteps_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
-- `storage_level_inter_rp[a, periods_block]`: The storage level for the storage asset `a` between (inter) representative periods in the periods block `periods_block`.
+- `storage_level_rep_period[a, rp, timesteps_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
+- `storage_level_over_clustered_year[a, periods_block]`: The storage level for the storage asset `a` between (inter) representative periods in the periods block `periods_block`.
 - `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
 - `objective_value`: A Float64 with the objective value at the solution.
 - `duals`: A Dictionary containing the dual variables of selected constraints.

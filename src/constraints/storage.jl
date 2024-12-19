@@ -6,15 +6,15 @@ add_storage_constraints!(model, graph,...)
 Adds the storage asset constraints to the model.
 """
 function add_storage_constraints!(connection, model, variables, constraints, profiles)
-    var_storage_level_intra_rp = variables[:storage_level_intra_rp]
-    var_storage_level_inter_rp = variables[:storage_level_inter_rp]
+    var_storage_level_rep_period = variables[:storage_level_rep_period]
+    var_storage_level_over_clustered_year = variables[:storage_level_over_clustered_year]
 
     accumulated_energy_capacity = model[:accumulated_energy_capacity]
 
     ## INTRA-TEMPORAL CONSTRAINTS (within a representative period)
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_rep_period, cons = constraints[table_name]
-        var_storage_level = variables[:storage_level_intra_rp].container
+        var_storage_level = variables[:storage_level_rep_period].container
         indices = _append_storage_data_to_indices(connection, table_name)
         attach_constraint!(
             model,
@@ -78,7 +78,7 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
         attach_constraint!(
             model,
             cons,
-            :max_storage_level_intra_rp_limit,
+            :max_storage_level_rep_period_limit,
             [
                 begin
                     max_storage_level_agg = _profile_aggregate(
@@ -92,10 +92,10 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
                         model,
                         var_storage_level ≤
                         max_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
-                        base_name = "max_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "max_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for
-                (row, var_storage_level) in zip(indices, var_storage_level_intra_rp.container)
+                (row, var_storage_level) in zip(indices, var_storage_level_rep_period.container)
             ],
         )
 
@@ -103,7 +103,7 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
         attach_constraint!(
             model,
             cons,
-            :min_storage_level_intra_rp_limit,
+            :min_storage_level_rep_period_limit,
             [
                 begin
                     min_storage_level_agg = _profile_aggregate(
@@ -117,10 +117,10 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
                         model,
                         var_storage_level ≥
                         min_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
-                        base_name = "min_storage_level_intra_rp_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "min_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for
-                (row, var_storage_level) in zip(indices, var_storage_level_intra_rp.container)
+                (row, var_storage_level) in zip(indices, var_storage_level_rep_period.container)
             ],
         )
     end
@@ -129,7 +129,7 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
 
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_over_clustered_year, cons = constraints[table_name]
-        var_storage_level = variables[:storage_level_inter_rp].container
+        var_storage_level = variables[:storage_level_over_clustered_year].container
         indices = _append_storage_data_to_indices(connection, table_name)
 
         # This assumes an ordering of the time blocks, that is guaranteed inside
@@ -147,7 +147,7 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
                         # Initial storage is a Float64
                         @constraint(
                             model,
-                            var_storage_level_inter_rp.container[row.index] ==
+                            var_storage_level_over_clustered_year.container[row.index] ==
                             initial_storage_level + inflows_agg + incoming_flow - outgoing_flow,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                         )
@@ -170,7 +170,7 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
 
                         @constraint(
                             model,
-                            var_storage_level_inter_rp.container[row.index] ==
+                            var_storage_level_over_clustered_year.container[row.index] ==
                             previous_level + inflows_agg + incoming_flow - outgoing_flow,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                         )
@@ -188,7 +188,7 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
         attach_constraint!(
             model,
             cons,
-            :max_storage_level_inter_rp_limit,
+            :max_storage_level_over_clustered_year_limit,
             [
                 begin
                     max_storage_level_agg = _profile_aggregate(
@@ -202,10 +202,10 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
                         model,
                         var_storage_level ≤
                         max_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
-                        base_name = "max_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+                        base_name = "max_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                     )
-                end for
-                (row, var_storage_level) in zip(indices, var_storage_level_inter_rp.container)
+                end for (row, var_storage_level) in
+                zip(indices, var_storage_level_over_clustered_year.container)
             ],
         )
 
@@ -213,7 +213,7 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
         attach_constraint!(
             model,
             cons,
-            :min_storage_level_inter_rp_limit,
+            :min_storage_level_over_clustered_year_limit,
             [
                 begin
                     min_storage_level_agg = _profile_aggregate(
@@ -227,10 +227,10 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
                         model,
                         var_storage_level ≥
                         min_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
-                        base_name = "min_storage_level_inter_rp_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+                        base_name = "min_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                     )
-                end for
-                (row, var_storage_level) in zip(indices, var_storage_level_inter_rp.container)
+                end for (row, var_storage_level) in
+                zip(indices, var_storage_level_over_clustered_year.container)
             ],
         )
     end

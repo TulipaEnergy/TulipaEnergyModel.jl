@@ -134,7 +134,7 @@ Finally, we can compute the solution.
 solution = solve_model(model, variables)
 ```
 
-or, if we want to store the `flow`, `storage_level_intra_rp`, and `storage_level_inter_rp` optimal value in the dataframes:
+or, if we want to store the `flow`, `storage_level_rep_period`, and `storage_level_over_clustered_year` optimal value in the dataframes:
 
 ```@example manual
 solution = solve_model!(dataframes, model, variables)
@@ -293,7 +293,7 @@ nothing # hide
 
 To create a traditional array in the order given by the investable assets, one can run
 
-The `solution.flow`, `solution.storage_level_intra_rp`, and `solution.storage_level_inter_rp` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows`, `:storage_level_intra_rp`, and `:storage_level_inter_rp`, respectively.
+The `solution.flow`, `solution.storage_level_rep_period`, and `solution.storage_level_over_clustered_year` values are linearized according to the dataframes in the dictionary `energy_problem.dataframes` with keys `:flows`, `:storage_level_rep_period`, and `:storage_level_over_clustered_year`, respectively.
 You need to query the data from these dataframes and then use the column `index` to select the appropriate value.
 
 To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
@@ -312,29 +312,29 @@ df = filter(
 [solution.flow[row.index] for row in eachrow(df)]
 ```
 
-To create a vector with the all values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
+To create a vector with the all values of `storage_level_rep_period` for a given `a` and `rp`, one can run
 
 ```@example solution
-a = energy_problem.dataframes[:storage_level_intra_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_rep_period].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rep_period == rp,
-    energy_problem.dataframes[:storage_level_intra_rp],
+    energy_problem.dataframes[:storage_level_rep_period],
     view = true,
 )
-[solution.storage_level_intra_rp[row.index] for row in eachrow(df)]
+[solution.storage_level_rep_period[row.index] for row in eachrow(df)]
 ```
 
-To create a vector with the all values of `storage_level_inter_rp` for a given `a`, one can run
+To create a vector with the all values of `storage_level_over_clustered_year` for a given `a`, one can run
 
 ```@example solution
-a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_over_clustered_year].asset[1]
 df = filter(
     row -> row.asset == a,
-    energy_problem.dataframes[:storage_level_inter_rp],
+    energy_problem.dataframes[:storage_level_over_clustered_year],
     view = true,
 )
-[solution.storage_level_inter_rp[row.index] for row in eachrow(df)]
+[solution.storage_level_over_clustered_year[row.index] for row in eachrow(df)]
 ```
 
 ### The solution inside the graph
@@ -371,34 +371,34 @@ df = filter(
 [energy_problem.graph[u, v].flow[(rp, row.timesteps_block)] for row in eachrow(df)]
 ```
 
-To create a vector with all the values of `storage_level_intra_rp` for a given `a` and `rp`, one can run
+To create a vector with all the values of `storage_level_rep_period` for a given `a` and `rp`, one can run
 
 ```@example solution
-a = energy_problem.dataframes[:storage_level_intra_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_rep_period].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rep_period == rp,
-    energy_problem.dataframes[:storage_level_intra_rp],
+    energy_problem.dataframes[:storage_level_rep_period],
     view = true,
 )
-[energy_problem.graph[a].storage_level_intra_rp[(rp, row.timesteps_block)] for row in eachrow(df)]
+[energy_problem.graph[a].storage_level_rep_period[(rp, row.timesteps_block)] for row in eachrow(df)]
 ```
 
-To create a vector with all the values of `storage_level_inter_rp` for a given `a`, one can run
+To create a vector with all the values of `storage_level_over_clustered_year` for a given `a`, one can run
 
 ```@example solution
-a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_over_clustered_year].asset[1]
 df = filter(
     row -> row.asset == a,
-    energy_problem.dataframes[:storage_level_inter_rp],
+    energy_problem.dataframes[:storage_level_over_clustered_year],
     view = true,
 )
-[energy_problem.graph[a].storage_level_inter_rp[row.periods_block] for row in eachrow(df)]
+[energy_problem.graph[a].storage_level_over_clustered_year[row.periods_block] for row in eachrow(df)]
 ```
 
 ### The solution inside the dataframes object
 
-In addition to being stored in the `solution` object, and in the `graph` object, the solution for the `flow`, `storage_level_intra_rp`, and `storage_level_inter_rp` is also stored inside the corresponding DataFrame objects if `solve_model!` is called.
+In addition to being stored in the `solution` object, and in the `graph` object, the solution for the `flow`, `storage_level_rep_period`, and `storage_level_over_clustered_year` is also stored inside the corresponding DataFrame objects if `solve_model!` is called.
 
 The code below will do the same as in the two previous examples:
 
@@ -414,21 +414,21 @@ df.solution
 ```
 
 ```@example solution
-a = energy_problem.dataframes[:storage_level_inter_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_over_clustered_year].asset[1]
 df = filter(
     row -> row.asset == a,
-    energy_problem.dataframes[:storage_level_inter_rp],
+    energy_problem.dataframes[:storage_level_over_clustered_year],
     view = true,
 )
 df.solution
 ```
 
 ```@example solution
-a = energy_problem.dataframes[:storage_level_intra_rp].asset[1]
+a = energy_problem.dataframes[:storage_level_rep_period].asset[1]
 rp = 1
 df = filter(
     row -> row.asset == a && row.rep_period == rp,
-    energy_problem.dataframes[:storage_level_intra_rp],
+    energy_problem.dataframes[:storage_level_rep_period],
     view = true,
 )
 df.solution
