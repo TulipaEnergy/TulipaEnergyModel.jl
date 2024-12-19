@@ -73,8 +73,6 @@ function create_internal_structures(connection)
 
     timeframe = Timeframe(num_periods.period, TulipaIO.get_table(connection, "rep_periods_mapping"))
 
-    groups = [Group(row...) for row in TulipaIO.get_table(Val(:raw), connection, "group_asset")]
-
     _query_data_per_year(table_name, col, year_col; where_pairs...) = begin
         # Make sure valid year columns are used
         @assert year_col in ("milestone_year", "commission_year")
@@ -296,7 +294,7 @@ function create_internal_structures(connection)
         end
     end
 
-    return graph, representative_periods, timeframe, groups, years
+    return graph, representative_periods, timeframe, years
 end
 
 function get_schema(tablename)
