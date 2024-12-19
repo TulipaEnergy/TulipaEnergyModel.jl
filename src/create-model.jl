@@ -143,12 +143,10 @@ function create_model(
 
     if !isempty(groups)
         @timeit to "add_group_constraints!" add_group_constraints!(
+            connection,
             model,
             variables,
             constraints,
-            graph,
-            sets,
-            groups,
         )
     end
 

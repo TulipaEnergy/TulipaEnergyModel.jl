@@ -1,24 +1,12 @@
 export add_group_constraints!
 
 """
-    add_group_constraints!(model, graph, ...)
+    add_group_constraints!(connection, model, ...)
 
 Adds group constraints for assets that share a common limits or bounds
 """
-function add_group_constraints!(model, variables, constraints, graph, sets, groups)
-    # unpack from sets
-    Ai = sets[:Ai]
-    Y = sets[:Y]
-
-    assets_investment = variables[:assets_investment].lookup
-
-    # - Group constraints for investments at each year
-    assets_at_year_in_group = Dict(
-        group.name => (
-            (a, y) for y in Y for
-            a in Ai[y] if !ismissing(graph[a].group) && graph[a].group == group.name
-        ) for group in groups
-    )
+function add_group_constraints!(connection, model, variables, constraints)
+    assets_investment = variables[:assets_investment].container
 
     for table_name in [:group_max_investment_limit, :group_min_investment_limit]
         cons = constraints[table_name]
@@ -29,8 +17,8 @@ function add_group_constraints!(model, variables, constraints, graph, sets, grou
                 @expression(
                     model,
                     sum(
-                        graph[a].capacity * assets_investment[y, a] for y in Y for
-                        (a, y) in assets_at_year_in_group[row.name]
+                        asset_row.capacity * assets_investment[asset_row.index] for
+                        asset_row in _get_assets_in_group(connection, row.name)
                     )
                 ) for row in eachrow(cons.indices)
             ],
@@ -71,4 +59,22 @@ function add_group_constraints!(model, variables, constraints, graph, sets, grou
 
     # - TODO: More group constraints e.g., limits on the accumulated investments of a group
 
+end
+
+function _get_assets_in_group(connection, group)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            var.index,
+            asset.group,
+            asset.capacity,
+        FROM var_assets_investment AS var
+        JOIN asset
+            ON var.asset = asset.asset
+        JOIN group_asset
+            ON asset.group = group_asset.name
+        WHERE asset.group IS NOT NULL
+              AND  asset.group = '$group'
+        ",
+    )
 end
