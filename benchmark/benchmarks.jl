@@ -23,6 +23,10 @@ TulipaIO.read_csv_folder(
     schemas = TulipaEnergyModel.schema_per_table_name,
 )
 
+# update data files to have hourly constraints
+DuckDB.query(connection, "UPDATE assets_rep_periods_partitions SET partition = 1")
+DuckDB.query(connection, "UPDATE flows_rep_periods_partitions SET partition = 1")
+
 SUITE["energy_problem"] = BenchmarkGroup()
 SUITE["energy_problem"]["input_and_constructor"] = @benchmarkable begin
     EnergyProblem($connection)
