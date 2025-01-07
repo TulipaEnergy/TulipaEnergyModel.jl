@@ -32,7 +32,7 @@ function create_internal_structures(connection)
         "profiles_timeframe"
     ]
     for table in tables_allowed_to_be_missing
-        _check_if_table_exist(connection, table)
+        _create_empty_unless_exists(connection, table)
     end
 
     # Get the years struct ordered by year
@@ -305,18 +305,14 @@ function get_schema(tablename)
     end
 end
 
-function _check_if_table_exist(connection, table_name)
+function _create_empty_unless_exists(connection, table_name)
     schema = get_schema(table_name)
 
-    existence_query = DBInterface.execute(
-        connection,
-        "SELECT table_name FROM information_schema.tables WHERE table_name = '$table_name'",
-    )
-    if length(collect(existence_query)) == 0
+    if !_check_if_table_exists(connection, table_name)
         columns_in_table = join(("$col $col_type" for (col, col_type) in schema), ",")
-        create_table_query =
-            DuckDB.query(connection, "CREATE TABLE $table_name ($columns_in_table)")
+        DuckDB.query(connection, "CREATE TABLE $table_name ($columns_in_table)")
     end
+
     return
 end
 
