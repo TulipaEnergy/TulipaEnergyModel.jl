@@ -85,9 +85,9 @@ function add_expression_terms_rep_period_constraints!(
                 cons.asset,
                 cons.year,
                 cons.rep_period,
-                ARRAY_AGG(cons.index) AS index,
-                ARRAY_AGG(cons.time_block_start) AS time_block_start,
-                ARRAY_AGG(cons.time_block_end) AS time_block_end,
+                ARRAY_AGG(cons.index ORDER BY cons.index) AS index,
+                ARRAY_AGG(cons.time_block_start ORDER BY cons.index) AS time_block_start,
+                ARRAY_AGG(cons.time_block_end ORDER BY cons.index) AS time_block_end,
             FROM $(cons.table_name) AS cons
             GROUP BY cons.asset, cons.year, cons.rep_period
             ",
@@ -121,10 +121,10 @@ function add_expression_terms_rep_period_constraints!(
                     var.$(case.asset_match) AS asset,
                     var.year,
                     var.rep_period,
-                    ARRAY_AGG(var.index) AS index,
-                    ARRAY_AGG(var.time_block_start) AS time_block_start,
-                    ARRAY_AGG(var.time_block_end) AS time_block_end,
-                    ARRAY_AGG(var.efficiency) AS efficiency,
+                    ARRAY_AGG(var.index ORDER BY var.index) AS index,
+                    ARRAY_AGG(var.time_block_start ORDER BY var.index) AS time_block_start,
+                    ARRAY_AGG(var.time_block_end ORDER BY var.index) AS time_block_end,
+                    ARRAY_AGG(var.efficiency ORDER BY var.index) AS efficiency,
                 FROM $(flow.table_name) AS var
                 GROUP BY var.$(case.asset_match), var.year, var.rep_period
                 ",
