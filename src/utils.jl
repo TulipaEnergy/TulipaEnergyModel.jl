@@ -1,5 +1,13 @@
 # Auxiliary functions to create the model
 
+function _check_if_table_exists(connection, table_name)
+    existence_query = DBInterface.execute(
+        connection,
+        "SELECT table_name FROM information_schema.tables WHERE table_name = '$table_name'",
+    )
+    return length(collect(existence_query)) > 0
+end
+
 # FIXME: Ugly hack applied
 """
     is_active(graph, a, y)
