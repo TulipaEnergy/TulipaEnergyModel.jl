@@ -18,6 +18,33 @@ This function is only used internally in the model.
 This strategy is based on the replies in this discourse thread:
 
   - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
+
+# Implementation
+
+This expression computation uses a workspace to store all variables defined for
+each timestep.
+The idea of this algorithm is to append all variables defined at time
+`timestep` in `workspace[timestep]` and then aggregate then for the constraint
+time block.
+
+The algorithm works like this:
+
+1. Loop over each group of (asset, year, rep_period)
+1.1. Loop over each variable in the group: (var_idx, var_time_block_start, var_time_block_end)
+1.1.1. Loop over each timestep in var_time_block_start:var_time_block_end
+1.1.1.1. Compute the coefficient of the variable based on the rep_period
+  resolution and the variable efficiency
+1.1.1.2. Store (var_idx, coefficient) in workspace[timestep]
+1.2. Loop over each constraint in the group: (cons_idx, cons_time_block_start, cons_time_block_end)
+1.2.1. Aggregate all variables in workspace[timestep] for timestep in the time
+  block to create a list of variable indices and their coefficients [(var_idx1, coef1), ...]
+1.2.2. Compute the expression using the variable container, the indices and coefficients
+
+Notes:
+- On step 1.2.1, the aggregation can be either by uniqueness of not, i.e., if
+  the variable happens in more that one `workspace[timestep]`, should we add up
+  the coefficients or not. This is defined by the keyword
+`multiply_by_duration`
 """
 function add_expression_terms_rep_period_constraints!(
     connection,
@@ -44,29 +71,6 @@ function add_expression_terms_rep_period_constraints!(
         row in DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM rep_periods_data")
     )::Int32
 
-    # This expression computation uses a workspace to store all variables
-    # defined for each timestep.
-    # The idea of this algorithm is to append all variables defined at time
-    # `timestep` in `workspace[timestep]` and then aggregate then for the
-    # constraint time block.
-    #
-    # The algorithm works like this:
-    #
-    # 1. Loop over each group of (asset, year, rep_period)
-    # 1.1. Loop over each variable in the group: (var_idx, var_time_block_start, var_time_block_end)
-    # 1.1.1. Loop over each timestep in var_time_block_start:var_time_block_end
-    # 1.1.1.1. Compute the coefficient of the variable based on the rep_period
-    #   resolution and the variable efficiency
-    # 1.1.1.2. Store (var_idx, coefficient) in workspace[timestep]
-    # 1.2. Loop over each constraint in the group: (cons_idx, cons_time_block_start, cons_time_block_end)
-    # 1.2.1. Aggregate all variables in workspace[timestep] for timestep in the
-    #   time block to create a list of variable indices and their coefficients [(var_idx1, coef1), ...]
-    # 1.2.2. Compute the expression using the variable container, the indices and coefficients
-    #
-    # Notes:
-    # - On step 1.2.1, the aggregation can be either by uniqueness of not,
-    #   i.e., if the variable happens in more that one `workspace[timestep]`,
-    #   should we add up the coefficients or not. This is defined by the keyword `multiply_by_duration`
     workspace = [Dict{Int,Float64}() for _ in 1:Tmax]
 
     # The SQL strategy to improve looping over the groups and then the
@@ -129,7 +133,8 @@ function add_expression_terms_rep_period_constraints!(
 
         resolution_query = multiply_by_duration ? "rep_periods_data.resolution" : "1.0::FLOAT8"
 
-        # Walk through (asset, year, rep_period)
+        # Start of the algorithm
+        # 1. Loop over each group of (asset, year, rep_period)
         for group_row in DuckDB.query(
             connection,
             "SELECT
@@ -163,7 +168,7 @@ function add_expression_terms_rep_period_constraints!(
             empty!.(workspace)
             outgoing_flow_durations = typemax(Int64) #LARGE_NUMBER to start finding the minimum outgoing flow duration
 
-            # Store the corresponding flow in the workspace
+            # Step 1.1. Loop over each variable in the group
             for (var_idx, time_block_start, time_block_end, efficiency) in zip(
                 group_row.var_idx::Vector{Union{Missing,Int64}},
                 group_row.var_time_block_start::Vector{Union{Missing,Int32}},
@@ -171,7 +176,9 @@ function add_expression_terms_rep_period_constraints!(
                 group_row.efficiency::Vector{Union{Missing,Float64}},
             )
                 time_block = time_block_start:time_block_end
+                # Step 1.1.1.
                 for timestep in time_block
+                    # Step 1.1.1.1.
                     # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
                     # And when you want the highest resolution (which is asset type-agnostic)
                     efficiency_coefficient =
@@ -185,6 +192,7 @@ function add_expression_terms_rep_period_constraints!(
                                 1.0 / efficiency::Float64
                             end
                         end
+                    # Step 1.1.1.2.
                     workspace[timestep][var_idx] = resolution * efficiency_coefficient
                 end
                 if conditions_to_add_min_outgoing_flow_duration
@@ -193,7 +201,7 @@ function add_expression_terms_rep_period_constraints!(
                 end
             end
 
-            # Sum the corresponding flows from the workspace
+            # Step 1.2. Loop over each constraint
             for (cons_idx, time_block_start, time_block_end) in zip(
                 group_row.cons_idx::Vector{Union{Missing,Int64}},
                 group_row.cons_time_block_start::Vector{Union{Missing,Int32}},
@@ -201,8 +209,9 @@ function add_expression_terms_rep_period_constraints!(
             )
                 time_block = time_block_start:time_block_end
                 workspace_agg = Dict{Int,Float64}()
-                for t in time_block
-                    for (var_idx, var_coefficient) in workspace[t]
+                # Step 1.2.1.
+                for timestep in time_block
+                    for (var_idx, var_coefficient) in workspace[timestep]
                         if !haskey(workspace_agg, var_idx)
                             # First time a variable is encountered it adds to the aggregation
                             workspace_agg[var_idx] = var_coefficient
@@ -215,6 +224,7 @@ function add_expression_terms_rep_period_constraints!(
                     end
                 end
                 if length(workspace_agg) > 0
+                    # Step 1.2.2.
                     cons.expressions[case.expr_key][cons_idx] = sum(
                         duration * flow.container[var_idx] for (var_idx, duration) in workspace_agg
                     )
