@@ -193,3 +193,25 @@ function apply_to_files_named(f, filename; include_missing = false)
         end
     end
 end
+
+"""
+    delete_header_in_csvs(path)
+
+Searches for all CSV files in the given `path` and its subfolders, deletes the header row of each file, and saves the file.
+"""
+function delete_header_in_csvs(path)
+    for (root, _, files) in walkdir(path)
+        for file in files
+            if endswith(file, ".csv")
+                try
+                    file_path = joinpath(root, file)
+                    df = CSV.read(file_path, DataFrame; header = 2)
+                    CSV.write(file_path, df; append = false)
+                    println("Processed: $file_path")
+                catch e
+                    println("Error processing $file_path: $e")
+                end
+            end
+        end
+    end
+end
