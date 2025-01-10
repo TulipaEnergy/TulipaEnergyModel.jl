@@ -2,10 +2,10 @@
     dir = joinpath(INPUT_FOLDER, "Tiny")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = EnergyProblem(connection)
-    create_model!(energy_problem)
-    solve_model!(energy_problem, HiGHS.Optimizer)
-    save_solution_to_file(mktempdir(), energy_problem)
+    energy_problem = TulipaEnergyModel.EnergyProblem(connection)
+    TulipaEnergyModel.create_model!(energy_problem)
+    TulipaEnergyModel.solve_model!(energy_problem, HiGHS.Optimizer)
+    TulipaEnergyModel.save_solution_to_file(mktempdir(), energy_problem)
 end
 
 @testset "Test that everything works for $input from beginning to end without EnergyProblem struct" for input in
@@ -21,15 +21,16 @@ end
     _read_csv_folder(connection, dir)
 
     # Internal data and structures pre-model
-    graph, representative_periods, timeframe, years = create_internal_structures(connection)
-    model_parameters = ModelParameters(connection)
-    sets = create_sets(graph, years)
-    variables = compute_variables_indices(connection)
-    constraints = compute_constraints_indices(connection)
-    profiles = prepare_profiles_structure(connection)
+    graph, representative_periods, timeframe, years =
+        TulipaEnergyModel.create_internal_structures(connection)
+    model_parameters = TulipaEnergyModel.ModelParameters(connection)
+    sets = TulipaEnergyModel.create_sets(graph, years)
+    variables = TulipaEnergyModel.compute_variables_indices(connection)
+    constraints = TulipaEnergyModel.compute_constraints_indices(connection)
+    profiles = TulipaEnergyModel.prepare_profiles_structure(connection)
 
     # Create model
-    model = create_model(
+    model = TulipaEnergyModel.create_model(
         connection,
         graph,
         sets,
@@ -43,6 +44,6 @@ end
     )
 
     # Solve model
-    solution = solve_model(model, variables, HiGHS.Optimizer)
-    save_solution_to_file(mktempdir(), graph, solution)
+    solution = TulipaEnergyModel.solve_model(model, variables, HiGHS.Optimizer)
+    TulipaEnergyModel.save_solution_to_file(mktempdir(), graph, solution)
 end
