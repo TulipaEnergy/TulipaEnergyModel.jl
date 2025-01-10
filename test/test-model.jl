@@ -1,11 +1,11 @@
 @testset "Test that solve_model! throws if model is not created but works otherwise" begin
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
-    energy_problem = EnergyProblem(connection)
-    @test_throws Exception solve_model!(energy_problem)
+    energy_problem = TulipaEnergyModel.EnergyProblem(connection)
+    @test_throws Exception TulipaEnergyModel.solve_model!(energy_problem)
     @test !energy_problem.solved
-    create_model!(energy_problem)
+    TulipaEnergyModel.create_model!(energy_problem)
     @test !energy_problem.solved
-    solution = solve_model!(energy_problem)
+    solution = TulipaEnergyModel.solve_model!(energy_problem)
     @test energy_problem.solved
 end

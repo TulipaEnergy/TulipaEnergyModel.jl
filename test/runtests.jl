@@ -1,16 +1,16 @@
-using CSV
-using Cbc
-using DataFrames
-using DuckDB
-using GLPK
-using Graphs
-using HiGHS
-using JuMP
-using MathOptInterface
-using Test
-using TOML
-using TulipaEnergyModel
-using TulipaIO
+using CSV: CSV
+using Cbc: Cbc
+using DataFrames: DataFrames, DataFrame
+using DuckDB: DuckDB, DBInterface
+using GLPK: GLPK
+using Graphs: Graphs
+using HiGHS: HiGHS
+using JuMP: JuMP
+using MathOptInterface: MathOptInterface
+using Test: Test, @test, @testset, @test_throws, @test_logs
+using TOML: TOML
+using TulipaEnergyModel: TulipaEnergyModel
+using TulipaIO: TulipaIO
 
 # Folders names
 const INPUT_FOLDER = joinpath(@__DIR__, "inputs")
@@ -49,5 +49,5 @@ end
 @testset "Ensuring data can be read and create the internal structures" begin
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(@__DIR__, "../benchmark/EU/"))
-    create_internal_structures(connection)
+    TulipaEnergyModel.create_internal_structures(connection)
 end

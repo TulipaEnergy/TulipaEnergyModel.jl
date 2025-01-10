@@ -19,7 +19,7 @@
         (2022, "asset1") => 135.6714595,
     )
 
-    result = calculate_annualized_cost(
+    result = TulipaEnergyModel.calculate_annualized_cost(
         discount_rate,
         economic_lifetime,
         investment_cost,
@@ -53,7 +53,7 @@ end
         (2022, "asset1") => 964.3285406,
     )
 
-    result = calculate_salvage_value(
+    result = TulipaEnergyModel.calculate_salvage_value(
         discount_rate,
         economic_lifetime,
         annualized_cost,
@@ -93,7 +93,7 @@ end
         (2022, "asset1") => 0.0797796,
     )
 
-    result = calculate_weight_for_investment_discounts(
+    result = TulipaEnergyModel.calculate_weight_for_investment_discounts(
         social_rate,
         discount_year,
         salvage_value,
