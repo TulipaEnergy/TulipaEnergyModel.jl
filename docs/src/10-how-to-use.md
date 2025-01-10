@@ -471,7 +471,7 @@ Let's explore how the groups are set up in the test case called [Norse](https://
 using DataFrames # hide
 using CSV # hide
 input_asset_file = "../../test/inputs/Norse/group-asset.csv" # hide
-assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
+assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 ```
 
 In the given data, there are two groups: `renewables` and `ccgt`. Both groups have the `invest_method` parameter set to `true`, indicating that investment group constraints apply to both. For the `renewables` group, the `min_investment_limit` parameter is missing, signifying that there is no minimum limit imposed on the group. However, the `max_investment_limit` parameter is set to 40000 MW, indicating that the total investments of assets in the group must be less than or equal to this value. In contrast, the `ccgt` group has a missing value in the `max_investment_limit` parameter, indicating no maximum limit, while the `min_investment_limit` is set to 10000 MW for the total investments in that group.
@@ -480,7 +480,7 @@ Let's now explore which assets are in each group. To do so, we can take a look a
 
 ```@example display-group-setup
 input_asset_file = "../../test/inputs/Norse/graph-assets-data.csv" # hide
-assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
+assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 assets = assets[.!ismissing.(assets.group), [:name, :type, :group]] # hide
 ```
 
@@ -538,7 +538,7 @@ In order to set up a model with year information, the following steps are necess
     using DataFrames # hide
     using CSV # hide
     input_asset_file = "../../test/inputs/Multi-year Investments/assets-data.csv" # hide
-    assets_data = CSV.read(input_asset_file, DataFrame, header = 2) # hide
+    assets_data = CSV.read(input_asset_file, DataFrame, header = 1) # hide
     assets_data = assets_data[1:10, [:name, :year, :commission_year, :investable, :initial_units]] # hide
     ```
 
@@ -558,7 +558,7 @@ In order to set up a model with year information, the following steps are necess
 
   ```@example multi-year-setup
   input_asset_file = "../../test/inputs/Multi-year Investments/assets-profiles.csv" # hide
-  assets_profiles = CSV.read(input_asset_file, DataFrame, header = 2) # hide
+  assets_profiles = CSV.read(input_asset_file, DataFrame, header = 1) # hide
   assets_profiles = assets_profiles[1:2, :] # hide
   ```
 

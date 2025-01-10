@@ -20,7 +20,7 @@ function TulipaCSV(path)
     end
 
     units = split(readline(path), ",")
-    csv = CSV.read(path, DataFrame; header = 2, types = String)
+    csv = CSV.read(path, DataFrame; header = 1, types = String)
 
     if size(csv) == (0, 0)
         units = String[]
