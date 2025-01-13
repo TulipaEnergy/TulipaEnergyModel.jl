@@ -444,7 +444,11 @@ function add_expression_terms_inter_rp_constraints!(
 
     # Incoming, outgoing flows, and profile aggregation
     for row_inter in eachrow(df_inter)
-        sub_df_map = filter(:period => in(row_inter.periods_block), df_map; view = true)
+        sub_df_map = DataFrames.subset(
+            df_map,
+            :period => DataFrames.ByRow(in(row_inter.periods_block));
+            view = true,
+        )
 
         for row_map in eachrow(sub_df_map)
             # Skip inactive row_inter or undefined for that year
@@ -453,11 +457,11 @@ function add_expression_terms_inter_rp_constraints!(
             #     continue
             # end
 
-            sub_df_flows = filter(
-                [:from, :year, :rep_period] =>
-                    (from, y, rp) ->
-                        (from, y, rp) == (row_inter.asset, row_map.year, row_map.rep_period),
-                df_flows;
+            sub_df_flows = DataFrames.subset(
+                df_flows,
+                :from => DataFrames.ByRow(==(row_inter.asset)),
+                :year => DataFrames.ByRow(==(row_map.year)),
+                :rep_period => DataFrames.ByRow(==(row_map.rep_period));
                 view = true,
             )
             sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
@@ -473,11 +477,11 @@ function add_expression_terms_inter_rp_constraints!(
             end
 
             if is_storage_level
-                sub_df_flows = filter(
-                    [:to, :year, :rep_period] =>
-                        (to, y, rp) ->
-                            (to, y, rp) == (row_inter.asset, row_map.year, row_map.rep_period),
-                    df_flows;
+                sub_df_flows = DataFrames.subset(
+                    df_flows,
+                    :to => DataFrames.ByRow(==(row_inter.asset)),
+                    :year => DataFrames.ByRow(==(row_map.year)),
+                    :rep_period => DataFrames.ByRow(==(row_map.rep_period));
                     view = true,
                 )
                 sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
