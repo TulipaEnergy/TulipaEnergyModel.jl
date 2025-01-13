@@ -75,7 +75,7 @@ The following table shows the user input data for the definition of asset time r
 using DataFrames # hide
 using CSV # hide
 input_asset_file = "../../test/inputs/Variable Resolution/assets-rep-periods-partitions.csv" # hide
-assets = CSV.read(input_asset_file, DataFrame, header = 2) # hide
+assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 assets = assets[assets.asset .!= "wind", :] # hide
 ```
 
@@ -85,7 +85,7 @@ The same time resolution can be specified for the flows, for example (again, the
 
 ```@example print-partitions
 input_flow_file = "../../test/inputs/Variable Resolution/flows-rep-periods-partitions.csv" # hide
-flows_partitions = CSV.read(input_flow_file, DataFrame, header = 2) # hide
+flows_partitions = CSV.read(input_flow_file, DataFrame, header = 1) # hide
 ```
 
 The table shows a `uniform` definition for the flow from the hydrogen producer (`H2`) to the conversion asset (`ccgt`) of 6 hours, from the wind producer (`wind`) to the storage (`phs`) of 3 hours, and from the balance hub (`balance`) to the consumer (`demand`) of 3 hours, too. In addition, the flow from the wind producer (`wind`) to the balance hub (`balance`) is defined using the `math` specification of `1x2+1x4`, meaning that there are two time blocks, one of two hours (i.e., `1:2`) and another of four hours (i.e., `3:6`). Finally, the flow from the storage (`phs`) to the balance hub (`balance`) is defined using the `math` specification of `1x4+1x2`, meaning that there are two time blocks, one of four hours (i.e., `1:4`) and another of two hours (i.e., `5:6`).
@@ -350,8 +350,8 @@ The example demonstrates various assets that supply demand. Each asset has diffe
 using DataFrames # hide
 using CSV # hide
 input_dir = "../../test/inputs/UC-ramping" # hide
-assets_data = CSV.read(joinpath(input_dir, "assets-data.csv"), DataFrame, header = 2) # hide
-graph_assets = CSV.read(joinpath(input_dir, "graph-assets-data.csv"), DataFrame, header = 2) # hide
+assets_data = CSV.read(joinpath(input_dir, "assets-data.csv"), DataFrame, header = 1) # hide
+graph_assets = CSV.read(joinpath(input_dir, "graph-assets-data.csv"), DataFrame, header = 1) # hide
 assets = leftjoin(graph_assets, assets_data, on=:name) # hide
 filtered_assets = assets[assets.type .== "producer" .|| assets.type .== "conversion", ["name", "type", "capacity", "initial_units", "unit_commitment",  "ramping"]] # hide
 ```
@@ -359,14 +359,14 @@ filtered_assets = assets[assets.type .== "producer" .|| assets.type .== "convers
 The `assets-rep-periods-partitions` file defines the time resolution for the assets in the `partition` column. For instance, here we can see that the time resolutions are 3h for the `ccgt` and 6h for the `smr`. These values mean that the unit commitment variables (e.g., `units_on`) in the model have three and six hours resolution, respectively.
 
 ```@example unit-commitment
-assets_partitions_data = CSV.read(joinpath(input_dir, "assets-rep-periods-partitions.csv"), DataFrame, header = 2) # hide
+assets_partitions_data = CSV.read(joinpath(input_dir, "assets-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
 filtered_assets_partitions = assets_partitions_data[!, ["asset", "specification", "partition"]] # hide
 ```
 
 The `flows-rep-periods-partitions` file defines the time resolution for the flows. In this example, we have that the flows from the `gas` asset to the `ccgt` and from the `ccgt` asset to the `demand` are in a 2h resolution.
 
 ```@example unit-commitment
-flows_partitions_data = CSV.read(joinpath(input_dir, "flows-rep-periods-partitions.csv"), DataFrame, header = 2) # hide
+flows_partitions_data = CSV.read(joinpath(input_dir, "flows-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
 filtered_flows_partitions = flows_partitions_data[!, ["from_asset", "to_asset", "specification", "partition"]] # hide
 ```
 
@@ -554,8 +554,8 @@ Let's first look at this feature's most relevant input data, starting with the `
 using DataFrames # hide
 using CSV # hide
 input_dir = "../../test/inputs/Storage" # hide
-assets_data = CSV.read(joinpath(input_dir, "assets-data.csv"), DataFrame, header = 2) # hide
-graph_assets = CSV.read(joinpath(input_dir, "graph-assets-data.csv"), DataFrame, header = 2) # hide
+assets_data = CSV.read(joinpath(input_dir, "assets-data.csv"), DataFrame, header = 1) # hide
+graph_assets = CSV.read(joinpath(input_dir, "graph-assets-data.csv"), DataFrame, header = 1) # hide
 assets = leftjoin(graph_assets, assets_data, on=:name) # hide
 filtered_assets = assets[assets.type .== "storage", ["name", "type", "capacity", "capacity_storage_energy", "initial_storage_units", "initial_storage_level", "is_seasonal"]] # hide
 ```
@@ -566,7 +566,7 @@ The `rep-periods-data` file has information on the representative periods in the
 
 ```@example seasonal-storage
 rp_file = "../../test/inputs/Storage/rep-periods-data.csv" # hide
-rp = CSV.read(rp_file, DataFrame, header = 2) # hide
+rp = CSV.read(rp_file, DataFrame, header = 1) # hide
 ```
 
 ![availability-profiles](./figs/availability-profiles.png)
@@ -575,7 +575,7 @@ The `rep-periods-mapping` relates each representative period with the periods in
 
 ```@example seasonal-storage
 map_file = "../../test/inputs/Storage/rep-periods-mapping.csv" # hide
-map = CSV.read(map_file, DataFrame, header = 2) # hide
+map = CSV.read(map_file, DataFrame, header = 1) # hide
 unstacked_map = unstack(map, :period, :rep_period, :weight) # hide
 rename!(unstacked_map, ["period", "k=1", "k=2", "k=3"]) # hide
 unstacked_map[!,["k=1", "k=2", "k=3"]] = convert.(Float64, unstacked_map[!,["k=1", "k=2", "k=3"]]) # hide
@@ -586,7 +586,7 @@ The file `assets-timeframe-partitions` has the information on how often we want 
 
 ```@example seasonal-storage
 phs_partitions_file = "../../test/inputs/Storage/assets-timeframe-partitions.csv" # hide
-phs_partitions = CSV.read(phs_partitions_file, DataFrame, header = 2) # hide
+phs_partitions = CSV.read(phs_partitions_file, DataFrame, header = 1) # hide
 ```
 
 > **Note:**

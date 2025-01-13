@@ -1,4 +1,3 @@
-,,,,,,,,
 from_asset,to_asset,carrier,is_transport,capacity,technical_lifetime,economic_lifetime,discount_rate,investment_integer
 ens,demand,electricity,false,0.0,10,1,0.02,false
 ocgt,demand,electricity,false,0.0,10,1,0.02,false

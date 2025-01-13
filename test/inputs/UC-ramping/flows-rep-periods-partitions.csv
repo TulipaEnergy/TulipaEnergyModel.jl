@@ -1,4 +1,3 @@
-,,,,{uniform;explicit;math},
 from_asset,to_asset,year,rep_period,specification,partition
 gas,ccgt,2030,1,uniform,2
 ccgt,demand,2030,1,uniform,2

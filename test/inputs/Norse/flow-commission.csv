@@ -1,4 +1,3 @@
-,,,,,,
 from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit
 G_imports,Midgard_CCGT,2030,0.0,0.0,1.0,0.0
 Midgard_E_demand,Midgard_Hydro,2030,0.0,0.0,0.7,0.0

@@ -1,4 +1,3 @@
-,,,,,,
 asset,milestone_year,commission_year,active,decommissionable,initial_units,initial_storage_units
 ocgt,2030,2030,true,true,1.0,0.0
 ccgt,2030,2030,true,true,2.0,0.0

@@ -1,4 +1,3 @@
-,,,,
 from_asset,to_asset,milestone_year,investable,variable_cost
 NL_E_ENS,NL_E_Demand,2030,false,1000.0
 NL_Wind_Onshore,NL_E_Balance,2030,false,2.06

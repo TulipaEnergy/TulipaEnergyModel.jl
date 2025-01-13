@@ -1,4 +1,3 @@
-,,,,,,,,
 from_asset,to_asset,carrier,is_transport,capacity,technical_lifetime,economic_lifetime,discount_rate,investment_integer
 NL_E_Balance,BE_E_Balance,electricity,true,1000.0,10,1,0.02,false
 DE_E_ENS,DE_E_Demand,electricity,false,1000.0,10,1,0.02,false

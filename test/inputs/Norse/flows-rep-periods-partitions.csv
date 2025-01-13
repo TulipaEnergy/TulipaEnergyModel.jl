@@ -1,4 +1,3 @@
-,,,,{uniform;explicit;math},
 from_asset,to_asset,year,rep_period,specification,partition
 Asgard_Solar,Asgard_Battery,2030,2,math,4x3+3x4
 Asgard_Solar,Asgard_E_demand,2030,2,math,3x4+4x3
