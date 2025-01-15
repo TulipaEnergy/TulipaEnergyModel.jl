@@ -44,6 +44,7 @@ end
     )
 
     # Solve model
-    solution = TulipaEnergyModel.solve_model(model, variables, HiGHS.Optimizer)
-    TulipaEnergyModel.save_solution_to_file(mktempdir(), graph, solution)
+    TulipaEnergyModel.solve_model(model, HiGHS.Optimizer)
+    TulipaEnergyModel.save_solution!(connection, model, variables, constraints)
+    TulipaEnergyModel.save_solution_to_file(mktempdir(), connection, variables, constraints)
 end
