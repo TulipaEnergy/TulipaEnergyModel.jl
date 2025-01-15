@@ -434,11 +434,11 @@ function add_expression_terms_inter_rp_constraints!(
     representative_periods;
     is_storage_level = false,
 )
-    df_inter[!, :outgoing_flow] .= JuMP.AffExpr(0.0)
+    df_inter[!, :outgoing_flow] = Vector{JuMP.AffExpr}(undef, size(df_inter, 1))
 
     if is_storage_level
-        df_inter[!, :incoming_flow] .= JuMP.AffExpr(0.0)
-        df_inter[!, :inflows_profile_aggregation] .= JuMP.AffExpr(0.0)
+        df_inter[!, :incoming_flow] = Vector{JuMP.AffExpr}(undef, size(df_inter, 1))
+        df_inter[!, :inflows_profile_aggregation] = Vector{JuMP.AffExpr}(undef, size(df_inter, 1))
     end
 
     # TODO: The interaction between year and timeframe is not clear yet, so this is probably wrong
@@ -446,6 +446,13 @@ function add_expression_terms_inter_rp_constraints!(
 
     # Incoming, outgoing flows, and profile aggregation
     for row_inter in eachrow(df_inter)
+        row_inter.outgoing_flow = JuMP.AffExpr(0.0)
+
+        if is_storage_level
+            row_inter.incoming_flow = JuMP.AffExpr(0.0)
+            row_inter.inflows_profile_aggregation = JuMP.AffExpr(0.0)
+        end
+
         sub_df_map = DataFrames.subset(
             df_map,
             :period => DataFrames.ByRow(in(row_inter.periods_block));
@@ -494,7 +501,6 @@ function add_expression_terms_inter_rp_constraints!(
                     LinearAlgebra.dot(sub_df_flows.flow, duration .* sub_df_flows.efficiency) *
                     row_map.weight,
                 )
-
                 row_inter.inflows_profile_aggregation +=
                     profile_aggregation(
                         sum,
