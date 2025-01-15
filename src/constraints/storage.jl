@@ -12,14 +12,14 @@ function add_storage_constraints!(
     dataframes,
     Ai,
     accumulated_energy_capacity,
-    incoming_flow_lowest_storage_resolution_intra_rp,
-    outgoing_flow_lowest_storage_resolution_intra_rp,
+    incoming_flow_lowest_storage_resolution_intra_rp::Vector{JuMP.AffExpr},
+    outgoing_flow_lowest_storage_resolution_intra_rp::Vector{JuMP.AffExpr},
     df_storage_intra_rp_balance_grouped,
     df_storage_inter_rp_balance_grouped,
     storage_level_intra_rp,
     storage_level_inter_rp,
-    incoming_flow_storage_inter_rp_balance,
-    outgoing_flow_storage_inter_rp_balance,
+    incoming_flow_storage_inter_rp_balance::Vector{JuMP.AffExpr},
+    outgoing_flow_storage_inter_rp_balance::Vector{JuMP.AffExpr},
 )
 
     ## INTRA-TEMPORAL CONSTRAINTS (within a representative period)
@@ -29,7 +29,7 @@ function add_storage_constraints!(
         # This assumes an ordering of the time blocks, that is guaranteed inside
         # construct_dataframes
         # The storage_inflows have been moved here
-        model[Symbol("storage_intra_rp_balance_$(a)_$(y)_$(rp)")] = [
+        model[Symbol("storage_intra_rp_balance_$(a)_$(y)_$(rp)")] = JuMP.ConstraintRef[
             @constraint(
                 model,
                 storage_level_intra_rp[row.index] ==
@@ -116,28 +116,34 @@ function add_storage_constraints!(
         # This assumes an ordering of the time blocks, that is guaranteed inside
         # construct_dataframes
         # The storage_inflows have been moved here
-        model[Symbol("storage_inter_rp_balance_$(a)_$(y)")] = [
-            @constraint(
-                model,
-                storage_level_inter_rp[row.index] ==
-                (
-                    if k > 1
-                        storage_level_inter_rp[row.index-1] # This assumes contiguous index
-                    else
-                        (
-                            if ismissing(graph[a].initial_storage_level[row.year])
-                                storage_level_inter_rp[last(sub_df.index)]
-                            else
-                                graph[a].initial_storage_level[row.year]
-                            end
-                        )
-                    end
-                ) +
-                row.inflows_profile_aggregation +
-                incoming_flow_storage_inter_rp_balance[row.index] -
-                outgoing_flow_storage_inter_rp_balance[row.index],
-                base_name = "storage_inter_rp_balance[$a,$(row.year),$(row.periods_block)]"
-            ) for (k, row) in enumerate(eachrow(sub_df))
+        model[Symbol("storage_inter_rp_balance_$(a)_$(y)")] = JuMP.ConstraintRef[
+            if k == 1 && !ismissing(graph[a].initial_storage_level[row.year])
+                @constraint(
+                    model,
+                    storage_level_inter_rp[row.index] ==
+                    graph[a].initial_storage_level[row.year] +
+                    row.inflows_profile_aggregation +
+                    incoming_flow_storage_inter_rp_balance[row.index] -
+                    outgoing_flow_storage_inter_rp_balance[row.index],
+                    base_name = "storage_inter_rp_balance[$a,$(row.year),$(row.periods_block)]"
+                )
+
+            else
+                previous_level::JuMP.VariableRef = if k > 1
+                    storage_level_inter_rp[row.index-1]
+                else
+                    storage_level_inter_rp[last(sub_df.index)]
+                end
+                @constraint(
+                    model,
+                    storage_level_inter_rp[row.index] ==
+                    previous_level +
+                    row.inflows_profile_aggregation +
+                    incoming_flow_storage_inter_rp_balance[row.index] -
+                    outgoing_flow_storage_inter_rp_balance[row.index],
+                    base_name = "storage_inter_rp_balance[$a,$(row.year),$(row.periods_block)]"
+                )
+            end for (k, row) in enumerate(eachrow(sub_df))
         ]
     end
 

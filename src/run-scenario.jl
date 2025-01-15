@@ -21,13 +21,14 @@ function run_scenario(
     write_lp_file = false,
     log_file = "",
     show_log = true,
+    enable_names = false,
 )
     energy_problem = @timeit to "create EnergyProblem from connection" EnergyProblem(
         connection;
         model_parameters_file,
     )
 
-    @timeit to "create_model!" create_model!(energy_problem; write_lp_file)
+    @timeit to "create_model!" create_model!(energy_problem; write_lp_file, enable_names)
 
     @timeit to "solve and store solution" solve_model!(energy_problem, optimizer; parameters)
 
