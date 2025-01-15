@@ -96,9 +96,11 @@ function construct_dataframes(graph, representative_periods, constraints_partiti
     RP = Dict(year => 1:length(representative_periods[year]) for year in years)
 
     # Create subsets of assets
-    Ap  = filter_graph(graph, A, "producer", :type)
+    Ap = filter_graph(graph, A, "producer", :type)
     Acv = filter_graph(graph, A, "conversion", :type)
-    Auc = Dict(year => (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :unit_commitment, year) for year in years)
+    Auc = Dict(
+        year => (Ap ∪ Acv) ∩ filter_graph(graph, A, true, :unit_commitment, year) for year in years
+    )
 
     # Output object
     dataframes = Dict{Symbol,DataFrame}()
@@ -459,37 +461,39 @@ function add_expression_terms_inter_rp_constraints!(
 
             sub_df_flows = DataFrames.subset(
                 df_flows,
-                :from => DataFrames.ByRow(==(row_inter.asset)),
-                :year => DataFrames.ByRow(==(row_map.year)),
-                :rep_period => DataFrames.ByRow(==(row_map.rep_period));
+                :from => from -> from .== row_inter.asset,
+                :year => year -> year .== row_map.year,
+                :rep_period => rep_period -> rep_period .== row_map.rep_period;
                 view = true,
             )
-            sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
+            duration = length.(sub_df_flows.timesteps_block)
             if is_storage_level
-                row_inter.outgoing_flow +=
-                    LinearAlgebra.dot(
-                        sub_df_flows.flow,
-                        sub_df_flows.duration ./ sub_df_flows.efficiency,
-                    ) * row_map.weight
+                JuMP.add_to_expression!(
+                    row_inter.outgoing_flow,
+                    LinearAlgebra.dot(sub_df_flows.flow, duration ./ sub_df_flows.efficiency) *
+                    row_map.weight,
+                )
             else
-                row_inter.outgoing_flow +=
-                    LinearAlgebra.dot(sub_df_flows.flow, sub_df_flows.duration) * row_map.weight
+                JuMP.add_to_expression!(
+                    row_inter.outgoing_flow,
+                    LinearAlgebra.dot(sub_df_flows.flow, duration) * row_map.weight,
+                )
             end
 
             if is_storage_level
                 sub_df_flows = DataFrames.subset(
                     df_flows,
-                    :to => DataFrames.ByRow(==(row_inter.asset)),
-                    :year => DataFrames.ByRow(==(row_map.year)),
-                    :rep_period => DataFrames.ByRow(==(row_map.rep_period));
+                    :to => to -> to .== row_inter.asset,
+                    :year => year -> year .== row_map.year,
+                    :rep_period => rep_period -> rep_period .== row_map.rep_period;
                     view = true,
                 )
-                sub_df_flows.duration = length.(sub_df_flows.timesteps_block)
-                row_inter.incoming_flow +=
-                    LinearAlgebra.dot(
-                        sub_df_flows.flow,
-                        sub_df_flows.duration .* sub_df_flows.efficiency,
-                    ) * row_map.weight
+                duration = length.(sub_df_flows.timesteps_block)
+                JuMP.add_to_expression!(
+                    row_inter.incoming_flow,
+                    LinearAlgebra.dot(sub_df_flows.flow, duration .* sub_df_flows.efficiency) *
+                    row_map.weight,
+                )
 
                 row_inter.inflows_profile_aggregation +=
                     profile_aggregation(
@@ -623,14 +627,14 @@ function create_model(
 
     ## Sets unpacking
     @timeit to "unpacking and creating sets" begin
-        A   = MetaGraphsNext.labels(graph) |> collect
-        F   = MetaGraphsNext.edge_labels(graph) |> collect
-        Ac  = filter_graph(graph, A, "consumer", :type)
-        Ap  = filter_graph(graph, A, "producer", :type)
-        As  = filter_graph(graph, A, "storage", :type)
-        Ah  = filter_graph(graph, A, "hub", :type)
+        A = MetaGraphsNext.labels(graph) |> collect
+        F = MetaGraphsNext.edge_labels(graph) |> collect
+        Ac = filter_graph(graph, A, "consumer", :type)
+        Ap = filter_graph(graph, A, "producer", :type)
+        As = filter_graph(graph, A, "storage", :type)
+        Ah = filter_graph(graph, A, "hub", :type)
         Acv = filter_graph(graph, A, "conversion", :type)
-        Ft  = filter_graph(graph, F, true, :is_transport)
+        Ft = filter_graph(graph, F, true, :is_transport)
 
         # Create subsets of assets by investable
         Ai = Dict(y => filter_graph(graph, A, true, :investable, y) for y in Y)
