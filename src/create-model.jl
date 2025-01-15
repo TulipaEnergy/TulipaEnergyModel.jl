@@ -589,7 +589,7 @@ function create_model!(energy_problem; kwargs...)
 end
 
 """
-    model = create_model(graph, representative_periods, dataframes, timeframe, groups; write_lp_file = false)
+    model = create_model(graph, representative_periods, dataframes, timeframe, groups; write_lp_file = false, enable_names = true)
 
 Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), timeframe, and groups.
 """
@@ -602,6 +602,7 @@ function create_model(
     groups,
     model_parameters;
     write_lp_file = false,
+    enable_names = true,
 )
 
     ## Helper functions
@@ -757,6 +758,8 @@ function create_model(
 
     ## Model
     model = JuMP.Model()
+
+    JuMP.set_string_names_on_creation(model, enable_names)
 
     ## Variables
     @timeit to "create variables" begin
