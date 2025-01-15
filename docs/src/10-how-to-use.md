@@ -64,6 +64,9 @@ You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/Tu
 
 ### [CSV Files](@id csv-files)
 
+!!! danger
+    This section is out of date. The update of these docs is tracked in <https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues/983>
+
 Below, we have a description of the files.
 At the end, in [Schemas](@ref schemas), we have the expected columns in these CSVs.
 
@@ -205,6 +208,9 @@ Markdown.parse(
 
 ## [Structures](@id structures)
 
+!!! danger
+    This section is out of date. The update of these docs is tracked in <https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues/983>
+
 The list of relevant structures used in this package are listed below:
 
 ### EnergyProblem
@@ -214,7 +220,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 
 #### Fields
 
-- `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
+- `graph`: The Graph object that defines the geometry of the energy problem.
 - `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
 - `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions](@ref Partition) (vectors of time blocks).
 - `timeframe`: The number of periods in the `representative_periods`.
@@ -237,30 +243,16 @@ The `EnergyProblem` can also be constructed using the minimal constructor below.
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 
-### Graph
-
-The energy problem is defined using a graph.
-Each vertex is an asset, and each edge is a flow.
-
-We use [MetaGraphsNext.jl](https://github.com/JuliaGraphs/MetaGraphsNext.jl) to define the graph and its objects.
-Using MetaGraphsNext we can define a graph with metadata, i.e., associate data with each asset and flow.
-Furthermore, we can define the labels of each asset as keys to access the elements of the graph.
-The assets in the graph are of type [GraphAssetData](@ref), and the flows are of type [GraphFlowData](@ref).
-
-The graph can be created using the [`create_internal_structures`](@ref) function, or it can be accessed from an [EnergyProblem](@ref).
-
-See how to use the graph in the [graph tutorial](@ref graph-tutorial).
-
 ### GraphAssetData
 
 This structure holds all the information of a given asset.
-These are stored inside the [Graph](@ref).
+These are stored inside the Graph.
 Given a graph `graph`, an asset `a` can be accessed through `graph[a]`.
 
 ### GraphFlowData
 
 This structure holds all the information of a given flow.
-These are stored inside the [Graph](@ref).
+These are stored inside the Graph.
 Given a graph `graph`, a flow from asset `u` to asset `v` can be accessed through `graph[u, v]`.
 
 ### Partition
@@ -294,20 +286,6 @@ A representative period has three fields:
 
 The number of timesteps and resolution work together to define the coarseness of the period.
 Nothing is defined outside of these timesteps; for instance, if the representative period represents a day and you want to specify a variable or constraint with a coarseness of 30 minutes. You need to define the number of timesteps to 48 and the resolution to `0.5`.
-
-### Solution
-
-The solution object `energy_problem.solution` is a mutable struct with the following fields:
-
-- `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
-- `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
-- `storage_level_rep_period[a, rp, timesteps_block]`: The storage level for the storage asset `a` within (intra) a representative period `rp` and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used to create the model.
-- `storage_level_over_clustered_year[a, periods_block]`: The storage level for the storage asset `a` between (inter) representative periods in the periods block `periods_block`.
-- `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
-- `objective_value`: A Float64 with the objective value at the solution.
-- `duals`: A Dictionary containing the dual variables of selected constraints.
-
-Check the [tutorial](@ref solution-tutorial) for tips on manipulating the solution.
 
 ### [Time Blocks](@id time-blocks)
 
@@ -479,9 +457,9 @@ In the given data, there are two groups: `renewables` and `ccgt`. Both groups ha
 Let's now explore which assets are in each group. To do so, we can take a look at the graph-assets-data.csv file:
 
 ```@example display-group-setup
-input_asset_file = "../../test/inputs/Norse/graph-assets-data.csv" # hide
-assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
-assets = assets[.!ismissing.(assets.group), [:name, :type, :group]] # hide
+input_asset_file = "../../test/inputs/Norse/asset.csv" # hide
+assets = CSV.read(input_asset_file, DataFrame) # hide
+assets = assets[.!ismissing.(assets.group), [:asset, :type, :group]] # hide
 ```
 
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
@@ -490,6 +468,9 @@ Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the 
 > If the group has a `min_investment_limit`, then assets in the group have to allow investment (`investable = true`) for the model to be feasible. If the assets are not `investable` then they cannot satisfy the minimum constraint.
 
 ## [Setting up multi-year investments](@id multi-year-setup)
+
+!!! danger
+    This section is out of date. The update of these docs is tracked in <https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues/983>
 
 It is possible to simutaneously model different years, which is especially relevant for modeling multi-year investments. Multi-year investments refer to making investment decisions at different points in time, such that a pathway of investments can be modeled. This is particularly useful when long-term scenarios are modeled, but modeling each year is not practical. Or in a business case, investment decisions are supposed to be made in different years which has an impact on the cash flow.
 
@@ -537,9 +518,9 @@ In order to set up a model with year information, the following steps are necess
     ```@example multi-year-setup
     using DataFrames # hide
     using CSV # hide
-    input_asset_file = "../../test/inputs/Multi-year Investments/assets-data.csv" # hide
-    assets_data = CSV.read(input_asset_file, DataFrame, header = 1) # hide
-    assets_data = assets_data[1:10, [:name, :year, :commission_year, :investable, :initial_units]] # hide
+    input_asset_file = "../../test/inputs/Multi-year Investments/asset-both.csv" # hide
+    assets_data = CSV.read(input_asset_file, DataFrame) # hide
+    assets_data = assets_data[1:10, [:asset, :milestone_year, :commission_year, :initial_units]] # hide
     ```
 
     We allow investments of `ocgt`, `ccgt`, `battery`, `wind`, and `solar` in 2030.

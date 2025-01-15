@@ -311,7 +311,7 @@ Structure to hold all parts of an energy problem. It is a wrapper around various
 It hides the complexity behind the energy problem, making the usage more friendly, although more verbose.
 
 # Fields
-- `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
+- `graph`: The Graph object that defines the geometry of the energy problem.
 - `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
 - `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
 - `timeframe`: The number of periods of the `representative_periods`.

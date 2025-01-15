@@ -340,6 +340,9 @@ The level of reduction and approximation error will depend on the case study. So
 
 ## [Flexible Time Resolution in the Unit Commitment and Ramping Constraints](@id flex-time-res-uc)
 
+!!! danger
+    This section is out of date. The update of these docs is tracked in <https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues/983>
+
 In the previous section, we have seen how the flexible temporal resolution is handled for the model's flow capacity and balance constraints. Here, we show how flexible time resolution is applied when considering the model's unit commitment and ramping constraints. Let's consider the example in the folder [`test/inputs/UC-ramping`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/UC-ramping) to explain how all these constraints are created in _TulipaEnergyModel.jl_ when having the flexible time resolution.
 
 ![unit-commitment-case-study](./figs/unit-commitment-case-study.png)
@@ -350,10 +353,10 @@ The example demonstrates various assets that supply demand. Each asset has diffe
 using DataFrames # hide
 using CSV # hide
 input_dir = "../../test/inputs/UC-ramping" # hide
-assets_data = CSV.read(joinpath(input_dir, "assets-data.csv"), DataFrame, header = 1) # hide
-graph_assets = CSV.read(joinpath(input_dir, "graph-assets-data.csv"), DataFrame, header = 1) # hide
-assets = leftjoin(graph_assets, assets_data, on=:name) # hide
-filtered_assets = assets[assets.type .== "producer" .|| assets.type .== "conversion", ["name", "type", "capacity", "initial_units", "unit_commitment",  "ramping"]] # hide
+assets_data = CSV.read(joinpath(input_dir, "asset-both.csv"), DataFrame) # hide
+graph_assets = CSV.read(joinpath(input_dir, "asset.csv"), DataFrame) # hide
+assets = leftjoin(graph_assets, assets_data, on=:asset) # hide
+filtered_assets = assets[assets.type .== "producer" .|| assets.type .== "conversion", ["asset", "type", "capacity", "initial_units", "unit_commitment",  "ramping"]] # hide
 ```
 
 The `assets-rep-periods-partitions` file defines the time resolution for the assets in the `partition` column. For instance, here we can see that the time resolutions are 3h for the `ccgt` and 6h for the `smr`. These values mean that the unit commitment variables (e.g., `units_on`) in the model have three and six hours resolution, respectively.
@@ -546,6 +549,9 @@ The equations of intra- and inter-temporal constraints for energy storage are av
 
 ### Example to Model Seasonal and Non-seasonal Storage
 
+!!! danger
+    This section is out of date. The update of these docs is tracked in <https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues/983>
+
 We use the example in the folder [`test/inputs/Storage`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Storage) to explain how all these concepts come together in _TulipaEnergyModel.jl_.
 
 Let's first look at this feature's most relevant input data, starting with the `assets-data` file. Here, we show only the storage assets and the appropriate columns for this example, but all the input data can be found in the previously mentioned folder.
@@ -554,10 +560,10 @@ Let's first look at this feature's most relevant input data, starting with the `
 using DataFrames # hide
 using CSV # hide
 input_dir = "../../test/inputs/Storage" # hide
-assets_data = CSV.read(joinpath(input_dir, "assets-data.csv"), DataFrame, header = 1) # hide
-graph_assets = CSV.read(joinpath(input_dir, "graph-assets-data.csv"), DataFrame, header = 1) # hide
-assets = leftjoin(graph_assets, assets_data, on=:name) # hide
-filtered_assets = assets[assets.type .== "storage", ["name", "type", "capacity", "capacity_storage_energy", "initial_storage_units", "initial_storage_level", "is_seasonal"]] # hide
+assets_data = CSV.read(joinpath(input_dir, "asset-both.csv"), DataFrame) # hide
+graph_assets = CSV.read(joinpath(input_dir, "asset.csv"), DataFrame) # hide
+assets = leftjoin(graph_assets, assets_data, on=:asset) # hide
+filtered_assets = assets[assets.type .== "storage", ["asset", "type", "capacity", "capacity_storage_energy",  "is_seasonal"]] # hide
 ```
 
 The `is_seasonal` parameter determines whether or not the storage asset uses the inter-temporal constraints. The `phs` is the only storage asset with this type of constraint and inter-storage level variable (i.e., $v^{\text{inter-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` will only consider intra-temporal constraints with intra-storage level variables (i.e., $v^{\text{intra-storage}}_{\text{battery},k,b_k}$), and has 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration).
