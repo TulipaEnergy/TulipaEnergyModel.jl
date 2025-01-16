@@ -28,9 +28,9 @@ function create_model!(energy_problem; kwargs...)
 end
 
 """
-    model = create_model(connection, graph, representative_periods, dataframes, timeframe; write_lp_file = false, enable_names = true)
+    model = create_model(args...; write_lp_file = false, enable_names = true)
 
-Create the energy model given the `graph`, `representative_periods`, dictionary of `dataframes` (created by [`construct_dataframes`](@ref)), and timeframe.
+Create the energy model manually. We recommend using [`create_model!`](@ref) instead.
 """
 function create_model(
     connection,
