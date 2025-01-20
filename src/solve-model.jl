@@ -19,7 +19,7 @@ function solve_model!(
 
     solve_model(model, optimizer; parameters = parameters)
     energy_problem.termination_status = JuMP.termination_status(model)
-    if energy_problem.termination_status != JuMP.OPTIMAL
+    if !JuMP.is_solved_and_feasible(model)
         # Warning has been given at internal function
         return
     end
@@ -96,12 +96,8 @@ Notice that the duals are only computed if `compute_duals` is true.
 """
 function save_solution!(connection, model, variables, constraints; compute_duals = true)
     # Check if it's solved
-    status = JuMP.termination_status(model)
-    if status == JuMP.OPTIMIZE_NOT_CALLED
-        @error("The model was not solved yet, use one of the solve_model functions")
-        return
-    elseif status != JuMP.OPTIMAL
-        @error("The model was not solved to optimality, cannot get solution")
+    if !JuMP.is_solved_and_feasible(model)
+        @error("The model has a termination status: $JuMP.termination_status(model), with primal status $JuMP.primal_status(model), and dual status $JuMP.dual_status(model)")
         return
     end
 
