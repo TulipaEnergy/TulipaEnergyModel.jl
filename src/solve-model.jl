@@ -97,7 +97,9 @@ Notice that the duals are only computed if `compute_duals` is true.
 function save_solution!(connection, model, variables, constraints; compute_duals = true)
     # Check if it's solved
     if !JuMP.is_solved_and_feasible(model)
-        @error("The model has a termination status: $JuMP.termination_status(model), with primal status $JuMP.primal_status(model), and dual status $JuMP.dual_status(model)")
+        @error(
+            "The model has a termination status: $JuMP.termination_status(model), with primal status $JuMP.primal_status(model), and dual status $JuMP.dual_status(model)"
+        )
         return
     end
 
