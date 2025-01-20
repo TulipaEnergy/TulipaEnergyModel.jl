@@ -35,5 +35,5 @@ end samples = 3 evals = 1 seconds = 86400
 create_model!(energy_problem)
 
 # SUITE["energy_problem"]["output"] = @benchmarkable begin
-#     save_solution_to_file($OUTPUT_FOLDER_BM, $energy_problem)
+#     export_solution_to_csv_files($OUTPUT_FOLDER_BM, $energy_problem)
 # end

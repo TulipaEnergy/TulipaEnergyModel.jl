@@ -7,16 +7,36 @@
 end
 
 @testset "Output validation" begin
+    @testset "Check that solution files are generated" begin
+        connection = DBInterface.connect(DuckDB.DB)
+        _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Norse"))
+        TulipaEnergyModel.run_scenario(connection; output_folder = joinpath(OUTPUT_FOLDER))
+        for filename in (
+            "var_flow.csv",
+            "var_flows_investment.csv",
+            "cons_balance_consumer.csv",
+            "cons_capacity_incoming.csv",
+        )
+            @test isfile(joinpath(OUTPUT_FOLDER, filename))
+        end
+    end
+
     @testset "Make sure that saving an unsolved energy problem fails" begin
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
         energy_problem = TulipaEnergyModel.EnergyProblem(connection)
         output_dir = mktempdir()
-        @test_throws Exception TulipaEnergyModel.save_solution_to_file(output_dir, energy_problem)
+        @test_throws Exception TulipaEnergyModel.export_solution_to_csv_files(
+            output_dir,
+            energy_problem,
+        )
         TulipaEnergyModel.create_model!(energy_problem)
-        @test_throws Exception TulipaEnergyModel.save_solution_to_file(output_dir, energy_problem)
+        @test_throws Exception TulipaEnergyModel.export_solution_to_csv_files(
+            output_dir,
+            energy_problem,
+        )
         TulipaEnergyModel.solve_model!(energy_problem)
-        @test TulipaEnergyModel.save_solution_to_file(output_dir, energy_problem) === nothing
+        @test TulipaEnergyModel.export_solution_to_csv_files(output_dir, energy_problem) === nothing
     end
 end
 

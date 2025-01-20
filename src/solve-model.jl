@@ -1,110 +1,37 @@
 export solve_model!, solve_model
 
 """
-    solution = solve_model!(energy_problem[, optimizer; parameters])
+    solve_model!(energy_problem[, optimizer; parameters, save_solution = true])
 
-Solve the internal model of an `energy_problem`. The solution obtained by calling
-[`solve_model`](@ref) is returned.
+Solve the internal model of an `energy_problem`. If `save_solution`, then the
+solution and dual variables are computed and saved by [`save_solution!`](@ref).
 """
 function solve_model!(
     energy_problem::EnergyProblem,
     optimizer = HiGHS.Optimizer;
     parameters = default_parameters(optimizer),
+    save_solution = true,
 )
     model = energy_problem.model
     if model === nothing
         error("Model is not created, run create_model(energy_problem) first.")
     end
 
-    energy_problem.solution =
-        solve_model!(model, energy_problem.variables, optimizer; parameters = parameters)
+    solve_model(model, optimizer; parameters = parameters)
     energy_problem.termination_status = JuMP.termination_status(model)
-    if energy_problem.solution === nothing
+    if !JuMP.is_solved_and_feasible(model)
         # Warning has been given at internal function
         return
     end
     energy_problem.solved = true
     energy_problem.objective_value = JuMP.objective_value(model)
-
-    graph = energy_problem.graph
-    for ((y, a), value) in energy_problem.solution.assets_investment
-        graph[a].investment[y] = graph[a].investment_integer ? round(Int, value) : value
-    end
-
-    for ((y, a), value) in energy_problem.solution.assets_investment_energy
-        graph[a].investment_energy[y] =
-            graph[a].investment_integer_storage_energy ? round(Int, value) : value
-    end
-
-    # TODO: fix this
-    # for row in eachrow(energy_problem.dataframes[:storage_level_rep_period])
-    #     a, rp, timesteps_block, value =
-    #         row.asset, row.rep_period, row.timesteps_block, row.solution
-    #     graph[a].storage_level_rep_period[(rp, timesteps_block)] = value
-    # end
-    #
-    # for row in eachrow(energy_problem.dataframes[:storage_level_over_clustered_year])
-    #     a, pb, value = row.asset, row.periods_block, row.solution
-    #     graph[a].storage_level_over_clustered_year[pb] = value
-    # end
-    #
-    # for row in eachrow(energy_problem.dataframes[:max_energy_over_clustered_year])
-    #     a, pb, value = row.asset, row.periods_block, row.solution
-    #     graph[a].max_energy_over_clustered_year[pb] = value
-    # end
-    #
-    # for row in eachrow(energy_problem.dataframes[:max_energy_over_clustered_year])
-    #     a, pb, value = row.asset, row.periods_block, row.solution
-    #     graph[a].max_energy_over_clustered_year[pb] = value
-    # end
-
-    for ((y, (u, v)), value) in energy_problem.solution.flows_investment
-        graph[u, v].investment[y] = graph[u, v].investment_integer ? round(Int, value) : value
-    end
-
-    # TODO: Fix this
-    # for row in eachrow(energy_problem.variables[:flow].indices)
-    #     u, v, rp, timesteps_block, value = row.from,
-    #     row.to,
-    #     row.rep_period,
-    #     row.time_block_start:row.time_block_end,
-    #     row.solution
-    #     graph[u, v].flow[(rp, timesteps_block)] = value
-    # end
-
-    return energy_problem.solution
+    return
 end
 
 """
-    solution = solve_model!(dataframes, model, ...)
+    solve_model(model[, optimizer; parameters])
 
-Solves the JuMP `model`, returns the solution, and modifies `dataframes` to include the solution.
-The modifications made to `dataframes` are:
-
-- `df_flows.solution = solution.flow`
-- `df_storage_level_rep_period.solution = solution.storage_level_rep_period`
-- `df_storage_level_over_clustered_year.solution = solution.storage_level_over_clustered_year`
-"""
-function solve_model!(model, args...; kwargs...)
-    solution = solve_model(model, args...; kwargs...)
-    if isnothing(solution)
-        return nothing
-    end
-
-    # TODO: fix this later
-    # dataframes[:flow].solution = solution.flow
-    # dataframes[:storage_level_rep_period].solution = solution.storage_level_rep_period
-    # dataframes[:storage_level_over_clustered_year].solution = solution.storage_level_over_clustered_year
-    # dataframes[:max_energy_over_clustered_year].solution = solution.max_energy_over_clustered_year
-    # dataframes[:min_energy_over_clustered_year].solution = solution.min_energy_over_clustered_year
-
-    return solution
-end
-
-"""
-    solution = solve_model(model[, optimizer; parameters])
-
-Solve the JuMP model and return the solution. The `optimizer` argument should be an MILP solver from the JuMP
+Solve the JuMP model. The `optimizer` argument should be an MILP solver from the JuMP
 list of [supported solvers](https://jump.dev/JuMP.jl/stable/installation/#Supported-solvers).
 By default we use HiGHS.
 
@@ -112,60 +39,15 @@ The keyword argument `parameters` should be passed as a list of `key => value` p
 These can be created manually, obtained using [`default_parameters`](@ref), or read from a file
 using [`read_parameters_from_file`](@ref).
 
-The `solution` object is a mutable struct with the following fields:
-
-  - `assets_investment[a]`: The investment for each asset, indexed on the investable asset `a`.
-    To create a traditional array in the order given by the investable assets, one can run
-
-    ```
-    [solution.assets_investment[a] for a in labels(graph) if graph[a].investable]
-    ```
-    - `assets_investment_energy[a]`: The investment on energy component for each asset, indexed on the investable asset `a` with a `storage_method_energy` set to `true`.
-    To create a traditional array in the order given by the investable assets, one can run
-
-    ```
-    [solution.assets_investment_energy[a] for a in labels(graph) if graph[a].investable && graph[a].storage_method_energy
-    ```
-  - `flows_investment[u, v]`: The investment for each flow, indexed on the investable flow `(u, v)`.
-    To create a traditional array in the order given by the investable flows, one can run
-
-    ```
-    [solution.flows_investment[(u, v)] for (u, v) in edge_labels(graph) if graph[u, v].investable]
-    ```
-  - `storage_level_rep_period[a, rp, timesteps_block]`: The storage level for the storage asset `a` for a representative period `rp`
-    and a time block `timesteps_block`. The list of time blocks is defined by `constraints_partitions`, which was used
-    to create the model.
-    To create a vector with all values of `storage_level_rep_period` for a given `a` and `rp`, one can run
-
-    ```
-    [solution.storage_level_rep_period[a, rp, timesteps_block] for timesteps_block in constraints_partitions[:lowest_resolution][(a, rp)]]
-    ```
-- `storage_level_over_clustered_year[a, pb]`: The storage level for the storage asset `a` for a periods block `pb`.
-    To create a vector with all values of `storage_level_over_clustered_year` for a given `a`, one can run
-
-    ```
-    [solution.storage_level_over_clustered_year[a, bp] for bp in graph[a].timeframe_partitions[a]]
-    ```
-- `flow[(u, v), rp, timesteps_block]`: The flow value for a given flow `(u, v)` at a given representative period
-    `rp`, and time block `timesteps_block`. The list of time blocks is defined by `graph[(u, v)].partitions[rp]`.
-    To create a vector with all values of `flow` for a given `(u, v)` and `rp`, one can run
-
-    ```
-    [solution.flow[(u, v), rp, timesteps_block] for timesteps_block in graph[u, v].partitions[rp]]
-    ```
-- `objective_value`: A Float64 with the objective value at the solution.
-- `duals`: A NamedTuple containing the dual variables of selected constraints.
-
 ## Examples
 
 ```julia
 parameters = Dict{String,Any}("presolve" => "on", "time_limit" => 60.0, "output_flag" => true)
-solution = solve_model(model, variables, HiGHS.Optimizer; parameters = parameters)
+solve_model(model, HiGHS.Optimizer; parameters = parameters)
 ```
 """
 function solve_model(
     model::JuMP.Model,
-    variables,
     optimizer = HiGHS.Optimizer;
     parameters = default_parameters(optimizer),
 )
@@ -183,24 +65,127 @@ function solve_model(
         return nothing
     end
 
-    dual_variables = @timeit to "compute_dual_variables" compute_dual_variables(model)
+    return
+end
 
-    return Solution(
-        Dict(k => JuMP.value(v) for (k, v) in variables[:assets_investment].lookup),
-        Dict(k => JuMP.value(v) for (k, v) in variables[:assets_investment_energy].lookup),
-        Dict(k => JuMP.value(v) for (k, v) in variables[:flows_investment].lookup),
-        JuMP.value.(variables[:storage_level_rep_period].container),
-        JuMP.value.(variables[:storage_level_over_clustered_year].container),
-        JuMP.value.(model[:max_energy_over_clustered_year]),
-        JuMP.value.(model[:min_energy_over_clustered_year]),
-        JuMP.value.(variables[:flow].container),
-        JuMP.objective_value(model),
-        dual_variables,
+"""
+    save_solution!(energy_problem; compute_duals = true)
+"""
+function save_solution!(energy_problem::EnergyProblem; compute_duals = true)
+    return save_solution!(
+        energy_problem.db_connection,
+        energy_problem.model,
+        energy_problem.variables,
+        energy_problem.constraints;
+        compute_duals,
     )
 end
 
 """
-    compute_dual_variables(model)
+    save_solution!(connection, model, variables, constraints; compute_duals = true)
+
+Saves the primal and dual variables values, in the following way:
+
+- For each variable in `variables`, get the solution value and save it in a
+column named `solution` in the corresponding dataset.
+- For each constraint in `constraints`, get the dual of each attached
+constraint listed in `constraint.constraint_names` and save it to the dictionary
+`constraint.duals` with the key given by the name.
+
+Notice that the duals are only computed if `compute_duals` is true.
+"""
+function save_solution!(connection, model, variables, constraints; compute_duals = true)
+    # Check if it's solved
+    if !JuMP.is_solved_and_feasible(model)
+        @error(
+            "The model has a termination status: $JuMP.termination_status(model), with primal status $JuMP.primal_status(model), and dual status $JuMP.dual_status(model)"
+        )
+        return
+    end
+
+    # Get variable values and save to corresponding table
+    for (name, var) in variables
+        if length(var.container) == 0
+            continue
+        end
+
+        # Create a named tuple structure (row table compliant) to hold the solution (which follows the row format)
+        # Note: This allocates memory, but I don't think there is a way to avoid it
+        tmp_table = ((index = i, value = JuMP.value(v)) for (i, v) in enumerate(var.container))
+
+        # Create a temporary DuckDB table for this table
+        DuckDB.register_table(connection, tmp_table, "t_var_solution_$name")
+
+        # Append an empty column called solution to the table
+        # TODO: Change FLOAT8 type depending on variable?
+        DuckDB.execute(
+            connection,
+            "ALTER TABLE $(var.table_name) ADD COLUMN IF NOT EXISTS solution FLOAT8",
+        )
+
+        # Update the column values
+        DuckDB.execute(
+            connection,
+            "UPDATE $(var.table_name)
+            SET solution = sol.value
+            FROM t_var_solution_$name AS sol
+            WHERE $(var.table_name).index = sol.index
+            ",
+        )
+    end
+
+    if compute_duals
+        # Compute the dual variables
+        @timeit to "compute_dual_variables" compute_dual_variables!(model)
+
+        for (name, cons) in constraints
+            if cons.num_rows == 0
+                continue
+            elseif length(cons.constraint_names) == 0
+                @warn "Constraint $name has no attached constraints!"
+                continue
+            end
+
+            set_query_args = String[]
+
+            # Save dual variables for each constraint attached to cons
+            for cons_name in cons.constraint_names
+                col_name = "dual_$cons_name"
+                cons.duals[cons_name] = JuMP.dual.(model[cons_name])
+                push!(set_query_args, "$col_name = cons.$cons_name")
+
+                DuckDB.execute(
+                    connection,
+                    "ALTER TABLE $(cons.table_name) ADD COLUMN IF NOT EXISTS $col_name FLOAT8",
+                )
+            end
+
+            # Create
+            tmp_table =
+                ((index = i, (k => v[i] for (k, v) in cons.duals)...) for i in 1:cons.num_rows)
+
+            duals_table_name = "t_duals_$name"
+
+            DuckDB.register_table(connection, tmp_table, duals_table_name)
+
+            set_query = join(set_query_args, ", ")
+
+            DuckDB.execute(
+                connection,
+                "UPDATE $(cons.table_name)
+                SET $set_query
+                FROM $duals_table_name AS cons
+                WHERE $(cons.table_name).index = cons.index
+                ",
+            )
+        end
+    end
+
+    return
+end
+
+"""
+    compute_dual_variables!(model)
 
 Compute the dual variables for the given model.
 
@@ -212,17 +197,14 @@ If the model does not have dual variables, this function fixes the discrete vari
 ## Returns
 A named tuple containing the dual variables of selected constraints.
 """
-function compute_dual_variables(model)
+function compute_dual_variables!(model)
     try
         if !JuMP.has_duals(model)
             JuMP.fix_discrete_variables(model)
             JuMP.optimize!(model)
         end
 
-        return Dict(
-            :hub_balance => JuMP.dual.(model[:hub_balance]),
-            :consumer_balance => JuMP.dual.(model[:consumer_balance]),
-        )
+        return nothing
     catch
         return nothing
     end

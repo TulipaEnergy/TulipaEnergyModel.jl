@@ -246,29 +246,11 @@ mutable struct GraphAssetData
     timeframe_profiles::Dict{Int,Dict{Int,Dict{String,Vector{Float64}}}}
     rep_periods_profiles::Dict{Int,Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}}
 
-    # Solution
-    investment::Dict{Int,Float64}
-    investment_energy::Dict{Int,Float64} # for storage assets with energy method
-    storage_level_rep_period::Dict{Tuple{Int,TimestepsBlock},Float64}
-    storage_level_over_clustered_year::Dict{PeriodsBlock,Float64}
-    max_energy_over_clustered_year::Dict{PeriodsBlock,Float64}
-    min_energy_over_clustered_year::Dict{PeriodsBlock,Float64}
-
     # You don't need profiles to create the struct, so initiate it empty
     function GraphAssetData(args...)
         timeframe_profiles = Dict{Int,Dict{Int,Dict{String,Vector{Float64}}}}()
         rep_periods_profiles = Dict{Int,Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}}()
-        return new(
-            args...,
-            timeframe_profiles,
-            rep_periods_profiles,
-            Dict{Int,Float64}(),
-            Dict{Int,Float64}(),
-            Dict{Tuple{Int,TimestepsBlock},Float64}(),
-            Dict{TimestepsBlock,Float64}(),
-            Dict{TimestepsBlock,Float64}(),
-            Dict{TimestepsBlock,Float64}(),
-        )
+        return new(args..., timeframe_profiles, rep_periods_profiles)
     end
 end
 
@@ -304,10 +286,6 @@ mutable struct GraphFlowData
     # profiles
     timeframe_profiles::Dict{Int,Dict{String,Vector{Float64}}}
     rep_periods_profiles::Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}
-
-    # Solution
-    flow::Dict{Tuple{Int,TimestepsBlock},Float64}
-    investment::Dict{Int,Float64}
 end
 
 function GraphFlowData(args...)
@@ -315,22 +293,7 @@ function GraphFlowData(args...)
         args...,
         Dict{Int,Dict{String,Vector{Float64}}}(),
         Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}(),
-        Dict{Int,Dict{Int,Vector{TimestepsBlock}}}(),
-        Dict{Int,Float64}(),
     )
-end
-
-mutable struct Solution
-    assets_investment::Dict{Tuple{Int,String},Float64}
-    assets_investment_energy::Dict{Tuple{Int,String},Float64} # for storage assets with energy method
-    flows_investment::Any # TODO: Fix this type
-    storage_level_rep_period::Vector{Float64}
-    storage_level_over_clustered_year::Vector{Float64}
-    max_energy_over_clustered_year::Vector{Float64}
-    min_energy_over_clustered_year::Vector{Float64}
-    flow::Vector{Float64}
-    objective_value::Float64
-    duals::Union{Nothing,Dict{Symbol,Vector{Float64}}}
 end
 
 mutable struct ProfileLookup
@@ -384,7 +347,6 @@ mutable struct EnergyProblem
     years::Vector{Year}
     model_parameters::ModelParameters
     model::Union{JuMP.Model,Nothing}
-    solution::Union{Solution,Nothing}
     solved::Bool
     objective_value::Float64
     termination_status::JuMP.TerminationStatusCode
@@ -418,7 +380,6 @@ mutable struct EnergyProblem
             timeframe,
             years,
             ModelParameters(connection, model_parameters_file),
-            nothing,
             nothing,
             false,
             NaN,

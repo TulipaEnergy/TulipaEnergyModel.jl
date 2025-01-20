@@ -1,4 +1,4 @@
-export create_internal_structures, save_solution_to_file
+export create_internal_structures, export_solution_to_csv_files
 
 """
     graph, representative_periods, timeframe  = create_internal_structures(connection)
@@ -317,161 +317,55 @@ function _create_empty_unless_exists(connection, table_name)
 end
 
 """
-    save_solution_to_file(output_folder, energy_problem)
+    export_solution_to_csv_files(output_folder, energy_problem)
 
 Saves the solution from `energy_problem` in CSV files inside `output_file`.
+Notice that this assumes that the solution has been computed by [`save_solution!`](@ref).
 """
-function save_solution_to_file(output_folder, energy_problem::EnergyProblem)
+function export_solution_to_csv_files(output_folder, energy_problem::EnergyProblem)
     if !energy_problem.solved
         error("The energy_problem has not been solved yet.")
     end
-    save_solution_to_file(output_folder, energy_problem.graph, energy_problem.solution)
+    export_solution_to_csv_files(
+        output_folder,
+        energy_problem.db_connection,
+        energy_problem.variables,
+        energy_problem.constraints,
+    )
     return
 end
 
 """
-    save_solution_to_file(output_file, graph, solution)
+    export_solution_to_csv_files(output_file, connection, variables, constraints)
 
 Saves the solution in CSV files inside `output_folder`.
-
-The following files are created:
-
-  - `assets-investment.csv`: The format of each row is `a,v,p*v`, where `a` is the asset name,
-    `v` is the corresponding asset investment value, and `p` is the corresponding
-    capacity value. Only investable assets are included.
-  - `assets-investments-energy.csv`: The format of each row is `a,v,p*v`, where `a` is the asset name,
-    `v` is the corresponding asset investment value on energy, and `p` is the corresponding
-    energy capacity value. Only investable assets with a `storage_method_energy` set to `true` are included.
-  - `flows-investment.csv`: Similar to `assets-investment.csv`, but for flows.
-  - `flows.csv`: The value of each flow, per `(from, to)` flow, `rp` representative period
-    and `timestep`. Since the flow is in power, the value at a timestep is equal to the value
-    at the corresponding time block, i.e., if flow[1:3] = 30, then flow[1] = flow[2] = flow[3] = 30.
-  - `storage-level.csv`: The value of each storage level, per `asset`, `rp` representative period,
-    and `timestep`. Since the storage level is in energy, the value at a timestep is a
-    proportional fraction of the value at the corresponding time block, i.e., if level[1:3] = 30,
-    then level[1] = level[2] = level[3] = 10.
+Notice that this assumes that the solution has been computed by [`save_solution!`](@ref).
 """
-function save_solution_to_file(output_folder, graph, solution)
-    output_file = joinpath(output_folder, "assets-investments.csv")
-    output_table = DataFrame(;
-        asset = String[],
-        year = Int[],
-        InstalUnits = Float64[],
-        InstalCap_MW = Float64[],
-    )
-
-    for ((y, a), investment) in solution.assets_investment
-        capacity = graph[a].capacity
-        push!(output_table, (a, y, investment, capacity * investment))
-    end
-    CSV.write(output_file, output_table)
-
-    output_file = joinpath(output_folder, "assets-investments-energy.csv")
-    output_table = DataFrame(;
-        asset = String[],
-        year = Int[],
-        InstalEnergyUnits = Float64[],
-        InstalEnergyCap_MWh = Float64[],
-    )
-
-    for ((y, a), energy_units_investmented) in solution.assets_investment_energy
-        energy_capacity = graph[a].capacity_storage_energy
-        push!(
-            output_table,
-            (a, y, energy_units_investmented, energy_capacity * energy_units_investmented),
+function export_solution_to_csv_files(output_folder, connection, variables, constraints)
+    # Save each variable
+    for (name, var) in variables
+        if length(var.container) == 0
+            continue
+        end
+        output_file = joinpath(output_folder, "var_$name.csv")
+        DuckDB.execute(
+            connection,
+            "COPY $(var.table_name) TO '$output_file' (HEADER, DELIMITER ',')",
         )
     end
-    CSV.write(output_file, output_table)
 
-    output_file = joinpath(output_folder, "flows-investments.csv")
-    output_table = DataFrame(;
-        from_asset = String[],
-        to_asset = String[],
-        year = Int[],
-        InstalUnits = Float64[],
-        InstalCap_MW = Float64[],
-    )
+    # Save each constraint
+    for (name, cons) in constraints
+        if cons.num_rows == 0
+            continue
+        end
 
-    for ((y, (u, v)), investment) in solution.flows_investment
-        capacity = graph[u, v].capacity
-        push!(output_table, (u, v, y, investment, capacity * investment))
+        output_file = joinpath(output_folder, "cons_$name.csv")
+        DuckDB.execute(
+            connection,
+            "COPY $(cons.table_name) TO '$output_file' (HEADER, DELIMITER ',')",
+        )
     end
-    CSV.write(output_file, output_table)
-
-    #=
-    In both cases below, we select the relevant columns from the existing dataframes,
-    then, we append the solution column.
-    After that, we transform and flatten, by rows, the time block values into a long version.
-    I.e., if a row shows `timesteps_block = 3:5` and `value = 30`, then we transform into
-    three rows with values `timestep = [3, 4, 5]` and `value` equal to 30 / 3 for storage,
-    or 30 for flows.
-    =#
-
-    # TODO: Fix all output
-    # output_file = joinpath(output_folder, "flows.csv")
-    # output_table = DataFrames.select(
-    #     dataframes[:flows],
-    #     :from,
-    #     :to,
-    #     :year,
-    #     :rep_period,
-    #     :timesteps_block => :timestep,
-    # )
-    # output_table.value = solution.flow
-    # output_table = DataFrames.flatten(
-    #     DataFrames.transform(
-    #         output_table,
-    #         [:timestep, :value] =>
-    #             DataFrames.ByRow(
-    #                 (timesteps_block, value) -> begin # transform each row using these two columns
-    #                     n = length(timesteps_block)
-    #                     (timesteps_block, Iterators.repeated(value, n)) # e.g., (3:5, [30, 30, 30])
-    #                 end,
-    #             ) => [:timestep, :value],
-    #     ),
-    #     [:timestep, :value], # flatten, e.g., [(3, 30), (4, 30), (5, 30)]
-    # )
-    # output_table |> CSV.write(output_file)
-
-    # output_file = joinpath(output_folder, "storage-level-intra-rp.csv")
-    # output_table = DataFrames.select(
-    #     dataframes[:storage_level_rep_period],
-    #     :asset,
-    #     :rep_period,
-    #     :timesteps_block => :timestep,
-    # )
-    # output_table.value = solution.storage_level_rep_period
-    # if !isempty(output_table.asset)
-    #     output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
-    #         _check_initial_storage_level!(subgroup, graph)
-    #         _interpolate_storage_level!(subgroup, :timestep)
-    #     end
-    # end
-    # output_table |> CSV.write(output_file)
-
-    # output_file = joinpath(output_folder, "storage-level-inter-rp.csv")
-    # output_table =
-    #     DataFrames.select(dataframes[:storage_level_over_clustered_year], :asset, :periods_block => :period)
-    # output_table.value = solution.storage_level_over_clustered_year
-    # if !isempty(output_table.asset)
-    #     output_table = DataFrames.combine(DataFrames.groupby(output_table, :asset)) do subgroup
-    #         _check_initial_storage_level!(subgroup, graph)
-    #         _interpolate_storage_level!(subgroup, :period)
-    #     end
-    # end
-    # output_table |> CSV.write(output_file)
-    #
-    # output_file = joinpath(output_folder, "max-energy-inter-rp.csv")
-    # output_table =
-    #     DataFrames.select(dataframes[:max_energy_over_clustered_year], :asset, :periods_block => :period)
-    # output_table.value = solution.max_energy_over_clustered_year
-    # output_table |> CSV.write(output_file)
-    #
-    # output_file = joinpath(output_folder, "min-energy-inter-rp.csv")
-    # output_table =
-    #     DataFrames.select(dataframes[:min_energy_over_clustered_year], :asset, :periods_block => :period)
-    # output_table.value = solution.min_energy_over_clustered_year
-    # output_table |> CSV.write(output_file)
 
     return
 end
