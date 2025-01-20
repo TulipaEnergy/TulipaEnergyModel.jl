@@ -490,11 +490,11 @@ The value of the constraint is obtained by looking only at the part with variabl
 
 ### Writing the output to CSV
 
-To save the solution to CSV files, you can use [`save_solution_to_file`](@ref):
+To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref):
 
 ```@example solution
 mkdir("outputs")
-save_solution_to_file("outputs", energy_problem)
+export_solution_to_csv_files("outputs", energy_problem)
 ```
 
 ### Plotting

@@ -5,7 +5,7 @@
     energy_problem = TulipaEnergyModel.EnergyProblem(connection)
     TulipaEnergyModel.create_model!(energy_problem)
     TulipaEnergyModel.solve_model!(energy_problem, HiGHS.Optimizer)
-    TulipaEnergyModel.save_solution_to_file(mktempdir(), energy_problem)
+    TulipaEnergyModel.export_solution_to_csv_files(mktempdir(), energy_problem)
 end
 
 @testset "Test that everything works for $input from beginning to end without EnergyProblem struct" for input in
@@ -46,5 +46,5 @@ end
     # Solve model
     TulipaEnergyModel.solve_model(model, HiGHS.Optimizer)
     TulipaEnergyModel.save_solution!(connection, model, variables, constraints)
-    TulipaEnergyModel.save_solution_to_file(mktempdir(), connection, variables, constraints)
+    TulipaEnergyModel.export_solution_to_csv_files(mktempdir(), connection, variables, constraints)
 end

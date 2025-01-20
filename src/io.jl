@@ -1,4 +1,4 @@
-export create_internal_structures, save_solution_to_file
+export create_internal_structures, export_solution_to_csv_files
 
 """
     graph, representative_periods, timeframe  = create_internal_structures(connection)
@@ -317,16 +317,16 @@ function _create_empty_unless_exists(connection, table_name)
 end
 
 """
-    save_solution_to_file(output_folder, energy_problem)
+    export_solution_to_csv_files(output_folder, energy_problem)
 
 Saves the solution from `energy_problem` in CSV files inside `output_file`.
 Notice that this assumes that the solution has been computed by [`save_solution!`](@ref).
 """
-function save_solution_to_file(output_folder, energy_problem::EnergyProblem)
+function export_solution_to_csv_files(output_folder, energy_problem::EnergyProblem)
     if !energy_problem.solved
         error("The energy_problem has not been solved yet.")
     end
-    save_solution_to_file(
+    export_solution_to_csv_files(
         output_folder,
         energy_problem.db_connection,
         energy_problem.variables,
@@ -336,12 +336,12 @@ function save_solution_to_file(output_folder, energy_problem::EnergyProblem)
 end
 
 """
-    save_solution_to_file(output_file, connection, variables, constraints)
+    export_solution_to_csv_files(output_file, connection, variables, constraints)
 
 Saves the solution in CSV files inside `output_folder`.
 Notice that this assumes that the solution has been computed by [`save_solution!`](@ref).
 """
-function save_solution_to_file(output_folder, connection, variables, constraints)
+function export_solution_to_csv_files(output_folder, connection, variables, constraints)
     # Save each variable
     for (name, var) in variables
         if length(var.container) == 0

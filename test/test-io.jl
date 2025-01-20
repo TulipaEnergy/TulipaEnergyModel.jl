@@ -26,11 +26,17 @@ end
         _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
         energy_problem = TulipaEnergyModel.EnergyProblem(connection)
         output_dir = mktempdir()
-        @test_throws Exception TulipaEnergyModel.save_solution_to_file(output_dir, energy_problem)
+        @test_throws Exception TulipaEnergyModel.export_solution_to_csv_files(
+            output_dir,
+            energy_problem,
+        )
         TulipaEnergyModel.create_model!(energy_problem)
-        @test_throws Exception TulipaEnergyModel.save_solution_to_file(output_dir, energy_problem)
+        @test_throws Exception TulipaEnergyModel.export_solution_to_csv_files(
+            output_dir,
+            energy_problem,
+        )
         TulipaEnergyModel.solve_model!(energy_problem)
-        @test TulipaEnergyModel.save_solution_to_file(output_dir, energy_problem) === nothing
+        @test TulipaEnergyModel.export_solution_to_csv_files(output_dir, energy_problem) === nothing
     end
 end
 
