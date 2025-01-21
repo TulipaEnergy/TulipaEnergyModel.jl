@@ -1,4 +1,3 @@
-group_name,,{false; true},MW,MW
 name,milestone_year,invest_method,min_investment_limit,max_investment_limit
 renewables,2030,true,,40000
 ccgt,2030,true,10000,

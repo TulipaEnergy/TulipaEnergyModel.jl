@@ -36,7 +36,7 @@ SparseArrays = "1"
 Statistics = "1"
 TOML = "1"
 TimerOutputs = "0.5"
-TulipaIO = "0.1, 0.2"
+TulipaIO = "0.3"
 julia = "1.10"
 
 [extras]
