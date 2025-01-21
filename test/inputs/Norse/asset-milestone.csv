@@ -1,4 +1,3 @@
-,,,,,,,,
 asset,milestone_year,investable,peak_demand,storage_inflows,initial_storage_level,min_energy_timeframe_partition,max_energy_timeframe_partition,units_on_cost
 Asgard_CCGT,2030,true,0.0,0.0,0.0,,,0.97
 Midgard_Wind,2030,true,0.0,0.0,0.0,,4.5e6,

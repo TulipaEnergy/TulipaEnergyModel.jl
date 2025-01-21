@@ -1,4 +1,3 @@
-,,,,
 from_asset,to_asset,milestone_year,investable,variable_cost
 G_imports,Midgard_CCGT,2030,false,0.0015
 Midgard_E_demand,Midgard_Hydro,2030,false,0.0

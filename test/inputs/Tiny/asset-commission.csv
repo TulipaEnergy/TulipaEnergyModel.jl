@@ -1,4 +1,3 @@
-,,,,,,,
 asset,commission_year,fixed_cost,investment_cost,investment_limit,fixed_cost_storage_energy,investment_cost_storage_energy,investment_limit_storage_energy
 ccgt,2030,0.0,40.0,10000.0,5.0,0.0,
 wind,2030,0.0,70.0,,5.0,0.0,

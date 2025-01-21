@@ -1,4 +1,3 @@
-1,2,3,4,5,6,7
 asset,milestone_year,commission_year,active,decommissionable,initial_units,initial_storage_units
 NL_E_Demand,2050,2050,true,false,0,0
 BE_E_Demand,2050,2050,true,false,0,0

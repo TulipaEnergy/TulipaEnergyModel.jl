@@ -1,4 +1,3 @@
-,,,,,,,,,,,,,,,,,,,,,,
 asset,type,group,capacity,min_operating_point,investment_method,investment_integer,technical_lifetime,economic_lifetime,discount_rate,consumer_balance_sense,capacity_storage_energy,is_seasonal,use_binary_storage_method,unit_commitment,unit_commitment_method,unit_commitment_integer,ramping,storage_method_energy,energy_to_power_ratio,investment_integer_storage_energy,max_ramp_up,max_ramp_down
 Asgard_Battery,storage,,100.0,,simple,true,15,1,0.05,,10.0,false,binary,false,,false,false,true,100.0,true,,
 Asgard_CCGT,conversion,ccgt,500.0,0.25,simple,true,15,1,0.05,,0.0,false,,true,basic,false,true,false,0.0,false,0.5,0.3
