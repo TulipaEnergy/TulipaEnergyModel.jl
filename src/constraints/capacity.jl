@@ -5,18 +5,9 @@ add_capacity_constraints!(model, graph,...)
 
 Adds the capacity constraints for all asset types to the model
 """
-
 function add_capacity_constraints!(connection, model, variables, constraints, profiles, graph, sets)
     ## unpack from sets
-    Acv = sets[:Acv]
-    Ap = sets[:Ap]
-    As = sets[:As]
-    V_all = sets[:V_all]
-    accumulated_set_using_compact_method = sets[:accumulated_set_using_compact_method]
-    accumulated_set_using_compact_method_lookup = sets[:accumulated_set_using_compact_method_lookup]
     accumulated_units_lookup = sets[:accumulated_units_lookup]
-    decommissionable_assets_using_compact_method =
-        sets[:decommissionable_assets_using_compact_method]
 
     ## unpack from model
     accumulated_initial_units = model[:accumulated_initial_units]
@@ -24,11 +15,16 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
         model[:accumulated_investment_units_using_simple_method]
     accumulated_units = model[:accumulated_units]
 
+    # TODO: Ask @gnawin:
+    # - If I want to change from simple to compact and vice-versa, what do I
+    # need to change in the data? How will those changes affect the
+    # accumulated_units?
+    # - What is the use of commission_year for simple variables?
+
     ## unpack from variables
+    assets_decommission_simple_method = variables[:assets_decommission_simple_method]
     assets_decommission_compact_method = variables[:assets_decommission_compact_method]
     assets_investment = variables[:assets_investment]
-    flows_indices = variables[:flow].indices
-    flow = variables[:flow].container
 
     # TODO: Rename these tables (don't merge without fixing this)
     # The table t_ADUUCM replaces accumulated_decommission_units_using_compact_method
@@ -54,6 +50,30 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
         GROUP BY var.index
         ",
     )
+
+    # The table t_ADUUSM below should be the equivalent table for simple method
+    # DuckDB.query(
+    #     connection,
+    #     "CREATE OR REPLACE TEMP TABLE t_ADUUSM AS
+    #     SELECT
+    #         var.index,
+    #         ANY_VALUE(var.asset) AS asset,
+    #         ANY_VALUE(var.milestone_year) AS milestone_year,
+    #         SUM(asset_both.initial_units)
+    #         ARRAY_AGG(other.index) AS acc_index
+    #     FROM var_assets_decommission_simple_method AS var
+    #     LEFT JOIN asset
+    #         ON asset.asset = var.asset
+    #     LEFT JOIN var_assets_decommission_simple_method AS other
+    #         ON var.asset = other.asset
+    #         AND var.milestone_year - asset.technical_lifetime + 1 <= other.milestone_year
+    #         AND other.milestone_year <= var.milestone_year
+    #     LEFT JOIN asset_both
+    #         ON var.asset = asset_both.asset
+    #         AND var.milestone_year = asset_both.milestone_year
+    #     GROUP BY var.index
+    #     ",
+    # )
 
     # The table t_compact replaces accumulated_set_using_compact_method
     # The key is also (asset, milestone_year, commission_year)
@@ -126,6 +146,29 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
         end for row in DuckDB.query(connection, "FROM t_compact")
     )
 
+    # accumulated_units_simple_method = Dict(
+    #     (row.asset, row.milestone_year, row.commission_year) => begin
+    #         initial_units = row.initial_units::Float64
+    #
+    #         var_adsm = assets_decommission_simple_method.container
+    #         var_ai = assets_investment.container
+    #
+    #         aduucm_acc_index = row.ADUUCM_acc_index::Vector{Union{Missing,Int}}
+    #
+    #         if length(aduucm_acc_index) > 0
+    #             aduucm = sum(var_adcm[i] for i in row.ADUUCM_acc_index::Vector{Union{Missing,Int}})
+    #             if row.investable::Bool
+    #                 @expression(model, initial_units + var_ai[row.asset_investment_index] - aduucm)
+    #             else
+    #                 @expression(model, initial_units - aduucm)
+    #             end
+    #         else
+    #             @assert row.investable::Bool
+    #             @expression(model, initial_units + var_ai[row.asset_investment_index])
+    #         end
+    #     end for row in DuckDB.query(connection, "FROM t_compact")
+    # )
+
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
     let table_name = :capacity_outgoing, cons = constraints[table_name]
@@ -155,6 +198,9 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
                         Statistics.mean,
                         1.0,
                     )
+                    # simple_accumulated_units = sum(
+                    #                                accumulated_units_simple_method[(row.asset, row.year)]
+                    #                                             )
                     @expression(
                         model,
                         availability_agg *
