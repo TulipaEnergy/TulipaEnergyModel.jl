@@ -135,22 +135,18 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
             :profile_times_capacity,
             [
                 if row.investment_method == "compact"
-                    @expression(
-                        model,
-                        row.capacity * sum(
-                            profile_aggregation(
-                                Statistics.mean,
-                                graph[row.asset].rep_periods_profiles,
-                                row.year,
-                                v,
-                                ("availability", row.rep_period),
-                                row.time_block_start:row.time_block_end,
-                                1.0,
-                            ) * accumulated_units_compact_method[(row.asset, row.year, v)] for
-                            v in V_all if
-                            (row.asset, row.year, v) in accumulated_set_using_compact_method
-                        )
+                    profile_times_compact_accumulated_units = sum(
+                        _profile_aggregate(
+                            profiles.rep_period,
+                            (compact_profile_name, row.year, row.rep_period),
+                            row.time_block_start:row.time_block_end,
+                            Statistics.mean,
+                            1.0,
+                        ) * accumulated_units_compact_method[(row.asset, row.year, v)] for
+                        (v, compact_profile_name) in
+                        zip(row.compact_commission_year, row.compact_profile_name)
                     )
+                    @expression(model, row.capacity * profile_times_compact_accumulated_units)
                 else
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
@@ -477,6 +473,7 @@ function _append_capacity_data_to_indices(connection, table_name)
             ANY_VALUE(cons.time_block_end) AS time_block_end,
             ARRAY_AGG(t_compact.index) AS compact_index,
             ARRAY_AGG(t_compact.commission_year) AS compact_commission_year,
+            ARRAY_AGG(compact_profile.profile_name) AS compact_profile_name,
             ANY_VALUE(asset.capacity) AS capacity,
             ANY_VALUE(asset.investment_method) AS investment_method,
             ANY_VALUE(asset_commission.investment_limit) AS investment_limit,
@@ -487,13 +484,17 @@ function _append_capacity_data_to_indices(connection, table_name)
         LEFT JOIN asset_commission
             ON cons.asset = asset_commission.asset
             AND cons.year = asset_commission.commission_year
+        LEFT JOIN t_compact
+            ON cons.asset = t_compact.asset
+            AND cons.year = t_compact.milestone_year
         LEFT OUTER JOIN assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
             AND assets_profiles.profile_type = 'availability'
-        LEFT JOIN t_compact
-            ON cons.asset = t_compact.asset
-            AND cons.year = t_compact.milestone_year
+        LEFT OUTER JOIN assets_profiles AS compact_profile
+            ON t_compact.asset = compact_profile.asset
+            AND t_compact.commission_year = compact_profile.commission_year
+            AND assets_profiles.profile_type = 'availability'
         GROUP BY cons.index
         ORDER BY cons.index
         ",
