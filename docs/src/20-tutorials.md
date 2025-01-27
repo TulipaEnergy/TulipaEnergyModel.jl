@@ -154,6 +154,7 @@ For the complete list of parameters, check your chosen optimizer.
 
 These parameters can also be passed via a file. See the
 [`read_parameters_from_file`](@ref) function for more details.
+
 ### Writing the output to CSV
 
 To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref):
