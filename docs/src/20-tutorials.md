@@ -82,11 +82,11 @@ save_solution!(energy_problem)
 ```
 
 The solutions will be saved in the variable and constraints tables.
-To save these tables to files, use
+To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref)
 
 ```@example manual-energy-problem
 mkdir("output_folder")
-save_solution_to_file("output_folder", energy_problem)
+export_solution_to_csv_files("output_folder", energy_problem)
 ```
 
 The objective value and the termination status are also included in the energy problem:
@@ -154,12 +154,3 @@ For the complete list of parameters, check your chosen optimizer.
 
 These parameters can also be passed via a file. See the
 [`read_parameters_from_file`](@ref) function for more details.
-
-### Writing the output to CSV
-
-To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref):
-
-```@example solution
-mkdir("outputs")
-export_solution_to_csv_files("outputs", energy_problem)
-```
