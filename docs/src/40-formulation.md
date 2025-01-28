@@ -577,7 +577,7 @@ v^{\text{intra-storage}}_{a,k_y,b^{\text{first}}_{k_y}} \geq p^{\text{init stora
 
 This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year). The parameter $p^{\text{map}}_{p_y,k_y}$ determines how much of the representative period $k_y$ is in the period $p_y$, and you can use a clustering technique to calculate it. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
 
-For the sake of simplicity, we show the constraint assuming the inter-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the file [`assets-timeframe-partitions.csv`](@ref assets-timeframe-partitions).
+For the sake of simplicity, we show the constraint assuming the inter-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref schemas).
 
 ```math
 \begin{aligned}
@@ -679,7 +679,7 @@ v^{\text{flow}}_{f,k_y,b_{k_y}} \geq - p^{\text{availability profile}}_{f,y,k_y,
 v^{\text{inv}}_{a,y} \leq \frac{p^{\text{inv limit}}_{a,y}}{p^{\text{capacity}}_{a}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{i}}_y
 ```
 
-If the parameter `investment_integer` in the [`assets-data.csv`](@ref assets-data) file is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
+If the parameter `investment_integer` is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
 
 #### Maximum Energy Investment Limit for Assets
 
@@ -687,7 +687,7 @@ If the parameter `investment_integer` in the [`assets-data.csv`](@ref assets-dat
 v^{\text{inv energy}}_{a,y} \leq \frac{p^{\text{inv limit energy}}_{a,y}}{p^{\text{energy capacity}}_{a}} \quad \forall y \in \mathcal{Y},  \forall a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y
 ```
 
-If the parameter `investment_integer_storage_energy` in the [`assets-data.csv`](@ref assets-data) file is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
+If the parameter `investment_integer_storage_energy` is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
 
 #### Maximum Investment Limit for Flows
 
@@ -695,7 +695,7 @@ If the parameter `investment_integer_storage_energy` in the [`assets-data.csv`](
 v^{\text{inv}}_{f,y} \leq \frac{p^{\text{inv limit}}_{f,y}}{p^{\text{capacity}}_{f}} \quad \forall y \in \mathcal{Y}, \forall f \in \mathcal{F}^{\text{ti}}_y
 ```
 
-If the parameter `investment_integer` in the [`flows-data.csv`](@ref flows-data) file is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
+If the parameter `investment_integer` is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
 
 ### [Inter-temporal Energy Constraints](@id inter-temporal-energy-constraints)
 

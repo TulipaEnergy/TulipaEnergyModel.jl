@@ -102,21 +102,22 @@ There is currently no reason to manually create and maintain these structures yo
 
 To avoid having to update this documentation whenever we make changes to the internals of TulipaEnergyModel before the v1.0.0 release, we will keep this section empty until then.
 
-### Change optimizer and specify parameters
+## Change optimizer and specify parameters
 
 By default, the model is solved using the [HiGHS](https://github.com/jump-dev/HiGHS.jl) optimizer (or solver).
 To change this, we can give the functions `run_scenario` or `solve_model!` a
 different optimizer.
 
 !!! warning
-    HiGHS is the only open source solver that we recommend. GLPK and Cbc are missing features and are not (fully) tested for Tulipa.
+    HiGHS is the only open source solver that we recommend. GLPK and Cbc are not (fully) tested for Tulipa.
 
-For instance, we run the [GLPK](https://github.com/jump-dev/GLPK.jl) optimizer below:
+For instance, let's run the Tiny example using the [GLPK](https://github.com/jump-dev/GLPK.jl) optimizer:
 
 ```@example
 using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
 
 input_dir = "../../test/inputs/Tiny" # hide
+# input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
 energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer)
@@ -130,8 +131,8 @@ using GLPK
 solution = solve_model!(energy_problem, GLPK.Optimizer)
 ```
 
-Notice that, in any of these cases, we need to explicitly add the GLPK package
-ourselves and add `using GLPK` before using `GLPK.Optimizer`.
+!!! info
+    Notice that, in any of these cases, we need to explicitly add the GLPK package ourselves and add `using GLPK` before using `GLPK.Optimizer`.
 
 In any of these cases, default parameters for the `GLPK` optimizer are used,
 which you can query using [`default_parameters`](@ref).
