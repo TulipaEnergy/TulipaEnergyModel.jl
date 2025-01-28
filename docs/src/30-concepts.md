@@ -184,7 +184,7 @@ The flows coming from the balancing hub are defined every 3 hours. Then, _min(in
 
 #### Hub Balance
 
-The hub balance is quite interesting because it integrates several flow resolutions. Remember that we didn't define any specific time resolution for this asset. Therefore, the highest resolution of all incoming and outgoing flows in the horizon implies that the hub balance must be imposed for all 6 blocks since _min(incoming flows, outgoing flows)_ becomes _min(1,2,3) = 1_
+The hub balance is quite interesting because it integrates several flow resolutions. Remember that we didn't define any specific time resolution for this asset. Therefore, the highest resolution of all incoming and outgoing flows in the horizon implies that the hub balance must be imposed for all 6 blocks since _min(incoming flows, outgoing flows)_ becomes _min(1,2,3,4) = 1_
 
 ```math
 \begin{aligned}
@@ -265,7 +265,7 @@ Therefore, the constraints are as follows:
 & \text{max\_output\_flows\_limit}_{\text{wind},3}: \\
 & \qquad v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{wind},\text{phs}),1:3} \leq p^{\text{init capacity}}_{\text{wind}} \cdot p^{\text{availability profile}}_{\text{wind},3} \\
 & \text{max\_output\_flows\_limit}_{\text{wind},4:6}: \\
-& \qquad v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{wind},\text{phs}),4:6} \leq \frac{p^{\text{init capacity}}_{\text{wind}}}{2} \cdot \sum_{b=5}^{6} p^{\text{availability profile}}_{\text{wind},b} \\
+& \qquad v^{\text{flow}}_{(\text{wind},\text{balance}),3:6} + v^{\text{flow}}_{(\text{wind},\text{phs}),4:6} \leq \frac{p^{\text{init capacity}}_{\text{wind}}}{3} \cdot \sum_{b=4}^{6} p^{\text{availability profile}}_{\text{wind},b} \\
 \end{aligned}
 ```
 
@@ -321,7 +321,8 @@ This section quantifies the advantages of the [`flexible connection`](@ref flex-
 2. Flexible connection with hourly resolution: This approach uses the flexible connection to represent the hybrid operation of the `phs` and `wind` assets.
 3. Flexible connection and flexible time: This approach uses both features, the flexible connection and the flexible time resolution.
 
-> **Note:** The flexibility of _TulipaEnergyModel.jl_ allows any of these three modeling approaches.
+!!! tip
+    The flexibility of _TulipaEnergyModel.jl_ allows any of these three modeling approaches.
 
 The table below shows the constraints and variables for each approach over a 6-hour horizon. These results show the potential of flexible connections and time resolution for reducing the size of the optimization model.
 
@@ -348,7 +349,7 @@ In the previous section, we have seen how the flexible temporal resolution is ha
 
 ![unit-commitment-case-study](./figs/unit-commitment-case-study.png)
 
-The example demonstrates various assets that supply demand. Each asset has different input data files, which activates different sets of constraints based on the method. For example, the `gas` producer has ramping constraints but not unit commitment constraints, while the `ocgt` conversion has unit commitment constraints but not ramping constraints. Lastly, the `ccgt` and `smr` assets both have unit commitment and ramping constraints.
+The example demonstrates various assets that supply demand. Each asset has different input data files, which activates different sets of constraints based on the method. For example, the `gas` producer has ramping constraints but not unit commitment constraints, while the `ocgt` conversion has unit commitment constraints but not ramping constraints. Lastly, the `ccgt` and `smr` assets both have unit commitment and ramping constraints. Moreover, `ccgt`, `wind`, `solar`, and `ocgt` are investable, meaning that the investment variable will only appear on the constraints related to those assets.
 
 ```@example unit-commitment
 using DataFrames # hide
@@ -356,8 +357,10 @@ using CSV # hide
 input_dir = "../../test/inputs/UC-ramping" # hide
 assets_data = CSV.read(joinpath(input_dir, "asset-both.csv"), DataFrame) # hide
 graph_assets = CSV.read(joinpath(input_dir, "asset.csv"), DataFrame) # hide
+asset_milestone = CSV.read(joinpath(input_dir, "asset-milestone.csv"), DataFrame) # hide
 assets = leftjoin(graph_assets, assets_data, on=:asset) # hide
-filtered_assets = assets[assets.type .== "producer" .|| assets.type .== "conversion", ["asset", "type", "capacity", "initial_units", "unit_commitment",  "ramping"]] # hide
+assets = leftjoin(assets, asset_milestone, on=[:asset, :milestone_year]) # hide
+filtered_assets = assets[assets.type .== "producer" .|| assets.type .== "conversion", ["asset", "type", "capacity", "initial_units", "investable", "unit_commitment",  "ramping", "max_ramp_up", "max_ramp_down"]] # hide
 ```
 
 The `assets-rep-periods-partitions` file defines the time resolution for the assets in the `partition` column. For instance, here we can see that the time resolutions are 3h for the `ccgt` and 6h for the `smr`. These values mean that the unit commitment variables (e.g., `units_on`) in the model have three and six hours resolution, respectively.
@@ -398,7 +401,10 @@ In the case of the `gas` asset, there are two output flows above the minimum ope
 
 Let's now take a look at the resulting constraints in the model.
 
-`max_ramp_up(gas)`: The first constraint starts in the second timestep block and takes the difference between the output flows above the minimum operating point from $b_{k = 2:2}$ and $b_{k = 1:1}$. Note that since the $v^{\text{flow}}_{(\text{gas,ccgt}),b_k}$ is the same in both timestep blocks, the only variables that appear in this first constraint are the ones associated with the $v^{\text{flow}}_{(\text{gas,ocgt}),b_k}$. The second constraint takes the difference between the output flows from $b_{k = 3:3}$ and $b_{k = 2:2}$; in this case, there is a change in the `flow(gas, ocgt)`; therefore, the constraint considers both changes in the output flows of the asset. In addition, the ramping parameter is multiplied by the flow duration with the highest resolution, i.e., one hour, which is the duration of the $v^{\text{flow}}_{(\text{gas,ocgt}),b_k}$.
+`max_ramp_up(gas)`: The first constraint considers the ramping up of output flows of the gas asset from the first hour to the second ($b_{k = 2:2}$ to $b_{k = 1:1}$). Note that since the $v^{\text{flow}}_{(\text{gas,ccgt}),b_k}$ is defined in in blocks of 2 hours, we only need to consider the difference of the $v^{\text{flow}}_{(\text{gas,ocgt}),b_k}$ variable in this constraint. However, the second constraint takes the difference between the output flows from $b_{k = 3:3}$ to $b_{k = 2:2}$. For this constraint, we need to consider the difference in both $v^{\text{flow}}_{(\text{gas,ocgt}),b_k}$ and $v^{\text{flow}}_{(\text{gas,ccgt}),b_k}$.
+
+!!! info
+    The duration parameter in the right hand side (RHS) of this constraint, $\text{RHS} = p^{\text{capacity}}_{\text{gas}} \cdot p^{\text{max ramp up}}_{\text{gas}} \cdot p^{\text{duration}}_{b_k}$, is defined by the flow duration with the `highest resolution`, i.e., one hour, which is the duration of the $v^{\text{flow}}_{(\text{gas,ocgt}),b_k}$. We need to multiply by duration since the ramp input values are given as rates, i.e., `p.u./h` or `p.u./min`, so the RHS in the constraint must be multiplied by the duration to match the flow units. So, using the data for this example we have: $\text{RHS} = 1800 \text{MW} \cdot 0.83 \text{p.u./h} \cdot 1 \text{h} = 1494 \text{MW}$
 
 ```math
 \begin{aligned}
