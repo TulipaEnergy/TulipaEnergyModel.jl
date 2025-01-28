@@ -51,6 +51,9 @@ mutable struct TulipaVariable
     end
 end
 
+"""
+Structure to hold the JuMP constraints for the TulipaEnergyModel
+"""
 mutable struct TulipaConstraint
     indices::DataFrame
     table_name::String
@@ -311,16 +314,18 @@ Structure to hold all parts of an energy problem. It is a wrapper around various
 It hides the complexity behind the energy problem, making the usage more friendly, although more verbose.
 
 # Fields
-- `graph`: The [Graph](@ref) object that defines the geometry of the energy problem.
-- `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
-- `constraints_partitions`: Dictionaries that connect pairs of asset and representative periods to [time partitions (vectors of time blocks)](@ref Partition)
-- `timeframe`: The number of periods of the `representative_periods`.
-- `dataframes`: The data frames used to linearize the variables and constraints. These are used internally in the model only.
-- `model_parameters`: The model parameters.
+- `db_connection`: A DuckDB connection to the input tables in the model
+- `graph`: The Graph object that defines the geometry of the energy problem.
 - `model`: A JuMP.Model object representing the optimization model.
+- `objective_value`: The objective value of the solved problem (Float64).
+- `variables`: A [TulipaVariable](@ref TulipaVariable) structure to store all the information related to the variables in the model.
+- `constraints`: A [TulipaConstraint](@ref TulipaConstraint) structure to store all the information related to the constraints in the model.
+- `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
 - `solved`: A boolean indicating whether the `model` has been solved or not.
-- `objective_value`: The objective value of the solved problem.
 - `termination_status`: The termination status of the optimization model.
+- `timeframe`: A structure with the number of periods in the `representative_periods` and the mapping between the periods and their representatives.
+- `model_parameters`: A [ModelParameters](@ref ModelParameters) structure to store all the parameters that are exclusive of the model.
+- `years`: A vector with the information of all the milestone years.
 
 # Constructor
 - `EnergyProblem(connection)`: Constructs a new `EnergyProblem` object with the given connection. The `constraints_partitions` field is computed from the `representative_periods`, and the other fields are initialized with default values.

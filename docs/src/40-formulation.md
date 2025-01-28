@@ -361,7 +361,8 @@ Storage assets using the method to avoid charging and discharging simultaneously
 \end{aligned}
 ```
 
-**Note**: The negative sign before the $v^{\text{accumulated units}}_{a,y}$ is because the accumulated units include the $p^{\text{init units}}_{a,y}$ in its calculation.
+!!! info
+    The negative sign before the $v^{\text{accumulated units}}_{a,y}$ is because the accumulated units include the $p^{\text{init units}}_{a,y}$ in its calculation.
 
 - Maximum output flows limit for storage assets such that $a \in \mathcal{A}^{\text{sb}}_y \setminus \mathcal{A}^{\text{i}}_y$
 
@@ -397,7 +398,8 @@ Storage assets using the method to avoid charging and discharging simultaneously
 \end{aligned}
 ```
 
-**Note**: The negative sign before the $v^{\text{accumulated units}}_{a,y}$ is because the accumulated units include the $p^{\text{init units}}_{a,y}$ in its calculation.
+!!! info
+    The negative sign before the $v^{\text{accumulated units}}_{a,y}$ is because the accumulated units include the $p^{\text{init units}}_{a,y}$ in its calculation.
 
 - Maximum input flows limit for storage assets such that $a \in \mathcal{A}^{\text{sb}}_y \setminus \mathcal{A}^{\text{i}}_y$
 
@@ -415,7 +417,7 @@ v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall 
 
 ### [Unit Commitment Constraints](@id uc-constraints)
 
-Production and conversion assets within the set $\mathcal{A}^{\text{uc}}$ will contain the unit commitment constraints in the model. These constraints are based on the work of [Morales-España et al. (2013)](https://ieeexplore.ieee.org/document/6485014) and [Morales-España et al. (2014)](https://ieeexplore.ieee.org/document/6514884).
+Production and conversion assets within the set $\mathcal{A}^{\text{uc}}$ will contain the unit commitment constraints in the model. These constraints are based on the work of [Morales-España et al. (2013)](@ref math-references) and [Morales-España et al. (2014)](@ref math-references).
 
 The current version of the code only incorporates a basic unit commitment version of the constraints (i.e., utilizing only the unit commitment variable $v^{\text{units on}}$). However, upcoming versions will include more detailed constraints, incorporating startup and shutdown variables.
 
@@ -451,9 +453,10 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} \geq 0  \quad
 
 Ramping constraints restrict the rate at which the output flow of a production or conversion asset can change. If the asset is part of the unit commitment set (e.g., $\mathcal{A}^{\text{uc}}_y$), the ramping limits apply to the flow above the minimum output, but if it is not, the ramping limits apply to the total output flow.
 
-Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](https://link.springer.com/article/10.1007/s10107-015-0919-9). Also, please note that since the current version of the code only handles the basic unit commitment implementation, the ramping constraints are applied to the assets in the set $\mathcal{A}^{\text{uc basic}}_y$.
+Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](@ref math-references). Also, please note that since the current version of the code only handles the basic unit commitment implementation, the ramping constraints are applied to the assets in the set $\mathcal{A}^{\text{uc basic}}_y$.
 
-> **Duration parameter**: The following constraints are multiplied by $p^{\text{duration}}_{b_{k_y}}$ on the right-hand side to adjust for the duration of the timesteps since the ramp parameters are defined as rates. This assumption is based on the idea that all timesteps are the same in this section, which simplifies the formulation. However, in a flexible temporal resolution context, this may not hold true, and the duration needs to be the minimum duration of all the outgoing flows at the timestep block $b_{k_y}$. For more information, please visit the concept section on flexible time resolution.
+!!! info "Duration parameter"
+    The following constraints are multiplied by $p^{\text{duration}}_{b_{k_y}}$ on the right-hand side to adjust for the duration of the timesteps since the ramp parameters are defined as rates. This assumption is based on the idea that all timesteps are the same in this section, which simplifies the formulation. However, in a flexible temporal resolution context, this may not hold true, and the duration needs to be the minimum duration of all the outgoing flows at the timestep block $b_{k_y}$. For more information, please visit the concept section on flexible time resolution.
 
 #### Maximum Ramp-Up Rate Limit WITH Unit Commitment Method
 
@@ -501,7 +504,7 @@ The balance constraint sense depends on the method selected in the asset file's 
 
 ### Constraints for Energy Storage Assets
 
-There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](https://ieeexplore.ieee.org/document/8334256) and [Tejada-Arango et al. (2019)](https://doi.org/10.1016/j.energy.2019.116079).
+There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](@ref math-references) and [Tejada-Arango et al. (2019)](@ref math-references).
 
 In addition, we define the following expression to determine the energy investment limit of the storage assets. This expression takes two different forms depending on whether the storage asset belongs to the set $\mathcal{A}^{\text{se}}$ or not.
 
@@ -577,7 +580,7 @@ v^{\text{intra-storage}}_{a,k_y,b^{\text{first}}_{k_y}} \geq p^{\text{init stora
 
 This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year). The parameter $p^{\text{map}}_{p_y,k_y}$ determines how much of the representative period $k_y$ is in the period $p_y$, and you can use a clustering technique to calculate it. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
 
-For the sake of simplicity, we show the constraint assuming the inter-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the file [`assets-timeframe-partitions.csv`](@ref assets-timeframe-partitions).
+For the sake of simplicity, we show the constraint assuming the inter-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref schemas).
 
 ```math
 \begin{aligned}
@@ -679,7 +682,7 @@ v^{\text{flow}}_{f,k_y,b_{k_y}} \geq - p^{\text{availability profile}}_{f,y,k_y,
 v^{\text{inv}}_{a,y} \leq \frac{p^{\text{inv limit}}_{a,y}}{p^{\text{capacity}}_{a}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{i}}_y
 ```
 
-If the parameter `investment_integer` in the [`assets-data.csv`](@ref assets-data) file is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
+If the parameter `investment_integer` is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
 
 #### Maximum Energy Investment Limit for Assets
 
@@ -687,7 +690,7 @@ If the parameter `investment_integer` in the [`assets-data.csv`](@ref assets-dat
 v^{\text{inv energy}}_{a,y} \leq \frac{p^{\text{inv limit energy}}_{a,y}}{p^{\text{energy capacity}}_{a}} \quad \forall y \in \mathcal{Y},  \forall a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y
 ```
 
-If the parameter `investment_integer_storage_energy` in the [`assets-data.csv`](@ref assets-data) file is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
+If the parameter `investment_integer_storage_energy` is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
 
 #### Maximum Investment Limit for Flows
 
@@ -695,7 +698,7 @@ If the parameter `investment_integer_storage_energy` in the [`assets-data.csv`](
 v^{\text{inv}}_{f,y} \leq \frac{p^{\text{inv limit}}_{f,y}}{p^{\text{capacity}}_{f}} \quad \forall y \in \mathcal{Y}, \forall f \in \mathcal{F}^{\text{ti}}_y
 ```
 
-If the parameter `investment_integer` in the [`flows-data.csv`](@ref flows-data) file is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
+If the parameter `investment_integer` is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
 
 ### [Inter-temporal Energy Constraints](@id inter-temporal-energy-constraints)
 
@@ -727,7 +730,8 @@ The following constraints aggregate variables of different assets depending on t
 
 These constraints apply to assets in a group using the investment method $\mathcal{G}^{\text{ai}}_y$. They help impose an investment potential of a spatial area commonly shared by several assets that can be invested there.
 
-> **Note**: These constraints are applied to the investments each year. The model does not yet have investment limits to a group's accumulated invested capacity.
+!!! info
+    These constraints are applied to the investments each year. The model does not yet have investment limits to a group's accumulated invested capacity.
 
 ##### Minimum Investment Limit of a Group
 
