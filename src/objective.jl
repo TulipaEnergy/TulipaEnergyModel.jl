@@ -1,9 +1,9 @@
 function add_objective!(model, variables, graph, representative_periods, sets, model_parameters)
     assets_investment = variables[:assets_investment].lookup
-    accumulated_units_simple_method = model[:accumulated_units_simple_method]
-    accumulated_units_compact_method = model[:accumulated_units_compact_method]
+    # accumulated_units_simple_method = model[:accumulated_units_simple_method]
+    # accumulated_units_compact_method = model[:accumulated_units_compact_method]
     assets_investment_energy = variables[:assets_investment_energy].lookup
-    accumulated_energy_units_simple_method = model[:accumulated_energy_units_simple_method]
+    # accumulated_energy_units_simple_method = model[:accumulated_energy_units_simple_method]
     flows_investment = variables[:flows_investment].lookup
     accumulated_flows_export_units = model[:accumulated_flows_export_units]
     accumulated_flows_import_units = model[:accumulated_flows_import_units]
@@ -43,16 +43,17 @@ function add_objective!(model, variables, graph, representative_periods, sets, m
 
     assets_fixed_cost = @expression(
         model,
-        sum(
-            weight_for_operation_discounts[y] *
-            graph[a].fixed_cost[y] *
-            graph[a].capacity *
-            accumulated_units_simple_method[a, y] for y in sets.Y for
-            a in sets.decommissionable_assets_using_simple_method
-        ) + sum(
-            weight_for_operation_discounts[y] * graph[a].fixed_cost[v] * graph[a].capacity * accm for (accm, (a, y, v)) in
-            zip(accumulated_units_compact_method, sets.accumulated_set_using_compact_method)
-        )
+        0.0
+        # sum(
+        #     weight_for_operation_discounts[y] *
+        #     graph[a].fixed_cost[y] *
+        #     graph[a].capacity *
+        #     accumulated_units_simple_method[a, y] for y in sets.Y for
+        #     a in sets.decommissionable_assets_using_simple_method
+        # ) + sum(
+        #     weight_for_operation_discounts[y] * graph[a].fixed_cost[v] * graph[a].capacity * accm for (accm, (a, y, v)) in
+        #     zip(accumulated_units_compact_method, sets.accumulated_set_using_compact_method)
+        # )
     )
 
     storage_assets_energy_investment_cost = @expression(

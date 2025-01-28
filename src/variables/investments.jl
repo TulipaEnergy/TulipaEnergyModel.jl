@@ -52,25 +52,18 @@ function add_investment_variables!(model, graph, sets, variables)
             row -> row.investment_integer,
         ),
         (
-            :assets_decommission_simple_method,
-            row -> (row.milestone_year, row.asset),
-            _ -> 0.0,
-            _ -> Inf,
-            row -> row.investment_integer,
-        ),
-        (
-            :flows_decommission_using_simple_method,
-            row -> (row.milestone_year, (row.from_asset, row.to_asset)),
-            _ -> 0.0,
-            _ -> Inf,
-            _ -> false,
-        ),
-        (
-            :assets_decommission_compact_method,
+            :assets_decommission,
             row -> (row.asset, row.milestone_year, row.commission_year),
             _ -> 0.0,
             _ -> Inf,
             row -> row.investment_integer,
+        ),
+        (
+            :flows_decommission,
+            row -> (row.milestone_year, (row.from_asset, row.to_asset)),
+            _ -> 0.0,
+            _ -> Inf,
+            _ -> false,
         ),
         (
             :assets_investment_energy,

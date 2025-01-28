@@ -78,10 +78,12 @@ function create_model(
 
     ## Expressions for multi-year investment
     @timeit to "create_multi_year_expressions!" create_multi_year_expressions!(
+        connection,
         model,
         graph,
         sets,
         variables,
+        constraints,
     )
 
     ## Expressions for storage assets

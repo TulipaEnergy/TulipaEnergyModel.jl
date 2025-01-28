@@ -9,7 +9,7 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
     var_storage_level_rep_period = variables[:storage_level_rep_period]
     var_storage_level_over_clustered_year = variables[:storage_level_over_clustered_year]
 
-    accumulated_energy_capacity = model[:accumulated_energy_capacity]
+    # accumulated_energy_capacity = model[:accumulated_energy_capacity]
 
     ## INTRA-TEMPORAL CONSTRAINTS (within a representative period)
     # - Balance constraint (using the lowest temporal resolution)
@@ -75,54 +75,54 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
         )
 
         # - Maximum storage level
-        attach_constraint!(
-            model,
-            cons,
-            :max_storage_level_rep_period_limit,
-            [
-                begin
-                    max_storage_level_agg = _profile_aggregate(
-                        profiles.rep_period,
-                        (row.max_storage_level_profile_name, row.year, row.rep_period),
-                        row.time_block_start:row.time_block_end,
-                        Statistics.mean,
-                        1.0,
-                    )
-                    @constraint(
-                        model,
-                        var_storage_level ≤
-                        max_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
-                        base_name = "max_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                    )
-                end for
-                (row, var_storage_level) in zip(indices, var_storage_level_rep_period.container)
-            ],
-        )
+        # attach_constraint!(
+        #     model,
+        #     cons,
+        #     :max_storage_level_rep_period_limit,
+        #     [
+        #         begin
+        #             max_storage_level_agg = _profile_aggregate(
+        #                 profiles.rep_period,
+        #                 (row.max_storage_level_profile_name, row.year, row.rep_period),
+        #                 row.time_block_start:row.time_block_end,
+        #                 Statistics.mean,
+        #                 1.0,
+        #             )
+        #             @constraint(
+        #                 model,
+        #                 var_storage_level ≤
+        #                 max_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
+        #                 base_name = "max_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+        #             )
+        #         end for
+        #         (row, var_storage_level) in zip(indices, var_storage_level_rep_period.container)
+        #     ],
+        # )
 
         # - Minimum storage level
-        attach_constraint!(
-            model,
-            cons,
-            :min_storage_level_rep_period_limit,
-            [
-                begin
-                    min_storage_level_agg = _profile_aggregate(
-                        profiles.rep_period,
-                        (row.min_storage_level_profile_name, row.year, row.rep_period),
-                        row.time_block_start:row.time_block_end,
-                        Statistics.mean,
-                        0.0,
-                    )
-                    @constraint(
-                        model,
-                        var_storage_level ≥
-                        min_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
-                        base_name = "min_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                    )
-                end for
-                (row, var_storage_level) in zip(indices, var_storage_level_rep_period.container)
-            ],
-        )
+        # attach_constraint!(
+        #     model,
+        #     cons,
+        #     :min_storage_level_rep_period_limit,
+        #     [
+        #         begin
+        #             min_storage_level_agg = _profile_aggregate(
+        #                 profiles.rep_period,
+        #                 (row.min_storage_level_profile_name, row.year, row.rep_period),
+        #                 row.time_block_start:row.time_block_end,
+        #                 Statistics.mean,
+        #                 0.0,
+        #             )
+        #             @constraint(
+        #                 model,
+        #                 var_storage_level ≥
+        #                 min_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
+        #                 base_name = "min_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+        #             )
+        #         end for
+        #         (row, var_storage_level) in zip(indices, var_storage_level_rep_period.container)
+        #     ],
+        # )
     end
 
     ## INTER-TEMPORAL CONSTRAINTS (between representative periods)
