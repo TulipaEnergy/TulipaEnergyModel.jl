@@ -1,4 +1,48 @@
-function add_storage_expressions!(model, graph, sets, variables)
+function add_storage_expressions!(connection, model, expressions)
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE expr_accumulated_energy_capacity AS
+        SELECT
+            nextval('id') AS index,
+            asset_milestone.asset,
+            asset_milestone.milestone_year,
+            ANY_VALUE(asset.capacity_storage_energy) AS capacity_storage_energy,
+            ARRAY_AGG(expr_acc.index) AS acc_indices,
+        FROM asset_milestone
+        LEFT JOIN asset
+            ON asset_milestone.asset = asset.asset
+        LEFT JOIN expr_accumulated_units AS expr_acc
+            ON asset_milestone.asset = expr_acc.asset
+            AND asset_milestone.milestone_year = expr_acc.milestone_year
+        GROUP BY
+            asset_milestone.asset,
+            asset_milestone.milestone_year
+        ORDER BY index
+        ",
+    )
+
+    expressions[:accumulated_energy_capacity] =
+        TulipaExpression(connection, "expr_accumulated_energy_capacity")
+
+    expr_acc = expressions[:accumulated_units].expressions[:assets_energy]
+
+    # TODO: Reevaluate the accumulated_energy_capacity definition
+    let table_name = :accumulated_energy_capacity, expr = expressions[table_name]
+        indices = DuckDB.query(connection, "FROM expr_$table_name")
+        attach_expression!(
+            expr,
+            :energy_capacity,
+            JuMP.AffExpr[
+                @expression(
+                    model,
+                    row.capacity_storage_energy *
+                    sum(expr_acc[acc_index] for acc_index in row.acc_indices)
+                ) for row in indices
+            ],
+        )
+    end
+
     # assets_investment_energy = variables[:assets_investment_energy].lookup
     # assets_decommission_energy_simple_method =
     #     variables[:assets_decommission_energy_simple_method].lookup

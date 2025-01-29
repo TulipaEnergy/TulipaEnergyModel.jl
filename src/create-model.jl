@@ -87,7 +87,7 @@ function create_model(
     )
 
     ## Expressions for storage assets
-    @timeit to "add_storage_expressions!" add_storage_expressions!(model, graph, sets, variables)
+    @timeit to "add_storage_expressions!" add_storage_expressions!(connection, model, expressions)
 
     ## Expressions for the objective function
     @timeit to "add_objective!" add_objective!(
@@ -128,6 +128,7 @@ function create_model(
         connection,
         model,
         variables,
+        expressions,
         constraints,
         profiles,
     )
