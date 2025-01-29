@@ -5,7 +5,7 @@ export add_ramping_and_unit_commitment_constraints!
 
 Adds the ramping constraints for producer and conversion assets where ramping = true in assets_data
 """
-function add_ramping_constraints!(connection, model, variables, constraints, profiles, sets)
+function add_ramping_constraints!(connection, model, variables, expressions, constraints, profiles)
     indices_dict = Dict(
         table_name => _append_ramping_data_to_indices(connection, table_name) for
         table_name in (
@@ -68,7 +68,7 @@ function add_ramping_constraints!(connection, model, variables, constraints, pro
     # - Limit to the units on (i.e. commitment)
     let table_name = :limit_units_on, cons = constraints[table_name]
         indices = _append_accumulated_units_data(connection, table_name)
-        expr_acc = constraints[:expr_accumulated_units].expressions[:accumulated_units]
+        expr_acc = expressions[:accumulated_units].expressions[:assets]
         attach_constraint!(
             model,
             cons,

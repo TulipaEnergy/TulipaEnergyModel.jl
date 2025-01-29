@@ -28,7 +28,7 @@ function add_capacity_constraints!(
     # assets_decommission_compact_method = variables[:assets_decommission_compact_method]
 
     ## unpack from expressions
-    expr_acc = expressions[:accumulated_units].expressions[:accumulated_units]
+    expr_acc = expressions[:accumulated_units].expressions[:assets]
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows

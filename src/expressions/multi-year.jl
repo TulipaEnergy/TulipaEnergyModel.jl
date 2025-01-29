@@ -32,7 +32,7 @@ function create_multi_year_expressions!(connection, model, graph, sets, variable
         indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY index")
         attach_expression!(
             expr,
-            :accumulated_units,
+            :assets,
             JuMP.AffExpr[
                 if ismissing(row.var_decommission_index) && ismissing(row.var_investment_index)
                     @expression(model, row.initial_units)
@@ -45,6 +45,36 @@ function create_multi_year_expressions!(connection, model, graph, sets, variable
                         model,
                         row.initial_units + var_inv[row.var_investment_index] -
                         var_dec[row.var_decommission_index]
+                    )
+                end for row in indices
+            ],
+        )
+
+        var_energy_inv = variables[:assets_investment_energy].container
+        var_energy_dec = variables[:assets_decommission_energy].container
+
+        attach_expression!(
+            expr,
+            :assets_energy,
+            JuMP.AffExpr[
+                if ismissing(row.var_energy_decommission_index) &&
+                   ismissing(row.var_energy_investment_index)
+                    @expression(model, row.initial_units)
+                elseif ismissing(row.var_energy_investment_index)
+                    @expression(
+                        model,
+                        row.initial_units - var_energy_dec[row.var_energy_decommission_index]
+                    )
+                elseif ismissing(row.var_energy_decommission_index)
+                    @expression(
+                        model,
+                        row.initial_units + var_energy_inv[row.var_energy_investment_index]
+                    )
+                else
+                    @expression(
+                        model,
+                        row.initial_units + var_energy_inv[row.var_energy_investment_index] -
+                        var_energy_dec[row.var_energy_decommission_index]
                     )
                 end for row in indices
             ],
@@ -108,32 +138,6 @@ function create_multi_year_expressions!(connection, model, graph, sets, variable
             ],
         )
     end
-
-    let table_name = :accumulated_units_energy, expr = expressions[table_name]
-        var_inv = variables[:assets_investment_energy].container
-        var_dec = variables[:assets_decommission_energy].container
-
-        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY index")
-        attach_expression!(
-            expr,
-            :accumulated_units_energy,
-            JuMP.AffExpr[
-                if ismissing(row.var_decommission_index) && ismissing(row.var_investment_index)
-                    @expression(model, row.initial_units)
-                elseif ismissing(row.var_investment_index)
-                    @expression(model, row.initial_units - var_dec[row.var_decommission_index])
-                elseif ismissing(row.var_decommission_index)
-                    @expression(model, row.initial_units + var_inv[row.var_investment_index])
-                else
-                    @expression(
-                        model,
-                        row.initial_units + var_inv[row.var_investment_index] -
-                        var_dec[row.var_decommission_index]
-                    )
-                end for row in indices
-            ],
-        )
-    end
 end
 
 function _create_multi_year_expressions_indices!(connection, expressions)
@@ -150,6 +154,8 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             asset_both.initial_units,
             var_dec.index AS var_decommission_index,
             var_inv.index AS var_investment_index,
+            var_energy_dec.index AS var_energy_decommission_index,
+            var_energy_inv.index AS var_energy_investment_index,
         FROM asset_both
         LEFT JOIN var_assets_decommission AS var_dec
             ON asset_both.asset = var_dec.asset
@@ -158,6 +164,13 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         LEFT JOIN var_assets_investment AS var_inv
             ON asset_both.asset = var_inv.asset
             AND asset_both.commission_year = var_inv.milestone_year
+        LEFT JOIN var_assets_decommission_energy AS var_energy_dec
+            ON asset_both.asset = var_energy_dec.asset
+            AND asset_both.commission_year = var_energy_dec.commission_year
+            AND asset_both.milestone_year = var_energy_dec.milestone_year
+        LEFT JOIN var_assets_investment_energy AS var_energy_inv
+            ON asset_both.asset = var_energy_inv.asset
+            AND asset_both.commission_year = var_energy_inv.milestone_year
         ",
     )
 
@@ -189,31 +202,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         ",
     )
 
-    DuckDB.query(
-        connection,
-        "
-        CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_accumulated_units_energy AS
-        SELECT
-            nextval('id') AS index,
-            asset_both.asset,
-            asset_both.milestone_year,
-            asset_both.commission_year,
-            asset_both.initial_units,
-            var_dec.index AS var_decommission_index,
-            var_inv.index AS var_investment_index,
-        FROM asset_both
-        LEFT JOIN var_assets_decommission_energy AS var_dec
-            ON asset_both.asset = var_dec.asset
-            AND asset_both.commission_year = var_dec.commission_year
-            AND asset_both.milestone_year = var_dec.milestone_year
-        LEFT JOIN var_assets_investment_energy AS var_inv
-            ON asset_both.asset = var_inv.asset
-            AND asset_both.commission_year = var_inv.milestone_year
-        ",
-    )
-
-    for expr_name in (:accumulated_units, :accumulated_flow_units, :accumulated_units_energy)
+    for expr_name in (:accumulated_units, :accumulated_flow_units)
         expressions[expr_name] = TulipaExpression(connection, "expr_$expr_name")
     end
 
