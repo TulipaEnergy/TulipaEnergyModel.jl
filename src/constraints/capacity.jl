@@ -5,7 +5,16 @@ add_capacity_constraints!(model, graph,...)
 
 Adds the capacity constraints for all asset types to the model
 """
-function add_capacity_constraints!(connection, model, variables, constraints, profiles, graph, sets)
+function add_capacity_constraints!(
+    connection,
+    model,
+    variables,
+    expressions,
+    constraints,
+    profiles,
+    graph,
+    sets,
+)
     ## unpack from sets
     accumulated_units_lookup = sets[:accumulated_units_lookup]
 
@@ -18,12 +27,13 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     # assets_decommission_simple_method = variables[:assets_decommission_simple_method]
     # assets_decommission_compact_method = variables[:assets_decommission_compact_method]
 
+    ## unpack from expressions
+    expr_acc = expressions[:accumulated_units].expressions[:accumulated_units]
+
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
     let table_name = :capacity_outgoing, cons = constraints[table_name]
         indices = _append_capacity_data_to_indices(connection, table_name)
-
-        expr_acc = constraints[:expr_accumulated_units].expressions[:accumulated_units]
 
         attach_expression!(
             cons,
@@ -80,8 +90,6 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
 
         indices = _append_capacity_data_to_indices(connection, table_name)
 
-        expr_acc = constraints[:expr_accumulated_units].expressions[:accumulated_units]
-
         attach_expression!(
             cons,
             :profile_times_capacity_with_investment_variable,
@@ -133,7 +141,6 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
     # - Create capacity limit for incoming flows
     let table_name = :capacity_incoming, cons = constraints[table_name]
         indices = _append_capacity_data_to_indices(connection, table_name)
-        expr_acc = constraints[:expr_accumulated_units].expressions[:accumulated_units]
         attach_expression!(
             cons,
             :profile_times_capacity,
@@ -188,8 +195,6 @@ function add_capacity_constraints!(connection, model, variables, constraints, pr
         cons = constraints[table_name]
 
         indices = _append_capacity_data_to_indices(connection, table_name)
-
-        expr_acc = constraints[:expr_accumulated_units].expressions[:accumulated_units]
 
         attach_expression!(
             cons,

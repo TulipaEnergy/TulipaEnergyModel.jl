@@ -18,7 +18,7 @@ function compute_variables_indices(connection)
             :flows_investment,
             :flows_decommission,
             :assets_investment_energy,
-            :assets_decommission_energy_simple_method,
+            :assets_decommission_energy,
         )
     )
 
@@ -213,13 +213,15 @@ function _create_variables_tables(connection)
             nextval('id') as index,
             flow.from_asset,
             flow.to_asset,
-            flow_milestone.milestone_year
-        FROM flow_milestone
+            flow_both.milestone_year,
+            flow_both.commission_year,
+        FROM flow_both
         LEFT JOIN flow
-            ON flow.from_asset = flow_milestone.from_asset
-            AND flow.to_asset = flow_milestone.to_asset
+            ON flow.from_asset = flow_both.from_asset
+            AND flow.to_asset = flow_both.to_asset
         WHERE
             flow.is_transport = true
+            AND flow_both.milestone_year != flow_both.commission_year
         ",
     )
 
@@ -251,19 +253,22 @@ function _create_variables_tables(connection)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE var_assets_decommission_energy_simple_method AS
+        CREATE OR REPLACE TABLE var_assets_decommission_energy AS
         SELECT
             nextval('id') as index,
             asset.asset,
-            asset_milestone.milestone_year,
+            asset_both.milestone_year,
+            asset_both.commission_year,
             asset.investment_integer_storage_energy,
-        FROM asset_milestone
+        FROM asset_both
         LEFT JOIN asset
-            ON asset.asset = asset_milestone.asset
+            ON asset.asset = asset_both.asset
         WHERE
             asset.storage_method_energy = true
             AND asset.type = 'storage'
-            AND asset.investment_method = 'simple'",
+            AND asset.investment_method = 'simple'
+            AND asset_both.milestone_year != asset_both.commission_year
+        ",
     )
 
     return

@@ -79,6 +79,25 @@ mutable struct TulipaConstraint
     end
 end
 
+mutable struct TulipaExpression
+    indices::DataFrame
+    table_name::String
+    num_rows::Int
+    expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
+
+    function TulipaExpression(connection, table_name::String)
+        return new(
+            DuckDB.query(connection, "SELECT * FROM $table_name") |> DataFrame,
+            table_name,
+            only([
+                row.num_rows for
+                row in DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM $table_name")
+            ]),
+            Dict(),
+        )
+    end
+end
+
 """
     attach_constraint!(model, cons, name, container)
 
@@ -120,21 +139,29 @@ function attach_constraint!(model::JuMP.Model, cons::TulipaConstraint, name::Sym
 end
 
 """
-    attach_expression!(cons, name, container)
-    attach_expression!(model, cons, name, container)
+    attach_expression!(cons_or_expr, name, container)
+    attach_expression!(model, cons_or_expr, name, container)
 
 Attach a expression named `name` stored in `container`, and optionally set `model[name] = container`.
 This checks that the `container` length matches the stored `indices` number of rows.
 """
-function attach_expression!(cons::TulipaConstraint, name::Symbol, container::Vector{JuMP.AffExpr})
-    if length(container) != cons.num_rows
+function attach_expression!(
+    cons_or_expr::Union{TulipaConstraint,TulipaExpression},
+    name::Symbol,
+    container::Vector{JuMP.AffExpr},
+)
+    if length(container) != cons_or_expr.num_rows
         error("The number of expressions does not match the number of rows in the indices of $name")
     end
-    cons.expressions[name] = container
+    cons_or_expr.expressions[name] = container
     return nothing
 end
 
-function attach_expression!(cons::TulipaConstraint, name::Symbol, container)
+function attach_expression!(
+    cons_or_expr::Union{TulipaConstraint,TulipaExpression},
+    name::Symbol,
+    container,
+)
     # This should be the empty case container = Any[] that happens when the
     # indices table in empty in [@constraint(...) for row in eachrow(indices)].
     # It resolves to [] so the element type cannot be inferred
@@ -143,10 +170,10 @@ function attach_expression!(cons::TulipaConstraint, name::Symbol, container)
             "This variant is supposed to capture empty containers. This container is not empty for $name",
         )
     end
-    if cons.num_rows > 0
+    if cons_or_expr.num_rows > 0
         error("The number of rows in indices table should be 0 for $name")
     end
-    cons.expressions[name] = JuMP.AffExpr[]
+    cons_or_expr.expressions[name] = JuMP.AffExpr[]
     return nothing
 end
 
@@ -345,6 +372,7 @@ mutable struct EnergyProblem
         Nothing, # Default edge weight
     }
     variables::Dict{Symbol,TulipaVariable}
+    expressions::Dict{Symbol,TulipaExpression}
     constraints::Dict{Symbol,TulipaConstraint}
     profiles::ProfileLookup
     representative_periods::Dict{Int,Vector{RepresentativePeriod}}
@@ -379,6 +407,7 @@ mutable struct EnergyProblem
             connection,
             graph,
             variables,
+            Dict(),
             constraints,
             profiles,
             representative_periods,
