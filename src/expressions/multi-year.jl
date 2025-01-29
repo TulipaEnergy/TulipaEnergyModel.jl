@@ -1,4 +1,4 @@
-function create_multi_year_expressions!(connection, model, graph, sets, variables, expressions)
+function create_multi_year_expressions!(connection, model, variables, expressions)
     # The variable assets_decommission is defined for (a, my, cy)
     # The capacity expression that we need to compute is
     #
@@ -59,21 +59,23 @@ function create_multi_year_expressions!(connection, model, graph, sets, variable
             JuMP.AffExpr[
                 if ismissing(row.var_energy_decommission_index) &&
                    ismissing(row.var_energy_investment_index)
-                    @expression(model, row.initial_units)
+                    @expression(model, row.initial_storage_units)
                 elseif ismissing(row.var_energy_investment_index)
                     @expression(
                         model,
-                        row.initial_units - var_energy_dec[row.var_energy_decommission_index]
+                        row.initial_storage_units -
+                        var_energy_dec[row.var_energy_decommission_index]
                     )
                 elseif ismissing(row.var_energy_decommission_index)
                     @expression(
                         model,
-                        row.initial_units + var_energy_inv[row.var_energy_investment_index]
+                        row.initial_storage_units + var_energy_inv[row.var_energy_investment_index]
                     )
                 else
                     @expression(
                         model,
-                        row.initial_units + var_energy_inv[row.var_energy_investment_index] -
+                        row.initial_storage_units +
+                        var_energy_inv[row.var_energy_investment_index] -
                         var_energy_dec[row.var_energy_decommission_index]
                     )
                 end for row in indices
@@ -152,6 +154,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             asset_both.milestone_year,
             asset_both.commission_year,
             asset_both.initial_units,
+            asset_both.initial_storage_units,
             var_dec.index AS var_decommission_index,
             var_inv.index AS var_investment_index,
             var_energy_dec.index AS var_energy_decommission_index,

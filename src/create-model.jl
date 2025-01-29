@@ -82,8 +82,6 @@ function create_model(
     @timeit to "create_multi_year_expressions!" create_multi_year_expressions!(
         connection,
         model,
-        graph,
-        sets,
         variables,
         expressions,
     )
@@ -95,6 +93,7 @@ function create_model(
     @timeit to "add_objective!" add_objective!(
         model,
         variables,
+        expressions,
         graph,
         representative_periods,
         sets,
@@ -106,12 +105,9 @@ function create_model(
     @timeit to "add_capacity_constraints!" add_capacity_constraints!(
         connection,
         model,
-        variables,
         expressions,
         constraints,
         profiles,
-        graph,
-        sets,
     )
 
     @timeit to "add_energy_constraints!" add_energy_constraints!(

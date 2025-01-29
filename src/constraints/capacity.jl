@@ -5,28 +5,7 @@ add_capacity_constraints!(model, graph,...)
 
 Adds the capacity constraints for all asset types to the model
 """
-function add_capacity_constraints!(
-    connection,
-    model,
-    variables,
-    expressions,
-    constraints,
-    profiles,
-    graph,
-    sets,
-)
-    ## unpack from sets
-    accumulated_units_lookup = sets[:accumulated_units_lookup]
-
-    ## unpack from model
-    # accumulated_investment_units_using_simple_method =
-    #     model[:accumulated_investment_units_using_simple_method]
-    # accumulated_units = model[:accumulated_units]
-
-    ## unpack from variables
-    # assets_decommission_simple_method = variables[:assets_decommission_simple_method]
-    # assets_decommission_compact_method = variables[:assets_decommission_compact_method]
-
+function add_capacity_constraints!(connection, model, expressions, constraints, profiles)
     ## unpack from expressions
     expr_acc = expressions[:accumulated_units].expressions[:assets]
 

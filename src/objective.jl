@@ -1,12 +1,18 @@
-function add_objective!(model, variables, graph, representative_periods, sets, model_parameters)
+function add_objective!(
+    model,
+    variables,
+    expressions,
+    graph,
+    representative_periods,
+    sets,
+    model_parameters,
+)
     assets_investment = variables[:assets_investment].lookup
-    # accumulated_units_simple_method = model[:accumulated_units_simple_method]
-    # accumulated_units_compact_method = model[:accumulated_units_compact_method]
     assets_investment_energy = variables[:assets_investment_energy].lookup
-    # accumulated_energy_units_simple_method = model[:accumulated_energy_units_simple_method]
     flows_investment = variables[:flows_investment].lookup
-    # accumulated_flows_export_units = model[:accumulated_flows_export_units]
-    # accumulated_flows_import_units = model[:accumulated_flows_import_units]
+
+    expr_accumulated_units = expressions[:accumulated_units]
+    expr_accumulated_flow_units = expressions[:accumulated_flow_units]
 
     # Create a dict of weights for assets investment discounts
     weight_for_assets_investment_discounts =
@@ -43,17 +49,15 @@ function add_objective!(model, variables, graph, representative_periods, sets, m
 
     assets_fixed_cost = @expression(
         model,
-        0.0
-        # sum(
-        #     weight_for_operation_discounts[y] *
-        #     graph[a].fixed_cost[y] *
-        #     graph[a].capacity *
-        #     accumulated_units_simple_method[a, y] for y in sets.Y for
-        #     a in sets.decommissionable_assets_using_simple_method
-        # ) + sum(
-        #     weight_for_operation_discounts[y] * graph[a].fixed_cost[v] * graph[a].capacity * accm for (accm, (a, y, v)) in
-        #     zip(accumulated_units_compact_method, sets.accumulated_set_using_compact_method)
-        # )
+        sum(
+            weight_for_operation_discounts[row.milestone_year] *
+            graph[row.asset].fixed_cost[row.milestone_year] *
+            graph[row.asset].capacity *
+            acc_unit for (row, acc_unit) in zip(
+                eachrow(expr_accumulated_units.indices),
+                expr_accumulated_units.expressions[:assets],
+            )
+        )
     )
 
     storage_assets_energy_investment_cost = @expression(
@@ -69,11 +73,13 @@ function add_objective!(model, variables, graph, representative_periods, sets, m
     storage_assets_energy_fixed_cost = @expression(
         model,
         sum(
-            weight_for_operation_discounts[y] *
-            graph[a].fixed_cost_storage_energy[y] *
-            graph[a].capacity_storage_energy *
-            accumulated_energy_units_simple_method[y, a] for y in sets.Y for
-            a in sets.Ase[y] ∩ sets.decommissionable_assets_using_simple_method
+            weight_for_operation_discounts[row.milestone_year] *
+            graph[row.asset].fixed_cost_storage_energy[row.milestone_year] *
+            graph[row.asset].capacity_storage_energy *
+            acc_unit for (row, acc_unit) in zip(
+                eachrow(expr_accumulated_units.indices),
+                expr_accumulated_units.expressions[:assets_energy],
+            )
         )
     )
 
@@ -87,14 +93,24 @@ function add_objective!(model, variables, graph, representative_periods, sets, m
         )
     )
 
+    # TODO: Fix this
+    # fixed_cost below is not defined for some graph[u, v].fixed[y]
+    # This indicates something is not totally right in this definition
+    # Probably because the loop is over the accumulated flow units now, and the
+    # sets have technically changed
     flows_fixed_cost = @expression(
         model,
-        0.0
-        # sum(
-        #     weight_for_operation_discounts[y] * graph[u, v].fixed_cost[y] / 2 *
-        #     graph[u, v].capacity *
-        #     (accumulated_flows_export_units[y, (u, v)] + accumulated_flows_import_units[y, (u, v)]) for y in sets.Y for (u, v) in sets.Fi[y]
-        # )
+        sum(
+            weight_for_operation_discounts[row.milestone_year] *
+            get(graph[row.from_asset, row.to_asset].fixed_cost, row.milestone_year, 0.0) / 2 *
+            graph[row.from_asset, row.to_asset].capacity *
+            (acc_export_unit + acc_import_unit) for
+            (row, acc_export_unit, acc_import_unit) in zip(
+                eachrow(expr_accumulated_flow_units.indices),
+                expr_accumulated_flow_units.expressions[:export],
+                expr_accumulated_flow_units.expressions[:import],
+            )
+        )
     )
 
     flows_variable_cost = @expression(
