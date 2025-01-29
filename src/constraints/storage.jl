@@ -185,54 +185,54 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
         )
 
         # - Maximum storage level
-        attach_constraint!(
-            model,
-            cons,
-            :max_storage_level_over_clustered_year_limit,
-            [
-                begin
-                    max_storage_level_agg = _profile_aggregate(
-                        profiles.over_clustered_year,
-                        (row.max_storage_level_profile_name, row.year),
-                        row.period_block_start:row.period_block_end,
-                        Statistics.mean,
-                        1.0,
-                    )
-                    @constraint(
-                        model,
-                        var_storage_level ≤
-                        max_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
-                        base_name = "max_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-                    )
-                end for (row, var_storage_level) in
-                zip(indices, var_storage_level_over_clustered_year.container)
-            ],
-        )
-
-        # - Minimum storage level
-        attach_constraint!(
-            model,
-            cons,
-            :min_storage_level_over_clustered_year_limit,
-            [
-                begin
-                    min_storage_level_agg = _profile_aggregate(
-                        profiles.over_clustered_year,
-                        (row.min_storage_level_profile_name, row.year),
-                        row.period_block_start:row.period_block_end,
-                        Statistics.mean,
-                        0.0,
-                    )
-                    @constraint(
-                        model,
-                        var_storage_level ≥
-                        min_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
-                        base_name = "min_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-                    )
-                end for (row, var_storage_level) in
-                zip(indices, var_storage_level_over_clustered_year.container)
-            ],
-        )
+        # attach_constraint!(
+        #     model,
+        #     cons,
+        #     :max_storage_level_over_clustered_year_limit,
+        #     [
+        #         begin
+        #             max_storage_level_agg = _profile_aggregate(
+        #                 profiles.over_clustered_year,
+        #                 (row.max_storage_level_profile_name, row.year),
+        #                 row.period_block_start:row.period_block_end,
+        #                 Statistics.mean,
+        #                 1.0,
+        #             )
+        #             @constraint(
+        #                 model,
+        #                 var_storage_level ≤
+        #                 max_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
+        #                 base_name = "max_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+        #             )
+        #         end for (row, var_storage_level) in
+        #         zip(indices, var_storage_level_over_clustered_year.container)
+        #     ],
+        # )
+        #
+        # # - Minimum storage level
+        # attach_constraint!(
+        #     model,
+        #     cons,
+        #     :min_storage_level_over_clustered_year_limit,
+        #     [
+        #         begin
+        #             min_storage_level_agg = _profile_aggregate(
+        #                 profiles.over_clustered_year,
+        #                 (row.min_storage_level_profile_name, row.year),
+        #                 row.period_block_start:row.period_block_end,
+        #                 Statistics.mean,
+        #                 0.0,
+        #             )
+        #             @constraint(
+        #                 model,
+        #                 var_storage_level ≥
+        #                 min_storage_level_agg * accumulated_energy_capacity[row.year, row.asset],
+        #                 base_name = "min_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+        #             )
+        #         end for (row, var_storage_level) in
+        #         zip(indices, var_storage_level_over_clustered_year.container)
+        #     ],
+        # )
     end
 end
 

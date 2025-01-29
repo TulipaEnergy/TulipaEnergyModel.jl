@@ -6,12 +6,6 @@ export add_ramping_and_unit_commitment_constraints!
 Adds the ramping constraints for producer and conversion assets where ramping = true in assets_data
 """
 function add_ramping_constraints!(connection, model, variables, constraints, profiles, sets)
-    # unpack from sets
-    accumulated_units_lookup = sets[:accumulated_units_lookup]
-
-    ## unpack from model
-    accumulated_units = model[:accumulated_units]
-
     indices_dict = Dict(
         table_name => _append_ramping_data_to_indices(connection, table_name) for
         table_name in (
@@ -73,6 +67,8 @@ function add_ramping_constraints!(connection, model, variables, constraints, pro
     ## Unit Commitment Constraints (basic implementation - more advanced will be added in 2025)
     # - Limit to the units on (i.e. commitment)
     let table_name = :limit_units_on, cons = constraints[table_name]
+        indices = _append_accumulated_units_data(connection, table_name)
+        expr_acc = constraints[:expr_accumulated_units].expressions[:accumulated_units]
         attach_constraint!(
             model,
             cons,
@@ -80,9 +76,9 @@ function add_ramping_constraints!(connection, model, variables, constraints, pro
             [
                 @constraint(
                     model,
-                    units_on ≤ accumulated_units[accumulated_units_lookup[(row.asset, row.year)]],
+                    units_on ≤ sum(expr_acc[acc_index] for acc_index in row.acc_indices),
                     base_name = "limit_units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                ) for (units_on, row) in zip(variables[:units_on].container, eachrow(cons.indices))
+                ) for (units_on, row) in zip(variables[:units_on].container, indices)
             ],
         )
     end
@@ -259,6 +255,27 @@ function _append_ramping_data_to_indices(connection, table_name)
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
             AND assets_profiles.profile_type = 'availability'
+        ORDER BY cons.index
+        ",
+    )
+end
+
+function _append_accumulated_units_data(connection, table_name)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            cons.index,
+            ANY_VALUE(cons.asset) AS asset,
+            ANY_VALUE(cons.year) AS year,
+            ANY_VALUE(cons.rep_period) AS rep_period,
+            ANY_VALUE(cons.time_block_start) AS time_block_start,
+            ANY_VALUE(cons.time_block_end) AS time_block_end,
+            ARRAY_AGG(expr_acc.index) AS acc_indices,
+        FROM cons_$table_name AS cons
+        LEFT JOIN expr_accumulated_units AS expr_acc
+            ON cons.asset = expr_acc.asset
+            AND cons.year = expr_acc.milestone_year
+        GROUP BY cons.index
         ORDER BY cons.index
         ",
     )
