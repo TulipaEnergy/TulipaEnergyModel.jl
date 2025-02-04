@@ -88,7 +88,7 @@ function _create_variables_tables(connection)
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE var_storage_level_rep_period AS
-        WITH filtered_data AS (
+        WITH filtered_assets AS (
             SELECT
                 t_low.asset,
                 t_low.year,
@@ -109,12 +109,8 @@ function _create_variables_tables(connection)
         )
         SELECT
             nextval('id') AS index,
-            asset,
-            year,
-            rep_period,
-            time_block_start,
-            time_block_end
-        FROM filtered_data
+            filtered_assets.*
+        FROM filtered_assets
         ",
     )
 
@@ -122,7 +118,7 @@ function _create_variables_tables(connection)
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
          CREATE OR REPLACE TABLE var_storage_level_over_clustered_year AS
-         WITH filtered_data AS (
+         WITH filtered_assets AS (
             SELECT
                 attr.asset,
                 attr.year,
@@ -133,6 +129,7 @@ function _create_variables_tables(connection)
                 ON attr.asset = asset.asset
             WHERE
                 asset.type = 'storage'
+                AND asset.is_seasonal = true
             ORDER BY
                 attr.asset,
                 attr.year,
@@ -140,11 +137,8 @@ function _create_variables_tables(connection)
         )
         SELECT
             nextval('id') AS index,
-            asset,
-            year,
-            period_block_start,
-            period_block_end
-        FROM filtered_data
+            filtered_assets.*
+        FROM filtered_assets
         ",
     )
 
