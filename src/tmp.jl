@@ -193,6 +193,25 @@ function tmp_create_partition_tables(connection)
 
     DBInterface.execute(
         connection,
+        "CREATE OR REPLACE TABLE explicit_assets_timeframe_partitions AS
+        SELECT
+            asset.asset,
+            asset_commission.commission_year AS year,
+            COALESCE(atp.specification, 'uniform') AS specification,
+            COALESCE(atp.partition, '1') AS partition,
+        FROM asset AS asset
+        LEFT JOIN asset_commission
+            ON asset.asset = asset_commission.asset
+        LEFT JOIN assets_timeframe_partitions AS atp
+            ON asset.asset = atp.asset
+            AND asset_commission.commission_year = atp.year
+        WHERE
+            asset.is_seasonal = true
+        ",
+    )
+
+    DBInterface.execute(
+        connection,
         "CREATE OR REPLACE TABLE asset_timeframe_time_resolution(
             asset STRING,
             year INT,
@@ -205,7 +224,7 @@ function tmp_create_partition_tables(connection)
     for row in DuckDB.query(
         connection,
         "SELECT asset, sub.year, specification, partition, num_periods AS num_periods
-        FROM assets_timeframe_partitions AS main
+        FROM explicit_assets_timeframe_partitions AS main
         LEFT JOIN (
             SELECT year, MAX(period) AS num_periods
             FROM timeframe_data
