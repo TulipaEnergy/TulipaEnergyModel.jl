@@ -365,13 +365,10 @@ function add_expression_terms_over_clustered_year_constraints!(
 )
     num_rows = size(cons.indices, 1)
     cons.expressions[:outgoing] = Vector{JuMP.AffExpr}(undef, num_rows)
-    cons.expressions[:outgoing] .= JuMP.AffExpr(0.0)
 
     if is_storage_level
         cons.expressions[:incoming] = Vector{JuMP.AffExpr}(undef, num_rows)
-        cons.expressions[:incoming] .= JuMP.AffExpr(0.0)
         cons.expressions[:inflows_profile_aggregation] = Vector{JuMP.AffExpr}(undef, num_rows)
-        cons.expressions[:inflows_profile_aggregation] .= JuMP.AffExpr(0.0)
     end
 
     # TODO: The interaction between year and timeframe is not clear yet, so this is probably wrong
@@ -379,11 +376,15 @@ function add_expression_terms_over_clustered_year_constraints!(
 
     # Incoming, outgoing flows, and profile aggregation
     for row_cons in eachrow(cons.indices)
+        cons.expressions[:outgoing][row_cons.index] = JuMP.AffExpr(0.0)
+        if is_storage_level
+            cons.expressions[:incoming][row_cons.index] = JuMP.AffExpr(0.0)
+            cons.expressions[:inflows_profile_aggregation][row_cons.index] = JuMP.AffExpr(0.0)
+        end
+
         sub_df_map = DataFrames.subset(
             df_map,
-            :period => DataFrames.ByRow(
-                p -> row_cons.period_block_start <= p <= row_cons.period_block_end,
-            );
+            :period => p -> row_cons.period_block_start .<= p .<= row_cons.period_block_end;
             view = true,
         )
 
@@ -402,20 +403,21 @@ function add_expression_terms_over_clustered_year_constraints!(
                 view = true,
             )
 
-            duration = sub_df_flows.time_block_end - sub_df_flows.time_block_start .+ 1
+            duration = sub_df_flows.time_block_end .- sub_df_flows.time_block_start .+ 1
             if is_storage_level
                 JuMP.add_to_expression!(
                     cons.expressions[:outgoing][row_cons.index],
+                    row_map.weight,
                     LinearAlgebra.dot(
                         flow.container[sub_df_flows.index],
                         duration ./ sub_df_flows.efficiency,
-                    ) * row_map.weight,
+                    ),
                 )
             else
                 JuMP.add_to_expression!(
                     cons.expressions[:outgoing][row_cons.index],
-                    LinearAlgebra.dot(flow.container[sub_df_flows.index], duration) *
                     row_map.weight,
+                    LinearAlgebra.dot(flow.container[sub_df_flows.index], duration),
                 )
             end
 
@@ -429,14 +431,15 @@ function add_expression_terms_over_clustered_year_constraints!(
                     view = true,
                 )
 
-                duration = sub_df_flows.time_block_end - sub_df_flows.time_block_start .+ 1
+                duration = sub_df_flows.time_block_end .- sub_df_flows.time_block_start .+ 1
 
                 JuMP.add_to_expression!(
                     cons.expressions[:incoming][row_cons.index],
+                    row_map.weight,
                     LinearAlgebra.dot(
                         flow.container[sub_df_flows.index],
                         duration .* sub_df_flows.efficiency,
-                    ) * row_map.weight,
+                    ),
                 )
 
                 cons.expressions[:inflows_profile_aggregation][row_cons.index] +=
