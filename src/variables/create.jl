@@ -201,7 +201,8 @@ function _create_variables_tables(connection)
         FROM asset_both
         LEFT JOIN asset
             ON asset.asset = asset_both.asset
-        WHERE asset_both.milestone_year != asset_both.commission_year
+        WHERE asset_both.decommissionable
+            AND asset_both.milestone_year != asset_both.commission_year
         ",
     )
 
@@ -221,7 +222,8 @@ function _create_variables_tables(connection)
             AND flow.to_asset = flow_both.to_asset
         WHERE
             flow.is_transport = true
-            AND flow_both.milestone_year != flow_both.commission_year
+            AND flow_both.decommissionable
+            AND flow_both.commission_year != flow_both.milestone_year
         ",
     )
 
@@ -266,8 +268,9 @@ function _create_variables_tables(connection)
         WHERE
             asset.storage_method_energy = true
             AND asset.type = 'storage'
-            AND asset.investment_method = 'simple'
-            AND asset_both.milestone_year != asset_both.commission_year
+            AND asset.investment_method = 'simple' -- TODO: Keep this or not?
+            AND asset_both.decommissionable
+            AND asset_both.commission_year != asset_both.milestone_year
         ",
     )
 

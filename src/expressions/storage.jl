@@ -15,6 +15,8 @@ function add_storage_expressions!(connection, model, expressions)
         LEFT JOIN expr_accumulated_units AS expr_acc
             ON asset_milestone.asset = expr_acc.asset
             AND asset_milestone.milestone_year = expr_acc.milestone_year
+        WHERE
+            asset.type = 'storage'
         GROUP BY
             asset_milestone.asset,
             asset_milestone.milestone_year

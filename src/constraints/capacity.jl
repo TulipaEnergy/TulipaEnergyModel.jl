@@ -24,12 +24,12 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         row.capacity * sum(
                             _profile_aggregate(
                                 profiles.rep_period,
-                                (acc_profile_name, row.year, row.rep_period),
                                 row.time_block_start:row.time_block_end,
+                                (acc_profile_name, row.year, row.rep_period),
                                 Statistics.mean,
                                 1.0,
-                            ) * expr_acc[acc_index] for (v, acc_profile_name, acc_index) in
-                            zip(row.acc_commission_year, row.acc_profile_name, row.acc_indices)
+                            ) * expr_acc[acc_index] for (acc_profile_name, acc_index) in
+                            zip(row.acc_profile_name, row.acc_indices)
                         )
                     )
                 end for row in indices
