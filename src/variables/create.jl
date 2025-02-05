@@ -88,37 +88,57 @@ function _create_variables_tables(connection)
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE var_storage_level_rep_period AS
+        WITH filtered_assets AS (
+            SELECT
+                t_low.asset,
+                t_low.year,
+                t_low.rep_period,
+                t_low.time_block_start,
+                t_low.time_block_end
+            FROM t_lowest_all AS t_low
+            LEFT JOIN asset
+                ON t_low.asset = asset.asset
+            WHERE
+                asset.type = 'storage'
+                AND asset.is_seasonal = false
+            ORDER BY
+                t_low.asset,
+                t_low.year,
+                t_low.rep_period,
+                t_low.time_block_start
+        )
         SELECT
-            nextval('id') as index,
-            t_low.asset,
-            t_low.year,
-            t_low.rep_period,
-            t_low.time_block_start,
-            t_low.time_block_end
-        FROM t_lowest_all AS t_low
-        LEFT JOIN asset
-            ON t_low.asset = asset.asset
-        WHERE
-            asset.type = 'storage'
-            AND asset.is_seasonal = false;
+            nextval('id') AS index,
+            filtered_assets.*
+        FROM filtered_assets
         ",
     )
 
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE var_storage_level_over_clustered_year AS
+         CREATE OR REPLACE TABLE var_storage_level_over_clustered_year AS
+         WITH filtered_assets AS (
+            SELECT
+                attr.asset,
+                attr.year,
+                attr.period_block_start,
+                attr.period_block_end
+            FROM asset_timeframe_time_resolution AS attr
+            LEFT JOIN asset
+                ON attr.asset = asset.asset
+            WHERE
+                asset.type = 'storage'
+                AND asset.is_seasonal = true
+            ORDER BY
+                attr.asset,
+                attr.year,
+                attr.period_block_start
+        )
         SELECT
-            nextval('id') as index,
-            asset.asset,
-            attr.year,
-            attr.period_block_start,
-            attr.period_block_end,
-        FROM asset_timeframe_time_resolution AS attr
-        LEFT JOIN asset
-            ON attr.asset = asset.asset
-        WHERE
-            asset.type = 'storage'
+            nextval('id') AS index,
+            filtered_assets.*
+        FROM filtered_assets
         ",
     )
 
