@@ -30,7 +30,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
 
     _create_multi_year_expressions_indices!(connection, expressions)
 
-    let table_name = :accumulated_units, expr = expressions[table_name]
+    let table_name = :accumulated_asset_units, expr = expressions[table_name]
         var_inv = variables[:assets_investment].container
         var_dec = variables[:assets_decommission].container
 
@@ -58,13 +58,16 @@ function create_multi_year_expressions!(connection, model, variables, expression
                 end for row in indices
             ],
         )
+    end
 
+    let table_name = :accumulated_energy_units, expr = expressions[table_name]
         var_energy_inv = variables[:assets_investment_energy].container
         var_energy_dec = variables[:assets_decommission_energy].container
 
+        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY index")
         attach_expression!(
             expr,
-            :assets_energy,
+            :energy,
             JuMP.AffExpr[
                 if ismissing(row.var_energy_decommission_indices) &&
                    ismissing(row.var_energy_investment_index)
@@ -158,18 +161,15 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_accumulated_units AS
+        CREATE OR REPLACE TABLE expr_accumulated_asset_units AS
         SELECT
             nextval('id') AS index,
             asset_both.asset AS asset,
             asset_both.milestone_year AS milestone_year,
             asset_both.commission_year AS commission_year,
             ANY_VALUE(asset_both.initial_units) AS initial_units,
-            ANY_VALUE(asset_both.initial_storage_units) AS initial_storage_units,
             ARRAY_AGG(var_dec.index) FILTER (var_dec.index IS NOT NULL) AS var_decommission_indices,
             ANY_VALUE(var_inv.index) AS var_investment_index,
-            ARRAY_AGG(var_energy_dec.index) FILTER (var_energy_dec.index IS NOT NULL) AS var_energy_decommission_indices,
-            ANY_VALUE(var_energy_inv.index) AS var_energy_investment_index,
         FROM asset_both
         LEFT JOIN var_assets_decommission AS var_dec
             ON asset_both.asset = var_dec.asset
@@ -178,6 +178,26 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         LEFT JOIN var_assets_investment AS var_inv
             ON asset_both.asset = var_inv.asset
             AND asset_both.commission_year = var_inv.milestone_year
+        GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
+        ",
+    )
+
+    DuckDB.query(
+        connection,
+        "
+        CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE expr_accumulated_energy_units AS
+        SELECT
+            nextval('id') AS index,
+            asset_both.asset AS asset,
+            asset_both.milestone_year AS milestone_year,
+            asset_both.commission_year AS commission_year,
+            ANY_VALUE(asset_both.initial_storage_units) AS initial_storage_units,
+            ARRAY_AGG(var_energy_dec.index) FILTER (var_energy_dec.index IS NOT NULL) AS var_energy_decommission_indices,
+            ANY_VALUE(var_energy_inv.index) AS var_energy_investment_index,
+        FROM asset_both
+        LEFT JOIN asset
+            ON asset.asset = asset_both.asset
         LEFT JOIN var_assets_decommission_energy AS var_energy_dec
             ON asset_both.asset = var_energy_dec.asset
             AND asset_both.commission_year = var_energy_dec.commission_year
@@ -185,6 +205,8 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         LEFT JOIN var_assets_investment_energy AS var_energy_inv
             ON asset_both.asset = var_energy_inv.asset
             AND asset_both.commission_year = var_energy_inv.milestone_year
+        WHERE
+            asset.type == 'storage'
         GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
         ",
     )
@@ -218,7 +240,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         ",
     )
 
-    for expr_name in (:accumulated_units, :accumulated_flow_units)
+    for expr_name in (:accumulated_asset_units, :accumulated_energy_units, :accumulated_flow_units)
         expressions[expr_name] = TulipaExpression(connection, "expr_$expr_name")
     end
 

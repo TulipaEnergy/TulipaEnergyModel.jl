@@ -7,7 +7,7 @@ Adds the capacity constraints for all asset types to the model
 """
 function add_capacity_constraints!(connection, model, expressions, constraints, profiles)
     ## unpack from expressions
-    expr_acc = expressions[:accumulated_units].expressions[:assets]
+    expr_acc = expressions[:accumulated_asset_units].expressions[:assets]
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
@@ -344,7 +344,7 @@ function _append_capacity_data_to_indices(connection, table_name)
         LEFT JOIN asset_commission
             ON cons.asset = asset_commission.asset
             AND cons.year = asset_commission.commission_year
-        LEFT JOIN expr_accumulated_units AS expr_acc
+        LEFT JOIN expr_accumulated_asset_units AS expr_acc
             ON cons.asset = expr_acc.asset
             AND cons.year = expr_acc.milestone_year
         LEFT OUTER JOIN assets_profiles

@@ -11,7 +11,8 @@ function add_objective!(
     assets_investment_energy = variables[:assets_investment_energy].lookup
     flows_investment = variables[:flows_investment].lookup
 
-    expr_accumulated_units = expressions[:accumulated_units]
+    expr_accumulated_asset_units = expressions[:accumulated_asset_units]
+    expr_accumulated_energy_units = expressions[:accumulated_energy_units]
     expr_accumulated_flow_units = expressions[:accumulated_flow_units]
 
     # Create a dict of weights for assets investment discounts
@@ -54,8 +55,8 @@ function add_objective!(
             graph[row.asset].fixed_cost[row.milestone_year] *
             graph[row.asset].capacity *
             acc_unit for (row, acc_unit) in zip(
-                eachrow(expr_accumulated_units.indices),
-                expr_accumulated_units.expressions[:assets],
+                eachrow(expr_accumulated_asset_units.indices),
+                expr_accumulated_asset_units.expressions[:assets],
             )
         )
     )
@@ -77,8 +78,8 @@ function add_objective!(
             graph[row.asset].fixed_cost_storage_energy[row.milestone_year] *
             graph[row.asset].capacity_storage_energy *
             acc_unit for (row, acc_unit) in zip(
-                eachrow(expr_accumulated_units.indices),
-                expr_accumulated_units.expressions[:assets_energy],
+                eachrow(expr_accumulated_energy_units.indices),
+                expr_accumulated_energy_units.expressions[:energy],
             )
         )
     )
