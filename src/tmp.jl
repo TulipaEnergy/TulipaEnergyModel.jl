@@ -206,7 +206,7 @@ function tmp_create_partition_tables(connection)
             ON asset.asset = atp.asset
             AND asset_commission.commission_year = atp.year
         WHERE
-            asset.is_seasonal = true
+            asset.is_seasonal
         ",
     )
 
