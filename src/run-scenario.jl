@@ -36,7 +36,7 @@ function run_scenario(
         @timeit to "save_solution_to_file" save_solution_to_file(output_folder, energy_problem)
     end
 
-    show_log && show(to)
+    show_log && show(to; compact = true)
     println()
 
     if log_file != ""
