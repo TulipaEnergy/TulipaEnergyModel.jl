@@ -429,8 +429,7 @@ function add_expression_terms_over_clustered_year_constraints!(
                     view = true,
                 )
 
-                sub_df_flows.duration =
-                    sub_df_flows.time_block_end - sub_df_flows.time_block_start .+ 1
+                duration = sub_df_flows.time_block_end - sub_df_flows.time_block_start .+ 1
 
                 JuMP.add_to_expression!(
                     cons.expressions[:incoming][row_cons.index],
