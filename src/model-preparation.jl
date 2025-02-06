@@ -384,7 +384,8 @@ function add_expression_terms_over_clustered_year_constraints!(
 
         sub_df_map = DataFrames.subset(
             df_map,
-            :period => p -> row_cons.period_block_start .<= p .<= row_cons.period_block_end;
+            :period => p -> row_cons.period_block_start .<= p .<= row_cons.period_block_end,
+            :weight => weight -> weight .> 0;
             view = true,
         )
 
