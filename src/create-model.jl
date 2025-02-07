@@ -15,8 +15,6 @@ function create_model!(energy_problem; kwargs...)
         energy_problem.constraints,
         energy_problem.profiles,
         energy_problem.representative_periods,
-        energy_problem.years,
-        energy_problem.timeframe,
         energy_problem.model_parameters;
         kwargs...,
     )
@@ -40,8 +38,6 @@ function create_model(
     constraints,
     profiles,
     representative_periods,
-    years,
-    timeframe,
     model_parameters;
     write_lp_file = false,
     enable_names = true,
@@ -77,9 +73,7 @@ function create_model(
         constraints,
         model,
         expression_workspace,
-        representative_periods,
-        timeframe,
-        graph,
+        profiles,
     )
 
     ## Expressions for multi-year investment
