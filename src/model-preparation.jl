@@ -411,13 +411,6 @@ function add_expression_terms_over_clustered_year_constraints!(
         )
     end
 
-    # O objetivo eh descobrir quais variaveis flow tem interseccao com a restricao.
-    # A restricao esta definida em period_blocks, entao eu preciso
-    # descobrir quais rep_periods estao nesses period blocks.
-    # A diferenca com a expressao de rep_period eh que aqui nao existe um group em comum entre cons e var, entao eh preciso decidir se fazemos dois traversals em dois grupos diferentes ou se tentamos algum join.
-    # O problem do join eh que ele vai ser ineficiente, i.e., tem que acontecer o join antes do group by.
-    # Por conta disso, vamos tentar encontrar uma solucao inicial que use dois grupos.
-
     # The flow_per_period_workspace holds the list of flows that will be aggregated in a given period
     maximum_num_periods = only(
         row[1] for row in DuckDB.query(connection, "SELECT MAX(period) FROM rep_periods_mapping")
@@ -452,48 +445,44 @@ function add_expression_terms_over_clustered_year_constraints!(
             connection,
             "CREATE OR REPLACE TEMP TABLE t_groups AS
             SELECT
-                var.asset,
-                var.year,
+                cons.asset,
+                cons.year,
                 ANY_VALUE(cons.index) AS cons_indices,
                 ANY_VALUE(cons.period_block_start) AS cons_period_block_start_vec,
                 ANY_VALUE(cons.period_block_end) AS cons_period_block_end_vec,
-                ARRAY_AGG(var.index ORDER BY var.rep_period) AS var_indices,
-                ARRAY_AGG(var.time_block_start ORDER BY var.rep_period) AS var_time_block_start_vec,
-                ARRAY_AGG(var.time_block_end ORDER BY var.rep_period) AS var_time_block_end_vec,
-                ARRAY_AGG(var.efficiency ORDER BY var.rep_period) AS var_efficiencies,
+                ARRAY_AGG(COALESCE(var.index, []) ORDER BY var.rep_period) AS var_indices,
+                ARRAY_AGG(COALESCE(var.time_block_start, []) ORDER BY var.rep_period) AS var_time_block_start_vec,
+                ARRAY_AGG(COALESCE(var.time_block_end, []) ORDER BY var.rep_period) AS var_time_block_end_vec,
+                ARRAY_AGG(COALESCE(var.efficiency, []) ORDER BY var.rep_period) AS var_efficiencies,
                 ARRAY_AGG(var.rep_period ORDER BY var.rep_period) AS var_rep_periods,
                 ARRAY_AGG(rpdata.num_timesteps ORDER BY var.rep_period) AS num_timesteps,
                 ARRAY_AGG(asset_milestone.storage_inflows ORDER BY var.rep_period) AS storage_inflows,
-                ARRAY_AGG(rpmap.periods ORDER BY var.rep_period) AS var_periods,
-                ARRAY_AGG(rpmap.weights ORDER BY var.rep_period) AS var_weights,
+                ARRAY_AGG(COALESCE(rpmap.periods, []) ORDER BY var.rep_period) AS var_periods,
+                ARRAY_AGG(COALESCE(rpmap.weights, []) ORDER BY var.rep_period) AS var_weights,
                 ANY_VALUE(profiles.profile_name) AS profile_name,
             FROM $grouped_cons_table_name AS cons
             LEFT JOIN $grouped_var_table_name AS var
                 ON cons.asset = var.asset
                 AND cons.year = var.year
             LEFT JOIN $grouped_rpmap_over_rp_table_name AS rpmap
-                ON rpmap.year = var.year
+                ON rpmap.year = cons.year
                 AND rpmap.rep_period = var.rep_period
             LEFT JOIN rep_periods_data AS rpdata
-                ON rpdata.year = var.year
+                ON rpdata.year = cons.year
                 AND rpdata.rep_period = var.rep_period
             LEFT JOIN asset_milestone
-                ON asset_milestone.asset = var.asset
-                AND asset_milestone.milestone_year = var.year
-            LEFT JOIN assets_profiles AS profiles
+                ON asset_milestone.asset = cons.asset
+                AND asset_milestone.milestone_year = cons.year
+            LEFT OUTER JOIN assets_profiles AS profiles
                 ON cons.asset = profiles.asset
                 AND cons.year = profiles.commission_year
                 AND profile_type = 'inflows'
-            GROUP BY var.asset, var.year;
+            GROUP BY cons.asset, cons.year;
             FROM t_groups
             ",
         )
             empty!.(flows_per_period_workspace)
             inflows_per_period .= 0.0
-
-            # @info case.expr_key
-            # @info group_row.asset, group_row.year
-            # @info group_row.cons_indices
 
             for (
                 rp,
