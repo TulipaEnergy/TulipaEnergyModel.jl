@@ -378,7 +378,6 @@ function add_expression_terms_over_clustered_year_constraints!(
 
     # TODO: The interaction between year and timeframe is not clear yet, so this is probably wrong
     #   At this moment, that relation is ignored (we don't even look at df_inter.year)
-
     grouped_cons_table_name = "t_grouped_$(cons.table_name)"
     if !_check_if_table_exists(connection, grouped_cons_table_name)
         DuckDB.query(
@@ -394,28 +393,6 @@ function add_expression_terms_over_clustered_year_constraints!(
             GROUP BY cons.asset, cons.year
             ",
         )
-    end
-
-    for case in cases
-        from_or_to = case.asset_match
-        grouped_var_table_name = "t_grouped_$(flow.table_name)_match_on_$(from_or_to)"
-        if !_check_if_table_exists(connection, grouped_var_table_name)
-            DuckDB.query(
-                connection,
-                "CREATE TEMP TABLE $grouped_var_table_name AS
-                SELECT
-                    var.$(from_or_to) AS asset,
-                    var.year,
-                    var.rep_period,
-                    ARRAY_AGG(var.index ORDER BY var.index) AS index,
-                    ARRAY_AGG(var.time_block_start ORDER BY var.index) AS time_block_start,
-                    ARRAY_AGG(var.time_block_end ORDER BY var.index) AS time_block_end,
-                    ARRAY_AGG(var.efficiency ORDER BY var.index) AS efficiency,
-                FROM $(flow.table_name) AS var
-                GROUP BY var.$(from_or_to), var.year, var.rep_period
-                ",
-            )
-        end
     end
 
     grouped_rpmap_over_rp_table_name = "t_grouped_rpmap_over_rp"
@@ -448,23 +425,45 @@ function add_expression_terms_over_clustered_year_constraints!(
     flow_per_period_workspace = [Dict{Int,Float64}() for _ in 1:maximum_num_periods]
 
     for case in cases
+        from_or_to = case.asset_match
+        grouped_var_table_name = "t_grouped_$(flow.table_name)_match_on_$(from_or_to)"
+        if !_check_if_table_exists(connection, grouped_var_table_name)
+            DuckDB.query(
+                connection,
+                "CREATE TEMP TABLE $grouped_var_table_name AS
+                SELECT
+                    var.$(from_or_to) AS asset,
+                    var.year,
+                    var.rep_period,
+                    ARRAY_AGG(var.index ORDER BY var.index) AS index,
+                    ARRAY_AGG(var.time_block_start ORDER BY var.index) AS time_block_start,
+                    ARRAY_AGG(var.time_block_end ORDER BY var.index) AS time_block_end,
+                    ARRAY_AGG(var.efficiency ORDER BY var.index) AS efficiency,
+                FROM $(flow.table_name) AS var
+                GROUP BY var.$(from_or_to), var.year, var.rep_period
+                ",
+            )
+        end
+
         for group_row in DuckDB.query(
             connection,
-            "SELECT
+            "CREATE OR REPLACE TEMP TABLE t_groups AS
+            SELECT
                 var.asset,
                 var.year,
                 ANY_VALUE(cons.index) AS cons_indices,
                 ANY_VALUE(cons.period_block_start) AS cons_period_block_start_vec,
                 ANY_VALUE(cons.period_block_end) AS cons_period_block_end_vec,
-                FLATTEN(ARRAY_AGG(var.index)) AS var_indices,
-                FLATTEN(ARRAY_AGG(var.time_block_start)) AS var_time_block_start_vec,
-                FLATTEN(ARRAY_AGG(var.time_block_end)) AS var_time_block_end_vec,
-                FLATTEN(ARRAY_AGG(var.efficiency)) AS var_efficiencies,
-                FLATTEN(ARRAY_AGG(rpmap.periods)) AS var_periods,
-                FLATTEN(ARRAY_AGG(rpmap.weights)) AS var_weights,
+                ARRAY_AGG(var.index ORDER BY var.rep_period) AS var_indices,
+                ARRAY_AGG(var.time_block_start ORDER BY var.rep_period) AS var_time_block_start_vec,
+                ARRAY_AGG(var.time_block_end ORDER BY var.rep_period) AS var_time_block_end_vec,
+                ARRAY_AGG(var.efficiency ORDER BY var.rep_period) AS var_efficiencies,
+                ARRAY_AGG(var.rep_period ORDER BY var.rep_period) AS var_rep_periods,
+                ARRAY_AGG(rpmap.periods ORDER BY var.rep_period) AS var_periods,
+                ARRAY_AGG(rpmap.weights ORDER BY var.rep_period) AS var_weights,
                 ANY_VALUE(profiles.profile_name) AS profile_name,
             FROM $grouped_cons_table_name AS cons
-            LEFT JOIN t_grouped_$(flow.table_name)_match_on_from AS var
+            LEFT JOIN $grouped_var_table_name AS var
                 ON cons.asset = var.asset
                 AND cons.year = var.year
             LEFT JOIN $grouped_rpmap_over_rp_table_name AS rpmap
@@ -474,39 +473,67 @@ function add_expression_terms_over_clustered_year_constraints!(
                 ON cons.asset = profiles.asset
                 AND cons.year = profiles.commission_year
                 AND profile_type = 'inflows'
-            GROUP BY var.asset, var.year
+            GROUP BY var.asset, var.year;
+            FROM t_groups
             ",
         )
             empty!.(flow_per_period_workspace)
 
             aggregate_profile_per_group_and_rp = Dict()
 
-            # Loop over each variable in the group and accumulate them
-            group_flow_accumulation = Dict{Int,Float64}()
-            for (var_idx, time_block_start, time_block_end, var_efficiency) in zip(
+            for (
+                _, # unused rp for now
+                var_indices,
+                var_time_block_start_vec,
+                var_time_block_end_vec,
+                var_efficiencies,
+                var_periods,
+                var_weights,
+            ) in zip(
+                group_row.var_rep_periods,
                 group_row.var_indices,
                 group_row.var_time_block_start_vec,
                 group_row.var_time_block_end_vec,
                 group_row.var_efficiencies,
+                group_row.var_periods,
+                group_row.var_weights,
             )
-                coefficient = (time_block_end - time_block_start + 1)
-                if is_storage_level
-                    if case.expr_key == :outgoing
-                        coefficient /= var_efficiency
-                    else
-                        coefficient *= var_efficiency
+
+                # Loop over each variable in the (group,rp) and accumulate them
+                group_flow_accumulation = Dict{Int,Float64}()
+
+                for (var_idx, time_block_start, time_block_end, var_efficiency) in zip(
+                    var_indices,
+                    var_time_block_start_vec,
+                    var_time_block_end_vec,
+                    var_efficiencies,
+                )
+                    coefficient = (time_block_end - time_block_start + 1)
+                    if is_storage_level
+                        if case.expr_key == :outgoing
+                            coefficient /= var_efficiency
+                        else
+                            coefficient *= var_efficiency
+                        end
+                    end
+                    group_flow_accumulation[var_idx] = coefficient
+                end
+
+                # Loop over each period in the group and add the accumulated flows to the workspace
+                for (period, weight) in zip(var_periods, var_weights)
+                    if weight == 0
+                        continue
+                    end
+                    # Note to future. Using `mergewith!` did not work because the
+                    # `combine` function is only applied for clashing entries, i.e., the weight is not applied uniformly to all entries.
+                    # It passed for most cases, since `weight = 1` in most cases.
+                    for (var_idx, var_coef) in group_flow_accumulation
+                        if !haskey(flow_per_period_workspace[period], var_idx)
+                            flow_per_period_workspace[period][var_idx] = 0.0
+                        end
+                        flow_per_period_workspace[period][var_idx] += var_coef * weight
                     end
                 end
-                group_flow_accumulation[var_idx] = coefficient
-            end
-
-            # Loop over each period in the group and add the accumulated flows to the workspace
-            for (period, weight) in zip(group_row.var_periods, group_row.var_weights)
-                if weight == 0
-                    continue
-                end
-                combine(existing, new) = existing + weight * new
-                mergewith!(combine, flow_per_period_workspace[period], group_flow_accumulation)
             end
 
             # Loop over each constraint and aggregate from the workspace into the expression
