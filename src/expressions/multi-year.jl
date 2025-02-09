@@ -22,8 +22,10 @@ function create_multi_year_expressions!(connection, model, variables, expression
     #
     #   accumulated_units[a, my, cy] =
     #       initial_units[a, my, cy] +
-    #       investment_units[a, cy] -
+    #       investment_units[a, cy]* -
     #       ∑_{past_my: past_my ≤ my} assets_decommission[a, past_my, cy]
+    #
+    # The investment_units[a, cy] are only added if cy + technical_lifetime - 1 ≥ milestone_year
     #
     # Assumption:
     # - asset_both exists only for (a,my,cy) where technical lifetime was already taken into account
@@ -40,7 +42,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
             :assets,
             JuMP.AffExpr[
                 if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
-                    @expression(model, row.initial_units)
+                    @expression(model, 0.0) # TODO: Should this be row.initial_units instead?
                 elseif ismissing(row.var_investment_index)
                     @expression(
                         model,
@@ -52,7 +54,8 @@ function create_multi_year_expressions!(connection, model, variables, expression
                 else
                     @expression(
                         model,
-                        row.initial_units + var_inv[row.var_investment_index] -
+                        # TODO: Should we add row.initial_units here?
+                        var_inv[row.var_investment_index] -
                         sum(var_dec[idx] for idx in row.var_decommission_indices)
                     )
                 end for row in indices
@@ -71,7 +74,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
             JuMP.AffExpr[
                 if ismissing(row.var_energy_decommission_indices) &&
                    ismissing(row.var_energy_investment_index)
-                    @expression(model, row.initial_storage_units)
+                    @expression(model, 0.0) # TODO: row.initial_storage_units)
                 elseif ismissing(row.var_energy_investment_index)
                     @expression(
                         model,
@@ -105,7 +108,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
             :export,
             JuMP.AffExpr[
                 if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
-                    @expression(model, row.initial_export_units)
+                    @expression(model, 0.0) # TODO: row.initial_export_units)
                 elseif ismissing(row.var_investment_index)
                     @expression(
                         model,
@@ -132,7 +135,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
             :import,
             JuMP.AffExpr[
                 if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
-                    @expression(model, row.initial_import_units)
+                    @expression(model, 0.0) # TODO: row.initial_import_units)
                 elseif ismissing(row.var_investment_index)
                     @expression(
                         model,
@@ -169,8 +172,14 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             asset_both.commission_year AS commission_year,
             ANY_VALUE(asset_both.initial_units) AS initial_units,
             ARRAY_AGG(var_dec.index) FILTER (var_dec.index IS NOT NULL) AS var_decommission_indices,
-            ANY_VALUE(var_inv.index) AS var_investment_index,
+            IF (
+                asset_both.commission_year + ANY_VALUE(asset.economic_lifetime) - 1 >= asset_both.milestone_year,
+                ANY_VALUE(var_inv.index),
+                NULL
+            ) AS var_investment_index,
         FROM asset_both
+        LEFT JOIN asset
+            ON asset_both.asset = asset.asset
         LEFT JOIN var_assets_decommission AS var_dec
             ON asset_both.asset = var_dec.asset
             AND asset_both.commission_year = var_dec.commission_year

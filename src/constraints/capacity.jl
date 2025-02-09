@@ -22,13 +22,21 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     @expression(
                         model,
                         row.capacity * sum(
-                            _profile_aggregate(
-                                profiles.rep_period,
-                                row.time_block_start:row.time_block_end,
-                                (acc_profile_name, row.year, row.rep_period),
-                                Statistics.mean,
-                                1.0,
-                            ) * expr_acc[acc_index] for (acc_profile_name, acc_index) in
+                            begin
+                                availability_agg = _profile_aggregate(
+                                    profiles.rep_period,
+                                    (acc_profile_name, row.year, row.rep_period),
+                                    row.time_block_start:row.time_block_end,
+                                    Statistics.mean,
+                                    1.0,
+                                )
+                                # if row.index == 505
+                                #     @info "DEBUGGING"
+                                #     @info row
+                                #     @info availability_agg
+                                # end
+                                availability_agg * expr_acc[acc_index]
+                            end for (acc_profile_name, acc_index) in
                             zip(row.acc_profile_name, row.acc_indices)
                         )
                     )
@@ -352,7 +360,7 @@ function _append_capacity_data_to_indices(connection, table_name)
             AND cons.year = assets_profiles.commission_year
             AND assets_profiles.profile_type = 'availability'
         LEFT OUTER JOIN assets_profiles AS acc_profile
-            ON expr_acc.asset = acc_profile.asset
+            ON cons.asset = acc_profile.asset
             AND expr_acc.commission_year = acc_profile.commission_year
             AND assets_profiles.profile_type = 'availability'
         GROUP BY cons.index
