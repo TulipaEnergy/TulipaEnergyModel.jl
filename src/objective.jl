@@ -51,19 +51,10 @@ function add_objective!(
     assets_fixed_cost = @expression(
         model,
         sum(
-            begin
-                # if row.index == 14
-                #     @show acc_unit
-                #     @show weight_for_operation_discounts[row.milestone_year]
-                #     @show graph[row.asset].fixed_cost[row.milestone_year]
-                #     @show graph[row.asset].capacity
-                # end
-
-                weight_for_operation_discounts[row.milestone_year] *
-                graph[row.asset].fixed_cost[row.milestone_year] *
-                graph[row.asset].capacity *
-                acc_unit
-            end for (row, acc_unit) in zip(
+            weight_for_operation_discounts[row.milestone_year] *
+            graph[row.asset].fixed_cost[row.milestone_year] *
+            graph[row.asset].capacity *
+            acc_unit for (row, acc_unit) in zip(
                 eachrow(expr_accumulated_asset_units.indices),
                 expr_accumulated_asset_units.expressions[:assets],
             )

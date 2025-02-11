@@ -42,7 +42,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
             :assets,
             JuMP.AffExpr[
                 if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
-                    @expression(model, 0.0) # TODO: Should this be row.initial_units instead?
+                    @expression(model, row.initial_units)
                 elseif ismissing(row.var_investment_index)
                     @expression(
                         model,
@@ -54,8 +54,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
                 else
                     @expression(
                         model,
-                        # TODO: Should we add row.initial_units here?
-                        var_inv[row.var_investment_index] -
+                        row.initial_units + var_inv[row.var_investment_index] -
                         sum(var_dec[idx] for idx in row.var_decommission_indices)
                     )
                 end for row in indices
@@ -74,7 +73,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
             JuMP.AffExpr[
                 if ismissing(row.var_energy_decommission_indices) &&
                    ismissing(row.var_energy_investment_index)
-                    @expression(model, 0.0) # TODO: row.initial_storage_units)
+                    @expression(model, row.initial_storage_units)
                 elseif ismissing(row.var_energy_investment_index)
                     @expression(
                         model,
@@ -108,7 +107,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
             :export,
             JuMP.AffExpr[
                 if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
-                    @expression(model, 0.0) # TODO: row.initial_export_units)
+                    @expression(model, row.initial_export_units)
                 elseif ismissing(row.var_investment_index)
                     @expression(
                         model,
@@ -135,7 +134,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
             :import,
             JuMP.AffExpr[
                 if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
-                    @expression(model, 0.0) # TODO: row.initial_import_units)
+                    @expression(model, row.initial_import_units)
                 elseif ismissing(row.var_investment_index)
                     @expression(
                         model,
@@ -173,7 +172,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             ANY_VALUE(asset_both.initial_units) AS initial_units,
             ARRAY_AGG(var_dec.index) FILTER (var_dec.index IS NOT NULL) AS var_decommission_indices,
             IF (
-                asset_both.commission_year + ANY_VALUE(asset.economic_lifetime) - 1 >= asset_both.milestone_year,
+                asset_both.commission_year + ANY_VALUE(asset.technical_lifetime) - 1 >= asset_both.milestone_year,
                 ANY_VALUE(var_inv.index),
                 NULL
             ) AS var_investment_index,

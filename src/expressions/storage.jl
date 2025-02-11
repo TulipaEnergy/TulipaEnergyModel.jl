@@ -49,9 +49,17 @@ function add_storage_expressions!(connection, model, expressions)
                     end
                     @expression(
                         model,
+                        # We remove row.accumulated_initial_storage_units from the sum of the expression
+                        # because it is added separately with a different coefficient (capacity_for_initial).
+                        # We need to keep the accumulated_initial_storage_units
+                        # inside the expression for the general expression
+                        # (file src/expressions/multi-year.jl) to be used in
+                        # the fixed cost in the objective function
                         capacity_for_initial * row.accumulated_initial_storage_units +
-                        capacity_for_variation *
-                        sum(expr_acc[acc_index] for acc_index in row.acc_indices)
+                        capacity_for_variation * (
+                            sum(expr_acc[acc_index] for acc_index in row.acc_indices) -
+                            row.accumulated_initial_storage_units
+                        )
                     )
                 end for row in indices
             ],
