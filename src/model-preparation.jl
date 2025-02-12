@@ -3,7 +3,6 @@ export create_sets, prepare_profiles_structure
 
 """
     add_expression_terms_rep_period_constraints!(df_cons,
-using Base: Workqueues
                                                df_flows,
                                                workspace;
                                                use_highest_resolution = true,
@@ -416,14 +415,9 @@ function add_expression_terms_over_clustered_year_constraints!(
         row[1] for row in DuckDB.query(connection, "SELECT MAX(period) FROM rep_periods_mapping")
     )::Int32
     flows_per_period_workspace = [Dict{Int,Float64}() for _ in 1:maximum_num_periods]
-    # inflows_per_period = zeros(maximum_num_periods)
-    # TODO: The computation of inflows_profile_aggregation is done separately using DuckDB alone at the end of this file.
-    # The code to perform the computation together with the computation of the expressions is commented out (search inflows).
-    # It was not working, and my last guess is that it related to missing flows.
 
     for case in cases
         from_or_to = case.asset_match
-        # update_inflows = case.expr_key == :incoming
 
         grouped_var_table_name = "t_grouped_$(flow.table_name)_match_on_$(from_or_to)"
         if !_check_if_table_exists(connection, grouped_var_table_name)
@@ -462,7 +456,6 @@ function add_expression_terms_over_clustered_year_constraints!(
                 ARRAY_AGG(asset_milestone.storage_inflows ORDER BY var.rep_period) AS storage_inflows,
                 ARRAY_AGG(COALESCE(rpmap.periods, []) ORDER BY var.rep_period) AS var_periods,
                 ARRAY_AGG(COALESCE(rpmap.weights, []) ORDER BY var.rep_period) AS var_weights,
-                ANY_VALUE(profiles.profile_name) AS profile_name,
             FROM $grouped_cons_table_name AS cons
             LEFT JOIN $grouped_var_table_name AS var
                 ON cons.asset = var.asset
@@ -476,18 +469,11 @@ function add_expression_terms_over_clustered_year_constraints!(
             LEFT JOIN asset_milestone
                 ON asset_milestone.asset = cons.asset
                 AND asset_milestone.milestone_year = cons.year
-            LEFT OUTER JOIN assets_profiles AS profiles
-                ON cons.asset = profiles.asset
-                AND cons.year = profiles.commission_year
-                AND profile_type = 'inflows'
             GROUP BY cons.asset, cons.year;
             FROM t_groups
             ",
         )
             empty!.(flows_per_period_workspace)
-            # inflows_per_period .= 0.0
-
-            # Problem! The flow might be not present but the asset should still be computed
 
             for (
                 rp,
@@ -545,20 +531,6 @@ function add_expression_terms_over_clustered_year_constraints!(
                         end
                         flows_per_period_workspace[period][var_idx] += var_coef * weight
                     end
-
-                    # Here we should aggregate over each period
-                    # if update_inflows
-                    #     inflows_per_period[period] +=
-                    #         _profile_aggregate(
-                    #             profiles.rep_period,
-                    #             (group_row.profile_name, group_row.year, rp),
-                    #             1:num_timesteps,
-                    #             sum,
-                    #             0.0,
-                    #         ) *
-                    #         storage_inflow *
-                    #         weight
-                    # end
                 end
             end
 
@@ -580,11 +552,6 @@ function add_expression_terms_over_clustered_year_constraints!(
                         (var_idx, coefficient) in workspace_aggregation
                     )
                 end
-
-                # if update_inflows
-                #     cons.coefficients[:inflows_profile_aggregation][cons_idx] +=
-                #         sum(inflows_per_period[period_block])
-                # end
             end
         end
     end
