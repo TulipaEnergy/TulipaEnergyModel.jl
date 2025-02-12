@@ -30,11 +30,6 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                                     Statistics.mean,
                                     1.0,
                                 )
-                                # if row.index == 505
-                                #     @info "DEBUGGING"
-                                #     @info row
-                                #     @info availability_agg
-                                # end
                                 availability_agg * expr_acc[acc_index]
                             end for (acc_profile_name, acc_index) in
                             zip(row.acc_profile_name, row.acc_indices)
