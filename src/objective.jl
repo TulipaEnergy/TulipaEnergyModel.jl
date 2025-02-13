@@ -9,7 +9,7 @@ function add_objective!(
     model_parameters,
 )
     assets_investment = variables[:assets_investment]
-    assets_investment_energy = variables[:assets_investment_energy].lookup
+    assets_investment_energy = variables[:assets_investment_energy]
     flows_investment = variables[:flows_investment].lookup
 
     expr_accumulated_asset_units = expressions[:accumulated_asset_units]
@@ -65,7 +65,9 @@ function add_objective!(
         connection,
         "SELECT
             var.index,
-            t_objective.weight_for_asset_investment_discount * t_objective.investment_cost * t_objective.capacity AS cost,
+            t_objective.weight_for_asset_investment_discount
+                * t_objective.investment_cost
+                * t_objective.capacity AS cost,
         FROM var_assets_investment AS var
         LEFT JOIN t_objective
             ON var.asset = t_objective.asset
@@ -89,9 +91,9 @@ function add_objective!(
             expr.index,
             expr.asset,
             expr.milestone_year,
-            t_objective.years_until_next_milestone_year AS years_between,
-            t_objective.weight_for_operation_discounts AS w_op,
-            t_objective.weight_for_operation_discounts * t_objective.fixed_cost * t_objective.capacity AS cost,
+            t_objective.weight_for_operation_discounts
+                * t_objective.fixed_cost
+                * t_objective.capacity AS cost,
         FROM expr_accumulated_asset_units AS expr
         LEFT JOIN t_objective
             ON expr.asset = t_objective.asset
@@ -109,26 +111,53 @@ function add_objective!(
         )
     )
 
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            var.index,
+            t_objective.weight_for_asset_investment_discount
+                * t_objective.investment_cost_storage_energy
+                * t_objective.capacity_storage_energy AS cost,
+        FROM var_assets_investment_energy AS var
+        LEFT JOIN t_objective
+            ON var.asset = t_objective.asset
+            AND var.milestone_year = t_objective.milestone_year
+        ORDER BY
+            var.index
+        ",
+    )
+
     storage_assets_energy_investment_cost = @expression(
         model,
         sum(
-            weight_for_assets_investment_discounts[(y, a)] *
-            graph[a].investment_cost_storage_energy[y] *
-            graph[a].capacity_storage_energy *
-            assets_investment_energy[y, a] for y in sets.Y for a in sets.Ase[y] ∩ sets.Ai[y]
+            row.cost * assets_investment_energy for
+            (row, assets_investment_energy) in zip(indices, assets_investment_energy.container)
         )
+    )
+
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            expr.index,
+            expr.asset,
+            expr.milestone_year,
+            t_objective.weight_for_operation_discounts
+                * t_objective.fixed_cost_storage_energy
+                * t_objective.capacity_storage_energy AS cost,
+        FROM expr_accumulated_energy_units AS expr
+        LEFT JOIN t_objective
+            ON expr.asset = t_objective.asset
+            AND expr.milestone_year = t_objective.milestone_year
+        ORDER BY
+            expr.index
+        ",
     )
 
     storage_assets_energy_fixed_cost = @expression(
         model,
         sum(
-            weight_for_operation_discounts[row.milestone_year] *
-            graph[row.asset].fixed_cost_storage_energy[row.milestone_year] *
-            graph[row.asset].capacity_storage_energy *
-            acc_unit for (row, acc_unit) in zip(
-                eachrow(expr_accumulated_energy_units.indices),
-                expr_accumulated_energy_units.expressions[:energy],
-            )
+            row.cost * acc_unit for
+            (row, acc_unit) in zip(indices, expr_accumulated_energy_units.expressions[:energy])
         )
     )
 
@@ -222,6 +251,9 @@ function _create_objective_auxiliary_table(connection, constants)
             asset_commission.investment_cost,
             asset_commission.fixed_cost,
             asset.capacity,
+            asset_commission.investment_cost_storage_energy,
+            asset_commission.fixed_cost_storage_energy,
+            asset.capacity_storage_energy,
             -- computed
             asset.discount_rate / (
                 (1 + asset.discount_rate) *
