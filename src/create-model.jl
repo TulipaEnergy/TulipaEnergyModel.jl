@@ -95,9 +95,6 @@ function create_model(
         model,
         variables,
         expressions,
-        graph,
-        representative_periods,
-        sets,
         model_parameters,
     )
 

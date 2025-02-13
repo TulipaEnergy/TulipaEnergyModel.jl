@@ -1,13 +1,4 @@
-function add_objective!(
-    connection,
-    model,
-    variables,
-    expressions,
-    graph,
-    representative_periods,
-    sets,
-    model_parameters,
-)
+function add_objective!(connection, model, variables, expressions, model_parameters)
     assets_investment = variables[:assets_investment]
     assets_investment_energy = variables[:assets_investment_energy]
     flows_investment = variables[:flows_investment]
@@ -15,40 +6,6 @@ function add_objective!(
     expr_accumulated_asset_units = expressions[:accumulated_asset_units]
     expr_accumulated_energy_units = expressions[:accumulated_energy_units]
     expr_accumulated_flow_units = expressions[:accumulated_flow_units]
-
-    # Create a dict of weights for assets investment discounts
-    weight_for_assets_investment_discounts =
-        calculate_weight_for_investment_discounts(graph, sets.Y, sets.Ai, sets.A, model_parameters)
-
-    # Create a dict of weights for flows investment discounts
-    weight_for_flows_investment_discounts =
-        calculate_weight_for_investment_discounts(graph, sets.Y, sets.Fi, sets.Ft, model_parameters)
-
-    # Create a dict of intervals for milestone years
-    intervals_for_milestone_years = create_intervals_for_years(sets.Y)
-
-    # Create a dict of operation discounts only for milestone years
-    operation_discounts_for_milestone_years = Dict(
-        y => 1 / (1 + model_parameters.discount_rate)^(y - model_parameters.discount_year) for
-        y in sets.Y
-    )
-
-    # Create a dict of operation discounts for milestone years including in-between years
-    weight_for_operation_discounts = Dict(
-        y => operation_discounts_for_milestone_years[y] * intervals_for_milestone_years[y] for
-        y in sets.Y
-    )
-
-    my_sort(D) = sort(D; by = key -> (key[2], key[1]))
-
-    # @info "weight for assets" my_sort(weight_for_assets_investment_discounts)
-    # @info "intervals" sort(intervals_for_milestone_years)
-    # @info "op discount" sort(operation_discounts_for_milestone_years)
-    # @info "weight for op" sort(weight_for_operation_discounts)
-
-    # @show my_sort(weight_for_flows_investment_discounts)
-
-    # @show assets_investment_cost
 
     social_rate = model_parameters.discount_rate
     discount_year = model_parameters.discount_year
@@ -67,7 +24,8 @@ function add_objective!(
             var.index,
             t_objective_assets.weight_for_asset_investment_discount
                 * t_objective_assets.investment_cost
-                * t_objective_assets.capacity AS cost,
+                * t_objective_assets.capacity
+                AS cost,
         FROM var_assets_investment AS var
         LEFT JOIN t_objective_assets
             ON var.asset = t_objective_assets.asset
@@ -91,7 +49,8 @@ function add_objective!(
             expr.index,
             t_objective_assets.weight_for_operation_discounts
                 * t_objective_assets.fixed_cost
-                * t_objective_assets.capacity AS cost,
+                * t_objective_assets.capacity
+                AS cost,
         FROM expr_accumulated_asset_units AS expr
         LEFT JOIN t_objective_assets
             ON expr.asset = t_objective_assets.asset
@@ -115,7 +74,8 @@ function add_objective!(
             var.index,
             t_objective_assets.weight_for_asset_investment_discount
                 * t_objective_assets.investment_cost_storage_energy
-                * t_objective_assets.capacity_storage_energy AS cost,
+                * t_objective_assets.capacity_storage_energy
+                AS cost,
         FROM var_assets_investment_energy AS var
         LEFT JOIN t_objective_assets
             ON var.asset = t_objective_assets.asset
@@ -139,7 +99,8 @@ function add_objective!(
             expr.index,
             t_objective_assets.weight_for_operation_discounts
                 * t_objective_assets.fixed_cost_storage_energy
-                * t_objective_assets.capacity_storage_energy AS cost,
+                * t_objective_assets.capacity_storage_energy
+                AS cost,
         FROM expr_accumulated_energy_units AS expr
         LEFT JOIN t_objective_assets
             ON expr.asset = t_objective_assets.asset
@@ -163,7 +124,8 @@ function add_objective!(
             var.index,
             t_objective_flows.weight_for_flow_investment_discount
                 * t_objective_flows.investment_cost
-                * t_objective_flows.capacity AS cost,
+                * t_objective_flows.capacity
+                AS cost,
         FROM var_flows_investment AS var
         LEFT JOIN t_objective_flows
             ON var.from_asset = t_objective_flows.from_asset
@@ -188,7 +150,8 @@ function add_objective!(
             expr.index,
             t_objective_flows.weight_for_operation_discounts
                 * t_objective_flows.fixed_cost / 2
-                * t_objective_flows.capacity AS cost,
+                * t_objective_flows.capacity
+                AS cost,
         FROM expr_accumulated_flow_units AS expr
         LEFT JOIN t_objective_flows
             ON expr.from_asset = t_objective_flows.from_asset
@@ -211,36 +174,79 @@ function add_objective!(
         )
     )
 
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            var.index,
+            t_objective_flows.weight_for_operation_discounts
+                * rpinfo.weight_sum
+                * rpinfo.resolution
+                * (var.time_block_end - var.time_block_start + 1)
+                * t_objective_flows.variable_cost
+                AS cost,
+        FROM var_flow AS var
+        LEFT JOIN t_objective_flows
+            ON var.from = t_objective_flows.from_asset
+            AND var.to = t_objective_flows.to_asset
+            AND var.year = t_objective_flows.milestone_year
+        LEFT JOIN (
+            SELECT
+                rpmap.year,
+                rpmap.rep_period,
+                SUM(weight) AS weight_sum,
+                ANY_VALUE(rpdata.resolution) AS resolution
+            FROM rep_periods_mapping AS rpmap
+            LEFT JOIN rep_periods_data AS rpdata
+                ON rpmap.year=rpdata.year AND rpmap.rep_period=rpdata.rep_period
+            GROUP BY rpmap.year, rpmap.rep_period
+        ) AS rpinfo
+            ON var.year = rpinfo.year
+            AND var.rep_period = rpinfo.rep_period
+        ORDER BY var.index
+        ",
+    )
+
     flows_variable_cost = @expression(
         model,
-        sum(
-            weight_for_operation_discounts[row.year] *
-            representative_periods[row.year][row.rep_period].weight *
-            duration(
-                row.time_block_start:row.time_block_end,
-                row.rep_period,
-                representative_periods[row.year],
-            ) *
-            graph[row.from, row.to].variable_cost[row.year] *
-            flow for
-            (flow, row) in zip(variables[:flow].container, eachrow(variables[:flow].indices))
-        )
+        sum(row.cost * flow for (row, flow) in zip(indices, variables[:flow].container))
+    )
+
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            var.index,
+            t_objective_assets.weight_for_operation_discounts
+                * rpinfo.weight_sum
+                * rpinfo.resolution
+                * (var.time_block_end - var.time_block_start + 1)
+                * t_objective_assets.units_on_cost
+                AS cost,
+        FROM var_units_on AS var
+        LEFT JOIN t_objective_assets
+            ON var.asset = t_objective_assets.asset
+            AND var.year = t_objective_assets.milestone_year
+        LEFT JOIN (
+            SELECT
+                rpmap.year,
+                rpmap.rep_period,
+                SUM(weight) AS weight_sum,
+                ANY_VALUE(rpdata.resolution) AS resolution
+            FROM rep_periods_mapping AS rpmap
+            LEFT JOIN rep_periods_data AS rpdata
+                ON rpmap.year=rpdata.year AND rpmap.rep_period=rpdata.rep_period
+            GROUP BY rpmap.year, rpmap.rep_period
+        ) AS rpinfo
+            ON var.year = rpinfo.year
+            AND var.rep_period = rpinfo.rep_period
+        WHERE t_objective_assets.units_on_cost IS NOT NULL
+        ORDER BY var.index
+        ",
     )
 
     units_on_cost = @expression(
         model,
         sum(
-            weight_for_operation_discounts[row.year] *
-            representative_periods[row.year][row.rep_period].weight *
-            duration(
-                row.time_block_start:row.time_block_end,
-                row.rep_period,
-                representative_periods[row.year],
-            ) *
-            graph[row.asset].units_on_cost[row.year] *
-            units_on for (units_on, row) in
-            zip(variables[:units_on].container, eachrow(variables[:units_on].indices)) if
-            !ismissing(graph[row.asset].units_on_cost[row.year])
+            row.cost * units_on for (row, units_on) in zip(indices, variables[:units_on].container)
         )
     )
 
@@ -274,6 +280,7 @@ function _create_objective_auxiliary_table(connection, constants)
             asset_commission.investment_cost_storage_energy,
             asset_commission.fixed_cost_storage_energy,
             asset.capacity_storage_energy,
+            asset_milestone.units_on_cost,
             -- computed
             asset.discount_rate / (
                 (1 + asset.discount_rate) *
@@ -316,6 +323,7 @@ function _create_objective_auxiliary_table(connection, constants)
             flow_commission.investment_cost,
             flow_commission.fixed_cost,
             flow.capacity,
+            flow_milestone.variable_cost,
             -- computed
             flow.discount_rate / (
                 (1 + flow.discount_rate) *
