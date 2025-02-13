@@ -10,7 +10,7 @@ function add_objective!(
 )
     assets_investment = variables[:assets_investment]
     assets_investment_energy = variables[:assets_investment_energy]
-    flows_investment = variables[:flows_investment].lookup
+    flows_investment = variables[:flows_investment]
 
     expr_accumulated_asset_units = expressions[:accumulated_asset_units]
     expr_accumulated_energy_units = expressions[:accumulated_energy_units]
@@ -65,13 +65,13 @@ function add_objective!(
         connection,
         "SELECT
             var.index,
-            t_objective.weight_for_asset_investment_discount
-                * t_objective.investment_cost
-                * t_objective.capacity AS cost,
+            t_objective_assets.weight_for_asset_investment_discount
+                * t_objective_assets.investment_cost
+                * t_objective_assets.capacity AS cost,
         FROM var_assets_investment AS var
-        LEFT JOIN t_objective
-            ON var.asset = t_objective.asset
-            AND var.milestone_year = t_objective.milestone_year
+        LEFT JOIN t_objective_assets
+            ON var.asset = t_objective_assets.asset
+            AND var.milestone_year = t_objective_assets.milestone_year
         ORDER BY
             var.index
         ",
@@ -89,15 +89,13 @@ function add_objective!(
         connection,
         "SELECT
             expr.index,
-            expr.asset,
-            expr.milestone_year,
-            t_objective.weight_for_operation_discounts
-                * t_objective.fixed_cost
-                * t_objective.capacity AS cost,
+            t_objective_assets.weight_for_operation_discounts
+                * t_objective_assets.fixed_cost
+                * t_objective_assets.capacity AS cost,
         FROM expr_accumulated_asset_units AS expr
-        LEFT JOIN t_objective
-            ON expr.asset = t_objective.asset
-            AND expr.milestone_year = t_objective.milestone_year
+        LEFT JOIN t_objective_assets
+            ON expr.asset = t_objective_assets.asset
+            AND expr.milestone_year = t_objective_assets.milestone_year
         ORDER BY
             expr.index
         ",
@@ -115,13 +113,13 @@ function add_objective!(
         connection,
         "SELECT
             var.index,
-            t_objective.weight_for_asset_investment_discount
-                * t_objective.investment_cost_storage_energy
-                * t_objective.capacity_storage_energy AS cost,
+            t_objective_assets.weight_for_asset_investment_discount
+                * t_objective_assets.investment_cost_storage_energy
+                * t_objective_assets.capacity_storage_energy AS cost,
         FROM var_assets_investment_energy AS var
-        LEFT JOIN t_objective
-            ON var.asset = t_objective.asset
-            AND var.milestone_year = t_objective.milestone_year
+        LEFT JOIN t_objective_assets
+            ON var.asset = t_objective_assets.asset
+            AND var.milestone_year = t_objective_assets.milestone_year
         ORDER BY
             var.index
         ",
@@ -139,15 +137,13 @@ function add_objective!(
         connection,
         "SELECT
             expr.index,
-            expr.asset,
-            expr.milestone_year,
-            t_objective.weight_for_operation_discounts
-                * t_objective.fixed_cost_storage_energy
-                * t_objective.capacity_storage_energy AS cost,
+            t_objective_assets.weight_for_operation_discounts
+                * t_objective_assets.fixed_cost_storage_energy
+                * t_objective_assets.capacity_storage_energy AS cost,
         FROM expr_accumulated_energy_units AS expr
-        LEFT JOIN t_objective
-            ON expr.asset = t_objective.asset
-            AND expr.milestone_year = t_objective.milestone_year
+        LEFT JOIN t_objective_assets
+            ON expr.asset = t_objective_assets.asset
+            AND expr.milestone_year = t_objective_assets.milestone_year
         ORDER BY
             expr.index
         ",
@@ -161,30 +157,54 @@ function add_objective!(
         )
     )
 
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            var.index,
+            t_objective_flows.weight_for_flow_investment_discount
+                * t_objective_flows.investment_cost
+                * t_objective_flows.capacity AS cost,
+        FROM var_flows_investment AS var
+        LEFT JOIN t_objective_flows
+            ON var.from_asset = t_objective_flows.from_asset
+            AND var.to_asset = t_objective_flows.to_asset
+            AND var.milestone_year = t_objective_flows.milestone_year
+        ORDER BY
+            var.index
+        ",
+    )
+
     flows_investment_cost = @expression(
         model,
         sum(
-            weight_for_flows_investment_discounts[(y, (u, v))] *
-            graph[u, v].investment_cost[y] *
-            graph[u, v].capacity *
-            flows_investment[y, (u, v)] for y in sets.Y for (u, v) in sets.Fi[y]
+            row.cost * flow_investment for
+            (row, flow_investment) in zip(indices, flows_investment.container)
         )
     )
 
-    # TODO: Fix this
-    # fixed_cost below is not defined for some graph[u, v].fixed[y]
-    # This indicates something is not totally right in this definition
-    # Probably because the loop is over the accumulated flow units now, and the
-    # sets have technically changed
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            expr.index,
+            t_objective_flows.weight_for_operation_discounts
+                * t_objective_flows.fixed_cost / 2
+                * t_objective_flows.capacity AS cost,
+        FROM expr_accumulated_flow_units AS expr
+        LEFT JOIN t_objective_flows
+            ON expr.from_asset = t_objective_flows.from_asset
+            AND expr.to_asset = t_objective_flows.to_asset
+            AND expr.milestone_year = t_objective_flows.milestone_year
+        ORDER BY
+            expr.index
+        ",
+    )
+
     flows_fixed_cost = @expression(
         model,
         sum(
-            weight_for_operation_discounts[row.milestone_year] *
-            get(graph[row.from_asset, row.to_asset].fixed_cost, row.milestone_year, 0.0) / 2 *
-            graph[row.from_asset, row.to_asset].capacity *
-            (acc_export_unit + acc_import_unit) for
+            row.cost * (acc_export_unit + acc_import_unit) for
             (row, acc_export_unit, acc_import_unit) in zip(
-                eachrow(expr_accumulated_flow_units.indices),
+                indices,
                 expr_accumulated_flow_units.expressions[:export],
                 expr_accumulated_flow_units.expressions[:import],
             )
@@ -240,9 +260,9 @@ function add_objective!(
 end
 
 function _create_objective_auxiliary_table(connection, constants)
-    return DuckDB.execute(
+    DuckDB.execute(
         connection,
-        "CREATE OR REPLACE TEMP TABLE t_objective AS
+        "CREATE OR REPLACE TEMP TABLE t_objective_assets AS
         SELECT
             -- keys
             asset_milestone.asset,
@@ -283,4 +303,50 @@ function _create_objective_auxiliary_table(connection, constants)
             ON asset.asset = asset_commission.asset
         ",
     )
+
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TEMP TABLE t_objective_flows AS
+        SELECT
+            -- keys
+            flow_milestone.from_asset,
+            flow_milestone.to_asset,
+            flow_milestone.milestone_year,
+            -- copied over
+            flow_commission.investment_cost,
+            flow_commission.fixed_cost,
+            flow.capacity,
+            -- computed
+            flow.discount_rate / (
+                (1 + flow.discount_rate) *
+                (1 - 1 / ((1 + flow.discount_rate) ** flow.economic_lifetime))
+            ) * flow_commission.investment_cost AS annualized_cost,
+            IF(
+                flow_milestone.milestone_year + flow.economic_lifetime > $(constants.end_of_horizon) + 1,
+                -annualized_cost * (
+                    (1 / (1 + flow.discount_rate))^(
+                        flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1
+                    ) - 1
+                ) / flow.discount_rate,
+                0.0
+            ) AS salvage_value,
+            1 / (1 + $(constants.social_rate))^(flow_milestone.milestone_year - $(constants.discount_year)) AS operation_discount,
+            operation_discount * (1 - salvage_value / flow_commission.investment_cost) AS weight_for_flow_investment_discount,
+            COALESCE(
+                lead(flow_milestone.milestone_year) OVER (PARTITION BY flow_milestone.from_asset, flow_milestone.to_asset ORDER BY flow_milestone.milestone_year) - flow_milestone.milestone_year,
+                1,
+            ) AS years_until_next_milestone_year,
+            operation_discount * years_until_next_milestone_year AS weight_for_operation_discounts,
+        FROM flow_milestone
+        LEFT JOIN flow_commission
+            ON flow_milestone.from_asset = flow_commission.from_asset
+            AND flow_milestone.to_asset = flow_commission.to_asset
+            AND flow_milestone.milestone_year = flow_commission.commission_year
+        LEFT JOIN flow
+            ON flow.from_asset = flow_commission.from_asset
+            AND flow.to_asset = flow_commission.to_asset
+        ",
+    )
+
+    return
 end
