@@ -59,3 +59,24 @@ function ModelParameters(connection::DuckDB.DB, path::String = ""; kwargs...)
 
     return ModelParameters(; discount_year, file_parameters..., kwargs...)
 end
+
+# function ModelParameters(connection, model_parameters::Dict)
+#     # TODO: This is essentially a schema
+#     model_parameters_keys =
+#         [(key = :discount_rate, type = "REAL"), (key = :discount_year, type = "INTEGER")]
+#
+#     table_keys = join(["$(par.key) $(par.type)" for par in model_parameters], ", ")
+#     table_values = join([])
+#     return DuckDB.query(
+#         connection,
+#         "CREATE OR REPLACE TABLE model_parameters (
+#             discount_rate REAL,
+#             discount_year INTEGER,
+#         );
+#         INSERT INTO model_parameters VALUES (
+#             $discount_rate,
+#             $discount_year,
+#         );
+#         ",
+#     )
+# end

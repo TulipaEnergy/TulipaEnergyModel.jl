@@ -91,6 +91,7 @@ function create_model(
 
     ## Expressions for the objective function
     @timeit to "add_objective!" add_objective!(
+        connection,
         model,
         variables,
         expressions,

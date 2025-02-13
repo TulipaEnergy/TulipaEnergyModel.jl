@@ -1,4 +1,5 @@
 function add_objective!(
+    connection,
     model,
     variables,
     expressions,
@@ -7,7 +8,7 @@ function add_objective!(
     sets,
     model_parameters,
 )
-    assets_investment = variables[:assets_investment].lookup
+    assets_investment = variables[:assets_investment]
     assets_investment_energy = variables[:assets_investment_energy].lookup
     flows_investment = variables[:flows_investment].lookup
 
@@ -38,13 +39,68 @@ function add_objective!(
         y in sets.Y
     )
 
+    my_sort(D) = sort(D; by = key -> (key[2], key[1]))
+
+    # @info "weight for assets" my_sort(weight_for_assets_investment_discounts)
+    # @info "intervals" sort(intervals_for_milestone_years)
+    # @info "op discount" sort(operation_discounts_for_milestone_years)
+    # @info "weight for op" sort(weight_for_operation_discounts)
+
+    # @show my_sort(weight_for_flows_investment_discounts)
+
+    # @show assets_investment_cost
+
+    social_rate = model_parameters.discount_rate
+    discount_year = model_parameters.discount_year
+    end_of_horizon = only([
+        row[1] for row in
+        DuckDB.query(connection, "SELECT MAX(year) AS end_of_horizon FROM rep_periods_data")
+    ])
+
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            var.index,
+            var.asset,
+            var.milestone_year,
+            asset.discount_rate / (
+                (1 + asset.discount_rate) *
+                (1 - 1 / ((1 + asset.discount_rate) ** asset.economic_lifetime))
+            ) * asset_commission.investment_cost AS annualized_cost,
+            IF(
+                var.milestone_year + asset.economic_lifetime > $end_of_horizon + 1,
+                -annualized_cost * (
+                    (1 / (1 + asset.discount_rate))^(
+                        var.milestone_year + asset.economic_lifetime - $end_of_horizon - 1
+                    ) - 1
+                ) / asset.discount_rate,
+                0.0
+            ) AS salvage_value,
+            1 / (1 + $social_rate)^(var.milestone_year - $discount_year) AS operation_discount,
+            operation_discount * (1 - salvage_value / asset_commission.investment_cost) AS weight_for_asset_investment_discount,
+            COALESCE(
+                lead(var.milestone_year) OVER (PARTITION BY var.asset ORDER BY var.milestone_year) - var.milestone_year,
+                1,
+            ) AS years_until_next_milestone_year,
+            weight_for_asset_investment_discount * asset_commission.investment_cost * asset.capacity AS cost,
+
+            -- weight_for_asset_investment_discount * years_until_next_milestone_year AS weight_for_operation_discounts,
+        FROM var_assets_investment AS var
+        LEFT JOIN asset_commission
+            ON var.asset = asset_commission.asset
+            AND var.milestone_year = asset_commission.commission_year
+        LEFT JOIN asset
+            ON asset.asset = asset_commission.asset
+        ORDER BY
+            var.index
+        ",
+    )
+
     assets_investment_cost = @expression(
         model,
         sum(
-            weight_for_assets_investment_discounts[(y, a)] *
-            graph[a].investment_cost[y] *
-            graph[a].capacity *
-            assets_investment[y, a] for y in sets.Y for a in sets.Ai[y]
+            row.cost * asset_investment for
+            (row, asset_investment) in zip(indices, assets_investment.container)
         )
     )
 
