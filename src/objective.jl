@@ -57,40 +57,19 @@ function add_objective!(
         DuckDB.query(connection, "SELECT MAX(year) AS end_of_horizon FROM rep_periods_data")
     ])
 
+    constants = (; social_rate, discount_year, end_of_horizon)
+
+    _create_objective_auxiliary_table(connection, constants)
+
     indices = DuckDB.query(
         connection,
         "SELECT
             var.index,
-            var.asset,
-            var.milestone_year,
-            asset.discount_rate / (
-                (1 + asset.discount_rate) *
-                (1 - 1 / ((1 + asset.discount_rate) ** asset.economic_lifetime))
-            ) * asset_commission.investment_cost AS annualized_cost,
-            IF(
-                var.milestone_year + asset.economic_lifetime > $end_of_horizon + 1,
-                -annualized_cost * (
-                    (1 / (1 + asset.discount_rate))^(
-                        var.milestone_year + asset.economic_lifetime - $end_of_horizon - 1
-                    ) - 1
-                ) / asset.discount_rate,
-                0.0
-            ) AS salvage_value,
-            1 / (1 + $social_rate)^(var.milestone_year - $discount_year) AS operation_discount,
-            operation_discount * (1 - salvage_value / asset_commission.investment_cost) AS weight_for_asset_investment_discount,
-            COALESCE(
-                lead(var.milestone_year) OVER (PARTITION BY var.asset ORDER BY var.milestone_year) - var.milestone_year,
-                1,
-            ) AS years_until_next_milestone_year,
-            weight_for_asset_investment_discount * asset_commission.investment_cost * asset.capacity AS cost,
-
-            -- weight_for_asset_investment_discount * years_until_next_milestone_year AS weight_for_operation_discounts,
+            t_objective.weight_for_asset_investment_discount * t_objective.investment_cost * t_objective.capacity AS cost,
         FROM var_assets_investment AS var
-        LEFT JOIN asset_commission
-            ON var.asset = asset_commission.asset
-            AND var.milestone_year = asset_commission.commission_year
-        LEFT JOIN asset
-            ON asset.asset = asset_commission.asset
+        LEFT JOIN t_objective
+            ON var.asset = t_objective.asset
+            AND var.milestone_year = t_objective.milestone_year
         ORDER BY
             var.index
         ",
@@ -104,16 +83,29 @@ function add_objective!(
         )
     )
 
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            expr.index,
+            expr.asset,
+            expr.milestone_year,
+            t_objective.years_until_next_milestone_year AS years_between,
+            t_objective.weight_for_operation_discounts AS w_op,
+            t_objective.weight_for_operation_discounts * t_objective.fixed_cost * t_objective.capacity AS cost,
+        FROM expr_accumulated_asset_units AS expr
+        LEFT JOIN t_objective
+            ON expr.asset = t_objective.asset
+            AND expr.milestone_year = t_objective.milestone_year
+        ORDER BY
+            expr.index
+        ",
+    )
+
     assets_fixed_cost = @expression(
         model,
         sum(
-            weight_for_operation_discounts[row.milestone_year] *
-            graph[row.asset].fixed_cost[row.milestone_year] *
-            graph[row.asset].capacity *
-            acc_unit for (row, acc_unit) in zip(
-                eachrow(expr_accumulated_asset_units.indices),
-                expr_accumulated_asset_units.expressions[:assets],
-            )
+            row.cost * acc_unit for
+            (row, acc_unit) in zip(indices, expr_accumulated_asset_units.expressions[:assets])
         )
     )
 
@@ -215,5 +207,48 @@ function add_objective!(
         flows_fixed_cost +
         flows_variable_cost +
         units_on_cost
+    )
+end
+
+function _create_objective_auxiliary_table(connection, constants)
+    return DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TEMP TABLE t_objective AS
+        SELECT
+            -- keys
+            asset_milestone.asset,
+            asset_milestone.milestone_year,
+            -- copied over
+            asset_commission.investment_cost,
+            asset_commission.fixed_cost,
+            asset.capacity,
+            -- computed
+            asset.discount_rate / (
+                (1 + asset.discount_rate) *
+                (1 - 1 / ((1 + asset.discount_rate) ** asset.economic_lifetime))
+            ) * asset_commission.investment_cost AS annualized_cost,
+            IF(
+                asset_milestone.milestone_year + asset.economic_lifetime > $(constants.end_of_horizon) + 1,
+                -annualized_cost * (
+                    (1 / (1 + asset.discount_rate))^(
+                        asset_milestone.milestone_year + asset.economic_lifetime - $(constants.end_of_horizon) - 1
+                    ) - 1
+                ) / asset.discount_rate,
+                0.0
+            ) AS salvage_value,
+            1 / (1 + $(constants.social_rate))^(asset_milestone.milestone_year - $(constants.discount_year)) AS operation_discount,
+            operation_discount * (1 - salvage_value / asset_commission.investment_cost) AS weight_for_asset_investment_discount,
+            COALESCE(
+                lead(asset_milestone.milestone_year) OVER (PARTITION BY asset_milestone.asset ORDER BY asset_milestone.milestone_year) - asset_milestone.milestone_year,
+                1,
+            ) AS years_until_next_milestone_year,
+            operation_discount * years_until_next_milestone_year AS weight_for_operation_discounts,
+        FROM asset_milestone
+        LEFT JOIN asset_commission
+            ON asset_milestone.asset = asset_commission.asset
+            AND asset_milestone.milestone_year = asset_commission.commission_year
+        LEFT JOIN asset
+            ON asset.asset = asset_commission.asset
+        ",
     )
 end
