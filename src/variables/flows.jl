@@ -9,7 +9,6 @@ The flow variables are created using the `@variable` macro for each row in the `
 """
 function add_flow_variables!(connection, model, variables)
     # Unpacking the variable indices
-    flows_indices = variables[:flow].indices
     indices = _create_flow_table(connection)
 
     lower_bound(row) =

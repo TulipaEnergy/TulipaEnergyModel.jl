@@ -27,13 +27,13 @@ function _create_investment_variable!(
 end
 
 """
-    add_investment_variables!(model, graph, sets)
+    add_investment_variables!(model, variables)
 
 Adds investment, decommission, and energy-related variables to the optimization `model`,
 and sets integer constraints on selected variables based on the `graph` data.
 
 """
-function add_investment_variables!(model, graph, sets, variables)
+function add_investment_variables!(model, variables)
     for (name, keys_from_row, lower_bound_from_row, upper_bound_from_row, integer_from_row) in [
         (
             :flows_investment,

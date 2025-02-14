@@ -6,11 +6,9 @@ export create_model!, create_model
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
-    sets = @timeit to "create_sets" create_sets(energy_problem.graph, energy_problem.years)
     energy_problem.model = @timeit to "create_model" create_model(
         energy_problem.db_connection,
         energy_problem.graph,
-        sets,
         energy_problem.variables,
         energy_problem.expressions,
         energy_problem.constraints,
@@ -34,7 +32,6 @@ Create the energy model manually. We recommend using [`create_model!`](@ref) ins
 function create_model(
     connection,
     graph,
-    sets,
     variables,
     expressions,
     constraints,
@@ -59,13 +56,9 @@ function create_model(
 
     ## Variables
     @timeit to "add_flow_variables!" add_flow_variables!(connection, model, variables)
-    @timeit to "add_investment_variables!" add_investment_variables!(model, graph, sets, variables)
-    @timeit to "add_unit_commitment_variables!" add_unit_commitment_variables!(
-        model,
-        sets,
-        variables,
-    )
-    @timeit to "add_storage_variables!" add_storage_variables!(model, graph, sets, variables)
+    @timeit to "add_investment_variables!" add_investment_variables!(model, variables)
+    @timeit to "add_unit_commitment_variables!" add_unit_commitment_variables!(model, variables)
+    @timeit to "add_storage_variables!" add_storage_variables!(model, graph, variables)
 
     ## Add expressions to dataframes
     # TODO: What will improve this? Variables (#884)?, Constraints?
@@ -98,7 +91,6 @@ function create_model(
         model_parameters,
     )
 
-    # TODO: Pass sets instead of the explicit values
     ## Constraints
     @timeit to "add_capacity_constraints!" add_capacity_constraints!(
         connection,

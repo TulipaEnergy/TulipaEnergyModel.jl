@@ -53,7 +53,8 @@ function _create_variables_tables(connection)
             atr.year,
             atr.rep_period,
             atr.time_block_start,
-            atr.time_block_end
+            atr.time_block_end,
+            asset.unit_commitment_integer,
         FROM asset_time_resolution AS atr
         LEFT JOIN asset
             ON asset.asset = atr.asset
@@ -73,13 +74,14 @@ function _create_variables_tables(connection)
             t_low.year,
             t_low.rep_period,
             t_low.time_block_start,
-            t_low.time_block_end
+            t_low.time_block_end,
+            asset.use_binary_storage_method
         FROM t_lowest_all_flows AS t_low
         LEFT JOIN asset
             ON t_low.asset = asset.asset
         WHERE
             asset.type = 'storage'
-            AND asset.use_binary_storage_method = true
+            AND asset.use_binary_storage_method in ('binary', 'relaxed_binary')
         ",
     )
 

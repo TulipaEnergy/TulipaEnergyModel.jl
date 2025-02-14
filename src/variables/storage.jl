@@ -7,7 +7,7 @@ Adds storage-related variables to the optimization `model`, including storage le
 The function also optionally sets binary constraints for certain charging variables based on storage methods.
 
 """
-function add_storage_variables!(model, graph, sets, variables)
+function add_storage_variables!(model, graph, variables)
     storage_level_rep_period_indices = variables[:storage_level_rep_period].indices
     storage_level_over_clustered_year_indices =
         variables[:storage_level_over_clustered_year].indices
@@ -34,24 +34,10 @@ function add_storage_variables!(model, graph, sets, variables)
             model,
             lower_bound = 0.0,
             upper_bound = 1.0,
-            base_name = "is_charging[$(row.asset),$(row.year),$(row.rep_period),$(row.timesteps_block)]"
+            binary = row.use_binary_storage_method == "binary",
+            base_name = "is_charging[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
         ) for row in eachrow(is_charging_indices)
     ]
-
-    ### Binary Charging Variables
-    is_charging_indices.use_binary_storage_method =
-        [graph[row.asset].use_binary_storage_method for row in eachrow(is_charging_indices)]
-
-    sub_df_is_charging_indices = DataFrames.subset(
-        is_charging_indices,
-        :asset => DataFrames.ByRow(a -> a in sets.Asb),
-        :use_binary_storage_method => DataFrames.ByRow(==("binary"));
-        view = true,
-    )
-
-    for row in eachrow(sub_df_is_charging_indices)
-        JuMP.set_binary(variables[:is_charging].container[row.index])
-    end
 
     ### Cycling conditions
     df_storage_rep_period_balance_grouped =
