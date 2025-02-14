@@ -420,7 +420,13 @@ function add_expression_terms_over_clustered_year_constraints!(
         from_or_to = case.asset_match
 
         grouped_var_table_name = "t_grouped_$(flow.table_name)_match_on_$(from_or_to)"
-        @assert _check_if_table_exists(connection, grouped_var_table_name) "The $grouped_var_table_name doesn't exist in the connection. This table is created in the 'add_expression_terms_rep_period_constraints!' function. Please, check if the function is being called before this one."
+        if !_check_if_table_exists(connection, grouped_var_table_name)
+            error(
+                """The table '$grouped_var_table_name' doesn't exist in the connection.
+                This table is created in the 'add_expression_terms_rep_period_constraints!' function.
+                Please, check if the function is being called before this one.""",
+            )
+        end
 
         for group_row in DuckDB.query(
             connection,
