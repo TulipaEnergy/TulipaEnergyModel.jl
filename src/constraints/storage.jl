@@ -179,7 +179,7 @@ function add_storage_constraints!(connection, model, variables, constraints, pro
                     indices,
                     cons.expressions[:incoming],
                     cons.expressions[:outgoing],
-                    cons.expressions[:inflows_profile_aggregation],
+                    cons.coefficients[:inflows_profile_aggregation],
                 )
             ],
         )

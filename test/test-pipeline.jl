@@ -38,8 +38,6 @@ end
         constraints,
         profiles,
         representative_periods,
-        years,
-        timeframe,
         model_parameters,
     )
 
