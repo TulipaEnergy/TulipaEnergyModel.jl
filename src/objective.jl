@@ -63,8 +63,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     assets_fixed_cost = @expression(
         model,
         sum(
-            row.cost * acc_unit for
-            (row, acc_unit) in zip(indices, expr_available_asset_units.expressions[:assets])
+            row.cost * expr_avail for
+            (row, expr_avail) in zip(indices, expr_available_asset_units.expressions[:assets])
         )
     )
 
@@ -113,8 +113,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     storage_assets_energy_fixed_cost = @expression(
         model,
         sum(
-            row.cost * acc_unit for
-            (row, acc_unit) in zip(indices, expr_available_energy_units.expressions[:energy])
+            row.cost * expr_avail for
+            (row, expr_avail) in zip(indices, expr_available_energy_units.expressions[:energy])
         )
     )
 
@@ -165,8 +165,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     flows_fixed_cost = @expression(
         model,
         sum(
-            row.cost * (acc_export_unit + acc_import_unit) for
-            (row, acc_export_unit, acc_import_unit) in zip(
+            row.cost * (avail_export_unit + avail_import_unit) for
+            (row, avail_export_unit, avail_import_unit) in zip(
                 indices,
                 expr_available_flow_units.expressions[:export],
                 expr_available_flow_units.expressions[:import],

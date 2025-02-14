@@ -68,7 +68,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     # - Limit to the units on (i.e. commitment)
     let table_name = :limit_units_on, cons = constraints[table_name]
         indices = _append_available_units_data(connection, table_name)
-        expr_acc = expressions[:available_asset_units].expressions[:assets]
+        expr_avail = expressions[:available_asset_units].expressions[:assets]
         attach_constraint!(
             model,
             cons,
@@ -76,7 +76,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             [
                 @constraint(
                     model,
-                    units_on ≤ sum(expr_acc[acc_index] for acc_index in row.acc_indices),
+                    units_on ≤ sum(expr_avail[avail_index] for avail_index in row.avail_indices),
                     base_name = "limit_units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (units_on, row) in zip(variables[:units_on].container, indices)
             ],
@@ -270,11 +270,11 @@ function _append_available_units_data(connection, table_name)
             ANY_VALUE(cons.rep_period) AS rep_period,
             ANY_VALUE(cons.time_block_start) AS time_block_start,
             ANY_VALUE(cons.time_block_end) AS time_block_end,
-            ARRAY_AGG(expr_acc.index) AS acc_indices,
+            ARRAY_AGG(expr_avail.index) AS avail_indices,
         FROM cons_$table_name AS cons
-        LEFT JOIN expr_available_asset_units AS expr_acc
-            ON cons.asset = expr_acc.asset
-            AND cons.year = expr_acc.milestone_year
+        LEFT JOIN expr_available_asset_units AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.year = expr_avail.milestone_year
         GROUP BY cons.index
         ORDER BY cons.index
         ",

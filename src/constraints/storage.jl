@@ -93,7 +93,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≤
                         max_storage_level_agg *
-                        available_energy_capacity[row.acc_energy_capacity_index],
+                        available_energy_capacity[row.avail_energy_capacity_index],
                         base_name = "max_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for
@@ -119,7 +119,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≥
                         min_storage_level_agg *
-                        available_energy_capacity[row.acc_energy_capacity_index],
+                        available_energy_capacity[row.avail_energy_capacity_index],
                         base_name = "min_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for
@@ -208,7 +208,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≤
                         max_storage_level_agg *
-                        available_energy_capacity[row.acc_energy_capacity_index],
+                        available_energy_capacity[row.avail_energy_capacity_index],
                         base_name = "max_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, var_storage_level) in
@@ -234,7 +234,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≥
                         min_storage_level_agg *
-                        available_energy_capacity[row.acc_energy_capacity_index],
+                        available_energy_capacity[row.avail_energy_capacity_index],
                         base_name = "min_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, var_storage_level) in
@@ -256,7 +256,7 @@ function _append_storage_data_to_indices(connection, table_name)
             inflows_profile.profile_name AS inflows_profile_name,
             max_storage_level_profile.profile_name AS max_storage_level_profile_name,
             min_storage_level_profile.profile_name AS min_storage_level_profile_name,
-            expr_acc.index AS acc_energy_capacity_index
+            expr_avail.index AS avail_energy_capacity_index
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
@@ -266,9 +266,9 @@ function _append_storage_data_to_indices(connection, table_name)
         LEFT JOIN asset_milestone
             ON cons.asset = asset_milestone.asset
             AND cons.year = asset_milestone.milestone_year
-        LEFT JOIN expr_available_energy_capacity AS expr_acc
-            ON cons.asset = expr_acc.asset
-            AND cons.year = expr_acc.milestone_year
+        LEFT JOIN expr_available_energy_capacity AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.year = expr_avail.milestone_year
         LEFT OUTER JOIN assets_profiles AS inflows_profile
             ON cons.asset = inflows_profile.asset
             AND cons.year = inflows_profile.commission_year

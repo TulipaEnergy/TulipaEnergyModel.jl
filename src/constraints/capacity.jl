@@ -7,7 +7,7 @@ Adds the capacity constraints for all asset types to the model
 """
 function add_capacity_constraints!(connection, model, expressions, constraints, profiles)
     ## unpack from expressions
-    expr_acc = expressions[:available_asset_units].expressions[:assets]
+    expr_avail = expressions[:available_asset_units].expressions[:assets]
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
@@ -25,14 +25,14 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                             begin
                                 availability_agg = _profile_aggregate(
                                     profiles.rep_period,
-                                    (acc_profile_name, row.year, row.rep_period),
+                                    (avail_profile_name, row.year, row.rep_period),
                                     row.time_block_start:row.time_block_end,
                                     Statistics.mean,
                                     1.0,
                                 )
-                                availability_agg * expr_acc[acc_index]
-                            end for (acc_profile_name, acc_index) in
-                            zip(row.acc_profile_name, row.acc_indices)
+                                availability_agg * expr_avail[avail_index]
+                            end for (avail_profile_name, avail_index) in
+                            zip(row.avail_profile_name, row.avail_indices)
                         )
                     )
                 end for row in indices
@@ -60,7 +60,10 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     )
                     @expression(
                         model,
-                        availability_agg * row.capacity * row.acc_initial_units * (1 - is_charging)
+                        availability_agg *
+                        row.capacity *
+                        row.avail_initial_units *
+                        (1 - is_charging)
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
             ],
@@ -89,8 +92,8 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         availability_agg *
                         row.capacity *
                         (
-                            row.acc_initial_units * (1 - is_charging) +
-                            sum(expr_acc[acc_index] for acc_index in row.acc_indices)
+                            row.avail_initial_units * (1 - is_charging) +
+                            sum(expr_avail[avail_index] for avail_index in row.avail_indices)
                         )
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -112,7 +115,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     @expression(
                         model,
                         availability_agg *
-                        (row.capacity * row.acc_initial_units + row.investment_limit) *
+                        (row.capacity * row.avail_initial_units + row.investment_limit) *
                         (1 - is_charging)
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -139,7 +142,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         model,
                         availability_agg *
                         row.capacity *
-                        sum(expr_acc[acc_index] for acc_index in row.acc_indices)
+                        sum(expr_avail[avail_index] for avail_index in row.avail_indices)
                     )
                 end for row in indices
             ],
@@ -166,7 +169,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     )
                     @expression(
                         model,
-                        availability_agg * row.capacity * row.acc_initial_units * is_charging
+                        availability_agg * row.capacity * row.avail_initial_units * is_charging
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
             ],
@@ -195,8 +198,8 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         availability_agg *
                         row.capacity *
                         (
-                            row.acc_initial_units * is_charging +
-                            sum(expr_acc[acc_index] for acc_index in row.acc_indices)
+                            row.avail_initial_units * is_charging +
+                            sum(expr_avail[avail_index] for avail_index in row.avail_indices)
                         )
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -218,7 +221,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     @expression(
                         model,
                         availability_agg *
-                        (row.capacity * row.acc_initial_units + row.investment_limit) *
+                        (row.capacity * row.avail_initial_units + row.investment_limit) *
                         is_charging
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -333,10 +336,10 @@ function _append_capacity_data_to_indices(connection, table_name)
             ANY_VALUE(cons.rep_period) AS rep_period,
             ANY_VALUE(cons.time_block_start) AS time_block_start,
             ANY_VALUE(cons.time_block_end) AS time_block_end,
-            ARRAY_AGG(expr_acc.index) AS acc_indices,
-            ARRAY_AGG(expr_acc.commission_year) AS acc_commission_year,
-            SUM(expr_acc.initial_units) AS acc_initial_units,
-            ARRAY_AGG(acc_profile.profile_name) AS acc_profile_name,
+            ARRAY_AGG(expr_avail.index) AS avail_indices,
+            ARRAY_AGG(expr_avail.commission_year) AS avail_commission_year,
+            SUM(expr_avail.initial_units) AS avail_initial_units,
+            ARRAY_AGG(avail_profile.profile_name) AS avail_profile_name,
             ANY_VALUE(asset.capacity) AS capacity,
             ANY_VALUE(asset.investment_method) AS investment_method,
             ANY_VALUE(asset_commission.investment_limit) AS investment_limit,
@@ -347,16 +350,16 @@ function _append_capacity_data_to_indices(connection, table_name)
         LEFT JOIN asset_commission
             ON cons.asset = asset_commission.asset
             AND cons.year = asset_commission.commission_year
-        LEFT JOIN expr_available_asset_units AS expr_acc
-            ON cons.asset = expr_acc.asset
-            AND cons.year = expr_acc.milestone_year
+        LEFT JOIN expr_available_asset_units AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.year = expr_avail.milestone_year
         LEFT OUTER JOIN assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
             AND assets_profiles.profile_type = 'availability'
-        LEFT OUTER JOIN assets_profiles AS acc_profile
-            ON cons.asset = acc_profile.asset
-            AND expr_acc.commission_year = acc_profile.commission_year
+        LEFT OUTER JOIN assets_profiles AS avail_profile
+            ON cons.asset = avail_profile.asset
+            AND expr_avail.commission_year = avail_profile.commission_year
             AND assets_profiles.profile_type = 'availability'
         GROUP BY cons.index
         ORDER BY cons.index

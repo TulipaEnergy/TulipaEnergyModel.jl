@@ -14,9 +14,9 @@ function add_transport_constraints!(
     profiles,
 )
     ## unpack from model
-    expr_acc = expressions[:available_flow_units]
-    expr_acc_export = expr_acc.expressions[:export]
-    expr_acc_import = expr_acc.expressions[:import]
+    expr_avail = expressions[:available_flow_units]
+    expr_avail_export = expr_avail.expressions[:export]
+    expr_avail_import = expr_avail.expressions[:import]
 
     let table_name = :transport_flow_limit, cons = constraints[table_name]
         indices = _append_transport_data_to_indices(connection)
@@ -41,7 +41,7 @@ function add_transport_constraints!(
                     model,
                     availability_agg *
                     row.capacity *
-                    sum(expr_acc_export[acc_index] for acc_index in row.acc_indices)
+                    sum(expr_avail_export[avail_index] for avail_index in row.avail_indices)
                 ) for (row, availability_agg) in zip(indices, availability_agg_iterator)
             ],
         )
@@ -55,7 +55,7 @@ function add_transport_constraints!(
                     model,
                     availability_agg *
                     row.capacity *
-                    sum(expr_acc_import[acc_index] for acc_index in row.acc_indices)
+                    sum(expr_avail_import[avail_index] for avail_index in row.avail_indices)
                 ) for (row, availability_agg) in zip(indices, availability_agg_iterator)
             ],
         )
@@ -109,17 +109,17 @@ function _append_transport_data_to_indices(connection)
             ANY_VALUE(cons.time_block_end) AS time_block_end,
             ANY_VALUE(cons.var_flow_index) AS var_flow_index,
             ANY_VALUE(flow.capacity) AS capacity,
-            ARRAY_AGG(expr_acc.index) AS acc_indices,
-            ARRAY_AGG(expr_acc.commission_year) AS acc_commission_years,
+            ARRAY_AGG(expr_avail.index) AS avail_indices,
+            ARRAY_AGG(expr_avail.commission_year) AS avail_commission_years,
             ANY_VALUE(flows_profiles.profile_name) AS profile_name,
         FROM cons_transport_flow_limit AS cons
         LEFT JOIN flow
             ON cons.from = flow.from_asset
             AND cons.to = flow.to_asset
-        LEFT JOIN expr_available_flow_units AS expr_acc
-            ON cons.from = expr_acc.from_asset
-            AND cons.to = expr_acc.to_asset
-            AND cons.year = expr_acc.milestone_year
+        LEFT JOIN expr_available_flow_units AS expr_avail
+            ON cons.from = expr_avail.from_asset
+            AND cons.to = expr_avail.to_asset
+            AND cons.year = expr_avail.milestone_year
         LEFT OUTER JOIN flows_profiles
             ON cons.from = flows_profiles.from_asset
             AND cons.to = flows_profiles.to_asset
