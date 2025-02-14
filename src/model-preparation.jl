@@ -225,9 +225,11 @@ function add_expression_terms_rep_period_constraints!(
                 end
                 if length(workspace_agg) > 0
                     # Step 1.2.2.
-                    cons.expressions[case.expr_key][cons_idx] = sum(
-                        duration * flow.container[var_idx] for (var_idx, duration) in workspace_agg
-                    )
+                    cons.expressions[case.expr_key][cons_idx] = JuMP.AffExpr(0.0)
+                    this_expr = cons.expressions[case.expr_key][cons_idx]
+                    for (var_idx, duration) in workspace_agg
+                        JuMP.add_to_expression!(this_expr, duration, flow.container[var_idx])
+                    end
                 end
                 if conditions_to_add_min_outgoing_flow_duration
                     cons.coefficients[:min_outgoing_flow_duration][cons_idx] =
@@ -537,10 +539,11 @@ function add_expression_terms_over_clustered_year_constraints!(
                 end
 
                 if length(workspace_aggregation) > 0
-                    cons.expressions[case.expr_key][cons_idx] = sum(
-                        coefficient * flow.container[var_idx] for
-                        (var_idx, coefficient) in workspace_aggregation
-                    )
+                    cons.expressions[case.expr_key][cons_idx] = JuMP.AffExpr(0.0)
+                    this_expr = cons.expressions[case.expr_key][cons_idx]
+                    for (var_idx, coefficient) in workspace_aggregation
+                        JuMP.add_to_expression!(this_expr, coefficient, flow.container[var_idx])
+                    end
                 end
             end
         end
