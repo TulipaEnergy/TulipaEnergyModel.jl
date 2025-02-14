@@ -9,7 +9,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
     #       rp
     #     ],
     #     time_block
-    #   ) * accumulated_units[a, my, cy]
+    #   ) * available_units[a, my, cy]
     #
     # where
     #
@@ -20,7 +20,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
     #
     # and
     #
-    #   accumulated_units[a, my, cy] =
+    #   available_units[a, my, cy] =
     #       initial_units[a, my, cy] +
     #       investment_units[a, cy]* -
     #       ∑_{past_my: past_my ≤ my} assets_decommission[a, past_my, cy]
@@ -32,7 +32,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
 
     _create_multi_year_expressions_indices!(connection, expressions)
 
-    let table_name = :accumulated_asset_units, expr = expressions[table_name]
+    let table_name = :available_asset_units, expr = expressions[table_name]
         var_inv = variables[:assets_investment].container
         var_dec = variables[:assets_decommission].container
 
@@ -62,7 +62,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
         )
     end
 
-    let table_name = :accumulated_energy_units, expr = expressions[table_name]
+    let table_name = :available_energy_units, expr = expressions[table_name]
         var_energy_inv = variables[:assets_investment_energy].container
         var_energy_dec = variables[:assets_decommission_energy].container
 
@@ -97,7 +97,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
         )
     end
 
-    let table_name = :accumulated_flow_units, expr = expressions[table_name]
+    let table_name = :available_flow_units, expr = expressions[table_name]
         var_inv = variables[:flows_investment].container
         var_dec = variables[:flows_decommission].container
 
@@ -163,7 +163,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_accumulated_asset_units AS
+        CREATE OR REPLACE TABLE expr_available_asset_units AS
         SELECT
             nextval('id') AS index,
             asset_both.asset AS asset,
@@ -194,7 +194,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_accumulated_energy_units AS
+        CREATE OR REPLACE TABLE expr_available_energy_units AS
         SELECT
             nextval('id') AS index,
             asset_both.asset AS asset,
@@ -223,7 +223,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_accumulated_flow_units AS
+        CREATE OR REPLACE TABLE expr_available_flow_units AS
         SELECT
             nextval('id') AS index,
             flow_both.from_asset AS from_asset,
@@ -248,7 +248,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         ",
     )
 
-    for expr_name in (:accumulated_asset_units, :accumulated_energy_units, :accumulated_flow_units)
+    for expr_name in (:available_asset_units, :available_energy_units, :available_flow_units)
         expressions[expr_name] = TulipaExpression(connection, "expr_$expr_name")
     end
 

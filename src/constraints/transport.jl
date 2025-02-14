@@ -14,7 +14,7 @@ function add_transport_constraints!(
     profiles,
 )
     ## unpack from model
-    expr_acc = expressions[:accumulated_flow_units]
+    expr_acc = expressions[:available_flow_units]
     expr_acc_export = expr_acc.expressions[:export]
     expr_acc_import = expr_acc.expressions[:import]
 
@@ -116,7 +116,7 @@ function _append_transport_data_to_indices(connection)
         LEFT JOIN flow
             ON cons.from = flow.from_asset
             AND cons.to = flow.to_asset
-        LEFT JOIN expr_accumulated_flow_units AS expr_acc
+        LEFT JOIN expr_available_flow_units AS expr_acc
             ON cons.from = expr_acc.from_asset
             AND cons.to = expr_acc.to_asset
             AND cons.year = expr_acc.milestone_year

@@ -3,9 +3,9 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     assets_investment_energy = variables[:assets_investment_energy]
     flows_investment = variables[:flows_investment]
 
-    expr_accumulated_asset_units = expressions[:accumulated_asset_units]
-    expr_accumulated_energy_units = expressions[:accumulated_energy_units]
-    expr_accumulated_flow_units = expressions[:accumulated_flow_units]
+    expr_available_asset_units = expressions[:available_asset_units]
+    expr_available_energy_units = expressions[:available_energy_units]
+    expr_available_flow_units = expressions[:available_flow_units]
 
     social_rate = model_parameters.discount_rate
     discount_year = model_parameters.discount_year
@@ -51,7 +51,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * t_objective_assets.fixed_cost
                 * t_objective_assets.capacity
                 AS cost,
-        FROM expr_accumulated_asset_units AS expr
+        FROM expr_available_asset_units AS expr
         LEFT JOIN t_objective_assets
             ON expr.asset = t_objective_assets.asset
             AND expr.milestone_year = t_objective_assets.milestone_year
@@ -64,7 +64,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         model,
         sum(
             row.cost * acc_unit for
-            (row, acc_unit) in zip(indices, expr_accumulated_asset_units.expressions[:assets])
+            (row, acc_unit) in zip(indices, expr_available_asset_units.expressions[:assets])
         )
     )
 
@@ -101,7 +101,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * t_objective_assets.fixed_cost_storage_energy
                 * t_objective_assets.capacity_storage_energy
                 AS cost,
-        FROM expr_accumulated_energy_units AS expr
+        FROM expr_available_energy_units AS expr
         LEFT JOIN t_objective_assets
             ON expr.asset = t_objective_assets.asset
             AND expr.milestone_year = t_objective_assets.milestone_year
@@ -114,7 +114,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         model,
         sum(
             row.cost * acc_unit for
-            (row, acc_unit) in zip(indices, expr_accumulated_energy_units.expressions[:energy])
+            (row, acc_unit) in zip(indices, expr_available_energy_units.expressions[:energy])
         )
     )
 
@@ -152,7 +152,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * t_objective_flows.fixed_cost / 2
                 * t_objective_flows.capacity
                 AS cost,
-        FROM expr_accumulated_flow_units AS expr
+        FROM expr_available_flow_units AS expr
         LEFT JOIN t_objective_flows
             ON expr.from_asset = t_objective_flows.from_asset
             AND expr.to_asset = t_objective_flows.to_asset
@@ -168,8 +168,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             row.cost * (acc_export_unit + acc_import_unit) for
             (row, acc_export_unit, acc_import_unit) in zip(
                 indices,
-                expr_accumulated_flow_units.expressions[:export],
-                expr_accumulated_flow_units.expressions[:import],
+                expr_available_flow_units.expressions[:export],
+                expr_available_flow_units.expressions[:import],
             )
         )
     )

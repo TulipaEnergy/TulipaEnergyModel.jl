@@ -57,7 +57,7 @@ function add_group_constraints!(connection, model, variables, constraints)
         )
     end
 
-    # - TODO: More group constraints e.g., limits on the accumulated investments of a group
+    # - TODO: More group constraints e.g., limits on the available investments of a group
 
     return
 end

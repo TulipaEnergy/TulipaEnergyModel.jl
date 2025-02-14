@@ -214,7 +214,7 @@ The mathematical formulation of the maximum and minimum investment limit for gro
 
 !!! info
     1. A missing value in the parameters `min_investment_limit` and `max_investment_limit` means that there is no investment limit.
-    2. These constraints are applied to the investments each year. The model does not yet have investment limits to a group's accumulated invested capacity.
+    2. These constraints are applied to the investments each year. The model does not yet have investment limits to a group's available invested capacity.
 
 ### Example: Group of Assets
 

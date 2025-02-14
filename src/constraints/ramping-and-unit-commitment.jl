@@ -67,8 +67,8 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     ## Unit Commitment Constraints (basic implementation - more advanced will be added in 2025)
     # - Limit to the units on (i.e. commitment)
     let table_name = :limit_units_on, cons = constraints[table_name]
-        indices = _append_accumulated_units_data(connection, table_name)
-        expr_acc = expressions[:accumulated_asset_units].expressions[:assets]
+        indices = _append_available_units_data(connection, table_name)
+        expr_acc = expressions[:available_asset_units].expressions[:assets]
         attach_constraint!(
             model,
             cons,
@@ -260,7 +260,7 @@ function _append_ramping_data_to_indices(connection, table_name)
     )
 end
 
-function _append_accumulated_units_data(connection, table_name)
+function _append_available_units_data(connection, table_name)
     return DuckDB.query(
         connection,
         "SELECT
@@ -272,7 +272,7 @@ function _append_accumulated_units_data(connection, table_name)
             ANY_VALUE(cons.time_block_end) AS time_block_end,
             ARRAY_AGG(expr_acc.index) AS acc_indices,
         FROM cons_$table_name AS cons
-        LEFT JOIN expr_accumulated_asset_units AS expr_acc
+        LEFT JOIN expr_available_asset_units AS expr_acc
             ON cons.asset = expr_acc.asset
             AND cons.year = expr_acc.milestone_year
         GROUP BY cons.index
