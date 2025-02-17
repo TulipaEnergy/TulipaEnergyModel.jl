@@ -1,7 +1,7 @@
-export create_internal_structures, export_solution_to_csv_files
+export create_internal_structures!, export_solution_to_csv_files
 
 """
-    create_internal_structures(connection)
+    create_internal_structures!(connection)
 
 Return the `graph`, `representative_periods`, and `timeframe` structures given the input dataframes structure.
 
@@ -20,7 +20,7 @@ The details of these structures are:
   - `timeframe`: Information of
     [`TulipaEnergyModel.Timeframe`](@ref).
 """
-function create_internal_structures(connection)
+function create_internal_structures!(connection)
 
     # Create tables that are allowed to be missing
     tables_allowed_to_be_missing = [

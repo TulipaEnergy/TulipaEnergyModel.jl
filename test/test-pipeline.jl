@@ -21,7 +21,7 @@ end
     _read_csv_folder(connection, dir)
 
     # Internal data and structures pre-model
-    TulipaEnergyModel.create_internal_structures(connection)
+    TulipaEnergyModel.create_internal_structures!(connection)
     model_parameters = TulipaEnergyModel.ModelParameters(connection)
     variables = TulipaEnergyModel.compute_variables_indices(connection)
     expressions = Dict()
