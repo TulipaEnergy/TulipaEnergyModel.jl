@@ -660,8 +660,7 @@ function add_expressions_to_constraints!(
     end
 
     for table_name in (
-        :ramping_without_unit_commitment,
-        :ramping_with_unit_commitment,
+        :min_output_flow_with_unit_commitment,
         :max_ramp_with_unit_commitment,
         :max_ramp_without_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
@@ -700,8 +699,7 @@ function add_expressions_to_constraints!(
         expression_workspace,
     )
     for table_name in (
-        :ramping_without_unit_commitment,
-        :ramping_with_unit_commitment,
+        :min_output_flow_with_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
         :max_ramp_with_unit_commitment,
     )

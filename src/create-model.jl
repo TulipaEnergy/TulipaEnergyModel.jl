@@ -143,16 +143,14 @@ function create_model(
         constraints,
     )
 
-    if !isempty(constraints[:ramping_with_unit_commitment].indices)
-        @timeit to "add_ramping_constraints!" add_ramping_constraints!(
-            connection,
-            model,
-            variables,
-            expressions,
-            constraints,
-            profiles,
-        )
-    end
+    @timeit to "add_ramping_constraints!" add_ramping_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles,
+    )
 
     if write_lp_file
         @timeit to "write lp file" JuMP.write_to_file(model, "model.lp")

@@ -9,8 +9,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     indices_dict = Dict(
         table_name => _append_ramping_data_to_indices(connection, table_name) for
         table_name in (
-            :ramping_with_unit_commitment,
-            :ramping_without_unit_commitment,
+            :min_output_flow_with_unit_commitment,
             :max_ramp_without_unit_commitment,
             :max_ramp_with_unit_commitment,
             :max_output_flow_with_basic_unit_commitment,
@@ -32,8 +31,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                 ) * row.capacity for row in indices
             ]
         end for table_name in (
-            :ramping_with_unit_commitment,
-            :ramping_without_unit_commitment,
+            :min_output_flow_with_unit_commitment,
             :max_ramp_without_unit_commitment,
             :max_ramp_with_unit_commitment,
             :max_output_flow_with_basic_unit_commitment,
@@ -42,7 +40,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
 
     # - Flow that is above the minimum operating point of the asset
     for table_name in (
-        :ramping_with_unit_commitment,
+        :min_output_flow_with_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
         :max_ramp_with_unit_commitment,
     )
@@ -84,7 +82,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     end
 
     # - Minimum output flow above the minimum operating point
-    let table_name = :ramping_with_unit_commitment, cons = constraints[table_name]
+    let table_name = :min_output_flow_with_unit_commitment, cons = constraints[table_name]
         indices = indices_dict[table_name]
         attach_constraint!(
             model,
@@ -214,7 +212,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         attach_constraint!(
             model,
             constraints[table_name],
-            :max_ramp_up_without_unit_commitment,
+            :max_ramp_down_without_unit_commitment,
             [
                 if row.time_block_start == 1
                     @constraint(model, 0 == 0) # Placeholder for case k = 1
