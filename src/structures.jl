@@ -1,36 +1,10 @@
-export GraphAssetData,
-    GraphFlowData,
-    EnergyProblem,
-    TulipaVariable,
-    TulipaConstraint,
-    RepresentativePeriod,
-    PeriodsBlock,
-    TimestepsBlock,
-    Timeframe,
-    Year
+export EnergyProblem, TulipaVariable, TulipaConstraint, PeriodsBlock, TimestepsBlock
 
 const TimestepsBlock = UnitRange{Int}
 const PeriodsBlock = UnitRange{Int}
 
 const PeriodType = Symbol
 const PERIOD_TYPES = [:rep_periods, :timeframe]
-
-"""
-Structure to hold the data of the year.
-"""
-struct Year
-    id::Int
-    length::Int
-    is_milestone::Bool
-end
-
-"""
-Structure to hold the data of the timeframe.
-"""
-struct Timeframe
-    num_periods::Int64
-    map_periods_to_rp::DataFrame
-end
 
 """
 Structure to hold the JuMP variables for the TulipaEnergyModel
@@ -208,124 +182,6 @@ function attach_coefficient!(cons::TulipaConstraint, name::Symbol, container)
     return nothing
 end
 
-"""
-Structure to hold the data of one representative period.
-"""
-struct RepresentativePeriod
-    weight::Float64
-    timesteps::TimestepsBlock
-    resolution::Float64
-
-    function RepresentativePeriod(weight, num_timesteps, resolution)
-        return new(weight, 1:num_timesteps, resolution)
-    end
-end
-
-"""
-Structure to hold the asset data in the graph.
-"""
-mutable struct GraphAssetData
-    # asset
-    type::String
-    group::Union{Missing,String}
-    capacity::Float64
-    min_operating_point::Union{Missing,Float64}
-    investment_method::String
-    investment_integer::Bool
-    technical_lifetime::Float64
-    economic_lifetime::Float64
-    discount_rate::Float64
-    consumer_balance_sense::Union{MathOptInterface.EqualTo,MathOptInterface.GreaterThan}
-    capacity_storage_energy::Float64
-    is_seasonal::Bool
-    use_binary_storage_method::Union{Missing,String}
-    unit_commitment::Bool
-    unit_commitment_method::Union{Missing,String}
-    unit_commitment_integer::Bool
-    ramping::Bool
-    storage_method_energy::Bool
-    energy_to_power_ratio::Float64
-    investment_integer_storage_energy::Bool
-    max_ramp_up::Union{Missing,Float64}
-    max_ramp_down::Union{Missing,Float64}
-
-    # asset_milestone
-    investable::Dict{Int,Bool}
-    peak_demand::Dict{Int,Float64}
-    storage_inflows::Dict{Int,Union{Missing,Float64}}
-    initial_storage_level::Dict{Int,Union{Missing,Float64}}
-    min_energy_timeframe_partition::Dict{Int,Union{Missing,Float64}}
-    max_energy_timeframe_partition::Dict{Int,Union{Missing,Float64}}
-    units_on_cost::Dict{Int,Union{Missing,Float64}}
-
-    # asset_commission
-    fixed_cost::Dict{Int,Float64}
-    investment_cost::Dict{Int,Float64}
-    investment_limit::Dict{Int,Union{Missing,Float64}}
-    fixed_cost_storage_energy::Dict{Int,Float64}
-    investment_cost_storage_energy::Dict{Int,Float64}
-    investment_limit_storage_energy::Dict{Int,Union{Missing,Float64}}
-
-    # asset_both
-    active::Dict{Int,Dict{Int,Bool}}
-    decommissionable::Dict{Int,Dict{Int,Bool}}
-    initial_units::Dict{Int,Dict{Int,Float64}}
-    initial_storage_units::Dict{Int,Dict{Int,Float64}}
-
-    # profiles
-    timeframe_profiles::Dict{Int,Dict{Int,Dict{String,Vector{Float64}}}}
-    rep_periods_profiles::Dict{Int,Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}}
-
-    # You don't need profiles to create the struct, so initiate it empty
-    function GraphAssetData(args...)
-        timeframe_profiles = Dict{Int,Dict{Int,Dict{String,Vector{Float64}}}}()
-        rep_periods_profiles = Dict{Int,Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}}()
-        return new(args..., timeframe_profiles, rep_periods_profiles)
-    end
-end
-
-"""
-Structure to hold the flow data in the graph.
-"""
-mutable struct GraphFlowData
-    # flow
-    carrier::String
-    is_transport::Bool
-    capacity::Float64
-    technical_lifetime::Float64
-    economic_lifetime::Float64
-    discount_rate::Float64
-    investment_integer::Bool
-
-    # flow_milestone
-    investable::Dict{Int,Bool}
-    variable_cost::Dict{Int,Float64}
-
-    # flow_commission
-    fixed_cost::Dict{Int,Float64}
-    investment_cost::Dict{Int,Float64}
-    efficiency::Dict{Int,Float64}
-    investment_limit::Dict{Int,Union{Missing,Float64}}
-
-    # flow_both
-    active::Dict{Int,Dict{Int,Bool}}
-    decommissionable::Dict{Int,Dict{Int,Bool}}
-    initial_export_units::Dict{Int,Dict{Int,Float64}}
-    initial_import_units::Dict{Int,Dict{Int,Float64}}
-
-    # profiles
-    timeframe_profiles::Dict{Int,Dict{String,Vector{Float64}}}
-    rep_periods_profiles::Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}
-end
-
-function GraphFlowData(args...)
-    return GraphFlowData(
-        args...,
-        Dict{Int,Dict{String,Vector{Float64}}}(),
-        Dict{Int,Dict{Tuple{String,Int},Vector{Float64}}}(),
-    )
-end
-
 mutable struct ProfileLookup
     # The integers here are Int32 because they are obtained directly from DuckDB
     #
@@ -361,23 +217,10 @@ See the [basic example tutorial](@ref basic-example) to see how these can be use
 """
 mutable struct EnergyProblem
     db_connection::DuckDB.DB
-    graph::MetaGraph{
-        Int,
-        SimpleDiGraph{Int},
-        String,
-        GraphAssetData,
-        GraphFlowData,
-        Nothing, # Internal data
-        Nothing, # Edge weight function
-        Nothing, # Default edge weight
-    }
     variables::Dict{Symbol,TulipaVariable}
     expressions::Dict{Symbol,TulipaExpression}
     constraints::Dict{Symbol,TulipaConstraint}
     profiles::ProfileLookup
-    representative_periods::Dict{Int,Vector{RepresentativePeriod}}
-    timeframe::Timeframe
-    years::Vector{Year}
     model_parameters::ModelParameters
     model::Union{JuMP.Model,Nothing}
     solved::Bool
@@ -391,10 +234,7 @@ mutable struct EnergyProblem
     This will call relevant functions to generate all input that is required for the model creation.
     """
     function EnergyProblem(connection; model_parameters_file = "")
-        model = JuMP.Model()
-
-        graph, representative_periods, timeframe, years =
-            @timeit to "create_internal_structure" create_internal_structures(connection)
+        @timeit to "create_internal_structure" create_internal_structures(connection)
 
         variables = @timeit to "compute_variables_indices" compute_variables_indices(connection)
 
@@ -405,14 +245,10 @@ mutable struct EnergyProblem
 
         energy_problem = new(
             connection,
-            graph,
             variables,
             Dict(),
             constraints,
             profiles,
-            representative_periods,
-            timeframe,
-            years,
             ModelParameters(connection, model_parameters_file),
             nothing,
             false,

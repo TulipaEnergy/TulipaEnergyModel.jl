@@ -8,12 +8,10 @@ Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
 function create_model!(energy_problem; kwargs...)
     energy_problem.model = @timeit to "create_model" create_model(
         energy_problem.db_connection,
-        energy_problem.graph,
         energy_problem.variables,
         energy_problem.expressions,
         energy_problem.constraints,
         energy_problem.profiles,
-        energy_problem.representative_periods,
         energy_problem.model_parameters;
         kwargs...,
     )
@@ -31,12 +29,10 @@ Create the energy model manually. We recommend using [`create_model!`](@ref) ins
 """
 function create_model(
     connection,
-    graph,
     variables,
     expressions,
     constraints,
     profiles,
-    representative_periods,
     model_parameters;
     write_lp_file = false,
     enable_names = true,

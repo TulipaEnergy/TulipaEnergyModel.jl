@@ -52,16 +52,3 @@ end
         print(energy_problem)
     end
 end
-
-@testset "Graph structure" begin
-    @testset "Graph structure is correct" begin
-        connection = DBInterface.connect(DuckDB.DB)
-        _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
-        graph, _, _ = TulipaEnergyModel.create_internal_structures(connection)
-
-        @test Graphs.nv(graph) == 6
-        @test Graphs.ne(graph) == 5
-        @test collect(Graphs.edges(graph)) ==
-              [Graphs.Edge(e) for e in [(1, 2), (3, 2), (4, 2), (5, 2), (6, 2)]]
-    end
-end
