@@ -27,13 +27,13 @@ function _create_investment_variable!(
 end
 
 """
-    add_investment_variables!(model, graph, sets)
+    add_investment_variables!(model, variables)
 
 Adds investment, decommission, and energy-related variables to the optimization `model`,
 and sets integer constraints on selected variables based on the `graph` data.
 
 """
-function add_investment_variables!(model, graph, sets, variables)
+function add_investment_variables!(model, variables)
     for (name, keys_from_row, lower_bound_from_row, upper_bound_from_row, integer_from_row) in [
         (
             :flows_investment,
@@ -52,22 +52,15 @@ function add_investment_variables!(model, graph, sets, variables)
             row -> row.investment_integer,
         ),
         (
-            :assets_decommission_simple_method,
-            row -> (row.milestone_year, row.asset),
+            :assets_decommission,
+            row -> (row.asset, row.milestone_year, row.commission_year),
             _ -> 0.0,
             _ -> Inf,
             row -> row.investment_integer,
         ),
         (
-            :flows_decommission_using_simple_method,
-            row -> (row.milestone_year, (row.from_asset, row.to_asset)),
-            _ -> 0.0,
-            _ -> Inf,
-            _ -> false,
-        ),
-        (
-            :assets_decommission_compact_method,
-            row -> (row.asset, row.milestone_year, row.commission_year),
+            :flows_decommission,
+            row -> ((row.from_asset, row.to_asset), row.milestone_year, row.commission_year),
             _ -> 0.0,
             _ -> Inf,
             row -> row.investment_integer,
@@ -84,8 +77,8 @@ function add_investment_variables!(model, graph, sets, variables)
             row -> row.investment_integer_storage_energy,
         ),
         (
-            :assets_decommission_energy_simple_method,
-            row -> (row.milestone_year, row.asset),
+            :assets_decommission_energy,
+            row -> (row.asset, row.milestone_year, row.commission_year),
             _ -> 0.0,
             _ -> Inf,
             row -> row.investment_integer_storage_energy,

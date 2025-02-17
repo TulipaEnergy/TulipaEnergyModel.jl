@@ -1,47 +1,68 @@
-function add_storage_expressions!(model, graph, sets, variables)
-    assets_investment_energy = variables[:assets_investment_energy].lookup
-    assets_decommission_energy_simple_method =
-        variables[:assets_decommission_energy_simple_method].lookup
-    accumulated_investment_units_using_simple_method =
-        model[:accumulated_investment_units_using_simple_method]
-    accumulated_decommission_units_using_simple_method =
-        model[:accumulated_decommission_units_using_simple_method]
+function add_storage_expressions!(connection, model, expressions)
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE expr_available_energy_capacity AS
+        SELECT
+            nextval('id') AS index,
+            asset_milestone.asset,
+            asset_milestone.milestone_year,
+            ANY_VALUE(asset.capacity) AS capacity,
+            ANY_VALUE(asset.capacity_storage_energy) AS capacity_storage_energy,
+            ANY_VALUE(asset.energy_to_power_ratio) AS energy_to_power_ratio,
+            ANY_VALUE(asset.storage_method_energy) AS storage_method_energy,
+            SUM(expr_avail.initial_storage_units) AS available_initial_storage_units,
+            ARRAY_AGG(expr_avail.index) AS avail_indices,
+        FROM asset_milestone
+        LEFT JOIN asset
+            ON asset_milestone.asset = asset.asset
+        LEFT JOIN expr_available_energy_units AS expr_avail
+            ON asset_milestone.asset = expr_avail.asset
+            AND asset_milestone.milestone_year = expr_avail.milestone_year
+        WHERE
+            asset.type = 'storage'
+        GROUP BY
+            asset_milestone.asset,
+            asset_milestone.milestone_year
+        ORDER BY index
+        ",
+    )
 
-    @expression(
-        model,
-        accumulated_energy_units_simple_method[
-            y ∈ sets.Y,
-            a ∈ sets.Ase[y]∩sets.decommissionable_assets_using_simple_method,
-        ],
-        sum(values(graph[a].initial_storage_units[y])) + sum(
-            assets_investment_energy[yy, a] for
-            yy in sets.Y if a ∈ (sets.Ase[yy] ∩ sets.investable_assets_using_simple_method[yy]) &&
-            sets.starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
-        ) - sum(
-            assets_decommission_energy_simple_method[yy, a] for yy in sets.Y if
-            a ∈ sets.Ase[yy] && sets.starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
-        )
-    )
-    @expression(
-        model,
-        accumulated_energy_capacity[y ∈ sets.Y, a ∈ sets.As],
-        if graph[a].storage_method_energy &&
-           a ∈ sets.Ase ∩ sets.decommissionable_assets_using_simple_method
-            graph[a].capacity_storage_energy * accumulated_energy_units_simple_method[y, a]
-        else
-            (
-                graph[a].capacity_storage_energy * sum(values(graph[a].initial_storage_units[y])) +
-                if a ∈ sets.Ai[y] ∩ sets.decommissionable_assets_using_simple_method
-                    graph[a].energy_to_power_ratio *
-                    graph[a].capacity *
-                    (
-                        accumulated_investment_units_using_simple_method[a, y] -
-                        accumulated_decommission_units_using_simple_method[a, y]
+    expressions[:available_energy_capacity] =
+        TulipaExpression(connection, "expr_available_energy_capacity")
+
+    expr_avail = expressions[:available_energy_units].expressions[:energy]
+
+    # TODO: Reevaluate the available_energy_capacity definition
+    let table_name = :available_energy_capacity, expr = expressions[table_name]
+        indices = DuckDB.query(connection, "FROM expr_$table_name")
+        attach_expression!(
+            expr,
+            :energy_capacity,
+            [
+                begin
+                    capacity_for_initial = row.capacity_storage_energy
+                    capacity_for_variation = if row.storage_method_energy
+                        row.capacity_storage_energy
+                    else
+                        row.energy_to_power_ratio * row.capacity
+                    end
+                    @expression(
+                        model,
+                        # We remove row.available_initial_storage_units from the sum of the expression
+                        # because it is added separately with a different coefficient (capacity_for_initial).
+                        # We need to keep the available_initial_storage_units
+                        # inside the expression for the general expression
+                        # (file src/expressions/multi-year.jl) to be used in
+                        # the fixed cost in the objective function
+                        capacity_for_initial * row.available_initial_storage_units +
+                        capacity_for_variation * (
+                            sum(expr_avail[avail_index] for avail_index in row.avail_indices) -
+                            row.available_initial_storage_units
+                        )
                     )
-                else
-                    0.0
-                end
-            )
-        end
-    )
+                end for row in indices
+            ],
+        )
+    end
 end

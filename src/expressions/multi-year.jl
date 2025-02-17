@@ -1,142 +1,256 @@
-function create_multi_year_expressions!(model, graph, sets, variables)
+function create_multi_year_expressions!(connection, model, variables, expressions)
+    # The variable assets_decommission is defined for (a, my, cy)
+    # The capacity expression that we need to compute is
+    #
+    #   profile_times_capacity[a, my] = ∑_cy agg(
+    #     profile[
+    #       profile_name[a, cy, 'availability'],
+    #       my,
+    #       rp
+    #     ],
+    #     time_block
+    #   ) * available_units[a, my, cy]
+    #
+    # where
+    #
+    # - a=asset, my=milestone_year, cy=commission_year, rp=rep_period
+    # - profile_name[a, cy, 'availability']: name of profile for (a, cy, 'availability')
+    # - profile[p_name, my, rp]: profile vector named `p_name` for my and rp (or some default value, ignored here)
+    # - agg(p_vector, time_block): some aggregation of vector p_vector over time_block
+    #
+    # and
+    #
+    #   available_units[a, my, cy] =
+    #       initial_units[a, my, cy] +
+    #       investment_units[a, cy]* -
+    #       ∑_{past_my: past_my ≤ my} assets_decommission[a, past_my, cy]
+    #
+    # The investment_units[a, cy] are only added if cy + technical_lifetime - 1 ≥ milestone_year
+    #
+    # Assumption:
+    # - asset_both exists only for (a,my,cy) where technical lifetime was already taken into account
 
-    # Unpacking
-    assets_investment = variables[:assets_investment].lookup
-    assets_decommission_simple_method = variables[:assets_decommission_simple_method].lookup
-    assets_decommission_compact_method = variables[:assets_decommission_compact_method].lookup
-    flows_investment = variables[:flows_investment].lookup
-    flows_decommission_using_simple_method =
-        variables[:flows_decommission_using_simple_method].lookup
+    _create_multi_year_expressions_indices!(connection, expressions)
 
-    accumulated_initial_units = @expression(
-        model,
-        accumulated_initial_units[a in sets.A, y in sets.Y],
-        sum(values(graph[a].initial_units[y]))
+    let table_name = :available_asset_units, expr = expressions[table_name]
+        var_inv = variables[:assets_investment].container
+        var_dec = variables[:assets_decommission].container
+
+        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY index")
+        attach_expression!(
+            expr,
+            :assets,
+            JuMP.AffExpr[
+                if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
+                    @expression(model, row.initial_units)
+                elseif ismissing(row.var_investment_index)
+                    @expression(
+                        model,
+                        row.initial_units -
+                        sum(var_dec[idx] for idx in row.var_decommission_indices)
+                    )
+                elseif ismissing(row.var_decommission_indices)
+                    @expression(model, row.initial_units + var_inv[row.var_investment_index])
+                else
+                    @expression(
+                        model,
+                        row.initial_units + var_inv[row.var_investment_index] -
+                        sum(var_dec[idx] for idx in row.var_decommission_indices)
+                    )
+                end for row in indices
+            ],
+        )
+    end
+
+    let table_name = :available_energy_units, expr = expressions[table_name]
+        var_energy_inv = variables[:assets_investment_energy].container
+        var_energy_dec = variables[:assets_decommission_energy].container
+
+        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY index")
+        attach_expression!(
+            expr,
+            :energy,
+            JuMP.AffExpr[
+                if ismissing(row.var_energy_decommission_indices) &&
+                   ismissing(row.var_energy_investment_index)
+                    @expression(model, row.initial_storage_units)
+                elseif ismissing(row.var_energy_investment_index)
+                    @expression(
+                        model,
+                        row.initial_storage_units -
+                        sum(var_energy_dec[idx] for idx in row.var_energy_decommission_indices)
+                    )
+                elseif ismissing(row.var_energy_decommission_indices)
+                    @expression(
+                        model,
+                        row.initial_storage_units + var_energy_inv[row.var_energy_investment_index]
+                    )
+                else
+                    @expression(
+                        model,
+                        row.initial_storage_units +
+                        var_energy_inv[row.var_energy_investment_index] -
+                        sum(var_energy_dec[idx] for idx in row.var_energy_decommission_indices)
+                    )
+                end for row in indices
+            ],
+        )
+    end
+
+    let table_name = :available_flow_units, expr = expressions[table_name]
+        var_inv = variables[:flows_investment].container
+        var_dec = variables[:flows_decommission].container
+
+        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY index")
+        attach_expression!(
+            expr,
+            :export,
+            JuMP.AffExpr[
+                if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
+                    @expression(model, row.initial_export_units)
+                elseif ismissing(row.var_investment_index)
+                    @expression(
+                        model,
+                        row.initial_export_units -
+                        sum(var_dec[idx] for idx in row.var_decommission_indices)
+                    )
+                elseif ismissing(row.var_decommission_indices)
+                    @expression(
+                        model,
+                        row.initial_export_units + var_inv[row.var_investment_index]
+                    )
+                else
+                    @expression(
+                        model,
+                        row.initial_export_units + var_inv[row.var_investment_index] -
+                        sum(var_dec[idx] for idx in row.var_decommission_indices)
+                    )
+                end for row in indices
+            ],
+        )
+
+        attach_expression!(
+            expr,
+            :import,
+            JuMP.AffExpr[
+                if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
+                    @expression(model, row.initial_import_units)
+                elseif ismissing(row.var_investment_index)
+                    @expression(
+                        model,
+                        row.initial_import_units -
+                        sum(var_dec[idx] for idx in row.var_decommission_indices)
+                    )
+                elseif ismissing(row.var_decommission_indices)
+                    @expression(
+                        model,
+                        row.initial_import_units + var_inv[row.var_investment_index]
+                    )
+                else
+                    @expression(
+                        model,
+                        row.initial_import_units + var_inv[row.var_investment_index] -
+                        sum(var_dec[idx] for idx in row.var_decommission_indices)
+                    )
+                end for row in indices
+            ],
+        )
+    end
+end
+
+function _create_multi_year_expressions_indices!(connection, expressions)
+    DuckDB.query(
+        connection,
+        "
+        CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE expr_available_asset_units AS
+        SELECT
+            nextval('id') AS index,
+            asset_both.asset AS asset,
+            asset_both.milestone_year AS milestone_year,
+            asset_both.commission_year AS commission_year,
+            ANY_VALUE(asset_both.initial_units) AS initial_units,
+            ARRAY_AGG(var_dec.index) FILTER (var_dec.index IS NOT NULL) AS var_decommission_indices,
+            IF (
+                asset_both.commission_year + ANY_VALUE(asset.technical_lifetime) - 1 >= asset_both.milestone_year,
+                ANY_VALUE(var_inv.index),
+                NULL
+            ) AS var_investment_index,
+        FROM asset_both
+        LEFT JOIN asset
+            ON asset_both.asset = asset.asset
+        LEFT JOIN var_assets_decommission AS var_dec
+            ON asset_both.asset = var_dec.asset
+            AND asset_both.commission_year = var_dec.commission_year
+            AND asset_both.milestone_year >= var_dec.milestone_year
+        LEFT JOIN var_assets_investment AS var_inv
+            ON asset_both.asset = var_inv.asset
+            AND asset_both.commission_year = var_inv.milestone_year
+        GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
+        ",
     )
 
-    ### Expressions for multi-year investment simple method
-    accumulated_investment_units_using_simple_method = @expression(
-        model,
-        accumulated_investment_units_using_simple_method[
-            a ∈ sets.decommissionable_assets_using_simple_method,
-            y in sets.Y,
-        ],
-        sum(
-            assets_investment[yy, a] for
-            yy in sets.Y if a ∈ sets.investable_assets_using_simple_method[yy] &&
-            sets.starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
-        )
-    )
-    @expression(
-        model,
-        accumulated_decommission_units_using_simple_method[
-            a ∈ sets.decommissionable_assets_using_simple_method,
-            y in sets.Y,
-        ],
-        sum(
-            assets_decommission_simple_method[yy, a] for
-            yy in sets.Y if sets.starting_year_using_simple_method[(y, a)] ≤ yy ≤ y
-        )
-    )
-    @expression(
-        model,
-        accumulated_units_simple_method[
-            a ∈ sets.decommissionable_assets_using_simple_method,
-            y ∈ sets.Y,
-        ],
-        accumulated_initial_units[a, y] + accumulated_investment_units_using_simple_method[a, y] -
-        accumulated_decommission_units_using_simple_method[a, y]
+    DuckDB.query(
+        connection,
+        "
+        CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE expr_available_energy_units AS
+        SELECT
+            nextval('id') AS index,
+            asset_both.asset AS asset,
+            asset_both.milestone_year AS milestone_year,
+            asset_both.commission_year AS commission_year,
+            ANY_VALUE(asset_both.initial_storage_units) AS initial_storage_units,
+            ARRAY_AGG(var_energy_dec.index) FILTER (var_energy_dec.index IS NOT NULL) AS var_energy_decommission_indices,
+            ANY_VALUE(var_energy_inv.index) AS var_energy_investment_index,
+        FROM asset_both
+        LEFT JOIN asset
+            ON asset.asset = asset_both.asset
+        LEFT JOIN var_assets_decommission_energy AS var_energy_dec
+            ON asset_both.asset = var_energy_dec.asset
+            AND asset_both.commission_year = var_energy_dec.commission_year
+            AND asset_both.milestone_year >= var_energy_dec.milestone_year
+        LEFT JOIN var_assets_investment_energy AS var_energy_inv
+            ON asset_both.asset = var_energy_inv.asset
+            AND asset_both.commission_year = var_energy_inv.milestone_year
+        WHERE
+            asset.type == 'storage'
+        GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
+        ",
     )
 
-    ### Expressions for multi-year investment compact method
-    @expression(
-        model,
-        accumulated_decommission_units_using_compact_method[(
-            a,
-            y,
-            v,
-        ) in sets.accumulated_set_using_compact_method],
-        sum(
-            assets_decommission_compact_method[(a, yy, v)] for
-            yy in sets.Y if v ≤ yy ≤ y && (a, yy, v) in sets.decommission_set_using_compact_method
-        )
+    DuckDB.query(
+        connection,
+        "
+        CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE expr_available_flow_units AS
+        SELECT
+            nextval('id') AS index,
+            flow_both.from_asset AS from_asset,
+            flow_both.to_asset AS to_asset,
+            flow_both.milestone_year AS milestone_year,
+            flow_both.commission_year AS commission_year,
+            ANY_VALUE(flow_both.initial_export_units) AS initial_export_units,
+            ANY_VALUE(flow_both.initial_import_units) AS initial_import_units,
+            ARRAY_AGG(var_dec.index) FILTER (var_dec.index IS NOT NULL) AS var_decommission_indices,
+            ANY_VALUE(var_inv.index) AS var_investment_index,
+        FROM flow_both
+        LEFT JOIN var_flows_decommission AS var_dec
+            ON flow_both.to_asset = var_dec.to_asset
+            AND flow_both.from_asset = var_dec.from_asset
+            AND flow_both.commission_year = var_dec.commission_year
+            AND var_dec.milestone_year <= flow_both.milestone_year
+        LEFT JOIN var_flows_investment AS var_inv
+            ON flow_both.to_asset = var_inv.to_asset
+            AND flow_both.from_asset = var_inv.from_asset
+            AND flow_both.commission_year = var_inv.milestone_year
+        GROUP BY flow_both.from_asset, flow_both.to_asset, flow_both.milestone_year, flow_both.commission_year
+        ",
     )
-    cond1(a, y, v) = a in sets.existing_assets_by_year_using_compact_method[v]
-    cond2(a, y, v) = v in sets.Y && a in sets.investable_assets_using_compact_method[v]
-    accumulated_units_compact_method =
-        model[:accumulated_units_compact_method] = JuMP.AffExpr[
-            if cond1(a, y, v) && cond2(a, y, v)
-                @expression(
-                    model,
-                    graph[a].initial_units[y][v] + assets_investment[v, a] -
-                    accumulated_decommission_units_using_compact_method[(a, y, v)]
-                )
-            elseif cond1(a, y, v) && !cond2(a, y, v)
-                @expression(
-                    model,
-                    graph[a].initial_units[y][v] -
-                    accumulated_decommission_units_using_compact_method[(a, y, v)]
-                )
-            elseif !cond1(a, y, v) && cond2(a, y, v)
-                @expression(
-                    model,
-                    assets_investment[v, a] -
-                    accumulated_decommission_units_using_compact_method[(a, y, v)]
-                )
-            else
-                @expression(model, 0.0)
-            end for (a, y, v) in sets.accumulated_set_using_compact_method
-        ]
 
-    ### Expressions for multi-year investment for accumulated units no matter the method
-    model[:accumulated_units] = JuMP.AffExpr[
-        if a in sets.decommissionable_assets_using_simple_method
-            @expression(model, accumulated_units_simple_method[a, y])
-        elseif a in sets.decommissionable_assets_using_compact_method
-            @expression(
-                model,
-                sum(
-                    accumulated_units_compact_method[sets.accumulated_set_using_compact_method_lookup[(
-                        a,
-                        y,
-                        v,
-                    )]] for
-                    v in sets.V_all if (a, y, v) in sets.accumulated_set_using_compact_method
-                )
-            )
-        else
-            @expression(model, sum(values(graph[a].initial_units[y])))
-        end for a in sets.A for y in sets.Y
-    ]
-    ## Expressions for transport assets
-    @expression(
-        model,
-        accumulated_investment_units_transport_using_simple_method[y ∈ sets.Y, (u, v) ∈ sets.Ft],
-        sum(
-            flows_investment[yy, (u, v)] for yy in sets.Y if (u, v) ∈ sets.Fi[yy] &&
-            sets.starting_year_flows_using_simple_method[(y, (u, v))] ≤ yy ≤ y
-        )
-    )
-    @expression(
-        model,
-        accumulated_decommission_units_transport_using_simple_method[y ∈ sets.Y, (u, v) ∈ sets.Ft],
-        sum(
-            flows_decommission_using_simple_method[yy, (u, v)] for
-            yy in sets.Y if sets.starting_year_flows_using_simple_method[(y, (u, v))] ≤ yy ≤ y
-        )
-    )
-    @expression(
-        model,
-        accumulated_flows_export_units[y ∈ sets.Y, (u, v) ∈ sets.Ft],
-        sum(values(graph[u, v].initial_export_units[y])) +
-        accumulated_investment_units_transport_using_simple_method[y, (u, v)] -
-        accumulated_decommission_units_transport_using_simple_method[y, (u, v)]
-    )
-    @expression(
-        model,
-        accumulated_flows_import_units[y ∈ sets.Y, (u, v) ∈ sets.Ft],
-        sum(values(graph[u, v].initial_import_units[y])) +
-        accumulated_investment_units_transport_using_simple_method[y, (u, v)] -
-        accumulated_decommission_units_transport_using_simple_method[y, (u, v)]
-    )
+    for expr_name in (:available_asset_units, :available_energy_units, :available_flow_units)
+        expressions[expr_name] = TulipaExpression(connection, "expr_$expr_name")
+    end
+
+    return nothing
 end

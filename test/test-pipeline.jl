@@ -24,8 +24,8 @@ end
     graph, representative_periods, timeframe, years =
         TulipaEnergyModel.create_internal_structures(connection)
     model_parameters = TulipaEnergyModel.ModelParameters(connection)
-    sets = TulipaEnergyModel.create_sets(graph, years)
     variables = TulipaEnergyModel.compute_variables_indices(connection)
+    expressions = Dict()
     constraints = TulipaEnergyModel.compute_constraints_indices(connection)
     profiles = TulipaEnergyModel.prepare_profiles_structure(connection)
 
@@ -33,8 +33,8 @@ end
     model = TulipaEnergyModel.create_model(
         connection,
         graph,
-        sets,
         variables,
+        expressions,
         constraints,
         profiles,
         representative_periods,
