@@ -1,9 +1,10 @@
 export create_model!, create_model
 
 """
-    create_model!(energy_problem; verbose = false)
+    create_model!(energy_problem; kwargs...)
 
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
+Any keyword argument will be passed to the underlyting [`create_model`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
     energy_problem.model = @timeit to "create_model" create_model(
@@ -23,7 +24,16 @@ function create_model!(energy_problem; kwargs...)
 end
 
 """
-    model = create_model(args...; write_lp_file = false, enable_names = true)
+    model = create_model(
+        connection,
+        variables,
+        expressions,
+        constraints,
+        profiles,
+        model_parameters;
+        write_lp_file = false,
+        enable_names = true
+    )
 
 Create the energy model manually. We recommend using [`create_model!`](@ref) instead.
 """
@@ -57,14 +67,11 @@ function create_model(
     @timeit to "add_storage_variables!" add_storage_variables!(connection, model, variables)
 
     ## Add expressions to dataframes
-    # TODO: What will improve this? Variables (#884)?, Constraints?
     @timeit to "add_expressions_to_constraints!" add_expressions_to_constraints!(
         connection,
         variables,
         constraints,
-        model,
         expression_workspace,
-        profiles,
     )
 
     ## Expressions for multi-year investment

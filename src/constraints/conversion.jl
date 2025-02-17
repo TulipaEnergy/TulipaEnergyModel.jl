@@ -10,7 +10,6 @@ add_conversion_constraints!(model,
 
 Adds the conversion asset constraints to the model.
 """
-
 function add_conversion_constraints!(model, constraints)
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_conversion, cons = constraints[table_name]

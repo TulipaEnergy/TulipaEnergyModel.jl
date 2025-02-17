@@ -33,7 +33,6 @@ function add_storage_expressions!(connection, model, expressions)
 
     expr_avail = expressions[:available_energy_units].expressions[:energy]
 
-    # TODO: Reevaluate the available_energy_capacity definition
     let table_name = :available_energy_capacity, expr = expressions[table_name]
         indices = DuckDB.query(connection, "FROM expr_$table_name")
         attach_expression!(

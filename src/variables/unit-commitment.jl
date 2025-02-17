@@ -1,7 +1,7 @@
 export add_unit_commitment_variables!
 
 """
-    add_unit_commitment_variables!(model, ...)
+    add_unit_commitment_variables!(model, variables)
 
 Adds unit commitment variables to the optimization `model` based on the `:units_on` indices.
 Additionally, variables are constrained to be integers based on the `unit_commitment_integer` property.

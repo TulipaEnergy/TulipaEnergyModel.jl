@@ -2,15 +2,16 @@
 export prepare_profiles_structure
 
 """
-    add_expression_terms_rep_period_constraints!(df_cons,
-                                               df_flows,
-                                               workspace;
-                                               use_highest_resolution = true,
-                                               multiply_by_duration = true,
-                                               add_min_outgoing_flow_duration = false,
-                                               )
+    add_expression_terms_rep_period_constraints!(
+        connection,
+        cons,
+        flow;
+        use_highest_resolution = true,
+        multiply_by_duration = true,
+        add_min_outgoing_flow_duration = false,
+    )
 
-Computes the incoming and outgoing expressions per row of df_cons for the constraints
+Computes the incoming and outgoing expressions per row of `cons` for the constraints
 that are within (intra) the representative periods.
 
 This function is only used internally in the model.
@@ -100,14 +101,6 @@ function add_expression_terms_rep_period_constraints!(
         conditions_to_add_min_outgoing_flow_duration =
             add_min_outgoing_flow_duration && case.expr_key == :outgoing
         if conditions_to_add_min_outgoing_flow_duration
-            # TODO: Evaluate what to do with this
-            # Originally, this was a column attach to the indices Assuming the
-            # indices will be DuckDB tables, that would be problematic,
-            # although possible However, that would be the only place that
-            # DuckDB tables are changed after creation - notice that
-            # constraints create new tables when a new column is necessary The
-            # current solution is to attach as a coefficient, a new field of
-            # TulipaConstraint created just for this purpose
             attach_coefficient!(cons, :min_outgoing_flow_duration, ones(num_rows))
         end
 
@@ -243,13 +236,13 @@ function add_expression_terms_rep_period_constraints!(
 end
 
 """
-    add_expression_is_charging_terms_rep_period_constraints!(df_cons,
-                                                       is_charging_indices,
-                                                       is_charging_variables,
-                                                       workspace
-                                                       )
+    add_expression_is_charging_terms_rep_period_constraints!(
+        cons,
+        is_charging,
+        workspace,
+    )
 
-Computes the `is_charging` expressions per row of `df_cons` for the constraints
+Computes the `is_charging` expressions per row of `cons` for the constraints
 that are within (intra) the representative periods.
 
 This function is only used internally in the model.
@@ -296,12 +289,12 @@ end
 
 """
     add_expression_units_on_terms_rep_period_constraints!(
-        df_cons,
-        df_units_on,
+        cons,
+        units_on,
         workspace,
     )
 
-Computes the `units_on` expressions per row of `df_cons` for the constraints
+Computes the `units_on` expressions per row of `cons` for the constraints
 that are within (intra) the representative periods.
 
 This function is only used internally in the model.
@@ -344,7 +337,13 @@ function add_expression_units_on_terms_rep_period_constraints!(
 end
 
 """
-    add_expression_terms_over_clustered_year_constraints!(connection, cons, flow, profiles; is_storage_level = false)
+    add_expression_terms_over_clustered_year_constraints!(
+        connection,
+        cons,
+        flow,
+        profiles;
+        is_storage_level = false,
+    )
 
 Computes the incoming and outgoing expressions per row of df_inter for the constraints
 that are between (inter) the representative periods.
@@ -355,8 +354,7 @@ This function is only used internally in the model.
 function add_expression_terms_over_clustered_year_constraints!(
     connection,
     cons::TulipaConstraint,
-    flow::TulipaVariable,
-    profiles;
+    flow::TulipaVariable;
     is_storage_level = false,
 )
     num_rows = size(cons.indices, 1)
@@ -372,8 +370,6 @@ function add_expression_terms_over_clustered_year_constraints!(
         cons.expressions[case.expr_key] .= JuMP.AffExpr(0.0)
     end
 
-    # TODO: The interaction between year and timeframe is not clear yet, so this is probably wrong
-    #   At this moment, that relation is ignored (we don't even look at df_inter.year)
     grouped_cons_table_name = "t_grouped_$(cons.table_name)"
     if !_check_if_table_exists(connection, grouped_cons_table_name)
         DuckDB.query(
@@ -463,9 +459,6 @@ function add_expression_terms_over_clustered_year_constraints!(
             empty!.(flows_per_period_workspace)
 
             for (
-                rp,
-                storage_inflow,
-                num_timesteps,
                 var_indices,
                 var_time_block_start_vec,
                 var_time_block_end_vec,
@@ -473,9 +466,6 @@ function add_expression_terms_over_clustered_year_constraints!(
                 var_periods,
                 var_weights,
             ) in zip(
-                group_row.var_rep_periods,
-                group_row.storage_inflows,
-                group_row.num_timesteps,
                 group_row.var_indices,
                 group_row.var_time_block_start_vec,
                 group_row.var_time_block_end_vec,
@@ -592,14 +582,7 @@ function add_expression_terms_over_clustered_year_constraints!(
     return
 end
 
-function add_expressions_to_constraints!(
-    connection,
-    variables,
-    constraints,
-    model,
-    expression_workspace,
-    profiles,
-)
+function add_expressions_to_constraints!(connection, variables, constraints, expression_workspace)
     # Unpack variables
     # Creating the incoming and outgoing flow expressions
     @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
@@ -674,20 +657,17 @@ function add_expressions_to_constraints!(
         connection,
         constraints[:balance_storage_over_clustered_year],
         variables[:flow],
-        profiles,
         is_storage_level = true,
     )
     @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
         connection,
         constraints[:max_energy_over_clustered_year],
         variables[:flow],
-        profiles,
     )
     @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
         connection,
         constraints[:min_energy_over_clustered_year],
         variables[:flow],
-        profiles,
     )
     @timeit to "add_expression_is_charging_terms_rep_period_constraints!" add_expression_is_charging_terms_rep_period_constraints!(
         constraints[:capacity_incoming],

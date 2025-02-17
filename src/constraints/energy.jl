@@ -5,7 +5,6 @@ export add_energy_constraints!
 
 Adds the energy constraints for assets within the period blocks of the timeframe (inter-temporal) to the model.
 """
-
 function add_energy_constraints!(connection, model, constraints, profiles)
     ## INTER-TEMPORAL CONSTRAINTS (between representative periods)
 

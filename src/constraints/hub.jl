@@ -1,16 +1,10 @@
 export add_hub_constraints!
 
 """
-add_hub_constraints!(model,
-                     dataframes,
-                     Ah,
-                     incoming_flow_highest_in_out_resolution,
-                     outgoing_flow_highest_in_out_resolution,
-                     )
+    add_hub_constraints!(model, constraints)
 
 Adds the hub asset constraints to the model.
 """
-
 function add_hub_constraints!(model, constraints)
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_hub, cons = constraints[:balance_hub]
