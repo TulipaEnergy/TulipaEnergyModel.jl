@@ -1,4 +1,5 @@
 export EnergyProblem,
+    ProfileLookup,
     TulipaVariable,
     TulipaConstraint,
     TulipaExpression,
@@ -61,6 +62,9 @@ mutable struct TulipaConstraint
     end
 end
 
+"""
+Structure to hold some JuMP expressions that are not attached to constraints but are attached to a table.
+"""
 mutable struct TulipaExpression
     indices::DataFrame
     table_name::String
@@ -190,6 +194,9 @@ function attach_coefficient!(cons::TulipaConstraint, name::Symbol, container)
     return nothing
 end
 
+"""
+Structure to hold the dictionaries of profiles.
+"""
 mutable struct ProfileLookup
     # The integers here are Int32 because they are obtained directly from DuckDB
     #
