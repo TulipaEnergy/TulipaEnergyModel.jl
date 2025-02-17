@@ -39,7 +39,6 @@ mutable struct TulipaVariable
     indices::DataFrame
     table_name::String
     container::Vector{JuMP.VariableRef}
-    expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
     lookup::OrderedDict # TODO: This is probably not type stable so it's only used for strangling
 
     function TulipaVariable(connection, table_name::String)
@@ -47,7 +46,6 @@ mutable struct TulipaVariable
             DuckDB.query(connection, "SELECT * FROM $table_name") |> DataFrame,
             table_name,
             JuMP.VariableRef[],
-            Dict(),
             Dict(),
         )
     end
@@ -141,26 +139,26 @@ function attach_constraint!(model::JuMP.Model, cons::TulipaConstraint, name::Sym
 end
 
 """
-    attach_expression!(var_cons_or_expr, name, container)
-    attach_expression!(model, var_cons_or_expr, name, container)
+    attach_expression!(cons_or_expr, name, container)
+    attach_expression!(model, cons_or_expr, name, container)
 
 Attach a expression named `name` stored in `container`, and optionally set `model[name] = container`.
 This checks that the `container` length matches the stored `indices` number of rows.
 """
 function attach_expression!(
-    var_cons_or_expr::Union{TulipaVariable,TulipaConstraint,TulipaExpression},
+    cons_or_expr::Union{TulipaVariable,TulipaConstraint,TulipaExpression},
     name::Symbol,
     container::Vector{JuMP.AffExpr},
 )
-    if length(container) != var_cons_or_expr.num_rows
+    if length(container) != cons_or_expr.num_rows
         error("The number of expressions does not match the number of rows in the indices of $name")
     end
-    var_cons_or_expr.expressions[name] = container
+    cons_or_expr.expressions[name] = container
     return nothing
 end
 
 function attach_expression!(
-    var_cons_or_expr::Union{TulipaVariable,TulipaConstraint,TulipaExpression},
+    cons_or_expr::Union{TulipaVariable,TulipaConstraint,TulipaExpression},
     name::Symbol,
     container,
 )
@@ -172,10 +170,10 @@ function attach_expression!(
             "This variant is supposed to capture empty containers. This container is not empty for $name",
         )
     end
-    if var_cons_or_expr.num_rows > 0
+    if cons_or_expr.num_rows > 0
         error("The number of rows in indices table should be 0 for $name")
     end
-    var_cons_or_expr.expressions[name] = JuMP.AffExpr[]
+    cons_or_expr.expressions[name] = JuMP.AffExpr[]
     return nothing
 end
 

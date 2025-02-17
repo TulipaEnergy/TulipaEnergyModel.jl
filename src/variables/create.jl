@@ -199,7 +199,7 @@ function _create_variables_tables(connection)
             asset_both.commission_year,
             asset_both.decommissionable,
             asset_both.initial_units,
-            asset.investment_integer
+            asset.investment_integer,
         FROM asset_both
         LEFT JOIN asset
             ON asset.asset = asset_both.asset
@@ -218,6 +218,7 @@ function _create_variables_tables(connection)
             flow.to_asset,
             flow_both.milestone_year,
             flow_both.commission_year,
+            flow.investment_integer,
         FROM flow_both
         LEFT JOIN flow
             ON flow.from_asset = flow_both.from_asset
@@ -250,7 +251,6 @@ function _create_variables_tables(connection)
             asset.storage_method_energy = true
             AND asset_milestone.investable = true
             AND asset.type = 'storage'
-            AND asset.investment_method = 'simple'
         ",
     )
 
@@ -270,7 +270,6 @@ function _create_variables_tables(connection)
         WHERE
             asset.storage_method_energy = true
             AND asset.type = 'storage'
-            AND asset.investment_method = 'simple' -- TODO: Keep this or not?
             AND asset_both.decommissionable
             AND asset_both.commission_year != asset_both.milestone_year
         ",

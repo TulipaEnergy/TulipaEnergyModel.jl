@@ -63,7 +63,7 @@ function add_investment_variables!(model, variables)
             row -> ((row.from_asset, row.to_asset), row.milestone_year, row.commission_year),
             _ -> 0.0,
             _ -> Inf,
-            _ -> false,
+            row -> row.investment_integer,
         ),
         (
             :assets_investment_energy,
