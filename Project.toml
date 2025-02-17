@@ -24,8 +24,8 @@ TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
 [compat]
 CSV = "0.10"
 DataFrames = "1"
-DuckDB = "0.10, ~1.0" # ~1.0 until they fix https://github.com/duckdb/duckdb/issues/13911
-DuckDB_jll = "0.10, ~1.0" # DuckDB 1.0.0 still allows DuckDB_jll 1.1.0
+DuckDB = "0.10, ~1.0, 1"
+DuckDB_jll = "0.10, ~1.0"
 Graphs = "1.8"
 HiGHS = "1"
 JuMP = "1"
