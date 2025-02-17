@@ -344,12 +344,7 @@ function add_expression_units_on_terms_rep_period_constraints!(
 end
 
 """
-    add_expression_terms_over_clustered_year_constraints!(df_inter,
-                                               df_flows,
-                                               df_map,
-                                               graph,
-                                               representative_periods,
-                                               )
+    add_expression_terms_over_clustered_year_constraints!(connection, cons, flow, profiles; is_storage_level = false)
 
 Computes the incoming and outgoing expressions per row of df_inter for the constraints
 that are between (inter) the representative periods.

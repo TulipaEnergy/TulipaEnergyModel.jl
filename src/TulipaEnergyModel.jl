@@ -9,10 +9,6 @@ using DuckDB: DuckDB, DBInterface
 using TOML: TOML
 using TulipaIO: TulipaIO
 
-## Graph
-using Graphs: Graphs, SimpleDiGraph
-using MetaGraphsNext: MetaGraphsNext, MetaGraph
-
 ## Optimization
 using HiGHS: HiGHS
 using JuMP: JuMP, @constraint, @expression, @objective, @variable
@@ -48,7 +44,6 @@ for folder_name in ["variables", "constraints", "expressions"]
         include(joinpath(folder_path, file))
     end
 end
-include("economic-parameters.jl")
 include("objective.jl")
 include("create-model.jl")
 

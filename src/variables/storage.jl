@@ -1,11 +1,10 @@
 export add_storage_variables!
 
 """
-    add_storage_variables!(model, ...)
+    add_storage_variables!(connection, model, variables)
 
 Adds storage-related variables to the optimization `model`, including storage levels for both intra-representative periods and inter-representative periods, as well as charging state variables.
 The function also optionally sets binary constraints for certain charging variables based on storage methods.
-
 """
 function add_storage_variables!(connection, model, variables)
     storage_level_rep_period_indices = variables[:storage_level_rep_period].indices

@@ -3,7 +3,6 @@ using Cbc: Cbc
 using DataFrames: DataFrames, DataFrame
 using DuckDB: DuckDB, DBInterface
 using GLPK: GLPK
-using Graphs: Graphs
 using HiGHS: HiGHS
 using JuMP: JuMP
 using MathOptInterface: MathOptInterface

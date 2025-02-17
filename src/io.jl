@@ -3,22 +3,7 @@ export create_internal_structures!, export_solution_to_csv_files
 """
     create_internal_structures!(connection)
 
-Return the `graph`, `representative_periods`, and `timeframe` structures given the input dataframes structure.
-
-The details of these structures are:
-
-  - `graph`: a MetaGraph with the following information:
-
-      + `labels(graph)`: All assets.
-      + `edge_labels(graph)`: All flows, in pair format `(u, v)`, where `u` and `v` are assets.
-      + `graph[a]`: A [`TulipaEnergyModel.GraphAssetData`](@ref) structure for asset `a`.
-      + `graph[u, v]`: A [`TulipaEnergyModel.GraphFlowData`](@ref) structure for flow `(u, v)`.
-
-  - `representative_periods`: An array of
-    [`TulipaEnergyModel.RepresentativePeriod`](@ref) ordered by their IDs.
-
-  - `timeframe`: Information of
-    [`TulipaEnergyModel.Timeframe`](@ref).
+Creates internal tables.
 """
 function create_internal_structures!(connection)
 
@@ -115,46 +100,4 @@ function export_solution_to_csv_files(output_folder, connection, variables, cons
     end
 
     return
-end
-
-"""
-    _check_initial_storage_level!(df)
-
-Determine the starting value for the initial storage level for interpolating the storage level.
-If there is no initial storage level given, we will use the final storage level.
-Otherwise, we use the given initial storage level.
-"""
-function _check_initial_storage_level!(df, graph)
-    initial_storage_level_dict = graph[unique(df.asset)[1]].initial_storage_level
-    for (_, initial_storage_level) in initial_storage_level_dict
-        if ismissing(initial_storage_level)
-            df[!, :processed_value] = [df.value[end]; df[1:end-1, :value]]
-        else
-            df[!, :processed_value] = [initial_storage_level; df[1:end-1, :value]]
-        end
-    end
-end
-
-"""
-    _interpolate_storage_level!(df, time_column::Symbol)
-
-Transform the storage level dataframe from grouped timesteps or periods to incremental ones by interpolation.
-The starting value is the value of the previous grouped timesteps or periods or the initial value.
-The ending value is the value for the grouped timesteps or periods.
-"""
-function _interpolate_storage_level!(df, time_column)
-    return DataFrames.flatten(
-        DataFrames.transform(
-            df,
-            [time_column, :value, :processed_value] =>
-                DataFrames.ByRow(
-                    (period, value, start_value) -> begin
-                        n = length(period)
-                        interpolated_values = range(start_value; stop = value, length = n + 1)
-                        (period, value, interpolated_values[2:end])
-                    end,
-                ) => [time_column, :value, :processed_value],
-        ),
-        [time_column, :processed_value],
-    )
 end

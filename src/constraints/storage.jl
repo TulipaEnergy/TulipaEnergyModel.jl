@@ -1,7 +1,7 @@
 export add_storage_constraints!
 
 """
-add_storage_constraints!(model, graph,...)
+    add_storage_constraints!(connection, model, variables, expressions, constraints, profiles)
 
 Adds the storage asset constraints to the model.
 """

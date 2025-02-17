@@ -1,13 +1,7 @@
 export add_consumer_constraints!
 
 """
-add_consumer_constraints!(model,
-                          graph,
-                          dataframes,
-                          Ac,
-                          incoming_flow_highest_in_out_resolution,
-                          outgoing_flow_highest_in_out_resolution,
-                          )
+    add_consumer_constraints!(connection, model, constraints, profiles)
 
 Adds the consumer asset constraints to the model.
 """

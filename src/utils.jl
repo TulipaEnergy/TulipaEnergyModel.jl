@@ -29,32 +29,3 @@ function _profile_aggregate(profiles, tuple_key::Tuple, time_block, agg_function
     profile_value = profiles[tuple_key]
     return agg_function(skipmissing(profile_value[time_block]))
 end
-
-"""
-    create_intervals(years)
-
-Create a dictionary of intervals for `years`. The interval is assigned to the its starting year.
-The last interval is 1.
-"""
-function create_intervals_for_years(years)
-    intervals = Dict()
-
-    # This assumes that `years` is ordered
-    for i in 1:length(years)-1
-        intervals[years[i]] = years[i+1] - years[i]
-    end
-
-    intervals[years[end]] = 1
-
-    return intervals
-end
-
-"""
-    Δ = duration(block, rp, representative_periods)
-
-Computes the duration of the `block` and multiply by the resolution of the
-representative period `rp`.
-"""
-function duration(timesteps_block, rp, representative_periods)
-    return length(timesteps_block) * representative_periods[rp].resolution
-end
