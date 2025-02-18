@@ -1,11 +1,11 @@
-export create_internal_structures!, export_solution_to_csv_files
+export create_internal_tables!, export_solution_to_csv_files
 
 """
-    create_internal_structures!(connection)
+    create_internal_tables!(connection)
 
 Creates internal tables.
 """
-function create_internal_structures!(connection)
+function create_internal_tables!(connection)
 
     # Create tables that are allowed to be missing
     tables_allowed_to_be_missing = [
@@ -20,7 +20,6 @@ function create_internal_structures!(connection)
         _create_empty_unless_exists(connection, table)
     end
 
-    # TODO: Move these function calls to the correct place
     @timeit to "create_unrolled_partition_tables" create_unrolled_partition_tables!(connection)
     @timeit to "create_merged_tables" create_merged_tables!(connection)
     @timeit to "create_lowest_resolution_table" create_lowest_resolution_table!(connection)

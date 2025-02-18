@@ -29,7 +29,7 @@ It hides the complexity behind the energy problem, making the usage more friendl
 
 The `EnergyProblem` can also be constructed using the minimal constructor below.
 
-- `EnergyProblem(connection)`: Constructs a new `EnergyProblem` object with the given `connection` that has been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl). The `graph`, `representative_periods`, `timeframe`, and `years` are computed using `create_internal_structures`.
+- `EnergyProblem(connection)`: Constructs a new `EnergyProblem` object with the given `connection` that has been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl).
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 
