@@ -39,7 +39,7 @@ function _create_variables_tables(connection)
             efficiency,
             time_block_start,
             time_block_end
-        FROM flow_time_resolution
+        FROM flow_time_resolution_rep_period
         ",
     )
 
@@ -55,7 +55,7 @@ function _create_variables_tables(connection)
             atr.time_block_start,
             atr.time_block_end,
             asset.unit_commitment_integer,
-        FROM asset_time_resolution AS atr
+        FROM asset_time_resolution_rep_period AS atr
         LEFT JOIN asset
             ON asset.asset = atr.asset
         WHERE
@@ -125,7 +125,7 @@ function _create_variables_tables(connection)
                 attr.year,
                 attr.period_block_start,
                 attr.period_block_end,
-            FROM asset_timeframe_time_resolution AS attr
+            FROM asset_time_resolution_over_clustered_year AS attr
             LEFT JOIN asset
                 ON attr.asset = asset.asset
             WHERE
