@@ -25,6 +25,7 @@ In addition, the following asset sets represent methods for incorporating additi
 | Name                                 | Description                                                   | Elements | Superset                                                                                         | Notes                                                                                                                                                                                                                                                           |
 | ------------------------------------ | ------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | $\mathcal{A}^{\text{i}}_y$           | Energy assets with investment method at year $y$              |          | $\mathcal{A}^{\text{i}}_y  \subseteq \mathcal{A}$                                                |                                                                                                                                                                                                                                                                 |
+| $\mathcal{A}^{\text{operation}}$     | Energy assets with operation mode at year $y$                 |          | $\mathcal{A}^{\text{operation}}  \subseteq \mathcal{A}$                                          |                                                                                                                                                                                                                                                                 |
 | $\mathcal{A}^{\text{decom simple}}$  | Energy assets with simple investment method at year $y$       |          | $\mathcal{A}^{\text{decom simple}}  \subseteq \mathcal{A}$                                       |                                                                                                                                                                                                                                                                 |
 | $\mathcal{A}^{\text{decom compact}}$ | Energy assets with compact investment method at year $y$      |          | $\mathcal{A}^{\text{decom compact}}  \subseteq \mathcal{A}$                                      |                                                                                                                                                                                                                                                                 |
 | $\mathcal{A}^{\text{ss}}_y$          | Energy assets with seasonal method at year $y$                |          | $\mathcal{A}^{\text{ss}}_y \subseteq \mathcal{A}$                                                | This set contains assets that use the seasonal method method. Please visit the how-to sections for [seasonal storage](@ref seasonal-setup) and [maximum/minimum outgoing energy limit](@ref max-min-outgoing-energy-setup) to learn how to set up this feature. |
@@ -79,21 +80,22 @@ In addition, the following subsets represent methods for incorporating additiona
 
 #### General Parameters for Assets
 
-| Name                                                 | Domain                   | Domains of Indices                                                                                 | Description                                                                                                            | Units          |
-| ---------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------- |
-| $p^{\text{inv cost}}_{a,y}$                          | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Overnight cost of a unit of asset $a$ at year $y$                                                                      | [kEUR/MW]      |
-| $p^{\text{annualized inv cost}}_{a,y}$               | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Annualized investment cost of a unit of asset $a$ at year $y$                                                          | [kEUR/MW/year] |
-| $p^{\text{salvage value}}_{a,y}$                     | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Salvage value of a unit of asset $a$ at year $y$                                                                       | [kEUR/MW]      |
-| $p^{\text{discounting factor asset inv cost}}_{a,y}$ | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Discounting factor for investment cost of a unit of asset $a$ at year $y$                                              | [-]            |
-| $p^{\text{fixed cost}}_{a,y}$                        | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Fixed cost of a unit of asset $a$ at year $y$                                                                          | [kEUR/MW/year] |
-| $p^{\text{inv limit}}_{a,y}$                         | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Investment potential of asset $a$ at year $y$                                                                          | [MW]           |
-| $p^{\text{capacity}}_{a}$                            | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                | Capacity per unit of asset $a$                                                                                         | [MW]           |
-| $p^{\text{technical lifetime}}_{a}$                  | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$                                                                                | Technical lifetime of asset $a$                                                                                        | [year]         |
-| $p^{\text{economic lifetime}}_{a}$                   | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$                                                                                | Economic lifetime of asset $a$                                                                                         | [year]         |
-| $p^{\text{technology-specific discount rate}}_{a}$   | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                | Technology-specific discount rate of asset $a$                                                                         | [year]         |
-| $p^{\text{init units}}_{a,y}$                        | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Initial number of units of asset $a$ available at year $y$                                                           | [units]        |
-| $p^{\text{availability profile}}_{a,v,k_y,b_{k_y}}$  | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Availability profile of asset $a$ invested in year $v$ in the representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]         |
-| $p^{\text{group}}_{a}$                               | $\mathcal{G}^{\text{a}}$ | $a \in \mathcal{A}$                                                                                | Group $g$ to which the asset $a$ belongs                                                                               | [-]            |
+| Name                                                 | Domain                   | Domains of Indices                                                                                      | Description                                                                                                            | Units          |
+| ---------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------- |
+| $p^{\text{inv cost}}_{a,y}$                          | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                                | Overnight cost of a unit of asset $a$ at year $y$                                                                      | [kEUR/MW]      |
+| $p^{\text{annualized inv cost}}_{a,y}$               | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                                | Annualized investment cost of a unit of asset $a$ at year $y$                                                          | [kEUR/MW/year] |
+| $p^{\text{salvage value}}_{a,y}$                     | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                                | Salvage value of a unit of asset $a$ at year $y$                                                                       | [kEUR/MW]      |
+| $p^{\text{discounting factor asset inv cost}}_{a,y}$ | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                                | Discounting factor for investment cost of a unit of asset $a$ at year $y$                                              | [-]            |
+| $p^{\text{fixed cost}}_{a,y}$                        | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                                | Fixed cost of a unit of asset $a$ at year $y$                                                                          | [kEUR/MW/year] |
+| $p^{\text{inv limit}}_{a,y}$                         | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                                | Investment potential of asset $a$ at year $y$                                                                          | [MW]           |
+| $p^{\text{capacity}}_{a}$                            | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                     | Capacity per unit of asset $a$                                                                                         | [MW]           |
+| $p^{\text{technical lifetime}}_{a}$                  | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$                                                                                     | Technical lifetime of asset $a$                                                                                        | [year]         |
+| $p^{\text{economic lifetime}}_{a}$                   | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$                                                                                     | Economic lifetime of asset $a$                                                                                         | [year]         |
+| $p^{\text{technology-specific discount rate}}_{a}$   | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                     | Technology-specific discount rate of asset $a$                                                                         | [year]         |
+| $p^{\text{init units}}_{a,y}$                        | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                                | Initial number of units of asset $a$ available at year $y$                                                             | [units]        |
+| $p^{\text{init units}}_{a,y,v}$                      | $\mathbb{R}_{+}$         | $ (a,y,v) \in \mathcal{D}^{\text{decom units compact}} \cup \mathcal{D}^{\text{decom units operation}}$ | Initial number of units of asset $a$ available at year $y$ commissioned in year $v$                                    | [units]        |
+| $p^{\text{availability profile}}_{a,v,k_y,b_{k_y}}$  | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$      | Availability profile of asset $a$ invested in year $v$ in the representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]         |
+| $p^{\text{group}}_{a}$                               | $\mathcal{G}^{\text{a}}$ | $a \in \mathcal{A}$                                                                                     | Group $g$ to which the asset $a$ belongs                                                                               | [-]            |
 
 #### Extra Parameters for Consumer Assets
 
@@ -106,7 +108,7 @@ In addition, the following subsets represent methods for incorporating additiona
 
 | Name                                         | Domain           | Domains of Indices                                                                                                           | Description                                                                                                          | Units           |
 | -------------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | --------------- |
-| $p^{\text{init storage units}}_{a,y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage units of storage asset $a$ available at year $y$                                                   | [units]         |
+| $p^{\text{init storage units}}_{a,y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage units of storage asset $a$ available at year $y$                                                     | [units]         |
 | $p^{\text{init storage level}}_{a,y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage level of storage asset $a$ at year $y$                                                               | [MWh]           |
 | $p^{\text{inflows}}_{a,k_y,b_{k_y}}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                     | Inflows of storage asset $a$ in the representative period $k_y$ and timestep block $b_{k_y}$                         | [MWh]           |
 | $p^{\text{inv cost energy}}_{a,y}$           | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Overnight cost of a energy unit of asset $a$ at year $y$                                                             | [kEUR/MWh]      |
@@ -153,8 +155,8 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{technical lifetime}}_{f}$                 | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Technical lifetime of investment of transport flow $f$ (both exports and imports)                                     | [year]         |
 | $p^{\text{economic lifetime}}_{f}$                  | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Economic lifetime of investment of transport flow $f$ (both exports and imports)                                      | [year]         |
 | $p^{\text{technology-specific discount rate}}_{f}$  | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Technology-specific discount rate of investment of transport flow $f$ (both exports and imports)                      | [year]         |
-| $p^{\text{init export units}}_{f,y}$                | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Initial export units of transport flow $f$ available at year $y$                                                    | [MW]           |
-| $p^{\text{init import units}}_{f,y}$                | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Initial import units of transport flow $f$ available at year $y$                                                    | [MW]           |
+| $p^{\text{init export units}}_{f,y}$                | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Initial export units of transport flow $f$ available at year $y$                                                      | [MW]           |
+| $p^{\text{init import units}}_{f,y}$                | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Initial import units of transport flow $f$ available at year $y$                                                      | [MW]           |
 | $p^{\text{availability profile}}_{f,v,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{F}$, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Availability profile of flow $f$ invested in year $v$ in the representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]         |
 
 ### Parameters for Temporal Structures
@@ -192,7 +194,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | $v^{\text{flow}}_{f,k_y,b_{k_y}}$          | $\mathbb{R}$     | $f \in \mathcal{F}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                  | Flow $f$ between two assets in representative period $k_y$ and timestep block $b_{k_y}$                                               | [MW]    |
 | $v^{\text{inv}}_{a,y}$                     | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y$, $y \in \mathcal{Y}$                                                                          | Number of invested units of asset $a$ at year $y$                                                                                     | [units] |
 | $v^{\text{decom simple}}_{a,y}$            | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{decom simple}}$, $y \in \mathcal{Y}$                                                                 | Number of decommissioned units of asset $a$ that uses simple investment method at year $y$                                            | [units] |
-| $v^{\text{decom compact}}_{a,y,v}$         | $\mathbb{Z}_{+}$ | $ (a,y,v) \in \mathcal{D}^{\text{decom units compact}}$                                                                        | Number of decommissioned units of asset $a$ that uses compact investment method at year $y$                                           | [units] |
+| $v^{\text{decom compact}}_{a,y,v}$         | $\mathbb{Z}_{+}$ | $ (a,y,v) \in \mathcal{D}^{\text{decom units compact}}$                                                                        | Number of decommissioned units of asset $a$ commissioned in year $v$ that uses compact investment method at year $y$                  | [units] |
 | $v^{\text{inv energy}}_{a,y}$              | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                           | Number of invested units of the energy component of the storage asset $a$ that uses energy method at year $y$                         | [units] |
 | $v^{\text{decom energy simple}}_{a,y}$     | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                           | Number of decommissioned units of the energy component of the storage asset $a$ that uses energy method at year $y$                   | [units] |
 | $v^{\text{inv}}_{f,y}$                     | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                         | Number of invested units of capacity increment of transport flow $f$ at year $y$                                                      | [units] |
@@ -211,16 +213,16 @@ For available units across years, we define the following expresssions:
 ```math
 \begin{aligned}
     v^{\text{available units simple method}}_{a,y} & = p^{\text{initial units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom simple}}_{a,i} \\
-    & \forall a \in \mathcal{A}^{\text{decom simple}}, \forall y \in \mathcal{Y} \\
+    & \forall a \in \mathcal{A}^{\text{decom simple}} \cup \mathcal{A}^{\text{operation}}, \forall y \in \mathcal{Y} \\
     v^{\text{available units compact method}}_{a,y,v} & = p^{\text{initial units}}_{a,y,v} + v^{\text{inv}}_{a,v} - \sum_{i \in \{\mathcal{Y}: v < i \le y\} | (a,i,v) \in \mathcal{D}^{\text{decom units compact}}} v^{\text{decom compact}}_{a,i,v}
  \\
-    & \forall (a,y,v) \in \mathcal{D}^{\text{available units compact}} \\
+    & \forall (a,y,v) \in \mathcal{D}^{\text{decom units compact}} \cup \mathcal{D}^{\text{decom units operation}} \\
     v^{\text{available energy units simple method}}_{a,y} & = p^{\text{initial storage units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv energy}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom energy simple}}_{a,i} \\
     & \forall a \in \mathcal{A}^{\text{se}}_y, \forall y \in \mathcal{Y} \\
     v^{\text{available export units simple method}}_{f,y} & = p^{\text{initial export units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
-    & \forall f \in \mathcal{F}^{\text{ti}}_y, \forall y \in \mathcal{Y} \\
+    & \forall f \in \mathcal{F}^{\text{t}}_y, \forall y \in \mathcal{Y} \\
     v^{\text{available import units simple method}}_{f,y} & = p^{\text{initial import units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
-    & \forall f \in \mathcal{F}^{\text{ti}}_y, \forall y \in \mathcal{Y} \\
+    & \forall f \in \mathcal{F}^{\text{t}}_y, \forall y \in \mathcal{Y} \\
 \end{aligned}
 ```
 
@@ -254,8 +256,8 @@ In addition, we define the following expressions to determine the available unit
 
 ```math
 \begin{aligned}
-    v^{\text{available export units}}_{f,y} & = v^{\text{available export units simple method}}_{f,y} \quad \forall f \in \mathcal{F}^{\text{ti}}_y, \forall y \in \mathcal{Y} \\
-    v^{\text{available import units}}_{f,y} & = v^{\text{available import units simple method}}_{f,y} \quad \forall f \in \mathcal{F}^{\text{ti}}_y, \forall y \in \mathcal{Y}
+    v^{\text{available export units}}_{f,y} & = v^{\text{available export units simple method}}_{f,y} \quad \forall f \in \mathcal{F}^{\text{t}}_y, \forall y \in \mathcal{Y} \\
+    v^{\text{available import units}}_{f,y} & = v^{\text{available import units simple method}}_{f,y} \quad \forall f \in \mathcal{F}^{\text{t}}_y, \forall y \in \mathcal{Y}
 \end{aligned}
 ```
 
@@ -318,11 +320,11 @@ Where:
 ```math
 \begin{aligned}
 assets\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset inv cost}} \cdot p^{\text{inv cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \\ &+  \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset inv cost}} \cdotp^{\text{inv cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{inv energy}}_{a,y}   \\
-assets\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{decom simple}} } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y} \\
-& + \sum_{(a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,v} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units compact method}}_{a,y,v} \\
-& + \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{decom simple}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{available energy capacity simple method}}_{a,y} \\
+assets\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{decom simple}} \cup \mathcal{A}^{\text{operation}} } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y} \\
+& + \sum_{(a,y,v) \in \mathcal{D}^{\text{decom units compact}} \cup \mathcal{D}^{\text{decom units operation mode}} }  p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,v} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units compact method}}_{a,y,v} \\
+& + \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap (\mathcal{A}^{\text{decom simple}} \cup \mathcal{A}^{\text{operation}}) } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{available energy capacity simple method}}_{a,y} \\
 flows\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p_{f, y}^{\text{discounting factor flow inv cost}} \cdot p^{\text{inv cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f,y} \\
-flows\_fixed\_cost &= \frac{1}{2} \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot \left( v^{\text{available export units}}_{f,y} + v^{\text{available import units}}_{f,y} \right) \\
+flows\_fixed\_cost &= \frac{1}{2} \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{t}}_y} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot \left( v^{\text{available export units}}_{f,y} + v^{\text{available import units}}_{f,y} \right) \\
 flows\_variable\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{k_y} \cdot p^{\text{variable cost}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 unit\_on\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{k_y} \cdot p^{\text{units on cost}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{units on}}_{a,k_y,b_{k_y}}
 \end{aligned}
@@ -337,9 +339,9 @@ unit\_on\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y
 ```math
 \begin{aligned}
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{decom simple}} \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right)  \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\ \\
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{decom simple}} \cup \mathcal{A}^{\text{operation}}) \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right)  \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\ \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{capacity}}_{a} \cdot \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{decom compact}} \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right) \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{decom compact}} \cup \mathcal{A}^{\text{operation}}) \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right) \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -362,7 +364,7 @@ Storage assets using the method to avoid charging and discharging simultaneously
 ```
 
 !!! info
-    The negative sign before the $v^{\text{available units}}_{a,y}$ is because the available units include the $p^{\text{init units}}_{a,y}$ in its calculation.
+The negative sign before the $v^{\text{available units}}_{a,y}$ is because the available units include the $p^{\text{init units}}_{a,y}$ in its calculation.
 
 - Maximum output flows limit for storage assets such that $a \in \mathcal{A}^{\text{sb}}_y \setminus \mathcal{A}^{\text{i}}_y$
 
@@ -399,7 +401,7 @@ Storage assets using the method to avoid charging and discharging simultaneously
 ```
 
 !!! info
-    The negative sign before the $v^{\text{available units}}_{a,y}$ is because the available units include the $p^{\text{init units}}_{a,y}$ in its calculation.
+The negative sign before the $v^{\text{available units}}_{a,y}$ is because the available units include the $p^{\text{init units}}_{a,y}$ in its calculation.
 
 - Maximum input flows limit for storage assets such that $a \in \mathcal{A}^{\text{sb}}_y \setminus \mathcal{A}^{\text{i}}_y$
 
@@ -456,7 +458,7 @@ Ramping constraints restrict the rate at which the output flow of a production o
 Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](@ref math-references). Also, please note that since the current version of the code only handles the basic unit commitment implementation, the ramping constraints are applied to the assets in the set $\mathcal{A}^{\text{uc basic}}_y$.
 
 !!! info "Duration parameter"
-    The following constraints are multiplied by $p^{\text{duration}}_{b_{k_y}}$ on the right-hand side to adjust for the duration of the timesteps since the ramp parameters are defined as rates. This assumption is based on the idea that all timesteps are the same in this section, which simplifies the formulation. However, in a flexible temporal resolution context, this may not hold true, and the duration needs to be the minimum duration of all the outgoing flows at the timestep block $b_{k_y}$. For more information, please visit the concept section on flexible time resolution.
+The following constraints are multiplied by $p^{\text{duration}}_{b_{k_y}}$ on the right-hand side to adjust for the duration of the timesteps since the ramp parameters are defined as rates. This assumption is based on the idea that all timesteps are the same in this section, which simplifies the formulation. However, in a flexible temporal resolution context, this may not hold true, and the duration needs to be the minimum duration of all the outgoing flows at the timestep block $b_{k_y}$. For more information, please visit the concept section on flexible time resolution.
 
 #### Maximum Ramp-Up Rate Limit WITH Unit Commitment Method
 
@@ -476,18 +478,18 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} - e^{\text{flow above min}}_{a,k_y,b_{
 
 ```math
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \leq p^{\text{max ramp up}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in  \mathcal{A}^{\text{decom simple}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{decom simple}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \leq p^{\text{max ramp up}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot  \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in  \mathcal{A}^{\text{decom compact}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{decom compact}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Maximum Ramp-Down Rate Limit WITHOUT Unit Commitment Method
 
 ```math
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \geq - p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in  \mathcal{A}^{\text{decom simple}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{decom simple}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \geq - p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot  \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{decom units compact}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in  \mathcal{A}^{\text{decom compact}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{decom compact}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ### Constraints for Energy Consumer Assets
@@ -731,7 +733,7 @@ The following constraints aggregate variables of different assets depending on t
 These constraints apply to assets in a group using the investment method $\mathcal{G}^{\text{ai}}_y$. They help impose an investment potential of a spatial area commonly shared by several assets that can be invested there.
 
 !!! info
-    These constraints are applied to the investments each year. The model does not yet have investment limits to a group's available invested capacity.
+These constraints are applied to the investments each year. The model does not yet have investment limits to a group's available invested capacity.
 
 ##### Minimum Investment Limit of a Group
 
