@@ -66,15 +66,12 @@ function tmp_create_partition_tables(connection)
             SELECT
                 asset,
                 milestone_year,
-                MIN(active) AS active,
             FROM asset_both
             GROUP BY
                 asset, milestone_year
         ) AS t
             ON asset.asset = t.asset
             AND rep_periods_data.year = t.milestone_year
-        WHERE
-            t.active = true
         ORDER BY rep_periods_data.year, rep_periods_data.rep_period
         ",
     )
@@ -107,7 +104,6 @@ function tmp_create_partition_tables(connection)
                 from_asset,
                 to_asset,
                 milestone_year,
-                MIN(active) AS active,
             FROM flow_both
             GROUP BY
                 from_asset, to_asset, milestone_year
@@ -115,8 +111,6 @@ function tmp_create_partition_tables(connection)
             ON flow.from_asset = t.from_asset
             AND flow.to_asset = t.to_asset
             AND rep_periods_data.year = t.milestone_year
-        WHERE
-            t.active = true
         ORDER BY rep_periods_data.year, rep_periods_data.rep_period
         ",
     )
@@ -402,7 +396,6 @@ function tmp_create_lowest_resolution_table(connection)
                 ON asset_both.asset = t_union.asset
                 AND asset_both.milestone_year = t_union.year
                 AND asset_both.commission_year = t_union.year
-            WHERE asset_both.active = true
             ORDER BY
                 t_union.asset,
                 t_union.year,
@@ -449,7 +442,6 @@ function tmp_create_highest_resolution_table(connection)
     # - keep all unique time_block_start
     # - create corresponing time_block_end
 
-    # filtering by active
     for union_table in
         ("t_union_" * x for x in ("in_flows", "out_flows", "assets_and_out_flows", "all_flows"))
         table_name = replace(union_table, "t_union" => "t_highest")
@@ -475,7 +467,6 @@ function tmp_create_highest_resolution_table(connection)
             LEFT JOIN rep_periods_data
                 ON t_union.year = rep_periods_data.year
                     AND t_union.rep_period = rep_periods_data.rep_period
-            WHERE asset_both.active = true
             ORDER BY t_union.asset, t_union.year, t_union.rep_period, time_block_start
             ",
         )

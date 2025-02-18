@@ -1,7 +1,7 @@
-asset,milestone_year,commission_year,active,decommissionable,initial_units,initial_storage_units
-H2,2030,2030,true,true,1.0,0.0
-ccgt,2030,2030,true,true,1.0,0.0
-wind,2030,2030,true,true,2.0,0.0
-phs,2030,2030,true,true,1.0,1.0
-demand,2030,2030,true,true,0.0,0.0
-balance,2030,2030,true,true,0.0,0.0
+asset,milestone_year,commission_year,decommissionable,initial_units,initial_storage_units
+H2,2030,2030,true,1.0,0.0
+ccgt,2030,2030,true,1.0,0.0
+wind,2030,2030,true,2.0,0.0
+phs,2030,2030,true,1.0,1.0
+demand,2030,2030,true,0.0,0.0
+balance,2030,2030,true,0.0,0.0

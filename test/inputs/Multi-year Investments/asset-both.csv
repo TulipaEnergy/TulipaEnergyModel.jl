@@ -19,4 +19,4 @@ wind,2050,2030,true,true,0.02,0.0
 wind,2050,2050,true,false,0.0,0.0
 solar,2050,2050,true,false,0.0,0.0
 ens,2050,2050,true,false,1.0,0.0
-demand,2050,2050,false,true,0.0,0.0
+demand,2050,2050,false,false,0.0,0.0
