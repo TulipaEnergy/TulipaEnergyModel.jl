@@ -14,18 +14,16 @@ It hides the complexity behind the energy problem, making the usage more friendl
 
 ### Fields
 
-- `db_connection`: A DuckDB connection to the input tables in the model
-- `graph`: The Graph object that defines the geometry of the energy problem.
-- `model`: A JuMP.Model object representing the optimization model.
-- `objective_value`: The objective value of the solved problem (Float64).
-- `variables`: A [TulipaVariable](@ref TulipaVariable) structure to store all the information related to the variables in the model.
-- `constraints`: A [TulipaConstraint](@ref TulipaConstraint) structure to store all the information related to the constraints in the model.
-- `representative_periods`: A vector of [Representative Periods](@ref representative-periods).
-- `solved`: A boolean indicating whether the `model` has been solved or not.
-- `termination_status`: The termination status of the optimization model.
-- `timeframe`: A structure with the number of periods in the `representative_periods` and the mapping between the periods and their representatives.
+- `db_connection`: A DuckDB connection to the input tables in the model.
+- `variables`: A dictionary of [TulipaVariable](@ref TulipaVariable)s containing the variables of the model.
+- `expressions`: A dictionary of [TulipaExpression](@ref TulipaExpression)s containing the expressions of the model attached to tables.
+- `constraints`: A dictionary of [TulipaConstraint](@ref TulipaConstraint)s containing the constraints of the model.
+- `profiles`: Holds the profiles per `rep_period` or `over_clustered_year` in dictionary format. See [ProfileLookup](@ref).
 - `model_parameters`: A [ModelParameters](@ref ModelParameters) structure to store all the parameters that are exclusive of the model.
-- `years`: A vector with the information of all the milestone years.
+- `model`: A JuMP.Model object representing the optimization model.
+- `solved`: A boolean indicating whether the `model` has been solved or not.
+- `objective_value`: The objective value of the solved problem (Float64).
+- `termination_status`: The termination status of the optimization model.
 
 ### Constructor
 

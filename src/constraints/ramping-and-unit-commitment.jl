@@ -1,7 +1,14 @@
 export add_ramping_and_unit_commitment_constraints!
 
 """
-    add_ramping_and_unit_commitment_constraints!(model, graph, ...)
+    add_ramping_and_unit_commitment_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles
+    )
 
 Adds the ramping constraints for producer and conversion assets where ramping = true in assets_data
 """

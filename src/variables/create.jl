@@ -95,7 +95,7 @@ function _create_variables_tables(connection)
                 t_low.year,
                 t_low.rep_period,
                 t_low.time_block_start,
-                t_low.time_block_end
+                t_low.time_block_end,
             FROM t_lowest_all AS t_low
             LEFT JOIN asset
                 ON t_low.asset = asset.asset
@@ -124,7 +124,7 @@ function _create_variables_tables(connection)
                 attr.asset,
                 attr.year,
                 attr.period_block_start,
-                attr.period_block_end
+                attr.period_block_end,
             FROM asset_timeframe_time_resolution AS attr
             LEFT JOIN asset
                 ON attr.asset = asset.asset

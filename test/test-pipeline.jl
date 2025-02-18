@@ -21,8 +21,7 @@ end
     _read_csv_folder(connection, dir)
 
     # Internal data and structures pre-model
-    graph, representative_periods, timeframe, years =
-        TulipaEnergyModel.create_internal_structures(connection)
+    TulipaEnergyModel.create_internal_structures!(connection)
     model_parameters = TulipaEnergyModel.ModelParameters(connection)
     variables = TulipaEnergyModel.compute_variables_indices(connection)
     expressions = Dict()
@@ -32,12 +31,10 @@ end
     # Create model
     model = TulipaEnergyModel.create_model(
         connection,
-        graph,
         variables,
         expressions,
         constraints,
         profiles,
-        representative_periods,
         model_parameters,
     )
 

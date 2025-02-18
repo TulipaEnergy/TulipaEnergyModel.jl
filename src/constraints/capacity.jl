@@ -1,7 +1,7 @@
 export add_capacity_constraints!
 
 """
-add_capacity_constraints!(model, graph,...)
+    add_capacity_constraints!(connection, model, expressions, constraints, profiles)
 
 Adds the capacity constraints for all asset types to the model
 """

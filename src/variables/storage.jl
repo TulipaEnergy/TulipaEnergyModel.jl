@@ -1,13 +1,12 @@
 export add_storage_variables!
 
 """
-    add_storage_variables!(model, ...)
+    add_storage_variables!(connection, model, variables)
 
 Adds storage-related variables to the optimization `model`, including storage levels for both intra-representative periods and inter-representative periods, as well as charging state variables.
 The function also optionally sets binary constraints for certain charging variables based on storage methods.
-
 """
-function add_storage_variables!(model, graph, variables)
+function add_storage_variables!(connection, model, variables)
     storage_level_rep_period_indices = variables[:storage_level_rep_period].indices
     storage_level_over_clustered_year_indices =
         variables[:storage_level_over_clustered_year].indices
@@ -40,29 +39,43 @@ function add_storage_variables!(model, graph, variables)
     ]
 
     ### Cycling conditions
-    df_storage_rep_period_balance_grouped =
-        DataFrames.groupby(storage_level_rep_period_indices, [:asset, :year, :rep_period])
-
-    df_storage_over_clustered_year_balance_grouped =
-        DataFrames.groupby(storage_level_over_clustered_year_indices, [:asset, :year])
-
-    for ((a, y, _), sub_df) in pairs(df_storage_rep_period_balance_grouped)
-        # Ordering is assumed
-        if !ismissing(graph[a].initial_storage_level[y])
-            JuMP.set_lower_bound(
-                variables[:storage_level_rep_period].container[last(sub_df.index)],
-                graph[a].initial_storage_level[y],
-            )
+    let var = variables[:storage_level_rep_period]
+        table_name = var.table_name
+        for row in DuckDB.query(
+            connection,
+            "SELECT
+                last(var.index) AS last_index,
+                var.asset, var.year, var.rep_period,
+                ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
+            FROM $table_name AS var
+            LEFT JOIN asset_milestone
+                ON var.asset = asset_milestone.asset
+                AND var.year = asset_milestone.milestone_year
+            WHERE asset_milestone.initial_storage_level IS NOT NULL
+            GROUP BY var.asset, var.year, var.rep_period
+            ",
+        )
+            JuMP.set_lower_bound(var.container[row.last_index], row.initial_storage_level)
         end
     end
 
-    for ((a, y), sub_df) in pairs(df_storage_over_clustered_year_balance_grouped)
-        # Ordering is assumed
-        if !ismissing(graph[a].initial_storage_level[y])
-            JuMP.set_lower_bound(
-                variables[:storage_level_over_clustered_year].container[last(sub_df.index)],
-                graph[a].initial_storage_level[y],
-            )
+    let var = variables[:storage_level_over_clustered_year]
+        table_name = var.table_name
+        for row in DuckDB.query(
+            connection,
+            "SELECT
+                last(var.index) AS last_index,
+                var.asset, var.year,
+                ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
+            FROM $table_name AS var
+            LEFT JOIN asset_milestone
+                ON var.asset = asset_milestone.asset
+                AND var.year = asset_milestone.milestone_year
+            WHERE asset_milestone.initial_storage_level IS NOT NULL
+            GROUP BY var.asset, var.year
+            ",
+        )
+            JuMP.set_lower_bound(var.container[row.last_index], row.initial_storage_level)
         end
     end
 
