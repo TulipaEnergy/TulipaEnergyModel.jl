@@ -1,0 +1,5 @@
+index,asset,milestone_year,investment_integer,capacity,investment_limit,solution
+1,ccgt,2030,true,400.0,10000.0,2.0
+2,ocgt,2030,true,100.0,,0.0
+3,solar,2030,true,10.0,,45.0
+4,wind,2030,true,50.0,,35.0
