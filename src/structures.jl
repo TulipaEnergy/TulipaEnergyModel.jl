@@ -22,14 +22,12 @@ mutable struct TulipaVariable
     indices::DataFrame
     table_name::String
     container::Vector{JuMP.VariableRef}
-    lookup::OrderedDict # TODO: This is probably not type stable so it's only used for strangling
 
     function TulipaVariable(connection, table_name::String)
         return new(
             DuckDB.query(connection, "SELECT * FROM $table_name") |> DataFrame,
             table_name,
             JuMP.VariableRef[],
-            Dict(),
         )
     end
 end
