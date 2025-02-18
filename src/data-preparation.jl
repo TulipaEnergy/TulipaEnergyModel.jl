@@ -1,5 +1,3 @@
-# This here are either because they don't have a place yet, or are necessary to help in the refactor
-
 function _append_given_durations(appender, row, durations)
     s = 1
     for Δ in durations
@@ -25,27 +23,46 @@ function _append_given_durations(appender, row, durations)
     return
 end
 
+function _append_lowest_helper(appender, group, s, e)
+    for x in group
+        DuckDB.append(appender, x)
+    end
+    DuckDB.append(appender, s)
+    DuckDB.append(appender, e)
+    DuckDB.end_row(appender)
+    return
+end
+
 """
-    tmp_create_partition_tables(connection)
+    create_unrolled_partition_table!(connection)
 
-Create the unrolled partition tables using only tables.
+Create unrolled partitions tables from existing DuckDB tables, i.e., adds the time block start and end information.
 
-The table `explicit_assets_rep_periods_partitions` is the explicit version of
-`assets_rep_periods_partitions`, i.e., it adds the rows not defined in that
-table by setting the specification to 'uniform' and the partition to '1'.
+## Input
 
-The table `asset_time_resolution` is the unrolled version of the table above,
-i.e., it takes the specification and partition and expands into a series of
-time blocks. The columns `time_block_start` and `time_block_end` replace the
-`specification` and `partition` columns.
+The following tables are expected to exist in the `connection`, containing the
+partition of some, or all, assets or flows, with their respective time information.
 
-Similarly, `flow` tables are created as well.
+- `assets_rep_periods_partitions`
+- `flows_rep_periods_partitions`
+- `assets_timeframe_partitions`
+
+## Output
+
+The generated tables are the unrolled version of the tables above.
+It transforms each row in (possibly) multiple rows.
+The columns `specification` and `partition` are used to determine the time
+blocks, and are replaced by columns `time_block_start` and `time_block_end`.
+
+- `asset_time_resolution_rep_period`
+- `flow_time_resolution_rep_period`
+- `asset_time_resolution_over_clustered_year`
+
 """
-function tmp_create_partition_tables(connection)
-    # DISTINCT is required because without commission year, it can be repeated
+function create_unrolled_partition_tables!(connection)
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE explicit_assets_rep_periods_partitions AS
+        "CREATE OR REPLACE TABLE t_explicit_assets_rep_periods_partitions AS
         SELECT
             asset.asset,
             rep_periods_data.year,
@@ -78,7 +95,7 @@ function tmp_create_partition_tables(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE explicit_flows_rep_periods_partitions AS
+        "CREATE OR REPLACE TABLE t_explicit_flows_rep_periods_partitions AS
         SELECT
             flow.from_asset,
             flow.to_asset,
@@ -117,7 +134,7 @@ function tmp_create_partition_tables(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE asset_time_resolution(
+        "CREATE OR REPLACE TABLE asset_time_resolution_rep_period(
             asset STRING,
             year INT,
             rep_period INT,
@@ -126,8 +143,8 @@ function tmp_create_partition_tables(connection)
         )",
     )
 
-    appender = DuckDB.Appender(connection, "asset_time_resolution")
-    for row in TulipaIO.get_table(Val(:raw), connection, "explicit_assets_rep_periods_partitions")
+    appender = DuckDB.Appender(connection, "asset_time_resolution_rep_period")
+    for row in TulipaIO.get_table(Val(:raw), connection, "t_explicit_assets_rep_periods_partitions")
         durations = if row.specification == "uniform"
             step = parse(Int, row.partition)
             durations = Iterators.repeated(step, div(row.num_timesteps, step))
@@ -151,7 +168,7 @@ function tmp_create_partition_tables(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE flow_time_resolution(
+        "CREATE OR REPLACE TABLE flow_time_resolution_rep_period(
             from_asset STRING,
             to_asset STRING,
             year INT,
@@ -162,8 +179,8 @@ function tmp_create_partition_tables(connection)
         )",
     )
 
-    appender = DuckDB.Appender(connection, "flow_time_resolution")
-    for row in TulipaIO.get_table(Val(:raw), connection, "explicit_flows_rep_periods_partitions")
+    appender = DuckDB.Appender(connection, "flow_time_resolution_rep_period")
+    for row in TulipaIO.get_table(Val(:raw), connection, "t_explicit_flows_rep_periods_partitions")
         durations = if row.specification == "uniform"
             step = parse(Int, row.partition)
             durations = Iterators.repeated(step, div(row.num_timesteps, step))
@@ -187,7 +204,7 @@ function tmp_create_partition_tables(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE explicit_assets_timeframe_partitions AS
+        "CREATE OR REPLACE TABLE t_explicit_assets_timeframe_partitions AS
         SELECT
             asset.asset,
             asset_commission.commission_year AS year,
@@ -206,7 +223,7 @@ function tmp_create_partition_tables(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE asset_timeframe_time_resolution(
+        "CREATE OR REPLACE TABLE asset_time_resolution_over_clustered_year(
             asset STRING,
             year INT,
             period_block_start INT,
@@ -214,11 +231,11 @@ function tmp_create_partition_tables(connection)
         )",
     )
 
-    appender = DuckDB.Appender(connection, "asset_timeframe_time_resolution")
+    appender = DuckDB.Appender(connection, "asset_time_resolution_over_clustered_year")
     for row in DuckDB.query(
         connection,
         "SELECT asset, sub.year, specification, partition, num_periods AS num_periods
-        FROM explicit_assets_timeframe_partitions AS main
+        FROM t_explicit_assets_timeframe_partitions AS main
         LEFT JOIN (
             SELECT year, MAX(period) AS num_periods
             FROM timeframe_data
@@ -250,78 +267,68 @@ function tmp_create_partition_tables(connection)
     return
 end
 
-function tmp_create_union_tables(connection)
+function create_merged_tables!(connection)
     # These are equivalent to the partitions in time-resolution.jl
     # But computed in a more general context to be used by variables as well
 
     # Incoming flows
     DuckDB.execute(
         connection,
-        "CREATE OR REPLACE TEMP TABLE t_union_in_flows AS
+        "CREATE OR REPLACE TEMP TABLE merged_in_flows AS
         SELECT DISTINCT to_asset as asset, year, rep_period, time_block_start, time_block_end
-        FROM flow_time_resolution
+        FROM flow_time_resolution_rep_period
         ",
     )
 
     # Outgoing flows
     DuckDB.execute(
         connection,
-        "CREATE OR REPLACE TEMP TABLE t_union_out_flows AS
+        "CREATE OR REPLACE TEMP TABLE merged_out_flows AS
         SELECT DISTINCT from_asset as asset, year, rep_period, time_block_start, time_block_end
-        FROM flow_time_resolution
+        FROM flow_time_resolution_rep_period
         ",
     )
 
     # Union of all assets and outgoing flows
     DuckDB.execute(
         connection,
-        "CREATE OR REPLACE TEMP TABLE t_union_assets_and_out_flows AS
+        "CREATE OR REPLACE TEMP TABLE merged_assets_and_out_flows AS
         SELECT DISTINCT asset, year, rep_period, time_block_start, time_block_end
-        FROM asset_time_resolution
+        FROM asset_time_resolution_rep_period
         UNION
-        FROM t_union_out_flows
+        FROM merged_out_flows
         ",
     )
 
     # Union of all incoming and outgoing flows
     DuckDB.execute(
         connection,
-        "CREATE OR REPLACE TEMP TABLE t_union_all_flows AS
-        FROM t_union_in_flows
+        "CREATE OR REPLACE TEMP TABLE merged_all_flows AS
+        FROM merged_in_flows
         UNION
-        FROM t_union_out_flows
+        FROM merged_out_flows
         ",
     )
 
     # Union of all assets, and incoming and outgoing flows
     DuckDB.execute(
         connection,
-        "CREATE OR REPLACE TEMP TABLE t_union_all AS
+        "CREATE OR REPLACE TEMP TABLE merged_all AS
         SELECT DISTINCT asset, year, rep_period, time_block_start, time_block_end
-        FROM asset_time_resolution
+        FROM asset_time_resolution_rep_period
         UNION
-        FROM t_union_all_flows
+        FROM merged_all_flows
         ",
     )
     return
 end
 
-function _append_lowest_helper(appender, group, s, e)
-    for x in group
-        DuckDB.append(appender, x)
-    end
-    DuckDB.append(appender, s)
-    DuckDB.append(appender, e)
-    DuckDB.end_row(appender)
-    return
-end
-
-function tmp_create_lowest_resolution_table(connection)
+function create_lowest_resolution_table!(connection)
     # These are generic tables to be used to create some variables and constraints
     # Following the lowest resolution merge strategy
 
     # The logic:
-    # - t_union is ordered by groups (asset, year, rep_period), so every new group starts the same way
+    # - merged table is ordered by groups (asset, year, rep_period), so every new group starts the same way
     # - Inside a group, time blocks (TBs) are ordered by time_block_start, so the
     #   first row of every group starts at time_block_start = 1
     # - The objective of the lowest resolution is to iteratively find the
@@ -372,8 +379,8 @@ function tmp_create_lowest_resolution_table(connection)
     #       Start a new block with s = 12 + 1 = 13 and e = TBE = 12
     # - END OF GROUP: Is 1 ≤ s ≤ e? No, so this is not a valid block
 
-    for union_table in ("t_union_all_flows", "t_union_all")
-        table_name = replace(union_table, "t_union" => "t_lowest")
+    for merged_table in ("merged_all_flows", "merged_all")
+        table_name = replace(merged_table, "merged" => "t_lowest")
         DuckDB.execute(
             connection,
             "CREATE OR REPLACE TABLE $table_name(
@@ -391,16 +398,16 @@ function tmp_create_lowest_resolution_table(connection)
         current_group = ("", 0, 0)
         @timeit to "append $table_name rows" for row in DuckDB.query(
             connection,
-            "SELECT t_union.* FROM $union_table AS t_union
+            "SELECT merged.* FROM $merged_table AS merged
             LEFT JOIN asset_both
-                ON asset_both.asset = t_union.asset
-                AND asset_both.milestone_year = t_union.year
-                AND asset_both.commission_year = t_union.year
+                ON asset_both.asset = merged.asset
+                AND asset_both.milestone_year = merged.year
+                AND asset_both.commission_year = merged.year
             ORDER BY
-                t_union.asset,
-                t_union.year,
-                t_union.rep_period,
-                t_union.time_block_start
+                merged.asset,
+                merged.year,
+                merged.rep_period,
+                merged.time_block_start
             ",
         )
             if (row.asset, row.year, row.rep_period) != current_group
@@ -433,80 +440,42 @@ function tmp_create_lowest_resolution_table(connection)
     end
 end
 
-function tmp_create_highest_resolution_table(connection)
+function create_highest_resolution_table!(connection)
     # These are generic tables to be used to create some variables and constraints
     # Following the highest resolution merge strategy
 
     # The logic:
-    # - for each group (asset, year, rep_period) in t_union
+    # - for each group (asset, year, rep_period) in merged
     # - keep all unique time_block_start
     # - create corresponing time_block_end
 
-    for union_table in
-        ("t_union_" * x for x in ("in_flows", "out_flows", "assets_and_out_flows", "all_flows"))
-        table_name = replace(union_table, "t_union" => "t_highest")
+    for merged_table in
+        ("merged_" * x for x in ("in_flows", "out_flows", "assets_and_out_flows", "all_flows"))
+        table_name = replace(merged_table, "merged" => "t_highest")
         DuckDB.execute(
             connection,
             "CREATE OR REPLACE TABLE $table_name AS
             SELECT
-                t_union.asset,
-                t_union.year,
-                t_union.rep_period,
-                t_union.time_block_start,
-                lead(t_union.time_block_start - 1, 1, rep_periods_data.num_timesteps)
-                    OVER (PARTITION BY t_union.asset, t_union.year, t_union.rep_period ORDER BY t_union.time_block_start)
+                merged.asset,
+                merged.year,
+                merged.rep_period,
+                merged.time_block_start,
+                lead(merged.time_block_start - 1, 1, rep_periods_data.num_timesteps)
+                    OVER (PARTITION BY merged.asset, merged.year, merged.rep_period ORDER BY merged.time_block_start)
                     AS time_block_end
             FROM (
                 SELECT DISTINCT asset, year, rep_period, time_block_start
-                FROM $union_table
-            ) AS t_union
+                FROM $merged_table
+            ) AS merged
             LEFT JOIN asset_both
-                ON asset_both.asset = t_union.asset
-                AND asset_both.milestone_year = t_union.year
-                AND asset_both.commission_year = t_union.year
+                ON asset_both.asset = merged.asset
+                AND asset_both.milestone_year = merged.year
+                AND asset_both.commission_year = merged.year
             LEFT JOIN rep_periods_data
-                ON t_union.year = rep_periods_data.year
-                    AND t_union.rep_period = rep_periods_data.rep_period
-            ORDER BY t_union.asset, t_union.year, t_union.rep_period, time_block_start
+                ON merged.year = rep_periods_data.year
+                    AND merged.rep_period = rep_periods_data.rep_period
+            ORDER BY merged.asset, merged.year, merged.rep_period, time_block_start
             ",
         )
     end
-end
-
-"""
-    connection, ep = tmp_example_of_flow_expression_problem()
-"""
-function tmp_example_of_flow_expression_problem()
-    connection = DBInterface.connect(DuckDB.DB)
-    schemas = TulipaEnergyModel.schema_per_table_name
-    TulipaIO.read_csv_folder(connection, "test/inputs/Norse"; schemas)
-    ep = EnergyProblem(connection)
-    create_model!(ep)
-
-    @info """# Example of flow expression problem
-
-    ref: see $(@__FILE__):$(@__LINE__)
-
-    # TODO: This is outdated
-    The desired incoming and outgoing flows are:
-    - ep.dataframes[:highest_in_out].incoming_flow
-    - ep.dataframes[:highest_in_out].outgoing_flow
-
-    The DuckDB relevant tables (created in this file) are
-    - `asset_time_resolution`: Each asset and their unrolled time partitions
-    - `flow_time_resolution`: Each flow and their unrolled time partitions
-      Note: This is the equivalent to `ep.dataframes[:flows]`.
-    - `cons_indices_highest_in_out`: The indices of the balance constraints.
-
-    Objectives:
-    - For each row in `cons_indices_highest_in_out`, find all incoming/outgoing
-      flows that **match** (asset,year,rep_period) and with intersecting time
-      block
-    - Find a way to store this information to use when creating the model in a
-      way that doesn't slow down when creating constraints/expressions in JuMP.
-      This normally implies not having conditionals on the expresion/constraints.
-      See, e.g., https://jump.dev/JuMP.jl/stable/tutorials/getting_started/sum_if/
-    """
-
-    return connection, ep
 end

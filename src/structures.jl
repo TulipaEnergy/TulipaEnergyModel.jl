@@ -251,7 +251,7 @@ mutable struct EnergyProblem
     This will call relevant functions to generate all input that is required for the model creation.
     """
     function EnergyProblem(connection; model_parameters_file = "")
-        @timeit to "create_internal_structure" create_internal_structures!(connection)
+        @timeit to "create_internal_structure" create_internal_tables!(connection)
 
         variables = @timeit to "compute_variables_indices" compute_variables_indices(connection)
 

@@ -296,7 +296,7 @@ function _create_constraints_tables(connection)
             attr.year,
             attr.period_block_start,
             attr.period_block_end,
-        FROM asset_timeframe_time_resolution AS attr
+        FROM asset_time_resolution_over_clustered_year AS attr
         LEFT JOIN asset_milestone
             ON attr.asset = asset_milestone.asset
             AND attr.year = asset_milestone.milestone_year
@@ -317,7 +317,7 @@ function _create_constraints_tables(connection)
             attr.year,
             attr.period_block_start,
             attr.period_block_end,
-        FROM asset_timeframe_time_resolution AS attr
+        FROM asset_time_resolution_over_clustered_year AS attr
         LEFT JOIN asset_milestone
             ON attr.asset = asset_milestone.asset
             AND attr.year = asset_milestone.milestone_year
