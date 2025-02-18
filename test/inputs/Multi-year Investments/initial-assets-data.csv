@@ -1,5 +1,5 @@
-name,active,year,commission_year,investable,investment_integer,investment_cost,investment_limit,capacity,initial_units,peak_demand,consumer_balance_sense,is_seasonal,storage_inflows,initial_storage_units,initial_storage_level,energy_to_power_ratio,storage_method_energy,investment_cost_storage_energy,investment_limit_storage_energy,capacity_storage_energy,investment_integer_storage_energy,use_binary_storage_method,max_energy_timeframe_partition,min_energy_timeframe_partition,unit_commitment,unit_commitment_method,units_on_cost,unit_commitment_integer,min_operating_point,ramping,max_ramp_up,max_ramp_down
-wind,true,2020,2020,false,false,0,,50,0.07,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
-wind,true,2030,2030,false,false,70,,50,0.02,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
-wind,true,2035,2020,false,false,0,,50,-0.02,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
-ccgt,true,2028,2028,false,false,0,,400,1,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
+name,year,commission_year,investable,investment_integer,investment_cost,investment_limit,capacity,initial_units,peak_demand,consumer_balance_sense,is_seasonal,storage_inflows,initial_storage_units,initial_storage_level,energy_to_power_ratio,storage_method_energy,investment_cost_storage_energy,investment_limit_storage_energy,capacity_storage_energy,investment_integer_storage_energy,use_binary_storage_method,max_energy_timeframe_partition,min_energy_timeframe_partition,unit_commitment,unit_commitment_method,units_on_cost,unit_commitment_integer,min_operating_point,ramping,max_ramp_up,max_ramp_down
+wind,2020,2020,false,false,0,,50,0.07,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
+wind,2030,2030,false,false,70,,50,0.02,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
+wind,2035,2020,false,false,0,,50,-0.02,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
+ccgt,2028,2028,false,false,0,,400,1,0,,false,0,0,0,0,false,0,,0,false,,,,false,,,false,,false,,
