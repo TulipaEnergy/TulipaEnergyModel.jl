@@ -31,10 +31,11 @@ function run_scenario(
 
     @timeit to "create_model!" create_model!(energy_problem; write_lp_file, enable_names)
 
-    @timeit to "solve and store solution" solve_model!(energy_problem, optimizer; parameters)
+    @timeit to "solve_model!" solve_model!(energy_problem, optimizer; parameters)
+
+    @timeit to "save_solution!" save_solution!(energy_problem)
 
     if output_folder != ""
-        @timeit to "save_solution" save_solution!(energy_problem)
         @timeit to "export_solution_to_csv_files" export_solution_to_csv_files(
             output_folder,
             energy_problem,
