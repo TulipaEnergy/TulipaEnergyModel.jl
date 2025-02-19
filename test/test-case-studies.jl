@@ -6,9 +6,6 @@
         # Removing because it's finding bad bases (ill-conditioned) randomly
         # GLPK.Optimizer => Dict("mip_gap" => 0.01, "msg_lev" => 0, "presolve" => GLPK.GLP_ON),
     )
-    if !Sys.isapple()
-        parameters_dict[Cbc.Optimizer] = Dict("ratioGap" => 0.01, "logLevel" => 0)
-    end
     for (optimizer, parameters) in parameters_dict
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, dir)
@@ -20,9 +17,6 @@ end
 @testset "Tiny Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
     optimizer_list = [HiGHS.Optimizer, GLPK.Optimizer]
-    if !Sys.isapple()
-        push!(optimizer_list, Cbc.Optimizer)
-    end
     for optimizer in optimizer_list
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, dir)
