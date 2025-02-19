@@ -252,39 +252,128 @@ This strategy is based on the replies in this discourse thread:
   - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
 """
 function add_expression_is_charging_terms_rep_period_constraints!(
+    connection,
     cons::TulipaConstraint,
     is_charging::TulipaVariable,
-    workspace,
 )
-    # Aggregating function: We have to compute the proportion of each variable is_charging in the constraint timesteps_block.
-    agg = Statistics.mean
+    Tmax = only(
+        row[1] for
+        row in DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM rep_periods_data")
+    )::Int32
 
-    grouped_cons = DataFrames.groupby(cons.indices, [:year, :rep_period, :asset])
+    workspace = [Dict{Int,Float64}() for _ in 1:Tmax]
 
-    cons.expressions[:is_charging] = Vector{JuMP.AffExpr}(undef, size(cons.indices, 1))
+    grouped_cons_table_name = "t_grouped_$(cons.table_name)"
+    if !_check_if_table_exists(connection, grouped_cons_table_name)
+        DuckDB.query(
+            connection,
+            "CREATE TEMP TABLE $grouped_cons_table_name AS
+            SELECT
+                cons.asset,
+                cons.year,
+                cons.rep_period,
+                ARRAY_AGG(cons.index ORDER BY cons.index) AS index,
+                ARRAY_AGG(cons.time_block_start ORDER BY cons.index) AS time_block_start,
+                ARRAY_AGG(cons.time_block_end ORDER BY cons.index) AS time_block_end,
+            FROM $(cons.table_name) AS cons
+            GROUP BY cons.asset, cons.year, cons.rep_period
+            ",
+        )
+    end
+
+    grouped_var_table_name = "t_grouped_$(is_charging.table_name)"
+    if !_check_if_table_exists(connection, grouped_var_table_name)
+        DuckDB.query(
+            connection,
+            "CREATE TEMP TABLE $grouped_var_table_name AS
+            SELECT
+                var.asset,
+                var.year,
+                var.rep_period,
+                ARRAY_AGG(var.index ORDER BY var.index) AS index,
+                ARRAY_AGG(var.time_block_start ORDER BY var.index) AS time_block_start,
+                ARRAY_AGG(var.time_block_end ORDER BY var.index) AS time_block_end,
+            FROM $(is_charging.table_name) AS var
+            GROUP BY var.asset, var.year, var.rep_period
+            ",
+        )
+    end
+
+    num_rows = size(cons.indices, 1)
+    attach_expression!(cons, :is_charging, Vector{JuMP.AffExpr}(undef, num_rows))
     cons.expressions[:is_charging] .= JuMP.AffExpr(0.0)
-    grouped_is_charging = DataFrames.groupby(is_charging.indices, [:year, :rep_period, :asset])
-    for ((year, rep_period, asset), sub_df) in pairs(grouped_cons)
-        if !haskey(grouped_is_charging, (year, rep_period, asset))
-            continue
-        end
 
-        for i in eachindex(workspace)
-            workspace[i] = JuMP.AffExpr(0.0)
-        end
-        # Store the corresponding variables in the workspace
-        for row in eachrow(grouped_is_charging[(year, rep_period, asset)])
-            asset = row[:asset]
-            for t in row.time_block_start:row.time_block_end
-                JuMP.add_to_expression!(workspace[t], is_charging.container[row.index])
+    # Loop over each group
+    for group_row in DuckDB.query(
+        connection,
+        "SELECT
+            cons.asset,
+            cons.year,
+            cons.rep_period,
+            cons.index AS cons_idx,
+            cons.time_block_start AS cons_time_block_start,
+            cons.time_block_end AS cons_time_block_end,
+            var.index AS var_idx,
+            var.time_block_start AS var_time_block_start,
+            var.time_block_end AS var_time_block_end,
+        FROM $grouped_cons_table_name AS cons
+        LEFT JOIN $grouped_var_table_name AS var
+            ON cons.asset = var.asset
+            AND cons.year = var.year
+            AND cons.rep_period = var.rep_period
+        WHERE
+            len(var.index) > 0
+        ",
+    )
+        empty!.(workspace)
+        # Loop over each variable in the group
+        for (var_idx, time_block_start, time_block_end) in zip(
+            group_row.var_idx::Vector{Union{Missing,Int64}},
+            group_row.var_time_block_start::Vector{Union{Missing,Int32}},
+            group_row.var_time_block_end::Vector{Union{Missing,Int32}},
+        )
+            for timestep in time_block_start:time_block_end
+                workspace[timestep][var_idx] = 1.0
             end
         end
-        # Apply the agg funtion to the corresponding variables from the workspace
-        for row in eachrow(sub_df)
-            cons.expressions[:is_charging][row.index] =
-                agg(@view workspace[row.time_block_start:row.time_block_end])
+
+        # Loop over each constraint
+        for (cons_idx, time_block_start, time_block_end) in zip(
+            group_row.cons_idx::Vector{Union{Missing,Int64}},
+            group_row.cons_time_block_start::Vector{Union{Missing,Int32}},
+            group_row.cons_time_block_end::Vector{Union{Missing,Int32}},
+        )
+            time_block = time_block_start:time_block_end
+            # We keep the coefficient and count to compute the mean later
+            workspace_coef_agg = Dict{Int,Float64}()
+            workspace_count_agg = Dict{Int,Int}()
+
+            for timestep in time_block
+                for (var_idx, var_coefficient) in workspace[timestep]
+                    if !haskey(workspace_coef_agg, var_idx)
+                        # First time a variable is encountered it adds to the aggregation
+                        workspace_coef_agg[var_idx] = var_coefficient
+                        workspace_count_agg[var_idx] = 1
+                    else
+                        # For the other times, aggregate the coefficient and increase the counter
+                        workspace_coef_agg[var_idx] += var_coefficient
+                        workspace_count_agg[var_idx] += 1
+                    end
+                end
+            end
+
+            if length(workspace_coef_agg) > 0
+                cons.expressions[:is_charging][cons_idx] = JuMP.AffExpr(0.0)
+                this_expr = cons.expressions[:is_charging][cons_idx]
+                for (var_idx, coef) in workspace_coef_agg
+                    count = workspace_count_agg[var_idx]
+                    JuMP.add_to_expression!(this_expr, coef / count, is_charging.container[var_idx])
+                end
+            end
         end
     end
+
+    return
 end
 
 """
@@ -631,9 +720,9 @@ function add_expressions_to_constraints!(connection, variables, constraints, exp
         )
 
         @timeit to "add_expression_is_charging_terms_rep_period_constraints! for $table_name" add_expression_is_charging_terms_rep_period_constraints!(
+            connection,
             constraints[table_name],
             variables[:is_charging],
-            expression_workspace,
         )
     end
 
@@ -667,11 +756,6 @@ function add_expressions_to_constraints!(connection, variables, constraints, exp
         connection,
         constraints[:min_energy_over_clustered_year],
         variables[:flow],
-    )
-    @timeit to "add_expression_is_charging_terms_rep_period_constraints!" add_expression_is_charging_terms_rep_period_constraints!(
-        constraints[:capacity_incoming],
-        variables[:is_charging],
-        expression_workspace,
     )
     for table_name in (
         :min_output_flow_with_unit_commitment,
