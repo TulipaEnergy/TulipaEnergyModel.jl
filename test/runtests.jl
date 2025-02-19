@@ -1,5 +1,4 @@
 using CSV: CSV
-using Cbc: Cbc
 using DataFrames: DataFrames, DataFrame
 using DuckDB: DuckDB, DBInterface
 using GLPK: GLPK
