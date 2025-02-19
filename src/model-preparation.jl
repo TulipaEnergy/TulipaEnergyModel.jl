@@ -218,178 +218,6 @@ function add_expression_terms_rep_period_constraints!(
 end
 
 """
-    add_expression_is_charging_terms_rep_period_constraints!(
-        cons,
-        is_charging,
-        workspace,
-    )
-
-Computes the `is_charging` expressions per row of `cons` for the constraints
-that are within (intra) the representative periods.
-
-This function is only used internally in the model.
-
-This strategy is based on the replies in this discourse thread:
-
-  - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
-"""
-function add_expression_is_charging_terms_rep_period_constraints!(
-    connection,
-    cons::TulipaConstraint,
-    is_charging::TulipaVariable,
-)
-    Tmax = only(
-        row[1] for
-        row in DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM rep_periods_data")
-    )::Int32
-
-    workspace = [Dict{Int,Float64}() for _ in 1:Tmax]
-
-    grouped_cons_table_name = "t_grouped_$(cons.table_name)"
-    _create_group_table_if_not_exist!(
-        connection,
-        cons.table_name,
-        grouped_cons_table_name,
-        [:asset, :year, :rep_period],
-        [:index, :time_block_start, :time_block_end],
-    )
-
-    grouped_var_table_name = "t_grouped_$(is_charging.table_name)"
-    _create_group_table_if_not_exist!(
-        connection,
-        is_charging.table_name,
-        grouped_var_table_name,
-        [:asset, :year, :rep_period],
-        [:index, :time_block_start, :time_block_end],
-    )
-
-    num_rows = size(cons.indices, 1)
-    attach_expression!(cons, :is_charging, Vector{JuMP.AffExpr}(undef, num_rows))
-    cons.expressions[:is_charging] .= JuMP.AffExpr(0.0)
-
-    # Loop over each group
-    for group_row in DuckDB.query(
-        connection,
-        "SELECT
-            cons.asset,
-            cons.year,
-            cons.rep_period,
-            cons.index AS cons_idx,
-            cons.time_block_start AS cons_time_block_start,
-            cons.time_block_end AS cons_time_block_end,
-            var.index AS var_idx,
-            var.time_block_start AS var_time_block_start,
-            var.time_block_end AS var_time_block_end,
-        FROM $grouped_cons_table_name AS cons
-        LEFT JOIN $grouped_var_table_name AS var
-            ON cons.asset = var.asset
-            AND cons.year = var.year
-            AND cons.rep_period = var.rep_period
-        WHERE
-            len(var.index) > 0
-        ",
-    )
-        empty!.(workspace)
-        # Loop over each variable in the group
-        for (var_idx, time_block_start, time_block_end) in zip(
-            group_row.var_idx::Vector{Union{Missing,Int64}},
-            group_row.var_time_block_start::Vector{Union{Missing,Int32}},
-            group_row.var_time_block_end::Vector{Union{Missing,Int32}},
-        )
-            for timestep in time_block_start:time_block_end
-                workspace[timestep][var_idx] = 1.0
-            end
-        end
-
-        # Loop over each constraint
-        for (cons_idx, time_block_start, time_block_end) in zip(
-            group_row.cons_idx::Vector{Union{Missing,Int64}},
-            group_row.cons_time_block_start::Vector{Union{Missing,Int32}},
-            group_row.cons_time_block_end::Vector{Union{Missing,Int32}},
-        )
-            time_block = time_block_start:time_block_end
-            # We keep the coefficient and count to compute the mean later
-            workspace_coef_agg = Dict{Int,Float64}()
-            workspace_count_agg = Dict{Int,Int}()
-
-            for timestep in time_block
-                for (var_idx, var_coefficient) in workspace[timestep]
-                    if !haskey(workspace_coef_agg, var_idx)
-                        # First time a variable is encountered it adds to the aggregation
-                        workspace_coef_agg[var_idx] = var_coefficient
-                        workspace_count_agg[var_idx] = 1
-                    else
-                        # For the other times, aggregate the coefficient and increase the counter
-                        workspace_coef_agg[var_idx] += var_coefficient
-                        workspace_count_agg[var_idx] += 1
-                    end
-                end
-            end
-
-            if length(workspace_coef_agg) > 0
-                cons.expressions[:is_charging][cons_idx] = JuMP.AffExpr(0.0)
-                this_expr = cons.expressions[:is_charging][cons_idx]
-                for (var_idx, coef) in workspace_coef_agg
-                    count = workspace_count_agg[var_idx]
-                    JuMP.add_to_expression!(this_expr, coef / count, is_charging.container[var_idx])
-                end
-            end
-        end
-    end
-
-    return
-end
-
-"""
-    add_expression_units_on_terms_rep_period_constraints!(
-        cons,
-        units_on,
-        workspace,
-    )
-
-Computes the `units_on` expressions per row of `cons` for the constraints
-that are within (intra) the representative periods.
-
-This function is only used internally in the model.
-
-This strategy is based on the replies in this discourse thread:
-
-  - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
-"""
-function add_expression_units_on_terms_rep_period_constraints!(
-    cons::TulipaConstraint,
-    units_on::TulipaVariable,
-    workspace,
-)
-    # Aggregating function: since the constraint is in the highest resolution we can aggregate with unique.
-    agg = v -> sum(unique(v))
-
-    grouped_cons = DataFrames.groupby(cons.indices, [:rep_period, :asset])
-
-    cons.expressions[:units_on] = Vector{JuMP.AffExpr}(undef, size(cons.indices, 1))
-    cons.expressions[:units_on] .= JuMP.AffExpr(0.0)
-    grouped_units_on = DataFrames.groupby(units_on.indices, [:rep_period, :asset])
-    for ((rep_period, asset), sub_df) in pairs(grouped_cons)
-        haskey(grouped_units_on, (rep_period, asset)) || continue
-
-        for i in eachindex(workspace)
-            workspace[i] = JuMP.AffExpr(0.0)
-        end
-        # Store the corresponding variables in the workspace
-        for row in eachrow(grouped_units_on[(rep_period, asset)])
-            for t in row.time_block_start:row.time_block_end
-                JuMP.add_to_expression!(workspace[t], units_on.container[row.index])
-            end
-        end
-        # Apply the agg funtion to the corresponding variables from the workspace
-        for row in eachrow(sub_df)
-            cons.expressions[:units_on][row.index] =
-                agg(@view workspace[row.time_block_start:row.time_block_end])
-        end
-    end
-end
-
-"""
     add_expression_terms_over_clustered_year_constraints!(
         connection,
         cons,
@@ -669,10 +497,12 @@ function add_expressions_to_constraints!(connection, variables, constraints, exp
             multiply_by_duration = false,
         )
 
-        @timeit to "add_expression_is_charging_terms_rep_period_constraints! for $table_name" add_expression_is_charging_terms_rep_period_constraints!(
+        @timeit to "attach is_charging expression to $table_name" attach_expression_on_constraints_grouping_variables!(
             connection,
             constraints[table_name],
             variables[:is_charging],
+            :is_charging,
+            agg_strategy = :mean,
         )
     end
 
@@ -712,10 +542,12 @@ function add_expressions_to_constraints!(connection, variables, constraints, exp
         :max_output_flow_with_basic_unit_commitment,
         :max_ramp_with_unit_commitment,
     )
-        @timeit to "add_expression_units_on_terms_rep_period_constraints!" add_expression_units_on_terms_rep_period_constraints!(
+        @timeit to "attach units_on expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+            connection,
             constraints[table_name],
             variables[:units_on],
-            expression_workspace,
+            :units_on,
+            agg_strategy = :unique_sum,
         )
     end
 
