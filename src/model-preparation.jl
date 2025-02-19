@@ -78,22 +78,13 @@ function add_expression_terms_rep_period_constraints!(
     # constraints and variables, is to create grouped tables beforehand and join them
     # The grouped constraint table is created below
     grouped_cons_table_name = "t_grouped_$(cons.table_name)"
-    if !_check_if_table_exists(connection, grouped_cons_table_name)
-        DuckDB.query(
-            connection,
-            "CREATE TEMP TABLE $grouped_cons_table_name AS
-            SELECT
-                cons.asset,
-                cons.year,
-                cons.rep_period,
-                ARRAY_AGG(cons.index ORDER BY cons.index) AS index,
-                ARRAY_AGG(cons.time_block_start ORDER BY cons.index) AS time_block_start,
-                ARRAY_AGG(cons.time_block_end ORDER BY cons.index) AS time_block_end,
-            FROM $(cons.table_name) AS cons
-            GROUP BY cons.asset, cons.year, cons.rep_period
-            ",
-        )
-    end
+    _create_group_table_if_not_exist!(
+        connection,
+        cons.table_name,
+        grouped_cons_table_name,
+        [:asset, :year, :rep_period],
+        [:index, :time_block_start, :time_block_end],
+    )
 
     for case in cases
         attach_expression!(cons, case.expr_key, Vector{JuMP.AffExpr}(undef, num_rows))
@@ -106,23 +97,14 @@ function add_expression_terms_rep_period_constraints!(
 
         # The grouped variable table is created below for each case (from=asset, to=asset)
         grouped_var_table_name = "t_grouped_$(flow.table_name)_match_on_$(case.asset_match)"
-        if !_check_if_table_exists(connection, grouped_var_table_name)
-            DuckDB.query(
-                connection,
-                "CREATE TEMP TABLE $grouped_var_table_name AS
-                SELECT
-                    var.$(case.asset_match) AS asset,
-                    var.year,
-                    var.rep_period,
-                    ARRAY_AGG(var.index ORDER BY var.index) AS index,
-                    ARRAY_AGG(var.time_block_start ORDER BY var.index) AS time_block_start,
-                    ARRAY_AGG(var.time_block_end ORDER BY var.index) AS time_block_end,
-                    ARRAY_AGG(var.efficiency ORDER BY var.index) AS efficiency,
-                FROM $(flow.table_name) AS var
-                GROUP BY var.$(case.asset_match), var.year, var.rep_period
-                ",
-            )
-        end
+        _create_group_table_if_not_exist!(
+            connection,
+            flow.table_name,
+            grouped_var_table_name,
+            [case.asset_match, :year, :rep_period],
+            [:index, :time_block_start, :time_block_end, :efficiency];
+            rename_columns = Dict(case.asset_match => :asset),
+        )
 
         resolution_query = multiply_by_duration ? "rep_periods_data.resolution" : "1.0::FLOAT8"
 
@@ -264,40 +246,22 @@ function add_expression_is_charging_terms_rep_period_constraints!(
     workspace = [Dict{Int,Float64}() for _ in 1:Tmax]
 
     grouped_cons_table_name = "t_grouped_$(cons.table_name)"
-    if !_check_if_table_exists(connection, grouped_cons_table_name)
-        DuckDB.query(
-            connection,
-            "CREATE TEMP TABLE $grouped_cons_table_name AS
-            SELECT
-                cons.asset,
-                cons.year,
-                cons.rep_period,
-                ARRAY_AGG(cons.index ORDER BY cons.index) AS index,
-                ARRAY_AGG(cons.time_block_start ORDER BY cons.index) AS time_block_start,
-                ARRAY_AGG(cons.time_block_end ORDER BY cons.index) AS time_block_end,
-            FROM $(cons.table_name) AS cons
-            GROUP BY cons.asset, cons.year, cons.rep_period
-            ",
-        )
-    end
+    _create_group_table_if_not_exist!(
+        connection,
+        cons.table_name,
+        grouped_cons_table_name,
+        [:asset, :year, :rep_period],
+        [:index, :time_block_start, :time_block_end],
+    )
 
     grouped_var_table_name = "t_grouped_$(is_charging.table_name)"
-    if !_check_if_table_exists(connection, grouped_var_table_name)
-        DuckDB.query(
-            connection,
-            "CREATE TEMP TABLE $grouped_var_table_name AS
-            SELECT
-                var.asset,
-                var.year,
-                var.rep_period,
-                ARRAY_AGG(var.index ORDER BY var.index) AS index,
-                ARRAY_AGG(var.time_block_start ORDER BY var.index) AS time_block_start,
-                ARRAY_AGG(var.time_block_end ORDER BY var.index) AS time_block_end,
-            FROM $(is_charging.table_name) AS var
-            GROUP BY var.asset, var.year, var.rep_period
-            ",
-        )
-    end
+    _create_group_table_if_not_exist!(
+        connection,
+        is_charging.table_name,
+        grouped_var_table_name,
+        [:asset, :year, :rep_period],
+        [:index, :time_block_start, :time_block_end],
+    )
 
     num_rows = size(cons.indices, 1)
     attach_expression!(cons, :is_charging, Vector{JuMP.AffExpr}(undef, num_rows))
@@ -460,37 +424,23 @@ function add_expression_terms_over_clustered_year_constraints!(
     end
 
     grouped_cons_table_name = "t_grouped_$(cons.table_name)"
-    if !_check_if_table_exists(connection, grouped_cons_table_name)
-        DuckDB.query(
-            connection,
-            "CREATE TEMP TABLE $grouped_cons_table_name AS
-            SELECT
-                cons.asset,
-                cons.year,
-                ARRAY_AGG(cons.index ORDER BY cons.index) AS index,
-                ARRAY_AGG(cons.period_block_start ORDER BY cons.index) AS period_block_start,
-                ARRAY_AGG(cons.period_block_end ORDER BY cons.index) AS period_block_end,
-            FROM $(cons.table_name) AS cons
-            GROUP BY cons.asset, cons.year
-            ",
-        )
-    end
+    _create_group_table_if_not_exist!(
+        connection,
+        cons.table_name,
+        grouped_cons_table_name,
+        [:asset, :year],
+        [:index, :period_block_start, :period_block_end],
+    )
 
     grouped_rpmap_over_rp_table_name = "t_grouped_rpmap_over_rp"
-    if !_check_if_table_exists(connection, grouped_rpmap_over_rp_table_name)
-        DuckDB.query(
-            connection,
-            "CREATE TEMP TABLE $grouped_rpmap_over_rp_table_name AS
-            SELECT
-                rpmap.year,
-                rpmap.rep_period,
-                ARRAY_AGG(rpmap.period ORDER BY period) AS periods,
-                ARRAY_AGG(rpmap.weight ORDER BY period) AS weights,
-            FROM rep_periods_mapping AS rpmap
-            GROUP BY rpmap.year, rpmap.rep_period
-            ",
-        )
-    end
+    _create_group_table_if_not_exist!(
+        connection,
+        "rep_periods_mapping",
+        grouped_rpmap_over_rp_table_name,
+        [:year, :rep_period],
+        [:period, :weight];
+        order_agg_by = :period,
+    )
 
     # The flow_per_period_workspace holds the list of flows that will be aggregated in a given period
     maximum_num_periods = only(
@@ -526,8 +476,8 @@ function add_expression_terms_over_clustered_year_constraints!(
                 ARRAY_AGG(var.rep_period ORDER BY var.rep_period) AS var_rep_periods,
                 ARRAY_AGG(rpdata.num_timesteps ORDER BY var.rep_period) AS num_timesteps,
                 ARRAY_AGG(asset_milestone.storage_inflows ORDER BY var.rep_period) AS storage_inflows,
-                ARRAY_AGG(COALESCE(rpmap.periods, []) ORDER BY var.rep_period) AS var_periods,
-                ARRAY_AGG(COALESCE(rpmap.weights, []) ORDER BY var.rep_period) AS var_weights,
+                ARRAY_AGG(COALESCE(rpmap.period, []) ORDER BY var.rep_period) AS var_periods,
+                ARRAY_AGG(COALESCE(rpmap.weight, []) ORDER BY var.rep_period) AS var_weights,
             FROM $grouped_cons_table_name AS cons
             LEFT JOIN $grouped_var_table_name AS var
                 ON cons.asset = var.asset
