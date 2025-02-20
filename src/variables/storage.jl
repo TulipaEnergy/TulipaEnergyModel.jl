@@ -17,7 +17,7 @@ function add_storage_variables!(connection, model, variables)
             model,
             lower_bound = 0.0,
             base_name = "storage_level_rep_period[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(storage_level_rep_period_indices)
+        ) for row in storage_level_rep_period_indices
     ]
 
     variables[:storage_level_over_clustered_year].container = [
@@ -25,7 +25,7 @@ function add_storage_variables!(connection, model, variables)
             model,
             lower_bound = 0.0,
             base_name = "storage_level_over_clustered_year[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
-        ) for row in eachrow(storage_level_over_clustered_year_indices)
+        ) for row in storage_level_over_clustered_year_indices
     ]
 
     variables[:is_charging].container = [
@@ -35,7 +35,7 @@ function add_storage_variables!(connection, model, variables)
             upper_bound = 1.0,
             binary = row.use_binary_storage_method == "binary",
             base_name = "is_charging[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in eachrow(is_charging_indices)
+        ) for row in is_charging_indices
     ]
 
     ### Cycling conditions

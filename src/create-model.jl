@@ -58,7 +58,6 @@ function create_model(
     @timeit to "add_unit_commitment_variables!" add_unit_commitment_variables!(model, variables)
     @timeit to "add_storage_variables!" add_storage_variables!(connection, model, variables)
 
-    ## Add expressions to dataframes
     @timeit to "add_expressions_to_constraints!" add_expressions_to_constraints!(
         connection,
         variables,
