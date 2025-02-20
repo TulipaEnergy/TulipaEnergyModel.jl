@@ -4,7 +4,7 @@ export add_flow_variables!
     add_flow_variables!(connection, model, variables)
 
 Adds flow variables to the optimization `model` based on data from the `variables`.
-The flow variables are created using the `@variable` macro for each row in the `:flows` dataframe.
+The flow variables are created using the `@variable` macro for each row in the `:flows` table.
 
 """
 function add_flow_variables!(connection, model, variables)

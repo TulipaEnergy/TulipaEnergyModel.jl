@@ -20,7 +20,7 @@ function add_group_constraints!(connection, model, variables, constraints)
                         asset_row.capacity * assets_investment[asset_row.index] for
                         asset_row in _get_assets_in_group(connection, row.name)
                     )
-                ) for row in eachrow(cons.indices)
+                ) for row in cons.indices
             ],
         )
     end
@@ -35,8 +35,8 @@ function add_group_constraints!(connection, model, variables, constraints)
                     model,
                     investment_group ≤ row.max_investment_limit,
                     base_name = "investment_group_max_limit[$(row.name)]"
-                ) for (row, investment_group) in
-                zip(eachrow(cons.indices), cons.expressions[:investment_group])
+                ) for
+                (row, investment_group) in zip(cons.indices, cons.expressions[:investment_group])
             ],
         )
     end
@@ -51,8 +51,8 @@ function add_group_constraints!(connection, model, variables, constraints)
                     model,
                     investment_group ≥ row.min_investment_limit,
                     base_name = "investment_group_min_limit[$(row.name)]"
-                ) for (row, investment_group) in
-                zip(eachrow(cons.indices), cons.expressions[:investment_group])
+                ) for
+                (row, investment_group) in zip(cons.indices, cons.expressions[:investment_group])
             ],
         )
     end

@@ -17,7 +17,7 @@ function _create_investment_variable!(
             upper_bound = upper_bound_from_row(row),
             integer = integer_from_row(row),
             base_name = "$name[" * join(keys_from_row(row), ",") * "]"
-        ) for row in eachrow(this_var.indices)
+        ) for row in this_var.indices
     ]
     return
 end
