@@ -48,18 +48,13 @@ function attach_expression_on_constraints_grouping_variables!(
     connection,
     cons::TulipaConstraint,
     var::TulipaVariable,
-    expr_name;
+    expr_name,
+    workspace;
     agg_strategy::Symbol,
 )
     if !(agg_strategy in (:sum, :mean, :unique_sum))
         error("Argument $agg_strategy must be :sum, :mean, or :unique_sum")
     end
-    Tmax = only(
-        row[1] for
-        row in DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM rep_periods_data")
-    )::Int32
-
-    workspace = [Dict{Int,Float64}() for _ in 1:Tmax]
 
     grouped_cons_table_name = "t_grouped_$(cons.table_name)"
     _create_group_table_if_not_exist!(
@@ -106,6 +101,7 @@ function attach_expression_on_constraints_grouping_variables!(
         ",
     )
         empty!.(workspace)
+
         # Loop over each variable in the group
         for (var_idx, time_block_start, time_block_end) in zip(
             group_row.var_idx::Vector{Union{Missing,Int64}},
@@ -124,6 +120,7 @@ function attach_expression_on_constraints_grouping_variables!(
             group_row.cons_time_block_end::Vector{Union{Missing,Int32}},
         )
             time_block = time_block_start:time_block_end
+
             # We keep the coefficient and count to compute the mean later
             workspace_coef_agg = Dict{Int,Float64}()
             workspace_count_agg = Dict{Int,Int}()

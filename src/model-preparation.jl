@@ -449,7 +449,18 @@ function add_expression_terms_over_clustered_year_constraints!(
     return
 end
 
-function add_expressions_to_constraints!(connection, variables, constraints, expression_workspace)
+function add_expressions_to_constraints!(connection, variables, constraints)
+    # creating a workspace with enough entries for any of the representative periods or normal periods
+    maximum_num_timesteps = only(
+        row[1] for
+        row in DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM rep_periods_data")
+    )::Int32
+    maximum_num_periods = only(
+        row[1] for row in DuckDB.query(connection, "SELECT MAX(period) FROM rep_periods_mapping")
+    )::Int32
+    Tmax = max(maximum_num_timesteps, maximum_num_periods)
+    workspace = [Dict{Int,Float64}() for _ in 1:Tmax]
+
     # Unpack variables
     # Creating the incoming and outgoing flow expressions
     @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
@@ -502,6 +513,7 @@ function add_expressions_to_constraints!(connection, variables, constraints, exp
             constraints[table_name],
             variables[:is_charging],
             :is_charging,
+            workspace,
             agg_strategy = :mean,
         )
     end
@@ -547,6 +559,7 @@ function add_expressions_to_constraints!(connection, variables, constraints, exp
             constraints[table_name],
             variables[:units_on],
             :units_on,
+            workspace,
             agg_strategy = :unique_sum,
         )
     end
