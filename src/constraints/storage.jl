@@ -44,19 +44,17 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         previous_level::JuMP.VariableRef = if row.time_block_start > 1
                             var_storage_level[row.index-1]
                         else
-                            # Find last index of this group
-                            # TODO: Replace by DuckDB call when working on #955
-                            last_index = last(
-                                DataFrames.subset(
-                                    cons.indices,
-                                    [:asset, :year, :rep_period] =>
-                                        (a, y, rp) ->
-                                            a .== row.asset .&&
-                                            y .== row.year .&&
-                                            rp .== row.rep_period;
-                                    view = true,
-                                ).index,
-                            )
+                            # Find last index of this group (there are probably cheaper ways, in case this becomes expensive)
+                            last_index = only([
+                                row[1] for row in DuckDB.query(
+                                    connection,
+                                    "SELECT
+                                        MAX(index)
+                                    FROM cons_$table_name
+                                    WHERE asset = '$(row.asset)' AND year = $(row.year) AND rep_period = $(row.rep_period)
+                                    ",
+                                )
+                            ])::Int
                             var_storage_level[last_index]
                         end
                         @constraint(
@@ -135,8 +133,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
         var_storage_level = variables[:storage_level_over_clustered_year].container
         indices = _append_storage_data_to_indices(connection, table_name)
 
-        # This assumes an ordering of the time blocks, that is guaranteed inside
-        # construct_dataframes
+        # This assumes an ordering of the time blocks, that is guaranteed by the append function above
         # The storage_inflows have been moved here
         attach_constraint!(
             model,
@@ -159,15 +156,16 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         previous_level::JuMP.VariableRef = if row.period_block_start > 1
                             var_storage_level[row.index-1]
                         else
-                            # TODO: Replace by DuckDB call when working on #955
-                            last_index = last(
-                                DataFrames.subset(
-                                    cons.indices,
-                                    [:asset, :year] =>
-                                        (a, y) -> a .== row.asset .&& y .== row.year;
-                                    view = true,
-                                ).index,
-                            )
+                            last_index = only([
+                                row[1] for row in DuckDB.query(
+                                    connection,
+                                    "SELECT
+                                        MAX(index)
+                                    FROM cons_$table_name
+                                    WHERE asset = '$(row.asset)' AND year = $(row.year)
+                                    ",
+                                )
+                            ])::Int
                             var_storage_level[last_index]
                         end
 
