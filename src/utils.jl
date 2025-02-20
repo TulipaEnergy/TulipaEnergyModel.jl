@@ -67,9 +67,9 @@ function _create_group_table_if_not_exist!(
     if _check_if_table_exists(connection, grouped_table_name)
         return
     elseif length(group_by_columns) == 0
-        error("`group_by_columns` cannot be empty")
+        throw(ArgumentError("`group_by_columns` cannot be empty"))
     elseif length(array_agg_columns) == 0
-        error("`array_agg_columns` cannot be empty")
+        throw(ArgumentError("`array_agg_columns` cannot be empty"))
     end
 
     select_string = join(
