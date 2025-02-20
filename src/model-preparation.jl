@@ -50,7 +50,8 @@ Notes:
 function add_expression_terms_rep_period_constraints!(
     connection,
     cons::TulipaConstraint,
-    flow::TulipaVariable;
+    flow::TulipaVariable,
+    workspace;
     use_highest_resolution = true,
     multiply_by_duration = true,
     add_min_outgoing_flow_duration = false,
@@ -66,13 +67,6 @@ function add_expression_terms_rep_period_constraints!(
         ),
     ]
     num_rows = size(cons.indices, 1)
-    # TODO: Move this new workspace definition out of this function if and when it's used by other functions
-    Tmax = only(
-        row[1] for
-        row in DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM rep_periods_data")
-    )::Int32
-
-    workspace = [Dict{Int,Float64}() for _ in 1:Tmax]
 
     # The SQL strategy to improve looping over the groups and then the
     # constraints and variables, is to create grouped tables beforehand and join them
@@ -235,7 +229,8 @@ This function is only used internally in the model.
 function add_expression_terms_over_clustered_year_constraints!(
     connection,
     cons::TulipaConstraint,
-    flow::TulipaVariable;
+    flow::TulipaVariable,
+    workspace;
     is_storage_level = false,
 )
     num_rows = size(cons.indices, 1)
@@ -269,12 +264,6 @@ function add_expression_terms_over_clustered_year_constraints!(
         [:period, :weight];
         order_agg_by = :period,
     )
-
-    # The flow_per_period_workspace holds the list of flows that will be aggregated in a given period
-    maximum_num_periods = only(
-        row[1] for row in DuckDB.query(connection, "SELECT MAX(period) FROM rep_periods_mapping")
-    )::Int32
-    flows_per_period_workspace = [Dict{Int,Float64}() for _ in 1:maximum_num_periods]
 
     for case in cases
         from_or_to = case.asset_match
@@ -323,7 +312,7 @@ function add_expression_terms_over_clustered_year_constraints!(
             FROM t_groups
             ",
         )
-            empty!.(flows_per_period_workspace)
+            empty!.(workspace)
 
             for (
                 var_indices,
@@ -370,10 +359,10 @@ function add_expression_terms_over_clustered_year_constraints!(
                     # `combine` function is only applied for clashing entries, i.e., the weight is not applied uniformly to all entries.
                     # It passed for most cases, since `weight = 1` in most cases.
                     for (var_idx, var_coef) in group_flows_accumulation
-                        if !haskey(flows_per_period_workspace[period], var_idx)
-                            flows_per_period_workspace[period][var_idx] = 0.0
+                        if !haskey(workspace[period], var_idx)
+                            workspace[period][var_idx] = 0.0
                         end
-                        flows_per_period_workspace[period][var_idx] += var_coef * weight
+                        workspace[period][var_idx] += var_coef * weight
                     end
                 end
             end
@@ -387,7 +376,7 @@ function add_expression_terms_over_clustered_year_constraints!(
                 period_block = period_block_start:period_block_end
                 workspace_aggregation = Dict{Int,Float64}()
                 for period in period_block
-                    mergewith!(+, workspace_aggregation, flows_per_period_workspace[period])
+                    mergewith!(+, workspace_aggregation, workspace[period])
                 end
 
                 if length(workspace_aggregation) > 0
@@ -466,28 +455,32 @@ function add_expressions_to_constraints!(connection, variables, constraints)
     @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         connection,
         constraints[:balance_conversion],
-        variables[:flow];
+        variables[:flow],
+        workspace;
         use_highest_resolution = false,
         multiply_by_duration = true,
     )
     @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         connection,
         constraints[:balance_storage_rep_period],
-        variables[:flow];
+        variables[:flow],
+        workspace;
         use_highest_resolution = false,
         multiply_by_duration = true,
     )
     @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         connection,
         constraints[:balance_consumer],
-        variables[:flow];
+        variables[:flow],
+        workspace;
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
     @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         connection,
         constraints[:balance_hub],
-        variables[:flow];
+        variables[:flow],
+        workspace;
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
@@ -503,7 +496,8 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         @timeit to "add_expression_terms_rep_period_constraints! for $table_name" add_expression_terms_rep_period_constraints!(
             connection,
             constraints[table_name],
-            variables[:flow];
+            variables[:flow],
+            workspace;
             use_highest_resolution = true,
             multiply_by_duration = false,
         )
@@ -527,7 +521,8 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
             connection,
             constraints[table_name],
-            variables[:flow];
+            variables[:flow],
+            workspace;
             use_highest_resolution = true,
             multiply_by_duration = false,
             add_min_outgoing_flow_duration = true,
@@ -537,17 +532,20 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         connection,
         constraints[:balance_storage_over_clustered_year],
         variables[:flow],
+        workspace;
         is_storage_level = true,
     )
     @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
         connection,
         constraints[:max_energy_over_clustered_year],
         variables[:flow],
+        workspace;
     )
     @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
         connection,
         constraints[:min_energy_over_clustered_year],
         variables[:flow],
+        workspace;
     )
     for table_name in (
         :min_output_flow_with_unit_commitment,
