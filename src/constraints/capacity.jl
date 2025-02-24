@@ -248,7 +248,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     outgoing_flow ≤ profile_times_capacity,
                     base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, outgoing_flow, profile_times_capacity) in zip(
-                    eachrow(constraints[table_name].indices),
+                    constraints[table_name].indices,
                     constraints[table_name].expressions[:outgoing],
                     constraints[table_name].expressions[:profile_times_capacity],
                 )
@@ -271,7 +271,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     outgoing_flow ≤ profile_times_capacity,
                     base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, outgoing_flow, profile_times_capacity) in zip(
-                    eachrow(constraints[table_name].indices),
+                    constraints[table_name].indices,
                     constraints[table_name].expressions[:outgoing],
                     constraints[table_name].expressions[Symbol("profile_times_capacity$suffix")],
                 )
@@ -294,7 +294,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     incoming_flow ≤ profile_times_capacity,
                     base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, incoming_flow, profile_times_capacity) in zip(
-                    eachrow(constraints[table_name].indices),
+                    constraints[table_name].indices,
                     constraints[table_name].expressions[:incoming],
                     constraints[table_name].expressions[:profile_times_capacity],
                 )
@@ -317,7 +317,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     incoming_flow ≤ profile_times_capacity,
                     base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, incoming_flow, profile_times_capacity) in zip(
-                    eachrow(constraints[table_name].indices),
+                    constraints[table_name].indices,
                     constraints[table_name].expressions[:incoming],
                     constraints[table_name].expressions[Symbol("profile_times_capacity$suffix")],
                 )

@@ -16,16 +16,37 @@ const PeriodType = Symbol
 const PERIOD_TYPES = [:rep_periods, :timeframe]
 
 """
+    TulipaTabularIndex
+
+Abstract structure for TulipaVariable, TulipaConstraint and TulipaExpression.
+All deriving types must satisfy:
+
+- Have fields
+    - `indices::DuckDB.QueryResult`
+    - `table_name`::String
+"""
+abstract type TulipaTabularIndex end
+
+function get_num_rows(connection, table_name::Union{String,Symbol})
+    return only([row[1] for row in DuckDB.query(connection, "SELECT COUNT(*) FROM $table_name")])
+end
+
+function get_num_rows(connection, object::TulipaTabularIndex)
+    table_name = object.table_name
+    return get_num_rows(connection, table_name)
+end
+
+"""
 Structure to hold the JuMP variables for the TulipaEnergyModel
 """
-mutable struct TulipaVariable
-    indices::DataFrame
+mutable struct TulipaVariable <: TulipaTabularIndex
+    indices::DuckDB.QueryResult
     table_name::String
     container::Vector{JuMP.VariableRef}
 
     function TulipaVariable(connection, table_name::String)
         return new(
-            DuckDB.query(connection, "SELECT * FROM $table_name") |> DataFrame,
+            DuckDB.query(connection, "SELECT * FROM $table_name"),
             table_name,
             JuMP.VariableRef[],
         )
@@ -35,8 +56,8 @@ end
 """
 Structure to hold the JuMP constraints for the TulipaEnergyModel
 """
-mutable struct TulipaConstraint
-    indices::DataFrame
+mutable struct TulipaConstraint <: TulipaTabularIndex
+    indices::DuckDB.QueryResult
     table_name::String
     num_rows::Int
     constraint_names::Vector{Symbol}
@@ -46,7 +67,7 @@ mutable struct TulipaConstraint
 
     function TulipaConstraint(connection, table_name::String)
         return new(
-            DuckDB.query(connection, "SELECT * FROM $table_name") |> DataFrame,
+            DuckDB.query(connection, "SELECT * FROM $table_name"),
             table_name,
             only([ # only makes sure that a single value is returned
                 row.num_rows for
@@ -63,15 +84,15 @@ end
 """
 Structure to hold some JuMP expressions that are not attached to constraints but are attached to a table.
 """
-mutable struct TulipaExpression
-    indices::DataFrame
+mutable struct TulipaExpression <: TulipaTabularIndex
+    indices::DuckDB.QueryResult
     table_name::String
     num_rows::Int
     expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
 
     function TulipaExpression(connection, table_name::String)
         return new(
-            DuckDB.query(connection, "SELECT * FROM $table_name") |> DataFrame,
+            DuckDB.query(connection, "SELECT * FROM $table_name"),
             table_name,
             only([
                 row.num_rows for
@@ -107,7 +128,7 @@ end
 
 function attach_constraint!(model::JuMP.Model, cons::TulipaConstraint, name::Symbol, container)
     # This should be the empty case container = Any[] that happens when the
-    # indices table in empty in [@constraint(...) for row in eachrow(indices)].
+    # indices table in empty in [@constraint(...) for row in indices].
     # It resolves to [] so the element type cannot be inferred
     if length(container) > 0
         error(
@@ -130,7 +151,7 @@ Attach a expression named `name` stored in `container`, and optionally set `mode
 This checks that the `container` length matches the stored `indices` number of rows.
 """
 function attach_expression!(
-    cons_or_expr::Union{TulipaVariable,TulipaConstraint,TulipaExpression},
+    cons_or_expr::TulipaTabularIndex,
     name::Symbol,
     container::Vector{JuMP.AffExpr},
 )
@@ -141,13 +162,9 @@ function attach_expression!(
     return nothing
 end
 
-function attach_expression!(
-    cons_or_expr::Union{TulipaVariable,TulipaConstraint,TulipaExpression},
-    name::Symbol,
-    container,
-)
+function attach_expression!(cons_or_expr::TulipaTabularIndex, name::Symbol, container)
     # This should be the empty case container = Any[] that happens when the
-    # indices table in empty in [@constraint(...) for row in eachrow(indices)].
+    # indices table in empty in [@constraint(...) for row in indices].
     # It resolves to [] so the element type cannot be inferred
     if length(container) > 0
         error(

@@ -66,7 +66,7 @@ function add_expression_terms_rep_period_constraints!(
             selected_assets = ["hub", "consumer", "producer"],
         ),
     ]
-    num_rows = size(cons.indices, 1)
+    num_rows = get_num_rows(connection, cons)
 
     # The SQL strategy to improve looping over the groups and then the
     # constraints and variables, is to create grouped tables beforehand and join them
@@ -233,7 +233,7 @@ function add_expression_terms_over_clustered_year_constraints!(
     workspace;
     is_storage_level = false,
 )
-    num_rows = size(cons.indices, 1)
+    num_rows = get_num_rows(connection, cons)
 
     cases = [(expr_key = :outgoing, asset_match = :from)]
     if is_storage_level

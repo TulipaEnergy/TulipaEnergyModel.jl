@@ -4,7 +4,6 @@ module TulipaEnergyModel
 
 ## Data
 using CSV: CSV
-using DataFrames: DataFrames, DataFrame
 using DuckDB: DuckDB, DBInterface
 using TOML: TOML
 using TulipaIO: TulipaIO
