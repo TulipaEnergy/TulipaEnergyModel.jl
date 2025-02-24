@@ -3,38 +3,59 @@
 Here are some tutorials on how to use Tulipa.
 
 ```@contents
-Pages = ["20-tutorials.md"]
+Pages = ["10-tutorials.md"]
 Depth = 3
 ```
 
-## [Basic example](@id basic-example)
+## [Beginner Tutorial #1](@id basic-example)
 
-For our first example, let's use a tiny existing dataset.
+For our first analysis, let's use a tiny existing dataset.
 Inside the code for this package, you can find the folder [`test/inputs/Tiny`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Tiny), which includes all the files necessary to create a model and solve it.
 
 The files inside the "Tiny" folder define the assets and flows data, their profiles, and their time resolution, as well as define the representative periods and which periods in the full problem formulation they represent.
 
 For more details about these files, see [Input](@ref input).
 
-### Run scenario
+### Starting Julia
 
-To read all data from the Tiny folder, perform all necessary steps to create a model, and solve the model, run the following in a Julia terminal:
+Choose one:
 
-```@example
+- In VSCode: Press `CTRL`+`Shift`+`P` and then `Enter` to start a Julia REPL.
+- In the terminal: Type `julia` and press `Enter`
+
+### Run a tiny scenario
+
+In Julia:
+
+```@example bt-1
 using DuckDB, TulipaIO, TulipaEnergyModel
 
-input_dir = "../../test/inputs/Tiny" # hide
-# input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
+input_dir = "../../test/inputs/Tiny" # The string should point to the Tiny folder, something like "test/inputs/Tiny"
+
 # TulipaEnergyModel.schema_per_table_name contains the schema with columns and types the file must have
+
+# Create a DuckDB database connection
 connection = DBInterface.connect(DuckDB.DB)
+
+# Read the files into DuckDB tables - luckily the files are already in the Model Schema
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
+
+# Run the scenario and save the result to the energy_problem
 energy_problem = run_scenario(connection)
 ```
 
-The `energy_problem` variable is of type `EnergyProblem`.
-For more details, see the [documentation for that type](@ref TulipaEnergyModel.EnergyProblem) or the section [Structures](@ref structures).
+Congratulations - you just solved your first scenario! 🌷
 
-That's all it takes to run a scenario! To learn about the data required to run your own scenario, see the [Input section](@ref input) of [How to Use](@ref how-to-use).
+Now let's look at some of the results:
+
+```@example bt-1
+# Check
+
+# Export the results to CSV
+
+```
+
+## [Beginner Tutorial #2](@id bt-2)
 
 ### Manually running each step
 
@@ -109,7 +130,7 @@ To change this, we can give the functions `run_scenario` or `solve_model!` a
 different optimizer.
 
 !!! warning
-    HiGHS is the only open source solver that we recommend. GLPK and Cbc are not (fully) tested for Tulipa.
+HiGHS is the only open source solver that we recommend. GLPK and Cbc are not (fully) tested for Tulipa.
 
 For instance, let's run the Tiny example using the [GLPK](https://github.com/jump-dev/GLPK.jl) optimizer:
 
@@ -132,7 +153,7 @@ solution = solve_model!(energy_problem, GLPK.Optimizer)
 ```
 
 !!! info
-    Notice that, in any of these cases, we need to explicitly add the GLPK package ourselves and add `using GLPK` before using `GLPK.Optimizer`.
+Notice that, in any of these cases, we need to explicitly add the GLPK package ourselves and add `using GLPK` before using `GLPK.Optimizer`.
 
 In any of these cases, default parameters for the `GLPK` optimizer are used,
 which you can query using [`default_parameters`](@ref).
