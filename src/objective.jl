@@ -48,10 +48,13 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         "SELECT
             expr.index,
             t_objective_assets.weight_for_operation_discounts
-                * t_objective_assets.fixed_cost
+                * asset_commission.fixed_cost
                 * t_objective_assets.capacity
                 AS cost,
         FROM expr_available_asset_units AS expr
+        LEFT JOIN asset_commission
+            ON expr.asset = asset_commission.asset
+            AND expr.commission_year = asset_commission.commission_year
         LEFT JOIN t_objective_assets
             ON expr.asset = t_objective_assets.asset
             AND expr.milestone_year = t_objective_assets.milestone_year
@@ -98,10 +101,13 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         "SELECT
             expr.index,
             t_objective_assets.weight_for_operation_discounts
-                * t_objective_assets.fixed_cost_storage_energy
+                * asset_commission.fixed_cost_storage_energy
                 * t_objective_assets.capacity_storage_energy
                 AS cost,
         FROM expr_available_energy_units AS expr
+        LEFT JOIN asset_commission
+            ON expr.asset = asset_commission.asset
+            AND expr.commission_year = asset_commission.commission_year
         LEFT JOIN t_objective_assets
             ON expr.asset = t_objective_assets.asset
             AND expr.milestone_year = t_objective_assets.milestone_year
@@ -149,10 +155,14 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         "SELECT
             expr.index,
             t_objective_flows.weight_for_operation_discounts
-                * t_objective_flows.fixed_cost / 2
+                * flow_commission.fixed_cost / 2
                 * t_objective_flows.capacity
                 AS cost,
         FROM expr_available_flow_units AS expr
+        LEFT JOIN flow_commission
+            ON expr.from_asset = flow_commission.from_asset
+            AND expr.to_asset = flow_commission.to_asset
+            AND expr.commission_year = flow_commission.commission_year
         LEFT JOIN t_objective_flows
             ON expr.from_asset = t_objective_flows.from_asset
             AND expr.to_asset = t_objective_flows.to_asset
@@ -275,10 +285,8 @@ function _create_objective_auxiliary_table(connection, constants)
             asset_milestone.milestone_year,
             -- copied over
             asset_commission.investment_cost,
-            asset_commission.fixed_cost,
             asset.capacity,
             asset_commission.investment_cost_storage_energy,
-            asset_commission.fixed_cost_storage_energy,
             asset.capacity_storage_energy,
             asset_milestone.units_on_cost,
             -- computed
@@ -321,7 +329,6 @@ function _create_objective_auxiliary_table(connection, constants)
             flow_milestone.milestone_year,
             -- copied over
             flow_commission.investment_cost,
-            flow_commission.fixed_cost,
             flow.capacity,
             flow_milestone.variable_cost,
             -- computed
