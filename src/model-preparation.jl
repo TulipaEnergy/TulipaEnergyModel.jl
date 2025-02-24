@@ -50,7 +50,8 @@ Notes:
 function add_expression_terms_rep_period_constraints!(
     connection,
     cons::TulipaConstraint,
-    flow::TulipaVariable;
+    flow::TulipaVariable,
+    workspace;
     use_highest_resolution = true,
     multiply_by_duration = true,
     add_min_outgoing_flow_duration = false,
@@ -66,34 +67,18 @@ function add_expression_terms_rep_period_constraints!(
         ),
     ]
     num_rows = size(cons.indices, 1)
-    # TODO: Move this new workspace definition out of this function if and when it's used by other functions
-    Tmax = only(
-        row[1] for
-        row in DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM rep_periods_data")
-    )::Int32
-
-    workspace = [Dict{Int,Float64}() for _ in 1:Tmax]
 
     # The SQL strategy to improve looping over the groups and then the
     # constraints and variables, is to create grouped tables beforehand and join them
     # The grouped constraint table is created below
     grouped_cons_table_name = "t_grouped_$(cons.table_name)"
-    if !_check_if_table_exists(connection, grouped_cons_table_name)
-        DuckDB.query(
-            connection,
-            "CREATE TEMP TABLE $grouped_cons_table_name AS
-            SELECT
-                cons.asset,
-                cons.year,
-                cons.rep_period,
-                ARRAY_AGG(cons.index ORDER BY cons.index) AS index,
-                ARRAY_AGG(cons.time_block_start ORDER BY cons.index) AS time_block_start,
-                ARRAY_AGG(cons.time_block_end ORDER BY cons.index) AS time_block_end,
-            FROM $(cons.table_name) AS cons
-            GROUP BY cons.asset, cons.year, cons.rep_period
-            ",
-        )
-    end
+    _create_group_table_if_not_exist!(
+        connection,
+        cons.table_name,
+        grouped_cons_table_name,
+        [:asset, :year, :rep_period],
+        [:index, :time_block_start, :time_block_end],
+    )
 
     for case in cases
         attach_expression!(cons, case.expr_key, Vector{JuMP.AffExpr}(undef, num_rows))
@@ -106,23 +91,14 @@ function add_expression_terms_rep_period_constraints!(
 
         # The grouped variable table is created below for each case (from=asset, to=asset)
         grouped_var_table_name = "t_grouped_$(flow.table_name)_match_on_$(case.asset_match)"
-        if !_check_if_table_exists(connection, grouped_var_table_name)
-            DuckDB.query(
-                connection,
-                "CREATE TEMP TABLE $grouped_var_table_name AS
-                SELECT
-                    var.$(case.asset_match) AS asset,
-                    var.year,
-                    var.rep_period,
-                    ARRAY_AGG(var.index ORDER BY var.index) AS index,
-                    ARRAY_AGG(var.time_block_start ORDER BY var.index) AS time_block_start,
-                    ARRAY_AGG(var.time_block_end ORDER BY var.index) AS time_block_end,
-                    ARRAY_AGG(var.efficiency ORDER BY var.index) AS efficiency,
-                FROM $(flow.table_name) AS var
-                GROUP BY var.$(case.asset_match), var.year, var.rep_period
-                ",
-            )
-        end
+        _create_group_table_if_not_exist!(
+            connection,
+            flow.table_name,
+            grouped_var_table_name,
+            [case.asset_match, :year, :rep_period],
+            [:index, :time_block_start, :time_block_end, :efficiency];
+            rename_columns = Dict(case.asset_match => :asset),
+        )
 
         resolution_query = multiply_by_duration ? "rep_periods_data.resolution" : "1.0::FLOAT8"
 
@@ -236,107 +212,6 @@ function add_expression_terms_rep_period_constraints!(
 end
 
 """
-    add_expression_is_charging_terms_rep_period_constraints!(
-        cons,
-        is_charging,
-        workspace,
-    )
-
-Computes the `is_charging` expressions per row of `cons` for the constraints
-that are within (intra) the representative periods.
-
-This function is only used internally in the model.
-
-This strategy is based on the replies in this discourse thread:
-
-  - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
-"""
-function add_expression_is_charging_terms_rep_period_constraints!(
-    cons::TulipaConstraint,
-    is_charging::TulipaVariable,
-    workspace,
-)
-    # Aggregating function: We have to compute the proportion of each variable is_charging in the constraint timesteps_block.
-    agg = Statistics.mean
-
-    grouped_cons = DataFrames.groupby(cons.indices, [:year, :rep_period, :asset])
-
-    cons.expressions[:is_charging] = Vector{JuMP.AffExpr}(undef, size(cons.indices, 1))
-    cons.expressions[:is_charging] .= JuMP.AffExpr(0.0)
-    grouped_is_charging = DataFrames.groupby(is_charging.indices, [:year, :rep_period, :asset])
-    for ((year, rep_period, asset), sub_df) in pairs(grouped_cons)
-        if !haskey(grouped_is_charging, (year, rep_period, asset))
-            continue
-        end
-
-        for i in eachindex(workspace)
-            workspace[i] = JuMP.AffExpr(0.0)
-        end
-        # Store the corresponding variables in the workspace
-        for row in eachrow(grouped_is_charging[(year, rep_period, asset)])
-            asset = row[:asset]
-            for t in row.time_block_start:row.time_block_end
-                JuMP.add_to_expression!(workspace[t], is_charging.container[row.index])
-            end
-        end
-        # Apply the agg funtion to the corresponding variables from the workspace
-        for row in eachrow(sub_df)
-            cons.expressions[:is_charging][row.index] =
-                agg(@view workspace[row.time_block_start:row.time_block_end])
-        end
-    end
-end
-
-"""
-    add_expression_units_on_terms_rep_period_constraints!(
-        cons,
-        units_on,
-        workspace,
-    )
-
-Computes the `units_on` expressions per row of `cons` for the constraints
-that are within (intra) the representative periods.
-
-This function is only used internally in the model.
-
-This strategy is based on the replies in this discourse thread:
-
-  - https://discourse.julialang.org/t/help-improving-the-speed-of-a-dataframes-operation/107615/23
-"""
-function add_expression_units_on_terms_rep_period_constraints!(
-    cons::TulipaConstraint,
-    units_on::TulipaVariable,
-    workspace,
-)
-    # Aggregating function: since the constraint is in the highest resolution we can aggregate with unique.
-    agg = v -> sum(unique(v))
-
-    grouped_cons = DataFrames.groupby(cons.indices, [:rep_period, :asset])
-
-    cons.expressions[:units_on] = Vector{JuMP.AffExpr}(undef, size(cons.indices, 1))
-    cons.expressions[:units_on] .= JuMP.AffExpr(0.0)
-    grouped_units_on = DataFrames.groupby(units_on.indices, [:rep_period, :asset])
-    for ((rep_period, asset), sub_df) in pairs(grouped_cons)
-        haskey(grouped_units_on, (rep_period, asset)) || continue
-
-        for i in eachindex(workspace)
-            workspace[i] = JuMP.AffExpr(0.0)
-        end
-        # Store the corresponding variables in the workspace
-        for row in eachrow(grouped_units_on[(rep_period, asset)])
-            for t in row.time_block_start:row.time_block_end
-                JuMP.add_to_expression!(workspace[t], units_on.container[row.index])
-            end
-        end
-        # Apply the agg funtion to the corresponding variables from the workspace
-        for row in eachrow(sub_df)
-            cons.expressions[:units_on][row.index] =
-                agg(@view workspace[row.time_block_start:row.time_block_end])
-        end
-    end
-end
-
-"""
     add_expression_terms_over_clustered_year_constraints!(
         connection,
         cons,
@@ -354,7 +229,8 @@ This function is only used internally in the model.
 function add_expression_terms_over_clustered_year_constraints!(
     connection,
     cons::TulipaConstraint,
-    flow::TulipaVariable;
+    flow::TulipaVariable,
+    workspace;
     is_storage_level = false,
 )
     num_rows = size(cons.indices, 1)
@@ -371,43 +247,23 @@ function add_expression_terms_over_clustered_year_constraints!(
     end
 
     grouped_cons_table_name = "t_grouped_$(cons.table_name)"
-    if !_check_if_table_exists(connection, grouped_cons_table_name)
-        DuckDB.query(
-            connection,
-            "CREATE TEMP TABLE $grouped_cons_table_name AS
-            SELECT
-                cons.asset,
-                cons.year,
-                ARRAY_AGG(cons.index ORDER BY cons.index) AS index,
-                ARRAY_AGG(cons.period_block_start ORDER BY cons.index) AS period_block_start,
-                ARRAY_AGG(cons.period_block_end ORDER BY cons.index) AS period_block_end,
-            FROM $(cons.table_name) AS cons
-            GROUP BY cons.asset, cons.year
-            ",
-        )
-    end
+    _create_group_table_if_not_exist!(
+        connection,
+        cons.table_name,
+        grouped_cons_table_name,
+        [:asset, :year],
+        [:index, :period_block_start, :period_block_end],
+    )
 
     grouped_rpmap_over_rp_table_name = "t_grouped_rpmap_over_rp"
-    if !_check_if_table_exists(connection, grouped_rpmap_over_rp_table_name)
-        DuckDB.query(
-            connection,
-            "CREATE TEMP TABLE $grouped_rpmap_over_rp_table_name AS
-            SELECT
-                rpmap.year,
-                rpmap.rep_period,
-                ARRAY_AGG(rpmap.period ORDER BY period) AS periods,
-                ARRAY_AGG(rpmap.weight ORDER BY period) AS weights,
-            FROM rep_periods_mapping AS rpmap
-            GROUP BY rpmap.year, rpmap.rep_period
-            ",
-        )
-    end
-
-    # The flow_per_period_workspace holds the list of flows that will be aggregated in a given period
-    maximum_num_periods = only(
-        row[1] for row in DuckDB.query(connection, "SELECT MAX(period) FROM rep_periods_mapping")
-    )::Int32
-    flows_per_period_workspace = [Dict{Int,Float64}() for _ in 1:maximum_num_periods]
+    _create_group_table_if_not_exist!(
+        connection,
+        "rep_periods_mapping",
+        grouped_rpmap_over_rp_table_name,
+        [:year, :rep_period],
+        [:period, :weight];
+        order_agg_by = :period,
+    )
 
     for case in cases
         from_or_to = case.asset_match
@@ -437,8 +293,8 @@ function add_expression_terms_over_clustered_year_constraints!(
                 ARRAY_AGG(var.rep_period ORDER BY var.rep_period) AS var_rep_periods,
                 ARRAY_AGG(rpdata.num_timesteps ORDER BY var.rep_period) AS num_timesteps,
                 ARRAY_AGG(asset_milestone.storage_inflows ORDER BY var.rep_period) AS storage_inflows,
-                ARRAY_AGG(COALESCE(rpmap.periods, []) ORDER BY var.rep_period) AS var_periods,
-                ARRAY_AGG(COALESCE(rpmap.weights, []) ORDER BY var.rep_period) AS var_weights,
+                ARRAY_AGG(COALESCE(rpmap.period, []) ORDER BY var.rep_period) AS var_periods,
+                ARRAY_AGG(COALESCE(rpmap.weight, []) ORDER BY var.rep_period) AS var_weights,
             FROM $grouped_cons_table_name AS cons
             LEFT JOIN $grouped_var_table_name AS var
                 ON cons.asset = var.asset
@@ -456,7 +312,7 @@ function add_expression_terms_over_clustered_year_constraints!(
             FROM t_groups
             ",
         )
-            empty!.(flows_per_period_workspace)
+            empty!.(workspace)
 
             for (
                 var_indices,
@@ -503,10 +359,10 @@ function add_expression_terms_over_clustered_year_constraints!(
                     # `combine` function is only applied for clashing entries, i.e., the weight is not applied uniformly to all entries.
                     # It passed for most cases, since `weight = 1` in most cases.
                     for (var_idx, var_coef) in group_flows_accumulation
-                        if !haskey(flows_per_period_workspace[period], var_idx)
-                            flows_per_period_workspace[period][var_idx] = 0.0
+                        if !haskey(workspace[period], var_idx)
+                            workspace[period][var_idx] = 0.0
                         end
-                        flows_per_period_workspace[period][var_idx] += var_coef * weight
+                        workspace[period][var_idx] += var_coef * weight
                     end
                 end
             end
@@ -520,7 +376,7 @@ function add_expression_terms_over_clustered_year_constraints!(
                 period_block = period_block_start:period_block_end
                 workspace_aggregation = Dict{Int,Float64}()
                 for period in period_block
-                    mergewith!(+, workspace_aggregation, flows_per_period_workspace[period])
+                    mergewith!(+, workspace_aggregation, workspace[period])
                 end
 
                 if length(workspace_aggregation) > 0
@@ -582,34 +438,49 @@ function add_expression_terms_over_clustered_year_constraints!(
     return
 end
 
-function add_expressions_to_constraints!(connection, variables, constraints, expression_workspace)
+function add_expressions_to_constraints!(connection, variables, constraints)
+    # creating a workspace with enough entries for any of the representative periods or normal periods
+    maximum_num_timesteps = only(
+        row[1] for
+        row in DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM rep_periods_data")
+    )::Int32
+    maximum_num_periods = only(
+        row[1] for row in DuckDB.query(connection, "SELECT MAX(period) FROM rep_periods_mapping")
+    )::Int32
+    Tmax = max(maximum_num_timesteps, maximum_num_periods)
+    workspace = [Dict{Int,Float64}() for _ in 1:Tmax]
+
     # Unpack variables
     # Creating the incoming and outgoing flow expressions
     @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         connection,
         constraints[:balance_conversion],
-        variables[:flow];
+        variables[:flow],
+        workspace;
         use_highest_resolution = false,
         multiply_by_duration = true,
     )
     @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         connection,
         constraints[:balance_storage_rep_period],
-        variables[:flow];
+        variables[:flow],
+        workspace;
         use_highest_resolution = false,
         multiply_by_duration = true,
     )
     @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         connection,
         constraints[:balance_consumer],
-        variables[:flow];
+        variables[:flow],
+        workspace;
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
     @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         connection,
         constraints[:balance_hub],
-        variables[:flow];
+        variables[:flow],
+        workspace;
         use_highest_resolution = true,
         multiply_by_duration = false,
     )
@@ -625,15 +496,19 @@ function add_expressions_to_constraints!(connection, variables, constraints, exp
         @timeit to "add_expression_terms_rep_period_constraints! for $table_name" add_expression_terms_rep_period_constraints!(
             connection,
             constraints[table_name],
-            variables[:flow];
+            variables[:flow],
+            workspace;
             use_highest_resolution = true,
             multiply_by_duration = false,
         )
 
-        @timeit to "add_expression_is_charging_terms_rep_period_constraints! for $table_name" add_expression_is_charging_terms_rep_period_constraints!(
+        @timeit to "attach is_charging expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+            connection,
             constraints[table_name],
             variables[:is_charging],
-            expression_workspace,
+            :is_charging,
+            workspace,
+            agg_strategy = :mean,
         )
     end
 
@@ -646,7 +521,8 @@ function add_expressions_to_constraints!(connection, variables, constraints, exp
         @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
             connection,
             constraints[table_name],
-            variables[:flow];
+            variables[:flow],
+            workspace;
             use_highest_resolution = true,
             multiply_by_duration = false,
             add_min_outgoing_flow_duration = true,
@@ -656,32 +532,33 @@ function add_expressions_to_constraints!(connection, variables, constraints, exp
         connection,
         constraints[:balance_storage_over_clustered_year],
         variables[:flow],
+        workspace;
         is_storage_level = true,
     )
     @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
         connection,
         constraints[:max_energy_over_clustered_year],
         variables[:flow],
+        workspace;
     )
     @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
         connection,
         constraints[:min_energy_over_clustered_year],
         variables[:flow],
-    )
-    @timeit to "add_expression_is_charging_terms_rep_period_constraints!" add_expression_is_charging_terms_rep_period_constraints!(
-        constraints[:capacity_incoming],
-        variables[:is_charging],
-        expression_workspace,
+        workspace;
     )
     for table_name in (
         :min_output_flow_with_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
         :max_ramp_with_unit_commitment,
     )
-        @timeit to "add_expression_units_on_terms_rep_period_constraints!" add_expression_units_on_terms_rep_period_constraints!(
+        @timeit to "attach units_on expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+            connection,
             constraints[table_name],
             variables[:units_on],
-            expression_workspace,
+            :units_on,
+            workspace,
+            agg_strategy = :unique_sum,
         )
     end
 
