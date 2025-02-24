@@ -1,44 +1,17 @@
 # [How to Use](@id how-to-use)
 
 ```@contents
-Pages = ["10-how-to-use.md"]
+Pages = ["20-how-to-use.md"]
 Depth = 3
 ```
 
-## Install
+Welcome! This section is intended for users who have already followed the Starter Tutorials and are looking for more specific details on functionality.
 
-To use Tulipa, you first need to install the opensource [Julia](https://julialang.org) programming language.
+## Running automatic tests
 
-Then consider installing a user-friendly code editor, such as [VSCode](https://code.visualstudio.com). Otherwise you will be running from the terminal/command prompt.
+To automatically test if the package is working:
 
-### Starting Julia
-
-Choose one:
-
-- In VSCode: Press CTRL+Shift+P and press Enter to start a Julia REPL.
-- In the terminal: Type `julia` and press Enter
-
-### Adding TulipaEnergyModel
-
-In Julia:
-
-- Enter package mode (press "]")
-
-```julia-pkg
-pkg> add TulipaEnergyModel
-```
-
-- Return to Julia mode (backspace)
-
-```julia
-julia> using TulipaEnergyModel
-```
-
-### (Optional) Running automatic tests
-
-It is nice to check that tests are passing to make sure your environment is working, this takes a minute or two.
-
-- Enter package mode (press "]")
+- Enter package mode (press `]`), then run:
 
 ```julia-pkg
 pkg> test TulipaEnergyModel
@@ -46,8 +19,89 @@ pkg> test TulipaEnergyModel
 
 All tests should pass.
 
-!!! warning "Admin rights in your local machine"
-    Ensure you have admin rights on the folder where the package is installed; otherwise, an error will appear during the tests.
+!!! warning "Local Admin Rights"
+Ensure you have admin rights on the folder where the package is installed; otherwise, an error will appear during the tests.
+
+## (!!!WIP) Connecting Data to the Model
+
+Tulipa uses DuckDB to read and write data. DuckDB can connect to data sources of various formats (CSV, Parquet, JSON, etc), and works cross-platform and cross-language. This provides you the flexibility to do pre- & post-processing using any tools, languages, and file-types you prefer. The only requirement is that the resulting DuckDB tables follow the [Model Parameters](@ref schemas) schemas, before being sent to TulipaEnergyModel.
+
+The Tulipa User Schema is friendlier (i.e. human-readable) and can be automatically converted to the Model Schema using TulipaIO.
+
+So choose your own adventure:
+
+- Option 1: Use TulipaIO for Pre-Processing
+- Option 2: Use other tools for Pre-Processing into the User Schema
+- Option 3: (Advanced) Use other tools for Pre-Processing into the Model Schema
+
+But don't miss our [Pro-Tip](@ref duplication-tip) for avoiding data duplication!
+
+### Option 1 - Use TulipaIO for Pre-Processing
+
+Follow the steps below to pre-process your data into the User Schema using TulipaIO. Note that Step 3 is up to the user and entirely depends on the data. See the TulipaIO documentation for more information on the functions available.
+
+```Julia
+using DuckDB, TulipaIO
+
+# 1. Create a database connection
+connection = DBInterface.connect(DuckDB.DB)
+
+# 2. Read data into DuckDB tables (currently only from CSV, more formats to come)
+read_csv_folder(connection, input_directory)
+
+# 3. Manipulate DuckDB tables into User Schema
+# Example
+# Example
+
+# 4. Automatically convert User Schema into Model Schema
+
+```
+
+### Option 2 - Use Other Tools for Pre-Processing into the User Schema
+
+If you use other tools for pre-processing,
+
+First, create a database connection for your analysis:
+
+```julia
+using DuckDB, TulipaIO
+
+# Create the connection
+connection = DBInterface.connect(DuckDB.DB)
+```
+
+Then load your data into the connection.
+
+- If the data already follows the Model Schema, you can do this directly with a function.
+
+```julia
+# Load the sources into DuckDB tables
+# - Read all CSV files located at folder_path, with the files already in the format of the schemas
+TulipaIO.read_csv_folder(connection, folder_path; schemas = TulipaEnergyModel.schema_per_table_name)
+
+# - Or read a single file (of any format) into a table
+TulipaIO.create_tbl(connection, file_path; name = "table-name") # Table name is optional
+```
+
+### Option 3 - (Advanced) Use Other Tools for Pre-Processing into the Model Schema
+
+If you prefer, you can pre-process your data directly into the Model Schema, skipping the User Schema completely. We consider this advanced usage, because the Model Schema is made to be optimal for TulipaEnergyModel and has no considerations for human-friendliness. Also, if the Model Schema changes, we will update the User Schema and TulipaIO conversion functions accordingly - but YOU will have to update your pipeline.
+
+```julia
+using DuckDB, TulipaIO
+
+# Create the connection
+connection = DBInterface.connect(DuckDB.DB)
+
+# Load the sources into DuckDB tables in Model Schema
+
+```
+
+### [Pro-Tip for Avoiding Data Duplication](@id duplication-tip)
+
+All of the options above connect the data to DuckDB and save the processed data to a new file. It is also possible (and arguably ideal, depending on the use case) to use DuckDB WITHOUT saving the processed data to a file. This saves memory by avoiding data duplication and is one of the benefits of DuckDB. Using this workflow, data stays in the sources and all manipulation happens in code before being sent to the model. To regenerate the input data, rerun the code!
+
+To take advantage of this feature and disable writing the data to a new file, set the keyword argument `tmp = true` in (virtually) all TulipaIO functions.
 
 ## Running a Scenario
 
@@ -70,12 +124,73 @@ You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/Tu
 
 To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref). See the [tutorials](@ref tutorials) for an example showcasing this function.
 
+## Changing the Solver (Optimizer) & Parameters (@id solver)
+
+Tulipa uses [HiGHS](https://highs.dev/) by default. To use a different solver:
+
+- Install an MILP solver from the JuMP list of [supported solvers](https://jump.dev/JuMP.jl/stable/installation/#Supported-solvers).
+
+  Opensource solvers can be installed using `pkg> add name-of-solver`
+
+- Set the optimizer argument when using [`run_scenario`](@ref) or [`solve_model!`](@ref)
+
+Example setting the solver to [Gurobi](https://www.gurobi.com/solutions/gurobi-optimizer/):
+
+```julia
+# Use the solver in your project
+using Gurobi
+
+# Specify the solver (optimizer) when using run_scenario
+energy_problem = run_scenario(connection, opitimizer = Gurobi.Optimizer)
+
+# Or when using solve_model!
+solution = solve_model!(energy_problem, Gurobi.Optimizer)
+```
+
+!!! warning HiGHS is the only open-source solver that we recommend. GLPK and Cbc are not (fully) tested for Tulipa.
+
+### Setting Optimizer Parameters
+
+To view the default settings (parameters) of the solver, use the [`default_parameters`](@ref) function.
+
+To change the parameters of the solver, pass a dictionary to the keyword argument `parameters` in [`run_scenario`](@ref) or [`solve_model!`](@ref). Solver parameters can also be passed via a file using the [`read_parameters_from_file`](@ref) function. For a complete list of available parameters, check the documentation of your chosen optimizer.
+
+Example setting the GLPK solving time limit to 10 seconds:
+
+```julia
+using TulipaEnergyModel, GLPK
+
+# --- OPTION 1 - Hard-coded Dictionary ---
+# Create a dictionary with the parameters you want to change
+my_parameters = Dict("tm_lim" => 10)
+
+# Set the solver and parameters
+energy_problem = run_scenario(connection, optimizer = GLPK.optimizer, parameters = my_parameters)
+
+
+# --- OPTION 2 - Passed from File ---
+# Create the file (if not existing) in TOML format
+filepath, io = mktemp()
+println(io,
+  """
+     tm_lim = 10
+  """
+)
+close(io)
+
+# Read the file into a dictionary
+my_parameters = read_parameters_from_file(filepath)
+
+# Set the solver and parameters
+energy_problem = run_scenario(connection, optimizer = GLPK.optimizer, parameters = my_parameters)
+```
+
 ## [Exploring infeasibility](@id infeasible)
 
 If your model is infeasible, you can try exploring the infeasibility with [JuMP.compute_conflict!](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.compute_conflict!) and [JuMP.copy_conflict](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.copy_conflict).
 
 !!! warning "Check your solver options!"
-    Not all solvers support this functionality; please check depending on each case.
+Not all solvers support this functionality; please check depending on each case.
 
 Use `energy_problem.model` for the model argument. For instance:
 
@@ -104,7 +219,7 @@ For more information, see the [JuMP documentation](https://jump.dev/JuMP.jl/stab
 ## Finding an input parameter
 
 !!! tip "Are you looking for a input parameter?"
-    Please visit the [Model Parameters](@ref schemas) section for a description and location of the input parameters mentioned in this section.
+Please visit the [Model Parameters](@ref schemas) section for a description and location of the input parameters mentioned in this section.
 
 ## Storage specific setups
 
@@ -116,7 +231,7 @@ Section [Storage Modeling](@ref storage-modeling) explains the main concepts for
 - _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the intra-temporal constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `false`.
 
 !!! info
-    If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
+If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
 
 ### [The energy storage investment method](@id storage-investment-setup)
 
@@ -173,22 +288,22 @@ For the model to add constraints for a [maximum or minimum energy limit](@ref in
 - `max_energy_timeframe_partition` $\neq$ `missing` or `min_energy_timeframe_partition` $\neq$ `missing`. This value represents the peak energy that will be then multiplied by the profile for each period in the timeframe.
 
 !!! info
-    These parameters are defined per period, and the default values for profiles are 1.0 p.u. per period. If the periods are determined daily, the energy limit for the whole year will be 365 times `max`or `min_energy_timeframe_partition`.
+These parameters are defined per period, and the default values for profiles are 1.0 p.u. per period. If the periods are determined daily, the energy limit for the whole year will be 365 times `max`or `min_energy_timeframe_partition`.
 
 - (optional) `profile_type` and `profile_name` in the timeframe files. If there is no profile defined, then by default it is 1.0 p.u. for all periods in the timeframe.
 - (optional) define a period partition in timeframe partition files. If there is no partition defined, then by default the constraint is created for each period in the timeframe, otherwise, it will consider the partition definition in the file.
 
 !!! tip "Tip"
-    If you want to set a limit on the maximum or minimum outgoing energy for a year with representative days, you can use the partition definition to create a single partition for the entire year to combine the profile.
+If you want to set a limit on the maximum or minimum outgoing energy for a year with representative days, you can use the partition definition to create a single partition for the entire year to combine the profile.
 
 ### Example: Setting Energy Limits
 
 Let's assume we have a year divided into 365 days because we are using days as periods in the representatives from [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl). Also, we define the `max_energy_timeframe_partition = 10 MWh`, meaning the peak energy we want to have is 10MWh for each period or period partition. So depending on the optional information, we can have:
 
-| Profile | Period Partitions | Example                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| ------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| None    | None              | The default profile is 1.p.u. for each period and since there are no period partitions, the constraints will be for each period (i.e., daily). So the outgoing energy of the asset for each day must be less than or equal to 10MWh.                                                                                                                                                                                                                                                                                                                                                                                                    |
-| Defined | None              | The profile definition and value will be in the  timeframe profiles files. For example, we define a profile that has the following first four values: 0.6 p.u., 1.0 p.u., 0.8 p.u., and 0.4 p.u. There are no period partitions, so constraints will be for each period (i.e., daily). Therefore the outgoing energy of the asset for the first four days must be less than or equal to 6MWh, 10MWh, 8MWh, and 4MWh.                                                                                                                                           |
+| Profile | Period Partitions | Example                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| None    | None              | The default profile is 1.p.u. for each period and since there are no period partitions, the constraints will be for each period (i.e., daily). So the outgoing energy of the asset for each day must be less than or equal to 10MWh.                                                                                                                                                                                                                                                                                                                                                                       |
+| Defined | None              | The profile definition and value will be in the timeframe profiles files. For example, we define a profile that has the following first four values: 0.6 p.u., 1.0 p.u., 0.8 p.u., and 0.4 p.u. There are no period partitions, so constraints will be for each period (i.e., daily). Therefore the outgoing energy of the asset for the first four days must be less than or equal to 6MWh, 10MWh, 8MWh, and 4MWh.                                                                                                                                                                                        |
 | Defined | Defined           | Using the same profile as above, we now define a period partition in the timeframe partitions file as `uniform` with a value of 2. This value means that we will aggregate every two periods (i.e., every two days). So, instead of having 365 constraints, we will have 183 constraints (182 every two days and one last constraint of 1 day). Then the profile is aggregated with the sum of the values inside the periods within the partition. Thus, the outgoing energy of the asset for the first two partitions (i.e., every two days) must be less than or equal to 16MWh and 12MWh, respectively. |
 
 ## [Defining a group of assets](@id group-setup)
@@ -201,7 +316,7 @@ In order to define the groups in the model, the following steps are necessary:
 2. Assign assets to the group by setting the `name` in the `group` parameter/column of the asset file.
 
 !!! info
-    A missing value in the parameter `group` means that the asset does not belong to any group.
+A missing value in the parameter `group` means that the asset does not belong to any group.
 
 Groups are useful to represent several common constraints, the following group constraints are available.
 
@@ -212,9 +327,7 @@ The mathematical formulation of the maximum and minimum investment limit for gro
 - `invest_method = true`. This parameter enables the model to use the investment group constraints.
 - `min_investment_limit` $\neq$ `missing` or `max_investment_limit` $\neq$ `missing`. This value represents the limits that will be imposed on the investment that belongs to the group.
 
-!!! info
-    1. A missing value in the parameters `min_investment_limit` and `max_investment_limit` means that there is no investment limit.
-    2. These constraints are applied to the investments each year. The model does not yet have investment limits to a group's available invested capacity.
+!!! info 1. A missing value in the parameters `min_investment_limit` and `max_investment_limit` means that there is no investment limit. 2. These constraints are applied to the investments each year. The model does not yet have investment limits to a group's available invested capacity.
 
 ### Example: Group of Assets
 
@@ -240,12 +353,12 @@ assets = assets[.!ismissing.(assets.group), [:asset, :type, :group]] # hide
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
 
 !!! info
-    If the group has a `min_investment_limit`, then assets in the group have to allow investment (`investable = true`) for the model to be feasible. If the assets are not `investable` then they cannot satisfy the minimum constraint.
+If the group has a `min_investment_limit`, then assets in the group have to allow investment (`investable = true`) for the model to be feasible. If the assets are not `investable` then they cannot satisfy the minimum constraint.
 
 ## [Setting up multi-year investments](@id multi-year-setup)
 
 !!! warning "This feature is under a major refactor"
-    This section might have out-of-date information. The update of these docs is tracked in <https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues/983>
+This section might have out-of-date information. The update of these docs is tracked in <https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues/983>
 
 It is possible to simutaneously model different years, which is especially relevant for modeling multi-year investments. Multi-year investments refer to making investment decisions at different points in time, such that a pathway of investments can be modeled. This is particularly useful when long-term scenarios are modeled, but modeling each year is not practical. Or in a business case, investment decisions are supposed to be made in different years which has an impact on the cash flow.
 
@@ -261,7 +374,7 @@ Fill in all the years in [`year-data.csv`](@ref schemas) file by defining the `y
 - Non-milestone years are the investment years of existing units. For example, you want to consider a existing wind unit that is invested in 2020, then 2020 is a non-milestone year.
 
 !!! info
-    A year can both be a year that you want to model and that there are existing units invested, then this year is a milestone year.
+A year can both be a year that you want to model and that there are existing units invested, then this year is a milestone year.
 
 #### Commission year data
 
@@ -276,7 +389,7 @@ You also have to choose a `investment_method` for the asset, between `none`, `si
 Consider you only want to model operation without investments, then you would need to set `investable_method` to `none`. Neither investment variables and decommission variables are activated. And here the `investable_method` overrules `investable`, because the latter does not matter.
 
 !!! info
-    Although it is called `investment_method`, you can see from the table that, actually, it controls directly the activation of the decommission variable. The investment variable is controlled by `investable`, which is overruled by `investable_method` in case of a conflict (i.e., for the `none` method).
+Although it is called `investment_method`, you can see from the table that, actually, it controls directly the activation of the decommission variable. The investment variable is controlled by `investable`, which is overruled by `investable_method` in case of a conflict (i.e., for the `none` method).
 
 | investment_method | investable | investment variable | decommission variable |
 | ----------------- | ---------- | ------------------- | --------------------- |
@@ -290,7 +403,7 @@ Consider you only want to model operation without investments, then you would ne
 For more details on the constraints that apply when selecting these methods, please visit the [`mathematical formulation`](@ref formulation) section.
 
 !!! info
-    The `compact` method can only be applied to producer assets and conversion assets. Transport assets and storage assets can only use `simple` method.
+The `compact` method can only be applied to producer assets and conversion assets. Transport assets and storage assets can only use `simple` method.
 
 #### Assets and flows information
 
@@ -319,7 +432,7 @@ We allow investments of `ocgt`, `ccgt`, `battery`, `wind`, and `solar` in 2030.
 - `solar` has no existing units.
 
 !!! info
-    We only consider the existing units which are still available in the milestone years.
+We only consider the existing units which are still available in the milestone years.
 
 #### Profiles information
 
@@ -344,7 +457,7 @@ For economic representation, the following parameters need to be set up:
 - `economic_lifetime`: used for discounting the costs.
 
 !!! info
-    Since the model explicitly discounts, all the inputs for costs should be given in the costs of the relevant year. For example, to model investments in 2030 and 2050, the `investment_cost` should be given in 2030 costs and 2050 costs, respectively.
+Since the model explicitly discounts, all the inputs for costs should be given in the costs of the relevant year. For example, to model investments in 2030 and 2050, the `investment_cost` should be given in 2030 costs and 2050 costs, respectively.
 
 For more details on the formulas for economic representation, please visit the [`mathematical formulation`](@ref formulation) section.
 
