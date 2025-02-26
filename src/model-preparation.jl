@@ -138,7 +138,12 @@ function add_expression_terms_rep_period_constraints!(
             outgoing_flow_durations = typemax(Int64) #LARGE_NUMBER to start finding the minimum outgoing flow duration
 
             # Step 1.1. Loop over each variable in the group
-            for (var_idx, time_block_start, time_block_end, efficiency) in zip(
+            for (
+                var_idx::Int64,
+                time_block_start::Int32,
+                time_block_end::Int32,
+                efficiency::Float64,
+            ) in zip(
                 group_row.var_idx::Vector{Union{Missing,Int64}},
                 group_row.var_time_block_start::Vector{Union{Missing,Int32}},
                 group_row.var_time_block_end::Vector{Union{Missing,Int32}},
@@ -155,10 +160,10 @@ function add_expression_terms_rep_period_constraints!(
                             1.0
                         else
                             if case.expr_key == :incoming
-                                efficiency::Float64
+                                efficiency
                             else
                                 # Divide by efficiency for outgoing flows
-                                1.0 / efficiency::Float64
+                                1.0 / efficiency
                             end
                         end
                     # Step 1.1.1.2.
@@ -171,7 +176,7 @@ function add_expression_terms_rep_period_constraints!(
             end
 
             # Step 1.2. Loop over each constraint
-            for (cons_idx, time_block_start, time_block_end) in zip(
+            for (cons_idx::Int64, time_block_start::Int32, time_block_end::Int32) in zip(
                 group_row.cons_idx::Vector{Union{Missing,Int64}},
                 group_row.cons_time_block_start::Vector{Union{Missing,Int32}},
                 group_row.cons_time_block_end::Vector{Union{Missing,Int32}},
@@ -315,31 +320,40 @@ function add_expression_terms_over_clustered_year_constraints!(
             empty!.(workspace)
 
             for (
-                var_indices,
-                var_time_block_start_vec,
-                var_time_block_end_vec,
-                var_efficiencies,
-                var_periods,
-                var_weights,
+                var_indices::Vector{Union{Missing,Int64}},
+                var_time_block_start_vec::Vector{Union{Missing,Int32}},
+                var_time_block_end_vec::Vector{Union{Missing,Int32}},
+                var_efficiencies::Vector{Union{Missing,Float64}},
+                var_periods::Vector{Union{Missing,Int32}},
+                var_weights::Vector{Union{Missing,Float64}},
             ) in zip(
-                group_row.var_indices,
-                group_row.var_time_block_start_vec,
-                group_row.var_time_block_end_vec,
-                group_row.var_efficiencies,
-                group_row.var_periods,
-                group_row.var_weights,
+                group_row.var_indices::Vector{Union{Missing,Vector{Union{Missing,Int64}}}},
+                group_row.var_time_block_start_vec::Vector{
+                    Union{Missing,Vector{Union{Missing,Int32}}},
+                },
+                group_row.var_time_block_end_vec::Vector{
+                    Union{Missing,Vector{Union{Missing,Int32}}},
+                },
+                group_row.var_efficiencies::Vector{Union{Missing,Vector{Union{Missing,Float64}}}},
+                group_row.var_periods::Vector{Union{Missing,Vector{Union{Missing,Int32}}}},
+                group_row.var_weights::Vector{Union{Missing,Vector{Union{Missing,Float64}}}},
             )
 
                 # Loop over each variable in the (group,rp) and accumulate them
                 group_flows_accumulation = Dict{Int,Float64}()
 
-                for (var_idx, time_block_start, time_block_end, var_efficiency) in zip(
-                    var_indices,
-                    var_time_block_start_vec,
-                    var_time_block_end_vec,
-                    var_efficiencies,
+                for (
+                    var_idx::Int64,
+                    time_block_start::Int32,
+                    time_block_end::Int32,
+                    var_efficiency::Float64,
+                ) in zip(
+                    var_indices::Vector{Union{Missing,Int64}},
+                    var_time_block_start_vec::Vector{Union{Missing,Int32}},
+                    var_time_block_end_vec::Vector{Union{Missing,Int32}},
+                    var_efficiencies::Vector{Union{Missing,Float64}},
                 )
-                    coefficient = (time_block_end - time_block_start + 1)
+                    coefficient = (time_block_end - time_block_start + 1.0)::Float64
                     if is_storage_level
                         if case.expr_key == :outgoing
                             coefficient /= var_efficiency
@@ -351,7 +365,10 @@ function add_expression_terms_over_clustered_year_constraints!(
                 end
 
                 # Loop over each period in the group and add the accumulated flows to the workspace
-                for (period, weight) in zip(var_periods, var_weights)
+                for (period::Int32, weight::Float64) in zip(
+                    var_periods::Vector{Union{Missing,Int32}},
+                    var_weights::Vector{Union{Missing,Float64}},
+                )
                     if weight == 0
                         continue
                     end
@@ -368,10 +385,10 @@ function add_expression_terms_over_clustered_year_constraints!(
             end
 
             # Loop over each constraint and aggregate from the workspace into the expression
-            for (cons_idx, period_block_start, period_block_end) in zip(
-                group_row.cons_indices,
-                group_row.cons_period_block_start_vec,
-                group_row.cons_period_block_end_vec,
+            for (cons_idx::Int64, period_block_start::Int32, period_block_end::Int32) in zip(
+                group_row.cons_indices::Vector{Union{Missing,Int64}},
+                group_row.cons_period_block_start_vec::Vector{Union{Missing,Int32}},
+                group_row.cons_period_block_end_vec::Vector{Union{Missing,Int32}},
             )
                 period_block = period_block_start:period_block_end
                 workspace_aggregation = Dict{Int,Float64}()

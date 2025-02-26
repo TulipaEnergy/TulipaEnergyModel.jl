@@ -28,7 +28,9 @@ All deriving types must satisfy:
 abstract type TulipaTabularIndex end
 
 function get_num_rows(connection, table_name::Union{String,Symbol})
-    return only([row[1] for row in DuckDB.query(connection, "SELECT COUNT(*) FROM $table_name")])
+    return only([
+        row[1] for row in DuckDB.query(connection, "SELECT COUNT(*) FROM $table_name")
+    ])::Int64
 end
 
 function get_num_rows(connection, object::TulipaTabularIndex)
@@ -62,7 +64,7 @@ mutable struct TulipaConstraint <: TulipaTabularIndex
     num_rows::Int
     constraint_names::Vector{Symbol}
     expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
-    coefficients::Dict{Symbol,Vector{Float64}} # TODO: This was created only because of min_outgoing_flow_duration
+    coefficients::Dict{Symbol,Vector{Float64}}
     duals::Dict{Symbol,Vector{Float64}}
 
     function TulipaConstraint(connection, table_name::String)
