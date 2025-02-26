@@ -1,5 +1,5 @@
 {
-  "assets": {
+  "asset": {
     "basic": {
       "asset": {
         "constraints": null,
@@ -512,7 +512,7 @@
       }
     }
   },
-  "flows": {
+  "flow": {
     "basic": {
       "capacity": {
         "constraints": {
@@ -819,7 +819,7 @@
       }
     }
   },
-  "groups": {
+  "group": {
     "data": {
       "invest_method": {
         "constraints": null,
@@ -858,7 +858,7 @@
       }
     }
   },
-  "rep_periods": {
+  "rep_period": {
     "data": {
       "num_timesteps": {
         "constraints": null,
