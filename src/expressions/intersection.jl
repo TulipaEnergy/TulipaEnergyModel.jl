@@ -103,7 +103,7 @@ function attach_expression_on_constraints_grouping_variables!(
         empty!.(workspace)
 
         # Loop over each variable in the group
-        for (var_idx, time_block_start, time_block_end) in zip(
+        for (var_idx::Int64, time_block_start::Int32, time_block_end::Int32) in zip(
             group_row.var_idx::Vector{Union{Missing,Int64}},
             group_row.var_time_block_start::Vector{Union{Missing,Int32}},
             group_row.var_time_block_end::Vector{Union{Missing,Int32}},
@@ -114,7 +114,7 @@ function attach_expression_on_constraints_grouping_variables!(
         end
 
         # Loop over each constraint
-        for (cons_idx, time_block_start, time_block_end) in zip(
+        for (cons_idx::Int64, time_block_start::Int32, time_block_end::Int32) in zip(
             group_row.cons_idx::Vector{Union{Missing,Int64}},
             group_row.cons_time_block_start::Vector{Union{Missing,Int32}},
             group_row.cons_time_block_end::Vector{Union{Missing,Int32}},
