@@ -74,7 +74,7 @@ function attach_expression_on_constraints_grouping_variables!(
         [:index, :time_block_start, :time_block_end],
     )
 
-    num_rows = size(cons.indices, 1)
+    num_rows = get_num_rows(connection, cons)
     attach_expression!(cons, expr_name, Vector{JuMP.AffExpr}(undef, num_rows))
     cons.expressions[expr_name] .= JuMP.AffExpr(0.0)
 

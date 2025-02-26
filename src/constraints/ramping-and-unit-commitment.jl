@@ -134,7 +134,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         indices = indices_dict[table_name]
         ## Ramping Constraints with unit commitment
         # Note: We start ramping constraints from the second timesteps_block
-        # We filter and group the dataframe per asset and representative period
+        # We filter and group the indices per asset and representative period
         # get the units on column to get easier the index - 1, i.e., the previous one
         units_on = cons.expressions[:units_on]
 
@@ -191,7 +191,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         indices = indices_dict[table_name]
         ## Ramping Constraints without unit commitment
         # Note: We start ramping constraints from the second timesteps_block
-        # We filter and group the dataframe per asset and representative period that does not have the unit_commitment methods
+        # We filter and group the indices per asset and representative period that does not have the unit_commitment methods
 
         # - Maximum ramp-up rate limit to the flow (no unit commitment variables)
         attach_constraint!(

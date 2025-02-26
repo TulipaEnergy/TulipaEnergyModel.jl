@@ -68,8 +68,8 @@ const schemas = (
         profiles_reference = OrderedDict(
             :asset => "VARCHAR",               # Asset name
             :commission_year => "INTEGER",
-            :profile_type => "VARCHAR",        # Type of profile, used to determine dataframe with source profile
-            :profile_name => "VARCHAR",        # Name of profile, used to determine data inside the dataframe
+            :profile_type => "VARCHAR",        # Type of profile, used to determine source profile
+            :profile_name => "VARCHAR",        # Name of profile, used to match with the profiles_data
         ),
 
         # Schema for the assets-timeframe-partitions.csv file.
@@ -149,8 +149,8 @@ const schemas = (
             :from_asset => "VARCHAR",          # Name of Asset
             :to_asset => "VARCHAR",            # Name of Asset
             :year => "INTEGER",
-            :profile_type => "VARCHAR",        # Type of profile, used to determine dataframe with source profile
-            :profile_name => "VARCHAR",        # Name of profile, used to determine data inside the dataframe
+            :profile_type => "VARCHAR",        # Type of profile, used to determine source profile
+            :profile_name => "VARCHAR",        # Name of profile, used to match with the profiles_data
         ),
 
         # Schema for the flows-rep-periods-partitions.csv file.
