@@ -56,13 +56,13 @@ function add_expression_terms_rep_period_constraints!(
     multiply_by_duration = true,
     add_min_outgoing_flow_duration = false,
 )
-    # cons' asset will be matched with flow's to or from, depending on whether
+    # cons' asset will be matched with flow's to_asset or from_asset, depending on whether
     # we are filling incoming or outgoing flows
     cases = [
-        (expr_key = :incoming, asset_match = :to, selected_assets = ["hub", "consumer"]),
+        (expr_key = :incoming, asset_match = :to_asset, selected_assets = ["hub", "consumer"]),
         (
             expr_key = :outgoing,
-            asset_match = :from,
+            asset_match = :from_asset,
             selected_assets = ["hub", "consumer", "producer"],
         ),
     ]
@@ -89,7 +89,7 @@ function add_expression_terms_rep_period_constraints!(
             attach_coefficient!(cons, :min_outgoing_flow_duration, ones(num_rows))
         end
 
-        # The grouped variable table is created below for each case (from=asset, to=asset)
+        # The grouped variable table is created below for each case (from_asset=asset, to_asset=asset)
         grouped_var_table_name = "t_grouped_$(flow.table_name)_match_on_$(case.asset_match)"
         _create_group_table_if_not_exist!(
             connection,
@@ -240,9 +240,9 @@ function add_expression_terms_over_clustered_year_constraints!(
 )
     num_rows = get_num_rows(connection, cons)
 
-    cases = [(expr_key = :outgoing, asset_match = :from)]
+    cases = [(expr_key = :outgoing, asset_match = :from_asset)]
     if is_storage_level
-        push!(cases, (expr_key = :incoming, asset_match = :to))
+        push!(cases, (expr_key = :incoming, asset_match = :to_asset))
         attach_coefficient!(cons, :inflows_profile_aggregation, zeros(num_rows))
     end
 

@@ -32,8 +32,8 @@ function _create_variables_tables(connection)
         CREATE OR REPLACE TABLE var_flow AS
         SELECT
             nextval('id') as id,
-            from_asset as from,
-            to_asset as to,
+            from_asset,
+            to_asset,
             year,
             rep_period,
             efficiency,

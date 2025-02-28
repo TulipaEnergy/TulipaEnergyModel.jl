@@ -332,8 +332,8 @@ function _create_constraints_tables(connection)
         CREATE OR REPLACE TABLE cons_transport_flow_limit AS
         SELECT
            nextval('id') AS id,
-           var_flow.from,
-           var_flow.to,
+           var_flow.from_asset,
+           var_flow.to_asset,
            var_flow.year,
            var_flow.rep_period,
            var_flow.time_block_start,
@@ -341,8 +341,8 @@ function _create_constraints_tables(connection)
            var_flow.id AS var_flow_id
         FROM var_flow
         LEFT JOIN flow
-            ON flow.from_asset = var_flow.from
-            AND flow.to_asset = var_flow.to
+            ON flow.from_asset = var_flow.from_asset
+            AND flow.to_asset = var_flow.to_asset
         WHERE
             flow.is_transport
         ",
