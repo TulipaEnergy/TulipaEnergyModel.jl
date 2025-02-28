@@ -43,14 +43,14 @@ end
         group_by_columns,
         array_agg_columns;
         rename_columns = Dict(),
-        order_agg_by = "index",
+        order_agg_by = "id",
     )
 
 Create a grouped table grouping the `table_name` into the `grouped_table_name`.
 The `group_by_columns` are the columns that are used in the group by (e.g., asset, year, rep_period),
-and the `array_agg_columns` are the columns that are aggregated into arrays (e.g., index, time_block_start, time_block_end).
+and the `array_agg_columns` are the columns that are aggregated into arrays (e.g., id, time_block_start, time_block_end).
 
-It is expected that the original table has an `index` column, which is used in the ordering of the `array_agg_columns`.
+It is expected that the original table has an `id` column, which is used in the ordering of the `array_agg_columns`.
 Otherwise, please pass the argument `order_agg_by` with the column that should be used for this ordering.
 
 If one of the columns has to be renamed, use the `rename_columns` dictionary.
@@ -62,7 +62,7 @@ function _create_group_table_if_not_exist!(
     group_by_columns,
     array_agg_columns;
     rename_columns = Dict(),
-    order_agg_by = :index,
+    order_agg_by = :id,
 )
     if _check_if_table_exists(connection, grouped_table_name)
         return

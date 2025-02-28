@@ -111,7 +111,7 @@ function save_solution!(connection, model, variables, constraints; compute_duals
 
         # Create a named tuple structure (row table compliant) to hold the solution (which follows the row format)
         # Note: This allocates memory, but I don't think there is a way to avoid it
-        tmp_table = ((index = i, value = JuMP.value(v)) for (i, v) in enumerate(var.container))
+        tmp_table = ((id = i, value = JuMP.value(v)) for (i, v) in enumerate(var.container))
 
         # Create a temporary DuckDB table for this table
         DuckDB.register_table(connection, tmp_table, "t_var_solution_$name")
@@ -129,7 +129,7 @@ function save_solution!(connection, model, variables, constraints; compute_duals
             "UPDATE $(var.table_name)
             SET solution = sol.value
             FROM t_var_solution_$name AS sol
-            WHERE $(var.table_name).index = sol.index
+            WHERE $(var.table_name).id = sol.id
             ",
         )
     end
@@ -161,8 +161,7 @@ function save_solution!(connection, model, variables, constraints; compute_duals
             end
 
             # Create
-            tmp_table =
-                ((index = i, (k => v[i] for (k, v) in cons.duals)...) for i in 1:cons.num_rows)
+            tmp_table = ((id = i, (k => v[i] for (k, v) in cons.duals)...) for i in 1:cons.num_rows)
 
             duals_table_name = "t_duals_$name"
 
@@ -175,7 +174,7 @@ function save_solution!(connection, model, variables, constraints; compute_duals
                 "UPDATE $(cons.table_name)
                 SET $set_query
                 FROM $duals_table_name AS cons
-                WHERE $(cons.table_name).index = cons.index
+                WHERE $(cons.table_name).id = cons.id
                 ",
             )
         end

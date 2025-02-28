@@ -42,7 +42,7 @@ function _create_flow_table(connection)
             ON var_flow.from = from_asset.asset
         LEFT JOIN asset AS to_asset
             ON var_flow.to = to_asset.asset
-        ORDER BY var_flow.index
+        ORDER BY var_flow.id
         ",
     )
 end

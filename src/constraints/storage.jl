@@ -33,7 +33,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         # Initial storage is a Float64
                         @constraint(
                             model,
-                            var_storage_level[row.index] ==
+                            var_storage_level[row.id] ==
                             initial_storage_level +
                             profile_agg * row.storage_inflows +
                             incoming_flow - outgoing_flow,
@@ -42,24 +42,24 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                     else
                         # Initial storage is the previous level (a JuMP variable)
                         previous_level::JuMP.VariableRef = if row.time_block_start > 1
-                            var_storage_level[row.index-1]
+                            var_storage_level[row.id-1]
                         else
-                            # Find last index of this group (there are probably cheaper ways, in case this becomes expensive)
-                            last_index = only([
+                            # Find last id of this group (there are probably cheaper ways, in case this becomes expensive)
+                            last_id = only([
                                 row[1] for row in DuckDB.query(
                                     connection,
                                     "SELECT
-                                        MAX(index)
+                                        MAX(id)
                                     FROM cons_$table_name
                                     WHERE asset = '$(row.asset)' AND year = $(row.year) AND rep_period = $(row.rep_period)
                                     ",
                                 )
                             ])::Int
-                            var_storage_level[last_index]
+                            var_storage_level[last_id]
                         end
                         @constraint(
                             model,
-                            var_storage_level[row.index] ==
+                            var_storage_level[row.id] ==
                             previous_level + profile_agg * row.storage_inflows + incoming_flow -
                             outgoing_flow,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
@@ -91,7 +91,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≤
                         max_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_index],
+                        available_energy_capacity[row.avail_energy_capacity_id],
                         base_name = "max_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for
@@ -117,7 +117,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≥
                         min_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_index],
+                        available_energy_capacity[row.avail_energy_capacity_id],
                         base_name = "min_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for
@@ -147,31 +147,31 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         # Initial storage is a Float64
                         @constraint(
                             model,
-                            var_storage_level_over_clustered_year.container[row.index] ==
+                            var_storage_level_over_clustered_year.container[row.id] ==
                             initial_storage_level + inflows_agg + incoming_flow - outgoing_flow,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     else
                         # Initial storage is the previous level (a JuMP variable)
                         previous_level::JuMP.VariableRef = if row.period_block_start > 1
-                            var_storage_level[row.index-1]
+                            var_storage_level[row.id-1]
                         else
-                            last_index = only([
+                            last_id = only([
                                 row[1] for row in DuckDB.query(
                                     connection,
                                     "SELECT
-                                        MAX(index)
+                                        MAX(id)
                                     FROM cons_$table_name
                                     WHERE asset = '$(row.asset)' AND year = $(row.year)
                                     ",
                                 )
                             ])::Int
-                            var_storage_level[last_index]
+                            var_storage_level[last_id]
                         end
 
                         @constraint(
                             model,
-                            var_storage_level_over_clustered_year.container[row.index] ==
+                            var_storage_level_over_clustered_year.container[row.id] ==
                             previous_level + inflows_agg + incoming_flow - outgoing_flow,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                         )
@@ -206,7 +206,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≤
                         max_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_index],
+                        available_energy_capacity[row.avail_energy_capacity_id],
                         base_name = "max_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, var_storage_level) in
@@ -232,7 +232,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≥
                         min_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_index],
+                        available_energy_capacity[row.avail_energy_capacity_id],
                         base_name = "min_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, var_storage_level) in
@@ -254,7 +254,7 @@ function _append_storage_data_to_indices(connection, table_name)
             inflows_profile.profile_name AS inflows_profile_name,
             max_storage_level_profile.profile_name AS max_storage_level_profile_name,
             min_storage_level_profile.profile_name AS min_storage_level_profile_name,
-            expr_avail.index AS avail_energy_capacity_index
+            expr_avail.id AS avail_energy_capacity_id
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
@@ -279,7 +279,7 @@ function _append_storage_data_to_indices(connection, table_name)
             ON cons.asset = min_storage_level_profile.asset
             AND cons.year = min_storage_level_profile.commission_year
             AND min_storage_level_profile.profile_type = 'min_storage_level'
-        ORDER BY cons.index
+        ORDER BY cons.id
         ",
     )
 end

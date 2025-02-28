@@ -4,7 +4,7 @@ function add_storage_expressions!(connection, model, expressions)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE expr_available_energy_capacity AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             asset_milestone.asset,
             asset_milestone.milestone_year,
             ANY_VALUE(asset.capacity) AS capacity,
@@ -12,7 +12,7 @@ function add_storage_expressions!(connection, model, expressions)
             ANY_VALUE(asset.energy_to_power_ratio) AS energy_to_power_ratio,
             ANY_VALUE(asset.storage_method_energy) AS storage_method_energy,
             SUM(expr_avail.initial_storage_units) AS available_initial_storage_units,
-            ARRAY_AGG(expr_avail.index) AS avail_indices,
+            ARRAY_AGG(expr_avail.id) AS avail_indices,
         FROM asset_milestone
         LEFT JOIN asset
             ON asset_milestone.asset = asset.asset
@@ -24,7 +24,7 @@ function add_storage_expressions!(connection, model, expressions)
         GROUP BY
             asset_milestone.asset,
             asset_milestone.milestone_year
-        ORDER BY index
+        ORDER BY id
         ",
     )
 
@@ -56,7 +56,7 @@ function add_storage_expressions!(connection, model, expressions)
                         # the fixed cost in the objective function
                         capacity_for_initial * row.available_initial_storage_units +
                         capacity_for_variation * (
-                            sum(expr_avail[avail_index] for avail_index in row.avail_indices) -
+                            sum(expr_avail[avail_id] for avail_id in row.avail_indices) -
                             row.available_initial_storage_units
                         )
                     )

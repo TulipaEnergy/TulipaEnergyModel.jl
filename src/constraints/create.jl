@@ -39,7 +39,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_balance_conversion AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             asset.asset,
             t_low.year,
             t_low.rep_period,
@@ -63,7 +63,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_balance_consumer AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             t_high.*
         FROM t_highest_all_flows AS t_high
         LEFT JOIN asset
@@ -78,7 +78,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_balance_hub AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             t_high.*
         FROM t_highest_all_flows AS t_high
         LEFT JOIN asset
@@ -93,7 +93,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_capacity_incoming AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             t_high.*
         FROM t_highest_in_flows AS t_high
         LEFT JOIN asset
@@ -107,7 +107,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_capacity_incoming_non_investable_storage_with_binary AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             t_high.*
         FROM t_highest_in_flows AS t_high
         LEFT JOIN asset
@@ -127,7 +127,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_capacity_incoming_investable_storage_with_binary AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             t_high.*
         FROM t_highest_in_flows AS t_high
         LEFT JOIN asset
@@ -147,7 +147,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_capacity_outgoing AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             t_high.*
         FROM t_highest_out_flows AS t_high
         LEFT JOIN asset
@@ -161,7 +161,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_capacity_outgoing_non_investable_storage_with_binary AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             t_high.*
         FROM t_highest_out_flows AS t_high
         LEFT JOIN asset
@@ -181,7 +181,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_capacity_outgoing_investable_storage_with_binary AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             t_high.*
         FROM t_highest_out_flows AS t_high
         LEFT JOIN asset
@@ -208,7 +208,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_min_output_flow_with_unit_commitment AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             t_high.*
         FROM t_highest_assets_and_out_flows AS t_high
         LEFT JOIN asset
@@ -224,7 +224,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_max_output_flow_with_basic_unit_commitment AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             t_high.*
         FROM t_highest_assets_and_out_flows AS t_high
         LEFT JOIN asset
@@ -241,7 +241,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_max_ramp_with_unit_commitment AS
         SELECT
-           nextval('id') AS index,
+           nextval('id') AS id,
            t_high.*
         FROM t_highest_assets_and_out_flows AS t_high
         LEFT JOIN asset
@@ -259,7 +259,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_max_ramp_without_unit_commitment AS
         SELECT
-           nextval('id') AS index,
+           nextval('id') AS id,
            t_high.*
         FROM t_highest_out_flows AS t_high
         LEFT JOIN asset
@@ -291,7 +291,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_min_energy_over_clustered_year AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             attr.asset,
             attr.year,
             attr.period_block_start,
@@ -312,7 +312,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_max_energy_over_clustered_year AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             attr.asset,
             attr.year,
             attr.period_block_start,
@@ -331,14 +331,14 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_transport_flow_limit AS
         SELECT
-           nextval('id') AS index,
+           nextval('id') AS id,
            var_flow.from,
            var_flow.to,
            var_flow.year,
            var_flow.rep_period,
            var_flow.time_block_start,
            var_flow.time_block_end,
-           var_flow.index AS var_flow_index
+           var_flow.id AS var_flow_id
         FROM var_flow
         LEFT JOIN flow
             ON flow.from_asset = var_flow.from
@@ -353,7 +353,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_group_max_investment_limit AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             ga.name,
             ga.milestone_year,
             ga.max_investment_limit,
@@ -369,7 +369,7 @@ function _create_constraints_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE cons_group_min_investment_limit AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             ga.name,
             ga.milestone_year,
             ga.min_investment_limit,

@@ -31,7 +31,7 @@ function _create_variables_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE var_flow AS
         SELECT
-            nextval('id') as index,
+            nextval('id') as id,
             from_asset as from,
             to_asset as to,
             year,
@@ -48,7 +48,7 @@ function _create_variables_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE var_units_on AS
         SELECT
-            nextval('id') as index,
+            nextval('id') as id,
             atr.asset,
             atr.year,
             atr.rep_period,
@@ -69,7 +69,7 @@ function _create_variables_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE var_is_charging AS
         SELECT
-            nextval('id') as index,
+            nextval('id') as id,
             t_low.asset,
             t_low.year,
             t_low.rep_period,
@@ -109,7 +109,7 @@ function _create_variables_tables(connection)
                 t_low.time_block_start
         )
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             filtered_assets.*
         FROM filtered_assets
         ",
@@ -137,7 +137,7 @@ function _create_variables_tables(connection)
                 attr.period_block_start
         )
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             filtered_assets.*
         FROM filtered_assets
         ",
@@ -148,7 +148,7 @@ function _create_variables_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE var_flows_investment AS
         SELECT
-            nextval('id') as index,
+            nextval('id') as id,
             flow.from_asset,
             flow.to_asset,
             flow_milestone.milestone_year,
@@ -172,7 +172,7 @@ function _create_variables_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE var_assets_investment AS
         SELECT
-            nextval('id') as index,
+            nextval('id') as id,
             asset.asset,
             asset_milestone.milestone_year,
             asset.investment_integer,
@@ -193,7 +193,7 @@ function _create_variables_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE var_assets_decommission AS
         SELECT
-            nextval('id') as index,
+            nextval('id') as id,
             asset_both.asset,
             asset_both.milestone_year,
             asset_both.commission_year,
@@ -213,7 +213,7 @@ function _create_variables_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE var_flows_decommission AS
         SELECT
-            nextval('id') as index,
+            nextval('id') as id,
             flow.from_asset,
             flow.to_asset,
             flow_both.milestone_year,
@@ -235,7 +235,7 @@ function _create_variables_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE var_assets_investment_energy AS
         SELECT
-            nextval('id') as index,
+            nextval('id') as id,
             asset.asset,
             asset_milestone.milestone_year,
             asset.investment_integer_storage_energy,
@@ -259,7 +259,7 @@ function _create_variables_tables(connection)
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE var_assets_decommission_energy AS
         SELECT
-            nextval('id') as index,
+            nextval('id') as id,
             asset.asset,
             asset_both.milestone_year,
             asset_both.commission_year,

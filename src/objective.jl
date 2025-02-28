@@ -21,7 +21,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     indices = DuckDB.query(
         connection,
         "SELECT
-            var.index,
+            var.id,
             t_objective_assets.weight_for_asset_investment_discount
                 * t_objective_assets.investment_cost
                 * t_objective_assets.capacity
@@ -31,7 +31,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             ON var.asset = t_objective_assets.asset
             AND var.milestone_year = t_objective_assets.milestone_year
         ORDER BY
-            var.index
+            var.id
         ",
     )
 
@@ -46,7 +46,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     indices = DuckDB.query(
         connection,
         "SELECT
-            expr.index,
+            expr.id,
             t_objective_assets.weight_for_operation_discounts
                 * asset_commission.fixed_cost
                 * t_objective_assets.capacity
@@ -59,7 +59,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             ON expr.asset = t_objective_assets.asset
             AND expr.milestone_year = t_objective_assets.milestone_year
         ORDER BY
-            expr.index
+            expr.id
         ",
     )
 
@@ -74,7 +74,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     indices = DuckDB.query(
         connection,
         "SELECT
-            var.index,
+            var.id,
             t_objective_assets.weight_for_asset_investment_discount
                 * t_objective_assets.investment_cost_storage_energy
                 * t_objective_assets.capacity_storage_energy
@@ -84,7 +84,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             ON var.asset = t_objective_assets.asset
             AND var.milestone_year = t_objective_assets.milestone_year
         ORDER BY
-            var.index
+            var.id
         ",
     )
 
@@ -99,7 +99,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     indices = DuckDB.query(
         connection,
         "SELECT
-            expr.index,
+            expr.id,
             t_objective_assets.weight_for_operation_discounts
                 * asset_commission.fixed_cost_storage_energy
                 * t_objective_assets.capacity_storage_energy
@@ -112,7 +112,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             ON expr.asset = t_objective_assets.asset
             AND expr.milestone_year = t_objective_assets.milestone_year
         ORDER BY
-            expr.index
+            expr.id
         ",
     )
 
@@ -127,7 +127,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     indices = DuckDB.query(
         connection,
         "SELECT
-            var.index,
+            var.id,
             t_objective_flows.weight_for_flow_investment_discount
                 * t_objective_flows.investment_cost
                 * t_objective_flows.capacity
@@ -138,7 +138,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             AND var.to_asset = t_objective_flows.to_asset
             AND var.milestone_year = t_objective_flows.milestone_year
         ORDER BY
-            var.index
+            var.id
         ",
     )
 
@@ -153,7 +153,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     indices = DuckDB.query(
         connection,
         "SELECT
-            expr.index,
+            expr.id,
             t_objective_flows.weight_for_operation_discounts
                 * flow_commission.fixed_cost / 2
                 * t_objective_flows.capacity
@@ -168,7 +168,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             AND expr.to_asset = t_objective_flows.to_asset
             AND expr.milestone_year = t_objective_flows.milestone_year
         ORDER BY
-            expr.index
+            expr.id
         ",
     )
 
@@ -187,7 +187,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     indices = DuckDB.query(
         connection,
         "SELECT
-            var.index,
+            var.id,
             t_objective_flows.weight_for_operation_discounts
                 * rpinfo.weight_sum
                 * rpinfo.resolution
@@ -212,7 +212,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         ) AS rpinfo
             ON var.year = rpinfo.year
             AND var.rep_period = rpinfo.rep_period
-        ORDER BY var.index
+        ORDER BY var.id
         ",
     )
 
@@ -224,7 +224,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     indices = DuckDB.query(
         connection,
         "SELECT
-            var.index,
+            var.id,
             t_objective_assets.weight_for_operation_discounts
                 * rpinfo.weight_sum
                 * rpinfo.resolution
@@ -249,7 +249,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             ON var.year = rpinfo.year
             AND var.rep_period = rpinfo.rep_period
         WHERE t_objective_assets.units_on_cost IS NOT NULL
-        ORDER BY var.index
+        ORDER BY var.id
         ",
     )
 

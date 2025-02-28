@@ -75,7 +75,7 @@ function _create_consumer_table(connection)
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
             AND assets_profiles.profile_type = 'demand' -- This must be a ON condition not a where (note 1)
-        ORDER BY cons.index -- order is important
+        ORDER BY cons.id -- order is important
         ",
     )
 end
