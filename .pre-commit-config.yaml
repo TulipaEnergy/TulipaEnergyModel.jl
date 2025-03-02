@@ -29,6 +29,10 @@ repos:
     rev: v0.42.0
     hooks:
       - id: markdownlint-fix
+  # - repo: https://github.com/sql-formatter-org/sql-formatter
+  #   rev: v15.4.11
+  #   hooks:
+  #     - id: sql-formatter
   - repo: https://github.com/citation-file-format/cffconvert
     rev: 054bda51dbe278b3e86f27c890e3f3ac877d616c
     hooks:

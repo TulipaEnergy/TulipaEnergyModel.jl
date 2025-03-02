@@ -1,5 +1,7 @@
 module TulipaEnergyModel
 
+const SQL_FOLDER = joinpath(@__DIR__, "sql")
+
 # Packages
 
 ## Data
