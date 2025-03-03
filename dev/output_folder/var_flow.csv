@@ -1,4 +1,4 @@
-id,from,to,year,rep_period,efficiency,time_block_start,time_block_end,solution
+id,from_asset,to_asset,year,rep_period,efficiency,time_block_start,time_block_end,solution
 1,ens,demand,2030,1,0.0,1,1,0.0
 2,ens,demand,2030,1,0.0,2,2,0.0
 3,ens,demand,2030,1,0.0,3,3,0.0
