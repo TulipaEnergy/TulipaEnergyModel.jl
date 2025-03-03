@@ -43,7 +43,6 @@ If `enable_names = false` then variables and constraints in the model will not b
 For more information, see [`JuMP.set_string_names_on_creation`](https://jump.dev/JuMP.jl/stable/api/JuMP/#set_string_names_on_creation).
 
 If `direct_model = true` then a JuMP `direct_model` will be created using `optimizer_with_attributes`, which has memory improvements.
-Bloop
 For more information, see [`JuMP.direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model).
 """
 function create_model(
