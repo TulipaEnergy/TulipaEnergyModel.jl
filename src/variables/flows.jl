@@ -23,7 +23,7 @@ function add_flow_variables!(connection, model, variables)
         @variable(
             model,
             lower_bound = lower_bound(row),
-            base_name = "flow[($(row.from), $(row.to)), $(row.year), $(row.rep_period), $(row.time_block_start):$(row.time_block_end)]"
+            base_name = "flow[($(row.from_asset),$(row.to_asset)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
         ) for row in indices
     ]
 
@@ -39,9 +39,9 @@ function _create_flow_table(connection)
             to_asset.type AS to_asset_type,
         FROM var_flow
         LEFT JOIN asset AS from_asset
-            ON var_flow.from = from_asset.asset
+            ON var_flow.from_asset = from_asset.asset
         LEFT JOIN asset AS to_asset
-            ON var_flow.to = to_asset.asset
+            ON var_flow.to_asset = to_asset.asset
         ORDER BY var_flow.id
         ",
     )

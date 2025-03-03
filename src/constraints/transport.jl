@@ -71,7 +71,7 @@ function add_transport_constraints!(
                 @constraint(
                     model,
                     var_flow[row.var_flow_id] ≤ upper_bound_transport_flow,
-                    base_name = "max_transport_flow_limit[($(row.from),$(row.to)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "max_transport_flow_limit[($(row.from_asset),$(row.to_asset)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, upper_bound_transport_flow) in
                 zip(indices, cons.expressions[:upper_bound_transport_flow])
             ],
@@ -86,7 +86,7 @@ function add_transport_constraints!(
                 @constraint(
                     model,
                     var_flow[row.var_flow_id] ≥ -lower_bound_transport_flow,
-                    base_name = "min_transport_flow_limit[($(row.from),$(row.to)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "min_transport_flow_limit[($(row.from_asset),$(row.to_asset)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, lower_bound_transport_flow) in
                 zip(indices, cons.expressions[:lower_bound_transport_flow])
             ],
@@ -101,8 +101,8 @@ function _append_transport_data_to_indices(connection)
         connection,
         "SELECT
             ANY_VALUE(cons.id) AS id,
-            ANY_VALUE(cons.to) AS to,
-            ANY_VALUE(cons.from) AS from,
+            ANY_VALUE(cons.from_asset) AS from_asset,
+            ANY_VALUE(cons.to_asset) AS to_asset,
             ANY_VALUE(cons.year) AS year,
             ANY_VALUE(cons.rep_period) AS rep_period,
             ANY_VALUE(cons.time_block_start) AS time_block_start,
@@ -114,15 +114,15 @@ function _append_transport_data_to_indices(connection)
             ANY_VALUE(flows_profiles.profile_name) AS profile_name,
         FROM cons_transport_flow_limit AS cons
         LEFT JOIN flow
-            ON cons.from = flow.from_asset
-            AND cons.to = flow.to_asset
+            ON cons.from_asset = flow.from_asset
+            AND cons.to_asset = flow.to_asset
         LEFT JOIN expr_available_flow_units AS expr_avail
-            ON cons.from = expr_avail.from_asset
-            AND cons.to = expr_avail.to_asset
+            ON cons.from_asset = expr_avail.from_asset
+            AND cons.to_asset = expr_avail.to_asset
             AND cons.year = expr_avail.milestone_year
         LEFT OUTER JOIN flows_profiles
-            ON cons.from = flows_profiles.from_asset
-            AND cons.to = flows_profiles.to_asset
+            ON cons.from_asset = flows_profiles.from_asset
+            AND cons.to_asset = flows_profiles.to_asset
             AND cons.year = flows_profiles.year
             AND flows_profiles.profile_type = 'availability'
         GROUP BY cons.id

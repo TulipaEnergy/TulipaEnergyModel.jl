@@ -196,8 +196,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 AS cost,
         FROM var_flow AS var
         LEFT JOIN t_objective_flows
-            ON var.from = t_objective_flows.from_asset
-            AND var.to = t_objective_flows.to_asset
+            ON var.from_asset = t_objective_flows.from_asset
+            AND var.to_asset = t_objective_flows.to_asset
             AND var.year = t_objective_flows.milestone_year
         LEFT JOIN (
             SELECT
