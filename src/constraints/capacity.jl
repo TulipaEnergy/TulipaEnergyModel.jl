@@ -30,8 +30,8 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                                     Statistics.mean,
                                     1.0,
                                 )
-                                availability_agg * expr_avail[avail_index]
-                            end for (avail_profile_name, avail_index) in
+                                availability_agg * expr_avail[avail_id]
+                            end for (avail_profile_name, avail_id) in
                             zip(row.avail_profile_name, row.avail_indices)
                         )
                     )
@@ -93,7 +93,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         row.capacity *
                         (
                             row.avail_initial_units * (1 - is_charging) +
-                            sum(expr_avail[avail_index] for avail_index in row.avail_indices)
+                            sum(expr_avail[avail_id] for avail_id in row.avail_indices)
                         )
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -142,7 +142,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         model,
                         availability_agg *
                         row.capacity *
-                        sum(expr_avail[avail_index] for avail_index in row.avail_indices)
+                        sum(expr_avail[avail_id] for avail_id in row.avail_indices)
                     )
                 end for row in indices
             ],
@@ -199,7 +199,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         row.capacity *
                         (
                             row.avail_initial_units * is_charging +
-                            sum(expr_avail[avail_index] for avail_index in row.avail_indices)
+                            sum(expr_avail[avail_id] for avail_id in row.avail_indices)
                         )
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -330,13 +330,13 @@ function _append_capacity_data_to_indices(connection, table_name)
     return DuckDB.query(
         connection,
         "SELECT
-            ANY_VALUE(cons.index) AS index,
+            ANY_VALUE(cons.id) AS id,
             ANY_VALUE(cons.asset) AS asset,
             ANY_VALUE(cons.year) AS year,
             ANY_VALUE(cons.rep_period) AS rep_period,
             ANY_VALUE(cons.time_block_start) AS time_block_start,
             ANY_VALUE(cons.time_block_end) AS time_block_end,
-            ARRAY_AGG(expr_avail.index) AS avail_indices,
+            ARRAY_AGG(expr_avail.id) AS avail_indices,
             ARRAY_AGG(expr_avail.commission_year) AS avail_commission_year,
             SUM(expr_avail.initial_units) AS avail_initial_units,
             ARRAY_AGG(avail_profile.profile_name) AS avail_profile_name,
@@ -361,8 +361,8 @@ function _append_capacity_data_to_indices(connection, table_name)
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
             AND assets_profiles.profile_type = 'availability'
-        GROUP BY cons.index
-        ORDER BY cons.index
+        GROUP BY cons.id
+        ORDER BY cons.id
         ",
     )
 end

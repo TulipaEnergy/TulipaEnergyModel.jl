@@ -41,7 +41,7 @@ function add_transport_constraints!(
                     model,
                     availability_agg *
                     row.capacity *
-                    sum(expr_avail_export[avail_index] for avail_index in row.avail_indices)
+                    sum(expr_avail_export[avail_id] for avail_id in row.avail_indices)
                 ) for (row, availability_agg) in zip(indices, availability_agg_iterator)
             ],
         )
@@ -55,7 +55,7 @@ function add_transport_constraints!(
                     model,
                     availability_agg *
                     row.capacity *
-                    sum(expr_avail_import[avail_index] for avail_index in row.avail_indices)
+                    sum(expr_avail_import[avail_id] for avail_id in row.avail_indices)
                 ) for (row, availability_agg) in zip(indices, availability_agg_iterator)
             ],
         )
@@ -70,7 +70,7 @@ function add_transport_constraints!(
             [
                 @constraint(
                     model,
-                    var_flow[row.var_flow_index] ≤ upper_bound_transport_flow,
+                    var_flow[row.var_flow_id] ≤ upper_bound_transport_flow,
                     base_name = "max_transport_flow_limit[($(row.from),$(row.to)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, upper_bound_transport_flow) in
                 zip(indices, cons.expressions[:upper_bound_transport_flow])
@@ -85,7 +85,7 @@ function add_transport_constraints!(
             [
                 @constraint(
                     model,
-                    var_flow[row.var_flow_index] ≥ -lower_bound_transport_flow,
+                    var_flow[row.var_flow_id] ≥ -lower_bound_transport_flow,
                     base_name = "min_transport_flow_limit[($(row.from),$(row.to)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, lower_bound_transport_flow) in
                 zip(indices, cons.expressions[:lower_bound_transport_flow])
@@ -100,16 +100,16 @@ function _append_transport_data_to_indices(connection)
     return DuckDB.query(
         connection,
         "SELECT
-            ANY_VALUE(cons.index) AS index,
+            ANY_VALUE(cons.id) AS id,
             ANY_VALUE(cons.to) AS to,
             ANY_VALUE(cons.from) AS from,
             ANY_VALUE(cons.year) AS year,
             ANY_VALUE(cons.rep_period) AS rep_period,
             ANY_VALUE(cons.time_block_start) AS time_block_start,
             ANY_VALUE(cons.time_block_end) AS time_block_end,
-            ANY_VALUE(cons.var_flow_index) AS var_flow_index,
+            ANY_VALUE(cons.var_flow_id) AS var_flow_id,
             ANY_VALUE(flow.capacity) AS capacity,
-            ARRAY_AGG(expr_avail.index) AS avail_indices,
+            ARRAY_AGG(expr_avail.id) AS avail_indices,
             ARRAY_AGG(expr_avail.commission_year) AS avail_commission_years,
             ANY_VALUE(flows_profiles.profile_name) AS profile_name,
         FROM cons_transport_flow_limit AS cons
@@ -125,8 +125,8 @@ function _append_transport_data_to_indices(connection)
             AND cons.to = flows_profiles.to_asset
             AND cons.year = flows_profiles.year
             AND flows_profiles.profile_type = 'availability'
-        GROUP BY cons.index
-        ORDER BY cons.index
+        GROUP BY cons.id
+        ORDER BY cons.id
         ",
     )
 end

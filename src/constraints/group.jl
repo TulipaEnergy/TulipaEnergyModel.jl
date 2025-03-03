@@ -17,7 +17,7 @@ function add_group_constraints!(connection, model, variables, constraints)
                 @expression(
                     model,
                     sum(
-                        asset_row.capacity * assets_investment[asset_row.index] for
+                        asset_row.capacity * assets_investment[asset_row.id] for
                         asset_row in _get_assets_in_group(connection, row.name)
                     )
                 ) for row in cons.indices
@@ -66,7 +66,7 @@ function _get_assets_in_group(connection, group)
     return DuckDB.query(
         connection,
         "SELECT
-            var.index,
+            var.id,
             asset.group,
             asset.capacity,
         FROM var_assets_investment AS var

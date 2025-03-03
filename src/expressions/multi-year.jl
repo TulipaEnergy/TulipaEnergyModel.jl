@@ -36,25 +36,25 @@ function create_multi_year_expressions!(connection, model, variables, expression
         var_inv = variables[:assets_investment].container
         var_dec = variables[:assets_decommission].container
 
-        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY index")
+        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY id")
         attach_expression!(
             expr,
             :assets,
             JuMP.AffExpr[
-                if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
+                if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_id)
                     @expression(model, row.initial_units)
-                elseif ismissing(row.var_investment_index)
+                elseif ismissing(row.var_investment_id)
                     @expression(
                         model,
                         row.initial_units -
                         sum(var_dec[idx] for idx in row.var_decommission_indices)
                     )
                 elseif ismissing(row.var_decommission_indices)
-                    @expression(model, row.initial_units + var_inv[row.var_investment_index])
+                    @expression(model, row.initial_units + var_inv[row.var_investment_id])
                 else
                     @expression(
                         model,
-                        row.initial_units + var_inv[row.var_investment_index] -
+                        row.initial_units + var_inv[row.var_investment_id] -
                         sum(var_dec[idx] for idx in row.var_decommission_indices)
                     )
                 end for row in indices
@@ -66,15 +66,15 @@ function create_multi_year_expressions!(connection, model, variables, expression
         var_energy_inv = variables[:assets_investment_energy].container
         var_energy_dec = variables[:assets_decommission_energy].container
 
-        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY index")
+        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY id")
         attach_expression!(
             expr,
             :energy,
             JuMP.AffExpr[
                 if ismissing(row.var_energy_decommission_indices) &&
-                   ismissing(row.var_energy_investment_index)
+                   ismissing(row.var_energy_investment_id)
                     @expression(model, row.initial_storage_units)
-                elseif ismissing(row.var_energy_investment_index)
+                elseif ismissing(row.var_energy_investment_id)
                     @expression(
                         model,
                         row.initial_storage_units -
@@ -83,13 +83,12 @@ function create_multi_year_expressions!(connection, model, variables, expression
                 elseif ismissing(row.var_energy_decommission_indices)
                     @expression(
                         model,
-                        row.initial_storage_units + var_energy_inv[row.var_energy_investment_index]
+                        row.initial_storage_units + var_energy_inv[row.var_energy_investment_id]
                     )
                 else
                     @expression(
                         model,
-                        row.initial_storage_units +
-                        var_energy_inv[row.var_energy_investment_index] -
+                        row.initial_storage_units + var_energy_inv[row.var_energy_investment_id] -
                         sum(var_energy_dec[idx] for idx in row.var_energy_decommission_indices)
                     )
                 end for row in indices
@@ -101,28 +100,25 @@ function create_multi_year_expressions!(connection, model, variables, expression
         var_inv = variables[:flows_investment].container
         var_dec = variables[:flows_decommission].container
 
-        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY index")
+        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY id")
         attach_expression!(
             expr,
             :export,
             JuMP.AffExpr[
-                if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
+                if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_id)
                     @expression(model, row.initial_export_units)
-                elseif ismissing(row.var_investment_index)
+                elseif ismissing(row.var_investment_id)
                     @expression(
                         model,
                         row.initial_export_units -
                         sum(var_dec[idx] for idx in row.var_decommission_indices)
                     )
                 elseif ismissing(row.var_decommission_indices)
-                    @expression(
-                        model,
-                        row.initial_export_units + var_inv[row.var_investment_index]
-                    )
+                    @expression(model, row.initial_export_units + var_inv[row.var_investment_id])
                 else
                     @expression(
                         model,
-                        row.initial_export_units + var_inv[row.var_investment_index] -
+                        row.initial_export_units + var_inv[row.var_investment_id] -
                         sum(var_dec[idx] for idx in row.var_decommission_indices)
                     )
                 end for row in indices
@@ -133,23 +129,20 @@ function create_multi_year_expressions!(connection, model, variables, expression
             expr,
             :import,
             JuMP.AffExpr[
-                if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_index)
+                if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_id)
                     @expression(model, row.initial_import_units)
-                elseif ismissing(row.var_investment_index)
+                elseif ismissing(row.var_investment_id)
                     @expression(
                         model,
                         row.initial_import_units -
                         sum(var_dec[idx] for idx in row.var_decommission_indices)
                     )
                 elseif ismissing(row.var_decommission_indices)
-                    @expression(
-                        model,
-                        row.initial_import_units + var_inv[row.var_investment_index]
-                    )
+                    @expression(model, row.initial_import_units + var_inv[row.var_investment_id])
                 else
                     @expression(
                         model,
-                        row.initial_import_units + var_inv[row.var_investment_index] -
+                        row.initial_import_units + var_inv[row.var_investment_id] -
                         sum(var_dec[idx] for idx in row.var_decommission_indices)
                     )
                 end for row in indices
@@ -165,17 +158,17 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE expr_available_asset_units AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             asset_both.asset AS asset,
             asset_both.milestone_year AS milestone_year,
             asset_both.commission_year AS commission_year,
             ANY_VALUE(asset_both.initial_units) AS initial_units,
-            ARRAY_AGG(var_dec.index) FILTER (var_dec.index IS NOT NULL) AS var_decommission_indices,
+            ARRAY_AGG(var_dec.id) FILTER (var_dec.id IS NOT NULL) AS var_decommission_indices,
             IF (
                 asset_both.commission_year + ANY_VALUE(asset.technical_lifetime) - 1 >= asset_both.milestone_year,
-                ANY_VALUE(var_inv.index),
+                ANY_VALUE(var_inv.id),
                 NULL
-            ) AS var_investment_index,
+            ) AS var_investment_id,
         FROM asset_both
         LEFT JOIN asset
             ON asset_both.asset = asset.asset
@@ -196,13 +189,13 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE expr_available_energy_units AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             asset_both.asset AS asset,
             asset_both.milestone_year AS milestone_year,
             asset_both.commission_year AS commission_year,
             ANY_VALUE(asset_both.initial_storage_units) AS initial_storage_units,
-            ARRAY_AGG(var_energy_dec.index) FILTER (var_energy_dec.index IS NOT NULL) AS var_energy_decommission_indices,
-            ANY_VALUE(var_energy_inv.index) AS var_energy_investment_index,
+            ARRAY_AGG(var_energy_dec.id) FILTER (var_energy_dec.id IS NOT NULL) AS var_energy_decommission_indices,
+            ANY_VALUE(var_energy_inv.id) AS var_energy_investment_id,
         FROM asset_both
         LEFT JOIN asset
             ON asset.asset = asset_both.asset
@@ -225,15 +218,15 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE expr_available_flow_units AS
         SELECT
-            nextval('id') AS index,
+            nextval('id') AS id,
             flow_both.from_asset AS from_asset,
             flow_both.to_asset AS to_asset,
             flow_both.milestone_year AS milestone_year,
             flow_both.commission_year AS commission_year,
             ANY_VALUE(flow_both.initial_export_units) AS initial_export_units,
             ANY_VALUE(flow_both.initial_import_units) AS initial_import_units,
-            ARRAY_AGG(var_dec.index) FILTER (var_dec.index IS NOT NULL) AS var_decommission_indices,
-            ANY_VALUE(var_inv.index) AS var_investment_index,
+            ARRAY_AGG(var_dec.id) FILTER (var_dec.id IS NOT NULL) AS var_decommission_indices,
+            ANY_VALUE(var_inv.id) AS var_investment_id,
         FROM flow_both
         LEFT JOIN var_flows_decommission AS var_dec
             ON flow_both.to_asset = var_dec.to_asset

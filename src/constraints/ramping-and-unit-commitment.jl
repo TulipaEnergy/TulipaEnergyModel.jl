@@ -60,9 +60,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                 @expression(
                     model,
                     outgoing_flow -
-                    profile_times_capacity[table_name][row.index] *
-                    row.min_operating_point *
-                    units_on
+                    profile_times_capacity[table_name][row.id] * row.min_operating_point * units_on
                 ) for (row, outgoing_flow, units_on) in
                 zip(indices, cons.expressions[:outgoing], cons.expressions[:units_on])
             ],
@@ -81,7 +79,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             [
                 @constraint(
                     model,
-                    units_on ≤ sum(expr_avail[avail_index] for avail_index in row.avail_indices),
+                    units_on ≤ sum(expr_avail[avail_id] for avail_id in row.avail_indices),
                     base_name = "limit_units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (units_on, row) in zip(variables[:units_on].container, indices)
             ],
@@ -118,7 +116,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                     model,
                     flow_above_min_operating_point ≤
                     (1 - row.min_operating_point) *
-                    profile_times_capacity[table_name][row.index] *
+                    profile_times_capacity[table_name][row.id] *
                     units_on,
                     base_name = "max_output_flow_with_basic_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, flow_above_min_operating_point, units_on) in zip(
@@ -135,7 +133,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         ## Ramping Constraints with unit commitment
         # Note: We start ramping constraints from the second timesteps_block
         # We filter and group the indices per asset and representative period
-        # get the units on column to get easier the index - 1, i.e., the previous one
+        # get the units on column to get easier the id - 1, i.e., the previous one
         units_on = cons.expressions[:units_on]
 
         # - Maximum ramp-up rate limit to the flow above the operating point when having unit commitment variables
@@ -149,12 +147,12 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                 else
                     @constraint(
                         model,
-                        cons.expressions[:flow_above_min_operating_point][row.index] -
-                        cons.expressions[:flow_above_min_operating_point][row.index-1] ≤
+                        cons.expressions[:flow_above_min_operating_point][row.id] -
+                        cons.expressions[:flow_above_min_operating_point][row.id-1] ≤
                         row.max_ramp_up *
                         min_outgoing_flow_duration *
-                        profile_times_capacity[table_name][row.index] *
-                        units_on[row.index],
+                        profile_times_capacity[table_name][row.id] *
+                        units_on[row.id],
                         base_name = "max_ramp_up_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, min_outgoing_flow_duration) in
@@ -173,12 +171,12 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                 else
                     @constraint(
                         model,
-                        cons.expressions[:flow_above_min_operating_point][row.index] -
-                        cons.expressions[:flow_above_min_operating_point][row.index-1] ≥
+                        cons.expressions[:flow_above_min_operating_point][row.id] -
+                        cons.expressions[:flow_above_min_operating_point][row.id-1] ≥
                         -row.max_ramp_down *
                         min_outgoing_flow_duration *
-                        profile_times_capacity[table_name][row.index] *
-                        units_on[row.index-1],
+                        profile_times_capacity[table_name][row.id] *
+                        units_on[row.id-1],
                         base_name = "max_ramp_down_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, min_outgoing_flow_duration) in
@@ -204,11 +202,11 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                 else
                     @constraint(
                         model,
-                        cons.expressions[:outgoing][row.index] -
-                        cons.expressions[:outgoing][row.index-1] ≤
+                        cons.expressions[:outgoing][row.id] -
+                        cons.expressions[:outgoing][row.id-1] ≤
                         row.max_ramp_up *
                         min_outgoing_flow_duration *
-                        profile_times_capacity[table_name][row.index],
+                        profile_times_capacity[table_name][row.id],
                         base_name = "max_ramp_up_without_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, min_outgoing_flow_duration) in
@@ -226,11 +224,11 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                 else
                     @constraint(
                         model,
-                        cons.expressions[:outgoing][row.index] -
-                        cons.expressions[:outgoing][row.index-1] ≥
+                        cons.expressions[:outgoing][row.id] -
+                        cons.expressions[:outgoing][row.id-1] ≥
                         -row.max_ramp_down *
                         min_outgoing_flow_duration *
-                        profile_times_capacity[table_name][row.index],
+                        profile_times_capacity[table_name][row.id],
                         base_name = "max_ramp_down_without_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, min_outgoing_flow_duration) in
@@ -260,7 +258,7 @@ function _append_ramping_data_to_indices(connection, table_name)
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
             AND assets_profiles.profile_type = 'availability'
-        ORDER BY cons.index
+        ORDER BY cons.id
         ",
     )
 end
@@ -269,19 +267,19 @@ function _append_available_units_data(connection, table_name)
     return DuckDB.query(
         connection,
         "SELECT
-            cons.index,
+            cons.id,
             ANY_VALUE(cons.asset) AS asset,
             ANY_VALUE(cons.year) AS year,
             ANY_VALUE(cons.rep_period) AS rep_period,
             ANY_VALUE(cons.time_block_start) AS time_block_start,
             ANY_VALUE(cons.time_block_end) AS time_block_end,
-            ARRAY_AGG(expr_avail.index) AS avail_indices,
+            ARRAY_AGG(expr_avail.id) AS avail_indices,
         FROM cons_$table_name AS cons
         LEFT JOIN expr_available_asset_units AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
-        GROUP BY cons.index
-        ORDER BY cons.index
+        GROUP BY cons.id
+        ORDER BY cons.id
         ",
     )
 end

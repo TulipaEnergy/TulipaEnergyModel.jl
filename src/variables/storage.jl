@@ -44,7 +44,7 @@ function add_storage_variables!(connection, model, variables)
         for row in DuckDB.query(
             connection,
             "SELECT
-                last(var.index) AS last_index,
+                last(var.id) AS last_id,
                 var.asset, var.year, var.rep_period,
                 ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
             FROM $table_name AS var
@@ -55,7 +55,7 @@ function add_storage_variables!(connection, model, variables)
             GROUP BY var.asset, var.year, var.rep_period
             ",
         )
-            JuMP.set_lower_bound(var.container[row.last_index], row.initial_storage_level)
+            JuMP.set_lower_bound(var.container[row.last_id], row.initial_storage_level)
         end
     end
 
@@ -64,7 +64,7 @@ function add_storage_variables!(connection, model, variables)
         for row in DuckDB.query(
             connection,
             "SELECT
-                last(var.index) AS last_index,
+                last(var.id) AS last_id,
                 var.asset, var.year,
                 ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
             FROM $table_name AS var
@@ -75,7 +75,7 @@ function add_storage_variables!(connection, model, variables)
             GROUP BY var.asset, var.year
             ",
         )
-            JuMP.set_lower_bound(var.container[row.last_index], row.initial_storage_level)
+            JuMP.set_lower_bound(var.container[row.last_id], row.initial_storage_level)
         end
     end
 
