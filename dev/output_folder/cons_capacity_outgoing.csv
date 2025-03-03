@@ -1,4 +1,4 @@
-index,asset,year,rep_period,time_block_start,time_block_end,dual_max_output_flows_limit
+id,asset,year,rep_period,time_block_start,time_block_end,dual_max_output_flows_limit
 1,ccgt,2030,1,1,1,0.0
 2,ccgt,2030,1,2,2,0.0
 3,ccgt,2030,1,3,3,0.0
