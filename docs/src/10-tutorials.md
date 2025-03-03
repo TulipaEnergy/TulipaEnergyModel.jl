@@ -27,17 +27,17 @@ Choose one:
 
 In Julia:
 
-```@example bt-1
+```julia @example bt-1
 using DuckDB, TulipaIO, TulipaEnergyModel
 
-input_dir = "../../test/inputs/Tiny" # The string should point to the Tiny folder, something like "test/inputs/Tiny"
-
-# TulipaEnergyModel.schema_per_table_name contains the schema with columns and types the file must have
+# Set the input directory to the Tiny folder
+input_dir = "../../test/inputs/Tiny" # Something like "test/inputs/Tiny" or "test\\inputs\\Tiny"
+readdir(input_dir) # Check the input directory is correct - this should show the names of the files in the folder
 
 # Create a DuckDB database connection
 connection = DBInterface.connect(DuckDB.DB)
 
-# Read the files into DuckDB tables - luckily the files are already in the Model Schema
+# Read the files into DuckDB tables - luckily the files are already formatted to fit the Model Schema
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
 
 # Run the scenario and save the result to the energy_problem
@@ -48,7 +48,7 @@ Congratulations - you just solved your first scenario! 🌷
 
 Now let's look at some of the results:
 
-```@example bt-1
+```julia @example bt-1
 # Check
 
 # Export the results to CSV
