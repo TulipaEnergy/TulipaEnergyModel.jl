@@ -197,6 +197,7 @@ from
 where
     asset_both.decommissionable
     and asset_both.milestone_year != asset_both.commission_year
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id
@@ -246,6 +247,7 @@ where
     asset.storage_method_energy = true
     and asset_milestone.investable = true
     and asset.type = 'storage'
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id
@@ -269,6 +271,7 @@ where
     and asset.type = 'storage'
     and asset_both.decommissionable
     and asset_both.commission_year != asset_both.milestone_year
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id

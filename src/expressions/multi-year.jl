@@ -179,6 +179,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         LEFT JOIN var_assets_investment AS var_inv
             ON asset_both.asset = var_inv.asset
             AND asset_both.commission_year = var_inv.milestone_year
+        WHERE asset.investment_method = 'compact'
         GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
         ",
     )
@@ -208,6 +209,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             AND asset_both.commission_year = var_energy_inv.milestone_year
         WHERE
             asset.type == 'storage'
+            AND asset.investment_method = 'compact'
         GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
         ",
     )
