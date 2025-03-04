@@ -347,9 +347,7 @@
           "demand",
           "inflows",
           "max_storage_level",
-          "min_storage_level",
-          "max_energy",
-          "min_energy"
+          "min_storage_level"
         ]
       },
       "description": "Type of profile, used to determine DuckDB table with source profile",
@@ -415,6 +413,33 @@
       "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
+    }
+  },
+  "assets_timeframe_profiles": {
+    "asset": {
+      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "type": "VARCHAR"
+    },
+    "commission_year": {
+      "default": 2000,
+      "description": "Year of commissioning",
+      "type": "INTEGER"
+    },
+    "profile_name": {
+      "description": "Name of profile, used to determine data inside the DuckDB table",
+      "type": "VARCHAR"
+    },
+    "profile_type": {
+      "constraints": {
+        "oneOf": [
+          "max_storage_level",
+          "min_storage_level",
+          "max_energy",
+          "min_energy"
+        ]
+      },
+      "description": "Type of profile, used to determine DuckDB table with source profile",
+      "type": "VARCHAR"
     }
   },
   "flow": {
