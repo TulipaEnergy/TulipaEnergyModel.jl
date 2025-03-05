@@ -22,7 +22,7 @@ PARAMETER_NAME
   •  Description: Lorem ipsum
   •  Type: SQL type of the parameter
   •  Default: a value or "No default"
-  •  Unit of measure: a value or "-"
+  •  Unit of measure: a value or "No unit"
   •  Constraints: a table or "No constraints"
 """
 
@@ -37,7 +37,7 @@ let buffer = IOBuffer()
         for (field_name, field_info) in fields
             _description = get(field_info, "description", "No description provided")
             _type = get(field_info, "type", "Unknown type")
-            _unit = get(field_info, "unit_of_measure", "-")
+            _unit = get(field_info, "unit_of_measure", "No unit")
             _default = get(field_info, "default", "No default")
             _constraints_values = get(field_info, "constraints", nothing)
 
