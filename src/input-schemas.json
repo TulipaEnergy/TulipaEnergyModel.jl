@@ -11,7 +11,7 @@
       "default": 0,
       "description": "Capacity for one unit of the asset (is therefore multiplied by number of existing plus number of invested assets).",
       "type": "DOUBLE",
-      "unit of measure": "MW"
+      "unit_of_measure": "MW"
     },
     "capacity_storage_energy": {
       "constraints": {
@@ -20,7 +20,7 @@
       "default": 0,
       "description": "Capacity of one storage unit.",
       "type": "DOUBLE",
-      "unit of measure": "MWh"
+      "unit_of_measure": "MWh"
     },
     "consumer_balance_sense": {
       "constraints": {
@@ -41,7 +41,7 @@
       "default": 0,
       "description": " e.g. 0.05 is 5 %. discount rate for the annuity calculation.",
       "type": "DOUBLE",
-      "unit of measure": "ratio"
+      "unit_of_measure": "ratio"
     },
     "economic_lifetime": {
       "constraints": {
@@ -50,7 +50,7 @@
       "default": 1,
       "description": "Economic lifetime of the unit for annuity calculation.",
       "type": "INTEGER",
-      "unit of measure": "years"
+      "unit_of_measure": "years"
     },
     "energy_to_power_ratio": {
       "constraints": {
@@ -59,7 +59,7 @@
       "default": 0,
       "description": "Fixed ratio between the energy storage capacity [MWh] and the discharge/charge capacity [MW] for energy storage investments where `storage_method_energy = false`.",
       "type": "DOUBLE",
-      "unit of measure": "h"
+      "unit_of_measure": "h"
     },
     "group": {
       "description": "Group to which the asset belongs to (null/empty/missing -> no group).",
@@ -99,7 +99,7 @@
       "default": 0,
       "description": "Maximum ramping down rate as a portion of the capacity of asset.",
       "type": "DOUBLE",
-      "unit of measure": "p.u./h"
+      "unit_of_measure": "p.u./h"
     },
     "max_ramp_up": {
       "constraints": {
@@ -108,7 +108,7 @@
       "default": 0,
       "description": "Maximum ramping up rate as a portion of the capacity of asset.",
       "type": "DOUBLE",
-      "unit of measure": "p.u./h"
+      "unit_of_measure": "p.u./h"
     },
     "min_operating_point": {
       "constraints": {
@@ -118,7 +118,7 @@
       "default": 0,
       "description": "Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset.",
       "type": "DOUBLE",
-      "unit of measure": "p.u."
+      "unit_of_measure": "p.u."
     },
     "ramping": {
       "default": false,
@@ -137,7 +137,7 @@
       "default": 1,
       "description": "Technical lifetime of the unit to determine for how long the capacity is considered from the commission year.",
       "type": "INTEGER",
-      "unit of measure": "years"
+      "unit_of_measure": "years"
     },
     "type": {
       "constraints": {
@@ -203,13 +203,13 @@
       "default": 0,
       "description": "Number of existing storage units",
       "type": "DOUBLE",
-      "unit of measure": "number"
+      "unit_of_measure": "number"
     },
     "initial_units": {
       "default": 0,
       "description": "Number of existing units",
       "type": "DOUBLE",
-      "unit of measure": "number"
+      "unit_of_measure": "number"
     },
     "milestone_year": {
       "default": 2000,
@@ -230,32 +230,32 @@
     "fixed_cost": {
       "description": "Fixed annual cost for the asset capacity.",
       "type": "DOUBLE",
-      "unit of measure": "CUR/MW/year"
+      "unit_of_measure": "CUR/MW/year"
     },
     "fixed_cost_storage_energy": {
       "description": "Fixed annual cost for the asset storage capacity",
       "type": "DOUBLE",
-      "unit of measure": "CUR/MWh/year"
+      "unit_of_measure": "CUR/MWh/year"
     },
     "investment_cost": {
       "description": "Investment cost for the asset capacity.",
       "type": "DOUBLE",
-      "unit of measure": "CUR/MW"
+      "unit_of_measure": "CUR/MW"
     },
     "investment_cost_storage_energy": {
       "description": "Investment cost for the asset energy storage capacity.",
       "type": "DOUBLE",
-      "unit of measure": "CUR/MWh"
+      "unit_of_measure": "CUR/MWh"
     },
     "investment_limit": {
       "description": "Maximum capacity for the asset investment. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
-      "unit of measure": "MWh"
+      "unit_of_measure": "MWh"
     },
     "investment_limit_storage_energy": {
       "description": "Maximum capacity for the asset storage investment. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
-      "unit of measure": "MWh"
+      "unit_of_measure": "MWh"
     }
   },
   "asset_milestone": {
@@ -270,7 +270,7 @@
       "default": 0,
       "description": "The initial storage level at the beginning of the optimization. The final storage level needs to be above this initial value. If the initial value is null, empty, or missing, it will be optimized using a cycling constraint that links the last period to the initial period.",
       "type": "DOUBLE",
-      "unit of measure": "MWh"
+      "unit_of_measure": "MWh"
     },
     "investable": {
       "default": false,
@@ -283,7 +283,7 @@
       },
       "description": "The maximum amount of energy across the timeframe (e.g., a year) that the asset must produce. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
-      "unit of measure": "MWh"
+      "unit_of_measure": "MWh"
     },
     "milestone_year": {
       "default": 2000,
@@ -296,7 +296,7 @@
       },
       "description": "The minimum amount of energy across the timeframe (e.g., a year) that the asset must produce. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
-      "unit of measure": "MWh"
+      "unit_of_measure": "MWh"
     },
     "peak_demand": {
       "constraints": {
@@ -305,7 +305,7 @@
       "default": 0,
       "description": "Value that multiplies the demand profile time series.",
       "type": "DOUBLE",
-      "unit of measure": "MW"
+      "unit_of_measure": "MW"
     },
     "storage_inflows": {
       "constraints": {
@@ -314,7 +314,7 @@
       "default": 0,
       "description": "Value that multiplies the inflow profile time series.",
       "type": "DOUBLE",
-      "unit of measure": "MWh/year"
+      "unit_of_measure": "MWh/year"
     },
     "units_on_cost": {
       "constraints": {
@@ -323,7 +323,7 @@
       "default": 0,
       "description": "Cost of keeping unit online for one hour or the objective function coefficient on `units_on` variable. e.g., no_load cost or idling cost",
       "type": "DOUBLE",
-      "unit of measure": "CUR/p.u./h"
+      "unit_of_measure": "CUR/p.u./h"
     }
   },
   "assets_profiles": {
@@ -367,7 +367,7 @@
     "rep_period": {
       "description": "Number of the representative period",
       "type": "INTEGER",
-      "unit of measure": "number"
+      "unit_of_measure": "number"
     },
     "specification": {
       "constraints": {
@@ -450,7 +450,7 @@
       "default": 0,
       "description": "Capacity for one unit of the transport flow (is therefore multiplied by number of existing plus invested number of transport assets).",
       "type": "DOUBLE",
-      "unit of measure": "MW"
+      "unit_of_measure": "MW"
     },
     "carrier": {
       "description": "Energy carrier",
@@ -463,7 +463,7 @@
       "default": 0,
       "description": " e.g. 0.05 is 5 %. discount rate for the annuity calculation.",
       "type": "DOUBLE",
-      "unit of measure": "ratio"
+      "unit_of_measure": "ratio"
     },
     "economic_lifetime": {
       "constraints": {
@@ -472,7 +472,7 @@
       "default": 1,
       "description": "Economic lifetime of the transport asset for annuity calculation.",
       "type": "INTEGER",
-      "unit of measure": "years"
+      "unit_of_measure": "years"
     },
     "from_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
@@ -495,7 +495,7 @@
       "default": 1,
       "description": "Technical lifetime of the transport asset to determine for how long the capacity is considered from the commission year.",
       "type": "INTEGER",
-      "unit of measure": "years"
+      "unit_of_measure": "years"
     },
     "to_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
@@ -521,13 +521,13 @@
       "default": 0,
       "description": "Number of existing units in `from_asset` -> `to_asset` direction",
       "type": "DOUBLE",
-      "unit of measure": "number"
+      "unit_of_measure": "number"
     },
     "initial_import_units": {
       "default": 0,
       "description": "Number of existing units in `to_asset` -> `from_asset` direction",
       "type": "DOUBLE",
-      "unit of measure": "number"
+      "unit_of_measure": "number"
     },
     "milestone_year": {
       "default": 2000,
@@ -552,12 +552,12 @@
       "default": 1,
       "description": "Efficiency of transfer in `from_asset` -> `to_asset` direction",
       "type": "DOUBLE",
-      "unit of measure": "ratio"
+      "unit_of_measure": "ratio"
     },
     "fixed_cost": {
       "description": "Fixed annual cost for the transport asset capacity.",
       "type": "DOUBLE",
-      "unit of measure": "CUR/MW/year"
+      "unit_of_measure": "CUR/MW/year"
     },
     "from_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
@@ -566,12 +566,12 @@
     "investment_cost": {
       "description": "Investment cost for the transport asset capacity.",
       "type": "DOUBLE",
-      "unit of measure": "CUR/MW"
+      "unit_of_measure": "CUR/MW"
     },
     "investment_limit": {
       "description": "Maximum capacity for the transport asset investment. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
-      "unit of measure": "MWh"
+      "unit_of_measure": "MWh"
     },
     "to_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
@@ -601,7 +601,7 @@
       "default": 0,
       "description": "Variable cost for the flow.",
       "type": "DOUBLE",
-      "unit of measure": "CUR/MWh"
+      "unit_of_measure": "CUR/MWh"
     }
   },
   "flows_profiles": {
@@ -645,7 +645,7 @@
     "rep_period": {
       "description": "Number of the representative period",
       "type": "INTEGER",
-      "unit of measure": "number"
+      "unit_of_measure": "number"
     },
     "specification": {
       "constraints": {
@@ -710,7 +710,7 @@
     "value": {
       "description": "Value of the profile.",
       "type": "DOUBLE",
-      "unit of measure": "p.u."
+      "unit_of_measure": "p.u."
     },
     "year": {
       "default": 2000,
@@ -730,7 +730,7 @@
     "value": {
       "description": "value of the profile.",
       "type": "DOUBLE",
-      "unit of measure": "p.u."
+      "unit_of_measure": "p.u."
     },
     "year": {
       "default": 2000,
@@ -748,13 +748,13 @@
       "default": 1,
       "description": "Representative period number.",
       "type": "INTEGER",
-      "unit of measure": "number"
+      "unit_of_measure": "number"
     },
     "resolution": {
       "default": 1,
       "description": "Duration of each timestep",
       "type": "DOUBLE",
-      "unit of measure": "hours"
+      "unit_of_measure": "hours"
     },
     "year": {
       "default": 2000,

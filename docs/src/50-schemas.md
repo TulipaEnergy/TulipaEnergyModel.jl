@@ -37,7 +37,7 @@ let buffer = IOBuffer()
         for (field_name, field_info) in fields
             _description = get(field_info, "description", "No description provided")
             _type = get(field_info, "type", "Unknown type")
-            _unit = get(field_info, "unit of measure", "-")
+            _unit = get(field_info, "unit_of_measure", "-")
             _default = get(field_info, "default", "No default")
             _constraints_values = get(field_info, "constraints", nothing)
 
