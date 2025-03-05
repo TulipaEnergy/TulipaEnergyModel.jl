@@ -8,6 +8,7 @@ const SQL_FOLDER = joinpath(@__DIR__, "sql")
 using CSV: CSV
 using DuckDB: DuckDB, DBInterface
 using TOML: TOML
+using JSON: JSON
 using TulipaIO: TulipaIO
 
 ## Optimization
