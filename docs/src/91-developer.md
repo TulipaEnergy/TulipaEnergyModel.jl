@@ -36,21 +36,21 @@ To contribute to TulipaEnergyModel.jl, you need the following:
    pip install --user pre-commit
    ```
 
-   If you prefer to create a local environment with it, do the following:
+   If you prefer to create a local environment with it, do the following (on Windows):
 
    ```bash
    python -m venv env
-   . env/bin/activate
+   source env/Scripts/activate # in bash
+   env/Scripts/Activate.ps1 # in powershell
    pip install --upgrade pip setuptools pre-commit
    ```
 
-   On Windows, you need to activate the environment using the following command instead of the previous one:
+   For every subsequent use, you don't have to install, just activate the environment:
 
    ```bash
-   env/Scripts/activate
+   source env/Scripts/activate # in bash
+   env/Scripts/Activate.ps1 # in powershell
    ```
-
-   Note that there is no leading dot (`.`) in the above command.
 
 6. [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
    formatting.
