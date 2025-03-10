@@ -1,14 +1,14 @@
 export run_scenario
 
 """
-    energy_problem = run_scenario(connection; output_folder, optimizer, parameters, model_parameters_file, write_lp_file, enable_names, log_file, show_log)
+    energy_problem = run_scenario(connection; output_folder, optimizer, parameters, model_parameters_file, model_file_name, enable_names, log_file, show_log)
 
 Run the scenario in the given `connection` and return the energy problem.
 
 The `optimizer` and `parameters` keyword arguments can be used to change the optimizer
 (the default is HiGHS) and its parameters. The variables are passed to the [`solve_model`](@ref) function.
 
-Set `write_lp_file = true` to export the problem that is sent to the solver to a file for viewing.
+Set `model_file_name = "some-name.lp"` to export the problem that is sent to the solver to a file for viewing (.lp or .mps).
 Set `enable_names = false` to turn off variable and constraint names (faster model creation).
 Set `show_log = false` to silence printing the log while running.
 
@@ -22,7 +22,7 @@ function run_scenario(
     optimizer = HiGHS.Optimizer,
     model_parameters_file = "",
     parameters = default_parameters(optimizer),
-    write_lp_file = false,
+    model_file_name = "",
     enable_names = true,
     log_file = "",
     show_log = true,
@@ -32,7 +32,7 @@ function run_scenario(
         model_parameters_file,
     )
 
-    @timeit to "create_model!" create_model!(energy_problem; write_lp_file, enable_names)
+    @timeit to "create_model!" create_model!(energy_problem; model_file_name, enable_names)
 
     @timeit to "solve_model!" solve_model!(energy_problem, optimizer; parameters)
 

@@ -391,7 +391,7 @@ With this information, we can analyze the constraints in each of the following c
 - Unit commitment and ramping in assets with flexible time resolution that are multiples of each other
 - Unit commitment and ramping in assets with flexible time resolution that are not multiples of each other
 
-We will analyze each case in the following sections, considering the constraints resolution defined in the summary table in the [flexible time resolution](@ref flex-time-res) section. For the sake of simplicity, we only show the asset $a$ and timestep block $b_k$ index and the constraints as they appear in the .lp file of the example, i.e., with all the coefficients and RHS values calculated from the input parameters. The .lp file can be exported using the keyword argument `write_lp_file = true` in the [`run_scenario`](@ref) function.
+We will analyze each case in the following sections, considering the constraints resolution defined in the summary table in the [flexible time resolution](@ref flex-time-res) section. For the sake of simplicity, we only show the asset $a$ and timestep block $b_k$ index and the constraints as they appear in the .lp file of the example, i.e., with all the coefficients and RHS values calculated from the input parameters. The .lp file can be exported using the keyword argument `model_file_name = "model.lp"` in the [`run_scenario`](@ref) function.
 
 ### Ramping in Assets with Multiple Outputs
 
