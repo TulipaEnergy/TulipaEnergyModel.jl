@@ -51,7 +51,7 @@ In addition, the following flow sets represent methods for incorporating additio
 | --------------------------------| ----------------------------------------------------------------| -------- | ------------------------------------------------------------ | ----- |
 | $\mathcal{F}^{\text{t}}$        | Flow between two assets with a transport method                 |          | $\mathcal{F}^{\text{t}} \subseteq \mathcal{F}$               |       |
 | $\mathcal{F}^{\text{ti}}_y$     | Transport flow with investment method at year $y$               |          | $\mathcal{F}^{\text{ti}}_y \subseteq \mathcal{F}^{\text{t}}$ |       |
-| $\mathcal{F}^{\text{dc-opf}}_y$ | Flow between two assets with a DC power flow method at year $y$ |          | $\mathcal{F}^{\text{dc-opf}}_y \subseteq \mathcal{F}$        | This set contains flows that use the dc-opf method. Please visit the [how-to section](@ref dc-opf-setup) to learn how to set up this feature. |
+| $\mathcal{F}^{\text{dc-opf}}_y$ | Flow between two assets with a DC power flow method at year $y$ |          | $\mathcal{F}^{\text{dc-opf}}_y \subseteq \mathcal{F}$        | This set contains flows that use the dc-opf method. |
 
 ### Sets for Temporal Structures
 
