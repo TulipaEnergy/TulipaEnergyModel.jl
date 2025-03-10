@@ -47,10 +47,11 @@ In addition, the following asset sets represent methods for incorporating additi
 
 In addition, the following flow sets represent methods for incorporating additional variables and constraints in the model.
 
-| Name                        | Description                                       | Elements | Superset                                                     | Notes |
-| --------------------------- | ------------------------------------------------- | -------- | ------------------------------------------------------------ | ----- |
-| $\mathcal{F}^{\text{t}}$    | Flow between two assets with a transport method   |          | $\mathcal{F}^{\text{t}} \subseteq \mathcal{F}$               |       |
-| $\mathcal{F}^{\text{ti}}_y$ | Transport flow with investment method at year $y$ |          | $\mathcal{F}^{\text{ti}}_y \subseteq \mathcal{F}^{\text{t}}$ |       |
+| Name                            | Description                                                     | Elements | Superset                                                     | Notes |
+| --------------------------------| ----------------------------------------------------------------| -------- | ------------------------------------------------------------ | ----- |
+| $\mathcal{F}^{\text{t}}$        | Flow between two assets with a transport method                 |          | $\mathcal{F}^{\text{t}} \subseteq \mathcal{F}$               |       |
+| $\mathcal{F}^{\text{ti}}_y$     | Transport flow with investment method at year $y$               |          | $\mathcal{F}^{\text{ti}}_y \subseteq \mathcal{F}^{\text{t}}$ |       |
+| $\mathcal{F}^{\text{dc-opf}}_y$ | Flow between two assets with a DC power flow method at year $y$ |          | $\mathcal{F}^{\text{dc-opf}}_y \subseteq \mathcal{F}$        | This set contains flows that use the dc-opf method. Please visit the [how-to section](@ref dc-opf-setup) to learn how to set up this feature. |
 
 ### Sets for Temporal Structures
 
@@ -145,6 +146,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | --------------------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------- |
 | $p^{\text{variable cost}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Variable cost of flow $f$ at year $y$                                                                                 | [kEUR/MWh]     |
 | $p^{\text{eff}}_{f,y}$                              | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Efficiency of flow $f$ at year $y$                                                                                    | [p.u.]         |
+| $p^{\text{reactance}}_{f,y}$                        | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Reactance of flow $f$ at year $y$                                                                                     | [p.u.]         |
 | $p^{\text{inv cost}}_{f,y}$                         | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Overnight cost of transport flow $f$ at year $y$                                                                      | [kEUR/MW]      |
 | $p^{\text{annualized inv cost}}_{f,y}$              | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Annualized investment cost of transport flow $f$ at year $y$                                                          | [kEUR/MW/year] |
 | $p^{\text{salvage value}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Salvage value of transport flow $f$ at year $y$                                                                       | [kEUR/MW]      |
@@ -180,6 +182,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | --------------------------------- | ---------------- | -------------------- | ------ |
 | $p^{\text{social discount rate}}$ | $\mathbb{R}_{+}$ | Social discount rate | [-]    |
 | $p^{\text{discount year}}$        | $\mathbb{Z}_{+}$ | Discount year        | [year] |
+| $p^{\text{power system base}}$    | $\mathbb{R}_{+}$ | Power system base    | [MVA]  |
 
 ### Extra Parameters for Discounting
 
@@ -202,6 +205,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | $v^{\text{intra-storage}}_{a,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}_y \setminus \mathcal{A}^{\text{ss}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Intra storage level (within a representative period) for storage asset $a$, representative period $k_y$, and timestep block $b_{k_y}$ | [MWh]   |
 | $v^{\text{inter-storage}}_{a,p_y}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                     | Inter storage level (between representative periods) for storage asset $a$ and period $p_y$                                           | [MWh]   |
 | $v^{\text{is charging}}_{a,k_y,b_{k_y}}$   | $\{0, 1\}$       | $a \in \mathcal{A}^{\text{sb}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                    | If an storage asset $a$ is charging or not in representative period $k_y$ and timestep block $b_{k_y}$                                | [-]     |
+| $v^{\text{angle}}_{a,k_y,b_{k_y}}$         | $\mathbb{R}$     | $a \in \mathcal{A}^{\text{dc-opf}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                | Electricity angle of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                            | [rad]   |
 | $v^{\text{units on}}_{a,k_y,b_{k_y}}$      | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                    | Number of units ON of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                           | [units] |
 
 ## [Objective Function](@id math-objective-function)
@@ -490,6 +494,16 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} - e^{\text{flow above min}}_{a,k_y,b_{
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \geq - p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot  \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{compact investment}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{compact investment}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+```
+
+### [DC Power Flow Constraints](@id dc-opf-constraints)
+
+For a flow $f$ connecting assets $a^{\text{from}}$ and $a^{\text{to}}$, which belongs to the set $\mathcal{F}^{\text{dc-opf}}_y$, the power flow constraints utilize the following equations:
+
+```math
+\begin{aligned}
+v^{\text{flow}}_{f,k_y,b_{k_y}} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{f,y}} \cdot (v^{\text{angle}}_{a^{\text{from}},k_y,b_{k_y}} - v^{\text{angle}}_{a^{\text{to}},k_y,b_{k_y}}) \quad \forall y \in \mathcal{Y}, \forall f(a^{\text{from}},a^{\text{to}}) \in \mathcal{F}^{\text{dc-opf}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\end{aligned}
 ```
 
 ### Constraints for Energy Consumer Assets
