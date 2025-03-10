@@ -1,0 +1,6 @@
+EnergyProblem:
+  - Model created!
+    - Number of variables: 364
+    - Number of constraints for variable bounds: 369
+    - Number of structural constraints: 432
+  - Model is infeasible!

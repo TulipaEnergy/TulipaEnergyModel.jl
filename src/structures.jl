@@ -319,7 +319,7 @@ function Base.show(io::IO, ep::EnergyProblem)
         println(io, "  - Model not created!")
     end
     if status_model_solved
-        println(io, "  - Model solved! ")
+        println(io, "  - Model solved!")
         println(io, "    - Termination status: ", ep.termination_status)
         println(io, "    - Objective value: ", ep.objective_value)
     elseif !status_model_solved && ep.termination_status == JuMP.INFEASIBLE

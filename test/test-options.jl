@@ -13,6 +13,7 @@
             "mip_max_leaves" => 64,
         ),
         write_lp_file = true,
+        show_log = false,
     )
 end
 
@@ -80,5 +81,6 @@ end
             output_folder = OUTPUT_FOLDER,
             optimizer = HiGHS.Optimizer,
             parameters = Dict("bad_param" => 1.0),
+            show_log = false,
         )
 end
