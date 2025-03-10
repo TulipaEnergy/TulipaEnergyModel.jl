@@ -21,8 +21,8 @@ TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
 
 [compat]
 CSV = "0.10"
-DuckDB = "0.10, ~1.0"
-DuckDB_jll = "0.10, ~1.0"
+DuckDB = "1"
+DuckDB_jll = "1.2.1"
 HiGHS = "1"
 JSON = "0.21.4"
 JuMP = "1"
@@ -32,7 +32,7 @@ SparseArrays = "1"
 Statistics = "1"
 TOML = "1"
 TimerOutputs = "0.5"
-TulipaIO = "0.3"
+TulipaIO = "0.4"
 julia = "1.10"
 
 [extras]
