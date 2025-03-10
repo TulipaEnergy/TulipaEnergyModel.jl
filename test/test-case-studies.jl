@@ -9,7 +9,8 @@
     for (optimizer, parameters) in parameters_dict
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, dir)
-        energy_problem = TulipaEnergyModel.run_scenario(connection; optimizer, parameters)
+        energy_problem =
+            TulipaEnergyModel.run_scenario(connection; optimizer, parameters, show_log = false)
         @test JuMP.is_solved_and_feasible(energy_problem.model)
     end
 end
@@ -20,7 +21,7 @@ end
     for optimizer in optimizer_list
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, dir)
-        energy_problem = TulipaEnergyModel.run_scenario(connection; optimizer)
+        energy_problem = TulipaEnergyModel.run_scenario(connection; optimizer, show_log = false)
         @test energy_problem.objective_value ≈ 269238.43825 rtol = 1e-8
     end
 end
@@ -33,6 +34,7 @@ end
         connection;
         output_folder = OUTPUT_FOLDER,
         write_lp_file = true,
+        show_log = false,
         log_file = "model.log",
     )
 end
@@ -41,7 +43,7 @@ end
     dir = joinpath(INPUT_FOLDER, "Storage")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test energy_problem.objective_value ≈ 2409.384029 atol = 1e-5
 end
 
@@ -52,8 +54,12 @@ end
         Dict("output_flag" => false, "mip_rel_gap" => 0.0, "mip_feasibility_tolerance" => 1e-5)
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem =
-        TulipaEnergyModel.run_scenario(connection; optimizer = optimizer, parameters = parameters)
+    energy_problem = TulipaEnergyModel.run_scenario(
+        connection;
+        optimizer = optimizer,
+        parameters = parameters,
+        show_log = false,
+    )
     @test energy_problem.objective_value ≈ 293074.923309 atol = 1e-5
 end
 
@@ -61,7 +67,7 @@ end
     dir = joinpath(INPUT_FOLDER, "Variable Resolution")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test energy_problem.objective_value ≈ 28.45872 atol = 1e-5
 end
 
@@ -72,6 +78,7 @@ end
     energy_problem = TulipaEnergyModel.run_scenario(
         connection;
         model_parameters_file = joinpath(@__DIR__, "inputs", "model-parameters-example.toml"),
+        show_log = false,
     )
     @test energy_problem.objective_value ≈ 4507633.87546 atol = 1e-5
 end
@@ -95,5 +102,7 @@ end
         energy_problem,
     )
     @test energy_problem.termination_status == JuMP.INFEASIBLE
-    print(energy_problem)
+    io = IOBuffer()
+    print(io, energy_problem)
+    @test String(take!(io)) == read("io-outputs/energy-problem-model-infeasible.txt", String)
 end

@@ -10,7 +10,11 @@ end
     @testset "Check that solution files are generated" begin
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Norse"))
-        TulipaEnergyModel.run_scenario(connection; output_folder = joinpath(OUTPUT_FOLDER))
+        TulipaEnergyModel.run_scenario(
+            connection;
+            output_folder = joinpath(OUTPUT_FOLDER),
+            show_log = false,
+        )
         for filename in (
             "var_flow.csv",
             "var_flows_investment.csv",
@@ -44,11 +48,20 @@ end
     @testset "Check the missing cases of printing the EnergyProblem" begin # model infeasible is covered in testset "Infeasible Case Study".
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
+
+        io = IOBuffer()
         energy_problem = TulipaEnergyModel.EnergyProblem(connection)
-        print(energy_problem)
+        print(io, energy_problem)
+        @test String(take!(io)) == read("io-outputs/energy-problem-empty.txt", String)
+
+        io = IOBuffer()
         TulipaEnergyModel.create_model!(energy_problem)
-        print(energy_problem)
+        print(io, energy_problem)
+        @test String(take!(io)) == read("io-outputs/energy-problem-model-created.txt", String)
+
+        io = IOBuffer()
         TulipaEnergyModel.solve_model!(energy_problem)
-        print(energy_problem)
+        print(io, energy_problem)
+        @test String(take!(io)) == read("io-outputs/energy-problem-model-solved.txt", String)
     end
 end

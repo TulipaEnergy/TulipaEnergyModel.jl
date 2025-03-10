@@ -1,0 +1,3 @@
+EnergyProblem:
+  - Model not created!
+  - Model not solved!
