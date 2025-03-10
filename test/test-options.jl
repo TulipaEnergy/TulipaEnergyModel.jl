@@ -12,7 +12,7 @@
             "mip_abs_gap" => 1e-4,
             "mip_max_leaves" => 64,
         ),
-        write_lp_file = true,
+        model_file_name = "model.lp",
         show_log = false,
     )
 end
