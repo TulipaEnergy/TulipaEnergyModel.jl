@@ -6,7 +6,7 @@ energy systems.
 
 ```@contents
 Pages = ["91-developer.md"]
-Depth = 3
+Depth = [2, 3]
 ```
 
 ## Before You Begin
