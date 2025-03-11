@@ -55,7 +55,7 @@ function create_model(
     write_lp_file = false,
     enable_names = true,
     direct_model = false,
-    #optimizer_with_attributes = optimizer_with_attributes(HiGHS.Optimizer),
+    optimizer_with_attributes = JuMP.optimizer_with_attributes(HiGHS.Optimizer),
 )
     ## Model
     if direct_model
