@@ -2,7 +2,7 @@
 
 ```@contents
 Pages = ["00-getting-started.md"]
-Depth = 3
+Depth = [2, 3]
 ```
 
 Let's get you set up! This will only take a few minutes.
@@ -45,8 +45,6 @@ You will also need a solver (optimizer), for now add the open-source solver [HiG
 pkg> add HiGHS
 ```
 
-If you want to use a different solver, see [How-To-Use](@ref solver).
-
 - Press `backspace` to return to Julia mode
 
 ## Using packages in your project
@@ -70,4 +68,4 @@ You should see the documentation for the [default_parameters](@ref) function. If
 
 ## Next Step
 
-Now that you're all set up, head over to our [Beginner Tutorials](@ref beginner-tutorials) to run your first analyses! 🌷
+Now that you're all set up, head over to our [Beginner Tutorials](@ref basic-example) to run your first analyses! 🌷
