@@ -2,7 +2,7 @@
 
 ```@contents
 Pages = ["30-concepts.md"]
-Depth = 3
+Depth = [2, 3]
 ```
 
 ## [Summary](@id concepts-summary)
