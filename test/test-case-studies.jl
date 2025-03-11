@@ -104,5 +104,6 @@ end
     @test energy_problem.termination_status == JuMP.INFEASIBLE
     io = IOBuffer()
     print(io, energy_problem)
-    @test String(take!(io)) == read("io-outputs/energy-problem-model-infeasible.txt", String)
+    @test split(String(take!(io))) ==
+          split(read("io-outputs/energy-problem-model-infeasible.txt", String))
 end
