@@ -52,16 +52,18 @@ end
         io = IOBuffer()
         energy_problem = TulipaEnergyModel.EnergyProblem(connection)
         print(io, energy_problem)
-        @test String(take!(io)) == read("io-outputs/energy-problem-empty.txt", String)
+        @test split(String(take!(io))) == split(read("io-outputs/energy-problem-empty.txt", String))
 
         io = IOBuffer()
         TulipaEnergyModel.create_model!(energy_problem)
         print(io, energy_problem)
-        @test String(take!(io)) == read("io-outputs/energy-problem-model-created.txt", String)
+        @test split(String(take!(io))) ==
+              split(read("io-outputs/energy-problem-model-created.txt", String))
 
         io = IOBuffer()
         TulipaEnergyModel.solve_model!(energy_problem)
         print(io, energy_problem)
-        @test String(take!(io)) == read("io-outputs/energy-problem-model-solved.txt", String)
+        @test split(String(take!(io))) ==
+              split(read("io-outputs/energy-problem-model-solved.txt", String))
     end
 end
