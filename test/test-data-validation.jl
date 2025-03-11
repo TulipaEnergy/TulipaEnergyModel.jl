@@ -1,5 +1,11 @@
 const TEM = TulipaEnergyModel
 
+@testset "Test DataValidationException print" begin
+    # Mostly to appease codecov
+    error_msg = "DataValidationException: The following issues were found in the data:\n- example"
+    @test_throws error_msg throw(TEM.DataValidationException(["example"]))
+end
+
 @testset "Test duplicate rows" begin
     @testset "Using fake data" begin
         bad_data = DataFrame(
