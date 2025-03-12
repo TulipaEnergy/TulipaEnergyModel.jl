@@ -15,17 +15,23 @@ end
 
 const OUTPUT_FOLDER_BM = mktempdir()
 
+SUITE["energy_problem"] = BenchmarkGroup()
+SUITE["energy_problem"]["input_and_constructor"] = @benchmarkable begin
+    connection = DBInterface.connect(DuckDB.DB)
+    TulipaIO.read_csv_folder(
+        connection,
+        $INPUT_FOLDER_BM;
+        schemas = $(TulipaEnergyModel.schema_per_table_name),
+    )
+    EnergyProblem(connection)
+end samples = 3 evals = 1 seconds = 86400
+
 connection = DBInterface.connect(DuckDB.DB)
 TulipaIO.read_csv_folder(
     connection,
     INPUT_FOLDER_BM;
     schemas = TulipaEnergyModel.schema_per_table_name,
 )
-
-SUITE["energy_problem"] = BenchmarkGroup()
-SUITE["energy_problem"]["input_and_constructor"] = @benchmarkable begin
-    EnergyProblem($connection)
-end samples = 3 evals = 1 seconds = 86400
 energy_problem = EnergyProblem(connection)
 
 SUITE["energy_problem"]["create_model"] = @benchmarkable begin
