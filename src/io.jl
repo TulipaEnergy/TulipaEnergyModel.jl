@@ -5,7 +5,7 @@ export create_internal_tables!, export_solution_to_csv_files
 
 Creates internal tables.
 """
-function create_internal_tables!(connection)
+function create_internal_tables!(connection; skip_validation = false)
 
     # Create tables that are allowed to be missing
     tables_allowed_to_be_missing = [
@@ -18,6 +18,11 @@ function create_internal_tables!(connection)
     ]
     for table in tables_allowed_to_be_missing
         _create_empty_unless_exists(connection, table)
+    end
+
+    if !skip_validation
+        # Data validation - ensure that data is correct before
+        @timeit to "validate data" validate_data!(connection)
     end
 
     @timeit to "create_unrolled_partition_tables" create_unrolled_partition_tables!(connection)

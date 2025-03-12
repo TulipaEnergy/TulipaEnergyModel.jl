@@ -33,6 +33,7 @@ include("structures.jl")
 # Data
 include("input-schemas.jl")
 include("io.jl")
+include("data-validation.jl")
 include("data-preparation.jl")
 
 # Data massage and model preparation
