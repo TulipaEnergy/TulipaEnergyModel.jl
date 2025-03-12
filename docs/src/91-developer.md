@@ -424,6 +424,65 @@ If you want to manually run the benchmarks, you can do the following:
   results = run(SUITE, verbose=true)
   ```
 
+### Manually running the benchmark across versions
+
+We use the package [AirspeedVelocity.jl](https://github.com/MilesCranmer/AirspeedVelocity.jl) to run the benchmarks in the CI, but it can also be used to compare explicitly named versions manually.
+
+1. Run the following to install AirspeedVelocity's commands to your Julia `bin` folder (`~/.julia/bin` on MacOS and Linux)
+
+   ```bash
+   julia -e 'using Pkg; Pkg.activate(temp=true); Pkg.add("AirspeedVelocity")'
+   ```
+
+1. Check that `benchpkg` was installed:
+
+   ```bash
+   benchpkg --version
+   ```
+
+   If if can't be found, then it is possible that your Julia `bin` folder is not in the `PATH`. After fixing this, try again.
+
+1. Then, run `benchpkg` with `--rev` to list the versions to be tested and `--bench-on` to indicate with script to use (if necessary). For instance:
+
+   ```bash
+   benchpkg TulipaEnergyModel --rev=v0.12.0,main --bench-on=main
+   ```
+
+   It is possible to use `dirty` as a `rev` value, to get the local modification. Alternatively, list tags or branches to compare.
+   The output should look like
+
+   ```plaintext
+   |                                      | v0.12.0       | main            | v0.12.0/main |
+   |:-------------------------------------|:-------------:|:---------------:|:------------:|
+   | energy_problem/create_model          | 25.1 ± 1.2 s  | 19.7 ± 1.1 s    | 1.27         |
+   | energy_problem/input_and_constructor | 11.2 ± 0.15 s | 8.57 ± 0.064 s  | 1.3          |
+   | time_to_load                         | 1.7 ± 0.022 s | 1.73 ± 0.0055 s | 0.979        |
+   ```
+
+   After all logging.
+
+1. When this is done, you can print just the table afterwards using `benchmarktable`:
+
+   ```bash
+   benchpkgtable TulipaEnergyModel --rev=v0.12.0,main
+   ...
+   |                                      | v0.12.0       | main            | v0.12.0/main |
+   |:-------------------------------------|:-------------:|:---------------:|:------------:|
+   | energy_problem/create_model          | 25.1 ± 1.2 s  | 19.7 ± 1.1 s    | 1.27         |
+   | energy_problem/input_and_constructor | 11.2 ± 0.15 s | 8.57 ± 0.064 s  | 1.3          |
+   | time_to_load                         | 1.7 ± 0.022 s | 1.73 ± 0.0055 s | 0.979        |
+   ```
+
+1. It is also possible to generate a plot, using `benchpkgplot`:
+
+   ```bash
+   benchpkgplot TulipaEnergyModel --rev=v0.12.0,main --format=jpeg
+   ```
+
+   Different formats can be used. Here is the output:
+
+   ![Plot of benchmark made with benchpkgplot](./images/plot_TulipaEnergyModel.jpeg)
+
 ### Profiling
 
 To profile the code in a more manual way, here are some tips:
