@@ -1,9 +1,9 @@
 export add_group_constraints!
 
 """
-    add_group_constraints!(connection, model, ...)
+    add_group_constraints!(connection, model, variables, constraints)
 
-Adds group constraints for assets that share a common limits or bounds
+Adds group constraints for assets that share a common limits or bounds.
 """
 function add_group_constraints!(connection, model, variables, constraints)
     assets_investment = variables[:assets_investment].container
