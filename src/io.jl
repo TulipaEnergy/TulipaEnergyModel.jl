@@ -5,7 +5,7 @@ export create_internal_tables!, export_solution_to_csv_files
 
 Creates internal tables.
 """
-function create_internal_tables!(connection, skip_validation = false)
+function create_internal_tables!(connection; skip_validation = false)
 
     # Create tables that are allowed to be missing
     tables_allowed_to_be_missing = [
