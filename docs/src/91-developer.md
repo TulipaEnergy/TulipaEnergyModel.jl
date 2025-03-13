@@ -448,8 +448,7 @@ We use the package [AirspeedVelocity.jl](https://github.com/MilesCranmer/Airspee
    benchpkg TulipaEnergyModel --rev=v0.12.0,main --bench-on=main
    ```
 
-   It is possible to use `dirty` as a `rev` value, to get the local modification. Alternatively, list tags or branches to compare.
-   The output should look like
+   After all logging, the output should look like
 
    ```plaintext
    |                                      | v0.12.0       | main            | v0.12.0/main |
@@ -459,7 +458,18 @@ We use the package [AirspeedVelocity.jl](https://github.com/MilesCranmer/Airspee
    | time_to_load                         | 1.7 ± 0.022 s | 1.73 ± 0.0055 s | 0.979        |
    ```
 
-   After all logging.
+   Be aware that the versions passed in `rev` must be compatible to the benchmark defined at `bench-on`.
+   So, for instance, testing `v0.10.4` above would fail, before the versions are too different.
+
+   If you are working on a local version of `TulipaEnergyModel`, it is possible to test the local modifications.
+   First, make sure that you are at the root of the `TulipaEnergyModel` repo, and then issue
+
+   ```bash
+   benchpkg --rev=<other>,dirty
+   ```
+
+   The `dirty` value refers to the current local modifications.
+   The `<other>` values can be tags or branches to compare.
 
 1. When this is done, you can print just the table afterwards using `benchmarktable`:
 
