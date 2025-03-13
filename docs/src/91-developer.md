@@ -428,7 +428,7 @@ If you want to manually run the benchmarks, you can do the following:
 
 We use the package [AirspeedVelocity.jl](https://github.com/MilesCranmer/AirspeedVelocity.jl) to run the benchmarks in the CI, but it can also be used to compare explicitly named versions manually.
 
-1. Run the following to install AirspeedVelocity's commands to your Julia `bin` folder (`~/.julia/bin` on MacOS and Linux)
+1. Run the following to install AirspeedVelocity's commands to your Julia `bin` folder (`~/.julia/bin` on MacOS and Linux). On Windows, if you are using the default Julia installation, search for `C:/Users/` then the folder of your Windows user and then `.julia/bin`
 
    ```bash
    julia -e 'using Pkg; Pkg.activate(temp=true); Pkg.add("AirspeedVelocity")'
