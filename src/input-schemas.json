@@ -326,6 +326,67 @@
       "unit_of_measure": "CUR/p.u./h"
     }
   },
+  "asset_milestone_simple_investment": {
+    "asset": {
+      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "type": "VARCHAR"
+    },
+    "decommissionable": {
+      "default": false,
+      "description": "Whether the transport asset can be decomission or not.",
+      "type": "BOOLEAN"
+    },
+    "fixed_cost": {
+      "description": "Fixed annual cost for the transport asset capacity.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/MW/year"
+    },
+    "initial_units": {
+      "default": 0,
+      "description": "Number of existing units",
+      "type": "DOUBLE",
+      "unit_of_measure": "number"
+    },
+    "investable": {
+      "default": false,
+      "description": "Whether there is an investment variable created for the asset or not.",
+      "type": "BOOLEAN"
+    },
+    "investment_cost": {
+      "description": "Investment cost for the asset capacity.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/MW"
+    },
+    "investment_cost_storage_energy": {
+      "description": "Investment cost for the asset energy storage capacity.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/MWh"
+    },
+    "investment_limit": {
+      "description": "Maximum capacity for the asset investment. If the initial value is null, empty, or missing, it will be no limit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "MWh"
+    },
+    "investment_limit_storage_energy": {
+      "description": "Maximum capacity for the asset storage investment. If the initial value is null, empty, or missing, it will be no limit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "MWh"
+    },
+    "milestone_year": {
+      "default": 2000,
+      "description": "Year of investment and operation decisions in the optimization.",
+      "type": "INTEGER"
+    },
+    "units_on_cost": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Cost of keeping unit online for one hour or the objective function coefficient on `units_on` variable. e.g., no_load cost or idling cost",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/p.u./h"
+    }
+  },
   "assets_profiles": {
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
@@ -334,6 +395,34 @@
     "commission_year": {
       "default": 2000,
       "description": "Year of commissioning",
+      "type": "INTEGER"
+    },
+    "profile_name": {
+      "description": "Name of profile, used to determine data inside the DuckDB table",
+      "type": "VARCHAR"
+    },
+    "profile_type": {
+      "constraints": {
+        "oneOf": [
+          "availability",
+          "demand",
+          "inflows",
+          "max_storage_level",
+          "min_storage_level"
+        ]
+      },
+      "description": "Type of profile, used to determine DuckDB table with source profile",
+      "type": "VARCHAR"
+    }
+  },
+  "assets_profiles_simple_investment": {
+    "asset": {
+      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "type": "VARCHAR"
+    },
+    "milestone_year": {
+      "default": 2000,
+      "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
     "profile_name": {

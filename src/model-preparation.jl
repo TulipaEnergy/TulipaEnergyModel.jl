@@ -507,6 +507,7 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         :capacity_incoming_non_investable_storage_with_binary,
         :capacity_incoming_investable_storage_with_binary,
         :capacity_outgoing,
+        :capacity_outgoing_simple_investment,
         :capacity_outgoing_non_investable_storage_with_binary,
         :capacity_outgoing_investable_storage_with_binary,
     )
