@@ -141,6 +141,24 @@ drop sequence id
 create sequence id start 1
 ;
 
+create table cons_capacity_outgoing_simple_investment as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method = 'simple'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 create table cons_capacity_outgoing_non_investable_storage_with_binary as
 select
     nextval('id') as id,

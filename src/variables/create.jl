@@ -15,6 +15,7 @@ function compute_variables_indices(connection)
             :storage_level_over_clustered_year,
             :assets_investment,
             :assets_decommission,
+            :assets_decommission_simple_investment,
             :flows_investment,
             :flows_decommission,
             :assets_investment_energy,

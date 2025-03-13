@@ -1,4 +1,6 @@
 function create_multi_year_expressions!(connection, model, variables, expressions)
+    # ------------------------- Compact investmnet -------------------------
+    #
     # The variable assets_decommission is defined for (a, my, cy)
     # The capacity expression that we need to compute is
     #
@@ -29,6 +31,36 @@ function create_multi_year_expressions!(connection, model, variables, expression
     #
     # Assumption:
     # - asset_both exists only for (a,my,cy) where technical lifetime was already taken into account
+    #
+    # ------------------------- Simple investmnet -------------------------
+    #
+    # The variable assets_decommission_simple_method is defined for (a, my)
+    # The capacity expression that we need to compute is
+    #
+    #   profile_times_capacity[a, my] = ∑_cy agg(
+    #     profile[
+    #       profile_name[a, my, 'availability'],
+    #       my,
+    #       rp
+    #     ],
+    #     time_block
+    #   ) * available_units[a, my]
+    #
+    # where
+    #
+    # - a=asset, my=milestone_year, rp=rep_period
+    # - profile_name[a, my, 'availability']: name of profile for (a, my, 'availability')
+    # - profile[p_name, my, rp]: profile vector named `p_name` for my and rp (or some default value, ignored here)
+    # - agg(p_vector, time_block): some aggregation of vector p_vector over time_block
+    #
+    # and
+    #
+    #   available_units[a, my] =
+    #       initial_units[a, my] +
+    #       ∑_{past_my: past_my ≤ my} investment_units[a, past_my]* -
+    #       ∑_{past_my: past_my ≤ my} assets_decommission[a, past_my]
+    #
+    # The investment_units[a, past_my] are only added if past_my + technical_lifetime - 1 ≥ milestone_year
 
     _create_multi_year_expressions_indices!(connection, expressions)
 
@@ -55,6 +87,40 @@ function create_multi_year_expressions!(connection, model, variables, expression
                     @expression(
                         model,
                         row.initial_units + var_inv[row.var_investment_id] -
+                        sum(var_dec[idx] for idx in row.var_decommission_indices)
+                    )
+                end for row in indices
+            ],
+        )
+    end
+
+    let table_name = :available_asset_units_simple_investment, expr = expressions[table_name]
+        var_inv = variables[:assets_investment].container
+        var_dec = variables[:assets_decommission_simple_investment].container
+
+        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY id")
+        attach_expression!(
+            expr,
+            :assets,
+            JuMP.AffExpr[
+                if ismissing(row.var_decommission_indices) && ismissing(row.var_investment_indices)
+                    @expression(model, row.initial_units)
+                elseif ismissing(row.var_investment_indices)
+                    @expression(
+                        model,
+                        row.initial_units -
+                        sum(var_dec[idx] for idx in row.var_decommission_indices)
+                    )
+                elseif ismissing(row.var_decommission_indices)
+                    @expression(
+                        model,
+                        row.initial_units + sum(var_inv[idx] for idx in row.var_investment_indices)
+                    )
+                else
+                    @expression(
+                        model,
+                        row.initial_units +
+                        sum(var_inv[idx] for idx in row.var_investment_indices) -
                         sum(var_dec[idx] for idx in row.var_decommission_indices)
                     )
                 end for row in indices
@@ -188,6 +254,38 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
+        CREATE OR REPLACE TABLE expr_available_asset_units_simple_investment AS
+        SELECT
+            nextval('id') AS id,
+            asset_milestone_simple_investment.asset AS asset,
+            asset_milestone_simple_investment.milestone_year AS milestone_year,
+            ANY_VALUE(asset_milestone_simple_investment.initial_units) AS initial_units,
+        ARRAY_AGG(DISTINCT var_inv.id) FILTER (
+            WHERE
+                var_inv.milestone_year +
+                    (SELECT
+                        ANY_VALUE(a.technical_lifetime)
+                    FROM asset as a
+                    WHERE a.asset = asset_milestone_simple_investment.asset
+                    )
+              - 1 >= asset_milestone_simple_investment.milestone_year
+            ) AS var_investment_indices,
+            ARRAY_AGG(DISTINCT var_dec.id) AS var_decommission_indices,
+        FROM asset_milestone_simple_investment
+        LEFT JOIN var_assets_decommission_simple_investment AS var_dec
+            ON asset_milestone_simple_investment.asset = var_dec.asset
+            AND asset_milestone_simple_investment.milestone_year >= var_dec.milestone_year
+        LEFT JOIN var_assets_investment AS var_inv
+            ON asset_milestone_simple_investment.asset = var_inv.asset
+            AND asset_milestone_simple_investment.milestone_year >= var_inv.milestone_year
+        GROUP BY asset_milestone_simple_investment.asset, asset_milestone_simple_investment.milestone_year
+        ",
+    )
+
+    DuckDB.query(
+        connection,
+        "
+        CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE expr_available_energy_units AS
         SELECT
             nextval('id') AS id,
@@ -243,7 +341,12 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         ",
     )
 
-    for expr_name in (:available_asset_units, :available_energy_units, :available_flow_units)
+    for expr_name in (
+        :available_asset_units,
+        :available_energy_units,
+        :available_flow_units,
+        :available_asset_units_simple_investment,
+    )
         expressions[expr_name] = TulipaExpression(connection, "expr_$expr_name")
     end
 

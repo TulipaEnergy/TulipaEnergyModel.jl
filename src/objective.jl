@@ -4,6 +4,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     flows_investment = variables[:flows_investment]
 
     expr_available_asset_units = expressions[:available_asset_units]
+    expr_available_asset_units_simple_investment =
+        expressions[:available_asset_units_simple_investment]
     expr_available_energy_units = expressions[:available_energy_units]
     expr_available_flow_units = expressions[:available_flow_units]
 
@@ -68,6 +70,34 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         sum(
             row.cost * expr_avail for
             (row, expr_avail) in zip(indices, expr_available_asset_units.expressions[:assets])
+        )
+    )
+
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            expr.id,
+            t_objective_assets_simple_investment.weight_for_operation_discounts
+              * asset_milestone_simple_investment.fixed_cost
+                * t_objective_assets_simple_investment.capacity
+                AS cost,
+        FROM expr_available_asset_units_simple_investment AS expr
+        LEFT JOIN asset_milestone_simple_investment
+            ON expr.asset = asset_milestone_simple_investment.asset
+            AND expr.milestone_year = asset_milestone_simple_investment.milestone_year
+        LEFT JOIN t_objective_assets_simple_investment
+            ON expr.asset = t_objective_assets_simple_investment.asset
+            AND expr.milestone_year = t_objective_assets_simple_investment.milestone_year
+        ORDER BY
+            expr.id
+        ",
+    )
+
+    assets_fixed_cost_simple_investment = @expression(
+        model,
+        sum(
+            row.cost * expr_avail for (row, expr_avail) in
+            zip(indices, expr_available_asset_units_simple_investment.expressions[:assets])
         )
     )
 
@@ -266,6 +296,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         Min,
         assets_investment_cost +
         assets_fixed_cost +
+        assets_fixed_cost_simple_investment +
         storage_assets_energy_investment_cost +
         storage_assets_energy_fixed_cost +
         flows_investment_cost +
@@ -316,6 +347,46 @@ function _create_objective_auxiliary_table(connection, constants)
             AND asset_milestone.milestone_year = asset_commission.commission_year
         LEFT JOIN asset
             ON asset.asset = asset_commission.asset
+        ",
+    )
+
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TEMP TABLE t_objective_assets_simple_investment AS
+        SELECT
+            -- keys
+            asset_milestone_simple_investment.asset,
+            asset_milestone_simple_investment.milestone_year,
+            -- copied over
+            asset_milestone_simple_investment.investment_cost,
+            asset.capacity,
+            asset_milestone_simple_investment.investment_cost_storage_energy,
+            asset.capacity_storage_energy,
+            asset_milestone_simple_investment.units_on_cost,
+            -- computed
+            asset.discount_rate / (
+                (1 + asset.discount_rate) *
+                (1 - 1 / ((1 + asset.discount_rate) ** asset.economic_lifetime))
+            ) * asset_milestone_simple_investment.investment_cost AS annualized_cost,
+            IF(
+                asset_milestone_simple_investment.milestone_year + asset.economic_lifetime > $(constants.end_of_horizon) + 1,
+                -annualized_cost * (
+                    (1 / (1 + asset.discount_rate))^(
+                        asset_milestone_simple_investment.milestone_year + asset.economic_lifetime - $(constants.end_of_horizon) - 1
+                    ) - 1
+                ) / asset.discount_rate,
+                0.0
+            ) AS salvage_value,
+            1 / (1 + $(constants.social_rate))^(asset_milestone_simple_investment.milestone_year - $(constants.discount_year)) AS operation_discount,
+            operation_discount * (1 - salvage_value / asset_milestone_simple_investment.investment_cost) AS weight_for_asset_investment_discount,
+            COALESCE(
+                lead(asset_milestone_simple_investment.milestone_year) OVER (PARTITION BY asset_milestone_simple_investment.asset ORDER BY asset_milestone_simple_investment.milestone_year) - asset_milestone_simple_investment.milestone_year,
+                1,
+            ) AS years_until_next_milestone_year,
+            operation_discount * years_until_next_milestone_year AS weight_for_operation_discounts,
+        FROM asset_milestone_simple_investment
+        LEFT JOIN asset
+            ON asset.asset = asset_milestone_simple_investment.asset
         ",
     )
 

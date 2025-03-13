@@ -1,0 +1,5 @@
+asset,milestone_year,investable,decommissionable,initial_units,investment_cost,investment_cost_storage_energy,investment_limit,investment_limit_storage_energy,units_on_cost,fixed_cost
+solar,2030,true,true,10,51,0,,,0,51
+solar,2050,true,true,0,52,0,,,0,52
+ccgt,2030,true,true,1,42,0,,,0,32
+ccgt,2050,false,true,1,43,0,,,0,33

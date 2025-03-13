@@ -206,6 +206,28 @@ drop sequence id
 create sequence id start 1
 ;
 
+create table var_assets_decommission_simple_investment as
+select
+    nextval('id') as id,
+    asset_milestone_simple_investment.asset,
+    asset_milestone_simple_investment.milestone_year,
+    asset_milestone_simple_investment.decommissionable,
+    asset_milestone_simple_investment.initial_units,
+    asset.investment_integer,
+from
+    asset_milestone_simple_investment
+    left join asset on asset.asset = asset_milestone_simple_investment.asset
+where
+    asset_milestone_simple_investment.decommissionable
+    and asset.investment_method = 'simple'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 create table var_flows_decommission as
 select
     nextval('id') as id,
