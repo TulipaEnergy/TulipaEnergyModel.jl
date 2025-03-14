@@ -4,7 +4,7 @@ This section shows the mathematical formulation of _TulipaEnergyModel.jl_, assum
 
 ```@contents
 Pages = ["40-formulation.md"]
-Depth = 3
+Depth = [2,3]
 ```
 
 ## [Sets](@id math-sets)
