@@ -13,6 +13,7 @@ function compute_constraints_indices(connection)
             :capacity_incoming_non_investable_storage_with_binary,
             :capacity_incoming_investable_storage_with_binary,
             :capacity_outgoing,
+            :capacity_outgoing_simple_investment,
             :capacity_outgoing_non_investable_storage_with_binary,
             :capacity_outgoing_investable_storage_with_binary,
             :limit_units_on,

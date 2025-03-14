@@ -21,6 +21,7 @@ function add_storage_expressions!(connection, model, expressions)
             AND asset_milestone.milestone_year = expr_avail.milestone_year
         WHERE
             asset.type = 'storage'
+            AND asset.investment_method = 'compact'
         GROUP BY
             asset_milestone.asset,
             asset_milestone.milestone_year

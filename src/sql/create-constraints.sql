@@ -70,6 +70,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('storage')
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id
@@ -91,6 +92,7 @@ where
     asset.type in ('storage')
     and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
     and not asset_milestone.investable
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id
@@ -112,6 +114,7 @@ where
     asset.type in ('storage')
     and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
     and asset_milestone.investable
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id
@@ -129,6 +132,25 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method = 'compact'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+create table cons_capacity_outgoing_simple_investment as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method = 'simple'
 ;
 
 drop sequence id
@@ -150,6 +172,7 @@ where
     asset.type in ('storage')
     and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
     and not asset_milestone.investable
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id
@@ -171,6 +194,7 @@ where
     asset.type in ('storage')
     and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
     and asset_milestone.investable
+    and asset.investment_method = 'compact'
 ;
 
 create table cons_limit_units_on as

@@ -197,6 +197,29 @@ from
 where
     asset_both.decommissionable
     and asset_both.milestone_year != asset_both.commission_year
+    and asset.investment_method = 'compact'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+create table var_assets_decommission_simple_investment as
+select
+    nextval('id') as id,
+    asset_milestone_simple_investment.asset,
+    asset_milestone_simple_investment.milestone_year,
+    asset_milestone_simple_investment.decommissionable,
+    asset_milestone_simple_investment.initial_units,
+    asset.investment_integer,
+from
+    asset_milestone_simple_investment
+    left join asset on asset.asset = asset_milestone_simple_investment.asset
+where
+    asset_milestone_simple_investment.decommissionable
+    and asset.investment_method = 'simple'
 ;
 
 drop sequence id
@@ -246,6 +269,7 @@ where
     asset.storage_method_energy = true
     and asset_milestone.investable = true
     and asset.type = 'storage'
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id
@@ -269,6 +293,7 @@ where
     and asset.type = 'storage'
     and asset_both.decommissionable
     and asset_both.commission_year != asset_both.milestone_year
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id
