@@ -33,7 +33,7 @@ For modellers, here is a brief summary of Tulipa's scope and features. More deta
 - Energy carriers: Any (All - electricity, gas, H2, heat, etc)
 - Timespan: Any (Usually Yearly or Multi-year)
 - Time resolution: [Fully-flexible](@ref flex-time-res) - even mixing different resolutions (1-hr, 2-hr, 3-hr, etc) within a scenario
-- Temporal aggregation: Time series aggregation using blended representative periods through [TulipaClustering](@url https://github.com/TulipaEnergy/TulipaClustering.jl)
+- Temporal aggregation: Time series aggregation using blended representative periods through [TulipaClustering](https://github.com/TulipaEnergy/TulipaClustering.jl)
 - Storage representation: [Short- and Long-term storage](@ref storage-modeling) constraints, even while using representative periods
 
 ## [Bug reports and discussions](@id bugs-and-discussions)
