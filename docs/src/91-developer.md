@@ -37,6 +37,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
    ```
 
    If you prefer to create a local environment with it, do the following:
+
    ```bash
    python -m venv env
 
