@@ -84,3 +84,22 @@ end
         ]
     end
 end
+
+@testset "Check only transport flows can be investable" begin
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Tiny"))
+    # Create all four combinations of is_transport and investable
+    # First set ccgt and ocgt to transport = TRUE
+    DuckDB.query(
+        connection,
+        "UPDATE flow SET is_transport = TRUE WHERE from_asset in ('ccgt', 'ocgt')",
+    )
+    # Second set investable to wind and ocgt
+    DuckDB.query(
+        connection,
+        "UPDATE flow_milestone SET investable = TRUE WHERE from_asset in ('wind','ocgt')",
+    )
+    @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
+    error_messages = TEM._validate_only_transport_flows_are_investable!(connection)
+    @test error_messages == ["Flow ('wind', 'demand') is investable but is not a transport flow"]
+end

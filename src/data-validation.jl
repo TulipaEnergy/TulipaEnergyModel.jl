@@ -28,6 +28,10 @@ function validate_data!(connection)
         error_messages,
         _validate_schema_one_of_constraints!(connection),
     )
+    @timeit to "only transport flows are investable" append!(
+        error_messages,
+        _validate_only_transport_flows_are_investable!(connection),
+    )
 
     if length(error_messages) > 0
         throw(DataValidationException(error_messages))
@@ -99,6 +103,29 @@ function _validate_schema_one_of_constraints!(connection)
                 )
             end
         end
+    end
+
+    return error_messages
+end
+
+function _validate_only_transport_flows_are_investable!(connection)
+    error_messages = String[]
+
+    for row in DuckDB.query(
+        connection,
+        "SELECT flow.from_asset, flow.to_asset,
+        FROM flow
+        LEFT JOIN flow_milestone
+            ON flow.from_asset = flow_milestone.from_asset
+            AND flow.to_asset = flow_milestone.to_asset
+        WHERE flow.is_transport = FALSE
+            AND flow_milestone.investable
+        ",
+    )
+        push!(
+            error_messages,
+            "Flow ('$(row.from_asset)', '$(row.to_asset)') is investable but is not a transport flow",
+        )
     end
 
     return error_messages
