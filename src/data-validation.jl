@@ -23,15 +23,14 @@ Raises an error if the data is not valid.
 """
 function validate_data!(connection)
     error_messages = String[]
-    @timeit to "no duplicate rows" append!(error_messages, _validate_no_duplicate_rows!(connection))
-    @timeit to "valid schema's oneOf constraints" append!(
-        error_messages,
-        _validate_schema_one_of_constraints!(connection),
+
+    for (log_msg, validation_function) in (
+        ("no duplicate rows", _validate_no_duplicate_rows!),
+        ("valid schema's oneOf constraints", _validate_schema_one_of_constraints!),
+        ("only transport flows are investable", _validate_only_transport_flows_are_investable!),
     )
-    @timeit to "only transport flows are investable" append!(
-        error_messages,
-        _validate_only_transport_flows_are_investable!(connection),
-    )
+        @timeit to "$log_msg" append!(error_messages, validation_function(connection))
+    end
 
     if length(error_messages) > 0
         throw(DataValidationException(error_messages))
