@@ -36,12 +36,17 @@ To contribute to TulipaEnergyModel.jl, you need the following:
    pip install --user pre-commit
    ```
 
-   If you prefer to create a local environment with it, do the following (on Windows):
-
+   If you prefer to create a local environment with it, do the following:
    ```bash
    python -m venv env
+
+   # Windows
    source env/Scripts/activate # in bash
    env/Scripts/Activate.ps1 # in powershell
+
+   # Mac or Linux
+   . env/bin/activate
+
    pip install --upgrade pip setuptools pre-commit
    ```
 

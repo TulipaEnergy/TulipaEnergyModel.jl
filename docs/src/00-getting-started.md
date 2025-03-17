@@ -39,12 +39,6 @@ Tulipa relies on [DuckDB](https://duckdb.org/) for data-handling:
 pkg> add DuckDB
 ```
 
-You will also need a solver (optimizer), for now add the open-source solver [HiGHS](https://highs.dev/):
-
-```julia-pkg
-pkg> add HiGHS
-```
-
 - Press `backspace` to return to Julia mode
 
 ## Using packages in your project
