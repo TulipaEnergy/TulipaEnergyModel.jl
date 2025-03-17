@@ -24,6 +24,10 @@ Raises an error if the data is not valid.
 function validate_data!(connection)
     error_messages = String[]
     @timeit to "no duplicate rows" append!(error_messages, _validate_no_duplicate_rows!(connection))
+    @timeit to "valid schema's oneOf constraints" append!(
+        error_messages,
+        _validate_schema_one_of_constraints!(connection),
+    )
 
     if length(error_messages) > 0
         throw(DataValidationException(error_messages))
@@ -77,4 +81,25 @@ function _validate_no_duplicate_rows!(connection, table, primary_keys)
     end
 
     return duplicates
+end
+
+function _validate_schema_one_of_constraints!(connection)
+    error_messages = String[]
+    for (table_name, table) in TulipaEnergyModel.schema, (col, attr) in table
+        if haskey(attr, "constraints") && haskey(attr["constraints"], "oneOf")
+            valid_types = attr["constraints"]["oneOf"]
+            valid_types_string = join(["'$s'" for s in valid_types], ", ")
+            for row in DuckDB.query(
+                connection,
+                "SELECT $col FROM $table_name WHERE $col NOT IN ($valid_types_string)",
+            )
+                push!(
+                    error_messages,
+                    "Table '$table_name' has bad value for column '$col': '$(row[1])'",
+                )
+            end
+        end
+    end
+
+    return error_messages
 end
