@@ -44,7 +44,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
    source env/Scripts/activate # in bash
    env/Scripts/Activate.ps1 # in powershell
 
-   # Mac or Linux
+   # Linux or macOS
    . env/bin/activate
 
    pip install --upgrade pip setuptools pre-commit
