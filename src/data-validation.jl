@@ -28,6 +28,7 @@ function validate_data!(connection)
         ("no duplicate rows", _validate_no_duplicate_rows!),
         ("valid schema's oneOf constraints", _validate_schema_one_of_constraints!),
         ("only transport flows are investable", _validate_only_transport_flows_are_investable!),
+        ("group consistency between tables", _validate_group_consistency!),
     )
         @timeit to "$log_msg" append!(error_messages, validation_function(connection))
     end
@@ -128,4 +129,36 @@ function _validate_only_transport_flows_are_investable!(connection)
     end
 
     return error_messages
+end
+
+function _validate_foreign_key!(
+    connection,
+    table_name,
+    column::Symbol,
+    foreign_table_name,
+    foreign_key::Symbol;
+    allow_missing = true,
+)
+    error_messages = String[]
+    query = "SELECT main.$column
+        FROM $table_name AS main
+        ANTI JOIN $foreign_table_name AS other
+            ON main.$column = other.$foreign_key "
+
+    if allow_missing
+        query *= "WHERE main.$column IS NOT NULL"
+    end
+
+    for row in DuckDB.query(connection, query)
+        push!(
+            error_messages,
+            "Table '$table_name' column '$column' has invalid value '$(row[1])'. Valid values should be among column '$foreign_key' of '$foreign_table_name'",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_group_consistency!(connection)
+    return _validate_foreign_key!(connection, "asset", :group, "group_asset", :name)
 end

@@ -23,8 +23,7 @@ end
     end
 
     @testset "Duplicating rows of Tiny data" begin
-        connection = DBInterface.connect(DuckDB.DB)
-        _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Tiny"))
+        connection = _tiny_fixture()
         # Duplicating rows in these specific tables
         for table in ("asset", "asset_both", "flow_both")
             DuckDB.query(connection, "INSERT INTO $table (FROM $table ORDER BY RANDOM() LIMIT 1)")
@@ -41,8 +40,7 @@ end
 
 @testset "Check Schema oneOf constraints" begin
     @testset "Changing Tiny data asset table (bad type)" begin
-        connection = DBInterface.connect(DuckDB.DB)
-        _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Tiny"))
+        connection = _tiny_fixture()
         # Change the table to force an error
         DuckDB.query(connection, "UPDATE asset SET type = 'badtype' WHERE asset = 'ccgt'")
         @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
@@ -51,8 +49,7 @@ end
     end
 
     @testset "Changing Tiny data asset table (bad consumer_balance_sense)" begin
-        connection = DBInterface.connect(DuckDB.DB)
-        _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Tiny"))
+        connection = _tiny_fixture()
         # Change the table to force an error
         DuckDB.query(
             connection,
@@ -107,8 +104,7 @@ end
     end
 
     @testset "Using Tiny data" begin
-        connection = DBInterface.connect(DuckDB.DB)
-        _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Tiny"))
+        connection = _tiny_fixture()
         # Create all four combinations of is_transport and investable
         # First set ccgt and ocgt to transport = TRUE
         DuckDB.query(
@@ -124,5 +120,72 @@ end
         error_messages = TEM._validate_only_transport_flows_are_investable!(connection)
         @test error_messages ==
               ["Flow ('wind', 'demand') is investable but is not a transport flow"]
+    end
+end
+
+@testset "Check that foreign keys are valid" begin
+    @testset "Using fake data" begin
+        # Main table
+        main_table = DataFrame(
+            :asset => ["A1", "A2", "A3"],
+            :cat1 => [missing, "good", "bad"],
+            :cat2 => ["good", missing, "ugly"],
+        )
+        # Foreign table
+        foreign_table = DataFrame(:category => ["good", "ugly"], :value => [1, 2])
+        connection = DBInterface.connect(DuckDB.DB)
+        DuckDB.register_data_frame(connection, main_table, "main_table")
+        DuckDB.register_data_frame(connection, foreign_table, "foreign_table")
+
+        @testset "'bad' value for cat1" begin
+            error_messages = TEM._validate_foreign_key!(
+                connection,
+                "main_table",
+                :cat1,
+                "foreign_table",
+                :category;
+                allow_missing = true,
+            )
+            @test error_messages == [
+                "Table 'main_table' column 'cat1' has invalid value 'bad'. Valid values should be among column 'category' of 'foreign_table'",
+            ]
+        end
+
+        @testset "missing value for cat2" begin
+            error_messages = TEM._validate_foreign_key!(
+                connection,
+                "main_table",
+                :cat2,
+                "foreign_table",
+                :category;
+                allow_missing = true,
+            )
+            @test error_messages == String[]
+
+            error_messages = TEM._validate_foreign_key!(
+                connection,
+                "main_table",
+                :cat2,
+                "foreign_table",
+                :category;
+                allow_missing = false,
+            )
+            @test error_messages == [
+                "Table 'main_table' column 'cat2' has invalid value 'missing'. Valid values should be among column 'category' of 'foreign_table'",
+            ]
+        end
+    end
+
+    @testset "Using Tiny data" begin
+        connection = _tiny_fixture()
+
+        # Doesn't throw
+        TEM.create_internal_tables!(connection)
+
+        # Modify group value to bad value
+        DuckDB.query(connection, "UPDATE asset SET \"group\" = 'bad' WHERE asset = 'ccgt'")
+        @test_throws "Table 'asset' column 'group' has invalid value 'bad'. Valid values should be among column 'name' of 'group_asset'" TEM.create_internal_tables!(
+            connection,
+        )
     end
 end
