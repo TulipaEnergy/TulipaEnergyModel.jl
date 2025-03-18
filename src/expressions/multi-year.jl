@@ -37,7 +37,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
     # The variable assets_decommission_simple_method is defined for (a, my)
     # The capacity expression that we need to compute is
     #
-    #   profile_times_capacity[a, my] = ∑_cy agg(
+    #   profile_times_capacity[a, my] = agg(
     #     profile[
     #       profile_name[a, my, 'availability'],
     #       my,
@@ -260,17 +260,18 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             asset_milestone_simple_investment.asset AS asset,
             asset_milestone_simple_investment.milestone_year AS milestone_year,
             ANY_VALUE(asset_milestone_simple_investment.initial_units) AS initial_units,
-        ARRAY_AGG(DISTINCT var_inv.id) FILTER (
-            WHERE
-                var_inv.milestone_year +
-                    (SELECT
-                        ANY_VALUE(a.technical_lifetime)
-                    FROM asset as a
-                    WHERE a.asset = asset_milestone_simple_investment.asset
+            ARRAY_AGG(DISTINCT var_inv.id) FILTER (
+                WHERE
+                    var_inv.id IS NOT NULL AND
+                    var_inv.milestone_year +
+                    (
+                        SELECT ANY_VALUE(a.technical_lifetime)
+                        FROM asset AS a
+                        WHERE a.asset = asset_milestone_simple_investment.asset
                     )
-              - 1 >= asset_milestone_simple_investment.milestone_year
+                    - 1 >= asset_milestone_simple_investment.milestone_year
             ) AS var_investment_indices,
-            ARRAY_AGG(DISTINCT var_dec.id) AS var_decommission_indices,
+            ARRAY_AGG(DISTINCT var_dec.id) FILTER (var_dec.id IS NOT NULL) AS var_decommission_indices
         FROM asset_milestone_simple_investment
         LEFT JOIN var_assets_decommission_simple_investment AS var_dec
             ON asset_milestone_simple_investment.asset = var_dec.asset

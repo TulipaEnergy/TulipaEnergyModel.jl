@@ -309,7 +309,7 @@ end
 function _create_objective_auxiliary_table(connection, constants)
     DuckDB.execute(
         connection,
-        "CREATE OR REPLACE TEMP TABLE t_objective_assets AS
+        "CREATE OR REPLACE TEMP TABLE t_objective_assets_compact_investment AS
         SELECT
             -- keys
             asset_milestone.asset,
@@ -387,6 +387,17 @@ function _create_objective_auxiliary_table(connection, constants)
         FROM asset_milestone_simple_investment
         LEFT JOIN asset
             ON asset.asset = asset_milestone_simple_investment.asset
+        ",
+    )
+
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TEMP TABLE t_objective_assets AS
+        SELECT *
+        FROM t_objective_assets_compact_investment
+        UNION ALL
+        SELECT *
+        FROM t_objective_assets_simple_investment
         ",
     )
 

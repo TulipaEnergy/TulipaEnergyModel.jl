@@ -341,6 +341,15 @@
       "type": "DOUBLE",
       "unit_of_measure": "CUR/MW/year"
     },
+    "initial_storage_level": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "The initial storage level at the beginning of the optimization. The final storage level needs to be above this initial value. If the initial value is null, empty, or missing, it will be optimized using a cycling constraint that links the last period to the initial period.",
+      "type": "DOUBLE",
+      "unit_of_measure": "MWh"
+    },
     "initial_units": {
       "default": 0,
       "description": "Number of existing units",
@@ -372,10 +381,44 @@
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
     },
+    "max_energy_timeframe_partition": {
+      "constraints": {
+        "minimum": 0
+      },
+      "description": "The maximum amount of energy across the timeframe (e.g., a year) that the asset must produce. If the initial value is null, empty, or missing, it will be no limit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "MWh"
+    },
     "milestone_year": {
       "default": 2000,
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
+    },
+    "min_energy_timeframe_partition": {
+      "constraints": {
+        "minimum": 0
+      },
+      "description": "The minimum amount of energy across the timeframe (e.g., a year) that the asset must produce. If the initial value is null, empty, or missing, it will be no limit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "MWh"
+    },
+    "peak_demand": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Value that multiplies the demand profile time series.",
+      "type": "DOUBLE",
+      "unit_of_measure": "MW"
+    },
+    "storage_inflows": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Value that multiplies the inflow profile time series.",
+      "type": "DOUBLE",
+      "unit_of_measure": "MWh/year"
     },
     "units_on_cost": {
       "constraints": {

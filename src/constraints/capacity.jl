@@ -416,10 +416,10 @@ function _append_capacity_data_to_indices_simple_investment(connection, table_na
             AND cons.year = asset_milestone_simple_investment.milestone_year
         LEFT JOIN expr_available_asset_units_simple_investment AS expr_avail
             ON cons.asset = expr_avail.asset
-        -- Is it possible to not have milestone_year in this table? It is redundant because year is available in profiles_rep_periods, see the try below
             AND cons.year = expr_avail.milestone_year
         LEFT JOIN assets_profiles_simple_investment AS avail_profile
             ON cons.asset = avail_profile.asset
+        -- Is it possible to not have milestone_year in this table? It is redundant because year is available in profiles_rep_periods, see the try below
             AND cons.year = avail_profile.milestone_year
             AND avail_profile.profile_type = 'availability'
         -- Below does not work yet, if it does, milestone_year can be removed from avail_profile
