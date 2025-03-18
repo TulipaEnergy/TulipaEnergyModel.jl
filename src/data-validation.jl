@@ -23,15 +23,15 @@ Raises an error if the data is not valid.
 """
 function validate_data!(connection)
     error_messages = String[]
-    @timeit to "no duplicate rows" append!(error_messages, _validate_no_duplicate_rows!(connection))
-    @timeit to "valid schema's oneOf constraints" append!(
-        error_messages,
-        _validate_schema_one_of_constraints!(connection),
+
+    for (log_msg, validation_function) in (
+        ("no duplicate rows", _validate_no_duplicate_rows!),
+        ("valid schema's oneOf constraints", _validate_schema_one_of_constraints!),
+        ("only transport flows are investable", _validate_only_transport_flows_are_investable!),
+        ("group consistency between tables", _validate_group_consistency!),
     )
-    @timeit to "only transport flows are investable" append!(
-        error_messages,
-        _validate_only_transport_flows_are_investable!(connection),
-    )
+        @timeit to "$log_msg" append!(error_messages, validation_function(connection))
+    end
 
     if length(error_messages) > 0
         throw(DataValidationException(error_messages))
@@ -125,6 +125,63 @@ function _validate_only_transport_flows_are_investable!(connection)
         push!(
             error_messages,
             "Flow ('$(row.from_asset)', '$(row.to_asset)') is investable but is not a transport flow",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_foreign_key!(
+    connection,
+    table_name,
+    column::Symbol,
+    foreign_table_name,
+    foreign_key::Symbol;
+    allow_missing = true,
+)
+    error_messages = String[]
+    query = "SELECT main.$column
+        FROM $table_name AS main
+        ANTI JOIN $foreign_table_name AS other
+            ON main.$column = other.$foreign_key "
+
+    if allow_missing
+        query *= "WHERE main.$column IS NOT NULL"
+    end
+
+    for row in DuckDB.query(connection, query)
+        push!(
+            error_messages,
+            "Table '$table_name' column '$column' has invalid value '$(row[1])'. Valid values should be among column '$foreign_key' of '$foreign_table_name'",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_group_consistency!(connection)
+    error_messages = String[]
+
+    # First, check if the values are valid
+    append!(
+        error_messages,
+        _validate_foreign_key!(connection, "asset", :group, "group_asset", :name),
+    )
+
+    # Second, these that the values are used
+    for row in DuckDB.query(
+        connection,
+        "FROM (
+            SELECT group_asset.name, COUNT(asset.group) AS group_count
+            FROM group_asset
+            LEFT JOIN asset
+                ON asset.group = group_asset.name
+            GROUP BY group_asset.name
+        ) WHERE group_count = 0",
+    )
+        push!(
+            error_messages,
+            "Group '$(row.name)' in 'group_asset' has no members in 'asset', column 'group'",
         )
     end
 
