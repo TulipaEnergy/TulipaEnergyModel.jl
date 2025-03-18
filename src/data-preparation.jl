@@ -276,8 +276,8 @@ function create_merged_tables!(connection)
 
     - `merged_in_flows`: Set `asset = from_asset` and drop `to_asset` from `flow_time_resolution_rep_period`.
     - `merged_out_flows`: Set `asset = to_asset` and drop `from_asset` from `flow_time_resolution_rep_period`.
-    - `merged_all_flows`: Union (i.e., vertically concatenation) of the tables above.
     - `merged_assets_and_out_flows`: Union of `merged_out_flows` and `asset_time_resolution_rep_period`.
+    - `merged_all_flows`: Union (i.e., vertically concatenation) of the tables above.
     - `merged_all`: Union of `merged_all_flows` and `asset_time_resolution_rep_period`.
 
     This function is intended for internal use.
