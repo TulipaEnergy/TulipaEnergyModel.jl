@@ -84,3 +84,45 @@ end
         ]
     end
 end
+
+@testset "Check only transport flows can be investable" begin
+    @testset "Using fake data" begin
+        # Create all four combinations of is_transport and investable
+        flow = DataFrame(
+            :from_asset => ["A1", "A2", "A3", "A4"],
+            :to_asset => ["B", "B", "B", "B"],
+            :is_transport => [false, false, true, true],
+        )
+        flow_milestone = DataFrame(
+            :from_asset => ["A1", "A2", "A3", "A4"],
+            :to_asset => ["B", "B", "B", "B"],
+            :investable => [true, false, true, false],
+        )
+        connection = DBInterface.connect(DuckDB.DB)
+        DuckDB.register_data_frame(connection, flow, "flow")
+        DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
+
+        error_messages = TEM._validate_only_transport_flows_are_investable!(connection)
+        @test error_messages == ["Flow ('A1', 'B') is investable but is not a transport flow"]
+    end
+
+    @testset "Using Tiny data" begin
+        connection = DBInterface.connect(DuckDB.DB)
+        _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Tiny"))
+        # Create all four combinations of is_transport and investable
+        # First set ccgt and ocgt to transport = TRUE
+        DuckDB.query(
+            connection,
+            "UPDATE flow SET is_transport = TRUE WHERE from_asset in ('ccgt', 'ocgt')",
+        )
+        # Second set investable to wind and ocgt
+        DuckDB.query(
+            connection,
+            "UPDATE flow_milestone SET investable = TRUE WHERE from_asset in ('wind','ocgt')",
+        )
+        @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
+        error_messages = TEM._validate_only_transport_flows_are_investable!(connection)
+        @test error_messages ==
+              ["Flow ('wind', 'demand') is investable but is not a transport flow"]
+    end
+end
