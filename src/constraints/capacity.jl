@@ -23,13 +23,14 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         model,
                         row.capacity * sum(
                             begin
-                                availability_agg = _profile_aggregate(
-                                    profiles.rep_period,
-                                    (avail_profile_name, row.year, row.rep_period),
-                                    row.time_block_start:row.time_block_end,
-                                    Statistics.mean,
-                                    1.0,
-                                )
+                                availability_agg =
+                                    _profile_aggregate(
+                                        profiles.rep_period,
+                                        (avail_profile_name, row.year, row.rep_period),
+                                        row.time_block_start:row.time_block_end,
+                                        Statistics.mean,
+                                        1.0,
+                                    ) * (rand() < 1e-2 ? 1.1 : 1.0)
                                 availability_agg * expr_avail[avail_id]
                             end for (avail_profile_name, avail_id) in
                             zip(row.avail_profile_name, row.avail_indices)

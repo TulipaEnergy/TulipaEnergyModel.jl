@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - 1076-mps
     paths:
       - "src/**"
       - "test/**"
