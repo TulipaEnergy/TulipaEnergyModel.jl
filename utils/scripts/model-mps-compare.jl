@@ -15,6 +15,8 @@ root_folder = joinpath(@__DIR__, "..", "..")
 function compare_mps(existing_mps_folder)
     test_inputs = joinpath(root_folder, "test", "inputs")
 
+    exit_flag = 0
+
     for folder in filter(isdir, readdir(test_inputs; join = true))
         existing_mps_file = joinpath(existing_mps_folder, basename(folder) * ".mps")
         @assert isfile(existing_mps_file)
@@ -79,11 +81,25 @@ function compare_mps(existing_mps_folder)
 
         if no_issues
             @info "No difference found"
+        else
+            exit_flag = 1
         end
     end
 
-    return nothing
+    return exit_flag
 end
 
 existing_mps_folder = joinpath(root_folder, "benchmark", "model-mps-folder")
-compare_mps(existing_mps_folder)
+logfile = get(ENV, "TULIPA_COMPARE_MPS_LOGFILE", "")
+
+exit_flag = if logfile == ""
+    compare_mps(existing_mps_folder)
+else
+    open(logfile, "w") do io
+        with_logger(SimpleLogger(io)) do
+            return compare_mps(existing_mps_folder)
+        end
+    end
+end
+
+exit(exit_flag)

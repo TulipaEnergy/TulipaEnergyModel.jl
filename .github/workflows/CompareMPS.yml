@@ -1,0 +1,56 @@
+name: Compare MPS
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "test/**"
+      - "*.toml"
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  # Skip intermediate builds: always.
+  # Cancel intermediate builds: only if it is a pull request build.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+jobs:
+  compare-mps:
+    name: Compare MPS files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: "1"
+      - name: Use Julia cache
+        uses: julia-actions/cache@v2
+      - name: Install the packages
+        uses: julia-actions/julia-buildpkg@v1
+      - name: Run comparison
+        run: julia --project=. utils/scripts/model-mps-compare.jl
+        env:
+          TULIPA_COMPARE_MPS_LOGFILE: "mps-logfile.txt"
+      - name: Create PR body
+        if: failure()
+        run: |
+          echo '## :warning MPS files differ
+
+          <details>
+
+          ```plaintext' > body.md
+          cat mps-logfile.txt >> body.md
+          echo '```
+
+          </details>
+          ' >> body.md
+      - name: Comment on PR with log if failed
+        if: failure()
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: body.md
