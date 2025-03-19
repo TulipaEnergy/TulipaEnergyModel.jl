@@ -1562,7 +1562,7 @@ COLUMNS
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,2,20:20] -100
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,2,21:21] -100
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,2,22:22] -100
-    assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,2,23:23] -110.00000000000001
+    assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,2,23:23] -100
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,2,24:24] -100
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,3,1:1] -100
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,3,2:2] -100
@@ -1660,7 +1660,7 @@ COLUMNS
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,2,8:8] -23.5
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,2,9:9] -23
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,2,10:10] -22.5
-    assets_investment[2030,wind] max_output_flows_limit[wind,2030,2,11:11] -24.750000000000004
+    assets_investment[2030,wind] max_output_flows_limit[wind,2030,2,11:11] -22.5
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,2,12:12] -22.5
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,2,13:13] -21.5
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,2,14:14] -20.5
@@ -1814,14 +1814,14 @@ RHS
     rhs       max_output_flows_limit[ens,2030,2,15:15] 1115
     rhs       max_output_flows_limit[ens,2030,2,16:16] 1115
     rhs       max_output_flows_limit[ens,2030,2,17:17] 1115
-    rhs       max_output_flows_limit[ens,2030,2,18:18] 1226.5
+    rhs       max_output_flows_limit[ens,2030,2,18:18] 1115
     rhs       max_output_flows_limit[ens,2030,2,19:19] 1115
     rhs       max_output_flows_limit[ens,2030,2,20:20] 1115
     rhs       max_output_flows_limit[ens,2030,2,21:21] 1115
     rhs       max_output_flows_limit[ens,2030,2,22:22] 1115
     rhs       max_output_flows_limit[ens,2030,2,23:23] 1115
     rhs       max_output_flows_limit[ens,2030,2,24:24] 1115
-    rhs       max_output_flows_limit[ens,2030,3,1:1] 1226.5
+    rhs       max_output_flows_limit[ens,2030,3,1:1] 1115
     rhs       max_output_flows_limit[ens,2030,3,2:2] 1115
     rhs       max_output_flows_limit[ens,2030,3,3:3] 1115
     rhs       max_output_flows_limit[ens,2030,3,4:4] 1115

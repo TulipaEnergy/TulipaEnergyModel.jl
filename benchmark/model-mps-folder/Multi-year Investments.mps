@@ -5304,7 +5304,7 @@ COLUMNS
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,2,18:18] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,2,19:19] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,2,20:20] -50
-    assets_investment[2030,battery] max_output_flows_limit[battery,2050,2,21:21] -55.00000000000001
+    assets_investment[2030,battery] max_output_flows_limit[battery,2050,2,21:21] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,2,22:22] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,2,23:23] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,2,24:24] -50
@@ -5312,10 +5312,10 @@ COLUMNS
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,2:2] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,3:3] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,4:4] -50
-    assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,5:5] -55.00000000000001
+    assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,5:5] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,6:6] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,7:7] -50
-    assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,8:8] -55.00000000000001
+    assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,8:8] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,9:9] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,10:10] -50
     assets_investment[2030,battery] max_output_flows_limit[battery,2050,3,11:11] -50
@@ -5637,7 +5637,7 @@ COLUMNS
     assets_investment[2030,ccgt] max_output_flows_limit[ccgt,2030,1,13:13] -400
     assets_investment[2030,ccgt] max_output_flows_limit[ccgt,2030,1,14:14] -400
     assets_investment[2030,ccgt] max_output_flows_limit[ccgt,2030,1,15:15] -400
-    assets_investment[2030,ccgt] max_output_flows_limit[ccgt,2030,1,16:16] -440.00000000000006
+    assets_investment[2030,ccgt] max_output_flows_limit[ccgt,2030,1,16:16] -400
     assets_investment[2030,ccgt] max_output_flows_limit[ccgt,2030,1,17:17] -400
     assets_investment[2030,ccgt] max_output_flows_limit[ccgt,2030,1,18:18] -400
     assets_investment[2030,ccgt] max_output_flows_limit[ccgt,2030,1,19:19] -400
@@ -5814,7 +5814,7 @@ COLUMNS
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,2,21:21] -100
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,2,22:22] -100
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,2,23:23] -100
-    assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,2,24:24] -110.00000000000001
+    assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,2,24:24] -100
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,3,1:1] -100
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,3,2:2] -100
     assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,3,3:3] -100
@@ -6003,7 +6003,7 @@ COLUMNS
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,1,14:14] -6
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,1,15:15] -7.000000000000001
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,1,16:16] -7.5
-    assets_investment[2030,wind] max_output_flows_limit[wind,2030,1,17:17] -8.8
+    assets_investment[2030,wind] max_output_flows_limit[wind,2030,1,17:17] -8
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,1,18:18] -8
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,1,19:19] -8
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,1,20:20] -7.5
@@ -6176,7 +6176,7 @@ COLUMNS
     assets_investment[2050,wind] max_output_flows_limit[wind,2050,2,18:18] -17.5
     assets_investment[2050,wind] max_output_flows_limit[wind,2050,2,19:19] -18
     assets_investment[2050,wind] max_output_flows_limit[wind,2050,2,20:20] -19
-    assets_investment[2050,wind] max_output_flows_limit[wind,2050,2,21:21] -22.55
+    assets_investment[2050,wind] max_output_flows_limit[wind,2050,2,21:21] -20.5
     assets_investment[2050,wind] max_output_flows_limit[wind,2050,2,22:22] -21.5
     assets_investment[2050,wind] max_output_flows_limit[wind,2050,2,23:23] -23
     assets_investment[2050,wind] max_output_flows_limit[wind,2050,2,24:24] -24
@@ -6245,7 +6245,7 @@ COLUMNS
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,2,14:14] 50
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,2,15:15] 50
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,2,16:16] 50
-    assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,2,17:17] 55.00000000000001
+    assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,2,17:17] 50
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,2,18:18] 50
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,2,19:19] 50
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,2,20:20] 50
@@ -6255,7 +6255,7 @@ COLUMNS
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,2,24:24] 50
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,3,1:1] 50
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,3,2:2] 50
-    assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,3,3:3] 55.00000000000001
+    assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,3,3:3] 50
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,3,4:4] 50
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,3,5:5] 50
     assets_decommission[battery,2050,2040] max_output_flows_limit[battery,2050,3,6:6] 50
@@ -6540,7 +6540,7 @@ COLUMNS
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,2,18:18] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,2,19:19] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,2,20:20] 50
-    assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,2,21:21] 55.00000000000001
+    assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,2,21:21] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,2,22:22] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,2,23:23] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,2,24:24] 50
@@ -6548,10 +6548,10 @@ COLUMNS
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,2:2] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,3:3] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,4:4] 50
-    assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,5:5] 55.00000000000001
+    assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,5:5] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,6:6] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,7:7] 50
-    assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,8:8] 55.00000000000001
+    assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,8:8] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,9:9] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,10:10] 50
     assets_decommission[battery,2050,2030] max_output_flows_limit[battery,2050,3,11:11] 50
@@ -6692,7 +6692,7 @@ COLUMNS
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,1:1] 400
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,2:2] 400
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,3:3] 400
-    assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,4:4] 440.00000000000006
+    assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,4:4] 400
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,5:5] 400
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,6:6] 400
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,7:7] 400
@@ -6703,7 +6703,7 @@ COLUMNS
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,12:12] 400
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,13:13] 400
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,14:14] 400
-    assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,15:15] 440.00000000000006
+    assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,15:15] 400
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,16:16] 400
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,17:17] 400
     assets_decommission[ccgt,2050,2028] max_output_flows_limit[ccgt,2050,3,18:18] 400
@@ -6720,7 +6720,7 @@ COLUMNS
     assets_decommission[wind,2030,2020] max_output_flows_limit[wind,2030,1,4:4] 5.5
     assets_decommission[wind,2030,2020] max_output_flows_limit[wind,2030,1,5:5] 5
     assets_decommission[wind,2030,2020] max_output_flows_limit[wind,2030,1,6:6] 5
-    assets_decommission[wind,2030,2020] max_output_flows_limit[wind,2030,1,7:7] 5.500000000000001
+    assets_decommission[wind,2030,2020] max_output_flows_limit[wind,2030,1,7:7] 5
     assets_decommission[wind,2030,2020] max_output_flows_limit[wind,2030,1,8:8] 4.5
     assets_decommission[wind,2030,2020] max_output_flows_limit[wind,2030,1,9:9] 4.5
     assets_decommission[wind,2030,2020] max_output_flows_limit[wind,2030,1,10:10] 4.5
@@ -7055,7 +7055,7 @@ COLUMNS
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,1:1] 400
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,2:2] 400
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,3:3] 400
-    assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,4:4] 440.00000000000006
+    assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,4:4] 400
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,5:5] 400
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,6:6] 400
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,7:7] 400
@@ -7066,7 +7066,7 @@ COLUMNS
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,12:12] 400
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,13:13] 400
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,14:14] 400
-    assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,15:15] 440.00000000000006
+    assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,15:15] 400
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,16:16] 400
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,17:17] 400
     assets_decommission[ccgt,2030,2028] max_output_flows_limit[ccgt,2050,3,18:18] 400
@@ -8561,22 +8561,22 @@ RHS
     rhs       max_output_flows_limit[battery,2050,2,14:14] 101
     rhs       max_output_flows_limit[battery,2050,2,15:15] 101
     rhs       max_output_flows_limit[battery,2050,2,16:16] 101
-    rhs       max_output_flows_limit[battery,2050,2,17:17] 111.00000000000001
+    rhs       max_output_flows_limit[battery,2050,2,17:17] 101
     rhs       max_output_flows_limit[battery,2050,2,18:18] 101
     rhs       max_output_flows_limit[battery,2050,2,19:19] 101
     rhs       max_output_flows_limit[battery,2050,2,20:20] 101
-    rhs       max_output_flows_limit[battery,2050,2,21:21] 101.1
+    rhs       max_output_flows_limit[battery,2050,2,21:21] 101
     rhs       max_output_flows_limit[battery,2050,2,22:22] 101
     rhs       max_output_flows_limit[battery,2050,2,23:23] 101
     rhs       max_output_flows_limit[battery,2050,2,24:24] 101
     rhs       max_output_flows_limit[battery,2050,3,1:1] 101
     rhs       max_output_flows_limit[battery,2050,3,2:2] 101
-    rhs       max_output_flows_limit[battery,2050,3,3:3] 111.00000000000001
+    rhs       max_output_flows_limit[battery,2050,3,3:3] 101
     rhs       max_output_flows_limit[battery,2050,3,4:4] 101
-    rhs       max_output_flows_limit[battery,2050,3,5:5] 101.1
+    rhs       max_output_flows_limit[battery,2050,3,5:5] 101
     rhs       max_output_flows_limit[battery,2050,3,6:6] 101
     rhs       max_output_flows_limit[battery,2050,3,7:7] 101
-    rhs       max_output_flows_limit[battery,2050,3,8:8] 101.1
+    rhs       max_output_flows_limit[battery,2050,3,8:8] 101
     rhs       max_output_flows_limit[battery,2050,3,9:9] 101
     rhs       max_output_flows_limit[battery,2050,3,10:10] 101
     rhs       max_output_flows_limit[battery,2050,3,11:11] 101
@@ -8716,7 +8716,7 @@ RHS
     rhs       max_output_flows_limit[ccgt,2050,3,1:1] 400
     rhs       max_output_flows_limit[ccgt,2050,3,2:2] 400
     rhs       max_output_flows_limit[ccgt,2050,3,3:3] 400
-    rhs       max_output_flows_limit[ccgt,2050,3,4:4] 440.00000000000006
+    rhs       max_output_flows_limit[ccgt,2050,3,4:4] 400
     rhs       max_output_flows_limit[ccgt,2050,3,5:5] 400
     rhs       max_output_flows_limit[ccgt,2050,3,6:6] 400
     rhs       max_output_flows_limit[ccgt,2050,3,7:7] 400
@@ -8727,7 +8727,7 @@ RHS
     rhs       max_output_flows_limit[ccgt,2050,3,12:12] 400
     rhs       max_output_flows_limit[ccgt,2050,3,13:13] 400
     rhs       max_output_flows_limit[ccgt,2050,3,14:14] 400
-    rhs       max_output_flows_limit[ccgt,2050,3,15:15] 440.00000000000006
+    rhs       max_output_flows_limit[ccgt,2050,3,15:15] 400
     rhs       max_output_flows_limit[ccgt,2050,3,16:16] 400
     rhs       max_output_flows_limit[ccgt,2050,3,17:17] 400
     rhs       max_output_flows_limit[ccgt,2050,3,18:18] 400
@@ -8815,7 +8815,7 @@ RHS
     rhs       max_output_flows_limit[ens,2050,1,4:4] 1115
     rhs       max_output_flows_limit[ens,2050,1,5:5] 1115
     rhs       max_output_flows_limit[ens,2050,1,6:6] 1115
-    rhs       max_output_flows_limit[ens,2050,1,7:7] 1226.5
+    rhs       max_output_flows_limit[ens,2050,1,7:7] 1115
     rhs       max_output_flows_limit[ens,2050,1,8:8] 1115
     rhs       max_output_flows_limit[ens,2050,1,9:9] 1115
     rhs       max_output_flows_limit[ens,2050,1,10:10] 1115
@@ -9175,7 +9175,7 @@ RHS
     rhs       max_output_flows_limit[wind,2030,1,4:4] 0.49500000000000005
     rhs       max_output_flows_limit[wind,2030,1,5:5] 0.45000000000000007
     rhs       max_output_flows_limit[wind,2030,1,6:6] 0.45000000000000007
-    rhs       max_output_flows_limit[wind,2030,1,7:7] 0.4850000000000001
+    rhs       max_output_flows_limit[wind,2030,1,7:7] 0.45000000000000007
     rhs       max_output_flows_limit[wind,2030,1,8:8] 0.40499999999999997
     rhs       max_output_flows_limit[wind,2030,1,9:9] 0.40499999999999997
     rhs       max_output_flows_limit[wind,2030,1,10:10] 0.40499999999999997
@@ -9185,7 +9185,7 @@ RHS
     rhs       max_output_flows_limit[wind,2030,1,14:14] 0.54
     rhs       max_output_flows_limit[wind,2030,1,15:15] 0.6300000000000001
     rhs       max_output_flows_limit[wind,2030,1,16:16] 0.675
-    rhs       max_output_flows_limit[wind,2030,1,17:17] 0.7360000000000001
+    rhs       max_output_flows_limit[wind,2030,1,17:17] 0.7200000000000001
     rhs       max_output_flows_limit[wind,2030,1,18:18] 0.7200000000000001
     rhs       max_output_flows_limit[wind,2030,1,19:19] 0.7200000000000001
     rhs       max_output_flows_limit[wind,2030,1,20:20] 0.675
