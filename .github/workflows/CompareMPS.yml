@@ -62,6 +62,8 @@ jobs:
           echo '```
 
           </details>
+
+          :robot: This was CompareMPS, we hope you have enjoyed this program.
           ' >> body.md
           echo "::warning title=MPS files are different::$(cat body.md)"
       - name: Comment on PR with log if failed
