@@ -38,7 +38,7 @@ jobs:
       - name: Create PR body
         if: failure()
         run: |
-          echo '## :warning MPS files differ
+          echo '## :warning: MPS files differ
 
           <details>
 
