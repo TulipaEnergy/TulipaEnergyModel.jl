@@ -1312,7 +1312,7 @@ COLUMNS
     assets_investment[2030,solar] max_output_flows_limit[solar,2030,1,15:15] -22
     assets_investment[2030,solar] max_output_flows_limit[solar,2030,1,16:16] -14.499999999999998
     assets_investment[2030,solar] max_output_flows_limit[solar,2030,1,17:17] -6.5
-    assets_investment[2030,solar] max_output_flows_limit[solar,2030,1,18:18] -1.5
+    assets_investment[2030,solar] max_output_flows_limit[solar,2030,1,18:18] -1.6500000000000001
     assets_investment[2030,solar] OBJ 750
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,1,1:1] -16.400000000000002
     assets_investment[2030,wind] max_output_flows_limit[wind,2030,1,2:2] -15.2
@@ -1671,7 +1671,7 @@ RHS
     rhs       max_output_flows_limit[ens,2030,1,20:20] 1150
     rhs       max_output_flows_limit[ens,2030,1,21:21] 1150
     rhs       max_output_flows_limit[ens,2030,1,22:22] 1150
-    rhs       max_output_flows_limit[ens,2030,1,23:23] 1150
+    rhs       max_output_flows_limit[ens,2030,1,23:23] 1265
     rhs       max_output_flows_limit[ens,2030,1,24:24] 1150
     rhs       max_output_flows_limit[gas,2030,1,1:1] 1800
     rhs       max_output_flows_limit[gas,2030,1,2:2] 1800
@@ -1727,7 +1727,7 @@ RHS
     rhs       max_output_flows_limit[smr,2030,1,4:4] 200
     rhs       max_output_flows_limit[smr,2030,1,5:5] 200
     rhs       max_output_flows_limit[smr,2030,1,6:6] 200
-    rhs       max_output_flows_limit[smr,2030,1,7:7] 200
+    rhs       max_output_flows_limit[smr,2030,1,7:7] 220.00000000000003
     rhs       max_output_flows_limit[smr,2030,1,8:8] 200
     rhs       max_output_flows_limit[smr,2030,1,9:9] 200
     rhs       max_output_flows_limit[smr,2030,1,10:10] 200
