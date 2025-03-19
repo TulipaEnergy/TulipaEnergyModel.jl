@@ -40,6 +40,20 @@ jobs:
         run: |
           echo '## :warning: MPS files differ
 
+          ### What to do?
+
+          #### :+1: If this is expected
+
+          Then you just have to update the MPS files running from the root of TulipaEnergyModel.jl:
+
+          ```bash
+          julia --project=. utils/scripts/model-mps-update.jl
+          ```
+
+          #### :-1: This is bad
+
+          Then, review the log below to figure out why the files differ:
+
           <details>
 
           ```plaintext' > body.md
@@ -48,6 +62,7 @@ jobs:
 
           </details>
           ' >> body.md
+          echo "::warning title=MPS files are different::$(cat body.md)"
       - name: Comment on PR with log if failed
         if: failure()
         uses: peter-evans/create-or-update-comment@v4
