@@ -22,6 +22,25 @@ jobs:
     name: Compare MPS files
     runs-on: ubuntu-latest
     steps:
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: This was CompareMPS
+      - name: Comment on PR with CompareMPS
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### :hourglass: Running MPS comparison
+
+            Please wait.
+
+            :robot: This was CompareMPS, we hope you have enjoyed this program.
+          edit-mode: replace
       - name: Clone
         uses: actions/checkout@v4
       - name: Setup Julia
@@ -70,5 +89,18 @@ jobs:
         if: failure()
         uses: peter-evans/create-or-update-comment@v4
         with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
           body-path: body.md
+          edit-mode: replace
+      - name: Comment on PR with CompareMPS
+        if: success()
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### :white_check_mark: MPS files match
+
+            :robot: This was CompareMPS, we hope you have enjoyed this program.
+          edit-mode: replace
