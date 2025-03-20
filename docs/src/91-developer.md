@@ -506,6 +506,82 @@ To profile the code in a more manual way, here are some tips:
 
 See the file <benchmark/profiling.jl> for an example of profiling code.
 
+## Testing the generate MPS files
+
+To make sure that unintended changes don't change the model, we have a workflow that automatically compares the generated MPS files.
+Here is an explanation of how it works, and how to run the same comparison locally.
+
+Before we start, notice that there are files in `benchmark/model-mps-folder` with the `.mps` files for each of the test inputs.
+There are the _existing_ MPS files.
+
+### Updating the MPS files
+
+To update the MPS files, you can simple run a script from the root of `TulipaEnergyModel.jl`:
+
+```bash
+julia --project=. utils/scripts/model-mps-update.jl
+```
+
+If you **know** that your changes will modify the model, then you need to update the MPS files as just showed.
+
+### Comparison of MPS files via script
+
+One quick way to check the difference between the existing MPS files and the new ones is just to run the update, and check the `git diff`.
+However, if you don't want to update, or just want a summary of the changes, you can run the script:
+
+```bash
+julia --project=. utils/scripts/model-mps-compare.jl
+```
+
+!!! warning
+    This comparison uses the _local version of `benchmark/model-mps-folder`_.
+    So, if you run the update script, there will be no changes to be shown.
+
+The generated log will look something liek this:
+
+```plaintext
+┌ Info: New comparison
+│ Comparing files
+│ - <path>/<file>.mps
+└ - <temp-path>/<file>.mps
+[ Info: Create mps for <path> in <temp-path>
+[ Info: No difference found
+┌ Info: New comparison
+│ Comparing files
+│ - <path>/<file>.mps
+└ - <temp-path>/<file>.mps
+[ Info: Create mps for <path> in <temp-path>
+┌ Error: Line 1272"
+│ ..Existing: '    assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,1,18:18] -100'
+│ .......New: '    assets_investment[2030,ocgt] max_output_flows_limit[ocgt,2030,1,18:18] -200'
+└ @ Main <path>/utils/scripts/model-mps-compare.jl:75
+```
+
+There are 2 cases:
+
+1. The first case starts at the beginning of the log and ends in "No difference found". There was nothing to show for that file.
+2. The second case has "errors", i.e., differences between the existing and new MPS files.
+   Here is what to expect from the error lines:
+   - `Error: Line ####`: The line number of the MPS file (which you can manually inspect).
+   - `..Existing`: Shows the existing line.
+   - `.......New`: Shows the new line.
+
+If the environment variable `TULIPA_COMPARE_MPS_LOGFILE` is defined and is a path to a file, then the log will be written to a file instead of printed.
+This is mostly relevant for the GitHub workflow.
+
+### GitHub Workflow
+
+When creating a pull request, the workflow `CompareMPS.yml` will run the comparison above and write a PR comment to indicate whether the files are the same or not. If the files are not the same, then the workflow fails, and there are two ways in which the workflow can fail:
+
+1. **Expected failure**: If you are making a change to the model, then the MPS file will be different. Then you should
+   1.1. Verify that the changes are **only** what you expected to see (i.e., use the MPS difference to debug possible issues).
+   1.2. Run the update script listed above to fix the comparison (i.e., the new MPS becomes the existing MPS).
+   1.3. Commit and push your modifications and wait for the comparison to run again.
+2. **Unexpected failure**: If you made modifications that were not supposed to change the model, then you need to investigate what happened. Use the MPS difference to debug what you have done. There is no easy fix for this. If you think there are bugs in the comparison script, discuss with your PR reviewer and open an issue if necessary.
+
+!!! warning
+    The comparison workflow only writes PR comments if the branch is made from within `TulipaEnergyModel`. To see the log online in that case, you have to open the GitHub action log, or run the comparison locally, as explained in the previous section.
+
 ## Procedure for Releasing a New Version (Julia Registry)
 
 When publishing a new version of the model to the Julia Registry, follow this procedure:
