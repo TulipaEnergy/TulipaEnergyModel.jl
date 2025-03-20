@@ -33,8 +33,8 @@ end
     energy_problem = TulipaEnergyModel.run_scenario(
         connection;
         output_folder = OUTPUT_FOLDER,
-        write_lp_file = true,
         show_log = false,
+        model_file_name = "model.lp",
         log_file = "model.log",
     )
 end

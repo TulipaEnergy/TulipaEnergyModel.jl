@@ -1,0 +1,105 @@
+name: Compare MPS
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "test/**"
+      - "*.toml"
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  # Skip intermediate builds: always.
+  # Cancel intermediate builds: only if it is a pull request build.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+jobs:
+  compare-mps:
+    name: Compare MPS files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: This was CompareMPS
+      - name: Comment on PR with CompareMPS
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### :hourglass: Running MPS comparison
+
+            Please wait.
+
+            :robot: This was CompareMPS, we hope you have enjoyed this program.
+          edit-mode: replace
+      - name: Clone
+        uses: actions/checkout@v4
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: "1"
+      - name: Use Julia cache
+        uses: julia-actions/cache@v2
+      - name: Install the packages
+        uses: julia-actions/julia-buildpkg@v1
+      - name: Run comparison
+        run: julia --project=. utils/scripts/model-mps-compare.jl
+        env:
+          TULIPA_COMPARE_MPS_LOGFILE: "mps-logfile.txt"
+      - name: Create PR body
+        if: failure()
+        run: |
+          echo '## :warning: MPS files differ
+
+          ### What to do?
+
+          #### :+1: If this is expected
+
+          Then you just have to update the MPS files running from the root of TulipaEnergyModel.jl:
+
+          ```bash
+          julia --project=. utils/scripts/model-mps-update.jl
+          ```
+
+          #### :-1: This is bad
+
+          Then, review the log below to figure out why the files differ:
+
+          <details>
+
+          ```plaintext' > body.md
+          cat mps-logfile.txt >> body.md
+          echo '```
+
+          </details>
+
+          :robot: This was CompareMPS, we hope you have enjoyed this program.
+          ' >> body.md
+          echo "::warning title=MPS files are different::$(cat body.md)"
+      - name: Comment on PR with log if failed
+        if: failure()
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: body.md
+          edit-mode: replace
+      - name: Comment on PR with CompareMPS
+        if: success()
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### :white_check_mark: MPS files match
+
+            :robot: This was CompareMPS, we hope you have enjoyed this program.
+          edit-mode: replace

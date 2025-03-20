@@ -31,7 +31,7 @@ end
         constraints,
         profiles,
         model_parameters;
-        write_lp_file = false,
+        model_file_name = "",
         enable_names = true
     )
 
@@ -44,7 +44,7 @@ function create_model(
     constraints,
     profiles,
     model_parameters;
-    write_lp_file = false,
+    model_file_name = "",
     enable_names = true,
 )
     ## Model
@@ -145,8 +145,8 @@ function create_model(
         profiles,
     )
 
-    if write_lp_file
-        @timeit to "write lp file" JuMP.write_to_file(model, "model.lp")
+    if model_file_name != ""
+        @timeit to "save model file" JuMP.write_to_file(model, model_file_name)
     end
 
     return model
