@@ -159,76 +159,37 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table var_assets_compact_investment as
-select
-    nextval('id') as id,
-    asset.asset,
-    asset_milestone.milestone_year,
-    asset.investment_integer,
-    asset.capacity,
-    asset_commission.investment_limit,
-from
-    asset_milestone
-    left join asset on asset.asset = asset_milestone.asset
-    left join asset_commission on asset_commission.asset = asset_milestone.asset
-    and asset_commission.commission_year = asset_milestone.milestone_year
-where
-    asset_milestone.investable = true
-;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
-create table var_assets_simple_investment as
-select
-    nextval('id') as id,
-    asset.asset,
-    asset_milestone_simple_investment.milestone_year,
-    asset.investment_integer,
-    asset.capacity,
-    asset_milestone_simple_investment.investment_limit,
-from
-    asset_milestone_simple_investment
-    left join asset on asset.asset = asset_milestone_simple_investment.asset
-where
-    asset_milestone_simple_investment.investable = true
-;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
 create table var_assets_investment as
-with unioned as (
+with merged_asset_milestone as (
     select
-        asset,
-        milestone_year,
-        investment_integer,
-        capacity,
-        investment_limit
-    from var_assets_compact_investment
+    asset_milestone.asset,
+    asset_milestone.milestone_year,
+    asset_commission.investment_limit,
+    from asset_milestone
+    left join asset_commission
+    on asset_milestone.asset = asset_commission.asset
+    and asset_milestone.milestone_year = asset_commission.commission_year,
+    where investable
+
     union all
+
     select
-        asset,
-        milestone_year,
-        investment_integer,
-        capacity,
-        investment_limit
-    from var_assets_simple_investment
+    asset_milestone_simple_investment.asset,
+    asset_milestone_simple_investment.milestone_year,
+    asset_milestone_simple_investment.investment_limit,
+    from asset_milestone_simple_investment
+    where investable
 )
 select
     nextval('id') as id,
-    asset,
-    milestone_year,
-    investment_integer,
-    capacity,
-    investment_limit
-from unioned;
+    asset.asset,
+    merged_asset_milestone.milestone_year,
+    asset.investment_integer,
+    asset.capacity,
+    merged_asset_milestone.investment_limit,
+from merged_asset_milestone
+left join asset
+    on asset.asset = merged_asset_milestone.asset;
 
 drop sequence id
 ;

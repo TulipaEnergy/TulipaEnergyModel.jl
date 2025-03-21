@@ -9,6 +9,10 @@ function create_internal_tables!(connection; skip_validation = false)
 
     # Create tables that are allowed to be missing
     tables_allowed_to_be_missing = [
+        "asset_milestone_simple_investment"
+        "asset_milestone"
+        "asset_commission"
+        "asset_both"
         "assets_rep_periods_partitions"
         "assets_timeframe_partitions"
         "assets_timeframe_profiles"

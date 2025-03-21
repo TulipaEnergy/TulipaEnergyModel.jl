@@ -257,29 +257,24 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         CREATE OR REPLACE TABLE expr_available_asset_units_simple_investment AS
         SELECT
             nextval('id') AS id,
-            asset_milestone_simple_investment.asset AS asset,
-            asset_milestone_simple_investment.milestone_year AS milestone_year,
-            ANY_VALUE(asset_milestone_simple_investment.initial_units) AS initial_units,
-            ARRAY_AGG(DISTINCT var_inv.id) FILTER (
-                WHERE
-                    var_inv.id IS NOT NULL AND
-                    var_inv.milestone_year +
-                    (
-                        SELECT ANY_VALUE(a.technical_lifetime)
-                        FROM asset AS a
-                        WHERE a.asset = asset_milestone_simple_investment.asset
-                    )
-                    - 1 >= asset_milestone_simple_investment.milestone_year
-            ) AS var_investment_indices,
-            ARRAY_AGG(DISTINCT var_dec.id) FILTER (var_dec.id IS NOT NULL) AS var_decommission_indices
-        FROM asset_milestone_simple_investment
-        LEFT JOIN var_assets_decommission_simple_investment AS var_dec
-            ON asset_milestone_simple_investment.asset = var_dec.asset
-            AND asset_milestone_simple_investment.milestone_year >= var_dec.milestone_year
+            asset_simple.asset,
+            asset_simple.milestone_year,
+            ANY_VALUE(asset_simple.initial_units) AS initial_units,
+            -- DISTINCT is required because joining both inv and dec at the same time create a mini-cross join between them.
+            ARRAY_AGG(DISTINCT var_inv.id) FILTER (var_inv.id IS NOT NULL) AS var_investment_indices,
+            ARRAY_AGG(DISTINCT var_dec.id) FILTER (var_dec.id IS NOT NULL) AS var_decommission_indices,
+        FROM asset_milestone_simple_investment AS asset_simple
+        LEFT JOIN asset
+            ON asset.asset = asset_simple.asset
         LEFT JOIN var_assets_investment AS var_inv
-            ON asset_milestone_simple_investment.asset = var_inv.asset
-            AND asset_milestone_simple_investment.milestone_year >= var_inv.milestone_year
-        GROUP BY asset_milestone_simple_investment.asset, asset_milestone_simple_investment.milestone_year
+            ON var_inv.asset = asset_simple.asset
+            AND var_inv.milestone_year <= asset_simple.milestone_year
+            AND var_inv.milestone_year + asset.technical_lifetime - 1 >= asset_simple.milestone_year
+        LEFT JOIN var_assets_decommission_simple_investment AS var_dec
+            ON var_dec.asset = asset_simple.asset
+            AND var_dec.milestone_year <= asset_simple.milestone_year
+        GROUP BY asset_simple.asset, asset_simple.milestone_year
+        ORDER BY asset_simple.asset, asset_simple.milestone_year
         ",
     )
 
