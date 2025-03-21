@@ -8,9 +8,12 @@ Adds the capacity constraints for all asset types to the model
 function add_capacity_constraints!(connection, model, expressions, constraints, profiles)
     ## unpack from expressions
     expr_avail = expressions[:available_asset_units].expressions[:assets]
+    expr_avail_simple_investment =
+        expressions[:available_asset_units_simple_investment].expressions[:assets]
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
+    # - Compact investment method
     let table_name = :capacity_outgoing, cons = constraints[table_name]
         indices = _append_capacity_data_to_indices(connection, table_name)
 
@@ -40,9 +43,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
-    expr_avail_simple_investment =
-        expressions[:available_asset_units_simple_investment].expressions[:assets]
-
+    # - Simple investment method
     let table_name = :capacity_outgoing_simple_investment, cons = constraints[table_name]
         indices = _append_capacity_data_to_indices_simple_investment(connection, table_name)
 
@@ -67,10 +68,11 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     end
 
     # - Create capacity limit for outgoing flows with binary is_charging for storage assets
-    let table_name = :capacity_outgoing_non_investable_storage_with_binary,
+    # - Simple investment method
+    let table_name = :capacity_outgoing_non_investable_storage_with_binary_simple_investment,
         cons = constraints[table_name]
 
-        indices = _append_capacity_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices_simple_investment(connection, table_name)
 
         attach_expression!(
             cons,
@@ -79,7 +81,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.avail_profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -96,19 +98,20 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
-    let table_name = :capacity_outgoing_investable_storage_with_binary,
+    # - Simple investment method
+    let table_name = :capacity_outgoing_investable_storage_with_binary_simple_investment,
         cons = constraints[table_name]
 
-        indices = _append_capacity_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices_simple_investment(connection, table_name)
 
         attach_expression!(
             cons,
-            :profile_times_capacity_with_investment_variable,
+            :profile_times_capacity_with_investment_variable_simple_investment,
             [
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.avail_profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -119,7 +122,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         row.capacity *
                         (
                             row.avail_initial_units * (1 - is_charging) +
-                            sum(expr_avail[avail_id] for avail_id in row.avail_indices)
+                            expr_avail_simple_investment[row.avail_indices]
                         )
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -128,12 +131,12 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
 
         attach_expression!(
             cons,
-            :profile_times_capacity_with_investment_limit,
+            :profile_times_capacity_with_investment_limit_simple_investment,
             [
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.avail_rofile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -150,8 +153,9 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     end
 
     # - Create capacity limit for incoming flows
-    let table_name = :capacity_incoming, cons = constraints[table_name]
-        indices = _append_capacity_data_to_indices(connection, table_name)
+    # - Simple investment method
+    let table_name = :capacity_incoming_simple_investment, cons = constraints[table_name]
+        indices = _append_capacity_data_to_indices_simple_investment(connection, table_name)
         attach_expression!(
             cons,
             :profile_times_capacity,
@@ -159,7 +163,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.avail_profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -168,7 +172,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         model,
                         availability_agg *
                         row.capacity *
-                        sum(expr_avail[avail_id] for avail_id in row.avail_indices)
+                        expr_avail_simple_investment[row.avail_indices]
                     )
                 end for row in indices
             ],
@@ -176,10 +180,11 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     end
 
     # - Create capacity limit for incoming flows with binary is_charging for storage assets
-    let table_name = :capacity_incoming_non_investable_storage_with_binary,
+    # - Simple investment method
+    let table_name = :capacity_incoming_non_investable_storage_with_binary_simple_investment,
         cons = constraints[table_name]
 
-        indices = _append_capacity_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices_simple_investment(connection, table_name)
 
         attach_expression!(
             cons,
@@ -188,7 +193,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.avail_profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -202,19 +207,19 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
-    let table_name = :capacity_incoming_investable_storage_with_binary,
+    let table_name = :capacity_incoming_investable_storage_with_binary_simple_investment,
         cons = constraints[table_name]
 
-        indices = _append_capacity_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices_simple_investment(connection, table_name)
 
         attach_expression!(
             cons,
-            :profile_times_capacity_with_investment_variable,
+            :profile_times_capacity_with_investment_variable_simple_investment,
             [
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.avail_profile_name, row.year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -225,7 +230,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         row.capacity *
                         (
                             row.avail_initial_units * is_charging +
-                            sum(expr_avail[avail_id] for avail_id in row.avail_indices)
+                            expr_avail_simple_investment[row.avail_indices]
                         )
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -234,7 +239,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
 
         attach_expression!(
             cons,
-            :profile_times_capacity_with_investment_limit,
+            :profile_times_capacity_with_investment_limit_simple_investment,
             [
                 begin
                     availability_agg = _profile_aggregate(
@@ -259,7 +264,8 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     # version and the version using binary to avoid charging and discharging at
     # the same time
 
-    for suffix in ("", "_non_investable_storage_with_binary", "_simple_investment")
+    for suffix in
+        ("", "_non_investable_storage_with_binary_simple_investment", "_simple_investment")
         cons_name = Symbol("max_output_flows_limit$suffix")
         table_name = Symbol("capacity_outgoing$suffix")
 
@@ -282,9 +288,10 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
-    for suffix in ("_with_investment_variable", "_with_investment_limit")
+    for suffix in
+        ("_with_investment_variable_simple_investment", "_with_investment_limit_simple_investment")
         cons_name = Symbol("max_output_flows_limit_investable_storage_with_binary_and$suffix")
-        table_name = :capacity_outgoing_investable_storage_with_binary
+        table_name = :capacity_outgoing_investable_storage_with_binary_simple_investment
 
         # - Maximum output flows limit
         attach_constraint!(
@@ -305,7 +312,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
-    for suffix in ("", "_non_investable_storage_with_binary")
+    for suffix in ("_simple_investment", "_non_investable_storage_with_binary_simple_investment")
         cons_name = Symbol("max_input_flows_limit$suffix")
         table_name = Symbol("capacity_incoming$suffix")
 
@@ -328,9 +335,10 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
-    for suffix in ("_with_investment_variable", "_with_investment_limit")
+    for suffix in
+        ("_with_investment_variable_simple_investment", "_with_investment_limit_simple_investment")
         cons_name = Symbol("max_input_flows_limit_investable_storage_with_binary_and_$suffix")
-        table_name = :capacity_incoming_investable_storage_with_binary
+        table_name = :capacity_incoming_investable_storage_with_binary_simple_investment
 
         # - Maximum input flows limit
         attach_constraint!(

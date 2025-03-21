@@ -9,13 +9,13 @@ function compute_constraints_indices(connection)
             :balance_conversion,
             :balance_consumer,
             :balance_hub,
-            :capacity_incoming,
-            :capacity_incoming_non_investable_storage_with_binary,
-            :capacity_incoming_investable_storage_with_binary,
+            :capacity_incoming_simple_investment,
+            :capacity_incoming_non_investable_storage_with_binary_simple_investment, # this applies only to `none` investment method
+            :capacity_incoming_investable_storage_with_binary_simple_investment, # this applies only to `simple` investment method
             :capacity_outgoing,
             :capacity_outgoing_simple_investment,
-            :capacity_outgoing_non_investable_storage_with_binary,
-            :capacity_outgoing_investable_storage_with_binary,
+            :capacity_outgoing_non_investable_storage_with_binary_simple_investment, # this applies only to `none` investment method
+            :capacity_outgoing_investable_storage_with_binary_simple_investment, # this applies only to `simple` investment method
             :limit_units_on,
             :min_output_flow_with_unit_commitment,
             :max_output_flow_with_basic_unit_commitment,
