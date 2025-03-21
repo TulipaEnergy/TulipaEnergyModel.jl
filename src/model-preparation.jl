@@ -55,6 +55,7 @@ function add_expression_terms_rep_period_constraints!(
     use_highest_resolution = true,
     multiply_by_duration = true,
     add_min_outgoing_flow_duration = false,
+    multiply_by_capacity_coefficient = false,
 )
     # cons' asset will be matched with flow's to_asset or from_asset, depending on whether
     # we are filling incoming or outgoing flows
@@ -96,7 +97,13 @@ function add_expression_terms_rep_period_constraints!(
             flow.table_name,
             grouped_var_table_name,
             [case.asset_match, :year, :rep_period],
-            [:id, :time_block_start, :time_block_end, :efficiency];
+            [
+                :id,
+                :time_block_start,
+                :time_block_end,
+                :efficiency,
+                :capacity_constraint_coefficient,
+            ];
             rename_columns = Dict(case.asset_match => :asset),
         )
 
@@ -117,6 +124,7 @@ function add_expression_terms_rep_period_constraints!(
                 var.time_block_start AS var_time_block_start_vec,
                 var.time_block_end AS var_time_block_end_vec,
                 var.efficiency,
+                var.capacity_constraint_coefficient,
                 asset.type AS type,
                 $resolution_query AS resolution,
             FROM $grouped_cons_table_name AS cons
@@ -143,21 +151,25 @@ function add_expression_terms_rep_period_constraints!(
                 time_block_start::Int32,
                 time_block_end::Int32,
                 efficiency::Float64,
+                capacity_constraint_coefficient::Float64,
             ) in zip(
                 group_row.var_id_vec::Vector{Union{Missing,Int64}},
                 group_row.var_time_block_start_vec::Vector{Union{Missing,Int32}},
                 group_row.var_time_block_end_vec::Vector{Union{Missing,Int32}},
                 group_row.efficiency::Vector{Union{Missing,Float64}},
+                group_row.capacity_constraint_coefficient::Vector{Union{Missing,Float64}},
             )
                 time_block = time_block_start:time_block_end
                 # Step 1.1.1.
                 for timestep in time_block
                     # Step 1.1.1.1.
-                    # Set the efficiency to 1 for inflows and outflows of hub and consumer assets, and outflows for producer assets
+                    # Set the flow coefficient for incoming and outgoing flows of hub and consumer assets, and outgoing flows for producer assets
                     # And when you want the highest resolution (which is asset type-agnostic)
-                    efficiency_coefficient =
+                    # If it is for the capacity constraints, multiply by the capacity constraint coefficient for these cases, otherwise, just use the 1.0
+                    # In any other case, the flow coefficient is the efficiency
+                    flow_coefficient =
                         if group_row.type::String in case.selected_assets || use_highest_resolution
-                            1.0
+                            multiply_by_capacity_coefficient ? capacity_constraint_coefficient : 1.0
                         else
                             if case.expr_key == :incoming
                                 efficiency
@@ -167,7 +179,7 @@ function add_expression_terms_rep_period_constraints!(
                             end
                         end
                     # Step 1.1.1.2.
-                    workspace[timestep][var_id] = resolution * efficiency_coefficient
+                    workspace[timestep][var_id] = resolution * flow_coefficient
                 end
                 if conditions_to_add_min_outgoing_flow_duration
                     outgoing_flow_durations =
@@ -517,6 +529,7 @@ function add_expressions_to_constraints!(connection, variables, constraints)
             workspace;
             use_highest_resolution = true,
             multiply_by_duration = false,
+            multiply_by_capacity_coefficient = true,
         )
 
         @timeit to "attach is_charging expression to $table_name" attach_expression_on_constraints_grouping_variables!(
