@@ -61,7 +61,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_incoming as
+create table cons_capacity_incoming_simple_investment as
 select
     nextval('id') as id,
     t_high.*
@@ -70,6 +70,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('storage')
+    and asset.investment_method in ('simple', 'none')
 ;
 
 drop sequence id
@@ -78,19 +79,20 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_incoming_non_investable_storage_with_binary as
+create table cons_capacity_incoming_non_investable_storage_with_binary_simple_investment as
 select
     nextval('id') as id,
     t_high.*
 from
     t_highest_in_flows as t_high
     left join asset on t_high.asset = asset.asset
-    left join asset_milestone on t_high.asset = asset_milestone.asset
-    and t_high.year = asset_milestone.milestone_year
+    left join asset_milestone_simple_investment on t_high.asset = asset_milestone_simple_investment.asset
+    and t_high.year = asset_milestone_simple_investment.milestone_year
 where
     asset.type in ('storage')
     and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
-    and not asset_milestone.investable
+    and not asset_milestone_simple_investment.investable
+    and asset.investment_method = 'none'
 ;
 
 drop sequence id
@@ -99,19 +101,20 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_incoming_investable_storage_with_binary as
+create table cons_capacity_incoming_investable_storage_with_binary_simple_investment as
 select
     nextval('id') as id,
     t_high.*
 from
     t_highest_in_flows as t_high
     left join asset on t_high.asset = asset.asset
-    left join asset_milestone on t_high.asset = asset_milestone.asset
-    and t_high.year = asset_milestone.milestone_year
+    left join asset_milestone_simple_investment on t_high.asset = asset_milestone_simple_investment.asset
+    and t_high.year = asset_milestone_simple_investment.milestone_year
 where
     asset.type in ('storage')
     and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
-    and asset_milestone.investable
+    and asset_milestone_simple_investment.investable
+    and asset.investment_method = 'simple'
 ;
 
 drop sequence id
@@ -129,6 +132,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id
@@ -137,19 +141,16 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_outgoing_non_investable_storage_with_binary as
+create table cons_capacity_outgoing_simple_investment as
 select
     nextval('id') as id,
     t_high.*
 from
     t_highest_out_flows as t_high
     left join asset on t_high.asset = asset.asset
-    left join asset_milestone on t_high.asset = asset_milestone.asset
-    and t_high.year = asset_milestone.milestone_year
 where
-    asset.type in ('storage')
-    and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
-    and not asset_milestone.investable
+    asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method in ('simple', 'none')
 ;
 
 drop sequence id
@@ -158,19 +159,42 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_outgoing_investable_storage_with_binary as
+create table cons_capacity_outgoing_non_investable_storage_with_binary_simple_investment as
 select
     nextval('id') as id,
     t_high.*
 from
     t_highest_out_flows as t_high
     left join asset on t_high.asset = asset.asset
-    left join asset_milestone on t_high.asset = asset_milestone.asset
-    and t_high.year = asset_milestone.milestone_year
+    left join asset_milestone_simple_investment on t_high.asset = asset_milestone_simple_investment.asset
+    and t_high.year = asset_milestone_simple_investment.milestone_year
 where
     asset.type in ('storage')
     and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
-    and asset_milestone.investable
+    and not asset_milestone_simple_investment.investable
+    and asset.investment_method in ('none')
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+create table cons_capacity_outgoing_investable_storage_with_binary_simple_investment as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+    left join asset_milestone_simple_investment on t_high.asset = asset_milestone_simple_investment.asset
+    and t_high.year = asset_milestone_simple_investment.milestone_year
+where
+    asset.type in ('storage')
+    and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
+    and asset_milestone_simple_investment.investable
+    and asset.investment_method = 'simple'
 ;
 
 create table cons_limit_units_on as
