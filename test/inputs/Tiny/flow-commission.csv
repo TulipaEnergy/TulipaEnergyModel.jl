@@ -1,6 +1,6 @@
-from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit
-wind,demand,2030,0.0,0.0,0.0,
-ccgt,demand,2030,0.0,0.0,0.0,
-ocgt,demand,2030,0.0,0.0,0.0,
-solar,demand,2030,0.0,0.0,0.0,
-ens,demand,2030,0.0,0.0,0.0,
+from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,capacity_constraint_coefficient
+wind,demand,2030,0.0,0.0,0.0,,1
+ccgt,demand,2030,0.0,0.0,0.0,,1
+ocgt,demand,2030,0.0,0.0,0.0,,1
+solar,demand,2030,0.0,0.0,0.0,,1
+ens,demand,2030,0.0,0.0,0.0,,1
