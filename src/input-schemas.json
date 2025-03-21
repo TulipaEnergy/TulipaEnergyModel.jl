@@ -540,6 +540,15 @@
     }
   },
   "flow_commission": {
+    "capacity_constraint_coefficient": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 1,
+      "description": "Coefficient for the flow in the maximum capacity constraints.",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u."
+    },
     "commission_year": {
       "default": 2000,
       "description": "Year of commissioning",
