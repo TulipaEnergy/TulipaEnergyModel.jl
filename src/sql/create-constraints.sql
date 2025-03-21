@@ -150,7 +150,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
-    and asset.investment_method = 'simple'
+    and asset.investment_method in ('simple', 'none')
 ;
 
 drop sequence id

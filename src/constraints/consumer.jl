@@ -63,18 +63,18 @@ function _create_consumer_table(connection)
             cons.*,
             asset.type,
             asset.consumer_balance_sense,
-            asset_milestone.peak_demand,
-            assets_profiles.profile_name,
+            asset_simple.peak_demand,
+            demand_profile.profile_name,
         FROM cons_balance_consumer AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
-        LEFT JOIN asset_milestone
-            ON cons.asset = asset_milestone.asset
-            AND cons.year = asset_milestone.milestone_year
-        LEFT OUTER JOIN assets_profiles
-            ON cons.asset = assets_profiles.asset
-            AND cons.year = assets_profiles.commission_year
-            AND assets_profiles.profile_type = 'demand' -- This must be a ON condition not a where (note 1)
+        LEFT JOIN asset_milestone_simple_investment as asset_simple
+            ON cons.asset = asset_simple.asset
+            AND cons.year = asset_simple.milestone_year
+        LEFT OUTER JOIN assets_profiles_simple_investment AS demand_profile
+            ON cons.asset = demand_profile.asset
+            AND cons.year = demand_profile.milestone_year
+            AND demand_profile.profile_type = 'demand' -- This must be a ON condition not a where (note 1)
         ORDER BY cons.id -- order is important
         ",
     )
