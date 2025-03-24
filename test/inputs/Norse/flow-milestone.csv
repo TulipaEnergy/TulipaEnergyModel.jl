@@ -31,3 +31,4 @@ G_imports,Asgard_CCGT,2030,false,0.0015
 Midgard_E_imports,Midgard_E_demand,2030,false,0.02
 Valhalla_Waste_heat,Valhalla_Heat_pump,2030,false,0.0025
 Valhalla_H2_storage,Valhalla_H2_demand,2030,false,0.0
+Midgard_Hydro,W_Spillage,2030,false,0.05
