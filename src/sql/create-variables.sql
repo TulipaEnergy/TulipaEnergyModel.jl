@@ -267,24 +267,22 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table var_assets_investment_energy as
+create table var_assets_investment_energy_simple as
 select
     nextval('id') as id,
     asset.asset,
-    asset_milestone.milestone_year,
+    asset_simple.milestone_year,
     asset.investment_integer_storage_energy,
     asset.capacity_storage_energy,
-    asset_commission.investment_limit_storage_energy,
+    asset_simple.investment_limit_storage_energy,
 from
-    asset_milestone
-    left join asset on asset.asset = asset_milestone.asset
-    left join asset_commission on asset_commission.asset = asset_milestone.asset
-    and asset_commission.commission_year = asset_milestone.milestone_year
+    asset_milestone_simple_investment as asset_simple
+    left join asset on asset.asset = asset_simple.asset
 where
     asset.storage_method_energy = true
-    and asset_milestone.investable = true
+    and asset_simple.investable = true
     and asset.type = 'storage'
-    and asset.investment_method = 'compact'
+    and asset.investment_method = 'simple'
 ;
 
 drop sequence id
@@ -293,22 +291,20 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table var_assets_decommission_energy as
+create table var_assets_decommission_energy_simple as
 select
     nextval('id') as id,
     asset.asset,
-    asset_both.milestone_year,
-    asset_both.commission_year,
+    asset_simple.milestone_year,
     asset.investment_integer_storage_energy,
 from
-    asset_both
-    left join asset on asset.asset = asset_both.asset
+    asset_milestone_simple_investment as asset_simple
+    left join asset on asset.asset = asset_simple.asset
 where
     asset.storage_method_energy = true
     and asset.type = 'storage'
-    and asset_both.decommissionable
-    and asset_both.commission_year != asset_both.milestone_year
-    and asset.investment_method = 'compact'
+    and asset_simple.decommissionable
+    and asset.investment_method = 'simple'
 ;
 
 drop sequence id

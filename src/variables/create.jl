@@ -18,8 +18,8 @@ function compute_variables_indices(connection)
             :assets_decommission_simple_investment,
             :flows_investment,
             :flows_decommission,
-            :assets_investment_energy,
-            :assets_decommission_energy,
+            :assets_investment_energy_simple,
+            :assets_decommission_energy_simple,
         )
     )
 

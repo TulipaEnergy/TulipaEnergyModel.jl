@@ -350,6 +350,12 @@
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
     },
+    "initial_storage_units": {
+      "default": 0,
+      "description": "Number of existing storage units",
+      "type": "DOUBLE",
+      "unit_of_measure": "number"
+    },
     "initial_units": {
       "default": 0,
       "description": "Number of existing units",

@@ -68,7 +68,7 @@ function add_investment_variables!(model, variables)
             row -> row.investment_integer,
         ),
         (
-            :assets_investment_energy,
+            :assets_investment_energy_simple,
             row -> (row.milestone_year, row.asset),
             _ -> 0.0,
             row -> _find_var_upper_bound(
@@ -79,8 +79,8 @@ function add_investment_variables!(model, variables)
             row -> row.investment_integer_storage_energy,
         ),
         (
-            :assets_decommission_energy,
-            row -> (row.asset, row.milestone_year, row.commission_year),
+            :assets_decommission_energy_simple,
+            row -> (row.asset, row.milestone_year),
             _ -> 0.0,
             _ -> Inf,
             row -> row.investment_integer_storage_energy,

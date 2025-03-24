@@ -13,7 +13,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_rep_period, cons = constraints[table_name]
         var_storage_level = variables[:storage_level_rep_period].container
-        indices = _append_storage_data_to_indices(connection, table_name)
+        indices = _append_storage_data_to_indices_simple_investment(connection, table_name)
         attach_constraint!(
             model,
             cons,
@@ -70,8 +70,8 @@ function add_storage_constraints!(connection, model, variables, expressions, con
             ],
         )
 
-        available_energy_capacity =
-            expressions[:available_energy_capacity].expressions[:energy_capacity]
+        available_energy_capacity_simple_investment =
+            expressions[:available_energy_capacity_simple_investment].expressions[:energy_capacity]
 
         # - Maximum storage level
         attach_constraint!(
@@ -91,7 +91,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≤
                         max_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_id],
+                        available_energy_capacity_simple_investment[row.avail_energy_capacity_id],
                         base_name = "max_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for
@@ -117,7 +117,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≥
                         min_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_id],
+                        available_energy_capacity_simple_investment[row.avail_energy_capacity_id],
                         base_name = "min_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for
@@ -131,7 +131,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_over_clustered_year, cons = constraints[table_name]
         var_storage_level = variables[:storage_level_over_clustered_year].container
-        indices = _append_storage_data_to_indices(connection, table_name)
+        indices = _append_storage_data_to_indices_simple_investment(connection, table_name)
 
         # This assumes an ordering of the time blocks, that is guaranteed by the append function above
         # The storage_inflows have been moved here
@@ -185,8 +185,8 @@ function add_storage_constraints!(connection, model, variables, expressions, con
             ],
         )
 
-        available_energy_capacity =
-            expressions[:available_energy_capacity].expressions[:energy_capacity]
+        available_energy_capacity_simple_investment =
+            expressions[:available_energy_capacity_simple_investment].expressions[:energy_capacity]
 
         # - Maximum storage level
         attach_constraint!(
@@ -206,7 +206,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≤
                         max_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_id],
+                        available_energy_capacity_simple_investment[row.avail_energy_capacity_id],
                         base_name = "max_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, var_storage_level) in
@@ -232,7 +232,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≥
                         min_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_id],
+                        available_energy_capacity_simple_investment[row.avail_energy_capacity_id],
                         base_name = "min_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, var_storage_level) in
@@ -278,6 +278,45 @@ function _append_storage_data_to_indices(connection, table_name)
         LEFT OUTER JOIN assets_profiles AS min_storage_level_profile
             ON cons.asset = min_storage_level_profile.asset
             AND cons.year = min_storage_level_profile.commission_year
+            AND min_storage_level_profile.profile_type = 'min_storage_level'
+        ORDER BY cons.id
+        ",
+    )
+end
+
+function _append_storage_data_to_indices_simple_investment(connection, table_name)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            cons.*,
+            asset.capacity,
+            asset_simple.investment_limit,
+            asset_simple.initial_storage_level,
+            asset_simple.storage_inflows,
+            inflows_profile.profile_name AS inflows_profile_name,
+            max_storage_level_profile.profile_name AS max_storage_level_profile_name,
+            min_storage_level_profile.profile_name AS min_storage_level_profile_name,
+            expr_avail.id AS avail_energy_capacity_id
+        FROM cons_$table_name AS cons
+        LEFT JOIN asset
+            ON cons.asset = asset.asset
+        LEFT JOIN asset_milestone_simple_investment as asset_simple
+            ON cons.asset = asset_simple.asset
+            AND cons.year = asset_simple.milestone_year
+        LEFT JOIN expr_available_energy_capacity_simple_investment AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.year = expr_avail.milestone_year
+        LEFT OUTER JOIN assets_profiles_simple_investment AS inflows_profile
+            ON cons.asset = inflows_profile.asset
+            AND cons.year = inflows_profile.milestone_year
+            AND inflows_profile.profile_type = 'inflows'
+        LEFT OUTER JOIN assets_profiles_simple_investment AS max_storage_level_profile
+            ON cons.asset = max_storage_level_profile.asset
+            AND cons.year = max_storage_level_profile.milestone_year
+            AND max_storage_level_profile.profile_type = 'max_storage_level'
+        LEFT OUTER JOIN assets_profiles_simple_investment AS min_storage_level_profile
+            ON cons.asset = min_storage_level_profile.asset
+            AND cons.year = min_storage_level_profile.milestone_year
             AND min_storage_level_profile.profile_type = 'min_storage_level'
         ORDER BY cons.id
         ",

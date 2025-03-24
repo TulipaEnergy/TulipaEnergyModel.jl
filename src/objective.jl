@@ -1,12 +1,13 @@
 function add_objective!(connection, model, variables, expressions, model_parameters)
     assets_investment = variables[:assets_investment]
-    assets_investment_energy = variables[:assets_investment_energy]
+    assets_investment_energy_simple = variables[:assets_investment_energy_simple]
     flows_investment = variables[:flows_investment]
 
     expr_available_asset_units = expressions[:available_asset_units]
     expr_available_asset_units_simple_investment =
         expressions[:available_asset_units_simple_investment]
-    expr_available_energy_units = expressions[:available_energy_units]
+    expr_available_energy_units_simple_investment =
+        expressions[:available_energy_units_simple_investment]
     expr_available_flow_units = expressions[:available_flow_units]
 
     social_rate = model_parameters.discount_rate
@@ -105,14 +106,14 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         connection,
         "SELECT
             var.id,
-            t_objective_assets.weight_for_asset_investment_discount
-                * t_objective_assets.investment_cost_storage_energy
-                * t_objective_assets.capacity_storage_energy
+            t_objective_assets_simple_investment.weight_for_asset_investment_discount
+                * t_objective_assets_simple_investment.investment_cost_storage_energy
+                * t_objective_assets_simple_investment.capacity_storage_energy
                 AS cost,
-        FROM var_assets_investment_energy AS var
-        LEFT JOIN t_objective_assets
-            ON var.asset = t_objective_assets.asset
-            AND var.milestone_year = t_objective_assets.milestone_year
+        FROM var_assets_investment_energy_simple AS var
+        LEFT JOIN t_objective_assets_simple_investment
+            ON var.asset = t_objective_assets_simple_investment.asset
+            AND var.milestone_year = t_objective_assets_simple_investment.milestone_year
         ORDER BY
             var.id
         ",
@@ -121,8 +122,9 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     storage_assets_energy_investment_cost = @expression(
         model,
         sum(
-            row.cost * assets_investment_energy for
-            (row, assets_investment_energy) in zip(indices, assets_investment_energy.container)
+            row.cost * assets_investment_energy_simple for
+            (row, assets_investment_energy_simple) in
+            zip(indices, assets_investment_energy_simple.container)
         )
     )
 
@@ -130,17 +132,17 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         connection,
         "SELECT
             expr.id,
-            t_objective_assets.weight_for_operation_discounts
-                * asset_commission.fixed_cost_storage_energy
-                * t_objective_assets.capacity_storage_energy
+            t_objective_assets_simple_investment.weight_for_operation_discounts
+                * asset_simple.fixed_cost_storage_energy
+                * t_objective_assets_simple_investment.capacity_storage_energy
                 AS cost,
-        FROM expr_available_energy_units AS expr
-        LEFT JOIN asset_commission
-            ON expr.asset = asset_commission.asset
-            AND expr.commission_year = asset_commission.commission_year
-        LEFT JOIN t_objective_assets
-            ON expr.asset = t_objective_assets.asset
-            AND expr.milestone_year = t_objective_assets.milestone_year
+        FROM expr_available_energy_units_simple_investment AS expr
+        LEFT JOIN asset_milestone_simple_investment as asset_simple
+            ON expr.asset = asset_simple.asset
+            AND expr.milestone_year = asset_simple.milestone_year
+        LEFT JOIN t_objective_assets_simple_investment
+            ON expr.asset = t_objective_assets_simple_investment.asset
+            AND expr.milestone_year = t_objective_assets_simple_investment.milestone_year
         ORDER BY
             expr.id
         ",
@@ -149,8 +151,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     storage_assets_energy_fixed_cost = @expression(
         model,
         sum(
-            row.cost * expr_avail for
-            (row, expr_avail) in zip(indices, expr_available_energy_units.expressions[:energy])
+            row.cost * expr_avail for (row, expr_avail) in
+            zip(indices, expr_available_energy_units_simple_investment.expressions[:energy])
         )
     )
 

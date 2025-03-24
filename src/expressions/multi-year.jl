@@ -128,9 +128,9 @@ function create_multi_year_expressions!(connection, model, variables, expression
         )
     end
 
-    let table_name = :available_energy_units, expr = expressions[table_name]
-        var_energy_inv = variables[:assets_investment_energy].container
-        var_energy_dec = variables[:assets_decommission_energy].container
+    let table_name = :available_energy_units_simple_investment, expr = expressions[table_name]
+        var_energy_inv = variables[:assets_investment_energy_simple].container
+        var_energy_dec = variables[:assets_decommission_energy_simple].container
 
         indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY id")
         attach_expression!(
@@ -138,9 +138,9 @@ function create_multi_year_expressions!(connection, model, variables, expression
             :energy,
             JuMP.AffExpr[
                 if ismissing(row.var_energy_decommission_indices) &&
-                   ismissing(row.var_energy_investment_id)
+                   ismissing(row.var_energy_investment_indices)
                     @expression(model, row.initial_storage_units)
-                elseif ismissing(row.var_energy_investment_id)
+                elseif ismissing(row.var_energy_investment_indices)
                     @expression(
                         model,
                         row.initial_storage_units -
@@ -149,12 +149,14 @@ function create_multi_year_expressions!(connection, model, variables, expression
                 elseif ismissing(row.var_energy_decommission_indices)
                     @expression(
                         model,
-                        row.initial_storage_units + var_energy_inv[row.var_energy_investment_id]
+                        row.initial_storage_units +
+                        sum(var_energy_inv[idx] for idx in row.var_energy_investment_indices)
                     )
                 else
                     @expression(
                         model,
-                        row.initial_storage_units + var_energy_inv[row.var_energy_investment_id] -
+                        row.initial_storage_units +
+                        sum(var_energy_inv[idx] for idx in row.var_energy_investment_indices) -
                         sum(var_energy_dec[idx] for idx in row.var_energy_decommission_indices)
                     )
                 end for row in indices
@@ -282,29 +284,29 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_energy_units AS
+        CREATE OR REPLACE TABLE expr_available_energy_units_simple_investment AS
         SELECT
             nextval('id') AS id,
-            asset_both.asset AS asset,
-            asset_both.milestone_year AS milestone_year,
-            asset_both.commission_year AS commission_year,
-            ANY_VALUE(asset_both.initial_storage_units) AS initial_storage_units,
-            ARRAY_AGG(var_energy_dec.id) FILTER (var_energy_dec.id IS NOT NULL) AS var_energy_decommission_indices,
-            ANY_VALUE(var_energy_inv.id) AS var_energy_investment_id,
-        FROM asset_both
+            asset_simple.asset AS asset,
+            asset_simple.milestone_year AS milestone_year,
+            ANY_VALUE(asset_simple.initial_storage_units) AS initial_storage_units,
+            ARRAY_AGG(DISTINCT var_energy_inv.id) FILTER (var_energy_inv.id IS NOT NULL) AS var_energy_investment_indices,
+            ARRAY_AGG(DISTINCT var_energy_dec.id) FILTER (var_energy_dec.id IS NOT NULL) AS var_energy_decommission_indices,
+        FROM asset_milestone_simple_investment AS asset_simple
         LEFT JOIN asset
-            ON asset.asset = asset_both.asset
-        LEFT JOIN var_assets_decommission_energy AS var_energy_dec
-            ON asset_both.asset = var_energy_dec.asset
-            AND asset_both.commission_year = var_energy_dec.commission_year
-            AND asset_both.milestone_year >= var_energy_dec.milestone_year
-        LEFT JOIN var_assets_investment_energy AS var_energy_inv
-            ON asset_both.asset = var_energy_inv.asset
-            AND asset_both.commission_year = var_energy_inv.milestone_year
+            ON asset.asset = asset_simple.asset
+        LEFT JOIN var_assets_decommission_energy_simple AS var_energy_dec
+            ON var_energy_dec.asset = asset_simple.asset
+            AND var_energy_dec.milestone_year <= asset_simple.milestone_year
+        LEFT JOIN var_assets_investment_energy_simple AS var_energy_inv
+            ON var_energy_inv.asset = asset_simple.asset
+            AND var_energy_inv.milestone_year <= asset_simple.milestone_year
+            AND var_energy_inv.milestone_year + asset.technical_lifetime - 1 >= asset_simple.milestone_year
         WHERE
             asset.type == 'storage'
-            AND asset.investment_method = 'compact'
-        GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
+            AND asset.investment_method in ('simple', 'none')
+        GROUP BY asset_simple.asset, asset_simple.milestone_year
+        ORDER BY asset_simple.asset, asset_simple.milestone_year
         ",
     )
 
@@ -339,7 +341,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
 
     for expr_name in (
         :available_asset_units,
-        :available_energy_units,
+        :available_energy_units_simple_investment,
         :available_flow_units,
         :available_asset_units_simple_investment,
     )

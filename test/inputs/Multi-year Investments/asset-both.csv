@@ -1,11 +1,7 @@
 asset,milestone_year,commission_year,active,decommissionable,initial_units,initial_storage_units
-battery,2030,2020,true,true,0.07,0.0
-battery,2030,2025,true,true,1.00,0.0
-battery,2030,2030,true,false,0.02,0.0
-battery,2050,2030,true,true,0.02,0.0
-battery,2050,2040,true,true,2.00,0.0
-battery,2050,2050,true,false,0.0,0.0
 demand,2030,2030,true,true,0.0,0.0
 demand,2050,2050,false,false,0.0,0.0
 ens,2030,2030,true,false,1.0,0.0
 ens,2050,2050,true,false,1.0,0.0
+ccgt,2030,2030,true,false,1.0,0.0
+ccgt,2050,2050,true,false,1.0,0.0

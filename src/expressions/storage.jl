@@ -2,39 +2,39 @@ function add_storage_expressions!(connection, model, expressions)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_energy_capacity AS
+        CREATE OR REPLACE TABLE expr_available_energy_capacity_simple_investment AS
         SELECT
             nextval('id') AS id,
-            asset_milestone.asset,
-            asset_milestone.milestone_year,
+            asset_simple.asset,
+            asset_simple.milestone_year,
             ANY_VALUE(asset.capacity) AS capacity,
             ANY_VALUE(asset.capacity_storage_energy) AS capacity_storage_energy,
             ANY_VALUE(asset.energy_to_power_ratio) AS energy_to_power_ratio,
             ANY_VALUE(asset.storage_method_energy) AS storage_method_energy,
-            SUM(expr_avail.initial_storage_units) AS available_initial_storage_units,
+            ANY_VALUE(expr_avail.initial_storage_units) AS available_initial_storage_units,
             ARRAY_AGG(expr_avail.id) AS avail_indices,
-        FROM asset_milestone
+        FROM asset_milestone_simple_investment as asset_simple
         LEFT JOIN asset
-            ON asset_milestone.asset = asset.asset
-        LEFT JOIN expr_available_energy_units AS expr_avail
-            ON asset_milestone.asset = expr_avail.asset
-            AND asset_milestone.milestone_year = expr_avail.milestone_year
+            ON asset_simple.asset = asset.asset
+        LEFT JOIN expr_available_energy_units_simple_investment AS expr_avail
+            ON asset_simple.asset = expr_avail.asset
+            AND asset_simple.milestone_year = expr_avail.milestone_year
         WHERE
             asset.type = 'storage'
-            AND asset.investment_method = 'compact'
+            AND asset.investment_method in ('simple', 'none')
         GROUP BY
-            asset_milestone.asset,
-            asset_milestone.milestone_year
+            asset_simple.asset,
+            asset_simple.milestone_year
         ORDER BY id
         ",
     )
 
-    expressions[:available_energy_capacity] =
-        TulipaExpression(connection, "expr_available_energy_capacity")
+    expressions[:available_energy_capacity_simple_investment] =
+        TulipaExpression(connection, "expr_available_energy_capacity_simple_investment")
 
-    expr_avail = expressions[:available_energy_units].expressions[:energy]
+    expr_avail = expressions[:available_energy_units_simple_investment].expressions[:energy]
 
-    let table_name = :available_energy_capacity, expr = expressions[table_name]
+    let table_name = :available_energy_capacity_simple_investment, expr = expressions[table_name]
         indices = DuckDB.query(connection, "FROM expr_$table_name")
         attach_expression!(
             expr,
@@ -57,7 +57,7 @@ function add_storage_expressions!(connection, model, expressions)
                         # the fixed cost in the objective function
                         capacity_for_initial * row.available_initial_storage_units +
                         capacity_for_variation * (
-                            sum(expr_avail[avail_id] for avail_id in row.avail_indices) -
+                            sum(expr_avail[idx] for idx in row.avail_indices) -
                             row.available_initial_storage_units
                         )
                     )
