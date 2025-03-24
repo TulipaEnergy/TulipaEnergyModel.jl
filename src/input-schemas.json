@@ -540,15 +540,6 @@
     }
   },
   "flow_commission": {
-    "capacity_constraint_coefficient": {
-      "constraints": {
-        "minimum": 0
-      },
-      "default": 1,
-      "description": "Coefficient for the flow in the maximum capacity constraints.",
-      "type": "DOUBLE",
-      "unit_of_measure": "p.u."
-    },
     "commission_year": {
       "default": 2000,
       "description": "Year of commissioning",
@@ -567,6 +558,15 @@
       "description": "Fixed annual cost for the transport asset capacity.",
       "type": "DOUBLE",
       "unit_of_measure": "CUR/MW/year"
+    },
+    "flow_coefficient_in_capacity_constraint": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 1,
+      "description": "Coefficient for the flow in the maximum capacity constraints.",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u."
     },
     "from_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",

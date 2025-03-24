@@ -1,4 +1,4 @@
-from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,capacity_constraint_coefficient
+from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,flow_coefficient_in_capacity_constraint
 wind,demand,2030,0.0,0.0,0.0,,1
 ccgt,demand,2030,0.0,0.0,0.5,,1
 gas,ocgt,2030,0.0,0.0,1.0,,1

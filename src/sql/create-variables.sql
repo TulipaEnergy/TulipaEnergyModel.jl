@@ -9,7 +9,7 @@ select
     year,
     rep_period,
     efficiency,
-    capacity_constraint_coefficient,
+    flow_coefficient_in_capacity_constraint,
     time_block_start,
     time_block_end,
 from

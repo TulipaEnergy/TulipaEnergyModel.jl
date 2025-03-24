@@ -1,4 +1,4 @@
-from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,capacity_constraint_coefficient
+from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,flow_coefficient_in_capacity_constraint
 NL_E_Balance,NL_E_Demand,2050,0,0,1,,1
 NL_E_ENS,NL_E_Demand,2050,0,0,1,,1
 NL_Wind_Onshore,NL_E_Balance,2050,0,0,1,,1

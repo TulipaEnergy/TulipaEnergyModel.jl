@@ -1,4 +1,4 @@
-from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,capacity_constraint_coefficient
+from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,flow_coefficient_in_capacity_constraint
 H2,ccgt,2030,0.0,0.0,1.0,,1
 wind,phs,2030,0.0,0.0,0.9,,1
 ccgt,balance,2030,0.0,0.0,0.5,,1
