@@ -350,14 +350,14 @@ For more details on the formulas for economic representation, please visit the [
 
 ## [Using the coefficient for flows in the capacity constraints](@id coefficient-for-capacity-constraints)
 
-Capacity constraints apply to all the outputs and inputs to assets according to the equations in the [`capacity constraints`](@ref cap-constraints) section of the mathematical formulation. The coeficient $p^{\text{capacity coefficient}}_{f,y}$ in the capacity constraints can be set model situations or process where the flows in the capacity constraint are multiplied by a constant factor.
+Capacity constraints apply to all the outputs and inputs to assets according to the equations in the [`capacity constraints`](@ref cap-constraints) section of the mathematical formulation. The coefficient $p^{\text{capacity coefficient}}_{f,y}$ in the capacity constraints can be set to model situations or processes where the flows in the capacity constraint are multiplied by a constant factor.
 
-For instance, a hydro reservoir (i.e., storage asset) with two outputs, one for electricity production and another for water spillage. The electricity output flow must me in the capacity constraints. However, the water spillage is an output that can be excluded from teh capacity constraint. In that case, the coefficient for the capacity constraint of the water output can be zero and therefore not included in that constraint.
+For instance, a hydro reservoir (i.e., storage asset) with two outputs, one for electricity production and another for water spillage. The electricity output flow must be in the capacity constraints. However, the water spillage is an output that can be excluded from the capacity constraint. In that case, the coefficient for the capacity constraint of the water output can be zero and therefore not included in that constraint.
 
-Other situations come from industrial processes where the sum of both outputs must be below the capacity, but one of the outputs can be above the capacity if only produces in that flow. For example,
+Another situation comes from industrial processes where the sum of both outputs must be below the capacity, but one of the outputs can be above the capacity if only produced in that flow. For example,
 
 $\text{flow process A} + 0.8 \cdot \text{flow process B} \leq \text{C}$
 
-In that case the sum must be always below the total capacity $\text{C}$, but if you only produce flow to B then you can get $1.25 \cdot \text{C}$.
+In that case the sum must be always below the total capacity $\text{C}$, but if you only produce flow through B then you can produce $1.25 \cdot \text{C}$ and still satisfy this constraint.
 
 To set up this parameter you need to fill in the information for the `capacity_constraint_coefficient` in the `flow_commission` table, see more in the [model parameters](@ref schemas) section.
