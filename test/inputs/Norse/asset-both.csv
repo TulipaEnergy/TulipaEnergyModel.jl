@@ -22,3 +22,4 @@ Valhalla_Heat_pump,2030,2030,false,0.0,0.0
 Valhalla_Waste_heat,2030,2030,true,0.0,0.0
 Valhalla_Heat_demand,2030,2030,true,0.0,0.0
 Valhalla_GT,2030,2030,false,0.0,0.0
+W_Spillage,2030,2030,false,1.0,0.0

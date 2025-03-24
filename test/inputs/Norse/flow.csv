@@ -31,3 +31,4 @@ G_imports,Valhalla_H2_generator,gas,false,0.0,10,1,0.02,false
 Valhalla_GT,Valhalla_E_balance,electricity,false,0.0,10,1,0.02,false
 Valhalla_Fuel_cell,Valhalla_Heat_demand,heat,false,0.0,10,1,0.02,false
 Midgard_E_demand,Valhalla_E_balance,electricity,true,1000.0,10,1,0.02,true
+Midgard_Hydro,W_Spillage,water,false,0.0,10,1,0.02,false

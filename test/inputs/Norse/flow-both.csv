@@ -31,3 +31,4 @@ Valhalla_Electrolyser,Valhalla_H2_demand,2030,2030,true,0.0,0.0
 Valhalla_H2_storage,Valhalla_H2_demand,2030,2030,true,0.0,0.0
 Valhalla_H2_demand,Valhalla_H2_storage,2030,2030,true,0.0,0.0
 Valhalla_H2_generator,Valhalla_H2_demand,2030,2030,true,0.0,0.0
+Midgard_Hydro,W_Spillage,2030,2030,false,0.0,0.0

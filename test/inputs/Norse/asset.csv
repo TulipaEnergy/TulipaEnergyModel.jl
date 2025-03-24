@@ -22,3 +22,4 @@ Valhalla_H2_storage,storage,,500.0,,simple,true,15,1,0.05,,100.0,true,,false,,fa
 Valhalla_Heat_demand,consumer,,0.0,,none,false,15,1,0.05,>=,0.0,false,,false,,false,false,false,0.0,false,,
 Valhalla_Heat_pump,conversion,,100.0,,simple,true,15,1,0.05,,0.0,false,,false,,false,false,false,0.0,false,,
 Valhalla_Waste_heat,producer,,200.0,,none,false,15,1,0.05,,0.0,false,,false,,false,false,false,0.0,false,,
+W_Spillage,consumer,,0.0,,none,false,15,1,0.05,>=,0.0,false,,false,,false,false,false,0.0,false,,
