@@ -251,6 +251,7 @@ function _append_ramping_data_to_indices(connection, table_name)
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
+        -- Do we need asset_commission below?
         LEFT JOIN asset_commission
             ON cons.asset = asset_commission.asset
             AND cons.year = asset_commission.commission_year

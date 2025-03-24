@@ -60,6 +60,48 @@ blocks, and are replaced by columns `time_block_start` and `time_block_end`.
 
 """
 function create_unrolled_partition_tables!(connection)
+    # Create a temporary table because the functions in this file is created when asset_both must be present
+    # Now asset_both can be missing, but the functions are still used in the code
+    # The required information should be from the union of asset_both and asset_milestone_simple_investment
+    # This is a temporary solution until this function is further refactored
+    DBInterface.execute(
+        connection,
+        "CREATE OR REPLACE TABLE tmp_asset_both AS (
+            SELECT
+                asset_both.asset,
+                asset_both.milestone_year,
+                asset_both.commission_year
+            FROM asset_both
+
+            UNION
+
+            SELECT
+                simple.asset,
+                simple.milestone_year,
+                simple.milestone_year,
+            FROM asset_milestone_simple_investment AS simple
+        )
+        ",
+    )
+
+    # Create a temporary table, same as above
+    DBInterface.execute(
+        connection,
+        "CREATE OR REPLACE TABLE tmp_asset_commission AS (
+            SELECT
+                asset_commission.asset,
+                asset_commission.commission_year
+            FROM asset_commission
+
+            UNION
+
+            SELECT
+                simple.asset,
+                simple.milestone_year
+            FROM asset_milestone_simple_investment AS simple
+        )
+        ",
+    )
     DBInterface.execute(
         connection,
         "CREATE OR REPLACE TABLE t_explicit_assets_rep_periods_partitions AS
@@ -72,9 +114,9 @@ function create_unrolled_partition_tables!(connection)
             rep_periods_data.num_timesteps,
         FROM asset
         CROSS JOIN rep_periods_data
-        LEFT JOIN asset_commission
-            ON asset.asset = asset_commission.asset
-            AND rep_periods_data.year = asset_commission.commission_year
+        LEFT JOIN tmp_asset_commission
+            ON asset.asset = tmp_asset_commission.asset
+            AND rep_periods_data.year = tmp_asset_commission.commission_year
         LEFT JOIN assets_rep_periods_partitions as arpp
             ON asset.asset = arpp.asset
             AND rep_periods_data.year = arpp.year
@@ -83,7 +125,7 @@ function create_unrolled_partition_tables!(connection)
             SELECT
                 asset,
                 milestone_year,
-            FROM asset_both
+            FROM tmp_asset_both
             GROUP BY
                 asset, milestone_year
         ) AS t
@@ -207,15 +249,15 @@ function create_unrolled_partition_tables!(connection)
         "CREATE OR REPLACE TABLE t_explicit_assets_timeframe_partitions AS
         SELECT
             asset.asset,
-            asset_commission.commission_year AS year,
+            tmp_asset_commission.commission_year AS year,
             COALESCE(atp.specification, 'uniform') AS specification,
             COALESCE(atp.partition, '1') AS partition,
         FROM asset AS asset
-        LEFT JOIN asset_commission
-            ON asset.asset = asset_commission.asset
+        LEFT JOIN tmp_asset_commission
+            ON asset.asset = tmp_asset_commission.asset
         LEFT JOIN assets_timeframe_partitions AS atp
             ON asset.asset = atp.asset
-            AND asset_commission.commission_year = atp.year
+            AND tmp_asset_commission.commission_year = atp.year
         WHERE
             asset.is_seasonal
         ",
@@ -399,10 +441,10 @@ function create_lowest_resolution_table!(connection)
         @timeit to "append $table_name rows" for row in DuckDB.query(
             connection,
             "SELECT merged.* FROM $merged_table AS merged
-            LEFT JOIN asset_both
-                ON asset_both.asset = merged.asset
-                AND asset_both.milestone_year = merged.year
-                AND asset_both.commission_year = merged.year
+            LEFT JOIN tmp_asset_both
+                ON tmp_asset_both.asset = merged.asset
+                AND tmp_asset_both.milestone_year = merged.year
+                AND tmp_asset_both.commission_year = merged.year
             ORDER BY
                 merged.asset,
                 merged.year,
@@ -467,10 +509,10 @@ function create_highest_resolution_table!(connection)
                 SELECT DISTINCT asset, year, rep_period, time_block_start
                 FROM $merged_table
             ) AS merged
-            LEFT JOIN asset_both
-                ON asset_both.asset = merged.asset
-                AND asset_both.milestone_year = merged.year
-                AND asset_both.commission_year = merged.year
+            LEFT JOIN tmp_asset_both
+                ON tmp_asset_both.asset = merged.asset
+                AND tmp_asset_both.milestone_year = merged.year
+                AND tmp_asset_both.commission_year = merged.year
             LEFT JOIN rep_periods_data
                 ON merged.year = rep_periods_data.year
                     AND merged.rep_period = rep_periods_data.rep_period
