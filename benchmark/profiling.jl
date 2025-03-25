@@ -57,6 +57,6 @@ end
 
 #%%
 
-@time model = create_model(graph, representative_periods, dataframes, timeframe);
+@time model, expressions = create_model(graph, representative_periods, dataframes, timeframe);
 @benchmark create_model($graph, $representative_periods, $dataframes, $timeframe)
 # @profview create_model(graph, representative_periods, dataframes, timeframe);
