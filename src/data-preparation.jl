@@ -75,23 +75,10 @@ function create_unrolled_partition_tables!(connection)
             rep_periods_data.num_timesteps,
         FROM asset
         CROSS JOIN rep_periods_data
-        LEFT JOIN asset_commission
-            ON asset.asset = asset_commission.asset
-            AND rep_periods_data.year = asset_commission.commission_year
         LEFT JOIN assets_rep_periods_partitions as arpp
             ON asset.asset = arpp.asset
             AND rep_periods_data.year = arpp.year
             AND rep_periods_data.rep_period = arpp.rep_period
-        LEFT JOIN (
-            SELECT
-                asset,
-                milestone_year,
-            FROM asset_both
-            GROUP BY
-                asset, milestone_year
-        ) AS t
-            ON asset.asset = t.asset
-            AND rep_periods_data.year = t.milestone_year
         ORDER BY rep_periods_data.year, rep_periods_data.rep_period
         ",
     )
@@ -210,19 +197,23 @@ function create_unrolled_partition_tables!(connection)
     DBInterface.execute(
         connection,
         "CREATE OR REPLACE TABLE t_explicit_assets_timeframe_partitions AS
+        WITH t_relevant_assets AS (
+            SELECT DISTINCT
+                asset.asset,
+                timeframe_data.year,
+            FROM asset
+            CROSS JOIN timeframe_data
+            WHERE asset.is_seasonal
+        )
         SELECT
-            asset.asset,
-            asset_commission.commission_year AS year,
+            t_relevant_assets.asset,
+            t_relevant_assets.year,
             COALESCE(atp.specification, 'uniform') AS specification,
             COALESCE(atp.partition, '1') AS partition,
-        FROM asset AS asset
-        LEFT JOIN asset_commission
-            ON asset.asset = asset_commission.asset
+        FROM t_relevant_assets
         LEFT JOIN assets_timeframe_partitions AS atp
-            ON asset.asset = atp.asset
-            AND asset_commission.commission_year = atp.year
-        WHERE
-            asset.is_seasonal
+            ON t_relevant_assets.asset = atp.asset
+            AND t_relevant_assets.year = atp.year
         ",
     )
 
@@ -404,10 +395,6 @@ function create_lowest_resolution_table!(connection)
         @timeit to "append $table_name rows" for row in DuckDB.query(
             connection,
             "SELECT merged.* FROM $merged_table AS merged
-            LEFT JOIN asset_both
-                ON asset_both.asset = merged.asset
-                AND asset_both.milestone_year = merged.year
-                AND asset_both.commission_year = merged.year
             ORDER BY
                 merged.asset,
                 merged.year,
@@ -472,10 +459,6 @@ function create_highest_resolution_table!(connection)
                 SELECT DISTINCT asset, year, rep_period, time_block_start
                 FROM $merged_table
             ) AS merged
-            LEFT JOIN asset_both
-                ON asset_both.asset = merged.asset
-                AND asset_both.milestone_year = merged.year
-                AND asset_both.commission_year = merged.year
             LEFT JOIN rep_periods_data
                 ON merged.year = rep_periods_data.year
                     AND merged.rep_period = rep_periods_data.rep_period

@@ -251,9 +251,6 @@ function _append_ramping_data_to_indices(connection, table_name)
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
-        LEFT JOIN asset_commission
-            ON cons.asset = asset_commission.asset
-            AND cons.year = asset_commission.commission_year
         LEFT OUTER JOIN assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
