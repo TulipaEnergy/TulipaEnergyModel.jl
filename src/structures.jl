@@ -282,7 +282,7 @@ mutable struct EnergyProblem
         energy_problem = new(
             connection,
             variables,
-            Dict(),
+            Dict{Symbol,TulipaExpression}(),
             constraints,
             profiles,
             ModelParameters(connection, model_parameters_file),
