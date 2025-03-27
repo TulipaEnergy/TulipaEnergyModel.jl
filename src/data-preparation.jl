@@ -339,6 +339,25 @@ function create_flow_rep_periods_partitions_table!(connection)
     # This function calculates the flow representative period partitions,
     # using the information of the assets. This is a (complex) calculation and therefore not provided by the user.
 
+    ```
+               from_partition = partition of from_asset
+               to_partition = partition of to_asset
+
+               for each row:
+               if from_ and to_partition exist
+                   if flow is transport
+                       flow_partition = max(from_partition, to_partition)
+                   else (if flow not transport)
+                       flow_partition = min(ditto)
+                   end
+               elseif from_ only exists
+                   flow_partition = from_partition
+               elseif to_ only exists
+                   flow_partition = to_partition
+               end
+
+               ```
+    return
 end
 
 function create_lowest_resolution_table!(connection)
