@@ -14,7 +14,13 @@ Inside the code for this package, you can find the folder [`test/inputs/Tiny`](h
 
 The files inside the "Tiny" folder define the assets and flows data, their profiles, and their time resolution, as well as the representative periods and which periods in the full problem formulation they represent.
 
-You can read more about the [Input](@ref input) later - for now you have everything you need!
+You can read more about the [Input](@ref input) later - for now just know that it's a minimal problem with producers connected to consumers.
+The optimisation will solve:
+
+1. Optimal (minimum cost) investment in production and flow capacities to satisfy future demand
+1. Optimal (minimum cost) operation (dispatch) of the new system
+
+Now you have everything you need!
 
 ### Starting Julia
 
@@ -22,6 +28,8 @@ Choose one:
 
 - In VSCode: Press `CTRL`+`Shift`+`P` and then `Enter` to start a Julia REPL.
 - In the terminal: Type `julia` and press `Enter`
+- Enter package mode and activate the project: `]` then `pkg> activate .` (including the dot!)
+- Make sure your package are up to date: `pkg> up`
 
 ### Run a tiny scenario
 
@@ -30,8 +38,9 @@ In Julia run:
 ```julia @example bt-1
 using DuckDB, TulipaIO, TulipaEnergyModel
 
-# Set the input directory to the Tiny folder
-input_dir = "../../test/inputs/Tiny" # Something like "test/inputs/Tiny" or "test\\inputs\\Tiny"
+# Set the input directory to the Tiny folder (which is in the test folder of the package)
+cp(joinpath(pkgdir(TulipaEnergyModel), "test", "inputs", "Tiny"), "example-data") # Create the path to the test folder
+input_dir = "example-data"
 readdir(input_dir) # Check the input directory is correct - this should show the names of the files in the folder
 
 # Create a DuckDB database connection
@@ -59,8 +68,11 @@ First create the DuckDB connection, populate the data, and create an empty [Ener
 ```@example manual-energy-problem
 using DuckDB, TulipaIO, TulipaEnergyModel
 
-input_dir = "../../test/inputs/Tiny" # hide
+# input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
+# Set the input directory to the Tiny folder (which is in the test folder of the package)
+cp(joinpath(pkgdir(TulipaEnergyModel), "test", "inputs", "Tiny"), "example-data") # Create the path to the test folder
+input_dir = "example-data"
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
 energy_problem = EnergyProblem(connection)
@@ -78,6 +90,7 @@ To create the internal model, call the function [`create_model!`](@ref).
 create_model!(energy_problem)
 energy_problem.model
 ```
+Now the internal model has been created and you can see the number of variables and constraints being used.
 
 The model has not been solved yet, which can be verified through the `solved` flag inside the energy problem:
 

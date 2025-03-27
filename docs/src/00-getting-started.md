@@ -33,6 +33,9 @@ pkg> add TulipaEnergyModel  # The model builder
 pkg> add TulipaIO           # For data handling
 ```
 
+!!! info
+    Make sure your project environment (folder where you are working) is not called TulipaEnergyModel or you will get a name conflict error when you try to add the package.
+
 Tulipa relies on [DuckDB](https://duckdb.org/) for data-handling:
 
 ```julia-pkg
@@ -43,17 +46,20 @@ pkg> add DuckDB
 
 ## Using packages in your project
 
-Now that the packages are installed, you need to activate them in your project. You should always have this line at the top of your code, specifying any packages you want to use.
+Now that the packages are installed, you need to activate them in your project by running the code below.
 
 ```julia
 using TulipaEnergyModel, TulipaIO, DuckDB
 ```
 
-Just to show that it worked, try accessing the documentation of a package:
+!!! info
+    You should always have this line at the top of your code, specifying any packages you want to use.
+
+To check if the packages are installed and active, try accessing the documentation of a package:
 
 - Press `?` to enter help mode, then:
 
-```julia
+```julia @example help
 # Search the documentation for this function from TulipaEnergyModel
 help?> default_parameters
 ```
