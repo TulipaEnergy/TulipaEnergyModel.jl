@@ -2,7 +2,7 @@
 
 The optimization model parameters with the input data must follow the schema below for each table. To create these tables we currently use CSV files that follow this same schema and then convert them into tables using TulipaIO, as shown in the basic example of the [Tutorials](@ref basic-example) section.
 
-The schemas can be found in the `input-schemas.json`. For more advanced users, they can also access the schemas at any time after loading the package by typing `TulipaEnergyModel.schema_per_table_name` in the Julia console. Here is the complete list of model parameters in the schemas per table (or CSV file):
+The schemas below are in [`input-schemas.json`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/input-schemas.json). You can also view the schemas after loading the package by typing `TulipaEnergyModel.schema_per_table_name` in the Julia console. Here is the complete list of model parameters in the schemas per table (or CSV file):
 
 !!! info "Optional tables/files and their defaults"
     The following tables/files are allowed to be missing: "assets\_rep\_periods\_partitions", "assets\_timeframe\_partitions", "assets\_timeframe\_profiles", "flows\_rep\_periods\_partitions", "group\_asset", "profiles\_timeframe".
