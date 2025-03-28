@@ -91,33 +91,33 @@ Now the internal model has been created and you can see the number of variables 
 
 The model has not been solved yet, which can be verified through the `solved` flag inside the energy problem:
 
-```@example manual-energy-problem
+```@example basics
 energy_problem.solved
 ```
 
 Finally, you can solve the model:
 
-```@example manual-energy-problem
+```@example basics
 solve_model!(energy_problem)
 ```
 
 To compute the solution and save it in the DuckDB connection, you can use
 
-```@example manual-energy-problem
+```@example basics
 save_solution!(energy_problem)
 ```
 
 The solutions will be saved in the variable and constraints tables.
 To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref)
 
-```@example manual-energy-problem
+```@example basics
 mkdir("output_folder")
 export_solution_to_csv_files("output_folder", energy_problem)
 ```
 
 The objective value and the termination status are also included in the energy problem:
 
-```@example manual-energy-problem
+```@example basics
 energy_problem.objective_value, energy_problem.termination_status
 ```
 
