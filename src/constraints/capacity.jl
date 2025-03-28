@@ -392,7 +392,7 @@ function _append_capacity_data_to_indices_compact_method(connection, table_name)
         LEFT OUTER JOIN assets_profiles AS avail_profile
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
-            AND assets_profiles.profile_type = 'availability'
+            AND avail_profile.profile_type = 'availability'
         WHERE asset.investment_method = 'compact'
         GROUP BY cons.id
         ORDER BY cons.id
@@ -415,7 +415,7 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
             ANY_VALUE(cons.time_block_end) AS time_block_end,
             ANY_VALUE(expr_avail.id) AS avail_indices,
             ANY_VALUE(expr_avail.commission_year) AS avail_commission_year,
-            SUM(expr_avail.initial_units) AS avail_initial_units,
+            ANY_VALUE(expr_avail.initial_units) AS avail_initial_units,
             ANY_VALUE(avail_profile.profile_name) AS avail_profile_name,
             ANY_VALUE(asset.capacity) AS capacity,
             ANY_VALUE(asset.investment_method) AS investment_method,
@@ -437,7 +437,7 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
         LEFT OUTER JOIN assets_profiles AS avail_profile
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
-            AND assets_profiles.profile_type = 'availability'
+            AND avail_profile.profile_type = 'availability'
         WHERE asset.investment_method in ('simple', 'none')
         GROUP BY cons.id
         ORDER BY cons.id
