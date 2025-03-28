@@ -35,7 +35,7 @@ Solve the JuMP model. The `optimizer` argument should be an MILP solver from the
 list of [supported solvers](https://jump.dev/JuMP.jl/stable/installation/#Supported-solvers).
 By default we use HiGHS.
 Note: If `create_model(; direct_model = true)` the `optimizer` cannot be changed in `solve_model`, but can be changed in the `optimizer_with_attributes` argument of [`create_model`](@ref).
-For more information, see the [JuMP documentation](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model).
+For more information, see [`JuMP.direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model).
 
 The keyword argument `parameters` should be passed as a list of `key => value` pairs.
 These can be created manually, obtained using [`default_parameters`](@ref), or read from a file
