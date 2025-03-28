@@ -17,6 +17,13 @@
     )
 end
 
+@testset "Test enable_names & direct_model usage" begin
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
+    energy_problem = TulipaEnergyModel.run_scenario(connection;)
+    TulipaEnergyModel.create_model!(energy_problem; enable_names = false, direct_model = true)
+end
+
 @testset "Test default_parameters usage" begin
     @testset "HiGHS" begin
         expected = Dict{String,Any}("output_flag" => false)
