@@ -3,7 +3,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     assets_investment_energy = variables[:assets_investment_energy]
     flows_investment = variables[:flows_investment]
 
-    expr_available_asset_units = expressions[:available_asset_units_compact_method]
+    expr_available_asset_units_compact_method = expressions[:available_asset_units_compact_method]
+    expr_available_asset_units_simple_method = expressions[:available_asset_units_simple_method]
     expr_available_energy_units = expressions[:available_energy_units]
     expr_available_flow_units = expressions[:available_flow_units]
 
@@ -43,6 +44,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         )
     )
 
+    # Select expressions for compact method
     indices = DuckDB.query(
         connection,
         "SELECT
@@ -63,11 +65,40 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         ",
     )
 
-    assets_fixed_cost = @expression(
+    assets_fixed_cost_compact_method = @expression(
         model,
         sum(
-            row.cost * expr_avail for
-            (row, expr_avail) in zip(indices, expr_available_asset_units.expressions[:assets])
+            row.cost * expr_avail for (row, expr_avail) in
+            zip(indices, expr_available_asset_units_compact_method.expressions[:assets])
+        )
+    )
+
+    # Select expressions for simple method
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            expr.id,
+            t_objective_assets.weight_for_operation_discounts
+                * asset_commission.fixed_cost
+                * t_objective_assets.capacity
+                AS cost,
+        FROM expr_available_asset_units_simple_method AS expr
+        LEFT JOIN asset_commission
+            ON expr.asset = asset_commission.asset
+            AND expr.commission_year = asset_commission.commission_year
+        LEFT JOIN t_objective_assets
+            ON expr.asset = t_objective_assets.asset
+            AND expr.milestone_year = t_objective_assets.milestone_year
+        ORDER BY
+            expr.id
+        ",
+    )
+
+    assets_fixed_cost_simple_method = @expression(
+        model,
+        sum(
+            row.cost * expr_avail for (row, expr_avail) in
+            zip(indices, expr_available_asset_units_simple_method.expressions[:assets])
         )
     )
 
@@ -265,7 +296,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         model,
         Min,
         assets_investment_cost +
-        assets_fixed_cost +
+        assets_fixed_cost_compact_method +
+        assets_fixed_cost_simple_method +
         storage_assets_energy_investment_cost +
         storage_assets_energy_fixed_cost +
         flows_investment_cost +
