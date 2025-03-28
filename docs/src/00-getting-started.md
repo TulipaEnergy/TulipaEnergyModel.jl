@@ -60,11 +60,11 @@ To check if the packages are installed and active, try accessing the documentati
 - Press `?` to enter help mode, then:
 
 ```julia @example help
-# Search the documentation for this function from TulipaEnergyModel
-help?> default_parameters
+# Search the documentation for a function from TulipaEnergyModel
+help?> save_solution!
 ```
 
-You should see the documentation for the [default_parameters](@ref) function. If Julia says it does not exist, that means TulipaEnergyModel is not in your environment (you need to activate it with `add` and `using` as described above).
+You should see the documentation for the [save_solution!](@ref) function. If Julia says it does not exist, that means TulipaEnergyModel is not in your environment (you need to activate it with `add` and `using` as described above).
 
 ## Next Step
 
