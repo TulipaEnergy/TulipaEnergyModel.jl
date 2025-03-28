@@ -4,7 +4,7 @@ export create_model!, create_model
     create_model!(energy_problem; kwargs...)
 
 Create the internal model of an [`TulipaEnergyModel.EnergyProblem`](@ref).
-Any keyword argument will be passed to the underlyting [`create_model`](@ref).
+Any keyword argument will be passed to the underlying [`create_model`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
     energy_problem.model = @timeit to "create_model" create_model(
