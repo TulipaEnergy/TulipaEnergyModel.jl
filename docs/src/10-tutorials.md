@@ -63,7 +63,7 @@ If you need more control, you can create the energy problem first, then the opti
 
 First create the DuckDB connection, populate the data, and create an empty [EnergyProblem](@ref energy-problem):
 
-```@example basics
+```julia @example basics
 using DuckDB, TulipaIO, TulipaEnergyModel
 
 # You can reuse the filepath you created in the first tutorial (or create it with the commented line below)
@@ -76,13 +76,13 @@ energy_problem = EnergyProblem(connection)
 
 The energy problem does not have a model yet:
 
-```@example basics
+```julia @example basics
 energy_problem.model === nothing
 ```
 
 To create the internal model, call the function [`create_model!`](@ref).
 
-```@example basics
+```julia @example basics
 create_model!(energy_problem)
 energy_problem.model
 ```
@@ -91,33 +91,33 @@ Now the internal model has been created and you can see the number of variables 
 
 The model has not been solved yet, which can be verified through the `solved` flag inside the energy problem:
 
-```@example basics
+```julia @example basics
 energy_problem.solved
 ```
 
 Finally, you can solve the model:
 
-```@example basics
+```julia @example basics
 solve_model!(energy_problem)
 ```
 
 To compute the solution and save it in the DuckDB connection, you can use
 
-```@example basics
+```julia @example basics
 save_solution!(energy_problem)
 ```
 
 The solutions will be saved in the variable and constraints tables.
 To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref)
 
-```@example basics
+```julia @example basics
 mkdir("output_folder")
 export_solution_to_csv_files("output_folder", energy_problem)
 ```
 
 The objective value and the termination status are also included in the energy problem:
 
-```@example basics
+```julia @example basics
 energy_problem.objective_value, energy_problem.termination_status
 ```
 
