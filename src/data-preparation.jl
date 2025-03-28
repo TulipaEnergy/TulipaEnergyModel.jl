@@ -263,9 +263,25 @@ function create_unrolled_partition_tables!(connection)
     return
 end
 
+"""
+create_merged_tables!(connection)
+
+Create the internal tables of merged flows and assets time partitions to be used in the computation of the lowest and highest resolution tables.
+The inputs tables are the flows table `flow_time_resolution_rep_period` and the assets table `asset_time_resolution_rep_period`.
+
+All merged tables have the same columns: `asset`, `year`, `rep_period`, `time_block_start`, and `time_block_end`.
+Given a "group" `(asset, year, rep_period)`, the table will have the list of all partitions that should be used to compute the resolution tables.
+These are the output tables:
+
+- `merged_in_flows`: Set `asset = from_asset` and drop `to_asset` from `flow_time_resolution_rep_period`.
+- `merged_out_flows`: Set `asset = to_asset` and drop `from_asset` from `flow_time_resolution_rep_period`.
+- `merged_assets_and_out_flows`: Union of `merged_out_flows` and `asset_time_resolution_rep_period`.
+- `merged_all_flows`: Union (i.e., vertically concatenation) of the tables above.
+- `merged_all`: Union of `merged_all_flows` and `asset_time_resolution_rep_period`.
+
+This function is intended for internal use.
+"""
 function create_merged_tables!(connection)
-    # These are equivalent to the partitions in time-resolution.jl
-    # But computed in a more general context to be used by variables as well
 
     # Incoming flows
     DuckDB.execute(
@@ -316,6 +332,31 @@ function create_merged_tables!(connection)
         FROM merged_all_flows
         ",
     )
+    return
+end
+
+function create_flow_rep_periods_partitions_table!(connection)
+    # This function calculates the flow representative period partitions,
+    # using the information of the assets. This is a (complex) calculation and therefore not provided by the user.
+
+    ```
+               from_partition = partition of from_asset
+               to_partition = partition of to_asset
+
+               for each row:
+               if from_ and to_partition exist
+                   if flow is transport
+                       flow_partition = max(from_partition, to_partition)
+                   else (if flow not transport)
+                       flow_partition = min(ditto)
+                   end
+               elseif from_ only exists
+                   flow_partition = from_partition
+               elseif to_ only exists
+                   flow_partition = to_partition
+               end
+
+               ```
     return
 end
 

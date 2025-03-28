@@ -25,6 +25,9 @@ function create_internal_tables!(connection; skip_validation = false)
         @timeit to "validate data" validate_data!(connection)
     end
 
+    @timeit to "create_flow_rep_periods_partitions_table!" create_flow_rep_periods_partitions_table!(
+        connection,
+    )
     @timeit to "create_unrolled_partition_tables" create_unrolled_partition_tables!(connection)
     @timeit to "create_merged_tables" create_merged_tables!(connection)
     @timeit to "create_lowest_resolution_table" create_lowest_resolution_table!(connection)
