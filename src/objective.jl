@@ -3,7 +3,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     assets_investment_energy = variables[:assets_investment_energy]
     flows_investment = variables[:flows_investment]
 
-    expr_available_asset_units = expressions[:available_asset_units]
+    expr_available_asset_units = expressions[:available_asset_units_compact_method]
     expr_available_energy_units = expressions[:available_energy_units]
     expr_available_flow_units = expressions[:available_flow_units]
 
@@ -51,7 +51,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * asset_commission.fixed_cost
                 * t_objective_assets.capacity
                 AS cost,
-        FROM expr_available_asset_units AS expr
+        FROM expr_available_asset_units_compact_method AS expr
         LEFT JOIN asset_commission
             ON expr.asset = asset_commission.asset
             AND expr.commission_year = asset_commission.commission_year
