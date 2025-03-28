@@ -197,7 +197,6 @@ from
     left join asset on asset.asset = asset_both.asset
 where
     asset_both.decommissionable
-    and asset_both.milestone_year != asset_both.commission_year
 ;
 
 drop sequence id
@@ -221,7 +220,6 @@ from
 where
     flow.is_transport = true
     and flow_both.decommissionable
-    and flow_both.commission_year != flow_both.milestone_year
 ;
 
 drop sequence id
@@ -269,7 +267,6 @@ where
     asset.storage_method_energy = true
     and asset.type = 'storage'
     and asset_both.decommissionable
-    and asset_both.commission_year != asset_both.milestone_year
 ;
 
 drop sequence id

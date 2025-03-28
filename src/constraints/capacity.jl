@@ -7,13 +7,16 @@ Adds the capacity constraints for all asset types to the model
 """
 function add_capacity_constraints!(connection, model, expressions, constraints, profiles)
     ## unpack from expressions
-    expr_avail = expressions[:available_asset_units].expressions[:assets]
+    expr_avail_compact_method =
+        expressions[:available_asset_units_compact_method].expressions[:assets]
+    expr_avail_simple_method =
+        expressions[:available_asset_units_simple_method].expressions[:assets]
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
-    let table_name = :capacity_outgoing, cons = constraints[table_name]
-        indices = _append_capacity_data_to_indices(connection, table_name)
-
+    # - Compact investment method
+    let table_name = :capacity_outgoing_compact_method, cons = constraints[table_name]
+        indices = _append_capacity_data_to_indices_compact_method(connection, table_name)
         attach_expression!(
             cons,
             :profile_times_capacity,
@@ -30,7 +33,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                                     Statistics.mean,
                                     1.0,
                                 )
-                                availability_agg * expr_avail[avail_id]
+                                availability_agg * expr_avail_compact_method[avail_id]
                             end for (avail_profile_name, avail_id) in
                             zip(row.avail_profile_name, row.avail_indices)
                         )
@@ -40,11 +43,35 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
+    # - Simple investment method
+    let table_name = :capacity_outgoing_simple_method, cons = constraints[table_name]
+        indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
+
+        attach_expression!(
+            cons,
+            :profile_times_capacity,
+            [
+                @expression(
+                    model,
+                    row.capacity *
+                    _profile_aggregate(
+                        profiles.rep_period,
+                        (row.profile_name, row.year, row.rep_period),
+                        row.time_block_start:row.time_block_end,
+                        Statistics.mean,
+                        1.0,
+                    ) *
+                    sum(expr_avail_simple_method[id] for id in row.avail_indices)
+                ) for row in indices
+            ],
+        )
+    end
+
     # - Create capacity limit for outgoing flows with binary is_charging for storage assets
     let table_name = :capacity_outgoing_non_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _append_capacity_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
 
         attach_expression!(
             cons,
@@ -73,7 +100,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     let table_name = :capacity_outgoing_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _append_capacity_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
 
         attach_expression!(
             cons,
@@ -92,8 +119,9 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         availability_agg *
                         row.capacity *
                         (
-                            row.avail_initial_units * (1 - is_charging) +
-                            sum(expr_avail[avail_id] for avail_id in row.avail_indices)
+                            row.avail_initial_units * (1 - is_charging) + sum(
+                                expr_avail_simple_method[avail_id] for avail_id in row.avail_indices
+                            )
                         )
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -125,7 +153,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
 
     # - Create capacity limit for incoming flows
     let table_name = :capacity_incoming, cons = constraints[table_name]
-        indices = _append_capacity_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
         attach_expression!(
             cons,
             :profile_times_capacity,
@@ -142,7 +170,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         model,
                         availability_agg *
                         row.capacity *
-                        sum(expr_avail[avail_id] for avail_id in row.avail_indices)
+                        sum(expr_avail_simple_method[avail_id] for avail_id in row.avail_indices)
                     )
                 end for row in indices
             ],
@@ -153,7 +181,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     let table_name = :capacity_incoming_non_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _append_capacity_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
 
         attach_expression!(
             cons,
@@ -179,7 +207,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     let table_name = :capacity_incoming_investable_storage_with_binary,
         cons = constraints[table_name]
 
-        indices = _append_capacity_data_to_indices(connection, table_name)
+        indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
 
         attach_expression!(
             cons,
@@ -198,8 +226,9 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         availability_agg *
                         row.capacity *
                         (
-                            row.avail_initial_units * is_charging +
-                            sum(expr_avail[avail_id] for avail_id in row.avail_indices)
+                            row.avail_initial_units * is_charging + sum(
+                                expr_avail_simple_method[avail_id] for avail_id in row.avail_indices
+                            )
                         )
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -233,7 +262,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     # version and the version using binary to avoid charging and discharging at
     # the same time
 
-    for suffix in ("", "_non_investable_storage_with_binary")
+    for suffix in ("_compact_method", "_simple_method", "_non_investable_storage_with_binary")
         cons_name = Symbol("max_output_flows_limit$suffix")
         table_name = Symbol("capacity_outgoing$suffix")
 
@@ -326,7 +355,10 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     end
 end
 
-function _append_capacity_data_to_indices(connection, table_name)
+# The below two functions are very similar
+# - The compact method selects the compact investment method
+# - and aggregates the available capacity indices
+function _append_capacity_data_to_indices_compact_method(connection, table_name)
     return DuckDB.query(
         connection,
         "SELECT
@@ -350,7 +382,7 @@ function _append_capacity_data_to_indices(connection, table_name)
         LEFT JOIN asset_commission
             ON cons.asset = asset_commission.asset
             AND cons.year = asset_commission.commission_year
-        LEFT JOIN expr_available_asset_units AS expr_avail
+        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
         LEFT OUTER JOIN assets_profiles
@@ -361,6 +393,52 @@ function _append_capacity_data_to_indices(connection, table_name)
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
             AND assets_profiles.profile_type = 'availability'
+        WHERE asset.investment_method = 'compact'
+        GROUP BY cons.id
+        ORDER BY cons.id
+        ",
+    )
+end
+
+# - The simple method selects the simple or the none investment method
+# - and do not aggregate the available capacity indices, because there will be only 1.
+# - It is a choice the the none method takes the simple formulation (can also take the compact formulation)
+function _append_capacity_data_to_indices_simple_method(connection, table_name)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            ANY_VALUE(cons.id) AS id,
+            ANY_VALUE(cons.asset) AS asset,
+            ANY_VALUE(cons.year) AS year,
+            ANY_VALUE(cons.rep_period) AS rep_period,
+            ANY_VALUE(cons.time_block_start) AS time_block_start,
+            ANY_VALUE(cons.time_block_end) AS time_block_end,
+            ANY_VALUE(expr_avail.id) AS avail_indices,
+            ANY_VALUE(expr_avail.commission_year) AS avail_commission_year,
+            SUM(expr_avail.initial_units) AS avail_initial_units,
+            ANY_VALUE(avail_profile.profile_name) AS avail_profile_name,
+            ANY_VALUE(asset.capacity) AS capacity,
+            ANY_VALUE(asset.investment_method) AS investment_method,
+            ANY_VALUE(asset_commission.investment_limit) AS investment_limit,
+            ANY_VALUE(assets_profiles.profile_name) AS profile_name,
+        FROM cons_$table_name AS cons
+        LEFT JOIN asset
+            ON cons.asset = asset.asset
+        LEFT JOIN asset_commission
+            ON cons.asset = asset_commission.asset
+            AND cons.year = asset_commission.commission_year
+        LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.year = expr_avail.milestone_year
+        LEFT OUTER JOIN assets_profiles
+            ON cons.asset = assets_profiles.asset
+            AND cons.year = assets_profiles.commission_year
+            AND assets_profiles.profile_type = 'availability'
+        LEFT OUTER JOIN assets_profiles AS avail_profile
+            ON cons.asset = avail_profile.asset
+            AND expr_avail.commission_year = avail_profile.commission_year
+            AND assets_profiles.profile_type = 'availability'
+        WHERE asset.investment_method in ('simple', 'none')
         GROUP BY cons.id
         ORDER BY cons.id
         ",
