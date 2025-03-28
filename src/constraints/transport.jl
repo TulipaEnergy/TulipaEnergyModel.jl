@@ -109,8 +109,8 @@ function _append_transport_data_to_indices(connection)
             ANY_VALUE(cons.time_block_end) AS time_block_end,
             ANY_VALUE(cons.var_flow_id) AS var_flow_id,
             ANY_VALUE(flow.capacity) AS capacity,
-            ARRAY_AGG(expr_avail.id) AS avail_indices,
-            ARRAY_AGG(expr_avail.commission_year) AS avail_commission_years,
+            ANY_VALUE(expr_avail.id) AS avail_indices,
+            ANY_VALUE(expr_avail.commission_year) AS avail_commission_years,
             ANY_VALUE(flows_profiles.profile_name) AS profile_name,
         FROM cons_transport_flow_limit AS cons
         LEFT JOIN flow

@@ -120,7 +120,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_outgoing as
+create table cons_capacity_outgoing_compact_method as
 select
     nextval('id') as id,
     t_high.*
@@ -129,6 +129,25 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method == 'compact'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+create table cons_capacity_outgoing_simple_method as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method in ('simple', 'none')
 ;
 
 drop sequence id
@@ -173,14 +192,25 @@ where
     and asset_milestone.investable
 ;
 
-create table cons_limit_units_on as
+drop sequence id
+;
+
+create table cons_limit_units_on_compact_method as
 select
     *
 from
     var_units_on
+    left join asset on var_units_on.asset = asset.asset
+    where asset.investment_method = 'compact'
 ;
 
-drop sequence id
+create table cons_limit_units_on_simple_method as
+select
+    *
+from
+    var_units_on
+    left join asset on var_units_on.asset = asset.asset
+    where asset.investment_method in ('simple', 'none')
 ;
 
 create sequence id start 1
