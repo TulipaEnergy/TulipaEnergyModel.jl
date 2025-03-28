@@ -122,6 +122,8 @@ end
 
 ## [Speed improvements in the model creation](@id need-for-speed)
 
+### Disable names of variables and constraints
+
 If you want to speed-up model creation, consider disabling the naming of variables and constraints. Of course, removing the names will make debugging difficult (or impossible) - so enable/disable naming as needed for your analysis.
 
 ```julia
@@ -133,6 +135,19 @@ create_model!(energy_problem; enable_names = false)
 ```
 
 For more information, see the JuMP documentation for [Disable string names](https://jump.dev/JuMP.jl/stable/tutorials/getting_started/performance_tips/#Disable-string-names).
+
+### Create a direct model
+
+If you want to reduce memory usage, consider using JuMP's [`direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model). This restricts certain actions after model creation (see JuMP docs).
+If this feature is activated, the optimizer cannot be changed in `solve_model`[@ref], but can be changed in the `optimizer_with_attributes` argument of [`create_model`](ref).
+
+```julia
+# Create a direct model
+create_model!(energy_problem; direct_model = true)
+
+# Create a direct model while specifying a solver and attributes
+create_model!(energy_problem; direct_model = true, optimizer_with_attributes = JuMP.optimizer_with_attributes(HiGHS.Optimizer, "presolve" => "off", MOI.Silent() => true))
+```
 
 ## Storage specific setups
 
