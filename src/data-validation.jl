@@ -1,5 +1,8 @@
 export DataValidationException
 
+# TODO: Remove after https://github.com/TulipaEnergy/TulipaIO.jl/pull/105 is released
+TulipaIO.FmtSQL.fmt_quote(::Nothing) = "NULL"
+
 """
     DataValidationException
 
@@ -24,13 +27,21 @@ Raises an error if the data is not valid.
 function validate_data!(connection)
     error_messages = String[]
 
-    for (log_msg, validation_function) in (
-        ("no duplicate rows", _validate_no_duplicate_rows!),
-        ("valid schema's oneOf constraints", _validate_schema_one_of_constraints!),
-        ("only transport flows are investable", _validate_only_transport_flows_are_investable!),
-        ("group consistency between tables", _validate_group_consistency!),
+    for (log_msg, validation_function, fail_fast) in (
+        ("has all tables and columns", _validate_has_all_tables_and_columns!, true),
+        ("no duplicate rows", _validate_no_duplicate_rows!, false),
+        ("valid schema's oneOf constraints", _validate_schema_one_of_constraints!, false),
+        (
+            "only transport flows are investable",
+            _validate_only_transport_flows_are_investable!,
+            false,
+        ),
+        ("group consistency between tables", _validate_group_consistency!, false),
     )
         @timeit to "$log_msg" append!(error_messages, validation_function(connection))
+        if fail_fast && length(error_messages) > 0
+            break
+        end
     end
 
     if length(error_messages) > 0
@@ -38,6 +49,39 @@ function validate_data!(connection)
     end
 
     return
+end
+
+function _validate_has_all_tables_and_columns!(connection)
+    error_messages = String[]
+    for (table_name, table) in TulipaEnergyModel.schema_per_table_name
+        columns_from_connection = [
+            row.column_name for row in DuckDB.query(
+                connection,
+                "SELECT column_name FROM duckdb_columns() WHERE table_name = '$table_name'",
+            )
+        ]
+        if length(columns_from_connection) == 0
+            # Just to make sure that this is not a random case with no columns but the table exists
+            has_table =
+                only([
+                    row.count for row in DuckDB.query(
+                        connection,
+                        "SELECT COUNT(table_name) as count FROM duckdb_tables() WHERE table_name = '$table_name'",
+                    )
+                ]) == 1
+            if !has_table
+                push!(error_messages, "Table '$table_name' expected but not found")
+            end
+        end
+
+        for (column, _) in table
+            if !(column in columns_from_connection)
+                push!(error_messages, "Column '$column' is missing from table '$table_name'")
+            end
+        end
+    end
+
+    return error_messages
 end
 
 function _validate_no_duplicate_rows!(connection)
@@ -92,7 +136,7 @@ function _validate_schema_one_of_constraints!(connection)
     for (table_name, table) in TulipaEnergyModel.schema, (col, attr) in table
         if haskey(attr, "constraints") && haskey(attr["constraints"], "oneOf")
             valid_types = attr["constraints"]["oneOf"]
-            valid_types_string = join(["'$s'" for s in valid_types], ", ")
+            valid_types_string = join([TulipaIO.FmtSQL.fmt_quote(s) for s in valid_types], ", ")
             for row in DuckDB.query(
                 connection,
                 "SELECT $col FROM $table_name WHERE $col NOT IN ($valid_types_string)",

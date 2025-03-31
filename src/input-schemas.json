@@ -62,6 +62,7 @@
       "unit_of_measure": "h"
     },
     "group": {
+      "default": null,
       "description": "Group to which the asset belongs to (null/empty/missing -> no group).",
       "type": "VARCHAR"
     },
@@ -169,6 +170,7 @@
           "basic"
         ]
       },
+      "default": null,
       "description": "Which unit commitment method to use (null/empty/missing -> no unit commitment method).",
       "type": "VARCHAR"
     },
@@ -180,6 +182,7 @@
           "relaxed_binary"
         ]
       },
+      "default": null,
       "description": "Whether to use an extra binary variable for the storage assets to avoid charging and discharging simultaneously (null/empty/missing -> no binary).",
       "type": "VARCHAR"
     }
@@ -190,7 +193,6 @@
       "type": "VARCHAR"
     },
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning",
       "type": "INTEGER"
     },
@@ -212,7 +214,6 @@
       "unit_of_measure": "number"
     },
     "milestone_year": {
-      "default": 2000,
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     }
@@ -223,7 +224,6 @@
       "type": "VARCHAR"
     },
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning.",
       "type": "INTEGER"
     },
@@ -286,7 +286,6 @@
       "unit_of_measure": "MWh"
     },
     "milestone_year": {
-      "default": 2000,
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
@@ -332,7 +331,6 @@
       "type": "VARCHAR"
     },
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning",
       "type": "INTEGER"
     },
@@ -382,7 +380,6 @@
       "type": "VARCHAR"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -410,7 +407,6 @@
       "type": "VARCHAR"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -421,7 +417,6 @@
       "type": "VARCHAR"
     },
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning",
       "type": "INTEGER"
     },
@@ -453,6 +448,7 @@
       "unit_of_measure": "MW"
     },
     "carrier": {
+      "default": null,
       "description": "Energy carrier",
       "type": "VARCHAR"
     },
@@ -504,7 +500,6 @@
   },
   "flow_both": {
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning",
       "type": "INTEGER"
     },
@@ -530,7 +525,6 @@
       "unit_of_measure": "number"
     },
     "milestone_year": {
-      "default": 2000,
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
@@ -541,7 +535,6 @@
   },
   "flow_commission": {
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning",
       "type": "INTEGER"
     },
@@ -598,7 +591,6 @@
       "type": "BOOLEAN"
     },
     "milestone_year": {
-      "default": 2000,
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
@@ -636,7 +628,6 @@
       "type": "VARCHAR"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -673,7 +664,6 @@
       "type": "VARCHAR"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -688,7 +678,6 @@
       "type": "DOUBLE"
     },
     "milestone_year": {
-      "default": 2000,
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
@@ -707,12 +696,10 @@
       "type": "VARCHAR"
     },
     "rep_period": {
-      "default": 1,
       "description": "Representative period number.",
       "type": "INTEGER"
     },
     "timestep": {
-      "default": 1,
       "description": "Timestep number.",
       "type": "INTEGER"
     },
@@ -722,7 +709,6 @@
       "unit_of_measure": "p.u."
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -742,19 +728,16 @@
       "unit_of_measure": "p.u."
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
   },
   "rep_periods_data": {
     "num_timesteps": {
-      "default": 8760,
       "description": "Number of timesteps",
       "type": "INTEGER"
     },
     "rep_period": {
-      "default": 1,
       "description": "Representative period number.",
       "type": "INTEGER",
       "unit_of_measure": "number"
@@ -766,36 +749,31 @@
       "unit_of_measure": "hours"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
   },
   "rep_periods_mapping": {
     "period": {
-      "default": 1,
       "description": "Period number.",
       "type": "INTEGER"
     },
     "rep_period": {
-      "default": 1,
       "description": "Representative period number.",
       "type": "INTEGER"
     },
     "weight": {
-      "default": 1,
+      "default": 1.0,
       "description": "Hours",
       "type": "DOUBLE"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
   },
   "timeframe_data": {
     "num_timesteps": {
-      "default": 8760,
       "description": "Number of timesteps of the representative period.",
       "type": "INTEGER"
     },
@@ -804,7 +782,6 @@
       "type": "INTEGER"
     },
     "year": {
-      "default": 2000,
       "description": "Unique identifier (currently, the year itself)",
       "type": "INTEGER"
     }
@@ -821,7 +798,6 @@
       "type": "INTEGER"
     },
     "year": {
-      "default": 2000,
       "description": "Unique identifier (currently, the year itself)",
       "type": "INTEGER"
     }
