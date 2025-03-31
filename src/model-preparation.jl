@@ -524,13 +524,13 @@ function add_expressions_to_constraints!(connection, variables, constraints)
     )
 
     for table_name in (
-        :capacity_incoming,
-        :capacity_incoming_non_investable_storage_with_binary,
-        :capacity_incoming_investable_storage_with_binary,
+        :capacity_incoming_simple_method,
+        :capacity_incoming_simple_method_non_investable_storage_with_binary,
+        :capacity_incoming_simple_method_investable_storage_with_binary,
         :capacity_outgoing_compact_method,
         :capacity_outgoing_simple_method,
-        :capacity_outgoing_non_investable_storage_with_binary,
-        :capacity_outgoing_investable_storage_with_binary,
+        :capacity_outgoing_simple_method_non_investable_storage_with_binary,
+        :capacity_outgoing_simple_method_investable_storage_with_binary,
     )
         @timeit to "add_expression_terms_rep_period_constraints! for $table_name" add_expression_terms_rep_period_constraints!(
             connection,

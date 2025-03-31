@@ -70,8 +70,8 @@ function add_storage_constraints!(connection, model, variables, expressions, con
             ],
         )
 
-        available_energy_capacity =
-            expressions[:available_energy_capacity].expressions[:energy_capacity]
+        available_energy_capacity_simple_method =
+            expressions[:available_energy_capacity_simple_method].expressions[:energy_capacity]
 
         # - Maximum storage level
         attach_constraint!(
@@ -91,7 +91,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≤
                         max_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_id],
+                        available_energy_capacity_simple_method[row.avail_energy_capacity_id],
                         base_name = "max_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for
@@ -117,7 +117,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≥
                         min_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_id],
+                        available_energy_capacity_simple_method[row.avail_energy_capacity_id],
                         base_name = "min_storage_level_rep_period_limit[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for
@@ -185,8 +185,8 @@ function add_storage_constraints!(connection, model, variables, expressions, con
             ],
         )
 
-        available_energy_capacity =
-            expressions[:available_energy_capacity].expressions[:energy_capacity]
+        available_energy_capacity_simple_method =
+            expressions[:available_energy_capacity_simple_method].expressions[:energy_capacity]
 
         # - Maximum storage level
         attach_constraint!(
@@ -206,7 +206,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≤
                         max_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_id],
+                        available_energy_capacity_simple_method[row.avail_energy_capacity_id],
                         base_name = "max_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, var_storage_level) in
@@ -232,7 +232,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         model,
                         var_storage_level ≥
                         min_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_id],
+                        available_energy_capacity_simple_method[row.avail_energy_capacity_id],
                         base_name = "min_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, var_storage_level) in
@@ -264,7 +264,7 @@ function _append_storage_data_to_indices(connection, table_name)
         LEFT JOIN asset_milestone
             ON cons.asset = asset_milestone.asset
             AND cons.year = asset_milestone.milestone_year
-        LEFT JOIN expr_available_energy_capacity AS expr_avail
+        LEFT JOIN expr_available_energy_capacity_simple_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
         LEFT OUTER JOIN assets_profiles AS inflows_profile

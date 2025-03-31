@@ -131,7 +131,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
     end
 
     # - Simple method (including none)
-    let table_name = :available_energy_units, expr = expressions[table_name]
+    let table_name = :available_energy_units_simple_method, expr = expressions[table_name]
         var_energy_inv = variables[:assets_investment_energy].container
         var_energy_dec = variables[:assets_decommission_energy].container
 
@@ -168,7 +168,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
     end
 
     # - Simple method (including none)
-    let table_name = :available_flow_units, expr = expressions[table_name]
+    let table_name = :available_flow_units_simple_method, expr = expressions[table_name]
         var_inv = variables[:flows_investment].container
         var_dec = variables[:flows_decommission].container
 
@@ -300,7 +300,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_energy_units AS
+        CREATE OR REPLACE TABLE expr_available_energy_units_simple_method AS
         SELECT
             nextval('id') AS id,
             asset_both.asset AS asset,
@@ -329,7 +329,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_flow_units AS
+        CREATE OR REPLACE TABLE expr_available_flow_units_simple_method AS
         SELECT
             nextval('id') AS id,
             flow_both.from_asset AS from_asset,
@@ -360,8 +360,8 @@ function _create_multi_year_expressions_indices!(connection, expressions)
     for expr_name in (
         :available_asset_units_compact_method,
         :available_asset_units_simple_method,
-        :available_energy_units,
-        :available_flow_units,
+        :available_energy_units_simple_method,
+        :available_flow_units_simple_method,
     )
         expressions[expr_name] = TulipaExpression(connection, "expr_$expr_name")
     end

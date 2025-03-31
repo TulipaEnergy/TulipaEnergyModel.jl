@@ -61,7 +61,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_incoming as
+create table cons_capacity_incoming_simple_method as
 select
     nextval('id') as id,
     t_high.*
@@ -78,7 +78,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_incoming_non_investable_storage_with_binary as
+create table cons_capacity_incoming_simple_method_non_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -99,7 +99,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_incoming_investable_storage_with_binary as
+create table cons_capacity_incoming_simple_method_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -156,7 +156,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_outgoing_non_investable_storage_with_binary as
+create table cons_capacity_outgoing_simple_method_non_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -177,7 +177,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_outgoing_investable_storage_with_binary as
+create table cons_capacity_outgoing_simple_method_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -349,7 +349,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_transport_flow_limit as
+create table cons_transport_flow_limit_simple_method as
 select
     nextval('id') as id,
     var_flow.from_asset,

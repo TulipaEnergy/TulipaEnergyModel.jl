@@ -5,8 +5,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 
     expr_available_asset_units_compact_method = expressions[:available_asset_units_compact_method]
     expr_available_asset_units_simple_method = expressions[:available_asset_units_simple_method]
-    expr_available_energy_units = expressions[:available_energy_units]
-    expr_available_flow_units = expressions[:available_flow_units]
+    expr_available_energy_units_simple_method = expressions[:available_energy_units_simple_method]
+    expr_available_flow_units_simple_method = expressions[:available_flow_units_simple_method]
 
     social_rate = model_parameters.discount_rate
     discount_year = model_parameters.discount_year
@@ -135,7 +135,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * asset_commission.fixed_cost_storage_energy
                 * t_objective_assets.capacity_storage_energy
                 AS cost,
-        FROM expr_available_energy_units AS expr
+        FROM expr_available_energy_units_simple_method AS expr
         LEFT JOIN asset_commission
             ON expr.asset = asset_commission.asset
             AND expr.commission_year = asset_commission.commission_year
@@ -150,8 +150,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     storage_assets_energy_fixed_cost = @expression(
         model,
         sum(
-            row.cost * expr_avail for
-            (row, expr_avail) in zip(indices, expr_available_energy_units.expressions[:energy])
+            row.cost * expr_avail for (row, expr_avail) in
+            zip(indices, expr_available_energy_units_simple_method.expressions[:energy])
         )
     )
 
@@ -189,7 +189,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * flow_commission.fixed_cost / 2
                 * t_objective_flows.capacity
                 AS cost,
-        FROM expr_available_flow_units AS expr
+        FROM expr_available_flow_units_simple_method AS expr
         LEFT JOIN flow_commission
             ON expr.from_asset = flow_commission.from_asset
             AND expr.to_asset = flow_commission.to_asset
@@ -209,8 +209,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             row.cost * (avail_export_unit + avail_import_unit) for
             (row, avail_export_unit, avail_import_unit) in zip(
                 indices,
-                expr_available_flow_units.expressions[:export],
-                expr_available_flow_units.expressions[:import],
+                expr_available_flow_units_simple_method.expressions[:export],
+                expr_available_flow_units_simple_method.expressions[:import],
             )
         )
     )
