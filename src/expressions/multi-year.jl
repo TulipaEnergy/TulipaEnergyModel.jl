@@ -351,6 +351,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         LEFT JOIN var_flows_investment AS var_inv
             ON flow_both.to_asset = var_inv.to_asset
             AND flow_both.from_asset = var_inv.from_asset
+            AND flow_both.milestone_year >= var_inv.milestone_year
             AND var_inv.milestone_year + flow.technical_lifetime - 1 >= flow_both.milestone_year
         GROUP BY flow_both.from_asset, flow_both.to_asset, flow_both.milestone_year, flow_both.commission_year
         ",
