@@ -139,7 +139,7 @@ For more information, see the JuMP documentation for [Disable string names](http
 ### Create a direct model
 
 If you want to reduce memory usage, consider using JuMP's [`direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model). This restricts certain actions after model creation (see JuMP docs).
-If this feature is activated, the optimizer cannot be changed in `solve_model`[@ref], but can be changed in the `optimizer_with_attributes` argument of [`create_model`](ref).
+If this feature is activated, the optimizer cannot be changed in `solve_model`[@ref], but can be changed in the `optimizer_with_attributes` argument of [`create_model`](@ref).
 
 ```julia
 # Create a direct model
