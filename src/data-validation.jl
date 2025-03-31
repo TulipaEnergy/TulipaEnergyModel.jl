@@ -37,6 +37,11 @@ function validate_data!(connection)
             false,
         ),
         ("group consistency between tables", _validate_group_consistency!, false),
+        (
+            "data consistency for simple investment",
+            _validate_simple_method_data_consistency!,
+            false,
+        ),
     )
         @timeit to "$log_msg" append!(error_messages, validation_function(connection))
         if fail_fast && length(error_messages) > 0
@@ -227,6 +232,99 @@ function _validate_group_consistency!(connection)
         push!(
             error_messages,
             "Group '$(row.name)' in 'group_asset' has no members in 'asset', column 'group'",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_simple_method_data_consistency!(connection)
+    error_messages = String[]
+
+    # For assets
+    # Validate that the data does not miss any milestone years
+    for row in DuckDB.query(
+        connection,
+        """
+        SELECT year_data.year, asset.asset,
+        FROM year_data
+        LEFT JOIN asset
+            ON asset.investment_method in ('simple', 'none')
+        LEFT JOIN asset_both
+            ON asset_both.asset = asset.asset
+            AND asset_both.milestone_year = year_data.year
+        WHERE year_data.is_milestone
+            AND asset_both.milestone_year is NULL
+        """,
+    )
+        push!(
+            error_messages,
+            "'$(row.asset)' uses simple/none investment method but there is no data for milestone year '$(row.year)' in 'asset_both'",
+        )
+    end
+
+    # For assets
+    # Validate that the data does not contain unneeded commission years
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset.asset,
+        FROM asset_both
+        LEFT JOIN asset
+            ON asset.asset = asset_both.asset
+        LEFT JOIN year_data
+            ON year_data.year = asset_both.milestone_year
+        WHERE asset_both.milestone_year != asset_both.commission_year
+            AND asset.investment_method in ('simple', 'none')
+        ",
+    )
+        push!(
+            error_messages,
+            "'$(row.asset)' uses simple/none investment method but there is unused data (i.e., when milestone year is not equal to commission year) in 'asset_both'",
+        )
+    end
+
+    # For flows
+    # Validate that the data does not miss any milestone years
+    for row in DuckDB.query(
+        connection,
+        """
+        SELECT year_data.year, flow.from_asset, flow.to_asset,
+        FROM year_data
+        LEFT JOIN flow
+            ON flow.is_transport
+        LEFT JOIN flow_both
+            ON flow.from_asset = flow_both.from_asset
+            AND flow.to_asset = flow_both.to_asset
+            AND flow_both.milestone_year = year_data.year
+        WHERE year_data.is_milestone
+            AND flow_both.milestone_year is NULL
+            AND flow.is_transport
+        """,
+    )
+        push!(
+            error_messages,
+            "Flow ('$(row.from_asset)', '$(row.to_asset)') uses simple/none investment method but there is no data for milestone year '$(row.year)' in 'flow_both'",
+        )
+    end
+
+    # For flows
+    # Validate that the data does not contain more than commission years
+    for row in DuckDB.query(
+        connection,
+        "SELECT flow.from_asset, flow.to_asset,
+        FROM flow
+        LEFT JOIN flow_both
+            ON flow.is_transport
+            AND flow.from_asset = flow_both.from_asset
+            AND flow.to_asset = flow_both.to_asset
+        LEFT JOIN year_data
+            ON year_data.year = flow_both.milestone_year
+        WHERE flow_both.milestone_year != flow_both.commission_year
+        ",
+    )
+        push!(
+            error_messages,
+            "Flow ('$(row.from_asset)', '$(row.to_asset)') uses simple/none uses simple investment method but there is unused data (i.e., when milestone year is not equal to commission year) in 'flow_both'",
         )
     end
 
