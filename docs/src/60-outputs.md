@@ -27,8 +27,8 @@ TABLE_NAME
 TABLE_NAME
 
   •  index columns: [list]
-  •  NonIndexColumn1: Description
-  •  NonIndexColumn2: Description
+  •  model parameters: [list]
+  •  solution or dual_constraint_name: Description
 
 """
 
