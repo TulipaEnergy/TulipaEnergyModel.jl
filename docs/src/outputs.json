@@ -1,112 +1,112 @@
 {
   "var_assets_decommission_energy": {
-    "indices": "asset, milestone_year, commission_year",
+    "index columns": "asset, milestone_year, commission_year",
     "investment_integer_storage_energy": "",
     "solution": ""
     },
   "var_assets_decommission": {
-    "indices": "asset, milestone_year, commission_year",
+    "index columns": "asset, milestone_year, commission_year",
     "decommissionable": "",
     "initial_units": "",
     "investment_integer": "",
     "solution": ""
     },
   "var_assets_investment_energy": {
-    "indices": "asset,milestone_year" ,
+    "index columns": "asset,milestone_year" ,
     "investment_integer_storage_energy": "",
     "capacity_storage_energy": "",
     "investment_limit_storage_energy": "",
     "solution": ""
     },
   "var_assets_investment": {
-    "indices": "asset, milestone_year",
+    "index columns": "asset, milestone_year",
     "investment_integer": "",
     "capacity": "",
     "investment_limit": "",
     "solution": ""
     },
   "var_flow": {
-    "indices": "from_asset, to_asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "from_asset, to_asset, year, rep_period, time_block_start, time_block_end",
     "efficiency": "",
     "solution": ""
     },
   "var_flows_decommission": {
-    "indices": "from_asset, to_asset, milestone_year, commission_year",
+    "index columns": "from_asset, to_asset, milestone_year, commission_year",
     "investment_integer": "",
     "solution": ""
     },
   "var_flows_investment": {
-    "indices": "from_asset, to_asset, milestone_year",
+    "index columns": "from_asset, to_asset, milestone_year",
     "investment_integer": "",
     "capacity": "",
     "investment_limit": "",
     "solution": ""
     },
   "var_storage_level_over_clustered_year": {
-    "indices": "asset,year, period_block_start, period_block_end" ,
+    "index columns": "asset,year, period_block_start, period_block_end" ,
     "solution": ""
     },
   "var_storage_level_rep_period": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
     "solution": ""
     },
   "var_units_on": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
     "unit_commitment_integer": "",
     "solution": ""
     },
   "cons_balance_hub": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
     "dual_balance_hub": ""
   },
   "cons_balance_consumer": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
     "dual_balance_consumer": ""
   },
   "cons_balance_conversion": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
     "dual_balance_conversion": ""
   },
   "cons_balance_storage_over_clustered_year": {
-    "indices": "asset, year, period_block_start, period_block_end",
+    "index columns": "asset, year, period_block_start, period_block_end",
     "dual_balance_storage_over_clustered_year": "",
     "dual_max_storage_level_over_clustered_year_limit": "",
     "dual_min_storage_level_over_clustered_year_limit": ""
   },
   "cons_balance_storage_rep_period": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
     "dual_balance_storage_rep_period": "",
     "dual_max_storage_level_rep_period_limit": "",
     "dual_min_storage_level_rep_period_limit": ""
   },
   "cons_capacity_incoming": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
     "dual_max_input_flows_limit": ""
   },
   "cons_capacity_outgoing": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
     "dual_max_output_flows_limit": ""
   },
   "cons_limit_units_on": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
     "unit_commitment_integer": "",
     "dual_limit_units_on": ""
   },
   "cons_max_output_flow_with_basic_unit_commitment": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
     "dual_max_output_flow_with_basic_unit_commitment": ""
   },
   "cons_max_ramp_with_unit_commitment": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
-    "dual_max_ramp_up_with_unit_commitment,": "",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
+    "dual_max_ramp_up_with_unit_commitment": "",
     "dual_max_ramp_down_with_unit_commitment": ""
   },
   "cons_min_output_flow_with_unit_commitment": {
-    "indices": "asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "asset, year, rep_period, time_block_start, time_block_end",
     "dual_min_output_flow_with_unit_commitment": ""
   },
   "cons_transport_flow_limit": {
-    "indices": "from_asset, to_asset, year, rep_period, time_block_start, time_block_end",
+    "index columns": "from_asset, to_asset, year, rep_period, time_block_start, time_block_end",
     "var_flow_id": "",
     "dual_max_transport_flow_limit": "",
     "dual_min_transport_flow_limit": ""
