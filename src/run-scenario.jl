@@ -24,6 +24,7 @@ function run_scenario(
     parameters = default_parameters(optimizer),
     model_file_name = "",
     enable_names = true,
+    direct_model = false,
     log_file = "",
     show_log = true,
 )
@@ -32,9 +33,21 @@ function run_scenario(
         model_parameters_file,
     )
 
-    @timeit to "create_model!" create_model!(energy_problem; model_file_name, enable_names)
+    if direct_model == true
+        optimizer_with_attributes = JuMP.optimizer_with_attributes(optimizer, parameters...)
+        @timeit to "create_model!" create_model!(
+            energy_problem;
+            model_file_name,
+            enable_names,
+            direct_model,
+            optimizer_with_attributes,
+        )
+        @timeit to "solve_model!" solve_model!(energy_problem)
 
-    @timeit to "solve_model!" solve_model!(energy_problem, optimizer; parameters)
+    else
+        @timeit to "create_model!" create_model!(energy_problem; model_file_name, enable_names)
+        @timeit to "solve_model!" solve_model!(energy_problem, optimizer; parameters)
+    end
 
     @timeit to "save_solution!" save_solution!(energy_problem)
 
