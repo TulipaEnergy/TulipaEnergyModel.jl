@@ -22,6 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Find older comment (to avoid multiple comments)
+        if: github.event.pull_request.head.repo.full_name == github.repository
         uses: peter-evans/find-comment@v3
         id: find-old-comment
         with:
@@ -29,6 +30,7 @@ jobs:
           comment-author: "github-actions[bot]"
           body-includes: This was CompareMPS
       - name: Comment on PR with CompareMPS
+        if: github.event.pull_request.head.repo.full_name == github.repository
         uses: peter-evans/create-or-update-comment@v4
         with:
           comment-id: ${{ steps.find-old-comment.outputs.comment-id }}
@@ -87,6 +89,7 @@ jobs:
           ' >> body.md
           echo "::warning title=MPS files are different::$(cat body.md)"
       - name: Find Comment
+        if: github.event.pull_request.head.repo.full_name == github.repository
         uses: peter-evans/find-comment@v3
         id: find-comment
         with:
@@ -94,7 +97,7 @@ jobs:
           comment-author: "github-actions[bot]"
           body-includes: This was CompareMPS
       - name: Comment on PR with log if failed
-        if: failure()
+        if: failure() && github.event.pull_request.head.repo.full_name == github.repository
         uses: peter-evans/create-or-update-comment@v4
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
@@ -102,7 +105,7 @@ jobs:
           body-path: body.md
           edit-mode: replace
       - name: Comment on PR with CompareMPS
-        if: success()
+        if: success() && github.event.pull_request.head.repo.full_name == github.repository
         uses: peter-evans/create-or-update-comment@v4
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
