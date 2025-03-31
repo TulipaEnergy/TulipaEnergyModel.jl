@@ -242,3 +242,126 @@ end
         )
     end
 end
+
+@testset "Check data consistency for simple investment method" begin
+    @testset "Using fake data" begin
+        # Test missing milestone year data for asset and flow
+        year_data = DataFrame(:year => [0, 1, 2, 3], :is_milestone => [false, true, true, false])
+        asset = DataFrame(:asset => ["A1", "A2"], :investment_method => ["simple", "none"])
+        asset_both = DataFrame(
+            :asset => ["A1", "A1", "A2", "A2"],
+            :milestone_year => [1, 2, 1, missing],
+            :commission_year => [1, 2, 1, missing],
+        )
+        flow = DataFrame(
+            :from_asset => ["A1", "A2"],
+            :to_asset => ["B", "B"],
+            :is_transport => [false, true],
+        )
+        flow_both = DataFrame(
+            :from_asset => ["A1", "A1", "A2", "A2"],
+            :to_asset => ["B", "B", "B", "B"],
+            :milestone_year => [1, 2, 1, missing],
+            :commission_year => [1, 2, 1, missing],
+        )
+        connection = DBInterface.connect(DuckDB.DB)
+        DuckDB.register_data_frame(connection, year_data, "year_data")
+        DuckDB.register_data_frame(connection, asset, "asset")
+        DuckDB.register_data_frame(connection, asset_both, "asset_both")
+        DuckDB.register_data_frame(connection, flow, "flow")
+        DuckDB.register_data_frame(connection, flow_both, "flow_both")
+
+        error_messages = TEM._validate_simple_method_data_consistency!(connection)
+        @test error_messages == [
+            "'A2' uses simple/none investment method but there is no data for milestone year '2' in 'asset_both'",
+            "Flow ('A2', 'B') uses simple/none investment method but there is no data for milestone year '2' in 'flow_both'",
+        ]
+
+        # Test more commission year data for asset and flow
+        asset_both = DataFrame(
+            :asset => ["A1", "A1", "A2", "A2", "A2"],
+            :milestone_year => [1, 2, 1, 2, 2],
+            :commission_year => [1, 2, 1, 2, 3],
+        )
+        flow_both = DataFrame(
+            :from_asset => ["A1", "A1", "A2", "A2", "A2"],
+            :to_asset => ["B", "B", "B", "B", "B"],
+            :milestone_year => [1, 2, 1, 2, 1],
+            :commission_year => [1, 2, 1, 2, 2],
+        )
+        DuckDB.query(connection, "DROP VIEW IF EXISTS asset_both;")
+        DuckDB.query(connection, "DROP VIEW IF EXISTS flow_both;")
+        DuckDB.register_data_frame(connection, asset_both, "asset_both")
+        DuckDB.register_data_frame(connection, flow_both, "flow_both")
+
+        error_messages = TEM._validate_simple_method_data_consistency!(connection)
+
+        @test error_messages == [
+            "'A2' uses simple/none investment method but there is unused data (i.e., when milestone year is not equal to commission year) in 'asset_both'",
+            "Flow ('A2', 'B') uses simple/none uses simple investment method but there is unused data (i.e., when milestone year is not equal to commission year) in 'flow_both'",
+        ]
+    end
+
+    @testset "Using Tiny data" begin
+        connection = _tiny_fixture()
+        # First add compact data to ccgt
+        DuckDB.query(
+            connection,
+            """
+            INSERT INTO asset_both (asset, milestone_year, commission_year)
+            VALUES ('ccgt', 2030, 2029);
+            """,
+        )
+        error_messages = TEM._validate_simple_method_data_consistency!(connection)
+        expected = [
+            "'ccgt' uses simple/none investment method but there is unused data (i.e., when milestone year is not equal to commission year) in 'asset_both'",
+        ]
+        expected = map(msg -> rstrip(msg, ','), expected)
+        @test error_messages == expected
+
+        # Second remove milestone year data of ccgt from asset_both
+        DuckDB.query(
+            connection,
+            "DELETE FROM asset_both WHERE asset = 'ccgt' AND milestone_year = 2030",
+        )
+        error_messages = TEM._validate_simple_method_data_consistency!(connection)
+        expected = [
+            "'ccgt' uses simple/none investment method but there is no data for milestone year '2030' in 'asset_both'",
+        ]
+        expected = map(msg -> rstrip(msg, ','), expected)
+        @test error_messages == expected
+
+        # Third bring back the original ccgt data
+        # Modify wind-demand to transport and delete it
+        DuckDB.query(
+            connection,
+            """
+            INSERT INTO asset_both (asset, milestone_year, commission_year)
+            VALUES ('ccgt', 2030, 2030);
+            UPDATE flow SET is_transport = TRUE WHERE from_asset = 'wind' AND to_asset = 'demand';
+            DELETE FROM flow_both WHERE from_asset = 'wind' AND to_asset = 'demand';
+            """,
+        )
+        error_messages = TEM._validate_simple_method_data_consistency!(connection)
+        expected = [
+            "Flow ('wind', 'demand') uses simple/none investment method but there is no data for milestone year '2030' in 'flow_both'",
+        ]
+        expected = map(msg -> rstrip(msg, ','), expected)
+        @test error_messages == expected
+
+        # Fourth add compact data to wind-demand
+        DuckDB.query(
+            connection,
+            """
+            INSERT INTO flow_both (from_asset, to_asset, milestone_year, commission_year)
+            VALUES ('wind', 'demand', 2030, 2020)
+            """,
+        )
+        error_messages = TEM._validate_simple_method_data_consistency!(connection)
+        expected = [
+            "Flow ('wind', 'demand') uses simple/none uses simple investment method but there is unused data (i.e., when milestone year is not equal to commission year) in 'flow_both'",
+        ]
+        expected = map(msg -> rstrip(msg, ','), expected)
+        @test error_messages == expected
+    end
+end
