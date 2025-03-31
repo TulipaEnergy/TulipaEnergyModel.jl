@@ -1,45 +1,37 @@
 {
   "var_assets_decommission_energy": {
     "index columns": "asset, milestone_year, commission_year",
-    "investment_integer_storage_energy": "",
+    "model parameters": "investment_integer_storage_energy",
     "solution": ""
     },
   "var_assets_decommission": {
     "index columns": "asset, milestone_year, commission_year",
-    "decommissionable": "",
-    "initial_units": "",
-    "investment_integer": "",
+    "model parameters": "decommissionable, initial_units, investment_integer",
     "solution": ""
     },
   "var_assets_investment_energy": {
     "index columns": "asset,milestone_year" ,
-    "investment_integer_storage_energy": "",
-    "capacity_storage_energy": "",
-    "investment_limit_storage_energy": "",
+    "model parameters": "investment_integer_storage_energy, capacity_storage_energy, investment_limit_storage_energy",
     "solution": ""
     },
   "var_assets_investment": {
     "index columns": "asset, milestone_year",
-    "investment_integer": "",
-    "capacity": "",
-    "investment_limit": "",
+    "model parameters": "investment_integer, capacity, investment_limit",
     "solution": ""
     },
   "var_flow": {
     "index columns": "from_asset, to_asset, year, rep_period, time_block_start, time_block_end",
-    "efficiency": "",
+    "model parameters": "efficiency",
     "solution": ""
     },
   "var_flows_decommission": {
     "index columns": "from_asset, to_asset, milestone_year, commission_year",
-    "investment_integer": "",
+    "model parameters": "investment_integer",
     "solution": ""
     },
   "var_flows_investment": {
     "index columns": "from_asset, to_asset, milestone_year",
-    "investment_integer": "",
-    "capacity": "",
-    "investment_limit": "",
+    "model parameters": "investment_integer, capacity, investment_limit",
     "solution": ""
     },
   "var_storage_level_over_clustered_year": {
@@ -52,16 +44,16 @@
     },
   "var_units_on": {
     "index columns": "asset, year, rep_period, time_block_start, time_block_end",
-    "unit_commitment_integer": "",
+    "model parameters": "unit_commitment_integer",
     "solution": ""
     },
   "cons_balance_hub": {
     "index columns": "asset, year, rep_period, time_block_start, time_block_end",
-    "dual_balance_hub": ""
+    "dual_balance_hub": "The change in the objective function for a 1 unit increase in capacity of the hub."
   },
   "cons_balance_consumer": {
     "index columns": "asset, year, rep_period, time_block_start, time_block_end",
-    "dual_balance_consumer": ""
+    "dual_balance_consumer": "The change in the objective function for a 1 unit increase in the consumer demand."
   },
   "cons_balance_conversion": {
     "index columns": "asset, year, rep_period, time_block_start, time_block_end",
@@ -89,7 +81,7 @@
   },
   "cons_limit_units_on": {
     "index columns": "asset, year, rep_period, time_block_start, time_block_end",
-    "unit_commitment_integer": "",
+    "model parameters": "unit_commitment_integer",
     "dual_limit_units_on": ""
   },
   "cons_max_output_flow_with_basic_unit_commitment": {
@@ -107,7 +99,7 @@
   },
   "cons_transport_flow_limit": {
     "index columns": "from_asset, to_asset, year, rep_period, time_block_start, time_block_end",
-    "var_flow_id": "",
+    "var_flow_id": "Unique ID used internally by TulipaEnergyModel",
     "dual_max_transport_flow_limit": "",
     "dual_min_transport_flow_limit": ""
   }
