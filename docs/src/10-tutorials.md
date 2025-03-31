@@ -37,7 +37,7 @@ In Julia run:
 using DuckDB, TulipaIO, TulipaEnergyModel
 
 # Set the input directory to the Tiny folder (which is in the test folder of the package)
-cp(joinpath(pkgdir(TulipaEnergyModel), "test", "inputs", "Tiny"), "example-data") # Create the path to the test folder
+cp(joinpath(pkgdir(TulipaEnergyModel), "test", "inputs", "Tiny"), "example-data") # Copy the data folder to your project space
 input_dir = "example-data"
 readdir(input_dir) # Check the input directory is correct - this should show the names of the files in the folder
 
@@ -66,7 +66,7 @@ First create the DuckDB connection, populate the data, and create an empty [Ener
 ```julia @example basics
 using DuckDB, TulipaIO, TulipaEnergyModel
 
-# You can reuse the filepath you created in the first tutorial (or create it with the commented line below)
+# You can reuse the data you copied in the first tutorial (or copy it with the commented line below)
 # cp(joinpath(pkgdir(TulipaEnergyModel), "test", "inputs", "Tiny"), "example-data") # Create the path to the test folder
 input_dir = "example-data"
 connection = DBInterface.connect(DuckDB.DB)
