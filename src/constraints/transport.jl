@@ -39,9 +39,7 @@ function add_transport_constraints!(
             [
                 @expression(
                     model,
-                    availability_agg *
-                    row.capacity *
-                    sum(expr_avail_export[avail_id] for avail_id in row.avail_indices)
+                    availability_agg * row.capacity * expr_avail_export[row.avail_id]
                 ) for (row, availability_agg) in zip(indices, availability_agg_iterator)
             ],
         )
@@ -53,9 +51,7 @@ function add_transport_constraints!(
             [
                 @expression(
                     model,
-                    availability_agg *
-                    row.capacity *
-                    sum(expr_avail_import[avail_id] for avail_id in row.avail_indices)
+                    availability_agg * row.capacity * expr_avail_import[row.avail_id]
                 ) for (row, availability_agg) in zip(indices, availability_agg_iterator)
             ],
         )
@@ -100,18 +96,17 @@ function _append_transport_data_to_indices(connection)
     return DuckDB.query(
         connection,
         "SELECT
-            ANY_VALUE(cons.id) AS id,
-            ANY_VALUE(cons.from_asset) AS from_asset,
-            ANY_VALUE(cons.to_asset) AS to_asset,
-            ANY_VALUE(cons.year) AS year,
-            ANY_VALUE(cons.rep_period) AS rep_period,
-            ANY_VALUE(cons.time_block_start) AS time_block_start,
-            ANY_VALUE(cons.time_block_end) AS time_block_end,
-            ANY_VALUE(cons.var_flow_id) AS var_flow_id,
-            ANY_VALUE(flow.capacity) AS capacity,
-            ANY_VALUE(expr_avail.id) AS avail_indices,
-            ANY_VALUE(expr_avail.commission_year) AS avail_commission_years,
-            ANY_VALUE(flows_profiles.profile_name) AS profile_name,
+            cons.id AS id,
+            cons.from_asset AS from_asset,
+            cons.to_asset AS to_asset,
+            cons.year AS year,
+            cons.rep_period AS rep_period,
+            cons.time_block_start AS time_block_start,
+            cons.time_block_end AS time_block_end,
+            cons.var_flow_id AS var_flow_id,
+            flow.capacity AS capacity,
+            expr_avail.id AS avail_id,
+            flows_profiles.profile_name AS profile_name,
         FROM cons_transport_flow_limit_simple_method AS cons
         LEFT JOIN flow
             ON cons.from_asset = flow.from_asset
@@ -125,7 +120,6 @@ function _append_transport_data_to_indices(connection)
             AND cons.to_asset = flows_profiles.to_asset
             AND cons.year = flows_profiles.year
             AND flows_profiles.profile_type = 'availability'
-        GROUP BY cons.id
         ORDER BY cons.id
         ",
     )
