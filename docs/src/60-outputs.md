@@ -14,6 +14,9 @@ There are two types of outputs:
 
 1. **Duals:** All tables/files starting with `cons_` show the dual value in the optimal solution for each constraint, with leading columns specifying the indices of each `dual` value. Remember that the dual represents *the incremental change in the optimal solution per unit increase in the right-hand-side (bound) of the constraint* - which in a minimal cost optimisation corresponds to an increase in cost.
 
+!!! note "Units"
+    TulipaEnergyModel is inherently unitless, meaning the units are directly taken from the input data. For example, if all costs are given in thousands of euros, then the objective function is also in thousands of euros. So a "change in the objective function" would mean a €1k increase/decrease.
+
 ```@eval
 """
 The output of the following code is a Markdown text with the following structure:
@@ -39,7 +42,7 @@ let buffer = IOBuffer()
       write(buffer, "**`$table_name`**\n\n")
 
       for (field_name, field_value) in fields
-        if field_name == "index columns"
+        if field_name == "index columns" || field_name == "model parameters"
               write(buffer, "- $field_name:  ")
               write(buffer, "`$field_value`\n\n")
         else
