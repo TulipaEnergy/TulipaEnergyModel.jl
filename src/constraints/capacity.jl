@@ -68,7 +68,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     end
 
     # - Create capacity limit for outgoing flows with binary is_charging for storage assets
-    let table_name = :capacity_outgoing_non_investable_storage_with_binary,
+    let table_name = :capacity_outgoing_simple_method_non_investable_storage_with_binary,
         cons = constraints[table_name]
 
         indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
@@ -97,7 +97,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
-    let table_name = :capacity_outgoing_investable_storage_with_binary,
+    let table_name = :capacity_outgoing_simple_method_investable_storage_with_binary,
         cons = constraints[table_name]
 
         indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
@@ -152,7 +152,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     end
 
     # - Create capacity limit for incoming flows
-    let table_name = :capacity_incoming, cons = constraints[table_name]
+    let table_name = :capacity_incoming_simple_method, cons = constraints[table_name]
         indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
         attach_expression!(
             cons,
@@ -178,7 +178,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     end
 
     # - Create capacity limit for incoming flows with binary is_charging for storage assets
-    let table_name = :capacity_incoming_non_investable_storage_with_binary,
+    let table_name = :capacity_incoming_simple_method_non_investable_storage_with_binary,
         cons = constraints[table_name]
 
         indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
@@ -204,7 +204,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
-    let table_name = :capacity_incoming_investable_storage_with_binary,
+    let table_name = :capacity_incoming_simple_method_investable_storage_with_binary,
         cons = constraints[table_name]
 
         indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
@@ -262,7 +262,8 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     # version and the version using binary to avoid charging and discharging at
     # the same time
 
-    for suffix in ("_compact_method", "_simple_method", "_non_investable_storage_with_binary")
+    for suffix in
+        ("_compact_method", "_simple_method", "_simple_method_non_investable_storage_with_binary")
         cons_name = Symbol("max_output_flows_limit$suffix")
         table_name = Symbol("capacity_outgoing$suffix")
 
@@ -286,8 +287,9 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     end
 
     for suffix in ("_with_investment_variable", "_with_investment_limit")
-        cons_name = Symbol("max_output_flows_limit_investable_storage_with_binary_and$suffix")
-        table_name = :capacity_outgoing_investable_storage_with_binary
+        cons_name =
+            Symbol("max_output_flows_limit_simple_method_investable_storage_with_binary_and$suffix")
+        table_name = :capacity_outgoing_simple_method_investable_storage_with_binary
 
         # - Maximum output flows limit
         attach_constraint!(
@@ -308,7 +310,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
-    for suffix in ("", "_non_investable_storage_with_binary")
+    for suffix in ("_simple_method", "_simple_method_non_investable_storage_with_binary")
         cons_name = Symbol("max_input_flows_limit$suffix")
         table_name = Symbol("capacity_incoming$suffix")
 
@@ -332,8 +334,9 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     end
 
     for suffix in ("_with_investment_variable", "_with_investment_limit")
-        cons_name = Symbol("max_input_flows_limit_investable_storage_with_binary_and_$suffix")
-        table_name = :capacity_incoming_investable_storage_with_binary
+        cons_name =
+            Symbol("max_input_flows_limit_simple_method_investable_storage_with_binary_and_$suffix")
+        table_name = :capacity_incoming_simple_method_investable_storage_with_binary
 
         # - Maximum input flows limit
         attach_constraint!(
