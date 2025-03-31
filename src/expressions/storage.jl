@@ -7,12 +7,12 @@ function add_storage_expressions!(connection, model, expressions)
             nextval('id') AS id,
             asset_milestone.asset,
             asset_milestone.milestone_year,
-            ANY_VALUE(asset.capacity) AS capacity,
-            ANY_VALUE(asset.capacity_storage_energy) AS capacity_storage_energy,
-            ANY_VALUE(asset.energy_to_power_ratio) AS energy_to_power_ratio,
-            ANY_VALUE(asset.storage_method_energy) AS storage_method_energy,
-            SUM(expr_avail.initial_storage_units) AS available_initial_storage_units,
-            ARRAY_AGG(expr_avail.id) AS avail_indices,
+            asset.capacity AS capacity,
+            asset.capacity_storage_energy AS capacity_storage_energy,
+            asset.energy_to_power_ratio AS energy_to_power_ratio,
+            asset.storage_method_energy AS storage_method_energy,
+            expr_avail.initial_storage_units AS available_initial_storage_units,
+            expr_avail.id AS avail_id,
         FROM asset_milestone
         LEFT JOIN asset
             ON asset_milestone.asset = asset.asset
@@ -21,9 +21,6 @@ function add_storage_expressions!(connection, model, expressions)
             AND asset_milestone.milestone_year = expr_avail.milestone_year
         WHERE
             asset.type = 'storage'
-        GROUP BY
-            asset_milestone.asset,
-            asset_milestone.milestone_year
         ORDER BY id
         ",
     )
@@ -57,9 +54,8 @@ function add_storage_expressions!(connection, model, expressions)
                         # the fixed cost in the objective function
                         capacity_for_initial * row.available_initial_storage_units +
                         capacity_for_variation * (
-                            sum(
-                                expr_avail_simple_method[avail_id] for avail_id in row.avail_indices
-                            ) - row.available_initial_storage_units
+                            expr_avail_simple_method[row.avail_id] -
+                            row.available_initial_storage_units
                         )
                     )
                 end for row in indices

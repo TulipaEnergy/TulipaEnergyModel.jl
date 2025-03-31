@@ -101,8 +101,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             [
                 @constraint(
                     model,
-                    units_on ≤
-                    sum(expr_avail_simple_method[avail_id] for avail_id in row.avail_indices),
+                    units_on ≤ expr_avail_simple_method[row.avail_id],
                     base_name = "limit_units_on_simple_method[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (units_on, row) in zip(variables[:units_on].container, indices)
             ],
@@ -315,12 +314,12 @@ function _append_available_units_data_simple_method(connection, table_name)
         connection,
         "SELECT
             cons.id,
-            ANY_VALUE(cons.asset) AS asset,
-            ANY_VALUE(cons.year) AS year,
-            ANY_VALUE(cons.rep_period) AS rep_period,
-            ANY_VALUE(cons.time_block_start) AS time_block_start,
-            ANY_VALUE(cons.time_block_end) AS time_block_end,
-            ARRAY_AGG(expr_avail.id) AS avail_indices,
+            cons.asset AS asset,
+            cons.year AS year,
+            cons.rep_period AS rep_period,
+            cons.time_block_start AS time_block_start,
+            cons.time_block_end AS time_block_end,
+            expr_avail.id AS avail_id,
         FROM cons_$table_name AS cons
         LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
             ON cons.asset = expr_avail.asset
@@ -328,7 +327,6 @@ function _append_available_units_data_simple_method(connection, table_name)
         LEFT JOIN asset
             ON cons.asset = asset.asset
         WHERE asset.investment_method in ('simple', 'none')
-        GROUP BY cons.id
         ORDER BY cons.id
         ",
     )

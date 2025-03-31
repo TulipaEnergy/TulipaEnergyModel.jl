@@ -61,7 +61,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         Statistics.mean,
                         1.0,
                     ) *
-                    sum(expr_avail_simple_method[id] for id in row.avail_indices)
+                    expr_avail_simple_method[row.avail_id]
                 ) for row in indices
             ],
         )
@@ -119,9 +119,8 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         availability_agg *
                         row.capacity *
                         (
-                            row.avail_initial_units * (1 - is_charging) + sum(
-                                expr_avail_simple_method[avail_id] for avail_id in row.avail_indices
-                            )
+                            row.avail_initial_units * (1 - is_charging) +
+                            expr_avail_simple_method[row.avail_id]
                         )
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -168,9 +167,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     )
                     @expression(
                         model,
-                        availability_agg *
-                        row.capacity *
-                        sum(expr_avail_simple_method[avail_id] for avail_id in row.avail_indices)
+                        availability_agg * row.capacity * expr_avail_simple_method[row.avail_id]
                     )
                 end for row in indices
             ],
@@ -226,9 +223,8 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                         availability_agg *
                         row.capacity *
                         (
-                            row.avail_initial_units * is_charging + sum(
-                                expr_avail_simple_method[avail_id] for avail_id in row.avail_indices
-                            )
+                            row.avail_initial_units * is_charging +
+                            expr_avail_simple_method[row.avail_id]
                         )
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -410,20 +406,19 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
     return DuckDB.query(
         connection,
         "SELECT
-            ANY_VALUE(cons.id) AS id,
-            ANY_VALUE(cons.asset) AS asset,
-            ANY_VALUE(cons.year) AS year,
-            ANY_VALUE(cons.rep_period) AS rep_period,
-            ANY_VALUE(cons.time_block_start) AS time_block_start,
-            ANY_VALUE(cons.time_block_end) AS time_block_end,
-            ANY_VALUE(expr_avail.id) AS avail_indices,
-            ANY_VALUE(expr_avail.commission_year) AS avail_commission_year,
-            ANY_VALUE(expr_avail.initial_units) AS avail_initial_units,
-            ANY_VALUE(avail_profile.profile_name) AS avail_profile_name,
-            ANY_VALUE(asset.capacity) AS capacity,
-            ANY_VALUE(asset.investment_method) AS investment_method,
-            ANY_VALUE(asset_commission.investment_limit) AS investment_limit,
-            ANY_VALUE(assets_profiles.profile_name) AS profile_name,
+            cons.id AS id,
+            cons.asset AS asset,
+            cons.year AS year,
+            cons.rep_period AS rep_period,
+            cons.time_block_start AS time_block_start,
+            cons.time_block_end AS time_block_end,
+            expr_avail.id AS avail_id,
+            expr_avail.initial_units AS avail_initial_units,
+            avail_profile.profile_name AS avail_profile_name,
+            asset.capacity AS capacity,
+            asset.investment_method AS investment_method,
+            asset_commission.investment_limit AS investment_limit,
+            assets_profiles.profile_name AS profile_name,
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
@@ -442,7 +437,6 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
             AND expr_avail.commission_year = avail_profile.commission_year
             AND avail_profile.profile_type = 'availability'
         WHERE asset.investment_method in ('simple', 'none')
-        GROUP BY cons.id
         ORDER BY cons.id
         ",
     )
