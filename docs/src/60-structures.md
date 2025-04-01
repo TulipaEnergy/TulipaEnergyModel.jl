@@ -2,12 +2,12 @@
 
 ```@contents
 Pages = ["60-structures.md"]
-Depth = 3
+Depth = [2, 3]
 ```
 
 The list of relevant structures used in this package are listed below:
 
-## EnergyProblem
+## [EnergyProblem](@id energy-problem)
 
 The `EnergyProblem` structure is a wrapper around various other relevant structures.
 It hides the complexity behind the energy problem, making the usage more friendly, although more verbose.

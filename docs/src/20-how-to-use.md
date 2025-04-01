@@ -1,53 +1,33 @@
 # [How to Use](@id how-to-use)
 
 ```@contents
-Pages = ["10-how-to-use.md"]
-Depth = 3
+Pages = ["20-how-to-use.md"]
+Depth = [2, 3]
 ```
 
-## Install
+This section assumes users have already followed the [Beginner Tutorials](@ref tutorials) and are looking for specific instructions for certain features.
 
-To use Tulipa, you first need to install the opensource [Julia](https://julialang.org) programming language.
+## Running automatic tests
 
-Then consider installing a user-friendly code editor, such as [VSCode](https://code.visualstudio.com). Otherwise you will be running from the terminal/command prompt.
-
-### Starting Julia
-
-Choose one:
-
-- In VSCode: Press CTRL+Shift+P and press Enter to start a Julia REPL.
-- In the terminal: Type `julia` and press Enter
-
-### Adding TulipaEnergyModel
-
-In Julia:
-
-- Enter package mode (press "]")
-
-```julia-pkg
-pkg> add TulipaEnergyModel
-```
-
-- Return to Julia mode (backspace)
-
-```julia
-julia> using TulipaEnergyModel
-```
-
-### (Optional) Running automatic tests
-
-It is nice to check that tests are passing to make sure your environment is working, this takes a minute or two.
+To run the automatic tests on your installation of TulipaEnergyModel:
 
 - Enter package mode (press "]")
 
 ```julia-pkg
 pkg> test TulipaEnergyModel
+# This takes a minute or two...
 ```
 
 All tests should pass.
+(If you have an error in your analysis, it is probably not caused by TulipaEnergyModel.)
 
-!!! warning "Admin rights in your local machine"
+!!! warning "Admin rights on your local machine"
     Ensure you have admin rights on the folder where the package is installed; otherwise, an error will appear during the tests.
+
+## Finding an input parameter
+
+!!! tip "Are you looking for an input parameter?"
+    Please visit the [Model Parameters](@ref schemas) section for a description and location of all model input parameters.
 
 ## Running a Scenario
 
@@ -70,12 +50,65 @@ You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/Tu
 
 To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref). See the [tutorials](@ref tutorials) for an example showcasing this function.
 
+## Changing the solver (optimizer) and specifying parameters
+
+By default, the model is solved using the [HiGHS](https://github.com/jump-dev/HiGHS.jl) optimizer.
+To change this, you can give the functions [`run_scenario`](@ref) or [`solve_model!`](@ref) a
+different optimizer.
+
+!!! warning
+    HiGHS is the only open source solver that we recommend. GLPK and Cbc are not (fully) tested for Tulipa.
+
+Here is an example running the Tiny case using the [GLPK](https://github.com/jump-dev/GLPK.jl) optimizer:
+
+```@example change-optimizer
+using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
+
+input_dir = "../../test/inputs/Tiny" # hide
+# input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
+energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer)
+```
+
+or using [`solve_model!`](@ref):
+
+```@example change-optimizer
+using GLPK
+
+solution = solve_model!(energy_problem, GLPK.Optimizer)
+```
+
+!!! info
+    Notice that you need to add the GLPK package and run `using GLPK` before running `GLPK.Optimizer`.
+
+In both cases, the `GLPK` optimizer uses its default parameters,
+which you can query using [`default_parameters`](@ref).
+To change any optimizer parameters, you can pass a dictionary using the keyword argument `parameters`.
+The example below changes the maximum allowed runtime for GLPK to 1 second,
+which will probably cause it to fail to converge in time.
+
+```@example
+using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
+
+input_dir = "../../test/inputs/Tiny" # hide
+parameters = Dict("tm_lim" => 1)
+connection = DBInterface.connect(DuckDB.DB)
+read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
+energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer, parameters = parameters)
+energy_problem.termination_status
+```
+
+For the complete list of parameters, check your chosen optimizer.
+
+You can also pass these parameters via a file using the [`read_parameters_from_file`](@ref) function.
+
 ## [Exploring infeasibility](@id infeasible)
 
 If your model is infeasible, you can try exploring the infeasibility with [JuMP.compute_conflict!](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.compute_conflict!) and [JuMP.copy_conflict](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.copy_conflict).
 
 !!! warning "Check your solver options!"
-    Not all solvers support this functionality; please check depending on each case.
+    Not all solvers support this functionality; please check your specific solver.
 
 Use `energy_problem.model` for the model argument. For instance:
 
@@ -99,12 +132,7 @@ run_scenario(connection; enable_names = false)
 create_model!(energy_problem; enable_names = false)
 ```
 
-For more information, see the [JuMP documentation](https://jump.dev/JuMP.jl/stable/tutorials/getting_started/performance_tips/#Disable-string-names).
-
-## Finding an input parameter
-
-!!! tip "Are you looking for a input parameter?"
-    Please visit the [Model Parameters](@ref schemas) section for a description and location of the input parameters mentioned in this section.
+For more information, see the JuMP documentation for [Disable string names](https://jump.dev/JuMP.jl/stable/tutorials/getting_started/performance_tips/#Disable-string-names).
 
 ## Storage specific setups
 
@@ -185,10 +213,10 @@ For the model to add constraints for a [maximum or minimum energy limit](@ref in
 
 Let's assume we have a year divided into 365 days because we are using days as periods in the representatives from [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl). Also, we define the `max_energy_timeframe_partition = 10 MWh`, meaning the peak energy we want to have is 10MWh for each period or period partition. So depending on the optional information, we can have:
 
-| Profile | Period Partitions | Example                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| ------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| None    | None              | The default profile is 1.p.u. for each period and since there are no period partitions, the constraints will be for each period (i.e., daily). So the outgoing energy of the asset for each day must be less than or equal to 10MWh.                                                                                                                                                                                                                                                                                                                                                                                                    |
-| Defined | None              | The profile definition and value will be in the  timeframe profiles files. For example, we define a profile that has the following first four values: 0.6 p.u., 1.0 p.u., 0.8 p.u., and 0.4 p.u. There are no period partitions, so constraints will be for each period (i.e., daily). Therefore the outgoing energy of the asset for the first four days must be less than or equal to 6MWh, 10MWh, 8MWh, and 4MWh.                                                                                                                                           |
+| Profile | Period Partitions | Example                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| None    | None              | The default profile is 1.p.u. for each period and since there are no period partitions, the constraints will be for each period (i.e., daily). So the outgoing energy of the asset for each day must be less than or equal to 10MWh.                                                                                                                                                                                                                                                                                                                                                                       |
+| Defined | None              | The profile definition and value will be in the timeframe profiles files. For example, we define a profile that has the following first four values: 0.6 p.u., 1.0 p.u., 0.8 p.u., and 0.4 p.u. There are no period partitions, so constraints will be for each period (i.e., daily). Therefore the outgoing energy of the asset for the first four days must be less than or equal to 6MWh, 10MWh, 8MWh, and 4MWh.                                                                                                                                                                                        |
 | Defined | Defined           | Using the same profile as above, we now define a period partition in the timeframe partitions file as `uniform` with a value of 2. This value means that we will aggregate every two periods (i.e., every two days). So, instead of having 365 constraints, we will have 183 constraints (182 every two days and one last constraint of 1 day). Then the profile is aggregated with the sum of the values inside the periods within the partition. Thus, the outgoing energy of the asset for the first two partitions (i.e., every two days) must be less than or equal to 16MWh and 12MWh, respectively. |
 
 ## [Defining a group of assets](@id group-setup)

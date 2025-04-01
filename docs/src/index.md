@@ -6,6 +6,10 @@ CurrentModule = TulipaEnergyModel
 
 [TulipaEnergyModel.jl](https://github.com/TulipaEnergy/TulipaEnergyModel.jl) is an optimization model for the electricity market that can be coupled with other energy sectors (e.g., hydrogen, heat, natural gas, etc.). The optimization model determines the optimal investment and operation decisions for different types of assets (e.g., producers, consumers, conversion, storage, and transport). _TulipaEnergyModel.jl_ is developed in [Julia](https://julialang.org/) and depends on the [JuMP.jl](https://github.com/jump-dev/JuMP.jl) package.
 
+## Using Tulipa
+
+Tulipa is free and easy to install. Check out [Getting Started](@ref getting-started) to start using Tulipa today!
+
 ## Tulipa in a Nutshell
 
 ### Example Questions
@@ -15,7 +19,7 @@ Tulipa can answer questions such as:
 - How much flexible energy supply and demand is available? How much is needed in the future?
 - How will different investment decisions impact the balance and generation mix of the energy system?
 - Where will there be grid congestion in the future? How would placing [technology] at [location] impact congestion?
-- How will [national/international] policy targets influence investment and dispatch?
+- How will policy targets influence investment and dispatch?
 - How will a future energy system handle different weather patterns and extreme events (such as dunkelflaute)?
 
 Not sure if Tulipa is right for your research? Feel free to ask in our [Discussions](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/discussions/categories/q-a)!
@@ -24,20 +28,13 @@ Not sure if Tulipa is right for your research? Feel free to ask in our [Discussi
 
 For modellers, here is a brief summary of Tulipa's scope and features. More details can be found in the [Concepts](@ref concepts) or [Formulation](@ref formulation).
 
-- Optimisation Objective: Minimize total system cost for investment & dispatch
-- Geographic scope: Flexible/Anywhere - Region/Country/Continent
-- Energy carriers: Any/All - electricity, gas, H2, heat, etc
-- Timespan: Any - Usually Yearly or Multi-year
+- Optimisation Objective: Minimize total system cost for investment & dispatch (investment in production, conversion, storage, transport/grid)
+- Geographic scope: Flexible (Anywhere - Region/Country/Continent)
+- Energy carriers: Any (All - electricity, gas, H2, heat, etc)
+- Timespan: Any (Usually Yearly or Multi-year)
 - Time resolution: [Fully-flexible](@ref flex-time-res) - even mixing different resolutions (1-hr, 2-hr, 3-hr, etc) within a scenario
-- Temporal aggregation: Time series aggregation using blended representative periods
+- Temporal aggregation: Time series aggregation with blended representative periods using [TulipaClustering](https://github.com/TulipaEnergy/TulipaClustering.jl)
 - Storage representation: [Short- and Long-term storage](@ref storage-modeling) constraints, even while using representative periods
-- Solutions: Optimal & Near-optimal alternatives, using modelling to generate alternatives (MGA)
-
-## Getting Started
-
-To start using TulipaEnergyModel for your research, check out our [How to Use](@ref how-to-use) section and [Tutorials](@ref tutorials).
-
-For a more technical explanation, check out the [Concepts](@ref concepts) section, or dive into the [Mathematical Formulation](@ref formulation).
 
 ## [Bug reports and discussions](@id bugs-and-discussions)
 
