@@ -31,10 +31,11 @@ end
         constraints,
         profiles,
         model_parameters;
+        optimizer = HiGHS.Optimizer,
+        parameters = default_parameters(optimizer),
         model_file_name = "",
         enable_names = true
         direct_model = false,
-        optimizer_with_attributes = optimizer_with_attributes(HiGHS.Optimizer),
     )
 
 Create the energy model manually. We recommend using [`create_model!`](@ref) instead.
