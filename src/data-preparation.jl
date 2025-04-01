@@ -265,7 +265,7 @@ end
 
 """
     create_merged_tables!(connection)
- 
+
 Create the internal tables of merged flows and assets time partitions to be used in the computation of the lowest and highest resolution tables.
 The inputs tables are the flows table `flow_time_resolution_rep_period` and the assets table `asset_time_resolution_rep_period`.
 All merged tables have the same columns: `asset`, `year`, `rep_period`, `time_block_start`, and `time_block_end`.
