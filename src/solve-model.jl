@@ -1,14 +1,14 @@
 export solve_model!, solve_model, save_solution!
 
 """
-    solve_model!(energy_problem[, optimizer; parameters, save_solution = true])
+    solve_model!(energy_problem; optimizer, parameters, save_solution = true])
 
 Solve the internal model of an `energy_problem`. If `save_solution`, then the
 solution and dual variables are computed and saved by [`save_solution!`](@ref).
 """
 function solve_model!(
-    energy_problem::EnergyProblem,
-    optimizer = HiGHS.Optimizer;
+    energy_problem::EnergyProblem;
+    optimizer = HiGHS.Optimizer,
     parameters = default_parameters(optimizer),
     save_solution = true,
 )
@@ -17,7 +17,7 @@ function solve_model!(
         error("Model is not created, run create_model(energy_problem) first.")
     end
 
-    solve_model(model, optimizer; parameters = parameters)
+    solve_model(model; optimizer, parameters)
     energy_problem.termination_status = JuMP.termination_status(model)
     if !JuMP.is_solved_and_feasible(model)
         # Warning has been given at internal function
@@ -29,12 +29,12 @@ function solve_model!(
 end
 
 """
-    solve_model(model[, optimizer; parameters])
+    solve_model(model; optimizer, parameters)
 
 Solve the JuMP model. The `optimizer` argument should be an MILP solver from the JuMP
 list of [supported solvers](https://jump.dev/JuMP.jl/stable/installation/#Supported-solvers).
 By default we use HiGHS.
-Note: If `create_model(; direct_model = true)` the `optimizer` cannot be changed in `solve_model`, but can be changed in the `optimizer_with_attributes` argument of [`create_model`](@ref).
+Note: If `create_model(; direct_model = true)` the `optimizer` cannot be changed in `solve_model`, but can be changed in the `optimizer` argument of [`create_model`](@ref).
 For more information, see [`JuMP.direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model).
 
 The keyword argument `parameters` should be passed as a list of `key => value` pairs.
@@ -45,12 +45,12 @@ using [`read_parameters_from_file`](@ref).
 
 ```julia
 parameters = Dict{String,Any}("presolve" => "on", "time_limit" => 60.0, "output_flag" => true)
-solve_model(model, HiGHS.Optimizer; parameters = parameters)
+solve_model(model; optimizer = HiGHS.Optimizer, parameters = parameters)
 ```
 """
 function solve_model(
-    model::JuMP.Model,
-    optimizer = HiGHS.Optimizer;
+    model::JuMP.Model;
+    optimizer = HiGHS.Optimizer,
     parameters = default_parameters(optimizer),
 )
     # Set optimizer and its parameters

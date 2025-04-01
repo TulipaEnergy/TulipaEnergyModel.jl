@@ -52,16 +52,20 @@ function create_model(
     constraints,
     profiles,
     model_parameters;
+    optimizer = HiGHS.Optimizer,
+    parameters = default_parameters(optimizer),
     model_file_name = "",
     enable_names = true,
     direct_model = false,
-    optimizer_with_attributes = JuMP.optimizer_with_attributes(HiGHS.Optimizer),
 )
+    ## Optimizer
+    optimizer_with_attributes = JuMP.optimizer_with_attributes(optimizer, parameters...)
+
     ## Model
     if direct_model
         model = JuMP.direct_model(optimizer_with_attributes)
     else
-        model = JuMP.Model()
+        model = JuMP.Model(optimizer_with_attributes)
     end
 
     JuMP.set_string_names_on_creation(model, enable_names)

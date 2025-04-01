@@ -52,9 +52,8 @@ To save the solution to CSV files, you can use [`export_solution_to_csv_files`](
 
 ## Changing the solver (optimizer) and specifying parameters
 
-By default, the model is solved using the [HiGHS](https://github.com/jump-dev/HiGHS.jl) optimizer.
-To change this, you can give the functions [`run_scenario`](@ref) or [`solve_model!`](@ref) a
-different optimizer.
+By default, the model is solved using the [HiGHS](https://github.com/jump-dev/HiGHS.jl) optimizer (or solver).
+To change this, you can give the functions [`run_scenario`](@ref) or [`create_model!`](@ref) a different optimizer.
 
 !!! warning
     HiGHS is the only open source solver that we recommend. GLPK and Cbc are not (fully) tested for Tulipa.
@@ -68,34 +67,26 @@ input_dir = "../../test/inputs/Tiny" # hide
 # input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
-energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer)
-```
-
-or using [`solve_model!`](@ref):
-
-```@example change-optimizer
-using GLPK
-
-solution = solve_model!(energy_problem, GLPK.Optimizer)
+energy_problem = run_scenario(connection; optimizer = GLPK.Optimizer)
+#OR model = create_model!(energy_problem; optimizer = GLPK.Optimizer)
 ```
 
 !!! info
     Notice that you need to add the GLPK package and run `using GLPK` before running `GLPK.Optimizer`.
 
-In both cases, the `GLPK` optimizer uses its default parameters,
-which you can query using [`default_parameters`](@ref).
-To change any optimizer parameters, you can pass a dictionary using the keyword argument `parameters`.
-The example below changes the maximum allowed runtime for GLPK to 1 second,
-which will probably cause it to fail to converge in time.
+In both cases above, the `GLPK` optimizer uses its default parameters, which you can query using [`default_parameters`](@ref).
+To change any optimizer parameters, you can pass a dictionary to the `parameters` keyword argument.
+The example below changes the maximum allowed runtime for GLPK to 1 second, which will probably cause it to fail to converge in time.
 
 ```@example
 using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
 
-input_dir = "../../test/inputs/Tiny" # hide
-parameters = Dict("tm_lim" => 1)
+input_dir = "../../test/inputs/Tiny" # your input directory will be different
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
-energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer, parameters = parameters)
+
+parameter_dict = Dict("tm_lim" => 1) # list as comma-separated parameter=>value pairs
+energy_problem = run_scenario(connection; optimizer = GLPK.Optimizer, parameters = parameter_dict)
 energy_problem.termination_status
 ```
 
@@ -138,15 +129,14 @@ For more information, see the JuMP documentation for [Disable string names](http
 
 ### Create a direct model
 
-If you want to reduce memory usage, consider using JuMP's [`direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model). This restricts certain actions after model creation (see JuMP docs).
-If this feature is activated, the optimizer cannot be changed in `solve_model`[@ref], but can be changed in the `optimizer_with_attributes` argument of [`create_model`](@ref).
+If you want to reduce memory usage, consider using JuMP's [`direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model). This restricts certain actions after model creation (see JuMP docs), for instance you can no longer set the optimizer and parameters in [`solve_model`](@ref).
 
 ```julia
 # Create a direct model
 create_model!(energy_problem; direct_model = true)
 
 # Create a direct model while specifying a solver and attributes
-create_model!(energy_problem; direct_model = true, optimizer_with_attributes = JuMP.optimizer_with_attributes(HiGHS.Optimizer, "presolve" => "off", MOI.Silent() => true))
+create_model!(energy_problem; direct_model = true, optimizer = HiGHS.Optimizer, parameters = Dict("presolve" => "off", MOI.Silent() => true))
 ```
 
 ## Storage specific setups
