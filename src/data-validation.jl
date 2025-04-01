@@ -240,92 +240,109 @@ end
 
 function _validate_simple_method_data_consistency!(connection)
     error_messages = String[]
-
-    # For assets
-    # Validate that the data does not miss any milestone years
-    for row in DuckDB.query(
+    _validate_simple_method_data_contains_only_one_row_where_milestone_year_not_equal_to_commission_year!(
+        error_messages,
         connection,
-        """
-        SELECT year_data.year, asset.asset,
-        FROM year_data
-        LEFT JOIN asset
-            ON asset.investment_method in ('simple', 'none')
-        LEFT JOIN asset_both
-            ON asset_both.asset = asset.asset
-            AND asset_both.milestone_year = year_data.year
-        WHERE year_data.is_milestone
-            AND asset_both.milestone_year is NULL
-        """,
     )
-        push!(
-            error_messages,
-            "'$(row.asset)' uses simple/none investment method but there is no data for milestone year '$(row.year)' in 'asset_both'",
-        )
-    end
+    _validate_simple_method_data_contains_more_than_one_row!(error_messages, connection)
 
+    return error_messages
+end
+
+function _validate_simple_method_data_contains_only_one_row_where_milestone_year_not_equal_to_commission_year!(
+    error_messages,
+    connection,
+)
     # For assets
-    # Validate that the data does not contain unneeded commission years
+    # Validate that the data per milestone year contains exactly one row where milestone year does not equal to commission year
     for row in DuckDB.query(
         connection,
-        "SELECT asset.asset,
+        "SELECT asset.asset, asset.investment_method, asset_both.milestone_year, COUNT(*) AS cnt
         FROM asset_both
         LEFT JOIN asset
             ON asset.asset = asset_both.asset
-        LEFT JOIN year_data
-            ON year_data.year = asset_both.milestone_year
         WHERE asset_both.milestone_year != asset_both.commission_year
             AND asset.investment_method in ('simple', 'none')
+        GROUP BY asset.asset, asset.investment_method, asset_both.milestone_year
+        ORDER BY asset.asset, asset.investment_method, asset_both.milestone_year
         ",
     )
-        push!(
-            error_messages,
-            "'$(row.asset)' uses simple/none investment method but there is unused data (i.e., when milestone year is not equal to commission year) in 'asset_both'",
-        )
+        if row.cnt == 1
+            push!(
+                error_messages,
+                "'$(row.asset)' uses '$(row.investment_method)' investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there is exactly one row of data where milestone year $(row.milestone_year) does not equal commission year in 'asset_both'.",
+            )
+        end
     end
 
     # For flows
-    # Validate that the data does not miss any milestone years
+    # Validate that the data per milestone year contains exactly one row where milestone year does not equal to commission year
     for row in DuckDB.query(
         connection,
-        """
-        SELECT year_data.year, flow.from_asset, flow.to_asset,
-        FROM year_data
-        LEFT JOIN flow
-            ON flow.is_transport
-        LEFT JOIN flow_both
-            ON flow.from_asset = flow_both.from_asset
-            AND flow.to_asset = flow_both.to_asset
-            AND flow_both.milestone_year = year_data.year
-        WHERE year_data.is_milestone
-            AND flow_both.milestone_year is NULL
-            AND flow.is_transport
-        """,
-    )
-        push!(
-            error_messages,
-            "Flow ('$(row.from_asset)', '$(row.to_asset)') uses simple/none investment method but there is no data for milestone year '$(row.year)' in 'flow_both'",
-        )
-    end
-
-    # For flows
-    # Validate that the data does not contain more than commission years
-    for row in DuckDB.query(
-        connection,
-        "SELECT flow.from_asset, flow.to_asset,
+        "SELECT flow.from_asset, flow.to_asset, flow_both.milestone_year, COUNT(*) AS cnt
         FROM flow
         LEFT JOIN flow_both
             ON flow.is_transport
             AND flow.from_asset = flow_both.from_asset
             AND flow.to_asset = flow_both.to_asset
-        LEFT JOIN year_data
-            ON year_data.year = flow_both.milestone_year
         WHERE flow_both.milestone_year != flow_both.commission_year
+        GROUP BY flow.from_asset, flow.to_asset, flow_both.milestone_year
+        ORDER BY flow.from_asset, flow.to_asset, flow_both.milestone_year
         ",
     )
-        push!(
-            error_messages,
-            "Flow ('$(row.from_asset)', '$(row.to_asset)') uses simple/none uses simple investment method but there is unused data (i.e., when milestone year is not equal to commission year) in 'flow_both'",
-        )
+        if row.cnt == 1
+            push!(
+                error_messages,
+                "By default, transport flow ('$(row.from_asset)', '$(row.to_asset)') uses simple/none investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there is exactly one row of data where milestone year $(row.milestone_year) does not equal commission year in 'flow_both'.",
+            )
+        end
+    end
+
+    return error_messages
+end
+
+function _validate_simple_method_data_contains_more_than_one_row!(error_messages, connection)
+    # For assets
+    # Validate that the data per milestone year contains more than one row
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset.asset, asset.investment_method, asset_both.milestone_year, COUNT(*) AS cnt
+        FROM asset_both
+        LEFT JOIN asset
+            ON asset.asset = asset_both.asset
+        WHERE asset.investment_method in ('simple', 'none')
+        GROUP BY asset.asset, asset.investment_method, asset_both.milestone_year
+        ORDER BY asset.asset, asset.investment_method, asset_both.milestone_year
+        ",
+    )
+        if row.cnt ≥ 2
+            push!(
+                error_messages,
+                "'$(row.asset)' uses '$(row.investment_method)' investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there are $(row.cnt) rows of data for milestone year $(row.milestone_year) in 'asset_both'.",
+            )
+        end
+    end
+
+    # For flows
+    # Validate that the data per milestone year contains more than one row
+    for row in DuckDB.query(
+        connection,
+        "SELECT flow.from_asset, flow.to_asset, flow_both.milestone_year, COUNT(*) AS cnt
+        FROM flow
+        LEFT JOIN flow_both
+            ON flow.is_transport
+            AND flow.from_asset = flow_both.from_asset
+            AND flow.to_asset = flow_both.to_asset
+        GROUP BY flow.from_asset, flow.to_asset, flow_both.milestone_year
+        ORDER BY flow.from_asset, flow.to_asset, flow_both.milestone_year
+        ",
+    )
+        if row.cnt ≥ 2
+            push!(
+                error_messages,
+                "By default, transport flow ('$(row.from_asset)', '$(row.to_asset)') uses simple/none investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there are $(row.cnt) rows of data for milestone year $(row.milestone_year) in 'flow_both'.",
+            )
+        end
     end
 
     return error_messages
