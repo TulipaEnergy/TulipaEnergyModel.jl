@@ -39,8 +39,7 @@ end
 end
 
 @testset "Test create_model! arguments" begin
-    connection = DBInterface.connect(DuckDB.DB)
-    _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
+    connection = _tiny_fixture()
 
     ep = TulipaEnergyModel.EnergyProblem(connection)
     TulipaEnergyModel.create_model!(
