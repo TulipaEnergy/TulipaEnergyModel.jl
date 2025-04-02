@@ -32,7 +32,7 @@ end
         profiles,
         model_parameters;
         optimizer = HiGHS.Optimizer,
-        parameters = default_parameters(optimizer),
+        optimizer_parameters = default_parameters(optimizer),
         model_file_name = "",
         enable_names = true
         direct_model = false,
@@ -40,11 +40,25 @@ end
 
 Create the energy model manually. We recommend using [`create_model!`](@ref) instead.
 
-If `enable_names = false` then variables and constraints in the model will not be assigned names, which improves speed but reduces the readability of log messages.
+The `optimizer` argument should be an MILP solver from the JuMP
+list of [supported solvers](https://jump.dev/JuMP.jl/stable/installation/#Supported-solvers).
+By default we use HiGHS.
+
+The keyword argument `optimizer_parameters` should be passed as a dictionary of `key => value` pairs.
+These can be created manually, obtained using [`default_parameters`](@ref), or read from a file
+using [`read_parameters_from_file`](@ref).
+
+```julia
+parameters = Dict{String,Any}("presolve" => "on", "time_limit" => 60.0, "output_flag" => true)
+solve_model(model; optimizer = HiGHS.Optimizer, optimizer_parameters = parameters)
+```
+
+Set `enable_names = false` to avoid assigning names to variables and constraints, which improves speed but reduces the readability of log messages.
 For more information, see [`JuMP.set_string_names_on_creation`](https://jump.dev/JuMP.jl/stable/api/JuMP/#set_string_names_on_creation).
 
-If `direct_model = true` then a JuMP `direct_model` will be created using `optimizer_with_attributes`, which has memory improvements.
+Set `direct_model = true` to create a JuMP `direct_model` using `optimizer_with_attributes`, which has memory improvements.
 For more information, see [`JuMP.direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model).
+
 """
 function create_model(
     connection,
@@ -54,13 +68,13 @@ function create_model(
     profiles,
     model_parameters;
     optimizer = HiGHS.Optimizer,
-    parameters = default_parameters(optimizer),
+    optimizer_parameters = default_parameters(optimizer),
     model_file_name = "",
     enable_names = true,
     direct_model = false,
 )
     ## Optimizer
-    optimizer_with_attributes = JuMP.optimizer_with_attributes(optimizer, parameters...)
+    optimizer_with_attributes = JuMP.optimizer_with_attributes(optimizer, optimizer_parameters...)
 
     ## Model
     if direct_model
