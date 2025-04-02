@@ -92,7 +92,7 @@ For more information on `direct_model`, see [Speed improvements in the model cre
 # create the model and solve with the default optimizer and optimizer parameters
 energy_problem = EnergyProblem(connection)
 create_model!(energy_problem)
-solution1 = solve_model(energy_problem)
+solve_model(energy_problem)
 
 # change the solver and parameters and resolve:
 parameter_dict = Dict("tm_lim" => 1) # list optimizer parameters as comma-separated parameter=>value pairs
