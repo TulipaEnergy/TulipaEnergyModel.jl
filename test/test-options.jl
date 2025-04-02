@@ -18,8 +18,7 @@
 end
 
 @testset "Test run_scenario arguments" begin
-    connection = DBInterface.connect(DuckDB.DB)
-    _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
+    connection = _tiny_fixture()
 
     ep = TulipaEnergyModel.run_scenario(
         connection;
