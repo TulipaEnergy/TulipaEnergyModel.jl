@@ -102,7 +102,7 @@ for (k, v) in optimizer_parameters
     JuMP.set_attribute(energy_problem.model, k, v) # change the optimizer_parameters
 end
 
-solution2 = solve_model(energy_problem) # solve the model with new optimizer & optimizer_parameters
+solve_model(energy_problem) # solve the model with new optimizer & optimizer_parameters
 ```
 
 For the complete list of parameters, check your chosen optimizer.
