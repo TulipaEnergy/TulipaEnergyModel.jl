@@ -22,13 +22,16 @@ once.
 To contribute to TulipaEnergyModel.jl, you need the following:
 
 1. [Julia](https://julialang.org) programming language.
-2. [Git](https://git-scm.com) for version control.
-3. [VSCode](https://code.visualstudio.com) or any other editor. For VSCode, we recommend
-   to install a few extensions. You can do it by pressing `Ctrl + Shift + X` (or `⇧ + ⌘ + X` on MacOS) and searching by the extension name. - [Julia for Visual Studio Code](https://www.julia-vscode.org); - [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph).
-4. [EditorConfig](https://editorconfig.org) for consistent code formatting.
+1. [Git](https://git-scm.com) for version control.
+1. [VSCode](https://code.visualstudio.com) or any other editor. For VSCode, we recommend
+   to install a few extensions. You can do it by pressing `Ctrl + Shift + X` (or `⇧ + ⌘ + X` on MacOS) and searching by the extension name:
+   - [Julia for Visual Studio Code](https://www.julia-vscode.org)
+   - [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph)
+1. [EditorConfig](https://editorconfig.org) for consistent code formatting.
    In VSCode, it is available as
    [an extension](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig).
-5. [pre-commit](https://pre-commit.com) to run the linters and formatters.
+1. [pre-commit](https://pre-commit.com) to run the linters and formatters.
+   - To install pre-commit, you will first need [Python](https://www.python.org/) with pip (included by default in recent Python versions).
 
    You can install `pre-commit` globally using
 
@@ -58,11 +61,10 @@ To contribute to TulipaEnergyModel.jl, you need the following:
    env/Scripts/Activate.ps1 # in powershell
    ```
 
-6. [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
+1. [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
    formatting.
 
-   To install it, open Julia REPL, for example, by typing in the
-   command line:
+   To install it, open a Julia REPL, for example, by typing in the command line:
 
    ```bash
    julia
@@ -70,27 +72,26 @@ To contribute to TulipaEnergyModel.jl, you need the following:
 
    > **Note:** `julia` must be part of your environment variables to call it from the command line.
 
-   Then press <kbd>]</kbd> to enter the package mode.
-   In the package mode, enter the following:
+   Then press `]` to enter package mode and enter the following:
 
    ```julia
    pkg> activate
    pkg> add JuliaFormatter
    ```
 
-   In VSCode, you can activate "Format on Save" for `JuliaFormatter`. To do so,
-   open VSCode Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>), then in "Search
-   Settings", type "Format on Save" and tick the first result:
+   In VSCode, you can activate "Format on Save" for `JuliaFormatter`:
+   - Open VSCode Settings (`Ctrl + ,`)
+   - In "Search Settings", type "Format on Save" and tick the first result:
 
    ![Screenshot of Format on Save option](./images/FormatOnSave.png)
 
-7. [Prettier](https://prettier.io/) for markdown formatting.
+1. [Prettier](https://prettier.io/) for markdown formatting.
    In VSCode, it is available as
    [an extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
 
    Having enabled "Format on Save" for `JuliaFormatter` in the previous step will also enable "Format on Save" for `Prettier`, provided that `Prettier` is set as the default formatter for markdown files. To do so, in VSCode, open any markdown file, right-click on any area of the file, choose "Format Document With...", click "Configure Default Formatter..." situated at the bottom of the drop-list list at the top of the screen, and then choose `Prettier - Code formatter` as the default formatter. Once you are done, you can double-check it by again right-clicking on any area of the file and choosing "Format Document With...", and you should see `Prettier - Code formatter (default)`.
 
-8. [LocalCoverage](https://github.com/JuliaCI/LocalCoverage.jl) for coverage
+1. [LocalCoverage](https://github.com/JuliaCI/LocalCoverage.jl) for coverage
    testing. You can install it the same way you installed `JuliaFormatter`,
    that is, by opening Julia REPL in the package mode and typing:
 
@@ -150,9 +151,9 @@ cd /path/to/TulipaEnergyModel.jl  # change the working directory to the repo dir
 julia                             # start Julia REPL
 ```
 
-In VSCode, first open your cloned fork as a new project. Then open the command palette with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> (or <kbd>⇧</kbd> + <kbd>⌘</kbd> + <kbd>P</kbd> on MacOS) and use the command called `Julia: Start REPL`.
+In VSCode, first open your cloned fork as a new project. Then open the command palette with `Ctrl + Shift + P` (or `⇧ + ⌘ + P` on MacOS) and use the command called `Julia: Start REPL`.
 
-In Julia REPL, enter the package mode by pressing <kbd>]</kbd>.
+In a Julia REPL, enter the package mode by pressing `]`.
 
 In the package mode, first activate and instantiate the project, then run the
 tests to ensure that everything is working as expected:
