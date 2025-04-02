@@ -595,7 +595,6 @@ When publishing a new version of the model to the Julia Registry, follow this pr
 
 !!! note
     To be able to register, you need to be a member of the organisation TulipaEnergy and set your visibility to public:
-
     ![Screenshot of public members of TulipaEnergy on GitHub](./images/PublicMember.png)
 
 1. Click on the `Project.toml` file on GitHub.
