@@ -612,7 +612,6 @@ When publishing a new version of the model to the Julia Registry, follow this pr
    ![Screenshot of full PR template on GitHub](./images/PullRequest.png)
 
 1. Go to the main page of repo and click in the commit.
-
    ![Screenshot of how to access commit on GitHub](./images/AccessCommit.png)
 
 1. Add the following comment to the commit: `@JuliaRegistrator register`
