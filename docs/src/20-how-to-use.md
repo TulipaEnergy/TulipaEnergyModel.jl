@@ -60,7 +60,7 @@ To change this, you can give the functions [`run_scenario`](@ref) or [`create_mo
 
 Here is an example running the Tiny case using the [GLPK](https://github.com/jump-dev/GLPK.jl) optimizer:
 
-```julia @example change-optimizer
+```julia
 using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
 
 input_dir = "../../test/inputs/Tiny" # you path will be different
@@ -77,7 +77,7 @@ In both cases above, the `GLPK` optimizer uses its default parameters, which you
 To change any optimizer parameters, you can pass a dictionary to the `optimizer_parameters` keyword argument.
 The example below changes the maximum allowed runtime for GLPK to 1 second, which will probably cause it to fail to converge in time.
 
-```julia @example change-optimizer
+```julia
 # change the optimizer parameters
 parameter_dict = Dict("tm_lim" => 1) # list optimizer parameters as comma-separated parameter=>value pairs
 energy_problem = run_scenario(connection; optimizer = GLPK.Optimizer, optimizer_parameters = parameter_dict)
