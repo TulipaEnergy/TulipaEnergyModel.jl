@@ -245,11 +245,49 @@ end
 
 @testset "Check data consistency for simple investment method" begin
     @testset "Using fake data" begin
-        @testset "Where there is only one row of data for milestone year not equal to commission year " begin
-            connection = DBInterface.connect(DuckDB.DB)
-            # Test 1:
+        @testset "Where there is no data for milestone year != commission year" begin
             # For asset and flow
-            # Having exactly one row of data per milestone year where milestone year does not equal to commission year
+            # Validate have only matching years
+            # Error otherwise and point out the unmatched rows
+            connection = DBInterface.connect(DuckDB.DB)
+            asset = DataFrame(:asset => ["A1", "A2"], :investment_method => ["simple", "none"])
+            asset_both = DataFrame(
+                :asset => ["A1", "A1", "A2", "A2"],
+                :milestone_year => [1, 1, 1, 1],
+                :commission_year => [1, 0, 1, 0],
+            )
+            flow = DataFrame(
+                :from_asset => ["A1", "A2"],
+                :to_asset => ["B", "B"],
+                :is_transport => [false, true], # only flow A2-B will be tested
+            )
+            flow_both = DataFrame(
+                :from_asset => ["A1", "A2", "A2"],
+                :to_asset => ["B", "B", "B"],
+                :milestone_year => [1, 1, 1],
+                :commission_year => [1, 1, 0],
+            )
+
+            DuckDB.register_data_frame(connection, asset, "asset")
+            DuckDB.register_data_frame(connection, asset_both, "asset_both")
+            DuckDB.register_data_frame(connection, flow, "flow")
+            DuckDB.register_data_frame(connection, flow_both, "flow_both")
+
+            error_messages =
+                TEM._validate_simple_method_has_only_matching_years!(String[], connection)
+            @test error_messages == [
+                "Unexpected (asset='A1', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A1' with investment_method='simple'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+                "Unexpected (asset='A2', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A2' with investment_method='none'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+                "Unexpected (from_asset='A2', to_asset='B', milestone_year=1, commission_year=0) in 'flow_both' for an flow=('A2', 'B') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+            ]
+        end
+
+        @testset "Where all milestone years are covered" begin
+            # For asset and flow
+            # Validate that the data contains all milestone years where milestone year = commission year
+            # Error otherwise and point out the missing milestone years
+            connection = DBInterface.connect(DuckDB.DB)
+            year_data = DataFrame(:year => [0, 1], :is_milestone => [false, true])
             asset = DataFrame(:asset => ["A1", "A2"], :investment_method => ["simple", "none"])
             asset_both = DataFrame(
                 :asset => ["A1", "A2"],
@@ -267,61 +305,51 @@ end
                 :milestone_year => [1, 1],
                 :commission_year => [0, 0],
             )
-
+            DuckDB.register_data_frame(connection, year_data, "year_data")
             DuckDB.register_data_frame(connection, asset, "asset")
             DuckDB.register_data_frame(connection, asset_both, "asset_both")
             DuckDB.register_data_frame(connection, flow, "flow")
             DuckDB.register_data_frame(connection, flow_both, "flow_both")
 
             error_messages =
-                TEM._validate_simple_method_data_contains_only_one_row_where_milestone_year_not_equal_to_commission_year!(
-                    String[],
-                    connection,
-                )
-            @test error_messages == [
-                "'A1' uses 'simple' investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there is exactly one row of data where milestone year 1 does not equal commission year in 'asset_both'.",
-                "'A2' uses 'none' investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there is exactly one row of data where milestone year 1 does not equal commission year in 'asset_both'.",
-                "By default, transport flow ('A2', 'B') uses simple/none investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there is exactly one row of data where milestone year 1 does not equal commission year in 'flow_both'.",
-            ]
-        end
-
-        @testset "Where there are more than one row of data" begin
-            connection = DBInterface.connect(DuckDB.DB)
-            # For asset and flow
-            # Having more than one row of data per milestone year
-            asset_both = DataFrame(
-                :asset => ["A1", "A1", "A2", "A2"],
-                :milestone_year => [1, 1, 1, 1],
-                :commission_year => [1, 0, 1, 0],
-            )
-            flow_both = DataFrame(
-                :from_asset => ["A1", "A2", "A2"],
-                :to_asset => ["B", "B", "B"],
-                :milestone_year => [1, 1, 1],
-                :commission_year => [1, 1, 0],
-            )
-            DuckDB.query(connection, "DROP VIEW IF EXISTS asset_both;")
-            DuckDB.query(connection, "DROP VIEW IF EXISTS flow_both;")
-            DuckDB.register_data_frame(connection, asset_both, "asset_both")
-            DuckDB.register_data_frame(connection, flow_both, "flow_both")
-
-            error_messages =
-                TEM._validate_simple_method_data_contains_more_than_one_row!(String[], connection)
+                TEM._validate_simple_method_all_milestone_years_are_covered!(String[], connection)
 
             @test error_messages == [
-                "'A1' uses 'simple' investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there are 2 rows of data for milestone year 1 in 'asset_both'.",
-                "'A2' uses 'none' investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there are 2 rows of data for milestone year 1 in 'asset_both'.",
-                "By default, transport flow ('A2', 'B') uses simple/none investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there are 2 rows of data for milestone year 1 in 'flow_both'.",
+                "Missing information in 'asset_both': Asset 'A1' has investment_method='simple' but there is no row (asset='A1', milestone_year=1, commission_year=1). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+                "Missing information in 'asset_both': Asset 'A2' has investment_method='none' but there is no row (asset='A2', milestone_year=1, commission_year=1). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+                "Missing information in 'flow_both': Flow ('A2', 'B') currently only has investment_method='simple/none' but there is no row (from_asset='A2', to_asset='B', milestone_year=1, commission_year=1). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
             ]
         end
     end
 
     @testset "Using Tiny data" begin
-        connection = _tiny_fixture()
-        @testset "Where there is only one row of data for milestone year not equal to commission year " begin
-            # Test 1:
+        @testset "Where there is no data for milestone year != commission year" begin
             # For asset and flow
-            # Having exactly one row of data where milestone year does not equal to commission year
+            # Validate have only matching years
+            # Error otherwise and point out the unmatched rows
+            connection = _tiny_fixture()
+            DuckDB.query(
+                connection,
+                """
+                INSERT INTO asset_both (asset, milestone_year, commission_year)
+                VALUES ('ccgt', 2030, 2029);
+                UPDATE flow SET is_transport = TRUE WHERE from_asset = 'wind' AND to_asset = 'demand';
+                INSERT INTO flow_both (from_asset, to_asset, milestone_year, commission_year)
+                VALUES ('wind', 'demand', 2030, 2029);
+                """,
+            )
+            error_messages =
+                TEM._validate_simple_method_has_only_matching_years!(String[], connection)
+            @test error_messages == [
+                "Unexpected (asset='ccgt', milestone_year=2030, commission_year=2029) in 'asset_both' for an asset='ccgt' with investment_method='none'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+                "Unexpected (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2029) in 'flow_both' for an flow=('wind', 'demand') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+            ]
+        end
+        @testset "Where all milestone years are covered" begin
+            # For asset and flow
+            # Validate that the data contains all milestone years where milestone year = commission year
+            # Error otherwise and point out the missing milestone years
+            connection = _tiny_fixture()
             DuckDB.query(
                 connection,
                 """
@@ -330,30 +358,11 @@ end
                 UPDATE flow_both SET commission_year = 2029 WHERE from_asset = 'wind' AND to_asset = 'demand' AND milestone_year = 2030;
                 """,
             )
-            error_messages = TEM._validate_simple_method_data_consistency!(connection)
-            @test error_messages == [
-                "'ccgt' uses 'none' investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there is exactly one row of data where milestone year 2030 does not equal commission year in 'asset_both'.",
-                "By default, transport flow ('wind', 'demand') uses simple/none investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there is exactly one row of data where milestone year 2030 does not equal commission year in 'flow_both'.",
-            ]
-        end
-        @testset "Where there are more than one row of data" begin
-            # Test 2:
-            # For asset and flow
-            # Having more than one row of data per milestone year
-            DuckDB.query(
-                connection,
-                """
-                INSERT INTO asset_both (asset, milestone_year, commission_year)
-                VALUES ('ccgt', 2030, 2030);
-                INSERT INTO flow_both (from_asset, to_asset, milestone_year, commission_year)
-                VALUES ('wind', 'demand', 2030, 2030);
-                """,
-            )
             error_messages =
-                TEM._validate_simple_method_data_contains_more_than_one_row!(String[], connection)
+                TEM._validate_simple_method_all_milestone_years_are_covered!(String[], connection)
             @test error_messages == [
-                "'ccgt' uses 'none' investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there are 2 rows of data for milestone year 2030 in 'asset_both'.",
-                "By default, transport flow ('wind', 'demand') uses simple/none investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there are 2 rows of data for milestone year 2030 in 'flow_both'.",
+                "Missing information in 'asset_both': Asset 'ccgt' has investment_method='none' but there is no row (asset='ccgt', milestone_year=2030, commission_year=2030). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+                "Missing information in 'flow_both': Flow ('wind', 'demand') currently only has investment_method='simple/none' but there is no row (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2030). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
             ]
         end
     end

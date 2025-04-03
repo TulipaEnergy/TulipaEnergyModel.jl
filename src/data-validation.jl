@@ -241,14 +241,14 @@ end
 function _validate_simple_method_data_consistency!(connection)
     error_messages = String[]
     _validate_simple_method_has_only_matching_years!(error_messages, connection)
-    _validate_simple_method_data_contains_more_than_one_row!(error_messages, connection)
+    _validate_simple_method_all_milestone_years_are_covered!(error_messages, connection)
 
     return error_messages
 end
 
 function _validate_simple_method_has_only_matching_years!(error_messages, connection)
     # Validate that the data should have milestone year = commission year
-    # Errors otherwise and point out the unmatched rows
+    # Error otherwise and point out the unmatched rows
     # - For assets
     for row in DuckDB.query(
         connection,
@@ -262,7 +262,7 @@ function _validate_simple_method_has_only_matching_years!(error_messages, connec
     )
         push!(
             error_messages,
-            "Unexpected (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'asset_both' for an asset='$(row.asset)' with investment_method='$(row.investment_method)'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year",
+            "Unexpected (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'asset_both' for an asset='$(row.asset)' with investment_method='$(row.investment_method)'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -270,8 +270,8 @@ function _validate_simple_method_has_only_matching_years!(error_messages, connec
     for row in DuckDB.query(
         connection,
         "SELECT flow.from_asset, flow.to_asset, flow_both.milestone_year, flow_both.commission_year,
-        FROM flow_both
-        LEFT JOIN flow
+        FROM flow
+        LEFT JOIN flow_both
             ON flow.is_transport
             AND flow.from_asset = flow_both.from_asset
             AND flow.to_asset = flow_both.to_asset
@@ -280,7 +280,7 @@ function _validate_simple_method_has_only_matching_years!(error_messages, connec
     )
         push!(
             error_messages,
-            "Unexpected (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' for an flow=('$(row.from_asset)', '$(row.to_asset)') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year",
+            "Unexpected (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' for an flow=('$(row.from_asset)', '$(row.to_asset)') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -288,18 +288,20 @@ function _validate_simple_method_has_only_matching_years!(error_messages, connec
 end
 
 function _validate_simple_method_all_milestone_years_are_covered!(error_messages, connection)
-    # For assets
-    # Validate that the data per milestone year contains more than one row
+    # Validate that the data contains all milestone years where milestone year = commission year
+    # Error otherwise and point out the missing milestone years
+    # - For assets
     for row in DuckDB.query(
         connection,
         "WITH asset_simple AS (
-            SELECT asset.asset, year_data.year AS milestone_year,
+            SELECT asset.asset, year_data.year AS milestone_year, asset.investment_method
             FROM asset
             CROSS JOIN year_data
             WHERE asset.investment_method in ('simple', 'none')
                 AND year_data.is_milestone
         )
-        SELECT asset_simple.asset, asset_simple.milestone_year
+        SELECT asset_simple.asset, asset_simple.milestone_year, asset_simple.investment_method
+        FROM asset_simple
         LEFT JOIN asset_both
             ON asset_simple.asset = asset_both.asset
             AND asset_simple.milestone_year = asset_both.milestone_year
@@ -309,30 +311,34 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
     )
         push!(
             error_messages,
-            "Missing information in 'asset_both': Asses '$(row.asset)' has investment_method='$(row.investment_method)' but there is no row (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+            "Missing information in 'asset_both': Asset '$(row.asset)' has investment_method='$(row.investment_method)' but there is no row (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
         )
     end
 
-    # For flows
-    # Validate that the data per milestone year contains more than one row
+    # - For flows
     for row in DuckDB.query(
         connection,
-        "SELECT flow.from_asset, flow.to_asset, flow_both.milestone_year, COUNT(*) AS cnt
-        FROM flow
+        "WITH flow_simple AS (
+            SELECT flow.from_asset, flow.to_asset, year_data.year AS milestone_year
+            FROM flow
+            CROSS JOIN year_data
+            WHERE year_data.is_milestone
+                AND flow.is_transport
+        )
+        SELECT flow_simple.from_asset, flow_simple.to_asset, flow_simple.milestone_year,
+        FROM flow_simple
         LEFT JOIN flow_both
-            ON flow.is_transport
-            AND flow.from_asset = flow_both.from_asset
-            AND flow.to_asset = flow_both.to_asset
-        GROUP BY flow.from_asset, flow.to_asset, flow_both.milestone_year
-        ORDER BY flow.from_asset, flow.to_asset, flow_both.milestone_year
+            ON flow_simple.from_asset = flow_both.from_asset
+            AND flow_simple.to_asset = flow_both.to_asset
+            AND flow_simple.milestone_year = flow_both.milestone_year
+            AND flow_simple.milestone_year = flow_both.commission_year
+        WHERE flow_both.commission_year IS NULL
         ",
     )
-        if row.cnt ≥ 2
-            push!(
-                error_messages,
-                "By default, transport flow ('$(row.from_asset)', '$(row.to_asset)') uses simple/none investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there are $(row.cnt) rows of data for milestone year $(row.milestone_year) in 'flow_both'.",
-            )
-        end
+        push!(
+            error_messages,
+            "Missing information in 'flow_both': Flow ('$(row.from_asset)', '$(row.to_asset)') currently only has investment_method='simple/none' but there is no row (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+        )
     end
 
     return error_messages
