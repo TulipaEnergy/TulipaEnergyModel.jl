@@ -2,11 +2,14 @@ export create_internal_tables!, export_solution_to_csv_files
 
 # Create tables that are allowed to be missing
 const tables_allowed_to_be_missing = [
+    "assets_profiles"
     "assets_rep_periods_partitions"
     "assets_timeframe_partitions"
     "assets_timeframe_profiles"
+    "flows_profiles"
     "flows_rep_periods_partitions"
     "group_asset"
+    "profiles_rep_periods"
     "profiles_timeframe"
 ]
 
