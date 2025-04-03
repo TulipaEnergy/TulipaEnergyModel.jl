@@ -269,7 +269,6 @@ function _validate_simple_method_has_only_matching_years!(
                 error_messages,
                 "Unexpected (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'asset_both' for an asset='$(row.asset)' with investment_method='$(row.investment_method)'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year",
             )
-        end
     end
 
     # For flows
