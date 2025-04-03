@@ -293,20 +293,16 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
     # - For assets
     for row in DuckDB.query(
         connection,
-        "WITH asset_simple AS (
-            SELECT asset.asset, year_data.year AS milestone_year, asset.investment_method
-            FROM asset
-            CROSS JOIN year_data
-            WHERE asset.investment_method in ('simple', 'none')
-                AND year_data.is_milestone
-        )
-        SELECT asset_simple.asset, asset_simple.milestone_year, asset_simple.investment_method
-        FROM asset_simple
+        "SELECT asset_milestone.asset, asset_milestone.milestone_year, asset.investment_method
+        FROM asset_milestone
+        LEFT JOIN asset
+            ON asset_milestone.asset = asset.asset
         LEFT JOIN asset_both
-            ON asset_simple.asset = asset_both.asset
-            AND asset_simple.milestone_year = asset_both.milestone_year
-            AND asset_simple.milestone_year = asset_both.commission_year
+            ON asset_milestone.asset = asset_both.asset
+            AND asset_milestone.milestone_year = asset_both.milestone_year
+            AND asset_milestone.milestone_year = asset_both.commission_year
         WHERE asset_both.commission_year IS NULL
+            AND asset.investment_method in ('simple', 'none')
         ",
     )
         push!(
