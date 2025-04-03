@@ -5,7 +5,7 @@
         connection;
         output_folder = OUTPUT_FOLDER,
         optimizer = HiGHS.Optimizer,
-        parameters = Dict(
+        optimizer_parameters = Dict(
             "output_flag" => false,
             "dual_feasibility_tolerance" => 1e-4,
             "mip_rel_gap" => 1e-2,
@@ -15,6 +15,45 @@
         model_file_name = "model.lp",
         show_log = false,
     )
+end
+
+@testset "Test run_scenario arguments" begin
+    connection = _tiny_fixture()
+
+    ep = TulipaEnergyModel.run_scenario(
+        connection;
+        output_folder = OUTPUT_FOLDER,
+        optimizer = GLPK.Optimizer,
+        optimizer_parameters = Dict("msg_lev" => GLPK.GLP_MSG_OFF, "tol_int" => 1e-3),
+        model_file_name = "model.lp",
+        enable_names = false,
+        direct_model = true,
+        log_file = "model.log",
+        show_log = false,
+    )
+
+    @test JuMP.get_attribute(ep.model, "msg_lev") == GLPK.GLP_MSG_OFF
+    @test JuMP.get_attribute(ep.model, "tol_int") == 1e-3
+    @test JuMP.constraint_by_name(ep.model, "consumer_balance[demand,2030,1,1:1]") === nothing
+    @test JuMP.mode(ep.model) == JuMP.ModelMode(2)
+end
+
+@testset "Test create_model! arguments" begin
+    connection = _tiny_fixture()
+
+    ep = TulipaEnergyModel.EnergyProblem(connection)
+    TulipaEnergyModel.create_model!(
+        ep;
+        optimizer = GLPK.Optimizer,
+        optimizer_parameters = Dict("msg_lev" => GLPK.GLP_MSG_OFF, "tol_int" => 1e-3),
+        enable_names = false,
+        direct_model = true,
+    )
+
+    @test JuMP.get_attribute(ep.model, "msg_lev") == GLPK.GLP_MSG_OFF
+    @test JuMP.get_attribute(ep.model, "tol_int") == 1e-3
+    @test JuMP.constraint_by_name(ep.model, "consumer_balance[demand,2030,1,1:1]") === nothing
+    @test JuMP.mode(ep.model) == JuMP.ModelMode(2)
 end
 
 @testset "Test default_parameters usage" begin
@@ -80,7 +119,7 @@ end
             connection;
             output_folder = OUTPUT_FOLDER,
             optimizer = HiGHS.Optimizer,
-            parameters = Dict("bad_param" => 1.0),
+            optimizer_parameters = Dict("bad_param" => 1.0),
             show_log = false,
         )
 end

@@ -52,51 +52,57 @@ To save the solution to CSV files, you can use [`export_solution_to_csv_files`](
 
 ## Changing the solver (optimizer) and specifying parameters
 
-By default, the model is solved using the [HiGHS](https://github.com/jump-dev/HiGHS.jl) optimizer.
-To change this, you can give the functions [`run_scenario`](@ref) or [`solve_model!`](@ref) a
-different optimizer.
+By default, the model is solved using the [HiGHS](https://github.com/jump-dev/HiGHS.jl) optimizer (or solver).
+To change this, you can give the functions [`run_scenario`](@ref) or [`create_model!`](@ref) a different optimizer.
 
 !!! warning
     HiGHS is the only open source solver that we recommend. GLPK and Cbc are not (fully) tested for Tulipa.
 
 Here is an example running the Tiny case using the [GLPK](https://github.com/jump-dev/GLPK.jl) optimizer:
 
-```@example change-optimizer
+```julia
 using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
 
-input_dir = "../../test/inputs/Tiny" # hide
-# input_dir should be the path to Tiny as a string (something like "test/inputs/Tiny")
+input_dir = "../../test/inputs/Tiny" # you path will be different
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
-energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer)
-```
-
-or using [`solve_model!`](@ref):
-
-```@example change-optimizer
-using GLPK
-
-solution = solve_model!(energy_problem, GLPK.Optimizer)
+energy_problem = run_scenario(connection; optimizer = GLPK.Optimizer)
+#OR create_model!(energy_problem; optimizer = GLPK.Optimizer)
 ```
 
 !!! info
     Notice that you need to add the GLPK package and run `using GLPK` before running `GLPK.Optimizer`.
 
-In both cases, the `GLPK` optimizer uses its default parameters,
-which you can query using [`default_parameters`](@ref).
-To change any optimizer parameters, you can pass a dictionary using the keyword argument `parameters`.
-The example below changes the maximum allowed runtime for GLPK to 1 second,
-which will probably cause it to fail to converge in time.
+In both cases above, the `GLPK` optimizer uses its default parameters, which you can query using [`default_parameters`](@ref).
+To change any optimizer parameters, you can pass a dictionary to the `optimizer_parameters` keyword argument.
+The example below changes the maximum allowed runtime for GLPK to 1 second, which will probably cause it to fail to converge in time.
 
-```@example
-using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
-
-input_dir = "../../test/inputs/Tiny" # hide
-parameters = Dict("tm_lim" => 1)
-connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
-energy_problem = run_scenario(connection, optimizer = GLPK.Optimizer, parameters = parameters)
+```julia
+# change the optimizer parameters
+parameter_dict = Dict("tm_lim" => 1) # list optimizer parameters as comma-separated parameter=>value pairs
+energy_problem = run_scenario(connection; optimizer = GLPK.Optimizer, optimizer_parameters = parameter_dict)
+#OR create_model!(energy_problem; optimizer = GLPK.Optimizer, optimizer_parameters = parameter_dict)
 energy_problem.termination_status
+```
+
+If `direct_model = false` you can change the optimizer and parameters after creating the model (but before solving it) using the JuMP commands demonstrated below.
+For more information on `direct_model`, see [Speed improvements in the model creation](@ref need-for-speed).
+
+```julia @example change-optimizer
+# create the model and solve with the default optimizer and optimizer parameters
+energy_problem = EnergyProblem(connection)
+create_model!(energy_problem)
+solve_model(energy_problem)
+
+# change the solver and parameters and resolve:
+parameter_dict = Dict("tm_lim" => 1) # list optimizer parameters as comma-separated parameter=>value pairs
+
+JuMP.set_optimizer(energy_problem.model, GLPK.Optimizer) # change the optimizer
+for (k, v) in optimizer_parameters
+    JuMP.set_attribute(energy_problem.model, k, v) # change the optimizer_parameters
+end
+
+solve_model(energy_problem) # solve the model with new optimizer & optimizer_parameters
 ```
 
 For the complete list of parameters, check your chosen optimizer.
@@ -114,13 +120,15 @@ Use `energy_problem.model` for the model argument. For instance:
 
 ```julia
 if energy_problem.termination_status == INFEASIBLE
- compute_conflict!(energy_problem.model)
- iis_model, reference_map = copy_conflict(energy_problem.model)
- print(iis_model)
+  compute_conflict!(energy_problem.model)
+  iis_model, reference_map = copy_conflict(energy_problem.model)
+  print(iis_model)
 end
 ```
 
 ## [Speed improvements in the model creation](@id need-for-speed)
+
+### Disable names of variables and constraints
 
 If you want to speed-up model creation, consider disabling the naming of variables and constraints. Of course, removing the names will make debugging difficult (or impossible) - so enable/disable naming as needed for your analysis.
 
@@ -133,6 +141,20 @@ create_model!(energy_problem; enable_names = false)
 ```
 
 For more information, see the JuMP documentation for [Disable string names](https://jump.dev/JuMP.jl/stable/tutorials/getting_started/performance_tips/#Disable-string-names).
+
+### Create a direct model
+
+If you want to reduce memory usage, consider using `direct_model = true`. This restricts certain actions after model creation, such as changing the optimizer.
+
+```julia
+# Create direct model with run_scenario
+run_scenario(connection; direct_model = true)
+
+# OR while using create_model!
+create_model!(energy_problem; direct_model = true)
+```
+
+For more information, see the JuMP documentation for [`direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model).
 
 ## Storage specific setups
 

@@ -6,11 +6,15 @@
         # Removing because it's finding bad bases (ill-conditioned) randomly
         # GLPK.Optimizer => Dict("mip_gap" => 0.01, "msg_lev" => 0, "presolve" => GLPK.GLP_ON),
     )
-    for (optimizer, parameters) in parameters_dict
+    for (optimizer, optimizer_parameters) in parameters_dict
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, dir)
-        energy_problem =
-            TulipaEnergyModel.run_scenario(connection; optimizer, parameters, show_log = false)
+        energy_problem = TulipaEnergyModel.run_scenario(
+            connection;
+            optimizer,
+            optimizer_parameters,
+            show_log = false,
+        )
         @test JuMP.is_solved_and_feasible(energy_problem.model)
     end
 end
@@ -26,19 +30,6 @@ end
     end
 end
 
-@testset "Test run_scenario arguments" begin
-    dir = joinpath(INPUT_FOLDER, "Norse")
-    connection = DBInterface.connect(DuckDB.DB)
-    _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(
-        connection;
-        output_folder = OUTPUT_FOLDER,
-        show_log = false,
-        model_file_name = "model.lp",
-        log_file = "model.log",
-    )
-end
-
 @testset "Storage Assets Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Storage")
     connection = DBInterface.connect(DuckDB.DB)
@@ -50,14 +41,14 @@ end
 @testset "UC ramping Case Study" begin
     dir = joinpath(INPUT_FOLDER, "UC-ramping")
     optimizer = HiGHS.Optimizer
-    parameters =
+    optimizer_parameters =
         Dict("output_flag" => false, "mip_rel_gap" => 0.0, "mip_feasibility_tolerance" => 1e-5)
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(
         connection;
-        optimizer = optimizer,
-        parameters = parameters,
+        optimizer,
+        optimizer_parameters,
         show_log = false,
     )
     @test energy_problem.objective_value ≈ 293074.923309 atol = 1e-5
@@ -99,7 +90,7 @@ end
     energy_problem = TulipaEnergyModel.EnergyProblem(connection)
     TulipaEnergyModel.create_model!(energy_problem)
     @test_logs (:warn, "Model status different from optimal") TulipaEnergyModel.solve_model!(
-        energy_problem,
+        energy_problem;
     )
     @test energy_problem.termination_status == JuMP.INFEASIBLE
     io = IOBuffer()

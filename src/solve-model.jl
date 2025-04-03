@@ -1,23 +1,18 @@
 export solve_model!, solve_model, save_solution!
 
 """
-    solve_model!(energy_problem[, optimizer; parameters, save_solution = true])
+    solve_model!(energy_problem::EnergyProblem; save_solution = true)
 
-Solve the internal model of an `energy_problem`. If `save_solution`, then the
-solution and dual variables are computed and saved by [`save_solution!`](@ref).
+Solve the internal model of an `energy_problem`.
+Set `save_solution = true` to have the solution and dual variables computed and saved by [`save_solution!`](@ref).
 """
-function solve_model!(
-    energy_problem::EnergyProblem,
-    optimizer = HiGHS.Optimizer;
-    parameters = default_parameters(optimizer),
-    save_solution = true,
-)
+function solve_model!(energy_problem::EnergyProblem; save_solution = true)
     model = energy_problem.model
     if model === nothing
         error("Model is not created, run create_model(energy_problem) first.")
     end
 
-    solve_model(model, optimizer; parameters = parameters)
+    solve_model(model)
     energy_problem.termination_status = JuMP.termination_status(model)
     if !JuMP.is_solved_and_feasible(model)
         # Warning has been given at internal function
@@ -29,33 +24,12 @@ function solve_model!(
 end
 
 """
-    solve_model(model[, optimizer; parameters])
+    solve_model(model::JuMP.Model)
 
-Solve the JuMP model. The `optimizer` argument should be an MILP solver from the JuMP
-list of [supported solvers](https://jump.dev/JuMP.jl/stable/installation/#Supported-solvers).
-By default we use HiGHS.
-
-The keyword argument `parameters` should be passed as a list of `key => value` pairs.
-These can be created manually, obtained using [`default_parameters`](@ref), or read from a file
-using [`read_parameters_from_file`](@ref).
-
-## Examples
-
-```julia
-parameters = Dict{String,Any}("presolve" => "on", "time_limit" => 60.0, "output_flag" => true)
-solve_model(model, HiGHS.Optimizer; parameters = parameters)
-```
+Solve the JuMP model.
 """
-function solve_model(
-    model::JuMP.Model,
-    optimizer = HiGHS.Optimizer;
-    parameters = default_parameters(optimizer),
-)
-    # Set optimizer and its parameters
-    JuMP.set_optimizer(model, optimizer)
-    for (k, v) in parameters
-        JuMP.set_attribute(model, k, v)
-    end
+function solve_model(model::JuMP.Model)
+
     # Solve model
     @timeit to "total solver time" JuMP.optimize!(model)
 
@@ -69,7 +43,7 @@ function solve_model(
 end
 
 """
-    save_solution!(energy_problem; compute_duals = true)
+    save_solution!(energy_problem::EnergyProblem; compute_duals = true)
 """
 function save_solution!(energy_problem::EnergyProblem; compute_duals = true)
     return save_solution!(

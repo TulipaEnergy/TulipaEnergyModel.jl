@@ -4,7 +4,7 @@
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.EnergyProblem(connection)
     TulipaEnergyModel.create_model!(energy_problem)
-    TulipaEnergyModel.solve_model!(energy_problem, HiGHS.Optimizer)
+    TulipaEnergyModel.solve_model!(energy_problem)
     TulipaEnergyModel.export_solution_to_csv_files(mktempdir(), energy_problem)
 end
 
@@ -39,7 +39,7 @@ end
     )
 
     # Solve model
-    TulipaEnergyModel.solve_model(model, HiGHS.Optimizer)
+    TulipaEnergyModel.solve_model(model)
     TulipaEnergyModel.save_solution!(connection, model, variables, constraints)
     TulipaEnergyModel.export_solution_to_csv_files(mktempdir(), connection, variables, constraints)
 end
