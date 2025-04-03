@@ -71,6 +71,7 @@ function _validate_has_all_tables_and_columns!(connection)
                 ]) == 1
             if !has_table
                 push!(error_messages, "Table '$table_name' expected but not found")
+                continue
             end
         end
 
