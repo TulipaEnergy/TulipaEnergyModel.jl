@@ -245,7 +245,7 @@ end
 
 @testset "Check data consistency for simple investment method" begin
     @testset "Using fake data" begin
-        @testset "Where there is no data for milestone year != commission year" begin
+        @testset "Where there is data for milestone year != commission year" begin
             # For asset and flow
             # Validate have only matching years
             # Error otherwise and point out the unmatched rows
@@ -282,13 +282,13 @@ end
             ]
         end
 
-        @testset "Where all milestone years are covered" begin
+        @testset "Where not all milestone years are covered" begin
             # For asset and flow
             # Validate that the data contains all milestone years where milestone year = commission year
             # Error otherwise and point out the missing milestone years
             connection = DBInterface.connect(DuckDB.DB)
-            year_data = DataFrame(:year => [0, 1], :is_milestone => [false, true])
             asset = DataFrame(:asset => ["A1", "A2"], :investment_method => ["simple", "none"])
+            asset_milestone = DataFrame(:asset => ["A1", "A2"], :milestone_year => [1, 1])
             asset_both = DataFrame(
                 :asset => ["A1", "A2"],
                 :milestone_year => [1, 1],
@@ -299,16 +299,22 @@ end
                 :to_asset => ["B", "B"],
                 :is_transport => [false, true], # only flow A2-B will be tested
             )
+            flow_milestone = DataFrame(
+                :from_asset => ["A1", "A2"],
+                :to_asset => ["B", "B"],
+                :milestone_year => [1, 1],
+            )
             flow_both = DataFrame(
                 :from_asset => ["A1", "A2"],
                 :to_asset => ["B", "B"],
                 :milestone_year => [1, 1],
                 :commission_year => [0, 0],
             )
-            DuckDB.register_data_frame(connection, year_data, "year_data")
             DuckDB.register_data_frame(connection, asset, "asset")
+            DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
             DuckDB.register_data_frame(connection, asset_both, "asset_both")
             DuckDB.register_data_frame(connection, flow, "flow")
+            DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
             DuckDB.register_data_frame(connection, flow_both, "flow_both")
 
             error_messages =
@@ -323,7 +329,7 @@ end
     end
 
     @testset "Using Tiny data" begin
-        @testset "Where there is no data for milestone year != commission year" begin
+        @testset "Where there is data for milestone year != commission year" begin
             # For asset and flow
             # Validate have only matching years
             # Error otherwise and point out the unmatched rows
@@ -345,7 +351,7 @@ end
                 "Unexpected (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2029) in 'flow_both' for an flow=('wind', 'demand') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
             ]
         end
-        @testset "Where all milestone years are covered" begin
+        @testset "Where not all milestone years are covered" begin
             # For asset and flow
             # Validate that the data contains all milestone years where milestone year = commission year
             # Error otherwise and point out the missing milestone years

@@ -314,21 +314,18 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
     # - For flows
     for row in DuckDB.query(
         connection,
-        "WITH flow_simple AS (
-            SELECT flow.from_asset, flow.to_asset, year_data.year AS milestone_year
-            FROM flow
-            CROSS JOIN year_data
-            WHERE year_data.is_milestone
-                AND flow.is_transport
-        )
-        SELECT flow_simple.from_asset, flow_simple.to_asset, flow_simple.milestone_year,
-        FROM flow_simple
+        "SELECT flow_milestone.from_asset, flow_milestone.to_asset, flow_milestone.milestone_year
+        FROM flow_milestone
+        LEFT JOIN flow
+            ON flow_milestone.from_asset = flow.from_asset
+            AND flow_milestone.to_asset = flow.to_asset
         LEFT JOIN flow_both
-            ON flow_simple.from_asset = flow_both.from_asset
-            AND flow_simple.to_asset = flow_both.to_asset
-            AND flow_simple.milestone_year = flow_both.milestone_year
-            AND flow_simple.milestone_year = flow_both.commission_year
+            ON flow_milestone.from_asset = flow_both.from_asset
+            AND flow_milestone.to_asset = flow_both.to_asset
+            AND flow_milestone.milestone_year = flow_both.milestone_year
+            AND flow_milestone.milestone_year = flow_both.commission_year
         WHERE flow_both.commission_year IS NULL
+            AND flow.is_transport
         ",
     )
         push!(
