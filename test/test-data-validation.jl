@@ -245,8 +245,8 @@ end
 
 @testset "Check data consistency for simple investment method" begin
     @testset "Using fake data" begin
-        connection = DBInterface.connect(DuckDB.DB)
         @testset "Where there is only one row of data for milestone year not equal to commission year " begin
+                connection = DBInterface.connect(DuckDB.DB)
             # Test 1:
             # For asset and flow
             # Having exactly one row of data per milestone year where milestone year does not equal to commission year
