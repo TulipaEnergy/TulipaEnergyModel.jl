@@ -284,8 +284,9 @@ end
                 "By default, transport flow ('A2', 'B') uses simple/none investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there is exactly one row of data where milestone year 1 does not equal commission year in 'flow_both'.",
             ]
         end
+
         @testset "Where there are more than one row of data" begin
-            # Test 2:
+            connection = DBInterface.connect(DuckDB.DB)
             # For asset and flow
             # Having more than one row of data per milestone year
             asset_both = DataFrame(
