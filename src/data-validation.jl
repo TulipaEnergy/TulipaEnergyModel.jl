@@ -240,24 +240,19 @@ end
 
 function _validate_simple_method_data_consistency!(connection)
     error_messages = String[]
-    _validate_simple_method_data_contains_only_one_row_where_milestone_year_not_equal_to_commission_year!(
-        error_messages,
-        connection,
-    )
+    _validate_simple_method_has_only_matching_years!(error_messages, connection)
     _validate_simple_method_data_contains_more_than_one_row!(error_messages, connection)
 
     return error_messages
 end
 
-function _validate_simple_method_has_only_matching_years!(
-    error_messages,
-    connection,
-)
-    # For assets
-    # Validate that the data per milestone year contains exactly one row where milestone year does not equal to commission year
+function _validate_simple_method_has_only_matching_years!(error_messages, connection)
+    # Validate that the data should have milestone year = commission year
+    # Errors otherwise and point out the unmatched rows
+    # - For assets
     for row in DuckDB.query(
         connection,
-        "SELECT asset.asset, asset_both.milestone_year, asset_both.commission_year,
+        "SELECT asset.asset, asset_both.milestone_year, asset_both.commission_year, asset.investment_method
         FROM asset_both
         LEFT JOIN asset
             ON asset.asset = asset_both.asset
@@ -265,33 +260,28 @@ function _validate_simple_method_has_only_matching_years!(
             AND asset.investment_method in ('simple', 'none')
         ",
     )
-            push!(
-                error_messages,
-                "Unexpected (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'asset_both' for an asset='$(row.asset)' with investment_method='$(row.investment_method)'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year",
-            )
+        push!(
+            error_messages,
+            "Unexpected (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'asset_both' for an asset='$(row.asset)' with investment_method='$(row.investment_method)'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year",
+        )
     end
 
-    # For flows
-    # Validate that the data per milestone year contains exactly one row where milestone year does not equal to commission year
+    # - For flows
     for row in DuckDB.query(
         connection,
-        "SELECT flow.from_asset, flow.to_asset, flow_both.milestone_year, COUNT(*) AS cnt
-        FROM flow
-        LEFT JOIN flow_both
+        "SELECT flow.from_asset, flow.to_asset, flow_both.milestone_year, flow_both.commission_year,
+        FROM flow_both
+        LEFT JOIN flow
             ON flow.is_transport
             AND flow.from_asset = flow_both.from_asset
             AND flow.to_asset = flow_both.to_asset
         WHERE flow_both.milestone_year != flow_both.commission_year
-        GROUP BY flow.from_asset, flow.to_asset, flow_both.milestone_year
-        ORDER BY flow.from_asset, flow.to_asset, flow_both.milestone_year
         ",
     )
-        if row.cnt == 1
-            push!(
-                error_messages,
-                "By default, transport flow ('$(row.from_asset)', '$(row.to_asset)') uses simple/none investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there is exactly one row of data where milestone year $(row.milestone_year) does not equal commission year in 'flow_both'.",
-            )
-        end
+        push!(
+            error_messages,
+            "Unexpected (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' for an flow=('$(row.from_asset)', '$(row.to_asset)') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year",
+        )
     end
 
     return error_messages
