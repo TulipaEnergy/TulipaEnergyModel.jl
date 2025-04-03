@@ -302,13 +302,19 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
     # Validate that the data per milestone year contains more than one row
     for row in DuckDB.query(
         connection,
-        "SELECT asset.asset, asset.investment_method, asset_both.milestone_year, COUNT(*) AS cnt
-        FROM asset_both
-        LEFT JOIN asset
-            ON asset.asset = asset_both.asset
-        WHERE asset.investment_method in ('simple', 'none')
-        GROUP BY asset.asset, asset.investment_method, asset_both.milestone_year
-        ORDER BY asset.asset, asset.investment_method, asset_both.milestone_year
+        "WITH asset_simple AS (
+            SELECT asset.asset, year_data.year AS milestone_year,
+            FROM asset
+            CROSS JOIN year_data
+            WHERE asset.investment_method in ('simple', 'none')
+                AND year_data.is_milestone
+        )
+        SELECT asset_simple.asset, asset_simple.milestone_year
+        LEFT JOIN asset_both
+            ON asset_simple.asset = asset_both.asset
+            AND asset_simple.milestone_year = asset_both.milestone_year
+            AND asset_simple.milestone_year = asset_both.commission_year
+        WHERE asset_both.commission_year IS NULL
         ",
     )
         push!(
