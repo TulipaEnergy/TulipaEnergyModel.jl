@@ -249,7 +249,7 @@ function _validate_simple_method_data_consistency!(connection)
     return error_messages
 end
 
-function _validate_simple_method_data_contains_only_one_row_where_milestone_year_not_equal_to_commission_year!(
+function _validate_simple_method_has_only_matching_years!(
     error_messages,
     connection,
 )
