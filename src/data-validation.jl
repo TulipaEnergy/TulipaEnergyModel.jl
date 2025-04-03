@@ -257,14 +257,12 @@ function _validate_simple_method_data_contains_only_one_row_where_milestone_year
     # Validate that the data per milestone year contains exactly one row where milestone year does not equal to commission year
     for row in DuckDB.query(
         connection,
-        "SELECT asset.asset, asset.investment_method, asset_both.milestone_year, COUNT(*) AS cnt
+        "SELECT asset.asset, asset_both.milestone_year, asset_both.commission_year,
         FROM asset_both
         LEFT JOIN asset
             ON asset.asset = asset_both.asset
         WHERE asset_both.milestone_year != asset_both.commission_year
             AND asset.investment_method in ('simple', 'none')
-        GROUP BY asset.asset, asset.investment_method, asset_both.milestone_year
-        ORDER BY asset.asset, asset.investment_method, asset_both.milestone_year
         ",
     )
         if row.cnt == 1
