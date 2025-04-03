@@ -311,12 +311,10 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
         ORDER BY asset.asset, asset.investment_method, asset_both.milestone_year
         ",
     )
-        if row.cnt ≥ 2
-            push!(
-                error_messages,
-                "'$(row.asset)' uses '$(row.investment_method)' investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there are $(row.cnt) rows of data for milestone year $(row.milestone_year) in 'asset_both'.",
-            )
-        end
+        push!(
+            error_messages,
+            "Missing information in 'asset_both': Asses '$(row.asset)' has investment_method='$(row.investment_method)' but there is no row (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+        )
     end
 
     # For flows
