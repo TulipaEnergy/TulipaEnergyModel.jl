@@ -60,7 +60,10 @@ end
     populate_with_defaults!(connection)
 
 Overwrites all tables expected by TulipaEnergyModel appending columns that have defaults.
-The expected columnsa and their defaults are obtained from `TulipaEnergyModel.schema`.
+The expected columns and their defaults are obtained from `TulipaEnergyModel.schema`.
+
+This should be called when you have enough data for a TulipaEnergyModel, but
+doesn't want to fill out all default columns by hand.
 """
 function populate_with_defaults!(connection)
     for (table_name, schema_table) in TulipaEnergyModel.schema
