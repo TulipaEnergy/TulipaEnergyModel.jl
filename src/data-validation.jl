@@ -297,7 +297,7 @@ function _validate_simple_method_has_only_matching_years!(
     return error_messages
 end
 
-function _validate_simple_method_data_contains_more_than_one_row!(error_messages, connection)
+function _validate_simple_method_all_milestone_years_are_covered!(error_messages, connection)
     # For assets
     # Validate that the data per milestone year contains more than one row
     for row in DuckDB.query(
