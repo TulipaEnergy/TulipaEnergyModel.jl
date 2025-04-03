@@ -270,7 +270,7 @@ function _validate_simple_method_data_contains_only_one_row_where_milestone_year
         if row.cnt == 1
             push!(
                 error_messages,
-                "'$(row.asset)' uses '$(row.investment_method)' investment method so there should only be one row of data per milestone year (where milestone year equals to commission year), but there is exactly one row of data where milestone year $(row.milestone_year) does not equal commission year in 'asset_both'.",
+                "Unexpected (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'asset_both' for an asset='$(row.asset)' with investment_method='$(row.investment_method)'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year",
             )
         end
     end
