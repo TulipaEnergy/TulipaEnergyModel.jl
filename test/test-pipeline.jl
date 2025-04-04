@@ -43,3 +43,15 @@ end
     TulipaEnergyModel.save_solution!(connection, model, variables, constraints)
     TulipaEnergyModel.export_solution_to_csv_files(mktempdir(), connection, variables, constraints)
 end
+
+@testset "Test starting with the simplest data and using populate_with_defaults!" begin
+    # Most basic version of data
+    connection = _create_connection_from_dict(TestData.simplest_data)
+
+    # Fix missing columns
+    TulipaEnergyModel.populate_with_defaults!(connection)
+
+    # Test that it doesn't fail
+    energy_problem =
+        TulipaEnergyModel.run_scenario(connection; show_log = false, output_folder = mktempdir())
+end

@@ -62,6 +62,7 @@
       "unit_of_measure": "h"
     },
     "group": {
+      "default": null,
       "description": "Group to which the asset belongs to (null/empty/missing -> no group).",
       "type": "VARCHAR"
     },
@@ -169,6 +170,7 @@
           "basic"
         ]
       },
+      "default": null,
       "description": "Which unit commitment method to use (null/empty/missing -> no unit commitment method).",
       "type": "VARCHAR"
     },
@@ -180,6 +182,7 @@
           "relaxed_binary"
         ]
       },
+      "default": null,
       "description": "Whether to use an extra binary variable for the storage assets to avoid charging and discharging simultaneously (null/empty/missing -> no binary).",
       "type": "VARCHAR"
     }
@@ -190,7 +193,6 @@
       "type": "VARCHAR"
     },
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning",
       "type": "INTEGER"
     },
@@ -212,7 +214,6 @@
       "unit_of_measure": "number"
     },
     "milestone_year": {
-      "default": 2000,
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     }
@@ -223,36 +224,41 @@
       "type": "VARCHAR"
     },
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning.",
       "type": "INTEGER"
     },
     "fixed_cost": {
+      "default": 0.0,
       "description": "Fixed annual cost for the asset capacity.",
       "type": "DOUBLE",
       "unit_of_measure": "CUR/MW/year"
     },
     "fixed_cost_storage_energy": {
+      "default": 0.0,
       "description": "Fixed annual cost for the asset storage capacity",
       "type": "DOUBLE",
       "unit_of_measure": "CUR/MWh/year"
     },
     "investment_cost": {
+      "default": 0.0,
       "description": "Investment cost for the asset capacity.",
       "type": "DOUBLE",
       "unit_of_measure": "CUR/MW"
     },
     "investment_cost_storage_energy": {
+      "default": 0.0,
       "description": "Investment cost for the asset energy storage capacity.",
       "type": "DOUBLE",
       "unit_of_measure": "CUR/MWh"
     },
     "investment_limit": {
+      "default": null,
       "description": "Maximum capacity for the asset investment. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
     },
     "investment_limit_storage_energy": {
+      "default": null,
       "description": "Maximum capacity for the asset storage investment. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
@@ -281,12 +287,12 @@
       "constraints": {
         "minimum": 0
       },
+      "default": null,
       "description": "The maximum amount of energy across the timeframe (e.g., a year) that the asset must produce. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
     },
     "milestone_year": {
-      "default": 2000,
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
@@ -294,6 +300,7 @@
       "constraints": {
         "minimum": 0
       },
+      "default": 0.0,
       "description": "The minimum amount of energy across the timeframe (e.g., a year) that the asset must produce. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
@@ -332,7 +339,6 @@
       "type": "VARCHAR"
     },
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning",
       "type": "INTEGER"
     },
@@ -382,7 +388,6 @@
       "type": "VARCHAR"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -410,7 +415,6 @@
       "type": "VARCHAR"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -421,7 +425,6 @@
       "type": "VARCHAR"
     },
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning",
       "type": "INTEGER"
     },
@@ -453,6 +456,7 @@
       "unit_of_measure": "MW"
     },
     "carrier": {
+      "default": null,
       "description": "Energy carrier",
       "type": "VARCHAR"
     },
@@ -504,7 +508,6 @@
   },
   "flow_both": {
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning",
       "type": "INTEGER"
     },
@@ -530,7 +533,6 @@
       "unit_of_measure": "number"
     },
     "milestone_year": {
-      "default": 2000,
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
@@ -541,7 +543,6 @@
   },
   "flow_commission": {
     "commission_year": {
-      "default": 2000,
       "description": "Year of commissioning",
       "type": "INTEGER"
     },
@@ -549,12 +550,13 @@
       "constraints": {
         "minimum": 0
       },
-      "default": 1,
+      "default": 1.0,
       "description": "Efficiency of transfer in `from_asset` -> `to_asset` direction",
       "type": "DOUBLE",
       "unit_of_measure": "ratio"
     },
     "fixed_cost": {
+      "default": 0.0,
       "description": "Fixed annual cost for the transport asset capacity.",
       "type": "DOUBLE",
       "unit_of_measure": "CUR/MW/year"
@@ -573,11 +575,13 @@
       "type": "VARCHAR"
     },
     "investment_cost": {
+      "default": 0.0,
       "description": "Investment cost for the transport asset capacity.",
       "type": "DOUBLE",
       "unit_of_measure": "CUR/MW"
     },
     "investment_limit": {
+      "default": null,
       "description": "Maximum capacity for the transport asset investment. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
@@ -598,7 +602,6 @@
       "type": "BOOLEAN"
     },
     "milestone_year": {
-      "default": 2000,
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
@@ -636,7 +639,6 @@
       "type": "VARCHAR"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -673,7 +675,6 @@
       "type": "VARCHAR"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -688,7 +689,6 @@
       "type": "DOUBLE"
     },
     "milestone_year": {
-      "default": 2000,
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
@@ -707,12 +707,10 @@
       "type": "VARCHAR"
     },
     "rep_period": {
-      "default": 1,
       "description": "Representative period number.",
       "type": "INTEGER"
     },
     "timestep": {
-      "default": 1,
       "description": "Timestep number.",
       "type": "INTEGER"
     },
@@ -722,7 +720,6 @@
       "unit_of_measure": "p.u."
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -742,7 +739,6 @@
       "unit_of_measure": "p.u."
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -754,7 +750,6 @@
       "type": "INTEGER"
     },
     "rep_period": {
-      "default": 1,
       "description": "Representative period number.",
       "type": "INTEGER",
       "unit_of_measure": "number"
@@ -766,29 +761,25 @@
       "unit_of_measure": "hours"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
   },
   "rep_periods_mapping": {
     "period": {
-      "default": 1,
       "description": "Period number.",
       "type": "INTEGER"
     },
     "rep_period": {
-      "default": 1,
       "description": "Representative period number.",
       "type": "INTEGER"
     },
     "weight": {
-      "default": 1,
+      "default": 1.0,
       "description": "Hours",
       "type": "DOUBLE"
     },
     "year": {
-      "default": 2000,
       "description": "Milestone year.",
       "type": "INTEGER"
     }
@@ -804,7 +795,6 @@
       "type": "INTEGER"
     },
     "year": {
-      "default": 2000,
       "description": "Unique identifier (currently, the year itself)",
       "type": "INTEGER"
     }
@@ -821,7 +811,6 @@
       "type": "INTEGER"
     },
     "year": {
-      "default": 2000,
       "description": "Unique identifier (currently, the year itself)",
       "type": "INTEGER"
     }

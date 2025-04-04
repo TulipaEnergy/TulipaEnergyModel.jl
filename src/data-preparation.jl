@@ -1,3 +1,110 @@
+export populate_with_defaults!
+
+"""
+    _query_to_complement_with_defaults(connection, existing_table, schema_table)
+
+Creates a query to completement a given table `existing_table` with the defaults stored in `schema_table`.
+
+The `existing_table` should be a table in `connection`.
+
+The `schema_table` should be a dictionary from the column to a dictionary of the column properties.
+For instance, from `TulipaEnergyModel.schema[table_name]`.
+
+The output is the argument for a 'SELECT' query that selects all existing
+columns from `existing_table`, and selects the default value for all other
+columns given in `, columnschema_table`.
+If a column in `schema_table` does not have a default and is not present in
+`existing_table`, then a `DataValidationException` is raised.
+"""
+function _query_to_complement_with_defaults(connection, existing_table::String, schema_table)
+    # Get all existing columns, we don't want to overwrite these
+    existing_columns = [row.column_name for row in DuckDB.query(
+        connection,
+        "SELECT column_name
+        FROM duckdb_columns()
+        WHERE table_name = '$existing_table'
+        ORDER BY column_index
+        ",
+    )]
+
+    # prepare the query starting with the existing columns
+    query_select_arguments = ["$existing_table.$column_name" for column_name in existing_columns]
+
+    # now for each column in the schema
+    for (col_name, props) in schema_table
+        # ignoring existing columns
+        if col_name in existing_columns
+            continue
+        end
+
+        # missing column must have a default
+        if !haskey(props, "default")
+            throw(
+                TulipaEnergyModel.DataValidationException([
+                    "Column '$col_name' of table '$existing_table' does not have a default",
+                ]),
+            )
+        end
+
+        # attach the default to the query
+        col_default, col_type = TulipaIO.FmtSQL.fmt_quote(props["default"]), props["type"]
+        push!(query_select_arguments, "$col_default::$col_type AS $col_name")
+    end
+
+    query_string = join(query_select_arguments, ",\n ")
+
+    return query_string
+end
+
+"""
+    populate_with_defaults!(connection)
+
+Overwrites all tables expected by TulipaEnergyModel appending columns that have defaults.
+The expected columns and their defaults are obtained from `TulipaEnergyModel.schema`.
+
+This should be called when you have enough data for a TulipaEnergyModel, but
+doesn't want to fill out all default columns by hand.
+"""
+function populate_with_defaults!(connection)
+    for (table_name, schema_table) in TulipaEnergyModel.schema
+        # Ignore tables that don't exist and are allowed to not exist
+        if table_name in TulipaEnergyModel.tables_allowed_to_be_missing &&
+           !_check_if_table_exists(connection, table_name)
+            continue
+        end
+
+        # Get the query string
+        query_string = _query_to_complement_with_defaults(connection, table_name, schema_table)
+
+        DuckDB.query(
+            connection,
+            "CREATE OR REPLACE TEMP TABLE t_new_$table_name AS
+            SELECT $query_string
+            FROM $table_name",
+        )
+        # DROP TABLE OR VIEW
+        is_table =
+            only([
+                row.count for row in DuckDB.query(
+                    connection,
+                    "SELECT COUNT(*) AS count FROM duckdb_tables WHERE table_name='$table_name'",
+                )
+            ]) > 0
+        if is_table
+            DuckDB.query(connection, "DROP TABLE $table_name")
+        else
+            DuckDB.query(connection, "DROP VIEW $table_name")
+        end
+        DuckDB.query(
+            connection,
+            "ALTER TABLE t_new_$table_name
+            RENAME TO $table_name",
+        )
+    end
+
+    return
+end
+
 function _append_given_durations(appender, row, durations)
     s = 1
     for Δ in durations

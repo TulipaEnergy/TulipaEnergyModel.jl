@@ -1,4 +1,5 @@
 # file with auxiliary functions for the testing
+include("data-simplest.jl")
 
 function _read_csv_folder(connection, input_dir)
     schemas = TulipaEnergyModel.schema_per_table_name

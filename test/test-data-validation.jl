@@ -6,6 +6,30 @@ const TEM = TulipaEnergyModel
     @test_throws error_msg throw(TEM.DataValidationException(["example"]))
 end
 
+@testset "Test having all tables and columns" begin
+    @testset "Starting from Tiny and deleting" begin
+        connection = _tiny_fixture()
+        for table in TulipaEnergyModel.tables_allowed_to_be_missing
+            TEM._create_empty_unless_exists(connection, table)
+        end
+
+        DuckDB.query(connection, "DROP TABLE asset")
+        @test TEM._validate_has_all_tables_and_columns!(connection) ==
+              ["Table 'asset' expected but not found"]
+    end
+
+    @testset "Starting from Tiny and deleting" begin
+        connection = _tiny_fixture()
+        for table in TulipaEnergyModel.tables_allowed_to_be_missing
+            TEM._create_empty_unless_exists(connection, table)
+        end
+
+        DuckDB.query(connection, "ALTER TABLE asset DROP COLUMN type")
+        @test TEM._validate_has_all_tables_and_columns!(connection) ==
+              ["Column 'type' is missing from table 'asset'"]
+    end
+end
+
 @testset "Test duplicate rows" begin
     @testset "Using fake data" begin
         bad_data = DataFrame(
