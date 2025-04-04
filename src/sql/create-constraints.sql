@@ -61,7 +61,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_incoming as
+create table cons_capacity_incoming_simple_method as
 select
     nextval('id') as id,
     t_high.*
@@ -78,7 +78,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_incoming_non_investable_storage_with_binary as
+create table cons_capacity_incoming_simple_method_non_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -99,7 +99,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_incoming_investable_storage_with_binary as
+create table cons_capacity_incoming_simple_method_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -120,7 +120,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_outgoing as
+create table cons_capacity_outgoing_compact_method as
 select
     nextval('id') as id,
     t_high.*
@@ -129,6 +129,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method == 'compact'
 ;
 
 drop sequence id
@@ -137,7 +138,25 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_outgoing_non_investable_storage_with_binary as
+create table cons_capacity_outgoing_simple_method as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method in ('simple', 'none')
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+create table cons_capacity_outgoing_simple_method_non_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -158,7 +177,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_capacity_outgoing_investable_storage_with_binary as
+create table cons_capacity_outgoing_simple_method_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -173,14 +192,25 @@ where
     and asset_milestone.investable
 ;
 
-create table cons_limit_units_on as
+drop sequence id
+;
+
+create table cons_limit_units_on_compact_method as
 select
     *
 from
     var_units_on
+    left join asset on var_units_on.asset = asset.asset
+    where asset.investment_method = 'compact'
 ;
 
-drop sequence id
+create table cons_limit_units_on_simple_method as
+select
+    *
+from
+    var_units_on
+    left join asset on var_units_on.asset = asset.asset
+    where asset.investment_method in ('simple', 'none')
 ;
 
 create sequence id start 1
@@ -319,7 +349,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_transport_flow_limit as
+create table cons_transport_flow_limit_simple_method as
 select
     nextval('id') as id,
     var_flow.from_asset,
