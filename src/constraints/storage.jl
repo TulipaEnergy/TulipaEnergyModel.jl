@@ -60,8 +60,11 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         @constraint(
                             model,
                             var_storage_level[row.id] ==
-                            previous_level + profile_agg * row.storage_inflows + incoming_flow -
-                            outgoing_flow,
+                            (
+                                1 - row.storage_loss_from_stored_energy
+                            )^length(row.time_block_start:row.time_block_end) * previous_level +
+                            profile_agg * row.storage_inflows +
+                            incoming_flow - outgoing_flow,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                         )
                     end
@@ -131,6 +134,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_over_clustered_year, cons = constraints[table_name]
         var_storage_level = variables[:storage_level_over_clustered_year].container
+        _create_duration_table_over_clusterd_years(connection)
         indices = _append_storage_data_to_indices(connection, table_name)
 
         # This assumes an ordering of the time blocks, that is guaranteed by the append function above
@@ -172,7 +176,10 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         @constraint(
                             model,
                             var_storage_level_over_clustered_year.container[row.id] ==
-                            previous_level + inflows_agg + incoming_flow - outgoing_flow,
+                            (1 - row.storage_loss_from_stored_energy)^row.total_duration *
+                            previous_level +
+                            inflows_agg +
+                            incoming_flow - outgoing_flow,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     end
@@ -243,12 +250,28 @@ function add_storage_constraints!(connection, model, variables, expressions, con
 end
 
 function _append_storage_data_to_indices(connection, table_name)
+    join_duration = ""
+    select_duration = ""
+
+    if table_name == :balance_storage_over_clustered_year
+        join_duration = """
+        LEFT JOIN duration_over_clustered_year AS duration
+          ON cons.asset = duration.asset
+         AND cons.year = duration.year
+         AND cons.period_block_start = duration.period_block_start
+         AND cons.period_block_end = duration.period_block_end
+        """
+        select_duration = "duration.total_duration,"
+    end
+
     return DuckDB.query(
         connection,
         "SELECT
             cons.*,
+            $select_duration
             asset.capacity,
             asset_commission.investment_limit,
+            asset_commission.storage_loss_from_stored_energy,
             asset_milestone.initial_storage_level,
             asset_milestone.storage_inflows,
             inflows_profile.profile_name AS inflows_profile_name,
@@ -279,7 +302,40 @@ function _append_storage_data_to_indices(connection, table_name)
             ON cons.asset = min_storage_level_profile.asset
             AND cons.year = min_storage_level_profile.commission_year
             AND min_storage_level_profile.profile_type = 'min_storage_level'
+        $join_duration
         ORDER BY cons.id
         ",
+    )
+end
+
+function _create_duration_table_over_clusterd_years(connection)
+    return DuckDB.query(
+        connection,
+        """
+        CREATE TABLE duration_over_clustered_year AS
+        WITH duration_mapping AS (
+            SELECT
+                year,
+                period,
+                SUM(rep_period * weight * num_timesteps * resolution) AS duration
+            FROM rep_periods_mapping
+            JOIN rep_periods_data
+              USING (rep_period, year)
+            GROUP BY year, period
+        )
+
+        SELECT
+            var.asset,
+            var.year,
+            var.period_block_start,
+            var.period_block_end,
+            SUM(mapping.duration) AS total_duration
+        FROM var_storage_level_over_clustered_year AS var
+        JOIN duration_mapping AS mapping
+          ON mapping.year = var.year
+         AND mapping.period BETWEEN var.period_block_start AND var.period_block_end
+        GROUP BY var.asset, var.year, var.period_block_start, var.period_block_end
+        ORDER BY var.asset, var.year, var.period_block_start
+        """,
     )
 end

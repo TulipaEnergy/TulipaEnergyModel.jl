@@ -262,6 +262,12 @@
       "description": "Maximum capacity for the asset storage investment. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
+    },
+    "storage_loss_from_stored_energy": {
+      "default": 0,
+      "description": "[e.g. 0.01 means 1% every hour] Loss of stored energy over time.",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u./h"
     }
   },
   "asset_milestone": {

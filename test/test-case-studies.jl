@@ -35,7 +35,7 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 2409.384029 atol = 1e-5
+    @test energy_problem.objective_value ≈ 2628.267762 atol = 1e-5
 end
 
 @testset "UC ramping Case Study" begin
