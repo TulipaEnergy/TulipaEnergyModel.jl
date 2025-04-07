@@ -134,7 +134,6 @@ function add_storage_constraints!(connection, model, variables, expressions, con
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_over_clustered_year, cons = constraints[table_name]
         var_storage_level = variables[:storage_level_over_clustered_year].container
-        _create_duration_table_over_clusterd_years(connection)
         indices = _append_storage_data_to_indices(connection, table_name)
 
         # This assumes an ordering of the time blocks, that is guaranteed by the append function above
@@ -176,7 +175,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         @constraint(
                             model,
                             var_storage_level_over_clustered_year.container[row.id] ==
-                            (1 - row.storage_loss_from_stored_energy)^row.total_duration *
+                            (1 - row.storage_loss_from_stored_energy)^row.duration_period_block *
                             previous_level +
                             inflows_agg +
                             incoming_flow - outgoing_flow,
@@ -254,14 +253,31 @@ function _append_storage_data_to_indices(connection, table_name)
     select_duration = ""
 
     if table_name == :balance_storage_over_clustered_year
+        DuckDB.query(
+            connection,
+            """
+            CREATE OR REPLACE TEMP TABLE t_duration_over_clustered_year AS
+            SELECT
+                con.asset,
+                con.year,
+                con.period_block_start,
+                SUM(mapping.num_timesteps) AS duration_period_block
+            FROM cons_balance_storage_over_clustered_year AS con
+            LEFT JOIN timeframe_data AS mapping
+                ON mapping.year = con.year
+                AND mapping.period BETWEEN con.period_block_start AND con.period_block_end
+            GROUP BY con.asset, con.year, con.period_block_start
+            ORDER BY con.asset, con.year, con.period_block_start
+            """,
+        )
+
         join_duration = """
-        LEFT JOIN duration_over_clustered_year AS duration
-          ON cons.asset = duration.asset
-         AND cons.year = duration.year
-         AND cons.period_block_start = duration.period_block_start
-         AND cons.period_block_end = duration.period_block_end
+        LEFT JOIN t_duration_over_clustered_year AS duration
+            ON cons.asset = duration.asset
+            AND cons.year = duration.year
+            AND cons.period_block_start = duration.period_block_start
         """
-        select_duration = "duration.total_duration,"
+        select_duration = "duration.duration_period_block,"
     end
 
     return DuckDB.query(
@@ -305,37 +321,5 @@ function _append_storage_data_to_indices(connection, table_name)
         $join_duration
         ORDER BY cons.id
         ",
-    )
-end
-
-function _create_duration_table_over_clusterd_years(connection)
-    return DuckDB.query(
-        connection,
-        """
-        CREATE TABLE duration_over_clustered_year AS
-        WITH duration_mapping AS (
-            SELECT
-                year,
-                period,
-                SUM(rep_period * weight * num_timesteps * resolution) AS duration
-            FROM rep_periods_mapping
-            JOIN rep_periods_data
-              USING (rep_period, year)
-            GROUP BY year, period
-        )
-
-        SELECT
-            var.asset,
-            var.year,
-            var.period_block_start,
-            var.period_block_end,
-            SUM(mapping.duration) AS total_duration
-        FROM var_storage_level_over_clustered_year AS var
-        JOIN duration_mapping AS mapping
-          ON mapping.year = var.year
-         AND mapping.period BETWEEN var.period_block_start AND var.period_block_end
-        GROUP BY var.asset, var.year, var.period_block_start, var.period_block_end
-        ORDER BY var.asset, var.year, var.period_block_start
-        """,
     )
 end
