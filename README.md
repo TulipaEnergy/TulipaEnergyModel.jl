@@ -67,6 +67,9 @@ This content is released under the [Apache License 2.0](https://www.apache.org/l
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/gzclarence"><img src="https://avatars.githubusercontent.com/u/70965161?v=4?s=100" width="100px;" alt="Zhi"/><br /><sub><b>Zhi</b></sub></a><br /><a href="#ideas-gzclarence" title="Ideas, Planning, & Feedback">🤔</a> <a href="#research-gzclarence" title="Research">🔬</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/maaikeelgersma"><img src="https://avatars.githubusercontent.com/u/55436655?v=4?s=100" width="100px;" alt="maaikeelgersma"/><br /><sub><b>maaikeelgersma</b></sub></a><br /><a href="#ideas-maaikeelgersma" title="Ideas, Planning, & Feedback">🤔</a> <a href="#research-maaikeelgersma" title="Research">🔬</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/nope82"><img src="https://avatars.githubusercontent.com/u/80949386?v=4?s=100" width="100px;" alt="nope82"/><br /><sub><b>nope82</b></sub></a><br /><a href="#review-nope82" title="Reviewed Pull Requests">👀</a></td>
+    </tr>
   </tbody>
 </table>
 
