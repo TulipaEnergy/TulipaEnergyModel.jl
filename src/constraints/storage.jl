@@ -57,12 +57,16 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                             ])::Int
                             var_storage_level[last_id]
                         end
+                        computed_storage_loss_coef = 1.0
+                        if row.storage_loss_from_stored_energy > 0.0
+                            duration = row.time_block_end - row.time_block_start + 1
+                            computed_storage_loss_coef =
+                                (1 - row.storage_loss_from_stored_energy)^duration
+                        end
                         @constraint(
                             model,
                             var_storage_level[row.id] ==
-                            (
-                                1 - row.storage_loss_from_stored_energy
-                            )^length(row.time_block_start:row.time_block_end) * previous_level +
+                            computed_storage_loss_coef * previous_level +
                             profile_agg * row.storage_inflows +
                             incoming_flow - outgoing_flow,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
@@ -171,12 +175,15 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                             ])::Int
                             var_storage_level[last_id]
                         end
-
+                        computed_storage_loss_coef = 1.0
+                        if row.storage_loss_from_stored_energy > 0.0
+                            computed_storage_loss_coef =
+                                (1 - row.storage_loss_from_stored_energy)^row.duration_period_block
+                        end
                         @constraint(
                             model,
                             var_storage_level_over_clustered_year.container[row.id] ==
-                            (1 - row.storage_loss_from_stored_energy)^row.duration_period_block *
-                            previous_level +
+                            computed_storage_loss_coef * previous_level +
                             inflows_agg +
                             incoming_flow - outgoing_flow,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
