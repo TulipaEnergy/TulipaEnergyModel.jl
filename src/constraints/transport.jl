@@ -14,11 +14,11 @@ function add_transport_constraints!(
     profiles,
 )
     ## unpack from model
-    expr_avail = expressions[:available_flow_units]
+    expr_avail = expressions[:available_flow_units_simple_method]
     expr_avail_export = expr_avail.expressions[:export]
     expr_avail_import = expr_avail.expressions[:import]
 
-    let table_name = :transport_flow_limit, cons = constraints[table_name]
+    let table_name = :transport_flow_limit_simple_method, cons = constraints[table_name]
         indices = _append_transport_data_to_indices(connection)
         var_flow = variables[:flow].container
 
@@ -39,9 +39,7 @@ function add_transport_constraints!(
             [
                 @expression(
                     model,
-                    availability_agg *
-                    row.capacity *
-                    sum(expr_avail_export[avail_id] for avail_id in row.avail_indices)
+                    availability_agg * row.capacity * expr_avail_export[row.avail_id]
                 ) for (row, availability_agg) in zip(indices, availability_agg_iterator)
             ],
         )
@@ -53,9 +51,7 @@ function add_transport_constraints!(
             [
                 @expression(
                     model,
-                    availability_agg *
-                    row.capacity *
-                    sum(expr_avail_import[avail_id] for avail_id in row.avail_indices)
+                    availability_agg * row.capacity * expr_avail_import[row.avail_id]
                 ) for (row, availability_agg) in zip(indices, availability_agg_iterator)
             ],
         )
@@ -66,12 +62,12 @@ function add_transport_constraints!(
         attach_constraint!(
             model,
             cons,
-            :max_transport_flow_limit,
+            :max_transport_flow_limit_simple_method,
             [
                 @constraint(
                     model,
                     var_flow[row.var_flow_id] ≤ upper_bound_transport_flow,
-                    base_name = "max_transport_flow_limit[($(row.from_asset),$(row.to_asset)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "max_transport_flow_limit_simple_method[($(row.from_asset),$(row.to_asset)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, upper_bound_transport_flow) in
                 zip(indices, cons.expressions[:upper_bound_transport_flow])
             ],
@@ -81,12 +77,12 @@ function add_transport_constraints!(
         attach_constraint!(
             model,
             cons,
-            :min_transport_flow_limit,
+            :min_transport_flow_limit_simple_method,
             [
                 @constraint(
                     model,
                     var_flow[row.var_flow_id] ≥ -lower_bound_transport_flow,
-                    base_name = "min_transport_flow_limit[($(row.from_asset),$(row.to_asset)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "min_transport_flow_limit_simple_method[($(row.from_asset),$(row.to_asset)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, lower_bound_transport_flow) in
                 zip(indices, cons.expressions[:lower_bound_transport_flow])
             ],
@@ -100,23 +96,22 @@ function _append_transport_data_to_indices(connection)
     return DuckDB.query(
         connection,
         "SELECT
-            ANY_VALUE(cons.id) AS id,
-            ANY_VALUE(cons.from_asset) AS from_asset,
-            ANY_VALUE(cons.to_asset) AS to_asset,
-            ANY_VALUE(cons.year) AS year,
-            ANY_VALUE(cons.rep_period) AS rep_period,
-            ANY_VALUE(cons.time_block_start) AS time_block_start,
-            ANY_VALUE(cons.time_block_end) AS time_block_end,
-            ANY_VALUE(cons.var_flow_id) AS var_flow_id,
-            ANY_VALUE(flow.capacity) AS capacity,
-            ARRAY_AGG(expr_avail.id) AS avail_indices,
-            ARRAY_AGG(expr_avail.commission_year) AS avail_commission_years,
-            ANY_VALUE(flows_profiles.profile_name) AS profile_name,
-        FROM cons_transport_flow_limit AS cons
+            cons.id AS id,
+            cons.from_asset AS from_asset,
+            cons.to_asset AS to_asset,
+            cons.year AS year,
+            cons.rep_period AS rep_period,
+            cons.time_block_start AS time_block_start,
+            cons.time_block_end AS time_block_end,
+            cons.var_flow_id AS var_flow_id,
+            flow.capacity AS capacity,
+            expr_avail.id AS avail_id,
+            flows_profiles.profile_name AS profile_name,
+        FROM cons_transport_flow_limit_simple_method AS cons
         LEFT JOIN flow
             ON cons.from_asset = flow.from_asset
             AND cons.to_asset = flow.to_asset
-        LEFT JOIN expr_available_flow_units AS expr_avail
+        LEFT JOIN expr_available_flow_units_simple_method AS expr_avail
             ON cons.from_asset = expr_avail.from_asset
             AND cons.to_asset = expr_avail.to_asset
             AND cons.year = expr_avail.milestone_year
@@ -125,7 +120,6 @@ function _append_transport_data_to_indices(connection)
             AND cons.to_asset = flows_profiles.to_asset
             AND cons.year = flows_profiles.year
             AND flows_profiles.profile_type = 'availability'
-        GROUP BY cons.id
         ORDER BY cons.id
         ",
     )

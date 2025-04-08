@@ -69,18 +69,40 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
 
     ## Unit Commitment Constraints (basic implementation - more advanced will be added in 2025)
     # - Limit to the units on (i.e. commitment)
-    let table_name = :limit_units_on, cons = constraints[table_name]
-        indices = _append_available_units_data(connection, table_name)
-        expr_avail = expressions[:available_asset_units].expressions[:assets]
+    # - For compact investment method
+    let table_name = :limit_units_on_compact_method, cons = constraints[table_name]
+        indices = _append_available_units_data_compact_method(connection, table_name)
+        expr_avail_compact_method =
+            expressions[:available_asset_units_compact_method].expressions[:assets]
         attach_constraint!(
             model,
             cons,
-            :limit_units_on,
+            :limit_units_on_compact_method,
             [
                 @constraint(
                     model,
-                    units_on ≤ sum(expr_avail[avail_id] for avail_id in row.avail_indices),
-                    base_name = "limit_units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    units_on ≤
+                    sum(expr_avail_compact_method[avail_id] for avail_id in row.avail_indices),
+                    base_name = "limit_units_on_compact_method[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                ) for (units_on, row) in zip(variables[:units_on].container, indices)
+            ],
+        )
+    end
+
+    # - For simple and none investment method
+    let table_name = :limit_units_on_simple_method, cons = constraints[table_name]
+        indices = _append_available_units_data_simple_method(connection, table_name)
+        expr_avail_simple_method =
+            expressions[:available_asset_units_simple_method].expressions[:assets]
+        attach_constraint!(
+            model,
+            cons,
+            :limit_units_on_simple_method,
+            [
+                @constraint(
+                    model,
+                    units_on ≤ expr_avail_simple_method[row.avail_id],
+                    base_name = "limit_units_on_simple_method[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (units_on, row) in zip(variables[:units_on].container, indices)
             ],
         )
@@ -260,7 +282,9 @@ function _append_ramping_data_to_indices(connection, table_name)
     )
 end
 
-function _append_available_units_data(connection, table_name)
+# The below two functions are very similar
+# - Select compact investment method and compact expression
+function _append_available_units_data_compact_method(connection, table_name)
     return DuckDB.query(
         connection,
         "SELECT
@@ -272,10 +296,37 @@ function _append_available_units_data(connection, table_name)
             ANY_VALUE(cons.time_block_end) AS time_block_end,
             ARRAY_AGG(expr_avail.id) AS avail_indices,
         FROM cons_$table_name AS cons
-        LEFT JOIN expr_available_asset_units AS expr_avail
+        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
+        LEFT JOIN asset
+            ON cons.asset = asset.asset
+        WHERE asset.investment_method = 'compact'
         GROUP BY cons.id
+        ORDER BY cons.id
+        ",
+    )
+end
+
+# - Select simple investment method and simple expression (including none method)
+function _append_available_units_data_simple_method(connection, table_name)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            cons.id,
+            cons.asset AS asset,
+            cons.year AS year,
+            cons.rep_period AS rep_period,
+            cons.time_block_start AS time_block_start,
+            cons.time_block_end AS time_block_end,
+            expr_avail.id AS avail_id,
+        FROM cons_$table_name AS cons
+        LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.year = expr_avail.milestone_year
+        LEFT JOIN asset
+            ON cons.asset = asset.asset
+        WHERE asset.investment_method in ('simple', 'none')
         ORDER BY cons.id
         ",
     )
