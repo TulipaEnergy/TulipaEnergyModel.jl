@@ -1,12 +1,11 @@
 export solve_model!, solve_model, save_solution!
 
 """
-    solve_model!(energy_problem::EnergyProblem; save_solution = true)
+    solve_model!(energy_problem::EnergyProblem)
 
 Solve the internal model of an `energy_problem`.
-Set `save_solution = true` to have the solution and dual variables computed and saved by [`save_solution!`](@ref).
 """
-function solve_model!(energy_problem::EnergyProblem; save_solution = true)
+function solve_model!(energy_problem::EnergyProblem)
     model = energy_problem.model
     if model === nothing
         error("Model is not created, run create_model(energy_problem) first.")
