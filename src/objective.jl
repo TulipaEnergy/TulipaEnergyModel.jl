@@ -308,6 +308,49 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 end
 
 function _create_objective_auxiliary_table(connection, constants)
+
+    # Create a table with the discount_factor_from_current_milestone_year_to_next_milestone_year (short for total_discount_factor) for operation
+    #
+    # total_discount_factor[asset, milestone_year] = ∑_[year = milestone_year:next_milestone_year - 1] discount_factor[a, year]
+    #   where discount_factor[asset, year] = 1 / (1 + social_rate)^(year - discount_year)
+    #
+    # Note total_discount_factor[asset, milestone_year] accounts for [milestone_year, next_milestone_year - 1], i.e., excluding next_milestone_year
+
+    DuckDB.execute(
+        connection,
+        " CREATE OR REPLACE TEMP TABLE t_discount_assets_in_between_milestone_years AS
+        WITH milestones AS (
+            SELECT
+                asset,
+                milestone_year AS current_year,
+                COALESCE(
+                    LEAD(milestone_year) OVER (PARTITION BY asset ORDER BY milestone_year),
+                    milestone_year + 1
+                ) AS next_year
+            FROM asset_milestone
+        ),
+        years_in_between AS (
+            SELECT
+                m.asset,
+                m.current_year,
+                in_between_years.year
+            FROM milestones as m,
+                LATERAL generate_series(m.current_year, m.next_year - 1) AS in_between_years(year)
+        ),
+        discounts AS (
+            SELECT
+                asset,
+                current_year as milestone_year,
+                SUM(1.0 / 1 / (1 + $(constants.social_rate))^(year - $(constants.discount_year))) AS discount_factor_from_current_milestone_year_to_next_milestone_year
+            FROM years_in_between
+            GROUP BY asset, milestone_year
+        )
+        SELECT
+            *
+        FROM discounts;
+       ",
+    )
+
     DuckDB.execute(
         connection,
         "CREATE OR REPLACE TEMP TABLE t_objective_assets AS
@@ -335,17 +378,16 @@ function _create_objective_auxiliary_table(connection, constants)
                 ) / asset.discount_rate,
                 0.0
             ) AS salvage_value,
-            1 / (1 + $(constants.social_rate))^(asset_milestone.milestone_year - $(constants.discount_year)) AS operation_discount,
-            operation_discount * (1 - salvage_value / asset_commission.investment_cost) AS weight_for_asset_investment_discount,
-            COALESCE(
-                lead(asset_milestone.milestone_year) OVER (PARTITION BY asset_milestone.asset ORDER BY asset_milestone.milestone_year) - asset_milestone.milestone_year,
-                1,
-            ) AS years_until_next_milestone_year,
-            operation_discount * years_until_next_milestone_year AS weight_for_operation_discounts,
+            1 / (1 + $(constants.social_rate))^(asset_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
+            investment_year_discount * (1 - salvage_value / asset_commission.investment_cost) AS weight_for_asset_investment_discount,
+            in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
         FROM asset_milestone
         LEFT JOIN asset_commission
             ON asset_milestone.asset = asset_commission.asset
             AND asset_milestone.milestone_year = asset_commission.commission_year
+        LEFT JOIN t_discount_assets_in_between_milestone_years as in_between_years
+            ON asset_milestone.asset = in_between_years.asset
+            AND asset_milestone.milestone_year = in_between_years.milestone_year
         LEFT JOIN asset
             ON asset.asset = asset_commission.asset
         ",
