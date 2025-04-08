@@ -42,6 +42,11 @@ function validate_data!(connection)
             _validate_simple_method_data_consistency!,
             false,
         ),
+        (
+            "investable storage assets using binary method should have investment limit > 0",
+            _validate_use_binary_storage_method_has_investment_limit!,
+            false,
+        ),
     )
         @timeit to "$log_msg" append!(error_messages, validation_function(connection))
         if fail_fast && length(error_messages) > 0
@@ -331,6 +336,33 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
         push!(
             error_messages,
             "Missing information in 'flow_both': Flow ('$(row.from_asset)', '$(row.to_asset)') currently only has investment_method='simple/none' but there is no row (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_use_binary_storage_method_has_investment_limit!(connection)
+    error_messages = String[]
+
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset.asset, asset.use_binary_storage_method, asset_milestone.milestone_year, asset_commission.commission_year, asset_commission.investment_limit
+        FROM asset_milestone
+        LEFT JOIN asset_commission
+            ON asset_milestone.asset = asset_commission.asset
+            AND asset_milestone.milestone_year = asset_commission.commission_year
+        LEFT JOIN asset
+            ON asset_milestone.asset = asset.asset
+        WHERE asset.type = 'storage'
+            AND asset_milestone.investable
+            AND asset.use_binary_storage_method IS NOT NULL
+            AND (asset_commission.investment_limit IS NULL OR asset_commission.investment_limit <= 0)
+        ",
+    )
+        push!(
+            error_messages,
+            "Incorrect investment_limit = $(row.investment_limit) for investable storage asset '$(row.asset)' with use_binary_storage_method = '$(row.use_binary_storage_method)' for year $(row.milestone_year). The investment_limit at year $(row.commission_year) should be greater than 0 in 'asset_commission'.",
         )
     end
 
