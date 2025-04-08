@@ -26,7 +26,7 @@ repos:
       - id: check-merge-conflict
         args: [--assume-in-merge]
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.42.0
+    rev: v0.44.0
     hooks:
       - id: markdownlint-fix
   # - repo: https://github.com/sql-formatter-org/sql-formatter
@@ -38,10 +38,10 @@ repos:
     hooks:
       - id: validate-cff
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.35.1
+    rev: v1.37.0
     hooks:
       - id: yamllint
   - repo: https://github.com/domluna/JuliaFormatter.jl
-    rev: v1.0.62
+    rev: v2.1.0
     hooks:
       - id: julia-formatter
