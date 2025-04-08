@@ -340,7 +340,7 @@ function _create_objective_auxiliary_table(connection, constants)
             SELECT
                 asset,
                 current_year as milestone_year,
-                SUM(1.0 / 1 / (1 + $(constants.social_rate))^(year - $(constants.discount_year))) AS discount_factor_from_current_milestone_year_to_next_milestone_year
+                SUM(1 / (1 + $(constants.social_rate))^(year - $(constants.discount_year))) AS discount_factor_from_current_milestone_year_to_next_milestone_year
             FROM years_in_between
             GROUP BY asset, milestone_year
         )
@@ -378,7 +378,7 @@ function _create_objective_auxiliary_table(connection, constants)
                 from_asset,
                 to_asset,
                 current_year as milestone_year,
-                SUM(1.0 / 1 / (1 + $(constants.social_rate))^(year - $(constants.discount_year))) AS discount_factor_from_current_milestone_year_to_next_milestone_year
+                SUM(1 / (1 + $(constants.social_rate))^(year - $(constants.discount_year))) AS discount_factor_from_current_milestone_year_to_next_milestone_year
             FROM years_in_between
             GROUP BY from_asset, to_asset, milestone_year
         )
