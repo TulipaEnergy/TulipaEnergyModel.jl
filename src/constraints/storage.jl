@@ -57,11 +57,18 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                             ])::Int
                             var_storage_level[last_id]
                         end
+                        computed_storage_loss_coef = 1.0
+                        if row.storage_loss_from_stored_energy > 0.0
+                            duration = row.time_block_end - row.time_block_start + 1
+                            computed_storage_loss_coef =
+                                (1 - row.storage_loss_from_stored_energy)^duration
+                        end
                         @constraint(
                             model,
                             var_storage_level[row.id] ==
-                            previous_level + profile_agg * row.storage_inflows + incoming_flow -
-                            outgoing_flow,
+                            computed_storage_loss_coef * previous_level +
+                            profile_agg * row.storage_inflows +
+                            incoming_flow - outgoing_flow,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                         )
                     end
@@ -168,11 +175,17 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                             ])::Int
                             var_storage_level[last_id]
                         end
-
+                        computed_storage_loss_coef = 1.0
+                        if row.storage_loss_from_stored_energy > 0.0
+                            computed_storage_loss_coef =
+                                (1 - row.storage_loss_from_stored_energy)^row.duration_period_block
+                        end
                         @constraint(
                             model,
                             var_storage_level_over_clustered_year.container[row.id] ==
-                            previous_level + inflows_agg + incoming_flow - outgoing_flow,
+                            computed_storage_loss_coef * previous_level +
+                            inflows_agg +
+                            incoming_flow - outgoing_flow,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     end
@@ -243,12 +256,44 @@ function add_storage_constraints!(connection, model, variables, expressions, con
 end
 
 function _append_storage_data_to_indices(connection, table_name)
+    join_duration = ""
+    select_duration = ""
+
+    if table_name == :balance_storage_over_clustered_year
+        DuckDB.query(
+            connection,
+            """
+            CREATE OR REPLACE TEMP TABLE t_duration_over_clustered_year AS
+            SELECT
+                cons.asset,
+                cons.year,
+                cons.period_block_start,
+                SUM(mapping.num_timesteps) AS duration_period_block
+            FROM cons_balance_storage_over_clustered_year AS cons
+            LEFT JOIN timeframe_data AS mapping
+                ON mapping.year = cons.year
+                AND mapping.period BETWEEN cons.period_block_start AND cons.period_block_end
+            GROUP BY cons.asset, cons.year, cons.period_block_start
+            """,
+        )
+
+        join_duration = """
+        LEFT JOIN t_duration_over_clustered_year AS duration
+            ON cons.asset = duration.asset
+            AND cons.year = duration.year
+            AND cons.period_block_start = duration.period_block_start
+        """
+        select_duration = "duration.duration_period_block,"
+    end
+
     return DuckDB.query(
         connection,
         "SELECT
             cons.*,
+            $select_duration
             asset.capacity,
             asset_commission.investment_limit,
+            asset_commission.storage_loss_from_stored_energy,
             asset_milestone.initial_storage_level,
             asset_milestone.storage_inflows,
             inflows_profile.profile_name AS inflows_profile_name,
@@ -279,6 +324,7 @@ function _append_storage_data_to_indices(connection, table_name)
             ON cons.asset = min_storage_level_profile.asset
             AND cons.year = min_storage_level_profile.commission_year
             AND min_storage_level_profile.profile_type = 'min_storage_level'
+        $join_duration
         ORDER BY cons.id
         ",
     )

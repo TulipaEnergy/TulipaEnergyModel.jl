@@ -48,10 +48,10 @@ In addition, the following asset sets represent methods for incorporating additi
 
 In addition, the following flow sets represent methods for incorporating additional variables and constraints in the model.
 
-| Name                            | Description                                                     | Elements | Superset                                                     | Notes |
-| --------------------------------| ----------------------------------------------------------------| -------- | ------------------------------------------------------------ | ----- |
-| $\mathcal{F}^{\text{t}}$        | Flow between two assets with a transport method                 |          | $\mathcal{F}^{\text{t}} \subseteq \mathcal{F}$               |       |
-| $\mathcal{F}^{\text{ti}}_y$     | Transport flow with investment method at year $y$               |          | $\mathcal{F}^{\text{ti}}_y \subseteq \mathcal{F}^{\text{t}}$ |       |
+| Name                            | Description                                                     | Elements | Superset                                                     | Notes                                               |
+| ------------------------------- | --------------------------------------------------------------- | -------- | ------------------------------------------------------------ | --------------------------------------------------- |
+| $\mathcal{F}^{\text{t}}$        | Flow between two assets with a transport method                 |          | $\mathcal{F}^{\text{t}} \subseteq \mathcal{F}$               |                                                     |
+| $\mathcal{F}^{\text{ti}}_y$     | Transport flow with investment method at year $y$               |          | $\mathcal{F}^{\text{ti}}_y \subseteq \mathcal{F}^{\text{t}}$ |                                                     |
 | $\mathcal{F}^{\text{dc-opf}}_y$ | Flow between two assets with a DC power flow method at year $y$ |          | $\mathcal{F}^{\text{dc-opf}}_y \subseteq \mathcal{F}$        | This set contains flows that use the dc-opf method. |
 
 ### Sets for Temporal Structures
@@ -108,20 +108,21 @@ In addition, the following subsets represent methods for incorporating additiona
 
 #### Extra Parameters for Storage Assets
 
-| Name                                         | Domain           | Domains of Indices                                                                                                           | Description                                                                                                          | Units           |
-| -------------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | --------------- |
-| $p^{\text{init storage units}}_{a,y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage units of storage asset $a$ available at year $y$                                                     | [units]         |
-| $p^{\text{init storage level}}_{a,y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage level of storage asset $a$ at year $y$                                                               | [MWh]           |
-| $p^{\text{inflows}}_{a,k_y,b_{k_y}}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                     | Inflows of storage asset $a$ in the representative period $k_y$ and timestep block $b_{k_y}$                         | [MWh]           |
-| $p^{\text{inv cost energy}}_{a,y}$           | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Overnight cost of a energy unit of asset $a$ at year $y$                                                             | [kEUR/MWh]      |
-| $p^{\text{fixed cost energy}}_{a,y}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Fixed cost of a energy unit of asset $a$ at year $y$                                                                 | [kEUR/MWh/year] |
-| $p^{\text{inv limit energy}}_{a,y}$          | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Investment energy potential of asset $a$ at year $y$                                                                 | [MWh]           |
-| $p^{\text{energy capacity}}_{a}$             | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$                                                                                              | Energy capacity of a unit of investment of the asset $a$                                                             | [MWh]           |
-| $p^{\text{energy to power ratio}}_{a,y}$     | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}}_y$                                                           | Energy to power ratio of storage asset $a$ at year $y$                                                               | [h]             |
-| $p^{\text{max intra level}}_{a,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Maximum intra-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
-| $p^{\text{min intra level}}_{a,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Minimum intra-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
-| $p^{\text{max inter level}}_{a,p_y}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Maximum inter-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
-| $p^{\text{min inter level}}_{a,p_y}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Minimum inter-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
+| Name                                               | Domain           | Domains of Indices                                                                                                           | Description                                                                                                          | Units           |
+| -------------------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | --------------- |
+| $p^{\text{init storage units}}_{a,y}$              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage units of storage asset $a$ available at year $y$                                                     | [units]         |
+| $p^{\text{init storage level}}_{a,y}$              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage level of storage asset $a$ at year $y$                                                               | [MWh]           |
+| $p^{\text{inflows}}_{a,k_y,b_{k_y}}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                     | Inflows of storage asset $a$ in the representative period $k_y$ and timestep block $b_{k_y}$                         | [MWh]           |
+| $p^{\text{inv cost energy}}_{a,y}$                 | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Overnight cost of a energy unit of asset $a$ at year $y$                                                             | [kEUR/MWh]      |
+| $p^{\text{fixed cost energy}}_{a,y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Fixed cost of a energy unit of asset $a$ at year $y$                                                                 | [kEUR/MWh/year] |
+| $p^{\text{inv limit energy}}_{a,y}$                | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Investment energy potential of asset $a$ at year $y$                                                                 | [MWh]           |
+| $p^{\text{energy capacity}}_{a}$                   | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$                                                                                              | Energy capacity of a unit of investment of the asset $a$                                                             | [MWh]           |
+| $p^{\text{energy to power ratio}}_{a,y}$           | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}}_y$                                                           | Energy to power ratio of storage asset $a$ at year $y$                                                               | [h]             |
+| $p^{\text{max intra level}}_{a,k_y,b_{k_y}}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Maximum intra-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
+| $p^{\text{min intra level}}_{a,k_y,b_{k_y}}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Minimum intra-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
+| $p^{\text{max inter level}}_{a,p_y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Maximum inter-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
+| $p^{\text{min inter level}}_{a,p_y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Minimum inter-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
+| $p^{\text{storage loss from stored energy}}_{a,y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}_y$                                                                        | [e.g. 0.01 means 1% every hour] Loss of stored energy over time.                                                     | [p.u./h]        |
 
 #### Extra Parameters for Energy Constraints
 
@@ -370,7 +371,7 @@ Storage assets using the method to avoid charging and discharging simultaneously
 ```
 
 !!! info
-    The negative sign before the $v^{\text{available units}}_{a,y}$ is because the available units include the $p^{\text{init units}}_{a,y}$ in its calculation.
+The negative sign before the $v^{\text{available units}}_{a,y}$ is because the available units include the $p^{\text{init units}}_{a,y}$ in its calculation.
 
 - Maximum output flows limit for storage assets such that $a \in \mathcal{A}^{\text{sb}}_y \setminus \mathcal{A}^{\text{i}}_y$
 
@@ -407,7 +408,7 @@ Storage assets using the method to avoid charging and discharging simultaneously
 ```
 
 !!! info
-    The negative sign before the $v^{\text{available units}}_{a,y}$ is because the available units include the $p^{\text{init units}}_{a,y}$ in its calculation.
+The negative sign before the $v^{\text{available units}}_{a,y}$ is because the available units include the $p^{\text{init units}}_{a,y}$ in its calculation.
 
 - Maximum input flows limit for storage assets such that $a \in \mathcal{A}^{\text{sb}}_y \setminus \mathcal{A}^{\text{i}}_y$
 
@@ -464,7 +465,7 @@ Ramping constraints restrict the rate at which the output flow of a production o
 Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](@ref math-references). Also, please note that since the current version of the code only handles the basic unit commitment implementation, the ramping constraints are applied to the assets in the set $\mathcal{A}^{\text{uc basic}}_y$.
 
 !!! info "Duration parameter"
-    The following constraints are multiplied by $p^{\text{duration}}_{b_{k_y}}$ on the right-hand side to adjust for the duration of the timesteps since the ramp parameters are defined as rates. This assumption is based on the idea that all timesteps are the same in this section, which simplifies the formulation. However, in a flexible temporal resolution context, this may not hold true, and the duration needs to be the minimum duration of all the outgoing flows at the timestep block $b_{k_y}$. For more information, please visit the concept section on flexible time resolution.
+The following constraints are multiplied by $p^{\text{duration}}_{b_{k_y}}$ on the right-hand side to adjust for the duration of the timesteps since the ramp parameters are defined as rates. This assumption is based on the idea that all timesteps are the same in this section, which simplifies the formulation. However, in a flexible temporal resolution context, this may not hold true, and the duration needs to be the minimum duration of all the outgoing flows at the timestep block $b_{k_y}$. For more information, please visit the concept section on flexible time resolution.
 
 #### Maximum Ramp-Up Rate Limit WITH Unit Commitment Method
 
@@ -550,7 +551,8 @@ e^{\text{available energy inv limit}}_{a,y}
 
 ```math
 \begin{aligned}
-v^{\text{intra-storage}}_{a,k_y,b_{k_y}} = v^{\text{intra-storage}}_{a,k_y,b_{k_y}-1}  + p^{\text{inflows}}_{a,k_y,b_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
+v^{\text{intra-storage}}_{a,k_y,b_{k_y}} = \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{b_{k_y}}}
+ \cdot  v^{\text{intra-storage}}_{a,k_y,b_{k_y}-1}  + p^{\text{inflows}}_{a,k_y,b_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
@@ -602,7 +604,8 @@ For the sake of simplicity, we show the constraint assuming the inter-storage le
 
 ```math
 \begin{aligned}
-v^{\text{inter-storage}}_{a,p_y} = & v^{\text{inter-storage}}_{a,p_y-1} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+v^{\text{inter-storage}}_{a,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}}
+ \cdot v^{\text{inter-storage}}_{a,p_y-1} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
 & + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 & - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
@@ -749,7 +752,7 @@ The following constraints aggregate variables of different assets depending on t
 These constraints apply to assets in a group using the investment method $\mathcal{G}^{\text{ai}}_y$. They help impose an investment potential of a spatial area commonly shared by several assets that can be invested there.
 
 !!! info
-    These constraints are applied to the investments each year. The model does not yet have investment limits to a group's available invested capacity.
+These constraints are applied to the investments each year. The model does not yet have investment limits to a group's available invested capacity.
 
 ##### Minimum Investment Limit of a Group
 
