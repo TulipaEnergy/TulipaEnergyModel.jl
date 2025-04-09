@@ -11,3 +11,9 @@ function _tiny_fixture()
     _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Tiny"))
     return connection
 end
+
+function _storage_fixture()
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Storage"))
+    return connection
+end
