@@ -309,8 +309,10 @@ p^{\text{annualized inv cost}}_{f, y} = \frac{p^{\text{technology-specific disco
 #### Discounting Factor for Operation Costs
 
 ```math
-p_{y}^{\text{discounting factor operation cost}}=\frac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}} p^{\text{milestone weight}}_{y}\quad \forall y \in \mathcal{Y}
+p_{y}^{\text{discounting factor operation cost}}= \sum^{\text{next}(y)-1}_{y`=y} \frac{1}{(1+p^{\text{social discount rate}})^{y`-p^{\text{discount year}}}} \quad \forall y \in \mathcal{Y}
 ```
+
+This definition of the discount factor at year $y$ includes the discounts for the range of years from the milestone year $y$ to the next milestone year $y+1$, i.e., \{$y$, $y$+1, ..., next($y$)-1\}, so the discounts at the non-modeled years are also correctly considered. When $y$=last($y$), only the discount at year $y$ is included.
 
 ### Objective Function
 

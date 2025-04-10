@@ -294,96 +294,90 @@ Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the 
 
 ## [Setting up multi-year investments](@id multi-year-setup)
 
-!!! warning "This feature is under a major refactor"
-    This section might have out-of-date information. The update of these docs is tracked in <https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues/983>
+!!! warning "The workflow of feature is under construction"
+    This section describes the existing workflow but we are working to make it more user friendly.
 
 It is possible to simutaneously model different years, which is especially relevant for modeling multi-year investments. Multi-year investments refer to making investment decisions at different points in time, such that a pathway of investments can be modeled. This is particularly useful when long-term scenarios are modeled, but modeling each year is not practical. Or in a business case, investment decisions are supposed to be made in different years which has an impact on the cash flow.
 
 ### Filling the input data
 
-In order to set up a model with year information, the following steps are necessary.
+In order to set up a model with year information, the following steps are necessary. The below illustrative example uses assets, but flows follow the same idea.
 
 #### Year data
 
 Fill in all the years in [`year-data.csv`](@ref schemas) file by defining the `year` property and its parameters. Differentiate milestone years and non-milestone years.
 
-- Milestone years are the years you would like to model, e.g., if you want to model operation and/or investments (it is possibile to not allow investments) in 2030, 2040, and 2050. These 3 years are then milestone years.
-- Non-milestone years are the investment years of existing units. For example, you want to consider a existing wind unit that is invested in 2020, then 2020 is a non-milestone year.
+- Milestone years are the years you would like to model. For example, if you want to model operation and/or investments in 2030, 2040, and 2050. These 3 years are then milestone years.
+- Non-milestone years are the commission years of existing units. For example, you want to consider a existing wind unit that has been commissioned in 2020, then 2020 is a non-milestone year.
 
 !!! info
     A year can both be a year that you want to model and that there are existing units invested, then this year is a milestone year.
 
-#### Commission year data
+#### Asset basic data
 
-Fill in the parameters related to the investment year (`commission_year` in the data) of the asset, i.e., investment costs and fixed costs.
+Fill in the parameters in the `asset.csv` file. These parameters are for the assets across all the years, i.e., not dependent on years. Examples are lifetime (both `technical_lifetime` and `economic_lifetime`) and capacity of a unit.
 
-#### Assets investment data
+You need to choose a `investment_method` for the asset, between `none`, `simple`, and `compact`. In addition, you also have to make it explicit on which assets you would like to invest in, by setting the `investable` parameter in `asset-milestone.csv`, and which assets you would like to decommission, by setting the `decommissionable` parameter in `asset-both.csv`. More information on `investable` and `decommissionable` are given in the next sections.
 
-Fill in the parameters in the asset file. These parameters are for the assets across all the years, i.e., not dependent on years. Examples are lifetime (both `technical_lifetime` and `economic_lifetime`) and capacity of a unit.
+Below is an overview of the important set-ups regarding the investment methods.
 
-You also have to choose a `investment_method` for the asset, between `none`, `simple`, and `compact`. The below tables shows what happens to the activation of the investment and decommission variable for certain investment methods and the `investable` parameter.
+- Operation mode: choose `none`. Set `investable` and `decommissionable` to `false` to make sure neither investments nor decommissioning occur.
+- Simple investment method: choose `simple`. Set `investable` and `decommissionable` manually. Make sure `milestone_year = commission_year` in `asset-both.csv`. Any missing or redundant rows will throw an error.
+- Compact investment method: choose `compact`. Set `investable` and `decommissionable` manually. Make sure to have more than one commission year for a milestone year in `asset-both.csv`, and the matching profiles. Otherwise the compact method will work the same as the simple method.
 
-Consider you only want to model operation without investments, then you would need to set `investable_method` to `none`. Neither investment variables and decommission variables are activated. And here the `investable_method` overrules `investable`, because the latter does not matter.
+!!! info "More about the investment methods"
+    1. The `compact` method can only be applied to producer assets and conversion assets. Transport assets and storage assets can only use `simple` or `none` method.
+    2. For more details on the constraints that apply when selecting these methods, please visit the [`mathematical formulation`](@ref formulation) section.
 
-!!! info
-    Although it is called `investment_method`, you can see from the table that, actually, it controls directly the activation of the decommission variable. The investment variable is controlled by `investable`, which is overruled by `investable_method` in case of a conflict (i.e., for the `none` method).
+#### Asset milestone year data
 
-| investment_method | investable | investment variable | decommission variable |
-| ----------------- | ---------- | ------------------- | --------------------- |
-| none              | true       | false               | false                 |
-| none              | false      | false               | false                 |
-| simple            | true       | true                | true                  |
-| simple            | false      | false               | true                  |
-| compact           | true       | true                | true                  |
-| compact           | false      | false               | true                  |
+Fill in the parameters related to the milestone year. Whether the model allows investment at a milestone year for an asset is set by the `investable` parameter in `asset-milestone.csv`. You can only invest in milestone years.
 
-For more details on the constraints that apply when selecting these methods, please visit the [`mathematical formulation`](@ref formulation) section.
+#### Asset commission year data
 
-!!! info
-    The `compact` method can only be applied to producer assets and conversion assets. Transport assets and storage assets can only use `simple` method.
+Fill in the parameters related to the commission year, e.g., investment costs and fixed costs.
 
-#### Assets and flows information
+#### Existing capacities and decommissioning
 
-Fill in the assets and flows information.
+Existing capacities and decommissioning are taken care of in `asset-both.csv`
 
-- In the `year` column, fill in all the milestone years. In the `commission_year` column, fill in the investment years of the existing assets that are still available in this `year`.
-  - If the `commission_year` is a non-milestone year, then it means the row is for an existing unit. The `investable` has to be set to `false`, and you put the existing units in the column `initial_units`.
-  - If the `commission_year` is a milestone year, then you put the existing units in the column `initial_units`. Depending on whether you want to model investments or not, you put the `investable` to either `true` or `false`.
+- In the `milestone_year` column, fill in all the milestone years. In the `commission_year` column, fill in the commission years of the existing assets that are still available in this `milestone_year` and put the existing units in the column `initial_units`.
+- Whether the model allows decommissioning at a `milestone_year` for an asset that has been commissioned in a `commission_year` is set by the parameter `decommissionable`.
 
-Let's explain further using an example. To do so, we can take a look at the `asset-both.csv` file:
+Let's explain further using an example. To do so, we take a look at the `asset-both.csv` file:
 
 ```@example multi-year-setup
 using DataFrames # hide
 using CSV # hide
 input_asset_file = "../../test/inputs/Multi-year Investments/asset-both.csv" # hide
 assets_data = CSV.read(input_asset_file, DataFrame) # hide
-assets_data = assets_data[1:10, [:asset, :milestone_year, :commission_year, :initial_units]] # hide
+assets_data = assets_data[:, [:asset, :milestone_year, :commission_year, :decommissionable, :initial_units]] # hide
 ```
 
-We allow investments of `ocgt`, `ccgt`, `battery`, `wind`, and `solar` in 2030.
-
+- `battery` has 1.09 existing units in 2030 and 2.02 existing units in 2050. Both units can be decommissioned.
+- `ccgt` has 1 existing units in 2030 and 2050. Neither can be decommissioned.
+- `demand` is a consumer, so is has no initial units and you only have data where `milestone_year = commission_year`.
+- `ens` has 1 existing units in 2030 and 2050. Neither can be decommissioned.
 - `ocgt` has no existing units.
-- `ccgt` has 1 existing units, invested in 2028, and still available in 2030.
-- `ccgt` has 0.07 existing units, invested in 2020, and still available in 2030. Another 0.02 existing units, invested in 2030.
-- `wind` has 0.07 existing units, invested in 2020, and still available in 2030. Another 0.02 existing units, invested in 2030.
 - `solar` has no existing units.
+- `wind` has 0.07 existing units, commissioned in 2020, and still available in 2030 but not in 2050. Another 0.02 existing units, commissioned in 2030, available in 2030 and 2050. There are no initial units commissioned in 2050.
 
 !!! info
     We only consider the existing units which are still available in the milestone years.
 
 #### Profiles information
 
-Fill in relevant profiles in the files. Important to know that you can use different profiles for assets that are invested in different years. You fill in the profile names in `assets-profiles.csv` for relevant years. In `profiles-rep-periods.csv`, you relate the profile names with the modeled years.
+Important to know that you can use different profiles for assets that are commissioned in different years, which is the power of the `compact` method. You fill in the profile names in `assets-profiles.csv` for relevant years. In `profiles-rep-periods.csv`, you relate the profile names with the modeled years.
 
 Let's explain further using an example. To do so, we can take a look at the `assets-profiles.csv` file:
 
 ```@example multi-year-setup
 input_asset_file = "../../test/inputs/Multi-year Investments/assets-profiles.csv" # hide
 assets_profiles = CSV.read(input_asset_file, DataFrame, header = 1) # hide
-assets_profiles = assets_profiles[1:2, :] # hide
+assets_profiles = assets_profiles[:, :] # hide
 ```
 
-We have two profiles for `wind` invested in 2020 and 2030. Imagine these are two wind turbines with different efficiencies due to the year of manufacture. These are reflected in the profiles for the model year 2030, which are defined in the `profiles-rep-periods.csv` file.
+We have 3 profiles for `wind` commissioned in 2020, 2030, and 2050, respectively. Imagine these are 3 wind turbines with different efficiencies due to the year of manufacture.
 
 ### Economic representation
 
@@ -394,9 +388,8 @@ For economic representation, the following parameters need to be set up:
 - `economic_lifetime`: used for discounting the costs.
 
 !!! info
-    Since the model explicitly discounts, all the inputs for costs should be given in the costs of the relevant year. For example, to model investments in 2030 and 2050, the `investment_cost` should be given in 2030 costs and 2050 costs, respectively.
-
-For more details on the formulas for economic representation, please visit the [`mathematical formulation`](@ref formulation) section.
+    1. Since the model explicitly discounts, all the inputs for costs should be given in the costs of the relevant year. For example, to model investments in 2030 and 2050, the `investment_cost` should be given in 2030 costs and 2050 costs, respectively.
+    2. For more details on the formulas for economic representation, please visit the [`mathematical formulation`](@ref formulation) section.
 
 ## [Using the coefficient for flows in the capacity constraints](@id coefficient-for-capacity-constraints)
 
