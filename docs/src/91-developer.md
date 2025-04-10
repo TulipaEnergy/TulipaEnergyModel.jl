@@ -106,9 +106,10 @@ Any changes should be done in a [fork](https://docs.github.com/en/get-started/qu
 
 ![Screenshot of Fork button on GitHub](./images/Fork.png)
 
-After that, clone your fork and add this repository as upstream:
+After that, clone your fork. The fork should ideally be cloned to a folder that is not affected by any cloud, to prevent LiveServer accessing and overwriting your folder. Finally, add this repository as upstream:
 
 ```bash
+cd path/to/folder #optionally, cd to a local folder
 git clone https://github.com/your-name/TulipaEnergyModel.jl                   # use the fork URL
 git remote add upstream https://github.com/TulipaEnergy/TulipaEnergyModel.jl  # use the original repository URL
 ```
