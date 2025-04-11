@@ -7,7 +7,7 @@ function compute_variables_indices(connection)
     DuckDB.query(connection, read(query_file, String))
 
     variables = Dict{Symbol,TulipaVariable}(
-        key => TulipaVariable(connection, "var_$key") for key in (
+        key => TulipaVariable(connection, "$key") for key in (
             :flow,
             :units_on,
             :electricity_angle,

@@ -47,8 +47,8 @@ function add_storage_variables!(connection, model, variables)
                 last(var.id) AS last_id,
                 var.asset, var.year, var.rep_period,
                 ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
-            FROM $table_name AS var
-            LEFT JOIN asset_milestone
+            FROM variables.$table_name AS var
+            LEFT JOIN input.asset_milestone as asset_milestone
                 ON var.asset = asset_milestone.asset
                 AND var.year = asset_milestone.milestone_year
             WHERE asset_milestone.initial_storage_level IS NOT NULL
@@ -67,8 +67,8 @@ function add_storage_variables!(connection, model, variables)
                 last(var.id) AS last_id,
                 var.asset, var.year,
                 ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
-            FROM $table_name AS var
-            LEFT JOIN asset_milestone
+            FROM variables.$table_name AS var
+            LEFT JOIN input.asset_milestone as asset_milestone
                 ON var.asset = asset_milestone.asset
                 AND var.year = asset_milestone.milestone_year
             WHERE asset_milestone.initial_storage_level IS NOT NULL

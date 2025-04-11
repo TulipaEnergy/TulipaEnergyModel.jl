@@ -19,8 +19,10 @@
         connection = _tiny_fixture()
 
         asset_capacity = Dict(
-            row.asset => row.capacity for
-            row in DuckDB.query(connection, "SELECT asset.asset, asset.capacity FROM asset")
+            row.asset => row.capacity for row in DuckDB.query(
+                connection,
+                "SELECT asset.asset, asset.capacity FROM input.asset as asset",
+            )
         )
 
         # Test that it doesn't fail
@@ -29,7 +31,8 @@
         # This should not change anything
         TulipaEnergyModel.populate_with_defaults!(connection)
 
-        for row in DuckDB.query(connection, "SELECT asset.asset, asset.capacity FROM asset")
+        for row in
+            DuckDB.query(connection, "SELECT asset.asset, asset.capacity FROM input.asset as asset")
             @test row.capacity == asset_capacity[row.asset]
         end
     end
@@ -40,7 +43,7 @@
         # Remove a column from asset
         DuckDB.query(
             connection,
-            "ALTER TABLE asset
+            "ALTER TABLE input.asset
             DROP COLUMN capacity
             ",
         )
@@ -53,8 +56,10 @@
         # Fix missing columns
         TulipaEnergyModel.populate_with_defaults!(connection)
 
-        for row in DuckDB.query(connection, "SELECT asset.asset, asset.capacity FROM asset")
-            @test row.capacity == TulipaEnergyModel.schema["asset"]["capacity"]["default"]
+        for row in
+            DuckDB.query(connection, "SELECT asset.asset, asset.capacity FROM input.asset as asset")
+            @test row.capacity ==
+                  TulipaEnergyModel.table_schemas["input"]["asset"]["capacity"]["default"]
         end
 
         # Test that it doesn't fail
@@ -67,7 +72,7 @@
         # Remove a primary key from asset
         DuckDB.query(
             connection,
-            "ALTER TABLE asset_milestone
+            "ALTER TABLE input.asset_milestone
             DROP COLUMN milestone_year
             ",
         )

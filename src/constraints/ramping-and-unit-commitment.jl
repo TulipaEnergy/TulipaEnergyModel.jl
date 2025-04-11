@@ -161,7 +161,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         # - Maximum ramp-up rate limit to the flow above the operating point when having unit commitment variables
         attach_constraint!(
             model,
-            constraints[table_name],
+            cons,
             :max_ramp_up_with_unit_commitment,
             [
                 if row.time_block_start == 1
@@ -185,7 +185,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         # - Maximum ramp-down rate limit to the flow above the operating point when having unit commitment variables
         attach_constraint!(
             model,
-            constraints[table_name],
+            cons,
             :max_ramp_down_with_unit_commitment,
             [
                 if row.time_block_start == 1
@@ -216,7 +216,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         # - Maximum ramp-up rate limit to the flow (no unit commitment variables)
         attach_constraint!(
             model,
-            constraints[table_name],
+            cons,
             :max_ramp_up_without_unit_commitment,
             [
                 if row.time_block_start == 1
@@ -238,7 +238,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
 
         attach_constraint!(
             model,
-            constraints[table_name],
+            cons,
             :max_ramp_down_without_unit_commitment,
             [
                 if row.time_block_start == 1
@@ -270,10 +270,10 @@ function _append_ramping_data_to_indices(connection, table_name)
             asset.max_ramp_up,
             asset.max_ramp_down,
             assets_profiles.profile_name
-        FROM cons_$table_name AS cons
-        LEFT JOIN asset
+        FROM constraints.$table_name AS cons
+        LEFT JOIN input.asset as asset
             ON cons.asset = asset.asset
-        LEFT OUTER JOIN assets_profiles
+        LEFT OUTER JOIN input.assets_profiles as assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
             AND assets_profiles.profile_type = 'availability'
@@ -295,11 +295,11 @@ function _append_available_units_data_compact_method(connection, table_name)
             ANY_VALUE(cons.time_block_start) AS time_block_start,
             ANY_VALUE(cons.time_block_end) AS time_block_end,
             ARRAY_AGG(expr_avail.id) AS avail_indices,
-        FROM cons_$table_name AS cons
-        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
+        FROM constraints.$table_name AS cons
+        LEFT JOIN expressions.available_asset_units_compact_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
-        LEFT JOIN asset
+        LEFT JOIN input.asset as asset
             ON cons.asset = asset.asset
         WHERE asset.investment_method = 'compact'
         GROUP BY cons.id
@@ -320,11 +320,11 @@ function _append_available_units_data_simple_method(connection, table_name)
             cons.time_block_start AS time_block_start,
             cons.time_block_end AS time_block_end,
             expr_avail.id AS avail_id,
-        FROM cons_$table_name AS cons
-        LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
+        FROM constraints.$table_name AS cons
+        LEFT JOIN expressions.available_asset_units_simple_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
-        LEFT JOIN asset
+        LEFT JOIN input.asset as asset
             ON cons.asset = asset.asset
         WHERE asset.investment_method in ('simple', 'none')
         ORDER BY cons.id

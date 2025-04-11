@@ -25,24 +25,16 @@
         ("death_star", "output_2", 2025, 1, 1, 4),
         ("death_star", "output_2", 2025, 1, 5, 5),
     ]
-    flow_time_resolution_rep_period = DataFrame(
+    flow_rep_period = DataFrame(
         table_rows,
         [:from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end],
     )
-    DuckDB.register_data_frame(
-        connection,
-        flow_time_resolution_rep_period,
-        "flow_time_resolution_rep_period",
-    )
+    _register_df(connection, flow_rep_period, "resolution", "flow_rep_period")
 
     table_rows = [("death_star", 2025, 1, 1, 5)]
-    asset_time_resolution_rep_period =
+    asset_rep_period =
         DataFrame(table_rows, [:asset, :year, :rep_period, :time_block_start, :time_block_end])
-    DuckDB.register_data_frame(
-        connection,
-        asset_time_resolution_rep_period,
-        "asset_time_resolution_rep_period",
-    )
+    _register_df(connection, asset_rep_period, "resolution", "asset_rep_period")
 
     table_rows = [
         ("input_1", "death_star", "input_2", "death_star", 2025),
@@ -60,11 +52,11 @@
             :milestone_year,
         ],
     )
-    DuckDB.register_data_frame(connection, flows_relationships, "flows_relationships")
+    _register_df(connection, flows_relationships, "input", "flows_relationships")
 
     table_rows = [(5, 1, 1.0, 2025)]
     rep_periods_data = DataFrame(table_rows, [:num_timesteps, :rep_period, :resolution, :year])
-    DuckDB.register_data_frame(connection, rep_periods_data, "rep_periods_data")
+    _register_df(connection, rep_periods_data, "cluster", "rep_periods_data")
 
     # Auxiliary information for the tests
     expected_cols = [:asset, :year, :rep_period, :time_block_start, :time_block_end]
@@ -74,7 +66,7 @@
         TulipaEnergyModel.create_merged_tables!(connection)
 
         # Verify the results in the merged tables
-        merged_in_flows = TulipaIO.select_tbl(connection, "merged_in_flows"; where_)
+        merged_in_flows = TulipaIO.select_tbl(connection, "t_merged_in_flows"; where_)
         expected_rows = [
             ("death_star", 2025, 1, 1, 1),
             ("death_star", 2025, 1, 1, 2),
@@ -84,7 +76,7 @@
         expected_table = DataFrame(expected_rows, expected_cols)
         @test merged_in_flows == expected_table
 
-        merged_out_flows = TulipaIO.select_tbl(connection, "merged_out_flows"; where_)
+        merged_out_flows = TulipaIO.select_tbl(connection, "t_merged_out_flows"; where_)
         expected_rows = [
             ("death_star", 2025, 1, 1, 3),
             ("death_star", 2025, 1, 1, 4),
@@ -95,7 +87,7 @@
         @test merged_out_flows == expected_table
 
         merged_assets_and_out_flows =
-            TulipaIO.select_tbl(connection, "merged_assets_and_out_flows"; where_)
+            TulipaIO.select_tbl(connection, "t_merged_assets_and_out_flows"; where_)
         expected_rows = [
             ("death_star", 2025, 1, 1, 3),
             ("death_star", 2025, 1, 1, 4),
@@ -106,7 +98,7 @@
         expected_table = DataFrame(expected_rows, expected_cols)
         @test merged_assets_and_out_flows == expected_table
 
-        merged_all_flows = TulipaIO.select_tbl(connection, "merged_all_flows"; where_)
+        merged_all_flows = TulipaIO.select_tbl(connection, "t_merged_all_flows"; where_)
         expected_rows = [
             ("death_star", 2025, 1, 1, 1),
             ("death_star", 2025, 1, 1, 2),
@@ -120,7 +112,7 @@
         expected_table = DataFrame(expected_rows, expected_cols)
         @test merged_all_flows == expected_table
 
-        merged_all = TulipaIO.select_tbl(connection, "merged_all"; where_)
+        merged_all = TulipaIO.select_tbl(connection, "t_merged_all"; where_)
         expected_rows = [
             ("death_star", 2025, 1, 1, 1),
             ("death_star", 2025, 1, 1, 2),
@@ -136,7 +128,7 @@
         @test merged_all == expected_table
 
         merged_flows_relationship =
-            TulipaIO.select_tbl(connection, "merged_flows_relationship"; where_)
+            TulipaIO.select_tbl(connection, "t_merged_flows_relationship"; where_)
         expected_rows = [
             ("death_star_output_1_death_star_output_2", 2025, 1, 1, 3),
             ("death_star_output_1_death_star_output_2", 2025, 1, 1, 4),
@@ -232,7 +224,4 @@
         expected_table = DataFrame(expected_rows, expected_cols)
         @test t_highest_out_flows == expected_table
     end
-
-    # test that the final number of tables is correct
-    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 17
 end

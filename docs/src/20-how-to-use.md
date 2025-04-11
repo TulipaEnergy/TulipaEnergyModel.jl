@@ -27,7 +27,7 @@ All tests should pass.
 ## Finding an input parameter
 
 !!! tip "Are you looking for an input parameter?"
-    Please visit the [Model Parameters](@ref schemas) section for a description and location of all model input parameters.
+    Please visit the [Data](@ref data) section for a description and location of all model input parameters.
 
 ## Running a Scenario
 

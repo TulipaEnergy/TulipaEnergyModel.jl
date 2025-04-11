@@ -52,8 +52,8 @@ end
 
 function ModelParameters(connection::DuckDB.DB, path::String = ""; kwargs...)
     discount_year = minimum(
-        row.year for
-        row in DuckDB.query(connection, "SELECT year FROM year_data WHERE is_milestone = true")
+        row.year for row in
+        DuckDB.query(connection, "SELECT year FROM input.year_data WHERE is_milestone = true")
     )
     # This can't be naively refactored to reuse the function above because of
     # the order of preference of the parameters.

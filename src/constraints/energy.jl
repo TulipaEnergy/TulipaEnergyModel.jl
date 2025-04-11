@@ -70,11 +70,11 @@ function _append_energy_data_to_indices(connection, table_name, min_or_max)
             cons.*,
             asset_milestone.$(min_or_max)_energy_timeframe_partition,
             assets_timeframe_profiles.profile_name
-        FROM cons_$table_name AS cons
-        LEFT JOIN asset_milestone
+        FROM constraints.$table_name AS cons
+        LEFT JOIN input.asset_milestone as asset_milestone
             ON cons.asset = asset_milestone.asset
             AND cons.year = asset_milestone.milestone_year
-        LEFT OUTER JOIN assets_timeframe_profiles
+        LEFT OUTER JOIN input.assets_timeframe_profiles as assets_timeframe_profiles
             ON cons.asset = assets_timeframe_profiles.asset
             AND cons.year = assets_timeframe_profiles.commission_year
             AND assets_timeframe_profiles.profile_type = '$(min_or_max)_energy'
