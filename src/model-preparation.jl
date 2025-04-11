@@ -76,6 +76,7 @@ function add_expression_terms_rep_period_constraints!(
     grouped_cons_table_name = "t_grouped_$(cons.table_name)"
     _create_group_table_if_not_exist!(
         connection,
+        "constraints",
         cons.table_name,
         grouped_cons_table_name,
         [:asset, :year, :rep_period],
@@ -95,6 +96,7 @@ function add_expression_terms_rep_period_constraints!(
         grouped_var_table_name = "t_grouped_$(flow.table_name)_match_on_$(case.asset_match)"
         _create_group_table_if_not_exist!(
             connection,
+            flow.database_schema,
             flow.table_name,
             grouped_var_table_name,
             [case.asset_match, :year, :rep_period],
@@ -133,9 +135,9 @@ function add_expression_terms_rep_period_constraints!(
                 ON cons.asset = var.asset
                 AND cons.year = var.year
                 AND cons.rep_period = var.rep_period
-            LEFT JOIN asset
+            LEFT JOIN input.asset as asset
                 ON cons.asset = asset.asset
-            LEFT JOIN rep_periods_data
+            LEFT JOIN cluster.rep_periods_data as rep_periods_data
                 ON cons.rep_period = rep_periods_data.rep_period
                 AND cons.year = rep_periods_data.year
             WHERE
@@ -271,6 +273,7 @@ function add_expression_terms_over_clustered_year_constraints!(
     grouped_cons_table_name = "t_grouped_$(cons.table_name)"
     _create_group_table_if_not_exist!(
         connection,
+        cons.database_schema,
         cons.table_name,
         grouped_cons_table_name,
         [:asset, :year],
@@ -280,6 +283,7 @@ function add_expression_terms_over_clustered_year_constraints!(
     grouped_rpmap_over_rp_table_name = "t_grouped_rpmap_over_rp"
     _create_group_table_if_not_exist!(
         connection,
+        "cluster",
         "rep_periods_mapping",
         grouped_rpmap_over_rp_table_name,
         [:year, :rep_period],
@@ -324,10 +328,10 @@ function add_expression_terms_over_clustered_year_constraints!(
             LEFT JOIN $grouped_rpmap_over_rp_table_name AS rpmap
                 ON rpmap.year = cons.year
                 AND rpmap.rep_period = var.rep_period
-            LEFT JOIN rep_periods_data AS rpdata
+            LEFT JOIN cluster.rep_periods_data AS rpdata
                 ON rpdata.year = cons.year
                 AND rpdata.rep_period = var.rep_period
-            LEFT JOIN asset_milestone
+            LEFT JOIN input.asset_milestone as asset_milestone
                 ON asset_milestone.asset = cons.asset
                 AND asset_milestone.milestone_year = cons.year
             GROUP BY cons.asset, cons.year;
@@ -335,6 +339,8 @@ function add_expression_terms_over_clustered_year_constraints!(
             ",
         )
             empty!.(workspace)
+
+            # @info group_row
 
             for (
                 var_id_vec::Vector{Union{Missing,Int64}},
@@ -435,22 +441,22 @@ function add_expression_terms_over_clustered_year_constraints!(
                     ANY_VALUE(cons.asset) AS asset,
                     ANY_VALUE(cons.year) AS year,
                     SUM(COALESCE(other.inflows_agg, 0.0)) AS inflows_agg,
-                FROM cons_balance_storage_over_clustered_year AS cons
+                FROM constraints.balance_storage_over_clustered_year AS cons
                 LEFT JOIN (
                     SELECT
                         assets_profiles.asset AS asset,
                         assets_profiles.commission_year AS year,
                         rpmap.period AS period,
                         SUM(COALESCE(profiles.value, 0.0) * rpmap.weight * asset_milestone.storage_inflows) AS inflows_agg,
-                    FROM assets_profiles
-                    LEFT OUTER JOIN profiles_rep_periods AS profiles
+                    FROM input.assets_profiles as assets_profiles
+                    LEFT OUTER JOIN cluster.profiles_rep_periods AS profiles
                         ON assets_profiles.profile_name=profiles.profile_name
                         AND assets_profiles.profile_type='inflows'
-                    LEFT JOIN rep_periods_mapping AS rpmap
+                    LEFT JOIN cluster.rep_periods_mapping AS rpmap
                         ON rpmap.year = assets_profiles.commission_year
                         AND rpmap.year = profiles.year -- because milestone_year = commission_year
                         AND rpmap.rep_period = profiles.rep_period
-                    LEFT JOIN asset_milestone
+                    LEFT JOIN input.asset_milestone as asset_milestone
                         ON asset_milestone.asset = assets_profiles.asset
                         AND asset_milestone.milestone_year = assets_profiles.commission_year
                     GROUP BY
@@ -476,14 +482,14 @@ function add_expressions_to_constraints!(connection, variables, constraints)
     # creating a workspace with enough entries for any of the representative periods or normal periods
     maximum_num_timesteps = Int64(
         only(
-            row[1] for
-            row in DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM rep_periods_data")
+            row[1] for row in
+            DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM cluster.rep_periods_data")
         ),
     )
     maximum_num_periods = Int64(
         only(
-            row[1] for
-            row in DuckDB.query(connection, "SELECT MAX(period) FROM rep_periods_mapping")
+            row[1] for row in
+            DuckDB.query(connection, "SELECT MAX(period) FROM cluster.rep_periods_mapping")
         ),
     )
     Tmax = max(maximum_num_timesteps, maximum_num_periods)
@@ -614,7 +620,7 @@ function prepare_profiles_structure(connection)
             row.value for row in DuckDB.query(
                 connection,
                 "SELECT profile.value
-                FROM profiles_rep_periods AS profile
+                FROM cluster.profiles_rep_periods AS profile
                 WHERE
                     profile.profile_name = '$(row.profile_name)'
                     AND profile.year = $(row.year)
@@ -627,7 +633,7 @@ function prepare_profiles_structure(connection)
                 profiles.profile_name,
                 profiles.year,
                 profiles.rep_period
-            FROM profiles_rep_periods AS profiles
+            FROM cluster.profiles_rep_periods AS profiles
             ",
         )
     )
@@ -637,7 +643,7 @@ function prepare_profiles_structure(connection)
             row.value for row in DuckDB.query(
                 connection,
                 "SELECT profile.value
-                FROM profiles_timeframe AS profile
+                FROM input.profiles_timeframe AS profile
                 WHERE
                     profile.profile_name = '$(row.profile_name)'
                     AND profile.year = $(row.year)
@@ -648,7 +654,7 @@ function prepare_profiles_structure(connection)
             "SELECT DISTINCT
                 profiles.profile_name,
                 profiles.year
-            FROM profiles_timeframe AS profiles
+            FROM input.profiles_timeframe AS profiles
             ",
         )
     )

@@ -1,17 +1,20 @@
 # Auxiliary functions to create the model
 
 """
-    _check_if_table_exists(connection, table_name)
+    _check_if_table_exists(connection, table_name, schema_name)
 
 Check if table `table_name` exists in the connection.
 """
-function _check_if_table_exists(connection, table_name)
+function _check_if_table_exists(connection, schema_name, table_name)
     existence_query = DBInterface.execute(
         connection,
-        "SELECT table_name FROM information_schema.tables WHERE table_name = '$table_name'",
+        "SELECT table_name FROM duckdb_tables() WHERE table_name = '$table_name' AND schema_name = '$schema_name'",
     )
     return length(collect(existence_query)) > 0
 end
+
+_check_if_table_exists(connection, table_name) =
+    _check_if_table_exists(connection, "main", table_name)
 
 """
     _profile_aggregate(profiles, tuple_key, time_block, agg_functions, default_value)
@@ -57,6 +60,7 @@ If one of the columns has to be renamed, use the `rename_columns` dictionary.
 """
 function _create_group_table_if_not_exist!(
     connection,
+    schema_name,
     table_name,
     grouped_table_name,
     group_by_columns,
@@ -64,7 +68,7 @@ function _create_group_table_if_not_exist!(
     rename_columns = Dict(),
     order_agg_by = :id,
 )
-    if _check_if_table_exists(connection, grouped_table_name)
+    if _check_if_table_exists(connection, "main", grouped_table_name)
         return
     elseif length(group_by_columns) == 0
         throw(ArgumentError("`group_by_columns` cannot be empty"))
@@ -85,9 +89,9 @@ function _create_group_table_if_not_exist!(
         ", ",
     )
 
-    sql_query = "CREATE TEMP TABLE $grouped_table_name AS
+    sql_query = "CREATE TEMP TABLE main.$grouped_table_name AS
         SELECT $select_string, $array_agg_string,
-        FROM $table_name AS t
+        FROM $schema_name.$table_name AS t
         GROUP BY $group_by_string"
 
     DuckDB.query(connection, sql_query)

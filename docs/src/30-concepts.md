@@ -90,7 +90,7 @@ The following table shows the user input data for the definition of asset time r
 ```@example print-partitions
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../test/inputs/Variable Resolution/assets-rep-periods-partitions.csv" # hide
+input_asset_file = "../../test/inputs/Variable Resolution/input/assets-rep-periods-partitions.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 assets = assets[assets.asset .!= "wind", :] # hide
 ```
@@ -100,7 +100,7 @@ The table shows that the `H2` producer and the `phs` storage have a `uniform` de
 The same time resolution can be specified for the flows, for example (again, the values are for illustrative purposes and do not represent a realistic case):
 
 ```@example print-partitions
-input_flow_file = "../../test/inputs/Variable Resolution/flows-rep-periods-partitions.csv" # hide
+input_flow_file = "../../test/inputs/Variable Resolution/input/flows-rep-periods-partitions.csv" # hide
 flows_partitions = CSV.read(input_flow_file, DataFrame, header = 1) # hide
 ```
 
@@ -370,10 +370,10 @@ The example demonstrates various assets that supply demand. Each asset has diffe
 ```@example unit-commitment
 using DataFrames # hide
 using CSV # hide
-input_dir = "../../test/inputs/UC-ramping" # hide
-assets_data = CSV.read(joinpath(input_dir, "asset-both.csv"), DataFrame) # hide
-graph_assets = CSV.read(joinpath(input_dir, "asset.csv"), DataFrame) # hide
-asset_milestone = CSV.read(joinpath(input_dir, "asset-milestone.csv"), DataFrame) # hide
+instance_dir = "../../test/inputs/UC-ramping" # hide
+assets_data = CSV.read(joinpath(instance_dir, "input", "asset-both.csv"), DataFrame) # hide
+graph_assets = CSV.read(joinpath(instance_dir, "input", "asset.csv"), DataFrame) # hide
+asset_milestone = CSV.read(joinpath(instance_dir, "input", "asset-milestone.csv"), DataFrame) # hide
 assets = leftjoin(graph_assets, assets_data, on=:asset) # hide
 assets = leftjoin(assets, asset_milestone, on=[:asset, :milestone_year]) # hide
 filtered_assets = assets[assets.type .== "producer" .|| assets.type .== "conversion", ["asset", "type", "capacity", "initial_units", "investable", "unit_commitment",  "ramping", "max_ramp_up", "max_ramp_down"]] # hide
@@ -382,14 +382,14 @@ filtered_assets = assets[assets.type .== "producer" .|| assets.type .== "convers
 The `assets-rep-periods-partitions` file defines the time resolution for the assets in the `partition` column. For instance, here we can see that the time resolutions are 3h for the `ccgt` and 6h for the `smr`. These values mean that the unit commitment variables (e.g., `units_on`) in the model have three and six hours resolution, respectively.
 
 ```@example unit-commitment
-assets_partitions_data = CSV.read(joinpath(input_dir, "assets-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
+assets_partitions_data = CSV.read(joinpath(instance_dir, "input", "assets-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
 filtered_assets_partitions = assets_partitions_data[!, ["asset", "specification", "partition"]] # hide
 ```
 
 The `flows-rep-periods-partitions` file defines the time resolution for the flows. In this example, we have that the flows from the `gas` asset to the `ccgt` and from the `ccgt` asset to the `demand` are in a 2h resolution.
 
 ```@example unit-commitment
-flows_partitions_data = CSV.read(joinpath(input_dir, "flows-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
+flows_partitions_data = CSV.read(joinpath(instance_dir, "input", "flows-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
 filtered_flows_partitions = flows_partitions_data[!, ["from_asset", "to_asset", "specification", "partition"]] # hide
 ```
 
@@ -625,9 +625,9 @@ Let's first look at this feature's most relevant input data in the input files. 
 ```@example seasonal-storage
 using DataFrames # hide
 using CSV # hide
-input_dir = "../../test/inputs/Storage" # hide
-assets_data = CSV.read(joinpath(input_dir, "asset-both.csv"), DataFrame) # hide
-graph_assets = CSV.read(joinpath(input_dir, "asset.csv"), DataFrame) # hide
+instance_dir = "../../test/inputs/Storage" # hide
+assets_data = CSV.read(joinpath(instance_dir, "input", "asset-both.csv"), DataFrame) # hide
+graph_assets = CSV.read(joinpath(instance_dir, "input", "asset.csv"), DataFrame) # hide
 assets = leftjoin(graph_assets, assets_data, on=:asset) # hide
 filtered_assets = assets[assets.type .== "storage", ["asset", "type", "capacity", "capacity_storage_energy",  "is_seasonal"]] # hide
 ```
@@ -637,7 +637,7 @@ The `is_seasonal` parameter determines whether or not the storage asset uses the
 The `rep-periods-data` file has information on the representative periods in the example. We have three representative periods, each with 24 timesteps and hourly resolution, representing a day. The figure below shows the availability profile of the renewable energy sources in the example.
 
 ```@example seasonal-storage
-rp_file = "../../test/inputs/Storage/rep-periods-data.csv" # hide
+rp_file = "../../test/inputs/Storage/cluster/rep-periods-data.csv" # hide
 rp = CSV.read(rp_file, DataFrame, header = 1) # hide
 ```
 
@@ -646,7 +646,7 @@ rp = CSV.read(rp_file, DataFrame, header = 1) # hide
 The `rep-periods-mapping` relates each representative period with the periods in the timeframe. We have seven periods in this case, meaning the timeframe is a week. Each value in the file indicates the weight of each representative period in the timeframe period. Notice that each period is composed of a linear combination of the representative periods. For more details on obtaining the representative periods and the weights, please look at [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl). For the sake of readability, we show here the information in the file in tabular form:
 
 ```@example seasonal-storage
-map_file = "../../test/inputs/Storage/rep-periods-mapping.csv" # hide
+map_file = "../../test/inputs/Storage/cluster/rep-periods-mapping.csv" # hide
 map = CSV.read(map_file, DataFrame, header = 1) # hide
 unstacked_map = unstack(map, :period, :rep_period, :weight) # hide
 rename!(unstacked_map, ["period", "k=1", "k=2", "k=3"]) # hide
@@ -654,7 +654,7 @@ unstacked_map[!,["k=1", "k=2", "k=3"]] = convert.(Float64, unstacked_map[!,["k=1
 unstacked_map # hide
 ```
 
-The file `assets-timeframe-partitions` has the information on how often we want to evaluate the over-clustered-year constraints that combine the information of the representative periods. In this example, the file is missing in the folder, meaning that the default of a `uniform` distribution of one period will be use in the model, see [model parameters](@ref schemas) section. This assumption implies that the model will check the over-clustered-year-storage level every day of the week timeframe.
+The file `assets-timeframe-partitions` has the information on how often we want to evaluate the over-clustered-year constraints that combine the information of the representative periods. In this example, the file is missing in the folder, meaning that the default of a `uniform` distribution of one period will be use in the model, see [Table Schemas](@ref table_schemas) section. This assumption implies that the model will check the over-clustered-year-storage level every day of the week timeframe.
 
 !!! info
     For the sake of simplicity, we show how using three representative days can recover part of the chronological information of one week. The same method can be applied to more representative periods to analyze the seasonality across a year or longer timeframe.
@@ -664,10 +664,21 @@ Now let's solve the example and explore the results:
 ```@example seasonal-storage
 using DuckDB, TulipaIO, TulipaEnergyModel
 
-input_dir = "../../test/inputs/Storage" # hide
-# input_dir should be the path to the Storage example
+instance_dir = "../../test/inputs/Storage" # hide
+# instance_dir should be the path to the Storage example
 connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
+read_csv_folder(
+    connection,
+    joinpath(instance_dir, "input");
+    database_schema = "input",
+    schemas = TulipaEnergyModel.sql_input_schema_per_table_name,
+)
+read_csv_folder(
+    connection,
+    joinpath(instance_dir, "cluster");
+    database_schema = "cluster",
+    schemas = TulipaEnergyModel.sql_cluster_schema_per_table_name,
+)
 energy_problem = run_scenario(connection)
 ```
 

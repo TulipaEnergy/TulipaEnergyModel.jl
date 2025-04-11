@@ -1,37 +1,45 @@
 export populate_with_defaults!
 
 """
-    _query_to_complement_with_defaults(connection, existing_table, schema_table)
+    _query_to_complement_with_defaults(connection, database_schema, existing_table, table_schema)
 
-Creates a query to completement a given table `existing_table` with the defaults stored in `schema_table`.
+Creates a query to completement a given table `existing_table` with the defaults stored in `table_schema`.
 
 The `existing_table` should be a table in `connection`.
 
-The `schema_table` should be a dictionary from the column to a dictionary of the column properties.
-For instance, from `TulipaEnergyModel.schema[table_name]`.
+The `table_schema` should be a dictionary from the column to a dictionary of the column properties.
+For instance, from `TulipaEnergyModel.table_schemas[table_name]`.
 
 The output is the argument for a 'SELECT' query that selects all existing
 columns from `existing_table`, and selects the default value for all other
-columns given in `, columnschema_table`.
-If a column in `schema_table` does not have a default and is not present in
+columns given in `table_schema`.
+If a column in `table_schema` does not have a default and is not present in
 `existing_table`, then a `DataValidationException` is raised.
 """
-function _query_to_complement_with_defaults(connection, existing_table::String, schema_table)
+function _query_to_complement_with_defaults(
+    connection,
+    database_schema,
+    existing_table::String,
+    table_schema,
+)
     # Get all existing columns, we don't want to overwrite these
-    existing_columns = [row.column_name for row in DuckDB.query(
-        connection,
-        "SELECT column_name
-        FROM duckdb_columns()
-        WHERE table_name = '$existing_table'
-        ORDER BY column_index
-        ",
-    )]
+    existing_columns = [
+        row.column_name for row in DuckDB.query(
+            connection,
+            "SELECT column_name
+            FROM duckdb_columns()
+            WHERE table_name = '$existing_table'
+                AND schema_name = '$database_schema'
+            ORDER BY column_index
+            ",
+        )
+    ]
 
     # prepare the query starting with the existing columns
     query_select_arguments = ["$existing_table.$column_name" for column_name in existing_columns]
 
     # now for each column in the schema
-    for (col_name, props) in schema_table
+    for (col_name, props) in table_schema
         # ignoring existing columns
         if col_name in existing_columns
             continue
@@ -60,46 +68,53 @@ end
     populate_with_defaults!(connection)
 
 Overwrites all tables expected by TulipaEnergyModel appending columns that have defaults.
-The expected columns and their defaults are obtained from `TulipaEnergyModel.schema`.
+The expected columns and their defaults are obtained from `TulipaEnergyModel.table_schemas`.
 
 This should be called when you have enough data for a TulipaEnergyModel, but
 doesn't want to fill out all default columns by hand.
 """
 function populate_with_defaults!(connection)
-    for (table_name, schema_table) in TulipaEnergyModel.schema
-        # Ignore tables that don't exist and are allowed to not exist
-        if table_name in TulipaEnergyModel.tables_allowed_to_be_missing &&
-           !_check_if_table_exists(connection, table_name)
-            continue
-        end
+    for (database_schema, table_schemas) in TulipaEnergyModel.table_schemas
+        for (table_name, table_schema) in table_schemas
+            # Ignore tables that don't exist but are allowed to not exist
+            if (database_schema, table_name) in TulipaEnergyModel.tables_allowed_to_be_missing &&
+               !_check_if_table_exists(connection, table_name)
+                continue
+            end
 
-        # Get the query string
-        query_string = _query_to_complement_with_defaults(connection, table_name, schema_table)
+            # Get the query string
+            query_string = _query_to_complement_with_defaults(
+                connection,
+                database_schema,
+                table_name,
+                table_schema,
+            )
 
-        DuckDB.query(
-            connection,
-            "CREATE OR REPLACE TEMP TABLE t_new_$table_name AS
-            SELECT $query_string
-            FROM $table_name",
-        )
-        # DROP TABLE OR VIEW
-        is_table =
-            only([
-                row.count for row in DuckDB.query(
-                    connection,
-                    "SELECT COUNT(*) AS count FROM duckdb_tables WHERE table_name='$table_name'",
-                )
-            ]) > 0
-        if is_table
-            DuckDB.query(connection, "DROP TABLE $table_name")
-        else
-            DuckDB.query(connection, "DROP VIEW $table_name")
+            DuckDB.query(
+                connection,
+                "CREATE OR REPLACE TABLE $database_schema.t_new_$table_name AS
+                SELECT $query_string
+                FROM $database_schema.$table_name",
+            )
+            # DROP TABLE OR VIEW
+            is_table =
+                only([
+                    row.count for row in DuckDB.query(
+                        connection,
+                        "SELECT COUNT(*) AS count FROM duckdb_tables WHERE table_name='$table_name' AND schema_name='$database_schema'",
+                    )
+                ]) > 0
+            if is_table
+                DuckDB.query(connection, "DROP TABLE $database_schema.$table_name")
+            else
+                DuckDB.query(connection, "DROP VIEW $database_schema.$table_name")
+            end
+            DuckDB.query(
+                connection,
+                "ALTER TABLE $database_schema.t_new_$table_name
+                RENAME TO $table_name",
+            )
         end
-        DuckDB.query(
-            connection,
-            "ALTER TABLE t_new_$table_name
-            RENAME TO $table_name",
-        )
     end
 
     return
@@ -164,12 +179,13 @@ It transforms each row in (possibly) multiple rows.
 The columns `specification` and `partition` are used to determine the time
 blocks, and are replaced by columns `time_block_start` and `time_block_end`.
 
-- `asset_time_resolution_rep_period`
-- `flow_time_resolution_rep_period`
-- `asset_time_resolution_over_clustered_year`
+- `resolution.asset_rep_period`
+- `resolution.flow_rep_period`
+- `resolution.asset_over_clustered_year`
 
 """
 function create_unrolled_partition_tables!(connection)
+    DuckDB.execute(connection, "CREATE SCHEMA IF NOT EXISTS resolution")
     DBInterface.execute(
         connection,
         "CREATE OR REPLACE TABLE t_explicit_assets_rep_periods_partitions AS
@@ -178,11 +194,11 @@ function create_unrolled_partition_tables!(connection)
             rep_periods_data.year,
             rep_periods_data.rep_period,
             COALESCE(arpp.specification, 'uniform') AS specification,
-            COALESCE(arpp.partition, '1') AS partition,
+            COALESCE(arpp.partition::string, '1') AS partition,
             rep_periods_data.num_timesteps,
-        FROM asset
-        CROSS JOIN rep_periods_data
-        LEFT JOIN assets_rep_periods_partitions as arpp
+        FROM input.asset as asset
+        CROSS JOIN cluster.rep_periods_data as rep_periods_data
+        LEFT JOIN input.assets_rep_periods_partitions as arpp
             ON asset.asset = arpp.asset
             AND rep_periods_data.year = arpp.year
             AND rep_periods_data.rep_period = arpp.rep_period
@@ -199,17 +215,17 @@ function create_unrolled_partition_tables!(connection)
             rep_periods_data.year,
             rep_periods_data.rep_period,
             COALESCE(frpp.specification, 'uniform') AS specification,
-            COALESCE(frpp.partition, '1') AS partition,
+            COALESCE(frpp.partition::string, '1') AS partition,
             flow_commission.efficiency,
             flow_commission.flow_coefficient_in_capacity_constraint,
             rep_periods_data.num_timesteps,
-        FROM flow
-        CROSS JOIN rep_periods_data
-        LEFT JOIN flow_commission
+        FROM input.flow as flow
+        CROSS JOIN cluster.rep_periods_data as rep_periods_data
+        LEFT JOIN input.flow_commission as flow_commission
             ON flow.from_asset = flow_commission.from_asset
             AND flow.to_asset = flow_commission.to_asset
             AND rep_periods_data.year = flow_commission.commission_year
-        LEFT JOIN flows_rep_periods_partitions as frpp
+        LEFT JOIN input.flows_rep_periods_partitions as frpp
             ON flow.from_asset = frpp.from_asset
             AND flow.to_asset = frpp.to_asset
             AND rep_periods_data.year = frpp.year
@@ -219,7 +235,7 @@ function create_unrolled_partition_tables!(connection)
                 from_asset,
                 to_asset,
                 milestone_year,
-            FROM flow_both
+            FROM input.flow_both as flow_both
             GROUP BY
                 from_asset, to_asset, milestone_year
         ) AS t
@@ -232,7 +248,7 @@ function create_unrolled_partition_tables!(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE asset_time_resolution_rep_period(
+        "CREATE OR REPLACE TABLE resolution.asset_rep_period(
             asset STRING,
             year INT,
             rep_period INT,
@@ -241,7 +257,7 @@ function create_unrolled_partition_tables!(connection)
         )",
     )
 
-    appender = DuckDB.Appender(connection, "asset_time_resolution_rep_period")
+    appender = DuckDB.Appender(connection, "asset_rep_period", "resolution")
     for row in TulipaIO.get_table(Val(:raw), connection, "t_explicit_assets_rep_periods_partitions")
         durations = if row.specification == "uniform"
             step = parse(Int, row.partition)
@@ -266,7 +282,7 @@ function create_unrolled_partition_tables!(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE flow_time_resolution_rep_period(
+        "CREATE OR REPLACE TABLE resolution.flow_rep_period(
             from_asset STRING,
             to_asset STRING,
             year INT,
@@ -278,7 +294,7 @@ function create_unrolled_partition_tables!(connection)
         )",
     )
 
-    appender = DuckDB.Appender(connection, "flow_time_resolution_rep_period")
+    appender = DuckDB.Appender(connection, "flow_rep_period", "resolution")
     for row in TulipaIO.get_table(Val(:raw), connection, "t_explicit_flows_rep_periods_partitions")
         durations = if row.specification == "uniform"
             step = parse(Int, row.partition)
@@ -308,8 +324,8 @@ function create_unrolled_partition_tables!(connection)
             SELECT DISTINCT
                 asset.asset,
                 timeframe_data.year,
-            FROM asset
-            CROSS JOIN timeframe_data
+            FROM input.asset as asset
+            CROSS JOIN cluster.timeframe_data as timeframe_data
             WHERE asset.is_seasonal
         )
         SELECT
@@ -318,7 +334,7 @@ function create_unrolled_partition_tables!(connection)
             COALESCE(atp.specification, 'uniform') AS specification,
             COALESCE(atp.partition, '1') AS partition,
         FROM t_relevant_assets
-        LEFT JOIN assets_timeframe_partitions AS atp
+        LEFT JOIN input.assets_timeframe_partitions AS atp
             ON t_relevant_assets.asset = atp.asset
             AND t_relevant_assets.year = atp.year
         ",
@@ -326,7 +342,7 @@ function create_unrolled_partition_tables!(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE asset_time_resolution_over_clustered_year(
+        "CREATE OR REPLACE TABLE resolution.asset_over_clustered_year(
             asset STRING,
             year INT,
             period_block_start INT,
@@ -334,14 +350,14 @@ function create_unrolled_partition_tables!(connection)
         )",
     )
 
-    appender = DuckDB.Appender(connection, "asset_time_resolution_over_clustered_year")
+    appender = DuckDB.Appender(connection, "asset_over_clustered_year", "resolution")
     for row in DuckDB.query(
         connection,
         "SELECT asset, sub.year, specification, partition, num_periods AS num_periods
         FROM t_explicit_assets_timeframe_partitions AS main
         LEFT JOIN (
             SELECT year, MAX(period) AS num_periods
-            FROM timeframe_data
+            FROM cluster.timeframe_data
             GROUP BY year
         ) AS sub
             ON main.year = sub.year
@@ -374,16 +390,18 @@ end
     create_merged_tables!(connection)
 
 Create the internal tables of merged flows and assets time partitions to be used in the computation of the lowest and highest resolution tables.
-The inputs tables are the flows table `flow_time_resolution_rep_period`, the assets table `asset_time_resolution_rep_period` and the `flows_relationships`.
+The inputs tables are the flows table `resolution.flow_rep_period`, the assets table `resolution.asset_rep_period` and the `input.flows_relationships`.
 All merged tables have the same columns: `asset`, `year`, `rep_period`, `time_block_start`, and `time_block_end`.
 Given a "group" `(asset, year, rep_period)`, the table will have the list of all partitions that should be used to compute the resolution tables.
 These are the output tables:
-- `merged_in_flows`: Set `asset = from_asset` and drop `to_asset` from `flow_time_resolution_rep_period`.
-- `merged_out_flows`: Set `asset = to_asset` and drop `from_asset` from `flow_time_resolution_rep_period`.
-- `merged_assets_and_out_flows`: Union of `merged_out_flows` and `asset_time_resolution_rep_period`.
-- `merged_all_flows`: Union (i.e., vertically concatenation) of the tables above.
-- `merged_all`: Union of `merged_all_flows` and `asset_time_resolution_rep_period`.
-- `merged_flows_relationship`: Set `asset` from `flow_time_resolution_rep_period` depending on `flows_relationships`
+
+- `t_merged_in_flows`: Set `asset = from_asset` and drop `to_asset` from `flow_time_resolution_rep_period`.
+- `t_merged_out_flows`: Set `asset = to_asset` and drop `from_asset` from `flow_time_resolution_rep_period`.
+- `t_merged_assets_and_out_flows`: Union of `merged_out_flows` and `asset_time_resolution_rep_period`.
+- `t_merged_all_flows`: Union (i.e., vertically concatenation) of the tables above.
+- `t_merged_all`: Union of `merged_all_flows` and `asset_time_resolution_rep_period`.
+- `t_merged_flows_relationship`: Set `asset` from `flow_time_resolution_rep_period` depending on `flows_relationships`
+
 This function is intended for internal use.
 """
 function create_merged_tables!(connection)
@@ -448,8 +466,8 @@ function create_lowest_resolution_table!(connection)
     #       Start a new block with s = 12 + 1 = 13 and e = TBE = 12
     # - END OF GROUP: Is 1 ≤ s ≤ e? No, so this is not a valid block
 
-    for merged_table in ("merged_all_flows", "merged_all", "merged_flows_relationship")
-        table_name = replace(merged_table, "merged" => "t_lowest")
+    for merged_table in ("t_merged_all_flows", "t_merged_all", "t_merged_flows_relationship")
+        table_name = replace(merged_table, "merged" => "lowest")
         DuckDB.execute(
             connection,
             "CREATE OR REPLACE TABLE $table_name(
@@ -515,8 +533,8 @@ function create_highest_resolution_table!(connection)
     # - create corresponing time_block_end
 
     for merged_table in
-        ("merged_" * x for x in ("in_flows", "out_flows", "assets_and_out_flows", "all_flows"))
-        table_name = replace(merged_table, "merged" => "t_highest")
+        ("t_merged_" * x for x in ("in_flows", "out_flows", "assets_and_out_flows", "all_flows"))
+        table_name = replace(merged_table, "merged" => "highest")
         DuckDB.execute(
             connection,
             "CREATE OR REPLACE TABLE $table_name AS
@@ -532,7 +550,7 @@ function create_highest_resolution_table!(connection)
                 SELECT DISTINCT asset, year, rep_period, time_block_start
                 FROM $merged_table
             ) AS merged
-            LEFT JOIN rep_periods_data
+            LEFT JOIN cluster.rep_periods_data as rep_periods_data
                 ON merged.year = rep_periods_data.year
                     AND merged.rep_period = rep_periods_data.rep_period
             ORDER BY merged.asset, merged.year, merged.rep_period, time_block_start

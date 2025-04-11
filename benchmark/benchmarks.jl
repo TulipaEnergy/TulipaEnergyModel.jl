@@ -8,7 +8,7 @@ const SUITE = BenchmarkGroup()
 function input_setup()
     # The following lines are checking whether this is being called from the `test`.
     # If it is not, then we use a larger dataset
-    input_folder = if isdefined(Main, :Test)
+    instance_folder = if isdefined(Main, :Test)
         joinpath(@__DIR__, "../test/inputs/Norse")
     else
         joinpath(@__DIR__, "EU")
@@ -17,8 +17,15 @@ function input_setup()
     connection = DBInterface.connect(DuckDB.DB)
     TulipaIO.read_csv_folder(
         connection,
-        input_folder;
-        schemas = TulipaEnergyModel.schema_per_table_name,
+        joinpath(instance_folder, "input");
+        database_schema = "input",
+        schemas = TulipaEnergyModel.sql_input_schema_per_table_name,
+    )
+    TulipaIO.read_csv_folder(
+        connection,
+        joinpath(instance_folder, "cluster");
+        database_schema = "cluster",
+        schemas = TulipaEnergyModel.sql_cluster_schema_per_table_name,
     )
     return connection
 end

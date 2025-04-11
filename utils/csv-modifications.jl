@@ -164,7 +164,7 @@ input_files_folders = [
         # Do stuff to path
     end
 
-Looks in the input folders defined in `input_files_folders` for a file named `filename` and apply
+Looks in the input_folders defined in `input_files_folders` for a file named `filename` and apply
 the function `f` to it.
 Skips paths that don't exist.
 

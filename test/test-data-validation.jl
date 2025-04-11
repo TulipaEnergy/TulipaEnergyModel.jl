@@ -7,26 +7,29 @@ const TEM = TulipaEnergyModel
 end
 
 @testset "Test having all tables and columns" begin
-    @testset "Starting from Tiny and deleting" begin
+    @testset "Starting from Tiny and deleting a table" begin
         connection = _tiny_fixture()
-        for table in TulipaEnergyModel.tables_allowed_to_be_missing
-            TEM._create_empty_unless_exists(connection, table)
+        for (schema_name, table_name) in TulipaEnergyModel.tables_allowed_to_be_missing
+            TEM._create_empty_unless_exists(connection, schema_name, table_name)
         end
 
-        DuckDB.query(connection, "DROP TABLE asset")
-        @test TEM._validate_has_all_tables_and_columns!(connection) ==
-              ["Table 'asset' expected but not found"]
+        DuckDB.query(connection, "DROP TABLE input.asset")
+        DuckDB.query(connection, "DROP TABLE cluster.rep_periods_mapping")
+        @test sort(TEM._validate_has_all_tables_and_columns!(connection)) == [
+            "Table 'cluster.rep_periods_mapping' expected but not found",
+            "Table 'input.asset' expected but not found",
+        ]
     end
 
-    @testset "Starting from Tiny and deleting" begin
+    @testset "Starting from Tiny and deleting a column" begin
         connection = _tiny_fixture()
-        for table in TulipaEnergyModel.tables_allowed_to_be_missing
-            TEM._create_empty_unless_exists(connection, table)
+        for (schema_name, table_name) in TulipaEnergyModel.tables_allowed_to_be_missing
+            TEM._create_empty_unless_exists(connection, schema_name, table_name)
         end
 
-        DuckDB.query(connection, "ALTER TABLE asset DROP COLUMN type")
+        DuckDB.query(connection, "ALTER TABLE input.asset DROP COLUMN type")
         @test TEM._validate_has_all_tables_and_columns!(connection) ==
-              ["Column 'type' is missing from table 'asset'"]
+              ["Column 'type' is missing from table 'input.asset'"]
     end
 end
 
@@ -39,26 +42,27 @@ end
         )
         connection = DBInterface.connect(DuckDB.DB)
         DuckDB.register_data_frame(connection, bad_data, "bad_data")
-        @test TEM._validate_no_duplicate_rows!(connection, "bad_data", [:asset, :year]) == []
-        @test TEM._validate_no_duplicate_rows!(connection, "bad_data", [:asset]) == [
-            "Table bad_data has duplicate entries for (asset=ccgt)",
-            "Table bad_data has duplicate entries for (asset=demand)",
+        @test TEM._validate_no_duplicate_rows!(connection, "main", "bad_data", [:asset, :year]) ==
+              []
+        @test TEM._validate_no_duplicate_rows!(connection, "main", "bad_data", [:asset]) == [
+            "Table 'main.bad_data' has duplicate entries for (asset=ccgt)",
+            "Table 'main.bad_data' has duplicate entries for (asset=demand)",
         ]
     end
 
     @testset "Duplicating rows of Tiny data" begin
         connection = _tiny_fixture()
         # Duplicating rows in these specific tables
-        for table in ("asset", "asset_both", "flow_both")
+        for table in ("input.asset", "input.asset_both", "input.flow_both")
             DuckDB.query(connection, "INSERT INTO $table (FROM $table ORDER BY RANDOM() LIMIT 1)")
         end
         @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
         error_messages = TEM._validate_no_duplicate_rows!(connection)
         @test length(error_messages) == 3
         # These tests assume an order in the validation of the tables
-        @test occursin("Table asset has duplicate entries", error_messages[1])
-        @test occursin("Table asset_both has duplicate entries", error_messages[2])
-        @test occursin("Table flow_both has duplicate entries", error_messages[3])
+        @test occursin("Table 'input.asset' has duplicate entries", error_messages[1])
+        @test occursin("Table 'input.asset_both' has duplicate entries", error_messages[2])
+        @test occursin("Table 'input.flow_both' has duplicate entries", error_messages[3])
     end
 end
 
@@ -66,10 +70,10 @@ end
     @testset "Changing Tiny data asset table (bad type)" begin
         connection = _tiny_fixture()
         # Change the table to force an error
-        DuckDB.query(connection, "UPDATE asset SET type = 'badtype' WHERE asset = 'ccgt'")
+        DuckDB.query(connection, "UPDATE input.asset SET type = 'badtype' WHERE asset = 'ccgt'")
         @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
         error_messages = TEM._validate_schema_one_of_constraints!(connection)
-        @test error_messages == ["Table 'asset' has bad value for column 'type': 'badtype'"]
+        @test error_messages == ["Table 'input.asset' has bad value for column 'type': 'badtype'"]
     end
 
     @testset "Changing Tiny data asset table (bad consumer_balance_sense)" begin
@@ -77,12 +81,12 @@ end
         # Change the table to force an error
         DuckDB.query(
             connection,
-            "UPDATE asset SET consumer_balance_sense = '<>' WHERE asset = 'demand'",
+            "UPDATE input.asset SET consumer_balance_sense = '<>' WHERE asset = 'demand'",
         )
         @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
         error_messages = TEM._validate_schema_one_of_constraints!(connection)
         @test error_messages ==
-              ["Table 'asset' has bad value for column 'consumer_balance_sense': '<>'"]
+              ["Table 'input.asset' has bad value for column 'consumer_balance_sense': '<>'"]
     end
 
     @testset "Changing Norse data flows_rep_periods_partitions table (bad specification)" begin
@@ -91,7 +95,7 @@ end
         # Change the table to force an error
         DuckDB.query(
             connection,
-            "UPDATE flows_rep_periods_partitions
+            "UPDATE input.flows_rep_periods_partitions
             SET specification = 'bad'
             WHERE from_asset = 'Asgard_Solar'
                 AND to_asset = 'Asgard_Battery'
@@ -101,7 +105,7 @@ end
         @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
         error_messages = TEM._validate_schema_one_of_constraints!(connection)
         @test error_messages == [
-            "Table 'flows_rep_periods_partitions' has bad value for column 'specification': 'bad'",
+            "Table 'input.flows_rep_periods_partitions' has bad value for column 'specification': 'bad'",
         ]
     end
 end
@@ -120,8 +124,8 @@ end
             :investable => [true, false, true, false],
         )
         connection = DBInterface.connect(DuckDB.DB)
-        DuckDB.register_data_frame(connection, flow, "flow")
-        DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
+        _register_df(connection, flow, "input", "flow")
+        _register_df(connection, flow_milestone, "input", "flow_milestone")
 
         error_messages = TEM._validate_only_transport_flows_are_investable!(connection)
         @test error_messages == ["Flow ('A1', 'B') is investable but is not a transport flow"]
@@ -133,12 +137,12 @@ end
         # First set ccgt and ocgt to transport = TRUE
         DuckDB.query(
             connection,
-            "UPDATE flow SET is_transport = TRUE WHERE from_asset in ('ccgt', 'ocgt')",
+            "UPDATE input.flow SET is_transport = TRUE WHERE from_asset in ('ccgt', 'ocgt')",
         )
         # Second set investable to wind and ocgt
         DuckDB.query(
             connection,
-            "UPDATE flow_milestone SET investable = TRUE WHERE from_asset in ('wind','ocgt')",
+            "UPDATE input.flow_milestone SET investable = TRUE WHERE from_asset in ('wind','ocgt')",
         )
         @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
         error_messages = TEM._validate_only_transport_flows_are_investable!(connection)
@@ -164,22 +168,26 @@ end
         @testset "'bad' value for cat1" begin
             error_messages = TEM._validate_foreign_key!(
                 connection,
+                "main",
                 "main_table",
                 :cat1,
+                "main",
                 "foreign_table",
                 :category;
                 allow_missing = true,
             )
             @test error_messages == [
-                "Table 'main_table' column 'cat1' has invalid value 'bad'. Valid values should be among column 'category' of 'foreign_table'",
+                "Table 'main.main_table' column 'cat1' has invalid value 'bad'. Valid values should be among column 'category' of 'main.foreign_table'",
             ]
         end
 
         @testset "missing value for cat2" begin
             error_messages = TEM._validate_foreign_key!(
                 connection,
+                "main",
                 "main_table",
                 :cat2,
+                "main",
                 "foreign_table",
                 :category;
                 allow_missing = true,
@@ -188,14 +196,16 @@ end
 
             error_messages = TEM._validate_foreign_key!(
                 connection,
+                "main",
                 "main_table",
                 :cat2,
+                "main",
                 "foreign_table",
                 :category;
                 allow_missing = false,
             )
             @test error_messages == [
-                "Table 'main_table' column 'cat2' has invalid value 'missing'. Valid values should be among column 'category' of 'foreign_table'",
+                "Table 'main.main_table' column 'cat2' has invalid value 'missing'. Valid values should be among column 'category' of 'main.foreign_table'",
             ]
         end
     end
@@ -206,8 +216,8 @@ end
         # Doesn't throw
         TEM.create_internal_tables!(connection)
 
-        DuckDB.query(connection, "UPDATE asset SET \"group\" = 'bad' WHERE asset = 'ccgt'")
-        @test_throws "Table 'asset' column 'group' has invalid value 'bad'. Valid values should be among column 'name' of 'group_asset'" TEM.create_internal_tables!(
+        DuckDB.query(connection, "UPDATE input.asset SET \"group\" = 'bad' WHERE asset = 'ccgt'")
+        @test_throws "Table 'input.asset' column 'group' has invalid value 'bad'. Valid values should be among column 'name' of 'input.group_asset'" TEM.create_internal_tables!(
             connection,
         )
     end
@@ -221,12 +231,13 @@ end
         )
         group_asset = DataFrame(:name => ["good", "bad", "ugly"], :value => [1, 2, 3])
         connection = DBInterface.connect(DuckDB.DB)
-        DuckDB.register_data_frame(connection, asset, "asset")
-        DuckDB.register_data_frame(connection, group_asset, "group_asset")
+        _register_df(connection, asset, "input", "asset")
+        _register_df(connection, group_asset, "input", "group_asset")
 
         error_messages = TEM._validate_group_consistency!(connection)
-        @test error_messages ==
-              ["Group 'ugly' in 'group_asset' has no members in 'asset', column 'group'"]
+        @test error_messages == [
+            "Group 'ugly' in 'input.group_asset' has no members in 'input.asset', column 'group'",
+        ]
     end
 
     @testset "Using Tiny data" begin
@@ -236,8 +247,8 @@ end
         TEM.create_internal_tables!(connection)
 
         # Modify group value to bad value
-        DuckDB.query(connection, "INSERT INTO group_asset (name) VALUES ('lonely')")
-        @test_throws "Group 'lonely' in 'group_asset' has no members in 'asset', column 'group'" TEM.create_internal_tables!(
+        DuckDB.query(connection, "INSERT INTO input.group_asset (name) VALUES ('lonely')")
+        @test_throws "Group 'lonely' in 'input.group_asset' has no members in 'input.asset', column 'group'" TEM.create_internal_tables!(
             connection,
         )
     end
@@ -268,17 +279,17 @@ end
                 :commission_year => [1, 1, 0],
             )
 
-            DuckDB.register_data_frame(connection, asset, "asset")
-            DuckDB.register_data_frame(connection, asset_both, "asset_both")
-            DuckDB.register_data_frame(connection, flow, "flow")
-            DuckDB.register_data_frame(connection, flow_both, "flow_both")
+            _register_df(connection, asset, "input", "asset")
+            _register_df(connection, asset_both, "input", "asset_both")
+            _register_df(connection, flow, "input", "flow")
+            _register_df(connection, flow_both, "input", "flow_both")
 
             error_messages =
                 TEM._validate_simple_method_has_only_matching_years!(String[], connection)
             @test error_messages == [
-                "Unexpected (asset='A1', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A1' with investment_method='simple'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-                "Unexpected (asset='A2', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A2' with investment_method='none'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-                "Unexpected (from_asset='A2', to_asset='B', milestone_year=1, commission_year=0) in 'flow_both' for an flow=('A2', 'B') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+                "Unexpected (asset='A1', milestone_year=1, commission_year=0) in 'input.asset_both' for an asset='A1' with investment_method='simple'. For this investment method, rows in 'input.asset_both' should have milestone_year=commission_year.",
+                "Unexpected (asset='A2', milestone_year=1, commission_year=0) in 'input.asset_both' for an asset='A2' with investment_method='none'. For this investment method, rows in 'input.asset_both' should have milestone_year=commission_year.",
+                "Unexpected (from_asset='A2', to_asset='B', milestone_year=1, commission_year=0) in 'input.flow_both' for an flow=('A2', 'B') with default investment_method='simple/none'. For this investment method, rows in 'input.flow_both' should have milestone_year=commission_year.",
             ]
         end
 
@@ -310,20 +321,20 @@ end
                 :milestone_year => [1, 1],
                 :commission_year => [0, 0],
             )
-            DuckDB.register_data_frame(connection, asset, "asset")
-            DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
-            DuckDB.register_data_frame(connection, asset_both, "asset_both")
-            DuckDB.register_data_frame(connection, flow, "flow")
-            DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
-            DuckDB.register_data_frame(connection, flow_both, "flow_both")
+            _register_df(connection, asset, "input", "asset")
+            _register_df(connection, asset_milestone, "input", "asset_milestone")
+            _register_df(connection, asset_both, "input", "asset_both")
+            _register_df(connection, flow, "input", "flow")
+            _register_df(connection, flow_milestone, "input", "flow_milestone")
+            _register_df(connection, flow_both, "input", "flow_both")
 
             error_messages =
                 TEM._validate_simple_method_all_milestone_years_are_covered!(String[], connection)
 
             @test error_messages == [
-                "Missing information in 'asset_both': Asset 'A1' has investment_method='simple' but there is no row (asset='A1', milestone_year=1, commission_year=1). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-                "Missing information in 'asset_both': Asset 'A2' has investment_method='none' but there is no row (asset='A2', milestone_year=1, commission_year=1). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-                "Missing information in 'flow_both': Flow ('A2', 'B') currently only has investment_method='simple/none' but there is no row (from_asset='A2', to_asset='B', milestone_year=1, commission_year=1). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+                "Missing information in 'input.asset_both': Asset 'A1' has investment_method='simple' but there is no row (asset='A1', milestone_year=1, commission_year=1). For this investment method, rows in 'input.asset_both' should have milestone_year=commission_year.",
+                "Missing information in 'input.asset_both': Asset 'A2' has investment_method='none' but there is no row (asset='A2', milestone_year=1, commission_year=1). For this investment method, rows in 'input.asset_both' should have milestone_year=commission_year.",
+                "Missing information in 'input.flow_both': Flow ('A2', 'B') currently only has investment_method='simple/none' but there is no row (from_asset='A2', to_asset='B', milestone_year=1, commission_year=1). For this investment method, rows in 'input.flow_both' should have milestone_year=commission_year.",
             ]
         end
     end
@@ -337,18 +348,18 @@ end
             DuckDB.query(
                 connection,
                 """
-                INSERT INTO asset_both (asset, milestone_year, commission_year)
+                INSERT INTO input.asset_both (asset, milestone_year, commission_year)
                 VALUES ('ccgt', 2030, 2029);
-                UPDATE flow SET is_transport = TRUE WHERE from_asset = 'wind' AND to_asset = 'demand';
-                INSERT INTO flow_both (from_asset, to_asset, milestone_year, commission_year)
+                UPDATE input.flow SET is_transport = TRUE WHERE from_asset = 'wind' AND to_asset = 'demand';
+                INSERT INTO input.flow_both (from_asset, to_asset, milestone_year, commission_year)
                 VALUES ('wind', 'demand', 2030, 2029);
                 """,
             )
             error_messages =
                 TEM._validate_simple_method_has_only_matching_years!(String[], connection)
             @test error_messages == [
-                "Unexpected (asset='ccgt', milestone_year=2030, commission_year=2029) in 'asset_both' for an asset='ccgt' with investment_method='none'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-                "Unexpected (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2029) in 'flow_both' for an flow=('wind', 'demand') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+                "Unexpected (asset='ccgt', milestone_year=2030, commission_year=2029) in 'input.asset_both' for an asset='ccgt' with investment_method='none'. For this investment method, rows in 'input.asset_both' should have milestone_year=commission_year.",
+                "Unexpected (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2029) in 'input.flow_both' for an flow=('wind', 'demand') with default investment_method='simple/none'. For this investment method, rows in 'input.flow_both' should have milestone_year=commission_year.",
             ]
         end
         @testset "Where not all milestone years are covered" begin
@@ -359,16 +370,16 @@ end
             DuckDB.query(
                 connection,
                 """
-                UPDATE asset_both SET commission_year = 2029 WHERE asset = 'ccgt' AND milestone_year = 2030;
-                UPDATE flow SET is_transport = TRUE WHERE from_asset = 'wind' AND to_asset = 'demand';
-                UPDATE flow_both SET commission_year = 2029 WHERE from_asset = 'wind' AND to_asset = 'demand' AND milestone_year = 2030;
+                UPDATE input.asset_both SET commission_year = 2029 WHERE asset = 'ccgt' AND milestone_year = 2030;
+                UPDATE input.flow SET is_transport = TRUE WHERE from_asset = 'wind' AND to_asset = 'demand';
+                UPDATE input.flow_both SET commission_year = 2029 WHERE from_asset = 'wind' AND to_asset = 'demand' AND milestone_year = 2030;
                 """,
             )
             error_messages =
                 TEM._validate_simple_method_all_milestone_years_are_covered!(String[], connection)
             @test error_messages == [
-                "Missing information in 'asset_both': Asset 'ccgt' has investment_method='none' but there is no row (asset='ccgt', milestone_year=2030, commission_year=2030). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-                "Missing information in 'flow_both': Flow ('wind', 'demand') currently only has investment_method='simple/none' but there is no row (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2030). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+                "Missing information in 'input.asset_both': Asset 'ccgt' has investment_method='none' but there is no row (asset='ccgt', milestone_year=2030, commission_year=2030). For this investment method, rows in 'input.asset_both' should have milestone_year=commission_year.",
+                "Missing information in 'input.flow_both': Flow ('wind', 'demand') currently only has investment_method='simple/none' but there is no row (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2030). For this investment method, rows in 'input.flow_both' should have milestone_year=commission_year.",
             ]
         end
     end
@@ -393,13 +404,13 @@ end
             :commission_year => repeat([1], 5),
             :investment_limit => [missing, 0, 1, missing, missing],
         )
-        DuckDB.register_data_frame(connection, asset, "asset")
-        DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
-        DuckDB.register_data_frame(connection, asset_commission, "asset_commission")
+        _register_df(connection, asset, "input", "asset")
+        _register_df(connection, asset_milestone, "input", "asset_milestone")
+        _register_df(connection, asset_commission, "input", "asset_commission")
         error_messages = TEM._validate_use_binary_storage_method_has_investment_limit!(connection)
         @test error_messages == [
-            "Incorrect investment_limit = missing for investable storage asset 'storage_1' with use_binary_storage_method = 'binary' for year 1. The investment_limit at year 1 should be greater than 0 in 'asset_commission'.",
-            "Incorrect investment_limit = 0 for investable storage asset 'storage_2' with use_binary_storage_method = 'binary' for year 1. The investment_limit at year 1 should be greater than 0 in 'asset_commission'.",
+            "Incorrect investment_limit = missing for investable storage asset 'storage_1' with use_binary_storage_method = 'binary' for year 1. The investment_limit at year 1 should be greater than 0 in 'input.asset_commission'.",
+            "Incorrect investment_limit = 0 for investable storage asset 'storage_2' with use_binary_storage_method = 'binary' for year 1. The investment_limit at year 1 should be greater than 0 in 'input.asset_commission'.",
         ]
     end
     @testset "Using Storage data" begin
@@ -407,13 +418,13 @@ end
         DuckDB.query(
             connection,
             """
-            UPDATE asset SET use_binary_storage_method = 'binary' WHERE asset = 'battery';
-            UPDATE asset_milestone SET investable = TRUE WHERE asset in ('battery', 'phs');
+            UPDATE input.asset SET use_binary_storage_method = 'binary' WHERE asset = 'battery';
+            UPDATE input.asset_milestone SET investable = TRUE WHERE asset in ('battery', 'phs');
             """,
         )
         error_messages = TEM._validate_use_binary_storage_method_has_investment_limit!(connection)
         @test error_messages == [
-            "Incorrect investment_limit = missing for investable storage asset 'battery' with use_binary_storage_method = 'binary' for year 2030. The investment_limit at year 2030 should be greater than 0 in 'asset_commission'.",
+            "Incorrect investment_limit = missing for investable storage asset 'battery' with use_binary_storage_method = 'binary' for year 2030. The investment_limit at year 2030 should be greater than 0 in 'input.asset_commission'.",
         ]
     end
 end

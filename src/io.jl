@@ -2,16 +2,16 @@ export create_internal_tables!, export_solution_to_csv_files
 
 # Create tables that are allowed to be missing
 const tables_allowed_to_be_missing = [
-    "assets_profiles"
-    "assets_rep_periods_partitions"
-    "assets_timeframe_partitions"
-    "assets_timeframe_profiles"
-    "flows_profiles"
-    "flows_relationships"
-    "flows_rep_periods_partitions"
-    "group_asset"
-    "profiles_rep_periods"
-    "profiles_timeframe"
+    ("input", "assets_profiles")
+    ("input", "assets_rep_periods_partitions")
+    ("input", "assets_timeframe_partitions")
+    ("input", "assets_timeframe_profiles")
+    ("input", "flows_profiles")
+    ("input", "flows_relationships")
+    ("input", "flows_rep_periods_partitions")
+    ("input", "group_asset")
+    ("cluster", "profiles_rep_periods")
+    ("input", "profiles_timeframe")
 ]
 
 """
@@ -19,14 +19,20 @@ const tables_allowed_to_be_missing = [
 
 Creates internal tables.
 """
-function create_internal_tables!(connection; skip_validation = false)
-    for table in TulipaEnergyModel.tables_allowed_to_be_missing
-        _create_empty_unless_exists(connection, table)
+function create_internal_tables!(
+    connection;
+    database_schema_name_override = Dict{Symbol,String}(),
+    skip_validation = false,
+)
+    input_database_schema = get(database_schema_name_override, "input", "input")
+    cluster_database_schema = get(database_schema_name_override, "cluster", "cluster")
+    for (schema_name, table) in TulipaEnergyModel.tables_allowed_to_be_missing
+        _create_empty_unless_exists(connection, schema_name, table)
     end
 
     if !skip_validation
         # Data validation - ensure that data is correct before
-        @timeit to "validate data" validate_data!(connection)
+        @timeit to "validate data" validate_data!(connection, database_schema_name_override)
     end
 
     @timeit to "create_unrolled_partition_tables" create_unrolled_partition_tables!(connection)
@@ -37,20 +43,23 @@ function create_internal_tables!(connection; skip_validation = false)
     return
 end
 
-function get_schema(tablename)
-    if haskey(schema_per_table_name, tablename)
-        return schema_per_table_name[tablename]
-    else
-        error("No implicit schema for table named $tablename")
+function get_schema(schema_name, table_name)
+    if !haskey(table_schemas, schema_name)
+        error("Invalid database schema '$schema_name'")
     end
+    if !haskey(table_schemas[schema_name], table_name)
+        error("No implicit schema for '$table_name' for database schema '$schema_name'")
+    end
+    return table_schemas[schema_name][table_name]
 end
 
-function _create_empty_unless_exists(connection, table_name)
-    schema = get_schema(table_name)
+function _create_empty_unless_exists(connection, schema_name, table_name)
+    table_schema = get_schema(schema_name, table_name)
 
-    if !_check_if_table_exists(connection, table_name)
-        columns_in_table = join(("$col $col_type" for (col, col_type) in schema), ",")
-        DuckDB.query(connection, "CREATE TABLE $table_name ($columns_in_table)")
+    if !_check_if_table_exists(connection, schema_name, table_name)
+        columns_in_table =
+            join(("\"$col\" $(content["type"])" for (col, content) in table_schema), ", ")
+        DuckDB.query(connection, "CREATE TABLE $schema_name.$table_name ($columns_in_table)")
     end
 
     return
@@ -90,7 +99,7 @@ function export_solution_to_csv_files(output_folder, connection, variables, cons
         output_file = joinpath(output_folder, "var_$name.csv")
         DuckDB.execute(
             connection,
-            "COPY $(var.table_name) TO '$output_file' (HEADER, DELIMITER ',')",
+            "COPY $(var.database_schema).$(var.table_name) TO '$output_file' (HEADER, DELIMITER ',')",
         )
     end
 
@@ -103,7 +112,7 @@ function export_solution_to_csv_files(output_folder, connection, variables, cons
         output_file = joinpath(output_folder, "cons_$name.csv")
         DuckDB.execute(
             connection,
-            "COPY $(cons.table_name) TO '$output_file' (HEADER, DELIMITER ',')",
+            "COPY $(cons.database_schema).$(cons.table_name) TO '$output_file' (HEADER, DELIMITER ',')",
         )
     end
 

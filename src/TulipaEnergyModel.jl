@@ -31,7 +31,7 @@ include("model-parameters.jl")
 include("structures.jl")
 
 # Data
-include("input-schemas.jl")
+include("table-schemas.jl")
 include("io.jl")
 include("data-validation.jl")
 include("data-preparation.jl")

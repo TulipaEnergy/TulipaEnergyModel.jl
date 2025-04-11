@@ -88,7 +88,7 @@ end
     _read_csv_folder(connection, dir)
     DuckDB.execute( # Make it infeasible
         connection,
-        "UPDATE asset_milestone
+        "UPDATE input.asset_milestone
             SET peak_demand = -1
             WHERE
                 asset = 'demand'

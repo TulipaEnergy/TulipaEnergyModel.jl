@@ -2,7 +2,7 @@ function add_storage_expressions!(connection, model, expressions)
     DuckDB.query(
         connection,
         "CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_energy_capacity_simple_method AS
+        CREATE OR REPLACE TABLE expressions.available_energy_capacity_simple_method AS
         SELECT
             nextval('id') AS id,
             asset_milestone.asset,
@@ -13,10 +13,10 @@ function add_storage_expressions!(connection, model, expressions)
             asset.storage_method_energy AS storage_method_energy,
             expr_avail.initial_storage_units AS available_initial_storage_units,
             expr_avail.id AS avail_id,
-        FROM asset_milestone
-        LEFT JOIN asset
+        FROM input.asset_milestone as asset_milestone
+        LEFT JOIN input.asset as asset
             ON asset_milestone.asset = asset.asset
-        LEFT JOIN expr_available_energy_units_simple_method AS expr_avail
+        LEFT JOIN expressions.available_energy_units_simple_method AS expr_avail
             ON asset_milestone.asset = expr_avail.asset
             AND asset_milestone.milestone_year = expr_avail.milestone_year
         WHERE
@@ -26,13 +26,13 @@ function add_storage_expressions!(connection, model, expressions)
     )
 
     expressions[:available_energy_capacity_simple_method] =
-        TulipaExpression(connection, "expr_available_energy_capacity_simple_method")
+        TulipaExpression(connection, "available_energy_capacity_simple_method")
 
     expr_avail_simple_method =
         expressions[:available_energy_units_simple_method].expressions[:energy]
 
     let table_name = :available_energy_capacity_simple_method, expr = expressions[table_name]
-        indices = DuckDB.query(connection, "FROM expr_$table_name")
+        indices = DuckDB.query(connection, "FROM expressions.$table_name")
         attach_expression!(
             expr,
             :energy_capacity,

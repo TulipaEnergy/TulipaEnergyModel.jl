@@ -19,7 +19,8 @@ function solve_model!(energy_problem::EnergyProblem)
     end
     energy_problem.solved = true
     energy_problem.objective_value = JuMP.objective_value(model)
-    return
+
+    return energy_problem
 end
 
 """
@@ -93,13 +94,13 @@ function save_solution!(connection, model, variables, constraints; compute_duals
         # TODO: Change FLOAT8 type depending on variable?
         DuckDB.execute(
             connection,
-            "ALTER TABLE $(var.table_name) ADD COLUMN IF NOT EXISTS solution FLOAT8",
+            "ALTER TABLE $(var.database_schema).$(var.table_name) ADD COLUMN IF NOT EXISTS solution FLOAT8",
         )
 
         # Update the column values
         DuckDB.execute(
             connection,
-            "UPDATE $(var.table_name)
+            "UPDATE $(var.database_schema).$(var.table_name)
             SET solution = sol.value
             FROM t_var_solution_$name AS sol
             WHERE $(var.table_name).id = sol.id
@@ -129,7 +130,7 @@ function save_solution!(connection, model, variables, constraints; compute_duals
 
                 DuckDB.execute(
                     connection,
-                    "ALTER TABLE $(cons.table_name) ADD COLUMN IF NOT EXISTS $col_name FLOAT8",
+                    "ALTER TABLE $(cons.database_schema).$(cons.table_name) ADD COLUMN IF NOT EXISTS $col_name FLOAT8",
                 )
             end
 
@@ -144,7 +145,7 @@ function save_solution!(connection, model, variables, constraints; compute_duals
 
             DuckDB.execute(
                 connection,
-                "UPDATE $(cons.table_name)
+                "UPDATE $(cons.database_schema).$(cons.table_name)
                 SET $set_query
                 FROM $duals_table_name AS cons
                 WHERE $(cons.table_name).id = cons.id

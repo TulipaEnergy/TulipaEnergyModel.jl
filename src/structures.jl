@@ -23,19 +23,19 @@ All deriving types must satisfy:
 
 - Have fields
     - `indices::DuckDB.QueryResult`
+    - `database_schema`::String
     - `table_name`::String
 """
 abstract type TulipaTabularIndex end
 
-function get_num_rows(connection, table_name::Union{String,Symbol})
+function get_num_rows(connection, schema_name, table_name::Union{String,Symbol})
     return only([
-        row[1] for row in DuckDB.query(connection, "SELECT COUNT(*) FROM $table_name")
+        row[1] for row in DuckDB.query(connection, "SELECT COUNT(*) FROM $schema_name.$table_name")
     ])::Int64
 end
 
 function get_num_rows(connection, object::TulipaTabularIndex)
-    table_name = object.table_name
-    return get_num_rows(connection, table_name)
+    return get_num_rows(connection, object.database_schema, object.table_name)
 end
 
 """
@@ -43,12 +43,14 @@ Structure to hold the JuMP variables for the TulipaEnergyModel
 """
 mutable struct TulipaVariable <: TulipaTabularIndex
     indices::DuckDB.QueryResult
+    database_schema::String
     table_name::String
     container::Vector{JuMP.VariableRef}
 
     function TulipaVariable(connection, table_name::String)
         return new(
-            DuckDB.query(connection, "SELECT * FROM $table_name"),
+            DuckDB.query(connection, "SELECT * FROM variables.$table_name"),
+            "variables",
             table_name,
             JuMP.VariableRef[],
         )
@@ -60,6 +62,7 @@ Structure to hold the JuMP constraints for the TulipaEnergyModel
 """
 mutable struct TulipaConstraint <: TulipaTabularIndex
     indices::DuckDB.QueryResult
+    database_schema::String
     table_name::String
     num_rows::Int
     constraint_names::Vector{Symbol}
@@ -69,11 +72,12 @@ mutable struct TulipaConstraint <: TulipaTabularIndex
 
     function TulipaConstraint(connection, table_name::String)
         return new(
-            DuckDB.query(connection, "SELECT * FROM $table_name"),
+            DuckDB.query(connection, "SELECT * FROM constraints.$table_name"),
+            "constraints",
             table_name,
             only([ # only makes sure that a single value is returned
-                row.num_rows for
-                row in DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM $table_name")
+                row.num_rows for row in
+                DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM constraints.$table_name")
             ]), # This loop is required to access the query resulted, because it's a lazy struct
             Symbol[],
             Dict(),
@@ -88,17 +92,19 @@ Structure to hold some JuMP expressions that are not attached to constraints but
 """
 mutable struct TulipaExpression <: TulipaTabularIndex
     indices::DuckDB.QueryResult
+    database_schema::String
     table_name::String
     num_rows::Int
     expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
 
     function TulipaExpression(connection, table_name::String)
         return new(
-            DuckDB.query(connection, "SELECT * FROM $table_name"),
+            DuckDB.query(connection, "SELECT * FROM expressions.$table_name"),
+            "expressions",
             table_name,
             only([
-                row.num_rows for
-                row in DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM $table_name")
+                row.num_rows for row in
+                DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM expressions.$table_name")
             ]),
             Dict(),
         )
