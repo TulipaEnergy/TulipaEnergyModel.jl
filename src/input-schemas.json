@@ -1,5 +1,5 @@
 {
-  "asset": {
+  "input_asset": {
     "asset": {
       "description": "Unique identifier with the name of the asset.",
       "type": "VARCHAR"
@@ -187,7 +187,7 @@
       "type": "VARCHAR"
     }
   },
-  "asset_both": {
+  "input_asset_both": {
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -218,7 +218,7 @@
       "type": "INTEGER"
     }
   },
-  "asset_commission": {
+  "input_asset_commission": {
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -270,7 +270,7 @@
       "unit_of_measure": "p.u./h"
     }
   },
-  "asset_milestone": {
+  "input_asset_milestone": {
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -339,7 +339,7 @@
       "unit_of_measure": "CUR/p.u./h"
     }
   },
-  "assets_profiles": {
+  "input_assets_profiles": {
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -366,7 +366,7 @@
       "type": "VARCHAR"
     }
   },
-  "assets_rep_periods_partitions": {
+  "input_assets_rep_periods_partitions": {
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -398,7 +398,7 @@
       "type": "INTEGER"
     }
   },
-  "assets_timeframe_partitions": {
+  "input_assets_timeframe_partitions": {
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -425,7 +425,7 @@
       "type": "INTEGER"
     }
   },
-  "assets_timeframe_profiles": {
+  "input_assets_timeframe_profiles": {
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -451,7 +451,7 @@
       "type": "VARCHAR"
     }
   },
-  "flow": {
+  "input_flow": {
     "capacity": {
       "constraints": {
         "minimum": 0
@@ -512,7 +512,7 @@
       "type": "VARCHAR"
     }
   },
-  "flow_both": {
+  "input_flow_both": {
     "commission_year": {
       "description": "Year of commissioning",
       "type": "INTEGER"
@@ -547,7 +547,7 @@
       "type": "VARCHAR"
     }
   },
-  "flow_commission": {
+  "input_flow_commission": {
     "commission_year": {
       "description": "Year of commissioning",
       "type": "INTEGER"
@@ -597,7 +597,7 @@
       "type": "VARCHAR"
     }
   },
-  "flow_milestone": {
+  "input_flow_milestone": {
     "from_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -622,7 +622,7 @@
       "unit_of_measure": "CUR/MWh"
     }
   },
-  "flows_profiles": {
+  "input_flows_profiles": {
     "from_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -649,7 +649,7 @@
       "type": "INTEGER"
     }
   },
-  "flows_rep_periods_partitions": {
+  "input_flows_rep_periods_partitions": {
     "from_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -685,7 +685,7 @@
       "type": "INTEGER"
     }
   },
-  "group_asset": {
+  "input_group_asset": {
     "invest_method": {
       "description": "true -> activate group constraints; false -> no group investment constraints",
       "type": "BOOLEAN"
@@ -707,7 +707,7 @@
       "type": "VARCHAR"
     }
   },
-  "profiles_rep_periods": {
+  "input_profiles_rep_periods": {
     "profile_name": {
       "description": "Profile name.",
       "type": "VARCHAR"
@@ -730,7 +730,7 @@
       "type": "INTEGER"
     }
   },
-  "profiles_timeframe": {
+  "input_profiles_timeframe": {
     "period": {
       "description": "Period.",
       "type": "INTEGER"
@@ -749,7 +749,7 @@
       "type": "INTEGER"
     }
   },
-  "rep_periods_data": {
+  "input_rep_periods_data": {
     "num_timesteps": {
       "default": 8760,
       "description": "Number of timesteps",
@@ -771,7 +771,7 @@
       "type": "INTEGER"
     }
   },
-  "rep_periods_mapping": {
+  "input_rep_periods_mapping": {
     "period": {
       "description": "Period number.",
       "type": "INTEGER"
@@ -790,7 +790,7 @@
       "type": "INTEGER"
     }
   },
-  "timeframe_data": {
+  "input_timeframe_data": {
     "num_timesteps": {
       "default": 8760,
       "description": "Number of timesteps of the representative period.",
@@ -805,7 +805,7 @@
       "type": "INTEGER"
     }
   },
-  "year_data": {
+  "input_year_data": {
     "is_milestone": {
       "default": true,
       "description": "Whether the year is a milestone year or a vintage year",

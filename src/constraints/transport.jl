@@ -108,14 +108,14 @@ function _append_transport_data_to_indices(connection)
             expr_avail.id AS avail_id,
             flows_profiles.profile_name AS profile_name,
         FROM cons_transport_flow_limit_simple_method AS cons
-        LEFT JOIN flow
+        LEFT JOIN input_flow as flow
             ON cons.from_asset = flow.from_asset
             AND cons.to_asset = flow.to_asset
         LEFT JOIN expr_available_flow_units_simple_method AS expr_avail
             ON cons.from_asset = expr_avail.from_asset
             AND cons.to_asset = expr_avail.to_asset
             AND cons.year = expr_avail.milestone_year
-        LEFT OUTER JOIN flows_profiles
+        LEFT OUTER JOIN input_flows_profiles as flows_profiles
             ON cons.from_asset = flows_profiles.from_asset
             AND cons.to_asset = flows_profiles.to_asset
             AND cons.year = flows_profiles.year

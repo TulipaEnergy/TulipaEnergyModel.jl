@@ -70,9 +70,9 @@ function _get_assets_in_group(connection, group)
             asset.group,
             asset.capacity,
         FROM var_assets_investment AS var
-        JOIN asset
+        JOIN input_asset as asset
             ON var.asset = asset.asset
-        JOIN group_asset
+        JOIN input_group_asset as group_asset
             ON asset.group = group_asset.name
         WHERE asset.group IS NOT NULL
               AND  asset.group = '$group'

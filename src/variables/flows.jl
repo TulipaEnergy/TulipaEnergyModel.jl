@@ -38,9 +38,9 @@ function _create_flow_table(connection)
             from_asset.type AS from_asset_type,
             to_asset.type AS to_asset_type,
         FROM var_flow
-        LEFT JOIN asset AS from_asset
+        LEFT JOIN input_asset AS from_asset
             ON var_flow.from_asset = from_asset.asset
-        LEFT JOIN asset AS to_asset
+        LEFT JOIN input_asset AS to_asset
             ON var_flow.to_asset = to_asset.asset
         ORDER BY var_flow.id
         ",

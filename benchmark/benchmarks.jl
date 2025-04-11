@@ -19,6 +19,7 @@ function input_setup()
         connection,
         input_folder;
         schemas = TulipaEnergyModel.schema_per_table_name,
+        table_name_prefix = "input_",
     )
     return connection
 end
