@@ -20,48 +20,48 @@ using DataFrames
 
 const simplest_data = Dict(
     # Basic asset data
-    "asset" => DataFrame(
+    "input_asset" => DataFrame(
         :asset => ["some_producer", "some_consumer"],
         :type => ["producer", "consumer"],
     ),
-    "asset_both" => DataFrame(
+    "input_asset_both" => DataFrame(
         :asset => ["some_producer", "some_consumer"],
         :commission_year => [2030, 2030],
         :milestone_year => [2030, 2030],
     ),
-    "asset_commission" => DataFrame(
+    "input_asset_commission" => DataFrame(
         :asset => ["some_producer", "some_consumer"],
         :commission_year => [2030, 2030],
     ),
-    "asset_milestone" => DataFrame(
+    "input_asset_milestone" => DataFrame(
         :asset => ["some_producer", "some_consumer"],
         :milestone_year => [2030, 2030],
     ),
 
     # Basic flow data
-    "flow" => DataFrame(:from_asset => ["some_producer"], :to_asset => ["some_consumer"]),
-    "flow_both" => DataFrame(
+    "input_flow" => DataFrame(:from_asset => ["some_producer"], :to_asset => ["some_consumer"]),
+    "input_flow_both" => DataFrame(
         :from_asset => ["some_producer"],
         :to_asset => ["some_consumer"],
         :commission_year => [2030],
         :milestone_year => [2030],
     ),
-    "flow_commission" => DataFrame(
+    "input_flow_commission" => DataFrame(
         :from_asset => ["some_producer"],
         :to_asset => ["some_consumer"],
         :commission_year => [2030],
     ),
-    "flow_milestone" => DataFrame(
+    "input_flow_milestone" => DataFrame(
         :from_asset => ["some_producer"],
         :to_asset => ["some_consumer"],
         :milestone_year => [2030],
     ),
 
     # Basic time information
-    "year_data" => DataFrame(:year => [2030]),
-    "rep_periods_data" => DataFrame(:year => [2030, 2030], :rep_period => [1, 2]),
-    "timeframe_data" => DataFrame(:year => 2030, :period => 1:365),
-    "rep_periods_mapping" =>
+    "input_year_data" => DataFrame(:year => [2030]),
+    "input_rep_periods_data" => DataFrame(:year => [2030, 2030], :rep_period => [1, 2]),
+    "input_timeframe_data" => DataFrame(:year => 2030, :period => 1:365),
+    "input_rep_periods_mapping" =>
         DataFrame(:year => 2030, :period => 1:365, :rep_period => mod1.(1:365, 2)),
 )
 end

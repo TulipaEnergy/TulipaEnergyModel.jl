@@ -3,7 +3,7 @@ include("data-simplest.jl")
 
 function _read_csv_folder(connection, input_dir)
     schemas = TulipaEnergyModel.schema_per_table_name
-    return TulipaIO.read_csv_folder(connection, input_dir; schemas)
+    return TulipaIO.read_csv_folder(connection, input_dir; schemas, table_name_prefix = "input_")
 end
 
 function _tiny_fixture()

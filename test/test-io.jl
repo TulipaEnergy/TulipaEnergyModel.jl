@@ -6,6 +6,25 @@
     end
 end
 
+@testset "Verify namespaces" begin
+    connection = _tiny_fixture()
+    energy_problem =
+        TulipaEnergyModel.run_scenario(connection; output_folder = mktempdir(), show_log = false)
+    prefixes = [
+        row.prefix for row in DuckDB.query(
+            connection,
+            "SELECT DISTINCT
+                regexp_extract(table_name, '^[a-z]*_', 0) as prefix
+            FROM duckdb_tables()
+            WHERE prefix IS NOT NULL
+            ORDER BY prefix
+            ",
+        )
+    ]
+
+    @test prefixes == ["cons_", "expr_", "input_", "resolution_", "t_", "var_"]
+end
+
 @testset "Output validation" begin
     @testset "Check that solution files are generated" begin
         connection = DBInterface.connect(DuckDB.DB)

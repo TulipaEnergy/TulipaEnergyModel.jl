@@ -251,8 +251,8 @@ function _create_multi_year_expressions_indices!(connection, expressions)
                 ANY_VALUE(var_inv.id),
                 NULL
             ) AS var_investment_id,
-        FROM asset_both
-        LEFT JOIN asset
+        FROM input_asset_both as asset_both
+        LEFT JOIN input_asset as asset
             ON asset_both.asset = asset.asset
         LEFT JOIN var_assets_decommission AS var_dec
             ON asset_both.asset = var_dec.asset
@@ -280,8 +280,8 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             ANY_VALUE(asset_both.initial_units) AS initial_units,
             ARRAY_AGG(DISTINCT var_inv.id) FILTER (var_inv.id IS NOT NULL) AS var_investment_indices,
             ARRAY_AGG(DISTINCT var_dec.id) FILTER (var_dec.id IS NOT NULL) AS var_decommission_indices,
-        FROM asset_both
-        LEFT JOIN asset
+        FROM input_asset_both as asset_both
+        LEFT JOIN input_asset as asset
             ON asset_both.asset = asset.asset
         LEFT JOIN var_assets_decommission AS var_dec
             ON asset_both.asset = var_dec.asset
@@ -309,8 +309,8 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             ANY_VALUE(asset_both.initial_storage_units) AS initial_storage_units,
             ARRAY_AGG(DISTINCT var_energy_dec.id) FILTER (var_energy_dec.id IS NOT NULL) AS var_energy_decommission_indices,
             ARRAY_AGG(DISTINCT var_energy_inv.id) FILTER (var_energy_inv.id IS NOT NULL) AS var_energy_investment_indices,
-        FROM asset_both
-        LEFT JOIN asset
+        FROM input_asset_both as asset_both
+        LEFT JOIN input_asset as asset
             ON asset.asset = asset_both.asset
         LEFT JOIN var_assets_decommission_energy AS var_energy_dec
             ON asset_both.asset = var_energy_dec.asset
@@ -340,8 +340,8 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             ANY_VALUE(flow_both.initial_import_units) AS initial_import_units,
             ARRAY_AGG(DISTINCT var_dec.id) FILTER (var_dec.id IS NOT NULL) AS var_decommission_indices,
             ARRAY_AGG(DISTINCT var_inv.id) FILTER (var_inv.id IS NOT NULL) AS var_investment_indices,
-        FROM flow_both
-        LEFT JOIN flow
+        FROM input_flow_both as flow_both
+        LEFT JOIN input_flow as flow
             ON flow.to_asset = flow_both.to_asset
             AND flow.from_asset = flow_both.from_asset
         LEFT JOIN var_flows_decommission AS var_dec
