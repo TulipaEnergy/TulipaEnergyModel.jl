@@ -10,8 +10,46 @@ TODO:
 
 ---
 
-Tulipa uses a DuckDB database to store the input data, the representation of variables, constraints, and other internal tables, as well as the output.
-This database is informed through the `connection` argument in various parts of the API. Most notably, for [`run_scenario`](@ref) and [`EnergyProblem`](@ref).
+In this section we will take a look into the data in more details, focusing on what you need to go from your raw data all the way to the results.
+
+```@contents
+Pages = ["50-schemas.md"]
+Depth = [2, 3]
+```
+
+## Workflow overview
+
+Here is a brief look at how we imagine a normal usage of the Tulipa model:
+
+![Tulipa Workflow. Textual explanation below.](./figs/tulipa-workflow.jpg)
+
+Brief explanation (more details in [TODO](#TODO)):
+
+- **External source**: The first thing that you need, and hopefully have, is data. Currently, Tulipa does not provide any public data sources, so we expected that you will _load_ all required data.
+- **Create connection**: Tulipa uses a DuckDB database to store the input data, the representation of variables, constraints, and other internal tables, as well as the output. This database is informed through the `connection` argument in various parts of the API. Most notably, [`run_scenario`](@ref) and [`EnergyProblem`](@ref) receive the `connection` as main argument to create the model (and various internal tables).
+  - **DuckDB connection**: This visual representation of the DuckDB shows which tables are created throughout the steps.
+- **Load data**: Whether you have CSV/Excel/Parquet files or a separate Database containing your data, you have to load it into the DuckDB connection, i.e., create tables (or table views) with the data that you will process for Tulipa.
+  - **DuckDB connection**: We denote this by the `Sources` tables. We have no expectations or control over what this data contains, but you will need to prepare it for Tulipa in some specific way later.
+- **Data processing for scenarios with DuckDB/TulipaIO**: Now we need to prepare this data for clustering. Even if you don't need to cluster your data, you still need to run the [`DummyClustering`](#TODO). Since your data in now inside the `connection`, we assume that you'll use `DuckDB`'s SQL and/or `TulipaIO.jl`'s convenience functions to manipulate it. However, you can create the data that you need externally and just load it again. You are also free to read the data from the connection in whatever other way you find useful (e.g., from Julia or Python, processing with Data Frames, and loading the result into the connection). The important thing is:
+  - [You need to satisfy the TulipaClustering format](#TODO)
+  - **DuckDB connection**: This data is represented by the `Scenerios` tables, but it could have been loaded with the `Sources`.
+- **Cluster into representative periods using TulipaClustering**: Run TulipaClustering to compute the representative periods and create tables with this information.
+  - **DuckDB connection**: We call these tables the `Time data` tables. The table created in this step will have a prefix `cluster_` (see [Namespaces](@ref) below)
+- **Prepare data for TulipaEnergyModel's format**: Once more, you have to process your data and create tables for the next step. Since the TulipaEnergyModel is reasonably extensive, you might want to use the `populate_with_defaults!` function. See [Minimum data and using defaults](@ref minimum_data) for more details.
+  - **DuckDB connection**: TulipaEnergyModel expects the `Time data` tables from the previous step and new tables that we denote `Tulipa format`. In rare instances, your data will be complete, but most likely you will need to, at the very least, enhance your tables with default values for columns that are not important for your problem. The tables required by TulipaEnergyModel have the prefix `input_` or `cluster_`.
+- **Create internal tables for the model indices**: Finally, we start using Tulipa. Your exact experience will depend on [what level of the API you are using](#TODO), but the underlying idea is the same. The first interaction with Tulipa will create the tables that Tulipa uses to store the variables, constraints, and expressions indices, as well as other internal tables required to get there. We also validate the data to try to make sure that the tables follow the expected requirements.
+  - **DuckDB connection**: There are various new tables at this stage that we denote simply as `Internal data`. See the [Namespaces](@ref) section for more details.
+- **Create model**: This is where most of the heavy lifting is done in the workflow, apart from solving the model. This step creates all the Julia/JuMP structures using the tables from the previous step. For instance, for each row of each variable table, there is an associated JuMP variable created in this step.
+  - **DuckDB connection**: Very little data is created in DuckDB actually. For the most part, we create expressions, prefixed by `expr_`, that could not have been created before. A lot of Julia/JuMP specific things are created, though, but they cannot be stored in a DuckDB connection.
+- **Solve model**: Finally, we give the model to the solver and wait for a result.
+- **Store primal and dual solutions**: In this step we compute the dual variables and then load the values of the primal and dual variables in the variable and constraints tables.
+  - **DuckDB connection**: We technically don't create any new tables in this step. Instead, we attach new columns to the `var_` and `cons_` tables with the variable values.
+- **Data processing for plots and dashboard**: This is the time to prepare the output that you need, once again using DuckDB/TulipaIO. You can also move all the data out of `DuckDB` and continue your analysis elsewhere.
+  - **DuckDB connection**: You might, optionally, create new tables. We denote these `Analysis` tables. They can be used for the next steps or for a possible dashboard connecting directly to the DuckDB connection.
+- **Create plots**: Optionally create plots.
+- **Export solution**: Optionally export all the tables from the DuckDB connection to files, and/or create and save plots.
+- **Output files**: External. The outputs of the workflow, which can be whatever you can produce. Notable, CSV/Parquet files with the full variables and constraints tables can be created easily.
+- **Dashboard**: Representation of a possible dashboard connecting directly to the DuckDB connection.
 
 ## [Minimum data and using defaults](@id minimum_data)
 
@@ -41,6 +79,7 @@ After creating a `connection` and loading data in a way that follows the schema 
 To differentiate between these tables, we use a prefix. This should also help differentiate between the data you might want to create yourself.
 Here are the different namespaces:
 
+- `cluster_`: Tables created by `TulipaClustering`.
 - `input_`: Tables expected by `TulipaEnergyModel`.
 - `var_`: Variable indices.
 - `cons_`: Constraints indices.

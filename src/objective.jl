@@ -328,7 +328,7 @@ function _create_objective_auxiliary_table(connection, constants)
                     LEAD(milestone_year) OVER (PARTITION BY asset ORDER BY milestone_year),
                     milestone_year + 1
                 ) AS next_year
-            FROM asset_milestone
+            FROM input_asset_milestone
         ),
         years_in_between AS (
             SELECT
@@ -364,7 +364,7 @@ function _create_objective_auxiliary_table(connection, constants)
                     LEAD(milestone_year) OVER (PARTITION BY from_asset, to_asset ORDER BY milestone_year),
                     milestone_year + 1
                 ) AS next_year
-            FROM flow_milestone
+            FROM input_flow_milestone
         ),
         years_in_between AS (
             SELECT

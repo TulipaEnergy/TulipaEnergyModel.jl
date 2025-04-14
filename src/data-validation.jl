@@ -351,11 +351,11 @@ function _validate_use_binary_storage_method_has_investment_limit!(connection)
     for row in DuckDB.query(
         connection,
         "SELECT asset.asset, asset.use_binary_storage_method, asset_milestone.milestone_year, asset_commission.commission_year, asset_commission.investment_limit
-        FROM asset_milestone
-        LEFT JOIN asset_commission
+        FROM input_asset_milestone as asset_milestone
+        LEFT JOIN input_asset_commission as asset_commission
             ON asset_milestone.asset = asset_commission.asset
             AND asset_milestone.milestone_year = asset_commission.commission_year
-        LEFT JOIN asset
+        LEFT JOIN input_asset as asset
             ON asset_milestone.asset = asset.asset
         WHERE asset.type = 'storage'
             AND asset_milestone.investable
