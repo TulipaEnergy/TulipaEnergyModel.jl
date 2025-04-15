@@ -1,4 +1,68 @@
 {
+  "cluster_profiles_rep_periods": {
+    "profile_name": {
+      "description": "Profile name.",
+      "type": "VARCHAR"
+    },
+    "rep_period": {
+      "description": "Representative period number.",
+      "type": "INTEGER"
+    },
+    "timestep": {
+      "description": "Timestep number.",
+      "type": "INTEGER"
+    },
+    "value": {
+      "description": "Value of the profile.",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u."
+    },
+    "year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    }
+  },
+  "cluster_rep_periods_data": {
+    "num_timesteps": {
+      "default": 8760,
+      "description": "Number of timesteps",
+      "type": "INTEGER"
+    },
+    "rep_period": {
+      "description": "Representative period number.",
+      "type": "INTEGER",
+      "unit_of_measure": "number"
+    },
+    "resolution": {
+      "default": 1,
+      "description": "Duration of each timestep",
+      "type": "DOUBLE",
+      "unit_of_measure": "hours"
+    },
+    "year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    }
+  },
+  "cluster_rep_periods_mapping": {
+    "period": {
+      "description": "Period number.",
+      "type": "INTEGER"
+    },
+    "rep_period": {
+      "description": "Representative period number.",
+      "type": "INTEGER"
+    },
+    "weight": {
+      "default": 1.0,
+      "description": "Hours",
+      "type": "DOUBLE"
+    },
+    "year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    }
+  },
   "input_asset": {
     "asset": {
       "description": "Unique identifier with the name of the asset.",
@@ -707,29 +771,6 @@
       "type": "VARCHAR"
     }
   },
-  "input_profiles_rep_periods": {
-    "profile_name": {
-      "description": "Profile name.",
-      "type": "VARCHAR"
-    },
-    "rep_period": {
-      "description": "Representative period number.",
-      "type": "INTEGER"
-    },
-    "timestep": {
-      "description": "Timestep number.",
-      "type": "INTEGER"
-    },
-    "value": {
-      "description": "Value of the profile.",
-      "type": "DOUBLE",
-      "unit_of_measure": "p.u."
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
-    }
-  },
   "input_profiles_timeframe": {
     "period": {
       "description": "Period.",
@@ -743,47 +784,6 @@
       "description": "value of the profile.",
       "type": "DOUBLE",
       "unit_of_measure": "p.u."
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
-    }
-  },
-  "input_rep_periods_data": {
-    "num_timesteps": {
-      "default": 8760,
-      "description": "Number of timesteps",
-      "type": "INTEGER"
-    },
-    "rep_period": {
-      "description": "Representative period number.",
-      "type": "INTEGER",
-      "unit_of_measure": "number"
-    },
-    "resolution": {
-      "default": 1,
-      "description": "Duration of each timestep",
-      "type": "DOUBLE",
-      "unit_of_measure": "hours"
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
-    }
-  },
-  "input_rep_periods_mapping": {
-    "period": {
-      "description": "Period number.",
-      "type": "INTEGER"
-    },
-    "rep_period": {
-      "description": "Representative period number.",
-      "type": "INTEGER"
-    },
-    "weight": {
-      "default": 1.0,
-      "description": "Hours",
-      "type": "DOUBLE"
     },
     "year": {
       "description": "Milestone year.",

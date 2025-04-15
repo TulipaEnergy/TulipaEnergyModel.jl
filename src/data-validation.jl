@@ -100,32 +100,29 @@ function _validate_no_duplicate_rows!(connection)
     # However, where to add this, and how to ensure it was added is not clear.
     duplicates = String[]
     for (table, primary_keys) in (
-        ("asset", (:asset,)),
-        ("asset_both", (:asset, :milestone_year, :commission_year)),
-        ("asset_commission", (:asset, :commission_year)),
-        ("asset_milestone", (:asset, :milestone_year)),
-        ("assets_profiles", (:asset, :commission_year, :profile_type)),
-        ("assets_rep_periods_partitions", (:asset, :year, :rep_period)),
-        ("assets_timeframe_partitions", (:asset, :year)),
-        ("assets_timeframe_profiles", (:asset, :commission_year, :profile_type)),
-        ("flow", (:from_asset, :to_asset)),
-        ("flow_both", (:from_asset, :to_asset, :milestone_year, :commission_year)),
-        ("flow_commission", (:from_asset, :to_asset, :commission_year)),
-        ("flow_milestone", (:from_asset, :to_asset, :milestone_year)),
-        ("flows_profiles", (:from_asset, :to_asset, :year, :profile_type)),
-        ("flows_rep_periods_partitions", (:from_asset, :to_asset, :year, :rep_period)),
-        ("group_asset", (:name, :milestone_year)),
-        ("profiles_rep_periods", (:profile_name, :year, :rep_period, :timestep)),
-        ("profiles_timeframe", (:profile_name, :year, :period)),
-        ("rep_periods_data", (:year, :rep_period)),
-        ("rep_periods_mapping", (:year, :period, :rep_period)),
-        ("timeframe_data", (:year, :period)),
-        ("year_data", (:year,)),
+        ("input_asset", (:asset,)),
+        ("input_asset_both", (:asset, :milestone_year, :commission_year)),
+        ("input_asset_commission", (:asset, :commission_year)),
+        ("input_asset_milestone", (:asset, :milestone_year)),
+        ("input_assets_profiles", (:asset, :commission_year, :profile_type)),
+        ("input_assets_rep_periods_partitions", (:asset, :year, :rep_period)),
+        ("input_assets_timeframe_partitions", (:asset, :year)),
+        ("input_assets_timeframe_profiles", (:asset, :commission_year, :profile_type)),
+        ("input_flow", (:from_asset, :to_asset)),
+        ("input_flow_both", (:from_asset, :to_asset, :milestone_year, :commission_year)),
+        ("input_flow_commission", (:from_asset, :to_asset, :commission_year)),
+        ("input_flow_milestone", (:from_asset, :to_asset, :milestone_year)),
+        ("input_flows_profiles", (:from_asset, :to_asset, :year, :profile_type)),
+        ("input_flows_rep_periods_partitions", (:from_asset, :to_asset, :year, :rep_period)),
+        ("input_group_asset", (:name, :milestone_year)),
+        ("cluster_profiles_rep_periods", (:profile_name, :year, :rep_period, :timestep)),
+        ("input_profiles_timeframe", (:profile_name, :year, :period)),
+        ("cluster_rep_periods_data", (:year, :rep_period)),
+        ("cluster_rep_periods_mapping", (:year, :period, :rep_period)),
+        ("input_timeframe_data", (:year, :period)),
+        ("input_year_data", (:year,)),
     )
-        append!(
-            duplicates,
-            _validate_no_duplicate_rows!(connection, "input_" * table, primary_keys),
-        )
+        append!(duplicates, _validate_no_duplicate_rows!(connection, table, primary_keys))
     end
 
     return duplicates
@@ -365,7 +362,7 @@ function _validate_use_binary_storage_method_has_investment_limit!(connection)
     )
         push!(
             error_messages,
-            "Incorrect investment_limit = $(row.investment_limit) for investable storage asset '$(row.asset)' with use_binary_storage_method = '$(row.use_binary_storage_method)' for year $(row.milestone_year). The investment_limit at year $(row.commission_year) should be greater than 0 in 'asset_commission'.",
+            "Incorrect investment_limit = $(row.investment_limit) for investable storage asset '$(row.asset)' with use_binary_storage_method = '$(row.use_binary_storage_method)' for year $(row.milestone_year). The investment_limit at year $(row.commission_year) should be greater than 0 in 'input_asset_commission'.",
         )
     end
 

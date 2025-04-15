@@ -22,7 +22,7 @@ end
         )
     ]
 
-    @test prefixes == ["cons_", "expr_", "input_", "resolution_", "t_", "var_"]
+    @test prefixes == ["cluster_", "cons_", "expr_", "input_", "resolution_", "t_", "var_"]
 end
 
 @testset "Output validation" begin

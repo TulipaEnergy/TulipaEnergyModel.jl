@@ -59,9 +59,9 @@ const simplest_data = Dict(
 
     # Basic time information
     "input_year_data" => DataFrame(:year => [2030]),
-    "input_rep_periods_data" => DataFrame(:year => [2030, 2030], :rep_period => [1, 2]),
+    "cluster_rep_periods_data" => DataFrame(:year => [2030, 2030], :rep_period => [1, 2]),
     "input_timeframe_data" => DataFrame(:year => 2030, :period => 1:365),
-    "input_rep_periods_mapping" =>
+    "cluster_rep_periods_mapping" =>
         DataFrame(:year => 2030, :period => 1:365, :rep_period => mod1.(1:365, 2)),
 )
 end

@@ -178,10 +178,10 @@ function create_unrolled_partition_tables!(connection)
             rep_periods_data.year,
             rep_periods_data.rep_period,
             COALESCE(arpp.specification, 'uniform') AS specification,
-            COALESCE(arpp.partition, '1') AS partition,
+            COALESCE(arpp.partition::string, '1') AS partition,
             rep_periods_data.num_timesteps,
         FROM input_asset as asset
-        CROSS JOIN input_rep_periods_data as rep_periods_data
+        CROSS JOIN cluster_rep_periods_data as rep_periods_data
         LEFT JOIN input_assets_rep_periods_partitions as arpp
             ON asset.asset = arpp.asset
             AND rep_periods_data.year = arpp.year
@@ -199,12 +199,12 @@ function create_unrolled_partition_tables!(connection)
             rep_periods_data.year,
             rep_periods_data.rep_period,
             COALESCE(frpp.specification, 'uniform') AS specification,
-            COALESCE(frpp.partition, '1') AS partition,
+            COALESCE(frpp.partition::string, '1') AS partition,
             flow_commission.efficiency,
             flow_commission.flow_coefficient_in_capacity_constraint,
             rep_periods_data.num_timesteps,
         FROM input_flow as flow
-        CROSS JOIN input_rep_periods_data as rep_periods_data
+        CROSS JOIN cluster_rep_periods_data as rep_periods_data
         LEFT JOIN input_flow_commission as flow_commission
             ON flow.from_asset = flow_commission.from_asset
             AND flow.to_asset = flow_commission.to_asset
@@ -578,7 +578,7 @@ function create_highest_resolution_table!(connection)
                 SELECT DISTINCT asset, year, rep_period, time_block_start
                 FROM $merged_table
             ) AS merged
-            LEFT JOIN input_rep_periods_data as rep_periods_data
+            LEFT JOIN cluster_rep_periods_data as rep_periods_data
                 ON merged.year = rep_periods_data.year
                     AND merged.rep_period = rep_periods_data.rep_period
             ORDER BY merged.asset, merged.year, merged.rep_period, time_block_start

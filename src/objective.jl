@@ -13,7 +13,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     end_of_horizon = only([
         row[1] for row in DuckDB.query(
             connection,
-            "SELECT MAX(year) AS end_of_horizon FROM input_rep_periods_data",
+            "SELECT MAX(year) AS end_of_horizon FROM cluster_rep_periods_data",
         )
     ])
 
@@ -238,8 +238,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 rpmap.rep_period,
                 SUM(weight) AS weight_sum,
                 ANY_VALUE(rpdata.resolution) AS resolution
-            FROM input_rep_periods_mapping AS rpmap
-            LEFT JOIN input_rep_periods_data AS rpdata
+            FROM cluster_rep_periods_mapping AS rpmap
+            LEFT JOIN cluster_rep_periods_data AS rpdata
                 ON rpmap.year=rpdata.year AND rpmap.rep_period=rpdata.rep_period
             GROUP BY rpmap.year, rpmap.rep_period
         ) AS rpinfo
@@ -274,8 +274,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 rpmap.rep_period,
                 SUM(weight) AS weight_sum,
                 ANY_VALUE(rpdata.resolution) AS resolution
-            FROM input_rep_periods_mapping AS rpmap
-            LEFT JOIN input_rep_periods_data AS rpdata
+            FROM cluster_rep_periods_mapping AS rpmap
+            LEFT JOIN cluster_rep_periods_data AS rpdata
                 ON rpmap.year=rpdata.year AND rpmap.rep_period=rpdata.rep_period
             GROUP BY rpmap.year, rpmap.rep_period
         ) AS rpinfo

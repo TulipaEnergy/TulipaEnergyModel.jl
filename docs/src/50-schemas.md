@@ -1,16 +1,19 @@
 # [Data pipeline/workflow](@id data)
 
 ---
-TODO:
 
-- diagrams
-- Replace
+## [TODO](@id TODO)
+
+- [ ] diagrams
+- [ ] Replace
   > To create these tables we currently use CSV files that follow this same schema and then convert them into tables using TulipaIO, as shown in the basic example of the [Tutorials](@ref basic-example) section.
-- Review below
+- [ ]Review below
+- [ ] Link to OBZ
 
 ---
 
 In this section we will take a look into the data in more details, focusing on what you need to go from your raw data all the way to the results.
+We also have a tutorial going over the [full workflow](#TODO), focusing on the code parts.
 
 ```@contents
 Pages = ["50-schemas.md"]
@@ -23,7 +26,7 @@ Here is a brief look at how we imagine a normal usage of the Tulipa model:
 
 ![Tulipa Workflow. Textual explanation below.](./figs/tulipa-workflow.jpg)
 
-Brief explanation (more details in [TODO](#TODO)):
+Workflow explanation:
 
 - **External source**: The first thing that you need, and hopefully have, is data. Currently, Tulipa does not provide any public data sources, so we expected that you will _load_ all required data.
 - **Create connection**: Tulipa uses a DuckDB database to store the input data, the representation of variables, constraints, and other internal tables, as well as the output. This database is informed through the `connection` argument in various parts of the API. Most notably, [`run_scenario`](@ref) and [`EnergyProblem`](@ref) receive the `connection` as main argument to create the model (and various internal tables).
@@ -69,8 +72,92 @@ To know the defaults, check the table [Schemas](@ref schemas) below.
 
 ### Example of using `populate_with_defaults!`
 
-```@example
-using TulipaEnergyModel, TulipaIO, DuckDB
+Below we have the minimum amount of data (essentially, nothing), that is necessary to start Tulipa.
+
+```@example minimum_data
+using TulipaEnergyModel, TulipaIO, DuckDB, DataFrames
+
+data = Dict(
+    # Basic asset data
+    "input_asset" => DataFrame(
+        :asset => ["some_producer", "some_consumer"],
+        :type => ["producer", "consumer"],
+    ),
+    "input_asset_both" => DataFrame(
+        :asset => ["some_producer", "some_consumer"],
+        :commission_year => [2030, 2030],
+        :milestone_year => [2030, 2030],
+    ),
+    "input_asset_commission" => DataFrame(
+        :asset => ["some_producer", "some_consumer"],
+        :commission_year => [2030, 2030],
+    ),
+    "input_asset_milestone" => DataFrame(
+        :asset => ["some_producer", "some_consumer"],
+        :milestone_year => [2030, 2030],
+    ),
+
+    # Basic flow data
+    "input_flow" => DataFrame(:from_asset => ["some_producer"], :to_asset => ["some_consumer"]),
+    "input_flow_both" => DataFrame(
+        :from_asset => ["some_producer"],
+        :to_asset => ["some_consumer"],
+        :commission_year => [2030],
+        :milestone_year => [2030],
+    ),
+    "input_flow_commission" => DataFrame(
+        :from_asset => ["some_producer"],
+        :to_asset => ["some_consumer"],
+        :commission_year => [2030],
+    ),
+    "input_flow_milestone" => DataFrame(
+        :from_asset => ["some_producer"],
+        :to_asset => ["some_consumer"],
+        :milestone_year => [2030],
+    ),
+
+    # Basic time information
+    "input_year_data" => DataFrame(:year => [2030]),
+    "cluster_rep_periods_data" => DataFrame(:year => [2030, 2030], :rep_period => [1, 2]),
+    "input_timeframe_data" => DataFrame(:year => 2030, :period => 1:365),
+    "cluster_rep_periods_mapping" =>
+        DataFrame(:year => 2030, :period => 1:365, :rep_period => mod1.(1:365, 2)),
+)
+```
+
+And here we load this data into a DuckDB connection.
+
+```@example minimum_data
+connection = DBInterface.connect(DuckDB.DB)
+
+# Loading the minimum data in the connection
+for (table_name::String, table::DataFrame) in data
+    DuckDB.register_data_frame(connection, table, table_name)
+end
+
+# Table `input_asset`:
+DuckDB.query(connection, "FROM input_asset") |> DataFrame
+```
+
+Now we run `populate_with_defaults!` to fill the remaining columns with default values:
+
+```@example minimum_data
+TulipaEnergyModel.populate_with_defaults!(connection)
+
+DuckDB.query(connection, "FROM input_asset") |> DataFrame
+```
+
+You can see the table has been modified to include many more columns.
+Even this problem, with no relevant information, can be solved:
+
+```@example minimum_data
+energy_problem = TulipaEnergyModel.run_scenario(
+    connection;
+    output_folder = mktempdir(),
+    show_log = false,
+)
+
+DuckDB.query(connection, "FROM var_flow LIMIT 5") |> DataFrame
 ```
 
 ## Namespaces

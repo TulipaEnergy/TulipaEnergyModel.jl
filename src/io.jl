@@ -9,7 +9,7 @@ const tables_allowed_to_be_missing = [
     "input_flows_profiles"
     "input_flows_rep_periods_partitions"
     "input_group_asset"
-    "input_profiles_rep_periods"
+    "cluster_profiles_rep_periods"
     "input_profiles_timeframe"
 ]
 
@@ -36,11 +36,14 @@ function create_internal_tables!(connection; skip_validation = false)
     return
 end
 
-function get_schema(tablename)
-    if haskey(schema_per_table_name, tablename)
-        return schema_per_table_name[tablename]
+function get_schema(table_name)
+    short_name = join(split(table_name, "_")[2:end], "_")
+    if haskey(schema_per_table_name, short_name)
+        return schema_per_table_name[short_name]
+    elseif haskey(schema_per_table_name, table_name)
+        return schema_per_table_name[table_name]
     else
-        error("No implicit schema for table named $tablename")
+        error("No implicit schema for '$table_name' or '$short_name'")
     end
 end
 

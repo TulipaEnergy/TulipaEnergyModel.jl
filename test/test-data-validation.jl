@@ -394,13 +394,13 @@ end
             :commission_year => repeat([1], 5),
             :investment_limit => [missing, 0, 1, missing, missing],
         )
-        DuckDB.register_data_frame(connection, asset, "asset")
-        DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
-        DuckDB.register_data_frame(connection, asset_commission, "asset_commission")
+        DuckDB.register_data_frame(connection, asset, "input_asset")
+        DuckDB.register_data_frame(connection, asset_milestone, "input_asset_milestone")
+        DuckDB.register_data_frame(connection, asset_commission, "input_asset_commission")
         error_messages = TEM._validate_use_binary_storage_method_has_investment_limit!(connection)
         @test error_messages == [
-            "Incorrect investment_limit = missing for investable storage asset 'storage_1' with use_binary_storage_method = 'binary' for year 1. The investment_limit at year 1 should be greater than 0 in 'asset_commission'.",
-            "Incorrect investment_limit = 0 for investable storage asset 'storage_2' with use_binary_storage_method = 'binary' for year 1. The investment_limit at year 1 should be greater than 0 in 'asset_commission'.",
+            "Incorrect investment_limit = missing for investable storage asset 'storage_1' with use_binary_storage_method = 'binary' for year 1. The investment_limit at year 1 should be greater than 0 in 'input_asset_commission'.",
+            "Incorrect investment_limit = 0 for investable storage asset 'storage_2' with use_binary_storage_method = 'binary' for year 1. The investment_limit at year 1 should be greater than 0 in 'input_asset_commission'.",
         ]
     end
     @testset "Using Storage data" begin
@@ -408,13 +408,13 @@ end
         DuckDB.query(
             connection,
             """
-            UPDATE asset SET use_binary_storage_method = 'binary' WHERE asset = 'battery';
-            UPDATE asset_milestone SET investable = TRUE WHERE asset in ('battery', 'phs');
+            UPDATE input_asset SET use_binary_storage_method = 'binary' WHERE asset = 'battery';
+            UPDATE input_asset_milestone SET investable = TRUE WHERE asset in ('battery', 'phs');
             """,
         )
         error_messages = TEM._validate_use_binary_storage_method_has_investment_limit!(connection)
         @test error_messages == [
-            "Incorrect investment_limit = missing for investable storage asset 'battery' with use_binary_storage_method = 'binary' for year 2030. The investment_limit at year 2030 should be greater than 0 in 'asset_commission'.",
+            "Incorrect investment_limit = missing for investable storage asset 'battery' with use_binary_storage_method = 'binary' for year 2030. The investment_limit at year 2030 should be greater than 0 in 'input_asset_commission'.",
         ]
     end
 end
