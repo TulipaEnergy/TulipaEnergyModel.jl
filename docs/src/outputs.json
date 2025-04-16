@@ -10,7 +10,7 @@
     "solution": ""
     },
   "var_assets_investment_energy": {
-    "index columns": "asset,milestone_year" ,
+    "index columns": "asset, milestone_year",
     "model parameters": "investment_integer_storage_energy, capacity_storage_energy, investment_limit_storage_energy",
     "solution": ""
     },
