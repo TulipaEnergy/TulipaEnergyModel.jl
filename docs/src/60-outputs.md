@@ -145,7 +145,7 @@ Associated input parameter: `unit_commitment_integer`
 
 ### `cons_min_output_flow_with_unit_commitment`
 
-- `dual_min_output_flow_with_unit_commitment`: Dual of the constraint ["minimum output flow above the minimum operating point"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/Minimum-output-flow-above-the-minimum-operating-point).
+- `dual_min_output_flow_with_unit_commitment`: Dual of the constraint ["minimum output flow above the minimum operating point"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Minimum-output-flow-above-the-minimum-operating-point).
 
 ### `cons_transport_flow_limit`
 
