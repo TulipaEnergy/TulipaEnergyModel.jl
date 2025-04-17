@@ -1,4 +1,4 @@
-# [Model Parameters](@id schemas)
+# [Input Parameters](@id schemas)
 
 The optimization model parameters with the input data must follow the schema below for each table. To create these tables we currently use CSV files that follow this same schema and then convert them into tables using TulipaIO, as shown in the basic example of the [Tutorials](@ref basic-example) section.
 
