@@ -136,20 +136,20 @@ Associated input parameter: `unit_commitment_integer`
 
 ### `cons_max_output_flow_with_basic_unit_commitment`
 
-- `dual_max_output_flow_with_basic_unit_commitment`: Dual of the constraint ["maximum output flow above the minimum operating point"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/40-formulation/#Maximum-output-flow-above-the-minimum-operating-point).
+- `dual_max_output_flow_with_basic_unit_commitment`: Dual of the constraint ["maximum output flow above the minimum operating point"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Maximum-output-flow-above-the-minimum-operating-point).
 
 ### `cons_max_ramp_with_unit_commitment`
 
-- `dual_max_ramp_up_with_unit_commitment`: Dual of the constraint ["maximum ramp-up rate limit WITH unit commitment"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/40-formulation/#Maximum-Ramp-Up-Rate-Limit-WITH-Unit-Commitment-Method).
-- `dual_max_ramp_down_with_unit_commitment`: Dual of the constraint ["maximum ramp-down rate limit with unit commitment"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/40-formulation/#Maximum-Ramp-Down-Rate-Limit-WITH-Unit-Commmitment-Method).
+- `dual_max_ramp_up_with_unit_commitment`: Dual of the constraint ["maximum ramp-up rate limit WITH unit commitment"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Maximum-Ramp-Up-Rate-Limit-WITH-Unit-Commitment-Method).
+- `dual_max_ramp_down_with_unit_commitment`: Dual of the constraint ["maximum ramp-down rate limit with unit commitment"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Maximum-Ramp-Down-Rate-Limit-WITH-Unit-Commmitment-Method).
 
 ### `cons_min_output_flow_with_unit_commitment`
 
-- `dual_min_output_flow_with_unit_commitment`: Dual of the constraint ["minimum output flow above the minimum operating point"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/40-formulation/Minimum-output-flow-above-the-minimum-operating-point).
+- `dual_min_output_flow_with_unit_commitment`: Dual of the constraint ["minimum output flow above the minimum operating point"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/Minimum-output-flow-above-the-minimum-operating-point).
 
 ### `cons_transport_flow_limit`
 
-- `dual_max_transport_flow_limit`: Dual of the constraint ["maximum transport flow limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/40-formulation/#Maximum-Transport-Flow-Limit).
-- `dual_min_transport_flow_limit`: Dual of the constraint ["minimum transport flow limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/40-formulation/#Minimum-Transport-Flow-Limit).
+- `dual_max_transport_flow_limit`: Dual of the constraint ["maximum transport flow limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Maximum-Transport-Flow-Limit).
+- `dual_min_transport_flow_limit`: Dual of the constraint ["minimum transport flow limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Minimum-Transport-Flow-Limit).
 
 Associated parameter: `var_flow_id`: Unique flow ID used internally by TulipaEnergyModel.
