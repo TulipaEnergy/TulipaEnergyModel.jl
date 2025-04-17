@@ -11,8 +11,10 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     social_rate = model_parameters.discount_rate
     discount_year = model_parameters.discount_year
     end_of_horizon = only([
-        row[1] for row in
-        DuckDB.query(connection, "SELECT MAX(year) AS end_of_horizon FROM rep_periods_data")
+        row[1] for row in DuckDB.query(
+            connection,
+            "SELECT MAX(year) AS end_of_horizon FROM cluster_rep_periods_data",
+        )
     ])
 
     constants = (; social_rate, discount_year, end_of_horizon)
@@ -54,7 +56,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * t_objective_assets.capacity
                 AS cost,
         FROM expr_available_asset_units_compact_method AS expr
-        LEFT JOIN asset_commission
+        LEFT JOIN input_asset_commission as asset_commission
             ON expr.asset = asset_commission.asset
             AND expr.commission_year = asset_commission.commission_year
         LEFT JOIN t_objective_assets
@@ -83,7 +85,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * t_objective_assets.capacity
                 AS cost,
         FROM expr_available_asset_units_simple_method AS expr
-        LEFT JOIN asset_commission
+        LEFT JOIN input_asset_commission as asset_commission
             ON expr.asset = asset_commission.asset
             AND expr.commission_year = asset_commission.commission_year
         LEFT JOIN t_objective_assets
@@ -136,7 +138,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * t_objective_assets.capacity_storage_energy
                 AS cost,
         FROM expr_available_energy_units_simple_method AS expr
-        LEFT JOIN asset_commission
+        LEFT JOIN input_asset_commission as asset_commission
             ON expr.asset = asset_commission.asset
             AND expr.commission_year = asset_commission.commission_year
         LEFT JOIN t_objective_assets
@@ -190,7 +192,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * t_objective_flows.capacity
                 AS cost,
         FROM expr_available_flow_units_simple_method AS expr
-        LEFT JOIN flow_commission
+        LEFT JOIN input_flow_commission as flow_commission
             ON expr.from_asset = flow_commission.from_asset
             AND expr.to_asset = flow_commission.to_asset
             AND expr.commission_year = flow_commission.commission_year
@@ -236,8 +238,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 rpmap.rep_period,
                 SUM(weight) AS weight_sum,
                 ANY_VALUE(rpdata.resolution) AS resolution
-            FROM rep_periods_mapping AS rpmap
-            LEFT JOIN rep_periods_data AS rpdata
+            FROM cluster_rep_periods_mapping AS rpmap
+            LEFT JOIN cluster_rep_periods_data AS rpdata
                 ON rpmap.year=rpdata.year AND rpmap.rep_period=rpdata.rep_period
             GROUP BY rpmap.year, rpmap.rep_period
         ) AS rpinfo
@@ -272,8 +274,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 rpmap.rep_period,
                 SUM(weight) AS weight_sum,
                 ANY_VALUE(rpdata.resolution) AS resolution
-            FROM rep_periods_mapping AS rpmap
-            LEFT JOIN rep_periods_data AS rpdata
+            FROM cluster_rep_periods_mapping AS rpmap
+            LEFT JOIN cluster_rep_periods_data AS rpdata
                 ON rpmap.year=rpdata.year AND rpmap.rep_period=rpdata.rep_period
             GROUP BY rpmap.year, rpmap.rep_period
         ) AS rpinfo
@@ -326,7 +328,7 @@ function _create_objective_auxiliary_table(connection, constants)
                     LEAD(milestone_year) OVER (PARTITION BY asset ORDER BY milestone_year),
                     milestone_year + 1
                 ) AS next_year
-            FROM asset_milestone
+            FROM input_asset_milestone
         ),
         years_in_between AS (
             SELECT
@@ -362,7 +364,7 @@ function _create_objective_auxiliary_table(connection, constants)
                     LEAD(milestone_year) OVER (PARTITION BY from_asset, to_asset ORDER BY milestone_year),
                     milestone_year + 1
                 ) AS next_year
-            FROM flow_milestone
+            FROM input_flow_milestone
         ),
         years_in_between AS (
             SELECT
@@ -418,14 +420,14 @@ function _create_objective_auxiliary_table(connection, constants)
             1 / (1 + $(constants.social_rate))^(asset_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
             investment_year_discount * (1 - salvage_value / asset_commission.investment_cost) AS weight_for_asset_investment_discount,
             in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
-        FROM asset_milestone
-        LEFT JOIN asset_commission
+        FROM input_asset_milestone AS asset_milestone
+        LEFT JOIN input_asset_commission AS asset_commission
             ON asset_milestone.asset = asset_commission.asset
             AND asset_milestone.milestone_year = asset_commission.commission_year
         LEFT JOIN t_discount_assets_in_between_milestone_years as in_between_years
             ON asset_milestone.asset = in_between_years.asset
             AND asset_milestone.milestone_year = in_between_years.milestone_year
-        LEFT JOIN asset
+        LEFT JOIN input_asset AS asset
             ON asset.asset = asset_commission.asset
         ",
     )
@@ -459,8 +461,8 @@ function _create_objective_auxiliary_table(connection, constants)
             1 / (1 + $(constants.social_rate))^(flow_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
             investment_year_discount * (1 - salvage_value / flow_commission.investment_cost) AS weight_for_flow_investment_discount,
             in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
-        FROM flow_milestone
-        LEFT JOIN flow_commission
+        FROM input_flow_milestone AS flow_milestone
+        LEFT JOIN input_flow_commission AS flow_commission
             ON flow_milestone.from_asset = flow_commission.from_asset
             AND flow_milestone.to_asset = flow_commission.to_asset
             AND flow_milestone.milestone_year = flow_commission.commission_year
@@ -468,7 +470,7 @@ function _create_objective_auxiliary_table(connection, constants)
             ON flow_milestone.from_asset = in_between_years.from_asset
             AND flow_milestone.to_asset = in_between_years.to_asset
             AND flow_milestone.milestone_year = in_between_years.milestone_year
-        LEFT JOIN flow
+        LEFT JOIN input_flow as flow
             ON flow.from_asset = flow_commission.from_asset
             AND flow.to_asset = flow_commission.to_asset
         ",

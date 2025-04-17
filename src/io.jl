@@ -2,15 +2,15 @@ export create_internal_tables!, export_solution_to_csv_files
 
 # Create tables that are allowed to be missing
 const tables_allowed_to_be_missing = [
-    "assets_profiles"
-    "assets_rep_periods_partitions"
-    "assets_timeframe_partitions"
-    "assets_timeframe_profiles"
-    "flows_profiles"
-    "flows_rep_periods_partitions"
-    "group_asset"
-    "profiles_rep_periods"
-    "profiles_timeframe"
+    "input_assets_profiles"
+    "input_assets_rep_periods_partitions"
+    "input_assets_timeframe_partitions"
+    "input_assets_timeframe_profiles"
+    "input_flows_profiles"
+    "input_flows_rep_periods_partitions"
+    "input_group_asset"
+    "cluster_profiles_rep_periods"
+    "input_profiles_timeframe"
 ]
 
 """
@@ -36,11 +36,14 @@ function create_internal_tables!(connection; skip_validation = false)
     return
 end
 
-function get_schema(tablename)
-    if haskey(schema_per_table_name, tablename)
-        return schema_per_table_name[tablename]
+function get_schema(table_name)
+    short_name = join(split(table_name, "_")[2:end], "_")
+    if haskey(schema_per_table_name, short_name)
+        return schema_per_table_name[short_name]
+    elseif haskey(schema_per_table_name, table_name)
+        return schema_per_table_name[table_name]
     else
-        error("No implicit schema for table named $tablename")
+        error("No implicit schema for '$table_name' or '$short_name'")
     end
 end
 

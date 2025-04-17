@@ -271,9 +271,9 @@ function _append_ramping_data_to_indices(connection, table_name)
             asset.max_ramp_down,
             assets_profiles.profile_name
         FROM cons_$table_name AS cons
-        LEFT JOIN asset
+        LEFT JOIN input_asset as asset
             ON cons.asset = asset.asset
-        LEFT OUTER JOIN assets_profiles
+        LEFT OUTER JOIN input_assets_profiles as assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
             AND assets_profiles.profile_type = 'availability'
@@ -299,7 +299,7 @@ function _append_available_units_data_compact_method(connection, table_name)
         LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
-        LEFT JOIN asset
+        LEFT JOIN input_asset as asset
             ON cons.asset = asset.asset
         WHERE asset.investment_method = 'compact'
         GROUP BY cons.id
@@ -324,7 +324,7 @@ function _append_available_units_data_simple_method(connection, table_name)
         LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
-        LEFT JOIN asset
+        LEFT JOIN input_asset as asset
             ON cons.asset = asset.asset
         WHERE asset.investment_method in ('simple', 'none')
         ORDER BY cons.id

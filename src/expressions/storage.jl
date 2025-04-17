@@ -13,8 +13,8 @@ function add_storage_expressions!(connection, model, expressions)
             asset.storage_method_energy AS storage_method_energy,
             expr_avail.initial_storage_units AS available_initial_storage_units,
             expr_avail.id AS avail_id,
-        FROM asset_milestone
-        LEFT JOIN asset
+        FROM input_asset_milestone as asset_milestone
+        LEFT JOIN input_asset as asset
             ON asset_milestone.asset = asset.asset
         LEFT JOIN expr_available_energy_units_simple_method AS expr_avail
             ON asset_milestone.asset = expr_avail.asset

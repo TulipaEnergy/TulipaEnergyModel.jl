@@ -11,7 +11,7 @@ select
     t_low.time_block_end,
 from
     t_lowest_all_flows as t_low
-    left join asset on t_low.asset = asset.asset
+    left join input_asset as asset on t_low.asset = asset.asset
 where
     asset.type in ('conversion')
 order by
@@ -33,7 +33,7 @@ select
     t_high.*
 from
     t_highest_all_flows as t_high
-    left join asset on t_high.asset = asset.asset
+    left join input_asset as asset on t_high.asset = asset.asset
 where
     asset.type = 'consumer'
 ;
@@ -50,7 +50,7 @@ select
     t_high.*
 from
     t_highest_all_flows as t_high
-    left join asset on t_high.asset = asset.asset
+    left join input_asset as asset on t_high.asset = asset.asset
 where
     asset.type = 'hub'
 ;
@@ -67,7 +67,7 @@ select
     t_high.*
 from
     t_highest_in_flows as t_high
-    left join asset on t_high.asset = asset.asset
+    left join input_asset as asset on t_high.asset = asset.asset
 where
     asset.type in ('storage')
 ;
@@ -84,8 +84,8 @@ select
     t_high.*
 from
     t_highest_in_flows as t_high
-    left join asset on t_high.asset = asset.asset
-    left join asset_milestone on t_high.asset = asset_milestone.asset
+    left join input_asset as asset on t_high.asset = asset.asset
+    left join input_asset_milestone as asset_milestone on t_high.asset = asset_milestone.asset
     and t_high.year = asset_milestone.milestone_year
 where
     asset.type in ('storage')
@@ -105,8 +105,8 @@ select
     t_high.*
 from
     t_highest_in_flows as t_high
-    left join asset on t_high.asset = asset.asset
-    left join asset_milestone on t_high.asset = asset_milestone.asset
+    left join input_asset as asset on t_high.asset = asset.asset
+    left join input_asset_milestone as asset_milestone on t_high.asset = asset_milestone.asset
     and t_high.year = asset_milestone.milestone_year
 where
     asset.type in ('storage')
@@ -126,10 +126,10 @@ select
     t_high.*
 from
     t_highest_out_flows as t_high
-    left join asset on t_high.asset = asset.asset
+    left join input_asset as asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
-    and asset.investment_method == 'compact'
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id
@@ -144,7 +144,7 @@ select
     t_high.*
 from
     t_highest_out_flows as t_high
-    left join asset on t_high.asset = asset.asset
+    left join input_asset as asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
     and asset.investment_method in ('simple', 'none')
@@ -162,8 +162,8 @@ select
     t_high.*
 from
     t_highest_out_flows as t_high
-    left join asset on t_high.asset = asset.asset
-    left join asset_milestone on t_high.asset = asset_milestone.asset
+    left join input_asset as asset on t_high.asset = asset.asset
+    left join input_asset_milestone as asset_milestone on t_high.asset = asset_milestone.asset
     and t_high.year = asset_milestone.milestone_year
 where
     asset.type in ('storage')
@@ -183,8 +183,8 @@ select
     t_high.*
 from
     t_highest_out_flows as t_high
-    left join asset on t_high.asset = asset.asset
-    left join asset_milestone on t_high.asset = asset_milestone.asset
+    left join input_asset as asset on t_high.asset = asset.asset
+    left join input_asset_milestone as asset_milestone on t_high.asset = asset_milestone.asset
     and t_high.year = asset_milestone.milestone_year
 where
     asset.type in ('storage')
@@ -200,7 +200,7 @@ select
     *
 from
     var_units_on
-    left join asset on var_units_on.asset = asset.asset
+    left join input_asset as asset on var_units_on.asset = asset.asset
     where asset.investment_method = 'compact'
 ;
 
@@ -209,7 +209,7 @@ select
     *
 from
     var_units_on
-    left join asset on var_units_on.asset = asset.asset
+    left join input_asset as asset on var_units_on.asset = asset.asset
     where asset.investment_method in ('simple', 'none')
 ;
 
@@ -222,7 +222,7 @@ select
     t_high.*
 from
     t_highest_assets_and_out_flows as t_high
-    left join asset on t_high.asset = asset.asset
+    left join input_asset as asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment
@@ -240,7 +240,7 @@ select
     t_high.*
 from
     t_highest_assets_and_out_flows as t_high
-    left join asset on t_high.asset = asset.asset
+    left join input_asset as asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment
@@ -259,7 +259,7 @@ select
     t_high.*
 from
     t_highest_assets_and_out_flows as t_high
-    left join asset on t_high.asset = asset.asset
+    left join input_asset as asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'conversion')
     and asset.ramping
@@ -279,7 +279,7 @@ select
     t_high.*
 from
     t_highest_out_flows as t_high
-    left join asset on t_high.asset = asset.asset
+    left join input_asset as asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
     and asset.ramping
@@ -315,8 +315,8 @@ select
     attr.period_block_start,
     attr.period_block_end,
 from
-    asset_time_resolution_over_clustered_year as attr
-    left join asset_milestone on attr.asset = asset_milestone.asset
+    resolution_asset_over_clustered_year as attr
+    left join input_asset_milestone as asset_milestone on attr.asset = asset_milestone.asset
     and attr.year = asset_milestone.milestone_year
 where
     asset_milestone.min_energy_timeframe_partition is not null
@@ -336,8 +336,8 @@ select
     attr.period_block_start,
     attr.period_block_end,
 from
-    asset_time_resolution_over_clustered_year as attr
-    left join asset_milestone on attr.asset = asset_milestone.asset
+    resolution_asset_over_clustered_year as attr
+    left join input_asset_milestone as asset_milestone on attr.asset = asset_milestone.asset
     and attr.year = asset_milestone.milestone_year
 where
     asset_milestone.max_energy_timeframe_partition is not null
@@ -361,7 +361,7 @@ select
     var_flow.id as var_flow_id
 from
     var_flow
-    left join flow on flow.from_asset = var_flow.from_asset
+    left join input_flow as flow on flow.from_asset = var_flow.from_asset
     and flow.to_asset = var_flow.to_asset
 where
     flow.is_transport
@@ -380,7 +380,7 @@ select
     ga.milestone_year,
     ga.max_investment_limit,
 from
-    group_asset as ga
+    input_group_asset as ga
 where
     ga.invest_method
     and ga.max_investment_limit is not null
@@ -399,7 +399,7 @@ select
     ga.milestone_year,
     ga.min_investment_limit,
 from
-    group_asset as ga
+    input_group_asset as ga
 where
     ga.invest_method
     and ga.min_investment_limit is not null
