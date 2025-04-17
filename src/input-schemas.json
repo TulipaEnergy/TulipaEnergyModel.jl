@@ -63,6 +63,21 @@
       "type": "INTEGER"
     }
   },
+  "cluster_timeframe_data": {
+    "num_timesteps": {
+      "default": 8760,
+      "description": "Number of timesteps of the representative period.",
+      "type": "INTEGER"
+    },
+    "period": {
+      "description": "Period.",
+      "type": "INTEGER"
+    },
+    "year": {
+      "description": "Unique identifier (currently, the year itself)",
+      "type": "INTEGER"
+    }
+  },
   "input_asset": {
     "asset": {
       "description": "Unique identifier with the name of the asset.",
@@ -787,21 +802,6 @@
     },
     "year": {
       "description": "Milestone year.",
-      "type": "INTEGER"
-    }
-  },
-  "input_timeframe_data": {
-    "num_timesteps": {
-      "default": 8760,
-      "description": "Number of timesteps of the representative period.",
-      "type": "INTEGER"
-    },
-    "period": {
-      "description": "Period.",
-      "type": "INTEGER"
-    },
-    "year": {
-      "description": "Unique identifier (currently, the year itself)",
       "type": "INTEGER"
     }
   },

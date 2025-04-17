@@ -19,7 +19,8 @@ function solve_model!(energy_problem::EnergyProblem)
     end
     energy_problem.solved = true
     energy_problem.objective_value = JuMP.objective_value(model)
-    return
+
+    return energy_problem
 end
 
 """

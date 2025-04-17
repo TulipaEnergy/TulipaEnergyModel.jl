@@ -119,7 +119,7 @@ function _validate_no_duplicate_rows!(connection)
         ("input_profiles_timeframe", (:profile_name, :year, :period)),
         ("cluster_rep_periods_data", (:year, :rep_period)),
         ("cluster_rep_periods_mapping", (:year, :period, :rep_period)),
-        ("input_timeframe_data", (:year, :period)),
+        ("cluster_timeframe_data", (:year, :period)),
         ("input_year_data", (:year,)),
     )
         append!(duplicates, _validate_no_duplicate_rows!(connection, table, primary_keys))

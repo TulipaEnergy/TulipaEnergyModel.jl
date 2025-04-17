@@ -270,7 +270,7 @@ function _append_storage_data_to_indices(connection, table_name)
                 cons.period_block_start,
                 SUM(mapping.num_timesteps) AS duration_period_block
             FROM cons_balance_storage_over_clustered_year AS cons
-            LEFT JOIN input_timeframe_data AS mapping
+            LEFT JOIN cluster_timeframe_data AS mapping
                 ON mapping.year = cons.year
                 AND mapping.period BETWEEN cons.period_block_start AND cons.period_block_end
             GROUP BY cons.asset, cons.year, cons.period_block_start

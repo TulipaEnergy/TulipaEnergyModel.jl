@@ -309,7 +309,7 @@ function create_unrolled_partition_tables!(connection)
                 asset.asset,
                 timeframe_data.year,
             FROM input_asset as asset
-            CROSS JOIN input_timeframe_data as timeframe_data
+            CROSS JOIN cluster_timeframe_data as timeframe_data
             WHERE asset.is_seasonal
         )
         SELECT
@@ -341,7 +341,7 @@ function create_unrolled_partition_tables!(connection)
         FROM t_explicit_assets_timeframe_partitions AS main
         LEFT JOIN (
             SELECT year, MAX(period) AS num_periods
-            FROM input_timeframe_data
+            FROM cluster_timeframe_data
             GROUP BY year
         ) AS sub
             ON main.year = sub.year
