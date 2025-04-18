@@ -198,7 +198,7 @@
     },
     "decommissionable": {
       "default": false,
-      "description": "Whether the asset can be decomission or not.",
+      "description": "Whether or not the asset can be decommissioned.",
       "type": "BOOLEAN"
     },
     "initial_storage_units": {
