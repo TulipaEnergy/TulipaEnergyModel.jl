@@ -29,10 +29,10 @@ Each output table has three types of columns:
    - `milestone_year`: Year of investment and operation decisions.
    - `commission_year`: Commissioning year of an asset (used for unique asset identification).
    - `rep_period`: Number of the representative period.
-   - `time_block_start`:
-   - `time_block_end`:
-   - `period_block_start`:
-   - `period_block_end`:
+   - `time_block_start`: Start of the time block of the representative period.
+   - `time_block_end`: End of the time block of the representative period.
+   - `period_block_start`: Start of the time block of the timeframe (mostly relevant for seasonal storage).
+   - `period_block_end`: Start of the time block of the timeframe (mostly relevant for seasonal storage).
 2. Associated [input parameters](@ref schemas): Listed per table below
 3. `Solution` or `dual_constraint_name`: Value of the variable or dual in the solution, described below.
 
@@ -40,27 +40,27 @@ Each output table has three types of columns:
 
 ### `var_assets_decommission_energy`
 
-For a storage asset commissioned in `commission_year`, the optimal decommissioning (decrease) of asset capacity in `milestone_year`, expressed in the same units as `capacity_storage_energy` of asset.
+For a storage asset that has `storage_method_energy` commissioned in `commission_year`, the optimal decommissioning (decrease) of asset energy capacity in `milestone_year`, expressed in the same units as `capacity_storage_energy` of asset.
 
-Associated input parameters: `investment_integer_storage_energy`
+Associated input parameters: `investment_integer_storage_energy`, `capacity_storage_energy`
 
 ### `var_assets_decommission`
 
-For a production asset commissioned in `commission_year`, the optimal decommissioning (decrease) of asset capacity in `milestone_year`, expressed in the same units as `capacity` of asset.
+For an asset commissioned in `commission_year`, the optimal decommissioning (decrease) of asset capacity in `milestone_year`, expressed in the same units as `capacity` of asset.
 
-Associated input parameters: `decommissionable`, `initial_units`, `investment_integer`
+Associated input parameters: `decommissionable`, `initial_units`, `investment_integer`, `capacity`
 
 ### `var_assets_investment_energy`
 
-For a storage asset, the optimal investment (increase) in asset capacity in `milestone_year`, expressed in the same units as `capacity_storage_energy` of asset.
+For a storage asset that has `storage_method_energy`, the optimal investment (increase) in asset energy capacity in `milestone_year`, expressed in the same units as `capacity_storage_energy` of asset.
 
-Associated input parameters: `investment_integer_storage_energy`, `capacity_storage_energy`, `investment_limit_storage_energy`
+Associated input parameters: `investable`, `investment_integer_storage_energy`, `capacity_storage_energy`, `investment_limit_storage_energy`
 
 ### `var_assets_investment`
 
-For a production asset, the optimal investment (increase) in asset capacity in `milestone_year`, expressed in the same units as `capacity` of asset.
+For an asset, the optimal investment (increase) in asset capacity in `milestone_year`, expressed in the same units as `capacity` of asset.
 
-Associated input parameters: `investment_integer`, `capacity`, `investment_limit`
+Associated input parameters: `investable`, `investment_integer`, `capacity`, `investment_limit`
 
 ### `var_flow`
 
@@ -70,15 +70,15 @@ Associated input parameter: `efficiency`
 
 ### `var_flows_decommission`
 
-For a flow commissioned in `commission_year`, the optimal decommissioning (decrease) of flow capacity in `milestone_year`, expressed in the same units as `capacity` of flow.
+For a transport flow commissioned in `commission_year`, the optimal decommissioning (decrease) of flow capacity in `milestone_year`, expressed in the same units as `capacity` of flow.
 
-Associated input parameter: `investment_integer`
+Associated input parameter: `decommissionable`, `investment_integer`, `capacity`
 
 ### `var_flows_investment`
 
-For a flow, the optimal investment (increase) in flow capacity in `milestone_year`, expressed in the same units as `capacity` of flow.
+For a transport flow, the optimal investment (increase) in flow capacity in `milestone_year`, expressed in the same units as `capacity` of flow.
 
-Associated input parameters: `investment_integer`, `capacity`, `investment_limit`
+Associated input parameters: `investable`, `investment_integer`, `capacity`, `investment_limit`
 
 ### `var_storage_level_over_clustered_year`
 
