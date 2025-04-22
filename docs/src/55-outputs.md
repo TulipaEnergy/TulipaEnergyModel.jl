@@ -4,7 +4,7 @@ Tulipa's user workflow is a work-in-progress. For now, you can export the comple
 Below is a description of the exported data. Files may be missing if the associated features were not included in the analysis.
 
 ```@contents
-Pages = ["60-outputs.md"]
+Pages = ["55-outputs.md"]
 Depth = [2, 3]
 ```
 
