@@ -168,7 +168,7 @@ As shown in the table, the resolution of the storage balance is energy, which is
 ```math
 \begin{aligned}
 & \text{storage\_balance}_{\text{phs},1:6}: \\
-& \qquad v^{\text{over-clustered-year-storage}}_{\text{phs},1:6} = 3 \cdot p^{\text{eff}}_{(\text{wind},\text{phs})} \cdot v^{\text{flow}}_{(\text{wind},\text{phs}),1:3} + 3 \cdot p^{\text{eff}}_{(\text{wind},\text{phs})} \cdot v^{\text{flow}}_{(\text{wind},\text{phs}),4:6} \\
+& \qquad v^{\text{rep-period-storage}}_{\text{phs},1:6} = 3 \cdot p^{\text{eff}}_{(\text{wind},\text{phs})} \cdot v^{\text{flow}}_{(\text{wind},\text{phs}),1:3} + 3 \cdot p^{\text{eff}}_{(\text{wind},\text{phs})} \cdot v^{\text{flow}}_{(\text{wind},\text{phs}),4:6} \\
 & \qquad \quad - \frac{4}{p^{\text{eff}}_{(\text{phs},\text{balance})}} \cdot v^{\text{flow}}_{(\text{phs},\text{balance}),1:4} - \frac{2}{p^{\text{eff}}_{(\text{phs},\text{balance})}} \cdot v^{\text{flow}}_{(\text{phs},\text{balance}),5:6} \\
 \end{aligned}
 ```
@@ -313,7 +313,7 @@ Since the system has a storage asset, we must limit the maximum storage level. T
 ```math
 \begin{aligned}
 & \text{max\_storage\_level\_limit}_{\text{phs},1:6}: \\
-& \qquad v^{\text{over-clustered-year-storage}}_{\text{phs},1:6} \leq p^{\text{init storage capacity}}_{\text{phs}}
+& \qquad v^{\text{rep-period-storage}}_{\text{phs},1:6} \leq p^{\text{init storage capacity}}_{\text{phs}}
 \end{aligned}
 ```
 
@@ -620,7 +620,7 @@ assets = leftjoin(graph_assets, assets_data, on=:asset) # hide
 filtered_assets = assets[assets.type .== "storage", ["asset", "type", "capacity", "capacity_storage_energy",  "is_seasonal"]] # hide
 ```
 
-The `is_seasonal` parameter determines whether or not the storage asset uses the over-clustered-year constraints. The `phs` is the only storage asset with this type of constraint and rep-period-storage level variable (i.e., $v^{\text{rep-period-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` will only consider rep-period constraints with over-clustered-year-storage level variables (i.e., $v^{\text{over-clustered-year-storage}}_{\text{battery},k,b_k}$), and has 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration).
+The `is_seasonal` parameter determines whether or not the storage asset uses the over-clustered-year constraints. The `phs` is the only storage asset with this type of constraint and over-clustered-year-storage level variable (i.e., $v^{\text{over-clustered-year-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` will only consider rep-period constraints with rep-period-storage level variables (i.e., $v^{\text{rep-period-storage}}_{\text{battery},k,b_k}$), and has 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration).
 
 The `rep-periods-data` file has information on the representative periods in the example. We have three representative periods, each with 24 timesteps and hourly resolution, representing a day. The figure below shows the availability profile of the renewable energy sources in the example.
 
@@ -642,7 +642,7 @@ unstacked_map[!,["k=1", "k=2", "k=3"]] = convert.(Float64, unstacked_map[!,["k=1
 unstacked_map # hide
 ```
 
-The file `assets-timeframe-partitions` has the information on how often we want to evaluate the over-clustered-year constraints that combine the information of the representative periods. In this example, the file is missing in the folder, meaning that the default of a `uniform` distribution of one period will be use in the model, see [model parameters](@ref schemas) section. This assumption implies that the model will check the rep-period-storage level every day of the week timeframe.
+The file `assets-timeframe-partitions` has the information on how often we want to evaluate the over-clustered-year constraints that combine the information of the representative periods. In this example, the file is missing in the folder, meaning that the default of a `uniform` distribution of one period will be use in the model, see [model parameters](@ref schemas) section. This assumption implies that the model will check the over-clustered-year-storage level every day of the week timeframe.
 
 !!! info
     For the sake of simplicity, we show how using three representative days can recover part of the chronological information of one week. The same method can be applied to more representative periods to analyze the seasonality across a year or longer timeframe.
@@ -659,12 +659,12 @@ read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_ta
 energy_problem = run_scenario(connection)
 ```
 
-Since the `battery` is not seasonal, it only has results for the over-clustered-year-storage level of each representative period, as shown in the following figure:
+Since the `battery` is not seasonal, it only has results for the rep-period-storage level of each representative period, as shown in the following figure:
 
-![Battery-over-clustered-year-storage-level](./figs/intra-storage-level.png)
+![Battery-rep-period-storage-level](./figs/intra-storage-level.png)
 
 Since the `phs` is defined as seasonal, it has results for only the rep-period-storage level. Since we defined the period partition as 1, we get results for each period (i.e., day). We can see that the over-clustered-year constraints in the model keep track of the storage level through the whole timeframe definition (i.e., week).
 
-![PHS-rep-period-storage-level](./figs/inter-storage-level.png)
+![PHS-over-clustered-year-storage-level](./figs/inter-storage-level.png)
 
 In this example, we have demonstrated how to partially recover the chronological information of a storage asset with a longer discharge duration (such as 48 hours) than the representative period length (24 hours). This feature enables us to model both short- and long-term storage in _TulipaEnergyModel.jl_.

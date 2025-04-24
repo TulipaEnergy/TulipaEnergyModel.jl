@@ -118,10 +118,10 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{inv limit energy}}_{a,y}$                | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Investment energy potential of asset $a$ at year $y$                                                                 | [MWh]           |
 | $p^{\text{energy capacity}}_{a}$                   | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$                                                                                              | Energy capacity of a unit of investment of the asset $a$                                                             | [MWh]           |
 | $p^{\text{energy to power ratio}}_{a,y}$           | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}}_y$                                                           | Energy to power ratio of storage asset $a$ at year $y$                                                               | [h]             |
-| $p^{\text{max rep-period-storage level}}_{a,k_y,b_{k_y}}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Maximum over-clustered-year-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
-| $p^{\text{min rep-period-storage level}}_{a,k_y,b_{k_y}}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Minimum over-clustered-year-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
-| $p^{\text{max over-clustered-year-storage level}}_{a,p_y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Maximum rep-period-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
-| $p^{\text{min over-clustered-year-storage level}}_{a,p_y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Minimum rep-period-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
+| $p^{\text{max rep-period-storage level}}_{a,k_y,b_{k_y}}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Maximum rep-period-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
+| $p^{\text{min rep-period-storage level}}_{a,k_y,b_{k_y}}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Minimum rep-period-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
+| $p^{\text{max over-clustered-year-storage level}}_{a,p_y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Maximum over-clustered-year-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
+| $p^{\text{min over-clustered-year-storage level}}_{a,p_y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Minimum over-clustered-year-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
 | $p^{\text{storage loss from stored energy}}_{a,y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}_y$                                                                        | [e.g. 0.01 means 1% every hour] Loss of stored energy over time.                                                     | [p.u./h]        |
 
 #### Extra Parameters for Energy Constraints
@@ -205,8 +205,8 @@ In addition, the following subsets represent methods for incorporating additiona
 | $v^{\text{decom energy simple}}_{a,y}$     | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                           | Number of decommissioned units of the energy component of the storage asset $a$ that uses energy method at year $y$                   | [units] |
 | $v^{\text{inv}}_{f,y}$                     | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                         | Number of invested units of capacity increment of transport flow $f$ at year $y$                                                      | [units] |
 | $v^{\text{decom simple}}_{f,y}$            | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                         | Number of decommissioned units of capacity increment of transport flow $f$ at year $y$                                                | [units] |
-| $v^{\text{over-clustered-year-storage}}_{a,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}_y \setminus \mathcal{A}^{\text{ss}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Rep-period-storage level for storage asset $a$, representative period $k_y$, and timestep block $b_{k_y}$ | [MWh]   |
-| $v^{\text{rep-period-storage}}_{a,p_y}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                     | Over-clustered-year-storage level for storage asset $a$ and period $p_y$                                           | [MWh]   |
+| $v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}_y \setminus \mathcal{A}^{\text{ss}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Rep-period-storage level for storage asset $a$, representative period $k_y$, and timestep block $b_{k_y}$ | [MWh]   |
+| $v^{\text{over-clustered-year-storage}}_{a,p_y}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                     | Over-clustered-year-storage level for storage asset $a$ and period $p_y$                                           | [MWh]   |
 | $v^{\text{is charging}}_{a,k_y,b_{k_y}}$   | $\{0, 1\}$       | $a \in \mathcal{A}^{\text{sb}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                    | If an storage asset $a$ is charging or not in representative period $k_y$ and timestep block $b_{k_y}$                                | [-]     |
 | $v^{\text{angle}}_{a,k_y,b_{k_y}}$         | $\mathbb{R}$     | $a \in \mathcal{A}^{\text{dc-opf}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                | Electricity angle of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                            | [rad]   |
 | $v^{\text{units on}}_{a,k_y,b_{k_y}}$      | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                    | Number of units ON of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                           | [units] |
@@ -549,12 +549,12 @@ e^{\text{available energy inv limit}}_{a,y}
 \end{aligned}
 ```
 
-#### [Rep-period Constraint for Storage Balance](@id over-clustered-year-storage-balance)
+#### [Rep-period Constraint for Storage Balance](@id rep-period-storage-balance)
 
 ```math
 \begin{aligned}
-v^{\text{over-clustered-year-storage}}_{a,k_y,b_{k_y}} = \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{b_{k_y}}}
- \cdot  v^{\text{over-clustered-year-storage}}_{a,k_y,b_{k_y}-1}  + p^{\text{inflows}}_{a,k_y,b_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} = \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{b_{k_y}}}
+ \cdot  v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}-1}  + p^{\text{inflows}}_{a,k_y,b_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
@@ -562,52 +562,52 @@ v^{\text{over-clustered-year-storage}}_{a,k_y,b_{k_y}} = \left(1 - p^{\text{stor
 #### Rep-period Constraint for Maximum Storage Level Limit
 
 ```math
-v^{\text{over-clustered-year-storage}}_{a,k_y,b_{k_y}} \leq p^{\text{max rep-period-storage level}}_{a,k_y,b_{k_y}} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} \leq p^{\text{max rep-period-storage level}}_{a,k_y,b_{k_y}} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Rep-period Constraint for Minimum Storage Level Limit
 
 ```math
-v^{\text{over-clustered-year-storage}}_{a,k_y,b_{k_y}} \geq p^{\text{min rep-period-storage level}}_{a,k_y,b_{k_y}} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} \geq p^{\text{min rep-period-storage level}}_{a,k_y,b_{k_y}} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Rep-period Cycling Constraint
 
 The cycling constraint for the rep-period constraints links the first timestep block ($b^{\text{first}}_{k_y}$) and the last one ($b^{\text{last}}_{k_y}$) in each representative period. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the over-clustered-year-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) is used as the initial value for the first timestep block in the [rep-period constraint for the storage balance](@ref over-clustered-year-storage-balance).
+- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the rep-period-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) is used as the initial value for the first timestep block in the [rep-period constraint for the storage balance](@ref rep-period-storage-balance).
 
 ```math
 \begin{aligned}
-v^{\text{over-clustered-year-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{over-clustered-year-storage}}_{a,k_y,b^{\text{last}}_{k_y}}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first timestep block in the [rep-period constraint for the storage balance](@ref over-clustered-year-storage-balance). In addition, the over-clustered-year-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) in each representative period must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first timestep block in the [rep-period constraint for the storage balance](@ref rep-period-storage-balance). In addition, the rep-period-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) in each representative period must be greater than this initial value.
 
 ```math
 \begin{aligned}
-v^{\text{over-clustered-year-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = p^{\text{init storage level}}_{a,y}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = p^{\text{init storage level}}_{a,y}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
 
 ```math
-v^{\text{over-clustered-year-storage}}_{a,k_y,b^{\text{first}}_{k_y}} \geq p^{\text{init storage level}}_{a,y} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} \geq p^{\text{init storage level}}_{a,y} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 ```
 
-#### [Over-clustered-year Constraint for Storage Balance](@id rep-period-storage-balance)
+#### [Over-clustered-year Constraint for Storage Balance](@id over-clustered-year-storage-balance)
 
 This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year). The parameter $p^{\text{map}}_{p_y,k_y}$ determines how much of the representative period $k_y$ is in the period $p_y$, and you can use a clustering technique to calculate it. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
 
-For the sake of simplicity, we show the constraint assuming the rep-period-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref schemas).
+For the sake of simplicity, we show the constraint assuming the over-clustered-year-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref schemas).
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}}
- \cdot v^{\text{rep-period-storage}}_{a,p_y-1} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+v^{\text{over-clustered-year-storage}}_{a,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}}
+ \cdot v^{\text{over-clustered-year-storage}}_{a,p_y-1} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
 & + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 & - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
@@ -617,35 +617,35 @@ v^{\text{rep-period-storage}}_{a,p_y} = & \left(1 - p^{\text{storage loss from s
 #### Over-clustered-year Constraint for Maximum Storage Level Limit
 
 ```math
-v^{\text{rep-period-storage}}_{a,p_y} \leq p^{\text{max over-clustered-year-storage level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
+v^{\text{over-clustered-year-storage}}_{a,p_y} \leq p^{\text{max over-clustered-year-storage level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 ```
 
 #### Over-clustered-year Constraint for Minimum Storage Level Limit
 
 ```math
-v^{\text{rep-period-storage}}_{a,p_y} \geq p^{\text{min over-clustered-year-storage level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
+v^{\text{over-clustered-year-storage}}_{a,p_y} \geq p^{\text{min over-clustered-year-storage level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 ```
 
 #### Over-clustered-year Cycling Constraint
 
 The cycling constraint for the over-clustered-year constraints links the first-period block ($p^{\text{first}}_y$) and the last one ($p^{\text{last}}_y$) in the timeframe. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the rep-period-storage level of the last period block ($p^{\text{last}}_y$) is used as the initial value for the first-period block in the [over-clustered-year constraint for the storage balance](@ref rep-period-storage-balance).
+- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the over-clustered-year-storage level of the last period block ($p^{\text{last}}_y$) is used as the initial value for the first-period block in the [over-clustered-year constraint for the storage balance](@ref over-clustered-year-storage-balance).
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,p^{\text{first}}_y} = & v^{\text{rep-period-storage}}_{a,p^{\text{last}}_y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+v^{\text{over-clustered-year-storage}}_{a,p^{\text{first}}_y} = & v^{\text{over-clustered-year-storage}}_{a,p^{\text{last}}_y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
 & + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 & - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
 \end{aligned}
 ```
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first-period block in the [over-clustered-year constraint for the storage balance](@ref rep-period-storage-balance). In addition, the rep-period-storage level of the last period block ($p^{\text{last}}_y$) in the timeframe must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first-period block in the [over-clustered-year constraint for the storage balance](@ref over-clustered-year-storage-balance). In addition, the over-clustered-year-storage level of the last period block ($p^{\text{last}}_y$) in the timeframe must be greater than this initial value.
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,p^{\text{first}}_y} = & p^{\text{init storage level}}_{a,y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+v^{\text{over-clustered-year-storage}}_{a,p^{\text{first}}_y} = & p^{\text{init storage level}}_{a,y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
 & + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 & - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
@@ -653,7 +653,7 @@ v^{\text{rep-period-storage}}_{a,p^{\text{first}}_y} = & p^{\text{init storage l
 ```
 
 ```math
-v^{\text{rep-period-storage}}_{a,p^{\text{last}}_y} \geq p^{\text{init storage level}}_{a,y} \quad
+v^{\text{over-clustered-year-storage}}_{a,p^{\text{last}}_y} \geq p^{\text{init storage level}}_{a,y} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
 ```
 
@@ -725,7 +725,7 @@ If the parameter `investment_integer` is set to true, then the right-hand side o
 
 ### [Over-clustered-year Energy Constraints](@id over-clustered-year-energy-constraints)
 
-These constraints allow us to consider a maximum or minimum energy limit for an asset throughout the model's timeframe (e.g., a year). It uses the same principle explained in the [over-clustered-year constraint for storage balance](@ref rep-period-storage-balance) and in the [Storage Modeling](@ref storage-modeling) section.
+These constraints allow us to consider a maximum or minimum energy limit for an asset throughout the model's timeframe (e.g., a year). It uses the same principle explained in the [over-clustered-year constraint for storage balance](@ref over-clustered-year-storage-balance) and in the [Storage Modeling](@ref storage-modeling) section.
 
 #### Maximum Outgoing Energy During the Timeframe
 
