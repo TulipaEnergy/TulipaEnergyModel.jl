@@ -22,11 +22,15 @@ In a nutshell, the model guarantees a balance of energy for the various types of
 - **Intra-temporal Constraints**: These constraints limit the asset or flow within a representative period. The intra-temporal constraints help to characterize the short-term operational dynamics of the assets. So far, the model considers balance and flow limitations within the representative period, as well as unit commitment and ramping. In the future, reserve constraints will also be included.
 - **Inter-temporal Constraints**: These constraints combine the information of the representative periods and create limitations between them to recover chronological information across the whole timeframe. The inter-temporal constraints help to characterize the long-term operational dynamics of the assets (e.g., seasonality). So far, the model uses this type of constraint to model seasonal storage. Future developments will include, for example, maximum or minimum production/consumption for a year (or any timeframe).
 
-The [`mathematical formulation`](@ref formulation) shows an overview of these constraints and the variables in the model.
+!!! info "Are you into the math, objective function terms, and constraints?"
+    The [`mathematical formulation`](@ref formulation) shows an overview of all the constraints and the variables in the model.
 
 Another essential concept in the model is the [flexible time resolution](@ref flex-time-res), which allows for each asset to be considered in a single timestep (e.g., 1, 2, 3...) or in a range of timesteps (e.g., 1:3, meaning that the asset's variable represents the value of timesteps 1, 2, and 3). This concept allows the modeling of different dynamics depending on the asset; for instance, electricity assets can be modeled hourly, whereas hydrogen assets can be modeled in a 6-hour resolution (avoiding creating unnecessary constraints and variables).
 
 The following sections explain these concepts in more detail.
+
+!!! info "Want to know more about the references used in this section?"
+    Please visit the [scientific references](@ref scientific-refs) section for links to the papers that support this section.
 
 ## [Flexible Connection of Energy Assets](@id flex-asset-connection)
 
