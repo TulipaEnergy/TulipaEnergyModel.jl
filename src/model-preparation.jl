@@ -12,7 +12,7 @@ export prepare_profiles_structure
     )
 
 Computes the incoming and outgoing expressions per row of `cons` for the constraints
-that are within (intra) the representative periods.
+that are within the representative periods.
 
 This function is only used internally in the model.
 

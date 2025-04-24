@@ -3,7 +3,7 @@ export add_storage_variables!
 """
     add_storage_variables!(connection, model, variables)
 
-Adds storage-related variables to the optimization `model`, including storage levels for both intra-representative periods and inter-representative periods, as well as charging state variables.
+Adds storage-related variables to the optimization `model`, including storage levels for both within rep-period and over-clustered-year, as well as charging state variables.
 The function also optionally sets binary constraints for certain charging variables based on storage methods.
 """
 function add_storage_variables!(connection, model, variables)
