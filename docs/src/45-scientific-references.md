@@ -1,6 +1,6 @@
 # [Scientific References](@id scientific-refs)
 
-One strong characteristic of Tulipa is that its [concepts](@ref concepts) and [mathematical formulation](@ref formulation) are primarily based on academic research that expands the boundaries of common equations and constraints found in the literature. This section shows the primary scientific references used in the model by topic.
+One strength of Tulipa is that its [concepts](@ref concepts) and [mathematical formulation](@ref formulation) are based on academic research that pushes the frontier of energy system modelling. This section shows the primary scientific references used in the model.
 
 ```@contents
 Pages = ["45-scientific-references.md"]

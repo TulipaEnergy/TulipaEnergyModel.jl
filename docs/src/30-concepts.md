@@ -29,8 +29,8 @@ Another essential concept in the model is the [flexible time resolution](@ref fl
 
 The following sections explain these concepts in more detail.
 
-!!! info "Do you want to know more about the references used in this section?"
-    Please visit the [scientific references](@ref scientific-refs) section to find links to the main papers that form the basis of this section.
+!!! info "Want to know more about the references used in this section?"
+    Please visit the [scientific references](@ref scientific-refs) section for links to the papers that support this section.
 
 ## [Flexible Connection of Energy Assets](@id flex-asset-connection)
 
