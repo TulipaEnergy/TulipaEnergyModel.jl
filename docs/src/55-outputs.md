@@ -110,9 +110,9 @@ Associated input parameter: `unit_commitment_integer`
 
 ### `cons_balance_storage_over_clustered_year`
 
-- `dual_balance_storage_over_clustered_year`: Dual of the constraint ["inter-temporal constraint for storage balance"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#inter-storage-balance).
-- `dual_max_storage_level_over_clustered_year_limit`: Dual of the constraint ["inter-temporal constraint for maximum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Inter-temporal-Constraint-for-Maximum-Storage-Level-Limit)
-- `dual_min_storage_level_over_clustered_year_limit`: Dual of the constraint ["inter-temporal constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Inter-temporal-Constraint-for-Minimum-Storage-Level-Limit)
+- `dual_balance_storage_over_clustered_year`: Dual of the constraint ["over-clustered-year constraint for storage balance"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#inter-storage-balance).
+- `dual_max_storage_level_over_clustered_year_limit`: Dual of the constraint ["over-clustered-year constraint for maximum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Over-clustered-year-Constraint-for-Maximum-Storage-Level-Limit)
+- `dual_min_storage_level_over_clustered_year_limit`: Dual of the constraint ["over-clustered-year constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Over-clustered-year-Constraint-for-Minimum-Storage-Level-Limit)
 
 ### `cons_balance_storage_rep_period`
 

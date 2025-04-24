@@ -128,10 +128,10 @@ In addition, the following subsets represent methods for incorporating additiona
 
 | Name                                   | Domain           | Domains of Indices                                            | Description                                                                                      | Units  |
 | -------------------------------------- | ---------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------ |
-| $p^{\text{min inter profile}}_{a,p_y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}_y$, $p_y \in \mathcal{P}_y$ | Minimum outgoing inter-temporal energy profile of asset $a$ in the period $p_y$ of the timeframe | [p.u.] |
-| $p^{\text{max inter profile}}_{a,p_y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}_y$, $p_y \in \mathcal{P}_y$ | Maximum outgoing inter-temporal energy profile of asset $a$ in the period $p_y$ of the timeframe | [p.u.] |
-| $p^{\text{max energy}}_{a,p_y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}_y$                          | Maximum outgoing inter-temporal energy value of asset $a$                                        | [MWh]  |
-| $p^{\text{min energy}}_{a,p_y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}_y$                          | Minimum outgoing inter-temporal energy value of asset $a$                                        | [MWh]  |
+| $p^{\text{min inter profile}}_{a,p_y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}_y$, $p_y \in \mathcal{P}_y$ | Minimum outgoing over-clustered-year energy profile of asset $a$ in the period $p_y$ of the timeframe | [p.u.] |
+| $p^{\text{max inter profile}}_{a,p_y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}_y$, $p_y \in \mathcal{P}_y$ | Maximum outgoing over-clustered-year energy profile of asset $a$ in the period $p_y$ of the timeframe | [p.u.] |
+| $p^{\text{max energy}}_{a,p_y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}_y$                          | Maximum outgoing over-clustered-year energy value of asset $a$                                        | [MWh]  |
+| $p^{\text{min energy}}_{a,p_y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}_y$                          | Minimum outgoing over-clustered-year energy value of asset $a$                                        | [MWh]  |
 
 #### Extra Parameters for Producers and Conversion Assets
 
@@ -525,7 +525,7 @@ The balance constraint sense depends on the method selected in the asset file's 
 
 ### Constraints for Energy Storage Assets
 
-There are two types of constraints for energy storage assets: rep_period and inter-temporal. Rep_period constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](@ref scientific-refs) and [Tejada-Arango et al. (2019)](@ref scientific-refs).
+There are two types of constraints for energy storage assets: rep_period and over-clustered-year. Rep_period constraints impose limits inside a representative period, while over-clustered-year constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](@ref scientific-refs) and [Tejada-Arango et al. (2019)](@ref scientific-refs).
 
 In addition, we define the following expression to determine the energy investment limit of the storage assets. This expression takes two different forms depending on whether the storage asset belongs to the set $\mathcal{A}^{\text{se}}$ or not.
 
@@ -598,7 +598,7 @@ v^{\text{intra-storage}}_{a,k_y,b^{\text{first}}_{k_y}} \geq p^{\text{init stora
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 ```
 
-#### [Inter-temporal Constraint for Storage Balance](@id inter-storage-balance)
+#### [Over-clustered-year Constraint for Storage Balance](@id inter-storage-balance)
 
 This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year). The parameter $p^{\text{map}}_{p_y,k_y}$ determines how much of the representative period $k_y$ is in the period $p_y$, and you can use a clustering technique to calculate it. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
 
@@ -614,23 +614,23 @@ v^{\text{inter-storage}}_{a,p_y} = & \left(1 - p^{\text{storage loss from stored
 \end{aligned}
 ```
 
-#### Inter-temporal Constraint for Maximum Storage Level Limit
+#### Over-clustered-year Constraint for Maximum Storage Level Limit
 
 ```math
 v^{\text{inter-storage}}_{a,p_y} \leq p^{\text{max inter level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 ```
 
-#### Inter-temporal Constraint for Minimum Storage Level Limit
+#### Over-clustered-year Constraint for Minimum Storage Level Limit
 
 ```math
 v^{\text{inter-storage}}_{a,p_y} \geq p^{\text{min inter level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 ```
 
-#### Inter-temporal Cycling Constraint
+#### Over-clustered-year Cycling Constraint
 
-The cycling constraint for the inter-temporal constraints links the first-period block ($p^{\text{first}}_y$) and the last one ($p^{\text{last}}_y$) in the timeframe. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
+The cycling constraint for the over-clustered-year constraints links the first-period block ($p^{\text{first}}_y$) and the last one ($p^{\text{last}}_y$) in the timeframe. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the inter-storage level of the last period block ($p^{\text{last}}_y$) is used as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance).
+- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the inter-storage level of the last period block ($p^{\text{last}}_y$) is used as the initial value for the first-period block in the [over-clustered-year constraint for the storage balance](@ref inter-storage-balance).
 
 ```math
 \begin{aligned}
@@ -641,7 +641,7 @@ v^{\text{inter-storage}}_{a,p^{\text{first}}_y} = & v^{\text{inter-storage}}_{a,
 \end{aligned}
 ```
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance). In addition, the inter-storage level of the last period block ($p^{\text{last}}_y$) in the timeframe must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first-period block in the [over-clustered-year constraint for the storage balance](@ref inter-storage-balance). In addition, the inter-storage level of the last period block ($p^{\text{last}}_y$) in the timeframe must be greater than this initial value.
 
 ```math
 \begin{aligned}
@@ -723,9 +723,9 @@ v^{\text{inv}}_{f,y} \leq \frac{p^{\text{inv limit}}_{f,y}}{p^{\text{capacity}}_
 
 If the parameter `investment_integer` is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
 
-### [Inter-temporal Energy Constraints](@id inter-temporal-energy-constraints)
+### [Over-clustered-year Energy Constraints](@id over-clustered-year-energy-constraints)
 
-These constraints allow us to consider a maximum or minimum energy limit for an asset throughout the model's timeframe (e.g., a year). It uses the same principle explained in the [inter-temporal constraint for storage balance](@ref inter-storage-balance) and in the [Storage Modeling](@ref storage-modeling) section.
+These constraints allow us to consider a maximum or minimum energy limit for an asset throughout the model's timeframe (e.g., a year). It uses the same principle explained in the [over-clustered-year constraint for storage balance](@ref inter-storage-balance) and in the [Storage Modeling](@ref storage-modeling) section.
 
 #### Maximum Outgoing Energy During the Timeframe
 
