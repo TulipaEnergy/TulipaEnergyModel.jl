@@ -663,7 +663,7 @@ Since the `battery` is not seasonal, it only has results for the rep-period-stor
 
 ![Battery-rep-period-storage-level](./figs/intra-storage-level.png)
 
-Since the `phs` is defined as seasonal, it has results for only the rep-period-storage level. Since we defined the period partition as 1, we get results for each period (i.e., day). We can see that the over-clustered-year constraints in the model keep track of the storage level through the whole timeframe definition (i.e., week).
+Since the `phs` is defined as seasonal, it has results for only the over-clustered-year-storage level. Since we defined the period partition as 1, we get results for each period (i.e., day). We can see that the over-clustered-year constraints in the model keep track of the storage level through the whole timeframe definition (i.e., week).
 
 ![PHS-over-clustered-year-storage-level](./figs/inter-storage-level.png)
 
