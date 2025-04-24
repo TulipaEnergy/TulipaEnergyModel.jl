@@ -163,7 +163,7 @@ For more information, see the JuMP documentation for [`direct_model`](https://ju
 Section [Storage Modeling](@ref storage-modeling) explains the main concepts for modeling seasonal and non-seasonal storage in _TulipaEnergyModel.jl_. To define if an asset is one type or the other then consider the following:
 
 - _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, we recommend using the inter-temporal constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `true`.
-- _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the intra-temporal constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `false`.
+- _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the representative period constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `false`.
 
 !!! info
     If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.

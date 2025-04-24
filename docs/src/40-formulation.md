@@ -525,7 +525,7 @@ The balance constraint sense depends on the method selected in the asset file's 
 
 ### Constraints for Energy Storage Assets
 
-There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](@ref scientific-refs) and [Tejada-Arango et al. (2019)](@ref scientific-refs).
+There are two types of constraints for energy storage assets: rep_period and inter-temporal. Rep_period constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](@ref scientific-refs) and [Tejada-Arango et al. (2019)](@ref scientific-refs).
 
 In addition, we define the following expression to determine the energy investment limit of the storage assets. This expression takes two different forms depending on whether the storage asset belongs to the set $\mathcal{A}^{\text{se}}$ or not.
 
@@ -549,7 +549,7 @@ e^{\text{available energy inv limit}}_{a,y}
 \end{aligned}
 ```
 
-#### [Intra-temporal Constraint for Storage Balance](@id intra-storage-balance)
+#### [Rep_period Constraint for Storage Balance](@id intra-storage-balance)
 
 ```math
 \begin{aligned}
@@ -559,23 +559,23 @@ v^{\text{intra-storage}}_{a,k_y,b_{k_y}} = \left(1 - p^{\text{storage loss from 
 \end{aligned}
 ```
 
-#### Intra-temporal Constraint for Maximum Storage Level Limit
+#### Rep_period Constraint for Maximum Storage Level Limit
 
 ```math
 v^{\text{intra-storage}}_{a,k_y,b_{k_y}} \leq p^{\text{max intra level}}_{a,k_y,b_{k_y}} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
-#### Intra-temporal Constraint for Minimum Storage Level Limit
+#### Rep_period Constraint for Minimum Storage Level Limit
 
 ```math
 v^{\text{intra-storage}}_{a,k_y,b_{k_y}} \geq p^{\text{min intra level}}_{a,k_y,b_{k_y}} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
-#### Intra-temporal Cycling Constraint
+#### Rep_period Cycling Constraint
 
-The cycling constraint for the intra-temporal constraints links the first timestep block ($b^{\text{first}}_{k_y}$) and the last one ($b^{\text{last}}_{k_y}$) in each representative period. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
+The cycling constraint for the rep_period constraints links the first timestep block ($b^{\text{first}}_{k_y}$) and the last one ($b^{\text{last}}_{k_y}$) in each representative period. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the intra-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) is used as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance).
+- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the intra-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) is used as the initial value for the first timestep block in the [rep_period constraint for the storage balance](@ref intra-storage-balance).
 
 ```math
 \begin{aligned}
@@ -584,7 +584,7 @@ v^{\text{intra-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{intra-storage
 \end{aligned}
 ```
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance). In addition, the intra-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) in each representative period must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first timestep block in the [rep_period constraint for the storage balance](@ref intra-storage-balance). In addition, the intra-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) in each representative period must be greater than this initial value.
 
 ```math
 \begin{aligned}
