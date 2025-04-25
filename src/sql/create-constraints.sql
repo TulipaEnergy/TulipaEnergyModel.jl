@@ -227,6 +227,37 @@ where
 drop sequence id
 ;
 
+create sequence id start 1
+;
+
+create table cons_min_incoming_flow_for_transport_flows as
+
+with transport_flow_info as (
+    select
+    asset.asset,
+    coalesce(
+        (select bool_or(flow.is_transport)
+         from flow
+         where flow.to_asset = asset.asset),
+         false
+    ) as incoming_flows_have_transport_flows,
+    from asset
+)
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+    left join transport_flow_info on t_high.asset = transport_flow_info.asset
+where
+    asset.type in ('storage', 'conversion')
+    and transport_flow_info.incoming_flows_have_transport_flows
+;
+
+drop sequence id
+;
+
 create table cons_limit_units_on_compact_method as
 select
     *
