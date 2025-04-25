@@ -532,6 +532,7 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         :capacity_outgoing_simple_method,
         :capacity_outgoing_simple_method_non_investable_storage_with_binary,
         :capacity_outgoing_simple_method_investable_storage_with_binary,
+        :min_outgoing_flow_for_transport_flows_without_unit_commitment,
     )
         @timeit to "add_expression_terms_rep_period_constraints! for $table_name" add_expression_terms_rep_period_constraints!(
             connection,

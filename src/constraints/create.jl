@@ -16,6 +16,7 @@ function compute_constraints_indices(connection)
             :capacity_outgoing_simple_method,
             :capacity_outgoing_simple_method_non_investable_storage_with_binary,
             :capacity_outgoing_simple_method_investable_storage_with_binary,
+            :min_outgoing_flow_for_transport_flows_without_unit_commitment,
             :limit_units_on_compact_method,
             :limit_units_on_simple_method,
             :min_output_flow_with_unit_commitment,
