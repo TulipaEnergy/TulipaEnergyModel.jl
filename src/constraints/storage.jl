@@ -133,7 +133,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
         )
     end
 
-    ## REP-PERIOD CONSTRAINTS (between representative periods)
+    ## OVER-CLUSTERED-YEAR CONSTRAINTS (between representative periods)
 
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_over_clustered_year, cons = constraints[table_name]
