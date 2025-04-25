@@ -9,7 +9,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
     var_storage_level_rep_period = variables[:storage_level_rep_period]
     var_storage_level_over_clustered_year = variables[:storage_level_over_clustered_year]
 
-    ## INTRA-TEMPORAL CONSTRAINTS (within a representative period)
+    ## REP-PERIOD CONSTRAINTS (within a representative period)
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_rep_period, cons = constraints[table_name]
         var_storage_level = variables[:storage_level_rep_period].container
@@ -133,7 +133,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
         )
     end
 
-    ## INTER-TEMPORAL CONSTRAINTS (between representative periods)
+    ## OVER-CLUSTERED-YEAR CONSTRAINTS (between representative periods)
 
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_over_clustered_year, cons = constraints[table_name]
