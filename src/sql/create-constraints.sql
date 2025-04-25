@@ -195,6 +195,38 @@ where
 drop sequence id
 ;
 
+create sequence id start 1
+;
+
+create table cons_min_outgoing_flow_for_transport_flows_without_unit_commitment as
+
+with transport_flow_info as (
+    select
+    asset.asset,
+    coalesce(
+        (select bool_or(flow.is_transport)
+         from flow
+         where flow.from_asset = asset.asset),
+         false
+    ) as outgoing_flows_have_transport_flows,
+    from asset
+)
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+    left join transport_flow_info on t_high.asset = transport_flow_info.asset
+where
+    asset.type in ('producer', 'storage', 'conversion')
+    and transport_flow_info.outgoing_flows_have_transport_flows
+    and not asset.unit_commitment
+;
+
+drop sequence id
+;
+
 create table cons_limit_units_on_compact_method as
 select
     *
