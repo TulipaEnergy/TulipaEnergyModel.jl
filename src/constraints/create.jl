@@ -16,8 +16,6 @@ function compute_constraints_indices(connection)
             :capacity_outgoing_simple_method,
             :capacity_outgoing_simple_method_non_investable_storage_with_binary,
             :capacity_outgoing_simple_method_investable_storage_with_binary,
-            :min_outgoing_flow_for_transport_flows_without_unit_commitment,
-            :min_incoming_flow_for_transport_flows,
             :limit_units_on_compact_method,
             :limit_units_on_simple_method,
             :min_output_flow_with_unit_commitment,
@@ -29,6 +27,8 @@ function compute_constraints_indices(connection)
             :min_energy_over_clustered_year,
             :max_energy_over_clustered_year,
             :transport_flow_limit_simple_method,
+            :min_outgoing_flow_for_transport_flows_without_unit_commitment,
+            :min_incoming_flow_for_transport_flows,
             :group_max_investment_limit,
             :group_min_investment_limit,
         )

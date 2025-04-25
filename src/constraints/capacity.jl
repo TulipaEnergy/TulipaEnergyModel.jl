@@ -352,48 +352,6 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
             ],
         )
     end
-
-    cons_name = Symbol("min_output_flows_limit_for_transport_flows_without_unit_commitment")
-    table_name = :min_outgoing_flow_for_transport_flows_without_unit_commitment
-
-    # - Minmum output flows limit if any of the flows is transport flow
-    # - This allows negative flows but not all negative flows, so flows can pass through this asset
-    # - Holds for producers, conversion and storage assets
-    attach_constraint!(
-        model,
-        constraints[table_name],
-        cons_name,
-        [
-            @constraint(
-                model,
-                outgoing_flow ≥ 0,
-                base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-            ) for (row, outgoing_flow) in
-            zip(constraints[table_name].indices, constraints[table_name].expressions[:outgoing])
-        ],
-    )
-
-    # - Minmum input flows limit if any of the flows is transport flow
-    # - This allows negative flows but not all negative flows, so flows can pass through this asset
-    # - Holds for onversion and storage assets
-    cons_name = Symbol("min_input_flows_limit_for_transport_flows")
-    table_name = :min_incoming_flow_for_transport_flows
-
-    attach_constraint!(
-        model,
-        constraints[table_name],
-        cons_name,
-        [
-            @constraint(
-                model,
-                incoming_flow ≥ 0,
-                base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-            ) for (row, incoming_flow) in
-            zip(constraints[table_name].indices, constraints[table_name].expressions[:incoming])
-        ],
-    )
-
-    return
 end
 
 # The below two functions are very similar
