@@ -90,7 +90,7 @@ function add_transport_constraints!(
         )
     end
 
-    # - Minmum output flows limit if any of the flows is transport flow
+    # - Minimum output flows limit if any of the flows is transport flow
     # - This allows some negative flows but not all negative flows, so transport flows can pass through this asset
     # - Holds for producers, conversion and storage assets
     let table_name = :min_outgoing_flow_for_transport_flows_without_unit_commitment,
@@ -111,9 +111,9 @@ function add_transport_constraints!(
         )
     end
 
-    # - Minmum input flows limit if any of the flows is transport flow
+    # - Minimum input flows limit if any of the flows is transport flow
     # - This allows some negative flows but not all negative flows, so transport flows can pass through this asset
-    # - Holds for onversion and storage assets
+    # - Holds for conversion and storage assets
     let table_name = :min_incoming_flow_for_transport_flows,
         cons_name = Symbol("min_input_flows_limit_for_transport_flows")
 

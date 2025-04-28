@@ -56,7 +56,7 @@ This example of a `phs` and a `wind` asset is useful for illustrating the advant
 
 In _TulipaEnergyModel.jl_, flows can be both input/output flows and transport flows (i.e., where you model a transmission asset). In the above illustrative example, `wind-balance` is an energy output flow, representing the production from `wind` directly sent to `balance`. In this case, the flow has a direction from `wind` to `balance`. However, in principle, any flow can be a transport flow and by definition in _TulipaEnergyModel.jl_, transport flows are bidirectional.
 
-Let's zoom in to the `phs-wind-balance` triangle and see what happens in the below figure. On the left, all three flows become transport flows, and they are now bidiretional. Flows can go towards `wind`, which can be counter-intuitive: what does it mean to have a producer receiving energy? Translating into a standard method may help the thinking, we are essentially modeling the case on the right. Producer cannot receive energy, but transport flows can pass through an extra node with a unidirectional flow from the producer. We reduce this unnecessary node, but the modeling problem is not changed.
+Let's zoom in on the `phs-wind-balance` triangle and see what happens in the figure below. To the left, all three flows have transformed into transport flows, and they are now bidirectional. Flows can go towards `wind`, which can be counter-intuitive: what does it mean to have a producer receiving energy? Translating into a standard method may help the thinking, we are essentially modeling the case to the right. The producer cannot receive energy, but transport flows can pass through an extra node with a unidirectional flow from the producer. We reduce this unnecessary node, but the modeling problem is not changed.
 
 ![Flexible connection with transport flows](./figs/flexible-connection-3.png)
 
@@ -68,7 +68,7 @@ Let's zoom in to the `phs-wind-balance` triangle and see what happens in the bel
 One of the core features of _TulipaEnergyModel.jl_ is that it can handle different time resolutions on the assets and the flows. Typically, the time resolution in an energy model is hourly, like in the following figure where we have a 6-hour energy system:
 
 ![Hourly Time Resolution](./figs/variable-time-resolution-1.png)
-]
+
 Therefore, for this simple example, we can determine the number of constraints and variables in the optimization problem:
 
 - _Number of variables_: 42 since we have six connections among assets (i.e., 6 flows x 6 hours = 36 variables) and one storage asset (i.e., 1 storage level x 6 h = 6 variables)
