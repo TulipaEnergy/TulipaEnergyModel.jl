@@ -466,6 +466,11 @@
       "description": "Energy carrier",
       "type": "VARCHAR"
     },
+    "dc_opf": {
+      "default": false,
+      "description": "Whether a flow uses direct current optimal power flow (dc-opf) method or not. This only applies to transport flows.",
+      "type": "BOOLEAN"
+    },
     "discount_rate": {
       "constraints": {
         "minimum": 0
