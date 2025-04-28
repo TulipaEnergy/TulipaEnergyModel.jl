@@ -649,6 +649,52 @@
       "type": "INTEGER"
     }
   },
+  "flows_relationships": {
+    "constant": {
+      "default": 0,
+      "description": "Constant `C` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint",
+      "type": "DOUBLE",
+      "unit_of_measure": "MWh"
+    },
+    "flow_1_from_asset": {
+      "description": "Name of the `from_asset` of the `flow_1` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
+      "type": "VARCHAR"
+    },
+    "flow_1_to_asset": {
+      "description": "Name of the `to_asset` of the `flow_1` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
+      "type": "VARCHAR"
+    },
+    "flow_2_from_asset": {
+      "description": "Name of the `from_asset` of the `flow_2` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
+      "type": "VARCHAR"
+    },
+    "flow_2_to_asset": {
+      "description": "Name of the `to_asset` of the `flow_2` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
+      "type": "VARCHAR"
+    },
+    "milestone_year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    },
+    "ratio": {
+      "default": 1,
+      "description": "Ratio `A` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u."
+    },
+    "sense": {
+      "constraints": {
+        "oneOf": [
+          "==",
+          ">=",
+          "<="
+        ]
+      },
+      "default": "==",
+      "description": "Is the sense in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint, equal to, greater than or less than.",
+      "type": "VARCHAR"
+    }
+  },
   "flows_rep_periods_partitions": {
     "from_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",

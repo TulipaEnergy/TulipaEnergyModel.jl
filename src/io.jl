@@ -7,6 +7,7 @@ const tables_allowed_to_be_missing = [
     "assets_timeframe_partitions"
     "assets_timeframe_profiles"
     "flows_profiles"
+    "flows_relationships"
     "flows_rep_periods_partitions"
     "group_asset"
     "profiles_rep_periods"
