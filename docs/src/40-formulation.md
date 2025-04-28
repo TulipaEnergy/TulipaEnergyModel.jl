@@ -420,10 +420,19 @@ Storage assets using the method to avoid charging and discharging simultaneously
 \end{aligned}
 ```
 
-#### Lower Limit for Flows that are Associated with Assets
+#### Lower Limit for Flows
 
 ```math
-v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \in \left( \mathcal{F}^{\text{out}}_{a,y} | a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} \right) \cup \left(\mathcal{F}^{\text{in}}_{a,y} | a \in \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} \right), \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \notin \mathcal{F}^t, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+```
+
+```math
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \in \left( \mathcal{F}^{\text{out}}_{a,y} \;\middle|\; a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}},\; a \notin \mathcal{A}^{\text{uc}} \right)
+ \cap \mathcal{F}^t, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+```
+
+```math
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \in \left(\mathcal{F}^{\text{in}}_{a,y} | a \in \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} \right) \cap \mathcal{F}^t , \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ### [Unit Commitment Constraints](@id uc-constraints)
