@@ -2,9 +2,14 @@
     path = joinpath(@__DIR__, "inputs", "model-parameters-example.toml")
 
     @testset "Basic usage" begin
-        mp = TulipaEnergyModel.ModelParameters(; discount_rate = 0.1, discount_year = 2018)
+        mp = TulipaEnergyModel.ModelParameters(;
+            discount_rate = 0.1,
+            discount_year = 2018,
+            power_system_base = 50,
+        )
         @test mp.discount_rate == 0.1
         @test mp.discount_year == 2018
+        @test mp.power_system_base == 50
     end
 
     @testset "Errors when missing required parameters" begin

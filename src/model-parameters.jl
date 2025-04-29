@@ -23,10 +23,12 @@ If both are passed, then `path` has preference. Explicit keyword arguments take 
 
 - `discount_rate::Float64 = 0.0`: The model discount rate.
 - `discount_year::Int`: The model discount year.
+- `power_system_base::Float64 = 100.0`: The power system base in MVA.
 """
 Base.@kwdef mutable struct ModelParameters
     discount_rate::Float64 = 0.0
     discount_year::Int # Explicit definition expected
+    power_system_base::Float64 = 100.0
 end
 
 # Using `@kwdef` defines a default constructor based on keywords

@@ -598,6 +598,11 @@
     }
   },
   "flow_milestone": {
+    "dc_opf": {
+      "default": false,
+      "description": "Whether a flow uses direct current optimal power flow (dc-opf) constraints or not. This method only applies to transport flows.",
+      "type": "BOOLEAN"
+    },
     "from_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -610,6 +615,12 @@
     "milestone_year": {
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
+    },
+    "reactance": {
+      "default": 0.3,
+      "description": "Reactance for the transport flow.",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u."
     },
     "to_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
