@@ -374,7 +374,7 @@ end
     create_merged_tables!(connection)
 
 Create the internal tables of merged flows and assets time partitions to be used in the computation of the lowest and highest resolution tables.
-The inputs tables are the flows table `flow_time_resolution_rep_period` and the assets table `asset_time_resolution_rep_period`.
+The inputs tables are the flows table `flow_time_resolution_rep_period`, the assets table `asset_time_resolution_rep_period` and the `flows_relationships`.
 All merged tables have the same columns: `asset`, `year`, `rep_period`, `time_block_start`, and `time_block_end`.
 Given a "group" `(asset, year, rep_period)`, the table will have the list of all partitions that should be used to compute the resolution tables.
 These are the output tables:
@@ -383,59 +383,13 @@ These are the output tables:
 - `merged_assets_and_out_flows`: Union of `merged_out_flows` and `asset_time_resolution_rep_period`.
 - `merged_all_flows`: Union (i.e., vertically concatenation) of the tables above.
 - `merged_all`: Union of `merged_all_flows` and `asset_time_resolution_rep_period`.
+- `merged_flows_relationship`: Set `asset` from `flow_time_resolution_rep_period` depending on `flows_relationships`
 This function is intended for internal use.
 """
 function create_merged_tables!(connection)
-    # Incoming flows
-    DuckDB.execute(
-        connection,
-        "CREATE OR REPLACE TEMP TABLE merged_in_flows AS
-        SELECT DISTINCT to_asset as asset, year, rep_period, time_block_start, time_block_end
-        FROM flow_time_resolution_rep_period
-        ",
-    )
-
-    # Outgoing flows
-    DuckDB.execute(
-        connection,
-        "CREATE OR REPLACE TEMP TABLE merged_out_flows AS
-        SELECT DISTINCT from_asset as asset, year, rep_period, time_block_start, time_block_end
-        FROM flow_time_resolution_rep_period
-        ",
-    )
-
-    # Union of all assets and outgoing flows
-    DuckDB.execute(
-        connection,
-        "CREATE OR REPLACE TEMP TABLE merged_assets_and_out_flows AS
-        SELECT DISTINCT asset, year, rep_period, time_block_start, time_block_end
-        FROM asset_time_resolution_rep_period
-        UNION
-        FROM merged_out_flows
-        ",
-    )
-
-    # Union of all incoming and outgoing flows
-    DuckDB.execute(
-        connection,
-        "CREATE OR REPLACE TEMP TABLE merged_all_flows AS
-        FROM merged_in_flows
-        UNION
-        FROM merged_out_flows
-        ",
-    )
-
-    # Union of all assets, and incoming and outgoing flows
-    DuckDB.execute(
-        connection,
-        "CREATE OR REPLACE TEMP TABLE merged_all AS
-        SELECT DISTINCT asset, year, rep_period, time_block_start, time_block_end
-        FROM asset_time_resolution_rep_period
-        UNION
-        FROM merged_all_flows
-        ",
-    )
-    return
+    query_file = joinpath(SQL_FOLDER, "create-merged-tables.sql")
+    DuckDB.query(connection, read(query_file, String))
+    return nothing
 end
 
 function create_lowest_resolution_table!(connection)
@@ -494,7 +448,7 @@ function create_lowest_resolution_table!(connection)
     #       Start a new block with s = 12 + 1 = 13 and e = TBE = 12
     # - END OF GROUP: Is 1 ≤ s ≤ e? No, so this is not a valid block
 
-    for merged_table in ("merged_all_flows", "merged_all")
+    for merged_table in ("merged_all_flows", "merged_all", "merged_flows_relationship")
         table_name = replace(merged_table, "merged" => "t_lowest")
         DuckDB.execute(
             connection,
