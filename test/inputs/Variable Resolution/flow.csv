@@ -1,7 +1,7 @@
-from_asset,to_asset,carrier,is_transport,capacity,technical_lifetime,economic_lifetime,discount_rate,investment_integer,dc_opf
-phs,balance,electricity,false,0.0,10,1,0.02,false,false
-H2,ccgt,hydrogen,false,0.0,10,1,0.02,false,false
-ccgt,balance,electricity,false,0.0,10,1,0.02,false,false
-wind,balance,electricity,false,0.0,10,1,0.02,false,false
-balance,demand,electricity,true,200.0,10,1,0.02,false,false
-wind,phs,electricity,false,0.0,10,1,0.02,false,false
+from_asset,to_asset,carrier,is_transport,capacity,technical_lifetime,economic_lifetime,discount_rate,investment_integer
+phs,balance,electricity,false,0.0,10,1,0.02,false
+H2,ccgt,hydrogen,false,0.0,10,1,0.02,false
+ccgt,balance,electricity,false,0.0,10,1,0.02,false
+wind,balance,electricity,false,0.0,10,1,0.02,false
+balance,demand,electricity,true,200.0,10,1,0.02,false
+wind,phs,electricity,false,0.0,10,1,0.02,false

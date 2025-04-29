@@ -466,11 +466,6 @@
       "description": "Energy carrier",
       "type": "VARCHAR"
     },
-    "dc_opf": {
-      "default": false,
-      "description": "Whether a flow uses direct current optimal power flow (dc-opf) method or not. This only applies to transport flows.",
-      "type": "BOOLEAN"
-    },
     "discount_rate": {
       "constraints": {
         "minimum": 0
@@ -603,6 +598,11 @@
     }
   },
   "flow_milestone": {
+    "dc_opf": {
+      "default": false,
+      "description": "Whether a flow uses direct current optimal power flow (dc-opf) constraints or not. This method only applies to transport flows.",
+      "type": "BOOLEAN"
+    },
     "from_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
