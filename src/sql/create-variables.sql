@@ -57,8 +57,11 @@ from
     asset_time_resolution_rep_period as atr
     left join flow on flow.from_asset = atr.asset
     or flow.to_asset = atr.asset
+    left join flow_milestone on flow_milestone.from_asset = flow.from_asset
+    and flow_milestone.to_asset = flow.to_asset
 where
     flow.is_transport
+    and flow_milestone.dc_opf
 group by
     atr.asset, atr.year, atr.rep_period, atr.time_block_start, atr.time_block_end
 ;
