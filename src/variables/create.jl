@@ -11,6 +11,7 @@ function compute_variables_indices(connection)
             :flow,
             :units_on,
             :is_charging,
+            :electricity_angle,
             :storage_level_rep_period,
             :storage_level_over_clustered_year,
             :assets_investment,

@@ -45,6 +45,30 @@ drop sequence id
 create sequence id start 1
 ;
 
+create table var_electricity_angle as
+select
+    nextval('id') as id,
+    atr.asset,
+    atr.year,
+    atr.rep_period,
+    atr.time_block_start,
+    atr.time_block_end,
+from
+    asset_time_resolution_rep_period as atr
+    left join flow on flow.from_asset = atr.asset
+    or flow.to_asset = atr.asset
+where
+    flow.is_transport
+group by
+    atr.asset, atr.year, atr.rep_period, atr.time_block_start, atr.time_block_end
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 create table var_is_charging as
 select
     nextval('id') as id,
