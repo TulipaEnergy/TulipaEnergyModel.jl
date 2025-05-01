@@ -61,7 +61,7 @@ Let's zoom in on the `phs-wind-balance` triangle and see what happens in the fig
 ![Flexible connection with transport flows](./figs/flexible-connection-3.png)
 
 !!! warning "Be careful with the definition of flows"
-    By having transport flows, we now model a different problem, where the charging/discharging of `phs` can be either `wind-phs-balance` or `balance-phs-wind`.
+    By having transport flows, we now model a different problem because flows can go through `wind` following `balance-wind-phs`. However, the unidirectional charging by `wind-phs` and discharging by `phs-balance` are not changed.
 
 ## [Flexible Time Resolution](@id flex-time-res)
 
