@@ -200,6 +200,9 @@ create sequence id start 1
 
 create table cons_min_outgoing_flow_for_transport_flows_without_unit_commitment as
 
+-- We want to check if the outgoing flows of an asset have transport flows
+-- This information is gathered from the flow table
+-- COALESCE is used to handle the case where there are no outgoing flows
 with transport_flow_info as (
     select
     asset.asset,
@@ -221,6 +224,7 @@ from
 where
     asset.type in ('producer', 'storage', 'conversion')
     and transport_flow_info.outgoing_flows_have_transport_flows
+    -- Assets with unit commitment already have a minimum outgoing flow constraints
     and not asset.unit_commitment
 ;
 
@@ -232,6 +236,8 @@ create sequence id start 1
 
 create table cons_min_incoming_flow_for_transport_flows as
 
+-- Similar to the previous query, but for incoming flows
+-- Also for assets with unit commitment
 with transport_flow_info as (
     select
     asset.asset,
