@@ -52,7 +52,7 @@ select
     atr.year,
     atr.rep_period,
     atr.time_block_start,
-    atr.time_block_end,
+    any_value(atr.time_block_end) as time_block_end,
 from
     -- The angle resolution is the same as the time resolution of the asset
     asset_time_resolution_rep_period as atr
@@ -73,8 +73,9 @@ where
 -- We may end up with duplicates because an asset can have both incoming and outgoing flows
 -- Or it can have multiple flows
 -- GROUP BY is used to remove duplicates
+-- Note SELECT only happens after the GROUP BY, so id is unique for each row.
 group by
-    atr.asset, atr.year, atr.rep_period, atr.time_block_start, atr.time_block_end
+    atr.asset, atr.year, atr.rep_period, atr.time_block_start
 ;
 
 drop sequence id
