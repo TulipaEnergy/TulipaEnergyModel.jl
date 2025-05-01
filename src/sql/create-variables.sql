@@ -54,14 +54,25 @@ select
     atr.time_block_start,
     atr.time_block_end,
 from
+    -- The angle resolution is the same as the time resolution of the asset
     asset_time_resolution_rep_period as atr
+    -- We need to check if the asset has any connecting flows that are transport
+    -- We only get the assets that have outgoing flows OR incoming flows
+    -- With the condition that the flows are transport
     left join flow on flow.from_asset = atr.asset
     or flow.to_asset = atr.asset
+    -- After that we need to also check if the flows have dc_opf method
+    -- This is by joining the flow_milestone table
+    -- Here we use AND because we need to match flow_milestone with flow
     left join flow_milestone on flow_milestone.from_asset = flow.from_asset
     and flow_milestone.to_asset = flow.to_asset
+    and flow_milestone.milestone_year = atr.year
 where
     flow.is_transport
     and flow_milestone.dc_opf
+-- We may end up with duplicates because an asset can have both incoming and outgoing flows
+-- Or it can have multiple flows
+-- GROUP BY is used to remove duplicates
 group by
     atr.asset, atr.year, atr.rep_period, atr.time_block_start, atr.time_block_end
 ;
