@@ -59,6 +59,8 @@ In addition, the following flow sets represent methods for incorporating additio
 | Name                | Description                                                       | Elements                        | Superset                           | Notes                                                                            |
 | ------------------- | ----------------------------------------------------------------- | ------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------- |
 | $\mathcal{Y}$       | Milestone years                                                   | $y \in \mathcal{Y}$             | $\mathcal{Y} \subset \mathbb{N}$   |                                                                                  |
+| $\mathcal{Y}^{\text{i}}_a$       | Milestone years where asset $a$ is investable                                                   | $y \in \mathcal{Y}^{\text{i}}_a$             | $\mathcal{Y} \subseteq \mathcal{Y}$   |                                                                                  |
+| $\mathcal{Y}^{\text{i}}_f$       | Milestone years where flow $f$ is investable                                                   | $y \in \mathcal{Y}^{\text{i}}_f$             | $\mathcal{Y} \subseteq \mathcal{Y}$   |                                                                                  |
 | $\mathcal{V}$       | All years                                                         | $v \in \mathcal{V}$             | $\mathcal{V} \subset \mathbb{N}$   |                                                                                  |
 | $\mathcal{P}_y$     | Periods in the timeframe at year $y$                              | $p_y \in \mathcal{P}_y$         | $\mathcal{P}_y \subset \mathbb{N}$ |                                                                                  |
 | $\mathcal{K}_y$     | Representative periods (rp) at year $y$                           | $k_y \in \mathcal{K}_y$         | $\mathcal{K}_y \subset \mathbb{N}$ | $\mathcal{K}_y$ does not have to be a subset of $\mathcal{P}_y$                  |
@@ -219,16 +221,16 @@ For available units across years, we define the following expresssions:
 
 ```math
 \begin{aligned}
-    v^{\text{available units simple method}}_{a,y} & = p^{\text{initial units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom simple}}_{a,i} \\
+    v^{\text{available units simple method}}_{a,y} & = p^{\text{initial units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_a: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom simple}}_{a,i} \\
     & \forall a \in \mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}, \forall y \in \mathcal{Y} \\
     v^{\text{available units compact method}}_{a,y,v} & = p^{\text{initial units}}_{a,y,v} + v^{\text{inv}}_{a,v} - \sum_{i \in \{\mathcal{Y}: v < i \le y\} | (a,i,v) \in \mathcal{D}^{\text{compact investment}}} v^{\text{decom compact}}_{a,i,v}
  \\
     & \forall (a,y,v) \in \mathcal{D}^{\text{compact investment}} \\
-    v^{\text{available energy units simple method}}_{a,y} & = p^{\text{initial storage units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv energy}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom energy simple}}_{a,i} \\
+    v^{\text{available energy units simple method}}_{a,y} & = p^{\text{initial storage units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_a: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv energy}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom energy simple}}_{a,i} \\
     & \forall a \in \mathcal{A}^{\text{se}}_y, \forall y \in \mathcal{Y} \\
-    v^{\text{available export units simple method}}_{f,y} & = p^{\text{initial export units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
+    v^{\text{available export units simple method}}_{f,y} & = p^{\text{initial export units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_f: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
     & \forall f \in \mathcal{F}^{\text{t}}_y, \forall y \in \mathcal{Y} \\
-    v^{\text{available import units simple method}}_{f,y} & = p^{\text{initial import units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
+    v^{\text{available import units simple method}}_{f,y} & = p^{\text{initial import units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_f: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
     & \forall f \in \mathcal{F}^{\text{t}}_y, \forall y \in \mathcal{Y} \\
 \end{aligned}
 ```
