@@ -62,12 +62,21 @@ from
 ;
 
 -- merged table for flows relationships
-create or replace temp table merged_flows_relationship as with matched_flows as (
-    select
-        fr.flow_1_from_asset,
-        fr.flow_1_to_asset,
-        fr.flow_2_from_asset,
-        fr.flow_2_to_asset,
+-- 1. create a new column to store the flows relationship
+alter table flows_relationships
+    add flows_relationship STRING
+;
+-- 2. add the values to the new flows relationship column
+update flows_relationships
+set flows_relationship = CONCAT(flow_1_from_asset, '_',
+                                flow_1_to_asset, '_',
+                                flow_2_from_asset, '_',
+                                flow_2_to_asset)
+;
+-- 3. get the resolution of the flows that are in the relationship
+create or replace temp table merged_flows_relationship as
+    select distinct
+        fr.flows_relationship AS asset,
         ftrrp.year,
         ftrrp.rep_period,
         ftrrp.time_block_start,
@@ -85,31 +94,4 @@ create or replace temp table merged_flows_relationship as with matched_flows as 
             )
         )
         and ftrrp.year = fr.milestone_year
-)
-select
-    distinct case
-        -- if flow_1_to_asset matches flow_2
-        when matched_flows.flow_1_to_asset = matched_flows.flow_2_from_asset
-        or matched_flows.flow_1_to_asset = matched_flows.flow_2_to_asset
-        then matched_flows.flow_1_to_asset
-        -- if flow_1_from_asset matches flow_2
-        when matched_flows.flow_1_from_asset = matched_flows.flow_2_from_asset
-        or matched_flows.flow_1_from_asset = matched_flows.flow_2_to_asset
-        then matched_flows.flow_1_from_asset
-        -- if flow_2_to_asset matches flow_1
-        when matched_flows.flow_2_to_asset = matched_flows.flow_1_from_asset
-        or matched_flows.flow_2_to_asset = matched_flows.flow_1_to_asset
-        then matched_flows.flow_2_to_asset
-        -- if flow_2_from_asset matches flow_1
-        when matched_flows.flow_2_from_asset = matched_flows.flow_1_from_asset
-        or matched_flows.flow_2_from_asset = matched_flows.flow_1_to_asset
-        then matched_flows.flow_2_from_asset
-        else null
-    end as asset,
-    year,
-    rep_period,
-    time_block_start,
-    time_block_end
-from
-    matched_flows
 ;
