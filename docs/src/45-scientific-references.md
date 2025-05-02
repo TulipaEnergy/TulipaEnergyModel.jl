@@ -34,3 +34,9 @@ Damcı-Kurt, P., Küçükyavuz, S., Rajan, D., Atamtürk, A., 2016. A polyhedral
 Morales-España, G., Ramos, A., García-González, J., 2014. An MIP Formulation for Joint Market-Clearing of Energy and Reserves Based on Ramp Scheduling. IEEE Transactions on Power Systems 29, 476-488. doi: 10.1109/TPWRS.2013.2259601.
 
 Morales-España, G., Latorre, J. M., Ramos, A., 2013. Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem. IEEE Transactions on Power Systems 28, 4897-4908. doi: 10.1109/TPWRS.2013.2251373.
+
+## Multi-year Investments
+
+Wang, Ni and Tejada-Arango, D.A., 2025. Discounting Approaches in Multi-Year Investment Modelling for Energy Systems. ArXiv. <https://arxiv.org/abs/2504.21709>
+
+Wang, Ni and Morales-España, G., 2025. Vintage-Based Formulations in Multi-Year Investment Modelling for Energy Systems. ArXiv. <https://arxiv.org/abs/2505.00379>

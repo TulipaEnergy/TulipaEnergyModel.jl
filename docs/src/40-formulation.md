@@ -217,6 +217,8 @@ In addition, the following subsets represent methods for incorporating additiona
 
 ### Expresssions for the Objective Function
 
+There are two types of investment methods for multi-year investment modelling: simple method and compact method. The simple method aggregates all units available in a year, regardless of when they were invested. The compact method tracks availability by investment and operational year, enabling vintage-specific constraints while reducing model size. For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
+
 For available units across years, we define the following expresssions:
 
 ```math
@@ -235,9 +237,9 @@ For available units across years, we define the following expresssions:
 \end{aligned}
 ```
 
-In addition, we define the following expressions to determine the available units. This expression takes a few forms depending on whether the asset uses _simple_ or _compact_ investment method.
+In addition, we define the following expressions to determine the available units. This expression takes a few forms depending on whether the asset uses simple or compact investment method.
 
-- If the asset uses _simple_ investment method
+- If the asset uses simple investment method
 
 ```math
 \begin{aligned}
@@ -245,7 +247,7 @@ In addition, we define the following expressions to determine the available unit
 \end{aligned}
 ```
 
-- If the asset uses _compact_ investment method
+- If the asset uses compact investment method
 
 ```math
 \begin{aligned}
@@ -253,7 +255,7 @@ In addition, we define the following expressions to determine the available unit
 \end{aligned}
 ```
 
-- Storage assets with energy method always use _simple_ investment method
+- Storage assets with energy method always use simple investment method
 
 ```math
 \begin{aligned}
@@ -261,7 +263,7 @@ In addition, we define the following expressions to determine the available unit
 \end{aligned}
 ```
 
-- Transport assets always use _simple_ investment method
+- Transport assets always use simple investment method
 
 ```math
 \begin{aligned}
@@ -271,6 +273,8 @@ In addition, we define the following expressions to determine the available unit
 ```
 
 ### Economic Representation for the Objective Function
+
+The model accounts for discounting in multi-year investment modelling. For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Tejada-Arango (2025)](@ref scientific-refs).
 
 #### Discounting Factor for Asset Investment Costs
 
@@ -346,6 +350,8 @@ unit\_on\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y
 ### [Capacity Constraints](@id cap-constraints)
 
 #### Maximum Output Flows Limit
+
+Maximum output flow constraints depend on the chosen investment method (simple or compact). For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
 
 ```math
 \begin{aligned}
