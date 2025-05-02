@@ -59,6 +59,8 @@ In addition, the following flow sets represent methods for incorporating additio
 | Name                | Description                                                       | Elements                        | Superset                           | Notes                                                                            |
 | ------------------- | ----------------------------------------------------------------- | ------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------- |
 | $\mathcal{Y}$       | Milestone years                                                   | $y \in \mathcal{Y}$             | $\mathcal{Y} \subset \mathbb{N}$   |                                                                                  |
+| $\mathcal{Y}^{\text{i}}_a$       | Milestone years where asset $a$ is investable                                                   | $y \in \mathcal{Y}^{\text{i}}_a$             | $\mathcal{Y} \subseteq \mathcal{Y}$   |                                                                                  |
+| $\mathcal{Y}^{\text{i}}_f$       | Milestone years where flow $f$ is investable                                                   | $y \in \mathcal{Y}^{\text{i}}_f$             | $\mathcal{Y} \subseteq \mathcal{Y}$   |                                                                                  |
 | $\mathcal{V}$       | All years                                                         | $v \in \mathcal{V}$             | $\mathcal{V} \subset \mathbb{N}$   |                                                                                  |
 | $\mathcal{P}_y$     | Periods in the timeframe at year $y$                              | $p_y \in \mathcal{P}_y$         | $\mathcal{P}_y \subset \mathbb{N}$ |                                                                                  |
 | $\mathcal{K}_y$     | Representative periods (rp) at year $y$                           | $k_y \in \mathcal{K}_y$         | $\mathcal{K}_y \subset \mathbb{N}$ | $\mathcal{K}_y$ does not have to be a subset of $\mathcal{P}_y$                  |
@@ -95,7 +97,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{economic lifetime}}_{a}$                   | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$                                                                                | Economic lifetime of asset $a$                                                                                         | [year]         |
 | $p^{\text{technology-specific discount rate}}_{a}$   | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                | Technology-specific discount rate of asset $a$                                                                         | [year]         |
 | $p^{\text{init units}}_{a,y}$                        | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Initial number of units of asset $a$ available at year $y$                                                             | [units]        |
-| $p^{\text{init units}}_{a,y,v}$                      | $\mathbb{R}_{+}$         | $ (a,y,v) \in \mathcal{D}^{\text{compact investment}} \cup \mathcal{D}^{\text{operation}}$         | Initial number of units of asset $a$ available at year $y$ commissioned in year $v$                                    | [units]        |
+| $p^{\text{init units}}_{a,y,v}$                      | $\mathbb{R}_{+}$         | $ (a,y,v) \in \mathcal{D}^{\text{compact investment}}$         | Initial number of units of asset $a$ available at year $y$ commissioned in year $v$                                    | [units]        |
 | $p^{\text{availability profile}}_{a,v,k_y,b_{k_y}}$  | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Availability profile of asset $a$ invested in year $v$ in the representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]         |
 | $p^{\text{group}}_{a}$                               | $\mathcal{G}^{\text{a}}$ | $a \in \mathcal{A}$                                                                                | Group $g$ to which the asset $a$ belongs                                                                               | [-]            |
 
@@ -215,27 +217,29 @@ In addition, the following subsets represent methods for incorporating additiona
 
 ### Expresssions for the Objective Function
 
+There are two types of investment methods for multi-year investment modelling: simple method and compact method. The simple method aggregates all units available in a year, regardless of when they were invested. The compact method tracks availability by investment and operational year, enabling vintage-specific constraints while reducing model size. For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
+
 For available units across years, we define the following expresssions:
 
 ```math
 \begin{aligned}
-    v^{\text{available units simple method}}_{a,y} & = p^{\text{initial units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom simple}}_{a,i} \\
+    v^{\text{available units simple method}}_{a,y} & = p^{\text{initial units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_a: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom simple}}_{a,i} \\
     & \forall a \in \mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}, \forall y \in \mathcal{Y} \\
     v^{\text{available units compact method}}_{a,y,v} & = p^{\text{initial units}}_{a,y,v} + v^{\text{inv}}_{a,v} - \sum_{i \in \{\mathcal{Y}: v < i \le y\} | (a,i,v) \in \mathcal{D}^{\text{compact investment}}} v^{\text{decom compact}}_{a,i,v}
  \\
-    & \forall (a,y,v) \in \mathcal{D}^{\text{compact investment}} \cup \mathcal{D}^{\text{operation}} \\
-    v^{\text{available energy units simple method}}_{a,y} & = p^{\text{initial storage units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv energy}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom energy simple}}_{a,i} \\
+    & \forall (a,y,v) \in \mathcal{D}^{\text{compact investment}} \\
+    v^{\text{available energy units simple method}}_{a,y} & = p^{\text{initial storage units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_a: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv energy}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom energy simple}}_{a,i} \\
     & \forall a \in \mathcal{A}^{\text{se}}_y, \forall y \in \mathcal{Y} \\
-    v^{\text{available export units simple method}}_{f,y} & = p^{\text{initial export units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
+    v^{\text{available export units simple method}}_{f,y} & = p^{\text{initial export units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_f: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
     & \forall f \in \mathcal{F}^{\text{t}}_y, \forall y \in \mathcal{Y} \\
-    v^{\text{available import units simple method}}_{f,y} & = p^{\text{initial import units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
+    v^{\text{available import units simple method}}_{f,y} & = p^{\text{initial import units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_f: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
     & \forall f \in \mathcal{F}^{\text{t}}_y, \forall y \in \mathcal{Y} \\
 \end{aligned}
 ```
 
-In addition, we define the following expressions to determine the available units. This expression takes a few forms depending on whether the asset uses _simple_ or _compact_ investment method.
+In addition, we define the following expressions to determine the available units. This expression takes a few forms depending on whether the asset uses simple or compact investment method.
 
-- If the asset uses _simple_ investment method
+- If the asset uses simple investment method
 
 ```math
 \begin{aligned}
@@ -243,7 +247,7 @@ In addition, we define the following expressions to determine the available unit
 \end{aligned}
 ```
 
-- If the asset uses _compact_ investment method
+- If the asset uses compact investment method
 
 ```math
 \begin{aligned}
@@ -251,7 +255,7 @@ In addition, we define the following expressions to determine the available unit
 \end{aligned}
 ```
 
-- Storage assets with energy method always use _simple_ investment method
+- Storage assets with energy method always use simple investment method
 
 ```math
 \begin{aligned}
@@ -259,7 +263,7 @@ In addition, we define the following expressions to determine the available unit
 \end{aligned}
 ```
 
-- Transport assets always use _simple_ investment method
+- Transport assets always use simple investment method
 
 ```math
 \begin{aligned}
@@ -269,6 +273,8 @@ In addition, we define the following expressions to determine the available unit
 ```
 
 ### Economic Representation for the Objective Function
+
+The model accounts for discounting in multi-year investment modelling. For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Tejada-Arango (2025)](@ref scientific-refs).
 
 #### Discounting Factor for Asset Investment Costs
 
@@ -330,7 +336,7 @@ Where:
 \begin{aligned}
 assets\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset inv cost}} \cdot p^{\text{inv cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \\ &+  \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset inv cost}} \cdotp^{\text{inv cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{inv energy}}_{a,y}   \\
 assets\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}} } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y} \\
-& + \sum_{(a,y,v) \in \mathcal{D}^{\text{compact investment}} \cup \mathcal{D}^{\text{decom units operation mode}} }  p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,v} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units compact method}}_{a,y,v} \\
+& + \sum_{(a,y,v) \in \mathcal{D}^{\text{compact investment}} }  p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,v} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units compact method}}_{a,y,v} \\
 & + \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{available energy capacity simple method}}_{a,y} \\
 flows\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p_{f, y}^{\text{discounting factor flow inv cost}} \cdot p^{\text{inv cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f,y} \\
 flows\_fixed\_cost &= \frac{1}{2} \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{t}}_y} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot \left( v^{\text{available export units}}_{f,y} + v^{\text{available import units}}_{f,y} \right) \\
@@ -345,12 +351,14 @@ unit\_on\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y
 
 #### Maximum Output Flows Limit
 
+Maximum output flow constraints depend on the chosen investment method (simple or compact). For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
+
 ```math
 \begin{aligned}
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y}  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right)  \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\ \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{capacity}}_{a} \cdot \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{compact investment}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{compact investment}} \cup \mathcal{A}^{\text{operation}}) \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right) \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{compact investment}} \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right) \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -489,7 +497,7 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} - e^{\text{flow above min}}_{a,k_y,b_{
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \leq p^{\text{max ramp up}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y}  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \leq p^{\text{max ramp up}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot  \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{compact investment}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{compact investment}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in  \mathcal{A}^{\text{compact investment}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Maximum Ramp-Down Rate Limit WITHOUT Unit Commitment Method
@@ -498,7 +506,7 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} - e^{\text{flow above min}}_{a,k_y,b_{
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \geq - p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y}  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \geq - p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot  \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{compact investment}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{compact investment}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in  \mathcal{A}^{\text{compact investment}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ### [DC Power Flow Constraints](@id dc-opf-constraints)
