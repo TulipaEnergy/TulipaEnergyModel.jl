@@ -9,7 +9,7 @@ Depth = [2, 3]
 
 ## Flexible Connection of Energy Assets
 
-Tejada-Arango, D.A., Morales-España, G., Kiviluoma, J., 2024. Debunking the Speed-Fidelity Trade-Off: Speeding-up Large-Scale Energy Models while Keeping Fidelity. ArXiv. <https://arxiv.org/abs/2407.05451>
+Tejada-Arango, D. A., Kiviluoma, J., & Morales-España, G. (2025). Debunking the speed-fidelity trade-off: Speeding-up large-scale energy models while keeping fidelity. International Journal of Electrical Power & Energy Systems, 168, 110674. <https://doi.org/10.1016/j.ijepes.2025.110674>
 
 ## Flexible Temporal Resolution
 
