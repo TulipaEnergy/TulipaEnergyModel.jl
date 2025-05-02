@@ -6,90 +6,71 @@
     # - flow (asset -> output_2) with time blocks [1:4, 5:5]
     # - asset with time blocks [1:5]
     # - flows relationships:
-    #   - (input_1 -> asset) and (input_2 -> asset)
-    #   - (input_1 -> asset) and (asset -> output_1)
-    #   - (asset -> output_1) and (input_1 -> asset)
-    #   - (asset -> output_1) and (asset -> output_2)
+    #   - INPUT and INPUT:   (input_1 -> asset) and (input_2 -> asset)
+    #   - INPUT and OUTPUT:  (input_1 -> asset) and (asset -> output_1)
+    #   - OUTPUT and INPUT:  (asset -> output_1) and (input_1 -> asset)
+    #   - OUTPUT and OUTPUT: (asset -> output_1) and (asset -> output_2)
 
     # Setup a temporary DuckDB connection
     connection = DBInterface.connect(DuckDB.DB)
 
-    # Create mock tables for testing
-    DBInterface.execute(
-        connection,
-        "CREATE TABLE flow_time_resolution_rep_period
-            (from_asset STRING,
-             to_asset STRING,
-             year INTEGER,
-             rep_period INTEGER,
-             time_block_start INTEGER,
-             time_block_end INTEGER)
-        ",
+    # Create mock tables for testing using register_data_frame
+    flow_time_resolution_rep_period = DataFrame(
+        :from_asset =>
+            ["input_1", "input_1", "input_2", "input_2", "asset", "asset", "asset", "asset"],
+        :to_asset => [
+            "asset",
+            "asset",
+            "asset",
+            "asset",
+            "output_1",
+            "output_1",
+            "output_2",
+            "output_2",
+        ],
+        :year => repeat([2025], 8),
+        :rep_period => repeat([1], 8),
+        :time_block_start => [1, 2, 1, 3, 1, 4, 1, 5],
+        :time_block_end => [1, 5, 2, 5, 3, 5, 4, 5],
     )
-    DBInterface.execute(
+    DuckDB.register_data_frame(
         connection,
-        "CREATE TABLE asset_time_resolution_rep_period
-            (asset STRING,
-             year INTEGER,
-             rep_period INTEGER,
-             time_block_start INTEGER,
-             time_block_end INTEGER)
-        ",
-    )
-    DBInterface.execute(
-        connection,
-        "CREATE TABLE flows_relationships
-            (flow_1_from_asset STRING,
-             flow_1_to_asset STRING,
-             flow_2_from_asset STRING,
-             flow_2_to_asset STRING,
-             milestone_year INTEGER)
-        ",
+        flow_time_resolution_rep_period,
+        "flow_time_resolution_rep_period",
     )
 
-    DBInterface.execute(
+    asset_time_resolution_rep_period = DataFrame(
+        :asset => ["asset"],
+        :year => [2025],
+        :rep_period => [1],
+        :time_block_start => [1],
+        :time_block_end => [5],
+    )
+    DuckDB.register_data_frame(
         connection,
-        "CREATE TABLE rep_periods_data
-            (num_timesteps INTEGER,
-             rep_period INTEGER,
-             resolution DOUBLE,
-             year INTEGER)
-        ",
+        asset_time_resolution_rep_period,
+        "asset_time_resolution_rep_period",
     )
 
-    # Insert mock data into the tables (example data of a Multiple Inputs and Outputs - MIMO)
-    DBInterface.execute(
-        connection,
-        "INSERT INTO flow_time_resolution_rep_period
-             VALUES ('input_1', 'asset', 2025, 1, 1, 1),
-                    ('input_1', 'asset', 2025, 1, 2, 5),
-                    ('input_2', 'asset', 2025, 1, 1, 2),
-                    ('input_2', 'asset', 2025, 1, 3, 5),
-                    ('asset', 'output_1', 2025, 1, 1, 3),
-                    ('asset', 'output_1', 2025, 1, 4, 5),
-                    ('asset', 'output_2', 2025, 1, 1, 4),
-                    ('asset', 'output_2', 2025, 1, 5, 5)
-        ",
+    flows_relationships = DataFrame(
+        :flow_1_from_asset => ["input_1", "input_1", "asset", "asset"],
+        :flow_1_to_asset => ["asset", "asset", "output_1", "output_1"],
+        :flow_2_from_asset => ["input_2", "asset", "input_1", "asset"],
+        :flow_2_to_asset => ["asset", "output_1", "asset", "output_2"],
+        :milestone_year => repeat([2025], 4),
     )
-    DBInterface.execute(
+    # We need to register the DataFrame with a name before creating the table
+    # because the table is modified (i.e., ALTER statement) in the SQL query
+    # to create the merged table.
+    DuckDB.register_data_frame(connection, flows_relationships, "flows_relationships_view")
+    DuckDB.execute(
         connection,
-        "INSERT INTO asset_time_resolution_rep_period VALUES ('asset', 2025, 1, 1, 5)",
+        "CREATE TABLE flows_relationships AS SELECT * FROM flows_relationships_view",
     )
-    DBInterface.execute(
-        connection,
-        "INSERT INTO flows_relationships
-            VALUES ('input_1', 'asset', 'input_2', 'asset', 2025),
-                   ('input_1', 'asset', 'asset', 'output_1', 2025),
-                   ('asset', 'output_1', 'input_1', 'asset', 2025),
-                   ('asset', 'output_1', 'asset', 'output_2', 2025),
-        ",
-    )
-    DBInterface.execute(
-        connection,
-        "INSERT INTO rep_periods_data
-            VALUES (5, 1, 1.0, 2025)
-        ",
-    )
+
+    rep_periods_data =
+        DataFrame(:num_timesteps => [5], :rep_period => [1], :resolution => [1.0], :year => [2025])
+    DuckDB.register_data_frame(connection, rep_periods_data, "rep_periods_data")
 
     @testset "Test create_merge_tables!" begin
         TulipaEnergyModel.create_merged_tables!(connection)
@@ -103,6 +84,8 @@
             ("asset", 2025, 1, 3, 5),
         ]
         @test _test_rows_exist(rows_to_test, merged_in_flows) |> all
+        @test DataFrames.nrow(merged_in_flows) == 8
+        @test DataFrames.ncol(merged_in_flows) == 5
 
         merged_out_flows = TulipaIO.get_table(connection, "merged_out_flows")
         rows_to_test = [
@@ -112,6 +95,8 @@
             ("asset", 2025, 1, 5, 5),
         ]
         @test _test_rows_exist(rows_to_test, merged_out_flows) |> all
+        @test DataFrames.nrow(merged_out_flows) == 8
+        @test DataFrames.ncol(merged_out_flows) == 5
 
         merged_assets_and_out_flows = TulipaIO.get_table(connection, "merged_assets_and_out_flows")
         rows_to_test = [
@@ -122,6 +107,8 @@
             ("asset", 2025, 1, 1, 5),
         ]
         @test _test_rows_exist(rows_to_test, merged_assets_and_out_flows) |> all
+        @test DataFrames.nrow(merged_assets_and_out_flows) == 9
+        @test DataFrames.ncol(merged_assets_and_out_flows) == 5
 
         merged_all_flows = TulipaIO.get_table(connection, "merged_all_flows")
         rows_to_test = [
@@ -135,6 +122,8 @@
             ("asset", 2025, 1, 5, 5),
         ]
         @test _test_rows_exist(rows_to_test, merged_all_flows) |> all
+        @test DataFrames.nrow(merged_all_flows) == 16
+        @test DataFrames.ncol(merged_all_flows) == 5
 
         merged_all = TulipaIO.get_table(connection, "merged_all")
         rows_to_test = [
@@ -149,6 +138,8 @@
             ("asset", 2025, 1, 1, 5),
         ]
         @test _test_rows_exist(rows_to_test, merged_all) |> all
+        @test DataFrames.nrow(merged_all) == 17
+        @test DataFrames.ncol(merged_all) == 5
 
         merged_flows_relationship = TulipaIO.get_table(connection, "merged_flows_relationship")
         rows_to_test = [
@@ -170,6 +161,8 @@
             ("input_1_asset_input_2_asset", 2025, 1, 3, 5),
         ]
         @test _test_rows_exist(rows_to_test, merged_flows_relationship) |> all
+        @test DataFrames.nrow(merged_flows_relationship) == 16
+        @test DataFrames.ncol(merged_flows_relationship) == 5
     end
 
     @testset "Test create_lowest_resolution_table!" begin
@@ -179,10 +172,14 @@
         t_lowest_all = TulipaIO.get_table(connection, "t_lowest_all")
         rows_to_test = [("asset", 2025, 1, 1, 5)]
         @test _test_rows_exist(rows_to_test, t_lowest_all) |> all
+        @test DataFrames.nrow(t_lowest_all) == 9
+        @test DataFrames.ncol(t_lowest_all) == 5
 
         t_lowest_all_flows = TulipaIO.get_table(connection, "t_lowest_all_flows")
         rows_to_test = [("asset", 2025, 1, 1, 4), ("asset", 2025, 1, 5, 5)]
         @test _test_rows_exist(rows_to_test, t_lowest_all_flows) |> all
+        @test DataFrames.nrow(t_lowest_all_flows) == 10
+        @test DataFrames.ncol(t_lowest_all_flows) == 5
 
         t_lowest_flows_relationship = TulipaIO.get_table(connection, "t_lowest_flows_relationship")
         rows_to_test = [
@@ -196,6 +193,8 @@
             ("input_1_asset_input_2_asset", 2025, 1, 3, 5),
         ]
         @test _test_rows_exist(rows_to_test, t_lowest_flows_relationship) |> all
+        @test DataFrames.nrow(t_lowest_flows_relationship) == 8
+        @test DataFrames.ncol(t_lowest_flows_relationship) == 5
     end
 
     @testset "Test create_highest_resolution_table!" begin
@@ -211,24 +210,32 @@
             ("asset", 2025, 1, 5, 5),
         ]
         @test _test_rows_exist(rows_to_test, t_highest_all_flows) |> all
+        @test DataFrames.nrow(t_highest_all_flows) == 13
+        @test DataFrames.ncol(t_highest_all_flows) == 5
 
         t_highest_assets_and_out_flows =
             TulipaIO.get_table(connection, "t_highest_assets_and_out_flows")
         rows_to_test =
             [("asset", 2025, 1, 1, 3), ("asset", 2025, 1, 4, 4), ("asset", 2025, 1, 5, 5)]
         @test _test_rows_exist(rows_to_test, t_highest_assets_and_out_flows) |> all
+        @test DataFrames.nrow(t_highest_assets_and_out_flows) == 7
+        @test DataFrames.ncol(t_highest_assets_and_out_flows) == 5
 
         t_highest_in_flows = TulipaIO.get_table(connection, "t_highest_in_flows")
         rows_to_test =
             [("asset", 2025, 1, 1, 1), ("asset", 2025, 1, 2, 2), ("asset", 2025, 1, 3, 5)]
         @test _test_rows_exist(rows_to_test, t_highest_in_flows) |> all
+        @test DataFrames.nrow(t_highest_in_flows) == 7
+        @test DataFrames.ncol(t_highest_in_flows) == 5
 
         t_highest_out_flows = TulipaIO.get_table(connection, "t_highest_out_flows")
         rows_to_test =
             [("asset", 2025, 1, 1, 3), ("asset", 2025, 1, 4, 4), ("asset", 2025, 1, 5, 5)]
         @test _test_rows_exist(rows_to_test, t_highest_out_flows) |> all
+        @test DataFrames.nrow(t_highest_out_flows) == 7
+        @test DataFrames.ncol(t_highest_out_flows) == 5
     end
 
     # test that the final number of tables is correct
-    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 17
+    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 18
 end
