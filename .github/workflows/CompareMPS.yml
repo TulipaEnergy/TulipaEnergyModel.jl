@@ -89,7 +89,7 @@ jobs:
           ' >> body.md
           echo "::warning title=MPS files are different::$(cat body.md)"
       - name: Find Comment
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: always() && github.event.pull_request.head.repo.full_name == github.repository
         uses: peter-evans/find-comment@v3
         id: find-comment
         with:
