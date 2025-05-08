@@ -38,10 +38,10 @@ repos:
     hooks:
       - id: validate-cff
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.37.0
+    rev: v1.37.1
     hooks:
       - id: yamllint
   - repo: https://github.com/domluna/JuliaFormatter.jl
-    rev: v2.1.1
+    rev: v2.1.2
     hooks:
       - id: julia-formatter
