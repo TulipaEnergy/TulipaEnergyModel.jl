@@ -61,7 +61,8 @@ Let's zoom in on the `phs-wind-balance` triangle and see what happens in the fig
 ![Flexible connection with transport flows](./figs/flexible-connection-3.png)
 
 !!! warning "Be careful with the definition of flows"
-    By having transport flows, we now model a different problem because flows can go through `wind` following `balance-wind-phs`. However, the unidirectional charging by `wind-phs` and discharging by `phs-balance` are not changed.
+    1. Although transport flows are bidirectional, they must be defined in a single direction. For example, a producer like wind can only have outgoing flows. Thus, the flow between `wind` and `balance` must be defined as `wind-balance`, with its sign allowed to be free.
+    2. By having transport flows, we now model a different problem because flows can go through `wind` following `balance-wind-phs`. However, the unidirectional charging by `wind-phs` and discharging by `phs-balance` are not changed.
 
 ## [Flexible Time Resolution](@id flex-time-res)
 
