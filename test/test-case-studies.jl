@@ -74,6 +74,14 @@ end
     @test energy_problem.objective_value ≈ 3458577.01472 atol = 1e-5
 end
 
+@testset "Power Flow Case Study" begin
+    dir = joinpath(INPUT_FOLDER, "Power-flow")
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, dir)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    @test energy_problem.objective_value ≈ 417486.99986 atol = 1e-5
+end
+
 @testset "Infeasible Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
     connection = DBInterface.connect(DuckDB.DB)

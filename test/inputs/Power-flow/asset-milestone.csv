@@ -1,5 +1,4 @@
 asset,milestone_year,investable,peak_demand,storage_inflows,initial_storage_level,min_energy_timeframe_partition,max_energy_timeframe_partition,units_on_cost
 ccgt,2030,false,0.0,0.0,0.0,,,
 demand,2030,false,1115.0,0.0,0.0,,,
-ocgt,2030,false,0.0,0.0,0.0,,,
 hub,2030,false,0.0,0.0,0.0,,,
