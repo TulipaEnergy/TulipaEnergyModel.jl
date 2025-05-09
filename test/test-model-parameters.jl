@@ -35,7 +35,7 @@
 
     @testset "Read from DuckDB" begin
         connection = DBInterface.connect(DuckDB.DB)
-        TulipaIO.read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Norse"))
+        _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Norse"))
         mp = TulipaEnergyModel.ModelParameters(connection)
         @test mp.discount_year == 2030
 

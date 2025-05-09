@@ -69,7 +69,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
         var_inv = variables[:assets_investment].container
         var_dec = variables[:assets_decommission].container
 
-        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY id")
+        indices = DuckDB.query(connection, "FROM expressions.$table_name ORDER BY id")
         attach_expression!(
             expr,
             :assets,
@@ -100,7 +100,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
         var_inv = variables[:assets_investment].container
         var_dec = variables[:assets_decommission].container
 
-        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY id")
+        indices = DuckDB.query(connection, "FROM expressions.$table_name ORDER BY id")
         attach_expression!(
             expr,
             :assets,
@@ -135,7 +135,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
         var_energy_inv = variables[:assets_investment_energy].container
         var_energy_dec = variables[:assets_decommission_energy].container
 
-        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY id")
+        indices = DuckDB.query(connection, "FROM expressions.$table_name ORDER BY id")
         attach_expression!(
             expr,
             :energy,
@@ -172,7 +172,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
         var_inv = variables[:flows_investment].container
         var_dec = variables[:flows_decommission].container
 
-        indices = DuckDB.query(connection, "FROM expr_$table_name ORDER BY id")
+        indices = DuckDB.query(connection, "FROM expressions.$table_name ORDER BY id")
         attach_expression!(
             expr,
             :export,
@@ -238,7 +238,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_asset_units_compact_method AS
+        CREATE OR REPLACE TABLE expressions.available_asset_units_compact_method AS
         SELECT
             nextval('id') AS id,
             asset_both.asset AS asset,
@@ -251,14 +251,14 @@ function _create_multi_year_expressions_indices!(connection, expressions)
                 ANY_VALUE(var_inv.id),
                 NULL
             ) AS var_investment_id,
-        FROM asset_both
-        LEFT JOIN asset
+        FROM input.asset_both as asset_both
+        LEFT JOIN input.asset as asset
             ON asset_both.asset = asset.asset
-        LEFT JOIN var_assets_decommission AS var_dec
+        LEFT JOIN variables.assets_decommission AS var_dec
             ON asset_both.asset = var_dec.asset
             AND asset_both.commission_year = var_dec.commission_year
             AND asset_both.milestone_year >= var_dec.milestone_year
-        LEFT JOIN var_assets_investment AS var_inv
+        LEFT JOIN variables.assets_investment AS var_inv
             ON asset_both.asset = var_inv.asset
             AND asset_both.commission_year = var_inv.milestone_year
         WHERE
@@ -271,7 +271,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_asset_units_simple_method AS
+        CREATE OR REPLACE TABLE expressions.available_asset_units_simple_method AS
         SELECT
             nextval('id') AS id,
             asset_both.asset AS asset,
@@ -280,13 +280,13 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             ANY_VALUE(asset_both.initial_units) AS initial_units,
             ARRAY_AGG(DISTINCT var_inv.id) FILTER (var_inv.id IS NOT NULL) AS var_investment_indices,
             ARRAY_AGG(DISTINCT var_dec.id) FILTER (var_dec.id IS NOT NULL) AS var_decommission_indices,
-        FROM asset_both
-        LEFT JOIN asset
+        FROM input.asset_both as asset_both
+        LEFT JOIN input.asset as asset
             ON asset_both.asset = asset.asset
-        LEFT JOIN var_assets_decommission AS var_dec
+        LEFT JOIN variables.assets_decommission AS var_dec
             ON asset_both.asset = var_dec.asset
             AND asset_both.milestone_year >= var_dec.milestone_year
-        LEFT JOIN var_assets_investment AS var_inv
+        LEFT JOIN variables.assets_investment AS var_inv
             ON asset_both.asset = var_inv.asset
             AND asset_both.milestone_year >= var_inv.milestone_year
             AND var_inv.milestone_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
@@ -300,7 +300,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_energy_units_simple_method AS
+        CREATE OR REPLACE TABLE expressions.available_energy_units_simple_method AS
         SELECT
             nextval('id') AS id,
             asset_both.asset AS asset,
@@ -309,13 +309,13 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             ANY_VALUE(asset_both.initial_storage_units) AS initial_storage_units,
             ARRAY_AGG(DISTINCT var_energy_dec.id) FILTER (var_energy_dec.id IS NOT NULL) AS var_energy_decommission_indices,
             ARRAY_AGG(DISTINCT var_energy_inv.id) FILTER (var_energy_inv.id IS NOT NULL) AS var_energy_investment_indices,
-        FROM asset_both
-        LEFT JOIN asset
+        FROM input.asset_both as asset_both
+        LEFT JOIN input.asset as asset
             ON asset.asset = asset_both.asset
-        LEFT JOIN var_assets_decommission_energy AS var_energy_dec
+        LEFT JOIN variables.assets_decommission_energy AS var_energy_dec
             ON asset_both.asset = var_energy_dec.asset
             AND asset_both.milestone_year >= var_energy_dec.milestone_year
-        LEFT JOIN var_assets_investment_energy AS var_energy_inv
+        LEFT JOIN variables.assets_investment_energy AS var_energy_inv
             ON asset_both.asset = var_energy_inv.asset
             AND asset_both.milestone_year >= var_energy_inv.milestone_year
             AND var_energy_inv.milestone_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
@@ -329,7 +329,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_flow_units_simple_method AS
+        CREATE OR REPLACE TABLE expressions.available_flow_units_simple_method AS
         SELECT
             nextval('id') AS id,
             flow_both.from_asset AS from_asset,
@@ -340,15 +340,15 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             ANY_VALUE(flow_both.initial_import_units) AS initial_import_units,
             ARRAY_AGG(DISTINCT var_dec.id) FILTER (var_dec.id IS NOT NULL) AS var_decommission_indices,
             ARRAY_AGG(DISTINCT var_inv.id) FILTER (var_inv.id IS NOT NULL) AS var_investment_indices,
-        FROM flow_both
-        LEFT JOIN flow
+        FROM input.flow_both as flow_both
+        LEFT JOIN input.flow as flow
             ON flow.to_asset = flow_both.to_asset
             AND flow.from_asset = flow_both.from_asset
-        LEFT JOIN var_flows_decommission AS var_dec
+        LEFT JOIN variables.flows_decommission AS var_dec
             ON flow_both.to_asset = var_dec.to_asset
             AND flow_both.from_asset = var_dec.from_asset
             AND var_dec.milestone_year <= flow_both.milestone_year
-        LEFT JOIN var_flows_investment AS var_inv
+        LEFT JOIN variables.flows_investment AS var_inv
             ON flow_both.to_asset = var_inv.to_asset
             AND flow_both.from_asset = var_inv.from_asset
             AND flow_both.milestone_year >= var_inv.milestone_year
@@ -363,7 +363,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         :available_energy_units_simple_method,
         :available_flow_units_simple_method,
     )
-        expressions[expr_name] = TulipaExpression(connection, "expr_$expr_name")
+        expressions[expr_name] = TulipaExpression(connection, "$expr_name")
     end
 
     return nothing

@@ -20,6 +20,7 @@
     # Create the table and check content
     TulipaEnergyModel._create_group_table_if_not_exist!(
         connection,
+        "main",
         table_name,
         grouped_table_name,
         [:asset],
@@ -36,6 +37,7 @@
     # Run it again with different values to check that it doesn't run
     TulipaEnergyModel._create_group_table_if_not_exist!(
         connection,
+        "main",
         table_name,
         grouped_table_name,
         [:year],
@@ -52,6 +54,7 @@
     DuckDB.query(connection, "DROP TABLE $grouped_table_name")
     TulipaEnergyModel._create_group_table_if_not_exist!(
         connection,
+        "main",
         table_name,
         grouped_table_name,
         [:year],
@@ -68,6 +71,7 @@
     DuckDB.query(connection, "DROP TABLE $grouped_table_name")
     @test_throws "`group_by_columns` cannot be empty" TulipaEnergyModel._create_group_table_if_not_exist!(
         connection,
+        "main",
         table_name,
         grouped_table_name,
         [],
@@ -75,6 +79,7 @@
     )
     @test_throws "`array_agg_columns` cannot be empty" TulipaEnergyModel._create_group_table_if_not_exist!(
         connection,
+        "main",
         table_name,
         grouped_table_name,
         [:asset],

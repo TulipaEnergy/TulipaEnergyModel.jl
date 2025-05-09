@@ -375,20 +375,20 @@ function _append_capacity_data_to_indices_compact_method(connection, table_name)
             ANY_VALUE(asset.investment_method) AS investment_method,
             ANY_VALUE(asset_commission.investment_limit) AS investment_limit,
             ANY_VALUE(assets_profiles.profile_name) AS profile_name,
-        FROM cons_$table_name AS cons
-        LEFT JOIN asset
+        FROM constraints.$table_name AS cons
+        LEFT JOIN input.asset as asset
             ON cons.asset = asset.asset
-        LEFT JOIN asset_commission
+        LEFT JOIN input.asset_commission as asset_commission
             ON cons.asset = asset_commission.asset
             AND cons.year = asset_commission.commission_year
-        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
+        LEFT JOIN expressions.available_asset_units_compact_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
-        LEFT OUTER JOIN assets_profiles
+        LEFT OUTER JOIN input.assets_profiles as assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
             AND assets_profiles.profile_type = 'availability'
-        LEFT OUTER JOIN assets_profiles AS avail_profile
+        LEFT OUTER JOIN input.assets_profiles AS avail_profile
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
             AND avail_profile.profile_type = 'availability'
@@ -419,20 +419,20 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
             asset.investment_method AS investment_method,
             asset_commission.investment_limit AS investment_limit,
             assets_profiles.profile_name AS profile_name,
-        FROM cons_$table_name AS cons
-        LEFT JOIN asset
+        FROM constraints.$table_name AS cons
+        LEFT JOIN input.asset as asset
             ON cons.asset = asset.asset
-        LEFT JOIN asset_commission
+        LEFT JOIN input.asset_commission as asset_commission
             ON cons.asset = asset_commission.asset
             AND cons.year = asset_commission.commission_year
-        LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
+        LEFT JOIN expressions.available_asset_units_simple_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
-        LEFT OUTER JOIN assets_profiles
+        LEFT OUTER JOIN input.assets_profiles as assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
             AND assets_profiles.profile_type = 'availability'
-        LEFT OUTER JOIN assets_profiles AS avail_profile
+        LEFT OUTER JOIN input.assets_profiles AS avail_profile
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
             AND avail_profile.profile_type = 'availability'

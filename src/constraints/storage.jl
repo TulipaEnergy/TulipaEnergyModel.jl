@@ -50,7 +50,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                                     connection,
                                     "SELECT
                                         MAX(id)
-                                    FROM cons_$table_name
+                                    FROM constraints.$table_name
                                     WHERE asset = '$(row.asset)' AND year = $(row.year) AND rep_period = $(row.rep_period)
                                     ",
                                 )
@@ -168,7 +168,7 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                                     connection,
                                     "SELECT
                                         MAX(id)
-                                    FROM cons_$table_name
+                                    FROM constraints.$table_name
                                     WHERE asset = '$(row.asset)' AND year = $(row.year)
                                     ",
                                 )
@@ -269,8 +269,8 @@ function _append_storage_data_to_indices(connection, table_name)
                 cons.year,
                 cons.period_block_start,
                 SUM(mapping.num_timesteps) AS duration_period_block
-            FROM cons_balance_storage_over_clustered_year AS cons
-            LEFT JOIN timeframe_data AS mapping
+            FROM constraints.balance_storage_over_clustered_year AS cons
+            LEFT JOIN cluster.timeframe_data AS mapping
                 ON mapping.year = cons.year
                 AND mapping.period BETWEEN cons.period_block_start AND cons.period_block_end
             GROUP BY cons.asset, cons.year, cons.period_block_start
@@ -300,27 +300,27 @@ function _append_storage_data_to_indices(connection, table_name)
             max_storage_level_profile.profile_name AS max_storage_level_profile_name,
             min_storage_level_profile.profile_name AS min_storage_level_profile_name,
             expr_avail.id AS avail_energy_capacity_id
-        FROM cons_$table_name AS cons
-        LEFT JOIN asset
+        FROM constraints.$table_name AS cons
+        LEFT JOIN input.asset as asset
             ON cons.asset = asset.asset
-        LEFT JOIN asset_commission
+        LEFT JOIN input.asset_commission as asset_commission
             ON cons.asset = asset_commission.asset
             AND cons.year = asset_commission.commission_year
-        LEFT JOIN asset_milestone
+        LEFT JOIN input.asset_milestone as asset_milestone
             ON cons.asset = asset_milestone.asset
             AND cons.year = asset_milestone.milestone_year
-        LEFT JOIN expr_available_energy_capacity_simple_method AS expr_avail
+        LEFT JOIN expressions.available_energy_capacity_simple_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
-        LEFT OUTER JOIN assets_profiles AS inflows_profile
+        LEFT OUTER JOIN input.assets_profiles AS inflows_profile
             ON cons.asset = inflows_profile.asset
             AND cons.year = inflows_profile.commission_year
             AND inflows_profile.profile_type = 'inflows'
-        LEFT OUTER JOIN assets_profiles AS max_storage_level_profile
+        LEFT OUTER JOIN input.assets_profiles AS max_storage_level_profile
             ON cons.asset = max_storage_level_profile.asset
             AND cons.year = max_storage_level_profile.commission_year
             AND max_storage_level_profile.profile_type = 'max_storage_level'
-        LEFT OUTER JOIN assets_profiles AS min_storage_level_profile
+        LEFT OUTER JOIN input.assets_profiles AS min_storage_level_profile
             ON cons.asset = min_storage_level_profile.asset
             AND cons.year = min_storage_level_profile.commission_year
             AND min_storage_level_profile.profile_type = 'min_storage_level'
