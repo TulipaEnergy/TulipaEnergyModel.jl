@@ -1,0 +1,5 @@
+asset,commission_year,fixed_cost,investment_cost,investment_limit,fixed_cost_storage_energy,investment_cost_storage_energy,investment_limit_storage_energy,storage_loss_from_stored_energy
+ccgt,2030,0.0,40.0,10000.0,5.0,0.0,,0
+demand,2030,0.0,0.0,,5.0,0.0,,0
+ocgt,2030,0.0,25.0,,5.0,0.0,,0
+hub,2030,0.0,0.0,,5.0,0.0,,0
