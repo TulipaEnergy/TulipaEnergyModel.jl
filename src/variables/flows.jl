@@ -12,11 +12,10 @@ function add_flow_variables!(connection, model, variables)
     indices = _create_flow_table(connection)
 
     lower_bound(row) =
-        if row.from_asset_type in ("producer", "conversion", "storage") ||
-           row.to_asset_type in ("conversion", "storage")
-            0.0
-        else
+        if row.is_transport
             -Inf
+        else
+            0.0
         end
 
     variables[:flow].container = [
@@ -35,13 +34,11 @@ function _create_flow_table(connection)
         connection,
         "SELECT
             var_flow.*,
-            from_asset.type AS from_asset_type,
-            to_asset.type AS to_asset_type,
+            flow.is_transport,
         FROM var_flow
-        LEFT JOIN asset AS from_asset
-            ON var_flow.from_asset = from_asset.asset
-        LEFT JOIN asset AS to_asset
-            ON var_flow.to_asset = to_asset.asset
+        LEFT JOIN flow
+            ON flow.from_asset = var_flow.from_asset
+            AND flow.to_asset = var_flow.to_asset
         ORDER BY var_flow.id
         ",
     )
