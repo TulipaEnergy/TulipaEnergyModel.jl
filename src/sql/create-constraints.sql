@@ -257,7 +257,7 @@ from
     left join asset on t_high.asset = asset.asset
     left join transport_flow_info on t_high.asset = transport_flow_info.asset
 where
-    asset.type in ('storage', 'conversion')
+    asset.type in ('storage', 'conversion', 'consumer')
     and transport_flow_info.incoming_flows_have_transport_flows
 ;
 
