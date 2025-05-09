@@ -28,7 +28,7 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: "github-actions[bot]"
-          body-includes: This was CompareMPS
+          body-includes: CompareMPS report
       - name: Comment on PR with CompareMPS
         if: github.event.pull_request.head.repo.full_name == github.repository
         uses: peter-evans/create-or-update-comment@v4
@@ -36,11 +36,11 @@ jobs:
           comment-id: ${{ steps.find-old-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
+            ## :robot: CompareMPS report
+
             ### :hourglass: Running MPS comparison
 
             Please wait.
-
-            :robot: This was CompareMPS, we hope you have enjoyed this program.
           edit-mode: replace
       - name: Clone
         uses: actions/checkout@v4
@@ -59,9 +59,11 @@ jobs:
       - name: Create PR body
         if: failure()
         run: |
-          echo '## :warning: MPS files differ
+          echo '## :robot: CompareMPS report
 
-          ### What to do?
+          ### :warning: MPS files differ
+
+          What to do?
 
           #### :+1: If this is expected
 
@@ -71,7 +73,7 @@ jobs:
           julia --project=. utils/scripts/model-mps-update.jl
           ```
 
-          #### :-1: This is bad
+          #### :-1: If this is bad
 
           Then, review the log below to figure out why the files differ:
 
@@ -84,18 +86,16 @@ jobs:
           </details>
 
           For more details about this workflow, check <https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/91-developer/#Testing-the-generate-MPS-files>.
-
-          :robot: This was CompareMPS, we hope you have enjoyed this program.
           ' >> body.md
           echo "::warning title=MPS files are different::$(cat body.md)"
       - name: Find Comment
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: always() && github.event.pull_request.head.repo.full_name == github.repository
         uses: peter-evans/find-comment@v3
         id: find-comment
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: "github-actions[bot]"
-          body-includes: This was CompareMPS
+          body-includes: CompareMPS report
       - name: Comment on PR with log if failed
         if: failure() && github.event.pull_request.head.repo.full_name == github.repository
         uses: peter-evans/create-or-update-comment@v4
@@ -111,7 +111,7 @@ jobs:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            ### :white_check_mark: MPS files match
+            ## :robot: CompareMPS report
 
-            :robot: This was CompareMPS, we hope you have enjoyed this program.
+            ### :white_check_mark: MPS files match
           edit-mode: replace

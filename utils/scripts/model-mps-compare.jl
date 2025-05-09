@@ -39,6 +39,7 @@ function compare_mps(existing_mps_folder)
         new_lines = readlines(new_mps_file)
 
         if length(existing_lines) != length(new_lines)
+            no_issues = false
             @error "Files don't have the same size"
         else
             zipped_lines = zip(existing_lines, new_lines)

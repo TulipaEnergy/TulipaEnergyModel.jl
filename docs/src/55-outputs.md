@@ -4,7 +4,7 @@ Tulipa's user workflow is a work-in-progress. For now, you can export the comple
 Below is a description of the exported data. Files may be missing if the associated features were not included in the analysis.
 
 ```@contents
-Pages = ["60-outputs.md"]
+Pages = ["55-outputs.md"]
 Depth = [2, 3]
 ```
 
@@ -110,15 +110,15 @@ Associated input parameter: `unit_commitment_integer`
 
 ### `cons_balance_storage_over_clustered_year`
 
-- `dual_balance_storage_over_clustered_year`: Dual of the constraint ["inter-temporal constraint for storage balance"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#inter-storage-balance).
-- `dual_max_storage_level_over_clustered_year_limit`: Dual of the constraint ["inter-temporal constraint for maximum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Inter-temporal-Constraint-for-Maximum-Storage-Level-Limit)
-- `dual_min_storage_level_over_clustered_year_limit`: Dual of the constraint ["inter-temporal constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Inter-temporal-Constraint-for-Minimum-Storage-Level-Limit)
+- `dual_balance_storage_over_clustered_year`: Dual of the constraint ["over-clustered-year constraint for storage balance"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#over-clustered-year-storage-balance).
+- `dual_max_storage_level_over_clustered_year_limit`: Dual of the constraint ["over-clustered-year constraint for maximum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Over-clustered-year-Constraint-for-Maximum-Storage-Level-Limit)
+- `dual_min_storage_level_over_clustered_year_limit`: Dual of the constraint ["over-clustered-year constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Over-clustered-year-Constraint-for-Minimum-Storage-Level-Limit)
 
 ### `cons_balance_storage_rep_period`
 
-- `dual_balance_storage_rep_period`: Dual of the constraint ["intra-temporal constraint for storage balance"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#intra-storage-balance).
-- `dual_max_storage_level_rep_period_limit`: Dual of the constraint ["intra-temporal constraint for maximimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Intra-temporal-Constraint-for-Maximum-Storage-Level-Limit)
-- `dual_min_storage_level_rep_period_limit`: Dual of the constraint ["intra-temporal constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Intra-temporal-Constraint-for-Minimum-Storage-Level-Limit)
+- `dual_balance_storage_rep_period`: Dual of the constraint ["rep-period constraint for storage balance"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#rep-period-storage-balance).
+- `dual_max_storage_level_rep_period_limit`: Dual of the constraint ["rep-period constraint for maximimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Rep-period-Constraint-for-Maximum-Storage-Level-Limit)
+- `dual_min_storage_level_rep_period_limit`: Dual of the constraint ["rep-period constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-formulation/#Rep-period-Constraint-for-Minimum-Storage-Level-Limit)
 
 ### `cons_capacity_incoming`
 

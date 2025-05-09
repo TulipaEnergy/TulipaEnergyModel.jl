@@ -1,7 +1,7 @@
-from_asset,to_asset,milestone_year,investable,variable_cost
-H2,ccgt,2030,false,0.01
-wind,phs,2030,false,0.002
-ccgt,balance,2030,false,0.05
-balance,demand,2030,false,0.0001
-wind,balance,2030,false,0.005
-phs,balance,2030,false,0.001
+from_asset,to_asset,milestone_year,investable,variable_cost,reactance,dc_opf
+H2,ccgt,2030,false,0.01,0.3,false
+wind,phs,2030,false,0.002,0.3,false
+ccgt,balance,2030,false,0.05,0.3,false
+balance,demand,2030,false,0.0001,0.3,false
+wind,balance,2030,false,0.005,0.3,false
+phs,balance,2030,false,0.001,0.3,false

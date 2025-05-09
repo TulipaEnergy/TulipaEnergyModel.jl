@@ -3,10 +3,10 @@ export add_energy_constraints!
 """
     add_energy_constraints!(connection, model, constraints, profiles)
 
-Adds the energy constraints for assets within the period blocks of the timeframe (inter-temporal) to the model.
+Adds the energy constraints for assets within the period blocks of the timeframe (over_clustered_year) to the model.
 """
 function add_energy_constraints!(connection, model, constraints, profiles)
-    ## INTER-TEMPORAL CONSTRAINTS (between representative periods)
+    ## OVER-CLUSTERED-YEAR CONSTRAINTS (between representative periods)
 
     let table_name = :max_energy_over_clustered_year, cons = constraints[table_name]
         indices = _append_energy_data_to_indices(connection, table_name, :max)

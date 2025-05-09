@@ -59,6 +59,8 @@ In addition, the following flow sets represent methods for incorporating additio
 | Name                | Description                                                       | Elements                        | Superset                           | Notes                                                                            |
 | ------------------- | ----------------------------------------------------------------- | ------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------- |
 | $\mathcal{Y}$       | Milestone years                                                   | $y \in \mathcal{Y}$             | $\mathcal{Y} \subset \mathbb{N}$   |                                                                                  |
+| $\mathcal{Y}^{\text{i}}_a$       | Milestone years where asset $a$ is investable                                                   | $y \in \mathcal{Y}^{\text{i}}_a$             | $\mathcal{Y} \subseteq \mathcal{Y}$   |                                                                                  |
+| $\mathcal{Y}^{\text{i}}_f$       | Milestone years where flow $f$ is investable                                                   | $y \in \mathcal{Y}^{\text{i}}_f$             | $\mathcal{Y} \subseteq \mathcal{Y}$   |                                                                                  |
 | $\mathcal{V}$       | All years                                                         | $v \in \mathcal{V}$             | $\mathcal{V} \subset \mathbb{N}$   |                                                                                  |
 | $\mathcal{P}_y$     | Periods in the timeframe at year $y$                              | $p_y \in \mathcal{P}_y$         | $\mathcal{P}_y \subset \mathbb{N}$ |                                                                                  |
 | $\mathcal{K}_y$     | Representative periods (rp) at year $y$                           | $k_y \in \mathcal{K}_y$         | $\mathcal{K}_y \subset \mathbb{N}$ | $\mathcal{K}_y$ does not have to be a subset of $\mathcal{P}_y$                  |
@@ -95,7 +97,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{economic lifetime}}_{a}$                   | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$                                                                                | Economic lifetime of asset $a$                                                                                         | [year]         |
 | $p^{\text{technology-specific discount rate}}_{a}$   | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                | Technology-specific discount rate of asset $a$                                                                         | [year]         |
 | $p^{\text{init units}}_{a,y}$                        | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Initial number of units of asset $a$ available at year $y$                                                             | [units]        |
-| $p^{\text{init units}}_{a,y,v}$                      | $\mathbb{R}_{+}$         | $ (a,y,v) \in \mathcal{D}^{\text{compact investment}} \cup \mathcal{D}^{\text{operation}}$         | Initial number of units of asset $a$ available at year $y$ commissioned in year $v$                                    | [units]        |
+| $p^{\text{init units}}_{a,y,v}$                      | $\mathbb{R}_{+}$         | $ (a,y,v) \in \mathcal{D}^{\text{compact investment}}$         | Initial number of units of asset $a$ available at year $y$ commissioned in year $v$                                    | [units]        |
 | $p^{\text{availability profile}}_{a,v,k_y,b_{k_y}}$  | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Availability profile of asset $a$ invested in year $v$ in the representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]         |
 | $p^{\text{group}}_{a}$                               | $\mathcal{G}^{\text{a}}$ | $a \in \mathcal{A}$                                                                                | Group $g$ to which the asset $a$ belongs                                                                               | [-]            |
 
@@ -118,20 +120,20 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{inv limit energy}}_{a,y}$                | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Investment energy potential of asset $a$ at year $y$                                                                 | [MWh]           |
 | $p^{\text{energy capacity}}_{a}$                   | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$                                                                                              | Energy capacity of a unit of investment of the asset $a$                                                             | [MWh]           |
 | $p^{\text{energy to power ratio}}_{a,y}$           | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}}_y$                                                           | Energy to power ratio of storage asset $a$ at year $y$                                                               | [h]             |
-| $p^{\text{max intra level}}_{a,k_y,b_{k_y}}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Maximum intra-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
-| $p^{\text{min intra level}}_{a,k_y,b_{k_y}}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Minimum intra-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
-| $p^{\text{max inter level}}_{a,p_y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Maximum inter-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
-| $p^{\text{min inter level}}_{a,p_y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Minimum inter-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
+| $p^{\text{max rep-period-storage level}}_{a,k_y,b_{k_y}}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Maximum rep-period-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
+| $p^{\text{min rep-period-storage level}}_{a,k_y,b_{k_y}}$       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Minimum rep-period-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
+| $p^{\text{max over-clustered-year-storage level}}_{a,p_y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Maximum over-clustered-year-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
+| $p^{\text{min over-clustered-year-storage level}}_{a,p_y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Minimum over-clustered-year-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
 | $p^{\text{storage loss from stored energy}}_{a,y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}_y$                                                                        | [e.g. 0.01 means 1% every hour] Loss of stored energy over time.                                                     | [p.u./h]        |
 
 #### Extra Parameters for Energy Constraints
 
 | Name                                   | Domain           | Domains of Indices                                            | Description                                                                                      | Units  |
 | -------------------------------------- | ---------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------ |
-| $p^{\text{min inter profile}}_{a,p_y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}_y$, $p_y \in \mathcal{P}_y$ | Minimum outgoing inter-temporal energy profile of asset $a$ in the period $p_y$ of the timeframe | [p.u.] |
-| $p^{\text{max inter profile}}_{a,p_y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}_y$, $p_y \in \mathcal{P}_y$ | Maximum outgoing inter-temporal energy profile of asset $a$ in the period $p_y$ of the timeframe | [p.u.] |
-| $p^{\text{max energy}}_{a,p_y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}_y$                          | Maximum outgoing inter-temporal energy value of asset $a$                                        | [MWh]  |
-| $p^{\text{min energy}}_{a,p_y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}_y$                          | Minimum outgoing inter-temporal energy value of asset $a$                                        | [MWh]  |
+| $p^{\text{min over-clustered-year-storage profile}}_{a,p_y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}_y$, $p_y \in \mathcal{P}_y$ | Minimum outgoing over-clustered-year energy profile of asset $a$ in the period $p_y$ of the timeframe | [p.u.] |
+| $p^{\text{max over-clustered-year-storage profile}}_{a,p_y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}_y$, $p_y \in \mathcal{P}_y$ | Maximum outgoing over-clustered-year energy profile of asset $a$ in the period $p_y$ of the timeframe | [p.u.] |
+| $p^{\text{max energy}}_{a,p_y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}_y$                          | Maximum outgoing over-clustered-year energy value of asset $a$                                        | [MWh]  |
+| $p^{\text{min energy}}_{a,p_y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}_y$                          | Minimum outgoing over-clustered-year energy value of asset $a$                                        | [MWh]  |
 
 #### Extra Parameters for Producers and Conversion Assets
 
@@ -205,8 +207,8 @@ In addition, the following subsets represent methods for incorporating additiona
 | $v^{\text{decom energy simple}}_{a,y}$     | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                           | Number of decommissioned units of the energy component of the storage asset $a$ that uses energy method at year $y$                   | [units] |
 | $v^{\text{inv}}_{f,y}$                     | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                         | Number of invested units of capacity increment of transport flow $f$ at year $y$                                                      | [units] |
 | $v^{\text{decom simple}}_{f,y}$            | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                         | Number of decommissioned units of capacity increment of transport flow $f$ at year $y$                                                | [units] |
-| $v^{\text{intra-storage}}_{a,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}_y \setminus \mathcal{A}^{\text{ss}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Intra storage level (within a representative period) for storage asset $a$, representative period $k_y$, and timestep block $b_{k_y}$ | [MWh]   |
-| $v^{\text{inter-storage}}_{a,p_y}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                     | Inter storage level (between representative periods) for storage asset $a$ and period $p_y$                                           | [MWh]   |
+| $v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}_y \setminus \mathcal{A}^{\text{ss}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Rep-period-storage level for storage asset $a$, representative period $k_y$, and timestep block $b_{k_y}$ | [MWh]   |
+| $v^{\text{over-clustered-year-storage}}_{a,p_y}$         | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                     | Over-clustered-year-storage level for storage asset $a$ and period $p_y$                                           | [MWh]   |
 | $v^{\text{is charging}}_{a,k_y,b_{k_y}}$   | $\{0, 1\}$       | $a \in \mathcal{A}^{\text{sb}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                    | If an storage asset $a$ is charging or not in representative period $k_y$ and timestep block $b_{k_y}$                                | [-]     |
 | $v^{\text{angle}}_{a,k_y,b_{k_y}}$         | $\mathbb{R}$     | $a \in \mathcal{A}^{\text{dc-opf}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                | Electricity angle of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                            | [rad]   |
 | $v^{\text{units on}}_{a,k_y,b_{k_y}}$      | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                    | Number of units ON of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                           | [units] |
@@ -215,27 +217,29 @@ In addition, the following subsets represent methods for incorporating additiona
 
 ### Expresssions for the Objective Function
 
+There are two types of investment methods for multi-year investment modelling: simple method and compact method. The simple method aggregates all units available in a year, regardless of when they were invested. The compact method tracks availability by investment and operational year, enabling vintage-specific constraints while reducing model size. For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
+
 For available units across years, we define the following expresssions:
 
 ```math
 \begin{aligned}
-    v^{\text{available units simple method}}_{a,y} & = p^{\text{initial units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom simple}}_{a,i} \\
+    v^{\text{available units simple method}}_{a,y} & = p^{\text{initial units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_a: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom simple}}_{a,i} \\
     & \forall a \in \mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}, \forall y \in \mathcal{Y} \\
     v^{\text{available units compact method}}_{a,y,v} & = p^{\text{initial units}}_{a,y,v} + v^{\text{inv}}_{a,v} - \sum_{i \in \{\mathcal{Y}: v < i \le y\} | (a,i,v) \in \mathcal{D}^{\text{compact investment}}} v^{\text{decom compact}}_{a,i,v}
  \\
-    & \forall (a,y,v) \in \mathcal{D}^{\text{compact investment}} \cup \mathcal{D}^{\text{operation}} \\
-    v^{\text{available energy units simple method}}_{a,y} & = p^{\text{initial storage units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv energy}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom energy simple}}_{a,i} \\
+    & \forall (a,y,v) \in \mathcal{D}^{\text{compact investment}} \\
+    v^{\text{available energy units simple method}}_{a,y} & = p^{\text{initial storage units}}_{a,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_a: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}}  v^{\text{inv energy}}_{a,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{a} + 1  \le i \le y \}} v^{\text{decom energy simple}}_{a,i} \\
     & \forall a \in \mathcal{A}^{\text{se}}_y, \forall y \in \mathcal{Y} \\
-    v^{\text{available export units simple method}}_{f,y} & = p^{\text{initial export units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
+    v^{\text{available export units simple method}}_{f,y} & = p^{\text{initial export units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_f: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
     & \forall f \in \mathcal{F}^{\text{t}}_y, \forall y \in \mathcal{Y} \\
-    v^{\text{available import units simple method}}_{f,y} & = p^{\text{initial import units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
+    v^{\text{available import units simple method}}_{f,y} & = p^{\text{initial import units}}_{f,y} + \sum_{i \in \{\mathcal{Y}^\text{i}_f: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}}  v^{\text{inv}}_{f,i} - \sum_{i \in \{\mathcal{Y}: y - p^{\text{technical lifetime}}_{f} + 1  \le i \le y \}} v^{\text{decom simple}}_{f,i} \\
     & \forall f \in \mathcal{F}^{\text{t}}_y, \forall y \in \mathcal{Y} \\
 \end{aligned}
 ```
 
-In addition, we define the following expressions to determine the available units. This expression takes a few forms depending on whether the asset uses _simple_ or _compact_ investment method.
+In addition, we define the following expressions to determine the available units. This expression takes a few forms depending on whether the asset uses simple or compact investment method.
 
-- If the asset uses _simple_ investment method
+- If the asset uses simple investment method
 
 ```math
 \begin{aligned}
@@ -243,7 +247,7 @@ In addition, we define the following expressions to determine the available unit
 \end{aligned}
 ```
 
-- If the asset uses _compact_ investment method
+- If the asset uses compact investment method
 
 ```math
 \begin{aligned}
@@ -251,7 +255,7 @@ In addition, we define the following expressions to determine the available unit
 \end{aligned}
 ```
 
-- Storage assets with energy method always use _simple_ investment method
+- Storage assets with energy method always use simple investment method
 
 ```math
 \begin{aligned}
@@ -259,7 +263,7 @@ In addition, we define the following expressions to determine the available unit
 \end{aligned}
 ```
 
-- Transport assets always use _simple_ investment method
+- Transport assets always use simple investment method
 
 ```math
 \begin{aligned}
@@ -269,6 +273,8 @@ In addition, we define the following expressions to determine the available unit
 ```
 
 ### Economic Representation for the Objective Function
+
+The model accounts for discounting in multi-year investment modelling. For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Tejada-Arango (2025)](@ref scientific-refs).
 
 #### Discounting Factor for Asset Investment Costs
 
@@ -330,7 +336,7 @@ Where:
 \begin{aligned}
 assets\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset inv cost}} \cdot p^{\text{inv cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \\ &+  \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap \mathcal{A}^{\text{i}}_y } p_{a, y}^{\text{discounting factor asset inv cost}} \cdotp^{\text{inv cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{inv energy}}_{a,y}   \\
 assets\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}} } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y} \\
-& + \sum_{(a,y,v) \in \mathcal{D}^{\text{compact investment}} \cup \mathcal{D}^{\text{decom units operation mode}} }  p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,v} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units compact method}}_{a,y,v} \\
+& + \sum_{(a,y,v) \in \mathcal{D}^{\text{compact investment}} }  p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{a,v} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units compact method}}_{a,y,v} \\
 & + \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{available energy capacity simple method}}_{a,y} \\
 flows\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p_{f, y}^{\text{discounting factor flow inv cost}} \cdot p^{\text{inv cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f,y} \\
 flows\_fixed\_cost &= \frac{1}{2} \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{t}}_y} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot \left( v^{\text{available export units}}_{f,y} + v^{\text{available import units}}_{f,y} \right) \\
@@ -345,12 +351,14 @@ unit\_on\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y
 
 #### Maximum Output Flows Limit
 
+Maximum output flow constraints depend on the chosen investment method (simple or compact). For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
+
 ```math
 \begin{aligned}
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y}  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right)  \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\ \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{capacity}}_{a} \cdot \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{compact investment}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{compact investment}} \cup \mathcal{A}^{\text{operation}}) \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right) \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{compact investment}} \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right) \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -428,7 +436,7 @@ v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall 
 
 ### [Unit Commitment Constraints](@id uc-constraints)
 
-Production and conversion assets within the set $\mathcal{A}^{\text{uc}}$ will contain the unit commitment constraints in the model. These constraints are based on the work of [Morales-España et al. (2013)](@ref math-references) and [Morales-España et al. (2014)](@ref math-references).
+Production and conversion assets within the set $\mathcal{A}^{\text{uc}}$ will contain the unit commitment constraints in the model. These constraints are based on the work of [Morales-España et al. (2013)](@ref scientific-refs) and [Morales-España et al. (2014)](@ref scientific-refs).
 
 The current version of the code only incorporates a basic unit commitment version of the constraints (i.e., utilizing only the unit commitment variable $v^{\text{units on}}$). However, upcoming versions will include more detailed constraints, incorporating startup and shutdown variables.
 
@@ -464,7 +472,7 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} \geq 0  \quad
 
 Ramping constraints restrict the rate at which the output flow of a production or conversion asset can change. If the asset is part of the unit commitment set (e.g., $\mathcal{A}^{\text{uc}}_y$), the ramping limits apply to the flow above the minimum output, but if it is not, the ramping limits apply to the total output flow.
 
-Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](@ref math-references). Also, please note that since the current version of the code only handles the basic unit commitment implementation, the ramping constraints are applied to the assets in the set $\mathcal{A}^{\text{uc basic}}_y$.
+Ramping constraints that take into account unit commitment variables are based on the work done by [Damcı-Kurt et. al (2016)](@ref scientific-refs). Also, please note that since the current version of the code only handles the basic unit commitment implementation, the ramping constraints are applied to the assets in the set $\mathcal{A}^{\text{uc basic}}_y$.
 
 !!! info "Duration parameter"
     The following constraints are multiplied by $p^{\text{duration}}_{b_{k_y}}$ on the right-hand side to adjust for the duration of the timesteps since the ramp parameters are defined as rates. This assumption is based on the idea that all timesteps are the same in this section, which simplifies the formulation. However, in a flexible temporal resolution context, this may not hold true, and the duration needs to be the minimum duration of all the outgoing flows at the timestep block $b_{k_y}$. For more information, please visit the concept section on flexible time resolution.
@@ -489,7 +497,7 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} - e^{\text{flow above min}}_{a,k_y,b_{
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \leq p^{\text{max ramp up}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y}  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \leq p^{\text{max ramp up}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot  \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{compact investment}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{compact investment}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in  \mathcal{A}^{\text{compact investment}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 #### Maximum Ramp-Down Rate Limit WITHOUT Unit Commitment Method
@@ -498,7 +506,7 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} - e^{\text{flow above min}}_{a,k_y,b_{
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \geq - p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units simple method}}_{a,y}  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}-1} \geq - p^{\text{max ramp down}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot p^{\text{capacity}}_{a} \cdot  \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{compact investment}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in  (\mathcal{A}^{\text{compact investment}} \cup \mathcal{A}^{\text{operation}}) \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in  \mathcal{A}^{\text{compact investment}} \cap\left(\mathcal{A}^{\text{ramp}}_y \setminus \mathcal{A}^{\text{uc basic}}_y \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ### [DC Power Flow Constraints](@id dc-opf-constraints)
@@ -525,7 +533,7 @@ The balance constraint sense depends on the method selected in the asset file's 
 
 ### Constraints for Energy Storage Assets
 
-There are two types of constraints for energy storage assets: intra-temporal and inter-temporal. Intra-temporal constraints impose limits inside a representative period, while inter-temporal constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](@ref math-references) and [Tejada-Arango et al. (2019)](@ref math-references).
+There are two types of constraints for energy storage assets: rep-period and over-clustered-year. Rep-period constraints impose limits inside a representative period, while over-clustered-year constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](@ref scientific-refs) and [Tejada-Arango et al. (2019)](@ref scientific-refs).
 
 In addition, we define the following expression to determine the energy investment limit of the storage assets. This expression takes two different forms depending on whether the storage asset belongs to the set $\mathcal{A}^{\text{se}}$ or not.
 
@@ -549,103 +557,103 @@ e^{\text{available energy inv limit}}_{a,y}
 \end{aligned}
 ```
 
-#### [Intra-temporal Constraint for Storage Balance](@id intra-storage-balance)
+#### [Rep-period Constraint for Storage Balance](@id rep-period-storage-balance)
 
 ```math
 \begin{aligned}
-v^{\text{intra-storage}}_{a,k_y,b_{k_y}} = \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{b_{k_y}}}
- \cdot  v^{\text{intra-storage}}_{a,k_y,b_{k_y}-1}  + p^{\text{inflows}}_{a,k_y,b_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} = \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{b_{k_y}}}
+ \cdot  v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}-1}  + p^{\text{inflows}}_{a,k_y,b_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
-#### Intra-temporal Constraint for Maximum Storage Level Limit
+#### Rep-period Constraint for Maximum Storage Level Limit
 
 ```math
-v^{\text{intra-storage}}_{a,k_y,b_{k_y}} \leq p^{\text{max intra level}}_{a,k_y,b_{k_y}} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} \leq p^{\text{max rep-period-storage level}}_{a,k_y,b_{k_y}} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
-#### Intra-temporal Constraint for Minimum Storage Level Limit
+#### Rep-period Constraint for Minimum Storage Level Limit
 
 ```math
-v^{\text{intra-storage}}_{a,k_y,b_{k_y}} \geq p^{\text{min intra level}}_{a,k_y,b_{k_y}} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} \geq p^{\text{min rep-period-storage level}}_{a,k_y,b_{k_y}} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
-#### Intra-temporal Cycling Constraint
+#### Rep-period Cycling Constraint
 
-The cycling constraint for the intra-temporal constraints links the first timestep block ($b^{\text{first}}_{k_y}$) and the last one ($b^{\text{last}}_{k_y}$) in each representative period. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
+The cycling constraint for the rep-period constraints links the first timestep block ($b^{\text{first}}_{k_y}$) and the last one ($b^{\text{last}}_{k_y}$) in each representative period. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the intra-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) is used as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance).
+- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the rep-period-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) is used as the initial value for the first timestep block in the [rep-period constraint for the storage balance](@ref rep-period-storage-balance).
 
 ```math
 \begin{aligned}
-v^{\text{intra-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{intra-storage}}_{a,k_y,b^{\text{last}}_{k_y}}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first timestep block in the [intra-temporal constraint for the storage balance](@ref intra-storage-balance). In addition, the intra-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) in each representative period must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first timestep block in the [rep-period constraint for the storage balance](@ref rep-period-storage-balance). In addition, the rep-period-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) in each representative period must be greater than this initial value.
 
 ```math
 \begin{aligned}
-v^{\text{intra-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = p^{\text{init storage level}}_{a,y}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = p^{\text{init storage level}}_{a,y}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
 
 ```math
-v^{\text{intra-storage}}_{a,k_y,b^{\text{first}}_{k_y}} \geq p^{\text{init storage level}}_{a,y} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} \geq p^{\text{init storage level}}_{a,y} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 ```
 
-#### [Inter-temporal Constraint for Storage Balance](@id inter-storage-balance)
+#### [Over-clustered-year Constraint for Storage Balance](@id over-clustered-year-storage-balance)
 
 This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year). The parameter $p^{\text{map}}_{p_y,k_y}$ determines how much of the representative period $k_y$ is in the period $p_y$, and you can use a clustering technique to calculate it. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
 
-For the sake of simplicity, we show the constraint assuming the inter-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref schemas).
+For the sake of simplicity, we show the constraint assuming the over-clustered-year-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref schemas).
 
 ```math
 \begin{aligned}
-v^{\text{inter-storage}}_{a,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}}
- \cdot v^{\text{inter-storage}}_{a,p_y-1} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+v^{\text{over-clustered-year-storage}}_{a,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}}
+ \cdot v^{\text{over-clustered-year-storage}}_{a,p_y-1} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
 & + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 & - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
 
-#### Inter-temporal Constraint for Maximum Storage Level Limit
+#### Over-clustered-year Constraint for Maximum Storage Level Limit
 
 ```math
-v^{\text{inter-storage}}_{a,p_y} \leq p^{\text{max inter level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
+v^{\text{over-clustered-year-storage}}_{a,p_y} \leq p^{\text{max over-clustered-year-storage level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 ```
 
-#### Inter-temporal Constraint for Minimum Storage Level Limit
+#### Over-clustered-year Constraint for Minimum Storage Level Limit
 
 ```math
-v^{\text{inter-storage}}_{a,p_y} \geq p^{\text{min inter level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
+v^{\text{over-clustered-year-storage}}_{a,p_y} \geq p^{\text{min over-clustered-year-storage level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 ```
 
-#### Inter-temporal Cycling Constraint
+#### Over-clustered-year Cycling Constraint
 
-The cycling constraint for the inter-temporal constraints links the first-period block ($p^{\text{first}}_y$) and the last one ($p^{\text{last}}_y$) in the timeframe. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
+The cycling constraint for the over-clustered-year constraints links the first-period block ($p^{\text{first}}_y$) and the last one ($p^{\text{last}}_y$) in the timeframe. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the inter-storage level of the last period block ($p^{\text{last}}_y$) is used as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance).
+- If parameter $p^{\text{init storage level}}_{a,y}$ is not defined, the over-clustered-year-storage level of the last period block ($p^{\text{last}}_y$) is used as the initial value for the first-period block in the [over-clustered-year constraint for the storage balance](@ref over-clustered-year-storage-balance).
 
 ```math
 \begin{aligned}
-v^{\text{inter-storage}}_{a,p^{\text{first}}_y} = & v^{\text{inter-storage}}_{a,p^{\text{last}}_y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+v^{\text{over-clustered-year-storage}}_{a,p^{\text{first}}_y} = & v^{\text{over-clustered-year-storage}}_{a,p^{\text{last}}_y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
 & + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 & - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
 \end{aligned}
 ```
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first-period block in the [inter-temporal constraint for the storage balance](@ref inter-storage-balance). In addition, the inter-storage level of the last period block ($p^{\text{last}}_y$) in the timeframe must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first-period block in the [over-clustered-year constraint for the storage balance](@ref over-clustered-year-storage-balance). In addition, the over-clustered-year-storage level of the last period block ($p^{\text{last}}_y$) in the timeframe must be greater than this initial value.
 
 ```math
 \begin{aligned}
-v^{\text{inter-storage}}_{a,p^{\text{first}}_y} = & p^{\text{init storage level}}_{a,y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+v^{\text{over-clustered-year-storage}}_{a,p^{\text{first}}_y} = & p^{\text{init storage level}}_{a,y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
 & + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 & - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
@@ -653,7 +661,7 @@ v^{\text{inter-storage}}_{a,p^{\text{first}}_y} = & p^{\text{init storage level}
 ```
 
 ```math
-v^{\text{inter-storage}}_{a,p^{\text{last}}_y} \geq p^{\text{init storage level}}_{a,y} \quad
+v^{\text{over-clustered-year-storage}}_{a,p^{\text{last}}_y} \geq p^{\text{init storage level}}_{a,y} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
 ```
 
@@ -723,15 +731,15 @@ v^{\text{inv}}_{f,y} \leq \frac{p^{\text{inv limit}}_{f,y}}{p^{\text{capacity}}_
 
 If the parameter `investment_integer` is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
 
-### [Inter-temporal Energy Constraints](@id inter-temporal-energy-constraints)
+### [Over-clustered-year Energy Constraints](@id over-clustered-year-energy-constraints)
 
-These constraints allow us to consider a maximum or minimum energy limit for an asset throughout the model's timeframe (e.g., a year). It uses the same principle explained in the [inter-temporal constraint for storage balance](@ref inter-storage-balance) and in the [Storage Modeling](@ref storage-modeling) section.
+These constraints allow us to consider a maximum or minimum energy limit for an asset throughout the model's timeframe (e.g., a year). It uses the same principle explained in the [over-clustered-year constraint for storage balance](@ref over-clustered-year-storage-balance) and in the [Storage Modeling](@ref storage-modeling) section.
 
 #### Maximum Outgoing Energy During the Timeframe
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq  p^{\text{max inter profile}}_{a,p_y} \cdot p^{\text{max energy}}_{a,y}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq  p^{\text{max over-clustered-year-storage profile}}_{a,p_y} \cdot p^{\text{max energy}}_{a,y}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{max e}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
@@ -740,7 +748,7 @@ These constraints allow us to consider a maximum or minimum energy limit for an 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq  p^{\text{min inter profile}}_{a,p_y} \cdot p^{\text{min energy}}_{a,y}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq  p^{\text{min over-clustered-year-storage profile}}_{a,p_y} \cdot p^{\text{min energy}}_{a,y}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{min e}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
@@ -773,15 +781,3 @@ These constraints apply to assets in a group using the investment method $\mathc
 \\ \\ & \forall y \in \mathcal{Y}, \forall g \in \mathcal{G}^{\text{ai}}_y
 \end{aligned}
 ```
-
-## [References](@id math-references)
-
-Damcı-Kurt, P., Küçükyavuz, S., Rajan, D., Atamtürk, A., 2016. A polyhedral study of production ramping. Math. Program. 158, 175–205. doi: 10.1007/s10107-015-0919-9.
-
-Morales-España, G., Ramos, A., García-González, J., 2014. An MIP Formulation for Joint Market-Clearing of Energy and Reserves Based on Ramp Scheduling. IEEE Transactions on Power Systems 29, 476-488. doi: 10.1109/TPWRS.2013.2259601.
-
-Morales-España, G., Latorre, J. M., Ramos, A., 2013. Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem. IEEE Transactions on Power Systems 28, 4897-4908. doi: 10.1109/TPWRS.2013.2251373.
-
-Tejada-Arango, D.A., Domeshek, M., Wogrin, S., Centeno, E., 2018. Enhanced representative days and system states modeling for energy storage investment analysis. IEEE Transactions on Power Systems 33, 6534–6544. doi:10.1109/TPWRS.2018.2819578.
-
-Tejada-Arango, D.A., Wogrin, S., Siddiqui, A.S., Centeno, E., 2019. Opportunity cost including short-term energy storage in hydrothermal dispatch models using a linked representative periods approach. Energy 188, 116079. doi:10.1016/j.energy.2019.116079.

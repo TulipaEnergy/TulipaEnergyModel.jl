@@ -588,7 +588,7 @@ When creating a pull request, the workflow `CompareMPS.yml` will run the compari
 2. **Unexpected failure**: If you made modifications that were not supposed to change the model, then you need to investigate what happened. Use the MPS difference to debug what you have done. There is no easy fix for this. If you think there are bugs in the comparison script, discuss with your PR reviewer and open an issue if necessary.
 
 !!! warning
-    The comparison workflow only writes PR comments if the branch is made from within `TulipaEnergyModel`. To see the log online in that case, you have to open the GitHub action log, or run the comparison locally, as explained in the previous section.
+    The comparison workflow only writes PR comments if the branch is made from within `TulipaEnergyModel` (i.e., not from forks). To see the log online in that case, you have to open the GitHub action log, or run the comparison locally, as explained in the previous section.
 
 ## Procedure for Releasing a New Version (Julia Registry)
 

@@ -162,8 +162,8 @@ For more information, see the JuMP documentation for [`direct_model`](https://ju
 
 Section [Storage Modeling](@ref storage-modeling) explains the main concepts for modeling seasonal and non-seasonal storage in _TulipaEnergyModel.jl_. To define if an asset is one type or the other then consider the following:
 
-- _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, we recommend using the inter-temporal constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `true`.
-- _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the intra-temporal constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `false`.
+- _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, we recommend using the over-clustered-year constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `true`.
+- _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the rep-period constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `false`.
 
 !!! info
     If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
@@ -217,9 +217,9 @@ For more details on the constraints that apply when selecting this method, pleas
 
 ## [Setting up a maximum or minimum outgoing energy limit](@id max-min-outgoing-energy-setup)
 
-For the model to add constraints for a [maximum or minimum energy limit](@ref inter-temporal-energy-constraints) for an asset throughout the model's timeframe (e.g., a year), we need to establish a couple of parameters:
+For the model to add constraints for a [maximum or minimum energy limit](@ref over-clustered-year-energy-constraints) for an asset throughout the model's timeframe (e.g., a year), we need to establish a couple of parameters:
 
-- `is_seasonal = true`. This parameter enables the model to use the inter-temporal constraints.
+- `is_seasonal = true`. This parameter enables the model to use the over-clustered-year constraints.
 - `max_energy_timeframe_partition` $\neq$ `missing` or `min_energy_timeframe_partition` $\neq$ `missing`. This value represents the peak energy that will be then multiplied by the profile for each period in the timeframe.
 
 !!! info
