@@ -72,13 +72,8 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     # - For compact investment method
     let table_name = :limit_units_on_compact_method,
         cons = constraints[table_name],
-        units_on_with_compact_investment_ids =
-            [row.id for row in _get_units_on_with_compact_investment_ids(connection)],
-        units_on_with_compact_investment_vars = [
-            var for (row, var) in
-            zip(collect(variables[:units_on].indices), variables[:units_on].container) if
-            row.id in units_on_with_compact_investment_ids
-        ]
+        units_on_with_compact_investment_vars =
+            _get_units_on_with_compact_investment_vars(connection, variables)
 
         indices = _append_available_units_data_compact_method(connection, table_name)
         expr_avail_compact_method =
@@ -101,13 +96,8 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     # - For simple and none investment method
     let table_name = :limit_units_on_simple_method,
         cons = constraints[table_name],
-        units_on_with_simple_or_none_investment_ids =
-            [row.id for row in _get_units_on_with_simple_or_none_investment_ids(connection)],
-        units_on_with_simple_or_none_investment_vars = [
-            var for (row, var) in
-            zip(collect(variables[:units_on].indices), variables[:units_on].container) if
-            row.id in units_on_with_simple_or_none_investment_ids
-        ]
+        units_on_with_simple_or_none_investment_vars =
+            _get_units_on_with_simple_or_none_investment_vars(connection, variables)
 
         indices = _append_available_units_data_simple_method(connection, table_name)
         expr_avail_simple_method =
@@ -348,6 +338,34 @@ function _append_available_units_data_simple_method(connection, table_name)
         ORDER BY cons.id
         ",
     )
+end
+
+# - Return juMP variables for units_on with compact investment method
+function _get_units_on_with_compact_investment_vars(connection, variables)
+    let units_on_with_compact_investment_ids =
+            [row.id for row in _get_units_on_with_compact_investment_ids(connection)],
+        units_on_with_compact_investment_vars = [
+            var for (row, var) in
+            zip(collect(variables[:units_on].indices), variables[:units_on].container) if
+            row.id in units_on_with_compact_investment_ids
+        ]
+
+        return units_on_with_compact_investment_vars
+    end
+end
+
+# - Return juMP variables for units_on with simple or none investment method
+function _get_units_on_with_simple_or_none_investment_vars(connection, variables)
+    let units_on_with_simple_or_none_investment_ids =
+            [row.id for row in _get_units_on_with_simple_or_none_investment_ids(connection)],
+        units_on_with_simple_or_none_investment_vars = [
+            var for (row, var) in
+            zip(collect(variables[:units_on].indices), variables[:units_on].container) if
+            row.id in units_on_with_simple_or_none_investment_ids
+        ]
+
+        return units_on_with_simple_or_none_investment_vars
+    end
 end
 
 # - Select IDs of units_on variables whose assets have a compact investment method
