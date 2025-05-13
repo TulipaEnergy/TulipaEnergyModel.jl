@@ -70,7 +70,10 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     ## Unit Commitment Constraints (basic implementation - more advanced will be added in 2025)
     # - Limit to the units on (i.e. commitment)
     # - For compact investment method
-    let table_name = :limit_units_on_compact_method, cons = constraints[table_name]
+    let table_name = :limit_units_on_compact_method,
+        cons = constraints[table_name],
+        units_on_indices = _get_units_on_ids_compact_investment(connection)
+
         indices = _append_available_units_data_compact_method(connection, table_name)
         expr_avail_compact_method =
             expressions[:available_asset_units_compact_method].expressions[:assets]
@@ -81,16 +84,19 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             [
                 @constraint(
                     model,
-                    units_on ≤
+                    variables[:units_on].container[row_units_on.id] ≤
                     sum(expr_avail_compact_method[avail_id] for avail_id in row.avail_indices),
                     base_name = "limit_units_on_compact_method[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                ) for (units_on, row) in zip(variables[:units_on].container, indices)
+                ) for (row_units_on, row) in zip(units_on_indices, indices)
             ],
         )
     end
 
     # - For simple and none investment method
-    let table_name = :limit_units_on_simple_method, cons = constraints[table_name]
+    let table_name = :limit_units_on_simple_method,
+        cons = constraints[table_name],
+        units_on_indices = _get_units_on_ids_simple_investment(connection)
+
         indices = _append_available_units_data_simple_method(connection, table_name)
         expr_avail_simple_method =
             expressions[:available_asset_units_simple_method].expressions[:assets]
@@ -101,9 +107,10 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             [
                 @constraint(
                     model,
-                    units_on ≤ expr_avail_simple_method[row.avail_id],
+                    variables[:units_on].container[row_units_on.id] ≤
+                    expr_avail_simple_method[row.avail_id],
                     base_name = "limit_units_on_simple_method[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                ) for (units_on, row) in zip(variables[:units_on].container, indices)
+                ) for (row_units_on, row) in zip(units_on_indices, indices)
             ],
         )
     end
@@ -328,6 +335,36 @@ function _append_available_units_data_simple_method(connection, table_name)
             ON cons.asset = asset.asset
         WHERE asset.investment_method in ('simple', 'none')
         ORDER BY cons.id
+        ",
+    )
+end
+
+# - Select IDs of units_on variables whose assets have a compact investment method
+function _get_units_on_ids_compact_investment(connection)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            var_units_on.id,
+        FROM var_units_on
+        LEFT JOIN asset
+            ON var_units_on.asset = asset.asset
+        WHERE asset.investment_method = 'compact'
+        ORDER BY var_units_on.id
+        ",
+    )
+end
+
+# - Select IDs of units_on variables whose assets have a simple or none investment method
+function _get_units_on_ids_simple_investment(connection)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            var_units_on.id,
+        FROM var_units_on
+        LEFT JOIN asset
+            ON var_units_on.asset = asset.asset
+        WHERE asset.investment_method in ('none', 'simple')
+        ORDER BY var_units_on.id
         ",
     )
 end
