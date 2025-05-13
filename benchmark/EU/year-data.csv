@@ -1,2 +1,2 @@
-year,length,is_milestone
-2050,8760,true
+is_milestone,length,year
+true,8760,2050
