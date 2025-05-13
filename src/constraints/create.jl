@@ -27,6 +27,8 @@ function compute_constraints_indices(connection)
             :min_energy_over_clustered_year,
             :max_energy_over_clustered_year,
             :transport_flow_limit_simple_method,
+            :min_outgoing_flow_for_transport_flows_without_unit_commitment,
+            :min_incoming_flow_for_transport_flows,
             :group_max_investment_limit,
             :group_min_investment_limit,
         )

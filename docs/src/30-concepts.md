@@ -52,6 +52,18 @@ By implementing this approach, we can reduce the number of variables and constra
 
 This example of a `phs` and a `wind` asset is useful for illustrating the advantages of this modeling approach and will be reused in the following sections. However, please keep in mind that there are other applications of hybrid configurations, such as battery-solar, hydro-solar, and electrolyzer-wind.
 
+### Additional explanation on transport flows
+
+In _TulipaEnergyModel.jl_, flows can be both input/output flows and transport flows (i.e., where you model a transmission asset). In the above illustrative example, `wind-balance` is an energy output flow, representing the production from `wind` directly sent to `balance`. In this case, the flow has a direction from `wind` to `balance`. However, in principle, any flow can be a transport flow and by definition in _TulipaEnergyModel.jl_, transport flows are bidirectional.
+
+Let's zoom in on the `phs-wind-balance` triangle and see what happens in the figure below. To the left, all three flows have transformed into transport flows, and they are now bidirectional. Flows can go towards `wind`, which can be counter-intuitive: what does it mean to have a producer receiving energy? Translating into a standard method may help the thinking, we are essentially modeling the case to the right. The producer cannot receive energy, but transport flows can pass through an extra node with a unidirectional flow from the producer. We reduce this unnecessary node, but the modeling problem is not changed.
+
+![Flexible connection with transport flows](./figs/flexible-connection-3.png)
+
+!!! warning "Be careful with the definition of flows"
+    1. Although transport flows are bidirectional, they must be defined in a single direction. For example, a producer like wind can only have outgoing flows. Thus, the flow between `wind` and `balance` must be specified as the flow from `wind` to `balance`, with its sign allowed to be free.
+    2. By having transport flows, we now model a different problem because flows can pass through `wind` following the direction from `balance` to `wind` to `phs`. However, this does not affect the unidirectional nature of charging by the flow from `wind` to `phs` and discharging by the flow from `phs` to `balance`, which remain fixed by the definition of the flows.
+
 ## [Flexible Time Resolution](@id flex-time-res)
 
 One of the core features of _TulipaEnergyModel.jl_ is that it can handle different time resolutions on the assets and the flows. Typically, the time resolution in an energy model is hourly, like in the following figure where we have a 6-hour energy system:

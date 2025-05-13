@@ -18,6 +18,7 @@ function add_transport_constraints!(
     expr_avail_export = expr_avail.expressions[:export]
     expr_avail_import = expr_avail.expressions[:import]
 
+    # - Capacity limits for transport flows
     let table_name = :transport_flow_limit_simple_method, cons = constraints[table_name]
         indices = _append_transport_data_to_indices(connection)
         var_flow = variables[:flow].container
@@ -85,6 +86,48 @@ function add_transport_constraints!(
                     base_name = "min_transport_flow_limit_simple_method[($(row.from_asset),$(row.to_asset)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, lower_bound_transport_flow) in
                 zip(indices, cons.expressions[:lower_bound_transport_flow])
+            ],
+        )
+    end
+
+    # - Minimum output flows limit if any of the flows is transport flow
+    # - This allows some negative flows but not all negative flows, so transport flows can pass through this asset
+    # - Holds for producers, conversion and storage assets
+    let table_name = :min_outgoing_flow_for_transport_flows_without_unit_commitment,
+        cons_name = Symbol("min_output_flows_limit_for_transport_flows_without_unit_commitment")
+
+        attach_constraint!(
+            model,
+            constraints[table_name],
+            cons_name,
+            [
+                @constraint(
+                    model,
+                    outgoing_flow ≥ 0,
+                    base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                ) for (row, outgoing_flow) in
+                zip(constraints[table_name].indices, constraints[table_name].expressions[:outgoing])
+            ],
+        )
+    end
+
+    # - Minimum input flows limit if any of the flows is transport flow
+    # - This allows some negative flows but not all negative flows, so transport flows can pass through this asset
+    # - Holds for conversion and storage assets
+    let table_name = :min_incoming_flow_for_transport_flows,
+        cons_name = Symbol("min_input_flows_limit_for_transport_flows")
+
+        attach_constraint!(
+            model,
+            constraints[table_name],
+            cons_name,
+            [
+                @constraint(
+                    model,
+                    incoming_flow ≥ 0,
+                    base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                ) for (row, incoming_flow) in
+                zip(constraints[table_name].indices, constraints[table_name].expressions[:incoming])
             ],
         )
     end
