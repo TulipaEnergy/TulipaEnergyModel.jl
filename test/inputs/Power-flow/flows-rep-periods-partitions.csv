@@ -1,4 +1,4 @@
 from_asset,to_asset,year,rep_period,specification,partition
-ccgt,hub,2030,1,uniform,6
-ccgt,demand,2030,1,uniform,2
-hub,demand,2030,1,uniform,3
+ccgt,hub,2030,1,uniform,1
+ccgt,demand,2030,1,uniform,3
+hub,demand,2030,1,uniform,2

@@ -179,6 +179,14 @@ function create_model(
         profiles,
     )
 
+    @timeit to "add_dc_power_flow_constraints!" add_dc_power_flow_constraints!(
+        connection,
+        model,
+        variables,
+        constraints,
+        model_parameters,
+    )
+
     if model_file_name != ""
         @timeit to "save model file" JuMP.write_to_file(model, model_file_name)
     end
