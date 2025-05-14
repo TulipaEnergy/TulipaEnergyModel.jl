@@ -38,14 +38,15 @@ using DuckDB, TulipaIO, TulipaEnergyModel
 
 # Set the input directory to the Tiny folder (which is in the test folder of the package)
 cp(joinpath(pkgdir(TulipaEnergyModel), "test", "inputs", "Tiny"), "example-data") # Copy the data folder to your project space
-input_dir = "example-data"
-readdir(input_dir) # Check the input directory is correct - this should show the names of the files in the folder
+instance_dir = "example-data"
+readdir(instance_dir) # Check the input directory is correct - this should show the names of the files in the folder
 
 # Create a DuckDB database connection
 connection = DBInterface.connect(DuckDB.DB)
 
 # Read the files into DuckDB tables - luckily the files are already formatted to fit the Model Schema
-read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
+read_csv_folder(connection, joinpath(instance_dir, "input"); database_schema = "input", schemas = TulipaEnergyModel.sql_input_schema_per_table_name)
+read_csv_folder(connection, joinpath(instance_dir, "cluster"); database_schema = "cluster", schemas = TulipaEnergyModel.sql_cluster_schema_per_table_name)
 
 # Run the scenario and save the result to the energy_problem
 energy_problem = run_scenario(connection)
@@ -68,9 +69,10 @@ using DuckDB, TulipaIO, TulipaEnergyModel
 
 # You can reuse the data you copied in the first tutorial (or copy it with the commented line below)
 # cp(joinpath(pkgdir(TulipaEnergyModel), "test", "inputs", "Tiny"), "example-data") # Create the path to the test folder
-input_dir = "example-data"
+instance_dir = "example-data"
 connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
+read_csv_folder(connection, joinpath(instance_dir, "input"); database_schema = "input", schemas = TulipaEnergyModel.sql_input_schema_per_table_name)
+read_csv_folder(connection, joinpath(instance_dir, "cluster"); database_schema = "cluster", schemas = TulipaEnergyModel.sql_cluster_schema_per_table_name)
 energy_problem = EnergyProblem(connection)
 ```
 

@@ -5,7 +5,7 @@ function compute_constraints_indices(connection)
     DuckDB.query(connection, read(query_file, String))
 
     constraints = Dict{Symbol,TulipaConstraint}(
-        key => TulipaConstraint(connection, "cons_$key") for key in (
+        key => TulipaConstraint(connection, "$key") for key in (
             :balance_conversion,
             :balance_consumer,
             :balance_hub,

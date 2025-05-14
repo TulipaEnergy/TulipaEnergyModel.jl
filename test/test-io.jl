@@ -6,6 +6,23 @@
     end
 end
 
+@testset "Verify namespaces" begin
+    connection = _tiny_fixture()
+    energy_problem =
+        TulipaEnergyModel.run_scenario(connection; output_folder = mktempdir(), show_log = false)
+    database_schemas = [row.schema_name for row in DuckDB.query(
+        connection,
+        "SELECT DISTINCT
+            schema_name
+        FROM duckdb_tables()
+        ORDER BY schema_name
+        ",
+    )]
+
+    @test database_schemas ==
+          ["cluster", "constraints", "expressions", "input", "main", "resolution", "variables"]
+end
+
 @testset "Output validation" begin
     @testset "Check that solution files are generated" begin
         connection = DBInterface.connect(DuckDB.DB)

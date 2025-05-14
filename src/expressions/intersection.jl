@@ -59,6 +59,7 @@ function attach_expression_on_constraints_grouping_variables!(
     grouped_cons_table_name = "t_grouped_$(cons.table_name)"
     _create_group_table_if_not_exist!(
         connection,
+        cons.database_schema,
         cons.table_name,
         grouped_cons_table_name,
         [:asset, :year, :rep_period],
@@ -68,6 +69,7 @@ function attach_expression_on_constraints_grouping_variables!(
     grouped_var_table_name = "t_grouped_$(var.table_name)"
     _create_group_table_if_not_exist!(
         connection,
+        var.database_schema,
         var.table_name,
         grouped_var_table_name,
         [:asset, :year, :rep_period],

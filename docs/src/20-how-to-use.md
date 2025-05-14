@@ -27,7 +27,7 @@ All tests should pass.
 ## Finding an input parameter
 
 !!! tip "Are you looking for an input parameter?"
-    Please visit the [Model Parameters](@ref schemas) section for a description and location of all model input parameters.
+    Please visit the [Data](@ref data) section for a description and location of all model input parameters.
 
 ## Running a Scenario
 
@@ -42,9 +42,9 @@ The `output_folder` is optional if the user wants to export the output.
 
 ### [Input](@id input)
 
-Currently, we only accept input from CSV files that follow the [Schemas](@ref schemas).
+Currently, we only accept input from CSV files that follow the [Table Schemas](@ref table_schemas).
 
-You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples of different predefined energy systems and features. Moreover, Tulipa's Offshore Bidding Zone Case Study can be found in <https://github.com/TulipaEnergy/Tulipa-OBZ-CaseStudy>. It shows how to start from user-friendly files and transform the data into the input files in the [Schemas](@ref schemas) through different functions.
+You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples of different predefined energy systems and features. Moreover, Tulipa's Offshore Bidding Zone Case Study can be found in <https://github.com/TulipaEnergy/Tulipa-OBZ-CaseStudy>. It shows how to start from user-friendly files and transform the data into the input files in the [Table Schemas](@ref table_schemas) through different functions.
 
 ### Writing the output to CSV
 
@@ -63,9 +63,10 @@ Here is an example running the Tiny case using the [GLPK](https://github.com/jum
 ```julia
 using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
 
-input_dir = "../../test/inputs/Tiny" # you path will be different
+instance_dir = "../../test/inputs/Tiny" # you path will be different
 connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
+read_csv_folder(connection, instance_dir; database_schema = "input", schemas = TulipaEnergyModel.sql_input_schema_per_table_name)
+read_csv_folder(connection, instance_dir; database_schema = "cluster", schemas = TulipaEnergyModel.sql_input_schema_per_table_name)
 energy_problem = run_scenario(connection; optimizer = GLPK.Optimizer)
 #OR create_model!(energy_problem; optimizer = GLPK.Optimizer)
 ```
@@ -273,7 +274,7 @@ Let's explore how the groups are set up in the test case called [Norse](https://
 ```@example display-group-setup
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../test/inputs/Norse/group-asset.csv" # hide
+input_asset_file = "../../test/inputs/Norse/input/group-asset.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 ```
 
@@ -282,7 +283,7 @@ In the given data, there are two groups: `renewables` and `ccgt`. Both groups ha
 Let's now explore which assets are in each group. To do so, we can take a look at the `asset.csv` file:
 
 ```@example display-group-setup
-input_asset_file = "../../test/inputs/Norse/asset.csv" # hide
+input_asset_file = "../../test/inputs/Norse/input/asset.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame) # hide
 assets = assets[.!ismissing.(assets.group), [:asset, :type, :group]] # hide
 ```
@@ -305,7 +306,7 @@ In order to set up a model with year information, the following steps are necess
 
 #### Year data
 
-Fill in all the years in [`year-data.csv`](@ref schemas) file by defining the `year` property and its parameters. Differentiate milestone years and non-milestone years.
+Fill in all the years in [`year-data.csv`](@ref table_schemas) file by defining the `year` property and its parameters. Differentiate milestone years and non-milestone years.
 
 - Milestone years are the years you would like to model. For example, if you want to model operation and/or investments in 2030, 2040, and 2050. These 3 years are then milestone years.
 - Non-milestone years are the commission years of existing units. For example, you want to consider a existing wind unit that has been commissioned in 2020, then 2020 is a non-milestone year.
@@ -349,7 +350,7 @@ Let's explain further using an example. To do so, we take a look at the `asset-b
 ```@example multi-year-setup
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../test/inputs/Multi-year Investments/asset-both.csv" # hide
+input_asset_file = "../../test/inputs/Multi-year Investments/input/asset-both.csv" # hide
 assets_data = CSV.read(input_asset_file, DataFrame) # hide
 assets_data = assets_data[:, [:asset, :milestone_year, :commission_year, :decommissionable, :initial_units]] # hide
 ```
@@ -372,7 +373,7 @@ Important to know that you can use different profiles for assets that are commis
 Let's explain further using an example. To do so, we can take a look at the `assets-profiles.csv` file:
 
 ```@example multi-year-setup
-input_asset_file = "../../test/inputs/Multi-year Investments/assets-profiles.csv" # hide
+input_asset_file = "../../test/inputs/Multi-year Investments/input/assets-profiles.csv" # hide
 assets_profiles = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 assets_profiles = assets_profiles[:, :] # hide
 ```
@@ -403,4 +404,4 @@ $\text{flow process A} + 0.8 \cdot \text{flow process B} \leq \text{C}$
 
 In that case the sum must be always below the total capacity $\text{C}$, but if you only produce flow through B then you can produce $1.25 \cdot \text{C}$ and still satisfy this constraint.
 
-To set up this parameter you need to fill in the information for the `flow_coefficient_in_capacity_constraint` in the `flow_commission` table, see more in the [model parameters](@ref schemas) section.
+To set up this parameter you need to fill in the information for the `flow_coefficient_in_capacity_constraint` in the `flow_commission` table, see more in the [model parameters](@ref table_schemas) section.
