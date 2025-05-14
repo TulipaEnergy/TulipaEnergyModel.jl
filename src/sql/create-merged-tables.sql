@@ -106,7 +106,7 @@ from
 union
 
 select distinct
-    CONCAT(ftrrp.from_asset, '_', ftrrp.to_asset) as asset,
+    CONCAT(flow.from_asset, '_', flow.to_asset) as asset,
     atrrp.year,
     atrrp.rep_period,
     atrrp.time_block_start,
@@ -114,10 +114,9 @@ select distinct
 from
     asset_time_resolution_rep_period as atrrp
 join
-    flow_time_resolution_rep_period as ftrrp
+    flow
     on (
-        atrrp.asset = ftrrp.from_asset
-        or atrrp.asset = ftrrp.to_asset
+        atrrp.asset = flow.from_asset
+        or atrrp.asset = flow.to_asset
     )
-    and atrrp.year = ftrrp.year
 ;

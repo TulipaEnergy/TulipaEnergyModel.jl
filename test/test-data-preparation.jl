@@ -16,6 +16,15 @@
 
     # Create mock tables for testing using register_data_frame
     table_rows = [
+        ("input_1", "death_star"),
+        ("input_2", "death_star"),
+        ("death_star", "output_1"),
+        ("death_star", "output_2"),
+    ]
+    flow = DataFrame(table_rows, [:from_asset, :to_asset])
+    DuckDB.register_data_frame(connection, flow, "flow")
+
+    table_rows = [
         ("input_1", "death_star", 2025, 1, 1, 1),
         ("input_1", "death_star", 2025, 1, 2, 5),
         ("input_2", "death_star", 2025, 1, 1, 2),
@@ -262,5 +271,5 @@
     end
 
     # test that the final number of tables is correct
-    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 19
+    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 20
 end
