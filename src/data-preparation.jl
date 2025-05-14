@@ -514,8 +514,15 @@ function create_highest_resolution_table!(connection)
     # - keep all unique time_block_start
     # - create corresponing time_block_end
 
-    for merged_table in
-        ("merged_" * x for x in ("in_flows", "out_flows", "assets_and_out_flows", "all_flows"))
+    for merged_table in (
+        "merged_" * x for x in (
+            "in_flows",
+            "out_flows",
+            "assets_and_out_flows",
+            "all_flows",
+            "flows_and_connecting_assets",
+        )
+    )
         table_name = replace(merged_table, "merged" => "t_highest")
         DuckDB.execute(
             connection,

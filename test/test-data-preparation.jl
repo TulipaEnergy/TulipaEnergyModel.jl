@@ -35,7 +35,8 @@
         "flow_time_resolution_rep_period",
     )
 
-    table_rows = [("death_star", 2025, 1, 1, 5)]
+    table_rows =
+        [("input_1", 2025, 1, 1, 3), ("input_1", 2025, 1, 4, 5), ("death_star", 2025, 1, 1, 5)]
     asset_time_resolution_rep_period =
         DataFrame(table_rows, [:asset, :year, :rep_period, :time_block_start, :time_block_end])
     DuckDB.register_data_frame(
@@ -69,7 +70,6 @@
     # Auxiliary information for the tests
     expected_cols = [:asset, :year, :rep_period, :time_block_start, :time_block_end]
     where_ = "asset LIKE '%death_star%' ORDER BY asset, rep_period, time_block_start, time_block_end"
-
     @testset "Test create_merge_tables!" begin
         TulipaEnergyModel.create_merged_tables!(connection)
 
@@ -157,6 +157,21 @@
         ]
         expected_table = DataFrame(expected_rows, expected_cols)
         @test merged_flows_relationship == expected_table
+
+        merged_flows_and_connecting_assets = TulipaIO.select_tbl(
+            connection,
+            "merged_flows_and_connecting_assets";
+            where_ = "asset = 'input_1_death_star' ORDER BY asset, rep_period, time_block_start, time_block_end",
+        )
+        expected_rows = [
+            ("input_1_death_star", 2025, 1, 1, 1),
+            ("input_1_death_star", 2025, 1, 1, 3),
+            ("input_1_death_star", 2025, 1, 1, 5),
+            ("input_1_death_star", 2025, 1, 2, 5),
+            ("input_1_death_star", 2025, 1, 4, 5),
+        ]
+        expected_table = DataFrame(expected_rows, expected_cols)
+        @test merged_flows_and_connecting_assets == expected_table
     end
 
     @testset "Test create_lowest_resolution_table!" begin
@@ -231,8 +246,21 @@
         ]
         expected_table = DataFrame(expected_rows, expected_cols)
         @test t_highest_out_flows == expected_table
+
+        t_highest_flows_and_connecting_assets = TulipaIO.select_tbl(
+            connection,
+            "t_highest_flows_and_connecting_assets";
+            where_ = "asset = 'input_1_death_star' ORDER BY asset, rep_period, time_block_start, time_block_end",
+        )
+        expected_rows = [
+            ("input_1_death_star", 2025, 1, 1, 1),
+            ("input_1_death_star", 2025, 1, 2, 3),
+            ("input_1_death_star", 2025, 1, 4, 5),
+        ]
+        expected_table = DataFrame(expected_rows, expected_cols)
+        @test t_highest_flows_and_connecting_assets == expected_table
     end
 
     # test that the final number of tables is correct
-    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 17
+    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 19
 end
