@@ -72,9 +72,9 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     # - For compact investment method
     let table_name = :limit_units_on_compact_method,
         cons = constraints[table_name],
-        units_on_indices = _get_units_on_ids_compact_investment(connection)
 
         indices = _append_available_units_data_compact_method(connection, table_name)
+
         expr_avail_compact_method =
             expressions[:available_asset_units_compact_method].expressions[:assets]
         attach_constraint!(
@@ -84,10 +84,10 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             [
                 @constraint(
                     model,
-                    variables[:units_on].container[row_units_on.id] ≤
+                    variables[:units_on].container[row.units_on_id] ≤
                     sum(expr_avail_compact_method[avail_id] for avail_id in row.avail_indices),
                     base_name = "limit_units_on_compact_method[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                ) for (row_units_on, row) in zip(units_on_indices, indices)
+                ) for row in indices
             ],
         )
     end
@@ -95,9 +95,9 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     # - For simple and none investment method
     let table_name = :limit_units_on_simple_method,
         cons = constraints[table_name],
-        units_on_indices = _get_units_on_ids_simple_investment(connection)
 
         indices = _append_available_units_data_simple_method(connection, table_name)
+
         expr_avail_simple_method =
             expressions[:available_asset_units_simple_method].expressions[:assets]
         attach_constraint!(
@@ -107,10 +107,10 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             [
                 @constraint(
                     model,
-                    variables[:units_on].container[row_units_on.id] ≤
+                    variables[:units_on].container[row.units_on_id] ≤
                     expr_avail_simple_method[row.avail_id],
                     base_name = "limit_units_on_simple_method[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                ) for (row_units_on, row) in zip(units_on_indices, indices)
+                ) for row in indices
             ],
         )
     end
@@ -302,12 +302,18 @@ function _append_available_units_data_compact_method(connection, table_name)
             ANY_VALUE(cons.time_block_start) AS time_block_start,
             ANY_VALUE(cons.time_block_end) AS time_block_end,
             ARRAY_AGG(expr_avail.id) AS avail_indices,
+            ANY_VALUE(var_units_on.id) AS units_on_id,
         FROM cons_$table_name AS cons
         LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
         LEFT JOIN asset
             ON cons.asset = asset.asset
+        LEFT JOIN var_units_on
+            ON var_units_on.asset = cons.asset
+            AND var_units_on.year = cons.year
+            AND var_units_on.rep_period = cons.rep_period
+            AND var_units_on.time_block_start = cons.time_block_start
         WHERE asset.investment_method = 'compact'
         GROUP BY cons.id
         ORDER BY cons.id
@@ -327,44 +333,20 @@ function _append_available_units_data_simple_method(connection, table_name)
             cons.time_block_start AS time_block_start,
             cons.time_block_end AS time_block_end,
             expr_avail.id AS avail_id,
+            var_units_on.id AS units_on_id,
         FROM cons_$table_name AS cons
         LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
         LEFT JOIN asset
             ON cons.asset = asset.asset
+        LEFT JOIN var_units_on
+            ON var_units_on.asset = cons.asset
+            AND var_units_on.year = cons.year
+            AND var_units_on.rep_period = cons.rep_period
+            AND var_units_on.time_block_start = cons.time_block_start
         WHERE asset.investment_method in ('simple', 'none')
         ORDER BY cons.id
-        ",
-    )
-end
-
-# - Select IDs of units_on variables whose assets have a compact investment method
-function _get_units_on_ids_compact_investment(connection)
-    return DuckDB.query(
-        connection,
-        "SELECT
-            var_units_on.id,
-        FROM var_units_on
-        LEFT JOIN asset
-            ON var_units_on.asset = asset.asset
-        WHERE asset.investment_method = 'compact'
-        ORDER BY var_units_on.id
-        ",
-    )
-end
-
-# - Select IDs of units_on variables whose assets have a simple or none investment method
-function _get_units_on_ids_simple_investment(connection)
-    return DuckDB.query(
-        connection,
-        "SELECT
-            var_units_on.id,
-        FROM var_units_on
-        LEFT JOIN asset
-            ON var_units_on.asset = asset.asset
-        WHERE asset.investment_method in ('none', 'simple')
-        ORDER BY var_units_on.id
         ",
     )
 end
