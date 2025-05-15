@@ -18,19 +18,17 @@ function add_flows_relationships_constraints!(connection, model, variables, cons
     attach_expression!(
         cons,
         :flow_1,
-        [
-            begin
-                @expression(model, sum(flows.container[id] for id in row.matching_ids))
-            end for row in grouped_indices_flow_1
+        JuMP.AffExpr[
+            @expression(model, sum(flows.container[id] for id in row.matching_ids)) for
+            row in grouped_indices_flow_1
         ],
     )
     attach_expression!(
         cons,
         :flow_2,
-        [
-            begin
-                @expression(model, sum(flows.container[id] for id in row.matching_ids))
-            end for row in grouped_indices_flow_2
+        JuMP.AffExpr[
+            @expression(model, sum(flows.container[id] for id in row.matching_ids)) for
+            row in grouped_indices_flow_2
         ],
     )
 
@@ -38,7 +36,7 @@ function add_flows_relationships_constraints!(connection, model, variables, cons
     attach_constraint!(
         model,
         cons,
-        :balance_consumer,
+        :flows_relationships,
         [
             begin
                 constraint_sense = if row.sense == "=="
@@ -51,12 +49,7 @@ function add_flows_relationships_constraints!(connection, model, variables, cons
                 @constraint(
                     model,
                     flow_1 - row.constant - row.ratio * flow_2 in constraint_sense,
-                    base_name = "flows_relationships[$(row.flow_1_from_asset)_$(row.flow_1_to_asset),
-                                                     $(row.flow_2_from_asset)_$(row.flow_2_to_asset),
-                                                     $(row.year),
-                                                     $(row.rep_period),
-                                                     $(row.time_block_start):$(row.time_block_end)
-                                                     ]"
+                    base_name = "flows_relationships[$(row.asset), $(row.year), $(row.rep_period), $(row.time_block_start):$(row.time_block_end)]"
                 )
             end for (row, flow_1, flow_2) in
             zip(cons.indices, cons.expressions[:flow_1], cons.expressions[:flow_2])
