@@ -31,6 +31,7 @@ function compute_constraints_indices(connection)
             :min_incoming_flow_for_transport_flows,
             :group_max_investment_limit,
             :group_min_investment_limit,
+            :flows_relationships,
         )
     )
 
