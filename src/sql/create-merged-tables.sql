@@ -102,11 +102,17 @@ select distinct
     ftrrp.time_block_end
 from
     flow_time_resolution_rep_period as ftrrp
+-- we only want the flows with dc_opf method
+left join flow_milestone as fm
+    on fm.from_asset = ftrrp.from_asset
+     and fm.to_asset = ftrrp.to_asset
+     and fm.milestone_year = ftrrp.year
+where fm.dc_opf
 
 union
 
 select distinct
-    CONCAT(flow.from_asset, '_', flow.to_asset) as asset,
+    CONCAT(fm.from_asset, '_', fm.to_asset) as asset,
     atrrp.year,
     atrrp.rep_period,
     atrrp.time_block_start,
@@ -114,9 +120,11 @@ select distinct
 from
     asset_time_resolution_rep_period as atrrp
 join
-    flow
+    flow_milestone as fm
     on (
-        atrrp.asset = flow.from_asset
-        or atrrp.asset = flow.to_asset
+        atrrp.asset = fm.from_asset
+        or atrrp.asset = fm.to_asset
     )
+      and fm.milestone_year = atrrp.year
+where fm.dc_opf
 ;

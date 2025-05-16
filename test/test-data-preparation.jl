@@ -15,14 +15,9 @@
     connection = DBInterface.connect(DuckDB.DB)
 
     # Create mock tables for testing using register_data_frame
-    table_rows = [
-        ("input_1", "death_star"),
-        ("input_2", "death_star"),
-        ("death_star", "output_1"),
-        ("death_star", "output_2"),
-    ]
-    flow = DataFrame(table_rows, [:from_asset, :to_asset])
-    DuckDB.register_data_frame(connection, flow, "flow")
+    table_rows = [("input_1", "death_star", 2025, true), ("input_2", "death_star", 2025, false)]
+    flow_milestone = DataFrame(table_rows, [:from_asset, :to_asset, :milestone_year, :dc_opf])
+    DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
 
     table_rows = [
         ("input_1", "death_star", 2025, 1, 1, 1),
@@ -170,7 +165,7 @@
         merged_flows_and_connecting_assets = TulipaIO.select_tbl(
             connection,
             "merged_flows_and_connecting_assets";
-            where_ = "asset = 'input_1_death_star' ORDER BY asset, rep_period, time_block_start, time_block_end",
+            where_ = "asset LIKE '%death_star' ORDER BY asset, rep_period, time_block_start, time_block_end",
         )
         expected_rows = [
             ("input_1_death_star", 2025, 1, 1, 1),
@@ -259,7 +254,7 @@
         t_highest_flows_and_connecting_assets = TulipaIO.select_tbl(
             connection,
             "t_highest_flows_and_connecting_assets";
-            where_ = "asset = 'input_1_death_star' ORDER BY asset, rep_period, time_block_start, time_block_end",
+            where_ = "asset LIKE '%death_star' ORDER BY asset, rep_period, time_block_start, time_block_end",
         )
         expected_rows = [
             ("input_1_death_star", 2025, 1, 1, 1),
