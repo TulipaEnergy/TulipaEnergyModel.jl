@@ -88,3 +88,35 @@ create or replace temp table merged_flows_relationship as
         )
         and ftrrp.year = fr.milestone_year
 ;
+
+-- merged table for flows and connecting assets:
+-- 1. Define the asset as the flow
+-- 2. Get the resolution of the flow and the connecting asset (i.e., UNION)
+
+create or replace temp table merged_flows_and_connecting_assets as
+select distinct
+    CONCAT(ftrrp.from_asset, '_', ftrrp.to_asset) as asset,
+    ftrrp.year,
+    ftrrp.rep_period,
+    ftrrp.time_block_start,
+    ftrrp.time_block_end
+from
+    flow_time_resolution_rep_period as ftrrp
+
+union
+
+select distinct
+    CONCAT(flow.from_asset, '_', flow.to_asset) as asset,
+    atrrp.year,
+    atrrp.rep_period,
+    atrrp.time_block_start,
+    atrrp.time_block_end
+from
+    asset_time_resolution_rep_period as atrrp
+join
+    flow
+    on (
+        atrrp.asset = flow.from_asset
+        or atrrp.asset = flow.to_asset
+    )
+;

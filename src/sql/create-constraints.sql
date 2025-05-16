@@ -476,3 +476,29 @@ where
 
 drop sequence id
 ;
+
+create sequence id start 1
+;
+
+create table cons_dc_power_flow as
+select
+    nextval('id') as id,
+    split_part(t_high.asset, '_', 1) as from_asset,
+    split_part(t_high.asset, '_', 2) as to_asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start,
+    t_high.time_block_end
+from
+    t_highest_flows_and_connecting_assets as t_high
+left join flow on t_high.asset = CONCAT(flow.from_asset, '_', flow.to_asset)
+left join flow_milestone on flow_milestone.from_asset = flow.from_asset
+    and flow_milestone.to_asset = flow.to_asset
+    and flow_milestone.milestone_year = t_high.year
+where
+    flow.is_transport
+    and flow_milestone.dc_opf
+;
+
+drop sequence id
+;
