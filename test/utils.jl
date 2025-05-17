@@ -31,7 +31,7 @@ function _is_constraint_equal(left, right)
 end
 
 function _show_constraint(con)
-    for (var, coef) in sort(con.func.terms; by = name)
+    for (var, coef) in sort(con.func.terms; by = JuMP.name)
         println(_signed_string(coef), " ", var)
     end
     println(_signed_string(con.func.constant))

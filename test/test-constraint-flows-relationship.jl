@@ -191,7 +191,7 @@
     expected_coefficients =
         [[3, 1, -4], [1, -1], [-10, -20, 3], [-20, 2], [1, 2, 3], [2, 2], [1, 1, -2], [3, -3]]
     expected_flows_ids =
-        [[6, 5, 7], [6, 8], [5, 2, 1], [6, 2], [2, 1, 5], [2, 6], [2, 1, 3], [2, 4]]
+        [[5, 6, 7], [6, 8], [1, 2, 5], [2, 6], [1, 2, 5], [2, 6], [1, 2, 3], [2, 4]]
     expected_senses = [
         MathOptInterface.EqualTo(0.0),
         MathOptInterface.EqualTo(0.0),
@@ -207,13 +207,13 @@
     # test the constraints
     var_flow = variables[:flow].container
     for (i, constraint) in enumerate(model[:flows_relationships])
+        observed_con = JuMP.constraint_object(constraint)
         expected_con = JuMP.@build_constraint(
             sum(
                 expected_coefficients[i][j] * var_flow[id] for
                 (j, id) in enumerate(expected_flows_ids[i])
             ) - expected_rhs[i] in expected_senses[i]
         )
-        expected_con = JuMP.constraint_object(constraint)
-        @test _is_constraint_equal(expected_con, expected_con)
+        @test _is_constraint_equal(observed_con, expected_con)
     end
 end
