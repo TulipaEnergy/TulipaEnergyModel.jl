@@ -1,4 +1,10 @@
+drop sequence if exists id
+;
+
 create sequence id start 1
+;
+
+drop table if exists var_flow
 ;
 
 create table var_flow as
@@ -20,6 +26,9 @@ drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists var_units_on
 ;
 
 create table var_units_on as
@@ -45,6 +54,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists var_electricity_angle
+;
+
 create table var_electricity_angle as
 select
     nextval('id') as id,
@@ -52,7 +64,7 @@ select
     atr.year,
     atr.rep_period,
     atr.time_block_start,
-    any_value(atr.time_block_end) as time_block_end,
+    any_value (atr.time_block_end) as time_block_end,
 from
     -- The angle resolution is the same as the time resolution of the asset
     asset_time_resolution_rep_period as atr
@@ -70,18 +82,24 @@ from
 where
     flow.is_transport
     and flow_milestone.dc_opf
--- We may end up with duplicates because an asset can have both incoming and outgoing flows
--- Or it can have multiple flows
--- GROUP BY is used to remove duplicates
--- Note SELECT only happens after the GROUP BY, so id is unique for each row.
+    -- We may end up with duplicates because an asset can have both incoming and outgoing flows
+    -- Or it can have multiple flows
+    -- GROUP BY is used to remove duplicates
+    -- Note SELECT only happens after the GROUP BY, so id is unique for each row.
 group by
-    atr.asset, atr.year, atr.rep_period, atr.time_block_start
+    atr.asset,
+    atr.year,
+    atr.rep_period,
+    atr.time_block_start
 ;
 
 drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists var_is_charging
 ;
 
 create table var_is_charging as
@@ -105,6 +123,9 @@ drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists var_storage_level_rep_period
 ;
 
 create table var_storage_level_rep_period as
@@ -141,6 +162,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists var_storage_level_over_clustered_year
+;
+
 create table var_storage_level_over_clustered_year as
 with
     filtered_assets as (
@@ -173,6 +197,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists var_flows_investment
+;
+
 create table var_flows_investment as
 select
     nextval('id') as id,
@@ -199,6 +226,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists var_assets_investment
+;
+
 create table var_assets_investment as
 select
     nextval('id') as id,
@@ -222,6 +252,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists var_assets_decommission
+;
+
 create table var_assets_decommission as
 select
     nextval('id') as id,
@@ -242,6 +275,9 @@ drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists var_flows_decommission
 ;
 
 create table var_flows_decommission as
@@ -267,6 +303,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists var_assets_investment_energy
+;
+
 create table var_assets_investment_energy as
 select
     nextval('id') as id,
@@ -290,6 +329,9 @@ drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists var_assets_decommission_energy
 ;
 
 create table var_assets_decommission_energy as

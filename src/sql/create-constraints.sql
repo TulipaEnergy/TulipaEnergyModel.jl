@@ -1,4 +1,10 @@
+drop sequence if exists id
+;
+
 create sequence id start 1
+;
+
+drop table if exists cons_balance_conversion
 ;
 
 create table cons_balance_conversion as
@@ -27,6 +33,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_balance_consumer
+;
+
 create table cons_balance_consumer as
 select
     nextval('id') as id,
@@ -42,6 +51,9 @@ drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists cons_balance_hub
 ;
 
 create table cons_balance_hub as
@@ -61,6 +73,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_capacity_incoming_simple_method
+;
+
 create table cons_capacity_incoming_simple_method as
 select
     nextval('id') as id,
@@ -76,6 +91,9 @@ drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists cons_capacity_incoming_simple_method_non_investable_storage_with_binary
 ;
 
 create table cons_capacity_incoming_simple_method_non_investable_storage_with_binary as
@@ -99,6 +117,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_capacity_incoming_simple_method_investable_storage_with_binary
+;
+
 create table cons_capacity_incoming_simple_method_investable_storage_with_binary as
 select
     nextval('id') as id,
@@ -120,6 +141,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_capacity_outgoing_compact_method
+;
+
 create table cons_capacity_outgoing_compact_method as
 select
     nextval('id') as id,
@@ -129,13 +153,16 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
-    and asset.investment_method == 'compact'
+    and asset.investment_method = 'compact'
 ;
 
 drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists cons_capacity_outgoing_simple_method
 ;
 
 create table cons_capacity_outgoing_simple_method as
@@ -154,6 +181,9 @@ drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists cons_capacity_outgoing_simple_method_non_investable_storage_with_binary
 ;
 
 create table cons_capacity_outgoing_simple_method_non_investable_storage_with_binary as
@@ -177,6 +207,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_capacity_outgoing_simple_method_investable_storage_with_binary
+;
+
 create table cons_capacity_outgoing_simple_method_investable_storage_with_binary as
 select
     nextval('id') as id,
@@ -198,22 +231,31 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_min_outgoing_flow_for_transport_flows_without_unit_commitment as
+drop table if exists cons_min_outgoing_flow_for_transport_flows_without_unit_commitment
+;
 
+create table cons_min_outgoing_flow_for_transport_flows_without_unit_commitment as
 -- We want to check if the outgoing flows of an asset have transport flows
 -- This information is gathered from the flow table
 -- COALESCE is used to handle the case where there are no outgoing flows
-with transport_flow_info as (
-    select
-    asset.asset,
-    coalesce(
-        (select bool_or(flow.is_transport)
-         from flow
-         where flow.from_asset = asset.asset),
-         false
-    ) as outgoing_flows_have_transport_flows,
-    from asset
-)
+with
+    transport_flow_info as (
+        select
+            asset.asset,
+            coalesce(
+                (
+                    select
+                        bool_or(flow.is_transport)
+                    from
+                        flow
+                    where
+                        flow.from_asset = asset.asset
+                ),
+                false
+            ) as outgoing_flows_have_transport_flows,
+        from
+            asset
+    )
 select
     nextval('id') as id,
     t_high.*
@@ -234,21 +276,30 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_min_incoming_flow_for_transport_flows as
+drop table if exists cons_min_incoming_flow_for_transport_flows
+;
 
+create table cons_min_incoming_flow_for_transport_flows as
 -- Similar to the previous query, but for incoming flows
 -- Also for assets with unit commitment
-with transport_flow_info as (
-    select
-    asset.asset,
-    coalesce(
-        (select bool_or(flow.is_transport)
-         from flow
-         where flow.to_asset = asset.asset),
-         false
-    ) as incoming_flows_have_transport_flows,
-    from asset
-)
+with
+    transport_flow_info as (
+        select
+            asset.asset,
+            coalesce(
+                (
+                    select
+                        bool_or(flow.is_transport)
+                    from
+                        flow
+                    where
+                        flow.to_asset = asset.asset
+                ),
+                false
+            ) as incoming_flows_have_transport_flows,
+        from
+            asset
+    )
 select
     nextval('id') as id,
     t_high.*
@@ -264,13 +315,20 @@ where
 drop sequence id
 ;
 
+drop table if exists cons_limit_units_on_compact_method
+;
+
 create table cons_limit_units_on_compact_method as
 select
     *
 from
     var_units_on
     left join asset on var_units_on.asset = asset.asset
-    where asset.investment_method = 'compact'
+where
+    asset.investment_method = 'compact'
+;
+
+drop table if exists cons_limit_units_on_simple_method
 ;
 
 create table cons_limit_units_on_simple_method as
@@ -279,10 +337,14 @@ select
 from
     var_units_on
     left join asset on var_units_on.asset = asset.asset
-    where asset.investment_method in ('simple', 'none')
+where
+    asset.investment_method in ('simple', 'none')
 ;
 
 create sequence id start 1
+;
+
+drop table if exists cons_min_output_flow_with_unit_commitment
 ;
 
 create table cons_min_output_flow_with_unit_commitment as
@@ -303,6 +365,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_max_output_flow_with_basic_unit_commitment
+;
+
 create table cons_max_output_flow_with_basic_unit_commitment as
 select
     nextval('id') as id,
@@ -320,6 +385,9 @@ drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists cons_max_ramp_with_unit_commitment
 ;
 
 create table cons_max_ramp_with_unit_commitment as
@@ -342,6 +410,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_max_ramp_without_unit_commitment
+;
+
 create table cons_max_ramp_without_unit_commitment as
 select
     nextval('id') as id,
@@ -356,11 +427,17 @@ where
     and asset.unit_commitment_method != 'basic'
 ;
 
+drop table if exists cons_balance_storage_rep_period
+;
+
 create table cons_balance_storage_rep_period as
 select
     *
 from
     var_storage_level_rep_period
+;
+
+drop table if exists cons_balance_storage_over_clustered_year
 ;
 
 create table cons_balance_storage_over_clustered_year as
@@ -374,6 +451,9 @@ drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists cons_min_energy_over_clustered_year
 ;
 
 create table cons_min_energy_over_clustered_year as
@@ -397,6 +477,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_max_energy_over_clustered_year
+;
+
 create table cons_max_energy_over_clustered_year as
 select
     nextval('id') as id,
@@ -416,6 +499,9 @@ drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists cons_transport_flow_limit_simple_method
 ;
 
 create table cons_transport_flow_limit_simple_method as
@@ -442,6 +528,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_group_max_investment_limit
+;
+
 create table cons_group_max_investment_limit as
 select
     nextval('id') as id,
@@ -459,6 +548,9 @@ drop sequence id
 ;
 
 create sequence id start 1
+;
+
+drop table if exists cons_group_min_investment_limit
 ;
 
 create table cons_group_min_investment_limit as
@@ -484,6 +576,10 @@ create sequence id start 1
 -- It joins the `cons_flows_relationships` table with the `flows_relationships` table
 -- using a composite key created by concatenating the flows from/to columns in the `flows_relationships` table.
 -- since the asset created in the `t_lowest_flows_relationship` table is a composite key.
+--
+drop table if exists cons_flows_relationships
+;
+
 create table cons_flows_relationships as
 select
     nextval('id') as id,
@@ -497,11 +593,15 @@ select
     fr.ratio,
 from
     t_lowest_flows_relationship as t_low
-    left join flows_relationships AS fr
-    on t_low.asset = CONCAT(fr.flow_1_from_asset, '_',
-                           fr.flow_1_to_asset, '_',
-                           fr.flow_2_from_asset, '_',
-                           fr.flow_2_to_asset)
+    left join flows_relationships as fr on t_low.asset = concat(
+        fr.flow_1_from_asset,
+        '_',
+        fr.flow_1_to_asset,
+        '_',
+        fr.flow_2_from_asset,
+        '_',
+        fr.flow_2_to_asset
+    )
     and t_low.year = fr.milestone_year
 ;
 

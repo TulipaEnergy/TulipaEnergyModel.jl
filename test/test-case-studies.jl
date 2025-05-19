@@ -27,6 +27,11 @@ end
         _read_csv_folder(connection, dir)
         energy_problem = TulipaEnergyModel.run_scenario(connection; optimizer, show_log = false)
         @test energy_problem.objective_value ≈ 269238.43825 rtol = 1e-8
+        @testset "populate_with_defaults shouldn't change the solution" begin
+            TulipaEnergyModel.populate_with_defaults!(connection)
+            energy_problem = TulipaEnergyModel.run_scenario(connection; optimizer, show_log = false)
+            @test energy_problem.objective_value ≈ 269238.43825 rtol = 1e-8
+        end
     end
 end
 
@@ -36,6 +41,11 @@ end
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test energy_problem.objective_value ≈ 2542.234377 atol = 1e-5
+    @testset "populate_with_defaults shouldn't change the solution" begin
+        TulipaEnergyModel.populate_with_defaults!(connection)
+        energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+        @test energy_problem.objective_value ≈ 2542.234377 atol = 1e-5
+    end
 end
 
 @testset "UC ramping Case Study" begin
@@ -52,6 +62,16 @@ end
         show_log = false,
     )
     @test energy_problem.objective_value ≈ 293074.923309 atol = 1e-5
+    @testset "populate_with_defaults shouldn't change the solution" begin
+        TulipaEnergyModel.populate_with_defaults!(connection)
+        energy_problem = TulipaEnergyModel.run_scenario(
+            connection;
+            optimizer,
+            optimizer_parameters,
+            show_log = false,
+        )
+        @test energy_problem.objective_value ≈ 293074.923309 atol = 1e-5
+    end
 end
 
 @testset "Tiny Variable Resolution Case Study" begin
@@ -60,6 +80,11 @@ end
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test energy_problem.objective_value ≈ 28.45872 atol = 1e-5
+    @testset "populate_with_defaults shouldn't change the solution" begin
+        TulipaEnergyModel.populate_with_defaults!(connection)
+        energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+        @test energy_problem.objective_value ≈ 28.45872 atol = 1e-5
+    end
 end
 
 @testset "Multi-year Case Study" begin
@@ -72,6 +97,15 @@ end
         show_log = false,
     )
     @test energy_problem.objective_value ≈ 3458577.01472 atol = 1e-5
+    @testset "populate_with_defaults shouldn't change the solution" begin
+        TulipaEnergyModel.populate_with_defaults!(connection)
+        energy_problem = TulipaEnergyModel.run_scenario(
+            connection;
+            model_parameters_file = joinpath(@__DIR__, "inputs", "model-parameters-example.toml"),
+            show_log = false,
+        )
+        @test energy_problem.objective_value ≈ 3458577.01472 atol = 1e-5
+    end
 end
 
 @testset "Power Flow Case Study" begin
@@ -80,6 +114,11 @@ end
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test energy_problem.objective_value ≈ 417486.99986 atol = 1e-5
+    @testset "populate_with_defaults shouldn't change the solution" begin
+        TulipaEnergyModel.populate_with_defaults!(connection)
+        energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+        @test energy_problem.objective_value ≈ 417486.99986 atol = 1e-5
+    end
 end
 
 @testset "Infeasible Case Study" begin
