@@ -2,3 +2,4 @@ from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,invest
 ccgt,demand,2030,0.0,0.0,0.0,,1
 ccgt,hub,2030,0.0,0.0,0.0,,1
 hub,demand,2030,0.0,0.0,0.0,,1
+import,hub,2030,0.0,0.0,0.0,,1

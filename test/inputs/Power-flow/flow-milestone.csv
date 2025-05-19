@@ -2,3 +2,4 @@ from_asset,to_asset,milestone_year,investable,variable_cost,reactance,dc_opf
 ccgt,demand,2030,false,0.05,0.3,true
 ccgt,hub,2030,false,0.05,0.3,true
 hub,demand,2030,false,0,0.3,true
+import,hub,2030,false,0.05,0.3,false
