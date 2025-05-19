@@ -476,3 +476,34 @@ where
 
 drop sequence id
 ;
+
+create sequence id start 1
+;
+
+-- This query fetches and appends flows relationships data to constraint table
+-- It joins the `cons_flows_relationships` table with the `flows_relationships` table
+-- using a composite key created by concatenating the flows from/to columns in the `flows_relationships` table.
+-- since the asset created in the `t_lowest_flows_relationship` table is a composite key.
+create table cons_flows_relationships as
+select
+    nextval('id') as id,
+    t_low.*,
+    fr.flow_1_from_asset,
+    fr.flow_1_to_asset,
+    fr.flow_2_from_asset,
+    fr.flow_2_to_asset,
+    fr.sense,
+    fr.constant,
+    fr.ratio,
+from
+    t_lowest_flows_relationship as t_low
+    left join flows_relationships AS fr
+    on t_low.asset = CONCAT(fr.flow_1_from_asset, '_',
+                           fr.flow_1_to_asset, '_',
+                           fr.flow_2_from_asset, '_',
+                           fr.flow_2_to_asset)
+    and t_low.year = fr.milestone_year
+;
+
+drop sequence id
+;
