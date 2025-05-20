@@ -34,6 +34,22 @@
         end
     end
 
+    @testset "Test that populate_with_defaults won't delete extra columns" begin
+        connection = _tiny_fixture()
+
+        DuckDB.query(connection, "ALTER TABLE asset ADD COLUMN extra INTEGER")
+
+        TulipaEnergyModel.populate_with_defaults!(connection)
+
+        # Make sure that there is one (and only one) column `extra` in `asset`
+        @test TulipaEnergyModel.get_single_element_from_query_and_ensure_its_only_one(
+            DuckDB.query(
+                connection,
+                "SELECT COUNT(*) FROM duckdb_columns() WHERE table_name = 'asset' AND column_name = 'extra'",
+            ),
+        ) == 1
+    end
+
     @testset "Test 1 missing column in Tiny" begin
         connection = _tiny_fixture()
 

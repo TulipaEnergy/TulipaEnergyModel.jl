@@ -28,9 +28,9 @@ All deriving types must satisfy:
 abstract type TulipaTabularIndex end
 
 function get_num_rows(connection, table_name::Union{String,Symbol})
-    return only([
-        row[1] for row in DuckDB.query(connection, "SELECT COUNT(*) FROM $table_name")
-    ])::Int64
+    return get_single_element_from_query_and_ensure_its_only_one(
+        DuckDB.query(connection, "SELECT COUNT(*) FROM $table_name"),
+    )::Int64
 end
 
 function get_num_rows(connection, object::TulipaTabularIndex)
@@ -71,10 +71,9 @@ mutable struct TulipaConstraint <: TulipaTabularIndex
         return new(
             DuckDB.query(connection, "SELECT * FROM $table_name"),
             table_name,
-            only([ # only makes sure that a single value is returned
-                row.num_rows for
-                row in DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM $table_name")
-            ]), # This loop is required to access the query resulted, because it's a lazy struct
+            get_single_element_from_query_and_ensure_its_only_one(
+                DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM $table_name"),
+            ),
             Symbol[],
             Dict(),
             Dict(),
@@ -96,10 +95,9 @@ mutable struct TulipaExpression <: TulipaTabularIndex
         return new(
             DuckDB.query(connection, "SELECT * FROM $table_name"),
             table_name,
-            only([
-                row.num_rows for
-                row in DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM $table_name")
-            ]),
+            get_single_element_from_query_and_ensure_its_only_one(
+                DuckDB.query(connection, "SELECT COUNT(*) AS num_rows FROM $table_name"),
+            ),
             Dict(),
         )
     end

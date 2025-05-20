@@ -45,16 +45,16 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                             var_storage_level[row.id-1]
                         else
                             # Find last id of this group (there are probably cheaper ways, in case this becomes expensive)
-                            last_id = only([
-                                row[1] for row in DuckDB.query(
+                            last_id = get_single_element_from_query_and_ensure_its_only_one(
+                                DuckDB.query(
                                     connection,
                                     "SELECT
                                         MAX(id)
                                     FROM cons_$table_name
                                     WHERE asset = '$(row.asset)' AND year = $(row.year) AND rep_period = $(row.rep_period)
                                     ",
-                                )
-                            ])::Int
+                                ),
+                            )::Int
                             var_storage_level[last_id]
                         end
                         computed_storage_loss_coef = 1.0
@@ -163,16 +163,16 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         previous_level::JuMP.VariableRef = if row.period_block_start > 1
                             var_storage_level[row.id-1]
                         else
-                            last_id = only([
-                                row[1] for row in DuckDB.query(
+                            last_id = get_single_element_from_query_and_ensure_its_only_one(
+                                DuckDB.query(
                                     connection,
                                     "SELECT
                                         MAX(id)
                                     FROM cons_$table_name
                                     WHERE asset = '$(row.asset)' AND year = $(row.year)
                                     ",
-                                )
-                            ])::Int
+                                ),
+                            )::Int
                             var_storage_level[last_id]
                         end
                         computed_storage_loss_coef = 1.0

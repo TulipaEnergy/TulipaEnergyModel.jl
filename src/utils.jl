@@ -94,3 +94,17 @@ function _create_group_table_if_not_exist!(
 
     return
 end
+
+"""
+    get_single_element_from_query_and_ensure_its_only_one(query_result :: QueryResult)
+
+Given a DuckDB `query_result` (output of `DuckDB.query(...)` or `DuckDB.execute`),
+return the single element returned by it.
+
+In other words, this assumes that `query_result` has a single row with a single column.
+
+We use `only` twice to obtain this single element.
+"""
+function get_single_element_from_query_and_ensure_its_only_one(query_result::DuckDB.QueryResult)
+    return only(only(query_result))
+end
