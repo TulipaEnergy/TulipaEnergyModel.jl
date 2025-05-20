@@ -72,13 +72,13 @@ function _validate_has_all_tables_and_columns!(connection)
         ]
         if length(columns_from_connection) == 0
             # Just to make sure that this is not a random case with no columns but the table exists
-            has_table =
-                only([
-                    row.count for row in DuckDB.query(
-                        connection,
-                        "SELECT COUNT(table_name) as count FROM duckdb_tables() WHERE table_name = '$table_name'",
-                    )
-                ]) == 1
+            count_tables = get_single_element_from_query_and_ensure_its_only_one(
+                DuckDB.query(
+                    connection,
+                    "SELECT COUNT(table_name) as count FROM duckdb_tables() WHERE table_name = '$table_name'",
+                ),
+            )
+            has_table = count_tables == 1
             if !has_table
                 push!(error_messages, "Table '$table_name' expected but not found")
                 continue

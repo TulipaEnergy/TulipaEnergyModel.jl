@@ -83,13 +83,13 @@ function populate_with_defaults!(connection)
             FROM $table_name",
         )
         # DROP TABLE OR VIEW
-        is_table =
-            only([
-                row.count for row in DuckDB.query(
-                    connection,
-                    "SELECT COUNT(*) AS count FROM duckdb_tables WHERE table_name='$table_name'",
-                )
-            ]) > 0
+        count_tables = get_single_element_from_query_and_ensure_its_only_one(
+            DuckDB.query(
+                connection,
+                "SELECT COUNT(*) AS count FROM duckdb_tables WHERE table_name='$table_name'",
+            ),
+        )
+        is_table = count_tables > 0
         if is_table
             DuckDB.query(connection, "DROP TABLE $table_name")
         else

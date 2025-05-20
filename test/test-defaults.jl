@@ -42,12 +42,10 @@
         TulipaEnergyModel.populate_with_defaults!(connection)
 
         # Make sure that there is one (and only one) column `extra` in `asset`
-        @test only(
-            only(
-                DuckDB.query(
-                    connection,
-                    "SELECT COUNT(*) FROM duckdb_columns() WHERE table_name = 'asset' AND column_name = 'extra'",
-                ),
+        @test TulipaEnergyModel.get_single_element_from_query_and_ensure_its_only_one(
+            DuckDB.query(
+                connection,
+                "SELECT COUNT(*) FROM duckdb_columns() WHERE table_name = 'asset' AND column_name = 'extra'",
             ),
         ) == 1
     end

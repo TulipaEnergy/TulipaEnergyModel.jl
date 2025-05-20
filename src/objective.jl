@@ -10,10 +10,9 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 
     social_rate = model_parameters.discount_rate
     discount_year = model_parameters.discount_year
-    end_of_horizon = only([
-        row[1] for row in
-        DuckDB.query(connection, "SELECT MAX(year) AS end_of_horizon FROM rep_periods_data")
-    ])
+    end_of_horizon = get_single_element_from_query_and_ensure_its_only_one(
+        DuckDB.query(connection, "SELECT MAX(year) AS end_of_horizon FROM rep_periods_data"),
+    )
 
     constants = (; social_rate, discount_year, end_of_horizon)
 

@@ -474,18 +474,13 @@ end
 
 function add_expressions_to_constraints!(connection, variables, constraints)
     # creating a workspace with enough entries for any of the representative periods or normal periods
-    maximum_num_timesteps = Int64(
-        only(
-            row[1] for
-            row in DuckDB.query(connection, "SELECT MAX(num_timesteps) FROM rep_periods_data")
-        ),
-    )
-    maximum_num_periods = Int64(
-        only(
-            row[1] for
-            row in DuckDB.query(connection, "SELECT MAX(period) FROM rep_periods_mapping")
-        ),
-    )
+    maximum_num_timesteps = get_single_element_from_query_and_ensure_its_only_one(
+        DuckDB.query(connection, "SELECT MAX(num_timesteps::BIGINT) FROM rep_periods_data"),
+    )::Int64
+
+    maximum_num_periods = get_single_element_from_query_and_ensure_its_only_one(
+        DuckDB.query(connection, "SELECT MAX(period::BIGINT) FROM rep_periods_mapping"),
+    )::Int64
     Tmax = max(maximum_num_timesteps, maximum_num_periods)
     workspace = [Dict{Int,Float64}() for _ in 1:Tmax]
 
