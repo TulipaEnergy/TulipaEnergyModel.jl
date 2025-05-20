@@ -17,10 +17,12 @@ function add_consumer_constraints!(connection, model, constraints, profiles)
         :balance_consumer,
         [
             begin
-                consumer_balance_sense = if ismissing(row.consumer_balance_sense)
+                consumer_balance_sense = if row.consumer_balance_sense == "=="
                     MathOptInterface.EqualTo(0.0)
-                else
+                elseif row.consumer_balance_sense == ">="
                     MathOptInterface.GreaterThan(0.0)
+                else
+                    MathOptInterface.LessThan(0.0)
                 end
                 # On demand computation of the mean
                 demand_agg = _profile_aggregate(

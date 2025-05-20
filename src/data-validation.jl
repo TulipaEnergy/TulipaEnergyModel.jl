@@ -148,10 +148,13 @@ function _validate_schema_one_of_constraints!(connection)
         if haskey(attr, "constraints") && haskey(attr["constraints"], "oneOf")
             valid_types = attr["constraints"]["oneOf"]
             valid_types_string = join([TulipaIO.FmtSQL.fmt_quote(s) for s in valid_types], ", ")
-            for row in DuckDB.query(
-                connection,
-                "SELECT $col FROM $table_name WHERE $col NOT IN ($valid_types_string)",
-            )
+
+            query_str = "SELECT $col FROM $table_name WHERE $col NOT IN ($valid_types_string)"
+            # The query above alone does not catch NULL. So if NULLs are not in the list, improve the query
+            if !(nothing in valid_types)
+                query_str *= " OR $col IS NULL"
+            end
+            for row in DuckDB.query(connection, query_str)
                 push!(
                     error_messages,
                     "Table '$table_name' has bad value for column '$col': '$(row[1])'",
