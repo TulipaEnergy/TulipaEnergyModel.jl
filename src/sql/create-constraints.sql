@@ -611,6 +611,9 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_dc_power_flow
+;
+
 create table cons_dc_power_flow as
 select
     nextval('id') as id,
