@@ -1,0 +1,7 @@
+asset,commission_year,investment_cost,investment_limit,fixed_cost_storage_energy
+ccgt,2030,40.0,10000.0,5.0
+wind,2030,70.0,,5.0
+solar,2030,50.0,,5.0
+demand,2030,0.0,,5.0
+ocgt,2030,25.0,,5.0
+ens,2030,0.0,,5.0
