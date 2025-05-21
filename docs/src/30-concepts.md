@@ -654,7 +654,7 @@ unstacked_map[!,["k=1", "k=2", "k=3"]] = convert.(Float64, unstacked_map[!,["k=1
 unstacked_map # hide
 ```
 
-The file `assets-timeframe-partitions` has the information on how often we want to evaluate the over-clustered-year constraints that combine the information of the representative periods. In this example, the file is missing in the folder, meaning that the default of a `uniform` distribution of one period will be use in the model, see [model parameters](@ref schemas) section. This assumption implies that the model will check the over-clustered-year-storage level every day of the week timeframe.
+The file `assets-timeframe-partitions` has the information on how often we want to evaluate the over-clustered-year constraints that combine the information of the representative periods. In this example, the file is missing in the folder, meaning that the default of a `uniform` distribution of one period will be use in the model, see [model parameters](@ref table_schemas) section. This assumption implies that the model will check the over-clustered-year-storage level every day of the week timeframe.
 
 !!! info
     For the sake of simplicity, we show how using three representative days can recover part of the chronological information of one week. The same method can be applied to more representative periods to analyze the seasonality across a year or longer timeframe.

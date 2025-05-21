@@ -33,7 +33,7 @@ Each output table has three types of columns:
    - `time_block_end`: End of the time block of the representative period.
    - `period_block_start`: Start of the time block of the timeframe (mostly relevant for seasonal storage).
    - `period_block_end`: Start of the time block of the timeframe (mostly relevant for seasonal storage).
-2. Associated [input parameters](@ref schemas): Listed per table below
+2. Associated [input parameters](@ref table_schemas): Listed per table below
 3. `Solution` or `dual_constraint_name`: Value of the variable or dual in the solution, described below.
 
 ## Variable Tables
