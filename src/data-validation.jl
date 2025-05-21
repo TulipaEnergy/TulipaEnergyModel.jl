@@ -4,7 +4,7 @@ export DataValidationException
 TulipaIO.FmtSQL.fmt_quote(::Nothing) = "NULL"
 
 """
-    DataValidationException
+	DataValidationException
 
 Exception related to data validation of the Tulipa Energy Model input data.
 """
@@ -20,7 +20,7 @@ function Base.showerror(io::IO, ex::DataValidationException)
 end
 
 """
-    validate_data!(connection)
+	validate_data!(connection)
 
 Raises an error if the data is not valid.
 """
@@ -47,6 +47,7 @@ function validate_data!(connection)
             _validate_use_binary_storage_method_has_investment_limit!,
             false,
         ),
+        ("check DC OPF data", _validate_dc_opf_data!, false),
     )
         @timeit to "$log_msg" append!(error_messages, validation_function(connection))
         if fail_fast && length(error_messages) > 0
@@ -174,10 +175,10 @@ function _validate_only_transport_flows_are_investable!(connection)
         "SELECT flow.from_asset, flow.to_asset,
         FROM flow
         LEFT JOIN flow_milestone
-            ON flow.from_asset = flow_milestone.from_asset
-            AND flow.to_asset = flow_milestone.to_asset
+        	ON flow.from_asset = flow_milestone.from_asset
+        	AND flow.to_asset = flow_milestone.to_asset
         WHERE flow.is_transport = FALSE
-            AND flow_milestone.investable
+        	AND flow_milestone.investable
         ",
     )
         push!(
@@ -199,9 +200,9 @@ function _validate_foreign_key!(
 )
     error_messages = String[]
     query = "SELECT main.$column
-        FROM $table_name AS main
-        ANTI JOIN $foreign_table_name AS other
-            ON main.$column = other.$foreign_key "
+     FROM $table_name AS main
+     ANTI JOIN $foreign_table_name AS other
+     	ON main.$column = other.$foreign_key "
 
     if allow_missing
         query *= "WHERE main.$column IS NOT NULL"
@@ -230,11 +231,11 @@ function _validate_group_consistency!(connection)
     for row in DuckDB.query(
         connection,
         "FROM (
-            SELECT group_asset.name, COUNT(asset.group) AS group_count
-            FROM group_asset
-            LEFT JOIN asset
-                ON asset.group = group_asset.name
-            GROUP BY group_asset.name
+        	SELECT group_asset.name, COUNT(asset.group) AS group_count
+        	FROM group_asset
+        	LEFT JOIN asset
+        		ON asset.group = group_asset.name
+        	GROUP BY group_asset.name
         ) WHERE group_count = 0",
     )
         push!(
@@ -263,9 +264,9 @@ function _validate_simple_method_has_only_matching_years!(error_messages, connec
         "SELECT asset.asset, asset_both.milestone_year, asset_both.commission_year, asset.investment_method
         FROM asset_both
         LEFT JOIN asset
-            ON asset.asset = asset_both.asset
+        	ON asset.asset = asset_both.asset
         WHERE asset_both.milestone_year != asset_both.commission_year
-            AND asset.investment_method in ('simple', 'none')
+        	AND asset.investment_method in ('simple', 'none')
         ",
     )
         push!(
@@ -280,9 +281,9 @@ function _validate_simple_method_has_only_matching_years!(error_messages, connec
         "SELECT flow.from_asset, flow.to_asset, flow_both.milestone_year, flow_both.commission_year,
         FROM flow
         LEFT JOIN flow_both
-            ON flow.is_transport
-            AND flow.from_asset = flow_both.from_asset
-            AND flow.to_asset = flow_both.to_asset
+        	ON flow.is_transport
+        	AND flow.from_asset = flow_both.from_asset
+        	AND flow.to_asset = flow_both.to_asset
         WHERE flow_both.milestone_year != flow_both.commission_year
         ",
     )
@@ -304,13 +305,13 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
         "SELECT asset_milestone.asset, asset_milestone.milestone_year, asset.investment_method
         FROM asset_milestone
         LEFT JOIN asset
-            ON asset_milestone.asset = asset.asset
+        	ON asset_milestone.asset = asset.asset
         LEFT JOIN asset_both
-            ON asset_milestone.asset = asset_both.asset
-            AND asset_milestone.milestone_year = asset_both.milestone_year
-            AND asset_milestone.milestone_year = asset_both.commission_year
+        	ON asset_milestone.asset = asset_both.asset
+        	AND asset_milestone.milestone_year = asset_both.milestone_year
+        	AND asset_milestone.milestone_year = asset_both.commission_year
         WHERE asset_both.commission_year IS NULL
-            AND asset.investment_method in ('simple', 'none')
+        	AND asset.investment_method in ('simple', 'none')
         ",
     )
         push!(
@@ -325,15 +326,15 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
         "SELECT flow_milestone.from_asset, flow_milestone.to_asset, flow_milestone.milestone_year
         FROM flow_milestone
         LEFT JOIN flow
-            ON flow_milestone.from_asset = flow.from_asset
-            AND flow_milestone.to_asset = flow.to_asset
+        	ON flow_milestone.from_asset = flow.from_asset
+        	AND flow_milestone.to_asset = flow.to_asset
         LEFT JOIN flow_both
-            ON flow_milestone.from_asset = flow_both.from_asset
-            AND flow_milestone.to_asset = flow_both.to_asset
-            AND flow_milestone.milestone_year = flow_both.milestone_year
-            AND flow_milestone.milestone_year = flow_both.commission_year
+        	ON flow_milestone.from_asset = flow_both.from_asset
+        	AND flow_milestone.to_asset = flow_both.to_asset
+        	AND flow_milestone.milestone_year = flow_both.milestone_year
+        	AND flow_milestone.milestone_year = flow_both.commission_year
         WHERE flow_both.commission_year IS NULL
-            AND flow.is_transport
+        	AND flow.is_transport
         ",
     )
         push!(
@@ -353,19 +354,45 @@ function _validate_use_binary_storage_method_has_investment_limit!(connection)
         "SELECT asset.asset, asset.use_binary_storage_method, asset_milestone.milestone_year, asset_commission.commission_year, asset_commission.investment_limit
         FROM asset_milestone
         LEFT JOIN asset_commission
-            ON asset_milestone.asset = asset_commission.asset
-            AND asset_milestone.milestone_year = asset_commission.commission_year
+        	ON asset_milestone.asset = asset_commission.asset
+        	AND asset_milestone.milestone_year = asset_commission.commission_year
         LEFT JOIN asset
-            ON asset_milestone.asset = asset.asset
+        	ON asset_milestone.asset = asset.asset
         WHERE asset.type = 'storage'
-            AND asset_milestone.investable
-            AND asset.use_binary_storage_method IS NOT NULL
-            AND (asset_commission.investment_limit IS NULL OR asset_commission.investment_limit <= 0)
+        	AND asset_milestone.investable
+        	AND asset.use_binary_storage_method IS NOT NULL
+        	AND (asset_commission.investment_limit IS NULL OR asset_commission.investment_limit <= 0)
         ",
     )
         push!(
             error_messages,
             "Incorrect investment_limit = $(row.investment_limit) for investable storage asset '$(row.asset)' with use_binary_storage_method = '$(row.use_binary_storage_method)' for year $(row.milestone_year). The investment_limit at year $(row.commission_year) should be greater than 0 in 'asset_commission'.",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_dc_opf_data!(connection)
+    error_messages = String[]
+    _validate_reactance_must_be_greater_than_zero!(error_messages, connection)
+
+    return error_messages
+end
+
+function _validate_reactance_must_be_greater_than_zero!(error_messages, connection)
+    # Validate that the data should have reactance > 0
+    # Error otherwise and point out the unmatched rows
+    for row in DuckDB.query(
+        connection,
+        "SELECT flow_milestone.from_asset, flow_milestone.to_asset, flow_milestone.milestone_year, flow_milestone.reactance
+        FROM flow_milestone
+        WHERE flow_milestone.reactance <= 0
+        ",
+    )
+        push!(
+            error_messages,
+            "Incorrect reactance = $(row.reactance) for flow ('$(row.from_asset)', '$(row.to_asset)') for year $(row.milestone_year) in 'flow_milestone'. The reactance should be greater than 0.",
         )
     end
 

@@ -94,9 +94,9 @@ end
             "UPDATE flows_rep_periods_partitions
             SET specification = 'bad'
             WHERE from_asset = 'Asgard_Solar'
-                AND to_asset = 'Asgard_Battery'
-                AND year = 2030
-                AND rep_period = 1",
+            	AND to_asset = 'Asgard_Battery'
+            	AND year = 2030
+            	AND rep_period = 1",
         )
         @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
         error_messages = TEM._validate_schema_one_of_constraints!(connection)
@@ -415,5 +415,43 @@ end
         @test error_messages == [
             "Incorrect investment_limit = missing for investable storage asset 'battery' with use_binary_storage_method = 'binary' for year 2030. The investment_limit at year 2030 should be greater than 0 in 'asset_commission'.",
         ]
+    end
+end
+@testset "Check DC OPF data" begin
+    @testset "Using fake data" begin
+        @testset "Reactance > 0" begin
+            connection = DBInterface.connect(DuckDB.DB)
+            flow_milestone = DataFrame(
+                :from_asset => ["A", "A", "A"],
+                :to_asset => ["B", "B", "B"],
+                :milestone_year => [1, 2, 3],
+                :reactance => [1.0, 0.0, -1.0],
+            )
+            DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
+            error_messages =
+                TEM._validate_reactance_must_be_greater_than_zero!(String[], connection)
+            @test error_messages == [
+                "Incorrect reactance = 0.0 for flow ('A', 'B') for year 2 in 'flow_milestone'. The reactance should be greater than 0.",
+                "Incorrect reactance = -1.0 for flow ('A', 'B') for year 3 in 'flow_milestone'. The reactance should be greater than 0.",
+            ]
+        end
+    end
+    @testset "Using Tiny data" begin
+        @testset "Reactance > 0" begin
+            connection = _tiny_fixture()
+            DuckDB.query(
+                connection,
+                """
+                UPDATE flow_milestone SET reactance = 0.0 WHERE from_asset = 'wind' and to_asset = 'demand';
+                UPDATE flow_milestone SET reactance = -1.0 WHERE from_asset = 'solar' and to_asset = 'demand';
+                """,
+            )
+            error_messages =
+                TEM._validate_reactance_must_be_greater_than_zero!(String[], connection)
+            @test error_messages == [
+                "Incorrect reactance = 0.0 for flow ('wind', 'demand') for year 2030 in 'flow_milestone'. The reactance should be greater than 0.",
+                "Incorrect reactance = -1.0 for flow ('solar', 'demand') for year 2030 in 'flow_milestone'. The reactance should be greater than 0.",
+            ]
+        end
     end
 end
