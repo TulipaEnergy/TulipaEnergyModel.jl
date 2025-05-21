@@ -77,6 +77,78 @@
         TulipaEnergyModel.EnergyProblem(connection)
     end
 
+    @testset "Test column 'partition' with wrong type" begin
+        connection = _storage_fixture()
+
+        # Drop partition with correct type
+        DuckDB.query(
+            connection,
+            "ALTER TABLE assets_rep_periods_partitions
+            DROP COLUMN partition
+            ",
+        )
+
+        # Add partition column with integer type
+        DuckDB.query(
+            connection,
+            "ALTER TABLE assets_rep_periods_partitions
+            ADD COLUMN partition INTEGER DEFAULT 1
+            ",
+        )
+
+        # Fix columns
+        TulipaEnergyModel.populate_with_defaults!(connection)
+
+        type_of_partition_column =
+            TulipaEnergyModel.get_single_element_from_query_and_ensure_its_only_one(
+                DuckDB.query(
+                    connection,
+                    "SELECT data_type
+                    FROM duckdb_columns()
+                    WHERE table_name = 'assets_rep_periods_partitions'
+                        AND column_name = 'partition'
+                    ",
+                ),
+            )
+        @test type_of_partition_column == "VARCHAR"
+    end
+
+    @testset "Test that populate_with_defaults fills NULL with defaults" begin
+        connection = _tiny_fixture()
+
+        # Drop column capacity
+        DuckDB.query(
+            connection,
+            "ALTER TABLE asset
+            DROP COLUMN capacity
+            ",
+        )
+
+        # Add capacity back with some missing values (don't inform a default)
+        DuckDB.query(
+            connection,
+            "ALTER TABLE asset
+            ADD COLUMN capacity DOUBLE
+            ",
+        )
+        # Fill some values of capacity with non-default values
+        DuckDB.query(connection, "UPDATE asset SET capacity = if(len(asset) > 4, 5.0, NULL)")
+
+        unique_capacity =
+            unique([row.capacity for row in DuckDB.query(connection, "SELECT capacity FROM asset")])
+        @test any(ismissing.(unique_capacity))  # One element is missing
+        @test 5.0 in unique_capacity            # One element is a 5.0
+        @test length(unique_capacity) == 2      # Two elements in total
+
+        TulipaEnergyModel.populate_with_defaults!(connection)
+
+        unique_capacity =
+            unique([row.capacity for row in DuckDB.query(connection, "SELECT capacity FROM asset")])
+        @test 0.0 in unique_capacity            # One element is 0.0
+        @test 5.0 in unique_capacity            # One element is a 5.0
+        @test length(unique_capacity) == 2      # Two elements in total
+    end
+
     @testset "Test that missing column cannot be require" begin
         connection = _tiny_fixture()
 
