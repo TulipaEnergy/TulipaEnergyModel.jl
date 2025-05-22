@@ -279,7 +279,7 @@
       "constraints": {
         "minimum": 0
       },
-      "default": 0,
+      "default": null,
       "description": "The initial storage level at the beginning of the optimization. The final storage level needs to be above this initial value. If the initial value is null, empty, or missing, it will be optimized using a cycling constraint that links the last period to the initial period.",
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
@@ -306,7 +306,7 @@
       "constraints": {
         "minimum": 0
       },
-      "default": 0.0,
+      "default": null,
       "description": "The minimum amount of energy across the timeframe (e.g., a year) that the asset must produce. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
@@ -333,7 +333,7 @@
       "constraints": {
         "minimum": 0
       },
-      "default": 0,
+      "default": null,
       "description": "Cost of keeping unit online for one hour or the objective function coefficient on `units_on` variable. e.g., no_load cost or idling cost",
       "type": "DOUBLE",
       "unit_of_measure": "CUR/p.u./h"

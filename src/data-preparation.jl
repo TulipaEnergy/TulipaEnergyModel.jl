@@ -1,59 +1,122 @@
 export populate_with_defaults!
 
 """
-    _query_to_complement_with_defaults(connection, existing_table, schema_table)
+    create_str, select_str = _sql_arguments_for_defaults(connection, table_name, table_schema)
 
-Creates a query to completement a given table `existing_table` with the defaults stored in `schema_table`.
+Returns the strings to complement the table creation informing the name, type
+and possible default, and the select with coalescing and type casting.
 
-The `existing_table` should be a table in `connection`.
+The `table_schema` should be the complete schema, not only the `type`.
+For instance, `TulipaEnergyModel.schema[table_name]`.
 
-The `schema_table` should be a dictionary from the column to a dictionary of the column properties.
-For instance, from `TulipaEnergyModel.schema[table_name]`.
+For each column of the `table_name` table, the creation string is like
 
-The output is the argument for a 'SELECT' query that selects all existing
-columns from `existing_table`, and selects the default value for all other
-columns given in `, columnschema_table`.
-If a column in `schema_table` does not have a default and is not present in
-`existing_table`, then a `DataValidationException` is raised.
+    COLUMN_NAME COLUMN_TYPE
+    -- For a column with no default type
+
+or
+
+    COLUMN_NAME COLUMN_TYPE DEFAULT COLUMN_DEFAULT
+    -- For a column with default type
+
+and the selection string is like
+
+    COLUMN_NAME::COLUMN_TYPE
+    -- For an existing column with no default type
+
+or
+
+    COALESCE(COLUMN_NAME::COLUMN_TYPE, COLUMN_DEFAULT) AS COLUMN_NAME
+    -- For an existing column with default type
+
+or
+
+    COLUMN_DEFAULT::COLUMN_TYPE AS COLUMN_NAME
+    -- For a non-existing column, just use the default type
+
+The name, type, and defaults are based on the existing table, but overridden by the `table_schema`.
 """
-function _query_to_complement_with_defaults(connection, existing_table::String, schema_table)
-    # Get all existing columns, we don't want to overwrite these
-    existing_columns = [row.column_name for row in DuckDB.query(
-        connection,
-        "SELECT column_name
-        FROM duckdb_columns()
-        WHERE table_name = '$existing_table'
-        ORDER BY column_index
-        ",
-    )]
+function _sql_arguments_for_defaults(connection, table_name, table_schema)
+    existing_columns = [
+        (col_name = row.column_name, col_type = row.data_type, col_default = row.column_default) for row in DuckDB.query(
+            connection,
+            "SELECT column_name, data_type, COALESCE(column_default, '') AS column_default
+            FROM duckdb_columns()
+            WHERE table_name = '$table_name'
+            ORDER BY column_index
+            ",
+        )
+    ]
+    existing_column_names = [col.col_name for col in existing_columns]
 
-    # prepare the query starting with the existing columns
-    query_select_arguments = ["$existing_table.$column_name" for column_name in existing_columns]
+    creation_arguments = String[]
+    selection_arguments = String[]
 
-    # now for each column in the schema
-    for (col_name, props) in schema_table
-        # ignoring existing columns
-        if col_name in existing_columns
-            continue
+    # First the existing columns
+    for (col_name, col_type, col_default) in existing_columns
+        # If the column is in the schema, then replace the type and possibly add a default
+        if haskey(table_schema, col_name)
+            # Expected columns
+            props = table_schema[col_name]
+            col_type = props["type"]
+            if haskey(props, "default") && !isnothing(props["default"]) # Only update the default if there is something there
+                col_default = props["default"]
+            end
         end
 
-        # missing column must have a default
+        # Basic version of the strings for this column
+        col_creation_string = "\"$col_name\" $col_type"
+        col_selection_string = "\"$col_name\"::$col_type"
+
+        if col_default != "" && col_default != "NULL"
+            # Sanitize the default
+            col_default = TulipaIO.FmtSQL.fmt_quote(col_default)
+
+            # Add the default to the table creation
+            col_creation_string *= " DEFAULT $col_default"
+            # COALESCE possible NULLs to the DEFAULT value
+            col_selection_string = "COALESCE($col_selection_string, $col_default) AS $col_name"
+        else
+            # No default, so just update the name
+            col_selection_string = "$col_selection_string AS $col_name"
+        end
+
+        push!(creation_arguments, col_creation_string)
+        push!(selection_arguments, col_selection_string)
+    end
+
+    # Then the other columns in the table schema
+    for (col_name, props) in table_schema
+        if col_name in existing_column_names
+            continue
+        end
+        col_type = props["type"]
         if !haskey(props, "default")
             throw(
                 TulipaEnergyModel.DataValidationException([
-                    "Column '$col_name' of table '$existing_table' does not have a default",
+                    "Column '$col_name' of table '$table_name' does not have a default",
                 ]),
             )
         end
 
-        # attach the default to the query
-        col_default, col_type = TulipaIO.FmtSQL.fmt_quote(props["default"]), props["type"]
-        push!(query_select_arguments, "$col_default::$col_type AS $col_name")
+        col_default = TulipaIO.FmtSQL.fmt_quote(props["default"])
+        # Basic version of the strings for this column
+        col_creation_string = "\"$col_name\" $col_type"
+        col_selection_string = "$col_default::$col_type AS $col_name"
+
+        if col_default != "" && col_default != "NULL"
+            # Add the default to the table creation
+            col_creation_string *= " DEFAULT $col_default"
+        end
+
+        push!(creation_arguments, col_creation_string)
+        push!(selection_arguments, col_selection_string)
     end
 
-    query_string = join(query_select_arguments, ",\n ")
+    creation_string = join(creation_arguments, ", ")
+    selection_string = join(selection_arguments, ", ")
 
-    return query_string
+    return creation_string, selection_string
 end
 
 """
@@ -66,20 +129,33 @@ This should be called when you have enough data for a TulipaEnergyModel, but
 doesn't want to fill out all default columns by hand.
 """
 function populate_with_defaults!(connection)
-    for (table_name, schema_table) in TulipaEnergyModel.schema
+    for (table_name, table_schema) in TulipaEnergyModel.schema
         # Ignore tables that don't exist and are allowed to not exist
         if table_name in TulipaEnergyModel.tables_allowed_to_be_missing &&
            !_check_if_table_exists(connection, table_name)
             continue
         end
 
+        # Get the table_creation string
+        # table_creation_string = _arguments_to_create_table(connection, table_name, table_schema)
+
         # Get the query string
-        query_string = _query_to_complement_with_defaults(connection, table_name, schema_table)
+        # query_string = _query_to_complement_with_defaults(connection, table_name, table_schema)
+
+        sql_create_string, sql_select_string =
+            _sql_arguments_for_defaults(connection, table_name, table_schema)
+
+        # @error table_name, sql_create_string, sql_select_string
 
         DuckDB.query(
             connection,
-            "CREATE OR REPLACE TEMP TABLE t_new_$table_name AS
-            SELECT $query_string
+            "CREATE OR REPLACE TABLE t_new_$table_name
+            ($sql_create_string)",
+        )
+        DuckDB.query(
+            connection,
+            "INSERT INTO t_new_$table_name BY NAME
+            SELECT $sql_select_string
             FROM $table_name",
         )
         # DROP TABLE OR VIEW
@@ -178,7 +254,7 @@ function create_unrolled_partition_tables!(connection)
             rep_periods_data.year,
             rep_periods_data.rep_period,
             COALESCE(arpp.specification, 'uniform') AS specification,
-            COALESCE(arpp.partition, '1') AS partition,
+            COALESCE(arpp.partition::string, '1') AS partition,
             rep_periods_data.num_timesteps,
         FROM asset
         CROSS JOIN rep_periods_data
@@ -199,7 +275,7 @@ function create_unrolled_partition_tables!(connection)
             rep_periods_data.year,
             rep_periods_data.rep_period,
             COALESCE(frpp.specification, 'uniform') AS specification,
-            COALESCE(frpp.partition, '1') AS partition,
+            COALESCE(frpp.partition::string, '1') AS partition,
             flow_commission.efficiency,
             flow_commission.flow_coefficient_in_capacity_constraint,
             rep_periods_data.num_timesteps,
