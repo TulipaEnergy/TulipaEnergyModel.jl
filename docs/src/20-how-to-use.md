@@ -27,7 +27,7 @@ All tests should pass.
 ## Finding an input parameter
 
 !!! tip "Are you looking for an input parameter?"
-    Please visit the [Model Parameters](@ref schemas) section for a description and location of all model input parameters.
+    Please visit the [Model Parameters](@ref table_schemas) section for a description and location of all model input parameters.
 
 ## Running a Scenario
 
@@ -42,9 +42,9 @@ The `output_folder` is optional if the user wants to export the output.
 
 ### [Input](@id input)
 
-Currently, we only accept input from CSV files that follow the [Schemas](@ref schemas).
+Currently, we only accept input from CSV files that follow the [Schemas](@ref table_schemas).
 
-You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples of different predefined energy systems and features. Moreover, Tulipa's Offshore Bidding Zone Case Study can be found in <https://github.com/TulipaEnergy/Tulipa-OBZ-CaseStudy>. It shows how to start from user-friendly files and transform the data into the input files in the [Schemas](@ref schemas) through different functions.
+You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples of different predefined energy systems and features. Moreover, Tulipa's Offshore Bidding Zone Case Study can be found in <https://github.com/TulipaEnergy/Tulipa-OBZ-CaseStudy>. It shows how to start from user-friendly files and transform the data into the input files in the [Schemas](@ref table_schemas) through different functions.
 
 ### Writing the output to CSV
 
@@ -305,7 +305,7 @@ In order to set up a model with year information, the following steps are necess
 
 #### Year data
 
-Fill in all the years in [`year-data.csv`](@ref schemas) file by defining the `year` property and its parameters. Differentiate milestone years and non-milestone years.
+Fill in all the years in [`year-data.csv`](@ref table_schemas) file by defining the `year` property and its parameters. Differentiate milestone years and non-milestone years.
 
 - Milestone years are the years you would like to model. For example, if you want to model operation and/or investments in 2030, 2040, and 2050. These 3 years are then milestone years.
 - Non-milestone years are the commission years of existing units. For example, you want to consider a existing wind unit that has been commissioned in 2020, then 2020 is a non-milestone year.
@@ -403,4 +403,4 @@ $\text{flow process A} + 0.8 \cdot \text{flow process B} \leq \text{C}$
 
 In that case the sum must be always below the total capacity $\text{C}$, but if you only produce flow through B then you can produce $1.25 \cdot \text{C}$ and still satisfy this constraint.
 
-To set up this parameter you need to fill in the information for the `flow_coefficient_in_capacity_constraint` in the `flow_commission` table, see more in the [model parameters](@ref schemas) section.
+To set up this parameter you need to fill in the information for the `flow_coefficient_in_capacity_constraint` in the `flow_commission` table, see more in the [model parameters](@ref table_schemas) section.
