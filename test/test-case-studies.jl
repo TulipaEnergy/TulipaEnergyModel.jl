@@ -35,6 +35,20 @@ end
     end
 end
 
+@testset "Tinier Case Study" begin
+    dir = joinpath(INPUT_FOLDER, "Tinier")
+    connection = DBInterface.connect(DuckDB.DB)
+    TulipaIO.read_csv_folder(connection, dir)
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    @test energy_problem.objective_value ≈ 269238.43825 rtol = 1e-8
+    @testset "populate_with_defaults shouldn't change the solution" begin
+        TulipaEnergyModel.populate_with_defaults!(connection)
+        energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+        @test energy_problem.objective_value ≈ 269238.43825 rtol = 1e-8
+    end
+end
+
 @testset "Storage Assets Case Study" begin
     dir = joinpath(INPUT_FOLDER, "Storage")
     connection = DBInterface.connect(DuckDB.DB)

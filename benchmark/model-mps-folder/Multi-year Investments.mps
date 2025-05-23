@@ -6418,7 +6418,7 @@ COLUMNS
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,3,15:15] -4
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,3,16:16] -2.3000000000000003
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,3,17:17] -0.5
-    assets_investment[2050,solar] OBJ 584.1355990305117
+    assets_investment[2050,solar] OBJ 584.1355990305118
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2030,1,1:1] -5.5
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2030,1,2:2] -5.5
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2030,1,3:3] -5.5
@@ -6636,7 +6636,7 @@ COLUMNS
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,3,22:22] -37
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,3,23:23] -37
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,3,24:24] -37
-    assets_investment[2050,wind] OBJ 3661.851415339661
+    assets_investment[2050,wind] OBJ 3661.851415339662
     assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,1:1] 50
     assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,2:2] 50
     assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,3:3] 50
