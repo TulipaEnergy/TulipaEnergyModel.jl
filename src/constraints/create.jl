@@ -32,6 +32,7 @@ function compute_constraints_indices(connection)
             :group_max_investment_limit,
             :group_min_investment_limit,
             :flows_relationships,
+            :dc_power_flow,
         )
     )
 
