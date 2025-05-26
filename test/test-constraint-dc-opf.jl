@@ -87,8 +87,8 @@
         observed_con = JuMP.constraint_object(constraint)
         flow_id, from_asset_id, to_asset_id = expected_ids[i]
         expected_con = JuMP.@build_constraint(
-            var_flow[flow_id] -
-            (power_system_base / reactance) *
+            reactance * var_flow[flow_id] -
+            power_system_base *
             (var_electricity_angle[from_asset_id] - var_electricity_angle[to_asset_id]) == 0
         )
         @test _is_constraint_equal(observed_con, expected_con)
