@@ -94,9 +94,9 @@ end
             "UPDATE flows_rep_periods_partitions
             SET specification = 'bad'
             WHERE from_asset = 'Asgard_Solar'
-            	AND to_asset = 'Asgard_Battery'
-            	AND year = 2030
-            	AND rep_period = 1",
+                AND to_asset = 'Asgard_Battery'
+                AND year = 2030
+                AND rep_period = 1",
         )
         @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
         error_messages = TEM._validate_schema_one_of_constraints!(connection)
