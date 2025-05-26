@@ -85,6 +85,10 @@ To contribute to TulipaEnergyModel.jl, you need the following:
 
    ![Screenshot of Format on Save option](./images/FormatOnSave.png)
 
+   > **Warning**:
+   > Do not use the JuliaFormatter VSCode extension because it may
+   > conflict with the formatting rules currently used in this codebase.
+
 1. [LocalCoverage](https://github.com/JuliaCI/LocalCoverage.jl) for coverage
    testing. You can install it the same way you installed `JuliaFormatter`,
    that is, by opening Julia REPL in the package mode and typing:
