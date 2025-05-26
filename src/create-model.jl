@@ -7,10 +7,9 @@ Create the internal model of a [`TulipaEnergyModel.EnergyProblem`](@ref).
 Any keyword argument will be passed to the underlying [`create_model`](@ref).
 """
 function create_model!(energy_problem; kwargs...)
-    energy_problem.model = @timeit to "create_model" create_model(
+    energy_problem.model, energy_problem.expressions = @timeit to "create_model" create_model(
         energy_problem.db_connection,
         energy_problem.variables,
-        energy_problem.expressions,
         energy_problem.constraints,
         energy_problem.profiles,
         energy_problem.model_parameters;
@@ -24,10 +23,9 @@ function create_model!(energy_problem; kwargs...)
 end
 
 """
-    model = create_model(
+    model, expressions = create_model(
         connection,
         variables,
-        expressions,
         constraints,
         profiles,
         model_parameters;
@@ -63,7 +61,6 @@ For more information, see [`JuMP.direct_model`](https://jump.dev/JuMP.jl/stable/
 function create_model(
     connection,
     variables,
-    expressions,
     constraints,
     profiles,
     model_parameters;
@@ -97,6 +94,9 @@ function create_model(
         variables,
         constraints,
     )
+
+    ## Expressions
+    expressions = Dict{Symbol,TulipaExpression}()
 
     ## Expressions for multi-year investment
     @timeit to "create_multi_year_expressions!" create_multi_year_expressions!(
@@ -198,5 +198,5 @@ function create_model(
         @timeit to "save model file" JuMP.write_to_file(model, model_file_name)
     end
 
-    return model
+    return model, expressions
 end
