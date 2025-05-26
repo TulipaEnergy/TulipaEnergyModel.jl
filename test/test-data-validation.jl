@@ -417,3 +417,85 @@ end
         ]
     end
 end
+@testset "Check DC OPF data" begin
+    @testset "Using fake data" begin
+        @testset "Reactance > 0" begin
+            connection = DBInterface.connect(DuckDB.DB)
+            flow_milestone = DataFrame(
+                :from_asset => ["A", "A", "A"],
+                :to_asset => ["B", "B", "B"],
+                :milestone_year => [1, 2, 3],
+                :reactance => [1.0, 0.0, -1.0],
+            )
+            DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
+            error_messages =
+                TEM._validate_reactance_must_be_greater_than_zero!(String[], connection)
+            @test error_messages == [
+                "Incorrect reactance = 0.0 for flow ('A', 'B') for year 2 in 'flow_milestone'. The reactance should be greater than 0.",
+                "Incorrect reactance = -1.0 for flow ('A', 'B') for year 3 in 'flow_milestone'. The reactance should be greater than 0.",
+            ]
+        end
+        @testset "Only apply to non-investable transport flows" begin
+            connection = DBInterface.connect(DuckDB.DB)
+            flow_milestone = DataFrame(
+                :from_asset => ["A", "A", "B"],
+                :to_asset => ["B", "B", "C"],
+                :milestone_year => [1, 2, 1],
+                :investable => [false, true, false],
+                :dc_opf => [true, true, true],
+            )
+            DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
+            flow = DataFrame(
+                :from_asset => ["A", "B"],
+                :to_asset => ["B", "C"],
+                :is_transport => [true, false],
+            )
+            DuckDB.register_data_frame(connection, flow, "flow")
+            error_messages = TEM._validate_dc_opf_only_apply_to_non_investable_transport_flows!(
+                String[],
+                connection,
+            )
+            @test error_messages == [
+                "Incorrect use of dc-opf method for flow ('A', 'B') for year 2 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
+                "Incorrect use of dc-opf method for flow ('B', 'C') for year 1 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
+            ]
+        end
+    end
+    @testset "Using Tiny data" begin
+        @testset "Reactance > 0" begin
+            connection = _tiny_fixture()
+            DuckDB.query(
+                connection,
+                """
+                UPDATE flow_milestone SET reactance = 0.0 WHERE from_asset = 'wind' and to_asset = 'demand';
+                UPDATE flow_milestone SET reactance = -1.0 WHERE from_asset = 'solar' and to_asset = 'demand';
+                """,
+            )
+            error_messages =
+                TEM._validate_reactance_must_be_greater_than_zero!(String[], connection)
+            @test error_messages == [
+                "Incorrect reactance = 0.0 for flow ('wind', 'demand') for year 2030 in 'flow_milestone'. The reactance should be greater than 0.",
+                "Incorrect reactance = -1.0 for flow ('solar', 'demand') for year 2030 in 'flow_milestone'. The reactance should be greater than 0.",
+            ]
+        end
+        @testset "Only apply to non-investable transport flows" begin
+            connection = _tiny_fixture()
+            DuckDB.query(
+                connection,
+                """
+                UPDATE flow SET is_transport = true WHERE from_asset = 'wind' and to_asset = 'demand';
+                UPDATE flow_milestone SET dc_opf = true, investable = true WHERE from_asset = 'wind' and to_asset = 'demand';
+                UPDATE flow_milestone SET dc_opf = true, investable = false WHERE from_asset = 'solar' and to_asset = 'demand';
+                """,
+            )
+            error_messages = TEM._validate_dc_opf_only_apply_to_non_investable_transport_flows!(
+                String[],
+                connection,
+            )
+            @test error_messages == [
+                "Incorrect use of dc-opf method for flow ('wind', 'demand') for year 2030 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
+                "Incorrect use of dc-opf method for flow ('solar', 'demand') for year 2030 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
+            ]
+        end
+    end
+end

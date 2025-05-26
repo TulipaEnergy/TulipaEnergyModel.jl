@@ -47,6 +47,7 @@ function validate_data!(connection)
             _validate_use_binary_storage_method_has_investment_limit!,
             false,
         ),
+        ("check DC OPF data", _validate_dc_opf_data!, false),
     )
         @timeit to "$log_msg" append!(error_messages, validation_function(connection))
         if fail_fast && length(error_messages) > 0
@@ -366,6 +367,52 @@ function _validate_use_binary_storage_method_has_investment_limit!(connection)
         push!(
             error_messages,
             "Incorrect investment_limit = $(row.investment_limit) for investable storage asset '$(row.asset)' with use_binary_storage_method = '$(row.use_binary_storage_method)' for year $(row.milestone_year). The investment_limit at year $(row.commission_year) should be greater than 0 in 'asset_commission'.",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_dc_opf_data!(connection)
+    error_messages = String[]
+    _validate_reactance_must_be_greater_than_zero!(error_messages, connection)
+    _validate_dc_opf_only_apply_to_non_investable_transport_flows!(error_messages, connection)
+
+    return error_messages
+end
+
+function _validate_reactance_must_be_greater_than_zero!(error_messages, connection)
+    for row in DuckDB.query(
+        connection,
+        "SELECT flow_milestone.from_asset, flow_milestone.to_asset, flow_milestone.milestone_year, flow_milestone.reactance
+        FROM flow_milestone
+        WHERE flow_milestone.reactance <= 0
+        ",
+    )
+        push!(
+            error_messages,
+            "Incorrect reactance = $(row.reactance) for flow ('$(row.from_asset)', '$(row.to_asset)') for year $(row.milestone_year) in 'flow_milestone'. The reactance should be greater than 0.",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_dc_opf_only_apply_to_non_investable_transport_flows!(error_messages, connection)
+    for row in DuckDB.query(
+        connection,
+        "SELECT flow_milestone.from_asset, flow_milestone.to_asset, flow_milestone.milestone_year
+        FROM flow_milestone
+        LEFT JOIN flow
+            ON flow_milestone.from_asset = flow.from_asset
+            AND flow_milestone.to_asset = flow.to_asset
+        WHERE flow_milestone.dc_opf
+            AND (NOT flow.is_transport OR flow_milestone.investable)
+        ",
+    )
+        push!(
+            error_messages,
+            "Incorrect use of dc-opf method for flow ('$(row.from_asset)', '$(row.to_asset)') for year $(row.milestone_year) in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
         )
     end
 
