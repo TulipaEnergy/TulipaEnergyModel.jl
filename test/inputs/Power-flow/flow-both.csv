@@ -2,3 +2,4 @@ from_asset,to_asset,milestone_year,commission_year,decommissionable,initial_expo
 ccgt,demand,2030,2030,false,1,1
 ccgt,hub,2030,2030,false,1,1
 hub,demand,2030,2030,false,1,1
+import,hub,2030,2030,false,1,1

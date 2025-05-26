@@ -1,0 +1,5 @@
+from_asset,to_asset,year,rep_period,specification,partition
+ccgt,hub,2030,1,uniform,3
+ccgt,demand,2030,1,uniform,2
+hub,demand,2030,1,uniform,2
+import,hub,2030,1,uniform,1

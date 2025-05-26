@@ -2,3 +2,4 @@ asset,commission_year,fixed_cost,investment_cost,investment_limit,fixed_cost_sto
 ccgt,2030,0.0,40.0,10000.0,5.0,0.0,,0
 demand,2030,0.0,0.0,,5.0,0.0,,0
 hub,2030,0.0,0.0,,5.0,0.0,,0
+import,2030,0.0,40.0,10000.0,5.0,0.0,,0
