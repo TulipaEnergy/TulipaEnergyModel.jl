@@ -57,7 +57,7 @@
     DuckDB.register_data_frame(connection, year_data, "year_data")
 
     table_rows =
-        [("input_1", "death_star", 2025, true, 2), ("input_2", "death_star", 2025, false, 5)]
+        [("input_1", "death_star", 2025, true, 0.5), ("input_2", "death_star", 2025, false, 0.4)]
     flow_milestone =
         DataFrame(table_rows, [:from_asset, :to_asset, :milestone_year, :dc_opf, :reactance])
     DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
