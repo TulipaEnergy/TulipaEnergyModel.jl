@@ -85,12 +85,6 @@ To contribute to TulipaEnergyModel.jl, you need the following:
 
    ![Screenshot of Format on Save option](./images/FormatOnSave.png)
 
-1. [Prettier](https://prettier.io/) for markdown formatting.
-   In VSCode, it is available as
-   [an extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
-
-   Having enabled "Format on Save" for `JuliaFormatter` in the previous step will also enable "Format on Save" for `Prettier`, provided that `Prettier` is set as the default formatter for markdown files. To do so, in VSCode, open any markdown file, right-click on any area of the file, choose "Format Document With...", click "Configure Default Formatter..." situated at the bottom of the drop-list list at the top of the screen, and then choose `Prettier - Code formatter` as the default formatter. Once you are done, you can double-check it by again right-clicking on any area of the file and choosing "Format Document With...", and you should see `Prettier - Code formatter (default)`.
-
 1. [LocalCoverage](https://github.com/JuliaCI/LocalCoverage.jl) for coverage
    testing. You can install it the same way you installed `JuliaFormatter`,
    that is, by opening Julia REPL in the package mode and typing:
