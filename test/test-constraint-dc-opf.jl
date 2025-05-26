@@ -77,7 +77,7 @@
 
     # parameters for the expected constraints
     power_system_base = 100
-    reactance = 2
+    reactance = 0.5
 
     # test the constraints
     var_flow = variables[:flow].container
