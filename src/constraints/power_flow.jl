@@ -22,7 +22,7 @@ function add_dc_power_flow_constraints!(connection, model, variables, constraint
                 @constraint(
                     model,
                     row.reactance * var_flow[row.var_flow_id] ==
-                    power_system_base * 
+                    power_system_base *
                     (var_angle[row.var_angle_from_asset_id] - var_angle[row.var_angle_to_asset_id]),
                     base_name = "$table_name[$(row.from_asset),$(row.to_asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for row in indices

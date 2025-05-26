@@ -875,7 +875,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,1:2] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,1:2] 1
     flow[(ccgt,demand),2030,1,1:2] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,1:2] 1
     flow[(ccgt,demand),2030,1,1:2] consumer_balance[demand,2030,1,1:2] 1
-    flow[(ccgt,demand),2030,1,1:2] dc_power_flow[ccgt,demand,2030,1,1:2] 1
+    flow[(ccgt,demand),2030,1,1:2] dc_power_flow[ccgt,demand,2030,1,1:2] 0.3
     flow[(ccgt,demand),2030,1,1:2] OBJ 7.300000000000001
     flow[(ccgt,demand),2030,1,3:4] max_output_flows_limit_simple_method[ccgt,2030,1,3:3] 1
     flow[(ccgt,demand),2030,1,3:4] max_output_flows_limit_simple_method[ccgt,2030,1,4:4] 1
@@ -884,22 +884,22 @@ COLUMNS
     flow[(ccgt,demand),2030,1,3:4] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,3:3] 1
     flow[(ccgt,demand),2030,1,3:4] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,4:4] 1
     flow[(ccgt,demand),2030,1,3:4] consumer_balance[demand,2030,1,3:4] 1
-    flow[(ccgt,demand),2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,3:3] 1
-    flow[(ccgt,demand),2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,4:4] 1
+    flow[(ccgt,demand),2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,3:3] 0.3
+    flow[(ccgt,demand),2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,4:4] 0.3
     flow[(ccgt,demand),2030,1,3:4] OBJ 7.300000000000001
     flow[(ccgt,demand),2030,1,5:6] max_output_flows_limit_simple_method[ccgt,2030,1,5:6] 1
     flow[(ccgt,demand),2030,1,5:6] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,5:6] 1
     flow[(ccgt,demand),2030,1,5:6] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,5:6] 1
     flow[(ccgt,demand),2030,1,5:6] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,5:6] 1
     flow[(ccgt,demand),2030,1,5:6] consumer_balance[demand,2030,1,5:6] 1
-    flow[(ccgt,demand),2030,1,5:6] dc_power_flow[ccgt,demand,2030,1,5:6] 1
+    flow[(ccgt,demand),2030,1,5:6] dc_power_flow[ccgt,demand,2030,1,5:6] 0.3
     flow[(ccgt,demand),2030,1,5:6] OBJ 7.300000000000001
     flow[(ccgt,demand),2030,1,7:8] max_output_flows_limit_simple_method[ccgt,2030,1,7:8] 1
     flow[(ccgt,demand),2030,1,7:8] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,7:8] 1
     flow[(ccgt,demand),2030,1,7:8] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,7:8] 1
     flow[(ccgt,demand),2030,1,7:8] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,7:8] 1
     flow[(ccgt,demand),2030,1,7:8] consumer_balance[demand,2030,1,7:8] 1
-    flow[(ccgt,demand),2030,1,7:8] dc_power_flow[ccgt,demand,2030,1,7:8] 1
+    flow[(ccgt,demand),2030,1,7:8] dc_power_flow[ccgt,demand,2030,1,7:8] 0.3
     flow[(ccgt,demand),2030,1,7:8] OBJ 7.300000000000001
     flow[(ccgt,demand),2030,1,9:10] max_output_flows_limit_simple_method[ccgt,2030,1,9:9] 1
     flow[(ccgt,demand),2030,1,9:10] max_output_flows_limit_simple_method[ccgt,2030,1,10:10] 1
@@ -908,22 +908,22 @@ COLUMNS
     flow[(ccgt,demand),2030,1,9:10] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,9:9] 1
     flow[(ccgt,demand),2030,1,9:10] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,10:10] 1
     flow[(ccgt,demand),2030,1,9:10] consumer_balance[demand,2030,1,9:10] 1
-    flow[(ccgt,demand),2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,9:9] 1
-    flow[(ccgt,demand),2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,10:10] 1
+    flow[(ccgt,demand),2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,9:9] 0.3
+    flow[(ccgt,demand),2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,10:10] 0.3
     flow[(ccgt,demand),2030,1,9:10] OBJ 7.300000000000001
     flow[(ccgt,demand),2030,1,11:12] max_output_flows_limit_simple_method[ccgt,2030,1,11:12] 1
     flow[(ccgt,demand),2030,1,11:12] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,11:12] 1
     flow[(ccgt,demand),2030,1,11:12] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,11:12] 1
     flow[(ccgt,demand),2030,1,11:12] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,11:12] 1
     flow[(ccgt,demand),2030,1,11:12] consumer_balance[demand,2030,1,11:12] 1
-    flow[(ccgt,demand),2030,1,11:12] dc_power_flow[ccgt,demand,2030,1,11:12] 1
+    flow[(ccgt,demand),2030,1,11:12] dc_power_flow[ccgt,demand,2030,1,11:12] 0.3
     flow[(ccgt,demand),2030,1,11:12] OBJ 7.300000000000001
     flow[(ccgt,demand),2030,1,13:14] max_output_flows_limit_simple_method[ccgt,2030,1,13:14] 1
     flow[(ccgt,demand),2030,1,13:14] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,13:14] 1
     flow[(ccgt,demand),2030,1,13:14] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,13:14] 1
     flow[(ccgt,demand),2030,1,13:14] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,13:14] 1
     flow[(ccgt,demand),2030,1,13:14] consumer_balance[demand,2030,1,13:14] 1
-    flow[(ccgt,demand),2030,1,13:14] dc_power_flow[ccgt,demand,2030,1,13:14] 1
+    flow[(ccgt,demand),2030,1,13:14] dc_power_flow[ccgt,demand,2030,1,13:14] 0.3
     flow[(ccgt,demand),2030,1,13:14] OBJ 7.300000000000001
     flow[(ccgt,demand),2030,1,15:16] max_output_flows_limit_simple_method[ccgt,2030,1,15:15] 1
     flow[(ccgt,demand),2030,1,15:16] max_output_flows_limit_simple_method[ccgt,2030,1,16:16] 1
@@ -932,22 +932,22 @@ COLUMNS
     flow[(ccgt,demand),2030,1,15:16] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,15:15] 1
     flow[(ccgt,demand),2030,1,15:16] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,16:16] 1
     flow[(ccgt,demand),2030,1,15:16] consumer_balance[demand,2030,1,15:16] 1
-    flow[(ccgt,demand),2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,15:15] 1
-    flow[(ccgt,demand),2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,16:16] 1
+    flow[(ccgt,demand),2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,15:15] 0.3
+    flow[(ccgt,demand),2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,16:16] 0.3
     flow[(ccgt,demand),2030,1,15:16] OBJ 7.300000000000001
     flow[(ccgt,demand),2030,1,17:18] max_output_flows_limit_simple_method[ccgt,2030,1,17:18] 1
     flow[(ccgt,demand),2030,1,17:18] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,17:18] 1
     flow[(ccgt,demand),2030,1,17:18] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,17:18] 1
     flow[(ccgt,demand),2030,1,17:18] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,17:18] 1
     flow[(ccgt,demand),2030,1,17:18] consumer_balance[demand,2030,1,17:18] 1
-    flow[(ccgt,demand),2030,1,17:18] dc_power_flow[ccgt,demand,2030,1,17:18] 1
+    flow[(ccgt,demand),2030,1,17:18] dc_power_flow[ccgt,demand,2030,1,17:18] 0.3
     flow[(ccgt,demand),2030,1,17:18] OBJ 7.300000000000001
     flow[(ccgt,demand),2030,1,19:20] max_output_flows_limit_simple_method[ccgt,2030,1,19:20] 1
     flow[(ccgt,demand),2030,1,19:20] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,19:20] 1
     flow[(ccgt,demand),2030,1,19:20] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,19:20] 1
     flow[(ccgt,demand),2030,1,19:20] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,19:20] 1
     flow[(ccgt,demand),2030,1,19:20] consumer_balance[demand,2030,1,19:20] 1
-    flow[(ccgt,demand),2030,1,19:20] dc_power_flow[ccgt,demand,2030,1,19:20] 1
+    flow[(ccgt,demand),2030,1,19:20] dc_power_flow[ccgt,demand,2030,1,19:20] 0.3
     flow[(ccgt,demand),2030,1,19:20] OBJ 7.300000000000001
     flow[(ccgt,demand),2030,1,21:22] max_output_flows_limit_simple_method[ccgt,2030,1,21:21] 1
     flow[(ccgt,demand),2030,1,21:22] max_output_flows_limit_simple_method[ccgt,2030,1,22:22] 1
@@ -956,15 +956,15 @@ COLUMNS
     flow[(ccgt,demand),2030,1,21:22] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,21:21] 1
     flow[(ccgt,demand),2030,1,21:22] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,22:22] 1
     flow[(ccgt,demand),2030,1,21:22] consumer_balance[demand,2030,1,21:22] 1
-    flow[(ccgt,demand),2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,21:21] 1
-    flow[(ccgt,demand),2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,22:22] 1
+    flow[(ccgt,demand),2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,21:21] 0.3
+    flow[(ccgt,demand),2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,22:22] 0.3
     flow[(ccgt,demand),2030,1,21:22] OBJ 7.300000000000001
     flow[(ccgt,demand),2030,1,23:24] max_output_flows_limit_simple_method[ccgt,2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,23:24] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,23:24] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,23:24] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,23:24] consumer_balance[demand,2030,1,23:24] 1
-    flow[(ccgt,demand),2030,1,23:24] dc_power_flow[ccgt,demand,2030,1,23:24] 1
+    flow[(ccgt,demand),2030,1,23:24] dc_power_flow[ccgt,demand,2030,1,23:24] 0.3
     flow[(ccgt,demand),2030,1,23:24] OBJ 7.300000000000001
     flow[(ccgt,hub),2030,1,1:3] max_output_flows_limit_simple_method[ccgt,2030,1,1:2] 1
     flow[(ccgt,hub),2030,1,1:3] max_output_flows_limit_simple_method[ccgt,2030,1,3:3] 1
@@ -975,7 +975,7 @@ COLUMNS
     flow[(ccgt,hub),2030,1,1:3] balance_hub[hub,2030,1,1:1] 1
     flow[(ccgt,hub),2030,1,1:3] balance_hub[hub,2030,1,2:2] 1
     flow[(ccgt,hub),2030,1,1:3] balance_hub[hub,2030,1,3:3] 1
-    flow[(ccgt,hub),2030,1,1:3] dc_power_flow[ccgt,hub,2030,1,1:3] 1
+    flow[(ccgt,hub),2030,1,1:3] dc_power_flow[ccgt,hub,2030,1,1:3] 0.3
     flow[(ccgt,hub),2030,1,1:3] OBJ 10.950000000000001
     flow[(ccgt,hub),2030,1,4:6] max_output_flows_limit_simple_method[ccgt,2030,1,4:4] 1
     flow[(ccgt,hub),2030,1,4:6] max_output_flows_limit_simple_method[ccgt,2030,1,5:6] 1
@@ -986,7 +986,7 @@ COLUMNS
     flow[(ccgt,hub),2030,1,4:6] balance_hub[hub,2030,1,4:4] 1
     flow[(ccgt,hub),2030,1,4:6] balance_hub[hub,2030,1,5:5] 1
     flow[(ccgt,hub),2030,1,4:6] balance_hub[hub,2030,1,6:6] 1
-    flow[(ccgt,hub),2030,1,4:6] dc_power_flow[ccgt,hub,2030,1,4:6] 1
+    flow[(ccgt,hub),2030,1,4:6] dc_power_flow[ccgt,hub,2030,1,4:6] 0.3
     flow[(ccgt,hub),2030,1,4:6] OBJ 10.950000000000001
     flow[(ccgt,hub),2030,1,7:9] max_output_flows_limit_simple_method[ccgt,2030,1,7:8] 1
     flow[(ccgt,hub),2030,1,7:9] max_output_flows_limit_simple_method[ccgt,2030,1,9:9] 1
@@ -997,7 +997,7 @@ COLUMNS
     flow[(ccgt,hub),2030,1,7:9] balance_hub[hub,2030,1,7:7] 1
     flow[(ccgt,hub),2030,1,7:9] balance_hub[hub,2030,1,8:8] 1
     flow[(ccgt,hub),2030,1,7:9] balance_hub[hub,2030,1,9:9] 1
-    flow[(ccgt,hub),2030,1,7:9] dc_power_flow[ccgt,hub,2030,1,7:9] 1
+    flow[(ccgt,hub),2030,1,7:9] dc_power_flow[ccgt,hub,2030,1,7:9] 0.3
     flow[(ccgt,hub),2030,1,7:9] OBJ 10.950000000000001
     flow[(ccgt,hub),2030,1,10:12] max_output_flows_limit_simple_method[ccgt,2030,1,10:10] 1
     flow[(ccgt,hub),2030,1,10:12] max_output_flows_limit_simple_method[ccgt,2030,1,11:12] 1
@@ -1008,7 +1008,7 @@ COLUMNS
     flow[(ccgt,hub),2030,1,10:12] balance_hub[hub,2030,1,10:10] 1
     flow[(ccgt,hub),2030,1,10:12] balance_hub[hub,2030,1,11:11] 1
     flow[(ccgt,hub),2030,1,10:12] balance_hub[hub,2030,1,12:12] 1
-    flow[(ccgt,hub),2030,1,10:12] dc_power_flow[ccgt,hub,2030,1,10:12] 1
+    flow[(ccgt,hub),2030,1,10:12] dc_power_flow[ccgt,hub,2030,1,10:12] 0.3
     flow[(ccgt,hub),2030,1,10:12] OBJ 10.950000000000001
     flow[(ccgt,hub),2030,1,13:15] max_output_flows_limit_simple_method[ccgt,2030,1,13:14] 1
     flow[(ccgt,hub),2030,1,13:15] max_output_flows_limit_simple_method[ccgt,2030,1,15:15] 1
@@ -1019,7 +1019,7 @@ COLUMNS
     flow[(ccgt,hub),2030,1,13:15] balance_hub[hub,2030,1,13:13] 1
     flow[(ccgt,hub),2030,1,13:15] balance_hub[hub,2030,1,14:14] 1
     flow[(ccgt,hub),2030,1,13:15] balance_hub[hub,2030,1,15:15] 1
-    flow[(ccgt,hub),2030,1,13:15] dc_power_flow[ccgt,hub,2030,1,13:15] 1
+    flow[(ccgt,hub),2030,1,13:15] dc_power_flow[ccgt,hub,2030,1,13:15] 0.3
     flow[(ccgt,hub),2030,1,13:15] OBJ 10.950000000000001
     flow[(ccgt,hub),2030,1,16:18] max_output_flows_limit_simple_method[ccgt,2030,1,16:16] 1
     flow[(ccgt,hub),2030,1,16:18] max_output_flows_limit_simple_method[ccgt,2030,1,17:18] 1
@@ -1030,7 +1030,7 @@ COLUMNS
     flow[(ccgt,hub),2030,1,16:18] balance_hub[hub,2030,1,16:16] 1
     flow[(ccgt,hub),2030,1,16:18] balance_hub[hub,2030,1,17:17] 1
     flow[(ccgt,hub),2030,1,16:18] balance_hub[hub,2030,1,18:18] 1
-    flow[(ccgt,hub),2030,1,16:18] dc_power_flow[ccgt,hub,2030,1,16:18] 1
+    flow[(ccgt,hub),2030,1,16:18] dc_power_flow[ccgt,hub,2030,1,16:18] 0.3
     flow[(ccgt,hub),2030,1,16:18] OBJ 10.950000000000001
     flow[(ccgt,hub),2030,1,19:21] max_output_flows_limit_simple_method[ccgt,2030,1,19:20] 1
     flow[(ccgt,hub),2030,1,19:21] max_output_flows_limit_simple_method[ccgt,2030,1,21:21] 1
@@ -1041,7 +1041,7 @@ COLUMNS
     flow[(ccgt,hub),2030,1,19:21] balance_hub[hub,2030,1,19:19] 1
     flow[(ccgt,hub),2030,1,19:21] balance_hub[hub,2030,1,20:20] 1
     flow[(ccgt,hub),2030,1,19:21] balance_hub[hub,2030,1,21:21] 1
-    flow[(ccgt,hub),2030,1,19:21] dc_power_flow[ccgt,hub,2030,1,19:21] 1
+    flow[(ccgt,hub),2030,1,19:21] dc_power_flow[ccgt,hub,2030,1,19:21] 0.3
     flow[(ccgt,hub),2030,1,19:21] OBJ 10.950000000000001
     flow[(ccgt,hub),2030,1,22:24] max_output_flows_limit_simple_method[ccgt,2030,1,22:22] 1
     flow[(ccgt,hub),2030,1,22:24] max_output_flows_limit_simple_method[ccgt,2030,1,23:24] 1
@@ -1052,84 +1052,84 @@ COLUMNS
     flow[(ccgt,hub),2030,1,22:24] balance_hub[hub,2030,1,22:22] 1
     flow[(ccgt,hub),2030,1,22:24] balance_hub[hub,2030,1,23:23] 1
     flow[(ccgt,hub),2030,1,22:24] balance_hub[hub,2030,1,24:24] 1
-    flow[(ccgt,hub),2030,1,22:24] dc_power_flow[ccgt,hub,2030,1,22:24] 1
+    flow[(ccgt,hub),2030,1,22:24] dc_power_flow[ccgt,hub,2030,1,22:24] 0.3
     flow[(ccgt,hub),2030,1,22:24] OBJ 10.950000000000001
     flow[(hub,demand),2030,1,1:2] max_transport_flow_limit_simple_method[(hub,demand),2030,1,1:2] 1
     flow[(hub,demand),2030,1,1:2] min_transport_flow_limit_simple_method[(hub,demand),2030,1,1:2] 1
     flow[(hub,demand),2030,1,1:2] consumer_balance[demand,2030,1,1:2] 1
     flow[(hub,demand),2030,1,1:2] balance_hub[hub,2030,1,1:1] -1
     flow[(hub,demand),2030,1,1:2] balance_hub[hub,2030,1,2:2] -1
-    flow[(hub,demand),2030,1,1:2] dc_power_flow[hub,demand,2030,1,1:2] 1
+    flow[(hub,demand),2030,1,1:2] dc_power_flow[hub,demand,2030,1,1:2] 0.3
     flow[(hub,demand),2030,1,3:4] max_transport_flow_limit_simple_method[(hub,demand),2030,1,3:4] 1
     flow[(hub,demand),2030,1,3:4] min_transport_flow_limit_simple_method[(hub,demand),2030,1,3:4] 1
     flow[(hub,demand),2030,1,3:4] consumer_balance[demand,2030,1,3:4] 1
     flow[(hub,demand),2030,1,3:4] balance_hub[hub,2030,1,3:3] -1
     flow[(hub,demand),2030,1,3:4] balance_hub[hub,2030,1,4:4] -1
-    flow[(hub,demand),2030,1,3:4] dc_power_flow[hub,demand,2030,1,3:3] 1
-    flow[(hub,demand),2030,1,3:4] dc_power_flow[hub,demand,2030,1,4:4] 1
+    flow[(hub,demand),2030,1,3:4] dc_power_flow[hub,demand,2030,1,3:3] 0.3
+    flow[(hub,demand),2030,1,3:4] dc_power_flow[hub,demand,2030,1,4:4] 0.3
     flow[(hub,demand),2030,1,5:6] max_transport_flow_limit_simple_method[(hub,demand),2030,1,5:6] 1
     flow[(hub,demand),2030,1,5:6] min_transport_flow_limit_simple_method[(hub,demand),2030,1,5:6] 1
     flow[(hub,demand),2030,1,5:6] consumer_balance[demand,2030,1,5:6] 1
     flow[(hub,demand),2030,1,5:6] balance_hub[hub,2030,1,5:5] -1
     flow[(hub,demand),2030,1,5:6] balance_hub[hub,2030,1,6:6] -1
-    flow[(hub,demand),2030,1,5:6] dc_power_flow[hub,demand,2030,1,5:6] 1
+    flow[(hub,demand),2030,1,5:6] dc_power_flow[hub,demand,2030,1,5:6] 0.3
     flow[(hub,demand),2030,1,7:8] max_transport_flow_limit_simple_method[(hub,demand),2030,1,7:8] 1
     flow[(hub,demand),2030,1,7:8] min_transport_flow_limit_simple_method[(hub,demand),2030,1,7:8] 1
     flow[(hub,demand),2030,1,7:8] consumer_balance[demand,2030,1,7:8] 1
     flow[(hub,demand),2030,1,7:8] balance_hub[hub,2030,1,7:7] -1
     flow[(hub,demand),2030,1,7:8] balance_hub[hub,2030,1,8:8] -1
-    flow[(hub,demand),2030,1,7:8] dc_power_flow[hub,demand,2030,1,7:8] 1
+    flow[(hub,demand),2030,1,7:8] dc_power_flow[hub,demand,2030,1,7:8] 0.3
     flow[(hub,demand),2030,1,9:10] max_transport_flow_limit_simple_method[(hub,demand),2030,1,9:10] 1
     flow[(hub,demand),2030,1,9:10] min_transport_flow_limit_simple_method[(hub,demand),2030,1,9:10] 1
     flow[(hub,demand),2030,1,9:10] consumer_balance[demand,2030,1,9:10] 1
     flow[(hub,demand),2030,1,9:10] balance_hub[hub,2030,1,9:9] -1
     flow[(hub,demand),2030,1,9:10] balance_hub[hub,2030,1,10:10] -1
-    flow[(hub,demand),2030,1,9:10] dc_power_flow[hub,demand,2030,1,9:9] 1
-    flow[(hub,demand),2030,1,9:10] dc_power_flow[hub,demand,2030,1,10:10] 1
+    flow[(hub,demand),2030,1,9:10] dc_power_flow[hub,demand,2030,1,9:9] 0.3
+    flow[(hub,demand),2030,1,9:10] dc_power_flow[hub,demand,2030,1,10:10] 0.3
     flow[(hub,demand),2030,1,11:12] max_transport_flow_limit_simple_method[(hub,demand),2030,1,11:12] 1
     flow[(hub,demand),2030,1,11:12] min_transport_flow_limit_simple_method[(hub,demand),2030,1,11:12] 1
     flow[(hub,demand),2030,1,11:12] consumer_balance[demand,2030,1,11:12] 1
     flow[(hub,demand),2030,1,11:12] balance_hub[hub,2030,1,11:11] -1
     flow[(hub,demand),2030,1,11:12] balance_hub[hub,2030,1,12:12] -1
-    flow[(hub,demand),2030,1,11:12] dc_power_flow[hub,demand,2030,1,11:12] 1
+    flow[(hub,demand),2030,1,11:12] dc_power_flow[hub,demand,2030,1,11:12] 0.3
     flow[(hub,demand),2030,1,13:14] max_transport_flow_limit_simple_method[(hub,demand),2030,1,13:14] 1
     flow[(hub,demand),2030,1,13:14] min_transport_flow_limit_simple_method[(hub,demand),2030,1,13:14] 1
     flow[(hub,demand),2030,1,13:14] consumer_balance[demand,2030,1,13:14] 1
     flow[(hub,demand),2030,1,13:14] balance_hub[hub,2030,1,13:13] -1
     flow[(hub,demand),2030,1,13:14] balance_hub[hub,2030,1,14:14] -1
-    flow[(hub,demand),2030,1,13:14] dc_power_flow[hub,demand,2030,1,13:14] 1
+    flow[(hub,demand),2030,1,13:14] dc_power_flow[hub,demand,2030,1,13:14] 0.3
     flow[(hub,demand),2030,1,15:16] max_transport_flow_limit_simple_method[(hub,demand),2030,1,15:16] 1
     flow[(hub,demand),2030,1,15:16] min_transport_flow_limit_simple_method[(hub,demand),2030,1,15:16] 1
     flow[(hub,demand),2030,1,15:16] consumer_balance[demand,2030,1,15:16] 1
     flow[(hub,demand),2030,1,15:16] balance_hub[hub,2030,1,15:15] -1
     flow[(hub,demand),2030,1,15:16] balance_hub[hub,2030,1,16:16] -1
-    flow[(hub,demand),2030,1,15:16] dc_power_flow[hub,demand,2030,1,15:15] 1
-    flow[(hub,demand),2030,1,15:16] dc_power_flow[hub,demand,2030,1,16:16] 1
+    flow[(hub,demand),2030,1,15:16] dc_power_flow[hub,demand,2030,1,15:15] 0.3
+    flow[(hub,demand),2030,1,15:16] dc_power_flow[hub,demand,2030,1,16:16] 0.3
     flow[(hub,demand),2030,1,17:18] max_transport_flow_limit_simple_method[(hub,demand),2030,1,17:18] 1
     flow[(hub,demand),2030,1,17:18] min_transport_flow_limit_simple_method[(hub,demand),2030,1,17:18] 1
     flow[(hub,demand),2030,1,17:18] consumer_balance[demand,2030,1,17:18] 1
     flow[(hub,demand),2030,1,17:18] balance_hub[hub,2030,1,17:17] -1
     flow[(hub,demand),2030,1,17:18] balance_hub[hub,2030,1,18:18] -1
-    flow[(hub,demand),2030,1,17:18] dc_power_flow[hub,demand,2030,1,17:18] 1
+    flow[(hub,demand),2030,1,17:18] dc_power_flow[hub,demand,2030,1,17:18] 0.3
     flow[(hub,demand),2030,1,19:20] max_transport_flow_limit_simple_method[(hub,demand),2030,1,19:20] 1
     flow[(hub,demand),2030,1,19:20] min_transport_flow_limit_simple_method[(hub,demand),2030,1,19:20] 1
     flow[(hub,demand),2030,1,19:20] consumer_balance[demand,2030,1,19:20] 1
     flow[(hub,demand),2030,1,19:20] balance_hub[hub,2030,1,19:19] -1
     flow[(hub,demand),2030,1,19:20] balance_hub[hub,2030,1,20:20] -1
-    flow[(hub,demand),2030,1,19:20] dc_power_flow[hub,demand,2030,1,19:20] 1
+    flow[(hub,demand),2030,1,19:20] dc_power_flow[hub,demand,2030,1,19:20] 0.3
     flow[(hub,demand),2030,1,21:22] max_transport_flow_limit_simple_method[(hub,demand),2030,1,21:22] 1
     flow[(hub,demand),2030,1,21:22] min_transport_flow_limit_simple_method[(hub,demand),2030,1,21:22] 1
     flow[(hub,demand),2030,1,21:22] consumer_balance[demand,2030,1,21:22] 1
     flow[(hub,demand),2030,1,21:22] balance_hub[hub,2030,1,21:21] -1
     flow[(hub,demand),2030,1,21:22] balance_hub[hub,2030,1,22:22] -1
-    flow[(hub,demand),2030,1,21:22] dc_power_flow[hub,demand,2030,1,21:21] 1
-    flow[(hub,demand),2030,1,21:22] dc_power_flow[hub,demand,2030,1,22:22] 1
+    flow[(hub,demand),2030,1,21:22] dc_power_flow[hub,demand,2030,1,21:21] 0.3
+    flow[(hub,demand),2030,1,21:22] dc_power_flow[hub,demand,2030,1,22:22] 0.3
     flow[(hub,demand),2030,1,23:24] max_transport_flow_limit_simple_method[(hub,demand),2030,1,23:24] 1
     flow[(hub,demand),2030,1,23:24] min_transport_flow_limit_simple_method[(hub,demand),2030,1,23:24] 1
     flow[(hub,demand),2030,1,23:24] consumer_balance[demand,2030,1,23:24] 1
     flow[(hub,demand),2030,1,23:24] balance_hub[hub,2030,1,23:23] -1
     flow[(hub,demand),2030,1,23:24] balance_hub[hub,2030,1,24:24] -1
-    flow[(hub,demand),2030,1,23:24] dc_power_flow[hub,demand,2030,1,23:24] 1
+    flow[(hub,demand),2030,1,23:24] dc_power_flow[hub,demand,2030,1,23:24] 0.3
     flow[(import,hub),2030,1,1:1] max_output_flows_limit_simple_method[import,2030,1,1:1] 1
     flow[(import,hub),2030,1,1:1] balance_hub[hub,2030,1,1:1] 1
     flow[(import,hub),2030,1,1:1] OBJ 3.6500000000000004
@@ -1207,457 +1207,457 @@ COLUMNS
     flow[(ccgt,demand),2030,2,1:1] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,1:1] 1
     flow[(ccgt,demand),2030,2,1:1] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,1:1] 1
     flow[(ccgt,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
-    flow[(ccgt,demand),2030,2,1:1] dc_power_flow[ccgt,demand,2030,2,1:1] 1
+    flow[(ccgt,demand),2030,2,1:1] dc_power_flow[ccgt,demand,2030,2,1:1] 0.3
     flow[(ccgt,demand),2030,2,1:1] OBJ 9.125
     flow[(ccgt,demand),2030,2,2:2] max_output_flows_limit_simple_method[ccgt,2030,2,2:2] 1
     flow[(ccgt,demand),2030,2,2:2] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,2:2] 1
     flow[(ccgt,demand),2030,2,2:2] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,2:2] 1
     flow[(ccgt,demand),2030,2,2:2] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,2:2] 1
     flow[(ccgt,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
-    flow[(ccgt,demand),2030,2,2:2] dc_power_flow[ccgt,demand,2030,2,2:2] 1
+    flow[(ccgt,demand),2030,2,2:2] dc_power_flow[ccgt,demand,2030,2,2:2] 0.3
     flow[(ccgt,demand),2030,2,2:2] OBJ 9.125
     flow[(ccgt,demand),2030,2,3:3] max_output_flows_limit_simple_method[ccgt,2030,2,3:3] 1
     flow[(ccgt,demand),2030,2,3:3] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,3:3] 1
     flow[(ccgt,demand),2030,2,3:3] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,3:3] 1
     flow[(ccgt,demand),2030,2,3:3] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,3:3] 1
     flow[(ccgt,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
-    flow[(ccgt,demand),2030,2,3:3] dc_power_flow[ccgt,demand,2030,2,3:3] 1
+    flow[(ccgt,demand),2030,2,3:3] dc_power_flow[ccgt,demand,2030,2,3:3] 0.3
     flow[(ccgt,demand),2030,2,3:3] OBJ 9.125
     flow[(ccgt,demand),2030,2,4:4] max_output_flows_limit_simple_method[ccgt,2030,2,4:4] 1
     flow[(ccgt,demand),2030,2,4:4] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,4:4] 1
     flow[(ccgt,demand),2030,2,4:4] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,4:4] 1
     flow[(ccgt,demand),2030,2,4:4] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,4:4] 1
     flow[(ccgt,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
-    flow[(ccgt,demand),2030,2,4:4] dc_power_flow[ccgt,demand,2030,2,4:4] 1
+    flow[(ccgt,demand),2030,2,4:4] dc_power_flow[ccgt,demand,2030,2,4:4] 0.3
     flow[(ccgt,demand),2030,2,4:4] OBJ 9.125
     flow[(ccgt,demand),2030,2,5:5] max_output_flows_limit_simple_method[ccgt,2030,2,5:5] 1
     flow[(ccgt,demand),2030,2,5:5] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,5:5] 1
     flow[(ccgt,demand),2030,2,5:5] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,5:5] 1
     flow[(ccgt,demand),2030,2,5:5] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,5:5] 1
     flow[(ccgt,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
-    flow[(ccgt,demand),2030,2,5:5] dc_power_flow[ccgt,demand,2030,2,5:5] 1
+    flow[(ccgt,demand),2030,2,5:5] dc_power_flow[ccgt,demand,2030,2,5:5] 0.3
     flow[(ccgt,demand),2030,2,5:5] OBJ 9.125
     flow[(ccgt,demand),2030,2,6:6] max_output_flows_limit_simple_method[ccgt,2030,2,6:6] 1
     flow[(ccgt,demand),2030,2,6:6] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,6:6] 1
     flow[(ccgt,demand),2030,2,6:6] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,6:6] 1
     flow[(ccgt,demand),2030,2,6:6] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,6:6] 1
     flow[(ccgt,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
-    flow[(ccgt,demand),2030,2,6:6] dc_power_flow[ccgt,demand,2030,2,6:6] 1
+    flow[(ccgt,demand),2030,2,6:6] dc_power_flow[ccgt,demand,2030,2,6:6] 0.3
     flow[(ccgt,demand),2030,2,6:6] OBJ 9.125
     flow[(ccgt,demand),2030,2,7:7] max_output_flows_limit_simple_method[ccgt,2030,2,7:7] 1
     flow[(ccgt,demand),2030,2,7:7] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,7:7] 1
     flow[(ccgt,demand),2030,2,7:7] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,7:7] 1
     flow[(ccgt,demand),2030,2,7:7] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,7:7] 1
     flow[(ccgt,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
-    flow[(ccgt,demand),2030,2,7:7] dc_power_flow[ccgt,demand,2030,2,7:7] 1
+    flow[(ccgt,demand),2030,2,7:7] dc_power_flow[ccgt,demand,2030,2,7:7] 0.3
     flow[(ccgt,demand),2030,2,7:7] OBJ 9.125
     flow[(ccgt,demand),2030,2,8:8] max_output_flows_limit_simple_method[ccgt,2030,2,8:8] 1
     flow[(ccgt,demand),2030,2,8:8] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,8:8] 1
     flow[(ccgt,demand),2030,2,8:8] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,8:8] 1
     flow[(ccgt,demand),2030,2,8:8] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,8:8] 1
     flow[(ccgt,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
-    flow[(ccgt,demand),2030,2,8:8] dc_power_flow[ccgt,demand,2030,2,8:8] 1
+    flow[(ccgt,demand),2030,2,8:8] dc_power_flow[ccgt,demand,2030,2,8:8] 0.3
     flow[(ccgt,demand),2030,2,8:8] OBJ 9.125
     flow[(ccgt,demand),2030,2,9:9] max_output_flows_limit_simple_method[ccgt,2030,2,9:9] 1
     flow[(ccgt,demand),2030,2,9:9] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,9:9] 1
     flow[(ccgt,demand),2030,2,9:9] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,9:9] 1
     flow[(ccgt,demand),2030,2,9:9] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,9:9] 1
     flow[(ccgt,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
-    flow[(ccgt,demand),2030,2,9:9] dc_power_flow[ccgt,demand,2030,2,9:9] 1
+    flow[(ccgt,demand),2030,2,9:9] dc_power_flow[ccgt,demand,2030,2,9:9] 0.3
     flow[(ccgt,demand),2030,2,9:9] OBJ 9.125
     flow[(ccgt,demand),2030,2,10:10] max_output_flows_limit_simple_method[ccgt,2030,2,10:10] 1
     flow[(ccgt,demand),2030,2,10:10] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,10:10] 1
     flow[(ccgt,demand),2030,2,10:10] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,10:10] 1
     flow[(ccgt,demand),2030,2,10:10] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,10:10] 1
     flow[(ccgt,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
-    flow[(ccgt,demand),2030,2,10:10] dc_power_flow[ccgt,demand,2030,2,10:10] 1
+    flow[(ccgt,demand),2030,2,10:10] dc_power_flow[ccgt,demand,2030,2,10:10] 0.3
     flow[(ccgt,demand),2030,2,10:10] OBJ 9.125
     flow[(ccgt,demand),2030,2,11:11] max_output_flows_limit_simple_method[ccgt,2030,2,11:11] 1
     flow[(ccgt,demand),2030,2,11:11] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,11:11] 1
     flow[(ccgt,demand),2030,2,11:11] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,11:11] 1
     flow[(ccgt,demand),2030,2,11:11] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,11:11] 1
     flow[(ccgt,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
-    flow[(ccgt,demand),2030,2,11:11] dc_power_flow[ccgt,demand,2030,2,11:11] 1
+    flow[(ccgt,demand),2030,2,11:11] dc_power_flow[ccgt,demand,2030,2,11:11] 0.3
     flow[(ccgt,demand),2030,2,11:11] OBJ 9.125
     flow[(ccgt,demand),2030,2,12:12] max_output_flows_limit_simple_method[ccgt,2030,2,12:12] 1
     flow[(ccgt,demand),2030,2,12:12] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,12:12] 1
     flow[(ccgt,demand),2030,2,12:12] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,12:12] 1
     flow[(ccgt,demand),2030,2,12:12] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,12:12] 1
     flow[(ccgt,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
-    flow[(ccgt,demand),2030,2,12:12] dc_power_flow[ccgt,demand,2030,2,12:12] 1
+    flow[(ccgt,demand),2030,2,12:12] dc_power_flow[ccgt,demand,2030,2,12:12] 0.3
     flow[(ccgt,demand),2030,2,12:12] OBJ 9.125
     flow[(ccgt,demand),2030,2,13:13] max_output_flows_limit_simple_method[ccgt,2030,2,13:13] 1
     flow[(ccgt,demand),2030,2,13:13] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,13:13] 1
     flow[(ccgt,demand),2030,2,13:13] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,13:13] 1
     flow[(ccgt,demand),2030,2,13:13] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,13:13] 1
     flow[(ccgt,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
-    flow[(ccgt,demand),2030,2,13:13] dc_power_flow[ccgt,demand,2030,2,13:13] 1
+    flow[(ccgt,demand),2030,2,13:13] dc_power_flow[ccgt,demand,2030,2,13:13] 0.3
     flow[(ccgt,demand),2030,2,13:13] OBJ 9.125
     flow[(ccgt,demand),2030,2,14:14] max_output_flows_limit_simple_method[ccgt,2030,2,14:14] 1
     flow[(ccgt,demand),2030,2,14:14] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,14:14] 1
     flow[(ccgt,demand),2030,2,14:14] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,14:14] 1
     flow[(ccgt,demand),2030,2,14:14] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,14:14] 1
     flow[(ccgt,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
-    flow[(ccgt,demand),2030,2,14:14] dc_power_flow[ccgt,demand,2030,2,14:14] 1
+    flow[(ccgt,demand),2030,2,14:14] dc_power_flow[ccgt,demand,2030,2,14:14] 0.3
     flow[(ccgt,demand),2030,2,14:14] OBJ 9.125
     flow[(ccgt,demand),2030,2,15:15] max_output_flows_limit_simple_method[ccgt,2030,2,15:15] 1
     flow[(ccgt,demand),2030,2,15:15] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,15:15] 1
     flow[(ccgt,demand),2030,2,15:15] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,15:15] 1
     flow[(ccgt,demand),2030,2,15:15] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,15:15] 1
     flow[(ccgt,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
-    flow[(ccgt,demand),2030,2,15:15] dc_power_flow[ccgt,demand,2030,2,15:15] 1
+    flow[(ccgt,demand),2030,2,15:15] dc_power_flow[ccgt,demand,2030,2,15:15] 0.3
     flow[(ccgt,demand),2030,2,15:15] OBJ 9.125
     flow[(ccgt,demand),2030,2,16:16] max_output_flows_limit_simple_method[ccgt,2030,2,16:16] 1
     flow[(ccgt,demand),2030,2,16:16] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,16:16] 1
     flow[(ccgt,demand),2030,2,16:16] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,16:16] 1
     flow[(ccgt,demand),2030,2,16:16] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,16:16] 1
     flow[(ccgt,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
-    flow[(ccgt,demand),2030,2,16:16] dc_power_flow[ccgt,demand,2030,2,16:16] 1
+    flow[(ccgt,demand),2030,2,16:16] dc_power_flow[ccgt,demand,2030,2,16:16] 0.3
     flow[(ccgt,demand),2030,2,16:16] OBJ 9.125
     flow[(ccgt,demand),2030,2,17:17] max_output_flows_limit_simple_method[ccgt,2030,2,17:17] 1
     flow[(ccgt,demand),2030,2,17:17] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,17:17] 1
     flow[(ccgt,demand),2030,2,17:17] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,17:17] 1
     flow[(ccgt,demand),2030,2,17:17] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,17:17] 1
     flow[(ccgt,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
-    flow[(ccgt,demand),2030,2,17:17] dc_power_flow[ccgt,demand,2030,2,17:17] 1
+    flow[(ccgt,demand),2030,2,17:17] dc_power_flow[ccgt,demand,2030,2,17:17] 0.3
     flow[(ccgt,demand),2030,2,17:17] OBJ 9.125
     flow[(ccgt,demand),2030,2,18:18] max_output_flows_limit_simple_method[ccgt,2030,2,18:18] 1
     flow[(ccgt,demand),2030,2,18:18] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,18:18] 1
     flow[(ccgt,demand),2030,2,18:18] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,18:18] 1
     flow[(ccgt,demand),2030,2,18:18] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,18:18] 1
     flow[(ccgt,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
-    flow[(ccgt,demand),2030,2,18:18] dc_power_flow[ccgt,demand,2030,2,18:18] 1
+    flow[(ccgt,demand),2030,2,18:18] dc_power_flow[ccgt,demand,2030,2,18:18] 0.3
     flow[(ccgt,demand),2030,2,18:18] OBJ 9.125
     flow[(ccgt,demand),2030,2,19:19] max_output_flows_limit_simple_method[ccgt,2030,2,19:19] 1
     flow[(ccgt,demand),2030,2,19:19] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,19:19] 1
     flow[(ccgt,demand),2030,2,19:19] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,19:19] 1
     flow[(ccgt,demand),2030,2,19:19] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,19:19] 1
     flow[(ccgt,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
-    flow[(ccgt,demand),2030,2,19:19] dc_power_flow[ccgt,demand,2030,2,19:19] 1
+    flow[(ccgt,demand),2030,2,19:19] dc_power_flow[ccgt,demand,2030,2,19:19] 0.3
     flow[(ccgt,demand),2030,2,19:19] OBJ 9.125
     flow[(ccgt,demand),2030,2,20:20] max_output_flows_limit_simple_method[ccgt,2030,2,20:20] 1
     flow[(ccgt,demand),2030,2,20:20] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,20:20] 1
     flow[(ccgt,demand),2030,2,20:20] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,20:20] 1
     flow[(ccgt,demand),2030,2,20:20] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,20:20] 1
     flow[(ccgt,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
-    flow[(ccgt,demand),2030,2,20:20] dc_power_flow[ccgt,demand,2030,2,20:20] 1
+    flow[(ccgt,demand),2030,2,20:20] dc_power_flow[ccgt,demand,2030,2,20:20] 0.3
     flow[(ccgt,demand),2030,2,20:20] OBJ 9.125
     flow[(ccgt,demand),2030,2,21:21] max_output_flows_limit_simple_method[ccgt,2030,2,21:21] 1
     flow[(ccgt,demand),2030,2,21:21] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,21:21] 1
     flow[(ccgt,demand),2030,2,21:21] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,21:21] 1
     flow[(ccgt,demand),2030,2,21:21] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,21:21] 1
     flow[(ccgt,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
-    flow[(ccgt,demand),2030,2,21:21] dc_power_flow[ccgt,demand,2030,2,21:21] 1
+    flow[(ccgt,demand),2030,2,21:21] dc_power_flow[ccgt,demand,2030,2,21:21] 0.3
     flow[(ccgt,demand),2030,2,21:21] OBJ 9.125
     flow[(ccgt,demand),2030,2,22:22] max_output_flows_limit_simple_method[ccgt,2030,2,22:22] 1
     flow[(ccgt,demand),2030,2,22:22] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,22:22] 1
     flow[(ccgt,demand),2030,2,22:22] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,22:22] 1
     flow[(ccgt,demand),2030,2,22:22] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,22:22] 1
     flow[(ccgt,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
-    flow[(ccgt,demand),2030,2,22:22] dc_power_flow[ccgt,demand,2030,2,22:22] 1
+    flow[(ccgt,demand),2030,2,22:22] dc_power_flow[ccgt,demand,2030,2,22:22] 0.3
     flow[(ccgt,demand),2030,2,22:22] OBJ 9.125
     flow[(ccgt,demand),2030,2,23:23] max_output_flows_limit_simple_method[ccgt,2030,2,23:23] 1
     flow[(ccgt,demand),2030,2,23:23] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,23:23] 1
     flow[(ccgt,demand),2030,2,23:23] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,23:23] 1
     flow[(ccgt,demand),2030,2,23:23] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,23:23] 1
     flow[(ccgt,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
-    flow[(ccgt,demand),2030,2,23:23] dc_power_flow[ccgt,demand,2030,2,23:23] 1
+    flow[(ccgt,demand),2030,2,23:23] dc_power_flow[ccgt,demand,2030,2,23:23] 0.3
     flow[(ccgt,demand),2030,2,23:23] OBJ 9.125
     flow[(ccgt,demand),2030,2,24:24] max_output_flows_limit_simple_method[ccgt,2030,2,24:24] 1
     flow[(ccgt,demand),2030,2,24:24] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,24:24] 1
     flow[(ccgt,demand),2030,2,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,24:24] 1
     flow[(ccgt,demand),2030,2,24:24] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,24:24] 1
     flow[(ccgt,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
-    flow[(ccgt,demand),2030,2,24:24] dc_power_flow[ccgt,demand,2030,2,24:24] 1
+    flow[(ccgt,demand),2030,2,24:24] dc_power_flow[ccgt,demand,2030,2,24:24] 0.3
     flow[(ccgt,demand),2030,2,24:24] OBJ 9.125
     flow[(ccgt,hub),2030,2,1:1] max_output_flows_limit_simple_method[ccgt,2030,2,1:1] 1
     flow[(ccgt,hub),2030,2,1:1] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,1:1] 1
     flow[(ccgt,hub),2030,2,1:1] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,1:1] 1
     flow[(ccgt,hub),2030,2,1:1] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,1:1] 1
     flow[(ccgt,hub),2030,2,1:1] balance_hub[hub,2030,2,1:1] 1
-    flow[(ccgt,hub),2030,2,1:1] dc_power_flow[ccgt,hub,2030,2,1:1] 1
+    flow[(ccgt,hub),2030,2,1:1] dc_power_flow[ccgt,hub,2030,2,1:1] 0.3
     flow[(ccgt,hub),2030,2,1:1] OBJ 9.125
     flow[(ccgt,hub),2030,2,2:2] max_output_flows_limit_simple_method[ccgt,2030,2,2:2] 1
     flow[(ccgt,hub),2030,2,2:2] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,2:2] 1
     flow[(ccgt,hub),2030,2,2:2] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,2:2] 1
     flow[(ccgt,hub),2030,2,2:2] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,2:2] 1
     flow[(ccgt,hub),2030,2,2:2] balance_hub[hub,2030,2,2:2] 1
-    flow[(ccgt,hub),2030,2,2:2] dc_power_flow[ccgt,hub,2030,2,2:2] 1
+    flow[(ccgt,hub),2030,2,2:2] dc_power_flow[ccgt,hub,2030,2,2:2] 0.3
     flow[(ccgt,hub),2030,2,2:2] OBJ 9.125
     flow[(ccgt,hub),2030,2,3:3] max_output_flows_limit_simple_method[ccgt,2030,2,3:3] 1
     flow[(ccgt,hub),2030,2,3:3] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,3:3] 1
     flow[(ccgt,hub),2030,2,3:3] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,3:3] 1
     flow[(ccgt,hub),2030,2,3:3] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,3:3] 1
     flow[(ccgt,hub),2030,2,3:3] balance_hub[hub,2030,2,3:3] 1
-    flow[(ccgt,hub),2030,2,3:3] dc_power_flow[ccgt,hub,2030,2,3:3] 1
+    flow[(ccgt,hub),2030,2,3:3] dc_power_flow[ccgt,hub,2030,2,3:3] 0.3
     flow[(ccgt,hub),2030,2,3:3] OBJ 9.125
     flow[(ccgt,hub),2030,2,4:4] max_output_flows_limit_simple_method[ccgt,2030,2,4:4] 1
     flow[(ccgt,hub),2030,2,4:4] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,4:4] 1
     flow[(ccgt,hub),2030,2,4:4] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,4:4] 1
     flow[(ccgt,hub),2030,2,4:4] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,4:4] 1
     flow[(ccgt,hub),2030,2,4:4] balance_hub[hub,2030,2,4:4] 1
-    flow[(ccgt,hub),2030,2,4:4] dc_power_flow[ccgt,hub,2030,2,4:4] 1
+    flow[(ccgt,hub),2030,2,4:4] dc_power_flow[ccgt,hub,2030,2,4:4] 0.3
     flow[(ccgt,hub),2030,2,4:4] OBJ 9.125
     flow[(ccgt,hub),2030,2,5:5] max_output_flows_limit_simple_method[ccgt,2030,2,5:5] 1
     flow[(ccgt,hub),2030,2,5:5] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,5:5] 1
     flow[(ccgt,hub),2030,2,5:5] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,5:5] 1
     flow[(ccgt,hub),2030,2,5:5] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,5:5] 1
     flow[(ccgt,hub),2030,2,5:5] balance_hub[hub,2030,2,5:5] 1
-    flow[(ccgt,hub),2030,2,5:5] dc_power_flow[ccgt,hub,2030,2,5:5] 1
+    flow[(ccgt,hub),2030,2,5:5] dc_power_flow[ccgt,hub,2030,2,5:5] 0.3
     flow[(ccgt,hub),2030,2,5:5] OBJ 9.125
     flow[(ccgt,hub),2030,2,6:6] max_output_flows_limit_simple_method[ccgt,2030,2,6:6] 1
     flow[(ccgt,hub),2030,2,6:6] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,6:6] 1
     flow[(ccgt,hub),2030,2,6:6] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,6:6] 1
     flow[(ccgt,hub),2030,2,6:6] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,6:6] 1
     flow[(ccgt,hub),2030,2,6:6] balance_hub[hub,2030,2,6:6] 1
-    flow[(ccgt,hub),2030,2,6:6] dc_power_flow[ccgt,hub,2030,2,6:6] 1
+    flow[(ccgt,hub),2030,2,6:6] dc_power_flow[ccgt,hub,2030,2,6:6] 0.3
     flow[(ccgt,hub),2030,2,6:6] OBJ 9.125
     flow[(ccgt,hub),2030,2,7:7] max_output_flows_limit_simple_method[ccgt,2030,2,7:7] 1
     flow[(ccgt,hub),2030,2,7:7] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,7:7] 1
     flow[(ccgt,hub),2030,2,7:7] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,7:7] 1
     flow[(ccgt,hub),2030,2,7:7] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,7:7] 1
     flow[(ccgt,hub),2030,2,7:7] balance_hub[hub,2030,2,7:7] 1
-    flow[(ccgt,hub),2030,2,7:7] dc_power_flow[ccgt,hub,2030,2,7:7] 1
+    flow[(ccgt,hub),2030,2,7:7] dc_power_flow[ccgt,hub,2030,2,7:7] 0.3
     flow[(ccgt,hub),2030,2,7:7] OBJ 9.125
     flow[(ccgt,hub),2030,2,8:8] max_output_flows_limit_simple_method[ccgt,2030,2,8:8] 1
     flow[(ccgt,hub),2030,2,8:8] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,8:8] 1
     flow[(ccgt,hub),2030,2,8:8] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,8:8] 1
     flow[(ccgt,hub),2030,2,8:8] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,8:8] 1
     flow[(ccgt,hub),2030,2,8:8] balance_hub[hub,2030,2,8:8] 1
-    flow[(ccgt,hub),2030,2,8:8] dc_power_flow[ccgt,hub,2030,2,8:8] 1
+    flow[(ccgt,hub),2030,2,8:8] dc_power_flow[ccgt,hub,2030,2,8:8] 0.3
     flow[(ccgt,hub),2030,2,8:8] OBJ 9.125
     flow[(ccgt,hub),2030,2,9:9] max_output_flows_limit_simple_method[ccgt,2030,2,9:9] 1
     flow[(ccgt,hub),2030,2,9:9] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,9:9] 1
     flow[(ccgt,hub),2030,2,9:9] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,9:9] 1
     flow[(ccgt,hub),2030,2,9:9] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,9:9] 1
     flow[(ccgt,hub),2030,2,9:9] balance_hub[hub,2030,2,9:9] 1
-    flow[(ccgt,hub),2030,2,9:9] dc_power_flow[ccgt,hub,2030,2,9:9] 1
+    flow[(ccgt,hub),2030,2,9:9] dc_power_flow[ccgt,hub,2030,2,9:9] 0.3
     flow[(ccgt,hub),2030,2,9:9] OBJ 9.125
     flow[(ccgt,hub),2030,2,10:10] max_output_flows_limit_simple_method[ccgt,2030,2,10:10] 1
     flow[(ccgt,hub),2030,2,10:10] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,10:10] 1
     flow[(ccgt,hub),2030,2,10:10] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,10:10] 1
     flow[(ccgt,hub),2030,2,10:10] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,10:10] 1
     flow[(ccgt,hub),2030,2,10:10] balance_hub[hub,2030,2,10:10] 1
-    flow[(ccgt,hub),2030,2,10:10] dc_power_flow[ccgt,hub,2030,2,10:10] 1
+    flow[(ccgt,hub),2030,2,10:10] dc_power_flow[ccgt,hub,2030,2,10:10] 0.3
     flow[(ccgt,hub),2030,2,10:10] OBJ 9.125
     flow[(ccgt,hub),2030,2,11:11] max_output_flows_limit_simple_method[ccgt,2030,2,11:11] 1
     flow[(ccgt,hub),2030,2,11:11] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,11:11] 1
     flow[(ccgt,hub),2030,2,11:11] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,11:11] 1
     flow[(ccgt,hub),2030,2,11:11] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,11:11] 1
     flow[(ccgt,hub),2030,2,11:11] balance_hub[hub,2030,2,11:11] 1
-    flow[(ccgt,hub),2030,2,11:11] dc_power_flow[ccgt,hub,2030,2,11:11] 1
+    flow[(ccgt,hub),2030,2,11:11] dc_power_flow[ccgt,hub,2030,2,11:11] 0.3
     flow[(ccgt,hub),2030,2,11:11] OBJ 9.125
     flow[(ccgt,hub),2030,2,12:12] max_output_flows_limit_simple_method[ccgt,2030,2,12:12] 1
     flow[(ccgt,hub),2030,2,12:12] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,12:12] 1
     flow[(ccgt,hub),2030,2,12:12] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,12:12] 1
     flow[(ccgt,hub),2030,2,12:12] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,12:12] 1
     flow[(ccgt,hub),2030,2,12:12] balance_hub[hub,2030,2,12:12] 1
-    flow[(ccgt,hub),2030,2,12:12] dc_power_flow[ccgt,hub,2030,2,12:12] 1
+    flow[(ccgt,hub),2030,2,12:12] dc_power_flow[ccgt,hub,2030,2,12:12] 0.3
     flow[(ccgt,hub),2030,2,12:12] OBJ 9.125
     flow[(ccgt,hub),2030,2,13:13] max_output_flows_limit_simple_method[ccgt,2030,2,13:13] 1
     flow[(ccgt,hub),2030,2,13:13] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,13:13] 1
     flow[(ccgt,hub),2030,2,13:13] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,13:13] 1
     flow[(ccgt,hub),2030,2,13:13] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,13:13] 1
     flow[(ccgt,hub),2030,2,13:13] balance_hub[hub,2030,2,13:13] 1
-    flow[(ccgt,hub),2030,2,13:13] dc_power_flow[ccgt,hub,2030,2,13:13] 1
+    flow[(ccgt,hub),2030,2,13:13] dc_power_flow[ccgt,hub,2030,2,13:13] 0.3
     flow[(ccgt,hub),2030,2,13:13] OBJ 9.125
     flow[(ccgt,hub),2030,2,14:14] max_output_flows_limit_simple_method[ccgt,2030,2,14:14] 1
     flow[(ccgt,hub),2030,2,14:14] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,14:14] 1
     flow[(ccgt,hub),2030,2,14:14] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,14:14] 1
     flow[(ccgt,hub),2030,2,14:14] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,14:14] 1
     flow[(ccgt,hub),2030,2,14:14] balance_hub[hub,2030,2,14:14] 1
-    flow[(ccgt,hub),2030,2,14:14] dc_power_flow[ccgt,hub,2030,2,14:14] 1
+    flow[(ccgt,hub),2030,2,14:14] dc_power_flow[ccgt,hub,2030,2,14:14] 0.3
     flow[(ccgt,hub),2030,2,14:14] OBJ 9.125
     flow[(ccgt,hub),2030,2,15:15] max_output_flows_limit_simple_method[ccgt,2030,2,15:15] 1
     flow[(ccgt,hub),2030,2,15:15] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,15:15] 1
     flow[(ccgt,hub),2030,2,15:15] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,15:15] 1
     flow[(ccgt,hub),2030,2,15:15] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,15:15] 1
     flow[(ccgt,hub),2030,2,15:15] balance_hub[hub,2030,2,15:15] 1
-    flow[(ccgt,hub),2030,2,15:15] dc_power_flow[ccgt,hub,2030,2,15:15] 1
+    flow[(ccgt,hub),2030,2,15:15] dc_power_flow[ccgt,hub,2030,2,15:15] 0.3
     flow[(ccgt,hub),2030,2,15:15] OBJ 9.125
     flow[(ccgt,hub),2030,2,16:16] max_output_flows_limit_simple_method[ccgt,2030,2,16:16] 1
     flow[(ccgt,hub),2030,2,16:16] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,16:16] 1
     flow[(ccgt,hub),2030,2,16:16] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,16:16] 1
     flow[(ccgt,hub),2030,2,16:16] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,16:16] 1
     flow[(ccgt,hub),2030,2,16:16] balance_hub[hub,2030,2,16:16] 1
-    flow[(ccgt,hub),2030,2,16:16] dc_power_flow[ccgt,hub,2030,2,16:16] 1
+    flow[(ccgt,hub),2030,2,16:16] dc_power_flow[ccgt,hub,2030,2,16:16] 0.3
     flow[(ccgt,hub),2030,2,16:16] OBJ 9.125
     flow[(ccgt,hub),2030,2,17:17] max_output_flows_limit_simple_method[ccgt,2030,2,17:17] 1
     flow[(ccgt,hub),2030,2,17:17] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,17:17] 1
     flow[(ccgt,hub),2030,2,17:17] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,17:17] 1
     flow[(ccgt,hub),2030,2,17:17] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,17:17] 1
     flow[(ccgt,hub),2030,2,17:17] balance_hub[hub,2030,2,17:17] 1
-    flow[(ccgt,hub),2030,2,17:17] dc_power_flow[ccgt,hub,2030,2,17:17] 1
+    flow[(ccgt,hub),2030,2,17:17] dc_power_flow[ccgt,hub,2030,2,17:17] 0.3
     flow[(ccgt,hub),2030,2,17:17] OBJ 9.125
     flow[(ccgt,hub),2030,2,18:18] max_output_flows_limit_simple_method[ccgt,2030,2,18:18] 1
     flow[(ccgt,hub),2030,2,18:18] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,18:18] 1
     flow[(ccgt,hub),2030,2,18:18] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,18:18] 1
     flow[(ccgt,hub),2030,2,18:18] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,18:18] 1
     flow[(ccgt,hub),2030,2,18:18] balance_hub[hub,2030,2,18:18] 1
-    flow[(ccgt,hub),2030,2,18:18] dc_power_flow[ccgt,hub,2030,2,18:18] 1
+    flow[(ccgt,hub),2030,2,18:18] dc_power_flow[ccgt,hub,2030,2,18:18] 0.3
     flow[(ccgt,hub),2030,2,18:18] OBJ 9.125
     flow[(ccgt,hub),2030,2,19:19] max_output_flows_limit_simple_method[ccgt,2030,2,19:19] 1
     flow[(ccgt,hub),2030,2,19:19] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,19:19] 1
     flow[(ccgt,hub),2030,2,19:19] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,19:19] 1
     flow[(ccgt,hub),2030,2,19:19] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,19:19] 1
     flow[(ccgt,hub),2030,2,19:19] balance_hub[hub,2030,2,19:19] 1
-    flow[(ccgt,hub),2030,2,19:19] dc_power_flow[ccgt,hub,2030,2,19:19] 1
+    flow[(ccgt,hub),2030,2,19:19] dc_power_flow[ccgt,hub,2030,2,19:19] 0.3
     flow[(ccgt,hub),2030,2,19:19] OBJ 9.125
     flow[(ccgt,hub),2030,2,20:20] max_output_flows_limit_simple_method[ccgt,2030,2,20:20] 1
     flow[(ccgt,hub),2030,2,20:20] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,20:20] 1
     flow[(ccgt,hub),2030,2,20:20] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,20:20] 1
     flow[(ccgt,hub),2030,2,20:20] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,20:20] 1
     flow[(ccgt,hub),2030,2,20:20] balance_hub[hub,2030,2,20:20] 1
-    flow[(ccgt,hub),2030,2,20:20] dc_power_flow[ccgt,hub,2030,2,20:20] 1
+    flow[(ccgt,hub),2030,2,20:20] dc_power_flow[ccgt,hub,2030,2,20:20] 0.3
     flow[(ccgt,hub),2030,2,20:20] OBJ 9.125
     flow[(ccgt,hub),2030,2,21:21] max_output_flows_limit_simple_method[ccgt,2030,2,21:21] 1
     flow[(ccgt,hub),2030,2,21:21] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,21:21] 1
     flow[(ccgt,hub),2030,2,21:21] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,21:21] 1
     flow[(ccgt,hub),2030,2,21:21] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,21:21] 1
     flow[(ccgt,hub),2030,2,21:21] balance_hub[hub,2030,2,21:21] 1
-    flow[(ccgt,hub),2030,2,21:21] dc_power_flow[ccgt,hub,2030,2,21:21] 1
+    flow[(ccgt,hub),2030,2,21:21] dc_power_flow[ccgt,hub,2030,2,21:21] 0.3
     flow[(ccgt,hub),2030,2,21:21] OBJ 9.125
     flow[(ccgt,hub),2030,2,22:22] max_output_flows_limit_simple_method[ccgt,2030,2,22:22] 1
     flow[(ccgt,hub),2030,2,22:22] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,22:22] 1
     flow[(ccgt,hub),2030,2,22:22] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,22:22] 1
     flow[(ccgt,hub),2030,2,22:22] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,22:22] 1
     flow[(ccgt,hub),2030,2,22:22] balance_hub[hub,2030,2,22:22] 1
-    flow[(ccgt,hub),2030,2,22:22] dc_power_flow[ccgt,hub,2030,2,22:22] 1
+    flow[(ccgt,hub),2030,2,22:22] dc_power_flow[ccgt,hub,2030,2,22:22] 0.3
     flow[(ccgt,hub),2030,2,22:22] OBJ 9.125
     flow[(ccgt,hub),2030,2,23:23] max_output_flows_limit_simple_method[ccgt,2030,2,23:23] 1
     flow[(ccgt,hub),2030,2,23:23] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,23:23] 1
     flow[(ccgt,hub),2030,2,23:23] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,23:23] 1
     flow[(ccgt,hub),2030,2,23:23] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,23:23] 1
     flow[(ccgt,hub),2030,2,23:23] balance_hub[hub,2030,2,23:23] 1
-    flow[(ccgt,hub),2030,2,23:23] dc_power_flow[ccgt,hub,2030,2,23:23] 1
+    flow[(ccgt,hub),2030,2,23:23] dc_power_flow[ccgt,hub,2030,2,23:23] 0.3
     flow[(ccgt,hub),2030,2,23:23] OBJ 9.125
     flow[(ccgt,hub),2030,2,24:24] max_output_flows_limit_simple_method[ccgt,2030,2,24:24] 1
     flow[(ccgt,hub),2030,2,24:24] max_transport_flow_limit_simple_method[(ccgt,hub),2030,2,24:24] 1
     flow[(ccgt,hub),2030,2,24:24] min_transport_flow_limit_simple_method[(ccgt,hub),2030,2,24:24] 1
     flow[(ccgt,hub),2030,2,24:24] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,2,24:24] 1
     flow[(ccgt,hub),2030,2,24:24] balance_hub[hub,2030,2,24:24] 1
-    flow[(ccgt,hub),2030,2,24:24] dc_power_flow[ccgt,hub,2030,2,24:24] 1
+    flow[(ccgt,hub),2030,2,24:24] dc_power_flow[ccgt,hub,2030,2,24:24] 0.3
     flow[(ccgt,hub),2030,2,24:24] OBJ 9.125
     flow[(hub,demand),2030,2,1:1] max_transport_flow_limit_simple_method[(hub,demand),2030,2,1:1] 1
     flow[(hub,demand),2030,2,1:1] min_transport_flow_limit_simple_method[(hub,demand),2030,2,1:1] 1
     flow[(hub,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
     flow[(hub,demand),2030,2,1:1] balance_hub[hub,2030,2,1:1] -1
-    flow[(hub,demand),2030,2,1:1] dc_power_flow[hub,demand,2030,2,1:1] 1
+    flow[(hub,demand),2030,2,1:1] dc_power_flow[hub,demand,2030,2,1:1] 0.3
     flow[(hub,demand),2030,2,2:2] max_transport_flow_limit_simple_method[(hub,demand),2030,2,2:2] 1
     flow[(hub,demand),2030,2,2:2] min_transport_flow_limit_simple_method[(hub,demand),2030,2,2:2] 1
     flow[(hub,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
     flow[(hub,demand),2030,2,2:2] balance_hub[hub,2030,2,2:2] -1
-    flow[(hub,demand),2030,2,2:2] dc_power_flow[hub,demand,2030,2,2:2] 1
+    flow[(hub,demand),2030,2,2:2] dc_power_flow[hub,demand,2030,2,2:2] 0.3
     flow[(hub,demand),2030,2,3:3] max_transport_flow_limit_simple_method[(hub,demand),2030,2,3:3] 1
     flow[(hub,demand),2030,2,3:3] min_transport_flow_limit_simple_method[(hub,demand),2030,2,3:3] 1
     flow[(hub,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
     flow[(hub,demand),2030,2,3:3] balance_hub[hub,2030,2,3:3] -1
-    flow[(hub,demand),2030,2,3:3] dc_power_flow[hub,demand,2030,2,3:3] 1
+    flow[(hub,demand),2030,2,3:3] dc_power_flow[hub,demand,2030,2,3:3] 0.3
     flow[(hub,demand),2030,2,4:4] max_transport_flow_limit_simple_method[(hub,demand),2030,2,4:4] 1
     flow[(hub,demand),2030,2,4:4] min_transport_flow_limit_simple_method[(hub,demand),2030,2,4:4] 1
     flow[(hub,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
     flow[(hub,demand),2030,2,4:4] balance_hub[hub,2030,2,4:4] -1
-    flow[(hub,demand),2030,2,4:4] dc_power_flow[hub,demand,2030,2,4:4] 1
+    flow[(hub,demand),2030,2,4:4] dc_power_flow[hub,demand,2030,2,4:4] 0.3
     flow[(hub,demand),2030,2,5:5] max_transport_flow_limit_simple_method[(hub,demand),2030,2,5:5] 1
     flow[(hub,demand),2030,2,5:5] min_transport_flow_limit_simple_method[(hub,demand),2030,2,5:5] 1
     flow[(hub,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
     flow[(hub,demand),2030,2,5:5] balance_hub[hub,2030,2,5:5] -1
-    flow[(hub,demand),2030,2,5:5] dc_power_flow[hub,demand,2030,2,5:5] 1
+    flow[(hub,demand),2030,2,5:5] dc_power_flow[hub,demand,2030,2,5:5] 0.3
     flow[(hub,demand),2030,2,6:6] max_transport_flow_limit_simple_method[(hub,demand),2030,2,6:6] 1
     flow[(hub,demand),2030,2,6:6] min_transport_flow_limit_simple_method[(hub,demand),2030,2,6:6] 1
     flow[(hub,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
     flow[(hub,demand),2030,2,6:6] balance_hub[hub,2030,2,6:6] -1
-    flow[(hub,demand),2030,2,6:6] dc_power_flow[hub,demand,2030,2,6:6] 1
+    flow[(hub,demand),2030,2,6:6] dc_power_flow[hub,demand,2030,2,6:6] 0.3
     flow[(hub,demand),2030,2,7:7] max_transport_flow_limit_simple_method[(hub,demand),2030,2,7:7] 1
     flow[(hub,demand),2030,2,7:7] min_transport_flow_limit_simple_method[(hub,demand),2030,2,7:7] 1
     flow[(hub,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
     flow[(hub,demand),2030,2,7:7] balance_hub[hub,2030,2,7:7] -1
-    flow[(hub,demand),2030,2,7:7] dc_power_flow[hub,demand,2030,2,7:7] 1
+    flow[(hub,demand),2030,2,7:7] dc_power_flow[hub,demand,2030,2,7:7] 0.3
     flow[(hub,demand),2030,2,8:8] max_transport_flow_limit_simple_method[(hub,demand),2030,2,8:8] 1
     flow[(hub,demand),2030,2,8:8] min_transport_flow_limit_simple_method[(hub,demand),2030,2,8:8] 1
     flow[(hub,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
     flow[(hub,demand),2030,2,8:8] balance_hub[hub,2030,2,8:8] -1
-    flow[(hub,demand),2030,2,8:8] dc_power_flow[hub,demand,2030,2,8:8] 1
+    flow[(hub,demand),2030,2,8:8] dc_power_flow[hub,demand,2030,2,8:8] 0.3
     flow[(hub,demand),2030,2,9:9] max_transport_flow_limit_simple_method[(hub,demand),2030,2,9:9] 1
     flow[(hub,demand),2030,2,9:9] min_transport_flow_limit_simple_method[(hub,demand),2030,2,9:9] 1
     flow[(hub,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
     flow[(hub,demand),2030,2,9:9] balance_hub[hub,2030,2,9:9] -1
-    flow[(hub,demand),2030,2,9:9] dc_power_flow[hub,demand,2030,2,9:9] 1
+    flow[(hub,demand),2030,2,9:9] dc_power_flow[hub,demand,2030,2,9:9] 0.3
     flow[(hub,demand),2030,2,10:10] max_transport_flow_limit_simple_method[(hub,demand),2030,2,10:10] 1
     flow[(hub,demand),2030,2,10:10] min_transport_flow_limit_simple_method[(hub,demand),2030,2,10:10] 1
     flow[(hub,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
     flow[(hub,demand),2030,2,10:10] balance_hub[hub,2030,2,10:10] -1
-    flow[(hub,demand),2030,2,10:10] dc_power_flow[hub,demand,2030,2,10:10] 1
+    flow[(hub,demand),2030,2,10:10] dc_power_flow[hub,demand,2030,2,10:10] 0.3
     flow[(hub,demand),2030,2,11:11] max_transport_flow_limit_simple_method[(hub,demand),2030,2,11:11] 1
     flow[(hub,demand),2030,2,11:11] min_transport_flow_limit_simple_method[(hub,demand),2030,2,11:11] 1
     flow[(hub,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
     flow[(hub,demand),2030,2,11:11] balance_hub[hub,2030,2,11:11] -1
-    flow[(hub,demand),2030,2,11:11] dc_power_flow[hub,demand,2030,2,11:11] 1
+    flow[(hub,demand),2030,2,11:11] dc_power_flow[hub,demand,2030,2,11:11] 0.3
     flow[(hub,demand),2030,2,12:12] max_transport_flow_limit_simple_method[(hub,demand),2030,2,12:12] 1
     flow[(hub,demand),2030,2,12:12] min_transport_flow_limit_simple_method[(hub,demand),2030,2,12:12] 1
     flow[(hub,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
     flow[(hub,demand),2030,2,12:12] balance_hub[hub,2030,2,12:12] -1
-    flow[(hub,demand),2030,2,12:12] dc_power_flow[hub,demand,2030,2,12:12] 1
+    flow[(hub,demand),2030,2,12:12] dc_power_flow[hub,demand,2030,2,12:12] 0.3
     flow[(hub,demand),2030,2,13:13] max_transport_flow_limit_simple_method[(hub,demand),2030,2,13:13] 1
     flow[(hub,demand),2030,2,13:13] min_transport_flow_limit_simple_method[(hub,demand),2030,2,13:13] 1
     flow[(hub,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
     flow[(hub,demand),2030,2,13:13] balance_hub[hub,2030,2,13:13] -1
-    flow[(hub,demand),2030,2,13:13] dc_power_flow[hub,demand,2030,2,13:13] 1
+    flow[(hub,demand),2030,2,13:13] dc_power_flow[hub,demand,2030,2,13:13] 0.3
     flow[(hub,demand),2030,2,14:14] max_transport_flow_limit_simple_method[(hub,demand),2030,2,14:14] 1
     flow[(hub,demand),2030,2,14:14] min_transport_flow_limit_simple_method[(hub,demand),2030,2,14:14] 1
     flow[(hub,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
     flow[(hub,demand),2030,2,14:14] balance_hub[hub,2030,2,14:14] -1
-    flow[(hub,demand),2030,2,14:14] dc_power_flow[hub,demand,2030,2,14:14] 1
+    flow[(hub,demand),2030,2,14:14] dc_power_flow[hub,demand,2030,2,14:14] 0.3
     flow[(hub,demand),2030,2,15:15] max_transport_flow_limit_simple_method[(hub,demand),2030,2,15:15] 1
     flow[(hub,demand),2030,2,15:15] min_transport_flow_limit_simple_method[(hub,demand),2030,2,15:15] 1
     flow[(hub,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
     flow[(hub,demand),2030,2,15:15] balance_hub[hub,2030,2,15:15] -1
-    flow[(hub,demand),2030,2,15:15] dc_power_flow[hub,demand,2030,2,15:15] 1
+    flow[(hub,demand),2030,2,15:15] dc_power_flow[hub,demand,2030,2,15:15] 0.3
     flow[(hub,demand),2030,2,16:16] max_transport_flow_limit_simple_method[(hub,demand),2030,2,16:16] 1
     flow[(hub,demand),2030,2,16:16] min_transport_flow_limit_simple_method[(hub,demand),2030,2,16:16] 1
     flow[(hub,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
     flow[(hub,demand),2030,2,16:16] balance_hub[hub,2030,2,16:16] -1
-    flow[(hub,demand),2030,2,16:16] dc_power_flow[hub,demand,2030,2,16:16] 1
+    flow[(hub,demand),2030,2,16:16] dc_power_flow[hub,demand,2030,2,16:16] 0.3
     flow[(hub,demand),2030,2,17:17] max_transport_flow_limit_simple_method[(hub,demand),2030,2,17:17] 1
     flow[(hub,demand),2030,2,17:17] min_transport_flow_limit_simple_method[(hub,demand),2030,2,17:17] 1
     flow[(hub,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
     flow[(hub,demand),2030,2,17:17] balance_hub[hub,2030,2,17:17] -1
-    flow[(hub,demand),2030,2,17:17] dc_power_flow[hub,demand,2030,2,17:17] 1
+    flow[(hub,demand),2030,2,17:17] dc_power_flow[hub,demand,2030,2,17:17] 0.3
     flow[(hub,demand),2030,2,18:18] max_transport_flow_limit_simple_method[(hub,demand),2030,2,18:18] 1
     flow[(hub,demand),2030,2,18:18] min_transport_flow_limit_simple_method[(hub,demand),2030,2,18:18] 1
     flow[(hub,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
     flow[(hub,demand),2030,2,18:18] balance_hub[hub,2030,2,18:18] -1
-    flow[(hub,demand),2030,2,18:18] dc_power_flow[hub,demand,2030,2,18:18] 1
+    flow[(hub,demand),2030,2,18:18] dc_power_flow[hub,demand,2030,2,18:18] 0.3
     flow[(hub,demand),2030,2,19:19] max_transport_flow_limit_simple_method[(hub,demand),2030,2,19:19] 1
     flow[(hub,demand),2030,2,19:19] min_transport_flow_limit_simple_method[(hub,demand),2030,2,19:19] 1
     flow[(hub,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
     flow[(hub,demand),2030,2,19:19] balance_hub[hub,2030,2,19:19] -1
-    flow[(hub,demand),2030,2,19:19] dc_power_flow[hub,demand,2030,2,19:19] 1
+    flow[(hub,demand),2030,2,19:19] dc_power_flow[hub,demand,2030,2,19:19] 0.3
     flow[(hub,demand),2030,2,20:20] max_transport_flow_limit_simple_method[(hub,demand),2030,2,20:20] 1
     flow[(hub,demand),2030,2,20:20] min_transport_flow_limit_simple_method[(hub,demand),2030,2,20:20] 1
     flow[(hub,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
     flow[(hub,demand),2030,2,20:20] balance_hub[hub,2030,2,20:20] -1
-    flow[(hub,demand),2030,2,20:20] dc_power_flow[hub,demand,2030,2,20:20] 1
+    flow[(hub,demand),2030,2,20:20] dc_power_flow[hub,demand,2030,2,20:20] 0.3
     flow[(hub,demand),2030,2,21:21] max_transport_flow_limit_simple_method[(hub,demand),2030,2,21:21] 1
     flow[(hub,demand),2030,2,21:21] min_transport_flow_limit_simple_method[(hub,demand),2030,2,21:21] 1
     flow[(hub,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
     flow[(hub,demand),2030,2,21:21] balance_hub[hub,2030,2,21:21] -1
-    flow[(hub,demand),2030,2,21:21] dc_power_flow[hub,demand,2030,2,21:21] 1
+    flow[(hub,demand),2030,2,21:21] dc_power_flow[hub,demand,2030,2,21:21] 0.3
     flow[(hub,demand),2030,2,22:22] max_transport_flow_limit_simple_method[(hub,demand),2030,2,22:22] 1
     flow[(hub,demand),2030,2,22:22] min_transport_flow_limit_simple_method[(hub,demand),2030,2,22:22] 1
     flow[(hub,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
     flow[(hub,demand),2030,2,22:22] balance_hub[hub,2030,2,22:22] -1
-    flow[(hub,demand),2030,2,22:22] dc_power_flow[hub,demand,2030,2,22:22] 1
+    flow[(hub,demand),2030,2,22:22] dc_power_flow[hub,demand,2030,2,22:22] 0.3
     flow[(hub,demand),2030,2,23:23] max_transport_flow_limit_simple_method[(hub,demand),2030,2,23:23] 1
     flow[(hub,demand),2030,2,23:23] min_transport_flow_limit_simple_method[(hub,demand),2030,2,23:23] 1
     flow[(hub,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
     flow[(hub,demand),2030,2,23:23] balance_hub[hub,2030,2,23:23] -1
-    flow[(hub,demand),2030,2,23:23] dc_power_flow[hub,demand,2030,2,23:23] 1
+    flow[(hub,demand),2030,2,23:23] dc_power_flow[hub,demand,2030,2,23:23] 0.3
     flow[(hub,demand),2030,2,24:24] max_transport_flow_limit_simple_method[(hub,demand),2030,2,24:24] 1
     flow[(hub,demand),2030,2,24:24] min_transport_flow_limit_simple_method[(hub,demand),2030,2,24:24] 1
     flow[(hub,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
     flow[(hub,demand),2030,2,24:24] balance_hub[hub,2030,2,24:24] -1
-    flow[(hub,demand),2030,2,24:24] dc_power_flow[hub,demand,2030,2,24:24] 1
+    flow[(hub,demand),2030,2,24:24] dc_power_flow[hub,demand,2030,2,24:24] 0.3
     flow[(import,hub),2030,2,1:1] max_output_flows_limit_simple_method[import,2030,2,1:1] 1
     flow[(import,hub),2030,2,1:1] balance_hub[hub,2030,2,1:1] 1
     flow[(import,hub),2030,2,1:1] OBJ 9.125
@@ -1735,457 +1735,457 @@ COLUMNS
     flow[(ccgt,demand),2030,3,1:1] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,1:1] 1
     flow[(ccgt,demand),2030,3,1:1] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,1:1] 1
     flow[(ccgt,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
-    flow[(ccgt,demand),2030,3,1:1] dc_power_flow[ccgt,demand,2030,3,1:1] 1
+    flow[(ccgt,demand),2030,3,1:1] dc_power_flow[ccgt,demand,2030,3,1:1] 0.3
     flow[(ccgt,demand),2030,3,1:1] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,2:2] max_output_flows_limit_simple_method[ccgt,2030,3,2:2] 1
     flow[(ccgt,demand),2030,3,2:2] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,2:2] 1
     flow[(ccgt,demand),2030,3,2:2] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,2:2] 1
     flow[(ccgt,demand),2030,3,2:2] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,2:2] 1
     flow[(ccgt,demand),2030,3,2:2] consumer_balance[demand,2030,3,2:2] 1
-    flow[(ccgt,demand),2030,3,2:2] dc_power_flow[ccgt,demand,2030,3,2:2] 1
+    flow[(ccgt,demand),2030,3,2:2] dc_power_flow[ccgt,demand,2030,3,2:2] 0.3
     flow[(ccgt,demand),2030,3,2:2] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,3:3] max_output_flows_limit_simple_method[ccgt,2030,3,3:3] 1
     flow[(ccgt,demand),2030,3,3:3] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,3:3] 1
     flow[(ccgt,demand),2030,3,3:3] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,3:3] 1
     flow[(ccgt,demand),2030,3,3:3] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,3:3] 1
     flow[(ccgt,demand),2030,3,3:3] consumer_balance[demand,2030,3,3:3] 1
-    flow[(ccgt,demand),2030,3,3:3] dc_power_flow[ccgt,demand,2030,3,3:3] 1
+    flow[(ccgt,demand),2030,3,3:3] dc_power_flow[ccgt,demand,2030,3,3:3] 0.3
     flow[(ccgt,demand),2030,3,3:3] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,4:4] max_output_flows_limit_simple_method[ccgt,2030,3,4:4] 1
     flow[(ccgt,demand),2030,3,4:4] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,4:4] 1
     flow[(ccgt,demand),2030,3,4:4] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,4:4] 1
     flow[(ccgt,demand),2030,3,4:4] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,4:4] 1
     flow[(ccgt,demand),2030,3,4:4] consumer_balance[demand,2030,3,4:4] 1
-    flow[(ccgt,demand),2030,3,4:4] dc_power_flow[ccgt,demand,2030,3,4:4] 1
+    flow[(ccgt,demand),2030,3,4:4] dc_power_flow[ccgt,demand,2030,3,4:4] 0.3
     flow[(ccgt,demand),2030,3,4:4] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,5:5] max_output_flows_limit_simple_method[ccgt,2030,3,5:5] 1
     flow[(ccgt,demand),2030,3,5:5] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,5:5] 1
     flow[(ccgt,demand),2030,3,5:5] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,5:5] 1
     flow[(ccgt,demand),2030,3,5:5] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,5:5] 1
     flow[(ccgt,demand),2030,3,5:5] consumer_balance[demand,2030,3,5:5] 1
-    flow[(ccgt,demand),2030,3,5:5] dc_power_flow[ccgt,demand,2030,3,5:5] 1
+    flow[(ccgt,demand),2030,3,5:5] dc_power_flow[ccgt,demand,2030,3,5:5] 0.3
     flow[(ccgt,demand),2030,3,5:5] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,6:6] max_output_flows_limit_simple_method[ccgt,2030,3,6:6] 1
     flow[(ccgt,demand),2030,3,6:6] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,6:6] 1
     flow[(ccgt,demand),2030,3,6:6] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,6:6] 1
     flow[(ccgt,demand),2030,3,6:6] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,6:6] 1
     flow[(ccgt,demand),2030,3,6:6] consumer_balance[demand,2030,3,6:6] 1
-    flow[(ccgt,demand),2030,3,6:6] dc_power_flow[ccgt,demand,2030,3,6:6] 1
+    flow[(ccgt,demand),2030,3,6:6] dc_power_flow[ccgt,demand,2030,3,6:6] 0.3
     flow[(ccgt,demand),2030,3,6:6] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,7:7] max_output_flows_limit_simple_method[ccgt,2030,3,7:7] 1
     flow[(ccgt,demand),2030,3,7:7] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,7:7] 1
     flow[(ccgt,demand),2030,3,7:7] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,7:7] 1
     flow[(ccgt,demand),2030,3,7:7] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,7:7] 1
     flow[(ccgt,demand),2030,3,7:7] consumer_balance[demand,2030,3,7:7] 1
-    flow[(ccgt,demand),2030,3,7:7] dc_power_flow[ccgt,demand,2030,3,7:7] 1
+    flow[(ccgt,demand),2030,3,7:7] dc_power_flow[ccgt,demand,2030,3,7:7] 0.3
     flow[(ccgt,demand),2030,3,7:7] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,8:8] max_output_flows_limit_simple_method[ccgt,2030,3,8:8] 1
     flow[(ccgt,demand),2030,3,8:8] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,8:8] 1
     flow[(ccgt,demand),2030,3,8:8] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,8:8] 1
     flow[(ccgt,demand),2030,3,8:8] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,8:8] 1
     flow[(ccgt,demand),2030,3,8:8] consumer_balance[demand,2030,3,8:8] 1
-    flow[(ccgt,demand),2030,3,8:8] dc_power_flow[ccgt,demand,2030,3,8:8] 1
+    flow[(ccgt,demand),2030,3,8:8] dc_power_flow[ccgt,demand,2030,3,8:8] 0.3
     flow[(ccgt,demand),2030,3,8:8] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,9:9] max_output_flows_limit_simple_method[ccgt,2030,3,9:9] 1
     flow[(ccgt,demand),2030,3,9:9] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,9:9] 1
     flow[(ccgt,demand),2030,3,9:9] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,9:9] 1
     flow[(ccgt,demand),2030,3,9:9] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,9:9] 1
     flow[(ccgt,demand),2030,3,9:9] consumer_balance[demand,2030,3,9:9] 1
-    flow[(ccgt,demand),2030,3,9:9] dc_power_flow[ccgt,demand,2030,3,9:9] 1
+    flow[(ccgt,demand),2030,3,9:9] dc_power_flow[ccgt,demand,2030,3,9:9] 0.3
     flow[(ccgt,demand),2030,3,9:9] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,10:10] max_output_flows_limit_simple_method[ccgt,2030,3,10:10] 1
     flow[(ccgt,demand),2030,3,10:10] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,10:10] 1
     flow[(ccgt,demand),2030,3,10:10] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,10:10] 1
     flow[(ccgt,demand),2030,3,10:10] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,10:10] 1
     flow[(ccgt,demand),2030,3,10:10] consumer_balance[demand,2030,3,10:10] 1
-    flow[(ccgt,demand),2030,3,10:10] dc_power_flow[ccgt,demand,2030,3,10:10] 1
+    flow[(ccgt,demand),2030,3,10:10] dc_power_flow[ccgt,demand,2030,3,10:10] 0.3
     flow[(ccgt,demand),2030,3,10:10] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,11:11] max_output_flows_limit_simple_method[ccgt,2030,3,11:11] 1
     flow[(ccgt,demand),2030,3,11:11] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,11:11] 1
     flow[(ccgt,demand),2030,3,11:11] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,11:11] 1
     flow[(ccgt,demand),2030,3,11:11] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,11:11] 1
     flow[(ccgt,demand),2030,3,11:11] consumer_balance[demand,2030,3,11:11] 1
-    flow[(ccgt,demand),2030,3,11:11] dc_power_flow[ccgt,demand,2030,3,11:11] 1
+    flow[(ccgt,demand),2030,3,11:11] dc_power_flow[ccgt,demand,2030,3,11:11] 0.3
     flow[(ccgt,demand),2030,3,11:11] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,12:12] max_output_flows_limit_simple_method[ccgt,2030,3,12:12] 1
     flow[(ccgt,demand),2030,3,12:12] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,12:12] 1
     flow[(ccgt,demand),2030,3,12:12] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,12:12] 1
     flow[(ccgt,demand),2030,3,12:12] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,12:12] 1
     flow[(ccgt,demand),2030,3,12:12] consumer_balance[demand,2030,3,12:12] 1
-    flow[(ccgt,demand),2030,3,12:12] dc_power_flow[ccgt,demand,2030,3,12:12] 1
+    flow[(ccgt,demand),2030,3,12:12] dc_power_flow[ccgt,demand,2030,3,12:12] 0.3
     flow[(ccgt,demand),2030,3,12:12] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,13:13] max_output_flows_limit_simple_method[ccgt,2030,3,13:13] 1
     flow[(ccgt,demand),2030,3,13:13] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,13:13] 1
     flow[(ccgt,demand),2030,3,13:13] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,13:13] 1
     flow[(ccgt,demand),2030,3,13:13] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,13:13] 1
     flow[(ccgt,demand),2030,3,13:13] consumer_balance[demand,2030,3,13:13] 1
-    flow[(ccgt,demand),2030,3,13:13] dc_power_flow[ccgt,demand,2030,3,13:13] 1
+    flow[(ccgt,demand),2030,3,13:13] dc_power_flow[ccgt,demand,2030,3,13:13] 0.3
     flow[(ccgt,demand),2030,3,13:13] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,14:14] max_output_flows_limit_simple_method[ccgt,2030,3,14:14] 1
     flow[(ccgt,demand),2030,3,14:14] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,14:14] 1
     flow[(ccgt,demand),2030,3,14:14] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,14:14] 1
     flow[(ccgt,demand),2030,3,14:14] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,14:14] 1
     flow[(ccgt,demand),2030,3,14:14] consumer_balance[demand,2030,3,14:14] 1
-    flow[(ccgt,demand),2030,3,14:14] dc_power_flow[ccgt,demand,2030,3,14:14] 1
+    flow[(ccgt,demand),2030,3,14:14] dc_power_flow[ccgt,demand,2030,3,14:14] 0.3
     flow[(ccgt,demand),2030,3,14:14] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,15:15] max_output_flows_limit_simple_method[ccgt,2030,3,15:15] 1
     flow[(ccgt,demand),2030,3,15:15] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,15:15] 1
     flow[(ccgt,demand),2030,3,15:15] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,15:15] 1
     flow[(ccgt,demand),2030,3,15:15] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,15:15] 1
     flow[(ccgt,demand),2030,3,15:15] consumer_balance[demand,2030,3,15:15] 1
-    flow[(ccgt,demand),2030,3,15:15] dc_power_flow[ccgt,demand,2030,3,15:15] 1
+    flow[(ccgt,demand),2030,3,15:15] dc_power_flow[ccgt,demand,2030,3,15:15] 0.3
     flow[(ccgt,demand),2030,3,15:15] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,16:16] max_output_flows_limit_simple_method[ccgt,2030,3,16:16] 1
     flow[(ccgt,demand),2030,3,16:16] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,16:16] 1
     flow[(ccgt,demand),2030,3,16:16] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,16:16] 1
     flow[(ccgt,demand),2030,3,16:16] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,16:16] 1
     flow[(ccgt,demand),2030,3,16:16] consumer_balance[demand,2030,3,16:16] 1
-    flow[(ccgt,demand),2030,3,16:16] dc_power_flow[ccgt,demand,2030,3,16:16] 1
+    flow[(ccgt,demand),2030,3,16:16] dc_power_flow[ccgt,demand,2030,3,16:16] 0.3
     flow[(ccgt,demand),2030,3,16:16] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,17:17] max_output_flows_limit_simple_method[ccgt,2030,3,17:17] 1
     flow[(ccgt,demand),2030,3,17:17] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,17:17] 1
     flow[(ccgt,demand),2030,3,17:17] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,17:17] 1
     flow[(ccgt,demand),2030,3,17:17] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,17:17] 1
     flow[(ccgt,demand),2030,3,17:17] consumer_balance[demand,2030,3,17:17] 1
-    flow[(ccgt,demand),2030,3,17:17] dc_power_flow[ccgt,demand,2030,3,17:17] 1
+    flow[(ccgt,demand),2030,3,17:17] dc_power_flow[ccgt,demand,2030,3,17:17] 0.3
     flow[(ccgt,demand),2030,3,17:17] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,18:18] max_output_flows_limit_simple_method[ccgt,2030,3,18:18] 1
     flow[(ccgt,demand),2030,3,18:18] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,18:18] 1
     flow[(ccgt,demand),2030,3,18:18] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,18:18] 1
     flow[(ccgt,demand),2030,3,18:18] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,18:18] 1
     flow[(ccgt,demand),2030,3,18:18] consumer_balance[demand,2030,3,18:18] 1
-    flow[(ccgt,demand),2030,3,18:18] dc_power_flow[ccgt,demand,2030,3,18:18] 1
+    flow[(ccgt,demand),2030,3,18:18] dc_power_flow[ccgt,demand,2030,3,18:18] 0.3
     flow[(ccgt,demand),2030,3,18:18] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,19:19] max_output_flows_limit_simple_method[ccgt,2030,3,19:19] 1
     flow[(ccgt,demand),2030,3,19:19] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,19:19] 1
     flow[(ccgt,demand),2030,3,19:19] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,19:19] 1
     flow[(ccgt,demand),2030,3,19:19] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,19:19] 1
     flow[(ccgt,demand),2030,3,19:19] consumer_balance[demand,2030,3,19:19] 1
-    flow[(ccgt,demand),2030,3,19:19] dc_power_flow[ccgt,demand,2030,3,19:19] 1
+    flow[(ccgt,demand),2030,3,19:19] dc_power_flow[ccgt,demand,2030,3,19:19] 0.3
     flow[(ccgt,demand),2030,3,19:19] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,20:20] max_output_flows_limit_simple_method[ccgt,2030,3,20:20] 1
     flow[(ccgt,demand),2030,3,20:20] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,20:20] 1
     flow[(ccgt,demand),2030,3,20:20] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,20:20] 1
     flow[(ccgt,demand),2030,3,20:20] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,20:20] 1
     flow[(ccgt,demand),2030,3,20:20] consumer_balance[demand,2030,3,20:20] 1
-    flow[(ccgt,demand),2030,3,20:20] dc_power_flow[ccgt,demand,2030,3,20:20] 1
+    flow[(ccgt,demand),2030,3,20:20] dc_power_flow[ccgt,demand,2030,3,20:20] 0.3
     flow[(ccgt,demand),2030,3,20:20] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,21:21] max_output_flows_limit_simple_method[ccgt,2030,3,21:21] 1
     flow[(ccgt,demand),2030,3,21:21] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,21:21] 1
     flow[(ccgt,demand),2030,3,21:21] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,21:21] 1
     flow[(ccgt,demand),2030,3,21:21] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,21:21] 1
     flow[(ccgt,demand),2030,3,21:21] consumer_balance[demand,2030,3,21:21] 1
-    flow[(ccgt,demand),2030,3,21:21] dc_power_flow[ccgt,demand,2030,3,21:21] 1
+    flow[(ccgt,demand),2030,3,21:21] dc_power_flow[ccgt,demand,2030,3,21:21] 0.3
     flow[(ccgt,demand),2030,3,21:21] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,22:22] max_output_flows_limit_simple_method[ccgt,2030,3,22:22] 1
     flow[(ccgt,demand),2030,3,22:22] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,22:22] 1
     flow[(ccgt,demand),2030,3,22:22] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,22:22] 1
     flow[(ccgt,demand),2030,3,22:22] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,22:22] 1
     flow[(ccgt,demand),2030,3,22:22] consumer_balance[demand,2030,3,22:22] 1
-    flow[(ccgt,demand),2030,3,22:22] dc_power_flow[ccgt,demand,2030,3,22:22] 1
+    flow[(ccgt,demand),2030,3,22:22] dc_power_flow[ccgt,demand,2030,3,22:22] 0.3
     flow[(ccgt,demand),2030,3,22:22] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,23:23] max_output_flows_limit_simple_method[ccgt,2030,3,23:23] 1
     flow[(ccgt,demand),2030,3,23:23] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,23:23] 1
     flow[(ccgt,demand),2030,3,23:23] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,23:23] 1
     flow[(ccgt,demand),2030,3,23:23] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,23:23] 1
     flow[(ccgt,demand),2030,3,23:23] consumer_balance[demand,2030,3,23:23] 1
-    flow[(ccgt,demand),2030,3,23:23] dc_power_flow[ccgt,demand,2030,3,23:23] 1
+    flow[(ccgt,demand),2030,3,23:23] dc_power_flow[ccgt,demand,2030,3,23:23] 0.3
     flow[(ccgt,demand),2030,3,23:23] OBJ 5.4750000000000005
     flow[(ccgt,demand),2030,3,24:24] max_output_flows_limit_simple_method[ccgt,2030,3,24:24] 1
     flow[(ccgt,demand),2030,3,24:24] max_transport_flow_limit_simple_method[(ccgt,demand),2030,3,24:24] 1
     flow[(ccgt,demand),2030,3,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,24:24] 1
     flow[(ccgt,demand),2030,3,24:24] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,24:24] 1
     flow[(ccgt,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
-    flow[(ccgt,demand),2030,3,24:24] dc_power_flow[ccgt,demand,2030,3,24:24] 1
+    flow[(ccgt,demand),2030,3,24:24] dc_power_flow[ccgt,demand,2030,3,24:24] 0.3
     flow[(ccgt,demand),2030,3,24:24] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,1:1] max_output_flows_limit_simple_method[ccgt,2030,3,1:1] 1
     flow[(ccgt,hub),2030,3,1:1] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,1:1] 1
     flow[(ccgt,hub),2030,3,1:1] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,1:1] 1
     flow[(ccgt,hub),2030,3,1:1] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,1:1] 1
     flow[(ccgt,hub),2030,3,1:1] balance_hub[hub,2030,3,1:1] 1
-    flow[(ccgt,hub),2030,3,1:1] dc_power_flow[ccgt,hub,2030,3,1:1] 1
+    flow[(ccgt,hub),2030,3,1:1] dc_power_flow[ccgt,hub,2030,3,1:1] 0.3
     flow[(ccgt,hub),2030,3,1:1] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,2:2] max_output_flows_limit_simple_method[ccgt,2030,3,2:2] 1
     flow[(ccgt,hub),2030,3,2:2] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,2:2] 1
     flow[(ccgt,hub),2030,3,2:2] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,2:2] 1
     flow[(ccgt,hub),2030,3,2:2] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,2:2] 1
     flow[(ccgt,hub),2030,3,2:2] balance_hub[hub,2030,3,2:2] 1
-    flow[(ccgt,hub),2030,3,2:2] dc_power_flow[ccgt,hub,2030,3,2:2] 1
+    flow[(ccgt,hub),2030,3,2:2] dc_power_flow[ccgt,hub,2030,3,2:2] 0.3
     flow[(ccgt,hub),2030,3,2:2] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,3:3] max_output_flows_limit_simple_method[ccgt,2030,3,3:3] 1
     flow[(ccgt,hub),2030,3,3:3] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,3:3] 1
     flow[(ccgt,hub),2030,3,3:3] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,3:3] 1
     flow[(ccgt,hub),2030,3,3:3] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,3:3] 1
     flow[(ccgt,hub),2030,3,3:3] balance_hub[hub,2030,3,3:3] 1
-    flow[(ccgt,hub),2030,3,3:3] dc_power_flow[ccgt,hub,2030,3,3:3] 1
+    flow[(ccgt,hub),2030,3,3:3] dc_power_flow[ccgt,hub,2030,3,3:3] 0.3
     flow[(ccgt,hub),2030,3,3:3] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,4:4] max_output_flows_limit_simple_method[ccgt,2030,3,4:4] 1
     flow[(ccgt,hub),2030,3,4:4] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,4:4] 1
     flow[(ccgt,hub),2030,3,4:4] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,4:4] 1
     flow[(ccgt,hub),2030,3,4:4] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,4:4] 1
     flow[(ccgt,hub),2030,3,4:4] balance_hub[hub,2030,3,4:4] 1
-    flow[(ccgt,hub),2030,3,4:4] dc_power_flow[ccgt,hub,2030,3,4:4] 1
+    flow[(ccgt,hub),2030,3,4:4] dc_power_flow[ccgt,hub,2030,3,4:4] 0.3
     flow[(ccgt,hub),2030,3,4:4] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,5:5] max_output_flows_limit_simple_method[ccgt,2030,3,5:5] 1
     flow[(ccgt,hub),2030,3,5:5] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,5:5] 1
     flow[(ccgt,hub),2030,3,5:5] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,5:5] 1
     flow[(ccgt,hub),2030,3,5:5] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,5:5] 1
     flow[(ccgt,hub),2030,3,5:5] balance_hub[hub,2030,3,5:5] 1
-    flow[(ccgt,hub),2030,3,5:5] dc_power_flow[ccgt,hub,2030,3,5:5] 1
+    flow[(ccgt,hub),2030,3,5:5] dc_power_flow[ccgt,hub,2030,3,5:5] 0.3
     flow[(ccgt,hub),2030,3,5:5] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,6:6] max_output_flows_limit_simple_method[ccgt,2030,3,6:6] 1
     flow[(ccgt,hub),2030,3,6:6] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,6:6] 1
     flow[(ccgt,hub),2030,3,6:6] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,6:6] 1
     flow[(ccgt,hub),2030,3,6:6] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,6:6] 1
     flow[(ccgt,hub),2030,3,6:6] balance_hub[hub,2030,3,6:6] 1
-    flow[(ccgt,hub),2030,3,6:6] dc_power_flow[ccgt,hub,2030,3,6:6] 1
+    flow[(ccgt,hub),2030,3,6:6] dc_power_flow[ccgt,hub,2030,3,6:6] 0.3
     flow[(ccgt,hub),2030,3,6:6] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,7:7] max_output_flows_limit_simple_method[ccgt,2030,3,7:7] 1
     flow[(ccgt,hub),2030,3,7:7] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,7:7] 1
     flow[(ccgt,hub),2030,3,7:7] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,7:7] 1
     flow[(ccgt,hub),2030,3,7:7] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,7:7] 1
     flow[(ccgt,hub),2030,3,7:7] balance_hub[hub,2030,3,7:7] 1
-    flow[(ccgt,hub),2030,3,7:7] dc_power_flow[ccgt,hub,2030,3,7:7] 1
+    flow[(ccgt,hub),2030,3,7:7] dc_power_flow[ccgt,hub,2030,3,7:7] 0.3
     flow[(ccgt,hub),2030,3,7:7] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,8:8] max_output_flows_limit_simple_method[ccgt,2030,3,8:8] 1
     flow[(ccgt,hub),2030,3,8:8] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,8:8] 1
     flow[(ccgt,hub),2030,3,8:8] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,8:8] 1
     flow[(ccgt,hub),2030,3,8:8] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,8:8] 1
     flow[(ccgt,hub),2030,3,8:8] balance_hub[hub,2030,3,8:8] 1
-    flow[(ccgt,hub),2030,3,8:8] dc_power_flow[ccgt,hub,2030,3,8:8] 1
+    flow[(ccgt,hub),2030,3,8:8] dc_power_flow[ccgt,hub,2030,3,8:8] 0.3
     flow[(ccgt,hub),2030,3,8:8] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,9:9] max_output_flows_limit_simple_method[ccgt,2030,3,9:9] 1
     flow[(ccgt,hub),2030,3,9:9] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,9:9] 1
     flow[(ccgt,hub),2030,3,9:9] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,9:9] 1
     flow[(ccgt,hub),2030,3,9:9] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,9:9] 1
     flow[(ccgt,hub),2030,3,9:9] balance_hub[hub,2030,3,9:9] 1
-    flow[(ccgt,hub),2030,3,9:9] dc_power_flow[ccgt,hub,2030,3,9:9] 1
+    flow[(ccgt,hub),2030,3,9:9] dc_power_flow[ccgt,hub,2030,3,9:9] 0.3
     flow[(ccgt,hub),2030,3,9:9] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,10:10] max_output_flows_limit_simple_method[ccgt,2030,3,10:10] 1
     flow[(ccgt,hub),2030,3,10:10] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,10:10] 1
     flow[(ccgt,hub),2030,3,10:10] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,10:10] 1
     flow[(ccgt,hub),2030,3,10:10] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,10:10] 1
     flow[(ccgt,hub),2030,3,10:10] balance_hub[hub,2030,3,10:10] 1
-    flow[(ccgt,hub),2030,3,10:10] dc_power_flow[ccgt,hub,2030,3,10:10] 1
+    flow[(ccgt,hub),2030,3,10:10] dc_power_flow[ccgt,hub,2030,3,10:10] 0.3
     flow[(ccgt,hub),2030,3,10:10] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,11:11] max_output_flows_limit_simple_method[ccgt,2030,3,11:11] 1
     flow[(ccgt,hub),2030,3,11:11] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,11:11] 1
     flow[(ccgt,hub),2030,3,11:11] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,11:11] 1
     flow[(ccgt,hub),2030,3,11:11] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,11:11] 1
     flow[(ccgt,hub),2030,3,11:11] balance_hub[hub,2030,3,11:11] 1
-    flow[(ccgt,hub),2030,3,11:11] dc_power_flow[ccgt,hub,2030,3,11:11] 1
+    flow[(ccgt,hub),2030,3,11:11] dc_power_flow[ccgt,hub,2030,3,11:11] 0.3
     flow[(ccgt,hub),2030,3,11:11] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,12:12] max_output_flows_limit_simple_method[ccgt,2030,3,12:12] 1
     flow[(ccgt,hub),2030,3,12:12] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,12:12] 1
     flow[(ccgt,hub),2030,3,12:12] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,12:12] 1
     flow[(ccgt,hub),2030,3,12:12] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,12:12] 1
     flow[(ccgt,hub),2030,3,12:12] balance_hub[hub,2030,3,12:12] 1
-    flow[(ccgt,hub),2030,3,12:12] dc_power_flow[ccgt,hub,2030,3,12:12] 1
+    flow[(ccgt,hub),2030,3,12:12] dc_power_flow[ccgt,hub,2030,3,12:12] 0.3
     flow[(ccgt,hub),2030,3,12:12] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,13:13] max_output_flows_limit_simple_method[ccgt,2030,3,13:13] 1
     flow[(ccgt,hub),2030,3,13:13] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,13:13] 1
     flow[(ccgt,hub),2030,3,13:13] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,13:13] 1
     flow[(ccgt,hub),2030,3,13:13] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,13:13] 1
     flow[(ccgt,hub),2030,3,13:13] balance_hub[hub,2030,3,13:13] 1
-    flow[(ccgt,hub),2030,3,13:13] dc_power_flow[ccgt,hub,2030,3,13:13] 1
+    flow[(ccgt,hub),2030,3,13:13] dc_power_flow[ccgt,hub,2030,3,13:13] 0.3
     flow[(ccgt,hub),2030,3,13:13] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,14:14] max_output_flows_limit_simple_method[ccgt,2030,3,14:14] 1
     flow[(ccgt,hub),2030,3,14:14] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,14:14] 1
     flow[(ccgt,hub),2030,3,14:14] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,14:14] 1
     flow[(ccgt,hub),2030,3,14:14] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,14:14] 1
     flow[(ccgt,hub),2030,3,14:14] balance_hub[hub,2030,3,14:14] 1
-    flow[(ccgt,hub),2030,3,14:14] dc_power_flow[ccgt,hub,2030,3,14:14] 1
+    flow[(ccgt,hub),2030,3,14:14] dc_power_flow[ccgt,hub,2030,3,14:14] 0.3
     flow[(ccgt,hub),2030,3,14:14] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,15:15] max_output_flows_limit_simple_method[ccgt,2030,3,15:15] 1
     flow[(ccgt,hub),2030,3,15:15] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,15:15] 1
     flow[(ccgt,hub),2030,3,15:15] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,15:15] 1
     flow[(ccgt,hub),2030,3,15:15] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,15:15] 1
     flow[(ccgt,hub),2030,3,15:15] balance_hub[hub,2030,3,15:15] 1
-    flow[(ccgt,hub),2030,3,15:15] dc_power_flow[ccgt,hub,2030,3,15:15] 1
+    flow[(ccgt,hub),2030,3,15:15] dc_power_flow[ccgt,hub,2030,3,15:15] 0.3
     flow[(ccgt,hub),2030,3,15:15] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,16:16] max_output_flows_limit_simple_method[ccgt,2030,3,16:16] 1
     flow[(ccgt,hub),2030,3,16:16] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,16:16] 1
     flow[(ccgt,hub),2030,3,16:16] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,16:16] 1
     flow[(ccgt,hub),2030,3,16:16] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,16:16] 1
     flow[(ccgt,hub),2030,3,16:16] balance_hub[hub,2030,3,16:16] 1
-    flow[(ccgt,hub),2030,3,16:16] dc_power_flow[ccgt,hub,2030,3,16:16] 1
+    flow[(ccgt,hub),2030,3,16:16] dc_power_flow[ccgt,hub,2030,3,16:16] 0.3
     flow[(ccgt,hub),2030,3,16:16] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,17:17] max_output_flows_limit_simple_method[ccgt,2030,3,17:17] 1
     flow[(ccgt,hub),2030,3,17:17] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,17:17] 1
     flow[(ccgt,hub),2030,3,17:17] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,17:17] 1
     flow[(ccgt,hub),2030,3,17:17] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,17:17] 1
     flow[(ccgt,hub),2030,3,17:17] balance_hub[hub,2030,3,17:17] 1
-    flow[(ccgt,hub),2030,3,17:17] dc_power_flow[ccgt,hub,2030,3,17:17] 1
+    flow[(ccgt,hub),2030,3,17:17] dc_power_flow[ccgt,hub,2030,3,17:17] 0.3
     flow[(ccgt,hub),2030,3,17:17] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,18:18] max_output_flows_limit_simple_method[ccgt,2030,3,18:18] 1
     flow[(ccgt,hub),2030,3,18:18] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,18:18] 1
     flow[(ccgt,hub),2030,3,18:18] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,18:18] 1
     flow[(ccgt,hub),2030,3,18:18] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,18:18] 1
     flow[(ccgt,hub),2030,3,18:18] balance_hub[hub,2030,3,18:18] 1
-    flow[(ccgt,hub),2030,3,18:18] dc_power_flow[ccgt,hub,2030,3,18:18] 1
+    flow[(ccgt,hub),2030,3,18:18] dc_power_flow[ccgt,hub,2030,3,18:18] 0.3
     flow[(ccgt,hub),2030,3,18:18] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,19:19] max_output_flows_limit_simple_method[ccgt,2030,3,19:19] 1
     flow[(ccgt,hub),2030,3,19:19] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,19:19] 1
     flow[(ccgt,hub),2030,3,19:19] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,19:19] 1
     flow[(ccgt,hub),2030,3,19:19] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,19:19] 1
     flow[(ccgt,hub),2030,3,19:19] balance_hub[hub,2030,3,19:19] 1
-    flow[(ccgt,hub),2030,3,19:19] dc_power_flow[ccgt,hub,2030,3,19:19] 1
+    flow[(ccgt,hub),2030,3,19:19] dc_power_flow[ccgt,hub,2030,3,19:19] 0.3
     flow[(ccgt,hub),2030,3,19:19] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,20:20] max_output_flows_limit_simple_method[ccgt,2030,3,20:20] 1
     flow[(ccgt,hub),2030,3,20:20] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,20:20] 1
     flow[(ccgt,hub),2030,3,20:20] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,20:20] 1
     flow[(ccgt,hub),2030,3,20:20] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,20:20] 1
     flow[(ccgt,hub),2030,3,20:20] balance_hub[hub,2030,3,20:20] 1
-    flow[(ccgt,hub),2030,3,20:20] dc_power_flow[ccgt,hub,2030,3,20:20] 1
+    flow[(ccgt,hub),2030,3,20:20] dc_power_flow[ccgt,hub,2030,3,20:20] 0.3
     flow[(ccgt,hub),2030,3,20:20] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,21:21] max_output_flows_limit_simple_method[ccgt,2030,3,21:21] 1
     flow[(ccgt,hub),2030,3,21:21] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,21:21] 1
     flow[(ccgt,hub),2030,3,21:21] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,21:21] 1
     flow[(ccgt,hub),2030,3,21:21] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,21:21] 1
     flow[(ccgt,hub),2030,3,21:21] balance_hub[hub,2030,3,21:21] 1
-    flow[(ccgt,hub),2030,3,21:21] dc_power_flow[ccgt,hub,2030,3,21:21] 1
+    flow[(ccgt,hub),2030,3,21:21] dc_power_flow[ccgt,hub,2030,3,21:21] 0.3
     flow[(ccgt,hub),2030,3,21:21] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,22:22] max_output_flows_limit_simple_method[ccgt,2030,3,22:22] 1
     flow[(ccgt,hub),2030,3,22:22] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,22:22] 1
     flow[(ccgt,hub),2030,3,22:22] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,22:22] 1
     flow[(ccgt,hub),2030,3,22:22] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,22:22] 1
     flow[(ccgt,hub),2030,3,22:22] balance_hub[hub,2030,3,22:22] 1
-    flow[(ccgt,hub),2030,3,22:22] dc_power_flow[ccgt,hub,2030,3,22:22] 1
+    flow[(ccgt,hub),2030,3,22:22] dc_power_flow[ccgt,hub,2030,3,22:22] 0.3
     flow[(ccgt,hub),2030,3,22:22] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,23:23] max_output_flows_limit_simple_method[ccgt,2030,3,23:23] 1
     flow[(ccgt,hub),2030,3,23:23] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,23:23] 1
     flow[(ccgt,hub),2030,3,23:23] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,23:23] 1
     flow[(ccgt,hub),2030,3,23:23] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,23:23] 1
     flow[(ccgt,hub),2030,3,23:23] balance_hub[hub,2030,3,23:23] 1
-    flow[(ccgt,hub),2030,3,23:23] dc_power_flow[ccgt,hub,2030,3,23:23] 1
+    flow[(ccgt,hub),2030,3,23:23] dc_power_flow[ccgt,hub,2030,3,23:23] 0.3
     flow[(ccgt,hub),2030,3,23:23] OBJ 5.4750000000000005
     flow[(ccgt,hub),2030,3,24:24] max_output_flows_limit_simple_method[ccgt,2030,3,24:24] 1
     flow[(ccgt,hub),2030,3,24:24] max_transport_flow_limit_simple_method[(ccgt,hub),2030,3,24:24] 1
     flow[(ccgt,hub),2030,3,24:24] min_transport_flow_limit_simple_method[(ccgt,hub),2030,3,24:24] 1
     flow[(ccgt,hub),2030,3,24:24] min_output_flows_limit_for_transport_flows_without_unit_commitment[ccgt,2030,3,24:24] 1
     flow[(ccgt,hub),2030,3,24:24] balance_hub[hub,2030,3,24:24] 1
-    flow[(ccgt,hub),2030,3,24:24] dc_power_flow[ccgt,hub,2030,3,24:24] 1
+    flow[(ccgt,hub),2030,3,24:24] dc_power_flow[ccgt,hub,2030,3,24:24] 0.3
     flow[(ccgt,hub),2030,3,24:24] OBJ 5.4750000000000005
     flow[(hub,demand),2030,3,1:1] max_transport_flow_limit_simple_method[(hub,demand),2030,3,1:1] 1
     flow[(hub,demand),2030,3,1:1] min_transport_flow_limit_simple_method[(hub,demand),2030,3,1:1] 1
     flow[(hub,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
     flow[(hub,demand),2030,3,1:1] balance_hub[hub,2030,3,1:1] -1
-    flow[(hub,demand),2030,3,1:1] dc_power_flow[hub,demand,2030,3,1:1] 1
+    flow[(hub,demand),2030,3,1:1] dc_power_flow[hub,demand,2030,3,1:1] 0.3
     flow[(hub,demand),2030,3,2:2] max_transport_flow_limit_simple_method[(hub,demand),2030,3,2:2] 1
     flow[(hub,demand),2030,3,2:2] min_transport_flow_limit_simple_method[(hub,demand),2030,3,2:2] 1
     flow[(hub,demand),2030,3,2:2] consumer_balance[demand,2030,3,2:2] 1
     flow[(hub,demand),2030,3,2:2] balance_hub[hub,2030,3,2:2] -1
-    flow[(hub,demand),2030,3,2:2] dc_power_flow[hub,demand,2030,3,2:2] 1
+    flow[(hub,demand),2030,3,2:2] dc_power_flow[hub,demand,2030,3,2:2] 0.3
     flow[(hub,demand),2030,3,3:3] max_transport_flow_limit_simple_method[(hub,demand),2030,3,3:3] 1
     flow[(hub,demand),2030,3,3:3] min_transport_flow_limit_simple_method[(hub,demand),2030,3,3:3] 1
     flow[(hub,demand),2030,3,3:3] consumer_balance[demand,2030,3,3:3] 1
     flow[(hub,demand),2030,3,3:3] balance_hub[hub,2030,3,3:3] -1
-    flow[(hub,demand),2030,3,3:3] dc_power_flow[hub,demand,2030,3,3:3] 1
+    flow[(hub,demand),2030,3,3:3] dc_power_flow[hub,demand,2030,3,3:3] 0.3
     flow[(hub,demand),2030,3,4:4] max_transport_flow_limit_simple_method[(hub,demand),2030,3,4:4] 1
     flow[(hub,demand),2030,3,4:4] min_transport_flow_limit_simple_method[(hub,demand),2030,3,4:4] 1
     flow[(hub,demand),2030,3,4:4] consumer_balance[demand,2030,3,4:4] 1
     flow[(hub,demand),2030,3,4:4] balance_hub[hub,2030,3,4:4] -1
-    flow[(hub,demand),2030,3,4:4] dc_power_flow[hub,demand,2030,3,4:4] 1
+    flow[(hub,demand),2030,3,4:4] dc_power_flow[hub,demand,2030,3,4:4] 0.3
     flow[(hub,demand),2030,3,5:5] max_transport_flow_limit_simple_method[(hub,demand),2030,3,5:5] 1
     flow[(hub,demand),2030,3,5:5] min_transport_flow_limit_simple_method[(hub,demand),2030,3,5:5] 1
     flow[(hub,demand),2030,3,5:5] consumer_balance[demand,2030,3,5:5] 1
     flow[(hub,demand),2030,3,5:5] balance_hub[hub,2030,3,5:5] -1
-    flow[(hub,demand),2030,3,5:5] dc_power_flow[hub,demand,2030,3,5:5] 1
+    flow[(hub,demand),2030,3,5:5] dc_power_flow[hub,demand,2030,3,5:5] 0.3
     flow[(hub,demand),2030,3,6:6] max_transport_flow_limit_simple_method[(hub,demand),2030,3,6:6] 1
     flow[(hub,demand),2030,3,6:6] min_transport_flow_limit_simple_method[(hub,demand),2030,3,6:6] 1
     flow[(hub,demand),2030,3,6:6] consumer_balance[demand,2030,3,6:6] 1
     flow[(hub,demand),2030,3,6:6] balance_hub[hub,2030,3,6:6] -1
-    flow[(hub,demand),2030,3,6:6] dc_power_flow[hub,demand,2030,3,6:6] 1
+    flow[(hub,demand),2030,3,6:6] dc_power_flow[hub,demand,2030,3,6:6] 0.3
     flow[(hub,demand),2030,3,7:7] max_transport_flow_limit_simple_method[(hub,demand),2030,3,7:7] 1
     flow[(hub,demand),2030,3,7:7] min_transport_flow_limit_simple_method[(hub,demand),2030,3,7:7] 1
     flow[(hub,demand),2030,3,7:7] consumer_balance[demand,2030,3,7:7] 1
     flow[(hub,demand),2030,3,7:7] balance_hub[hub,2030,3,7:7] -1
-    flow[(hub,demand),2030,3,7:7] dc_power_flow[hub,demand,2030,3,7:7] 1
+    flow[(hub,demand),2030,3,7:7] dc_power_flow[hub,demand,2030,3,7:7] 0.3
     flow[(hub,demand),2030,3,8:8] max_transport_flow_limit_simple_method[(hub,demand),2030,3,8:8] 1
     flow[(hub,demand),2030,3,8:8] min_transport_flow_limit_simple_method[(hub,demand),2030,3,8:8] 1
     flow[(hub,demand),2030,3,8:8] consumer_balance[demand,2030,3,8:8] 1
     flow[(hub,demand),2030,3,8:8] balance_hub[hub,2030,3,8:8] -1
-    flow[(hub,demand),2030,3,8:8] dc_power_flow[hub,demand,2030,3,8:8] 1
+    flow[(hub,demand),2030,3,8:8] dc_power_flow[hub,demand,2030,3,8:8] 0.3
     flow[(hub,demand),2030,3,9:9] max_transport_flow_limit_simple_method[(hub,demand),2030,3,9:9] 1
     flow[(hub,demand),2030,3,9:9] min_transport_flow_limit_simple_method[(hub,demand),2030,3,9:9] 1
     flow[(hub,demand),2030,3,9:9] consumer_balance[demand,2030,3,9:9] 1
     flow[(hub,demand),2030,3,9:9] balance_hub[hub,2030,3,9:9] -1
-    flow[(hub,demand),2030,3,9:9] dc_power_flow[hub,demand,2030,3,9:9] 1
+    flow[(hub,demand),2030,3,9:9] dc_power_flow[hub,demand,2030,3,9:9] 0.3
     flow[(hub,demand),2030,3,10:10] max_transport_flow_limit_simple_method[(hub,demand),2030,3,10:10] 1
     flow[(hub,demand),2030,3,10:10] min_transport_flow_limit_simple_method[(hub,demand),2030,3,10:10] 1
     flow[(hub,demand),2030,3,10:10] consumer_balance[demand,2030,3,10:10] 1
     flow[(hub,demand),2030,3,10:10] balance_hub[hub,2030,3,10:10] -1
-    flow[(hub,demand),2030,3,10:10] dc_power_flow[hub,demand,2030,3,10:10] 1
+    flow[(hub,demand),2030,3,10:10] dc_power_flow[hub,demand,2030,3,10:10] 0.3
     flow[(hub,demand),2030,3,11:11] max_transport_flow_limit_simple_method[(hub,demand),2030,3,11:11] 1
     flow[(hub,demand),2030,3,11:11] min_transport_flow_limit_simple_method[(hub,demand),2030,3,11:11] 1
     flow[(hub,demand),2030,3,11:11] consumer_balance[demand,2030,3,11:11] 1
     flow[(hub,demand),2030,3,11:11] balance_hub[hub,2030,3,11:11] -1
-    flow[(hub,demand),2030,3,11:11] dc_power_flow[hub,demand,2030,3,11:11] 1
+    flow[(hub,demand),2030,3,11:11] dc_power_flow[hub,demand,2030,3,11:11] 0.3
     flow[(hub,demand),2030,3,12:12] max_transport_flow_limit_simple_method[(hub,demand),2030,3,12:12] 1
     flow[(hub,demand),2030,3,12:12] min_transport_flow_limit_simple_method[(hub,demand),2030,3,12:12] 1
     flow[(hub,demand),2030,3,12:12] consumer_balance[demand,2030,3,12:12] 1
     flow[(hub,demand),2030,3,12:12] balance_hub[hub,2030,3,12:12] -1
-    flow[(hub,demand),2030,3,12:12] dc_power_flow[hub,demand,2030,3,12:12] 1
+    flow[(hub,demand),2030,3,12:12] dc_power_flow[hub,demand,2030,3,12:12] 0.3
     flow[(hub,demand),2030,3,13:13] max_transport_flow_limit_simple_method[(hub,demand),2030,3,13:13] 1
     flow[(hub,demand),2030,3,13:13] min_transport_flow_limit_simple_method[(hub,demand),2030,3,13:13] 1
     flow[(hub,demand),2030,3,13:13] consumer_balance[demand,2030,3,13:13] 1
     flow[(hub,demand),2030,3,13:13] balance_hub[hub,2030,3,13:13] -1
-    flow[(hub,demand),2030,3,13:13] dc_power_flow[hub,demand,2030,3,13:13] 1
+    flow[(hub,demand),2030,3,13:13] dc_power_flow[hub,demand,2030,3,13:13] 0.3
     flow[(hub,demand),2030,3,14:14] max_transport_flow_limit_simple_method[(hub,demand),2030,3,14:14] 1
     flow[(hub,demand),2030,3,14:14] min_transport_flow_limit_simple_method[(hub,demand),2030,3,14:14] 1
     flow[(hub,demand),2030,3,14:14] consumer_balance[demand,2030,3,14:14] 1
     flow[(hub,demand),2030,3,14:14] balance_hub[hub,2030,3,14:14] -1
-    flow[(hub,demand),2030,3,14:14] dc_power_flow[hub,demand,2030,3,14:14] 1
+    flow[(hub,demand),2030,3,14:14] dc_power_flow[hub,demand,2030,3,14:14] 0.3
     flow[(hub,demand),2030,3,15:15] max_transport_flow_limit_simple_method[(hub,demand),2030,3,15:15] 1
     flow[(hub,demand),2030,3,15:15] min_transport_flow_limit_simple_method[(hub,demand),2030,3,15:15] 1
     flow[(hub,demand),2030,3,15:15] consumer_balance[demand,2030,3,15:15] 1
     flow[(hub,demand),2030,3,15:15] balance_hub[hub,2030,3,15:15] -1
-    flow[(hub,demand),2030,3,15:15] dc_power_flow[hub,demand,2030,3,15:15] 1
+    flow[(hub,demand),2030,3,15:15] dc_power_flow[hub,demand,2030,3,15:15] 0.3
     flow[(hub,demand),2030,3,16:16] max_transport_flow_limit_simple_method[(hub,demand),2030,3,16:16] 1
     flow[(hub,demand),2030,3,16:16] min_transport_flow_limit_simple_method[(hub,demand),2030,3,16:16] 1
     flow[(hub,demand),2030,3,16:16] consumer_balance[demand,2030,3,16:16] 1
     flow[(hub,demand),2030,3,16:16] balance_hub[hub,2030,3,16:16] -1
-    flow[(hub,demand),2030,3,16:16] dc_power_flow[hub,demand,2030,3,16:16] 1
+    flow[(hub,demand),2030,3,16:16] dc_power_flow[hub,demand,2030,3,16:16] 0.3
     flow[(hub,demand),2030,3,17:17] max_transport_flow_limit_simple_method[(hub,demand),2030,3,17:17] 1
     flow[(hub,demand),2030,3,17:17] min_transport_flow_limit_simple_method[(hub,demand),2030,3,17:17] 1
     flow[(hub,demand),2030,3,17:17] consumer_balance[demand,2030,3,17:17] 1
     flow[(hub,demand),2030,3,17:17] balance_hub[hub,2030,3,17:17] -1
-    flow[(hub,demand),2030,3,17:17] dc_power_flow[hub,demand,2030,3,17:17] 1
+    flow[(hub,demand),2030,3,17:17] dc_power_flow[hub,demand,2030,3,17:17] 0.3
     flow[(hub,demand),2030,3,18:18] max_transport_flow_limit_simple_method[(hub,demand),2030,3,18:18] 1
     flow[(hub,demand),2030,3,18:18] min_transport_flow_limit_simple_method[(hub,demand),2030,3,18:18] 1
     flow[(hub,demand),2030,3,18:18] consumer_balance[demand,2030,3,18:18] 1
     flow[(hub,demand),2030,3,18:18] balance_hub[hub,2030,3,18:18] -1
-    flow[(hub,demand),2030,3,18:18] dc_power_flow[hub,demand,2030,3,18:18] 1
+    flow[(hub,demand),2030,3,18:18] dc_power_flow[hub,demand,2030,3,18:18] 0.3
     flow[(hub,demand),2030,3,19:19] max_transport_flow_limit_simple_method[(hub,demand),2030,3,19:19] 1
     flow[(hub,demand),2030,3,19:19] min_transport_flow_limit_simple_method[(hub,demand),2030,3,19:19] 1
     flow[(hub,demand),2030,3,19:19] consumer_balance[demand,2030,3,19:19] 1
     flow[(hub,demand),2030,3,19:19] balance_hub[hub,2030,3,19:19] -1
-    flow[(hub,demand),2030,3,19:19] dc_power_flow[hub,demand,2030,3,19:19] 1
+    flow[(hub,demand),2030,3,19:19] dc_power_flow[hub,demand,2030,3,19:19] 0.3
     flow[(hub,demand),2030,3,20:20] max_transport_flow_limit_simple_method[(hub,demand),2030,3,20:20] 1
     flow[(hub,demand),2030,3,20:20] min_transport_flow_limit_simple_method[(hub,demand),2030,3,20:20] 1
     flow[(hub,demand),2030,3,20:20] consumer_balance[demand,2030,3,20:20] 1
     flow[(hub,demand),2030,3,20:20] balance_hub[hub,2030,3,20:20] -1
-    flow[(hub,demand),2030,3,20:20] dc_power_flow[hub,demand,2030,3,20:20] 1
+    flow[(hub,demand),2030,3,20:20] dc_power_flow[hub,demand,2030,3,20:20] 0.3
     flow[(hub,demand),2030,3,21:21] max_transport_flow_limit_simple_method[(hub,demand),2030,3,21:21] 1
     flow[(hub,demand),2030,3,21:21] min_transport_flow_limit_simple_method[(hub,demand),2030,3,21:21] 1
     flow[(hub,demand),2030,3,21:21] consumer_balance[demand,2030,3,21:21] 1
     flow[(hub,demand),2030,3,21:21] balance_hub[hub,2030,3,21:21] -1
-    flow[(hub,demand),2030,3,21:21] dc_power_flow[hub,demand,2030,3,21:21] 1
+    flow[(hub,demand),2030,3,21:21] dc_power_flow[hub,demand,2030,3,21:21] 0.3
     flow[(hub,demand),2030,3,22:22] max_transport_flow_limit_simple_method[(hub,demand),2030,3,22:22] 1
     flow[(hub,demand),2030,3,22:22] min_transport_flow_limit_simple_method[(hub,demand),2030,3,22:22] 1
     flow[(hub,demand),2030,3,22:22] consumer_balance[demand,2030,3,22:22] 1
     flow[(hub,demand),2030,3,22:22] balance_hub[hub,2030,3,22:22] -1
-    flow[(hub,demand),2030,3,22:22] dc_power_flow[hub,demand,2030,3,22:22] 1
+    flow[(hub,demand),2030,3,22:22] dc_power_flow[hub,demand,2030,3,22:22] 0.3
     flow[(hub,demand),2030,3,23:23] max_transport_flow_limit_simple_method[(hub,demand),2030,3,23:23] 1
     flow[(hub,demand),2030,3,23:23] min_transport_flow_limit_simple_method[(hub,demand),2030,3,23:23] 1
     flow[(hub,demand),2030,3,23:23] consumer_balance[demand,2030,3,23:23] 1
     flow[(hub,demand),2030,3,23:23] balance_hub[hub,2030,3,23:23] -1
-    flow[(hub,demand),2030,3,23:23] dc_power_flow[hub,demand,2030,3,23:23] 1
+    flow[(hub,demand),2030,3,23:23] dc_power_flow[hub,demand,2030,3,23:23] 0.3
     flow[(hub,demand),2030,3,24:24] max_transport_flow_limit_simple_method[(hub,demand),2030,3,24:24] 1
     flow[(hub,demand),2030,3,24:24] min_transport_flow_limit_simple_method[(hub,demand),2030,3,24:24] 1
     flow[(hub,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
     flow[(hub,demand),2030,3,24:24] balance_hub[hub,2030,3,24:24] -1
-    flow[(hub,demand),2030,3,24:24] dc_power_flow[hub,demand,2030,3,24:24] 1
+    flow[(hub,demand),2030,3,24:24] dc_power_flow[hub,demand,2030,3,24:24] 0.3
     flow[(import,hub),2030,3,1:1] max_output_flows_limit_simple_method[import,2030,3,1:1] 1
     flow[(import,hub),2030,3,1:1] balance_hub[hub,2030,3,1:1] 1
     flow[(import,hub),2030,3,1:1] OBJ 5.4750000000000005
@@ -2258,374 +2258,374 @@ COLUMNS
     flow[(import,hub),2030,3,24:24] max_output_flows_limit_simple_method[import,2030,3,24:24] 1
     flow[(import,hub),2030,3,24:24] balance_hub[hub,2030,3,24:24] 1
     flow[(import,hub),2030,3,24:24] OBJ 5.4750000000000005
-    electricity_angle[ccgt,2030,1,1:3] dc_power_flow[ccgt,demand,2030,1,1:2] -333.33333333333337
-    electricity_angle[ccgt,2030,1,1:3] dc_power_flow[ccgt,demand,2030,1,3:3] -333.33333333333337
-    electricity_angle[ccgt,2030,1,1:3] dc_power_flow[ccgt,hub,2030,1,1:3] -333.33333333333337
-    electricity_angle[ccgt,2030,1,4:6] dc_power_flow[ccgt,demand,2030,1,4:4] -333.33333333333337
-    electricity_angle[ccgt,2030,1,4:6] dc_power_flow[ccgt,demand,2030,1,5:6] -333.33333333333337
-    electricity_angle[ccgt,2030,1,4:6] dc_power_flow[ccgt,hub,2030,1,4:6] -333.33333333333337
-    electricity_angle[ccgt,2030,1,7:9] dc_power_flow[ccgt,demand,2030,1,7:8] -333.33333333333337
-    electricity_angle[ccgt,2030,1,7:9] dc_power_flow[ccgt,demand,2030,1,9:9] -333.33333333333337
-    electricity_angle[ccgt,2030,1,7:9] dc_power_flow[ccgt,hub,2030,1,7:9] -333.33333333333337
-    electricity_angle[ccgt,2030,1,10:12] dc_power_flow[ccgt,demand,2030,1,10:10] -333.33333333333337
-    electricity_angle[ccgt,2030,1,10:12] dc_power_flow[ccgt,demand,2030,1,11:12] -333.33333333333337
-    electricity_angle[ccgt,2030,1,10:12] dc_power_flow[ccgt,hub,2030,1,10:12] -333.33333333333337
-    electricity_angle[ccgt,2030,1,13:15] dc_power_flow[ccgt,demand,2030,1,13:14] -333.33333333333337
-    electricity_angle[ccgt,2030,1,13:15] dc_power_flow[ccgt,demand,2030,1,15:15] -333.33333333333337
-    electricity_angle[ccgt,2030,1,13:15] dc_power_flow[ccgt,hub,2030,1,13:15] -333.33333333333337
-    electricity_angle[ccgt,2030,1,16:18] dc_power_flow[ccgt,demand,2030,1,16:16] -333.33333333333337
-    electricity_angle[ccgt,2030,1,16:18] dc_power_flow[ccgt,demand,2030,1,17:18] -333.33333333333337
-    electricity_angle[ccgt,2030,1,16:18] dc_power_flow[ccgt,hub,2030,1,16:18] -333.33333333333337
-    electricity_angle[ccgt,2030,1,19:21] dc_power_flow[ccgt,demand,2030,1,19:20] -333.33333333333337
-    electricity_angle[ccgt,2030,1,19:21] dc_power_flow[ccgt,demand,2030,1,21:21] -333.33333333333337
-    electricity_angle[ccgt,2030,1,19:21] dc_power_flow[ccgt,hub,2030,1,19:21] -333.33333333333337
-    electricity_angle[ccgt,2030,1,22:24] dc_power_flow[ccgt,demand,2030,1,22:22] -333.33333333333337
-    electricity_angle[ccgt,2030,1,22:24] dc_power_flow[ccgt,demand,2030,1,23:24] -333.33333333333337
-    electricity_angle[ccgt,2030,1,22:24] dc_power_flow[ccgt,hub,2030,1,22:24] -333.33333333333337
-    electricity_angle[ccgt,2030,2,1:1] dc_power_flow[ccgt,demand,2030,2,1:1] -333.33333333333337
-    electricity_angle[ccgt,2030,2,1:1] dc_power_flow[ccgt,hub,2030,2,1:1] -333.33333333333337
-    electricity_angle[ccgt,2030,2,2:2] dc_power_flow[ccgt,demand,2030,2,2:2] -333.33333333333337
-    electricity_angle[ccgt,2030,2,2:2] dc_power_flow[ccgt,hub,2030,2,2:2] -333.33333333333337
-    electricity_angle[ccgt,2030,2,3:3] dc_power_flow[ccgt,demand,2030,2,3:3] -333.33333333333337
-    electricity_angle[ccgt,2030,2,3:3] dc_power_flow[ccgt,hub,2030,2,3:3] -333.33333333333337
-    electricity_angle[ccgt,2030,2,4:4] dc_power_flow[ccgt,demand,2030,2,4:4] -333.33333333333337
-    electricity_angle[ccgt,2030,2,4:4] dc_power_flow[ccgt,hub,2030,2,4:4] -333.33333333333337
-    electricity_angle[ccgt,2030,2,5:5] dc_power_flow[ccgt,demand,2030,2,5:5] -333.33333333333337
-    electricity_angle[ccgt,2030,2,5:5] dc_power_flow[ccgt,hub,2030,2,5:5] -333.33333333333337
-    electricity_angle[ccgt,2030,2,6:6] dc_power_flow[ccgt,demand,2030,2,6:6] -333.33333333333337
-    electricity_angle[ccgt,2030,2,6:6] dc_power_flow[ccgt,hub,2030,2,6:6] -333.33333333333337
-    electricity_angle[ccgt,2030,2,7:7] dc_power_flow[ccgt,demand,2030,2,7:7] -333.33333333333337
-    electricity_angle[ccgt,2030,2,7:7] dc_power_flow[ccgt,hub,2030,2,7:7] -333.33333333333337
-    electricity_angle[ccgt,2030,2,8:8] dc_power_flow[ccgt,demand,2030,2,8:8] -333.33333333333337
-    electricity_angle[ccgt,2030,2,8:8] dc_power_flow[ccgt,hub,2030,2,8:8] -333.33333333333337
-    electricity_angle[ccgt,2030,2,9:9] dc_power_flow[ccgt,demand,2030,2,9:9] -333.33333333333337
-    electricity_angle[ccgt,2030,2,9:9] dc_power_flow[ccgt,hub,2030,2,9:9] -333.33333333333337
-    electricity_angle[ccgt,2030,2,10:10] dc_power_flow[ccgt,demand,2030,2,10:10] -333.33333333333337
-    electricity_angle[ccgt,2030,2,10:10] dc_power_flow[ccgt,hub,2030,2,10:10] -333.33333333333337
-    electricity_angle[ccgt,2030,2,11:11] dc_power_flow[ccgt,demand,2030,2,11:11] -333.33333333333337
-    electricity_angle[ccgt,2030,2,11:11] dc_power_flow[ccgt,hub,2030,2,11:11] -333.33333333333337
-    electricity_angle[ccgt,2030,2,12:12] dc_power_flow[ccgt,demand,2030,2,12:12] -333.33333333333337
-    electricity_angle[ccgt,2030,2,12:12] dc_power_flow[ccgt,hub,2030,2,12:12] -333.33333333333337
-    electricity_angle[ccgt,2030,2,13:13] dc_power_flow[ccgt,demand,2030,2,13:13] -333.33333333333337
-    electricity_angle[ccgt,2030,2,13:13] dc_power_flow[ccgt,hub,2030,2,13:13] -333.33333333333337
-    electricity_angle[ccgt,2030,2,14:14] dc_power_flow[ccgt,demand,2030,2,14:14] -333.33333333333337
-    electricity_angle[ccgt,2030,2,14:14] dc_power_flow[ccgt,hub,2030,2,14:14] -333.33333333333337
-    electricity_angle[ccgt,2030,2,15:15] dc_power_flow[ccgt,demand,2030,2,15:15] -333.33333333333337
-    electricity_angle[ccgt,2030,2,15:15] dc_power_flow[ccgt,hub,2030,2,15:15] -333.33333333333337
-    electricity_angle[ccgt,2030,2,16:16] dc_power_flow[ccgt,demand,2030,2,16:16] -333.33333333333337
-    electricity_angle[ccgt,2030,2,16:16] dc_power_flow[ccgt,hub,2030,2,16:16] -333.33333333333337
-    electricity_angle[ccgt,2030,2,17:17] dc_power_flow[ccgt,demand,2030,2,17:17] -333.33333333333337
-    electricity_angle[ccgt,2030,2,17:17] dc_power_flow[ccgt,hub,2030,2,17:17] -333.33333333333337
-    electricity_angle[ccgt,2030,2,18:18] dc_power_flow[ccgt,demand,2030,2,18:18] -333.33333333333337
-    electricity_angle[ccgt,2030,2,18:18] dc_power_flow[ccgt,hub,2030,2,18:18] -333.33333333333337
-    electricity_angle[ccgt,2030,2,19:19] dc_power_flow[ccgt,demand,2030,2,19:19] -333.33333333333337
-    electricity_angle[ccgt,2030,2,19:19] dc_power_flow[ccgt,hub,2030,2,19:19] -333.33333333333337
-    electricity_angle[ccgt,2030,2,20:20] dc_power_flow[ccgt,demand,2030,2,20:20] -333.33333333333337
-    electricity_angle[ccgt,2030,2,20:20] dc_power_flow[ccgt,hub,2030,2,20:20] -333.33333333333337
-    electricity_angle[ccgt,2030,2,21:21] dc_power_flow[ccgt,demand,2030,2,21:21] -333.33333333333337
-    electricity_angle[ccgt,2030,2,21:21] dc_power_flow[ccgt,hub,2030,2,21:21] -333.33333333333337
-    electricity_angle[ccgt,2030,2,22:22] dc_power_flow[ccgt,demand,2030,2,22:22] -333.33333333333337
-    electricity_angle[ccgt,2030,2,22:22] dc_power_flow[ccgt,hub,2030,2,22:22] -333.33333333333337
-    electricity_angle[ccgt,2030,2,23:23] dc_power_flow[ccgt,demand,2030,2,23:23] -333.33333333333337
-    electricity_angle[ccgt,2030,2,23:23] dc_power_flow[ccgt,hub,2030,2,23:23] -333.33333333333337
-    electricity_angle[ccgt,2030,2,24:24] dc_power_flow[ccgt,demand,2030,2,24:24] -333.33333333333337
-    electricity_angle[ccgt,2030,2,24:24] dc_power_flow[ccgt,hub,2030,2,24:24] -333.33333333333337
-    electricity_angle[ccgt,2030,3,1:1] dc_power_flow[ccgt,demand,2030,3,1:1] -333.33333333333337
-    electricity_angle[ccgt,2030,3,1:1] dc_power_flow[ccgt,hub,2030,3,1:1] -333.33333333333337
-    electricity_angle[ccgt,2030,3,2:2] dc_power_flow[ccgt,demand,2030,3,2:2] -333.33333333333337
-    electricity_angle[ccgt,2030,3,2:2] dc_power_flow[ccgt,hub,2030,3,2:2] -333.33333333333337
-    electricity_angle[ccgt,2030,3,3:3] dc_power_flow[ccgt,demand,2030,3,3:3] -333.33333333333337
-    electricity_angle[ccgt,2030,3,3:3] dc_power_flow[ccgt,hub,2030,3,3:3] -333.33333333333337
-    electricity_angle[ccgt,2030,3,4:4] dc_power_flow[ccgt,demand,2030,3,4:4] -333.33333333333337
-    electricity_angle[ccgt,2030,3,4:4] dc_power_flow[ccgt,hub,2030,3,4:4] -333.33333333333337
-    electricity_angle[ccgt,2030,3,5:5] dc_power_flow[ccgt,demand,2030,3,5:5] -333.33333333333337
-    electricity_angle[ccgt,2030,3,5:5] dc_power_flow[ccgt,hub,2030,3,5:5] -333.33333333333337
-    electricity_angle[ccgt,2030,3,6:6] dc_power_flow[ccgt,demand,2030,3,6:6] -333.33333333333337
-    electricity_angle[ccgt,2030,3,6:6] dc_power_flow[ccgt,hub,2030,3,6:6] -333.33333333333337
-    electricity_angle[ccgt,2030,3,7:7] dc_power_flow[ccgt,demand,2030,3,7:7] -333.33333333333337
-    electricity_angle[ccgt,2030,3,7:7] dc_power_flow[ccgt,hub,2030,3,7:7] -333.33333333333337
-    electricity_angle[ccgt,2030,3,8:8] dc_power_flow[ccgt,demand,2030,3,8:8] -333.33333333333337
-    electricity_angle[ccgt,2030,3,8:8] dc_power_flow[ccgt,hub,2030,3,8:8] -333.33333333333337
-    electricity_angle[ccgt,2030,3,9:9] dc_power_flow[ccgt,demand,2030,3,9:9] -333.33333333333337
-    electricity_angle[ccgt,2030,3,9:9] dc_power_flow[ccgt,hub,2030,3,9:9] -333.33333333333337
-    electricity_angle[ccgt,2030,3,10:10] dc_power_flow[ccgt,demand,2030,3,10:10] -333.33333333333337
-    electricity_angle[ccgt,2030,3,10:10] dc_power_flow[ccgt,hub,2030,3,10:10] -333.33333333333337
-    electricity_angle[ccgt,2030,3,11:11] dc_power_flow[ccgt,demand,2030,3,11:11] -333.33333333333337
-    electricity_angle[ccgt,2030,3,11:11] dc_power_flow[ccgt,hub,2030,3,11:11] -333.33333333333337
-    electricity_angle[ccgt,2030,3,12:12] dc_power_flow[ccgt,demand,2030,3,12:12] -333.33333333333337
-    electricity_angle[ccgt,2030,3,12:12] dc_power_flow[ccgt,hub,2030,3,12:12] -333.33333333333337
-    electricity_angle[ccgt,2030,3,13:13] dc_power_flow[ccgt,demand,2030,3,13:13] -333.33333333333337
-    electricity_angle[ccgt,2030,3,13:13] dc_power_flow[ccgt,hub,2030,3,13:13] -333.33333333333337
-    electricity_angle[ccgt,2030,3,14:14] dc_power_flow[ccgt,demand,2030,3,14:14] -333.33333333333337
-    electricity_angle[ccgt,2030,3,14:14] dc_power_flow[ccgt,hub,2030,3,14:14] -333.33333333333337
-    electricity_angle[ccgt,2030,3,15:15] dc_power_flow[ccgt,demand,2030,3,15:15] -333.33333333333337
-    electricity_angle[ccgt,2030,3,15:15] dc_power_flow[ccgt,hub,2030,3,15:15] -333.33333333333337
-    electricity_angle[ccgt,2030,3,16:16] dc_power_flow[ccgt,demand,2030,3,16:16] -333.33333333333337
-    electricity_angle[ccgt,2030,3,16:16] dc_power_flow[ccgt,hub,2030,3,16:16] -333.33333333333337
-    electricity_angle[ccgt,2030,3,17:17] dc_power_flow[ccgt,demand,2030,3,17:17] -333.33333333333337
-    electricity_angle[ccgt,2030,3,17:17] dc_power_flow[ccgt,hub,2030,3,17:17] -333.33333333333337
-    electricity_angle[ccgt,2030,3,18:18] dc_power_flow[ccgt,demand,2030,3,18:18] -333.33333333333337
-    electricity_angle[ccgt,2030,3,18:18] dc_power_flow[ccgt,hub,2030,3,18:18] -333.33333333333337
-    electricity_angle[ccgt,2030,3,19:19] dc_power_flow[ccgt,demand,2030,3,19:19] -333.33333333333337
-    electricity_angle[ccgt,2030,3,19:19] dc_power_flow[ccgt,hub,2030,3,19:19] -333.33333333333337
-    electricity_angle[ccgt,2030,3,20:20] dc_power_flow[ccgt,demand,2030,3,20:20] -333.33333333333337
-    electricity_angle[ccgt,2030,3,20:20] dc_power_flow[ccgt,hub,2030,3,20:20] -333.33333333333337
-    electricity_angle[ccgt,2030,3,21:21] dc_power_flow[ccgt,demand,2030,3,21:21] -333.33333333333337
-    electricity_angle[ccgt,2030,3,21:21] dc_power_flow[ccgt,hub,2030,3,21:21] -333.33333333333337
-    electricity_angle[ccgt,2030,3,22:22] dc_power_flow[ccgt,demand,2030,3,22:22] -333.33333333333337
-    electricity_angle[ccgt,2030,3,22:22] dc_power_flow[ccgt,hub,2030,3,22:22] -333.33333333333337
-    electricity_angle[ccgt,2030,3,23:23] dc_power_flow[ccgt,demand,2030,3,23:23] -333.33333333333337
-    electricity_angle[ccgt,2030,3,23:23] dc_power_flow[ccgt,hub,2030,3,23:23] -333.33333333333337
-    electricity_angle[ccgt,2030,3,24:24] dc_power_flow[ccgt,demand,2030,3,24:24] -333.33333333333337
-    electricity_angle[ccgt,2030,3,24:24] dc_power_flow[ccgt,hub,2030,3,24:24] -333.33333333333337
-    electricity_angle[demand,2030,1,1:2] dc_power_flow[ccgt,demand,2030,1,1:2] 333.33333333333337
-    electricity_angle[demand,2030,1,1:2] dc_power_flow[hub,demand,2030,1,1:2] 333.33333333333337
-    electricity_angle[demand,2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,3:3] 333.33333333333337
-    electricity_angle[demand,2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,4:4] 333.33333333333337
-    electricity_angle[demand,2030,1,3:4] dc_power_flow[hub,demand,2030,1,3:3] 333.33333333333337
-    electricity_angle[demand,2030,1,3:4] dc_power_flow[hub,demand,2030,1,4:4] 333.33333333333337
-    electricity_angle[demand,2030,1,5:6] dc_power_flow[ccgt,demand,2030,1,5:6] 333.33333333333337
-    electricity_angle[demand,2030,1,5:6] dc_power_flow[hub,demand,2030,1,5:6] 333.33333333333337
-    electricity_angle[demand,2030,1,7:8] dc_power_flow[ccgt,demand,2030,1,7:8] 333.33333333333337
-    electricity_angle[demand,2030,1,7:8] dc_power_flow[hub,demand,2030,1,7:8] 333.33333333333337
-    electricity_angle[demand,2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,9:9] 333.33333333333337
-    electricity_angle[demand,2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,10:10] 333.33333333333337
-    electricity_angle[demand,2030,1,9:10] dc_power_flow[hub,demand,2030,1,9:9] 333.33333333333337
-    electricity_angle[demand,2030,1,9:10] dc_power_flow[hub,demand,2030,1,10:10] 333.33333333333337
-    electricity_angle[demand,2030,1,11:12] dc_power_flow[ccgt,demand,2030,1,11:12] 333.33333333333337
-    electricity_angle[demand,2030,1,11:12] dc_power_flow[hub,demand,2030,1,11:12] 333.33333333333337
-    electricity_angle[demand,2030,1,13:14] dc_power_flow[ccgt,demand,2030,1,13:14] 333.33333333333337
-    electricity_angle[demand,2030,1,13:14] dc_power_flow[hub,demand,2030,1,13:14] 333.33333333333337
-    electricity_angle[demand,2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,15:15] 333.33333333333337
-    electricity_angle[demand,2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,16:16] 333.33333333333337
-    electricity_angle[demand,2030,1,15:16] dc_power_flow[hub,demand,2030,1,15:15] 333.33333333333337
-    electricity_angle[demand,2030,1,15:16] dc_power_flow[hub,demand,2030,1,16:16] 333.33333333333337
-    electricity_angle[demand,2030,1,17:18] dc_power_flow[ccgt,demand,2030,1,17:18] 333.33333333333337
-    electricity_angle[demand,2030,1,17:18] dc_power_flow[hub,demand,2030,1,17:18] 333.33333333333337
-    electricity_angle[demand,2030,1,19:20] dc_power_flow[ccgt,demand,2030,1,19:20] 333.33333333333337
-    electricity_angle[demand,2030,1,19:20] dc_power_flow[hub,demand,2030,1,19:20] 333.33333333333337
-    electricity_angle[demand,2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,21:21] 333.33333333333337
-    electricity_angle[demand,2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,22:22] 333.33333333333337
-    electricity_angle[demand,2030,1,21:22] dc_power_flow[hub,demand,2030,1,21:21] 333.33333333333337
-    electricity_angle[demand,2030,1,21:22] dc_power_flow[hub,demand,2030,1,22:22] 333.33333333333337
-    electricity_angle[demand,2030,1,23:24] dc_power_flow[ccgt,demand,2030,1,23:24] 333.33333333333337
-    electricity_angle[demand,2030,1,23:24] dc_power_flow[hub,demand,2030,1,23:24] 333.33333333333337
-    electricity_angle[demand,2030,2,1:1] dc_power_flow[ccgt,demand,2030,2,1:1] 333.33333333333337
-    electricity_angle[demand,2030,2,1:1] dc_power_flow[hub,demand,2030,2,1:1] 333.33333333333337
-    electricity_angle[demand,2030,2,2:2] dc_power_flow[ccgt,demand,2030,2,2:2] 333.33333333333337
-    electricity_angle[demand,2030,2,2:2] dc_power_flow[hub,demand,2030,2,2:2] 333.33333333333337
-    electricity_angle[demand,2030,2,3:3] dc_power_flow[ccgt,demand,2030,2,3:3] 333.33333333333337
-    electricity_angle[demand,2030,2,3:3] dc_power_flow[hub,demand,2030,2,3:3] 333.33333333333337
-    electricity_angle[demand,2030,2,4:4] dc_power_flow[ccgt,demand,2030,2,4:4] 333.33333333333337
-    electricity_angle[demand,2030,2,4:4] dc_power_flow[hub,demand,2030,2,4:4] 333.33333333333337
-    electricity_angle[demand,2030,2,5:5] dc_power_flow[ccgt,demand,2030,2,5:5] 333.33333333333337
-    electricity_angle[demand,2030,2,5:5] dc_power_flow[hub,demand,2030,2,5:5] 333.33333333333337
-    electricity_angle[demand,2030,2,6:6] dc_power_flow[ccgt,demand,2030,2,6:6] 333.33333333333337
-    electricity_angle[demand,2030,2,6:6] dc_power_flow[hub,demand,2030,2,6:6] 333.33333333333337
-    electricity_angle[demand,2030,2,7:7] dc_power_flow[ccgt,demand,2030,2,7:7] 333.33333333333337
-    electricity_angle[demand,2030,2,7:7] dc_power_flow[hub,demand,2030,2,7:7] 333.33333333333337
-    electricity_angle[demand,2030,2,8:8] dc_power_flow[ccgt,demand,2030,2,8:8] 333.33333333333337
-    electricity_angle[demand,2030,2,8:8] dc_power_flow[hub,demand,2030,2,8:8] 333.33333333333337
-    electricity_angle[demand,2030,2,9:9] dc_power_flow[ccgt,demand,2030,2,9:9] 333.33333333333337
-    electricity_angle[demand,2030,2,9:9] dc_power_flow[hub,demand,2030,2,9:9] 333.33333333333337
-    electricity_angle[demand,2030,2,10:10] dc_power_flow[ccgt,demand,2030,2,10:10] 333.33333333333337
-    electricity_angle[demand,2030,2,10:10] dc_power_flow[hub,demand,2030,2,10:10] 333.33333333333337
-    electricity_angle[demand,2030,2,11:11] dc_power_flow[ccgt,demand,2030,2,11:11] 333.33333333333337
-    electricity_angle[demand,2030,2,11:11] dc_power_flow[hub,demand,2030,2,11:11] 333.33333333333337
-    electricity_angle[demand,2030,2,12:12] dc_power_flow[ccgt,demand,2030,2,12:12] 333.33333333333337
-    electricity_angle[demand,2030,2,12:12] dc_power_flow[hub,demand,2030,2,12:12] 333.33333333333337
-    electricity_angle[demand,2030,2,13:13] dc_power_flow[ccgt,demand,2030,2,13:13] 333.33333333333337
-    electricity_angle[demand,2030,2,13:13] dc_power_flow[hub,demand,2030,2,13:13] 333.33333333333337
-    electricity_angle[demand,2030,2,14:14] dc_power_flow[ccgt,demand,2030,2,14:14] 333.33333333333337
-    electricity_angle[demand,2030,2,14:14] dc_power_flow[hub,demand,2030,2,14:14] 333.33333333333337
-    electricity_angle[demand,2030,2,15:15] dc_power_flow[ccgt,demand,2030,2,15:15] 333.33333333333337
-    electricity_angle[demand,2030,2,15:15] dc_power_flow[hub,demand,2030,2,15:15] 333.33333333333337
-    electricity_angle[demand,2030,2,16:16] dc_power_flow[ccgt,demand,2030,2,16:16] 333.33333333333337
-    electricity_angle[demand,2030,2,16:16] dc_power_flow[hub,demand,2030,2,16:16] 333.33333333333337
-    electricity_angle[demand,2030,2,17:17] dc_power_flow[ccgt,demand,2030,2,17:17] 333.33333333333337
-    electricity_angle[demand,2030,2,17:17] dc_power_flow[hub,demand,2030,2,17:17] 333.33333333333337
-    electricity_angle[demand,2030,2,18:18] dc_power_flow[ccgt,demand,2030,2,18:18] 333.33333333333337
-    electricity_angle[demand,2030,2,18:18] dc_power_flow[hub,demand,2030,2,18:18] 333.33333333333337
-    electricity_angle[demand,2030,2,19:19] dc_power_flow[ccgt,demand,2030,2,19:19] 333.33333333333337
-    electricity_angle[demand,2030,2,19:19] dc_power_flow[hub,demand,2030,2,19:19] 333.33333333333337
-    electricity_angle[demand,2030,2,20:20] dc_power_flow[ccgt,demand,2030,2,20:20] 333.33333333333337
-    electricity_angle[demand,2030,2,20:20] dc_power_flow[hub,demand,2030,2,20:20] 333.33333333333337
-    electricity_angle[demand,2030,2,21:21] dc_power_flow[ccgt,demand,2030,2,21:21] 333.33333333333337
-    electricity_angle[demand,2030,2,21:21] dc_power_flow[hub,demand,2030,2,21:21] 333.33333333333337
-    electricity_angle[demand,2030,2,22:22] dc_power_flow[ccgt,demand,2030,2,22:22] 333.33333333333337
-    electricity_angle[demand,2030,2,22:22] dc_power_flow[hub,demand,2030,2,22:22] 333.33333333333337
-    electricity_angle[demand,2030,2,23:23] dc_power_flow[ccgt,demand,2030,2,23:23] 333.33333333333337
-    electricity_angle[demand,2030,2,23:23] dc_power_flow[hub,demand,2030,2,23:23] 333.33333333333337
-    electricity_angle[demand,2030,2,24:24] dc_power_flow[ccgt,demand,2030,2,24:24] 333.33333333333337
-    electricity_angle[demand,2030,2,24:24] dc_power_flow[hub,demand,2030,2,24:24] 333.33333333333337
-    electricity_angle[demand,2030,3,1:1] dc_power_flow[ccgt,demand,2030,3,1:1] 333.33333333333337
-    electricity_angle[demand,2030,3,1:1] dc_power_flow[hub,demand,2030,3,1:1] 333.33333333333337
-    electricity_angle[demand,2030,3,2:2] dc_power_flow[ccgt,demand,2030,3,2:2] 333.33333333333337
-    electricity_angle[demand,2030,3,2:2] dc_power_flow[hub,demand,2030,3,2:2] 333.33333333333337
-    electricity_angle[demand,2030,3,3:3] dc_power_flow[ccgt,demand,2030,3,3:3] 333.33333333333337
-    electricity_angle[demand,2030,3,3:3] dc_power_flow[hub,demand,2030,3,3:3] 333.33333333333337
-    electricity_angle[demand,2030,3,4:4] dc_power_flow[ccgt,demand,2030,3,4:4] 333.33333333333337
-    electricity_angle[demand,2030,3,4:4] dc_power_flow[hub,demand,2030,3,4:4] 333.33333333333337
-    electricity_angle[demand,2030,3,5:5] dc_power_flow[ccgt,demand,2030,3,5:5] 333.33333333333337
-    electricity_angle[demand,2030,3,5:5] dc_power_flow[hub,demand,2030,3,5:5] 333.33333333333337
-    electricity_angle[demand,2030,3,6:6] dc_power_flow[ccgt,demand,2030,3,6:6] 333.33333333333337
-    electricity_angle[demand,2030,3,6:6] dc_power_flow[hub,demand,2030,3,6:6] 333.33333333333337
-    electricity_angle[demand,2030,3,7:7] dc_power_flow[ccgt,demand,2030,3,7:7] 333.33333333333337
-    electricity_angle[demand,2030,3,7:7] dc_power_flow[hub,demand,2030,3,7:7] 333.33333333333337
-    electricity_angle[demand,2030,3,8:8] dc_power_flow[ccgt,demand,2030,3,8:8] 333.33333333333337
-    electricity_angle[demand,2030,3,8:8] dc_power_flow[hub,demand,2030,3,8:8] 333.33333333333337
-    electricity_angle[demand,2030,3,9:9] dc_power_flow[ccgt,demand,2030,3,9:9] 333.33333333333337
-    electricity_angle[demand,2030,3,9:9] dc_power_flow[hub,demand,2030,3,9:9] 333.33333333333337
-    electricity_angle[demand,2030,3,10:10] dc_power_flow[ccgt,demand,2030,3,10:10] 333.33333333333337
-    electricity_angle[demand,2030,3,10:10] dc_power_flow[hub,demand,2030,3,10:10] 333.33333333333337
-    electricity_angle[demand,2030,3,11:11] dc_power_flow[ccgt,demand,2030,3,11:11] 333.33333333333337
-    electricity_angle[demand,2030,3,11:11] dc_power_flow[hub,demand,2030,3,11:11] 333.33333333333337
-    electricity_angle[demand,2030,3,12:12] dc_power_flow[ccgt,demand,2030,3,12:12] 333.33333333333337
-    electricity_angle[demand,2030,3,12:12] dc_power_flow[hub,demand,2030,3,12:12] 333.33333333333337
-    electricity_angle[demand,2030,3,13:13] dc_power_flow[ccgt,demand,2030,3,13:13] 333.33333333333337
-    electricity_angle[demand,2030,3,13:13] dc_power_flow[hub,demand,2030,3,13:13] 333.33333333333337
-    electricity_angle[demand,2030,3,14:14] dc_power_flow[ccgt,demand,2030,3,14:14] 333.33333333333337
-    electricity_angle[demand,2030,3,14:14] dc_power_flow[hub,demand,2030,3,14:14] 333.33333333333337
-    electricity_angle[demand,2030,3,15:15] dc_power_flow[ccgt,demand,2030,3,15:15] 333.33333333333337
-    electricity_angle[demand,2030,3,15:15] dc_power_flow[hub,demand,2030,3,15:15] 333.33333333333337
-    electricity_angle[demand,2030,3,16:16] dc_power_flow[ccgt,demand,2030,3,16:16] 333.33333333333337
-    electricity_angle[demand,2030,3,16:16] dc_power_flow[hub,demand,2030,3,16:16] 333.33333333333337
-    electricity_angle[demand,2030,3,17:17] dc_power_flow[ccgt,demand,2030,3,17:17] 333.33333333333337
-    electricity_angle[demand,2030,3,17:17] dc_power_flow[hub,demand,2030,3,17:17] 333.33333333333337
-    electricity_angle[demand,2030,3,18:18] dc_power_flow[ccgt,demand,2030,3,18:18] 333.33333333333337
-    electricity_angle[demand,2030,3,18:18] dc_power_flow[hub,demand,2030,3,18:18] 333.33333333333337
-    electricity_angle[demand,2030,3,19:19] dc_power_flow[ccgt,demand,2030,3,19:19] 333.33333333333337
-    electricity_angle[demand,2030,3,19:19] dc_power_flow[hub,demand,2030,3,19:19] 333.33333333333337
-    electricity_angle[demand,2030,3,20:20] dc_power_flow[ccgt,demand,2030,3,20:20] 333.33333333333337
-    electricity_angle[demand,2030,3,20:20] dc_power_flow[hub,demand,2030,3,20:20] 333.33333333333337
-    electricity_angle[demand,2030,3,21:21] dc_power_flow[ccgt,demand,2030,3,21:21] 333.33333333333337
-    electricity_angle[demand,2030,3,21:21] dc_power_flow[hub,demand,2030,3,21:21] 333.33333333333337
-    electricity_angle[demand,2030,3,22:22] dc_power_flow[ccgt,demand,2030,3,22:22] 333.33333333333337
-    electricity_angle[demand,2030,3,22:22] dc_power_flow[hub,demand,2030,3,22:22] 333.33333333333337
-    electricity_angle[demand,2030,3,23:23] dc_power_flow[ccgt,demand,2030,3,23:23] 333.33333333333337
-    electricity_angle[demand,2030,3,23:23] dc_power_flow[hub,demand,2030,3,23:23] 333.33333333333337
-    electricity_angle[demand,2030,3,24:24] dc_power_flow[ccgt,demand,2030,3,24:24] 333.33333333333337
-    electricity_angle[demand,2030,3,24:24] dc_power_flow[hub,demand,2030,3,24:24] 333.33333333333337
-    electricity_angle[hub,2030,1,1:3] dc_power_flow[ccgt,hub,2030,1,1:3] 333.33333333333337
-    electricity_angle[hub,2030,1,1:3] dc_power_flow[hub,demand,2030,1,1:2] -333.33333333333337
-    electricity_angle[hub,2030,1,1:3] dc_power_flow[hub,demand,2030,1,3:3] -333.33333333333337
-    electricity_angle[hub,2030,1,4:6] dc_power_flow[ccgt,hub,2030,1,4:6] 333.33333333333337
-    electricity_angle[hub,2030,1,4:6] dc_power_flow[hub,demand,2030,1,4:4] -333.33333333333337
-    electricity_angle[hub,2030,1,4:6] dc_power_flow[hub,demand,2030,1,5:6] -333.33333333333337
-    electricity_angle[hub,2030,1,7:9] dc_power_flow[ccgt,hub,2030,1,7:9] 333.33333333333337
-    electricity_angle[hub,2030,1,7:9] dc_power_flow[hub,demand,2030,1,7:8] -333.33333333333337
-    electricity_angle[hub,2030,1,7:9] dc_power_flow[hub,demand,2030,1,9:9] -333.33333333333337
-    electricity_angle[hub,2030,1,10:12] dc_power_flow[ccgt,hub,2030,1,10:12] 333.33333333333337
-    electricity_angle[hub,2030,1,10:12] dc_power_flow[hub,demand,2030,1,10:10] -333.33333333333337
-    electricity_angle[hub,2030,1,10:12] dc_power_flow[hub,demand,2030,1,11:12] -333.33333333333337
-    electricity_angle[hub,2030,1,13:15] dc_power_flow[ccgt,hub,2030,1,13:15] 333.33333333333337
-    electricity_angle[hub,2030,1,13:15] dc_power_flow[hub,demand,2030,1,13:14] -333.33333333333337
-    electricity_angle[hub,2030,1,13:15] dc_power_flow[hub,demand,2030,1,15:15] -333.33333333333337
-    electricity_angle[hub,2030,1,16:18] dc_power_flow[ccgt,hub,2030,1,16:18] 333.33333333333337
-    electricity_angle[hub,2030,1,16:18] dc_power_flow[hub,demand,2030,1,16:16] -333.33333333333337
-    electricity_angle[hub,2030,1,16:18] dc_power_flow[hub,demand,2030,1,17:18] -333.33333333333337
-    electricity_angle[hub,2030,1,19:21] dc_power_flow[ccgt,hub,2030,1,19:21] 333.33333333333337
-    electricity_angle[hub,2030,1,19:21] dc_power_flow[hub,demand,2030,1,19:20] -333.33333333333337
-    electricity_angle[hub,2030,1,19:21] dc_power_flow[hub,demand,2030,1,21:21] -333.33333333333337
-    electricity_angle[hub,2030,1,22:24] dc_power_flow[ccgt,hub,2030,1,22:24] 333.33333333333337
-    electricity_angle[hub,2030,1,22:24] dc_power_flow[hub,demand,2030,1,22:22] -333.33333333333337
-    electricity_angle[hub,2030,1,22:24] dc_power_flow[hub,demand,2030,1,23:24] -333.33333333333337
-    electricity_angle[hub,2030,2,1:1] dc_power_flow[ccgt,hub,2030,2,1:1] 333.33333333333337
-    electricity_angle[hub,2030,2,1:1] dc_power_flow[hub,demand,2030,2,1:1] -333.33333333333337
-    electricity_angle[hub,2030,2,2:2] dc_power_flow[ccgt,hub,2030,2,2:2] 333.33333333333337
-    electricity_angle[hub,2030,2,2:2] dc_power_flow[hub,demand,2030,2,2:2] -333.33333333333337
-    electricity_angle[hub,2030,2,3:3] dc_power_flow[ccgt,hub,2030,2,3:3] 333.33333333333337
-    electricity_angle[hub,2030,2,3:3] dc_power_flow[hub,demand,2030,2,3:3] -333.33333333333337
-    electricity_angle[hub,2030,2,4:4] dc_power_flow[ccgt,hub,2030,2,4:4] 333.33333333333337
-    electricity_angle[hub,2030,2,4:4] dc_power_flow[hub,demand,2030,2,4:4] -333.33333333333337
-    electricity_angle[hub,2030,2,5:5] dc_power_flow[ccgt,hub,2030,2,5:5] 333.33333333333337
-    electricity_angle[hub,2030,2,5:5] dc_power_flow[hub,demand,2030,2,5:5] -333.33333333333337
-    electricity_angle[hub,2030,2,6:6] dc_power_flow[ccgt,hub,2030,2,6:6] 333.33333333333337
-    electricity_angle[hub,2030,2,6:6] dc_power_flow[hub,demand,2030,2,6:6] -333.33333333333337
-    electricity_angle[hub,2030,2,7:7] dc_power_flow[ccgt,hub,2030,2,7:7] 333.33333333333337
-    electricity_angle[hub,2030,2,7:7] dc_power_flow[hub,demand,2030,2,7:7] -333.33333333333337
-    electricity_angle[hub,2030,2,8:8] dc_power_flow[ccgt,hub,2030,2,8:8] 333.33333333333337
-    electricity_angle[hub,2030,2,8:8] dc_power_flow[hub,demand,2030,2,8:8] -333.33333333333337
-    electricity_angle[hub,2030,2,9:9] dc_power_flow[ccgt,hub,2030,2,9:9] 333.33333333333337
-    electricity_angle[hub,2030,2,9:9] dc_power_flow[hub,demand,2030,2,9:9] -333.33333333333337
-    electricity_angle[hub,2030,2,10:10] dc_power_flow[ccgt,hub,2030,2,10:10] 333.33333333333337
-    electricity_angle[hub,2030,2,10:10] dc_power_flow[hub,demand,2030,2,10:10] -333.33333333333337
-    electricity_angle[hub,2030,2,11:11] dc_power_flow[ccgt,hub,2030,2,11:11] 333.33333333333337
-    electricity_angle[hub,2030,2,11:11] dc_power_flow[hub,demand,2030,2,11:11] -333.33333333333337
-    electricity_angle[hub,2030,2,12:12] dc_power_flow[ccgt,hub,2030,2,12:12] 333.33333333333337
-    electricity_angle[hub,2030,2,12:12] dc_power_flow[hub,demand,2030,2,12:12] -333.33333333333337
-    electricity_angle[hub,2030,2,13:13] dc_power_flow[ccgt,hub,2030,2,13:13] 333.33333333333337
-    electricity_angle[hub,2030,2,13:13] dc_power_flow[hub,demand,2030,2,13:13] -333.33333333333337
-    electricity_angle[hub,2030,2,14:14] dc_power_flow[ccgt,hub,2030,2,14:14] 333.33333333333337
-    electricity_angle[hub,2030,2,14:14] dc_power_flow[hub,demand,2030,2,14:14] -333.33333333333337
-    electricity_angle[hub,2030,2,15:15] dc_power_flow[ccgt,hub,2030,2,15:15] 333.33333333333337
-    electricity_angle[hub,2030,2,15:15] dc_power_flow[hub,demand,2030,2,15:15] -333.33333333333337
-    electricity_angle[hub,2030,2,16:16] dc_power_flow[ccgt,hub,2030,2,16:16] 333.33333333333337
-    electricity_angle[hub,2030,2,16:16] dc_power_flow[hub,demand,2030,2,16:16] -333.33333333333337
-    electricity_angle[hub,2030,2,17:17] dc_power_flow[ccgt,hub,2030,2,17:17] 333.33333333333337
-    electricity_angle[hub,2030,2,17:17] dc_power_flow[hub,demand,2030,2,17:17] -333.33333333333337
-    electricity_angle[hub,2030,2,18:18] dc_power_flow[ccgt,hub,2030,2,18:18] 333.33333333333337
-    electricity_angle[hub,2030,2,18:18] dc_power_flow[hub,demand,2030,2,18:18] -333.33333333333337
-    electricity_angle[hub,2030,2,19:19] dc_power_flow[ccgt,hub,2030,2,19:19] 333.33333333333337
-    electricity_angle[hub,2030,2,19:19] dc_power_flow[hub,demand,2030,2,19:19] -333.33333333333337
-    electricity_angle[hub,2030,2,20:20] dc_power_flow[ccgt,hub,2030,2,20:20] 333.33333333333337
-    electricity_angle[hub,2030,2,20:20] dc_power_flow[hub,demand,2030,2,20:20] -333.33333333333337
-    electricity_angle[hub,2030,2,21:21] dc_power_flow[ccgt,hub,2030,2,21:21] 333.33333333333337
-    electricity_angle[hub,2030,2,21:21] dc_power_flow[hub,demand,2030,2,21:21] -333.33333333333337
-    electricity_angle[hub,2030,2,22:22] dc_power_flow[ccgt,hub,2030,2,22:22] 333.33333333333337
-    electricity_angle[hub,2030,2,22:22] dc_power_flow[hub,demand,2030,2,22:22] -333.33333333333337
-    electricity_angle[hub,2030,2,23:23] dc_power_flow[ccgt,hub,2030,2,23:23] 333.33333333333337
-    electricity_angle[hub,2030,2,23:23] dc_power_flow[hub,demand,2030,2,23:23] -333.33333333333337
-    electricity_angle[hub,2030,2,24:24] dc_power_flow[ccgt,hub,2030,2,24:24] 333.33333333333337
-    electricity_angle[hub,2030,2,24:24] dc_power_flow[hub,demand,2030,2,24:24] -333.33333333333337
-    electricity_angle[hub,2030,3,1:1] dc_power_flow[ccgt,hub,2030,3,1:1] 333.33333333333337
-    electricity_angle[hub,2030,3,1:1] dc_power_flow[hub,demand,2030,3,1:1] -333.33333333333337
-    electricity_angle[hub,2030,3,2:2] dc_power_flow[ccgt,hub,2030,3,2:2] 333.33333333333337
-    electricity_angle[hub,2030,3,2:2] dc_power_flow[hub,demand,2030,3,2:2] -333.33333333333337
-    electricity_angle[hub,2030,3,3:3] dc_power_flow[ccgt,hub,2030,3,3:3] 333.33333333333337
-    electricity_angle[hub,2030,3,3:3] dc_power_flow[hub,demand,2030,3,3:3] -333.33333333333337
-    electricity_angle[hub,2030,3,4:4] dc_power_flow[ccgt,hub,2030,3,4:4] 333.33333333333337
-    electricity_angle[hub,2030,3,4:4] dc_power_flow[hub,demand,2030,3,4:4] -333.33333333333337
-    electricity_angle[hub,2030,3,5:5] dc_power_flow[ccgt,hub,2030,3,5:5] 333.33333333333337
-    electricity_angle[hub,2030,3,5:5] dc_power_flow[hub,demand,2030,3,5:5] -333.33333333333337
-    electricity_angle[hub,2030,3,6:6] dc_power_flow[ccgt,hub,2030,3,6:6] 333.33333333333337
-    electricity_angle[hub,2030,3,6:6] dc_power_flow[hub,demand,2030,3,6:6] -333.33333333333337
-    electricity_angle[hub,2030,3,7:7] dc_power_flow[ccgt,hub,2030,3,7:7] 333.33333333333337
-    electricity_angle[hub,2030,3,7:7] dc_power_flow[hub,demand,2030,3,7:7] -333.33333333333337
-    electricity_angle[hub,2030,3,8:8] dc_power_flow[ccgt,hub,2030,3,8:8] 333.33333333333337
-    electricity_angle[hub,2030,3,8:8] dc_power_flow[hub,demand,2030,3,8:8] -333.33333333333337
-    electricity_angle[hub,2030,3,9:9] dc_power_flow[ccgt,hub,2030,3,9:9] 333.33333333333337
-    electricity_angle[hub,2030,3,9:9] dc_power_flow[hub,demand,2030,3,9:9] -333.33333333333337
-    electricity_angle[hub,2030,3,10:10] dc_power_flow[ccgt,hub,2030,3,10:10] 333.33333333333337
-    electricity_angle[hub,2030,3,10:10] dc_power_flow[hub,demand,2030,3,10:10] -333.33333333333337
-    electricity_angle[hub,2030,3,11:11] dc_power_flow[ccgt,hub,2030,3,11:11] 333.33333333333337
-    electricity_angle[hub,2030,3,11:11] dc_power_flow[hub,demand,2030,3,11:11] -333.33333333333337
-    electricity_angle[hub,2030,3,12:12] dc_power_flow[ccgt,hub,2030,3,12:12] 333.33333333333337
-    electricity_angle[hub,2030,3,12:12] dc_power_flow[hub,demand,2030,3,12:12] -333.33333333333337
-    electricity_angle[hub,2030,3,13:13] dc_power_flow[ccgt,hub,2030,3,13:13] 333.33333333333337
-    electricity_angle[hub,2030,3,13:13] dc_power_flow[hub,demand,2030,3,13:13] -333.33333333333337
-    electricity_angle[hub,2030,3,14:14] dc_power_flow[ccgt,hub,2030,3,14:14] 333.33333333333337
-    electricity_angle[hub,2030,3,14:14] dc_power_flow[hub,demand,2030,3,14:14] -333.33333333333337
-    electricity_angle[hub,2030,3,15:15] dc_power_flow[ccgt,hub,2030,3,15:15] 333.33333333333337
-    electricity_angle[hub,2030,3,15:15] dc_power_flow[hub,demand,2030,3,15:15] -333.33333333333337
-    electricity_angle[hub,2030,3,16:16] dc_power_flow[ccgt,hub,2030,3,16:16] 333.33333333333337
-    electricity_angle[hub,2030,3,16:16] dc_power_flow[hub,demand,2030,3,16:16] -333.33333333333337
-    electricity_angle[hub,2030,3,17:17] dc_power_flow[ccgt,hub,2030,3,17:17] 333.33333333333337
-    electricity_angle[hub,2030,3,17:17] dc_power_flow[hub,demand,2030,3,17:17] -333.33333333333337
-    electricity_angle[hub,2030,3,18:18] dc_power_flow[ccgt,hub,2030,3,18:18] 333.33333333333337
-    electricity_angle[hub,2030,3,18:18] dc_power_flow[hub,demand,2030,3,18:18] -333.33333333333337
-    electricity_angle[hub,2030,3,19:19] dc_power_flow[ccgt,hub,2030,3,19:19] 333.33333333333337
-    electricity_angle[hub,2030,3,19:19] dc_power_flow[hub,demand,2030,3,19:19] -333.33333333333337
-    electricity_angle[hub,2030,3,20:20] dc_power_flow[ccgt,hub,2030,3,20:20] 333.33333333333337
-    electricity_angle[hub,2030,3,20:20] dc_power_flow[hub,demand,2030,3,20:20] -333.33333333333337
-    electricity_angle[hub,2030,3,21:21] dc_power_flow[ccgt,hub,2030,3,21:21] 333.33333333333337
-    electricity_angle[hub,2030,3,21:21] dc_power_flow[hub,demand,2030,3,21:21] -333.33333333333337
-    electricity_angle[hub,2030,3,22:22] dc_power_flow[ccgt,hub,2030,3,22:22] 333.33333333333337
-    electricity_angle[hub,2030,3,22:22] dc_power_flow[hub,demand,2030,3,22:22] -333.33333333333337
-    electricity_angle[hub,2030,3,23:23] dc_power_flow[ccgt,hub,2030,3,23:23] 333.33333333333337
-    electricity_angle[hub,2030,3,23:23] dc_power_flow[hub,demand,2030,3,23:23] -333.33333333333337
-    electricity_angle[hub,2030,3,24:24] dc_power_flow[ccgt,hub,2030,3,24:24] 333.33333333333337
-    electricity_angle[hub,2030,3,24:24] dc_power_flow[hub,demand,2030,3,24:24] -333.33333333333337
+    electricity_angle[ccgt,2030,1,1:3] dc_power_flow[ccgt,demand,2030,1,1:2] -100
+    electricity_angle[ccgt,2030,1,1:3] dc_power_flow[ccgt,demand,2030,1,3:3] -100
+    electricity_angle[ccgt,2030,1,1:3] dc_power_flow[ccgt,hub,2030,1,1:3] -100
+    electricity_angle[ccgt,2030,1,4:6] dc_power_flow[ccgt,demand,2030,1,4:4] -100
+    electricity_angle[ccgt,2030,1,4:6] dc_power_flow[ccgt,demand,2030,1,5:6] -100
+    electricity_angle[ccgt,2030,1,4:6] dc_power_flow[ccgt,hub,2030,1,4:6] -100
+    electricity_angle[ccgt,2030,1,7:9] dc_power_flow[ccgt,demand,2030,1,7:8] -100
+    electricity_angle[ccgt,2030,1,7:9] dc_power_flow[ccgt,demand,2030,1,9:9] -100
+    electricity_angle[ccgt,2030,1,7:9] dc_power_flow[ccgt,hub,2030,1,7:9] -100
+    electricity_angle[ccgt,2030,1,10:12] dc_power_flow[ccgt,demand,2030,1,10:10] -100
+    electricity_angle[ccgt,2030,1,10:12] dc_power_flow[ccgt,demand,2030,1,11:12] -100
+    electricity_angle[ccgt,2030,1,10:12] dc_power_flow[ccgt,hub,2030,1,10:12] -100
+    electricity_angle[ccgt,2030,1,13:15] dc_power_flow[ccgt,demand,2030,1,13:14] -100
+    electricity_angle[ccgt,2030,1,13:15] dc_power_flow[ccgt,demand,2030,1,15:15] -100
+    electricity_angle[ccgt,2030,1,13:15] dc_power_flow[ccgt,hub,2030,1,13:15] -100
+    electricity_angle[ccgt,2030,1,16:18] dc_power_flow[ccgt,demand,2030,1,16:16] -100
+    electricity_angle[ccgt,2030,1,16:18] dc_power_flow[ccgt,demand,2030,1,17:18] -100
+    electricity_angle[ccgt,2030,1,16:18] dc_power_flow[ccgt,hub,2030,1,16:18] -100
+    electricity_angle[ccgt,2030,1,19:21] dc_power_flow[ccgt,demand,2030,1,19:20] -100
+    electricity_angle[ccgt,2030,1,19:21] dc_power_flow[ccgt,demand,2030,1,21:21] -100
+    electricity_angle[ccgt,2030,1,19:21] dc_power_flow[ccgt,hub,2030,1,19:21] -100
+    electricity_angle[ccgt,2030,1,22:24] dc_power_flow[ccgt,demand,2030,1,22:22] -100
+    electricity_angle[ccgt,2030,1,22:24] dc_power_flow[ccgt,demand,2030,1,23:24] -100
+    electricity_angle[ccgt,2030,1,22:24] dc_power_flow[ccgt,hub,2030,1,22:24] -100
+    electricity_angle[ccgt,2030,2,1:1] dc_power_flow[ccgt,demand,2030,2,1:1] -100
+    electricity_angle[ccgt,2030,2,1:1] dc_power_flow[ccgt,hub,2030,2,1:1] -100
+    electricity_angle[ccgt,2030,2,2:2] dc_power_flow[ccgt,demand,2030,2,2:2] -100
+    electricity_angle[ccgt,2030,2,2:2] dc_power_flow[ccgt,hub,2030,2,2:2] -100
+    electricity_angle[ccgt,2030,2,3:3] dc_power_flow[ccgt,demand,2030,2,3:3] -100
+    electricity_angle[ccgt,2030,2,3:3] dc_power_flow[ccgt,hub,2030,2,3:3] -100
+    electricity_angle[ccgt,2030,2,4:4] dc_power_flow[ccgt,demand,2030,2,4:4] -100
+    electricity_angle[ccgt,2030,2,4:4] dc_power_flow[ccgt,hub,2030,2,4:4] -100
+    electricity_angle[ccgt,2030,2,5:5] dc_power_flow[ccgt,demand,2030,2,5:5] -100
+    electricity_angle[ccgt,2030,2,5:5] dc_power_flow[ccgt,hub,2030,2,5:5] -100
+    electricity_angle[ccgt,2030,2,6:6] dc_power_flow[ccgt,demand,2030,2,6:6] -100
+    electricity_angle[ccgt,2030,2,6:6] dc_power_flow[ccgt,hub,2030,2,6:6] -100
+    electricity_angle[ccgt,2030,2,7:7] dc_power_flow[ccgt,demand,2030,2,7:7] -100
+    electricity_angle[ccgt,2030,2,7:7] dc_power_flow[ccgt,hub,2030,2,7:7] -100
+    electricity_angle[ccgt,2030,2,8:8] dc_power_flow[ccgt,demand,2030,2,8:8] -100
+    electricity_angle[ccgt,2030,2,8:8] dc_power_flow[ccgt,hub,2030,2,8:8] -100
+    electricity_angle[ccgt,2030,2,9:9] dc_power_flow[ccgt,demand,2030,2,9:9] -100
+    electricity_angle[ccgt,2030,2,9:9] dc_power_flow[ccgt,hub,2030,2,9:9] -100
+    electricity_angle[ccgt,2030,2,10:10] dc_power_flow[ccgt,demand,2030,2,10:10] -100
+    electricity_angle[ccgt,2030,2,10:10] dc_power_flow[ccgt,hub,2030,2,10:10] -100
+    electricity_angle[ccgt,2030,2,11:11] dc_power_flow[ccgt,demand,2030,2,11:11] -100
+    electricity_angle[ccgt,2030,2,11:11] dc_power_flow[ccgt,hub,2030,2,11:11] -100
+    electricity_angle[ccgt,2030,2,12:12] dc_power_flow[ccgt,demand,2030,2,12:12] -100
+    electricity_angle[ccgt,2030,2,12:12] dc_power_flow[ccgt,hub,2030,2,12:12] -100
+    electricity_angle[ccgt,2030,2,13:13] dc_power_flow[ccgt,demand,2030,2,13:13] -100
+    electricity_angle[ccgt,2030,2,13:13] dc_power_flow[ccgt,hub,2030,2,13:13] -100
+    electricity_angle[ccgt,2030,2,14:14] dc_power_flow[ccgt,demand,2030,2,14:14] -100
+    electricity_angle[ccgt,2030,2,14:14] dc_power_flow[ccgt,hub,2030,2,14:14] -100
+    electricity_angle[ccgt,2030,2,15:15] dc_power_flow[ccgt,demand,2030,2,15:15] -100
+    electricity_angle[ccgt,2030,2,15:15] dc_power_flow[ccgt,hub,2030,2,15:15] -100
+    electricity_angle[ccgt,2030,2,16:16] dc_power_flow[ccgt,demand,2030,2,16:16] -100
+    electricity_angle[ccgt,2030,2,16:16] dc_power_flow[ccgt,hub,2030,2,16:16] -100
+    electricity_angle[ccgt,2030,2,17:17] dc_power_flow[ccgt,demand,2030,2,17:17] -100
+    electricity_angle[ccgt,2030,2,17:17] dc_power_flow[ccgt,hub,2030,2,17:17] -100
+    electricity_angle[ccgt,2030,2,18:18] dc_power_flow[ccgt,demand,2030,2,18:18] -100
+    electricity_angle[ccgt,2030,2,18:18] dc_power_flow[ccgt,hub,2030,2,18:18] -100
+    electricity_angle[ccgt,2030,2,19:19] dc_power_flow[ccgt,demand,2030,2,19:19] -100
+    electricity_angle[ccgt,2030,2,19:19] dc_power_flow[ccgt,hub,2030,2,19:19] -100
+    electricity_angle[ccgt,2030,2,20:20] dc_power_flow[ccgt,demand,2030,2,20:20] -100
+    electricity_angle[ccgt,2030,2,20:20] dc_power_flow[ccgt,hub,2030,2,20:20] -100
+    electricity_angle[ccgt,2030,2,21:21] dc_power_flow[ccgt,demand,2030,2,21:21] -100
+    electricity_angle[ccgt,2030,2,21:21] dc_power_flow[ccgt,hub,2030,2,21:21] -100
+    electricity_angle[ccgt,2030,2,22:22] dc_power_flow[ccgt,demand,2030,2,22:22] -100
+    electricity_angle[ccgt,2030,2,22:22] dc_power_flow[ccgt,hub,2030,2,22:22] -100
+    electricity_angle[ccgt,2030,2,23:23] dc_power_flow[ccgt,demand,2030,2,23:23] -100
+    electricity_angle[ccgt,2030,2,23:23] dc_power_flow[ccgt,hub,2030,2,23:23] -100
+    electricity_angle[ccgt,2030,2,24:24] dc_power_flow[ccgt,demand,2030,2,24:24] -100
+    electricity_angle[ccgt,2030,2,24:24] dc_power_flow[ccgt,hub,2030,2,24:24] -100
+    electricity_angle[ccgt,2030,3,1:1] dc_power_flow[ccgt,demand,2030,3,1:1] -100
+    electricity_angle[ccgt,2030,3,1:1] dc_power_flow[ccgt,hub,2030,3,1:1] -100
+    electricity_angle[ccgt,2030,3,2:2] dc_power_flow[ccgt,demand,2030,3,2:2] -100
+    electricity_angle[ccgt,2030,3,2:2] dc_power_flow[ccgt,hub,2030,3,2:2] -100
+    electricity_angle[ccgt,2030,3,3:3] dc_power_flow[ccgt,demand,2030,3,3:3] -100
+    electricity_angle[ccgt,2030,3,3:3] dc_power_flow[ccgt,hub,2030,3,3:3] -100
+    electricity_angle[ccgt,2030,3,4:4] dc_power_flow[ccgt,demand,2030,3,4:4] -100
+    electricity_angle[ccgt,2030,3,4:4] dc_power_flow[ccgt,hub,2030,3,4:4] -100
+    electricity_angle[ccgt,2030,3,5:5] dc_power_flow[ccgt,demand,2030,3,5:5] -100
+    electricity_angle[ccgt,2030,3,5:5] dc_power_flow[ccgt,hub,2030,3,5:5] -100
+    electricity_angle[ccgt,2030,3,6:6] dc_power_flow[ccgt,demand,2030,3,6:6] -100
+    electricity_angle[ccgt,2030,3,6:6] dc_power_flow[ccgt,hub,2030,3,6:6] -100
+    electricity_angle[ccgt,2030,3,7:7] dc_power_flow[ccgt,demand,2030,3,7:7] -100
+    electricity_angle[ccgt,2030,3,7:7] dc_power_flow[ccgt,hub,2030,3,7:7] -100
+    electricity_angle[ccgt,2030,3,8:8] dc_power_flow[ccgt,demand,2030,3,8:8] -100
+    electricity_angle[ccgt,2030,3,8:8] dc_power_flow[ccgt,hub,2030,3,8:8] -100
+    electricity_angle[ccgt,2030,3,9:9] dc_power_flow[ccgt,demand,2030,3,9:9] -100
+    electricity_angle[ccgt,2030,3,9:9] dc_power_flow[ccgt,hub,2030,3,9:9] -100
+    electricity_angle[ccgt,2030,3,10:10] dc_power_flow[ccgt,demand,2030,3,10:10] -100
+    electricity_angle[ccgt,2030,3,10:10] dc_power_flow[ccgt,hub,2030,3,10:10] -100
+    electricity_angle[ccgt,2030,3,11:11] dc_power_flow[ccgt,demand,2030,3,11:11] -100
+    electricity_angle[ccgt,2030,3,11:11] dc_power_flow[ccgt,hub,2030,3,11:11] -100
+    electricity_angle[ccgt,2030,3,12:12] dc_power_flow[ccgt,demand,2030,3,12:12] -100
+    electricity_angle[ccgt,2030,3,12:12] dc_power_flow[ccgt,hub,2030,3,12:12] -100
+    electricity_angle[ccgt,2030,3,13:13] dc_power_flow[ccgt,demand,2030,3,13:13] -100
+    electricity_angle[ccgt,2030,3,13:13] dc_power_flow[ccgt,hub,2030,3,13:13] -100
+    electricity_angle[ccgt,2030,3,14:14] dc_power_flow[ccgt,demand,2030,3,14:14] -100
+    electricity_angle[ccgt,2030,3,14:14] dc_power_flow[ccgt,hub,2030,3,14:14] -100
+    electricity_angle[ccgt,2030,3,15:15] dc_power_flow[ccgt,demand,2030,3,15:15] -100
+    electricity_angle[ccgt,2030,3,15:15] dc_power_flow[ccgt,hub,2030,3,15:15] -100
+    electricity_angle[ccgt,2030,3,16:16] dc_power_flow[ccgt,demand,2030,3,16:16] -100
+    electricity_angle[ccgt,2030,3,16:16] dc_power_flow[ccgt,hub,2030,3,16:16] -100
+    electricity_angle[ccgt,2030,3,17:17] dc_power_flow[ccgt,demand,2030,3,17:17] -100
+    electricity_angle[ccgt,2030,3,17:17] dc_power_flow[ccgt,hub,2030,3,17:17] -100
+    electricity_angle[ccgt,2030,3,18:18] dc_power_flow[ccgt,demand,2030,3,18:18] -100
+    electricity_angle[ccgt,2030,3,18:18] dc_power_flow[ccgt,hub,2030,3,18:18] -100
+    electricity_angle[ccgt,2030,3,19:19] dc_power_flow[ccgt,demand,2030,3,19:19] -100
+    electricity_angle[ccgt,2030,3,19:19] dc_power_flow[ccgt,hub,2030,3,19:19] -100
+    electricity_angle[ccgt,2030,3,20:20] dc_power_flow[ccgt,demand,2030,3,20:20] -100
+    electricity_angle[ccgt,2030,3,20:20] dc_power_flow[ccgt,hub,2030,3,20:20] -100
+    electricity_angle[ccgt,2030,3,21:21] dc_power_flow[ccgt,demand,2030,3,21:21] -100
+    electricity_angle[ccgt,2030,3,21:21] dc_power_flow[ccgt,hub,2030,3,21:21] -100
+    electricity_angle[ccgt,2030,3,22:22] dc_power_flow[ccgt,demand,2030,3,22:22] -100
+    electricity_angle[ccgt,2030,3,22:22] dc_power_flow[ccgt,hub,2030,3,22:22] -100
+    electricity_angle[ccgt,2030,3,23:23] dc_power_flow[ccgt,demand,2030,3,23:23] -100
+    electricity_angle[ccgt,2030,3,23:23] dc_power_flow[ccgt,hub,2030,3,23:23] -100
+    electricity_angle[ccgt,2030,3,24:24] dc_power_flow[ccgt,demand,2030,3,24:24] -100
+    electricity_angle[ccgt,2030,3,24:24] dc_power_flow[ccgt,hub,2030,3,24:24] -100
+    electricity_angle[demand,2030,1,1:2] dc_power_flow[ccgt,demand,2030,1,1:2] 100
+    electricity_angle[demand,2030,1,1:2] dc_power_flow[hub,demand,2030,1,1:2] 100
+    electricity_angle[demand,2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,3:3] 100
+    electricity_angle[demand,2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,4:4] 100
+    electricity_angle[demand,2030,1,3:4] dc_power_flow[hub,demand,2030,1,3:3] 100
+    electricity_angle[demand,2030,1,3:4] dc_power_flow[hub,demand,2030,1,4:4] 100
+    electricity_angle[demand,2030,1,5:6] dc_power_flow[ccgt,demand,2030,1,5:6] 100
+    electricity_angle[demand,2030,1,5:6] dc_power_flow[hub,demand,2030,1,5:6] 100
+    electricity_angle[demand,2030,1,7:8] dc_power_flow[ccgt,demand,2030,1,7:8] 100
+    electricity_angle[demand,2030,1,7:8] dc_power_flow[hub,demand,2030,1,7:8] 100
+    electricity_angle[demand,2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,9:9] 100
+    electricity_angle[demand,2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,10:10] 100
+    electricity_angle[demand,2030,1,9:10] dc_power_flow[hub,demand,2030,1,9:9] 100
+    electricity_angle[demand,2030,1,9:10] dc_power_flow[hub,demand,2030,1,10:10] 100
+    electricity_angle[demand,2030,1,11:12] dc_power_flow[ccgt,demand,2030,1,11:12] 100
+    electricity_angle[demand,2030,1,11:12] dc_power_flow[hub,demand,2030,1,11:12] 100
+    electricity_angle[demand,2030,1,13:14] dc_power_flow[ccgt,demand,2030,1,13:14] 100
+    electricity_angle[demand,2030,1,13:14] dc_power_flow[hub,demand,2030,1,13:14] 100
+    electricity_angle[demand,2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,15:15] 100
+    electricity_angle[demand,2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,16:16] 100
+    electricity_angle[demand,2030,1,15:16] dc_power_flow[hub,demand,2030,1,15:15] 100
+    electricity_angle[demand,2030,1,15:16] dc_power_flow[hub,demand,2030,1,16:16] 100
+    electricity_angle[demand,2030,1,17:18] dc_power_flow[ccgt,demand,2030,1,17:18] 100
+    electricity_angle[demand,2030,1,17:18] dc_power_flow[hub,demand,2030,1,17:18] 100
+    electricity_angle[demand,2030,1,19:20] dc_power_flow[ccgt,demand,2030,1,19:20] 100
+    electricity_angle[demand,2030,1,19:20] dc_power_flow[hub,demand,2030,1,19:20] 100
+    electricity_angle[demand,2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,21:21] 100
+    electricity_angle[demand,2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,22:22] 100
+    electricity_angle[demand,2030,1,21:22] dc_power_flow[hub,demand,2030,1,21:21] 100
+    electricity_angle[demand,2030,1,21:22] dc_power_flow[hub,demand,2030,1,22:22] 100
+    electricity_angle[demand,2030,1,23:24] dc_power_flow[ccgt,demand,2030,1,23:24] 100
+    electricity_angle[demand,2030,1,23:24] dc_power_flow[hub,demand,2030,1,23:24] 100
+    electricity_angle[demand,2030,2,1:1] dc_power_flow[ccgt,demand,2030,2,1:1] 100
+    electricity_angle[demand,2030,2,1:1] dc_power_flow[hub,demand,2030,2,1:1] 100
+    electricity_angle[demand,2030,2,2:2] dc_power_flow[ccgt,demand,2030,2,2:2] 100
+    electricity_angle[demand,2030,2,2:2] dc_power_flow[hub,demand,2030,2,2:2] 100
+    electricity_angle[demand,2030,2,3:3] dc_power_flow[ccgt,demand,2030,2,3:3] 100
+    electricity_angle[demand,2030,2,3:3] dc_power_flow[hub,demand,2030,2,3:3] 100
+    electricity_angle[demand,2030,2,4:4] dc_power_flow[ccgt,demand,2030,2,4:4] 100
+    electricity_angle[demand,2030,2,4:4] dc_power_flow[hub,demand,2030,2,4:4] 100
+    electricity_angle[demand,2030,2,5:5] dc_power_flow[ccgt,demand,2030,2,5:5] 100
+    electricity_angle[demand,2030,2,5:5] dc_power_flow[hub,demand,2030,2,5:5] 100
+    electricity_angle[demand,2030,2,6:6] dc_power_flow[ccgt,demand,2030,2,6:6] 100
+    electricity_angle[demand,2030,2,6:6] dc_power_flow[hub,demand,2030,2,6:6] 100
+    electricity_angle[demand,2030,2,7:7] dc_power_flow[ccgt,demand,2030,2,7:7] 100
+    electricity_angle[demand,2030,2,7:7] dc_power_flow[hub,demand,2030,2,7:7] 100
+    electricity_angle[demand,2030,2,8:8] dc_power_flow[ccgt,demand,2030,2,8:8] 100
+    electricity_angle[demand,2030,2,8:8] dc_power_flow[hub,demand,2030,2,8:8] 100
+    electricity_angle[demand,2030,2,9:9] dc_power_flow[ccgt,demand,2030,2,9:9] 100
+    electricity_angle[demand,2030,2,9:9] dc_power_flow[hub,demand,2030,2,9:9] 100
+    electricity_angle[demand,2030,2,10:10] dc_power_flow[ccgt,demand,2030,2,10:10] 100
+    electricity_angle[demand,2030,2,10:10] dc_power_flow[hub,demand,2030,2,10:10] 100
+    electricity_angle[demand,2030,2,11:11] dc_power_flow[ccgt,demand,2030,2,11:11] 100
+    electricity_angle[demand,2030,2,11:11] dc_power_flow[hub,demand,2030,2,11:11] 100
+    electricity_angle[demand,2030,2,12:12] dc_power_flow[ccgt,demand,2030,2,12:12] 100
+    electricity_angle[demand,2030,2,12:12] dc_power_flow[hub,demand,2030,2,12:12] 100
+    electricity_angle[demand,2030,2,13:13] dc_power_flow[ccgt,demand,2030,2,13:13] 100
+    electricity_angle[demand,2030,2,13:13] dc_power_flow[hub,demand,2030,2,13:13] 100
+    electricity_angle[demand,2030,2,14:14] dc_power_flow[ccgt,demand,2030,2,14:14] 100
+    electricity_angle[demand,2030,2,14:14] dc_power_flow[hub,demand,2030,2,14:14] 100
+    electricity_angle[demand,2030,2,15:15] dc_power_flow[ccgt,demand,2030,2,15:15] 100
+    electricity_angle[demand,2030,2,15:15] dc_power_flow[hub,demand,2030,2,15:15] 100
+    electricity_angle[demand,2030,2,16:16] dc_power_flow[ccgt,demand,2030,2,16:16] 100
+    electricity_angle[demand,2030,2,16:16] dc_power_flow[hub,demand,2030,2,16:16] 100
+    electricity_angle[demand,2030,2,17:17] dc_power_flow[ccgt,demand,2030,2,17:17] 100
+    electricity_angle[demand,2030,2,17:17] dc_power_flow[hub,demand,2030,2,17:17] 100
+    electricity_angle[demand,2030,2,18:18] dc_power_flow[ccgt,demand,2030,2,18:18] 100
+    electricity_angle[demand,2030,2,18:18] dc_power_flow[hub,demand,2030,2,18:18] 100
+    electricity_angle[demand,2030,2,19:19] dc_power_flow[ccgt,demand,2030,2,19:19] 100
+    electricity_angle[demand,2030,2,19:19] dc_power_flow[hub,demand,2030,2,19:19] 100
+    electricity_angle[demand,2030,2,20:20] dc_power_flow[ccgt,demand,2030,2,20:20] 100
+    electricity_angle[demand,2030,2,20:20] dc_power_flow[hub,demand,2030,2,20:20] 100
+    electricity_angle[demand,2030,2,21:21] dc_power_flow[ccgt,demand,2030,2,21:21] 100
+    electricity_angle[demand,2030,2,21:21] dc_power_flow[hub,demand,2030,2,21:21] 100
+    electricity_angle[demand,2030,2,22:22] dc_power_flow[ccgt,demand,2030,2,22:22] 100
+    electricity_angle[demand,2030,2,22:22] dc_power_flow[hub,demand,2030,2,22:22] 100
+    electricity_angle[demand,2030,2,23:23] dc_power_flow[ccgt,demand,2030,2,23:23] 100
+    electricity_angle[demand,2030,2,23:23] dc_power_flow[hub,demand,2030,2,23:23] 100
+    electricity_angle[demand,2030,2,24:24] dc_power_flow[ccgt,demand,2030,2,24:24] 100
+    electricity_angle[demand,2030,2,24:24] dc_power_flow[hub,demand,2030,2,24:24] 100
+    electricity_angle[demand,2030,3,1:1] dc_power_flow[ccgt,demand,2030,3,1:1] 100
+    electricity_angle[demand,2030,3,1:1] dc_power_flow[hub,demand,2030,3,1:1] 100
+    electricity_angle[demand,2030,3,2:2] dc_power_flow[ccgt,demand,2030,3,2:2] 100
+    electricity_angle[demand,2030,3,2:2] dc_power_flow[hub,demand,2030,3,2:2] 100
+    electricity_angle[demand,2030,3,3:3] dc_power_flow[ccgt,demand,2030,3,3:3] 100
+    electricity_angle[demand,2030,3,3:3] dc_power_flow[hub,demand,2030,3,3:3] 100
+    electricity_angle[demand,2030,3,4:4] dc_power_flow[ccgt,demand,2030,3,4:4] 100
+    electricity_angle[demand,2030,3,4:4] dc_power_flow[hub,demand,2030,3,4:4] 100
+    electricity_angle[demand,2030,3,5:5] dc_power_flow[ccgt,demand,2030,3,5:5] 100
+    electricity_angle[demand,2030,3,5:5] dc_power_flow[hub,demand,2030,3,5:5] 100
+    electricity_angle[demand,2030,3,6:6] dc_power_flow[ccgt,demand,2030,3,6:6] 100
+    electricity_angle[demand,2030,3,6:6] dc_power_flow[hub,demand,2030,3,6:6] 100
+    electricity_angle[demand,2030,3,7:7] dc_power_flow[ccgt,demand,2030,3,7:7] 100
+    electricity_angle[demand,2030,3,7:7] dc_power_flow[hub,demand,2030,3,7:7] 100
+    electricity_angle[demand,2030,3,8:8] dc_power_flow[ccgt,demand,2030,3,8:8] 100
+    electricity_angle[demand,2030,3,8:8] dc_power_flow[hub,demand,2030,3,8:8] 100
+    electricity_angle[demand,2030,3,9:9] dc_power_flow[ccgt,demand,2030,3,9:9] 100
+    electricity_angle[demand,2030,3,9:9] dc_power_flow[hub,demand,2030,3,9:9] 100
+    electricity_angle[demand,2030,3,10:10] dc_power_flow[ccgt,demand,2030,3,10:10] 100
+    electricity_angle[demand,2030,3,10:10] dc_power_flow[hub,demand,2030,3,10:10] 100
+    electricity_angle[demand,2030,3,11:11] dc_power_flow[ccgt,demand,2030,3,11:11] 100
+    electricity_angle[demand,2030,3,11:11] dc_power_flow[hub,demand,2030,3,11:11] 100
+    electricity_angle[demand,2030,3,12:12] dc_power_flow[ccgt,demand,2030,3,12:12] 100
+    electricity_angle[demand,2030,3,12:12] dc_power_flow[hub,demand,2030,3,12:12] 100
+    electricity_angle[demand,2030,3,13:13] dc_power_flow[ccgt,demand,2030,3,13:13] 100
+    electricity_angle[demand,2030,3,13:13] dc_power_flow[hub,demand,2030,3,13:13] 100
+    electricity_angle[demand,2030,3,14:14] dc_power_flow[ccgt,demand,2030,3,14:14] 100
+    electricity_angle[demand,2030,3,14:14] dc_power_flow[hub,demand,2030,3,14:14] 100
+    electricity_angle[demand,2030,3,15:15] dc_power_flow[ccgt,demand,2030,3,15:15] 100
+    electricity_angle[demand,2030,3,15:15] dc_power_flow[hub,demand,2030,3,15:15] 100
+    electricity_angle[demand,2030,3,16:16] dc_power_flow[ccgt,demand,2030,3,16:16] 100
+    electricity_angle[demand,2030,3,16:16] dc_power_flow[hub,demand,2030,3,16:16] 100
+    electricity_angle[demand,2030,3,17:17] dc_power_flow[ccgt,demand,2030,3,17:17] 100
+    electricity_angle[demand,2030,3,17:17] dc_power_flow[hub,demand,2030,3,17:17] 100
+    electricity_angle[demand,2030,3,18:18] dc_power_flow[ccgt,demand,2030,3,18:18] 100
+    electricity_angle[demand,2030,3,18:18] dc_power_flow[hub,demand,2030,3,18:18] 100
+    electricity_angle[demand,2030,3,19:19] dc_power_flow[ccgt,demand,2030,3,19:19] 100
+    electricity_angle[demand,2030,3,19:19] dc_power_flow[hub,demand,2030,3,19:19] 100
+    electricity_angle[demand,2030,3,20:20] dc_power_flow[ccgt,demand,2030,3,20:20] 100
+    electricity_angle[demand,2030,3,20:20] dc_power_flow[hub,demand,2030,3,20:20] 100
+    electricity_angle[demand,2030,3,21:21] dc_power_flow[ccgt,demand,2030,3,21:21] 100
+    electricity_angle[demand,2030,3,21:21] dc_power_flow[hub,demand,2030,3,21:21] 100
+    electricity_angle[demand,2030,3,22:22] dc_power_flow[ccgt,demand,2030,3,22:22] 100
+    electricity_angle[demand,2030,3,22:22] dc_power_flow[hub,demand,2030,3,22:22] 100
+    electricity_angle[demand,2030,3,23:23] dc_power_flow[ccgt,demand,2030,3,23:23] 100
+    electricity_angle[demand,2030,3,23:23] dc_power_flow[hub,demand,2030,3,23:23] 100
+    electricity_angle[demand,2030,3,24:24] dc_power_flow[ccgt,demand,2030,3,24:24] 100
+    electricity_angle[demand,2030,3,24:24] dc_power_flow[hub,demand,2030,3,24:24] 100
+    electricity_angle[hub,2030,1,1:3] dc_power_flow[ccgt,hub,2030,1,1:3] 100
+    electricity_angle[hub,2030,1,1:3] dc_power_flow[hub,demand,2030,1,1:2] -100
+    electricity_angle[hub,2030,1,1:3] dc_power_flow[hub,demand,2030,1,3:3] -100
+    electricity_angle[hub,2030,1,4:6] dc_power_flow[ccgt,hub,2030,1,4:6] 100
+    electricity_angle[hub,2030,1,4:6] dc_power_flow[hub,demand,2030,1,4:4] -100
+    electricity_angle[hub,2030,1,4:6] dc_power_flow[hub,demand,2030,1,5:6] -100
+    electricity_angle[hub,2030,1,7:9] dc_power_flow[ccgt,hub,2030,1,7:9] 100
+    electricity_angle[hub,2030,1,7:9] dc_power_flow[hub,demand,2030,1,7:8] -100
+    electricity_angle[hub,2030,1,7:9] dc_power_flow[hub,demand,2030,1,9:9] -100
+    electricity_angle[hub,2030,1,10:12] dc_power_flow[ccgt,hub,2030,1,10:12] 100
+    electricity_angle[hub,2030,1,10:12] dc_power_flow[hub,demand,2030,1,10:10] -100
+    electricity_angle[hub,2030,1,10:12] dc_power_flow[hub,demand,2030,1,11:12] -100
+    electricity_angle[hub,2030,1,13:15] dc_power_flow[ccgt,hub,2030,1,13:15] 100
+    electricity_angle[hub,2030,1,13:15] dc_power_flow[hub,demand,2030,1,13:14] -100
+    electricity_angle[hub,2030,1,13:15] dc_power_flow[hub,demand,2030,1,15:15] -100
+    electricity_angle[hub,2030,1,16:18] dc_power_flow[ccgt,hub,2030,1,16:18] 100
+    electricity_angle[hub,2030,1,16:18] dc_power_flow[hub,demand,2030,1,16:16] -100
+    electricity_angle[hub,2030,1,16:18] dc_power_flow[hub,demand,2030,1,17:18] -100
+    electricity_angle[hub,2030,1,19:21] dc_power_flow[ccgt,hub,2030,1,19:21] 100
+    electricity_angle[hub,2030,1,19:21] dc_power_flow[hub,demand,2030,1,19:20] -100
+    electricity_angle[hub,2030,1,19:21] dc_power_flow[hub,demand,2030,1,21:21] -100
+    electricity_angle[hub,2030,1,22:24] dc_power_flow[ccgt,hub,2030,1,22:24] 100
+    electricity_angle[hub,2030,1,22:24] dc_power_flow[hub,demand,2030,1,22:22] -100
+    electricity_angle[hub,2030,1,22:24] dc_power_flow[hub,demand,2030,1,23:24] -100
+    electricity_angle[hub,2030,2,1:1] dc_power_flow[ccgt,hub,2030,2,1:1] 100
+    electricity_angle[hub,2030,2,1:1] dc_power_flow[hub,demand,2030,2,1:1] -100
+    electricity_angle[hub,2030,2,2:2] dc_power_flow[ccgt,hub,2030,2,2:2] 100
+    electricity_angle[hub,2030,2,2:2] dc_power_flow[hub,demand,2030,2,2:2] -100
+    electricity_angle[hub,2030,2,3:3] dc_power_flow[ccgt,hub,2030,2,3:3] 100
+    electricity_angle[hub,2030,2,3:3] dc_power_flow[hub,demand,2030,2,3:3] -100
+    electricity_angle[hub,2030,2,4:4] dc_power_flow[ccgt,hub,2030,2,4:4] 100
+    electricity_angle[hub,2030,2,4:4] dc_power_flow[hub,demand,2030,2,4:4] -100
+    electricity_angle[hub,2030,2,5:5] dc_power_flow[ccgt,hub,2030,2,5:5] 100
+    electricity_angle[hub,2030,2,5:5] dc_power_flow[hub,demand,2030,2,5:5] -100
+    electricity_angle[hub,2030,2,6:6] dc_power_flow[ccgt,hub,2030,2,6:6] 100
+    electricity_angle[hub,2030,2,6:6] dc_power_flow[hub,demand,2030,2,6:6] -100
+    electricity_angle[hub,2030,2,7:7] dc_power_flow[ccgt,hub,2030,2,7:7] 100
+    electricity_angle[hub,2030,2,7:7] dc_power_flow[hub,demand,2030,2,7:7] -100
+    electricity_angle[hub,2030,2,8:8] dc_power_flow[ccgt,hub,2030,2,8:8] 100
+    electricity_angle[hub,2030,2,8:8] dc_power_flow[hub,demand,2030,2,8:8] -100
+    electricity_angle[hub,2030,2,9:9] dc_power_flow[ccgt,hub,2030,2,9:9] 100
+    electricity_angle[hub,2030,2,9:9] dc_power_flow[hub,demand,2030,2,9:9] -100
+    electricity_angle[hub,2030,2,10:10] dc_power_flow[ccgt,hub,2030,2,10:10] 100
+    electricity_angle[hub,2030,2,10:10] dc_power_flow[hub,demand,2030,2,10:10] -100
+    electricity_angle[hub,2030,2,11:11] dc_power_flow[ccgt,hub,2030,2,11:11] 100
+    electricity_angle[hub,2030,2,11:11] dc_power_flow[hub,demand,2030,2,11:11] -100
+    electricity_angle[hub,2030,2,12:12] dc_power_flow[ccgt,hub,2030,2,12:12] 100
+    electricity_angle[hub,2030,2,12:12] dc_power_flow[hub,demand,2030,2,12:12] -100
+    electricity_angle[hub,2030,2,13:13] dc_power_flow[ccgt,hub,2030,2,13:13] 100
+    electricity_angle[hub,2030,2,13:13] dc_power_flow[hub,demand,2030,2,13:13] -100
+    electricity_angle[hub,2030,2,14:14] dc_power_flow[ccgt,hub,2030,2,14:14] 100
+    electricity_angle[hub,2030,2,14:14] dc_power_flow[hub,demand,2030,2,14:14] -100
+    electricity_angle[hub,2030,2,15:15] dc_power_flow[ccgt,hub,2030,2,15:15] 100
+    electricity_angle[hub,2030,2,15:15] dc_power_flow[hub,demand,2030,2,15:15] -100
+    electricity_angle[hub,2030,2,16:16] dc_power_flow[ccgt,hub,2030,2,16:16] 100
+    electricity_angle[hub,2030,2,16:16] dc_power_flow[hub,demand,2030,2,16:16] -100
+    electricity_angle[hub,2030,2,17:17] dc_power_flow[ccgt,hub,2030,2,17:17] 100
+    electricity_angle[hub,2030,2,17:17] dc_power_flow[hub,demand,2030,2,17:17] -100
+    electricity_angle[hub,2030,2,18:18] dc_power_flow[ccgt,hub,2030,2,18:18] 100
+    electricity_angle[hub,2030,2,18:18] dc_power_flow[hub,demand,2030,2,18:18] -100
+    electricity_angle[hub,2030,2,19:19] dc_power_flow[ccgt,hub,2030,2,19:19] 100
+    electricity_angle[hub,2030,2,19:19] dc_power_flow[hub,demand,2030,2,19:19] -100
+    electricity_angle[hub,2030,2,20:20] dc_power_flow[ccgt,hub,2030,2,20:20] 100
+    electricity_angle[hub,2030,2,20:20] dc_power_flow[hub,demand,2030,2,20:20] -100
+    electricity_angle[hub,2030,2,21:21] dc_power_flow[ccgt,hub,2030,2,21:21] 100
+    electricity_angle[hub,2030,2,21:21] dc_power_flow[hub,demand,2030,2,21:21] -100
+    electricity_angle[hub,2030,2,22:22] dc_power_flow[ccgt,hub,2030,2,22:22] 100
+    electricity_angle[hub,2030,2,22:22] dc_power_flow[hub,demand,2030,2,22:22] -100
+    electricity_angle[hub,2030,2,23:23] dc_power_flow[ccgt,hub,2030,2,23:23] 100
+    electricity_angle[hub,2030,2,23:23] dc_power_flow[hub,demand,2030,2,23:23] -100
+    electricity_angle[hub,2030,2,24:24] dc_power_flow[ccgt,hub,2030,2,24:24] 100
+    electricity_angle[hub,2030,2,24:24] dc_power_flow[hub,demand,2030,2,24:24] -100
+    electricity_angle[hub,2030,3,1:1] dc_power_flow[ccgt,hub,2030,3,1:1] 100
+    electricity_angle[hub,2030,3,1:1] dc_power_flow[hub,demand,2030,3,1:1] -100
+    electricity_angle[hub,2030,3,2:2] dc_power_flow[ccgt,hub,2030,3,2:2] 100
+    electricity_angle[hub,2030,3,2:2] dc_power_flow[hub,demand,2030,3,2:2] -100
+    electricity_angle[hub,2030,3,3:3] dc_power_flow[ccgt,hub,2030,3,3:3] 100
+    electricity_angle[hub,2030,3,3:3] dc_power_flow[hub,demand,2030,3,3:3] -100
+    electricity_angle[hub,2030,3,4:4] dc_power_flow[ccgt,hub,2030,3,4:4] 100
+    electricity_angle[hub,2030,3,4:4] dc_power_flow[hub,demand,2030,3,4:4] -100
+    electricity_angle[hub,2030,3,5:5] dc_power_flow[ccgt,hub,2030,3,5:5] 100
+    electricity_angle[hub,2030,3,5:5] dc_power_flow[hub,demand,2030,3,5:5] -100
+    electricity_angle[hub,2030,3,6:6] dc_power_flow[ccgt,hub,2030,3,6:6] 100
+    electricity_angle[hub,2030,3,6:6] dc_power_flow[hub,demand,2030,3,6:6] -100
+    electricity_angle[hub,2030,3,7:7] dc_power_flow[ccgt,hub,2030,3,7:7] 100
+    electricity_angle[hub,2030,3,7:7] dc_power_flow[hub,demand,2030,3,7:7] -100
+    electricity_angle[hub,2030,3,8:8] dc_power_flow[ccgt,hub,2030,3,8:8] 100
+    electricity_angle[hub,2030,3,8:8] dc_power_flow[hub,demand,2030,3,8:8] -100
+    electricity_angle[hub,2030,3,9:9] dc_power_flow[ccgt,hub,2030,3,9:9] 100
+    electricity_angle[hub,2030,3,9:9] dc_power_flow[hub,demand,2030,3,9:9] -100
+    electricity_angle[hub,2030,3,10:10] dc_power_flow[ccgt,hub,2030,3,10:10] 100
+    electricity_angle[hub,2030,3,10:10] dc_power_flow[hub,demand,2030,3,10:10] -100
+    electricity_angle[hub,2030,3,11:11] dc_power_flow[ccgt,hub,2030,3,11:11] 100
+    electricity_angle[hub,2030,3,11:11] dc_power_flow[hub,demand,2030,3,11:11] -100
+    electricity_angle[hub,2030,3,12:12] dc_power_flow[ccgt,hub,2030,3,12:12] 100
+    electricity_angle[hub,2030,3,12:12] dc_power_flow[hub,demand,2030,3,12:12] -100
+    electricity_angle[hub,2030,3,13:13] dc_power_flow[ccgt,hub,2030,3,13:13] 100
+    electricity_angle[hub,2030,3,13:13] dc_power_flow[hub,demand,2030,3,13:13] -100
+    electricity_angle[hub,2030,3,14:14] dc_power_flow[ccgt,hub,2030,3,14:14] 100
+    electricity_angle[hub,2030,3,14:14] dc_power_flow[hub,demand,2030,3,14:14] -100
+    electricity_angle[hub,2030,3,15:15] dc_power_flow[ccgt,hub,2030,3,15:15] 100
+    electricity_angle[hub,2030,3,15:15] dc_power_flow[hub,demand,2030,3,15:15] -100
+    electricity_angle[hub,2030,3,16:16] dc_power_flow[ccgt,hub,2030,3,16:16] 100
+    electricity_angle[hub,2030,3,16:16] dc_power_flow[hub,demand,2030,3,16:16] -100
+    electricity_angle[hub,2030,3,17:17] dc_power_flow[ccgt,hub,2030,3,17:17] 100
+    electricity_angle[hub,2030,3,17:17] dc_power_flow[hub,demand,2030,3,17:17] -100
+    electricity_angle[hub,2030,3,18:18] dc_power_flow[ccgt,hub,2030,3,18:18] 100
+    electricity_angle[hub,2030,3,18:18] dc_power_flow[hub,demand,2030,3,18:18] -100
+    electricity_angle[hub,2030,3,19:19] dc_power_flow[ccgt,hub,2030,3,19:19] 100
+    electricity_angle[hub,2030,3,19:19] dc_power_flow[hub,demand,2030,3,19:19] -100
+    electricity_angle[hub,2030,3,20:20] dc_power_flow[ccgt,hub,2030,3,20:20] 100
+    electricity_angle[hub,2030,3,20:20] dc_power_flow[hub,demand,2030,3,20:20] -100
+    electricity_angle[hub,2030,3,21:21] dc_power_flow[ccgt,hub,2030,3,21:21] 100
+    electricity_angle[hub,2030,3,21:21] dc_power_flow[hub,demand,2030,3,21:21] -100
+    electricity_angle[hub,2030,3,22:22] dc_power_flow[ccgt,hub,2030,3,22:22] 100
+    electricity_angle[hub,2030,3,22:22] dc_power_flow[hub,demand,2030,3,22:22] -100
+    electricity_angle[hub,2030,3,23:23] dc_power_flow[ccgt,hub,2030,3,23:23] 100
+    electricity_angle[hub,2030,3,23:23] dc_power_flow[hub,demand,2030,3,23:23] -100
+    electricity_angle[hub,2030,3,24:24] dc_power_flow[ccgt,hub,2030,3,24:24] 100
+    electricity_angle[hub,2030,3,24:24] dc_power_flow[hub,demand,2030,3,24:24] -100
 RHS
     rhs       max_output_flows_limit_simple_method[ccgt,2030,1,1:2] 2000
     rhs       max_output_flows_limit_simple_method[ccgt,2030,1,3:3] 2000
