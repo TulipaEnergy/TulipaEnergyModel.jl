@@ -283,10 +283,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         ",
     )
 
-    units_on_cost = @expression(
-        model,
-        sum(row.cost * variables[:units_on].container[row.id] for row in indices)
-    )
+    var_units_on = variables[:units_on].container
+    units_on_cost = @expression(model, sum(row.cost * var_units_on[row.id] for row in indices))
 
     ## Objective function
     @objective(
