@@ -35,8 +35,8 @@ function compare_mps(existing_mps_folder)
         create_mps(folder, new_mps_folder)
         @assert isfile(new_mps_file)
 
-        existing_lines = readlines(existing_mps_file)
-        new_lines = readlines(new_mps_file)
+        existing_lines = sort(readlines(existing_mps_file))
+        new_lines = sort(readlines(new_mps_file))
 
         if length(existing_lines) != length(new_lines)
             no_issues = false
