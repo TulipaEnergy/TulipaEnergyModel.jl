@@ -1,7 +1,7 @@
-asset,commission_year,fixed_cost,investment_cost,investment_limit,fixed_cost_storage_energy,investment_cost_storage_energy,investment_limit_storage_energy,storage_loss_from_stored_energy
-ccgt,2030,0.0,0.0,,0.0,0.0,,0
-wind,2030,0.0,0.0,,0.0,0.0,,0
-demand,2030,0.0,0.0,,0.0,0.0,,0
-phs,2030,0.0,0.0,,0.0,0.0,,0
-balance,2030,0.0,0.0,,0.0,0.0,,0
-H2,2030,0.0,0.0,,0.0,0.0,,0
+asset,commission_year,fixed_cost,investment_cost,investment_limit,fixed_cost_storage_energy,investment_cost_storage_energy,investment_limit_storage_energy,storage_loss_from_stored_energy,conversion_efficiency,storage_charging_efficiency,storage_discharging_efficiency
+ccgt,2030,0.0,0.0,,0.0,0.0,,0,0.5,1.0,1.0
+wind,2030,0.0,0.0,,0.0,0.0,,0,1.0,1.0,1.0
+demand,2030,0.0,0.0,,0.0,0.0,,0,1.0,1.0,1.0
+phs,2030,0.0,0.0,,0.0,0.0,,0,1.0,0.9,0.9
+balance,2030,0.0,0.0,,0.0,0.0,,0,1.0,1.0,1.0
+H2,2030,0.0,0.0,,0.0,0.0,,0,1.0,1.0,1.0
