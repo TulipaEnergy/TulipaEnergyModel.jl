@@ -198,8 +198,8 @@ function _append_given_durations(appender, row, durations)
         if haskey(row, :efficiency)
             DuckDB.append(appender, row.efficiency)
         end
-        if haskey(row, :flow_coefficient_in_capacity_constraint)
-            DuckDB.append(appender, row.flow_coefficient_in_capacity_constraint)
+        if haskey(row, :capacity_coefficient)
+            DuckDB.append(appender, row.capacity_coefficient)
         end
         DuckDB.append(appender, s)
         DuckDB.append(appender, e)
@@ -277,7 +277,7 @@ function create_unrolled_partition_tables!(connection)
             COALESCE(frpp.specification, 'uniform') AS specification,
             COALESCE(frpp.partition::string, '1') AS partition,
             flow_commission.efficiency,
-            flow_commission.flow_coefficient_in_capacity_constraint,
+            flow_commission.capacity_coefficient,
             rep_periods_data.num_timesteps,
         FROM flow
         CROSS JOIN rep_periods_data
@@ -348,7 +348,7 @@ function create_unrolled_partition_tables!(connection)
             year INT,
             rep_period INT,
             efficiency DOUBLE,
-            flow_coefficient_in_capacity_constraint DOUBLE,
+            capacity_coefficient DOUBLE,
             time_block_start INT,
             time_block_end INT
         )",
