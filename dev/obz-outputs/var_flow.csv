@@ -1,4 +1,4 @@
-id,from_asset,to_asset,year,rep_period,efficiency,flow_coefficient_in_capacity_constraint,time_block_start,time_block_end,solution
+id,from_asset,to_asset,year,rep_period,efficiency,capacity_coefficient,time_block_start,time_block_end,solution
 1,AT_Battery,AT_E_Balance,2050,1,0.955,1.0,1,4,0.21774000000000002
 2,AT_Battery,AT_E_Balance,2050,1,0.955,1.0,5,8,-0.0
 3,AT_Battery,AT_E_Balance,2050,1,0.955,1.0,9,12,-0.0
