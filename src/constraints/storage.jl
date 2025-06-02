@@ -36,7 +36,8 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                             var_storage_level[row.id] ==
                             initial_storage_level +
                             profile_agg * row.storage_inflows +
-                            incoming_flow - outgoing_flow,
+                            row.storage_charging_efficiency * incoming_flow -
+                            outgoing_flow / row.storage_discharging_efficiency,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                         )
                     else
@@ -68,7 +69,8 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                             var_storage_level[row.id] ==
                             computed_storage_loss_coef * previous_level +
                             profile_agg * row.storage_inflows +
-                            incoming_flow - outgoing_flow,
+                            row.storage_charging_efficiency * incoming_flow -
+                            outgoing_flow / row.storage_discharging_efficiency,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                         )
                     end
@@ -155,7 +157,10 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         @constraint(
                             model,
                             var_storage_level_over_clustered_year.container[row.id] ==
-                            initial_storage_level + inflows_agg + incoming_flow - outgoing_flow,
+                            initial_storage_level +
+                            inflows_agg +
+                            row.storage_charging_efficiency * incoming_flow -
+                            outgoing_flow / row.storage_discharging_efficiency,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     else
@@ -185,7 +190,8 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                             var_storage_level_over_clustered_year.container[row.id] ==
                             computed_storage_loss_coef * previous_level +
                             inflows_agg +
-                            incoming_flow - outgoing_flow,
+                            row.storage_charging_efficiency * incoming_flow -
+                            outgoing_flow / row.storage_discharging_efficiency,
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     end
@@ -294,6 +300,8 @@ function _append_storage_data_to_indices(connection, table_name)
             asset.capacity,
             asset_commission.investment_limit,
             asset_commission.storage_loss_from_stored_energy,
+            asset_commission.storage_charging_efficiency,
+            asset_commission.storage_discharging_efficiency,
             asset_milestone.initial_storage_level,
             asset_milestone.storage_inflows,
             inflows_profile.profile_name AS inflows_profile_name,
