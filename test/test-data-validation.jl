@@ -40,7 +40,7 @@ end
         connection = DBInterface.connect(DuckDB.DB)
         DuckDB.register_data_frame(connection, bad_data, "bad_data")
         @test TEM._validate_no_duplicate_rows!(connection, "bad_data", [:asset, :year]) == []
-        @test TEM._validate_no_duplicate_rows!(connection, "bad_data", [:asset]) == [
+        @test TEM._validate_no_duplicate_rows!(connection, "bad_data", [:asset]) |> sort == [
             "Table bad_data has duplicate entries for (asset=ccgt)",
             "Table bad_data has duplicate entries for (asset=demand)",
         ]
