@@ -356,6 +356,28 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
     ## Create lower bound for available capacity compact method
     # - Only apply to decommissionable assets using the compact investment method
     # - The simple method has the capacity constraint to guarantee the lower bound
+    add_limit_decommission_compact_method_constraints!(
+        connection,
+        model,
+        expr_avail_compact_method,
+        constraints,
+    )
+
+    return
+end
+
+"""
+    add_limit_decommission_compact_method_constraints!(connection, model, expressions, constraints)
+
+Adds the lower bound for the available capacity of decommissionable assets for the compact investment method.
+This is used to give a upper bound for the decommission variable.
+"""
+function add_limit_decommission_compact_method_constraints!(
+    connection,
+    model,
+    expressions,
+    constraints,
+)
     let table_name = :limit_decommission_compact_method, cons = constraints[table_name]
         indices = _append_expression_available_capacity_id_to_indices_compact_method(
             connection,
@@ -369,7 +391,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
             [
                 @constraint(
                     model,
-                    expr_avail_compact_method[row.id] ≥ 0,
+                    expressions[row.id] ≥ 0,
                     base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.commission_year)]"
                 ) for row in indices
             ],
