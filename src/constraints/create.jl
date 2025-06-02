@@ -33,6 +33,7 @@ function compute_constraints_indices(connection)
             :group_min_investment_limit,
             :flows_relationships,
             :dc_power_flow,
+            :limit_decommission_compact_method,
         )
     )
 
