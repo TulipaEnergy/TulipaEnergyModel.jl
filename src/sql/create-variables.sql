@@ -16,6 +16,7 @@ select
     rep_period,
     efficiency,
     capacity_coefficient,
+    conversion_coefficient,
     time_block_start,
     time_block_end,
 from
