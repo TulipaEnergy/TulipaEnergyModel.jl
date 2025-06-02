@@ -9,11 +9,7 @@ body:
         Please, before submitting, make sure that:
 
         - There is not an [existing issue](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues) with the same question
-
         - You have read the [contributing guide](https://TulipaEnergy.github.io/TulipaEnergyModel.jl/dev/90-contributing/)
-
-
-
         The form below should help you in filling out this issue.
   - type: textarea
     id: description

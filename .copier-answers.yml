@@ -1,12 +1,45 @@
 # Changes here will be overwritten by Copier
-AnswerStrategy: recommended
-Authors: Abel Soares Siqueira <abel.s.siqueira@gmail.com>,Diego A. Tejada-Arango <diego.tejadaarango@tno.nl>,Germán Morales-España <german.morales@tno.nl>,Grigory Neustroev <G.Neustroev@tudelft.nl>,Juha Kiviluoma <Juha.Kiviluoma@vtt.fi>,Lauren Clisby <lauren.clisby@tno.nl>,Maaike Elgersma <m.b.elgersma@tudelft.nl>,Ni Wang <ni.wang@tno.nl>,Suvayu Ali <s.ali@esciencecenter.nl>,Zhi Gao <z.gao1@uu.nl>
+AddAllcontributors: true
+AddCitationCFF: true
+AddCodeOfConduct: false
+AddCompatHelperCI: true
+AddContributionDocs: true
+AddCopierCI: false
+AddDependabot: true
+AddDocs: true
+AddDocsCI: true
+AddFormatterAndLinterConfigFiles: true
+AddGitHubPRTemplate: true
+AddGitHubTemplates: true
+AddLintCI: true
+AddLychee: true
+AddMacToCI: true
+AddPrecommit: true
+AddTagBotCI: true
+AddTestCI: true
+AddWinToCI: true
+Authors: Abel Soares Siqueira <abel.s.siqueira@gmail.com>,Diego A. Tejada-Arango <diego.tejadaarango@tno.nl>,Germán
+    Morales-España <german.morales@tno.nl>,Grigory Neustroev <G.Neustroev@tudelft.nl>,Juha
+    Kiviluoma <Juha.Kiviluoma@vtt.fi>,Lauren Clisby <lauren.clisby@tno.nl>,Maaike
+    Elgersma <m.b.elgersma@tudelft.nl>,Ni Wang <ni.wang@tno.nl>,Suvayu Ali <s.ali@esciencecenter.nl>,Zhi
+    Gao <z.gao1@uu.nl>
+AutoIncludeTests: true
+CheckExplicitImports: false
+ConfigIndentation: 2
 JuliaIndentation: 4
+JuliaMinCIVersion: lts
 JuliaMinVersion: '1.10'
 License: Apache-2.0
-LicenseCopyrightHolders: Abel Soares Siqueira, Germán Morales-España, Grigory Neustroev, Juha Kiviluoma, Lauren Clisby, Maaike Elgersma, Ni Wang, Suvayu Ali, Zhi Gao
+LicenseCopyrightHolders: Abel Soares Siqueira, Germán Morales-España, Grigory Neustroev,
+    Juha Kiviluoma, Lauren Clisby, Maaike Elgersma, Ni Wang, Suvayu Ali, Zhi Gao
+MarkdownIndentation: 2
 PackageName: TulipaEnergyModel
 PackageOwner: TulipaEnergy
 PackageUUID: 5d7bd171-d18e-45a5-9111-f1f11ac5d04d
-_commit: v0.12.0
+RunJuliaNightlyOnCI: false
+StrategyConfirmIncluded: true
+StrategyLevel: 3
+StrategyReviewExcluded: true
+UseCirrusCI: false
+_commit: v0.16.2
 _src_path: https://github.com/JuliaBesties/BestieTemplate.jl

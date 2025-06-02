@@ -12,6 +12,7 @@ const numbered_pages = [
 makedocs(;
     modules = [TulipaEnergyModel],
     authors = "Abel Soares Siqueira <abel.s.siqueira@gmail.com>,Diego A. Tejada-Arango <diego.tejadaarango@tno.nl>,Germán Morales-España <german.morales@tno.nl>,Grigory Neustroev <G.Neustroev@tudelft.nl>,Juha Kiviluoma <Juha.Kiviluoma@vtt.fi>,Lauren Clisby <lauren.clisby@tno.nl>,Maaike Elgersma <m.b.elgersma@tudelft.nl>,Ni Wang <ni.wang@tno.nl>,Suvayu Ali <s.ali@esciencecenter.nl>,Zhi Gao <z.gao1@uu.nl>",
+    repo = "https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/{commit}{path}#{line}",
     sitename = "TulipaEnergyModel.jl",
     format = Documenter.HTML(; canonical = "https://TulipaEnergy.github.io/TulipaEnergyModel.jl"),
     pages = ["index.md"; numbered_pages],
