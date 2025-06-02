@@ -18,6 +18,12 @@ function _storage_fixture()
     return connection
 end
 
+function _multi_year_fixture()
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Multi-year Investments"))
+    return connection
+end
+
 function _is_constraint_equal(left, right)
     if !_is_constraint_equal_kernel(left, right)
         println("LEFT")

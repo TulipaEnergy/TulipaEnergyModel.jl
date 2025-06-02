@@ -1297,6 +1297,8 @@ ROWS
  L  max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22]
  L  max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23]
  L  max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24]
+ G  limit_decommission_compact_method[wind,2050,2030]
+ G  limit_decommission_compact_method[wind,2030,2020]
  G  min_storage_level_rep_period_limit[battery,2030,1,1:1]
  G  min_storage_level_rep_period_limit[battery,2030,1,2:2]
  G  min_storage_level_rep_period_limit[battery,2030,1,3:3]
@@ -6418,7 +6420,7 @@ COLUMNS
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,3,15:15] -4
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,3,16:16] -2.3000000000000003
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,3,17:17] -0.5
-    assets_investment[2050,solar] OBJ 584.1355990305118
+    assets_investment[2050,solar] OBJ 584.1355990305117
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2030,1,1:1] -5.5
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2030,1,2:2] -5.5
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2030,1,3:3] -5.5
@@ -6563,6 +6565,7 @@ COLUMNS
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2050,3,22:22] -37
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2050,3,23:23] -37
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2050,3,24:24] -37
+    assets_investment[2030,wind] limit_decommission_compact_method[wind,2050,2030] 1
     assets_investment[2030,wind] OBJ 69200
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,1,1:1] -5.5
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,1,2:2] -5.5
@@ -6636,7 +6639,7 @@ COLUMNS
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,3,22:22] -37
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,3,23:23] -37
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,3,24:24] -37
-    assets_investment[2050,wind] OBJ 3661.851415339662
+    assets_investment[2050,wind] OBJ 3661.851415339661
     assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,1:1] 50
     assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,2:2] 50
     assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,3:3] 50
@@ -6854,6 +6857,7 @@ COLUMNS
     assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,22:22] 37
     assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,23:23] 37
     assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,24:24] 37
+    assets_decommission[wind,2050,2030] limit_decommission_compact_method[wind,2050,2030] -1
     assets_decommission[wind,2050,2030] OBJ -3100
     assets_decommission[battery,2030,2030] max_output_flows_limit_simple_method[battery,2030,1,1:1] 50
     assets_decommission[battery,2030,2030] max_output_flows_limit_simple_method[battery,2030,1,2:2] 50
@@ -7216,6 +7220,7 @@ COLUMNS
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,3,22:22] 37
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,3,23:23] 37
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,3,24:24] 37
+    assets_decommission[wind,2030,2020] limit_decommission_compact_method[wind,2030,2020] -1
     assets_decommission[wind,2030,2020] OBJ -61000
     MARKER    'MARKER'                 'INTEND'
     flows_decommission[("ccgt",_"demand"),2030,2030] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,1:1] 100
@@ -9955,6 +9960,8 @@ RHS
     rhs       max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22] 0
     rhs       max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23] 0
     rhs       max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24] 0
+    rhs       limit_decommission_compact_method[wind,2050,2030] -0.02
+    rhs       limit_decommission_compact_method[wind,2030,2020] -0.07
     rhs       min_storage_level_rep_period_limit[battery,2030,1,1:1] 0
     rhs       min_storage_level_rep_period_limit[battery,2030,1,2:2] 0
     rhs       min_storage_level_rep_period_limit[battery,2030,1,3:3] 0

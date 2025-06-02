@@ -352,6 +352,50 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
             ],
         )
     end
+
+    ## Create lower bound for available capacity compact method
+    # - Only apply to decommissionable assets using the compact investment method
+    # - The simple method has the capacity constraint to guarantee the lower bound
+    add_limit_decommission_compact_method_constraints!(
+        connection,
+        model,
+        expr_avail_compact_method,
+        constraints,
+    )
+
+    return
+end
+
+"""
+    add_limit_decommission_compact_method_constraints!(connection, model, expressions, constraints)
+
+Adds the lower bound for the available capacity of decommissionable assets for the compact investment method.
+This is used to give a upper bound for the decommission variable.
+"""
+function add_limit_decommission_compact_method_constraints!(
+    connection,
+    model,
+    expressions,
+    constraints,
+)
+    let table_name = :limit_decommission_compact_method, cons = constraints[table_name]
+        indices = _append_expression_available_capacity_id_to_indices_compact_method(
+            connection,
+            table_name,
+        )
+        attach_constraint!(
+            model,
+            cons,
+            table_name,
+            [
+                @constraint(
+                    model,
+                    expressions[row.avail_id] ≥ 0,
+                    base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.commission_year)]"
+                ) for row in indices
+            ],
+        )
+    end
 end
 
 # The below two functions are very similar
@@ -437,6 +481,26 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
             AND expr_avail.commission_year = avail_profile.commission_year
             AND avail_profile.profile_type = 'availability'
         WHERE asset.investment_method in ('simple', 'none')
+        ORDER BY cons.id
+        ",
+    )
+end
+
+# - Append the expression available capacity id to the indices of the con
+function _append_expression_available_capacity_id_to_indices_compact_method(connection, table_name)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            cons.id AS id,
+            expr_avail_compact_method.id AS avail_id,
+            cons.asset AS asset,
+            cons.milestone_year AS milestone_year,
+            cons.commission_year AS commission_year,
+        FROM cons_$table_name AS cons
+        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail_compact_method
+            ON cons.asset = expr_avail_compact_method.asset
+            AND cons.milestone_year = expr_avail_compact_method.milestone_year
+            AND cons.commission_year = expr_avail_compact_method.commission_year
         ORDER BY cons.id
         ",
     )

@@ -636,3 +636,25 @@ where
 
 drop sequence id
 ;
+
+create sequence id start 1
+;
+
+drop table if exists cons_limit_decommission_compact_method
+;
+
+create table cons_limit_decommission_compact_method as
+select
+    nextval('id') as id,
+    var_assets_decommission.asset,
+    var_assets_decommission.milestone_year,
+    var_assets_decommission.commission_year,
+from
+    var_assets_decommission
+left join asset on asset.asset = var_assets_decommission.asset
+where
+    asset.investment_method = 'compact'
+;
+
+drop sequence id
+;
