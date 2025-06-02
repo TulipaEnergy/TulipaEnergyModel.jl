@@ -561,6 +561,15 @@
       "description": "Year of commissioning",
       "type": "INTEGER"
     },
+    "conversion_coefficient": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 1,
+      "description": "Multiplier between the flow and the conversion equation of the unit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u."
+    },
     "efficiency": {
       "constraints": {
         "minimum": 0
