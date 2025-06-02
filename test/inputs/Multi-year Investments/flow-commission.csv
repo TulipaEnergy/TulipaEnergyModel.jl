@@ -1,4 +1,4 @@
-from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,flow_coefficient_in_capacity_constraint
+from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,capacity_coefficient
 battery,demand,2030,0.0,350.0,0.95,,1
 wind,demand,2030,0.0,350.0,0.0,,1
 ens,demand,2050,0.0,350.0,0.0,,1

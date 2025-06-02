@@ -98,13 +98,7 @@ function add_expression_terms_rep_period_constraints!(
             flow.table_name,
             grouped_var_table_name,
             [case.asset_match, :year, :rep_period],
-            [
-                :id,
-                :time_block_start,
-                :time_block_end,
-                :efficiency,
-                :flow_coefficient_in_capacity_constraint,
-            ];
+            [:id, :time_block_start, :time_block_end, :efficiency, :capacity_coefficient];
             rename_columns = Dict(case.asset_match => :asset),
         )
 
@@ -125,7 +119,7 @@ function add_expression_terms_rep_period_constraints!(
                 var.time_block_start AS var_time_block_start_vec,
                 var.time_block_end AS var_time_block_end_vec,
                 var.efficiency,
-                var.flow_coefficient_in_capacity_constraint,
+                var.capacity_coefficient,
                 asset.type AS type,
                 $resolution_query AS resolution,
             FROM $grouped_cons_table_name AS cons
@@ -152,13 +146,13 @@ function add_expression_terms_rep_period_constraints!(
                 time_block_start::Int32,
                 time_block_end::Int32,
                 efficiency::Float64,
-                flow_coefficient_in_capacity_constraint::Float64,
+                capacity_coefficient::Float64,
             ) in zip(
                 group_row.var_id_vec::Vector{Union{Missing,Int64}},
                 group_row.var_time_block_start_vec::Vector{Union{Missing,Int32}},
                 group_row.var_time_block_end_vec::Vector{Union{Missing,Int32}},
                 group_row.efficiency::Vector{Union{Missing,Float64}},
-                group_row.flow_coefficient_in_capacity_constraint::Vector{Union{Missing,Float64}},
+                group_row.capacity_coefficient::Vector{Union{Missing,Float64}},
             )
                 time_block = time_block_start:time_block_end
                 # Step 1.1.1.
@@ -171,7 +165,7 @@ function add_expression_terms_rep_period_constraints!(
                     flow_coefficient =
                         if group_row.type::String in case.selected_assets || use_highest_resolution
                             if multiply_by_capacity_coefficient
-                                flow_coefficient_in_capacity_constraint
+                                capacity_coefficient
                             else
                                 1.0
                             end

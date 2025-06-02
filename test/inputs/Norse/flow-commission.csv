@@ -1,4 +1,4 @@
-from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,flow_coefficient_in_capacity_constraint
+from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,capacity_coefficient
 G_imports,Midgard_CCGT,2030,0.0,0.0,1.0,0.0,1
 Midgard_E_demand,Midgard_Hydro,2030,0.0,0.0,0.7,0.0,1
 Midgard_PHS,Midgard_E_demand,2030,0.0,0.0,0.85,0.0,1

@@ -403,4 +403,4 @@ $\text{flow process A} + 0.8 \cdot \text{flow process B} \leq \text{C}$
 
 In that case the sum must be always below the total capacity $\text{C}$, but if you only produce flow through B then you can produce $1.25 \cdot \text{C}$ and still satisfy this constraint.
 
-To set up this parameter you need to fill in the information for the `flow_coefficient_in_capacity_constraint` in the `flow_commission` table, see more in the [model parameters](@ref table_schemas) section.
+To set up this parameter you need to fill in the information for the `capacity_coefficient` in the `flow_commission` table, see more in the [model parameters](@ref table_schemas) section.
