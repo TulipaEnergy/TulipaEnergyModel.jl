@@ -383,7 +383,6 @@ function add_limit_decommission_compact_method_constraints!(
             connection,
             table_name,
         )
-
         attach_constraint!(
             model,
             cons,
@@ -391,7 +390,7 @@ function add_limit_decommission_compact_method_constraints!(
             [
                 @constraint(
                     model,
-                    expressions[row.id] ≥ 0,
+                    expressions[row.avail_id] ≥ 0,
                     base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.commission_year)]"
                 ) for row in indices
             ],
@@ -492,7 +491,8 @@ function _append_expression_available_capacity_id_to_indices_compact_method(conn
     return DuckDB.query(
         connection,
         "SELECT
-            expr_avail_compact_method.id AS id,
+            cons.id AS id,
+            expr_avail_compact_method.id AS avail_id,
             cons.asset AS asset,
             cons.milestone_year AS milestone_year,
             cons.commission_year AS commission_year,
@@ -501,6 +501,7 @@ function _append_expression_available_capacity_id_to_indices_compact_method(conn
             ON cons.asset = expr_avail_compact_method.asset
             AND cons.milestone_year = expr_avail_compact_method.milestone_year
             AND cons.commission_year = expr_avail_compact_method.commission_year
+        ORDER BY cons.id
         ",
     )
 end

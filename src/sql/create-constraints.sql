@@ -637,8 +637,6 @@ where
 drop sequence id
 ;
 
-
-
 create sequence id start 1
 ;
 
