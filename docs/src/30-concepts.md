@@ -129,7 +129,7 @@ So, let's recap:
 !!! tip "Fully flexible temporal resolution"
     This example demonstrates that different time resolutions can be assigned to each asset and flow in the model. Furthermore, the resolutions do not need to be multiples of one another or evenly distributed and they can vary throughout the time horizon.
 
-The complete input data for this example can be found [here](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Variable%20Resolution).
+The complete input data for this example can be found in the [Variable Resolution test folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Variable%20Resolution).
 
 Due to the flexible resolution, we must explicitly state how the constraints are constructed. For each constraint, three things need to be considered:
 
