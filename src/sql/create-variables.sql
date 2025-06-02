@@ -14,7 +14,6 @@ select
     to_asset,
     year,
     rep_period,
-    efficiency,
     capacity_coefficient,
     conversion_coefficient,
     time_block_start,

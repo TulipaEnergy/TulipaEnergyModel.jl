@@ -195,9 +195,6 @@ function _append_given_durations(appender, row, durations)
         if haskey(row, :rep_period)
             DuckDB.append(appender, row.rep_period)
         end
-        if haskey(row, :efficiency)
-            DuckDB.append(appender, row.efficiency)
-        end
         if haskey(row, :capacity_coefficient)
             DuckDB.append(appender, row.capacity_coefficient)
         end
@@ -279,7 +276,6 @@ function create_unrolled_partition_tables!(connection)
             rep_periods_data.rep_period,
             COALESCE(frpp.specification, 'uniform') AS specification,
             COALESCE(frpp.partition::string, '1') AS partition,
-            flow_commission.efficiency,
             flow_commission.capacity_coefficient,
             flow_commission.conversion_coefficient,
             rep_periods_data.num_timesteps,
@@ -351,7 +347,6 @@ function create_unrolled_partition_tables!(connection)
             to_asset STRING,
             year INT,
             rep_period INT,
-            efficiency DOUBLE,
             capacity_coefficient DOUBLE,
             conversion_coefficient DOUBLE,
             time_block_start INT,

@@ -102,7 +102,6 @@ function add_expression_terms_rep_period_constraints!(
                 :id,
                 :time_block_start,
                 :time_block_end,
-                :efficiency,
                 :capacity_coefficient,
                 :conversion_coefficient,
             ];
@@ -125,7 +124,6 @@ function add_expression_terms_rep_period_constraints!(
                 var.id AS var_id_vec,
                 var.time_block_start AS var_time_block_start_vec,
                 var.time_block_end AS var_time_block_end_vec,
-                var.efficiency,
                 var.capacity_coefficient,
                 var.conversion_coefficient,
                 asset.type AS type,
@@ -153,14 +151,12 @@ function add_expression_terms_rep_period_constraints!(
                 var_id::Int64,
                 time_block_start::Int32,
                 time_block_end::Int32,
-                efficiency::Float64,
                 capacity_coefficient::Float64,
                 conversion_coefficient::Float64,
             ) in zip(
                 group_row.var_id_vec::Vector{Union{Missing,Int64}},
                 group_row.var_time_block_start_vec::Vector{Union{Missing,Int32}},
                 group_row.var_time_block_end_vec::Vector{Union{Missing,Int32}},
-                group_row.efficiency::Vector{Union{Missing,Float64}},
                 group_row.capacity_coefficient::Vector{Union{Missing,Float64}},
                 group_row.conversion_coefficient::Vector{Union{Missing,Float64}},
             )
@@ -180,12 +176,7 @@ function add_expression_terms_rep_period_constraints!(
                                 1.0
                             end
                         else
-                            if case.expr_key == :incoming
-                                conversion_coefficient * efficiency
-                            else
-                                # Divide by efficiency for outgoing flows
-                                conversion_coefficient / efficiency
-                            end
+                            conversion_coefficient
                         end
                     # Step 1.1.1.2.
                     workspace[timestep][var_id] = resolution * flow_coefficient
@@ -315,7 +306,6 @@ function add_expression_terms_over_clustered_year_constraints!(
                 ARRAY_AGG(COALESCE(var.id, []) ORDER BY var.rep_period) AS var_id_vec,
                 ARRAY_AGG(COALESCE(var.time_block_start, []) ORDER BY var.rep_period) AS var_time_block_start_vec,
                 ARRAY_AGG(COALESCE(var.time_block_end, []) ORDER BY var.rep_period) AS var_time_block_end_vec,
-                ARRAY_AGG(COALESCE(var.efficiency, []) ORDER BY var.rep_period) AS var_efficiencies,
                 ARRAY_AGG(var.rep_period ORDER BY var.rep_period) AS var_rep_periods,
                 ARRAY_AGG(rpdata.num_timesteps ORDER BY var.rep_period) AS num_timesteps,
                 ARRAY_AGG(asset_milestone.storage_inflows ORDER BY var.rep_period) AS storage_inflows,
@@ -344,7 +334,6 @@ function add_expression_terms_over_clustered_year_constraints!(
                 var_id_vec::Vector{Union{Missing,Int64}},
                 var_time_block_start_vec::Vector{Union{Missing,Int32}},
                 var_time_block_end_vec::Vector{Union{Missing,Int32}},
-                var_efficiencies::Vector{Union{Missing,Float64}},
                 var_periods::Vector{Union{Missing,Int32}},
                 var_weights::Vector{Union{Missing,Float64}},
             ) in zip(
@@ -355,7 +344,6 @@ function add_expression_terms_over_clustered_year_constraints!(
                 group_row.var_time_block_end_vec::Vector{
                     Union{Missing,Vector{Union{Missing,Int32}}},
                 },
-                group_row.var_efficiencies::Vector{Union{Missing,Vector{Union{Missing,Float64}}}},
                 group_row.var_periods::Vector{Union{Missing,Vector{Union{Missing,Int32}}}},
                 group_row.var_weights::Vector{Union{Missing,Vector{Union{Missing,Float64}}}},
             )
@@ -363,25 +351,12 @@ function add_expression_terms_over_clustered_year_constraints!(
                 # Loop over each variable in the (group,rp) and accumulate them
                 group_flows_accumulation = Dict{Int,Float64}()
 
-                for (
-                    var_id::Int64,
-                    time_block_start::Int32,
-                    time_block_end::Int32,
-                    var_efficiency::Float64,
-                ) in zip(
+                for (var_id::Int64, time_block_start::Int32, time_block_end::Int32) in zip(
                     var_id_vec::Vector{Union{Missing,Int64}},
                     var_time_block_start_vec::Vector{Union{Missing,Int32}},
                     var_time_block_end_vec::Vector{Union{Missing,Int32}},
-                    var_efficiencies::Vector{Union{Missing,Float64}},
                 )
                     coefficient = (time_block_end - time_block_start + 1.0)::Float64
-                    if is_storage_level
-                        if case.expr_key == :outgoing
-                            coefficient /= var_efficiency
-                        else
-                            coefficient *= var_efficiency
-                        end
-                    end
                     group_flows_accumulation[var_id] = coefficient
                 end
 
