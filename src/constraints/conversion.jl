@@ -31,7 +31,7 @@ function _append_conversion_data_to_indices(connection, table_name)
     return DuckDB.query(
         connection,
         "SELECT
-            cons.*,
+            cons.id,
             asset_commission.conversion_efficiency,
         FROM cons_$table_name AS cons
         LEFT JOIN asset_commission
