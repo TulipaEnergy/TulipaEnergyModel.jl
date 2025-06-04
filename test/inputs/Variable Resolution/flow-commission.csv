@@ -1,7 +1,7 @@
-from_asset,to_asset,commission_year,fixed_cost,investment_cost,efficiency,investment_limit,capacity_coefficient,conversion_coefficient
-H2,ccgt,2030,0.0,0.0,1.0,,1,1.0
-wind,phs,2030,0.0,0.0,0.9,,1,1.0
-ccgt,balance,2030,0.0,0.0,0.5,,1,1.0
-balance,demand,2030,0.0,0.0,0.0,,1,1.0
-wind,balance,2030,0.0,0.0,0.0,,1,1.0
-phs,balance,2030,0.0,0.0,0.9,,1,1.0
+from_asset,to_asset,commission_year,fixed_cost,investment_cost,investment_limit,capacity_coefficient,conversion_coefficient
+H2,ccgt,2030,0.0,0.0,,1,1.0
+wind,phs,2030,0.0,0.0,,1,1.0
+ccgt,balance,2030,0.0,0.0,,1,1.0
+balance,demand,2030,0.0,0.0,,1,1.0
+wind,balance,2030,0.0,0.0,,1,1.0
+phs,balance,2030,0.0,0.0,,1,1.0

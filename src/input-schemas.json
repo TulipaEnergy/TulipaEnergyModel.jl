@@ -227,6 +227,15 @@
       "description": "Year of commissioning.",
       "type": "INTEGER"
     },
+    "conversion_efficiency": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 1.0,
+      "description": "Conversion asset efficiency as a multiplier for turning inputs to outputs.",
+      "type": "DOUBLE",
+      "unit_of_measure": "ratio"
+    },
     "fixed_cost": {
       "default": 0.0,
       "description": "Fixed annual cost for the asset capacity.",
@@ -262,6 +271,24 @@
       "description": "Maximum capacity for the asset storage investment. If the initial value is null, empty, or missing, it will be no limit.",
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
+    },
+    "storage_charging_efficiency": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 1.0,
+      "description": "Storage asset charging efficiency as a multiplier for the sum of all inputs of the asset.",
+      "type": "DOUBLE",
+      "unit_of_measure": "ratio"
+    },
+    "storage_discharging_efficiency": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 1.0,
+      "description": "Storage asset discharging efficiency as a multiplier for the sum of all outputs of the asset.",
+      "type": "DOUBLE",
+      "unit_of_measure": "ratio"
     },
     "storage_loss_from_stored_energy": {
       "default": 0,
@@ -566,18 +593,9 @@
         "minimum": 0
       },
       "default": 1,
-      "description": "Multiplier between the flow and the conversion equation of the unit.",
+      "description": "Multiplier between the flow and the conversion balance constraint of the asset.",
       "type": "DOUBLE",
       "unit_of_measure": "p.u."
-    },
-    "efficiency": {
-      "constraints": {
-        "minimum": 0
-      },
-      "default": 1.0,
-      "description": "Efficiency of transfer in `from_asset` -> `to_asset` direction",
-      "type": "DOUBLE",
-      "unit_of_measure": "ratio"
     },
     "fixed_cost": {
       "default": 0.0,

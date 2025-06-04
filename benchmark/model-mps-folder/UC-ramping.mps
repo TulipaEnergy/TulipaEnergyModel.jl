@@ -469,7 +469,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,1:2] max_ramp_down_with_unit_commitment[ccgt,2030,1,3:3] -1
     flow[(ccgt,demand),2030,1,1:2] consumer_balance[demand,2030,1,1:1] 1
     flow[(ccgt,demand),2030,1,1:2] consumer_balance[demand,2030,1,2:2] 1
-    flow[(ccgt,demand),2030,1,1:2] conversion_balance[ccgt,2030,1,1:2] -4
+    flow[(ccgt,demand),2030,1,1:2] conversion_balance[ccgt,2030,1,1:2] -2
     flow[(ccgt,demand),2030,1,1:2] OBJ 36.5
     flow[(ccgt,demand),2030,1,3:4] max_output_flows_limit_simple_method[ccgt,2030,1,3:4] 1
     flow[(ccgt,demand),2030,1,3:4] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,3:3] 1
@@ -482,7 +482,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,3:4] max_ramp_down_with_unit_commitment[ccgt,2030,1,5:6] -1
     flow[(ccgt,demand),2030,1,3:4] consumer_balance[demand,2030,1,3:3] 1
     flow[(ccgt,demand),2030,1,3:4] consumer_balance[demand,2030,1,4:4] 1
-    flow[(ccgt,demand),2030,1,3:4] conversion_balance[ccgt,2030,1,3:4] -4
+    flow[(ccgt,demand),2030,1,3:4] conversion_balance[ccgt,2030,1,3:4] -2
     flow[(ccgt,demand),2030,1,3:4] OBJ 36.5
     flow[(ccgt,demand),2030,1,5:6] max_output_flows_limit_simple_method[ccgt,2030,1,5:6] 1
     flow[(ccgt,demand),2030,1,5:6] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,5:6] 1
@@ -493,7 +493,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,5:6] max_ramp_down_with_unit_commitment[ccgt,2030,1,7:8] -1
     flow[(ccgt,demand),2030,1,5:6] consumer_balance[demand,2030,1,5:5] 1
     flow[(ccgt,demand),2030,1,5:6] consumer_balance[demand,2030,1,6:6] 1
-    flow[(ccgt,demand),2030,1,5:6] conversion_balance[ccgt,2030,1,5:6] -4
+    flow[(ccgt,demand),2030,1,5:6] conversion_balance[ccgt,2030,1,5:6] -2
     flow[(ccgt,demand),2030,1,5:6] OBJ 36.5
     flow[(ccgt,demand),2030,1,7:8] max_output_flows_limit_simple_method[ccgt,2030,1,7:8] 1
     flow[(ccgt,demand),2030,1,7:8] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,7:8] 1
@@ -504,7 +504,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,7:8] max_ramp_down_with_unit_commitment[ccgt,2030,1,9:9] -1
     flow[(ccgt,demand),2030,1,7:8] consumer_balance[demand,2030,1,7:7] 1
     flow[(ccgt,demand),2030,1,7:8] consumer_balance[demand,2030,1,8:8] 1
-    flow[(ccgt,demand),2030,1,7:8] conversion_balance[ccgt,2030,1,7:8] -4
+    flow[(ccgt,demand),2030,1,7:8] conversion_balance[ccgt,2030,1,7:8] -2
     flow[(ccgt,demand),2030,1,7:8] OBJ 36.5
     flow[(ccgt,demand),2030,1,9:10] max_output_flows_limit_simple_method[ccgt,2030,1,9:10] 1
     flow[(ccgt,demand),2030,1,9:10] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,9:9] 1
@@ -517,7 +517,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,9:10] max_ramp_down_with_unit_commitment[ccgt,2030,1,11:12] -1
     flow[(ccgt,demand),2030,1,9:10] consumer_balance[demand,2030,1,9:9] 1
     flow[(ccgt,demand),2030,1,9:10] consumer_balance[demand,2030,1,10:10] 1
-    flow[(ccgt,demand),2030,1,9:10] conversion_balance[ccgt,2030,1,9:10] -4
+    flow[(ccgt,demand),2030,1,9:10] conversion_balance[ccgt,2030,1,9:10] -2
     flow[(ccgt,demand),2030,1,9:10] OBJ 36.5
     flow[(ccgt,demand),2030,1,11:12] max_output_flows_limit_simple_method[ccgt,2030,1,11:12] 1
     flow[(ccgt,demand),2030,1,11:12] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,11:12] 1
@@ -528,7 +528,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,11:12] max_ramp_down_with_unit_commitment[ccgt,2030,1,13:14] -1
     flow[(ccgt,demand),2030,1,11:12] consumer_balance[demand,2030,1,11:11] 1
     flow[(ccgt,demand),2030,1,11:12] consumer_balance[demand,2030,1,12:12] 1
-    flow[(ccgt,demand),2030,1,11:12] conversion_balance[ccgt,2030,1,11:12] -4
+    flow[(ccgt,demand),2030,1,11:12] conversion_balance[ccgt,2030,1,11:12] -2
     flow[(ccgt,demand),2030,1,11:12] OBJ 36.5
     flow[(ccgt,demand),2030,1,13:14] max_output_flows_limit_simple_method[ccgt,2030,1,13:14] 1
     flow[(ccgt,demand),2030,1,13:14] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,13:14] 1
@@ -539,7 +539,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,13:14] max_ramp_down_with_unit_commitment[ccgt,2030,1,15:15] -1
     flow[(ccgt,demand),2030,1,13:14] consumer_balance[demand,2030,1,13:13] 1
     flow[(ccgt,demand),2030,1,13:14] consumer_balance[demand,2030,1,14:14] 1
-    flow[(ccgt,demand),2030,1,13:14] conversion_balance[ccgt,2030,1,13:14] -4
+    flow[(ccgt,demand),2030,1,13:14] conversion_balance[ccgt,2030,1,13:14] -2
     flow[(ccgt,demand),2030,1,13:14] OBJ 36.5
     flow[(ccgt,demand),2030,1,15:16] max_output_flows_limit_simple_method[ccgt,2030,1,15:16] 1
     flow[(ccgt,demand),2030,1,15:16] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,15:15] 1
@@ -552,7 +552,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,15:16] max_ramp_down_with_unit_commitment[ccgt,2030,1,17:18] -1
     flow[(ccgt,demand),2030,1,15:16] consumer_balance[demand,2030,1,15:15] 1
     flow[(ccgt,demand),2030,1,15:16] consumer_balance[demand,2030,1,16:16] 1
-    flow[(ccgt,demand),2030,1,15:16] conversion_balance[ccgt,2030,1,15:16] -4
+    flow[(ccgt,demand),2030,1,15:16] conversion_balance[ccgt,2030,1,15:16] -2
     flow[(ccgt,demand),2030,1,15:16] OBJ 36.5
     flow[(ccgt,demand),2030,1,17:18] max_output_flows_limit_simple_method[ccgt,2030,1,17:18] 1
     flow[(ccgt,demand),2030,1,17:18] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,17:18] 1
@@ -563,7 +563,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,17:18] max_ramp_down_with_unit_commitment[ccgt,2030,1,19:20] -1
     flow[(ccgt,demand),2030,1,17:18] consumer_balance[demand,2030,1,17:17] 1
     flow[(ccgt,demand),2030,1,17:18] consumer_balance[demand,2030,1,18:18] 1
-    flow[(ccgt,demand),2030,1,17:18] conversion_balance[ccgt,2030,1,17:18] -4
+    flow[(ccgt,demand),2030,1,17:18] conversion_balance[ccgt,2030,1,17:18] -2
     flow[(ccgt,demand),2030,1,17:18] OBJ 36.5
     flow[(ccgt,demand),2030,1,19:20] max_output_flows_limit_simple_method[ccgt,2030,1,19:20] 1
     flow[(ccgt,demand),2030,1,19:20] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,19:20] 1
@@ -574,7 +574,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,19:20] max_ramp_down_with_unit_commitment[ccgt,2030,1,21:21] -1
     flow[(ccgt,demand),2030,1,19:20] consumer_balance[demand,2030,1,19:19] 1
     flow[(ccgt,demand),2030,1,19:20] consumer_balance[demand,2030,1,20:20] 1
-    flow[(ccgt,demand),2030,1,19:20] conversion_balance[ccgt,2030,1,19:20] -4
+    flow[(ccgt,demand),2030,1,19:20] conversion_balance[ccgt,2030,1,19:20] -2
     flow[(ccgt,demand),2030,1,19:20] OBJ 36.5
     flow[(ccgt,demand),2030,1,21:22] max_output_flows_limit_simple_method[ccgt,2030,1,21:22] 1
     flow[(ccgt,demand),2030,1,21:22] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,21:21] 1
@@ -587,7 +587,7 @@ COLUMNS
     flow[(ccgt,demand),2030,1,21:22] max_ramp_down_with_unit_commitment[ccgt,2030,1,23:24] -1
     flow[(ccgt,demand),2030,1,21:22] consumer_balance[demand,2030,1,21:21] 1
     flow[(ccgt,demand),2030,1,21:22] consumer_balance[demand,2030,1,22:22] 1
-    flow[(ccgt,demand),2030,1,21:22] conversion_balance[ccgt,2030,1,21:22] -4
+    flow[(ccgt,demand),2030,1,21:22] conversion_balance[ccgt,2030,1,21:22] -2
     flow[(ccgt,demand),2030,1,21:22] OBJ 36.5
     flow[(ccgt,demand),2030,1,23:24] max_output_flows_limit_simple_method[ccgt,2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,23:24] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,23:24] 1
@@ -596,44 +596,44 @@ COLUMNS
     flow[(ccgt,demand),2030,1,23:24] max_ramp_down_with_unit_commitment[ccgt,2030,1,23:24] 1
     flow[(ccgt,demand),2030,1,23:24] consumer_balance[demand,2030,1,23:23] 1
     flow[(ccgt,demand),2030,1,23:24] consumer_balance[demand,2030,1,24:24] 1
-    flow[(ccgt,demand),2030,1,23:24] conversion_balance[ccgt,2030,1,23:24] -4
+    flow[(ccgt,demand),2030,1,23:24] conversion_balance[ccgt,2030,1,23:24] -2
     flow[(ccgt,demand),2030,1,23:24] OBJ 36.5
     flow[(gas,ccgt),2030,1,1:2] max_output_flows_limit_simple_method[gas,2030,1,1:1] 1
     flow[(gas,ccgt),2030,1,1:2] max_output_flows_limit_simple_method[gas,2030,1,2:2] 1
-    flow[(gas,ccgt),2030,1,1:2] conversion_balance[ccgt,2030,1,1:2] 2
+    flow[(gas,ccgt),2030,1,1:2] conversion_balance[ccgt,2030,1,1:2] 1
     flow[(gas,ccgt),2030,1,3:4] max_output_flows_limit_simple_method[gas,2030,1,3:3] 1
     flow[(gas,ccgt),2030,1,3:4] max_output_flows_limit_simple_method[gas,2030,1,4:4] 1
-    flow[(gas,ccgt),2030,1,3:4] conversion_balance[ccgt,2030,1,3:4] 2
+    flow[(gas,ccgt),2030,1,3:4] conversion_balance[ccgt,2030,1,3:4] 1
     flow[(gas,ccgt),2030,1,5:6] max_output_flows_limit_simple_method[gas,2030,1,5:5] 1
     flow[(gas,ccgt),2030,1,5:6] max_output_flows_limit_simple_method[gas,2030,1,6:6] 1
-    flow[(gas,ccgt),2030,1,5:6] conversion_balance[ccgt,2030,1,5:6] 2
+    flow[(gas,ccgt),2030,1,5:6] conversion_balance[ccgt,2030,1,5:6] 1
     flow[(gas,ccgt),2030,1,7:8] max_output_flows_limit_simple_method[gas,2030,1,7:7] 1
     flow[(gas,ccgt),2030,1,7:8] max_output_flows_limit_simple_method[gas,2030,1,8:8] 1
-    flow[(gas,ccgt),2030,1,7:8] conversion_balance[ccgt,2030,1,7:8] 2
+    flow[(gas,ccgt),2030,1,7:8] conversion_balance[ccgt,2030,1,7:8] 1
     flow[(gas,ccgt),2030,1,9:10] max_output_flows_limit_simple_method[gas,2030,1,9:9] 1
     flow[(gas,ccgt),2030,1,9:10] max_output_flows_limit_simple_method[gas,2030,1,10:10] 1
-    flow[(gas,ccgt),2030,1,9:10] conversion_balance[ccgt,2030,1,9:10] 2
+    flow[(gas,ccgt),2030,1,9:10] conversion_balance[ccgt,2030,1,9:10] 1
     flow[(gas,ccgt),2030,1,11:12] max_output_flows_limit_simple_method[gas,2030,1,11:11] 1
     flow[(gas,ccgt),2030,1,11:12] max_output_flows_limit_simple_method[gas,2030,1,12:12] 1
-    flow[(gas,ccgt),2030,1,11:12] conversion_balance[ccgt,2030,1,11:12] 2
+    flow[(gas,ccgt),2030,1,11:12] conversion_balance[ccgt,2030,1,11:12] 1
     flow[(gas,ccgt),2030,1,13:14] max_output_flows_limit_simple_method[gas,2030,1,13:13] 1
     flow[(gas,ccgt),2030,1,13:14] max_output_flows_limit_simple_method[gas,2030,1,14:14] 1
-    flow[(gas,ccgt),2030,1,13:14] conversion_balance[ccgt,2030,1,13:14] 2
+    flow[(gas,ccgt),2030,1,13:14] conversion_balance[ccgt,2030,1,13:14] 1
     flow[(gas,ccgt),2030,1,15:16] max_output_flows_limit_simple_method[gas,2030,1,15:15] 1
     flow[(gas,ccgt),2030,1,15:16] max_output_flows_limit_simple_method[gas,2030,1,16:16] 1
-    flow[(gas,ccgt),2030,1,15:16] conversion_balance[ccgt,2030,1,15:16] 2
+    flow[(gas,ccgt),2030,1,15:16] conversion_balance[ccgt,2030,1,15:16] 1
     flow[(gas,ccgt),2030,1,17:18] max_output_flows_limit_simple_method[gas,2030,1,17:17] 1
     flow[(gas,ccgt),2030,1,17:18] max_output_flows_limit_simple_method[gas,2030,1,18:18] 1
-    flow[(gas,ccgt),2030,1,17:18] conversion_balance[ccgt,2030,1,17:18] 2
+    flow[(gas,ccgt),2030,1,17:18] conversion_balance[ccgt,2030,1,17:18] 1
     flow[(gas,ccgt),2030,1,19:20] max_output_flows_limit_simple_method[gas,2030,1,19:19] 1
     flow[(gas,ccgt),2030,1,19:20] max_output_flows_limit_simple_method[gas,2030,1,20:20] 1
-    flow[(gas,ccgt),2030,1,19:20] conversion_balance[ccgt,2030,1,19:20] 2
+    flow[(gas,ccgt),2030,1,19:20] conversion_balance[ccgt,2030,1,19:20] 1
     flow[(gas,ccgt),2030,1,21:22] max_output_flows_limit_simple_method[gas,2030,1,21:21] 1
     flow[(gas,ccgt),2030,1,21:22] max_output_flows_limit_simple_method[gas,2030,1,22:22] 1
-    flow[(gas,ccgt),2030,1,21:22] conversion_balance[ccgt,2030,1,21:22] 2
+    flow[(gas,ccgt),2030,1,21:22] conversion_balance[ccgt,2030,1,21:22] 1
     flow[(gas,ccgt),2030,1,23:24] max_output_flows_limit_simple_method[gas,2030,1,23:23] 1
     flow[(gas,ccgt),2030,1,23:24] max_output_flows_limit_simple_method[gas,2030,1,24:24] 1
-    flow[(gas,ccgt),2030,1,23:24] conversion_balance[ccgt,2030,1,23:24] 2
+    flow[(gas,ccgt),2030,1,23:24] conversion_balance[ccgt,2030,1,23:24] 1
     flow[(wind,demand),2030,1,1:1] max_output_flows_limit_simple_method[wind,2030,1,1:1] 1
     flow[(wind,demand),2030,1,1:1] consumer_balance[demand,2030,1,1:1] 1
     flow[(wind,demand),2030,1,1:1] OBJ 0.365
@@ -707,196 +707,196 @@ COLUMNS
     flow[(wind,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
     flow[(wind,demand),2030,1,24:24] OBJ 0.365
     flow[(gas,ocgt),2030,1,1:1] max_output_flows_limit_simple_method[gas,2030,1,1:1] 1
-    flow[(gas,ocgt),2030,1,1:1] conversion_balance[ocgt,2030,1,1:1] 1
+    flow[(gas,ocgt),2030,1,1:1] conversion_balance[ocgt,2030,1,1:1] 0.45
     flow[(gas,ocgt),2030,1,2:2] max_output_flows_limit_simple_method[gas,2030,1,2:2] 1
-    flow[(gas,ocgt),2030,1,2:2] conversion_balance[ocgt,2030,1,2:2] 1
+    flow[(gas,ocgt),2030,1,2:2] conversion_balance[ocgt,2030,1,2:2] 0.45
     flow[(gas,ocgt),2030,1,3:3] max_output_flows_limit_simple_method[gas,2030,1,3:3] 1
-    flow[(gas,ocgt),2030,1,3:3] conversion_balance[ocgt,2030,1,3:3] 1
+    flow[(gas,ocgt),2030,1,3:3] conversion_balance[ocgt,2030,1,3:3] 0.45
     flow[(gas,ocgt),2030,1,4:4] max_output_flows_limit_simple_method[gas,2030,1,4:4] 1
-    flow[(gas,ocgt),2030,1,4:4] conversion_balance[ocgt,2030,1,4:4] 1
+    flow[(gas,ocgt),2030,1,4:4] conversion_balance[ocgt,2030,1,4:4] 0.45
     flow[(gas,ocgt),2030,1,5:5] max_output_flows_limit_simple_method[gas,2030,1,5:5] 1
-    flow[(gas,ocgt),2030,1,5:5] conversion_balance[ocgt,2030,1,5:5] 1
+    flow[(gas,ocgt),2030,1,5:5] conversion_balance[ocgt,2030,1,5:5] 0.45
     flow[(gas,ocgt),2030,1,6:6] max_output_flows_limit_simple_method[gas,2030,1,6:6] 1
-    flow[(gas,ocgt),2030,1,6:6] conversion_balance[ocgt,2030,1,6:6] 1
+    flow[(gas,ocgt),2030,1,6:6] conversion_balance[ocgt,2030,1,6:6] 0.45
     flow[(gas,ocgt),2030,1,7:7] max_output_flows_limit_simple_method[gas,2030,1,7:7] 1
-    flow[(gas,ocgt),2030,1,7:7] conversion_balance[ocgt,2030,1,7:7] 1
+    flow[(gas,ocgt),2030,1,7:7] conversion_balance[ocgt,2030,1,7:7] 0.45
     flow[(gas,ocgt),2030,1,8:8] max_output_flows_limit_simple_method[gas,2030,1,8:8] 1
-    flow[(gas,ocgt),2030,1,8:8] conversion_balance[ocgt,2030,1,8:8] 1
+    flow[(gas,ocgt),2030,1,8:8] conversion_balance[ocgt,2030,1,8:8] 0.45
     flow[(gas,ocgt),2030,1,9:9] max_output_flows_limit_simple_method[gas,2030,1,9:9] 1
-    flow[(gas,ocgt),2030,1,9:9] conversion_balance[ocgt,2030,1,9:9] 1
+    flow[(gas,ocgt),2030,1,9:9] conversion_balance[ocgt,2030,1,9:9] 0.45
     flow[(gas,ocgt),2030,1,10:10] max_output_flows_limit_simple_method[gas,2030,1,10:10] 1
-    flow[(gas,ocgt),2030,1,10:10] conversion_balance[ocgt,2030,1,10:10] 1
+    flow[(gas,ocgt),2030,1,10:10] conversion_balance[ocgt,2030,1,10:10] 0.45
     flow[(gas,ocgt),2030,1,11:11] max_output_flows_limit_simple_method[gas,2030,1,11:11] 1
-    flow[(gas,ocgt),2030,1,11:11] conversion_balance[ocgt,2030,1,11:11] 1
+    flow[(gas,ocgt),2030,1,11:11] conversion_balance[ocgt,2030,1,11:11] 0.45
     flow[(gas,ocgt),2030,1,12:12] max_output_flows_limit_simple_method[gas,2030,1,12:12] 1
-    flow[(gas,ocgt),2030,1,12:12] conversion_balance[ocgt,2030,1,12:12] 1
+    flow[(gas,ocgt),2030,1,12:12] conversion_balance[ocgt,2030,1,12:12] 0.45
     flow[(gas,ocgt),2030,1,13:13] max_output_flows_limit_simple_method[gas,2030,1,13:13] 1
-    flow[(gas,ocgt),2030,1,13:13] conversion_balance[ocgt,2030,1,13:13] 1
+    flow[(gas,ocgt),2030,1,13:13] conversion_balance[ocgt,2030,1,13:13] 0.45
     flow[(gas,ocgt),2030,1,14:14] max_output_flows_limit_simple_method[gas,2030,1,14:14] 1
-    flow[(gas,ocgt),2030,1,14:14] conversion_balance[ocgt,2030,1,14:14] 1
+    flow[(gas,ocgt),2030,1,14:14] conversion_balance[ocgt,2030,1,14:14] 0.45
     flow[(gas,ocgt),2030,1,15:15] max_output_flows_limit_simple_method[gas,2030,1,15:15] 1
-    flow[(gas,ocgt),2030,1,15:15] conversion_balance[ocgt,2030,1,15:15] 1
+    flow[(gas,ocgt),2030,1,15:15] conversion_balance[ocgt,2030,1,15:15] 0.45
     flow[(gas,ocgt),2030,1,16:16] max_output_flows_limit_simple_method[gas,2030,1,16:16] 1
-    flow[(gas,ocgt),2030,1,16:16] conversion_balance[ocgt,2030,1,16:16] 1
+    flow[(gas,ocgt),2030,1,16:16] conversion_balance[ocgt,2030,1,16:16] 0.45
     flow[(gas,ocgt),2030,1,17:17] max_output_flows_limit_simple_method[gas,2030,1,17:17] 1
-    flow[(gas,ocgt),2030,1,17:17] conversion_balance[ocgt,2030,1,17:17] 1
+    flow[(gas,ocgt),2030,1,17:17] conversion_balance[ocgt,2030,1,17:17] 0.45
     flow[(gas,ocgt),2030,1,18:18] max_output_flows_limit_simple_method[gas,2030,1,18:18] 1
-    flow[(gas,ocgt),2030,1,18:18] conversion_balance[ocgt,2030,1,18:18] 1
+    flow[(gas,ocgt),2030,1,18:18] conversion_balance[ocgt,2030,1,18:18] 0.45
     flow[(gas,ocgt),2030,1,19:19] max_output_flows_limit_simple_method[gas,2030,1,19:19] 1
-    flow[(gas,ocgt),2030,1,19:19] conversion_balance[ocgt,2030,1,19:19] 1
+    flow[(gas,ocgt),2030,1,19:19] conversion_balance[ocgt,2030,1,19:19] 0.45
     flow[(gas,ocgt),2030,1,20:20] max_output_flows_limit_simple_method[gas,2030,1,20:20] 1
-    flow[(gas,ocgt),2030,1,20:20] conversion_balance[ocgt,2030,1,20:20] 1
+    flow[(gas,ocgt),2030,1,20:20] conversion_balance[ocgt,2030,1,20:20] 0.45
     flow[(gas,ocgt),2030,1,21:21] max_output_flows_limit_simple_method[gas,2030,1,21:21] 1
-    flow[(gas,ocgt),2030,1,21:21] conversion_balance[ocgt,2030,1,21:21] 1
+    flow[(gas,ocgt),2030,1,21:21] conversion_balance[ocgt,2030,1,21:21] 0.45
     flow[(gas,ocgt),2030,1,22:22] max_output_flows_limit_simple_method[gas,2030,1,22:22] 1
-    flow[(gas,ocgt),2030,1,22:22] conversion_balance[ocgt,2030,1,22:22] 1
+    flow[(gas,ocgt),2030,1,22:22] conversion_balance[ocgt,2030,1,22:22] 0.45
     flow[(gas,ocgt),2030,1,23:23] max_output_flows_limit_simple_method[gas,2030,1,23:23] 1
-    flow[(gas,ocgt),2030,1,23:23] conversion_balance[ocgt,2030,1,23:23] 1
+    flow[(gas,ocgt),2030,1,23:23] conversion_balance[ocgt,2030,1,23:23] 0.45
     flow[(gas,ocgt),2030,1,24:24] max_output_flows_limit_simple_method[gas,2030,1,24:24] 1
-    flow[(gas,ocgt),2030,1,24:24] conversion_balance[ocgt,2030,1,24:24] 1
+    flow[(gas,ocgt),2030,1,24:24] conversion_balance[ocgt,2030,1,24:24] 0.45
     flow[(ocgt,demand),2030,1,1:1] max_output_flows_limit_simple_method[ocgt,2030,1,1:1] 1
     flow[(ocgt,demand),2030,1,1:1] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,1:1] 1
     flow[(ocgt,demand),2030,1,1:1] min_output_flow_with_unit_commitment[ocgt,2030,1,1:1] 1
     flow[(ocgt,demand),2030,1,1:1] consumer_balance[demand,2030,1,1:1] 1
-    flow[(ocgt,demand),2030,1,1:1] conversion_balance[ocgt,2030,1,1:1] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,1:1] conversion_balance[ocgt,2030,1,1:1] -1
     flow[(ocgt,demand),2030,1,1:1] OBJ 25.55
     flow[(ocgt,demand),2030,1,2:2] max_output_flows_limit_simple_method[ocgt,2030,1,2:2] 1
     flow[(ocgt,demand),2030,1,2:2] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,2:2] 1
     flow[(ocgt,demand),2030,1,2:2] min_output_flow_with_unit_commitment[ocgt,2030,1,2:2] 1
     flow[(ocgt,demand),2030,1,2:2] consumer_balance[demand,2030,1,2:2] 1
-    flow[(ocgt,demand),2030,1,2:2] conversion_balance[ocgt,2030,1,2:2] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,2:2] conversion_balance[ocgt,2030,1,2:2] -1
     flow[(ocgt,demand),2030,1,2:2] OBJ 25.55
     flow[(ocgt,demand),2030,1,3:3] max_output_flows_limit_simple_method[ocgt,2030,1,3:3] 1
     flow[(ocgt,demand),2030,1,3:3] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,3:3] 1
     flow[(ocgt,demand),2030,1,3:3] min_output_flow_with_unit_commitment[ocgt,2030,1,3:3] 1
     flow[(ocgt,demand),2030,1,3:3] consumer_balance[demand,2030,1,3:3] 1
-    flow[(ocgt,demand),2030,1,3:3] conversion_balance[ocgt,2030,1,3:3] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,3:3] conversion_balance[ocgt,2030,1,3:3] -1
     flow[(ocgt,demand),2030,1,3:3] OBJ 25.55
     flow[(ocgt,demand),2030,1,4:4] max_output_flows_limit_simple_method[ocgt,2030,1,4:4] 1
     flow[(ocgt,demand),2030,1,4:4] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,4:4] 1
     flow[(ocgt,demand),2030,1,4:4] min_output_flow_with_unit_commitment[ocgt,2030,1,4:4] 1
     flow[(ocgt,demand),2030,1,4:4] consumer_balance[demand,2030,1,4:4] 1
-    flow[(ocgt,demand),2030,1,4:4] conversion_balance[ocgt,2030,1,4:4] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,4:4] conversion_balance[ocgt,2030,1,4:4] -1
     flow[(ocgt,demand),2030,1,4:4] OBJ 25.55
     flow[(ocgt,demand),2030,1,5:5] max_output_flows_limit_simple_method[ocgt,2030,1,5:5] 1
     flow[(ocgt,demand),2030,1,5:5] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,5:5] 1
     flow[(ocgt,demand),2030,1,5:5] min_output_flow_with_unit_commitment[ocgt,2030,1,5:5] 1
     flow[(ocgt,demand),2030,1,5:5] consumer_balance[demand,2030,1,5:5] 1
-    flow[(ocgt,demand),2030,1,5:5] conversion_balance[ocgt,2030,1,5:5] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,5:5] conversion_balance[ocgt,2030,1,5:5] -1
     flow[(ocgt,demand),2030,1,5:5] OBJ 25.55
     flow[(ocgt,demand),2030,1,6:6] max_output_flows_limit_simple_method[ocgt,2030,1,6:6] 1
     flow[(ocgt,demand),2030,1,6:6] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,6:6] 1
     flow[(ocgt,demand),2030,1,6:6] min_output_flow_with_unit_commitment[ocgt,2030,1,6:6] 1
     flow[(ocgt,demand),2030,1,6:6] consumer_balance[demand,2030,1,6:6] 1
-    flow[(ocgt,demand),2030,1,6:6] conversion_balance[ocgt,2030,1,6:6] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,6:6] conversion_balance[ocgt,2030,1,6:6] -1
     flow[(ocgt,demand),2030,1,6:6] OBJ 25.55
     flow[(ocgt,demand),2030,1,7:7] max_output_flows_limit_simple_method[ocgt,2030,1,7:7] 1
     flow[(ocgt,demand),2030,1,7:7] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,7:7] 1
     flow[(ocgt,demand),2030,1,7:7] min_output_flow_with_unit_commitment[ocgt,2030,1,7:7] 1
     flow[(ocgt,demand),2030,1,7:7] consumer_balance[demand,2030,1,7:7] 1
-    flow[(ocgt,demand),2030,1,7:7] conversion_balance[ocgt,2030,1,7:7] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,7:7] conversion_balance[ocgt,2030,1,7:7] -1
     flow[(ocgt,demand),2030,1,7:7] OBJ 25.55
     flow[(ocgt,demand),2030,1,8:8] max_output_flows_limit_simple_method[ocgt,2030,1,8:8] 1
     flow[(ocgt,demand),2030,1,8:8] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,8:8] 1
     flow[(ocgt,demand),2030,1,8:8] min_output_flow_with_unit_commitment[ocgt,2030,1,8:8] 1
     flow[(ocgt,demand),2030,1,8:8] consumer_balance[demand,2030,1,8:8] 1
-    flow[(ocgt,demand),2030,1,8:8] conversion_balance[ocgt,2030,1,8:8] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,8:8] conversion_balance[ocgt,2030,1,8:8] -1
     flow[(ocgt,demand),2030,1,8:8] OBJ 25.55
     flow[(ocgt,demand),2030,1,9:9] max_output_flows_limit_simple_method[ocgt,2030,1,9:9] 1
     flow[(ocgt,demand),2030,1,9:9] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,9:9] 1
     flow[(ocgt,demand),2030,1,9:9] min_output_flow_with_unit_commitment[ocgt,2030,1,9:9] 1
     flow[(ocgt,demand),2030,1,9:9] consumer_balance[demand,2030,1,9:9] 1
-    flow[(ocgt,demand),2030,1,9:9] conversion_balance[ocgt,2030,1,9:9] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,9:9] conversion_balance[ocgt,2030,1,9:9] -1
     flow[(ocgt,demand),2030,1,9:9] OBJ 25.55
     flow[(ocgt,demand),2030,1,10:10] max_output_flows_limit_simple_method[ocgt,2030,1,10:10] 1
     flow[(ocgt,demand),2030,1,10:10] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,10:10] 1
     flow[(ocgt,demand),2030,1,10:10] min_output_flow_with_unit_commitment[ocgt,2030,1,10:10] 1
     flow[(ocgt,demand),2030,1,10:10] consumer_balance[demand,2030,1,10:10] 1
-    flow[(ocgt,demand),2030,1,10:10] conversion_balance[ocgt,2030,1,10:10] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,10:10] conversion_balance[ocgt,2030,1,10:10] -1
     flow[(ocgt,demand),2030,1,10:10] OBJ 25.55
     flow[(ocgt,demand),2030,1,11:11] max_output_flows_limit_simple_method[ocgt,2030,1,11:11] 1
     flow[(ocgt,demand),2030,1,11:11] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,11:11] 1
     flow[(ocgt,demand),2030,1,11:11] min_output_flow_with_unit_commitment[ocgt,2030,1,11:11] 1
     flow[(ocgt,demand),2030,1,11:11] consumer_balance[demand,2030,1,11:11] 1
-    flow[(ocgt,demand),2030,1,11:11] conversion_balance[ocgt,2030,1,11:11] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,11:11] conversion_balance[ocgt,2030,1,11:11] -1
     flow[(ocgt,demand),2030,1,11:11] OBJ 25.55
     flow[(ocgt,demand),2030,1,12:12] max_output_flows_limit_simple_method[ocgt,2030,1,12:12] 1
     flow[(ocgt,demand),2030,1,12:12] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,12:12] 1
     flow[(ocgt,demand),2030,1,12:12] min_output_flow_with_unit_commitment[ocgt,2030,1,12:12] 1
     flow[(ocgt,demand),2030,1,12:12] consumer_balance[demand,2030,1,12:12] 1
-    flow[(ocgt,demand),2030,1,12:12] conversion_balance[ocgt,2030,1,12:12] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,12:12] conversion_balance[ocgt,2030,1,12:12] -1
     flow[(ocgt,demand),2030,1,12:12] OBJ 25.55
     flow[(ocgt,demand),2030,1,13:13] max_output_flows_limit_simple_method[ocgt,2030,1,13:13] 1
     flow[(ocgt,demand),2030,1,13:13] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,13:13] 1
     flow[(ocgt,demand),2030,1,13:13] min_output_flow_with_unit_commitment[ocgt,2030,1,13:13] 1
     flow[(ocgt,demand),2030,1,13:13] consumer_balance[demand,2030,1,13:13] 1
-    flow[(ocgt,demand),2030,1,13:13] conversion_balance[ocgt,2030,1,13:13] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,13:13] conversion_balance[ocgt,2030,1,13:13] -1
     flow[(ocgt,demand),2030,1,13:13] OBJ 25.55
     flow[(ocgt,demand),2030,1,14:14] max_output_flows_limit_simple_method[ocgt,2030,1,14:14] 1
     flow[(ocgt,demand),2030,1,14:14] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,14:14] 1
     flow[(ocgt,demand),2030,1,14:14] min_output_flow_with_unit_commitment[ocgt,2030,1,14:14] 1
     flow[(ocgt,demand),2030,1,14:14] consumer_balance[demand,2030,1,14:14] 1
-    flow[(ocgt,demand),2030,1,14:14] conversion_balance[ocgt,2030,1,14:14] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,14:14] conversion_balance[ocgt,2030,1,14:14] -1
     flow[(ocgt,demand),2030,1,14:14] OBJ 25.55
     flow[(ocgt,demand),2030,1,15:15] max_output_flows_limit_simple_method[ocgt,2030,1,15:15] 1
     flow[(ocgt,demand),2030,1,15:15] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,15:15] 1
     flow[(ocgt,demand),2030,1,15:15] min_output_flow_with_unit_commitment[ocgt,2030,1,15:15] 1
     flow[(ocgt,demand),2030,1,15:15] consumer_balance[demand,2030,1,15:15] 1
-    flow[(ocgt,demand),2030,1,15:15] conversion_balance[ocgt,2030,1,15:15] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,15:15] conversion_balance[ocgt,2030,1,15:15] -1
     flow[(ocgt,demand),2030,1,15:15] OBJ 25.55
     flow[(ocgt,demand),2030,1,16:16] max_output_flows_limit_simple_method[ocgt,2030,1,16:16] 1
     flow[(ocgt,demand),2030,1,16:16] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,16:16] 1
     flow[(ocgt,demand),2030,1,16:16] min_output_flow_with_unit_commitment[ocgt,2030,1,16:16] 1
     flow[(ocgt,demand),2030,1,16:16] consumer_balance[demand,2030,1,16:16] 1
-    flow[(ocgt,demand),2030,1,16:16] conversion_balance[ocgt,2030,1,16:16] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,16:16] conversion_balance[ocgt,2030,1,16:16] -1
     flow[(ocgt,demand),2030,1,16:16] OBJ 25.55
     flow[(ocgt,demand),2030,1,17:17] max_output_flows_limit_simple_method[ocgt,2030,1,17:17] 1
     flow[(ocgt,demand),2030,1,17:17] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,17:17] 1
     flow[(ocgt,demand),2030,1,17:17] min_output_flow_with_unit_commitment[ocgt,2030,1,17:17] 1
     flow[(ocgt,demand),2030,1,17:17] consumer_balance[demand,2030,1,17:17] 1
-    flow[(ocgt,demand),2030,1,17:17] conversion_balance[ocgt,2030,1,17:17] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,17:17] conversion_balance[ocgt,2030,1,17:17] -1
     flow[(ocgt,demand),2030,1,17:17] OBJ 25.55
     flow[(ocgt,demand),2030,1,18:18] max_output_flows_limit_simple_method[ocgt,2030,1,18:18] 1
     flow[(ocgt,demand),2030,1,18:18] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,18:18] 1
     flow[(ocgt,demand),2030,1,18:18] min_output_flow_with_unit_commitment[ocgt,2030,1,18:18] 1
     flow[(ocgt,demand),2030,1,18:18] consumer_balance[demand,2030,1,18:18] 1
-    flow[(ocgt,demand),2030,1,18:18] conversion_balance[ocgt,2030,1,18:18] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,18:18] conversion_balance[ocgt,2030,1,18:18] -1
     flow[(ocgt,demand),2030,1,18:18] OBJ 25.55
     flow[(ocgt,demand),2030,1,19:19] max_output_flows_limit_simple_method[ocgt,2030,1,19:19] 1
     flow[(ocgt,demand),2030,1,19:19] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,19:19] 1
     flow[(ocgt,demand),2030,1,19:19] min_output_flow_with_unit_commitment[ocgt,2030,1,19:19] 1
     flow[(ocgt,demand),2030,1,19:19] consumer_balance[demand,2030,1,19:19] 1
-    flow[(ocgt,demand),2030,1,19:19] conversion_balance[ocgt,2030,1,19:19] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,19:19] conversion_balance[ocgt,2030,1,19:19] -1
     flow[(ocgt,demand),2030,1,19:19] OBJ 25.55
     flow[(ocgt,demand),2030,1,20:20] max_output_flows_limit_simple_method[ocgt,2030,1,20:20] 1
     flow[(ocgt,demand),2030,1,20:20] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,20:20] 1
     flow[(ocgt,demand),2030,1,20:20] min_output_flow_with_unit_commitment[ocgt,2030,1,20:20] 1
     flow[(ocgt,demand),2030,1,20:20] consumer_balance[demand,2030,1,20:20] 1
-    flow[(ocgt,demand),2030,1,20:20] conversion_balance[ocgt,2030,1,20:20] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,20:20] conversion_balance[ocgt,2030,1,20:20] -1
     flow[(ocgt,demand),2030,1,20:20] OBJ 25.55
     flow[(ocgt,demand),2030,1,21:21] max_output_flows_limit_simple_method[ocgt,2030,1,21:21] 1
     flow[(ocgt,demand),2030,1,21:21] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,21:21] 1
     flow[(ocgt,demand),2030,1,21:21] min_output_flow_with_unit_commitment[ocgt,2030,1,21:21] 1
     flow[(ocgt,demand),2030,1,21:21] consumer_balance[demand,2030,1,21:21] 1
-    flow[(ocgt,demand),2030,1,21:21] conversion_balance[ocgt,2030,1,21:21] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,21:21] conversion_balance[ocgt,2030,1,21:21] -1
     flow[(ocgt,demand),2030,1,21:21] OBJ 25.55
     flow[(ocgt,demand),2030,1,22:22] max_output_flows_limit_simple_method[ocgt,2030,1,22:22] 1
     flow[(ocgt,demand),2030,1,22:22] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,22:22] 1
     flow[(ocgt,demand),2030,1,22:22] min_output_flow_with_unit_commitment[ocgt,2030,1,22:22] 1
     flow[(ocgt,demand),2030,1,22:22] consumer_balance[demand,2030,1,22:22] 1
-    flow[(ocgt,demand),2030,1,22:22] conversion_balance[ocgt,2030,1,22:22] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,22:22] conversion_balance[ocgt,2030,1,22:22] -1
     flow[(ocgt,demand),2030,1,22:22] OBJ 25.55
     flow[(ocgt,demand),2030,1,23:23] max_output_flows_limit_simple_method[ocgt,2030,1,23:23] 1
     flow[(ocgt,demand),2030,1,23:23] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,23:23] 1
     flow[(ocgt,demand),2030,1,23:23] min_output_flow_with_unit_commitment[ocgt,2030,1,23:23] 1
     flow[(ocgt,demand),2030,1,23:23] consumer_balance[demand,2030,1,23:23] 1
-    flow[(ocgt,demand),2030,1,23:23] conversion_balance[ocgt,2030,1,23:23] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,23:23] conversion_balance[ocgt,2030,1,23:23] -1
     flow[(ocgt,demand),2030,1,23:23] OBJ 25.55
     flow[(ocgt,demand),2030,1,24:24] max_output_flows_limit_simple_method[ocgt,2030,1,24:24] 1
     flow[(ocgt,demand),2030,1,24:24] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,24:24] 1
     flow[(ocgt,demand),2030,1,24:24] min_output_flow_with_unit_commitment[ocgt,2030,1,24:24] 1
     flow[(ocgt,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
-    flow[(ocgt,demand),2030,1,24:24] conversion_balance[ocgt,2030,1,24:24] -2.2222222222222223
+    flow[(ocgt,demand),2030,1,24:24] conversion_balance[ocgt,2030,1,24:24] -1
     flow[(ocgt,demand),2030,1,24:24] OBJ 25.55
     flow[(smr,demand),2030,1,1:1] max_output_flows_limit_simple_method[smr,2030,1,1:1] 1
     flow[(smr,demand),2030,1,1:1] max_output_flow_with_basic_unit_commitment[smr,2030,1,1:1] 1

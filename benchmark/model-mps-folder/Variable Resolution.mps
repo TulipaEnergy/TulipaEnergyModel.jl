@@ -33,7 +33,7 @@ ROWS
  E  conversion_balance[ccgt,2030,1,1:6]
 COLUMNS
     flow[(H2,ccgt),2030,1,1:6] max_output_flows_limit_simple_method[H2,2030,1,1:6] 1
-    flow[(H2,ccgt),2030,1,1:6] conversion_balance[ccgt,2030,1,1:6] 6
+    flow[(H2,ccgt),2030,1,1:6] conversion_balance[ccgt,2030,1,1:6] 3
     flow[(H2,ccgt),2030,1,1:6] OBJ 0.06
     flow[(wind,balance),2030,1,1:2] max_output_flows_limit_simple_method[wind,2030,1,1:2] 1
     flow[(wind,balance),2030,1,1:2] balance_hub[balance,2030,1,1:1] 1
@@ -69,27 +69,27 @@ COLUMNS
     flow[(phs,balance),2030,1,5:6] OBJ 0.002
     flow[(ccgt,balance),2030,1,1:1] max_output_flows_limit_simple_method[ccgt,2030,1,1:1] 1
     flow[(ccgt,balance),2030,1,1:1] balance_hub[balance,2030,1,1:1] 1
-    flow[(ccgt,balance),2030,1,1:1] conversion_balance[ccgt,2030,1,1:6] -2
+    flow[(ccgt,balance),2030,1,1:1] conversion_balance[ccgt,2030,1,1:6] -1
     flow[(ccgt,balance),2030,1,1:1] OBJ 0.05
     flow[(ccgt,balance),2030,1,2:2] max_output_flows_limit_simple_method[ccgt,2030,1,2:2] 1
     flow[(ccgt,balance),2030,1,2:2] balance_hub[balance,2030,1,2:2] 1
-    flow[(ccgt,balance),2030,1,2:2] conversion_balance[ccgt,2030,1,1:6] -2
+    flow[(ccgt,balance),2030,1,2:2] conversion_balance[ccgt,2030,1,1:6] -1
     flow[(ccgt,balance),2030,1,2:2] OBJ 0.05
     flow[(ccgt,balance),2030,1,3:3] max_output_flows_limit_simple_method[ccgt,2030,1,3:3] 1
     flow[(ccgt,balance),2030,1,3:3] balance_hub[balance,2030,1,3:3] 1
-    flow[(ccgt,balance),2030,1,3:3] conversion_balance[ccgt,2030,1,1:6] -2
+    flow[(ccgt,balance),2030,1,3:3] conversion_balance[ccgt,2030,1,1:6] -1
     flow[(ccgt,balance),2030,1,3:3] OBJ 0.05
     flow[(ccgt,balance),2030,1,4:4] max_output_flows_limit_simple_method[ccgt,2030,1,4:4] 1
     flow[(ccgt,balance),2030,1,4:4] balance_hub[balance,2030,1,4:4] 1
-    flow[(ccgt,balance),2030,1,4:4] conversion_balance[ccgt,2030,1,1:6] -2
+    flow[(ccgt,balance),2030,1,4:4] conversion_balance[ccgt,2030,1,1:6] -1
     flow[(ccgt,balance),2030,1,4:4] OBJ 0.05
     flow[(ccgt,balance),2030,1,5:5] max_output_flows_limit_simple_method[ccgt,2030,1,5:5] 1
     flow[(ccgt,balance),2030,1,5:5] balance_hub[balance,2030,1,5:5] 1
-    flow[(ccgt,balance),2030,1,5:5] conversion_balance[ccgt,2030,1,1:6] -2
+    flow[(ccgt,balance),2030,1,5:5] conversion_balance[ccgt,2030,1,1:6] -1
     flow[(ccgt,balance),2030,1,5:5] OBJ 0.05
     flow[(ccgt,balance),2030,1,6:6] max_output_flows_limit_simple_method[ccgt,2030,1,6:6] 1
     flow[(ccgt,balance),2030,1,6:6] balance_hub[balance,2030,1,6:6] 1
-    flow[(ccgt,balance),2030,1,6:6] conversion_balance[ccgt,2030,1,1:6] -2
+    flow[(ccgt,balance),2030,1,6:6] conversion_balance[ccgt,2030,1,1:6] -1
     flow[(ccgt,balance),2030,1,6:6] OBJ 0.05
     flow[(balance,demand),2030,1,1:3] max_transport_flow_limit_simple_method[(balance,demand),2030,1,1:3] 1
     flow[(balance,demand),2030,1,1:3] min_transport_flow_limit_simple_method[(balance,demand),2030,1,1:3] 1

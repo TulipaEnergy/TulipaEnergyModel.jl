@@ -66,8 +66,6 @@ Associated input parameters: `investable`, `investment_integer`, `capacity`, `in
 
 For a flow, the optimal flow (of energy) during a particular `rep_period` between `time_block_start` and `time_block_end`, expressed in the same units as `capacity` of flow.
 
-Associated input parameter: `efficiency`
-
 ### `var_flows_decommission`
 
 For a transport flow commissioned in `commission_year`, the optimal decommissioning (decrease) of flow capacity in `milestone_year`, expressed in the same units as `capacity` of flow.
