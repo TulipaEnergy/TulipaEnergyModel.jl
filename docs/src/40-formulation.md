@@ -428,6 +428,14 @@ Storage assets using the method to avoid charging and discharging simultaneously
 \end{aligned}
 ```
 
+#### Lower Limit for Available Units Compact method
+
+```math
+\begin{aligned}
+    v^{\text{available units compact method}}_{a,y,v} \ge 0 \quad  \forall (a,y,v) \in \mathcal{D}^{\text{compact investment}}
+\end{aligned}
+```
+
 #### Lower Limit for Flows
 
 ```math
