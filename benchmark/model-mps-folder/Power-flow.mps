@@ -2282,6 +2282,38 @@ COLUMNS
     electricity_angle[ccgt,2030,1,22:24] dc_power_flow[ccgt,demand,2030,1,22:22] -100
     electricity_angle[ccgt,2030,1,22:24] dc_power_flow[ccgt,demand,2030,1,23:24] -100
     electricity_angle[ccgt,2030,1,22:24] dc_power_flow[ccgt,hub,2030,1,22:24] -100
+    electricity_angle[demand,2030,1,1:2] dc_power_flow[ccgt,demand,2030,1,1:2] 100
+    electricity_angle[demand,2030,1,1:2] dc_power_flow[hub,demand,2030,1,1:2] 100
+    electricity_angle[demand,2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,3:3] 100
+    electricity_angle[demand,2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,4:4] 100
+    electricity_angle[demand,2030,1,3:4] dc_power_flow[hub,demand,2030,1,3:3] 100
+    electricity_angle[demand,2030,1,3:4] dc_power_flow[hub,demand,2030,1,4:4] 100
+    electricity_angle[demand,2030,1,5:6] dc_power_flow[ccgt,demand,2030,1,5:6] 100
+    electricity_angle[demand,2030,1,5:6] dc_power_flow[hub,demand,2030,1,5:6] 100
+    electricity_angle[demand,2030,1,7:8] dc_power_flow[ccgt,demand,2030,1,7:8] 100
+    electricity_angle[demand,2030,1,7:8] dc_power_flow[hub,demand,2030,1,7:8] 100
+    electricity_angle[demand,2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,9:9] 100
+    electricity_angle[demand,2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,10:10] 100
+    electricity_angle[demand,2030,1,9:10] dc_power_flow[hub,demand,2030,1,9:9] 100
+    electricity_angle[demand,2030,1,9:10] dc_power_flow[hub,demand,2030,1,10:10] 100
+    electricity_angle[demand,2030,1,11:12] dc_power_flow[ccgt,demand,2030,1,11:12] 100
+    electricity_angle[demand,2030,1,11:12] dc_power_flow[hub,demand,2030,1,11:12] 100
+    electricity_angle[demand,2030,1,13:14] dc_power_flow[ccgt,demand,2030,1,13:14] 100
+    electricity_angle[demand,2030,1,13:14] dc_power_flow[hub,demand,2030,1,13:14] 100
+    electricity_angle[demand,2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,15:15] 100
+    electricity_angle[demand,2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,16:16] 100
+    electricity_angle[demand,2030,1,15:16] dc_power_flow[hub,demand,2030,1,15:15] 100
+    electricity_angle[demand,2030,1,15:16] dc_power_flow[hub,demand,2030,1,16:16] 100
+    electricity_angle[demand,2030,1,17:18] dc_power_flow[ccgt,demand,2030,1,17:18] 100
+    electricity_angle[demand,2030,1,17:18] dc_power_flow[hub,demand,2030,1,17:18] 100
+    electricity_angle[demand,2030,1,19:20] dc_power_flow[ccgt,demand,2030,1,19:20] 100
+    electricity_angle[demand,2030,1,19:20] dc_power_flow[hub,demand,2030,1,19:20] 100
+    electricity_angle[demand,2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,21:21] 100
+    electricity_angle[demand,2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,22:22] 100
+    electricity_angle[demand,2030,1,21:22] dc_power_flow[hub,demand,2030,1,21:21] 100
+    electricity_angle[demand,2030,1,21:22] dc_power_flow[hub,demand,2030,1,22:22] 100
+    electricity_angle[demand,2030,1,23:24] dc_power_flow[ccgt,demand,2030,1,23:24] 100
+    electricity_angle[demand,2030,1,23:24] dc_power_flow[hub,demand,2030,1,23:24] 100
     electricity_angle[ccgt,2030,2,1:1] dc_power_flow[ccgt,demand,2030,2,1:1] -100
     electricity_angle[ccgt,2030,2,1:1] dc_power_flow[ccgt,hub,2030,2,1:1] -100
     electricity_angle[ccgt,2030,2,2:2] dc_power_flow[ccgt,demand,2030,2,2:2] -100
@@ -2330,86 +2362,6 @@ COLUMNS
     electricity_angle[ccgt,2030,2,23:23] dc_power_flow[ccgt,hub,2030,2,23:23] -100
     electricity_angle[ccgt,2030,2,24:24] dc_power_flow[ccgt,demand,2030,2,24:24] -100
     electricity_angle[ccgt,2030,2,24:24] dc_power_flow[ccgt,hub,2030,2,24:24] -100
-    electricity_angle[ccgt,2030,3,1:1] dc_power_flow[ccgt,demand,2030,3,1:1] -100
-    electricity_angle[ccgt,2030,3,1:1] dc_power_flow[ccgt,hub,2030,3,1:1] -100
-    electricity_angle[ccgt,2030,3,2:2] dc_power_flow[ccgt,demand,2030,3,2:2] -100
-    electricity_angle[ccgt,2030,3,2:2] dc_power_flow[ccgt,hub,2030,3,2:2] -100
-    electricity_angle[ccgt,2030,3,3:3] dc_power_flow[ccgt,demand,2030,3,3:3] -100
-    electricity_angle[ccgt,2030,3,3:3] dc_power_flow[ccgt,hub,2030,3,3:3] -100
-    electricity_angle[ccgt,2030,3,4:4] dc_power_flow[ccgt,demand,2030,3,4:4] -100
-    electricity_angle[ccgt,2030,3,4:4] dc_power_flow[ccgt,hub,2030,3,4:4] -100
-    electricity_angle[ccgt,2030,3,5:5] dc_power_flow[ccgt,demand,2030,3,5:5] -100
-    electricity_angle[ccgt,2030,3,5:5] dc_power_flow[ccgt,hub,2030,3,5:5] -100
-    electricity_angle[ccgt,2030,3,6:6] dc_power_flow[ccgt,demand,2030,3,6:6] -100
-    electricity_angle[ccgt,2030,3,6:6] dc_power_flow[ccgt,hub,2030,3,6:6] -100
-    electricity_angle[ccgt,2030,3,7:7] dc_power_flow[ccgt,demand,2030,3,7:7] -100
-    electricity_angle[ccgt,2030,3,7:7] dc_power_flow[ccgt,hub,2030,3,7:7] -100
-    electricity_angle[ccgt,2030,3,8:8] dc_power_flow[ccgt,demand,2030,3,8:8] -100
-    electricity_angle[ccgt,2030,3,8:8] dc_power_flow[ccgt,hub,2030,3,8:8] -100
-    electricity_angle[ccgt,2030,3,9:9] dc_power_flow[ccgt,demand,2030,3,9:9] -100
-    electricity_angle[ccgt,2030,3,9:9] dc_power_flow[ccgt,hub,2030,3,9:9] -100
-    electricity_angle[ccgt,2030,3,10:10] dc_power_flow[ccgt,demand,2030,3,10:10] -100
-    electricity_angle[ccgt,2030,3,10:10] dc_power_flow[ccgt,hub,2030,3,10:10] -100
-    electricity_angle[ccgt,2030,3,11:11] dc_power_flow[ccgt,demand,2030,3,11:11] -100
-    electricity_angle[ccgt,2030,3,11:11] dc_power_flow[ccgt,hub,2030,3,11:11] -100
-    electricity_angle[ccgt,2030,3,12:12] dc_power_flow[ccgt,demand,2030,3,12:12] -100
-    electricity_angle[ccgt,2030,3,12:12] dc_power_flow[ccgt,hub,2030,3,12:12] -100
-    electricity_angle[ccgt,2030,3,13:13] dc_power_flow[ccgt,demand,2030,3,13:13] -100
-    electricity_angle[ccgt,2030,3,13:13] dc_power_flow[ccgt,hub,2030,3,13:13] -100
-    electricity_angle[ccgt,2030,3,14:14] dc_power_flow[ccgt,demand,2030,3,14:14] -100
-    electricity_angle[ccgt,2030,3,14:14] dc_power_flow[ccgt,hub,2030,3,14:14] -100
-    electricity_angle[ccgt,2030,3,15:15] dc_power_flow[ccgt,demand,2030,3,15:15] -100
-    electricity_angle[ccgt,2030,3,15:15] dc_power_flow[ccgt,hub,2030,3,15:15] -100
-    electricity_angle[ccgt,2030,3,16:16] dc_power_flow[ccgt,demand,2030,3,16:16] -100
-    electricity_angle[ccgt,2030,3,16:16] dc_power_flow[ccgt,hub,2030,3,16:16] -100
-    electricity_angle[ccgt,2030,3,17:17] dc_power_flow[ccgt,demand,2030,3,17:17] -100
-    electricity_angle[ccgt,2030,3,17:17] dc_power_flow[ccgt,hub,2030,3,17:17] -100
-    electricity_angle[ccgt,2030,3,18:18] dc_power_flow[ccgt,demand,2030,3,18:18] -100
-    electricity_angle[ccgt,2030,3,18:18] dc_power_flow[ccgt,hub,2030,3,18:18] -100
-    electricity_angle[ccgt,2030,3,19:19] dc_power_flow[ccgt,demand,2030,3,19:19] -100
-    electricity_angle[ccgt,2030,3,19:19] dc_power_flow[ccgt,hub,2030,3,19:19] -100
-    electricity_angle[ccgt,2030,3,20:20] dc_power_flow[ccgt,demand,2030,3,20:20] -100
-    electricity_angle[ccgt,2030,3,20:20] dc_power_flow[ccgt,hub,2030,3,20:20] -100
-    electricity_angle[ccgt,2030,3,21:21] dc_power_flow[ccgt,demand,2030,3,21:21] -100
-    electricity_angle[ccgt,2030,3,21:21] dc_power_flow[ccgt,hub,2030,3,21:21] -100
-    electricity_angle[ccgt,2030,3,22:22] dc_power_flow[ccgt,demand,2030,3,22:22] -100
-    electricity_angle[ccgt,2030,3,22:22] dc_power_flow[ccgt,hub,2030,3,22:22] -100
-    electricity_angle[ccgt,2030,3,23:23] dc_power_flow[ccgt,demand,2030,3,23:23] -100
-    electricity_angle[ccgt,2030,3,23:23] dc_power_flow[ccgt,hub,2030,3,23:23] -100
-    electricity_angle[ccgt,2030,3,24:24] dc_power_flow[ccgt,demand,2030,3,24:24] -100
-    electricity_angle[ccgt,2030,3,24:24] dc_power_flow[ccgt,hub,2030,3,24:24] -100
-    electricity_angle[demand,2030,1,1:2] dc_power_flow[ccgt,demand,2030,1,1:2] 100
-    electricity_angle[demand,2030,1,1:2] dc_power_flow[hub,demand,2030,1,1:2] 100
-    electricity_angle[demand,2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,3:3] 100
-    electricity_angle[demand,2030,1,3:4] dc_power_flow[ccgt,demand,2030,1,4:4] 100
-    electricity_angle[demand,2030,1,3:4] dc_power_flow[hub,demand,2030,1,3:3] 100
-    electricity_angle[demand,2030,1,3:4] dc_power_flow[hub,demand,2030,1,4:4] 100
-    electricity_angle[demand,2030,1,5:6] dc_power_flow[ccgt,demand,2030,1,5:6] 100
-    electricity_angle[demand,2030,1,5:6] dc_power_flow[hub,demand,2030,1,5:6] 100
-    electricity_angle[demand,2030,1,7:8] dc_power_flow[ccgt,demand,2030,1,7:8] 100
-    electricity_angle[demand,2030,1,7:8] dc_power_flow[hub,demand,2030,1,7:8] 100
-    electricity_angle[demand,2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,9:9] 100
-    electricity_angle[demand,2030,1,9:10] dc_power_flow[ccgt,demand,2030,1,10:10] 100
-    electricity_angle[demand,2030,1,9:10] dc_power_flow[hub,demand,2030,1,9:9] 100
-    electricity_angle[demand,2030,1,9:10] dc_power_flow[hub,demand,2030,1,10:10] 100
-    electricity_angle[demand,2030,1,11:12] dc_power_flow[ccgt,demand,2030,1,11:12] 100
-    electricity_angle[demand,2030,1,11:12] dc_power_flow[hub,demand,2030,1,11:12] 100
-    electricity_angle[demand,2030,1,13:14] dc_power_flow[ccgt,demand,2030,1,13:14] 100
-    electricity_angle[demand,2030,1,13:14] dc_power_flow[hub,demand,2030,1,13:14] 100
-    electricity_angle[demand,2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,15:15] 100
-    electricity_angle[demand,2030,1,15:16] dc_power_flow[ccgt,demand,2030,1,16:16] 100
-    electricity_angle[demand,2030,1,15:16] dc_power_flow[hub,demand,2030,1,15:15] 100
-    electricity_angle[demand,2030,1,15:16] dc_power_flow[hub,demand,2030,1,16:16] 100
-    electricity_angle[demand,2030,1,17:18] dc_power_flow[ccgt,demand,2030,1,17:18] 100
-    electricity_angle[demand,2030,1,17:18] dc_power_flow[hub,demand,2030,1,17:18] 100
-    electricity_angle[demand,2030,1,19:20] dc_power_flow[ccgt,demand,2030,1,19:20] 100
-    electricity_angle[demand,2030,1,19:20] dc_power_flow[hub,demand,2030,1,19:20] 100
-    electricity_angle[demand,2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,21:21] 100
-    electricity_angle[demand,2030,1,21:22] dc_power_flow[ccgt,demand,2030,1,22:22] 100
-    electricity_angle[demand,2030,1,21:22] dc_power_flow[hub,demand,2030,1,21:21] 100
-    electricity_angle[demand,2030,1,21:22] dc_power_flow[hub,demand,2030,1,22:22] 100
-    electricity_angle[demand,2030,1,23:24] dc_power_flow[ccgt,demand,2030,1,23:24] 100
-    electricity_angle[demand,2030,1,23:24] dc_power_flow[hub,demand,2030,1,23:24] 100
     electricity_angle[demand,2030,2,1:1] dc_power_flow[ccgt,demand,2030,2,1:1] 100
     electricity_angle[demand,2030,2,1:1] dc_power_flow[hub,demand,2030,2,1:1] 100
     electricity_angle[demand,2030,2,2:2] dc_power_flow[ccgt,demand,2030,2,2:2] 100
@@ -2458,6 +2410,54 @@ COLUMNS
     electricity_angle[demand,2030,2,23:23] dc_power_flow[hub,demand,2030,2,23:23] 100
     electricity_angle[demand,2030,2,24:24] dc_power_flow[ccgt,demand,2030,2,24:24] 100
     electricity_angle[demand,2030,2,24:24] dc_power_flow[hub,demand,2030,2,24:24] 100
+    electricity_angle[ccgt,2030,3,1:1] dc_power_flow[ccgt,demand,2030,3,1:1] -100
+    electricity_angle[ccgt,2030,3,1:1] dc_power_flow[ccgt,hub,2030,3,1:1] -100
+    electricity_angle[ccgt,2030,3,2:2] dc_power_flow[ccgt,demand,2030,3,2:2] -100
+    electricity_angle[ccgt,2030,3,2:2] dc_power_flow[ccgt,hub,2030,3,2:2] -100
+    electricity_angle[ccgt,2030,3,3:3] dc_power_flow[ccgt,demand,2030,3,3:3] -100
+    electricity_angle[ccgt,2030,3,3:3] dc_power_flow[ccgt,hub,2030,3,3:3] -100
+    electricity_angle[ccgt,2030,3,4:4] dc_power_flow[ccgt,demand,2030,3,4:4] -100
+    electricity_angle[ccgt,2030,3,4:4] dc_power_flow[ccgt,hub,2030,3,4:4] -100
+    electricity_angle[ccgt,2030,3,5:5] dc_power_flow[ccgt,demand,2030,3,5:5] -100
+    electricity_angle[ccgt,2030,3,5:5] dc_power_flow[ccgt,hub,2030,3,5:5] -100
+    electricity_angle[ccgt,2030,3,6:6] dc_power_flow[ccgt,demand,2030,3,6:6] -100
+    electricity_angle[ccgt,2030,3,6:6] dc_power_flow[ccgt,hub,2030,3,6:6] -100
+    electricity_angle[ccgt,2030,3,7:7] dc_power_flow[ccgt,demand,2030,3,7:7] -100
+    electricity_angle[ccgt,2030,3,7:7] dc_power_flow[ccgt,hub,2030,3,7:7] -100
+    electricity_angle[ccgt,2030,3,8:8] dc_power_flow[ccgt,demand,2030,3,8:8] -100
+    electricity_angle[ccgt,2030,3,8:8] dc_power_flow[ccgt,hub,2030,3,8:8] -100
+    electricity_angle[ccgt,2030,3,9:9] dc_power_flow[ccgt,demand,2030,3,9:9] -100
+    electricity_angle[ccgt,2030,3,9:9] dc_power_flow[ccgt,hub,2030,3,9:9] -100
+    electricity_angle[ccgt,2030,3,10:10] dc_power_flow[ccgt,demand,2030,3,10:10] -100
+    electricity_angle[ccgt,2030,3,10:10] dc_power_flow[ccgt,hub,2030,3,10:10] -100
+    electricity_angle[ccgt,2030,3,11:11] dc_power_flow[ccgt,demand,2030,3,11:11] -100
+    electricity_angle[ccgt,2030,3,11:11] dc_power_flow[ccgt,hub,2030,3,11:11] -100
+    electricity_angle[ccgt,2030,3,12:12] dc_power_flow[ccgt,demand,2030,3,12:12] -100
+    electricity_angle[ccgt,2030,3,12:12] dc_power_flow[ccgt,hub,2030,3,12:12] -100
+    electricity_angle[ccgt,2030,3,13:13] dc_power_flow[ccgt,demand,2030,3,13:13] -100
+    electricity_angle[ccgt,2030,3,13:13] dc_power_flow[ccgt,hub,2030,3,13:13] -100
+    electricity_angle[ccgt,2030,3,14:14] dc_power_flow[ccgt,demand,2030,3,14:14] -100
+    electricity_angle[ccgt,2030,3,14:14] dc_power_flow[ccgt,hub,2030,3,14:14] -100
+    electricity_angle[ccgt,2030,3,15:15] dc_power_flow[ccgt,demand,2030,3,15:15] -100
+    electricity_angle[ccgt,2030,3,15:15] dc_power_flow[ccgt,hub,2030,3,15:15] -100
+    electricity_angle[ccgt,2030,3,16:16] dc_power_flow[ccgt,demand,2030,3,16:16] -100
+    electricity_angle[ccgt,2030,3,16:16] dc_power_flow[ccgt,hub,2030,3,16:16] -100
+    electricity_angle[ccgt,2030,3,17:17] dc_power_flow[ccgt,demand,2030,3,17:17] -100
+    electricity_angle[ccgt,2030,3,17:17] dc_power_flow[ccgt,hub,2030,3,17:17] -100
+    electricity_angle[ccgt,2030,3,18:18] dc_power_flow[ccgt,demand,2030,3,18:18] -100
+    electricity_angle[ccgt,2030,3,18:18] dc_power_flow[ccgt,hub,2030,3,18:18] -100
+    electricity_angle[ccgt,2030,3,19:19] dc_power_flow[ccgt,demand,2030,3,19:19] -100
+    electricity_angle[ccgt,2030,3,19:19] dc_power_flow[ccgt,hub,2030,3,19:19] -100
+    electricity_angle[ccgt,2030,3,20:20] dc_power_flow[ccgt,demand,2030,3,20:20] -100
+    electricity_angle[ccgt,2030,3,20:20] dc_power_flow[ccgt,hub,2030,3,20:20] -100
+    electricity_angle[ccgt,2030,3,21:21] dc_power_flow[ccgt,demand,2030,3,21:21] -100
+    electricity_angle[ccgt,2030,3,21:21] dc_power_flow[ccgt,hub,2030,3,21:21] -100
+    electricity_angle[ccgt,2030,3,22:22] dc_power_flow[ccgt,demand,2030,3,22:22] -100
+    electricity_angle[ccgt,2030,3,22:22] dc_power_flow[ccgt,hub,2030,3,22:22] -100
+    electricity_angle[ccgt,2030,3,23:23] dc_power_flow[ccgt,demand,2030,3,23:23] -100
+    electricity_angle[ccgt,2030,3,23:23] dc_power_flow[ccgt,hub,2030,3,23:23] -100
+    electricity_angle[ccgt,2030,3,24:24] dc_power_flow[ccgt,demand,2030,3,24:24] -100
+    electricity_angle[ccgt,2030,3,24:24] dc_power_flow[ccgt,hub,2030,3,24:24] -100
     electricity_angle[demand,2030,3,1:1] dc_power_flow[ccgt,demand,2030,3,1:1] 100
     electricity_angle[demand,2030,3,1:1] dc_power_flow[hub,demand,2030,3,1:1] 100
     electricity_angle[demand,2030,3,2:2] dc_power_flow[ccgt,demand,2030,3,2:2] 100
@@ -3825,6 +3825,18 @@ BOUNDS
  FR bounds    electricity_angle[ccgt,2030,1,16:18]
  FR bounds    electricity_angle[ccgt,2030,1,19:21]
  FR bounds    electricity_angle[ccgt,2030,1,22:24]
+ FR bounds    electricity_angle[demand,2030,1,1:2]
+ FR bounds    electricity_angle[demand,2030,1,3:4]
+ FR bounds    electricity_angle[demand,2030,1,5:6]
+ FR bounds    electricity_angle[demand,2030,1,7:8]
+ FR bounds    electricity_angle[demand,2030,1,9:10]
+ FR bounds    electricity_angle[demand,2030,1,11:12]
+ FR bounds    electricity_angle[demand,2030,1,13:14]
+ FR bounds    electricity_angle[demand,2030,1,15:16]
+ FR bounds    electricity_angle[demand,2030,1,17:18]
+ FR bounds    electricity_angle[demand,2030,1,19:20]
+ FR bounds    electricity_angle[demand,2030,1,21:22]
+ FR bounds    electricity_angle[demand,2030,1,23:24]
  FR bounds    electricity_angle[ccgt,2030,2,1:1]
  FR bounds    electricity_angle[ccgt,2030,2,2:2]
  FR bounds    electricity_angle[ccgt,2030,2,3:3]
@@ -3849,42 +3861,6 @@ BOUNDS
  FR bounds    electricity_angle[ccgt,2030,2,22:22]
  FR bounds    electricity_angle[ccgt,2030,2,23:23]
  FR bounds    electricity_angle[ccgt,2030,2,24:24]
- FR bounds    electricity_angle[ccgt,2030,3,1:1]
- FR bounds    electricity_angle[ccgt,2030,3,2:2]
- FR bounds    electricity_angle[ccgt,2030,3,3:3]
- FR bounds    electricity_angle[ccgt,2030,3,4:4]
- FR bounds    electricity_angle[ccgt,2030,3,5:5]
- FR bounds    electricity_angle[ccgt,2030,3,6:6]
- FR bounds    electricity_angle[ccgt,2030,3,7:7]
- FR bounds    electricity_angle[ccgt,2030,3,8:8]
- FR bounds    electricity_angle[ccgt,2030,3,9:9]
- FR bounds    electricity_angle[ccgt,2030,3,10:10]
- FR bounds    electricity_angle[ccgt,2030,3,11:11]
- FR bounds    electricity_angle[ccgt,2030,3,12:12]
- FR bounds    electricity_angle[ccgt,2030,3,13:13]
- FR bounds    electricity_angle[ccgt,2030,3,14:14]
- FR bounds    electricity_angle[ccgt,2030,3,15:15]
- FR bounds    electricity_angle[ccgt,2030,3,16:16]
- FR bounds    electricity_angle[ccgt,2030,3,17:17]
- FR bounds    electricity_angle[ccgt,2030,3,18:18]
- FR bounds    electricity_angle[ccgt,2030,3,19:19]
- FR bounds    electricity_angle[ccgt,2030,3,20:20]
- FR bounds    electricity_angle[ccgt,2030,3,21:21]
- FR bounds    electricity_angle[ccgt,2030,3,22:22]
- FR bounds    electricity_angle[ccgt,2030,3,23:23]
- FR bounds    electricity_angle[ccgt,2030,3,24:24]
- FR bounds    electricity_angle[demand,2030,1,1:2]
- FR bounds    electricity_angle[demand,2030,1,3:4]
- FR bounds    electricity_angle[demand,2030,1,5:6]
- FR bounds    electricity_angle[demand,2030,1,7:8]
- FR bounds    electricity_angle[demand,2030,1,9:10]
- FR bounds    electricity_angle[demand,2030,1,11:12]
- FR bounds    electricity_angle[demand,2030,1,13:14]
- FR bounds    electricity_angle[demand,2030,1,15:16]
- FR bounds    electricity_angle[demand,2030,1,17:18]
- FR bounds    electricity_angle[demand,2030,1,19:20]
- FR bounds    electricity_angle[demand,2030,1,21:22]
- FR bounds    electricity_angle[demand,2030,1,23:24]
  FR bounds    electricity_angle[demand,2030,2,1:1]
  FR bounds    electricity_angle[demand,2030,2,2:2]
  FR bounds    electricity_angle[demand,2030,2,3:3]
@@ -3909,6 +3885,30 @@ BOUNDS
  FR bounds    electricity_angle[demand,2030,2,22:22]
  FR bounds    electricity_angle[demand,2030,2,23:23]
  FR bounds    electricity_angle[demand,2030,2,24:24]
+ FR bounds    electricity_angle[ccgt,2030,3,1:1]
+ FR bounds    electricity_angle[ccgt,2030,3,2:2]
+ FR bounds    electricity_angle[ccgt,2030,3,3:3]
+ FR bounds    electricity_angle[ccgt,2030,3,4:4]
+ FR bounds    electricity_angle[ccgt,2030,3,5:5]
+ FR bounds    electricity_angle[ccgt,2030,3,6:6]
+ FR bounds    electricity_angle[ccgt,2030,3,7:7]
+ FR bounds    electricity_angle[ccgt,2030,3,8:8]
+ FR bounds    electricity_angle[ccgt,2030,3,9:9]
+ FR bounds    electricity_angle[ccgt,2030,3,10:10]
+ FR bounds    electricity_angle[ccgt,2030,3,11:11]
+ FR bounds    electricity_angle[ccgt,2030,3,12:12]
+ FR bounds    electricity_angle[ccgt,2030,3,13:13]
+ FR bounds    electricity_angle[ccgt,2030,3,14:14]
+ FR bounds    electricity_angle[ccgt,2030,3,15:15]
+ FR bounds    electricity_angle[ccgt,2030,3,16:16]
+ FR bounds    electricity_angle[ccgt,2030,3,17:17]
+ FR bounds    electricity_angle[ccgt,2030,3,18:18]
+ FR bounds    electricity_angle[ccgt,2030,3,19:19]
+ FR bounds    electricity_angle[ccgt,2030,3,20:20]
+ FR bounds    electricity_angle[ccgt,2030,3,21:21]
+ FR bounds    electricity_angle[ccgt,2030,3,22:22]
+ FR bounds    electricity_angle[ccgt,2030,3,23:23]
+ FR bounds    electricity_angle[ccgt,2030,3,24:24]
  FR bounds    electricity_angle[demand,2030,3,1:1]
  FR bounds    electricity_angle[demand,2030,3,2:2]
  FR bounds    electricity_angle[demand,2030,3,3:3]
