@@ -1,6 +1,6 @@
 EnergyProblem:
   - Model created!
-    - Number of variables: 364
-    - Number of constraints for variable bounds: 369
+    - Number of variables: 363
+    - Number of constraints for variable bounds: 366
     - Number of structural constraints: 432
   - Model not solved!
