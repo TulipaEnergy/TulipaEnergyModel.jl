@@ -26,11 +26,11 @@ end
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, dir)
         energy_problem = TulipaEnergyModel.run_scenario(connection; optimizer, show_log = false)
-        @test energy_problem.objective_value ≈ 289181.98024 rtol = 1e-8
+        @test energy_problem.objective_value ≈ 269238.43825 rtol = 1e-8
         @testset "populate_with_defaults shouldn't change the solution" begin
             TulipaEnergyModel.populate_with_defaults!(connection)
             energy_problem = TulipaEnergyModel.run_scenario(connection; optimizer, show_log = false)
-            @test energy_problem.objective_value ≈ 289181.98024 rtol = 1e-8
+            @test energy_problem.objective_value ≈ 269238.43825 rtol = 1e-8
         end
     end
 end
@@ -41,11 +41,11 @@ end
     TulipaIO.read_csv_folder(connection, dir)
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 289181.98024 rtol = 1e-8
+    @test energy_problem.objective_value ≈ 269238.43825 rtol = 1e-8
     @testset "populate_with_defaults shouldn't change the solution" begin
         TulipaEnergyModel.populate_with_defaults!(connection)
         energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-        @test energy_problem.objective_value ≈ 289181.98024 rtol = 1e-8
+        @test energy_problem.objective_value ≈ 269238.43825 rtol = 1e-8
     end
 end
 

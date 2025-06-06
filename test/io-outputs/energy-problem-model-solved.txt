@@ -1,8 +1,8 @@
 EnergyProblem:
   - Model created!
-    - Number of variables: 363
-    - Number of constraints for variable bounds: 366
+    - Number of variables: 364
+    - Number of constraints for variable bounds: 369
     - Number of structural constraints: 432
   - Model solved!
     - Termination status: OPTIMAL
-    - Objective value: 289181.98024354916
+    - Objective value: 269238.4382415647

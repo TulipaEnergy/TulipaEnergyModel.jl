@@ -1,5 +1,5 @@
 asset,type,capacity,investment_method,investment_integer,technical_lifetime,discount_rate
-ccgt,producer,400.0,none,true,15,0.05
+ccgt,producer,400.0,simple,true,15,0.05
 demand,consumer,0.0,none,false,15,0.05
 ens,producer,1115.0,none,false,15,0.05
 ocgt,producer,100.0,simple,true,15,0.05
