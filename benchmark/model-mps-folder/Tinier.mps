@@ -1443,6 +1443,79 @@ COLUMNS
     flow[(solar,demand),2030,3,24:24] max_output_flows_limit_simple_method[solar,2030,3,24:24] 1
     flow[(solar,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
     MARKER    'MARKER'                 'INTORG'
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,1:1] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,2:2] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,3:3] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,4:4] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,5:5] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,6:6] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,7:7] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,8:8] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,9:9] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,10:10] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,11:11] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,12:12] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,13:13] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,14:14] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,15:15] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,16:16] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,17:17] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,18:18] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,19:19] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,20:20] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,21:21] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,22:22] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,23:23] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,1,24:24] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,1:1] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,2:2] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,3:3] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,4:4] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,5:5] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,6:6] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,7:7] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,8:8] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,9:9] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,10:10] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,11:11] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,12:12] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,13:13] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,14:14] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,15:15] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,16:16] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,17:17] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,18:18] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,19:19] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,20:20] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,21:21] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,22:22] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,23:23] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,2,24:24] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,1:1] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,2:2] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,3:3] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,4:4] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,5:5] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,6:6] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,7:7] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,8:8] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,9:9] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,10:10] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,11:11] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,12:12] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,13:13] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,14:14] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,15:15] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,16:16] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,17:17] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,18:18] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,19:19] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,20:20] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,21:21] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,22:22] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,23:23] -400
+    assets_investment[2030,ccgt] max_output_flows_limit_simple_method[ccgt,2030,3,24:24] -400
+    assets_investment[2030,ccgt] OBJ 16000
     assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,1:1] -5.5
     assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,2:2] -5.5
     assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,3:3] -5.5
@@ -2782,6 +2855,8 @@ BOUNDS
  PL bounds    flow[(solar,demand),2030,3,23:23]
  LO bounds    flow[(solar,demand),2030,3,24:24] 0
  PL bounds    flow[(solar,demand),2030,3,24:24]
+ LO bounds    assets_investment[2030,ccgt] 0
+ UP bounds    assets_investment[2030,ccgt] 25
  LO bounds    assets_investment[2030,wind] 0
  PL bounds    assets_investment[2030,wind]
  LO bounds    assets_investment[2030,solar] 0
