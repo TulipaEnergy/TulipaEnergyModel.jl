@@ -1,0 +1,14 @@
+from_asset,to_asset,capacity,carrier,discount_rate,economic_lifetime,investment_integer,is_transport,technical_lifetime
+gas_market,power_plant,100,gas,0.0,1,false,false,1
+biomass,power_plant,100,biomass,0.0,1,false,false,1
+power_plant,electricity_demand,100,electricity,0.0,1,false,false,1
+power_plant,heat_demand,100,heat,0.0,1,false,false,1
+gas_market,chp_backpressure,100,gas,0.0,1,false,false,1
+chp_backpressure,electricity_demand,100,electricity,0.0,1,false,false,1
+chp_backpressure,heat_demand,100,heat,0.0,1,false,false,1
+gas_market,chp_extraction,100,gas,0.0,1,false,false,1
+chp_extraction,electricity_demand,100,electricity,0.0,1,false,false,1
+chp_extraction,heat_demand,100,heat,0.0,1,false,false,1
+power_plant,atmosphere,100,co2,0.0,1,false,false,1
+chp_backpressure,atmosphere,100,co2,0.0,1,false,false,1
+chp_extraction,atmosphere,100,co2,0.0,1,false,false,1
