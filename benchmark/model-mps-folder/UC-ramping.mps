@@ -1252,6 +1252,44 @@ COLUMNS
     assets_investment[2030,ccgt] limit_units_on_simple_method[ccgt,2030,1,19:21] -1
     assets_investment[2030,ccgt] limit_units_on_simple_method[ccgt,2030,1,22:24] -1
     assets_investment[2030,ccgt] OBJ 8000
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,1:1] -16.400000000000002
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,2:2] -15.2
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,3:3] -14.2
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,4:4] -16.1
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,5:5] -23.7
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,6:6] -33.5
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,7:7] -40.1
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,8:8] -43
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,9:9] -43.2
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,10:10] -43.4
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,11:11] -45.2
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,12:12] -47.199999999999996
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,13:13] -48.4
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,14:14] -49.1
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,15:15] -50.7
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,16:16] -51.300000000000004
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,17:17] -54
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,18:18] -55.50000000000001
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,19:19] -53.5
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,20:20] -57.8
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,21:21] -47.599999999999994
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,22:22] -38.800000000000004
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,23:23] -32.9
+    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,24:24] -30.8
+    assets_investment[2030,wind] OBJ 10000
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,7:7] -0.5
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,8:8] -3.5000000000000004
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,9:9] -10
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,10:10] -18
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,11:11] -25
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,12:12] -28.499999999999996
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,13:13] -29.5
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,14:14] -27
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,15:15] -22
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,16:16] -14.499999999999998
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,17:17] -6.5
+    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,18:18] -1.5
+    assets_investment[2030,solar] OBJ 750
     assets_investment[2030,ocgt] max_output_flows_limit_simple_method[ocgt,2030,1,1:1] -100
     assets_investment[2030,ocgt] max_output_flows_limit_simple_method[ocgt,2030,1,2:2] -100
     assets_investment[2030,ocgt] max_output_flows_limit_simple_method[ocgt,2030,1,3:3] -100
@@ -1301,123 +1339,6 @@ COLUMNS
     assets_investment[2030,ocgt] limit_units_on_simple_method[ocgt,2030,1,23:23] -1
     assets_investment[2030,ocgt] limit_units_on_simple_method[ocgt,2030,1,24:24] -1
     assets_investment[2030,ocgt] OBJ 2500
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,7:7] -0.5
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,8:8] -3.5000000000000004
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,9:9] -10
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,10:10] -18
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,11:11] -25
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,12:12] -28.499999999999996
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,13:13] -29.5
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,14:14] -27
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,15:15] -22
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,16:16] -14.499999999999998
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,17:17] -6.5
-    assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,18:18] -1.5
-    assets_investment[2030,solar] OBJ 750
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,1:1] -16.400000000000002
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,2:2] -15.2
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,3:3] -14.2
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,4:4] -16.1
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,5:5] -23.7
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,6:6] -33.5
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,7:7] -40.1
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,8:8] -43
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,9:9] -43.2
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,10:10] -43.4
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,11:11] -45.2
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,12:12] -47.199999999999996
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,13:13] -48.4
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,14:14] -49.1
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,15:15] -50.7
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,16:16] -51.300000000000004
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,17:17] -54
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,18:18] -55.50000000000001
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,19:19] -53.5
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,20:20] -57.8
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,21:21] -47.599999999999994
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,22:22] -38.800000000000004
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,23:23] -32.9
-    assets_investment[2030,wind] max_output_flows_limit_simple_method[wind,2030,1,24:24] -30.8
-    assets_investment[2030,wind] OBJ 10000
-    MARKER    'MARKER'                 'INTEND'
-    assets_decommission[demand,2030,2030] OBJ 0
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,1:1] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,2:2] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,3:3] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,4:4] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,5:5] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,6:6] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,7:7] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,8:8] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,9:9] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,10:10] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,11:11] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,12:12] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,13:13] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,14:14] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,15:15] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,16:16] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,17:17] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,18:18] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,19:19] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,20:20] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,21:21] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,22:22] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,23:23] 1150
-    assets_decommission[ens,2030,2030] max_output_flows_limit_simple_method[ens,2030,1,24:24] 1150
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,1:1] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,2:2] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,3:3] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,4:4] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,5:5] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,6:6] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,7:7] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,8:8] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,9:9] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,10:10] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,11:11] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,12:12] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,13:13] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,14:14] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,15:15] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,16:16] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,17:17] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,18:18] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,19:19] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,20:20] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,21:21] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,22:22] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,23:23] 1800
-    assets_decommission[gas,2030,2030] max_output_flows_limit_simple_method[gas,2030,1,24:24] 1800
-    MARKER    'MARKER'                 'INTORG'
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,1:1] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,2:2] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,3:3] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,4:4] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,5:5] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,6:6] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,7:7] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,8:8] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,9:9] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,10:10] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,11:11] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,12:12] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,13:13] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,14:14] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,15:15] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,16:16] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,17:17] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,18:18] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,19:19] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,20:20] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,21:21] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,22:22] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,23:23] 200
-    assets_decommission[smr,2030,2030] max_output_flows_limit_simple_method[smr,2030,1,24:24] 200
-    assets_decommission[smr,2030,2030] limit_units_on_simple_method[smr,2030,1,1:6] 1
-    assets_decommission[smr,2030,2030] limit_units_on_simple_method[smr,2030,1,7:12] 1
-    assets_decommission[smr,2030,2030] limit_units_on_simple_method[smr,2030,1,13:18] 1
-    assets_decommission[smr,2030,2030] limit_units_on_simple_method[smr,2030,1,19:24] 1
     units_on[ccgt,2030,1,1:3] limit_units_on_simple_method[ccgt,2030,1,1:3] 1
     units_on[ccgt,2030,1,1:3] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,1:2] -200
     units_on[ccgt,2030,1,1:3] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,3:3] -200
@@ -2516,20 +2437,12 @@ BOUNDS
  PL bounds    flow[(ens,demand),2030,1,24:24]
  LO bounds    assets_investment[2030,ccgt] 0
  UP bounds    assets_investment[2030,ccgt] 50
- LO bounds    assets_investment[2030,ocgt] 0
- PL bounds    assets_investment[2030,ocgt]
- LO bounds    assets_investment[2030,solar] 0
- PL bounds    assets_investment[2030,solar]
  LO bounds    assets_investment[2030,wind] 0
  PL bounds    assets_investment[2030,wind]
- LO bounds    assets_decommission[demand,2030,2030] 0
- PL bounds    assets_decommission[demand,2030,2030]
- LO bounds    assets_decommission[ens,2030,2030] 0
- PL bounds    assets_decommission[ens,2030,2030]
- LO bounds    assets_decommission[gas,2030,2030] 0
- PL bounds    assets_decommission[gas,2030,2030]
- LO bounds    assets_decommission[smr,2030,2030] 0
- PL bounds    assets_decommission[smr,2030,2030]
+ LO bounds    assets_investment[2030,solar] 0
+ PL bounds    assets_investment[2030,solar]
+ LO bounds    assets_investment[2030,ocgt] 0
+ PL bounds    assets_investment[2030,ocgt]
  LO bounds    units_on[ccgt,2030,1,1:3] 0
  PL bounds    units_on[ccgt,2030,1,1:3]
  LO bounds    units_on[ccgt,2030,1,4:6] 0

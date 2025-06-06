@@ -347,7 +347,7 @@ end
             error_messages =
                 TEM._validate_simple_method_has_only_matching_years!(String[], connection)
             @test error_messages == [
-                "Unexpected (asset='ccgt', milestone_year=2030, commission_year=2029) in 'asset_both' for an asset='ccgt' with investment_method='none'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+                "Unexpected (asset='ccgt', milestone_year=2030, commission_year=2029) in 'asset_both' for an asset='ccgt' with investment_method='simple'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
                 "Unexpected (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2029) in 'flow_both' for an flow=('wind', 'demand') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
             ]
         end
@@ -367,7 +367,7 @@ end
             error_messages =
                 TEM._validate_simple_method_all_milestone_years_are_covered!(String[], connection)
             @test error_messages == [
-                "Missing information in 'asset_both': Asset 'ccgt' has investment_method='none' but there is no row (asset='ccgt', milestone_year=2030, commission_year=2030). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+                "Missing information in 'asset_both': Asset 'ccgt' has investment_method='simple' but there is no row (asset='ccgt', milestone_year=2030, commission_year=2030). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
                 "Missing information in 'flow_both': Flow ('wind', 'demand') currently only has investment_method='simple/none' but there is no row (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2030). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
             ]
         end

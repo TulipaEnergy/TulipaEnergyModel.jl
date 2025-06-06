@@ -1297,8 +1297,8 @@ ROWS
  L  max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22]
  L  max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23]
  L  max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24]
- G  limit_decommission_compact_method[wind,2050,2030]
  G  limit_decommission_compact_method[wind,2030,2020]
+ G  limit_decommission_compact_method[wind,2050,2030]
  G  min_storage_level_rep_period_limit[battery,2030,1,1:1]
  G  min_storage_level_rep_period_limit[battery,2030,1,2:2]
  G  min_storage_level_rep_period_limit[battery,2030,1,3:3]
@@ -6640,225 +6640,6 @@ COLUMNS
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,3,23:23] -37
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,3,24:24] -37
     assets_investment[2050,wind] OBJ 3661.851415339661
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,1:1] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,2:2] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,3:3] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,4:4] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,5:5] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,6:6] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,7:7] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,8:8] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,9:9] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,10:10] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,11:11] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,12:12] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,13:13] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,14:14] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,15:15] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,16:16] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,17:17] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,18:18] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,19:19] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,20:20] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,21:21] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,22:22] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,23:23] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,24:24] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,1:1] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,2:2] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,3:3] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,4:4] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,5:5] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,6:6] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,7:7] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,8:8] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,9:9] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,10:10] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,11:11] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,12:12] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,13:13] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,14:14] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,15:15] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,16:16] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,17:17] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,18:18] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,19:19] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,20:20] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,21:21] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,22:22] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,23:23] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,24:24] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,1:1] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,2:2] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,3:3] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,4:4] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,5:5] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,6:6] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,7:7] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,8:8] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,9:9] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,10:10] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,11:11] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,12:12] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,13:13] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,14:14] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,15:15] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,16:16] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,17:17] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,18:18] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,19:19] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,20:20] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,21:21] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,22:22] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,23:23] 50
-    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,24:24] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,1:1] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,2:2] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,3:3] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,4:4] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,5:5] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,6:6] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,7:7] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,8:8] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,9:9] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,10:10] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,11:11] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,12:12] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,13:13] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,14:14] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,15:15] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,16:16] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,17:17] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,18:18] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,19:19] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,20:20] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,21:21] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,22:22] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,23:23] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,24:24] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,1:1] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,2:2] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,3:3] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,4:4] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,5:5] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,6:6] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,7:7] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,8:8] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,9:9] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,10:10] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,11:11] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,12:12] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,13:13] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,14:14] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,15:15] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,16:16] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,17:17] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,18:18] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,19:19] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,20:20] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,21:21] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,22:22] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,23:23] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,24:24] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,1:1] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,2:2] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,3:3] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,4:4] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,5:5] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,6:6] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,7:7] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,8:8] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,9:9] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,10:10] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,11:11] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,12:12] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,13:13] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,14:14] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,15:15] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,16:16] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,17:17] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,18:18] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,19:19] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,20:20] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,21:21] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,22:22] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,23:23] 50
-    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,24:24] 50
-    assets_decommission[battery,2050,2050] OBJ -1250
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,1:1] 5.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,2:2] 5.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,3:3] 5.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,4:4] 5.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,5:5] 5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,6:6] 5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,7:7] 5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,8:8] 4.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,9:9] 4.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,10:10] 4.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,11:11] 4.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,12:12] 4.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,13:13] 5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,14:14] 6
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,15:15] 7.000000000000001
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,16:16] 7.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,17:17] 8
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,18:18] 8
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,19:19] 8
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,20:20] 7.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,21:21] 7.000000000000001
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,22:22] 6.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,23:23] 6
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,24:24] 6
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,1:1] 27
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,2:2] 27
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,3:3] 26.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,4:4] 26
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,5:5] 25.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,6:6] 25
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,7:7] 24
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,8:8] 23.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,9:9] 23
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,10:10] 22.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,11:11] 22.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,12:12] 22.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,13:13] 21.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,14:14] 20.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,15:15] 19
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,16:16] 17.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,17:17] 17
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,18:18] 17.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,19:19] 18
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,20:20] 19
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,21:21] 20.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,22:22] 21.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,23:23] 23
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,24:24] 24
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,1:1] 34
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,2:2] 34.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,3:3] 35
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,4:4] 35.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,5:5] 36.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,6:6] 37
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,7:7] 37.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,8:8] 38
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,9:9] 38.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,10:10] 39
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,11:11] 39.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,12:12] 40
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,13:13] 40.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,14:14] 40.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,15:15] 40
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,16:16] 39.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,17:17] 39
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,18:18] 38.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,19:19] 38
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,20:20] 37.5
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,21:21] 37
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,22:22] 37
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,23:23] 37
-    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,24:24] 37
-    assets_decommission[wind,2050,2030] limit_decommission_compact_method[wind,2050,2030] -1
-    assets_decommission[wind,2050,2030] OBJ -3100
     assets_decommission[battery,2030,2030] max_output_flows_limit_simple_method[battery,2030,1,1:1] 50
     assets_decommission[battery,2030,2030] max_output_flows_limit_simple_method[battery,2030,1,2:2] 50
     assets_decommission[battery,2030,2030] max_output_flows_limit_simple_method[battery,2030,1,3:3] 50
@@ -7148,6 +6929,151 @@ COLUMNS
     assets_decommission[battery,2030,2030] max_input_flows_limit_simple_method[battery,2050,3,23:23] 50
     assets_decommission[battery,2030,2030] max_input_flows_limit_simple_method[battery,2050,3,24:24] 50
     assets_decommission[battery,2030,2030] OBJ -24250
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,1:1] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,2:2] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,3:3] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,4:4] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,5:5] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,6:6] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,7:7] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,8:8] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,9:9] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,10:10] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,11:11] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,12:12] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,13:13] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,14:14] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,15:15] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,16:16] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,17:17] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,18:18] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,19:19] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,20:20] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,21:21] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,22:22] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,23:23] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,24:24] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,1:1] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,2:2] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,3:3] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,4:4] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,5:5] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,6:6] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,7:7] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,8:8] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,9:9] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,10:10] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,11:11] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,12:12] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,13:13] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,14:14] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,15:15] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,16:16] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,17:17] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,18:18] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,19:19] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,20:20] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,21:21] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,22:22] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,23:23] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,2,24:24] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,1:1] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,2:2] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,3:3] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,4:4] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,5:5] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,6:6] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,7:7] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,8:8] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,9:9] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,10:10] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,11:11] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,12:12] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,13:13] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,14:14] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,15:15] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,16:16] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,17:17] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,18:18] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,19:19] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,20:20] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,21:21] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,22:22] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,23:23] 50
+    assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,3,24:24] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,1:1] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,2:2] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,3:3] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,4:4] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,5:5] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,6:6] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,7:7] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,8:8] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,9:9] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,10:10] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,11:11] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,12:12] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,13:13] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,14:14] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,15:15] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,16:16] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,17:17] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,18:18] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,19:19] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,20:20] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,21:21] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,22:22] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,23:23] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,1,24:24] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,1:1] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,2:2] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,3:3] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,4:4] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,5:5] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,6:6] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,7:7] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,8:8] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,9:9] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,10:10] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,11:11] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,12:12] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,13:13] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,14:14] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,15:15] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,16:16] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,17:17] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,18:18] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,19:19] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,20:20] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,21:21] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,22:22] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,23:23] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,2,24:24] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,1:1] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,2:2] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,3:3] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,4:4] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,5:5] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,6:6] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,7:7] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,8:8] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,9:9] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,10:10] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,11:11] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,12:12] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,13:13] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,14:14] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,15:15] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,16:16] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,17:17] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,18:18] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,19:19] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,20:20] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,21:21] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,22:22] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,23:23] 50
+    assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,24:24] 50
+    assets_decommission[battery,2050,2050] OBJ -1250
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,1,1:1] 5.5
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,1,2:2] 5.5
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,1,3:3] 5.5
@@ -7222,6 +7148,80 @@ COLUMNS
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,3,24:24] 37
     assets_decommission[wind,2030,2020] limit_decommission_compact_method[wind,2030,2020] -1
     assets_decommission[wind,2030,2020] OBJ -61000
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,1:1] 5.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,2:2] 5.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,3:3] 5.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,4:4] 5.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,5:5] 5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,6:6] 5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,7:7] 5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,8:8] 4.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,9:9] 4.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,10:10] 4.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,11:11] 4.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,12:12] 4.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,13:13] 5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,14:14] 6
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,15:15] 7.000000000000001
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,16:16] 7.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,17:17] 8
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,18:18] 8
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,19:19] 8
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,20:20] 7.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,21:21] 7.000000000000001
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,22:22] 6.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,23:23] 6
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,24:24] 6
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,1:1] 27
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,2:2] 27
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,3:3] 26.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,4:4] 26
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,5:5] 25.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,6:6] 25
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,7:7] 24
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,8:8] 23.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,9:9] 23
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,10:10] 22.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,11:11] 22.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,12:12] 22.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,13:13] 21.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,14:14] 20.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,15:15] 19
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,16:16] 17.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,17:17] 17
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,18:18] 17.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,19:19] 18
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,20:20] 19
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,21:21] 20.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,22:22] 21.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,23:23] 23
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,2,24:24] 24
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,1:1] 34
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,2:2] 34.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,3:3] 35
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,4:4] 35.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,5:5] 36.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,6:6] 37
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,7:7] 37.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,8:8] 38
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,9:9] 38.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,10:10] 39
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,11:11] 39.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,12:12] 40
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,13:13] 40.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,14:14] 40.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,15:15] 40
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,16:16] 39.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,17:17] 39
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,18:18] 38.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,19:19] 38
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,20:20] 37.5
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,21:21] 37
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,22:22] 37
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,23:23] 37
+    assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,24:24] 37
+    assets_decommission[wind,2050,2030] limit_decommission_compact_method[wind,2050,2030] -1
+    assets_decommission[wind,2050,2030] OBJ -3100
     MARKER    'MARKER'                 'INTEND'
     flows_decommission[("ccgt",_"demand"),2030,2030] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,1:1] 100
     flows_decommission[("ccgt",_"demand"),2030,2030] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,2:2] 100
@@ -9960,8 +9960,8 @@ RHS
     rhs       max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22] 0
     rhs       max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23] 0
     rhs       max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24] 0
-    rhs       limit_decommission_compact_method[wind,2050,2030] -0.02
     rhs       limit_decommission_compact_method[wind,2030,2020] -0.07
+    rhs       limit_decommission_compact_method[wind,2050,2030] -0.02
     rhs       min_storage_level_rep_period_limit[battery,2030,1,1:1] 0
     rhs       min_storage_level_rep_period_limit[battery,2030,1,2:2] 0
     rhs       min_storage_level_rep_period_limit[battery,2030,1,3:3] 0
@@ -12577,14 +12577,14 @@ BOUNDS
  PL bounds    assets_investment[2030,wind]
  LO bounds    assets_investment[2050,wind] 0
  PL bounds    assets_investment[2050,wind]
- LO bounds    assets_decommission[battery,2050,2050] 0
- PL bounds    assets_decommission[battery,2050,2050]
- LO bounds    assets_decommission[wind,2050,2030] 0
- PL bounds    assets_decommission[wind,2050,2030]
  LO bounds    assets_decommission[battery,2030,2030] 0
  PL bounds    assets_decommission[battery,2030,2030]
+ LO bounds    assets_decommission[battery,2050,2050] 0
+ PL bounds    assets_decommission[battery,2050,2050]
  LO bounds    assets_decommission[wind,2030,2020] 0
  PL bounds    assets_decommission[wind,2030,2020]
+ LO bounds    assets_decommission[wind,2050,2030] 0
+ PL bounds    assets_decommission[wind,2050,2030]
  LO bounds    flows_decommission[("ccgt",_"demand"),2030,2030] 0
  PL bounds    flows_decommission[("ccgt",_"demand"),2030,2030]
  LO bounds    flows_decommission[("ccgt",_"demand"),2050,2050] 0

@@ -105,22 +105,6 @@ COLUMNS
     flow[(balance,demand),2030,1,4:6] balance_hub[balance,2030,1,5:5] -1
     flow[(balance,demand),2030,1,4:6] balance_hub[balance,2030,1,6:6] -1
     flow[(balance,demand),2030,1,4:6] OBJ 0.00030000000000000003
-    assets_decommission[H2,2030,2030] max_output_flows_limit_simple_method[H2,2030,1,1:6] 400
-    assets_decommission[balance,2030,2030] OBJ 0
-    assets_decommission[ccgt,2030,2030] max_output_flows_limit_simple_method[ccgt,2030,1,1:1] 100
-    assets_decommission[ccgt,2030,2030] max_output_flows_limit_simple_method[ccgt,2030,1,2:2] 100
-    assets_decommission[ccgt,2030,2030] max_output_flows_limit_simple_method[ccgt,2030,1,3:3] 100
-    assets_decommission[ccgt,2030,2030] max_output_flows_limit_simple_method[ccgt,2030,1,4:4] 100
-    assets_decommission[ccgt,2030,2030] max_output_flows_limit_simple_method[ccgt,2030,1,5:5] 100
-    assets_decommission[ccgt,2030,2030] max_output_flows_limit_simple_method[ccgt,2030,1,6:6] 100
-    assets_decommission[demand,2030,2030] OBJ 0
-    assets_decommission[phs,2030,2030] max_output_flows_limit_simple_method[phs,2030,1,1:4] 25
-    assets_decommission[phs,2030,2030] max_output_flows_limit_simple_method[phs,2030,1,5:6] 25
-    assets_decommission[phs,2030,2030] max_input_flows_limit_simple_method[phs,2030,1,1:3] 25
-    assets_decommission[phs,2030,2030] max_input_flows_limit_simple_method[phs,2030,1,4:6] 25
-    assets_decommission[wind,2030,2030] max_output_flows_limit_simple_method[wind,2030,1,1:2] 5.5
-    assets_decommission[wind,2030,2030] max_output_flows_limit_simple_method[wind,2030,1,3:3] 5.5
-    assets_decommission[wind,2030,2030] max_output_flows_limit_simple_method[wind,2030,1,4:6] 5.166666666666667
     flows_decommission[("balance",_"demand"),2030,2030] max_transport_flow_limit_simple_method[(balance,demand),2030,1,1:3] 200
     flows_decommission[("balance",_"demand"),2030,2030] max_transport_flow_limit_simple_method[(balance,demand),2030,1,4:6] 200
     flows_decommission[("balance",_"demand"),2030,2030] min_transport_flow_limit_simple_method[(balance,demand),2030,1,1:3] -200
@@ -189,18 +173,6 @@ BOUNDS
  PL bounds    flow[(ccgt,balance),2030,1,6:6]
  FR bounds    flow[(balance,demand),2030,1,1:3]
  FR bounds    flow[(balance,demand),2030,1,4:6]
- LO bounds    assets_decommission[H2,2030,2030] 0
- PL bounds    assets_decommission[H2,2030,2030]
- LO bounds    assets_decommission[balance,2030,2030] 0
- PL bounds    assets_decommission[balance,2030,2030]
- LO bounds    assets_decommission[ccgt,2030,2030] 0
- PL bounds    assets_decommission[ccgt,2030,2030]
- LO bounds    assets_decommission[demand,2030,2030] 0
- PL bounds    assets_decommission[demand,2030,2030]
- LO bounds    assets_decommission[phs,2030,2030] 0
- PL bounds    assets_decommission[phs,2030,2030]
- LO bounds    assets_decommission[wind,2030,2030] 0
- PL bounds    assets_decommission[wind,2030,2030]
  LO bounds    flows_decommission[("balance",_"demand"),2030,2030] 0
  PL bounds    flows_decommission[("balance",_"demand"),2030,2030]
  LO bounds    storage_level_rep_period[phs,2030,1,1:6] 0
