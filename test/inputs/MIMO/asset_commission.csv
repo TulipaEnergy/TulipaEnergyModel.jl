@@ -1,9 +1,9 @@
 asset,commission_year,conversion_efficiency,fixed_cost,fixed_cost_storage_energy,investment_cost,investment_cost_storage_energy,investment_limit,investment_limit_storage_energy,storage_charging_efficiency,storage_discharging_efficiency,storage_loss_from_stored_energy
 power_plant,2030,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0
-chp_backpressure,2030,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0
+chp_backpressure,2030,0.9,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0
 chp_extraction,2030,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0
 gas_market,2030,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0
-biomass,2030,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0
+biomass,2030,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.3,0.0
 electricity_demand,2030,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0
 heat_demand,2030,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0
 atmosphere,2030,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0

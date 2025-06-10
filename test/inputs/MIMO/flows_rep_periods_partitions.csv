@@ -1,1 +1,4 @@
 from_asset,to_asset,partition,rep_period,specification,year
+power_plant,atmosphere,24,1,uniform,2030
+chp_backpressure,atmosphere,24,1,uniform,2030
+chp_extraction,atmosphere,24,1,uniform,2030

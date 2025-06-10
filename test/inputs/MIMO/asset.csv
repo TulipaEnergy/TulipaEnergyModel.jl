@@ -1,9 +1,9 @@
 asset,capacity,capacity_storage_energy,consumer_balance_sense,discount_rate,economic_lifetime,energy_to_power_ratio,group,investment_integer,investment_integer_storage_energy,investment_method,is_seasonal,max_ramp_down,max_ramp_up,min_operating_point,ramping,storage_method_energy,technical_lifetime,type,unit_commitment,unit_commitment_integer,unit_commitment_method,use_binary_storage_method
-power_plant,100,,==,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,conversion,false,false,,false
-chp_backpressure,100,,==,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,conversion,false,false,,false
-chp_extraction,100,,==,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,conversion,false,false,,false
+power_plant,400,,==,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,conversion,false,false,,false
+chp_backpressure,35,,==,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,conversion,false,false,,false
+chp_extraction,35,,==,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,conversion,false,false,,false
 gas_market,1000,,==,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,producer,false,false,,false
-biomass,100,2400,==,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,storage,false,false,,false
+biomass,400,2400,==,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,storage,false,false,,false
 electricity_demand,0,,==,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,consumer,false,false,,false
 heat_demand,0,,>=,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,consumer,false,false,,false
 atmosphere,0,,>=,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,consumer,false,false,,false
