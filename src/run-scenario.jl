@@ -56,7 +56,7 @@ function run_scenario(
 
     @timeit to "save_solution!" save_solution!(energy_problem)
 
-    if output_folder != ""
+    if output_folder != "" && energy_problem.solved
         @timeit to "export_solution_to_csv_files" export_solution_to_csv_files(
             output_folder,
             energy_problem,
