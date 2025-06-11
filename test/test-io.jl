@@ -30,12 +30,12 @@ end
         _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
         energy_problem = TulipaEnergyModel.EnergyProblem(connection)
         output_dir = mktempdir()
-        @test_logs (:error, "The energy_problem has not been solved yet.") TulipaEnergyModel.export_solution_to_csv_files(
+        @test_throws Exception TulipaEnergyModel.export_solution_to_csv_files(
             output_dir,
             energy_problem,
         )
         TulipaEnergyModel.create_model!(energy_problem)
-        @test_logs (:error, "The energy_problem has not been solved yet.") TulipaEnergyModel.export_solution_to_csv_files(
+        @test_throws Exception TulipaEnergyModel.export_solution_to_csv_files(
             output_dir,
             energy_problem,
         )
