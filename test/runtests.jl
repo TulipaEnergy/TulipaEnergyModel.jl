@@ -4,6 +4,7 @@ using DuckDB: DuckDB, DBInterface
 using GLPK: GLPK
 using HiGHS: HiGHS
 using JuMP: JuMP
+using Logging: Logging, with_logger
 using MathOptInterface: MathOptInterface
 using Test: Test, @test, @testset, @test_throws, @test_logs
 using TOML: TOML
