@@ -1,0 +1,14 @@
+from_asset,to_asset,capacity_coefficient,commission_year,conversion_coefficient,fixed_cost,investment_cost,investment_limit
+gas_market,power_plant,1.0,2030,0.45,0.0,0.0,0.0
+biomass,power_plant,1.0,2030,0.30,0.0,0.0,0.0
+power_plant,electricity_demand,1.0,2030,1.0,0.0,0.0,0.0
+power_plant,heat_demand,0.0,2030,0.0,0.0,0.0,0.0
+gas_market,chp_backpressure,1.0,2030,1.0,0.0,0.0,0.0
+chp_backpressure,electricity_demand,1.0,2030,1.41,0.0,0.0,0.0
+chp_backpressure,heat_demand,0.389,2030,0.49,0.0,0.0,0.0
+gas_market,chp_extraction,1.0,2030,1.0,0.0,0.0,0.0
+chp_extraction,electricity_demand,1.0,2030,1.0,0.0,0.0,0.0
+chp_extraction,heat_demand,0.0,2030,1.0,0.0,0.0,0.0
+power_plant,atmosphere,1.0,2030,1.0,0.0,0.0,0.0
+chp_backpressure,atmosphere,1.0,2030,1.0,0.0,0.0,0.0
+chp_extraction,atmosphere,1.0,2030,1.0,0.0,0.0,0.0

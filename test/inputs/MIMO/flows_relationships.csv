@@ -1,0 +1,11 @@
+flow_1_from_asset,flow_1_to_asset,flow_2_from_asset,flow_2_to_asset,milestone_year,constant,ratio,sense
+power_plant,electricity_demand,power_plant,heat_demand,2030,0.0,4.0,==
+power_plant,atmosphere,gas_market,power_plant,2030,0.0,0.1575,==
+power_plant,atmosphere,biomass,power_plant,2030,0.0,0.150,==
+chp_backpressure,electricity_demand,chp_backpressure,heat_demand,2030,0.0,2.0,==
+chp_backpressure,atmosphere,chp_backpressure,electricity_demand,2030,0.0,0.18,==
+chp_extraction,electricity_demand,chp_extraction,heat_demand,2030,0.0,1.8,>=
+chp_extraction,electricity_demand,chp_extraction,heat_demand,2030,35,-0.15,<=
+chp_extraction,electricity_demand,chp_extraction,heat_demand,2030,15,-0.15,>=
+chp_extraction,heat_demand,chp_extraction,electricity_demand,2030,13.61,0.0,<=
+chp_extraction,atmosphere,chp_extraction,electricity_demand,2030,0.0,0.108,==

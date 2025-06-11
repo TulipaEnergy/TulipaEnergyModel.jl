@@ -1,0 +1,4 @@
+asset,commission_year,profile_name,profile_type
+electricity_demand,2030,electricity_demand_profile,demand
+heat_demand,2030,heat_demand_profile,demand
+biomass,2030,biomass_profile,inflows

@@ -1,0 +1,9 @@
+asset,commission_year,decommissionable,initial_storage_units,initial_units,milestone_year
+power_plant,2030,false,0.0,1.0,2030
+chp_backpressure,2030,false,0.0,1.0,2030
+chp_extraction,2030,false,0.0,1.0,2030
+gas_market,2030,false,0.0,1.0,2030
+biomass,2030,false,1.0,1.0,2030
+electricity_demand,2030,false,0.0,1.0,2030
+heat_demand,2030,false,0.0,1.0,2030
+atmosphere,2030,false,0.0,1.0,2030
