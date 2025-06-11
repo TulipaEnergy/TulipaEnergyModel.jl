@@ -64,7 +64,7 @@ Notice that this assumes that the solution has been computed by [`save_solution!
 """
 function export_solution_to_csv_files(output_folder, energy_problem::EnergyProblem)
     if !energy_problem.solved
-        return error("The energy_problem has not been solved yet.")
+        error("The energy_problem has not been solved yet.")
     end
     export_solution_to_csv_files(
         output_folder,
