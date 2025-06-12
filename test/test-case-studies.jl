@@ -171,4 +171,9 @@ end
     print(io, energy_problem)
     @test split(String(take!(io))) ==
           split(read("io-outputs/energy-problem-model-infeasible.txt", String))
+
+    # Test that export solution warning is present in logs
+    output_folder = mktempdir()
+    @test_logs (:warn, "The energy problem has not been solved yet. Skipping export solution.") match_mode =
+        :any TulipaEnergyModel.run_scenario(connection; output_folder)
 end
