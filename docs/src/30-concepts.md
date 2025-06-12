@@ -168,7 +168,6 @@ Below is the table outlining the details for each type of constraint.
 | Maximum Ramp Down Flow without Unit Commitment | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |
 | DC-OPF Constraint | flow, electricity_angle                        | -     | power           | min(neighboring assets, flow)                                                                      | -                |
 
-
 For this basic example, we can describe the balance and capacity constraints in the model. For the sake of simplicity, we consider only the rep-period constraints, the representative period index is dropped from the equations, and there are no investment variables in the equations.
 
 ### Energy Balance Constraints
@@ -705,7 +704,6 @@ filtered_assets_partitions = assets_partitions_data[!, ["asset", "specification"
     1. The resolutions of the assets determine the resolution of the unit commitment variables (when UC constraints are applied), storage level variables, and electricity angle variables (when DC-OPF constraints are applied).
     2. It is important to note that these resolutions do not dictate the resolution of the balance constraints. Instead, the resolution of balance constraints is derived from the rules outlined in the table under the section [`flexible time resolution`](@ref flex-time-res).
 
-
 The `flows-rep-periods-partitions` file defines the time resolution for the flows, as shown below.
 
 ```@example power-flow
@@ -715,6 +713,7 @@ input_dir = "../../test/inputs/Power-flow" # hide
 flows_partitions_data = CSV.read(joinpath(input_dir, "flows-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
 filtered_flows_partitions = flows_partitions_data[!, ["from_asset", "to_asset", "specification", "partition"]] # hide
 ```
+
 ### The Core Model
 
 #### DC-OPF Constraints
@@ -803,7 +802,6 @@ However, since the RHS values are identical, one of these variables becomes redu
     1. Higher resolution can improve temporal accuracy but may lead to formulation inefficiencies, such as redundant variables or unnecessarily large problem sizes, as illustrated in the previous example.
     2. Lower resolution, on the other hand, may result in an infeasible model if it fails to capture the necessary dynamics or violates resolution consistency rules (e.g., with neighboring assets or constraints).
 
-
 #### Poorly Defined Problem Topology: Why Include Import?
 
 It is considered good modeling practice to connect the hub asset to more than two flows.
@@ -831,6 +829,7 @@ Firstly of all, we list the hub balance and the two DC-OPF constraints for `1:2`
 ```
 
 Next, we substitute the DC-OPF constraints into the hub balance. After some algebraic rearrangements, we obtain the following simplified expression:
+
 ```math
 \begin{aligned}
 & \qquad v^{\text{electricity angle}}_{\text{hub},1:2} = v^{\text{electricity angle}}_{\text{hub},3:4}
