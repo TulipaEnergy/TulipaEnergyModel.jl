@@ -747,7 +747,7 @@ The resolution of the DC-OPF constraint for flow `hub` to `demand` is 2h:
 \end{aligned}
 ```
 
-#### Consumer Balance
+#### Consumer Balance Constraints
 
 For `demand`, consumer balance applies. This constraint operates at the highest resolution among all incoming and outgoing flows connected to the asset. In this case, `demand` receives two incoming flows: `ccgt` to `demand` in 4h and `hub` to `demand` in 2h. As a result, the consumer balance is enforced in 2h resolution, which is the highest of the two.
 
@@ -758,7 +758,7 @@ For `demand`, consumer balance applies. This constraint operates at the highest 
 \end{aligned}
 ```
 
-#### Hub Balance
+#### Hub Balance Constraints
 
 For `hub`, hub balance applies. This constraint also operates at the highest resolution among all incoming and outgoing flows connected to the asset. In this case, `hub` receives two incoming flows: `ccgt` to `hub` in 2h and `import` to `hub` in 2h, and an outgoing flow `hub` to `demand` in 2h. As a result, the hub balance is enforced in 2h resolution, which is the highest of the three.
 
