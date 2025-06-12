@@ -693,28 +693,29 @@ The following example demonstrates the impact of the DC-OPF constraints on syste
 
 The `assets-rep-periods-partitions` file defines the time resolution for the assets in the `partition` column. Here we set the time resolution to 8h for the `ccgt`, 4h for the `demand`, 2h for the `hub`, and 1h for the `import`.
 
-```@example unit-commitment
+```@example power-flow
 using DataFrames # hide
 using CSV # hide
-input_dir = "../../test/inputs/Storage" # hide
+input_dir = "../../test/inputs/Power-flow" # hide
 assets_partitions_data = CSV.read(joinpath(input_dir, "assets-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
 filtered_assets_partitions = assets_partitions_data[!, ["asset", "specification", "partition"]] # hide
 ```
 
-!!! info Do you still remember what resolution of the assets is used for?
-    - The resolutions of the assets determine the resolution of the unit commitment variables (when UC constraints are applied), storage level variables, and electricity angle variables (when DC-OPF constraints are applied).
-    - It is important to note that these resolutions do not dictate the resolution of the balance constraints. Instead, the resolution of balance constraints is derived from the rules outlined in the table under the section[`flexible time resolution`](@ref flex-time-res).
+!!! info "Do you still remember what resolution of the assets is used for?"
+    1. The resolutions of the assets determine the resolution of the unit commitment variables (when UC constraints are applied), storage level variables, and electricity angle variables (when DC-OPF constraints are applied).
+    2. It is important to note that these resolutions do not dictate the resolution of the balance constraints. Instead, the resolution of balance constraints is derived from the rules outlined in the table under the section [`flexible time resolution`](@ref flex-time-res).
 
 
 The `flows-rep-periods-partitions` file defines the time resolution for the flows, as shown below.
 
-```@example unit-commitment
+```@example power-flow
 using DataFrames # hide
 using CSV # hide
+input_dir = "../../test/inputs/Power-flow" # hide
 flows_partitions_data = CSV.read(joinpath(input_dir, "flows-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
 filtered_flows_partitions = flows_partitions_data[!, ["from_asset", "to_asset", "specification", "partition"]] # hide
 ```
-### The Correct Constraints
+### The Core Model
 
 #### DC-OPF Constraints
 
@@ -769,7 +770,7 @@ For `hub`, hub balance applies. This constraint also operates at the highest res
 \end{aligned}
 ```
 
-The abovementioned constraints are functioning as intended, resulting in feasible optimization problem.
+The abovementioned constraints are functioning as intended, resulting in a feasible optimization problem.
 
 ### Model Feasibility Issues
 
@@ -798,9 +799,9 @@ Interestingly, in this setup, the right-hand sides (RHS) of the DC-OPF equations
 
 However, since the RHS values are identical, one of these variables becomes redundant. This redundancy highlights a key modeling insight: not every combination of resolutions is viable or meaningful. Introducing unnecessarily high resolution without corresponding variation in the system can lead to inefficient formulations.
 
-!!! note The flow resolution must be defined as the highest between the resolutions of its adjacent (neighboring) assets!
-    - Higher resolution can improve temporal accuracy but may lead to formulation inefficiencies, such as redundant variables or unnecessarily large problem sizes, as illustrated in the previous example.
-    - Lower resolution, on the other hand, may result in an infeasible model if it fails to capture the necessary dynamics or violates resolution consistency rules (e.g., with neighboring assets or constraints).
+!!! warning "The flow resolution must be defined as the highest between the resolutions of its adjacent (neighboring) assets!"
+    1. Higher resolution can improve temporal accuracy but may lead to formulation inefficiencies, such as redundant variables or unnecessarily large problem sizes, as illustrated in the previous example.
+    2. Lower resolution, on the other hand, may result in an infeasible model if it fails to capture the necessary dynamics or violates resolution consistency rules (e.g., with neighboring assets or constraints).
 
 
 #### Poorly Defined Problem Topology: Why Include Import?
