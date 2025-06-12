@@ -174,13 +174,6 @@ end
 
     # Test that export solution warning is present in logs
     output_folder = mktempdir()
-    test_logger = Test.TestLogger()
-    with_logger(test_logger) do
-        return TulipaEnergyModel.run_scenario(connection; output_folder)
-    end
-    warning_messages = [log.message for log in test_logger.logs if log.level == Logging.Warn]
-    @test any(
-        msg -> msg == "The energy problem has not been solved yet. Skipping export solution.",
-        warning_messages,
-    )
+    @test_logs (:warn, "The energy problem has not been solved yet. Skipping export solution.") match_mode =
+        :any TulipaEnergyModel.run_scenario(connection; output_folder)
 end
