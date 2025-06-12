@@ -62,7 +62,7 @@ Let's zoom in on the `phs-wind-balance` triangle and see what happens in the fig
 
 !!! warning "Be careful with the definition of flows"
     1. Although transport flows are bidirectional, they must be defined in a single direction. For example, a producer like wind can only have outgoing flows. Thus, the flow between `wind` and `balance` must be specified as the flow from `wind` to `balance`, with its sign allowed to be free.
-    2. By having transport flows, we now model a different problem because flows can pass through `wind` following the direction from `balance` to `wind` to `phs`. However, this does not affect the unidirectional nature of charging by the flow from `wind` to `phs` and discharging by the flow from `phs` to `balance`, which remain fixed by the definition of the flows.
+    2. By having transport flows, we now model a different problem because flows can pass through `wind` following the direction from `balance` to `wind` to `phs`. `wind` is essentially a hub asset. However, this does not affect the unidirectional nature of charging by the flow from `wind` to `phs` and discharging by the flow from `phs` to `balance`, which remain fixed by the definition of the flows.
 
 ## [Flexible Time Resolution](@id flex-time-res)
 
@@ -166,6 +166,8 @@ Below is the table outlining the details for each type of constraint.
 | Maximum Ramp Down Flow with Unit Commitment    | outputs, units_on              | availability     | power           | min(outgoing flows, units_on)                                                            | mean                |
 | Maximum Ramp Up Flow without Unit Commitment   | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |
 | Maximum Ramp Down Flow without Unit Commitment | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |
+| DC-OPF Constraint | flow, electricity_angle                        | -     | power           | min(neighboring assets, flow)                                                                      | -                |
+
 
 For this basic example, we can describe the balance and capacity constraints in the model. For the sake of simplicity, we consider only the rep-period constraints, the representative period index is dropped from the equations, and there are no investment variables in the equations.
 
@@ -680,3 +682,188 @@ Since the `phs` is defined as seasonal, it has results for only the over-cluster
 ![PHS-over-clustered-year-storage-level](./figs/inter-storage-level.png)
 
 In this example, we have demonstrated how to partially recover the chronological information of a storage asset with a longer discharge duration (such as 48 hours) than the representative period length (24 hours). This feature enables us to model both short- and long-term storage in _TulipaEnergyModel.jl_.
+
+## [Flexible Time Resolution in the Direct Current Optimal Power Flow Constraints](@id flex-time-res-dc-opf)
+
+In this section, we show how flexible time resolution is applied when considering the model's direct current optimal power flow (DC-OPF) constraint. Let's consider the example in the folder [`test/inputs/Power-flow`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Power-flow) to explain how this constraint is created in _TulipaEnergyModel.jl_ when having the flexible time resolution.
+
+The following example demonstrates the impact of the DC-OPF constraints on system behavior. In this setup, demand can be met by two sources: `ccgt`and `hub`. The `hub` itself can receive energy from both `ccgt` and `electricity imports`. In the absence of power flow constraints, the model may choose to satisfy 100% of the demand directly via the `ccgt` to `demand` flow. However, when DC-OPF constraints are enforced, all three transport flows — `ccgt` to `demand`, `ccgt` to `hub`, and `hub` to `demand` must comply with the physical laws governing power flow. As a result, it becomes infeasible to supply the entire demand solely through the `ccgt` to `demand` path. Instead, the solution must account for the distribution of flows in accordance with the DC-OPF model.
+
+![power-flow-example](./figs/power_flow_example.png)
+
+The `assets-rep-periods-partitions` file defines the time resolution for the assets in the `partition` column. Here we set the time resolution to 8h for the `ccgt`, 4h for the `demand`, 2h for the `hub`, and 1h for the `import`.
+
+```@example unit-commitment
+using DataFrames # hide
+using CSV # hide
+input_dir = "../../test/inputs/Storage" # hide
+assets_partitions_data = CSV.read(joinpath(input_dir, "assets-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
+filtered_assets_partitions = assets_partitions_data[!, ["asset", "specification", "partition"]] # hide
+```
+
+!!! info Do you still remember what resolution of the assets is used for?
+    - The resolutions of the assets determine the resolution of the unit commitment variables (when UC constraints are applied), storage level variables, and electricity angle variables (when DC-OPF constraints are applied).
+    - It is important to note that these resolutions do not dictate the resolution of the balance constraints. Instead, the resolution of balance constraints is derived from the rules outlined in the table under the section[`flexible time resolution`](@ref flex-time-res).
+
+
+The `flows-rep-periods-partitions` file defines the time resolution for the flows, as shown below.
+
+```@example unit-commitment
+using DataFrames # hide
+using CSV # hide
+flows_partitions_data = CSV.read(joinpath(input_dir, "flows-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
+filtered_flows_partitions = flows_partitions_data[!, ["from_asset", "to_asset", "specification", "partition"]] # hide
+```
+### The Correct Constraints
+
+#### DC-OPF Constraints
+
+The DC-OPF constraint is applied to every transport flow that utilizes the DC-OPF method. The resolution at which this constraint is enforced is determined by the highest resolution among the flow itself and its adjacent (neighboring) assets. To illustrate how this works in practice, we now examine each relevant flow individually.
+
+The resolution of the DC-OPF constraint for flow `ccgt` to `hub` is 2h:
+
+```math
+\begin{aligned}
+& \text{DC-OPF}_{(\text{ccgt}, \text{hub}),1:2}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),1:2} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{ccgt},\text{hub}}} (v^{\text{electricity angle}}_{\text{ccgt},1:8} - v^{\text{electricity angle}}_{\text{hub},1:2}) \\
+\end{aligned}
+```
+
+The resolution of the DC-OPF constraint for flow `ccgt` to `demand` is 4h:
+
+```math
+\begin{aligned}
+& \text{DC-OPF}_{(\text{ccgt}, \text{demand}),1:4}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{demand}),1:4} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{ccgt},\text{demand}}} (v^{\text{electricity angle}}_{\text{ccgt},1:8} - v^{\text{electricity angle}}_{\text{demand},1:4}) \\
+\end{aligned}
+```
+
+The resolution of the DC-OPF constraint for flow `hub` to `demand` is 2h:
+
+```math
+\begin{aligned}
+& \text{DC-OPF}_{(\text{hub}, \text{demand}),1:2}: \\
+& \qquad v^{\text{flow}}_{(\text{hub},\text{demand}),1:2} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{hub},\text{demand}}} (v^{\text{electricity angle}}_{\text{hub},1:2} - v^{\text{electricity angle}}_{\text{demand},1:4}) \\
+\end{aligned}
+```
+
+#### Consumer Balance
+
+For `demand`, consumer balance applies. This constraint operates at the highest resolution among all incoming and outgoing flows connected to the asset. In this case, `demand` receives two incoming flows: `ccgt` to `demand` in 4h and `hub` to `demand` in 2h. As a result, the consumer balance is enforced in 2h resolution, which is the highest of the two.
+
+```math
+\begin{aligned}
+& \text{consumer\_balance}_{\text{demand},1:2}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{demand}),1:4} + v^{\text{flow}}_{(\text{hub},\text{demand}),1:2} \leq p^{\text{peak demand}}_{\text{demand}} \cdot \frac{\sum_{b=1}^{2} p^{\text{demand profile}}_{\text{demand},b}}{2} \\\\
+\end{aligned}
+```
+
+#### Hub Balance
+
+For `hub`, hub balance applies. This constraint also operates at the highest resolution among all incoming and outgoing flows connected to the asset. In this case, `hub` receives two incoming flows: `ccgt` to `hub` in 2h and `import` to `hub` in 2h, and an outgoing flow `hub` to `demand` in 2h. As a result, the hub balance is enforced in 2h resolution, which is the highest of the three.
+
+```math
+\begin{aligned}
+& \text{hub\_balance}_{\text{demand},1:2}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),1:2} + v^{\text{flow}}_{(\text{import},\text{hub}),1:2} = v^{\text{flow}}_{(\text{hub},\text{demand}),1:2}  \\
+\end{aligned}
+```
+
+The abovementioned constraints are functioning as intended, resulting in feasible optimization problem.
+
+### Model Feasibility Issues
+
+Model feasibility can be compromised in two key ways:
+
+- Incorrect flow resolutions — If the temporal resolutions of flows are not aligned with those of their neighboring assets, or if they violate resolution consistency rules, the model may become infeasible or produce redundant variables.
+
+- Poorly defined problem topology — If the graph structure (i.e., the set of assets and their connecting flows) is not well-constructed — such as having insufficient connectivity at key assets like hubs — the model may lack the necessary degrees of freedom to satisfy constraints, particularly under DC-OPF formulations.
+
+Let's first elaborate on the first case.
+
+#### Incorrect Flow Resolutions: Why Enforce the Flow Resolution This Way?
+
+This raises a valid question. To explore this further, let’s consider a scenario with an even higher resolution. Suppose we now set the resolution of the flow from `ccgt` to `hub` to 1h. According to the modeling rules, this means the DC-OPF constraint must also be enforced at 1h resolution, as it must match the highest resolution among the flow and its neighboring assets.
+
+```math
+\begin{aligned}
+& \text{DC-OPF}_{(\text{ccgt}, \text{hub}),1:1}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),1:1} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{ccgt},\text{hub}}} (v^{\text{electricity angle}}_{\text{ccgt},1:8} - v^{\text{electricity angle}}_{\text{hub},1:2}) \\
+& \text{DC-OPF}_{(\text{ccgt}, \text{hub}),2:2}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),2:2} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{ccgt},\text{hub}}} (v^{\text{electricity angle}}_{\text{ccgt},1:8} - v^{\text{electricity angle}}_{\text{hub},1:2}) \\
+\end{aligned}
+```
+
+Interestingly, in this setup, the right-hand sides (RHS) of the DC-OPF equations remain the same across time steps. This leads to the creation of two separate flow variables $v^{\text{flow}}_{(\text{ccgt},\text{hub}),1:1}$ and $v^{\text{flow}}_{(\text{ccgt},\text{hub}),2:2}$.
+
+However, since the RHS values are identical, one of these variables becomes redundant. This redundancy highlights a key modeling insight: not every combination of resolutions is viable or meaningful. Introducing unnecessarily high resolution without corresponding variation in the system can lead to inefficient formulations.
+
+!!! note The flow resolution must be defined as the highest between the resolutions of its adjacent (neighboring) assets!
+    - Higher resolution can improve temporal accuracy but may lead to formulation inefficiencies, such as redundant variables or unnecessarily large problem sizes, as illustrated in the previous example.
+    - Lower resolution, on the other hand, may result in an infeasible model if it fails to capture the necessary dynamics or violates resolution consistency rules (e.g., with neighboring assets or constraints).
+
+
+#### Poorly Defined Problem Topology: Why Include Import?
+
+It is considered good modeling practice to connect the hub asset to more than two flows.
+
+- Without DC-OPF constraints, having only two flows connected to the hub is not ideal but still valid. In such cases, the hub simply acts as a passive energy transfer point.
+- With DC-OPF constraints, however, having only two flows connected to the hub (e.g., `ccgt` to `hub` and `hub` to `demand`, without import) becomes incorrect. Let's show the issue below.
+
+Firstly of all, we list the hub balance and the two DC-OPF constraints for `1:2` and `3:4` as follows.
+
+```math
+\begin{aligned}
+& \text{hub\_balance}_{\text{demand},1:2}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),1:2} = v^{\text{flow}}_{(\text{hub},\text{demand}),1:2}  \\
+& \text{hub\_balance}_{\text{demand},3:4}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),3:4} = v^{\text{flow}}_{(\text{hub},\text{demand}),3:4}  \\
+& \text{DC-OPF}_{(\text{ccgt}, \text{hub}),1:2}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),1:2} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{ccgt},\text{hub}}} (v^{\text{electricity angle}}_{\text{ccgt},1:8} - v^{\text{electricity angle}}_{\text{hub},1:2}) \\
+& \text{DC-OPF}_{(\text{ccgt}, \text{hub}),3:4}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),3:4} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{ccgt},\text{hub}}} (v^{\text{electricity angle}}_{\text{ccgt},1:8} - v^{\text{electricity angle}}_{\text{hub},3:4}) \\
+& \text{DC-OPF}_{(\text{hub}, \text{demand}),1:2}: \\
+& \qquad v^{\text{flow}}_{(\text{hub},\text{demand}),1:2} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{hub},\text{demand}}} (v^{\text{electricity angle}}_{\text{hub},1:2} - v^{\text{electricity angle}}_{\text{demand},1:4}) \\
+& \text{DC-OPF}_{(\text{hub}, \text{demand}),3:4}: \\
+& \qquad v^{\text{flow}}_{(\text{hub},\text{demand}),3:4} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{hub},\text{demand}}} (v^{\text{electricity angle}}_{\text{hub},3:4} - v^{\text{electricity angle}}_{\text{demand},1:4}) \\
+\end{aligned}
+```
+
+Next, we substitute the DC-OPF constraints into the hub balance. After some algebraic rearrangements, we obtain the following simplified expression:
+```math
+\begin{aligned}
+& \qquad v^{\text{electricity angle}}_{\text{hub},1:2} = v^{\text{electricity angle}}_{\text{hub},3:4}
+\end{aligned}
+```
+
+Guess what? We have identified one redundant variable. Now, by examining the following two DC-OPF constraints more closely, we may uncover additional issues:
+
+```math
+\begin{aligned}
+& \text{DC-OPF}_{(\text{hub}, \text{demand}),1:2}: \\
+& \qquad v^{\text{flow}}_{(\text{hub},\text{demand}),1:2} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{hub},\text{demand}}} (v^{\text{electricity angle}}_{\text{hub},1:2} - v^{\text{electricity angle}}_{\text{demand},1:4}) \\
+& \text{DC-OPF}_{(\text{hub}, \text{demand}),3:4}: \\
+& \qquad v^{\text{flow}}_{(\text{hub},\text{demand}),3:4} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{hub},\text{demand}}} (v^{\text{electricity angle}}_{\text{hub},3:4} - v^{\text{electricity angle}}_{\text{demand},1:4}) \\
+\end{aligned}
+```
+
+We now actually have:
+
+```math
+\begin{aligned}
+& \qquad v^{\text{flow}}_{(\text{hub},\text{demand}),1:2} = v^{\text{flow}}_{(\text{hub},\text{demand}),3:4}
+\end{aligned}
+```
+
+Leading to somewhere? Let's list the consumer balance:
+
+```math
+\begin{aligned}
+& \text{consumer\_balance}_{\text{demand},1:2}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{demand}),1:4} + v^{\text{flow}}_{(\text{hub},\text{demand}),1:2} \leq p^{\text{peak demand}}_{\text{demand}} \cdot \frac{\sum_{b=1}^{2} p^{\text{demand profile}}_{\text{demand},b}}{2} \\
+& \text{consumer\_balance}_{\text{demand},3:4}: \\
+& \qquad v^{\text{flow}}_{(\text{ccgt},\text{demand}),1:4} + v^{\text{flow}}_{(\text{hub},\text{demand}),3:4} \leq p^{\text{peak demand}}_{\text{demand}} \cdot \frac{\sum_{b=3}^{4} p^{\text{demand profile}}_{\text{demand},b}}{2} \\
+\end{aligned}
+```
+
+Although the LHS of the two DC-OPF constraints are identical, their RHS differ. This discrepancy implies that the same variables are being forced to satisfy two conflicting conditions simultaneously. As a result, the model becomes infeasible.
