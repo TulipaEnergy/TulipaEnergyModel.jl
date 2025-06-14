@@ -30,7 +30,7 @@ See the [documentation](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stab
 ## Bug reports and discussions
 
 If you think you have found a bug, feel free to open an [issue](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues).
-If you have a general question or idea, start a discussion [here](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/discussions).
+If you have a general question or idea, start a [discussion](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/discussions).
 
 ## Contributing
 
