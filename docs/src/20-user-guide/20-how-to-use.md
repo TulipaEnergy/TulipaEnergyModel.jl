@@ -285,7 +285,7 @@ Let's explore how the groups are set up in the test case called [Norse](https://
 ```@example display-group-setup
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../test/inputs/Norse/group-asset.csv" # hide
+input_asset_file = "../../../test/inputs/Norse/group-asset.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 ```
 
@@ -294,7 +294,7 @@ In the given data, there are two groups: `renewables` and `ccgt`. Both groups ha
 Let's now explore which assets are in each group. To do so, we can take a look at the `asset.csv` file:
 
 ```@example display-group-setup
-input_asset_file = "../../test/inputs/Norse/asset.csv" # hide
+input_asset_file = "../../../test/inputs/Norse/asset.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame) # hide
 assets = assets[.!ismissing.(assets.group), [:asset, :type, :group]] # hide
 ```
@@ -361,7 +361,7 @@ Let's explain further using an example. To do so, we take a look at the `asset-b
 ```@example multi-year-setup
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../test/inputs/Multi-year Investments/asset-both.csv" # hide
+input_asset_file = "../../../test/inputs/Multi-year Investments/asset-both.csv" # hide
 assets_data = CSV.read(input_asset_file, DataFrame) # hide
 assets_data = assets_data[:, [:asset, :milestone_year, :commission_year, :decommissionable, :initial_units]] # hide
 ```
@@ -384,7 +384,7 @@ Important to know that you can use different profiles for assets that are commis
 Let's explain further using an example. To do so, we can take a look at the `assets-profiles.csv` file:
 
 ```@example multi-year-setup
-input_asset_file = "../../test/inputs/Multi-year Investments/assets-profiles.csv" # hide
+input_asset_file = "../../../test/inputs/Multi-year Investments/assets-profiles.csv" # hide
 assets_profiles = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 assets_profiles = assets_profiles[:, :] # hide
 ```

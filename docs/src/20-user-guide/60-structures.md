@@ -1,4 +1,4 @@
-# [Model Structures](@id structures)
+# [Internal Model Structures](@id structures)
 
 ```@contents
 Pages = ["60-structures.md"]
