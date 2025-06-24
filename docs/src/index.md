@@ -4,7 +4,7 @@ CurrentModule = TulipaEnergyModel
 
 # [Welcome](@id home)
 
-[TulipaEnergyModel.jl](https://github.com/TulipaEnergy/TulipaEnergyModel.jl) is an optimization model for the electricity market that can be coupled with other energy sectors (e.g., hydrogen, heat, natural gas, etc.). The optimization model determines the optimal investment and operation decisions for different types of assets (e.g., producers, consumers, conversion, storage, and transport). _TulipaEnergyModel.jl_ is developed in [Julia](https://julialang.org/) and depends on the [JuMP.jl](https://github.com/jump-dev/JuMP.jl) package.
+[TulipaEnergyModel.jl](https://github.com/TulipaEnergy/TulipaEnergyModel.jl) is an optimization model for analysing energy systems (electricity, hydrogen, heat, natural gas, etc.). The model determines the optimal investment and operation decisions for different types of assets (production, consumption, conversion, storage, and transport). Tulipa is developed in [Julia](https://julialang.org/) and depends on the [JuMP.jl](https://github.com/jump-dev/JuMP.jl) package.
 
 Tulipa is free and easy to install. Check out [Getting Started](@ref getting-started) to start using Tulipa today!
 
@@ -15,33 +15,34 @@ Tulipa is free and easy to install. Check out [Getting Started](@ref getting-sta
 Tulipa can answer questions such as:
 
 - How much flexible energy supply and demand is available? How much is needed in the future?
+
 - How will different investment decisions impact the balance and generation mix of the energy system?
+
 - Where will there be grid congestion in the future? How would placing [technology] at [location] impact congestion?
+
 - How will policy targets influence investment and dispatch?
+
 - How will a future energy system handle different weather patterns and extreme events (such as dunkelflaute)?
 
-Not sure if Tulipa is right for your research? Feel free to ask in our [Discussions](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/discussions/categories/q-a)!
+Not sure if Tulipa is right for your project? Feel free to ask in our [Discussions](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/discussions/categories/q-a)!
 
 ### Scope & Features
 
-For modellers, here is a brief summary of Tulipa's scope and features. More details can be found in the [Concepts](@ref concepts) or [Formulation](@ref formulation).
+For modellers, here is a brief summary of Tulipa's scope and features. More details can be found in the [Concepts](@ref concepts) and [Formulation](@ref formulation).
 
-- Optimisation Objective: Minimize total system cost for investment & dispatch (investment in production, conversion, storage, transport/grid)
-- Geographic scope: Flexible (Anywhere - Region/Country/Continent)
-- Energy carriers: Any (All - electricity, gas, H2, heat, etc)
-- Timespan: Any (Usually Yearly or Multi-year)
-- Time resolution: [Fully-flexible](@ref flex-time-res) - even mixing different resolutions (1-hr, 2-hr, 3-hr, etc) within a scenario
-- Temporal aggregation: Time series aggregation with blended representative periods using [TulipaClustering](https://github.com/TulipaEnergy/TulipaClustering.jl)
-- Storage representation: [Short- and Long-term storage](@ref storage-modeling) constraints, even while using representative periods
+- **Optimization Objective:** Minimize total system cost for investment & dispatch (investment in production, conversion, storage, transport/grid)
 
-## [Bug reports and discussions](@id bugs-and-discussions)
+- **Geographic scope:** Flexible *(Anywhere - Region/Country/Continent)*
 
-If you think you have found a bug, feel free to open an [Issue](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/issues).
-If you have a general question or idea, start a [Discussion](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/discussions).
+- **Energy carriers:** Any/All *(electricity, gas, H2, heat, etc.)*
 
-## Contributing
+- **Timespan:** Any *(Usually Yearly or Multi-year)*
 
-If you want to contribute (awesome!), please read our [Contributing Guidelines](@ref contributing) and follow the setup in our [Developer Documentation](@ref developer).
+- **Time resolution:** [Fully Flexible](@ref flex-time-res) *- even mixing different resolutions (1-hr, 2-hr, 3-hr, etc) within a scenario)*
+
+- **Temporal aggregation:** Time series aggregation with blended representative periods using [TulipaClustering](https://github.com/TulipaEnergy/TulipaClustering.jl)
+
+- **Storage representation:** [Short- and Long-term storage](@ref storage-modeling) *- even while using representative periods*
 
 ## [License](@id license)
 
