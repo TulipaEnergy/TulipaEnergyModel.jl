@@ -1,7 +1,7 @@
-# [Reference](@id reference)
+# [API Reference](@id reference)
 
 ```@index
-Pages = ["95-reference.md"]
+Pages = ["70-reference.md"]
 ```
 
 ```@autodocs

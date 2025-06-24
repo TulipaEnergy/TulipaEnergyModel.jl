@@ -1,4 +1,4 @@
-# Tutorial: OBZ case study
+# Complete Workflow
 
 Tutorial for the OBZ case study as an example of the full workflow of Tulipa.
 
@@ -10,7 +10,7 @@ We are basing ourselves on the Tulipa [data pipeline/workflow](@ref data).
 To help us navigate this workflow, we'll reproduce the diagram from the link above here.
 For more details on the steps of the workflow, check the original link, or follow the tutorial.
 
-![Tulipa Workflow. Textual explanation below.](./figs/tulipa-workflow.jpg)
+![Tulipa Workflow. Textual explanation below.](../figs/tulipa-workflow.jpg)
 
 ## Install packages
 
