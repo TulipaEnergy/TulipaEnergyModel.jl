@@ -33,18 +33,6 @@ The `EnergyProblem` can also be constructed using the minimal constructor below.
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
 
-## GraphAssetData
-
-This structure holds all the information of a given asset.
-These are stored inside the Graph.
-Given a graph `graph`, an asset `a` can be accessed through `graph[a]`.
-
-## GraphFlowData
-
-This structure holds all the information of a given flow.
-These are stored inside the Graph.
-Given a graph `graph`, a flow from asset `u` to asset `v` can be accessed through `graph[u, v]`.
-
 ## [Timeframe](@id timeframe)
 
 The timeframe is the total period we want to analyze with the model. Usually this is a year, but it can be any length of time. A timeframe has two fields:

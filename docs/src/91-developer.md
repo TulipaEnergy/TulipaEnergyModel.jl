@@ -4,12 +4,15 @@ Welcome to TulipaEnergyModel.jl developer documentation. Here is how you can
 contribute to our Julia-based toolkit for modeling and optimization of electric
 energy systems.
 
+This may seem like a lot, but that's because we walk you through step-by-step.
+If you follow these steps, you'll contributing in no time!
+
 ```@contents
 Pages = ["91-developer.md"]
 Depth = [2, 3]
 ```
 
-## Before You Begin
+## First-Time Setup
 
 Before you can start contributing, please read our [Contributing Guidelines](@ref contributing).
 
@@ -196,13 +199,13 @@ This section will list the guidelines for code formatting **not enforced** by Ju
 We will try to follow these during development and reviews.
 
 - Naming
-  - `CamelCase` for classes and modules,
-  - `snake_case` for functions and variables, and
-  - `kebab-case` for file names.
+  - `CamelCase` for classes and modules
+  - `snake_case` for functions and variables
+  - `kebab-case` for file names
 - Use `using` instead of `import`, in the following way:
   - Don't use pure `using Package`, always list all necessary objects with `using Package: A, B, C`.
-  - List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context, or `using Graph: SimpleDiGraph`, because it's a constructor with an obvious name.
-  - For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `DataFrames.groupby`.
+  - List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context.
+  - For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `JuMP.direct_model`.
   - List all `using` in <src/TulipaEnergyModel.jl>.
 - Explicitly state what a function will `return`; if returning nothing, simply use `return`.
 
@@ -588,7 +591,7 @@ When creating a pull request, the workflow `CompareMPS.yml` will run the compari
 !!! warning
     The comparison workflow only writes PR comments if the branch is made from within `TulipaEnergyModel` (i.e., not from forks). To see the log online in that case, you have to open the GitHub action log, or run the comparison locally, as explained in the previous section.
 
-## Procedure for Releasing a New Version (Julia Registry)
+## Releasing a New Version
 
 When publishing a new version of the model to the Julia Registry, follow this procedure:
 

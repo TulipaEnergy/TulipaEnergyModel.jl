@@ -7,9 +7,9 @@ Depth = [2, 3]
 
 ## [Summary](@id concepts-summary)
 
-_TulipaEnergyModel.jl_ incorporates two fundamental concepts that serve as the foundation of the optimization model:
+_TulipaEnergyModel.jl_ uses two fundamental building blocks as the foundation of the optimization model:
 
-- **Energy Assets**: representation of a physical asset that can produce, consume, store, balance, or convert energy. Some examples of what these assets can represent are:
+- **Assets**: representation of a physical asset that can produce, consume, store, balance, or convert energy. Some examples of what these assets can represent are:
   - Producer: e.g., wind turbine, solar panel
   - Consumer: e.g., electricity demand, heat demand
   - Storage: e.g., battery, pumped-hydro storage
