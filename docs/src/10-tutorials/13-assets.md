@@ -2,18 +2,20 @@
 
 Tulipa uses [Assets and Flows](@ref concepts) as generalized components to build energy systems.
 
-## 1. Set up the data
+## Set up the data
 
-We will reuse the project we created in the [Basics Tutorial](@ref basic-example).
+We will start from the [Basics Tutorial](@ref basic-example).\
+If you have not followed that tutorial, follow these sections before starting this tutorial:
 
-1. **Move the folder** `my-awesome-energy-system-lesson-2` into your VS Code project.\
-!!! tip
-    To find the folder where you created your project, right click on any file in VS code (e.g. 'my_workflow.jl') and click "Reveal in File Explorer"*
+1. [Create a VS Code Project](@ref vscode-project)
+1. [Set up data and folders](@ref tutorial-data-folders)
 
-1. Explore the files :eyeglasses:\
+## Explore the files :eyeglasses:
+
+Take a look at the files in the `assets-tutorial` folder.
 **TODO: Add notes about what they should see in the files**
 
-## 2. Run the workflow
+## Run the workflow
 
 In `my_workflow.jl` you can simply change the name of your input directory and run your code.\
 From the Basics Tutorial, it should look something like this:
@@ -31,8 +33,8 @@ using DataFrames
 using Plots
 
 # Define the directories
-input_dir = "my-awesome-energy-system-lesson-2" # Change this from lesson-1 to lesson-2
-output_dir = "my-awesome-energy-system-results"
+input_dir = "assets-tutorial"
+output_dir = "my-awesome-results"
 
 # Create the connection and read the input files
 connection = DBInterface.connect(DuckDB.DB)
@@ -46,7 +48,7 @@ energy_problem =
     TEM.run_scenario(connection; output_folder=output_dir)
 ```
 
-## 3. Explore the results
+## Explore the results
 
 1. Explore the flow that goes from the hub to the e_demand:
 

@@ -201,7 +201,7 @@ We will try to follow these during development and reviews.
 - Naming
   - `CamelCase` for classes and modules
   - `snake_case` for functions and variables
-  - `kebab-case` for file names
+  - `kebab-case` for file names and reference tags
 - Use `using` instead of `import`, in the following way:
   - Don't use pure `using Package`, always list all necessary objects with `using Package: A, B, C`.
   - List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context.

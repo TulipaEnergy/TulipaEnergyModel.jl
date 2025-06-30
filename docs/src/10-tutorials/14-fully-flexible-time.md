@@ -1,40 +1,58 @@
-# Fully-Flexible Temporal Resolution Tutorial
+# Flexible Time Resolution Tutorial
 
-The main concepts are explained in the docs section [Flexible Time Resolution](@ref flex-time-res).
+## Introduction
+
+Tulipa allows mixing multiple time resolutions within the same problem.\
+For instance, by **energy carrier** (electricity high, heat low), **geographic area** (local high, international low), or **time horizon** (short-term high, long-term low).\
+This is a useful feature for scaling a problem to make it solvable, or for faster solves while tuning data.
+
+More information is in the section [Flexible Time Resolution](@ref flex-time-res).
 
 For more nitty gritty nerdy details, you can read this reference. :wink:\
-*Gao, Zhi and Gazzani, Matteo and Tejada-Arango, Diego A. and Siqueira, Abel and Wang, Ni and Gibescu, Madeleine and Morales-España, G., Fully Flexible Temporal Resolution for Energy System Optimization.*\
-Available at SSRN: https://ssrn.com/abstract=5214263 or http://dx.doi.org/10.2139/ssrn.5214263
+*Gao, Zhi and Gazzani, Matteo and Tejada-Arango, Diego A. and Siqueira, Abel and Wang, Ni and Gibescu, Madeleine and Morales-España, G., Fully Flexible Temporal Resolution for Energy System Optimization.* Available at SSRN: https://ssrn.com/abstract=5214263 or http://dx.doi.org/10.2139/ssrn.5214263
 
-## 1. Set up the data
+In this tutorial, you will learn:
 
-We will reuse the project we created in the [Basics Tutorial](@ref basic-example).
+1. bleep
+1. bloop
 
-1. **Move the folder** `my-awesome-energy-system-lesson-3` into your VS Code project.\
-!!! tip
-    To find the folder where you created your project, right click on any file in VS code (e.g. 'my_workflow.jl') and click "Reveal in File Explorer"*
+## Set up the data
+
+Use the project and data from the [Basics Tutorial](@ref basic-example).\
+If you have not followed that tutorial, follow these sections before starting this tutorial:
+
+1. [Create a VS Code Project](@ref vscode-project)
+1. [Set up data and folders](@ref tutorial-data-folders)
+
+!!! note
+    The folder `flexible-time-resolution-answers` contains the *final* files you will create in this lesson.
 
 ### Hydrogen sector on 6 hour resolution
 
-The flexible temporal resolution for assets and flows is defined in the files: 'assets_rep_periods_partitions' and 'flows_rep_periods_partitions'
+Defining flexible temporal resolution requires the files `assets_rep_periods_partitions` and `flows_rep_periods_partitions`, so let's create them together.
 
-*Note*: The schemas of the files is described in the [input parameters](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/50-schemas/) of the docs.
+!!! note
+    The schemas of the files is described in the section [Inputs](@ref table-schemas).
 
-- 'assets_rep_periods_partitions' file:
+1. Working in the folder `flexible-time-tutorial`:
+2. Create a new file called `assets_rep_periods_partitions.csv`
+3. Copy this text into the file:
 
-```txt
-asset,partition,rep_period,specification,year
-electrolizer,6,1,uniform,2030
-```
+    ```txt
+    asset,partition,rep_period,specification,year
+    electrolizer,6,1,uniform,2030
+    ```
 
-- 'flows_rep_periods_partitions' file:
+4. Create a new file called `flows_rep_periods_partitions.csv`
+5. Copy this text into the file:
 
-```txt
-from_asset,to_asset,partition,rep_period,specification,year
-electrolizer,h2_demand,6,1,uniform,2030
-```
+    ```txt
+    from_asset,to_asset,partition,rep_period,specification,year
+    electrolizer,h2_demand,6,1,uniform,2030
+    ```
 
-*Note*: If no partition/resolution is defined for and asset or flow, then the default values are `uniform` and `1`.
+!!! note
+    If no partition/resolution is defined for an asset or flow, then the default values are `uniform` and `1`.
 
 Let's add the compatibility of TulipaEnergyModel in the Julia REPL:
 
@@ -71,7 +89,7 @@ Pkg.activate(".")
 Pkg.instantiate()
 ```
 
-## 2. Run the case study
+## Run the workflow
 
 In `my_workflow.jl` you can simply change the name of your input directory and run your code.\
 From the Basics Tutorial, it should look something like this:
@@ -89,8 +107,8 @@ using DataFrames
 using Plots
 
 # Define the directories
-input_dir = "my-awesome-energy-system-lesson-3"
-output_dir = "my-awesome-energy-system-results"
+input_dir = "flexible-time-resolution-tutorial"
+output_dir = "results"
 
 # Temporary fix!!: pass the schema of the partition files
 schema_partition_files = Dict(
@@ -123,7 +141,7 @@ energy_problem =
     - Objective value: 1.6945648344572577e8
 ```
 
-## 3. Explore the results
+## Explore the results
 
 Explore the flow that goes from the electrolizer to the h2_demand:
 
@@ -194,7 +212,7 @@ smr_ccs,h2_demand,6,1,uniform,2030
 
 Run again and explore the results once more :wink:
 
-### Changing the specification
+### Change the specification
 
 The parameter `specification` allows three values: `uniform`,`math`,`explicit`
 
@@ -284,4 +302,4 @@ plot!(
 
 ## Final files
 
-You can get the final files of the tutorial from this link: [case studies github repo](https://github.com/datejada/Tulipa101-hands-on/tree/main)
+The final files are in `fully-flexible-temporal-resolution-answers` if you want to compare with what you created.

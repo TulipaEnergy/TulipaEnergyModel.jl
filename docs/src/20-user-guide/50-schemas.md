@@ -7,7 +7,7 @@ Pages = ["50-schemas.md"]
 Depth = [2, 3]
 ```
 
-## [Workflow overview](@id workflow_overview)
+## [Workflow overview](@id workflow-overview)
 
 Here is a snapshot overview of a regular workflow:
 
@@ -23,11 +23,11 @@ Workflow explanation (follow the boxes):
 - **Process data into an instance (1 model run) with DuckDB/TulipaIO**: Now you need to prepare the data for clustering. Even if you don't want to cluster your data, you still need to run `TulipaClustering.dummy_cluster!` to generate Tulipa's required tables. Since your data in now inside the `connection`, you can use `DuckDB`'s SQL and/or `TulipaIO`'s convenience functions to manipulate it. Another method is to use Julia/Python/Excel to create the data externally (from the source files or DuckDB) and load it back into DuckDB. The important thing is [you need to satisfy the TulipaClustering format.](https://tulipaenergy.github.io/TulipaClustering.jl/stable/)
   - **DuckDB connection**: These are the `Instance data` tables, but it can also be loaded with the `Sources`.
 - **Cluster into representative periods using TulipaClustering**: Run TulipaClustering to compute the representative periods and create the necessary tables.
-  - **DuckDB connection**: These are the `Time data` tables. The tables created in this step are part of the cluster group (see [Groups of tables](@ref groups_of_tables) below)
-- **Prepare data for TulipaEnergyModel's format**: Process your data (using `TulipaIO`, `DuckDB` or whatever method you choose) into the Tulipa Format, following the [schema](@ref table_schemas). Since the format is quite extensive, you might want to use the `populate_with_defaults!` function to generate all columns and work from there. See [Minimum data and using defaults](@ref minimum_data) for more details.
-  - **DuckDB connection**: TulipaEnergyModel expects the `Time data` tables from the previous step and these `Tulipa format` tables. In rare instances, your data will be complete, but most likely you will need to fill-out your tables with default values for columns that are not important for your problem. The tables prepared in this step are part of the `input` [group of tables](@ref groups_of_tables).
+  - **DuckDB connection**: These are the `Time data` tables. The tables created in this step are part of the cluster group (see [Groups of tables](@ref groups-of-tables) below)
+- **Prepare data for TulipaEnergyModel's format**: Process your data (using `TulipaIO`, `DuckDB` or whatever method you choose) into the Tulipa Format, following the [schema](@ref table-schemas). Since the format is quite extensive, you might want to use the `populate_with_defaults!` function to generate all columns and work from there. See [Minimum data and using defaults](@ref minimum-data) for more details.
+  - **DuckDB connection**: TulipaEnergyModel expects the `Time data` tables from the previous step and these `Tulipa format` tables. In rare instances, your data will be complete, but most likely you will need to fill-out your tables with default values for columns that are not important for your problem. The tables prepared in this step are part of the `input` [group of tables](@ref groups-of-tables).
 - **Create internal tables for the model indices**: Finally, you're ready to use TulipaEnergyModel! There are multiple ways to create and solve the model, but the idea is the same. The first interaction with Tulipa will create the tables to store the variables, constraints, and expressions indices, as well as other necessary internal tables. Data validation also checks that the tables follow the expected requirements.
-  - **DuckDB connection**: These are the `Internal data` tables. Notably, the variables and constraints indices tables are created in their respective groups: `variables` and `constraints`. See the [Groups of tables](@ref groups_of_tables) section for more details.
+  - **DuckDB connection**: These are the `Internal data` tables. Notably, the variables and constraints indices tables are created in their respective groups: `variables` and `constraints`. See the [Groups of tables](@ref groups-of-tables) section for more details.
 - **Create model**: This is most of the heavy-lifting of the workflow, apart from solving the model. This step creates all the Julia/[JuMP](https://jump.dev) structures using the tables from the previous step. For instance, a JuMP variable is created for each row of each variable table.
   - **DuckDB connection**: Very little data is created in DuckDB in this step. Some expressions that could not have been created before are created in the `expressions` group. A lot of Julia/JuMP-specific things are created, but they cannot be stored in the DuckDB connection.
 - **Solve model**: Finally, send the model to the solver and wait for a result.
@@ -40,7 +40,7 @@ Workflow explanation (follow the boxes):
   - **Output files**: External. Whatever outputs you have produced and want to export to other formats. For instance, CSV/Parquet files with the full variables and constraints tables can be exported from the corresponding DuckDB tables.
 - **Dashboard**: A possible dashboard connecting directly to the DuckDB connection.
 
-## [Minimum data and using defaults](@id minimum_data)
+## [Minimum data and using defaults](@id minimum-data)
 
 Since `TulipaEnergyModel` is at a late stage in the workflow, its input data requirements are stricter.
 Therefore, the input data required by the Tulipa model must follow the schema in the follow section.
@@ -49,7 +49,7 @@ Dealing with defaults is hard. A missing value might represent two different thi
 However, we also understand that it is not reasonable to expect people to fill a lot of things that they don't need for their models.
 Therefore, we have created the function [`populate_with_defaults!`](@ref) to fill the remaining columns of your tables with default values.
 
-To know the defaults, check the [Table Schemas](@ref table_schemas) below.
+To know the defaults, check the [Table Schemas](@ref table-schemas) below.
 
 !!! warning "Beware implicit assumptions"
     When data is missing and you automatically fill it with defaults, beware of your assumptions on what that means.
@@ -61,7 +61,7 @@ To know the defaults, check the [Table Schemas](@ref table_schemas) below.
 
 Below we have the minimum amount of data (essentially, nothing), that is necessary to start Tulipa.
 
-```@example minimum_data
+```@example minimum-data
 using TulipaEnergyModel, TulipaIO, DuckDB, DataFrames
 
 data = Dict(
@@ -114,7 +114,7 @@ data = Dict(
 
 And here we load this data into a DuckDB connection.
 
-```@example minimum_data
+```@example minimum-data
 connection = DBInterface.connect(DuckDB.DB)
 
 # Loading the minimum data in the connection
@@ -128,7 +128,7 @@ DuckDB.query(connection, "FROM asset") |> DataFrame
 
 Now we run `populate_with_defaults!` to fill the remaining columns with default values:
 
-```@example minimum_data
+```@example minimum-data
 TulipaEnergyModel.populate_with_defaults!(connection)
 
 DuckDB.query(connection, "FROM asset") |> DataFrame
@@ -138,7 +138,7 @@ You can see that the table above has been modified to include many more columns.
 
 Finally, the problem can be solved:
 
-```@example minimum_data
+```@example minimum-data
 energy_problem = TulipaEnergyModel.run_scenario(
     connection;
     output_folder = mktempdir(),
@@ -148,12 +148,12 @@ energy_problem = TulipaEnergyModel.run_scenario(
 DuckDB.query(connection, "FROM var_flow LIMIT 5") |> DataFrame
 ```
 
-## [Groups of tables](@id groups_of_tables)
+## [Groups of tables](@id groups-of-tables)
 
-After creating a `connection` and loading data in a way that follows the schema (see the previous section on [minimum data](@ref minimum_data)), then Tulipa will create tables to handle the model data and various internal tables.
-There are different groups of tables, which we explain below. See the [Workflow overview](@ref workflow_overview) to see where they pop up.
+After creating a `connection` and loading data in a way that follows the schema (see the previous section on [minimum data](@ref minimum-data)), then Tulipa will create tables to handle the model data and various internal tables.
+There are different groups of tables, which we explain below. See the [Workflow overview](@ref workflow-overview) to see where they pop up.
 
-- Required by TulipaEnergyModel. These are described in the [Table Schemas](@ref table_schemas).
+- Required by TulipaEnergyModel. These are described in the [Table Schemas](@ref table-schemas).
   - `cluster`: Tables created by `TulipaClustering`.
   - `input`: Tables expected by `TulipaEnergyModel`.
 - Created by TulipaEnergyModel.
@@ -170,7 +170,7 @@ Additionally, we create various temporary tables, which are prefixed by `t_`.
 You probably don't have to navigate these tables yourself, but if you want more information, you can list them all from DuckDB using the `duckdb_tables()` table.
 Here are 10 random tables:
 
-```@example minimum_data
+```@example minimum-data
 DuckDB.query(
     connection,
     "SELECT table_name
@@ -180,7 +180,7 @@ DuckDB.query(
 ) |> DataFrame
 ```
 
-## [Table Schemas](@id table_schemas)
+## [Table Schemas](@id table-schemas)
 
 The optimization model parameters with the input data must follow the schema below for each table.
 

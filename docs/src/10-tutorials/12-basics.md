@@ -9,7 +9,7 @@ In this tutorial, you will learn (a bit) about:
 
 *Let's get started!*
 
-## 1. Create a VS Code project
+## [Create a VS Code project](@id vscode-project)
 
 Make sure you have Julia installed, as well as the Julia extension in VS Code.
 
@@ -40,24 +40,19 @@ Make sure you have Julia installed, as well as the Julia extension in VS Code.
     using Plots
     ```
 
-## 2. Set up data and folders
+## Set up data and folders (@id tutorial-data-folders)
 
-1. **Download the files** from this link: [case studies files](https://github.com/datejada/Tulipa101-hands-on/tree/main)\
+1. **Download the folders** from this [**LINK.**](https://github.com/datejada/Tulipa101-hands-on/tree/main)\
 *Click the green button Code > Download ZIP*
 
-1. **Move the folder** `my-awesome-energy-system-lesson-1` into your VS Code project.\
+1. **Move the folders** into your VS Code project.\
 !!! tip
     To find the folder where you created your project, right click on any file in VS code (e.g. 'my_workflow.jl') and click "Reveal in File Explorer"*
-
-1. **Create a new folder** to store results called "my-awesome-energy-system-results".\
-*In VS Code in the left navigation panel: Right click > New Folder*
-
-Let's explore the files!
 
 !!! What parameters can I use?
     Check out the docs: [TulipaEnergyModel Inputs](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/20-user-guide/50-schemas/) and the [input-schemas.json](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/input-schemas.json) file.
 
-## 3. Load data and run Tulipa
+## Load data and run Tulipa
 
 *Follow along in this section, copy-pasting into your my_workflow.jl file.\
 In VS Code, you can highlight each section and press (SHIFT+ENTER) to run the code.\
@@ -67,8 +62,8 @@ Or paste everything and press the run arrow (top right in VS Code) to run the en
 
     ```julia
     connection = DBInterface.connect(DuckDB.DB)
-    input_dir = "my-awesome-energy-system-lesson-1"
-    output_dir = "my-awesome-energy-system-results"
+    input_dir = "basics-tutorial"
+    output_dir = "my-awesome-results"
     ```
 
 1. Let's use TulipaIO to read the files and list them:
@@ -104,7 +99,7 @@ Or paste everything and press the run arrow (top right in VS Code) to run the en
         TEM.run_scenario(connection; output_folder=output_dir)
     ```
 
-## 4. Explore the results
+## Explore the results
 
 *Which files were created in the output folder?*\
 Take a minute to explore them.
