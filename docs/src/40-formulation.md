@@ -619,7 +619,7 @@ v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = p^{\text{init sto
 ```
 
 ```math
-v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} \geq p^{\text{init storage level}}_{a,y} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}} \geq p^{\text{init storage level}}_{a,y} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 ```
 
