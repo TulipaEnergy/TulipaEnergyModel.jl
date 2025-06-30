@@ -550,11 +550,11 @@ DuckDB.query(
 )
 ```
 
-### [Populate with defaults](@id obz_populate_with_defaults)
+### [Populate with defaults](@id obz-populate-with-defaults)
 
 Finally, in many cases, you will need to complete the missing columns with additional information.
 To simplify this process, we created the `populate_with_defaults!` function.
-Please read TulipaEnergyModel's [populate with default section](@ref minimum_data) for a complete picture.
+Please read TulipaEnergyModel's [populate with default section](@ref minimum-data) for a complete picture.
 
 Here is the before of one of the tables:
 
@@ -576,7 +576,7 @@ nice_query("FROM asset_both LIMIT 5")
 
 !!! warning "If you skipped ahead"
     If you skipped ahead and have errors here, check out some of the previous steps.
-    Notably, [populating with defaults](@ref obz_populate_with_defaults) helps solve many issues with missing data and wrong types in the columns.
+    Notably, [populating with defaults](@ref obz-populate-with-defaults) helps solve many issues with missing data and wrong types in the columns.
 
 !!! info "More general option: run_scenario"
     We split the TulipaEnergyModel part in a few parts, however all these things could be achieved using [`run_scenario`](@ref) directly instead.
@@ -651,7 +651,7 @@ nice_query("SELECT *
 ## Data processing for plots and dashboard
 
 This part of the workflow is open for you to do whatever you need.
-In principle, you can skip this step and go straight to [exporting the solution](@ref step_export), and then perform your analysis of the solution outside of the DuckDB/Julia environment.
+In principle, you can skip this step and go straight to [exporting the solution](@ref step-export), and then perform your analysis of the solution outside of the DuckDB/Julia environment.
 
 Here is an example of data processing using DuckDB and Julia.
 
@@ -701,7 +701,7 @@ plot!(
 )
 ```
 
-## [Export solution](@id step_export)
+## [Export solution](@id step-export)
 
 Finally, we can export the solution to CSV files using the convenience function below:
 

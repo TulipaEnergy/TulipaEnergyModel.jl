@@ -540,7 +540,7 @@ v^{\text{flow}}_{f,k_y,b_{k_y}} = \frac{p^{\text{power system base}}}{p^{\text{r
 
 #### Balance Constraint for Consumers
 
-The balance constraint sense depends on the method selected in the asset file's parameter [`consumer_balance_sense`](@ref table_schemas). The default value is $=$, but the user can choose $\geq$ as an option.
+The balance constraint sense depends on the method selected in the asset file's parameter [`consumer_balance_sense`](@ref table-schemas). The default value is $=$, but the user can choose $\geq$ as an option.
 
 ```math
 \begin{aligned}
@@ -627,7 +627,7 @@ v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}} \geq p^{\text{init s
 
 This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year). The parameter $p^{\text{map}}_{p_y,k_y}$ determines how much of the representative period $k_y$ is in the period $p_y$, and you can use a clustering technique to calculate it. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
 
-For the sake of simplicity, we show the constraint assuming the over-clustered-year-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref table_schemas).
+For the sake of simplicity, we show the constraint assuming the over-clustered-year-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref table-schemas).
 
 ```math
 \begin{aligned}
