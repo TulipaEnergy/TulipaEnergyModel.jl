@@ -1,4 +1,4 @@
-# [Beginner Tutorial #2](@id tutorial-manual)
+# [Full Model Control Tutorial](@id tutorial-manual)
 
 ## Manually running each step
 
@@ -9,8 +9,7 @@ First create the DuckDB connection, populate the data, and create an empty [Ener
 ```julia @example basics
 using DuckDB, TulipaIO, TulipaEnergyModel
 
-# You can reuse the data you copied in the first tutorial (or copy it with the commented line below)
-# cp(joinpath(pkgdir(TulipaEnergyModel), "test", "inputs", "Tiny"), "example-data") # Create the path to the test folder
+cp(joinpath(pkgdir(TulipaEnergyModel), "test", "inputs", "Tiny"), "example-data") # Copy the path to the test folder
 input_dir = "example-data"
 connection = DBInterface.connect(DuckDB.DB)
 read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)

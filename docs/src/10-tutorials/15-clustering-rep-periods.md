@@ -1,12 +1,16 @@
-# Tulipa 101 Lesson 4: Tulipa Clustering
+# Representative Periods Tutorial with Tulipa Clustering
 
 ## Introduction
 
-Clustering is done is a separate library called `TulipaClustering`. It also requires a notion of distance to measure how different two data points are from each other. Luckily, Julia has a package for that called `Distances`.
+Using representative periods is a simplification method to reduce the size of the problem.
+Instead of solving for every time period, the model solves for a few chosen representatives of the data.
+The original data is then reconstructed or approximated by blending the representatives.
 
-> Note: Make sure you install TulipaClustering v0.4.0
+Tulipa uses the package `TulipaClustering` to choose representatives and cluster input data.
 
-Reminder on how to add a package:
+## Set up the environment
+
+Add the new packages:
 
 ```julia
 using Pkg: Pkg
@@ -15,21 +19,23 @@ Pkg.add(name="TulipaClustering", version="0.4.0")
 Pkg.add("Distances")
 ```
 
-We start with importing the packages we need.
+Import packages:
 
 ```julia=
 import TulipaIO as TIO
 import TulipaEnergyModel as TEM
-import TulipaClustering as TC  # NB: this is new
+import TulipaClustering as TC
 using DuckDB
 using DataFrames
 using Plots
-using Distances  # NB: this is new
+using Distances
 ```
 
 > **Question:** Do you remember how to install the two new libraries into your environment?
 
-Let's now go the repository and download the new files **my-awesome-energy-system-lesson-4** from the following link: [case studies github repo](https://github.com/datejada/Tulipa101-hands-on/tree/main)
+## Set up the data
+
+Let's now go to the repository and download the new files **my-awesome-energy-system-lesson-4** from the following link: [case studies github repo](https://github.com/datejada/Tulipa101-hands-on/tree/main)
 
 Next, let's load the data.
 
