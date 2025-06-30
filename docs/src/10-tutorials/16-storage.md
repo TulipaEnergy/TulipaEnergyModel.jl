@@ -1,4 +1,4 @@
-# Tulipa 101 Lesson 5: Seasonal and non-seasonal storage
+# Seasonal and Non-seasonal Storage Tutorial
 
 ## Introduction
 
@@ -6,7 +6,6 @@ Tulipa has two types of storage representations:
 
 1. **seasonal** -> inter-temporal constraints -> over clustered analysis period (i.e. year)
 2. **non-seasonal** -> intra-temporal constraints -> inside the representative periods
-
 
 Here is the concept documentation for more details: [Storage Modelling](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/30-concepts/#storage-modeling)
 
