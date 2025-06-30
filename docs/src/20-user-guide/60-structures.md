@@ -1,4 +1,4 @@
-# [Model Structures](@id structures)
+# [Internal Model Structures](@id structures)
 
 ```@contents
 Pages = ["60-structures.md"]
@@ -32,18 +32,6 @@ The `EnergyProblem` can also be constructed using the minimal constructor below.
 - `EnergyProblem(connection)`: Constructs a new `EnergyProblem` object with the given `connection` that has been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl).
 
 See the [basic example tutorial](@ref basic-example) to see how these can be used.
-
-## GraphAssetData
-
-This structure holds all the information of a given asset.
-These are stored inside the Graph.
-Given a graph `graph`, an asset `a` can be accessed through `graph[a]`.
-
-## GraphFlowData
-
-This structure holds all the information of a given flow.
-These are stored inside the Graph.
-Given a graph `graph`, a flow from asset `u` to asset `v` can be accessed through `graph[u, v]`.
 
 ## [Timeframe](@id timeframe)
 

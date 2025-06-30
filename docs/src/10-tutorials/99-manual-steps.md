@@ -1,63 +1,6 @@
-# [Tutorials](@id tutorials)
+# [Beginner Tutorial #2](@id tutorial-manual)
 
-Here are some tutorials on how to use Tulipa.
-
-```@contents
-Pages = ["10-tutorials.md"]
-Depth = [2, 3]
-```
-
-## [Beginner Tutorial #1](@id basic-example)
-
-For our first analysis, let's use a tiny existing dataset.
-Inside the code for this package, there is a Tiny test case, which includes all the files necessary to create a model and solve it.
-
-The Tiny case defines the assets and flows, their profiles, and their time resolution, as well as the representative periods and which periods in the full problem formulation they represent.
-The optimisation will solve:
-
-1. Optimal (minimum cost) investment in production and flow capacities to satisfy future demand
-1. Optimal (minimum cost) operation (dispatch) of the new system
-
-You can read more about the [Input](@ref input) later - for now you have everything you need!
-
-### Starting Julia
-
-Choose one:
-
-- In VSCode: Press `CTRL`+`Shift`+`P` and then `Enter` to start a Julia REPL.
-- In the terminal: Type `julia` and press `Enter`
-- Enter package mode and activate your project: `]` then `pkg> activate .` (including the dot!)
-- Make sure your package are up to date: `pkg> up`
-
-### Run a tiny scenario
-
-In Julia run:
-
-```julia @example basics
-using DuckDB, TulipaIO, TulipaEnergyModel
-
-# Set the input directory to the Tiny folder (which is in the test folder of the package)
-cp(joinpath(pkgdir(TulipaEnergyModel), "test", "inputs", "Tiny"), "example-data") # Copy the data folder to your project space
-input_dir = "example-data"
-readdir(input_dir) # Check the input directory is correct - this should show the names of the files in the folder
-
-# Create a DuckDB database connection
-connection = DBInterface.connect(DuckDB.DB)
-
-# Read the files into DuckDB tables - luckily the files are already formatted to fit the Model Schema
-read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
-
-# Run the scenario and save the result to the energy_problem
-energy_problem = run_scenario(connection)
-```
-
-Congratulations - you just solved your first scenario! 🌷
-
-<!-- TODO : Add looking at results -->
-
-## [Beginner Tutorial #2](@id tutorial-manual)
-
-### Manually running each step
+## Manually running each step
 
 If you need more control, you can create the energy problem first, then the optimization model inside it, and finally ask for it to be solved.
 
@@ -121,7 +64,7 @@ The objective value and the termination status are also included in the energy p
 energy_problem.objective_value, energy_problem.termination_status
 ```
 
-### Manually creating all structures without EnergyProblem
+## Manually creating all structures without EnergyProblem
 
 The `EnergyProblem` structure holds various internal structures, including the JuMP model and the DuckDB connection.
 There is currently no reason to manually create and maintain these structures yourself, so we recommend that you use the previous sections instead.
