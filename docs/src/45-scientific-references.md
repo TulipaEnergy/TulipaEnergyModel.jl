@@ -13,30 +13,30 @@ Tejada-Arango, D. A., Kiviluoma, J., & Morales-España, G. (2025). Debunking the
 
 ## Flexible Temporal Resolution
 
-Gao, Zhi and Gazzani, Matteo and Tejada-Arango, Diego A. and Siqueira, Abel and Wang, Ni and Gibescu, Madeleine and Morales-España, G., Fully Flexible Temporal Resolution for Energy System Optimization. Available at SSRN: <https://ssrn.com/abstract=5214263> or <http://dx.doi.org/10.2139/ssrn.5214263>
+Gao, Z., Gazzani, M., Tejada-Arango, D. A., Siqueira, A. S., Wang, N., Gibescu, M., & Morales-España, G. (2025). Fully flexible temporal resolution for energy system optimization. Applied Energy, 396, 126267. <https://doi.org/10.1016/j.apenergy.2025.126267>
 
 ## Storage Modelling
 
 ### Seasonal Storage with Representative Periods
 
-Tejada-Arango, D.A., Domeshek, M., Wogrin, S., Centeno, E., 2018. Enhanced representative days and system states modeling for energy storage investment analysis. IEEE Transactions on Power Systems 33, 6534–6544. doi:10.1109/TPWRS.2018.2819578.
+Tejada-Arango, D. A., Domeshek, M., Wogrin, S., & Centeno, E. (2018). Enhanced representative days and system states modeling for energy storage investment analysis. IEEE Transactions on Power Systems, 33(6), 6534–6544. <https://doi.org/10.1109/TPWRS.2018.2819578>
 
-Tejada-Arango, D.A., Wogrin, S., Siddiqui, A.S., Centeno, E., 2019. Opportunity cost including short-term energy storage in hydrothermal dispatch models using a linked representative periods approach. Energy 188, 116079. doi:10.1016/j.energy.2019.116079.
+Tejada-Arango, D. A., Wogrin, S., Siddiqui, A. S., & Centeno, E. (2019). Opportunity cost including short-term energy storage in hydrothermal dispatch models using a linked representative periods approach. Energy, 188, 116079. <https://doi.org/10.1016/j.energy.2019.116079>
 
 ### Tight Formulations to Avoid Simultaneous Charging and Discharging
 
-Elgersma, M. B., Aardal, K. I., Helistö, N., Kiviluoma, J., & De Weerdt, M. M., 2024. Tight MIP Formulations for Optimal Operation and Investment of Storage Including Reserves. ArXiv. <https://arxiv.org/abs/2411.17484>
+Elgersma, M. B., Aardal, K. I., Helistö, N., Kiviluoma, J., & De Weerdt, M. M. (2024). Tight MIP formulations for optimal operation and investment of storage including reserves. arXiv. <https://arxiv.org/abs/2411.17484>
 
 ## Ramping and Unit Commitment
 
-Damcı-Kurt, P., Küçükyavuz, S., Rajan, D., Atamtürk, A., 2016. A polyhedral study of production ramping. Math. Program. 158, 175–205. doi: 10.1007/s10107-015-0919-9.
+Damcı-Kurt, P., Küçükyavuz, S., Rajan, D., & Atamtürk, A. (2016). A polyhedral study of production ramping. Mathematical Programming, 158(1–2), 175–205. <https://doi.org/10.1007/s10107-015-0919-9>
 
-Morales-España, G., Ramos, A., García-González, J., 2014. An MIP Formulation for Joint Market-Clearing of Energy and Reserves Based on Ramp Scheduling. IEEE Transactions on Power Systems 29, 476-488. doi: 10.1109/TPWRS.2013.2259601.
+Morales-España, G., Ramos, A., & García-González, J. (2014). An MIP formulation for joint market-clearing of energy and reserves based on ramp scheduling. IEEE Transactions on Power Systems, 29(1), 476–488. <https://doi.org/10.1109/TPWRS.2013.2259601>
 
-Morales-España, G., Latorre, J. M., Ramos, A., 2013. Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem. IEEE Transactions on Power Systems 28, 4897-4908. doi: 10.1109/TPWRS.2013.2251373.
+Morales-España, G., Latorre, J. M., & Ramos, A. (2013). Tight and compact MILP formulation for the thermal unit commitment problem. IEEE Transactions on Power Systems, 28(4), 4897–4908. <https://doi.org/10.1109/TPWRS.2013.2251373>
 
 ## Multi-year Investments
 
-Wang, Ni and Tejada-Arango, D.A., 2025. Discounting Approaches in Multi-Year Investment Modelling for Energy Systems. ArXiv. <https://arxiv.org/abs/2504.21709>
+Wang, N., & Tejada-Arango, D. A. (2025). Discounting approaches in multi-year investment modelling for energy systems. ArXiv. <https://arxiv.org/abs/2504.21709>
 
-Wang, Ni and Morales-España, G., 2025. Vintage-Based Formulations in Multi-Year Investment Modelling for Energy Systems. ArXiv. <https://arxiv.org/abs/2505.00379>
+Wang, N., & Morales-España, G. (2025). Vintage-based formulations in multi-year investment modelling for energy systems. ArXiv. <https://arxiv.org/abs/2505.00379>
