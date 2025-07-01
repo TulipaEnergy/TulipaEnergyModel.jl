@@ -1,0 +1,3 @@
+*.mps linguist-generated
+benchmark/EU/*.csv linguist-vendored
+test/inputs/**/*.csv linguist-vendored
