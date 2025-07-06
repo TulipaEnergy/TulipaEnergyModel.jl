@@ -10,6 +10,28 @@ from
     flow_time_resolution_rep_period
 ;
 
+-- incoming flows for conversion balance
+create or replace temp table merged_in_flows_conversion_balance as
+select
+    distinct ftrrp.to_asset as asset,
+    ftrrp.year,
+    ftrrp.rep_period,
+    ftrrp.time_block_start,
+    ftrrp.time_block_end
+from
+    flow_time_resolution_rep_period as ftrrp
+left join
+    flow_commission as fc on
+        ftrrp.from_asset = fc.from_asset and
+        ftrrp.to_asset = fc.to_asset and
+        ftrrp.year = fc.commission_year
+left join
+    asset on ftrrp.to_asset = asset.asset
+where
+    fc.conversion_coefficient > 0 and
+    asset.type in ('conversion')
+;
+
 -- outgoing flows
 create or replace temp table merged_out_flows as
 select
@@ -20,6 +42,28 @@ select
     time_block_end
 from
     flow_time_resolution_rep_period
+;
+
+-- outgoing flows for conversion balance
+create or replace temp table merged_out_flows_conversion_balance as
+select
+    distinct ftrrp.from_asset as asset,
+    ftrrp.year,
+    ftrrp.rep_period,
+    ftrrp.time_block_start,
+    ftrrp.time_block_end
+from
+    flow_time_resolution_rep_period as ftrrp
+left join
+    flow_commission as fc on
+        ftrrp.from_asset = fc.from_asset and
+        ftrrp.to_asset = fc.to_asset and
+        ftrrp.year = fc.commission_year
+left join
+    asset on ftrrp.from_asset = asset.asset
+where
+    fc.conversion_coefficient > 0 and
+    asset.type in ('conversion')
 ;
 
 -- union of all assets and outgoing flows
@@ -44,6 +88,15 @@ from
 union
 from
     merged_out_flows
+;
+
+-- union of all incoming and outgoing flows for conversion balance
+create or replace temp table merged_flows_conversion_balance as
+from
+    merged_in_flows_conversion_balance
+union
+from
+    merged_out_flows_conversion_balance
 ;
 
 -- union of all assets, and incoming and outgoing flows
