@@ -10,18 +10,11 @@ drop table if exists cons_balance_conversion
 create table cons_balance_conversion as
 select
     nextval('id') as id,
-    asset.asset,
-    t_low.year,
-    t_low.rep_period,
-    t_low.time_block_start,
-    t_low.time_block_end,
+    t_low.*
 from
-    t_lowest_all_flows as t_low
-    left join asset on t_low.asset = asset.asset
-where
-    asset.type in ('conversion')
+    t_lowest_flows_conversion_balance as t_low
 order by
-    asset.asset,
+    t_low.asset,
     t_low.year,
     t_low.rep_period,
     t_low.time_block_start
