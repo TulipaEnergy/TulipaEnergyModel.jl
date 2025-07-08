@@ -15,9 +15,23 @@
     connection = DBInterface.connect(DuckDB.DB)
 
     # Create mock tables for testing using register_data_frame
+    table_rows = [("death_star", "conversion")]
+    asset = DataFrame(table_rows, [:asset, :type])
+    DuckDB.register_data_frame(connection, asset, "asset")
+
     table_rows = [("input_1", "death_star", 2025, true), ("input_2", "death_star", 2025, false)]
     flow_milestone = DataFrame(table_rows, [:from_asset, :to_asset, :milestone_year, :dc_opf])
     DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
+
+    table_rows = [
+        ("input_1", "death_star", 2025, 1.0),
+        ("input_2", "death_star", 2025, 0.0),
+        ("death_star", "output_1", 2025, 1.0),
+        ("death_star", "output_2", 2025, 0.0),
+    ]
+    flow_commission =
+        DataFrame(table_rows, [:from_asset, :to_asset, :commission_year, :conversion_coefficient])
+    DuckDB.register_data_frame(connection, flow_commission, "flow_commission")
 
     table_rows = [
         ("input_1", "death_star", 2025, 1, 1, 1),
@@ -88,6 +102,12 @@
         expected_table = DataFrame(expected_rows, expected_cols)
         @test merged_in_flows == expected_table
 
+        merged_in_flows_conversion_balance =
+            TulipaIO.select_tbl(connection, "merged_in_flows_conversion_balance"; where_)
+        expected_rows = [("death_star", 2025, 1, 1, 1), ("death_star", 2025, 1, 2, 5)]
+        expected_table = DataFrame(expected_rows, expected_cols)
+        @test merged_in_flows_conversion_balance == expected_table
+
         merged_out_flows = TulipaIO.select_tbl(connection, "merged_out_flows"; where_)
         expected_rows = [
             ("death_star", 2025, 1, 1, 3),
@@ -97,6 +117,12 @@
         ]
         expected_table = DataFrame(expected_rows, expected_cols)
         @test merged_out_flows == expected_table
+
+        merged_out_flows_conversion_balance =
+            TulipaIO.select_tbl(connection, "merged_out_flows_conversion_balance"; where_)
+        expected_rows = [("death_star", 2025, 1, 1, 3), ("death_star", 2025, 1, 4, 5)]
+        expected_table = DataFrame(expected_rows, expected_cols)
+        @test merged_out_flows_conversion_balance == expected_table
 
         merged_assets_and_out_flows =
             TulipaIO.select_tbl(connection, "merged_assets_and_out_flows"; where_)
@@ -138,6 +164,17 @@
         ]
         expected_table = DataFrame(expected_rows, expected_cols)
         @test merged_all == expected_table
+
+        merged_flows_conversion_balance =
+            TulipaIO.select_tbl(connection, "merged_flows_conversion_balance"; where_)
+        expected_rows = [
+            ("death_star", 2025, 1, 1, 1),
+            ("death_star", 2025, 1, 1, 3),
+            ("death_star", 2025, 1, 2, 5),
+            ("death_star", 2025, 1, 4, 5),
+        ]
+        expected_table = DataFrame(expected_rows, expected_cols)
+        @test merged_flows_conversion_balance == expected_table
 
         merged_flows_relationship =
             TulipaIO.select_tbl(connection, "merged_flows_relationship"; where_)
@@ -191,6 +228,12 @@
         expected_rows = [("death_star", 2025, 1, 1, 4), ("death_star", 2025, 1, 5, 5)]
         expected_table = DataFrame(expected_rows, expected_cols)
         @test t_lowest_all_flows == expected_table
+
+        t_lowest_flows_conversion_balance =
+            TulipaIO.select_tbl(connection, "t_lowest_flows_conversion_balance"; where_)
+        expected_rows = [("death_star", 2025, 1, 1, 3), ("death_star", 2025, 1, 4, 5)]
+        expected_table = DataFrame(expected_rows, expected_cols)
+        @test t_lowest_flows_conversion_balance == expected_table
 
         t_lowest_flows_relationship =
             TulipaIO.select_tbl(connection, "t_lowest_flows_relationship"; where_)
@@ -266,5 +309,5 @@
     end
 
     # test that the final number of tables is correct
-    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 20
+    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 26
 end

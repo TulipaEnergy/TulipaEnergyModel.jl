@@ -524,7 +524,12 @@ function create_lowest_resolution_table!(connection)
     #       Start a new block with s = 12 + 1 = 13 and e = TBE = 12
     # - END OF GROUP: Is 1 ≤ s ≤ e? No, so this is not a valid block
 
-    for merged_table in ("merged_all_flows", "merged_all", "merged_flows_relationship")
+    for merged_table in (
+        "merged_all_flows",
+        "merged_all",
+        "merged_flows_relationship",
+        "merged_flows_conversion_balance",
+    )
         table_name = replace(merged_table, "merged" => "t_lowest")
         DuckDB.execute(
             connection,
