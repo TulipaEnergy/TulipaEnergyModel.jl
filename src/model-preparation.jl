@@ -167,7 +167,8 @@ function add_expression_terms_rep_period_constraints!(
                     # Set the flow coefficient for incoming and outgoing flows of hub and consumer assets, and outgoing flows for producer assets
                     # And when you want the highest resolution (which is asset type-agnostic)
                     # If it is for the capacity constraints, multiply by the capacity constraint coefficient for these cases, otherwise, just use the 1.0
-                    # In any other case, the flow coefficient is the efficiency
+                    # Else if the asset is a conversion asset the flow coefficient is the conversion coefficient
+                    # In any other case, the flow coefficient is equal to one.
                     flow_coefficient =
                         if group_row.type::String in case.selected_assets || use_highest_resolution
                             if multiply_by_capacity_coefficient
@@ -175,8 +176,10 @@ function add_expression_terms_rep_period_constraints!(
                             else
                                 1.0
                             end
-                        else
+                        elseif group_row.type::String == "conversion"
                             conversion_coefficient
+                        else
+                            1.0
                         end
                     # Step 1.1.1.2.
                     workspace[timestep][var_id] = resolution * flow_coefficient
