@@ -91,6 +91,20 @@ As a short example, consider the following example:
 
 ![Example of network with flexible resolution of assets](docs/src/figs/variable-time-resolution-2.png)
 
+In the example, we look at 6 hours of a network. The flow between "H2" and "ccgt" has a resolution of 6 hours (i.e., the whole period), while from "ccgt" to the "balance", the resolution is 1 hour.
+The resolution from "wind" to "phs" is 3 hours, and the resolution from "phs" to "balance" is not regular, starting with a 4 hours block and then a 2 hours block.
+All these "time blocks" are handled by the Tulipa energy model to allow for more or less detailed solutions.
+This implies that less variables and constraints are created, ensuring a faster solving speed, with little loss in accuracy.
+See (cite) for more details on the research behind fully flexible resolution.
+
+Another feature of the Tulipa model is the use of representative periods (cite), supported by another package in our ecosystem, `TulipaClustering.jl`.
+The representative periods are obtained by clustering the asset profiles (time series) from the full time frame to a much smaller one.
+For instance, instead of using a full year with 8760 hours (365 periods of 24 hours each), we can choose to have 30 representative periods of 24 hours each.
+These representative periods will be computed using `TulipaClustering.jl` so that each of the 365 original periods are replaced by a combination of the 30 representatives.
+Now, we can model within representative periods (30 periods of 24 hours each), and across periods (365 periods).
+Either way, we have a much smaller number of variables, making our model easier to solve.
+See (cite) for more details on the research behind representative periods.
+
 ## Statement of need
 
 (Energy-field related motivation).
