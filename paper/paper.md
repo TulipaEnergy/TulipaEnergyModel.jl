@@ -71,7 +71,7 @@ affiliations:
   - name: Utrecht University, Netherlands
     ror: 04pp8hn57
     index: 5
-date: 23 May 2025
+date: 10 July 2025
 bibliography: paper.bib
 ---
 
@@ -109,6 +109,8 @@ One main design choice of Tulipa is that data is passed (and kept) in a [DuckDB]
 This enables us to handle different data formats by relying on DuckDB's capabilities, instead of specific Julia capabilities.
 Furthermore, this separates most of the data manipulation from the model manipulation, allowing users to separately create the necessary input data from whatever platform they are more comfortable with.
 
+![Overview of Tulipa's integration with DuckDB](images/tulipa-overview.jpg)
+
 Due to the flexible resolution of assets and flows, many of our variables have a "time block" component, instead of a "time step" component.
 Since different assets and flows can have different time resolutions, the indices of many of our variables and constraints are sparse.
 To better explain this feature, look again at Fig. X and ignore years and representative periods.
@@ -138,14 +140,14 @@ A single vector of variables is created, with each element corresponding to a ro
 
 ## Statement of need
 
-(Energy-field related motivation).
-
 There are multiple packages and frameworks related to Energy System Optimisation in Julia and other languages.
 A few examples in the Julia and Python realm are [EnergyModelsX](https://github.com/EnergyModelsX) [@EnergyModelsX], [PowerModels](https://github.com/lanl-ansi/PowerModels.jl) [@PowerModels], [SpineOpt](https://www.tools-for-energy-system-modelling.org/) [@SpineOpt], [Sienna](https://www.nrel.gov/analysis/sienna) [@Sienna], [GenX](https://github.com/GenXProject/GenX) [@GenX], [PyPSA](https://pypsa.org) [@PyPSA], and [Calliope](https://github.com/calliope-project/calliope) [@Calliope].
-
 Despite the large array of options, we still felt necessary to develop Tulipa from the ground up due to the use of specific features already included and future developments.
 This changes all model structures in ways that cannot be easily adapted to existing models.
 
 ## Acknowledgements
+
+TODO: Actually check this
+The development of the Tulipa ecosystem has been supported in part by NWO via the ESI.2019.008 grant.
 
 ## References
