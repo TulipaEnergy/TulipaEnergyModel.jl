@@ -4,6 +4,11 @@
     model = JuMP.Model()
 
     # Create mock tables for testing using register_data_frame
+    # This first table is only necessary because we have a left join of var_flow with the asset table
+    table_rows = [("input_1", "none"), ("input_2", "none")]
+    asset = DataFrame(table_rows, [:asset, :investment_method])
+    DuckDB.register_data_frame(connection, asset, "asset")
+
     table_rows = [("input_1", "death_star", true), ("input_2", "death_star", true)]
     flow = DataFrame(table_rows, [:from_asset, :to_asset, :is_transport])
     DuckDB.register_data_frame(connection, flow, "flow")

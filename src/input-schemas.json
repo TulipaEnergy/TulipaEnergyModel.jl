@@ -81,6 +81,7 @@
         "oneOf": [
           "none",
           "simple",
+          "semi-compact",
           "compact"
         ]
       },

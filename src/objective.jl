@@ -242,14 +242,16 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         ) AS rpinfo
             ON var.year = rpinfo.year
             AND var.rep_period = rpinfo.rep_period
+        LEFT JOIN asset
+            ON asset.asset = var.from_asset
+        WHERE asset.investment_method != 'semi-compact'
         ORDER BY var.id
         ",
     )
 
-    flows_variable_cost = @expression(
-        model,
-        sum(row.cost * flow for (row, flow) in zip(indices, variables[:flow].container))
-    )
+    var_flow = variables[:flow].container
+
+    flows_variable_cost = @expression(model, sum(row.cost * var_flow[row.id] for row in indices))
 
     indices = DuckDB.query(
         connection,
@@ -278,7 +280,10 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         ) AS rpinfo
             ON var.year = rpinfo.year
             AND var.rep_period = rpinfo.rep_period
+        LEFT JOIN asset
+            ON asset.asset = var.asset
         WHERE t_objective_assets.units_on_cost IS NOT NULL
+            AND asset.investment_method != 'semi-compact'
         ORDER BY var.id
         ",
     )
