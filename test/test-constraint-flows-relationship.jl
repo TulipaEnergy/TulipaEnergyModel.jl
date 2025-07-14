@@ -4,6 +4,10 @@
     model = JuMP.Model()
 
     # Create mock tables for testing using register_data_frame
+    table_rows = [("input_1", "none"), ("input_2", "none"), ("death_star", "none")]
+    asset = DataFrame(table_rows, [:asset, :investment_method])
+    DuckDB.register_data_frame(connection, asset, "asset")
+
     table_rows = [
         ("input_1", "death_star", false),
         ("input_2", "death_star", false),
