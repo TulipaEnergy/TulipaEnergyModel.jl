@@ -1,28 +1,29 @@
-# Seasonal and Non-seasonal Storage Tutorial
+# Seasonal and Non-seasonal Storage
 
 ## Introduction
 
 Tulipa has two types of storage representations:
 
-1. **seasonal** -> inter-temporal constraints -> over clustered analysis period (i.e. year)
-2. **non-seasonal** -> intra-temporal constraints -> inside the representative periods
+1. seasonal - inter-temporal constraints over the clustered analysis period (i.e. year)
+2. non-seasonal - intra-temporal constraints inside the representative periods
 
 Here is the concept documentation for more details: [Storage Modelling](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/30-concepts/#storage-modeling)
 
 ## The new data
 
-Using our now well-known `awesome energy system` case, we have added two new assets: `battery` and `H2_storage` in the `my-awesome-energy-system-lesson-5` folder.
+Using our now well-known `awesome energy system` case, there are two new assets: `battery` and `H2_storage` in the `my-awesome-energy-system-lesson-5` folder.
 
 **Download the files** from the following link: [case studies files](https://github.com/datejada/Tulipa101-hands-on/tree/main)
-  - Click the green button Code > Download ZIP
 
-Let's have a look at their input parameters... :eyes:
+- Click the green button Code > Download ZIP
 
-For instance, what are the storage capacities? efficiencies? initial storage level? Any other parameters?
+Let's have a look at their input parameters...
 
-## Previously in the TLC...
+For instance, what are the storage capacities? Efficiencies? Initial storage levels? Any other parameters?
 
-Let's start the workflow in Lesson 4, but using our new storage data (and a temporary hack - sorry :sweat_smile:, a fix is coming soon):
+## Previously in the TLC
+
+Let's start the workflow in Lesson 4, but using our new storage data (and a temporary hack - sorry, a fix is coming soon):
 
 ```julia=
 using Pkg
@@ -121,24 +122,24 @@ p
 
 What is happening? Any ideas?
 
-It seems that 2 representative periods is not that fun. :thinking_face:
+It seems that 2 representative periods is not that fun.
 
-Let's change the number of representatives to 10 and rerun the whole workflow.
+Change the number of representatives to 10 and rerun the whole workflow.
 
->**Note:** We need to run the whole workflow because we need to update the representatives.
+>**Note:** You need to run the whole workflow to update the representatives.
 
 The battery storage looks reasonable, but what is happening with the hydrogen storage?
 
 ## The parameter `is_seasonal`
 
-Let's change the parameter `is_seasonal` from `false` to `true` for the hydrogen storage in the file `assets.csv`.
+Change the parameter `is_seasonal` from `false` to `true` for the hydrogen storage in the file `assets.csv`.
 
 Rerun the workflow and check the results again...
 
 What do you notice in the output folder? Any new variables/constraints?
 
-Let's check the storage level of the hydrogen storage.
->**Note:** It's now in the variable `var_storage_level_over_clustered_year` because it's seasonal :wink:
+Check the storage level of the hydrogen storage.
+>**Note:** It's now in the variable `var_storage_level_over_clustered_year` because it's seasonal.
 
 ```julia=
 seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_over_clustered_year")
@@ -159,10 +160,9 @@ end
 p
 ```
 
-
 ## Changing other storage parameters
 
-As you saw before, there are several parameters for the storage assets. Let's play with some of them... :wink:
+As you saw before, there are several parameters for the storage assets. Let's play with some of them...
 
 ### The parameter `initial_storage_level`
 
@@ -177,10 +177,11 @@ Change the `storage_loss_from_stored_energy` of the battery to empty (blank) and
 The following code:
 
 1. Creates a new connection `conn_hourly_benchmark` to store the results of the hourly benchmark
-2. Runs TulipaClustering with 1 representative period of 8760 hours. Therefore, the whole hourly year
-3. TulipaClustering does not cluster in this case, it just runs to create the necessary tables for TulipaEnergy
-4. We update the values of the `is_seasonal` parameter to `false`, since we have the whole year and 1 representative, the storage is not considered seasonal (it is within the representative period :wink:)
-5. We store the run in new object called `ep_hourly`
+2. Runs TulipaClustering with 1 representative period of 8760 hours. Therefore, the whole hourly year\
+   *TulipaClustering does not cluster in this case, it just runs to create the necessary tables for TulipaEnergyModel*
+3. Updates the values of the `is_seasonal` parameter to `false`.\
+   *Since it is 1 year and 1 representative, the storage is not considered seasonal (it is within the representative period)*
+4. Stores the run in a new object called `ep_hourly`
 
 ```julia=
 ## Hourly benchmark
@@ -217,7 +218,8 @@ DuckDB.query(
 ep_hourly = TEM.run_scenario(conn_hourly_benchmark)
 ```
 
-We can use this result and the ones from the clustering to see the comparison of the two solutions. Here an example of how to combine the plots for this specific example.
+You can use this result and the ones from the clustering to see the comparison of the two solutions.\
+Here is an example of how to combine the plots for this case:
 
 ```julia=
 # plotting the results for the hourly benchmark
@@ -264,5 +266,3 @@ Here you can see the results comparing from different number of representative p
 Here there is a zoom to best approximation of the hydrogen storage:
 
 ![seasonal_storage_levels-2](https://hackmd.io/_uploads/HkhIpMfWge.png)
-
-## Questions

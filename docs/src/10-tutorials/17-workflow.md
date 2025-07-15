@@ -1,4 +1,4 @@
-# Complete Workflow Tutorial
+# [Workflow](@id workflow-tutorial)
 
 Tutorial for the OBZ case study as an example of the full workflow of Tulipa.
 
@@ -62,11 +62,11 @@ readdir(user_input_dir)
 ```
 
 For the Tulipa workflow, we will need to transform some of this data into a specific format.
-This can be done externally in whatever tools you are already comfortable with, or through Julia via DuckDB and Tulipa's convenience functions.
+This can be done externally in whatever tools you are already comfortable with, or through Julia via DuckDB and TulipaIO's convenience functions.
 
 ## Create connection
 
-Once we are done manipulating the data externally, it is time to create a DuckDB connection.
+First create a DuckDB connection.
 
 You can create a connection storing the DB locally, or keep everything in-memory only.
 Let's assume you want to store the DB, otherwise you can just remove the argument `"obz.db"`.
@@ -79,7 +79,7 @@ rm("obz.db", force=true) # hide
 connection = DBInterface.connect(DuckDB.DB, "obz.db")
 ```
 
-We will be performing various queries with DuckDB. To format them nicely, we can wrap the results in a `DataFrame`:
+You will be performing various queries with DuckDB. To format them nicely, you can wrap the results in a `DataFrame`:
 
 ```@example obz
 using DataFrames: DataFrame
@@ -89,12 +89,12 @@ nice_query(str) = DataFrame(DuckDB.query(connection, str))
 
 ## Load data
 
-Once we are done manipulating the data externally, it is time to load it into the DuckDB connection.
+Once you are done manipulating the data externally, it is time to load it into the DuckDB connection.
 
-Note that this doesn't have to be the Tulipa-specific data.
+This doesn't have to be in Tulipa Format.
 It can be whatever data you prefer to manipulate via Julia/DuckDB, instead of externally.
 
-We can load them manually with `DuckDB`, but we also have a convenience function:
+You can load data manually with `DuckDB`, but there is also a convenience function:
 
 ```@example obz
 using TulipaIO: TulipaIO
@@ -712,6 +712,8 @@ end # hide
 mkdir("obz-outputs")
 TEM.export_solution_to_csv_files("obz-outputs", energy_problem)
 readdir("obz-outputs")
+
+close(connection) # hide
 ```
 
 Using DuckDB directly it is also possible to export to other formats, such as Parquet.

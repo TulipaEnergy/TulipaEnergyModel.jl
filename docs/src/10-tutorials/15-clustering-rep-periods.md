@@ -1,4 +1,4 @@
-# Representative Periods Tutorial with Tulipa Clustering
+# Representative Periods with Tulipa Clustering
 
 ## Introduction
 
@@ -6,7 +6,7 @@ Using representative periods is a simplification method to reduce the size of th
 Instead of solving for every time period, the model solves for a few chosen representatives of the data.
 The original data is then reconstructed or approximated by blending the representatives.
 
-Tulipa uses the package `TulipaClustering` to choose representatives and cluster input data.
+Tulipa uses the package [TulipaClustering.jl](https://github.com/TulipaEnergy/TulipaClustering.jl) to choose representatives and cluster input data.
 
 ## Set up the environment
 
@@ -37,7 +37,7 @@ using Distances
 
 Let's now go to the repository and download the new files **my-awesome-energy-system-lesson-4** from the following link: [case studies github repo](https://github.com/datejada/Tulipa101-hands-on/tree/main)
 
-Next, let's load the data.
+Then load the data:
 
 ```julia=9
 connection = DBInterface.connect(DuckDB.DB)
@@ -46,14 +46,14 @@ output_dir = "my-awesome-energy-system-results"
 TIO.read_csv_folder(connection, input_dir)
 ```
 
-Let's try to run the problem as usual:
+Try to run the problem as usual:
 
 ```julia=14
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.run_scenario(connection; output_folder=output_dir)
 ```
 
-> **Question:** It does not work; why?
+Uh oh! It doesn't work. Why not?
 
 ```txt
 ERROR: DataValidationException: The following issues were found in the data:
@@ -63,7 +63,7 @@ ERROR: DataValidationException: The following issues were found in the data:
 - Column 'is_milestone' is missing from table 'year_data'
 ```
 
-Answer: No, beacuse we need the tables from the clustering :wink:
+Because we need the tables from the clustering!
 
 ## Adding `TulipaClustering`
 
@@ -107,11 +107,11 @@ The `clustering_result` contains some useful information:
 - `profiles` is a dataframe with profiles for RPs,
 - `weight_matrix` is a matrix of weights of RPs in blended periods,
 - `clustering_matrix` and `rp_matrix` are matrices of profile data for each base and representative period (useful to keep for the next step, but you should not need these unless you want to do some extra math here)
-- similarly, `auxiliary_data` contains some extra data that was generated during the clustering process and is generally not interesting to the user who is not planning to interact with the clustering method on a very low level.
+- `auxiliary_data` contains some extra data that was generated during the clustering process and is generally not interesting to the user who is not planning to interact with the clustering method on a very low level.
 
 ### Weight Fitting
 
-After the clustering is done, each period is assigned to one representative period. We call this a Dirac assignment after the Dirac measure: a measure that is concentrated on one item (i.e., one base period is mapped into exactly one representative period).
+After the clustering is done, each period is assigned to one representative period. We call this a "Dirac assignment" after the Dirac measure: a measure that is concentrated on one item (i.e., one base period is mapped into exactly one representative period).
 
 `TulipaClustering` supports blended weights for representative periods. To produce these, we use projected gradient descent. You don't need to know all the math behind it, but it has a few parameters that are useful to understand:
 
@@ -119,7 +119,7 @@ After the clustering is done, each period is assigned to one representative peri
 - `tol` is the algorithm's tolerance. A tolerance of `1e-2` means that weights are estimated up to two decimal places (e.g., something like `0.15`).
 - `niters` and `learning_rate` tell for how many iterations to run the descent and by how much to adjust the weights in each iterations. More iterations make the method slower but produce better results. Larger learning rate makes the method converge faster but in a less stable manner (i.e., weights might start going up and down a lot from iteration to iteration). Sometimes you need to find the right balance for yourself. In general, if the weights produced by the method look strange, try decreasing the learning rate and/or increasing the number of iterations.
 
-Now let's fit the weights:
+Now fit the weights:
 
 ```julia=29
 weight_type = :dirac  # :convex, :conical, :conical_bounded
@@ -138,7 +138,7 @@ TC.fit_rep_period_weights!(
 
 ### Running the Model
 
-To run the model, we add the data to the system with `TulipaIO` and then run it as usual:
+To run the model, add the data to the system with `TulipaIO` and then run it as usual:
 
 ```julia=42
 TC.write_clustering_result_to_tables(connection, clustering_result)
@@ -149,7 +149,7 @@ energy_problem = TEM.run_scenario(connection; output_folder=output_dir)
 
 ### Interpreting the Results
 
-To plot the results, we first read the data with `TulipaIO` and filter what we need (and let's rename `time_block_start` to `timestep` while we are at it):
+To plot the results, first read the data with `TulipaIO` and filter what's needed (and rename `time_block_start` to `timestep` while you're at it):
 
 ```julia=47
 flows = TIO.get_table(connection, "var_flow")
@@ -177,21 +177,21 @@ filtered_flow = filter(
 )
 ```
 
-To reinterpret the RP data as base periods data we first create a new dataframe that contains both by using the inner join operation:
+To reinterpret the RP data as base periods data, first create a new dataframe that contains both by using the inner join operation:
 
 ```julia=71
 rep_periods_mapping = TIO.get_table(connection, "rep_periods_mapping")
 df = innerjoin(filtered_flow, rep_periods_mapping, on=[:year, :rep_period])
 ```
 
-Next, we use Julia's Split-Apply-Combine approach to group the dataframe into smaller ones. Each groupped dataframe contains a single data point for one base period and all RPs it maps to. We then multiply the results by weights and add them up.
+Next, use Julia's Split-Apply-Combine approach to group the dataframe into smaller ones. Each grouped dataframe contains a single data point for one base period and all RPs it maps to. Then multiply the results by weights and add them up.
 
 ```julia=73
 gdf = groupby(df, [:from_asset, :to_asset, :year, :period, :timestep])
 result_df = combine(gdf, [:weight, :solution] => ((w, s) -> sum(w .* s)) => :solution)
 ```
 
-Now we can plot the results. We can remove the period data since we don't need it anymore, and re-sort the data to make sure it is in the right order.
+Now you can plot the results. Remove the period data since you don't need it anymore, and re-sort the data to make sure it is in the right order.
 
 ```julia=76
 TC.combine_periods!(result_df)
@@ -214,9 +214,10 @@ This concludes this tutorial! Play around with different parameters to see how t
 
 ## Troubleshooting
 
-If you can't run up to the end, then check that you have the following information in the *Project.toml* file in your repository, and then in your Julia REPL activate and instantiate the project.
+If you can't run up to the end, then check that you have the following information in the `Project.toml` file in your repository, and then in your Julia REPL activate and instantiate the project.
 
-**Project.toml**
+`Project.toml`:
+
 ```txt
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -240,10 +241,6 @@ Pkg.activate(".")
 Pkg.resolve()
 Pkg.instantiate()
 ```
-
-## Q&A
-
-Any questions? Leave them here.
 
 ## The Script as a Whole
 

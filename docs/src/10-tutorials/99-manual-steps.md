@@ -1,4 +1,4 @@
-# [Full Model Control Tutorial](@id tutorial-manual)
+# [Advanced Control](@id tutorial-manual)
 
 ## Manually running each step
 

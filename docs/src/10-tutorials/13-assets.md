@@ -10,10 +10,9 @@ If you have not followed that tutorial, follow these sections before starting th
 1. [Create a VS Code Project](@ref vscode-project)
 1. [Set up data and folders](@ref tutorial-data-folders)
 
-## Explore the files :eyeglasses:
+## Explore the files
 
 Take a look at the files in the `assets-tutorial` folder.
-**TODO: Add notes about what they should see in the files**
 
 ## Run the workflow
 
@@ -50,52 +49,52 @@ energy_problem =
 
 ## Explore the results
 
-1. Explore the flow that goes from the hub to the e_demand:
+Explore the flow that goes from the hub to the e_demand:
 
-    ```julia
-    flows = TIO.get_table(connection, "var_flow")
+```julia
+flows = TIO.get_table(connection, "var_flow")
 
-    from_asset = "hub"
-    to_asset = "e_demand"
-    year = 2030
-    rep_period = 1
+from_asset = "hub"
+to_asset = "e_demand"
+year = 2030
+rep_period = 1
 
-    filtered_flow = filter(
-        row ->
-            row.from_asset == from_asset &&
-                row.to_asset == to_asset &&
-                row.year == year &&
-                row.rep_period == rep_period,
-        flows,
-    )
+filtered_flow = filter(
+    row ->
+        row.from_asset == from_asset &&
+            row.to_asset == to_asset &&
+            row.year == year &&
+            row.rep_period == rep_period,
+    flows,
+)
 
-    plot(
-        filtered_flow.time_block_start,
-        filtered_flow.solution;
-        label=string(from_asset, " -> ", to_asset),
-        xlabel="Hour",
-        ylabel="[MWh]",
-        dpi=600,
-    )
-    ```
+plot(
+    filtered_flow.time_block_start,
+    filtered_flow.solution;
+    label=string(from_asset, " -> ", to_asset),
+    xlabel="Hour",
+    ylabel="[MWh]",
+    dpi=600,
+)
+```
 
-1. Explore the congestion using the duals in the results:
+Explore the congestion using the duals in the results:
 
-    ```julia
-    transport = TIO.get_table(connection, "cons_transport_flow_limit_simple_method")
+```julia
+transport = TIO.get_table(connection, "cons_transport_flow_limit_simple_method")
 
-    names(transport)
+names(transport)
 
-    filter(
-        row ->
-            row.dual_max_transport_flow_limit_simple_method != 0.0,
-        transport,
-    )
-    ```
+filter(
+    row ->
+        row.dual_max_transport_flow_limit_simple_method != 0.0,
+    transport,
+)
+```
 
-!!! Test Your Knowledge
+!!! info "Test Your Knowledge"
     Can you explain the values you get from the column `dual_max_transport_flow_limit_simple_method`?
 
-## Add a Battery (storage asset)
+## Challenge: Add a Battery
 
-Add a battery that can **only charge** from the solar PV and discharges to the `e_demand` consumer.
+Try adding a battery (a short-term storage asset) that can **only charge** from the solar PV and discharges to the `e_demand` consumer.

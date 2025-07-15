@@ -1,20 +1,21 @@
-# Flexible Time Resolution Tutorial
+# Flexible Time Resolution
 
 ## Introduction
 
 Tulipa allows mixing multiple time resolutions within the same problem.\
-For instance, by **energy carrier** (electricity high, heat low), **geographic area** (local high, international low), or **time horizon** (short-term high, long-term low).\
-This is a useful feature for scaling a problem to make it solvable, or for faster solves while tuning data.
+For instance, by:
+
+- energy carrier - electricity high, gas medium, heat low
+- geographic area - local high, neighboring areas decreasing with distance
+- time horizon - short-term high, long-term low
+
+This is a useful feature for scaling large problems to make them solvable or to solve problems faster while iteratively tuning data - without losing granular detail in the area of interest.
 
 More information is in the section [Flexible Time Resolution](@ref flex-time-res).
 
-For more nitty gritty nerdy details, you can read this reference. :wink:\
-*Gao, Zhi and Gazzani, Matteo and Tejada-Arango, Diego A. and Siqueira, Abel and Wang, Ni and Gibescu, Madeleine and Morales-España, G., Fully Flexible Temporal Resolution for Energy System Optimization.* Available at SSRN: https://ssrn.com/abstract=5214263 or http://dx.doi.org/10.2139/ssrn.5214263
+For more nitty gritty nerdy details, you can read this reference.
 
-In this tutorial, you will learn:
-
-1. bleep
-1. bloop
+*Gao, Zhi and Gazzani, Matteo and Tejada-Arango, Diego A. and Siqueira, Abel and Wang, Ni and Gibescu, Madeleine and Morales-España, G., Fully Flexible Temporal Resolution for Energy System Optimization.* Available at SSRN: <https://ssrn.com/abstract=5214263> or <http://dx.doi.org/10.2139/ssrn.5214263>
 
 ## Set up the data
 
@@ -24,27 +25,28 @@ If you have not followed that tutorial, follow these sections before starting th
 1. [Create a VS Code Project](@ref vscode-project)
 1. [Set up data and folders](@ref tutorial-data-folders)
 
-!!! note
+!!! info
     The folder `flexible-time-resolution-answers` contains the *final* files you will create in this lesson.
 
 ### Hydrogen sector on 6 hour resolution
 
 Defining flexible temporal resolution requires the files `assets_rep_periods_partitions` and `flows_rep_periods_partitions`, so let's create them together.
 
-!!! note
+!!! tip
     The schemas of the files is described in the section [Inputs](@ref table-schemas).
 
-1. Working in the folder `flexible-time-tutorial`:
-2. Create a new file called `assets_rep_periods_partitions.csv`
-3. Copy this text into the file:
+Working in the folder `flexible-time-tutorial`:
+
+1. Create a new file called `assets_rep_periods_partitions.csv`
+2. Copy this text into the file:
 
     ```txt
     asset,partition,rep_period,specification,year
     electrolizer,6,1,uniform,2030
     ```
 
-4. Create a new file called `flows_rep_periods_partitions.csv`
-5. Copy this text into the file:
+3. Create a new file called `flows_rep_periods_partitions.csv`
+4. Copy this text into the file:
 
     ```txt
     from_asset,to_asset,partition,rep_period,specification,year
@@ -52,7 +54,7 @@ Defining flexible temporal resolution requires the files `assets_rep_periods_par
     ```
 
 !!! note
-    If no partition/resolution is defined for an asset or flow, then the default values are `uniform` and `1`.
+    If no partition or resolution is defined for an asset or flow, then the default values are `uniform` and `1`.
 
 Let's add the compatibility of TulipaEnergyModel in the Julia REPL:
 
@@ -129,7 +131,7 @@ energy_problem =
 
 ```
 
-**From the statistics at the end, what are the number of constraints, variables, and objective function?**
+From the statistics at the end, what are the number of constraints, variables, and objective function?
 
 ```log
   - Model created!
@@ -143,9 +145,8 @@ energy_problem =
 
 ## Explore the results
 
-Explore the flow that goes from the electrolizer to the h2_demand:
-
-*Note*: There are 1460 values (8760h/6h)
+Explore the flow that goes from the electrolizer to the h2_demand:\
+*Notice there are 1460 values (8760h/6h).*
 
 ```julia
 
@@ -198,11 +199,11 @@ filtered_asset = filter(
 )
 ```
 
-**What do you notice?**
+What do you notice?
 
-**How is the resolution of the Consumer Balance Constraint defined?**
+How is the resolution of the Consumer Balance Constraint defined?
 
-Update the 'flows_rep_periods_partitions' file:
+Update the `flows_rep_periods_partitions` file:
 
 ```txt
 from_asset,to_asset,partition,rep_period,specification,year
@@ -210,17 +211,17 @@ electrolizer,h2_demand,6,1,uniform,2030
 smr_ccs,h2_demand,6,1,uniform,2030
 ```
 
-Run again and explore the results once more :wink:
+Run again and explore the results once more...
 
 ### Change the specification
 
-The parameter `specification` allows three values: `uniform`,`math`,`explicit`
+The parameter `specification` allows three values: `uniform`,`math`, or `explicit`.
 
-see some examples on how to set it up here: https://tulipaenergy.github.io/TulipaEnergyModel.jl/v0.10/95-reference/#TulipaEnergyModel._parse_rp_partition
+Some examples on how to set it up are in the docs for the [`TulipaEnergyModel._parse_rp_partition`](https://tulipaenergy.github.io/TulipaEnergyModel.jl/v0.10/95-reference/#TulipaEnergyModel._parse_rp_partition) function.
 
 What is the equialent of a partition of 6 in a `uniform` specification in a `math` specification?
 
-### Compare with the hourly (case study from lesson 2)
+### Compare with the hourly case from the Assets & Flows tutorial
 
 If you want to compare results of two models, you can create a new connection, a new energy problem and compare results. For example:
 
@@ -234,7 +235,7 @@ hourly_energy_problem = TEM.run_scenario(conn_hourly)
 
 Notice that we change the name of the connection and the name of the energy problem (also, we are not exporting the results, but it can be done in a new folder, if needed).
 
-**Compare the number of constraints, variables, and objective function between the two problems**
+Compare the number of constraints, variables, and objective function between the two problems:
 
 ```log
 EnergyProblem:
@@ -249,7 +250,7 @@ EnergyProblem:
 
 What do you notice? Is it what you where expecting?
 
-Let's plot the flows togother:
+Let's plot the flows together:
 
 ```julia
 flows = TIO.get_table(connection, "var_flow")
@@ -302,4 +303,4 @@ plot!(
 
 ## Final files
 
-The final files are in `fully-flexible-temporal-resolution-answers` if you want to compare with what you created.
+The final files (answers) are in `fully-flexible-temporal-resolution-answers` if you want to compare with what you created.

@@ -5,7 +5,7 @@ Pages = ["20-how-to-use.md"]
 Depth = [2, 3]
 ```
 
-This section assumes users have already followed the [Beginner Tutorials](@ref tutorials) and are looking for specific instructions for certain features.
+This section assumes users have already followed the Tutorials and are looking for specific instructions for certain features.
 
 ## Running a Scenario
 
@@ -15,7 +15,7 @@ To run a scenario, use the function:
 - [`run_scenario(connection; output_folder)`](@ref)
 
 The `connection` should have been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl).
-See the [tutorials](@ref tutorials) for a complete guide on how to achieve this.
+See the [Workflow Tutorial](@ref workflow-tutorial) for a complete guide on how to achieve this.
 The `output_folder` is optional if the user wants to export the output.
 
 ## Finding an input parameter
@@ -56,7 +56,7 @@ You can check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaE
 
 Outputs are sent from Tulipa to DuckDB and can be exported to various file formats.
 
-To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref). See the [tutorials](@ref tutorials) for an example showcasing this function.
+To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref). See the [Workflow Tutorial](@ref step-export) for an example showcasing this function.
 
 ## Setting the solver and its parameters
 
