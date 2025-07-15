@@ -50,7 +50,7 @@ using Plots
     *To find the folder where you created your project, right click on any file in VS code (e.g. 'my_workflow.jl') and click "Reveal in File Explorer"*
 
 !!! info "What parameters can I use?"
-    Check out the docs: [TulipaEnergyModel Inputs](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/20-user-guide/50-schemas/) and the [input-schemas.json](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/input-schemas.json) file.
+    Check out the docs: [TulipaEnergyModel Inputs](@ref table-schemas) and the [input-schemas.json](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/input-schemas.json) file.
 
 ## Load data and run Tulipa
 
