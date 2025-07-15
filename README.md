@@ -40,6 +40,17 @@ If you want to contribute (awesome!), please read our [Contributing Guidelines](
 
 This content is released under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) License.
 
+## LLM coding assistant notice
+
+Some parts of this software have been assisted by LLM coding tools.
+They have been verified as part of our normal pull request review interactions.
+Commits using such tools have been marked with "Co-Authored-By: ..." with the respective tool.
+
+Our short guidelines for accepting work assisted by AI:
+
+- You must credit the tool you with "Co-Authored-By: Name <email>".
+- You must be able to understand and explain the code.
+
 ---
 
 ## Contributors
