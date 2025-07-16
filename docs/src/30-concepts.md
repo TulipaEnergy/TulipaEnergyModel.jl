@@ -7,9 +7,9 @@ Depth = [2, 3]
 
 ## [Summary](@id concepts-summary)
 
-_TulipaEnergyModel.jl_ incorporates two fundamental concepts that serve as the foundation of the optimization model:
+_TulipaEnergyModel.jl_ uses two fundamental building blocks as the foundation of the optimization model:
 
-- **Energy Assets**: representation of a physical asset that can produce, consume, store, balance, or convert energy. Some examples of what these assets can represent are:
+- **Assets**: representation of a physical asset that can produce, consume, store, balance, or convert energy. Some examples of what these assets can represent are:
   - Producer: e.g., wind turbine, solar panel
   - Consumer: e.g., electricity demand, heat demand
   - Storage: e.g., battery, pumped-hydro storage
@@ -655,7 +655,7 @@ unstacked_map[!,["k=1", "k=2", "k=3"]] = convert.(Float64, unstacked_map[!,["k=1
 unstacked_map # hide
 ```
 
-The file `assets-timeframe-partitions` has the information on how often we want to evaluate the over-clustered-year constraints that combine the information of the representative periods. In this example, the file is missing in the folder, meaning that the default of a `uniform` distribution of one period will be use in the model, see [model parameters](@ref table_schemas) section. This assumption implies that the model will check the over-clustered-year-storage level every day of the week timeframe.
+The file `assets-timeframe-partitions` has the information on how often we want to evaluate the over-clustered-year constraints that combine the information of the representative periods. In this example, the file is missing in the folder, meaning that the default of a `uniform` distribution of one period will be use in the model, see [model parameters](@ref table-schemas) section. This assumption implies that the model will check the over-clustered-year-storage level every day of the week timeframe.
 
 !!! info
     For the sake of simplicity, we show how using three representative days can recover part of the chronological information of one week. The same method can be applied to more representative periods to analyze the seasonality across a year or longer timeframe.

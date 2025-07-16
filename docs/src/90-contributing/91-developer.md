@@ -4,12 +4,15 @@ Welcome to TulipaEnergyModel.jl developer documentation. Here is how you can
 contribute to our Julia-based toolkit for modeling and optimization of electric
 energy systems.
 
+This may seem like a lot, but that's because we walk you through step-by-step.
+If you follow these steps, you'll contributing in no time!
+
 ```@contents
 Pages = ["91-developer.md"]
 Depth = [2, 3]
 ```
 
-## Before You Begin
+## First-Time Setup
 
 Before you can start contributing, please read our [Contributing Guidelines](@ref contributing).
 
@@ -83,7 +86,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
    - Open VSCode Settings (`Ctrl + ,`)
    - In "Search Settings", type "Format on Save" and tick the first result:
 
-   ![Screenshot of Format on Save option](./images/FormatOnSave.png)
+   ![Screenshot of Format on Save option](../images/FormatOnSave.png)
 
    > **Warning**:
    > Do not use the JuliaFormatter VSCode extension because it may
@@ -102,7 +105,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
 
 Any changes should be done in a [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo). You can fork this repository directly on GitHub:
 
-![Screenshot of Fork button on GitHub](./images/Fork.png)
+![Screenshot of Fork button on GitHub](../images/Fork.png)
 
 After that, clone your fork. The fork should ideally be cloned to a folder that is not affected by any cloud, to prevent LiveServer accessing and overwriting your folder. Finally, add this repository as upstream:
 
@@ -119,7 +122,7 @@ git remote -v
 ```
 
 You should see something similar to:
-![Screenshot of remote names, showing origin and upstream](./images/Remotes.png)
+![Screenshot of remote names, showing origin and upstream](../images/Remotes.png)
 
 If your names are wrong, use this command (with the relevant names) to correct it:
 
@@ -196,13 +199,13 @@ This section will list the guidelines for code formatting **not enforced** by Ju
 We will try to follow these during development and reviews.
 
 - Naming
-  - `CamelCase` for classes and modules,
-  - `snake_case` for functions and variables, and
-  - `kebab-case` for file names.
+  - `CamelCase` for classes and modules
+  - `snake_case` for functions and variables
+  - `kebab-case` for file names and documentation reference tags
 - Use `using` instead of `import`, in the following way:
   - Don't use pure `using Package`, always list all necessary objects with `using Package: A, B, C`.
-  - List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context, or `using Graph: SimpleDiGraph`, because it's a constructor with an obvious name.
-  - For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `DataFrames.groupby`.
+  - List obvious objects, e.g., `using JuMP: @variable`, since `@variable` is obviously from JuMP in this context.
+  - For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `JuMP.direct_model`.
   - List all `using` in <src/TulipaEnergyModel.jl>.
 - Explicitly state what a function will `return`; if returning nothing, simply use `return`.
 
@@ -362,7 +365,7 @@ When there are no more conflicts and all the test are passing, create a pull
 request to merge your remote branch into the org main. You can do this on
 GitHub by opening the branch in your fork and clicking "Compare & pull request".
 
-![Screenshot of Compare & pull request button on GitHub](./images/CompareAndPR.png)
+![Screenshot of Compare & pull request button on GitHub](../images/CompareAndPR.png)
 
 Fill in the pull request details:
 
@@ -372,7 +375,7 @@ Fill in the pull request details:
 4. (Optional) Choose a reviewer.
 5. When all of the information is filled in, click "Create pull request".
 
-![Screenshot of the pull request information](./images/PRInfo.png)
+![Screenshot of the pull request information](../images/PRInfo.png)
 
 You pull request will appear in the list of pull requests in the
 TulipaEnergyModel.jl repository, where you can track the review process.
@@ -497,7 +500,7 @@ We use the package [AirspeedVelocity.jl](https://github.com/MilesCranmer/Airspee
 
    Different formats can be used. Here is the output:
 
-   ![Plot of benchmark made with benchpkgplot](./images/plot_TulipaEnergyModel.jpeg)
+   ![Plot of benchmark made with benchpkgplot](../images/plot_TulipaEnergyModel.jpeg)
 
 ### Profiling
 
@@ -588,42 +591,42 @@ When creating a pull request, the workflow `CompareMPS.yml` will run the compari
 !!! warning
     The comparison workflow only writes PR comments if the branch is made from within `TulipaEnergyModel` (i.e., not from forks). To see the log online in that case, you have to open the GitHub action log, or run the comparison locally, as explained in the previous section.
 
-## Procedure for Releasing a New Version (Julia Registry)
+## Releasing a New Version
 
 When publishing a new version of the model to the Julia Registry, follow this procedure:
 
 !!! note
     To be able to register, you need to be a member of the organisation TulipaEnergy and set your visibility to public:
-    ![Screenshot of public members of TulipaEnergy on GitHub](./images/PublicMember.png)
+    ![Screenshot of public members of TulipaEnergy on GitHub](../images/PublicMember.png)
 
 1. Click on the `Project.toml` file on GitHub.
 
 1. Edit the file and change the version number according to [semantic versioning](https://semver.org/): Major.Minor.Patch
 
-   ![Screenshot of editing Project.toml on GitHub](./images/UpdateVersion.png)
+   ![Screenshot of editing Project.toml on GitHub](../images/UpdateVersion.png)
 
 1. Commit the changes in a new branch and open a pull request. Change the commit message according to the version number.
 
-   ![Screenshot of PR with commit message "Release 0.6.1"](./images/CommitMessage.png)
+   ![Screenshot of PR with commit message "Release 0.6.1"](../images/CommitMessage.png)
 
 1. Create the pull request and squash & merge it after the review and testing process. Delete the branch after the squash and merge.
 
-   ![Screenshot of full PR template on GitHub](./images/PullRequest.png)
+   ![Screenshot of full PR template on GitHub](../images/PullRequest.png)
 
 1. Go to the main page of repo and click in the commit.
-   ![Screenshot of how to access commit on GitHub](./images/AccessCommit.png)
+   ![Screenshot of how to access commit on GitHub](../images/AccessCommit.png)
 
 1. Add the following comment to the commit: `@JuliaRegistrator register`
 
-   ![Screenshot of calling JuliaRegistrator in commit comments](./images/JuliaRegistrator.png)
+   ![Screenshot of calling JuliaRegistrator in commit comments](../images/JuliaRegistrator.png)
 
 1. The bot should start the registration process.
 
-   ![Screenshot of JuliaRegistrator bot message](./images/BotProcess.png)
+   ![Screenshot of JuliaRegistrator bot message](../images/BotProcess.png)
 
 1. After approval, the bot will take care of the PR at the Julia Registry and automatically create the release for the new version.
 
-   ![Screenshot of new version on registry](./images/NewRelease.png)
+   ![Screenshot of new version on registry](../images/NewRelease.png)
 
    Thank you for helping make frequent releases!
 

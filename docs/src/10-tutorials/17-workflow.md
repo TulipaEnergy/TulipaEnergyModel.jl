@@ -1,4 +1,4 @@
-# Tutorial: OBZ case study
+# [Workflow](@id workflow-tutorial)
 
 Tutorial for the OBZ case study as an example of the full workflow of Tulipa.
 
@@ -10,7 +10,7 @@ We are basing ourselves on the Tulipa [data pipeline/workflow](@ref data).
 To help us navigate this workflow, we'll reproduce the diagram from the link above here.
 For more details on the steps of the workflow, check the original link, or follow the tutorial.
 
-![Tulipa Workflow. Textual explanation below.](./figs/tulipa-workflow.jpg)
+![Tulipa Workflow. Textual explanation below.](../figs/tulipa-workflow.jpg)
 
 ## Install packages
 
@@ -62,11 +62,11 @@ readdir(user_input_dir)
 ```
 
 For the Tulipa workflow, we will need to transform some of this data into a specific format.
-This can be done externally in whatever tools you are already comfortable with, or through Julia via DuckDB and Tulipa's convenience functions.
+This can be done externally in whatever tools you are already comfortable with, or through Julia via DuckDB and TulipaIO's convenience functions.
 
 ## Create connection
 
-Once we are done manipulating the data externally, it is time to create a DuckDB connection.
+First create a DuckDB connection.
 
 You can create a connection storing the DB locally, or keep everything in-memory only.
 Let's assume you want to store the DB, otherwise you can just remove the argument `"obz.db"`.
@@ -79,7 +79,7 @@ rm("obz.db", force=true) # hide
 connection = DBInterface.connect(DuckDB.DB, "obz.db")
 ```
 
-We will be performing various queries with DuckDB. To format them nicely, we can wrap the results in a `DataFrame`:
+You will be performing various queries with DuckDB. To format them nicely, you can wrap the results in a `DataFrame`:
 
 ```@example obz
 using DataFrames: DataFrame
@@ -89,12 +89,12 @@ nice_query(str) = DataFrame(DuckDB.query(connection, str))
 
 ## Load data
 
-Once we are done manipulating the data externally, it is time to load it into the DuckDB connection.
+Once you are done manipulating the data externally, it is time to load it into the DuckDB connection.
 
-Note that this doesn't have to be the Tulipa-specific data.
+This doesn't have to be in Tulipa Format.
 It can be whatever data you prefer to manipulate via Julia/DuckDB, instead of externally.
 
-We can load them manually with `DuckDB`, but we also have a convenience function:
+You can load data manually with `DuckDB`, but there is also a convenience function:
 
 ```@example obz
 using TulipaIO: TulipaIO
@@ -550,11 +550,11 @@ DuckDB.query(
 )
 ```
 
-### [Populate with defaults](@id obz_populate_with_defaults)
+### [Populate with defaults](@id obz-populate-with-defaults)
 
 Finally, in many cases, you will need to complete the missing columns with additional information.
 To simplify this process, we created the `populate_with_defaults!` function.
-Please read TulipaEnergyModel's [populate with default section](@ref minimum_data) for a complete picture.
+Please read TulipaEnergyModel's [populate with default section](@ref minimum-data) for a complete picture.
 
 Here is the before of one of the tables:
 
@@ -576,7 +576,7 @@ nice_query("FROM asset_both LIMIT 5")
 
 !!! warning "If you skipped ahead"
     If you skipped ahead and have errors here, check out some of the previous steps.
-    Notably, [populating with defaults](@ref obz_populate_with_defaults) helps solve many issues with missing data and wrong types in the columns.
+    Notably, [populating with defaults](@ref obz-populate-with-defaults) helps solve many issues with missing data and wrong types in the columns.
 
 !!! info "More general option: run_scenario"
     We split the TulipaEnergyModel part in a few parts, however all these things could be achieved using [`run_scenario`](@ref) directly instead.
@@ -651,7 +651,7 @@ nice_query("SELECT *
 ## Data processing for plots and dashboard
 
 This part of the workflow is open for you to do whatever you need.
-In principle, you can skip this step and go straight to [exporting the solution](@ref step_export), and then perform your analysis of the solution outside of the DuckDB/Julia environment.
+In principle, you can skip this step and go straight to [exporting the solution](@ref step-export), and then perform your analysis of the solution outside of the DuckDB/Julia environment.
 
 Here is an example of data processing using DuckDB and Julia.
 
@@ -701,7 +701,7 @@ plot!(
 )
 ```
 
-## [Export solution](@id step_export)
+## [Export solution](@id step-export)
 
 Finally, we can export the solution to CSV files using the convenience function below:
 
@@ -712,6 +712,8 @@ end # hide
 mkdir("obz-outputs")
 TEM.export_solution_to_csv_files("obz-outputs", energy_problem)
 readdir("obz-outputs")
+
+close(connection) # hide
 ```
 
 Using DuckDB directly it is also possible to export to other formats, such as Parquet.

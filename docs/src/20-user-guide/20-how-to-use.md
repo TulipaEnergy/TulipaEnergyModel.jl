@@ -5,7 +5,23 @@ Pages = ["20-how-to-use.md"]
 Depth = [2, 3]
 ```
 
-This section assumes users have already followed the [Beginner Tutorials](@ref tutorials) and are looking for specific instructions for certain features.
+This section assumes users have already followed the Tutorials and are looking for specific instructions for certain features.
+
+## Running a Scenario
+
+To run a scenario, use the function:
+
+- [`run_scenario(connection)`](@ref)
+- [`run_scenario(connection; output_folder)`](@ref)
+
+The `connection` should have been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl).
+See the [Workflow Tutorial](@ref workflow-tutorial) for a complete guide on how to achieve this.
+The `output_folder` is optional if the user wants to export the output.
+
+## Finding an input parameter
+
+!!! tip "Are you looking for an input parameter?"
+    Please visit the [Model Parameters](@ref table-schemas) section for a description and location of all model input parameters.
 
 ## Running automatic tests
 
@@ -24,33 +40,25 @@ All tests should pass.
 !!! warning "Admin rights on your local machine"
     Ensure you have admin rights on the folder where the package is installed; otherwise, an error will appear during the tests.
 
-## Finding an input parameter
+## [Input and Output](@id input)
 
-!!! tip "Are you looking for an input parameter?"
-    Please visit the [Model Parameters](@ref table_schemas) section for a description and location of all model input parameters.
+Tulipa runs from tables in DuckDB, which can be loaded from many formats (CSV, Parquet, etc).
+See the workflow tutorial for more information on inputting data.
 
-## Running a Scenario
+### Input
 
-To run a scenario, use the function:
+Tulipa runs from strictly defined files that follow the [Schemas](@ref table-schemas).
+See the workflow section for more information on how to work with the schema.
 
-- [`run_scenario(connection)`](@ref)
-- [`run_scenario(connection; output_folder)`](@ref)
+You can check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples of different predefined energy systems and features. Moreover, Tulipa's Offshore Bidding Zone Case Study can be found in <https://github.com/TulipaEnergy/Tulipa-OBZ-CaseStudy>. It shows how to start from user-friendly files and transform the data into the input files in the [Schemas](@ref table-schemas) through different functions.
 
-The `connection` should have been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl).
-See the [tutorials](@ref tutorials) for a complete guide on how to achieve this.
-The `output_folder` is optional if the user wants to export the output.
+### Output
 
-### [Input](@id input)
+Outputs are sent from Tulipa to DuckDB and can be exported to various file formats.
 
-Currently, we only accept input from CSV files that follow the [Schemas](@ref table_schemas).
+To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref). See the [Workflow Tutorial](@ref step-export) for an example showcasing this function.
 
-You can also check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples of different predefined energy systems and features. Moreover, Tulipa's Offshore Bidding Zone Case Study can be found in <https://github.com/TulipaEnergy/Tulipa-OBZ-CaseStudy>. It shows how to start from user-friendly files and transform the data into the input files in the [Schemas](@ref table_schemas) through different functions.
-
-### Writing the output to CSV
-
-To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref). See the [tutorials](@ref tutorials) for an example showcasing this function.
-
-## Changing the solver (optimizer) and specifying parameters
+## Setting the solver and its parameters
 
 By default, the model is solved using the [HiGHS](https://github.com/jump-dev/HiGHS.jl) optimizer (or solver).
 To change this, you can give the functions [`run_scenario`](@ref) or [`create_model!`](@ref) a different optimizer.
@@ -126,7 +134,7 @@ if energy_problem.termination_status == INFEASIBLE
 end
 ```
 
-## [Speed improvements in the model creation](@id need-for-speed)
+## [Speeding up model creation](@id need-for-speed)
 
 ### Disable names of variables and constraints
 
@@ -156,9 +164,11 @@ create_model!(energy_problem; direct_model = true)
 
 For more information, see the JuMP documentation for [`direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model).
 
-## Storage specific setups
+## Activating specific constraints
 
-### [Seasonal and non-seasonal storage](@id seasonal-setup)
+### Storage constraints
+
+#### [Seasonal and non-seasonal storage](@id seasonal-setup)
 
 Section [Storage Modeling](@ref storage-modeling) explains the main concepts for modeling seasonal and non-seasonal storage in _TulipaEnergyModel.jl_. To define if an asset is one type or the other then consider the following:
 
@@ -168,7 +178,7 @@ Section [Storage Modeling](@ref storage-modeling) explains the main concepts for
 !!! info
     If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
 
-### [The energy storage investment method](@id storage-investment-setup)
+#### [The energy storage investment method](@id storage-investment-setup)
 
 Energy storage assets have a unique characteristic wherein the investment is based not solely on the capacity to charge and discharge, but also on the energy capacity. Some storage asset types have a fixed duration for a given capacity, which means that there is a predefined ratio between energy and power. For instance, a battery of 10MW/unit and 4h duration implies that the energy capacity is 40MWh. Conversely, other storage asset types don't have a fixed ratio between the investment of capacity and storage capacity. Therefore, the energy capacity can be optimized independently of the capacity investment, such as hydrogen storage in salt caverns. To define if an energy asset is one type or the other then consider the following parameters:
 
@@ -185,7 +195,7 @@ In addition, the parameter `capacity_storage_energy` defines the energy per unit
 
 For more details on the constraints that apply when selecting one method or the other, please visit the [`mathematical formulation`](@ref formulation) section.
 
-### [Control simultaneous charging and discharging](@id storage-binary-method-setup)
+#### [Control simultaneous charging and discharging](@id storage-binary-method-setup)
 
 Depending on the configuration of the energy storage assets, it may or may not be possible to charge and discharge them simultaneously. For instance, a single battery cannot charge and discharge at the same time, but some pumped hydro storage technologies have separate components for charging (pump) and discharging (turbine) that can function independently, allowing them to charge and discharge simultaneously. To account for these differences, the model provides users with three options for the `use_binary_storage_method` parameter:
 
@@ -195,7 +205,7 @@ Depending on the configuration of the energy storage assets, it may or may not b
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
-## [Setting up unit commitment constraints](@id unit-commitment-setup)
+### [Unit Commitment constraints](@id unit-commitment-setup)
 
 The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter must be set to `true` to include the constraints. Additionally, the following parameters should be set in that same file:
 
@@ -206,7 +216,7 @@ The unit commitment constraints are only applied to producer and conversion asse
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
-## [Setting up ramping constraints](@id ramping-setup)
+### [Ramping constraints](@id ramping-setup)
 
 The ramping constraints are only applied to producer and conversion assets. The `ramping` parameter must be set to `true` to include the constraints. Additionally, the following parameters should be set in that same file:
 
@@ -215,7 +225,7 @@ The ramping constraints are only applied to producer and conversion assets. The 
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
-## [Setting up a maximum or minimum outgoing energy limit](@id max-min-outgoing-energy-setup)
+### [Outgoing energy constraints (maximum or minimum)](@id max-min-outgoing-energy-setup)
 
 For the model to add constraints for a [maximum or minimum energy limit](@ref over-clustered-year-energy-constraints) for an asset throughout the model's timeframe (e.g., a year), we need to establish a couple of parameters:
 
@@ -231,7 +241,7 @@ For the model to add constraints for a [maximum or minimum energy limit](@ref ov
 !!! tip "Tip"
     If you want to set a limit on the maximum or minimum outgoing energy for a year with representative days, you can use the partition definition to create a single partition for the entire year to combine the profile.
 
-### Example: Setting Energy Limits
+#### Example: Setting Energy Limits
 
 Let's assume we have a year divided into 365 days because we are using days as periods in the representatives from [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl). Also, we define the `max_energy_timeframe_partition = 10 MWh`, meaning the peak energy we want to have is 10MWh for each period or period partition. So depending on the optional information, we can have:
 
@@ -241,9 +251,13 @@ Let's assume we have a year divided into 365 days because we are using days as p
 | Defined | None              | The profile definition and value will be in the timeframe profiles files. For example, we define a profile that has the following first four values: 0.6 p.u., 1.0 p.u., 0.8 p.u., and 0.4 p.u. There are no period partitions, so constraints will be for each period (i.e., daily). Therefore the outgoing energy of the asset for the first four days must be less than or equal to 6MWh, 10MWh, 8MWh, and 4MWh.                                                                                                                                                                                        |
 | Defined | Defined           | Using the same profile as above, we now define a period partition in the timeframe partitions file as `uniform` with a value of 2. This value means that we will aggregate every two periods (i.e., every two days). So, instead of having 365 constraints, we will have 183 constraints (182 every two days and one last constraint of 1 day). Then the profile is aggregated with the sum of the values inside the periods within the partition. Thus, the outgoing energy of the asset for the first two partitions (i.e., every two days) must be less than or equal to 16MWh and 12MWh, respectively. |
 
-## [Defining a group of assets](@id group-setup)
+### Group constraints
 
 A group of assets refers to a set of assets that share certain constraints. For example, the investments of a group of assets may be capped at a maximum value, which represents the potential of a specific area that is restricted in terms of the maximum allowable MW due to limitations on building licenses.
+
+Groups are useful to represent several common constraints.
+
+#### [Creating Groups](@id group-setup)
 
 In order to define the groups in the model, the following steps are necessary:
 
@@ -253,9 +267,7 @@ In order to define the groups in the model, the following steps are necessary:
 !!! info
     A missing value in the parameter `group` means that the asset does not belong to any group.
 
-Groups are useful to represent several common constraints, the following group constraints are available.
-
-### [Setting up a maximum or minimum investment limit for a group](@id investment-group-setup)
+#### [Group Investment constraints (maximum or minimum)](@id investment-group-setup)
 
 The mathematical formulation of the maximum and minimum investment limit for group constraints is available [here](@ref investment-group-constraints).
 
@@ -266,14 +278,14 @@ The mathematical formulation of the maximum and minimum investment limit for gro
     1. A missing value in the parameters `min_investment_limit` and `max_investment_limit` means that there is no investment limit.
     2. These constraints are applied to the investments each year. The model does not yet have investment limits to a group's available invested capacity.
 
-### Example: Group of Assets
+#### Example: Group of Assets
 
 Let's explore how the groups are set up in the test case called [Norse](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Norse). First, let's take a look at the `group-asset.csv` file:
 
 ```@example display-group-setup
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../test/inputs/Norse/group-asset.csv" # hide
+input_asset_file = "../../../test/inputs/Norse/group-asset.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 ```
 
@@ -282,7 +294,7 @@ In the given data, there are two groups: `renewables` and `ccgt`. Both groups ha
 Let's now explore which assets are in each group. To do so, we can take a look at the `asset.csv` file:
 
 ```@example display-group-setup
-input_asset_file = "../../test/inputs/Norse/asset.csv" # hide
+input_asset_file = "../../../test/inputs/Norse/asset.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame) # hide
 assets = assets[.!ismissing.(assets.group), [:asset, :type, :group]] # hide
 ```
@@ -292,20 +304,20 @@ Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the 
 !!! info
     If the group has a `min_investment_limit`, then assets in the group have to allow investment (`investable = true`) for the model to be feasible. If the assets are not `investable` then they cannot satisfy the minimum constraint.
 
-## [Setting up multi-year investments](@id multi-year-setup)
+### [Multi-year investments](@id multi-year-setup)
 
 !!! warning "The workflow of feature is under construction"
     This section describes the existing workflow but we are working to make it more user friendly.
 
 It is possible to simutaneously model different years, which is especially relevant for modeling multi-year investments. Multi-year investments refer to making investment decisions at different points in time, such that a pathway of investments can be modeled. This is particularly useful when long-term scenarios are modeled, but modeling each year is not practical. Or in a business case, investment decisions are supposed to be made in different years which has an impact on the cash flow.
 
-### Filling the input data
+#### Filling the input data
 
 In order to set up a model with year information, the following steps are necessary. The below illustrative example uses assets, but flows follow the same idea.
 
-#### Year data
+##### Year data
 
-Fill in all the years in [`year-data.csv`](@ref table_schemas) file by defining the `year` property and its parameters. Differentiate milestone years and non-milestone years.
+Fill in all the years in [`year-data.csv`](@ref table-schemas) file by defining the `year` property and its parameters. Differentiate milestone years and non-milestone years.
 
 - Milestone years are the years you would like to model. For example, if you want to model operation and/or investments in 2030, 2040, and 2050. These 3 years are then milestone years.
 - Non-milestone years are the commission years of existing units. For example, you want to consider a existing wind unit that has been commissioned in 2020, then 2020 is a non-milestone year.
@@ -313,7 +325,7 @@ Fill in all the years in [`year-data.csv`](@ref table_schemas) file by defining 
 !!! info
     A year can both be a year that you want to model and that there are existing units invested, then this year is a milestone year.
 
-#### Asset basic data
+##### Asset basic data
 
 Fill in the parameters in the `asset.csv` file. These parameters are for the assets across all the years, i.e., not dependent on years. Examples are lifetime (both `technical_lifetime` and `economic_lifetime`) and capacity of a unit.
 
@@ -329,15 +341,15 @@ Below is an overview of the important set-ups regarding the investment methods.
     1. The `compact` method can only be applied to producer assets and conversion assets. Transport assets and storage assets can only use `simple` or `none` method.
     2. For more details on the constraints that apply when selecting these methods, please visit the [`mathematical formulation`](@ref formulation) section.
 
-#### Asset milestone year data
+##### Asset milestone year data
 
 Fill in the parameters related to the milestone year. Whether the model allows investment at a milestone year for an asset is set by the `investable` parameter in `asset-milestone.csv`. You can only invest in milestone years.
 
-#### Asset commission year data
+##### Asset commission year data
 
 Fill in the parameters related to the commission year, e.g., investment costs and fixed costs.
 
-#### Existing capacities and decommissioning
+##### Existing capacities and decommissioning
 
 Existing capacities and decommissioning are taken care of in `asset-both.csv`
 
@@ -349,7 +361,7 @@ Let's explain further using an example. To do so, we take a look at the `asset-b
 ```@example multi-year-setup
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../test/inputs/Multi-year Investments/asset-both.csv" # hide
+input_asset_file = "../../../test/inputs/Multi-year Investments/asset-both.csv" # hide
 assets_data = CSV.read(input_asset_file, DataFrame) # hide
 assets_data = assets_data[:, [:asset, :milestone_year, :commission_year, :decommissionable, :initial_units]] # hide
 ```
@@ -365,21 +377,21 @@ assets_data = assets_data[:, [:asset, :milestone_year, :commission_year, :decomm
 !!! info
     We only consider the existing units which are still available in the milestone years.
 
-#### Profiles information
+##### Profiles information
 
 Important to know that you can use different profiles for assets that are commissioned in different years, which is the power of the `compact` method. You fill in the profile names in `assets-profiles.csv` for relevant years. In `profiles-rep-periods.csv`, you relate the profile names with the modeled years.
 
 Let's explain further using an example. To do so, we can take a look at the `assets-profiles.csv` file:
 
 ```@example multi-year-setup
-input_asset_file = "../../test/inputs/Multi-year Investments/assets-profiles.csv" # hide
+input_asset_file = "../../../test/inputs/Multi-year Investments/assets-profiles.csv" # hide
 assets_profiles = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 assets_profiles = assets_profiles[:, :] # hide
 ```
 
 We have 3 profiles for `wind` commissioned in 2020, 2030, and 2050, respectively. Imagine these are 3 wind turbines with different efficiencies due to the year of manufacture.
 
-### Economic representation
+#### Economic representation
 
 For economic representation, the following parameters need to be set up:
 
@@ -391,7 +403,7 @@ For economic representation, the following parameters need to be set up:
     1. Since the model explicitly discounts, all the inputs for costs should be given in the costs of the relevant year. For example, to model investments in 2030 and 2050, the `investment_cost` should be given in 2030 costs and 2050 costs, respectively.
     2. For more details on the formulas for economic representation, please visit the [`mathematical formulation`](@ref formulation) section.
 
-## [Using the coefficient for flows in the capacity constraints](@id coefficient-for-capacity-constraints)
+### [Flow Coefficient in Capacity constraints](@id coefficient-for-capacity-constraints)
 
 Capacity constraints apply to all the outputs and inputs to assets according to the equations in the [`capacity constraints`](@ref cap-constraints) section of the mathematical formulation. The coefficient $p^{\text{capacity coefficient}}_{f,y}$ in the capacity constraints can be set to model situations or processes where the flows in the capacity constraint are multiplied by a constant factor.
 
@@ -403,4 +415,4 @@ $\text{flow process A} + 0.8 \cdot \text{flow process B} \leq \text{C}$
 
 In that case the sum must be always below the total capacity $\text{C}$, but if you only produce flow through B then you can produce $1.25 \cdot \text{C}$ and still satisfy this constraint.
 
-To set up this parameter you need to fill in the information for the `capacity_coefficient` in the `flow_commission` table, see more in the [model parameters](@ref table_schemas) section.
+To set up this parameter you need to fill in the information for the `capacity_coefficient` in the `flow_commission` table, see more in the [model parameters](@ref table-schemas) section.
