@@ -416,3 +416,35 @@ $\text{flow process A} + 0.8 \cdot \text{flow process B} \leq \text{C}$
 In that case the sum must be always below the total capacity $\text{C}$, but if you only produce flow through B then you can produce $1.25 \cdot \text{C}$ and still satisfy this constraint.
 
 To set up this parameter you need to fill in the information for the `capacity_coefficient` in the `flow_commission` table, see more in the [model parameters](@ref table-schemas) section.
+
+## [Using the coefficient for flows in the conversion constraints](@id coefficient-for-conversion-constraints)
+
+Conversion constraints apply to all the outputs and inputs of a conversion asset according to the equations in the [`conversion balance constraints`](@ref conversion-balance-constraints) section of the mathematical formulation. The coefficient $p^{\text{conversion coefficient}}_{f,y}$ in that constraint can be set to model situations or processes where the flows in the conversion balance constraint are multiplied by a constant factor.
+
+For instance, CO2 emissions modeled as an extra output of a gas-fired power plant that produces electricity. Here, the conversion is from gas (input) into electricity (output) through an efficiency parameter of the asset. However, the CO2 emissions are also an output of the asset, therefore by default they are considered in the conversion balance, unless we set the `conversion_coefficient` to zero.
+
+To set up this parameter you need to fill in the information for the `conversion_coefficient` in the `flow_commission` table, see more in the [model parameters](@ref table_schemas) section.
+
+!!! info "Conversion coefficient and flexible time resolution"
+    As explained in the [flexible time resolution section](@ref flex-time-res), the resolution of the conversion balance constraint is determined by the highest resolution of the input and output flows because it is treated as an energy constraint. Nevertheless, for consistency, only the flows with a `conversion_coefficient` greater than zero are included in the definition of the constraint's resolution.
+
+## [Defining Flows Relationships](@id flow-relationships)
+
+Two flows in the model can be related using the [`flows relationships constraints`](@ref flows-relationships-constraints) section of the mathematical formulation. The parameters in this constraint, i.e., the constant, sense, and ratio, and the flows in the relationship are defined in the `flows_relationships` table, see more in the [model parameters](@ref table_schemas) section.
+
+There will be a set of constraints for each row in the `flows_relationships` table, meaning that the same flows can have different sets of constraints to describe different relationships between them. One example is the Combined Heat and Power (CHP) extraction plants, which rely on a set of inequality constraints between the electricity and heat outputs to define a feasible operating region. For more details about this example, refer to the [`multiple inputs and outputs`](@ref flex-time-res-mimo) example in the concepts section.
+
+## [Modeling Greenhouse Gas Emissions (e.g., CO2)](@id greenhouse-gas-emissions)
+
+Since the model provides a general definition of assets, specific definitions for different greenhouse gas emissions, such as CO2 or methane, do not exist. Instead, these emissions can be modeled as outputs of an asset. Through the concept of [`flows relationships`](@ref flow-relationships), any input (e.g., fuel consumption) or output (e.g., electricity) of the asset can be linked to an output flow that represents greenhouse gas emissions (e.g., CO2). In this context, the fixed ratio in the relationship equation serves as the emission factor.
+
+Thanks to the [`flexible temporal resolution`](@ref flex-time-res) in the model, the output flow representing greenhouse gases can have a high resolution, such as daily, monthly, or even yearly. This flexibility allows for varying resolutions based on modeling needs and helps in reducing the number of variables in the model.
+
+Additionally, you can use either a consumer or a storage asset to represent the aggregation of a particular greenhouse gas, such as total CO2 emissions in the system. Both options are viable, and the choice depends on what the modeler finds more convenient for their analysis.
+
+For instance, using a storage asset means that the storage level will represent the total accumulated emissions at each defined time block (or period), which can then be restricted by maximum and minimum storage levels to account for limits on total emissions. Alternatively, if you use a consumer asset, you can define the consumer's output as $\geq 0$, allowing you to track total emissions by post-processing all emission flows over a specified duration. This latter approach involves fewer variables since no storage level is created, but it does require post-processing to obtain the desired results. Ultimately, both methods have their pros and cons, and it is up to the modeler to decide which is best suited for their case study.
+
+For an example of implementing CO2 emissions as a consumer asset, refer to the [`multiple inputs and outputs`](@ref flex-time-res-mimo) example in the concepts section.
+
+!!! warning "By-products should not be part of the capacity constraint"
+    It is important to note that by-products like emissions should not be included in the capacity constraint of the asset. Therefore, the [`capacity_coefficient`](@ref coefficient-for-capacity-constraints) should be set to zero to prevent the asset's output flow from limiting its energy output.
