@@ -2,3 +2,7 @@ from_asset,to_asset,partition,rep_period,specification,year
 power_plant,atmosphere,24,1,uniform,2030
 chp_backpressure,atmosphere,24,1,uniform,2030
 chp_extraction,atmosphere,24,1,uniform,2030
+gas_market,power_plant,2,1,uniform,2030
+gas_market,chp_backpressure,2,1,uniform,2030
+gas_market,chp_extraction,2,1,uniform,2030
+biomass,power_plant,3,1,uniform,2030

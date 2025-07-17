@@ -150,7 +150,7 @@ Below is the table outlining the details for each type of constraint.
 | Consumer Balance                               | inputs, outputs                | demand           | power           | min(incoming flows, outgoing flows)                                                      | mean                |
 | Storage Balance                                | inputs, outputs, storage level | inflows          | energy          | max(asset, min(incoming flows, outgoing flows))                                          | sum                 |
 | Hub Balance                                    | inputs, outputs                | -                | power           | min(incoming flows, outgoing flows)                                                      | -                   |
-| Conversion Balance                             | inputs, outputs                | -                | energy          | max(incoming flows, outgoing flows)                                                      | -                   |
+| Conversion Balance                             | inputs, outputs [^1]           | -                | energy          | max(incoming flows, outgoing flows)                                                      | -                   |
 | Producers Capacity Constraints                 | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |
 | Storage Capacity Constraints (outgoing)        | outputs                        | -                | power           | min(outgoing flows)                                                                      | -                   |
 | Conversion Capacity Constraints (outgoing)     | outputs                        | -                | power           | min(outgoing flows)                                                                      | -                   |
@@ -166,7 +166,10 @@ Below is the table outlining the details for each type of constraint.
 | Maximum Ramp Down Flow with Unit Commitment    | outputs, units_on              | availability     | power           | min(outgoing flows, units_on)                                                            | mean                |
 | Maximum Ramp Up Flow without Unit Commitment   | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |
 | Maximum Ramp Down Flow without Unit Commitment | outputs                        | availability     | power           | min(outgoing flows)                                                                      | mean                |
-| DC-OPF Constraint | flow, electricity_angle                        | -     | power           | min(neighboring assets, flow)                                                                      | -                |
+| DC-OPF Constraint                              | flow, electricity_angle        | -                | power           | min(neighboring assets, flow)                                                            | -                   |
+| Flows relationships                            | flow 1, flow 2                 | -                | energy          | max(flow1, flow2)                                                                        | -                   |
+
+[^1]: Only inputs or outputs with [`conversion coefficient`](@ref coefficient-for-conversion-constraints) $\geq 0$ are considered to determine the resolution of the conversion balance constraint.
 
 For this basic example, we can describe the balance and capacity constraints in the model. For the sake of simplicity, we consider only the rep-period constraints, the representative period index is dropped from the equations, and there are no investment variables in the equations.
 
@@ -867,3 +870,301 @@ Leading to somewhere? Let's list the consumer balance:
 ```
 
 Although the LHS of the two DC-OPF constraints are identical, their RHS differ. This discrepancy implies that the same variables are being forced to satisfy two conflicting conditions simultaneously. As a result, the model becomes infeasible.
+
+## [Flexible Time Resolution in Assets with Multiple Input and Multiple Output (MIMO) and Flows Relationships](@id flex-time-res-mimo)
+
+In this section, we show how flexible time resolution is applied when considering assets with Multiple Inputs and Multiple Outputs (MIMO) and flows relationship constraints. Let's consider the example in the folder [`test/inputs/MIMO`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/MIMO) to explain how these constraints are created in _TulipaEnergyModel.jl_ when having the flexible time resolution. Here is a representation of the energy system in the example.
+
+![mimo-example](./figs/mimo-example.png)
+
+The example has two sources of energy `biomass` and `gas_market`, three conversion assets `power_plant`, `chp_backpressure`, and `chp_extraction`, two demands of energy represented by `electricity_demand` and `heat_demand`, and finally a by-product CO2 emmisions that goes to the asset `atmosphere`. The table below shows the type of each asset. Notice that the `biomass` asset is modeled as a storage and the `atmosphere` as a consumer. We will return to these definitions later in this section, but bear with us and keep this in mind.
+
+```@example mimo
+using DataFrames # hide
+using CSV # hide
+input_dir = "../../test/inputs/MIMO" # hide
+assets_data = CSV.read(joinpath(input_dir, "asset.csv"), DataFrame, header = 1) # hide
+filtered_assets_data = assets_data[!, ["asset", "type", "capacity", "consumer_balance_sense"]] # hide
+```
+
+Notice that the `heat_demand` and the `atmosphere` are modeled as consumer assets with a sense $\geq$, meaning that the sum
+
+As for the flexible time resolution, the `flows-rep-periods-partitions` file defines them for the flows in the energy system, as shown below. Here, the flows that go to the `atmosphere` have a uniform 24h resolution (i.e., daily); this will reduce the number of variables we need to account for the CO2 emissions and consider only one variable per day. The flows going out of the `gas_market` are every two hours, and the ones from the `biomass` every three hours. Why? Because we want to showcase in this example the fully flexible resolution in the model, however, in a real-life case study, the resolution will often be related to the energy carrier's dynamics or another expert's criteria to reduce the number of constraints.
+
+```@example mimo
+flows_partitions_data = CSV.read(joinpath(input_dir, "flows_rep_periods_partitions.csv"), DataFrame, header = 1) # hide
+filtered_flows_partitions = flows_partitions_data[!, ["from_asset", "to_asset", "specification", "partition"]] # hide
+```
+
+!!! info "Do you still remember what resolution of the flows is used for?"
+    The assets and flows resolution determine the resolution of the model constraints considering the rules outlined in the table under the section [`flexible time resolution`](@ref flex-time-res).
+
+### Constraints for Flows Relationships
+
+Thanks to the [`flexible asset connection`](@ref flex-asset-connection) in the model, any asset can have multiple inputs and outputs, as illustrated in the figure at the beginning of this section. By default, the flows corresponding to these inputs and outputs are independent of each other within the model. However, there are situations where these flows are related to each other. For example, by-products like CO2 emissions depend on the fuel consumption. Another instance is the residual heat produced by power plants, such as small modular reactors, when generating electricity. Additionally, combined heat and power (CHP) technologies can yield residual heat during electricity production and may have a more complex operational feasible region when generating both electricity and heat.
+
+To model these interactions, we use a linear combination of flow variables known as flow relationships. These are outlined in the constraints found in the [`formulation section`](@ref flows-relationships-constraints). The relationships are defined in the `flows_relationships` file located in the example folder. In this section, we present these relationships in accordance with the constraints established in the model.
+
+```@example mimo
+flows_relationships_data = CSV.read(joinpath(input_dir, "flows_relationships.csv"), DataFrame, header = 1) # hide
+flows_relationships_data[!, :flow_1] = "(" .* string.(flows_relationships_data.flow_1_from_asset) .* ", " .* string.(flows_relationships_data.flow_1_to_asset) .* ")" # hide
+flows_relationships_data[!, :flow_2] = "(" .* string.(flows_relationships_data.flow_2_from_asset) .* ", " .* string.(flows_relationships_data.flow_2_to_asset) .* ")" # hide
+filtered_flows_relationships = flows_relationships_data[!, ["flow_1", "sense", "constant", "ratio", "flow_2"]] # hide
+```
+
+The table illustrates that the `power_plant` asset has three flow relationships: one connecting electricity and heat outputs, and two relating to CO2 emissions released into the atmosphere, which vary depending on the fuel used for energy production. For the `chp_backpressure` asset, there are two relationships: one representing the fixed ratio between electricity and heat, and another concerning CO2 emissions. Lastly, the `chp_extraction` asset features a fixed ratio for CO2 emissions, along with a set of inequalities that define the feasible operating region for heat and electricity production. The following figure displays this feasible region:
+
+![chp-extraction](./figs/chp-extraction.png)
+
+```@example mimo
+"""                                                                                        #hide
+# To reproduce the chp extraction plot in Julia, use the following script                  #hide
+using Plots                                                                                #hide
+function plot_chp_extraction(                                                              #hide
+    cb,                                                                                    #hide
+    upper_cv_slope,                                                                        #hide
+    lower_cv_slope,                                                                        #hide
+    upper_cv_intercept,                                                                    #hide
+    lower_cv_intercept,                                                                    #hide
+    max_heat,                                                                              #hide
+)                                                                                          #hide
+    plot(;                                                                                 #hide
+        dpi = 300,                                                                         #hide
+        xlabel = "Heat (Q)",                                                               #hide
+        ylabel = "Electricity (P)",                                                        #hide
+        title = "CHP Extraction",                                                          #hide
+        xlim = (0, round(max_heat) + 1),                                                   #hide
+        ylim = (0, round(upper_cv_intercept) + 5),                                         #hide
+    )                                                                                      #hide
+    heat_1 = [lower_cv_intercept / (cb - lower_cv_slope), max_heat]                        #hide
+    elec_1 = [cb * heat_1[1], cb * heat_1[2]]                                              #hide
+    heat_2 = [0, max_heat]                                                                 #hide
+    elec_2 = [                                                                             #hide
+        upper_cv_intercept + upper_cv_slope * heat_2[1],                                   #hide
+        upper_cv_intercept + upper_cv_slope * heat_2[2],                                   #hide
+    ]                                                                                      #hide
+    heat_3 = [0, lower_cv_intercept / (cb - lower_cv_slope)]                               #hide
+    elec_3 = [                                                                             #hide
+        lower_cv_intercept + lower_cv_slope * heat_3[1],                                   #hide
+        lower_cv_intercept + lower_cv_slope * heat_3[2],                                   #hide
+    ]                                                                                      #hide
+    heat_4 = [max_heat, max_heat]                                                          #hide
+    elec_4 = [cb * heat_4[2], upper_cv_intercept + upper_cv_slope * heat_4[2]]             #hide
+    plot!(heat_1, elec_1; label = "")                                                      #hide
+    plot!(heat_2, elec_2; label = "")                                                      #hide
+    plot!(heat_3, elec_3; label = "")                                                      #hide
+    plot!(heat_4, elec_4; label = "")                                                      #hide
+    heat_filling = [0, lower_cv_intercept / (cb - lower_cv_slope), max_heat]               #hide
+    elec_filling_lb = [upper_cv_intercept + lower_cv_slope * heat_filling[i] for i in 1:3] #hide
+    elec_filling_ub = [                                                                    #hide
+        lower_cv_intercept + lower_cv_slope * heat_filling[1],                             #hide
+        lower_cv_intercept + lower_cv_slope * heat_filling[2],                             #hide
+        cb * heat_filling[3],                                                              #hide
+    ]                                                                                      #hide
+    return plot!(                                                                          #hide
+        heat_filling,                                                                      #hide
+        elec_filling_lb;                                                                   #hide
+        linewidth = 0,                                                                     #hide
+        fillrange = elec_filling_ub,                                                       #hide
+        fillalpha = 0.1,                                                                   #hide
+        c = :grey,                                                                         #hide
+        label = "Feasible operating region",                                               #hide
+        fg_legend = :false,                                                                #hide
+    )                                                                                      #hide
+end                                                                                        #hide
+cb = 1.8                                                                                   #hide
+upper_cv_slope = -0.15                                                                     #hide
+lower_cv_slope = -0.15                                                                     #hide
+upper_cv_intercept = 35                                                                    #hide
+lower_cv_intercept = 15                                                                    #hide
+max_heat = 13.61                                                                           #hide
+plot_chp_extraction(                                                                       #hide
+    cb,                                                                                    #hide
+    upper_cv_slope,                                                                        #hide
+    lower_cv_slope,                                                                        #hide
+    upper_cv_intercept,                                                                    #hide
+    lower_cv_intercept,                                                                    #hide
+    max_heat,                                                                              #hide
+)                                                                                          #hide
+savefig("chp-extraction.png")                                                              #hide
+"""                                                                                        #hide
+```
+
+That looks cool 🤓 but, wait a minute! What about the flexible temporal resolution?
+
+It's straightforward: When it comes to the constraints created by the flow relationships, the resulting resolution follows the highest resolution of the flows involved in the relationship. In simpler terms, this means it is determined by `max(flow1 resolution, flow2 resolution)`. Consequently, the resulting constraints are considered as energy constraints. Where do I find this information? Remember, the table in the section titled [`flexible time resolution`](@ref flex-time-res) summarizes all the rules 😉 .Now, let’s examine each relationship ($x \in \mathcal{X}$) closely:
+
+- Relationship $x_1$ = **flow_1(power_plant, electricity_demand) and flow_2(power_plant, heat_demand)**: both flows have an hourly resolution (i.e., deafult value) since they don't have any definition in the `flows-rep-periods-partitions` file. Therefore, the flows relationship constraint is also hourly.
+
+```math
+\begin{aligned}
+& \text{flows\_relationship}_{x_1, 1, 1:1}: \\
+& v^{\text{flow}}_{(\text{power\_plant},\text{electricity\_demand}),1,1:1} =  4.0 \cdot v^{\text{flow}}_{(\text{power\_plant},\text{heat\_demand}),1,1:1} \\
+& \text{flows\_relationship}_{x_1, 1, 2:2}: \\
+& v^{\text{flow}}_{(\text{power\_plant},\text{electricity\_demand}),1,2:2} =  4.0 \cdot v^{\text{flow}}_{(\text{power\_plant},\text{heat\_demand}),1,2:2} \\
+& ...
+\end{aligned}
+```
+
+- Relationship `x_2` = **flow_1(power_plant, atmosphere) and flow_2(gas_market, power_plant)**: The first flow has an uniform resolution of 24h and the second flow has an uniform resolution of 2h in their definitions. Therefore, the flows relationship constraint is in the highest resolution of both, i.e., every 24h. In addition, the constraint accounts for the durations, so each flow variable is then multiply by the it.
+
+```math
+\begin{aligned}
+& \text{flows\_relationship}_{x_2, 1, 1:24}: \\
+& 24 \cdot v^{\text{flow}}_{(\text{power\_plant},\text{atmosphere}),1,1:24} =  0.1575 \cdot \sum_{b=1}^{12} 2 \cdot v^{\text{flow}}_{(\text{gas\_market},\text{power\_plant}),1,(2b-1):(2b)}
+\end{aligned}
+```
+
+- Relationship $x_3$ = **flow_1(power_plant, atmosphere) and flow_2(biomass, power_plant)**: The first flow has an uniform resolution of 24h and the second flow has an uniform resolution of 3h in their definitions. Therefore, the flows relationship constraint is in the highest resolution of both, i.e., every 24h. In addition, the constraint accounts for the durations, so each flow variable is then multiply by the it.
+
+```math
+\begin{aligned}
+& \text{flows\_relationship}_{x_3, 1, 1:24}: \\
+& 24 \cdot v^{\text{flow}}_{(\text{power\_plant},\text{atmosphere}),1,1:24} =  0.15 \cdot \sum_{b=1}^{8} 3 \cdot v^{\text{flow}}_{(\text{biomass},\text{power\_plant}),1,(3b-2):(3b)}
+\end{aligned}
+```
+
+- Relationship $x_4$ = **flow_1(chp_backpressure, electricity_demand) and flow_2(chp_backpressure, heat_demand)**: both flows have an hourly resolution (i.e., deafult value). Therefore, the flows relationship constraint is also hourly.
+
+```math
+\begin{aligned}
+& \text{flows\_relationship}_{x_4, 1, 1:1}: \\
+& v^{\text{flow}}_{(\text{chp\_backpressure},\text{electricity\_demand}),1,1:1} =  2.0 \cdot v^{\text{flow}}_{(\text{chp\_backpressure},\text{heat\_demand}),1,1:1} \\
+& \text{flows\_relationship}_{x_4, 1, 2:2}: \\
+& v^{\text{flow}}_{(\text{chp\_backpressure},\text{electricity\_demand}),1,2:2} =  2.0 \cdot v^{\text{flow}}_{(\text{chp\_backpressure},\text{heat\_demand}),1,2:2} \\
+& ...
+\end{aligned}
+```
+
+- Relationship $x_5$ = **flow_1(chp_backpressure, atmosphere) and flow_2(chp_backpressure, electricity_demand)**: The first flow has an uniform resolution of 24h and the second flow has an uniform resolution of 1h in their definitions. Therefore, the flows relationship constraint is in the highest resolution of both, i.e., every 24h. In addition, the constraint accounts for the durations, so each flow variable is then multiply by the it.
+
+```math
+\begin{aligned}
+& \text{flows\_relationship}_{x_5, 1, 1:24}: \\
+& 24 \cdot v^{\text{flow}}_{(\text{chp\_backpressure},\text{atmosphere}),1,1:24} =  0.18 \cdot \sum_{b=1}^{24} v^{\text{flow}}_{(\text{chp\_backpressure},\text{electricity\_demand}),1,b:b}
+\end{aligned}
+```
+
+- Relationship $x_6$ = **flow_1(chp_extraction, electricity_demand) and flow_2(chp_extraction, heat_demand)**: both flows have an hourly resolution (i.e., deafult value). Therefore, the flows relationship constraint is also hourly.
+
+```math
+\begin{aligned}
+& \text{flows\_relationship}_{x_6, 1, 1:1}: \\
+& v^{\text{flow}}_{(\text{chp\_extraction},\text{electricity\_demand}),1,1:1} \geq  1.8 \cdot v^{\text{flow}}_{(\text{chp\_extraction},\text{heat\_demand}),1,1:1} \\
+& \text{flows\_relationship}_{x_6, 1, 2:2}: \\
+& v^{\text{flow}}_{(\text{chp\_extraction},\text{electricity\_demand}),1,2:2} \geq  1.8 \cdot v^{\text{flow}}_{(\text{chp\_extraction},\text{heat\_demand}),1,2:2} \\
+& ...
+\end{aligned}
+```
+
+- Relationship $x_7$ = **flow_1(chp_extraction, electricity_demand) and flow_2(chp_extraction, heat_demand)**: both flows have an hourly resolution (i.e., deafult value). Therefore, the flows relationship constraint is also hourly.
+
+```math
+\begin{aligned}
+& \text{flows\_relationship}_{x_7, 1, 1:1}: \\
+& v^{\text{flow}}_{(\text{chp\_extraction},\text{electricity\_demand}),1,1:1} \leq  35 - 0.15 \cdot v^{\text{flow}}_{(\text{chp\_extraction},\text{heat\_demand}),1,1:1} \\
+& \text{flows\_relationship}_{x_7, 1, 2:2}: \\
+& v^{\text{flow}}_{(\text{chp\_extraction},\text{electricity\_demand}),1,2:2} \leq  35 - 0.15 \cdot v^{\text{flow}}_{(\text{chp\_extraction},\text{heat\_demand}),1,2:2} \\
+& ...
+\end{aligned}
+```
+
+- Relationship $x_8$ = **flow_1(chp_extraction, electricity_demand) and flow_2(chp_extraction, heat_demand)**: both flows have an hourly resolution (i.e., deafult value). Therefore, the flows relationship constraint is also hourly.
+
+```math
+\begin{aligned}
+& \text{flows\_relationship}_{x_8, 1, 1:1}: \\
+& v^{\text{flow}}_{(\text{chp\_extraction},\text{electricity\_demand}),1,1:1} \geq  15 - 0.15 \cdot v^{\text{flow}}_{(\text{chp\_extraction},\text{heat\_demand}),1,1:1} \\
+& \text{flows\_relationship}_{x_8, 1, 2:2}: \\
+& v^{\text{flow}}_{(\text{chp\_extraction},\text{electricity\_demand}),1,2:2} \geq  15 - 0.15 \cdot v^{\text{flow}}_{(\text{chp\_extraction},\text{heat\_demand}),1,2:2} \\
+& ...
+\end{aligned}
+```
+
+- Relationship $x_9$ = **flow_1(chp_extraction, heat_demand) and flow_2(chp_extraction, electricity_demand)**: both flows have an hourly resolution (i.e., deafult value). Therefore, the flows relationship constraint is also hourly. This constraint reprsents a simple limit for the maximum heat flow.
+
+```math
+\begin{aligned}
+& \text{flows\_relationship}_{x_9, 1, 1:1}: \\
+& v^{\text{flow}}_{(\text{chp\_extraction},\text{heat\_demand}),1,1:1} \leq  13.61 \\
+& \text{flows\_relationship}_{x_9, 1, 2:2}: \\
+& v^{\text{flow}}_{(\text{chp\_extraction},\text{heat\_demand}),1,2:2} \leq  13.61 \\
+& ...
+\end{aligned}
+```
+
+- Relationship $x_{10}$ = **flow_1(chp_extraction, atmosphere) and flow_2(chp_extraction, electricity_demand)**: The first flow has an uniform resolution of 24h and the second flow has an uniform resolution of 1h in their definitions. Therefore, the flows relationship constraint is in the highest resolution of both, i.e., every 24h. In addition, the constraint accounts for the durations, so each flow variable is then multiply by the it.
+
+```math
+\begin{aligned}
+& \text{flows\_relationship}_{x_{10}, 1, 1:24}: \\
+& 24 \cdot v^{\text{flow}}_{(\text{chp\_extraction},\text{atmosphere}),1,1:24} =  0.108 \cdot \sum_{b=1}^{24} v^{\text{flow}}_{(\text{chp\_extraction},\text{electricity\_demand}),1,b:b}
+\end{aligned}
+```
+
+### The Conversion Coefficient and the Conversion Balance Constraints
+
+The [`conversion coefficient`](@ref coefficient-for-conversion-constraints) is a key parameter in the [`conversion balance constraints`](@ref conversion-balance-constraints), especially for assets with MIMO and flexible temporal resolution. Remember that only flows with conversion coefficient greater than zero are considered to determine the resolution of the conversion balance constraint. So, let's explore each conversion asset in the example.
+
+- **power_plant**: This asset has two inputs and three outputs. However, the outputs to `heat_demand` and the `atmosphere` have a conversion coefficient of zero, as shown in the table below. This indicates that the constraint's resolution will be determined by the flows coming from the `biomass` and `gas_market`, alongside the output flow to `electricity_demand`. Therefore, the resolution for the conversion balance of this asset is: `max(3h, 2h, 1h) = 3h`.
+
+```@example mimo
+flows_commission_data = CSV.read(joinpath(input_dir, "flow_commission.csv"), DataFrame, header = 1) # hide
+function filtered_asset(asset_to_filter::String) #hide
+  return (flows_commission_data[!,"from_asset"] .== asset_to_filter) .||  #hide
+         (flows_commission_data[!,"to_asset"] .== asset_to_filter)        #hide
+end #hide
+asset_to_filter = "power_plant" #hide
+columns_to_filter = ["from_asset", "to_asset", "conversion_coefficient"] #hide
+filtered_flows_commission_data = flows_commission_data[filtered_asset(asset_to_filter), columns_to_filter] # hide
+```
+
+- **chp_backpressure**: This asset has one input and three outputs. However, the output to `atmosphere` has a conversion coefficient of zero, as shown in the table below. This indicates that the constraint's resolution will be determined by the flow coming from the `gas_market`, alongside the outputs flows to `electricity_demand` and `heat_demand`. Therefore, the resolution for the conversion balance of this asset is: `max(2h, 1h, 1h) = 2h`.
+
+```@example mimo
+asset_to_filter = "chp_backpressure" #hide
+filtered_flows_commission_data = flows_commission_data[filtered_asset(asset_to_filter), columns_to_filter] # hide
+```
+
+- **chp_extraction**: This asset has one input and three outputs. However, the output to `atmosphere` has a conversion coefficient of zero, as shown in the table below. This indicates that the constraint's resolution will be determined by the flow coming from the `gas_market`, alongside the outputs flows to `electricity_demand` and `heat_demand`. Therefore, the resolution for the conversion balance of this asset is: `max(2h, 1h, 1h) = 2h`.
+
+```@example mimo
+asset_to_filter = "chp_extraction" #hide
+filtered_flows_commission_data = flows_commission_data[filtered_asset(asset_to_filter), columns_to_filter] # hide
+```
+
+### The Capacity Coefficient and the Maximum Capacity Constraints
+
+The [`capacity_coefficient`](@ref coefficient-for-capacity-constraints) determines which output flows of an asset will be included in the [`capacity constraints`](@ref cap-constraints) for that asset. This parameter is particularly important when an asset has outputs that are by-products, such as CO2 emissions. For example, all outputs from conversion assets to the atmosphere have a coefficient of zero (as shown in the table below), indicating that they will not be considered in the capacity constraints.
+
+```@example mimo
+asset_to_filter = "atmosphere" #hide
+columns_to_filter = ["from_asset", "to_asset", "capacity_coefficient"] #hide
+filtered_flows_commission_data = flows_commission_data[filtered_asset(asset_to_filter), columns_to_filter] # hide
+```
+
+Remember that the capacity constraints resolution are defined in the lowest resolution of the output flows since it is a power constraint. Notice that all the conversion assets have three outputs `electricity_demand`, `heat_demand`, and `atmosphere`. Therefore, the resolution for the output capacity constraint of those assets is: `min(1h, 1h, 24h) = 1h`.
+
+### The Atmosphere as a Consumer Asset
+
+From the following table, you can see that the `atmosphere` asset is modeled as a consumer assets with a sense $\geq$, meaning that the sum of all inputs needs to be greater than the `peak_demand`, i.e., greater than zero in this case.
+
+```@example mimo
+assets_milestone_data = CSV.read(joinpath(input_dir, "asset_milestone.csv"), DataFrame, header = 1) # hide
+df_joined = leftjoin(assets_data, assets_milestone_data, on = :asset) #hide
+consumers = assets_data[!,"type"] .== "consumer" #hide
+filtered_df_joined = df_joined[consumers, ["asset", "consumer_balance_sense", "peak_demand"]] # hide
+```
+
+In addition, the resolution of all the flows comming into the `atmosphere` asset is 24h, i.e., daily, meaning that the resolution of the consumer balance for this asset is also 24h:
+
+```math
+\begin{aligned}
+& \text{consumer\_balance}_{\text{atmosphere}, 1, 1:24}: \\
+& v^{\text{flow}}_{(\text{power\_plant},\text{atmosphere}),1,1:24} + v^{\text{flow}}_{(\text{chp\_backpressure},\text{atmosphere}),1,1:24} + v^{\text{flow}}_{(\text{chp\_extraction},\text{atmosphere}),1,1:24} \geq 0
+\end{aligned}
+```
+
+Notice that the flows are defined as power (i.e., instantaneous value); therefore, the result of all the flows going to the `atmosphere` will represent the average CO2 emissions within the day. To compute the total daily emissions, multiply the flow by the duration (i.e., 24h) and then get the total daily value.
+
+As explained in the [modeling greenhouse gas emissions](@ref greenhouse-gas-emissions) section, you can alternatively model the `atmosphere` as a storage asset and account for the total emissions as the storage level of the asset.
