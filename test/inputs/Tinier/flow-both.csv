@@ -1,6 +1,1 @@
 from_asset,to_asset,milestone_year,commission_year,decommissionable
-ocgt,demand,2030,2030,true
-ccgt,demand,2030,2030,true
-wind,demand,2030,2030,true
-solar,demand,2030,2030,true
-ens,demand,2030,2030,true

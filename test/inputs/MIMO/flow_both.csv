@@ -1,14 +1,1 @@
 from_asset,to_asset,commission_year,decommissionable,initial_export_units,initial_import_units,milestone_year
-gas_market,power_plant,2030,false,0.0,0.0,2030
-biomass,power_plant,2030,false,0.0,0.0,2030
-power_plant,electricity_demand,2030,false,0.0,0.0,2030
-power_plant,heat_demand,2030,false,0.0,0.0,2030
-gas_market,chp_backpressure,2030,false,0.0,0.0,2030
-chp_backpressure,electricity_demand,2030,false,0.0,0.0,2030
-chp_backpressure,heat_demand,2030,false,0.0,0.0,2030
-gas_market,chp_extraction,2030,false,0.0,0.0,2030
-chp_extraction,electricity_demand,2030,false,0.0,0.0,2030
-chp_extraction,heat_demand,2030,false,0.0,0.0,2030
-power_plant,atmosphere,2030,false,0.0,0.0,2030
-chp_backpressure,atmosphere,2030,false,0.0,0.0,2030
-chp_extraction,atmosphere,2030,false,0.0,0.0,2030

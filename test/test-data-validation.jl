@@ -49,16 +49,15 @@ end
     @testset "Duplicating rows of Tiny data" begin
         connection = _tiny_fixture()
         # Duplicating rows in these specific tables
-        for table in ("asset", "asset_both", "flow_both")
+        for table in ("asset", "asset_both")
             DuckDB.query(connection, "INSERT INTO $table (FROM $table ORDER BY RANDOM() LIMIT 1)")
         end
         @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
         error_messages = TEM._validate_no_duplicate_rows!(connection)
-        @test length(error_messages) == 3
+        @test length(error_messages) == 2
         # These tests assume an order in the validation of the tables
         @test occursin("Table asset has duplicate entries", error_messages[1])
         @test occursin("Table asset_both has duplicate entries", error_messages[2])
-        @test occursin("Table flow_both has duplicate entries", error_messages[3])
     end
 end
 

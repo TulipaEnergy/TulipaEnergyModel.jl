@@ -1,9 +1,1 @@
 from_asset,to_asset,milestone_year,commission_year,decommissionable,initial_export_units,initial_import_units
-gas,ocgt,2030,2030,true,0.0,0.0
-gas,ccgt,2030,2030,true,0.0,0.0
-ocgt,demand,2030,2030,true,0.0,0.0
-ccgt,demand,2030,2030,true,0.0,0.0
-smr,demand,2030,2030,true,0.0,0.0
-wind,demand,2030,2030,true,0.0,0.0
-solar,demand,2030,2030,true,0.0,0.0
-ens,demand,2030,2030,true,0.0,0.0
