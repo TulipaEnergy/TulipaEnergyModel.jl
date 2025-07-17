@@ -85,7 +85,7 @@ jobs:
 
           </details>
 
-          For more details about this workflow, check <https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/91-developer/#Testing-the-generate-MPS-files>.
+          For more details about this workflow, check <https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/90-contributing/91-developer/#Testing-the-generate-MPS-files>.
           ' >> body.md
           echo "::warning title=MPS files are different::$(cat body.md)"
       - name: Find Comment

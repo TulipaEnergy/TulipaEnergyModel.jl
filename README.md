@@ -34,7 +34,7 @@ If you have a general question or idea, start a [discussion](https://github.com/
 
 ## Contributing
 
-If you want to contribute (awesome!), please read our [Contributing Guidelines](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/90-contributing/) and follow the setup in our [Developer Documentation](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/91-developer/).
+If you want to contribute (awesome!), please read our [Contributing Guidelines](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/90-contributing/90-contributing/) and follow the setup in our [Developer Documentation](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/90-contributing/91-developer/).
 
 ## License
 
