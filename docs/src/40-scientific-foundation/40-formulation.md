@@ -53,6 +53,8 @@ In addition, the following flow sets represent methods for incorporating additio
 | $\mathcal{F}^{\text{t}}$        | Flow between two assets with a transport method                 |          | $\mathcal{F}^{\text{t}} \subseteq \mathcal{F}$               |                                                     |
 | $\mathcal{F}^{\text{ti}}_y$     | Transport flow with investment method at year $y$               |          | $\mathcal{F}^{\text{ti}}_y \subseteq \mathcal{F}^{\text{t}}$ |                                                     |
 | $\mathcal{F}^{\text{dc-opf}}_y$ | Flow between two assets with a DC power flow method at year $y$ |          | $\mathcal{F}^{\text{dc-opf}}_y \subseteq \mathcal{F}$        | This set contains flows that use the dc-opf method. |
+| $\mathcal{F}^{\text{1}}_{x,y}$  | First flow in the relationship $x$ at year $y$                  |          | $\mathcal{F}^{\text{1}}_{x,y} \subseteq \mathcal{F}$         |                                                     |
+| $\mathcal{F}^{\text{2}}_{x,y}$  | Second flow in the relationship $x$ at year $y$                 |          | $\mathcal{F}^{\text{2}}_{x,y} \subseteq \mathcal{F}$         |                                                     |
 
 ### Sets for Temporal Structures
 
@@ -77,6 +79,12 @@ In addition, the following subsets represent methods for incorporating additiona
 | Name                        | Description                                         | Elements | Superset                                                     | Notes                                                                                                                                                            |
 | --------------------------- | --------------------------------------------------- | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | $\mathcal{G}^{\text{ai}}_y$ | Group of assets that share min/max investment limit |          | $\mathcal{G}^{\text{ai}}_y \subseteq \mathcal{G}^{\text{a}}$ | This set contains assets that have a group investment limit. Please visit the [how-to section](@ref investment-group-setup) to learn how to set up this feature. |
+
+### Sets for Flows Relationships
+
+| Name            | Description                    | Elements            | Superset | Notes |
+| ----------------| ------------------------------ | --------------------| -------- | ----- |
+| $\mathcal{X}$   | Relationship between two flows | $x \in \mathcal{X}$ |          |       |
 
 ## [Parameters](@id math-parameters)
 
@@ -115,6 +123,8 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{init storage units}}_{a,y}$              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage units of storage asset $a$ available at year $y$                                                     | [units]         |
 | $p^{\text{init storage level}}_{a,y}$              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage level of storage asset $a$ at year $y$                                                               | [MWh]           |
 | $p^{\text{inflows}}_{a,k_y,b_{k_y}}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                     | Inflows of storage asset $a$ in the representative period $k_y$ and timestep block $b_{k_y}$                         | [MWh]           |
+| $p^{\text{charging eff}}_{a,y}$                    | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}$                                                                          | Charging efficiency of storage asset $a$ at year $y$                                                                 | [p.u.]          |
+| $p^{\text{discharging eff}}_{a,y}$                 | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}$                                                                          | Discharging efficiency of storage asset $a$ at year $y$                                                              | [p.u.]          |
 | $p^{\text{inv cost energy}}_{a,y}$                 | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Overnight cost of a energy unit of asset $a$ at year $y$                                                             | [kEUR/MWh]      |
 | $p^{\text{fixed cost energy}}_{a,y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Fixed cost of a energy unit of asset $a$ at year $y$                                                                 | [kEUR/MWh/year] |
 | $p^{\text{inv limit energy}}_{a,y}$                | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Investment energy potential of asset $a$ at year $y$                                                                 | [MWh]           |
@@ -126,6 +136,12 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{min over-clustered-year-storage level}}_{a,p_y}$               | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Minimum over-clustered-year-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe                        | [p.u.]          |
 | $p^{\text{storage loss from stored energy}}_{a,y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}_y$                                                                        | [e.g. 0.01 means 1% every hour] Loss of stored energy over time.                                                     | [p.u./h]        |
 
+#### Extra Parameters for Conversion Assets
+
+| Name                                   | Domain           | Domains of Indices                                            | Description                                                       | Units           |
+| ---------------------------------------| ---------------- | --------------------------------------------------------------| ----------------------------------------------------------------- | --------------- |
+| $p^{\text{conversion eff}}_{a,y}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{cv}}}$, $y \in \mathcal{Y}$          | Conversion efficiency of conversion asset $a$ at year $y$         | [p.u.]          |
+
 #### Extra Parameters for Energy Constraints
 
 | Name                                   | Domain           | Domains of Indices                                            | Description                                                                                      | Units  |
@@ -135,7 +151,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{max energy}}_{a,p_y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{max e}}}_y$                          | Maximum outgoing over-clustered-year energy value of asset $a$                                        | [MWh]  |
 | $p^{\text{min energy}}_{a,p_y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{min e}}}_y$                          | Minimum outgoing over-clustered-year energy value of asset $a$                                        | [MWh]  |
 
-#### Extra Parameters for Producers and Conversion Assets
+#### Extra Parameters for Unit Commitment and Ramping Constraints
 
 | Name                                   | Domain           | Domains of Indices                  | Description                                                                                                              | Units          |
 | -------------------------------------- | ---------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------- |
@@ -149,9 +165,9 @@ In addition, the following subsets represent methods for incorporating additiona
 | Name                                                | Domain           | Domains of Indices                                                                                 | Description                                                                                                           | Units          |
 | --------------------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------- |
 | $p^{\text{variable cost}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Variable cost of flow $f$ at year $y$                                                                                 | [kEUR/MWh]     |
-| $p^{\text{eff}}_{f,y}$                              | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Efficiency of flow $f$ at year $y$                                                                                    | [p.u.]         |
 | $p^{\text{reactance}}_{f,y}$                        | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Reactance of flow $f$ at year $y$                                                                                     | [p.u.]         |
 | $p^{\text{capacity coefficient}}_{f,y}$             | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Coefficient that multiplies the flow $f$ at year $y$ in the capacity constraints                                      | [-]            |
+| $p^{\text{conversion coefficient}}_{f,y}$           | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Coefficient that multiplies the flow $f$ at year $y$ in the conversion constraints                                    | [-]            |
 | $p^{\text{inv cost}}_{f,y}$                         | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Overnight cost of transport flow $f$ at year $y$                                                                      | [kEUR/MW]      |
 | $p^{\text{annualized inv cost}}_{f,y}$              | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Annualized investment cost of transport flow $f$ at year $y$                                                          | [kEUR/MW/year] |
 | $p^{\text{salvage value}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Salvage value of transport flow $f$ at year $y$                                                                       | [kEUR/MW]      |
@@ -180,6 +196,13 @@ In addition, the following subsets represent methods for incorporating additiona
 | ----------------------------------- | ---------------- | ---------------------------------------------------- | ------------------------------------------------------------- | ----- |
 | $p^{\text{min invest limit}}_{g,y}$ | $\mathbb{R}_{+}$ | $g \in \mathcal{G}^{\text{ai}}$, $y \in \mathcal{Y}$ | Minimum investment limit (potential) of group $g$ at year $y$ | [MW]  |
 | $p^{\text{max invest limit}}_{g,y}$ | $\mathbb{R}_{+}$ | $g \in \mathcal{G}^{\text{ai}}$, $y \in \mathcal{Y}$ | Maximum investment limit (potential) of group $g$ at year $y$ | [MW]  |
+
+### Parameters for Flows Relationship
+
+| Name                        | Domain           | Domains of Indices                       | Description                                                   | Units |
+| ----------------------------| ---------------- | -----------------------------------------| --------------------------------------------------------------| ----- |
+| $p^{\text{constant}}_{x,y}$ | $\mathbb{R}$     | $x \in \mathcal{X}$, $y \in \mathcal{Y}$ | Constant value in the flow relationship $x$ at year $y$       | [MW]  |
+| $p^{\text{ratio}}_{x,y}$    | $\mathbb{R}$     | $x \in \mathcal{X}$, $y \in \mathcal{Y}$ | Ratio value in the flow relationship $x$ at year $y$          | [-]   |
 
 ### Parameters for the Model
 
@@ -579,7 +602,7 @@ e^{\text{available energy inv limit}}_{a,y}
 ```math
 \begin{aligned}
 v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} = \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{b_{k_y}}}
- \cdot  v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}-1}  + p^{\text{inflows}}_{a,k_y,b_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
+ \cdot  v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}-1}  + p^{\text{inflows}}_{a,k_y,b_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
@@ -604,7 +627,7 @@ The cycling constraint for the rep-period constraints links the first timestep b
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
@@ -613,7 +636,7 @@ v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{rep-peri
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = p^{\text{init storage level}}_{a,y}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = p^{\text{init storage level}}_{a,y}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
@@ -633,8 +656,8 @@ For the sake of simplicity, we show the constraint assuming the over-clustered-y
 \begin{aligned}
 v^{\text{over-clustered-year-storage}}_{a,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}}
  \cdot v^{\text{over-clustered-year-storage}}_{a,p_y-1} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
-& + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
+& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
@@ -660,8 +683,8 @@ The cycling constraint for the over-clustered-year constraints links the first-p
 ```math
 \begin{aligned}
 v^{\text{over-clustered-year-storage}}_{a,p^{\text{first}}_y} = & v^{\text{over-clustered-year-storage}}_{a,p^{\text{last}}_y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
-& + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
+& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
 \end{aligned}
 ```
@@ -671,8 +694,8 @@ v^{\text{over-clustered-year-storage}}_{a,p^{\text{first}}_y} = & v^{\text{over-
 ```math
 \begin{aligned}
 v^{\text{over-clustered-year-storage}}_{a,p^{\text{first}}_y} = & p^{\text{init storage level}}_{a,y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
-& + \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{1}{p^{\text{eff}}_{f,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
+& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
 \end{aligned}
 ```
@@ -695,12 +718,24 @@ v^{\text{over-clustered-year-storage}}_{a,p^{\text{last}}_y} \geq p^{\text{init 
 
 ### Constraints for Energy Conversion Assets
 
-#### Balance Constraint for Conversion Assets
+#### [Balance Constraint for Conversion Assets](@id conversion-balance-constraints)
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{eff}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} = \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \frac{v^{\text{flow}}_{f,k_y,b_{k_y}}}{p^{\text{eff}}_{f,y}}
-\quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{cv}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+p^{\text{conversion eff}}_{a,y} \cdot & \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{conversion coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} =  \\
+& \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{conversion coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{cv}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\end{aligned}
+```
+
+### [Constraints for Flows Relationships](@id flows-relationships-constraints)
+
+For each relationship $x$, two flows are related to each other using the following constraint. The first flow is defined in the set $\mathcal{F}^{\text{1}}_{x,y}$ and the second flow in the relationship is defined in set $\mathcal{F}^{\text{2}}_{x,y}$. Notice, the same pair of flows can be defined in several relationships in the set $\mathcal{X}$. In other words, two flows can have more than one flow relationship constraint. These constraints can be used to model Combined Heat and Power (CHP) operation constraints, CO2 emissions, or any other linear constraint that involves two flows in the model.
+
+```math
+\begin{aligned}
+\sum_{f \in \mathcal{F}^{\text{1}}_{x,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \left\{\begin{array}{l} = \\ \geq \\ \leq \end{array}\right\}  p^{\text{constant}}_{x,y}  + p^{\text{ratio}}_{x,y} \cdot \sum_{f \in \mathcal{F}^{\text{2}}_{x,y}} v^{\text{flow}}_{f,k_y,b_{k_y}}
+\quad \forall y \in \mathcal{Y}, \forall x \in \mathcal{X}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
