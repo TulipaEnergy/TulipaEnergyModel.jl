@@ -1,7 +1,2 @@
 from_asset,to_asset,milestone_year,commission_year,decommissionable,initial_export_units,initial_import_units
-H2,ccgt,2030,2030,true,0.0,0.0
-ccgt,balance,2030,2030,true,0.0,0.0
-wind,balance,2030,2030,true,0.0,0.0
-wind,phs,2030,2030,true,0.0,0.0
-phs,balance,2030,2030,true,0.0,0.0
 balance,demand,2030,2030,true,1.0,1.0

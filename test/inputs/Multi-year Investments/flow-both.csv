@@ -1,15 +1,3 @@
 from_asset,to_asset,milestone_year,commission_year,decommissionable,initial_export_units,initial_import_units
-ocgt,demand,2030,2030,true,0.0,0.0
 ccgt,demand,2030,2030,true,1.0,1.0
-battery,demand,2030,2030,true,0.0,0.0
-demand,battery,2030,2030,true,0.0,0.0
-wind,demand,2030,2030,true,0.0,0.0
-solar,demand,2030,2030,true,0.0,0.0
-ens,demand,2030,2030,true,0.0,0.0
-ocgt,demand,2050,2030,true,0.0,0.0
 ccgt,demand,2050,2050,true,0.0,0.0
-battery,demand,2050,2030,true,0.0,0.0
-demand,battery,2050,2030,true,0.0,0.0
-wind,demand,2050,2030,true,0.0,0.0
-solar,demand,2050,2030,true,0.0,0.0
-ens,demand,2050,2030,false,0.0,0.0
