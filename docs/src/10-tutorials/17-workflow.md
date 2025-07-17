@@ -44,15 +44,14 @@ These are the files that we are working with:
 using JSON
 user_input_dir = joinpath(@__DIR__, "user-input-files")
 url = "https://zenodo.org/api/records/15498101"
-json = JSON.parsefile(download(url))
-if isdir(user_input_dir)
-    rm(user_input_dir, recursive=true, force=true)
-end
-mkdir(user_input_dir)
+if !isdir(user_input_dir)
+    zenodo_json = JSON.parsefile(download(url))
+    mkdir(user_input_dir)
 
-for data in json["files"]
-    filepath = joinpath(user_input_dir, data["key"])
-    download(data["links"]["self"], filepath)
+    for data in zenodo_json["files"]
+        filepath = joinpath(user_input_dir, data["key"])
+        download(data["links"]["self"], filepath)
+    end
 end
 ```
 
@@ -706,14 +705,17 @@ plot!(
 Finally, we can export the solution to CSV files using the convenience function below:
 
 ```@example obz
-if isdir("obz-outputs") # hide
-    rm("obz-outputs", force=true, recursive=true) # hide
-end # hide
+if !isdir("obz-outputs") # hide
 mkdir("obz-outputs")
 TEM.export_solution_to_csv_files("obz-outputs", energy_problem)
+end # hide
 readdir("obz-outputs")
-
-close(connection) # hide
 ```
 
 Using DuckDB directly it is also possible to export to other formats, such as Parquet.
+
+Finally, we close the connection. It should also be closed automatically if the `connection` variable goes out of scope.
+
+```@example obz
+close(connection)
+```
