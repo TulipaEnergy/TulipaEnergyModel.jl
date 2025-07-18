@@ -9,6 +9,7 @@ function compute_variables_indices(connection)
     variables = Dict{Symbol,TulipaVariable}(
         key => TulipaVariable(connection, "var_$key") for key in (
             :flow,
+            :vintage_flow,
             :units_on,
             :electricity_angle,
             :is_charging,
