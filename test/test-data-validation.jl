@@ -146,6 +146,49 @@ end
     end
 end
 
+@testset "Check flow_both does not only contain non-transport flows" begin
+    @testset "Using fake data" begin
+        # Create all four combinations of is_transport and investable
+        flow = DataFrame(
+            :from_asset => ["A1", "A2"],
+            :to_asset => ["B", "B"],
+            :is_transport => [false, true],
+        )
+        flow_both = DataFrame(
+            :from_asset => ["A1", "A2"],
+            :to_asset => ["B", "B"],
+            :milestone_year => [1, 2],
+            :commission_year => [1, 2],
+        )
+        connection = DBInterface.connect(DuckDB.DB)
+        DuckDB.register_data_frame(connection, flow, "flow")
+        DuckDB.register_data_frame(connection, flow_both, "flow_both")
+
+        error_messages =
+            TEM._validate_flow_both_table_does_not_contain_non_transport_flows!(connection)
+        @test error_messages == [
+            "Unexpected (flow=('A1', 'B'), milestone_year=1, commission_year=1) in 'flow_both' because 'flow_both' should only contain transport flows.",
+        ]
+    end
+
+    @testset "Using Multi-year data" begin
+        connection = _multi_year_fixture()
+        DuckDB.query(
+            connection,
+            """
+            INSERT INTO flow_both (from_asset, to_asset, milestone_year, commission_year)
+            VALUES ('wind', 'demand', 2030, 2030);
+            """,
+        )
+
+        error_messages =
+            TEM._validate_flow_both_table_does_not_contain_non_transport_flows!(connection)
+        @test error_messages == [
+            "Unexpected (flow=('wind', 'demand'), milestone_year=2030, commission_year=2030) in 'flow_both' because 'flow_both' should only contain transport flows.",
+        ]
+    end
+end
+
 @testset "Check that foreign keys are valid" begin
     @testset "Using fake data" begin
         # Main table
