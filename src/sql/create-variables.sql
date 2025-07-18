@@ -28,6 +28,42 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists var_vintage_flow
+;
+
+create table var_vintage_flow as
+select
+    nextval('id') as id,
+    ft.from_asset,
+    ft.to_asset,
+    ab.milestone_year,
+    ab.commission_year,
+    ft.rep_period,
+    ft.time_block_start,
+    ft.time_block_end,
+    fc.capacity_coefficient,
+    fc.conversion_coefficient,
+from
+    flow_time_resolution_rep_period as ft
+    -- We want to split the outgoing flows by the asset's vintage
+    left join asset_both as ab
+    on ab.asset = ft.from_asset
+    and ab.milestone_year = ft.year
+    left join asset on asset.asset = ab.asset
+    left join flow_commission as fc
+    on fc.from_asset = ft.from_asset
+    and fc.to_asset = ft.to_asset
+    and fc.commission_year = ab.commission_year
+where asset.type in ('producer', 'conversion', 'storage')
+    and asset.investment_method = 'semi-compact'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 drop table if exists var_units_on
 ;
 
