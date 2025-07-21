@@ -427,7 +427,7 @@ DuckDB.query(
     LEFT JOIN flow
       ON flow.from_asset = t_flow_yearly.from_asset
       AND flow.to_asset = t_flow_yearly.to_asset
-    WHERE flow.is_transport = TRUE
+    WHERE flow.is_transport = TRUE -- flow_both must only contain transport flows
     ORDER by t_flow_yearly.from_asset, t_flow_yearly.to_asset
     "
 )
