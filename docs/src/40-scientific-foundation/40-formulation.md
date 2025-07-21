@@ -199,8 +199,8 @@ In addition, the following subsets represent methods for incorporating additiona
 | Name                            | Domain           | Domains of Indices                                                  | Description                                                                                     | Units |
 | ------------------------------- | ---------------- | --------------------------------------------------------------------| ----------------------------------------------------------------------------------------------- | ----- |
 | $p^{\text{duration}}_{b_{k_y}}$ | $\mathbb{R}_{+}$ | $b_{k_y} \in \mathcal{B_{k_y}}$                                     | Duration of the timestep blocks $b_{k_y}$                                                       | [h]   |
-| $p^{\text{rp weight}}_{s, k_y}$ | $\mathbb{R}_{+}$ | $s \in \mathcal{S}, k_y \in \mathcal{K}_y$                          | Weight of representative period $k_y$ in stochastic scenario $s$                                | [-]   |
-| $p^{\text{map}}_{s, p_y,k_y}$   | $\mathbb{R}_{+}$ | $s \in \mathcal{S}, p_y \in \mathcal{P}_y$, $k_y \in \mathcal{K}_y$ | Map with the weight of representative period $k_y$ in period $p_y$, and stochastic scenario $s$ | [-]   |
+| $p^{\text{rp weight}}_{s,k_y}$  | $\mathbb{R}_{+}$ | $s \in \mathcal{S}, k_y \in \mathcal{K}_y$                          | Weight of representative period $k_y$ in stochastic scenario $s$                                | [-]   |
+| $p^{\text{map}}_{s,p_y,k_y}$    | $\mathbb{R}_{+}$ | $s \in \mathcal{S}, p_y \in \mathcal{P}_y$, $k_y \in \mathcal{K}_y$ | Map with the weight of representative period $k_y$ in period $p_y$, and stochastic scenario $s$ | [-]   |
 
 ### Parameters for Groups
 
@@ -377,8 +377,8 @@ assets\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{s
 & + \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{available energy capacity simple method}}_{a,y} \\
 flows\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p_{f, y}^{\text{discounting factor flow inv cost}} \cdot p^{\text{inv cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f,y} \\
 flows\_fixed\_cost &= \frac{1}{2} \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{t}}_y} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot \left( v^{\text{available export units}}_{f,y} + v^{\text{available import units}}_{f,y} \right) \\
-flows\_variable\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s, k_y} \cdot p^{\text{variable cost}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-unit\_on\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s, k_y} \cdot p^{\text{units on cost}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{units on}}_{a,k_y,b_{k_y}}
+flows\_variable\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{variable cost}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+unit\_on\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{units on cost}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{units on}}_{a,k_y,b_{k_y}}
 \end{aligned}
 ```
 
@@ -662,16 +662,16 @@ v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}} \geq p^{\text{init s
 
 #### [Over-clustered-year Constraint for Storage Balance](@id over-clustered-year-storage-balance)
 
-This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year) and stochastic scenario. The parameter $p^{\text{map}}_{s, p_y,k_y}$ determines how much of the representative period $k_y$ is in the period $p_y$, and stochastic scenario $s$. Researchers and practitioners often use clustering techniques to determine this parameter. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
+This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year) and stochastic scenario. The parameter $p^{\text{map}}_{s,p_y,k_y}$ determines how much of the representative period $k_y$ is in the period $p_y$, and stochastic scenario $s$. Researchers and practitioners often use clustering techniques to determine this parameter. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
 
 For the sake of simplicity, we show the constraint assuming the over-clustered-year-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref table-schemas).
 
 ```math
 \begin{aligned}
-v^{\text{over-clustered-year-storage}}_{a,s,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}}
- \cdot v^{\text{over-clustered-year-storage}}_{a,s,p_y-1} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
-& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
+v^{\text{over-clustered-year-storage}}_{a,s,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}}
+ \cdot v^{\text{over-clustered-year-storage}}_{a,s,p_y-1} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall s \in \mathcal{S}, y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
@@ -696,9 +696,9 @@ The cycling constraint for the over-clustered-year constraints links the first-p
 
 ```math
 \begin{aligned}
-v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{first}}_y} = & v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{last}}_y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
-& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
+v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{first}}_y} = & v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{last}}_y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
 \end{aligned}
 ```
@@ -707,9 +707,9 @@ v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{first}}_y} = & v^{\text{ove
 
 ```math
 \begin{aligned}
-v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{first}}_y} = & p^{\text{init storage level}}_{a,y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
-& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
+v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{first}}_y} = & p^{\text{init storage level}}_{a,y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
 \end{aligned}
 ```
@@ -805,7 +805,7 @@ These constraints allow us to consider a maximum or minimum energy limit for an 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq  p^{\text{max over-clustered-year-storage profile}}_{a,p_y} \cdot p^{\text{max energy}}_{a,y}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq  p^{\text{max over-clustered-year-storage profile}}_{a,p_y} \cdot p^{\text{max energy}}_{a,y}
 \\ \\ & s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{max e}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
@@ -814,7 +814,7 @@ These constraints allow us to consider a maximum or minimum energy limit for an 
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s, p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq  p^{\text{min over-clustered-year-storage profile}}_{a,p_y} \cdot p^{\text{min energy}}_{a,y}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_k} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq  p^{\text{min over-clustered-year-storage profile}}_{a,p_y} \cdot p^{\text{min energy}}_{a,y}
 \\ \\ & s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{min e}}, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
