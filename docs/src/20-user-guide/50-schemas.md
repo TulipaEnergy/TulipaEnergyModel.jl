@@ -87,10 +87,10 @@ data = Dict(
     # Basic flow data
     "flow" => DataFrame(:from_asset => ["some_producer"], :to_asset => ["some_consumer"]),
     "flow_both" => DataFrame(
-        :from_asset => ["some_producer"],
-        :to_asset => ["some_consumer"],
-        :commission_year => [2030],
-        :milestone_year => [2030],
+        :from_asset => String[],
+        :to_asset => String[],
+        :commission_year => Int[],
+        :milestone_year => Int[],
     ),
     "flow_commission" => DataFrame(
         :from_asset => ["some_producer"],
