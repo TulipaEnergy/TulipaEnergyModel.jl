@@ -540,3 +540,37 @@ end
         end
     end
 end
+
+@testset "Check consistency between investment method and asset types" begin
+    @testset "Using fake data" begin
+        asset = DataFrame(
+            :asset => ["A1", "A2", "A3", "A4", "A5", "A6", "A7"],
+            :type =>
+                ["producer", "conversion", "storage", "hub", "consumer", "hub", "consumer"],
+            :investment_method =>
+                ["simple", "none", "none", "simple", "compact", "none", "none"],
+        )
+        connection = DBInterface.connect(DuckDB.DB)
+        DuckDB.register_data_frame(connection, asset, "asset")
+
+        error_messages =
+            TEM._validate_certain_asset_types_can_only_have_none_investment_methods!(connection)
+        @test error_messages == [
+            "Incorrect use of investment method 'simple' for asset 'A4' of type 'hub'. Hub and consumer assets can only have 'none' investment method.",
+            "Incorrect use of investment method 'compact' for asset 'A5' of type 'consumer'. Hub and consumer assets can only have 'none' investment method.",
+        ]
+    end
+
+    @testset "Using Tiny data" begin
+        connection = _tiny_fixture()
+        DuckDB.query(
+            connection,
+            "UPDATE asset SET investment_method = 'simple' WHERE asset = 'demand'",
+        )
+        error_messages =
+            TEM._validate_certain_asset_types_can_only_have_none_investment_methods!(connection)
+        @test error_messages == [
+            "Incorrect use of investment method 'simple' for asset 'demand' of type 'consumer'. Hub and consumer assets can only have 'none' investment method.",
+        ]
+    end
+end

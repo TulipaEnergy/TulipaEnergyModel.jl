@@ -53,6 +53,11 @@ function validate_data!(connection)
             false,
         ),
         ("check DC OPF data", _validate_dc_opf_data!, false),
+        (
+            "consistency between asset types and investment methods",
+            _validate_certain_asset_types_can_only_have_none_investment_methods!,
+            false,
+        ),
     )
         @timeit to "$log_msg" append!(error_messages, validation_function(connection))
         if fail_fast && length(error_messages) > 0
@@ -442,6 +447,26 @@ function _validate_dc_opf_only_apply_to_non_investable_transport_flows!(error_me
         push!(
             error_messages,
             "Incorrect use of dc-opf method for flow ('$(row.from_asset)', '$(row.to_asset)') for year $(row.milestone_year) in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_certain_asset_types_can_only_have_none_investment_methods!(connection)
+    error_messages = String[]
+
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset.asset, asset.investment_method, asset.type
+        FROM asset
+        WHERE asset.investment_method != 'none'
+            AND asset.type in ('hub', 'consumer')
+        ",
+    )
+        push!(
+            error_messages,
+            "Incorrect use of investment method '$(row.investment_method)' for asset '$(row.asset)' of type '$(row.type)'. Hub and consumer assets can only have 'none' investment method.",
         )
     end
 
