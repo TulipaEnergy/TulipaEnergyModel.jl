@@ -417,14 +417,18 @@ DuckDB.query(
     connection,
     "CREATE TABLE flow_both AS
     SELECT
-        from_asset,
-        to_asset,
-        year AS milestone_year,
-        year AS commission_year,
-        initial_export_units,
-        initial_import_units,
+        t_flow_yearly.from_asset,
+        t_flow_yearly.to_asset,
+        t_flow_yearly.year AS milestone_year,
+        t_flow_yearly.year AS commission_year,
+        t_flow_yearly.initial_export_units,
+        t_flow_yearly.initial_import_units,
     FROM t_flow_yearly
-    ORDER by from_asset, to_asset
+    LEFT JOIN flow
+      ON flow.from_asset = t_flow_yearly.from_asset
+      AND flow.to_asset = t_flow_yearly.to_asset
+    WHERE flow.is_transport = TRUE -- flow_both must only contain transport flows
+    ORDER by t_flow_yearly.from_asset, t_flow_yearly.to_asset
     "
 )
 ```

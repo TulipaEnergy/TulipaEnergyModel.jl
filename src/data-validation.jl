@@ -36,6 +36,11 @@ function validate_data!(connection)
             _validate_only_transport_flows_are_investable!,
             false,
         ),
+        (
+            "flow_both only contain transport flows",
+            _validate_flow_both_table_does_not_contain_non_transport_flows!,
+            false,
+        ),
         ("group consistency between tables", _validate_group_consistency!, false),
         (
             "data consistency for simple investment",
@@ -184,6 +189,30 @@ function _validate_only_transport_flows_are_investable!(connection)
         push!(
             error_messages,
             "Flow ('$(row.from_asset)', '$(row.to_asset)') is investable but is not a transport flow",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_flow_both_table_does_not_contain_non_transport_flows!(connection)
+    # In principle, we should also check all transport flows are covered.
+    # But that is tested elsewhere, i.e., in _validate_simple_method_data_consistency!()
+    error_messages = String[]
+
+    for row in DuckDB.query(
+        connection,
+        "SELECT flow_both.from_asset, flow_both.to_asset, flow_both.milestone_year, flow_both.commission_year
+        FROM flow_both
+        LEFT JOIN flow
+            ON flow.from_asset = flow_both.from_asset
+            AND flow.to_asset = flow_both.to_asset
+        WHERE flow.is_transport = FALSE
+        ",
+    )
+        push!(
+            error_messages,
+            "Unexpected (flow=('$(row.from_asset)', '$(row.to_asset)'), milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' because 'flow_both' should only contain transport flows.",
         )
     end
 
