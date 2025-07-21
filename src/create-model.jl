@@ -84,6 +84,11 @@ function create_model(
 
     ## Variables
     @timeit to "add_flow_variables!" add_flow_variables!(connection, model, variables)
+    @timeit to "add_vintage_flow_variables!" add_vintage_flow_variables!(
+        connection,
+        model,
+        variables,
+    )
     @timeit to "add_investment_variables!" add_investment_variables!(model, variables)
     @timeit to "add_unit_commitment_variables!" add_unit_commitment_variables!(model, variables)
     @timeit to "add_power_flow_variables!" add_power_flow_variables!(model, variables)
