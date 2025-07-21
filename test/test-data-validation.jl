@@ -148,7 +148,6 @@ end
 
 @testset "Check flow_both does not only contain non-transport flows" begin
     @testset "Using fake data" begin
-        # Create all four combinations of is_transport and investable
         flow = DataFrame(
             :from_asset => ["A1", "A2"],
             :to_asset => ["B", "B"],

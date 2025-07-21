@@ -196,6 +196,8 @@ function _validate_only_transport_flows_are_investable!(connection)
 end
 
 function _validate_flow_both_table_does_not_contain_non_transport_flows!(connection)
+    # In principle, we should also check all transport flows are covered.
+    # But that is tested elsewhere, i.e., in _validate_simple_method_data_consistency!()
     error_messages = String[]
 
     for row in DuckDB.query(
