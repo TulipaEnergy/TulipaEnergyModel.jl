@@ -40,3 +40,7 @@ Morales-España, G., Latorre, J. M., & Ramos, A. (2013). Tight and compact MILP 
 Wang, N., & Tejada-Arango, D. A. (2025). Discounting approaches in multi-year investment modelling for energy systems. ArXiv. <https://arxiv.org/abs/2504.21709>
 
 Wang, N., & Morales-España, G. (2025). Vintage-based formulations in multi-year investment modelling for energy systems. ArXiv. <https://arxiv.org/abs/2505.00379>
+
+## Two-Stage Stochastic Programming
+
+Kremer, L.A.A., de Weerdt, M.M., Neustroev, G., Morales-España, G. (2025). Stochastic programming for energy models: A blended cross-scenario representative periods approach. Master Thesis, TU Delft - Electrical Engineering, Mathematics and Computer Science. <https://resolver.tudelft.nl/uuid:0e87f306-1c92-4eec-805f-72377ed57fb2>
