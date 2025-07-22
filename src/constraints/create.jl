@@ -34,6 +34,7 @@ function compute_constraints_indices(connection)
             :flows_relationships,
             :dc_power_flow,
             :limit_decommission_compact_method,
+            :vintage_flow_sum_semi_compact_method,
         )
     )
 

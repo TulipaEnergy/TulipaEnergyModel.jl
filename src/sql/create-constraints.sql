@@ -651,3 +651,28 @@ where
 
 drop sequence id
 ;
+
+create sequence id start 1
+;
+
+drop table if exists cons_vintage_flow_sum_semi_compact_method
+;
+
+create table cons_vintage_flow_sum_semi_compact_method as
+select
+    nextval('id') as id,
+    from_asset,
+    to_asset,
+    year,
+    rep_period,
+    time_block_start,
+    time_block_end,
+from
+    var_flow
+left join asset on asset.asset = var_flow.from_asset
+where
+    asset.investment_method = 'semi-compact'
+;
+
+drop sequence id
+;
