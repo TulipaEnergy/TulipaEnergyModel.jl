@@ -203,7 +203,7 @@ function create_model(
         model_parameters,
     )
 
-    @timeit to "add_vintage_flow_constraints!" add_vintage_flow_sum_constraints!(
+    @timeit to "add_vintage_flow_sum_constraints!" add_vintage_flow_sum_constraints!(
         connection,
         model,
         variables,
