@@ -59,27 +59,33 @@
     # Note: Decommission variables don't have upper bounds
     asset_vars = variables[:assets_decommission].container
     for row in eachrow(asset_decommission_data)
-        var = asset_vars[row.id]
-        @test JuMP.lower_bound(var) == 0.0
-        @test !JuMP.has_upper_bound(var)
-        @test JuMP.is_integer(var) == row.investment_integer
+        _test_variable_properties(
+            asset_vars[row.id],
+            0.0,
+            nothing;
+            is_integer = row.investment_integer,
+        )
     end
 
     # Test bounds and integer constraints for flows decommission
     flow_vars = variables[:flows_decommission].container
     for row in eachrow(flow_decommission_data)
-        var = flow_vars[row.id]
-        @test JuMP.lower_bound(var) == 0.0
-        @test !JuMP.has_upper_bound(var)
-        @test JuMP.is_integer(var) == row.investment_integer
+        _test_variable_properties(
+            flow_vars[row.id],
+            0.0,
+            nothing;
+            is_integer = row.investment_integer,
+        )
     end
 
     # Test bounds and integer constraints for assets decommission energy
     energy_vars = variables[:assets_decommission_energy].container
     for row in eachrow(asset_decommission_energy_data)
-        var = energy_vars[row.id]
-        @test JuMP.lower_bound(var) == 0.0
-        @test !JuMP.has_upper_bound(var)
-        @test JuMP.is_integer(var) == row.investment_integer_storage_energy
+        _test_variable_properties(
+            energy_vars[row.id],
+            0.0,
+            nothing;
+            is_integer = row.investment_integer_storage_energy,
+        )
     end
 end
