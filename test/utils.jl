@@ -80,3 +80,28 @@ function _is_constraint_equal_kernel(left, right)
     end
     return result
 end
+
+function _test_variable_properties(
+    variable::JuMP.GenericVariableRef,
+    lower_bound::Union{Nothing,Float64},
+    upper_bound::Union{Nothing,Float64};
+    is_integer::Bool = false,
+    is_binary::Bool = false,
+)
+    if isnothing(lower_bound)
+        @test !JuMP.has_lower_bound(variable)
+    else
+        @test JuMP.lower_bound(variable) == lower_bound
+    end
+
+    if isnothing(upper_bound)
+        @test !JuMP.has_upper_bound(variable)
+    else
+        @test JuMP.upper_bound(variable) == upper_bound
+    end
+
+    @test JuMP.is_integer(variable) == is_integer
+    @test JuMP.is_binary(variable) == is_binary
+
+    return nothing
+end

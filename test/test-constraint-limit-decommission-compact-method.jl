@@ -55,6 +55,7 @@
     )
     # Create JuMP variables
     TulipaEnergyModel.add_investment_variables!(model, variables)
+    TulipaEnergyModel.add_decommission_variables!(model, variables)
 
     # Create expressions
     expressions = Dict{Symbol,TulipaEnergyModel.TulipaExpression}()

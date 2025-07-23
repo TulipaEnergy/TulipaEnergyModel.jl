@@ -26,3 +26,60 @@ function compute_variables_indices(connection)
 
     return variables
 end
+
+"""
+    _create_variables_from_indices!(
+    model,
+    variables,
+    name,
+    keys_from_row;
+    lower_bound_from_row = row -> -Inf,
+    upper_bound_from_row = row -> Inf,
+    integer_from_row = row -> false,
+)
+
+This function creates variables by iterating over the variable indices,
+where each variable can have different properties determined by the index/row data.
+"""
+function _create_variables_from_indices!(
+    model,
+    variables,
+    name,
+    keys_from_row;
+    lower_bound_from_row = row -> -Inf,
+    upper_bound_from_row = row -> Inf,
+    integer_from_row = row -> false,
+)
+    this_var = variables[name]
+    this_var.container = [
+        @variable(
+            model,
+            lower_bound = lower_bound_from_row(row),
+            upper_bound = upper_bound_from_row(row),
+            integer = integer_from_row(row),
+            base_name = "$name[" * join(keys_from_row(row), ",") * "]"
+        ) for row in this_var.indices
+    ]
+    return
+end
+
+"""
+    _create_variables_from_specifications!(model, variables, specifications)
+
+Creates variables based on a dictionary of specifications.
+Each specification should contain keys_from_row, lower_bound_from_row, upper_bound_from_row, and integer_from_row functions.
+"""
+function _create_variables_from_specifications!(model, variables, specifications)
+    for (name, spec) in specifications
+        _create_variables_from_indices!(
+            model,
+            variables,
+            name,
+            spec.keys_from_row;
+            lower_bound_from_row = spec.lower_bound_from_row,
+            upper_bound_from_row = spec.upper_bound_from_row,
+            integer_from_row = spec.integer_from_row,
+        )
+    end
+    return
+end
