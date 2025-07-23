@@ -15,7 +15,7 @@ authors:
     - given-names: Diego A.
       surname: Tejada-Arango
       email: diego.tejadaarango@tno.nl
-      affiliation: 2
+      affiliation: 2, 6
       orcid: "https://orcid.org/0000-0002-3278-9283"
     - given-names: Germán
       surname: Morales-España
@@ -71,6 +71,9 @@ affiliations:
   - name: Utrecht University, Netherlands
     ror: 04pp8hn57
     index: 5
+  - name: Universidad Pontificia Comillas
+    ror: 017mdc710
+    index: 6
 date: 10 July 2025
 bibliography: paper.bib
 ---
