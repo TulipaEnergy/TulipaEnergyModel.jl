@@ -10,7 +10,7 @@
         milestone_year = [2030, 2030, 2040, 2040],
         investment_integer = [true, false, true, true],
         capacity = [100.0, 50.0, 25.0, 125.0],
-        investment_limit = [1000.0, missing, 500.0, 650.0],  # Should result in [10.0, Inf, 20.0, 5.0]
+        investment_limit = [1000.0, missing, 500.0, 650.0],
     )
     DuckDB.register_data_frame(connection, asset_investment_data, "var_assets_investment")
 
@@ -60,36 +60,37 @@
     # Test bounds and integer constraints for assets investment
     asset_vars = variables[:assets_investment].container
     for row in eachrow(asset_investment_data)
-        var = asset_vars[row.id]
-        @test JuMP.lower_bound(var) == 0.0
-        if ismissing(row.investment_limit)
-            @test !JuMP.has_upper_bound(var)
-        else
-            @test JuMP.upper_bound(var) == floor(row.investment_limit / row.capacity)
-        end
-        @test JuMP.is_integer(var) == row.investment_integer
+        _test_variable_properties(
+            asset_vars[row.id],
+            0.0,
+            ismissing(row.investment_limit) ? nothing : floor(row.investment_limit / row.capacity);
+            is_integer = row.investment_integer,
+        )
     end
 
     # Test bounds and integer constraints for flows investment
     flow_vars = variables[:flows_investment].container
     for row in eachrow(flow_investment_data)
-        var = flow_vars[row.id]
-        @test JuMP.lower_bound(var) == 0.0
-        if ismissing(row.investment_limit)
-            @test !JuMP.has_upper_bound(var)
-        else
-            @test JuMP.upper_bound(var) == floor(row.investment_limit / row.capacity)
-        end
-        @test JuMP.is_integer(var) == row.investment_integer
+        _test_variable_properties(
+            flow_vars[row.id],
+            0.0,
+            ismissing(row.investment_limit) ? nothing : floor(row.investment_limit / row.capacity);
+            is_integer = row.investment_integer,
+        )
     end
 
     # Test bounds and integer constraints for assets investment energy
     energy_vars = variables[:assets_investment_energy].container
     for row in eachrow(asset_investment_energy_data)
-        var = energy_vars[row.id]
-        @test JuMP.lower_bound(var) == 0.0
-        @test JuMP.upper_bound(var) ==
-              floor(row.investment_limit_storage_energy / row.capacity_storage_energy)
-        @test JuMP.is_integer(var) == row.investment_integer_storage_energy
+        _test_variable_properties(
+            energy_vars[row.id],
+            0.0,
+            if ismissing(row.investment_limit_storage_energy)
+                nothing
+            else
+                floor(row.investment_limit_storage_energy / row.capacity_storage_energy)
+            end;
+            is_integer = row.investment_integer_storage_energy,
+        )
     end
 end
