@@ -17,6 +17,15 @@ function compare_mps(existing_mps_folder)
 
     exit_flag = 0
 
+    @warn """This comparison is not fail-proof. The new and existing MPS are
+    compared by first remove all MARKER lines, sorting all lines, and comparing
+    line by line."""
+    function get_relevant_lines(filename)
+        return filter(readlines(filename)) do line
+            return !contains(line, "MARKER")
+        end |> sort
+    end
+
     for folder in filter(isdir, readdir(test_inputs; join = true))
         existing_mps_file = joinpath(existing_mps_folder, basename(folder) * ".mps")
         @assert isfile(existing_mps_file)
@@ -35,8 +44,8 @@ function compare_mps(existing_mps_folder)
         create_mps(folder, new_mps_folder)
         @assert isfile(new_mps_file)
 
-        existing_lines = sort(readlines(existing_mps_file))
-        new_lines = sort(readlines(new_mps_file))
+        existing_lines = get_relevant_lines(existing_mps_file)
+        new_lines = get_relevant_lines(new_mps_file)
 
         if length(existing_lines) != length(new_lines)
             no_issues = false
@@ -103,4 +112,8 @@ else
     end
 end
 
-exit(exit_flag)
+if abspath(PROGRAM_FILE) == @__FILE__
+    exit(exit_flag)
+else
+    @info "Exit flag: $exit_flag"
+end
