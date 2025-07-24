@@ -68,10 +68,11 @@
         "cons_vintage_flow_sum_semi_compact_method",
     )
 
-    constraints = Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(
-        key => TulipaEnergyModel.TulipaConstraint(connection, "cons_$key") for
-        key in (:vintage_flow_sum_semi_compact_method,)
-    )
+    constraints = let key=:vintage_flow_sum_semi_compact_method
+        Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(
+            key => TulipaEnergyModel.TulipaConstraint(connection, "cons_$key")
+        )
+    end
 
     TulipaEnergyModel.add_vintage_flow_sum_constraints!(connection, model, variables, constraints)
 
