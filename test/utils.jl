@@ -124,3 +124,14 @@ function _test_variable_properties(
 
     return nothing
 end
+
+function _create_table_for_tests(
+    connection::DuckDB.DB,
+    table_name::String,
+    table_rows::Vector{<:Tuple},
+    columns::Vector{Symbol},
+)
+    df = DataFrame(table_rows, columns)
+    DuckDB.register_data_frame(connection, df, table_name)
+    return nothing
+end

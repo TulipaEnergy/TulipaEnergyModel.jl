@@ -5,9 +5,10 @@
 
     # Create mock tables for testing using register_data_frame
     # This first table is only necessary because we have a left join of var_flow with the asset table
+    table_name = "asset"
     table_rows = [("input_1", "semi-compact"), ("input_2", "compact"), ("death_star", "simple")]
-    asset = DataFrame(table_rows, [:asset, :investment_method])
-    DuckDB.register_data_frame(connection, asset, "asset")
+    columns = [:asset, :investment_method]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_rows = [
         ("input_1", "death_star", false),
