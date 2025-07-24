@@ -204,6 +204,13 @@ function create_model(
         model_parameters,
     )
 
+    @timeit to "add_vintage_flow_sum_constraints!" add_vintage_flow_sum_constraints!(
+        connection,
+        model,
+        variables,
+        constraints,
+    )
+
     if model_file_name != ""
         @timeit to "save model file" JuMP.write_to_file(model, model_file_name)
     end
