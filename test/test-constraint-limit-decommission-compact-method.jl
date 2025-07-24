@@ -93,9 +93,9 @@
         JuMP.@build_constraint(0.07 - var_assets_decommission[1] ≥ 0),
         JuMP.@build_constraint(0.02 + var_assets_investment[1] - var_assets_decommission[2] ≥ 0)
     ]
-    for (i, constraint) in enumerate(model[:limit_decommission_compact_method])
-        observed_con = JuMP.constraint_object(constraint)
-        expected_con = expected_cons[i]
-        @test _is_constraint_equal(observed_con, expected_con)
-    end
+    observed_cons = [
+        JuMP.constraint_object(constraint) for
+        constraint in model[:limit_decommission_compact_method]
+    ]
+    @test _is_constraint_equal(expected_cons, observed_cons)
 end
