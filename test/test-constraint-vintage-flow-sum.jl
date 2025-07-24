@@ -68,21 +68,27 @@
         "cons_vintage_flow_sum_semi_compact_method",
     )
 
-    constraints = let key=:vintage_flow_sum_semi_compact_method
+    constraints = let key = :vintage_flow_sum_semi_compact_method
         Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(
-            key => TulipaEnergyModel.TulipaConstraint(connection, "cons_$key")
+            key => TulipaEnergyModel.TulipaConstraint(connection, "cons_$key"),
         )
     end
 
     TulipaEnergyModel.add_vintage_flow_sum_constraints!(connection, model, variables, constraints)
 
-    # test the constraints
+    # Test the constraints
     var_flow = variables[:flow].container
     var_vintage_flow = variables[:vintage_flow].container
 
-    expected_con = JuMP.@build_constraint(var_vintage_flow[1] + var_vintage_flow[2] == var_flow[1])
+    expected_con =
+        [JuMP.@build_constraint(var_vintage_flow[1] + var_vintage_flow[2] == var_flow[1])]
 
-    observed_con = JuMP.constraint_object(model[:vintage_flow_sum_semi_compact_method][1])
+    observed_con =
+        [JuMP.constraint_object(con) for con in model[:vintage_flow_sum_semi_compact_method]]
 
-    @test _is_constraint_equal(observed_con, expected_con)
+    for (expected, observed) in zip(expected_con, observed_con)
+        @test _is_constraint_equal(expected, observed)
+    end
+
+    @test length(expected_con) == length(observed_con)
 end
