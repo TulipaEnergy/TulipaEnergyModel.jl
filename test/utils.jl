@@ -30,10 +30,27 @@ function _is_constraint_equal(left, right)
         _show_constraint(left)
         println("RIGHT")
         _show_constraint(right)
-        false
+        return false
     else
-        true
+        return true
     end
+end
+
+function _is_constraint_equal(expected_vec::Vector, observed_vec::Vector)
+    if length(expected_vec) != length(observed_vec)
+        println(
+            "Vector lengths differ: expected $(length(expected_vec)), observed $(length(observed_vec))",
+        )
+        return false
+    end
+
+    for (i, (expected, observed)) in enumerate(zip(expected_vec, observed_vec))
+        if !_is_constraint_equal(expected, observed)
+            println("Constraint $i differs")
+            return false
+        end
+    end
+    return true
 end
 
 function _show_constraint(con)
