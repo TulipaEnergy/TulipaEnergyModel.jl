@@ -88,14 +88,16 @@
     var_flow = variables[:flow].container
     var_electricity_angle = variables[:electricity_angle].container
 
-    for (i, constraint) in enumerate(model[:dc_power_flow])
-        observed_con = JuMP.constraint_object(constraint)
+    expected_cons = []
+    for i in 1:length(model[:dc_power_flow])
         flow_id, from_asset_id, to_asset_id = expected_ids[i]
         expected_con = JuMP.@build_constraint(
             reactance * var_flow[flow_id] -
             power_system_base *
             (var_electricity_angle[from_asset_id] - var_electricity_angle[to_asset_id]) == 0
         )
-        @test _is_constraint_equal(observed_con, expected_con)
+        push!(expected_cons, expected_con)
     end
+    observed_cons = [JuMP.constraint_object(constraint) for constraint in model[:dc_power_flow]]
+    @test _is_constraint_equal(expected_cons, observed_cons)
 end
