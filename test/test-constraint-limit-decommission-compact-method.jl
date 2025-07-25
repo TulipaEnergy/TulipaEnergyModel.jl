@@ -67,14 +67,10 @@
         expressions[:available_asset_units_compact_method].expressions[:assets]
 
     # Create constraint tables
+    table_name = "cons_limit_decommission_compact_method"
     table_rows = [(1, "wind", 2030, 2020), (2, "wind", 2050, 2030)]
-    cons_limit_decommission_compact_method =
-        DataFrame(table_rows, [:id, :asset, :milestone_year, :commission_year])
-    DuckDB.register_data_frame(
-        connection,
-        cons_limit_decommission_compact_method,
-        "cons_limit_decommission_compact_method",
-    )
+    columns = [:id, :asset, :milestone_year, :commission_year]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
     constraints = Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(
         key => TulipaEnergyModel.TulipaConstraint(connection, "cons_$key") for

@@ -54,17 +54,10 @@
     TulipaEnergyModel.add_flow_variables!(connection, model, variables)
     TulipaEnergyModel.add_vintage_flow_variables!(connection, model, variables)
 
+    table_name = "cons_vintage_flow_sum_semi_compact_method"
     table_rows = [(1, "input_1", "death_star", 2025, 1, 1, 1)]
-
-    cons_vintage_flow_sum_semi_compact_method = DataFrame(
-        table_rows,
-        [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end],
-    )
-    DuckDB.register_data_frame(
-        connection,
-        cons_vintage_flow_sum_semi_compact_method,
-        "cons_vintage_flow_sum_semi_compact_method",
-    )
+    columns = [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
     constraints = let key = :vintage_flow_sum_semi_compact_method
         Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(
