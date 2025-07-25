@@ -10,45 +10,42 @@
     columns = [:asset, :investment_method]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "flow"
     table_rows = [
         ("input_1", "death_star", false),
         ("input_2", "death_star", false),
         ("death_star", "input_1", false),
         ("death_star", "input_2", false),
     ]
-    flow = DataFrame(table_rows, [:from_asset, :to_asset, :is_transport])
-    DuckDB.register_data_frame(connection, flow, "flow")
+    columns = [:from_asset, :to_asset, :is_transport]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "var_flow"
     table_rows = [
         (1, "input_1", "death_star", 2025, 1, 1, 1),
         (2, "input_2", "death_star", 2025, 1, 1, 1),
         (3, "death_star", "input_1", 2025, 1, 1, 1),
         (4, "death_star", "input_2", 2025, 1, 1, 1),
     ]
-    var_flow = DataFrame(
-        table_rows,
-        [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end],
-    )
-    DuckDB.register_data_frame(connection, var_flow, "var_flow")
+    columns = [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "var_vintage_flow"
     table_rows = [
         (1, "input_1", "death_star", 2025, 2025, 1, 1, 1),
         (2, "input_1", "death_star", 2025, 2020, 1, 1, 1),
     ]
-    var_vintage_flow = DataFrame(
-        table_rows,
-        [
-            :id,
-            :from_asset,
-            :to_asset,
-            :milestone_year,
-            :commission_year,
-            :rep_period,
-            :time_block_start,
-            :time_block_end,
-        ],
-    )
-    DuckDB.register_data_frame(connection, var_vintage_flow, "var_vintage_flow")
+    columns = [
+        :id,
+        :from_asset,
+        :to_asset,
+        :milestone_year,
+        :commission_year,
+        :rep_period,
+        :time_block_start,
+        :time_block_end,
+    ]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
     variables = Dict{Symbol,TulipaEnergyModel.TulipaVariable}(
         key => TulipaEnergyModel.TulipaVariable(connection, "var_$key") for
