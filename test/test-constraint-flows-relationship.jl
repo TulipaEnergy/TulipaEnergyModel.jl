@@ -212,11 +212,10 @@
     var_flow = variables[:flow].container
     expected_cons = [
         JuMP.@build_constraint(
-            sum(
-                expected_coefficients[i][j] * var_flow[id] for
-                (j, id) in enumerate(expected_flows_ids[i])
-            ) - expected_rhs[i] in expected_senses[i]
-        ) for i in 1:length(model[:flows_relationships])
+            sum(e_coef * var_flow[id] for (id, e_coef) in zip(e_flows_ids, e_coefs)) - e_rhs in
+            e_sense
+        ) for (e_flows_ids, e_coefs, e_rhs, e_sense) in
+        zip(expected_flows_ids, expected_coefficients, expected_rhs, expected_senses)
     ]
     observed_cons = _get_cons_object(model, :flows_relationships)
     @test _is_constraint_equal(expected_cons, observed_cons)
