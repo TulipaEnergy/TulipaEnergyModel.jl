@@ -138,7 +138,7 @@ function _create_table_for_tests(
 end
 
 # Create a empty table with a specific schema for tests
-function _create_table_for_tests!(
+function _create_table_for_tests(
     connection::DuckDB.DB,
     table_name::String,
     columns_with_types::Vector{Pair{Symbol,DataType}},

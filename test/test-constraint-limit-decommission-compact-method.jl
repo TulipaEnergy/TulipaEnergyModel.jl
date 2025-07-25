@@ -4,17 +4,15 @@
     model = JuMP.Model()
 
     # Create variable tables
+    table_name = "var_assets_investment"
     table_rows = [(1, "wind", 2030, true, 50, Inf), (2, "wind", 2050, true, 50, Inf)]
-    var_assets_investment = DataFrame(
-        table_rows,
-        [:id, :asset, :milestone_year, :investment_integer, :capacity, :investment_limit],
-    )
-    DuckDB.register_data_frame(connection, var_assets_investment, "var_assets_investment")
+    columns = [:id, :asset, :milestone_year, :investment_integer, :capacity, :investment_limit]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "var_assets_decommission"
     table_rows = [(1, "wind", 2030, 2020, true), (2, "wind", 2050, 2030, true)]
-    var_assets_decommission =
-        DataFrame(table_rows, [:id, :asset, :milestone_year, :commission_year, :investment_integer])
-    DuckDB.register_data_frame(connection, var_assets_decommission, "var_assets_decommission")
+    columns = [:id, :asset, :milestone_year, :commission_year, :investment_integer]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "var_flows_investment"
     columns_with_types = [
@@ -26,23 +24,27 @@
         :capacity => Float64,
         :investment_limit => Float64,
     ]
-    _create_table_for_tests!(connection, table_name, columns_with_types)
+    _create_table_for_tests(connection, table_name, columns_with_types)
 
-    df = DataFrame(;
-        id = Int[],
-        from_asset = String[],
-        to_asset = String[],
-        milestone_year = Int[],
-        commission_year = Int[],
-        investment_integer = Bool[],
-    )
-    DuckDB.register_data_frame(connection, df, "var_flows_decommission")
+    table_name = "var_flows_decommission"
+    columns_with_types = [
+        :id => Int,
+        :from_asset => String,
+        :to_asset => String,
+        :milestone_year => Int,
+        :commission_year => Int,
+        :investment_integer => Bool,
+    ]
+    _create_table_for_tests(connection, table_name, columns_with_types)
 
-    df = DataFrame(; id = Int[], asset = String[], milestone_year = Int[])
-    DuckDB.register_data_frame(connection, df, "var_assets_investment_energy")
+    table_name = "var_assets_investment_energy"
+    columns_with_types = [:id => Int, :asset => String, :milestone_year => Int]
+    _create_table_for_tests(connection, table_name, columns_with_types)
 
-    df = DataFrame(; id = Int[], asset = String[], milestone_year = Int[], commission_year = Int[])
-    DuckDB.register_data_frame(connection, df, "var_assets_decommission_energy")
+    table_name = "var_assets_decommission_energy"
+    columns_with_types =
+        [:id => Int, :asset => String, :milestone_year => Int, :commission_year => Int]
+    _create_table_for_tests(connection, table_name, columns_with_types)
 
     variables = Dict{Symbol,TulipaEnergyModel.TulipaVariable}(
         key => TulipaEnergyModel.TulipaVariable(connection, "var_$key") for key in (
