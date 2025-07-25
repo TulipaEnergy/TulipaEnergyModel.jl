@@ -38,15 +38,13 @@ end
 
 function _is_constraint_equal(expected_vec::Vector, observed_vec::Vector)
     if length(expected_vec) != length(observed_vec)
-        println(
-            "Vector lengths differ: expected $(length(expected_vec)), observed $(length(observed_vec))",
-        )
+        @error "Vector lengths differ: expected $(length(expected_vec)), observed $(length(observed_vec))"
         return false
     end
 
     for (i, (expected, observed)) in enumerate(zip(expected_vec, observed_vec))
         if !_is_constraint_equal(expected, observed)
-            println("Constraint $i differs")
+            @error "Constraint $i differs"
             return false
         end
     end
