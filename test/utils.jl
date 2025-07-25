@@ -30,10 +30,25 @@ function _is_constraint_equal(left, right)
         _show_constraint(left)
         println("RIGHT")
         _show_constraint(right)
-        false
+        return false
     else
-        true
+        return true
     end
+end
+
+function _is_constraint_equal(expected_vec::Vector, observed_vec::Vector)
+    if length(expected_vec) != length(observed_vec)
+        @error "Vector lengths differ: expected $(length(expected_vec)), observed $(length(observed_vec))"
+        return false
+    end
+
+    for (i, (expected, observed)) in enumerate(zip(expected_vec, observed_vec))
+        if !_is_constraint_equal(expected, observed)
+            @error "Constraint $i differs"
+            return false
+        end
+    end
+    return true
 end
 
 function _show_constraint(con)
@@ -79,6 +94,10 @@ function _is_constraint_equal_kernel(left, right)
         result = false
     end
     return result
+end
+
+function _get_cons_object(model::JuMP.GenericModel, name::Symbol)
+    return [JuMP.constraint_object(con) for con in model[name]]
 end
 
 function _test_variable_properties(

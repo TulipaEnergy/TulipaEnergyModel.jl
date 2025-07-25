@@ -80,15 +80,8 @@
     var_flow = variables[:flow].container
     var_vintage_flow = variables[:vintage_flow].container
 
-    expected_con =
+    expected_cons =
         [JuMP.@build_constraint(var_vintage_flow[1] + var_vintage_flow[2] == var_flow[1])]
-
-    observed_con =
-        [JuMP.constraint_object(con) for con in model[:vintage_flow_sum_semi_compact_method]]
-
-    for (expected, observed) in zip(expected_con, observed_con)
-        @test _is_constraint_equal(expected, observed)
-    end
-
-    @test length(expected_con) == length(observed_con)
+    observed_cons = _get_cons_object(model, :vintage_flow_sum_semi_compact_method)
+    @test _is_constraint_equal(expected_cons, observed_cons)
 end
