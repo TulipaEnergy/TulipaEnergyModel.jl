@@ -82,7 +82,6 @@
 
     expected_cons =
         [JuMP.@build_constraint(var_vintage_flow[1] + var_vintage_flow[2] == var_flow[1])]
-    observed_cons =
-        [JuMP.constraint_object(con) for con in model[:vintage_flow_sum_semi_compact_method]]
+    observed_cons = _get_cons_object(model, :vintage_flow_sum_semi_compact_method)
     @test _is_constraint_equal(expected_cons, observed_cons)
 end

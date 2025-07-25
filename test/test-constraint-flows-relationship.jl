@@ -218,7 +218,6 @@
             ) - expected_rhs[i] in expected_senses[i]
         ) for i in 1:length(model[:flows_relationships])
     ]
-    observed_cons =
-        [JuMP.constraint_object(constraint) for constraint in model[:flows_relationships]]
+    observed_cons = _get_cons_object(model, :flows_relationships)
     @test _is_constraint_equal(expected_cons, observed_cons)
 end

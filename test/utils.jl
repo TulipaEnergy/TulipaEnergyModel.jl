@@ -96,6 +96,10 @@ function _is_constraint_equal_kernel(left, right)
     return result
 end
 
+function _get_cons_object(model::JuMP.GenericModel, name::Symbol)
+    return [JuMP.constraint_object(con) for con in model[name]]
+end
+
 function _test_variable_properties(
     variable::JuMP.GenericVariableRef,
     lower_bound::Union{Nothing,Float64},
