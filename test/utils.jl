@@ -125,6 +125,7 @@ function _test_variable_properties(
     return nothing
 end
 
+# Create a non-empty table for tests
 function _create_table_for_tests(
     connection::DuckDB.DB,
     table_name::String,
@@ -132,6 +133,17 @@ function _create_table_for_tests(
     columns::Vector{Symbol},
 )
     df = DataFrame(table_rows, columns)
+    DuckDB.register_data_frame(connection, df, table_name)
+    return nothing
+end
+
+# Create a empty table with a specific schema for tests
+function _create_table_for_tests!(
+    connection::DuckDB.DB,
+    table_name::String,
+    columns_with_types::Vector{Pair{Symbol,DataType}},
+)
+    df = DataFrame(Dict(name => col_type[] for (name, col_type) in columns_with_types))
     DuckDB.register_data_frame(connection, df, table_name)
     return nothing
 end

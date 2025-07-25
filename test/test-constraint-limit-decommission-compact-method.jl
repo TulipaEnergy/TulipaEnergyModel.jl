@@ -16,16 +16,17 @@
         DataFrame(table_rows, [:id, :asset, :milestone_year, :commission_year, :investment_integer])
     DuckDB.register_data_frame(connection, var_assets_decommission, "var_assets_decommission")
 
-    df = DataFrame(;
-        id = Int[],
-        from_asset = String[],
-        to_asset = String[],
-        milestone_year = Int[],
-        investment_integer = Bool[],
-        capacity = Float64[],
-        investment_limit = Float64[],
-    )
-    DuckDB.register_data_frame(connection, df, "var_flows_investment")
+    table_name = "var_flows_investment"
+    columns_with_types = [
+        :id => Int,
+        :from_asset => String,
+        :to_asset => String,
+        :milestone_year => Int,
+        :investment_integer => Bool,
+        :capacity => Float64,
+        :investment_limit => Float64,
+    ]
+    _create_table_for_tests!(connection, table_name, columns_with_types)
 
     df = DataFrame(;
         id = Int[],
