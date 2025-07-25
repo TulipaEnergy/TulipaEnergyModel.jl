@@ -4,19 +4,22 @@
     model = JuMP.Model()
 
     # Create mock tables for testing using register_data_frame
+    table_name = "asset"
     table_rows = [("input_1", "none"), ("input_2", "none"), ("death_star", "none")]
-    asset = DataFrame(table_rows, [:asset, :investment_method])
-    DuckDB.register_data_frame(connection, asset, "asset")
+    columns = [:asset, :investment_method]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "flow"
     table_rows = [
         ("input_1", "death_star", false),
         ("input_2", "death_star", false),
         ("death_star", "output_1", false),
         ("death_star", "output_2", false),
     ]
-    flow = DataFrame(table_rows, [:from_asset, :to_asset, :is_transport])
-    DuckDB.register_data_frame(connection, flow, "flow")
+    columns = [:from_asset, :to_asset, :is_transport]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "var_flow"
     table_rows = [
         (1, "input_1", "death_star", 2025, 1, 1, 1),
         (2, "input_1", "death_star", 2025, 1, 2, 5),
@@ -27,12 +30,10 @@
         (7, "death_star", "output_2", 2025, 1, 1, 4),
         (8, "death_star", "output_2", 2025, 1, 5, 5),
     ]
-    var_flow = DataFrame(
-        table_rows,
-        [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end],
-    )
-    DuckDB.register_data_frame(connection, var_flow, "var_flow")
+    columns = [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "cons_flows_relationships"
     table_rows = [
         (
             1,
@@ -155,25 +156,22 @@
             1.0,
         ),
     ]
-    cons_flows_relationships = DataFrame(
-        table_rows,
-        [
-            :id,
-            :asset,
-            :year,
-            :rep_period,
-            :time_block_start,
-            :time_block_end,
-            :flow_1_from_asset,
-            :flow_1_to_asset,
-            :flow_2_from_asset,
-            :flow_2_to_asset,
-            :sense,
-            :constant,
-            :ratio,
-        ],
-    )
-    DuckDB.register_data_frame(connection, cons_flows_relationships, "cons_flows_relationships")
+    columns = [
+        :id,
+        :asset,
+        :year,
+        :rep_period,
+        :time_block_start,
+        :time_block_end,
+        :flow_1_from_asset,
+        :flow_1_to_asset,
+        :flow_2_from_asset,
+        :flow_2_to_asset,
+        :sense,
+        :constant,
+        :ratio,
+    ]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
     variables = Dict{Symbol,TulipaEnergyModel.TulipaVariable}(
         key => TulipaEnergyModel.TulipaVariable(connection, "var_$key") for key in (:flow,)
