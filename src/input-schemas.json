@@ -872,6 +872,12 @@
       "description": "Representative period number.",
       "type": "INTEGER"
     },
+    "stochastic_scenario": {
+      "default": 1.0,
+      "description": "Stochastic scenario number.",
+      "type": "INTEGER",
+      "unit_of_measure": "number"
+    },
     "weight": {
       "default": 1.0,
       "description": "Hours",
@@ -880,6 +886,29 @@
     "year": {
       "description": "Milestone year.",
       "type": "INTEGER"
+    }
+  },
+  "stochastic_scenario": {
+    "name": {
+      "default": "sto_scen_1",
+      "description": "Name of the stochastic scenario.",
+      "type": "VARCHAR"
+    },
+    "probability": {
+      "constraints": {
+        "maximum": 1,
+        "minimum": 0
+      },
+      "default": 1.0,
+      "description": "Probability of the stochastic scenario.",
+      "type": "DOUBLE",
+      "unit_of_measure": "ratio"
+    },
+    "stochastic_scenario": {
+      "default": 1.0,
+      "description": "Stochastic scenario number.",
+      "type": "INTEGER",
+      "unit_of_measure": "number"
     }
   },
   "timeframe_data": {
