@@ -43,6 +43,16 @@ function validate_data!(connection)
         ),
         ("group consistency between tables", _validate_group_consistency!, false),
         (
+            "stochastic scenario consistency between tables",
+            _validate_stochastic_scenario_consistency!,
+            false,
+        ),
+        (
+            "stochastic scenario probabilities sum to 1",
+            _validate_stochastic_scenario_probabilities_sum_to_one!,
+            false,
+        ),
+        (
             "data consistency for simple investment",
             _validate_simple_method_data_consistency!,
             false,
@@ -135,6 +145,7 @@ function _validate_no_duplicate_rows!(connection)
         ("profiles_timeframe", (:profile_name, :year, :period)),
         ("rep_periods_data", (:year, :rep_period)),
         ("rep_periods_mapping", (:year, :period, :rep_period)),
+        ("stochastic_scenario", (:stochastic_scenario,)),
         ("timeframe_data", (:year, :period)),
         ("year_data", (:year,)),
     )
@@ -281,6 +292,58 @@ function _validate_group_consistency!(connection)
         push!(
             error_messages,
             "Group '$(row.name)' in 'group_asset' has no members in 'asset', column 'group'",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_stochastic_scenario_consistency!(connection)
+    error_messages = String[]
+
+    # First, check if the values are valid
+    append!(
+        error_messages,
+        _validate_foreign_key!(
+            connection,
+            "rep_periods_mapping",
+            :stochastic_scenario,
+            "stochastic_scenario",
+            :stochastic_scenario,
+        ),
+    )
+
+    # Second, these that the values are used
+    for row in DuckDB.query(
+        connection,
+        "FROM (
+            SELECT ss.stochastic_scenario, COUNT(rpm.stochastic_scenario) AS ss_count
+            FROM stochastic_scenario AS ss
+            LEFT JOIN rep_periods_mapping AS rpm
+                ON rpm.stochastic_scenario = ss.stochastic_scenario
+            GROUP BY ss.stochastic_scenario
+        ) WHERE ss_count = 0",
+    )
+        push!(
+            error_messages,
+            "Stochastic scenario '$(row.stochastic_scenario)' in 'stochastic_scenario' table has no members in 'rep_periods_mapping' table, column 'stochastic_scenario'",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_stochastic_scenario_probabilities_sum_to_one!(connection; tolerance = 1e-3)
+    error_messages = String[]
+    sum_query = DuckDB.query(
+        connection,
+        "SELECT SUM(probability) as total_probability FROM stochastic_scenario",
+    )
+    total_probability = get_single_element_from_query_and_ensure_its_only_one(sum_query)
+    if abs(total_probability - 1.0) > tolerance
+        push!(
+            error_messages,
+            "Sum of probabilities in 'stochastic_scenario' table is $(total_probability), but should be approximately 1.0 (tolerance: $(tolerance))",
         )
     end
 
