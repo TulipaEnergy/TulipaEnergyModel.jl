@@ -11,6 +11,7 @@ export prepare_profiles_structure
         multiply_by_duration = true,
         add_min_outgoing_flow_duration = false,
         multiply_by_capacity_coefficient = false,
+        include_commission_year = false,
     )
 
 Computes the incoming and outgoing expressions per row of `cons` for the constraints
@@ -57,6 +58,7 @@ function add_expression_terms_rep_period_constraints!(
     multiply_by_duration = true,
     add_min_outgoing_flow_duration = false,
     multiply_by_capacity_coefficient = false,
+    include_commission_year = false,
 )
     # cons' asset will be matched with flow's to_asset or from_asset, depending on whether
     # we are filling incoming or outgoing flows
@@ -70,6 +72,12 @@ function add_expression_terms_rep_period_constraints!(
     ]
     num_rows = get_num_rows(connection, cons)
 
+    year_information = if include_commission_year
+        [:milestone_year, :commission_year]
+    else
+        [:year]
+    end
+
     # The SQL strategy to improve looping over the groups and then the
     # constraints and variables, is to create grouped tables beforehand and join them
     # The grouped constraint table is created below
@@ -78,7 +86,7 @@ function add_expression_terms_rep_period_constraints!(
         connection,
         cons.table_name,
         grouped_cons_table_name,
-        [:asset, :year, :rep_period],
+        [:asset; year_information; :rep_period],
         [:id, :time_block_start, :time_block_end],
     )
 
@@ -97,7 +105,7 @@ function add_expression_terms_rep_period_constraints!(
             connection,
             flow.table_name,
             grouped_var_table_name,
-            [case.asset_match, :year, :rep_period],
+            [case.asset_match; year_information; :rep_period],
             [
                 :id,
                 :time_block_start,
@@ -110,13 +118,17 @@ function add_expression_terms_rep_period_constraints!(
 
         resolution_query = multiply_by_duration ? "rep_periods_data.resolution" : "1.0::FLOAT8"
 
+        year_select = join(("cons.$col" for col in year_information), ", ")
+        year_join_var = join(("cons.$col = var.$col" for col in year_information), " AND ")
+        year_join_rp = "cons.$(year_information[1]) = rep_periods_data.year"
+
         # Start of the algorithm
         # 1. Loop over each group of (asset, year, rep_period)
         for group_row in DuckDB.query(
             connection,
             "SELECT
                 cons.asset,
-                cons.year,
+                $year_select,
                 cons.rep_period,
                 cons.id AS cons_id_vec,
                 cons.time_block_start AS cons_time_block_start_vec,
@@ -131,13 +143,13 @@ function add_expression_terms_rep_period_constraints!(
             FROM $grouped_cons_table_name AS cons
             LEFT JOIN $grouped_var_table_name AS var
                 ON cons.asset = var.asset
-                AND cons.year = var.year
+                AND $year_join_var
                 AND cons.rep_period = var.rep_period
             LEFT JOIN asset
                 ON cons.asset = asset.asset
             LEFT JOIN rep_periods_data
                 ON cons.rep_period = rep_periods_data.rep_period
-                AND cons.year = rep_periods_data.year
+                AND $year_join_rp
             WHERE
                 len(var.id) > 0
             ",
@@ -499,6 +511,17 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         workspace;
         use_highest_resolution = true,
         multiply_by_duration = false,
+    )
+
+    @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
+        connection,
+        constraints[:capacity_outgoing_semi_compact_method],
+        variables[:vintage_flow],
+        workspace;
+        use_highest_resolution = true,
+        multiply_by_duration = false,
+        multiply_by_capacity_coefficient = true,
+        include_commission_year = true,
     )
 
     for table_name in (
