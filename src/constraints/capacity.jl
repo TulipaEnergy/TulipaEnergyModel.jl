@@ -43,6 +43,30 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
+    # - Semi-compact investment method
+    let table_name = :capacity_outgoing_semi_compact_method, cons = constraints[table_name]
+        indices = _append_capacity_data_to_indices_semi_compact_method(connection, table_name)
+
+        attach_expression!(
+            cons,
+            :profile_times_capacity,
+            [
+                @expression(
+                    model,
+                    row.capacity *
+                    _profile_aggregate(
+                        profiles.rep_period,
+                        (row.profile_name, row.milestone_year, row.rep_period),
+                        row.time_block_start:row.time_block_end,
+                        Statistics.mean,
+                        1.0,
+                    ) *
+                    expr_avail_compact_method[row.avail_id]
+                ) for row in indices
+            ],
+        )
+    end
+
     # - Simple investment method
     let table_name = :capacity_outgoing_simple_method, cons = constraints[table_name]
         indices = _append_capacity_data_to_indices_simple_method(connection, table_name)
@@ -282,6 +306,29 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
+    let suffix = "_semi_compact_method"
+        cons_name = Symbol("max_output_flows_limit$suffix")
+        table_name = Symbol("capacity_outgoing$suffix")
+
+        # - Maximum output flows limit
+        attach_constraint!(
+            model,
+            constraints[table_name],
+            cons_name,
+            [
+                @constraint(
+                    model,
+                    outgoing_flow ≤ profile_times_capacity,
+                    base_name = "$cons_name[$(row.asset),$(row.milestone_year),$(row.commission_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                ) for (row, outgoing_flow, profile_times_capacity) in zip(
+                    constraints[table_name].indices,
+                    constraints[table_name].expressions[:outgoing],
+                    constraints[table_name].expressions[:profile_times_capacity],
+                )
+            ],
+        )
+    end
+
     for suffix in ("_with_investment_variable", "_with_investment_limit")
         cons_name =
             Symbol("max_output_flows_limit_simple_method_investable_storage_with_binary_and$suffix")
@@ -467,6 +514,41 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
             AND expr_avail.commission_year = avail_profile.commission_year
             AND avail_profile.profile_type = 'availability'
         WHERE asset.investment_method in ('simple', 'none')
+        ORDER BY cons.id
+        ",
+    )
+end
+
+function _append_capacity_data_to_indices_semi_compact_method(connection, table_name)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            cons.id AS id,
+            expr_avail.id AS avail_id,
+            cons.asset AS asset,
+            cons.milestone_year AS milestone_year,
+            cons.commission_year AS commission_year,
+            cons.rep_period AS rep_period,
+            cons.time_block_start AS time_block_start,
+            cons.time_block_end AS time_block_end,
+            asset.capacity AS capacity,
+            assets_profiles.profile_name AS profile_name,
+        FROM cons_$table_name AS cons
+        LEFT JOIN asset
+            ON cons.asset = asset.asset
+        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.milestone_year = expr_avail.milestone_year
+            AND cons.commission_year = expr_avail.commission_year
+        LEFT OUTER JOIN assets_profiles
+            ON cons.asset = assets_profiles.asset
+            AND cons.milestone_year = assets_profiles.commission_year
+            AND assets_profiles.profile_type = 'availability'
+        LEFT OUTER JOIN assets_profiles AS avail_profile
+            ON cons.asset = avail_profile.asset
+            AND expr_avail.commission_year = avail_profile.commission_year
+            AND avail_profile.profile_type = 'availability'
+        WHERE asset.investment_method = 'semi-compact' -- this condition is not needed, but makes it more explicit
         ORDER BY cons.id
         ",
     )
