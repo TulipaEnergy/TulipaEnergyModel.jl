@@ -873,7 +873,7 @@
       "type": "INTEGER"
     },
     "stochastic_scenario": {
-      "default": 1.0,
+      "default": 1,
       "description": "Stochastic scenario number.",
       "type": "INTEGER",
       "unit_of_measure": "number"
@@ -905,7 +905,7 @@
       "unit_of_measure": "ratio"
     },
     "stochastic_scenario": {
-      "default": 1.0,
+      "default": 1,
       "description": "Stochastic scenario number.",
       "type": "INTEGER",
       "unit_of_measure": "number"
