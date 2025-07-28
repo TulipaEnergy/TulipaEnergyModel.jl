@@ -24,7 +24,7 @@
         :capacity => Float64,
         :investment_limit => Float64,
     ]
-    _create_table_for_tests(connection, table_name, columns_with_types)
+    _create_empty_table_for_tests(connection, table_name, columns_with_types)
 
     table_name = "var_flows_decommission"
     columns_with_types = [
@@ -35,16 +35,16 @@
         :commission_year => Int,
         :investment_integer => Bool,
     ]
-    _create_table_for_tests(connection, table_name, columns_with_types)
+    _create_empty_table_for_tests(connection, table_name, columns_with_types)
 
     table_name = "var_assets_investment_energy"
     columns_with_types = [:id => Int, :asset => String, :milestone_year => Int]
-    _create_table_for_tests(connection, table_name, columns_with_types)
+    _create_empty_table_for_tests(connection, table_name, columns_with_types)
 
     table_name = "var_assets_decommission_energy"
     columns_with_types =
         [:id => Int, :asset => String, :milestone_year => Int, :commission_year => Int]
-    _create_table_for_tests(connection, table_name, columns_with_types)
+    _create_empty_table_for_tests(connection, table_name, columns_with_types)
 
     variables = Dict{Symbol,TulipaEnergyModel.TulipaVariable}(
         key => TulipaEnergyModel.TulipaVariable(connection, "var_$key") for key in (
