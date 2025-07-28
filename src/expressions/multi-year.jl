@@ -64,7 +64,8 @@ function create_multi_year_expressions!(connection, model, variables, expression
 
     _create_multi_year_expressions_indices!(connection, expressions)
 
-    # - Compact method
+    # - Semi-compact and compact method
+    # - Note this expression is used for both compact and semi-compact investment methods
     let table_name = :available_asset_units_compact_method, expr = expressions[table_name]
         var_inv = variables[:assets_investment].container
         var_dec = variables[:assets_decommission].container
@@ -262,7 +263,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             ON asset_both.asset = var_inv.asset
             AND asset_both.commission_year = var_inv.milestone_year
         WHERE
-            asset.investment_method == 'compact'
+            asset.investment_method in ['compact', 'semi-compact']
             -- Hub and consumer assets do not use this expression, so we can filter them out to be more explicit
             AND asset.type in ('producer', 'conversion', 'storage')
         GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
