@@ -889,9 +889,9 @@
     }
   },
   "stochastic_scenario": {
-    "name": {
-      "default": "sto_scen_1",
-      "description": "Name of the stochastic scenario.",
+    "description": {
+      "default": "",
+      "description": "Description of the stochastic scenario. e.g., 'Weather year 1982'.",
       "type": "VARCHAR"
     },
     "probability": {
