@@ -12,7 +12,6 @@ const tables_allowed_to_be_missing = [
     "group_asset"
     "profiles_rep_periods"
     "profiles_timeframe"
-    "stochastic_scenario"
 ]
 
 """
