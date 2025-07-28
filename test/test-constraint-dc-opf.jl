@@ -4,46 +4,44 @@
     model = JuMP.Model()
 
     # Create mock tables for testing using register_data_frame
-    # This first table is only necessary because we have a left join of var_flow with the asset table
+    # This first table is only necessary because we have a left join of var_flow with the asset
+    table_name = "asset"
     table_rows = [("input_1", "none"), ("input_2", "none")]
-    asset = DataFrame(table_rows, [:asset, :investment_method])
-    DuckDB.register_data_frame(connection, asset, "asset")
+    columns = [:asset, :investment_method]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "flow"
     table_rows = [("input_1", "death_star", true), ("input_2", "death_star", true)]
-    flow = DataFrame(table_rows, [:from_asset, :to_asset, :is_transport])
-    DuckDB.register_data_frame(connection, flow, "flow")
+    columns = [:from_asset, :to_asset, :is_transport]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "var_flow"
     table_rows = [
         (1, "input_1", "death_star", 2025, 1, 1, 1),
         (2, "input_1", "death_star", 2025, 1, 2, 5),
         (3, "input_2", "death_star", 2025, 1, 1, 2),
         (4, "input_2", "death_star", 2025, 1, 3, 5),
     ]
-    var_flow = DataFrame(
-        table_rows,
-        [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end],
-    )
-    DuckDB.register_data_frame(connection, var_flow, "var_flow")
+    columns = [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "var_electricity_angle"
     table_rows = [
         (1, "input_1", 2025, 1, 1, 3),
         (2, "input_1", 2025, 1, 4, 5),
         (3, "death_star", 2025, 1, 1, 5),
     ]
-    electricity_angle =
-        DataFrame(table_rows, [:id, :asset, :year, :rep_period, :time_block_start, :time_block_end])
-    DuckDB.register_data_frame(connection, electricity_angle, "var_electricity_angle")
+    columns = [:id, :asset, :year, :rep_period, :time_block_start, :time_block_end]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "cons_dc_power_flow"
     table_rows = [
         (1, "input_1", "death_star", 2025, 1, 1, 1),
         (2, "input_1", "death_star", 2025, 1, 2, 3),
         (3, "input_1", "death_star", 2025, 1, 4, 5),
     ]
-    cons_dc_power_flow = DataFrame(
-        table_rows,
-        [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end],
-    )
-    DuckDB.register_data_frame(connection, cons_dc_power_flow, "cons_dc_power_flow")
+    columns = [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
     variables = Dict{Symbol,TulipaEnergyModel.TulipaVariable}(
         key => TulipaEnergyModel.TulipaVariable(connection, "var_$key") for
@@ -57,15 +55,16 @@
         key in (:dc_power_flow,)
     )
 
+    table_name = "year_data"
     table_rows = [(2025, true)]
-    year_data = DataFrame(table_rows, [:year, :is_milestone])
-    DuckDB.register_data_frame(connection, year_data, "year_data")
+    columns = [:year, :is_milestone]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
+    table_name = "flow_milestone"
     table_rows =
         [("input_1", "death_star", 2025, true, 0.5), ("input_2", "death_star", 2025, false, 0.4)]
-    flow_milestone =
-        DataFrame(table_rows, [:from_asset, :to_asset, :milestone_year, :dc_opf, :reactance])
-    DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
+    columns = [:from_asset, :to_asset, :milestone_year, :dc_opf, :reactance]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
     model_parameters = TulipaEnergyModel.ModelParameters(connection)
 
