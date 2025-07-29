@@ -532,7 +532,7 @@ function _append_capacity_data_to_indices_semi_compact_method(connection, table_
             cons.time_block_start AS time_block_start,
             cons.time_block_end AS time_block_end,
             asset.capacity AS capacity,
-            assets_profiles.profile_name AS profile_name,
+            avail_profile.profile_name AS profile_name,
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
@@ -540,12 +540,9 @@ function _append_capacity_data_to_indices_semi_compact_method(connection, table_
             ON cons.asset = expr_avail.asset
             AND cons.milestone_year = expr_avail.milestone_year
             AND cons.commission_year = expr_avail.commission_year
-        LEFT OUTER JOIN assets_profiles
-            ON cons.asset = assets_profiles.asset
-            AND cons.milestone_year = assets_profiles.commission_year
-            AND assets_profiles.profile_type = 'availability'
-        LEFT OUTER JOIN assets_profiles AS avail_profile
+       LEFT JOIN assets_profiles AS avail_profile
             ON cons.asset = avail_profile.asset
+            AND cons.milestone_year = expr_avail.milestone_year
             AND expr_avail.commission_year = avail_profile.commission_year
             AND avail_profile.profile_type = 'availability'
         WHERE asset.investment_method = 'semi-compact' -- this condition is not needed, but makes it more explicit
