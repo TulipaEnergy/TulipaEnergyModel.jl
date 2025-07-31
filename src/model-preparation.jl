@@ -17,6 +17,10 @@ export prepare_profiles_structure
 Computes the incoming and outgoing expressions per row of `cons` for the constraints
 that are within the representative periods.
 
+Include_commission_year is only used for the constraints regarding the flows for the semi-compact investment method.
+If true, the expression will include the commission year of the flows.
+If false (the default), it will only use the year (i.e., milestone_year).
+
 This function is only used internally in the model.
 
 This strategy is based on the replies in this discourse thread:
@@ -72,7 +76,9 @@ function add_expression_terms_rep_period_constraints!(
     ]
     num_rows = get_num_rows(connection, cons)
 
-    year_information = if include_commission_year
+    # year_columns holds the relevant column names that will be expanded into the auxiliary functions,
+    # or into the SQL select and join clauses
+    year_columns = if include_commission_year
         [:milestone_year, :commission_year]
     else
         [:year]
@@ -86,7 +92,7 @@ function add_expression_terms_rep_period_constraints!(
         connection,
         cons.table_name,
         grouped_cons_table_name,
-        [:asset; year_information; :rep_period],
+        [:asset; year_columns; :rep_period],
         [:id, :time_block_start, :time_block_end],
     )
 
@@ -105,7 +111,7 @@ function add_expression_terms_rep_period_constraints!(
             connection,
             flow.table_name,
             grouped_var_table_name,
-            [case.asset_match; year_information; :rep_period],
+            [case.asset_match; year_columns; :rep_period],
             [
                 :id,
                 :time_block_start,
@@ -118,9 +124,9 @@ function add_expression_terms_rep_period_constraints!(
 
         resolution_query = multiply_by_duration ? "rep_periods_data.resolution" : "1.0::FLOAT8"
 
-        year_select = join(("cons.$col" for col in year_information), ", ")
-        year_join_var = join(("cons.$col = var.$col" for col in year_information), " AND ")
-        year_join_rp = "cons.$(year_information[1]) = rep_periods_data.year"
+        year_select = join(("cons.$col" for col in year_columns), ", ")
+        year_join_var = join(("cons.$col = var.$col" for col in year_columns), " AND ")
+        year_join_rp = "cons.$(year_columns[1]) = rep_periods_data.year"
 
         # Start of the algorithm
         # 1. Loop over each group of (asset, year, rep_period)
