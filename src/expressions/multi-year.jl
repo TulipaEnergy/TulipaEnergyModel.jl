@@ -263,7 +263,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             ON asset_both.asset = var_inv.asset
             AND asset_both.commission_year = var_inv.milestone_year
         WHERE
-            asset.investment_method in ['compact', 'semi-compact']
+            asset.investment_method in ('compact', 'semi-compact')
             -- Hub and consumer assets do not use this expression, so we can filter them out to be more explicit
             AND asset.type in ('producer', 'conversion', 'storage')
         GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
