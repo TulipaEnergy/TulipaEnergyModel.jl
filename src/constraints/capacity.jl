@@ -412,26 +412,14 @@ function _append_capacity_data_to_indices_compact_method(connection, table_name)
             ANY_VALUE(cons.time_block_start) AS time_block_start,
             ANY_VALUE(cons.time_block_end) AS time_block_end,
             ARRAY_AGG(expr_avail.id) AS avail_indices,
-            ARRAY_AGG(expr_avail.commission_year) AS avail_commission_year,
-            SUM(expr_avail.initial_units) AS avail_initial_units,
             ARRAY_AGG(avail_profile.profile_name) AS avail_profile_name,
-            ANY_VALUE(asset.capacity) AS capacity,
-            ANY_VALUE(asset.investment_method) AS investment_method,
-            ANY_VALUE(asset_commission.investment_limit) AS investment_limit,
-            ANY_VALUE(assets_profiles.profile_name) AS profile_name,
+            ANY_VALUE(asset.capacity) AS capacity
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
-        LEFT JOIN asset_commission
-            ON cons.asset = asset_commission.asset
-            AND cons.year = asset_commission.commission_year
         LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.year = expr_avail.milestone_year
-        LEFT OUTER JOIN assets_profiles
-            ON cons.asset = assets_profiles.asset
-            AND cons.year = assets_profiles.commission_year
-            AND assets_profiles.profile_type = 'availability'
         LEFT OUTER JOIN assets_profiles AS avail_profile
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
