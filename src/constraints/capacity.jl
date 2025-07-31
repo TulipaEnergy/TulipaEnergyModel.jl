@@ -458,11 +458,9 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
             cons.time_block_end AS time_block_end,
             expr_avail.id AS avail_id,
             expr_avail.initial_units AS avail_initial_units,
-            avail_profile.profile_name AS avail_profile_name,
             asset.capacity AS capacity,
-            asset.investment_method AS investment_method,
             asset_commission.investment_limit AS investment_limit,
-            assets_profiles.profile_name AS profile_name,
+            avail_profile.profile_name AS profile_name,
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
@@ -471,11 +469,11 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
             AND cons.year = asset_commission.commission_year
         LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
             ON cons.asset = expr_avail.asset
+            -- For simple method: milestone_year = commission_year
+            -- so no need to join on commission_year
             AND cons.year = expr_avail.milestone_year
-        LEFT OUTER JOIN assets_profiles
-            ON cons.asset = assets_profiles.asset
-            AND cons.year = assets_profiles.commission_year
-            AND assets_profiles.profile_type = 'availability'
+        -- OUTER JOIN is used to allow for assets without availability profiles
+        -- Null will be left and replaced by 1.0 in the profile aggregate
         LEFT OUTER JOIN assets_profiles AS avail_profile
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
