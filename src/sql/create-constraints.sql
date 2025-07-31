@@ -155,6 +155,34 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_capacity_outgoing_semi_compact_method
+;
+
+create table cons_capacity_outgoing_semi_compact_method as
+select
+    nextval('id') as id,
+    t_high.asset,
+    asset_both.milestone_year as milestone_year,
+    asset_both.commission_year as commission_year,
+    t_high.rep_period,
+    t_high.time_block_start,
+    t_high.time_block_end
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+    left join asset_both on t_high.asset = asset_both.asset
+    and t_high.year = asset_both.milestone_year
+where
+    asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method = 'semi-compact'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 drop table if exists cons_capacity_outgoing_simple_method
 ;
 
