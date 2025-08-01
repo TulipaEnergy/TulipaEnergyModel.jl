@@ -61,7 +61,14 @@ const simplest_data = Dict(
     "year_data" => DataFrame(:year => [2030]),
     "rep_periods_data" => DataFrame(:year => [2030, 2030], :rep_period => [1, 2]),
     "timeframe_data" => DataFrame(:year => 2030, :period => 1:365),
-    "rep_periods_mapping" =>
-        DataFrame(:year => 2030, :period => 1:365, :rep_period => mod1.(1:365, 2)),
+    "rep_periods_mapping" => DataFrame(
+        :stochastic_scenario => 1,
+        :year => 2030,
+        :period => 1:365,
+        :rep_period => mod1.(1:365, 2),
+    ),
+
+    # Basic stochastic scenario information
+    "stochastic_scenario" => DataFrame(:stochastic_scenario => 1),
 )
 end
