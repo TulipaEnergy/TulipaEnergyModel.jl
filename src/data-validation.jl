@@ -139,8 +139,8 @@ function _validate_no_duplicate_rows!(connection)
         ("profiles_rep_periods", (:profile_name, :year, :rep_period, :timestep)),
         ("profiles_timeframe", (:profile_name, :year, :period)),
         ("rep_periods_data", (:year, :rep_period)),
-        ("rep_periods_mapping", (:stochastic_scenario, :year, :period, :rep_period)),
-        ("stochastic_scenario", (:stochastic_scenario,)),
+        ("rep_periods_mapping", (:scenario, :year, :period, :rep_period)),
+        ("stochastic_scenario", (:scenario,)),
         ("timeframe_data", (:year, :period)),
         ("year_data", (:year,)),
     )
@@ -301,9 +301,9 @@ function _validate_stochastic_scenario_consistency!(connection)
         _validate_foreign_key!(
             connection,
             "rep_periods_mapping",
-            :stochastic_scenario,
+            :scenario,
             "stochastic_scenario",
-            :stochastic_scenario,
+            :scenario,
         ),
     )
 
@@ -311,16 +311,16 @@ function _validate_stochastic_scenario_consistency!(connection)
     for row in DuckDB.query(
         connection,
         "FROM (
-            SELECT ss.stochastic_scenario, COUNT(rpm.stochastic_scenario) AS ss_count
+            SELECT ss.scenario, COUNT(rpm.scenario) AS ss_count
             FROM stochastic_scenario AS ss
             LEFT JOIN rep_periods_mapping AS rpm
-                ON rpm.stochastic_scenario = ss.stochastic_scenario
-            GROUP BY ss.stochastic_scenario
+                ON rpm.scenario = ss.scenario
+            GROUP BY ss.scenario
         ) WHERE ss_count = 0",
     )
         push!(
             error_messages,
-            "Stochastic scenario '$(row.stochastic_scenario)' in 'stochastic_scenario' table has no members in 'rep_periods_mapping' table, column 'stochastic_scenario'",
+            "Stochastic scenario '$(row.scenario)' in 'stochastic_scenario' table has no members in 'rep_periods_mapping' table, column 'scenario'",
         )
     end
 

@@ -286,15 +286,15 @@ end
 
 @testset "Check that stochastic scenarios have at least one member" begin
     @testset "Using fake data" begin
-        stochastic_scenario = DataFrame(:stochastic_scenario => [1, 2, 3])
-        rep_periods_mapping = DataFrame(:stochastic_scenario => [1, 2])
+        stochastic_scenario = DataFrame(:scenario => [1, 2, 3])
+        rep_periods_mapping = DataFrame(:scenario => [1, 2])
         connection = DBInterface.connect(DuckDB.DB)
         DuckDB.register_data_frame(connection, stochastic_scenario, "stochastic_scenario")
         DuckDB.register_data_frame(connection, rep_periods_mapping, "rep_periods_mapping")
 
         error_messages = TEM._validate_stochastic_scenario_consistency!(connection)
         @test error_messages == [
-            "Stochastic scenario '3' in 'stochastic_scenario' table has no members in 'rep_periods_mapping' table, column 'stochastic_scenario'",
+            "Stochastic scenario '3' in 'stochastic_scenario' table has no members in 'rep_periods_mapping' table, column 'scenario'",
         ]
     end
 
@@ -305,8 +305,8 @@ end
         TEM.create_internal_tables!(connection)
 
         # Modify stochastic_scenario to have a bad value
-        DuckDB.query(connection, "INSERT INTO stochastic_scenario (stochastic_scenario) VALUES (2)")
-        @test_throws "Stochastic scenario '2' in 'stochastic_scenario' table has no members in 'rep_periods_mapping' table, column 'stochastic_scenario'" TEM.create_internal_tables!(
+        DuckDB.query(connection, "INSERT INTO stochastic_scenario (scenario) VALUES (2)")
+        @test_throws "Stochastic scenario '2' in 'stochastic_scenario' table has no members in 'rep_periods_mapping' table, column 'scenario'" TEM.create_internal_tables!(
             connection,
         )
     end
@@ -314,8 +314,7 @@ end
 
 @testset "Check that stochastic scenario probabilities sum to 1" begin
     @testset "Using fake data with probabilities summing to 1" begin
-        stochastic_scenario =
-            DataFrame(:stochastic_scenario => [1, 2, 3], :probability => [0.3, 0.4, 0.3])
+        stochastic_scenario = DataFrame(:scenario => [1, 2, 3], :probability => [0.3, 0.4, 0.3])
         connection = DBInterface.connect(DuckDB.DB)
         DuckDB.register_data_frame(connection, stochastic_scenario, "stochastic_scenario")
 
@@ -324,8 +323,7 @@ end
     end
 
     @testset "Using fake data with probabilities outside tolerance" begin
-        stochastic_scenario =
-            DataFrame(:stochastic_scenario => [1, 2], :probability => [0.499, 0.5])
+        stochastic_scenario = DataFrame(:scenario => [1, 2], :probability => [0.499, 0.5])
         connection = DBInterface.connect(DuckDB.DB)
         DuckDB.register_data_frame(connection, stochastic_scenario, "stochastic_scenario")
 
