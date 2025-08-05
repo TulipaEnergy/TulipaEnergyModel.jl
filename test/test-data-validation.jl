@@ -284,6 +284,72 @@ end
     end
 end
 
+@testset "Check that stochastic scenarios have at least one member" begin
+    @testset "Using fake data" begin
+        stochastic_scenario = DataFrame(:scenario => [1, 2, 3])
+        rep_periods_mapping = DataFrame(:scenario => [1, 2])
+        connection = DBInterface.connect(DuckDB.DB)
+        DuckDB.register_data_frame(connection, stochastic_scenario, "stochastic_scenario")
+        DuckDB.register_data_frame(connection, rep_periods_mapping, "rep_periods_mapping")
+
+        error_messages = TEM._validate_stochastic_scenario_consistency!(connection)
+        @test error_messages == [
+            "Stochastic scenario '3' in 'stochastic_scenario' table has no members in 'rep_periods_mapping' table, column 'scenario'",
+        ]
+    end
+
+    @testset "Using Tiny data" begin
+        connection = _tiny_fixture()
+
+        # Doesn't throw (and creates empty stochastic_scenario)
+        TEM.create_internal_tables!(connection)
+
+        # Modify stochastic_scenario to have a bad value
+        DuckDB.query(connection, "INSERT INTO stochastic_scenario (scenario) VALUES (2)")
+        @test_throws "Stochastic scenario '2' in 'stochastic_scenario' table has no members in 'rep_periods_mapping' table, column 'scenario'" TEM.create_internal_tables!(
+            connection,
+        )
+    end
+end
+
+@testset "Check that stochastic scenario probabilities sum to 1" begin
+    @testset "Using fake data with probabilities summing to 1" begin
+        stochastic_scenario = DataFrame(:scenario => [1, 2, 3], :probability => [0.3, 0.4, 0.3])
+        connection = DBInterface.connect(DuckDB.DB)
+        DuckDB.register_data_frame(connection, stochastic_scenario, "stochastic_scenario")
+
+        error_messages = TEM._validate_stochastic_scenario_probabilities_sum_to_one!(connection)
+        @test error_messages == []
+    end
+
+    @testset "Using fake data with probabilities outside tolerance" begin
+        stochastic_scenario = DataFrame(:scenario => [1, 2], :probability => [0.499, 0.5])
+        connection = DBInterface.connect(DuckDB.DB)
+        DuckDB.register_data_frame(connection, stochastic_scenario, "stochastic_scenario")
+
+        error_messages = TEM._validate_stochastic_scenario_probabilities_sum_to_one!(
+            connection;
+            tolerance = 1e-5, # testing passing a tolerance different from default
+        )
+        @test error_messages == [
+            "Sum of probabilities in 'stochastic_scenario' table is 0.999, but should be approximately 1.0 (tolerance: 1.0e-5)",
+        ]
+    end
+
+    @testset "Using Tiny data" begin
+        connection = _tiny_fixture()
+
+        # Doesn't throw (creates empty stochastic_scenario with default probability = 1.0)
+        TEM.create_internal_tables!(connection)
+
+        # Modify stochastic_scenario to have bad probabilities
+        DuckDB.query(connection, "UPDATE stochastic_scenario SET probability = 0.8")
+        @test_throws "Sum of probabilities in 'stochastic_scenario' table is 0.8, but should be approximately 1.0 (tolerance: 0.001)" TEM.create_internal_tables!(
+            connection,
+        )
+    end
+end
+
 @testset "Check data consistency for simple investment method" begin
     @testset "Using fake data" begin
         @testset "Where there is data for milestone year != commission year" begin
