@@ -376,7 +376,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
 end
 
 """
-    add_capacity_outgoing_semi_compact_method_constraints!(connection, model, expressions, constraints,profiles)
+    add_capacity_outgoing_semi_compact_method_constraints!(connection, model, expressions, constraints, profiles)
 
 Adds the capacity constraints for the semi-compact investment method.
 """
@@ -542,6 +542,9 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
     )
 end
 
+# The goal of the below function is to append data to the indices of the semi-compact method
+# Important to note is the correct avail_id for (asset, milestone_year, commission_year)
+# and the correct profile name for (asset, milestone_year, commission_year).
 function _append_capacity_data_to_indices_semi_compact_method(connection, table_name)
     return DuckDB.query(
         connection,
@@ -565,7 +568,6 @@ function _append_capacity_data_to_indices_semi_compact_method(connection, table_
             AND cons.commission_year = expr_avail.commission_year
        LEFT JOIN assets_profiles AS avail_profile
             ON cons.asset = avail_profile.asset
-            AND cons.milestone_year = expr_avail.milestone_year
             AND expr_avail.commission_year = avail_profile.commission_year
             AND avail_profile.profile_type = 'availability'
         WHERE asset.investment_method = 'semi-compact' -- this condition is not needed, but makes it more explicit
