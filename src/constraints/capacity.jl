@@ -406,7 +406,7 @@ function add_capacity_outgoing_semi_compact_method_constraints!(
                         Statistics.mean,
                         1.0,
                     ) *
-                    expressions[row.avail_id]
+                    expressions[row.id]
                 ) for row in indices
             ],
         )
@@ -549,8 +549,7 @@ function _append_capacity_data_to_indices_semi_compact_method(connection, table_
     return DuckDB.query(
         connection,
         "SELECT
-            cons.id AS id,
-            expr_avail.id AS avail_id,
+            cons.id AS id, -- also used as avail_id, because both cons and expr_avail have the same id
             cons.asset AS asset,
             cons.milestone_year AS milestone_year,
             cons.commission_year AS commission_year,

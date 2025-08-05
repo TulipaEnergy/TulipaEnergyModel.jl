@@ -23,14 +23,14 @@
     # Create variable tables
     table_name = "var_vintage_flow"
     table_rows = [
-        (1, "wind", "battery", 2050, 2050, 1, 1, 1, 1.0, 1.0),
-        (2, "wind", "battery", 2050, 2030, 1, 1, 1, 1.0, 1.0),
-        (3, "wind", "battery", 2030, 2020, 1, 1, 1, 1.0, 1.0),
-        (4, "wind", "battery", 2030, 2030, 1, 1, 1, 1.0, 1.0),
-        (5, "wind", "demand", 2050, 2050, 1, 1, 1, 1.0, 1.0),
-        (6, "wind", "demand", 2050, 2030, 1, 1, 1, 1.0, 1.0),
-        (7, "wind", "demand", 2030, 2020, 1, 1, 1, 1.0, 1.0),
-        (8, "wind", "demand", 2030, 2030, 1, 1, 1, 1.0, 1.0),
+        (1, "wind", "battery", 2030, 2020, 1, 1, 1, 1.0, 1.0),
+        (2, "wind", "battery", 2030, 2030, 1, 1, 1, 1.0, 1.0),
+        (3, "wind", "battery", 2050, 2030, 1, 1, 1, 1.0, 1.0),
+        (4, "wind", "battery", 2050, 2050, 1, 1, 1, 1.0, 1.0),
+        (5, "wind", "demand", 2030, 2020, 1, 1, 1, 1.0, 1.0),
+        (6, "wind", "demand", 2030, 2030, 1, 1, 1, 1.0, 1.0),
+        (7, "wind", "demand", 2050, 2030, 1, 1, 1, 1.0, 1.0),
+        (8, "wind", "demand", 2050, 2050, 1, 1, 1, 1.0, 1.0),
     ]
     columns = [
         :id,
@@ -113,10 +113,10 @@
     # Create constraint
     table_name = "cons_capacity_outgoing_semi_compact_method"
     table_rows = [
-        (1, "wind", 2050, 2050, 1, 1, 1),
-        (2, "wind", 2050, 2030, 1, 1, 1),
-        (3, "wind", 2030, 2020, 1, 1, 1),
-        (4, "wind", 2030, 2030, 1, 1, 1),
+        (1, "wind", 2030, 2020, 1, 1, 1),
+        (2, "wind", 2030, 2030, 1, 1, 1),
+        (4, "wind", 2050, 2030, 1, 1, 1),
+        (3, "wind", 2050, 2050, 1, 1, 1),
     ]
     columns = [
         :id,
@@ -165,10 +165,10 @@
     observed_cons = _get_cons_object(model, :max_output_flows_limit_semi_compact_method)
 
     expected_profiles = [
-        profiles.rep_period[("availability-wind2050", 2050, 1)][1],
-        profiles.rep_period[("availability-wind2030", 2050, 1)][1],
         profiles.rep_period[("availability-wind2020", 2030, 1)][1],
         profiles.rep_period[("availability-wind2030", 2030, 1)][1],
+        profiles.rep_period[("availability-wind2030", 2050, 1)][1],
+        profiles.rep_period[("availability-wind2050", 2050, 1)][1],
     ]
     capacity = 50
     expected_cons = [

@@ -240,33 +240,40 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE expr_available_asset_units_compact_method AS
+        -- use a CTE here because we want to add ids after the group by
+        WITH grouped_data AS (
+            SELECT
+                asset_both.asset AS asset,
+                asset_both.milestone_year AS milestone_year,
+                asset_both.commission_year AS commission_year,
+                ANY_VALUE(asset_both.initial_units) AS initial_units,
+                ARRAY_AGG(var_dec.id) FILTER (var_dec.id IS NOT NULL) AS var_decommission_indices,
+                IF (
+                    asset_both.commission_year + ANY_VALUE(asset.technical_lifetime) - 1 >= asset_both.milestone_year,
+                    ANY_VALUE(var_inv.id),
+                    NULL
+                ) AS var_investment_id,
+            FROM asset_both
+            LEFT JOIN asset
+                ON asset_both.asset = asset.asset
+            LEFT JOIN var_assets_decommission AS var_dec
+                ON asset_both.asset = var_dec.asset
+                AND asset_both.commission_year = var_dec.commission_year
+                AND asset_both.milestone_year >= var_dec.milestone_year
+            LEFT JOIN var_assets_investment AS var_inv
+                ON asset_both.asset = var_inv.asset
+                AND asset_both.commission_year = var_inv.milestone_year
+            WHERE
+                asset.investment_method in ('compact', 'semi-compact')
+                -- Hub and consumer assets do not use this expression, so we can filter them out to be more explicit
+                AND asset.type in ('producer', 'conversion', 'storage')
+            GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
+            ORDER BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
+        )
         SELECT
             nextval('id') AS id,
-            asset_both.asset AS asset,
-            asset_both.milestone_year AS milestone_year,
-            asset_both.commission_year AS commission_year,
-            ANY_VALUE(asset_both.initial_units) AS initial_units,
-            ARRAY_AGG(var_dec.id) FILTER (var_dec.id IS NOT NULL) AS var_decommission_indices,
-            IF (
-                asset_both.commission_year + ANY_VALUE(asset.technical_lifetime) - 1 >= asset_both.milestone_year,
-                ANY_VALUE(var_inv.id),
-                NULL
-            ) AS var_investment_id,
-        FROM asset_both
-        LEFT JOIN asset
-            ON asset_both.asset = asset.asset
-        LEFT JOIN var_assets_decommission AS var_dec
-            ON asset_both.asset = var_dec.asset
-            AND asset_both.commission_year = var_dec.commission_year
-            AND asset_both.milestone_year >= var_dec.milestone_year
-        LEFT JOIN var_assets_investment AS var_inv
-            ON asset_both.asset = var_inv.asset
-            AND asset_both.commission_year = var_inv.milestone_year
-        WHERE
-            asset.investment_method in ('compact', 'semi-compact')
-            -- Hub and consumer assets do not use this expression, so we can filter them out to be more explicit
-            AND asset.type in ('producer', 'conversion', 'storage')
-        GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
+            *
+        FROM grouped_data
         ",
     )
 

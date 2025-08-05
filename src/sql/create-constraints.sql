@@ -175,6 +175,14 @@ from
 where
     asset.type in ('producer', 'storage', 'conversion')
     and asset.investment_method = 'semi-compact'
+-- t_high is ordered by asset, milestone_year, rep_period, time_block_start
+-- since we added commission_year, we need to explictly order by commission_year
+order by
+    t_high.asset,
+    asset_both.milestone_year,
+    asset_both.commission_year,
+    t_high.rep_period,
+    t_high.time_block_start
 ;
 
 drop sequence id
