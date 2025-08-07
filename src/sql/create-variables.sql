@@ -90,6 +90,72 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists var_start_up
+;
+
+create table var_start_up as
+select
+    nextval('id') as id,
+    atr.asset,
+    atr.year,
+    atr.rep_period,
+    atr.time_block_start,
+    atr.time_block_end,
+    asset.unit_commitment_integer,
+from
+    t_highest_assets_and_out_flows as t_high
+    inner join asset_time_resolution_rep_period as atr
+        on
+            t_high.asset = atr.asset
+            and t_high.year = atr.year
+            and t_high.rep_period = atr.rep_period 
+            and t_high.time_block_start = atr.time_block_start 
+    left join asset on asset.asset = atr.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.unit_commitment = true
+    and asset.unit_commitment_method LIKE '3bin-%'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists var_shut_down
+;
+
+create table var_shut_down as
+select
+    nextval('id') as id,
+    atr.asset,
+    atr.year,
+    atr.rep_period,
+    atr.time_block_start,
+    atr.time_block_end,
+    asset.unit_commitment_integer,
+from
+    t_highest_assets_and_out_flows as t_high
+    inner join asset_time_resolution_rep_period as atr
+        on
+            t_high.asset = atr.asset
+            and t_high.year = atr.year
+            and t_high.rep_period = atr.rep_period 
+            and t_high.time_block_start = atr.time_block_start 
+    left join asset on asset.asset = atr.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.unit_commitment = true
+    and asset.unit_commitment_method LIKE '3bin-%'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 drop table if exists var_electricity_angle
 ;
 
