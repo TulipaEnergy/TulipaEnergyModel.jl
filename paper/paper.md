@@ -4,8 +4,11 @@ tags:
   - Julia
   - energy-system optimisation
   - unit commitment
+  - multi-year investment
+  - DC-OPF
+  - seasonal storage
   - representative periods
-  - flexible resolution
+  - flexible temporal resolution
 authors:
     - given-names: Abel
       surname: Soares Siqueira
@@ -20,7 +23,7 @@ authors:
     - given-names: Germán
       surname: Morales-España
       email: german.morales@tno.nl
-      affiliation: 2
+      affiliation: 2,3
       orcid: "https://orcid.org/0000-0002-6372-6197"
     - given-names: Grigory
       surname: Neustroev
@@ -80,15 +83,16 @@ bibliography: paper.bib
 
 ## Summary
 
-`TulipaEnergyModel.jl` is an optimization model for the electricity market that can be coupled with other energy sectors (e.g., hydrogen, heat, natural gas, etc.).
-The optimization model determines the optimal investment and operation decisions for different types of assets (e.g., producers, consumers, conversion, storage, and transport).
+`TulipaEnergyModel.jl` is an energy optimisation model for analysis of sector coupling (e.g., electricity, hydrogen, heat, natural gas, etc.).
+The optimisation model determines the optimal investment and operation decisions for different types of assets (e.g., producers, consumers, conversion, storage, and transport) over time.
 TulipaEnergyModel.jl is developed in [Julia](https://julialang.org) [@Julia] and depends on the [JuMP.jl](https://jump.dev) [@JuMP] package.
 
 TulipaEnergyModel.jl is the main package of the Tulipa Energy ecosystem.
 It provides a cutting-edge energy system model based on the user's data.
-Our main use case is modeling energy distribution in Europe, but there are no constraints preventing the user from extending to other use cases.
+Our main use case is modelling energy distribution in Europe, but there are no constraints preventing the user from extending to other use cases.
 
-One of the main features of TulipaEnergyModel is that it accepts a _fully flexible resolution_ (cite) for the assets and flows.
+### Modelling Innovations 
+One of the main innovations of TulipaEnergyModel is that it accepts a _fully flexible resolution_ [@Gao2025] for the assets and flows.
 In other words, the resolution at which the variables are defined don't have to be multiples of one another.
 As a short example, consider the following example:
 
@@ -98,17 +102,14 @@ In the example, we look at 6 hours of a network. The flow between "H2" and "ccgt
 The resolution from "wind" to "phs" is 3 hours, and the resolution from "phs" to "balance" is not regular, starting with a 4 hours block and then a 2 hours block.
 All these "time blocks" are handled by the Tulipa energy model to allow for more or less detailed solutions.
 This implies that less variables and constraints are created, ensuring a faster solving speed, with little loss in accuracy.
-See (cite) for more details on the research behind fully flexible resolution.
+See [@Gao2025] for more details on the research behind fully flexible resolution.
 
-Another feature of the Tulipa model is the use of representative periods (cite), supported by another package in our ecosystem, `TulipaClustering.jl`.
-The representative periods are obtained by clustering the asset profiles (time series) from the full time frame to a much smaller one.
-For instance, instead of using a full year with 8760 hours (365 periods of 24 hours each), we can choose to have 30 representative periods of 24 hours each.
-These representative periods will be computed using `TulipaClustering.jl` so that each of the 365 original periods are replaced by a combination of the 30 representatives.
-Now, we can model within representative periods (30 periods of 24 hours each), and across periods (365 periods).
-Either way, we have a much smaller number of variables, making our model easier to solve.
-See (cite) for more details on the research behind representative periods.
+TulipaEnergyModel.jl is fundamentally focused on modeling innovation, with its mathematical formulations firmly rooted in scientific research.
+The model also includes other key features such as flexible connection of energy assets [@Tejada2025], seasonal storage modeling using representative periods [@Tejada2018], and tight formulations to prevent simultaneous charging and discharging [@Elgersma2025].
+Furthermore, it incorporates ramping and unit commitment functionalities [@MoralesEspana2013], along with the capability for multi-year investment planning [@wang2025a; @wang2025b].
 
-One main design choice of Tulipa is that data is passed (and kept) in a [DuckDB](https://duckdb.org) [@DuckDB] connection.
+### Software Design Innovations
+One of the main software design choices for TulipaEnergyModel.jl is to maintain a [DuckDB](https://duckdb.org) [@DuckDB] connection from the input data to model creation and output generation.
 This enables us to handle different data formats by relying on DuckDB's capabilities, instead of specific Julia capabilities.
 Furthermore, this separates most of the data manipulation from the model manipulation, allowing users to separately create the necessary input data from whatever platform they are more comfortable with.
 
@@ -145,12 +146,13 @@ A single vector of variables is created, with each element corresponding to a ro
 
 There are multiple packages and frameworks related to Energy System Optimisation in Julia and other languages.
 A few examples in the Julia and Python realm are [EnergyModelsX](https://github.com/EnergyModelsX) [@EnergyModelsX], [PowerModels](https://github.com/lanl-ansi/PowerModels.jl) [@PowerModels], [SpineOpt](https://www.tools-for-energy-system-modelling.org/) [@SpineOpt], [Sienna](https://www.nrel.gov/analysis/sienna) [@Sienna], [GenX](https://github.com/GenXProject/GenX) [@GenX], [PyPSA](https://pypsa.org) [@PyPSA], and [Calliope](https://github.com/calliope-project/calliope) [@Calliope].
-Despite the large array of options, we still felt necessary to develop Tulipa from the ground up due to the use of specific features already included and future developments.
-This changes all model structures in ways that cannot be easily adapted to existing models.
+Although there are many options available, the modeling innovation for flexible temporal resolution in TulipaEnergyModel.jl alters all model structures in ways that are not easily compatible with existing models.
+As a result, TulipaEnergyModel.jl had to be developed from the ground up to incorporate specific features already included and to accommodate future enhancements.
 
 ## Acknowledgements
 
 TODO: Actually check this
-The development of the Tulipa ecosystem has been supported in part by NWO via the ESI.2019.008 grant.
+This publication is part of the project NextGenOpt with project number ESI.2019.008, which is (partly) financed by the Dutch Research Council (NWO) and supported by eScienceCenter under project number NLeSC C 21.0226.
+In addition, this research received partial funding from the European Climate, Infrastructure and Environment Executive Agency under the European Union’s HORIZON Research and Innovation Actions under grant agreement no. 101095998.
 
 ## References
