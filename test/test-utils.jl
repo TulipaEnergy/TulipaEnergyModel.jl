@@ -1,4 +1,4 @@
-@testset "Test _create_group_table_if_not_exist" begin
+@testitem "Test _create_group_table_if_not_exist" setup = [CommonSetup] tags = [:unit, :fast] begin
     # Test data
     table_name = "test_table"
     connection = DBInterface.connect(DuckDB.DB)
