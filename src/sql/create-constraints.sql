@@ -159,30 +159,37 @@ drop table if exists cons_capacity_outgoing_semi_compact_method
 ;
 
 create table cons_capacity_outgoing_semi_compact_method as
+with cons_data as (
+    select
+        t_high.asset,
+        asset_both.milestone_year as milestone_year,
+        asset_both.commission_year as commission_year,
+        t_high.rep_period,
+        t_high.time_block_start,
+        t_high.time_block_end
+    from
+        t_highest_out_flows as t_high
+        left join asset on t_high.asset = asset.asset
+        left join asset_both on t_high.asset = asset_both.asset
+        and t_high.year = asset_both.milestone_year
+    where
+        asset.type in ('producer', 'storage', 'conversion')
+        and asset.investment_method = 'semi-compact'
+    -- t_high is ordered by asset, milestone_year, rep_period, time_block_start
+    -- since we added commission_year, we need to explictly order by commission_year
+    -- note the order is only needed for the test, constraints do not require it
+    order by
+        t_high.asset,
+        asset_both.milestone_year,
+        asset_both.commission_year,
+        t_high.rep_period,
+        t_high.time_block_start
+    )
 select
-    nextval('id') as id,
-    t_high.asset,
-    asset_both.milestone_year as milestone_year,
-    asset_both.commission_year as commission_year,
-    t_high.rep_period,
-    t_high.time_block_start,
-    t_high.time_block_end
+   nextval('id') as id,
+   *
 from
-    t_highest_out_flows as t_high
-    left join asset on t_high.asset = asset.asset
-    left join asset_both on t_high.asset = asset_both.asset
-    and t_high.year = asset_both.milestone_year
-where
-    asset.type in ('producer', 'storage', 'conversion')
-    and asset.investment_method = 'semi-compact'
--- t_high is ordered by asset, milestone_year, rep_period, time_block_start
--- since we added commission_year, we need to explictly order by commission_year
-order by
-    t_high.asset,
-    asset_both.milestone_year,
-    asset_both.commission_year,
-    t_high.rep_period,
-    t_high.time_block_start
+    cons_data
 ;
 
 drop sequence id

@@ -241,6 +241,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
         CREATE OR REPLACE TABLE expr_available_asset_units_compact_method AS
         -- use a CTE here because we want to add ids after the group by
+        -- the order is needed by the test, but not by the constraints
         WITH grouped_data AS (
             SELECT
                 asset_both.asset AS asset,
