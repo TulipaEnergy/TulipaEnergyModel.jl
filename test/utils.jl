@@ -185,6 +185,8 @@
 end
 
 @testmodule TestData begin
+    using DataFrames: DataFrame
+
     const simplest_data = Dict(
         # Basic asset data
         "asset" => DataFrame(
