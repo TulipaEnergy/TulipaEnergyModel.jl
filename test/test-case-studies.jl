@@ -1,4 +1,4 @@
-@testset "Norse Case Study" begin
+@testitem "Norse Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow] begin
     dir = joinpath(INPUT_FOLDER, "Norse")
     parameters_dict = Dict(
         HiGHS.Optimizer => Dict("mip_rel_gap" => 0.01, "output_flag" => false),
