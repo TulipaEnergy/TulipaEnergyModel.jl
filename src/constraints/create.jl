@@ -35,6 +35,9 @@ function compute_constraints_indices(connection)
             :dc_power_flow,
             :limit_decommission_compact_method,
             :vintage_flow_sum_semi_compact_method,
+            :start_up_upper_bound,
+            :shut_down_upper_bound,
+            :su_sd_eq_units_on_diff,
         )
     )
 
