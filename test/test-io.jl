@@ -1,12 +1,12 @@
 @testitem "Test input validation - missing asset partition if strict" setup = [CommonSetup] tags =
-    [:integration, :fast] begin
+    [:integration, :io, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Norse"))
     @test_throws Exception TulipaEnergyModel.EnergyProblem(connection, strict = true)
 end
 
 @testitem "Test output validation - solution files are generated" setup = [CommonSetup] tags =
-    [:integration, :fast] begin
+    [:integration, :io, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Norse"))
     TulipaEnergyModel.run_scenario(
@@ -25,7 +25,7 @@ end
 end
 
 @testitem "Test output validation - saving unsolved energy problem fails" setup = [CommonSetup] tags =
-    [:integration, :fast] begin
+    [:integration, :io, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
     energy_problem = TulipaEnergyModel.EnergyProblem(connection)
@@ -44,7 +44,7 @@ end
 end
 
 @testitem "Test printing EnergyProblem validation" setup = [CommonSetup] tags =
-    [:integration, :fast] begin
+    [:integration, :io, :fast] begin
     # model infeasible is covered in testset "Infeasible Case Study"
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))

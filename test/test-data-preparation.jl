@@ -91,7 +91,7 @@
 end
 
 @testitem "Test create_merged_tables!" setup = [CommonSetup, DataPreparationSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_preparation, :fast] begin
     TulipaEnergyModel.create_merged_tables!(connection)
 
     # Verify the results in the merged tables
@@ -218,7 +218,7 @@ end
 end
 
 @testitem "Test create_lowest_resolution_table!" setup = [CommonSetup, DataPreparationSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_preparation, :fast] begin
     # Need to create merged tables first since create_lowest_resolution_table! depends on them
     TulipaEnergyModel.create_merged_tables!(connection)
     TulipaEnergyModel.create_lowest_resolution_table!(connection)
@@ -257,7 +257,7 @@ end
 end
 
 @testitem "Test create_highest_resolution_table!" setup = [CommonSetup, DataPreparationSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_preparation, :fast] begin
     # Need to create merged tables first since create_highest_resolution_table! depends on them
     TulipaEnergyModel.create_merged_tables!(connection)
     TulipaEnergyModel.create_highest_resolution_table!(connection)
@@ -317,7 +317,7 @@ end
 end
 
 @testitem "Test total number of tables created" setup = [CommonSetup, DataPreparationSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_preparation, :fast] begin
     # Need to run all data preparation functions to get the full table count
     TulipaEnergyModel.create_merged_tables!(connection)
     TulipaEnergyModel.create_lowest_resolution_table!(connection)
