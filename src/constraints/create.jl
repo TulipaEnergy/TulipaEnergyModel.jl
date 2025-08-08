@@ -36,7 +36,8 @@ function compute_constraints_indices(connection)
             :limit_decommission_compact_method,
             :vintage_flow_sum_semi_compact_method,
             :start_up_upper_bound,
-            :shut_down_upper_bound,
+            :shut_down_upper_bound_simple_investment,
+            :shut_down_upper_bound_compact_investment,
             :su_sd_eq_units_on_diff,
         )
     )
