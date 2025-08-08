@@ -1,4 +1,5 @@
-@testset "Test add_limit_decommission_compact_method_constraints!" begin
+@testitem "Test add_limit_decommission_compact_method_constraints!" setup = [CommonSetup] tags =
+    [:unit, :validation, :fast] begin
     # Setup a temporary DuckDB connection and model
     connection = _multi_year_fixture()
     model = JuMP.Model()
