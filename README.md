@@ -40,6 +40,21 @@ If you want to contribute (awesome!), please read our [Contributing Guidelines](
 
 This content is released under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) License.
 
+## AI Coding Assistant Attribution
+
+We use and accepts pull requests with AI coding assistants to help with development, but we expect the committers to understand and be responsible for the code that they introduce.
+All commits that receive AI assistance should be signed off with:
+
+```plaintextt
+Co-authored-by: MODEL NAME (FULL MODEL VERSION) <EMAIL>
+```
+
+For example:
+
+```plaintextt
+Co-authored-by: Claude Code (claude-sonnet-4-20250514) <noreply@anthropic.com>
+```
+
 ---
 
 ## Contributors
