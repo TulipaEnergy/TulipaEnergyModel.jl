@@ -1,0 +1,9 @@
+asset,type,group,capacity,min_operating_point,investment_method,investment_integer,technical_lifetime,economic_lifetime,discount_rate,consumer_balance_sense,capacity_storage_energy,is_seasonal,use_binary_storage_method,unit_commitment,unit_commitment_method,unit_commitment_integer,ramping,storage_method_energy,energy_to_power_ratio,investment_integer_storage_energy,max_ramp_up,max_ramp_down
+ccgt,conversion,,200.0,0.25,simple,true,15,1,0.05,==,0.0,false,,true,3bin-0,true,true,false,0.0,false,0.3,0.4
+demand,consumer,,0.0,,none,false,15,1,0.05,==,0.0,false,,false,,false,false,false,0.0,false,,
+ens,producer,,1150.0,,none,false,15,1,0.05,==,0.0,false,,false,,false,false,false,0.0,false,,
+gas,producer,,1800.0,,none,false,15,1,0.05,==,0.0,false,,false,,false,true,false,0.0,false,0.83,0.83
+ocgt,conversion,,100.0,0.1,simple,true,15,1,0.05,==,0.0,false,,true,3bin-0,true,false,false,0.0,false,,
+smr,producer,,200.0,0.75,none,true,15,1,0.05,==,0.0,false,,true,basic,true,true,false,0.0,false,0.1,0.1
+solar,producer,,50.0,,simple,true,15,1,0.05,==,0.0,false,,false,,false,false,false,0.0,false,,
+wind,producer,,100.0,,simple,true,15,1,0.05,==,0.0,false,,false,,false,false,false,0.0,false,,

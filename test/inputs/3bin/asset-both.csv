@@ -1,0 +1,9 @@
+asset,milestone_year,commission_year,decommissionable,initial_units,initial_storage_units
+gas,2030,2030,true,1.0,0.0
+ocgt,2030,2030,false,0.0,0.0
+ccgt,2030,2030,false,1.0,0.0
+smr,2030,2030,true,1.0,0.0
+wind,2030,2030,false,0.0,0.0
+solar,2030,2030,false,0.0,0.0
+ens,2030,2030,true,1.0,0.0
+demand,2030,2030,true,0.0,0.0
