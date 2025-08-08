@@ -25,7 +25,13 @@ function add_start_up_upper_bound_constraints!(
     expressions,
     constraints,
 )
-    let table_name = :start_up_upper_bound, cons = constraints[:start_up_upper_bound]
+    let table_name = :start_up_upper_bound,
+        cons = constraints[:start_up_upper_bound],
+        start_up_vars = variables[:start_up].container,
+        units_on_vars = variables[:units_on].container
+
+        indices = _append_variable_ids(connection, table_name, ["units_on", "start_up"])
+
         attach_constraint!(
             model,
             cons,
@@ -33,10 +39,9 @@ function add_start_up_upper_bound_constraints!(
             [
                 @constraint(
                     model,
-                    start_up <= units_on,
+                    start_up_vars[row.start_up_id] <= units_on_vars[row.units_on_id],
                     base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                ) for (row, start_up, units_on) in
-                zip(cons.indices, variables[:start_up].container, variables[:units_on].container)
+                ) for row in indices
             ],
         )
     end
@@ -54,11 +59,14 @@ function add_shut_down_upper_bound_constraints!(
     expressions,
     constraints,
 )
-    let table_name = :shut_down_upper_bound, cons = constraints[:shut_down_upper_bound]
+    let table_name = :shut_down_upper_bound_simple_investment, cons = constraints[table_name]
         expr_avail_simple_method =
             expressions[:available_asset_units_simple_method].expressions[:assets]
 
-        indices = _append_available_units_simple_method(connection, :shut_down_upper_bound)
+        indices = _append_available_units_shut_down_simple_method(connection, table_name)
+
+        units_on_vars = variables[:units_on].container
+        shut_down_vars = variables[:shut_down].container
 
         attach_constraint!(
             model,
@@ -67,10 +75,10 @@ function add_shut_down_upper_bound_constraints!(
             [
                 @constraint(
                     model,
-                    shut_down <= expr_avail_simple_method[row.avail_id] - units_on,
+                    shut_down_vars[row.shut_down_id] <=
+                    expr_avail_simple_method[row.avail_id] - units_on_vars[row.units_on_id],
                     base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                ) for (row, shut_down, units_on) in
-                zip(indices, variables[:shut_down].container, variables[:units_on].container)
+                ) for row in indices
             ],
         )
     end
@@ -112,6 +120,9 @@ function add_su_sd_eq_units_on_diff_constraints!(
         start_up = variables[:start_up].container
         shut_down = variables[:shut_down].container
 
+        indices =
+            _append_variable_ids(connection, table_name, ["units_on", "start_up", "shut_down"])
+
         attach_constraint!(
             model,
             cons,
@@ -123,12 +134,12 @@ function add_su_sd_eq_units_on_diff_constraints!(
                     else
                         @constraint(
                             model,
-                            units_on[row.id] - units_on[row.id-1] ==
-                            start_up[row.id] - shut_down[row.id],
+                            units_on[row.units_on_id] - units_on[row.units_on_id-1] ==
+                            start_up[row.start_up_id] - shut_down[row.shut_down_id],
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                         )
                     end
-                end for row in cons.indices
+                end for row in indices
             ],
         )
     end
