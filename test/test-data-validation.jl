@@ -1,4 +1,5 @@
-@testitem "Test DataValidationException print" setup = [CommonSetup] tags = [:unit, :fast] begin
+@testitem "Test DataValidationException print" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     # Mostly to appease codecov
     error_msg = "DataValidationException: The following issues were found in the data:\n- example"
