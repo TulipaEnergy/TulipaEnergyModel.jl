@@ -44,7 +44,6 @@ function _list_available_tags()
 end
 
 const TAGS_DATA = Dict(
-    # TODO: Make sure every test has some of these tags
     # Test Type (What kind of test?)
     :integration => "End-to-end tests with real datasets and full workflows",
     :unit => "Single component or function tests",

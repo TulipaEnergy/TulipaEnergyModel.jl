@@ -293,23 +293,20 @@ julia --project=test test/runtests.jl --verbose
 The test suite uses tags for efficient test filtering during development. Here are some tags:
 
 - `:unit` - Single component or function tests
-- `:integration` - End-to-end tests with real datasets and full workflows
+- `:integration` - End-to-end tests
 - `:validation` - Tests verifying expected values, behavior, or mathematical correctness
 - `:fast` - Quick tests suitable for frequent execution
 - `:slow` - Resource-intensive tests requiring significant time or memory
 
-Check `test/runtests.jl` for a complete list.
+Check `test/runtests.jl` for a complete list or run with the `--list-tags` option.
 
 Examples of running specific test categories:
 
 ```bash
 # Run only fast unit tests
 julia --project=test test/runtests.jl --tags unit,fast
-```
-
-You can run tests from a specific file:
-
-```bash
+ 
+# Run only files that match the name:
 julia --project=test test/runtests.jl --file test-model.jl
 ```
 
@@ -353,7 +350,7 @@ When adding new tests, use the `@testitem` macro with appropriate setup and tags
 end
 ```
 
-Choose appropriate tags based on your test characteristics.
+Choose appropriate tags based on your test characteristics. If you need to add a new tag, check the `TAGS_DATA` dictionary on the `test/runtests.jl` file.
 
 ### 5. Run the Linter
 
