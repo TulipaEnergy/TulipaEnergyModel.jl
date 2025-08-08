@@ -89,6 +89,7 @@
     expected_cols = [:asset, :year, :rep_period, :time_block_start, :time_block_end]
     where_ = "asset LIKE '%death_star%' ORDER BY asset, rep_period, time_block_start, time_block_end"
 end
+
 @testitem "Test create_merged_tables!" setup = [CommonSetup, DataPreparationSetup] tags =
     [:unit, :fast] begin
     TulipaEnergyModel.create_merged_tables!(connection)
