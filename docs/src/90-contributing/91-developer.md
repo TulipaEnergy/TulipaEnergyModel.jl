@@ -163,8 +163,12 @@ tests to ensure that everything is working as expected:
 ```bash
 pkg> activate .   # activate the project
 pkg> instantiate  # instantiate to install the required packages
-pkg> test         # run the tests
+pkg> test         # run the tests (uses TestItemRunner.jl)
 ```
+
+> **Note:** The test suite uses TestItemRunner.jl for better test organization and
+> granular execution. You can also run specific test categories using tags or
+> individual test files as described in the testing section below.
 
 ### Configuring Linting and Formatting
 
@@ -268,11 +272,58 @@ Implement your changes to address the issue associated with the branch.
 
 ### 4. Run the Tests
 
+TulipaEnergyModel.jl uses [TestItemRunner.jl](https://github.com/julia-vscode/TestItemRunner.jl) for testing, which provides granular test execution and better development experience.
+
+#### Running All Tests
+
 In Julia:
 
 ```bash
 TulipaEnergyModel> test
 ```
+
+Or, using the CLI version:
+
+```bash
+julia --project=test test/runtests.jl --verbose
+```
+
+#### Running Tests with filters
+
+The test suite uses tags for efficient test filtering during development. Here are some tags:
+
+- `:unit` - Single component or function tests
+- `:integration` - End-to-end tests with real datasets and full workflows
+- `:validation` - Tests verifying expected values, behavior, or mathematical correctness
+- `:fast` - Quick tests suitable for frequent execution
+- `:slow` - Resource-intensive tests requiring significant time or memory
+
+Check `test/runtests.jl` for a complete list.
+
+Examples of running specific test categories:
+
+```bash
+# Run only fast unit tests
+julia --project=test test/runtests.jl --tags unit,fast
+```
+
+You can run tests from a specific file:
+
+```bash
+julia --project=test test/runtests.jl --file test-model.jl
+```
+
+And it's also possible to run a specific `@testitem`.
+If you are on VSCode with the Julia extension installed, you will see a "play" button on the left side of the `@testitem`.
+Otherwise, if you know (part of) the name of the test, you can run it with:
+
+```bash
+julia --project=test test/runtests.jl --name "Some test name"
+```
+
+Use `--help` to see the full help.
+
+#### Test Coverage
 
 To run the tests with code coverage, you can use the `LocalCoverage` package:
 
@@ -290,6 +341,19 @@ coverage, please add tests to cover the missing lines.
 
 If you are having trouble reaching 100% test coverage, you can set your pull
 request to 'draft' status and ask for help.
+
+#### Writing New Tests
+
+When adding new tests, use the `@testitem` macro with appropriate setup and tags:
+
+```julia
+@testitem "Test description" setup = [CommonSetup] tags = [:unit, :fast] begin
+    # Test code here
+    @test actual_result == expected_result
+end
+```
+
+Choose appropriate tags based on your test characteristics.
 
 ### 5. Run the Linter
 

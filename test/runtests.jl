@@ -55,6 +55,7 @@ const TAGS_DATA = Dict(
     :slow => "Resource-intensive tests requiring significant time or memory",
 
     # Feature Areas (What functionality is being tested?)
+    :case_study => "Complete case study tests with real-world scenarios",
 
     # Test Characteristics (What capabilities/dependencies are required?)
 )
