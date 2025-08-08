@@ -6,7 +6,7 @@
 end
 
 @testitem "Test having all tables and columns - missing table" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _tiny_fixture()
     for table in TulipaEnergyModel.tables_allowed_to_be_missing
@@ -19,7 +19,7 @@ end
 end
 
 @testitem "Test having all tables and columns - missing column" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _tiny_fixture()
     for table in TulipaEnergyModel.tables_allowed_to_be_missing
@@ -31,7 +31,8 @@ end
           ["Column 'type' is missing from table 'asset'"]
 end
 
-@testitem "Test duplicate rows - using fake data" setup = [CommonSetup] tags = [:unit, :fast] begin
+@testitem "Test duplicate rows - using fake data" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     bad_data = DataFrame(
         :asset => ["ccgt", "demand", "wind", "ccgt", "demand"],
@@ -48,7 +49,7 @@ end
 end
 
 @testitem "Test duplicate rows - duplicating rows of Tiny data" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _tiny_fixture()
     # Duplicating rows in these specific tables
@@ -64,7 +65,7 @@ end
 end
 
 @testitem "Test schema oneOf constraints - bad asset type" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _tiny_fixture()
     # Change the table to force an error
@@ -75,7 +76,7 @@ end
 end
 
 @testitem "Test schema oneOf constraints - bad consumer balance sense" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _tiny_fixture()
     # Change the table to force an error
@@ -90,7 +91,7 @@ end
 end
 
 @testitem "Test schema oneOf constraints - bad specification" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Norse"))
@@ -111,7 +112,7 @@ end
 end
 
 @testitem "Test only transport flows can be investable - using fake data" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     # Create all four combinations of is_transport and investable
     flow = DataFrame(
@@ -133,7 +134,7 @@ end
 end
 
 @testitem "Test only transport flows can be investable - using Tiny data" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _tiny_fixture()
     # Create all four combinations of is_transport and investable
@@ -153,7 +154,7 @@ end
 end
 
 @testitem "Test flow_both does not contain non-transport flows - using fake data" setup =
-    [CommonSetup] tags = [:unit, :fast] begin
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     flow = DataFrame(
         :from_asset => ["A1", "A2"],
@@ -177,7 +178,7 @@ end
 end
 
 @testitem "Test flow_both does not contain non-transport flows - using Multi-year data" setup =
-    [CommonSetup] tags = [:unit, :fast] begin
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _multi_year_fixture()
     DuckDB.query(
@@ -195,7 +196,7 @@ end
 end
 
 @testitem "Test foreign keys are valid - bad value for cat1" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     # Main table
     main_table = DataFrame(
@@ -223,7 +224,7 @@ end
 end
 
 @testitem "Test foreign keys are valid - missing value for cat2" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     # Main table
     main_table = DataFrame(
@@ -261,7 +262,7 @@ end
 end
 
 @testitem "Test foreign keys are valid - using Tiny data" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _tiny_fixture()
 
@@ -275,7 +276,7 @@ end
 end
 
 @testitem "Test groups have at least one member - using fake data" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     asset = DataFrame(
         :asset => ["A1", "A2", "A3", "A4", "A5"],
@@ -292,7 +293,7 @@ end
 end
 
 @testitem "Test groups have at least one member - using Tiny data" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _tiny_fixture()
 
@@ -307,7 +308,7 @@ end
 end
 
 @testitem "Test simple investment method has only matching years - using fake data" setup =
-    [CommonSetup] tags = [:unit, :fast] begin
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     # For asset and flow
     # Validate have only matching years
@@ -345,7 +346,7 @@ end
 end
 
 @testitem "Test simple investment method all milestone years covered - using fake data" setup =
-    [CommonSetup] tags = [:unit, :fast] begin
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     # For asset and flow
     # Validate that the data contains all milestone years where milestone year = commission year
@@ -386,7 +387,7 @@ end
 end
 
 @testitem "Test simple investment method has only matching years - using Tiny data" setup =
-    [CommonSetup] tags = [:unit, :fast] begin
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     # For asset and flow
     # Validate have only matching years
@@ -410,7 +411,7 @@ end
 end
 
 @testitem "Test simple investment method all milestone years covered - using Tiny data" setup =
-    [CommonSetup] tags = [:unit, :fast] begin
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     # For asset and flow
     # Validate that the data contains all milestone years where milestone year = commission year
@@ -433,7 +434,7 @@ end
 end
 
 @testitem "Test binary storage method has investment limit - using fake data" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = DBInterface.connect(DuckDB.DB)
     asset = DataFrame(
@@ -463,7 +464,7 @@ end
 end
 
 @testitem "Test binary storage method has investment limit - using Storage data" setup =
-    [CommonSetup] tags = [:unit, :fast] begin
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _storage_fixture()
     DuckDB.query(
@@ -479,7 +480,7 @@ end
     ]
 end
 @testitem "Test DC OPF data - reactance > 0 using fake data" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = DBInterface.connect(DuckDB.DB)
     flow_milestone = DataFrame(
@@ -497,7 +498,7 @@ end
 end
 
 @testitem "Test DC OPF data - only apply to non-investable transport flows using fake data" setup =
-    [CommonSetup] tags = [:unit, :fast] begin
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = DBInterface.connect(DuckDB.DB)
     flow_milestone = DataFrame(
@@ -523,7 +524,7 @@ end
 end
 
 @testitem "Test DC OPF data - reactance > 0 using Tiny data" setup = [CommonSetup] tags =
-    [:unit, :fast] begin
+    [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _tiny_fixture()
     DuckDB.query(
@@ -541,7 +542,7 @@ end
 end
 
 @testitem "Test DC OPF data - only apply to non-investable transport flows using Tiny data" setup =
-    [CommonSetup] tags = [:unit, :fast] begin
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _tiny_fixture()
     DuckDB.query(
@@ -561,7 +562,7 @@ end
 end
 
 @testitem "Test investment method and asset types consistency - using fake data" setup =
-    [CommonSetup] tags = [:unit, :fast] begin
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     asset = DataFrame(
         :asset => ["A1", "A2", "A3", "A4", "A5", "A6", "A7"],
@@ -580,7 +581,7 @@ end
 end
 
 @testitem "Test investment method and asset types consistency - using Tiny data" setup =
-    [CommonSetup] tags = [:unit, :fast] begin
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     const TEM = TulipaEnergyModel
     connection = _tiny_fixture()
     DuckDB.query(connection, "UPDATE asset SET investment_method = 'simple' WHERE asset = 'demand'")

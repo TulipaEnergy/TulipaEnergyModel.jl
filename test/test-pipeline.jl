@@ -1,5 +1,5 @@
 @testitem "Test pipeline from beginning to end with EnergyProblem struct" setup = [CommonSetup] tags =
-    [:integration, :fast] begin
+    [:integration, :pipeline, :fast] begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
@@ -47,27 +47,27 @@ end
 end
 
 @testitem "Test pipeline from beginning to end without EnergyProblem struct - Tiny" setup =
-    [CommonSetup, PipelineSetup] tags = [:integration, :fast] begin
+    [CommonSetup, PipelineSetup] tags = [:integration, :pipeline, :fast] begin
     @test run_full_pipeline_test("Tiny")
 end
 
 @testitem "Test pipeline from beginning to end without EnergyProblem struct - Norse" setup =
-    [CommonSetup, PipelineSetup] tags = [:integration, :fast] begin
+    [CommonSetup, PipelineSetup] tags = [:integration, :pipeline, :fast] begin
     @test run_full_pipeline_test("Norse")
 end
 
 @testitem "Test pipeline from beginning to end without EnergyProblem struct - Variable Resolution" setup =
-    [CommonSetup, PipelineSetup] tags = [:integration, :fast] begin
+    [CommonSetup, PipelineSetup] tags = [:integration, :pipeline, :fast] begin
     @test run_full_pipeline_test("Variable Resolution")
 end
 
 @testitem "Test pipeline from beginning to end without EnergyProblem struct - Multi-year Investments" setup =
-    [CommonSetup, PipelineSetup] tags = [:integration, :fast] begin
+    [CommonSetup, PipelineSetup] tags = [:integration, :pipeline, :fast] begin
     @test run_full_pipeline_test("Multi-year Investments")
 end
 
 @testitem "Test pipeline starting with simplest data and using populate_with_defaults!" setup =
-    [CommonSetup, TestData] tags = [:integration, :fast] begin
+    [CommonSetup, TestData] tags = [:integration, :pipeline, :fast] begin
     # Most basic version of data
     connection = _create_connection_from_dict(TestData.simplest_data)
 

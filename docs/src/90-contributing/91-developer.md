@@ -305,7 +305,7 @@ Examples of running specific test categories:
 ```bash
 # Run only fast unit tests
 julia --project=test test/runtests.jl --tags unit,fast
- 
+
 # Run only files that match the name:
 julia --project=test test/runtests.jl --file test-model.jl
 ```
