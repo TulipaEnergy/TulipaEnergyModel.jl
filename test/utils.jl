@@ -11,6 +11,8 @@
     using TulipaEnergyModel: TulipaEnergyModel
     using TulipaIO: TulipaIO
 
+    const TEM = TulipaEnergyModel
+
     INPUT_FOLDER = joinpath(@__DIR__, "inputs")
     export INPUT_FOLDER
 
