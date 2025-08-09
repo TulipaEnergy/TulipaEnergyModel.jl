@@ -1,4 +1,5 @@
-@testset "Test that solve_model! throws if model is not created but works otherwise" begin
+@testitem "Test that solve_model! throws if model is not created but works otherwise" setup =
+    [CommonSetup] tags = [:integration, :validation, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
     energy_problem = TulipaEnergyModel.EnergyProblem(connection)
@@ -10,7 +11,8 @@
     @test energy_problem.solved
 end
 
-@testset "Test that model.lp and model.mps are created" begin
+@testitem "Test that model.lp and model.mps are created" setup = [CommonSetup] tags =
+    [:integration, :validation, :fast] begin
     for ext in ("lp", "mps")
         connection = DBInterface.connect(DuckDB.DB)
         _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))

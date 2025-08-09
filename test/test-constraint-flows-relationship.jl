@@ -1,4 +1,5 @@
-@testset "Test add_flows_relationships_constraints!" begin
+@testitem "Test add_flows_relationships_constraints!" setup = [CommonSetup] tags =
+    [:unit, :validation, :fast] begin
     # Setup a temporary DuckDB connection and model
     connection = DBInterface.connect(DuckDB.DB)
     model = JuMP.Model()

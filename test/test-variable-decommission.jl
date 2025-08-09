@@ -1,4 +1,5 @@
-@testset "Test add_decommission_variables!" begin
+@testitem "Test add_decommission_variables!" setup = [CommonSetup] tags =
+    [:unit, :validation, :fast] begin
     # Setup a temporary DuckDB connection and model
     connection = DBInterface.connect(DuckDB.DB)
     model = JuMP.Model()
