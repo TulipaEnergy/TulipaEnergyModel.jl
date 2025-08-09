@@ -843,3 +843,6 @@ from (
         t_high.time_block_start
 ) as sub
 ;
+
+drop sequence id
+;

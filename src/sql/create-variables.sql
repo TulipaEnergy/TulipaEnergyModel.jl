@@ -72,7 +72,7 @@ select
     nextval('id') as id,
     sub.*
 from (
-    select 
+    select
         atr.asset,
         atr.year,
         atr.rep_period,
@@ -120,14 +120,14 @@ from (
             on
                 t_high.asset = atr.asset
                 and t_high.year = atr.year
-                and t_high.rep_period = atr.rep_period 
-                and t_high.time_block_start = atr.time_block_start 
+                and t_high.rep_period = atr.rep_period
+                and t_high.time_block_start = atr.time_block_start
         left join asset on asset.asset = atr.asset
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
         and asset.unit_commitment_method LIKE '3bin-%'
-    order by 
+    order by
         atr.asset,
         atr.year,
         atr.rep_period,
@@ -162,14 +162,14 @@ from (
             on
                 t_high.asset = atr.asset
                 and t_high.year = atr.year
-                and t_high.rep_period = atr.rep_period 
-                and t_high.time_block_start = atr.time_block_start 
+                and t_high.rep_period = atr.rep_period
+                and t_high.time_block_start = atr.time_block_start
         left join asset on asset.asset = atr.asset
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
         and asset.unit_commitment_method LIKE '3bin-%'
-    order by 
+    order by
         atr.asset,
         atr.year,
         atr.rep_period,
