@@ -563,3 +563,32 @@ end
         "Incorrect use of investment method 'simple' for asset 'demand' of type 'consumer'. Hub and consumer assets can only have 'none' investment method.",
     ]
 end
+
+@testitem "Check consistency between asset_commission and asset_both - using fake data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    asset_both =
+        DataFrame(:asset => ["A", "A"], :milestone_year => [1, 2], :commission_year => [0, 0])
+    DuckDB.register_data_frame(connection, asset_both, "asset_both")
+
+    asset_commission = DataFrame(:asset => ["A", "A"], :commission_year => [-1, 1])
+    DuckDB.register_data_frame(connection, asset_commission, "asset_commission")
+
+    error_messages = TEM._validate_asset_commission_and_asset_both_consistency!(connection)
+    @test error_messages == [
+        "Missing commission_year = 0 for asset 'A' in 'asset_commission' given (asset 'A', milestone_year = 1, commission_year = 0) in 'asset_both'. The commission_year should match the one in 'asset_both'.",
+        "Missing commission_year = 0 for asset 'A' in 'asset_commission' given (asset 'A', milestone_year = 2, commission_year = 0) in 'asset_both'. The commission_year should match the one in 'asset_both'.",
+        "Unexpected commission_year = -1 for asset 'A' in 'asset_commission'. The commission_year should match the one in 'asset_both'.",
+        "Unexpected commission_year = 1 for asset 'A' in 'asset_commission'. The commission_year should match the one in 'asset_both'.",
+    ]
+end
+@testitem "Check consistency between asset_commission and asset_both - using Tiny data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(connection, "UPDATE asset_commission SET commission_year = 0 WHERE asset = 'wind'")
+    error_messages = TEM._validate_asset_commission_and_asset_both_consistency!(connection)
+    @test error_messages == [
+        "Missing commission_year = 2030 for asset 'wind' in 'asset_commission' given (asset 'wind', milestone_year = 2030, commission_year = 2030) in 'asset_both'. The commission_year should match the one in 'asset_both'.",
+        "Unexpected commission_year = 0 for asset 'wind' in 'asset_commission'. The commission_year should match the one in 'asset_both'.",
+    ]
+end
