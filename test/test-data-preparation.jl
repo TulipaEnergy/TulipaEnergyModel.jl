@@ -326,3 +326,23 @@ end
     # test that the final number of tables is correct
     @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 26
 end
+
+@testitem "Test _compute_durations" setup = [CommonSetup] tags = [:unit, :fast] begin
+    row = (specification = "uniform", partition = "4")
+    @test collect(TEM._compute_durations(row, 12)) == [4, 4, 4]
+    @test collect(TEM._compute_durations(row, 24)) == [4, 4, 4, 4, 4, 4]
+    @test_throws AssertionError TEM._compute_durations(row) # missing horizon_length
+
+    row = (specification = "explicit", partition = "4;3")
+    @test collect(TEM._compute_durations(row)) == [4, 3]
+    row = (specification = "explicit", partition = "4;3;4;7")
+    @test collect(TEM._compute_durations(row)) == [4, 3, 4, 7]
+
+    row = (specification = "math", partition = "4x3+3x4")
+    @test collect(TEM._compute_durations(row)) == [3, 3, 3, 3, 4, 4, 4]
+    row = (specification = "math", partition = "1x12+2x3+1x4+2x1")
+    @test collect(TEM._compute_durations(row)) == [12, 3, 3, 4, 1, 1]
+
+    row = (specification = "bad",)
+    @test_throws ErrorException TEM._compute_durations(row)
+end

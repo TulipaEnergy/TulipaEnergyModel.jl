@@ -319,23 +319,7 @@ function create_unrolled_partition_tables!(connection)
 
     appender = DuckDB.Appender(connection, "asset_time_resolution_rep_period")
     for row in TulipaIO.get_table(Val(:raw), connection, "t_explicit_assets_rep_periods_partitions")
-        durations = if row.specification == "uniform"
-            step = parse(Int, row.partition)
-            durations = Iterators.repeated(step, div(row.num_timesteps, step))
-        elseif row.specification == "explicit"
-            durations = parse.(Int, split(row.partition, ";"))
-        elseif row.specification == "math"
-            atoms = split(row.partition, "+")
-            durations =
-                (
-                    begin
-                        r, d = parse.(Int, split(atom, "x"))
-                        Iterators.repeated(d, r)
-                    end for atom in atoms
-                ) |> Iterators.flatten
-        else
-            error("Row specification '$(row.specification)' is not valid")
-        end
+        durations = _compute_durations(row, row.num_timesteps)
         _append_given_durations(appender, row, durations)
     end
     DuckDB.close(appender)
@@ -356,23 +340,7 @@ function create_unrolled_partition_tables!(connection)
 
     appender = DuckDB.Appender(connection, "flow_time_resolution_rep_period")
     for row in TulipaIO.get_table(Val(:raw), connection, "t_explicit_flows_rep_periods_partitions")
-        durations = if row.specification == "uniform"
-            step = parse(Int, row.partition)
-            durations = Iterators.repeated(step, div(row.num_timesteps, step))
-        elseif row.specification == "explicit"
-            durations = parse.(Int, split(row.partition, ";"))
-        elseif row.specification == "math"
-            atoms = split(row.partition, "+")
-            durations =
-                (
-                    begin
-                        r, d = parse.(Int, split(atom, "x"))
-                        Iterators.repeated(d, r)
-                    end for atom in atoms
-                ) |> Iterators.flatten
-        else
-            error("Row specification '$(row.specification)' is not valid")
-        end
+        durations = _compute_durations(row, row.num_timesteps)
         _append_given_durations(appender, row, durations)
     end
     DuckDB.close(appender)
@@ -423,23 +391,7 @@ function create_unrolled_partition_tables!(connection)
             ON main.year = sub.year
         ",
     )
-        durations = if row.specification == "uniform"
-            step = parse(Int, row.partition)
-            durations = Iterators.repeated(step, div(row.num_periods, step))
-        elseif row.specification == "explicit"
-            durations = parse.(Int, split(row.partition, ";"))
-        elseif row.specification == "math"
-            atoms = split(row.partition, "+")
-            durations =
-                (
-                    begin
-                        r, d = parse.(Int, split(atom, "x"))
-                        Iterators.repeated(d, r)
-                    end for atom in atoms
-                ) |> Iterators.flatten
-        else
-            error("Row specification '$(row.specification)' is not valid")
-        end
+        durations = _compute_durations(row, row.num_periods)
         _append_given_durations(appender, row, durations)
     end
     DuckDB.close(appender)
@@ -627,4 +579,21 @@ function create_highest_resolution_table!(connection)
             ",
         )
     end
+end
+
+function _compute_durations(row, max_length_uniform = "")
+    if row.specification == "uniform"
+        @assert max_length_uniform != ""
+        step = parse(Int, row.partition)
+        return Iterators.repeated(step, div(max_length_uniform, step))
+    elseif row.specification == "explicit"
+        return parse.(Int, split(row.partition, ";"))
+    elseif row.specification == "math"
+        atoms = split(row.partition, "+")
+        parsed_atoms = (parse.(Int, split(atom, "x")) for atom in atoms)
+        transformed_atoms = (Iterators.repeated(d, r) for (r, d) in parsed_atoms)
+        return Iterators.flatten(transformed_atoms)
+    end
+
+    return error("Row specification '$(row.specification)' is not valid")
 end
