@@ -1,4 +1,4 @@
-@testset "Test some HiGHS options" begin
+@testitem "Test HiGHS optimizer options" setup = [CommonSetup] tags = [:unit, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
     energy_problem = TulipaEnergyModel.run_scenario(
@@ -17,7 +17,7 @@
     )
 end
 
-@testset "Test run_scenario arguments" begin
+@testitem "Test run_scenario arguments" setup = [CommonSetup] tags = [:unit, :fast] begin
     connection = _tiny_fixture()
 
     ep = TulipaEnergyModel.run_scenario(
@@ -38,7 +38,7 @@ end
     @test JuMP.mode(ep.model) == JuMP.ModelMode(2)
 end
 
-@testset "Test create_model! arguments" begin
+@testitem "Test create_model! arguments" setup = [CommonSetup] tags = [:unit, :fast] begin
     connection = _tiny_fixture()
 
     ep = TulipaEnergyModel.EnergyProblem(connection)
@@ -56,35 +56,45 @@ end
     @test JuMP.mode(ep.model) == JuMP.ModelMode(2)
 end
 
-@testset "Test default_parameters usage" begin
-    @testset "HiGHS" begin
-        expected = Dict{String,Any}("output_flag" => false)
-        @test TulipaEnergyModel.default_parameters(Val(:HiGHS)) == expected
-        @test TulipaEnergyModel.default_parameters(HiGHS.Optimizer) == expected
-        @test TulipaEnergyModel.default_parameters(:HiGHS) == expected
-        @test TulipaEnergyModel.default_parameters("HiGHS") == expected
-    end
-
-    @testset "Undefined values" begin
-        expected = Dict{String,Any}()
-        @test TulipaEnergyModel.default_parameters(Val(:blah)) == expected
-        @test TulipaEnergyModel.default_parameters(:blah) == expected
-        @test TulipaEnergyModel.default_parameters("blah") == expected
-        struct DummySolver <: MathOptInterface.AbstractOptimizer end
-        @test TulipaEnergyModel.default_parameters(Val(:DummySolver)) == expected
-    end
-
-    @testset "New definition" begin
-        expected = Dict{String,Any}("dummy" => true, "use" => :testing)
-        struct NewSolver <: MathOptInterface.AbstractOptimizer end
-        TulipaEnergyModel.default_parameters(::Val{:NewSolver}) = expected
-        @test TulipaEnergyModel.default_parameters(NewSolver) == expected
-        @test TulipaEnergyModel.default_parameters(:NewSolver) == expected
-        @test TulipaEnergyModel.default_parameters("NewSolver") == expected
-    end
+@testitem "Test default_parameters for HiGHS" setup = [CommonSetup] tags = [:unit, :fast] begin
+    expected = Dict{String,Any}("output_flag" => false)
+    @test TulipaEnergyModel.default_parameters(Val(:HiGHS)) == expected
+    @test TulipaEnergyModel.default_parameters(HiGHS.Optimizer) == expected
+    @test TulipaEnergyModel.default_parameters(:HiGHS) == expected
+    @test TulipaEnergyModel.default_parameters("HiGHS") == expected
 end
 
-@testset "Test reading from file" begin
+@testmodule TestSolvers begin
+    using MathOptInterface
+    using TulipaEnergyModel
+
+    struct DummySolver <: MathOptInterface.AbstractOptimizer end
+    struct NewSolver <: MathOptInterface.AbstractOptimizer end
+    # Need to override the method specifically for our NewSolver type
+    TulipaEnergyModel.default_parameters(::Type{NewSolver}) =
+        Dict{String,Any}("dummy" => true, "use" => :testing)
+    TulipaEnergyModel.default_parameters(::Val{:NewSolver}) =
+        Dict{String,Any}("dummy" => true, "use" => :testing)
+end
+
+@testitem "Test default_parameters for undefined values" setup = [CommonSetup, TestSolvers] tags =
+    [:unit, :fast] begin
+    expected = Dict{String,Any}()
+    @test TulipaEnergyModel.default_parameters(Val(:blah)) == expected
+    @test TulipaEnergyModel.default_parameters(:blah) == expected
+    @test TulipaEnergyModel.default_parameters("blah") == expected
+    @test TulipaEnergyModel.default_parameters(Val(:DummySolver)) == expected
+end
+
+@testitem "Test default_parameters new definition" setup = [CommonSetup, TestSolvers] tags =
+    [:unit, :fast] begin
+    expected = Dict{String,Any}("dummy" => true, "use" => :testing)
+    @test TulipaEnergyModel.default_parameters(TestSolvers.NewSolver) == expected
+    @test TulipaEnergyModel.default_parameters(:NewSolver) == expected
+    @test TulipaEnergyModel.default_parameters("NewSolver") == expected
+end
+
+@testitem "Test reading parameters from file" setup = [CommonSetup] tags = [:unit, :fast] begin
     filepath, io = mktemp()
     println(
         io,
@@ -111,7 +121,7 @@ end
     @test_throws ArgumentError TulipaEnergyModel.read_parameters_from_file("badfile")
 end
 
-@testset "Test that bad options throw errors" begin
+@testitem "Test bad optimizer options throw errors" setup = [CommonSetup] tags = [:unit, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
     @test_throws MathOptInterface.UnsupportedAttribute energy_problem =
