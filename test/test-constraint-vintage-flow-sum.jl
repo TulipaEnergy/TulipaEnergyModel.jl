@@ -1,4 +1,5 @@
-@testset "Test add_vintage_flow_sum_constraints!" begin
+@testitem "Test add_vintage_flow_sum_constraints!" setup = [CommonSetup] tags =
+    [:unit, :validation, :fast] begin
     # Setup a temporary DuckDB connection and model
     connection = DBInterface.connect(DuckDB.DB)
     model = JuMP.Model()

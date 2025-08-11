@@ -1,4 +1,4 @@
-@testset "Test add_investment_variables!" begin
+@testitem "Test add_investment_variables!" setup = [CommonSetup] tags = [:unit, :validation, :fast] begin
     # Setup a temporary DuckDB connection and model
     connection = DBInterface.connect(DuckDB.DB)
     model = JuMP.Model()
