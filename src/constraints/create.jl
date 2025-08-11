@@ -39,6 +39,10 @@ function compute_constraints_indices(connection)
             :shut_down_upper_bound_simple_investment,
             :shut_down_upper_bound_compact_investment,
             :su_sd_eq_units_on_diff,
+            :su_ramping_compact_1bin,
+            :sd_ramping_compact_1bin,
+            :su_ramping_tight_1bin,
+            :sd_ramping_tight_1bin,
         )
     )
 
