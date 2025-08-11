@@ -426,7 +426,7 @@ function _create_objective_auxiliary_table(connection, constants)
             ON asset_milestone.asset = in_between_years.asset
             AND asset_milestone.milestone_year = in_between_years.milestone_year
         LEFT JOIN asset
-            ON asset.asset = asset_commission.asset
+            ON asset.asset = asset_milestone.asset
         ",
     )
 
