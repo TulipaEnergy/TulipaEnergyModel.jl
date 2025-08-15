@@ -619,6 +619,27 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         )
     end
 
+    for table_name in (:susd_trajectory,)
+        for expr_name in (:units_on,)
+            @timeit to "attach $expr_name expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+                connection,
+                constraints[table_name],
+                variables[:units_on],
+                :units_on,
+                workspace,
+                agg_strategy = :unique_sum,
+            )
+        end
+        @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
+            connection,
+            constraints[table_name],
+            variables[:flow],
+            workspace;
+            use_highest_resolution = true,
+            multiply_by_duration = false,
+        )
+    end
+
     return
 end
 

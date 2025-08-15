@@ -984,3 +984,44 @@ from (
 
 drop sequence id
 ;
+
+create sequence id start 1
+;
+
+drop table if exists cons_susd_trajectory
+;
+
+create table cons_susd_trajectory as
+with sorted as (
+    select
+        t_high.asset,
+        t_high.year,
+        t_high.rep_period,
+        t_high.time_block_start,
+        t_high.time_block_end,
+        asset.min_operating_point,
+    from
+        t_highest_assets_and_out_flows as t_high
+        join asset
+            on
+                t_high.asset = asset.asset
+    where
+        asset.type in ('producer', 'conversion')
+        and asset.unit_commitment
+        and asset.unit_commitment_method = '3bin-3'
+    order by
+        t_high.asset,
+        t_high.year,
+        t_high.rep_period,
+        t_high.time_block_start,
+        t_high.time_block_end
+)
+select
+    nextval('id') as id,
+    sorted.*
+from
+    sorted
+;
+
+drop sequence id
+;
