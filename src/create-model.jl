@@ -215,7 +215,23 @@ function create_model(
         constraints,
     )
 
-    @timeit to "add_start_up_and_shut_down_constraints!" add_start_up_and_shut_down_constraints!(
+    @timeit to "add_start_up_upper_bound_constraints!" add_start_up_upper_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_shut_down_upper_bound_constraints!" add_shut_down_upper_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_su_sd_eq_units_on_diff_constraints!" add_su_sd_eq_units_on_diff_constraints!(
         connection,
         model,
         variables,
