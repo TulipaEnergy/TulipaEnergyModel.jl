@@ -178,7 +178,23 @@ using JuMP
     expressions[:available_asset_units_compact_method].expressions[:assets] =
         [@expression(model, 1), @expression(model, 1)]
 
-    TulipaEnergyModel.add_start_up_and_shut_down_constraints!(
+    TulipaEnergyModel.add_start_up_upper_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    TulipaEnergyModel.add_shut_down_upper_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    TulipaEnergyModel.add_su_sd_eq_units_on_diff_constraints!(
         connection,
         model,
         variables,
