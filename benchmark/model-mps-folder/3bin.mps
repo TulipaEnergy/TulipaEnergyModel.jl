@@ -1709,21 +1709,21 @@ COLUMNS
     start_up[ocgt,2030,1,23:23] su_sd_eq_units_on_diff[ocgt,2030,1,23:23] -1
     start_up[ocgt,2030,1,24:24] start_up_upper_bound[ocgt,2030,1,24:24] 1
     start_up[ocgt,2030,1,24:24] su_sd_eq_units_on_diff[ocgt,2030,1,24:24] -1
-    shut_down[ccgt,2030,1,1:3] shut_down_upper_bound_simple_investment[ccgt,2030,1,1:2] 1
-    shut_down[ccgt,2030,1,4:6] shut_down_upper_bound_simple_investment[ccgt,2030,1,4:4] 1
-    shut_down[ccgt,2030,1,4:6] su_sd_eq_units_on_diff[ccgt,2030,1,4:4] 1
-    shut_down[ccgt,2030,1,7:9] shut_down_upper_bound_simple_investment[ccgt,2030,1,7:8] 1
-    shut_down[ccgt,2030,1,7:9] su_sd_eq_units_on_diff[ccgt,2030,1,7:8] 1
-    shut_down[ccgt,2030,1,10:12] shut_down_upper_bound_simple_investment[ccgt,2030,1,10:10] 1
-    shut_down[ccgt,2030,1,10:12] su_sd_eq_units_on_diff[ccgt,2030,1,10:10] 1
-    shut_down[ccgt,2030,1,13:15] shut_down_upper_bound_simple_investment[ccgt,2030,1,13:14] 1
-    shut_down[ccgt,2030,1,13:15] su_sd_eq_units_on_diff[ccgt,2030,1,13:14] 1
-    shut_down[ccgt,2030,1,16:18] shut_down_upper_bound_simple_investment[ccgt,2030,1,16:16] 1
-    shut_down[ccgt,2030,1,16:18] su_sd_eq_units_on_diff[ccgt,2030,1,16:16] 1
-    shut_down[ccgt,2030,1,19:21] shut_down_upper_bound_simple_investment[ccgt,2030,1,19:20] 1
-    shut_down[ccgt,2030,1,19:21] su_sd_eq_units_on_diff[ccgt,2030,1,19:20] 1
-    shut_down[ccgt,2030,1,22:24] shut_down_upper_bound_simple_investment[ccgt,2030,1,22:22] 1
-    shut_down[ccgt,2030,1,22:24] su_sd_eq_units_on_diff[ccgt,2030,1,22:22] 1
+    shut_down[ccgt,2030,1,1:2] shut_down_upper_bound_simple_investment[ccgt,2030,1,1:2] 1
+    shut_down[ccgt,2030,1,4:4] shut_down_upper_bound_simple_investment[ccgt,2030,1,4:4] 1
+    shut_down[ccgt,2030,1,4:4] su_sd_eq_units_on_diff[ccgt,2030,1,4:4] 1
+    shut_down[ccgt,2030,1,7:8] shut_down_upper_bound_simple_investment[ccgt,2030,1,7:8] 1
+    shut_down[ccgt,2030,1,7:8] su_sd_eq_units_on_diff[ccgt,2030,1,7:8] 1
+    shut_down[ccgt,2030,1,10:10] shut_down_upper_bound_simple_investment[ccgt,2030,1,10:10] 1
+    shut_down[ccgt,2030,1,10:10] su_sd_eq_units_on_diff[ccgt,2030,1,10:10] 1
+    shut_down[ccgt,2030,1,13:14] shut_down_upper_bound_simple_investment[ccgt,2030,1,13:14] 1
+    shut_down[ccgt,2030,1,13:14] su_sd_eq_units_on_diff[ccgt,2030,1,13:14] 1
+    shut_down[ccgt,2030,1,16:16] shut_down_upper_bound_simple_investment[ccgt,2030,1,16:16] 1
+    shut_down[ccgt,2030,1,16:16] su_sd_eq_units_on_diff[ccgt,2030,1,16:16] 1
+    shut_down[ccgt,2030,1,19:20] shut_down_upper_bound_simple_investment[ccgt,2030,1,19:20] 1
+    shut_down[ccgt,2030,1,19:20] su_sd_eq_units_on_diff[ccgt,2030,1,19:20] 1
+    shut_down[ccgt,2030,1,22:22] shut_down_upper_bound_simple_investment[ccgt,2030,1,22:22] 1
+    shut_down[ccgt,2030,1,22:22] su_sd_eq_units_on_diff[ccgt,2030,1,22:22] 1
     shut_down[ocgt,2030,1,1:1] shut_down_upper_bound_simple_investment[ocgt,2030,1,1:1] 1
     shut_down[ocgt,2030,1,2:2] shut_down_upper_bound_simple_investment[ocgt,2030,1,2:2] 1
     shut_down[ocgt,2030,1,2:2] su_sd_eq_units_on_diff[ocgt,2030,1,2:2] 1
@@ -2739,22 +2739,22 @@ BOUNDS
  PL bounds    start_up[ocgt,2030,1,23:23]
  LO bounds    start_up[ocgt,2030,1,24:24] 0
  PL bounds    start_up[ocgt,2030,1,24:24]
- LO bounds    shut_down[ccgt,2030,1,1:3] 0
- PL bounds    shut_down[ccgt,2030,1,1:3]
- LO bounds    shut_down[ccgt,2030,1,4:6] 0
- PL bounds    shut_down[ccgt,2030,1,4:6]
- LO bounds    shut_down[ccgt,2030,1,7:9] 0
- PL bounds    shut_down[ccgt,2030,1,7:9]
- LO bounds    shut_down[ccgt,2030,1,10:12] 0
- PL bounds    shut_down[ccgt,2030,1,10:12]
- LO bounds    shut_down[ccgt,2030,1,13:15] 0
- PL bounds    shut_down[ccgt,2030,1,13:15]
- LO bounds    shut_down[ccgt,2030,1,16:18] 0
- PL bounds    shut_down[ccgt,2030,1,16:18]
- LO bounds    shut_down[ccgt,2030,1,19:21] 0
- PL bounds    shut_down[ccgt,2030,1,19:21]
- LO bounds    shut_down[ccgt,2030,1,22:24] 0
- PL bounds    shut_down[ccgt,2030,1,22:24]
+ LO bounds    shut_down[ccgt,2030,1,1:2] 0
+ PL bounds    shut_down[ccgt,2030,1,1:2]
+ LO bounds    shut_down[ccgt,2030,1,4:4] 0
+ PL bounds    shut_down[ccgt,2030,1,4:4]
+ LO bounds    shut_down[ccgt,2030,1,7:8] 0
+ PL bounds    shut_down[ccgt,2030,1,7:8]
+ LO bounds    shut_down[ccgt,2030,1,10:10] 0
+ PL bounds    shut_down[ccgt,2030,1,10:10]
+ LO bounds    shut_down[ccgt,2030,1,13:14] 0
+ PL bounds    shut_down[ccgt,2030,1,13:14]
+ LO bounds    shut_down[ccgt,2030,1,16:16] 0
+ PL bounds    shut_down[ccgt,2030,1,16:16]
+ LO bounds    shut_down[ccgt,2030,1,19:20] 0
+ PL bounds    shut_down[ccgt,2030,1,19:20]
+ LO bounds    shut_down[ccgt,2030,1,22:22] 0
+ PL bounds    shut_down[ccgt,2030,1,22:22]
  LO bounds    shut_down[ocgt,2030,1,1:1] 0
  PL bounds    shut_down[ocgt,2030,1,1:1]
  LO bounds    shut_down[ocgt,2030,1,2:2] 0
