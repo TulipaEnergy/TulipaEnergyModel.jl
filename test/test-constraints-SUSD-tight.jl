@@ -1,6 +1,6 @@
 using JuMP
 
-@testset "Test tight SUSD constraints" begin
+@testitem "Test tight SUSD constraints" setup = [CommonSetup] tags = [:unit, :validation, :fast] begin
     # Setup a temporary DuckDB connection and model
     connection = DBInterface.connect(DuckDB.DB)
     model = JuMP.Model()
@@ -172,11 +172,15 @@ using JuMP
         key in (:available_asset_units_simple_method, :available_asset_units_compact_method)
     )
 
-    expressions[:available_asset_units_simple_method].expressions[:assets] =
-        [@expression(model, 1), @expression(model, 1), @expression(model, 1), @expression(model, 1)]
+    expressions[:available_asset_units_simple_method].expressions[:assets] = [
+        JuMP.@expression(model, 1),
+        JuMP.@expression(model, 1),
+        JuMP.@expression(model, 1),
+        JuMP.@expression(model, 1)
+    ]
 
     expressions[:available_asset_units_compact_method].expressions[:assets] =
-        [@expression(model, 1), @expression(model, 1)]
+        [JuMP.@expression(model, 1), JuMP.@expression(model, 1)]
 
     TulipaEnergyModel.add_start_up_upper_bound_constraints!(
         connection,
@@ -235,7 +239,7 @@ using JuMP
     observed_cons = _get_cons_object(model, :shut_down_upper_bound_compact_investment)
     @test _is_constraint_equal(expected_cons, observed_cons)
 
-    @variable(model, dummy)
+    JuMP.@variable(model, dummy)
 
     expected_cons = [
         JuMP.@build_constraint(0 * dummy == 0),
