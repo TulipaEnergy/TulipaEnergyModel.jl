@@ -163,7 +163,8 @@ function _validate_schema_one_of_constraints!(connection)
     for (table_name, table) in TulipaEnergyModel.schema, (col, attr) in table
         if haskey(attr, "constraints") && haskey(attr["constraints"], "oneOf")
             valid_types = attr["constraints"]["oneOf"]
-            valid_types_string = join([TulipaIO.FmtSQL.fmt_quote(s) for s in valid_types], ", ")
+            valid_types_string =
+                join([TulipaIO.FmtSQL.fmt_quote(s) for s in valid_types if !isnothing(s)], ", ")
 
             query_str = "SELECT $col FROM $table_name WHERE $col NOT IN ($valid_types_string)"
             # The query above alone does not catch NULL. So if NULLs are not in the list, improve the query
