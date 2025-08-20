@@ -84,6 +84,20 @@ end
           ["Table 'asset' has bad value for column 'consumer_balance_sense': '<>'"]
 end
 
+@testitem "Test schema oneOf constraints - bad unit commitment method" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    # Change the table to force an error
+    DuckDB.query(
+        connection,
+        "UPDATE asset SET unit_commitment_method = 'bad' WHERE asset = 'demand'",
+    )
+    @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
+    error_messages = TEM._validate_schema_one_of_constraints!(connection)
+    @test error_messages ==
+          ["Table 'asset' has bad value for column 'unit_commitment_method': 'bad'"]
+end
+
 @testitem "Test schema oneOf constraints - bad specification" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)
