@@ -85,6 +85,32 @@ end
     @test energy_problem.objective_value ≈ 293074.923309 atol = 1e-5
 end
 
+@testitem "3bin Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow] begin
+    dir = joinpath(INPUT_FOLDER, "3bin")
+    optimizer = HiGHS.Optimizer
+    optimizer_parameters =
+        Dict("output_flag" => false, "mip_rel_gap" => 0.0, "mip_feasibility_tolerance" => 1e-5)
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, dir)
+    energy_problem = TulipaEnergyModel.run_scenario(
+        connection;
+        optimizer,
+        optimizer_parameters,
+        show_log = false,
+    )
+
+    @test energy_problem.objective_value ≈ 284157.180907 atol = 1e-5
+    # populate_with_defaults shouldn't change the solution
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(
+        connection;
+        optimizer,
+        optimizer_parameters,
+        show_log = false,
+    )
+    @test energy_problem.objective_value ≈ 284157.180907 atol = 1e-5
+end
+
 @testitem "Tiny Variable Resolution Case Study" setup = [CommonSetup] tags =
     [:case_study, :integration, :slow] begin
     dir = joinpath(INPUT_FOLDER, "Variable Resolution")
