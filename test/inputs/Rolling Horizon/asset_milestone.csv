@@ -1,0 +1,6 @@
+asset,initial_storage_level,investable,milestone_year,peak_demand,max_energy_timeframe_partition,min_energy_timeframe_partition,storage_inflows,units_on_cost
+Solar,,false,2030,0.0,,,0.0,
+Wind Offshore,,false,2030,0.0,,,0.0,
+Battery,10.0,false,2030,0.0,,,0.0,
+Hub,,false,2030,0.0,,,0.0,
+Demand,,false,2030,37.5,,,0.0,

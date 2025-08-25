@@ -1,0 +1,5 @@
+from_asset,milestone_year,to_asset,dc_opf,investable,reactance,variable_cost
+Wind Offshore,2030,Hub,false,false,0.3,0.0
+Battery,2030,Hub,false,false,0.3,0.0
+Hub,2030,Battery,false,false,0.3,0.0
+Hub,2030,Demand,false,false,0.3,0.0

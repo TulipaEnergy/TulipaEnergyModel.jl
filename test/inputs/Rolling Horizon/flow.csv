@@ -1,0 +1,5 @@
+from_asset,to_asset,capacity,carrier,discount_rate,economic_lifetime,investment_integer,is_transport,technical_lifetime
+Wind Offshore,Hub,0.0,,0.0,1,false,false,1
+Battery,Hub,0.0,,0.0,1,false,false,1
+Hub,Battery,0.0,,0.0,1,false,false,1
+Hub,Demand,0.0,,0.0,1,false,false,1
