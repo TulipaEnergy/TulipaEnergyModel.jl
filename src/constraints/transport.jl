@@ -111,6 +111,27 @@ function add_transport_constraints!(
         )
     end
 
+    # - Minimum output vintage flows limit if any of the flows is transport flow
+    # - Since regular flow is a special case of the vintage_flow, vintage_flow has to have the same
+    # - constraint as the regular flow above
+    let table_name = :min_outgoing_flow_for_transport_vintage_flows,
+        cons_name = Symbol("min_output_flows_limit_for_transport_vintage_flows")
+
+        attach_constraint!(
+            model,
+            constraints[table_name],
+            cons_name,
+            [
+                @constraint(
+                    model,
+                    outgoing_flow ≥ 0,
+                    base_name = "$cons_name[$(row.asset),$(row.milestone_year),$(row.commission_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                ) for (row, outgoing_flow) in
+                zip(constraints[table_name].indices, constraints[table_name].expressions[:outgoing])
+            ],
+        )
+    end
+
     # - Minimum input flows limit if any of the flows is transport flow
     # - This allows some negative flows but not all negative flows, so transport flows can pass through this asset
     # - Holds for conversion and storage assets

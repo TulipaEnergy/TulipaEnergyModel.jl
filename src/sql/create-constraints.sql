@@ -309,6 +309,9 @@ where
 drop sequence id
 ;
 
+create sequence id start 1
+;
+
 drop table if exists cons_min_outgoing_flow_for_transport_vintage_flows
 ;
 
@@ -334,14 +337,20 @@ with
             asset
     )
 select
-    var.*
+    nextval('id') as id,
+    t_high.asset as asset,
+    t_high.year as milestone_year,
+    asset_both.commission_year as commission_year,
+    t_high.rep_period,
+    t_high.time_block_start,
+    t_high.time_block_end
 from
-    var_vintage_flow as var
-    left join asset on var.from_asset = asset.asset
-    left join transport_flow_info on var.from_asset = transport_flow_info.asset
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+    left join transport_flow_info on t_high.asset = transport_flow_info.asset
+    left join asset_both on t_high.asset = asset_both.asset
+        and t_high.year = asset_both.milestone_year
 where
-    -- the first condition below is strictly not needed because var_vintage_flow only
-    -- has these types, but is included to reiterate
     asset.type in ('producer', 'storage', 'conversion')
     and asset.investment_method = 'semi-compact'
     and transport_flow_info.outgoing_flows_have_transport_flows
@@ -349,6 +358,9 @@ where
     -- the minimum point of flow, instead of vintage_flow
     -- for the same reason, we cannot reuse cons_min_outgoing_flow_for_transport_flows_without_unit_commitment
     -- directly
+;
+
+drop sequence id
 ;
 
 create sequence id start 1
