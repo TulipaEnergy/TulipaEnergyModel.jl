@@ -309,6 +309,48 @@ where
 drop sequence id
 ;
 
+drop table if exists cons_min_outgoing_flow_for_transport_vintage_flows
+;
+
+-- this constraint is very similar to cons_min_outgoing_flow_for_transport_flows_without_unit_commitment
+-- but it applies to vintage flows instead of regular flows
+create table cons_min_outgoing_flow_for_transport_vintage_flows as
+with
+    transport_flow_info as (
+        select
+            asset.asset,
+            coalesce(
+                (
+                    select
+                        bool_or(flow.is_transport)
+                    from
+                        flow
+                    where
+                        flow.from_asset = asset.asset
+                ),
+                false
+            ) as outgoing_flows_have_transport_flows,
+        from
+            asset
+    )
+select
+    var.*
+from
+    var_vintage_flow as var
+    left join asset on var.from_asset = asset.asset
+    left join transport_flow_info on var.from_asset = transport_flow_info.asset
+where
+    -- the first condition below is strictly not needed because var_vintage_flow only
+    -- has these types, but is included to reiterate
+    asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method = 'semi-compact'
+    and transport_flow_info.outgoing_flows_have_transport_flows
+    -- note we do not exclude UC here, because UC only guarantees
+    -- the minimum point of flow, instead of vintage_flow
+    -- for the same reason, we cannot reuse cons_min_outgoing_flow_for_transport_flows_without_unit_commitment
+    -- directly
+;
+
 create sequence id start 1
 ;
 
