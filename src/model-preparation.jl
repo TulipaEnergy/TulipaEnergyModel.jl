@@ -426,6 +426,7 @@ function add_expression_terms_over_clustered_year_constraints!(
 
     # Completely separate calculation for inflows_profile_aggregation
     if is_storage_level
+        # TODO: Fix this for rolling horizon
         cons.coefficients[:inflows_profile_aggregation] .= [
             row.inflows_agg for row in DuckDB.query(
                 connection,
@@ -615,19 +616,23 @@ function add_expressions_to_constraints!(connection, variables, constraints)
 end
 
 function prepare_profiles_structure(connection)
+    # Independent of being rolling horizon or not, these are complete
     rep_period = Dict(
-        (row.profile_name, row.year, row.rep_period) => [
-            row.value for row in DuckDB.query(
-                connection,
-                "SELECT profile.value
-                FROM profiles_rep_periods AS profile
-                WHERE
-                    profile.profile_name = '$(row.profile_name)'
-                    AND profile.year = $(row.year)
-                    AND profile.rep_period = $(row.rep_period)
-                ",
-            )
-        ] for row in DuckDB.query(
+        (row.profile_name, row.year, row.rep_period) => ProfileWithRollingHorizon(
+            [
+                row.value for row in DuckDB.query(
+                    connection,
+                    "SELECT profile.value
+                    FROM profiles_rep_periods AS profile
+                    WHERE
+                        profile.profile_name = '$(row.profile_name)'
+                        AND profile.year = $(row.year)
+                        AND profile.rep_period = $(row.rep_period)
+                    ",
+                )
+            ],
+            JuMP.VariableRef[],
+        ) for row in DuckDB.query(
             connection,
             "SELECT DISTINCT
                 profiles.profile_name,
