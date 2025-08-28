@@ -13,6 +13,44 @@ function add_transport_constraints!(
     constraints,
     profiles,
 )
+    # - Capacity limits for transport flows including lower bounds and upper bounds
+    add_capacity_limits_transport_flows!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles,
+    )
+
+    # - Minimum output flows limit if any of the flows is transport flow
+    # - This allows some negative flows but not all negative flows, so transport flows can pass
+    # - through this asset
+    # - Holds for producers, conversion and storage assets
+    add_min_outgoing_flow_for_transport_flows_without_unit_commitment(model, constraints)
+
+    # - Minimum output vintage flows limit if any of the flows is transport flow
+    # - Since regular flow is a special case of the vintage_flow, vintage_flow has to have the same
+    # - constraint as the regular flow above
+    add_min_outgoing_flow_for_transport_vintage_flows(model, constraints)
+
+    # - Minimum input flows limit if any of the flows is transport flow
+    # - This allows some negative flows but not all negative flows, so transport flows can pass
+    # - through this asset
+    # - Holds for conversion and storage assets
+    add_min_incoming_flow_for_transport_flows(model, constraints)
+
+    return
+end
+
+function add_capacity_limits_transport_flows!(
+    connection,
+    model,
+    variables,
+    expressions,
+    constraints,
+    profiles,
+)
     ## unpack from model
     expr_avail = expressions[:available_flow_units_simple_method]
     expr_avail_export = expr_avail.expressions[:export]
@@ -89,10 +127,9 @@ function add_transport_constraints!(
             ],
         )
     end
+end
 
-    # - Minimum output flows limit if any of the flows is transport flow
-    # - This allows some negative flows but not all negative flows, so transport flows can pass through this asset
-    # - Holds for producers, conversion and storage assets
+function add_min_outgoing_flow_for_transport_flows_without_unit_commitment(model, constraints)
     let table_name = :min_outgoing_flow_for_transport_flows_without_unit_commitment,
         cons_name = Symbol("min_output_flows_limit_for_transport_flows_without_unit_commitment")
 
@@ -110,34 +147,6 @@ function add_transport_constraints!(
             ],
         )
     end
-
-    # - Minimum output vintage flows limit if any of the flows is transport flow
-    # - Since regular flow is a special case of the vintage_flow, vintage_flow has to have the same
-    # - constraint as the regular flow above
-    add_min_outgoing_flow_for_transport_vintage_flows(model, constraints)
-
-    # - Minimum input flows limit if any of the flows is transport flow
-    # - This allows some negative flows but not all negative flows, so transport flows can pass through this asset
-    # - Holds for conversion and storage assets
-    let table_name = :min_incoming_flow_for_transport_flows,
-        cons_name = Symbol("min_input_flows_limit_for_transport_flows")
-
-        attach_constraint!(
-            model,
-            constraints[table_name],
-            cons_name,
-            [
-                @constraint(
-                    model,
-                    incoming_flow ≥ 0,
-                    base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                ) for (row, incoming_flow) in
-                zip(constraints[table_name].indices, constraints[table_name].expressions[:incoming])
-            ],
-        )
-    end
-
-    return
 end
 
 function add_min_outgoing_flow_for_transport_vintage_flows(model, constraints)
@@ -155,6 +164,26 @@ function add_min_outgoing_flow_for_transport_vintage_flows(model, constraints)
                     base_name = "$cons_name[$(row.asset),$(row.milestone_year),$(row.commission_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, outgoing_flow) in
                 zip(constraints[table_name].indices, constraints[table_name].expressions[:outgoing])
+            ],
+        )
+    end
+end
+
+function add_min_incoming_flow_for_transport_flows(model, constraints)
+    let table_name = :min_incoming_flow_for_transport_flows,
+        cons_name = Symbol("min_input_flows_limit_for_transport_flows")
+
+        attach_constraint!(
+            model,
+            constraints[table_name],
+            cons_name,
+            [
+                @constraint(
+                    model,
+                    incoming_flow ≥ 0,
+                    base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                ) for (row, incoming_flow) in
+                zip(constraints[table_name].indices, constraints[table_name].expressions[:incoming])
             ],
         )
     end
