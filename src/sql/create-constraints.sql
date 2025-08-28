@@ -272,6 +272,8 @@ drop table if exists cons_min_outgoing_flow_for_transport_flows_without_unit_com
 
 create table cons_min_outgoing_flow_for_transport_flows_without_unit_commitment as
 -- We want to check if the outgoing flows of an asset have transport flows
+-- Note we assume that the this property does not change across the years
+-- In other words, we assume the underlying graph does not change
 -- This information is gathered from the flow table
 -- COALESCE is used to handle the case where there are no outgoing flows
 with
@@ -315,7 +317,7 @@ create sequence id start 1
 drop table if exists cons_min_outgoing_flow_for_transport_vintage_flows
 ;
 
--- this constraint is very similar to cons_min_outgoing_flow_for_transport_flows_without_unit_commitment
+-- This constraint is very similar to cons_min_outgoing_flow_for_transport_flows_without_unit_commitment
 -- but it applies to vintage flows instead of regular flows
 create table cons_min_outgoing_flow_for_transport_vintage_flows as
 with
@@ -354,9 +356,9 @@ where
     asset.type in ('producer', 'storage', 'conversion')
     and asset.investment_method = 'semi-compact'
     and transport_flow_info.outgoing_flows_have_transport_flows
-    -- note we do not exclude UC here, because UC only guarantees
-    -- the minimum point of flow, instead of vintage_flow
-    -- for the same reason, we cannot reuse cons_min_outgoing_flow_for_transport_flows_without_unit_commitment
+    -- Note we do not exclude UC here, because UC only guarantees
+    -- the minimum point of flow, instead of vintage flow
+    -- For the same reason, we cannot reuse cons_min_outgoing_flow_for_transport_flows_without_unit_commitment
     -- directly
 ;
 
