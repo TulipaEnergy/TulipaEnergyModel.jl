@@ -403,7 +403,7 @@ from
 where
     asset.type in ('storage', 'conversion')
     and transport_flow_info.incoming_flows_have_transport_flows
-    and asset.investment_method in ('compact','simple', 'none')
+    and asset.investment_method in ('compact', 'simple', 'none')
 ;
 
 drop sequence id
