@@ -306,7 +306,7 @@ where
     and transport_flow_info.outgoing_flows_have_transport_flows
     -- Assets with unit commitment already have a minimum outgoing flow constraints
     and not asset.unit_commitment
-    and asset.investment_method in ('compact','simple', 'none')
+    and asset.investment_method in ('compact', 'simple', 'none')
 ;
 
 drop sequence id
