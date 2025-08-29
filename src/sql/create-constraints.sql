@@ -350,7 +350,7 @@ select
 from
     t_highest_out_flows as t_high
     left join asset on t_high.asset = asset.asset
-    left join transport_flow_info on t_high.asset = transport_flow_info.asset
+    left join cte_transport_flow_info on t_high.asset = cte_transport_flow_info.asset
     left join asset_both on t_high.asset = asset_both.asset
         and t_high.year = asset_both.milestone_year
 where
