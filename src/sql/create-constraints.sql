@@ -334,7 +334,7 @@ with
                     where
                         flow.from_asset = asset.asset
                 ),
-                false
+                false -- coalescing to false in case there are no outgoing flows
             ) as outgoing_flows_have_transport_flows,
         from
             asset
