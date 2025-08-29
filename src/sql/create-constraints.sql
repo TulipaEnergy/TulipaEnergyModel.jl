@@ -328,7 +328,7 @@ with
             coalesce(
                 (
                     select
-                        bool_or(flow.is_transport)
+                        bool_or(flow.is_transport) -- true if any outgoing flow is transport
                     from
                         flow
                     where
