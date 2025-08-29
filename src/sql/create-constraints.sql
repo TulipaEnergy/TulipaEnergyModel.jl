@@ -356,7 +356,7 @@ from
 where
     asset.type in ('producer', 'storage', 'conversion')
     and asset.investment_method = 'semi-compact'
-    and transport_flow_info.outgoing_flows_have_transport_flows
+    and cte_transport_flow_info.outgoing_flows_have_transport_flows
     -- Note we do not exclude UC here, because UC only guarantees
     -- the minimum point of flow, instead of vintage flow
     -- For the same reason, we cannot reuse cons_min_outgoing_flow_for_transport_flows_without_unit_commitment
