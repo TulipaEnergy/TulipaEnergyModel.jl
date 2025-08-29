@@ -322,7 +322,7 @@ drop table if exists cons_min_outgoing_flow_for_transport_vintage_flows
 -- but it applies to vintage flows instead of regular flows
 create table cons_min_outgoing_flow_for_transport_vintage_flows as
 with
-    transport_flow_info as (
+    cte_transport_flow_info as (
         select
             asset.asset,
             coalesce(
