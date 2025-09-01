@@ -272,22 +272,24 @@ drop table if exists cons_min_outgoing_flow_for_transport_flows_without_unit_com
 
 create table cons_min_outgoing_flow_for_transport_flows_without_unit_commitment as
 -- We want to check if the outgoing flows of an asset have transport flows
+-- Note we assume that the this property does not change across the years
+-- In other words, we assume the underlying graph does not change
 -- This information is gathered from the flow table
 -- COALESCE is used to handle the case where there are no outgoing flows
 with
-    transport_flow_info as (
+    cte_transport_flow_info as (
         select
             asset.asset,
             coalesce(
                 (
                     select
-                        bool_or(flow.is_transport)
+                        bool_or(flow.is_transport) -- true if any outgoing flow is transport
                     from
                         flow
                     where
                         flow.from_asset = asset.asset
                 ),
-                false
+                false -- coalescing to false in case there are no outgoing flows
             ) as outgoing_flows_have_transport_flows,
         from
             asset
@@ -298,12 +300,67 @@ select
 from
     t_highest_out_flows as t_high
     left join asset on t_high.asset = asset.asset
-    left join transport_flow_info on t_high.asset = transport_flow_info.asset
+    left join cte_transport_flow_info on t_high.asset = cte_transport_flow_info.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
-    and transport_flow_info.outgoing_flows_have_transport_flows
+    and cte_transport_flow_info.outgoing_flows_have_transport_flows
     -- Assets with unit commitment already have a minimum outgoing flow constraints
     and not asset.unit_commitment
+    and asset.investment_method in ('compact', 'simple', 'none')
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_min_outgoing_flow_for_transport_vintage_flows
+;
+
+-- This constraint is very similar to cons_min_outgoing_flow_for_transport_flows_without_unit_commitment
+-- but it applies to vintage flows instead of regular flows
+create table cons_min_outgoing_flow_for_transport_vintage_flows as
+with
+    cte_transport_flow_info as (
+        select
+            asset.asset,
+            coalesce(
+                (
+                    select
+                        bool_or(flow.is_transport) -- true if any outgoing flow is transport
+                    from
+                        flow
+                    where
+                        flow.from_asset = asset.asset
+                ),
+                false -- coalescing to false in case there are no outgoing flows
+            ) as outgoing_flows_have_transport_flows,
+        from
+            asset
+    )
+select
+    nextval('id') as id,
+    t_high.asset as asset,
+    t_high.year as milestone_year,
+    asset_both.commission_year as commission_year,
+    t_high.rep_period,
+    t_high.time_block_start,
+    t_high.time_block_end
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+    left join cte_transport_flow_info on t_high.asset = cte_transport_flow_info.asset
+    left join asset_both on t_high.asset = asset_both.asset
+        and t_high.year = asset_both.milestone_year
+where
+    asset.type in ('producer', 'storage', 'conversion')
+    and asset.investment_method = 'semi-compact'
+    and cte_transport_flow_info.outgoing_flows_have_transport_flows
+    -- Note we do not exclude UC here, because UC only guarantees
+    -- the minimum point of flow, instead of vintage flow
+    -- For the same reason, we cannot reuse cons_min_outgoing_flow_for_transport_flows_without_unit_commitment
+    -- directly
 ;
 
 drop sequence id
@@ -319,20 +376,20 @@ create table cons_min_incoming_flow_for_transport_flows as
 -- Similar to the previous query, but for incoming flows
 -- Also for assets with unit commitment
 with
-    transport_flow_info as (
+    cte_transport_flow_info as (
         select
             asset.asset,
             coalesce(
                 (
                     select
-                        bool_or(flow.is_transport)
+                        bool_or(flow.is_transport) -- true if any incoming flow is transport
                     from
                         flow
                     where
                         flow.to_asset = asset.asset
                 ),
-                false
-            ) as incoming_flows_have_transport_flows,
+                false -- coalescing to false in case there are no incoming flows
+            ) as incoming_flows_have_transport_flows
         from
             asset
     )
@@ -342,10 +399,11 @@ select
 from
     t_highest_out_flows as t_high
     left join asset on t_high.asset = asset.asset
-    left join transport_flow_info on t_high.asset = transport_flow_info.asset
+    left join cte_transport_flow_info on t_high.asset = cte_transport_flow_info.asset
 where
     asset.type in ('storage', 'conversion')
-    and transport_flow_info.incoming_flows_have_transport_flows
+    and cte_transport_flow_info.incoming_flows_have_transport_flows
+    and asset.investment_method in ('compact', 'simple', 'none')
 ;
 
 drop sequence id

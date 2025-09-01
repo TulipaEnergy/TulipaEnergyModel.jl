@@ -519,16 +519,19 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         multiply_by_duration = false,
     )
 
-    @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
-        connection,
-        constraints[:capacity_outgoing_semi_compact_method],
-        variables[:vintage_flow],
-        workspace;
-        use_highest_resolution = true,
-        multiply_by_duration = false,
-        multiply_by_capacity_coefficient = true,
-        include_commission_year = true,
-    )
+    for table_name in
+        (:capacity_outgoing_semi_compact_method, :min_outgoing_flow_for_transport_vintage_flows)
+        @timeit to "add_expression_terms_rep_period_constraints! for $table_name" add_expression_terms_rep_period_constraints!(
+            connection,
+            constraints[table_name],
+            variables[:vintage_flow],
+            workspace;
+            use_highest_resolution = true,
+            multiply_by_duration = false,
+            multiply_by_capacity_coefficient = true,
+            include_commission_year = true,
+        )
+    end
 
     for table_name in (
         :capacity_incoming_simple_method,
