@@ -647,17 +647,20 @@ function prepare_profiles_structure(connection)
     )
 
     over_clustered_year = Dict(
-        (row.profile_name, row.year) => [
-            row.value for row in DuckDB.query(
-                connection,
-                "SELECT profile.value
-                FROM profiles_timeframe AS profile
-                WHERE
-                    profile.profile_name = '$(row.profile_name)'
-                    AND profile.year = $(row.year)
-                ",
-            )
-        ] for row in DuckDB.query(
+        (row.profile_name, row.year) => ProfileWithRollingHorizon(
+            [
+                row.value for row in DuckDB.query(
+                    connection,
+                    "SELECT profile.value
+                    FROM profiles_timeframe AS profile
+                    WHERE
+                        profile.profile_name = '$(row.profile_name)'
+                        AND profile.year = $(row.year)
+                    ",
+                )
+            ],
+            JuMP.VariableRef[],
+        ) for row in DuckDB.query(
             connection,
             "SELECT DISTINCT
                 profiles.profile_name,
