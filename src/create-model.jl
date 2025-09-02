@@ -117,7 +117,13 @@ function create_model(
         - Create fake variables to tied to the profiles values
     =#
     if rolling_horizon
-        add_rolling_horizon_parameters!(model, profiles, rolling_horizon_window_length)
+        add_rolling_horizon_parameters!(
+            connection,
+            model,
+            variables,
+            profiles,
+            rolling_horizon_window_length,
+        )
     end
 
     ## Expressions
@@ -172,7 +178,8 @@ function create_model(
         variables,
         expressions,
         constraints,
-        profiles,
+        profiles;
+        rolling_horizon,
     )
 
     @timeit to "add_hub_constraints!" add_hub_constraints!(model, constraints)
