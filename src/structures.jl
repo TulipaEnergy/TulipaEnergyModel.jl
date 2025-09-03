@@ -233,6 +233,8 @@ end
 mutable struct ProfileWithRollingHorizon
     values::Vector{Float64}
     rolling_horizon_variables::Vector{JuMP.VariableRef}
+
+    ProfileWithRollingHorizon(values::Vector{Float64}) = new(values, JuMP.VariableRef[])
 end
 
 """
