@@ -78,8 +78,7 @@ function create_model(
 
     ## Optimizer
     optimizer_with_attributes = if rolling_horizon
-        # TODO: Fix this
-        () -> POI.Optimizer(HiGHS.Optimizer())
+        JuMP.optimizer_with_attributes(() -> POI.Optimizer(optimizer()), optimizer_parameters...)
     else
         JuMP.optimizer_with_attributes(optimizer, optimizer_parameters...)
     end

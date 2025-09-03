@@ -424,52 +424,6 @@ function add_expression_terms_over_clustered_year_constraints!(
         end
     end
 
-    # Completely separate calculation for inflows_profile_aggregation
-    if is_storage_level
-        # TODO: Fix this for rolling horizon
-        cons.coefficients[:inflows_profile_aggregation] .= [
-            row.inflows_agg for row in DuckDB.query(
-                connection,
-                "
-                SELECT
-                    cons.id,
-                    ANY_VALUE(cons.asset) AS asset,
-                    ANY_VALUE(cons.year) AS year,
-                    SUM(COALESCE(other.inflows_agg, 0.0)) AS inflows_agg,
-                FROM cons_balance_storage_over_clustered_year AS cons
-                LEFT JOIN (
-                    SELECT
-                        assets_profiles.asset AS asset,
-                        assets_profiles.commission_year AS year,
-                        rpmap.period AS period,
-                        SUM(COALESCE(profiles.value, 0.0) * rpmap.weight * asset_milestone.storage_inflows) AS inflows_agg,
-                    FROM assets_profiles
-                    LEFT OUTER JOIN profiles_rep_periods AS profiles
-                        ON assets_profiles.profile_name=profiles.profile_name
-                        AND assets_profiles.profile_type='inflows'
-                    LEFT JOIN rep_periods_mapping AS rpmap
-                        ON rpmap.year = assets_profiles.commission_year
-                        AND rpmap.year = profiles.year -- because milestone_year = commission_year
-                        AND rpmap.rep_period = profiles.rep_period
-                    LEFT JOIN asset_milestone
-                        ON asset_milestone.asset = assets_profiles.asset
-                        AND asset_milestone.milestone_year = assets_profiles.commission_year
-                    GROUP BY
-                        assets_profiles.asset,
-                        assets_profiles.commission_year,
-                        rpmap.period
-                    ) AS other
-                    ON cons.asset = other.asset
-                    AND cons.year = other.year
-                    AND cons.period_block_start <= other.period
-                    AND cons.period_block_end >= other.period
-                GROUP BY cons.id
-                ORDER BY cons.id
-                ",
-            )
-        ]
-    end
-
     return
 end
 
@@ -618,21 +572,18 @@ end
 function prepare_profiles_structure(connection)
     # Independent of being rolling horizon or not, these are complete
     rep_period = Dict(
-        (row.profile_name, row.year, row.rep_period) => ProfileWithRollingHorizon(
-            [
-                row.value for row in DuckDB.query(
-                    connection,
-                    "SELECT profile.value
-                    FROM profiles_rep_periods AS profile
-                    WHERE
-                        profile.profile_name = '$(row.profile_name)'
-                        AND profile.year = $(row.year)
-                        AND profile.rep_period = $(row.rep_period)
-                    ",
-                )
-            ],
-            JuMP.VariableRef[],
-        ) for row in DuckDB.query(
+        (row.profile_name, row.year, row.rep_period) => ProfileWithRollingHorizon([
+            row.value for row in DuckDB.query(
+                connection,
+                "SELECT profile.value
+                FROM profiles_rep_periods AS profile
+                WHERE
+                    profile.profile_name = '$(row.profile_name)'
+                    AND profile.year = $(row.year)
+                    AND profile.rep_period = $(row.rep_period)
+                ",
+            )
+        ]) for row in DuckDB.query(
             connection,
             "SELECT DISTINCT
                 profiles.profile_name,
@@ -644,20 +595,17 @@ function prepare_profiles_structure(connection)
     )
 
     over_clustered_year = Dict(
-        (row.profile_name, row.year) => ProfileWithRollingHorizon(
-            [
-                row.value for row in DuckDB.query(
-                    connection,
-                    "SELECT profile.value
-                    FROM profiles_timeframe AS profile
-                    WHERE
-                        profile.profile_name = '$(row.profile_name)'
-                        AND profile.year = $(row.year)
-                    ",
-                )
-            ],
-            JuMP.VariableRef[],
-        ) for row in DuckDB.query(
+        (row.profile_name, row.year) => ProfileWithRollingHorizon([
+            row.value for row in DuckDB.query(
+                connection,
+                "SELECT profile.value
+                FROM profiles_timeframe AS profile
+                WHERE
+                    profile.profile_name = '$(row.profile_name)'
+                    AND profile.year = $(row.year)
+                ",
+            )
+        ]) for row in DuckDB.query(
             connection,
             "SELECT DISTINCT
                 profiles.profile_name,
@@ -666,6 +614,58 @@ function prepare_profiles_structure(connection)
             ",
         )
     )
+
+    # TODO: Decide where to put this (leave here?)
+    # Creating over_clustered_year profiles of inflows using the inflows
+    # profiles of rep_periods and asset_milestone.storage_inflows
+    for row in DuckDB.query(
+        connection,
+        """
+        SELECT
+            assets_profiles.asset,
+            assets_profiles.profile_name,
+            assets_profiles.commission_year,
+            asset_milestone.storage_inflows
+        FROM assets_profiles
+        LEFT JOIN asset
+            ON assets_profiles.asset = asset.asset
+        LEFT JOIN asset_milestone
+            ON assets_profiles.asset = asset_milestone.asset
+            AND assets_profiles.commission_year = asset_milestone.milestone_year -- commission_year = milestone_year
+        WHERE assets_profiles.profile_type = 'inflows' AND asset.type = 'storage' AND asset.is_seasonal
+        """,
+    )
+        asset = row.asset
+        profile_name = row.profile_name
+        year = row.commission_year
+        storage_inflows = row.storage_inflows
+        over_clustered_year[(profile_name, year)] = ProfileWithRollingHorizon([
+            row.value for row in DuckDB.query(
+                connection,
+                """
+                WITH cte_profile_rp AS (
+                    SELECT
+                        '$asset' AS asset,
+                        $year AS year,
+                        profiles_rep_periods.rep_period,
+                        profiles_rep_periods.timestep,
+                        profiles_rep_periods.value,
+                    FROM profiles_rep_periods
+                    WHERE profile_name = '$profile_name' AND year = $year
+                )
+                SELECT
+                    rp_map.period,
+                    SUM(cte_profile_rp.value * rp_map.weight * $storage_inflows) AS value,
+                FROM cte_profile_rp
+                LEFT JOIN rep_periods_mapping AS rp_map
+                    ON cte_profile_rp.year = rp_map.year
+                    AND cte_profile_rp.rep_period = rp_map.rep_period
+                GROUP BY rp_map.period
+                ORDER BY rp_map.period
+                """,
+            )
+        ])
+    end
 
     return ProfileLookup(rep_period, over_clustered_year)
 end
