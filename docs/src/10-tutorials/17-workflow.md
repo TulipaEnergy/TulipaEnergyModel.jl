@@ -407,7 +407,7 @@ DuckDB.query(
         from_asset,
         to_asset,
         year AS milestone_year,
-        operational_cost,
+        variable_cost AS operational_cost,
     FROM t_flow_yearly
     ORDER by from_asset, to_asset
     "
