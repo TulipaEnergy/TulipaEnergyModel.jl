@@ -276,7 +276,6 @@ function add_expression_terms_over_clustered_year_constraints!(
     cases = [(expr_key = :outgoing, asset_match = :from_asset)]
     if is_storage_level
         push!(cases, (expr_key = :incoming, asset_match = :to_asset))
-        attach_coefficient!(cons, :inflows_profile_aggregation, zeros(num_rows))
     end
 
     for case in cases
@@ -643,34 +642,35 @@ function prepare_profiles_structure(connection)
         profile_name = row.profile_name
         year = row.commission_year
         storage_inflows = row.storage_inflows
-        over_clustered_year[(profile_name, year)] = ProfileWithRollingHorizon(
-            Float64[
-                row.value for row in DuckDB.query(
-                    connection,
-                    """
-                    WITH cte_profile_rp AS (
-                        SELECT
-                            '$asset' AS asset,
-                            $year AS year,
-                            profiles_rep_periods.rep_period,
-                            profiles_rep_periods.timestep,
-                            profiles_rep_periods.value,
-                        FROM profiles_rep_periods
-                        WHERE profile_name = '$profile_name' AND year = $year
-                    )
+        values = Float64[
+            row.value for row in DuckDB.query(
+                connection,
+                """
+                WITH cte_profile_rp AS (
                     SELECT
-                        rp_map.period,
-                        SUM(cte_profile_rp.value * rp_map.weight * $storage_inflows) AS value,
-                    FROM cte_profile_rp
-                    LEFT JOIN rep_periods_mapping AS rp_map
-                        ON cte_profile_rp.year = rp_map.year
-                        AND cte_profile_rp.rep_period = rp_map.rep_period
-                    GROUP BY rp_map.period
-                    ORDER BY rp_map.period
-                    """,
+                        '$asset' AS asset,
+                        $year AS year,
+                        profiles_rep_periods.rep_period,
+                        profiles_rep_periods.timestep,
+                        profiles_rep_periods.value,
+                    FROM profiles_rep_periods
+                    WHERE profile_name = '$profile_name' AND year = $year
                 )
-            ],
-        )
+                SELECT
+                    rp_map.period,
+                    SUM(cte_profile_rp.value * rp_map.weight * $storage_inflows) AS value,
+                FROM cte_profile_rp
+                LEFT JOIN rep_periods_mapping AS rp_map
+                    ON cte_profile_rp.year = rp_map.year
+                    AND cte_profile_rp.rep_period = rp_map.rep_period
+                GROUP BY rp_map.period
+                ORDER BY rp_map.period
+                """,
+            )
+        ]
+        if length(values) > 0
+            over_clustered_year[(profile_name, year)] = ProfileWithRollingHorizon(values)
+        end
     end
 
     return ProfileLookup(rep_period, over_clustered_year)
