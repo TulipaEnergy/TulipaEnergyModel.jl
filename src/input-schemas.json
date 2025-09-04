@@ -304,6 +304,12 @@
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
+    "commodity_price": {
+      "default": 0,
+      "description": "Price of the commodity.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/MWh or other units depending on the commodity"
+    },
     "initial_storage_level": {
       "constraints": {
         "minimum": 0
@@ -645,6 +651,12 @@
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
+    "operational_cost": {
+      "default": 0,
+      "description": "Variable cost for the flow.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/MWh"
+    },
     "reactance": {
       "default": 0.3,
       "description": "Reactance for the transport flow.",
@@ -654,12 +666,6 @@
     "to_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
-    },
-    "variable_cost": {
-      "default": 0,
-      "description": "Variable cost for the flow.",
-      "type": "DOUBLE",
-      "unit_of_measure": "CUR/MWh"
     }
   },
   "flows_profiles": {

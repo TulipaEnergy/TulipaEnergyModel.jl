@@ -892,7 +892,7 @@ Notice that the `heat_demand` and the `atmosphere` are modeled as consumer asset
 As for the flexible time resolution, the `flows-rep-periods-partitions` file defines them for the flows in the energy system, as shown below. Here, the flows that go to the `atmosphere` have a uniform 24h resolution (i.e., daily); this will reduce the number of variables we need to account for the CO2 emissions and consider only one variable per day. The flows going out of the `gas_market` are every two hours, and the ones from the `biomass` every three hours. Why? Because we want to showcase in this example the fully flexible resolution in the model, however, in a real-life case study, the resolution will often be related to the energy carrier's dynamics or another expert's criteria to reduce the number of constraints.
 
 ```@example mimo
-flows_partitions_data = CSV.read(joinpath(input_dir, "flows_rep_periods_partitions.csv"), DataFrame, header = 1) # hide
+flows_partitions_data = CSV.read(joinpath(input_dir, "flows-rep-periods-partitions.csv"), DataFrame, header = 1) # hide
 filtered_flows_partitions = flows_partitions_data[!, ["from_asset", "to_asset", "specification", "partition"]] # hide
 ```
 
@@ -906,7 +906,7 @@ Thanks to the [`flexible asset connection`](@ref flex-asset-connection) in the m
 To model these interactions, we use a linear combination of flow variables known as flow relationships. These are outlined in the constraints found in the [`formulation section`](@ref flows-relationships-constraints). The relationships are defined in the `flows_relationships` file located in the example folder. In this section, we present these relationships in accordance with the constraints established in the model.
 
 ```@example mimo
-flows_relationships_data = CSV.read(joinpath(input_dir, "flows_relationships.csv"), DataFrame, header = 1) # hide
+flows_relationships_data = CSV.read(joinpath(input_dir, "flows-relationships.csv"), DataFrame, header = 1) # hide
 flows_relationships_data[!, :flow_1] = "(" .* string.(flows_relationships_data.flow_1_from_asset) .* ", " .* string.(flows_relationships_data.flow_1_to_asset) .* ")" # hide
 flows_relationships_data[!, :flow_2] = "(" .* string.(flows_relationships_data.flow_2_from_asset) .* ", " .* string.(flows_relationships_data.flow_2_to_asset) .* ")" # hide
 filtered_flows_relationships = flows_relationships_data[!, ["flow_1", "sense", "constant", "ratio", "flow_2"]] # hide
@@ -1109,7 +1109,7 @@ The [`conversion coefficient`](@ref coefficient-for-conversion-constraints) is a
 - **power_plant**: This asset has two inputs and three outputs. However, the outputs to `heat_demand` and the `atmosphere` have a conversion coefficient of zero, as shown in the table below. This indicates that the constraint's resolution will be determined by the flows coming from the `biomass` and `gas_market`, alongside the output flow to `electricity_demand`. Therefore, the resolution for the conversion balance of this asset is: `max(3h, 2h, 1h) = 3h`.
 
 ```@example mimo
-flows_commission_data = CSV.read(joinpath(input_dir, "flow_commission.csv"), DataFrame, header = 1) # hide
+flows_commission_data = CSV.read(joinpath(input_dir, "flow-commission.csv"), DataFrame, header = 1) # hide
 function filtered_asset(asset_to_filter::String) #hide
   return (flows_commission_data[!,"from_asset"] .== asset_to_filter) .||  #hide
          (flows_commission_data[!,"to_asset"] .== asset_to_filter)        #hide
@@ -1150,7 +1150,7 @@ Remember that the capacity constraints resolution are defined in the lowest reso
 From the following table, you can see that the `atmosphere` asset is modeled as a consumer assets with a sense $\geq$, meaning that the sum of all inputs needs to be greater than the `peak_demand`, i.e., greater than zero in this case.
 
 ```@example mimo
-assets_milestone_data = CSV.read(joinpath(input_dir, "asset_milestone.csv"), DataFrame, header = 1) # hide
+assets_milestone_data = CSV.read(joinpath(input_dir, "asset-milestone.csv"), DataFrame, header = 1) # hide
 df_joined = leftjoin(assets_data, assets_milestone_data, on = :asset) #hide
 consumers = assets_data[!,"type"] .== "consumer" #hide
 filtered_df_joined = df_joined[consumers, ["asset", "consumer_balance_sense", "peak_demand"]] # hide
