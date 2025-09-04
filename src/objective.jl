@@ -222,7 +222,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * rpinfo.weight_sum
                 * rpinfo.resolution
                 * (var.time_block_end - var.time_block_start + 1)
-                * t_objective_flows.variable_cost
+                * t_objective_flows.operational_cost
                 AS cost,
         FROM var_flow AS var
         LEFT JOIN t_objective_flows
@@ -251,7 +251,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 
     var_flow = variables[:flow].container
 
-    flows_variable_cost = @expression(model, sum(row.cost * var_flow[row.id] for row in indices))
+    flows_operational_cost = @expression(model, sum(row.cost * var_flow[row.id] for row in indices))
 
     indices = DuckDB.query(
         connection,
@@ -302,7 +302,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         storage_assets_energy_fixed_cost +
         flows_investment_cost +
         flows_fixed_cost +
-        flows_variable_cost +
+        flows_operational_cost +
         units_on_cost
     )
 end
@@ -441,7 +441,7 @@ function _create_objective_auxiliary_table(connection, constants)
             -- copied over
             flow_commission.investment_cost,
             flow.capacity,
-            flow_milestone.variable_cost,
+            flow_milestone.operational_cost,
             -- computed
             flow.discount_rate / (
                 (1 + flow.discount_rate) *

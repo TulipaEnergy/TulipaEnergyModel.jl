@@ -1,4 +1,4 @@
-from_asset,to_asset,milestone_year,investable,variable_cost,reactance,dc_opf
+from_asset,to_asset,milestone_year,investable,operational_cost,reactance,dc_opf
 G_imports,Midgard_CCGT,2030,false,0.0015,0.3,false
 Midgard_E_demand,Midgard_Hydro,2030,false,0.0,0.3,false
 Midgard_PHS,Midgard_E_demand,2030,false,0.004,0.3,false

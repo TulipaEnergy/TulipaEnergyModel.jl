@@ -1,4 +1,4 @@
-from_asset,to_asset,milestone_year,investable,variable_cost,reactance,dc_opf
+from_asset,to_asset,milestone_year,investable,operational_cost,reactance,dc_opf
 H2,ccgt,2030,false,0.01,0.3,false
 wind,phs,2030,false,0.002,0.3,false
 ccgt,balance,2030,false,0.05,0.3,false
