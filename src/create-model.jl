@@ -69,9 +69,19 @@ function create_model(
     model_file_name = "",
     enable_names = true,
     direct_model = false,
+    rolling_horizon = false,
+    rolling_horizon_window_length = 0,
 )
+    if rolling_horizon
+        @assert rolling_horizon_window_length > 0
+    end
+
     ## Optimizer
-    optimizer_with_attributes = JuMP.optimizer_with_attributes(optimizer, optimizer_parameters...)
+    optimizer_with_attributes = if rolling_horizon
+        JuMP.optimizer_with_attributes(() -> POI.Optimizer(optimizer()), optimizer_parameters...)
+    else
+        JuMP.optimizer_with_attributes(optimizer, optimizer_parameters...)
+    end
 
     ## Model
     if direct_model
@@ -100,6 +110,20 @@ function create_model(
         variables,
         constraints,
     )
+
+    ## Rolling Horizon Parameters
+    #=
+        - Create fake variables to tied to the profiles values
+    =#
+    if rolling_horizon
+        add_rolling_horizon_parameters!(
+            connection,
+            model,
+            variables,
+            profiles,
+            rolling_horizon_window_length,
+        )
+    end
 
     ## Expressions
     expressions = Dict{Symbol,TulipaExpression}()
@@ -153,7 +177,8 @@ function create_model(
         variables,
         expressions,
         constraints,
-        profiles,
+        profiles;
+        rolling_horizon,
     )
 
     @timeit to "add_hub_constraints!" add_hub_constraints!(model, constraints)

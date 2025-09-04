@@ -15,6 +15,7 @@ using TulipaIO: TulipaIO
 using HiGHS: HiGHS
 using JuMP: JuMP, @constraint, @expression, @objective, @variable
 using MathOptInterface: MathOptInterface
+using ParametricOptInterface: ParametricOptInterface as POI
 
 ## Others
 using LinearAlgebra: LinearAlgebra
@@ -38,6 +39,7 @@ include("data-preparation.jl")
 
 # Data massage and model preparation
 include("model-preparation.jl")
+include("rolling-horizon.jl")
 
 # Model creation
 for folder_name in ["variables", "constraints", "expressions"]

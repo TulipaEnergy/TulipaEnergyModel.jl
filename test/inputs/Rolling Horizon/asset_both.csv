@@ -1,0 +1,6 @@
+asset,commission_year,initial_storage_units,initial_units,milestone_year,decommissionable
+Solar,2030,0.0,100000.0,2030,false
+Wind Offshore,2030,0.0,80.0,2030,false
+Battery,2030,1.0,10.0,2030,false
+Hub,2030,0.0,0.0,2030,false
+Demand,2030,0.0,0.0,2030,false
