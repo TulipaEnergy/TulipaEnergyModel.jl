@@ -577,7 +577,7 @@ function _create_objective_auxiliary_table(connection, constants)
             ON var.from_asset = flow_milestone.from_asset
             AND var.to_asset = flow_milestone.to_asset
             AND var.milestone_year = flow_milestone.milestone_year
-        LEFT JOIN flow AS flow
+        LEFT JOIN flow
             ON var.from_asset = flow.from_asset
             AND var.to_asset = flow.to_asset
         LEFT JOIN flow_commission
