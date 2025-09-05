@@ -1,4 +1,4 @@
-asset,commission_year,fixed_cost,fixed_cost_storage_energy,investment_cost,investment_cost_storage_energy,investment_limit,investment_limit_storage_energy,storage_loss_from_stored_energy,conversion_efficiency,storage_charging_efficiency,storage_discharging_efficiency
+asset,commission_year,fixed_cost,fixed_cost_storage_energy,investment_cost,investment_cost_storage_energy,investment_limit,investment_limit_storage_energy,storage_loss_from_stored_energy,efficiency,storage_charging_efficiency,storage_discharging_efficiency
 NL_E_Demand,2050,0.0,0.0,0.0,0.0,,,0,1.0,1.0,1.0
 BE_E_Demand,2050,0.0,0.0,0.0,0.0,,,0,1.0,1.0,1.0
 DE_E_Demand,2050,0.0,0.0,0.0,0.0,,,0,1.0,1.0,1.0
