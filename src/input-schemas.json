@@ -228,12 +228,12 @@
       "description": "Year of commissioning.",
       "type": "INTEGER"
     },
-    "conversion_efficiency": {
+    "efficiency": {
       "constraints": {
         "minimum": 0
       },
       "default": 1.0,
-      "description": "Conversion asset efficiency as a multiplier for turning inputs to outputs.",
+      "description": "Asset efficiency. Can be used for both producer and conversion assets.",
       "type": "DOUBLE",
       "unit_of_measure": "ratio"
     },

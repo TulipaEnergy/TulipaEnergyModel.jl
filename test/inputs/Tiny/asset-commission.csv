@@ -1,4 +1,4 @@
-asset,commission_year,fixed_cost,investment_cost,investment_limit,fixed_cost_storage_energy,investment_cost_storage_energy,investment_limit_storage_energy,storage_loss_from_stored_energy,conversion_efficiency,storage_charging_efficiency,storage_discharging_efficiency
+asset,commission_year,fixed_cost,investment_cost,investment_limit,fixed_cost_storage_energy,investment_cost_storage_energy,investment_limit_storage_energy,storage_loss_from_stored_energy,efficiency,storage_charging_efficiency,storage_discharging_efficiency
 ccgt,2030,0.0,40.0,10000.0,5.0,0.0,,0,1.0,1.0,1.0
 wind,2030,0.0,70.0,,5.0,0.0,,0,1.0,1.0,1.0
 solar,2030,0.0,50.0,,5.0,0.0,,0,1.0,1.0,1.0
