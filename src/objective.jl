@@ -323,7 +323,6 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN asset
             ON asset.asset = var.asset
         WHERE t_objective_assets.units_on_cost IS NOT NULL
-            AND asset.investment_method != 'semi-compact'
         ORDER BY var.id
         ",
     )
