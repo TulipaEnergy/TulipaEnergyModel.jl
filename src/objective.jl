@@ -257,6 +257,46 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         connection,
         "SELECT
             var.id,
+            t_objective_vintage_flows.weight_for_operation_discounts
+                * rpinfo.weight_sum
+                * rpinfo.resolution
+                * (var.time_block_end - var.time_block_start + 1)
+                * t_objective_vintage_flows.marginal_cost
+                AS cost,
+        FROM var_vintage_flow AS var
+        LEFT JOIN t_objective_vintage_flows
+            ON var.from_asset = t_objective_vintage_flows.from_asset
+            AND var.to_asset = t_objective_vintage_flows.to_asset
+            AND var.milestone_year = t_objective_vintage_flows.milestone_year
+            AND var.commission_year = t_objective_vintage_flows.commission_year
+        LEFT JOIN (
+            SELECT
+                rpmap.year,
+                rpmap.rep_period,
+                SUM(weight) AS weight_sum,
+                ANY_VALUE(rpdata.resolution) AS resolution
+            FROM rep_periods_mapping AS rpmap
+            LEFT JOIN rep_periods_data AS rpdata
+                ON rpmap.year=rpdata.year AND rpmap.rep_period=rpdata.rep_period
+            GROUP BY rpmap.year, rpmap.rep_period
+        ) AS rpinfo
+            ON var.milestone_year = rpinfo.year
+            AND var.rep_period = rpinfo.rep_period
+        GROUP BY var.id, t_objective_vintage_flows.weight_for_operation_discounts, rpinfo.weight_sum, rpinfo.resolution,
+            var.time_block_end, var.time_block_start, t_objective_vintage_flows.marginal_cost
+        ORDER BY var.id
+        ",
+    )
+
+    var_vintage_flow = variables[:vintage_flow].container
+
+    vintage_flows_operational_cost =
+        @expression(model, sum(row.cost * var_vintage_flow[row.id] for row in indices))
+
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            var.id,
             t_objective_assets.weight_for_operation_discounts
                 * rpinfo.weight_sum
                 * rpinfo.resolution
@@ -303,6 +343,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         flows_investment_cost +
         flows_fixed_cost +
         flows_operational_cost +
+        vintage_flows_operational_cost +
         units_on_cost
     )
 end
@@ -310,7 +351,7 @@ end
 function _create_objective_auxiliary_table(connection, constants)
     # Create a table with the discount_factor_from_current_milestone_year_to_next_milestone_year (short for total_discount_factor) for operation
     #
-    # total_discount_factor[asset, milestone_year] = ∑_[year = milestone_year:next_milestone_year - 1] discount_factor[a, year]
+    # total_discount_factor[asset, milestone_year] = ∑_[year = milestone_year:next_milestone_year - 1] discount_factor[asset, year]
     #   where discount_factor[asset, year] = 1 / (1 + social_rate)^(year - discount_year)
     #
     # Note total_discount_factor[asset, milestone_year] accounts for [milestone_year, next_milestone_year - 1], i.e., excluding next_milestone_year
@@ -490,6 +531,67 @@ function _create_objective_auxiliary_table(connection, constants)
         LEFT JOIN asset_commission
             ON flow_milestone.from_asset = asset_commission.asset
             AND flow_milestone.milestone_year = asset_commission.commission_year
+        ",
+    )
+
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TEMP TABLE t_objective_vintage_flows AS
+        SELECT
+            -- keys
+            var.from_asset,
+            var.to_asset,
+            var.milestone_year,
+            var.commission_year,
+            -- copied over
+            asset_milestone.commodity_price,
+            asset_commission.efficiency,
+            flow_milestone.operational_cost,
+            -- computed
+            (asset_milestone.commodity_price / asset_commission.efficiency) AS fuel_cost,
+            (fuel_cost + flow_milestone.operational_cost) AS marginal_cost,
+            flow.discount_rate / (
+                (1 + flow.discount_rate) *
+                (1 - 1 / ((1 + flow.discount_rate) ** flow.economic_lifetime))
+            ) * flow_commission.investment_cost AS annualized_cost,
+            IF(
+                flow_milestone.milestone_year + flow.economic_lifetime > $(constants.end_of_horizon) + 1,
+                -annualized_cost * (
+                    (1 / (1 + flow.discount_rate))^(
+                        flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1
+                    ) - 1
+                ) / flow.discount_rate,
+                0.0
+            ) AS salvage_value,
+            1 / (1 + $(constants.social_rate))^(flow_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
+            investment_year_discount * (1 - salvage_value / flow_commission.investment_cost) AS weight_for_flow_investment_discount,
+            in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
+        FROM var_vintage_flow AS var
+        -- We get the asset_milestone from the outgoing asset
+        LEFT JOIN asset_milestone
+            ON var.from_asset = asset_milestone.asset
+            AND var.milestone_year = asset_milestone.milestone_year
+        LEFT JOIN asset_commission
+            ON var.from_asset = asset_commission.asset
+            AND var.commission_year = asset_commission.commission_year
+        LEFT JOIN flow_milestone
+            ON var.from_asset = flow_milestone.from_asset
+            AND var.to_asset = flow_milestone.to_asset
+            AND var.milestone_year = flow_milestone.milestone_year
+        LEFT JOIN flow AS flow
+            ON var.from_asset = flow.from_asset
+            AND var.to_asset = flow.to_asset
+        LEFT JOIN flow_commission
+            ON var.from_asset = flow_commission.from_asset
+            AND var.to_asset = flow_commission.to_asset
+            AND var.commission_year = flow_commission.commission_year
+        LEFT JOIN t_discount_flows_in_between_milestone_years as in_between_years
+            ON var.from_asset = in_between_years.from_asset
+            AND var.to_asset = in_between_years.to_asset
+            AND var.milestone_year = in_between_years.milestone_year
+        LEFT JOIN asset
+            ON asset.asset = flow_milestone.from_asset
+        WHERE asset.investment_method = 'semi-compact'
         ",
     )
 
