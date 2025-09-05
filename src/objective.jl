@@ -222,7 +222,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * rpinfo.weight_sum
                 * rpinfo.resolution
                 * (var.time_block_end - var.time_block_start + 1)
-                * t_objective_flows.operational_cost
+                * t_objective_flows.marginal_cost
                 AS cost,
         FROM var_flow AS var
         LEFT JOIN t_objective_flows
@@ -441,8 +441,12 @@ function _create_objective_auxiliary_table(connection, constants)
             -- copied over
             flow_commission.investment_cost,
             flow.capacity,
+            asset_milestone.commodity_price,
+            asset_commission.efficiency,
             flow_milestone.operational_cost,
             -- computed
+            (asset_milestone.commodity_price / asset_commission.efficiency) AS fuel_cost,
+            (fuel_cost + flow_milestone.operational_cost) AS marginal_cost,
             flow.discount_rate / (
                 (1 + flow.discount_rate) *
                 (1 - 1 / ((1 + flow.discount_rate) ** flow.economic_lifetime))
@@ -471,6 +475,21 @@ function _create_objective_auxiliary_table(connection, constants)
         LEFT JOIN flow
             ON flow.from_asset = flow_commission.from_asset
             AND flow.to_asset = flow_commission.to_asset
+        -- We get the asset_milestone from the outgoing asset
+        LEFT JOIN asset_milestone
+            ON flow_milestone.from_asset = asset_milestone.asset
+            AND flow_milestone.milestone_year = asset_milestone.milestone_year
+        /*
+        The below join works for compact/simple/none method.
+        Note normally this condition milestone_year = commission_year does not work for compact method.
+        But here, it means if you use compact method, the fuel cost will ignore the efficiencies where
+        milestone_year != commission_year
+        It makes sense because if you would like to consider efficiencies from different commission years,
+        you should use semi-compact method instead.
+        */
+        LEFT JOIN asset_commission
+            ON flow_milestone.from_asset = asset_commission.asset
+            AND flow_milestone.milestone_year = asset_commission.commission_year
         ",
     )
 
