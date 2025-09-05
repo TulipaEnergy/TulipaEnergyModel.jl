@@ -147,7 +147,7 @@ In addition, the following subsets represent methods for incorporating additiona
 
 | Name                                   | Domain           | Domains of Indices                                            | Description                                                       | Units           |
 | ---------------------------------------| ---------------- | --------------------------------------------------------------| ----------------------------------------------------------------- | --------------- |
-| $p^{\text{conversion eff}}_{a,y}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{cv}}}$, $y \in \mathcal{Y}$          | Conversion efficiency of conversion asset $a$ at year $y$         | [p.u.]          |
+| $p^{\text{efficiency}}_{a,y}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{cv}}}$, $y \in \mathcal{Y}$          | efficiency of conversion asset $a$ at year $y$         | [p.u.]          |
 
 #### Extra Parameters for Energy Constraints
 
@@ -750,7 +750,7 @@ v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{last}}_y} \geq p^{\text{ini
 
 ```math
 \begin{aligned}
-p^{\text{conversion eff}}_{a,y} \cdot & \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{conversion coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} =  \\
+p^{\text{efficiency}}_{a,y} \cdot & \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{conversion coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} =  \\
 & \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{conversion coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 & \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{cv}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}

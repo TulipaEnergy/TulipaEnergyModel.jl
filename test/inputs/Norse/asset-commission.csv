@@ -1,4 +1,4 @@
-asset,commission_year,fixed_cost,investment_cost,investment_limit,fixed_cost_storage_energy,investment_cost_storage_energy,investment_limit_storage_energy,storage_loss_from_stored_energy,conversion_efficiency,storage_charging_efficiency,storage_discharging_efficiency
+asset,commission_year,fixed_cost,investment_cost,investment_limit,fixed_cost_storage_energy,investment_cost_storage_energy,investment_limit_storage_energy,storage_loss_from_stored_energy,efficiency,storage_charging_efficiency,storage_discharging_efficiency
 Asgard_CCGT,2030,0.0,650.0,,5.0,0.0,,0,0.55,1.0,1.0
 Midgard_Wind,2030,0.0,1300.0,80000.0,5.0,0.0,,0,1.0,1.0,1.0
 Midgard_PHS,2030,0.0,800.0,5000.0,5.0,500.0,1000.0,0,1.0,0.85,0.85
