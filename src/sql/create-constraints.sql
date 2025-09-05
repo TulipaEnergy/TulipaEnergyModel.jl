@@ -749,7 +749,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3bin-%'
+        and asset.unit_commitment_method LIKE '3var-%'
     order by
         t_high.asset,
         t_high.year,
@@ -790,7 +790,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3bin-%'
+        and asset.unit_commitment_method LIKE '3var-%'
         and asset.investment_method in ('simple', 'none')
 
     order by
@@ -833,7 +833,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment = true
-    and asset.unit_commitment_method LIKE '3bin-%'
+    and asset.unit_commitment_method LIKE '3var-%'
     and asset.investment_method = 'compact'
 order by
     t_high.asset,
@@ -852,10 +852,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_su_sd_eq_units_on_diff
+drop table if exists cons_unit_commitment_logic
 ;
 
-create table cons_su_sd_eq_units_on_diff as
+create table cons_unit_commitment_logic as
 select distinct
     nextval('id') as id,
     sub.*
@@ -878,7 +878,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3bin-%'
+        and asset.unit_commitment_method LIKE '3var-%'
     order by
         t_high.asset,
         t_high.year,

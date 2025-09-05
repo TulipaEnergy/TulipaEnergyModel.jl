@@ -26,7 +26,7 @@ end
 """
     add_start_up_and_shut_down_variables!(model, variables)
 
-Adds 3bin UC variables to the optimization `model` based on the `:start_up` and `:shut_down` indices.
+Adds 3var UC variables to the optimization `model` based on the `:start_up` and `:shut_down` indices.
 Additionally, variables are constrained to be integers based on the `unit_commitment_integer` property.
 
 """

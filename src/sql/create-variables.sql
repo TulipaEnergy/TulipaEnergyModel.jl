@@ -126,7 +126,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3bin-%'
+        and asset.unit_commitment_method LIKE '3var-%'
     order by
         atr.asset,
         atr.year,
@@ -168,7 +168,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3bin-%'
+        and asset.unit_commitment_method LIKE '3var-%'
     order by
         atr.asset,
         atr.year,
