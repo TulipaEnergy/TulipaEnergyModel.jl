@@ -1,13 +1,4 @@
 function add_objective!(connection, model, variables, expressions, model_parameters)
-    assets_investment = variables[:assets_investment]
-    assets_investment_energy = variables[:assets_investment_energy]
-    flows_investment = variables[:flows_investment]
-
-    expr_available_asset_units_compact_method = expressions[:available_asset_units_compact_method]
-    expr_available_asset_units_simple_method = expressions[:available_asset_units_simple_method]
-    expr_available_energy_units_simple_method = expressions[:available_energy_units_simple_method]
-    expr_available_flow_units_simple_method = expressions[:available_flow_units_simple_method]
-
     social_rate = model_parameters.discount_rate
     discount_year = model_parameters.discount_year
     end_of_horizon = get_single_element_from_query_and_ensure_its_only_one(
@@ -30,18 +21,13 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN t_objective_assets
             ON var.asset = t_objective_assets.asset
             AND var.milestone_year = t_objective_assets.milestone_year
-        ORDER BY
-            var.id
         ",
     )
 
-    assets_investment_cost = @expression(
-        model,
-        sum(
-            row.cost * asset_investment for
-            (row, asset_investment) in zip(indices, assets_investment.container)
-        )
-    )
+    var_assets_investment = variables[:assets_investment].container
+
+    assets_investment_cost =
+        @expression(model, sum(row.cost * var_assets_investment[row.id] for row in indices))
 
     # Select expressions for compact method
     indices = DuckDB.query(
@@ -59,17 +45,15 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN t_objective_assets
             ON expr.asset = t_objective_assets.asset
             AND expr.milestone_year = t_objective_assets.milestone_year
-        ORDER BY
-            expr.id
         ",
     )
 
+    expr_available_asset_units_compact_method =
+        expressions[:available_asset_units_compact_method].expressions[:assets]
+
     assets_fixed_cost_compact_method = @expression(
         model,
-        sum(
-            row.cost * expr_avail for (row, expr_avail) in
-            zip(indices, expr_available_asset_units_compact_method.expressions[:assets])
-        )
+        sum(row.cost * expr_available_asset_units_compact_method[row.id] for row in indices)
     )
 
     # Select expressions for simple method
@@ -88,17 +72,15 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN t_objective_assets
             ON expr.asset = t_objective_assets.asset
             AND expr.milestone_year = t_objective_assets.milestone_year
-        ORDER BY
-            expr.id
         ",
     )
 
+    expr_available_asset_units_simple_method =
+        expressions[:available_asset_units_simple_method].expressions[:assets]
+
     assets_fixed_cost_simple_method = @expression(
         model,
-        sum(
-            row.cost * expr_avail for (row, expr_avail) in
-            zip(indices, expr_available_asset_units_simple_method.expressions[:assets])
-        )
+        sum(row.cost * expr_available_asset_units_simple_method[row.id] for row in indices)
     )
 
     indices = DuckDB.query(
@@ -113,18 +95,13 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN t_objective_assets
             ON var.asset = t_objective_assets.asset
             AND var.milestone_year = t_objective_assets.milestone_year
-        ORDER BY
-            var.id
         ",
     )
 
-    storage_assets_energy_investment_cost = @expression(
-        model,
-        sum(
-            row.cost * assets_investment_energy for
-            (row, assets_investment_energy) in zip(indices, assets_investment_energy.container)
-        )
-    )
+    var_assets_investment_energy = variables[:assets_investment_energy].container
+
+    storage_assets_energy_investment_cost =
+        @expression(model, sum(row.cost * var_assets_investment_energy[row.id] for row in indices))
 
     indices = DuckDB.query(
         connection,
@@ -141,17 +118,15 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN t_objective_assets
             ON expr.asset = t_objective_assets.asset
             AND expr.milestone_year = t_objective_assets.milestone_year
-        ORDER BY
-            expr.id
         ",
     )
 
+    expr_available_energy_units_simple_method =
+        expressions[:available_energy_units_simple_method].expressions[:energy]
+
     storage_assets_energy_fixed_cost = @expression(
         model,
-        sum(
-            row.cost * expr_avail for (row, expr_avail) in
-            zip(indices, expr_available_energy_units_simple_method.expressions[:energy])
-        )
+        sum(row.cost * expr_available_energy_units_simple_method[row.id] for row in indices)
     )
 
     indices = DuckDB.query(
@@ -167,18 +142,13 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             ON var.from_asset = t_objective_flows.from_asset
             AND var.to_asset = t_objective_flows.to_asset
             AND var.milestone_year = t_objective_flows.milestone_year
-        ORDER BY
-            var.id
         ",
     )
 
-    flows_investment_cost = @expression(
-        model,
-        sum(
-            row.cost * flow_investment for
-            (row, flow_investment) in zip(indices, flows_investment.container)
-        )
-    )
+    var_flows_investment = variables[:flows_investment].container
+
+    flows_investment_cost =
+        @expression(model, sum(row.cost * var_flows_investment[row.id] for row in indices))
 
     indices = DuckDB.query(
         connection,
@@ -202,15 +172,19 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         ",
     )
 
+    expr_available_export_unit =
+        expr_available_flow_units_simple_method =
+            expressions[:available_flow_units_simple_method].expressions[:export]
+
+    expr_available_import_unit =
+        expr_available_flow_units_simple_method =
+            expressions[:available_flow_units_simple_method].expressions[:import]
+
     flows_fixed_cost = @expression(
         model,
         sum(
-            row.cost * (avail_export_unit + avail_import_unit) for
-            (row, avail_export_unit, avail_import_unit) in zip(
-                indices,
-                expr_available_flow_units_simple_method.expressions[:export],
-                expr_available_flow_units_simple_method.expressions[:import],
-            )
+            row.cost * (expr_available_export_unit[row.id] + expr_available_import_unit[row.id]) for
+            row in indices
         )
     )
 
@@ -245,7 +219,6 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN asset
             ON asset.asset = var.from_asset
         WHERE asset.investment_method != 'semi-compact'
-        ORDER BY var.id
         ",
     )
 
@@ -284,7 +257,6 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             AND var.rep_period = rpinfo.rep_period
         GROUP BY var.id, t_objective_vintage_flows.weight_for_operation_discounts, rpinfo.weight_sum, rpinfo.resolution,
             var.time_block_end, var.time_block_start, t_objective_vintage_flows.marginal_cost
-        ORDER BY var.id
         ",
     )
 
@@ -323,7 +295,6 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN asset
             ON asset.asset = var.asset
         WHERE t_objective_assets.units_on_cost IS NOT NULL
-        ORDER BY var.id
         ",
     )
 
