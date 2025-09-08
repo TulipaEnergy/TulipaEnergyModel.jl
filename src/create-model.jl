@@ -231,7 +231,7 @@ function create_model(
         constraints,
     )
 
-    @timeit to "add_su_sd_eq_units_on_diff_constraints!" add_su_sd_eq_units_on_diff_constraints!(
+    @timeit to "add_uc_logic_constraints!" add_uc_logic_constraints!(
         connection,
         model,
         variables,

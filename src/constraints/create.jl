@@ -39,7 +39,7 @@ function compute_constraints_indices(connection)
             :start_up_upper_bound,
             :shut_down_upper_bound_simple_investment,
             :shut_down_upper_bound_compact_investment,
-            :su_sd_eq_units_on_diff,
+            :unit_commitment_logic,
         )
     )
 

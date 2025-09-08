@@ -1,18 +1,12 @@
-export add_su_sd_eq_units_on_diff_constraints!
+export add_uc_logic_constraints!
 
 """
-    add_su_sd_eq_units_on_diff_constraints!(model, constraints)
+    add_uc_logic_constraints!(model, constraints)
 
-Adds the start up - shut down = units_on difference to the model.
+Adds the unit commitment logic constraint (i.e., start up - shut down = units_on difference) to the model.
 """
-function add_su_sd_eq_units_on_diff_constraints!(
-    connection,
-    model,
-    variables,
-    expressions,
-    constraints,
-)
-    let table_name = :su_sd_eq_units_on_diff, cons = constraints[:su_sd_eq_units_on_diff]
+function add_uc_logic_constraints!(connection, model, variables, expressions, constraints)
+    let table_name = :unit_commitment_logic, cons = constraints[:unit_commitment_logic]
         units_on = variables[:units_on].container
         start_up = variables[:start_up].container
         shut_down = variables[:shut_down].container
@@ -27,7 +21,7 @@ function add_su_sd_eq_units_on_diff_constraints!(
             [
                 begin
                     if row.time_block_start == 1
-                        @constraint(model, 0 == 0)
+                        @constraint(model, 0 == 0) # TODO: Placeholder for case k = 1
                     else
                         @constraint(
                             model,
