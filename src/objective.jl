@@ -196,7 +196,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * rpinfo.weight_sum
                 * rpinfo.resolution
                 * (var.time_block_end - var.time_block_start + 1)
-                * t_objective_flows.marginal_cost
+                * t_objective_flows.total_variable_cost
                 AS cost,
         FROM var_flow AS var
         LEFT JOIN t_objective_flows
@@ -234,7 +234,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * rpinfo.weight_sum
                 * rpinfo.resolution
                 * (var.time_block_end - var.time_block_start + 1)
-                * t_objective_vintage_flows.marginal_cost
+                * t_objective_vintage_flows.total_variable_cost
                 AS cost,
         FROM var_vintage_flow AS var
         LEFT JOIN t_objective_vintage_flows
@@ -256,7 +256,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             ON var.milestone_year = rpinfo.year
             AND var.rep_period = rpinfo.rep_period
         GROUP BY var.id, t_objective_vintage_flows.weight_for_operation_discounts, rpinfo.weight_sum, rpinfo.resolution,
-            var.time_block_end, var.time_block_start, t_objective_vintage_flows.marginal_cost
+            var.time_block_end, var.time_block_start, t_objective_vintage_flows.total_variable_cost
         ",
     )
 
@@ -457,7 +457,7 @@ function _create_objective_auxiliary_table(connection, constants)
             flow_milestone.operational_cost,
             -- computed
             (asset_milestone.commodity_price / asset_commission.efficiency) AS fuel_cost,
-            (fuel_cost + flow_milestone.operational_cost) AS marginal_cost,
+            (fuel_cost + flow_milestone.operational_cost) AS total_variable_cost,
             flow.discount_rate / (
                 (1 + flow.discount_rate) *
                 (1 - 1 / ((1 + flow.discount_rate) ** flow.economic_lifetime))
@@ -519,7 +519,7 @@ function _create_objective_auxiliary_table(connection, constants)
             flow_milestone.operational_cost,
             -- computed
             (asset_milestone.commodity_price / asset_commission.efficiency) AS fuel_cost,
-            (fuel_cost + flow_milestone.operational_cost) AS marginal_cost,
+            (fuel_cost + flow_milestone.operational_cost) AS total_variable_cost,
             flow.discount_rate / (
                 (1 + flow.discount_rate) *
                 (1 - 1 / ((1 + flow.discount_rate) ** flow.economic_lifetime))
