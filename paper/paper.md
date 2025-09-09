@@ -20,12 +20,7 @@ authors:
       email: diego.tejadaarango@tno.nl
       affiliation: 2, 6
       orcid: "https://orcid.org/0000-0002-3278-9283"
-    - given-names: Germán
-      surname: Morales-España
-      email: german.morales@tno.nl
-      affiliation: 2,3
-      orcid: "https://orcid.org/0000-0002-6372-6197"
-    - given-names: Grigory
+        - given-names: Grigory
       surname: Neustroev
       email: g.neustroev@tudelft.nl
       affiliation: 3
@@ -58,6 +53,11 @@ authors:
       email: z.gao1@uu.nl
       affiliation: 5
       orcid: "https://orcid.org/0000-0002-3817-8037"
+    - given-names: Germán
+      surname: Morales-España
+      email: german.morales@tno.nl
+      affiliation: 2,3
+      orcid: "https://orcid.org/0000-0002-6372-6197"
 affiliations:
   - name: Netherlands eScience Center, Netherlands
     ror: 00rbjv475
