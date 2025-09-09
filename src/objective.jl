@@ -13,14 +13,14 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         connection,
         "SELECT
             var.id,
-            t_objective_assets.weight_for_asset_investment_discount
-                * t_objective_assets.investment_cost
-                * t_objective_assets.capacity
+            obj.weight_for_asset_investment_discount
+                * obj.investment_cost
+                * obj.capacity
                 AS cost,
         FROM var_assets_investment AS var
-        LEFT JOIN t_objective_assets
-            ON var.asset = t_objective_assets.asset
-            AND var.milestone_year = t_objective_assets.milestone_year
+        LEFT JOIN t_objective_assets as obj
+            ON var.asset = obj.asset
+            AND var.milestone_year = obj.milestone_year
         ",
     )
 
@@ -34,17 +34,17 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         connection,
         "SELECT
             expr.id,
-            t_objective_assets.weight_for_operation_discounts
+            obj.weight_for_operation_discounts
                 * asset_commission.fixed_cost
-                * t_objective_assets.capacity
+                * obj.capacity
                 AS cost,
         FROM expr_available_asset_units_compact_method AS expr
         LEFT JOIN asset_commission
             ON expr.asset = asset_commission.asset
             AND expr.commission_year = asset_commission.commission_year
-        LEFT JOIN t_objective_assets
-            ON expr.asset = t_objective_assets.asset
-            AND expr.milestone_year = t_objective_assets.milestone_year
+        LEFT JOIN t_objective_assets as obj
+            ON expr.asset = obj.asset
+            AND expr.milestone_year = obj.milestone_year
         ",
     )
 
@@ -61,17 +61,17 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         connection,
         "SELECT
             expr.id,
-            t_objective_assets.weight_for_operation_discounts
+            obj.weight_for_operation_discounts
                 * asset_commission.fixed_cost
-                * t_objective_assets.capacity
+                * obj.capacity
                 AS cost,
         FROM expr_available_asset_units_simple_method AS expr
         LEFT JOIN asset_commission
             ON expr.asset = asset_commission.asset
             AND expr.commission_year = asset_commission.commission_year
-        LEFT JOIN t_objective_assets
-            ON expr.asset = t_objective_assets.asset
-            AND expr.milestone_year = t_objective_assets.milestone_year
+        LEFT JOIN t_objective_assets as obj
+            ON expr.asset = obj.asset
+            AND expr.milestone_year = obj.milestone_year
         ",
     )
 
@@ -87,14 +87,14 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         connection,
         "SELECT
             var.id,
-            t_objective_assets.weight_for_asset_investment_discount
-                * t_objective_assets.investment_cost_storage_energy
-                * t_objective_assets.capacity_storage_energy
+            obj.weight_for_asset_investment_discount
+                * obj.investment_cost_storage_energy
+                * obj.capacity_storage_energy
                 AS cost,
         FROM var_assets_investment_energy AS var
-        LEFT JOIN t_objective_assets
-            ON var.asset = t_objective_assets.asset
-            AND var.milestone_year = t_objective_assets.milestone_year
+        LEFT JOIN t_objective_assets as obj
+            ON var.asset = obj.asset
+            AND var.milestone_year = obj.milestone_year
         ",
     )
 
@@ -107,17 +107,17 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         connection,
         "SELECT
             expr.id,
-            t_objective_assets.weight_for_operation_discounts
+            obj.weight_for_operation_discounts
                 * asset_commission.fixed_cost_storage_energy
-                * t_objective_assets.capacity_storage_energy
+                * obj.capacity_storage_energy
                 AS cost,
         FROM expr_available_energy_units_simple_method AS expr
         LEFT JOIN asset_commission
             ON expr.asset = asset_commission.asset
             AND expr.commission_year = asset_commission.commission_year
-        LEFT JOIN t_objective_assets
-            ON expr.asset = t_objective_assets.asset
-            AND expr.milestone_year = t_objective_assets.milestone_year
+        LEFT JOIN t_objective_assets as obj
+            ON expr.asset = obj.asset
+            AND expr.milestone_year = obj.milestone_year
         ",
     )
 
@@ -133,15 +133,15 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         connection,
         "SELECT
             var.id,
-            t_objective_flows.weight_for_flow_investment_discount
-                * t_objective_flows.investment_cost
-                * t_objective_flows.capacity
+            obj.weight_for_flow_investment_discount
+                * obj.investment_cost
+                * obj.capacity
                 AS cost,
         FROM var_flows_investment AS var
-        LEFT JOIN t_objective_flows
-            ON var.from_asset = t_objective_flows.from_asset
-            AND var.to_asset = t_objective_flows.to_asset
-            AND var.milestone_year = t_objective_flows.milestone_year
+        LEFT JOIN t_objective_flows as obj
+            ON var.from_asset = obj.from_asset
+            AND var.to_asset = obj.to_asset
+            AND var.milestone_year = obj.milestone_year
         ",
     )
 
@@ -154,21 +154,19 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         connection,
         "SELECT
             expr.id,
-            t_objective_flows.weight_for_operation_discounts
+            obj.weight_for_operation_discounts
                 * flow_commission.fixed_cost / 2
-                * t_objective_flows.capacity
+                * obj.capacity
                 AS cost,
         FROM expr_available_flow_units_simple_method AS expr
         LEFT JOIN flow_commission
             ON expr.from_asset = flow_commission.from_asset
             AND expr.to_asset = flow_commission.to_asset
             AND expr.commission_year = flow_commission.commission_year
-        LEFT JOIN t_objective_flows
-            ON expr.from_asset = t_objective_flows.from_asset
-            AND expr.to_asset = t_objective_flows.to_asset
-            AND expr.milestone_year = t_objective_flows.milestone_year
-        ORDER BY
-            expr.id
+        LEFT JOIN t_objective_flows as obj
+            ON expr.from_asset = obj.from_asset
+            AND expr.to_asset = obj.to_asset
+            AND expr.milestone_year = obj.milestone_year
         ",
     )
 
@@ -190,32 +188,41 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 
     indices = DuckDB.query(
         connection,
-        "SELECT
+        "WITH rp_weight AS (
+            SELECT
+                year,
+                rep_period,
+                SUM(weight) AS weight_sum
+            FROM rep_periods_mapping
+            GROUP BY year, rep_period
+        ),
+        rp_res AS (
+            SELECT
+                year,
+                rep_period,
+                ANY_VALUE(resolution) AS resolution
+            FROM rep_periods_data
+            GROUP BY year, rep_period
+        )
+        SELECT
             var.id,
-            t_objective_flows.weight_for_operation_discounts
-                * rpinfo.weight_sum
-                * rpinfo.resolution
+            obj.weight_for_operation_discounts
+                * rp_weight.weight_sum
+                * rp_res.resolution
                 * (var.time_block_end - var.time_block_start + 1)
-                * t_objective_flows.total_variable_cost
+                * obj.total_variable_cost
                 AS cost,
         FROM var_flow AS var
-        LEFT JOIN t_objective_flows
-            ON var.from_asset = t_objective_flows.from_asset
-            AND var.to_asset = t_objective_flows.to_asset
-            AND var.year = t_objective_flows.milestone_year
-        LEFT JOIN (
-            SELECT
-                rpmap.year,
-                rpmap.rep_period,
-                SUM(weight) AS weight_sum,
-                ANY_VALUE(rpdata.resolution) AS resolution
-            FROM rep_periods_mapping AS rpmap
-            LEFT JOIN rep_periods_data AS rpdata
-                ON rpmap.year=rpdata.year AND rpmap.rep_period=rpdata.rep_period
-            GROUP BY rpmap.year, rpmap.rep_period
-        ) AS rpinfo
-            ON var.year = rpinfo.year
-            AND var.rep_period = rpinfo.rep_period
+        LEFT JOIN t_objective_flows as obj
+            ON var.from_asset = obj.from_asset
+            AND var.to_asset = obj.to_asset
+            AND var.year = obj.milestone_year
+        LEFT JOIN rp_weight
+            ON var.year = rp_weight.year
+            AND var.rep_period = rp_weight.rep_period
+        LEFT JOIN rp_res
+            ON var.year = rp_res.year
+            AND var.rep_period = rp_res.rep_period
         LEFT JOIN asset
             ON asset.asset = var.from_asset
         WHERE asset.investment_method != 'semi-compact'
@@ -228,8 +235,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 
     indices = DuckDB.query(
         connection,
-        "
-        WITH rp_weight AS (
+        "WITH rp_weight AS (
             SELECT
                 year,
                 rep_period,
@@ -285,34 +291,41 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 
     indices = DuckDB.query(
         connection,
-        "SELECT
+        "WITH rp_weight AS (
+            SELECT
+                year,
+                rep_period,
+                SUM(weight) AS weight_sum
+            FROM rep_periods_mapping
+            GROUP BY year, rep_period
+        ),
+        rp_res AS (
+            SELECT
+                year,
+                rep_period,
+                ANY_VALUE(resolution) AS resolution
+            FROM rep_periods_data
+            GROUP BY year, rep_period
+        )
+        SELECT
             var.id,
-            t_objective_assets.weight_for_operation_discounts
-                * rpinfo.weight_sum
-                * rpinfo.resolution
+            obj.weight_for_operation_discounts
+                * rp_weight.weight_sum
+                * rp_res.resolution
                 * (var.time_block_end - var.time_block_start + 1)
-                * t_objective_assets.units_on_cost
+                * obj.units_on_cost
                 AS cost,
         FROM var_units_on AS var
-        LEFT JOIN t_objective_assets
-            ON var.asset = t_objective_assets.asset
-            AND var.year = t_objective_assets.milestone_year
-        LEFT JOIN (
-            SELECT
-                rpmap.year,
-                rpmap.rep_period,
-                SUM(weight) AS weight_sum,
-                ANY_VALUE(rpdata.resolution) AS resolution
-            FROM rep_periods_mapping AS rpmap
-            LEFT JOIN rep_periods_data AS rpdata
-                ON rpmap.year=rpdata.year AND rpmap.rep_period=rpdata.rep_period
-            GROUP BY rpmap.year, rpmap.rep_period
-        ) AS rpinfo
-            ON var.year = rpinfo.year
-            AND var.rep_period = rpinfo.rep_period
-        LEFT JOIN asset
-            ON asset.asset = var.asset
-        WHERE t_objective_assets.units_on_cost IS NOT NULL
+        LEFT JOIN t_objective_assets as obj
+            ON var.asset = obj.asset
+            AND var.year = obj.milestone_year
+        LEFT JOIN rp_weight
+            ON var.year = rp_weight.year
+            AND var.rep_period = rp_weight.rep_period
+        LEFT JOIN rp_res
+            ON var.year = rp_res.year
+            AND var.rep_period = rp_res.rep_period
+        WHERE obj.units_on_cost IS NOT NULL
         ",
     )
 
