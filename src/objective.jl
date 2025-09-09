@@ -136,9 +136,9 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN asset_commission
             ON expr.asset = asset_commission.asset
             AND expr.commission_year = asset_commission.commission_year
-        LEFT JOIN t_objective_assets
-            ON expr.asset = t_objective_assets.asset
-            AND expr.milestone_year = t_objective_assets.milestone_year
+        LEFT JOIN t_objective_assets as obj
+            ON expr.asset = obj.asset
+            AND expr.milestone_year = obj.milestone_year
         ORDER BY expr.id
         ",
     )
@@ -304,7 +304,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN rp_res
             ON var.milestone_year = rp_res.year
             AND var.rep_period = rp_res.rep_period
-        ORDER BY  var.id
+        ORDER BY var.id
         ",
     )
 
