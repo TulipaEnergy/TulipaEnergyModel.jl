@@ -102,7 +102,7 @@ In the example, we look at 6 hours of a network. The flow between "H2" and "ccgt
 The resolution from "wind" to "phs" is 3 hours, and the resolution from "phs" to "balance" is not regular, starting with a 4 hours block and then a 2 hours block.
 All these "time blocks" are handled by the Tulipa energy model to allow for more or less detailed solutions.
 This implies that less variables and constraints are created, ensuring a faster solving speed, with little loss in accuracy.
-See [@Gao2025] for more details on the research behind fully flexible resolution.
+See @Gao2025 for more details on the research behind fully flexible resolution.
 
 TulipaEnergyModel.jl is fundamentally focused on modeling innovation, with its mathematical formulations firmly rooted in scientific research.
 The model also includes other key features such as flexible connection of energy assets [@Tejada2025], seasonal storage modeling using representative periods [@Tejada2018], and tight formulations to prevent simultaneous charging and discharging [@Elgersma2025].
