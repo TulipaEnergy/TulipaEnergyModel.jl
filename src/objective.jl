@@ -228,35 +228,53 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 
     indices = DuckDB.query(
         connection,
-        "SELECT
-            var.id,
-            t_objective_vintage_flows.weight_for_operation_discounts
-                * rpinfo.weight_sum
-                * rpinfo.resolution
-                * (var.time_block_end - var.time_block_start + 1)
-                * t_objective_vintage_flows.total_variable_cost
-                AS cost,
-        FROM var_vintage_flow AS var
-        LEFT JOIN t_objective_vintage_flows
-            ON var.from_asset = t_objective_vintage_flows.from_asset
-            AND var.to_asset = t_objective_vintage_flows.to_asset
-            AND var.milestone_year = t_objective_vintage_flows.milestone_year
-            AND var.commission_year = t_objective_vintage_flows.commission_year
-        LEFT JOIN (
+        "
+        WITH rp_weight AS (
             SELECT
-                rpmap.year,
-                rpmap.rep_period,
-                SUM(weight) AS weight_sum,
-                ANY_VALUE(rpdata.resolution) AS resolution
-            FROM rep_periods_mapping AS rpmap
-            LEFT JOIN rep_periods_data AS rpdata
-                ON rpmap.year=rpdata.year AND rpmap.rep_period=rpdata.rep_period
-            GROUP BY rpmap.year, rpmap.rep_period
-        ) AS rpinfo
-            ON var.milestone_year = rpinfo.year
-            AND var.rep_period = rpinfo.rep_period
-        GROUP BY var.id, t_objective_vintage_flows.weight_for_operation_discounts, rpinfo.weight_sum, rpinfo.resolution,
-            var.time_block_end, var.time_block_start, t_objective_vintage_flows.total_variable_cost
+                year,
+                rep_period,
+                SUM(weight) AS weight_sum
+            FROM rep_periods_mapping
+            GROUP BY year, rep_period
+        ),
+        rp_res AS (
+            SELECT
+                year,
+                rep_period,
+                ANY_VALUE(resolution) AS resolution
+            FROM rep_periods_data
+            GROUP BY year, rep_period
+        ),
+        vint_obj AS (
+            SELECT
+                from_asset,
+                to_asset,
+                milestone_year,
+                commission_year,
+                ANY_VALUE(weight_for_operation_discounts) AS weight_for_operation_discounts,
+                ANY_VALUE(total_variable_cost) AS total_variable_cost
+            FROM t_objective_vintage_flows
+            GROUP BY from_asset, to_asset, milestone_year, commission_year
+        )
+        SELECT
+            var.id,
+            vint_obj.weight_for_operation_discounts
+                * rp_weight.weight_sum
+                * rp_res.resolution
+                * (var.time_block_end - var.time_block_start + 1)
+                * vint_obj.total_variable_cost AS cost
+        FROM var_vintage_flow AS var
+        LEFT JOIN vint_obj
+            ON var.from_asset = vint_obj.from_asset
+            AND var.to_asset = vint_obj.to_asset
+            AND var.milestone_year = vint_obj.milestone_year
+            AND var.commission_year = vint_obj.commission_year
+        LEFT JOIN rp_weight
+            ON var.milestone_year = rp_weight.year
+            AND var.rep_period = rp_weight.rep_period
+        LEFT JOIN rp_res
+            ON var.milestone_year = rp_res.year
+            AND var.rep_period = rp_res.rep_period
         ",
     )
 
