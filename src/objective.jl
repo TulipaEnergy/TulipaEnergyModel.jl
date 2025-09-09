@@ -114,8 +114,6 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         ",
     )
 
-    var_assets_investment_energy = variables[:assets_investment_energy].container
-
     storage_assets_energy_investment_cost = @expression(
         model,
         sum(
@@ -193,6 +191,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             ON expr.from_asset = obj.from_asset
             AND expr.to_asset = obj.to_asset
             AND expr.milestone_year = obj.milestone_year
+        ORDER BY expr.id
         ",
     )
 
