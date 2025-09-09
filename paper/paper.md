@@ -20,7 +20,7 @@ authors:
       email: diego.tejadaarango@tno.nl
       affiliation: 2, 6
       orcid: "https://orcid.org/0000-0002-3278-9283"
-        - given-names: Grigory
+    - given-names: Grigory
       surname: Neustroev
       email: g.neustroev@tudelft.nl
       affiliation: 3
