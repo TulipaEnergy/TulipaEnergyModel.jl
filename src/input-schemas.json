@@ -168,7 +168,8 @@
       "constraints": {
         "oneOf": [
           null,
-          "basic"
+          "basic",
+          "3var"
         ]
       },
       "default": null,

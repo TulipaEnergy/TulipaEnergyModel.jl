@@ -92,6 +92,10 @@ function create_model(
     @timeit to "add_investment_variables!" add_investment_variables!(model, variables)
     @timeit to "add_decommission_variables!" add_decommission_variables!(model, variables)
     @timeit to "add_unit_commitment_variables!" add_unit_commitment_variables!(model, variables)
+    @timeit to "add_start_up_and_shut_down_variables!" add_start_up_and_shut_down_variables!(
+        model,
+        variables,
+    )
     @timeit to "add_power_flow_variables!" add_power_flow_variables!(model, variables)
     @timeit to "add_storage_variables!" add_storage_variables!(connection, model, variables)
 
@@ -208,6 +212,30 @@ function create_model(
         connection,
         model,
         variables,
+        constraints,
+    )
+
+    @timeit to "add_start_up_upper_bound_constraints!" add_start_up_upper_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_shut_down_upper_bound_constraints!" add_shut_down_upper_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_uc_logic_constraints!" add_uc_logic_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
         constraints,
     )
 

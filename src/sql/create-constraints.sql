@@ -777,3 +777,173 @@ where
 
 drop sequence id
 ;
+
+create sequence id start 1
+;
+
+drop table if exists cons_start_up_upper_bound
+;
+
+create table cons_start_up_upper_bound as
+select
+    nextval('id') as id,
+    sub.*
+from (
+    select
+        t_high.asset,
+        t_high.year,
+        t_high.rep_period,
+        t_high.time_block_start,
+        t_high.time_block_end
+    from
+        t_highest_assets_and_out_flows as t_high
+        inner join asset_time_resolution_rep_period as atr
+            on
+                t_high.asset = atr.asset
+                and t_high.year = atr.year
+                and t_high.rep_period = atr.rep_period
+                and t_high.time_block_start = atr.time_block_start
+        left join asset on asset.asset = atr.asset
+    where
+        asset.type in ('producer', 'conversion')
+        and asset.unit_commitment = true
+        and asset.unit_commitment_method LIKE '3var-%'
+    order by
+        t_high.asset,
+        t_high.year,
+        t_high.rep_period,
+        t_high.time_block_start
+) as sub
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_shut_down_upper_bound_simple_investment
+;
+
+create table cons_shut_down_upper_bound_simple_investment as
+select
+    nextval('id') as id,
+    sub.*
+from (
+    select
+        t_high.asset,
+        t_high.year,
+        t_high.rep_period,
+        t_high.time_block_start,
+        t_high.time_block_end
+    from
+        t_highest_assets_and_out_flows as t_high
+        inner join asset_time_resolution_rep_period as atr
+            on
+                t_high.asset = atr.asset
+                and t_high.year = atr.year
+                and t_high.rep_period = atr.rep_period
+                and t_high.time_block_start = atr.time_block_start
+        left join asset on asset.asset = atr.asset
+    where
+        asset.type in ('producer', 'conversion')
+        and asset.unit_commitment = true
+        and asset.unit_commitment_method LIKE '3var-%'
+        and asset.investment_method in ('simple', 'none')
+
+    order by
+        t_high.asset,
+        t_high.year,
+        t_high.rep_period,
+        t_high.time_block_start
+) as sub
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_shut_down_upper_bound_compact_investment
+;
+
+create table cons_shut_down_upper_bound_compact_investment as
+with sub as
+(select distinct
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start,
+    t_high.time_block_end,
+from
+    asset_time_resolution_rep_period as atr
+    join
+    t_highest_assets_and_out_flows as t_high
+        on
+            atr.asset = t_high.asset and
+            atr.time_block_start = t_high.time_block_start and
+            atr.rep_period = t_high.rep_period and
+            atr.year = t_high.year
+    join asset
+        on
+            asset.asset = t_high.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.unit_commitment = true
+    and asset.unit_commitment_method LIKE '3var-%'
+    and asset.investment_method = 'compact'
+order by
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start)
+select
+    nextval('id') as id,
+    sub.*
+from sub
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_unit_commitment_logic
+;
+
+create table cons_unit_commitment_logic as
+select distinct
+    nextval('id') as id,
+    sub.*
+from (
+    select distinct
+        t_high.asset,
+        t_high.year,
+        t_high.rep_period,
+        t_high.time_block_start,
+        t_high.time_block_end,
+    from
+        t_highest_assets_and_out_flows as t_high
+        inner join asset_time_resolution_rep_period as atr
+            on
+                t_high.asset = atr.asset
+                and t_high.year = atr.year
+                and t_high.rep_period = atr.rep_period
+                and t_high.time_block_start = atr.time_block_start
+        left join asset on asset.asset = atr.asset
+    where
+        asset.type in ('producer', 'conversion')
+        and asset.unit_commitment = true
+        and asset.unit_commitment_method LIKE '3var-%'
+    order by
+        t_high.asset,
+        t_high.year,
+        t_high.rep_period,
+        t_high.time_block_start
+) as sub
+;
+
+drop sequence id
+;

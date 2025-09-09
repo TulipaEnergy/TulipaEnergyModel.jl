@@ -108,3 +108,42 @@ We use `only` twice to obtain this single element.
 function get_single_element_from_query_and_ensure_its_only_one(query_result::DuckDB.QueryResult)
     return only(only(query_result))
 end
+
+"""
+    _append_variable_ids(
+        connection,
+        constraint_table_name,
+        variables_to_append,
+    )
+
+Create table containing all rows of the given constraint (`constraint_table_name`) and their matching variable ids of the variables in `variables_to_append`
+"""
+function _append_variable_ids(connection, constraint_table_name, variables_to_append)
+    query_string = "SELECT
+                       cons.*,
+                   "
+
+    for variable in variables_to_append
+        query_string = query_string * "\n" * "var_$variable.id as $(variable)_id,"
+    end
+
+    query_string = query_string * "\n" * "FROM cons_$constraint_table_name AS cons
+                                            LEFT JOIN asset
+                                            ON cons.asset = asset.asset"
+
+    for variable in variables_to_append
+        variable_table_name = "var_$variable"
+
+        variable_query = "LEFT JOIN $variable_table_name
+                             ON $variable_table_name.asset = cons.asset
+                             AND $variable_table_name.year = cons.year
+                             AND $variable_table_name.rep_period = cons.rep_period
+                             AND $variable_table_name.time_block_start = cons.time_block_start"
+
+        query_string = query_string * "\n" * variable_query
+    end
+
+    query_string = query_string * "\n" * "ORDER BY cons.id"
+
+    return DuckDB.query(connection, query_string)
+end
