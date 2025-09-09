@@ -247,10 +247,12 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN asset
             ON asset.asset = var.from_asset
         WHERE asset.investment_method != 'semi-compact'
-        ORDER BY var.id
         ",
     )
 
+    # For the flows_operational_cost, we cannot use the zip method as done in all other terms,
+    # because there are more flow variables than the number of rows in indices,
+    # i.e., we only consider the costs of the flows that are not in semi-compact method
     var_flow = variables[:flow].container
 
     flows_operational_cost = @expression(model, sum(row.cost * var_flow[row.id] for row in indices))
@@ -307,10 +309,13 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         ",
     )
 
-    var_vintage_flow = variables[:vintage_flow].container
-
-    vintage_flows_operational_cost =
-        @expression(model, sum(row.cost * var_vintage_flow[row.id] for row in indices))
+    vintage_flows_operational_cost = @expression(
+        model,
+        sum(
+            row.cost * vintage_flow for
+            (row, vintage_flow) in zip(indices, variables[:vintage_flow].container)
+        )
+    )
 
     indices = DuckDB.query(
         connection,
@@ -353,8 +358,12 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         ",
     )
 
-    var_units_on = variables[:units_on].container
-    units_on_cost = @expression(model, sum(row.cost * var_units_on[row.id] for row in indices))
+    units_on_cost = @expression(
+        model,
+        sum(
+            row.cost * units_on for (row, units_on) in zip(indices, variables[:units_on].container)
+        )
+    )
 
     ## Objective function
     @objective(
