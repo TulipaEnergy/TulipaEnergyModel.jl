@@ -169,7 +169,8 @@
         "oneOf": [
           null,
           "basic",
-          "3var"
+          "3var",
+          "SU-SD-compact"
         ]
       },
       "default": null,
