@@ -239,6 +239,22 @@ function create_model(
         constraints,
     )
 
+    @timeit to "add_start_up_lower_bound_constraints!" add_start_up_lower_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_shut_down_lower_bound_constraints!" add_shut_down_lower_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
     if model_file_name != ""
         @timeit to "save model file" JuMP.write_to_file(model, model_file_name)
     end

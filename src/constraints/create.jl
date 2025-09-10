@@ -41,6 +41,8 @@ function compute_constraints_indices(connection)
             :shut_down_upper_bound_simple_investment,
             :shut_down_upper_bound_compact_investment,
             :unit_commitment_logic,
+            :start_up_lower_bound,
+            :shut_down_lower_bound,
         )
     )
 
