@@ -53,6 +53,11 @@ authors:
       email: z.gao1@uu.nl
       affiliation: 5
       orcid: "https://orcid.org/0000-0002-3817-8037"
+     -given-names: Mathijs M.
+      surname: de Weerdt
+      email: m.m.deweerdt@tudelft.nl
+      affiliation: 3
+      orcid: "https://orcid.org/0000-0002-0470-6241"
     - given-names: Germán
       surname: Morales-España
       email: german.morales@tno.nl
