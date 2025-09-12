@@ -91,9 +91,21 @@ bibliography: paper.bib
 `TulipaEnergyModel.jl` is a modelling framework for analysing the investment and operational performance of future energy systems, using capacity expansion and dispatch optimisation. `TulipaEnergyModel.jl` is developed in [Julia](https://julialang.org) [@Julia]  using [JuMP.jl](https://jump.dev) [@JuMP] as an algebraic modelling language.
 `TulipaEnergyModel.jl` is the main package of the Tulipa Energy ecosystem. As a framework, Tulipa formulates models completely based on input data, so users can analyse virtually any system using the generalized building blocks – producers, consumers, conversion, storage, and transport – and by specifying details such as time resolution, energy carriers or commodities, and geographic scope. TulipaEnergyModel.jl focuses on model quality and efficient implementation, allowing it to break the tradeoff between model fidelity and computational load.
 
+## Statement of need
+
+There are multiple packages and frameworks related to Energy System Optimisation in Julia and other languages.
+A few examples in the Julia and Python realm are [EnergyModelsX](https://github.com/EnergyModelsX) [@EnergyModelsX], [PowerModels](https://github.com/lanl-ansi/PowerModels.jl) [@PowerModels], [SpineOpt](https://www.tools-for-energy-system-modelling.org/) [@SpineOpt], [Sienna](https://www.nrel.gov/analysis/sienna) [@Sienna], [GenX](https://github.com/GenXProject/GenX) [@GenX], [PyPSA](https://pypsa.org) [@PyPSA], and [Calliope](https://github.com/calliope-project/calliope) [@Calliope].
+Although there are many options available, the modeling innovation for flexible temporal resolution in TulipaEnergyModel.jl alters all model structures in ways that are not easily compatible with existing models.
+As a result, TulipaEnergyModel.jl had to be developed from the ground up to incorporate specific features already included and to accommodate future enhancements.
+
+There are multiple packages and frameworks related to Energy System Optimization in Julia and other languages. A few examples in the Julia and Python realm are [EnergyModelsX](https://github.com/EnergyModelsX) [@EnergyModelsX], [PowerModels](https://github.com/lanl-ansi/PowerModels.jl) [@PowerModels], [SpineOpt](https://www.tools-for-energy-system-modelling.org/) [@SpineOpt], [Sienna](https://www.nrel.gov/analysis/sienna) [@Sienna], [GenX](https://github.com/GenXProject/GenX) [@GenX], [PyPSA](https://pypsa.org) [@PyPSA], and [Calliope](https://github.com/calliope-project/calliope) [@Calliope].
+However, existing models run into computational limits when solving large-scale problems, and have to resort to (over)simplifying the model to reduce computational burden. The common misconception is that the only strategy to speedup solving times without sacrificing model fidelity is through better software (decomposition & solvers) or hardware (high-performance computing). Current models overlook another strategy: improving the theoretical quality of the mathematical formulation, as this fundamentally defines the computational load. That is, higher quality mathematical formulations increase model fidelity while simultaneously solving faster than standard formulations. This insight inspired the development of TulipaEnergyModel.jl, with the core philosophy of advancing the state-of-the-art in formulation quality by exploiting the following three strategies: 1) lowering computational cost while maintaining model fidelity, by representing the same problem with fewer constraints and variables [@Tejada2025], and by creating tighter mixed-integer programming (MIP) formulations [@MoralesEspana2013]; 2) increasing model fidelity without extra computational cost, e.g., by developing more accurate linear programming (LP) approximations for storage [@Elgersma2025] and other technologies [UC ref]; and 3) balancing computational burden with adaptive/flexible model fidelity , i.e., having different levels of detail in different parts of the model, in the temporal [ref], technological and spatial dimensions. These modelling strategies have significant computational benefits, especially when handling problems of immense scale and dimensionality [ref].
+Some recent modelling breakthroughs alter the foundation and all structures of the model in ways that are not easily compatible with existing models. As a result, TulipaEnergyModel.jl had to be developed from the ground up to incorporate specific features already included and to accommodate future enhancements. Below we show some of the main modelling and software design innovations that alter the core structures of the model.
 
 
-### Modelling Innovations 
+
+
+## Modelling Innovations 
 One of the main innovations of TulipaEnergyModel is that it accepts a _fully flexible resolution_ [@Gao2025] for the assets and flows.
 In other words, the resolution at which the variables are defined don't have to be multiples of one another.
 As a short example, consider the following example:
@@ -110,7 +122,7 @@ TulipaEnergyModel.jl is fundamentally focused on modeling innovation, with its m
 The model also includes other key features such as flexible connection of energy assets [@Tejada2025], seasonal storage modeling using representative periods [@Tejada2018], and tight formulations to prevent simultaneous charging and discharging [@Elgersma2025].
 Furthermore, it incorporates ramping and unit commitment functionalities [@MoralesEspana2013], along with the capability for multi-year investment planning [@wang2025a; @wang2025b].
 
-### Software Design Innovations
+## Software Design Innovations
 One of the main software design choices for TulipaEnergyModel.jl is to maintain a [DuckDB](https://duckdb.org) [@DuckDB] connection from the input data to model creation and output generation.
 This enables us to handle different data formats by relying on DuckDB's capabilities, instead of specific Julia capabilities.
 Furthermore, this separates most of the data manipulation from the model manipulation, allowing users to separately create the necessary input data from whatever platform they are more comfortable with.
@@ -144,12 +156,7 @@ This decreases data movement by keeping everything in DuckDB.
 The JuMP variables themselves are created and kept in memory during the program execution.
 A single vector of variables is created, with each element corresponding to a row of the `var_flow` table.
 
-## Statement of need
 
-There are multiple packages and frameworks related to Energy System Optimisation in Julia and other languages.
-A few examples in the Julia and Python realm are [EnergyModelsX](https://github.com/EnergyModelsX) [@EnergyModelsX], [PowerModels](https://github.com/lanl-ansi/PowerModels.jl) [@PowerModels], [SpineOpt](https://www.tools-for-energy-system-modelling.org/) [@SpineOpt], [Sienna](https://www.nrel.gov/analysis/sienna) [@Sienna], [GenX](https://github.com/GenXProject/GenX) [@GenX], [PyPSA](https://pypsa.org) [@PyPSA], and [Calliope](https://github.com/calliope-project/calliope) [@Calliope].
-Although there are many options available, the modeling innovation for flexible temporal resolution in TulipaEnergyModel.jl alters all model structures in ways that are not easily compatible with existing models.
-As a result, TulipaEnergyModel.jl had to be developed from the ground up to incorporate specific features already included and to accommodate future enhancements.
 
 ## Acknowledgements
 
