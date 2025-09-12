@@ -1,5 +1,5 @@
 ---
-title: 'TulipaEnergyModel.jl: Energy system optimisation with fully flexible resolution'
+title: 'TulipaEnergyModel.jl: A Modelling Framework breaking the Tradeoff Between Model Fidelity and Computational Load'
 tags:
   - Julia
   - energy-system optimisation
@@ -88,13 +88,10 @@ bibliography: paper.bib
 
 ## Summary
 
-`TulipaEnergyModel.jl` is an energy optimisation model for analysis of sector coupling (e.g., electricity, hydrogen, heat, natural gas, etc.).
-The optimisation model determines the optimal investment and operation decisions for different types of assets (e.g., producers, consumers, conversion, storage, and transport) over time.
-TulipaEnergyModel.jl is developed in [Julia](https://julialang.org) [@Julia] and depends on the [JuMP.jl](https://jump.dev) [@JuMP] package.
+`TulipaEnergyModel.jl` is a modelling framework for analysing the investment and operational performance of future energy systems, using capacity expansion and dispatch optimisation. 'TulipaEnergyModel.jl' is developed in [Julia](https://julialang.org) [@Julia]  using [JuMP.jl](https://jump.dev) [@JuMP]) as an algebraic modelling language.
+`TulipaEnergyModel.jl` is the main package of the Tulipa Energy ecosystem. As a framework, Tulipa formulates models completely based on input data, so users can analyse virtually any system using the generalized building blocks – producers, consumers, conversion, storage, and transport – and by specifying details such as time resolution, energy carriers or commodities, and geographic scope. TulipaEnergyModel.jl focuses on model quality and efficient implementation, allowing it to break the tradeoff between model fidelity and computational load.
 
-TulipaEnergyModel.jl is the main package of the Tulipa Energy ecosystem.
-It provides a cutting-edge energy system model based on the user's data.
-Our main use case is modelling energy distribution in Europe, but there are no constraints preventing the user from extending to other use cases.
+
 
 ### Modelling Innovations 
 One of the main innovations of TulipaEnergyModel is that it accepts a _fully flexible resolution_ [@Gao2025] for the assets and flows.
