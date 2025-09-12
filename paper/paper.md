@@ -152,10 +152,10 @@ A single vector of variables is created, with each element corresponding to a ro
 
 
 
-### Acknowledgements
+## Acknowledgements
 
 TODO: Actually check this
 This publication is part of the project NextGenOpt with project number ESI.2019.008, which is (partly) financed by the Dutch Research Council (NWO) and supported by eScienceCenter under project number NLeSC C 21.0226.
 In addition, this research received partial funding from the European Climate, Infrastructure and Environment Executive Agency under the European Union’s HORIZON Research and Innovation Actions under grant agreement no. 101095998.
 
-### References
+## References
