@@ -1,5 +1,5 @@
 ---
-title: 'TulipaEnergyModel.jl: A Modelling Framework breaking the Tradeoff Between Model Fidelity and Computational Load'
+title: 'TulipaEnergyModel.jl: A Modelling Framework Breaking the Tradeoff Between Fidelity and Computational Load'
 tags:
   - Julia
   - energy-system optimisation
