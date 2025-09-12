@@ -807,7 +807,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var-%'
+        and asset.unit_commitment_method LIKE '3var%'
     order by
         t_high.asset,
         t_high.year,
@@ -848,7 +848,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var-%'
+        and asset.unit_commitment_method LIKE '3var%'
         and asset.investment_method in ('simple', 'none')
 
     order by
@@ -891,7 +891,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment = true
-    and asset.unit_commitment_method LIKE '3var-%'
+    and asset.unit_commitment_method LIKE '3var%'
     and asset.investment_method = 'compact'
 order by
     t_high.asset,
@@ -936,7 +936,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var-%'
+        and asset.unit_commitment_method LIKE '3var%'
     order by
         t_high.asset,
         t_high.year,
