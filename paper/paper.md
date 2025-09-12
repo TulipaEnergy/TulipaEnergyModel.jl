@@ -105,18 +105,20 @@ Some recent modelling breakthroughs alter the foundation and all structures of t
 
 
 
-## Modelling Innovations 
+### Modelling Innovations 
 Two of the main innovations of TulipaEnergyModel are that it accepts a fully flexible resolution [@Gao2025] for the assets and flows, and it allows for a direct connection between assets [@Tejada2025]. To illustrate these concepts, consider the following example:
 
 ![Example of network with flexible resolution of assets and flows](images/flexible-time-resolution.png)
 
 For the fully flexible temporal resolution, we look at 6 hours of a system. The flow between "H2" and "ccgt" has a resolution of 6 hours (i.e., the whole period), while from "ccgt" to the "balance", the resolution is 1 hour. The resolution from "wind" to "phs" is 3 hours, and the resolution from "phs" to "balance" is not regular, starting with a 4 hours block and then a 2 hours block. All these "time blocks" are handled by the TulipaEnergyModel.jl to allow for more or less detailed solutions. This implies that less variables and constraints are created, ensuring a faster solving speed, with little loss in accuracy, See @Gao2025 for further details.
+
 For the direct connection between assets, notice how the storage “phs” unit is directly connected to the “wind“ to charge, and also directly connected to “balance” to discharge. This direct connection between assets completely avoids extra elements in between (connections and nodes) naturally avoiding unnecessary extra variables and constraints. Consequently, speeding up solving times without any loss of accuracy when compared with traditional formulations, see @Tejada25 for further details.
+
 TulipaEnergyModel.jl is fundamentally focused on high quality mathematical formulations. The model also includes other key features such as seasonal storage modeling using representative periods [Tejada2018; @greg2025], tight formulations to prevent simultaneous charging and discharging [@Elgersma2025], tight and compact unit commitment constraints [@MoralesEspana2013], and compact formulations for multi-year investment planning [@wang2025a; @wang2025b].
 
 
 
-## Software Design Innovations
+### Software Design Innovations
 One of the main software design choices for TulipaEnergyModel.jl is to maintain a [DuckDB](https://duckdb.org) [@DuckDB] connection from the input data to model creation and output generation.
 This enables us to handle different data formats by relying on DuckDB's capabilities, instead of specific Julia capabilities.
 Furthermore, this separates most of the data manipulation from the model manipulation, allowing users to separately create the necessary input data from whatever platform they are more comfortable with.
