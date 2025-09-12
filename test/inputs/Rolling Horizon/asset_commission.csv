@@ -1,0 +1,6 @@
+asset,commission_year,fixed_cost,investment_cost,conversion_efficiency,fixed_cost_storage_energy,investment_cost_storage_energy,investment_limit,investment_limit_storage_energy,storage_charging_efficiency,storage_discharging_efficiency,storage_loss_from_stored_energy
+Solar,2030,0.01,0.01,1.0,0.0,0.0,,,1.0,1.0,0.0
+Wind Offshore,2030,0.0,1.0,1.0,0.0,0.0,,,1.0,1.0,0.0
+Battery,2030,0.0,0.0,1.0,0.0,0.0,,,1.0,1.0,0.0
+Hub,2030,0.0,0.0,1.0,0.0,0.0,,,1.0,1.0,0.0
+Demand,2030,0.0,0.0,1.0,0.0,0.0,,,1.0,1.0,0.0

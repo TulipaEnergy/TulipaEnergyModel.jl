@@ -55,6 +55,20 @@ mutable struct TulipaVariable <: TulipaTabularIndex
     end
 end
 
+mutable struct TulipaParameter <: TulipaTabularIndex
+    indices::DuckDB.QueryResult
+    table_name::String
+    container::Vector{JuMP.VariableRef}
+
+    function TulipaParameter(connection, table_name::String)
+        return new(
+            DuckDB.query(connection, "SELECT * FROM $table_name"),
+            table_name,
+            JuMP.VariableRef[],
+        )
+    end
+end
+
 """
 Structure to hold the JuMP constraints for the TulipaEnergyModel
 """
@@ -63,7 +77,8 @@ mutable struct TulipaConstraint <: TulipaTabularIndex
     table_name::String
     num_rows::Int
     constraint_names::Vector{Symbol}
-    expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
+    expressions::Dict
+    # expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
     coefficients::Dict{Symbol,Vector{Float64}}
     duals::Dict{Symbol,Vector{Float64}}
 
@@ -89,7 +104,8 @@ mutable struct TulipaExpression <: TulipaTabularIndex
     indices::DuckDB.QueryResult
     table_name::String
     num_rows::Int
-    expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
+    # expressions::Dict{Symbol,Vector{Union{JuMP.AffExpr,JuMP.QuadExpr}}}
+    expressions::Dict
 
     function TulipaExpression(connection, table_name::String)
         return new(
@@ -153,7 +169,10 @@ This checks that the `container` length matches the stored `indices` number of r
 function attach_expression!(
     cons_or_expr::TulipaTabularIndex,
     name::Symbol,
-    container::Vector{JuMP.AffExpr},
+    container::Union{
+        Vector{JuMP.AffExpr}, # variables
+        Vector{JuMP.AbstractJuMPScalar}, # parameters
+    },
 )
     if length(container) != cons_or_expr.num_rows
         error("The number of expressions does not match the number of rows in the indices of $name")
@@ -167,6 +186,8 @@ function attach_expression!(cons_or_expr::TulipaTabularIndex, name::Symbol, cont
     # indices table in empty in [@constraint(...) for row in indices].
     # It resolves to [] so the element type cannot be inferred
     if length(container) > 0
+        @warn typeof(container)
+        @warn eltype(container)
         error(
             "This variant is supposed to capture empty containers. This container is not empty for $name",
         )
@@ -209,6 +230,13 @@ function attach_coefficient!(cons::TulipaConstraint, name::Symbol, container)
     return nothing
 end
 
+mutable struct ProfileWithRollingHorizon
+    values::Vector{Float64}
+    rolling_horizon_variables::Vector{JuMP.VariableRef}
+
+    ProfileWithRollingHorizon(values::Vector{Float64}) = new(values, JuMP.VariableRef[])
+end
+
 """
 Structure to hold the dictionaries of profiles.
 """
@@ -216,10 +244,10 @@ mutable struct ProfileLookup
     # The integers here are Int32 because they are obtained directly from DuckDB
     #
     # rep_period[(asset, year, rep_period)]
-    rep_period::Dict{Tuple{String,Int32,Int32},Vector{Float64}}
+    rep_period::Dict{Tuple{String,Int32,Int32},ProfileWithRollingHorizon}
 
     # over_clustered_year[(asset, year)]
-    over_clustered_year::Dict{Tuple{String,Int32},Vector{Float64}}
+    over_clustered_year::Dict{Tuple{String,Int32},ProfileWithRollingHorizon}
 end
 
 """

@@ -31,8 +31,20 @@ function _profile_aggregate(profiles, tuple_key::Tuple, time_block, agg_function
     if any(ismissing, tuple_key) || !haskey(profiles, tuple_key)
         return agg_function(Iterators.repeated(default_value, length(time_block)))
     end
-    profile_value = profiles[tuple_key]
-    return agg_function(skipmissing(profile_value[time_block]))
+    profile_object = profiles[tuple_key]
+
+    # Rolling horizon is inferred by the existence and non-emptyness of rolling_horizon_variables
+    is_rolling_horizon =
+        hasproperty(profile_object, :rolling_horizon_variables) &&
+        length(profile_object.rolling_horizon_variables) > 0
+
+    if is_rolling_horizon
+        profile_value = profile_object.rolling_horizon_variables
+        return agg_function(skipmissing(profile_value[time_block]))
+    else
+        profile_value = profile_object.values
+        return agg_function(skipmissing(profile_value[time_block]))
+    end
 end
 
 """
