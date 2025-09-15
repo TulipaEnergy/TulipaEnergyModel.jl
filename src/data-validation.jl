@@ -43,11 +43,6 @@ function validate_data!(connection)
         ),
         ("group consistency between tables", _validate_group_consistency!, false),
         (
-            "stochastic scenario consistency between tables",
-            _validate_stochastic_scenario_consistency!,
-            false,
-        ),
-        (
             "stochastic scenario probabilities sum to 1",
             _validate_stochastic_scenario_probabilities_sum_to_one!,
             false,
@@ -298,43 +293,18 @@ function _validate_group_consistency!(connection)
     return error_messages
 end
 
-function _validate_stochastic_scenario_consistency!(connection)
-    error_messages = String[]
-
-    # First, check if the values are valid
-    append!(
-        error_messages,
-        _validate_foreign_key!(
-            connection,
-            "rep_periods_mapping",
-            :stochastic_scenario,
-            "stochastic_scenario",
-            :stochastic_scenario,
-        ),
-    )
-
-    # Second, these that the values are used
-    for row in DuckDB.query(
-        connection,
-        "FROM (
-            SELECT ss.stochastic_scenario, COUNT(rpm.stochastic_scenario) AS ss_count
-            FROM stochastic_scenario AS ss
-            LEFT JOIN rep_periods_mapping AS rpm
-                ON rpm.stochastic_scenario = ss.stochastic_scenario
-            GROUP BY ss.stochastic_scenario
-        ) WHERE ss_count = 0",
-    )
-        push!(
-            error_messages,
-            "Stochastic scenario '$(row.stochastic_scenario)' in 'stochastic_scenario' table has no members in 'rep_periods_mapping' table, column 'stochastic_scenario'",
-        )
-    end
-
-    return error_messages
-end
-
 function _validate_stochastic_scenario_probabilities_sum_to_one!(connection; tolerance = 1e-3)
     error_messages = String[]
+
+    # Check if table is not empty
+    row_count_query =
+        DuckDB.query(connection, "SELECT COUNT(*) as row_count FROM stochastic_scenario")
+    row_count = get_single_element_from_query_and_ensure_its_only_one(row_count_query)
+    if row_count == 0
+        return error_messages
+    end
+
+    # Check if sum of probabilities is equal to 1
     sum_query = DuckDB.query(
         connection,
         "SELECT SUM(probability) as total_probability FROM stochastic_scenario",
