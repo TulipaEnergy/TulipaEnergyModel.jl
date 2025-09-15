@@ -609,8 +609,7 @@ end
 
 @testitem "Check that stochastic scenario probabilities sum to 1 - no error" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
-    stochastic_scenario =
-        DataFrame(:stochastic_scenario => [1, 2, 3], :probability => [0.3, 0.4, 0.3])
+    stochastic_scenario = DataFrame(:scenario => [1, 2, 3], :probability => [0.3, 0.4, 0.3])
     connection = DBInterface.connect(DuckDB.DB)
     DuckDB.register_data_frame(connection, stochastic_scenario, "stochastic_scenario")
 
@@ -620,7 +619,7 @@ end
 
 @testitem "Check that stochastic scenario probabilities sum to 1 - throw error" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
-    stochastic_scenario = DataFrame(:stochastic_scenario => [1, 2], :probability => [0.499, 0.5])
+    stochastic_scenario = DataFrame(:scenario => [1, 2], :probability => [0.499, 0.5])
     connection = DBInterface.connect(DuckDB.DB)
     DuckDB.register_data_frame(connection, stochastic_scenario, "stochastic_scenario")
 
@@ -633,7 +632,7 @@ end
     ]
 end
 
-@testitem "Check that stochastic scenario probabilities sum to 1 - Using Tiny data" setup =
+@testitem "Check that stochastic scenario probabilities sum to 1 - using Tiny data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
 
@@ -641,7 +640,13 @@ end
     TEM.create_internal_tables!(connection)
 
     # Modify stochastic_scenario to have bad probabilities
-    DuckDB.query(connection, "UPDATE stochastic_scenario SET probability = 0.8")
+    DuckDB.query(
+        connection,
+        """
+        INSERT INTO stochastic_scenario (description, scenario, probability)
+        VALUES ('', 1, 0.8);
+        """,
+    )
     @test_throws "Sum of probabilities in 'stochastic_scenario' table is 0.8, but should be approximately 1.0 (tolerance: 0.001)" TEM.create_internal_tables!(
         connection,
     )
