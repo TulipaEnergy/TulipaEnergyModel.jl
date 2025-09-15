@@ -2,6 +2,8 @@ exclude = [
   "@ref",
   "^https://github.com/.*/releases/tag/v.*$",
   "^https://code.visualstudio.com",
+  "https://resolver.tudelft.nl/uuid:0e87f306-1c92-4eec-805f-72377ed57fb2",
+  "https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593",
 ]
 
 exclude_path = [
