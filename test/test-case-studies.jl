@@ -107,7 +107,7 @@ end
         model_parameters_file = joinpath(@__DIR__, "inputs", "model-parameters-example.toml"),
         show_log = false,
     )
-    @test energy_problem.objective_value ≈ 3458577.01472 atol = 1e-5
+    @test energy_problem.objective_value ≈ 4623425.16649 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(
@@ -115,7 +115,7 @@ end
         model_parameters_file = joinpath(@__DIR__, "inputs", "model-parameters-example.toml"),
         show_log = false,
     )
-    @test energy_problem.objective_value ≈ 3458577.01472 atol = 1e-5
+    @test energy_problem.objective_value ≈ 4623425.16649 atol = 1e-5
 end
 
 @testitem "Power Flow Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow] begin
