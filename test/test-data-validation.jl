@@ -636,7 +636,7 @@ end
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
 
-    # Doesn't throw (creates empty stochastic_scenario with default probability = 1.0)
+    # Doesn't throw (creates empty stochastic_scenario table)
     TEM.create_internal_tables!(connection)
 
     # Modify stochastic_scenario to have bad probabilities
