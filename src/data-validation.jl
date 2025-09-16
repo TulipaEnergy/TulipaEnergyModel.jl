@@ -575,24 +575,24 @@ function _validate_flow_commission_and_asset_both_consistency!(connection)
         )
     end
 
-    # for row in DuckDB.query(
-    #     connection,
-    #     "SELECT flow_commission.from_asset, asset_both.commission_year
-    #     FROM flow_commission
-    #     LEFT JOIN asset_both
-    #         ON flow_commission.from_asset = asset_both.asset
-    #         AND flow_commission.commission_year = asset_both.commission_year
-    #     LEFT JOIN asset
-    #         ON asset_both.asset = asset.asset
-    #     WHERE asset.investment_method = 'semi-compact'
-    #         AND flow_commission.commission_year IS NULL
-    #     ",
-    # )
-    #     push!(
-    #         error_messages,
-    #         "Unexpected commission_year = $(row.commission_year) for the outgoing flow of asset '$(row.asset)' in 'flow_commission'. The commission_year should match the one in 'asset_both'.",
-    #     )
-    # end
+    for row in DuckDB.query(
+        connection,
+        "SELECT flow_commission.from_asset, flow_commission.commission_year
+        FROM flow_commission
+        LEFT JOIN asset_both
+            ON flow_commission.from_asset = asset_both.asset
+            AND flow_commission.commission_year = asset_both.commission_year
+        LEFT JOIN asset
+            ON flow_commission.from_asset = asset.asset
+        WHERE asset.investment_method = 'semi-compact'
+            AND asset_both.commission_year IS NULL
+        ",
+    )
+        push!(
+            error_messages,
+            "Unexpected commission_year = $(row.commission_year) for the outgoing flow of asset '$(row.from_asset)' in 'flow_commission'. The commission_year should match the one in 'asset_both'.",
+        )
+    end
 
     return error_messages
 end
