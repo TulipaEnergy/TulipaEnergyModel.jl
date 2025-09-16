@@ -1,4 +1,4 @@
-# Representative Periods with Tulipa Clustering
+# Tutorial 4: Representative Periods with Tulipa Clustering
 
 ## Introduction
 
@@ -15,7 +15,7 @@ Add the new packages:
 ```julia
 using Pkg: Pkg
 Pkg.activate(".")
-Pkg.add(name="TulipaClustering", version="0.4.0")
+Pkg.add(name="TulipaClustering")
 Pkg.add("Distances")
 ```
 
@@ -33,16 +33,16 @@ using Distances
 
 > **Question:** Do you remember how to install the two new libraries into your environment?
 
-## Set up the data
+## Set up the workflow
 
-Let's now go to the repository and download the new files **my-awesome-energy-system-lesson-4** from the following link: [case studies github repo](https://github.com/datejada/Tulipa101-hands-on/tree/main)
+The data for this tutorial can be found in the folder `my-awesome-energy-system/tutorial-4`
 
-Then load the data:
+Load the data:
 
 ```julia=9
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "my-awesome-energy-system-lesson-4"
-output_dir = "my-awesome-energy-system-results"
+input_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-4"
+output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-4/results"
 TIO.read_csv_folder(connection, input_dir)
 ```
 
@@ -57,13 +57,10 @@ Uh oh! It doesn't work. Why not?
 
 ```txt
 ERROR: DataValidationException: The following issues were found in the data:
-- Table 'rep_periods_data' expected but not found
-- Table 'rep_periods_mapping' expected but not found
-- Table 'timeframe_data' expected but not found
-- Column 'is_milestone' is missing from table 'year_data'
+- Column 'rep_period' of table 'rep_periods_data' does not have a default
 ```
 
-Because we need the tables from the clustering!
+Because we need data from the clustering!
 
 ## Adding `TulipaClustering`
 
@@ -212,36 +209,6 @@ plot(
 
 This concludes this tutorial! Play around with different parameters to see how the results change. For example, when you use `:dirac` vs `:convex` weights, do you see the difference? How does the solution change as you increase the number of RPs?
 
-## Troubleshooting
-
-If you can't run up to the end, then check that you have the following information in the `Project.toml` file in your repository, and then in your Julia REPL activate and instantiate the project.
-
-`Project.toml`:
-
-```txt
-[deps]
-DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
-Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
-DuckDB = "d2f5444f-75bc-4fdf-ac35-56f514c445e1"
-Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-TulipaClustering = "314fac8b-c762-4aa3-9d12-851379729163"
-TulipaEnergyModel = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
-TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
-
-[compat]
-TulipaEnergyModel = "0.15.0"
-
-```
-
-Close your current REPL, open a new one, and type:
-
-```julia
-using Pkg: Pkg
-Pkg.activate(".")
-Pkg.resolve()
-Pkg.instantiate()
-```
-
 ## The Script as a Whole
 
 ```julia=
@@ -249,7 +216,7 @@ using Pkg
 Pkg.activate(".")
 # Pkg.add("TulipaEnergyModel")
 # Pkg.add("TulipaIO")
-Pkg.add("TulipaClustering") # NB: this is new; ask students if they remember how to install a package
+Pkg.add("TulipaClustering")
 # Pkg.add("DuckDB")
 # Pkg.add("DataFrames")
 # Pkg.add("Plots")
@@ -259,16 +226,16 @@ Pkg.instantiate()
 
 import TulipaIO as TIO
 import TulipaEnergyModel as TEM
-import TulipaClustering as TC  # NB: this is new
+import TulipaClustering as TC
 using DuckDB
 using DataFrames
 using Plots
-using Distances  # NB: this is new
+using Distances
 
 connection = DBInterface.connect(DuckDB.DB)
 
-input_dir = "my-awesome-energy-system-lesson-4"
-output_dir = "my-awesome-energy-system-results"
+input_dir = "my-awesome-energy-system/tutorial-4"
+output_dir = "my-awesome-energy-system/tutorial-4/results"
 
 TIO.read_csv_folder(connection, input_dir)
 

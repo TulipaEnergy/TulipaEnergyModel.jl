@@ -1,37 +1,11 @@
-# [The Basics](@id basic-example)
+# [Tutorial 1: The Basics](@id basic-example)
 
-In this tutorial, you will learn (a bit) about:
 
-- Connecting example data with DuckDB
-- Populating default inputs
-- Running the model
-- Exploring and graphing results in Julia
+## Load data and run Tulipa
+If you have not done so already, please follow the steps in the pre-tutorial first.
+You should have a VS Code project set up before starting this tutorial.
 
-*Let's get started!*
-
-## [Create a VS Code project](@id vscode-project)
-
-Make sure you have Julia installed, as well as the Julia extension in VS Code.
-
-- Open VS Code and create a new project\
-   *File > Open Folder > Create a new folder > Select*
-- Open a Julia REPL\
-  *CTRL + SHIFT + P > ENTER*
-- Run the code below in your Julia REPL to create a new environment and add the necessary packages (only necessary when creating a new project environment):
-
-```julia
-using Pkg: Pkg       # Julia package manager
-Pkg.activate(".")    # Creates and activates the project in the new folder - notice it creates Project.toml and Manifest.toml in your folder for reproducibility
-Pkg.add("TulipaEnergyModel")
-Pkg.add("TulipaIO")
-Pkg.add("DuckDB")
-Pkg.add("DataFrames")
-Pkg.add("Plots")
-Pkg.instantiate()
-```
-
-- Create a Julia file called `my_workflow.jl`
-- Paste this code in the file. Running it will load the necessary packages:
+Ensure you are using the necessary packages by running the lines below:
 
 ```julia
 import TulipaIO as TIO
@@ -40,19 +14,6 @@ using DuckDB
 using DataFrames
 using Plots
 ```
-
-## [Set up data and folders](@id tutorial-data-folders)
-
-- **Download the folders** from [this repository](https://github.com/datejada/Tulipa101-hands-on/tree/main)\
-    *Click the green button Code > Download ZIP*
-
-- **Move the folders** into your VS Code project.\
-    *To find the folder where you created your project, right click on any file in VS code (e.g. 'my_workflow.jl') and click "Reveal in File Explorer"*
-
-!!! info "What parameters can I use?"
-    Check out the docs: [TulipaEnergyModel Inputs](@ref table-schemas) and the [input-schemas.json](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/input-schemas.json) file.
-
-## Load data and run Tulipa
 
 !!! tip
     Follow along in this section, copy-pasting into your my_workflow.jl file.\
@@ -63,8 +24,8 @@ We need to create a connection to DuckDB and point to the input and output folde
 
 ```julia
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "basics-tutorial"
-output_dir = "my-awesome-results"
+input_dir = "my-awesome-energy-system/tutorial-1"
+output_dir = "my-awesome-energy-system/tutorial-1/results"
 ```
 
 Let's use TulipaIO to read the files and list them:
@@ -166,10 +127,13 @@ plot(
     #label=string(from_asset, " -> ", to_asset),
     xlabel="Hour",
     ylabel="[MWh]",
+    ylims=(0,200),
     #xlims=(0, 168),
     dpi=600,
 )
 ```
 
 !!! info "Test Your Knowledge"
-    Can you explain the prices of 56€/MWh in the e_demand?
+    Inspect the prices in the plot. Notice how the prices mostly match the operational costs of the dispatchable assets. However, there is an outlier. Can you explain the prices of 153.8462€/MWh in the e_demand? Hint: consider the interlinkage between hydrogen and electricity demand
+
+    Another important aspect to consider is that we are currently not allowing the model to invest in any of the technologies. It has to solve the energy problem with the currently allocated capacities. There is a column in the `asset-milestone.csv` file that requires true or false values for whether an asset is investable or not. Try changing the value in this column for the wind asset to true and run the model again. What differences do you see?
