@@ -1,0 +1,10 @@
+id,asset,milestone_year,investment_integer,capacity,investment_limit,solution
+1,ccgt,2030,true,400.0,10000.0,2.0
+2,wind,2030,true,50.0,,1.0
+3,solar,2030,true,10.0,,0.0
+4,ocgt,2030,true,100.0,,0.0
+5,electrolizer,2030,true,100.0,,2.0
+6,smr_ccs,2030,true,100.0,,1.0
+7,wind_offshore,2030,true,400.0,,2.0
+8,battery,2030,true,20.0,10000.0,0.0
+9,h2_storage,2030,true,100.0,10000.0,1.0
