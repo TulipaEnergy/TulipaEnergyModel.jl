@@ -647,6 +647,7 @@ end
     error_messages = TEM._validate_flow_commission_and_asset_both_consistency!(connection)
     @test error_messages == [
         "Missing commission_year = 2030 for the outgoing flow of asset 'wind' in 'flow_commission' given (asset 'wind', milestone_year = 2030, commission_year = 2030) in 'asset_both'. The commission_year should match the one in 'asset_both'.",
+        "Unexpected commission_year = 0 for the outgoing flow of asset 'wind' in 'flow_commission'. The commission_year should match the one in 'asset_both'.",
     ]
 end
 
