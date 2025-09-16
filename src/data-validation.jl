@@ -43,6 +43,11 @@ function validate_data!(connection)
         ),
         ("group consistency between tables", _validate_group_consistency!, false),
         (
+            "stochastic scenario probabilities sum to 1",
+            _validate_stochastic_scenario_probabilities_sum_to_one!,
+            false,
+        ),
+        (
             "data consistency for simple investment",
             _validate_simple_method_data_consistency!,
             false,
@@ -135,6 +140,7 @@ function _validate_no_duplicate_rows!(connection)
         ("profiles_timeframe", (:profile_name, :year, :period)),
         ("rep_periods_data", (:year, :rep_period)),
         ("rep_periods_mapping", (:year, :period, :rep_period)),
+        ("stochastic_scenario", (:scenario,)),
         ("timeframe_data", (:year, :period)),
         ("year_data", (:year,)),
     )
@@ -281,6 +287,33 @@ function _validate_group_consistency!(connection)
         push!(
             error_messages,
             "Group '$(row.name)' in 'group_asset' has no members in 'asset', column 'group'",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_stochastic_scenario_probabilities_sum_to_one!(connection; tolerance = 1e-3)
+    error_messages = String[]
+
+    # Check if table is not empty
+    row_count_query =
+        DuckDB.query(connection, "SELECT COUNT(*) as row_count FROM stochastic_scenario")
+    row_count = get_single_element_from_query_and_ensure_its_only_one(row_count_query)
+    if row_count == 0
+        return error_messages
+    end
+
+    # Check if sum of probabilities is equal to 1
+    sum_query = DuckDB.query(
+        connection,
+        "SELECT SUM(probability) as total_probability FROM stochastic_scenario",
+    )
+    total_probability = get_single_element_from_query_and_ensure_its_only_one(sum_query)
+    if abs(total_probability - 1.0) > tolerance
+        push!(
+            error_messages,
+            "Sum of probabilities in 'stochastic_scenario' table is $(total_probability), but should be approximately 1.0 (tolerance: $(tolerance))",
         )
     end
 
