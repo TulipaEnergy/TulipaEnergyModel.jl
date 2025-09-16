@@ -19,7 +19,7 @@ For instance, what are the storage capacities? Efficiencies? Initial storage lev
 
 Let's start the workflow in Lesson 4, but using our new storage data (and a temporary hack - sorry, a fix is coming soon):
 
-```julia=
+```julia
 using Pkg
 Pkg.activate(".")
 # Pkg.add("TulipaEnergyModel")
@@ -85,7 +85,7 @@ At this point, everything should work the same as Lesson 4.
 
 Nice, so what about the storage level?
 
-```julia=98
+```julia
 # Retrieve and group the data
 storage_levels = TIO.get_table(connection, "var_storage_level_rep_period")
 gdf = groupby(storage_levels, [:asset])
@@ -131,7 +131,7 @@ Check the storage level of the hydrogen storage.
 >**Note:** It's now in the variable `var_storage_level_over_clustered_year` because it's seasonal.
 TIO.get_table(connection, "var_storage_level_over_clustered_year") # Or any other table name
 
-```julia=
+```julia
 seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_over_clustered_year")
 gdf = groupby(seasonal_storage_levels, [:asset])
 n_subplots = length(gdf)
@@ -173,7 +173,7 @@ The following code:
    *Since it is 1 year and 1 representative, the storage is not considered seasonal (it is within the representative period)*
 4. Stores the run in a new object called `ep_hourly`
 
-```julia=
+```julia
 ## Hourly benchmark
 conn_hourly_benchmark = DBInterface.connect(DuckDB.DB)
 TIO.read_csv_folder(conn_hourly_benchmark, input_dir)
@@ -211,7 +211,7 @@ ep_hourly = TEM.run_scenario(conn_hourly_benchmark)
 You can use this result and the ones from the clustering to see the comparison of the two solutions.\
 Here is an example of how to combine the plots for this case:
 
-```julia=
+```julia
 # plotting the results for the hourly benchmark
 storage_levels_hourly = TIO.get_table(conn_hourly_benchmark, "var_storage_level_rep_period")
 asset_to_filter = "h2_storage"

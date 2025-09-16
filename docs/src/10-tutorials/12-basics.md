@@ -1,7 +1,9 @@
 # [Tutorial 1: The Basics](@id basic-example)
 
+Welcome to the first tutorial, here you will learn the basics of how to run TulipaEnergyModel. Good luck! 🌷
 
 ## Load data and run Tulipa
+
 If you have not done so already, please follow the steps in the pre-tutorial first.
 You should have a VS Code project set up before starting this tutorial.
 
@@ -136,4 +138,4 @@ plot(
 !!! info "Test Your Knowledge"
     Inspect the prices in the plot. Notice how the prices mostly match the operational costs of the dispatchable assets. However, there is an outlier. Can you explain the prices of 153.8462€/MWh in the e_demand? Hint: consider the interlinkage between hydrogen and electricity demand
 
-    Another important aspect to consider is that we are currently not allowing the model to invest in any of the technologies. It has to solve the energy problem with the currently allocated capacities. There is a column in the `asset-milestone.csv` file that requires true or false values for whether an asset is investable or not. Try changing the value in this column for the wind asset to true and run the model again. What differences do you see?
+Another important aspect to consider is that we are currently not allowing the model to invest in any of the technologies. It has to solve the energy problem with the currently allocated capacities. There is a column in the `asset-milestone.csv` file that requires true or false values for whether an asset is investable or not. Try changing the value in this column for the wind asset to true and run the model again. What differences do you see?

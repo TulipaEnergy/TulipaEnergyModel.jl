@@ -31,6 +31,10 @@ Pkg.add("Plots")
 Pkg.instantiate()
 ```
 
+!!! tip
+    If you already had an installed version of the packages, then consider updating them using
+    the update function in Pkg, for instance, `Pkg.update("TulipaEnergyModel")`.
+
 - Create a Julia file called `my_workflow.jl`
 - Paste this code in the file. Running it will load the necessary packages:
 
@@ -44,9 +48,11 @@ using Plots
 
 ## [Set up data and folders](@id tutorial-data-folders)
 
-- **Download the folders** from [this repository](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/docs/src/10-tutorials)\
-    *Click the green button Code > Download ZIP*
-    *The data is located in the subfolders docs > src > 10-tutorials > my-awesome-energy-system*
+- **Download the folders**
+     1. Go to main repo website: [https://github.com/TulipaEnergy/TulipaEnergyModel.jl/](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/)
+     1. Click on *Tags*
+     1. Download the Zip file of the version you have installed (usually the latest)
+     1. The data is located in the subfolders: *docs > src > 10-tutorials > my-awesome-energy-system*
 
 - **Move the 'my-awesome-energy-system' folder** into your VS Code project.\
     *To find the folder where you created your project, right click on any file in VS code (e.g. 'my_workflow.jl') and click "Reveal in File Explorer"*
@@ -55,4 +61,3 @@ The workflow.jl and 'my-awesome-energy-system' folder should now both be present
 
 !!! info "What parameters can I use?"
     Check out the docs: [TulipaEnergyModel Inputs](@ref table-schemas) and the [input-schemas.json](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/input-schemas.json) file.
-

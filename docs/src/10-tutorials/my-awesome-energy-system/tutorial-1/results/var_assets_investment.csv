@@ -1,7 +1,0 @@
-id,asset,milestone_year,investment_integer,capacity,investment_limit,solution
-1,ccgt,2030,true,800.0,10000.0,0.0
-2,wind,2030,true,400.0,,85.0
-3,solar,2030,true,500.0,,9.0
-4,ocgt,2030,true,100.0,,0.0
-5,electrolizer,2030,true,100.0,,0.0
-6,smr_ccs,2030,true,100.0,,0.0

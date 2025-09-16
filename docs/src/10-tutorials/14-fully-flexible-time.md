@@ -15,7 +15,7 @@ More information is in the section [Flexible Time Resolution](@ref flex-time-res
 
 For more nitty gritty nerdy details, you can read this reference.
 
-*Gao, Zhi and Gazzani, Matteo and Tejada-Arango, Diego A. and Siqueira, Abel and Wang, Ni and Gibescu, Madeleine and Morales-España, G., Fully Flexible Temporal Resolution for Energy System Optimization.* Available at SSRN: <https://ssrn.com/abstract=5214263> or <http://dx.doi.org/10.2139/ssrn.5214263>
+Gao, Z., Gazzani, M., Tejada-Arango, D. A., Siqueira, A. S., Wang, N., Gibescu, M., & Morales-España, G. (2025). Fully flexible temporal resolution for energy system optimization. Applied Energy, 396, 126267. <https://doi.org/10.1016/j.apenergy.2025.126267>
 
 ### Hydrogen sector on 6 hour resolution
 
@@ -264,4 +264,3 @@ plot!(
     label=string(from_asset, " -> ", to_asset, " (hourly)"),
 )
 ```
-

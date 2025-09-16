@@ -21,7 +21,7 @@ Pkg.add("Distances")
 
 Import packages:
 
-```julia=
+```julia
 import TulipaIO as TIO
 import TulipaEnergyModel as TEM
 import TulipaClustering as TC
@@ -39,7 +39,7 @@ The data for this tutorial can be found in the folder `my-awesome-energy-system/
 
 Load the data:
 
-```julia=9
+```julia
 connection = DBInterface.connect(DuckDB.DB)
 input_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-4"
 output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-4/results"
@@ -48,7 +48,7 @@ TIO.read_csv_folder(connection, input_dir)
 
 Try to run the problem as usual:
 
-```julia=14
+```julia
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.run_scenario(connection; output_folder=output_dir)
 ```
@@ -70,7 +70,7 @@ We need to produce representative period data from the base period data.
 
 Let's say we want to split the year into days, i.e., periods of length 24. `TulipaClustering` provides two methods that can help: `combine_periods!` combines existing periods into consequentive timesteps, and `split_into_periods!` splits it back into periods of desired length:
 
-```julia=17
+```julia
 period_duration = 24  # group data into days
 
 profiles_df = TIO.get_table(connection, "profiles_periods")
@@ -91,7 +91,7 @@ You can also change two optional arguments (after a semicolon):
 - `method` clustering method (defaults to `:k_means`),
 - `distance` a metric used to measure how different the datapoints are (defaults to `SqEuclidean()`),
 
-```julia=23
+```julia
 num_rep_periods = 7
 method = :k_medoids  # :k_means, :convex_hull, :convex_hull_with_null, :conical_hull
 distance = Euclidean()  # CosineDist()
@@ -118,7 +118,7 @@ After the clustering is done, each period is assigned to one representative peri
 
 Now fit the weights:
 
-```julia=29
+```julia
 weight_type = :dirac  # :convex, :conical, :conical_bounded
 tol = 1e-2
 niters = 100
@@ -137,7 +137,7 @@ TC.fit_rep_period_weights!(
 
 To run the model, add the data to the system with `TulipaIO` and then run it as usual:
 
-```julia=42
+```julia
 TC.write_clustering_result_to_tables(connection, clustering_result)
 
 TEM.populate_with_defaults!(connection)
@@ -148,7 +148,7 @@ energy_problem = TEM.run_scenario(connection; output_folder=output_dir)
 
 To plot the results, first read the data with `TulipaIO` and filter what's needed (and rename `time_block_start` to `timestep` while you're at it):
 
-```julia=47
+```julia
 flows = TIO.get_table(connection, "var_flow")
 
 select!(
@@ -176,21 +176,21 @@ filtered_flow = filter(
 
 To reinterpret the RP data as base periods data, first create a new dataframe that contains both by using the inner join operation:
 
-```julia=71
+```julia
 rep_periods_mapping = TIO.get_table(connection, "rep_periods_mapping")
 df = innerjoin(filtered_flow, rep_periods_mapping, on=[:year, :rep_period])
 ```
 
 Next, use Julia's Split-Apply-Combine approach to group the dataframe into smaller ones. Each grouped dataframe contains a single data point for one base period and all RPs it maps to. Then multiply the results by weights and add them up.
 
-```julia=73
+```julia
 gdf = groupby(df, [:from_asset, :to_asset, :year, :period, :timestep])
 result_df = combine(gdf, [:weight, :solution] => ((w, s) -> sum(w .* s)) => :solution)
 ```
 
 Now you can plot the results. Remove the period data since you don't need it anymore, and re-sort the data to make sure it is in the right order.
 
-```julia=76
+```julia
 TC.combine_periods!(result_df)
 sort!(result_df, :timestep)
 
@@ -211,7 +211,7 @@ This concludes this tutorial! Play around with different parameters to see how t
 
 ## The Script as a Whole
 
-```julia=
+```julia
 using Pkg
 Pkg.activate(".")
 # Pkg.add("TulipaEnergyModel")
@@ -318,13 +318,13 @@ plot(
 
 You can check the new tables with TulipaIO, for example:
 
-```julia=
+```julia
 TIO.get_table(connection,"rep_periods_mapping")
 ```
 
 If you want to save the intermediary tables created by the clustering, you can do this with DuckDB:
 
-```julia=
+```julia
 DuckDB.execute(
     connection,
     "COPY 'profiles_rep_periods' TO 'profiles-rep-periods.csv' (HEADER, DELIMITER ',')",
