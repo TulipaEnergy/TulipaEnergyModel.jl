@@ -25,9 +25,10 @@ In addition, the following asset sets represent methods for incorporating additi
 | Name                                      | Description                                                   | Elements | Superset                                                                                         | Notes                                                                                                                                                                                                                                                           |
 | ----------------------------------------- | ------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | $\mathcal{A}^{\text{i}}_y$                | Energy assets with investment method at year $y$              |          | $\mathcal{A}^{\text{i}}_y  \subseteq \mathcal{A}$                                                |                                                                                                                                                                                                                                                                 |
-| $\mathcal{A}^{\text{operation}}$          | Energy assets with operation mode at year $y$                 |          | $\mathcal{A}^{\text{operation}}  \subseteq \mathcal{A}$                                          |                                                                                                                                                                                                                                                                 |
+| $\mathcal{A}^{\text{operation}}$          | Energy assets with operation mode at year $y$                 |          | $\mathcal{A}^{\text{operation}}  \subseteq \mathcal{A}$                                               |                                                                                                                                                                                                                                                                 |
 | $\mathcal{A}^{\text{simple investment}}$  | Energy assets with simple investment method at year $y$       |          | $\mathcal{A}^{\text{simple investment}}  \subseteq \mathcal{A}$                                  |                                                                                                                                                                                                                                                                 |
-| $\mathcal{A}^{\text{compact investment}}$ | Energy assets with compact investment method at year $y$      |          | $\mathcal{A}^{\text{compact investment}}  \subseteq \mathcal{A}$                                 |                                                                                                                                                                                                                                                                 |
+| $\mathcal{A}^{\text{compact investment}}$ | Energy assets with compact investment method at year $y$      |          | $\mathcal{A}^{\text{compact investment}}  \subseteq \mathcal{A}$                                 | |
+| $\mathcal{A}^{\text{semi-compact investment}}$  | Energy assets with semi-compact investment method at year $y$       |          | $\mathcal{A}^{\text{semi-compact investment}}  \subseteq \mathcal{A}$                                  | |
 | $\mathcal{A}^{\text{ss}}_y$               | Energy assets with seasonal method at year $y$                |          | $\mathcal{A}^{\text{ss}}_y \subseteq \mathcal{A}$                                                | This set contains assets that use the seasonal method method. Please visit the how-to sections for [seasonal storage](@ref seasonal-setup) and [maximum/minimum outgoing energy limit](@ref max-min-outgoing-energy-setup) to learn how to set up this feature. |
 | $\mathcal{A}^{\text{se}}_y$               | Storage energy assets with energy method at year $y$          |          | $\mathcal{A}^{\text{se}}_y \subseteq \mathcal{A}^{\text{s}}$                                     | This set contains storage assets that use investment energy method. Please visit the [how-to section](@ref storage-investment-setup) to learn how to set up this feature.                                                                                       |
 | $\mathcal{A}^{\text{sb}}_y$               | Storage energy assets with binary method at year $y$          |          | $\mathcal{A}^{\text{sb}}_y \subseteq \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}_y$ | This set contains storage assets that use an extra binary variable to avoid charging and discharging simultaneously. Please visit the [how-to section](@ref storage-binary-method-setup) to learn how to set up this feature.                                   |
@@ -237,6 +238,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | Name                                               | Domain           | Domains of Indices                                                                                                             | Description                                                                                                                           | Units   |
 | -------------------------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | $v^{\text{flow}}_{f,k_y,b_{k_y}}$                  | $\mathbb{R}$     | $f \in \mathcal{F}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                  | Flow $f$ between two assets in representative period $k_y$ and timestep block $b_{k_y}$                                               | [MW]    |
+| $v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}}$                  | $\mathbb{R}$     | $f \in \mathcal{F}^{\text{out}}_{a,y} \mid a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} $, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                  | Vintage flow $f$ between two assets in commission year $v$ in representative period $k_y$ and timestep block $b_{k_y}$                                               | [MW]    |
 | $v^{\text{inv}}_{a,y}$                             | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y$, $y \in \mathcal{Y}$                                                                          | Number of invested units of asset $a$ at year $y$                                                                                     | [units] |
 | $v^{\text{decom simple}}_{a,y}$                    | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{simple investment}}$, $y \in \mathcal{Y}$                                                            | Number of decommissioned units of asset $a$ that uses simple investment method at year $y$                                            | [units] |
 | $v^{\text{decom compact}}_{a,y,v}$                 | $\mathbb{Z}_{+}$ | $ (a,y,v) \in \mathcal{D}^{\text{compact investment}}$                                                                         | Number of decommissioned units of asset $a$ commissioned in year $v$ that uses compact investment method at year $y$                  | [units] |
@@ -395,7 +397,7 @@ unit\_on\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc
 
 #### Maximum Output Flows Limit
 
-Maximum output flow constraints depend on the chosen investment method (simple or compact). For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
+Maximum output flow constraints depend on the chosen investment method (operation, simple, compact, or semi-compact). For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
 
 ```math
 \begin{aligned}
@@ -403,6 +405,9 @@ Maximum output flow constraints depend on the chosen investment method (simple o
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right)  \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\ \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{capacity}}_{a} \cdot \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{compact investment}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{compact investment}} \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right) \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y} } p^{\text{capacity coefficient}}_{f,v} \cdot v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} \leq p^{\text{capacity}}_{a} \cdot p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v},  \quad
+\\ \forall y \in \mathcal{Y}, \forall v \in \mathcal{V}, \forall a \in \mathcal{A}^{\text{semi-compact investment}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -483,16 +488,31 @@ Storage assets using the method to avoid charging and discharging simultaneously
 #### Lower Limit for Flows
 
 ```math
-v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \notin \mathcal{F}^t, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \in (\mathcal{F} \setminus \mathcal{F}^t) \;\text{with}\; a^{\text{from}}_f \notin \mathcal{A}^{\text{semi-compact investment}}, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ```math
-\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \in \left( \mathcal{F}^{\text{out}}_{a,y} \;\middle|\; a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}},\; a \notin \mathcal{A}^{\text{uc}} \right)
- \cap \mathcal{F}^t, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall v \in \mathcal{V}, \forall f \in ( \mathcal{F}^{\text{out}}_{a,y} \setminus \mathcal{F}^t ) \;\text{with}\; a^{\text{from}}_f \in \mathcal{A}^{\text{semi-compact investment}}, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ```math
-\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \in \left(\mathcal{F}^{\text{in}}_{a,y} | a \in \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} \right) \cap \mathcal{F}^t , \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} ) \setminus \mathcal{A}^{\text{uc}} \setminus \mathcal{A}^{\text{semi-compact investment}} \;\text{with}\; \mathcal{F}^{\text{out}}_{a,y} \cap \mathcal{F}^t \neq \emptyset, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+```
+
+```math
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}}) \setminus \mathcal{A}^{\text{semi-compact investment}} \;\text{with}\; \mathcal{F}^{\text{in}}_{a,y} \cap \mathcal{F}^t \neq \emptyset, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+```
+
+```math
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,v} \cdot v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} \geq 0 \quad  \forall y \in \mathcal{Y}, \forall v \in \mathcal{V}, \forall a \in (\mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} ) \cap \mathcal{A}^{\text{semi-compact investment}} \;\text{with}\; \mathcal{F}^{\text{out}}_{a,y} \cap \mathcal{F}^t \neq \emptyset, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+```
+
+### [Vintage Flow Sum Constraints](@id vintage-sum-constraints)
+
+When the semi-compact investment method is selected, the model introduces vintage flow variables which represent flows from different commissioning years alongside the standard flow variables. Vintage flow variables are included only where relevant, such as in the objective function, capacity constraints, and conversion balance. In all other cases, standard flow variables are used. A linkage is established between the two sets of variables to maintain consistency.
+
+```math
+\\  \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{semi-compact investment}}} v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} = v^{\text{flow}}_{f,k_y,b_{k_y}}, \forall y \in \mathcal{Y},  \forall f \in \mathcal{F}^{\text{out}}_{a,y}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ### [Unit Commitment Constraints](@id uc-constraints)
