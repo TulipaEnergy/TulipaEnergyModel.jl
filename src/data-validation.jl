@@ -68,6 +68,11 @@ function validate_data!(connection)
             _validate_asset_commission_and_asset_both_consistency!,
             false,
         ),
+        (
+            "consistency between flow_commission and asset_both",
+            _validate_flow_commission_and_asset_both_consistency!,
+            false,
+        ),
     )
         @timeit to "$log_msg" append!(error_messages, validation_function(connection))
         if fail_fast && length(error_messages) > 0
@@ -545,6 +550,49 @@ function _validate_asset_commission_and_asset_both_consistency!(connection)
             "Unexpected commission_year = $(row.commission_year) for asset '$(row.asset)' in 'asset_commission'. The commission_year should match the one in 'asset_both'.",
         )
     end
+
+    return error_messages
+end
+
+function _validate_flow_commission_and_asset_both_consistency!(connection)
+    error_messages = String[]
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset_both.asset, asset_both.milestone_year, asset_both.commission_year
+        FROM asset_both
+        LEFT JOIN flow_commission
+            ON asset_both.asset = flow_commission.from_asset
+            AND asset_both.commission_year = flow_commission.commission_year
+        LEFT JOIN asset
+            ON asset_both.asset = asset.asset
+        WHERE asset.investment_method = 'semi-compact'
+            AND flow_commission.commission_year IS NULL
+        ",
+    )
+        push!(
+            error_messages,
+            "Missing commission_year = $(row.commission_year) for the outgoing flow of asset '$(row.asset)' in 'flow_commission' given (asset '$(row.asset)', milestone_year = $(row.milestone_year), commission_year = $(row.commission_year)) in 'asset_both'. The commission_year should match the one in 'asset_both'.",
+        )
+    end
+
+    # for row in DuckDB.query(
+    #     connection,
+    #     "SELECT flow_commission.from_asset, asset_both.commission_year
+    #     FROM flow_commission
+    #     LEFT JOIN asset_both
+    #         ON flow_commission.from_asset = asset_both.asset
+    #         AND flow_commission.commission_year = asset_both.commission_year
+    #     LEFT JOIN asset
+    #         ON asset_both.asset = asset.asset
+    #     WHERE asset.investment_method = 'semi-compact'
+    #         AND flow_commission.commission_year IS NULL
+    #     ",
+    # )
+    #     push!(
+    #         error_messages,
+    #         "Unexpected commission_year = $(row.commission_year) for the outgoing flow of asset '$(row.asset)' in 'flow_commission'. The commission_year should match the one in 'asset_both'.",
+    #     )
+    # end
 
     return error_messages
 end

@@ -607,6 +607,49 @@ end
     ]
 end
 
+@testitem "Check consistency between flow_commission and asset_both - using fake data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    asset_both = DataFrame(
+        :asset => ["A", "A", "B"],
+        :milestone_year => [1, 1, 1],
+        :commission_year => [0, 1, 1],
+    )
+    DuckDB.register_data_frame(connection, asset_both, "asset_both")
+
+    flow_commission = DataFrame(
+        :from_asset => ["A", "B", "B"],
+        :to_asset => ["B", "A", "A"],
+        :commission_year => [1, -1, 1],
+    )
+    DuckDB.register_data_frame(connection, flow_commission, "flow_commission")
+
+    asset = DataFrame(:asset => ["A", "B"], :investment_method => ["semi-compact", "semi-compact"])
+    DuckDB.register_data_frame(connection, asset, "asset")
+
+    error_messages = TEM._validate_flow_commission_and_asset_both_consistency!(connection)
+    @test error_messages == [
+        "Missing commission_year = 0 for the outgoing flow of asset 'A' in 'flow_commission' given (asset 'A', milestone_year = 1, commission_year = 0) in 'asset_both'. The commission_year should match the one in 'asset_both'.",
+        # "Unexpected commission_year = -1 for the outgoing flow of asset 'B' in 'flow_commission'. The commission_year should match the one in 'asset_both'.",
+    ]
+end
+
+@testitem "Check consistency between flow_commission and asset_both - using Tiny data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(
+        connection,
+        """
+        UPDATE flow_commission SET commission_year = 0 WHERE from_asset = 'wind';
+        UPDATE asset SET investment_method = 'semi-compact' WHERE asset = 'wind';
+        """,
+    )
+    error_messages = TEM._validate_flow_commission_and_asset_both_consistency!(connection)
+    @test error_messages == [
+        "Missing commission_year = 2030 for the outgoing flow of asset 'wind' in 'flow_commission' given (asset 'wind', milestone_year = 2030, commission_year = 2030) in 'asset_both'. The commission_year should match the one in 'asset_both'.",
+    ]
+end
+
 @testitem "Check that stochastic scenario probabilities sum to 1 - no error" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     stochastic_scenario = DataFrame(:scenario => [1, 2, 3], :probability => [0.3, 0.4, 0.3])
