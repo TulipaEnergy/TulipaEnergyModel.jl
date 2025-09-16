@@ -1,4 +1,4 @@
-# [The Basics](@id basic-example)
+# [Setting up](@id tutorials-setup)
 
 In this pre-tutorial, you will learn (a bit) about:
 
