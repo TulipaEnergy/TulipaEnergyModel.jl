@@ -1,4 +1,4 @@
-# [Workflow](@id workflow-tutorial)
+# [Tutorial 7: Workflow](@id workflow-tutorial)
 
 Tutorial for the OBZ case study as an example of the full workflow of Tulipa.
 

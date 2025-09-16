@@ -1,4 +1,4 @@
-# Flexible Time Resolution
+# Tutorial 3: Flexible Time Resolution
 
 ## Introduction
 
@@ -15,18 +15,7 @@ More information is in the section [Flexible Time Resolution](@ref flex-time-res
 
 For more nitty gritty nerdy details, you can read this reference.
 
-*Gao, Zhi and Gazzani, Matteo and Tejada-Arango, Diego A. and Siqueira, Abel and Wang, Ni and Gibescu, Madeleine and Morales-España, G., Fully Flexible Temporal Resolution for Energy System Optimization.* Available at SSRN: <https://ssrn.com/abstract=5214263> or <http://dx.doi.org/10.2139/ssrn.5214263>
-
-## Set up the data
-
-Use the project and data from the [Basics Tutorial](@ref basic-example).\
-If you have not followed that tutorial, follow these sections before starting this tutorial:
-
-1. [Create a VS Code Project](@ref vscode-project)
-1. [Set up data and folders](@ref tutorial-data-folders)
-
-!!! info
-    The folder `flexible-time-resolution-answers` contains the *final* files you will create in this lesson.
+Gao, Z., Gazzani, M., Tejada-Arango, D. A., Siqueira, A. S., Wang, N., Gibescu, M., & Morales-España, G. (2025). Fully flexible temporal resolution for energy system optimization. Applied Energy, 396, 126267. <https://doi.org/10.1016/j.apenergy.2025.126267>
 
 ### Hydrogen sector on 6 hour resolution
 
@@ -56,33 +45,9 @@ Working in the folder `flexible-time-tutorial`:
 !!! note
     If no partition or resolution is defined for an asset or flow, then the default values are `uniform` and `1`.
 
-Let's add the compatibility of TulipaEnergyModel in the Julia REPL:
+## Instantiate
 
-### Project TOML of the project
-
-Some of you have encountered some problems, so first try to add
-
-```julia
-# ]
-pkg> compat TulipaEnergyModel 0.15.0
-pkg> add TulipaEnergyModel@0.15.0
-```
-
-If still you have problems, then please edit the **Project.toml** file with the following information:
-
-```toml
-[deps]
-DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
-DuckDB = "d2f5444f-75bc-4fdf-ac35-56f514c445e1"
-Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-TulipaEnergyModel = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
-TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
-
-[compat]
-TulipaEnergyModel = "0.15.0"
-```
-
-After updating your **Project.toml** please instantiate your enviroment by typing the following command in the Julia REPL:
+Please instantiate your enviroment by typing the following command in the Julia REPL:
 
 ```julia
 # guaranteed to be run in the current directory
@@ -109,21 +74,20 @@ using DataFrames
 using Plots
 
 # Define the directories
-input_dir = "flexible-time-resolution-tutorial"
-output_dir = "results"
-
-# Temporary fix!!: pass the schema of the partition files
-schema_partition_files = Dict(
-    table_name => TEM.schema_per_table_name[table_name]
-    for table_name in ["assets_rep_periods_partitions", "flows_rep_periods_partitions"]
-)
+input_dir = "my-awesome-energy-system/tutorial-3"
+output_dir = "my-awesome-energy-system/tutorial-3/results"
 
 # Create the connection and read the case study files
 connection = DBInterface.connect(DuckDB.DB)
-TIO.read_csv_folder(connection, input_dir; schemas=schema_partition_files)
+TIO.read_csv_folder(connection, input_dir)
 
 # Add the defaults
 TEM.populate_with_defaults!(connection)
+
+# You can print the tables you have created to see if everything matches and is filled in as intended
+TIO.get_table(connection, "assets_rep_periods_partitions")
+TIO.get_table(connection, "flows_rep_periods_partitions")
+
 
 # Optimize the model
 energy_problem =
@@ -135,12 +99,12 @@ From the statistics at the end, what are the number of constraints, variables, a
 
 ```log
   - Model created!
-    - Number of variables: 80300
-    - Number of constraints for variable bounds: 71540
-    - Number of structural constraints: 99280
+    - Number of variables: 89060
+    - Number of constraints for variable bounds: 80300
+    - Number of structural constraints: 108040
   - Model solved!
     - Termination status: OPTIMAL
-    - Objective value: 1.6945648344572577e8
+    - Objective value: 1.4718768475318682e8
 ```
 
 ## Explore the results
@@ -223,11 +187,13 @@ What is the equialent of a partition of 6 in a `uniform` specification in a `mat
 
 ### Compare with the hourly case from the Assets & Flows tutorial
 
-If you want to compare results of two models, you can create a new connection, a new energy problem and compare results. For example:
+If you want to compare results of two models, you can create a new connection, a new energy problem and compare result.
+One thing that could be interesting to consider is changing partitions in `flows_rep_periods_partitions` and `assets_rep_periods_partitions` to 1.
+Once changed, we can solve a new energy problem as such:
 
 ```julia
 conn_hourly = DBInterface.connect(DuckDB.DB)
-input_dir = "my-awesome-energy-system-lesson-2"
+input_dir = "my-awesome-energy-system/tutorial-3"
 TIO.read_csv_folder(conn_hourly, input_dir)
 TEM.populate_with_defaults!(conn_hourly)
 hourly_energy_problem = TEM.run_scenario(conn_hourly)
@@ -240,17 +206,17 @@ Compare the number of constraints, variables, and objective function between the
 ```log
 EnergyProblem:
   - Model created!
-    - Number of variables: 87600
-    - Number of constraints for variable bounds: 78840
-    - Number of structural constraints: 113880
+    - Number of variables: 96360
+    - Number of constraints for variable bounds: 87600
+    - Number of structural constraints: 122640
   - Model solved!
     - Termination status: OPTIMAL
-    - Objective value: 1.7065763441643083e8
+    - Objective value: 1.4854146333461973e8
 ```
 
 What do you notice? Is it what you where expecting?
 
-Let's plot the flows together:
+Let's plot the flows together, for a specific time period in the year:
 
 ```julia
 flows = TIO.get_table(connection, "var_flow")
@@ -277,7 +243,7 @@ plot(
     marker=:circle,
     markersize=2,
     linetype=:steppost, # try: stepmid, steppost, or steppre
-    xlims=(400, 600),
+    xlims=(2200, 2400),
     dpi=600,
 )
 
@@ -298,9 +264,3 @@ plot!(
     label=string(from_asset, " -> ", to_asset, " (hourly)"),
 )
 ```
-
-![comparison](https://hackmd.io/_uploads/r12Vvcyexl.svg)
-
-## Final files
-
-The final files (answers) are in `fully-flexible-temporal-resolution-answers` if you want to compare with what you created.
