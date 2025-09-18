@@ -153,7 +153,7 @@ end
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test energy_problem.objective_value ≈ 10000.0 atol = 1e-5
-    # Rolling horizon
+    # Rolling horizon # TODO: Split this to test all objectives
     energy_problem =
         TulipaEnergyModel.run_rolling_horizon(connection, 24 * 7, 48 * 7; show_log = false)
     # @test energy_problem.objective_value ≈ 10000.0 atol = 1e-5
