@@ -1,5 +1,6 @@
 commission_year,from_asset,to_asset,capacity_coefficient,conversion_coefficient,fixed_cost,investment_cost,investment_limit
-2030,Wind Offshore,Hub,1.0,1.0,0.0,0.0,
-2030,Battery,Hub,1.0,1.0,0.0,0.0,
-2030,Hub,Battery,1.0,1.0,0.0,0.0,
-2030,Hub,Demand,1.0,1.0,0.0,0.0,
+2030,solar,battery,1.0,1.0,0.0,0.0,
+2030,solar,demand,1.0,1.0,0.0,0.0,
+2030,thermal,battery,1.0,1.0,0.0,0.0,
+2030,thermal,demand,1.0,1.0,0.0,0.0,
+2030,battery,demand,1.0,1.0,0.0,0.0,

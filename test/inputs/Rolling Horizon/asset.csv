@@ -1,6 +1,5 @@
-asset,capacity,capacity_storage_energy,consumer_balance_sense,investment_method,type,discount_rate,economic_lifetime,energy_to_power_ratio,group,investment_integer,investment_integer_storage_energy,is_seasonal,max_ramp_down,max_ramp_up,min_operating_point,ramping,storage_method_energy,technical_lifetime,unit_commitment,unit_commitment_integer,unit_commitment_method,use_binary_storage_method
-Solar,10.0,0.0,==,none,producer,0.0,1,0.0,,false,false,false,0.0,0.0,0.0,false,false,1,false,false,,
-Wind Offshore,100.0,0.0,==,simple,producer,0.0,1,0.0,,false,false,false,0.0,0.0,0.0,false,false,1,false,false,,
-Battery,10.0,1000.0,==,none,storage,0.0,1,0.0,,false,false,false,0.0,0.0,0.0,false,false,1,false,false,,
-Hub,0.0,0.0,==,none,hub,0.0,1,0.0,,false,false,false,0.0,0.0,0.0,false,false,1,false,false,,
-Demand,0.0,0.0,==,none,consumer,0.0,1,0.0,,false,false,false,0.0,0.0,0.0,false,false,1,false,false,,
+asset,capacity,capacity_storage_energy,consumer_balance_sense,type,discount_rate,economic_lifetime,energy_to_power_ratio,group,investment_integer,investment_integer_storage_energy,investment_method,is_seasonal,max_ramp_down,max_ramp_up,min_operating_point,ramping,storage_method_energy,technical_lifetime,unit_commitment,unit_commitment_integer,unit_commitment_method,use_binary_storage_method
+solar,150.0,0.0,==,producer,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,false,false,,
+thermal,150.0,0.0,==,producer,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,false,false,,
+battery,10.0,40.0,==,storage,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,false,false,,
+demand,0.0,0.0,==,consumer,0.0,1,0.0,,false,false,none,false,0.0,0.0,0.0,false,false,1,false,false,,
