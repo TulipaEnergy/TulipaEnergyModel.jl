@@ -5,9 +5,27 @@ export add_storage_constraints!
 
 Adds the storage asset constraints to the model.
 """
-function add_storage_constraints!(connection, model, variables, expressions, constraints, profiles)
+function add_storage_constraints!(
+    connection,
+    model,
+    variables,
+    expressions,
+    constraints,
+    profiles;
+    rolling_horizon = false,
+)
     var_storage_level_rep_period = variables[:storage_level_rep_period]
     var_storage_level_over_clustered_year = variables[:storage_level_over_clustered_year]
+
+    # TODO: Evaluate if this is the better way
+    rolling_horizon_lookup = if rolling_horizon
+        Dict{Int,Int}(
+            row.var_storage_id::Int => row.id::Int for
+            row in DuckDB.query(connection, "FROM param_initial_storage_level")
+        )
+    else
+        Dict{Int,Int}()
+    end
 
     ## REP-PERIOD CONSTRAINTS (within a representative period)
     # - Balance constraint (using the lowest temporal resolution)
@@ -27,7 +45,13 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                         sum,
                         0.0,
                     )
-                    initial_storage_level = row.initial_storage_level::Union{Float64,Missing}
+                    initial_storage_level = if rolling_horizon && row.time_block_start == 1
+                        # TODO: Implement it better after all rolling horizon variables have been defined
+                        rolling_horizon_id = rolling_horizon_lookup[row.id]
+                        variables[:param_initial_storage_level].container[rolling_horizon_id]
+                    else
+                        row.initial_storage_level::Union{Float64,Missing}
+                    end
                     storage_charging_efficiency = row.storage_charging_efficiency::Float64
                     storage_discharging_efficiency = row.storage_discharging_efficiency::Float64
 
@@ -156,6 +180,14 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                     storage_charging_efficiency = row.storage_charging_efficiency::Float64
                     storage_discharging_efficiency = row.storage_discharging_efficiency::Float64
 
+                    inflows_agg = _profile_aggregate(
+                        profiles.over_clustered_year,
+                        (row.inflows_profile_name, row.year),
+                        row.period_block_start:row.period_block_end,
+                        sum,
+                        0.0,
+                    )
+
                     if row.period_block_start == 1 && !ismissing(initial_storage_level)
                         # Initial storage is a Float64
                         @constraint(
@@ -199,12 +231,8 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     end
-                end for (row, incoming_flow, outgoing_flow, inflows_agg) in zip(
-                    indices,
-                    cons.expressions[:incoming],
-                    cons.expressions[:outgoing],
-                    cons.coefficients[:inflows_profile_aggregation],
-                )
+                end for (row, incoming_flow, outgoing_flow) in
+                zip(indices, cons.expressions[:incoming], cons.expressions[:outgoing])
             ],
         )
 

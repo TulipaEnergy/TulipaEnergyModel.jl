@@ -248,7 +248,7 @@ blocks, and are replaced by columns `time_block_start` and `time_block_end`.
 function create_unrolled_partition_tables!(connection)
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE t_explicit_assets_rep_periods_partitions AS
+        "CREATE OR REPLACE TEMP TABLE t_explicit_assets_rep_periods_partitions AS
         SELECT
             asset.asset,
             rep_periods_data.year,
@@ -268,7 +268,7 @@ function create_unrolled_partition_tables!(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE t_explicit_flows_rep_periods_partitions AS
+        "CREATE OR REPLACE TEMP TABLE t_explicit_flows_rep_periods_partitions AS
         SELECT
             flow.from_asset,
             flow.to_asset,
@@ -347,7 +347,7 @@ function create_unrolled_partition_tables!(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE t_explicit_assets_timeframe_partitions AS
+        "CREATE OR REPLACE TEMP TABLE t_explicit_assets_timeframe_partitions AS
         WITH t_relevant_assets AS (
             SELECT DISTINCT
                 asset.asset,
@@ -485,7 +485,7 @@ function create_lowest_resolution_table!(connection)
         table_name = replace(merged_table, "merged" => "t_lowest")
         DuckDB.execute(
             connection,
-            "CREATE OR REPLACE TABLE $table_name(
+            "CREATE OR REPLACE TEMP TABLE $table_name(
                 asset STRING,
                 year INT,
                 rep_period INT,
@@ -559,7 +559,7 @@ function create_highest_resolution_table!(connection)
         table_name = replace(merged_table, "merged" => "t_highest")
         DuckDB.execute(
             connection,
-            "CREATE OR REPLACE TABLE $table_name AS
+            "CREATE OR REPLACE TEMP TABLE $table_name AS
             SELECT
                 merged.asset,
                 merged.year,

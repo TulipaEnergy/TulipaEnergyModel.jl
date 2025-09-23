@@ -1,0 +1,6 @@
+from_asset,to_asset,capacity,carrier,discount_rate,economic_lifetime,investment_integer,is_transport,technical_lifetime
+solar,battery,0.0,,0.0,1,false,false,1
+solar,demand,0.0,,0.0,1,false,false,1
+thermal,battery,0.0,,0.0,1,false,false,1
+thermal,demand,0.0,,0.0,1,false,false,1
+battery,demand,0.0,,0.0,1,false,false,1
