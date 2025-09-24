@@ -145,7 +145,7 @@ from
     t_highest_out_flows as t_high
     left join asset on t_high.asset = asset.asset
 where
-    asset.type in ('producer', 'storage', 'conversion')
+    asset.type in ('producer', 'conversion')
     and asset.investment_method = 'compact'
 ;
 
@@ -173,7 +173,7 @@ with cons_data as (
         left join asset_both on t_high.asset = asset_both.asset
         and t_high.year = asset_both.milestone_year
     where
-        asset.type in ('producer', 'storage', 'conversion')
+        asset.type in ('producer', 'conversion')
         and asset.investment_method = 'semi-compact'
     -- t_high is ordered by asset, milestone_year, rep_period, time_block_start
     -- since we added commission_year, we need to explictly order by commission_year
@@ -354,7 +354,7 @@ from
     left join asset_both on t_high.asset = asset_both.asset
         and t_high.year = asset_both.milestone_year
 where
-    asset.type in ('producer', 'storage', 'conversion')
+    asset.type in ('producer', 'conversion')
     and asset.investment_method = 'semi-compact'
     and cte_transport_flow_info.outgoing_flows_have_transport_flows
     -- Note we do not exclude UC here, because UC only guarantees
