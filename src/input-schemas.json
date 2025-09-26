@@ -122,6 +122,24 @@
       "type": "DOUBLE",
       "unit_of_measure": "p.u."
     },
+    "minimum_down_time": {
+      "constraints": {
+        "minimum": 1
+      },
+      "default": 1,
+      "description": "Minimum time between shutting a unit down and starting it back up",
+      "type": "INTEGER",
+      "unit_of_measure": "h"
+    },
+    "minimum_up_time": {
+      "constraints": {
+        "minimum": 1
+      },
+      "default": 1,
+      "description": "Minimum time between starting a unit up and shutting it back down",
+      "type": "INTEGER",
+      "unit_of_measure": "h"
+    },
     "ramping": {
       "default": false,
       "description": "Whether asset has ramping constraints or not.",
@@ -188,7 +206,8 @@
           null,
           "basic",
           "3var",
-          "SU-SD-compact"
+          "SU-SD-compact",
+          "min_up_down"
         ]
       },
       "default": null,

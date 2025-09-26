@@ -1043,3 +1043,122 @@ order by
 
 drop sequence id
 ;
+
+create sequence id start 1
+;
+
+create table cons_minimum_up_time as
+with sorted as
+(select distinct
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start,
+    t_high.time_block_end,
+from
+    asset_time_resolution_rep_period as atr
+    join
+    t_highest_assets_and_out_flows as t_high
+        on
+            atr.asset = t_high.asset and
+            atr.time_block_start = t_high.time_block_start
+    join asset
+        on
+            asset.asset = t_high.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.unit_commitment = true
+    and asset.unit_commitment_method in ('min_up_down')
+order by
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start)
+select
+    nextval('id') as id,
+    sorted.*
+from sorted
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+create table cons_minimum_down_time_simple_investment as
+with sorted as
+(select distinct
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start,
+    t_high.time_block_end
+from
+    asset_time_resolution_rep_period as atr
+    join
+    t_highest_assets_and_out_flows as t_high
+        on
+            atr.asset = t_high.asset and
+            atr.time_block_start = t_high.time_block_start
+    join asset
+        on
+            asset.asset = t_high.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.unit_commitment = true
+    and asset.unit_commitment_method in ('min_up_down')
+    and asset.investment_method in ('simple', 'none')
+order by
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start)
+select
+    nextval('id') as id,
+    sorted.*
+from sorted
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+create table cons_minimum_down_time_compact_investment as
+with sorted as
+(select distinct
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start,
+    t_high.time_block_end
+from
+    asset_time_resolution_rep_period as atr
+    join
+    t_highest_assets_and_out_flows as t_high
+        on
+            atr.asset = t_high.asset and
+            atr.time_block_start = t_high.time_block_start
+    join asset
+        on
+            asset.asset = t_high.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.unit_commitment = true
+    and asset.unit_commitment_method in ('min_up_down')
+    and asset.investment_method = 'compact'
+order by
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start)
+select
+    nextval('id') as id,
+    sorted.*
+from sorted
+;
+
+drop sequence id
+;
