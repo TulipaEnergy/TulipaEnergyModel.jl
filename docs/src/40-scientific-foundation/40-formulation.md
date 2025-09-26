@@ -37,6 +37,7 @@ In addition, the following asset sets represent methods for incorporating additi
 | $\mathcal{A}^{\text{uc}}_y$               | Energy assets with unit commitment method at year $y$         |          | $\mathcal{A}^{\text{uc}}_y  \subseteq \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{p}}$       | This set contains conversion and production assets that have a unit commitment method. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                                                       |
 | $\mathcal{A}^{\text{uc basic}}_y$         | Energy assets with a basic unit commitment method at year $y$ |          | $\mathcal{A}^{\text{uc basic}}_y \subseteq \mathcal{A}^{\text{uc}}_y$                            | This set contains the assets that have a basic unit commitment method that uses only the units on variable. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                                                                       |
 | $\mathcal{A}^{\text{uc 3var}}_y$          | Energy assets with a 3var unit commitment method at year $y$  |          | $\mathcal{A}^{\text{uc 3var}}_y \subseteq \mathcal{A}^{\text{uc}}_y$                             | This set contains the assets that have a unit commitment method using three variables: units on, start-up, and shut-down. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                                                                       |
+| $\mathcal{A}^{\text{su-sd compact}}_y$    | Energy assets with compact start-up and shut-down constraints at year $y$  |     | $\mathcal{A}^{\text{su-sd compact}}_y \subseteq \mathcal{A}^{\text{uc}}_y$               | This set contains the assets that have a unit commitment method using three variables: units on, start-up, and shut-down, along with a compact set of logical constraints. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature. |
 | $\mathcal{A}^{\text{ramp}}_y$             | Energy assets with ramping method at year $y$                 |          | $\mathcal{A}^{\text{ramp}}_y  \subseteq \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{p}}$     | This set contains conversion and production assets that have a ramping method. Please visit the [how-to section](@ref ramping-setup) to learn how to set up this feature.                                                                                       |
 | $\mathcal{A}^{\text{dc-opf}}_y$           | Energy assets with a DC power flow method at year $y$         |          | $\mathcal{A}^{\text{dc-opf}}_y \subseteq \mathcal{A}$                                            | This set contains the assets that have that use the dc-opf method.                                                                                                                                                                                              |
 
@@ -558,6 +559,17 @@ v^{\text{on}}_{a, k_y, b_{k_y}} - v^{\text{on}}_{a, k_y, (b_{k_y} - 1)} = v^{\te
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
 \\ v^{\text{shut down}}_{a, k_y, b_{k_y}} \leq v^{\text{available units}}_{a,y} - v^{\text{on}}_{a, k_y, b_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+```
+
+#### Compact logical constraints for start-up and shut-down variables
+
+This set of logical constraints defines the behaviour of the start-up and shut-down variables, and is more compact than the tight logical constraints defined above. The constraints are tight in the direction of the objective function.
+
+```math
+v^{\text{start up}}_{a, k_y, b_{k_y}} \geq v^{\text{on}}_{a, k_y, b_{k_y}} - v^{\text{on}}_{a, k_y, (b_{k_y} - 1)} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{su-sd compact}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}^{\text{su}}_{k_y}
+\\ v^{\text{shut down}}_{a, k_y, b_{k_y}} \geq v^{\text{on}}_{a, k_y, (b_{k_y} - 1)} - v^{\text{on}}_{a, k_y, b_{k_y}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{su-sd compact}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}^{\text{sd}}_{k_y}
 ```
 
 ### [Ramping Constraints](@id ramp-constraints)

@@ -126,7 +126,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var%'
+        and (asset.unit_commitment_method LIKE '3var-%' or asset.unit_commitment_method = 'SU-SD-compact')
     order by
         atr.asset,
         atr.year,
@@ -168,7 +168,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var%'
+        and (asset.unit_commitment_method LIKE '3var-%' or asset.unit_commitment_method = 'SU-SD-compact')
     order by
         atr.asset,
         atr.year,
