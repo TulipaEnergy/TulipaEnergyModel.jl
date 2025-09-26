@@ -127,6 +127,24 @@
       "description": "Whether asset has ramping constraints or not.",
       "type": "BOOLEAN"
     },
+    "shut_down_cost": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Cost of shutting down a unit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR"
+    },
+    "start_up_cost": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Cost of starting up a unit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR"
+    },
     "storage_method_energy": {
       "default": false,
       "description": "Whether there is independent investment on storage capacity or not. If false, the investment on storage capacity uses the energy_to_power_ratio as a constant fixed value.",

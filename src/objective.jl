@@ -365,6 +365,52 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         )
     )
 
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            var.id,
+            t_objective_assets.weight_for_operation_discounts *
+            t_objective_assets.start_up_cost AS cost,
+        FROM var_start_up AS var
+        LEFT JOIN t_objective_assets
+            ON var.asset = t_objective_assets.asset
+            AND var.year = t_objective_assets.milestone_year
+        WHERE t_objective_assets.start_up_cost IS NOT NULL
+        ORDER BY var.asset,
+            var.year,
+            var.rep_period,
+            var.time_block_start,
+            var.time_block_end
+        ",
+    )
+
+    var_start_up = variables[:start_up].container
+
+    start_up_cost = @expression(model, sum(row.cost * var_start_up[row.id] for row in indices))
+
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            var.id,
+            t_objective_assets.weight_for_operation_discounts *
+            t_objective_assets.shut_down_cost AS cost,
+        FROM var_shut_down AS var
+        LEFT JOIN t_objective_assets
+            ON var.asset = t_objective_assets.asset
+            AND var.year = t_objective_assets.milestone_year
+        WHERE t_objective_assets.shut_down_cost IS NOT NULL
+        ORDER BY var.asset,
+            var.year,
+            var.rep_period,
+            var.time_block_start,
+            var.time_block_end
+        ",
+    )
+
+    var_shut_down = variables[:shut_down].container
+
+    shut_down_cost = @expression(model, sum(row.cost * var_shut_down[row.id] for row in indices))
+
     ## Objective function
     @objective(
         model,
@@ -378,7 +424,9 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         flows_fixed_cost +
         flows_operational_cost +
         vintage_flows_operational_cost +
-        units_on_cost
+        units_on_cost +
+        start_up_cost +
+        shut_down_cost
     )
 end
 
@@ -476,6 +524,8 @@ function _create_objective_auxiliary_table(connection, constants)
             asset_commission.investment_cost_storage_energy,
             asset.capacity_storage_energy,
             asset_milestone.units_on_cost,
+            asset.start_up_cost,
+            asset.shut_down_cost,
             -- computed
             asset.discount_rate / (
                 (1 + asset.discount_rate) *
