@@ -226,7 +226,9 @@
           "3var",
           "SU-SD-compact",
           "min_up_down",
-          "3var-su-sd-ramp"
+          "3var-su-sd-ramp",
+          "1var-1C",
+          "1var-1T"
         ]
       },
       "default": null,

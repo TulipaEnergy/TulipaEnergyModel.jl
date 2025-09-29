@@ -1280,3 +1280,95 @@ from cons_su_ramp_vars_flow_upper_bound
 
 drop sequence id
 ;
+
+create sequence id start 1
+;
+
+drop table if exists cons_su_ramping_compact_1bin
+;
+
+create table cons_su_ramping_compact_1bin as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_assets_and_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.ramping
+    and asset.unit_commitment
+    and asset.unit_commitment_method like '1var-1%'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_sd_ramping_compact_1bin
+;
+
+create table cons_sd_ramping_compact_1bin as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_assets_and_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.ramping
+    and asset.unit_commitment
+    and asset.unit_commitment_method like '1var-1%'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_su_ramping_tight_1bin
+;
+
+create table cons_su_ramping_tight_1bin as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_assets_and_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.ramping
+    and asset.unit_commitment
+    and asset.unit_commitment_method = '1var-1T'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_sd_ramping_tight_1bin
+;
+
+create table cons_sd_ramping_tight_1bin as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_assets_and_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.ramping
+    and asset.unit_commitment
+    and asset.unit_commitment_method = '1var-1T'
+;
+
+drop sequence id
+;

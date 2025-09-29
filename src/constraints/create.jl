@@ -51,6 +51,10 @@ function compute_constraints_indices(connection)
             :su_ramp_vars_flow_upper_bound,
             :sd_ramp_vars_flow_upper_bound,
             :su_sd_ramp_vars_flow_with_high_uptime,
+            :su_ramping_compact_1bin,
+            :sd_ramping_compact_1bin,
+            :su_ramping_tight_1bin,
+            :sd_ramping_tight_1bin,
         )
     )
 
