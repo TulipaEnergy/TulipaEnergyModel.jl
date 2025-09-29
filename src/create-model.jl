@@ -262,12 +262,22 @@ function create_model(
         expressions,
         constraints,
     )
+
     @timeit to "add_minimum_down_time_constraints!" add_minimum_down_time_constraints!(
         connection,
         model,
         variables,
         expressions,
         constraints,
+    )
+
+    @timeit to "add_su_sd_ramping_with_vars_constraints!" add_su_sd_ramping_with_vars_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles,
     )
 
     if model_file_name != ""
