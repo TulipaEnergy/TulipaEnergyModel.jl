@@ -99,26 +99,25 @@ Although there are many options available, the modeling innovation for flexible 
 As a result, TulipaEnergyModel.jl had to be developed from the ground up to incorporate specific features already included and to accommodate future enhancements.
 
 There are multiple packages and frameworks related to Energy System Optimization in Julia and other languages. A few examples in the Julia and Python realm are [EnergyModelsX](https://github.com/EnergyModelsX) [@EnergyModelsX], [PowerModels](https://github.com/lanl-ansi/PowerModels.jl) [@PowerModels], [SpineOpt](https://www.tools-for-energy-system-modelling.org/) [@SpineOpt], [Sienna](https://www.nrel.gov/analysis/sienna) [@Sienna], [GenX](https://github.com/GenXProject/GenX) [@GenX], [PyPSA](https://pypsa.org) [@PyPSA], and [Calliope](https://github.com/calliope-project/calliope) [@Calliope].
-However, existing models run into computational limits when solving large-scale problems, and have to resort to (over)simplifying the model to reduce computational burden. The common misconception is that the only strategy to speedup solving times without sacrificing model fidelity is through better software (decomposition & solvers) or hardware (high-performance computing). Current models overlook another strategy: improving the theoretical quality of the mathematical formulation, as this fundamentally defines the computational load. That is, higher quality mathematical formulations increase model fidelity while simultaneously solving faster than standard formulations. This insight inspired the development of TulipaEnergyModel.jl, with the core philosophy of advancing the state-of-the-art in formulation quality by exploiting the following three strategies: 1) lowering computational cost while maintaining model fidelity, by representing the same problem with fewer constraints and variables [@Tejada2025], and by creating tighter mixed-integer programming (MIP) formulations [@MoralesEspana2013]; 2) increasing model fidelity without extra computational cost, e.g., by developing more accurate linear programming (LP) approximations for storage [@Elgersma2025] and other technologies [@gentile2016; @MoralesEspana2022]; and 3) balancing computational burden with adaptive/flexible model fidelity, i.e., having different levels of detail in different parts of the model, in the temporal [@Gao2025], technological [@MoralesEspana2022] and spatial dimensions. These modelling strategies have significant computational benefits, especially when handling problems of immense scale and dimensionality.
+However, existing models run into computational limits when solving large-scale problems, and have to resort to (over)simplifying the model to reduce computational burden. The common misconception is that the only strategy to speedup solving times without sacrificing model fidelity is through better software (decomposition & solvers) or hardware (high-performance computing). Current models overlook another strategy: improving the theoretical quality of the mathematical formulation, as this fundamentally defines the computational load. That is, higher quality mathematical formulations increase model fidelity while simultaneously solving faster than standard formulations.
+This insight inspired the development of TulipaEnergyModel.jl, with the core philosophy of advancing the state-of-the-art in formulation quality by exploiting the following three strategies: 1) lowering computational cost while maintaining model fidelity, by representing the same problem with fewer constraints and variables [@Tejada2025], and by creating tighter mixed-integer programming (MIP) formulations [@MoralesEspana2013]; 2) increasing model fidelity without extra computational cost, e.g., by developing more accurate linear programming (LP) approximations for storage [@Elgersma2025] and other technologies [@gentile2016; @MoralesEspana2022]; and 3) balancing computational burden with adaptive/flexible model fidelity, i.e., having different levels of detail in different parts of the model, in the temporal [@Gao2025], technological [@MoralesEspana2022] and spatial dimensions.
+These modelling strategies have significant computational benefits, especially when handling problems of immense scale and dimensionality.
 Some recent modelling breakthroughs alter the foundation and all structures of the model in ways that are not easily compatible with existing models. As a result, `TulipaEnergyModel.jl` had to be developed from the ground up to incorporate specific features already included and to accommodate future enhancements. Below we show some of the main modelling and software design innovations that alter the core structures of the model.
 
+### Modelling Innovations
 
-
-
-### Modelling Innovations 
 Two of the main innovations of TulipaEnergyModel are that it accepts a fully flexible resolution [@Gao2025] for the assets and flows, and it allows for a direct connection between assets [@Tejada2025]. To illustrate these concepts, consider the following example:
 
 ![Example of network with flexible resolution of assets and flows](images/flexible-time-resolution.png)
 
 For the fully flexible temporal resolution, we look at 6 hours of a system. The flow between "H2" and "ccgt" has a resolution of 6 hours (i.e., the whole period), while from "ccgt" to the "balance", the resolution is 1 hour. The resolution from "wind" to "phs" is 3 hours, and the resolution from "phs" to "balance" is not regular, starting with a 4 hours block and then a 2 hours block. All these "time blocks" are handled by the TulipaEnergyModel.jl to allow for more or less detailed solutions. This implies that less variables and constraints are created, ensuring a faster solving speed, with little loss in accuracy, See @Gao2025 for further details.
 
-For the direct connection between assets, notice how the storage “phs” unit is directly connected to the “wind“ to charge, and also directly connected to “balance” to discharge. This direct connection between assets completely avoids extra elements in between (connections and nodes) naturally avoiding unnecessary extra variables and constraints. Consequently, speeding up solving times without any loss of accuracy when compared with traditional formulations, see @Tejada25 for further details.
+For the direct connection between assets, notice how the storage “phs” unit is directly connected to the “wind“ to charge, and also directly connected to “balance” to discharge. This direct connection between assets completely avoids extra elements in between (connections and nodes) naturally avoiding unnecessary extra variables and constraints. Consequently, speeding up solving times without any loss of accuracy when compared with traditional formulations, see @Tejada2025 for further details.
 
 TulipaEnergyModel.jl is fundamentally focused on high quality mathematical formulations. The model also includes other key features such as seasonal storage modeling using representative periods [Tejada2018; @greg2025], tight formulations to prevent simultaneous charging and discharging [@Elgersma2025], tight and compact unit commitment constraints [@MoralesEspana2013], and compact formulations for multi-year investment planning [@wang2025a; @wang2025b].
 
-
-
 ### Software Design Innovations
+
 One of the main software design choices for TulipaEnergyModel.jl is to maintain a [DuckDB](https://duckdb.org) [@DuckDB] connection from the input data to model creation and output generation.
 This enables us to handle different data formats by relying on DuckDB's capabilities, instead of specific Julia capabilities.
 Furthermore, this separates most of the data manipulation from the model manipulation, allowing users to separately create the necessary input data from whatever platform they are more comfortable with.
@@ -151,8 +150,6 @@ We decided to also use DuckDB tables as the main format to keep these indices.
 This decreases data movement by keeping everything in DuckDB.
 The JuMP variables themselves are created and kept in memory during the program execution.
 A single vector of variables is created, with each element corresponding to a row of the `var_flow` table.
-
-
 
 ## Acknowledgements
 
