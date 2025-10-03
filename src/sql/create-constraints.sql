@@ -1468,6 +1468,9 @@ where
 drop sequence id
 ;
 
+create sequence id start 1
+;
+
 create table cons_susd_trajectory as
 with sorted as (
     select
