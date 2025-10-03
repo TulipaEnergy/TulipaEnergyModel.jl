@@ -1488,7 +1488,7 @@ with sorted as (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment
-        and asset.unit_commitment_method = '3bin-3'
+        and asset.unit_commitment_method = '3var-3'
     order by
         t_high.asset,
         t_high.year,
@@ -1502,4 +1502,3 @@ select
 from
     sorted
 ;
-

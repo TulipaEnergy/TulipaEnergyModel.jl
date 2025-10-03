@@ -207,7 +207,7 @@ function _get_trajectory_info(connection)
         WHERE
             asset.type in ('producer', 'conversion')
             AND asset.unit_commitment
-            AND asset.unit_commitment_method = '3bin-3'
+            AND asset.unit_commitment_method = '3var-3'
         ",
     )
 end
