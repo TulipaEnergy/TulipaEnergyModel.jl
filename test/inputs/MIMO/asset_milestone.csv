@@ -1,9 +1,0 @@
-asset,initial_storage_level,investable,max_energy_timeframe_partition,milestone_year,min_energy_timeframe_partition,peak_demand,storage_inflows,units_on_cost
-power_plant,0.0,false,0.0,2030,0.0,0.0,0.0,0.0
-chp_backpressure,0.0,false,0.0,2030,0.0,0.0,0.0,0.0
-chp_extraction,0.0,false,0.0,2030,0.0,0.0,0.0,0.0
-gas_market,0.0,false,0.0,2030,0.0,0.0,0.0,0.0
-biomass,0.0,false,0.0,2030,0.0,0.0,1200,0.0
-electricity_demand,0.0,false,0.0,2030,0.0,80,0.0,0.0
-heat_demand,0.0,false,0.0,2030,0.0,35,0.0,0.0
-atmosphere,0.0,false,0.0,2030,0.0,0.0,0.0,0.0

@@ -1,4 +1,4 @@
-from_asset,investable,milestone_year,to_asset,variable_cost,reactance,dc_opf
+from_asset,investable,milestone_year,to_asset,operational_cost,reactance,dc_opf
 NL_E_Balance,false,2050,NL_E_Demand,0,0.3,false
 NL_E_ENS,false,2050,NL_E_Demand,1,0.3,false
 NL_Wind_Onshore,false,2050,NL_E_Balance,0,0.3,false

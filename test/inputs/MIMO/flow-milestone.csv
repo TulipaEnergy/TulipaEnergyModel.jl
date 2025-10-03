@@ -1,4 +1,4 @@
-from_asset,to_asset,dc_opf,investable,milestone_year,reactance,variable_cost
+from_asset,to_asset,dc_opf,investable,milestone_year,reactance,operational_cost
 gas_market,power_plant,false,false,2030,0.1,36
 biomass,power_plant,false,false,2030,0.1,26
 power_plant,electricity_demand,false,false,2030,0.1,0.0

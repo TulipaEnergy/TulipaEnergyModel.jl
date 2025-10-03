@@ -43,6 +43,11 @@ function validate_data!(connection)
         ),
         ("group consistency between tables", _validate_group_consistency!, false),
         (
+            "stochastic scenario probabilities sum to 1",
+            _validate_stochastic_scenario_probabilities_sum_to_one!,
+            false,
+        ),
+        (
             "data consistency for simple investment",
             _validate_simple_method_data_consistency!,
             false,
@@ -61,6 +66,11 @@ function validate_data!(connection)
         (
             "consistency between asset_commission and asset_both",
             _validate_asset_commission_and_asset_both_consistency!,
+            false,
+        ),
+        (
+            "consistency between flow_commission and asset_both",
+            _validate_flow_commission_and_asset_both_consistency!,
             false,
         ),
     )
@@ -135,6 +145,7 @@ function _validate_no_duplicate_rows!(connection)
         ("profiles_timeframe", (:profile_name, :year, :period)),
         ("rep_periods_data", (:year, :rep_period)),
         ("rep_periods_mapping", (:year, :period, :rep_period)),
+        ("stochastic_scenario", (:scenario,)),
         ("timeframe_data", (:year, :period)),
         ("year_data", (:year,)),
     )
@@ -163,7 +174,8 @@ function _validate_schema_one_of_constraints!(connection)
     for (table_name, table) in TulipaEnergyModel.schema, (col, attr) in table
         if haskey(attr, "constraints") && haskey(attr["constraints"], "oneOf")
             valid_types = attr["constraints"]["oneOf"]
-            valid_types_string = join([TulipaIO.FmtSQL.fmt_quote(s) for s in valid_types], ", ")
+            valid_types_string =
+                join([TulipaIO.FmtSQL.fmt_quote(s) for s in valid_types if !isnothing(s)], ", ")
 
             query_str = "SELECT $col FROM $table_name WHERE $col NOT IN ($valid_types_string)"
             # The query above alone does not catch NULL. So if NULLs are not in the list, improve the query
@@ -280,6 +292,33 @@ function _validate_group_consistency!(connection)
         push!(
             error_messages,
             "Group '$(row.name)' in 'group_asset' has no members in 'asset', column 'group'",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_stochastic_scenario_probabilities_sum_to_one!(connection; tolerance = 1e-3)
+    error_messages = String[]
+
+    # Check if table is not empty
+    row_count_query =
+        DuckDB.query(connection, "SELECT COUNT(*) as row_count FROM stochastic_scenario")
+    row_count = get_single_element_from_query_and_ensure_its_only_one(row_count_query)
+    if row_count == 0
+        return error_messages
+    end
+
+    # Check if sum of probabilities is equal to 1
+    sum_query = DuckDB.query(
+        connection,
+        "SELECT SUM(probability) as total_probability FROM stochastic_scenario",
+    )
+    total_probability = get_single_element_from_query_and_ensure_its_only_one(sum_query)
+    if abs(total_probability - 1.0) > tolerance
+        push!(
+            error_messages,
+            "Sum of probabilities in 'stochastic_scenario' table is $(total_probability), but should be approximately 1.0 (tolerance: $(tolerance))",
         )
     end
 
@@ -509,6 +548,49 @@ function _validate_asset_commission_and_asset_both_consistency!(connection)
         push!(
             error_messages,
             "Unexpected commission_year = $(row.commission_year) for asset '$(row.asset)' in 'asset_commission'. The commission_year should match the one in 'asset_both'.",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_flow_commission_and_asset_both_consistency!(connection)
+    error_messages = String[]
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset_both.asset, asset_both.milestone_year, asset_both.commission_year
+        FROM asset_both
+        LEFT JOIN flow_commission
+            ON asset_both.asset = flow_commission.from_asset
+            AND asset_both.commission_year = flow_commission.commission_year
+        LEFT JOIN asset
+            ON asset_both.asset = asset.asset
+        WHERE asset.investment_method = 'semi-compact'
+            AND flow_commission.commission_year IS NULL
+        ",
+    )
+        push!(
+            error_messages,
+            "Missing commission_year = $(row.commission_year) for the outgoing flow of asset '$(row.asset)' in 'flow_commission' given (asset '$(row.asset)', milestone_year = $(row.milestone_year), commission_year = $(row.commission_year)) in 'asset_both'. The commission_year should match the one in 'asset_both'.",
+        )
+    end
+
+    for row in DuckDB.query(
+        connection,
+        "SELECT flow_commission.from_asset, flow_commission.commission_year
+        FROM flow_commission
+        LEFT JOIN asset_both
+            ON flow_commission.from_asset = asset_both.asset
+            AND flow_commission.commission_year = asset_both.commission_year
+        LEFT JOIN asset
+            ON flow_commission.from_asset = asset.asset
+        WHERE asset.investment_method = 'semi-compact'
+            AND asset_both.commission_year IS NULL
+        ",
+    )
+        push!(
+            error_messages,
+            "Unexpected commission_year = $(row.commission_year) for the outgoing flow of asset '$(row.from_asset)' in 'flow_commission'. The commission_year should match the one in 'asset_both'.",
         )
     end
 

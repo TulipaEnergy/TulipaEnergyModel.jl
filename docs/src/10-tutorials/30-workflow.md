@@ -1,4 +1,4 @@
-# [Workflow](@id workflow-tutorial)
+# [Tutorial 7: Workflow](@id workflow-tutorial)
 
 Tutorial for the OBZ case study as an example of the full workflow of Tulipa.
 
@@ -407,7 +407,7 @@ DuckDB.query(
         from_asset,
         to_asset,
         year AS milestone_year,
-        variable_cost,
+        variable_cost AS operational_cost,
     FROM t_flow_yearly
     ORDER by from_asset, to_asset
     "

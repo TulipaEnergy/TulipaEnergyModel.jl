@@ -84,6 +84,20 @@ end
           ["Table 'asset' has bad value for column 'consumer_balance_sense': '<>'"]
 end
 
+@testitem "Test schema oneOf constraints - bad unit commitment method" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    # Change the table to force an error
+    DuckDB.query(
+        connection,
+        "UPDATE asset SET unit_commitment_method = 'bad' WHERE asset = 'demand'",
+    )
+    @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
+    error_messages = TEM._validate_schema_one_of_constraints!(connection)
+    @test error_messages ==
+          ["Table 'asset' has bad value for column 'unit_commitment_method': 'bad'"]
+end
+
 @testitem "Test schema oneOf constraints - bad specification" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)
@@ -591,4 +605,93 @@ end
         "Missing commission_year = 2030 for asset 'wind' in 'asset_commission' given (asset 'wind', milestone_year = 2030, commission_year = 2030) in 'asset_both'. The commission_year should match the one in 'asset_both'.",
         "Unexpected commission_year = 0 for asset 'wind' in 'asset_commission'. The commission_year should match the one in 'asset_both'.",
     ]
+end
+
+@testitem "Check consistency between flow_commission and asset_both - using fake data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    asset_both = DataFrame(
+        :asset => ["A", "A", "B"],
+        :milestone_year => [1, 1, 1],
+        :commission_year => [0, 1, 1],
+    )
+    DuckDB.register_data_frame(connection, asset_both, "asset_both")
+
+    flow_commission = DataFrame(
+        :from_asset => ["A", "B", "B"],
+        :to_asset => ["B", "A", "A"],
+        :commission_year => [1, -1, 1],
+    )
+    DuckDB.register_data_frame(connection, flow_commission, "flow_commission")
+
+    asset = DataFrame(:asset => ["A", "B"], :investment_method => ["semi-compact", "semi-compact"])
+    DuckDB.register_data_frame(connection, asset, "asset")
+
+    error_messages = TEM._validate_flow_commission_and_asset_both_consistency!(connection)
+    @test error_messages == [
+        "Missing commission_year = 0 for the outgoing flow of asset 'A' in 'flow_commission' given (asset 'A', milestone_year = 1, commission_year = 0) in 'asset_both'. The commission_year should match the one in 'asset_both'.",
+        "Unexpected commission_year = -1 for the outgoing flow of asset 'B' in 'flow_commission'. The commission_year should match the one in 'asset_both'.",
+    ]
+end
+
+@testitem "Check consistency between flow_commission and asset_both - using Tiny data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(
+        connection,
+        """
+        UPDATE flow_commission SET commission_year = 0 WHERE from_asset = 'wind';
+        UPDATE asset SET investment_method = 'semi-compact' WHERE asset = 'wind';
+        """,
+    )
+    error_messages = TEM._validate_flow_commission_and_asset_both_consistency!(connection)
+    @test error_messages == [
+        "Missing commission_year = 2030 for the outgoing flow of asset 'wind' in 'flow_commission' given (asset 'wind', milestone_year = 2030, commission_year = 2030) in 'asset_both'. The commission_year should match the one in 'asset_both'.",
+        "Unexpected commission_year = 0 for the outgoing flow of asset 'wind' in 'flow_commission'. The commission_year should match the one in 'asset_both'.",
+    ]
+end
+
+@testitem "Check that stochastic scenario probabilities sum to 1 - no error" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    stochastic_scenario = DataFrame(:scenario => [1, 2, 3], :probability => [0.3, 0.4, 0.3])
+    connection = DBInterface.connect(DuckDB.DB)
+    DuckDB.register_data_frame(connection, stochastic_scenario, "stochastic_scenario")
+
+    error_messages = TEM._validate_stochastic_scenario_probabilities_sum_to_one!(connection)
+    @test error_messages == []
+end
+
+@testitem "Check that stochastic scenario probabilities sum to 1 - throw error" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    stochastic_scenario = DataFrame(:scenario => [1, 2], :probability => [0.499, 0.5])
+    connection = DBInterface.connect(DuckDB.DB)
+    DuckDB.register_data_frame(connection, stochastic_scenario, "stochastic_scenario")
+
+    error_messages = TEM._validate_stochastic_scenario_probabilities_sum_to_one!(
+        connection;
+        tolerance = 1e-5, # testing passing a tolerance different from default
+    )
+    @test error_messages == [
+        "Sum of probabilities in 'stochastic_scenario' table is 0.999, but should be approximately 1.0 (tolerance: 1.0e-5)",
+    ]
+end
+
+@testitem "Check that stochastic scenario probabilities sum to 1 - using Tiny data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+
+    # Doesn't throw (creates empty stochastic_scenario table)
+    TEM.create_internal_tables!(connection)
+
+    # Modify stochastic_scenario to have bad probabilities
+    DuckDB.query(
+        connection,
+        """
+        INSERT INTO stochastic_scenario (description, scenario, probability)
+        VALUES ('', 1, 0.8);
+        """,
+    )
+    @test_throws "Sum of probabilities in 'stochastic_scenario' table is 0.8, but should be approximately 1.0 (tolerance: 0.001)" TEM.create_internal_tables!(
+        connection,
+    )
 end

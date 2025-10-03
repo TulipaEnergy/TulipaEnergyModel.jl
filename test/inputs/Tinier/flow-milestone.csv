@@ -1,4 +1,4 @@
-from_asset,to_asset,milestone_year,variable_cost
+from_asset,to_asset,milestone_year,operational_cost
 wind,demand,2030,0.001
 ccgt,demand,2030,0.05
 ocgt,demand,2030,0.07

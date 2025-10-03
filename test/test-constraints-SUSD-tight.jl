@@ -1,6 +1,6 @@
 using JuMP
 
-@testset "Test tight SUSD constraints" begin
+@testitem "Test tight SUSD constraints" setup = [CommonSetup] tags = [:unit, :validation, :fast] begin
     # Setup a temporary DuckDB connection and model
     connection = DBInterface.connect(DuckDB.DB)
     model = JuMP.Model()
@@ -9,9 +9,9 @@ using JuMP
     # This first table is only necessary because we have a left join of var_flow with the asset table
     table_name = "asset"
     table_rows = [
-        ("input_1", "simple", true, "3bin-0", "conversion", 15),
-        ("input_2", "compact", true, "3bin-0", "conversion", 15),
-        ("death_star", "simple", true, "3bin-0", "conversion", 15),
+        ("input_1", "simple", true, "3var-0", "conversion", 15),
+        ("input_2", "compact", true, "3var-0", "conversion", 15),
+        ("death_star", "simple", true, "3var-0", "conversion", 15),
     ]
     columns = [
         :asset,
@@ -120,7 +120,7 @@ using JuMP
     columns = [:id, :asset, :year, :rep_period, :time_block_start, :time_block_end]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
-    table_name = "cons_su_sd_eq_units_on_diff"
+    table_name = "cons_unit_commitment_logic"
     table_rows = [
         (1, "input_1", 2050, 1, 1, 2),
         (2, "input_1", 2050, 1, 4, 4),
@@ -137,7 +137,7 @@ using JuMP
             :start_up_upper_bound,
             :shut_down_upper_bound_simple_investment,
             :shut_down_upper_bound_compact_investment,
-            :su_sd_eq_units_on_diff,
+            :unit_commitment_logic,
         )
     )
 
@@ -172,13 +172,33 @@ using JuMP
         key in (:available_asset_units_simple_method, :available_asset_units_compact_method)
     )
 
-    expressions[:available_asset_units_simple_method].expressions[:assets] =
-        [@expression(model, 1), @expression(model, 1), @expression(model, 1), @expression(model, 1)]
+    expressions[:available_asset_units_simple_method].expressions[:assets] = [
+        JuMP.@expression(model, 1),
+        JuMP.@expression(model, 1),
+        JuMP.@expression(model, 1),
+        JuMP.@expression(model, 1)
+    ]
 
     expressions[:available_asset_units_compact_method].expressions[:assets] =
-        [@expression(model, 1), @expression(model, 1)]
+        [JuMP.@expression(model, 1), JuMP.@expression(model, 1)]
 
-    TulipaEnergyModel.add_start_up_and_shut_down_constraints!(
+    TulipaEnergyModel.add_start_up_upper_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    TulipaEnergyModel.add_shut_down_upper_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    TulipaEnergyModel.add_uc_logic_constraints!(
         connection,
         model,
         variables,
@@ -219,7 +239,7 @@ using JuMP
     observed_cons = _get_cons_object(model, :shut_down_upper_bound_compact_investment)
     @test _is_constraint_equal(expected_cons, observed_cons)
 
-    @variable(model, dummy)
+    JuMP.@variable(model, dummy)
 
     expected_cons = [
         JuMP.@build_constraint(0 * dummy == 0),
@@ -236,7 +256,7 @@ using JuMP
         ),
     ]
 
-    observed_cons = _get_cons_object(model, :su_sd_eq_units_on_diff)
+    observed_cons = _get_cons_object(model, :unit_commitment_logic)
 
     @test _is_constraint_equal(expected_cons, observed_cons)
 end

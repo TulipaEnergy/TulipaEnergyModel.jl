@@ -25,16 +25,19 @@ In addition, the following asset sets represent methods for incorporating additi
 | Name                                      | Description                                                   | Elements | Superset                                                                                         | Notes                                                                                                                                                                                                                                                           |
 | ----------------------------------------- | ------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | $\mathcal{A}^{\text{i}}_y$                | Energy assets with investment method at year $y$              |          | $\mathcal{A}^{\text{i}}_y  \subseteq \mathcal{A}$                                                |                                                                                                                                                                                                                                                                 |
-| $\mathcal{A}^{\text{operation}}$          | Energy assets with operation mode at year $y$                 |          | $\mathcal{A}^{\text{operation}}  \subseteq \mathcal{A}$                                          |                                                                                                                                                                                                                                                                 |
+| $\mathcal{A}^{\text{operation}}$          | Energy assets with operation mode at year $y$                 |          | $\mathcal{A}^{\text{operation}}  \subseteq \mathcal{A}$                                               |                                                                                                                                                                                                                                                                 |
 | $\mathcal{A}^{\text{simple investment}}$  | Energy assets with simple investment method at year $y$       |          | $\mathcal{A}^{\text{simple investment}}  \subseteq \mathcal{A}$                                  |                                                                                                                                                                                                                                                                 |
-| $\mathcal{A}^{\text{compact investment}}$ | Energy assets with compact investment method at year $y$      |          | $\mathcal{A}^{\text{compact investment}}  \subseteq \mathcal{A}$                                 |                                                                                                                                                                                                                                                                 |
+| $\mathcal{A}^{\text{compact investment}}$ | Energy assets with compact investment method at year $y$      |          | $\mathcal{A}^{\text{compact investment}}  \subseteq \mathcal{A}$                                 | |
+| $\mathcal{A}^{\text{semi-compact investment}}$  | Energy assets with semi-compact investment method at year $y$       |          | $\mathcal{A}^{\text{semi-compact investment}}  \subseteq \mathcal{A}$                                  | |
 | $\mathcal{A}^{\text{ss}}_y$               | Energy assets with seasonal method at year $y$                |          | $\mathcal{A}^{\text{ss}}_y \subseteq \mathcal{A}$                                                | This set contains assets that use the seasonal method method. Please visit the how-to sections for [seasonal storage](@ref seasonal-setup) and [maximum/minimum outgoing energy limit](@ref max-min-outgoing-energy-setup) to learn how to set up this feature. |
 | $\mathcal{A}^{\text{se}}_y$               | Storage energy assets with energy method at year $y$          |          | $\mathcal{A}^{\text{se}}_y \subseteq \mathcal{A}^{\text{s}}$                                     | This set contains storage assets that use investment energy method. Please visit the [how-to section](@ref storage-investment-setup) to learn how to set up this feature.                                                                                       |
 | $\mathcal{A}^{\text{sb}}_y$               | Storage energy assets with binary method at year $y$          |          | $\mathcal{A}^{\text{sb}}_y \subseteq \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}_y$ | This set contains storage assets that use an extra binary variable to avoid charging and discharging simultaneously. Please visit the [how-to section](@ref storage-binary-method-setup) to learn how to set up this feature.                                   |
 | $\mathcal{A}^{\text{max e}}_y$            | Energy assets with maximum outgoing energy method at year $y$ |          | $\mathcal{A}^{\text{max e}}_y \subseteq \mathcal{A}$                                             | This set contains assets that use the maximum outgoing energy method. Please visit the [how-to section](@ref max-min-outgoing-energy-setup) to learn how to set up this feature.                                                                                |
 | $\mathcal{A}^{\text{min e}}_y$            | Energy assets with minimum outgoing energy method at year $y$ |          | $\mathcal{A}^{\text{min e}} _y\subseteq \mathcal{A}$                                             | This set contains assets that use the minimum outgoing energy method. Please visit the [how-to section](@ref max-min-outgoing-energy-setup) to learn how to set up this feature.                                                                                |
 | $\mathcal{A}^{\text{uc}}_y$               | Energy assets with unit commitment method at year $y$         |          | $\mathcal{A}^{\text{uc}}_y  \subseteq \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{p}}$       | This set contains conversion and production assets that have a unit commitment method. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                                                       |
-| $\mathcal{A}^{\text{uc basic}}_y$         | Energy assets with a basic unit commitment method at year $y$ |          | $\mathcal{A}^{\text{uc basic}}_y \subseteq \mathcal{A}^{\text{uc}}_y$                            | This set contains the assets that have a basic unit commitment method. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                                                                       |
+| $\mathcal{A}^{\text{uc basic}}_y$         | Energy assets with a basic unit commitment method at year $y$ |          | $\mathcal{A}^{\text{uc basic}}_y \subseteq \mathcal{A}^{\text{uc}}_y$                            | This set contains the assets that have a basic unit commitment method that uses only the units on variable. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                                                                       |
+| $\mathcal{A}^{\text{uc 3var}}_y$          | Energy assets with a 3var unit commitment method at year $y$  |          | $\mathcal{A}^{\text{uc 3var}}_y \subseteq \mathcal{A}^{\text{uc}}_y$                             | This set contains the assets that have a unit commitment method using three variables: units on, start-up, and shut-down. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature.                                                                                       |
+| $\mathcal{A}^{\text{su-sd compact}}_y$    | Energy assets with compact start-up and shut-down constraints at year $y$  |     | $\mathcal{A}^{\text{su-sd compact}}_y \subseteq \mathcal{A}^{\text{uc}}_y$               | This set contains the assets that have a unit commitment method using three variables: units on, start-up, and shut-down, along with a compact set of logical constraints. Please visit the [how-to section](@ref unit-commitment-setup) to learn how to set up this feature. |
 | $\mathcal{A}^{\text{ramp}}_y$             | Energy assets with ramping method at year $y$                 |          | $\mathcal{A}^{\text{ramp}}_y  \subseteq \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{p}}$     | This set contains conversion and production assets that have a ramping method. Please visit the [how-to section](@ref ramping-setup) to learn how to set up this feature.                                                                                       |
 | $\mathcal{A}^{\text{dc-opf}}_y$           | Energy assets with a DC power flow method at year $y$         |          | $\mathcal{A}^{\text{dc-opf}}_y \subseteq \mathcal{A}$                                            | This set contains the assets that have that use the dc-opf method.                                                                                                                                                                                              |
 
@@ -101,6 +104,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | Name                                                 | Domain                   | Domains of Indices                                                                                 | Description                                                                                                            | Units          |
 | ---------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------- |
 | $p^{\text{inv cost}}_{a,y}$                          | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Overnight cost of a unit of asset $a$ at year $y$                                                                      | [kEUR/MW]      |
+| $p^{\text{commodity price}}_{a,y}$                          | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Price of the commodity to produce a unit of energy for asset $a$ at year $y$. Only applies to producers.                                                                      | [kEUR/MWh] or other units      |
 | $p^{\text{annualized inv cost}}_{a,y}$               | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Annualized investment cost of a unit of asset $a$ at year $y$                                                          | [kEUR/MW/year] |
 | $p^{\text{salvage value}}_{a,y}$                     | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Salvage value of a unit of asset $a$ at year $y$                                                                       | [kEUR/MW]      |
 | $p^{\text{discounting factor asset inv cost}}_{a,y}$ | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Discounting factor for investment cost of a unit of asset $a$ at year $y$                                              | [-]            |
@@ -146,7 +150,7 @@ In addition, the following subsets represent methods for incorporating additiona
 
 | Name                                   | Domain           | Domains of Indices                                            | Description                                                       | Units           |
 | ---------------------------------------| ---------------- | --------------------------------------------------------------| ----------------------------------------------------------------- | --------------- |
-| $p^{\text{conversion eff}}_{a,y}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{cv}}}$, $y \in \mathcal{Y}$          | Conversion efficiency of conversion asset $a$ at year $y$         | [p.u.]          |
+| $p^{\text{efficiency}}_{a,y}$      | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{cv}}}$, $y \in \mathcal{Y}$          | efficiency of conversion asset $a$ at year $y$         | [p.u.]          |
 
 #### Extra Parameters for Energy Constraints
 
@@ -170,7 +174,7 @@ In addition, the following subsets represent methods for incorporating additiona
 
 | Name                                                | Domain           | Domains of Indices                                                                                 | Description                                                                                                           | Units          |
 | --------------------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------- |
-| $p^{\text{variable cost}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Variable cost of flow $f$ at year $y$                                                                                 | [kEUR/MWh]     |
+| $p^{\text{operational cost}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Operational cost of flow $f$ at year $y$                                                                                 | [kEUR/MWh]     |
 | $p^{\text{reactance}}_{f,y}$                        | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Reactance of flow $f$ at year $y$                                                                                     | [p.u.]         |
 | $p^{\text{capacity coefficient}}_{f,y}$             | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Coefficient that multiplies the flow $f$ at year $y$ in the capacity constraints                                      | [-]            |
 | $p^{\text{conversion coefficient}}_{f,y}$           | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Coefficient that multiplies the flow $f$ at year $y$ in the conversion constraints                                    | [-]            |
@@ -235,6 +239,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | Name                                               | Domain           | Domains of Indices                                                                                                             | Description                                                                                                                           | Units   |
 | -------------------------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | $v^{\text{flow}}_{f,k_y,b_{k_y}}$                  | $\mathbb{R}$     | $f \in \mathcal{F}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                  | Flow $f$ between two assets in representative period $k_y$ and timestep block $b_{k_y}$                                               | [MW]    |
+| $v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}}$                  | $\mathbb{R}$     | $f \in \mathcal{F}^{\text{out}}_{a,y} \mid a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} $, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                  | Vintage flow $f$ between two assets in commission year $v$ in representative period $k_y$ and timestep block $b_{k_y}$                                               | [MW]    |
 | $v^{\text{inv}}_{a,y}$                             | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y$, $y \in \mathcal{Y}$                                                                          | Number of invested units of asset $a$ at year $y$                                                                                     | [units] |
 | $v^{\text{decom simple}}_{a,y}$                    | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{simple investment}}$, $y \in \mathcal{Y}$                                                            | Number of decommissioned units of asset $a$ that uses simple investment method at year $y$                                            | [units] |
 | $v^{\text{decom compact}}_{a,y,v}$                 | $\mathbb{Z}_{+}$ | $ (a,y,v) \in \mathcal{D}^{\text{compact investment}}$                                                                         | Number of decommissioned units of asset $a$ commissioned in year $v$ that uses compact investment method at year $y$                  | [units] |
@@ -247,6 +252,8 @@ In addition, the following subsets represent methods for incorporating additiona
 | $v^{\text{is charging}}_{a,k_y,b_{k_y}}$           | $\{0, 1\}$       | $a \in \mathcal{A}^{\text{sb}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                    | If an storage asset $a$ is charging or not in representative period $k_y$ and timestep block $b_{k_y}$                                | [-]     |
 | $v^{\text{angle}}_{a,k_y,b_{k_y}}$                 | $\mathbb{R}$     | $a \in \mathcal{A}^{\text{dc-opf}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                | Electricity angle of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                            | [rad]   |
 | $v^{\text{units on}}_{a,k_y,b_{k_y}}$              | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                    | Number of units ON of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                           | [units] |
+| $v^{\text{start up}}_{a,k_y,b_{k_y}}$              | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc 3var}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                               | Number of units of asset $a$ STARTING UP in representative period $k_y$ and timestep block $b_{k_y}$                                  | [units] |
+| $v^{\text{shut down}}_{a,k_y,b_{k_y}}$             | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc 3var}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                               | Number of units of asset $a$ SHUTTING DOWN in representative period $k_y$ and timestep block $b_{k_y}$                                | [units] |
 
 ## [Objective Function](@id math-objective-function)
 
@@ -363,7 +370,7 @@ The objective function is formulated as a two-stage stochastic optimization prob
 \begin{aligned}
 \text{{minimize}} \quad & assets\_investment\_cost + assets\_fixed\_cost \\
                         & + flows\_investment\_cost + flows\_fixed\_cost \\
-                        & + \sum_{s \in \mathcal{S}} p^{\text{probability}}_{s} \cdot (flows\_variable\_cost_{s} + unit\_on\_cost_{s})
+                        & + \sum_{s \in \mathcal{S}} p^{\text{probability}}_{s} \cdot (flows\_operational\_cost_{s} + unit\_on\_cost_{s})
 \end{aligned}
 ```
 
@@ -377,7 +384,10 @@ assets\_fixed\_cost &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{s
 & + \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{se}}_y \cap (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) } p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost energy}}_{a,y} \cdot p^{\text{energy capacity}}_{a} \cdot v^{\text{available energy capacity simple method}}_{a,y} \\
 flows\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{ti}}_y} p_{f, y}^{\text{discounting factor flow inv cost}} \cdot p^{\text{inv cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot v^{\text{inv}}_{f,y} \\
 flows\_fixed\_cost &= \frac{1}{2} \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{t}}_y} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot \left( v^{\text{available export units}}_{f,y} + v^{\text{available import units}}_{f,y} \right) \\
-flows\_variable\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{variable cost}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+flows\_operational\_cost_{s} &=
+\sum_{y \in \mathcal{Y}} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{duration}}_{b_{k_y}} \bigg( \sum_{f \in F^{\text{in}}_{a,y} | a \in \mathcal{A} } p^{\text{operational cost}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& \sum_{f \in F^{\text{out}}_{a,y} | a \in \mathcal{A}^{\text{semi-compact investment}}}  \sum_{v \in \mathcal{V}}  \cdot (p^{\text{commodity price}}_{a, y} / p^{\text{efficiency}}_{a, v} + p^{\text{operational cost}}_{f, y}) \cdot \cdot v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} \\
+& \sum_{f \in F^{\text{out}}_{a,y} | a \in \mathcal{A}^{\text{compact investment}} \cup \mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}} } \cdot (p^{\text{commodity price}}_{a, y} / p^{\text{efficiency}}_{a, v} + p^{\text{operational cost}}_{f, y}) \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \bigg) \\
 unit\_on\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{units on cost}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{units on}}_{a,k_y,b_{k_y}}
 \end{aligned}
 ```
@@ -388,7 +398,7 @@ unit\_on\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc
 
 #### Maximum Output Flows Limit
 
-Maximum output flow constraints depend on the chosen investment method (simple or compact). For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
+Maximum output flow constraints depend on the chosen investment method (operation, simple, compact, or semi-compact). For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
 
 ```math
 \begin{aligned}
@@ -396,6 +406,9 @@ Maximum output flow constraints depend on the chosen investment method (simple o
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}}) \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right)  \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}} \\ \\
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{capacity}}_{a} \cdot \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{compact investment}}} p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v}  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{compact investment}} \cap \left(\mathcal{A}^{\text{cv}} \cup \left(\mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{sb}}_y \right) \cup \mathcal{A}^{\text{p}} \right), \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\\ \\
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y} } p^{\text{capacity coefficient}}_{f,v} \cdot v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} \leq p^{\text{capacity}}_{a} \cdot p^{\text{availability profile}}_{a,v,k_y,b_{k_y}} \cdot v^{\text{available units compact method}}_{a,y,v},  \quad
+\\ \forall y \in \mathcal{Y}, \forall v \in \mathcal{V}, \forall a \in \mathcal{A}^{\text{semi-compact investment}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -476,16 +489,31 @@ Storage assets using the method to avoid charging and discharging simultaneously
 #### Lower Limit for Flows
 
 ```math
-v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \notin \mathcal{F}^t, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \in (\mathcal{F} \setminus \mathcal{F}^t) \;\text{with}\; a^{\text{from}}_f \notin \mathcal{A}^{\text{semi-compact investment}}, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ```math
-\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \in \left( \mathcal{F}^{\text{out}}_{a,y} \;\middle|\; a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}},\; a \notin \mathcal{A}^{\text{uc}} \right)
- \cap \mathcal{F}^t, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall v \in \mathcal{V}, \forall f \in ( \mathcal{F}^{\text{out}}_{a,y} \setminus \mathcal{F}^t ) \;\text{with}\; a^{\text{from}}_f \in \mathcal{A}^{\text{semi-compact investment}}, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ```math
-\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall f \in \left(\mathcal{F}^{\text{in}}_{a,y} | a \in \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} \right) \cap \mathcal{F}^t , \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} ) \setminus \mathcal{A}^{\text{uc}} \setminus \mathcal{A}^{\text{semi-compact investment}} \;\text{with}\; \mathcal{F}^{\text{out}}_{a,y} \cap \mathcal{F}^t \neq \emptyset, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+```
+
+```math
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq 0 \quad \forall y \in \mathcal{Y}, \forall a \in (\mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}}) \setminus \mathcal{A}^{\text{semi-compact investment}} \;\text{with}\; \mathcal{F}^{\text{in}}_{a,y} \cap \mathcal{F}^t \neq \emptyset, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+```
+
+```math
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,v} \cdot v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} \geq 0 \quad  \forall y \in \mathcal{Y}, \forall v \in \mathcal{V}, \forall a \in (\mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} ) \cap \mathcal{A}^{\text{semi-compact investment}} \;\text{with}\; \mathcal{F}^{\text{out}}_{a,y} \cap \mathcal{F}^t \neq \emptyset, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B_{k_y}}
+```
+
+### [Vintage Flow Sum Constraints](@id vintage-sum-constraints)
+
+When the semi-compact investment method is selected, the model introduces vintage flow variables which represent flows from different commissioning years alongside the standard flow variables. Vintage flow variables are included only where relevant, such as in the objective function, capacity constraints, and conversion balance. In all other cases, standard flow variables are used. A linkage is established between the two sets of variables to maintain consistency.
+
+```math
+\\  \sum_{v \in \mathcal{V} | (a,y,v) \in \mathcal{D}^{\text{semi-compact investment}}} v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} = v^{\text{flow}}_{f,k_y,b_{k_y}}, \forall y \in \mathcal{Y},  \forall f \in \mathcal{F}^{\text{out}}_{a,y}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 ```
 
 ### [Unit Commitment Constraints](@id uc-constraints)
@@ -520,6 +548,28 @@ e^{\text{flow above min}}_{a,y,k_y,b_{k_y}} \leq p^{\text{availability profile}}
 ```math
 e^{\text{flow above min}}_{a,k_y,b_{k_y}} \geq 0  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc basic}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+```
+
+#### Tight logical constraints for start-up and shut-down variables
+
+```math
+v^{\text{on}}_{a, k_y, b_{k_y}} - v^{\text{on}}_{a, k_y, (b_{k_y} - 1)} = v^{\text{start up}}_{a, k_y, b_{k_y}} - v^{\text{shut down}}_{a, k_y, b_{k_y}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+\\ v^{\text{start up}}_{a, k_y, b_{k_y}} \leq v^{\text{on}}_{a, k_y, b_{k_y}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+\\ v^{\text{shut down}}_{a, k_y, b_{k_y}} \leq v^{\text{available units}}_{a,y} - v^{\text{on}}_{a, k_y, b_{k_y}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+```
+
+#### Compact logical constraints for start-up and shut-down variables
+
+This set of logical constraints defines the behaviour of the start-up and shut-down variables, and is more compact than the tight logical constraints defined above. The constraints are tight in the direction of the objective function.
+
+```math
+v^{\text{start up}}_{a, k_y, b_{k_y}} \geq v^{\text{on}}_{a, k_y, b_{k_y}} - v^{\text{on}}_{a, k_y, (b_{k_y} - 1)} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{su-sd compact}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}^{\text{su}}_{k_y}
+\\ v^{\text{shut down}}_{a, k_y, b_{k_y}} \geq v^{\text{on}}_{a, k_y, (b_{k_y} - 1)} - v^{\text{on}}_{a, k_y, b_{k_y}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{su-sd compact}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}^{\text{sd}}_{k_y}
 ```
 
 ### [Ramping Constraints](@id ramp-constraints)
@@ -736,7 +786,7 @@ v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{last}}_y} \geq p^{\text{ini
 
 ```math
 \begin{aligned}
-p^{\text{conversion eff}}_{a,y} \cdot & \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{conversion coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} =  \\
+p^{\text{efficiency}}_{a,y} \cdot & \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{conversion coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} =  \\
 & \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{conversion coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 & \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{cv}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}

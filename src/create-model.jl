@@ -215,12 +215,69 @@ function create_model(
         constraints,
     )
 
-    @timeit to "add_start_up_and_shut_down_constraints!" add_start_up_and_shut_down_constraints!(
+    @timeit to "add_start_up_upper_bound_constraints!" add_start_up_upper_bound_constraints!(
         connection,
         model,
         variables,
         expressions,
         constraints,
+    )
+
+    @timeit to "add_shut_down_upper_bound_constraints!" add_shut_down_upper_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_uc_logic_constraints!" add_uc_logic_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_start_up_lower_bound_constraints!" add_start_up_lower_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_shut_down_lower_bound_constraints!" add_shut_down_lower_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_minimum_up_time_constraints!" add_minimum_up_time_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_minimum_down_time_constraints!" add_minimum_down_time_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_su_sd_ramping_with_vars_constraints!" add_su_sd_ramping_with_vars_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles,
     )
 
     @timeit to "add_su_sd_ramping_constraints_compact!" add_su_sd_ramping_constraints_compact!(

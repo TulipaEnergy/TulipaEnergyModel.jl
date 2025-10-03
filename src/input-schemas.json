@@ -112,6 +112,24 @@
       "type": "DOUBLE",
       "unit_of_measure": "p.u./h"
     },
+    "max_sd_ramp": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Maximum ramping down rate at shutdown as a portion of the capacity of asset.",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u./h"
+    },
+    "max_su_ramp": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Maximum ramping up rate at startup as a portion of the capacity of asset.",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u./h"
+    },
     "min_operating_point": {
       "constraints": {
         "maximum": 1,
@@ -122,10 +140,46 @@
       "type": "DOUBLE",
       "unit_of_measure": "p.u."
     },
+    "minimum_down_time": {
+      "constraints": {
+        "minimum": 1
+      },
+      "default": 1,
+      "description": "Minimum time between shutting a unit down and starting it back up",
+      "type": "INTEGER",
+      "unit_of_measure": "h"
+    },
+    "minimum_up_time": {
+      "constraints": {
+        "minimum": 1
+      },
+      "default": 1,
+      "description": "Minimum time between starting a unit up and shutting it back down",
+      "type": "INTEGER",
+      "unit_of_measure": "h"
+    },
     "ramping": {
       "default": false,
       "description": "Whether asset has ramping constraints or not.",
       "type": "BOOLEAN"
+    },
+    "shut_down_cost": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Cost of shutting down a unit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR"
+    },
+    "start_up_cost": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Cost of starting up a unit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR"
     },
     "storage_method_energy": {
       "default": false,
@@ -168,7 +222,13 @@
       "constraints": {
         "oneOf": [
           null,
-          "basic"
+          "basic",
+          "3var",
+          "SU-SD-compact",
+          "min_up_down",
+          "3var-su-sd-ramp",
+          "1var-1C",
+          "1var-1T"
         ]
       },
       "default": null,
@@ -228,12 +288,12 @@
       "description": "Year of commissioning.",
       "type": "INTEGER"
     },
-    "conversion_efficiency": {
+    "efficiency": {
       "constraints": {
         "minimum": 0
       },
       "default": 1.0,
-      "description": "Conversion asset efficiency as a multiplier for turning inputs to outputs.",
+      "description": "Asset efficiency. Can be used for both producer and conversion assets.",
       "type": "DOUBLE",
       "unit_of_measure": "ratio"
     },
@@ -302,6 +362,12 @@
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
+    },
+    "commodity_price": {
+      "default": 0,
+      "description": "Price of the commodity.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/MWh or other units depending on the commodity"
     },
     "initial_storage_level": {
       "constraints": {
@@ -644,6 +710,12 @@
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
+    "operational_cost": {
+      "default": 0,
+      "description": "Variable cost for the flow.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/MWh"
+    },
     "reactance": {
       "default": 0.3,
       "description": "Reactance for the transport flow.",
@@ -653,12 +725,6 @@
     "to_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
-    },
-    "variable_cost": {
-      "default": 0,
-      "description": "Variable cost for the flow.",
-      "type": "DOUBLE",
-      "unit_of_measure": "CUR/MWh"
     }
   },
   "flows_profiles": {
@@ -801,6 +867,12 @@
       "description": "Representative period number.",
       "type": "INTEGER"
     },
+    "scenario": {
+      "default": 1,
+      "description": "Stochastic scenario number.",
+      "type": "INTEGER",
+      "unit_of_measure": "number"
+    },
     "timestep": {
       "description": "Timestep number.",
       "type": "INTEGER"
@@ -873,6 +945,28 @@
     "year": {
       "description": "Milestone year.",
       "type": "INTEGER"
+    }
+  },
+  "stochastic_scenario": {
+    "description": {
+      "default": "",
+      "description": "Description of the stochastic scenario. e.g., 'Weather year 1982'.",
+      "type": "VARCHAR"
+    },
+    "probability": {
+      "constraints": {
+        "maximum": 1,
+        "minimum": 0
+      },
+      "default": 1.0,
+      "description": "Probability of the stochastic scenario.",
+      "type": "DOUBLE",
+      "unit_of_measure": "ratio"
+    },
+    "scenario": {
+      "description": "Stochastic scenario number.",
+      "type": "INTEGER",
+      "unit_of_measure": "number"
     }
   },
   "timeframe_data": {

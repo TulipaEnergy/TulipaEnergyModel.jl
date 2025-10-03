@@ -126,7 +126,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3bin-%'
+        and (asset.unit_commitment_method LIKE '3var%' or asset.unit_commitment_method in ('SU-SD-compact', 'min_up_down'))
     order by
         atr.asset,
         atr.year,
@@ -153,8 +153,8 @@ from (
         atr.asset,
         atr.year,
         atr.rep_period,
-        atr.time_block_start,
-        atr.time_block_end,
+        t_high.time_block_start,
+        t_high.time_block_end,
         asset.unit_commitment_integer,
     from
         t_highest_assets_and_out_flows as t_high
@@ -168,7 +168,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3bin-%'
+        and (asset.unit_commitment_method LIKE '3var%' or asset.unit_commitment_method in ('SU-SD-compact', 'min_up_down'))
     order by
         atr.asset,
         atr.year,

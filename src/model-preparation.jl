@@ -519,16 +519,19 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         multiply_by_duration = false,
     )
 
-    @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
-        connection,
-        constraints[:capacity_outgoing_semi_compact_method],
-        variables[:vintage_flow],
-        workspace;
-        use_highest_resolution = true,
-        multiply_by_duration = false,
-        multiply_by_capacity_coefficient = true,
-        include_commission_year = true,
-    )
+    for table_name in
+        (:capacity_outgoing_semi_compact_method, :min_outgoing_flow_for_transport_vintage_flows)
+        @timeit to "add_expression_terms_rep_period_constraints! for $table_name" add_expression_terms_rep_period_constraints!(
+            connection,
+            constraints[table_name],
+            variables[:vintage_flow],
+            workspace;
+            use_highest_resolution = true,
+            multiply_by_duration = false,
+            multiply_by_capacity_coefficient = true,
+            include_commission_year = true,
+        )
+    end
 
     for table_name in (
         :capacity_incoming_simple_method,
@@ -566,6 +569,11 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         :max_ramp_with_unit_commitment,
         :max_ramp_without_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
+        :su_ramp_vars_flow_diff,
+        :sd_ramp_vars_flow_diff,
+        :su_ramp_vars_flow_upper_bound,
+        :sd_ramp_vars_flow_upper_bound,
+        :su_sd_ramp_vars_flow_with_high_uptime,
         :su_ramping_compact_1bin,
         :sd_ramping_compact_1bin,
         :su_ramping_tight_1bin,
@@ -614,6 +622,41 @@ function add_expressions_to_constraints!(connection, variables, constraints)
             constraints[table_name],
             variables[:units_on],
             :units_on,
+            workspace,
+            agg_strategy = :unique_sum,
+        )
+    end
+
+    for table_name in (
+        :su_ramp_vars_flow_diff,
+        :sd_ramp_vars_flow_diff,
+        :su_ramp_vars_flow_upper_bound,
+        :sd_ramp_vars_flow_upper_bound,
+        :su_sd_ramp_vars_flow_with_high_uptime,
+    )
+        @timeit to "attach units_on expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+            connection,
+            constraints[table_name],
+            variables[:units_on],
+            :units_on,
+            workspace,
+            agg_strategy = :unique_sum,
+        )
+
+        @timeit to "attach start_up expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+            connection,
+            constraints[table_name],
+            variables[:start_up],
+            :start_up,
+            workspace,
+            agg_strategy = :unique_sum,
+        )
+
+        @timeit to "attach shut_down expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+            connection,
+            constraints[table_name],
+            variables[:shut_down],
+            :shut_down,
             workspace,
             agg_strategy = :unique_sum,
         )
