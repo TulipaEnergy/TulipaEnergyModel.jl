@@ -1,9 +1,0 @@
-from_asset,to_asset,carrier,is_transport,capacity,technical_lifetime,economic_lifetime,discount_rate,investment_integer
-ens,demand,electricity,false,0.0,10,1,0.02,false
-gas,ccgt,electricity,false,0.0,10,1,0.02,false
-ocgt,demand,electricity,false,0.0,10,1,0.02,false
-smr,demand,electricity,false,0.0,10,1,0.02,false
-gas,ocgt,electricity,false,0.0,10,1,0.02,false
-ccgt,demand,electricity,false,0.0,10,1,0.02,false
-wind,demand,electricity,false,0.0,10,1,0.02,false
-solar,demand,electricity,false,0.0,10,1,0.02,false
