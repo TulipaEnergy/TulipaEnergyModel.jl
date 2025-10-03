@@ -228,7 +228,8 @@
           "min_up_down",
           "3var-su-sd-ramp",
           "1var-1C",
-          "1var-1T"
+          "1var-1T",
+          "min_up_down_2var"
         ]
       },
       "default": null,

@@ -298,6 +298,14 @@ function create_model(
         profiles,
     )
 
+    @timeit to "add_minimum_down_time_2var_constraints!" add_minimum_down_time_2var_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
     if model_file_name != ""
         @timeit to "save model file" JuMP.write_to_file(model, model_file_name)
     end

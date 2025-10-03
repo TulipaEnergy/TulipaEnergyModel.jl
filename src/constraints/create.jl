@@ -55,6 +55,8 @@ function compute_constraints_indices(connection)
             :sd_ramping_compact_1bin,
             :su_ramping_tight_1bin,
             :sd_ramping_tight_1bin,
+            :minimum_down_time_2var_simple_investment,
+            :minimum_down_time_2var_compact_investment,
         )
     )
 
