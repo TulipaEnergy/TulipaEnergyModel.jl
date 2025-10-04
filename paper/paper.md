@@ -82,7 +82,7 @@ affiliations:
   - name: Universidad Pontificia Comillas
     ror: 017mdc710
     index: 6
-date: 10 July 2025
+date: 04 October 2025
 bibliography: paper.bib
 ---
 
@@ -108,13 +108,13 @@ Some recent modelling breakthroughs alter the foundation and all structures of t
 
 Two of the main innovations of TulipaEnergyModel are that it accepts a fully flexible resolution [@Gao2025] for the assets and flows, and it allows for a direct connection between assets [@Tejada2025]. To illustrate these concepts, consider the following example:
 
-![Example of network with flexible resolution of assets and flows](images/flexible-time-resolution.png)
+![Example of network with flexible resolution of assets and flows \label{fig:flexible-time-resolution}](images/flexible-time-resolution.png)
 
-For the fully flexible temporal resolution, we look at 6 hours of a system. The flow between "H2" and "ccgt" has a resolution of 6 hours (i.e., the whole period), while from "ccgt" to the "balance", the resolution is 1 hour. The resolution from "wind" to "phs" is 3 hours, and the resolution from "phs" to "balance" is not regular, starting with a 4 hours block and then a 2 hours block. All these "time blocks" are handled by the TulipaEnergyModel.jl to allow for more or less detailed solutions. This implies that less variables and constraints are created, ensuring a faster solving speed, with little loss in accuracy, See @Gao2025 for further details.
+For the fully flexible temporal resolution, we look at 6 hours of a system. The flow between "H2" and "ccgt" has a resolution of 6 hours (i.e., the whole period), while from "ccgt" to the "balance", the resolution is 1 hour. The resolution from "wind" to "phs" is 3 hours, and the resolution from "phs" to "balance" is not regular, starting with a 4 hours block and then a 2 hours block. All these "time blocks" are handled by the TulipaEnergyModel.jl to allow for more or less detailed solutions. This implies that less variables and constraints are created, ensuring a faster solving speed, with little loss in accuracy. See @Gao2025 for further details.
 
-For the direct connection between assets, notice how the storage “phs” unit is directly connected to the “wind“ to charge, and also directly connected to “balance” to discharge. This direct connection between assets completely avoids extra elements in between (connections and nodes) naturally avoiding unnecessary extra variables and constraints. Consequently, speeding up solving times without any loss of accuracy when compared with traditional formulations, see @Tejada2025 for further details.
+For the direct connection between assets, notice how the storage “phs” unit is directly connected to the “wind“ to charge, and also directly connected to “balance” to discharge. This direct connection between assets completely avoids extra elements in-between (connections and nodes) naturally avoiding unnecessary extra variables and constraints, consequently speeding up solving times without any loss of accuracy when compared with traditional formulations. See @Tejada2025 for further details.
 
-TulipaEnergyModel.jl is fundamentally focused on high quality mathematical formulations. The model also includes other key features such as seasonal storage modeling using representative periods [Tejada2018; @greg2025], tight formulations to prevent simultaneous charging and discharging [@Elgersma2025], tight and compact unit commitment constraints [@MoralesEspana2013], and compact formulations for multi-year investment planning [@wang2025a; @wang2025b].
+TulipaEnergyModel.jl is fundamentally focused on high quality mathematical formulations. The model also includes other key features such as seasonal storage modeling using representative periods [@Tejada2018; @greg2025], tight formulations to prevent simultaneous charging and discharging [@Elgersma2025], tight and compact unit commitment constraints [@MoralesEspana2013], and compact formulations for multi-year investment planning [@wang2025a; @wang2025b].
 
 ### Software Design Innovations
 
