@@ -79,27 +79,18 @@ function add_minimum_down_time_2var_constraints!(
                         variables[:start_up].container,
                         row.time_block_start,
                     )
-                    if row.asset == "ccgt"
-                        println(RHS_UC_ID[2])
-                        println(RHS_UC_ID[2] < 2)
-                        println(units_on)
-                    end
-                    if RHS_UC_ID[2] < 2 # || row.time_block_start == 1
-                        println("ENTERED NO UC AREA")
-                        println(RHS_UC_ID)
+                    if !RHS_UC_ID[2] || row.units_on_id - RHS_UC_ID[3] < 1 # || row.time_block_start == 1
                         @constraint(
                             model,
                             RHS_UC_ID[1] <= expr_avail_simple_method[row.avail_id],
                             base_name = "minimum_down_time_2var_simple_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                         )
                     else
-                        println("ENTERED YES UC AREA")
-                        println(RHS_UC_ID[2])
-                        println(units_on[RHS_UC_ID[2]-1])
                         @constraint(
                             model,
                             RHS_UC_ID[1] <=
-                            expr_avail_simple_method[row.avail_id] - units_on[RHS_UC_ID[2]-1],
+                            expr_avail_simple_method[row.avail_id] -
+                            units_on[row.units_on_id-RHS_UC_ID[3]],
                             base_name = "minimum_down_time_2var_simple_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                         )
                     end
@@ -145,7 +136,7 @@ function add_minimum_down_time_2var_constraints!(
                         row.time_block_start,
                     )
                     (
-                        if RHS_UC_ID[2] < 2
+                        if !RHS_UC_ID[2] || row.units_on_id - RHS_UC_ID[3] < 1
                             @constraint(
                                 model,
                                 RHS_UC_ID[1] <= sum(
@@ -161,7 +152,7 @@ function add_minimum_down_time_2var_constraints!(
                                 sum(
                                     expr_avail_compact_method[avail_id] for
                                     avail_id in row.avail_indices
-                                ) - units_on[RHS_UC_ID[2]-1],
+                                ) - units_on[row.units_on_id-RHS_UC_ID[3]],
                                 base_name = "minimum_down_time_2var_compact_investment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                             )
                         end,
@@ -175,11 +166,11 @@ end
 function _sum_min_down_blocks_2var(sum_rows, shut_downs, start_of_curr_constraint)
     sum = 0
 
-    first_SU_id = -1
+    should_have_units_on = true
 
     iters = 0
 
-    should_look_for_first = true
+    total_timeblocks = 0
 
     for single_row in sum_rows
         start_of_this = single_row.time_block_start
@@ -190,24 +181,17 @@ function _sum_min_down_blocks_2var(sum_rows, shut_downs, start_of_curr_constrain
             start_of_curr_constraint
         )
             if iters == 0
-                should_look_for_first = false
+                should_have_units_on = false
             end
 
             sum = sum + shut_downs[single_row.id]
 
-            if should_look_for_first
-                first_SU_id = single_row.id
-                should_look_for_first = false
-            end
-
-            # if first_SU_id == -1 && iters > 0
-            #     first_SU_id = single_row.id
-            # end
+            total_timeblocks = total_timeblocks + 1
         end
 
         iters = iters + 1
     end
-    return sum, first_SU_id
+    return sum, should_have_units_on, total_timeblocks
 end
 
 function _append_available_units_data_simple_2var(connection, table_name)
