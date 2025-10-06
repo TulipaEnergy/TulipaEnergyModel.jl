@@ -306,6 +306,15 @@ function create_model(
         constraints,
     )
 
+    @timeit to "add_2var_sd_ramping_constraints!" add_2var_sd_ramping_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles,
+    )
+
     if model_file_name != ""
         @timeit to "save model file" JuMP.write_to_file(model, model_file_name)
     end

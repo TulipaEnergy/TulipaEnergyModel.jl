@@ -1186,7 +1186,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method in ('3var-su-sd-ramp')
+    and asset.unit_commitment_method in ('3var-su-sd-ramp', '2var-su-sd-ramp')
 order by
     t_high.asset,
     t_high.year,
@@ -1205,10 +1205,35 @@ create sequence id start 1
 ;
 
 create table cons_sd_ramp_vars_flow_diff as
+with sub as
+(select distinct
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start,
+    t_high.time_block_end,
+from
+    asset_time_resolution_rep_period as atr
+    join t_highest_assets_and_out_flows as t_high
+        on atr.asset = t_high.asset
+        and atr.rep_period = t_high.rep_period
+        and atr.year = t_high.year
+    join asset
+        on asset.asset = t_high.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.ramping
+    and asset.unit_commitment
+    and asset.unit_commitment_method in ('3var-su-sd-ramp')
+order by
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start)
 select
     nextval('id') as id,
-    cons_su_ramp_vars_flow_diff.*
-from cons_su_ramp_vars_flow_diff
+    sub.*
+from sub
 ;
 
 drop sequence id
@@ -1448,6 +1473,44 @@ select
     nextval('id') as id,
     sorted.*
 from sorted
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+create table cons_sd_ramp_vars_flow_diff_2var as
+with sub as
+(select distinct
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start,
+    t_high.time_block_end,
+from
+    asset_time_resolution_rep_period as atr
+    join t_highest_assets_and_out_flows as t_high
+        on atr.asset = t_high.asset
+        and atr.rep_period = t_high.rep_period
+        and atr.year = t_high.year
+    join asset
+        on asset.asset = t_high.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.ramping
+    and asset.unit_commitment
+    and asset.unit_commitment_method in ('2var-su-sd-ramp')
+order by
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start)
+select
+    nextval('id') as id,
+    sub.*
+from sub
 ;
 
 drop sequence id

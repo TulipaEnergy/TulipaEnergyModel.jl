@@ -1,9 +1,9 @@
 asset,type,group,capacity,min_operating_point,investment_method,investment_integer,technical_lifetime,economic_lifetime,discount_rate,consumer_balance_sense,capacity_storage_energy,is_seasonal,use_binary_storage_method,unit_commitment,unit_commitment_method,unit_commitment_integer,ramping,storage_method_energy,energy_to_power_ratio,investment_integer_storage_energy,max_ramp_up,max_ramp_down,start_up_cost,shut_down_cost,minimum_up_time,minimum_down_time,max_su_ramp,max_sd_ramp
-ccgt,conversion,,200.0,0.25,simple,true,15,1,0.05,==,0.0,false,,true,min_up_down_2var,true,true,false,0.0,false,0.3,0.4,10,20,1,4,0.1,0.2
+ccgt,conversion,,200.0,0.25,simple,true,15,1,0.05,==,0.0,false,,true,2var-su-sd-ramp,true,true,false,0.0,false,0.3,0.4,10,20,1,1,0.1,0.2
 demand,consumer,,0.0,,none,false,15,1,0.05,==,0.0,false,,false,,false,false,false,0.0,false,,,,,,,,
 ens,producer,,1150.0,,none,false,15,1,0.05,==,0.0,false,,false,,false,false,false,0.0,false,,,,,,,,
 gas,producer,,1800.0,,none,false,15,1,0.05,==,0.0,false,,false,,false,true,false,0.0,false,0.83,0.83,,,,,,
-ocgt,conversion,,100.0,0.1,simple,true,15,1,0.05,==,0.0,false,,true,min_up_down_2var,true,false,false,0.0,false,,,30,40,3,4,0.11,0.21
-smr,producer,,200.0,0.75,none,true,15,1,0.05,==,0.0,false,,true,min_up_down_2var,true,true,false,0.0,false,0.1,0.1,50,60,5,6,0.12,0.22
+ocgt,conversion,,100.0,0.1,simple,true,15,1,0.05,==,0.0,false,,true,2var-su-sd-ramp,true,true,false,0.0,false,0.83,0.83,30,40,1,1,0.11,0.21
+smr,producer,,200.0,0.75,none,true,15,1,0.05,==,0.0,false,,true,2var-su-sd-ramp,true,true,false,0.0,false,0.1,0.1,50,60,1,1,0.12,0.22
 solar,producer,,50.0,,simple,true,15,1,0.05,==,0.0,false,,false,,false,false,false,0.0,false,,,,,,,,
 wind,producer,,100.0,,simple,true,15,1,0.05,==,0.0,false,,false,,false,false,false,0.0,false,,,,,,,,
