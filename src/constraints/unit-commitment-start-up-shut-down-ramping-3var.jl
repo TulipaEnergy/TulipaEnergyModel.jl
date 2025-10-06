@@ -139,11 +139,20 @@ function add_su_sd_ramping_with_vars_constraints!(
                 )
                     @constraint(model, 0 == 0)
                 else
-                    average_up, average_up_prime = _calculate_average_ramping_parameters(
+                    p_max = profile_times_capacity[table_name][row.id-1]
+
+                    average_up = _calculate_average_su_sd_ramping_parameters(
                         row.max_su_ramp,
                         row.max_ramp_up,
-                        profile_times_capacity[table_name][row.id],
-                        duration[row.id],
+                        profile_times_capacity[table_name][row.id-1],
+                        duration[row.id-1],
+                    )
+
+                    average_down = _calculate_average_su_sd_ramping_parameters(
+                        row.max_sd_ramp,
+                        row.max_ramp_down,
+                        profile_times_capacity[table_name][row.id-1],
+                        duration[row.id-1],
                     )
 
                     @constraint(
@@ -177,11 +186,20 @@ function add_su_sd_ramping_with_vars_constraints!(
                 )
                     @constraint(model, 0 == 0)
                 else
-                    average_down, average_down_prime = _calculate_average_ramping_parameters(
+                    p_max = profile_times_capacity[table_name][row.id-1]
+
+                    average_up = _calculate_average_su_sd_ramping_parameters(
+                        row.max_su_ramp,
+                        row.max_ramp_up,
+                        profile_times_capacity[table_name][row.id-1],
+                        duration[row.id-1],
+                    )
+
+                    average_down = _calculate_average_su_sd_ramping_parameters(
                         row.max_sd_ramp,
                         row.max_ramp_down,
-                        profile_times_capacity[table_name][row.id],
-                        duration[row.id],
+                        profile_times_capacity[table_name][row.id-1],
+                        duration[row.id-1],
                     )
 
                     @constraint(
