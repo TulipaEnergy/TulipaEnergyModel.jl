@@ -58,6 +58,7 @@ function compute_constraints_indices(connection)
             :minimum_down_time_2var_simple_investment,
             :minimum_down_time_2var_compact_investment,
             :sd_ramp_vars_flow_diff_2var,
+            :su_sd_ramp_vars_flow_with_high_uptime_2var,
         )
     )
 

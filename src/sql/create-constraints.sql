@@ -1515,3 +1515,44 @@ from sub
 
 drop sequence id
 ;
+
+create sequence id start 1
+;
+
+create table cons_su_sd_ramp_vars_flow_with_high_uptime_2var as
+with sub as
+(select distinct
+    t_high.*,
+    var_units_on.time_block_start as units_on_start,
+    var_units_on.time_block_end as units_on_end
+from
+    asset_time_resolution_rep_period as atr
+    join t_highest_assets_and_out_flows as t_high
+        on atr.asset = t_high.asset
+        and atr.rep_period = t_high.rep_period
+        and atr.year = t_high.year
+    join asset
+        on asset.asset = t_high.asset
+    left join var_units_on on t_high.asset = var_units_on.asset
+        and t_high.year = var_units_on.year
+        and t_high.rep_period = var_units_on.rep_period
+        and t_high.time_block_start >= var_units_on.time_block_start
+        and t_high.time_block_end <= var_units_on.time_block_end
+where
+    asset.type in ('producer', 'conversion')
+    and asset.ramping
+    and asset.unit_commitment
+    and asset.unit_commitment_method in ('2var-su-sd-ramp')
+order by
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start)
+select
+    nextval('id') as id,
+    sub.*
+from sub
+;
+
+drop sequence id
+;

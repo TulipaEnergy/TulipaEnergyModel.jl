@@ -579,6 +579,7 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         :su_ramping_tight_1bin,
         :sd_ramping_tight_1bin,
         :sd_ramp_vars_flow_diff_2var,
+        :su_sd_ramp_vars_flow_with_high_uptime_2var,
     )
         @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
             connection,
@@ -635,6 +636,7 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         :sd_ramp_vars_flow_upper_bound,
         :su_sd_ramp_vars_flow_with_high_uptime,
         :sd_ramp_vars_flow_diff_2var,
+        :su_sd_ramp_vars_flow_with_high_uptime_2var,
     )
         @timeit to "attach units_on expression to $table_name" attach_expression_on_constraints_grouping_variables!(
             connection,
@@ -654,14 +656,16 @@ function add_expressions_to_constraints!(connection, variables, constraints)
             agg_strategy = :unique_sum,
         )
 
-        @timeit to "attach shut_down expression to $table_name" attach_expression_on_constraints_grouping_variables!(
-            connection,
-            constraints[table_name],
-            variables[:shut_down],
-            :shut_down,
-            workspace,
-            agg_strategy = :unique_sum,
-        )
+        if (!occursin("2var", string(table_name)))
+            @timeit to "attach shut_down expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+                connection,
+                constraints[table_name],
+                variables[:shut_down],
+                :shut_down,
+                workspace,
+                agg_strategy = :unique_sum,
+            )
+        end
     end
 
     return
