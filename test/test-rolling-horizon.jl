@@ -37,11 +37,11 @@ end
 
     # Not hardcoding these as they might change when the input changes
     move_forward = 24
-    maximum_window_length = move_forward * 2
+    opt_window_length = move_forward * 2
     horizon_length = TEM.get_single_element_from_query_and_ensure_its_only_one(
         DuckDB.query(connection, "SELECT max(timestep) FROM profiles_rep_periods"),
     )
-    energy_problem = run_rolling_horizon(connection, move_forward, maximum_window_length)
+    energy_problem = run_rolling_horizon(connection, move_forward, opt_window_length)
 
     # Table rolling_horizon_window
     @test "rolling_horizon_window" in
@@ -50,7 +50,7 @@ end
     number_of_windows = ceil(Int, horizon_length / move_forward)
     df_rolling_horizon_window = DataFrame(DuckDB.query(connection, "FROM rolling_horizon_window"))
     @test maximum(df_rolling_horizon_window.id) == number_of_windows
-    @test sum(df_rolling_horizon_window.maximum_move_forward) == horizon_length
+    @test sum(df_rolling_horizon_window.move_forward) == horizon_length
     # TODO: If would be great to test something about the solution
 end
 
@@ -63,7 +63,7 @@ end
 #     horizon_length = TEM.get_single_element_from_query_and_ensure_its_only_one(
 #         DuckDB.query(connection, "SELECT max(timestep) FROM profiles_rep_periods"),
 #     )
-#     maximum_window_length = horizon_length
+#     opt_window_length = horizon_length
 #     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
 #     expected_objective = energy_problem.objective_value
 #     variable_tables = [
@@ -92,7 +92,7 @@ end
 #     col_id = 1
 #     for move_forward in [div(horizon_length, k) for k in 3:-1:2]
 #         energy_problem =
-#             run_rolling_horizon(connection, move_forward, maximum_window_length; show_log = false)
+#             run_rolling_horizon(connection, move_forward, opt_window_length; show_log = false)
 #         df_rolling_horizon_window =
 #             DataFrame(DuckDB.query(connection, "FROM rolling_horizon_window"))
 #         @test df_rolling_horizon_window.objective_value[1] == expected_objective # The first solution should be the full problem
@@ -139,8 +139,8 @@ end
         DuckDB.query(connection, "SELECT max(timestep) FROM profiles_rep_periods"),
     )
     move_forward = 24
-    maximum_window_length = horizon_length
-    energy_problem = run_rolling_horizon(connection, move_forward, maximum_window_length)
+    opt_window_length = horizon_length
+    energy_problem = run_rolling_horizon(connection, move_forward, opt_window_length)
     number_of_windows = ceil(Int, horizon_length / move_forward)
 
     @test "rolling_solution_var_flow" in

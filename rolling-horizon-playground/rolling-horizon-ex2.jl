@@ -36,11 +36,6 @@ try
     # TODO: This should go to validation
     _validate_one_rep_period(connection)
 
-    DuckDB.execute( # Make it infeasible
-        connection,
-        "UPDATE asset_milestone SET peak_demand = 1500
-        ",
-    )
     move_forward = 24
     maximum_window_length = 48
     global energy_problem = run_rolling_horizon(
@@ -110,29 +105,50 @@ big_table = df_sql("""
     ), cte_full_asset_data AS (
         SELECT
             cte_unified.*,
+            IF(
+                cte_unified.timestep < roldata.window_start,
+                cte_unified.timestep + 168,
+                cte_unified.timestep
+            ) AS adjusted_timestep,
             asset.type,
         FROM cte_unified
         LEFT JOIN asset
             ON cte_unified.asset = asset.asset
+        LEFT JOIN rolling_horizon_window AS roldata
+            ON roldata.id = cte_unified.window_id
     )
     FROM cte_full_asset_data
     """)
 
 num_windows = TulipaEnergyModel.get_num_rows(connection, "rolling_horizon_window")
 horizon_length = maximum(big_table.timestep)
+@info big_table[1:20, :]
 
 big_table_grouped_per_window = groupby(big_table, :window_id)
+rolling_horizon_window_df = df_sql("FROM rolling_horizon_window")
 plt_vec = Plots.Plot[]
 for ((window_id,), window_table) in pairs(big_table_grouped_per_window)
-    local timestep = range(extrema(window_table.timestep)...)
+    @info window_table[(end-5):end, :]
+    window_row = subset(rolling_horizon_window_df, :id => id -> id .== window_id)
+    move_forward = only(window_row.move_forward)
+    opt_window_length = only(window_row.opt_window_length)
+    window_start = only(window_row.window_start)
 
-    thermal = sort(window_table[window_table.asset .== "thermal", :], :timestep).outgoing
-    solar = sort(window_table[window_table.asset .== "solar", :], :timestep).outgoing
-    discharge = sort(window_table[window_table.asset .== "battery", :], :timestep).outgoing
-    charge = sort(window_table[window_table.asset .== "battery", :], :timestep).incoming
+    local timestep = range(extrema(window_table.adjusted_timestep)...)
+    @info timestep
+
+    thermal = sort(window_table[window_table.asset .== "thermal", :], :adjusted_timestep).outgoing
+    solar = sort(window_table[window_table.asset .== "solar", :], :adjusted_timestep).outgoing
+    discharge = sort(window_table[window_table.asset .== "battery", :], :adjusted_timestep).outgoing
+    charge = sort(window_table[window_table.asset .== "battery", :], :adjusted_timestep).incoming
 
     y = hcat(thermal, solar, discharge)
-    local plt = plot(; ylabel = "MW", xlims = (1, horizon_length), xticks = 1:12:horizon_length)
+    local plt = plot(;
+        ylabel = "MW",
+        xlims = (1, horizon_length + opt_window_length - move_forward),
+        ylims = (-20, 100),
+        xticks = 1:12:(horizon_length+1),
+    )
     label = window_id == 1 ? ["thermal" "solar" "discharge"] : false
     areaplot!(timestep, y; lab = label)
     label = window_id == 1 ? "charge" : false

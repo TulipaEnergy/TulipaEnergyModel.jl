@@ -45,22 +45,11 @@ end
 
 function update_rolling_horizon_profiles!(profiles, window_start, window_end)
     for (_, profile_object) in profiles.rep_period
-        window_length = window_end - window_start + 1
-        if length(profile_object.rolling_horizon_variables) == window_length
-            JuMP.set_parameter_value.(
-                profile_object.rolling_horizon_variables,
-                profile_object.values[window_start:window_end],
-            )
-        else
-            JuMP.set_parameter_value.(
-                profile_object.rolling_horizon_variables[1:window_length],
-                profile_object.values[window_start:window_end],
-            )
-            JuMP.set_parameter_value.(
-                profile_object.rolling_horizon_variables[(window_length+1):end],
-                0.0,
-            )
-        end
+        profile_length = length(profile_object.values)
+        JuMP.set_parameter_value.(
+            profile_object.rolling_horizon_variables,
+            profile_object.values[mod1.(window_start:window_end, profile_length)],
+        )
     end
 
     return
@@ -113,8 +102,8 @@ Specify a `log_file` name to export the log to a file.
 """
 function run_rolling_horizon(
     connection,
-    maximum_move_forward,
-    maximum_window_length;
+    move_forward,
+    opt_window_length;
     output_folder = "",
     optimizer = HiGHS.Optimizer,
     optimizer_parameters = default_parameters(optimizer),
@@ -127,7 +116,7 @@ function run_rolling_horizon(
 )
     # Validation that the input data must satisfy to run rolling horizon
     # TODO: Should this be in data_validation?
-    @assert maximum_window_length >= maximum_move_forward
+    @assert opt_window_length >= move_forward
     for row in DuckDB.query(
         connection,
         "SELECT year, max(rep_period) as num_rep_periods
@@ -139,8 +128,6 @@ function run_rolling_horizon(
     horizon_length = get_single_element_from_query_and_ensure_its_only_one(
         DuckDB.query(connection, "SELECT max(timestep) FROM profiles_rep_periods"),
     )
-    @assert maximum_move_forward < horizon_length
-    @assert maximum_window_length <= horizon_length
 
     # Rolling horizon info table
     DuckDB.query(
@@ -149,7 +136,7 @@ function run_rolling_horizon(
         CREATE OR REPLACE TABLE rolling_horizon_window (
             id INTEGER,
             window_start INTEGER,
-            maximum_move_forward INTEGER,
+            move_forward INTEGER,
             opt_window_length INTEGER,
             objective_value FLOAT8,
         );
@@ -157,14 +144,12 @@ function run_rolling_horizon(
     )
 
     # Create no-rolling problem
-    # TODO: How much to we need to build? Indices are enough?
     full_energy_problem = @timeit to "create Rolling Horizon EnergyProblem" EnergyProblem(
         connection;
         model_parameters_file,
     )
 
     # These are all the non-empty variable tables
-    # TODO: We possibly don't need all of them
     variable_tables = [
         row.table_name::String for row in DuckDB.query(
             connection,
@@ -198,7 +183,9 @@ function run_rolling_horizon(
     for table_name in [backup_tables; variable_tables]
         DuckDB.query(
             connection,
-            "CREATE OR REPLACE TABLE full_$table_name AS SELECT *, NULL AS solution FROM $table_name",
+            "CREATE OR REPLACE TABLE full_$table_name AS
+            SELECT *, NULL AS solution
+            FROM $table_name",
         )
     end
 
@@ -209,8 +196,8 @@ function run_rolling_horizon(
 
     # Modify tables that keep horizon information to limit the horizon to the rolling window
     # TODO: Instead of modifying existing tables (and risking losing information), allow different table names internally (this is a larger issue)
-    DuckDB.query(connection, "UPDATE rep_periods_data SET num_timesteps = $maximum_window_length")
-    DuckDB.query(connection, "UPDATE year_data SET length = $maximum_window_length")
+    DuckDB.query(connection, "UPDATE rep_periods_data SET num_timesteps = $opt_window_length")
+    DuckDB.query(connection, "UPDATE year_data SET length = $opt_window_length")
 
     # Rolling horizon problem
     energy_problem = @timeit to "create EnergyProblem from connection" EnergyProblem(
@@ -229,27 +216,12 @@ function run_rolling_horizon(
         enable_names,
         direct_model,
         rolling_horizon = true,
-        rolling_horizon_window_length = maximum_window_length,
+        rolling_horizon_window_length = opt_window_length,
     )
 
     # Loop over the windows, solve, save, update, repeat
     solved = true
-    for (rolling_horizon_id, window_start) in enumerate(1:maximum_move_forward:horizon_length)
-        # Windows might be shorter than expected due to horizon end
-        move_forward =
-            min(window_start + maximum_move_forward - 1, horizon_length) - window_start + 1
-        window_end = min(window_start + maximum_window_length - 1, horizon_length)
-        opt_window_length = window_end - window_start + 1
-
-        # If this window is too large, we decrease the rep_periods_data
-        if opt_window_length < maximum_window_length
-            DuckDB.query(
-                connection,
-                "UPDATE rep_periods_data SET num_timesteps = $opt_window_length",
-            )
-            DuckDB.query(connection, "UPDATE year_data SET length = $opt_window_length")
-        end
-
+    for (rolling_horizon_id, window_start) in enumerate(1:move_forward:horizon_length)
         # Update Parameters in the model (even for the first time)
         @timeit to "update rolling horizon profiles" update_rolling_horizon_profiles!(
             energy_problem.profiles,
@@ -315,7 +287,7 @@ function run_rolling_horizon(
                 UPDATE full_$table_name
                 SET solution = $table_name.solution
                 FROM $table_name WHERE $where_condition
-                    AND full_$table_name.time_block_start = $(window_start - 1) + $table_name.time_block_start
+                    AND full_$table_name.time_block_start = ($(window_start - 1) + $table_name.time_block_start - 1) % $horizon_length + 1
                     AND $table_name.time_block_end <= $move_forward -- only save the move_forward window
                 """,
             )
@@ -333,9 +305,7 @@ function run_rolling_horizon(
                     FROM $table_name
                     LEFT JOIN full_$table_name
                         ON $where_condition -- this condition should match
-                        AND full_$table_name.time_block_start = $(window_start - 1) + $table_name.time_block_start
-                    WHERE
-                        $table_name.time_block_end <= $opt_window_length -- limiting the time_block_end by the actual opt_window_length to ignore unused variables in the last window
+                        AND full_$table_name.time_block_start = ($(window_start - 1) + $table_name.time_block_start - 1) % $horizon_length + 1
                 )
                 INSERT INTO rolling_solution_$table_name
                 SELECT *
