@@ -378,17 +378,16 @@ function run_rolling_horizon(
     end
 
     # Export solution
-    # TODO: Figure out what needs to change to export the solution
-    # if output_folder != ""
-    #     if energy_problem.solved
-    #         @timeit to "export_solution_to_csv_files" export_solution_to_csv_files(
-    #             output_folder,
-    #             energy_problem,
-    #         )
-    #     else
-    #         @warn "The energy problem has not been solved yet. Skipping export solution."
-    #     end
-    # end
+    if output_folder != ""
+        if energy_problem.solved
+            @timeit to "export_solution_to_csv_files" export_solution_to_csv_files(
+                output_folder,
+                energy_problem,
+            )
+        else
+            @warn "The energy problem has not been solved yet. Skipping export solution."
+        end
+    end
 
     if show_log
         show(to)

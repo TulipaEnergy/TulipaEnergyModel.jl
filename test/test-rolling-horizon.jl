@@ -253,3 +253,24 @@ end
     @test isnan(energy_problem.objective_value)
     @test !isnan(energy_problem.rolling_horizon_energy_problem.objective_value)
 end
+
+@testitem "Test exporting output of rolling horizon to CSV works" setup = [CommonSetup] tags =
+    [:integration, :io, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
+    TulipaEnergyModel.run_rolling_horizon(
+        connection,
+        24,
+        48;
+        output_folder = joinpath(OUTPUT_FOLDER),
+        show_log = false,
+    )
+    for filename in (
+        "var_flow.csv",
+        "var_flows_investment.csv",
+        "cons_balance_consumer.csv",
+        "cons_capacity_incoming_simple_method.csv",
+    )
+        @test isfile(joinpath(OUTPUT_FOLDER, filename))
+    end
+end
