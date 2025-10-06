@@ -175,4 +175,48 @@ end
 end
 
 # Test validation of time resolution (uniform and resolutions are divisors of move_forward)
+@testitem "Test that opt_window_length must be divisible by all time resolutions and that they are uniform" setup =
+    [CommonSetup] tags = [:rolling_horizon, :unit] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
+
+    # First, it should allow more complex resolutions
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TABLE assets_rep_periods_partitions (
+            asset TEXT,
+            specification TEXT,
+            partition TEXT,
+            year INT,
+            rep_period INT
+        );
+        INSERT INTO assets_rep_periods_partitions (asset, specification, partition, year, rep_period)
+            VALUES
+                ('solar',   'uniform', '2', 2030, 1),
+                ('thermal', 'uniform', '3', 2030, 1),
+                ('battery', 'uniform', '4', 2030, 1),
+                ('demand',  'uniform', '6', 2030, 1),
+        ",
+    )
+    energy_problem = TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
+
+    # It should fail when opt_window_length is not a multiple of any of these
+    DuckDB.query(
+        connection,
+        "UPDATE assets_rep_periods_partitions SET partition='5' WHERE asset='battery'
+        ",
+    )
+    @test_throws AssertionError TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
+
+    # Working again with a different opt_window_length
+    TEM.run_rolling_horizon(connection, 24, 24 * 5; show_log = false)
+
+    # It should fail when partition is not uniform
+    DuckDB.query(
+        connection,
+        "UPDATE assets_rep_periods_partitions SET partition='4', specification='math' WHERE asset='battery'
+        ",
+    )
+    @test_throws AssertionError TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
+end
 # Test optionality of the full rolling_solution_var_* tables

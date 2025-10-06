@@ -125,6 +125,20 @@ function run_rolling_horizon(
     )
         @assert row.num_rep_periods == 1
     end
+    partition_tables = [
+        row.table_name for row in
+        DuckDB.query(connection, "FROM duckdb_tables() WHERE table_name LIKE '%_partitions'")
+    ]
+
+    for table_name in partition_tables
+        for row in DuckDB.query(connection, "FROM $table_name")
+            @assert row.specification == "uniform" "Only 'uniform' specification is accepted"
+            partition = tryparse(Int, row.partition)
+            @assert !isnothing(partition) "Invalid partition"
+            @assert opt_window_length % partition == 0
+        end
+    end
+
     horizon_length = get_single_element_from_query_and_ensure_its_only_one(
         DuckDB.query(connection, "SELECT max(timestep) FROM profiles_rep_periods"),
     )
