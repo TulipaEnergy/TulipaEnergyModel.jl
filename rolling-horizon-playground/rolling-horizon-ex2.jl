@@ -44,6 +44,7 @@ try
         maximum_window_length;
         show_log = false,
         model_file_name = "jump-test.lp",
+        save_rolling_solution = true,
     )
 
     @info "Full run" energy_problem

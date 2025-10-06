@@ -113,6 +113,7 @@ function run_rolling_horizon(
     direct_model = false,
     log_file = "",
     show_log = true,
+    save_rolling_solution = false,
 )
     # Validation that the input data must satisfy to run rolling horizon
     # TODO: Should this be in data_validation?
@@ -177,18 +178,19 @@ function run_rolling_horizon(
         # Add a column solution to no-rolling variable tables
         DuckDB.execute(connection, "ALTER TABLE $table ADD COLUMN IF NOT EXISTS solution FLOAT8")
 
-        # TODO: Make this optional
-        # Save solutions with a table linking the window to the id of the (no-rolling) variable
-        DuckDB.execute(
-            connection,
-            """
-            CREATE OR REPLACE TABLE rolling_solution_$table (
-                window_id INTEGER,
-                var_id INTEGER,
-                solution FLOAT8,
-            );
-            """,
-        )
+        if save_rolling_solution
+            # Save solutions with a table linking the window to the id of the (no-rolling) variable
+            DuckDB.execute(
+                connection,
+                """
+                CREATE OR REPLACE TABLE rolling_solution_$table (
+                    window_id INTEGER,
+                    var_id INTEGER,
+                    solution FLOAT8,
+                );
+                """,
+            )
+        end
     end
 
     # Create backup tables for rep_periods_data, year_data, and asset_milestone
@@ -306,26 +308,28 @@ function run_rolling_horizon(
                 """,
             )
 
-            # Store the solution in the corresponding rolling_solution_$table_name
-            # This also uses the `where_condition`, but to join the no-rolling and rolling variable tables
-            DuckDB.query(
-                connection,
-                """
-                WITH cte_var_solution AS (
-                    SELECT
-                        $rolling_horizon_id as window_id,
-                        full_$table_name.id as var_id, -- the ids are from the main model
-                        $table_name.solution
-                    FROM $table_name
-                    LEFT JOIN full_$table_name
-                        ON $where_condition -- this condition should match
-                        AND full_$table_name.time_block_start = ($(window_start - 1) + $table_name.time_block_start - 1) % $horizon_length + 1
+            if save_rolling_solution
+                # Store the solution in the corresponding rolling_solution_$table_name
+                # This also uses the `where_condition`, but to join the no-rolling and rolling variable tables
+                DuckDB.query(
+                    connection,
+                    """
+                    WITH cte_var_solution AS (
+                        SELECT
+                            $rolling_horizon_id as window_id,
+                            full_$table_name.id as var_id, -- the ids are from the main model
+                            $table_name.solution
+                        FROM $table_name
+                        LEFT JOIN full_$table_name
+                            ON $where_condition -- this condition should match
+                            AND full_$table_name.time_block_start = ($(window_start - 1) + $table_name.time_block_start - 1) % $horizon_length + 1
+                    )
+                    INSERT INTO rolling_solution_$table_name
+                    SELECT *
+                    FROM cte_var_solution
+                    """,
                 )
-                INSERT INTO rolling_solution_$table_name
-                SELECT *
-                FROM cte_var_solution
-                """,
-            )
+            end
         end
 
         energy_problem.solved = false

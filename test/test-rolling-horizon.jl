@@ -140,7 +140,12 @@ end
     )
     move_forward = 24
     opt_window_length = horizon_length
-    energy_problem = run_rolling_horizon(connection, move_forward, opt_window_length)
+    energy_problem = run_rolling_horizon(
+        connection,
+        move_forward,
+        opt_window_length;
+        save_rolling_solution = true,
+    )
     number_of_windows = ceil(Int, horizon_length / move_forward)
 
     @test "rolling_solution_var_flow" in
@@ -219,4 +224,16 @@ end
     )
     @test_throws AssertionError TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
 end
+
 # Test optionality of the full rolling_solution_var_* tables
+@testitem "Test option ... " setup = [CommonSetup] tags = [:rolling_horizon, :unit] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
+
+    TEM.run_rolling_horizon(connection, 24, 48; show_log = false, save_rolling_solution = false)
+    tables = [row.table_name for row in DuckDB.query(connection, "FROM duckdb_tables")]
+    @test !("rolling_solution_var_flow" in tables)
+    TEM.run_rolling_horizon(connection, 24, 48; show_log = false, save_rolling_solution = true)
+    tables = [row.table_name for row in DuckDB.query(connection, "FROM duckdb_tables")]
+    @test "rolling_solution_var_flow" in tables
+end
