@@ -36,6 +36,11 @@ try
     # TODO: This should go to validation
     _validate_one_rep_period(connection)
 
+    DuckDB.execute( # Make it infeasible
+        connection,
+        "UPDATE asset_milestone SET peak_demand = 1500
+        ",
+    )
     move_forward = 24
     maximum_window_length = 48
     global energy_problem = run_rolling_horizon(
@@ -77,7 +82,7 @@ big_table = df_sql("""
             var.time_block_start AS timestep,
             sum(rolsol.solution) AS solution
         FROM rolling_solution_var_flow AS rolsol
-        LEFT JOIN full_var_flow AS var
+        LEFT JOIN var_flow AS var
             ON rolsol.var_id = var.id
         GROUP BY window_id, asset, timestep
     ), cte_incoming AS (
@@ -87,7 +92,7 @@ big_table = df_sql("""
             var.time_block_start AS timestep,
             sum(rolsol.solution) AS solution
         FROM rolling_solution_var_flow AS rolsol
-        LEFT JOIN full_var_flow AS var
+        LEFT JOIN var_flow AS var
             ON rolsol.var_id = var.id
         GROUP BY window_id, asset, timestep
     ), cte_unified AS (
@@ -121,10 +126,10 @@ plt_vec = Plots.Plot[]
 for ((window_id,), window_table) in pairs(big_table_grouped_per_window)
     local timestep = range(extrema(window_table.timestep)...)
 
-    thermal = sort(window_table[window_table.asset.=="thermal", :], :timestep).outgoing
-    solar = sort(window_table[window_table.asset.=="solar", :], :timestep).outgoing
-    discharge = sort(window_table[window_table.asset.=="battery", :], :timestep).outgoing
-    charge = sort(window_table[window_table.asset.=="battery", :], :timestep).incoming
+    thermal = sort(window_table[window_table.asset .== "thermal", :], :timestep).outgoing
+    solar = sort(window_table[window_table.asset .== "solar", :], :timestep).outgoing
+    discharge = sort(window_table[window_table.asset .== "battery", :], :timestep).outgoing
+    charge = sort(window_table[window_table.asset .== "battery", :], :timestep).incoming
 
     y = hcat(thermal, solar, discharge)
     local plt = plot(; ylabel = "MW", xlims = (1, horizon_length), xticks = 1:12:horizon_length)

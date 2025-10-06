@@ -143,20 +143,22 @@ end
     @test energy_problem.objective_value ≈ 89360.638146 atol = 1e-5
 end
 
-@testitem "Rolling horizon" setup = [CommonSetup] tags = [:case_study, :integration, :slow] begin
+@testitem "Rolling horizon Case Study" setup = [CommonSetup] tags =
+    [:case_study, :integration, :slow] begin
     dir = joinpath(INPUT_FOLDER, "Rolling Horizon")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 10000.0 atol = 1e-5
-    # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 10000.0 atol = 1e-5
-    # Rolling horizon # TODO: Split this to test all objectives
-    energy_problem =
-        TulipaEnergyModel.run_rolling_horizon(connection, 24 * 7, 48 * 7; show_log = false)
-    # @test energy_problem.objective_value ≈ 10000.0 atol = 1e-5
+
+    # We only check the rolling horizon objectives since we cannot easily obtain
+    # the objective of the full problem
+    expected_objective_values =
+        [103424.0, 120894.0, 109303.0, 108443.0, 123410.0, 137768.0, 74737.1]
+
+    energy_problem = TulipaEnergyModel.run_rolling_horizon(connection, 24, 48; show_log = false)
+    for row in DuckDB.query(connection, "FROM rolling_horizon_window")
+        @test row.objective_value ≈ expected_objective_values[row.id] rtol = 1e-5
+    end
 end
 
 @testitem "Infeasible Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow] begin
