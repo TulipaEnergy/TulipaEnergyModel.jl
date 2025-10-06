@@ -51,7 +51,6 @@ end
     df_rolling_horizon_window = DataFrame(DuckDB.query(connection, "FROM rolling_horizon_window"))
     @test maximum(df_rolling_horizon_window.id) == number_of_windows
     @test sum(df_rolling_horizon_window.move_forward) == horizon_length
-    # TODO: If would be great to test something about the solution
 end
 
 # TODO: Commented out until further discussion
@@ -226,7 +225,7 @@ end
 end
 
 # Test optionality of the full rolling_solution_var_* tables
-@testitem "Test option ... " setup = [CommonSetup] tags = [:rolling_horizon, :unit] begin
+@testitem "Test option save_rolling_solution" setup = [CommonSetup] tags = [:rolling_horizon, :unit] begin
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
 
@@ -236,4 +235,21 @@ end
     TEM.run_rolling_horizon(connection, 24, 48; show_log = false, save_rolling_solution = true)
     tables = [row.table_name for row in DuckDB.query(connection, "FROM duckdb_tables")]
     @test "rolling_solution_var_flow" in tables
+end
+
+@testitem "Test internal rolling_horizon_energy_problem" setup = [CommonSetup] tags =
+    [:rolling_horizon, :unit] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
+
+    # There is no internal rolling_horizon_energy_problem when we're not running rolling_horizon
+    energy_problem = TEM.run_scenario(connection; show_log = false)
+    @test isnothing(energy_problem.rolling_horizon_energy_problem)
+    @test !isnan(energy_problem.objective_value)
+
+    # Now there will be one
+    energy_problem = TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
+    @test energy_problem.rolling_horizon_energy_problem isa EnergyProblem
+    @test isnan(energy_problem.objective_value)
+    @test !isnan(energy_problem.rolling_horizon_energy_problem.objective_value)
 end

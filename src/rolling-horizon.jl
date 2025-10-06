@@ -340,6 +340,7 @@ function run_rolling_horizon(
     # Propagate information to main model
     full_energy_problem.solved = solved
     full_energy_problem.termination_status = energy_problem.termination_status
+    full_energy_problem.rolling_horizon_energy_problem = energy_problem
 
     # Undo the changes to rep_periods_data and year_data
     # TODO: Instead of modifying existing tables (and risking losing information), allow different table names internally

@@ -288,6 +288,7 @@ mutable struct EnergyProblem
     solved::Bool
     objective_value::Float64
     termination_status::JuMP.TerminationStatusCode
+    rolling_horizon_energy_problem::Union{EnergyProblem,Nothing}
 
     """
         EnergyProblem(connection; model_parameters_file = "")
@@ -316,6 +317,7 @@ mutable struct EnergyProblem
             false,
             NaN,
             JuMP.OPTIMIZE_NOT_CALLED,
+            nothing,
         )
 
         return energy_problem
