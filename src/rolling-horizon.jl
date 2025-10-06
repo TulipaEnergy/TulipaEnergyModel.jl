@@ -74,31 +74,41 @@ end
 
 """
     energy_problem = run_rolling_horizon(
-        connection;
-        output_folder,
-        optimizer,
-        optimizer_parameters,
-        model_parameters_file,
-        model_file_name,
-        enable_names,
-        log_file,
-        show_log
+        connection,
+        move_forward,
+        opt_window_length;
+        save_rolling_solution = false,
+        kwargs...
     )
 
-TODO: Update docs
-Run the scenario in the given `connection` and return the energy problem.
+Run the scenario in the given `connection` as a rolling horizon and return the energy problem.
 
-The `optimizer` and `optimizer_parameters` keyword arguments can be used to change the optimizer
-(the default is HiGHS) and its parameters. The arguments are passed to the [`create_model`](@ref) function.
+Our implementation of rolling horizon uses a moving window with size
+`opt_window_length` that is moved ahead each iteration by `move_forward`.
+The solution of the variables in the `move_forward` window are saved between iterations.
 
-Set `model_file_name = "some-name.lp"` to export the problem that is sent to the solver to a file for viewing (.lp or .mps).
-Set `enable_names = false` to turn off variable and constraint names (faster model creation).
-Set `direct_model = true` to create a JuMP direct model (faster & less memory).
-Set `show_log = false` to silence printing the log while running.
+We implement a model with fixed size given by the `opt_window_length`.
+The `EnergyProblem` with this internal model is stored internally inside the
+returned `EnergyProblem` on field `rolling_horizon_energy_problem`.
 
-Specify a `output_folder` name to export the solution to CSV files.
-Specify a `model_parameters_file` name to load the model parameters from a TOML file.
-Specify a `log_file` name to export the log to a file.
+The termination status of the returned `EnergyProblem` is the same as the
+termination status of the last solved window.
+In other words, it is OPTIMAL if all windows were solved optimally. Otherwise,
+the last solved window will be non-optimal, and the issue will be returned.
+
+The table `rolling_horizon_window` stores the window information.
+
+If `save_rolling_solution` is `true`, the tables `rolling_solution_var_%` will
+be created for each non-empty variable. These can be used for debugging purposes.
+
+The parameters associated with the profiles are stored in
+`rolling_horizon_energy_problem.profiles`, in the respective
+`rolling_horizon_variables`.
+
+The other rolling parameters are stored in tables `param_%` and
+`rolling_horizon_energy_problem.variables` under the same name.
+
+This function also accepts other keyword arguments also accepted by [`run_scenario`](@ref).
 """
 function run_rolling_horizon(
     connection,
