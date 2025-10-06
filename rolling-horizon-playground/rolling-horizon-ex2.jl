@@ -37,7 +37,7 @@ try
     _validate_one_rep_period(connection)
 
     move_forward = 24
-    maximum_window_length = 168
+    maximum_window_length = 48
     global energy_problem = run_rolling_horizon(
         connection,
         move_forward,

@@ -1,7 +1,3 @@
-@testitem "Rolling Horizon ..." setup = [CommonSetup] tags = [:rolling_horizon, :unit] begin
-    # Test that if the EnergyProblem is created
-end
-
 @testitem "add_rolling_horizon_parameters created Parameters" setup = [CommonSetup] tags =
     [:rolling_horizon, :unit] begin
     connection = DBInterface.connect(DuckDB.DB)

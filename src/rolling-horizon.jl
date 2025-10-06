@@ -1,5 +1,16 @@
 export run_rolling_horizon
 
+"""
+    add_rolling_horizon_parameters!(connection, model, variables, profiles, window_length)
+
+Create Parameters to handle rolling horizon.
+
+The profile parameters are attached to `profiles.rep_period`.
+
+The other parameters are the ones that have initial value (currently only initial_storage_level).
+These must be filtered from the corresponding indices table when time_block_start = 1.
+The corresponding parameters is saved in the variables and in the model.
+"""
 function add_rolling_horizon_parameters!(connection, model, variables, profiles, window_length)
     # Profiles
     for (_, profile_object) in profiles.rep_period
@@ -43,6 +54,11 @@ function add_rolling_horizon_parameters!(connection, model, variables, profiles,
     return
 end
 
+"""
+    update_rolling_horizon_profiles!(profiles, window_start, window_end)
+
+Update the profile parameters to use the window window_start:window_end.
+"""
 function update_rolling_horizon_profiles!(profiles, window_start, window_end)
     for (_, profile_object) in profiles.rep_period
         profile_length = length(profile_object.values)
@@ -55,14 +71,23 @@ function update_rolling_horizon_profiles!(profiles, window_start, window_end)
     return
 end
 
-function update_initial_storage_level!(param_initial_storage_level::TulipaVariable, connection)
+"""
+    update_initial_storage_level!(param_initial_storage_level, connection, move_forward)
+
+Update the initial_storage_level parameter to use the new value at time_block_end=move_forward
+"""
+function update_initial_storage_level!(
+    param_initial_storage_level::TulipaVariable,
+    connection,
+    move_forward,
+)
     new_initial_storage_level = [
         row.solution::Float64 for row in DuckDB.query(
             connection,
             """
             SELECT var.solution
             FROM var_storage_level_rep_period AS var
-            WHERE var.time_block_start = 1
+            WHERE var.time_block_end = $move_forward
             """,
         )
     ]
@@ -183,7 +208,6 @@ function run_rolling_horizon(
     ]
 
     # Preparing the table to save the rolling solution
-    # TODO: Currently we save it twice, we should check what we want
     for table in variable_tables
         # Add a column solution to no-rolling variable tables
         DuckDB.execute(connection, "ALTER TABLE $table ADD COLUMN IF NOT EXISTS solution FLOAT8")
@@ -221,7 +245,6 @@ function run_rolling_horizon(
     end
 
     # Modify tables that keep horizon information to limit the horizon to the rolling window
-    # TODO: Instead of modifying existing tables (and risking losing information), allow different table names internally (this is a larger issue)
     DuckDB.query(connection, "UPDATE rep_periods_data SET num_timesteps = $opt_window_length")
     DuckDB.query(connection, "UPDATE year_data SET length = $opt_window_length")
 
@@ -232,8 +255,7 @@ function run_rolling_horizon(
     )
 
     # The rolling horizon Parameters are created here. The model has the size of
-    # the `maximum_window_length` even if not all variables are used. This
-    # maximum is limited by the horizon_length because of the validation.
+    # the `opt_window_length`.
     @timeit to "create_model!" create_model!(
         energy_problem;
         optimizer,
@@ -259,6 +281,7 @@ function run_rolling_horizon(
             update_initial_storage_level!(
                 energy_problem.variables[:param_initial_storage_level],
                 connection,
+                move_forward,
             )
         end
 
