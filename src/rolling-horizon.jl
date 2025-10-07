@@ -98,6 +98,178 @@ function update_initial_storage_level!(
 end
 
 """
+    update_scalar_parameters!(variables, connection, move_forward)
+
+Update scalar parameters, i.e., the ones that have an initial value that changes
+between windows.
+"""
+function update_scalar_parameters!(variables, connection, move_forward)
+    return update_initial_storage_level!(
+        variables[:param_initial_storage_level],
+        connection,
+        move_forward,
+    )
+end
+
+"""
+    validate_rolling_horizon_input(connection, move_forward, opt_window)
+
+Validation of the rolling horizon input:
+- opt_window_length ≥ move_forward
+- Only one representative period per year
+- Only 'uniform' partitions are allowed
+- Only partitions that exactly divide opt_window_length are allowed
+"""
+function validate_rolling_horizon_input(connection, move_forward, opt_window_length)
+    @assert opt_window_length >= move_forward
+    for row in DuckDB.query(
+        connection,
+        "SELECT year, max(rep_period) as num_rep_periods
+        FROM rep_periods_data
+        GROUP BY year",
+    )
+        @assert row.num_rep_periods == 1
+    end
+    partition_tables = [
+        row.table_name for row in
+        DuckDB.query(connection, "FROM duckdb_tables() WHERE table_name LIKE '%_partitions'")
+    ]
+
+    for table_name in partition_tables
+        for row in DuckDB.query(connection, "FROM $table_name")
+            @assert row.specification == "uniform" "Only 'uniform' specification is accepted"
+            partition = tryparse(Int, row.partition)
+            @assert !isnothing(partition) "Invalid partition"
+            @assert opt_window_length % partition == 0
+        end
+    end
+
+    return
+end
+
+function prepare_rolling_horizon_tables!(
+    connection,
+    variable_tables,
+    save_rolling_solution,
+    opt_window_length,
+)
+    # Preparing the table to save the rolling solution
+    for table in variable_tables
+        # Add a column solution to no-rolling variable tables
+        DuckDB.execute(connection, "ALTER TABLE $table ADD COLUMN IF NOT EXISTS solution FLOAT8")
+
+        if save_rolling_solution
+            # Save solutions with a table linking the window to the id of the (no-rolling) variable
+            DuckDB.execute(
+                connection,
+                """
+                CREATE OR REPLACE TABLE rolling_solution_$table (
+                    window_id INTEGER,
+                    var_id INTEGER,
+                    solution FLOAT8,
+                );
+                """,
+            )
+        end
+    end
+
+    # Create backup tables for rep_periods_data, year_data, and asset_milestone
+    # and full tables for the variables
+    backup_tables = ["rep_periods_data", "year_data", "asset_milestone"]
+    for table_name in [backup_tables; variable_tables]
+        DuckDB.query(
+            connection,
+            "CREATE OR REPLACE TABLE full_$table_name AS
+            SELECT *, NULL AS solution
+            FROM $table_name",
+        )
+    end
+
+    # Drop all temporary tables to avoid conflict (shouldn't happen anyway)
+    for row in DuckDB.query(connection, "FROM duckdb_tables() WHERE temporary")
+        DuckDB.query(connection, "DROP TABLE $(row.table_name)")
+    end
+
+    # Modify tables that keep horizon information to limit the horizon to the rolling window
+    DuckDB.query(connection, "UPDATE rep_periods_data SET num_timesteps = $opt_window_length")
+    DuckDB.query(connection, "UPDATE year_data SET length = $opt_window_length")
+
+    return
+end
+
+function save_solution_into_tables!(
+    energy_problem,
+    variable_tables,
+    window_id,
+    move_forward,
+    window_start,
+    horizon_length,
+    save_rolling_solution,
+)
+    @timeit to "Save internal rolling horizon solution to connection" save_solution!(
+        energy_problem,
+        compute_duals = false,
+    )
+    # Save rolling solution of each variable
+    for table_name in variable_tables
+        # Guessing which columns should be used as key for matching with the larger no-rolling variables
+        # TODO: Use the schema for this matching?
+        key_columns = [
+            row.column_name for row in DuckDB.query(
+                energy_problem.db_connection,
+                """
+                FROM duckdb_columns
+                WHERE table_name = '$table_name'
+                    AND column_name IN ('asset', 'from_asset', 'to_asset',
+                        'milestone_year', 'commission_year', 'year', 'rep_period')
+                """,
+            )
+        ]
+
+        # Construct the WHERE condition matching the keys
+        where_condition =
+            join(["full_$table_name.$key = $table_name.$key" for key in key_columns], " AND ")
+
+        # Save solution to full table
+        DuckDB.query(
+            energy_problem.db_connection,
+            """
+            UPDATE full_$table_name
+            SET solution = $table_name.solution
+            FROM $table_name WHERE $where_condition
+                AND full_$table_name.time_block_start = ($(window_start - 1) + $table_name.time_block_start - 1) % $horizon_length + 1
+                AND $table_name.time_block_end <= $move_forward -- only save the move_forward window
+            """,
+        )
+
+        if save_rolling_solution
+            # Store the solution in the corresponding rolling_solution_$table_name
+            # This also uses the `where_condition`, but to join the no-rolling and rolling variable tables
+            DuckDB.query(
+                energy_problem.db_connection,
+                """
+                WITH cte_var_solution AS (
+                    SELECT
+                        $window_id as window_id,
+                        full_$table_name.id as var_id, -- the ids are from the main model
+                        $table_name.solution
+                    FROM $table_name
+                    LEFT JOIN full_$table_name
+                        ON $where_condition -- this condition should match
+                        AND full_$table_name.time_block_start = ($(window_start - 1) + $table_name.time_block_start - 1) % $horizon_length + 1
+                )
+                INSERT INTO rolling_solution_$table_name
+                SELECT *
+                FROM cte_var_solution
+                """,
+            )
+        end
+    end
+
+    return
+end
+
+"""
     energy_problem = run_rolling_horizon(
         connection,
         move_forward,
@@ -151,29 +323,11 @@ function run_rolling_horizon(
     save_rolling_solution = false,
 )
     # Validation that the input data must satisfy to run rolling horizon
-    # TODO: Should this be in data_validation?
-    @assert opt_window_length >= move_forward
-    for row in DuckDB.query(
+    @timeit to "Validate rolling horizon input" validate_rolling_horizon_input(
         connection,
-        "SELECT year, max(rep_period) as num_rep_periods
-        FROM rep_periods_data
-        GROUP BY year",
+        move_forward,
+        opt_window_length,
     )
-        @assert row.num_rep_periods == 1
-    end
-    partition_tables = [
-        row.table_name for row in
-        DuckDB.query(connection, "FROM duckdb_tables() WHERE table_name LIKE '%_partitions'")
-    ]
-
-    for table_name in partition_tables
-        for row in DuckDB.query(connection, "FROM $table_name")
-            @assert row.specification == "uniform" "Only 'uniform' specification is accepted"
-            partition = tryparse(Int, row.partition)
-            @assert !isnothing(partition) "Invalid partition"
-            @assert opt_window_length % partition == 0
-        end
-    end
 
     horizon_length = get_single_element_from_query_and_ensure_its_only_one(
         DuckDB.query(connection, "SELECT max(timestep) FROM profiles_rep_periods"),
@@ -194,7 +348,7 @@ function run_rolling_horizon(
     )
 
     # Create no-rolling problem
-    full_energy_problem = @timeit to "create Rolling Horizon EnergyProblem" EnergyProblem(
+    full_energy_problem = @timeit to "Create Rolling Horizon EnergyProblem" EnergyProblem(
         connection;
         model_parameters_file,
     )
@@ -207,56 +361,21 @@ function run_rolling_horizon(
         )
     ]
 
-    # Preparing the table to save the rolling solution
-    for table in variable_tables
-        # Add a column solution to no-rolling variable tables
-        DuckDB.execute(connection, "ALTER TABLE $table ADD COLUMN IF NOT EXISTS solution FLOAT8")
+    @timeit to "Prepare table for rolling horizon" prepare_rolling_horizon_tables!(
+        connection,
+        variable_tables,
+        save_rolling_solution,
+        opt_window_length,
+    )
 
-        if save_rolling_solution
-            # Save solutions with a table linking the window to the id of the (no-rolling) variable
-            DuckDB.execute(
-                connection,
-                """
-                CREATE OR REPLACE TABLE rolling_solution_$table (
-                    window_id INTEGER,
-                    var_id INTEGER,
-                    solution FLOAT8,
-                );
-                """,
-            )
-        end
-    end
-
-    # Create backup tables for rep_periods_data, year_data, and asset_milestone
-    # and full tables for the variables
-    backup_tables = ["rep_periods_data", "year_data", "asset_milestone"]
-    for table_name in [backup_tables; variable_tables]
-        DuckDB.query(
-            connection,
-            "CREATE OR REPLACE TABLE full_$table_name AS
-            SELECT *, NULL AS solution
-            FROM $table_name",
-        )
-    end
-
-    # Drop all temporary tables to avoid conflict (shouldn't happen anyway)
-    for row in DuckDB.query(connection, "FROM duckdb_tables() WHERE temporary")
-        DuckDB.query(connection, "DROP TABLE $(row.table_name)")
-    end
-
-    # Modify tables that keep horizon information to limit the horizon to the rolling window
-    DuckDB.query(connection, "UPDATE rep_periods_data SET num_timesteps = $opt_window_length")
-    DuckDB.query(connection, "UPDATE year_data SET length = $opt_window_length")
-
-    # Rolling horizon problem
-    energy_problem = @timeit to "create EnergyProblem from connection" EnergyProblem(
+    energy_problem = @timeit to "Create internal EnergyProblem for rolling horizon" EnergyProblem(
         connection;
         model_parameters_file,
     )
 
     # The rolling horizon Parameters are created here. The model has the size of
     # the `opt_window_length`.
-    @timeit to "create_model!" create_model!(
+    @timeit to "Create internal rolling horizon model" create_model!(
         energy_problem;
         optimizer,
         optimizer_parameters,
@@ -269,36 +388,34 @@ function run_rolling_horizon(
 
     # Loop over the windows, solve, save, update, repeat
     solved = true
-    for (rolling_horizon_id, window_start) in enumerate(1:move_forward:horizon_length)
+    for (window_id, window_start) in enumerate(1:move_forward:horizon_length)
         # Update Parameters in the model (even for the first time)
         @timeit to "update rolling horizon profiles" update_rolling_horizon_profiles!(
             energy_problem.profiles,
             window_start,
             window_start + opt_window_length - 1,
         )
-        # TODO: Update other scalar parameters
-        if rolling_horizon_id > 1 # Don't try to update the first initial values
-            update_initial_storage_level!(
-                energy_problem.variables[:param_initial_storage_level],
+        if window_id > 1 # Don't try to update the first initial values
+            @timeit to "update scalar parameters" update_scalar_parameters!(
+                energy_problem.variables,
                 connection,
                 move_forward,
             )
         end
 
-        @timeit to "solve_model!" solve_model!(energy_problem)
+        @timeit to "Solve internal rolling horizon model" solve_model!(energy_problem)
 
         # Save window to table rolling_horizon_window
-        objective_value =
-            if isnothing(energy_problem.objective_value) || isnan(energy_problem.objective_value)
-                "NULL"
-            else
-                string(energy_problem.objective_value)
-            end
+        objective_value = if isnan(energy_problem.objective_value)
+            "NULL"
+        else
+            string(energy_problem.objective_value)
+        end
         DuckDB.query(
             connection,
             """
             INSERT INTO rolling_horizon_window
-            VALUES ($rolling_horizon_id, $window_start, $move_forward, $opt_window_length, $objective_value);
+            VALUES ($window_id, $window_start, $move_forward, $opt_window_length, $objective_value);
             """,
         )
 
@@ -307,63 +424,15 @@ function run_rolling_horizon(
             break
         end
 
-        @timeit to "save_solution!" save_solution!(energy_problem, compute_duals = false)
-
-        # Save rolling solution of each variable
-        for table_name in variable_tables
-            # Guessing which columns should be used as key for matching with the larger no-rolling variables
-            # TODO: Use the schema for this matching
-            key_columns = [
-                row.column_name for row in DuckDB.query(
-                    connection,
-                    """
-                    FROM duckdb_columns
-                    WHERE table_name = '$table_name'
-                        AND column_name IN ('asset', 'from_asset', 'to_asset',
-                            'milestone_year', 'commission_year', 'year', 'rep_period')
-                    """,
-                )
-            ]
-            # Construct the WHERE condition matching the keys
-            where_condition =
-                join(["full_$table_name.$key = $table_name.$key" for key in key_columns], " AND ")
-
-            # Attach solution in the optimisation window to the full table
-            # TODO: Maybe we don't want to do this, check earlier TODO comments
-            DuckDB.query(
-                connection,
-                """
-                UPDATE full_$table_name
-                SET solution = $table_name.solution
-                FROM $table_name WHERE $where_condition
-                    AND full_$table_name.time_block_start = ($(window_start - 1) + $table_name.time_block_start - 1) % $horizon_length + 1
-                    AND $table_name.time_block_end <= $move_forward -- only save the move_forward window
-                """,
-            )
-
-            if save_rolling_solution
-                # Store the solution in the corresponding rolling_solution_$table_name
-                # This also uses the `where_condition`, but to join the no-rolling and rolling variable tables
-                DuckDB.query(
-                    connection,
-                    """
-                    WITH cte_var_solution AS (
-                        SELECT
-                            $rolling_horizon_id as window_id,
-                            full_$table_name.id as var_id, -- the ids are from the main model
-                            $table_name.solution
-                        FROM $table_name
-                        LEFT JOIN full_$table_name
-                            ON $where_condition -- this condition should match
-                            AND full_$table_name.time_block_start = ($(window_start - 1) + $table_name.time_block_start - 1) % $horizon_length + 1
-                    )
-                    INSERT INTO rolling_solution_$table_name
-                    SELECT *
-                    FROM cte_var_solution
-                    """,
-                )
-            end
-        end
+        @timeit to "Save window solution" save_solution_into_tables!(
+            energy_problem,
+            variable_tables,
+            window_id,
+            move_forward,
+            window_start,
+            horizon_length,
+            save_rolling_solution,
+        )
 
         energy_problem.solved = false
     end
