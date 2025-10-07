@@ -24,11 +24,7 @@
     },
     "consumer_balance_sense": {
       "constraints": {
-        "oneOf": [
-          "==",
-          ">=",
-          "<="
-        ]
+        "oneOf": ["==", ">=", "<="]
       },
       "default": "==",
       "description": "Is the sense of the consumer balance constraint, equal to, greater than or less than.",
@@ -78,12 +74,7 @@
     },
     "investment_method": {
       "constraints": {
-        "oneOf": [
-          "none",
-          "simple",
-          "semi-compact",
-          "compact"
-        ]
+        "oneOf": ["none", "simple", "semi-compact", "compact"]
       },
       "default": "none",
       "description": "How investments are treated.",
@@ -197,13 +188,7 @@
     },
     "type": {
       "constraints": {
-        "oneOf": [
-          "producer",
-          "consumer",
-          "storage",
-          "conversion",
-          "hub"
-        ]
+        "oneOf": ["producer", "consumer", "storage", "conversion", "hub"]
       },
       "description": "Type of energy asset.",
       "type": "VARCHAR"
@@ -230,7 +215,8 @@
           "1var-1C",
           "1var-1T",
           "min_up_down_2var",
-          "2var-su-sd-ramp"
+          "2var-su-sd-ramp",
+          "3var-3"
         ]
       },
       "default": null,
@@ -239,11 +225,7 @@
     },
     "use_binary_storage_method": {
       "constraints": {
-        "oneOf": [
-          null,
-          "binary",
-          "relaxed_binary"
-        ]
+        "oneOf": [null, "binary", "relaxed_binary"]
       },
       "default": null,
       "description": "Whether to use an extra binary variable for the storage assets to avoid charging and discharging simultaneously (null/empty/missing -> no binary).",
@@ -479,11 +461,7 @@
     },
     "specification": {
       "constraints": {
-        "oneOf": [
-          "uniform",
-          "explicit",
-          "math"
-        ]
+        "oneOf": ["uniform", "explicit", "math"]
       },
       "default": "uniform",
       "description": "Partition (or temporal resolution) specification in the representative periods.",
@@ -506,11 +484,7 @@
     },
     "specification": {
       "constraints": {
-        "oneOf": [
-          "uniform",
-          "explicit",
-          "math"
-        ]
+        "oneOf": ["uniform", "explicit", "math"]
       },
       "default": "uniform",
       "description": "Partition (or temporal resolution) specification in the timeframe.",
@@ -740,9 +714,7 @@
     },
     "profile_type": {
       "constraints": {
-        "oneOf": [
-          "availability"
-        ]
+        "oneOf": ["availability"]
       },
       "description": "Type of profile, used to determine DuckDB table with source profile",
       "type": "VARCHAR"
@@ -791,11 +763,7 @@
     },
     "sense": {
       "constraints": {
-        "oneOf": [
-          "==",
-          ">=",
-          "<="
-        ]
+        "oneOf": ["==", ">=", "<="]
       },
       "default": "==",
       "description": "Is the sense in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint, equal to, greater than or less than.",
@@ -819,11 +787,7 @@
     },
     "specification": {
       "constraints": {
-        "oneOf": [
-          "uniform",
-          "explicit",
-          "math"
-        ]
+        "oneOf": ["uniform", "explicit", "math"]
       },
       "default": "uniform",
       "description": "Partition (or temporal resolution) specification in the representative periods.",
