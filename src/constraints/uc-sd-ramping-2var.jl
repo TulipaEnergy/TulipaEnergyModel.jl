@@ -15,7 +15,7 @@ function add_2var_sd_ramping_constraints!(
 )
     indices_dict = Dict(
         table_name => _append_su_sd_ramp_vars_data_to_indices_2var(connection, table_name) for
-        table_name in (:sd_ramp_vars_flow_diff_2var, :su_sd_ramp_vars_flow_with_high_uptime_2var)
+        table_name in (:sd_ramping_2var_flow_diff, :susd_ramping_2var_flow_unaligned_uc)
     )
 
     # expression for p^{availability profile} * p^{capacity}
@@ -33,11 +33,11 @@ function add_2var_sd_ramping_constraints!(
                 ) * row.capacity for row in indices
             ]
         end for table_name in
-        (:sd_ramp_vars_flow_diff_2var, :su_sd_ramp_vars_flow_with_high_uptime_2var)
+        (:sd_ramping_2var_flow_diff, :susd_ramping_2var_flow_unaligned_uc)
     )
 
     # constraint 13c - shut-down ramping flow difference
-    let table_name = :sd_ramp_vars_flow_diff_2var, cons = constraints[table_name]
+    let table_name = :sd_ramping_2var_flow_diff, cons = constraints[table_name]
         units_on = cons.expressions[:units_on]
         # shut_down = cons.expressions[:shut_down]
         start_up = cons.expressions[:start_up]
@@ -75,7 +75,7 @@ function add_2var_sd_ramping_constraints!(
     end
 
     # constraint 13e - flow upper bound for min up time >= 2
-    let table_name = :su_sd_ramp_vars_flow_with_high_uptime_2var, cons = constraints[table_name]
+    let table_name = :susd_ramping_2var_flow_unaligned_uc, cons = constraints[table_name]
         units_on = cons.expressions[:units_on]
         start_up = cons.expressions[:start_up]
         # shut_down = cons.expressions[:shut_down]

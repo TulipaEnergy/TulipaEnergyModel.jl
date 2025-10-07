@@ -1166,7 +1166,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_su_ramp_vars_flow_diff as
+create table cons_su_ramping_3var_flow_diff as
 with sub as
 (select distinct
     t_high.asset,
@@ -1204,7 +1204,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_sd_ramp_vars_flow_diff as
+create table cons_sd_ramping_3var_flow_diff as
 with sub as
 (select distinct
     t_high.asset,
@@ -1242,7 +1242,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_su_ramp_vars_flow_upper_bound as
+create table cons_su_ramping_3var_flow_upper_bound as
 with sub as
 (select distinct
     t_high.*,
@@ -1283,11 +1283,11 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_sd_ramp_vars_flow_upper_bound as
+create table cons_sd_ramping_3var_flow_upper_bound as
 select
     nextval('id') as id,
-    cons_su_ramp_vars_flow_upper_bound.*
-from cons_su_ramp_vars_flow_upper_bound
+    cons_su_ramping_3var_flow_upper_bound.*
+from cons_su_ramping_3var_flow_upper_bound
 ;
 
 drop sequence id
@@ -1296,11 +1296,11 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_su_sd_ramp_vars_flow_with_high_uptime as
+create table cons_susd_ramping_3var_flow_unaligned_uc as
 select
     nextval('id') as id,
-    cons_su_ramp_vars_flow_upper_bound.*
-from cons_su_ramp_vars_flow_upper_bound
+    cons_su_ramping_3var_flow_upper_bound.*
+from cons_su_ramping_3var_flow_upper_bound
 ;
 
 drop sequence id
@@ -1481,7 +1481,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_sd_ramp_vars_flow_diff_2var as
+create table cons_sd_ramping_2var_flow_diff as
 with sub as
 (select distinct
     t_high.asset,
@@ -1519,7 +1519,7 @@ drop sequence id
 create sequence id start 1
 ;
 
-create table cons_su_sd_ramp_vars_flow_with_high_uptime_2var as
+create table cons_susd_ramping_2var_flow_unaligned_uc as
 with sub as
 (select distinct
     t_high.*,
