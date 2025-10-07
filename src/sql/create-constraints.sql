@@ -1309,10 +1309,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_su_ramping_compact_1bin
+drop table if exists cons_su_ramping_compact_1var
 ;
 
-create table cons_su_ramping_compact_1bin as
+create table cons_su_ramping_compact_1var as
 select
     nextval('id') as id,
     t_high.*
@@ -1332,10 +1332,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_sd_ramping_compact_1bin
+drop table if exists cons_sd_ramping_compact_1var
 ;
 
-create table cons_sd_ramping_compact_1bin as
+create table cons_sd_ramping_compact_1var as
 select
     nextval('id') as id,
     t_high.*
@@ -1355,10 +1355,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_su_ramping_tight_1bin
+drop table if exists cons_su_ramping_tight_1var
 ;
 
-create table cons_su_ramping_tight_1bin as
+create table cons_su_ramping_tight_1var as
 select
     nextval('id') as id,
     t_high.*
@@ -1378,10 +1378,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_sd_ramping_tight_1bin
+drop table if exists cons_sd_ramping_tight_1var
 ;
 
-create table cons_sd_ramping_tight_1bin as
+create table cons_sd_ramping_tight_1var as
 select
     nextval('id') as id,
     t_high.*
