@@ -32,8 +32,7 @@ function add_2var_sd_ramping_constraints!(
                     1.0,
                 ) * row.capacity for row in indices
             ]
-        end for table_name in
-        (:sd_ramping_2var_flow_diff, :susd_ramping_2var_flow_unaligned_uc)
+        end for table_name in (:sd_ramping_2var_flow_diff, :susd_ramping_2var_flow_unaligned_uc)
     )
 
     # constraint 13c - shut-down ramping flow difference
