@@ -126,7 +126,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and (asset.unit_commitment_method LIKE '3var%' or asset.unit_commitment_method in ('SU-SD-compact', 'min_up_down'))
+        and (asset.unit_commitment_method LIKE '3var%' or asset.unit_commitment_method in ('SU-SD-compact', 'min_up_down', 'min_up_down_2var', '2var-su-sd-ramp'))
     order by
         atr.asset,
         atr.year,

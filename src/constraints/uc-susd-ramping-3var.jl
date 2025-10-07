@@ -16,11 +16,11 @@ function add_su_sd_ramping_with_vars_constraints!(
     indices_dict = Dict(
         table_name => _append_su_sd_ramp_vars_data_to_indices(connection, table_name) for
         table_name in (
-            :su_ramp_vars_flow_diff,
-            :sd_ramp_vars_flow_diff,
-            :su_ramp_vars_flow_upper_bound,
-            :sd_ramp_vars_flow_upper_bound,
-            :su_sd_ramp_vars_flow_with_high_uptime,
+            :su_ramping_3var_flow_diff,
+            :sd_ramping_3var_flow_diff,
+            :su_ramping_3var_flow_upper_bound,
+            :sd_ramping_3var_flow_upper_bound,
+            :susd_ramping_3var_flow_unaligned_uc,
         )
     )
 
@@ -39,16 +39,16 @@ function add_su_sd_ramping_with_vars_constraints!(
                 ) * row.capacity for row in indices
             ]
         end for table_name in (
-            :su_ramp_vars_flow_diff,
-            :sd_ramp_vars_flow_diff,
-            :su_ramp_vars_flow_upper_bound,
-            :sd_ramp_vars_flow_upper_bound,
-            :su_sd_ramp_vars_flow_with_high_uptime,
+            :su_ramping_3var_flow_diff,
+            :sd_ramping_3var_flow_diff,
+            :su_ramping_3var_flow_upper_bound,
+            :sd_ramping_3var_flow_upper_bound,
+            :susd_ramping_3var_flow_unaligned_uc,
         )
     )
 
     # constraint 13a - start-up ramping flow difference
-    let table_name = :su_ramp_vars_flow_diff, cons = constraints[table_name]
+    let table_name = :su_ramping_3var_flow_diff, cons = constraints[table_name]
         units_on = cons.expressions[:units_on]
         start_up = cons.expressions[:start_up]
         flow_total = cons.expressions[:outgoing]
@@ -84,7 +84,7 @@ function add_su_sd_ramping_with_vars_constraints!(
     end
 
     # constraint 13c - shut-down ramping flow difference
-    let table_name = :sd_ramp_vars_flow_diff, cons = constraints[table_name]
+    let table_name = :sd_ramping_3var_flow_diff, cons = constraints[table_name]
         units_on = cons.expressions[:units_on]
         shut_down = cons.expressions[:shut_down]
         flow_total = cons.expressions[:outgoing]
@@ -121,7 +121,7 @@ function add_su_sd_ramping_with_vars_constraints!(
     end
 
     # constraint 13b - start-up ramping flow upper bound
-    let table_name = :su_ramp_vars_flow_upper_bound, cons = constraints[table_name]
+    let table_name = :su_ramping_3var_flow_upper_bound, cons = constraints[table_name]
         units_on = cons.expressions[:units_on]
         start_up = cons.expressions[:start_up]
         shut_down = cons.expressions[:shut_down]
@@ -139,11 +139,20 @@ function add_su_sd_ramping_with_vars_constraints!(
                 )
                     @constraint(model, 0 == 0)
                 else
-                    average_up, average_up_prime = _calculate_average_ramping_parameters(
+                    p_max = profile_times_capacity[table_name][row.id-1]
+
+                    average_up = _calculate_average_su_sd_ramping_parameters(
                         row.max_su_ramp,
                         row.max_ramp_up,
-                        profile_times_capacity[table_name][row.id],
-                        duration[row.id],
+                        profile_times_capacity[table_name][row.id-1],
+                        duration[row.id-1],
+                    )
+
+                    average_down = _calculate_average_su_sd_ramping_parameters(
+                        row.max_sd_ramp,
+                        row.max_ramp_down,
+                        profile_times_capacity[table_name][row.id-1],
+                        duration[row.id-1],
                     )
 
                     @constraint(
@@ -159,7 +168,7 @@ function add_su_sd_ramping_with_vars_constraints!(
     end
 
     # constraint 13d - shut-down ramping flow upper bound
-    let table_name = :sd_ramp_vars_flow_upper_bound, cons = constraints[table_name]
+    let table_name = :sd_ramping_3var_flow_upper_bound, cons = constraints[table_name]
         units_on = cons.expressions[:units_on]
         start_up = cons.expressions[:start_up]
         shut_down = cons.expressions[:shut_down]
@@ -177,11 +186,20 @@ function add_su_sd_ramping_with_vars_constraints!(
                 )
                     @constraint(model, 0 == 0)
                 else
-                    average_down, average_down_prime = _calculate_average_ramping_parameters(
+                    p_max = profile_times_capacity[table_name][row.id-1]
+
+                    average_up = _calculate_average_su_sd_ramping_parameters(
+                        row.max_su_ramp,
+                        row.max_ramp_up,
+                        profile_times_capacity[table_name][row.id-1],
+                        duration[row.id-1],
+                    )
+
+                    average_down = _calculate_average_su_sd_ramping_parameters(
                         row.max_sd_ramp,
                         row.max_ramp_down,
-                        profile_times_capacity[table_name][row.id],
-                        duration[row.id],
+                        profile_times_capacity[table_name][row.id-1],
+                        duration[row.id-1],
                     )
 
                     @constraint(
@@ -197,7 +215,7 @@ function add_su_sd_ramping_with_vars_constraints!(
     end
 
     # constraint 13e - flow upper bound for min up time >= 2
-    let table_name = :su_sd_ramp_vars_flow_with_high_uptime, cons = constraints[table_name]
+    let table_name = :susd_ramping_3var_flow_unaligned_uc, cons = constraints[table_name]
         units_on = cons.expressions[:units_on]
         start_up = cons.expressions[:start_up]
         shut_down = cons.expressions[:shut_down]

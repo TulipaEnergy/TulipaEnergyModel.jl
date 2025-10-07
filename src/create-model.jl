@@ -298,6 +298,23 @@ function create_model(
         profiles,
     )
 
+    @timeit to "add_minimum_down_time_2var_constraints!" add_minimum_down_time_2var_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_2var_sd_ramping_constraints!" add_2var_sd_ramping_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles,
+    )
+
     @timeit to "add_trajectory_constraints!" add_trajectory_constraints!(
         connection,
         model,

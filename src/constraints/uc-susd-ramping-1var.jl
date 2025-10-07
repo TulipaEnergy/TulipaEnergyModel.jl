@@ -16,7 +16,7 @@ function add_su_sd_ramping_constraints_compact!(
 )
     # A way to check if any constraints for this index were defined
     constraintsPresent = false
-    for row in constraints[:su_ramping_compact_1bin].indices
+    for row in constraints[:su_ramping_compact_1var].indices
         constraintsPresent = true
         break
     end
@@ -30,7 +30,7 @@ function add_su_sd_ramping_constraints_compact!(
     # Warn: runs SQL query. Guarded by `if` statement above
     indices_dict = Dict(
         table_name => _append_su_sd_ramping_data_to_indices(connection, table_name) for
-        table_name in (:su_ramping_compact_1bin, :sd_ramping_compact_1bin)
+        table_name in (:su_ramping_compact_1var, :sd_ramping_compact_1var)
     )
 
     # Compute ` P^{availability profile} * P^{capacity}`
@@ -46,11 +46,11 @@ function add_su_sd_ramping_constraints_compact!(
                     1.0,
                 ) * row.capacity for row in indices
             ]
-        end for table_name in (:su_ramping_compact_1bin, :sd_ramping_compact_1bin)
+        end for table_name in (:su_ramping_compact_1var, :sd_ramping_compact_1var)
     )
 
     # Start-Up ramping constraint --> (11a)
-    let table_name = :su_ramping_compact_1bin, cons = constraints[table_name]
+    let table_name = :su_ramping_compact_1var, cons = constraints[table_name]
         indices = indices_dict[table_name]
         units_on = cons.expressions[:units_on]
         attach_constraint!(
@@ -88,7 +88,7 @@ function add_su_sd_ramping_constraints_compact!(
     end
 
     # Shut-Down ramping constraint --> (11c)
-    let table_name = :sd_ramping_compact_1bin, cons = constraints[table_name]
+    let table_name = :sd_ramping_compact_1var, cons = constraints[table_name]
         indices = indices_dict[table_name]
         units_on = cons.expressions[:units_on]
         attach_constraint!(
@@ -140,7 +140,7 @@ function add_su_sd_ramping_constraints_tight!(
 )
     # A way to check if any constraints for this index were defined
     constraintsPresent = false
-    for row in constraints[:su_ramping_tight_1bin].indices
+    for row in constraints[:su_ramping_tight_1var].indices
         constraintsPresent = true
         break
     end
@@ -154,7 +154,7 @@ function add_su_sd_ramping_constraints_tight!(
     # Warn: runs SQL query. Guarded by `if` statement above
     indices_dict = Dict(
         table_name => _append_su_sd_ramping_data_to_indices(connection, table_name) for
-        table_name in (:su_ramping_tight_1bin, :sd_ramping_tight_1bin)
+        table_name in (:su_ramping_tight_1var, :sd_ramping_tight_1var)
     )
 
     # Compute ` P^{availability profile} * P^{capacity}`
@@ -170,11 +170,11 @@ function add_su_sd_ramping_constraints_tight!(
                     1.0,
                 ) * row.capacity for row in indices
             ]
-        end for table_name in (:su_ramping_tight_1bin, :sd_ramping_tight_1bin)
+        end for table_name in (:su_ramping_tight_1var, :sd_ramping_tight_1var)
     )
 
     # Start-Up ramping constraint --> (12a)
-    let table_name = :su_ramping_tight_1bin, cons = constraints[table_name]
+    let table_name = :su_ramping_tight_1var, cons = constraints[table_name]
         indices = indices_dict[table_name]
         units_on = cons.expressions[:units_on]
         attach_constraint!(
@@ -207,7 +207,7 @@ function add_su_sd_ramping_constraints_tight!(
     end
 
     # Shut-Down ramping constraint --> (12b)
-    let table_name = :sd_ramping_tight_1bin, cons = constraints[table_name]
+    let table_name = :sd_ramping_tight_1var, cons = constraints[table_name]
         indices = indices_dict[table_name]
         units_on = cons.expressions[:units_on]
         attach_constraint!(

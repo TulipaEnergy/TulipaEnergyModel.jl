@@ -569,15 +569,17 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         :max_ramp_with_unit_commitment,
         :max_ramp_without_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
-        :su_ramp_vars_flow_diff,
-        :sd_ramp_vars_flow_diff,
-        :su_ramp_vars_flow_upper_bound,
-        :sd_ramp_vars_flow_upper_bound,
-        :su_sd_ramp_vars_flow_with_high_uptime,
-        :su_ramping_compact_1bin,
-        :sd_ramping_compact_1bin,
-        :su_ramping_tight_1bin,
-        :sd_ramping_tight_1bin,
+        :su_ramping_3var_flow_diff,
+        :sd_ramping_3var_flow_diff,
+        :su_ramping_3var_flow_upper_bound,
+        :sd_ramping_3var_flow_upper_bound,
+        :susd_ramping_3var_flow_unaligned_uc,
+        :su_ramping_compact_1var,
+        :sd_ramping_compact_1var,
+        :su_ramping_tight_1var,
+        :sd_ramping_tight_1var,
+        :sd_ramping_2var_flow_diff,
+        :susd_ramping_2var_flow_unaligned_uc,
     )
         @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
             connection,
@@ -612,10 +614,10 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         :min_output_flow_with_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
         :max_ramp_with_unit_commitment,
-        :su_ramping_compact_1bin,
-        :sd_ramping_compact_1bin,
-        :su_ramping_tight_1bin,
-        :sd_ramping_tight_1bin,
+        :su_ramping_compact_1var,
+        :sd_ramping_compact_1var,
+        :su_ramping_tight_1var,
+        :sd_ramping_tight_1var,
     )
         @timeit to "attach units_on expression to $table_name" attach_expression_on_constraints_grouping_variables!(
             connection,
@@ -628,11 +630,13 @@ function add_expressions_to_constraints!(connection, variables, constraints)
     end
 
     for table_name in (
-        :su_ramp_vars_flow_diff,
-        :sd_ramp_vars_flow_diff,
-        :su_ramp_vars_flow_upper_bound,
-        :sd_ramp_vars_flow_upper_bound,
-        :su_sd_ramp_vars_flow_with_high_uptime,
+        :su_ramping_3var_flow_diff,
+        :sd_ramping_3var_flow_diff,
+        :su_ramping_3var_flow_upper_bound,
+        :sd_ramping_3var_flow_upper_bound,
+        :susd_ramping_3var_flow_unaligned_uc,
+        :sd_ramping_2var_flow_diff,
+        :susd_ramping_2var_flow_unaligned_uc,
     )
         @timeit to "attach units_on expression to $table_name" attach_expression_on_constraints_grouping_variables!(
             connection,
@@ -652,14 +656,16 @@ function add_expressions_to_constraints!(connection, variables, constraints)
             agg_strategy = :unique_sum,
         )
 
-        @timeit to "attach shut_down expression to $table_name" attach_expression_on_constraints_grouping_variables!(
-            connection,
-            constraints[table_name],
-            variables[:shut_down],
-            :shut_down,
-            workspace,
-            agg_strategy = :unique_sum,
-        )
+        if (!occursin("2var", string(table_name)))
+            @timeit to "attach shut_down expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+                connection,
+                constraints[table_name],
+                variables[:shut_down],
+                :shut_down,
+                workspace,
+                agg_strategy = :unique_sum,
+            )
+        end
     end
 
     for table_name in (:susd_trajectory,)
