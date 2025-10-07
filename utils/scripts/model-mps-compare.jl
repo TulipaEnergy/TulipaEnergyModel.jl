@@ -1,11 +1,11 @@
 using Base: SimpleLogger
 # Run from project folder with
 #
-#   julia --project=. utils/scripts/model-mps-update.jl
+#   julia --project=. utils/scripts/model-mps-compare.jl
 #
 # or
 #
-#   julia --project=<project_root> <project_root>/utils/scripts/model-mps-update.jl
+#   julia --project=<project_root> <project_root>/utils/scripts/model-mps-compare.jl
 #
 include("model-mps-common.jl")
 using Logging

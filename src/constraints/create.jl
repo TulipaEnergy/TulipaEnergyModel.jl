@@ -55,6 +55,7 @@ function compute_constraints_indices(connection)
             :sd_ramping_compact_1bin,
             :su_ramping_tight_1bin,
             :sd_ramping_tight_1bin,
+            :susd_trajectory,
         )
     )
 
