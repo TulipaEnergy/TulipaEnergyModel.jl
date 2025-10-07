@@ -42,8 +42,8 @@ using Distances
 
 connection = DBInterface.connect(DuckDB.DB)
 
-input_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-5"
-output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-5/results"
+input_dir = "my-awesome-energy-system/tutorial-5"
+output_dir = "my-awesome-energy-system/tutorial-5/results"
 
 TIO.read_csv_folder(connection, input_dir)
 
@@ -76,6 +76,9 @@ TEM.populate_with_defaults!(connection)
 
 energy_problem = TEM.run_scenario(connection; output_folder=output_dir)
 ```
+
+!!! warning
+    Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error.
 
 At this point, everything should work the same as Lesson 4.
 

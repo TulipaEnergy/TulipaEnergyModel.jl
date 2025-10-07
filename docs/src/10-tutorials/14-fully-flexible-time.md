@@ -24,23 +24,23 @@ Defining flexible temporal resolution requires the files `assets_rep_periods_par
 !!! tip
     The schemas of the files is described in the section [Inputs](@ref table-schemas).
 
-Working in the folder `flexible-time-tutorial`:
+Working in the folder `tutorial-3`:
 
 1. Create a new file called `assets_rep_periods_partitions.csv`
 2. Copy this text into the file:
 
-    ```txt
-    asset,partition,rep_period,specification,year
-    electrolizer,6,1,uniform,2030
-    ```
+   ```txt
+   asset,partition,rep_period,specification,year
+   electrolizer,6,1,uniform,2030
+   ```
 
 3. Create a new file called `flows_rep_periods_partitions.csv`
 4. Copy this text into the file:
 
-    ```txt
-    from_asset,to_asset,partition,rep_period,specification,year
-    electrolizer,h2_demand,6,1,uniform,2030
-    ```
+   ```txt
+   from_asset,to_asset,partition,rep_period,specification,year
+   electrolizer,h2_demand,6,1,uniform,2030
+   ```
 
 !!! note
     If no partition or resolution is defined for an asset or flow, then the default values are `uniform` and `1`.
@@ -95,6 +95,9 @@ energy_problem =
 
 ```
 
+!!! warning
+    Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error.
+
 From the statistics at the end, what are the number of constraints, variables, and objective function?
 
 ```log
@@ -139,7 +142,7 @@ plot(
     marker=:circle,
     markersize=2,
     linetype=:steppost, # try: stepmid, steppost, or steppre
-    xlims=(1, 168 * 4),
+    xlims=(168 * 2, 168 * 3),
     dpi=600,
 )
 
