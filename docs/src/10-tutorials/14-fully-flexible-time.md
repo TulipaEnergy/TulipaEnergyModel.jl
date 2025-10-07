@@ -95,6 +95,9 @@ energy_problem =
 
 ```
 
+!!! warning
+    Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error.
+
 From the statistics at the end, what are the number of constraints, variables, and objective function?
 
 ```log

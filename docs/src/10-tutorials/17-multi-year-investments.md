@@ -52,6 +52,9 @@ energy_problem = TEM.run_scenario(
 )
 ```
 
+!!! warning
+    Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error.
+
 There is a new file *model-parameters-example.toml*. It contains model-wide parameters, in this case:
 
 ```julia
@@ -98,7 +101,7 @@ So...the wind built in 2020 has a worse profile. How does it play a role in the 
 
 Let's try the simple method first.
 
-```julia!
+```julia
 connection = DBInterface.connect(DuckDB.DB)
 input_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-6-simple-method"
 output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-6-simple-method/results"
@@ -128,7 +131,7 @@ filter(row -> row.asset=="wind", TIO.get_table(connection, "var_assets_investmen
 
 Now try the compact method.
 
-```julia!
+```julia
 connection = DBInterface.connect(DuckDB.DB)
 input_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-6-compact-method"
 output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-6-compact-method/results"
@@ -140,6 +143,9 @@ energy_problem = TEM.run_scenario(
         output_folder = output_dir,
     )
 ```
+
+!!! warning
+    Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error.
 
 Check initial capacity - units built in different years are explicitly listed, meaning that their corresponding profiles are also considered.
 

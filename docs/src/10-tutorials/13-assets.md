@@ -41,6 +41,9 @@ energy_problem =
     TEM.run_scenario(connection; output_folder=output_dir)
 ```
 
+!!! warning
+    Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error.
+
 ## Explore the results
 
 Explore the flow that goes from the hub to the e_demand:

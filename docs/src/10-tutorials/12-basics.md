@@ -19,7 +19,10 @@ using Plots
 
 !!! tip
     Follow along in this section, copy-pasting into your my_workflow.jl file.\
-    In VS Code, you can highlight each section and press (SHIFT+ENTER) to run the code.\
+    In VS Code, you can press (CTRL+ENTER) to run the current line,\
+    (SHIFT+ENTER) to run the current line and go to the next line.\
+    To run multiple lines together, you need to highlight the part you want to run first,\
+    and then hit (CTRL+ENTER) or (SHIFT+ENTER).\
     Or paste everything and press the run arrow (top right in VS Code) to run the entire file.
 
 We need to create a connection to DuckDB and point to the input and output folders:
@@ -29,6 +32,8 @@ connection = DBInterface.connect(DuckDB.DB)
 input_dir = "my-awesome-energy-system/tutorial-1"
 output_dir = "my-awesome-energy-system/tutorial-1/results"
 ```
+
+Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error later.
 
 Let's use TulipaIO to read the files and list them:
 

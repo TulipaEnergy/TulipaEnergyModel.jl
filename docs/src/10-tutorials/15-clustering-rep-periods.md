@@ -46,6 +46,9 @@ output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-4/results"
 TIO.read_csv_folder(connection, input_dir)
 ```
 
+!!! warning
+    Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error later.
+
 Try to run the problem as usual:
 
 ```julia
