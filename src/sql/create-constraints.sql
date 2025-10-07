@@ -1640,4 +1640,3 @@ select
 from
     sorted
 ;
-
