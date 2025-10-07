@@ -41,8 +41,8 @@ Run TEM
 
 ```julia
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-6-simple-method"
-output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-6-simple-method/results"
+input_dir = "my-awesome-energy-system/tutorial-6-simple-method"
+output_dir = "my-awesome-energy-system/tutorial-6-simple-method/results"
 TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.run_scenario(
@@ -103,8 +103,8 @@ Let's try the simple method first.
 
 ```julia
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-6-simple-method"
-output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-6-simple-method/results"
+input_dir = "my-awesome-energy-system/tutorial-6-simple-method"
+output_dir = "my-awesome-energy-system/tutorial-6-simple-method/results"
 TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.run_scenario(
@@ -133,8 +133,8 @@ Now try the compact method.
 
 ```julia
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-6-compact-method"
-output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-6-compact-method/results"
+input_dir = "my-awesome-energy-system/tutorial-6-compact-method"
+output_dir = "my-awesome-energy-system/tutorial-6-compact-method/results"
 TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.run_scenario(

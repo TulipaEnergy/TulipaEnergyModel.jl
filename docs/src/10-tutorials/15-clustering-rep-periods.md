@@ -41,8 +41,8 @@ Load the data:
 
 ```julia
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-4"
-output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-4/results"
+input_dir = "my-awesome-energy-system/tutorial-4"
+output_dir = "my-awesome-energy-system/tutorial-4/results"
 TIO.read_csv_folder(connection, input_dir)
 ```
 
