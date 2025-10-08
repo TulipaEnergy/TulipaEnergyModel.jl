@@ -11,7 +11,6 @@
     )
 
     # With rolling horizon
-    # create_model!(energy_problem; rolling_horizon = true, rolling_horizon_window_length = 24)
     window_length = 24
     TEM.add_rolling_horizon_parameters!(
         energy_problem.db_connection,

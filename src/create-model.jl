@@ -124,9 +124,6 @@ function create_model(
     )
 
     ## Rolling Horizon Parameters
-    #=
-        - Create fake variables to tied to the profiles values
-    =#
     if rolling_horizon
         add_rolling_horizon_parameters!(
             connection,

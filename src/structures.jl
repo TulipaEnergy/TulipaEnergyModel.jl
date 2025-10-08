@@ -63,8 +63,7 @@ mutable struct TulipaConstraint <: TulipaTabularIndex
     table_name::String
     num_rows::Int
     constraint_names::Vector{Symbol}
-    expressions::Dict
-    # expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
+    expressions::Dict{Symbol,Vector{JuMP.AbstractJuMPScalar}}
     coefficients::Dict{Symbol,Vector{Float64}}
     duals::Dict{Symbol,Vector{Float64}}
 
@@ -90,8 +89,7 @@ mutable struct TulipaExpression <: TulipaTabularIndex
     indices::DuckDB.QueryResult
     table_name::String
     num_rows::Int
-    # expressions::Dict{Symbol,Vector{Union{JuMP.AffExpr,JuMP.QuadExpr}}}
-    expressions::Dict
+    expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
 
     function TulipaExpression(connection, table_name::String)
         return new(
