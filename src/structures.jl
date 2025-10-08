@@ -55,20 +55,6 @@ mutable struct TulipaVariable <: TulipaTabularIndex
     end
 end
 
-mutable struct TulipaParameter <: TulipaTabularIndex
-    indices::DuckDB.QueryResult
-    table_name::String
-    container::Vector{JuMP.VariableRef}
-
-    function TulipaParameter(connection, table_name::String)
-        return new(
-            DuckDB.query(connection, "SELECT * FROM $table_name"),
-            table_name,
-            JuMP.VariableRef[],
-        )
-    end
-end
-
 """
 Structure to hold the JuMP constraints for the TulipaEnergyModel
 """
@@ -186,8 +172,6 @@ function attach_expression!(cons_or_expr::TulipaTabularIndex, name::Symbol, cont
     # indices table in empty in [@constraint(...) for row in indices].
     # It resolves to [] so the element type cannot be inferred
     if length(container) > 0
-        @warn typeof(container)
-        @warn eltype(container)
         error(
             "This variant is supposed to capture empty containers. This container is not empty for $name",
         )

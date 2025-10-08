@@ -158,5 +158,3 @@ for ((window_id,), window_table) in pairs(big_table_grouped_per_window)
 end
 Plots.plot(plt_vec...; layout = (length(plt_vec), 1), size = (800, 150 * num_windows))
 plot!()
-
-# TODO: fix naming of opt_window (just move_forward is enough)

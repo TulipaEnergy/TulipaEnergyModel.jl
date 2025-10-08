@@ -159,6 +159,11 @@ end
     for row in DuckDB.query(connection, "FROM rolling_horizon_window")
         @test row.objective_value ≈ expected_objective_values[row.id] rtol = 1e-5
     end
+
+    io = IOBuffer()
+    print(io, energy_problem)
+    @test split(String(take!(io))) ==
+          split(read("io-outputs/energy-problem-rolling-horizon.txt", String))
 end
 
 @testitem "Infeasible Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow] begin
