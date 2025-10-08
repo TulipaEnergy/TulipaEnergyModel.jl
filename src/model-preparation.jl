@@ -599,19 +599,17 @@ function prepare_profiles_structure(connection)
     )
 
     over_clustered_year = Dict(
-        (row.profile_name, row.year) => ProfileWithRollingHorizon(
-            Float64[
-                row.value for row in DuckDB.query(
-                    connection,
-                    "SELECT profile.value
-                    FROM profiles_timeframe AS profile
-                    WHERE
-                        profile.profile_name = '$(row.profile_name)'
-                        AND profile.year = $(row.year)
-                    ",
-                )
-            ],
-        ) for row in DuckDB.query(
+        (row.profile_name, row.year) => Float64[
+            row.value for row in DuckDB.query(
+                connection,
+                "SELECT profile.value
+                FROM profiles_timeframe AS profile
+                WHERE
+                    profile.profile_name = '$(row.profile_name)'
+                    AND profile.year = $(row.year)
+                ",
+            )
+        ] for row in DuckDB.query(
             connection,
             "SELECT DISTINCT
                 profiles.profile_name,
@@ -621,7 +619,6 @@ function prepare_profiles_structure(connection)
         )
     )
 
-    # TODO: Decide where to put this (leave here?)
     # Creating over_clustered_year profiles of inflows using the inflows
     # profiles of rep_periods and asset_milestone.storage_inflows
     for row in DuckDB.query(
@@ -672,7 +669,7 @@ function prepare_profiles_structure(connection)
             )
         ]
         if length(values) > 0
-            over_clustered_year[(profile_name, year)] = ProfileWithRollingHorizon(values)
+            over_clustered_year[(profile_name, year)] = values
         end
     end
 
