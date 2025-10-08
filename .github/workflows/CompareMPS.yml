@@ -31,7 +31,7 @@ jobs:
           body-includes: CompareMPS report
       - name: Comment on PR with CompareMPS
         if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: peter-evans/create-or-update-comment@v4
+        uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.find-old-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
@@ -98,7 +98,7 @@ jobs:
           body-includes: CompareMPS report
       - name: Comment on PR with log if failed
         if: failure() && github.event.pull_request.head.repo.full_name == github.repository
-        uses: peter-evans/create-or-update-comment@v4
+        uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
@@ -106,7 +106,7 @@ jobs:
           edit-mode: replace
       - name: Comment on PR with CompareMPS
         if: success() && github.event.pull_request.head.repo.full_name == github.repository
-        uses: peter-evans/create-or-update-comment@v4
+        uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
