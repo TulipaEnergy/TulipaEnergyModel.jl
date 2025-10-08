@@ -36,12 +36,7 @@ end
         TulipaEnergyModel.solve_model(model)
         TulipaEnergyModel.save_solution!(connection, model, variables, constraints)
         output_dir = mktempdir()
-        TulipaEnergyModel.export_solution_to_csv_files(
-            output_dir,
-            connection,
-            variables,
-            constraints,
-        )
+        TulipaEnergyModel.export_solution_to_csv_files(output_dir, connection)
         return true
     end
 end
