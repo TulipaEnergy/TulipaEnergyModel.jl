@@ -147,6 +147,18 @@ function validate_rolling_horizon_input(connection, move_forward, opt_window_len
     return
 end
 
+"""
+    prepare_rolling_horizon_tables!(connection, variable_tables, save_rolling_solution, opt_window_length)
+
+Modify and create tables to prepare to start the rolling horizon execution.
+The changes are:
+
+- Stored the original variable tables as `full_var_%` per variable table
+- Add `solution` column to each full variable table.
+- If `save_rolling_solution`, create the `rolling_solution_var_%` tables per variable table.
+- Backup `rep_periods_data` and `year_data` into `full_rep_periods_data` and `full_year_data`.
+- Modify `rep_periods_data` and `year_data` to use `opt_window_length` as `num_timesteps`/`length`, respectively.
+"""
 function prepare_rolling_horizon_tables!(
     connection,
     variable_tables,
@@ -175,7 +187,7 @@ function prepare_rolling_horizon_tables!(
 
     # Create backup tables for rep_periods_data, year_data, and asset_milestone
     # and full tables for the variables
-    backup_tables = ["rep_periods_data", "year_data", "asset_milestone"]
+    backup_tables = ["rep_periods_data", "year_data"]
     for table_name in [backup_tables; variable_tables]
         DuckDB.query(
             connection,
@@ -185,11 +197,6 @@ function prepare_rolling_horizon_tables!(
         )
     end
 
-    # Drop all temporary tables to avoid conflict (shouldn't happen anyway)
-    for row in DuckDB.query(connection, "FROM duckdb_tables() WHERE temporary")
-        DuckDB.query(connection, "DROP TABLE $(row.table_name)")
-    end
-
     # Modify tables that keep horizon information to limit the horizon to the rolling window
     DuckDB.query(connection, "UPDATE rep_periods_data SET num_timesteps = $opt_window_length")
     DuckDB.query(connection, "UPDATE year_data SET length = $opt_window_length")
@@ -197,6 +204,15 @@ function prepare_rolling_horizon_tables!(
     return
 end
 
+"""
+    save_solution_into_tables!(energy_problem, variable_tables, window_id, move_forward, window_start, horizon_length, save_rolling_solution)
+
+Save the current rolling horizon solution from the model into the connection.
+This involves:
+- Calling [`save_solution!`](@ref) to copy the internal solution from the JuMP model to the connection.
+- Copying the solution from the internal variables to the full variables for the `move_forward` sub-window.
+- If `save_rolling_solution`, save the complete rolling solution in the table `rolling_solution_var_%` per variable table.
+"""
 function save_solution_into_tables!(
     energy_problem,
     variable_tables,
@@ -264,6 +280,41 @@ function save_solution_into_tables!(
                 """,
             )
         end
+    end
+
+    return
+end
+
+"""
+    prepare_tables_to_leave_rolling_horizon!(connection, variable_tables)
+
+Undo some of the changes done by [`prepare_rolling_horizon_tables`] to go back to the original input data.
+This involves:
+- Revert `rep_periods_data` and `year_data` to their original values.
+- Drop the internal variable tables and replace them with the full variable tables.
+"""
+function prepare_tables_to_leave_rolling_horizon!(connection, variable_tables)
+    DuckDB.query(
+        connection,
+        "UPDATE rep_periods_data
+        SET num_timesteps = full_rep_periods_data.num_timesteps
+        FROM full_rep_periods_data
+        WHERE rep_periods_data.year = full_rep_periods_data.year
+            AND rep_periods_data.rep_period = full_rep_periods_data.rep_period",
+    )
+    DuckDB.query(
+        connection,
+        "UPDATE year_data
+        SET length = full_year_data.length
+        FROM full_year_data
+        WHERE year_data.year = full_year_data.year
+        ",
+    )
+
+    # Drop the rolling horizon variable tables and rename the full_var_% tables
+    for table_name in variable_tables
+        DuckDB.query(connection, "DROP TABLE IF EXISTS $table_name")
+        DuckDB.query(connection, "ALTER TABLE full_$table_name RENAME TO $table_name")
     end
 
     return
@@ -445,29 +496,10 @@ function run_rolling_horizon(
     full_energy_problem.rolling_horizon_energy_problem = energy_problem
 
     # Undo the changes to rep_periods_data and year_data
-    # TODO: Instead of modifying existing tables (and risking losing information), allow different table names internally
-    DuckDB.query(
+    @timeit to "undo changes to rolling horizon tables" prepare_tables_to_leave_rolling_horizon!(
         connection,
-        "UPDATE rep_periods_data
-        SET num_timesteps = full_rep_periods_data.num_timesteps
-        FROM full_rep_periods_data
-        WHERE rep_periods_data.year = full_rep_periods_data.year
-            AND rep_periods_data.rep_period = full_rep_periods_data.rep_period",
+        variable_tables,
     )
-    DuckDB.query(
-        connection,
-        "UPDATE year_data
-        SET length = full_year_data.length
-        FROM full_year_data
-        WHERE year_data.year = full_year_data.year
-        ",
-    )
-
-    # Drop the rolling horizon variable tables and rename the full_var_% tables
-    for table_name in variable_tables
-        DuckDB.query(connection, "DROP TABLE IF EXISTS $table_name")
-        DuckDB.query(connection, "ALTER TABLE full_$table_name RENAME TO $table_name")
-    end
 
     # Export solution
     if output_folder != ""
