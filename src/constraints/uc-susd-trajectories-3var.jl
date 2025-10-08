@@ -72,11 +72,10 @@ function add_trajectory_constraints!(
             trajectories_info[asset_row.asset] = Dict{String,Union{String,Int64}}()
 
             trajectories_info[asset_row.asset]["su_trajectory"] =
-            # read_trajectory(asset_row.start_trajectory)
-                [1, 2, 3]
+                read_trajectory(asset_row.start_trajectory)
+
             trajectories_info[asset_row.asset]["sd_trajectory"] =
-            # read_trajectory(asset_row.shut_trajectory)
-                [6, 5, 4]
+                read_trajectory(asset_row.shut_trajectory)
 
             trajectories_info[asset_row.asset]["su_length"] =
                 length(trajectories_info[asset_row.asset]["su_trajectory"])
@@ -279,4 +278,8 @@ function read_trajectory(trajectory::String)#, target::Float64 = 0.0)
     # else
     return parse.(Int, split(trajectory, ","))
     # end
+end
+
+function read_trajectory(trajectory::Int64)
+    return trajectory
 end
