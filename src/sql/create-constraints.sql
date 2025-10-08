@@ -1117,7 +1117,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment = true
-    and asset.unit_commitment_method in ('min_up_down', 'min_up_down_2var', '3var-3')
+    and asset.unit_commitment_method in ('min_up_down', 'min_up_down_2var')
 order by
     t_high.asset,
     t_high.year,
