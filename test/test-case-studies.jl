@@ -143,6 +143,16 @@ end
     @test energy_problem.objective_value ≈ 89360.638146 atol = 1e-5
 end
 
+@testitem "Rolling horizon Case Study" setup = [CommonSetup] tags =
+    [:case_study, :integration, :slow] begin
+    dir = joinpath(INPUT_FOLDER, "Rolling Horizon")
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, dir)
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    @test energy_problem.objective_value ≈ 410873.9 rtol = 1e-5
+end
+
 @testitem "Infeasible Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow] begin
     dir = joinpath(INPUT_FOLDER, "Tiny")
     connection = DBInterface.connect(DuckDB.DB)

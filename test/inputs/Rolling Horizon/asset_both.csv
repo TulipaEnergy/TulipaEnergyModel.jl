@@ -1,0 +1,5 @@
+asset,commission_year,initial_storage_units,initial_units,milestone_year,decommissionable
+solar,2030,0.0,1.0,2030,false
+thermal,2030,0.0,1.0,2030,false
+battery,2030,1.0,1.0,2030,false
+demand,2030,0.0,0.0,2030,false
