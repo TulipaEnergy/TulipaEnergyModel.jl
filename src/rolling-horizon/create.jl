@@ -1,3 +1,15 @@
+function add_scalar_rolling_horizon_parameter!(model, variables, connection, param_table_name)
+    initial_value =
+        [row.original_value::Float64 for row in DuckDB.query(connection, "FROM $param_table_name")]
+    num_rows = length(initial_value)
+    param = TulipaVariable(connection, param_table_name)
+    param.container = @variable(model, [1:num_rows] in JuMP.Parameter.(initial_value))
+
+    key = Symbol(param_table_name)
+    model[key] = param.container
+    variables[key] = param
+    return param
+end
 
 """
     add_rolling_horizon_parameters!(connection, model, variables, profiles, window_length)
@@ -17,8 +29,12 @@ function add_rolling_horizon_parameters!(connection, model, variables, profiles,
             @variable(model, [1:window_length] in JuMP.Parameter(0.0))
     end
 
-    # initial_storage_level
-    # Storing inside the variables, for now TODO: Review if there is a better strategy after all parameters have been defined
+    # Scalar rolling horizon parameters
+    # These need a table filtering where time_block_start = 1, and the current
+    # strategy is to create a table `param_NAME` and call
+    # add_scalar_rolling_horizon_parameter!.
+
+    ## initial_storage_level
     DuckDB.query(
         connection,
         """
@@ -40,15 +56,12 @@ function add_rolling_horizon_parameters!(connection, model, variables, profiles,
         DROP SEQUENCE id;
         """,
     )
-    initial_storage_level = [
-        row.original_value::Float64 for
-        row in DuckDB.query(connection, "FROM param_initial_storage_level")
-    ]
-    num_rows = length(initial_storage_level)
-    param = TulipaVariable(connection, "param_initial_storage_level")
-    model[:param_initial_storage_level] =
-        param.container = @variable(model, [1:num_rows] in JuMP.Parameter.(initial_storage_level))
-    variables[:param_initial_storage_level] = param
+    add_scalar_rolling_horizon_parameter!(
+        model,
+        variables,
+        connection,
+        "param_initial_storage_level",
+    )
 
     return
 end
