@@ -39,7 +39,9 @@ include("data-preparation.jl")
 
 # Data massage and model preparation
 include("model-preparation.jl")
-include("rolling-horizon.jl")
+
+# Rolling horizon
+include("rolling-horizon/rolling-horizon.jl")
 
 # Model creation
 for folder_name in ["variables", "constraints", "expressions"]
