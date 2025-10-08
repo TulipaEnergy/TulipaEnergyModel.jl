@@ -76,7 +76,7 @@ try
     _q("UPDATE rep_periods_data SET num_timesteps = $maximum_window_length")
     _q("UPDATE year_data SET length = $maximum_window_length")
 
-    for window_start in 1:move_forward:horizon_length-move_forward
+    for window_start in 1:move_forward:(horizon_length-move_forward)
         window_end = min(window_start + maximum_window_length - 1, horizon_length)
         window_length = window_end - window_start + 1
 
