@@ -138,10 +138,10 @@ for ((window_id,), window_table) in pairs(big_table_grouped_per_window)
     local timestep = range(extrema(window_table.adjusted_timestep)...)
     @info timestep
 
-    thermal = sort(window_table[window_table.asset .== "thermal", :], :adjusted_timestep).outgoing
-    solar = sort(window_table[window_table.asset .== "solar", :], :adjusted_timestep).outgoing
-    discharge = sort(window_table[window_table.asset .== "battery", :], :adjusted_timestep).outgoing
-    charge = sort(window_table[window_table.asset .== "battery", :], :adjusted_timestep).incoming
+    thermal = sort(window_table[window_table.asset.=="thermal", :], :adjusted_timestep).outgoing
+    solar = sort(window_table[window_table.asset.=="solar", :], :adjusted_timestep).outgoing
+    discharge = sort(window_table[window_table.asset.=="battery", :], :adjusted_timestep).outgoing
+    charge = sort(window_table[window_table.asset.=="battery", :], :adjusted_timestep).incoming
 
     y = hcat(thermal, solar, discharge)
     local plt = plot(;
