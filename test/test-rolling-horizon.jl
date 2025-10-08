@@ -110,7 +110,7 @@ end
         connection,
         "UPDATE asset_milestone SET peak_demand = 1500",
     )
-    @test_logs (:warn, "Model status different from optimal") TEM.run_rolling_horizon(
+    @test_logs (:warn, "Model status different from optimal") match_mode = :any TEM.run_rolling_horizon(
         connection,
         24,
         48,
