@@ -82,6 +82,14 @@ function create_model(
 
     JuMP.set_string_names_on_creation(model, enable_names)
 
+    # Cleanup temporary t_grouped_% tables so they don't conflict with future ones
+    # t_grouped_% are special because they are created inside the `add_expression_terms_rep_period_constraints`
+    # and reused if they exist. It's easier to delete them if they exist,
+    # instead of keeping track of their existence in a possible exception state.
+    for row in DuckDB.query(connection, "FROM duckdb_tables() WHERE table_name LIKE 't_grouped_%'")
+        DuckDB.query(connection, "DROP TABLE $(row.table_name)")
+    end
+
     ## Variables
     @timeit to "add_flow_variables!" add_flow_variables!(connection, model, variables)
     @timeit to "add_vintage_flow_variables!" add_vintage_flow_variables!(
