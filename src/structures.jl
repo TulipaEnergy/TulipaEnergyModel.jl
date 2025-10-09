@@ -63,7 +63,7 @@ mutable struct TulipaConstraint <: TulipaTabularIndex
     table_name::String
     num_rows::Int
     constraint_names::Vector{Symbol}
-    expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
+    expressions::Dict{Symbol,Vector{JuMP.AbstractJuMPScalar}}
     coefficients::Dict{Symbol,Vector{Float64}}
     duals::Dict{Symbol,Vector{Float64}}
 
@@ -153,7 +153,10 @@ This checks that the `container` length matches the stored `indices` number of r
 function attach_expression!(
     cons_or_expr::TulipaTabularIndex,
     name::Symbol,
-    container::Vector{JuMP.AffExpr},
+    container::Union{
+        Vector{JuMP.AffExpr}, # variables
+        Vector{JuMP.AbstractJuMPScalar}, # parameters
+    },
 )
     if length(container) != cons_or_expr.num_rows
         error("The number of expressions does not match the number of rows in the indices of $name")
