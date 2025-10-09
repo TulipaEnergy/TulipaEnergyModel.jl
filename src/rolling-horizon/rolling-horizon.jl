@@ -2,6 +2,7 @@ export run_rolling_horizon
 
 include("create.jl")
 include("update.jl")
+include("utils.jl")
 
 """
     energy_problem = run_rolling_horizon(
@@ -56,10 +57,12 @@ function run_rolling_horizon(
     show_log = true,
     save_rolling_solution = false,
 )
-    ## TODO: Replace TODOs with the actual implementation of the functions
-
     # Validation that the input data must satisfy to run rolling horizon
-    ## TODO: Call function to validate rolling horizon input
+    @timeit to "Validate rolling horizon input" validate_rolling_horizon_input(
+        connection,
+        move_forward,
+        opt_window_length,
+    )
 
     horizon_length = get_single_element_from_query_and_ensure_its_only_one(
         DuckDB.query(connection, "SELECT max(timestep) FROM profiles_rep_periods"),
@@ -93,7 +96,12 @@ function run_rolling_horizon(
         )
     ]
 
-    ## TODO: Call function to prepare table for rolling horizon to simulate different input size
+    @timeit to "Prepare table for rolling horizon" prepare_rolling_horizon_tables!(
+        connection,
+        variable_tables,
+        save_rolling_solution,
+        opt_window_length,
+    )
 
     energy_problem = @timeit to "Create internal EnergyProblem for rolling horizon" EnergyProblem(
         connection;
@@ -151,7 +159,15 @@ function run_rolling_horizon(
             break
         end
 
-        ## TODO: Call function to save window solution
+        @timeit to "Save window solution" save_solution_into_tables!(
+            energy_problem,
+            variable_tables,
+            window_id,
+            move_forward,
+            window_start,
+            horizon_length,
+            save_rolling_solution,
+        )
 
         energy_problem.solved = false
     end
@@ -164,7 +180,10 @@ function run_rolling_horizon(
     full_energy_problem.rolling_horizon_energy_problem = energy_problem
 
     # Undo the changes to rep_periods_data and year_data
-    ## TODO: Call function to undo change to input tables
+    @timeit to "undo changes to rolling horizon tables" prepare_tables_to_leave_rolling_horizon!(
+        connection,
+        variable_tables,
+    )
 
     # Export solution
     if output_folder != ""
