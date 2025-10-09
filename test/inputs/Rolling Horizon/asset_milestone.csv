@@ -1,0 +1,5 @@
+asset,initial_storage_level,milestone_year,peak_demand,commodity_price,investable,max_energy_timeframe_partition,min_energy_timeframe_partition,storage_inflows,units_on_cost
+solar,,2030,0.0,0.0,false,,,0.0,
+thermal,,2030,0.0,0.0,false,,,0.0,
+battery,0.0,2030,0.0,0.0,false,,,0.0,
+demand,,2030,100.0,0.0,false,,,0.0,
