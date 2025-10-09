@@ -1,6 +1,7 @@
 export run_rolling_horizon
 
 include("create.jl")
+include("update.jl")
 
 """
     energy_problem = run_rolling_horizon(
@@ -116,7 +117,18 @@ function run_rolling_horizon(
     solved = true
     for (window_id, window_start) in enumerate(1:move_forward:horizon_length)
         # Update Parameters in the model (even for the first time)
-        ## TODO: call update functions
+        @timeit to "update rolling horizon profiles" update_rolling_horizon_profiles!(
+            energy_problem.profiles,
+            window_start,
+            window_start + opt_window_length - 1,
+        )
+        if window_id > 1 # Don't try to update the first initial values
+            @timeit to "update scalar parameters" update_scalar_parameters!(
+                energy_problem.variables,
+                connection,
+                move_forward,
+            )
+        end
 
         @timeit to "Solve internal rolling horizon model" solve_model!(energy_problem)
 
