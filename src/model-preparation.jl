@@ -276,7 +276,6 @@ function add_expression_terms_over_clustered_year_constraints!(
     cases = [(expr_key = :outgoing, asset_match = :from_asset)]
     if is_storage_level
         push!(cases, (expr_key = :incoming, asset_match = :to_asset))
-        attach_coefficient!(cons, :inflows_profile_aggregation, zeros(num_rows))
     end
 
     for case in cases
@@ -422,51 +421,6 @@ function add_expression_terms_over_clustered_year_constraints!(
                 end
             end
         end
-    end
-
-    # Completely separate calculation for inflows_profile_aggregation
-    if is_storage_level
-        cons.coefficients[:inflows_profile_aggregation] .= [
-            row.inflows_agg for row in DuckDB.query(
-                connection,
-                "
-                SELECT
-                    cons.id,
-                    ANY_VALUE(cons.asset) AS asset,
-                    ANY_VALUE(cons.year) AS year,
-                    SUM(COALESCE(other.inflows_agg, 0.0)) AS inflows_agg,
-                FROM cons_balance_storage_over_clustered_year AS cons
-                LEFT JOIN (
-                    SELECT
-                        assets_profiles.asset AS asset,
-                        assets_profiles.commission_year AS year,
-                        rpmap.period AS period,
-                        SUM(COALESCE(profiles.value, 0.0) * rpmap.weight * asset_milestone.storage_inflows) AS inflows_agg,
-                    FROM assets_profiles
-                    LEFT OUTER JOIN profiles_rep_periods AS profiles
-                        ON assets_profiles.profile_name=profiles.profile_name
-                        AND assets_profiles.profile_type='inflows'
-                    LEFT JOIN rep_periods_mapping AS rpmap
-                        ON rpmap.year = assets_profiles.commission_year
-                        AND rpmap.year = profiles.year -- because milestone_year = commission_year
-                        AND rpmap.rep_period = profiles.rep_period
-                    LEFT JOIN asset_milestone
-                        ON asset_milestone.asset = assets_profiles.asset
-                        AND asset_milestone.milestone_year = assets_profiles.commission_year
-                    GROUP BY
-                        assets_profiles.asset,
-                        assets_profiles.commission_year,
-                        rpmap.period
-                    ) AS other
-                    ON cons.asset = other.asset
-                    AND cons.year = other.year
-                    AND cons.period_block_start <= other.period
-                    AND cons.period_block_end >= other.period
-                GROUP BY cons.id
-                ORDER BY cons.id
-                ",
-            )
-        ]
     end
 
     return
@@ -661,6 +615,60 @@ function prepare_profiles_structure(connection)
             ",
         )
     )
+
+    # Creating over_clustered_year profiles of inflows using the inflows
+    # profiles of rep_periods and asset_milestone.storage_inflows
+    for row in DuckDB.query(
+        connection,
+        """
+        SELECT
+            assets_profiles.asset,
+            assets_profiles.profile_name,
+            assets_profiles.commission_year,
+            asset_milestone.storage_inflows
+        FROM assets_profiles
+        LEFT JOIN asset
+            ON assets_profiles.asset = asset.asset
+        LEFT JOIN asset_milestone
+            ON assets_profiles.asset = asset_milestone.asset
+            AND assets_profiles.commission_year = asset_milestone.milestone_year -- commission_year = milestone_year
+        WHERE assets_profiles.profile_type = 'inflows' AND asset.type = 'storage' AND asset.is_seasonal
+        """,
+    )
+        asset = row.asset
+        profile_name = row.profile_name
+        year = row.commission_year
+        storage_inflows = row.storage_inflows
+        values = Float64[
+            row.value for row in DuckDB.query(
+                connection,
+                """
+                WITH cte_profile_rp AS (
+                    SELECT
+                        '$asset' AS asset,
+                        $year AS year,
+                        profiles_rep_periods.rep_period,
+                        profiles_rep_periods.timestep,
+                        profiles_rep_periods.value,
+                    FROM profiles_rep_periods
+                    WHERE profile_name = '$profile_name' AND year = $year
+                )
+                SELECT
+                    rp_map.period,
+                    SUM(cte_profile_rp.value * rp_map.weight * $storage_inflows) AS value,
+                FROM cte_profile_rp
+                LEFT JOIN rep_periods_mapping AS rp_map
+                    ON cte_profile_rp.year = rp_map.year
+                    AND cte_profile_rp.rep_period = rp_map.rep_period
+                GROUP BY rp_map.period
+                ORDER BY rp_map.period
+                """,
+            )
+        ]
+        if length(values) > 0
+            over_clustered_year[(profile_name, year)] = values
+        end
+    end
 
     return ProfileLookup(rep_period, over_clustered_year)
 end
