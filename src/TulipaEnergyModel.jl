@@ -39,6 +39,9 @@ include("data-preparation.jl")
 # Data massage and model preparation
 include("model-preparation.jl")
 
+# Rolling horizon
+include("rolling-horizon/rolling-horizon.jl")
+
 # Model creation
 for folder_name in ["variables", "constraints", "expressions"]
     folder_path = joinpath(@__DIR__, folder_name)

@@ -267,6 +267,7 @@ mutable struct EnergyProblem
     solved::Bool
     objective_value::Float64
     termination_status::JuMP.TerminationStatusCode
+    rolling_horizon_energy_problem::Union{EnergyProblem,Nothing}
 
     """
         EnergyProblem(connection; model_parameters_file = "")
@@ -295,6 +296,7 @@ mutable struct EnergyProblem
             false,
             NaN,
             JuMP.OPTIMIZE_NOT_CALLED,
+            nothing,
         )
 
         return energy_problem
@@ -304,6 +306,7 @@ end
 function Base.show(io::IO, ep::EnergyProblem)
     status_model_creation = !isnothing(ep.model)
     status_model_solved = ep.solved
+    is_rolling_horizon = !isnothing(ep.rolling_horizon_energy_problem)
 
     println(io, "EnergyProblem:")
     if status_model_creation
@@ -319,6 +322,21 @@ function Base.show(io::IO, ep::EnergyProblem)
             io,
             "    - Number of structural constraints: ",
             JuMP.num_constraints(ep.model; count_variable_in_set_constraints = false),
+        )
+    elseif is_rolling_horizon
+        model = ep.rolling_horizon_energy_problem.model
+        println(io, "  - Solved using rolling horizon. Internal model info:")
+        println(io, "    - Number of variables: ", JuMP.num_variables(model))
+        println(
+            io,
+            "    - Number of constraints for variable bounds: ",
+            JuMP.num_constraints(model; count_variable_in_set_constraints = true) -
+            JuMP.num_constraints(model; count_variable_in_set_constraints = false),
+        )
+        println(
+            io,
+            "    - Number of structural constraints: ",
+            JuMP.num_constraints(model; count_variable_in_set_constraints = false),
         )
     else
         println(io, "  - Model not created!")
