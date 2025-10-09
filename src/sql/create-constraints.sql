@@ -1117,7 +1117,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment = true
-    and asset.unit_commitment_method in ('min_up_down', 'min_up_down_2var', '3var-3')
+    and asset.unit_commitment_method in ('3var-E1', '2var-E1', '3var-E3')
 order by
     t_high.asset,
     t_high.year,
@@ -1156,7 +1156,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment = true
-    and asset.unit_commitment_method in ('min_up_down', '3var-3')
+    and asset.unit_commitment_method in ('3var-E1', '3var-E3')
     and asset.investment_method in ('simple', 'none')
 order by
     t_high.asset,
@@ -1196,7 +1196,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment = true
-    and asset.unit_commitment_method in ('min_up_down', '3var-3')
+    and asset.unit_commitment_method in ('3var-E1', '3var-E3')
     and asset.investment_method = 'compact'
 order by
     t_high.asset,
@@ -1235,7 +1235,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method in ('3var-su-sd-ramp', '2var-su-sd-ramp')
+    and asset.unit_commitment_method in ('3var-E2', '2var-E2')
 order by
     t_high.asset,
     t_high.year,
@@ -1273,7 +1273,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method in ('3var-su-sd-ramp')
+    and asset.unit_commitment_method in ('3var-E2')
 order by
     t_high.asset,
     t_high.year,
@@ -1314,7 +1314,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method in ('3var-su-sd-ramp')
+    and asset.unit_commitment_method in ('3var-E2')
 order by
     t_high.asset,
     t_high.year,
@@ -1471,7 +1471,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment = true
-    and asset.unit_commitment_method in ('min_up_down_2var')
+    and asset.unit_commitment_method in ('2var-E1')
     and asset.investment_method in ('simple', 'none')
 order by
     t_high.asset,
@@ -1511,7 +1511,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment = true
-    and asset.unit_commitment_method in ('min_up_down_2var')
+    and asset.unit_commitment_method in ('2var-E1')
     and asset.investment_method = 'compact'
 order by
     t_high.asset,
@@ -1550,7 +1550,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method in ('2var-su-sd-ramp')
+    and asset.unit_commitment_method in ('2var-E2')
 order by
     t_high.asset,
     t_high.year,
@@ -1591,7 +1591,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method in ('2var-su-sd-ramp')
+    and asset.unit_commitment_method in ('2var-E2')
 order by
     t_high.asset,
     t_high.year,
@@ -1626,7 +1626,7 @@ with sorted as (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment
-        and asset.unit_commitment_method = '3var-3'
+        and asset.unit_commitment_method = '3var-E3'
     order by
         t_high.asset,
         t_high.year,
