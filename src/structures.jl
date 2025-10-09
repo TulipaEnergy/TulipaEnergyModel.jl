@@ -63,7 +63,7 @@ mutable struct TulipaConstraint <: TulipaTabularIndex
     table_name::String
     num_rows::Int
     constraint_names::Vector{Symbol}
-    expressions::Dict{Symbol,Vector{JuMP.AffExpr}}
+    expressions::Dict{Symbol,Vector{JuMP.AbstractJuMPScalar}}
     coefficients::Dict{Symbol,Vector{Float64}}
     duals::Dict{Symbol,Vector{Float64}}
 
@@ -153,7 +153,10 @@ This checks that the `container` length matches the stored `indices` number of r
 function attach_expression!(
     cons_or_expr::TulipaTabularIndex,
     name::Symbol,
-    container::Vector{JuMP.AffExpr},
+    container::Union{
+        Vector{JuMP.AffExpr}, # variables
+        Vector{JuMP.AbstractJuMPScalar}, # parameters
+    },
 )
     if length(container) != cons_or_expr.num_rows
         error("The number of expressions does not match the number of rows in the indices of $name")
@@ -209,14 +212,21 @@ function attach_coefficient!(cons::TulipaConstraint, name::Symbol, container)
     return nothing
 end
 
+mutable struct ProfileWithRollingHorizon
+    values::Vector{Float64}
+    rolling_horizon_variables::Vector{JuMP.VariableRef}
+
+    ProfileWithRollingHorizon(values::Vector{Float64}) = new(values, JuMP.VariableRef[])
+end
+
 """
 Structure to hold the dictionaries of profiles.
 """
 mutable struct ProfileLookup
     # The integers here are Int32 because they are obtained directly from DuckDB
-    #
+
     # rep_period[(asset, year, rep_period)]
-    rep_period::Dict{Tuple{String,Int32,Int32},Vector{Float64}}
+    rep_period::Dict{Tuple{String,Int32,Int32},ProfileWithRollingHorizon}
 
     # over_clustered_year[(asset, year)]
     over_clustered_year::Dict{Tuple{String,Int32},Vector{Float64}}
@@ -260,6 +270,7 @@ mutable struct EnergyProblem
     solved::Bool
     objective_value::Float64
     termination_status::JuMP.TerminationStatusCode
+    rolling_horizon_energy_problem::Union{EnergyProblem,Nothing}
 
     """
         EnergyProblem(connection; model_parameters_file = "")
@@ -288,6 +299,7 @@ mutable struct EnergyProblem
             false,
             NaN,
             JuMP.OPTIMIZE_NOT_CALLED,
+            nothing,
         )
 
         return energy_problem
@@ -297,6 +309,7 @@ end
 function Base.show(io::IO, ep::EnergyProblem)
     status_model_creation = !isnothing(ep.model)
     status_model_solved = ep.solved
+    is_rolling_horizon = !isnothing(ep.rolling_horizon_energy_problem)
 
     println(io, "EnergyProblem:")
     if status_model_creation
@@ -312,6 +325,21 @@ function Base.show(io::IO, ep::EnergyProblem)
             io,
             "    - Number of structural constraints: ",
             JuMP.num_constraints(ep.model; count_variable_in_set_constraints = false),
+        )
+    elseif is_rolling_horizon
+        model = ep.rolling_horizon_energy_problem.model
+        println(io, "  - Solved using rolling horizon. Internal model info:")
+        println(io, "    - Number of variables: ", JuMP.num_variables(model))
+        println(
+            io,
+            "    - Number of constraints for variable bounds: ",
+            JuMP.num_constraints(model; count_variable_in_set_constraints = true) -
+            JuMP.num_constraints(model; count_variable_in_set_constraints = false),
+        )
+        println(
+            io,
+            "    - Number of structural constraints: ",
+            JuMP.num_constraints(model; count_variable_in_set_constraints = false),
         )
     else
         println(io, "  - Model not created!")

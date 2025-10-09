@@ -69,9 +69,19 @@ function create_model(
     model_file_name = "",
     enable_names = true,
     direct_model = false,
+    rolling_horizon = false,
+    rolling_horizon_window_length = 0,
 )
+    if rolling_horizon
+        @assert rolling_horizon_window_length > 0
+    end
+
     ## Optimizer
-    optimizer_with_attributes = JuMP.optimizer_with_attributes(optimizer, optimizer_parameters...)
+    optimizer_with_attributes = if rolling_horizon
+        JuMP.optimizer_with_attributes(() -> POI.Optimizer(optimizer()), optimizer_parameters...)
+    else
+        JuMP.optimizer_with_attributes(optimizer, optimizer_parameters...)
+    end
 
     ## Model
     if direct_model
@@ -81,6 +91,14 @@ function create_model(
     end
 
     JuMP.set_string_names_on_creation(model, enable_names)
+
+    # Cleanup temporary t_grouped_% tables so they don't conflict with future ones
+    # t_grouped_% are special because they are created inside the `add_expression_terms_rep_period_constraints`
+    # and reused if they exist. It's easier to delete them if they exist,
+    # instead of keeping track of their existence in a possible exception state.
+    for row in DuckDB.query(connection, "FROM duckdb_tables() WHERE table_name LIKE 't_grouped_%'")
+        DuckDB.query(connection, "DROP TABLE $(row.table_name)")
+    end
 
     ## Variables
     @timeit to "add_flow_variables!" add_flow_variables!(connection, model, variables)
@@ -104,6 +122,17 @@ function create_model(
         variables,
         constraints,
     )
+
+    ## Rolling Horizon Parameters
+    if rolling_horizon
+        add_rolling_horizon_parameters!(
+            connection,
+            model,
+            variables,
+            profiles,
+            rolling_horizon_window_length,
+        )
+    end
 
     ## Expressions
     expressions = Dict{Symbol,TulipaExpression}()
@@ -157,7 +186,8 @@ function create_model(
         variables,
         expressions,
         constraints,
-        profiles,
+        profiles;
+        rolling_horizon,
     )
 
     @timeit to "add_hub_constraints!" add_hub_constraints!(model, constraints)

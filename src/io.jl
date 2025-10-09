@@ -67,45 +67,29 @@ function export_solution_to_csv_files(output_folder, energy_problem::EnergyProbl
     if !energy_problem.solved
         error("The energy_problem has not been solved yet.")
     end
-    export_solution_to_csv_files(
-        output_folder,
-        energy_problem.db_connection,
-        energy_problem.variables,
-        energy_problem.constraints,
-    )
+    export_solution_to_csv_files(output_folder, energy_problem.db_connection)
     return
 end
 
 """
-    export_solution_to_csv_files(output_file, connection, variables, constraints)
+    export_solution_to_csv_files(output_file, connection)
 
 Saves the solution in CSV files inside `output_folder`.
-Notice that this assumes that the solution has been computed by [`save_solution!`](@ref).
+Notice that this assumes that the solution has already been computed (e.g., by
+[`save_solution!`](@ref), or using rolling horizon).
 """
-function export_solution_to_csv_files(output_folder, connection, variables, constraints)
+function export_solution_to_csv_files(output_folder, connection)
     # Save each variable
-    for (name, var) in variables
-        if length(var.container) == 0
-            continue
+    for prefix in ("var", "cons")
+        for table_name in [
+            row.table_name for row in DuckDB.query(
+                connection,
+                "FROM duckdb_tables() WHERE table_name LIKE '$(prefix)_%' AND estimated_size > 0",
+            )
+        ]
+            output_file = joinpath(output_folder, "$table_name.csv")
+            DuckDB.execute(connection, "COPY $table_name TO '$output_file' (HEADER, DELIMITER ',')")
         end
-        output_file = joinpath(output_folder, "var_$name.csv")
-        DuckDB.execute(
-            connection,
-            "COPY $(var.table_name) TO '$output_file' (HEADER, DELIMITER ',')",
-        )
-    end
-
-    # Save each constraint
-    for (name, cons) in constraints
-        if cons.num_rows == 0
-            continue
-        end
-
-        output_file = joinpath(output_folder, "cons_$name.csv")
-        DuckDB.execute(
-            connection,
-            "COPY $(cons.table_name) TO '$output_file' (HEADER, DELIMITER ',')",
-        )
     end
 
     return

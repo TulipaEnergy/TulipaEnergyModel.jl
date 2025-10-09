@@ -15,6 +15,7 @@ using TulipaIO: TulipaIO
 using HiGHS: HiGHS
 using JuMP: JuMP, @constraint, @expression, @objective, @variable
 using MathOptInterface: MathOptInterface
+using ParametricOptInterface: ParametricOptInterface as POI
 
 ## Others
 using LinearAlgebra: LinearAlgebra
@@ -25,10 +26,10 @@ using TimerOutputs: TimerOutput, @timeit
 const to = TimerOutput()
 
 # Definitions and auxiliary files
-include("utils.jl")
 include("run-scenario.jl")
 include("model-parameters.jl")
 include("structures.jl")
+include("utils.jl")
 
 # Data
 include("input-schemas.jl")
@@ -38,6 +39,9 @@ include("data-preparation.jl")
 
 # Data massage and model preparation
 include("model-preparation.jl")
+
+# Rolling horizon
+include("rolling-horizon/rolling-horizon.jl")
 
 # Model creation
 for folder_name in ["variables", "constraints", "expressions"]
