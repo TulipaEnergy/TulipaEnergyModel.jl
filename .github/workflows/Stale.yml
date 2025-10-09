@@ -13,8 +13,8 @@ jobs:
           stale-issue-message: This issue is stale because it has been open 2 months with no activity. Remove the stale label or comment, otherwise this will be closed in 5 days.
           stale-pr-message: This PR is stale because it has been open 1 month with no activity. Remove stale label or comment to revive it.
           stale-issue-label: stale
-          exempt-issue-labels: "Type: bug"
+          exempt-issue-labels: "bug"
           days-before-issue-stale: 60
           days-before-pr-stale: 30
-          days-before-close: -1
-          days-before-pr-close: -1
+          days-before-close: 7
+          days-before-pr-close: 7
