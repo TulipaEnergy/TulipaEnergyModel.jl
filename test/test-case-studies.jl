@@ -148,6 +148,9 @@ end
     dir = joinpath(INPUT_FOLDER, "Rolling Horizon")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    @test energy_problem.objective_value ≈ 410873.9 rtol = 1e-5
+    # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test energy_problem.objective_value ≈ 410873.9 rtol = 1e-5
