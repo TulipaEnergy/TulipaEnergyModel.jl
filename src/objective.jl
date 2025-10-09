@@ -392,7 +392,7 @@ function _create_objective_auxiliary_table(connection, constants)
     # Same for flows
     DuckDB.execute(
         connection,
-        " CREATE OR REPLACE TEMP TABLE t_discount_assets_in_between_milestone_years AS
+        "CREATE OR REPLACE TEMP TABLE t_discount_assets_in_between_milestone_years AS
         WITH milestones AS (
             SELECT
                 asset,
@@ -427,7 +427,7 @@ function _create_objective_auxiliary_table(connection, constants)
 
     DuckDB.execute(
         connection,
-        " CREATE OR REPLACE TEMP TABLE t_discount_flows_in_between_milestone_years AS
+        "CREATE OR REPLACE TEMP TABLE t_discount_flows_in_between_milestone_years AS
         WITH milestones AS (
             SELECT
                 from_asset,
@@ -531,19 +531,28 @@ function _create_objective_auxiliary_table(connection, constants)
             -- computed
             (asset_milestone.commodity_price / asset_commission.efficiency) AS fuel_cost,
             (fuel_cost + flow_milestone.operational_cost) AS total_variable_cost,
-            flow.discount_rate / (
-                (1 + flow.discount_rate) *
-                (1 - 1 / ((1 + flow.discount_rate) ** flow.economic_lifetime))
-            ) * flow_commission.investment_cost AS annualized_cost,
-            IF(
-                flow_milestone.milestone_year + flow.economic_lifetime > $(constants.end_of_horizon) + 1,
-                -annualized_cost * (
-                    (1 / (1 + flow.discount_rate))^(
-                        flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1
-                    ) - 1
-                ) / flow.discount_rate,
-                0.0
-            ) AS salvage_value,
+            CASE
+                -- the below closed-form equation does not accept 0 in the denominator when flow.discount_rate = 0
+                WHEN flow.discount_rate = 0
+                    THEN flow_commission.investment_cost / flow.economic_lifetime
+                ELSE flow.discount_rate / (
+                    (1 + flow.discount_rate) *
+                    (1 - 1 / ((1 + flow.discount_rate) ** flow.economic_lifetime))
+                    ) * flow_commission.investment_cost
+            END AS annualized_cost,
+            CASE
+                WHEN flow_milestone.milestone_year + flow.economic_lifetime <= $(constants.end_of_horizon) + 1
+                    THEN 0.0
+                -- the below closed-form equation does not accept flow.discount_rate = 0 in the denominator
+                WHEN flow.discount_rate = 0
+                    THEN annualized_cost *
+                        (flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1)
+                ELSE -annualized_cost * (
+                        (1 / (1 + flow.discount_rate)) ^ (
+                            flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1
+                        ) - 1
+                    ) / flow.discount_rate
+            END AS salvage_value,
             1 / (1 + $(constants.social_rate))^(flow_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
             investment_year_discount * (1 - salvage_value / flow_commission.investment_cost) AS weight_for_flow_investment_discount,
             in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
@@ -593,19 +602,28 @@ function _create_objective_auxiliary_table(connection, constants)
             -- computed
             (asset_milestone.commodity_price / asset_commission.efficiency) AS fuel_cost,
             (fuel_cost + flow_milestone.operational_cost) AS total_variable_cost,
-            flow.discount_rate / (
-                (1 + flow.discount_rate) *
-                (1 - 1 / ((1 + flow.discount_rate) ** flow.economic_lifetime))
-            ) * flow_commission.investment_cost AS annualized_cost,
-            IF(
-                flow_milestone.milestone_year + flow.economic_lifetime > $(constants.end_of_horizon) + 1,
-                -annualized_cost * (
-                    (1 / (1 + flow.discount_rate))^(
-                        flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1
-                    ) - 1
-                ) / flow.discount_rate,
-                0.0
-            ) AS salvage_value,
+            CASE
+                -- the below closed-form equation does not accept 0 in the denominator when flow.discount_rate = 0
+                WHEN flow.discount_rate = 0
+                    THEN flow_commission.investment_cost / flow.economic_lifetime
+                ELSE flow.discount_rate / (
+                    (1 + flow.discount_rate) *
+                    (1 - 1 / ((1 + flow.discount_rate) ** flow.economic_lifetime))
+                    ) * flow_commission.investment_cost
+            END AS annualized_cost,
+            CASE
+                WHEN flow_milestone.milestone_year + flow.economic_lifetime <= $(constants.end_of_horizon) + 1
+                    THEN 0.0
+                -- the below closed-form equation does not accept flow.discount_rate = 0 in the denominator
+                WHEN flow.discount_rate = 0
+                    THEN annualized_cost *
+                        (flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1)
+                ELSE -annualized_cost * (
+                        (1 / (1 + flow.discount_rate)) ^ (
+                            flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1
+                        ) - 1
+                    ) / flow.discount_rate
+            END AS salvage_value,
             1 / (1 + $(constants.social_rate))^(flow_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
             investment_year_discount * (1 - salvage_value / flow_commission.investment_cost) AS weight_for_flow_investment_discount,
             in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
