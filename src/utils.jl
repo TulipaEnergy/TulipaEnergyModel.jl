@@ -27,11 +27,35 @@ If `profiles[tuple_key]` exists, then this function computes the aggregation of 
 over the range `time_block` using the aggregator `agg_function`, i.e., `agg_function(V[time_block])`.
 If it does not exist, then `V[time_block]` is substituted by a vector of the corresponding size and `default_value`.
 """
-function _profile_aggregate(profiles, tuple_key::Tuple, time_block, agg_function, default_value)
+function _profile_aggregate(
+    profiles::Dict, # either rep_period or over_clustered_year
+    tuple_key::Tuple,
+    time_block,
+    agg_function,
+    default_value,
+)
     if any(ismissing, tuple_key) || !haskey(profiles, tuple_key)
         return agg_function(Iterators.repeated(default_value, length(time_block)))
     end
-    profile_value = profiles[tuple_key]
+    profile_object = profiles[tuple_key]
+
+    return _profile_aggregate(profile_object, time_block, agg_function)
+end
+
+function _profile_aggregate(profile_object::Vector{Float64}, time_block, agg_function)
+    return agg_function(skipmissing(profile_object[time_block]))
+end
+
+function _profile_aggregate(profile_object::ProfileWithRollingHorizon, time_block, agg_function)
+    # Rolling horizon is inferred by the existence of rolling_horizon_variables
+    is_rolling_horizon = length(profile_object.rolling_horizon_variables) > 0
+
+    profile_value = if is_rolling_horizon
+        profile_object.rolling_horizon_variables
+    else
+        profile_object.values
+    end
+
     return agg_function(skipmissing(profile_value[time_block]))
 end
 
