@@ -186,7 +186,8 @@ function create_model(
         variables,
         expressions,
         constraints,
-        profiles,
+        profiles;
+        rolling_horizon,
     )
 
     @timeit to "add_hub_constraints!" add_hub_constraints!(model, constraints)
