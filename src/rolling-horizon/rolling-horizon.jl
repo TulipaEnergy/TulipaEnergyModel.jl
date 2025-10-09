@@ -1,5 +1,7 @@
 export run_rolling_horizon
 
+include("create.jl")
+
 """
     energy_problem = run_rolling_horizon(
         connection,
