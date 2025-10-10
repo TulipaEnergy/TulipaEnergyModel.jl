@@ -496,7 +496,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and (asset.unit_commitment_method = basic
+    and (asset.unit_commitment_method = 'basic'
         or asset.unit_commitment_method LIKE '1var-E%' 
         or asset.unit_commitment_method LIKE '%var-E2'
         or asset.unit_commitment_method = '3var-E3'
