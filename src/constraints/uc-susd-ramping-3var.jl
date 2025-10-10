@@ -16,9 +16,9 @@ function add_su_sd_ramping_with_vars_constraints!(
     indices_dict = Dict(
         table_name => _append_su_sd_ramp_vars_data_to_indices(connection, table_name) for
         table_name in (
-            :su_ramping_3var_flow_diff,
+            :su_ramping_2_3_var_flow_diff,
             :sd_ramping_3var_flow_diff,
-            :su_ramping_3var_flow_upper_bound,
+            :su_ramping_2_3_var_flow_upper_bound,
             :sd_ramping_3var_flow_upper_bound,
             :susd_ramping_3var_flow_unaligned_uc,
         )
@@ -39,16 +39,16 @@ function add_su_sd_ramping_with_vars_constraints!(
                 ) * row.capacity for row in indices
             ]
         end for table_name in (
-            :su_ramping_3var_flow_diff,
+            :su_ramping_2_3_var_flow_diff,
             :sd_ramping_3var_flow_diff,
-            :su_ramping_3var_flow_upper_bound,
+            :su_ramping_2_3_var_flow_upper_bound,
             :sd_ramping_3var_flow_upper_bound,
             :susd_ramping_3var_flow_unaligned_uc,
         )
     )
 
     # constraint 13a - start-up ramping flow difference
-    let table_name = :su_ramping_3var_flow_diff, cons = constraints[table_name]
+    let table_name = :su_ramping_2_3_var_flow_diff, cons = constraints[table_name]
         units_on = cons.expressions[:units_on]
         start_up = cons.expressions[:start_up]
         flow_total = cons.expressions[:outgoing]
@@ -121,7 +121,7 @@ function add_su_sd_ramping_with_vars_constraints!(
     end
 
     # constraint 13b - start-up ramping flow upper bound
-    let table_name = :su_ramping_3var_flow_upper_bound, cons = constraints[table_name]
+    let table_name = :su_ramping_2_3_var_flow_upper_bound, cons = constraints[table_name]
         units_on = cons.expressions[:units_on]
         start_up = cons.expressions[:start_up]
         shut_down = cons.expressions[:shut_down]
