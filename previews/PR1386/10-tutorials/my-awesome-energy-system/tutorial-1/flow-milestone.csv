@@ -1,0 +1,9 @@
+from_asset,to_asset,milestone_year,operational_cost
+wind,e_demand,2030,5
+ccgt,e_demand,2030,50
+ocgt,e_demand,2030,70
+solar,e_demand,2030,10
+ens,e_demand,2030,180
+wind,electrolizer,2030,5
+electrolizer,h2_demand,2030,0
+smr_ccs,h2_demand,2030,100
