@@ -209,14 +209,21 @@ function attach_coefficient!(cons::TulipaConstraint, name::Symbol, container)
     return nothing
 end
 
+mutable struct ProfileWithRollingHorizon
+    values::Vector{Float64}
+    rolling_horizon_variables::Vector{JuMP.VariableRef}
+
+    ProfileWithRollingHorizon(values::Vector{Float64}) = new(values, JuMP.VariableRef[])
+end
+
 """
 Structure to hold the dictionaries of profiles.
 """
 mutable struct ProfileLookup
     # The integers here are Int32 because they are obtained directly from DuckDB
-    #
+
     # rep_period[(asset, year, rep_period)]
-    rep_period::Dict{Tuple{String,Int32,Int32},Vector{Float64}}
+    rep_period::Dict{Tuple{String,Int32,Int32},ProfileWithRollingHorizon}
 
     # over_clustered_year[(asset, year)]
     over_clustered_year::Dict{Tuple{String,Int32},Vector{Float64}}
