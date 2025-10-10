@@ -54,4 +54,22 @@ jobs:
           JULIA_PKG_SERVER: ""
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+          PUSH_PREVIEW: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # true if PR is from same repo
           GKSwstype: "100" # https://discourse.julialang.org/t/generation-of-documentation-fails-qt-qpa-xcb-could-not-connect-to-display/60988
+      - name: Find comment for preview link
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: peter-evans/find-comment@v4
+        id: docpreview
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: Check the documentation preview
+      - name: Comment on PR
+        if: github.event.pull_request.head.repo.full_name == github.repository && steps.docpreview.outputs.comment-id == 0
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          comment-id: ${{ steps.docpreview.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            :memo: Check the documentation preview: https://tulipaenergy.github.io/TulipaEnergyModel.jl/previews/PR${{ github.event.number }}
+          edit-mode: replace

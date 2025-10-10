@@ -41,4 +41,10 @@ makedocs(;
     ],
 )
 
-deploydocs(; repo = "github.com/TulipaEnergy/TulipaEnergyModel.jl")
+env_push_preview = get(ENV, "PUSH_PREVIEW", "false")
+push_preview = tryparse(Bool, env_push_preview)
+if isnothing(push_preview)
+    @warn """Couldn't parse '$env_push_preview' into a Bool"""
+    push_preview = false
+end
+deploydocs(; repo = "github.com/TulipaEnergy/TulipaEnergyModel.jl", push_preview)
