@@ -451,6 +451,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment
+    and asset.unit_commitment_method != '3var-E3'
 ;
 
 drop sequence id
@@ -472,7 +473,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment
-    and asset.unit_commitment_method = 'basic'
+    and asset.unit_commitment_method != '3var-E3'
 ;
 
 drop sequence id
@@ -495,7 +496,11 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method = 'basic'
+    and (asset.unit_commitment_method = basic
+        or asset.unit_commitment_method LIKE '1var-E%' 
+        or asset.unit_commitment_method LIKE '%var-E2'
+        or asset.unit_commitment_method = '3var-E3'
+    )
 ;
 
 drop sequence id
@@ -518,7 +523,6 @@ where
     asset.type in ('producer', 'storage', 'conversion')
     and asset.ramping
     and not asset.unit_commitment
-    and asset.unit_commitment_method != 'basic'
 ;
 
 drop sequence id
@@ -528,43 +532,6 @@ create sequence id start 1
 ;
 
 drop table if exists cons_su_ramping_tight_1bin
-;
-
-create table cons_su_ramping_tight_1bin as
-select
-    nextval('id') as id,
-    t_high.*
-from
-    t_highest_assets_and_out_flows as t_high
-    left join asset on t_high.asset = asset.asset
-where
-    asset.type in ('producer', 'conversion')
-    and asset.ramping
-    and asset.unit_commitment
-    and asset.unit_commitment_method = '1bin-1T'
-;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
-drop table if exists cons_sd_ramping_tight_1bin
-;
-
-create table cons_sd_ramping_tight_1bin as
-select
-    nextval('id') as id,
-    t_high.*
-from
-    t_highest_assets_and_out_flows as t_high
-    left join asset on t_high.asset = asset.asset
-where
-    asset.type in ('producer', 'conversion')
-    and asset.ramping
-    and asset.unit_commitment
-    and asset.unit_commitment_method = '1bin-1T'
 ;
 
 drop sequence id
@@ -856,7 +823,8 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var%'
+        and (asset.unit_commitment_method LIKE '3var%'
+        or asset.unit_commitment_method LIKE '2var%')
     order by
         t_high.asset,
         t_high.year,
@@ -1023,7 +991,8 @@ with sorted as (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method = 'SU-SD-compact'
+        and (asset.unit_commitment_method LIKE '3var%' 
+        or asset.unit_commitment_method LIKE '2var%')
     order by
         t_high.asset,
         t_high.year,
@@ -1071,7 +1040,7 @@ with sorted as (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method = 'SU-SD-compact'
+        and asset.unit_commitment_method LIKE '3var%'
     order by
         t_high.asset,
         t_high.year,
@@ -1372,7 +1341,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method like '1var-1%'
+    and asset.unit_commitment_method like '1var-E2%T%'
 ;
 
 drop sequence id
@@ -1395,7 +1364,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method like '1var-1%'
+    and asset.unit_commitment_method like '1var-E2%T%'
 ;
 
 drop sequence id
@@ -1418,7 +1387,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method = '1var-1T'
+    and asset.unit_commitment_method = '1var-E2%C%'
 ;
 
 drop sequence id
@@ -1441,7 +1410,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method = '1var-1T'
+    and asset.unit_commitment_method = '1var-E2%C%'
 ;
 
 drop sequence id

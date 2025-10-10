@@ -208,12 +208,13 @@
         "oneOf": [
           null,
           "basic",
-          "SU-SD-compact",
-          "3var-E1",
-          "1var-1C",
-          "1var-1T",
+          "1var-E2C",
+          "1var-E2T",
+          "1var-E2CT",
+          "1var-E2TC",
           "2var-E1",
           "2var-E2",
+          "3var-E1",
           "3var-E2",
           "3var-E3"
         ]
