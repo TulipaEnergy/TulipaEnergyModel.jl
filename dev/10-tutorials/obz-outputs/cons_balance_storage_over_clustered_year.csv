@@ -524,7 +524,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 523,AT_Pump_Hydro_Closed,2050,158,158,-0.0,0.0,0.0
 524,AT_Pump_Hydro_Closed,2050,159,159,-0.0,0.0,0.0
 525,AT_Pump_Hydro_Closed,2050,160,160,-0.0,0.0,0.0
-526,AT_Pump_Hydro_Closed,2050,161,161,-0.0,0.0,0.0
+526,AT_Pump_Hydro_Closed,2050,161,161,-0.0,-0.0,0.0
 527,AT_Pump_Hydro_Closed,2050,162,162,-0.0,0.0,0.0
 528,AT_Pump_Hydro_Closed,2050,163,163,-0.0,0.0,0.0
 529,AT_Pump_Hydro_Closed,2050,164,164,-0.0,0.0,0.0
@@ -889,7 +889,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 888,AT_Pump_Hydro_Open,2050,158,158,-0.0,0.0,0.0
 889,AT_Pump_Hydro_Open,2050,159,159,-0.0,0.0,0.0
 890,AT_Pump_Hydro_Open,2050,160,160,-0.0,0.0,0.0
-891,AT_Pump_Hydro_Open,2050,161,161,-0.0,0.0,0.0
+891,AT_Pump_Hydro_Open,2050,161,161,-0.0,-0.0,0.0
 892,AT_Pump_Hydro_Open,2050,162,162,-0.0,0.0,0.0
 893,AT_Pump_Hydro_Open,2050,163,163,-0.0,0.0,0.0
 894,AT_Pump_Hydro_Open,2050,164,164,-0.0,0.0,0.0
@@ -2349,7 +2349,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 2348,CH_Pump_Hydro_Closed,2050,158,158,-0.0,0.0,0.0
 2349,CH_Pump_Hydro_Closed,2050,159,159,-0.0,0.0,0.0
 2350,CH_Pump_Hydro_Closed,2050,160,160,-0.0,0.0,0.0
-2351,CH_Pump_Hydro_Closed,2050,161,161,-0.0,0.0,0.0
+2351,CH_Pump_Hydro_Closed,2050,161,161,-0.0,-0.0,0.0
 2352,CH_Pump_Hydro_Closed,2050,162,162,-0.0,0.0,0.0
 2353,CH_Pump_Hydro_Closed,2050,163,163,-0.0,0.0,0.0
 2354,CH_Pump_Hydro_Closed,2050,164,164,-0.0,0.0,0.0
@@ -2645,7 +2645,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 2644,CH_Pump_Hydro_Open,2050,89,89,-0.0,0.0,0.0
 2645,CH_Pump_Hydro_Open,2050,90,90,-0.0,0.0,0.0
 2646,CH_Pump_Hydro_Open,2050,91,91,-0.0,0.0,0.0
-2647,CH_Pump_Hydro_Open,2050,92,92,-0.0,0.0,0.0
+2647,CH_Pump_Hydro_Open,2050,92,92,-0.0,-0.0,0.0
 2648,CH_Pump_Hydro_Open,2050,93,93,-0.0,0.0,0.0
 2649,CH_Pump_Hydro_Open,2050,94,94,-0.0,0.0,0.0
 2650,CH_Pump_Hydro_Open,2050,95,95,-0.0,0.0,0.0
@@ -4517,7 +4517,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 4516,DE_Pump_Hydro_Closed,2050,136,136,-0.0,0.0,0.0
 4517,DE_Pump_Hydro_Closed,2050,137,137,-0.0,0.0,0.0
 4518,DE_Pump_Hydro_Closed,2050,138,138,-0.0,0.0,0.0
-4519,DE_Pump_Hydro_Closed,2050,139,139,-0.0,0.0,0.0
+4519,DE_Pump_Hydro_Closed,2050,139,139,-0.0,-0.0,0.0
 4520,DE_Pump_Hydro_Closed,2050,140,140,-0.0,0.0,0.0
 4521,DE_Pump_Hydro_Closed,2050,141,141,-0.0,0.0,0.0
 4522,DE_Pump_Hydro_Closed,2050,142,142,-0.0,0.0,0.0
@@ -4539,7 +4539,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 4538,DE_Pump_Hydro_Closed,2050,158,158,-0.0,0.0,0.0
 4539,DE_Pump_Hydro_Closed,2050,159,159,-0.0,0.0,0.0
 4540,DE_Pump_Hydro_Closed,2050,160,160,-0.0,0.0,0.0
-4541,DE_Pump_Hydro_Closed,2050,161,161,-0.0,0.0,0.0
+4541,DE_Pump_Hydro_Closed,2050,161,161,-0.0,-0.0,0.0
 4542,DE_Pump_Hydro_Closed,2050,162,162,-0.0,0.0,0.0
 4543,DE_Pump_Hydro_Closed,2050,163,163,-0.0,0.0,0.0
 4544,DE_Pump_Hydro_Closed,2050,164,164,-0.0,0.0,0.0
@@ -4904,7 +4904,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 4903,DE_Pump_Hydro_Open,2050,158,158,-0.0,0.0,0.0
 4904,DE_Pump_Hydro_Open,2050,159,159,-0.0,0.0,0.0
 4905,DE_Pump_Hydro_Open,2050,160,160,-0.0,0.0,0.0
-4906,DE_Pump_Hydro_Open,2050,161,161,-0.0,0.0,0.0
+4906,DE_Pump_Hydro_Open,2050,161,161,-0.0,-0.0,0.0
 4907,DE_Pump_Hydro_Open,2050,162,162,-0.0,0.0,0.0
 4908,DE_Pump_Hydro_Open,2050,163,163,-0.0,0.0,0.0
 4909,DE_Pump_Hydro_Open,2050,164,164,-0.0,0.0,0.0
@@ -5634,7 +5634,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 5633,ES_Pump_Hydro_Closed,2050,158,158,-0.0,0.0,0.0
 5634,ES_Pump_Hydro_Closed,2050,159,159,-0.0,0.0,0.0
 5635,ES_Pump_Hydro_Closed,2050,160,160,-0.0,0.0,0.0
-5636,ES_Pump_Hydro_Closed,2050,161,161,-0.0,0.0,0.0
+5636,ES_Pump_Hydro_Closed,2050,161,161,-0.0,-0.0,0.0
 5637,ES_Pump_Hydro_Closed,2050,162,162,-0.0,0.0,0.0
 5638,ES_Pump_Hydro_Closed,2050,163,163,-0.0,0.0,0.0
 5639,ES_Pump_Hydro_Closed,2050,164,164,-0.0,0.0,0.0
@@ -5934,7 +5934,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 5933,ES_Pump_Hydro_Open,2050,93,93,-0.0,0.0,0.0
 5934,ES_Pump_Hydro_Open,2050,94,94,-0.0,0.0,0.0
 5935,ES_Pump_Hydro_Open,2050,95,95,-0.0,0.0,0.0
-5936,ES_Pump_Hydro_Open,2050,96,96,-0.0,0.0,0.0
+5936,ES_Pump_Hydro_Open,2050,96,96,-0.0,-0.0,0.0
 5937,ES_Pump_Hydro_Open,2050,97,97,-0.0,0.0,0.0
 5938,ES_Pump_Hydro_Open,2050,98,98,-0.0,0.0,0.0
 5939,ES_Pump_Hydro_Open,2050,99,99,-0.0,0.0,0.0
@@ -6664,7 +6664,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 6663,FR_Hydro_Reservoir,2050,93,93,-0.0,0.0,0.0
 6664,FR_Hydro_Reservoir,2050,94,94,-0.0,0.0,0.0
 6665,FR_Hydro_Reservoir,2050,95,95,-0.0,0.0,0.0
-6666,FR_Hydro_Reservoir,2050,96,96,-0.0,0.0,0.0
+6666,FR_Hydro_Reservoir,2050,96,96,-0.0,-0.0,0.0
 6667,FR_Hydro_Reservoir,2050,97,97,-0.0,0.0,0.0
 6668,FR_Hydro_Reservoir,2050,98,98,-0.0,0.0,0.0
 6669,FR_Hydro_Reservoir,2050,99,99,-0.0,0.0,0.0
@@ -7094,7 +7094,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 7093,FR_Pump_Hydro_Closed,2050,158,158,-0.0,0.0,0.0
 7094,FR_Pump_Hydro_Closed,2050,159,159,-0.0,0.0,0.0
 7095,FR_Pump_Hydro_Closed,2050,160,160,-0.0,0.0,0.0
-7096,FR_Pump_Hydro_Closed,2050,161,161,-0.0,0.0,0.0
+7096,FR_Pump_Hydro_Closed,2050,161,161,-0.0,-0.0,0.0
 7097,FR_Pump_Hydro_Closed,2050,162,162,-0.0,0.0,0.0
 7098,FR_Pump_Hydro_Closed,2050,163,163,-0.0,0.0,0.0
 7099,FR_Pump_Hydro_Closed,2050,164,164,-0.0,0.0,0.0
@@ -7459,7 +7459,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 7458,FR_Pump_Hydro_Open,2050,158,158,-0.0,0.0,0.0
 7459,FR_Pump_Hydro_Open,2050,159,159,-0.0,0.0,0.0
 7460,FR_Pump_Hydro_Open,2050,160,160,-0.0,0.0,0.0
-7461,FR_Pump_Hydro_Open,2050,161,161,-0.0,0.0,0.0
+7461,FR_Pump_Hydro_Open,2050,161,161,-0.0,-0.0,0.0
 7462,FR_Pump_Hydro_Open,2050,162,162,-0.0,0.0,0.0
 7463,FR_Pump_Hydro_Open,2050,163,163,-0.0,0.0,0.0
 7464,FR_Pump_Hydro_Open,2050,164,164,-0.0,0.0,0.0
@@ -8854,7 +8854,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 8853,HR_Hydro_Reservoir,2050,93,93,-0.0,0.0,0.0
 8854,HR_Hydro_Reservoir,2050,94,94,-0.0,0.0,0.0
 8855,HR_Hydro_Reservoir,2050,95,95,-0.0,0.0,0.0
-8856,HR_Hydro_Reservoir,2050,96,96,-0.0,0.0,0.0
+8856,HR_Hydro_Reservoir,2050,96,96,-0.0,-0.0,0.0
 8857,HR_Hydro_Reservoir,2050,97,97,-0.0,0.0,0.0
 8858,HR_Hydro_Reservoir,2050,98,98,-0.0,0.0,0.0
 8859,HR_Hydro_Reservoir,2050,99,99,-0.0,0.0,0.0
@@ -9284,7 +9284,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 9283,HR_Pump_Hydro_Open,2050,158,158,-0.0,0.0,0.0
 9284,HR_Pump_Hydro_Open,2050,159,159,-0.0,0.0,0.0
 9285,HR_Pump_Hydro_Open,2050,160,160,-0.0,0.0,0.0
-9286,HR_Pump_Hydro_Open,2050,161,161,-0.0,0.0,0.0
+9286,HR_Pump_Hydro_Open,2050,161,161,-0.0,-0.0,0.0
 9287,HR_Pump_Hydro_Open,2050,162,162,-0.0,0.0,0.0
 9288,HR_Pump_Hydro_Open,2050,163,163,-0.0,0.0,0.0
 9289,HR_Pump_Hydro_Open,2050,164,164,-0.0,0.0,0.0
@@ -9949,7 +9949,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 9948,IT_Hydro_Reservoir,2050,93,93,-0.0,0.0,0.0
 9949,IT_Hydro_Reservoir,2050,94,94,-0.0,0.0,0.0
 9950,IT_Hydro_Reservoir,2050,95,95,-0.0,0.0,0.0
-9951,IT_Hydro_Reservoir,2050,96,96,-0.0,0.0,0.0
+9951,IT_Hydro_Reservoir,2050,96,96,-0.0,-0.0,0.0
 9952,IT_Hydro_Reservoir,2050,97,97,-0.0,0.0,0.0
 9953,IT_Hydro_Reservoir,2050,98,98,-0.0,0.0,0.0
 9954,IT_Hydro_Reservoir,2050,99,99,-0.0,0.0,0.0
@@ -10379,7 +10379,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 10378,IT_Pump_Hydro_Closed,2050,158,158,-0.0,0.0,0.0
 10379,IT_Pump_Hydro_Closed,2050,159,159,-0.0,0.0,0.0
 10380,IT_Pump_Hydro_Closed,2050,160,160,-0.0,0.0,0.0
-10381,IT_Pump_Hydro_Closed,2050,161,161,-0.0,0.0,0.0
+10381,IT_Pump_Hydro_Closed,2050,161,161,-0.0,-0.0,0.0
 10382,IT_Pump_Hydro_Closed,2050,162,162,-0.0,0.0,0.0
 10383,IT_Pump_Hydro_Closed,2050,163,163,-0.0,0.0,0.0
 10384,IT_Pump_Hydro_Closed,2050,164,164,-0.0,0.0,0.0
@@ -10744,7 +10744,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 10743,IT_Pump_Hydro_Open,2050,158,158,-0.0,0.0,0.0
 10744,IT_Pump_Hydro_Open,2050,159,159,-0.0,0.0,0.0
 10745,IT_Pump_Hydro_Open,2050,160,160,-0.0,0.0,0.0
-10746,IT_Pump_Hydro_Open,2050,161,161,-0.0,0.0,0.0
+10746,IT_Pump_Hydro_Open,2050,161,161,-0.0,-0.0,0.0
 10747,IT_Pump_Hydro_Open,2050,162,162,-0.0,0.0,0.0
 10748,IT_Pump_Hydro_Open,2050,163,163,-0.0,0.0,0.0
 10749,IT_Pump_Hydro_Open,2050,164,164,-0.0,0.0,0.0
@@ -11474,7 +11474,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 11473,LU_Pump_Hydro_Closed,2050,158,158,-0.0,0.0,0.0
 11474,LU_Pump_Hydro_Closed,2050,159,159,-0.0,0.0,0.0
 11475,LU_Pump_Hydro_Closed,2050,160,160,-0.0,0.0,0.0
-11476,LU_Pump_Hydro_Closed,2050,161,161,-0.0,0.0,0.0
+11476,LU_Pump_Hydro_Closed,2050,161,161,-0.0,-0.0,0.0
 11477,LU_Pump_Hydro_Closed,2050,162,162,-0.0,0.0,0.0
 11478,LU_Pump_Hydro_Closed,2050,163,163,-0.0,0.0,0.0
 11479,LU_Pump_Hydro_Closed,2050,164,164,-0.0,0.0,0.0
@@ -12204,7 +12204,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 12203,NO_Pump_Hydro_Open,2050,158,158,-0.0,0.0,0.0
 12204,NO_Pump_Hydro_Open,2050,159,159,-0.0,0.0,0.0
 12205,NO_Pump_Hydro_Open,2050,160,160,-0.0,0.0,0.0
-12206,NO_Pump_Hydro_Open,2050,161,161,-0.0,0.0,0.0
+12206,NO_Pump_Hydro_Open,2050,161,161,-0.0,-0.0,0.0
 12207,NO_Pump_Hydro_Open,2050,162,162,-0.0,0.0,0.0
 12208,NO_Pump_Hydro_Open,2050,163,163,-0.0,0.0,0.0
 12209,NO_Pump_Hydro_Open,2050,164,164,-0.0,0.0,0.0
@@ -12569,7 +12569,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 12568,PL_Hydro_Reservoir,2050,158,158,-0.0,0.0,0.0
 12569,PL_Hydro_Reservoir,2050,159,159,-0.0,0.0,0.0
 12570,PL_Hydro_Reservoir,2050,160,160,-0.0,0.0,0.0
-12571,PL_Hydro_Reservoir,2050,161,161,-0.0,0.0,0.0
+12571,PL_Hydro_Reservoir,2050,161,161,-0.0,-0.0,0.0
 12572,PL_Hydro_Reservoir,2050,162,162,-0.0,0.0,0.0
 12573,PL_Hydro_Reservoir,2050,163,163,-0.0,0.0,0.0
 12574,PL_Hydro_Reservoir,2050,164,164,-0.0,0.0,0.0
@@ -12934,7 +12934,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 12933,PL_Pump_Hydro_Closed,2050,158,158,-0.0,0.0,0.0
 12934,PL_Pump_Hydro_Closed,2050,159,159,-0.0,0.0,0.0
 12935,PL_Pump_Hydro_Closed,2050,160,160,-0.0,0.0,0.0
-12936,PL_Pump_Hydro_Closed,2050,161,161,-0.0,0.0,0.0
+12936,PL_Pump_Hydro_Closed,2050,161,161,-0.0,-0.0,0.0
 12937,PL_Pump_Hydro_Closed,2050,162,162,-0.0,0.0,0.0
 12938,PL_Pump_Hydro_Closed,2050,163,163,-0.0,0.0,0.0
 12939,PL_Pump_Hydro_Closed,2050,164,164,-0.0,0.0,0.0
@@ -13299,7 +13299,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 13298,PL_Pump_Hydro_Open,2050,158,158,-0.0,0.0,0.0
 13299,PL_Pump_Hydro_Open,2050,159,159,-0.0,0.0,0.0
 13300,PL_Pump_Hydro_Open,2050,160,160,-0.0,0.0,0.0
-13301,PL_Pump_Hydro_Open,2050,161,161,-0.0,0.0,0.0
+13301,PL_Pump_Hydro_Open,2050,161,161,-0.0,-0.0,0.0
 13302,PL_Pump_Hydro_Open,2050,162,162,-0.0,0.0,0.0
 13303,PL_Pump_Hydro_Open,2050,163,163,-0.0,0.0,0.0
 13304,PL_Pump_Hydro_Open,2050,164,164,-0.0,0.0,0.0
@@ -13960,7 +13960,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 13959,PT_Pump_Hydro_Open,2050,89,89,-0.0,0.0,0.0
 13960,PT_Pump_Hydro_Open,2050,90,90,-0.0,0.0,0.0
 13961,PT_Pump_Hydro_Open,2050,91,91,-0.0,0.0,0.0
-13962,PT_Pump_Hydro_Open,2050,92,92,-0.0,0.0,0.0
+13962,PT_Pump_Hydro_Open,2050,92,92,-0.0,-0.0,0.0
 13963,PT_Pump_Hydro_Open,2050,93,93,-0.0,0.0,0.0
 13964,PT_Pump_Hydro_Open,2050,94,94,-0.0,0.0,0.0
 13965,PT_Pump_Hydro_Open,2050,95,95,-0.0,0.0,0.0
@@ -15489,7 +15489,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 15488,SI_Pump_Hydro_Closed,2050,158,158,-0.0,0.0,0.0
 15489,SI_Pump_Hydro_Closed,2050,159,159,-0.0,0.0,0.0
 15490,SI_Pump_Hydro_Closed,2050,160,160,-0.0,0.0,0.0
-15491,SI_Pump_Hydro_Closed,2050,161,161,-0.0,0.0,0.0
+15491,SI_Pump_Hydro_Closed,2050,161,161,-0.0,-0.0,0.0
 15492,SI_Pump_Hydro_Closed,2050,162,162,-0.0,0.0,0.0
 15493,SI_Pump_Hydro_Closed,2050,163,163,-0.0,0.0,0.0
 15494,SI_Pump_Hydro_Closed,2050,164,164,-0.0,0.0,0.0
@@ -16949,7 +16949,7 @@ id,asset,year,period_block_start,period_block_end,dual_balance_storage_over_clus
 16948,UK_Pump_Hydro_Closed,2050,158,158,-0.0,0.0,0.0
 16949,UK_Pump_Hydro_Closed,2050,159,159,-0.0,0.0,0.0
 16950,UK_Pump_Hydro_Closed,2050,160,160,-0.0,0.0,0.0
-16951,UK_Pump_Hydro_Closed,2050,161,161,-0.0,0.0,0.0
+16951,UK_Pump_Hydro_Closed,2050,161,161,-0.0,-0.0,0.0
 16952,UK_Pump_Hydro_Closed,2050,162,162,-0.0,0.0,0.0
 16953,UK_Pump_Hydro_Closed,2050,163,163,-0.0,0.0,0.0
 16954,UK_Pump_Hydro_Closed,2050,164,164,-0.0,0.0,0.0
