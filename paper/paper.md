@@ -88,23 +88,20 @@ bibliography: paper.bib
 
 ## Summary
 
-`TulipaEnergyModel.jl` is a modelling framework for analysing the investment and operational performance of future energy systems, using capacity expansion and dispatch optimisation. `TulipaEnergyModel.jl` is developed in [Julia](https://julialang.org) [@Julia]  using [JuMP.jl](https://jump.dev) [@JuMP] as an algebraic modelling language.
-`TulipaEnergyModel.jl` is the main package of the Tulipa Energy ecosystem. As a framework, Tulipa formulates models completely based on input data, so users can analyse virtually any system using the generalized building blocks – producers, consumers, conversion, storage, and transport – and by specifying details such as time resolution, energy carriers or commodities, and geographic scope. TulipaEnergyModel.jl focuses on model quality and efficient implementation, allowing it to break the tradeoff between model fidelity and computational load.
+`TulipaEnergyModel.jl` is a modelling framework for analysing the investment decisions and operational performance of future energy systems, using capacity expansion and dispatch optimisation. `TulipaEnergyModel.jl` is developed in [Julia](https://julialang.org) [@Julia]  using [JuMP.jl](https://jump.dev) [@JuMP] as an algebraic modelling language.
+`TulipaEnergyModel.jl` is the main package of the Tulipa Energy ecosystem. As a framework, Tulipa formulates models completely based on input data, so users can analyse virtually any system using the generalized building blocks – producers, consumers, conversion, storage, and transport – and by specifying details such as time resolution, energy carriers or commodities, and geographic scope.
+TulipaEnergyModel.jl focuses on model quality and efficient implementation, allowing it to break the tradeoff between model fidelity and computational load through: tighter MIP formulations; better problem representation with fewer constraints and variables; more accurate LP approximations for storage and other technologies; and flexible model fidelity across temporal, technological, and spatial dimensions.
 
 ## Statement of Need
 
 There are multiple packages and frameworks related to Energy System Optimisation in Julia and other languages.
 A few examples in the Julia and Python realm are [EnergyModelsX](https://github.com/EnergyModelsX) [@EnergyModelsX], [PowerModels](https://github.com/lanl-ansi/PowerModels.jl) [@PowerModels], [SpineOpt](https://www.tools-for-energy-system-modelling.org/) [@SpineOpt], [Sienna](https://www.nrel.gov/analysis/sienna) [@Sienna], [GenX](https://github.com/GenXProject/GenX) [@GenX], [PyPSA](https://pypsa.org) [@PyPSA], and [Calliope](https://github.com/calliope-project/calliope) [@Calliope].
-Although there are many options available, the modeling innovation for flexible temporal resolution in TulipaEnergyModel.jl alters all model structures in ways that are not easily compatible with existing models.
-As a result, TulipaEnergyModel.jl had to be developed from the ground up to incorporate specific features already included and to accommodate future enhancements.
-
-There are multiple packages and frameworks related to Energy System Optimization in Julia and other languages. A few examples in the Julia and Python realm are [EnergyModelsX](https://github.com/EnergyModelsX) [@EnergyModelsX], [PowerModels](https://github.com/lanl-ansi/PowerModels.jl) [@PowerModels], [SpineOpt](https://www.tools-for-energy-system-modelling.org/) [@SpineOpt], [Sienna](https://www.nrel.gov/analysis/sienna) [@Sienna], [GenX](https://github.com/GenXProject/GenX) [@GenX], [PyPSA](https://pypsa.org) [@PyPSA], and [Calliope](https://github.com/calliope-project/calliope) [@Calliope].
 However, existing models run into computational limits when solving large-scale problems, and have to resort to (over)simplifying the model to reduce computational burden. The common misconception is that the only strategy to speedup solving times without sacrificing model fidelity is through better software (decomposition & solvers) or hardware (high-performance computing). Current models overlook another strategy: improving the theoretical quality of the mathematical formulation, as this fundamentally defines the computational load. That is, higher quality mathematical formulations increase model fidelity while simultaneously solving faster than standard formulations.
 This insight inspired the development of TulipaEnergyModel.jl, with the core philosophy of advancing the state-of-the-art in formulation quality by exploiting the following three strategies: 1) lowering computational cost while maintaining model fidelity, by representing the same problem with fewer constraints and variables [@Tejada2025], and by creating tighter mixed-integer programming (MIP) formulations [@MoralesEspana2013]; 2) increasing model fidelity without extra computational cost, e.g., by developing more accurate linear programming (LP) approximations for storage [@Elgersma2025] and other technologies [@gentile2016; @MoralesEspana2022]; and 3) balancing computational burden with adaptive/flexible model fidelity, i.e., having different levels of detail in different parts of the model, in the temporal [@Gao2025], technological [@MoralesEspana2022] and spatial dimensions.
-These modelling strategies have significant computational benefits, especially when handling problems of immense scale and dimensionality.
+These modelling strategies have significant computational benefits, especially when handling problems of realistic scale: with the spatial dimension of a continent, and with a horizon of decades while reasoning about the (renewable) generation with an hourly resolution.
 Some recent modelling breakthroughs alter the foundation and all structures of the model in ways that are not easily compatible with existing models. As a result, `TulipaEnergyModel.jl` had to be developed from the ground up to incorporate specific features already included and to accommodate future enhancements. Below we show some of the main modelling and software design innovations that alter the core structures of the model.
 
-### Modelling Innovations
+## Modelling Innovations
 
 Two of the main innovations of TulipaEnergyModel are that it accepts a fully flexible resolution [@Gao2025] for the assets and flows, and it allows for a direct connection between assets [@Tejada2025]. To illustrate these concepts, consider the following example:
 
@@ -116,7 +113,7 @@ For the direct connection between assets, notice how the storage “phs” unit 
 
 TulipaEnergyModel.jl is fundamentally focused on high quality mathematical formulations. The model also includes other key features such as seasonal storage modeling using representative periods [@Tejada2018; @greg2025], tight formulations to prevent simultaneous charging and discharging [@Elgersma2025], tight and compact unit commitment constraints [@MoralesEspana2013], and compact formulations for multi-year investment planning [@wang2025a; @wang2025b].
 
-### Software Design Innovations
+## Software Design Innovations
 
 Due to the flexible resolution of assets and flows, many of our variables have a "time block" component, instead of a "time step" component.
 Since different assets and flows can have different time resolutions, the indices of many of our variables and constraints are sparse.
@@ -129,9 +126,9 @@ $$f_{e,b} \qquad \forall e \in E, b \in B(e),$$
 
 where $E$ is the set of edges of the graph, and $B(e)$ is the set of time blocks for this edge.
 
-Directly defining variables like this in JuMP will lead to sparse indices.
-Similarly, some of the constraints and expressions in the model also depend on time, and have their own associated time blocks (e.g., the balance constraints), and thus, are also stored sparsely.
-The interaction between these time blocks is not trivial, and if done naively, can lead to some performance pitfalls, such as the ["sum-if problem"](https://jump.dev/JuMP.jl/stable/tutorials/getting_started/sum_if/).
+Similarly, some of the constraints and expressions in the model have their own time blocks (e.g., the balance constraints), and computing the coefficients of the flows involve matching indices and computing it intersections between time blocks.
+Directly defining variables like this in JuMP leads to sparse indices, which are cumbersome and potentially slow for this kind of operation, especially when we are trying to avoid unnecessary computations.
+Furthermore, it can create some performance pitfalls, such as the ["sum-if problem"](https://jump.dev/JuMP.jl/stable/tutorials/getting_started/sum_if/), when trying to determine the coefficients of each flow in each balance constraint.
 
 To improve the storage of these objects, we use a tabular format for the collections of indices of each variable, constraint, and expression.
 Each row of the table stores the corresponding set of indices for JuMP objects, and the JuMP objects themselves are stored in a linearized way in an array.
@@ -151,7 +148,7 @@ Figure \ref{fig:indices} shows the representation of this storage.
 
 ![Representation of the storage of indices and JuMP objects \label{fig:indices}](images/indices-storage.png){height=80pt}
 
-One of the main software design choices for TulipaEnergyModel.jl is to maintain a [DuckDB](https://duckdb.org) [@DuckDB] connection from the input data to model creation and output generation.
+A second main software design choices for TulipaEnergyModel.jl is to maintain a [DuckDB](https://duckdb.org) [@DuckDB] connection from the input data to model creation and output generation.
 This enables us to handle different data formats by relying on DuckDB's capabilities, instead of Julia's.
 
 We decided to also use DuckDB to store the indices tables, decreasing data movement and duplication by keeping the data in DuckDB for as long as possible.
@@ -162,7 +159,7 @@ Figure \ref{fig:overview} shows an overview of how Tulipa interacts with the Duc
 
 ![Overview of Tulipa's integration with DuckDB \label{fig:overview}](images/tulipa-overview.jpg)
 
-This separation allows users to create the necessary input data from whatever platform they are more comfortable with and load that data into the DuckDB connection.
+This separation allows users to create the necessary input data from whatever platform the users are more comfortable with and load that data into the DuckDB connection.
 Then, the indices are created from the data in the DuckDB connection and saved back into it.
 While Tulipa still has this step tied to Julia, many of the operations are done in SQL, and could be performed independently in the pipeline if necessary.
 Finally, the JuMP-specific part of the pipeline starts by reading the indices table, possibly complementing the data before creating the JuMP objects and the complete model.
