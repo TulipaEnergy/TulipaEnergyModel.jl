@@ -156,6 +156,14 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                     storage_charging_efficiency = row.storage_charging_efficiency::Float64
                     storage_discharging_efficiency = row.storage_discharging_efficiency::Float64
 
+                    inflows_agg = _profile_aggregate(
+                        profiles.over_clustered_year,
+                        (row.inflows_profile_name, row.year),
+                        row.period_block_start:row.period_block_end,
+                        sum,
+                        0.0,
+                    )
+
                     if row.period_block_start == 1 && !ismissing(initial_storage_level)
                         # Initial storage is a Float64
                         @constraint(
@@ -199,12 +207,8 @@ function add_storage_constraints!(connection, model, variables, expressions, con
                             base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     end
-                end for (row, incoming_flow, outgoing_flow, inflows_agg) in zip(
-                    indices,
-                    cons.expressions[:incoming],
-                    cons.expressions[:outgoing],
-                    cons.coefficients[:inflows_profile_aggregation],
-                )
+                end for (row, incoming_flow, outgoing_flow) in
+                zip(indices, cons.expressions[:incoming], cons.expressions[:outgoing])
             ],
         )
 
