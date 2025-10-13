@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Tutorial 7: Workflow · TulipaEnergyModel.jl</title><meta name="title" content="Tutorial 7: Workflow · TulipaEnergyModel.jl"/><meta property="og:title" content="Tutorial 7: Workflow · TulipaEnergyModel.jl"/><meta property="twitter:title" content="Tutorial 7: Workflow · TulipaEnergyModel.jl"/><meta name="description" content="Documentation for TulipaEnergyModel.jl."/><meta property="og:description" content="Documentation for TulipaEnergyModel.jl."/><meta property="twitter:description" content="Documentation for TulipaEnergyModel.jl."/><meta property="og:url" content="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/30-workflow/"/><meta property="twitter:url" content="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/30-workflow/"/><link rel="canonical" href="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/30-workflow/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.png" alt="TulipaEnergyModel.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TulipaEnergyModel.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Welcome</a></li><li><span class="tocitem">Tutorials</span><ul><li><a class="tocitem" href="../11-setting-up/">Setting up</a></li><li><a class="tocitem" href="../12-basics/">Tutorial 1: The Basics</a></li><li><a class="tocitem" href="../13-assets/">Tutorial 2: Assets and Flows</a></li><li><a class="tocitem" href="../14-fully-flexible-time/">Tutorial 3: Flexible Time Resolution</a></li><li><a class="tocitem" href="../15-clustering-rep-periods/">Tutorial 4: Representative Periods with Tulipa Clustering</a></li><li><a class="tocitem" href="../16-storage/">Tutorial 5: Seasonal and Non-seasonal Storage</a></li><li><a class="tocitem" href="../17-multi-year-investments/">Tutorial 6: Multi-year investments</a></li><li class="is-active"><a class="tocitem" href>Tutorial 7: Workflow</a><ul class="internal"><li><a class="tocitem" href="#Install-packages"><span>Install packages</span></a></li><li><a class="tocitem" href="#External-source"><span>External source</span></a></li><li><a class="tocitem" href="#Create-connection"><span>Create connection</span></a></li><li><a class="tocitem" href="#Load-data"><span>Load data</span></a></li><li><a class="tocitem" href="#Data-processing-for-instance-data-with-DuckDB/TulipaIO"><span>Data processing for instance data with DuckDB/TulipaIO</span></a></li><li><a class="tocitem" href="#Cluster-into-representative-periods-using-TulipaClustering"><span>Cluster into representative periods using TulipaClustering</span></a></li><li><a class="tocitem" href="#Prepare-data-for-TulipaEnergyModel&#39;s-format"><span>Prepare data for TulipaEnergyModel&#39;s format</span></a></li><li><a class="tocitem" href="#Create-internal-tables-for-the-model-indices"><span>Create internal tables for the model indices</span></a></li><li><a class="tocitem" href="#Create-model"><span>Create model</span></a></li><li><a class="tocitem" href="#Solve-model"><span>Solve model</span></a></li><li><a class="tocitem" href="#Store-primal-and-dual-solution"><span>Store primal and dual solution</span></a></li><li><a class="tocitem" href="#Data-processing-for-plots-and-dashboard"><span>Data processing for plots and dashboard</span></a></li><li><a class="tocitem" href="#Create-plots"><span>Create plots</span></a></li><li><a class="tocitem" href="#step-export"><span>Export solution</span></a></li></ul></li><li><a class="tocitem" href="../31-rolling-horizon/">Tutorial 8: Rolling Horizon</a></li><li><a class="tocitem" href="../99-manual-steps/">Advanced Control</a></li></ul></li><li><span class="tocitem">User Guide</span><ul><li><a class="tocitem" href="../../20-user-guide/00-getting-started/">Getting Started</a></li><li><a class="tocitem" href="../../20-user-guide/20-how-to-use/">How to Use</a></li><li><a class="tocitem" href="../../20-user-guide/50-schemas/">Analysis Workflow</a></li><li><a class="tocitem" href="../../20-user-guide/55-outputs/">Output Variables</a></li><li><a class="tocitem" href="../../20-user-guide/60-structures/">Internal Model Structures</a></li></ul></li><li><a class="tocitem" href="../../30-concepts/">Concepts</a></li><li><span class="tocitem">Scientific Foundation</span><ul><li><a class="tocitem" href="../../40-scientific-foundation/40-formulation/">Mathematical Formulation</a></li><li><a class="tocitem" href="../../40-scientific-foundation/45-scientific-references/">Scientific References</a></li></ul></li><li><a class="tocitem" href="../../70-reference/">API Reference</a></li><li><a class="tocitem" href="../../80-ecosystem/">Tulipa Ecosystem</a></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../90-contributing/90-contributing/">Contributing Guidelines</a></li><li><a class="tocitem" href="../../90-contributing/91-developer/">Developer Documentation</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Tutorials</a></li><li class="is-active"><a href>Tutorial 7: Workflow</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Tutorial 7: Workflow</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/docs/src/10-tutorials/30-workflow.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="workflow-tutorial"><a class="docs-heading-anchor" href="#workflow-tutorial">Tutorial 7: Workflow</a><a id="workflow-tutorial-1"></a><a class="docs-heading-anchor-permalink" href="#workflow-tutorial" title="Permalink"></a></h1><p>Tutorial for the OBZ case study as an example of the full workflow of Tulipa.</p><div class="admonition is-warning" id="Not-tested-for-multi-year-5961affa5fcee2b3"><header class="admonition-header">Not tested for multi-year<a class="admonition-anchor" href="#Not-tested-for-multi-year-5961affa5fcee2b3" title="Permalink"></a></header><div class="admonition-body"><p>Although we use years in the tutorial below, we haven&#39;t tried it on a multi-year case study. Your experience may vary.</p></div></div><p>We are basing ourselves on the Tulipa <a href="../../20-user-guide/50-schemas/#data">data pipeline/workflow</a>. To help us navigate this workflow, we&#39;ll reproduce the diagram from the link above here. For more details on the steps of the workflow, check the original link, or follow the tutorial.</p><p><img src="../../figs/tulipa-workflow.jpg" alt="Tulipa Workflow. Textual explanation below."/></p><h2 id="Install-packages"><a class="docs-heading-anchor" href="#Install-packages">Install packages</a><a id="Install-packages-1"></a><a class="docs-heading-anchor-permalink" href="#Install-packages" title="Permalink"></a></h2><p>To follow this tutorial, you need to install some packages:</p><ol><li>Open <code>julia</code> in the folder that you will be working</li><li>In the <code>julia</code> terminal, press <code>]</code>. You should see <code>pkg&gt;</code></li><li>Activate you local environment using <code>activate .</code></li><li>Install packages with <code>add &lt;Package1&gt;,&lt;Package2&gt;</code>, etc. You shouldn&#39;t need to specify the versions, if this tutorial is up-to-date.</li></ol><p>These are the installed packages and their versions:</p><pre><code class="language-julia hljs">using Pkg
+Pkg.status()</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/work/TulipaEnergyModel.jl/TulipaEnergyModel.jl/docs/Project.toml`
+  [336ed68f] CSV v0.10.15
+  [a93c6f00] DataFrames v1.8.0
+  [b4f34e82] Distances v0.10.12
+  [e30172f5] Documenter v1.14.1
+  [d2f5444f] DuckDB v1.4.1
+  [60bf3e95] GLPK v1.2.1
+  [87dc4568] HiGHS v1.19.0
+⌅ [682c06a0] JSON v0.21.4
+  [4076af6c] JuMP v1.29.1
+  [16fef848] LiveServer v1.5.0
+  [bac558e1] OrderedCollections v1.8.1
+  [91a5bcdd] Plots v1.41.1
+  [314fac8b] TulipaClustering v0.4.1
+  [5d7bd171] TulipaEnergyModel v0.18.1 `~/work/TulipaEnergyModel.jl/TulipaEnergyModel.jl`
+  [7b3808b7] TulipaIO v0.5.0
+Info Packages marked with ⌅ have new versions available but compatibility constraints restrict them from upgrading. To see why use `status --outdated`</code></pre><h2 id="External-source"><a class="docs-heading-anchor" href="#External-source">External source</a><a id="External-source-1"></a><a class="docs-heading-anchor-permalink" href="#External-source" title="Permalink"></a></h2><p>For this tutorial, we&#39;ll use the OBZ data. Download it from the <a href="https://zenodo.org/records/15498101">Zenodo Link</a> and store it in a folder.</p><p>Check <a href="https://github.com/TulipaEnergy/Tulipa-OBZ-CaseStudy">https://github.com/TulipaEnergy/Tulipa-OBZ-CaseStudy</a> for more information.</p><p>These are the files that we are working with:</p><pre><code class="language-julia hljs"># user_input_dir should point to the folder where the data was downloaded and extracted
+readdir(user_input_dir)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">20-element Vector{String}:
+ &quot;assets-consumer-basic-data.csv&quot;
+ &quot;assets-consumer-yearly-data.csv&quot;
+ &quot;assets-conversion-basic-data.csv&quot;
+ &quot;assets-conversion-yearly-data.csv&quot;
+ &quot;assets-hub-basic-data.csv&quot;
+ &quot;assets-hub-yearly-data.csv&quot;
+ &quot;assets-producer-basic-data.csv&quot;
+ &quot;assets-producer-yearly-data.csv&quot;
+ &quot;assets-profiles.csv&quot;
+ &quot;assets-storage-basic-data.csv&quot;
+ &quot;assets-storage-min-max-reservoir-level-profiles.csv&quot;
+ &quot;assets-storage-yearly-data.csv&quot;
+ &quot;flows-assets-connections-basic-data.csv&quot;
+ &quot;flows-assets-connections-yearly-data.csv&quot;
+ &quot;flows-transport-assets-basic-data.csv&quot;
+ &quot;flows-transport-assets-yearly-data.csv&quot;
+ &quot;inputs-description.toml&quot;
+ &quot;min-max-reservoir-levels.csv&quot;
+ &quot;profiles.csv&quot;
+ &quot;year-data.csv&quot;</code></pre><p>For the Tulipa workflow, we will need to transform some of this data into a specific format. This can be done externally in whatever tools you are already comfortable with, or through Julia via DuckDB and TulipaIO&#39;s convenience functions.</p><h2 id="Create-connection"><a class="docs-heading-anchor" href="#Create-connection">Create connection</a><a id="Create-connection-1"></a><a class="docs-heading-anchor-permalink" href="#Create-connection" title="Permalink"></a></h2><p>First create a DuckDB connection.</p><p>You can create a connection storing the DB locally, or keep everything in-memory only. Let&#39;s assume you want to store the DB, otherwise you can just remove the argument <code>&quot;obz.db&quot;</code>.</p><pre><code class="language-julia hljs">using DuckDB: DBInterface, DuckDB
+
+# We are staring from a fresh `obz.db` file
+connection = DBInterface.connect(DuckDB.DB, &quot;obz.db&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">DuckDB.DB(&quot;obz.db&quot;)</code></pre><p>You will be performing various queries with DuckDB. To format them nicely, you can wrap the results in a <code>DataFrame</code>:</p><pre><code class="language-julia hljs">using DataFrames: DataFrame
+
+nice_query(str) = DataFrame(DuckDB.query(connection, str))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">nice_query (generic function with 1 method)</code></pre><h2 id="Load-data"><a class="docs-heading-anchor" href="#Load-data">Load data</a><a id="Load-data-1"></a><a class="docs-heading-anchor-permalink" href="#Load-data" title="Permalink"></a></h2><p>Once you are done manipulating the data externally, it is time to load it into the DuckDB connection.</p><p>This doesn&#39;t have to be in Tulipa Format. It can be whatever data you prefer to manipulate via Julia/DuckDB, instead of externally.</p><p>You can load data manually with <code>DuckDB</code>, but there is also a convenience function:</p><pre><code class="language-julia hljs">using TulipaIO: TulipaIO
+
+TulipaIO.read_csv_folder(
+    connection,
+    user_input_dir,
+    replace_if_exists = true,
+)
+
+# The first 5 tables
+nice_query(&quot;SELECT table_name FROM duckdb_tables() LIMIT 5&quot;)</code></pre><div><div style = "float: left;"><span>5×1 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">table_name</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">assets_consumer_basic_data</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">assets_consumer_yearly_data</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">assets_conversion_basic_data</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: left;">assets_conversion_yearly_data</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: left;">assets_hub_basic_data</td></tr></tbody></table></div><h2 id="Data-processing-for-instance-data-with-DuckDB/TulipaIO"><a class="docs-heading-anchor" href="#Data-processing-for-instance-data-with-DuckDB/TulipaIO">Data processing for instance data with DuckDB/TulipaIO</a><a id="Data-processing-for-instance-data-with-DuckDB/TulipaIO-1"></a><a class="docs-heading-anchor-permalink" href="#Data-processing-for-instance-data-with-DuckDB/TulipaIO" title="Permalink"></a></h2><p>As we mentioned before, you can process your data externally and then load it. But you can also use Julia and DuckDB to process the data.</p><p>This step is required to prepare the data for TulipaClustering for the clustering of the profile data.</p><p>We need a single profiles table with 4 columns:</p><ul><li><code>profile_name</code></li><li><code>year</code></li><li><code>timestep</code></li><li><code>value</code></li></ul><p>Instead, we have the profiles data in the <code>profiles</code> table, which looks something like the following, but with many more columns:</p><pre><code class="language-julia hljs">nice_query(&quot;SELECT year, timestep, * LIKE &#39;NL_%&#39; FROM profiles LIMIT 5&quot;)</code></pre><div><div style = "float: left;"><span>5×6 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">year</th><th style = "text-align: left;">timestep</th><th style = "text-align: left;">NL_Wind_Onshore</th><th style = "text-align: left;">NL_Wind_Offshore</th><th style = "text-align: left;">NL_Solar</th><th style = "text-align: left;">NL_E_Demand</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">0.927321</td><td style = "text-align: right;">0.975744</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">0.633142</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2</td><td style = "text-align: right;">0.927321</td><td style = "text-align: right;">0.974482</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">0.625239</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">3</td><td style = "text-align: right;">0.929584</td><td style = "text-align: right;">0.974812</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">0.62111</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">4</td><td style = "text-align: right;">0.931063</td><td style = "text-align: right;">0.97763</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">0.619755</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">5</td><td style = "text-align: right;">0.933165</td><td style = "text-align: right;">0.976298</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">0.620001</td></tr></tbody></table></div><p>The total number of columns in the <code>profiles</code> table:</p><pre><code class="language-julia hljs">nice_query(&quot;SELECT COUNT(*) FROM duckdb_columns() WHERE table_name = &#39;profiles&#39;&quot;)</code></pre><div><div style = "float: left;"><span>1×1 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">count_star()</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Int64" style = "text-align: left;">Int64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">165</td></tr></tbody></table></div><p>Notice that these are all hourly profiles for the whole year:</p><pre><code class="language-julia hljs">nice_query(&quot;SELECT year, MAX(timestep) FROM profiles GROUP BY year&quot;)</code></pre><div><div style = "float: left;"><span>1×2 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">year</th><th style = "text-align: left;">max(timestep)</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "Int64" style = "text-align: left;">Int64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">8760</td></tr></tbody></table></div><p>So we will transform both this table to long format:</p><pre><code class="language-julia hljs">using TulipaClustering: TulipaClustering
+
+TulipaClustering.transform_wide_to_long!(connection, &quot;profiles&quot;, &quot;pivot_profiles&quot;)
+
+DuckDB.query(
+    connection,
+    &quot;CREATE OR REPLACE TABLE profiles AS
+    FROM pivot_profiles
+    ORDER BY profile_name, year, timestep
+    &quot;
+)
+
+nice_query(&quot;SELECT COUNT(*) FROM profiles&quot;)</code></pre><div><div style = "float: left;"><span>1×1 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">count_star()</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Int64" style = "text-align: left;">Int64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">1427880</td></tr></tbody></table></div><p>Just to showcase this, let&#39;s plot all <code>NL_*</code> profiles in the first 72 hours of the year:</p><pre><code class="language-julia hljs">using Plots
+
+subtable = DuckDB.query(
+    connection,
+    &quot;SELECT
+        timestep,
+        value,
+        profile_name,
+    FROM profiles
+    WHERE
+        profile_name LIKE &#39;NL_%&#39;
+        AND year=2050
+        AND timestep &lt;= 72 -- Just 72 hours
+    ORDER BY timestep
+    &quot;,
+)
+df = DataFrame(subtable)
+plot(df.timestep, df.value, group=df.profile_name)</code></pre><img src="f8173836.svg" alt="Example block output"/><h2 id="Cluster-into-representative-periods-using-TulipaClustering"><a class="docs-heading-anchor" href="#Cluster-into-representative-periods-using-TulipaClustering">Cluster into representative periods using TulipaClustering</a><a id="Cluster-into-representative-periods-using-TulipaClustering-1"></a><a class="docs-heading-anchor-permalink" href="#Cluster-into-representative-periods-using-TulipaClustering" title="Permalink"></a></h2><p>Instead of working with the full time horizon of 8760 hours, we will cluster the profiles using <a href="https://github.com/TulipaEnergy/TulipaClustering.jl">TulipaClustering</a>.</p><p>You can tweak around the number of representative periods and period duration (and naturally other parameters). This is the configuration that we&#39;ll use:</p><pre><code class="language-julia hljs">using Distances: SqEuclidean
+
+## Data for clustering
+clustering_params = (
+    num_rep_periods = 3,    # number of representative periods
+    period_duration = 24,   # hours of the representative period
+    method = :k_means,
+    distance = SqEuclidean(),
+    ## Data for weight fitting
+    weight_type = :convex,
+    tol = 1e-2,
+)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(num_rep_periods = 3, period_duration = 24, method = :k_means, distance = Distances.SqEuclidean(0.0), weight_type = :convex, tol = 0.01)</code></pre><p>PS. We chose to define our <code>clustering_params</code> as a <code>NamedTuple</code> in Julia, but that is completely optional and you can use whatever structure suits your case.</p><pre><code class="language-julia hljs">using Random: Random
+Random.seed!(123)
+TulipaClustering.cluster!(
+    connection,
+    clustering_params.period_duration,  # Required
+    clustering_params.num_rep_periods;  # Required
+    clustering_params.method,           # Optional
+    clustering_params.distance,         # Optional
+    clustering_params.weight_type,      # Optional
+    clustering_params.tol,              # Optional
+);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">TulipaClustering.ClusteringResult(<span class="sgr1">11736×5 DataFrame
+   Row │ rep_period  timestep  year   profile_name     value
+       │<span class="sgr90"> Int64       Int64     Int64  String           Float64
+───────┼────────────────────────────────────────────────────────
+     1 │          1         1   2050  AT_E_Demand      0.433742
+     2 │          1         2   2050  AT_E_Demand      0.413336
+     3 │          1         3   2050  AT_E_Demand      0.400568
+     4 │          1         4   2050  AT_E_Demand      0.404315
+     5 │          1         5   2050  AT_E_Demand      0.447875
+     6 │          1         6   2050  AT_E_Demand      0.490754
+     7 │          1         7   2050  AT_E_Demand      0.555144
+     8 │          1         8   2050  AT_E_Demand      0.592532
+   ⋮   │     ⋮          ⋮        ⋮           ⋮            ⋮
+ 11730 │          3        18   2050  UK_Wind_Onshore  0.770287
+ 11731 │          3        19   2050  UK_Wind_Onshore  0.769074
+ 11732 │          3        20   2050  UK_Wind_Onshore  0.769339
+ 11733 │          3        21   2050  UK_Wind_Onshore  0.769764
+ 11734 │          3        22   2050  UK_Wind_Onshore  0.768185
+ 11735 │          3        23   2050  UK_Wind_Onshore  0.766419
+ 11736 │          3        24   2050  UK_Wind_Onshore  0.75759
+</span><span class="sgr36">                                              11721 rows omitted, sparse([46, 47, 48, 49, 51, 53, 62, 67, 69, 70  …  356, 357, 358, 359, 360, 361, 362, 363, 364, 365], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1  …  3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0.14481082337653622, 0.13121132447100464, 0.04959948680279389, 0.05227205608976673, 0.11217960913380766, 0.03744057362266463, 0.014585541277927053, 0.04976782552689989, 0.47021910388116805, 0.09138795402559592  …  1.0, 1.0, 1.0, 1.0, 0.9894463485115309, 0.8167218510506219, 0.7836474990520129, 0.8652566754986826, 1.0, 1.0], 365, 3), [0.561845156 0.715936085 … 0.722342321 0.692761049; 0.533957227 0.690376332 … 0.69299084 0.666338922; … ; 0.944921215 0.84162672 … 0.572282407 0.888713937; 0.943940536 0.870985063 … 0.602038058 0.870050813], [0.433741974188679 0.4888906324253732 0.6131286770479999; 0.4133362753867923 0.4679652152985074 0.5866607760399997; … ; 0.5037757928113207 0.5261235292985074 0.7664189462400003; 0.5021113885377356 0.5181840313432834 0.757589973752], TulipaClustering.AuxiliaryClusteringData([:timestep, :year, :profile_name], 24, 24, 365, nothing))</span></span></code></pre><p>These are the tables created by TulipaClustering:</p><ul><li><code>rep_periods_data</code></li><li><code>rep_periods_mapping</code></li><li><code>profiles_rep_periods</code></li><li><code>timeframe_data</code></li></ul><h2 id="Prepare-data-for-TulipaEnergyModel&#39;s-format"><a class="docs-heading-anchor" href="#Prepare-data-for-TulipaEnergyModel&#39;s-format">Prepare data for TulipaEnergyModel&#39;s format</a><a id="Prepare-data-for-TulipaEnergyModel&#39;s-format-1"></a><a class="docs-heading-anchor-permalink" href="#Prepare-data-for-TulipaEnergyModel&#39;s-format" title="Permalink"></a></h2><p>Now the fun part starts. We need to create specific tables for Tulipa using our current tables. Again, we remind you that you can create most of these files externally, i.e., you don&#39;t have to use DuckDB to join them here. However, defining the workflow in a programmatic way makes it easier to reproduce it in the future.</p><p>We have to define a minimum set of columns for each table, and then the remaining columns will be filled with defaults. Some columns cannot contain missing values (such as the <code>asset</code> or <code>year</code> columns in most tables). For other columns, missing values will be filled with the columns&#39; default.</p><div class="admonition is-warning" id="Populating-with-defaults-is-an-explicit-step-25b186600433ffad"><header class="admonition-header">Populating with defaults is an explicit step<a class="admonition-anchor" href="#Populating-with-defaults-is-an-explicit-step-25b186600433ffad" title="Permalink"></a></header><div class="admonition-body"><p>As we&#39;ll see in the end of this section, populating the remaining columns with default values is an explicit step and can only be skipped if your data is already correct.</p></div></div><h3 id="Year-data"><a class="docs-heading-anchor" href="#Year-data">Year data</a><a id="Year-data-1"></a><a class="docs-heading-anchor-permalink" href="#Year-data" title="Permalink"></a></h3><p>This data is already correct in the case study and contains a single year.</p><pre><code class="language-julia hljs">nice_query(&quot;FROM year_data&quot;)</code></pre><div><div style = "float: left;"><span>1×2 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">year</th><th style = "text-align: left;">length</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "Int64" style = "text-align: left;">Int64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">8760</td></tr></tbody></table></div><h3 id="Assets"><a class="docs-heading-anchor" href="#Assets">Assets</a><a id="Assets-1"></a><a class="docs-heading-anchor-permalink" href="#Assets" title="Permalink"></a></h3><p>First, let&#39;s join all assets&#39; basic data. This table goes directly into the <code>asset</code> table for Tulipa.</p><pre><code class="language-julia hljs">DuckDB.query(
+    connection,
+    &quot;CREATE TABLE asset AS
+    SELECT
+        name AS asset,
+        type,
+        capacity,
+        capacity_storage_energy,
+        is_seasonal,
+    FROM (
+        FROM assets_consumer_basic_data
+        UNION BY NAME
+        FROM assets_conversion_basic_data
+        UNION BY NAME
+        FROM assets_hub_basic_data
+        UNION BY NAME
+        FROM assets_producer_basic_data
+        UNION BY NAME
+        FROM assets_storage_basic_data
+    )
+    ORDER BY asset
+    &quot;,
+)
+
+nice_query(&quot;FROM asset ORDER BY random() LIMIT 5&quot;)</code></pre><div><div style = "float: left;"><span>5×5 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">type</th><th style = "text-align: left;">capacity</th><th style = "text-align: left;">capacity_storage_energy</th><th style = "text-align: left;">is_seasonal</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th><th title = "String" style = "text-align: left;">String</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Union{Missing, Float64}" style = "text-align: left;">Float64?</th><th title = "Union{Missing, Bool}" style = "text-align: left;">Bool?</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">PL_Pump_Hydro_Open</td><td style = "text-align: left;">storage</td><td style = "text-align: right;">0.216</td><td style = "text-align: right;">1.5</td><td style = "text-align: right;">true</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">SE_OCGT</td><td style = "text-align: left;">producer</td><td style = "text-align: right;">0.097</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">CZ_Wind_Onshore</td><td style = "text-align: left;">producer</td><td style = "text-align: right;">4.486</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: left;">IT_Battery</td><td style = "text-align: left;">storage</td><td style = "text-align: right;">142.781</td><td style = "text-align: right;">428.343</td><td style = "text-align: right;">false</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: left;">PL_E_ENS</td><td style = "text-align: left;">producer</td><td style = "text-align: right;">33.6468</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td></tr></tbody></table></div><p>Similarly, we join the assets&#39; yearly data:</p><pre><code class="language-julia hljs">DuckDB.query(
+    connection,
+    &quot;CREATE TABLE t_asset_yearly AS
+    FROM (
+        FROM assets_consumer_yearly_data
+        UNION BY NAME
+        FROM assets_conversion_yearly_data
+        UNION BY NAME
+        FROM assets_hub_yearly_data
+        UNION BY NAME
+        FROM assets_producer_yearly_data
+        UNION BY NAME
+        FROM assets_storage_yearly_data
+    )
+    &quot;,
+)
+
+nice_query(&quot;FROM t_asset_yearly ORDER BY random() LIMIT 5&quot;)</code></pre><div><div style = "float: left;"><span>5×8 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">name</th><th style = "text-align: left;">year</th><th style = "text-align: left;">partition</th><th style = "text-align: left;">peak_demand</th><th style = "text-align: left;">initial_units</th><th style = "text-align: left;">initial_storage_units</th><th style = "text-align: left;">initial_storage_level</th><th style = "text-align: left;">storage_inflows</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "Union{Missing, Float64}" style = "text-align: left;">Float64?</th><th title = "Union{Missing, Int64}" style = "text-align: left;">Int64?</th><th title = "Union{Missing, Int64}" style = "text-align: left;">Int64?</th><th title = "Union{Missing, Float64}" style = "text-align: left;">Float64?</th><th title = "Union{Missing, Float64}" style = "text-align: left;">Float64?</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">DE_E_Demand</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">125.041</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">CZ_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">4</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "text-align: right;">1</td><td style = "text-align: right;">1</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "text-align: right;">0.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">IT_Hydro</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">4</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "text-align: right;">1</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: left;">NL_Gas</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "text-align: right;">1</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: left;">SI_E_ENS</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">4</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "text-align: right;">1</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td></tr></tbody></table></div><p>Then, the <code>t_asset_yearly</code> table is used to create the three other asset tables that Tulipa requires:</p><pre><code class="language-julia hljs">DuckDB.query(
+    connection,
+    &quot;CREATE TABLE asset_commission AS
+    SELECT
+        name AS asset,
+        year AS commission_year,
+    FROM t_asset_yearly
+    ORDER by asset
+    &quot;
+)
+
+DuckDB.query(
+    connection,
+    &quot;CREATE TABLE asset_milestone AS
+    SELECT
+        name AS asset,
+        year AS milestone_year,
+        peak_demand,
+        initial_storage_level,
+        storage_inflows,
+    FROM t_asset_yearly
+    ORDER by asset
+    &quot;
+)
+
+DuckDB.query(
+    connection,
+    &quot;CREATE TABLE asset_both AS
+    SELECT
+        name AS asset,
+        year AS milestone_year,
+        year AS commission_year, -- Yes, it is the same year twice with different names because it&#39;s not a multi-year problem
+        initial_units,
+        initial_storage_units,
+    FROM t_asset_yearly
+    ORDER by asset
+    &quot;
+)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(Count = [391],)</code></pre><p>Here is an example of one of these tables:</p><pre><code class="language-julia hljs">nice_query(&quot;FROM asset_both WHERE initial_storage_units &gt; 0 LIMIT 5&quot;)</code></pre><div><div style = "float: left;"><span>5×5 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">milestone_year</th><th style = "text-align: left;">commission_year</th><th style = "text-align: left;">initial_units</th><th style = "text-align: left;">initial_storage_units</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "Int64" style = "text-align: left;">Int64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">1</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">AT_Hydro_Reservoir</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">1</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">AT_Pump_Hydro_Closed</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">1</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: left;">AT_Pump_Hydro_Open</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">1</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: left;">BE_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">1</td></tr></tbody></table></div><h3 id="Flows"><a class="docs-heading-anchor" href="#Flows">Flows</a><a id="Flows-1"></a><a class="docs-heading-anchor-permalink" href="#Flows" title="Permalink"></a></h3><p>We repeat the steps above for flows:</p><pre><code class="language-julia hljs">DuckDB.query(
+    connection,
+    &quot;CREATE TABLE flow AS
+    SELECT
+        from_asset,
+        to_asset,
+        carrier,
+        capacity,
+        is_transport,
+    FROM (
+        FROM flows_assets_connections_basic_data
+        UNION BY NAME
+        FROM flows_transport_assets_basic_data
+    )
+    ORDER BY from_asset, to_asset
+    &quot;,
+)
+
+DuckDB.query(
+    connection,
+    &quot;CREATE TABLE t_flow_yearly AS
+    FROM (
+        FROM flows_assets_connections_yearly_data
+        UNION BY NAME
+        FROM flows_transport_assets_yearly_data
+    )
+    &quot;,
+)
+
+DuckDB.query(
+    connection,
+    &quot;CREATE TABLE flow_commission AS
+    SELECT
+        from_asset,
+        to_asset,
+        year AS commission_year,
+        efficiency,
+    FROM t_flow_yearly
+    ORDER by from_asset, to_asset
+    &quot;
+)
+
+DuckDB.query(
+    connection,
+    &quot;CREATE TABLE flow_milestone AS
+    SELECT
+        from_asset,
+        to_asset,
+        year AS milestone_year,
+        variable_cost AS operational_cost,
+    FROM t_flow_yearly
+    ORDER by from_asset, to_asset
+    &quot;
+)
+
+DuckDB.query(
+    connection,
+    &quot;CREATE TABLE flow_both AS
+    SELECT
+        t_flow_yearly.from_asset,
+        t_flow_yearly.to_asset,
+        t_flow_yearly.year AS milestone_year,
+        t_flow_yearly.year AS commission_year,
+        t_flow_yearly.initial_export_units,
+        t_flow_yearly.initial_import_units,
+    FROM t_flow_yearly
+    LEFT JOIN flow
+      ON flow.from_asset = t_flow_yearly.from_asset
+      AND flow.to_asset = t_flow_yearly.to_asset
+    WHERE flow.is_transport = TRUE -- flow_both must only contain transport flows
+    ORDER by t_flow_yearly.from_asset, t_flow_yearly.to_asset
+    &quot;
+)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(Count = [61],)</code></pre><h3 id="Assets-profiles"><a class="docs-heading-anchor" href="#Assets-profiles">Assets profiles</a><a id="Assets-profiles-1"></a><a class="docs-heading-anchor-permalink" href="#Assets-profiles" title="Permalink"></a></h3><p>The <code>assets_profiles</code> table already exists, so we only need to create <code>assets_timeframe_profiles</code>. Since all the data is already in <code>assets_storage_min_max_reservoir_level_profiles</code>, we just copy it over.</p><pre><code class="language-julia hljs">DuckDB.query(
+    connection,
+    &quot;CREATE TABLE assets_timeframe_profiles AS
+    FROM assets_storage_min_max_reservoir_level_profiles
+    ORDER BY asset, commission_year, profile_name
+    &quot;,
+)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(Count = [12],)</code></pre><h3 id="Partitions"><a class="docs-heading-anchor" href="#Partitions">Partitions</a><a id="Partitions-1"></a><a class="docs-heading-anchor-permalink" href="#Partitions" title="Permalink"></a></h3><p>The OBZ table uses only uniform time partitions, which makes it easy to create the necessary tables.</p><p>For the <code>assets_rep_periods_partitions</code>, we simply have to copy the <code>partition</code> given by the assets&#39; yearly data for each representative period given <code>rep_periods_data.rep_period</code> and attach a <code>specification = &#39;uniform&#39;</code> to that table.</p><pre><code class="language-julia hljs">DuckDB.query(
+    connection,
+    &quot;CREATE TABLE assets_rep_periods_partitions AS
+    SELECT
+        t.name AS asset,
+        t.year,
+        t.partition AS partition,
+        rep_periods_data.rep_period,
+        &#39;uniform&#39; AS specification,
+    FROM t_asset_yearly AS t
+    LEFT JOIN rep_periods_data
+        ON t.year = rep_periods_data.year
+    ORDER BY asset, t.year, rep_period
+    &quot;,
+)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(Count = [1173],)</code></pre><p>For the <code>flows_rep_periods_partitions</code>, we need to also compute the expected <code>partition</code> value, which will follow a simple formula. Given a flow <code>(from_asset, to_asset)</code>, we look at the partition of both <code>from_asset</code> and <code>to_asset</code>. If the flow is a transport flow, we use the <strong>maximum</strong> between the partitions of <code>from_asset</code> and <code>to_asset</code>. Otherwise, we use the <strong>minimum</strong> between these two.</p><pre><code class="language-julia hljs">DuckDB.query(
+    connection,
+    &quot;CREATE TABLE flows_rep_periods_partitions AS
+    SELECT
+        flow.from_asset,
+        flow.to_asset,
+        t_from.year,
+        t_from.rep_period,
+        &#39;uniform&#39; AS specification,
+        IF(
+            flow.is_transport,
+            greatest(t_from.partition::int, t_to.partition::int),
+            least(t_from.partition::int, t_to.partition::int)
+        ) AS partition,
+    FROM flow
+    LEFT JOIN assets_rep_periods_partitions AS t_from
+        ON flow.from_asset = t_from.asset
+    LEFT JOIN assets_rep_periods_partitions AS t_to
+        ON flow.to_asset = t_to.asset
+        AND t_from.year = t_to.year
+        AND t_from.rep_period = t_to.rep_period
+    &quot;,
+)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(Count = [1503],)</code></pre><h3 id="Timeframe-profiles"><a class="docs-heading-anchor" href="#Timeframe-profiles">Timeframe profiles</a><a id="Timeframe-profiles-1"></a><a class="docs-heading-anchor-permalink" href="#Timeframe-profiles" title="Permalink"></a></h3><p>For the <code>timeframe</code> profiles, we&#39;ll use the other profiles table that we haven&#39;t touched yet: <code>min_max_reservoir_levels</code>. As with the other profiles, we will first pivot that table to have it in long format. However, we do not cluster these profiles, since the representative periods are already computed. Instead, we will create a temporary table (<code>cte_split_profiles</code>) that converts the <code>timestep</code> that goes from 1 to 8760 into two columns: <code>period</code>, from to 1 to 365 (days) and <code>timestep</code>, from 1 to 24 (hours).</p><p>Finally, the <code>timeframe</code> profiles are computed with the average over <code>period</code>, i.e., each value of a given timeframe profile in a <code>period</code> is the average of 24 hours of the original profile.</p><pre><code class="language-julia hljs">TulipaClustering.transform_wide_to_long!(
+    connection,
+    &quot;min_max_reservoir_levels&quot;,
+    &quot;pivot_min_max_reservoir_levels&quot;,
+)
+
+period_duration = clustering_params.period_duration
+
+DuckDB.query(
+    connection,
+    &quot;
+    CREATE TABLE profiles_timeframe AS
+    WITH cte_split_profiles AS (
+        SELECT
+            profile_name,
+            year,
+            1 + (timestep - 1) // $period_duration  AS period,
+            1 + (timestep - 1)  % $period_duration AS timestep,
+            value,
+        FROM pivot_min_max_reservoir_levels
+    )
+    SELECT
+        cte_split_profiles.profile_name,
+        cte_split_profiles.year,
+        cte_split_profiles.period,
+        AVG(cte_split_profiles.value) AS value, -- Computing the average aggregation
+    FROM cte_split_profiles
+    GROUP BY
+        cte_split_profiles.profile_name,
+        cte_split_profiles.year,
+        cte_split_profiles.period
+    ORDER BY
+        cte_split_profiles.profile_name,
+        cte_split_profiles.year,
+        cte_split_profiles.period
+    &quot;,
+)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(Count = [4380],)</code></pre><h3 id="obz-populate-with-defaults"><a class="docs-heading-anchor" href="#obz-populate-with-defaults">Populate with defaults</a><a id="obz-populate-with-defaults-1"></a><a class="docs-heading-anchor-permalink" href="#obz-populate-with-defaults" title="Permalink"></a></h3><p>Finally, in many cases, you will need to complete the missing columns with additional information. To simplify this process, we created the <code>populate_with_defaults!</code> function. Please read TulipaEnergyModel&#39;s <a href="../../20-user-guide/50-schemas/#minimum-data">populate with default section</a> for a complete picture.</p><p>Here is the before of one of the tables:</p><pre><code class="language-julia hljs">nice_query(&quot;FROM asset_both LIMIT 5&quot;)</code></pre><div><div style = "float: left;"><span>5×5 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">milestone_year</th><th style = "text-align: left;">commission_year</th><th style = "text-align: left;">initial_units</th><th style = "text-align: left;">initial_storage_units</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "Union{Missing, Int64}" style = "text-align: left;">Int64?</th><th title = "Union{Missing, Int64}" style = "text-align: left;">Int64?</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">1</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">AT_E_Balance</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">AT_E_Demand</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "font-style: italic; text-align: right;">missing</td><td style = "font-style: italic; text-align: right;">missing</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: left;">AT_E_ENS</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "font-style: italic; text-align: right;">missing</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: left;">AT_Gas</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "font-style: italic; text-align: right;">missing</td></tr></tbody></table></div><pre><code class="language-julia hljs">using TulipaEnergyModel: TulipaEnergyModel as TEM
+
+TEM.populate_with_defaults!(connection)</code></pre><pre><code class="language-julia hljs">nice_query(&quot;FROM asset_both LIMIT 5&quot;)</code></pre><div><div style = "float: left;"><span>5×6 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">milestone_year</th><th style = "text-align: left;">commission_year</th><th style = "text-align: left;">initial_units</th><th style = "text-align: left;">initial_storage_units</th><th style = "text-align: left;">decommissionable</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Bool" style = "text-align: left;">Bool</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1.0</td><td style = "text-align: right;">1.0</td><td style = "text-align: right;">false</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">AT_E_Balance</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">false</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">AT_E_Demand</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">false</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: left;">AT_E_ENS</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1.0</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">false</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: left;">AT_Gas</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1.0</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">false</td></tr></tbody></table></div><h2 id="Create-internal-tables-for-the-model-indices"><a class="docs-heading-anchor" href="#Create-internal-tables-for-the-model-indices">Create internal tables for the model indices</a><a id="Create-internal-tables-for-the-model-indices-1"></a><a class="docs-heading-anchor-permalink" href="#Create-internal-tables-for-the-model-indices" title="Permalink"></a></h2><div class="admonition is-warning" id="If-you-skipped-ahead-43e000c4c61ec4b6"><header class="admonition-header">If you skipped ahead<a class="admonition-anchor" href="#If-you-skipped-ahead-43e000c4c61ec4b6" title="Permalink"></a></header><div class="admonition-body"><p>If you skipped ahead and have errors here, check out some of the previous steps. Notably, <a href="#obz-populate-with-defaults">populating with defaults</a> helps solve many issues with missing data and wrong types in the columns.</p></div></div><div class="admonition is-info" id="More-general-option:-run_scenario-94c50c5654907e7c"><header class="admonition-header">More general option: run_scenario<a class="admonition-anchor" href="#More-general-option:-run_scenario-94c50c5654907e7c" title="Permalink"></a></header><div class="admonition-body"><p>We split the TulipaEnergyModel part in a few parts, however all these things could be achieved using <a href="../../70-reference/#TulipaEnergyModel.run_scenario-Tuple{Any}"><code>run_scenario</code></a> directly instead. We leave the details out of this tutorial to keep it more instructional.</p></div></div><pre><code class="language-julia hljs">energy_problem = TEM.EnergyProblem(connection)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+  - Model not created!
+  - Model not solved!
+</code></pre><p>Purely out of curiosity, here is the total number of tables that we have:</p><pre><code class="language-julia hljs">nice_query(&quot;SELECT COUNT(*) as num_tables, FROM duckdb_tables()&quot;)</code></pre><div><div style = "float: left;"><span>1×1 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">num_tables</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Int64" style = "text-align: left;">Int64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">119</td></tr></tbody></table></div><h2 id="Create-model"><a class="docs-heading-anchor" href="#Create-model">Create model</a><a id="Create-model-1"></a><a class="docs-heading-anchor-permalink" href="#Create-model" title="Permalink"></a></h2><p>Finally, we get to actually use the model.</p><pre><code class="language-julia hljs">optimizer_parameters = Dict(
+    &quot;output_flag&quot; =&gt; true,
+    &quot;mip_rel_gap&quot; =&gt; 0.0,
+    &quot;mip_feasibility_tolerance&quot; =&gt; 1e-5,
+)
+TEM.create_model!(energy_problem; model_file_name, optimizer_parameters)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+  - Model created!
+    - Number of variables: 34075
+    - Number of constraints for variable bounds: 32221
+    - Number of structural constraints: 72855
+  - Model not solved!
+</code></pre><h2 id="Solve-model"><a class="docs-heading-anchor" href="#Solve-model">Solve model</a><a id="Solve-model-1"></a><a class="docs-heading-anchor-permalink" href="#Solve-model" title="Permalink"></a></h2><p>Last, but not least important, we solve the model:</p><pre><code class="language-julia hljs">TEM.solve_model!(energy_problem)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Running HiGHS 1.11.0 (git hash: 364c83a51e): Copyright (c) 2025 HiGHS under MIT licence terms
+LP   has 72855 rows; 34075 cols; 586771 nonzeros
+Coefficient ranges:
+  Matrix [1e-02, 4e+00]
+  Cost   [1e+03, 5e+05]
+  Bound  [4e-01, 5e+04]
+  RHS    [1e-06, 9e+04]
+Presolving model
+18937 rows, 28719 cols, 524930 nonzeros  0s
+Dependent equations search running on 17882 equations with time limit of 1000.00s
+Dependent equations search removed 242 rows and 3246 nonzeros in 0.05s (limit = 1000.00s)
+17633 rows, 23985 cols, 316064 nonzeros  0s
+Presolve : Reductions: rows 17633(-55222); columns 23985(-10090); elements 316064(-270707)
+Solving the presolved LP
+Using EKK dual simplex solver - serial
+  Iteration        Objective     Infeasibilities num(sum)
+          0     0.0000000000e+00 Ph1: 0(0) 1s
+      19798     7.1490531571e+05 Pr: 0(0); Du: 0(3.95877e-10) 2s
+Solving the original LP from the solution after postsolve
+Model status        : Optimal
+Simplex   iterations: 19798
+Objective value     :  7.1490531569e+05
+P-D objective error :  3.1183875751e-14
+HiGHS run time      :          2.17</code></pre><h2 id="Store-primal-and-dual-solution"><a class="docs-heading-anchor" href="#Store-primal-and-dual-solution">Store primal and dual solution</a><a id="Store-primal-and-dual-solution-1"></a><a class="docs-heading-anchor-permalink" href="#Store-primal-and-dual-solution" title="Permalink"></a></h2><p>The primal and dual solutions are computed when saving the solution with <code>save_solution!</code>, as long as we don&#39;t change the default value of <code>compute_duals</code>. Here it is, explicitly:</p><pre><code class="language-julia hljs">TEM.save_solution!(energy_problem; compute_duals = true)</code></pre><p>Now every variable indices table has a column <code>solution</code>, and every constraint has additional columns <code>dual_*</code>, depending on the constraints name.</p><h3 id="Examples-checking-the-primal-and-dual-solutions"><a class="docs-heading-anchor" href="#Examples-checking-the-primal-and-dual-solutions">Examples checking the primal and dual solutions</a><a id="Examples-checking-the-primal-and-dual-solutions-1"></a><a class="docs-heading-anchor-permalink" href="#Examples-checking-the-primal-and-dual-solutions" title="Permalink"></a></h3><p>Select all variables of storage level at representative periods with value greater than 0 at the solution (show only first 5):</p><pre><code class="language-julia hljs">nice_query(&quot;SELECT *
+    FROM var_storage_level_rep_period
+    WHERE solution &gt; 0
+    LIMIT 5
+&quot;)</code></pre><div><div style = "float: left;"><span>5×7 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">id</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">year</th><th style = "text-align: left;">rep_period</th><th style = "text-align: left;">time_block_start</th><th style = "text-align: left;">time_block_end</th><th style = "text-align: left;">solution</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">4</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">13</td><td style = "text-align: right;">16</td><td style = "text-align: right;">0.912</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: right;">5</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">17</td><td style = "text-align: right;">20</td><td style = "text-align: right;">0.912</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: right;">7</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2</td><td style = "text-align: right;">1</td><td style = "text-align: right;">4</td><td style = "text-align: right;">0.912</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: right;">10</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2</td><td style = "text-align: right;">13</td><td style = "text-align: right;">16</td><td style = "text-align: right;">0.912</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: right;">11</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">2</td><td style = "text-align: right;">17</td><td style = "text-align: right;">20</td><td style = "text-align: right;">0.912</td></tr></tbody></table></div><p>Select all indices related to the balance storage at representative periods when both <code>min_storage_level_rep_period_limit</code> and <code>max_storage_level_rep_period_limit</code> have duals equal to 0.</p><pre><code class="language-julia hljs">nice_query(&quot;SELECT *
+    FROM cons_balance_storage_rep_period
+    WHERE dual_max_storage_level_rep_period_limit = 0
+        AND dual_min_storage_level_rep_period_limit = 0
+    LIMIT 5
+&quot;)</code></pre><div><div style = "float: left;"><span>5×9 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">id</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">year</th><th style = "text-align: left;">rep_period</th><th style = "text-align: left;">time_block_start</th><th style = "text-align: left;">time_block_end</th><th style = "text-align: left;">dual_balance_storage_rep_period</th><th style = "text-align: left;">dual_max_storage_level_rep_period_limit</th><th style = "text-align: left;">dual_min_storage_level_rep_period_limit</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">1</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">1</td><td style = "text-align: right;">4</td><td style = "text-align: right;">-0.0</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">0.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: right;">2</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">5</td><td style = "text-align: right;">8</td><td style = "text-align: right;">-0.0</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">0.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: right;">3</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">9</td><td style = "text-align: right;">12</td><td style = "text-align: right;">-0.0</td><td style = "text-align: right;">0.0</td><td style = "text-align: right;">0.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: right;">4</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">13</td><td style = "text-align: right;">16</td><td style = "text-align: right;">-0.0</td><td style = "text-align: right;">-0.0</td><td style = "text-align: right;">0.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: right;">5</td><td style = "text-align: left;">AT_Battery</td><td style = "text-align: right;">2050</td><td style = "text-align: right;">1</td><td style = "text-align: right;">17</td><td style = "text-align: right;">20</td><td style = "text-align: right;">-0.0</td><td style = "text-align: right;">-0.0</td><td style = "text-align: right;">0.0</td></tr></tbody></table></div><h2 id="Data-processing-for-plots-and-dashboard"><a class="docs-heading-anchor" href="#Data-processing-for-plots-and-dashboard">Data processing for plots and dashboard</a><a id="Data-processing-for-plots-and-dashboard-1"></a><a class="docs-heading-anchor-permalink" href="#Data-processing-for-plots-and-dashboard" title="Permalink"></a></h2><p>This part of the workflow is open for you to do whatever you need. In principle, you can skip this step and go straight to <a href="#step-export">exporting the solution</a>, and then perform your analysis of the solution outside of the DuckDB/Julia environment.</p><p>Here is an example of data processing using DuckDB and Julia.</p><p>The table</p><pre><code class="language-julia hljs">nice_query(&quot;
+CREATE TEMP TABLE analysis_inter_storage_levels AS
+SELECT
+    var.id,
+    var.asset,
+    var.period_block_start as period,
+    asset.capacity_storage_energy,
+    var.solution / (
+        IF(asset.capacity_storage_energy &gt; 0, asset.capacity_storage_energy, 1)
+    ) AS SoC,
+FROM var_storage_level_over_clustered_year AS var
+LEFT JOIN asset
+    ON var.asset = asset.asset
+&quot;)
+nice_query(&quot;FROM analysis_inter_storage_levels LIMIT 5&quot;)</code></pre><div><div style = "float: left;"><span>5×5 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">id</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">period</th><th style = "text-align: left;">capacity_storage_energy</th><th style = "text-align: left;">SoC</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">1</td><td style = "text-align: left;">AT_Hydro_Reservoir</td><td style = "text-align: right;">1</td><td style = "text-align: right;">757.0</td><td style = "text-align: right;">0.503223</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: right;">2</td><td style = "text-align: left;">AT_Hydro_Reservoir</td><td style = "text-align: right;">2</td><td style = "text-align: right;">757.0</td><td style = "text-align: right;">0.506447</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: right;">3</td><td style = "text-align: left;">AT_Hydro_Reservoir</td><td style = "text-align: right;">3</td><td style = "text-align: right;">757.0</td><td style = "text-align: right;">0.50967</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: right;">4</td><td style = "text-align: left;">AT_Hydro_Reservoir</td><td style = "text-align: right;">4</td><td style = "text-align: right;">757.0</td><td style = "text-align: right;">0.512893</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: right;">5</td><td style = "text-align: left;">AT_Hydro_Reservoir</td><td style = "text-align: right;">5</td><td style = "text-align: right;">757.0</td><td style = "text-align: right;">0.514263</td></tr></tbody></table></div><h2 id="Create-plots"><a class="docs-heading-anchor" href="#Create-plots">Create plots</a><a id="Create-plots-1"></a><a class="docs-heading-anchor-permalink" href="#Create-plots" title="Permalink"></a></h2><p>Now, using the analysis tables from above, we can create plots in Julia:</p><pre><code class="language-julia hljs">using Plots
+
+p = plot()
+assets = [&quot;ES_Hydro_Reservoir&quot;, &quot;NO_Hydro_Reservoir&quot;, &quot;FR_Hydro_Reservoir&quot;]
+
+df = nice_query(&quot;SELECT asset, period, SoC
+    FROM analysis_inter_storage_levels
+    WHERE asset in (&#39;ES_Hydro_Reservoir&#39;, &#39;NO_Hydro_Reservoir&#39;, &#39;FR_Hydro_Reservoir&#39;)
+&quot;)
+
+plot!(
+    df.period,          # x-axis
+    df.SoC,             # y-axis
+    group = df.asset,   # each asset is a different plot
+    xlabel = &quot;Period&quot;,
+    ylabel = &quot;Storage level [p.u.]&quot;,
+    linewidth = 3,
+    dpi = 600,
+)</code></pre><img src="560a3b03.svg" alt="Example block output"/><h2 id="step-export"><a class="docs-heading-anchor" href="#step-export">Export solution</a><a id="step-export-1"></a><a class="docs-heading-anchor-permalink" href="#step-export" title="Permalink"></a></h2><p>Finally, we can export the solution to CSV files using the convenience function below:</p><pre><code class="language-julia hljs">mkdir(&quot;obz-outputs&quot;)
+TEM.export_solution_to_csv_files(&quot;obz-outputs&quot;, energy_problem)
+readdir(&quot;obz-outputs&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">11-element Vector{String}:
+ &quot;cons_balance_consumer.csv&quot;
+ &quot;cons_balance_conversion.csv&quot;
+ &quot;cons_balance_hub.csv&quot;
+ &quot;cons_balance_storage_over_clustered_year.csv&quot;
+ &quot;cons_balance_storage_rep_period.csv&quot;
+ &quot;cons_capacity_incoming_simple_method.csv&quot;
+ &quot;cons_capacity_outgoing_simple_method.csv&quot;
+ &quot;cons_transport_flow_limit_simple_method.csv&quot;
+ &quot;var_flow.csv&quot;
+ &quot;var_storage_level_over_clustered_year.csv&quot;
+ &quot;var_storage_level_rep_period.csv&quot;</code></pre><p>Using DuckDB directly it is also possible to export to other formats, such as Parquet.</p><p>Finally, we close the connection. It should also be closed automatically if the <code>connection</code> variable goes out of scope.</p><pre><code class="language-julia hljs">close(connection)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../17-multi-year-investments/">« Tutorial 6: Multi-year investments</a><a class="docs-footer-nextpage" href="../31-rolling-horizon/">Tutorial 8: Rolling Horizon »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Monday 13 October 2025 09:07">Monday 13 October 2025</span>. Using Julia version 1.12.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
