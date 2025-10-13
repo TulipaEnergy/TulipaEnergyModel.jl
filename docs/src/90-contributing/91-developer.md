@@ -450,7 +450,14 @@ main branch using "Squash and Merge".
 You can also delete the branch that originated the pull request by clicking the button that appears after the merge.
 For branches that were pushed to the main repo, it is recommended that you do so.
 
-## Building the Documentation Locally
+## Documentation updates
+
+When updating the documentation, pull requests mades from branches within the repo (i.e., not from forks) will have a preview build enabled and a preview link pasted on the comments.
+The PR preview link will look something like: `https://tulipaenergy.github.io/TulipaEnergyModel.jl/previews/PRXXXX`.
+
+Alternatively, you might want to build the documentation locally. See below for more information.
+
+### Building the Documentation Locally
 
 Following the latest suggestions, we recommend using `LiveServer` to build the documentation.
 
