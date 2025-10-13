@@ -394,6 +394,52 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             var.id,
             t_objective_assets.weight_for_operation_discounts *
             t_objective_assets.shut_down_cost AS cost,
+            UC.id as units_on_id,
+            var.time_block_start,
+        FROM var_start_up AS var
+        LEFT JOIN t_objective_assets
+            ON var.asset = t_objective_assets.asset
+            AND var.year = t_objective_assets.milestone_year
+        LEFT JOIN var_units_on as UC
+            ON var.asset = UC.asset
+            AND var.year = UC.year
+            AND var.rep_period = UC.rep_period
+            AND var.time_block_start = UC.time_block_start
+        WHERE t_objective_assets.shut_down_cost IS NOT NULL AND t_objective_assets.unit_commitment_method LIKE '2var%'
+        ORDER BY var.asset,
+            var.year,
+            var.rep_period,
+            var.time_block_start,
+            var.time_block_end
+        ",
+    )
+
+    var_units_on = variables[:units_on].container
+
+    previous_units_on = []
+
+    for row in indices
+        if row.time_block_start == 1
+            push!(previous_units_on, 0)
+        else
+            push!(previous_units_on, var_units_on[row.units_on_id-1])
+        end
+    end
+
+    shut_down_cost_2var = @expression(
+        model,
+        sum(
+            row.cost * (var_start_up[row.id] - var_units_on[row.units_on_id] + prev) for
+            (row, prev) in zip(indices, previous_units_on)
+        )
+    )
+
+    indices = DuckDB.query(
+        connection,
+        "SELECT
+            var.id,
+            t_objective_assets.weight_for_operation_discounts *
+            t_objective_assets.shut_down_cost AS cost,
         FROM var_shut_down AS var
         LEFT JOIN t_objective_assets
             ON var.asset = t_objective_assets.asset
@@ -426,7 +472,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         vintage_flows_operational_cost +
         units_on_cost +
         start_up_cost +
-        shut_down_cost
+        shut_down_cost +
+        shut_down_cost_2var
     )
 end
 
@@ -526,6 +573,7 @@ function _create_objective_auxiliary_table(connection, constants)
             asset_milestone.units_on_cost,
             asset.start_up_cost,
             asset.shut_down_cost,
+            asset.unit_commitment_method,
             -- computed
             asset.discount_rate / (
                 (1 + asset.discount_rate) *

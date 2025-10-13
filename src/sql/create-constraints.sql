@@ -810,7 +810,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method = '3var-0T'
+        and asset.unit_commitment_method in ('3var-0T', '2var-0T')
     order by
         t_high.asset,
         t_high.year,
@@ -978,7 +978,7 @@ with sorted as (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and asset.unit_commitment_method = '3var-0C'
+        and asset.unit_commitment_method in ('3var-0C', '2var-0C')
     order by
         t_high.asset,
         t_high.year,
