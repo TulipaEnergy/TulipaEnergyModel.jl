@@ -27,9 +27,9 @@ authors:
       orcid: "https://orcid.org/0000-0002-7706-7778"
     - given-names: Juha
       surname:  Kiviluoma
-      email: Juha.Kiviluoma@vtt.fi
+      email: juha.kiviluoma@nodal-tools.fi
       affiliation: 4
-      orcid: "https://orcid.org/0000-0003-3425-0254"
+      orcid: "https://orcid.org/0000-0002-1299-9056"
     - given-names: Lauren
       surname: Clisby
       email: lauren.clisby@tno.nl
@@ -73,8 +73,7 @@ affiliations:
   - name: Delft University of Technology, Netherlands
     ror: 02e2c7k09
     index: 3
-  - name: VTT Technical Research Centre of Finland, Netherlands
-    ror: 04b181w54
+  - name: Nodal Tools, Finland
     index: 4
   - name: Utrecht University, Netherlands
     ror: 04pp8hn57
