@@ -569,9 +569,9 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         :max_ramp_with_unit_commitment,
         :max_ramp_without_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
-        :su_ramping_3var_flow_diff,
+        :su_ramping_2_3_var_flow_diff,
         :sd_ramping_3var_flow_diff,
-        :su_ramping_3var_flow_upper_bound,
+        :su_ramping_2_3_var_flow_upper_bound,
         :sd_ramping_3var_flow_upper_bound,
         :susd_ramping_3var_flow_unaligned_uc,
         :su_ramping_compact_1var,
@@ -630,9 +630,9 @@ function add_expressions_to_constraints!(connection, variables, constraints)
     end
 
     for table_name in (
-        :su_ramping_3var_flow_diff,
+        :su_ramping_2_3_var_flow_diff,
         :sd_ramping_3var_flow_diff,
-        :su_ramping_3var_flow_upper_bound,
+        :su_ramping_2_3_var_flow_upper_bound,
         :sd_ramping_3var_flow_upper_bound,
         :susd_ramping_3var_flow_unaligned_uc,
         :sd_ramping_2var_flow_diff,

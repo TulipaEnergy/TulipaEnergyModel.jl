@@ -1,0 +1,2 @@
+from_asset,to_asset,milestone_year,investable,operational_cost,reactance,dc_opf
+gen,demand,2030,false,0.0,0.3,false

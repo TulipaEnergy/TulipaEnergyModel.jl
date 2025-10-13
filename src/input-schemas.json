@@ -223,14 +223,20 @@
         "oneOf": [
           null,
           "basic",
-          "SU-SD-compact",
-          "min_up_down",
-          "1var-1C",
-          "1var-1T",
-          "min_up_down_2var",
-          "2var-su-sd-ramp",
-          "3var-su-sd-ramp",
-          "3var-3"
+          "1var-0",
+          "1var-E1",
+          "1var-E2T",
+          "1var-E2C",
+          "1var-E2TC",
+          "1var-E2CT",
+          "2var-0",
+          "2var-E1",
+          "2var-E2",
+          "3var-0T",
+          "3var-0C",
+          "3var-E1",
+          "3var-E2",
+          "3var-E3"
         ]
       },
       "default": null,
