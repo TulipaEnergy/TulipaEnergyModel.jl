@@ -1227,7 +1227,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment
-    and asset.unit_commitment_method in ('3var-E2')
+    and asset.unit_commitment_method in ('3var-E2', '3var-E3')
 order by
     t_high.asset,
     t_high.year,
