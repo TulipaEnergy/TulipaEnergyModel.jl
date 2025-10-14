@@ -89,13 +89,6 @@ function save_solution!(connection, model, variables, constraints; compute_duals
         # Create a temporary DuckDB table for this table
         DuckDB.register_table(connection, tmp_table, "t_var_solution_$name")
 
-        # Append an empty column called solution to the table
-        # TODO: Change FLOAT8 type depending on variable?
-        DuckDB.execute(
-            connection,
-            "ALTER TABLE $(var.table_name) ADD COLUMN IF NOT EXISTS solution FLOAT8",
-        )
-
         # Update the column values
         DuckDB.execute(
             connection,
