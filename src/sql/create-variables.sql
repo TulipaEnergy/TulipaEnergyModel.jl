@@ -18,6 +18,7 @@ select
     conversion_coefficient,
     time_block_start,
     time_block_end,
+    cast(null as float8) as solution,
 from
     flow_time_resolution_rep_period
 ;
@@ -43,18 +44,18 @@ select
     ft.time_block_end,
     fc.capacity_coefficient,
     fc.conversion_coefficient,
+    cast(null as float8) as solution,
 from
     flow_time_resolution_rep_period as ft
     -- We want to split the outgoing flows by the asset's vintage
-    left join asset_both as ab
-    on ab.asset = ft.from_asset
+    left join asset_both as ab on ab.asset = ft.from_asset
     and ab.milestone_year = ft.year
     left join asset on asset.asset = ab.asset
-    left join flow_commission as fc
-    on fc.from_asset = ft.from_asset
+    left join flow_commission as fc on fc.from_asset = ft.from_asset
     and fc.to_asset = ft.to_asset
     and fc.commission_year = ab.commission_year
-where asset.type in ('producer', 'conversion', 'storage')
+where
+    asset.type in ('producer', 'conversion', 'storage')
     and asset.investment_method = 'semi-compact'
 ;
 
@@ -70,27 +71,29 @@ drop table if exists var_units_on
 create table var_units_on as
 select
     nextval('id') as id,
-    sub.*
-from (
-    select
-        atr.asset,
-        atr.year,
-        atr.rep_period,
-        atr.time_block_start,
-        atr.time_block_end,
-        asset.unit_commitment_integer,
-    from
-        asset_time_resolution_rep_period as atr
-        left join asset on asset.asset = atr.asset
-    where
-        asset.type in ('producer', 'conversion')
-        and asset.unit_commitment = true
-    order by
-        atr.asset,
-        atr.year,
-        atr.rep_period,
-        atr.time_block_start
-) as sub
+    sub.*,
+    cast(null as float8) as solution,
+from
+    (
+        select
+            atr.asset,
+            atr.year,
+            atr.rep_period,
+            atr.time_block_start,
+            atr.time_block_end,
+            asset.unit_commitment_integer,
+        from
+            asset_time_resolution_rep_period as atr
+            left join asset on asset.asset = atr.asset
+        where
+            asset.type in ('producer', 'conversion')
+            and asset.unit_commitment = true
+        order by
+            atr.asset,
+            atr.year,
+            atr.rep_period,
+            atr.time_block_start
+    ) as sub
 ;
 
 drop sequence id
@@ -105,34 +108,34 @@ drop table if exists var_start_up
 create table var_start_up as
 select
     nextval('id') as id,
-    sub.*
-from (
-    select
-        atr.asset,
-        atr.year,
-        atr.rep_period,
-        t_high.time_block_start,
-        t_high.time_block_end,
-        asset.unit_commitment_integer
-    from
-        t_highest_assets_and_out_flows as t_high
-        inner join asset_time_resolution_rep_period as atr
-            on
-                t_high.asset = atr.asset
-                and t_high.year = atr.year
-                and t_high.rep_period = atr.rep_period
-                and t_high.time_block_start = atr.time_block_start
-        left join asset on asset.asset = atr.asset
-    where
-        asset.type in ('producer', 'conversion')
-        and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var%'
-    order by
-        atr.asset,
-        atr.year,
-        atr.rep_period,
-        atr.time_block_start
-) as sub
+    sub.*,
+    cast(null as float8) as solution,
+from
+    (
+        select
+            atr.asset,
+            atr.year,
+            atr.rep_period,
+            t_high.time_block_start,
+            t_high.time_block_end,
+            asset.unit_commitment_integer
+        from
+            t_highest_assets_and_out_flows as t_high
+            inner join asset_time_resolution_rep_period as atr on t_high.asset = atr.asset
+            and t_high.year = atr.year
+            and t_high.rep_period = atr.rep_period
+            and t_high.time_block_start = atr.time_block_start
+            left join asset on asset.asset = atr.asset
+        where
+            asset.type in ('producer', 'conversion')
+            and asset.unit_commitment = true
+            and asset.unit_commitment_method like '3var%'
+        order by
+            atr.asset,
+            atr.year,
+            atr.rep_period,
+            atr.time_block_start
+    ) as sub
 ;
 
 drop sequence id
@@ -147,34 +150,34 @@ drop table if exists var_shut_down
 create table var_shut_down as
 select
     nextval('id') as id,
-    sub.*
-from (
-    select
-        atr.asset,
-        atr.year,
-        atr.rep_period,
-        t_high.time_block_start,
-        t_high.time_block_end,
-        asset.unit_commitment_integer,
-    from
-        t_highest_assets_and_out_flows as t_high
-        inner join asset_time_resolution_rep_period as atr
-            on
-                t_high.asset = atr.asset
-                and t_high.year = atr.year
-                and t_high.rep_period = atr.rep_period
-                and t_high.time_block_start = atr.time_block_start
-        left join asset on asset.asset = atr.asset
-    where
-        asset.type in ('producer', 'conversion')
-        and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var%'
-    order by
-        atr.asset,
-        atr.year,
-        atr.rep_period,
-        atr.time_block_start
-) as sub
+    sub.*,
+    cast(null as float8) as solution,
+from
+    (
+        select
+            atr.asset,
+            atr.year,
+            atr.rep_period,
+            t_high.time_block_start,
+            t_high.time_block_end,
+            asset.unit_commitment_integer,
+        from
+            t_highest_assets_and_out_flows as t_high
+            inner join asset_time_resolution_rep_period as atr on t_high.asset = atr.asset
+            and t_high.year = atr.year
+            and t_high.rep_period = atr.rep_period
+            and t_high.time_block_start = atr.time_block_start
+            left join asset on asset.asset = atr.asset
+        where
+            asset.type in ('producer', 'conversion')
+            and asset.unit_commitment = true
+            and asset.unit_commitment_method like '3var%'
+        order by
+            atr.asset,
+            atr.year,
+            atr.rep_period,
+            atr.time_block_start
+    ) as sub
 ;
 
 drop sequence id
@@ -194,6 +197,7 @@ select
     atr.rep_period,
     atr.time_block_start,
     any_value (atr.time_block_end) as time_block_end,
+    cast(null as float8) as solution,
 from
     -- The angle resolution is the same as the time resolution of the asset
     asset_time_resolution_rep_period as atr
@@ -239,7 +243,8 @@ select
     t_low.rep_period,
     t_low.time_block_start,
     t_low.time_block_end,
-    asset.use_binary_storage_method
+    asset.use_binary_storage_method,
+    cast(null as float8) as solution,
 from
     t_lowest_all_flows as t_low
     left join asset on t_low.asset = asset.asset
@@ -280,7 +285,8 @@ with
     )
 select
     nextval('id') as id,
-    filtered_assets.*
+    filtered_assets.*,
+    cast(null as float8) as solution,
 from
     filtered_assets
 ;
@@ -315,7 +321,8 @@ with
     )
 select
     nextval('id') as id,
-    filtered_assets.*
+    filtered_assets.*,
+    cast(null as float8) as solution,
 from
     filtered_assets
 ;
@@ -338,6 +345,7 @@ select
     flow.investment_integer,
     flow.capacity,
     flow_commission.investment_limit,
+    cast(null as float8) as solution,
 from
     flow_milestone
     left join flow on flow.from_asset = flow_milestone.from_asset
@@ -366,6 +374,7 @@ select
     asset.investment_integer,
     asset.capacity,
     asset_commission.investment_limit,
+    cast(null as float8) as solution,
 from
     asset_milestone
     left join asset on asset.asset = asset_milestone.asset
@@ -394,12 +403,13 @@ select
     asset_both.decommissionable,
     asset_both.initial_units,
     asset.investment_integer,
+    cast(null as float8) as solution,
 from
     asset_both
     left join asset on asset.asset = asset_both.asset
 where
     asset_both.decommissionable
-    and asset.investment_method in ('simple', 'semi-compact','compact')
+    and asset.investment_method in ('simple', 'semi-compact', 'compact')
 ;
 
 drop sequence id
@@ -419,6 +429,7 @@ select
     flow_both.milestone_year,
     flow_both.commission_year,
     flow.investment_integer,
+    cast(null as float8) as solution,
 from
     flow_both
     left join flow on flow.from_asset = flow_both.from_asset
@@ -445,6 +456,7 @@ select
     asset.investment_integer_storage_energy,
     asset.capacity_storage_energy,
     asset_commission.investment_limit_storage_energy,
+    cast(null as float8) as solution,
 from
     asset_milestone
     left join asset on asset.asset = asset_milestone.asset
@@ -473,6 +485,7 @@ select
     asset_both.milestone_year,
     asset_both.commission_year,
     asset.investment_integer_storage_energy,
+    cast(null as float8) as solution,
 from
     asset_both
     left join asset on asset.asset = asset_both.asset
