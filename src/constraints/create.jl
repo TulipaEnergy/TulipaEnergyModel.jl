@@ -60,6 +60,7 @@ function compute_constraints_indices(connection)
             :minimum_down_time_2var_compact_investment,
             :sd_ramping_2var_flow_diff,
             :susd_ramping_2var_flow_unaligned_uc,
+            :sd_ramping_2var_flow_upper_bound,
         )
     )
 
