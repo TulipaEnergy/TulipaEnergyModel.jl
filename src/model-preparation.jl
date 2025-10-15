@@ -572,19 +572,22 @@ function add_expressions_to_constraints!(connection, variables, constraints)
 end
 
 function prepare_profiles_structure(connection)
+    # Independent of being rolling horizon or not, these are complete
     rep_period = Dict(
-        (row.profile_name, row.year, row.rep_period) => [
-            row.value for row in DuckDB.query(
-                connection,
-                "SELECT profile.value
-                FROM profiles_rep_periods AS profile
-                WHERE
-                    profile.profile_name = '$(row.profile_name)'
-                    AND profile.year = $(row.year)
-                    AND profile.rep_period = $(row.rep_period)
-                ",
-            )
-        ] for row in DuckDB.query(
+        (row.profile_name, row.year, row.rep_period) => ProfileWithRollingHorizon(
+            Float64[
+                row.value for row in DuckDB.query(
+                    connection,
+                    "SELECT profile.value
+                    FROM profiles_rep_periods AS profile
+                    WHERE
+                        profile.profile_name = '$(row.profile_name)'
+                        AND profile.year = $(row.year)
+                        AND profile.rep_period = $(row.rep_period)
+                    ",
+                )
+            ],
+        ) for row in DuckDB.query(
             connection,
             "SELECT DISTINCT
                 profiles.profile_name,
@@ -596,7 +599,7 @@ function prepare_profiles_structure(connection)
     )
 
     over_clustered_year = Dict(
-        (row.profile_name, row.year) => [
+        (row.profile_name, row.year) => Float64[
             row.value for row in DuckDB.query(
                 connection,
                 "SELECT profile.value
