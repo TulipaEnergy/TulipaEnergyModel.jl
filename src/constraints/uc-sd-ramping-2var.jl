@@ -15,7 +15,11 @@ function add_2var_sd_ramping_constraints!(
 )
     indices_dict = Dict(
         table_name => _append_su_sd_ramp_vars_data_to_indices_2var(connection, table_name) for
-        table_name in (:sd_ramping_2var_flow_diff, :susd_ramping_2var_flow_unaligned_uc)
+        table_name in (
+            :sd_ramping_2var_flow_diff,
+            :susd_ramping_2var_flow_unaligned_uc,
+            :sd_ramping_2var_flow_upper_bound,
+        )
     )
 
     # expression for p^{availability profile} * p^{capacity}
@@ -32,13 +36,16 @@ function add_2var_sd_ramping_constraints!(
                     1.0,
                 ) * row.capacity for row in indices
             ]
-        end for table_name in (:sd_ramping_2var_flow_diff, :susd_ramping_2var_flow_unaligned_uc)
+        end for table_name in (
+            :sd_ramping_2var_flow_diff,
+            :susd_ramping_2var_flow_unaligned_uc,
+            :sd_ramping_2var_flow_upper_bound,
+        )
     )
 
     # constraint 13c - shut-down ramping flow difference
     let table_name = :sd_ramping_2var_flow_diff, cons = constraints[table_name]
         units_on = cons.expressions[:units_on]
-        # shut_down = cons.expressions[:shut_down]
         start_up = cons.expressions[:start_up]
         flow_total = cons.expressions[:outgoing]
         duration = cons.coefficients[:min_outgoing_flow_duration]
@@ -77,7 +84,6 @@ function add_2var_sd_ramping_constraints!(
     let table_name = :susd_ramping_2var_flow_unaligned_uc, cons = constraints[table_name]
         units_on = cons.expressions[:units_on]
         start_up = cons.expressions[:start_up]
-        # shut_down = cons.expressions[:shut_down]
         flow_total = cons.expressions[:outgoing]
         duration = cons.coefficients[:min_outgoing_flow_duration]
 
@@ -114,6 +120,54 @@ function add_2var_sd_ramping_constraints!(
                         average_down * units_on[row.id-1] -
                         start_up[row.id-1] * (p_max - average_up) -
                         start_up[row.id] * (p_max - average_down) +
+                        units_on[row.id] * (p_max - average_down),
+                        base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    )
+                end for row in indices_dict[table_name]
+            ],
+        )
+    end
+
+    # constraint 13d - shut-down ramping flow upper bound
+    let table_name = :sd_ramping_2var_flow_upper_bound, cons = constraints[table_name]
+        units_on = cons.expressions[:units_on]
+        start_up = cons.expressions[:start_up]
+        flow_total = cons.expressions[:outgoing]
+        duration = cons.coefficients[:min_outgoing_flow_duration]
+
+        attach_constraint!(
+            model,
+            cons,
+            table_name,
+            [
+                if row.time_block_start == 1 || (
+                    row.units_on_start != row.time_block_start ||
+                    row.units_on_end != row.time_block_end
+                )
+                    @constraint(model, 0 == 0)
+                else
+                    p_max = profile_times_capacity[table_name][row.id-1]
+
+                    average_up = _calculate_average_su_sd_ramping_parameters(
+                        row.max_su_ramp,
+                        row.max_ramp_up,
+                        profile_times_capacity[table_name][row.id-1],
+                        duration[row.id-1],
+                    )
+
+                    average_down = _calculate_average_su_sd_ramping_parameters(
+                        row.max_sd_ramp,
+                        row.max_ramp_down,
+                        profile_times_capacity[table_name][row.id-1],
+                        duration[row.id-1],
+                    )
+
+                    @constraint(
+                        model,
+                        flow_total[row.id-1] <=
+                        average_down * units_on[row.id-1] -
+                        start_up[row.id] * (p_max - average_down) -
+                        start_up[row.id-1] * max(average_down - average_up, 0) +
                         units_on[row.id] * (p_max - average_down),
                         base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
