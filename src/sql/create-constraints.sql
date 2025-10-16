@@ -1329,10 +1329,37 @@ create sequence id start 1
 ;
 
 create table cons_susd_ramping_3var_flow_unaligned_uc as
+with sub as
+(select distinct
+    t_high.*,
+    var_units_on.time_block_start as units_on_start,
+    var_units_on.time_block_end as units_on_end
+from
+    asset_time_resolution_rep_period as atr
+    join t_highest_assets_and_out_flows as t_high
+        on atr.asset = t_high.asset
+        and atr.rep_period = t_high.rep_period
+        and atr.year = t_high.year
+    join asset
+        on asset.asset = t_high.asset
+    left join var_units_on on t_high.asset = var_units_on.asset
+        and t_high.year = var_units_on.year
+        and t_high.rep_period = var_units_on.rep_period
+        and t_high.time_block_start >= var_units_on.time_block_start
+        and t_high.time_block_end <= var_units_on.time_block_end
+where
+    asset.type in ('producer', 'conversion')
+    and asset.unit_commitment
+    and asset.unit_commitment_method in ('3var-E2', '3var-E3')
+order by
+    t_high.asset,
+    t_high.year,
+    t_high.rep_period,
+    t_high.time_block_start)
 select
     nextval('id') as id,
-    cons_su_ramping_2_3_var_flow_upper_bound.*
-from cons_su_ramping_2_3_var_flow_upper_bound
+    sub.*
+from sub
 ;
 
 drop sequence id

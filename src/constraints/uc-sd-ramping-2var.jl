@@ -92,10 +92,11 @@ function add_2var_sd_ramping_constraints!(
             cons,
             table_name,
             [
-                if row.time_block_start == 1 || (
+                if row.time_block_start == 1 ||
+                   ((
                     row.units_on_start == row.time_block_start &&
                     row.units_on_end == row.time_block_end
-                )
+                )) && row.minimum_up_time <= row.units_on_end - row.units_on_start + 1
                     @constraint(model, 0 == 0)
                 else
                     p_max = profile_times_capacity[table_name][row.id-1]
@@ -140,10 +141,12 @@ function add_2var_sd_ramping_constraints!(
             cons,
             table_name,
             [
-                if row.time_block_start == 1 || (
-                    row.units_on_start != row.time_block_start ||
-                    row.units_on_end != row.time_block_end
-                )
+                if row.time_block_start == 1 ||
+                   (
+                       row.units_on_start != row.time_block_start ||
+                       row.units_on_end != row.time_block_end
+                   ) ||
+                   row.minimum_up_time > row.units_on_end - row.units_on_start + 1
                     @constraint(model, 0 == 0)
                 else
                     p_max = profile_times_capacity[table_name][row.id-1]
