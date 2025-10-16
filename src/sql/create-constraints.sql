@@ -473,7 +473,10 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment
-    and asset.unit_commitment_method = 'basic'
+    and (asset.unit_commitment_method = 'basic'
+    or asset.unit_commitment_method LIKE '%var-0%'
+    or asset.unit_commitment_method LIKE '%var-E1%'
+    )
 ;
 
 drop sequence id
@@ -1451,7 +1454,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment = true
-    and asset.unit_commitment_method in ('2var-E%')
+    and asset.unit_commitment_method LIKE '2var-E%'
     and asset.investment_method in ('simple', 'none')
 order by
     t_high.asset,

@@ -1,0 +1,4 @@
+from_asset,to_asset,commission_year,fixed_cost,investment_cost,investment_limit,capacity_coefficient,conversion_coefficient
+g1,demand,2030,0.0,0.0,,1,1.0
+g2,demand,2030,0.0,0.0,,1,1.0
+g3,demand,2030,0.0,0.0,,1,1.0

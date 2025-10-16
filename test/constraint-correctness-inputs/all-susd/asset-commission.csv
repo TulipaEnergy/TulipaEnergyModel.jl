@@ -1,0 +1,5 @@
+asset,commission_year,fixed_cost,investment_cost,investment_limit,fixed_cost_storage_energy,investment_cost_storage_energy,investment_limit_storage_energy,storage_loss_from_stored_energy,efficiency,storage_charging_efficiency,storage_discharging_efficiency
+g1,2030,0.0,0.0,,5.0,0.0,,0,1.0,1.0,1.0
+g2,2030,0.0,0.0,,5.0,0.0,,0,1.0,1.0,1.0
+g3,2030,0.0,0.0,,5.0,0.0,,0,1.0,1.0,1.0
+demand,2030,0.0,0.0,,5.0,0.0,,0,1.0,1.0,1.0
