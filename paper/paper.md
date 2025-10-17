@@ -103,6 +103,7 @@ Since some of these modelling breakthroughs alter the foundation and structures 
 ## Modelling Innovations
 
 Two of the main innovations of Tulipa include:
+
 1. Providing fully flexible temporal resolution [@Gao2025] for the assets and flows, and
 2. Allowing direct connections between assets [@Tejada2025].
 To illustrate these concepts, consider the following example:
@@ -141,14 +142,14 @@ Returning to the example system, the first three rows of the flow variable defin
 |  2 | phs | balance | 1 | 4 |
 |  3 | phs | balance | 5 | 6 |
 
-Table: "Simplified example of the `var_flow` table"\label{tab:linearised}
+Table: "Example of linearised tabular indices of the `var_flow` table"\label{tab:linearised}
 
 Storing the indices in tables avoids the sparse storage of JuMP objects, which can instead be stored in an array with their positions matching the IDs in the index tables.
 Figure \ref{fig:indices} illustrates this method of storage.
 
-![Representation of the storage of indices and JuMP objects \label{fig:indices}](images/indices-storage.png){height=80pt}
+![Representation of the storage of indices and JuMP objects \label{fig:indices}](images/indices-storage.png){height=60pt}
 
-Another key design decision in Tulipa is handling data throughout the analysis pipeline through a [DuckDB](https://duckdb.org) [@DuckDB] connection - from processing input data, to generating internal tables for model creation, to storing outputs. 
+Another key design decision in Tulipa is handling data throughout the analysis pipeline through a [DuckDB](https://duckdb.org) [@DuckDB] connection - from processing input data, to generating internal tables for model creation, to storing outputs.
 This enables manipulating different data formats using DuckDB's capabilities (instead of Julia's), as well as decreasing data movement and duplication.
 
 When creating the variables and constraints, Tulipa can read the DuckDB tables row by row, reducing memory usage compared to using an explicit Julia table, such as DataFrames.
@@ -158,10 +159,10 @@ Figure \ref{fig:overview} summarises how Tulipa interacts with the DuckDB connec
 
 ![Overview of Tulipa's integration with DuckDB \label{fig:overview}](images/tulipa-overview.jpg)
 
-This separation allows users to create the necessary input data from whatever platform the users are more comfortable with and load that data into the DuckDB connection.
+First, this separations allow users to prepare their data using whatever tools they are most comfortable with before loading the input data into the DuckDB connection.
 Then, the indices are created from the data in the DuckDB connection and saved back into it.
 While this step currently occurs in Julia, many of the operations use SQL and could potentially be moved outside of Julia.
-Finally, the JuMP-pipeline begins by reading the indices table and complementing the data as necessary, then creates the JuMP objects and generates the complete model, which is sent to the solver.
+Finally, the JuMP pipeline begins by reading the indices table and complementing the data as necessary, then creates the JuMP objects and generates the complete model, which is sent to the solver.
 Tulipa is tested and benchmarked using the HiGHS [@HiGHS] solver, but other MIP solvers accepted by JuMP can be used as well.
 
 ## Acknowledgements
