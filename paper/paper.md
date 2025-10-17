@@ -117,24 +117,23 @@ TulipaEnergyModel.jl is fundamentally focused on high quality mathematical formu
 
 ## Software Design Innovations
 
-Due to the flexible resolution of assets and flows, many of our variables have a "time block" component, instead of a "time step" component.
-Since different assets and flows can have different time resolutions, the indices of many of our variables and constraints are sparse.
-To better explain this feature, look again at Figure \ref{fig:flexible-time-resolution}.
-In an hourly implementation, we would have variables such as $f_{(\text{H2},\text{ccgt}),t}$, $f_{(\text{phs},\text{balance}),t}$ for $t = 1,\dots,6$.
-Instead, looking at the time blocks of each flow, we have $f_{(\text{H2},\text{ccgt}),1:6}$, $f_{(\text{phs},\text{balance}),1:4}$, and $f_{(\text{phs},\text{balance}),5:6}$.
+Due to the flexible temporal resolution of assets and flows, many variables have a "time block" component instead of a "time step" component and many variables and constraints have sparse indices.
+To explain how this is implemented, revisit the system from Figure \ref{fig:flexible-time-resolution}.
+In an hourly implementation, there would be variables such as $f_{(\text{H2},\text{ccgt}),t}$, $f_{(\text{phs},\text{balance}),t}$ for $t = 1,\dots,6$.
+Instead, looking at the time blocks of each flow, there are $f_{(\text{H2},\text{ccgt}),1:6}$, $f_{(\text{phs},\text{balance}),1:4}$, and $f_{(\text{phs},\text{balance}),5:6}$.
 In other words, this flow variable could be defined as
 
 $$f_{e,b} \qquad \forall e \in E, b \in B(e),$$
 
 where $E$ is the set of edges of the graph, and $B(e)$ is the set of time blocks for this edge.
 
-Similarly, some of the constraints and expressions in the model have their own time blocks (e.g., the balance constraints), and computing the coefficients of the flows involve matching indices and computing it intersections between time blocks.
-Directly defining variables like this in JuMP leads to sparse indices, which are cumbersome and potentially slow for this kind of operation, especially when we are trying to avoid unnecessary computations.
-Furthermore, it can create some performance pitfalls, such as the ["sum-if problem"](https://jump.dev/JuMP.jl/stable/tutorials/getting_started/sum_if/), when trying to determine the coefficients of each flow in each balance constraint.
+Similarly, some of the constraints and expressions in the model have their own time blocks (e.g., the balance constraints), and computing the coefficients of the flows involves matching indices and computing the intersections between time blocks.
+Directly defining variables like this in JuMP leads to sparse indices, which are cumbersome and potentially slow for this kind of operation.
+It can also create performance pitfalls, such as the ["sum-if problem"](https://jump.dev/JuMP.jl/stable/tutorials/getting_started/sum_if/), when trying to determine the coefficients of each flow in each balance constraint.
 
-To improve the storage of these objects, we use a tabular format for the collections of indices of each variable, constraint, and expression.
-Each row of the table stores the corresponding set of indices for JuMP objects, and the JuMP objects themselves are stored in a linearized way in an array.
-For instance, for the flow variable as described above, the first three rows are given in Table \ref{tab:linearized}.
+To improve the storage of these objects, Tulipa uses a tabular format for the collections of indices of each variable, constraint, and expression.
+Each row of the table stores the corresponding set of indices for each JuMP object, and the JuMP objects themselves are stored in a linearized way in an array.
+Returning to the example system, the first three rows of the flow variable defined above are shown in Table \ref{tab:linearized}.
 
 | id | from asset | to asset | time block start | time block end |
 |----|------------|----------|------------------|----------------|
@@ -144,34 +143,32 @@ For instance, for the flow variable as described above, the first three rows are
 
 Table: "Simplified example of the `var_flow` table"\label{tab:linearized}
 
-The table storage of the indices avoids the sparsity of the storage of the JuMP objects.
-The actual JuMP objects are kept separately in an array, with positions matching the ids stored in the table.
-Figure \ref{fig:indices} shows the representation of this storage.
+Storing the indices in tables avoids the sparse storage of JuMP objects, which can instead be stored in an array with their positions matching the IDs in the index tables.
+Figure \ref{fig:indices} illustrates this method of storage.
 
 ![Representation of the storage of indices and JuMP objects \label{fig:indices}](images/indices-storage.png){height=80pt}
 
-A second main software design choices for TulipaEnergyModel.jl is to maintain a [DuckDB](https://duckdb.org) [@DuckDB] connection from the input data to model creation and output generation.
-This enables us to handle different data formats by relying on DuckDB's capabilities, instead of Julia's.
+Another key design decision in Tulipa is handling data throughout the analysis pipeline through a [DuckDB](https://duckdb.org) [@DuckDB] connection - from processing input data, to generating internal tables for model creation, to storing outputs. 
+This enables manipulating different data formats using DuckDB's capabilities (instead of Julia's), as well as decreases data movement and duplication.
 
-We decided to also use DuckDB to store the indices tables, decreasing data movement and duplication by keeping the data in DuckDB for as long as possible.
-When creating the variables and constraints, we can read the DuckDB tables per row, decreasing the memory usage in comparison to using an explicit Julia table, such as DataFrames.
+When creating the variables and constraints, Tulipa can read the DuckDB tables per row, decreasing memory usage compared to using an explicit Julia table, such as DataFrames.
 
-Furthermore, this better separates the pipeline steps into (i) data ingestion and manipulation, (ii) indices creation, and (iii) model creation.
-Figure \ref{fig:overview} shows an overview of how Tulipa interacts with the DuckDB connection.
+Furthermore, using DuckDB for everything allows cleaner separation of the pipeline into (i) data ingestion and manipulation, (ii) indices creation, and (iii) model creation.
+Figure \ref{fig:overview} summarizes how Tulipa interacts with the DuckDB connection.
 
 ![Overview of Tulipa's integration with DuckDB \label{fig:overview}](images/tulipa-overview.jpg)
 
 This separation allows users to create the necessary input data from whatever platform the users are more comfortable with and load that data into the DuckDB connection.
 Then, the indices are created from the data in the DuckDB connection and saved back into it.
-While Tulipa still has this step tied to Julia, many of the operations are done in SQL, and could be performed independently in the pipeline if necessary.
-Finally, the JuMP-specific part of the pipeline starts by reading the indices table, possibly complementing the data before creating the JuMP objects and the complete model.
-Our model is tested and benchmarked using the HiGHS solver [@HiGHS], which is also the default solver in our interface, but other MIP solvers accepted by JuMP can be used as well.
+While this step currently occurs in Julia, many of the operations use SQL and could potentially be moved outside of Julia.
+Finally, the JuMP-pipeline starts with reading the indices table and complementing the data as necessary, before creating the JuMP objects and generating the complete model, which is sent to the solver.
+Tulipa is tested and benchmarked using the HiGHS [@HiGHS] solver, but other MIP solvers accepted by JuMP can be used as well.
 
 ## Acknowledgements
 
 We thank Oscar Dowson for the initial suggestion to use DataFrames to handle the sum-if problem, which motivated the use of tabular storage for all indices.
 
-This publication is part of the project NextGenOpt with project number ESI.2019.008, which is (partly) financed by the Dutch Research Council (NWO) and supported by eScienceCenter under project number NLeSC C 21.0226.
+This publication is part of the project NextGenOpt with project number ESI.2019.008, which is (partly) financed by the Dutch Research Council (NWO) and supported by the Netherlands eScience Center under project number NLeSC C 21.0226.
 In addition, this research received partial funding from the European Climate, Infrastructure and Environment Executive Agency under the European Union’s HORIZON Research and Innovation Actions under grant agreement no. 101095998.
 
 ## References
