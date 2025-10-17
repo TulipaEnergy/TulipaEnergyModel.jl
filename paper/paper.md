@@ -102,7 +102,7 @@ Since some of these modelling breakthroughs alter the foundation and structures 
 
 ## Modelling Innovations
 
-Two novel features in Tulipa are:
+Two of the main innovations of Tulipa include:
 1. Providing fully flexible temporal resolution [@Gao2025] for the assets and flows, and
 2. Allowing direct connections between assets [@Tejada2025].
 To illustrate these concepts, consider the following example:
