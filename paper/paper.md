@@ -102,7 +102,10 @@ Since some of these modelling breakthroughs alter the foundation and structures 
 
 ## Modelling Innovations
 
-Two of the main innovations of TulipaEnergyModel are that it accepts a fully flexible resolution [@Gao2025] for the assets and flows, and it allows for a direct connection between assets [@Tejada2025]. To illustrate these concepts, consider the following example:
+Two novel features in Tulipa are:
+1. Providing fully flexible temporal resolution [@Gao2025] for the assets and flows, and
+2. Allowing direct connections between assets [@Tejada2025].
+To illustrate these concepts, consider the following example:
 
 ![Example of network with flexible resolution of assets and flows \label{fig:flexible-time-resolution}](images/flexible-time-resolution.png)
 
