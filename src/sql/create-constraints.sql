@@ -46,26 +46,6 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_balance_hub
-;
-
-create table cons_balance_hub as
-select
-    nextval('id') as id,
-    t_high.*
-from
-    t_highest_all_flows as t_high
-    left join asset on t_high.asset = asset.asset
-where
-    asset.type = 'hub'
-;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
 drop table if exists cons_capacity_incoming_simple_method
 ;
 
