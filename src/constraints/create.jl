@@ -8,7 +8,6 @@ function compute_constraints_indices(connection)
         key => TulipaConstraint(connection, "cons_$key") for key in (
             :balance_conversion,
             :balance_consumer,
-            :balance_hub,
             :capacity_incoming_simple_method,
             :capacity_incoming_simple_method_non_investable_storage_with_binary,
             :capacity_incoming_simple_method_investable_storage_with_binary,

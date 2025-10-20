@@ -511,12 +511,12 @@ function _validate_certain_asset_types_can_only_have_none_investment_methods!(co
         "SELECT asset.asset, asset.investment_method, asset.type
         FROM asset
         WHERE asset.investment_method != 'none'
-            AND asset.type in ('hub', 'consumer')
+            AND asset.type in ('consumer')
         ",
     )
         push!(
             error_messages,
-            "Incorrect use of investment method '$(row.investment_method)' for asset '$(row.asset)' of type '$(row.type)'. Hub and consumer assets can only have 'none' investment method.",
+            "Incorrect use of investment method '$(row.investment_method)' for asset '$(row.asset)' of type '$(row.type)'. Consumer assets can only have 'none' investment method.",
         )
     end
 
