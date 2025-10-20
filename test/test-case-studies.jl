@@ -154,6 +154,21 @@ end
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test energy_problem.objective_value ≈ 410873.9 rtol = 1e-5
+
+    # We only check the rolling horizon objectives since we cannot easily obtain
+    # the objective of the full problem
+    expected_objective_values =
+        [103424.0, 120393.6, 109303.0, 108443.0, 122910.4, 137268.2, 118006.6]
+
+    energy_problem = TulipaEnergyModel.run_rolling_horizon(connection, 24, 48; show_log = false)
+    for row in DuckDB.query(connection, "FROM rolling_horizon_window")
+        @test row.objective_value ≈ expected_objective_values[row.id] rtol = 1e-5
+    end
+
+    io = IOBuffer()
+    print(io, energy_problem)
+    @test split(String(take!(io))) ==
+          split(read("io-outputs/energy-problem-rolling-horizon.txt", String))
 end
 
 @testitem "Infeasible Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow] begin

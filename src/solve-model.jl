@@ -81,6 +81,9 @@ function save_solution!(connection, model, variables, constraints; compute_duals
         if length(var.container) == 0
             continue
         end
+        if startswith(string(name), "param") # ignore Parameters
+            continue
+        end
 
         # Create a named tuple structure (row table compliant) to hold the solution (which follows the row format)
         # Note: This allocates memory, but I don't think there is a way to avoid it
