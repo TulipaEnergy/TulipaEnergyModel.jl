@@ -553,7 +553,15 @@ end
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     asset = DataFrame(
         :asset => ["A1", "A2", "A3", "A4", "A5", "A6", "A7"],
-        :type => ["producer", "conversion", "storage", "consumer", "consumer", "consumer", "consumer"],
+        :type => [
+            "producer",
+            "conversion",
+            "storage",
+            "consumer",
+            "consumer",
+            "consumer",
+            "consumer",
+        ],
         :investment_method => ["simple", "none", "none", "simple", "compact", "none", "none"],
     )
     connection = DBInterface.connect(DuckDB.DB)
