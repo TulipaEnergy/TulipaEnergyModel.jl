@@ -94,10 +94,6 @@ Associated input parameter: `unit_commitment_integer`
 
 ## Constraint Dual Tables
 
-### `cons_balance_hub`
-
-- `dual_balance_hub`: Dual of the constraint ["balance constraint for hubs"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Balance-Constraint-for-Hubs).
-
 ### `cons_balance_consumer`
 
 - `dual_balance_consumer`: Dual of the constraint ["balance constraint for consumers"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Balance-Constraint-for-Consumers).
