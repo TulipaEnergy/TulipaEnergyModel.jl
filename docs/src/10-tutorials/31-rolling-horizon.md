@@ -314,7 +314,7 @@ Plots.areaplot!(timestep, y; label = ["thermal" "solar" "discharge"])
 Plots.areaplot!(timestep, -charge; label = "charge")
 ```
 
-### Error
+### Comparison
 
 For completeness, let's show the difference between the solutions using rolling horizon and not using it.
 
@@ -328,6 +328,30 @@ solar_rh = sort(big_table_rh[big_table_rh.asset .== "solar", :], :timestep).outg
 discharge_rh = sort(big_table_rh[big_table_rh.asset .== "battery", :], :timestep).outgoing
 charge_rh = sort(big_table_rh[big_table_rh.asset .== "battery", :], :timestep).incoming
 
+both_plots = [
+    Plots.plot(;
+        ylabel = "MW",
+        xlims = (1, horizon_length),
+        xticks = 1:12:horizon_length,
+        size = (800, 150),
+        legend = :outerright,
+    ) for _ in 1:2
+]
+
+y = hcat(thermal_no_rh, solar_no_rh, discharge_no_rh)
+Plots.areaplot!(both_plots[1], timestep, y; label = ["thermal" "solar" "discharge"])
+Plots.areaplot!(both_plots[1], timestep, -charge_no_rh; label = "charge")
+
+y = hcat(thermal_rh, solar_rh, discharge_rh)
+Plots.areaplot!(both_plots[2], timestep, y; label = ["thermal" "solar" "discharge"])
+Plots.areaplot!(both_plots[2], timestep, -charge_rh; label = "charge")
+
+Plots.plot(both_plots..., layout = (2, 1), size = (800, 150 * 2))
+```
+
+Finally, as a sanity check, we can compare that indeed both solutions reach the same demand value by comparing the aggregated outgoing flow and the charge between the rolling horizon and the no-rolling horizon versions.
+
+```@example rolling_horizon
 outgoing_rh = thermal_rh + solar_rh + discharge_rh
 outgoing_no_rh = thermal_no_rh + solar_no_rh + discharge_no_rh
 
