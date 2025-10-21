@@ -4,6 +4,7 @@ authors = ["Abel Soares Siqueira <abel.s.siqueira@gmail.com>", "Diego A. Tejada-
 version = "0.18.0"
 
 [deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DuckDB = "d2f5444f-75bc-4fdf-ac35-56f514c445e1"
 DuckDB_jll = "2cbbab25-fc8b-58cf-88d4-687a02676033"
@@ -21,6 +22,7 @@ TimerOutputs = "a759f4b9-e2f1-59dc-863e-4aeb61b1ea8f"
 TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
 
 [compat]
+BenchmarkTools = "1.6.2"
 CSV = "0.10"
 DuckDB = "1"
 DuckDB_jll = "1.2.1"
