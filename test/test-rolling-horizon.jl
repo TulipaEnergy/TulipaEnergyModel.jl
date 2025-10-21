@@ -195,7 +195,7 @@ end
 end
 
 @testitem "Test exporting output of rolling horizon to CSV works" setup = [CommonSetup] tags =
-    [:integration, :io, :fast] begin
+    [:integration, :io, :rolling_horizon] begin
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
     output_folder = mktempdir()
@@ -204,4 +204,66 @@ end
         ("var_flow.csv", "cons_balance_consumer.csv", "cons_capacity_incoming_simple_method.csv")
         @test isfile(joinpath(output_folder, filename))
     end
+end
+
+@testitem "Test duals of rolling horizon" setup = [CommonSetup] tags = [:fast, :rolling_horizon] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
+
+    temp_ep = EnergyProblem(connection)
+    expected_number_cons = TEM.get_single_element_from_query_and_ensure_its_only_one(
+        DuckDB.query(connection, "SELECT COUNT(*) FROM cons_balance_consumer"),
+    )
+
+    move_forward = 24
+    opt_window_length = 48
+
+    # Without duals
+    TulipaEnergyModel.run_rolling_horizon(
+        connection,
+        move_forward,
+        opt_window_length;
+        compute_duals = false,
+        show_log = false,
+    )
+    @test !(
+        "dual_balance_consumer" in [
+            row.column_name for row in DuckDB.query(
+                connection,
+                """
+                FROM duckdb_columns WHERE table_name = 'cons_balance_consumer'
+                """,
+            )
+        ]
+    )
+
+    # With duals
+    TulipaEnergyModel.run_rolling_horizon(
+        connection,
+        move_forward,
+        opt_window_length;
+        compute_duals = true,
+        show_log = false,
+    )
+    @test "dual_balance_consumer" in [
+        row.column_name for row in DuckDB.query(
+            connection,
+            """
+            FROM duckdb_columns WHERE table_name = 'cons_balance_consumer'
+            """,
+        )
+    ]
+
+    dual_balance_consumer = [
+        row.dual_balance_consumer for row in DuckDB.query(
+            connection,
+            """
+            SELECT id, dual_balance_consumer FROM cons_balance_consumer ORDER BY id
+            """,
+        )
+    ]
+    @test !any(isnan.(dual_balance_consumer)) # None of then are NaN
+    @test !any(ismissing.(dual_balance_consumer)) # None of then are missing
+    @test !any(isnothing.(dual_balance_consumer)) # None of then are nothing
+    @test length(dual_balance_consumer) == expected_number_cons
 end
