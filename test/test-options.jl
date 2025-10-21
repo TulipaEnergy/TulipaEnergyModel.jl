@@ -3,7 +3,7 @@
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Tiny"))
     energy_problem = TulipaEnergyModel.run_scenario(
         connection;
-        output_folder = OUTPUT_FOLDER,
+        output_folder = mktempdir(),
         optimizer = HiGHS.Optimizer,
         optimizer_parameters = Dict(
             "output_flag" => false,
@@ -22,7 +22,7 @@ end
 
     ep = TulipaEnergyModel.run_scenario(
         connection;
-        output_folder = OUTPUT_FOLDER,
+        output_folder = mktempdir(),
         optimizer = GLPK.Optimizer,
         optimizer_parameters = Dict("msg_lev" => GLPK.GLP_MSG_OFF, "tol_int" => 1e-3),
         model_file_name = "model.lp",
@@ -127,7 +127,7 @@ end
     @test_throws MathOptInterface.UnsupportedAttribute energy_problem =
         TulipaEnergyModel.run_scenario(
             connection;
-            output_folder = OUTPUT_FOLDER,
+            output_folder = mktempdir(),
             optimizer = HiGHS.Optimizer,
             optimizer_parameters = Dict("bad_param" => 1.0),
             show_log = false,
