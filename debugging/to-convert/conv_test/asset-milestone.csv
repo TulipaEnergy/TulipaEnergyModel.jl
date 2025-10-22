@@ -1,4 +1,0 @@
-asset,milestone_year,investable,peak_demand,storage_inflows,initial_storage_level,min_energy_timeframe_partition,max_energy_timeframe_partition,units_on_cost,commodity_price
-gen,2030,true,0.0,0.0,0.0,,,100,1
-gen2,2030,true,0.0,0.0,0.0,,,100,1
-demand,2030,false,100.0,0.0,0.0,,,,0
