@@ -452,11 +452,11 @@ For branches that were pushed to the main repo, it is recommended that you do so
 
 #### Tests on Pull Requests
 
-The pull request test are run by the workflow `TestOnPRs`, while the tests on `main` are run by the `Test` workflow.
+The pull request tests are run by the workflow `TestOnPRs`, while the tests on `main` are run by the `Test` workflow.
 The `Test` workflow is much more comprehensive, running the tests on two Julia versions (Latest and Long Term Support) and 3 operating systems (Linux, MacOS, Windows).
 
-The `TestOnPRs` workflow, by default, only runs the test using the latest Julia version and on Linux.
-By tagging the pull request with the label `pr-test-all`, the `TestOnPRs` workflow changes behavious to run the test on all 3 OSs mentioned above.
+The `TestOnPRs` workflow, by default, only runs the tests using the latest Julia version and on Linux.
+By tagging the pull request with the label `pr-test-all`, the `TestOnPRs` workflow changes behaviour to run the tests on all 3 OSs mentioned above.
 
 ## Documentation updates
 
