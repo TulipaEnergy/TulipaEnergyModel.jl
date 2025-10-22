@@ -2,16 +2,30 @@ using TulipaEnergyModel
 using DuckDB
 using TulipaIO
 
-# in_folder = joinpath(pwd(), "test/inputs")
-in_folder = joinpath(pwd(), "test/constraint-correctness-inputs")
+in_folder = joinpath(pwd(), "test\\inputs")
 bench_folder = joinpath(pwd(), "benchmark")
 
 # in_dir = joinpath(in_folder, "3bin")
-in_dir = joinpath(in_folder, "all-susd")
 # in_dir = joinpath(in_folder, "UC-ramping")
-# in_dir = joinpath(in_folder, "susd-ramping-2var-feas")
-# in_dir = joinpath(in_folder, "Multi-year Investments")
 # in_dir = joinpath(bench_folder, "EU")
+
+# Conversion
+conv_dir = joinpath(pwd(), "debugging", "to-convert")
+# conv_dir = joinpath(pwd(), "debugging", "converted")
+
+in_dir = joinpath(conv_dir, "conv_test")
+
+# Trajectory
+# in_dir = joinpath(pwd(), "test", "constraint-correctness-inputs", "trajectories-feas")
+# in_dir = joinpath(pwd(), "test", "constraint-correctness-inputs", "trajectories-infeas")
+
+# SUSD Ramping 1,2,3var
+# in_dir = joinpath(pwd(), "test", "constraint-correctness-inputs", "susd-ramping-1var-feas")
+# in_dir = joinpath(pwd(), "test", "constraint-correctness-inputs", "susd-ramping-1var-infeas")
+# in_dir = joinpath(pwd(), "test", "constraint-correctness-inputs", "susd-ramping-2var-feas")
+# in_dir = joinpath(pwd(), "test", "constraint-correctness-inputs", "susd-ramping-2var-infeas")
+# in_dir = joinpath(pwd(), "test", "constraint-correctness-inputs", "susd-ramping-3var-feas")
+# in_dir = joinpath(pwd(), "test", "constraint-correctness-inputs", "susd-ramping-3var-infeas")
 
 conn = DBInterface.connect(DuckDB.DB)
 read_csv_folder(conn, in_dir; schemas = TulipaEnergyModel.schema_per_table_name)

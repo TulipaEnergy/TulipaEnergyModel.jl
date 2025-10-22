@@ -1,0 +1,3 @@
+from_asset,to_asset,carrier,is_transport,capacity,technical_lifetime,economic_lifetime,discount_rate,investment_integer
+gen,demand,electricity,true,10000.0,10,10,0.02,false
+gen2,demand,electricity,true,10000.0,10,10,0.02,false
