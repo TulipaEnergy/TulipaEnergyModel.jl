@@ -553,7 +553,15 @@ end
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     asset = DataFrame(
         :asset => ["A1", "A2", "A3", "A4", "A5", "A6", "A7"],
-        :type => ["producer", "conversion", "storage", "hub", "consumer", "hub", "consumer"],
+        :type => [
+            "producer",
+            "conversion",
+            "storage",
+            "consumer",
+            "consumer",
+            "consumer",
+            "consumer",
+        ],
         :investment_method => ["simple", "none", "none", "simple", "compact", "none", "none"],
     )
     connection = DBInterface.connect(DuckDB.DB)
@@ -562,8 +570,8 @@ end
     error_messages =
         TEM._validate_certain_asset_types_can_only_have_none_investment_methods!(connection)
     @test error_messages == [
-        "Incorrect use of investment method 'simple' for asset 'A4' of type 'hub'. Hub and consumer assets can only have 'none' investment method.",
-        "Incorrect use of investment method 'compact' for asset 'A5' of type 'consumer'. Hub and consumer assets can only have 'none' investment method.",
+        "Incorrect use of investment method 'simple' for asset 'A4' of type 'consumer'. Consumer assets can only have 'none' investment method.",
+        "Incorrect use of investment method 'compact' for asset 'A5' of type 'consumer'. Consumer assets can only have 'none' investment method.",
     ]
 end
 
@@ -574,7 +582,7 @@ end
     error_messages =
         TEM._validate_certain_asset_types_can_only_have_none_investment_methods!(connection)
     @test error_messages == [
-        "Incorrect use of investment method 'simple' for asset 'demand' of type 'consumer'. Hub and consumer assets can only have 'none' investment method.",
+        "Incorrect use of investment method 'simple' for asset 'demand' of type 'consumer'. Consumer assets can only have 'none' investment method.",
     ]
 end
 
