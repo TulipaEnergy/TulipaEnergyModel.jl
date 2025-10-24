@@ -1,0 +1,8 @@
+EnergyProblem:
+  - Solved using rolling horizon. Internal model info:
+    - Number of variables: 337
+    - Number of constraints for variable bounds: 337
+    - Number of structural constraints: 384
+  - Model solved!
+    - Termination status: OPTIMAL
+    - Objective value: NaN

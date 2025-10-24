@@ -1,0 +1,15 @@
+{
+  "@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": [],
+  "codeRepository": "https://github.com/TulipaEnergy/TulipaEnergyModel.jl/",
+  "dateCreated": "2025-10-19",
+  "dateModified": "2025-10-19",
+  "datePublished": "2025-10-19",
+  "description": "An energy system optimization model that is flexible, computationally efficient, and academically robust.",
+  "identifier": "https://doi.org/10.5281/zenodo.8363262",
+  "keywords": "julia, energy-system optimisation, unit commitment,  multi-year investment, DC-OPF, seasonal storage, representative periods, flexible temporal resolution",
+  "license": "Apache 2.0",
+  "title": "TulipaEnergyModel.jl: A Modelling Framework Breaking the Tradeoff Between Fidelity and Computational Load",
+  "version": "v0.18.2"
+}

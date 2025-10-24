@@ -16,12 +16,6 @@
     INPUT_FOLDER = joinpath(@__DIR__, "inputs")
     export INPUT_FOLDER
 
-    OUTPUT_FOLDER = joinpath(@__DIR__, "outputs")
-    export OUTPUT_FOLDER
-    if !isdir(OUTPUT_FOLDER)
-        mkdir(OUTPUT_FOLDER)
-    end
-
     function _create_connection_from_dict(data::Dict{String,DataFrame})
         connection = DBInterface.connect(DuckDB.DB)
 

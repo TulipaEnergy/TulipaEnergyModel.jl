@@ -1,0 +1,236 @@
+# npx bibtex-tidy paper/paper.bib
+
+
+
+
+
+@misc{greg2025,
+	title = {Hull {Clustering} with {Blended} {Representative} {Periods} for {Energy} {System} {Optimization} {Models}},
+	url = {http://arxiv.org/abs/2508.21641},
+	doi = {10.48550/arXiv.2508.21641},
+	urldate = {2025-09-01},
+	publisher = {arXiv},
+	author = {Neustroev, Grigory and Tejada-Arango, Diego A. and Morales-Espana, German and Weerdt, Mathijs M. de},
+	month = aug,
+	year = {2025},
+	note = {arXiv:2508.21641 [math]},
+	keywords = {Mathematics - Optimization and Control, Computer Science - Systems and Control, Electrical Engineering and Systems Science - Systems and Control},
+}
+@article{gentile2016,
+	title = {A tight {MIP} formulation of the unit commitment problem with start-up and shut-down constraints},
+	volume = {5},
+	copyright = {All rights reserved},
+	issn = {2192-4406, 2192-4414},
+	url = {https://link.springer.com/article/10.1007/s13675-016-0066-y},
+	doi = {10.1007/s13675-016-0066-y},
+	number = {1},
+	urldate = {2017-03-09},
+	journal = {EURO Journal on Computational Optimization},
+	author = {Gentile, C. and Morales-España, G. and Ramos, A.},
+	month = apr,
+	year = {2016},
+	pages = {177--201},
+}
+@article{MoralesEspana2022,
+	title = {Classifying and modelling demand response in power systems},
+	volume = {242},
+	issn = {0360-5442},
+	url = {https://www.sciencedirect.com/science/article/pii/S0360544221027936},
+	doi = {10.1016/j.energy.2021.122544},
+	urldate = {2022-01-26},
+	journal = {Energy},
+	author = {Morales-España, Germán and Martínez-Gordón, Rafael and Sijm, Jos},
+	month = mar,
+	year = {2022},
+	keywords = {Demand response, Linear programming, Demand side management, Integrated energy system models, Mixed-integer programming, Power systems models},
+	pages = {122544},
+}
+
+
+@article{Gao2025,
+  title         = {Fully flexible temporal resolution for energy system optimization},
+  journal       = {Applied Energy},
+  volume        = {396},
+  pages         = {126267},
+  year          = {2025},
+  issn          = {0306-2619},
+  doi           = {https://doi.org/10.1016/j.apenergy.2025.126267},
+  url           = {https://www.sciencedirect.com/science/article/pii/S0306261925009973},
+  author        = {Zhi Gao and Matteo Gazzani and Diego A. Tejada-Arango and Abel {Soares Siqueira} and Ni Wang and Madeleine Gibescu and Germ\'{a}n Morales-Espa\~{n}a},
+  keywords      = {Energy system optimization, Temporal aggregation, Computational efficiency},
+  abstract      = {In order to achieve a timely transition towards sustainable energy systems within a large landscape of multi-sectors and multi-technologies, decision-makers and industry practitioners can rely on time- and space-discretized energy system optimization models. However, such models are often burdened by the computational costs arising from the growing problem complexity, which is especially due to the time discretization. The common strategy to lower the computational cost is to uniformly reduce the temporal resolution, sacrificing the quality of the solution. In light of this, we propose the concept and a formulation of fully flexible temporal resolution, wherein each decision variable and constraint can have a separate temporal resolution. After introducing the formulation in detail, we demonstrate its capability by applying it to an EU-wide case study optimizing both capacity investment and operation decisions of the inter-connected energy system across the different countries. We show that the proposed flexible formulation allows us to flexibly remove variables and constraints that are not needed without losing accuracy, and to simplify the time discretization (e.g., in space) while pushing the Pareto front by simultaneously speeding up computation and limiting losses in accuracy. In conclusion, we highlight the promise of adopting fully flexible temporal resolution and encourage future research to explore further temporal resolution configurations beyond our examples.}
+}
+@article{Tejada2025,
+  title = {Debunking the speed-fidelity trade-off: Speeding-up large-scale energy models while keeping fidelity},
+  journal = {International Journal of Electrical Power & Energy Systems},
+  volume = {168},
+  pages = {110674},
+  year = {2025},
+  issn = {0142-0615},
+  doi = {https://doi.org/10.1016/j.ijepes.2025.110674},
+  url = {https://www.sciencedirect.com/science/article/pii/S014206152500225X},
+  author = {Diego A. Tejada-Arango and Juha Kiviluoma and Germán Morales-España},
+  keywords = {Energy sector coupling, Optimisation modelling, Energy system models, Linear programming (LP), Computational efficiency},
+  abstract = {Energy system models are essential for planning and supporting the energy transition. However, increasing temporal, spatial, and sectoral resolutions have led to large-scale linear programming (LP) models that are often (over)simplified to remain computationally tractable—frequently at the expense of model fidelity. This paper challenges the common belief that LP formulations cannot be improved without sacrificing their accuracy. Inspired by graph theory, we propose to model energy systems using energy assets (vertices), as a single building-block, and flows to connect between them. This reduces the need for additional components such as nodes and connections. The resulting formulation is more compact, without sacrificing accuracy, and leverages the inherent graph structure of energy systems. To evaluate performance, we implemented and compared four common modelling approaches varying in their use of building blocks and flow representations. We conducted experiments using TulipaEnergyModel.jl and applied them to a multi-sector case study with varying problem sizes. Results show that our single-building-block (1BB-1F) approach reduces variables and constraints by 26% and 35%, respectively, and achieves a 1.27x average speedup in solving time without any loss in model fidelity. The speedup increases with problem size, making this approach particularly advantageous for large-scale models. Our findings demonstrate that not all LPs are equal in quality and that better reformulations can lead to substantial computational benefits. This paper also aims to raise awareness of model quality considerations in energy system optimisation and promote more efficient formulations without compromising fidelity.}
+}
+@article{Tejada2018,
+  author={Tejada-Arango, Diego A. and Domeshek, Maya and Wogrin, Sonja and Centeno, Efraim},
+  journal={IEEE Transactions on Power Systems},
+  title={Enhanced Representative Days and System States Modeling for Energy Storage Investment Analysis},
+  year={2018},
+  volume={33},
+  number={6},
+  pages={6534-6544},
+  keywords={Investment;Power system modeling;Energy storage;Analytical models;Power system planning;Energy storage systems;power system planning;power system modeling;system states;representative days},
+  doi={10.1109/TPWRS.2018.2819578}
+}
+@article{Elgersma2025,
+      title={Tight MIP Formulations for Optimal Operation and Investment of Storage Including Reserves},
+      author={Maaike B. Elgersma and Germán Morales-España and Karen I. Aardal and Niina Helistö and Juha Kiviluoma and Mathijs M. de Weerdt},
+      year={2025},
+      eprint={2411.17484},
+      archivePrefix={arXiv},
+      primaryClass={math.OC},
+      url={https://arxiv.org/abs/2411.17484},
+}
+
+
+@ARTICLE{MoralesEspana2013,
+  author={Morales-España, Germán and Latorre, Jesus M. and Ramos, Andres},
+  journal={IEEE Transactions on Power Systems},
+  title={Tight and Compact MILP Formulation for the Thermal Unit Commitment Problem},
+  year={2013},
+  volume={28},
+  number={4},
+  pages={4897-4908},
+  keywords={Upper bound;Linear programming;Cost function;Production;Computational modeling;Power systems;Spinning;Mixed-integer linear programming (MILP);strong lower bounds;thermal units;unit commitment (UC)},
+  doi={10.1109/TPWRS.2013.2251373}
+}
+@misc{wang2025a,
+      title={Discounting Approaches in Multi-Year Investment Modelling for Energy Systems},
+      author={Ni Wang and Diego A. Tejada-Arango},
+      year={2025},
+      eprint={2504.21709},
+      archivePrefix={arXiv},
+      primaryClass={math.OC},
+      url={https://arxiv.org/abs/2504.21709},
+}
+@misc{wang2025b,
+      title={Vintage-Based Formulations in Multi-Year Investment Modelling for Energy Systems},
+      author={Ni Wang and Germán Morales-España},
+      year={2025},
+      eprint={2505.00379},
+      archivePrefix={arXiv},
+      primaryClass={math.OC},
+      url={https://arxiv.org/abs/2505.00379},
+}
+@article{Calliope,
+  doi           = {10.21105/joss.00825},
+  url           = {https://doi.org/10.21105/joss.00825},
+  year          = {2018},
+  publisher     = {The Open Journal},
+  volume        = {3},
+  number        = {29},
+  pages         = {825},
+  author        = {Pfenninger, Stefan and Pickering, Bryn},
+  title         = {Calliope: a multi-scale energy systems modelling framework},
+  journal       = {Journal of Open Source Software}
+}
+@article{EnergyModelsX,
+  doi           = {10.21105/joss.06619},
+  url           = {https://doi.org/10.21105/joss.06619},
+  year          = {2024},
+  publisher     = {The Open Journal},
+  volume        = {9},
+  number        = {97},
+  pages         = {6619},
+  author        = {Hellemo, Lars and B\o{}dal, Espen Flo and Holm, Sigmund Eggen and Pinel, Dimitri and Straus, Julian},
+  title         = {EnergyModelsX: Flexible Energy Systems Modelling with Multiple Dispatch},
+  journal       = {Journal of Open Source Software}
+}
+@software{GenX,
+  author        = {Bonaldo, Luca and Chakrabarti, Sambuddha and Cheng, Fangwei and Ding, Yifu and Jenkins, Jesse and Luo, Qian and Macdonald, Ruaridh and Mallapragada, Dharik and Manocha, Aneesha and Mantegna, Gabe and Morris, Jack and Patankar, Neha and Pecci, Filippo and Schwartz, Aaron and Schwartz, Jacob and Schivley, Greg and Sepulveda, Nestor and Xu, Qingyu},
+  doi           = {10.5281/zenodo.10846070},
+  month         = feb,
+  title         = {{GenX}},
+  url           = {https://github.com/GenXProject/GenX.jl},
+  version       = {0.4.4},
+  year          = {2025}
+}
+@article{SpineOpt,
+  title         = {SpineOpt: A flexible open-source energy system modelling framework},
+  journal       = {Energy Strategy Reviews},
+  volume        = {43},
+  pages         = {100902},
+  year          = {2022},
+  issn          = {2211-467X},
+  doi           = {https://doi.org/10.1016/j.esr.2022.100902},
+  url           = {https://www.sciencedirect.com/science/article/pii/S2211467X22000955},
+  author        = {Maren Ihlemann and Iasonas Kouveliotis-Lysikatos and Jiangyi Huang and Joseph Dillon and Ciara O'Dwyer and Topi Rasku and Manuel Marin and Kris Poncelet and Juha Kiviluoma},
+  keywords      = {Open source tool, Energy system modelling, Energy system analysis, Integrated energy systems, Investment planning, Sector coupling},
+  abstract      = {The transition towards more sustainable energy systems poses new requirements on energy system models. New challenges include representing more uncertainties, including short-term detail in long-term planning models, allowing for more integration across energy sectors, and dealing with increased model complexities. SpineOpt is a flexible, open-source, energy system modelling framework for performing operational and planning studies, consisting of a wide spectrum of novel tools and functionalities. The most salient features of SpineOpt include a generic data structure, flexible temporal and spatial structures, a comprehensive representation of uncertainties, and model decomposition capabilities to reduce the computational complexity. These enable the implementation of highly diverse case studies. SpineOpt's features are presented through several publicly-available applications. An illustrative case study presents the impact of different temporal resolutions and stochastic structures in a co-optimised electricity and gas network. Using a lower temporal resolution in different parts of the model leads to a lower computational time (44\%–98\% reductions), while the total system cost varies only slightly (-1.22–1.39\%). This implies that modellers experiencing computational issues should choose a high level of temporal accuracy only when needed.}
+}
+@article{JuMP,
+  author        = {Miles Lubin and Oscar Dowson and Joaquim {Dias Garcia} and Joey Huchette and Beno{\^i}t Legat and Juan Pablo Vielma},
+  title         = {{JuMP} 1.0: {R}ecent improvements to a modeling language for mathematical optimization},
+  journal       = {Mathematical Programming Computation},
+  year          = {2023},
+  doi           = {10.1007/s12532-023-00239-3}
+}
+@article{Julia,
+  title         = {Julia: A fresh approach to numerical computing},
+  author        = {Bezanson, Jeff and Edelman, Alan and Karpinski, Stefan and Shah, Viral B},
+  journal       = {SIAM {R}eview},
+  volume        = {59},
+  number        = {1},
+  pages         = {65--98},
+  year          = {2017},
+  publisher     = {SIAM},
+  doi           = {10.1137/141000671},
+  url           = {https://epubs.siam.org/doi/10.1137/141000671}
+}
+@software{DuckDB,
+  author        = {Raasveldt, Mark and Muehleisen, Hannes},
+  title         = {{DuckDB}},
+  url           = {https://github.com/duckdb/duckdb}
+}
+@inproceedings{PowerModels,
+  author        = {Carleton Coffrin and Russell Bent and Kaarthik Sundar and Yeesian Ng and Miles Lubin},
+  title         = {PowerModels.jl: An Open-Source Framework for Exploring Power Flow Formulations},
+  booktitle     = {2018 Power Systems Computation Conference (PSCC)},
+  year          = {2018},
+  month         = {June},
+  pages         = {1--8},
+  doi           = {10.23919/PSCC.2018.8442948}
+}
+@software{PyPSA,
+  author        = {Brown, Tom and H\"{o}rsch, Jonas and Hofmann, Fabian and Neumann, Fabian and Zeyen, Lisa and Syranidis, Chloe and Frysztacki, Martha and Schlachtberger, David and Glaum, Philipp and Parzen, Max},
+  doi           = {10.5334/jors.188},
+  license       = {MIT},
+  title         = {{PyPSA: Python for Power System Analysis}},
+  version       = {0.35.1}
+}
+@article{Sienna,
+author = {Lara, José Daniel and Barrows, Clayton and Thom, Daniel and Krishnamurthy, Dheepak and Callaway, Duncan},
+doi = {https://doi.org/10.1016/j.softx.2021.100747},
+journal = {SoftwareX},
+month = jul,
+title = {{PowerSystems.jl — A power system data management package for large scale modeling}},
+url = {https://www.sciencedirect.com/science/article/pii/S2352711021000765},
+volume = {15},
+year = {2021}
+}
+@article{HiGHS,
+  title = {Parallelizing the dual revised simplex method},
+  volume = {10},
+  ISSN = {1867-2957},
+  url = {http://dx.doi.org/10.1007/s12532-017-0130-5},
+  DOI = {10.1007/s12532-017-0130-5},
+  number = {1},
+  journal = {Mathematical Programming Computation},
+  publisher = {Springer Science and Business Media LLC},
+  author = {Huangfu,  Q. and Hall,  J. A. J.},
+  year = {2017},
+  month = dec,
+  pages = {119–142}
+}

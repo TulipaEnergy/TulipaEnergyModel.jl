@@ -9,18 +9,15 @@ end
     [:integration, :io, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Norse"))
-    TulipaEnergyModel.run_scenario(
-        connection;
-        output_folder = joinpath(OUTPUT_FOLDER),
-        show_log = false,
-    )
+    output_folder = mktempdir()
+    TulipaEnergyModel.run_scenario(connection; output_folder, show_log = false)
     for filename in (
         "var_flow.csv",
         "var_flows_investment.csv",
         "cons_balance_consumer.csv",
         "cons_capacity_incoming_simple_method.csv",
     )
-        @test isfile(joinpath(OUTPUT_FOLDER, filename))
+        @test isfile(joinpath(output_folder, filename))
     end
 end
 

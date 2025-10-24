@@ -81,6 +81,9 @@ function save_solution!(connection, model, variables, constraints; compute_duals
         if length(var.container) == 0
             continue
         end
+        if startswith(string(name), "param") # ignore Parameters
+            continue
+        end
 
         # Create a named tuple structure (row table compliant) to hold the solution (which follows the row format)
         # Note: This allocates memory, but I don't think there is a way to avoid it
@@ -88,13 +91,6 @@ function save_solution!(connection, model, variables, constraints; compute_duals
 
         # Create a temporary DuckDB table for this table
         DuckDB.register_table(connection, tmp_table, "t_var_solution_$name")
-
-        # Append an empty column called solution to the table
-        # TODO: Change FLOAT8 type depending on variable?
-        DuckDB.execute(
-            connection,
-            "ALTER TABLE $(var.table_name) ADD COLUMN IF NOT EXISTS solution FLOAT8",
-        )
 
         # Update the column values
         DuckDB.execute(
