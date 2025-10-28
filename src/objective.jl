@@ -1,4 +1,4 @@
-function add_objective!(connection, model, variables, expressions, model_parameters)
+function add_objective!(connection, model, variables, expressions, profiles, model_parameters)
     assets_investment = variables[:assets_investment]
     assets_investment_energy = variables[:assets_investment_energy]
     flows_investment = variables[:flows_investment]
@@ -232,9 +232,15 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             obj.weight_for_operation_discounts
                 * rp_weight_prob.total_weight_prob
                 * rp_res.resolution
-                * (var.time_block_end - var.time_block_start + 1)
-                * obj.total_variable_cost
-                AS cost
+                AS cost_coefficient,
+            var.time_block_start,
+            var.time_block_end,
+            var.year,
+            var.rep_period,
+            obj.commodity_price,
+            obj.producer_efficiency,
+            obj.operational_cost,
+            commodity_price_profiles.profile_name,
         FROM var_flow AS var
         LEFT JOIN t_objective_flows as obj
             ON var.from_asset = obj.from_asset
@@ -248,6 +254,11 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             AND var.rep_period = rp_res.rep_period
         LEFT JOIN asset
             ON asset.asset = var.from_asset
+        LEFT JOIN flows_profiles AS commodity_price_profiles
+            ON commodity_price_profiles.from_asset = var.from_asset
+            AND commodity_price_profiles.to_asset = var.to_asset
+            AND commodity_price_profiles.year = var.year
+            AND commodity_price_profiles.profile_type = 'commodity_price' -- TODO: inconsistent year naming to assets_profiles
         WHERE asset.investment_method != 'semi-compact'
         ",
     )
@@ -257,7 +268,23 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     # i.e., we only consider the costs of the flows that are not in semi-compact method
     var_flow = variables[:flow].container
 
-    flows_operational_cost = @expression(model, sum(row.cost * var_flow[row.id] for row in indices))
+    flows_operational_cost = @expression(
+        model,
+        sum(
+            row.cost_coefficient *
+            (
+                row.commodity_price * _profile_aggregate( # commodity_price aggregation
+                    profiles.rep_period,
+                    (row.profile_name, row.year, row.rep_period),
+                    row.time_block_start:row.time_block_end,
+                    sum,
+                    1.0,
+                ) / row.producer_efficiency +
+                row.operational_cost * (row.time_block_end - row.time_block_start + 1)
+            ) *
+            var_flow[row.id] for row in indices
+        )
+    )
 
     indices = DuckDB.query(
         connection,
@@ -535,8 +562,6 @@ function _create_objective_auxiliary_table(connection, constants)
             flow_commission.producer_efficiency,
             flow_milestone.operational_cost,
             -- computed
-            (flow_milestone.commodity_price / flow_commission.producer_efficiency) AS fuel_cost,
-            (fuel_cost + flow_milestone.operational_cost) AS total_variable_cost,
             CASE
                 -- the below closed-form equation does not accept 0 in the denominator when flow.discount_rate = 0
                 WHEN flow.discount_rate = 0
