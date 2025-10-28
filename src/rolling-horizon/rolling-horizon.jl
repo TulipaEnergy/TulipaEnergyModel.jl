@@ -10,6 +10,7 @@ include("utils.jl")
         move_forward,
         opt_window_length;
         save_rolling_solution = false,
+        compute_duals = true,
         kwargs...
     )
 
@@ -32,6 +33,9 @@ The table `rolling_horizon_window` stores the window information.
 
 If `save_rolling_solution` is `true`, the tables `rolling_solution_var_%` will
 be created for each non-empty variable. These can be used for debugging purposes.
+
+If `compute_duals` is `true`, then the duals are computed for each internal
+problem and the dual solutions are copied for the full problem.
 
 The parameters associated with the profiles are stored in
 `rolling_horizon_energy_problem.profiles`, in the respective
@@ -56,6 +60,7 @@ function run_rolling_horizon(
     log_file = "",
     show_log = true,
     save_rolling_solution = false,
+    compute_duals = true,
 )
     # Validation that the input data must satisfy to run rolling horizon
     @timeit to "Validate rolling horizon input" validate_rolling_horizon_input(
@@ -96,9 +101,17 @@ function run_rolling_horizon(
         )
     ]
 
+    constraint_tables = [
+        row.table_name::String for row in DuckDB.query(
+            connection,
+            "FROM duckdb_tables() WHERE table_name LIKE 'cons_%' AND estimated_size > 0",
+        )
+    ]
+
     @timeit to "Prepare table for rolling horizon" prepare_rolling_horizon_tables!(
         connection,
         variable_tables,
+        constraint_tables,
         save_rolling_solution,
         opt_window_length,
     )
@@ -162,11 +175,13 @@ function run_rolling_horizon(
         @timeit to "Save window solution" save_solution_into_tables!(
             energy_problem,
             variable_tables,
+            constraint_tables,
             window_id,
             move_forward,
             window_start,
             horizon_length,
             save_rolling_solution,
+            compute_duals,
         )
 
         energy_problem.solved = false
@@ -183,6 +198,7 @@ function run_rolling_horizon(
     @timeit to "undo changes to rolling horizon tables" prepare_tables_to_leave_rolling_horizon!(
         connection,
         variable_tables,
+        constraint_tables,
     )
 
     # Export solution
