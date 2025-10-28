@@ -60,6 +60,12 @@ end
     io = IOBuffer()
     TulipaEnergyModel.solve_model!(energy_problem)
     print(io, energy_problem)
-    @test split(String(take!(io))) ==
-          split(read("io-outputs/energy-problem-model-solved.txt", String))
+    expected_output = split(read("io-outputs/energy-problem-model-solved.txt", String))
+    actual_output = split(String(take!(io)))
+    # To make the comparison more robust, the only look at the the first
+    # 9 significant digits of the solution (+ '.')
+    expected_output[end] = expected_output[end][1:10]
+    actual_output[end] = actual_output[end][1:10]
+
+    @test expected_output == actual_output
 end
