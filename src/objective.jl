@@ -231,7 +231,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
                 * rp_weight.weight_sum
                 * rp_res.resolution
                 * (var.time_block_end - var.time_block_start + 1)
-                * obj.total_variable_cost
+                * (obj.commodity_price / obj.efficiency + obj.operational_cost)
                 AS cost,
         FROM var_flow AS var
         LEFT JOIN t_objective_flows as obj
@@ -529,8 +529,6 @@ function _create_objective_auxiliary_table(connection, constants)
             asset_commission.efficiency,
             flow_milestone.operational_cost,
             -- computed
-            (asset_milestone.commodity_price / asset_commission.efficiency) AS fuel_cost,
-            (fuel_cost + flow_milestone.operational_cost) AS total_variable_cost,
             CASE
                 -- the below closed-form equation does not accept 0 in the denominator when flow.discount_rate = 0
                 WHEN flow.discount_rate = 0
