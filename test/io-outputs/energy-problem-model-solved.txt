@@ -5,4 +5,4 @@ EnergyProblem:
     - Number of structural constraints: 432
   - Model solved!
     - Termination status: OPTIMAL
-    - Objective value: 269238.4382415647
+    - Objective value: 269238.4382415648
