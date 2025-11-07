@@ -808,12 +808,6 @@
       "description": "Representative period number.",
       "type": "INTEGER"
     },
-    "scenario": {
-      "default": 1,
-      "description": "Stochastic scenario number.",
-      "type": "INTEGER",
-      "unit_of_measure": "number"
-    },
     "timestep": {
       "description": "Timestep number.",
       "type": "INTEGER"
@@ -877,6 +871,12 @@
     "rep_period": {
       "description": "Representative period number.",
       "type": "INTEGER"
+    },
+    "scenario": {
+      "default": 1,
+      "description": "Stochastic scenario number.",
+      "type": "INTEGER",
+      "unit_of_measure": "number"
     },
     "weight": {
       "default": 1.0,
