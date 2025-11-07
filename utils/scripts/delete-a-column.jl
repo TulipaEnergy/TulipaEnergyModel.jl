@@ -1,4 +1,4 @@
-# Use to update a specific column in a specific table
+# Use to delete a specific column in a specific table
 using DuckDB
 
 root_dir = joinpath(@__DIR__, "..", "..")
@@ -13,15 +13,15 @@ for dir in dirs
     println("Processing directory: $dir")
 
     # Explicit name of the table
-    filename = joinpath(dir, "rep-periods-mapping.csv")
+    filename = joinpath(dir, "profiles-rep-periods.csv")
 
     connection = DBInterface.connect(DuckDB.DB)
     _q(s) = DuckDB.query(connection, s)
 
     _q("CREATE TABLE t AS FROM read_csv('$filename')")
 
-    # Add a new column with a default value
-    _q("ALTER TABLE t ADD COLUMN scenario DOUBLE DEFAULT 1")
+    # Delete a column by name
+    _q("ALTER TABLE t DROP COLUMN scenario")
 
     _q("COPY t TO '$filename' (HEADER, DELIMITER ',')")
 end
