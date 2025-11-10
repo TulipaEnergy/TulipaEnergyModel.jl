@@ -144,7 +144,7 @@ function _validate_no_duplicate_rows!(connection)
         ("profiles_rep_periods", (:profile_name, :year, :rep_period, :timestep)),
         ("profiles_timeframe", (:profile_name, :year, :period)),
         ("rep_periods_data", (:year, :rep_period)),
-        ("rep_periods_mapping", (:year, :period, :rep_period)),
+        ("rep_periods_mapping", (:year, :scenario, :period, :rep_period)),
         ("stochastic_scenario", (:scenario,)),
         ("timeframe_data", (:year, :period)),
         ("year_data", (:year,)),

@@ -143,6 +143,32 @@ end
     @test energy_problem.objective_value ≈ 89360.638146 atol = 1e-5
 end
 
+@testitem "Two-stage Stochastic Optimization Cross Scenario Case Study" setup = [CommonSetup] tags =
+    [:case_study, :integration, :slow] begin
+    dir = joinpath(INPUT_FOLDER, "TwoStage-StochOpt RPs cross Scenario")
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, dir)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    @test energy_problem.objective_value ≈ 16_990_833_442.304893 atol = 1e-5
+    # populate_with_defaults shouldn't change the solution
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    @test energy_problem.objective_value ≈ 16_990_833_442.304893 atol = 1e-5
+end
+
+@testitem "Two-stage Stochastic Optimization Per Scenario Case Study" setup = [CommonSetup] tags =
+    [:case_study, :integration, :slow] begin
+    dir = joinpath(INPUT_FOLDER, "TwoStage-StochOpt RPs per Scenario")
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, dir)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    @test energy_problem.objective_value ≈ 22_204_081_753.647957 atol = 1e-5
+    # populate_with_defaults shouldn't change the solution
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    @test energy_problem.objective_value ≈ 22_204_081_753.647957 atol = 1e-5
+end
+
 @testitem "Rolling horizon Case Study" setup = [CommonSetup] tags =
     [:case_study, :integration, :slow] begin
     dir = joinpath(INPUT_FOLDER, "Rolling Horizon")
