@@ -680,15 +680,14 @@ end
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
 
-    # Doesn't throw (creates empty stochastic_scenario table)
+    # Doesn't throw (creates default stochastic_scenario table with probabilities summing to 1)
     TEM.create_internal_tables!(connection)
 
     # Modify stochastic_scenario to have bad probabilities
     DuckDB.query(
         connection,
         """
-        INSERT INTO stochastic_scenario (description, scenario, probability)
-        VALUES ('', 1, 0.8);
+        UPDATE stochastic_scenario SET probability = 0.8 WHERE scenario = 1;
         """,
     )
     @test_throws "Sum of probabilities in 'stochastic_scenario' table is 0.8, but should be approximately 1.0 (tolerance: 0.001)" TEM.create_internal_tables!(
