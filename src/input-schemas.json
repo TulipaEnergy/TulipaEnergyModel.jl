@@ -483,6 +483,12 @@
         ]
       },
       "description": "Type of profile, used to determine DuckDB table with source profile",
+      "scenario": {
+        "default": 1,
+        "description": "Stochastic scenario number.",
+        "type": "INTEGER",
+        "unit_of_measure": "number"
+      },
       "type": "VARCHAR"
     }
   },
@@ -830,6 +836,12 @@
     "profile_name": {
       "description": "Profile name.",
       "type": "VARCHAR"
+    },
+    "scenario": {
+      "default": 1,
+      "description": "Stochastic scenario number.",
+      "type": "INTEGER",
+      "unit_of_measure": "number"
     },
     "value": {
       "description": "value of the profile.",
