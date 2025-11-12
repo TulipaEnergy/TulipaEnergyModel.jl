@@ -441,10 +441,15 @@ Since all the data is already in `assets_storage_min_max_reservoir_level_profile
 ```@example obz
 DuckDB.query(
     connection,
-    "CREATE TABLE assets_timeframe_profiles AS
-    FROM assets_storage_min_max_reservoir_level_profiles
-    ORDER BY asset, commission_year, profile_name
-    ",
+      "CREATE TABLE assets_timeframe_profiles AS
+      SELECT
+        asset,
+        commission_year AS year,
+        profile_type,
+        profile_name
+      FROM assets_storage_min_max_reservoir_level_profiles
+      ORDER BY asset, year, profile_name
+      ",
 )
 ```
 
