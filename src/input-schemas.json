@@ -465,10 +465,6 @@
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
-    "commission_year": {
-      "description": "Year of commissioning",
-      "type": "INTEGER"
-    },
     "profile_name": {
       "description": "Name of profile, used to determine data inside the DuckDB table",
       "type": "VARCHAR"
@@ -490,6 +486,10 @@
         "unit_of_measure": "number"
       },
       "type": "VARCHAR"
+    },
+    "year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
     }
   },
   "flow": {
@@ -836,12 +836,6 @@
     "profile_name": {
       "description": "Profile name.",
       "type": "VARCHAR"
-    },
-    "scenario": {
-      "default": 1,
-      "description": "Stochastic scenario number.",
-      "type": "INTEGER",
-      "unit_of_measure": "number"
     },
     "value": {
       "description": "value of the profile.",
