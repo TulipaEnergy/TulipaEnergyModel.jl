@@ -1,4 +1,4 @@
-@testitem "Test add_vintage_flow_sum_for_producers!" setup = [CommonSetup] tags =
+@testitem "Test add_vintage_flow_sum_constraints!" setup = [CommonSetup] tags =
     [:unit, :validation, :fast] begin
     # Setup a temporary DuckDB connection and model
     connection = DBInterface.connect(DuckDB.DB)
@@ -66,7 +66,7 @@
         )
     end
 
-    TulipaEnergyModel.add_vintage_flow_sum_for_producers!(connection, model, variables, constraints)
+    TulipaEnergyModel.add_vintage_flow_sum_constraints!(connection, model, variables, constraints)
 
     # Test the constraints
     var_flow = variables[:flow].container

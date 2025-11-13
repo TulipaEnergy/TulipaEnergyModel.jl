@@ -21,8 +21,8 @@ function add_vintage_flow_sum_constraints!(connection, model, variables, constra
             [
                 @constraint(
                     model,
-                    var_flow[row.var_flow_id] ==
-                    sum(var_vintage_flow[idx] for idx in row.var_vintage_flow_indices),
+                    sum(var_vintage_flow[idx] for idx in row.var_vintage_flow_indices) ==
+                    var_flow[row.var_flow_id],
                     base_name = "$table_name[$(row.from_asset),$(row.to_asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for row in indices
             ],

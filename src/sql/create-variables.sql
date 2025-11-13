@@ -54,7 +54,7 @@ from
     left join flow_commission as fc on fc.from_asset = ft.from_asset
     and fc.to_asset = ft.to_asset
     and fc.commission_year = ab.commission_year
-where asset.type in ('producer', 'conversion')
+where asset.type = 'producer'
     and asset.investment_method = 'semi-compact'
 ;
 
