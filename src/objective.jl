@@ -212,10 +212,10 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         "WITH rp_weight AS (
             SELECT
                 year,
+                scenario,
                 rep_period,
-                SUM(weight) AS weight_sum
+                weight
             FROM rep_periods_mapping
-            GROUP BY year, rep_period
         ),
         rp_res AS (
             SELECT
@@ -228,11 +228,11 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         SELECT
             var.id,
             obj.weight_for_operation_discounts
-                * rp_weight.weight_sum
+                * SUM(rp_weight.weight * scn.probability)
                 * rp_res.resolution
                 * (var.time_block_end - var.time_block_start + 1)
                 * obj.total_variable_cost
-                AS cost,
+                AS cost
         FROM var_flow AS var
         LEFT JOIN t_objective_flows as obj
             ON var.from_asset = obj.from_asset
@@ -244,9 +244,13 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN rp_res
             ON var.year = rp_res.year
             AND var.rep_period = rp_res.rep_period
+        LEFT JOIN stochastic_scenario AS scn
+            ON rp_weight.scenario = scn.scenario
         LEFT JOIN asset
             ON asset.asset = var.from_asset
         WHERE asset.investment_method != 'semi-compact'
+        GROUP BY var.id, obj.weight_for_operation_discounts, rp_res.resolution,
+                 var.time_block_end, var.time_block_start, obj.total_variable_cost
         ",
     )
 
@@ -262,10 +266,10 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         "WITH rp_weight AS (
             SELECT
                 year,
+                scenario,
                 rep_period,
-                SUM(weight) AS weight_sum
+                weight
             FROM rep_periods_mapping
-            GROUP BY year, rep_period
         ),
         rp_res AS (
             SELECT
@@ -289,7 +293,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         SELECT
             var.id,
             vint_obj.weight_for_operation_discounts
-                * rp_weight.weight_sum
+                * SUM(rp_weight.weight * scn.probability)
                 * rp_res.resolution
                 * (var.time_block_end - var.time_block_start + 1)
                 * vint_obj.total_variable_cost AS cost
@@ -305,6 +309,10 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN rp_res
             ON var.milestone_year = rp_res.year
             AND var.rep_period = rp_res.rep_period
+        LEFT JOIN stochastic_scenario AS scn
+            ON rp_weight.scenario = scn.scenario
+        GROUP BY var.id, vint_obj.weight_for_operation_discounts, rp_res.resolution,
+                 var.time_block_end, var.time_block_start, vint_obj.total_variable_cost
         ORDER BY var.id
         ",
     )
@@ -322,10 +330,10 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         "WITH rp_weight AS (
             SELECT
                 year,
+                scenario,
                 rep_period,
-                SUM(weight) AS weight_sum
+                weight
             FROM rep_periods_mapping
-            GROUP BY year, rep_period
         ),
         rp_res AS (
             SELECT
@@ -338,11 +346,11 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         SELECT
             var.id,
             obj.weight_for_operation_discounts
-                * rp_weight.weight_sum
+                * SUM(rp_weight.weight * scn.probability)
                 * rp_res.resolution
                 * (var.time_block_end - var.time_block_start + 1)
                 * obj.units_on_cost
-                AS cost,
+                AS cost
         FROM var_units_on AS var
         LEFT JOIN t_objective_assets as obj
             ON var.asset = obj.asset
@@ -353,7 +361,11 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN rp_res
             ON var.year = rp_res.year
             AND var.rep_period = rp_res.rep_period
+        LEFT JOIN stochastic_scenario AS scn
+            ON rp_weight.scenario = scn.scenario
         WHERE obj.units_on_cost IS NOT NULL
+        GROUP BY var.id, obj.weight_for_operation_discounts, rp_res.resolution,
+                 var.time_block_end, var.time_block_start, obj.units_on_cost
         ORDER BY var.id
         ",
     )
