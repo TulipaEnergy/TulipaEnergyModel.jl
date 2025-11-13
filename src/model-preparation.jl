@@ -288,7 +288,7 @@ function add_expression_terms_over_clustered_year_constraints!(
         connection,
         cons.table_name,
         grouped_cons_table_name,
-        [:asset, :year],
+        [:asset, :year, :scenario],
         [:id, :period_block_start, :period_block_end],
     )
 
@@ -297,7 +297,7 @@ function add_expression_terms_over_clustered_year_constraints!(
         connection,
         "rep_periods_mapping",
         grouped_rpmap_over_rp_table_name,
-        [:year, :rep_period],
+        [:year, :scenario, :rep_period],
         [:period, :weight];
         order_agg_by = :period,
     )
@@ -320,6 +320,7 @@ function add_expression_terms_over_clustered_year_constraints!(
             SELECT
                 cons.asset,
                 cons.year,
+                cons.scenario,
                 ANY_VALUE(cons.id) AS cons_id_vec,
                 ANY_VALUE(cons.period_block_start) AS cons_period_block_start_vec,
                 ANY_VALUE(cons.period_block_end) AS cons_period_block_end_vec,
@@ -337,6 +338,7 @@ function add_expression_terms_over_clustered_year_constraints!(
                 AND cons.year = var.year
             LEFT JOIN $grouped_rpmap_over_rp_table_name AS rpmap
                 ON rpmap.year = cons.year
+                AND rpmap.scenario = cons.scenario
                 AND rpmap.rep_period = var.rep_period
             LEFT JOIN rep_periods_data AS rpdata
                 ON rpdata.year = cons.year
@@ -344,7 +346,7 @@ function add_expression_terms_over_clustered_year_constraints!(
             LEFT JOIN asset_milestone
                 ON asset_milestone.asset = cons.asset
                 AND asset_milestone.milestone_year = cons.year
-            GROUP BY cons.asset, cons.year;
+            GROUP BY cons.asset, cons.year, cons.scenario;
             FROM t_groups
             ",
         )
