@@ -141,8 +141,8 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{energy to power ratio}}_{a,y}$                              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}}_y$                                                           | Energy to power ratio of storage asset $a$ at year $y$                                                                    | [h]             |
 | $p^{\text{max rep-period-storage level}}_{a,k_y,b_{k_y}}$             | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Maximum rep-period-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
 | $p^{\text{min rep-period-storage level}}_{a,k_y,b_{k_y}}$             | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Minimum rep-period-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]          |
-| $p^{\text{max over-clustered-year-storage level}}_{a,p_y}$            | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Maximum over-clustered-year-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe               | [p.u.]          |
-| $p^{\text{min over-clustered-year-storage level}}_{a,p_y}$            | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $p_y \in \mathcal{P}_y$                                                                   | Minimum over-clustered-year-storage level profile of storage asset $a$ in the period $p_y$ of the timeframe               | [p.u.]          |
+| $p^{\text{max over-clustered-year-storage level}}_{a,s,p_y}$            | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $s \in \mathcal{S}$, $p_y \in \mathcal{P}_y$                                                                   | Maximum over-clustered-year-storage level profile of storage asset $a$ in scenario $s$ and the period $p_y$ of the timeframe               | [p.u.]          |
+| $p^{\text{min over-clustered-year-storage level}}_{a,s,p_y}$            | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $s \in \mathcal{S}$, $p_y \in \mathcal{P}_y$                                                                   | Minimum over-clustered-year-storage level profile of storage asset $a$ in scenario $s$ and the period $p_y$ of the timeframe               | [p.u.]          |
 | $p^{\text{storage loss from stored energy}}_{a,y}$                    | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}_y$                                                                        | [e.g. 0.01 means 1% every hour] Loss of stored energy over time.                                                          | [p.u./h]        |
 
 #### Extra Parameters for Conversion Assets
@@ -717,13 +717,13 @@ v^{\text{over-clustered-year-storage}}_{a,s,p_y} = & \left(1 - p^{\text{storage 
 #### Over-clustered-year Constraint for Maximum Storage Level Limit
 
 ```math
-v^{\text{over-clustered-year-storage}}_{a,s,p_y} \leq p^{\text{max over-clustered-year-storage level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall s \in \mathcal{S}, y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
+v^{\text{over-clustered-year-storage}}_{a,s,p_y} \leq p^{\text{max over-clustered-year-storage level}}_{a,s,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall s \in \mathcal{S}, y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 ```
 
 #### Over-clustered-year Constraint for Minimum Storage Level Limit
 
 ```math
-v^{\text{over-clustered-year-storage}}_{a,s,p_y} \geq p^{\text{min over-clustered-year-storage level}}_{a,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall s \in \mathcal{S}, y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
+v^{\text{over-clustered-year-storage}}_{a,s,p_y} \geq p^{\text{min over-clustered-year-storage level}}_{a,s,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall s \in \mathcal{S}, y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 ```
 
 #### Over-clustered-year Cycling Constraint

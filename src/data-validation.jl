@@ -133,7 +133,7 @@ function _validate_no_duplicate_rows!(connection)
         ("assets_profiles", (:asset, :commission_year, :profile_type)),
         ("assets_rep_periods_partitions", (:asset, :year, :rep_period)),
         ("assets_timeframe_partitions", (:asset, :year)),
-        ("assets_timeframe_profiles", (:asset, :commission_year, :profile_type)),
+        ("assets_timeframe_profiles", (:asset, :year, :profile_type)),
         ("flow", (:from_asset, :to_asset)),
         ("flow_both", (:from_asset, :to_asset, :milestone_year, :commission_year)),
         ("flow_commission", (:from_asset, :to_asset, :commission_year)),
