@@ -228,8 +228,8 @@ mutable struct ProfileLookup
     # rep_period[(asset, year, rep_period)]
     rep_period::Dict{Tuple{String,Int32,Int32},ProfileWithRollingHorizon}
 
-    # over_clustered_year[(asset, year)]
-    over_clustered_year::Dict{Tuple{String,Int32},Vector{Float64}}
+    # over_clustered_year[(asset, year, scenario)]
+    over_clustered_year::Dict{Tuple{String,Int32,Int32},Vector{Float64}}
 end
 
 """
