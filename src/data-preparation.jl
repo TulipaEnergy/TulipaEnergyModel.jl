@@ -597,3 +597,57 @@ function _compute_durations(row, max_length_uniform = "")
 
     return error("Row specification '$(row.specification)' is not valid")
 end
+
+"""
+    _calculate_stochastic_scenario_probabilities(connection)
+
+Calculate and populate the stochastic scenario probabilities table.
+
+This function creates a `stochastic_scenario` table with uniform probability distribution
+across all scenarios found in the `rep_periods_mapping` table. If the `stochastic_scenario`
+table already contains data, the function returns early without modifying the table.
+
+# Arguments
+- `connection`: A DuckDB database connection object.
+
+# Behavior
+- If `stochastic_scenario` table is not empty, the function returns `nothing` without making changes.
+- Otherwise, it:
+  1. Extracts a list with the unique values of the scenarios from the `rep_periods_mapping` table
+  2. Calculates uniform probabilities (1/n) for each scenario
+  3. Creates/replaces the `stochastic_scenario` table with scenario names and their probabilities
+
+# Returns
+- `nothing`
+
+# Notes
+- Probabilities are uniformly distributed (each scenario receives probability of 1/number_of_scenarios)
+- Validation of probability values occurs in a separate validation step
+"""
+function _calculate_stochastic_scenario_probabilities(connection)
+    count_scenarios = get_single_element_from_query_and_ensure_its_only_one(
+        DuckDB.query(connection, "SELECT COUNT(*) AS count FROM stochastic_scenario"),
+    )::Int64
+    if count_scenarios > 0
+        return nothing
+    end
+
+    scenario_list = DuckDB.query(
+        connection,
+        "SELECT DISTINCT scenario FROM rep_periods_mapping",
+    )::DuckDB.QueryResult
+    scenarios = [row.scenario for row in scenario_list]
+    num_scenarios = length(scenarios)
+
+    DuckDB.execute(
+        connection,
+        "CREATE OR REPLACE TABLE stochastic_scenario AS
+        SELECT
+            unnest(?) AS scenario,
+            1.0 / ? AS probability,
+            '' AS description
+        ",
+        [scenarios, num_scenarios],
+    )
+    return nothing
+end
