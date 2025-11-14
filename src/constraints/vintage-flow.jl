@@ -28,7 +28,7 @@ function add_vintage_flow_sum_constraints!(connection, model, variables, constra
             ],
         )
     end
-    
+
     return nothing
 end
 
@@ -36,12 +36,7 @@ function _append_vintage_flow_data_to_indices(connection, table_name)
     return DuckDB.query(
         connection,
         "
-        WITH grouped_var_flow AS (
-            SELECT from_asset, to_asset, year, rep_period, time_block_start, ANY_VALUE(id) AS id
-            FROM var_flow
-            GROUP BY from_asset, to_asset, year, rep_period, time_block_start
-        ),
-        grouped_var_vintage_flow AS (
+        WITH grouped_var_vintage_flow AS (
             SELECT from_asset, to_asset, milestone_year, rep_period, time_block_start, ARRAY_AGG(id) AS ids
             FROM var_vintage_flow
             GROUP BY from_asset, to_asset, milestone_year, rep_period, time_block_start
@@ -57,7 +52,7 @@ function _append_vintage_flow_data_to_indices(connection, table_name)
             var_flow.id AS var_flow_id,
             var_vintage_flow.ids AS var_vintage_flow_indices,
         FROM cons_$table_name AS cons
-        LEFT JOIN grouped_var_flow as var_flow
+        LEFT JOIN var_flow as var_flow
             ON cons.from_asset = var_flow.from_asset
             AND cons.to_asset = var_flow.to_asset
             AND cons.year = var_flow.year
