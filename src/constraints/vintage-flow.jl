@@ -28,6 +28,8 @@ function add_vintage_flow_sum_constraints!(connection, model, variables, constra
             ],
         )
     end
+    
+    return nothing
 end
 
 function _append_vintage_flow_data_to_indices(connection, table_name)
