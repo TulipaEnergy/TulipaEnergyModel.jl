@@ -555,6 +555,7 @@ select
     nextval('id') as id,
     attr.asset,
     attr.year,
+    attr.scenario,
     attr.period_block_start,
     attr.period_block_end,
 from
@@ -579,6 +580,7 @@ select
     nextval('id') as id,
     attr.asset,
     attr.year,
+    attr.scenario,
     attr.period_block_start,
     attr.period_block_end,
 from

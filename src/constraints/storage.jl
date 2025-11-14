@@ -180,7 +180,7 @@ function add_storage_constraints!(
 
                     inflows_agg = _profile_aggregate(
                         profiles.over_clustered_year,
-                        (row.inflows_profile_name, row.year),
+                        (row.inflows_profile_name, row.year, row.scenario),
                         row.period_block_start:row.period_block_end,
                         sum,
                         0.0,
@@ -195,7 +195,7 @@ function add_storage_constraints!(
                             inflows_agg +
                             storage_charging_efficiency * incoming_flow -
                             outgoing_flow / storage_discharging_efficiency,
-                            base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+                            base_name = "$table_name[$(row.asset),$(row.year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     else
                         # Initial storage is the previous level (a JuMP variable)
@@ -208,7 +208,7 @@ function add_storage_constraints!(
                                     "SELECT
                                         MAX(id)
                                     FROM cons_$table_name
-                                    WHERE asset = '$(row.asset)' AND year = $(row.year)
+                                    WHERE asset = '$(row.asset)' AND year = $(row.year) AND scenario = $(row.scenario)
                                     ",
                                 ),
                             )::Int
@@ -226,7 +226,7 @@ function add_storage_constraints!(
                             inflows_agg +
                             storage_charging_efficiency * incoming_flow -
                             outgoing_flow / storage_discharging_efficiency,
-                            base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+                            base_name = "$table_name[$(row.asset),$(row.year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     end
                 end for (row, incoming_flow, outgoing_flow) in
@@ -246,7 +246,7 @@ function add_storage_constraints!(
                 begin
                     max_storage_level_agg = _profile_aggregate(
                         profiles.over_clustered_year,
-                        (row.max_storage_level_profile_name, row.year),
+                        (row.max_storage_level_profile_name, row.year, row.scenario),
                         row.period_block_start:row.period_block_end,
                         Statistics.mean,
                         1.0,
@@ -256,7 +256,7 @@ function add_storage_constraints!(
                         var_storage_level ≤
                         max_storage_level_agg *
                         available_energy_capacity_simple_method[row.avail_energy_capacity_id],
-                        base_name = "max_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+                        base_name = "max_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, var_storage_level) in
                 zip(indices, var_storage_level_over_clustered_year.container)
@@ -272,7 +272,7 @@ function add_storage_constraints!(
                 begin
                     min_storage_level_agg = _profile_aggregate(
                         profiles.over_clustered_year,
-                        (row.min_storage_level_profile_name, row.year),
+                        (row.min_storage_level_profile_name, row.year, row.scenario),
                         row.period_block_start:row.period_block_end,
                         Statistics.mean,
                         0.0,
@@ -282,7 +282,7 @@ function add_storage_constraints!(
                         var_storage_level ≥
                         min_storage_level_agg *
                         available_energy_capacity_simple_method[row.avail_energy_capacity_id],
-                        base_name = "min_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+                        base_name = "min_storage_level_over_clustered_year_limit[$(row.asset),$(row.year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, var_storage_level) in
                 zip(indices, var_storage_level_over_clustered_year.container)
@@ -303,13 +303,14 @@ function _append_storage_data_to_indices(connection, table_name)
             SELECT
                 cons.asset,
                 cons.year,
+                cons.scenario,
                 cons.period_block_start,
                 SUM(mapping.num_timesteps) AS duration_period_block
             FROM cons_balance_storage_over_clustered_year AS cons
             LEFT JOIN timeframe_data AS mapping
                 ON mapping.year = cons.year
                 AND mapping.period BETWEEN cons.period_block_start AND cons.period_block_end
-            GROUP BY cons.asset, cons.year, cons.period_block_start
+            GROUP BY cons.asset, cons.year, cons.scenario, cons.period_block_start
             """,
         )
 
@@ -317,6 +318,7 @@ function _append_storage_data_to_indices(connection, table_name)
         LEFT JOIN t_duration_over_clustered_year AS duration
             ON cons.asset = duration.asset
             AND cons.year = duration.year
+            AND cons.scenario = duration.scenario
             AND cons.period_block_start = duration.period_block_start
         """
         select_duration = "duration.duration_period_block,"
