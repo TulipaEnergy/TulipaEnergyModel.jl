@@ -154,6 +154,7 @@ function create_model(
         model,
         variables,
         expressions,
+        profiles,
         model_parameters,
     )
 
