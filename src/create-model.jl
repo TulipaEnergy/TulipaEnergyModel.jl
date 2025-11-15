@@ -190,8 +190,6 @@ function create_model(
         rolling_horizon,
     )
 
-    @timeit to "add_hub_constraints!" add_hub_constraints!(model, constraints)
-
     @timeit to "add_conversion_constraints!" add_conversion_constraints!(
         connection,
         model,

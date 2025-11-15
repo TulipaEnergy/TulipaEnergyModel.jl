@@ -8,5 +8,5 @@ wind,producer,400.0,simple,true,15,0.05
 electrolizer,conversion,100,simple,true,15,0.05
 h2_demand,consumer,100,none,false,15,0.05
 smr_ccs,producer,100,simple,true,15,0.05
-hub,hub,0,none,false,15,0.05
+hub,consumer,0,none,false,15,0.05
 wind_offshore,producer,400,simple,true,15,0.05
