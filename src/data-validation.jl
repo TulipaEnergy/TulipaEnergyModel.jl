@@ -275,23 +275,23 @@ function _validate_group_consistency!(connection)
     # First, check if the values are valid
     append!(
         error_messages,
-        _validate_foreign_key!(connection, "asset", :group, "group_asset", :name),
+        _validate_foreign_key!(connection, "asset", :investment_group, "group_asset", :name),
     )
 
     # Second, these that the values are used
     for row in DuckDB.query(
         connection,
         "FROM (
-            SELECT group_asset.name, COUNT(asset.group) AS group_count
+            SELECT group_asset.name, COUNT(asset.investment_group) AS group_count
             FROM group_asset
             LEFT JOIN asset
-                ON asset.group = group_asset.name
+                ON asset.investment_group = group_asset.name
             GROUP BY group_asset.name
         ) WHERE group_count = 0",
     )
         push!(
             error_messages,
-            "Group '$(row.name)' in 'group_asset' has no members in 'asset', column 'group'",
+            "Group '$(row.name)' in 'group_asset' has no members in 'asset', column 'investment_group'",
         )
     end
 
