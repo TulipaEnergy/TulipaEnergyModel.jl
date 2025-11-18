@@ -31,28 +31,15 @@ Pkg.status()
 
 ## External source
 
-For this tutorial, we'll use the OBZ data. Download it from the [Zenodo Link](https://zenodo.org/records/15498101) and store it in a folder.
+For this tutorial, we'll use the OBZ data. Download it from the [GitHub repo](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/docs/src/data/obz) and store it in a folder.
 
 Check <https://github.com/TulipaEnergy/Tulipa-OBZ-CaseStudy> for more information.
 
 These are the files that we are working with:
 
 ```@setup obz
-# This setup step is hidden from the user.
-# It downloads the list of files as JSON using the Zenodo API link
-# then downloads each file into the user_input_dir folder.
-using JSON
-user_input_dir = joinpath(@__DIR__, "user-input-files")
-url = "https://zenodo.org/api/records/15498101"
-if !isdir(user_input_dir)
-    zenodo_json = JSON.parsefile(download(url))
-    mkdir(user_input_dir)
-
-    for data in zenodo_json["files"]
-        filepath = joinpath(user_input_dir, data["key"])
-        download(data["links"]["self"], filepath)
-    end
-end
+# This setup step is hidden from the user. It simply sets the location of the data.
+user_input_dir = joinpath(@__DIR__, "..", "data", "obz")
 ```
 
 ```@example obz
