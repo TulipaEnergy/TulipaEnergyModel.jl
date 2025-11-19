@@ -61,7 +61,7 @@ authors:
     - given-names: Germán
       surname: Morales-España
       email: german.morales@tno.nl
-      affiliation: 2,3
+      affiliation: "2, 3"
       orcid: "0000-0002-6372-6197"
 affiliations:
   - name: Netherlands eScience Center, Netherlands
