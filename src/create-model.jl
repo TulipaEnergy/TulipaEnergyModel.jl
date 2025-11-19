@@ -207,7 +207,7 @@ function create_model(
         profiles,
     )
 
-    @timeit to "add_group_constraints!" add_group_constraints!(
+    @timeit to "add_investment_group_constraints!" add_investment_group_constraints!(
         connection,
         model,
         variables,

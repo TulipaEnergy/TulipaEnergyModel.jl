@@ -50,7 +50,7 @@ apply_to_files_named("asset.csv"; include_missing = true) do path
                 "SELECT
                     gad.name as asset,
                     ANY_VALUE(type) AS type,
-                    ANY_VALUE(gad.group) AS group,
+                    ANY_VALUE(gad.investment_group) AS investment_group,
                     ANY_VALUE(gad.capacity) AS capacity,
                     ANY_VALUE(ad.min_operating_point) AS min_operating_point,
                     ANY_VALUE(investment_method) AS investment_method,

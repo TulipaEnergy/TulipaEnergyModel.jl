@@ -1,11 +1,11 @@
-export add_group_constraints!
+export add_investment_group_constraints!
 
 """
-    add_group_constraints!(connection, model, variables, constraints)
+    add_investment_group_constraints!(connection, model, variables, constraints)
 
 Adds group constraints for assets that share a common limits or bounds.
 """
-function add_group_constraints!(connection, model, variables, constraints)
+function add_investment_group_constraints!(connection, model, variables, constraints)
     assets_investment = variables[:assets_investment].container
 
     for table_name in [:group_max_investment_limit, :group_min_investment_limit]
@@ -67,15 +67,15 @@ function _get_assets_in_group(connection, group)
         connection,
         "SELECT
             var.id,
-            asset.group,
+            asset.investment_group,
             asset.capacity,
         FROM var_assets_investment AS var
         JOIN asset
             ON var.asset = asset.asset
         JOIN group_asset
-            ON asset.group = group_asset.name
-        WHERE asset.group IS NOT NULL
-              AND  asset.group = '$group'
+            ON asset.investment_group = group_asset.name
+        WHERE asset.investment_group IS NOT NULL
+              AND  asset.investment_group = '$group'
         ",
     )
 end

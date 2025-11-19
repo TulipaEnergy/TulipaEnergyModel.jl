@@ -296,7 +296,7 @@ Let's now explore which assets are in each group. To do so, we can take a look a
 ```@example display-group-setup
 input_asset_file = "../../../test/inputs/Norse/asset.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame) # hide
-assets = assets[.!ismissing.(assets.group), [:asset, :type, :group]] # hide
+assets = assets[.!ismissing.(assets.investment_group), [:asset, :type, :investment_group]] # hide
 ```
 
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.

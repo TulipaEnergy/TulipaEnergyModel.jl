@@ -14,7 +14,7 @@ apply_to_files_named("assets-data.csv") do path
         new_file = "graph-assets-data.csv"
         new_file_path = joinpath(dirname(path), new_file)
 
-        static_cols = [:type, :group]
+        static_cols = [:type, :investment_group]
 
         # New file changes
         touch(new_file_path)

@@ -61,9 +61,9 @@
       "type": "DOUBLE",
       "unit_of_measure": "h"
     },
-    "group": {
+    "investment_group": {
       "default": null,
-      "description": "Group to which the asset belongs to (null/empty/missing -> no group).",
+      "description": "Investment group to which the asset belongs to (null/empty/missing -> no group).",
       "type": "VARCHAR"
     },
     "investment_integer": {

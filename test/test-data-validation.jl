@@ -269,8 +269,8 @@ end
     # Doesn't throw
     TEM.create_internal_tables!(connection)
 
-    DuckDB.query(connection, "UPDATE asset SET \"group\" = 'bad' WHERE asset = 'ccgt'")
-    @test_throws "Table 'asset' column 'group' has invalid value 'bad'. Valid values should be among column 'name' of 'group_asset'" TEM.create_internal_tables!(
+    DuckDB.query(connection, "UPDATE asset SET \"investment_group\" = 'bad' WHERE asset = 'ccgt'")
+    @test_throws "Table 'asset' column 'investment_group' has invalid value 'bad'. Valid values should be among column 'name' of 'group_asset'" TEM.create_internal_tables!(
         connection,
     )
 end
@@ -279,7 +279,7 @@ end
     [:unit, :data_validation, :fast] begin
     asset = DataFrame(
         :asset => ["A1", "A2", "A3", "A4", "A5"],
-        :group => [missing, "good", "bad", "good", missing],
+        :investment_group => [missing, "good", "bad", "good", missing],
     )
     group_asset = DataFrame(:name => ["good", "bad", "ugly"], :value => [1, 2, 3])
     connection = DBInterface.connect(DuckDB.DB)
@@ -288,7 +288,7 @@ end
 
     error_messages = TEM._validate_group_consistency!(connection)
     @test error_messages ==
-          ["Group 'ugly' in 'group_asset' has no members in 'asset', column 'group'"]
+          ["Group 'ugly' in 'group_asset' has no members in 'asset', column 'investment_group'"]
 end
 
 @testitem "Test groups have at least one member - using Tiny data" setup = [CommonSetup] tags =
@@ -300,7 +300,7 @@ end
 
     # Modify group value to bad value
     DuckDB.query(connection, "INSERT INTO group_asset (name) VALUES ('lonely')")
-    @test_throws "Group 'lonely' in 'group_asset' has no members in 'asset', column 'group'" TEM.create_internal_tables!(
+    @test_throws "Group 'lonely' in 'group_asset' has no members in 'asset', column 'investment_group'" TEM.create_internal_tables!(
         connection,
     )
 end
