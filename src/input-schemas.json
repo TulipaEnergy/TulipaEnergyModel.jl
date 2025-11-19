@@ -147,8 +147,7 @@
           "producer",
           "consumer",
           "storage",
-          "conversion",
-          "hub"
+          "conversion"
         ]
       },
       "description": "Type of energy asset.",
