@@ -708,7 +708,7 @@ When publishing a new version of the model to the Julia Registry, follow this pr
 
 ## Adding a Package to the TulipaEnergy Organisation
 
-To get started creating a new (Julia) package that will live in the TulipaEnergy organisation and interact with TulipaEnergyModel, please start by using [BestieTemplate.jl](https://github.com/JuliaBesties/BestieTemplate.jl), and follow the steps in their [Full guide](https://juliabesties.github.io/BestieTemplate.jl/stable/10-full-guide/#full_guide) for a new package.
+To get started creating a new (Julia) package that will live in the TulipaEnergy organisation and interact with TulipaEnergyModel, please start by using [BestieTemplate.jl](https://github.com/JuliaBesties/BestieTemplate.jl), and follow the steps in their [Full guide](https://juliabesties.github.io/BestieTemplate.jl/stable/10-guides/10-full-guide) for a new package.
 
 This will set up the majority of automation and workflows we use and make your repo consistent with the others!
 
