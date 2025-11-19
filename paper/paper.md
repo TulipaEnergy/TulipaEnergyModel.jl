@@ -14,27 +14,27 @@ authors:
       surname: Soares Siqueira
       email: abel.siqueira@esciencecenter.nl
       affiliation: 1
-      orcid: "https://orcid.org/0000-0003-4451-281X"
+      orcid: "0000-0003-4451-281X"
     - given-names: Diego A.
       surname: Tejada-Arango
       email: diego.tejadaarango@tno.nl
       affiliation: 2, 6
-      orcid: "https://orcid.org/0000-0002-3278-9283"
+      orcid: "0000-0002-3278-9283"
     - given-names: Grigory
       surname: Neustroev
       email: g.neustroev@tudelft.nl
       affiliation: 3
-      orcid: "https://orcid.org/0000-0002-7706-7778"
+      orcid: "0000-0002-7706-7778"
     - given-names: Juha
       surname:  Kiviluoma
       email: juha.kiviluoma@nodal-tools.fi
       affiliation: 4
-      orcid: "https://orcid.org/0000-0002-1299-9056"
+      orcid: "0000-0002-1299-9056"
     - given-names: Lauren
       surname: Clisby
       email: lauren.clisby@tno.nl
       affiliation: 2
-      orcid: "https://orcid.org/0009-0008-7848-4144"
+      orcid: "0009-0008-7848-4144"
     - given-names: Maaike
       surname: Elgersma
       email: m.b.elgersma@tudelft.nl
@@ -43,7 +43,7 @@ authors:
       surname: Wang
       email: ni.wang@tno.nl
       affiliation: 2
-      orcid: "https://orcid.org/0000-0001-7037-7004"
+      orcid: "0000-0001-7037-7004"
     - given-names: Suvayu
       surname: Ali
       email: s.ali@esciencecenter.nl
@@ -52,17 +52,17 @@ authors:
       surname: Gao
       email: z.gao1@uu.nl
       affiliation: 5
-      orcid: "https://orcid.org/0000-0002-3817-8037"
+      orcid: "0000-0002-3817-8037"
     - given-names: Mathijs M.
       surname: de Weerdt
       email: m.m.deweerdt@tudelft.nl
       affiliation: 3
-      orcid: "https://orcid.org/0000-0002-0470-6241"
+      orcid: "0000-0002-0470-6241"
     - given-names: Germán
       surname: Morales-España
       email: german.morales@tno.nl
       affiliation: 2,3
-      orcid: "https://orcid.org/0000-0002-6372-6197"
+      orcid: "0000-0002-6372-6197"
 affiliations:
   - name: Netherlands eScience Center, Netherlands
     ror: 00rbjv475
