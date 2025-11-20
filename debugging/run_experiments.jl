@@ -33,6 +33,8 @@ metrics = [
     "LP_gap_presolve",
     "model_creation_time",
     "model_solve_time",
+    "model_create_time_std",
+    "model_solve_time_std",
 ]
 experiment_inputs_dir = "debugging/experiment-inputs"
 experiment_results_dir = "debugging/experiment-results"
@@ -280,6 +282,18 @@ for case in case_studies_to_run
         solve_time = mean(results_of_run["run_model"][case]).time / 1e9
 
         push!(metrics_results, solve_time)
+    end
+
+    if "model_create_time_std" in metrics
+        creation_time_std = std(results_of_run["create_model"][case]).time / 1e9
+
+        push!(metrics_results, creation_time_std)
+    end
+
+    if "model_solve_time_std" in metrics
+        solve_time_std = std(results_of_run["run_model"][case]).time / 1e9
+
+        push!(metrics_results, solve_time_std)
     end
 
     metrics_dict[case] = metrics_results
