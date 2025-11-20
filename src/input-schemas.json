@@ -229,12 +229,12 @@
       "description": "Year of commissioning.",
       "type": "INTEGER"
     },
-    "efficiency": {
+    "conversion_efficiency": {
       "constraints": {
         "minimum": 0
       },
       "default": 1.0,
-      "description": "Asset efficiency. Can be used for both producer and conversion assets.",
+      "description": "Conversion asset efficiency.",
       "type": "DOUBLE",
       "unit_of_measure": "ratio"
     },
