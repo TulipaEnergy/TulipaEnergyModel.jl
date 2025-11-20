@@ -1,5 +1,5 @@
-from_asset,milestone_year,operational_cost,to_asset,dc_opf,investable,reactance
-solar,2030,0.0,demand,false,false,0.3
-thermal,2030,50.0,demand,false,false,0.3
-battery,2030,0.0,demand,false,false,0.3
-demand,2030,0.0,battery,false,false,0.3
+from_asset,milestone_year,operational_cost,to_asset,dc_opf,investable,reactance,commodity_price
+solar,2030,0.0,demand,false,false,0.3,0.0
+thermal,2030,50.0,demand,false,false,0.3,0.0
+battery,2030,0.0,demand,false,false,0.3,0.0
+demand,2030,0.0,battery,false,false,0.3,0.0

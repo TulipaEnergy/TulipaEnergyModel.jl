@@ -1,7 +1,7 @@
-asset,milestone_year,investable,peak_demand,storage_inflows,initial_storage_level,min_energy_timeframe_partition,max_energy_timeframe_partition,units_on_cost,commodity_price
-ccgt,2030,false,0.0,0.0,0.0,,,,0
-wind,2030,false,0.0,0.0,0.0,,,,0
-demand,2030,false,100.0,0.0,0.0,,,,0
-phs,2030,false,0.0,0.0,0.0,,,,0
-balance,2030,false,0.0,0.0,0.0,,,,0
-H2,2030,false,0.0,0.0,0.0,,,,0
+asset,milestone_year,investable,peak_demand,storage_inflows,initial_storage_level,min_energy_timeframe_partition,max_energy_timeframe_partition,units_on_cost
+ccgt,2030,false,0.0,0.0,0.0,,,
+wind,2030,false,0.0,0.0,0.0,,,
+demand,2030,false,100.0,0.0,0.0,,,
+phs,2030,false,0.0,0.0,0.0,,,
+balance,2030,false,0.0,0.0,0.0,,,
+H2,2030,false,0.0,0.0,0.0,,,

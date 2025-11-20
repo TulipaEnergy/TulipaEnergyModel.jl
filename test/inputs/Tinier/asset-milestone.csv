@@ -1,7 +1,7 @@
-asset,milestone_year,investable,peak_demand,commodity_price
-ccgt,2030,true,0.0,0
-wind,2030,true,0.0,0
-solar,2030,true,0.0,0
-demand,2030,false,1115.0,0
-ocgt,2030,true,0.0,0
-ens,2030,false,0.0,0
+asset,milestone_year,investable,peak_demand
+ccgt,2030,true,0.0
+wind,2030,true,0.0
+solar,2030,true,0.0
+demand,2030,false,1115.0
+ocgt,2030,true,0.0
+ens,2030,false,0.0

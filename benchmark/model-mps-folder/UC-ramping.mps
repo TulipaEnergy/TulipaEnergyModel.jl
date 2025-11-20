@@ -165,10 +165,6 @@ ROWS
  L  limit_units_on_simple_method[ccgt,2030,1,16:18]
  L  limit_units_on_simple_method[ccgt,2030,1,19:21]
  L  limit_units_on_simple_method[ccgt,2030,1,22:24]
- L  limit_units_on_simple_method[smr,2030,1,1:6]
- L  limit_units_on_simple_method[smr,2030,1,7:12]
- L  limit_units_on_simple_method[smr,2030,1,13:18]
- L  limit_units_on_simple_method[smr,2030,1,19:24]
  L  limit_units_on_simple_method[ocgt,2030,1,1:1]
  L  limit_units_on_simple_method[ocgt,2030,1,2:2]
  L  limit_units_on_simple_method[ocgt,2030,1,3:3]
@@ -193,6 +189,10 @@ ROWS
  L  limit_units_on_simple_method[ocgt,2030,1,22:22]
  L  limit_units_on_simple_method[ocgt,2030,1,23:23]
  L  limit_units_on_simple_method[ocgt,2030,1,24:24]
+ L  limit_units_on_simple_method[smr,2030,1,1:6]
+ L  limit_units_on_simple_method[smr,2030,1,7:12]
+ L  limit_units_on_simple_method[smr,2030,1,13:18]
+ L  limit_units_on_simple_method[smr,2030,1,19:24]
  L  max_output_flow_with_basic_unit_commitment[ccgt,2030,1,1:2]
  L  max_output_flow_with_basic_unit_commitment[ccgt,2030,1,3:3]
  L  max_output_flow_with_basic_unit_commitment[ccgt,2030,1,4:4]
@@ -1431,6 +1431,102 @@ COLUMNS
     units_on[ccgt,2030,1,22:24] max_ramp_down_with_unit_commitment[ccgt,2030,1,22:22] -50
     units_on[ccgt,2030,1,22:24] max_ramp_down_with_unit_commitment[ccgt,2030,1,23:24] 160
     units_on[ccgt,2030,1,22:24] OBJ 492.75
+    units_on[ocgt,2030,1,1:1] limit_units_on_simple_method[ocgt,2030,1,1:1] 1
+    units_on[ocgt,2030,1,1:1] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,1:1] -100
+    units_on[ocgt,2030,1,1:1] min_output_flow_with_unit_commitment[ocgt,2030,1,1:1] -10
+    units_on[ocgt,2030,1,1:1] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,2:2] limit_units_on_simple_method[ocgt,2030,1,2:2] 1
+    units_on[ocgt,2030,1,2:2] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,2:2] -100
+    units_on[ocgt,2030,1,2:2] min_output_flow_with_unit_commitment[ocgt,2030,1,2:2] -10
+    units_on[ocgt,2030,1,2:2] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,3:3] limit_units_on_simple_method[ocgt,2030,1,3:3] 1
+    units_on[ocgt,2030,1,3:3] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,3:3] -100
+    units_on[ocgt,2030,1,3:3] min_output_flow_with_unit_commitment[ocgt,2030,1,3:3] -10
+    units_on[ocgt,2030,1,3:3] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,4:4] limit_units_on_simple_method[ocgt,2030,1,4:4] 1
+    units_on[ocgt,2030,1,4:4] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,4:4] -100
+    units_on[ocgt,2030,1,4:4] min_output_flow_with_unit_commitment[ocgt,2030,1,4:4] -10
+    units_on[ocgt,2030,1,4:4] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,5:5] limit_units_on_simple_method[ocgt,2030,1,5:5] 1
+    units_on[ocgt,2030,1,5:5] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,5:5] -100
+    units_on[ocgt,2030,1,5:5] min_output_flow_with_unit_commitment[ocgt,2030,1,5:5] -10
+    units_on[ocgt,2030,1,5:5] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,6:6] limit_units_on_simple_method[ocgt,2030,1,6:6] 1
+    units_on[ocgt,2030,1,6:6] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,6:6] -100
+    units_on[ocgt,2030,1,6:6] min_output_flow_with_unit_commitment[ocgt,2030,1,6:6] -10
+    units_on[ocgt,2030,1,6:6] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,7:7] limit_units_on_simple_method[ocgt,2030,1,7:7] 1
+    units_on[ocgt,2030,1,7:7] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,7:7] -100
+    units_on[ocgt,2030,1,7:7] min_output_flow_with_unit_commitment[ocgt,2030,1,7:7] -10
+    units_on[ocgt,2030,1,7:7] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,8:8] limit_units_on_simple_method[ocgt,2030,1,8:8] 1
+    units_on[ocgt,2030,1,8:8] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,8:8] -100
+    units_on[ocgt,2030,1,8:8] min_output_flow_with_unit_commitment[ocgt,2030,1,8:8] -10
+    units_on[ocgt,2030,1,8:8] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,9:9] limit_units_on_simple_method[ocgt,2030,1,9:9] 1
+    units_on[ocgt,2030,1,9:9] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,9:9] -100
+    units_on[ocgt,2030,1,9:9] min_output_flow_with_unit_commitment[ocgt,2030,1,9:9] -10
+    units_on[ocgt,2030,1,9:9] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,10:10] limit_units_on_simple_method[ocgt,2030,1,10:10] 1
+    units_on[ocgt,2030,1,10:10] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,10:10] -100
+    units_on[ocgt,2030,1,10:10] min_output_flow_with_unit_commitment[ocgt,2030,1,10:10] -10
+    units_on[ocgt,2030,1,10:10] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,11:11] limit_units_on_simple_method[ocgt,2030,1,11:11] 1
+    units_on[ocgt,2030,1,11:11] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,11:11] -100
+    units_on[ocgt,2030,1,11:11] min_output_flow_with_unit_commitment[ocgt,2030,1,11:11] -10
+    units_on[ocgt,2030,1,11:11] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,12:12] limit_units_on_simple_method[ocgt,2030,1,12:12] 1
+    units_on[ocgt,2030,1,12:12] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,12:12] -100
+    units_on[ocgt,2030,1,12:12] min_output_flow_with_unit_commitment[ocgt,2030,1,12:12] -10
+    units_on[ocgt,2030,1,12:12] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,13:13] limit_units_on_simple_method[ocgt,2030,1,13:13] 1
+    units_on[ocgt,2030,1,13:13] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,13:13] -100
+    units_on[ocgt,2030,1,13:13] min_output_flow_with_unit_commitment[ocgt,2030,1,13:13] -10
+    units_on[ocgt,2030,1,13:13] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,14:14] limit_units_on_simple_method[ocgt,2030,1,14:14] 1
+    units_on[ocgt,2030,1,14:14] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,14:14] -100
+    units_on[ocgt,2030,1,14:14] min_output_flow_with_unit_commitment[ocgt,2030,1,14:14] -10
+    units_on[ocgt,2030,1,14:14] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,15:15] limit_units_on_simple_method[ocgt,2030,1,15:15] 1
+    units_on[ocgt,2030,1,15:15] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,15:15] -100
+    units_on[ocgt,2030,1,15:15] min_output_flow_with_unit_commitment[ocgt,2030,1,15:15] -10
+    units_on[ocgt,2030,1,15:15] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,16:16] limit_units_on_simple_method[ocgt,2030,1,16:16] 1
+    units_on[ocgt,2030,1,16:16] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,16:16] -100
+    units_on[ocgt,2030,1,16:16] min_output_flow_with_unit_commitment[ocgt,2030,1,16:16] -10
+    units_on[ocgt,2030,1,16:16] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,17:17] limit_units_on_simple_method[ocgt,2030,1,17:17] 1
+    units_on[ocgt,2030,1,17:17] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,17:17] -100
+    units_on[ocgt,2030,1,17:17] min_output_flow_with_unit_commitment[ocgt,2030,1,17:17] -10
+    units_on[ocgt,2030,1,17:17] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,18:18] limit_units_on_simple_method[ocgt,2030,1,18:18] 1
+    units_on[ocgt,2030,1,18:18] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,18:18] -100
+    units_on[ocgt,2030,1,18:18] min_output_flow_with_unit_commitment[ocgt,2030,1,18:18] -10
+    units_on[ocgt,2030,1,18:18] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,19:19] limit_units_on_simple_method[ocgt,2030,1,19:19] 1
+    units_on[ocgt,2030,1,19:19] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,19:19] -100
+    units_on[ocgt,2030,1,19:19] min_output_flow_with_unit_commitment[ocgt,2030,1,19:19] -10
+    units_on[ocgt,2030,1,19:19] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,20:20] limit_units_on_simple_method[ocgt,2030,1,20:20] 1
+    units_on[ocgt,2030,1,20:20] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,20:20] -100
+    units_on[ocgt,2030,1,20:20] min_output_flow_with_unit_commitment[ocgt,2030,1,20:20] -10
+    units_on[ocgt,2030,1,20:20] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,21:21] limit_units_on_simple_method[ocgt,2030,1,21:21] 1
+    units_on[ocgt,2030,1,21:21] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,21:21] -100
+    units_on[ocgt,2030,1,21:21] min_output_flow_with_unit_commitment[ocgt,2030,1,21:21] -10
+    units_on[ocgt,2030,1,21:21] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,22:22] limit_units_on_simple_method[ocgt,2030,1,22:22] 1
+    units_on[ocgt,2030,1,22:22] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,22:22] -100
+    units_on[ocgt,2030,1,22:22] min_output_flow_with_unit_commitment[ocgt,2030,1,22:22] -10
+    units_on[ocgt,2030,1,22:22] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,23:23] limit_units_on_simple_method[ocgt,2030,1,23:23] 1
+    units_on[ocgt,2030,1,23:23] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,23:23] -100
+    units_on[ocgt,2030,1,23:23] min_output_flow_with_unit_commitment[ocgt,2030,1,23:23] -10
+    units_on[ocgt,2030,1,23:23] OBJ 248.20000000000002
+    units_on[ocgt,2030,1,24:24] limit_units_on_simple_method[ocgt,2030,1,24:24] 1
+    units_on[ocgt,2030,1,24:24] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,24:24] -100
+    units_on[ocgt,2030,1,24:24] min_output_flow_with_unit_commitment[ocgt,2030,1,24:24] -10
+    units_on[ocgt,2030,1,24:24] OBJ 248.20000000000002
     units_on[smr,2030,1,1:6] limit_units_on_simple_method[smr,2030,1,1:6] 1
     units_on[smr,2030,1,1:6] max_output_flow_with_basic_unit_commitment[smr,2030,1,1:1] -200
     units_on[smr,2030,1,1:6] max_output_flow_with_basic_unit_commitment[smr,2030,1,2:2] -200
@@ -1539,102 +1635,6 @@ COLUMNS
     units_on[smr,2030,1,19:24] max_ramp_down_with_unit_commitment[smr,2030,1,23:23] 20
     units_on[smr,2030,1,19:24] max_ramp_down_with_unit_commitment[smr,2030,1,24:24] 20
     units_on[smr,2030,1,19:24] OBJ 6460.5
-    units_on[ocgt,2030,1,1:1] limit_units_on_simple_method[ocgt,2030,1,1:1] 1
-    units_on[ocgt,2030,1,1:1] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,1:1] -100
-    units_on[ocgt,2030,1,1:1] min_output_flow_with_unit_commitment[ocgt,2030,1,1:1] -10
-    units_on[ocgt,2030,1,1:1] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,2:2] limit_units_on_simple_method[ocgt,2030,1,2:2] 1
-    units_on[ocgt,2030,1,2:2] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,2:2] -100
-    units_on[ocgt,2030,1,2:2] min_output_flow_with_unit_commitment[ocgt,2030,1,2:2] -10
-    units_on[ocgt,2030,1,2:2] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,3:3] limit_units_on_simple_method[ocgt,2030,1,3:3] 1
-    units_on[ocgt,2030,1,3:3] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,3:3] -100
-    units_on[ocgt,2030,1,3:3] min_output_flow_with_unit_commitment[ocgt,2030,1,3:3] -10
-    units_on[ocgt,2030,1,3:3] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,4:4] limit_units_on_simple_method[ocgt,2030,1,4:4] 1
-    units_on[ocgt,2030,1,4:4] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,4:4] -100
-    units_on[ocgt,2030,1,4:4] min_output_flow_with_unit_commitment[ocgt,2030,1,4:4] -10
-    units_on[ocgt,2030,1,4:4] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,5:5] limit_units_on_simple_method[ocgt,2030,1,5:5] 1
-    units_on[ocgt,2030,1,5:5] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,5:5] -100
-    units_on[ocgt,2030,1,5:5] min_output_flow_with_unit_commitment[ocgt,2030,1,5:5] -10
-    units_on[ocgt,2030,1,5:5] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,6:6] limit_units_on_simple_method[ocgt,2030,1,6:6] 1
-    units_on[ocgt,2030,1,6:6] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,6:6] -100
-    units_on[ocgt,2030,1,6:6] min_output_flow_with_unit_commitment[ocgt,2030,1,6:6] -10
-    units_on[ocgt,2030,1,6:6] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,7:7] limit_units_on_simple_method[ocgt,2030,1,7:7] 1
-    units_on[ocgt,2030,1,7:7] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,7:7] -100
-    units_on[ocgt,2030,1,7:7] min_output_flow_with_unit_commitment[ocgt,2030,1,7:7] -10
-    units_on[ocgt,2030,1,7:7] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,8:8] limit_units_on_simple_method[ocgt,2030,1,8:8] 1
-    units_on[ocgt,2030,1,8:8] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,8:8] -100
-    units_on[ocgt,2030,1,8:8] min_output_flow_with_unit_commitment[ocgt,2030,1,8:8] -10
-    units_on[ocgt,2030,1,8:8] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,9:9] limit_units_on_simple_method[ocgt,2030,1,9:9] 1
-    units_on[ocgt,2030,1,9:9] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,9:9] -100
-    units_on[ocgt,2030,1,9:9] min_output_flow_with_unit_commitment[ocgt,2030,1,9:9] -10
-    units_on[ocgt,2030,1,9:9] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,10:10] limit_units_on_simple_method[ocgt,2030,1,10:10] 1
-    units_on[ocgt,2030,1,10:10] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,10:10] -100
-    units_on[ocgt,2030,1,10:10] min_output_flow_with_unit_commitment[ocgt,2030,1,10:10] -10
-    units_on[ocgt,2030,1,10:10] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,11:11] limit_units_on_simple_method[ocgt,2030,1,11:11] 1
-    units_on[ocgt,2030,1,11:11] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,11:11] -100
-    units_on[ocgt,2030,1,11:11] min_output_flow_with_unit_commitment[ocgt,2030,1,11:11] -10
-    units_on[ocgt,2030,1,11:11] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,12:12] limit_units_on_simple_method[ocgt,2030,1,12:12] 1
-    units_on[ocgt,2030,1,12:12] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,12:12] -100
-    units_on[ocgt,2030,1,12:12] min_output_flow_with_unit_commitment[ocgt,2030,1,12:12] -10
-    units_on[ocgt,2030,1,12:12] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,13:13] limit_units_on_simple_method[ocgt,2030,1,13:13] 1
-    units_on[ocgt,2030,1,13:13] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,13:13] -100
-    units_on[ocgt,2030,1,13:13] min_output_flow_with_unit_commitment[ocgt,2030,1,13:13] -10
-    units_on[ocgt,2030,1,13:13] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,14:14] limit_units_on_simple_method[ocgt,2030,1,14:14] 1
-    units_on[ocgt,2030,1,14:14] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,14:14] -100
-    units_on[ocgt,2030,1,14:14] min_output_flow_with_unit_commitment[ocgt,2030,1,14:14] -10
-    units_on[ocgt,2030,1,14:14] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,15:15] limit_units_on_simple_method[ocgt,2030,1,15:15] 1
-    units_on[ocgt,2030,1,15:15] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,15:15] -100
-    units_on[ocgt,2030,1,15:15] min_output_flow_with_unit_commitment[ocgt,2030,1,15:15] -10
-    units_on[ocgt,2030,1,15:15] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,16:16] limit_units_on_simple_method[ocgt,2030,1,16:16] 1
-    units_on[ocgt,2030,1,16:16] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,16:16] -100
-    units_on[ocgt,2030,1,16:16] min_output_flow_with_unit_commitment[ocgt,2030,1,16:16] -10
-    units_on[ocgt,2030,1,16:16] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,17:17] limit_units_on_simple_method[ocgt,2030,1,17:17] 1
-    units_on[ocgt,2030,1,17:17] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,17:17] -100
-    units_on[ocgt,2030,1,17:17] min_output_flow_with_unit_commitment[ocgt,2030,1,17:17] -10
-    units_on[ocgt,2030,1,17:17] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,18:18] limit_units_on_simple_method[ocgt,2030,1,18:18] 1
-    units_on[ocgt,2030,1,18:18] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,18:18] -100
-    units_on[ocgt,2030,1,18:18] min_output_flow_with_unit_commitment[ocgt,2030,1,18:18] -10
-    units_on[ocgt,2030,1,18:18] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,19:19] limit_units_on_simple_method[ocgt,2030,1,19:19] 1
-    units_on[ocgt,2030,1,19:19] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,19:19] -100
-    units_on[ocgt,2030,1,19:19] min_output_flow_with_unit_commitment[ocgt,2030,1,19:19] -10
-    units_on[ocgt,2030,1,19:19] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,20:20] limit_units_on_simple_method[ocgt,2030,1,20:20] 1
-    units_on[ocgt,2030,1,20:20] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,20:20] -100
-    units_on[ocgt,2030,1,20:20] min_output_flow_with_unit_commitment[ocgt,2030,1,20:20] -10
-    units_on[ocgt,2030,1,20:20] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,21:21] limit_units_on_simple_method[ocgt,2030,1,21:21] 1
-    units_on[ocgt,2030,1,21:21] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,21:21] -100
-    units_on[ocgt,2030,1,21:21] min_output_flow_with_unit_commitment[ocgt,2030,1,21:21] -10
-    units_on[ocgt,2030,1,21:21] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,22:22] limit_units_on_simple_method[ocgt,2030,1,22:22] 1
-    units_on[ocgt,2030,1,22:22] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,22:22] -100
-    units_on[ocgt,2030,1,22:22] min_output_flow_with_unit_commitment[ocgt,2030,1,22:22] -10
-    units_on[ocgt,2030,1,22:22] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,23:23] limit_units_on_simple_method[ocgt,2030,1,23:23] 1
-    units_on[ocgt,2030,1,23:23] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,23:23] -100
-    units_on[ocgt,2030,1,23:23] min_output_flow_with_unit_commitment[ocgt,2030,1,23:23] -10
-    units_on[ocgt,2030,1,23:23] OBJ 248.20000000000002
-    units_on[ocgt,2030,1,24:24] limit_units_on_simple_method[ocgt,2030,1,24:24] 1
-    units_on[ocgt,2030,1,24:24] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,24:24] -100
-    units_on[ocgt,2030,1,24:24] min_output_flow_with_unit_commitment[ocgt,2030,1,24:24] -10
-    units_on[ocgt,2030,1,24:24] OBJ 248.20000000000002
     MARKER    'MARKER'                 'INTEND'
 RHS
     rhs       max_output_flows_limit_simple_method[ccgt,2030,1,1:2] 200
@@ -1801,10 +1801,6 @@ RHS
     rhs       limit_units_on_simple_method[ccgt,2030,1,16:18] 1
     rhs       limit_units_on_simple_method[ccgt,2030,1,19:21] 1
     rhs       limit_units_on_simple_method[ccgt,2030,1,22:24] 1
-    rhs       limit_units_on_simple_method[smr,2030,1,1:6] 1
-    rhs       limit_units_on_simple_method[smr,2030,1,7:12] 1
-    rhs       limit_units_on_simple_method[smr,2030,1,13:18] 1
-    rhs       limit_units_on_simple_method[smr,2030,1,19:24] 1
     rhs       limit_units_on_simple_method[ocgt,2030,1,1:1] 0
     rhs       limit_units_on_simple_method[ocgt,2030,1,2:2] 0
     rhs       limit_units_on_simple_method[ocgt,2030,1,3:3] 0
@@ -1829,6 +1825,10 @@ RHS
     rhs       limit_units_on_simple_method[ocgt,2030,1,22:22] 0
     rhs       limit_units_on_simple_method[ocgt,2030,1,23:23] 0
     rhs       limit_units_on_simple_method[ocgt,2030,1,24:24] 0
+    rhs       limit_units_on_simple_method[smr,2030,1,1:6] 1
+    rhs       limit_units_on_simple_method[smr,2030,1,7:12] 1
+    rhs       limit_units_on_simple_method[smr,2030,1,13:18] 1
+    rhs       limit_units_on_simple_method[smr,2030,1,19:24] 1
     rhs       max_output_flow_with_basic_unit_commitment[ccgt,2030,1,1:2] 0
     rhs       max_output_flow_with_basic_unit_commitment[ccgt,2030,1,3:3] 0
     rhs       max_output_flow_with_basic_unit_commitment[ccgt,2030,1,4:4] 0
@@ -2459,14 +2459,6 @@ BOUNDS
  PL bounds    units_on[ccgt,2030,1,19:21]
  LO bounds    units_on[ccgt,2030,1,22:24] 0
  PL bounds    units_on[ccgt,2030,1,22:24]
- LO bounds    units_on[smr,2030,1,1:6] 0
- PL bounds    units_on[smr,2030,1,1:6]
- LO bounds    units_on[smr,2030,1,7:12] 0
- PL bounds    units_on[smr,2030,1,7:12]
- LO bounds    units_on[smr,2030,1,13:18] 0
- PL bounds    units_on[smr,2030,1,13:18]
- LO bounds    units_on[smr,2030,1,19:24] 0
- PL bounds    units_on[smr,2030,1,19:24]
  LO bounds    units_on[ocgt,2030,1,1:1] 0
  PL bounds    units_on[ocgt,2030,1,1:1]
  LO bounds    units_on[ocgt,2030,1,2:2] 0
@@ -2515,4 +2507,12 @@ BOUNDS
  PL bounds    units_on[ocgt,2030,1,23:23]
  LO bounds    units_on[ocgt,2030,1,24:24] 0
  PL bounds    units_on[ocgt,2030,1,24:24]
+ LO bounds    units_on[smr,2030,1,1:6] 0
+ PL bounds    units_on[smr,2030,1,1:6]
+ LO bounds    units_on[smr,2030,1,7:12] 0
+ PL bounds    units_on[smr,2030,1,7:12]
+ LO bounds    units_on[smr,2030,1,13:18] 0
+ PL bounds    units_on[smr,2030,1,13:18]
+ LO bounds    units_on[smr,2030,1,19:24] 0
+ PL bounds    units_on[smr,2030,1,19:24]
 ENDATA

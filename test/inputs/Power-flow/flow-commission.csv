@@ -1,5 +1,5 @@
-from_asset,to_asset,commission_year,fixed_cost,investment_cost,investment_limit,capacity_coefficient,conversion_coefficient
-ccgt,demand,2030,0.0,0.0,,1,1.0
-ccgt,hub,2030,0.0,0.0,,1,1.0
-hub,demand,2030,0.0,0.0,,1,1.0
-import,hub,2030,0.0,0.0,,1,1.0
+from_asset,to_asset,commission_year,fixed_cost,investment_cost,investment_limit,capacity_coefficient,conversion_coefficient,producer_efficiency
+ccgt,demand,2030,0.0,0.0,,1,1.0,1.0
+ccgt,hub,2030,0.0,0.0,,1,1.0,1.0
+hub,demand,2030,0.0,0.0,,1,1.0,1.0
+import,hub,2030,0.0,0.0,,1,1.0,1.0

@@ -15,10 +15,10 @@ function add_conversion_constraints!(connection, model, constraints)
             table_name,
             [
                 begin
-                    efficiency = row.efficiency::Float64
+                    conversion_efficiency = row.conversion_efficiency::Float64
                     @constraint(
                         model,
-                        efficiency * incoming_flow == outgoing_flow,
+                        conversion_efficiency * incoming_flow == outgoing_flow,
                         base_name = "conversion_balance[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, incoming_flow, outgoing_flow) in
@@ -40,7 +40,7 @@ function _append_conversion_data_to_indices(connection, table_name)
             cons.rep_period,
             cons.time_block_start,
             cons.time_block_end,
-            asset_commission.efficiency,
+            asset_commission.conversion_efficiency,
         FROM cons_$table_name AS cons
         LEFT JOIN asset_commission
             ON cons.asset = asset_commission.asset
