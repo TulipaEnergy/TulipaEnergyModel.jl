@@ -1775,78 +1775,78 @@ COLUMNS
     flow[(solar,demand),2030,1,23:23] consumer_balance[demand,2030,1,23:23] 1
     flow[(solar,demand),2030,1,24:24] max_output_flows_limit_simple_method[solar,2030,1,24:24] 1
     flow[(solar,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
-    flow[(ens,demand),2030,2,1:1] max_output_flows_limit_simple_method[ens,2030,2,1:1] 1
-    flow[(ens,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
-    flow[(ens,demand),2030,2,1:1] OBJ 0.756
-    flow[(ens,demand),2030,2,2:2] max_output_flows_limit_simple_method[ens,2030,2,2:2] 1
-    flow[(ens,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
-    flow[(ens,demand),2030,2,2:2] OBJ 0.756
-    flow[(ens,demand),2030,2,3:3] max_output_flows_limit_simple_method[ens,2030,2,3:3] 1
-    flow[(ens,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
-    flow[(ens,demand),2030,2,3:3] OBJ 0.756
-    flow[(ens,demand),2030,2,4:4] max_output_flows_limit_simple_method[ens,2030,2,4:4] 1
-    flow[(ens,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
-    flow[(ens,demand),2030,2,4:4] OBJ 0.756
-    flow[(ens,demand),2030,2,5:5] max_output_flows_limit_simple_method[ens,2030,2,5:5] 1
-    flow[(ens,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
-    flow[(ens,demand),2030,2,5:5] OBJ 0.756
-    flow[(ens,demand),2030,2,6:6] max_output_flows_limit_simple_method[ens,2030,2,6:6] 1
-    flow[(ens,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
-    flow[(ens,demand),2030,2,6:6] OBJ 0.756
-    flow[(ens,demand),2030,2,7:7] max_output_flows_limit_simple_method[ens,2030,2,7:7] 1
-    flow[(ens,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
-    flow[(ens,demand),2030,2,7:7] OBJ 0.756
-    flow[(ens,demand),2030,2,8:8] max_output_flows_limit_simple_method[ens,2030,2,8:8] 1
-    flow[(ens,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
-    flow[(ens,demand),2030,2,8:8] OBJ 0.756
-    flow[(ens,demand),2030,2,9:9] max_output_flows_limit_simple_method[ens,2030,2,9:9] 1
-    flow[(ens,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
-    flow[(ens,demand),2030,2,9:9] OBJ 0.756
-    flow[(ens,demand),2030,2,10:10] max_output_flows_limit_simple_method[ens,2030,2,10:10] 1
-    flow[(ens,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
-    flow[(ens,demand),2030,2,10:10] OBJ 0.756
-    flow[(ens,demand),2030,2,11:11] max_output_flows_limit_simple_method[ens,2030,2,11:11] 1
-    flow[(ens,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
-    flow[(ens,demand),2030,2,11:11] OBJ 0.756
-    flow[(ens,demand),2030,2,12:12] max_output_flows_limit_simple_method[ens,2030,2,12:12] 1
-    flow[(ens,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
-    flow[(ens,demand),2030,2,12:12] OBJ 0.756
-    flow[(ens,demand),2030,2,13:13] max_output_flows_limit_simple_method[ens,2030,2,13:13] 1
-    flow[(ens,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
-    flow[(ens,demand),2030,2,13:13] OBJ 0.756
-    flow[(ens,demand),2030,2,14:14] max_output_flows_limit_simple_method[ens,2030,2,14:14] 1
-    flow[(ens,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
-    flow[(ens,demand),2030,2,14:14] OBJ 0.756
-    flow[(ens,demand),2030,2,15:15] max_output_flows_limit_simple_method[ens,2030,2,15:15] 1
-    flow[(ens,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
-    flow[(ens,demand),2030,2,15:15] OBJ 0.756
-    flow[(ens,demand),2030,2,16:16] max_output_flows_limit_simple_method[ens,2030,2,16:16] 1
-    flow[(ens,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
-    flow[(ens,demand),2030,2,16:16] OBJ 0.756
-    flow[(ens,demand),2030,2,17:17] max_output_flows_limit_simple_method[ens,2030,2,17:17] 1
-    flow[(ens,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
-    flow[(ens,demand),2030,2,17:17] OBJ 0.756
-    flow[(ens,demand),2030,2,18:18] max_output_flows_limit_simple_method[ens,2030,2,18:18] 1
-    flow[(ens,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
-    flow[(ens,demand),2030,2,18:18] OBJ 0.756
-    flow[(ens,demand),2030,2,19:19] max_output_flows_limit_simple_method[ens,2030,2,19:19] 1
-    flow[(ens,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
-    flow[(ens,demand),2030,2,19:19] OBJ 0.756
-    flow[(ens,demand),2030,2,20:20] max_output_flows_limit_simple_method[ens,2030,2,20:20] 1
-    flow[(ens,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
-    flow[(ens,demand),2030,2,20:20] OBJ 0.756
-    flow[(ens,demand),2030,2,21:21] max_output_flows_limit_simple_method[ens,2030,2,21:21] 1
-    flow[(ens,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
-    flow[(ens,demand),2030,2,21:21] OBJ 0.756
-    flow[(ens,demand),2030,2,22:22] max_output_flows_limit_simple_method[ens,2030,2,22:22] 1
-    flow[(ens,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
-    flow[(ens,demand),2030,2,22:22] OBJ 0.756
-    flow[(ens,demand),2030,2,23:23] max_output_flows_limit_simple_method[ens,2030,2,23:23] 1
-    flow[(ens,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
-    flow[(ens,demand),2030,2,23:23] OBJ 0.756
-    flow[(ens,demand),2030,2,24:24] max_output_flows_limit_simple_method[ens,2030,2,24:24] 1
-    flow[(ens,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
-    flow[(ens,demand),2030,2,24:24] OBJ 0.756
+    flow[(battery,demand),2030,2,1:1] max_output_flows_limit_simple_method[battery,2030,2,1:1] 1
+    flow[(battery,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
+    flow[(battery,demand),2030,2,1:1] balance_storage_rep_period[battery,2030,2,1:1] 1.0526315789473684
+    flow[(battery,demand),2030,2,2:2] max_output_flows_limit_simple_method[battery,2030,2,2:2] 1
+    flow[(battery,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
+    flow[(battery,demand),2030,2,2:2] balance_storage_rep_period[battery,2030,2,2:2] 1.0526315789473684
+    flow[(battery,demand),2030,2,3:3] max_output_flows_limit_simple_method[battery,2030,2,3:3] 1
+    flow[(battery,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
+    flow[(battery,demand),2030,2,3:3] balance_storage_rep_period[battery,2030,2,3:3] 1.0526315789473684
+    flow[(battery,demand),2030,2,4:4] max_output_flows_limit_simple_method[battery,2030,2,4:4] 1
+    flow[(battery,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
+    flow[(battery,demand),2030,2,4:4] balance_storage_rep_period[battery,2030,2,4:4] 1.0526315789473684
+    flow[(battery,demand),2030,2,5:5] max_output_flows_limit_simple_method[battery,2030,2,5:5] 1
+    flow[(battery,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
+    flow[(battery,demand),2030,2,5:5] balance_storage_rep_period[battery,2030,2,5:5] 1.0526315789473684
+    flow[(battery,demand),2030,2,6:6] max_output_flows_limit_simple_method[battery,2030,2,6:6] 1
+    flow[(battery,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
+    flow[(battery,demand),2030,2,6:6] balance_storage_rep_period[battery,2030,2,6:6] 1.0526315789473684
+    flow[(battery,demand),2030,2,7:7] max_output_flows_limit_simple_method[battery,2030,2,7:7] 1
+    flow[(battery,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
+    flow[(battery,demand),2030,2,7:7] balance_storage_rep_period[battery,2030,2,7:7] 1.0526315789473684
+    flow[(battery,demand),2030,2,8:8] max_output_flows_limit_simple_method[battery,2030,2,8:8] 1
+    flow[(battery,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
+    flow[(battery,demand),2030,2,8:8] balance_storage_rep_period[battery,2030,2,8:8] 1.0526315789473684
+    flow[(battery,demand),2030,2,9:9] max_output_flows_limit_simple_method[battery,2030,2,9:9] 1
+    flow[(battery,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
+    flow[(battery,demand),2030,2,9:9] balance_storage_rep_period[battery,2030,2,9:9] 1.0526315789473684
+    flow[(battery,demand),2030,2,10:10] max_output_flows_limit_simple_method[battery,2030,2,10:10] 1
+    flow[(battery,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
+    flow[(battery,demand),2030,2,10:10] balance_storage_rep_period[battery,2030,2,10:10] 1.0526315789473684
+    flow[(battery,demand),2030,2,11:11] max_output_flows_limit_simple_method[battery,2030,2,11:11] 1
+    flow[(battery,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
+    flow[(battery,demand),2030,2,11:11] balance_storage_rep_period[battery,2030,2,11:11] 1.0526315789473684
+    flow[(battery,demand),2030,2,12:12] max_output_flows_limit_simple_method[battery,2030,2,12:12] 1
+    flow[(battery,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
+    flow[(battery,demand),2030,2,12:12] balance_storage_rep_period[battery,2030,2,12:12] 1.0526315789473684
+    flow[(battery,demand),2030,2,13:13] max_output_flows_limit_simple_method[battery,2030,2,13:13] 1
+    flow[(battery,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
+    flow[(battery,demand),2030,2,13:13] balance_storage_rep_period[battery,2030,2,13:13] 1.0526315789473684
+    flow[(battery,demand),2030,2,14:14] max_output_flows_limit_simple_method[battery,2030,2,14:14] 1
+    flow[(battery,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
+    flow[(battery,demand),2030,2,14:14] balance_storage_rep_period[battery,2030,2,14:14] 1.0526315789473684
+    flow[(battery,demand),2030,2,15:15] max_output_flows_limit_simple_method[battery,2030,2,15:15] 1
+    flow[(battery,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
+    flow[(battery,demand),2030,2,15:15] balance_storage_rep_period[battery,2030,2,15:15] 1.0526315789473684
+    flow[(battery,demand),2030,2,16:16] max_output_flows_limit_simple_method[battery,2030,2,16:16] 1
+    flow[(battery,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
+    flow[(battery,demand),2030,2,16:16] balance_storage_rep_period[battery,2030,2,16:16] 1.0526315789473684
+    flow[(battery,demand),2030,2,17:17] max_output_flows_limit_simple_method[battery,2030,2,17:17] 1
+    flow[(battery,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
+    flow[(battery,demand),2030,2,17:17] balance_storage_rep_period[battery,2030,2,17:17] 1.0526315789473684
+    flow[(battery,demand),2030,2,18:18] max_output_flows_limit_simple_method[battery,2030,2,18:18] 1
+    flow[(battery,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
+    flow[(battery,demand),2030,2,18:18] balance_storage_rep_period[battery,2030,2,18:18] 1.0526315789473684
+    flow[(battery,demand),2030,2,19:19] max_output_flows_limit_simple_method[battery,2030,2,19:19] 1
+    flow[(battery,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
+    flow[(battery,demand),2030,2,19:19] balance_storage_rep_period[battery,2030,2,19:19] 1.0526315789473684
+    flow[(battery,demand),2030,2,20:20] max_output_flows_limit_simple_method[battery,2030,2,20:20] 1
+    flow[(battery,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
+    flow[(battery,demand),2030,2,20:20] balance_storage_rep_period[battery,2030,2,20:20] 1.0526315789473684
+    flow[(battery,demand),2030,2,21:21] max_output_flows_limit_simple_method[battery,2030,2,21:21] 1
+    flow[(battery,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
+    flow[(battery,demand),2030,2,21:21] balance_storage_rep_period[battery,2030,2,21:21] 1.0526315789473684
+    flow[(battery,demand),2030,2,22:22] max_output_flows_limit_simple_method[battery,2030,2,22:22] 1
+    flow[(battery,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
+    flow[(battery,demand),2030,2,22:22] balance_storage_rep_period[battery,2030,2,22:22] 1.0526315789473684
+    flow[(battery,demand),2030,2,23:23] max_output_flows_limit_simple_method[battery,2030,2,23:23] 1
+    flow[(battery,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
+    flow[(battery,demand),2030,2,23:23] balance_storage_rep_period[battery,2030,2,23:23] 1.0526315789473684
+    flow[(battery,demand),2030,2,24:24] max_output_flows_limit_simple_method[battery,2030,2,24:24] 1
+    flow[(battery,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
+    flow[(battery,demand),2030,2,24:24] balance_storage_rep_period[battery,2030,2,24:24] 1.0526315789473684
     flow[(ocgt,demand),2030,2,1:1] max_output_flows_limit_simple_method[ocgt,2030,2,1:1] 1
     flow[(ocgt,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
     flow[(ocgt,demand),2030,2,1:1] OBJ 0.29400000000000004
@@ -2207,78 +2207,78 @@ COLUMNS
     flow[(demand,battery),2030,2,24:24] max_input_flows_limit_simple_method[battery,2030,2,24:24] 1
     flow[(demand,battery),2030,2,24:24] consumer_balance[demand,2030,2,24:24] -1
     flow[(demand,battery),2030,2,24:24] balance_storage_rep_period[battery,2030,2,24:24] -0.95
-    flow[(battery,demand),2030,2,1:1] max_output_flows_limit_simple_method[battery,2030,2,1:1] 1
-    flow[(battery,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
-    flow[(battery,demand),2030,2,1:1] balance_storage_rep_period[battery,2030,2,1:1] 1.0526315789473684
-    flow[(battery,demand),2030,2,2:2] max_output_flows_limit_simple_method[battery,2030,2,2:2] 1
-    flow[(battery,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
-    flow[(battery,demand),2030,2,2:2] balance_storage_rep_period[battery,2030,2,2:2] 1.0526315789473684
-    flow[(battery,demand),2030,2,3:3] max_output_flows_limit_simple_method[battery,2030,2,3:3] 1
-    flow[(battery,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
-    flow[(battery,demand),2030,2,3:3] balance_storage_rep_period[battery,2030,2,3:3] 1.0526315789473684
-    flow[(battery,demand),2030,2,4:4] max_output_flows_limit_simple_method[battery,2030,2,4:4] 1
-    flow[(battery,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
-    flow[(battery,demand),2030,2,4:4] balance_storage_rep_period[battery,2030,2,4:4] 1.0526315789473684
-    flow[(battery,demand),2030,2,5:5] max_output_flows_limit_simple_method[battery,2030,2,5:5] 1
-    flow[(battery,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
-    flow[(battery,demand),2030,2,5:5] balance_storage_rep_period[battery,2030,2,5:5] 1.0526315789473684
-    flow[(battery,demand),2030,2,6:6] max_output_flows_limit_simple_method[battery,2030,2,6:6] 1
-    flow[(battery,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
-    flow[(battery,demand),2030,2,6:6] balance_storage_rep_period[battery,2030,2,6:6] 1.0526315789473684
-    flow[(battery,demand),2030,2,7:7] max_output_flows_limit_simple_method[battery,2030,2,7:7] 1
-    flow[(battery,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
-    flow[(battery,demand),2030,2,7:7] balance_storage_rep_period[battery,2030,2,7:7] 1.0526315789473684
-    flow[(battery,demand),2030,2,8:8] max_output_flows_limit_simple_method[battery,2030,2,8:8] 1
-    flow[(battery,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
-    flow[(battery,demand),2030,2,8:8] balance_storage_rep_period[battery,2030,2,8:8] 1.0526315789473684
-    flow[(battery,demand),2030,2,9:9] max_output_flows_limit_simple_method[battery,2030,2,9:9] 1
-    flow[(battery,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
-    flow[(battery,demand),2030,2,9:9] balance_storage_rep_period[battery,2030,2,9:9] 1.0526315789473684
-    flow[(battery,demand),2030,2,10:10] max_output_flows_limit_simple_method[battery,2030,2,10:10] 1
-    flow[(battery,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
-    flow[(battery,demand),2030,2,10:10] balance_storage_rep_period[battery,2030,2,10:10] 1.0526315789473684
-    flow[(battery,demand),2030,2,11:11] max_output_flows_limit_simple_method[battery,2030,2,11:11] 1
-    flow[(battery,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
-    flow[(battery,demand),2030,2,11:11] balance_storage_rep_period[battery,2030,2,11:11] 1.0526315789473684
-    flow[(battery,demand),2030,2,12:12] max_output_flows_limit_simple_method[battery,2030,2,12:12] 1
-    flow[(battery,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
-    flow[(battery,demand),2030,2,12:12] balance_storage_rep_period[battery,2030,2,12:12] 1.0526315789473684
-    flow[(battery,demand),2030,2,13:13] max_output_flows_limit_simple_method[battery,2030,2,13:13] 1
-    flow[(battery,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
-    flow[(battery,demand),2030,2,13:13] balance_storage_rep_period[battery,2030,2,13:13] 1.0526315789473684
-    flow[(battery,demand),2030,2,14:14] max_output_flows_limit_simple_method[battery,2030,2,14:14] 1
-    flow[(battery,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
-    flow[(battery,demand),2030,2,14:14] balance_storage_rep_period[battery,2030,2,14:14] 1.0526315789473684
-    flow[(battery,demand),2030,2,15:15] max_output_flows_limit_simple_method[battery,2030,2,15:15] 1
-    flow[(battery,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
-    flow[(battery,demand),2030,2,15:15] balance_storage_rep_period[battery,2030,2,15:15] 1.0526315789473684
-    flow[(battery,demand),2030,2,16:16] max_output_flows_limit_simple_method[battery,2030,2,16:16] 1
-    flow[(battery,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
-    flow[(battery,demand),2030,2,16:16] balance_storage_rep_period[battery,2030,2,16:16] 1.0526315789473684
-    flow[(battery,demand),2030,2,17:17] max_output_flows_limit_simple_method[battery,2030,2,17:17] 1
-    flow[(battery,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
-    flow[(battery,demand),2030,2,17:17] balance_storage_rep_period[battery,2030,2,17:17] 1.0526315789473684
-    flow[(battery,demand),2030,2,18:18] max_output_flows_limit_simple_method[battery,2030,2,18:18] 1
-    flow[(battery,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
-    flow[(battery,demand),2030,2,18:18] balance_storage_rep_period[battery,2030,2,18:18] 1.0526315789473684
-    flow[(battery,demand),2030,2,19:19] max_output_flows_limit_simple_method[battery,2030,2,19:19] 1
-    flow[(battery,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
-    flow[(battery,demand),2030,2,19:19] balance_storage_rep_period[battery,2030,2,19:19] 1.0526315789473684
-    flow[(battery,demand),2030,2,20:20] max_output_flows_limit_simple_method[battery,2030,2,20:20] 1
-    flow[(battery,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
-    flow[(battery,demand),2030,2,20:20] balance_storage_rep_period[battery,2030,2,20:20] 1.0526315789473684
-    flow[(battery,demand),2030,2,21:21] max_output_flows_limit_simple_method[battery,2030,2,21:21] 1
-    flow[(battery,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
-    flow[(battery,demand),2030,2,21:21] balance_storage_rep_period[battery,2030,2,21:21] 1.0526315789473684
-    flow[(battery,demand),2030,2,22:22] max_output_flows_limit_simple_method[battery,2030,2,22:22] 1
-    flow[(battery,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
-    flow[(battery,demand),2030,2,22:22] balance_storage_rep_period[battery,2030,2,22:22] 1.0526315789473684
-    flow[(battery,demand),2030,2,23:23] max_output_flows_limit_simple_method[battery,2030,2,23:23] 1
-    flow[(battery,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
-    flow[(battery,demand),2030,2,23:23] balance_storage_rep_period[battery,2030,2,23:23] 1.0526315789473684
-    flow[(battery,demand),2030,2,24:24] max_output_flows_limit_simple_method[battery,2030,2,24:24] 1
-    flow[(battery,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
-    flow[(battery,demand),2030,2,24:24] balance_storage_rep_period[battery,2030,2,24:24] 1.0526315789473684
+    flow[(ens,demand),2030,2,1:1] max_output_flows_limit_simple_method[ens,2030,2,1:1] 1
+    flow[(ens,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
+    flow[(ens,demand),2030,2,1:1] OBJ 0.756
+    flow[(ens,demand),2030,2,2:2] max_output_flows_limit_simple_method[ens,2030,2,2:2] 1
+    flow[(ens,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
+    flow[(ens,demand),2030,2,2:2] OBJ 0.756
+    flow[(ens,demand),2030,2,3:3] max_output_flows_limit_simple_method[ens,2030,2,3:3] 1
+    flow[(ens,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
+    flow[(ens,demand),2030,2,3:3] OBJ 0.756
+    flow[(ens,demand),2030,2,4:4] max_output_flows_limit_simple_method[ens,2030,2,4:4] 1
+    flow[(ens,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
+    flow[(ens,demand),2030,2,4:4] OBJ 0.756
+    flow[(ens,demand),2030,2,5:5] max_output_flows_limit_simple_method[ens,2030,2,5:5] 1
+    flow[(ens,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
+    flow[(ens,demand),2030,2,5:5] OBJ 0.756
+    flow[(ens,demand),2030,2,6:6] max_output_flows_limit_simple_method[ens,2030,2,6:6] 1
+    flow[(ens,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
+    flow[(ens,demand),2030,2,6:6] OBJ 0.756
+    flow[(ens,demand),2030,2,7:7] max_output_flows_limit_simple_method[ens,2030,2,7:7] 1
+    flow[(ens,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
+    flow[(ens,demand),2030,2,7:7] OBJ 0.756
+    flow[(ens,demand),2030,2,8:8] max_output_flows_limit_simple_method[ens,2030,2,8:8] 1
+    flow[(ens,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
+    flow[(ens,demand),2030,2,8:8] OBJ 0.756
+    flow[(ens,demand),2030,2,9:9] max_output_flows_limit_simple_method[ens,2030,2,9:9] 1
+    flow[(ens,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
+    flow[(ens,demand),2030,2,9:9] OBJ 0.756
+    flow[(ens,demand),2030,2,10:10] max_output_flows_limit_simple_method[ens,2030,2,10:10] 1
+    flow[(ens,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
+    flow[(ens,demand),2030,2,10:10] OBJ 0.756
+    flow[(ens,demand),2030,2,11:11] max_output_flows_limit_simple_method[ens,2030,2,11:11] 1
+    flow[(ens,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
+    flow[(ens,demand),2030,2,11:11] OBJ 0.756
+    flow[(ens,demand),2030,2,12:12] max_output_flows_limit_simple_method[ens,2030,2,12:12] 1
+    flow[(ens,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
+    flow[(ens,demand),2030,2,12:12] OBJ 0.756
+    flow[(ens,demand),2030,2,13:13] max_output_flows_limit_simple_method[ens,2030,2,13:13] 1
+    flow[(ens,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
+    flow[(ens,demand),2030,2,13:13] OBJ 0.756
+    flow[(ens,demand),2030,2,14:14] max_output_flows_limit_simple_method[ens,2030,2,14:14] 1
+    flow[(ens,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
+    flow[(ens,demand),2030,2,14:14] OBJ 0.756
+    flow[(ens,demand),2030,2,15:15] max_output_flows_limit_simple_method[ens,2030,2,15:15] 1
+    flow[(ens,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
+    flow[(ens,demand),2030,2,15:15] OBJ 0.756
+    flow[(ens,demand),2030,2,16:16] max_output_flows_limit_simple_method[ens,2030,2,16:16] 1
+    flow[(ens,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
+    flow[(ens,demand),2030,2,16:16] OBJ 0.756
+    flow[(ens,demand),2030,2,17:17] max_output_flows_limit_simple_method[ens,2030,2,17:17] 1
+    flow[(ens,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
+    flow[(ens,demand),2030,2,17:17] OBJ 0.756
+    flow[(ens,demand),2030,2,18:18] max_output_flows_limit_simple_method[ens,2030,2,18:18] 1
+    flow[(ens,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
+    flow[(ens,demand),2030,2,18:18] OBJ 0.756
+    flow[(ens,demand),2030,2,19:19] max_output_flows_limit_simple_method[ens,2030,2,19:19] 1
+    flow[(ens,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
+    flow[(ens,demand),2030,2,19:19] OBJ 0.756
+    flow[(ens,demand),2030,2,20:20] max_output_flows_limit_simple_method[ens,2030,2,20:20] 1
+    flow[(ens,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
+    flow[(ens,demand),2030,2,20:20] OBJ 0.756
+    flow[(ens,demand),2030,2,21:21] max_output_flows_limit_simple_method[ens,2030,2,21:21] 1
+    flow[(ens,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
+    flow[(ens,demand),2030,2,21:21] OBJ 0.756
+    flow[(ens,demand),2030,2,22:22] max_output_flows_limit_simple_method[ens,2030,2,22:22] 1
+    flow[(ens,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
+    flow[(ens,demand),2030,2,22:22] OBJ 0.756
+    flow[(ens,demand),2030,2,23:23] max_output_flows_limit_simple_method[ens,2030,2,23:23] 1
+    flow[(ens,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
+    flow[(ens,demand),2030,2,23:23] OBJ 0.756
+    flow[(ens,demand),2030,2,24:24] max_output_flows_limit_simple_method[ens,2030,2,24:24] 1
+    flow[(ens,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
+    flow[(ens,demand),2030,2,24:24] OBJ 0.756
     flow[(phs,demand),2030,2,1:1] max_output_flows_limit_simple_method[phs,2030,2,1:1] 1
     flow[(phs,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
     flow[(phs,demand),2030,2,1:1] balance_storage_over_clustered_year[phs,2030,1:1] 1.1764705882352942
@@ -5207,54 +5207,54 @@ BOUNDS
  PL bounds    flow[(solar,demand),2030,1,23:23]
  LO bounds    flow[(solar,demand),2030,1,24:24] 0
  PL bounds    flow[(solar,demand),2030,1,24:24]
- LO bounds    flow[(ens,demand),2030,2,1:1] 0
- PL bounds    flow[(ens,demand),2030,2,1:1]
- LO bounds    flow[(ens,demand),2030,2,2:2] 0
- PL bounds    flow[(ens,demand),2030,2,2:2]
- LO bounds    flow[(ens,demand),2030,2,3:3] 0
- PL bounds    flow[(ens,demand),2030,2,3:3]
- LO bounds    flow[(ens,demand),2030,2,4:4] 0
- PL bounds    flow[(ens,demand),2030,2,4:4]
- LO bounds    flow[(ens,demand),2030,2,5:5] 0
- PL bounds    flow[(ens,demand),2030,2,5:5]
- LO bounds    flow[(ens,demand),2030,2,6:6] 0
- PL bounds    flow[(ens,demand),2030,2,6:6]
- LO bounds    flow[(ens,demand),2030,2,7:7] 0
- PL bounds    flow[(ens,demand),2030,2,7:7]
- LO bounds    flow[(ens,demand),2030,2,8:8] 0
- PL bounds    flow[(ens,demand),2030,2,8:8]
- LO bounds    flow[(ens,demand),2030,2,9:9] 0
- PL bounds    flow[(ens,demand),2030,2,9:9]
- LO bounds    flow[(ens,demand),2030,2,10:10] 0
- PL bounds    flow[(ens,demand),2030,2,10:10]
- LO bounds    flow[(ens,demand),2030,2,11:11] 0
- PL bounds    flow[(ens,demand),2030,2,11:11]
- LO bounds    flow[(ens,demand),2030,2,12:12] 0
- PL bounds    flow[(ens,demand),2030,2,12:12]
- LO bounds    flow[(ens,demand),2030,2,13:13] 0
- PL bounds    flow[(ens,demand),2030,2,13:13]
- LO bounds    flow[(ens,demand),2030,2,14:14] 0
- PL bounds    flow[(ens,demand),2030,2,14:14]
- LO bounds    flow[(ens,demand),2030,2,15:15] 0
- PL bounds    flow[(ens,demand),2030,2,15:15]
- LO bounds    flow[(ens,demand),2030,2,16:16] 0
- PL bounds    flow[(ens,demand),2030,2,16:16]
- LO bounds    flow[(ens,demand),2030,2,17:17] 0
- PL bounds    flow[(ens,demand),2030,2,17:17]
- LO bounds    flow[(ens,demand),2030,2,18:18] 0
- PL bounds    flow[(ens,demand),2030,2,18:18]
- LO bounds    flow[(ens,demand),2030,2,19:19] 0
- PL bounds    flow[(ens,demand),2030,2,19:19]
- LO bounds    flow[(ens,demand),2030,2,20:20] 0
- PL bounds    flow[(ens,demand),2030,2,20:20]
- LO bounds    flow[(ens,demand),2030,2,21:21] 0
- PL bounds    flow[(ens,demand),2030,2,21:21]
- LO bounds    flow[(ens,demand),2030,2,22:22] 0
- PL bounds    flow[(ens,demand),2030,2,22:22]
- LO bounds    flow[(ens,demand),2030,2,23:23] 0
- PL bounds    flow[(ens,demand),2030,2,23:23]
- LO bounds    flow[(ens,demand),2030,2,24:24] 0
- PL bounds    flow[(ens,demand),2030,2,24:24]
+ LO bounds    flow[(battery,demand),2030,2,1:1] 0
+ PL bounds    flow[(battery,demand),2030,2,1:1]
+ LO bounds    flow[(battery,demand),2030,2,2:2] 0
+ PL bounds    flow[(battery,demand),2030,2,2:2]
+ LO bounds    flow[(battery,demand),2030,2,3:3] 0
+ PL bounds    flow[(battery,demand),2030,2,3:3]
+ LO bounds    flow[(battery,demand),2030,2,4:4] 0
+ PL bounds    flow[(battery,demand),2030,2,4:4]
+ LO bounds    flow[(battery,demand),2030,2,5:5] 0
+ PL bounds    flow[(battery,demand),2030,2,5:5]
+ LO bounds    flow[(battery,demand),2030,2,6:6] 0
+ PL bounds    flow[(battery,demand),2030,2,6:6]
+ LO bounds    flow[(battery,demand),2030,2,7:7] 0
+ PL bounds    flow[(battery,demand),2030,2,7:7]
+ LO bounds    flow[(battery,demand),2030,2,8:8] 0
+ PL bounds    flow[(battery,demand),2030,2,8:8]
+ LO bounds    flow[(battery,demand),2030,2,9:9] 0
+ PL bounds    flow[(battery,demand),2030,2,9:9]
+ LO bounds    flow[(battery,demand),2030,2,10:10] 0
+ PL bounds    flow[(battery,demand),2030,2,10:10]
+ LO bounds    flow[(battery,demand),2030,2,11:11] 0
+ PL bounds    flow[(battery,demand),2030,2,11:11]
+ LO bounds    flow[(battery,demand),2030,2,12:12] 0
+ PL bounds    flow[(battery,demand),2030,2,12:12]
+ LO bounds    flow[(battery,demand),2030,2,13:13] 0
+ PL bounds    flow[(battery,demand),2030,2,13:13]
+ LO bounds    flow[(battery,demand),2030,2,14:14] 0
+ PL bounds    flow[(battery,demand),2030,2,14:14]
+ LO bounds    flow[(battery,demand),2030,2,15:15] 0
+ PL bounds    flow[(battery,demand),2030,2,15:15]
+ LO bounds    flow[(battery,demand),2030,2,16:16] 0
+ PL bounds    flow[(battery,demand),2030,2,16:16]
+ LO bounds    flow[(battery,demand),2030,2,17:17] 0
+ PL bounds    flow[(battery,demand),2030,2,17:17]
+ LO bounds    flow[(battery,demand),2030,2,18:18] 0
+ PL bounds    flow[(battery,demand),2030,2,18:18]
+ LO bounds    flow[(battery,demand),2030,2,19:19] 0
+ PL bounds    flow[(battery,demand),2030,2,19:19]
+ LO bounds    flow[(battery,demand),2030,2,20:20] 0
+ PL bounds    flow[(battery,demand),2030,2,20:20]
+ LO bounds    flow[(battery,demand),2030,2,21:21] 0
+ PL bounds    flow[(battery,demand),2030,2,21:21]
+ LO bounds    flow[(battery,demand),2030,2,22:22] 0
+ PL bounds    flow[(battery,demand),2030,2,22:22]
+ LO bounds    flow[(battery,demand),2030,2,23:23] 0
+ PL bounds    flow[(battery,demand),2030,2,23:23]
+ LO bounds    flow[(battery,demand),2030,2,24:24] 0
+ PL bounds    flow[(battery,demand),2030,2,24:24]
  LO bounds    flow[(ocgt,demand),2030,2,1:1] 0
  PL bounds    flow[(ocgt,demand),2030,2,1:1]
  LO bounds    flow[(ocgt,demand),2030,2,2:2] 0
@@ -5399,54 +5399,54 @@ BOUNDS
  PL bounds    flow[(demand,battery),2030,2,23:23]
  LO bounds    flow[(demand,battery),2030,2,24:24] 0
  PL bounds    flow[(demand,battery),2030,2,24:24]
- LO bounds    flow[(battery,demand),2030,2,1:1] 0
- PL bounds    flow[(battery,demand),2030,2,1:1]
- LO bounds    flow[(battery,demand),2030,2,2:2] 0
- PL bounds    flow[(battery,demand),2030,2,2:2]
- LO bounds    flow[(battery,demand),2030,2,3:3] 0
- PL bounds    flow[(battery,demand),2030,2,3:3]
- LO bounds    flow[(battery,demand),2030,2,4:4] 0
- PL bounds    flow[(battery,demand),2030,2,4:4]
- LO bounds    flow[(battery,demand),2030,2,5:5] 0
- PL bounds    flow[(battery,demand),2030,2,5:5]
- LO bounds    flow[(battery,demand),2030,2,6:6] 0
- PL bounds    flow[(battery,demand),2030,2,6:6]
- LO bounds    flow[(battery,demand),2030,2,7:7] 0
- PL bounds    flow[(battery,demand),2030,2,7:7]
- LO bounds    flow[(battery,demand),2030,2,8:8] 0
- PL bounds    flow[(battery,demand),2030,2,8:8]
- LO bounds    flow[(battery,demand),2030,2,9:9] 0
- PL bounds    flow[(battery,demand),2030,2,9:9]
- LO bounds    flow[(battery,demand),2030,2,10:10] 0
- PL bounds    flow[(battery,demand),2030,2,10:10]
- LO bounds    flow[(battery,demand),2030,2,11:11] 0
- PL bounds    flow[(battery,demand),2030,2,11:11]
- LO bounds    flow[(battery,demand),2030,2,12:12] 0
- PL bounds    flow[(battery,demand),2030,2,12:12]
- LO bounds    flow[(battery,demand),2030,2,13:13] 0
- PL bounds    flow[(battery,demand),2030,2,13:13]
- LO bounds    flow[(battery,demand),2030,2,14:14] 0
- PL bounds    flow[(battery,demand),2030,2,14:14]
- LO bounds    flow[(battery,demand),2030,2,15:15] 0
- PL bounds    flow[(battery,demand),2030,2,15:15]
- LO bounds    flow[(battery,demand),2030,2,16:16] 0
- PL bounds    flow[(battery,demand),2030,2,16:16]
- LO bounds    flow[(battery,demand),2030,2,17:17] 0
- PL bounds    flow[(battery,demand),2030,2,17:17]
- LO bounds    flow[(battery,demand),2030,2,18:18] 0
- PL bounds    flow[(battery,demand),2030,2,18:18]
- LO bounds    flow[(battery,demand),2030,2,19:19] 0
- PL bounds    flow[(battery,demand),2030,2,19:19]
- LO bounds    flow[(battery,demand),2030,2,20:20] 0
- PL bounds    flow[(battery,demand),2030,2,20:20]
- LO bounds    flow[(battery,demand),2030,2,21:21] 0
- PL bounds    flow[(battery,demand),2030,2,21:21]
- LO bounds    flow[(battery,demand),2030,2,22:22] 0
- PL bounds    flow[(battery,demand),2030,2,22:22]
- LO bounds    flow[(battery,demand),2030,2,23:23] 0
- PL bounds    flow[(battery,demand),2030,2,23:23]
- LO bounds    flow[(battery,demand),2030,2,24:24] 0
- PL bounds    flow[(battery,demand),2030,2,24:24]
+ LO bounds    flow[(ens,demand),2030,2,1:1] 0
+ PL bounds    flow[(ens,demand),2030,2,1:1]
+ LO bounds    flow[(ens,demand),2030,2,2:2] 0
+ PL bounds    flow[(ens,demand),2030,2,2:2]
+ LO bounds    flow[(ens,demand),2030,2,3:3] 0
+ PL bounds    flow[(ens,demand),2030,2,3:3]
+ LO bounds    flow[(ens,demand),2030,2,4:4] 0
+ PL bounds    flow[(ens,demand),2030,2,4:4]
+ LO bounds    flow[(ens,demand),2030,2,5:5] 0
+ PL bounds    flow[(ens,demand),2030,2,5:5]
+ LO bounds    flow[(ens,demand),2030,2,6:6] 0
+ PL bounds    flow[(ens,demand),2030,2,6:6]
+ LO bounds    flow[(ens,demand),2030,2,7:7] 0
+ PL bounds    flow[(ens,demand),2030,2,7:7]
+ LO bounds    flow[(ens,demand),2030,2,8:8] 0
+ PL bounds    flow[(ens,demand),2030,2,8:8]
+ LO bounds    flow[(ens,demand),2030,2,9:9] 0
+ PL bounds    flow[(ens,demand),2030,2,9:9]
+ LO bounds    flow[(ens,demand),2030,2,10:10] 0
+ PL bounds    flow[(ens,demand),2030,2,10:10]
+ LO bounds    flow[(ens,demand),2030,2,11:11] 0
+ PL bounds    flow[(ens,demand),2030,2,11:11]
+ LO bounds    flow[(ens,demand),2030,2,12:12] 0
+ PL bounds    flow[(ens,demand),2030,2,12:12]
+ LO bounds    flow[(ens,demand),2030,2,13:13] 0
+ PL bounds    flow[(ens,demand),2030,2,13:13]
+ LO bounds    flow[(ens,demand),2030,2,14:14] 0
+ PL bounds    flow[(ens,demand),2030,2,14:14]
+ LO bounds    flow[(ens,demand),2030,2,15:15] 0
+ PL bounds    flow[(ens,demand),2030,2,15:15]
+ LO bounds    flow[(ens,demand),2030,2,16:16] 0
+ PL bounds    flow[(ens,demand),2030,2,16:16]
+ LO bounds    flow[(ens,demand),2030,2,17:17] 0
+ PL bounds    flow[(ens,demand),2030,2,17:17]
+ LO bounds    flow[(ens,demand),2030,2,18:18] 0
+ PL bounds    flow[(ens,demand),2030,2,18:18]
+ LO bounds    flow[(ens,demand),2030,2,19:19] 0
+ PL bounds    flow[(ens,demand),2030,2,19:19]
+ LO bounds    flow[(ens,demand),2030,2,20:20] 0
+ PL bounds    flow[(ens,demand),2030,2,20:20]
+ LO bounds    flow[(ens,demand),2030,2,21:21] 0
+ PL bounds    flow[(ens,demand),2030,2,21:21]
+ LO bounds    flow[(ens,demand),2030,2,22:22] 0
+ PL bounds    flow[(ens,demand),2030,2,22:22]
+ LO bounds    flow[(ens,demand),2030,2,23:23] 0
+ PL bounds    flow[(ens,demand),2030,2,23:23]
+ LO bounds    flow[(ens,demand),2030,2,24:24] 0
+ PL bounds    flow[(ens,demand),2030,2,24:24]
  LO bounds    flow[(phs,demand),2030,2,1:1] 0
  PL bounds    flow[(phs,demand),2030,2,1:1]
  LO bounds    flow[(phs,demand),2030,2,2:2] 0
