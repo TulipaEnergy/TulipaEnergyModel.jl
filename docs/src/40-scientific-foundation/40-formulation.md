@@ -103,7 +103,6 @@ In addition, the following subsets represent methods for incorporating additiona
 | Name                                                 | Domain                   | Domains of Indices                                                                                 | Description                                                                                                            | Units                     |
 | ---------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------- |
 | $p^{\text{inv cost}}_{a,y}$                          | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Overnight cost of a unit of asset $a$ at year $y$                                                                      | [kEUR/MW]                 |
-| $p^{\text{commodity price}}_{a,y}$                   | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Price of the commodity to produce a unit of energy for asset $a$ at year $y$. Only applies to producers.               | [kEUR/MWh] or other units |
 | $p^{\text{annualized inv cost}}_{a,y}$               | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Annualized investment cost of a unit of asset $a$ at year $y$                                                          | [kEUR/MW/year]            |
 | $p^{\text{salvage value}}_{a,y}$                     | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Salvage value of a unit of asset $a$ at year $y$                                                                       | [kEUR/MW]                 |
 | $p^{\text{discounting factor asset inv cost}}_{a,y}$ | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Discounting factor for investment cost of a unit of asset $a$ at year $y$                                              | [-]                       |
@@ -149,7 +148,7 @@ In addition, the following subsets represent methods for incorporating additiona
 
 | Name                                    | Domain           | Domains of Indices                                             | Description                                                       | Units           |
 | --------------------------------------- | ---------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- | --------------- |
-| $p^{\text{efficiency}}_{a,y}$           | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{cv}}}$, $y \in \mathcal{Y}$           | efficiency of conversion asset $a$ at year $y$                    | [p.u.]          |
+| $p^{\text{conversion efficiency}}_{a,y}$           | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{cv}}}$, $y \in \mathcal{Y}$           | efficiency of conversion asset $a$ at year $y$                    | [p.u.]          |
 
 #### Extra Parameters for Energy Constraints
 
@@ -175,6 +174,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | --------------------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------- |
 | $p^{\text{operational cost}}_{f,y}$                 | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Operational cost of flow $f$ at year $y$                                                                              | [kEUR/MWh]     |
 | $p^{\text{reactance}}_{f,y}$                        | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Reactance of flow $f$ at year $y$                                                                                     | [p.u.]         |
+| $p^{\text{commodity price}}_{f,y}$                          | $\mathbb{R}_{+}$         | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Price of the commodity to produce a unit of energy for flow $f$ at year $y$. Only applies to producers.                                                                      | [kEUR/MWh] or other units      |
 | $p^{\text{capacity coefficient}}_{f,y}$             | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Coefficient that multiplies the flow $f$ at year $y$ in the capacity constraints                                      | [-]            |
 | $p^{\text{conversion coefficient}}_{f,y}$           | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Coefficient that multiplies the flow $f$ at year $y$ in the conversion constraints                                    | [-]            |
 | $p^{\text{inv cost}}_{f,y}$                         | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Overnight cost of transport flow $f$ at year $y$                                                                      | [kEUR/MW]      |
@@ -189,7 +189,8 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{technology-specific discount rate}}_{f}$  | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Technology-specific discount rate of investment of transport flow $f$ (both exports and imports)                      | [year]         |
 | $p^{\text{init export units}}_{f,y}$                | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Initial export units of transport flow $f$ available at year $y$                                                      | [MW]           |
 | $p^{\text{init import units}}_{f,y}$                | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Initial import units of transport flow $f$ available at year $y$                                                      | [MW]           |
-| $p^{\text{availability profile}}_{f,v,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{F}$, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Availability profile of flow $f$ invested in year $v$ in the representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]         |
+| $p^{\text{availability profile}}_{f,v,k_y,b_{k_y}}$ | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Availability profile of flow $f$ invested in year $v$ in the representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]         |
+| $p^{\text{producer efficiency}}_{f,y}$      | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{out}}_{a,y}$, $y \in \mathcal{Y}$          | Efficiency of flow $f$ from producer asset $a$ at year $y$         | [p.u.]          |
 
 ### Parameters for Stochastic Scenarios
 
@@ -385,8 +386,8 @@ flows\_investment\_cost &= \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\te
 flows\_fixed\_cost &= \frac{1}{2} \sum_{y \in \mathcal{Y}} \sum_{f \in \mathcal{F}^{\text{t}}_y} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{fixed cost}}_{f,y} \cdot p^{\text{capacity}}_{f} \cdot \left( v^{\text{available export units}}_{f,y} + v^{\text{available import units}}_{f,y} \right) \\
 flows\_operational\_cost_{s} &=
 \sum_{y \in \mathcal{Y}} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot \bigg( \sum_{f \in F^{\text{in}}_{a,y} | a \in \mathcal{A} } p^{\text{operational cost}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& \sum_{f \in F^{\text{out}}_{a,y} | a \in \mathcal{A}^{\text{semi-compact investment}}}  \sum_{v \in \mathcal{V}} (p^{\text{commodity price}}_{a, y} / p^{\text{efficiency}}_{a, v} + p^{\text{operational cost}}_{f, y}) \cdot v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} \\
-& \sum_{f \in F^{\text{out}}_{a,y} | a \in \mathcal{A}^{\text{compact investment}} \cup \mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}} } (p^{\text{commodity price}}_{a, y} / p^{\text{efficiency}}_{a, v} + p^{\text{operational cost}}_{f, y}) \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \bigg) \\
+& \sum_{f \in F^{\text{out}}_{a,y} | a \in \mathcal{A}^{\text{semi-compact investment}}}  \sum_{v \in \mathcal{V}} (p^{\text{commodity price}}_{f, y} / p^{\text{producer efficiency}}_{f, v} + p^{\text{operational cost}}_{f, y}) \cdot v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}} \\
+& \sum_{f \in F^{\text{out}}_{a,y} | a \in \mathcal{A}^{\text{compact investment}} \cup \mathcal{A}^{\text{simple investment}} \cup \mathcal{A}^{\text{operation}} } (p^{\text{commodity price}}_{f, y} / p^{\text{producer efficiency}}_{f, v} + p^{\text{operational cost}}_{f, y}) \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \bigg) \\
 unit\_on\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc}}_y} \sum_{k_y \in \mathcal{K}_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p_{y}^{\text{discounting factor operation cost}} \cdot p^{\text{rp weight}}_{s,k_y} \cdot p^{\text{units on cost}}_{a,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{units on}}_{a,k_y,b_{k_y}}
 \end{aligned}
 ```
@@ -774,7 +775,7 @@ v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{last}}_y} \geq p^{\text{ini
 
 ```math
 \begin{aligned}
-p^{\text{efficiency}}_{a,y} \cdot & \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{conversion coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} =  \\
+p^{\text{conversion efficiency}}_{a,y} \cdot & \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{conversion coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} =  \\
 & \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{conversion coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
 & \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{cv}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
