@@ -633,6 +633,15 @@
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
     },
+    "producer_efficiency": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 1.0,
+      "description": "Producer asset efficiency.",
+      "type": "DOUBLE",
+      "unit_of_measure": "ratio"
+    },
     "to_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
