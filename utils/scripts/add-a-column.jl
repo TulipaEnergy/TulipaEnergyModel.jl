@@ -13,7 +13,7 @@ for dir in dirs
     println("Processing directory: $dir")
 
     # Explicit name of the table
-    filename = joinpath(dir, "rep-periods-mapping.csv")
+    filename = joinpath(dir, "flow-commission.csv")
 
     connection = DBInterface.connect(DuckDB.DB)
     _q(s) = DuckDB.query(connection, s)
@@ -21,7 +21,7 @@ for dir in dirs
     _q("CREATE TABLE t AS FROM read_csv('$filename')")
 
     # Add a new column with a default value
-    _q("ALTER TABLE t ADD COLUMN scenario DOUBLE DEFAULT 1")
+    _q("ALTER TABLE t ADD COLUMN producer_efficiency DOUBLE DEFAULT 1")
 
     _q("COPY t TO '$filename' (HEADER, DELIMITER ',')")
 end
