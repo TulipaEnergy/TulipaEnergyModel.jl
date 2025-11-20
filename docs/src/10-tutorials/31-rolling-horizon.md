@@ -27,7 +27,7 @@ nice_query(sql) = DuckDB.query(connection, sql) |> DataFrame
 ```
 
 In this data, we have four assets: `solar`, `thermal`, `battery` and `demand`.
-You can see the connection between them in the `flow` table:
+You can see the connections between them in the `flow` table:
 
 ```@example rolling_horizon
 nice_query("SELECT from_asset, to_asset FROM flow")
@@ -99,7 +99,7 @@ Plots.areaplot!(timestep, -charge; label = "charge")
 ## Solution with rolling horizon
 
 The rolling horizon solution is obtained by considering a model in a smaller timeframe, called the "optimisation window".
-We limit out data to only the timesteps inside the optimisation window, solve the model that we obtain, save part of the solution, and move the window forward by some amount.
+We limit the data to only the timesteps inside the optimisation window, solve the model that we obtain, save part of the solution, and move the window forward by some amount.
 
 The "move forward" amount defines how much of the solution we store, and how much we move the window forward.
 
@@ -371,7 +371,7 @@ Still using the same input as the tutorial above, let's explore these tables.
 
 ### `rolling_horizon_window`
 
-Contain information of each window of the rolling horizon.
+Contains information about each window of the rolling horizon.
 Notably, this table stores the objective value of each window.
 
 ```@example rolling_horizon
