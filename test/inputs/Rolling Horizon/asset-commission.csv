@@ -1,4 +1,4 @@
-asset,commission_year,storage_charging_efficiency,storage_discharging_efficiency,efficiency,fixed_cost,fixed_cost_storage_energy,investment_cost,investment_cost_storage_energy,investment_limit,investment_limit_storage_energy,storage_loss_from_stored_energy
+asset,commission_year,storage_charging_efficiency,storage_discharging_efficiency,conversion_efficiency,fixed_cost,fixed_cost_storage_energy,investment_cost,investment_cost_storage_energy,investment_limit,investment_limit_storage_energy,storage_loss_from_stored_energy
 solar,2030,1.0,1.0,1.0,0.0,0.0,0.0,0.0,,,0.0
 thermal,2030,1.0,1.0,1.0,0.0,0.0,0.0,0.0,,,0.0
 battery,2030,0.9,0.9,1.0,0.0,0.0,0.0,0.0,,,0.0
