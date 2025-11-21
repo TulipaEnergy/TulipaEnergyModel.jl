@@ -209,13 +209,15 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 
     indices = DuckDB.query(
         connection,
-        "WITH rp_weight AS (
+        "WITH rp_weight_prob AS (
             SELECT
                 year,
-                scenario,
                 rep_period,
-                weight
-            FROM rep_periods_mapping
+                SUM(rpm.weight * scn.probability) AS total_weight_prob
+            FROM rep_periods_mapping AS rpm
+            LEFT JOIN stochastic_scenario AS scn
+                ON rpm.scenario = scn.scenario
+            GROUP BY year, rep_period
         ),
         rp_res AS (
             SELECT
@@ -228,7 +230,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         SELECT
             var.id,
             obj.weight_for_operation_discounts
-                * SUM(rp_weight.weight * scn.probability)
+                * rp_weight_prob.total_weight_prob
                 * rp_res.resolution
                 * (var.time_block_end - var.time_block_start + 1)
                 * obj.total_variable_cost
@@ -238,19 +240,15 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             ON var.from_asset = obj.from_asset
             AND var.to_asset = obj.to_asset
             AND var.year = obj.milestone_year
-        LEFT JOIN rp_weight
-            ON var.year = rp_weight.year
-            AND var.rep_period = rp_weight.rep_period
+        LEFT JOIN rp_weight_prob
+            ON var.year = rp_weight_prob.year
+            AND var.rep_period = rp_weight_prob.rep_period
         LEFT JOIN rp_res
             ON var.year = rp_res.year
             AND var.rep_period = rp_res.rep_period
-        LEFT JOIN stochastic_scenario AS scn
-            ON rp_weight.scenario = scn.scenario
         LEFT JOIN asset
             ON asset.asset = var.from_asset
         WHERE asset.investment_method != 'semi-compact'
-        GROUP BY var.id, obj.weight_for_operation_discounts, rp_res.resolution,
-                 var.time_block_end, var.time_block_start, obj.total_variable_cost
         ",
     )
 
@@ -263,13 +261,15 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 
     indices = DuckDB.query(
         connection,
-        "WITH rp_weight AS (
+        "WITH rp_weight_prob AS (
             SELECT
                 year,
-                scenario,
                 rep_period,
-                weight
-            FROM rep_periods_mapping
+                SUM(rpm.weight * scn.probability) AS total_weight_prob
+            FROM rep_periods_mapping AS rpm
+            LEFT JOIN stochastic_scenario AS scn
+                ON rpm.scenario = scn.scenario
+            GROUP BY year, rep_period
         ),
         rp_res AS (
             SELECT
@@ -293,7 +293,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         SELECT
             var.id,
             vint_obj.weight_for_operation_discounts
-                * SUM(rp_weight.weight * scn.probability)
+                * rp_weight_prob.total_weight_prob
                 * rp_res.resolution
                 * (var.time_block_end - var.time_block_start + 1)
                 * vint_obj.total_variable_cost AS cost
@@ -303,16 +303,12 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             AND var.to_asset = vint_obj.to_asset
             AND var.milestone_year = vint_obj.milestone_year
             AND var.commission_year = vint_obj.commission_year
-        LEFT JOIN rp_weight
-            ON var.milestone_year = rp_weight.year
-            AND var.rep_period = rp_weight.rep_period
+        LEFT JOIN rp_weight_prob
+            ON var.milestone_year = rp_weight_prob.year
+            AND var.rep_period = rp_weight_prob.rep_period
         LEFT JOIN rp_res
             ON var.milestone_year = rp_res.year
             AND var.rep_period = rp_res.rep_period
-        LEFT JOIN stochastic_scenario AS scn
-            ON rp_weight.scenario = scn.scenario
-        GROUP BY var.id, vint_obj.weight_for_operation_discounts, rp_res.resolution,
-                 var.time_block_end, var.time_block_start, vint_obj.total_variable_cost
         ORDER BY var.id
         ",
     )
@@ -327,13 +323,15 @@ function add_objective!(connection, model, variables, expressions, model_paramet
 
     indices = DuckDB.query(
         connection,
-        "WITH rp_weight AS (
+        "WITH rp_weight_prob AS (
             SELECT
                 year,
-                scenario,
                 rep_period,
-                weight
-            FROM rep_periods_mapping
+                SUM(rpm.weight * scn.probability) AS total_weight_prob
+            FROM rep_periods_mapping AS rpm
+            LEFT JOIN stochastic_scenario AS scn
+                ON rpm.scenario = scn.scenario
+            GROUP BY year, rep_period
         ),
         rp_res AS (
             SELECT
@@ -346,7 +344,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         SELECT
             var.id,
             obj.weight_for_operation_discounts
-                * SUM(rp_weight.weight * scn.probability)
+                * rp_weight_prob.total_weight_prob
                 * rp_res.resolution
                 * (var.time_block_end - var.time_block_start + 1)
                 * obj.units_on_cost
@@ -355,17 +353,13 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         LEFT JOIN t_objective_assets as obj
             ON var.asset = obj.asset
             AND var.year = obj.milestone_year
-        LEFT JOIN rp_weight
-            ON var.year = rp_weight.year
-            AND var.rep_period = rp_weight.rep_period
+        LEFT JOIN rp_weight_prob
+            ON var.year = rp_weight_prob.year
+            AND var.rep_period = rp_weight_prob.rep_period
         LEFT JOIN rp_res
             ON var.year = rp_res.year
             AND var.rep_period = rp_res.rep_period
-        LEFT JOIN stochastic_scenario AS scn
-            ON rp_weight.scenario = scn.scenario
         WHERE obj.units_on_cost IS NOT NULL
-        GROUP BY var.id, obj.weight_for_operation_discounts, rp_res.resolution,
-                 var.time_block_end, var.time_block_start, obj.units_on_cost
         ORDER BY var.id
         ",
     )
