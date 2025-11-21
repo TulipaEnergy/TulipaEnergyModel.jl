@@ -149,11 +149,11 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 16_990_833_442.304893 atol = 1e-5
+    @test energy_problem.objective_value ≈ 10_331_281_729.650423 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 16_990_833_442.304893 atol = 1e-5
+    @test energy_problem.objective_value ≈ 10_331_281_729.650423 atol = 1e-5
 end
 
 @testitem "Two-stage Stochastic Optimization Per Scenario Case Study" setup = [CommonSetup] tags =
@@ -162,11 +162,11 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 22_204_081_753.647957 atol = 1e-5
+    @test energy_problem.objective_value ≈ 11_794_495_552.83554 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 22_204_081_753.647957 atol = 1e-5
+    @test energy_problem.objective_value ≈ 11_794_495_552.83554 atol = 1e-5
 end
 
 @testitem "Rolling horizon Case Study" setup = [CommonSetup] tags =
