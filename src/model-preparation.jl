@@ -631,20 +631,30 @@ function prepare_profiles_structure(connection)
     for row in DuckDB.query(
         connection,
         """
+        WITH
+            cte_scenarios AS (
+                SELECT DISTINCT scenario
+                FROM rep_periods_mapping
+            ),
+            cte_storage_assets AS (
+                SELECT asset.asset
+                FROM asset
+                WHERE asset.type = 'storage' AND asset.is_seasonal
+            )
         SELECT DISTINCT
             assets_profiles.asset,
             assets_profiles.profile_name,
             assets_profiles.commission_year,
             asset_milestone.storage_inflows,
-            rpm.scenario
+            cte_scenarios.scenario
         FROM assets_profiles
-        LEFT JOIN asset
-            ON assets_profiles.asset = asset.asset
+        INNER JOIN cte_storage_assets
+            ON assets_profiles.asset = cte_storage_assets.asset
         LEFT JOIN asset_milestone
             ON assets_profiles.asset = asset_milestone.asset
             AND assets_profiles.commission_year = asset_milestone.milestone_year -- commission_year = milestone_year
-        CROSS JOIN (SELECT DISTINCT scenario FROM rep_periods_mapping) AS rpm
-        WHERE assets_profiles.profile_type = 'inflows' AND asset.type = 'storage' AND asset.is_seasonal
+        CROSS JOIN cte_scenarios
+        WHERE assets_profiles.profile_type = 'inflows'
         """,
     )
         asset = row.asset
