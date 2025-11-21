@@ -679,7 +679,7 @@ function prepare_profiles_structure(connection)
                 )
                 SELECT
                     rp_map.period,
-                    SUM(cte_profile_rp.value * rp_map.weight * $storage_inflows) AS value
+                    SUM(cte_profile_rp.value * rp_map.weight) * $storage_inflows AS value
                 FROM cte_profile_rp
                 INNER JOIN rep_periods_mapping AS rp_map
                     ON cte_profile_rp.year = rp_map.year
