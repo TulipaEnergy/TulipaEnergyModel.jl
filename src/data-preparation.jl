@@ -192,6 +192,9 @@ function _append_given_durations(appender, row, durations)
             DuckDB.append(appender, row.to_asset)
         end
         DuckDB.append(appender, row.year)
+        if haskey(row, :scenario)
+            DuckDB.append(appender, row.scenario)
+        end
         if haskey(row, :rep_period)
             DuckDB.append(appender, row.rep_period)
         end
@@ -373,6 +376,7 @@ function create_unrolled_partition_tables!(connection)
         "CREATE OR REPLACE TABLE asset_time_resolution_over_clustered_year(
             asset STRING,
             year INT,
+            scenario INT,
             period_block_start INT,
             period_block_end INT
         )",
@@ -381,12 +385,12 @@ function create_unrolled_partition_tables!(connection)
     appender = DuckDB.Appender(connection, "asset_time_resolution_over_clustered_year")
     for row in DuckDB.query(
         connection,
-        "SELECT asset, sub.year, specification, partition, num_periods AS num_periods
+        "SELECT asset, sub.year, sub.scenario, specification, partition, num_periods AS num_periods
         FROM t_explicit_assets_timeframe_partitions AS main
         LEFT JOIN (
-            SELECT year, MAX(period) AS num_periods
-            FROM timeframe_data
-            GROUP BY year
+            SELECT year, scenario, MAX(period::BIGINT) AS num_periods
+            FROM rep_periods_mapping
+            GROUP BY year, scenario
         ) AS sub
             ON main.year = sub.year
         ",

@@ -19,7 +19,7 @@ function add_energy_constraints!(connection, model, constraints, profiles)
                 begin
                     max_energy_agg = _profile_aggregate(
                         profiles.over_clustered_year,
-                        (row.profile_name, row.year),
+                        (row.profile_name, row.year, row.scenario),
                         row.period_block_start:row.period_block_end,
                         sum,
                         1.0,
@@ -45,7 +45,7 @@ function add_energy_constraints!(connection, model, constraints, profiles)
                 begin
                     min_energy_agg = _profile_aggregate(
                         profiles.over_clustered_year,
-                        (row.profile_name, row.year),
+                        (row.profile_name, row.year, row.scenario),
                         row.period_block_start:row.period_block_end,
                         sum,
                         1.0,

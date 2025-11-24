@@ -24,7 +24,7 @@ function add_storage_variables!(connection, model, variables)
         @variable(
             model,
             lower_bound = 0.0,
-            base_name = "storage_level_over_clustered_year[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+            base_name = "storage_level_over_clustered_year[$(row.asset),$(row.year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
         ) for row in storage_level_over_clustered_year_indices
     ]
 
@@ -65,14 +65,16 @@ function add_storage_variables!(connection, model, variables)
             connection,
             "SELECT
                 last(var.id) AS last_id,
-                var.asset, var.year,
+                var.asset,
+                var.year,
+                var.scenario,
                 ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
             FROM $table_name AS var
             LEFT JOIN asset_milestone
                 ON var.asset = asset_milestone.asset
                 AND var.year = asset_milestone.milestone_year
             WHERE asset_milestone.initial_storage_level IS NOT NULL
-            GROUP BY var.asset, var.year
+            GROUP BY var.asset, var.year, var.scenario
             ",
         )
             JuMP.set_lower_bound(var.container[row.last_id], row.initial_storage_level)

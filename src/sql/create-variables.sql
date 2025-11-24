@@ -305,6 +305,7 @@ with
         select
             attr.asset,
             attr.year,
+            attr.scenario,
             attr.period_block_start,
             attr.period_block_end,
         from
@@ -316,6 +317,7 @@ with
         order by
             attr.asset,
             attr.year,
+            attr.scenario,
             attr.period_block_start
     )
 select
