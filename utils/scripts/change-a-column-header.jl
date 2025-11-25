@@ -3,8 +3,12 @@ using DuckDB
 
 root_dir = joinpath(@__DIR__, "..", "..")
 test_inputs = joinpath(root_dir, "test", "inputs")
+tutorial_inputs =
+    joinpath(root_dir, "tutorials/inputs/docs/src/10-tutorials/my-awesome-energy-system")
 
-dirs = readdir(test_inputs; join = true)
+test_dirs = readdir(test_inputs; join = true)
+tutorial_dirs = readdir(tutorial_inputs; join = true)
+dirs = vcat(test_dirs, tutorial_dirs)
 push!(dirs, joinpath(root_dir, "benchmark", "EU"))
 
 for dir in dirs
