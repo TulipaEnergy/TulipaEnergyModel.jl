@@ -9,5 +9,8 @@
   },
   "MD033": false,
   "MD041": false,
+  "MD060": {
+    "style": "aligned"
+  },
   "default": true
 }

@@ -136,11 +136,11 @@ To improve the storage of these objects, Tulipa uses a tabular format for the co
 Each row of the table stores the corresponding set of indices for each JuMP object, and the JuMP objects themselves are stored in a linearised way in an array.
 Returning to the example system, the first three rows of the flow variable defined above are shown in Table \ref{tab:linearised}.
 
-| id | from asset | to asset | time block start | time block end |
-|----|------------|----------|------------------|----------------|
-|  1 | H2 | ccgt | 1 | 6 |
-|  2 | phs | balance | 1 | 4 |
-|  3 | phs | balance | 5 | 6 |
+| id   | from asset   | to asset   | time block start   | time block end   |
+| ---- | ------------ | ---------- | ------------------ | ---------------- |
+| 1    | H2           | ccgt       | 1                  | 6                |
+| 2    | phs          | balance    | 1                  | 4                |
+| 3    | phs          | balance    | 5                  | 6                |
 
 Table: "Example of linearised tabular indices of the `var_flow` table"\label{tab:linearised}
 
