@@ -213,6 +213,45 @@ We will try to follow these during development and reviews.
   - List all `using` in <src/TulipaEnergyModel.jl>.
 - Explicitly state what a function will `return`; if returning nothing, simply use `return`.
 
+### Markdown Table Formatting (MD060)
+
+Markdown tables in the documentation must follow proper column alignment to pass the MD060 linting rule. This means that all pipes (`|`) in a table must be vertically aligned, and cells should be properly padded with spaces.
+
+**Example of a properly formatted table:**
+
+```markdown
+| Column 1 | Column 2 | Column 3 |
+| -------- | -------- | -------- |
+| Value 1  | Value 2  | Value 3  |
+| Data A   | Data B   | Data C   |
+```
+
+**Example of an incorrectly formatted table:**
+
+```markdown
+| Column 1 | Column 2 | Column 3 |
+| --- | --- | --- |
+| Value 1 | Value 2 | Value 3 |
+| Data A | Data B | Data C |
+```
+
+If the pre-commit linter fails due to MD060 violations, you have two options:
+
+1. **Manually fix the table**: Adjust the spacing and alignment in your markdown file.
+2. **Use the automatic formatting script**: Run the Python script located in `utils/apply_md_rule.py` to automatically format all tables in a markdown file:
+
+   ```bash
+   python utils/apply_md_rule.py path/to/your/file.md
+   ```
+
+   For example, to fix tables in the formulation documentation:
+
+   ```bash
+   python utils/apply_md_rule.py docs/src/40-scientific-foundation/40-formulation.md
+   ```
+
+   The script will automatically detect all tables in the file and apply proper alignment.
+
 ## Contributing Workflow
 
 When the software is installed and configured, and you have forked the
