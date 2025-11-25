@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Tutorial 4: Representative Periods with Tulipa Clustering · TulipaEnergyModel.jl</title><meta name="title" content="Tutorial 4: Representative Periods with Tulipa Clustering · TulipaEnergyModel.jl"/><meta property="og:title" content="Tutorial 4: Representative Periods with Tulipa Clustering · TulipaEnergyModel.jl"/><meta property="twitter:title" content="Tutorial 4: Representative Periods with Tulipa Clustering · TulipaEnergyModel.jl"/><meta name="description" content="Documentation for TulipaEnergyModel.jl."/><meta property="og:description" content="Documentation for TulipaEnergyModel.jl."/><meta property="twitter:description" content="Documentation for TulipaEnergyModel.jl."/><meta property="og:url" content="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/15-clustering-rep-periods/"/><meta property="twitter:url" content="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/15-clustering-rep-periods/"/><link rel="canonical" href="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/15-clustering-rep-periods/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.png" alt="TulipaEnergyModel.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TulipaEnergyModel.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Welcome</a></li><li><span class="tocitem">Tutorials</span><ul><li><a class="tocitem" href="../11-setting-up/">Setting up</a></li><li><a class="tocitem" href="../12-basics/">Tutorial 1: The Basics</a></li><li><a class="tocitem" href="../13-assets/">Tutorial 2: Assets and Flows</a></li><li><a class="tocitem" href="../14-fully-flexible-time/">Tutorial 3: Flexible Time Resolution</a></li><li class="is-active"><a class="tocitem" href>Tutorial 4: Representative Periods with Tulipa Clustering</a><ul class="internal"><li><a class="tocitem" href="#Introduction"><span>Introduction</span></a></li><li><a class="tocitem" href="#Set-up-the-environment"><span>Set up the environment</span></a></li><li><a class="tocitem" href="#Set-up-the-workflow"><span>Set up the workflow</span></a></li><li><a class="tocitem" href="#Using-TulipaClustering"><span>Using <code>TulipaClustering</code></span></a></li><li><a class="tocitem" href="#Running-the-Model"><span>Running the Model</span></a></li><li><a class="tocitem" href="#Interpreting-the-Results"><span>Interpreting the Results</span></a></li><li><a class="tocitem" href="#The-Script-as-a-Whole"><span>The Script as a Whole</span></a></li><li><a class="tocitem" href="#Working-with-the-New-Tables-Created-by-TulipaClustering"><span>Working with the New Tables Created by TulipaClustering</span></a></li></ul></li><li><a class="tocitem" href="../16-storage/">Tutorial 5: Seasonal and Non-seasonal Storage</a></li><li><a class="tocitem" href="../17-multi-year-investments/">Tutorial 6: Multi-year investments</a></li><li><a class="tocitem" href="../30-workflow/">Tutorial 7: Workflow</a></li><li><a class="tocitem" href="../99-manual-steps/">Advanced Control</a></li></ul></li><li><span class="tocitem">User Guide</span><ul><li><a class="tocitem" href="../../20-user-guide/00-getting-started/">Getting Started</a></li><li><a class="tocitem" href="../../20-user-guide/20-how-to-use/">How to Use</a></li><li><a class="tocitem" href="../../20-user-guide/50-schemas/">Analysis Workflow</a></li><li><a class="tocitem" href="../../20-user-guide/55-outputs/">Output Variables</a></li><li><a class="tocitem" href="../../20-user-guide/60-structures/">Internal Model Structures</a></li></ul></li><li><a class="tocitem" href="../../30-concepts/">Concepts</a></li><li><span class="tocitem">Scientific Foundation</span><ul><li><a class="tocitem" href="../../40-scientific-foundation/40-formulation/">Mathematical Formulation</a></li><li><a class="tocitem" href="../../40-scientific-foundation/45-scientific-references/">Scientific References</a></li></ul></li><li><a class="tocitem" href="../../70-reference/">API Reference</a></li><li><a class="tocitem" href="../../80-ecosystem/">Tulipa Ecosystem</a></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../90-contributing/90-contributing/">Contributing Guidelines</a></li><li><a class="tocitem" href="../../90-contributing/91-developer/">Developer Documentation</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Tutorials</a></li><li class="is-active"><a href>Tutorial 4: Representative Periods with Tulipa Clustering</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Tutorial 4: Representative Periods with Tulipa Clustering</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/docs/src/10-tutorials/15-clustering-rep-periods.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Tutorial-4:-Representative-Periods-with-Tulipa-Clustering"><a class="docs-heading-anchor" href="#Tutorial-4:-Representative-Periods-with-Tulipa-Clustering">Tutorial 4: Representative Periods with Tulipa Clustering</a><a id="Tutorial-4:-Representative-Periods-with-Tulipa-Clustering-1"></a><a class="docs-heading-anchor-permalink" href="#Tutorial-4:-Representative-Periods-with-Tulipa-Clustering" title="Permalink"></a></h1><h2 id="Introduction"><a class="docs-heading-anchor" href="#Introduction">Introduction</a><a id="Introduction-1"></a><a class="docs-heading-anchor-permalink" href="#Introduction" title="Permalink"></a></h2><p>Using representative periods is a simplification method to reduce the size of the problem. Instead of solving for every time period, the model solves for a few chosen representatives of the data. The original data is then reconstructed or approximated by blending the representatives.</p><p>Tulipa uses the package <a href="https://github.com/TulipaEnergy/TulipaClustering.jl">TulipaClustering.jl</a> to choose representatives and cluster input data.</p><h2 id="Set-up-the-environment"><a class="docs-heading-anchor" href="#Set-up-the-environment">Set up the environment</a><a id="Set-up-the-environment-1"></a><a class="docs-heading-anchor-permalink" href="#Set-up-the-environment" title="Permalink"></a></h2><p>Add the new packages:</p><pre><code class="language-julia hljs">using Pkg: Pkg
+Pkg.activate(&quot;.&quot;)
+Pkg.add(&quot;TulipaClustering&quot;)
+Pkg.add(&quot;Distances&quot;)</code></pre><p>Import packages:</p><pre><code class="language-julia hljs">import TulipaIO as TIO
+import TulipaEnergyModel as TEM
+import TulipaClustering as TC
+using DuckDB
+using DataFrames
+using Plots
+using Distances</code></pre><blockquote><p><strong>Question:</strong> Do you remember how to install the two new libraries into your environment?</p></blockquote><h2 id="Set-up-the-workflow"><a class="docs-heading-anchor" href="#Set-up-the-workflow">Set up the workflow</a><a id="Set-up-the-workflow-1"></a><a class="docs-heading-anchor-permalink" href="#Set-up-the-workflow" title="Permalink"></a></h2><p>The data for this tutorial can be found in the folder <code>my-awesome-energy-system/tutorial-4</code></p><p>Load the data:</p><pre><code class="language-julia hljs">connection = DBInterface.connect(DuckDB.DB)
+input_dir = &quot;my-awesome-energy-system/tutorial-4&quot;
+output_dir = &quot;my-awesome-energy-system/tutorial-4/results&quot;
+TIO.read_csv_folder(connection, input_dir)</code></pre><div class="admonition is-warning" id="Warning-c90d638b72d817d5"><header class="admonition-header">Warning<a class="admonition-anchor" href="#Warning-c90d638b72d817d5" title="Permalink"></a></header><div class="admonition-body"><p>Since the output directory does not exist yet, we need to create the &#39;results&#39; folder inside our tutorial folder, otherwise it will error later.</p></div></div><div class="admonition is-success" id="Tip-8a62f820485692f5"><header class="admonition-header">Tip<a class="admonition-anchor" href="#Tip-8a62f820485692f5" title="Permalink"></a></header><div class="admonition-body"><p>You can use the line <code>mkdir(output_dir)</code> to create the results folder if it doesn&#39;t exist.</p></div></div><p>Try to run the problem as usual:</p><pre><code class="language-julia hljs">TEM.populate_with_defaults!(connection)
+energy_problem = TEM.run_scenario(connection; output_folder=output_dir)</code></pre><p>Uh oh! It doesn&#39;t work. Why not?</p><pre><code class="language-txt hljs">ERROR: DataValidationException: The following issues were found in the data:
+- Column &#39;rep_period&#39; of table &#39;rep_periods_data&#39; does not have a default</code></pre><p>In previous tutorials, the representative periods tables were available in the input directories asumming you had only one representative period for the whole year, e.g., have a look at the tables <code>profiles_rep_periods</code>, <code>rep_periods_data</code>, <code>rep_periods_mapping</code>, and <code>timeframe_data</code> in tutorials 1 to 3.</p><p>Now, we will learn how to generate these tables using TulipaClustering! 😉</p><h2 id="Using-TulipaClustering"><a class="docs-heading-anchor" href="#Using-TulipaClustering">Using <code>TulipaClustering</code></a><a id="Using-TulipaClustering-1"></a><a class="docs-heading-anchor-permalink" href="#Using-TulipaClustering" title="Permalink"></a></h2><h3 id="Explore-the-Profiles-Data"><a class="docs-heading-anchor" href="#Explore-the-Profiles-Data">Explore the Profiles Data</a><a id="Explore-the-Profiles-Data-1"></a><a class="docs-heading-anchor-permalink" href="#Explore-the-Profiles-Data" title="Permalink"></a></h3><p>Let&#39;s first take a look at the profiles data we have by looking at the file <code>profiles-wide.csv</code> in the input directory. You can also use TulipaIO to read the table and see its contents:</p><pre><code class="language-julia hljs">profiles_wide_df = TIO.get_table(connection, &quot;profiles_wide&quot;)</code></pre><p>The wide is very convenient for humans to read, but not so much for computers to process. We need to transform it into a long format first.</p><h3 id="Transforming-the-Format-from-Wide-to-Long"><a class="docs-heading-anchor" href="#Transforming-the-Format-from-Wide-to-Long">Transforming the Format from Wide to Long</a><a id="Transforming-the-Format-from-Wide-to-Long-1"></a><a class="docs-heading-anchor-permalink" href="#Transforming-the-Format-from-Wide-to-Long" title="Permalink"></a></h3><p>TulipaClustering provides a function <code>transform_wide_to_long!</code> that does exactly that:</p><pre><code class="language-julia hljs">TC.transform_wide_to_long!(
+    connection,
+    &quot;profiles_wide&quot;,
+    &quot;profiles&quot;;
+)</code></pre><p>Let&#39;s have a look at the new table:</p><pre><code class="language-julia hljs">profiles_df = TIO.get_table(connection, &quot;profiles&quot;)</code></pre><p>The new table stacks the columns with profile data into one column called <code>value</code> and adds a new column called <code>profile_name</code> that contains the names of the profiles. Each row now corresponds to one timestep of one profile per year.</p><h3 id="Clustering-the-Profiles"><a class="docs-heading-anchor" href="#Clustering-the-Profiles">Clustering the Profiles</a><a id="Clustering-the-Profiles-1"></a><a class="docs-heading-anchor-permalink" href="#Clustering-the-Profiles" title="Permalink"></a></h3><p>We can perform the clustering by using the <code>cluster!</code> function from TulipaClustering by passing the connection with the profiles table and two extra arguments:</p><ul><li><code>period_duration</code>: How long are the periods (e.g., 24 for daily periods if the timestep is hourly);</li><li><code>num_rps</code>: How many representative periods.</li></ul><p>Let&#39;s first use the function <code>cluster!</code> with its default parameters. Have a look at the default definition if you&#39;re curious.</p><pre><code class="language-julia hljs">period_duration = 24
+num_rps = 4
+clusters = TC.cluster!(connection, period_duration, num_rps)</code></pre><p>Explore the results by looking at the new tables created, e.g., <code>profiles_rep_periods</code>, <code>rep_periods_data</code>, <code>rep_periods_mapping</code>, and <code>timeframe_data</code>. Remember that you can use  <code>TIO.get_table(connection, &quot;table_name&quot;)</code> to explore the tables.</p><p>Now, let&#39;s have a look at the clustering results by plotting the representative periods:</p><pre><code class="language-julia hljs">df = TIO.get_table(connection, &quot;profiles_rep_periods&quot;)
+rep_periods = unique(df.rep_period)
+plots = []
+
+for rp in rep_periods
+    df_rp = filter(row -&gt; row.rep_period == rp, df)
+    p = plot(size=(400, 300), title=&quot;Representative Period $rp&quot;)
+
+    for group in groupby(df_rp, :profile_name)
+        name = group.profile_name[1]
+        plot!(p, group.timestep, group.value, label=name)
+    end
+
+    show_legend = (rp == rep_periods[1])
+    plot!(p,
+          xlabel=&quot;Timestep&quot;,
+          ylabel=&quot;Value&quot;,
+          xticks=0:2:period_duration,
+          xlim=(1, period_duration),
+          ylim=(0, 1),
+          legend=show_legend ? :bottomleft : false,
+          legendfontsize=6
+         )
+    push!(plots, p)
+end
+
+plot(plots..., layout=(2, 2), size=(800, 600))</code></pre><p>Nice! But, do you know we can do better than this? Yes, we can! Let&#39;s explore a more advanced clustering method.</p><h3 id="Hull-Clustering-with-Blended-Representative-Periods"><a class="docs-heading-anchor" href="#Hull-Clustering-with-Blended-Representative-Periods">Hull Clustering with Blended Representative Periods</a><a id="Hull-Clustering-with-Blended-Representative-Periods-1"></a><a class="docs-heading-anchor-permalink" href="#Hull-Clustering-with-Blended-Representative-Periods" title="Permalink"></a></h3><p>The function <code>cluster!</code> has several keyword arguments that can be used to customize the clustering process. Alternatively, you can use the help mode in Julia REPL by typing <code>?cluster!</code> to see all the available keyword arguments and their descriptions. Here is a summary of the most important keyword arguments for this example:</p><ul><li><code>method</code> (default <code>:k_medoids</code>): clustering method to use <code>:k_means</code>, <code>:k_medoids</code>, <code>:convex_hull</code>, <code>:convex_hull_with_null</code>, or <code>:conical_hull</code>.</li><li><code>distance</code> (default <code>Distances.Euclidean()</code>): semimetric used to measure distance between data points from the the package Distances.jl.</li><li><code>weight_type</code> (default <code>:dirac</code>): the type of weights to find; possible values are:<ul><li><code>:dirac</code>: each period is represented by exactly one representative period (a one unit weight and the rest are zeros)</li><li><code>:convex</code>: each period is represented as a convex sum of the representative periods (a sum with nonnegative weights adding into one)</li><li><code>:conical</code>: each period is represented as a conical sum of the representative periods (a sum with nonnegative weights)</li><li><code>:conical_bounded</code>: each period is represented as a conical sum of the representative periods (a sum with nonnegative weights) with the total weight bounded from above by one.</li></ul></li></ul><p>As you can see, there are several keyword arguments that can be combined to explore different clustering strategies. Our proposed method is the Hull Clustering with Blended Representative Periods, see the <a href="https://tulipaenergy.github.io/TulipaClustering.jl/stable/80-scientific-references/">references</a> in the TulipaClustering package. To activate this method you need to set up the following keyword arguments:</p><ul><li><code>method = :convex_hull</code></li><li><code>distance = Distances.CosineDist()</code></li><li><code>weight_type = :convex</code></li></ul><p>So, let&#39;s cluster again using the proposed method:</p><pre><code class="language-julia hljs">using Distances
+clusters = TC.cluster!(connection,
+                    period_duration,
+                    num_rps;
+                    method = :convex_hull,
+                    distance = Distances.CosineDist(),
+                    weight_type = :convex
+                    )
+
+# Let&#39;s have a look at the new rep_periods_mapping table
+TIO.get_table(connection, &quot;rep_periods_mapping&quot;)</code></pre><p>What do you notice about the new representative periods mapping?</p><p>Let&#39;s plot again the resulting representative periods, but this time using the clustered profiles with the hull clustering method:</p><pre><code class="language-julia hljs">df = TIO.get_table(connection, &quot;profiles_rep_periods&quot;)
+rep_periods = unique(df.rep_period)
+plots = []
+
+for rp in rep_periods
+    df_rp = filter(row -&gt; row.rep_period == rp, df)
+    p = plot(size=(400, 300), title=&quot;Hull Clustering RP $rp&quot;)
+
+    for group in groupby(df_rp, :profile_name)
+        name = group.profile_name[1]
+        plot!(p, group.timestep, group.value, label=name)
+    end
+
+    show_legend = (rp == rep_periods[1])
+    plot!(p,
+          xlabel=&quot;Timestep&quot;,
+          ylabel=&quot;Value&quot;,
+          xticks=0:2:period_duration,
+          xlim=(1, period_duration),
+          ylim=(0, 1),
+          legend=show_legend ? :topleft : false,
+          legendfontsize=6
+         )
+    push!(plots, p)
+end
+
+plot(plots..., layout=(2, 2), size=(800, 600))</code></pre><p>The first difference you may notice is that the representative periods (RPs) obtained with hull clustering are more extreme than those obtained with the default method. This is because hull clustering selects RPs that are more likely to be constraint-binding in an optimization model.</p><div class="admonition is-success" id="The-Projected-Gradient-Descent-Parameters-79a1d06c9cfbdf26"><header class="admonition-header">The Projected Gradient Descent Parameters<a class="admonition-anchor" href="#The-Projected-Gradient-Descent-Parameters-79a1d06c9cfbdf26" title="Permalink"></a></header><div class="admonition-body"><p>The parameters <code>niters</code> and <code>learning_rate</code> tell for how many iterations to run the descent and by how much to adjust the weights in each iterations. More iterations make the method slower but produce better results. Larger learning rate makes the method converge faster but in a less stable manner (i.e., weights might start going up and down a lot from iteration to iteration). Sometimes you need to find the right balance for yourself. In general, if the weights produced by the method look strange, try decreasing the learning rate and/or increasing the number of iterations.</p></div></div><h2 id="Running-the-Model"><a class="docs-heading-anchor" href="#Running-the-Model">Running the Model</a><a id="Running-the-Model-1"></a><a class="docs-heading-anchor-permalink" href="#Running-the-Model" title="Permalink"></a></h2><p>To run the model, add the data to the system with <code>TulipaIO</code> and then run it as usual:</p><pre><code class="language-julia hljs">TEM.populate_with_defaults!(connection)
+energy_problem = TEM.run_scenario(connection; output_folder=output_dir)</code></pre><h2 id="Interpreting-the-Results"><a class="docs-heading-anchor" href="#Interpreting-the-Results">Interpreting the Results</a><a id="Interpreting-the-Results-1"></a><a class="docs-heading-anchor-permalink" href="#Interpreting-the-Results" title="Permalink"></a></h2><p>To plot the results, first read the data with <code>TulipaIO</code> and filter what&#39;s needed (and rename <code>time_block_start</code> to <code>timestep</code> while you&#39;re at it):</p><pre><code class="language-julia hljs">flows = TIO.get_table(connection, &quot;var_flow&quot;)
+
+select!(
+    flows,
+    :from_asset,
+    :to_asset,
+    :year,
+    :rep_period,
+    :time_block_start =&gt; :timestep,
+    :solution
+)
+
+from_asset = &quot;ccgt&quot;
+to_asset = &quot;e_demand&quot;
+year = 2030
+
+filtered_flow = filter(
+    row -&gt;
+        row.from_asset == from_asset &amp;&amp;
+            row.to_asset == to_asset &amp;&amp;
+            row.year == year,
+    flows,
+)</code></pre><p>To reinterpret the RP data as base periods data, first create a new dataframe that contains both by using the inner join operation:</p><pre><code class="language-julia hljs">rep_periods_mapping = TIO.get_table(connection, &quot;rep_periods_mapping&quot;)
+df = innerjoin(filtered_flow, rep_periods_mapping, on=[:year, :rep_period])</code></pre><p>Next, use Julia&#39;s Split-Apply-Combine approach to group the dataframe into smaller ones. Each grouped dataframe contains a single data point for one base period and all RPs it maps to. Then multiply the results by weights and add them up.</p><pre><code class="language-julia hljs">gdf = groupby(df, [:from_asset, :to_asset, :year, :period, :timestep])
+result_df = combine(gdf, [:weight, :solution] =&gt; ((w, s) -&gt; sum(w .* s)) =&gt; :solution)</code></pre><p>Now you can plot the results. Remove the period data since you don&#39;t need it anymore, and re-sort the data to make sure it is in the right order.</p><pre><code class="language-julia hljs">TC.combine_periods!(result_df)
+sort!(result_df, :timestep)
+
+plot(
+    result_df.timestep,
+    result_df.solution;
+    label=string(from_asset, &quot; -&gt; &quot;, to_asset),
+    xlabel=&quot;Hour&quot;,
+    ylabel=&quot;[MWh]&quot;,
+    marker=:circle,
+    markersize=2,
+    xlims=(1, 168),
+    dpi=600,
+)</code></pre><p>This concludes this tutorial! Play around with different parameters to see how the results change. For example, when you use <code>:dirac</code> vs <code>:convex</code> weights, do you see the difference? How does the solution change as you increase the number of RPs?</p><h2 id="The-Script-as-a-Whole"><a class="docs-heading-anchor" href="#The-Script-as-a-Whole">The Script as a Whole</a><a id="The-Script-as-a-Whole-1"></a><a class="docs-heading-anchor-permalink" href="#The-Script-as-a-Whole" title="Permalink"></a></h2><p>Here is the whole script for your convenience that runs from top to bottom, skipping errors we encountered along the explanations in this tutorial and not exporting the results to the output folder for sake of brevity:</p><pre><code class="language-julia hljs"># 1. Import packages
+import TulipaIO as TIO
+import TulipaEnergyModel as TEM
+import TulipaClustering as TC
+using DuckDB
+using DataFrames
+using Plots
+using Distances
+
+# 2. Set up the connection and read the data
+connection = DBInterface.connect(DuckDB.DB)
+input_dir = &quot;my-awesome-energy-system/tutorial-4&quot;
+TIO.read_csv_folder(connection, input_dir)
+
+# 3. Transform the profiles data from wide to long
+profiles_wide_df = TIO.get_table(connection, &quot;profiles_wide&quot;)
+TC.transform_wide_to_long!(
+    connection,
+    &quot;profiles_wide&quot;,
+    &quot;profiles&quot;;
+)
+
+# 4. Hull Clustering with Blended Representative Periods
+period_duration = 24
+num_rps = 4
+clusters = TC.cluster!(connection,
+                    period_duration,
+                    num_rps;
+                    method = :convex_hull,
+                    distance = Distances.CosineDist(),
+                    weight_type = :convex
+                    )
+
+# 5. plot the representative periods
+df = TIO.get_table(connection, &quot;profiles_rep_periods&quot;)
+rep_periods = unique(df.rep_period)
+plots = []
+for rp in rep_periods
+    df_rp = filter(row -&gt; row.rep_period == rp, df)
+    p = plot(size=(400, 300), title=&quot;Hull Clustering RP $rp&quot;)
+
+    for group in groupby(df_rp, :profile_name)
+        name = group.profile_name[1]
+        plot!(p, group.timestep, group.value, label=name)
+    end
+
+    show_legend = (rp == rep_periods[1])
+    plot!(p,
+          xlabel=&quot;Timestep&quot;,
+          ylabel=&quot;Value&quot;,
+          xticks=0:2:period_duration,
+          xlim=(1, period_duration),
+          ylim=(0, 1),
+          legend=show_legend ? :topleft : false,
+          legendfontsize=6
+         )
+    push!(plots, p)
+end
+plot(plots..., layout=(2, 2), size=(800, 600))</code></pre><img src="ca585d38.svg" alt="Example block output"/><p>Let&#39;s continue with running the model and plotting the results:</p><pre><code class="language-julia hljs"># 6. Run the model
+TEM.populate_with_defaults!(connection)
+energy_problem = TEM.run_scenario(connection; show_log = false)
+
+# 7. Plot the results per representative period for a specific flow
+flows = TIO.get_table(connection, &quot;var_flow&quot;)
+select!(
+    flows,
+    :from_asset,
+    :to_asset,
+    :year,
+    :rep_period,
+    :time_block_start =&gt; :timestep,
+    :solution
+)
+from_asset = &quot;electrolizer&quot;
+to_asset = &quot;h2_demand&quot;
+year = 2030
+filtered_flow = filter(
+    row -&gt;
+        row.from_asset == from_asset &amp;&amp;
+            row.to_asset == to_asset &amp;&amp;
+            row.year == year,
+    flows,
+)
+plot(
+    filtered_flow.timestep,
+    filtered_flow.solution;
+    group=filtered_flow.rep_period,
+    xlabel=&quot;Hour&quot;,
+    ylabel=&quot;[MWh]&quot;,
+    legend= Symbol(:outer,:bottom),
+    legend_column = -1,
+    marker=:circle,
+    markersize=2,
+    xlims=(1, 24),
+    title=&quot;Flow $from_asset -&gt; $to_asset&quot;,
+    label=hcat([string(&quot;RP &quot;, rp) for rp in 1:num_rps]...),
+    dpi=600,
+)</code></pre><img src="4590272f.svg" alt="Example block output"/><p>By using the representative periods results and the <code>rep_periods_mapping</code>, we can plot the results in the original periods:</p><pre><code class="language-julia hljs"># 7. Plot the results in the original periods using the representative period results
+rep_periods_mapping = TIO.get_table(connection, &quot;rep_periods_mapping&quot;)
+df = innerjoin(filtered_flow, rep_periods_mapping, on=[:year, :rep_period])
+gdf = groupby(df, [:from_asset, :to_asset, :year, :period, :timestep])
+result_df = combine(gdf, [:weight, :solution] =&gt; ((w, s) -&gt; sum(w .* s)) =&gt; :solution)
+TC.combine_periods!(result_df)
+sort!(result_df, :timestep)
+plot(
+    result_df.timestep,
+    result_df.solution;
+    label=string(from_asset, &quot; -&gt; &quot;, to_asset),
+    xlabel=&quot;Hour&quot;,
+    ylabel=&quot;[MWh]&quot;,
+    marker=:circle,
+    markersize=2,
+    xlims=(1, 168),
+    dpi=600,
+)</code></pre><img src="f591db16.svg" alt="Example block output"/><h2 id="Working-with-the-New-Tables-Created-by-TulipaClustering"><a class="docs-heading-anchor" href="#Working-with-the-New-Tables-Created-by-TulipaClustering">Working with the New Tables Created by TulipaClustering</a><a id="Working-with-the-New-Tables-Created-by-TulipaClustering-1"></a><a class="docs-heading-anchor-permalink" href="#Working-with-the-New-Tables-Created-by-TulipaClustering" title="Permalink"></a></h2><p>You can check the new tables with TulipaIO, for example:</p><pre><code class="language-julia hljs">TIO.get_table(connection,&quot;rep_periods_mapping&quot;)</code></pre><p>If you want to save the intermediary tables created by the clustering, you can do this with DuckDB:</p><pre><code class="language-julia hljs">DuckDB.execute(
+    connection,
+    &quot;COPY &#39;profiles_rep_periods&#39; TO &#39;profiles-rep-periods.csv&#39; (HEADER, DELIMITER &#39;,&#39;)&quot;,
+)</code></pre><p>Remember, the new tables out from the TulipaClustering are:</p><ul><li><code>profiles_rep_periods</code></li><li><code>rep_periods_data</code></li><li><code>rep_periods_mapping</code></li><li><code>timeframe_data</code></li></ul><p>This is useful when you don&#39;t have to rerun the clustering every time.</p><div class="admonition is-success" id="Tip-2a6a10b036385639"><header class="admonition-header">Tip<a class="admonition-anchor" href="#Tip-2a6a10b036385639" title="Permalink"></a></header><div class="admonition-body"><p>If you want to create the tables programmatically using only one dummy representative period for the whole year, you can use the <code>dummy_cluster!</code> function from the <code>TulipaClustering</code> package. We will use this function in the next tutorial to create a benchmark with hourly data.</p></div></div></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../14-fully-flexible-time/">« Tutorial 3: Flexible Time Resolution</a><a class="docs-footer-nextpage" href="../16-storage/">Tutorial 5: Seasonal and Non-seasonal Storage »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Tuesday 25 November 2025 10:10">Tuesday 25 November 2025</span>. Using Julia version 1.12.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
