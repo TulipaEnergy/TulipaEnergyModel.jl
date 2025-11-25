@@ -167,8 +167,6 @@ end
     from_asset
     to_asset
     milestone_year
-    variable_cost
-    efficiency
 =#
 apply_to_files_named("flow-milestone.csv"; include_missing = true) do path
     touch(path)
@@ -247,6 +245,8 @@ end
     commission_year
     fixed_cost
     investment_cost
+    producer_efficiency
+    investment_limit
 =#
 apply_to_files_named("flow-commission.csv"; include_missing = true) do path
     touch(path)
@@ -265,7 +265,7 @@ apply_to_files_named("flow-commission.csv"; include_missing = true) do path
                     vfd.commission_year,
                     ANY_VALUE(fixed_cost) AS fixed_cost,
                     ANY_VALUE(investment_cost) AS investment_cost,
-                    ANY_VALUE(efficiency) AS efficiency,
+                    ANY_VALUE(producer_efficiency) AS producer_efficiency,
                     ANY_VALUE(investment_limit) AS investment_limit,
                 FROM vintage_flows_data AS vfd
                 LEFT JOIN flows_data AS fd
@@ -355,7 +355,6 @@ apply_to_files_named("flow-both.csv"; include_missing = true) do path
                 commission_year,
                 active,
                 NOT investable AS decommissionable,
-                variable_cost,
                 initial_export_units,
                 initial_import_units,
             FROM flows_data AS fd
