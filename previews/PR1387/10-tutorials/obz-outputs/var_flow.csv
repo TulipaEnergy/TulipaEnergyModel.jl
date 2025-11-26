@@ -3,7 +3,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 2,AT_E_Balance,DE_E_Balance,2050,1,1.0,1.0,5,8,11.5
 3,AT_E_Balance,DE_E_Balance,2050,1,1.0,1.0,9,12,-11.5
 4,AT_E_Balance,DE_E_Balance,2050,1,1.0,1.0,13,16,-11.5
-5,AT_E_Balance,DE_E_Balance,2050,1,1.0,1.0,17,20,5.539301473246826
+5,AT_E_Balance,DE_E_Balance,2050,1,1.0,1.0,17,20,5.539301473246824
 6,AT_E_Balance,DE_E_Balance,2050,1,1.0,1.0,21,24,11.388785801817587
 7,BG_E_Balance,GR_E_Balance,2050,1,1.0,1.0,1,4,-2.4
 8,BG_E_Balance,GR_E_Balance,2050,1,1.0,1.0,5,8,-2.4
@@ -11,8 +11,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 10,BG_E_Balance,GR_E_Balance,2050,1,1.0,1.0,13,16,-2.4
 11,BG_E_Balance,GR_E_Balance,2050,1,1.0,1.0,17,20,-2.4
 12,BG_E_Balance,GR_E_Balance,2050,1,1.0,1.0,21,24,-2.4
-13,CH_E_Balance,FR_E_Balance,2050,1,1.0,1.0,1,4,-6.262358368948148
-14,CH_E_Balance,FR_E_Balance,2050,1,1.0,1.0,5,8,-1.4965353455057286
+13,CH_E_Balance,FR_E_Balance,2050,1,1.0,1.0,1,4,-6.262358368948145
+14,CH_E_Balance,FR_E_Balance,2050,1,1.0,1.0,5,8,-1.4965353455057269
 15,CH_E_Balance,FR_E_Balance,2050,1,1.0,1.0,9,12,-6.5
 16,CH_E_Balance,FR_E_Balance,2050,1,1.0,1.0,13,16,-6.5
 17,CH_E_Balance,FR_E_Balance,2050,1,1.0,1.0,17,20,-6.5
@@ -25,17 +25,17 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 24,CY_E_Balance,GR_E_Balance,2050,1,1.0,1.0,21,24,-0.9091353398428088
 25,CZ_E_Balance,DE_E_Balance,2050,1,1.0,1.0,1,4,-5.6
 26,CZ_E_Balance,DE_E_Balance,2050,1,1.0,1.0,5,8,-5.6
-27,CZ_E_Balance,DE_E_Balance,2050,1,1.0,1.0,9,12,-4.015293865099732
+27,CZ_E_Balance,DE_E_Balance,2050,1,1.0,1.0,9,12,-4.015293865099734
 28,CZ_E_Balance,DE_E_Balance,2050,1,1.0,1.0,13,16,-5.6
 29,CZ_E_Balance,DE_E_Balance,2050,1,1.0,1.0,17,20,-5.6
-30,CZ_E_Balance,DE_E_Balance,2050,1,1.0,1.0,21,24,-4.525520078938528
+30,CZ_E_Balance,DE_E_Balance,2050,1,1.0,1.0,21,24,-4.525520078938529
 31,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,1,1,-5.522302732040355
 32,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,2,2,-5.991869137637881
 33,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,3,3,-6.10663252187604
 34,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,4,4,-5.6159869324615315
 35,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,5,5,-2.302026162029618
 36,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,6,6,-1.0043887858899136
-37,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,7,7,0.2333470711739043
+37,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,7,7,0.23334707117390519
 38,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,8,8,8.0
 39,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,9,9,8.0
 40,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,10,10,8.0
@@ -51,8 +51,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 50,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,20,20,8.0
 51,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,21,21,8.0
 52,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,22,22,8.0
-53,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,23,23,0.39156029316429297
-54,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,24,24,-6.097038142952127
+53,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,23,23,0.3915602931642912
+54,DE_E_Balance,NL_E_Balance,2050,1,1.0,1.0,24,24,-6.097038142952128
 55,DK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,1,1,-2.7
 56,DK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,2,2,-2.7
 57,DK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,3,3,-2.7
@@ -75,16 +75,16 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 74,DK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,20,20,-2.7
 75,DK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,21,21,2.7
 76,DK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,22,22,2.7
-77,DK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,23,23,2.3995035206850828
-78,DK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,24,24,1.6879484669335136
+77,DK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,23,23,2.3995035206850845
+78,DK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,24,24,1.6879484669335145
 79,EE_E_Balance,LV_E_Balance,2050,1,1.0,1.0,1,4,-3.879
 80,EE_E_Balance,LV_E_Balance,2050,1,1.0,1.0,5,8,-3.879
 81,EE_E_Balance,LV_E_Balance,2050,1,1.0,1.0,9,12,-3.879
 82,EE_E_Balance,LV_E_Balance,2050,1,1.0,1.0,13,16,-3.879
 83,EE_E_Balance,LV_E_Balance,2050,1,1.0,1.0,17,20,-3.879
 84,EE_E_Balance,LV_E_Balance,2050,1,1.0,1.0,21,24,-3.879
-85,ES_E_Balance,FR_E_Balance,2050,1,1.0,1.0,1,3,-4.949249100534012
-86,ES_E_Balance,FR_E_Balance,2050,1,1.0,1.0,4,6,-4.949249100534012
+85,ES_E_Balance,FR_E_Balance,2050,1,1.0,1.0,1,3,-4.949249100534016
+86,ES_E_Balance,FR_E_Balance,2050,1,1.0,1.0,4,6,-4.949249100534016
 87,ES_E_Balance,FR_E_Balance,2050,1,1.0,1.0,7,9,-11.000000000000004
 88,ES_E_Balance,FR_E_Balance,2050,1,1.0,1.0,10,12,-11.0
 89,ES_E_Balance,FR_E_Balance,2050,1,1.0,1.0,13,15,-11.0
@@ -96,7 +96,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 95,FI_E_Balance,SE_E_Balance,2050,1,1.0,1.0,9,12,-12.0
 96,FI_E_Balance,SE_E_Balance,2050,1,1.0,1.0,13,16,-12.0
 97,FI_E_Balance,SE_E_Balance,2050,1,1.0,1.0,17,20,-12.0
-98,FI_E_Balance,SE_E_Balance,2050,1,1.0,1.0,21,24,-7.476839414353833
+98,FI_E_Balance,SE_E_Balance,2050,1,1.0,1.0,21,24,-7.476839414353832
 99,GR_E_Balance,IT_E_Balance,2050,1,1.0,1.0,1,4,2.5
 100,GR_E_Balance,IT_E_Balance,2050,1,1.0,1.0,5,8,2.5
 101,GR_E_Balance,IT_E_Balance,2050,1,1.0,1.0,9,12,-2.5
@@ -163,7 +163,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 162,OBZLL_E_Balance,UK_E_Balance,2050,1,1.0,1.0,4,4,-1.8
 163,OBZLL_E_Balance,UK_E_Balance,2050,1,1.0,1.0,5,5,-1.8
 164,OBZLL_E_Balance,UK_E_Balance,2050,1,1.0,1.0,6,6,-1.8
-165,OBZLL_E_Balance,UK_E_Balance,2050,1,1.0,1.0,7,7,-1.184870792682121
+165,OBZLL_E_Balance,UK_E_Balance,2050,1,1.0,1.0,7,7,-1.18487079268212
 166,OBZLL_E_Balance,UK_E_Balance,2050,1,1.0,1.0,8,8,1.8
 167,OBZLL_E_Balance,UK_E_Balance,2050,1,1.0,1.0,9,9,1.8
 168,OBZLL_E_Balance,UK_E_Balance,2050,1,1.0,1.0,10,10,1.8
@@ -188,7 +188,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 187,AT_E_Balance,CH_E_Balance,2050,1,1.0,1.0,17,20,-2.2
 188,AT_E_Balance,CH_E_Balance,2050,1,1.0,1.0,21,24,-2.2
 189,CH_E_Balance,DE_E_Balance,2050,1,1.0,1.0,1,4,4.5
-190,CH_E_Balance,DE_E_Balance,2050,1,1.0,1.0,5,8,1.4749298711761343
+190,CH_E_Balance,DE_E_Balance,2050,1,1.0,1.0,5,8,1.4749298711761325
 191,CH_E_Balance,DE_E_Balance,2050,1,1.0,1.0,9,12,-5.0
 192,CH_E_Balance,DE_E_Balance,2050,1,1.0,1.0,13,16,-5.0
 193,CH_E_Balance,DE_E_Balance,2050,1,1.0,1.0,17,20,4.5
@@ -271,7 +271,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 270,OBZLL_E_Balance,NL_E_Balance,2050,1,1.0,1.0,4,4,1.8
 271,OBZLL_E_Balance,NL_E_Balance,2050,1,1.0,1.0,5,5,1.8
 272,OBZLL_E_Balance,NL_E_Balance,2050,1,1.0,1.0,6,6,1.8
-273,OBZLL_E_Balance,NL_E_Balance,2050,1,1.0,1.0,7,7,1.184870792682121
+273,OBZLL_E_Balance,NL_E_Balance,2050,1,1.0,1.0,7,7,1.18487079268212
 274,OBZLL_E_Balance,NL_E_Balance,2050,1,1.0,1.0,8,8,-1.8
 275,OBZLL_E_Balance,NL_E_Balance,2050,1,1.0,1.0,9,9,-1.8
 276,OBZLL_E_Balance,NL_E_Balance,2050,1,1.0,1.0,10,10,-1.8
@@ -309,7 +309,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 308,FI_E_Balance,EE_E_Balance,2050,1,1.0,1.0,21,24,-3.116
 309,FR_E_Balance,DE_E_Balance,2050,1,1.0,1.0,1,2,-6.8
 310,FR_E_Balance,DE_E_Balance,2050,1,1.0,1.0,3,4,-6.8
-311,FR_E_Balance,DE_E_Balance,2050,1,1.0,1.0,5,6,2.543826780753496
+311,FR_E_Balance,DE_E_Balance,2050,1,1.0,1.0,5,6,2.543826780753498
 312,FR_E_Balance,DE_E_Balance,2050,1,1.0,1.0,7,8,-6.8
 313,FR_E_Balance,DE_E_Balance,2050,1,1.0,1.0,9,10,-6.8
 314,FR_E_Balance,DE_E_Balance,2050,1,1.0,1.0,11,12,6.8
@@ -350,7 +350,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 349,SE_E_Balance,DK_E_Balance,2050,1,1.0,1.0,9,12,1.0763125805158715
 350,SE_E_Balance,DK_E_Balance,2050,1,1.0,1.0,13,16,1.3918065904550554
 351,SE_E_Balance,DK_E_Balance,2050,1,1.0,1.0,17,20,-0.24279958246156852
-352,SE_E_Balance,DK_E_Balance,2050,1,1.0,1.0,21,24,4.537003071053325
+352,SE_E_Balance,DK_E_Balance,2050,1,1.0,1.0,21,24,4.537003071053326
 353,SI_E_Balance,IT_E_Balance,2050,1,1.0,1.0,1,4,-2.08
 354,SI_E_Balance,IT_E_Balance,2050,1,1.0,1.0,5,8,-2.08
 355,SI_E_Balance,IT_E_Balance,2050,1,1.0,1.0,9,12,-2.08
@@ -379,7 +379,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 378,UK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,14,14,3.0
 379,UK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,15,15,3.0
 380,UK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,16,16,3.0
-381,UK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,17,17,1.2769258536060075
+381,UK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,17,17,1.2769258536059933
 382,UK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,18,18,-3.0
 383,UK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,19,19,-3.0
 384,UK_E_Balance,NL_E_Balance,2050,1,1.0,1.0,20,20,-1.13743232642312
@@ -412,7 +412,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 411,IE_E_Balance,FR_E_Balance,2050,1,1.0,1.0,21,22,2.1
 412,IE_E_Balance,FR_E_Balance,2050,1,1.0,1.0,23,24,2.1
 413,IT_E_Balance,FR_E_Balance,2050,1,1.0,1.0,1,4,-6.485
-414,IT_E_Balance,FR_E_Balance,2050,1,1.0,1.0,5,8,-1.2380533585008457
+414,IT_E_Balance,FR_E_Balance,2050,1,1.0,1.0,5,8,-1.2380533585008475
 415,IT_E_Balance,FR_E_Balance,2050,1,1.0,1.0,9,12,-6.485
 416,IT_E_Balance,FR_E_Balance,2050,1,1.0,1.0,13,16,-6.485
 417,IT_E_Balance,FR_E_Balance,2050,1,1.0,1.0,17,20,-6.485
@@ -449,7 +449,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 448,NO_E_Balance,NL_E_Balance,2050,1,1.0,1.0,24,24,2.7
 449,PL_E_Balance,DE_E_Balance,2050,1,1.0,1.0,1,3,-6.0
 450,PL_E_Balance,DE_E_Balance,2050,1,1.0,1.0,4,6,1.3800777023342763
-451,PL_E_Balance,DE_E_Balance,2050,1,1.0,1.0,7,9,5.237969779024381
+451,PL_E_Balance,DE_E_Balance,2050,1,1.0,1.0,7,9,5.2379697790243815
 452,PL_E_Balance,DE_E_Balance,2050,1,1.0,1.0,10,12,7.0
 453,PL_E_Balance,DE_E_Balance,2050,1,1.0,1.0,13,15,7.0
 454,PL_E_Balance,DE_E_Balance,2050,1,1.0,1.0,16,18,6.153102782792654
@@ -459,7 +459,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 458,RO_E_Balance,BG_E_Balance,2050,1,1.0,1.0,5,8,0.3676810850526371
 459,RO_E_Balance,BG_E_Balance,2050,1,1.0,1.0,9,12,-2.858186593827367
 460,RO_E_Balance,BG_E_Balance,2050,1,1.0,1.0,13,16,-2.450962037210108
-461,RO_E_Balance,BG_E_Balance,2050,1,1.0,1.0,17,20,-2.1052128196837505
+461,RO_E_Balance,BG_E_Balance,2050,1,1.0,1.0,17,20,-2.105212819683749
 462,RO_E_Balance,BG_E_Balance,2050,1,1.0,1.0,21,24,-1.8045200515912638
 463,SE_E_Balance,DE_E_Balance,2050,1,1.0,1.0,1,4,5.015
 464,SE_E_Balance,DE_E_Balance,2050,1,1.0,1.0,5,8,5.015
@@ -471,7 +471,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 470,SI_E_Balance,AT_E_Balance,2050,1,1.0,1.0,5,8,0.3935966145134362
 471,SI_E_Balance,AT_E_Balance,2050,1,1.0,1.0,9,12,-2.95
 472,SI_E_Balance,AT_E_Balance,2050,1,1.0,1.0,13,16,-2.95
-473,SI_E_Balance,AT_E_Balance,2050,1,1.0,1.0,17,20,1.321577493887387
+473,SI_E_Balance,AT_E_Balance,2050,1,1.0,1.0,17,20,1.3215774938873868
 474,SI_E_Balance,AT_E_Balance,2050,1,1.0,1.0,21,24,0.6788073399229141
 475,SK_E_Balance,HU_E_Balance,2050,1,1.0,1.0,1,4,2.268007212087922
 476,SK_E_Balance,HU_E_Balance,2050,1,1.0,1.0,5,8,2.19014723144483
@@ -481,7 +481,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 480,SK_E_Balance,HU_E_Balance,2050,1,1.0,1.0,21,24,2.1672934274371247
 481,UK_E_Balance,FR_E_Balance,2050,1,1.0,1.0,1,2,-4.82662794398783
 482,UK_E_Balance,FR_E_Balance,2050,1,1.0,1.0,3,4,-8.121679900365873
-483,UK_E_Balance,FR_E_Balance,2050,1,1.0,1.0,5,6,-5.196949693948689
+483,UK_E_Balance,FR_E_Balance,2050,1,1.0,1.0,5,6,-5.1969496939486834
 484,UK_E_Balance,FR_E_Balance,2050,1,1.0,1.0,7,8,-8.15
 485,UK_E_Balance,FR_E_Balance,2050,1,1.0,1.0,9,10,-8.15
 486,UK_E_Balance,FR_E_Balance,2050,1,1.0,1.0,11,12,-8.15
@@ -511,8 +511,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 510,DE_E_Balance,BE_E_Balance,2050,1,1.0,1.0,23,24,4.0
 511,IT_E_Balance,CH_E_Balance,2050,1,1.0,1.0,1,4,-8.772
 512,IT_E_Balance,CH_E_Balance,2050,1,1.0,1.0,5,8,-8.772
-513,IT_E_Balance,CH_E_Balance,2050,1,1.0,1.0,9,12,-7.054748851590471
-514,IT_E_Balance,CH_E_Balance,2050,1,1.0,1.0,13,16,0.872779695261277
+513,IT_E_Balance,CH_E_Balance,2050,1,1.0,1.0,9,12,-7.054748851590506
+514,IT_E_Balance,CH_E_Balance,2050,1,1.0,1.0,13,16,0.8727796952612805
 515,IT_E_Balance,CH_E_Balance,2050,1,1.0,1.0,17,20,-8.772
 516,IT_E_Balance,CH_E_Balance,2050,1,1.0,1.0,21,24,-8.772
 517,NO_E_Balance,DK_E_Balance,2050,1,1.0,1.0,1,1,-3.362
@@ -541,7 +541,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 540,NO_E_Balance,DK_E_Balance,2050,1,1.0,1.0,24,24,-3.362
 541,PL_E_Balance,CZ_E_Balance,2050,1,1.0,1.0,1,4,2.8
 542,PL_E_Balance,CZ_E_Balance,2050,1,1.0,1.0,5,8,2.8
-543,PL_E_Balance,CZ_E_Balance,2050,1,1.0,1.0,9,12,0.946821726347995
+543,PL_E_Balance,CZ_E_Balance,2050,1,1.0,1.0,9,12,0.9468217263479932
 544,PL_E_Balance,CZ_E_Balance,2050,1,1.0,1.0,13,16,-2.1787886922175463
 545,PL_E_Balance,CZ_E_Balance,2050,1,1.0,1.0,17,20,2.421211307782462
 546,PL_E_Balance,CZ_E_Balance,2050,1,1.0,1.0,21,24,2.421211307782462
@@ -576,7 +576,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 575,UK_E_Balance,DK_E_Balance,2050,1,1.0,1.0,23,23,-2.8
 576,UK_E_Balance,DK_E_Balance,2050,1,1.0,1.0,24,24,-2.8
 577,IT_E_Balance,AT_E_Balance,2050,1,1.0,1.0,1,4,-2.525
-578,IT_E_Balance,AT_E_Balance,2050,1,1.0,1.0,5,8,2.0559293769618137
+578,IT_E_Balance,AT_E_Balance,2050,1,1.0,1.0,5,8,2.0559293769618154
 579,IT_E_Balance,AT_E_Balance,2050,1,1.0,1.0,9,12,-2.525
 580,IT_E_Balance,AT_E_Balance,2050,1,1.0,1.0,13,16,-2.525
 581,IT_E_Balance,AT_E_Balance,2050,1,1.0,1.0,17,20,2.345
@@ -654,7 +654,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 653,AT_Pump_Hydro_Closed,AT_E_Balance,2050,1,1.0,1.0,17,20,0.0
 654,AT_Pump_Hydro_Closed,AT_E_Balance,2050,1,1.0,1.0,21,24,0.3
 655,AT_Pump_Hydro_Open,AT_E_Balance,2050,1,1.0,1.0,1,4,5.793
-656,AT_Pump_Hydro_Open,AT_E_Balance,2050,1,1.0,1.0,5,8,5.17009790961481
+656,AT_Pump_Hydro_Open,AT_E_Balance,2050,1,1.0,1.0,5,8,5.1700979096148085
 657,AT_Pump_Hydro_Open,AT_E_Balance,2050,1,1.0,1.0,9,12,0.0
 658,AT_Pump_Hydro_Open,AT_E_Balance,2050,1,1.0,1.0,13,16,0.0
 659,AT_Pump_Hydro_Open,AT_E_Balance,2050,1,1.0,1.0,17,20,0.0
@@ -843,7 +843,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 842,BG_Hydro_Reservoir,BG_E_Balance,2050,1,1.0,1.0,5,8,0.0
 843,BG_Hydro_Reservoir,BG_E_Balance,2050,1,1.0,1.0,9,12,0.0
 844,BG_Hydro_Reservoir,BG_E_Balance,2050,1,1.0,1.0,13,16,0.0
-845,BG_Hydro_Reservoir,BG_E_Balance,2050,1,1.0,1.0,17,20,0.5627759961327765
+845,BG_Hydro_Reservoir,BG_E_Balance,2050,1,1.0,1.0,17,20,0.5627759961327754
 846,BG_Hydro_Reservoir,BG_E_Balance,2050,1,1.0,1.0,21,24,0.6689521650145787
 847,BG_Nuclear,BG_E_Balance,2050,1,1.0,1.0,1,4,0.0
 848,BG_Nuclear,BG_E_Balance,2050,1,1.0,1.0,5,8,0.0
@@ -861,7 +861,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 860,BG_Pump_Hydro_Closed,BG_E_Balance,2050,1,1.0,1.0,5,8,0.0
 861,BG_Pump_Hydro_Closed,BG_E_Balance,2050,1,1.0,1.0,9,12,0.0
 862,BG_Pump_Hydro_Closed,BG_E_Balance,2050,1,1.0,1.0,13,16,0.0
-863,BG_Pump_Hydro_Closed,BG_E_Balance,2050,1,1.0,1.0,17,20,0.8209740634866548
+863,BG_Pump_Hydro_Closed,BG_E_Balance,2050,1,1.0,1.0,17,20,0.8209740634866547
 864,BG_Pump_Hydro_Closed,BG_E_Balance,2050,1,1.0,1.0,21,24,0.864
 865,BG_Pump_Hydro_Open,BG_E_Balance,2050,1,1.0,1.0,1,4,0.535
 866,BG_Pump_Hydro_Open,BG_E_Balance,2050,1,1.0,1.0,5,8,0.0
@@ -915,7 +915,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 914,CH_Pump_Hydro_Closed,CH_E_Balance,2050,1,1.0,1.0,5,8,2.17
 915,CH_Pump_Hydro_Closed,CH_E_Balance,2050,1,1.0,1.0,9,12,0.0
 916,CH_Pump_Hydro_Closed,CH_E_Balance,2050,1,1.0,1.0,13,16,0.0
-917,CH_Pump_Hydro_Closed,CH_E_Balance,2050,1,1.0,1.0,17,20,0.2956671102237376
+917,CH_Pump_Hydro_Closed,CH_E_Balance,2050,1,1.0,1.0,17,20,0.295667110223734
 918,CH_Pump_Hydro_Closed,CH_E_Balance,2050,1,1.0,1.0,21,24,2.17
 919,CH_Pump_Hydro_Open,CH_E_Balance,2050,1,1.0,1.0,1,4,10.732
 920,CH_Pump_Hydro_Open,CH_E_Balance,2050,1,1.0,1.0,5,8,10.732
@@ -981,8 +981,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 980,CZ_Battery,CZ_E_Balance,2050,1,1.0,1.0,5,8,0.0
 981,CZ_Battery,CZ_E_Balance,2050,1,1.0,1.0,9,12,0.0
 982,CZ_Battery,CZ_E_Balance,2050,1,1.0,1.0,13,16,0.0
-983,CZ_Battery,CZ_E_Balance,2050,1,1.0,1.0,17,20,1.4669209149703375
-984,CZ_Battery,CZ_E_Balance,2050,1,1.0,1.0,21,24,1.2405790850296625
+983,CZ_Battery,CZ_E_Balance,2050,1,1.0,1.0,17,20,1.4669209149703377
+984,CZ_Battery,CZ_E_Balance,2050,1,1.0,1.0,21,24,1.2405790850296623
 985,CZ_Coal,CZ_E_Balance,2050,1,1.0,1.0,1,4,0.0
 986,CZ_Coal,CZ_E_Balance,2050,1,1.0,1.0,5,8,0.0
 987,CZ_Coal,CZ_E_Balance,2050,1,1.0,1.0,9,12,0.0
@@ -1012,7 +1012,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 1011,CZ_Hydro_Reservoir,CZ_E_Balance,2050,1,1.0,1.0,9,12,0.0
 1012,CZ_Hydro_Reservoir,CZ_E_Balance,2050,1,1.0,1.0,13,16,0.0
 1013,CZ_Hydro_Reservoir,CZ_E_Balance,2050,1,1.0,1.0,17,20,0.0
-1014,CZ_Hydro_Reservoir,CZ_E_Balance,2050,1,1.0,1.0,21,24,0.47450131957070213
+1014,CZ_Hydro_Reservoir,CZ_E_Balance,2050,1,1.0,1.0,21,24,0.47450131957070263
 1015,CZ_Nuclear,CZ_E_Balance,2050,1,1.0,1.0,1,4,0.0
 1016,CZ_Nuclear,CZ_E_Balance,2050,1,1.0,1.0,5,8,0.0
 1017,CZ_Nuclear,CZ_E_Balance,2050,1,1.0,1.0,9,12,0.0
@@ -1067,9 +1067,9 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 1066,DE_Battery,DE_E_Balance,2050,1,1.0,1.0,16,16,0.0
 1067,DE_Battery,DE_E_Balance,2050,1,1.0,1.0,17,17,0.0
 1068,DE_Battery,DE_E_Balance,2050,1,1.0,1.0,18,18,0.0
-1069,DE_Battery,DE_E_Balance,2050,1,1.0,1.0,19,19,1.2791809546957484
+1069,DE_Battery,DE_E_Balance,2050,1,1.0,1.0,19,19,1.2791809546957502
 1070,DE_Battery,DE_E_Balance,2050,1,1.0,1.0,20,20,29.458206430144003
-1071,DE_Battery,DE_E_Balance,2050,1,1.0,1.0,21,21,4.264459856724478
+1071,DE_Battery,DE_E_Balance,2050,1,1.0,1.0,21,21,4.2644598567244785
 1072,DE_Battery,DE_E_Balance,2050,1,1.0,1.0,22,22,0.0
 1073,DE_Battery,DE_E_Balance,2050,1,1.0,1.0,23,23,0.0
 1074,DE_Battery,DE_E_Balance,2050,1,1.0,1.0,24,24,0.0
@@ -1244,7 +1244,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 1243,DE_Pump_Hydro_Open,DE_E_Balance,2050,1,1.0,1.0,1,1,0.0
 1244,DE_Pump_Hydro_Open,DE_E_Balance,2050,1,1.0,1.0,2,2,1.644
 1245,DE_Pump_Hydro_Open,DE_E_Balance,2050,1,1.0,1.0,3,3,1.644
-1246,DE_Pump_Hydro_Open,DE_E_Balance,2050,1,1.0,1.0,4,4,1.4597248675639054
+1246,DE_Pump_Hydro_Open,DE_E_Balance,2050,1,1.0,1.0,4,4,1.4597248675639056
 1247,DE_Pump_Hydro_Open,DE_E_Balance,2050,1,1.0,1.0,5,5,1.644
 1248,DE_Pump_Hydro_Open,DE_E_Balance,2050,1,1.0,1.0,6,6,1.644
 1249,DE_Pump_Hydro_Open,DE_E_Balance,2050,1,1.0,1.0,7,7,1.644
@@ -1501,8 +1501,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 1500,DK_Wind_Offshore,DK_E_Balance,2050,1,1.0,1.0,18,18,0.0
 1501,DK_Wind_Offshore,DK_E_Balance,2050,1,1.0,1.0,19,19,0.0
 1502,DK_Wind_Offshore,DK_E_Balance,2050,1,1.0,1.0,20,20,0.0
-1503,DK_Wind_Offshore,DK_E_Balance,2050,1,1.0,1.0,21,21,12.675398175217921
-1504,DK_Wind_Offshore,DK_E_Balance,2050,1,1.0,1.0,22,22,10.303653725551932
+1503,DK_Wind_Offshore,DK_E_Balance,2050,1,1.0,1.0,21,21,12.675398175217914
+1504,DK_Wind_Offshore,DK_E_Balance,2050,1,1.0,1.0,22,22,10.303653725551925
 1505,DK_Wind_Offshore,DK_E_Balance,2050,1,1.0,1.0,23,23,0.0
 1506,DK_Wind_Offshore,DK_E_Balance,2050,1,1.0,1.0,24,24,0.0
 1507,DK_Wind_Onshore,DK_E_Balance,2050,1,1.0,1.0,1,1,0.0
@@ -1527,7 +1527,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 1526,DK_Wind_Onshore,DK_E_Balance,2050,1,1.0,1.0,20,20,0.9504498297607267
 1527,DK_Wind_Onshore,DK_E_Balance,2050,1,1.0,1.0,21,21,7.037006342730764
 1528,DK_Wind_Onshore,DK_E_Balance,2050,1,1.0,1.0,22,22,7.0473912982593285
-1529,DK_Wind_Onshore,DK_E_Balance,2050,1,1.0,1.0,23,23,0.9141376604137492
+1529,DK_Wind_Onshore,DK_E_Balance,2050,1,1.0,1.0,23,23,0.9141376604137501
 1530,DK_Wind_Onshore,DK_E_Balance,2050,1,1.0,1.0,24,24,0.0
 1531,DK_electrolyzer,DK_H_Demand,2050,1,1.0,1.0,1,1,2.305936073
 1532,DK_electrolyzer,DK_H_Demand,2050,1,1.0,1.0,2,2,2.305936073
@@ -1616,7 +1616,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 1615,ES_Hydro,ES_E_Balance,2050,1,1.0,1.0,19,21,3.8010207146678296
 1616,ES_Hydro,ES_E_Balance,2050,1,1.0,1.0,22,24,3.8010207146678296
 1617,ES_Hydro_Reservoir,ES_E_Balance,2050,1,1.0,1.0,1,3,6.350466377728513
-1618,ES_Hydro_Reservoir,ES_E_Balance,2050,1,1.0,1.0,4,6,7.597094193540889
+1618,ES_Hydro_Reservoir,ES_E_Balance,2050,1,1.0,1.0,4,6,7.597094193540886
 1619,ES_Hydro_Reservoir,ES_E_Balance,2050,1,1.0,1.0,7,9,0.6876268153915284
 1620,ES_Hydro_Reservoir,ES_E_Balance,2050,1,1.0,1.0,10,12,0.0
 1621,ES_Hydro_Reservoir,ES_E_Balance,2050,1,1.0,1.0,13,15,0.0
@@ -1815,7 +1815,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 1814,IT_Hydro_Reservoir,IT_E_Balance,2050,1,1.0,1.0,5,8,9.576
 1815,IT_Hydro_Reservoir,IT_E_Balance,2050,1,1.0,1.0,9,12,0.0
 1816,IT_Hydro_Reservoir,IT_E_Balance,2050,1,1.0,1.0,13,16,0.0
-1817,IT_Hydro_Reservoir,IT_E_Balance,2050,1,1.0,1.0,17,20,1.1225361957941324
+1817,IT_Hydro_Reservoir,IT_E_Balance,2050,1,1.0,1.0,17,20,1.1225361957941373
 1818,IT_Hydro_Reservoir,IT_E_Balance,2050,1,1.0,1.0,21,24,9.576
 1819,IT_OCGT,IT_E_Balance,2050,1,1.0,1.0,1,4,0.0
 1820,IT_OCGT,IT_E_Balance,2050,1,1.0,1.0,5,8,0.0
@@ -1837,8 +1837,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 1836,IT_Pump_Hydro_Open,IT_E_Balance,2050,1,1.0,1.0,21,24,3.254
 1837,IT_Solar,IT_E_Balance,2050,1,1.0,1.0,1,4,0.0
 1838,IT_Solar,IT_E_Balance,2050,1,1.0,1.0,5,8,10.21140745756673
-1839,IT_Solar,IT_E_Balance,2050,1,1.0,1.0,9,12,53.41292968753756
-1840,IT_Solar,IT_E_Balance,2050,1,1.0,1.0,13,16,62.08588883751177
+1839,IT_Solar,IT_E_Balance,2050,1,1.0,1.0,9,12,53.412929687537535
+1840,IT_Solar,IT_E_Balance,2050,1,1.0,1.0,13,16,62.08588883751178
 1841,IT_Solar,IT_E_Balance,2050,1,1.0,1.0,17,20,34.29624073557205
 1842,IT_Solar,IT_E_Balance,2050,1,1.0,1.0,21,24,0.0
 1843,IT_Wind_Offshore,IT_E_Balance,2050,1,1.0,1.0,1,4,4.622645567132076
@@ -2199,7 +2199,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 2198,NL_Wind_Offshore,NL_E_Balance,2050,1,1.0,1.0,14,14,12.876701202842431
 2199,NL_Wind_Offshore,NL_E_Balance,2050,1,1.0,1.0,15,15,12.61922508096645
 2200,NL_Wind_Offshore,NL_E_Balance,2050,1,1.0,1.0,16,16,13.620996190316303
-2201,NL_Wind_Offshore,NL_E_Balance,2050,1,1.0,1.0,17,17,18.21481492625162
+2201,NL_Wind_Offshore,NL_E_Balance,2050,1,1.0,1.0,17,17,18.214814926251634
 2202,NL_Wind_Offshore,NL_E_Balance,2050,1,1.0,1.0,18,18,23.04399325298781
 2203,NL_Wind_Offshore,NL_E_Balance,2050,1,1.0,1.0,19,19,22.747909433870973
 2204,NL_Wind_Offshore,NL_E_Balance,2050,1,1.0,1.0,20,20,22.59321248494324
@@ -2311,7 +2311,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 2310,NO_Pump_Hydro_Open,NO_E_Balance,2050,1,1.0,1.0,6,6,0.76
 2311,NO_Pump_Hydro_Open,NO_E_Balance,2050,1,1.0,1.0,7,7,0.76
 2312,NO_Pump_Hydro_Open,NO_E_Balance,2050,1,1.0,1.0,8,8,0.0
-2313,NO_Pump_Hydro_Open,NO_E_Balance,2050,1,1.0,1.0,9,9,0.5333560559462056
+2313,NO_Pump_Hydro_Open,NO_E_Balance,2050,1,1.0,1.0,9,9,0.5333560559462054
 2314,NO_Pump_Hydro_Open,NO_E_Balance,2050,1,1.0,1.0,10,10,0.0
 2315,NO_Pump_Hydro_Open,NO_E_Balance,2050,1,1.0,1.0,11,11,0.0
 2316,NO_Pump_Hydro_Open,NO_E_Balance,2050,1,1.0,1.0,12,12,0.0
@@ -2513,7 +2513,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 2512,PL_Hydro,PL_E_Balance,2050,1,1.0,1.0,22,24,0.3972166570496794
 2513,PL_Hydro_Reservoir,PL_E_Balance,2050,1,1.0,1.0,1,3,0.272
 2514,PL_Hydro_Reservoir,PL_E_Balance,2050,1,1.0,1.0,4,6,0.272
-2515,PL_Hydro_Reservoir,PL_E_Balance,2050,1,1.0,1.0,7,9,0.009829200175089243
+2515,PL_Hydro_Reservoir,PL_E_Balance,2050,1,1.0,1.0,7,9,0.009829200175089552
 2516,PL_Hydro_Reservoir,PL_E_Balance,2050,1,1.0,1.0,10,12,0.0
 2517,PL_Hydro_Reservoir,PL_E_Balance,2050,1,1.0,1.0,13,15,0.0
 2518,PL_Hydro_Reservoir,PL_E_Balance,2050,1,1.0,1.0,16,18,0.0
@@ -2538,7 +2538,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 2537,PL_Solar,PL_E_Balance,2050,1,1.0,1.0,1,3,0.0
 2538,PL_Solar,PL_E_Balance,2050,1,1.0,1.0,4,6,0.26218729018633014
 2539,PL_Solar,PL_E_Balance,2050,1,1.0,1.0,7,9,10.858599379973672
-2540,PL_Solar,PL_E_Balance,2050,1,1.0,1.0,10,12,20.25454280447773
+2540,PL_Solar,PL_E_Balance,2050,1,1.0,1.0,10,12,20.254542804477722
 2541,PL_Solar,PL_E_Balance,2050,1,1.0,1.0,13,15,15.603252456549647
 2542,PL_Solar,PL_E_Balance,2050,1,1.0,1.0,16,18,12.216547072903861
 2543,PL_Solar,PL_E_Balance,2050,1,1.0,1.0,19,21,0.7173134414544435
@@ -2600,14 +2600,14 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 2599,PT_Hydro_Reservoir,PT_E_Balance,2050,1,1.0,1.0,1,4,3.766
 2600,PT_Hydro_Reservoir,PT_E_Balance,2050,1,1.0,1.0,5,8,0.0
 2601,PT_Hydro_Reservoir,PT_E_Balance,2050,1,1.0,1.0,9,12,0.0
-2602,PT_Hydro_Reservoir,PT_E_Balance,2050,1,1.0,1.0,13,16,0.44185603021564174
+2602,PT_Hydro_Reservoir,PT_E_Balance,2050,1,1.0,1.0,13,16,0.4418560302156411
 2603,PT_Hydro_Reservoir,PT_E_Balance,2050,1,1.0,1.0,17,20,0.0
 2604,PT_Hydro_Reservoir,PT_E_Balance,2050,1,1.0,1.0,21,24,0.9867595849057942
 2605,PT_Pump_Hydro_Open,PT_E_Balance,2050,1,1.0,1.0,1,4,0.17513937325493067
 2606,PT_Pump_Hydro_Open,PT_E_Balance,2050,1,1.0,1.0,5,8,0.0
 2607,PT_Pump_Hydro_Open,PT_E_Balance,2050,1,1.0,1.0,9,12,0.0
 2608,PT_Pump_Hydro_Open,PT_E_Balance,2050,1,1.0,1.0,13,16,3.832
-2609,PT_Pump_Hydro_Open,PT_E_Balance,2050,1,1.0,1.0,17,20,0.7472933296996415
+2609,PT_Pump_Hydro_Open,PT_E_Balance,2050,1,1.0,1.0,17,20,0.7472933296996427
 2610,PT_Pump_Hydro_Open,PT_E_Balance,2050,1,1.0,1.0,21,24,3.832
 2611,PT_Solar,PT_E_Balance,2050,1,1.0,1.0,1,4,0.0
 2612,PT_Solar,PT_E_Balance,2050,1,1.0,1.0,5,8,0.05063463499056604
@@ -2619,7 +2619,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 2618,PT_Wind_Offshore,PT_E_Balance,2050,1,1.0,1.0,5,8,3.5035076768122932
 2619,PT_Wind_Offshore,PT_E_Balance,2050,1,1.0,1.0,9,12,3.099260414749117
 2620,PT_Wind_Offshore,PT_E_Balance,2050,1,1.0,1.0,13,16,0.0
-2621,PT_Wind_Offshore,PT_E_Balance,2050,1,1.0,1.0,17,20,0.06840139245962717
+2621,PT_Wind_Offshore,PT_E_Balance,2050,1,1.0,1.0,17,20,0.0684013924596254
 2622,PT_Wind_Offshore,PT_E_Balance,2050,1,1.0,1.0,21,24,0.0
 2623,PT_Wind_Onshore,PT_E_Balance,2050,1,1.0,1.0,1,4,0.0
 2624,PT_Wind_Onshore,PT_E_Balance,2050,1,1.0,1.0,5,8,3.312534095306604
@@ -2673,7 +2673,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 2672,RO_Hydro_Reservoir,RO_E_Balance,2050,1,1.0,1.0,5,8,0.0
 2673,RO_Hydro_Reservoir,RO_E_Balance,2050,1,1.0,1.0,9,12,0.0
 2674,RO_Hydro_Reservoir,RO_E_Balance,2050,1,1.0,1.0,13,16,0.0
-2675,RO_Hydro_Reservoir,RO_E_Balance,2050,1,1.0,1.0,17,20,1.4225447679415346
+2675,RO_Hydro_Reservoir,RO_E_Balance,2050,1,1.0,1.0,17,20,1.4225447679415357
 2676,RO_Hydro_Reservoir,RO_E_Balance,2050,1,1.0,1.0,21,24,2.579
 2677,RO_Nuclear,RO_E_Balance,2050,1,1.0,1.0,1,4,0.0
 2678,RO_Nuclear,RO_E_Balance,2050,1,1.0,1.0,5,8,0.0
@@ -2827,7 +2827,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 2826,BG_E_Balance,BG_Pump_Hydro_Closed,2050,1,1.0,1.0,21,24,0.0
 2827,CH_E_Balance,CH_Pump_Hydro_Open,2050,1,1.0,1.0,1,4,0.0
 2828,CH_E_Balance,CH_Pump_Hydro_Open,2050,1,1.0,1.0,5,8,0.0
-2829,CH_E_Balance,CH_Pump_Hydro_Open,2050,1,1.0,1.0,9,12,6.77327953877351
+2829,CH_E_Balance,CH_Pump_Hydro_Open,2050,1,1.0,1.0,9,12,6.773279538773475
 2830,CH_E_Balance,CH_Pump_Hydro_Open,2050,1,1.0,1.0,13,16,10.732
 2831,CH_E_Balance,CH_Pump_Hydro_Open,2050,1,1.0,1.0,17,20,0.0
 2832,CH_E_Balance,CH_Pump_Hydro_Open,2050,1,1.0,1.0,21,24,0.0
@@ -3013,8 +3013,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 3012,UK_E_Balance,UK_Battery,2050,1,1.0,1.0,2,2,0.0
 3013,UK_E_Balance,UK_Battery,2050,1,1.0,1.0,3,3,0.0
 3014,UK_E_Balance,UK_Battery,2050,1,1.0,1.0,4,4,0.0
-3015,UK_E_Balance,UK_Battery,2050,1,1.0,1.0,5,5,4.329718483533005
-3016,UK_E_Balance,UK_Battery,2050,1,1.0,1.0,6,6,0.04924974148821448
+3015,UK_E_Balance,UK_Battery,2050,1,1.0,1.0,5,5,4.329718483533009
+3016,UK_E_Balance,UK_Battery,2050,1,1.0,1.0,6,6,0.04924974148820915
 3017,UK_E_Balance,UK_Battery,2050,1,1.0,1.0,7,7,0.0
 3018,UK_E_Balance,UK_Battery,2050,1,1.0,1.0,8,8,0.0
 3019,UK_E_Balance,UK_Battery,2050,1,1.0,1.0,9,9,0.0
@@ -3045,7 +3045,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 3044,BG_E_Balance,BG_E_Demand,2050,1,1.0,1.0,13,16,4.100064161999457
 3045,BG_E_Balance,BG_E_Demand,2050,1,1.0,1.0,17,20,4.184484108628398
 3046,BG_E_Balance,BG_E_Demand,2050,1,1.0,1.0,21,24,3.1788620751142345
-3047,CH_E_Balance,CH_Pump_Hydro_Closed,2050,1,1.0,1.0,1,4,0.3708494899276171
+3047,CH_E_Balance,CH_Pump_Hydro_Closed,2050,1,1.0,1.0,1,4,0.3708494899276135
 3048,CH_E_Balance,CH_Pump_Hydro_Closed,2050,1,1.0,1.0,5,8,0.0
 3049,CH_E_Balance,CH_Pump_Hydro_Closed,2050,1,1.0,1.0,9,12,2.17
 3050,CH_E_Balance,CH_Pump_Hydro_Closed,2050,1,1.0,1.0,13,16,2.17
@@ -3140,8 +3140,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 3139,IT_E_Balance,IT_Battery,2050,1,1.0,1.0,1,4,-0.0
 3140,IT_E_Balance,IT_Battery,2050,1,1.0,1.0,5,8,-0.0
 3141,IT_E_Balance,IT_Battery,2050,1,1.0,1.0,9,12,-0.0
-3142,IT_E_Balance,IT_Battery,2050,1,1.0,1.0,13,16,0.974301060907961
-3143,IT_E_Balance,IT_Battery,2050,1,1.0,1.0,17,20,6.641641593040863
+3142,IT_E_Balance,IT_Battery,2050,1,1.0,1.0,13,16,0.9743010609079645
+3143,IT_E_Balance,IT_Battery,2050,1,1.0,1.0,17,20,6.64164159304086
 3144,IT_E_Balance,IT_Battery,2050,1,1.0,1.0,21,24,0.0
 3145,LT_E_Balance,LT_E_Demand,2050,1,1.0,1.0,1,4,1.064959152202419
 3146,LT_E_Balance,LT_E_Demand,2050,1,1.0,1.0,5,8,1.098338568307532
@@ -3274,8 +3274,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 3273,CH_E_Balance,CH_Battery,2050,1,1.0,1.0,1,4,-0.0
 3274,CH_E_Balance,CH_Battery,2050,1,1.0,1.0,5,8,-0.0
 3275,CH_E_Balance,CH_Battery,2050,1,1.0,1.0,9,12,-0.0
-3276,CH_E_Balance,CH_Battery,2050,1,1.0,1.0,13,16,1.6372603035087763
-3277,CH_E_Balance,CH_Battery,2050,1,1.0,1.0,17,20,2.150239696491224
+3276,CH_E_Balance,CH_Battery,2050,1,1.0,1.0,13,16,1.6372603035087798
+3277,CH_E_Balance,CH_Battery,2050,1,1.0,1.0,17,20,2.1502396964912203
 3278,CH_E_Balance,CH_Battery,2050,1,1.0,1.0,21,24,0.0
 3279,EU_SMR_CCS,PL_H_Demand,2050,1,1.0,1.0,1,1,0.0
 3280,EU_SMR_CCS,PL_H_Demand,2050,1,1.0,1.0,2,2,-0.0
@@ -3903,7 +3903,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 3902,FR_Solar,FR_E_Balance,2050,1,1.0,1.0,11,12,64.86540020365588
 3903,FR_Solar,FR_E_Balance,2050,1,1.0,1.0,13,14,96.79603822236777
 3904,FR_Solar,FR_E_Balance,2050,1,1.0,1.0,15,16,21.054753450492626
-3905,FR_Solar,FR_E_Balance,2050,1,1.0,1.0,17,18,34.59085235013583
+3905,FR_Solar,FR_E_Balance,2050,1,1.0,1.0,17,18,34.59085235013585
 3906,FR_Solar,FR_E_Balance,2050,1,1.0,1.0,19,20,16.498148669847527
 3907,FR_Solar,FR_E_Balance,2050,1,1.0,1.0,21,22,0.20577041059001888
 3908,FR_Solar,FR_E_Balance,2050,1,1.0,1.0,23,24,-0.0
@@ -4261,7 +4261,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 4260,IT_E_Balance,IT_Pump_Hydro_Open,2050,1,1.0,1.0,5,8,0.0
 4261,IT_E_Balance,IT_Pump_Hydro_Open,2050,1,1.0,1.0,9,12,3.254
 4262,IT_E_Balance,IT_Pump_Hydro_Open,2050,1,1.0,1.0,13,16,3.254
-4263,IT_E_Balance,IT_Pump_Hydro_Open,2050,1,1.0,1.0,17,20,1.1890286139985875
+4263,IT_E_Balance,IT_Pump_Hydro_Open,2050,1,1.0,1.0,17,20,1.189028613998596
 4264,IT_E_Balance,IT_Pump_Hydro_Open,2050,1,1.0,1.0,21,24,0.0
 4265,SE_electrolyzer,SE_H_Demand,2050,1,1.0,1.0,1,4,8.664383562
 4266,SE_electrolyzer,SE_H_Demand,2050,1,1.0,1.0,5,8,8.664383562
@@ -4381,7 +4381,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 4380,UK_E_Balance,UK_Pump_Hydro_Closed,2050,1,1.0,1.0,14,14,2.744
 4381,UK_E_Balance,UK_Pump_Hydro_Closed,2050,1,1.0,1.0,15,15,2.744
 4382,UK_E_Balance,UK_Pump_Hydro_Closed,2050,1,1.0,1.0,16,16,2.744
-4383,UK_E_Balance,UK_Pump_Hydro_Closed,2050,1,1.0,1.0,17,17,0.5062492236694633
+4383,UK_E_Balance,UK_Pump_Hydro_Closed,2050,1,1.0,1.0,17,17,0.5062492236694722
 4384,UK_E_Balance,UK_Pump_Hydro_Closed,2050,1,1.0,1.0,18,18,0.0
 4385,UK_E_Balance,UK_Pump_Hydro_Closed,2050,1,1.0,1.0,19,19,0.0
 4386,UK_E_Balance,UK_Pump_Hydro_Closed,2050,1,1.0,1.0,20,20,0.0
@@ -4475,7 +4475,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 4474,NL_E_Balance,NL_Battery,2050,1,1.0,1.0,24,24,-0.0
 4475,PL_E_Balance,PL_Pump_Hydro_Open,2050,1,1.0,1.0,1,3,0.0
 4476,PL_E_Balance,PL_Pump_Hydro_Open,2050,1,1.0,1.0,4,6,0.0
-4477,PL_E_Balance,PL_Pump_Hydro_Open,2050,1,1.0,1.0,7,9,0.005548343529519029
+4477,PL_E_Balance,PL_Pump_Hydro_Open,2050,1,1.0,1.0,7,9,0.005548343529518703
 4478,PL_E_Balance,PL_Pump_Hydro_Open,2050,1,1.0,1.0,10,12,0.216
 4479,PL_E_Balance,PL_Pump_Hydro_Open,2050,1,1.0,1.0,13,15,0.216
 4480,PL_E_Balance,PL_Pump_Hydro_Open,2050,1,1.0,1.0,16,18,0.216
@@ -4626,7 +4626,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 4625,FI_Wind_Onshore,FI_E_Balance,2050,1,1.0,1.0,9,12,0.0
 4626,FI_Wind_Onshore,FI_E_Balance,2050,1,1.0,1.0,13,16,0.0
 4627,FI_Wind_Onshore,FI_E_Balance,2050,1,1.0,1.0,17,20,0.0
-4628,FI_Wind_Onshore,FI_E_Balance,2050,1,1.0,1.0,21,24,5.852582083065625
+4628,FI_Wind_Onshore,FI_E_Balance,2050,1,1.0,1.0,21,24,5.852582083065627
 4629,HR_Coal,HR_E_Balance,2050,1,1.0,1.0,1,4,0.0
 4630,HR_Coal,HR_E_Balance,2050,1,1.0,1.0,5,8,0.0
 4631,HR_Coal,HR_E_Balance,2050,1,1.0,1.0,9,12,0.0
@@ -4833,7 +4833,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 4832,SI_E_ENS,SI_E_Demand,2050,1,1.0,1.0,13,16,0.0
 4833,SI_E_ENS,SI_E_Demand,2050,1,1.0,1.0,17,20,0.0
 4834,SI_E_ENS,SI_E_Demand,2050,1,1.0,1.0,21,24,0.0
-4835,HR_Wind_Onshore,HR_E_Balance,2050,1,1.0,1.0,1,4,0.7640733398420291
+4835,HR_Wind_Onshore,HR_E_Balance,2050,1,1.0,1.0,1,4,0.7640733398420273
 4836,HR_Wind_Onshore,HR_E_Balance,2050,1,1.0,1.0,5,8,1.0280587155566039
 4837,HR_Wind_Onshore,HR_E_Balance,2050,1,1.0,1.0,9,12,0.2766233675703389
 4838,HR_Wind_Onshore,HR_E_Balance,2050,1,1.0,1.0,13,16,0.31647276869455676
@@ -4987,7 +4987,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 4986,HR_Pump_Hydro_Open,HR_E_Balance,2050,1,1.0,1.0,5,8,0.281
 4987,HR_Pump_Hydro_Open,HR_E_Balance,2050,1,1.0,1.0,9,12,0.0
 4988,HR_Pump_Hydro_Open,HR_E_Balance,2050,1,1.0,1.0,13,16,0.0
-4989,HR_Pump_Hydro_Open,HR_E_Balance,2050,1,1.0,1.0,17,20,0.16122026639927173
+4989,HR_Pump_Hydro_Open,HR_E_Balance,2050,1,1.0,1.0,17,20,0.16122026639927145
 4990,HR_Pump_Hydro_Open,HR_E_Balance,2050,1,1.0,1.0,21,24,0.281
 4991,SI_E_Balance,SI_Pump_Hydro_Closed,2050,1,1.0,1.0,1,4,0.0
 4992,SI_E_Balance,SI_Pump_Hydro_Closed,2050,1,1.0,1.0,5,8,0.0
@@ -5055,7 +5055,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5054,CH_E_Balance,CH_electrolyzer,2050,1,1.0,1.0,13,16,3.820526568
 5055,CH_E_Balance,CH_electrolyzer,2050,1,1.0,1.0,17,20,3.820526568
 5056,CH_E_Balance,CH_electrolyzer,2050,1,1.0,1.0,21,24,3.820526568
-5057,HR_Hydro_Reservoir,HR_E_Balance,2050,1,1.0,1.0,1,4,1.0269068028840722
+5057,HR_Hydro_Reservoir,HR_E_Balance,2050,1,1.0,1.0,1,4,1.0269068028840744
 5058,HR_Hydro_Reservoir,HR_E_Balance,2050,1,1.0,1.0,5,8,0.0
 5059,HR_Hydro_Reservoir,HR_E_Balance,2050,1,1.0,1.0,9,12,0.0
 5060,HR_Hydro_Reservoir,HR_E_Balance,2050,1,1.0,1.0,13,16,0.0
@@ -5085,7 +5085,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5084,UK_Battery,UK_E_Balance,2050,1,1.0,1.0,4,4,-0.0
 5085,UK_Battery,UK_E_Balance,2050,1,1.0,1.0,5,5,0.0
 5086,UK_Battery,UK_E_Balance,2050,1,1.0,1.0,6,6,0.0
-5087,UK_Battery,UK_E_Balance,2050,1,1.0,1.0,7,7,4.37896822502122
+5087,UK_Battery,UK_E_Balance,2050,1,1.0,1.0,7,7,4.378968225021219
 5088,UK_Battery,UK_E_Balance,2050,1,1.0,1.0,8,8,-0.0
 5089,UK_Battery,UK_E_Balance,2050,1,1.0,1.0,9,9,-0.0
 5090,UK_Battery,UK_E_Balance,2050,1,1.0,1.0,10,10,-0.0
@@ -5131,11 +5131,11 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5130,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,2,2,0.0
 5131,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,3,3,0.0
 5132,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,4,4,0.0
-5133,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,5,5,0.7282215461295944
+5133,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,5,5,0.7282215461296033
 5134,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,6,6,2.744
 5135,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,7,7,2.744
 5136,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,8,8,1.4726520968042833
-5137,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,9,9,1.3441669616681595
+5137,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,9,9,1.3441669616681597
 5138,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,10,10,0.0
 5139,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,11,11,0.0
 5140,UK_Pump_Hydro_Closed,UK_E_Balance,2050,1,1.0,1.0,12,12,0.0
@@ -5187,7 +5187,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5186,SK_Solar,SK_E_Balance,2050,1,1.0,1.0,13,16,0.0
 5187,SK_Solar,SK_E_Balance,2050,1,1.0,1.0,17,20,0.48630287923349064
 5188,SK_Solar,SK_E_Balance,2050,1,1.0,1.0,21,24,-0.0
-5189,SK_Pump_Hydro_Open,SK_E_Balance,2050,1,1.0,1.0,1,4,0.1579215931654003
+5189,SK_Pump_Hydro_Open,SK_E_Balance,2050,1,1.0,1.0,1,4,0.15792159316540022
 5190,SK_Pump_Hydro_Open,SK_E_Balance,2050,1,1.0,1.0,5,8,0.276
 5191,SK_Pump_Hydro_Open,SK_E_Balance,2050,1,1.0,1.0,9,12,0.0
 5192,SK_Pump_Hydro_Open,SK_E_Balance,2050,1,1.0,1.0,13,16,0.0
@@ -5333,7 +5333,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5332,FR_Hydro_Reservoir,FR_E_Balance,2050,1,1.0,1.0,11,12,0.0
 5333,FR_Hydro_Reservoir,FR_E_Balance,2050,1,1.0,1.0,13,14,0.0
 5334,FR_Hydro_Reservoir,FR_E_Balance,2050,1,1.0,1.0,15,16,8.785
-5335,FR_Hydro_Reservoir,FR_E_Balance,2050,1,1.0,1.0,17,18,4.680640845085827
+5335,FR_Hydro_Reservoir,FR_E_Balance,2050,1,1.0,1.0,17,18,4.680640845085822
 5336,FR_Hydro_Reservoir,FR_E_Balance,2050,1,1.0,1.0,19,20,8.785
 5337,FR_Hydro_Reservoir,FR_E_Balance,2050,1,1.0,1.0,21,22,8.785
 5338,FR_Hydro_Reservoir,FR_E_Balance,2050,1,1.0,1.0,23,24,8.785
@@ -5341,7 +5341,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5340,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,1,1.0,1.0,5,8,0.0
 5341,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,1,1.0,1.0,9,12,0.47
 5342,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,1,1.0,1.0,13,16,0.47
-5343,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,1,1.0,1.0,17,20,0.4527546743375843
+5343,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,1,1.0,1.0,17,20,0.45275467433758465
 5344,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,1,1.0,1.0,21,24,0.0
 5345,FI_E_Balance,FI_E_Demand,2050,1,1.0,1.0,1,4,14.018340621985958
 5346,FI_E_Balance,FI_E_Demand,2050,1,1.0,1.0,5,8,15.5080234478428
@@ -5352,7 +5352,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5351,GR_E_Balance,GR_Pump_Hydro_Open,2050,1,1.0,1.0,1,4,0.0
 5352,GR_E_Balance,GR_Pump_Hydro_Open,2050,1,1.0,1.0,5,8,0.0
 5353,GR_E_Balance,GR_Pump_Hydro_Open,2050,1,1.0,1.0,9,12,0.699
-5354,GR_E_Balance,GR_Pump_Hydro_Open,2050,1,1.0,1.0,13,16,0.3137970185539815
+5354,GR_E_Balance,GR_Pump_Hydro_Open,2050,1,1.0,1.0,13,16,0.31379701855398123
 5355,GR_E_Balance,GR_Pump_Hydro_Open,2050,1,1.0,1.0,17,20,0.699
 5356,GR_E_Balance,GR_Pump_Hydro_Open,2050,1,1.0,1.0,21,24,0.0
 5357,OBZLL_E_Balance,OBZLL_electrolyzer,2050,1,1.0,1.0,1,1,-0.0
@@ -5493,7 +5493,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5492,HR_E_Balance,SI_E_Balance,2050,2,1.0,1.0,5,8,0.06476548826497408
 5493,HR_E_Balance,SI_E_Balance,2050,2,1.0,1.0,9,12,-3.5
 5494,HR_E_Balance,SI_E_Balance,2050,2,1.0,1.0,13,16,-3.5
-5495,HR_E_Balance,SI_E_Balance,2050,2,1.0,1.0,17,20,-0.21031497972265756
+5495,HR_E_Balance,SI_E_Balance,2050,2,1.0,1.0,17,20,-0.2103149797226571
 5496,HR_E_Balance,SI_E_Balance,2050,2,1.0,1.0,21,24,0.20002294693022293
 5497,HU_E_Balance,SI_E_Balance,2050,2,1.0,1.0,1,4,-3.2
 5498,HU_E_Balance,SI_E_Balance,2050,2,1.0,1.0,5,8,-3.2
@@ -5730,7 +5730,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5729,RO_E_Balance,HU_E_Balance,2050,2,1.0,1.0,9,12,4.482327170440046
 5730,RO_E_Balance,HU_E_Balance,2050,2,1.0,1.0,13,16,3.1238903759641943
 5731,RO_E_Balance,HU_E_Balance,2050,2,1.0,1.0,17,20,0.4369277359313197
-5732,RO_E_Balance,HU_E_Balance,2050,2,1.0,1.0,21,24,1.2731892152996749
+5732,RO_E_Balance,HU_E_Balance,2050,2,1.0,1.0,21,24,1.2731892152996753
 5733,SE_E_Balance,DK_E_Balance,2050,2,1.0,1.0,1,4,5.259009543718834
 5734,SE_E_Balance,DK_E_Balance,2050,2,1.0,1.0,5,8,5.815951514336786
 5735,SE_E_Balance,DK_E_Balance,2050,2,1.0,1.0,9,12,2.514835736831895
@@ -5757,7 +5757,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5756,UK_E_Balance,NL_E_Balance,2050,2,1.0,1.0,6,6,3.0
 5757,UK_E_Balance,NL_E_Balance,2050,2,1.0,1.0,7,7,3.0
 5758,UK_E_Balance,NL_E_Balance,2050,2,1.0,1.0,8,8,3.0
-5759,UK_E_Balance,NL_E_Balance,2050,2,1.0,1.0,9,9,-1.6812539207460078
+5759,UK_E_Balance,NL_E_Balance,2050,2,1.0,1.0,9,9,-1.6812539207460653
 5760,UK_E_Balance,NL_E_Balance,2050,2,1.0,1.0,10,10,-3.0
 5761,UK_E_Balance,NL_E_Balance,2050,2,1.0,1.0,11,11,-3.0
 5762,UK_E_Balance,NL_E_Balance,2050,2,1.0,1.0,12,12,-3.0
@@ -5817,7 +5817,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5816,NO_E_Balance,NL_E_Balance,2050,2,1.0,1.0,6,6,-0.669913085952242
 5817,NO_E_Balance,NL_E_Balance,2050,2,1.0,1.0,7,7,-0.2133321082033388
 5818,NO_E_Balance,NL_E_Balance,2050,2,1.0,1.0,8,8,0.5905098342993291
-5819,NO_E_Balance,NL_E_Balance,2050,2,1.0,1.0,9,9,-0.8905947863926734
+5819,NO_E_Balance,NL_E_Balance,2050,2,1.0,1.0,9,9,-0.8905947863926158
 5820,NO_E_Balance,NL_E_Balance,2050,2,1.0,1.0,10,10,-2.7
 5821,NO_E_Balance,NL_E_Balance,2050,2,1.0,1.0,11,11,-2.7
 5822,NO_E_Balance,NL_E_Balance,2050,2,1.0,1.0,12,12,-2.7
@@ -5834,7 +5834,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5833,NO_E_Balance,NL_E_Balance,2050,2,1.0,1.0,23,23,-2.7
 5834,NO_E_Balance,NL_E_Balance,2050,2,1.0,1.0,24,24,-2.7
 5835,PL_E_Balance,DE_E_Balance,2050,2,1.0,1.0,1,3,-6.0
-5836,PL_E_Balance,DE_E_Balance,2050,2,1.0,1.0,4,6,-2.3939988264684864
+5836,PL_E_Balance,DE_E_Balance,2050,2,1.0,1.0,4,6,-2.3939988264684846
 5837,PL_E_Balance,DE_E_Balance,2050,2,1.0,1.0,7,9,-0.2124533464763516
 5838,PL_E_Balance,DE_E_Balance,2050,2,1.0,1.0,10,12,5.557041796554943
 5839,PL_E_Balance,DE_E_Balance,2050,2,1.0,1.0,13,15,5.854400578945922
@@ -5857,9 +5857,9 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5856,SI_E_Balance,AT_E_Balance,2050,2,1.0,1.0,5,8,1.9347307027818692
 5857,SI_E_Balance,AT_E_Balance,2050,2,1.0,1.0,9,12,2.95
 5858,SI_E_Balance,AT_E_Balance,2050,2,1.0,1.0,13,16,2.95
-5859,SI_E_Balance,AT_E_Balance,2050,2,1.0,1.0,17,20,2.1411948283366162
+5859,SI_E_Balance,AT_E_Balance,2050,2,1.0,1.0,17,20,2.1411948283366167
 5860,SI_E_Balance,AT_E_Balance,2050,2,1.0,1.0,21,24,1.4618197368227333
-5861,SK_E_Balance,HU_E_Balance,2050,2,1.0,1.0,1,4,-0.8199228049730363
+5861,SK_E_Balance,HU_E_Balance,2050,2,1.0,1.0,1,4,-0.8199228049730367
 5862,SK_E_Balance,HU_E_Balance,2050,2,1.0,1.0,5,8,-2.5061746062485364
 5863,SK_E_Balance,HU_E_Balance,2050,2,1.0,1.0,9,12,-3.8
 5864,SK_E_Balance,HU_E_Balance,2050,2,1.0,1.0,13,16,-3.8
@@ -5899,7 +5899,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5898,IT_E_Balance,CH_E_Balance,2050,2,1.0,1.0,5,8,1.9907961496084772
 5899,IT_E_Balance,CH_E_Balance,2050,2,1.0,1.0,9,12,6.11
 5900,IT_E_Balance,CH_E_Balance,2050,2,1.0,1.0,13,16,-8.772
-5901,IT_E_Balance,CH_E_Balance,2050,2,1.0,1.0,17,20,-5.691533628825067
+5901,IT_E_Balance,CH_E_Balance,2050,2,1.0,1.0,17,20,-5.691533628825063
 5902,IT_E_Balance,CH_E_Balance,2050,2,1.0,1.0,21,24,1.470455738853281
 5903,NO_E_Balance,DK_E_Balance,2050,2,1.0,1.0,1,1,-3.362
 5904,NO_E_Balance,DK_E_Balance,2050,2,1.0,1.0,2,2,-3.362
@@ -5986,7 +5986,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 5985,NO_E_Balance,DE_E_Balance,2050,2,1.0,1.0,17,17,-3.4
 5986,NO_E_Balance,DE_E_Balance,2050,2,1.0,1.0,18,18,-2.692291394214287
 5987,NO_E_Balance,DE_E_Balance,2050,2,1.0,1.0,19,19,-3.196466597613682
-5988,NO_E_Balance,DE_E_Balance,2050,2,1.0,1.0,20,20,-3.0735640184452713
+5988,NO_E_Balance,DE_E_Balance,2050,2,1.0,1.0,20,20,-3.073564018445328
 5989,NO_E_Balance,DE_E_Balance,2050,2,1.0,1.0,21,21,-1.3426180996305845
 5990,NO_E_Balance,DE_E_Balance,2050,2,1.0,1.0,22,22,-0.7748042764219605
 5991,NO_E_Balance,DE_E_Balance,2050,2,1.0,1.0,23,23,-0.07773238066197763
@@ -6043,7 +6043,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 6042,AT_Pump_Hydro_Open,AT_E_Balance,2050,2,1.0,1.0,5,8,5.793
 6043,AT_Pump_Hydro_Open,AT_E_Balance,2050,2,1.0,1.0,9,12,0.0
 6044,AT_Pump_Hydro_Open,AT_E_Balance,2050,2,1.0,1.0,13,16,0.0
-6045,AT_Pump_Hydro_Open,AT_E_Balance,2050,2,1.0,1.0,17,20,5.156834569726384
+6045,AT_Pump_Hydro_Open,AT_E_Balance,2050,2,1.0,1.0,17,20,5.156834569726386
 6046,AT_Pump_Hydro_Open,AT_E_Balance,2050,2,1.0,1.0,21,24,5.793
 6047,AT_Solar,AT_E_Balance,2050,2,1.0,1.0,1,4,-0.0
 6048,AT_Solar,AT_E_Balance,2050,2,1.0,1.0,5,8,1.8504966653740882
@@ -6079,7 +6079,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 6078,BE_Battery,BE_E_Balance,2050,2,1.0,1.0,14,14,0.0
 6079,BE_Battery,BE_E_Balance,2050,2,1.0,1.0,15,15,0.0
 6080,BE_Battery,BE_E_Balance,2050,2,1.0,1.0,16,16,0.0
-6081,BE_Battery,BE_E_Balance,2050,2,1.0,1.0,17,17,-0.0
+6081,BE_Battery,BE_E_Balance,2050,2,1.0,1.0,17,17,0.0
 6082,BE_Battery,BE_E_Balance,2050,2,1.0,1.0,18,18,0.0
 6083,BE_Battery,BE_E_Balance,2050,2,1.0,1.0,19,19,1.13
 6084,BE_Battery,BE_E_Balance,2050,2,1.0,1.0,20,20,1.129999999999999
@@ -6243,14 +6243,14 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 6242,BG_OCGT,BG_E_Balance,2050,2,1.0,1.0,13,16,0.0
 6243,BG_OCGT,BG_E_Balance,2050,2,1.0,1.0,17,20,0.0
 6244,BG_OCGT,BG_E_Balance,2050,2,1.0,1.0,21,24,0.0
-6245,BG_Pump_Hydro_Closed,BG_E_Balance,2050,2,1.0,1.0,1,4,0.5323339053417422
-6246,BG_Pump_Hydro_Closed,BG_E_Balance,2050,2,1.0,1.0,5,8,0.29062210150725726
+6245,BG_Pump_Hydro_Closed,BG_E_Balance,2050,2,1.0,1.0,1,4,0.5323339053417424
+6246,BG_Pump_Hydro_Closed,BG_E_Balance,2050,2,1.0,1.0,5,8,0.2906221015072572
 6247,BG_Pump_Hydro_Closed,BG_E_Balance,2050,2,1.0,1.0,9,12,0.0
 6248,BG_Pump_Hydro_Closed,BG_E_Balance,2050,2,1.0,1.0,13,16,0.0
 6249,BG_Pump_Hydro_Closed,BG_E_Balance,2050,2,1.0,1.0,17,20,0.7506103689364214
 6250,BG_Pump_Hydro_Closed,BG_E_Balance,2050,2,1.0,1.0,21,24,0.18699245340399528
 6251,BG_Pump_Hydro_Open,BG_E_Balance,2050,2,1.0,1.0,1,4,0.535
-6252,BG_Pump_Hydro_Open,BG_E_Balance,2050,2,1.0,1.0,5,8,0.4547857094904492
+6252,BG_Pump_Hydro_Open,BG_E_Balance,2050,2,1.0,1.0,5,8,0.4547857094904493
 6253,BG_Pump_Hydro_Open,BG_E_Balance,2050,2,1.0,1.0,9,12,0.0
 6254,BG_Pump_Hydro_Open,BG_E_Balance,2050,2,1.0,1.0,13,16,0.0
 6255,BG_Pump_Hydro_Open,BG_E_Balance,2050,2,1.0,1.0,17,20,0.535
@@ -6367,8 +6367,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 6366,CZ_Battery,CZ_E_Balance,2050,2,1.0,1.0,5,8,0.0
 6367,CZ_Battery,CZ_E_Balance,2050,2,1.0,1.0,9,12,0.0
 6368,CZ_Battery,CZ_E_Balance,2050,2,1.0,1.0,13,16,0.0
-6369,CZ_Battery,CZ_E_Balance,2050,2,1.0,1.0,17,20,1.359486477780416
-6370,CZ_Battery,CZ_E_Balance,2050,2,1.0,1.0,21,24,1.348013522219584
+6369,CZ_Battery,CZ_E_Balance,2050,2,1.0,1.0,17,20,1.3594864777804156
+6370,CZ_Battery,CZ_E_Balance,2050,2,1.0,1.0,21,24,1.3480135222195844
 6371,CZ_Coal,CZ_E_Balance,2050,2,1.0,1.0,1,4,0.0
 6372,CZ_Coal,CZ_E_Balance,2050,2,1.0,1.0,5,8,0.0
 6373,CZ_Coal,CZ_E_Balance,2050,2,1.0,1.0,9,12,0.0
@@ -6398,13 +6398,13 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 6397,CZ_Hydro_Reservoir,CZ_E_Balance,2050,2,1.0,1.0,9,12,0.0
 6398,CZ_Hydro_Reservoir,CZ_E_Balance,2050,2,1.0,1.0,13,16,0.0
 6399,CZ_Hydro_Reservoir,CZ_E_Balance,2050,2,1.0,1.0,17,20,0.0
-6400,CZ_Hydro_Reservoir,CZ_E_Balance,2050,2,1.0,1.0,21,24,0.5793086891467495
+6400,CZ_Hydro_Reservoir,CZ_E_Balance,2050,2,1.0,1.0,21,24,0.5793086891467484
 6401,CZ_Nuclear,CZ_E_Balance,2050,2,1.0,1.0,1,4,6.983
 6402,CZ_Nuclear,CZ_E_Balance,2050,2,1.0,1.0,5,8,6.983
 6403,CZ_Nuclear,CZ_E_Balance,2050,2,1.0,1.0,9,12,5.518363597919988
 6404,CZ_Nuclear,CZ_E_Balance,2050,2,1.0,1.0,13,16,0.0
 6405,CZ_Nuclear,CZ_E_Balance,2050,2,1.0,1.0,17,20,6.983
-6406,CZ_Nuclear,CZ_E_Balance,2050,2,1.0,1.0,21,24,4.685711690318337
+6406,CZ_Nuclear,CZ_E_Balance,2050,2,1.0,1.0,21,24,4.685711690318338
 6407,CZ_Pump_Hydro_Closed,CZ_E_Balance,2050,2,1.0,1.0,1,4,0.5667115371563067
 6408,CZ_Pump_Hydro_Closed,CZ_E_Balance,2050,2,1.0,1.0,5,8,0.5634309970710696
 6409,CZ_Pump_Hydro_Closed,CZ_E_Balance,2050,2,1.0,1.0,9,12,0.0
@@ -6438,9 +6438,9 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 6437,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,1,1,13.345267368544246
 6438,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,2,2,29.476577572207056
 6439,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,3,3,35.104565106763225
-6440,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,4,4,36.5893773521011
-6441,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,5,5,41.825275846183274
-6442,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,6,6,42.133015032460214
+6440,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,4,4,36.589377352101096
+6441,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,5,5,41.82527584618327
+6442,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,6,6,42.13301503246021
 6443,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,7,7,37.58713490690536
 6444,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,8,8,16.048844461109965
 6445,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,9,9,0.0
@@ -6454,7 +6454,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 6453,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,17,17,0.0
 6454,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,18,18,0.0
 6455,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,19,19,29.949499903457628
-6456,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,20,20,34.0106362917432
+6456,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,20,20,34.01063629174325
 6457,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,21,21,14.721614990591998
 6458,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,22,22,6.463783570863495
 6459,DE_Battery,DE_E_Balance,2050,2,1.0,1.0,23,23,0.0
@@ -7219,7 +7219,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 7218,IT_Pump_Hydro_Open,IT_E_Balance,2050,2,1.0,1.0,5,8,3.254
 7219,IT_Pump_Hydro_Open,IT_E_Balance,2050,2,1.0,1.0,9,12,0.0
 7220,IT_Pump_Hydro_Open,IT_E_Balance,2050,2,1.0,1.0,13,16,0.0
-7221,IT_Pump_Hydro_Open,IT_E_Balance,2050,2,1.0,1.0,17,20,0.021493412296777547
+7221,IT_Pump_Hydro_Open,IT_E_Balance,2050,2,1.0,1.0,17,20,0.021493412296782036
 7222,IT_Pump_Hydro_Open,IT_E_Balance,2050,2,1.0,1.0,21,24,3.254
 7223,IT_Solar,IT_E_Balance,2050,2,1.0,1.0,1,4,0.0
 7224,IT_Solar,IT_E_Balance,2050,2,1.0,1.0,5,8,6.174540302091313
@@ -7697,7 +7697,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 7696,NO_Pump_Hydro_Open,NO_E_Balance,2050,2,1.0,1.0,6,6,0.76
 7697,NO_Pump_Hydro_Open,NO_E_Balance,2050,2,1.0,1.0,7,7,0.76
 7698,NO_Pump_Hydro_Open,NO_E_Balance,2050,2,1.0,1.0,8,8,0.76
-7699,NO_Pump_Hydro_Open,NO_E_Balance,2050,2,1.0,1.0,9,9,0.7083619253432673
+7699,NO_Pump_Hydro_Open,NO_E_Balance,2050,2,1.0,1.0,9,9,0.7083619253433249
 7700,NO_Pump_Hydro_Open,NO_E_Balance,2050,2,1.0,1.0,10,10,0.0
 7701,NO_Pump_Hydro_Open,NO_E_Balance,2050,2,1.0,1.0,11,11,0.0
 7702,NO_Pump_Hydro_Open,NO_E_Balance,2050,2,1.0,1.0,12,12,0.0
@@ -7898,7 +7898,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 7897,PL_Hydro,PL_E_Balance,2050,2,1.0,1.0,19,21,0.34237082350883574
 7898,PL_Hydro,PL_E_Balance,2050,2,1.0,1.0,22,24,0.34237082350883574
 7899,PL_Hydro_Reservoir,PL_E_Balance,2050,2,1.0,1.0,1,3,0.272
-7900,PL_Hydro_Reservoir,PL_E_Balance,2050,2,1.0,1.0,4,6,0.2216922422887269
+7900,PL_Hydro_Reservoir,PL_E_Balance,2050,2,1.0,1.0,4,6,0.22169224228872866
 7901,PL_Hydro_Reservoir,PL_E_Balance,2050,2,1.0,1.0,7,9,0.0
 7902,PL_Hydro_Reservoir,PL_E_Balance,2050,2,1.0,1.0,10,12,0.0
 7903,PL_Hydro_Reservoir,PL_E_Balance,2050,2,1.0,1.0,13,15,0.0
@@ -8023,8 +8023,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 8022,RO_Battery,RO_E_Balance,2050,2,1.0,1.0,5,8,0.0
 8023,RO_Battery,RO_E_Balance,2050,2,1.0,1.0,9,12,0.0
 8024,RO_Battery,RO_E_Balance,2050,2,1.0,1.0,13,16,0.0
-8025,RO_Battery,RO_E_Balance,2050,2,1.0,1.0,17,20,0.5524482200719878
-8026,RO_Battery,RO_E_Balance,2050,2,1.0,1.0,21,24,0.45705177992801227
+8025,RO_Battery,RO_E_Balance,2050,2,1.0,1.0,17,20,0.5524482200719874
+8026,RO_Battery,RO_E_Balance,2050,2,1.0,1.0,21,24,0.4570517799280127
 8027,RO_Coal,RO_E_Balance,2050,2,1.0,1.0,1,4,0.0
 8028,RO_Coal,RO_E_Balance,2050,2,1.0,1.0,5,8,0.0
 8029,RO_Coal,RO_E_Balance,2050,2,1.0,1.0,9,12,0.0
@@ -8077,7 +8077,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 8076,RO_Pump_Hydro_Open,RO_E_Balance,2050,2,1.0,1.0,5,8,0.06762122282532612
 8077,RO_Pump_Hydro_Open,RO_E_Balance,2050,2,1.0,1.0,9,12,0.0
 8078,RO_Pump_Hydro_Open,RO_E_Balance,2050,2,1.0,1.0,13,16,0.0
-8079,RO_Pump_Hydro_Open,RO_E_Balance,2050,2,1.0,1.0,17,20,0.7359268879848031
+8079,RO_Pump_Hydro_Open,RO_E_Balance,2050,2,1.0,1.0,17,20,0.7359268879848035
 8080,RO_Pump_Hydro_Open,RO_E_Balance,2050,2,1.0,1.0,21,24,0.839
 8081,RO_Solar,RO_E_Balance,2050,2,1.0,1.0,1,4,-0.0
 8082,RO_Solar,RO_E_Balance,2050,2,1.0,1.0,5,8,2.3001470730812468
@@ -8214,7 +8214,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 8213,CH_E_Balance,CH_Pump_Hydro_Open,2050,2,1.0,1.0,1,4,0.0
 8214,CH_E_Balance,CH_Pump_Hydro_Open,2050,2,1.0,1.0,5,8,0.0
 8215,CH_E_Balance,CH_Pump_Hydro_Open,2050,2,1.0,1.0,9,12,9.628435138349726
-8216,CH_E_Balance,CH_Pump_Hydro_Open,2050,2,1.0,1.0,13,16,1.4449786569022585
+8216,CH_E_Balance,CH_Pump_Hydro_Open,2050,2,1.0,1.0,13,16,1.4449786569022807
 8217,CH_E_Balance,CH_Pump_Hydro_Open,2050,2,1.0,1.0,17,20,0.0
 8218,CH_E_Balance,CH_Pump_Hydro_Open,2050,2,1.0,1.0,21,24,0.0
 8219,CY_E_Balance,CY_Battery,2050,2,1.0,1.0,1,4,0.0737117610961131
@@ -8320,7 +8320,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 8319,HU_E_Balance,HU_Battery,2050,2,1.0,1.0,9,12,0.0
 8320,HU_E_Balance,HU_Battery,2050,2,1.0,1.0,13,16,0.7155
 8321,HU_E_Balance,HU_Battery,2050,2,1.0,1.0,17,20,0.0
-8322,HU_E_Balance,HU_Battery,2050,2,1.0,1.0,21,24,0.23272580106881202
+8322,HU_E_Balance,HU_Battery,2050,2,1.0,1.0,21,24,0.23272580106881247
 8323,IE_E_Balance,IE_E_Demand,2050,2,1.0,1.0,1,2,5.996293109532321
 8324,IE_E_Balance,IE_E_Demand,2050,2,1.0,1.0,3,4,5.637045129837677
 8325,IE_E_Balance,IE_E_Demand,2050,2,1.0,1.0,5,6,5.588521638906898
@@ -8364,7 +8364,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 8363,NO_E_Balance,NO_Pump_Hydro_Open,2050,2,1.0,1.0,17,17,0.76
 8364,NO_E_Balance,NO_Pump_Hydro_Open,2050,2,1.0,1.0,18,18,0.76
 8365,NO_E_Balance,NO_Pump_Hydro_Open,2050,2,1.0,1.0,19,19,0.76
-8366,NO_E_Balance,NO_Pump_Hydro_Open,2050,2,1.0,1.0,20,20,0.6168516109356119
+8366,NO_E_Balance,NO_Pump_Hydro_Open,2050,2,1.0,1.0,20,20,0.6168516109356688
 8367,NO_E_Balance,NO_Pump_Hydro_Open,2050,2,1.0,1.0,21,21,0.0
 8368,NO_E_Balance,NO_Pump_Hydro_Open,2050,2,1.0,1.0,22,22,0.0
 8369,NO_E_Balance,NO_Pump_Hydro_Open,2050,2,1.0,1.0,23,23,0.0
@@ -8398,7 +8398,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 8397,UK_E_Balance,UK_Battery,2050,2,1.0,1.0,1,1,0.0
 8398,UK_E_Balance,UK_Battery,2050,2,1.0,1.0,2,2,9.191419810415702
 8399,UK_E_Balance,UK_Battery,2050,2,1.0,1.0,3,3,11.121256186067228
-8400,UK_E_Balance,UK_Battery,2050,2,1.0,1.0,4,4,9.143743394125554
+8400,UK_E_Balance,UK_Battery,2050,2,1.0,1.0,4,4,9.143743394125497
 8401,UK_E_Balance,UK_Battery,2050,2,1.0,1.0,5,5,0.06470363972299253
 8402,UK_E_Balance,UK_Battery,2050,2,1.0,1.0,6,6,0.0
 8403,UK_E_Balance,UK_Battery,2050,2,1.0,1.0,7,7,0.0
@@ -8660,8 +8660,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 8659,CH_E_Balance,CH_Battery,2050,2,1.0,1.0,1,4,0.0
 8660,CH_E_Balance,CH_Battery,2050,2,1.0,1.0,5,8,-0.0
 8661,CH_E_Balance,CH_Battery,2050,2,1.0,1.0,9,12,-0.0
-8662,CH_E_Balance,CH_Battery,2050,2,1.0,1.0,13,16,3.230882315112218
-8663,CH_E_Balance,CH_Battery,2050,2,1.0,1.0,17,20,0.5566176848877822
+8662,CH_E_Balance,CH_Battery,2050,2,1.0,1.0,13,16,3.2308823151122135
+8663,CH_E_Balance,CH_Battery,2050,2,1.0,1.0,17,20,0.5566176848877866
 8664,CH_E_Balance,CH_Battery,2050,2,1.0,1.0,21,24,-0.0
 8665,EU_SMR_CCS,PL_H_Demand,2050,2,1.0,1.0,1,1,1.5680576529880401
 8666,EU_SMR_CCS,PL_H_Demand,2050,2,1.0,1.0,2,2,1.5680576529880401
@@ -9305,7 +9305,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 9304,FR_Solar,FR_E_Balance,2050,2,1.0,1.0,19,20,10.97709211263104
 9305,FR_Solar,FR_E_Balance,2050,2,1.0,1.0,21,22,0.13444605084396266
 9306,FR_Solar,FR_E_Balance,2050,2,1.0,1.0,23,24,0.0
-9307,HU_Battery,HU_E_Balance,2050,2,1.0,1.0,1,4,0.23272580106881202
+9307,HU_Battery,HU_E_Balance,2050,2,1.0,1.0,1,4,0.23272580106881247
 9308,HU_Battery,HU_E_Balance,2050,2,1.0,1.0,5,8,-0.0
 9309,HU_Battery,HU_E_Balance,2050,2,1.0,1.0,9,12,-0.0
 9310,HU_Battery,HU_E_Balance,2050,2,1.0,1.0,13,16,0.0
@@ -9722,7 +9722,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 9721,LV_E_Balance,LV_E_Demand,2050,2,1.0,1.0,17,20,0.9268700798520818
 9722,LV_E_Balance,LV_E_Demand,2050,2,1.0,1.0,21,24,0.7720270258890086
 9723,SK_E_Balance,SK_Pump_Hydro_Open,2050,2,1.0,1.0,1,4,0.0
-9724,SK_E_Balance,SK_Pump_Hydro_Open,2050,2,1.0,1.0,5,8,0.06599669669702524
+9724,SK_E_Balance,SK_Pump_Hydro_Open,2050,2,1.0,1.0,5,8,0.06599669669702496
 9725,SK_E_Balance,SK_Pump_Hydro_Open,2050,2,1.0,1.0,9,12,0.276
 9726,SK_E_Balance,SK_Pump_Hydro_Open,2050,2,1.0,1.0,13,16,0.276
 9727,SK_E_Balance,SK_Pump_Hydro_Open,2050,2,1.0,1.0,17,20,0.0
@@ -9759,7 +9759,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 9758,UK_Battery,UK_E_Balance,2050,2,1.0,1.0,6,6,4.980355902720202
 9759,UK_Battery,UK_E_Balance,2050,2,1.0,1.0,7,7,12.932
 9760,UK_Battery,UK_E_Balance,2050,2,1.0,1.0,8,8,3.5691950373781864
-9761,UK_Battery,UK_E_Balance,2050,2,1.0,1.0,9,9,8.039572090233088
+9761,UK_Battery,UK_E_Balance,2050,2,1.0,1.0,9,9,8.03957209023303
 9762,UK_Battery,UK_E_Balance,2050,2,1.0,1.0,10,10,-0.0
 9763,UK_Battery,UK_E_Balance,2050,2,1.0,1.0,11,11,0.0
 9764,UK_Battery,UK_E_Balance,2050,2,1.0,1.0,12,12,0.0
@@ -9775,7 +9775,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 9774,UK_Battery,UK_E_Balance,2050,2,1.0,1.0,22,22,0.0
 9775,UK_Battery,UK_E_Balance,2050,2,1.0,1.0,23,23,6.411504896387818
 9776,UK_Battery,UK_E_Balance,2050,2,1.0,1.0,24,24,0.0
-9777,SK_Nuclear,SK_E_Balance,2050,2,1.0,1.0,1,4,2.8298170799719826
+9777,SK_Nuclear,SK_E_Balance,2050,2,1.0,1.0,1,4,2.8298170799719817
 9778,SK_Nuclear,SK_E_Balance,2050,2,1.0,1.0,5,8,3.096
 9779,SK_Nuclear,SK_E_Balance,2050,2,1.0,1.0,9,12,0.6783298860923793
 9780,SK_Nuclear,SK_E_Balance,2050,2,1.0,1.0,13,16,2.6453342793222525
@@ -10007,7 +10007,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 10006,PL_E_Balance,PL_Pump_Hydro_Closed,2050,2,1.0,1.0,22,24,0.0
 10007,PL_E_Balance,PL_Pump_Hydro_Open,2050,2,1.0,1.0,1,3,0.0
 10008,PL_E_Balance,PL_Pump_Hydro_Open,2050,2,1.0,1.0,4,6,0.0
-10009,PL_E_Balance,PL_Pump_Hydro_Open,2050,2,1.0,1.0,7,9,0.023516322893591995
+10009,PL_E_Balance,PL_Pump_Hydro_Open,2050,2,1.0,1.0,7,9,0.02351632289359203
 10010,PL_E_Balance,PL_Pump_Hydro_Open,2050,2,1.0,1.0,10,12,0.216
 10011,PL_E_Balance,PL_Pump_Hydro_Open,2050,2,1.0,1.0,13,15,0.216
 10012,PL_E_Balance,PL_Pump_Hydro_Open,2050,2,1.0,1.0,16,18,0.216
@@ -10047,7 +10047,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 10046,BE_E_Balance,BE_Battery,2050,2,1.0,1.0,14,14,1.13
 10047,BE_E_Balance,BE_Battery,2050,2,1.0,1.0,15,15,0.5650000000000004
 10048,BE_E_Balance,BE_Battery,2050,2,1.0,1.0,16,16,0.5650000000000008
-10049,BE_E_Balance,BE_Battery,2050,2,1.0,1.0,17,17,0.0
+10049,BE_E_Balance,BE_Battery,2050,2,1.0,1.0,17,17,-0.0
 10050,BE_E_Balance,BE_Battery,2050,2,1.0,1.0,18,18,-0.0
 10051,BE_E_Balance,BE_Battery,2050,2,1.0,1.0,19,19,0.0
 10052,BE_E_Balance,BE_Battery,2050,2,1.0,1.0,20,20,0.0
@@ -10380,7 +10380,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 10379,DE_E_Balance,DE_Pump_Hydro_Open,2050,2,1.0,1.0,15,15,1.644
 10380,DE_E_Balance,DE_Pump_Hydro_Open,2050,2,1.0,1.0,16,16,1.644
 10381,DE_E_Balance,DE_Pump_Hydro_Open,2050,2,1.0,1.0,17,17,1.644
-10382,DE_E_Balance,DE_Pump_Hydro_Open,2050,2,1.0,1.0,18,18,0.7982317569908481
+10382,DE_E_Balance,DE_Pump_Hydro_Open,2050,2,1.0,1.0,18,18,0.798231756990849
 10383,DE_E_Balance,DE_Pump_Hydro_Open,2050,2,1.0,1.0,19,19,0.0
 10384,DE_E_Balance,DE_Pump_Hydro_Open,2050,2,1.0,1.0,20,20,0.0
 10385,DE_E_Balance,DE_Pump_Hydro_Open,2050,2,1.0,1.0,21,21,0.0
@@ -10409,7 +10409,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 10408,HR_Pump_Hydro_Open,HR_E_Balance,2050,2,1.0,1.0,5,8,0.281
 10409,HR_Pump_Hydro_Open,HR_E_Balance,2050,2,1.0,1.0,9,12,0.0
 10410,HR_Pump_Hydro_Open,HR_E_Balance,2050,2,1.0,1.0,13,16,0.0
-10411,HR_Pump_Hydro_Open,HR_E_Balance,2050,2,1.0,1.0,17,20,0.24334686419010598
+10411,HR_Pump_Hydro_Open,HR_E_Balance,2050,2,1.0,1.0,17,20,0.24334686419010665
 10412,HR_Pump_Hydro_Open,HR_E_Balance,2050,2,1.0,1.0,21,24,0.281
 10413,GR_Hydro,GR_E_Balance,2050,2,1.0,1.0,1,4,0.9979287119572835
 10414,GR_Hydro,GR_E_Balance,2050,2,1.0,1.0,5,8,0.9979287119572835
@@ -10517,7 +10517,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 10516,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,2,1.0,1.0,5,8,0.0
 10517,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,2,1.0,1.0,9,12,0.47
 10518,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,2,1.0,1.0,13,16,0.47
-10519,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,2,1.0,1.0,17,20,0.43580155302226486
+10519,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,2,1.0,1.0,17,20,0.4358015530222643
 10520,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,2,1.0,1.0,21,24,0.0
 10521,UK_Pump_Hydro_Closed,UK_E_Balance,2050,2,1.0,1.0,1,1,2.744
 10522,UK_Pump_Hydro_Closed,UK_E_Balance,2050,2,1.0,1.0,2,2,0.0
@@ -10720,7 +10720,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 10719,UK_Nuclear,UK_E_Balance,2050,2,1.0,1.0,1,1,0.0
 10720,UK_Nuclear,UK_E_Balance,2050,2,1.0,1.0,2,2,16.0
 10721,UK_Nuclear,UK_E_Balance,2050,2,1.0,1.0,3,3,16.0
-10722,UK_Nuclear,UK_E_Balance,2050,2,1.0,1.0,4,4,7.941668005634249
+10722,UK_Nuclear,UK_E_Balance,2050,2,1.0,1.0,4,4,7.941668005634192
 10723,UK_Nuclear,UK_E_Balance,2050,2,1.0,1.0,5,5,0.0
 10724,UK_Nuclear,UK_E_Balance,2050,2,1.0,1.0,6,6,0.0
 10725,UK_Nuclear,UK_E_Balance,2050,2,1.0,1.0,7,7,0.0
@@ -10772,7 +10772,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 10771,GR_Wind_Offshore,GR_E_Balance,2050,2,1.0,1.0,17,20,7.37789604046642
 10772,GR_Wind_Offshore,GR_E_Balance,2050,2,1.0,1.0,21,24,7.068754879864739
 10773,AT_E_Balance,DE_E_Balance,2050,3,1.0,1.0,1,4,-7.258252389235489
-10774,AT_E_Balance,DE_E_Balance,2050,3,1.0,1.0,5,8,-11.081013258380935
+10774,AT_E_Balance,DE_E_Balance,2050,3,1.0,1.0,5,8,-11.081013258380938
 10775,AT_E_Balance,DE_E_Balance,2050,3,1.0,1.0,9,12,-5.166696875172856
 10776,AT_E_Balance,DE_E_Balance,2050,3,1.0,1.0,13,16,-11.5
 10777,AT_E_Balance,DE_E_Balance,2050,3,1.0,1.0,17,20,-3.979943632529182
@@ -10873,7 +10873,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 10872,GR_E_Balance,IT_E_Balance,2050,3,1.0,1.0,5,8,2.5
 10873,GR_E_Balance,IT_E_Balance,2050,3,1.0,1.0,9,12,-2.5
 10874,GR_E_Balance,IT_E_Balance,2050,3,1.0,1.0,13,16,-2.5
-10875,GR_E_Balance,IT_E_Balance,2050,3,1.0,1.0,17,20,0.10589327094676082
+10875,GR_E_Balance,IT_E_Balance,2050,3,1.0,1.0,17,20,0.10589327094674661
 10876,GR_E_Balance,IT_E_Balance,2050,3,1.0,1.0,21,24,2.5
 10877,HR_E_Balance,SI_E_Balance,2050,3,1.0,1.0,1,4,-1.462174304138417
 10878,HR_E_Balance,SI_E_Balance,2050,3,1.0,1.0,5,8,-1.569807837415594
@@ -10898,7 +10898,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 10897,IE_E_Balance,UK_E_Balance,2050,3,1.0,1.0,17,18,3.95
 10898,IE_E_Balance,UK_E_Balance,2050,3,1.0,1.0,19,20,3.95
 10899,IE_E_Balance,UK_E_Balance,2050,3,1.0,1.0,21,22,3.95
-10900,IE_E_Balance,UK_E_Balance,2050,3,1.0,1.0,23,24,2.2808661022947447
+10900,IE_E_Balance,UK_E_Balance,2050,3,1.0,1.0,23,24,2.28086610229475
 10901,LT_E_Balance,SE_E_Balance,2050,3,1.0,1.0,1,4,2.3
 10902,LT_E_Balance,SE_E_Balance,2050,3,1.0,1.0,5,8,2.3
 10903,LT_E_Balance,SE_E_Balance,2050,3,1.0,1.0,9,12,2.3
@@ -11015,7 +11015,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11014,DK_E_Balance,DE_E_Balance,2050,3,1.0,1.0,18,18,-9.1
 11015,DK_E_Balance,DE_E_Balance,2050,3,1.0,1.0,19,19,-9.1
 11016,DK_E_Balance,DE_E_Balance,2050,3,1.0,1.0,20,20,-0.18481592954386938
-11017,DK_E_Balance,DE_E_Balance,2050,3,1.0,1.0,21,21,-1.8990439615779966
+11017,DK_E_Balance,DE_E_Balance,2050,3,1.0,1.0,21,21,-1.8990439615780002
 11018,DK_E_Balance,DE_E_Balance,2050,3,1.0,1.0,22,22,-9.1
 11019,DK_E_Balance,DE_E_Balance,2050,3,1.0,1.0,23,23,-9.1
 11020,DK_E_Balance,DE_E_Balance,2050,3,1.0,1.0,24,24,-9.1
@@ -11105,7 +11105,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11104,LU_E_Balance,DE_E_Balance,2050,3,1.0,1.0,21,24,-1.9384490696086254
 11105,PL_E_Balance,DK_E_Balance,2050,3,1.0,1.0,1,3,-0.6
 11106,PL_E_Balance,DK_E_Balance,2050,3,1.0,1.0,4,6,-0.6
-11107,PL_E_Balance,DK_E_Balance,2050,3,1.0,1.0,7,9,-0.32151529446757976
+11107,PL_E_Balance,DK_E_Balance,2050,3,1.0,1.0,7,9,-0.32151529446758
 11108,PL_E_Balance,DK_E_Balance,2050,3,1.0,1.0,10,12,-0.6
 11109,PL_E_Balance,DK_E_Balance,2050,3,1.0,1.0,13,15,-0.6
 11110,PL_E_Balance,DK_E_Balance,2050,3,1.0,1.0,16,18,-0.6
@@ -11116,13 +11116,13 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11115,RO_E_Balance,HU_E_Balance,2050,3,1.0,1.0,9,12,2.7800732711349636
 11116,RO_E_Balance,HU_E_Balance,2050,3,1.0,1.0,13,16,-0.41936685912688176
 11117,RO_E_Balance,HU_E_Balance,2050,3,1.0,1.0,17,20,-1.0212022557587996
-11118,RO_E_Balance,HU_E_Balance,2050,3,1.0,1.0,21,24,-0.022396799421038338
+11118,RO_E_Balance,HU_E_Balance,2050,3,1.0,1.0,21,24,-0.022396799421037672
 11119,SE_E_Balance,DK_E_Balance,2050,3,1.0,1.0,1,4,0.9353680846471808
 11120,SE_E_Balance,DK_E_Balance,2050,3,1.0,1.0,5,8,-4.154639350854014
 11121,SE_E_Balance,DK_E_Balance,2050,3,1.0,1.0,9,12,1.4150988461752796
 11122,SE_E_Balance,DK_E_Balance,2050,3,1.0,1.0,13,16,1.6097808209029818
 11123,SE_E_Balance,DK_E_Balance,2050,3,1.0,1.0,17,20,-8.115
-11124,SE_E_Balance,DK_E_Balance,2050,3,1.0,1.0,21,24,0.57121267832966
+11124,SE_E_Balance,DK_E_Balance,2050,3,1.0,1.0,21,24,0.5712126783296547
 11125,SI_E_Balance,IT_E_Balance,2050,3,1.0,1.0,1,4,-0.201284687026913
 11126,SI_E_Balance,IT_E_Balance,2050,3,1.0,1.0,5,8,-0.38300537727644435
 11127,SI_E_Balance,IT_E_Balance,2050,3,1.0,1.0,9,12,2.153
@@ -11207,7 +11207,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11206,NO_E_Balance,NL_E_Balance,2050,3,1.0,1.0,10,10,-2.7
 11207,NO_E_Balance,NL_E_Balance,2050,3,1.0,1.0,11,11,-2.7
 11208,NO_E_Balance,NL_E_Balance,2050,3,1.0,1.0,12,12,-2.6154107092506322
-11209,NO_E_Balance,NL_E_Balance,2050,3,1.0,1.0,13,13,-1.6331736955797602
+11209,NO_E_Balance,NL_E_Balance,2050,3,1.0,1.0,13,13,-1.6331736955797607
 11210,NO_E_Balance,NL_E_Balance,2050,3,1.0,1.0,14,14,-2.7
 11211,NO_E_Balance,NL_E_Balance,2050,3,1.0,1.0,15,15,-2.7
 11212,NO_E_Balance,NL_E_Balance,2050,3,1.0,1.0,16,16,-2.7
@@ -11226,7 +11226,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11225,PL_E_Balance,DE_E_Balance,2050,3,1.0,1.0,13,15,7.0
 11226,PL_E_Balance,DE_E_Balance,2050,3,1.0,1.0,16,18,6.086567307610663
 11227,PL_E_Balance,DE_E_Balance,2050,3,1.0,1.0,19,21,5.014024474913915
-11228,PL_E_Balance,DE_E_Balance,2050,3,1.0,1.0,22,24,1.002978822567349
+11228,PL_E_Balance,DE_E_Balance,2050,3,1.0,1.0,22,24,1.0029788225673473
 11229,RO_E_Balance,BG_E_Balance,2050,3,1.0,1.0,1,4,-3.19
 11230,RO_E_Balance,BG_E_Balance,2050,3,1.0,1.0,5,8,-3.19
 11231,RO_E_Balance,BG_E_Balance,2050,3,1.0,1.0,9,12,-2.053880008026019
@@ -11238,7 +11238,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11237,SE_E_Balance,DE_E_Balance,2050,3,1.0,1.0,9,12,-5.015
 11238,SE_E_Balance,DE_E_Balance,2050,3,1.0,1.0,13,16,-5.015
 11239,SE_E_Balance,DE_E_Balance,2050,3,1.0,1.0,17,20,2.994574930497926
-11240,SE_E_Balance,DE_E_Balance,2050,3,1.0,1.0,21,24,-4.617556639118792
+11240,SE_E_Balance,DE_E_Balance,2050,3,1.0,1.0,21,24,-4.617556639118787
 11241,SI_E_Balance,AT_E_Balance,2050,3,1.0,1.0,1,4,-2.95
 11242,SI_E_Balance,AT_E_Balance,2050,3,1.0,1.0,5,8,-2.95
 11243,SI_E_Balance,AT_E_Balance,2050,3,1.0,1.0,9,12,-2.95
@@ -11250,7 +11250,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11249,SK_E_Balance,HU_E_Balance,2050,3,1.0,1.0,9,12,-3.6165439180640915
 11250,SK_E_Balance,HU_E_Balance,2050,3,1.0,1.0,13,16,-1.2681675274592195
 11251,SK_E_Balance,HU_E_Balance,2050,3,1.0,1.0,17,20,3.8593499506335016
-11252,SK_E_Balance,HU_E_Balance,2050,3,1.0,1.0,21,24,1.3284391381593297
+11252,SK_E_Balance,HU_E_Balance,2050,3,1.0,1.0,21,24,1.328439138159329
 11253,UK_E_Balance,FR_E_Balance,2050,3,1.0,1.0,1,2,8.15
 11254,UK_E_Balance,FR_E_Balance,2050,3,1.0,1.0,3,4,-2.5081605515573653
 11255,UK_E_Balance,FR_E_Balance,2050,3,1.0,1.0,5,6,5.770520830288777
@@ -11322,7 +11322,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11321,SK_E_Balance,CZ_E_Balance,2050,3,1.0,1.0,9,12,0.21141837374205985
 11322,SK_E_Balance,CZ_E_Balance,2050,3,1.0,1.0,13,16,-2.0042694120579774
 11323,SK_E_Balance,CZ_E_Balance,2050,3,1.0,1.0,17,20,-3.3
-11324,SK_E_Balance,CZ_E_Balance,2050,3,1.0,1.0,21,24,-1.8954042491239302
+11324,SK_E_Balance,CZ_E_Balance,2050,3,1.0,1.0,21,24,-1.89540424912393
 11325,UK_E_Balance,DK_E_Balance,2050,3,1.0,1.0,1,1,-2.712106852133578
 11326,UK_E_Balance,DK_E_Balance,2050,3,1.0,1.0,2,2,-2.8
 11327,UK_E_Balance,DK_E_Balance,2050,3,1.0,1.0,3,3,-2.699015936883032
@@ -11345,7 +11345,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11344,UK_E_Balance,DK_E_Balance,2050,3,1.0,1.0,20,20,-2.8
 11345,UK_E_Balance,DK_E_Balance,2050,3,1.0,1.0,21,21,-2.8
 11346,UK_E_Balance,DK_E_Balance,2050,3,1.0,1.0,22,22,-2.8
-11347,UK_E_Balance,DK_E_Balance,2050,3,1.0,1.0,23,23,-2.2668038997525244
+11347,UK_E_Balance,DK_E_Balance,2050,3,1.0,1.0,23,23,-2.266803899752519
 11348,UK_E_Balance,DK_E_Balance,2050,3,1.0,1.0,24,24,-2.8
 11349,IT_E_Balance,AT_E_Balance,2050,3,1.0,1.0,1,4,-2.525
 11350,IT_E_Balance,AT_E_Balance,2050,3,1.0,1.0,5,8,-2.525
@@ -11612,11 +11612,11 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11611,BG_Hydro,BG_E_Balance,2050,3,1.0,1.0,17,20,0.5453830746745121
 11612,BG_Hydro,BG_E_Balance,2050,3,1.0,1.0,21,24,0.5453830746745121
 11613,BG_Hydro_Reservoir,BG_E_Balance,2050,3,1.0,1.0,1,4,1.281
-11614,BG_Hydro_Reservoir,BG_E_Balance,2050,3,1.0,1.0,5,8,1.254970811027922
+11614,BG_Hydro_Reservoir,BG_E_Balance,2050,3,1.0,1.0,5,8,1.2549708110279223
 11615,BG_Hydro_Reservoir,BG_E_Balance,2050,3,1.0,1.0,9,12,0.0
 11616,BG_Hydro_Reservoir,BG_E_Balance,2050,3,1.0,1.0,13,16,0.0
 11617,BG_Hydro_Reservoir,BG_E_Balance,2050,3,1.0,1.0,17,20,1.281
-11618,BG_Hydro_Reservoir,BG_E_Balance,2050,3,1.0,1.0,21,24,0.19724951846737157
+11618,BG_Hydro_Reservoir,BG_E_Balance,2050,3,1.0,1.0,21,24,0.1972495184673711
 11619,BG_Nuclear,BG_E_Balance,2050,3,1.0,1.0,1,4,0.0
 11620,BG_Nuclear,BG_E_Balance,2050,3,1.0,1.0,5,8,0.0
 11621,BG_Nuclear,BG_E_Balance,2050,3,1.0,1.0,9,12,0.0
@@ -11634,9 +11634,9 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11633,BG_Pump_Hydro_Closed,BG_E_Balance,2050,3,1.0,1.0,9,12,0.0
 11634,BG_Pump_Hydro_Closed,BG_E_Balance,2050,3,1.0,1.0,13,16,0.0
 11635,BG_Pump_Hydro_Closed,BG_E_Balance,2050,3,1.0,1.0,17,20,0.864
-11636,BG_Pump_Hydro_Closed,BG_E_Balance,2050,3,1.0,1.0,21,24,0.3608312514525853
+11636,BG_Pump_Hydro_Closed,BG_E_Balance,2050,3,1.0,1.0,21,24,0.36083125145258543
 11637,BG_Pump_Hydro_Open,BG_E_Balance,2050,3,1.0,1.0,1,4,0.535
-11638,BG_Pump_Hydro_Open,BG_E_Balance,2050,3,1.0,1.0,5,8,0.006558056280564009
+11638,BG_Pump_Hydro_Open,BG_E_Balance,2050,3,1.0,1.0,5,8,0.0065580562805639285
 11639,BG_Pump_Hydro_Open,BG_E_Balance,2050,3,1.0,1.0,9,12,0.0
 11640,BG_Pump_Hydro_Open,BG_E_Balance,2050,3,1.0,1.0,13,16,0.0
 11641,BG_Pump_Hydro_Open,BG_E_Balance,2050,3,1.0,1.0,17,20,0.535
@@ -11687,7 +11687,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11686,CH_Pump_Hydro_Closed,CH_E_Balance,2050,3,1.0,1.0,5,8,2.17
 11687,CH_Pump_Hydro_Closed,CH_E_Balance,2050,3,1.0,1.0,9,12,0.0
 11688,CH_Pump_Hydro_Closed,CH_E_Balance,2050,3,1.0,1.0,13,16,0.0
-11689,CH_Pump_Hydro_Closed,CH_E_Balance,2050,3,1.0,1.0,17,20,1.955104325423381
+11689,CH_Pump_Hydro_Closed,CH_E_Balance,2050,3,1.0,1.0,17,20,1.9551043254233806
 11690,CH_Pump_Hydro_Closed,CH_E_Balance,2050,3,1.0,1.0,21,24,0.0
 11691,CH_Pump_Hydro_Open,CH_E_Balance,2050,3,1.0,1.0,1,4,0.08218869299511411
 11692,CH_Pump_Hydro_Open,CH_E_Balance,2050,3,1.0,1.0,5,8,1.1477667965615197
@@ -11784,7 +11784,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11783,CZ_Hydro_Reservoir,CZ_E_Balance,2050,3,1.0,1.0,9,12,0.0
 11784,CZ_Hydro_Reservoir,CZ_E_Balance,2050,3,1.0,1.0,13,16,0.0
 11785,CZ_Hydro_Reservoir,CZ_E_Balance,2050,3,1.0,1.0,17,20,0.2196784890318173
-11786,CZ_Hydro_Reservoir,CZ_E_Balance,2050,3,1.0,1.0,21,24,0.48878839531030205
+11786,CZ_Hydro_Reservoir,CZ_E_Balance,2050,3,1.0,1.0,21,24,0.4887883953103019
 11787,CZ_Nuclear,CZ_E_Balance,2050,3,1.0,1.0,1,4,1.9535635306994086
 11788,CZ_Nuclear,CZ_E_Balance,2050,3,1.0,1.0,5,8,4.760566915845163
 11789,CZ_Nuclear,CZ_E_Balance,2050,3,1.0,1.0,9,12,0.0
@@ -11994,9 +11994,9 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 11993,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,3,3,7.036087096477232
 11994,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,4,4,0.0
 11995,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,5,5,0.0
-11996,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,6,6,1.9829693275567917
+11996,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,6,6,1.9829693275567952
 11997,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,7,7,7.382
-11998,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,8,8,6.874342384152159
+11998,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,8,8,6.874342384152163
 11999,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,9,9,0.0
 12000,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,10,10,0.0
 12001,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,11,11,0.0
@@ -12010,7 +12010,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 12009,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,19,19,7.382
 12010,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,20,20,7.382
 12011,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,21,21,7.382
-12012,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,22,22,5.227659336258357
+12012,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,22,22,5.227659336258354
 12013,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,23,23,0.0
 12014,DE_Pump_Hydro_Closed,DE_E_Balance,2050,3,1.0,1.0,24,24,0.0
 12015,DE_Pump_Hydro_Open,DE_E_Balance,2050,3,1.0,1.0,1,1,1.644
@@ -12019,7 +12019,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 12018,DE_Pump_Hydro_Open,DE_E_Balance,2050,3,1.0,1.0,4,4,0.0
 12019,DE_Pump_Hydro_Open,DE_E_Balance,2050,3,1.0,1.0,5,5,1.644
 12020,DE_Pump_Hydro_Open,DE_E_Balance,2050,3,1.0,1.0,6,6,1.644
-12021,DE_Pump_Hydro_Open,DE_E_Balance,2050,3,1.0,1.0,7,7,0.7482968085411135
+12021,DE_Pump_Hydro_Open,DE_E_Balance,2050,3,1.0,1.0,7,7,0.748296808541117
 12022,DE_Pump_Hydro_Open,DE_E_Balance,2050,3,1.0,1.0,8,8,1.644
 12023,DE_Pump_Hydro_Open,DE_E_Balance,2050,3,1.0,1.0,9,9,0.0
 12024,DE_Pump_Hydro_Open,DE_E_Balance,2050,3,1.0,1.0,10,10,0.0
@@ -12273,10 +12273,10 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 12272,DK_Wind_Offshore,DK_E_Balance,2050,3,1.0,1.0,18,18,9.984912551263417
 12273,DK_Wind_Offshore,DK_E_Balance,2050,3,1.0,1.0,19,19,9.78762403600675
 12274,DK_Wind_Offshore,DK_E_Balance,2050,3,1.0,1.0,20,20,18.49678326087821
-12275,DK_Wind_Offshore,DK_E_Balance,2050,3,1.0,1.0,21,21,7.9710099666017245
-12276,DK_Wind_Offshore,DK_E_Balance,2050,3,1.0,1.0,22,22,0.6821383233420097
+12275,DK_Wind_Offshore,DK_E_Balance,2050,3,1.0,1.0,21,21,7.971009966601726
+12276,DK_Wind_Offshore,DK_E_Balance,2050,3,1.0,1.0,22,22,0.6821383233420151
 12277,DK_Wind_Offshore,DK_E_Balance,2050,3,1.0,1.0,23,23,0.0
-12278,DK_Wind_Offshore,DK_E_Balance,2050,3,1.0,1.0,24,24,0.3760352666216953
+12278,DK_Wind_Offshore,DK_E_Balance,2050,3,1.0,1.0,24,24,0.3760352666217006
 12279,DK_Wind_Onshore,DK_E_Balance,2050,3,1.0,1.0,1,1,0.0
 12280,DK_Wind_Onshore,DK_E_Balance,2050,3,1.0,1.0,2,2,0.0
 12281,DK_Wind_Onshore,DK_E_Balance,2050,3,1.0,1.0,3,3,0.0
@@ -12284,7 +12284,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 12283,DK_Wind_Onshore,DK_E_Balance,2050,3,1.0,1.0,5,5,0.0
 12284,DK_Wind_Onshore,DK_E_Balance,2050,3,1.0,1.0,6,6,0.0
 12285,DK_Wind_Onshore,DK_E_Balance,2050,3,1.0,1.0,7,7,0.0
-12286,DK_Wind_Onshore,DK_E_Balance,2050,3,1.0,1.0,8,8,0.05280127667792911
+12286,DK_Wind_Onshore,DK_E_Balance,2050,3,1.0,1.0,8,8,0.052801276677930886
 12287,DK_Wind_Onshore,DK_E_Balance,2050,3,1.0,1.0,9,9,0.0
 12288,DK_Wind_Onshore,DK_E_Balance,2050,3,1.0,1.0,10,10,0.0
 12289,DK_Wind_Onshore,DK_E_Balance,2050,3,1.0,1.0,11,11,0.3869937987437835
@@ -12497,7 +12497,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 12496,FI_Hydro_Reservoir,FI_E_Balance,2050,3,1.0,1.0,5,8,3.237
 12497,FI_Hydro_Reservoir,FI_E_Balance,2050,3,1.0,1.0,9,12,3.237
 12498,FI_Hydro_Reservoir,FI_E_Balance,2050,3,1.0,1.0,13,16,3.237
-12499,FI_Hydro_Reservoir,FI_E_Balance,2050,3,1.0,1.0,17,20,2.09176900174382
+12499,FI_Hydro_Reservoir,FI_E_Balance,2050,3,1.0,1.0,17,20,2.091769001743821
 12500,FI_Hydro_Reservoir,FI_E_Balance,2050,3,1.0,1.0,21,24,3.237
 12501,FI_Nuclear,FI_E_Balance,2050,3,1.0,1.0,1,4,0.0
 12502,FI_Nuclear,FI_E_Balance,2050,3,1.0,1.0,5,8,0.0
@@ -12540,7 +12540,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 12539,IE_Wind_Offshore,IE_E_Balance,2050,3,1.0,1.0,17,18,9.672175120447204
 12540,IE_Wind_Offshore,IE_E_Balance,2050,3,1.0,1.0,19,20,9.314926129121933
 12541,IE_Wind_Offshore,IE_E_Balance,2050,3,1.0,1.0,21,22,8.327740449287674
-12542,IE_Wind_Offshore,IE_E_Balance,2050,3,1.0,1.0,23,24,6.006484045635089
+12542,IE_Wind_Offshore,IE_E_Balance,2050,3,1.0,1.0,23,24,6.006484045635096
 12543,IE_Wind_Onshore,IE_E_Balance,2050,3,1.0,1.0,1,2,9.005110034295939
 12544,IE_Wind_Onshore,IE_E_Balance,2050,3,1.0,1.0,3,4,7.195006456456058
 12545,IE_Wind_Onshore,IE_E_Balance,2050,3,1.0,1.0,5,6,9.053064062267635
@@ -13302,7 +13302,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 13301,PL_Hydro_Reservoir,PL_E_Balance,2050,3,1.0,1.0,13,15,0.0
 13302,PL_Hydro_Reservoir,PL_E_Balance,2050,3,1.0,1.0,16,18,0.0
 13303,PL_Hydro_Reservoir,PL_E_Balance,2050,3,1.0,1.0,19,21,0.272
-13304,PL_Hydro_Reservoir,PL_E_Balance,2050,3,1.0,1.0,22,24,0.06357202813181458
+13304,PL_Hydro_Reservoir,PL_E_Balance,2050,3,1.0,1.0,22,24,0.06357202813181283
 13305,PL_Pump_Hydro_Closed,PL_E_Balance,2050,3,1.0,1.0,1,3,1.323
 13306,PL_Pump_Hydro_Closed,PL_E_Balance,2050,3,1.0,1.0,4,6,1.323
 13307,PL_Pump_Hydro_Closed,PL_E_Balance,2050,3,1.0,1.0,7,9,0.0
@@ -13313,7 +13313,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 13312,PL_Pump_Hydro_Closed,PL_E_Balance,2050,3,1.0,1.0,22,24,1.3003437522335821
 13313,PL_Pump_Hydro_Open,PL_E_Balance,2050,3,1.0,1.0,1,3,0.216
 13314,PL_Pump_Hydro_Open,PL_E_Balance,2050,3,1.0,1.0,4,6,0.216
-13315,PL_Pump_Hydro_Open,PL_E_Balance,2050,3,1.0,1.0,7,9,0.0332013141240469
+13315,PL_Pump_Hydro_Open,PL_E_Balance,2050,3,1.0,1.0,7,9,0.03320131412404672
 13316,PL_Pump_Hydro_Open,PL_E_Balance,2050,3,1.0,1.0,10,12,0.0
 13317,PL_Pump_Hydro_Open,PL_E_Balance,2050,3,1.0,1.0,13,15,0.0
 13318,PL_Pump_Hydro_Open,PL_E_Balance,2050,3,1.0,1.0,16,18,0.0
@@ -13417,7 +13417,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 13416,PT_electrolyzer,PT_H_Demand,2050,3,1.0,1.0,13,16,3.515981735
 13417,PT_electrolyzer,PT_H_Demand,2050,3,1.0,1.0,17,20,3.515981735
 13418,PT_electrolyzer,PT_H_Demand,2050,3,1.0,1.0,21,24,3.515981735
-13419,RO_Battery,RO_E_Balance,2050,3,1.0,1.0,1,4,0.45010997688904464
+13419,RO_Battery,RO_E_Balance,2050,3,1.0,1.0,1,4,0.450109976889044
 13420,RO_Battery,RO_E_Balance,2050,3,1.0,1.0,5,8,0.0
 13421,RO_Battery,RO_E_Balance,2050,3,1.0,1.0,9,12,0.0
 13422,RO_Battery,RO_E_Balance,2050,3,1.0,1.0,13,16,0.0
@@ -13459,7 +13459,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 13458,RO_Hydro_Reservoir,RO_E_Balance,2050,3,1.0,1.0,13,16,0.0
 13459,RO_Hydro_Reservoir,RO_E_Balance,2050,3,1.0,1.0,17,20,2.579
 13460,RO_Hydro_Reservoir,RO_E_Balance,2050,3,1.0,1.0,21,24,0.0
-13461,RO_Nuclear,RO_E_Balance,2050,3,1.0,1.0,1,4,0.3545436201751371
+13461,RO_Nuclear,RO_E_Balance,2050,3,1.0,1.0,1,4,0.35454362017513796
 13462,RO_Nuclear,RO_E_Balance,2050,3,1.0,1.0,5,8,0.0
 13463,RO_Nuclear,RO_E_Balance,2050,3,1.0,1.0,9,12,0.0
 13464,RO_Nuclear,RO_E_Balance,2050,3,1.0,1.0,13,16,0.0
@@ -13598,7 +13598,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 13597,UK_E_Balance,UK_E_Demand,2050,3,1.0,1.0,23,23,72.20941510594113
 13598,UK_E_Balance,UK_E_Demand,2050,3,1.0,1.0,24,24,64.18345636517479
 13599,AT_E_Balance,AT_Pump_Hydro_Open,2050,3,1.0,1.0,1,4,0.6228487005373617
-13600,AT_E_Balance,AT_Pump_Hydro_Open,2050,3,1.0,1.0,5,8,2.7119411748479476
+13600,AT_E_Balance,AT_Pump_Hydro_Open,2050,3,1.0,1.0,5,8,2.711941174847951
 13601,AT_E_Balance,AT_Pump_Hydro_Open,2050,3,1.0,1.0,9,12,5.793
 13602,AT_E_Balance,AT_Pump_Hydro_Open,2050,3,1.0,1.0,13,16,5.793
 13603,AT_E_Balance,AT_Pump_Hydro_Open,2050,3,1.0,1.0,17,20,0.0
@@ -13631,11 +13631,11 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 13630,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,2,2,0.0
 13631,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,3,3,0.0
 13632,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,4,4,1.6363590782862598
-13633,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,5,5,0.30678226065773695
+13633,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,5,5,0.3067822606577332
 13634,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,6,6,0.0
 13635,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,7,7,0.0
 13636,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,8,8,0.0
-13637,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,9,9,3.185677013599431
+13637,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,9,9,3.1856770135994283
 13638,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,10,10,7.382
 13639,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,11,11,7.382
 13640,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,12,12,7.382
@@ -13649,8 +13649,8 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 13648,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,20,20,0.0
 13649,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,21,21,0.0
 13650,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,22,22,0.0
-13651,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,23,23,5.352746167328232
-13652,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,24,24,3.8109973066986416
+13651,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,23,23,5.35274616732824
+13652,DE_E_Balance,DE_Pump_Hydro_Closed,2050,3,1.0,1.0,24,24,3.810997306698646
 13653,ES_E_Balance,ES_Pump_Hydro_Closed,2050,3,1.0,1.0,1,3,0.0
 13654,ES_E_Balance,ES_Pump_Hydro_Closed,2050,3,1.0,1.0,4,6,0.0
 13655,ES_E_Balance,ES_Pump_Hydro_Closed,2050,3,1.0,1.0,7,9,0.0
@@ -13755,7 +13755,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 13754,NO_E_Balance,NO_Pump_Hydro_Open,2050,3,1.0,1.0,10,10,0.0
 13755,NO_E_Balance,NO_Pump_Hydro_Open,2050,3,1.0,1.0,11,11,0.1122877914378364
 13756,NO_E_Balance,NO_Pump_Hydro_Open,2050,3,1.0,1.0,12,12,0.76
-13757,NO_E_Balance,NO_Pump_Hydro_Open,2050,3,1.0,1.0,13,13,0.20536285491212428
+13757,NO_E_Balance,NO_Pump_Hydro_Open,2050,3,1.0,1.0,13,13,0.20536285491212472
 13758,NO_E_Balance,NO_Pump_Hydro_Open,2050,3,1.0,1.0,14,14,0.76
 13759,NO_E_Balance,NO_Pump_Hydro_Open,2050,3,1.0,1.0,15,15,0.7140175949878511
 13760,NO_E_Balance,NO_Pump_Hydro_Open,2050,3,1.0,1.0,16,16,0.0
@@ -13780,7 +13780,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 13779,RO_E_Balance,RO_Battery,2050,3,1.0,1.0,9,12,-0.0
 13780,RO_E_Balance,RO_Battery,2050,3,1.0,1.0,13,16,1.0095
 13781,RO_E_Balance,RO_Battery,2050,3,1.0,1.0,17,20,0.0
-13782,RO_E_Balance,RO_Battery,2050,3,1.0,1.0,21,24,0.45010997688904464
+13782,RO_E_Balance,RO_Battery,2050,3,1.0,1.0,21,24,0.450109976889044
 13783,SI_E_Balance,SI_Battery,2050,3,1.0,1.0,1,4,0.0
 13784,SI_E_Balance,SI_Battery,2050,3,1.0,1.0,5,8,0.0
 13785,SI_E_Balance,SI_Battery,2050,3,1.0,1.0,9,12,0.0
@@ -14907,7 +14907,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 14906,FI_Wind_Onshore,FI_E_Balance,2050,3,1.0,1.0,5,8,2.638542292298868
 14907,FI_Wind_Onshore,FI_E_Balance,2050,3,1.0,1.0,9,12,3.330293354518388
 14908,FI_Wind_Onshore,FI_E_Balance,2050,3,1.0,1.0,13,16,3.9579528428362805
-14909,FI_Wind_Onshore,FI_E_Balance,2050,3,1.0,1.0,17,20,5.979138947135318
+14909,FI_Wind_Onshore,FI_E_Balance,2050,3,1.0,1.0,17,20,5.979138947135314
 14910,FI_Wind_Onshore,FI_E_Balance,2050,3,1.0,1.0,21,24,1.8072582978963032
 14911,HU_electrolyzer,HU_H_Demand,2050,3,1.0,1.0,1,4,4.212328767
 14912,HU_electrolyzer,HU_H_Demand,2050,3,1.0,1.0,5,8,4.212328767
@@ -15075,7 +15075,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 15074,IT_E_Balance,IT_Pump_Hydro_Open,2050,3,1.0,1.0,5,8,0.0
 15075,IT_E_Balance,IT_Pump_Hydro_Open,2050,3,1.0,1.0,9,12,3.254
 15076,IT_E_Balance,IT_Pump_Hydro_Open,2050,3,1.0,1.0,13,16,3.254
-15077,IT_E_Balance,IT_Pump_Hydro_Open,2050,3,1.0,1.0,17,20,2.4640482993921666
+15077,IT_E_Balance,IT_Pump_Hydro_Open,2050,3,1.0,1.0,17,20,2.4640482993921617
 15078,IT_E_Balance,IT_Pump_Hydro_Open,2050,3,1.0,1.0,21,24,0.0
 15079,IE_Pump_Hydro_Closed,IE_E_Balance,2050,3,1.0,1.0,1,2,0.292
 15080,IE_Pump_Hydro_Closed,IE_E_Balance,2050,3,1.0,1.0,3,4,0.0
@@ -15118,12 +15118,12 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 15117,SK_E_Balance,SK_Pump_Hydro_Open,2050,3,1.0,1.0,9,12,0.276
 15118,SK_E_Balance,SK_Pump_Hydro_Open,2050,3,1.0,1.0,13,16,0.276
 15119,SK_E_Balance,SK_Pump_Hydro_Open,2050,3,1.0,1.0,17,20,0.0
-15120,SK_E_Balance,SK_Pump_Hydro_Open,2050,3,1.0,1.0,21,24,0.14903212319152262
+15120,SK_E_Balance,SK_Pump_Hydro_Open,2050,3,1.0,1.0,21,24,0.14903212319152312
 15121,GR_Wind_Onshore,GR_E_Balance,2050,3,1.0,1.0,1,4,8.29529287191
 15122,GR_Wind_Onshore,GR_E_Balance,2050,3,1.0,1.0,5,8,8.480208276044998
 15123,GR_Wind_Onshore,GR_E_Balance,2050,3,1.0,1.0,9,12,0.0
 15124,GR_Wind_Onshore,GR_E_Balance,2050,3,1.0,1.0,13,16,0.0
-15125,GR_Wind_Onshore,GR_E_Balance,2050,3,1.0,1.0,17,20,7.785999909958548
+15125,GR_Wind_Onshore,GR_E_Balance,2050,3,1.0,1.0,17,20,7.785999909958534
 15126,GR_Wind_Onshore,GR_E_Balance,2050,3,1.0,1.0,21,24,5.986570761115496
 15127,OBZLL_E_Balance,OBZLL_electrolyzer,2050,3,1.0,1.0,1,1,-0.0
 15128,OBZLL_E_Balance,OBZLL_electrolyzer,2050,3,1.0,1.0,2,2,-0.0
@@ -15185,12 +15185,12 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 15184,LT_E_Balance,LT_electrolyzer,2050,3,1.0,1.0,13,16,2.066210046
 15185,LT_E_Balance,LT_electrolyzer,2050,3,1.0,1.0,17,20,2.066210046
 15186,LT_E_Balance,LT_electrolyzer,2050,3,1.0,1.0,21,24,2.066210046
-15187,GR_Hydro_Reservoir,GR_E_Balance,2050,3,1.0,1.0,1,4,0.45912768193154674
+15187,GR_Hydro_Reservoir,GR_E_Balance,2050,3,1.0,1.0,1,4,0.45912768193154685
 15188,GR_Hydro_Reservoir,GR_E_Balance,2050,3,1.0,1.0,5,8,2.419157629999809
 15189,GR_Hydro_Reservoir,GR_E_Balance,2050,3,1.0,1.0,9,12,0.0
 15190,GR_Hydro_Reservoir,GR_E_Balance,2050,3,1.0,1.0,13,16,2.744
 15191,GR_Hydro_Reservoir,GR_E_Balance,2050,3,1.0,1.0,17,20,0.0
-15192,GR_Hydro_Reservoir,GR_E_Balance,2050,3,1.0,1.0,21,24,2.474777985522791
+15192,GR_Hydro_Reservoir,GR_E_Balance,2050,3,1.0,1.0,21,24,2.4747779855227927
 15193,MT_E_Balance,MT_E_Demand,2050,3,1.0,1.0,1,4,0.24051527466534847
 15194,MT_E_Balance,MT_E_Demand,2050,3,1.0,1.0,5,8,0.2318736619319403
 15195,MT_E_Balance,MT_E_Demand,2050,3,1.0,1.0,9,12,0.31605933878835574
@@ -15530,7 +15530,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 15529,UK_Wind_Offshore,UK_E_Balance,2050,3,1.0,1.0,21,21,82.32750132671465
 15530,UK_Wind_Offshore,UK_E_Balance,2050,3,1.0,1.0,22,22,82.30738461766795
 15531,UK_Wind_Offshore,UK_E_Balance,2050,3,1.0,1.0,23,23,81.15504884452936
-15532,UK_Wind_Offshore,UK_E_Balance,2050,3,1.0,1.0,24,24,69.72523907589809
+15532,UK_Wind_Offshore,UK_E_Balance,2050,3,1.0,1.0,24,24,69.72523907589807
 15533,UK_Nuclear,UK_E_Balance,2050,3,1.0,1.0,1,1,0.0
 15534,UK_Nuclear,UK_E_Balance,2050,3,1.0,1.0,2,2,0.0
 15535,UK_Nuclear,UK_E_Balance,2050,3,1.0,1.0,3,3,0.0
@@ -15693,7 +15693,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 15692,HR_Wind_Onshore,HR_E_Balance,2050,3,1.0,1.0,5,8,1.164999891834
 15693,HR_Wind_Onshore,HR_E_Balance,2050,3,1.0,1.0,9,12,0.8213551855263185
 15694,HR_Wind_Onshore,HR_E_Balance,2050,3,1.0,1.0,13,16,0.8315873735975173
-15695,HR_Wind_Onshore,HR_E_Balance,2050,3,1.0,1.0,17,20,0.5457169876064383
+15695,HR_Wind_Onshore,HR_E_Balance,2050,3,1.0,1.0,17,20,0.5457169876064385
 15696,HR_Wind_Onshore,HR_E_Balance,2050,3,1.0,1.0,21,24,1.1963698264499998
 15697,SK_Hydro,SK_E_Balance,2050,3,1.0,1.0,1,4,0.49142664576551986
 15698,SK_Hydro,SK_E_Balance,2050,3,1.0,1.0,5,8,0.49142664576551986
@@ -15754,7 +15754,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 15753,UK_Pump_Hydro_Closed,UK_E_Balance,2050,3,1.0,1.0,21,21,2.744
 15754,UK_Pump_Hydro_Closed,UK_E_Balance,2050,3,1.0,1.0,22,22,2.744
 15755,UK_Pump_Hydro_Closed,UK_E_Balance,2050,3,1.0,1.0,23,23,0.0
-15756,UK_Pump_Hydro_Closed,UK_E_Balance,2050,3,1.0,1.0,24,24,0.5728733910400208
+15756,UK_Pump_Hydro_Closed,UK_E_Balance,2050,3,1.0,1.0,24,24,0.5728733910400207
 15757,UK_Hydro,UK_E_Balance,2050,3,1.0,1.0,1,1,0.6659937359961763
 15758,UK_Hydro,UK_E_Balance,2050,3,1.0,1.0,2,2,0.6659937359961763
 15759,UK_Hydro,UK_E_Balance,2050,3,1.0,1.0,3,3,0.6659937359961763
@@ -16002,7 +16002,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 16001,FR_Hydro_Reservoir,FR_E_Balance,2050,3,1.0,1.0,21,22,0.0
 16002,FR_Hydro_Reservoir,FR_E_Balance,2050,3,1.0,1.0,23,24,0.0
 16003,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,3,1.0,1.0,1,4,0.0
-16004,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,3,1.0,1.0,5,8,0.4303035965198092
+16004,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,3,1.0,1.0,5,8,0.43030359651980943
 16005,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,3,1.0,1.0,9,12,0.47
 16006,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,3,1.0,1.0,13,16,0.47
 16007,CZ_E_Balance,CZ_Pump_Hydro_Open,2050,3,1.0,1.0,17,20,0.0
@@ -16033,7 +16033,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 16032,DE_E_Balance,DE_Pump_Hydro_Open,2050,3,1.0,1.0,6,6,0.0
 16033,DE_E_Balance,DE_Pump_Hydro_Open,2050,3,1.0,1.0,7,7,0.0
 16034,DE_E_Balance,DE_Pump_Hydro_Open,2050,3,1.0,1.0,8,8,0.0
-16035,DE_E_Balance,DE_Pump_Hydro_Open,2050,3,1.0,1.0,9,9,0.8223219470316722
+16035,DE_E_Balance,DE_Pump_Hydro_Open,2050,3,1.0,1.0,9,9,0.8223219470316748
 16036,DE_E_Balance,DE_Pump_Hydro_Open,2050,3,1.0,1.0,10,10,1.644
 16037,DE_E_Balance,DE_Pump_Hydro_Open,2050,3,1.0,1.0,11,11,1.644
 16038,DE_E_Balance,DE_Pump_Hydro_Open,2050,3,1.0,1.0,12,12,1.644
@@ -16065,7 +16065,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 16064,HR_Pump_Hydro_Open,HR_E_Balance,2050,3,1.0,1.0,5,8,0.281
 16065,HR_Pump_Hydro_Open,HR_E_Balance,2050,3,1.0,1.0,9,12,0.0
 16066,HR_Pump_Hydro_Open,HR_E_Balance,2050,3,1.0,1.0,13,16,0.0
-16067,HR_Pump_Hydro_Open,HR_E_Balance,2050,3,1.0,1.0,17,20,0.19146266096433273
+16067,HR_Pump_Hydro_Open,HR_E_Balance,2050,3,1.0,1.0,17,20,0.1914626609643325
 16068,HR_Pump_Hydro_Open,HR_E_Balance,2050,3,1.0,1.0,21,24,0.281
 16069,GR_Hydro,GR_E_Balance,2050,3,1.0,1.0,1,4,0.735617406729745
 16070,GR_Hydro,GR_E_Balance,2050,3,1.0,1.0,5,8,0.735617406729745
@@ -16109,7 +16109,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 16108,HR_E_ENS,HR_E_Demand,2050,3,1.0,1.0,13,16,0.0
 16109,HR_E_ENS,HR_E_Demand,2050,3,1.0,1.0,17,20,0.0
 16110,HR_E_ENS,HR_E_Demand,2050,3,1.0,1.0,21,24,0.0
-16111,GR_E_Balance,GR_Pump_Hydro_Open,2050,3,1.0,1.0,1,4,0.2978019106484918
+16111,GR_E_Balance,GR_Pump_Hydro_Open,2050,3,1.0,1.0,1,4,0.29780191064849193
 16112,GR_E_Balance,GR_Pump_Hydro_Open,2050,3,1.0,1.0,5,8,0.699
 16113,GR_E_Balance,GR_Pump_Hydro_Open,2050,3,1.0,1.0,9,12,0.699
 16114,GR_E_Balance,GR_Pump_Hydro_Open,2050,3,1.0,1.0,13,16,0.0
@@ -16145,7 +16145,7 @@ id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficie
 16144,UK_Solar,UK_E_Balance,2050,3,1.0,1.0,22,22,0.0
 16145,UK_Solar,UK_E_Balance,2050,3,1.0,1.0,23,23,0.0
 16146,UK_Solar,UK_E_Balance,2050,3,1.0,1.0,24,24,0.0
-16147,SK_Hydro_Reservoir,SK_E_Balance,2050,3,1.0,1.0,1,4,0.014400714930448918
+16147,SK_Hydro_Reservoir,SK_E_Balance,2050,3,1.0,1.0,1,4,0.014400714930448907
 16148,SK_Hydro_Reservoir,SK_E_Balance,2050,3,1.0,1.0,5,8,0.021
 16149,SK_Hydro_Reservoir,SK_E_Balance,2050,3,1.0,1.0,9,12,0.0
 16150,SK_Hydro_Reservoir,SK_E_Balance,2050,3,1.0,1.0,13,16,0.0
