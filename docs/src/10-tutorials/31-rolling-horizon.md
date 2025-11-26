@@ -105,7 +105,11 @@ Plots.areaplot!(timestep, -charge; label = "charge")
 The rolling horizon solution is obtained by considering a model in a smaller timeframe, called the "optimisation window".
 We limit the data to only the timesteps inside the optimisation window, solve the model that we obtain, save part of the solution, and move the window forward by some amount.
 
-The "move forward" amount defines how much of the solution we store, and how much we move the window forward.
+The "move forward" value defines how much we move the window forward, and consequently also defines how much of the window solution is saved.
+
+For the current example, we have a time horizon of 1 week. We will use 2 days as the "optimisation window" and a moving window of 1 day.
+The first iteration will solve a 2-day model (days 1 and 2), and we will save the first day as part of the global solution.
+The second iteration will solve a 2-day model (days 2 and 3), and we will save the second day as part of the global solution, and so on.
 
 Some variables from previous windows are used to update relevant parameters.
 Most notably, the initial storage value of the batteries start at a given parameter, but after the first window, it is updated to use the solution obtained in the previous window.
