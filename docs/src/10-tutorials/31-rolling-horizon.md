@@ -113,7 +113,7 @@ Most notably, the initial storage value of the batteries start at a given parame
 This process is repeated until the solution for the complete horizon is computed.
 Since we only save the variables covered by the **"move forward" window**, this is done until the "move forward" window reaches the end of the horizon.
 
-This also means that the optimisation window is larger than the horizon. To handle this, we "loop around" the horizon, i.e., we extend the profiles by defining the profile at `timestep = horizon + X` to be the profile at `X`.
+This also means that the optimisation window might extend beyond the end of the horizon. To handle this, we use the profile looping back to the start of the horizon.
 
 The image below (recreated from the JuMP tutorial) exemplifies the process:
 
