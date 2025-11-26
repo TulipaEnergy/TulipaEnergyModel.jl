@@ -41,7 +41,7 @@ The algorithm works like this:
 1. Loop over each group of (asset, year, rep_period)
 1.1. Loop over each variable in the group: (var_id, var_time_block_start, var_time_block_end)
 1.1.1. Loop over each timestep in var_time_block_start:var_time_block_end
-1.1.1.1. Compute the coefficient of the variable based on the rep_period resolution and the variable efficiency
+1.1.1.1. Compute the coefficient of the variable based on the rep_period resolution and the variable coefficients
 1.1.1.2. Store (var_id, coefficient) in workspace[timestep]
 1.2. Loop over each constraint in the group: (cons_id, cons_time_block_start, cons_time_block_end)
 1.2.1. Aggregate all variables in workspace[timestep] for timestep in the time block to create a list of variable ids and their coefficients [(var_id1, coef1), ...]

@@ -531,11 +531,11 @@ function _create_objective_auxiliary_table(connection, constants)
             -- copied over
             flow_commission.investment_cost,
             flow.capacity,
-            asset_milestone.commodity_price,
-            asset_commission.efficiency,
+            flow_milestone.commodity_price,
+            flow_commission.producer_efficiency,
             flow_milestone.operational_cost,
             -- computed
-            (asset_milestone.commodity_price / asset_commission.efficiency) AS fuel_cost,
+            (flow_milestone.commodity_price / flow_commission.producer_efficiency) AS fuel_cost,
             (fuel_cost + flow_milestone.operational_cost) AS total_variable_cost,
             CASE
                 -- the below closed-form equation does not accept 0 in the denominator when flow.discount_rate = 0
@@ -574,21 +574,6 @@ function _create_objective_auxiliary_table(connection, constants)
         LEFT JOIN flow
             ON flow.from_asset = flow_commission.from_asset
             AND flow.to_asset = flow_commission.to_asset
-        -- We get the asset_milestone from the outgoing asset
-        LEFT JOIN asset_milestone
-            ON flow_milestone.from_asset = asset_milestone.asset
-            AND flow_milestone.milestone_year = asset_milestone.milestone_year
-        /*
-        The below join works for compact/simple/none method.
-        Note normally this condition milestone_year = commission_year does not work for compact method.
-        But here, it means if you use compact method, the fuel cost will ignore the efficiencies where
-        milestone_year != commission_year
-        It makes sense because if you would like to consider efficiencies from different commission years,
-        you should use semi-compact method instead.
-        */
-        LEFT JOIN asset_commission
-            ON flow_milestone.from_asset = asset_commission.asset
-            AND flow_milestone.milestone_year = asset_commission.commission_year
         ",
     )
 
@@ -602,11 +587,11 @@ function _create_objective_auxiliary_table(connection, constants)
             var.milestone_year,
             var.commission_year,
             -- copied over
-            asset_milestone.commodity_price,
-            asset_commission.efficiency,
+            flow_milestone.commodity_price,
+            flow_commission.producer_efficiency,
             flow_milestone.operational_cost,
             -- computed
-            (asset_milestone.commodity_price / asset_commission.efficiency) AS fuel_cost,
+            (flow_milestone.commodity_price / flow_commission.producer_efficiency) AS fuel_cost,
             (fuel_cost + flow_milestone.operational_cost) AS total_variable_cost,
             CASE
                 -- the below closed-form equation does not accept 0 in the denominator when flow.discount_rate = 0
@@ -634,13 +619,6 @@ function _create_objective_auxiliary_table(connection, constants)
             investment_year_discount * (1 - salvage_value / flow_commission.investment_cost) AS weight_for_flow_investment_discount,
             in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
         FROM var_vintage_flow AS var
-        -- We get the asset_milestone from the outgoing asset
-        LEFT JOIN asset_milestone
-            ON var.from_asset = asset_milestone.asset
-            AND var.milestone_year = asset_milestone.milestone_year
-        LEFT JOIN asset_commission
-            ON var.from_asset = asset_commission.asset
-            AND var.commission_year = asset_commission.commission_year
         LEFT JOIN flow_milestone
             ON var.from_asset = flow_milestone.from_asset
             AND var.to_asset = flow_milestone.to_asset

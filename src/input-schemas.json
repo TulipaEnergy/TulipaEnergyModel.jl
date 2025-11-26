@@ -229,12 +229,12 @@
       "description": "Year of commissioning.",
       "type": "INTEGER"
     },
-    "efficiency": {
+    "conversion_efficiency": {
       "constraints": {
         "minimum": 0
       },
       "default": 1.0,
-      "description": "Asset efficiency. Can be used for both producer and conversion assets.",
+      "description": "Conversion asset efficiency.",
       "type": "DOUBLE",
       "unit_of_measure": "ratio"
     },
@@ -303,12 +303,6 @@
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
-    },
-    "commodity_price": {
-      "default": 0,
-      "description": "Price of the commodity.",
-      "type": "DOUBLE",
-      "unit_of_measure": "CUR/MWh or other units depending on the commodity"
     },
     "initial_storage_level": {
       "constraints": {
@@ -633,12 +627,27 @@
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
     },
+    "producer_efficiency": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 1.0,
+      "description": "Producer asset efficiency.",
+      "type": "DOUBLE",
+      "unit_of_measure": "ratio"
+    },
     "to_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     }
   },
   "flow_milestone": {
+    "commodity_price": {
+      "default": 0,
+      "description": "Price of the commodity.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/MWh or other units depending on the commodity"
+    },
     "dc_opf": {
       "default": false,
       "description": "Whether a flow uses direct current optimal power flow (dc-opf) constraints or not. This method only applies to transport flows.",

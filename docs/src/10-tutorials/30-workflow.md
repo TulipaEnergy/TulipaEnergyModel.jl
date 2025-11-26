@@ -381,7 +381,7 @@ DuckDB.query(
         from_asset,
         to_asset,
         year AS commission_year,
-        efficiency,
+        efficiency AS producer_efficiency,
     FROM t_flow_yearly
     ORDER by from_asset, to_asset
     "
