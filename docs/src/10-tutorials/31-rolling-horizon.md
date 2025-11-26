@@ -1,6 +1,10 @@
 # Tutorial 8: Rolling Horizon
 
 In this example we will replicate the [rolling horizon example in JuMP](https://jump.dev/JuMP.jl/stable/tutorials/algorithms/rolling_horizon/).
+Rolling horizon is a technique to try to manage very large problems by trading some accuracy for efficiency.
+Instead of solving the model for the full time horizon model, it solves many smaller problems of the same size, in what are called "rolling windows".
+Each window corresponds to a shorter time period, so it's faster to solve, but since we cannot look at the full horizon, the solution is (potentially) sub-optimal.
+In particular, long-term storage can be affected by the limited information.
 
 For this example we will use the [Rolling Horizon](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/test/inputs/Rolling%20Horizon/) test files.
 If you are following along, make sure to download all of these files beforehand.
