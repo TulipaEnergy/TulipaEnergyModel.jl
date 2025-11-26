@@ -10,7 +10,6 @@ Please note:  there are many ways to go about processing data, depending on your
 
 Like previous tutorials we will start with working in our 'workflow.jl' file. There are a couple of new packages we will add first.
 
-
 ```julia
 # Guarantee to run in the current directory
 using Pkg: Pkg
@@ -44,12 +43,11 @@ Pkg.status()
 # Pkg.add(name="TulipaEnergyModel", version="0.18.2")
 ```
 
-
 ## 2. Context and input data
 
 We are interested in investigating the electricity prices in our future system, in moments where both solar PV and wind make up a large share of our electricity production. This will help us understand the role that dispatchable/storage technologies play within the system.
 
-All input data required for this tutorial can be found here: https://zenodo.org/records/17454936
+All input data required for this tutorial can be found here: <https://zenodo.org/records/17454936>
 
 Download the data and place them in a directory similar to the previous tutorials (within your VS project), for example `my-awesome-energy-system/tutorial-7`. As can be seen in this folder, the data is comprised of different file types. We have .csv files for our hourly profiles, .xlsx files for our asset and technology data, and a .accdb file for storage metadata.
 
@@ -57,7 +55,7 @@ The first thing we should do is transforming and cleaning the data. As you know 
 
 ## 3. Transforming and cleaning the data
 
-Let's start with the hourly profiles for demand and variable renewable energy production. These are respectively named `electricity_demand.csv`, `ninja-pv-country-NL-national-merra2` and `ninja-wind-country-NL-future_total-merra2`. The demand profiles are extracted from the ETM, which provides data on several scenario studies concerning the future electricity (and hydrogen and gas) system of the Netherlands. The original source can be found here https://my.energytransitionmodel.com/saved_scenarios/19919. The production profiles are sourced from Renewables.ninja, which can be found here https://www.renewables.ninja/. We will start with the demand data.
+Let's start with the hourly profiles for demand and variable renewable energy production. These are respectively named `electricity_demand.csv`, `ninja-pv-country-NL-national-merra2` and `ninja-wind-country-NL-future_total-merra2`. The demand profiles are extracted from the ETM, which provides data on several scenario studies concerning the future electricity (and hydrogen and gas) system of the Netherlands. The original source can be found here <https://my.energytransitionmodel.com/saved_scenarios/19919>. The production profiles are sourced from Renewables.ninja, which can be found here <https://www.renewables.ninja/>. We will start with the demand data.
 
 ```julia
 # Create a DuckDB file to store the input data
@@ -461,6 +459,7 @@ connection = DuckDB.DB(db_file)
 At this point, we have a connection to our main database file, as well as a backup should anything get lost for whatever reason.
 
 To run the model, we first populate with defaults as we did in previous tutorials. Next up; run!
+
 ```julia
 
 TEM.populate_with_defaults!(connection)
@@ -515,7 +514,6 @@ plot(
 
 Relatively high prices, even some energy not served! High variability of prices. Feel free to play around with the plot range to consider different moments in the year, it is currently only displaying from timestep 0 to 768.
 Notice the size of the problem, construction time, solving time. Keep this in mind for the next steps.
-
 
 ## 6. Construct the second scenario
 
@@ -713,6 +711,7 @@ plot!(filtered_storage.time_block_start, filtered_storage.dual_balance_consumer,
       label="With Storage")
 
 ```
+
 What do you notice? What happened to the objective value of the model outcome?
 
 It can be worthwhile to consider the price duration curve, in this plot the prices (this time of the whole year) are ranked from high to low in the two model runs.
@@ -753,6 +752,7 @@ plot!(
 )
 
 ```
+
 Notice the dramatic decrease of the electricity price as shown in the plot.
 
 ## 8. Further analysis
