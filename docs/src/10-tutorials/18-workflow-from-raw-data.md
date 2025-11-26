@@ -1,4 +1,4 @@
-# Tutorial 7: Workflow
+# Tutorial 7: Workflow from Raw Data to Results
 
 In previous tutorials you have learned how to work with TulipaEnergyModel and related tools such as TulipaClustering and TulipaIO. However, we have not yet considered data requirements and processing to get to these steps. How do we work with 'raw' data and convert it to the format needed for running the optimization model? How are results stored? How do we compare scenarios with different assumptions for input data? This tutorial will be about teaching you the basics in the workflow that are currently supported.
 
