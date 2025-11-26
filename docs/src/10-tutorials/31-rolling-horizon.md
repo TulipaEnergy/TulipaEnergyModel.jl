@@ -110,7 +110,8 @@ The "move forward" amount defines how much of the solution we store, and how muc
 Some variables from previous windows are used to update relevant parameters.
 Most notably, the initial storage value of the batteries start at a given parameter, but after the first window, it is updated to use the solution obtained in the previous window.
 
-This process is repeated until the complete horizon is covered by the **"move forward" window**. This is done since only the solution in the "move forward" window is copied to the full problem.
+This process is repeated until the solution for the complete horizon is computed.
+Since we only save the variables covered by the **"move forward" window**, this is done until the "move forward" window reaches the end of the horizon.
 
 This also means that the optimisation window is larger than the horizon. To handle this, we "loop around" the horizon, i.e., we extend the profiles by defining the profile at `timestep = horizon + X` to be the profile at `X`.
 
