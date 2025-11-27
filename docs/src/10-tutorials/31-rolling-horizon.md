@@ -178,8 +178,8 @@ energy_problem = TulipaEnergyModel.run_rolling_horizon(
 )
 ```
 
-To visualise each step of the rolling horizon solution, we set `save_rolling_solution = true`, but that's optional.
-The default option is to ignore those extras tables to save storage.
+To save the solution for each step of the rolling horizon, we can set `save_rolling_solution = true`.
+The default option is to save storage by only saving the solution of the full horizon.
 
 ```@example rolling_horizon
 big_table_rh_all = nice_query("""
