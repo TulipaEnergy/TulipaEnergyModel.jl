@@ -374,6 +374,17 @@ println("Maximum absolute error: $(maximum(abs.(error_rh)))")
 println("Mean absolute error: $(Statistics.mean(abs.(error_rh)))")
 ```
 
+Here is a plot of the error, notice that it is around 0.
+
+```@example rolling_horizon
+Plots.plot(
+    Plots.plot(timestep, error_rh, title="error"),
+    layout = (2, 1),
+    size = (800, 150 * 2),
+    xticks = 1:move_forward:horizon_length,
+)
+```
+
 Finally, we can compare that indeed both solutions reach the same demand value by comparing the aggregated outgoing flow and the charge between the rolling horizon and the no-rolling horizon versions.
 
 ```@example rolling_horizon
