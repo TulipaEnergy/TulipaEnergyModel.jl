@@ -100,6 +100,28 @@ Plots.areaplot!(timestep, y; label = ["thermal" "solar" "discharge"])
 Plots.areaplot!(timestep, -charge; label = "charge")
 ```
 
+Let's also save the dual values to compare them later
+
+```@example rolling_horizon
+dual_balance_consumer_no_rh = [
+    row.dual_balance_consumer
+    for row in DuckDB.query(connection,
+        "SELECT cons.id, cons.dual_balance_consumer
+        FROM cons_balance_consumer AS cons
+        ORDER BY cons.id"
+    )
+]
+dual_balance_storage_rep_period_no_rh = [
+    row.dual_balance_storage_rep_period
+    for row in DuckDB.query(connection,
+        "SELECT cons.id, cons.dual_balance_storage_rep_period
+        FROM cons_balance_storage_rep_period AS cons
+        ORDER BY cons.id"
+    )
+]
+nothing
+```
+
 ## Solution with rolling horizon
 
 The rolling horizon solution is obtained by considering a model in a smaller timeframe, called the "optimisation window".
@@ -398,6 +420,39 @@ Plots.plot(
     size = (800, 150 * 2),
     xticks = 1:move_forward:horizon_length,
 )
+```
+
+And we also compare that the dual variables are close enough
+
+```@example rolling_horizon
+dual_balance_consumer_rh = [
+    row.dual_balance_consumer
+    for row in DuckDB.query(connection,
+        "SELECT cons.id, cons.dual_balance_consumer
+        FROM cons_balance_consumer AS cons
+        ORDER BY cons.id"
+    )
+]
+dual_balance_storage_rep_period_rh = [
+    row.dual_balance_storage_rep_period
+    for row in DuckDB.query(connection,
+        "SELECT cons.id, cons.dual_balance_storage_rep_period
+        FROM cons_balance_storage_rep_period AS cons
+        ORDER BY cons.id"
+    )
+]
+
+error_dual_balance_consumer = dual_balance_consumer_no_rh - dual_balance_consumer_rh
+error_dual_balance_storage_rep_period = dual_balance_storage_rep_period_no_rh - dual_balance_storage_rep_period_rh
+
+println("Error for dual of balance_consumer:")
+println("Minimum absolute error: $(minimum(abs.(error_dual_balance_consumer)))")
+println("Maximum absolute error: $(maximum(abs.(error_dual_balance_consumer)))")
+println("Mean absolute error: $(Statistics.mean(abs.(error_dual_balance_consumer)))")
+println("Error for dual of balance_storage_rep_period:")
+println("Minimum absolute error: $(minimum(abs.(error_dual_balance_storage_rep_period)))")
+println("Maximum absolute error: $(maximum(abs.(error_dual_balance_storage_rep_period)))")
+println("Mean absolute error: $(Statistics.mean(abs.(error_dual_balance_storage_rep_period)))")
 ```
 
 ## Rolling horizon tables
