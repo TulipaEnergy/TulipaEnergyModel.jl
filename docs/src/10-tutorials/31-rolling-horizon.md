@@ -422,7 +422,7 @@ Plots.plot(
 )
 ```
 
-And we also compare that the dual variables are close enough
+We also compare the dual variables between the rolling-horizon and the no-rolling-horizon versions. While the demand values must remain the same in both scenarios, as demand is inelastic, the dual variables may differ between the two versions. In this case study, the differences in the dual variables are close to zero, which is due to the input data used in the example.
 
 ```@example rolling_horizon
 dual_balance_consumer_rh = [
