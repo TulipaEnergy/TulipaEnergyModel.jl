@@ -348,17 +348,33 @@ both_plots = [
 ]
 
 y = hcat(thermal_no_rh, solar_no_rh, discharge_no_rh)
+Plots.title!(both_plots[1], "no rolling horizon")
 Plots.areaplot!(both_plots[1], timestep, y; label = ["thermal" "solar" "discharge"])
 Plots.areaplot!(both_plots[1], timestep, -charge_no_rh; label = "charge")
 
 y = hcat(thermal_rh, solar_rh, discharge_rh)
+Plots.title!(both_plots[2], "rolling horizon")
 Plots.areaplot!(both_plots[2], timestep, y; label = ["thermal" "solar" "discharge"])
 Plots.areaplot!(both_plots[2], timestep, -charge_rh; label = "charge")
 
 Plots.plot(both_plots..., layout = (2, 1), size = (800, 150 * 2))
 ```
 
-Finally, as a sanity check, we can compare that indeed both solutions reach the same demand value by comparing the aggregated outgoing flow and the charge between the rolling horizon and the no-rolling horizon versions.
+As sanity checks, let's check the error between all aggregated outgoing flow and incoming flow and the demand:
+
+```@example rolling_horizon
+peak_demand = TulipaEnergyModel.get_single_element_from_query_and_ensure_its_only_one(
+    DuckDB.query(connection, "SELECT peak_demand FROM asset_milestone WHERE asset = 'demand'"),
+)
+error_rh = peak_demand * sort(demand, :timestep).value - thermal_rh - solar_rh - discharge_rh + charge_rh
+
+using Statistics
+println("Minimum absolute error: $(minimum(abs.(error_rh)))")
+println("Maximum absolute error: $(maximum(abs.(error_rh)))")
+println("Mean absolute error: $(Statistics.mean(abs.(error_rh)))")
+```
+
+Finally, we can compare that indeed both solutions reach the same demand value by comparing the aggregated outgoing flow and the charge between the rolling horizon and the no-rolling horizon versions.
 
 ```@example rolling_horizon
 outgoing_rh = thermal_rh + solar_rh + discharge_rh

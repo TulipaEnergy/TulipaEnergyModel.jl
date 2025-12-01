@@ -15,6 +15,9 @@ TulipaClustering = "314fac8b-c762-4aa3-9d12-851379729163"
 TulipaEnergyModel = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
 TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
 
+[sources]
+TulipaEnergyModel = {path = ".."}
+
 [compat]
 TulipaClustering = "0.4 - 0.5"
 TulipaIO = "0.5.0"
