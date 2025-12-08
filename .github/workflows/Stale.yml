@@ -9,7 +9,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v10.1.0
+      - uses: actions/stale@v10.1.1
         with:
           stale-issue-message: This issue is stale because it has been open 2 months with no activity. Remove the stale label or comment, otherwise this will be closed in 5 days.
           stale-pr-message: This PR is stale because it has been open 1 month with no activity. Remove stale label or comment to revive it.
