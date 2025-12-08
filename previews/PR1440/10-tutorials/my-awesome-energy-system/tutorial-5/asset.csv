@@ -1,0 +1,14 @@
+asset,type,capacity,investment_method,investment_integer,technical_lifetime,discount_rate,capacity_storage_energy,is_seasonal
+ccgt,producer,800.0,simple,true,15,0.05,0.0,false
+e_demand,consumer,0.0,none,false,15,0.05,0.0,false
+ens,producer,1000.0,none,false,15,0.05,0.0,false
+ocgt,producer,100.0,simple,true,15,0.05,0.0,false
+solar,producer,500.0,simple,true,15,0.05,0.0,false
+wind,producer,400.0,simple,true,15,0.05,0.0,false
+electrolizer,conversion,100,simple,true,15,0.05,0.0,false
+h2_demand,consumer,100,none,false,15,0.05,0.0,false
+smr_ccs,producer,100,simple,true,15,0.05,0.0,false
+hub,hub,0,none,false,15,0.05,0.0,false
+wind_offshore,producer,400,simple,true,15,0.05,0.0,false
+battery,storage,20,simple,true,15,0.05,40,false
+h2_storage,storage,100,simple,true,15,0.05,16800,false
