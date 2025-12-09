@@ -229,7 +229,7 @@ end
 
 @testitem "DEMOSES 7 bids 1 day Case Study" setup = [CommonSetup] tags =
     [:case_study, :integration, :slow] begin
-    dir = joinpath(INPUT_FOLDER, "DEMOSES-bids-7bids-1day")
+    dir = joinpath(INPUT_FOLDER, "DEMOSES-bids-7bids-1hour")
 
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
