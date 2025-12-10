@@ -15,7 +15,7 @@ jobs:
           stale-pr-message: This PR is stale because it has been open 1 month with no activity. Remove stale label or comment to revive it.
           stale-issue-label: stale
           exempt-issue-labels: "bug"
-          days-before-issue-stale: 60
-          days-before-pr-stale: 30
+          days-before-issue-stale: 180
+          days-before-pr-stale: 180
           days-before-close: 7
           days-before-pr-close: 7
