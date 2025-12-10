@@ -1,0 +1,8 @@
+bid_id,bid_id_1,satellite,exclusive_group_id,profile_block_id,peak_demand,operational_cost,asset,type,consumer_balance_sense,unit_commitment,unit_commitment_integer,unit_commitment_method
+1,1,Consumer2,1,1,1.0,-18,bid1,consumer,==,true,true,basic
+2,2,Consumer2,4,1,1.0,-3,bid2,consumer,==,true,true,basic
+3,3,Consumer1,1,1,1.0,-20,bid3,consumer,==,true,true,basic
+4,4,Consumer2,2,1,1.0,-16,bid4,consumer,==,true,true,basic
+5,5,Consumer2,3,1,1.0,-11,bid5,consumer,==,true,true,basic
+6,6,Consumer1,3,1,1.0,-7,bid6,consumer,==,true,true,basic
+7,7,Consumer1,2,1,1.0,-15,bid7,consumer,==,true,true,basic

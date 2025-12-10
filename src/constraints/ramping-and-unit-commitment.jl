@@ -57,11 +57,19 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             cons,
             :flow_above_min_operating_point,
             [
-                @expression(
-                    model,
-                    outgoing_flow -
-                    profile_times_capacity[table_name][row.id] * row.min_operating_point * units_on
-                ) for (row, outgoing_flow, units_on) in
+                begin
+                    @info row
+                    @info outgoing_flow
+                    @info profile_times_capacity[table_name][row.id]
+                    @info units_on
+                    @expression(
+                        model,
+                        outgoing_flow -
+                        profile_times_capacity[table_name][row.id] *
+                        row.min_operating_point *
+                        units_on
+                    )
+                end for (row, outgoing_flow, units_on) in
                 zip(indices, cons.expressions[:outgoing], cons.expressions[:units_on])
             ],
         )
@@ -123,12 +131,22 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             cons,
             :min_output_flow_with_unit_commitment,
             [
-                @constraint(
-                    model,
-                    flow_above_min_operating_point ≥ 0,
-                    base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                ) for (row, flow_above_min_operating_point) in
-                zip(indices, cons.expressions[:flow_above_min_operating_point])
+                begin
+                    @info "min_output_flow_with_unit_commitment"
+                    @info flow_above_min_operating_point
+                    @info row.min_operating_point
+                    @info profile_times_capacity[table_name][row.id]
+                    @info units_on
+                    @constraint(
+                        model,
+                        flow_above_min_operating_point ≥ 0,
+                        base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    )
+                end for (row, flow_above_min_operating_point, units_on) in zip(
+                    indices,
+                    cons.expressions[:flow_above_min_operating_point],
+                    cons.expressions[:units_on],
+                )
             ],
         )
     end
@@ -283,7 +301,12 @@ function _append_ramping_data_to_indices(connection, table_name)
         LEFT OUTER JOIN assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
-            AND assets_profiles.profile_type = 'availability'
+            AND (
+                assets_profiles.profile_type = 'availability'
+                OR
+                (asset.type = 'consumer' AND
+                assets_profiles.profile_type = 'demand')
+            )
         ORDER BY cons.id
         ",
     )
