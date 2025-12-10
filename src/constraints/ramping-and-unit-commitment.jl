@@ -139,10 +139,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                     @info units_on
                     @constraint(
                         model,
-                        flow_above_min_operating_point ≥
-                        (1 - row.min_operating_point) *
-                        profile_times_capacity[table_name][row.id] *
-                        units_on,
+                        flow_above_min_operating_point ≥ 0,
                         base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, flow_above_min_operating_point, units_on) in zip(
