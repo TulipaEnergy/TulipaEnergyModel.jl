@@ -1,0 +1,16 @@
+asset,type,group,capacity,min_operating_point,investment_method,investment_integer,technical_lifetime,economic_lifetime,discount_rate,consumer_balance_sense,capacity_storage_energy,is_seasonal,use_binary_storage_method,unit_commitment,unit_commitment_method,unit_commitment_integer,ramping,storage_method_energy,energy_to_power_ratio,investment_integer_storage_energy,max_ramp_up,max_ramp_down,start_up_cost,shut_down_cost,max_su_ramp,max_sd_ramp,minimum_up_time,minimum_down_time,start_trajectory,shut_trajectory
+Coal1,producer,,444,0.565,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.286,0.466,28714,28714,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+Coal2,producer,,681,0.510,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.250,0.372,30550,30550,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+Coal3,producer,,336,0.670,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.274,0.774,16907,16907,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+Coal4,producer,,175,0.543,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.331,0.634,23004,23004,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+Gas_Steam1,producer,,771,0.127,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.674,0.571,24921,24921,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+Gas_Steam2,producer,,47,0.170,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.542,0.447,992,992,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+Gas_Steam3,producer,,517,0.072,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.728,0.735,45272,45272,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+Gas_Steam4,producer,,240,0.233,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.463,0.579,37313,37313,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+CCGT1,producer,,255,0.549,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.333,0.769,10921,10921,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+CCGT2,producer,,280,0.379,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.512,0.729,56345,56345,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+CCGT3,producer,,74,0.405,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.608,0.730,5420,5420,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+CCGT4,producer,,323,0.402,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.307,0.554,15469,15469,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+Gas_CT1,producer,,73,0.562,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.973,0.767,17462,17462,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+Gas_CT2,producer,,150,0.600,simple,true,15,15,0.05,==,0.0,false,,true,FILL_IN,true,true,false,0.0,false,0.527,0.520,42947,42947,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN,FILL_IN
+demand,consumer,,0.0,0.0,none,,15,15,0.05,>=,0.0,false,,,,false,false,false,0.0,false,,,,,,,,,,
