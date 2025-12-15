@@ -58,10 +58,6 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             :flow_above_min_operating_point,
             [
                 begin
-                    @info row
-                    @info outgoing_flow
-                    @info profile_times_capacity[table_name][row.id]
-                    @info units_on
                     @expression(
                         model,
                         outgoing_flow -
@@ -132,11 +128,6 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             :min_output_flow_with_unit_commitment,
             [
                 begin
-                    @info "min_output_flow_with_unit_commitment"
-                    @info flow_above_min_operating_point
-                    @info row.min_operating_point
-                    @info profile_times_capacity[table_name][row.id]
-                    @info units_on
                     @constraint(
                         model,
                         flow_above_min_operating_point ≥ 0,
