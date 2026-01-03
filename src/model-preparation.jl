@@ -642,7 +642,6 @@ function prepare_profiles_structure(connection)
                 WHERE asset.type = 'storage' AND asset.is_seasonal
             )
         SELECT DISTINCT
-            assets_profiles.asset,
             assets_profiles.profile_name,
             assets_profiles.commission_year,
             cte_scenarios.scenario
@@ -653,7 +652,6 @@ function prepare_profiles_structure(connection)
         WHERE assets_profiles.profile_type = 'inflows'
         """,
     )
-        asset = row.asset
         profile_name = row.profile_name
         year = row.commission_year
         scenario = row.scenario
@@ -663,11 +661,9 @@ function prepare_profiles_structure(connection)
                 """
                 WITH cte_profile_rp AS (
                     SELECT
-                        '$asset' AS asset,
                         $year AS year,
                         $scenario AS scenario,
                         profiles_rep_periods.rep_period,
-                        profiles_rep_periods.timestep,
                         profiles_rep_periods.value
                     FROM profiles_rep_periods
                     WHERE profile_name = '$profile_name' AND year = $year
