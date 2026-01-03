@@ -178,13 +178,14 @@ function add_storage_constraints!(
                     storage_charging_efficiency = row.storage_charging_efficiency::Float64
                     storage_discharging_efficiency = row.storage_discharging_efficiency::Float64
 
-                    inflows_agg = _profile_aggregate(
-                        profiles.over_clustered_year,
-                        (row.inflows_profile_name, row.year, row.scenario),
-                        row.period_block_start:row.period_block_end,
-                        sum,
-                        0.0,
-                    )
+                    inflows_agg =
+                        _profile_aggregate(
+                            profiles.over_clustered_year,
+                            (row.inflows_profile_name, row.year, row.scenario),
+                            row.period_block_start:row.period_block_end,
+                            sum,
+                            0.0,
+                        ) * row.storage_inflows
 
                     if row.period_block_start == 1 && !ismissing(initial_storage_level)
                         # Initial storage is a Float64
