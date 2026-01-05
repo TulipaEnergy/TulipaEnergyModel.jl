@@ -12,4 +12,25 @@ TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 TestItemRunner = "f8b46487-2199-4994-9208-9a1283c18c0a"
 TestItems = "1c621080-faea-4a02-84b6-bbd5e436b8fe"
+TulipaBuilder = "05fe4dc7-9a58-53a4-b912-b5673d74e816"
+TulipaClustering = "314fac8b-c762-4aa3-9d12-851379729163"
+TulipaEnergyModel = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
 TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
+
+[sources]
+TulipaEnergyModel = {path = ".."}
+
+[compat]
+BenchmarkTools = "1"
+CSV = "0.10"
+DataFrames = " 1"
+DuckDB = "1"
+GLPK = "1"
+HiGHS = "1"
+JuMP = "1"
+MathOptInterface = "1"
+TestItemRunner = "1"
+TestItems = "1"
+TulipaBuilder = "0.1"
+TulipaClustering = "0.5"
+TulipaIO = "0.5"

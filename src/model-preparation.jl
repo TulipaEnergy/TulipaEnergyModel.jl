@@ -329,7 +329,6 @@ function add_expression_terms_over_clustered_year_constraints!(
                 ARRAY_AGG(COALESCE(var.time_block_end, []) ORDER BY var.rep_period) AS var_time_block_end_vec,
                 ARRAY_AGG(var.rep_period ORDER BY var.rep_period) AS var_rep_periods,
                 ARRAY_AGG(rpdata.num_timesteps ORDER BY var.rep_period) AS num_timesteps,
-                ARRAY_AGG(asset_milestone.storage_inflows ORDER BY var.rep_period) AS storage_inflows,
                 ARRAY_AGG(COALESCE(rpmap.period, []) ORDER BY var.rep_period) AS var_periods,
                 ARRAY_AGG(COALESCE(rpmap.weight, []) ORDER BY var.rep_period) AS var_weights,
             FROM $grouped_cons_table_name AS cons
@@ -626,7 +625,8 @@ function prepare_profiles_structure(connection)
     )
 
     # Creating over_clustered_year profiles of inflows using the inflows
-    # profiles of rep_periods and asset_milestone.storage_inflows
+    # profiles of rep_periods (asset_milestone.storage_inflows is
+    # asset-specific and is not used here).
     # These profiles are scenario-specific since rep_periods_mapping depends on scenario
     for row in DuckDB.query(
         connection,
@@ -642,25 +642,18 @@ function prepare_profiles_structure(connection)
                 WHERE asset.type = 'storage' AND asset.is_seasonal
             )
         SELECT DISTINCT
-            assets_profiles.asset,
             assets_profiles.profile_name,
             assets_profiles.commission_year,
-            asset_milestone.storage_inflows,
             cte_scenarios.scenario
         FROM assets_profiles
         INNER JOIN cte_storage_assets
             ON assets_profiles.asset = cte_storage_assets.asset
-        LEFT JOIN asset_milestone
-            ON assets_profiles.asset = asset_milestone.asset
-            AND assets_profiles.commission_year = asset_milestone.milestone_year -- commission_year = milestone_year
         CROSS JOIN cte_scenarios
         WHERE assets_profiles.profile_type = 'inflows'
         """,
     )
-        asset = row.asset
         profile_name = row.profile_name
         year = row.commission_year
-        storage_inflows = row.storage_inflows
         scenario = row.scenario
         values = Float64[
             row.value for row in DuckDB.query(
@@ -668,18 +661,16 @@ function prepare_profiles_structure(connection)
                 """
                 WITH cte_profile_rp AS (
                     SELECT
-                        '$asset' AS asset,
                         $year AS year,
                         $scenario AS scenario,
                         profiles_rep_periods.rep_period,
-                        profiles_rep_periods.timestep,
                         profiles_rep_periods.value
                     FROM profiles_rep_periods
                     WHERE profile_name = '$profile_name' AND year = $year
                 )
                 SELECT
                     rp_map.period,
-                    SUM(cte_profile_rp.value * rp_map.weight) * $storage_inflows AS value
+                    SUM(cte_profile_rp.value * rp_map.weight) AS value
                 FROM cte_profile_rp
                 INNER JOIN rep_periods_mapping AS rp_map
                     ON cte_profile_rp.year = rp_map.year
