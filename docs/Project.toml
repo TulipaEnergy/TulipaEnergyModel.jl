@@ -19,5 +19,17 @@ TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
 TulipaEnergyModel = {path = ".."}
 
 [compat]
+CSV = "0.10"
+DataFrames = " 1"
+Distances = "0.10"
+Documenter = "1"
+DuckDB = "1"
+GLPK = "1"
+HiGHS = "1"
+JSON = "1"
+JuMP = "1"
+LiveServer = "1"
+OrderedCollections = "1"
+Plots = "1"
 TulipaClustering = "0.4 - 0.5"
 TulipaIO = "0.5.0"
