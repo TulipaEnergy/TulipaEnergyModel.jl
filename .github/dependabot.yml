@@ -13,3 +13,5 @@ updates:
       - "/test"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "TulipaEnergyModel"
