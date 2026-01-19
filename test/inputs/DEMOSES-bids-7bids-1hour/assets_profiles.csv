@@ -1,0 +1,17 @@
+asset,commission_year,profile_name,profile_type
+G01,2030,G01-availability-2030,availability
+G02,2030,G02-availability-2030,availability
+G03,2030,G03-availability-2030,availability
+G04,2030,G04-availability-2030,availability
+G05,2030,G05-availability-2030,availability
+G06,2030,G06-availability-2030,availability
+G07,2030,G07-availability-2030,availability
+G08,2030,G08-availability-2030,availability
+G09,2030,G09-availability-2030,availability
+bid1,2030,bid-bid1-demand,demand
+bid2,2030,bid-bid2-demand,demand
+bid3,2030,bid-bid3-demand,demand
+bid4,2030,bid-bid4-demand,demand
+bid5,2030,bid-bid5-demand,demand
+bid6,2030,bid-bid6-demand,demand
+bid7,2030,bid-bid7-demand,demand

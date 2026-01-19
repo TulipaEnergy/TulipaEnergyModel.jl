@@ -226,3 +226,16 @@ end
     @test_logs (:warn, "The energy problem has not been solved yet. Skipping export solution.") match_mode =
         :any TulipaEnergyModel.run_scenario(connection; output_folder)
 end
+
+@testitem "DEMOSES 7 bids 1 day Case Study" setup = [CommonSetup] tags =
+    [:case_study, :integration, :slow] begin
+    dir = joinpath(INPUT_FOLDER, "DEMOSES-bids-7bids-1hour")
+
+    connection = DBInterface.connect(DuckDB.DB)
+    TulipaIO.read_csv_folder(connection, dir)
+
+    # Populating with defaults is expected, as these
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    @test energy_problem.objective_value ≈ -404.0 rtol = 1e-8
+end
