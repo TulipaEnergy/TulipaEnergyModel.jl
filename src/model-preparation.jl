@@ -585,6 +585,7 @@ function prepare_profiles_structure(connection)
                         profile.profile_name = '$(row.profile_name)'
                         AND profile.year = $(row.year)
                         AND profile.rep_period = $(row.rep_period)
+                    ORDER BY profile.timestep
                     ",
                 )
             ],
@@ -608,6 +609,7 @@ function prepare_profiles_structure(connection)
                 WHERE
                     profile.profile_name = '$(row.profile_name)'
                     AND profile.year = $(row.year)
+                ORDER BY profile.period
                 ",
             )
         ] for row in DuckDB.query(

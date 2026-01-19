@@ -5,7 +5,7 @@ export add_consumer_constraints!
 
 Adds the consumer asset constraints to the model.
 """
-function add_consumer_constraints!(connection, model, constraints, profiles)
+function add_consumer_constraints!(connection, model, variables, constraints, profiles)
     cons = constraints[:balance_consumer]
 
     table = _create_consumer_table(connection)
@@ -32,10 +32,14 @@ function add_consumer_constraints!(connection, model, constraints, profiles)
                     Statistics.mean,
                     1.0,
                 )
+                loop_or_demand = if !ismissing(row.loop_var_id)
+                    variables[:flow].container[row.loop_var_id] * row.peak_demand
+                else
+                    demand_agg * row.peak_demand
+                end
                 @constraint(
                     model,
-                    incoming_flow - outgoing_flow - demand_agg * row.peak_demand in
-                    consumer_balance_sense,
+                    incoming_flow - outgoing_flow - loop_or_demand in consumer_balance_sense,
                     base_name = "consumer_balance[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 )
             end for (row, incoming_flow, outgoing_flow) in
@@ -61,18 +65,34 @@ function _create_consumer_table(connection)
     =#
     return DuckDB.query(
         connection,
-        "SELECT
+        "WITH cte_loop AS (
+            SELECT
+                cons.id AS cons_id,
+                var.id AS var_id,
+            FROM cons_balance_consumer AS cons
+            LEFT JOIN var_flow AS var
+                ON cons.asset = var.from_asset
+                AND cons.asset = var.to_asset
+                AND cons.year = var.year
+                AND cons.rep_period = var.rep_period
+                AND cons.time_block_start = var.time_block_start -- TODO: This is a simplification ignoring different time resolution
+                AND cons.time_block_end = var.time_block_end
+        )
+        SELECT
             cons.*,
             asset.type,
             asset.consumer_balance_sense,
             asset_milestone.peak_demand,
             assets_profiles.profile_name,
+            cte_loop.var_id AS loop_var_id,
         FROM cons_balance_consumer AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
         LEFT JOIN asset_milestone
             ON cons.asset = asset_milestone.asset
             AND cons.year = asset_milestone.milestone_year
+        LEFT JOIN cte_loop
+            ON cons.id = cte_loop.cons_id
         LEFT OUTER JOIN assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year

@@ -121,6 +121,7 @@ end
 
 """
     get_single_element_from_query_and_ensure_its_only_one(query_result :: QueryResult)
+    get_single_element_from_query_and_ensure_its_only_one(connection, query)
 
 Given a DuckDB `query_result` (output of `DuckDB.query(...)` or `DuckDB.execute`),
 return the single element returned by it.
@@ -131,6 +132,10 @@ We use `only` twice to obtain this single element.
 """
 function get_single_element_from_query_and_ensure_its_only_one(query_result::DuckDB.QueryResult)
     return only(only(query_result))
+end
+
+function get_single_element_from_query_and_ensure_its_only_one(connection, query)
+    return get_single_element_from_query_and_ensure_its_only_one(DuckDB.query(connection, query))
 end
 
 """
