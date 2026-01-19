@@ -1,0 +1,11 @@
+asset,commission_year,profile_type,profile_name
+wind,2030,availability,wind_onshore
+solar,2030,availability,solar
+e_demand,2030,demand,demand
+wind_offshore,2030,availability,wind_offshore
+hydro_reservoir,2030,inflows,hydro_inflow
+wind,2050,availability,wind_onshore
+solar,2050,availability,solar
+e_demand,2050,demand,demand
+wind_offshore,2050,availability,wind_offshore
+hydro_reservoir,2050,inflows,hydro_inflow
