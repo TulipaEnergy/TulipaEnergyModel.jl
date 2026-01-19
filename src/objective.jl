@@ -277,7 +277,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
                     profiles.rep_period,
                     (row.profile_name, row.year, row.rep_period),
                     row.time_block_start:row.time_block_end,
-                    sum,
+                    mean,
                     1.0,
                 ) / row.producer_efficiency +
                 row.operational_cost * (row.time_block_end - row.time_block_start + 1)
