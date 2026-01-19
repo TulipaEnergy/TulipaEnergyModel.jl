@@ -39,7 +39,7 @@ To contribute to TulipaEnergyModel.jl, you need the following:
    You can install `pre-commit` globally using
 
    ```bash
-   pip install --user pre-commit
+   pip install pre-commit
    ```
 
    If you prefer to create a local environment with it, do the following:
@@ -55,13 +55,6 @@ To contribute to TulipaEnergyModel.jl, you need the following:
    . env/bin/activate
 
    pip install --upgrade pip setuptools pre-commit
-   ```
-
-   For every subsequent use, you don't have to install, just activate the environment:
-
-   ```bash
-   source env/Scripts/activate # in bash
-   env/Scripts/Activate.ps1 # in powershell
    ```
 
 1. [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl) for code
