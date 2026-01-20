@@ -909,5 +909,5 @@ end
         WHERE from_asset = 'wind' AND to_asset = 'demand'
         """,
     )
-    @test_logs min_level = Logging.Warn TEM.create_internal_tables!(connection)
+    @test_logs min_level = Logging.Info TEM.create_internal_tables!(connection)
 end
