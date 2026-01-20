@@ -268,24 +268,49 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
     # i.e., we only consider the costs of the flows that are not in semi-compact method
     var_flow = variables[:flow].container
 
+    has_commodity_price_profile =
+        get_single_element_from_query_and_ensure_its_only_one(
+            DuckDB.query(
+                connection,
+                """
+                SELECT COUNT(*)
+                FROM flows_profiles
+                WHERE profile_type = 'commodity_price'
+                """,
+            ),
+        ) > 0
     flows_operational_cost =
-        model[:flows_operational_cost] = @expression(
-            model,
-            sum(
-                row.cost_coefficient *
-                (
-                    row.commodity_price * _profile_aggregate( # commodity_price aggregation
-                        profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
-                        row.time_block_start:row.time_block_end,
-                        Statistics.mean,
-                        1.0,
-                    ) / row.producer_efficiency +
-                    row.operational_cost * (row.time_block_end - row.time_block_start + 1)
-                ) *
-                var_flow[row.id] for row in indices
+        model[:flows_operational_cost] = if has_commodity_price_profile
+            @expression(
+                model,
+                sum(
+                    row.cost_coefficient *
+                    (
+                        row.commodity_price * _profile_aggregate( # commodity_price aggregation
+                            profiles.rep_period,
+                            (row.profile_name, row.year, row.rep_period),
+                            row.time_block_start:row.time_block_end,
+                            Statistics.mean,
+                            1.0,
+                        ) / row.producer_efficiency +
+                        row.operational_cost * (row.time_block_end - row.time_block_start + 1)
+                    ) *
+                    var_flow[row.id] for row in indices
+                )
             )
-        )
+        else
+            @expression(
+                model,
+                sum(
+                    row.cost_coefficient *
+                    (
+                        row.commodity_price / row.producer_efficiency +
+                        row.operational_cost * (row.time_block_end - row.time_block_start + 1)
+                    ) *
+                    var_flow[row.id] for row in indices
+                )
+            )
+        end
 
     indices = DuckDB.query(
         connection,
