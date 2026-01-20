@@ -268,23 +268,24 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
     # i.e., we only consider the costs of the flows that are not in semi-compact method
     var_flow = variables[:flow].container
 
-    flows_operational_cost = @expression(
-        model,
-        sum(
-            row.cost_coefficient *
-            (
-                row.commodity_price * _profile_aggregate( # commodity_price aggregation
-                    profiles.rep_period,
-                    (row.profile_name, row.year, row.rep_period),
-                    row.time_block_start:row.time_block_end,
-                    mean,
-                    1.0,
-                ) / row.producer_efficiency +
-                row.operational_cost * (row.time_block_end - row.time_block_start + 1)
-            ) *
-            var_flow[row.id] for row in indices
+    flows_operational_cost =
+        model[:flows_operational_cost] = @expression(
+            model,
+            sum(
+                row.cost_coefficient *
+                (
+                    row.commodity_price * _profile_aggregate( # commodity_price aggregation
+                        profiles.rep_period,
+                        (row.profile_name, row.year, row.rep_period),
+                        row.time_block_start:row.time_block_end,
+                        Statistics.mean,
+                        1.0,
+                    ) / row.producer_efficiency +
+                    row.operational_cost * (row.time_block_end - row.time_block_start + 1)
+                ) *
+                var_flow[row.id] for row in indices
+            )
         )
-    )
 
     indices = DuckDB.query(
         connection,
