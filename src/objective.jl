@@ -284,16 +284,17 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             @expression(
                 model,
                 sum(
-                    row.cost_coefficient *
+                    row.cost_coefficient::Float64 *
                     (
-                        row.commodity_price * _profile_aggregate( # commodity_price aggregation
+                        row.commodity_price::Float64 * _profile_aggregate( # commodity_price aggregation
                             profiles.rep_period,
-                            (row.profile_name, row.year, row.rep_period),
+                            (row.profile_name::String, row.year, row.rep_period),
                             row.time_block_start:row.time_block_end,
                             Statistics.mean,
                             1.0,
-                        ) / row.producer_efficiency +
-                        row.operational_cost * (row.time_block_end - row.time_block_start + 1)
+                        ) / row.producer_efficiency::Float64 +
+                        row.operational_cost::Float64 *
+                        (row.time_block_end - row.time_block_start + 1)
                     ) *
                     var_flow[row.id] for row in indices
                 )
@@ -302,10 +303,11 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             @expression(
                 model,
                 sum(
-                    row.cost_coefficient *
+                    row.cost_coefficient::Float64 *
                     (
-                        row.commodity_price / row.producer_efficiency +
-                        row.operational_cost * (row.time_block_end - row.time_block_start + 1)
+                        row.commodity_price::Float64 / row.producer_efficiency::Float64 +
+                        row.operational_cost::Float64 *
+                        (row.time_block_end - row.time_block_start + 1)
                     ) *
                     var_flow[row.id] for row in indices
                 )
