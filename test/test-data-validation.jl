@@ -873,6 +873,8 @@ end
 
 @testitem "Check that commodity_price profile requires flow_milestone.commodity_price > 0" tags =
     [:fast, :validation] setup = [CommonSetup] begin
+    using Logging
+
     connection = _tiny_fixture()
 
     # Add a commodity_price profile and link to (demand, flow)
@@ -907,5 +909,5 @@ end
         WHERE from_asset = 'wind' AND to_asset = 'demand'
         """,
     )
-    @test_logs TEM.create_internal_tables!(connection)
+    @test_logs min_level = Logging.Warn TEM.create_internal_tables!(connection)
 end
