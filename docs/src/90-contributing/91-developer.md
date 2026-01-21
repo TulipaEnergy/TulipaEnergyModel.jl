@@ -517,10 +517,11 @@ Here is how you do it:
 
 ## Performance Considerations
 
-If you updated something that might impact the performance of the package, you
-can run the `Benchmark.yml` workflow from your pull request. To do that, add
-the tag `benchmark` in the pull request. This will trigger the workflow and
-post the results as a comment in you pull request.
+If you updated something that might impact the performance of the package, we
+expect that the `Benchmark.yml` workflow runs for your pull request.
+To do that, add the tag `benchmark` in the pull request.
+This will trigger the workflow and post the results as a comment in you pull
+request.
 
 > **Warning**:
 > This requires that your branch was pushed to the main repo.
@@ -529,16 +530,20 @@ post the results as a comment in you pull request.
 
 If you want to manually run the benchmarks, you can do the following:
 
-- Navigate to the benchmark folder
-- Run `julia --project=.`
-- Enter `pkg` mode by pressing `]`
-- Run `dev ..` to add the development version of TulipaEnergyModel
+- Run `julia --project=benchmark` from the root folder
+- Enter `pkg` mode by pressing `]` and `pkg> instantiate`  of `pkg> update` if necessary
 - Now run
 
   ```julia
-  include("benchmarks.jl")
+  include("benchmark/benchmarks.jl")
   tune!(SUITE)
   results = run(SUITE, verbose=true)
+  ```
+
+- To compare these results to a different run, say `results_old`, use
+
+  ```julia
+  judge(old=results_old, new=results)
   ```
 
 ### Manually running the benchmark across versions
@@ -610,18 +615,38 @@ We use the package [AirspeedVelocity.jl](https://github.com/MilesCranmer/Airspee
 
    ![Plot of benchmark made with benchpkgplot](../images/plot_TulipaEnergyModel.jpeg)
 
-### Profiling
+### Investigating performance issues
 
-To profile the code in a more manual way, here are some tips:
+Make sure to check [Modern Julia Workflows](https://modernjuliaworkflows.org/optimizing/) at least until measurements.
 
-- Wrap your code into functions.
-- Call the function once to precompile it. This must be done after every change to the function.
-- Prefix the function call with `@time`. This is the most basic timing, part of Julia.
-- Prefix the function call with `@btime`. This is part of the BenchmarkTools package, which you might need to install. `@btime` will evaluate the function a few times to give a better estimate.
-- Prefix the function call with `@benchmark`. Also part of BenchmarkTools. This will produce a nice histogram of the times and give more information. `@btime` and `@benchmark` do the same thing in the background.
-- Call `@profview`. This needs to be done in VSCode, or using the ProfileView package. This will create a flame graph, where each function call is a block. The size of the block is proportional to the aggregate time it takes to run. The blocks below a block are functions called inside the function above.
+When investigating performance issues, we use three main ways to check out performance of functions:
 
-See the file <benchmark/profiling.jl> for an example of profiling code.
+- Run the pipeline until the relevant part and check the `TimerOutput` log.
+  - TulipaEnergyModel holds a global `TimerOutput`. This strategy is to simply run the relevant parts of the pipeline and `show(TEM.to)` to see the results.
+  - You can also use `TimerOutputs.reset_timer!` to reset the timer manually, which can be useful to limit the log.
+  - Check `benchmark/timer-output.jl`.
+- Benchmark the relevant part, preparing a setup function.
+  - Create a `setup` function that generates everything necessary for the function you're benchmarking
+  - If you're benchmarking more than one function, wrap them in a function
+  - Call `@benchmark` with a `setup` argument
+  - Check `benchmark/benchmarktools.jl`
+- Use `@profview` for flame graph profiling.
+  - Reuse the code from above.
+  - Call the setup function and then call `@profview` on the function that you're investigating.
+  - This needs to be done in VSCode, or using the ProfileView package.
+  - This will create a flame graph, where each function call is a block. The size of the block is proportional to the aggregate time it takes to run. The blocks below a block are functions called inside the function above.
+  - Check `benchmark/profview.jl`.
+  - Check the folder `benchmark/profiling/` for more details, tips and tricks.
+
+In all cases, you can run the relevant function (after inspecting it) in the `benchmark` folder environment:
+
+```bash
+julia --project=benchmark
+# press ]
+pkg> instantiate
+# press backspace
+julia> include("benchmark/relevant-file.jl")
+```
 
 ## Testing the generate MPS files
 
