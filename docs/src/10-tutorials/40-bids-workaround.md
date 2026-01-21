@@ -480,7 +480,7 @@ a, b, accepted_bids = full_bid_run(bid_blocks; capacity = 34.9, operational_cost
 To help visualize the use of bids, we will vary the value of generator's capacity and the operational cost to get from the generator to the bid and create a few plots of the solutions.
 We are doing the same as in the previous section, but systematically.
 
-We will use some longer code that we'll hide, but that can be inspected in the [code for this file](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/something). The code simply loops over many cases, like the section above, and saves data to be used in the plots below:
+We will use some longer code that we'll hide, but that can be inspected in the [code for this file](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/docs/src/10-tutorials/40-bids-workaround.md). The code simply loops over many cases, like the section above, and saves data to be used in the plots below:
 
 ```@setup bids
 using Plots
