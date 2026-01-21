@@ -751,10 +751,17 @@ function _validate_bid_related_data!(connection)
         )
     end
 
-    bid_data = get_bid_data(connection)
     consumers_with_unit_commitment = get_consumers_with_unit_commitment(connection)
     assets_with_loop_flows = get_assets_with_loop_flows(connection)
     assets_with_negative_operational_cost = get_assets_with_negative_operational_cost(connection)
+
+    if length(consumers_with_unit_commitment) == 0 &&
+       length(assets_with_loop_flows) == 0 &&
+       length(assets_with_negative_operational_cost) == 0
+        return error_messages
+    end
+
+    bid_data = get_bid_data(connection)
     num_years = get_single_element_from_query_and_ensure_its_only_one(
         connection,
         "SELECT COUNT(*) FROM year_data",
