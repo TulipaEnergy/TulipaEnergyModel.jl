@@ -6,6 +6,7 @@
     energy_problem = TulipaEnergyModel.EnergyProblem(connection)
     TulipaEnergyModel.create_model!(energy_problem)
     TulipaEnergyModel.solve_model!(energy_problem)
+    TulipaEnergyModel.save_solution!(energy_problem; compute_duals = true)
     TulipaEnergyModel.export_solution_to_csv_files(mktempdir(), energy_problem)
 end
 
@@ -34,7 +35,13 @@ end
 
         # Solve model
         TulipaEnergyModel.solve_model(model)
-        TulipaEnergyModel.save_solution!(connection, model, variables, constraints)
+        TulipaEnergyModel.save_solution!(
+            connection,
+            model,
+            variables,
+            constraints;
+            compute_duals = true,
+        )
         output_dir = mktempdir()
         TulipaEnergyModel.export_solution_to_csv_files(output_dir, connection)
         return true
