@@ -24,24 +24,30 @@ function add_consumer_constraints!(connection, model, variables, constraints, pr
                 else
                     MathOptInterface.LessThan(0.0)
                 end
-                # On demand computation of the mean
-                demand_agg = _profile_aggregate(
-                    profiles.rep_period,
-                    (row.profile_name, row.year, row.rep_period),
-                    row.time_block_start:row.time_block_end,
-                    Statistics.mean,
-                    1.0,
-                )
-                loop_or_demand = if !ismissing(row.loop_var_id)
-                    variables[:flow].container[row.loop_var_id] * row.peak_demand
+                if !ismissing(row.loop_var_id)
+                    var = variables[:flow].container[row.loop_var_id]
+                    @constraint(
+                        model,
+                        incoming_flow - outgoing_flow - var * row.peak_demand in
+                        consumer_balance_sense,
+                        base_name = "consumer_balance[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    )
                 else
-                    demand_agg * row.peak_demand
+                    # On demand computation of the mean
+                    demand_agg = _profile_aggregate(
+                        profiles.rep_period,
+                        (row.profile_name, row.year, row.rep_period),
+                        row.time_block_start:row.time_block_end,
+                        Statistics.mean,
+                        1.0,
+                    )
+                    @constraint(
+                        model,
+                        incoming_flow - outgoing_flow - demand_agg * row.peak_demand in
+                        consumer_balance_sense,
+                        base_name = "consumer_balance[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    )
                 end
-                @constraint(
-                    model,
-                    incoming_flow - outgoing_flow - loop_or_demand in consumer_balance_sense,
-                    base_name = "consumer_balance[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                )
             end for (row, incoming_flow, outgoing_flow) in
             zip(table, cons.expressions[:incoming], cons.expressions[:outgoing])
         ],
