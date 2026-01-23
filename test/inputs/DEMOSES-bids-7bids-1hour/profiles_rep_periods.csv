@@ -1,0 +1,17 @@
+rep_period,profile_name,year,value,timestep
+1,G08-availability-2030,2030,1.0,1
+1,G09-availability-2030,2030,1.0,1
+1,G03-availability-2030,2030,1.0,1
+1,G07-availability-2030,2030,1.0,1
+1,G02-availability-2030,2030,1.0,1
+1,G05-availability-2030,2030,1.0,1
+1,G04-availability-2030,2030,1.0,1
+1,G06-availability-2030,2030,1.0,1
+1,G01-availability-2030,2030,1.0,1
+1,bid-bid1-demand,2030,7.0,1
+1,bid-bid2-demand,2030,3.0,1
+1,bid-bid3-demand,2030,8.0,1
+1,bid-bid4-demand,2030,4.0,1
+1,bid-bid5-demand,2030,4.0,1
+1,bid-bid6-demand,2030,5.0,1
+1,bid-bid7-demand,2030,5.0,1

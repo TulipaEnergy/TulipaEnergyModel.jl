@@ -449,7 +449,7 @@ from
     t_highest_assets_and_out_flows as t_high
     left join asset on t_high.asset = asset.asset
 where
-    asset.type in ('producer', 'conversion')
+    asset.type in ('producer', 'conversion', 'consumer')
     and asset.unit_commitment
 ;
 
@@ -470,7 +470,7 @@ from
     t_highest_assets_and_out_flows as t_high
     left join asset on t_high.asset = asset.asset
 where
-    asset.type in ('producer', 'conversion')
+    asset.type in ('producer', 'conversion', 'consumer')
     and asset.unit_commitment
     and asset.unit_commitment_method = 'basic'
 ;

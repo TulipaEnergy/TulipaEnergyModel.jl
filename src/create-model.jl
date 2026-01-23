@@ -176,6 +176,7 @@ function create_model(
     @timeit to "add_consumer_constraints!" add_consumer_constraints!(
         connection,
         model,
+        variables,
         constraints,
         profiles,
     )

@@ -575,55 +575,41 @@ end
 function prepare_profiles_structure(connection)
     # Independent of being rolling horizon or not, these are complete
     rep_period = Dict(
-        (row.profile_name, row.year, row.rep_period) => ProfileWithRollingHorizon(
-            Float64[
-                row.value for row in DuckDB.query(
-                    connection,
-                    "SELECT profile.value
-                    FROM profiles_rep_periods AS profile
-                    WHERE
-                        profile.profile_name = '$(row.profile_name)'
-                        AND profile.year = $(row.year)
-                        AND profile.rep_period = $(row.rep_period)
-                    ",
-                )
-            ],
-        ) for row in DuckDB.query(
+        (row.profile_name, row.year, row.rep_period) =>
+            ProfileWithRollingHorizon(convert(Vector{Float64}, row.values)) for
+        row in DuckDB.query(
             connection,
-            "SELECT DISTINCT
-                profiles.profile_name,
-                profiles.year,
-                profiles.rep_period
-            FROM profiles_rep_periods AS profiles
-            ",
+            """
+            SELECT DISTINCT ON(profile_name, year, rep_period)
+                profile_name,
+                year,
+                rep_period,
+                ARRAY_AGG(value ORDER BY timestep) AS values,
+            FROM profiles_rep_periods
+            GROUP BY profile_name, year, rep_period
+            """,
         )
     )
 
     over_clustered_year = Dict(
-        (row.profile_name, row.year, row.scenario) => Float64[
-            row.value for row in DuckDB.query(
-                connection,
-                "SELECT profile.value
-                FROM profiles_timeframe AS profile
-                WHERE
-                    profile.profile_name = '$(row.profile_name)'
-                    AND profile.year = $(row.year)
-                ",
-            )
-        ] for row in DuckDB.query(
+        (row.profile_name, row.year, row.scenario) => convert(Vector{Float64}, row.values) for
+        row in DuckDB.query(
             connection,
-            "SELECT DISTINCT
+            "SELECT DISTINCT ON(profiles.profile_name, profiles.year, atp.scenario)
                 profiles.profile_name,
                 profiles.year,
-                atp.scenario
+                atp.scenario,
+                ARRAY_AGG(profiles.value ORDER BY profiles.period) AS values,
             FROM profiles_timeframe AS profiles
             INNER JOIN assets_timeframe_profiles AS atp
                 ON profiles.profile_name = atp.profile_name
                 AND profiles.year = atp.year
+            GROUP BY profiles.profile_name, profiles.year, atp.scenario
             ",
         )
     )
 
+    # TODO: Try to convert the flow below using group by like above
     # Creating over_clustered_year profiles of inflows using the inflows
     # profiles of rep_periods (asset_milestone.storage_inflows is
     # asset-specific and is not used here).

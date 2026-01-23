@@ -73,6 +73,11 @@ function validate_data!(connection)
             _validate_flow_commission_and_asset_both_consistency!,
             false,
         ),
+        (
+            "consumer unit commitment used as bids has right data",
+            _validate_bid_related_data!,
+            false,
+        ),
     )
         @timeit to "$log_msg" append!(error_messages, validation_function(connection))
         if fail_fast && length(error_messages) > 0
@@ -592,6 +597,264 @@ function _validate_flow_commission_and_asset_both_consistency!(connection)
             error_messages,
             "Unexpected commission_year = $(row.commission_year) for the outgoing flow of asset '$(row.from_asset)' in 'flow_commission'. The commission_year should match the one in 'asset_both'.",
         )
+    end
+
+    return error_messages
+end
+
+function _validate_bid_related_data!(connection)
+    error_messages = String[]
+
+    #= Testing strategy:
+    # - For a given `asset`, there are necessary and sufficient conditions that
+    #   imply that this asset represents a bid.
+    # - We loop over each sufficient condition and get all assets that satisfy that condition
+    # - For each of these assets, we verify the necessary conditions.
+    =#
+
+    """
+        get_bid_data(connection)
+
+    Gets all relevant data related to an asset in dictionary format. Used to
+    verify the necessary conditions for a bid to be defined correctly:
+
+    - asset.type = 'consumer'
+    - asset.unit_commitment = true
+    - asset.unit_commitment_integer = true
+    - asset.unit_commitment_method = 'basic'
+    - asset.consumer_balance_sense = '=='
+    - asset.capacity = 1.0
+    - asset_both.initial_units = 1.0
+    - assets_rep_periods_partitions.specification = 'uniform' and partition = num_timesteps of rep_period
+    - assets_profiles.type = 'demand' (i.e., there is a 'demand' profile for this asset)
+    - there is a loop flow.from_asset = flow.to_asset = asset.asset (i.e., the asset has a loop) (by itself is already prohibitive)
+    - there is a flow from some consumer to this asset, with operational_cost < 0
+    - there is a single rep_period
+    - there is a single year
+    """
+    function get_bid_data(connection)
+        has_demand_profile_str = "false"
+
+        if _check_if_table_exists(connection, "assets_profiles")
+            has_demand_profile_str = """
+            EXISTS (
+                FROM assets_profiles
+                WHERE assets_profiles.asset = asset.asset
+                    AND assets_profiles.profile_type = 'demand'
+            )"""
+        end
+
+        has_wrong_asset_partition_str = "true" # partition needs to be defined because default is hourly
+        if _check_if_table_exists(connection, "assets_rep_periods_partitions")
+            has_wrong_asset_partition_str = """
+            EXISTS (
+                FROM assets_rep_periods_partitions AS partitions
+                LEFT JOIN rep_periods_data AS rpdata
+                    ON partitions.year = rpdata.year AND partitions.rep_period = rpdata.rep_period
+                WHERE partitions.asset = asset.asset
+                    AND (
+                        partitions.specification != 'uniform'
+                        OR partitions.partition != rpdata.num_timesteps
+                    )
+            )"""
+        end
+
+        query = """
+        SELECT
+            asset.asset,
+            asset.type,
+            asset.unit_commitment,
+            asset.unit_commitment_integer,
+            asset.unit_commitment_method,
+            asset.consumer_balance_sense,
+            asset.capacity,
+            asset_both.initial_units,
+            EXISTS (
+                FROM flow
+                WHERE flow.from_asset = asset.asset
+                    AND flow.to_asset = asset.asset
+            ) AS has_loop,
+            flow_milestone.from_asset as bid_manager,
+            flow_milestone.operational_cost,
+            $has_demand_profile_str AS has_demand_profile,
+            $has_wrong_asset_partition_str AS has_wrong_asset_partition,
+        FROM asset
+        LEFT JOIN asset_both
+            ON asset.asset = asset_both.asset
+        LEFT JOIN flow_milestone
+            ON flow_milestone.to_asset = asset.asset
+            AND flow_milestone.operational_cost < 0
+        """
+
+        return Dict(row.asset => row for row in DuckDB.query(connection, query))
+    end
+
+    """
+        get_consumers_with_unit_commitment(connection)
+
+    Gets the assets that satisfy the first sufficient condition that implies
+    that this asset represents a bid: It has asset.type = 'consumer' and
+    asset.unit_commitment is true.
+    """
+    function get_consumers_with_unit_commitment(connection)
+        return Dict(
+            row.asset => row for row in DuckDB.query(
+                connection,
+                """
+                SELECT
+                    asset, type, unit_commitment, consumer_balance_sense, capacity
+                FROM asset
+                WHERE asset.type = 'consumer' AND unit_commitment
+                """,
+            )
+        )
+    end
+
+    """
+        get_assets_with_loop_flows(connection)
+
+    Gets the assets that satisfy the second sufficient condition that implies
+    that this asset represents a bid: It has a loop flow.
+    """
+    function get_assets_with_loop_flows(connection)
+        return Dict(
+            row.from_asset => row for row in DuckDB.query(
+                connection,
+                """
+                SELECT
+                    from_asset, to_asset,
+                FROM flow
+                WHERE from_asset = to_asset
+                """,
+            )
+        )
+    end
+
+    """
+        get_assets_with_negative_operational_cost(connection)
+
+    Gets the assets that satisfy the third sufficient condition that implies
+    that this asset represents a bid: It has an incoming flow with negative
+    operational_cost.
+    """
+    function get_assets_with_negative_operational_cost(connection)
+        return Dict(
+            row.to_asset => row for row in DuckDB.query(
+                connection,
+                """
+                SELECT
+                    from_asset, to_asset, operational_cost
+                FROM flow_milestone
+                WHERE operational_cost < 0
+                """,
+            )
+        )
+    end
+
+    consumers_with_unit_commitment = get_consumers_with_unit_commitment(connection)
+    assets_with_loop_flows = get_assets_with_loop_flows(connection)
+    assets_with_negative_operational_cost = get_assets_with_negative_operational_cost(connection)
+
+    if length(consumers_with_unit_commitment) == 0 &&
+       length(assets_with_loop_flows) == 0 &&
+       length(assets_with_negative_operational_cost) == 0
+        return error_messages
+    end
+
+    bid_data = get_bid_data(connection)
+    num_years = get_single_element_from_query_and_ensure_its_only_one(
+        connection,
+        "SELECT COUNT(*) FROM year_data",
+    )
+    num_rep_periods = get_single_element_from_query_and_ensure_its_only_one(
+        connection,
+        "SELECT COUNT(*) FROM rep_periods_data",
+    )
+
+    for (justification, condition_dict) in (
+        ("consumer with unit commitment", consumers_with_unit_commitment),
+        ("a loop flow", assets_with_loop_flows),
+        ("an incoming flow with negative operational_cost", assets_with_negative_operational_cost),
+    )
+        if length(condition_dict) > 0
+            if num_years != 1
+                push!(
+                    error_messages,
+                    "Problem is assumed to have bids because at least 1 asset has $justification, so it should have only 1 year, but found $num_years",
+                )
+            end
+            if num_rep_periods != 1
+                push!(
+                    error_messages,
+                    "Problem is assumed to have bids because at least 1 asset has $justification, so it should have only 1 representative period, but found $num_rep_periods",
+                )
+            end
+        end
+        for asset in keys(condition_dict)
+            prefix_msg = "Asset '$asset' is a bid because it has $justification, so it should"
+            _,
+            type,
+            unit_commitment,
+            unit_commitment_integer,
+            unit_commitment_method,
+            consumer_balance_sense,
+            capacity,
+            initial_units,
+            has_loop,
+            _,
+            operational_cost,
+            has_demand_profile,
+            has_wrong_asset_partition = bid_data[asset]
+
+            if !(type == "consumer" && unit_commitment)
+                push!(
+                    error_messages,
+                    "$prefix_msg have asset.type = 'consumer' and asset.unit_commitment = true",
+                )
+            end
+            if !unit_commitment_integer
+                push!(error_messages, "have asset.unit_commitment_integer = true")
+            end
+            if unit_commitment_method != "basic"
+                push!(error_messages, "have asset.unit_commitment_method = \"basic\"")
+            end
+            if consumer_balance_sense != "=="
+                push!(
+                    error_messages,
+                    "$prefix_msg have asset.consumer_balance_sense = \"==\", but found \"$consumer_balance_sense\"",
+                )
+            end
+            if capacity != 1.0
+                push!(error_messages, "$prefix_msg have asset.capacity = 1.0, but found $capacity")
+            end
+            if initial_units != 1.0
+                push!(
+                    error_messages,
+                    "$prefix_msg have asset_both.initial_units = 1.0, but found $initial_units",
+                )
+            end
+            if !has_loop
+                push!(error_messages, "$prefix_msg have a loop flow, but found none")
+            end
+            if ismissing(operational_cost)
+                push!(
+                    error_messages,
+                    "$prefix_msg to have an incoming flow with negative operational_cost, but found none",
+                )
+            end
+            if !has_demand_profile
+                push!(
+                    error_messages,
+                    "$prefix_msg have a profile in assets_profiles with profile_type = 'demand', but found none",
+                )
+            end
+            if has_wrong_asset_partition
+                push!(
+                    error_messages,
+                    "$prefix_msg has wrong asset partition. It should be uniform and equal to num_timesteps for all representative periods",
+                )
+            end
+        end
     end
 
     return error_messages

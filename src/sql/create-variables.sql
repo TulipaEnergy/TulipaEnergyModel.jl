@@ -85,7 +85,7 @@ from
             asset_time_resolution_rep_period as atr
             left join asset on asset.asset = atr.asset
         where
-            asset.type in ('producer', 'conversion')
+            asset.type in ('producer', 'conversion', 'consumer')
             and asset.unit_commitment = true
         order by
             atr.asset,

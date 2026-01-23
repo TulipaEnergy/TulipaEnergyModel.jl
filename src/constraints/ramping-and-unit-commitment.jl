@@ -14,12 +14,12 @@ Adds the ramping constraints for producer and conversion assets where ramping = 
 """
 function add_ramping_constraints!(connection, model, variables, expressions, constraints, profiles)
     indices_dict = Dict(
-        table_name => _append_ramping_data_to_indices(connection, table_name) for
-        table_name in (
-            :min_output_flow_with_unit_commitment,
-            :max_ramp_without_unit_commitment,
-            :max_ramp_with_unit_commitment,
-            :max_output_flow_with_basic_unit_commitment,
+        table_name => _append_ramping_data_to_indices(connection, table_name, allow_consumers)
+        for (table_name, allow_consumers) in (
+            (:min_output_flow_with_unit_commitment, true),
+            (:max_ramp_without_unit_commitment, false),
+            (:max_ramp_with_unit_commitment, false),
+            (:max_output_flow_with_basic_unit_commitment, true),
         )
     )
 
@@ -267,7 +267,18 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     end
 end
 
-function _append_ramping_data_to_indices(connection, table_name)
+function _append_ramping_data_to_indices(connection, table_name, allow_consumers)
+    profile_type_condition = if allow_consumers
+        "(
+            assets_profiles.profile_type = 'availability'
+            OR
+            (asset.type = 'consumer' AND
+            assets_profiles.profile_type = 'demand')
+        )"
+    else
+        "assets_profiles.profile_type = 'availability'"
+    end
+
     return DuckDB.query(
         connection,
         "SELECT
@@ -283,7 +294,7 @@ function _append_ramping_data_to_indices(connection, table_name)
         LEFT OUTER JOIN assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.year = assets_profiles.commission_year
-            AND assets_profiles.profile_type = 'availability'
+            AND $profile_type_condition
         ORDER BY cons.id
         ",
     )

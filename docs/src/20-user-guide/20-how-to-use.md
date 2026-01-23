@@ -5,7 +5,7 @@ Pages = ["20-how-to-use.md"]
 Depth = [2, 3]
 ```
 
-This section assumes users have already followed the Tutorials and are looking for specific instructions for certain features.
+This section assumes users have already followed the basic Tutorials and are looking for specific instructions for certain features.
 
 ## Running a Scenario
 
@@ -448,3 +448,43 @@ For an example of implementing CO2 emissions as a consumer asset, refer to the [
 
 !!! warning "By-products should not be part of the capacity constraint"
     It is important to note that by-products like emissions should not be included in the capacity constraint of the asset. Therefore, the [`capacity_coefficient`](@ref coefficient-for-capacity-constraints) should be set to zero to prevent the asset's output flow from limiting its energy output.
+
+## [Simulating Bids using Unit Commitment](@id bids)
+
+In our context, a bid is a proposal to buy energy at a given price at one or more time steps.
+Currently, bids are not natively supported in Tulipa, but they can be simulated with some existing workarounds related to unit commitment to consumers.
+For a step-by-step creation of a problem with bids, follow the [Bids tutorial](@ref bids-tutorial).
+
+Bids can be created in any existing Tulipa problem that satisfied the following assumptions:
+
+- There is only 1 year.
+- There is only 1 representative period.
+- There is at least one consumer that will serve as "manager" of the bids, i.e., that will receive energy from the generators and pass it on to the bids, if accepted.
+
+To have bids in Tulipa, you need create a new asset for each of the bid blocks.
+Each of these bid assets is a consumer asset, and the "demand" profile for this consumer is the requested amounts of energy in the bid.
+To satisfy the "demand" of the bid assets, we create a flow from the "manager" asset to these bid assets.
+To simulate the `price` willing to be paid by a bid, we use the `operational_cost` between the "manager" and the bid asset.
+In summary:
+
+- For each bid, create a new asset. We'll name it "Bid". Set
+  - `capacity = 1.0`
+  - `consumer_balance_sense = "=="` (which is the default)
+  - `initial_units = 1.0`
+  - `peak_demand` as anything positive (`1.0` makes it easier to understand the results, `maximum(bid_block.profile)` is the common normalized way)
+  - `type = :consumer`
+  - `unit_commitment = true`
+  - `unit_commitment_integer = true`
+  - `unit_commitment_method = "basic"`
+- Set the time resolution of the asset to the full length of the profile (`assets_rep_periods_partitions.partition = rep_periods_data.num_timesteps`)
+- Find an existing consumer, we'll name it "Bid Manager".
+- Connect a flow from the "Bid Manager" to "Bid", with `flow_milestone.operational_cost = -price`.
+- Create a loop flow, connecting the asset "Bid" to itself.
+- Create a profile in `profiles_rep_periods` or `profiles`, depending on whether you still have to cluster or not.
+  - Use the bid's quantities, normalized by `peak_demand`, as `value`, for the corresponding time steps as `timestep`.
+  - Use 0 as `value` for the missing `timestep`.
+  - Choose a `profile_name`
+- Relate the profile above to the asset "Bid" in `assets_profiles`, with `profile_type = 'demand'`.
+
+Finally, if there are exclusive groups in the bids, i.e., at most 1 bid in the same exclusive group can be accepted, then you also need to modify the underlying JuMP model.
+We need to add a constraint like $\displaystyle \sum_{i: i \in G_k} u_i \leq 1$, where $u_i$ are the unit commitment variables (i.e., the bid-acceptance variables), and $G_k$ are the exclusive groups.
