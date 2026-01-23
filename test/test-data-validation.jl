@@ -907,5 +907,10 @@ end
         WHERE from_asset = 'wind' AND to_asset = 'demand'
         """,
     )
-    TEM.create_internal_tables!(connection)
+    @test TEM._validate_commodity_price_consistency!(connection) == String[]
+
+    # If the flows_profiles table does not exist, no more error (this is mostly here to incrase coverage)
+    connection = _tiny_fixture()
+    DuckDB.query(connection, "DROP TABLE flows_profiles")
+    @test TEM._validate_commodity_price_consistency!(connection) == String[]
 end
