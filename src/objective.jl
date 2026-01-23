@@ -256,6 +256,8 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
                 * rp_weight_prob.total_weight_prob
                 * rp_res.resolution
                 AS cost_coefficient,
+            cost_coefficient * obj.total_variable_cost
+                * (var.time_block_end - var.time_block_start + 1) AS total_cost_if_no_profile,
             var.time_block_start,
             var.time_block_end,
             var.year,
@@ -300,10 +302,9 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
                             row.time_block_start:row.time_block_end,
                             Statistics.mean,
                             1.0,
-                        ) / row.producer_efficiency::Float64 +
-                        row.operational_cost::Float64 *
-                        (row.time_block_end - row.time_block_start + 1)
+                        ) / row.producer_efficiency::Float64 + row.operational_cost::Float64
                     ) *
+                    (row.time_block_end - row.time_block_start + 1) *
                     var_flow[row.id::Int64] for row in indices
                 )
             )
@@ -311,13 +312,8 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             @expression(
                 model,
                 sum(
-                    row.cost_coefficient::Float64 *
-                    (
-                        row.commodity_price::Float64 / row.producer_efficiency::Float64 +
-                        row.operational_cost::Float64 *
-                        (row.time_block_end - row.time_block_start + 1)
-                    ) *
-                    var_flow[row.id::Int64] for row in indices
+                    row.total_cost_if_no_profile::Float64 * var_flow[row.id::Int64] for
+                    row in indices
                 )
             )
         end
@@ -598,6 +594,8 @@ function _create_objective_auxiliary_table(connection, constants)
             flow_commission.producer_efficiency,
             flow_milestone.operational_cost,
             -- computed
+            (flow_milestone.commodity_price / flow_commission.producer_efficiency) AS fuel_cost,
+            (fuel_cost + flow_milestone.operational_cost) AS total_variable_cost,
             CASE
                 -- the below closed-form equation does not accept 0 in the denominator when flow.discount_rate = 0
                 WHEN flow.discount_rate = 0

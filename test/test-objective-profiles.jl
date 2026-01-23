@@ -6,6 +6,8 @@
     using Statistics
 
     commodity_price = 3.14
+    producer_efficiency = 0.95
+    operational_cost = 6.66
     commodity_price_profile = collect(1.0:6.0)
 
     function full_run(; add_commodity_price, add_commodity_price_profile)
@@ -13,9 +15,16 @@
         TB.add_asset!(tulipa, "Producer", :producer)
         TB.add_asset!(tulipa, "Consumer", :consumer)
         if add_commodity_price
-            TB.add_flow!(tulipa, "Producer", "Consumer"; commodity_price)
+            TB.add_flow!(
+                tulipa,
+                "Producer",
+                "Consumer";
+                commodity_price,
+                producer_efficiency,
+                operational_cost,
+            )
         else
-            TB.add_flow!(tulipa, "Producer", "Consumer")
+            TB.add_flow!(tulipa, "Producer", "Consumer"; producer_efficiency, operational_cost)
         end
         if add_commodity_price_profile
             TB.attach_profile!(
@@ -55,13 +64,18 @@
     # Without commodity_price
     energy_problem, var_flow, partitions, flow_lookup, observed =
         full_run(; add_commodity_price = false, add_commodity_price_profile = false)
-    expected = JuMP.AffExpr(0.0)
+    expected =
+        sum(flow_lookup[i] * length(partitions[i]) * operational_cost for i in keys(partitions))
     @test expected == observed
 
     # Traditional commodity_price
     energy_problem, var_flow, partitions, flow_lookup, observed =
         full_run(; add_commodity_price = true, add_commodity_price_profile = false)
-    expected = sum(flow_lookup[i] * commodity_price for i in keys(partitions))
+    expected = sum(
+        flow_lookup[i] *
+        length(partitions[i]) *
+        (commodity_price / producer_efficiency + operational_cost) for i in keys(partitions)
+    )
     @test expected == observed
 
     # Profile only, (default commodity_price = 0.0)
@@ -73,8 +87,14 @@
     # Profile and commodity_price = 3.14
     energy_problem, var_flow, partitions, flow_lookup, observed =
         full_run(; add_commodity_price = true, add_commodity_price_profile = true)
+    commodity_price_agg = Dict(
+        i => commodity_price * Statistics.mean(commodity_price_profile[p]) for (i, p) in partitions
+    )
     expected = sum(
-        flow_lookup[i] * commodity_price * Statistics.mean(commodity_price_profile[partitions[i]]) for i in keys(partitions)
+        flow_lookup[i] *
+        length(partitions[i]) *
+        (commodity_price_agg[i] / producer_efficiency + operational_cost) for
+        i in keys(partitions)
     )
 
     @test expected == observed
