@@ -506,11 +506,12 @@ function _create_objective_auxiliary_table(connection, constants)
                     ) / asset.discount_rate
             END AS salvage_value,
             1 / (1 + $(constants.social_rate))^(asset_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
-            -- to avoid investment_cost being zero causing division by zero
-            COALESCE(
-                investment_year_discount * (1 - salvage_value / NULLIF(asset_commission.investment_cost, 0)),
-                0.0
-            ) AS weight_for_asset_investment_discount,
+            CASE
+                -- the below calculation does not accept asset_commission.investment_cost = 0 in the denominator
+                WHEN asset_commission.investment_cost = 0
+                    THEN 0.0 -- in this case, the investment cost is 0, so the weight does not matter
+                ELSE investment_year_discount * (1 - salvage_value / asset_commission.investment_cost)
+            END AS weight_for_asset_investment_discount,
             in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
         FROM asset_milestone
         LEFT JOIN asset_commission
@@ -564,11 +565,12 @@ function _create_objective_auxiliary_table(connection, constants)
                     ) / flow.discount_rate
             END AS salvage_value,
             1 / (1 + $(constants.social_rate))^(flow_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
-            -- to avoid investment_cost being zero causing division by zero
-            COALESCE(
-                investment_year_discount * (1 - salvage_value / NULLIF(flow_commission.investment_cost, 0)),
-                0.0
-            ) AS weight_for_flow_investment_discount,
+            CASE
+                -- the below calculation does not accept flow_commission.investment_cost = 0 in the denominator
+                WHEN flow_commission.investment_cost = 0
+                    THEN 0.0 -- in this case, the investment cost is 0, so the weight does not matter
+                ELSE investment_year_discount * (1 - salvage_value / flow_commission.investment_cost)
+            END AS weight_for_flow_investment_discount,
             in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
         FROM flow_milestone
         LEFT JOIN flow_commission
@@ -624,11 +626,12 @@ function _create_objective_auxiliary_table(connection, constants)
                     ) / flow.discount_rate
             END AS salvage_value,
             1 / (1 + $(constants.social_rate))^(flow_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
-            -- to avoid investment_cost being zero causing division by zero
-            COALESCE(
-                investment_year_discount * (1 - salvage_value / NULLIF(flow_commission.investment_cost, 0)),
-                0.0
-            ) AS weight_for_flow_investment_discount,
+            CASE
+                -- the below calculation does not accept flow_commission.investment_cost = 0 in the denominator
+                WHEN flow_commission.investment_cost = 0
+                    THEN 0.0 -- in this case, the investment cost is 0, so the weight does not matter
+                ELSE investment_year_discount * (1 - salvage_value / flow_commission.investment_cost)
+            END AS weight_for_flow_investment_discount,
             in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
         FROM var_vintage_flow AS var
         LEFT JOIN flow_milestone
