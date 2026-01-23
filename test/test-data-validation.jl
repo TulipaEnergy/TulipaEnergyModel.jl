@@ -870,3 +870,47 @@ end
         @test all(contains(msg, expected_error_message) for msg in error_messages)
     end
 end
+
+@testitem "Check that commodity_price profile requires flow_milestone.commodity_price > 0" tags =
+    [:fast, :validation] setup = [CommonSetup] begin
+    connection = _tiny_fixture()
+
+    # Add a commodity_price profile and link to (demand, flow)
+    DuckDB.query(
+        connection,
+        """
+        INSERT INTO profiles_rep_periods BY NAME
+        SELECT
+            'commodity_price-wind-demand' AS profile_name,
+            * EXCLUDE (profile_name)
+        FROM profiles_rep_periods
+        WHERE profile_name = 'availability-wind'
+        """,
+    )
+    DuckDB.query(
+        connection,
+        """
+        INSERT INTO flows_profiles (from_asset, to_asset, year, profile_type, profile_name)
+        VALUES ('wind', 'demand', 2030, 'commodity_price', 'commodity_price-wind-demand')
+        """,
+    )
+    @test_throws "Flow (wind, demand) is associated with a 'commodity_price' profile, so it should have flow_milestone.commodity_price > 0, but we found 0.0" TEM.create_internal_tables!(
+        connection,
+    )
+
+    # If commodity_price is > 0, no more error
+    DuckDB.query(
+        connection,
+        """
+        UPDATE flow_milestone
+        SET commodity_price = 3.14
+        WHERE from_asset = 'wind' AND to_asset = 'demand'
+        """,
+    )
+    @test TEM._validate_commodity_price_consistency!(connection) == String[]
+
+    # If the flows_profiles table does not exist, no more error (this is mostly here to incrase coverage)
+    connection = _tiny_fixture()
+    DuckDB.query(connection, "DROP TABLE flows_profiles")
+    @test TEM._validate_commodity_price_consistency!(connection) == String[]
+end

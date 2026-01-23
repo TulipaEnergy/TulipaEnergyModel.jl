@@ -1,4 +1,4 @@
-function add_objective!(connection, model, variables, expressions, model_parameters)
+function add_objective!(connection, model, variables, expressions, profiles, model_parameters)
     assets_investment = variables[:assets_investment]
     assets_investment_energy = variables[:assets_investment_energy]
     flows_investment = variables[:flows_investment]
@@ -207,6 +207,29 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         )
     )
 
+    commodity_price_profile_name = ""
+    flows_profiles_query_left_join = ""
+    has_commodity_price_profile =
+        get_single_element_from_query_and_ensure_its_only_one(
+            DuckDB.query(
+                connection,
+                """
+                SELECT COUNT(*)
+                FROM flows_profiles
+                WHERE profile_type = 'commodity_price'
+                """,
+            ),
+        ) > 0
+    if has_commodity_price_profile
+        commodity_price_profile_name = "commodity_price_profiles.profile_name,"
+        flows_profiles_query_left_join = """
+        LEFT JOIN flows_profiles AS commodity_price_profiles
+            ON commodity_price_profiles.from_asset = var.from_asset
+            AND commodity_price_profiles.to_asset = var.to_asset
+            AND commodity_price_profiles.year = var.year -- TODO: inconsistent year naming to assets_profiles
+            AND commodity_price_profiles.profile_type = 'commodity_price'
+        """
+    end
     indices = DuckDB.query(
         connection,
         "WITH rp_weight_prob AS (
@@ -232,9 +255,17 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             obj.weight_for_operation_discounts
                 * rp_weight_prob.total_weight_prob
                 * rp_res.resolution
-                * (var.time_block_end - var.time_block_start + 1)
-                * obj.total_variable_cost
-                AS cost
+                AS cost_coefficient,
+            cost_coefficient * obj.total_variable_cost
+                * (var.time_block_end - var.time_block_start + 1) AS total_cost_if_no_profile,
+            var.time_block_start,
+            var.time_block_end,
+            var.year,
+            var.rep_period,
+            obj.commodity_price,
+            obj.producer_efficiency,
+            obj.operational_cost,
+            $commodity_price_profile_name
         FROM var_flow AS var
         LEFT JOIN t_objective_flows as obj
             ON var.from_asset = obj.from_asset
@@ -248,6 +279,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
             AND var.rep_period = rp_res.rep_period
         LEFT JOIN asset
             ON asset.asset = var.from_asset
+        $flows_profiles_query_left_join
         WHERE asset.investment_method != 'semi-compact'
         ",
     )
@@ -257,7 +289,34 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     # i.e., we only consider the costs of the flows that are not in semi-compact method
     var_flow = variables[:flow].container
 
-    flows_operational_cost = @expression(model, sum(row.cost * var_flow[row.id] for row in indices))
+    flows_operational_cost =
+        model[:flows_operational_cost] = if has_commodity_price_profile
+            @expression(
+                model,
+                sum(
+                    row.cost_coefficient::Float64 *
+                    (
+                        row.commodity_price::Float64 * _profile_aggregate( # commodity_price aggregation
+                            profiles.rep_period,
+                            (row.profile_name::String, row.year::Int32, row.rep_period::Int32),
+                            row.time_block_start:row.time_block_end,
+                            Statistics.mean,
+                            1.0,
+                        ) / row.producer_efficiency::Float64 + row.operational_cost::Float64
+                    ) *
+                    (row.time_block_end - row.time_block_start + 1) *
+                    var_flow[row.id::Int64] for row in indices
+                )
+            )
+        else
+            @expression(
+                model,
+                sum(
+                    row.total_cost_if_no_profile::Float64 * var_flow[row.id::Int64] for
+                    row in indices
+                )
+            )
+        end
 
     indices = DuckDB.query(
         connection,

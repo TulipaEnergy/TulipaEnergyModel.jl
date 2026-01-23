@@ -695,7 +695,8 @@
     "profile_type": {
       "constraints": {
         "oneOf": [
-          "availability"
+          "availability",
+          "commodity_price"
         ]
       },
       "description": "Type of profile, used to determine DuckDB table with source profile",
