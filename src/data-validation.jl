@@ -886,20 +886,16 @@ function _validate_commodity_price_consistency!(connection)
                 AND flow_milestone.to_asset = flows_profiles.to_asset
             WHERE
                 flows_profiles.profile_type = 'commodity_price'
+                AND flow_milestone.commodity_price <= 0
             """,
         )
     ]
-    if length(rows) == 0
-        return error_messages # No commodity_price profile, just leave
-    end
     for row in rows
-        if row.commodity_price <= 0
-            from, to, commodity_price = row.from_asset, row.to_asset, row.commodity_price
-            push!(
-                error_messages,
-                "Flow ($from, $to) is associated with a 'commodity_price' profile, so it should have flow_milestone.commodity_price > 0, but we found $commodity_price",
-            )
-        end
+        from, to, commodity_price = row.from_asset, row.to_asset, row.commodity_price
+        push!(
+            error_messages,
+            "Flow ($from, $to) is associated with a 'commodity_price' profile, so it should have flow_milestone.commodity_price > 0, but we found $commodity_price",
+        )
     end
 
     return error_messages
