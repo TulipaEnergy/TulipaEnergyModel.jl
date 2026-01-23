@@ -296,7 +296,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
                     (
                         row.commodity_price::Float64 * _profile_aggregate( # commodity_price aggregation
                             profiles.rep_period,
-                            (row.profile_name::String, row.year, row.rep_period),
+                            (row.profile_name::String, row.year::Int32, row.rep_period::Int32),
                             row.time_block_start:row.time_block_end,
                             Statistics.mean,
                             1.0,
@@ -304,7 +304,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
                         row.operational_cost::Float64 *
                         (row.time_block_end - row.time_block_start + 1)
                     ) *
-                    var_flow[row.id] for row in indices
+                    var_flow[row.id::Int64] for row in indices
                 )
             )
         else
@@ -317,7 +317,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
                         row.operational_cost::Float64 *
                         (row.time_block_end - row.time_block_start + 1)
                     ) *
-                    var_flow[row.id] for row in indices
+                    var_flow[row.id::Int64] for row in indices
                 )
             )
         end
