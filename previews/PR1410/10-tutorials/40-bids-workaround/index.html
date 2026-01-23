@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Bids via workaround using consumer unit commitment · TulipaEnergyModel.jl</title><meta name="title" content="Bids via workaround using consumer unit commitment · TulipaEnergyModel.jl"/><meta property="og:title" content="Bids via workaround using consumer unit commitment · TulipaEnergyModel.jl"/><meta property="twitter:title" content="Bids via workaround using consumer unit commitment · TulipaEnergyModel.jl"/><meta name="description" content="Documentation for TulipaEnergyModel.jl."/><meta property="og:description" content="Documentation for TulipaEnergyModel.jl."/><meta property="twitter:description" content="Documentation for TulipaEnergyModel.jl."/><meta property="og:url" content="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/40-bids-workaround/"/><meta property="twitter:url" content="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/40-bids-workaround/"/><link rel="canonical" href="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/40-bids-workaround/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.png" alt="TulipaEnergyModel.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TulipaEnergyModel.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Welcome</a></li><li><span class="tocitem">Tutorials</span><ul><li><a class="tocitem" href="../11-setting-up/">Setting up</a></li><li><a class="tocitem" href="../12-basics/">Tutorial 1: The Basics</a></li><li><a class="tocitem" href="../13-assets/">Tutorial 2: Assets and Flows</a></li><li><a class="tocitem" href="../14-fully-flexible-time/">Tutorial 3: Flexible Time Resolution</a></li><li><a class="tocitem" href="../15-clustering-rep-periods/">Tutorial 4: Representative Periods with Tulipa Clustering</a></li><li><a class="tocitem" href="../16-storage/">Tutorial 5: Seasonal and Non-seasonal Storage</a></li><li><a class="tocitem" href="../17-multi-year-investments/">Tutorial 6: Multi-year investments</a></li><li><a class="tocitem" href="../30-workflow/">Tutorial 7: Workflow</a></li><li><a class="tocitem" href="../31-rolling-horizon/">Tutorial 8: Rolling Horizon</a></li><li class="is-active"><a class="tocitem" href>Bids via workaround using consumer unit commitment</a><ul class="internal"><li><a class="tocitem" href="#Introduction"><span>Introduction</span></a></li><li><a class="tocitem" href="#Modeling"><span>Modeling</span></a></li></ul></li><li><a class="tocitem" href="../99-manual-steps/">Advanced Control</a></li></ul></li><li><span class="tocitem">User Guide</span><ul><li><a class="tocitem" href="../../20-user-guide/00-getting-started/">Getting Started</a></li><li><a class="tocitem" href="../../20-user-guide/20-how-to-use/">How to Use</a></li><li><a class="tocitem" href="../../20-user-guide/50-schemas/">Analysis Workflow</a></li><li><a class="tocitem" href="../../20-user-guide/55-outputs/">Output Variables</a></li><li><a class="tocitem" href="../../20-user-guide/60-structures/">Internal Model Structures</a></li></ul></li><li><a class="tocitem" href="../../30-concepts/">Concepts</a></li><li><span class="tocitem">Scientific Foundation</span><ul><li><a class="tocitem" href="../../40-scientific-foundation/40-formulation/">Mathematical Formulation</a></li><li><a class="tocitem" href="../../40-scientific-foundation/45-scientific-references/">Scientific References</a></li></ul></li><li><a class="tocitem" href="../../70-reference/">API Reference</a></li><li><a class="tocitem" href="../../80-ecosystem/">Tulipa Ecosystem</a></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../90-contributing/90-contributing/">Contributing Guidelines</a></li><li><a class="tocitem" href="../../90-contributing/91-developer/">Developer Documentation</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Tutorials</a></li><li class="is-active"><a href>Bids via workaround using consumer unit commitment</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Bids via workaround using consumer unit commitment</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/docs/src/10-tutorials/40-bids-workaround.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="bids-tutorial"><a class="docs-heading-anchor" href="#bids-tutorial">Bids via workaround using consumer unit commitment</a><a id="bids-tutorial-1"></a><a class="docs-heading-anchor-permalink" href="#bids-tutorial" title="Permalink"></a></h1><p>In this tutorial we will learn how to create bids using consumer unit commitment. Bids are not explicitly supported in Tulipa (yet), but they can be modeled with a few workarounds.</p><p>This is an advanced tutorial. It assumes some basic knowledge of Tulipa, so going through some of the earlier tutorials might be beneficial. Furthermore, it deals with the underlying model of Tulipa, so it</p><h2 id="Introduction"><a class="docs-heading-anchor" href="#Introduction">Introduction</a><a id="Introduction-1"></a><a class="docs-heading-anchor-permalink" href="#Introduction" title="Permalink"></a></h2><p>In our context, a bid is a proposal to buy energy at a given price at one or more time steps. If the proposal is for a single time step, then we are going to call it a &quot;simple bid&quot;, as opposed to a &quot;profile bid&quot;, when it involves more than one time step. The price is constant in both cases, which allow us to always use vectors to represent the required quantities. In a &quot;simple bid&quot;, the vectors of time steps and quantities both have 1 element.</p><p>Furthermore, the bid can be part of an &quot;exclusive group&quot;. Inside each exclusive group, a single bid is accepted. Finally, some bids also have a curtailment possibility, i.e., they can be supplied with less energy than the maximum desired, but no less than a given percentage of the maximum (given by <code>curtailment_minimum</code>).</p><p>Here are some example bids:</p><pre><code class="language-julia hljs">bid_blocks = [
+    (
+        customer = &quot;A&quot;,
+        exclusive_group = 1,
+        profile_block = 1,
+        timestep = 4:4,
+        quantity = [10],
+        price = 5.0,
+        curtailment_minimum = 1.0,
+    ),
+    (
+        customer = &quot;A&quot;,
+        exclusive_group = 2,
+        profile_block = 1,
+        timestep = 2:3,
+        quantity = [40, 30],
+        price = 2.5,
+        curtailment_minimum = 1.0,
+    ),
+    (
+        customer = &quot;A&quot;,
+        exclusive_group = 2,
+        profile_block = 2,
+        timestep = 2:3,
+        quantity = [20, 20],
+        price = 1.5,
+        curtailment_minimum = 0.8,
+    ),
+    (
+        customer = &quot;B&quot;,
+        exclusive_group = 1,
+        profile_block = 1,
+        timestep = 1:6,
+        quantity = [5, 10, 15, 25, 30, 15],
+        price = 0.8,
+        curtailment_minimum = 1.0,
+    ),
+]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">4-element Vector{@NamedTuple{customer::String, exclusive_group::Int64, profile_block::Int64, timestep::UnitRange{Int64}, quantity::Vector{Int64}, price::Float64, curtailment_minimum::Float64}}:
+ (customer = &quot;A&quot;, exclusive_group = 1, profile_block = 1, timestep = 4:4, quantity = [10], price = 5.0, curtailment_minimum = 1.0)
+ (customer = &quot;A&quot;, exclusive_group = 2, profile_block = 1, timestep = 2:3, quantity = [40, 30], price = 2.5, curtailment_minimum = 1.0)
+ (customer = &quot;A&quot;, exclusive_group = 2, profile_block = 2, timestep = 2:3, quantity = [20, 20], price = 1.5, curtailment_minimum = 0.8)
+ (customer = &quot;B&quot;, exclusive_group = 1, profile_block = 1, timestep = 1:6, quantity = [5, 10, 15, 25, 30, 15], price = 0.8, curtailment_minimum = 1.0)</code></pre><p>Each bid has the following data:</p><ul><li><code>customer</code>, identifying who is the asking party;</li><li><code>exclusive_group</code>, identifying each group of exclusive bids;</li><li><code>profile_block</code>, identifying each block of bids;</li><li><code>timestep</code>, indicating the time steps of a bid;</li><li><code>quantity</code>, indicating the vector of requested quantities;</li><li><code>price</code>, indicating the price;</li><li><code>curtailment_minimum</code>, indicating the minimum percentage of energy that can be delivered under curtailment.</li></ul><p>Notice that <code>(customer, exclusive_group, profile_block)</code> form a unique identifier for this bid.</p><p>In words, we can say:</p><ul><li>The first bid, <code>(A, 1, 1)</code>, requests 10 KW at time step 4 and is willing to pay <span>$</span>5.0 per KW. No curtailment allowed.</li><li>The second bid, <code>(A, 2, 1)</code>, requests 40 KW at time step 2 and 30 KW at time step 3 and is willing to pay <span>$</span>2.5 per KW. No curtailment allowed.</li><li>The third bid, <code>(A, 2, 2)</code>, requests 20 KW at time step 2 and 20 KW at time step 3 and is willing to pay <span>$</span>1.5 per KW. At least 80% of the requested quantity per day must be satisfied.</li><li>The fourth bid, <code>(B, 1, 1)</code>, requests 5 KW, 10 KW, 15 KW, 25 KW, 30 KW, and 15 KW from time steps 1 to 6, in order. It is willing to pay <span>$</span>0.8 per KW, and no curtailment is allowed.</li></ul><p>Finally, notice that the second and third bids share the same <code>exclusive_group</code>, so <strong>at most one of them can be accepted</strong>.</p><h2 id="Modeling"><a class="docs-heading-anchor" href="#Modeling">Modeling</a><a id="Modeling-1"></a><a class="docs-heading-anchor-permalink" href="#Modeling" title="Permalink"></a></h2><p>We don&#39;t have an underlying energy system to make these bids, so let&#39;s create a fake scenario with</p><ul><li>One generator, with 1 initial unit, where the <strong>capacity</strong> is given by us;</li><li>One consumer, with no demand (because we don&#39;t care for this problem);</li><li>A flow between the generator and the consumer, with an <strong>operational cost</strong> given by us;</li></ul><h3 id="Creating-initial-problem-with-TulipaBuilder"><a class="docs-heading-anchor" href="#Creating-initial-problem-with-TulipaBuilder">Creating initial problem with TulipaBuilder</a><a id="Creating-initial-problem-with-TulipaBuilder-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-initial-problem-with-TulipaBuilder" title="Permalink"></a></h3><p>We will use <a href="https://github.com/TulipaEnergy/TulipaBuilder.jl">TulipaBuilder.jl</a> to create the Tulipa problem for this problem:</p><pre><code class="language-julia hljs">using TulipaBuilder
+
+year = 2030 # We don&#39;t need the year for anything, but we need to set it
+num_timesteps = 6
+
+function create_new_problem(;capacity = 60.0, operational_cost = 0.5)
+    tulipa = TulipaData()
+
+    add_asset!(tulipa, &quot;Generator&quot;, :producer; capacity, operational_cost, initial_units = 1.0)
+    add_asset!(tulipa, &quot;Consumer&quot;, :consumer; peak_demand = 0.0)
+    add_flow!(tulipa, &quot;Generator&quot;, &quot;Consumer&quot;; operational_cost)
+    # Because we need at least one profile, we explicitly set demand to 0
+    attach_profile!(tulipa, &quot;Consumer&quot;, :demand, year, zeros(num_timesteps))
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">create_new_problem (generic function with 1 method)</code></pre><p>Notice that this is already a valid Tulipa problem, but the solution is to have no flow.</p><pre><code class="language-julia hljs">using TulipaClustering: TulipaClustering as TC
+using TulipaEnergyModel: TulipaEnergyModel as TEM
+
+tulipa = create_new_problem()
+
+# Convert TulipaBuilder&#39;s data to TulipaEnergyModel format in the connection
+connection = create_connection(tulipa)
+
+# (Fake) cluster the profiles to generate representative periods
+TC.dummy_cluster!(connection)
+
+# Solve the scenario
+TEM.populate_with_defaults!(connection)
+energy_problem = TEM.run_scenario(connection, show_log=false)
+
+energy_problem</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+  - Model created!
+    - Number of variables: 6
+    - Number of constraints for variable bounds: 6
+    - Number of structural constraints: 12
+  - Model solved!
+    - Termination status: OPTIMAL
+    - Objective value: 0.0
+</code></pre><h3 id="Input-modification-for-bids"><a class="docs-heading-anchor" href="#Input-modification-for-bids">Input modification for bids</a><a id="Input-modification-for-bids-1"></a><a class="docs-heading-anchor-permalink" href="#Input-modification-for-bids" title="Permalink"></a></h3><p>The trick to have bids is to create a new asset for each of the bids. Each of these bid assets is a consumer asset requesting the profile bid as a &quot;demand&quot; bid. In Tulipa, the <code>:consumer</code> assets also work as hubs, i.e., they are allowed to provide energy to other assets connected via outgoing flows. So, to satisfy the &quot;demand&quot; of the bid assets, we create a flow from the <code>&quot;Consumer&quot;</code> asset to these bid assets. To simulate the <code>price</code> willing to be paid by a bid, we use the <code>operational_cost</code> between the &quot;Consumer&quot; and the bid asset. In summary:</p><ul><li>For each <code>(consumer, exclusive_group, profile_block)</code> bid, create a new &#39;:consumer&#39; asset.</li><li>Attach a profile with the quantities per time steps of the bid to this asset.<ul><li>The profiles in Tulipa have to be complete, so the remaining hours are simply completed with 0.</li></ul></li><li>Create a flow between an existing <code>:consumer</code> and this bid asset and set <code>operational_cost = -price</code>.</li></ul><p>However, this by itself is not sufficient, because there is nothing yet forcing this bid to accepted or not.</p><p>If the bid is accepted, the requested quantity is treated as a demand to be satisfied for every time step. If the bid is not accepted, there should be no flow to this asset for every time step.</p><p>The missing link is to have some kind of variable that indicates whether the bid is accepted or not. For that, we will use an existing feature of TulipaEnergyModel, <a href="../../20-user-guide/20-how-to-use/#unit-commitment-setup">Unit Commitment</a>, but we will apply it to consumers.</p><p>By itself, however, this is not enough, because the consumer balance constraint still forces the requested bid to be satisfied, and there is nothing tying that to the unit commitment variables. Therefore, we use a special condition inside the consumer balance constraint created specifically for this case, which is to create a <strong>loop flow</strong> in the bid asset. This existence of a loop flow changes the balance constraint tying the incoming flow to the loop flow, and the loop flow is tied to the unit commitment variables by the minimum and maximum output flow ramping constraints.</p><p>These are the modifications:</p><ul><li>For each bid, create a new asset. We&#39;ll name it &quot;Bid&quot;. Set<ul><li><code>capacity = 1.0</code></li><li><code>consumer_balance_sense = &quot;==&quot;</code> (which is the default)</li><li><code>initial_units = 1.0</code></li><li><code>peak_demand</code> as anything positive (<code>1.0</code> makes it easier to understand the results, <code>maximum(bid_block.profile)</code> is the common normalized way)</li><li><code>type = :consumer</code></li><li><code>unit_commitment = true</code></li><li><code>unit_commitment_integer = true</code></li><li><code>unit_commitment_method = &quot;basic&quot;</code></li></ul></li><li>Set the time resolution of the asset to the full length of the profile (<code>assets_rep_periods_partitions.partition = rep_periods_data.num_timesteps</code>)</li><li>Find an existing consumer, we&#39;ll name it &quot;Bid Manager&quot;.</li><li>Connect a flow from the &quot;Bid Manager&quot; to &quot;Bid&quot;, with <code>flow_milestone.operational_cost = -price</code>.</li><li>Create a loop flow, connecting the asset &quot;Bid&quot; to itself.</li><li>Create a profile in <code>profiles_rep_periods</code> or <code>profiles</code>, depending on whether you still have to cluster or not.<ul><li>Use the bid&#39;s quantities, normalized by <code>peak_demand</code>, as <code>value</code>, for the corresponding time steps as <code>timestep</code>.</li><li>Use 0 as <code>value</code> for the missing <code>timestep</code>.</li><li>Choose a <code>profile_name</code></li></ul></li><li>Relate the profile above to the asset &quot;Bid&quot; in <code>assets_profiles</code>, with <code>profile_type = &#39;demand&#39;</code>.</li></ul><p>We can create a function to help us create a bid with the above characteristics based on a given bid_block:</p><pre><code class="language-julia hljs">function add_new_bid!(tulipa, bid_id, bid_block)
+    bid_name = &quot;bid$bid_id&quot;
+    bid_manager = &quot;Consumer&quot;
+    peak_demand = 1.0
+    add_asset!(
+        tulipa,
+        bid_name,
+        :consumer,
+        capacity = 1.0,
+        consumer_balance_sense = &quot;==&quot;,
+        initial_units = 1.0,
+        min_operating_point = bid_block.curtailment_minimum,
+        peak_demand = peak_demand,
+        unit_commitment = true,
+        unit_commitment_integer = true,
+        unit_commitment_method = &quot;basic&quot;,
+    )
+    set_partition!(tulipa, bid_name, year, 1, num_timesteps) # 1 = rep_period, there is only one
+    add_flow!(tulipa, bid_manager, bid_name, operational_cost = -bid_block.price)
+    add_flow!(tulipa, bid_name, bid_name)
+    profile = zeros(num_timesteps)
+    profile[bid_block.timestep] = bid_block.quantity / peak_demand
+    attach_profile!(tulipa, bid_name, :demand, year, profile)
+
+    return tulipa
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">add_new_bid! (generic function with 1 method)</code></pre><p>With this function, we can go back to our initial problem and add the bid blocks from the beginning:</p><pre><code class="language-julia hljs">tulipa = create_new_problem(capacity = 60, operational_cost = 0.5)
+for (bid_id, bid_block) in enumerate(bid_blocks)
+    add_new_bid!(tulipa, bid_id, bid_block)
+end
+
+# Convert TulipaBuilder&#39;s data to TulipaEnergyModel format in the connection
+connection = create_connection(tulipa)
+
+# (Fake) cluster the profiles to generate representative periods
+TC.dummy_cluster!(connection)
+
+# Solve the scenario
+TEM.populate_with_defaults!(connection)
+energy_problem = TEM.run_scenario(connection, show_log=false)
+
+energy_problem</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+  - Model created!
+    - Number of variables: 58
+    - Number of constraints for variable bounds: 58
+    - Number of structural constraints: 88
+  - Model solved!
+    - Termination status: OPTIMAL
+    - Objective value: -225.0
+</code></pre><p>We can see that the objective value is different, but let&#39;s investigate the solution in more details. First, we can check which flows are not 0:</p><pre><code class="language-julia hljs">using DuckDB, DataFrames
+
+# Helper function
+df_sql(con, s) = DataFrame(DuckDB.query(con, s))
+
+df_sql(
+    connection,
+    &quot;&quot;&quot;
+    SELECT from_asset, to_asset, time_block_start AS timestep, solution,
+    FROM var_flow
+    WHERE solution != 0
+    &quot;&quot;&quot;,
+)</code></pre><div><div style = "float: left;"><span>13×4 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">from_asset</th><th style = "text-align: left;">to_asset</th><th style = "text-align: left;">timestep</th><th style = "text-align: left;">solution</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">Generator</td><td style = "text-align: left;">Consumer</td><td style = "text-align: right;">2</td><td style = "text-align: right;">60.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">Generator</td><td style = "text-align: left;">Consumer</td><td style = "text-align: right;">3</td><td style = "text-align: right;">50.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">Generator</td><td style = "text-align: left;">Consumer</td><td style = "text-align: right;">4</td><td style = "text-align: right;">10.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid1</td><td style = "text-align: right;">4</td><td style = "text-align: right;">10.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid2</td><td style = "text-align: right;">2</td><td style = "text-align: right;">40.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">6</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid2</td><td style = "text-align: right;">3</td><td style = "text-align: right;">30.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">7</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid3</td><td style = "text-align: right;">2</td><td style = "text-align: right;">20.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">8</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid3</td><td style = "text-align: right;">3</td><td style = "text-align: right;">20.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">9</td><td style = "text-align: left;">bid1</td><td style = "text-align: left;">bid1</td><td style = "text-align: right;">4</td><td style = "text-align: right;">10.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">10</td><td style = "text-align: left;">bid2</td><td style = "text-align: left;">bid2</td><td style = "text-align: right;">2</td><td style = "text-align: right;">40.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">11</td><td style = "text-align: left;">bid2</td><td style = "text-align: left;">bid2</td><td style = "text-align: right;">3</td><td style = "text-align: right;">30.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">12</td><td style = "text-align: left;">bid3</td><td style = "text-align: left;">bid3</td><td style = "text-align: right;">2</td><td style = "text-align: right;">20.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">13</td><td style = "text-align: left;">bid3</td><td style = "text-align: left;">bid3</td><td style = "text-align: right;">3</td><td style = "text-align: right;">20.0</td></tr></tbody></table></div><p>Second, we can also check the unit commitment variables:</p><pre><code class="language-julia hljs">df_sql(
+    connection,
+    &quot;&quot;&quot;
+    SELECT asset, solution,
+    FROM var_units_on
+    WHERE solution != 0
+    &quot;&quot;&quot;,
+)</code></pre><div><div style = "float: left;"><span>3×2 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">solution</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">bid1</td><td style = "text-align: right;">1.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">bid2</td><td style = "text-align: right;">1.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">bid3</td><td style = "text-align: right;">1.0</td></tr></tbody></table></div><p>We can see from these two tables that bids 1, 2, and 3 were accepted. This mostly makes sense, <strong>except</strong> that bids 2 and 3 should not be accepted at the same time, since they are in the same exclusivity group (same <code>exclusive_group</code> for a given <code>customer</code>). This means that we have one least modification to make.</p><h3 id="Model-modification-for-exclusivity-of-the-bids"><a class="docs-heading-anchor" href="#Model-modification-for-exclusivity-of-the-bids">Model modification for exclusivity of the bids</a><a id="Model-modification-for-exclusivity-of-the-bids-1"></a><a class="docs-heading-anchor-permalink" href="#Model-modification-for-exclusivity-of-the-bids" title="Permalink"></a></h3><p>This modification has to be done directly in the <strong>underlying JuMP model</strong>. The required change is to add a constraint <span>$\displaystyle \sum_{i: i \in G_k} u_i \leq 1$</span>, where <span>$u_i$</span> are the unit commitment variables (i.e., the bid-acceptance variables), and <span>$G_k$</span> are the exclusive groups.</p><p>The function below modifies a model with this constraint:</p><pre><code class="language-julia hljs">using JuMP
+
+function add_exclusive_groups!(energy_problem, bid_blocks)
+    exclusive_groups = Dict{Tuple{String,Int},Vector{Int}}() # (customer, exclusive_group) -&gt; [bid_ids...]
+    for (bid_id, bid) in enumerate(bid_blocks)
+        key = (bid.customer, bid.exclusive_group)
+        if !haskey(exclusive_groups, key)
+            exclusive_groups[key] = Int[]
+        end
+        push!(exclusive_groups[key], bid_id)
+    end
+
+    for ((customer, exclusive_group), bid_ids) in exclusive_groups
+        if length(bid_ids) == 1 # There is only one bid in this group, there is no need to further constrain
+            continue
+        end
+        var = energy_problem.variables[:units_on].container
+        JuMP.@constraint(
+            energy_problem.model,
+            sum(var[id] for id in bid_ids) &lt;= 1,
+            base_name = &quot;exclusive_bid_group[$(customer),$(exclusive_group)]&quot;,
+        )
+    end
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">add_exclusive_groups! (generic function with 1 method)</code></pre><p>We now modify our little script with this additional step:</p><pre><code class="language-julia hljs">tulipa = create_new_problem(capacity = 60, operational_cost = 0.5)
+for (bid_id, bid_block) in enumerate(bid_blocks)
+    add_new_bid!(tulipa, bid_id, bid_block)
+end
+
+# Convert TulipaBuilder&#39;s data to TulipaEnergyModel format in the connection
+connection = create_connection(tulipa)
+
+# (Fake) cluster the profiles to generate representative periods
+TC.dummy_cluster!(connection)
+
+# Create the mode
+TEM.populate_with_defaults!(connection)
+energy_problem = TEM.EnergyProblem(connection)
+TEM.create_model!(energy_problem)
+
+# Modify the model
+add_exclusive_groups!(energy_problem, bid_blocks)
+
+# Solve the model
+TEM.solve_model!(energy_problem)
+TEM.save_solution!(energy_problem; compute_duals = true)
+
+energy_problem</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+  - Model created!
+    - Number of variables: 58
+    - Number of constraints for variable bounds: 58
+    - Number of structural constraints: 89
+  - Model solved!
+    - Termination status: OPTIMAL
+    - Objective value: -215.0
+</code></pre><p>Once again, we investigate the flow and unit commitment solution:</p><pre><code class="language-julia hljs">using DuckDB, DataFrames
+
+# Helper function
+df_sql(con, s) = DataFrame(DuckDB.query(con, s))
+
+df_sql(
+    connection,
+    &quot;&quot;&quot;
+    SELECT from_asset, to_asset, time_block_start AS timestep, solution,
+    FROM var_flow
+    WHERE solution != 0
+    &quot;&quot;&quot;,
+)</code></pre><div><div style = "float: left;"><span>24×4 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">from_asset</th><th style = "text-align: left;">to_asset</th><th style = "text-align: left;">timestep</th><th style = "text-align: left;">solution</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">Generator</td><td style = "text-align: left;">Consumer</td><td style = "text-align: right;">1</td><td style = "text-align: right;">5.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">Generator</td><td style = "text-align: left;">Consumer</td><td style = "text-align: right;">2</td><td style = "text-align: right;">50.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">Generator</td><td style = "text-align: left;">Consumer</td><td style = "text-align: right;">3</td><td style = "text-align: right;">45.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: left;">Generator</td><td style = "text-align: left;">Consumer</td><td style = "text-align: right;">4</td><td style = "text-align: right;">35.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: left;">Generator</td><td style = "text-align: left;">Consumer</td><td style = "text-align: right;">5</td><td style = "text-align: right;">30.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">6</td><td style = "text-align: left;">Generator</td><td style = "text-align: left;">Consumer</td><td style = "text-align: right;">6</td><td style = "text-align: right;">15.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">7</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid1</td><td style = "text-align: right;">4</td><td style = "text-align: right;">10.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">8</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid2</td><td style = "text-align: right;">2</td><td style = "text-align: right;">40.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">9</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid2</td><td style = "text-align: right;">3</td><td style = "text-align: right;">30.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">10</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">1</td><td style = "text-align: right;">5.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">11</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">2</td><td style = "text-align: right;">10.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">12</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">3</td><td style = "text-align: right;">15.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">13</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">4</td><td style = "text-align: right;">25.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">14</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">5</td><td style = "text-align: right;">30.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">15</td><td style = "text-align: left;">Consumer</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">6</td><td style = "text-align: right;">15.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">16</td><td style = "text-align: left;">bid1</td><td style = "text-align: left;">bid1</td><td style = "text-align: right;">4</td><td style = "text-align: right;">10.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">17</td><td style = "text-align: left;">bid2</td><td style = "text-align: left;">bid2</td><td style = "text-align: right;">2</td><td style = "text-align: right;">40.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">18</td><td style = "text-align: left;">bid2</td><td style = "text-align: left;">bid2</td><td style = "text-align: right;">3</td><td style = "text-align: right;">30.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">19</td><td style = "text-align: left;">bid4</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">1</td><td style = "text-align: right;">5.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">20</td><td style = "text-align: left;">bid4</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">2</td><td style = "text-align: right;">10.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">21</td><td style = "text-align: left;">bid4</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">3</td><td style = "text-align: right;">15.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">22</td><td style = "text-align: left;">bid4</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">4</td><td style = "text-align: right;">25.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">23</td><td style = "text-align: left;">bid4</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">5</td><td style = "text-align: right;">30.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">24</td><td style = "text-align: left;">bid4</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">6</td><td style = "text-align: right;">15.0</td></tr></tbody></table></div><p>and</p><pre><code class="language-julia hljs">df_sql(
+    connection,
+    &quot;&quot;&quot;
+    SELECT asset, solution,
+    FROM var_units_on
+    WHERE solution != 0
+    &quot;&quot;&quot;,
+)</code></pre><div><div style = "float: left;"><span>3×2 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">solution</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">bid1</td><td style = "text-align: right;">1.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">bid2</td><td style = "text-align: right;">1.0</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">bid4</td><td style = "text-align: right;">1.0</td></tr></tbody></table></div><p>Now, we can see that bids 1, 2, and 4 are accepted.</p><h3 id="Testing-more-cases"><a class="docs-heading-anchor" href="#Testing-more-cases">Testing more cases</a><a id="Testing-more-cases-1"></a><a class="docs-heading-anchor-permalink" href="#Testing-more-cases" title="Permalink"></a></h3><p>To play around a little more, we can wrap this is a function and try a few cases:</p><pre><code class="language-julia hljs">function full_bid_run(bid_blocks; capacity, operational_cost)
+    tulipa = create_new_problem(; capacity, operational_cost)
+    for (bid_id, bid_block) in enumerate(bid_blocks)
+        add_new_bid!(tulipa, bid_id, bid_block)
+    end
+
+    # Convert TulipaBuilder&#39;s data to TulipaEnergyModel format in the connection
+    connection = create_connection(tulipa)
+
+    # (Fake) cluster the profiles to generate representative periods
+    TC.dummy_cluster!(connection)
+
+    # Create the mode
+    TEM.populate_with_defaults!(connection)
+    energy_problem = TEM.EnergyProblem(connection)
+    TEM.create_model!(energy_problem)
+
+    # Modify the model
+    add_exclusive_groups!(energy_problem, bid_blocks)
+
+    # Solve the model
+    TEM.solve_model!(energy_problem)
+    TEM.save_solution!(energy_problem; compute_duals = true)
+
+    flow_solution = Dict(
+        (row.from_asset, row.to_asset, row.timestep) =&gt; row.solution
+        for row in DuckDB.query(
+            connection,
+            &quot;&quot;&quot;
+            SELECT from_asset, to_asset, time_block_start AS timestep, solution,
+            FROM var_flow
+            WHERE solution != 0
+            &quot;&quot;&quot;,
+        )
+    )
+
+    bid_id_lookup = Dict(&quot;bid$bid_id&quot; =&gt; bid_id for bid_id = 1:length(bid_blocks))
+
+    accepted_bids = [
+        round(Int, bid_id_lookup[row.asset]) # The solution is returned as float
+        for row in DuckDB.query(
+            connection,
+            &quot;&quot;&quot;
+            SELECT asset, solution,
+            FROM var_units_on
+            WHERE solution != 0
+            &quot;&quot;&quot;,
+        )
+    ]
+
+    return energy_problem.objective_value, flow_solution, accepted_bids
+end
+
+energy_problem</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+  - Model created!
+    - Number of variables: 58
+    - Number of constraints for variable bounds: 58
+    - Number of structural constraints: 89
+  - Model solved!
+    - Termination status: OPTIMAL
+    - Objective value: -215.0
+</code></pre><p>Now that we have a function that runs the whole process based on the given bid blocks, the generator capacity, and the operational cost to deliver the generated energy, we can verify these cases:</p><ul><li>There is enough capacity to accept all bids and there is no generation cost, so we expect the all bids to be accepted. Notice that bids 2 and 3 are exclusive, so only bids 1, 2, and 4 are accepted.</li></ul><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 999.9, operational_cost = 0.0)
+@assert accepted_bids == [1, 2, 4]</code></pre><ul><li>By restricting the capacity, we accepted bids will eventually change. The first breakpoint is at capacity = 50, because bids 2 and 4 requires 50 KW at time steps 2 and 3.</li></ul><p>When capacity is slightly less than 50, bid 3 is dropped:</p><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 49.9, operational_cost = 0.0)
+@assert accepted_bids == [1, 2]</code></pre><ul><li>We also expect bid 4 to be dropped if the price is not higher than the operational cost:</li></ul><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 999.9, operational_cost = 1.0)
+@assert accepted_bids == [1, 2]</code></pre><ul><li>Decreasing the capacity to slightly less than 40 KW, also makes us drop bid 2, but allows us to have more space to accept bids 3 and 4:</li></ul><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 39.9, operational_cost = 0.0)
+@assert accepted_bids == [1, 3, 4]</code></pre><ul><li>In fact, because bid 3 can be curtailed to 80%, we can further decrease the capacity. Up to 35 KW, the same bids are still accepted:</li></ul><pre><code class="language-julia hljs">a, b, accepted_bids = full_bid_run(bid_blocks; capacity = 35.0, operational_cost = 0.0)
+@assert accepted_bids == [1, 3, 4]</code></pre><ul><li>Slight less capacity forces the model to drop another bid. Although bid 4 is cheaper per KW, is requests more energy, to it is better.</li></ul><pre><code class="language-julia hljs">a, b, accepted_bids = full_bid_run(bid_blocks; capacity = 34.9, operational_cost = 0.0)
+@assert accepted_bids == [3, 4]</code></pre><ul><li>But if the generation cost is too high, then bid 4 is dropped in favour of bid 1.</li></ul><pre><code class="language-julia hljs">a, b, accepted_bids = full_bid_run(bid_blocks; capacity = 34.9, operational_cost = 1.0)
+@assert accepted_bids == [1, 3]</code></pre><h3 id="Visualization-of-the-results"><a class="docs-heading-anchor" href="#Visualization-of-the-results">Visualization of the results</a><a id="Visualization-of-the-results-1"></a><a class="docs-heading-anchor-permalink" href="#Visualization-of-the-results" title="Permalink"></a></h3><p>To help visualize the use of bids, we will vary the value of generator&#39;s capacity and the operational cost to get from the generator to the bid and create a few plots of the solutions. We are doing the same as in the previous section, but systematically.</p><p>We will use some longer code that we&#39;ll hide, but that can be inspected in the <a href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/docs/src/10-tutorials/40-bids-workaround.md">code for this file</a>. The code simply loops over many cases, like the section above, and saves data to be used in the plots below:</p><pre><code class="language-julia hljs"># plts and dim2 are defined in the hidden code
+plot(
+    plts...;
+    size = (300 * dim2, 3 * 200),
+    layout = grid(3, dim2),
+    leftmargin = 5Plots.mm,
+    bottommargin = 4Plots.mm,
+)</code></pre><img src="8e798325.svg" alt="Example block output"/><p>The plot has three columns and three rows. The columns vary in operational cost, and the rows show three different kinds of plots. The x-axis of all plots is the capacity.</p><p>The first row of plots show the profit made accepting these bids, per capacity. The second row of plots show the accepted bids per capacity. The plots in the third row show the profit made per capacity, but grouped per bid.</p><p>Some noteworthy points in the plots above:</p><ul><li>For operational cost = <span>$</span> 0.1 / KW, around capacity 35, bid 1 is slightly less profitable than bid 4, and there is only capacity for one of them (and bid 3), so the accepted bids change accordingly.</li><li>For operational cost = <span>$</span> 0.6 / KW, this is not the case anymore, and thus bid 1 is always accepted.</li><li>For operational cost = <span>$</span> 1.1 / KW, then it is never profitable to accept bid 4.</li><li>The profit generated by bid 3 around capacity 16 to 20, and 31 to 35 is linearly increasing, since the bid 3 can be curtailed.</li></ul></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../31-rolling-horizon/">« Tutorial 8: Rolling Horizon</a><a class="docs-footer-nextpage" href="../99-manual-steps/">Advanced Control »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Friday 23 January 2026 10:47">Friday 23 January 2026</span>. Using Julia version 1.12.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
