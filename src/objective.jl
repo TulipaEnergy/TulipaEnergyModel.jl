@@ -207,7 +207,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         )
     )
 
-    flows_profiles_query_select = ""
+    commodity_price_profile_name = ""
     flows_profiles_query_left_join = ""
     has_commodity_price_profile =
         get_single_element_from_query_and_ensure_its_only_one(
