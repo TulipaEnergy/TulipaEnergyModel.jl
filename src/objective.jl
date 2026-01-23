@@ -207,6 +207,29 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         )
     )
 
+    flows_profiles_query_select = ""
+    flows_profiles_query_left_join = ""
+    has_commodity_price_profile =
+        get_single_element_from_query_and_ensure_its_only_one(
+            DuckDB.query(
+                connection,
+                """
+                SELECT COUNT(*)
+                FROM flows_profiles
+                WHERE profile_type = 'commodity_price'
+                """,
+            ),
+        ) > 0
+    if has_commodity_price_profile
+        commodity_price_profile_name = "commodity_price_profiles.profile_name,"
+        flows_profiles_query_left_join = """
+        LEFT JOIN flows_profiles AS commodity_price_profiles
+            ON commodity_price_profiles.from_asset = var.from_asset
+            AND commodity_price_profiles.to_asset = var.to_asset
+            AND commodity_price_profiles.year = var.year -- TODO: inconsistent year naming to assets_profiles
+            AND commodity_price_profiles.profile_type = 'commodity_price'
+        """
+    end
     indices = DuckDB.query(
         connection,
         "WITH rp_weight_prob AS (
@@ -240,7 +263,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             obj.commodity_price,
             obj.producer_efficiency,
             obj.operational_cost,
-            commodity_price_profiles.profile_name,
+            $commodity_price_profile_name
         FROM var_flow AS var
         LEFT JOIN t_objective_flows as obj
             ON var.from_asset = obj.from_asset
@@ -254,11 +277,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             AND var.rep_period = rp_res.rep_period
         LEFT JOIN asset
             ON asset.asset = var.from_asset
-        LEFT JOIN flows_profiles AS commodity_price_profiles
-            ON commodity_price_profiles.from_asset = var.from_asset
-            AND commodity_price_profiles.to_asset = var.to_asset
-            AND commodity_price_profiles.year = var.year
-            AND commodity_price_profiles.profile_type = 'commodity_price' -- TODO: inconsistent year naming to assets_profiles
+        $flows_profiles_query_left_join
         WHERE asset.investment_method != 'semi-compact'
         ",
     )
@@ -268,17 +287,6 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
     # i.e., we only consider the costs of the flows that are not in semi-compact method
     var_flow = variables[:flow].container
 
-    has_commodity_price_profile =
-        get_single_element_from_query_and_ensure_its_only_one(
-            DuckDB.query(
-                connection,
-                """
-                SELECT COUNT(*)
-                FROM flows_profiles
-                WHERE profile_type = 'commodity_price'
-                """,
-            ),
-        ) > 0
     flows_operational_cost =
         model[:flows_operational_cost] = if has_commodity_price_profile
             @expression(
