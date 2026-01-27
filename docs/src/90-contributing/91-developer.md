@@ -648,7 +648,13 @@ pkg> instantiate
 julia> include("benchmark/relevant-file.jl")
 ```
 
-## Testing the generate MPS files
+### Testing scalability
+
+This is still a new topic for us, so material is scarce.
+At the moment, check `benchmark/scalability.jl` for an example of running a benchmark on many artificial Tulipa problems, with varying sizes, saving the results, and creating a plot out of it.
+You can see an example of the expected output in the file `results.csv` and the plot `results.png` in the `benchmark` folder.
+
+## Testing the generated MPS files
 
 To make sure that unintended changes don't change the model, we have a workflow that automatically compares the generated MPS files.
 Here is an explanation of how it works, and how to run the same comparison locally.

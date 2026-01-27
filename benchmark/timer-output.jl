@@ -21,21 +21,16 @@ function lower_level_pipeline(; kwargs...)
     constraints = TEM.compute_constraints_indices(connection)
     profiles = TEM.prepare_profiles_structure(connection)
 
-    #= Comment out not relevant
     # Create model
-    model, expressions = TEM.create_model(
-        connection,
-        variables,
-        constraints,
-        profiles,
-        model_parameters,
-    )
+    model, expressions =
+        TEM.create_model(connection, variables, constraints, profiles, model_parameters)
 
     # Solve model
     TEM.solve_model(model)
     TEM.save_solution!(connection, model, variables, constraints)
     output_dir = mktempdir()
     TEM.export_solution_to_csv_files(output_dir, connection)
+    #= Comment out not relevant
     =#
 
     return connection
@@ -55,6 +50,9 @@ function higher_level_pipeline(; kwargs...)
     return connection, energy_problem
 end
 
-connection = lower_level_pipeline(; num_days = 3)
-# connection, energy_problem = higher_level_pipeline(num_days = 3)
+# connection = lower_level_pipeline(; num_rep_periods = 3)
+connection, energy_problem =
+    higher_level_pipeline(; num_rep_periods = 3, num_countries = 10, period_duration = 24)
 show(TEM.to)
+# print(energy_problem.model)
+energy_problem
