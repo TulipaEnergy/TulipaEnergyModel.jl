@@ -91,7 +91,7 @@ function give_me_better_name(;
             TB.add_flow!(tulipa, demand, other; operational_cost = 0.01)
             TB.add_flow!(tulipa, other, demand; operational_cost = 0.01)
         end
-        if country_id == num_countries && num_countries != 1
+        if country_id == num_countries && num_countries > 2
             other = "Country1_demand"
             TB.add_flow!(tulipa, demand, other; operational_cost = 0.01)
             TB.add_flow!(tulipa, other, demand; operational_cost = 0.01)
