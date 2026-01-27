@@ -1,0 +1,8 @@
+asset,commission_year,fixed_cost,investment_cost,investment_limit,fixed_cost_storage_energy,investment_cost_storage_energy,investment_limit_storage_energy,storage_loss_from_stored_energy
+demand,2030,0.0,0.0,,0.0,0.0,,0
+demand,2050,0.0,0.0,,0.0,0.0,,0
+ens,2030,0.0,0.0,,0.0,0.0,,0
+ens,2050,0.0,0.0,,0.0,0.0,,0
+wind,2020,61.0,81.0,,0.0,0.0,,0
+wind,2030,62.0,82.0,,0.0,0.0,,0
+wind,2050,63.0,83.0,,0.0,0.0,,0
