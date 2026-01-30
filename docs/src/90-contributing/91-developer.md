@@ -654,6 +654,18 @@ This is still a new topic for us, so material is scarce.
 At the moment, check `benchmark/scalability.jl` for an example of running a benchmark on many artificial Tulipa problems, with varying sizes, saving the results, and creating a plot out of it.
 You can see an example of the expected output in the file `results.csv` and the plot `results.png` in the `benchmark` folder.
 
+### Memory profiling
+
+To investigate memory usage of the code, we use the [Allocation Profiler](https://docs.julialang.org/en/v1/manual/profile/#allocation-profiler).
+The script `benchmark/memory-profile.jl` has an example using PProf.
+It should be possible to use VSCode's [`@profview_allocs`](https://www.julia-vscode.org/docs/stable/userguide/profiler/) as well.
+
+Notice that the `sample_rate` value might be relevant in this investigation, though at the moment we don't have a recommendation on how to find the best value.
+
+Profiling memory use is useful to figure out _where_ large amounts of memory are being allocated, but not exactly _why_.
+Type stability is one of the main issues.
+Check [Modern Julia Workflows' type stability section](https://modernjuliaworkflows.org/optimizing/#type_stability) and memory management section for more information.
+
 ## Testing the generated MPS files
 
 To make sure that unintended changes don't change the model, we have a workflow that automatically compares the generated MPS files.
