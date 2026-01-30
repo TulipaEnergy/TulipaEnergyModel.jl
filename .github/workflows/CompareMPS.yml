@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Find older comment (to avoid multiple comments)
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
         uses: peter-evans/find-comment@v4
         id: find-old-comment
         with:
@@ -30,7 +30,7 @@ jobs:
           comment-author: "github-actions[bot]"
           body-includes: CompareMPS report
       - name: Comment on PR with CompareMPS
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
         uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.find-old-comment.outputs.comment-id }}
@@ -80,7 +80,11 @@ jobs:
           <details>
 
           ```plaintext' > body.md
-          cat mps-logfile.txt >> body.md
+          if [ -f mps-logfile.txt]; then
+            cat mps-logfile.txt >> body.md
+          else
+            echo "mps-logfile.txt was not created" >> body.md
+          fi
           echo '```
 
           </details>
@@ -89,7 +93,7 @@ jobs:
           ' >> body.md
           echo "::warning title=MPS files are different::$(cat body.md)"
       - name: Find Comment
-        if: always() && github.event.pull_request.head.repo.full_name == github.repository
+        if: always() && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
         uses: peter-evans/find-comment@v4
         id: find-comment
         with:
@@ -97,7 +101,7 @@ jobs:
           comment-author: "github-actions[bot]"
           body-includes: CompareMPS report
       - name: Comment on PR with log if failed
-        if: failure() && github.event.pull_request.head.repo.full_name == github.repository
+        if: failure() && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
         uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
@@ -105,7 +109,7 @@ jobs:
           body-path: body.md
           edit-mode: replace
       - name: Comment on PR with CompareMPS
-        if: success() && github.event.pull_request.head.repo.full_name == github.repository
+        if: success() && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
         uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
