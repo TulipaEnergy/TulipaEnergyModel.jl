@@ -57,7 +57,7 @@ using Plots
 - **Move the 'my-awesome-energy-system' folder** into your VS Code project.\
     *To find the folder where you created your project, right click on any file in VS code (e.g. 'my_workflow.jl') and click "Reveal in File Explorer"*
 
-The workflow.jl and 'my-awesome-energy-system' folder should now both be present in your VS Code project.
+Now the file workflow.jl and folder 'my-awesome-energy-system' should both be present in your VS Code project.
 
 !!! info "What parameters can I use?"
-    Check out the docs: [TulipaEnergyModel Inputs](@ref table-schemas) and the [input-schemas.json](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/input-schemas.json) file.
+    Check out the docs: [Input Table Schemas](@ref table-schemas) and the [input-schemas.json](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/input-schemas.json) file.
