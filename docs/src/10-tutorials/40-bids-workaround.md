@@ -1,10 +1,9 @@
-# [Bids via workaround using consumer unit commitment](@id bids-tutorial)
+# [Bids using Consumer Unit Commitment (Workaround)](@id bids-tutorial)
 
 In this tutorial we will learn how to create bids using consumer unit commitment.
 Bids are not explicitly supported in Tulipa (yet), but they can be modeled with a few workarounds.
 
 This is an advanced tutorial. It assumes some basic knowledge of Tulipa, so going through some of the earlier tutorials might be beneficial.
-Furthermore, it deals with the underlying model of Tulipa, so it
 
 ## Introduction
 
