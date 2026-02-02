@@ -488,7 +488,7 @@ function _create_objective_auxiliary_table(connection, constants)
                 WHEN asset.discount_rate = 0
                     THEN asset_commission.investment_cost / asset.economic_lifetime
                 ELSE asset.discount_rate / (
-                    (1 + asset.discount_rate) *
+                    (1) *
                     (1 - 1 / ((1 + asset.discount_rate) ** asset.economic_lifetime))
                     ) * asset_commission.investment_cost
             END AS annualized_cost,
@@ -507,10 +507,15 @@ function _create_objective_auxiliary_table(connection, constants)
             END AS salvage_value,
             1 / (1 + $(constants.social_rate))^(asset_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
             CASE
-                -- the below calculation does not accept asset_commission.investment_cost = 0 in the denominator
+                -- 1. Handle zero cost to avoid division by zero
                 WHEN asset_commission.investment_cost = 0
-                    THEN 0.0 -- in this case, the investment cost is 0, so the weight does not matter
-                ELSE investment_year_discount * (1 - salvage_value / asset_commission.investment_cost)
+                    THEN 0.0
+                -- 2. Single Year Setup: Horizon matches Investment Year
+                -- We ignore salvage and use the annualized cost ratio directly
+                WHEN $(constants.end_of_horizon) = asset_milestone.milestone_year
+                    THEN investment_year_discount * (annualized_cost / asset_commission.investment_cost)
+                -- 3. Multi-year Setup: Use the standard salvage logic
+                ELSE investment_year_discount * (1 - salvage_value / asset_commission.investment_cost) * (1 + asset.discount_rate)
             END AS weight_for_asset_investment_discount,
             in_between_years.discount_factor_from_current_milestone_year_to_next_milestone_year AS weight_for_operation_discounts,
         FROM asset_milestone
