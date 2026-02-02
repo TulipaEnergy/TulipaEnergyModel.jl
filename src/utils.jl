@@ -139,6 +139,15 @@ function get_single_element_from_query_and_ensure_its_only_one(connection, query
 end
 
 """
+    count_rows_from(connection, from_str)
+
+Run `SELECT COUNT(*) FROM \$from_str` and return the integer as count value.
+"""
+function count_rows_from(connection, from_str)
+    return only(only(DuckDB.query(connection, "SELECT COUNT(*) FROM $from_str")))::Int
+end
+
+"""
     _append_variable_ids(
         connection,
         constraint_table_name,

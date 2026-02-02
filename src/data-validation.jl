@@ -84,7 +84,10 @@ function validate_data!(connection)
             false,
         ),
     )
-        @timeit to "$log_msg" append!(error_messages, validation_function(connection))
+        @timeit to "$log_msg" append!(
+            error_messages,
+            validation_function(connection)::Vector{String},
+        )
         if fail_fast && length(error_messages) > 0
             break
         end
@@ -101,19 +104,15 @@ function _validate_has_all_tables_and_columns!(connection)
     error_messages = String[]
     for (table_name, table) in TulipaEnergyModel.schema_per_table_name
         columns_from_connection = [
-            row.column_name for row in DuckDB.query(
+            row.column_name::String for row in DuckDB.query(
                 connection,
                 "SELECT column_name FROM duckdb_columns() WHERE table_name = '$table_name'",
             )
         ]
         if length(columns_from_connection) == 0
             # Just to make sure that this is not a random case with no columns but the table exists
-            count_tables = get_single_element_from_query_and_ensure_its_only_one(
-                DuckDB.query(
-                    connection,
-                    "SELECT COUNT(table_name) as count FROM duckdb_tables() WHERE table_name = '$table_name'",
-                ),
-            )
+            count_tables =
+                count_rows_from(connection, "duckdb_tables() WHERE table_name = '$table_name'")
             has_table = count_tables == 1
             if !has_table
                 push!(error_messages, "Table '$table_name' expected but not found")
@@ -121,7 +120,7 @@ function _validate_has_all_tables_and_columns!(connection)
             end
         end
 
-        for (column, _) in table
+        for column in keys(table)
             if !(column in columns_from_connection)
                 push!(error_messages, "Column '$column' is missing from table '$table_name'")
             end
@@ -136,28 +135,28 @@ function _validate_no_duplicate_rows!(connection)
     # However, where to add this, and how to ensure it was added is not clear.
     duplicates = String[]
     for (table, primary_keys) in (
-        ("asset", (:asset,)),
-        ("asset_both", (:asset, :milestone_year, :commission_year)),
-        ("asset_commission", (:asset, :commission_year)),
-        ("asset_milestone", (:asset, :milestone_year)),
-        ("assets_profiles", (:asset, :commission_year, :profile_type)),
-        ("assets_rep_periods_partitions", (:asset, :year, :rep_period)),
-        ("assets_timeframe_partitions", (:asset, :year)),
-        ("assets_timeframe_profiles", (:asset, :year, :profile_type)),
-        ("flow", (:from_asset, :to_asset)),
-        ("flow_both", (:from_asset, :to_asset, :milestone_year, :commission_year)),
-        ("flow_commission", (:from_asset, :to_asset, :commission_year)),
-        ("flow_milestone", (:from_asset, :to_asset, :milestone_year)),
-        ("flows_profiles", (:from_asset, :to_asset, :year, :profile_type)),
-        ("flows_rep_periods_partitions", (:from_asset, :to_asset, :year, :rep_period)),
-        ("group_asset", (:name, :milestone_year)),
-        ("profiles_rep_periods", (:profile_name, :year, :rep_period, :timestep)),
-        ("profiles_timeframe", (:profile_name, :year, :period)),
-        ("rep_periods_data", (:year, :rep_period)),
-        ("rep_periods_mapping", (:year, :scenario, :period, :rep_period)),
-        ("stochastic_scenario", (:scenario,)),
-        ("timeframe_data", (:year, :period)),
-        ("year_data", (:year,)),
+        ("asset", [:asset]),
+        ("asset_both", [:asset, :milestone_year, :commission_year]),
+        ("asset_commission", [:asset, :commission_year]),
+        ("asset_milestone", [:asset, :milestone_year]),
+        ("assets_profiles", [:asset, :commission_year, :profile_type]),
+        ("assets_rep_periods_partitions", [:asset, :year, :rep_period]),
+        ("assets_timeframe_partitions", [:asset, :year]),
+        ("assets_timeframe_profiles", [:asset, :year, :profile_type]),
+        ("flow", [:from_asset, :to_asset]),
+        ("flow_both", [:from_asset, :to_asset, :milestone_year, :commission_year]),
+        ("flow_commission", [:from_asset, :to_asset, :commission_year]),
+        ("flow_milestone", [:from_asset, :to_asset, :milestone_year]),
+        ("flows_profiles", [:from_asset, :to_asset, :year, :profile_type]),
+        ("flows_rep_periods_partitions", [:from_asset, :to_asset, :year, :rep_period]),
+        ("group_asset", [:name, :milestone_year]),
+        ("profiles_rep_periods", [:profile_name, :year, :rep_period, :timestep]),
+        ("profiles_timeframe", [:profile_name, :year, :period]),
+        ("rep_periods_data", [:year, :rep_period]),
+        ("rep_periods_mapping", [:year, :scenario, :period, :rep_period]),
+        ("stochastic_scenario", [:scenario]),
+        ("timeframe_data", [:year, :period]),
+        ("year_data", [:year]),
     )
         append!(duplicates, _validate_no_duplicate_rows!(connection, table, primary_keys))
     end
@@ -312,19 +311,16 @@ function _validate_stochastic_scenario_probabilities_sum_to_one!(connection; tol
     error_messages = String[]
 
     # Check if table is not empty
-    row_count_query =
-        DuckDB.query(connection, "SELECT COUNT(*) as row_count FROM stochastic_scenario")
-    row_count = get_single_element_from_query_and_ensure_its_only_one(row_count_query)
+    row_count = count_rows_from(connection, "stochastic_scenario")
     if row_count == 0
         return error_messages
     end
 
     # Check if sum of probabilities is equal to 1
-    sum_query = DuckDB.query(
+    total_probability = get_single_element_from_query_and_ensure_its_only_one(
         connection,
         "SELECT SUM(probability) as total_probability FROM stochastic_scenario",
-    )
-    total_probability = get_single_element_from_query_and_ensure_its_only_one(sum_query)
+    )::Float64
     if abs(total_probability - 1.0) > tolerance
         push!(
             error_messages,
@@ -767,14 +763,8 @@ function _validate_bid_related_data!(connection)
     end
 
     bid_data = get_bid_data(connection)
-    num_years = get_single_element_from_query_and_ensure_its_only_one(
-        connection,
-        "SELECT COUNT(*) FROM year_data",
-    )
-    num_rep_periods = get_single_element_from_query_and_ensure_its_only_one(
-        connection,
-        "SELECT COUNT(*) FROM rep_periods_data",
-    )
+    num_years = count_rows_from(connection, "year_data")
+    num_rep_periods = count_rows_from(connection, "rep_periods_data")
 
     for (justification, condition_dict) in (
         ("consumer with unit commitment", consumers_with_unit_commitment),

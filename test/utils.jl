@@ -234,7 +234,7 @@ end
         "timeframe_data" => DataFrame(:year => 2030, :period => 1:365),
         "rep_periods_mapping" => DataFrame(
             :year => 2030,
-            :scenario => 1,
+            :scenario => Int32(1),
             :period => 1:365,
             :rep_period => mod1.(1:365, 2),
         ),
