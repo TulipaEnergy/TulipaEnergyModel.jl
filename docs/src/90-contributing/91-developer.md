@@ -654,6 +654,16 @@ This is still a new topic for us, so material is scarce.
 At the moment, check `benchmark/scalability.jl` for an example of running a benchmark on many artificial Tulipa problems, with varying sizes, saving the results, and creating a plot out of it.
 You can see an example of the expected output in the file `results.csv` and the plot `results.png` in the `benchmark` folder.
 
+### Type instability investigation
+
+To investigate type instability issues in the code, we can use `@code_warntype`, [JET.jl](https://github.com/aviatesk/JET.jl), and [Cthulhu.jl](https://github.com/JuliaDebug/Cthulhu.jl), in increasing complexity order.
+
+If you have a single function that you can directly call, `@code_warntype` might be enough to investigate possible type instability issues.
+Most times, though, the function will be deeply nested, so using JET or Cthulhu will be necessary to actually see what is going on.
+See the `benchmark/type-stability.jl` script for an example of setting up the lower o higher level API and calling some of these functions.
+
+Check [Modern Julia Workflow's type stability section](https://modernjuliaworkflows.org/optimizing/#type_stability) for more details.
+
 ### Memory profiling
 
 To investigate memory usage of the code, we use the [Allocation Profiler](https://docs.julialang.org/en/v1/manual/profile/#allocation-profiler).
