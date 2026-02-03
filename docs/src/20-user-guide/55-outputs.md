@@ -40,7 +40,7 @@ Each output table has three types of columns:
 
 ### `var_assets_decommission_energy`
 
-For a storage asset that has `storage_method_energy` commissioned in `commission_year`, the optimal decommissioning (decrease) of asset energy capacity in `milestone_year`, expressed in the same units as `capacity_storage_energy` of asset.
+For a storage asset that has `storage_method_energy` commissioned in `commission_year`, the optimal decommissioning (decrease) of asset capacity storage energy in `milestone_year`, expressed in the same units as `capacity_storage_energy` of asset.
 
 Associated input parameters: `investment_integer_storage_energy`, `capacity_storage_energy`
 
@@ -52,7 +52,7 @@ Associated input parameters: `decommissionable`, `initial_units`, `investment_in
 
 ### `var_assets_investment_energy`
 
-For a storage asset that has `storage_method_energy`, the optimal investment (increase) in asset energy capacity in `milestone_year`, expressed in the same units as `capacity_storage_energy` of asset.
+For a storage asset that has `storage_method_energy`, the optimal investment (increase) in asset capacity storage energy in `milestone_year`, expressed in the same units as `capacity_storage_energy` of asset.
 
 Associated input parameters: `investable`, `investment_integer_storage_energy`, `capacity_storage_energy`, `investment_limit_storage_energy`
 
