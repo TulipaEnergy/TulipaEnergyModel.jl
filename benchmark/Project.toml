@@ -11,5 +11,5 @@ TulipaEnergyModel = {path = ".."}
 [compat]
 BenchmarkTools = "1"
 DuckDB = "1"
-MetaGraphsNext = "0.7"
+MetaGraphsNext = "0.7, 0.8"
 TulipaIO = "0.5"
