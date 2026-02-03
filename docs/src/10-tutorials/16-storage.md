@@ -1,4 +1,4 @@
-# Tutorial 5: Seasonal and Non-seasonal Storage
+# Seasonal and Non-seasonal Storage
 
 ## Introduction
 

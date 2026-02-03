@@ -1,4 +1,4 @@
-# Tutorial 6: Multi-year investments
+# Multi-Year Investment Pathways
 
 Let's explore the multi-year investments in Tulipa. We will talk about discount approaches and different investment methods. The latter is an example for different levels of detail in Tulipa.
 

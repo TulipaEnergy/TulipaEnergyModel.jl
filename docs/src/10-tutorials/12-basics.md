@@ -1,4 +1,4 @@
-# [Tutorial 1: The Basics](@id basic-example)
+# [The Basics](@id basic-example)
 
 Welcome to the first tutorial, here you will learn the basics of how to run TulipaEnergyModel. Good luck! 🌷
 

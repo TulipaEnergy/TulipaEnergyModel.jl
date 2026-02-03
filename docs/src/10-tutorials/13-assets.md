@@ -1,4 +1,4 @@
-# Tutorial 2: Assets and Flows
+# Gereralized Assets and Flows
 
 Tulipa uses [Assets and Flows](@ref concepts) as generalized components to build energy systems.
 

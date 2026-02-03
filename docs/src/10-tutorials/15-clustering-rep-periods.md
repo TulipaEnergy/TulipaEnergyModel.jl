@@ -1,4 +1,4 @@
-# Tutorial 4: Representative Periods with Tulipa Clustering
+# Blended Representative Periods with Tulipa Clustering
 
 ## Introduction
 

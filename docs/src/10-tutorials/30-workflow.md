@@ -1,6 +1,6 @@
-# [Tutorial 7: Workflow](@id workflow-tutorial)
+# [Data-Handling Workflow (Example)](@id workflow-tutorial)
 
-Tutorial for the OBZ case study as an example of the full workflow of Tulipa.
+This is a tutorial of the OBZ case study as an example of the full workflow of Tulipa.
 
 !!! warning "Not tested for multi-year"
     Although we use years in the tutorial below, we haven't tried it on a

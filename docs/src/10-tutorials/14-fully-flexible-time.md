@@ -1,4 +1,4 @@
-# Tutorial 3: Flexible Time Resolution
+# Fully-Flexible Time Resolution
 
 ## Introduction
 

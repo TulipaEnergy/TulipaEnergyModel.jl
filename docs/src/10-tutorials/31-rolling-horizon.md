@@ -1,4 +1,4 @@
-# Tutorial 8: Rolling Horizon
+# Rolling Horizon
 
 In this example we will replicate the [rolling horizon example in JuMP](https://jump.dev/JuMP.jl/stable/tutorials/algorithms/rolling_horizon/).
 Rolling horizon is a technique to try to manage very large problems by trading some accuracy for efficiency.

@@ -1,4 +1,4 @@
-# [Setting up](@id tutorials-setup)
+# [Tutorial Setup](@id tutorials-setup)
 
 In this pre-tutorial, you will learn (a bit) about:
 
