@@ -45,3 +45,6 @@ repos:
     rev: v2.2.1
     hooks:
       - id: julia-formatter
+        name: Julia Formatter
+        entry: julia -e 'using JuliaFormatter; format(".")'
+        language: system
