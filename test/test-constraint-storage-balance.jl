@@ -3,37 +3,50 @@
     using TulipaBuilder: TulipaBuilder as TB
     using TulipaClustering: TulipaClustering as TC
 
+    # Type-stable storage configuration struct
+    struct StorageConfig
+        inflows::Float64
+        is_seasonal::Bool
+        initial_units::Float64
+        initial_storage_units::Float64
+        charging_efficiency::Float64
+        discharging_efficiency::Float64
+        initial_storage_level::Float64
+        capacity::Float64
+        capacity_storage_energy::Float64
+    end
+
     # Storage asset configuration data
-    const STORAGE_CONFIGS = Dict{String,Dict{String,Union{Float64,Bool,Int}}}(
-        "seasonal_storage" => Dict{String,Union{Float64,Bool,Int}}(
-            "inflows" => 10.0,
-            "is_seasonal" => true,
-            "initial_units" => 1.0,
-            "initial_storage_units" => 1.0,
-            "storage_charging_efficiency" => 0.85,
-            "storage_discharging_efficiency" => 0.8,
-            "initial_storage_level" => 0.5,
-            "capacity" => 1.0,
-            "capacity_storage_energy" => 168.0,
+    const STORAGE_CONFIGS = Dict{String,StorageConfig}(
+        "seasonal_storage" => StorageConfig(
+            10.0,  # inflows
+            true,  # is_seasonal
+            1.0,   # initial_units
+            1.0,   # initial_storage_units
+            0.85,  # charging_efficiency
+            0.8,   # discharging_efficiency
+            0.5,   # initial_storage_level
+            1.0,   # capacity
+            168.0, # capacity_storage_energy
         ),
-        "non_seasonal_storage" => Dict{String,Union{Float64,Bool,Int}}(
-            "inflows" => 3.5,
-            "is_seasonal" => false,
-            "initial_units" => 1.0,
-            "initial_storage_units" => 1.0,
-            "storage_charging_efficiency" => 0.9,
-            "storage_discharging_efficiency" => 0.95,
-            "initial_storage_level" => 0.25,
-            "capacity" => 1.0,
-            "capacity_storage_energy" => 4.0,
+        "non_seasonal_storage" => StorageConfig(
+            3.5,   # inflows
+            false, # is_seasonal
+            1.0,   # initial_units
+            1.0,   # initial_storage_units
+            0.9,   # charging_efficiency
+            0.95,  # discharging_efficiency
+            0.25,  # initial_storage_level
+            1.0,   # capacity
+            4.0,   # capacity_storage_energy
         ),
     )
 
     """
-        create_storage_balance_problem(; inflows_profile=[1.0, 5.5, 10.0], period_duration=1, num_rps=2)
+        create_storage_balance_problem(; inflows_profile, period_duration, num_rps)
 
-    Create a storage balance test problem with two storage assets (seasonal_storage and non_seasonal_storage).
-    Returns the connection and energy_problem ready for constraint testing.
+    Create a storage balance test problem with two storage assets.
+    Returns the database connection with configured storage assets and clustering.
     """
     function create_storage_balance_problem(;
         inflows_profile::Dict{Tuple{String,Int},Vector{Float64}} = Dict(
@@ -41,33 +54,33 @@
         ),
         period_duration::Int = 1,
         num_rps::Int = 2,
-    )
-        # Create tulipa data structure
+    )::DuckDB.DB
         tulipa = TB.TulipaData()
 
-        # Add basic producer and consumer
+        # Add basic producer and consumer for flow balance
         TB.add_asset!(tulipa, "generator", :producer)
         TB.add_asset!(tulipa, "consumer", :consumer)
         TB.add_flow!(tulipa, "generator", "consumer")
 
-        # Add storage assets
+        # Add and configure storage assets
         for (storage_name, config) in STORAGE_CONFIGS
             TB.add_asset!(
                 tulipa,
                 storage_name,
                 :storage;
-                storage_inflows = config["inflows"],
-                is_seasonal = config["is_seasonal"],
-                initial_units = config["initial_units"],
-                initial_storage_units = config["initial_storage_units"],
-                storage_charging_efficiency = config["storage_charging_efficiency"],
-                storage_discharging_efficiency = config["storage_discharging_efficiency"],
-                initial_storage_level = config["initial_storage_level"],
-                capacity = config["capacity"],
-                capacity_storage_energy = config["capacity_storage_energy"],
+                storage_inflows = config.inflows,
+                is_seasonal = config.is_seasonal,
+                initial_units = config.initial_units,
+                initial_storage_units = config.initial_storage_units,
+                storage_charging_efficiency = config.charging_efficiency,
+                storage_discharging_efficiency = config.discharging_efficiency,
+                initial_storage_level = config.initial_storage_level,
+                capacity = config.capacity,
+                capacity_storage_energy = config.capacity_storage_energy,
             )
             TB.add_flow!(tulipa, "consumer", storage_name)
             TB.add_flow!(tulipa, storage_name, "consumer")
+
             # Attach inflows profiles for this storage asset
             for ((asset, year), values) in inflows_profile
                 if asset == storage_name
@@ -76,7 +89,7 @@
             end
         end
 
-        # Create connection and cluster
+        # Create connection and apply clustering
         connection = TB.create_connection(tulipa)
         TC.cluster!(
             connection,
@@ -92,10 +105,10 @@
     end
 
     """
-        get_flow_ids(connection, storage_asset, num_rps, period_duration)
+        get_flow_ids(connection, storage_asset, num_rps, period_duration) -> (incoming, outgoing)
 
-    Get incoming and outgoing flow IDs for a storage asset across all representative periods.
-    Returns (incoming_flow_ids, outgoing_flow_ids) dictionaries indexed by rep_period and time_block_start.
+    Query incoming and outgoing flow IDs for a storage asset across all time blocks.
+    Returns two dictionaries indexed by (rep_period, time_block_start).
     """
     function get_flow_ids(
         connection::DuckDB.DB,
@@ -103,6 +116,7 @@
         num_rps::Int,
         period_duration::Int,
     )::Tuple{Dict{Tuple{Int,Int},Vector{Int}},Dict{Tuple{Int,Int},Vector{Int}}}
+        # Pre-allocate dictionaries for all time blocks
         incoming = Dict{Tuple{Int,Int},Vector{Int}}(
             (rp, tb) => Int[] for rp in 1:num_rps for tb in 1:period_duration
         )
@@ -110,77 +124,95 @@
             (rp, tb) => Int[] for rp in 1:num_rps for tb in 1:period_duration
         )
 
-        for rp in 1:num_rps
-            for tb in 1:period_duration
-                incoming[(rp, tb)] = [
-                    row.id for row in DuckDB.query(
-                        connection,
-                        "SELECT id FROM var_flow WHERE to_asset = '$storage_asset' AND rep_period = $rp AND time_block_start = $tb",
-                    )
-                ]
-                outgoing[(rp, tb)] = [
-                    row.id for row in DuckDB.query(
-                        connection,
-                        "SELECT id FROM var_flow WHERE from_asset = '$storage_asset' AND rep_period = $rp AND time_block_start = $tb",
-                    )
-                ]
-            end
+        # Query flow IDs for each time block
+        for rp in 1:num_rps, tb in 1:period_duration
+            incoming[(rp, tb)] = [
+                row.id for row in DuckDB.query(
+                    connection,
+                    "SELECT id FROM var_flow WHERE to_asset = '$storage_asset' AND rep_period = $rp AND time_block_start = $tb",
+                )
+            ]
+            outgoing[(rp, tb)] = [
+                row.id for row in DuckDB.query(
+                    connection,
+                    "SELECT id FROM var_flow WHERE from_asset = '$storage_asset' AND rep_period = $rp AND time_block_start = $tb",
+                )
+            ]
         end
+
         return (incoming, outgoing)
     end
 
     """
-        compute_expected_terms_seasonal_storage(
-            flow,
-            incoming_flow_ids,
-            outgoing_flow_ids,
-            map,
-            profiles_rep_periods,
-            period,
-            num_rps,
-            charging_eff,
-            discharging_eff,
-            base_inflows,
-        )
-    Compute the expected incoming, outgoing, and inflows terms for a given period.
+        get_inflow_value(profiles_rep_periods, rp, tb) -> Float64
+
+    Extract inflow value for a given representative period and time block.
+    Returns 0.0 if no matching profile is found.
+    """
+    function get_inflow_value(profiles_rep_periods::DataFrame, rp::Int, tb::Int)::Float64
+        filtered = profiles_rep_periods[
+            (profiles_rep_periods.rep_period.==rp).&(profiles_rep_periods.timestep.==tb),
+            :value,
+        ]
+        return isempty(filtered) ? 0.0 : filtered[1]
+    end
+
+    """
+        compute_flow_terms(flow, flow_ids, efficiency) -> JuMP.AffExpr
+
+    Compute weighted flow term for charging or discharging.
+    """
+    function compute_flow_terms(
+        flow::Vector{JuMP.VariableRef},
+        flow_ids::Vector{Int},
+        efficiency::Float64,
+    )::JuMP.AffExpr
+        return sum(flow[id] for id in flow_ids; init = JuMP.AffExpr(0.0)) * efficiency
+    end
+
+    """
+        compute_expected_terms_seasonal_storage(...)
+
+    Compute aggregated flow and inflow terms for seasonal storage over a period.
+    Aggregates across all representative periods using their weights.
     """
     function compute_expected_terms_seasonal_storage(
         flow::Vector{JuMP.VariableRef},
         incoming_flow_ids::Dict{Tuple{Int,Int},Vector{Int}},
         outgoing_flow_ids::Dict{Tuple{Int,Int},Vector{Int}},
-        map::Dict{Tuple{Int,Int},Float64},
+        period_weight_map::Dict{Tuple{Int,Int},Float64},
         profiles_rep_periods::DataFrame,
         period::Int,
         num_rps::Int,
         period_duration::Int,
-        charging_eff::Float64,
-        discharging_eff::Float64,
-        base_inflows::Float64,
+        config::StorageConfig,
     )::Tuple{JuMP.AffExpr,JuMP.AffExpr,Float64}
         incoming = JuMP.AffExpr(0.0)
         outgoing = JuMP.AffExpr(0.0)
         inflows = 0.0
 
         for rp in 1:num_rps
-            weight = get(map, (period, rp), 0.0)
+            weight = get(period_weight_map, (period, rp), 0.0)
             for tb in 1:period_duration
-                # Incoming flows (charging)
+                # Compute weighted charging flows
                 incoming +=
-                    sum(flow[id] for id in incoming_flow_ids[(rp, tb)]) * weight * charging_eff
+                    compute_flow_terms(
+                        flow,
+                        incoming_flow_ids[(rp, tb)],
+                        config.charging_efficiency,
+                    ) * weight
 
-                # Outgoing flows (discharging)
+                # Compute weighted discharging flows (divide by efficiency for energy balance)
                 outgoing +=
-                    sum(flow[id] for id in outgoing_flow_ids[(rp, tb)]) * weight / discharging_eff
+                    compute_flow_terms(
+                        flow,
+                        outgoing_flow_ids[(rp, tb)],
+                        1.0 / config.discharging_efficiency,
+                    ) * weight
 
-                # Inflows
-                rp_inflows = let
-                    filtered = profiles_rep_periods[
-                        (profiles_rep_periods.rep_period.==rp).&(profiles_rep_periods.timestep.==tb),
-                        :value,
-                    ]
-                    isempty(filtered) ? 0.0 : filtered[1]
-                end
-                inflows += weight * rp_inflows * base_inflows
+                # Aggregate weighted inflows
+                profile_value = get_inflow_value(profiles_rep_periods, rp, tb)
+                inflows += weight * profile_value * config.inflows
             end
         end
 
@@ -188,17 +220,10 @@
     end
 
     """
-        compute_expected_terms_non_seasonal_storage(
-            flow,
-            incoming_flow_ids,
-            outgoing_flow_ids,
-            profiles_rep_periods,
-            num_rps,
-            charging_eff,
-            discharging_eff,
-            base_inflows,
-        )
-    Compute the expected incoming, outgoing, and inflows terms for a given representative period.
+        compute_expected_terms_non_seasonal_storage(...)
+
+    Compute flow and inflow terms for non-seasonal storage at a specific time block.
+    No aggregation across representative periods - each time block is independent.
     """
     function compute_expected_terms_non_seasonal_storage(
         flow::Vector{JuMP.VariableRef},
@@ -207,29 +232,21 @@
         profiles_rep_periods::DataFrame,
         rp::Int,
         tb::Int,
-        charging_eff::Float64,
-        discharging_eff::Float64,
-        base_inflows::Float64,
+        config::StorageConfig,
     )::Tuple{JuMP.AffExpr,JuMP.AffExpr,Float64}
-        incoming = JuMP.AffExpr(0.0)
-        outgoing = JuMP.AffExpr(0.0)
-        inflows = 0.0
+        # Compute charging flows
+        incoming = compute_flow_terms(flow, incoming_flow_ids[(rp, tb)], config.charging_efficiency)
 
-        # Incoming flows (charging)
-        incoming = sum(flow[id] for id in incoming_flow_ids[(rp, tb)]) * charging_eff
+        # Compute discharging flows (divide by efficiency for energy balance)
+        outgoing = compute_flow_terms(
+            flow,
+            outgoing_flow_ids[(rp, tb)],
+            1.0 / config.discharging_efficiency,
+        )
 
-        # Outgoing flows (discharging)
-        outgoing = sum(flow[id] for id in outgoing_flow_ids[(rp, tb)]) / discharging_eff
-
-        # Inflows
-        rp_inflows = let
-            filtered = profiles_rep_periods[
-                (profiles_rep_periods.rep_period.==rp).&(profiles_rep_periods.timestep.==tb),
-                :value,
-            ]
-            isempty(filtered) ? 0.0 : filtered[1]
-        end
-        inflows = rp_inflows * base_inflows
+        # Get inflows for this time block
+        profile_value = get_inflow_value(profiles_rep_periods, rp, tb)
+        inflows = profile_value * config.inflows
 
         return (incoming, outgoing, inflows)
     end
@@ -240,47 +257,40 @@ end
     using DuckDB: DuckDB
     using JuMP: JuMP
 
-    """
-    Note: Non-seasonal storage (a.k.a. short-term storage, intra-day/week storage)
-          does not depend on the set scenario. It only depends on the representative periods.
-          Therefore, we only need to test it once (no need for multiple scenarios).
-    """
+    # Non-seasonal storage (intra-day/week) only depends on representative periods,
+    # not on scenarios, so we test with a single scenario.
 
-    # Test storage balance for non_seasonal_storage
+    # Setup test parameters
     storage_asset = "non_seasonal_storage"
-    storage_config = STORAGE_CONFIGS[storage_asset]
-
-    # Create the test problem for only one scenario in year
+    config = STORAGE_CONFIGS[storage_asset]
     year = 2030
     inflows_profile = Dict((storage_asset, year) => [1.0, 5.5, 10.0, 2.5])
-    periods = 1:length(inflows_profile[(storage_asset, year)])
     period_duration = 2
     num_rps = 2
+
+    # Create and configure the test problem
     connection = create_storage_balance_problem(;
         inflows_profile = inflows_profile,
         period_duration = period_duration,
         num_rps = num_rps,
     )
-
-    # Populate defaults and create energy problem
     TEM.populate_with_defaults!(connection)
     energy_problem = TEM.EnergyProblem(connection)
-    TEM.create_model!(energy_problem; model_file_name = joinpath(@__DIR__, "test_storage.lp"))
+    TEM.create_model!(energy_problem)
 
-    # Extract variables and data
+    # Extract model variables
     flow = energy_problem.variables[:flow].container
     storage_level = energy_problem.variables[:storage_level_rep_period].container
 
-    # Get inflow profiles by representative period
-    profiles_rep_periods::DataFrame = TulipaIO.get_table(connection, "profiles_rep_periods")
-    profiles_rep_periods =
-        filter(row -> occursin(storage_asset, row.profile_name), profiles_rep_periods)
+    # Get inflow profiles for this storage asset
+    profiles = TulipaIO.get_table(connection, "profiles_rep_periods")
+    profiles = filter(row -> occursin(storage_asset, row.profile_name), profiles)
 
-    # Get flow IDs for the storage asset
+    # Get flow IDs for charging and discharging
     incoming_flow_ids, outgoing_flow_ids =
         get_flow_ids(connection, storage_asset, num_rps, period_duration)
 
-    # Verify constraint exists for all periods since we didn't define flexible temporal resolution data
+    # Verify all expected constraints exist
     cons_name = :balance_storage_rep_period
     constraint_data = [row for row in DuckDB.query(
         connection,
@@ -291,40 +301,37 @@ end
     )]
     @test length(constraint_data) == num_rps * period_duration
 
-    # Test each representative period's constraint per time block
+    # Test each constraint
     for row in constraint_data
         rp = Int(row.rep_period)
         tb = Int(row.time_block_start)
         id = row.id
 
-        # Compute expected terms
+        # Compute expected terms for this time block
         incoming, outgoing, inflows = compute_expected_terms_non_seasonal_storage(
             flow,
             incoming_flow_ids,
             outgoing_flow_ids,
-            profiles_rep_periods,
+            profiles,
             rp,
             tb,
-            storage_config["storage_charging_efficiency"],
-            storage_config["storage_discharging_efficiency"],
-            storage_config["inflows"],
+            config,
         )
 
-        # Build expected constraint
-        if tb == 1
-            # First time block: includes initial storage level
-            expected_cons = JuMP.@build_constraint(
-                storage_level[id] - incoming + outgoing ==
-                inflows + storage_config["initial_storage_level"]
+        # Build expected constraint based on position in time series
+        expected_cons = if tb == 1
+            # First time block: balance includes initial storage level
+            JuMP.@build_constraint(
+                storage_level[id] - incoming + outgoing == inflows + config.initial_storage_level
             )
         else
             # Subsequent time blocks: balance against previous time block
-            expected_cons = JuMP.@build_constraint(
+            JuMP.@build_constraint(
                 storage_level[id] - storage_level[id-1] - incoming + outgoing == inflows
             )
         end
 
-        # Compare with actual constraint
+        # Verify constraint matches expected form
         observed_cons = _get_cons_object(energy_problem.model, cons_name)[id]
         @test _is_constraint_equal(expected_cons, observed_cons)
     end
@@ -335,48 +342,48 @@ end
     using DuckDB: DuckDB
     using JuMP: JuMP
 
-    # Test storage balance for seasonal_storage
-    storage_asset = "seasonal_storage"
-    storage_config = STORAGE_CONFIGS[storage_asset]
+    # Seasonal storage aggregates across representative periods using weights.
+    # This test uses a single scenario to verify the constraint formulation.
 
-    # Create the test problem for only one scenario
+    # Setup test parameters
+    storage_asset = "seasonal_storage"
+    config = STORAGE_CONFIGS[storage_asset]
     year = 2030
     inflows_profile = Dict((storage_asset, year) => [1.0, 5.5, 10.0])
     periods = 1:length(inflows_profile[(storage_asset, year)])
     period_duration = 1
     num_rps = 2
+
+    # Create and configure the test problem
     connection = create_storage_balance_problem(;
         inflows_profile = inflows_profile,
         period_duration = period_duration,
         num_rps = num_rps,
     )
-
-    # Populate defaults and create energy problem
     TEM.populate_with_defaults!(connection)
     energy_problem = TEM.EnergyProblem(connection)
-    TEM.create_model!(energy_problem; model_file_name = joinpath(@__DIR__, "test_storage.lp"))
+    TEM.create_model!(energy_problem)
 
-    # Extract variables and data
+    # Extract model variables
     flow = energy_problem.variables[:flow].container
     storage_level = energy_problem.variables[:storage_level_over_clustered_year].container
 
-    # Build period mapping: (period, rep_period) => weight
+    # Build period-to-representative-period weight mapping
     rep_periods_mapping = TulipaIO.get_table(connection, "rep_periods_mapping")
     period_weight_map = Dict{Tuple{Int,Int},Float64}(
         (row.period, row.rep_period) => get(row, :weight, 0.0) for
         row in eachrow(rep_periods_mapping)
     )
 
-    # Get inflow profiles by representative period and filter it by the storage_asset
-    profiles_rep_periods::DataFrame = TulipaIO.get_table(connection, "profiles_rep_periods")
-    profiles_rep_periods =
-        filter(row -> occursin(storage_asset, row.profile_name), profiles_rep_periods)
+    # Get inflow profiles for this storage asset
+    profiles = TulipaIO.get_table(connection, "profiles_rep_periods")
+    profiles = filter(row -> occursin(storage_asset, row.profile_name), profiles)
 
-    # Get flow IDs for the storage asset
+    # Get flow IDs for charging and discharging
     incoming_flow_ids, outgoing_flow_ids =
         get_flow_ids(connection, storage_asset, num_rps, period_duration)
 
-    # Verify constraint exists for all periods since we didn't define flexible temporal resolution data
+    # Verify all expected constraints exist
     cons_name = :balance_storage_over_clustered_year
     constraint_ids = [
         row.id for row in DuckDB.query(
@@ -388,37 +395,35 @@ end
 
     # Test each period's constraint
     for period in periods
-        # Compute expected terms
+        # Compute expected terms aggregated over all representative periods
         incoming, outgoing, inflows_sum = compute_expected_terms_seasonal_storage(
             flow,
             incoming_flow_ids,
             outgoing_flow_ids,
             period_weight_map,
-            profiles_rep_periods,
+            profiles,
             period,
             num_rps,
             period_duration,
-            storage_config["storage_charging_efficiency"],
-            storage_config["storage_discharging_efficiency"],
-            storage_config["inflows"],
+            config,
         )
 
-        # Build expected constraint
-        if period == 1
-            # First period: includes initial storage level
-            expected_cons = JuMP.@build_constraint(
+        # Build expected constraint based on position in time series
+        expected_cons = if period == 1
+            # First period: balance includes initial storage level
+            JuMP.@build_constraint(
                 storage_level[period] - incoming + outgoing ==
-                inflows_sum + storage_config["initial_storage_level"]
+                inflows_sum + config.initial_storage_level
             )
         else
             # Subsequent periods: balance against previous period
-            expected_cons = JuMP.@build_constraint(
+            JuMP.@build_constraint(
                 storage_level[period] - storage_level[period-1] - incoming + outgoing ==
                 inflows_sum
             )
         end
 
-        # Compare with actual constraint
+        # Verify constraint matches expected form
         observed_cons = _get_cons_object(energy_problem.model, cons_name)[period]
         @test _is_constraint_equal(expected_cons, observed_cons)
     end
