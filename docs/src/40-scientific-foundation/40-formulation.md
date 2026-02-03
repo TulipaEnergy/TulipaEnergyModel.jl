@@ -13,11 +13,10 @@ Depth = [2,3]
 
 | Name                      | Description                             | Elements            | Superset                                        | Notes                                                                                                  |
 | ------------------------- | --------------------------------------- | ------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| $\mathcal{A}$             | Energy assets                           | $a \in \mathcal{A}$ |                                                 | The Energy asset types (i.e., consumer, producer, storage, hub, and conversion) are mutually exclusive |
+| $\mathcal{A}$             | Energy assets                           | $a \in \mathcal{A}$ |                                                 | The Energy asset types (i.e., consumer, producer, storage, and conversion) are mutually exclusive      |
 | $\mathcal{A}^{\text{c}}$  | Consumer energy assets                  |                     | $\mathcal{A}^{\text{c}}  \subseteq \mathcal{A}$ |                                                                                                        |
 | $\mathcal{A}^{\text{p}}$  | Producer energy assets                  |                     | $\mathcal{A}^{\text{p}}  \subseteq \mathcal{A}$ |                                                                                                        |
 | $\mathcal{A}^{\text{s}}$  | Storage energy assets                   |                     | $\mathcal{A}^{\text{s}}  \subseteq \mathcal{A}$ |                                                                                                        |
-| $\mathcal{A}^{\text{h}}$  | Hub energy assets (e.g., transshipment) |                     | $\mathcal{A}^{\text{h}}  \subseteq \mathcal{A}$ |                                                                                                        |
 | $\mathcal{A}^{\text{cv}}$ | Conversion energy assets                |                     | $\mathcal{A}^{\text{cv}} \subseteq \mathcal{A}$ |                                                                                                        |
 
 In addition, the following asset sets represent methods for incorporating additional variables and constraints in the model.
@@ -756,17 +755,6 @@ v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{first}}_y} = & p^{\text{ini
 ```math
 v^{\text{over-clustered-year-storage}}_{a,s,p^{\text{last}}_y} \geq p^{\text{init storage level}}_{a,y} \quad
 \\ \\ s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
-```
-
-### Constraints for Energy Hub Assets
-
-#### Balance Constraint for Hubs
-
-```math
-\begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} = \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}}
-\quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{h}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
-\end{aligned}
 ```
 
 ### Constraints for Energy Conversion Assets

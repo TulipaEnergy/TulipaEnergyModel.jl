@@ -46,7 +46,7 @@ energy_problem =
 
 ## Explore the results
 
-Explore the flow that goes from the hub to the e_demand:
+Explore the flow that goes from the `hub` to the `e_demand`:
 
 ```julia
 flows = TIO.get_table(connection, "var_flow")
@@ -91,7 +91,7 @@ filter(
 
 !!! info "Test Your Knowledge"
     Can you explain the values you get from the column `dual_max_transport_flow_limit_simple_method`?
-    Hint: consider what is currently defining the capacity to transport the flow between the assets you see in the table
+    Hint: consider what is currently defining the capacity to transport the flow between the assets you see in the table.
 
 ## Challenge: Add a Battery
 

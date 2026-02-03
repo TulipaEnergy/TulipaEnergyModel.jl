@@ -9,13 +9,13 @@ Depth = [2, 3]
 
 _TulipaEnergyModel.jl_ uses two fundamental building blocks as the foundation of the optimization model:
 
-- **Assets**: representation of a physical asset that can produce, consume, store, balance, or convert energy. Some examples of what these assets can represent are:
+- **Assets**: representation of a physical asset that can produce, consume, balance, store, or convert energy. Some examples of what these assets can represent are:
   - Producer: e.g., wind turbine, solar panel
-  - Consumer: e.g., electricity demand, heat demand
+  - Consumer: e.g., electricity demand, heat demand, energy balance
+    - Note that a consumer can have 0 demand and serve as a balance or "hub"
   - Storage: e.g., battery, pumped-hydro storage
-  - Balancing Hub: e.g., an electricity network that serves as a connection among other energy assets
   - Conversion: e.g., power plants, electrolyzers
-- **Flows**: representation of the connections among assets, e.g., pipelines, transmission lines, or simply the energy production that goes from one asset to another.
+- **Flows**: connections between assets, e.g., pipelines, transmission lines, or simply the energy production that goes from one asset to another.
 
 In a nutshell, the model guarantees a balance of energy for the various types of assets while considering the flow limits. It considers a set of [representative periods](@ref representative-periods) (e.g., days or weeks) for a given [timeframe](@ref timeframe) (e.g., a year) the user wants to analyze. Therefore, the model has two types of temporal (time) constraints to consider the different chronology characteristics of the assets:
 
@@ -42,7 +42,7 @@ Consider the following example to demonstrate the benefits of using a graph theo
 
 ![Classic connection](./figs/flexible-connection-1.png)
 
-In this system, the `phs` storage asset charges and discharges from the `connection point`, while the `wind` turbine produces power that goes directly to the `connection point`. This `connection point` is connected to the external power grid through a transmission line that leads to a `balance` hub that connects to other assets. Essentially, the `connection point` acts as a balancing hub point for the assets in this hybrid configuration. Furthermore, these hybrid configurations impose an extra constraint to avoid storage charges from the power grid.
+In this system, the `phs` storage asset charges and discharges from the `connection point`, while the `wind` turbine produces power that goes directly to the `connection point`. This `connection point` is connected to the external power grid through a transmission line that leads to a `balance` consumer (0 demand) that connects to other assets. Essentially, the `connection point` acts as a balancing point for the assets in this hybrid configuration. Furthermore, these hybrid configurations impose an extra constraint to avoid storage charges from the power grid.
 
 Let's consider the modeling approach in _TulipaEnergyModel.jl_. As nodes are no longer needed to connect assets, we can connect them directly to each other, as shown in the figure below:
 
@@ -62,7 +62,7 @@ Let's zoom in on the `phs-wind-balance` triangle and see what happens in the fig
 
 !!! warning "Be careful with the definition of flows"
     1. Although transport flows are bidirectional, they must be defined in a single direction. For example, a producer like wind can only have outgoing flows. Thus, the flow between `wind` and `balance` must be specified as the flow from `wind` to `balance`, with its sign allowed to be free.
-    2. By having transport flows, we now model a different problem because flows can pass through `wind` following the direction from `balance` to `wind` to `phs`. `wind` is essentially a hub asset. However, this does not affect the unidirectional nature of charging by the flow from `wind` to `phs` and discharging by the flow from `phs` to `balance`, which remain fixed by the definition of the flows.
+    2. By having transport flows, we now model a different problem because flows can pass through `wind` following the direction from `balance` to `wind` to `phs`. However, this does not affect the unidirectional nature of charging by the flow from `wind` to `phs` and discharging by the flow from `phs` to `balance`, which remain fixed by the definition of the flows.
 
 ## [Flexible Time Resolution](@id flex-time-res)
 
@@ -78,8 +78,8 @@ Therefore, for this simple example, we can determine the number of constraints a
   - 24 from the maximum output limit of the assets that produce, convert, or discharge energy (i.e., `H2`, `wind`, `ccgt`, and `phs`) for each hour (i.e., 4 assets x 6 h = 24 constraints)
   - 6 from the maximum input limit of the storage or charging limit for the `phs`
   - 6 from the maximum storage level limit for the `phs`
-  - 12 from the import and export limits for the transmission line between the `balance` hub and the `demand`
-  - 24 from the energy balance on the consumer, hub, conversion, and storage assets (i.e., `demand`, `balance`, `ccgt`, and `phs`) for each hour (i.e., 4 assets x 6 h = 24 constraints)
+  - 12 from the import and export limits for the transmission line between the `balance` and the `demand`
+  - 24 from the energy balance on the consumer, conversion, and storage assets (i.e., `demand`, `balance`, `ccgt`, and `phs`) for each hour (i.e., 4 assets x 6 h = 24 constraints)
 
 Depending on the input data and the level of detail you want to model, hourly resolution in all the variables might not be necessary. _TulipaEnergyModel.jl_ can have different time resolutions for each asset and flow to simplify the optimization problem and approximate hourly representation. This feature is useful for large-scale energy systems that involve multiple sectors, as detailed granularity is not always necessary due to the unique temporal dynamics of each sector. For instance, we can use hourly resolution for the electricity sector and six-hour resolution for the hydrogen sector. We can couple multiple sectors, each with its own temporal resolution.
 
@@ -104,7 +104,7 @@ input_flow_file = "../../test/inputs/Variable Resolution/flows-rep-periods-parti
 flows_partitions = CSV.read(input_flow_file, DataFrame, header = 1) # hide
 ```
 
-The table shows a `uniform` definition for the flow from the hydrogen producer (`H2`) to the conversion asset (`ccgt`) of 6 hours, from the wind producer (`wind`) to the storage (`phs`) of 3 hours, and from the balance hub (`balance`) to the consumer (`demand`) of 3 hours, too. In addition, the flow from the wind producer (`wind`) to the balance hub (`balance`) is defined using the `math` specification of `1x2+1x4`, meaning that there are two time blocks, one of two hours (i.e., `1:2`) and another of four hours (i.e., `3:6`). Finally, the flow from the storage (`phs`) to the balance hub (`balance`) is defined using the `math` specification of `1x4+1x2`, meaning that there are two time blocks, one of four hours (i.e., `1:4`) and another of two hours (i.e., `5:6`).
+The table shows a `uniform` definition for the flow from the hydrogen producer (`H2`) to the conversion asset (`ccgt`) of 6 hours, from the wind producer (`wind`) to the storage (`phs`) of 3 hours, and from the consumer (`balance`) to the consumer (`demand`) of 3 hours, too. In addition, the flow from the wind producer (`wind`) to the consumer (`balance`) is defined using the `math` specification of `1x2+1x4`, meaning that there are two time blocks, one of two hours (i.e., `1:2`) and another of four hours (i.e., `3:6`). Finally, the flow from the storage (`phs`) to the consumer (`balance`) is defined using the `math` specification of `1x4+1x2`, meaning that there are two time blocks, one of four hours (i.e., `1:4`) and another of two hours (i.e., `5:6`).
 
 The following figure illustrates these definitions on the example system.
 
@@ -114,17 +114,17 @@ So, let's recap:
 
 - The hydrogen producer (`H2`) is in a 6-hour resolution represented by the range `1:6`, meaning that the balance of the hydrogen produced is for every 6 hours.
 - The flow from the hydrogen producer to the ccgt power plant (`H2,ccgt`) is also in a 6-hour resolution `1:6`.
-- The flow from the ccgt power plant to the balance hub (`ccgt, balance`) has hourly resolution `[1,2,3,4,5,6]`.
+- The flow from the ccgt power plant to the balance (`ccgt, balance`) has hourly resolution `[1,2,3,4,5,6]`.
 - The `ccgt` is a conversion plant that takes hydrogen to produce electricity. Since both sectors have different time resolutions, the energy balance in the conversion asset is defined in the lowest resolution connecting to the asset. In this case, the energy balance in the `ccgt` is defined every 6 hours, i.e., in the range `1:6`.
 - The `wind` producer has an hourly profile of electricity production, so the resolution of the asset is hourly.
-- The `wind` producer output has two connections, one to the `balance` hub and the other to the pumped-hydro storage (`phs`) with different resolutions:
+- The `wind` producer output has two connections, one to the `balance` and the other to the pumped-hydro storage (`phs`) with different resolutions:
   - The flow from the wind producer to the phs storage (`wind, phs`) has a uniform resolution of two blocks from hours 1 to 3 (i.e., `1:3`) and from hours 4 to 6 (i.e., `4:6`).
-  - The flow from the wind producer to the balance hub (`wind, balance`) has a variable resolution of two blocks, too, but from hours 1 to 2 (i.e., `1:2`) and from hours 3 to 6 (i.e., `3:6`).
+  - The flow from the wind producer to the balance (`wind, balance`) has a variable resolution of two blocks, too, but from hours 1 to 2 (i.e., `1:2`) and from hours 3 to 6 (i.e., `3:6`).
 - The `phs` is in a 6-hour resolution represented by the range `1:6`, meaning the storage balance is determined every 6 hours.
 - The flow from the phs to the balance (`phs, balance`) represents the discharge of the `phs`. This flow has a variable resolution of two blocks from hours 1 to 4 (i.e., `1:4`) and from hours 5 to 6 (i.e., `5:6`), which differs from the one defined for the charging flow from the `wind` asset.
-- The `demand` consumption has hourly input data with one connection to the `balance` hub:
-  - The flow from the balance hub to the demand (`balance, demand`) has a uniform resolution of 3 hours; therefore, it has two blocks, one from hours 1 to 3 (i.e., `1:3`) and the other from hours 4 to 6 (i.e., `4:6`).
-- The `balance` hub integrates all the different assets with their different resolutions. The lowest resolution of all connections determines the balance equation for this asset. Therefore, the resulting resolution is into two blocks, one from hours 1 to 4 (i.e., `1:4`) and the other from hours 5 to 6 (i.e., `5:6`).
+- The `demand` consumption has hourly input data with one connection to the `balance`:
+  - The flow from the balance to the demand (`balance, demand`) has a uniform resolution of 3 hours; therefore, it has two blocks, one from hours 1 to 3 (i.e., `1:3`) and the other from hours 4 to 6 (i.e., `4:6`).
+- The `balance` integrates all the different assets with their different resolutions. The lowest resolution of all connections determines the balance equation for this asset. Therefore, the resulting resolution is into two blocks, one from hours 1 to 4 (i.e., `1:4`) and the other from hours 5 to 6 (i.e., `5:6`).
 
 !!! tip "Fully flexible temporal resolution"
     This example demonstrates that different time resolutions can be assigned to each asset and flow in the model. Furthermore, the resolutions do not need to be multiples of one another or evenly distributed and they can vary throughout the time horizon.
@@ -151,9 +151,9 @@ As shown in the table, the resolution of the storage balance is energy, which is
 \end{aligned}
 ```
 
-#### Consumer Balance
+#### Consumer Balance for Demand
 
-The flows coming from the balancing hub are defined every 3 hours. Then, _min(incoming flows, outgoing flows)_ becomes _min(3, -) = 3_, and thus balanced every 3 hours. The input demand is aggregated as the mean of the hourly values in the input data.
+The flows coming from `balance` are defined every 3 hours. Then, _min(incoming flows, outgoing flows)_ becomes _min(3, -) = 3_, and thus balanced every 3 hours. The input demand is aggregated as the mean of the hourly values in the input data.
 
 ```math
 \begin{aligned}
@@ -166,7 +166,7 @@ The flows coming from the balancing hub are defined every 3 hours. Then, _min(in
 
 #### Hub Balance
 
-The hub balance is quite interesting because it integrates several flow resolutions. Remember that we didn't define any specific time resolution for this asset. Therefore, the highest resolution of all incoming and outgoing flows in the horizon implies that the hub balance must be imposed for all 6 blocks since _min(incoming flows, outgoing flows)_ becomes _min(1,2,3,4) = 1_
+The balance is quite interesting because it integrates several flow resolutions. Remember that we didn't define any specific time resolution for this asset. Therefore, the highest resolution of all incoming and outgoing flows in the horizon implies that the hub balance must be imposed for all 6 blocks since _min(incoming flows, outgoing flows)_ becomes _min(1,2,3,4) = 1_
 
 ```math
 \begin{aligned}
@@ -264,7 +264,7 @@ The hydrogen (H2) producer capacity limit is straightforward, since both the ass
 
 #### Transport Capacity Constraints
 
-For the connection from the hub to the demand, there are associated transmission capacity constraints, which are in the same resolution as the flow:
+For the connection from the balance to the demand, there are associated transmission capacity constraints, which are in the same resolution as the flow:
 
 ```math
 \begin{aligned}
@@ -725,11 +725,11 @@ For `demand`, consumer balance applies. This constraint operates at the highest 
 
 #### Hub Balance Constraints
 
-For `hub`, hub balance applies. This constraint also operates at the highest resolution among all incoming and outgoing flows connected to the asset. In this case, `hub` receives two incoming flows: `ccgt` to `hub` in 2h and `import` to `hub` in 2h, and an outgoing flow `hub` to `demand` in 2h. As a result, the hub balance is enforced in 2h resolution, which is the highest of the three.
+For `hub`, consumer balance applies. This constraint also operates at the highest resolution among all incoming and outgoing flows connected to the asset. In this case, `hub` receives two incoming flows: `ccgt` to `hub` in 2h and `import` to `hub` in 2h, and an outgoing flow `hub` to `demand` in 2h. As a result, the consumer balance is enforced in 2h resolution, which is the highest of the three.
 
 ```math
 \begin{aligned}
-& \text{hub\_balance}_{\text{demand},1:2}: \\
+& \text{consumer\_balance}_{\text{demand},1:2}: \\
 & \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),1:2} + v^{\text{flow}}_{(\text{import},\text{hub}),1:2} = v^{\text{flow}}_{(\text{hub},\text{demand}),1:2}  \\
 \end{aligned}
 ```
@@ -742,7 +742,7 @@ Model feasibility can be compromised in two key ways:
 
 - Incorrect flow resolutions — If the temporal resolutions of flows are not aligned with those of their neighboring assets, or if they violate resolution consistency rules, the model may become infeasible or produce redundant variables.
 
-- Poorly defined problem topology — If the graph structure (i.e., the set of assets and their connecting flows) is not well-constructed — such as having insufficient connectivity at key assets like hubs — the model may lack the necessary degrees of freedom to satisfy constraints, particularly under DC-OPF formulations.
+- Poorly defined problem topology — If the graph structure (i.e., the set of assets and their connecting flows) is not well-constructed — such as having insufficient connectivity at key assets like balancing consumers — the model may lack the necessary degrees of freedom to satisfy constraints, particularly under DC-OPF formulations.
 
 Let's first elaborate on the first case.
 
@@ -769,18 +769,18 @@ However, since the RHS values are identical, one of these variables becomes redu
 
 #### Poorly Defined Problem Topology: Why Include Import?
 
-It is considered good modeling practice to connect the hub asset to more than two flows.
+It is considered good modeling practice to connect the balancing consumer asset to more than two flows.
 
-- Without DC-OPF constraints, having only two flows connected to the hub is not ideal but still valid. In such cases, the hub simply acts as a passive energy transfer point.
-- With DC-OPF constraints, however, having only two flows connected to the hub (e.g., `ccgt` to `hub` and `hub` to `demand`, without import) becomes incorrect. Let's show the issue below.
+- Without DC-OPF constraints, having only two flows connected to the consumer is not ideal but still valid. In such cases, the consumer simply acts as a passive energy transfer point.
+- With DC-OPF constraints, however, having only two flows connected to the consumer (e.g., `ccgt` to `hub` and `hub` to `demand`, without import) becomes incorrect. Let's show the issue below.
 
-Firstly of all, we list the hub balance and the two DC-OPF constraints for `1:2` and `3:4` as follows.
+Firstly of all, we list the consumer balance and the two DC-OPF constraints for `1:2` and `3:4` as follows.
 
 ```math
 \begin{aligned}
-& \text{hub\_balance}_{\text{demand},1:2}: \\
+& \text{consumer\_balance}_{\text{demand},1:2}: \\
 & \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),1:2} = v^{\text{flow}}_{(\text{hub},\text{demand}),1:2}  \\
-& \text{hub\_balance}_{\text{demand},3:4}: \\
+& \text{consumer\_balance}_{\text{demand},3:4}: \\
 & \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),3:4} = v^{\text{flow}}_{(\text{hub},\text{demand}),3:4}  \\
 & \text{DC-OPF}_{(\text{ccgt}, \text{hub}),1:2}: \\
 & \qquad v^{\text{flow}}_{(\text{ccgt},\text{hub}),1:2} = \frac{p^{\text{power system base}}}{p^{\text{reactance}}_{\text{ccgt},\text{hub}}} (v^{\text{electricity angle}}_{\text{ccgt},1:8} - v^{\text{electricity angle}}_{\text{hub},1:2}) \\
@@ -793,7 +793,7 @@ Firstly of all, we list the hub balance and the two DC-OPF constraints for `1:2`
 \end{aligned}
 ```
 
-Next, we substitute the DC-OPF constraints into the hub balance. After some algebraic rearrangements, we obtain the following simplified expression:
+Next, we substitute the DC-OPF constraints into the consumer balance. After some algebraic rearrangements, we obtain the following simplified expression:
 
 ```math
 \begin{aligned}
