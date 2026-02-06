@@ -49,8 +49,8 @@
     Returns the database connection with configured storage assets and clustering.
     """
     function create_storage_balance_problem(;
-        inflows_profile::Dict{Tuple{String,Int},Vector{Float64}} = Dict(
-            ("seasonal_storage", 2030) => [1.0, 5.5, 10.0],
+        inflows_profile::Dict{Tuple{String,Int,Int},Vector{Float64}} = Dict(
+            ("seasonal_storage", 2030, 1) => [1.0, 5.5, 10.0],
         ),
         period_duration::Int = 1,
         num_rps::Int = 2,
@@ -81,16 +81,24 @@
             TB.add_flow!(tulipa, "consumer", storage_name)
             TB.add_flow!(tulipa, storage_name, "consumer")
 
-            # Attach inflows profiles for this storage asset
-            for ((asset, year), values) in inflows_profile
+            # Attach inflows profiles per  storage asset, year and scenario
+            for ((asset, year, scenario), values) in inflows_profile
                 if asset == storage_name
-                    TB.attach_profile!(tulipa, storage_name, :inflows, year, values)
+                    TB.attach_profile!(
+                        tulipa,
+                        storage_name,
+                        :inflows,
+                        year,
+                        values;
+                        scenario = scenario,
+                    )
                 end
             end
         end
 
         # Create connection and apply clustering
         connection = TB.create_connection(tulipa)
+        layout = TC.ProfilesTableLayout(; cols_to_crossby = [:scenario])
         TC.cluster!(
             connection,
             period_duration,
@@ -99,6 +107,7 @@
             weight_type = :convex,
             tol = 1e-6,
             weight_fitting_kwargs = Dict(:learning_rate => 0.001, :niters => 1000),
+            layout = layout,
         )
 
         return connection
@@ -144,6 +153,40 @@
     end
 
     """
+        get_storage_ids(connection, storage_asset, scenarios, periods) -> (storage_level_ids)
+
+    Query storage level over clustered year IDs for a storage asset for each scenario and period block.
+    Returns a dictionary indexed by (scenario, period).
+    """
+    function get_storage_ids(
+        connection::DuckDB.DB,
+        storage_asset::String,
+        scenarios::UnitRange{Int},
+        periods::UnitRange{Int},
+    )::Dict{Tuple{Int,Int},Int}
+        # Pre-allocate dictionaries
+        storage_level_ids = Dict{Tuple{Int,Int},Int}(
+            (scenario, period) => 0 for scenario in scenarios for period in periods
+        )
+
+        # Query storage level IDs for each scenario and period block
+        for s in scenarios, p in periods
+            storage_level_ids[(s, p)] = [
+                row.id for row in DuckDB.query(
+                    connection,
+                    "SELECT id
+                     FROM var_storage_level_over_clustered_year
+                     WHERE asset = '$storage_asset' AND
+                           scenario = $s AND
+                           period_block_start = $p",
+                )
+            ][1] # one variable per scenario and period block
+        end
+
+        return storage_level_ids
+    end
+
+    """
         get_inflow_value(profiles_rep_periods, rp, tb) -> Float64
 
     Extract inflow value for a given representative period and time block.
@@ -180,8 +223,9 @@
         flow::Vector{JuMP.VariableRef},
         incoming_flow_ids::Dict{Tuple{Int,Int},Vector{Int}},
         outgoing_flow_ids::Dict{Tuple{Int,Int},Vector{Int}},
-        period_weight_map::Dict{Tuple{Int,Int},Float64},
+        period_weight_map::Dict{Tuple{Int,Int,Int},Float64},
         profiles_rep_periods::DataFrame,
+        scenario::Int,
         period::Int,
         num_rps::Int,
         period_duration::Int,
@@ -192,7 +236,7 @@
         inflows = 0.0
 
         for rp in 1:num_rps
-            weight = get(period_weight_map, (period, rp), 0.0)
+            weight = get(period_weight_map, (scenario, period, rp), 0.0)
             for tb in 1:period_duration
                 # Compute weighted charging flows
                 incoming +=
@@ -264,7 +308,7 @@ end
     storage_asset = "non_seasonal_storage"
     config = STORAGE_CONFIGS[storage_asset]
     year = 2030
-    inflows_profile = Dict((storage_asset, year) => [1.0, 5.5, 10.0, 2.5])
+    inflows_profile = Dict((storage_asset, year, 1) => [1.0, 5.5, 10.0, 2.5]) # keys = (asset, year, scenario)
     period_duration = 2
     num_rps = 2
 
@@ -349,8 +393,8 @@ end
     storage_asset = "seasonal_storage"
     config = STORAGE_CONFIGS[storage_asset]
     year = 2030
-    inflows_profile = Dict((storage_asset, year) => [1.0, 5.5, 10.0])
-    periods = 1:length(inflows_profile[(storage_asset, year)])
+    inflows_profile = Dict((storage_asset, year, 1) => [1.0, 5.5, 10.0]) # keys = (asset, year, scenario)
+    periods = 1:length(inflows_profile[(storage_asset, year, 1)])
     period_duration = 1
     num_rps = 2
 
@@ -370,10 +414,10 @@ end
 
     # Build period-to-representative-period weight mapping
     rep_periods_mapping = TulipaIO.get_table(connection, "rep_periods_mapping")
-    period_weight_map = Dict{Tuple{Int,Int},Float64}(
-        (row.period, row.rep_period) => get(row, :weight, 0.0) for
+    period_weight_map = Dict{Tuple{Int,Int,Int},Float64}(
+        (1, row.period, row.rep_period) => get(row, :weight, 0.0) for
         row in eachrow(rep_periods_mapping)
-    )
+    ) # single scenario = 1 in the key
 
     # Get inflow profiles for this storage asset
     profiles = TulipaIO.get_table(connection, "profiles_rep_periods")
@@ -402,6 +446,7 @@ end
             outgoing_flow_ids,
             period_weight_map,
             profiles,
+            1, # single scenario
             period,
             num_rps,
             period_duration,
@@ -425,6 +470,107 @@ end
 
         # Verify constraint matches expected form
         observed_cons = _get_cons_object(energy_problem.model, cons_name)[period]
+        @test _is_constraint_equal(expected_cons, observed_cons)
+    end
+end
+
+@testitem "Test seasonal storage balance constraints - two scenarios" setup =
+    [CommonSetup, StorageSetup] tags = [:unit, :validation, :fast] begin
+    using DuckDB: DuckDB
+    using JuMP: JuMP
+
+    # Seasonal storage aggregates across representative periods using weights.
+    # This test uses two scenarios to verify the constraint formulation.
+
+    # Setup test parameters
+    storage_asset = "seasonal_storage"
+    config = STORAGE_CONFIGS[storage_asset]
+    year = 2030
+    inflows_profile = Dict(
+        (storage_asset, year, 1) => [1.0, 5.5, 10.0], # Scenario 1
+        (storage_asset, year, 2) => [10.0, 5.5, 1.0], # Scenario 2
+    ) # keys = (asset, year, scenario)
+    periods = 1:length(inflows_profile[(storage_asset, year, 1)])
+    scenarios = 1:2
+    period_duration = 1
+    num_rps = 2
+
+    # Create and configure the test problem
+    connection = create_storage_balance_problem(;
+        inflows_profile = inflows_profile,
+        period_duration = period_duration,
+        num_rps = num_rps,
+    )
+    TEM.populate_with_defaults!(connection)
+    energy_problem = TEM.EnergyProblem(connection)
+    TEM.create_model!(energy_problem; model_file_name = "seasonal_storage_balance_two_scenarios.lp")
+
+    # Extract model variables
+    flow = energy_problem.variables[:flow].container
+    storage_level = energy_problem.variables[:storage_level_over_clustered_year].container
+
+    # Build period-to-representative-period weight mapping
+    rep_periods_mapping = TulipaIO.get_table(connection, "rep_periods_mapping")
+    period_weight_map = Dict{Tuple{Int,Int,Int},Float64}(
+        (row.scenario, row.period, row.rep_period) => get(row, :weight, 0.0) for
+        row in eachrow(rep_periods_mapping)
+    )
+
+    # Get inflow profiles for this storage asset
+    profiles = TulipaIO.get_table(connection, "profiles_rep_periods")
+    profiles = filter(row -> occursin(storage_asset, row.profile_name), profiles)
+
+    # Get flow IDs for charging and discharging
+    incoming_flow_ids, outgoing_flow_ids =
+        get_flow_ids(connection, storage_asset, num_rps, period_duration)
+
+    # Get storage level variable IDs for all periods and scenarios
+    storage_level_ids = get_storage_ids(connection, storage_asset, scenarios, periods)
+
+    # Verify all expected constraints exist
+    cons_name = :balance_storage_over_clustered_year
+    constraint_ids = [
+        row.id for row in DuckDB.query(
+            connection,
+            "SELECT id FROM cons_$cons_name WHERE asset = '$storage_asset'",
+        )
+    ]
+    @test length(constraint_ids) == length(periods) * length(scenarios)
+
+    # Test each scenario and period
+    for scenario in scenarios, period in periods
+        # Compute expected terms aggregated over all representative periods
+        incoming, outgoing, inflows_sum = compute_expected_terms_seasonal_storage(
+            flow,
+            incoming_flow_ids,
+            outgoing_flow_ids,
+            period_weight_map,
+            profiles,
+            scenario,
+            period,
+            num_rps,
+            period_duration,
+            config,
+        )
+        # Build expected constraint based on position in time series
+        expected_cons = if period == 1
+            # First period: balance includes initial storage level
+            JuMP.@build_constraint(
+                storage_level[storage_level_ids[(scenario, period)]] - incoming + outgoing ==
+                inflows_sum + config.initial_storage_level
+            )
+        else
+            # Subsequent periods: balance against previous period
+            JuMP.@build_constraint(
+                storage_level[storage_level_ids[(scenario, period)]] -
+                storage_level[storage_level_ids[(scenario, period - 1)]] - incoming +
+                outgoing == inflows_sum
+            )
+        end
+
+        # Verify constraint matches expected form
+        observed_cons_id = maximum(periods) * (scenario - 1) + period # constraints are ordered by scenario and period
+        observed_cons = _get_cons_object(energy_problem.model, cons_name)[observed_cons_id]
         @test _is_constraint_equal(expected_cons, observed_cons)
     end
 end
