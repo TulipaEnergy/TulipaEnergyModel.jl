@@ -1,9 +1,10 @@
+using Cthulhu: Cthulhu
 using DuckDB: DuckDB, DBInterface
 using JET: JET
 using TulipaEnergyModel: TulipaEnergyModel as TEM
 using TulipaIO: TulipaIO as TIO
 
-include("tulipa-data.jl")
+include("../tulipa-data.jl")
 
 function common_setup(; kwargs...)
     connection, tulipa_data = give_me_better_name(; kwargs...)
@@ -82,8 +83,10 @@ problem_kwargs = (num_days = 3, num_countries = 3)
 # Uncomment one of the two
 # Lower level API
 args = setup_lower_level_pipeline(; problem_kwargs...)
+relevant_lower_level_pipeline(args)
 # @code_warntype relevant_lower_level_pipeline(args)
 JET.@report_opt target_modules = (TEM,) relevant_lower_level_pipeline(args)
+# Cthulhu.@descend relevant_lower_level_pipeline(args)
 
 # Higher level API
 # connection, energy_problem=setup_higher_level_pipeline(;problem_kwargs...)

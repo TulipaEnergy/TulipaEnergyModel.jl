@@ -4,7 +4,7 @@ using ProfileView
 using TulipaEnergyModel: TulipaEnergyModel as TEM
 using TulipaIO: TulipaIO as TIO
 
-include("tulipa-data.jl")
+include("../tulipa-data.jl")
 
 function common_setup(; kwargs...)
     connection, tulipa_data = give_me_better_name(; kwargs...)
@@ -71,7 +71,11 @@ problem_kwargs = (num_days = 3, num_countries = 3)
 
 # Uncomment one of the two
 # Lower level API
-# @benchmark relevant_lower_level_pipeline(connection) setup=(connection=setup_lower_level_pipeline(;problem_kwargs...))
+# connection = setup_lower_level_pipeline(; problem_kwargs...)
+# relevant_lower_level_pipeline(connection) # run once to precompile
+# @profview relevant_lower_level_pipeline(connection)
 
 # Higher level API
-# @benchmark relevant_higher_level_pipeline(connection, energy_problem) setup=(connection, energy_problem=setup_higher_level_pipeline(;problem_kwargs...))
+# connection, energy_problem=setup_higher_level_pipeline(;problem_kwargs...)
+# relevant_higher_level_pipeline(connection, energy_problem) # run once to precompile
+# @profview relevant_higher_level_pipeline(connection, energy_problem)

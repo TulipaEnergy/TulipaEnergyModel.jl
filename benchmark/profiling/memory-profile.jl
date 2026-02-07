@@ -5,7 +5,7 @@ using PProf: PProf
 using TulipaEnergyModel: TulipaEnergyModel as TEM
 using TulipaIO: TulipaIO as TIO
 
-include("tulipa-data.jl")
+include("../tulipa-data.jl")
 
 function common_setup(; kwargs...)
     connection, tulipa_data = give_me_better_name(; kwargs...)

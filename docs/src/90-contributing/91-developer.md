@@ -619,40 +619,40 @@ We use the package [AirspeedVelocity.jl](https://github.com/MilesCranmer/Airspee
 
 Make sure to check [Modern Julia Workflows](https://modernjuliaworkflows.org/optimizing/) at least until measurements.
 
-When investigating performance issues, we use three main ways to check out performance of functions:
+When investigating performance issues, we use three main ways to check out (speed) performance of functions:
 
 - Run the pipeline until the relevant part and check the `TimerOutput` log.
   - TulipaEnergyModel holds a global `TimerOutput`. This strategy is to simply run the relevant parts of the pipeline and `show(TEM.to)` to see the results.
   - You can also use `TimerOutputs.reset_timer!` to reset the timer manually, which can be useful to limit the log.
-  - Check `benchmark/timer-output.jl`.
+  - Check `benchmark/profiling/timer-output.jl`.
 - Benchmark the relevant part, preparing a setup function.
   - Create a `setup` function that generates everything necessary for the function you're benchmarking
   - If you're benchmarking more than one function, wrap them in a function
   - Call `@benchmark` with a `setup` argument
-  - Check `benchmark/benchmarktools.jl`
+  - Check `benchmark/profiling/benchmarktools.jl`
 - Use `@profview` for flame graph profiling.
   - Reuse the code from above.
   - Call the setup function and then call `@profview` on the function that you're investigating.
   - This needs to be done in VSCode, or using the ProfileView package.
   - This will create a flame graph, where each function call is a block. The size of the block is proportional to the aggregate time it takes to run. The blocks below a block are functions called inside the function above.
-  - Check `benchmark/profview.jl`.
-  - Check the folder `benchmark/profiling/` for more details, tips and tricks.
+  - Check `benchmark/profiling/profview.jl`.
+  - Check `benchmark/profiling/README.md` for more details, tips and tricks.
 
 In all cases, you can run the relevant function (after inspecting it) in the `benchmark` folder environment:
 
 ```bash
-julia --project=benchmark
+julia --project="benchmark/profiling"
 # press ]
 pkg> instantiate
 # press backspace
-julia> include("benchmark/relevant-file.jl")
+julia> include("benchmark/profiling/relevant-file.jl")
 ```
 
 ### Testing scalability
 
 This is still a new topic for us, so material is scarce.
-At the moment, check `benchmark/scalability.jl` for an example of running a benchmark on many artificial Tulipa problems, with varying sizes, saving the results, and creating a plot out of it.
-You can see an example of the expected output in the file `results.csv` and the plot `results.png` in the `benchmark` folder.
+At the moment, check `benchmark/profiling/scalability.jl` for an example of running a benchmark on many artificial Tulipa problems, with varying sizes, saving the results, and creating a plot out of it.
+You can see an example of the expected output in the file `results.csv` and the plot `results.png` in the same folder.
 
 ### Type instability investigation
 
@@ -660,14 +660,14 @@ To investigate type instability issues in the code, we can use `@code_warntype`,
 
 If you have a single function that you can directly call, `@code_warntype` might be enough to investigate possible type instability issues.
 Most times, though, the function will be deeply nested, so using JET or Cthulhu will be necessary to actually see what is going on.
-See the `benchmark/type-stability.jl` script for an example of setting up the lower o higher level API and calling some of these functions.
+See the `benchmark/profiling/type-stability.jl` script for an example of setting up the lower or higher level API and calling some of these functions.
 
 Check [Modern Julia Workflow's type stability section](https://modernjuliaworkflows.org/optimizing/#type_stability) for more details.
 
 ### Memory profiling
 
 To investigate memory usage of the code, we use the [Allocation Profiler](https://docs.julialang.org/en/v1/manual/profile/#allocation-profiler).
-The script `benchmark/memory-profile.jl` has an example using PProf.
+The script `benchmark/profiling/memory-profile.jl` has an example using PProf.
 It should be possible to use VSCode's [`@profview_allocs`](https://www.julia-vscode.org/docs/stable/userguide/profiler/) as well.
 
 Notice that the `sample_rate` value might be relevant in this investigation, though at the moment we don't have a recommendation on how to find the best value.
