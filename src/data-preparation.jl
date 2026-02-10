@@ -159,12 +159,7 @@ function populate_with_defaults!(connection)
             FROM $table_name",
         )
         # DROP TABLE OR VIEW
-        count_tables = get_single_element_from_query_and_ensure_its_only_one(
-            DuckDB.query(
-                connection,
-                "SELECT COUNT(*) AS count FROM duckdb_tables WHERE table_name='$table_name'",
-            ),
-        )
+        count_tables = count_rows_from(connection, "duckdb_tables WHERE table_name='$table_name'")
         is_table = count_tables > 0
         if is_table
             DuckDB.query(connection, "DROP TABLE $table_name")
@@ -322,7 +317,7 @@ function create_unrolled_partition_tables!(connection)
 
     appender = DuckDB.Appender(connection, "asset_time_resolution_rep_period")
     for row in TulipaIO.get_table(Val(:raw), connection, "t_explicit_assets_rep_periods_partitions")
-        durations = _compute_durations(row, row.num_timesteps)
+        durations = _compute_durations(row, row.num_timesteps::Int32)
         _append_given_durations(appender, row, durations)
     end
     DuckDB.close(appender)
@@ -499,9 +494,9 @@ function create_lowest_resolution_table!(connection)
         )
         appender = DuckDB.Appender(connection, table_name)
         # Dummy starting values
-        s = 0
-        e_candidate = 0
-        current_group = ("", 0, 0)
+        s = Int32(0)
+        e_candidate = Int32(0)
+        current_group = ("", Int32(0), Int32(0))
         @timeit to "append $table_name rows" for row in DuckDB.query(
             connection,
             "SELECT merged.* FROM $merged_table AS merged
@@ -512,26 +507,27 @@ function create_lowest_resolution_table!(connection)
                 merged.time_block_start
             ",
         )
-            if (row.asset, row.year, row.rep_period) != current_group
+            new_group = (row.asset::String, row.year::Int32, row.rep_period::Int32)
+            if new_group != current_group
                 # New group, create the last entry
                 # Except for the initial case and when it was already added
                 if s != 0 && s <= e_candidate
                     _append_lowest_helper(appender, current_group, s, e_candidate)
                 end
                 # Start of a new group
-                current_group = (row.asset, row.year, row.rep_period)
-                e_candidate = row.time_block_end
-                s = 1
+                current_group = new_group
+                e_candidate = row.time_block_end::Int32
+                s = Int32(1)
             end
-            if row.time_block_start > s
+            if row.time_block_start::Int32 > s
                 # Since it's ordered, we ran out of candidates, so this marks the beginning of a new section
                 # Then, let's append and update
                 _append_lowest_helper(appender, current_group, s, e_candidate)
-                s = e_candidate + 1
-                e_candidate = row.time_block_end
+                s = e_candidate + Int32(1)
+                e_candidate = row.time_block_end::Int32
             else
                 # This row has a candidate
-                e_candidate = max(e_candidate, row.time_block_end)
+                e_candidate = max(e_candidate, row.time_block_end::Int32)
             end
         end
         # Add the last entry
@@ -629,29 +625,24 @@ table already contains data, the function returns early without modifying the ta
 - Validation of probability values occurs in a separate validation step
 """
 function _calculate_stochastic_scenario_probabilities(connection)
-    count_scenarios = get_single_element_from_query_and_ensure_its_only_one(
-        DuckDB.query(connection, "SELECT COUNT(*) AS count FROM stochastic_scenario"),
-    )::Int64
+    count_scenarios = count_rows_from(connection, "stochastic_scenario")
     if count_scenarios > 0
         return nothing
     end
 
-    scenario_list = DuckDB.query(
-        connection,
-        "SELECT DISTINCT scenario FROM rep_periods_mapping",
-    )::DuckDB.QueryResult
-    scenarios = [row.scenario for row in scenario_list]
+    scenario_list = DuckDB.query(connection, "SELECT DISTINCT scenario FROM rep_periods_mapping")
+    scenarios = [row.scenario::Int32 for row in scenario_list]
+    scenarios_str = "[" * join(scenarios, ",")::String * "]"
     num_scenarios = length(scenarios)
 
     DuckDB.execute(
         connection,
         "CREATE OR REPLACE TABLE stochastic_scenario AS
         SELECT
-            unnest(?) AS scenario,
-            1.0 / ? AS probability,
+            unnest($scenarios_str) AS scenario,
+            1.0 / $num_scenarios AS probability,
             '' AS description
         ",
-        [scenarios, num_scenarios],
     )
     return nothing
 end

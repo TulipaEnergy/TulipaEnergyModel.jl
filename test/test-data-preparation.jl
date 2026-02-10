@@ -18,30 +18,32 @@
     table_rows = [("death_star", "conversion")]
     asset = DataFrame(table_rows, [:asset, :type])
     DuckDB.register_data_frame(connection, asset, "asset")
+    year = Int32(2025)
+    rp = Int32(1)
 
-    table_rows = [("input_1", "death_star", 2025, true), ("input_2", "death_star", 2025, false)]
+    table_rows = [("input_1", "death_star", year, true), ("input_2", "death_star", year, false)]
     flow_milestone = DataFrame(table_rows, [:from_asset, :to_asset, :milestone_year, :dc_opf])
     DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
 
     table_rows = [
-        ("input_1", "death_star", 2025, 1.0),
-        ("input_2", "death_star", 2025, 0.0),
-        ("death_star", "output_1", 2025, 1.0),
-        ("death_star", "output_2", 2025, 0.0),
+        ("input_1", "death_star", year, 1.0),
+        ("input_2", "death_star", year, 0.0),
+        ("death_star", "output_1", year, 1.0),
+        ("death_star", "output_2", year, 0.0),
     ]
     flow_commission =
         DataFrame(table_rows, [:from_asset, :to_asset, :commission_year, :conversion_coefficient])
     DuckDB.register_data_frame(connection, flow_commission, "flow_commission")
 
     table_rows = [
-        ("input_1", "death_star", 2025, 1, 1, 1),
-        ("input_1", "death_star", 2025, 1, 2, 5),
-        ("input_2", "death_star", 2025, 1, 1, 2),
-        ("input_2", "death_star", 2025, 1, 3, 5),
-        ("death_star", "output_1", 2025, 1, 1, 3),
-        ("death_star", "output_1", 2025, 1, 4, 5),
-        ("death_star", "output_2", 2025, 1, 1, 4),
-        ("death_star", "output_2", 2025, 1, 5, 5),
+        ("input_1", "death_star", year, rp, Int32(1), Int32(1)),
+        ("input_1", "death_star", year, rp, Int32(2), Int32(5)),
+        ("input_2", "death_star", year, rp, Int32(1), Int32(2)),
+        ("input_2", "death_star", year, rp, Int32(3), Int32(5)),
+        ("death_star", "output_1", year, rp, Int32(1), Int32(3)),
+        ("death_star", "output_1", year, rp, Int32(4), Int32(5)),
+        ("death_star", "output_2", year, rp, Int32(1), Int32(4)),
+        ("death_star", "output_2", year, rp, Int32(5), Int32(5)),
     ]
     flow_time_resolution_rep_period = DataFrame(
         table_rows,
@@ -53,8 +55,11 @@
         "flow_time_resolution_rep_period",
     )
 
-    table_rows =
-        [("input_1", 2025, 1, 1, 3), ("input_1", 2025, 1, 4, 5), ("death_star", 2025, 1, 1, 5)]
+    table_rows = [
+        ("input_1", year, rp, Int32(1), Int32(3)),
+        ("input_1", year, rp, Int32(4), Int32(5)),
+        ("death_star", year, rp, Int32(1), Int32(5)),
+    ]
     asset_time_resolution_rep_period =
         DataFrame(table_rows, [:asset, :year, :rep_period, :time_block_start, :time_block_end])
     DuckDB.register_data_frame(
@@ -64,10 +69,10 @@
     )
 
     table_rows = [
-        ("input_1", "death_star", "input_2", "death_star", 2025),
-        ("input_1", "death_star", "death_star", "output_1", 2025),
-        ("death_star", "output_1", "input_1", "death_star", 2025),
-        ("death_star", "output_1", "death_star", "output_2", 2025),
+        ("input_1", "death_star", "input_2", "death_star", year),
+        ("input_1", "death_star", "death_star", "output_1", year),
+        ("death_star", "output_1", "input_1", "death_star", year),
+        ("death_star", "output_1", "death_star", "output_2", year),
     ]
     flows_relationships = DataFrame(
         table_rows,
@@ -81,7 +86,7 @@
     )
     DuckDB.register_data_frame(connection, flows_relationships, "flows_relationships")
 
-    table_rows = [(5, 1, 1.0, 2025)]
+    table_rows = [(5, rp, 1.0, year)]
     rep_periods_data = DataFrame(table_rows, [:num_timesteps, :rep_period, :resolution, :year])
     DuckDB.register_data_frame(connection, rep_periods_data, "rep_periods_data")
 

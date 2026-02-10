@@ -517,10 +517,11 @@ Here is how you do it:
 
 ## Performance Considerations
 
-If you updated something that might impact the performance of the package, you
-can run the `Benchmark.yml` workflow from your pull request. To do that, add
-the tag `benchmark` in the pull request. This will trigger the workflow and
-post the results as a comment in you pull request.
+If you updated something that might impact the performance of the package, we
+expect that the `Benchmark.yml` workflow runs for your pull request.
+To do that, add the tag `benchmark` in the pull request.
+This will trigger the workflow and post the results as a comment in you pull
+request.
 
 > **Warning**:
 > This requires that your branch was pushed to the main repo.
@@ -529,16 +530,20 @@ post the results as a comment in you pull request.
 
 If you want to manually run the benchmarks, you can do the following:
 
-- Navigate to the benchmark folder
-- Run `julia --project=.`
-- Enter `pkg` mode by pressing `]`
-- Run `dev ..` to add the development version of TulipaEnergyModel
+- Run `julia --project=benchmark` from the root folder
+- Enter `pkg` mode by pressing `]` and `pkg> instantiate`  of `pkg> update` if necessary
 - Now run
 
   ```julia
-  include("benchmarks.jl")
+  include("benchmark/benchmarks.jl")
   tune!(SUITE)
   results = run(SUITE, verbose=true)
+  ```
+
+- To compare these results to a different run, say `results_old`, use
+
+  ```julia
+  judge(old=results_old, new=results)
   ```
 
 ### Manually running the benchmark across versions
@@ -610,20 +615,116 @@ We use the package [AirspeedVelocity.jl](https://github.com/MilesCranmer/Airspee
 
    ![Plot of benchmark made with benchpkgplot](../images/plot_TulipaEnergyModel.jpeg)
 
-### Profiling
+### Investigating performance issues
 
-To profile the code in a more manual way, here are some tips:
+Make sure to check [Modern Julia Workflows](https://modernjuliaworkflows.org/optimizing/) at least until measurements.
 
-- Wrap your code into functions.
-- Call the function once to precompile it. This must be done after every change to the function.
-- Prefix the function call with `@time`. This is the most basic timing, part of Julia.
-- Prefix the function call with `@btime`. This is part of the BenchmarkTools package, which you might need to install. `@btime` will evaluate the function a few times to give a better estimate.
-- Prefix the function call with `@benchmark`. Also part of BenchmarkTools. This will produce a nice histogram of the times and give more information. `@btime` and `@benchmark` do the same thing in the background.
-- Call `@profview`. This needs to be done in VSCode, or using the ProfileView package. This will create a flame graph, where each function call is a block. The size of the block is proportional to the aggregate time it takes to run. The blocks below a block are functions called inside the function above.
+When investigating performance issues, we use three main ways to check out (speed) performance of functions:
 
-See the file <benchmark/profiling.jl> for an example of profiling code.
+- Run the pipeline until the relevant part and check the `TimerOutput` log.
+  - TulipaEnergyModel holds a global `TimerOutput`. This strategy is to simply run the relevant parts of the pipeline and `show(TEM.to)` to see the results.
+  - You can also use `TimerOutputs.reset_timer!` to reset the timer manually, which can be useful to limit the log.
+  - Check `benchmark/profiling/timer-output.jl`.
+- Benchmark the relevant part, preparing a setup function.
+  - Create a `setup` function that generates everything necessary for the function you're benchmarking
+  - If you're benchmarking more than one function, wrap them in a function
+  - Call `@benchmark` with a `setup` argument
+  - Check `benchmark/profiling/benchmarktools.jl`
+- Use `@profview` for flame graph profiling.
+  - Reuse the code from above.
+  - Call the setup function and then call `@profview` on the function that you're investigating.
+  - This needs to be done in VSCode, or using the ProfileView package.
+  - This will create a flame graph, where each function call is a block. The size of the block is proportional to the aggregate time it takes to run. The blocks below a block are functions called inside the function above.
+  - Check `benchmark/profiling/profview.jl`.
+  - See the [flame graph tips](@ref flame-graph-tips) below for more details.
 
-## Testing the generate MPS files
+In all cases, you can run the relevant function (after inspecting it) in the `benchmark` folder environment:
+
+```bash
+julia --project="benchmark/profiling"
+# press ]
+pkg> instantiate
+# press backspace
+julia> include("benchmark/profiling/relevant-file.jl")
+```
+
+### [Flame graph tips](@id flame-graph-tips)
+
+When running `@profview` in VSCode, a tab will appear with the flame graph.
+If running outside VSCode, you need the [ProfileView](https://github.com/timholy/ProfileView.jl) package.
+
+The flame graph will normally have many functions (~15) from the Julia side _before_ the actual code.
+This is normally identified by an `eval` block.
+Click on a block to zoom into that region, and focus on the TEM code.
+
+#### Too fast
+
+Make sure that your `@profview` call is not too fast.
+You want to have your code run for enough time that the sampler will capture relevant information.
+If you have a larger data input, that is better. Otherwise, run the relevant code inside a loop.
+
+#### Focus
+
+If the part of the code that you want to profile does not appear in the flame graph and you are already running in a loop, then you need to change your benchmark to run something more focused.
+
+Look into the tests, maybe there is already something that can be reused.
+
+#### Large blocks
+
+The size of the blocks is proportional to how much the code is taking to execute (according to the sampler).
+If a block is large, it is relevant, but that doesn't mean that it's wrong.
+In a large scale problem, some things will be slow.
+
+#### Color codes
+
+The color of the blocks are an indication of other problems in the code.
+
+There are various tonalities of blue, which is normal.
+
+The red blocks are bad. It means, in essence, that there are issues related to type. We should try to avoid these as much as possible, although sometimes it will happen in other packages (e.g. DataFrames).
+
+The yellow blocks are also bad. It means that the garbage collector was called, which means that some memory stopped being used.
+E.g., creating a temporary array.
+
+See the [ProfileView color coding documentation](https://github.com/timholy/ProfileView.jl?tab=readme-ov-file#color-coding) for more information.
+
+#### Repeated blocks
+
+Sometimes a block will be small but will appear in many places.
+Every time that the block appears, it's a separate execution.
+This means that the actual time of the code is the aggregate of all blocks.
+These are great candidates for improvement if they add up to become a large block.
+However, as with the large blocks, being slow does not mean that it's wrong.
+
+### Testing scalability
+
+This is still a new topic for us, so material is scarce.
+At the moment, check `benchmark/profiling/scalability.jl` for an example of running a benchmark on many artificial Tulipa problems, with varying sizes, saving the results, and creating a plot out of it.
+You can see an example of the expected output in the file `results.csv` and the plot `results.png` in the same folder.
+
+### Type instability investigation
+
+To investigate type instability issues in the code, we can use `@code_warntype`, [JET.jl](https://github.com/aviatesk/JET.jl), and [Cthulhu.jl](https://github.com/JuliaDebug/Cthulhu.jl), in increasing complexity order.
+
+If you have a single function that you can directly call, `@code_warntype` might be enough to investigate possible type instability issues.
+Most times, though, the function will be deeply nested, so using JET or Cthulhu will be necessary to actually see what is going on.
+See the `benchmark/profiling/type-stability.jl` script for an example of setting up the lower or higher level API and calling some of these functions.
+
+Check [Modern Julia Workflow's type stability section](https://modernjuliaworkflows.org/optimizing/#type_stability) for more details.
+
+### Memory profiling
+
+To investigate memory usage of the code, we use the [Allocation Profiler](https://docs.julialang.org/en/v1/manual/profile/#allocation-profiler).
+The script `benchmark/profiling/memory-profile.jl` has an example using PProf.
+It should be possible to use VSCode's [`@profview_allocs`](https://www.julia-vscode.org/docs/stable/userguide/profiler/) as well.
+
+Notice that the `sample_rate` value might be relevant in this investigation, though at the moment we don't have a recommendation on how to find the best value.
+
+Profiling memory use is useful to figure out _where_ large amounts of memory are being allocated, but not exactly _why_.
+Type stability is one of the main issues.
+Check [Modern Julia Workflows' type stability section](https://modernjuliaworkflows.org/optimizing/#type_stability) and memory management section for more information.
+
+## Testing the generated MPS files
 
 To make sure that unintended changes don't change the model, we have a workflow that automatically compares the generated MPS files.
 Here is an explanation of how it works, and how to run the same comparison locally.
