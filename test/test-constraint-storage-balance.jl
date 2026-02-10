@@ -114,7 +114,7 @@
     end
 
     """
-        get_flow_ids(connection, storage_asset, num_rps, period_duration) -> (incoming, outgoing)
+        incoming, outgoing = get_flow_ids(connection, storage_asset, num_rps, period_duration)
 
     Query incoming and outgoing flow IDs for a storage asset across all time blocks.
     Returns two dictionaries indexed by (rep_period, time_block_start).
@@ -397,13 +397,13 @@ end
 
     # Verify all expected constraints exist
     cons_name = :balance_storage_rep_period
-    constraint_data = [row for row in DuckDB.query(
+    constraint_data = DuckDB.query(
         connection,
         "SELECT id, rep_period, time_block_start
          FROM cons_$cons_name
          WHERE asset = '$storage_asset'
          ORDER BY rep_period, time_block_start",
-    )]
+    )
     @test length(constraint_data) == num_rps * period_duration
 
     # Test each constraint for proper formulation
