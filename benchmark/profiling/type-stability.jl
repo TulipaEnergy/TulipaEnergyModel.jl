@@ -7,7 +7,7 @@ using TulipaIO: TulipaIO as TIO
 include("../tulipa-data.jl")
 
 function common_setup(; kwargs...)
-    connection, tulipa_data = give_me_better_name(; kwargs...)
+    connection, tulipa_data = create_synthetic_problem(; kwargs...)
     TEM.populate_with_defaults!(connection)
     return connection, tulipa_data
 end
@@ -16,7 +16,7 @@ function setup_lower_level_pipeline(; kwargs...)
     connection, tulipa_data = common_setup(; kwargs...)
 
     # Internal data and structures pre-model
-    #= Comment out before revelant function
+    #= Comment out before relevant function
     TEM.create_internal_tables!(connection)
     model_parameters = TEM.ModelParameters(connection)
     variables = TEM.compute_variables_indices(connection)
@@ -61,7 +61,7 @@ function setup_higher_level_pipeline(; kwargs...)
     connection, tulipa_data = common_setup(; kwargs...)
 
     energy_problem = TEM.EnergyProblem(connection)
-    #= Comment out before revelant function
+    #= Comment out before relevant function
     TEM.create_model!(energy_problem)
     TEM.solve_model!(energy_problem)
     TEM.save_solution!(energy_problem)

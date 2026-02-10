@@ -10,7 +10,7 @@ using TulipaIO: TulipaIO as TIO
 include("../tulipa-data.jl")
 
 function common_setup(; kwargs...)
-    connection, tulipa_data = give_me_better_name(; kwargs...)
+    connection, tulipa_data = create_synthetic_problem(; kwargs...)
     TEM.populate_with_defaults!(connection)
     return connection, tulipa_data
 end
@@ -27,7 +27,7 @@ function setup_lower_level_pipeline(; kwargs...)
     constraints = TEM.compute_constraints_indices(connection)
     profiles = TEM.prepare_profiles_structure(connection)
 
-    #= Comment out before revelant function
+    #= Comment out before relevant function
     # Create model
     model, expressions = TEM.create_model(
         connection,
@@ -59,7 +59,7 @@ function setup_higher_level_pipeline(; kwargs...)
     connection, tulipa_data = common_setup(; kwargs...)
 
     energy_problem = TEM.EnergyProblem(connection)
-    #= Comment out before revelant function
+    #= Comment out before relevant function
     TEM.create_model!(energy_problem)
     TEM.solve_model!(energy_problem)
     TEM.save_solution!(energy_problem)

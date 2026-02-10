@@ -2,7 +2,7 @@ using TulipaBuilder: TulipaBuilder as TB
 using TulipaClustering: TulipaClustering as TC
 
 """
-    give_me_better_name(; kwargs...)
+    create_synthetic_problem(; kwargs...)
 
 Create a fake problem with `num_countries` countries.
 Each country has:
@@ -27,7 +27,7 @@ Each country has:
 - `num_rep_periods`: Number of representative periods. Default: 3
 - `period_duration`: Number of time steps in the day. Default: 24
 """
-function give_me_better_name(;
+function create_synthetic_problem(;
     num_countries = 3,
     num_days = 365,
     num_rep_periods = 3,

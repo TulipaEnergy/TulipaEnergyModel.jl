@@ -7,8 +7,7 @@ using TulipaIO: TulipaIO as TIO
 include("../tulipa-data.jl")
 
 function common_setup(; kwargs...)
-    connection, tulipa_data = give_me_better_name(; kwargs...)
-    reset_timer!(TEM.to)
+    connection, tulipa_data = create_synthetic_problem(; kwargs...)
     TEM.populate_with_defaults!(connection)
     return connection, tulipa_data
 end
@@ -19,7 +18,7 @@ function setup_lower_level_pipeline(; kwargs...)
     # Internal data and structures pre-model
     TEM.create_internal_tables!(connection)
     model_parameters = TEM.ModelParameters(connection)
-    #= Comment out before revelant function
+    #= Comment out before relevant function
     variables = TEM.compute_variables_indices(connection)
     constraints = TEM.compute_constraints_indices(connection)
     profiles = TEM.prepare_profiles_structure(connection)
@@ -52,7 +51,7 @@ function setup_higher_level_pipeline(; kwargs...)
     connection, tulipa_data = common_setup(; kwargs...)
 
     energy_problem = TEM.EnergyProblem(connection)
-    #= Comment out before revelant function
+    #= Comment out before relevant function
     TEM.create_model!(energy_problem)
     TEM.solve_model!(energy_problem)
     TEM.save_solution!(energy_problem)
@@ -71,7 +70,8 @@ problem_kwargs = (num_days = 3, num_countries = 3)
 
 # Uncomment one of the two
 # Lower level API
-# @benchmark relevant_lower_level_pipeline(connection) setup=(connection=setup_lower_level_pipeline(;problem_kwargs...))
+@benchmark relevant_lower_level_pipeline(connection) setup =
+    (connection = setup_lower_level_pipeline(; problem_kwargs...))
 
 # Higher level API
 # @benchmark relevant_higher_level_pipeline(connection, energy_problem) setup=(connection, energy_problem=setup_higher_level_pipeline(;problem_kwargs...))

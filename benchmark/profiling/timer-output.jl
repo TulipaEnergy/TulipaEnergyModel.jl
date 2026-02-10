@@ -2,10 +2,10 @@ using TimerOutputs: reset_timer!
 using TulipaEnergyModel: TulipaEnergyModel as TEM
 using TulipaIO: TulipaIO as TIO
 
-include("tulipa-data.jl")
+include("../tulipa-data.jl")
 
 function common_setup(; kwargs...)
-    connection, tulipa_data = give_me_better_name(; kwargs...)
+    connection, tulipa_data = create_synthetic_problem(; kwargs...)
     reset_timer!(TEM.to)
     TEM.populate_with_defaults!(connection)
     return connection, tulipa_data

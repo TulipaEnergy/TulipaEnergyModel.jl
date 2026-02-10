@@ -636,7 +636,7 @@ When investigating performance issues, we use three main ways to check out (spee
   - This needs to be done in VSCode, or using the ProfileView package.
   - This will create a flame graph, where each function call is a block. The size of the block is proportional to the aggregate time it takes to run. The blocks below a block are functions called inside the function above.
   - Check `benchmark/profiling/profview.jl`.
-  - Check `benchmark/profiling/README.md` for more details, tips and tricks.
+  - See the [flame graph tips](@ref flame-graph-tips) below for more details.
 
 In all cases, you can run the relevant function (after inspecting it) in the `benchmark` folder environment:
 
@@ -647,6 +647,54 @@ pkg> instantiate
 # press backspace
 julia> include("benchmark/profiling/relevant-file.jl")
 ```
+
+### [Flame graph tips](@id flame-graph-tips)
+
+When running `@profview` in VSCode, a tab will appear with the flame graph.
+If running outside VSCode, you need the [ProfileView](https://github.com/timholy/ProfileView.jl) package.
+
+The flame graph will normally have many functions (~15) from the Julia side _before_ the actual code.
+This is normally identified by an `eval` block.
+Click on a block to zoom into that region, and focus on the TEM code.
+
+#### Too fast
+
+Make sure that your `@profview` call is not too fast.
+You want to have your code run for enough time that the sampler will capture relevant information.
+If you have a larger data input, that is better. Otherwise, run the relevant code inside a loop.
+
+#### Focus
+
+If the part of the code that you want to profile does not appear in the flame graph and you are already running in a loop, then you need to change your benchmark to run something more focused.
+
+Look into the tests, maybe there is already something that can be reused.
+
+#### Large blocks
+
+The size of the blocks is proportional to how much the code is taking to execute (according to the sampler).
+If a block is large, it is relevant, but that doesn't mean that it's wrong.
+In a large scale problem, some things will be slow.
+
+#### Color codes
+
+The color of the blocks are an indication of other problems in the code.
+
+There are various tonalities of blue, which is normal.
+
+The red blocks are bad. It means, in essence, that there are issues related to type. We should try to avoid these as much as possible, although sometimes it will happen in other packages (e.g. DataFrames).
+
+The yellow blocks are also bad. It means that the garbage collector was called, which means that some memory stopped being used.
+E.g., creating a temporary array.
+
+See the [ProfileView color coding documentation](https://github.com/timholy/ProfileView.jl?tab=readme-ov-file#color-coding) for more information.
+
+#### Repeated blocks
+
+Sometimes a block will be small but will appear in many places.
+Every time that the block appears, it's a separate execution.
+This means that the actual time of the code is the aggregate of all blocks.
+These are great candidates for improvement if they add up to become a large block.
+However, as with the large blocks, being slow does not mean that it's wrong.
 
 ### Testing scalability
 
