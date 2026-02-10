@@ -54,7 +54,7 @@
         ),
         period_duration::Int = 1,
         num_rps::Int = 2,
-    )::DuckDB.DB
+    )
         tulipa = TB.TulipaData()
 
         # Add basic producer and consumer for flow balance
@@ -126,7 +126,7 @@
         storage_asset::String,
         num_rps::Int,
         period_duration::Int,
-    )::Tuple{Dict{Tuple{Int,Int},Vector{Int}},Dict{Tuple{Int,Int},Vector{Int}}}
+    )
         # Pre-allocate dictionaries for all time blocks
         incoming = Dict{Tuple{Int,Int},Vector{Int}}()
         outgoing = Dict{Tuple{Int,Int},Vector{Int}}()
@@ -179,7 +179,7 @@
         storage_asset::String,
         scenarios::UnitRange{Int},
         periods::UnitRange{Int},
-    )::Dict{Tuple{Int,Int},Int}
+    )
         storage_level_ids = Dict{Tuple{Int,Int},Int}()
         sizehint!(storage_level_ids, length(scenarios) * length(periods))
 
@@ -205,7 +205,7 @@
     Extract inflow value for a given representative period and time block.
     Returns 0.0 if no matching profile is found.
     """
-    function get_inflow_value(profiles_rep_periods::DataFrame, rp::Int, tb::Int)::Float64
+    function get_inflow_value(profiles_rep_periods::DataFrame, rp::Int, tb::Int)
         filtered = profiles_rep_periods[
             (profiles_rep_periods.rep_period.==rp).&(profiles_rep_periods.timestep.==tb),
             :value,
@@ -223,7 +223,7 @@
         flow::Vector{JuMP.VariableRef},
         flow_ids::Vector{Int},
         efficiency::Float64,
-    )::JuMP.AffExpr
+    )
         isempty(flow_ids) && return JuMP.AffExpr(0.0)
         return sum(flow[id] for id in flow_ids; init = JuMP.AffExpr(0.0)) * efficiency
     end
@@ -245,7 +245,7 @@
         num_rps::Int,
         period_duration::Int,
         config::StorageConfig,
-    )::Tuple{JuMP.AffExpr,JuMP.AffExpr,Float64}
+    )
         incoming_expr = JuMP.AffExpr(0.0)
         outgoing_expr = JuMP.AffExpr(0.0)
         total_inflows = 0.0
@@ -294,7 +294,7 @@
         rp::Int,
         tb::Int,
         config::StorageConfig,
-    )::Tuple{JuMP.AffExpr,JuMP.AffExpr,Float64}
+    )
         # Precompute discharge efficiency inverse
         discharge_efficiency_inv = 1.0 / config.discharging_efficiency
 
@@ -338,14 +338,7 @@
         inflows_profile::Dict{Tuple{String,Int,Int},Vector{Float64}},
         period_duration::Int,
         num_rps::Int,
-    )::Tuple{
-        DuckDB.DB,
-        TEM.EnergyProblem,
-        Vector{JuMP.VariableRef},
-        DataFrame,
-        Dict{Tuple{Int,Int},Vector{Int}},
-        Dict{Tuple{Int,Int},Vector{Int}},
-    }
+    )
         # Create and configure the test problem
         connection = create_storage_balance_problem(;
             inflows_profile = inflows_profile,
@@ -404,7 +397,8 @@ end
          WHERE asset = '$storage_asset'
          ORDER BY rep_period, time_block_start",
     )
-    @test length(constraint_data) == num_rps * period_duration
+    num_constraints = constraint_data |> collect |> length
+    @test num_constraints == num_rps * period_duration
 
     # Test each constraint for proper formulation
     for row in constraint_data
