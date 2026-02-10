@@ -43,7 +43,7 @@
     )
 
     """
-        create_storage_balance_problem(; inflows_profile, period_duration, num_rps)
+        create_storage_balance_problem(; inflows_profile, num_timesteps, num_rps)
 
     Create a storage balance test problem with two storage assets.
     Returns the database connection with configured storage assets and clustering.
@@ -52,7 +52,7 @@
         inflows_profile::Dict{Tuple{String,Int,Int},Vector{Float64}} = Dict(
             ("seasonal_storage", 2030, 1) => [1.0, 5.5, 10.0],
         ),
-        period_duration::Int = 1,
+        num_timesteps::Int = 1,
         num_rps::Int = 2,
     )
         tulipa = TB.TulipaData()
@@ -101,7 +101,7 @@
         layout = TC.ProfilesTableLayout(; cols_to_crossby = [:scenario])
         TC.cluster!(
             connection,
-            period_duration,
+            num_timesteps,
             num_rps;
             method = :convex_hull,
             weight_type = :convex,
@@ -114,7 +114,7 @@
     end
 
     """
-        incoming, outgoing = get_flow_ids(connection, storage_asset, num_rps, period_duration)
+        incoming, outgoing = get_flow_ids(connection, storage_asset, num_rps, num_timesteps)
 
     Query incoming and outgoing flow IDs for a storage asset across all time blocks.
     Returns two dictionaries indexed by (rep_period, time_block_start).
@@ -125,14 +125,14 @@
         connection::DuckDB.DB,
         storage_asset::String,
         num_rps::Int,
-        period_duration::Int,
+        num_timesteps::Int,
     )
         # Pre-allocate dictionaries for all time blocks
         incoming = Dict{Tuple{Int,Int},Vector{Int}}()
         outgoing = Dict{Tuple{Int,Int},Vector{Int}}()
 
         # Initialize empty vectors for each time block
-        for rp in 1:num_rps, tb in 1:period_duration
+        for rp in 1:num_rps, tb in 1:num_timesteps
             incoming[(rp, tb)] = Int[]
             outgoing[(rp, tb)] = Int[]
         end
@@ -243,7 +243,7 @@
         scenario::Int,
         period::Int,
         num_rps::Int,
-        period_duration::Int,
+        num_timesteps::Int,
         config::StorageConfig,
     )
         incoming_expr = JuMP.AffExpr(0.0)
@@ -257,7 +257,7 @@
             weight = get(period_weight_map, (scenario, period, rp), 0.0)
             iszero(weight) && continue  # Skip zero-weight periods
 
-            for tb in 1:period_duration
+            for tb in 1:num_timesteps
                 # Compute weighted charging flows
                 charging_flow = compute_flow_terms(
                     flow,
@@ -328,7 +328,7 @@
     end
 
     """
-        setup_test_problem(storage_asset, inflows_profile, period_duration, num_rps)
+        setup_test_problem(storage_asset, inflows_profile, num_timesteps, num_rps)
 
     Common setup function for creating and configuring test problems.
     Returns connection, energy_problem, flow, profiles, incoming_flow_ids, and outgoing_flow_ids.
@@ -336,13 +336,13 @@
     function setup_test_problem(
         storage_asset::String,
         inflows_profile::Dict{Tuple{String,Int,Int},Vector{Float64}},
-        period_duration::Int,
+        num_timesteps::Int,
         num_rps::Int,
     )
         # Create and configure the test problem
         connection = create_storage_balance_problem(;
             inflows_profile = inflows_profile,
-            period_duration = period_duration,
+            num_timesteps = num_timesteps,
             num_rps = num_rps,
         )
         TEM.populate_with_defaults!(connection)
@@ -358,7 +358,7 @@
 
         # Get flow IDs for charging and discharging
         incoming_flow_ids, outgoing_flow_ids =
-            get_flow_ids(connection, storage_asset, num_rps, period_duration)
+            get_flow_ids(connection, storage_asset, num_rps, num_timesteps)
 
         return (connection, energy_problem, flow, profiles, incoming_flow_ids, outgoing_flow_ids)
     end
@@ -378,12 +378,12 @@ end
     year = 2030
     scenario = 1
     inflows_profile = Dict((storage_asset, year, scenario) => [1.0, 5.5, 10.0, 2.5])
-    period_duration = 2
+    num_timesteps = 2
     num_rps = 2
 
     # Setup test problem with common helper
     connection, energy_problem, flow, profiles, incoming_flow_ids, outgoing_flow_ids =
-        setup_test_problem(storage_asset, inflows_profile, period_duration, num_rps)
+        setup_test_problem(storage_asset, inflows_profile, num_timesteps, num_rps)
 
     # Extract storage level variable
     storage_level = energy_problem.variables[:storage_level_rep_period].container
@@ -398,7 +398,7 @@ end
          ORDER BY rep_period, time_block_start",
     )
     num_constraints = constraint_data |> collect |> length
-    @test num_constraints == num_rps * period_duration
+    @test num_constraints == num_rps * num_timesteps
 
     # Test each constraint for proper formulation
     for row in constraint_data
@@ -450,12 +450,12 @@ end
     scenario = 1
     inflows_profile = Dict((storage_asset, year, scenario) => [1.0, 5.5, 10.0])
     periods = 1:length(inflows_profile[(storage_asset, year, scenario)])
-    period_duration = 1
+    num_timesteps = 1
     num_rps = 2
 
     # Setup test problem with common helper
     connection, energy_problem, flow, profiles, incoming_flow_ids, outgoing_flow_ids =
-        setup_test_problem(storage_asset, inflows_profile, period_duration, num_rps)
+        setup_test_problem(storage_asset, inflows_profile, num_timesteps, num_rps)
 
     # Extract storage level variable
     storage_level = energy_problem.variables[:storage_level_over_clustered_year].container
@@ -469,13 +469,14 @@ end
 
     # Verify all expected constraints exist
     cons_name = :balance_storage_over_clustered_year
-    constraint_ids = [
-        row.id for row in DuckDB.query(
-            connection,
-            "SELECT id FROM cons_$cons_name WHERE asset = '$storage_asset'",
-        )
-    ]
-    @test length(constraint_ids) == length(periods)
+    constraint_data = DuckDB.query(
+        connection,
+        "SELECT id
+         FROM cons_$cons_name
+         WHERE asset = '$storage_asset'",
+    )
+    num_constraints = constraint_data |> collect |> length
+    @test num_constraints == length(periods)
 
     # Test each period's constraint
     for period in periods
@@ -489,7 +490,7 @@ end
             scenario,
             period,
             num_rps,
-            period_duration,
+            num_timesteps,
             config,
         )
 
@@ -530,12 +531,12 @@ end
     )
     periods = 1:length(inflows_profile[(storage_asset, year, 1)])
     scenarios = 1:2
-    period_duration = 1
+    num_timesteps = 1
     num_rps = 2
 
     # Setup test problem with common helper
     connection, energy_problem, flow, profiles, incoming_flow_ids, outgoing_flow_ids =
-        setup_test_problem(storage_asset, inflows_profile, period_duration, num_rps)
+        setup_test_problem(storage_asset, inflows_profile, num_timesteps, num_rps)
 
     # Extract storage level variable
     storage_level = energy_problem.variables[:storage_level_over_clustered_year].container
@@ -552,13 +553,14 @@ end
 
     # Verify all expected constraints exist
     cons_name = :balance_storage_over_clustered_year
-    constraint_ids = [
-        row.id for row in DuckDB.query(
-            connection,
-            "SELECT id FROM cons_$cons_name WHERE asset = '$storage_asset'",
-        )
-    ]
-    @test length(constraint_ids) == length(periods) * length(scenarios)
+    constraint_data = DuckDB.query(
+        connection,
+        "SELECT id
+         FROM cons_$cons_name
+         WHERE asset = '$storage_asset'",
+    )
+    num_constraints = constraint_data |> collect |> length
+    @test num_constraints == length(periods) * length(scenarios)
 
     # Test each scenario and period
     max_period = maximum(periods)
@@ -573,7 +575,7 @@ end
             scenario,
             period,
             num_rps,
-            period_duration,
+            num_timesteps,
             config,
         )
 
