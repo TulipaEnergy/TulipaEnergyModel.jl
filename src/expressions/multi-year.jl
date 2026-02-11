@@ -266,7 +266,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
                 AND asset_both.commission_year = var_inv.milestone_year
             WHERE
                 asset.investment_method in ('compact', 'semi-compact')
-                -- Hub and consumer assets do not use this expression, so we can filter them out to be more explicit
+                -- Consumer assets do not use this expression, so we can filter them out to be more explicit
                 AND asset.type in ('producer', 'conversion', 'storage')
             GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
             ORDER BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
@@ -303,7 +303,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             AND var_inv.milestone_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
         WHERE
             asset.investment_method in ('simple', 'none')
-            -- Hub and consumer assets do not use this expression, so we can filter them out to be more explicit
+            -- Consumer assets do not use this expression, so we can filter them out to be more explicit
             AND asset.type in ('producer', 'conversion', 'storage', 'consumer')
         GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
         ",

@@ -255,8 +255,6 @@ DuckDB.query(
         UNION BY NAME
         FROM assets_conversion_basic_data
         UNION BY NAME
-        FROM assets_hub_basic_data
-        UNION BY NAME
         FROM assets_producer_basic_data
         UNION BY NAME
         FROM assets_storage_basic_data
@@ -278,8 +276,6 @@ DuckDB.query(
         FROM assets_consumer_yearly_data
         UNION BY NAME
         FROM assets_conversion_yearly_data
-        UNION BY NAME
-        FROM assets_hub_yearly_data
         UNION BY NAME
         FROM assets_producer_yearly_data
         UNION BY NAME

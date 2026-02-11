@@ -67,11 +67,11 @@ function add_expression_terms_rep_period_constraints!(
     # cons' asset will be matched with flow's to_asset or from_asset, depending on whether
     # we are filling incoming or outgoing flows
     cases = [
-        (expr_key = :incoming, asset_match = :to_asset, selected_assets = ["hub", "consumer"]),
+        (expr_key = :incoming, asset_match = :to_asset, selected_assets = ["consumer"]),
         (
             expr_key = :outgoing,
             asset_match = :from_asset,
-            selected_assets = ["hub", "consumer", "producer"],
+            selected_assets = ["consumer", "producer"],
         ),
     ]
     num_rows = get_num_rows(connection, cons)
@@ -182,7 +182,7 @@ function add_expression_terms_rep_period_constraints!(
                 # Step 1.1.1.
                 for timestep in time_block
                     # Step 1.1.1.1.
-                    # Set the flow coefficient for incoming and outgoing flows of hub and consumer assets, and outgoing flows for producer assets
+                    # Set the flow coefficient for incoming and outgoing flows of consumer assets and outgoing flows for producer assets
                     # And when you want the highest resolution (which is asset type-agnostic)
                     # If it is for the capacity constraints, multiply by the capacity constraint coefficient for these cases, otherwise, just use the 1.0
                     # Else if the asset is a conversion asset the flow coefficient is the conversion coefficient
@@ -460,14 +460,6 @@ function add_expressions_to_constraints!(connection, variables, constraints)
     @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
         connection,
         constraints[:balance_consumer],
-        variables[:flow],
-        workspace;
-        use_highest_resolution = true,
-        multiply_by_duration = false,
-    )
-    @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
-        connection,
-        constraints[:balance_hub],
         variables[:flow],
         workspace;
         use_highest_resolution = true,
