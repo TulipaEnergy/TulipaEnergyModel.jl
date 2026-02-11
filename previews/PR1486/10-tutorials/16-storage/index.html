@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Seasonal and Non-seasonal Storage · TulipaEnergyModel.jl</title><meta name="title" content="Seasonal and Non-seasonal Storage · TulipaEnergyModel.jl"/><meta property="og:title" content="Seasonal and Non-seasonal Storage · TulipaEnergyModel.jl"/><meta property="twitter:title" content="Seasonal and Non-seasonal Storage · TulipaEnergyModel.jl"/><meta name="description" content="Documentation for TulipaEnergyModel.jl."/><meta property="og:description" content="Documentation for TulipaEnergyModel.jl."/><meta property="twitter:description" content="Documentation for TulipaEnergyModel.jl."/><meta property="og:url" content="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/16-storage/"/><meta property="twitter:url" content="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/16-storage/"/><link rel="canonical" href="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/16-storage/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.png" alt="TulipaEnergyModel.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TulipaEnergyModel.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Welcome</a></li><li><span class="tocitem">Tutorials</span><ul><li><a class="tocitem" href="../11-setting-up/">Tutorial Setup</a></li><li><a class="tocitem" href="../12-basics/">The Basics</a></li><li><a class="tocitem" href="../13-assets/">Gereralized Assets and Flows</a></li><li><a class="tocitem" href="../14-fully-flexible-time/">Fully-Flexible Time Resolution</a></li><li><a class="tocitem" href="../15-clustering-rep-periods/">Blended Representative Periods with Tulipa Clustering</a></li><li class="is-active"><a class="tocitem" href>Seasonal and Non-seasonal Storage</a><ul class="internal"><li><a class="tocitem" href="#Introduction"><span>Introduction</span></a></li><li><a class="tocitem" href="#Previously-in-the-TLC"><span>Previously in the TLC</span></a></li><li><a class="tocitem" href="#Results"><span>Results</span></a></li><li><a class="tocitem" href="#The-parameter-is_seasonal"><span>The parameter <code>is_seasonal</code></span></a></li><li><a class="tocitem" href="#Changing-other-storage-parameters"><span>Changing other storage parameters</span></a></li><li><a class="tocitem" href="#Comparing-with-the-full-year-of-optimization"><span>Comparing with the full year of optimization</span></a></li><li><a class="tocitem" href="#Finding-the-Balance"><span>Finding the Balance</span></a></li></ul></li><li><a class="tocitem" href="../17-multi-year-investments/">Multi-Year Investment Pathways</a></li><li><a class="tocitem" href="../30-workflow/">Data-Handling Workflow (Example)</a></li><li><a class="tocitem" href="../31-rolling-horizon/">Rolling Horizon</a></li><li><a class="tocitem" href="../40-bids-workaround/">Bids using Consumer Unit Commitment (Workaround)</a></li><li><a class="tocitem" href="../99-manual-steps/">Advanced Control</a></li></ul></li><li><span class="tocitem">User Guide</span><ul><li><a class="tocitem" href="../../20-user-guide/00-getting-started/">Getting Started</a></li><li><a class="tocitem" href="../../20-user-guide/20-how-to-use/">How to Use</a></li><li><a class="tocitem" href="../../20-user-guide/50-workflow/">Analysis Workflow</a></li><li><a class="tocitem" href="../../20-user-guide/54-input-table-schemas/">Input Table Schemas</a></li><li><a class="tocitem" href="../../20-user-guide/55-outputs/">Output Variables</a></li><li><a class="tocitem" href="../../20-user-guide/60-structures/">Internal Model Structures</a></li><li><a class="tocitem" href="../../20-user-guide/65-FFTR-table/">FFTR Constraints Table</a></li></ul></li><li><a class="tocitem" href="../../30-concepts/">Concepts</a></li><li><span class="tocitem">Scientific Foundation</span><ul><li><a class="tocitem" href="../../40-scientific-foundation/40-formulation/">Mathematical Formulation</a></li><li><a class="tocitem" href="../../40-scientific-foundation/45-scientific-references/">Scientific References</a></li></ul></li><li><a class="tocitem" href="../../70-reference/">API Reference</a></li><li><a class="tocitem" href="../../80-ecosystem/">Tulipa Ecosystem</a></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../90-contributing/90-contributing/">Contributing Guidelines</a></li><li><a class="tocitem" href="../../90-contributing/91-developer/">Developer Documentation</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Tutorials</a></li><li class="is-active"><a href>Seasonal and Non-seasonal Storage</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Seasonal and Non-seasonal Storage</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/docs/src/10-tutorials/16-storage.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Seasonal-and-Non-seasonal-Storage"><a class="docs-heading-anchor" href="#Seasonal-and-Non-seasonal-Storage">Seasonal and Non-seasonal Storage</a><a id="Seasonal-and-Non-seasonal-Storage-1"></a><a class="docs-heading-anchor-permalink" href="#Seasonal-and-Non-seasonal-Storage" title="Permalink"></a></h1><h2 id="Introduction"><a class="docs-heading-anchor" href="#Introduction">Introduction</a><a id="Introduction-1"></a><a class="docs-heading-anchor-permalink" href="#Introduction" title="Permalink"></a></h2><p>Tulipa has two types of storage representations:</p><ol><li>seasonal - inter-temporal constraints over the clustered analysis period (i.e. year)</li><li>non-seasonal - intra-temporal constraints inside the representative periods</li></ol><p>Here is the concept documentation for more details: <a href="https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/30-concepts/#storage-modeling">Storage Modelling</a></p><p>The data we will be working with is once again located in the <code>my-awesome-energy-system</code> folder, this time under tutorial 5</p><p>Let&#39;s have a look at their input parameters...</p><p>For instance, what are the storage capacities? Efficiencies? Initial storage levels? Any other parameters?</p><h2 id="Previously-in-the-TLC"><a class="docs-heading-anchor" href="#Previously-in-the-TLC">Previously in the TLC</a><a id="Previously-in-the-TLC-1"></a><a class="docs-heading-anchor-permalink" href="#Previously-in-the-TLC" title="Permalink"></a></h2><p>Let&#39;s reuse most of the final script from the Tutorial 4, but using the data from tutorial 5:</p><pre><code class="language-julia hljs">using Pkg
+Pkg.activate(&quot;.&quot;)
+# Pkg.add(&quot;TulipaEnergyModel&quot;)
+# Pkg.add(&quot;TulipaIO&quot;)
+# Pkg.add(&quot;TulipaClustering&quot;)
+# Pkg.add(&quot;DuckDB&quot;)
+# Pkg.add(&quot;DataFrames&quot;)
+# Pkg.add(&quot;Plots&quot;)
+# Pkg.add(&quot;Distances&quot;)
+Pkg.instantiate()
+
+import TulipaIO as TIO
+import TulipaEnergyModel as TEM
+import TulipaClustering as TC
+using DuckDB
+using DataFrames
+using Plots
+using Distances
+
+connection = DBInterface.connect(DuckDB.DB)
+input_dir = &quot;my-awesome-energy-system/tutorial-5&quot;
+output_dir = &quot;my-awesome-energy-system/tutorial-5/results&quot;
+#mkdir(output_dir) # optional if the output folder doesn&#39;t exist yet
+TIO.read_csv_folder(connection, input_dir)
+
+TC.transform_wide_to_long!(
+    connection,
+    &quot;profiles_wide&quot;,
+    &quot;profiles&quot;;
+)
+
+period_duration = 24
+num_rps = 12
+clusters = TC.cluster!(connection,
+                    period_duration,
+                    num_rps;
+                    method = :convex_hull,
+                    distance = Distances.CosineDist(),
+                    weight_type = :convex
+                    )
+
+TEM.populate_with_defaults!(connection)
+energy_problem = TEM.run_scenario(connection; output_folder=output_dir)</code></pre><div class="admonition is-warning" id="Warning-a399e9e0d82877e5"><header class="admonition-header">Warning<a class="admonition-anchor" href="#Warning-a399e9e0d82877e5" title="Permalink"></a></header><div class="admonition-body"><p>Since the output directory does not exist yet, we need to create the &#39;results&#39; folder inside our tutorial folder, otherwise it will error.</p></div></div><p>At this point, everything should work similiar as Tutorial 4.</p><h2 id="Results"><a class="docs-heading-anchor" href="#Results">Results</a><a id="Results-1"></a><a class="docs-heading-anchor-permalink" href="#Results" title="Permalink"></a></h2><blockquote><p><strong>Note:</strong> Remember to look at your output folder to see the exported results and check which primal and dual information you want to analyze.</p></blockquote><p>Nice, so what about the storage level?</p><pre><code class="language-julia hljs"># Retrieve and group the data
+storage_levels = TIO.get_table(connection, &quot;var_storage_level_rep_period&quot;)
+gdf = groupby(storage_levels, [:asset])
+
+# Create a simple plot
+n_subplots = length(gdf)
+p = plot(; layout=grid(n_subplots, 1))
+for (i, group) in enumerate(gdf)
+    plot!(
+        p[i],
+        group.time_block_end,
+        group.solution;
+        group=group.rep_period,
+        title=string(unique(group.asset)),
+        xlabel=&quot;Hour&quot;,
+        ylabel=&quot;[MWh]&quot;,
+        xlims=(1, 24),
+        dpi=600,
+    )
+end
+p</code></pre><p>What is happening with the storage assets? Any ideas?</p><p>The battery storage looks reasonable, but what is happening with the hydrogen storage?</p><h2 id="The-parameter-is_seasonal"><a class="docs-heading-anchor" href="#The-parameter-is_seasonal">The parameter <code>is_seasonal</code></a><a id="The-parameter-is_seasonal-1"></a><a class="docs-heading-anchor-permalink" href="#The-parameter-is_seasonal" title="Permalink"></a></h2><p>Change the parameter <code>is_seasonal</code> from <code>false</code> to <code>true</code> for the hydrogen storage in the file <code>assets.csv</code>.</p><p>Rerun the workflow and check the results again...</p><div class="admonition is-success" id="Pro-tip-54cbf43bc87f962c"><header class="admonition-header">Pro tip<a class="admonition-anchor" href="#Pro-tip-54cbf43bc87f962c" title="Permalink"></a></header><div class="admonition-body"><p>You can use the following command to update a parameter in the database directly from Julia and then rerun:</p><pre><code class="language-julia hljs">DuckDB.query(connection, &quot;UPDATE asset SET is_seasonal = true WHERE asset = &#39;h2_storage&#39;&quot;)
+energy_problem = TEM.run_scenario(connection; output_folder=output_dir)</code></pre></div></div><p>What do you notice in the output folder? Any new variables/constraints?</p><p>Check the storage level of the hydrogen storage.</p><div class="admonition is-success" id="Tip-6b668cf54915a7ac"><header class="admonition-header">Tip<a class="admonition-anchor" href="#Tip-6b668cf54915a7ac" title="Permalink"></a></header><div class="admonition-body"><p>It&#39;s now in the variable <code>var_storage_level_over_clustered_year</code> because it&#39;s seasonal. Use <code>TIO.get_table(connection, &quot;var_storage_level_over_clustered_year&quot;)</code> to access it.</p></div></div><pre><code class="language-julia hljs">seasonal_storage_levels = TIO.get_table(connection, &quot;var_storage_level_over_clustered_year&quot;)
+gdf = groupby(seasonal_storage_levels, [:asset])
+n_subplots = length(gdf)
+p = plot(; layout=grid(n_subplots, 1))
+for (i, group) in enumerate(gdf)
+    plot!(
+        p[i],
+        group.period_block_end,
+        group.solution;
+        title=string(unique(group.asset)),
+        xlabel=&quot;Day&quot;,
+        ylabel=&quot;[MWh]&quot;,
+        dpi=600,
+    )
+end
+p</code></pre><h2 id="Changing-other-storage-parameters"><a class="docs-heading-anchor" href="#Changing-other-storage-parameters">Changing other storage parameters</a><a id="Changing-other-storage-parameters-1"></a><a class="docs-heading-anchor-permalink" href="#Changing-other-storage-parameters" title="Permalink"></a></h2><p>As you saw before, there are several parameters for the storage assets. Let&#39;s play with some of them...</p><h3 id="The-parameter-initial_storage_level"><a class="docs-heading-anchor" href="#The-parameter-initial_storage_level">The parameter <code>initial_storage_level</code></a><a id="The-parameter-initial_storage_level-1"></a><a class="docs-heading-anchor-permalink" href="#The-parameter-initial_storage_level" title="Permalink"></a></h3><p>Change the <code>initial_storage_level</code> of the battery to empty (blank) and rerun the workflow.</p><h3 id="The-parameter-storage_loss_from_stored_energy"><a class="docs-heading-anchor" href="#The-parameter-storage_loss_from_stored_energy">The parameter <code>storage_loss_from_stored_energy</code></a><a id="The-parameter-storage_loss_from_stored_energy-1"></a><a class="docs-heading-anchor-permalink" href="#The-parameter-storage_loss_from_stored_energy" title="Permalink"></a></h3><p>Change the <code>storage_loss_from_stored_energy</code> of the battery to empty (blank) and rerun the workflow.</p><h2 id="Comparing-with-the-full-year-of-optimization"><a class="docs-heading-anchor" href="#Comparing-with-the-full-year-of-optimization">Comparing with the full year of optimization</a><a id="Comparing-with-the-full-year-of-optimization-1"></a><a class="docs-heading-anchor-permalink" href="#Comparing-with-the-full-year-of-optimization" title="Permalink"></a></h2><p>The following code:</p><ol><li>Creates a new connection <code>conn_hourly_benchmark</code> to store the results of the hourly benchmark</li><li>Runs TulipaClustering using the <code>dummy_cluster!</code> function to create 1 representative period of 8760 hours</li><li>Updates the values of the <code>is_seasonal</code> parameter to <code>false</code>.<br/><em>Since it is 1 year and 1 representative, the storage is not considered seasonal (it is within the representative period)</em></li><li>Stores the run in a new object called <code>ep_hourly</code></li></ol><pre><code class="language-julia hljs"># 1. Create a new connection for the hourly benchmark
+conn_hourly_benchmark = DBInterface.connect(DuckDB.DB)
+TIO.read_csv_folder(conn_hourly_benchmark, input_dir)
+
+# 2. Transform the profiles and create the tables with 1 representative period of 8760 hours
+TC.transform_wide_to_long!(
+    conn_hourly_benchmark,
+    &quot;profiles_wide&quot;,
+    &quot;profiles&quot;;
+)
+TC.dummy_cluster!(conn_hourly_benchmark)
+
+# 3. Populate with defaults
+TEM.populate_with_defaults!(conn_hourly_benchmark)
+
+# 4. We update the `is_seasonal` column to false to make sure all the storage assets are non-seasonal since we only have one representative period that is the whole year
+DuckDB.query(
+    conn_hourly_benchmark, &quot;UPDATE asset SET is_seasonal = false&quot;)
+
+# 5. We can solve it now
+ep_hourly = TEM.run_scenario(conn_hourly_benchmark)</code></pre><p>You can use this result and the ones from the clustering to see the comparison of the two solutions.<br/>Here is an example of how to combine the plots for this case:</p><pre><code class="language-julia hljs"># plotting the results for the hourly benchmark
+storage_levels_hourly = TIO.get_table(conn_hourly_benchmark, &quot;var_storage_level_rep_period&quot;)
+asset_to_filter = &quot;h2_storage&quot;
+hourly_filtered_asset = filter(
+    row -&gt;
+        row.asset == asset_to_filter,
+    storage_levels_hourly,
+)
+plot(
+    hourly_filtered_asset.time_block_end,
+    hourly_filtered_asset.solution;
+    label=&quot;hourly&quot;,
+    title=&quot;Storage level for $asset_to_filter&quot;,
+    xlabel=&quot;Hour&quot;,
+    ylabel=&quot;[MWh]&quot;,
+    xlims=(1, 8760),
+    dpi=600,
+)
+# adding the seasonal storage levels
+seasonal_filtered_asset = filter(
+    row -&gt;
+        row.asset == asset_to_filter,
+    seasonal_storage_levels,
+)
+
+# multiplying the period_block_end by period_duration (24 in the original example) to have the same time scale
+seasonal_filtered_asset.period_block_end .*= period_duration
+seasonal_filtered_asset
+plot!(
+    seasonal_filtered_asset.period_block_end,
+    seasonal_filtered_asset.solution;
+    label=&quot;$num_rps rep periods&quot;,
+)</code></pre><div class="admonition is-warning" id="Warning-f268898c725579ed"><header class="admonition-header">Warning<a class="admonition-anchor" href="#Warning-f268898c725579ed" title="Permalink"></a></header><div class="admonition-body"><p>This is a mock-up case study with several symmetries in the data, so the results here show the trend but shouldn&#39;t be taken as general rules. Each case study needs to be fine-tuned to determine the best number of representatives.</p></div></div><h2 id="Finding-the-Balance"><a class="docs-heading-anchor" href="#Finding-the-Balance">Finding the Balance</a><a id="Finding-the-Balance-1"></a><a class="docs-heading-anchor-permalink" href="#Finding-the-Balance" title="Permalink"></a></h2><p>Here you can see a whole script to compare the results from different number of representative periods. See, that the more representatives, the better the approximations (but watch out! the longer the time to solve).</p><pre><code class="language-julia hljs">import TulipaIO as TIO
+import TulipaEnergyModel as TEM
+import TulipaClustering as TC
+using DuckDB
+using DataFrames
+using Plots
+using Distances
+
+input_dir = &quot;my-awesome-energy-system/tutorial-5&quot;
+
+# The hourly benchmark
+conn_hourly_benchmark = DBInterface.connect(DuckDB.DB)
+TIO.read_csv_folder(conn_hourly_benchmark, input_dir)
+TC.transform_wide_to_long!(conn_hourly_benchmark, &quot;profiles_wide&quot;, &quot;profiles&quot;;)
+TC.dummy_cluster!(conn_hourly_benchmark)
+TEM.populate_with_defaults!(conn_hourly_benchmark)
+DuckDB.query(conn_hourly_benchmark, &quot;UPDATE asset SET is_seasonal = false&quot;)
+ep_hourly = TEM.run_scenario(conn_hourly_benchmark; show_log = false)
+
+# The plot of the hourly benchmark
+storage_levels_hourly = TIO.get_table(conn_hourly_benchmark, &quot;var_storage_level_rep_period&quot;)
+asset_to_filter = &quot;h2_storage&quot;
+hourly_filtered_asset = filter(row -&gt; row.asset == asset_to_filter, storage_levels_hourly)
+p = plot(
+    hourly_filtered_asset.time_block_end,
+    hourly_filtered_asset.solution;
+    label = &quot;hourly&quot;,
+    title = &quot;Storage level for $asset_to_filter&quot;,
+    xlabel = &quot;Hour&quot;,
+    ylabel = &quot;[MWh]&quot;,
+    xlims = (1, 8760),
+    legend = Symbol(:outer,:bottom),
+    legend_column = -1,
+    dpi = 600,
+)
+
+# The base for each representative periods run
+connection = DBInterface.connect(DuckDB.DB)
+TIO.read_csv_folder(connection, input_dir)
+TC.transform_wide_to_long!(connection, &quot;profiles_wide&quot;, &quot;profiles&quot;;)
+period_duration = 24
+
+# loop over a list of representatives
+list_num_rps = [n * 12 for n in 1:4:10]
+for num_rps in list_num_rps
+    clusters = TC.cluster!(
+        connection,
+        period_duration,
+        num_rps;
+        method = :convex_hull,
+        distance = Distances.CosineDist(),
+        weight_type = :convex,
+    )
+    TEM.populate_with_defaults!(connection)
+    DuckDB.query(connection, &quot;UPDATE asset SET is_seasonal = true WHERE asset = &#39;h2_storage&#39;&quot;)
+    energy_problem = TEM.run_scenario(connection; show_log = false)
+
+    # update the plot for each num_rps
+    seasonal_storage_levels = TIO.get_table(connection, &quot;var_storage_level_over_clustered_year&quot;)
+    seasonal_filtered_asset = filter(row -&gt; row.asset == asset_to_filter, seasonal_storage_levels)
+    seasonal_filtered_asset.period_block_end .*= period_duration
+    seasonal_filtered_asset
+    plot!(
+        seasonal_filtered_asset.period_block_end,
+        seasonal_filtered_asset.solution;
+        label = &quot;$num_rps rps&quot;,
+    )
+end
+
+# show the final plot
+p</code></pre><img src="874b6e0a.svg" alt="Example block output"/></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../15-clustering-rep-periods/">« Blended Representative Periods with Tulipa Clustering</a><a class="docs-footer-nextpage" href="../17-multi-year-investments/">Multi-Year Investment Pathways »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Wednesday 11 February 2026 15:15">Wednesday 11 February 2026</span>. Using Julia version 1.12.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
