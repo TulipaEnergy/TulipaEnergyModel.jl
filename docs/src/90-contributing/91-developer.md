@@ -155,8 +155,8 @@ tests to ensure that everything is working as expected:
 
 ```bash
 pkg> activate .   # activate the project
-pkg> instantiate  # instantiate to install the required packages
-pkg> test         # run the tests (uses TestItemRunner.jl)
+(TulipaEnergyModel) pkg> instantiate  # instantiate to install the required packages
+(TulipaEnergyModel) pkg> test         # run the tests (uses TestItemRunner.jl)
 ```
 
 > **Note:** The test suite uses TestItemRunner.jl for better test organization and
