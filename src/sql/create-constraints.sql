@@ -499,7 +499,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method = '1var-E1'
+    and not (asset.unit_commitment_method in ('1var-0', '1var-E2C', '2var-0T', '2var-0C', '2var-E1', '3var-0T', '3var-0C', '3var-E1'))
 ;
 
 drop sequence id

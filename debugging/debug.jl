@@ -7,16 +7,16 @@ in_folder = joinpath(pwd(), "test/inputs")
 bench_folder = joinpath(pwd(), "debugging")
 
 # in_dir = joinpath(in_folder, "Multi-year Investments")
-in_dir = joinpath(in_folder, "with_limits_model_2")
+# in_dir = joinpath(in_folder, "with_limits_model_2")
 # in_dir = joinpath(in_folder, "all-susd")
-# in_dir = joinpath(in_folder, "UC-ramping")
+in_dir = joinpath(in_folder, "UC-ramping")
 # in_dir = joinpath(bench_folder, "EU")
 
 # Conversion
-conv_dir = joinpath(pwd(), "debugging", "to-convert")
+# conv_dir = joinpath(pwd(), "debugging", "to-convert")
 # conv_dir = joinpath(pwd(), "debugging", "converted")
 
-in_dir = joinpath(conv_dir, "conv_test")
+# in_dir = joinpath(conv_dir, "conv_test")
 
 # Trajectory
 # in_dir = joinpath(pwd(), "test", "constraint-correctness-inputs", "trajectories-feas")
