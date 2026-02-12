@@ -15,12 +15,37 @@ using Gurobi
 ### SETUP
 run_case_studies_name_check = true # set to `true` if you want to run a function which checks whether each case study exists
 use_random_seeds = true # set to `true` if you want the solver to use a random seed each time it solves an energy problem instance
-calculate_LP_relaxation = true # set to `true` if you want to store the LP relaxation values for each case study
+# This array should contain the metrics to be included in the experiment run.
+# Available values are: [
+#     "obj_value",
+#     "num_constraints",
+#     "num_constraints_presolve",
+#     "LP_gap",
+#     "LP_gap_presolve",
+#     "model_creation_time",
+#     "model_solve_time"
+# ]
+metrics = [
+    "obj_value",
+    # "num_constraints",
+    # "num_constraints_presolve",
+    "LP_gap",
+    # "LP_gap_presolve",
+    # "model_creation_time",
+    # "model_solve_time",
+    # "model_create_time_std",
+    # "model_solve_time_std",
+]
 experiment_inputs_dir = "debugging/experiment-inputs"
 experiment_results_dir = "debugging/experiment-results"
 
+# after how many seconds to stop taking samples (at least one sample will always be taken)
+create_model_timeout = 86400 # seconds
+run_model_timeout = 86400 #seconds
+
 ### LIST OF NAMES OF CASE STUDIES TO RUN
-case_studies_to_run = ["basic", "3var-E2", "3var-E3", "2var-E2", "2var-0T", "3var-0T"]
+case_studies_to_run = ["2var-E2", "3var-E2", "2var-0T", "3var-0T"]
+# case_studies_to_run = ["3var-E2"]
 
 ### BENCHMARK PARAMETERS
 
@@ -37,10 +62,6 @@ global energy_problem_cb = undef
 ran_already = Ref(false)
 LP_relaxation = Ref(-1.0)
 global LP_relaxation_values = Dict()
-
-# after how many seconds to stop taking samples (at least one sample will always be taken)
-create_model_timeout = 86400 # seconds
-run_model_timeout = 86400 #seconds
 
 function root_relaxation_callback(cb_data, cb_where::Cint)
     if ran_already[]
@@ -59,7 +80,7 @@ function root_relaxation_callback(cb_data, cb_where::Cint)
 
         Gurobi.GRBcbget(cb_data, cb_where, Gurobi.GRB_CB_MIPNODE_NODCNT, resultP2)
 
-        if resultP2[] != 0.0
+        if resultP2[] != 0.0 # we want to be at node 0 (root)
             return nothing
         end
 
@@ -75,6 +96,7 @@ function root_relaxation_callback(cb_data, cb_where::Cint)
 
         obj = JuMP.objective_function(energy_problem_cb.model)
         terms = obj.terms
+        res = obj.constant
 
         num_vars = length(terms)
 
@@ -84,12 +106,7 @@ function root_relaxation_callback(cb_data, cb_where::Cint)
 
         resultP4 = fill(Cdouble(0.0), num_vars)
 
-        println("startttt")
-        println(typeof(resultP4))
-
         Gurobi.GRBcbget(cb_data, cb_where, Gurobi.GRB_CB_MIPNODE_REL, resultP4)
-
-        res = obj.constant
 
         for (coeff, var_val) in zip(collect(values(terms)), resultP4)
             res += coeff * var_val
@@ -129,8 +146,6 @@ function input_setup(input_folder)
     return connection
 end
 
-global energy_problem_solved = Dict()
-
 # CREATE THE BENCHMARK SUITE
 const SUITE = BenchmarkGroup()
 SUITE["create_model"] = BenchmarkGroup()
@@ -140,78 +155,159 @@ for case in case_studies_to_run
     input_folder = joinpath(pwd(), "$experiment_inputs_dir/$case")
 
     # Benchmark of creating the model
-    SUITE["create_model"]["$case"] = @benchmarkable begin
-        create_model!(energy_problem)
-    end samples = create_model_num_samples evals = create_model_num_evals seconds =
-        create_model_timeout setup =
-        (energy_problem = EnergyProblem(input_setup($input_folder)))
+    if "model_creation_time" in metrics
+        SUITE["create_model"]["$case"] = @benchmarkable begin
+            create_model!(energy_problem)
+        end samples = create_model_num_samples evals = create_model_num_evals seconds =
+            create_model_timeout setup =
+            (energy_problem = EnergyProblem(input_setup($input_folder)))
+    end
 
-    key = "$case"
-    # Benchmark of running the model
-    SUITE["run_model"]["$case"] = @benchmarkable begin
-        solve_model!(energy_problem)
-    end samples = run_model_num_samples evals = run_model_num_evals seconds = run_model_timeout setup =
-        begin
+    if "model_solve_time" in metrics
+        key = "$case"
+        # Benchmark of running the model
+        SUITE["run_model"]["$case"] = @benchmarkable begin
+            solve_model!(energy_problem)
+        end samples = run_model_num_samples evals = run_model_num_evals seconds =
+            run_model_timeout setup = begin
             energy_problem = create_model!(EnergyProblem(input_setup($input_folder)))
-
-            global energy_problem_cb
-            energy_problem_cb = energy_problem
-
-            if calculate_LP_relaxation
-                ran_already[] = false
-                LP_relaxation[] = -1
-
-                JuMP.set_optimizer_attribute(
-                    energy_problem.model,
-                    Gurobi.CallbackFunction(),
-                    root_relaxation_callback,
-                )
-            end
 
             if use_random_seeds
                 JuMP.set_optimizer_attribute(energy_problem.model, "seed", Int(rand(1:2e6)))
             end
-        end teardown = (global energy_problem_solved;
-    energy_problem_solved[$key] = energy_problem.objective_value;
-    global LP_relaxation_values;
-    LP_relaxation_values[$key] = LP_relaxation[];
-    ran_already[] = false)
-
-    LP_relaxation_values[case] = LP_relaxation[]
+        end
+    end
 end
 
-results_of_run = run(SUITE; verbose = true)
+results_of_run = undef
+
+if "model_creation_time" in metrics || "model_solve_time" in metrics
+    results_of_run = run(SUITE; verbose = true)
+end
 
 # Save run times
-BenchmarkTools.save("$experiment_results_dir/runtimes.json", results_of_run)
+if results_of_run != undef
+    BenchmarkTools.save("$experiment_results_dir/runtimes.json", results_of_run)
+end
 
-if calculate_LP_relaxation
-    open("$experiment_results_dir/obj.csv", "w") do io
-        println(io, "case_study,lp_relaxation_obj,obj")
+metrics_dict = Dict()
 
-        for (key, value) in LP_relaxation_values
-            obj = energy_problem_solved[key]
-            println(io, "$key,$value,$obj")
-        end
+for case in case_studies_to_run
+    # "obj_value",
+    # "num_constraints",
+    # "num_constraints_presolve",
+    # "LP_gap",
+    # "LP_gap_presolve",
+    # "model_creation_time",
+    # "model_solve_time"
+
+    metrics_results = []
+
+    input_folder = joinpath(pwd(), "$experiment_inputs_dir/$case")
+
+    energy_problem = EnergyProblem(input_setup(input_folder))
+    create_model!(energy_problem)
+
+    if "LP_gap_presolve" in metrics
+        ran_already[] = false
+        LP_relaxation[] = -1
+
+        global energy_problem_cb
+        energy_problem_cb = energy_problem
+
+        JuMP.set_optimizer_attribute(
+            energy_problem.model,
+            Gurobi.CallbackFunction(),
+            root_relaxation_callback,
+        )
     end
-else
-    open("$experiment_results_dir/obj.csv", "w") do io
-        println(io, "case_study,obj")
 
-        for (key, value) in energy_problem_solved
-            println(io, "$key,$value")
+    solve_model!(energy_problem)
+
+    if "obj_value" in metrics
+        obj_value = energy_problem.objective_value
+        push!(metrics_results, obj_value)
+    end
+
+    if "num_constraints" in metrics
+        num_constraints_before_presolve =
+            num_constraints(energy_problem.model; count_variable_in_set_constraints = false)
+        push!(metrics_results, num_constraints_before_presolve)
+    end
+
+    if "num_constraints_presolve" in metrics
+        backend_reference = unsafe_backend(energy_problem.model)
+
+        presolved_pointer = Ref{Ptr{Cvoid}}()
+        GRBpresolvemodel(backend_reference, presolved_pointer)
+
+        presolved_model_reference = presolved_pointer[]
+
+        num_constraints_after_presolve_pointer = Ref{Cint}()
+        Gurobi.GRBgetintattr(
+            presolved_model_reference,
+            "NumConstrs",
+            num_constraints_after_presolve_pointer,
+        )
+
+        num_constraints_after_presolve = num_constraints_after_presolve_pointer[]
+        push!(metrics_results, num_constraints_after_presolve)
+    end
+
+    if "LP_gap" in metrics
+        relax_integrality(energy_problem.model)
+        optimize!(energy_problem.model)
+
+        LP_relaxation_before_presolve = objective_value(energy_problem.model)
+
+        println("GUROBI SPECIAL VALUE: " * string(LP_relaxation_before_presolve))
+
+        push!(metrics_results, metrics_results[1] / LP_relaxation_before_presolve)
+    end
+
+    if "LP_gap_presolve" in metrics
+        actual_presolve_LP_relaxation = metrics_results[1]
+
+        if LP_relaxation[] > 0.0
+            actual_presolve_LP_relaxation = LP_relaxation[]
         end
+
+        push!(metrics_results, metrics_results[1] / actual_presolve_LP_relaxation)
+    end
+
+    if "model_creation_time" in metrics
+        creation_time = mean(results_of_run["create_model"][case]).time / 1e9
+
+        push!(metrics_results, creation_time)
+    end
+
+    if "model_solve_time" in metrics
+        solve_time = mean(results_of_run["run_model"][case]).time / 1e9
+
+        push!(metrics_results, solve_time)
+    end
+
+    if "model_create_time_std" in metrics
+        creation_time_std = std(results_of_run["create_model"][case]).time / 1e9
+
+        push!(metrics_results, creation_time_std)
+    end
+
+    if "model_solve_time_std" in metrics
+        solve_time_std = std(results_of_run["run_model"][case]).time / 1e9
+
+        push!(metrics_results, solve_time_std)
+    end
+
+    metrics_dict[case] = metrics_results
+end
+
+open("$experiment_results_dir/results.csv", "w") do io
+    columns = "case," * join(metrics, ",")
+    println(io, columns)
+
+    for (key, value) in metrics_dict
+        to_print = "$key," * join(value, ",")
+        println(io, to_print)
     end
 end
-# println(energy_problem_solved)
-
-# println(energy_problem_solved["basic"])
-
-# # Save optimal solution
-# for (key, value) in energy_problem_solved
-#     debugFolder = joinpath(pwd(), "debugging\\results")
-#     exportFolder = mkpath(joinpath(debugFolder, key))
-#     save_solution!(value)
-#     export_solution_to_csv_files(exportFolder, value)
-#     filePath = joinpath(exportFolder, "objective_value.txt")
-# end

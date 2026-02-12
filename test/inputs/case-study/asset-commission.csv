@@ -1,0 +1,16 @@
+zasset   , commission_year, investment_cost, investment_limit, fixed_cost_storage_energy
+CoalSubC1,            2030,          1370.0,              444,                       5.0
+CoalSubC2,            2030,          1370.0,              681,                       5.0
+CoalSubC3,            2030,          1370.0,              336,                       5.0
+CoalSubC4,            2030,          1370.0,              175,                       5.0
+CoalSC1  ,            2030,          1710.0,              444,                       5.0
+CoalSC2  ,            2030,          1710.0,              681,                       5.0
+CoalSC3  ,            2030,          1710.0,              336,                       5.0
+CoalSC4  ,            2030,          1710.0,              175,                       5.0
+CCGT1    ,            2030,           860.0,              175,                       5.0
+CCGT2    ,            2030,           860.0,              175,                       5.0
+CCGT3    ,            2030,           860.0,              175,                       5.0
+CCGT4    ,            2030,           860.0,              175,                       5.0
+demand   ,            2030,             0.0,                 ,                       5.0
+ocgt     ,            2030,            25.0,                 ,                       5.0
+ens      ,            2030,             0.0,                 ,                       5.0

@@ -61,6 +61,8 @@ function compute_constraints_indices(connection)
             :sd_ramping_2var_flow_diff,
             :susd_ramping_2var_flow_unaligned_uc,
             :sd_ramping_2var_flow_upper_bound,
+            :shut_down_upper_bound_simple_investment_2var,
+            :shut_down_domain_2var,
         )
     )
 
