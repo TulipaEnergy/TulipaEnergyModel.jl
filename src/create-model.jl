@@ -231,6 +231,22 @@ function create_model(
         constraints,
     )
 
+    @timeit to "add_shut_down_upper_bound_2var_constraints!" add_shut_down_upper_bound_2var_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_shut_down_domain_2var_constraints!" add_shut_down_domain_2var_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
     @timeit to "add_uc_logic_constraints!" add_uc_logic_constraints!(
         connection,
         model,

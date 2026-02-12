@@ -1,0 +1,13 @@
+from_asset,to_asset,milestone_year,operational_cost
+CoalSubC1,demand,2030,0.0077
+CoalSubC2,demand,2030,0.0077
+CoalSubC3,demand,2030,0.0077
+CoalSubC4,demand,2030,0.0077
+CoalSC1,demand,2030,0.006
+CoalSC2,demand,2030,0.006
+CoalSC3,demand,2030,0.006
+CoalSC4,demand,2030,0.006
+ccgt,demand,2030,0.05
+ocgt,demand,2030,0.07
+solar,demand,2030,0.0
+ens,demand,2030,0.18

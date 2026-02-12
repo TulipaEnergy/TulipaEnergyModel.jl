@@ -1,0 +1,13 @@
+from_asset,to_asset,technical_lifetime,discount_rate
+CoalSubC1,demand,10,0.02
+CoalSubC2,demand,10,0.02
+CoalSubC3,demand,10,0.02
+CoalSubC4,demand,10,0.02
+CoalSC1,demand,10,0.02
+CoalSC2,demand,10,0.02
+CoalSC3,demand,10,0.02
+CoalSC4,demand,10,0.02
+ocgt,demand,10,0.02
+ccgt,demand,10,0.02
+wind,demand,10,0.02
+solar,demand,10,0.02

@@ -27,14 +27,14 @@ use_random_seeds = true # set to `true` if you want the solver to use a random s
 # ]
 metrics = [
     "obj_value",
-    "num_constraints",
-    "num_constraints_presolve",
+    # "num_constraints",
+    # "num_constraints_presolve",
     "LP_gap",
-    "LP_gap_presolve",
-    "model_creation_time",
-    "model_solve_time",
-    "model_create_time_std",
-    "model_solve_time_std",
+    # "LP_gap_presolve",
+    # "model_creation_time",
+    # "model_solve_time",
+    # "model_create_time_std",
+    # "model_solve_time_std",
 ]
 experiment_inputs_dir = "debugging/experiment-inputs"
 experiment_results_dir = "debugging/experiment-results"
@@ -44,7 +44,8 @@ create_model_timeout = 86400 # seconds
 run_model_timeout = 86400 #seconds
 
 ### LIST OF NAMES OF CASE STUDIES TO RUN
-case_studies_to_run = ["basic", "3var-E2", "3var-E3", "2var-E2", "2var-0T", "3var-0T"]
+case_studies_to_run = ["2var-E2", "3var-E2", "2var-0T", "3var-0T"]
+# case_studies_to_run = ["3var-E2"]
 
 ### BENCHMARK PARAMETERS
 
@@ -258,6 +259,8 @@ for case in case_studies_to_run
         optimize!(energy_problem.model)
 
         LP_relaxation_before_presolve = objective_value(energy_problem.model)
+
+        println("GUROBI SPECIAL VALUE: " * string(LP_relaxation_before_presolve))
 
         push!(metrics_results, metrics_results[1] / LP_relaxation_before_presolve)
     end
