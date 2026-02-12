@@ -12,6 +12,7 @@ benchmark/*.json
 coverage
 debugging/experiment-inputs
 debugging/experiment-results
+debugging/converted
 docs/build
 env
 node_modules
