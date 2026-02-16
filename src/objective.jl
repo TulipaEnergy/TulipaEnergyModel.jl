@@ -209,6 +209,8 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
 
     commodity_price_profile_name = ""
     flows_profiles_query_left_join = ""
+    # has_commodity_price_profile is used to determine if there is at least one flow with commodity_price profile.
+    # The profiles are differentiated later
     has_commodity_price_profile =
         get_single_element_from_query_and_ensure_its_only_one(
             DuckDB.query(
@@ -289,34 +291,34 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
     # i.e., we only consider the costs of the flows that are not in semi-compact method
     var_flow = variables[:flow].container
 
-    flows_operational_cost =
-        model[:flows_operational_cost] = if has_commodity_price_profile
-            @expression(
-                model,
-                sum(
-                    row.cost_coefficient::Float64 *
-                    (
-                        row.commodity_price::Float64 * _profile_aggregate( # commodity_price aggregation
-                            profiles.rep_period,
-                            (row.profile_name::String, row.year::Int32, row.rep_period::Int32),
-                            row.time_block_start:row.time_block_end,
-                            Statistics.mean,
-                            1.0,
-                        ) / row.producer_efficiency::Float64 + row.operational_cost::Float64
-                    ) *
-                    (row.time_block_end - row.time_block_start + 1) *
-                    var_flow[row.id::Int64] for row in indices
-                )
-            )
+    # The flows with commodity_price profile are differentiated here. If there
+    # are no commodity_price profiles, then the column `profile_name` doesn't
+    # exist.
+    flows_operational_cost = JuMP.AffExpr(0.0)
+    for row in indices
+        coefficient = 0.0
+        if !has_commodity_price_profile || ismissing(row.profile_name) # No commodity_price profile
+            coefficient = row.total_cost_if_no_profile::Float64
         else
-            @expression(
-                model,
-                sum(
-                    row.total_cost_if_no_profile::Float64 * var_flow[row.id::Int64] for
-                    row in indices
-                )
+            commodity_price_agg = _profile_aggregate(
+                profiles.rep_period,
+                (row.profile_name::String, row.year::Int32, row.rep_period::Int32),
+                row.time_block_start:row.time_block_end,
+                Statistics.mean,
+                1.0,
             )
+            coefficient =
+                row.cost_coefficient::Float64 *
+                (
+                    row.commodity_price::Float64 * commodity_price_agg /
+                    row.producer_efficiency::Float64 + row.operational_cost::Float64
+                ) *
+                (row.time_block_end - row.time_block_start + 1)
         end
+        JuMP.add_to_expression!(flows_operational_cost, coefficient, var_flow[row.id::Int64])
+    end
+
+    model[:flows_operational_cost] = flows_operational_cost
 
     indices = DuckDB.query(
         connection,
