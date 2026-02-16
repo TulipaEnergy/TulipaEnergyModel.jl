@@ -1,12 +1,20 @@
-# Tutorial 9: Stochastic method
+# Two-Stage Stochastic Optimization
 
 ## Introduction
 
-Stochastic programming methods are used to model the uncertainty in long-term investment decisions explicitly by considering multiple scenarios. In a two-stage stochastic setting, the investment decision is modeled as the first stage decision and the operational decisions after uncertainty is realized represent the second stage.
+Stochastic programming is often used to represent the uncertainty in medium- and long-term optimization problems in energy systems, based on the basis that the *uncertainty can be represented by a known probability distribution*. In the context of energy systems, this uncertainty can be related to the availability of renewable energy sources, demand fluctuations, or hydro inflows. Stochastic programming allows for the incorporation of uncertainty by sampling the uncertainty space and creating multiple scenarios that represent different possible future outcomes. This approach enables decision-makers to make informed choices that are prepared against a range of possible future conditions.
+
+A **two-stage stochastic** setting is when there are first stage decisions that are unique for each scenario and there are second stage decisions that are made after the uncertainty is realized. In the context of energy systems, the first stage decisions could be related to investment decisions, such as the capacity of new renewable energy sources to be built, while the second stage decisions could be related to operational decisions, such as how to dispatch the available generation resources to meet demand.
+
+![two stage stochastic programming](../figs/two-stage-stochastic-programming.png)
+
+## Two-Stage Stochastic Optimization with TulipaEnergyModel.jl
+
+TulipaEnergyModel.jl approach to two-stage stochastic optimization is based on the concept of Representative Periods (RPs). RPs are a way to reduce the size of the problem by clustering similar time periods together, see tutorial [Blended Representative Periods with Tulipa Clustering](@ref blended-representative-periods). This is particularly useful in the context of energy systems, where there can be a large number of time periods to consider. By clustering similar time periods together, we can reduce the number of variables and constraints in the optimization problem, making it more tractable.
+
+In the stochastic setting, RPs can be clustered Per or Cross the stochastic scenarios. In that case, the representative periods mapping matrix will relate original periods to representative periods either per scenario (diagonal block structure) or across scenarios (full matrix structure). Here is the concept documentation for more detail: [Clustering per or Cross](https://tulipaenergy.github.io/TulipaClustering.jl/stable/20-concepts/#Clustering-Per-or-Cross)
 
 The TulipaClustering.jl package allows the creation of blended Representative Periods (RPs) to reduce the size of the problem. A tutorial on this package is available under [Tutorial4](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/10-tutorials/15-clustering-rep-periods/)
-
-In the stochastic setting, RPs can be clustered Per or Cross scenario. Here is the concept documentation for more detail: [Clustering per or Cross](https://tulipaenergy.github.io/TulipaClustering.jl/stable/20-concepts/#Clustering-Per-or-Cross)
 
 ## Previously in the TLC
 
