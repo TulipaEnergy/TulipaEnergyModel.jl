@@ -44,6 +44,10 @@ For modellers, here is a brief summary of Tulipa's scope and features. More deta
 
 - **Storage representation:** [Short- and Long-term storage](@ref storage-modeling) *- even while using representative periods*
 
+### Comparison with Other Models
+
+There are several energy system optimization models out there, each with their own scope and features. We recommend the EPRI's report [Comparing Open-Source Integrated Planning Models in 2025](https://www.epri.com/research/products/000000003002033187), which compares several open-source energy system optimization models, including Tulipa, using a five-dimension rubric: (1) scope, (2) modeling language & formulation, (3) data & workflows, (4) uncertainty, (5) usability & ecosystem.
+
 ## [License](@id license)
 
 This content is released under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) License.
