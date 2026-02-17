@@ -1,6 +1,14 @@
 # [Data-Handling Workflow (Example)](@id workflow-tutorial)
 
-This is a tutorial of the OBZ case study as an example of the full workflow of Tulipa.
+This is a tutorial of the **Noth Sea Offshore Bidding Zones (OBZ) case study** as an example of the full workflow of Tulipa.
+
+The main characteristic of this case study are:
+
+- Single-year 2050 dispatch model without considering investments
+- TYNDP2024 GA 2050 as a scenario basis
+- Weather year: 2008
+- EU country-level plus UK, NO, and CH as nodes
+- Electricity and hydrogen as energy carriers
 
 !!! warning "Not tested for multi-year"
     Although we use years in the tutorial below, we haven't tried it on a

@@ -1,4 +1,4 @@
-# Blended Representative Periods with Tulipa Clustering
+# [Blended Representative Periods with Tulipa Clustering](@id blended-representative-periods)
 
 ## Introduction
 
