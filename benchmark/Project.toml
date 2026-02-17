@@ -15,5 +15,6 @@ projects = ["profiling"]
 [compat]
 BenchmarkTools = "1"
 DuckDB = "1"
+TulipaBuilder = "0.1"
 TulipaClustering = "0.5"
 TulipaIO = "0.5"
