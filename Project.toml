@@ -1,6 +1,6 @@
 name = "TulipaEnergyModel"
 uuid = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
-version = "0.20.0"
+version = "0.20.1"
 authors = [
   "Abel Soares Siqueira <abel.s.siqueira@gmail.com>",
   "Diego A. Tejada-Arango <diego.tejadaarango@tno.nl>",
