@@ -1,6 +1,6 @@
 # [Analysis Workflow](@id data)
 
-In this section we will look at the analysis workflow and data-handling in more detail, explaining what you need to go from raw data to analysis results.
+In this section we provide a general overview of the analysis workflow and data-handling, explaining what you need to go from raw data to analysis results and some tips when creating new workflows. For a detailed example of a workflow from raw data, see the [Data-Handling Workflow From Raw Data](@ref workflow-tutorial-raw-data) tutorial.
 
 ```@contents
 Pages = ["50-schemas.md"]
