@@ -1,12 +1,22 @@
-# Tutorial 7: Workflow from Raw Data to Results
+# [Data-Handling Workflow From Raw Data (Example)](@id workflow-tutorial-raw-data)
 
 In previous tutorials you have learned how to work with TulipaEnergyModel and related tools such as TulipaClustering and TulipaIO. However, we have not yet considered data requirements and processing to get to these steps. How do we work with 'raw' data and convert it to the format needed for running the optimization model? How are results stored? How do we compare scenarios with different assumptions for input data? This tutorial will be about teaching you the basics in the workflow that are currently supported.
 
-Please note:  there are many ways to go about processing data, depending on your preferences. The work below is simply an example! For reference, see the workflow structure below
-
-![Tulipa Workflow. Textual explanation below.](../figs/tulipa-workflow.jpg)
+!!! note "Important note"
+    There are many ways to go about processing data, depending on your preferences. The work below is simply an example! For a general overview please visit the [Analysis Workflow](@ref data) section.
 
 ## 1. Set up
+
+!!! warning "Version compatibility"
+    The code in this tutorial is based on TulipaEnergyModel version 0.18.2. If you are on a different version, some of the code may not work as expected. We recommend creating a separate environment for this tutorial. You can check your version and update if necessary using the following code:
+
+```julia
+# Check what TulipaEnergyModel version you are on
+Pkg.status()
+# or in console type ] followed by 'status TulipaEnergyModel'
+# if necessary run the following to ensure the compatible version for this tutorial is installed:
+# Pkg.add(name="TulipaEnergyModel", version="0.18.2")
+```
 
 Like previous tutorials we will start with working in our 'workflow.jl' file. There are a couple of new packages we will add first.
 
@@ -35,12 +45,6 @@ using CSV
 using Chain
 using Tables
 using ODBC
-
-# Check what TulipaEnergyModel version you are on
-Pkg.status()
-# or in console type ] followed by 'status TulipaEnergyModel'
-# if necessary run the following:
-# Pkg.add(name="TulipaEnergyModel", version="0.18.2")
 ```
 
 ## 2. Context and input data
