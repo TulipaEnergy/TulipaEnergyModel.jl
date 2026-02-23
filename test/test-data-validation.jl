@@ -931,11 +931,8 @@ end
         :milestone_year => [1, 1, 1],
         :investable => [true, true, false],
     )
-    asset_both = DataFrame(
-        :asset => ["B", "C"],
-        :milestone_year => [1, 1],
-        :commission_year => [1, 1],
-    )
+    asset_both =
+        DataFrame(:asset => ["B", "C"], :milestone_year => [1, 1], :commission_year => [1, 1])
     DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
     DuckDB.register_data_frame(connection, asset_both, "asset_both")
 
