@@ -384,6 +384,11 @@ end
 
 Choose appropriate tags based on your test characteristics. If you need to add a new tag, check the `TAGS_DATA` dictionary on the `test/runtests.jl` file.
 
+#### Aqua tests
+
+One of the tests, `Aqua.test_all` in `test-aqua.jl`, makes some quality checks.
+These shouldn't trigger frequently, but in case they trigger and the error message is not clear enough, refer to [Aqua's documentation](https://juliatesting.github.io/Aqua.jl/stable/).
+
 ### 5. Run the Linter
 
 In the bash/git bash terminal, run pre-commit:
