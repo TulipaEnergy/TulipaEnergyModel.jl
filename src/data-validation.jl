@@ -71,6 +71,11 @@ function validate_data!(connection)
             false,
         ),
         (
+            "consistency between investable and asset_both",
+            _validate_investable_and_asset_both_consistency!,
+            false,
+        ),
+        (
             "consumer unit commitment used as bids has right data",
             _validate_bid_related_data!,
             false,
@@ -882,6 +887,30 @@ function _validate_commodity_price_consistency!(connection)
         push!(
             error_messages,
             "Flow ($from, $to) is associated with a 'commodity_price' profile, so it should have flow_milestone.commodity_price > 0, but we found $commodity_price",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_investable_and_asset_both_consistency!(connection)
+    error_messages = String[]
+
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset_milestone.asset, asset_milestone.milestone_year
+        FROM asset_milestone
+        LEFT JOIN asset_both
+            ON asset_milestone.asset = asset_both.asset
+            AND asset_milestone.milestone_year = asset_both.milestone_year
+            AND asset_milestone.milestone_year = asset_both.commission_year
+        WHERE asset_milestone.investable
+            AND asset_both.commission_year IS NULL
+        ",
+    )
+        push!(
+            error_messages,
+            "Investable asset '$(row.asset)' with milestone_year=$(row.milestone_year) in 'asset_milestone' does not have a corresponding entry (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)) in 'asset_both'.",
         )
     end
 

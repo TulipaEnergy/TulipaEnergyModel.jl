@@ -922,3 +922,38 @@ end
     DuckDB.query(connection, "DROP TABLE flows_profiles")
     @test TEM._validate_commodity_price_consistency!(connection) == String[]
 end
+
+@testitem "Check consistency between investable and asset_both - using fake data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    asset_milestone = DataFrame(
+        :asset => ["A", "B", "C"],
+        :milestone_year => [1, 1, 1],
+        :investable => [true, true, false],
+    )
+    # A is missing and should generated an error message.
+    # C is missing as well, but is not investable, so it is fine.
+    asset_both = DataFrame(:asset => ["B"], :milestone_year => [1], :commission_year => [1])
+    DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
+    DuckDB.register_data_frame(connection, asset_both, "asset_both")
+
+    error_messages = TEM._validate_investable_and_asset_both_consistency!(connection)
+    @test error_messages == [
+        "Investable asset 'A' with milestone_year=1 in 'asset_milestone' does not have a corresponding entry (asset='A', milestone_year=1, commission_year=1) in 'asset_both'.",
+    ]
+end
+
+@testitem "Check consistency between investable and asset_both - using Tiny data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    # Remove the asset_both entry for 'wind' at milestone_year=2030 with commission_year=2030
+    # so that the investable 'wind' asset has no matching entry
+    DuckDB.query(
+        connection,
+        "DELETE FROM asset_both WHERE asset = 'wind' AND milestone_year = 2030 AND commission_year = 2030",
+    )
+    error_messages = TEM._validate_investable_and_asset_both_consistency!(connection)
+    @test error_messages == [
+        "Investable asset 'wind' with milestone_year=2030 in 'asset_milestone' does not have a corresponding entry (asset='wind', milestone_year=2030, commission_year=2030) in 'asset_both'.",
+    ]
+end
