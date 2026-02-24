@@ -1,8 +1,5 @@
 export DataValidationException
 
-# TODO: Remove after https://github.com/TulipaEnergy/TulipaIO.jl/pull/105 is released
-TulipaIO.FmtSQL.fmt_quote(::Nothing) = "NULL"
-
 """
     DataValidationException
 

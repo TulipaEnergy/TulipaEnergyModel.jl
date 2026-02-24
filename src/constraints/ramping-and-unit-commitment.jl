@@ -1,7 +1,7 @@
-export add_ramping_and_unit_commitment_constraints!
+export add_ramping_constraints!
 
 """
-    add_ramping_and_unit_commitment_constraints!(
+    add_ramping_constraints!(
         connection,
         model,
         variables,

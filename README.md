@@ -12,6 +12,7 @@
 
 [![All Contributors](https://img.shields.io/github/all-contributors/TulipaEnergy/TulipaEnergyModel.jl?labelColor=5e1ec7&color=c0ffee&style=flat-square)](#contributors)
 [![BestieTemplate](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JuliaBesties/BestieTemplate.jl/main/docs/src/assets/badge.json)](https://github.com/JuliaBesties/BestieTemplate.jl)
+[![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
 This package provides an optimization model for the electricity market and its coupling with other energy sectors (e.g., hydrogen, heat, natural gas, etc.). The main objective is to determine the optimal investment and operation decisions for different types of assets (e.g., producers, consumers, conversions, storages, and transports).
 

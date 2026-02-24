@@ -18,7 +18,6 @@ using MathOptInterface: MathOptInterface
 using ParametricOptInterface: ParametricOptInterface as POI
 
 ## Others
-using LinearAlgebra: LinearAlgebra
 using OrderedCollections: OrderedDict
 using Statistics: Statistics
 using TimerOutputs: TimerOutput, @timeit
