@@ -933,8 +933,7 @@ end
     )
     # A is missing and should generated an error message.
     # C is missing as well, but is not investable, so it is fine.
-    asset_both =
-        DataFrame(:asset => ["B"], :milestone_year => [1], :commission_year => [1])
+    asset_both = DataFrame(:asset => ["B"], :milestone_year => [1], :commission_year => [1])
     DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
     DuckDB.register_data_frame(connection, asset_both, "asset_both")
 
