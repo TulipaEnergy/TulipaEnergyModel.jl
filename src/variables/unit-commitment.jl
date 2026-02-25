@@ -16,7 +16,7 @@ function add_unit_commitment_variables!(model, variables)
             model,
             lower_bound = 0.0,
             integer = row.unit_commitment_integer,
-            base_name = "units_on[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]",
+            base_name = "units_on[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]",
         ) for row in units_on_indices
     ]
 
@@ -37,7 +37,7 @@ function add_start_up_and_shut_down_variables!(model, variables)
             model,
             lower_bound = 0.0,
             integer = row.unit_commitment_integer,
-            base_name = "start_up[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]",
+            base_name = "start_up[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]",
         ) for row in start_up_indices
     ]
 
@@ -47,7 +47,7 @@ function add_start_up_and_shut_down_variables!(model, variables)
             model,
             lower_bound = 0.0,
             integer = row.unit_commitment_integer,
-            base_name = "shut_down[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]",
+            base_name = "shut_down[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]",
         ) for row in shut_down_indices
     ]
 

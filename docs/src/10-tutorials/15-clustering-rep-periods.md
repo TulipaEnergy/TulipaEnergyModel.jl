@@ -251,7 +251,7 @@ select!(
     flows,
     :from_asset,
     :to_asset,
-    :year,
+    :milestone_year,
     :rep_period,
     :time_block_start => :timestep,
     :solution
@@ -265,7 +265,7 @@ filtered_flow = filter(
     row ->
         row.from_asset == from_asset &&
             row.to_asset == to_asset &&
-            row.year == year,
+            row.milestone_year == year,
     flows,
 )
 ```
@@ -274,13 +274,13 @@ To reinterpret the RP data as base periods data, first create a new dataframe th
 
 ```julia
 rep_periods_mapping = TIO.get_table(connection, "rep_periods_mapping")
-df = innerjoin(filtered_flow, rep_periods_mapping, on=[:year, :rep_period])
+df = innerjoin(filtered_flow, rep_periods_mapping, on=[:milestone_year, :rep_period])
 ```
 
 Next, use Julia's Split-Apply-Combine approach to group the dataframe into smaller ones. Each grouped dataframe contains a single data point for one base period and all RPs it maps to. Then multiply the results by weights and add them up.
 
 ```julia
-gdf = groupby(df, [:from_asset, :to_asset, :year, :period, :timestep])
+gdf = groupby(df, [:from_asset, :to_asset, :milestone_year, :period, :timestep])
 result_df = combine(gdf, [:weight, :solution] => ((w, s) -> sum(w .* s)) => :solution)
 ```
 
@@ -384,7 +384,7 @@ select!(
     flows,
     :from_asset,
     :to_asset,
-    :year,
+    :milestone_year,
     :rep_period,
     :time_block_start => :timestep,
     :solution
@@ -396,7 +396,7 @@ filtered_flow = filter(
     row ->
         row.from_asset == from_asset &&
             row.to_asset == to_asset &&
-            row.year == year,
+            row.milestone_year == year,
     flows,
 )
 plot(
@@ -421,8 +421,8 @@ By using the representative periods results and the `rep_periods_mapping`, we ca
 ```@example tutorial-4
 # 7. Plot the results in the original periods using the representative period results
 rep_periods_mapping = TIO.get_table(connection, "rep_periods_mapping")
-df = innerjoin(filtered_flow, rep_periods_mapping, on=[:year, :rep_period])
-gdf = groupby(df, [:from_asset, :to_asset, :year, :period, :timestep])
+df = innerjoin(filtered_flow, rep_periods_mapping, on=[:milestone_year, :rep_period])
+gdf = groupby(df, [:from_asset, :to_asset, :milestone_year, :period, :timestep])
 result_df = combine(gdf, [:weight, :solution] => ((w, s) -> sum(w .* s)) => :solution)
 TC.combine_periods!(result_df)
 sort!(result_df, :timestep)

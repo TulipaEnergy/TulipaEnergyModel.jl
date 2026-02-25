@@ -65,11 +65,11 @@ hydro_reservoir--> spillage
 ## Profiles Depending on the Scenario
 
 So far the profiles have been for a single scenario. Now, we have profiles for multiple scenarios, which represent different weather years. Each scenario has 8760 time steps (1 year of hourly data) and profiles for solar, wind offshore, wind onshore, demand, and hydro inflow.
-Let's have a look at the profiles in the table `profiles_wide` and a summary of the information in it by grouping by year and scenario.
+Let's have a look at the profiles in the table `profiles_wide` and a summary of the information in it by grouping by `milestone_year` and `scenario`.
 
 ```@example stochastic
 profiles = TIO.get_table(connection, "profiles_wide")
-gdf = groupby(profiles, [:year, :scenario])
+gdf = groupby(profiles, [:milestone_year, :scenario])
 selected_columns = [:solar, :wind_offshore, :wind_onshore, :demand, :hydro_inflow]
 result_df = combine(gdf, selected_columns .=> mean)
 ```
@@ -78,21 +78,21 @@ Here we can see that there are 3 different weather years (i.e., scenarios 1995, 
 
 ## Clustering Per Scenario
 
-To obtain representative periods for each scenario, we first transform the data from wide to long format, notice that we exclude the scenario, year, and timestep columns since we want the profiles to be grouped by scenario as well.
+To obtain representative periods for each scenario, we first transform the data from wide to long format, notice that we exclude the `scenario`, `milestone_year`, and `timestep` columns since we want the profiles to be grouped by scenario as well.
 
 ```@example stochastic
 TC.transform_wide_to_long!(
     connection,
     "profiles_wide",
     "profiles";
-    exclude_columns=["scenario", "year", "timestep"],
+    exclude_columns=["scenario", "milestone_year", "timestep"],
 )
 ```
 
 To cluster per scenario and year, we define the profiles layout using TulipaClustering. The rest of the parameters are the same as in the previous tutorial on clustering. In this case, we want to cluster into 16 representative periods of 24 hours each.
 
 ```@example stochastic
-layout = TC.ProfilesTableLayout(; cols_to_groupby = [:year, :scenario])
+layout = TC.ProfilesTableLayout(; cols_to_groupby = [:milestone_year, :scenario])
 num_rps = 16
 period_duration = 24
 clusters = TC.cluster!(
@@ -115,7 +115,7 @@ How do we want to visualize the mapping? A heat map is a tool that plots large m
 ```@example stochastic
 rp_mapping = TIO.get_table(connection, "rep_periods_mapping")
 rp_mapping_wide = unstack(rp_mapping, :rep_period, :weight; fill = 0.0)
-M = Matrix(rp_mapping_wide[:, Not([:scenario, :year, :period])])
+M = Matrix(rp_mapping_wide[:, Not([:scenario, :milestone_year, :period])])
 heatmap(
     M;
     xlabel = "Representative period per scenario",
@@ -139,7 +139,7 @@ The mapping matrix has a diagonal block structure, which means that the represen
 TulipaClustering allows you to cluster across scenarios, which means that the representative periods can be shared across scenarios. This is useful when you want to capture common patterns across scenarios and reduce the number of representative periods even further. In that case, we need to define the layout differently, since we want to group by years and cross by scenarios. The rest of the parameters are the same as in the previous case.
 
 ```@example stochastic
-layout = TC.ProfilesTableLayout(; cols_to_groupby = [:year], cols_to_crossby = [:scenario])
+layout = TC.ProfilesTableLayout(; cols_to_groupby = [:milestone_year], cols_to_crossby = [:scenario])
 num_rps = 16
 period_duration = 24
 clusters = TC.cluster!(
@@ -160,7 +160,7 @@ Let's visualize the mapping matrix again with a heat map.
 ```@example stochastic
 rp_mapping = TIO.get_table(connection, "rep_periods_mapping")
 rp_mapping_wide = unstack(rp_mapping, :rep_period, :weight; fill = 0.0)
-M = Matrix(rp_mapping_wide[:, Not([:scenario, :year, :period])])
+M = Matrix(rp_mapping_wide[:, Not([:scenario, :milestone_year, :period])])
 heatmap(
     M;
     xlabel = "Representative period across scenarios",

@@ -60,7 +60,7 @@ filtered_flow = filter(
     row ->
         row.from_asset == from_asset &&
             row.to_asset == to_asset &&
-            row.year == year &&
+            row.milestone_year == year &&
             row.rep_period == rep_period,
     flows,
 )

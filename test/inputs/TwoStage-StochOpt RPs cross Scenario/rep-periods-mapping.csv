@@ -1,4 +1,4 @@
-year,period,scenario,rep_period,weight
+milestone_year,period,scenario,rep_period,weight
 2030,1,1995,1,0.19613557439785187
 2030,2,1995,1,0.1978551285731026
 2030,3,1995,1,0.15953749847592918

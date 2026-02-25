@@ -18,8 +18,8 @@ Computes the incoming and outgoing expressions per row of `cons` for the constra
 that are within the representative periods.
 
 Include_commission_year is only used for the constraints regarding the flows for the semi-compact investment method.
-If true, the expression will include the commission year of the flows.
-If false (the default), it will only use the year (i.e., milestone_year).
+If true, the expression will include the commission_year of the flows.
+If false (the default), it will only use the milestone_year.
 
 This function is only used internally in the model.
 
@@ -38,7 +38,7 @@ time block.
 The algorithm works like this:
 
 ```
-1. Loop over each group of (asset, year, rep_period)
+1. Loop over each group of (asset, milestone_year, rep_period)
 1.1. Loop over each variable in the group: (var_id, var_time_block_start, var_time_block_end)
 1.1.1. Loop over each timestep in var_time_block_start:var_time_block_end
 1.1.1.1. Compute the coefficient of the variable based on the rep_period resolution and the variable coefficients
@@ -81,7 +81,7 @@ function add_expression_terms_rep_period_constraints!(
     year_columns = if include_commission_year
         [:milestone_year, :commission_year]
     else
-        [:year]
+        [:milestone_year]
     end
 
     # The SQL strategy to improve looping over the groups and then the
@@ -126,10 +126,10 @@ function add_expression_terms_rep_period_constraints!(
 
         year_select = join(("cons.$col" for col in year_columns), ", ")
         year_join_var = join(("cons.$col = var.$col" for col in year_columns), " AND ")
-        year_join_rp = "cons.$(year_columns[1]) = rep_periods_data.year"
+        year_join_rp = "cons.$(year_columns[1]) = rep_periods_data.milestone_year"
 
         # Start of the algorithm
-        # 1. Loop over each group of (asset, year, rep_period)
+        # 1. Loop over each group of (asset, milestone_year, rep_period)
         for group_row in DuckDB.query(
             connection,
             "SELECT
@@ -288,7 +288,7 @@ function add_expression_terms_over_clustered_year_constraints!(
         connection,
         cons.table_name,
         grouped_cons_table_name,
-        [:asset, :year, :scenario],
+        [:asset, :milestone_year, :scenario],
         [:id, :period_block_start, :period_block_end],
     )
 
@@ -297,7 +297,7 @@ function add_expression_terms_over_clustered_year_constraints!(
         connection,
         "rep_periods_mapping",
         grouped_rpmap_over_rp_table_name,
-        [:year, :scenario, :rep_period],
+        [:milestone_year, :scenario, :rep_period],
         [:period, :weight];
         order_agg_by = :period,
     )
@@ -319,7 +319,7 @@ function add_expression_terms_over_clustered_year_constraints!(
             "CREATE OR REPLACE TEMP TABLE t_groups AS
             SELECT
                 cons.asset,
-                cons.year,
+                cons.milestone_year,
                 cons.scenario,
                 ANY_VALUE(cons.id) AS cons_id_vec,
                 ANY_VALUE(cons.period_block_start) AS cons_period_block_start_vec,
@@ -334,18 +334,18 @@ function add_expression_terms_over_clustered_year_constraints!(
             FROM $grouped_cons_table_name AS cons
             LEFT JOIN $grouped_var_table_name AS var
                 ON cons.asset = var.asset
-                AND cons.year = var.year
+                AND cons.milestone_year = var.milestone_year
             LEFT JOIN $grouped_rpmap_over_rp_table_name AS rpmap
-                ON rpmap.year = cons.year
+                ON rpmap.milestone_year = cons.milestone_year
                 AND rpmap.scenario = cons.scenario
                 AND rpmap.rep_period = var.rep_period
             LEFT JOIN rep_periods_data AS rpdata
-                ON rpdata.year = cons.year
+                ON rpdata.milestone_year = cons.milestone_year
                 AND rpdata.rep_period = var.rep_period
             LEFT JOIN asset_milestone
                 ON asset_milestone.asset = cons.asset
-                AND asset_milestone.milestone_year = cons.year
-            GROUP BY cons.asset, cons.year, cons.scenario;
+                AND asset_milestone.milestone_year = cons.milestone_year
+            GROUP BY cons.asset, cons.milestone_year, cons.scenario;
             FROM t_groups
             ",
         )
@@ -567,36 +567,36 @@ end
 function prepare_profiles_structure(connection)
     # Independent of being rolling horizon or not, these are complete
     rep_period = Dict(
-        (row.profile_name, row.year, row.rep_period) =>
+        (row.profile_name, row.milestone_year, row.rep_period) =>
             ProfileWithRollingHorizon(convert(Vector{Float64}, row.values)) for
         row in DuckDB.query(
             connection,
             """
-            SELECT DISTINCT ON(profile_name, year, rep_period)
+            SELECT DISTINCT ON(profile_name, milestone_year, rep_period)
                 profile_name,
-                year,
+                milestone_year,
                 rep_period,
                 ARRAY_AGG(value ORDER BY timestep) AS values,
             FROM profiles_rep_periods
-            GROUP BY profile_name, year, rep_period
+            GROUP BY profile_name, milestone_year, rep_period
             """,
         )
     )
 
     over_clustered_year = Dict(
-        (row.profile_name, row.year, row.scenario) => convert(Vector{Float64}, row.values) for
-        row in DuckDB.query(
+        (row.profile_name, row.milestone_year, row.scenario) =>
+            convert(Vector{Float64}, row.values) for row in DuckDB.query(
             connection,
-            "SELECT DISTINCT ON(profiles.profile_name, profiles.year, atp.scenario)
+            "SELECT DISTINCT ON(profiles.profile_name, profiles.milestone_year, atp.scenario)
                 profiles.profile_name,
-                profiles.year,
+                profiles.milestone_year,
                 atp.scenario,
                 ARRAY_AGG(profiles.value ORDER BY profiles.period) AS values,
             FROM profiles_timeframe AS profiles
             INNER JOIN assets_timeframe_profiles AS atp
                 ON profiles.profile_name = atp.profile_name
-                AND profiles.year = atp.year
-            GROUP BY profiles.profile_name, profiles.year, atp.scenario
+                AND profiles.milestone_year = atp.milestone_year
+            GROUP BY profiles.profile_name, profiles.milestone_year, atp.scenario
             ",
         )
     )
@@ -631,7 +631,7 @@ function prepare_profiles_structure(connection)
         """,
     )
         profile_name = row.profile_name
-        year = row.commission_year
+        milestone_year = row.commission_year
         scenario = row.scenario
         values = Float64[
             row.value for row in DuckDB.query(
@@ -639,19 +639,19 @@ function prepare_profiles_structure(connection)
                 """
                 WITH cte_profile_rp AS (
                     SELECT
-                        $year AS year,
+                        $milestone_year AS milestone_year,
                         $scenario AS scenario,
                         profiles_rep_periods.rep_period,
                         profiles_rep_periods.value
                     FROM profiles_rep_periods
-                    WHERE profile_name = '$profile_name' AND year = $year
+                    WHERE profile_name = '$profile_name' AND milestone_year = $milestone_year
                 )
                 SELECT
                     rp_map.period,
                     SUM(cte_profile_rp.value * rp_map.weight) AS value
                 FROM cte_profile_rp
                 INNER JOIN rep_periods_mapping AS rp_map
-                    ON cte_profile_rp.year = rp_map.year
+                    ON cte_profile_rp.milestone_year = rp_map.milestone_year
                     AND cte_profile_rp.scenario = rp_map.scenario
                     AND cte_profile_rp.rep_period = rp_map.rep_period
                 GROUP BY rp_map.period
@@ -660,7 +660,7 @@ function prepare_profiles_structure(connection)
             )
         ]
         if length(values) > 0
-            over_clustered_year[(profile_name, year, scenario)] = values
+            over_clustered_year[(profile_name, milestone_year, scenario)] = values
         end
     end
 

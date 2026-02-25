@@ -1,4 +1,4 @@
-rep_period,timestep,year,profile_name,value
+rep_period,timestep,milestone_year,profile_name,value
 1,1,2030,demand,0.5019591725400138
 1,2,2030,demand,0.487813520660711
 1,3,2030,demand,0.4754003983916234

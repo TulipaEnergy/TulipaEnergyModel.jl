@@ -133,7 +133,7 @@ It's supposed to be used with the `do` syntax:
 
 ```julia
 change_file("test/inputs/Norse/assets-data.csv") do tcsv
-    add_column(tcsv, "year", 2030; position=4)
+    add_column(tcsv, "milestone_year", 2030; position=4)
 end
 ```
 """
@@ -147,7 +147,7 @@ end
 input_files_folders = [
     [
         joinpath(@__DIR__, "..", "test", "inputs", test_input) for test_input in [
-            "Multi-year Investments",
+            "Multi-milestone_year Investments",
             "Norse",
             "Storage",
             "Tiny",
@@ -173,7 +173,7 @@ This is supposed to be used with the `do` syntax:
 ```julia
 apply_to_files_named("assets-data.csv") do path
     change_file(path) do tcsv
-        add_column(tcsv, "year", 2030; position=4)
+        add_column(tcsv, "milestone_year", 2030; position=4)
     end
 end
 ```

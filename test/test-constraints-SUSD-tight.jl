@@ -36,7 +36,7 @@ using JuMP
     columns = [
         :id,
         :asset,
-        :year,
+        :milestone_year,
         :rep_period,
         :time_block_start,
         :time_block_end,
@@ -57,7 +57,7 @@ using JuMP
     columns = [
         :id,
         :asset,
-        :year,
+        :milestone_year,
         :rep_period,
         :time_block_start,
         :time_block_end,
@@ -78,7 +78,7 @@ using JuMP
     columns = [
         :id,
         :asset,
-        :year,
+        :milestone_year,
         :rep_period,
         :time_block_start,
         :time_block_end,
@@ -102,7 +102,7 @@ using JuMP
         (5, "death_star", 2050, 1, 1, 2),
         (6, "death_star", 2050, 1, 4, 4),
     ]
-    columns = [:id, :asset, :year, :rep_period, :time_block_start, :time_block_end]
+    columns = [:id, :asset, :milestone_year, :rep_period, :time_block_start, :time_block_end]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "cons_shut_down_upper_bound_simple_investment"
@@ -112,12 +112,12 @@ using JuMP
         (5, "death_star", 2050, 1, 1, 2),
         (6, "death_star", 2050, 1, 4, 4),
     ]
-    columns = [:id, :asset, :year, :rep_period, :time_block_start, :time_block_end]
+    columns = [:id, :asset, :milestone_year, :rep_period, :time_block_start, :time_block_end]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "cons_shut_down_upper_bound_compact_investment"
     table_rows = [(3, "input_2", 2050, 1, 1, 2), (4, "input_2", 2050, 1, 4, 4)]
-    columns = [:id, :asset, :year, :rep_period, :time_block_start, :time_block_end]
+    columns = [:id, :asset, :milestone_year, :rep_period, :time_block_start, :time_block_end]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "cons_unit_commitment_logic"
@@ -129,7 +129,7 @@ using JuMP
         (5, "death_star", 2050, 1, 1, 2),
         (6, "death_star", 2050, 1, 4, 4),
     ]
-    columns = [:id, :asset, :year, :rep_period, :time_block_start, :time_block_end]
+    columns = [:id, :asset, :milestone_year, :rep_period, :time_block_start, :time_block_end]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     constraints = Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(

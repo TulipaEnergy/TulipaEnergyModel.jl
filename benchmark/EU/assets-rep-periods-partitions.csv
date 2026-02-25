@@ -1,4 +1,4 @@
-asset,partition,rep_period,specification,year
+asset,partition,rep_period,specification,milestone_year
 NL_E_Demand,1,1,uniform,2050
 BE_E_Demand,1,1,uniform,2050
 DE_E_Demand,1,1,uniform,2050

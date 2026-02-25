@@ -109,7 +109,7 @@ end
         SET specification = 'bad'
         WHERE from_asset = 'Asgard_Solar'
             AND to_asset = 'Asgard_Battery'
-            AND year = 2030
+            AND milestone_year = 2030
             AND rep_period = 1",
     )
     @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
@@ -824,7 +824,7 @@ end
                 DuckDB.query(
                     connection,
                     """
-                    INSERT INTO rep_periods_data (year, rep_period, num_timesteps, resolution)
+                    INSERT INTO rep_periods_data (milestone_year, rep_period, num_timesteps, resolution)
                     VALUES (2030, $i, 24, 1.0)
                     """,
                 )

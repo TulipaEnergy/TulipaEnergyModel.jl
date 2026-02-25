@@ -59,7 +59,7 @@ apply_to_files_named("flows-data.csv") do path
     end
 end
 
-apply_to_files_named("year-data.csv") do path
+apply_to_files_named("milestone_year-data.csv") do path
     change_file(path) do tcsv
         return add_column(tcsv, "is_milestone", true; unit = "{true;false}")
     end

@@ -1,4 +1,4 @@
-asset,year,rep_period,specification,partition
+asset,milestone_year,rep_period,specification,partition
 ccgt,2030,1,uniform,8
 demand,2030,1,uniform,4
 hub,2030,1,uniform,2

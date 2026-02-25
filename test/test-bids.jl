@@ -151,11 +151,9 @@
     """
     function modify_input_for_bids!(connection; with_curtailment = false)
         # Modifications to make bids work
-        year = only([
-            row.year for row in DuckDB.query(
-                connection,
-                "SELECT DISTINCT milestone_year AS year FROM asset_milestone",
-            )
+        milestone_year = only([
+            row.milestone_year for row in
+            DuckDB.query(connection, "SELECT DISTINCT milestone_year FROM asset_milestone")
         ])
 
         timestep_window = only([
@@ -166,9 +164,9 @@
             )
         ])
 
-        create_assets_for_bids!(connection, year, timestep_window; with_curtailment)
-        create_flows_for_bids!(connection, year, timestep_window)
-        create_profiles_for_bids!(connection, year, timestep_window)
+        create_assets_for_bids!(connection, milestone_year, timestep_window; with_curtailment)
+        create_flows_for_bids!(connection, milestone_year, timestep_window)
+        create_profiles_for_bids!(connection, milestone_year, timestep_window)
 
         return connection
     end
@@ -193,9 +191,14 @@
     - `assets_profiles.profile_name = "bid_profiles-bid<BID_ID>-demand"`, a
       unique profile name per bid, to be referenced later.
     """
-    function create_assets_for_bids!(connection, year, timestep_window; with_curtailment = false)
-        milestone_year = "$year AS milestone_year"
-        commission_year = "$year AS commission_year"
+    function create_assets_for_bids!(
+        connection,
+        milestone_year,
+        timestep_window;
+        with_curtailment = false,
+    )
+        commission_year = "$milestone_year AS commission_year"
+        milestone_year = "$milestone_year AS milestone_year"
         timestep_start = timestep_window.timestep_start
         timestep_end = timestep_window.timestep_end
 
@@ -228,13 +231,13 @@
         DuckDB.query(
             connection,
             """CREATE TABLE IF NOT EXISTS assets_rep_periods_partitions
-                (asset VARCHAR, year INTEGER, rep_period INTEGER, specification VARCHAR, partition VARCHAR);
+                (asset VARCHAR, milestone_year INTEGER, rep_period INTEGER, specification VARCHAR, partition VARCHAR);
             """,
         )
         from_bids_insert_into(
             connection,
             "assets_rep_periods_partitions",
-            "asset, $year AS year, $rep_period, $specification, $partition",
+            "asset, $milestone_year, $rep_period, $specification, $partition",
         )
 
         profile_name = "'bid_profiles-bid' || bid_id::VARCHAR || '-demand' AS profile_name"
@@ -261,9 +264,9 @@
       for operational cost, "satisfying" the demand means receiving money per
       supplied quantity.
     """
-    function create_flows_for_bids!(connection, year, timestep_window)
-        milestone_year = "$year AS milestone_year"
-        commission_year = "$year AS commission_year"
+    function create_flows_for_bids!(connection, milestone_year, timestep_window)
+        commission_year = "$milestone_year AS commission_year"
+        milestone_year = "$milestone_year AS milestone_year"
 
         consumer_used_for_bids = only([
             row.asset for row in DuckDB.query(
@@ -310,7 +313,7 @@
     Add a new profile per bid block. The bid block is filled with 0s to match the full size of the profiles.
     The profiles' quantity are already normalised and the maximum was captured by peak_demand.
     """
-    function create_profiles_for_bids!(connection, year, timestep_window)
+    function create_profiles_for_bids!(connection, milestone_year, timestep_window)
         rep_period = "1 AS rep_period"
         timestep_start = timestep_window.timestep_start
         timestep_end = timestep_window.timestep_end
@@ -330,7 +333,7 @@
             )
             SELECT
                 cte_clean_profiles.profile_name,
-                $year AS year,
+                $milestone_year AS milestone_year,
                 $rep_period,
                 cte_clean_profiles.timestep,
                 COALESCE(bids_profiles.quantity, 0.0) AS value,

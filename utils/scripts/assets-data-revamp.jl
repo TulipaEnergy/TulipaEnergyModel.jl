@@ -124,13 +124,13 @@ end
 
     asset -> ?
     milestone_year -> ?
-    peak_demand -> assets_data WHERE year=commission_year
-    storage_inflows -> assets_data WHERE year=commission_year
-    initial_storage_level -> assets_data WHERE year=commission_year
-    max_energy_timeframe_partition  -> assets_data WHERE year=commission_year
-    min_energy_timeframe_partition -> assets_data WHERE year=commission_year
-    max_ramp_up -> assets_data WHERE year=commission_year
-    max_ramp_down -> assets_data WHERE year=commission_year
+    peak_demand -> assets_data WHERE milestone_year=commission_year
+    storage_inflows -> assets_data WHERE milestone_year=commission_year
+    initial_storage_level -> assets_data WHERE milestone_year=commission_year
+    max_energy_timeframe_partition  -> assets_data WHERE milestone_year=commission_year
+    min_energy_timeframe_partition -> assets_data WHERE milestone_year=commission_year
+    max_ramp_up -> assets_data WHERE milestone_year=commission_year
+    max_ramp_down -> assets_data WHERE milestone_year=commission_year
 =#
 apply_to_files_named("asset-milestone.csv"; include_missing = true) do path
     touch(path)
@@ -145,7 +145,7 @@ apply_to_files_named("asset-milestone.csv"; include_missing = true) do path
                 con,
                 "SELECT
                     name as asset,
-                    year as milestone_year,
+                    milestone_year as milestone_year,
                     ANY_VALUE(investable) AS investable,
                     ANY_VALUE(peak_demand) AS peak_demand,
                     ANY_VALUE(storage_inflows) AS storage_inflows,
@@ -181,7 +181,7 @@ apply_to_files_named("flow-milestone.csv"; include_missing = true) do path
             "SELECT
                 from_asset,
                 to_asset,
-                year AS milestone_year,
+                milestone_year AS milestone_year,
                 ANY_VALUE(investable) AS investable,
             FROM flows_data AS fd
             GROUP BY from_asset, to_asset, milestone_year
@@ -202,8 +202,8 @@ end
     investment_cost
     fixed_cost_storage_energy
     investment_cost_storage_energy
-    storage_method_energy -> assets_data WHERE year=commission_year
-    energy_to_power_ratio -> assets_data WHERE year=commission_year
+    storage_method_energy -> assets_data WHERE milestone_year=commission_year
+    energy_to_power_ratio -> assets_data WHERE milestone_year=commission_year
 =#
 apply_to_files_named("asset-commission.csv"; include_missing = true) do path
     touch(path)
@@ -284,7 +284,7 @@ end
 
     keep:
     name -> asset
-    year -> milestone_year
+    milestone_year -> milestone_year
     commission_year
     active
     investable
@@ -308,7 +308,7 @@ apply_to_files_named("asset-both.csv"; include_missing = true) do path
             con,
             "SELECT
                 name as asset,
-                year as milestone_year,
+                milestone_year as milestone_year,
                 commission_year,
                 active,
                 NOT investable AS decommissionable,
@@ -351,7 +351,7 @@ apply_to_files_named("flow-both.csv"; include_missing = true) do path
             "SELECT
                 from_asset,
                 to_asset,
-                year AS milestone_year,
+                milestone_year AS milestone_year,
                 commission_year,
                 active,
                 NOT investable AS decommissionable,
