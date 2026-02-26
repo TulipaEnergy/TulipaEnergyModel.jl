@@ -250,8 +250,8 @@ input_dir = "my-awesome-energy-system/tutorial-5"
 # The hourly benchmark
 conn_hourly_benchmark = DBInterface.connect(DuckDB.DB)
 TIO.read_csv_folder(conn_hourly_benchmark, input_dir)
-TC.transform_wide_to_long!(conn_hourly_benchmark, "profiles_wide", "profiles";)
-TC.dummy_cluster!(conn_hourly_benchmark)
+TC.transform_wide_to_long!(conn_hourly_benchmark, "profiles_wide", "profiles"; exclude_columns = ["milestone_year", "timestep"])
+TC.dummy_cluster!(conn_hourly_benchmark; layout = TC.ProfilesTableLayout(year = :milestone_year))
 TEM.populate_with_defaults!(conn_hourly_benchmark)
 DuckDB.query(conn_hourly_benchmark, "UPDATE asset SET is_seasonal = false")
 ep_hourly = TEM.run_scenario(conn_hourly_benchmark; show_log = false)
@@ -276,7 +276,7 @@ p = plot(
 # The base for each representative periods run
 connection = DBInterface.connect(DuckDB.DB)
 TIO.read_csv_folder(connection, input_dir)
-TC.transform_wide_to_long!(connection, "profiles_wide", "profiles";)
+TC.transform_wide_to_long!(connection, "profiles_wide", "profiles"; exclude_columns = ["milestone_year", "timestep"])
 period_duration = 24
 
 # loop over a list of representatives
@@ -289,6 +289,7 @@ for num_rps in list_num_rps
         method = :convex_hull,
         distance = Distances.CosineDist(),
         weight_type = :convex,
+        layout = TC.ProfilesTableLayout(year = :milestone_year),
     )
     TEM.populate_with_defaults!(connection)
     DuckDB.query(connection, "UPDATE asset SET is_seasonal = true WHERE asset = 'h2_storage'")

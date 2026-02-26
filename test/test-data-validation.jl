@@ -862,7 +862,7 @@ end
             "wrong asset partition. It should be uniform and equal to num_timesteps for all representative periods",
         ),
         (:num_rep_periods => 3, 3, "only 1 representative period, but found 3"),
-        (:num_years => 3, 3, "only 1 year, but found 3"),
+        (:num_years => 3, 3, "only 1 milestone_year, but found 3"),
         (:unit_commitment_integer => false, 3, "asset.unit_commitment_integer = true"),
         (:unit_commitment_method => "", 3, "asset.unit_commitment_method = \"basic\""),
         # These are excluding cases, i.e., one of the sufficient cases won't be generated, so only 2 will error.

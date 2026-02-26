@@ -330,6 +330,7 @@ TC.transform_wide_to_long!(
     connection,
     "profiles_wide",
     "profiles";
+    exclude_columns = ["milestone_year", "timestep"],
 )
 
 # 4. Hull Clustering with Blended Representative Periods
@@ -340,7 +341,8 @@ clusters = TC.cluster!(connection,
                     num_rps;
                     method = :convex_hull,
                     distance = Distances.CosineDist(),
-                    weight_type = :convex
+                    weight_type = :convex,
+                    layout = TC.ProfilesTableLayout(year = :milestone_year),
                     )
 
 # 5. plot the representative periods

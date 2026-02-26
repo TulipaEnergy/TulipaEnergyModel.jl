@@ -141,7 +141,7 @@ So we will transform both this table to long format:
 ```@example obz
 using TulipaClustering: TulipaClustering
 
-TulipaClustering.transform_wide_to_long!(connection, "profiles", "pivot_profiles")
+TulipaClustering.transform_wide_to_long!(connection, "profiles", "pivot_profiles"; exclude_columns = ["milestone_year", "timestep"])
 
 DuckDB.query(
     connection,
@@ -212,6 +212,7 @@ TulipaClustering.cluster!(
     clustering_params.distance,         # Optional
     clustering_params.weight_type,      # Optional
     clustering_params.tol,              # Optional
+    layout = TulipaClustering.ProfilesTableLayout(year = :milestone_year), # Required
 );
 ```
 
@@ -513,7 +514,8 @@ Finally, the `timeframe` profiles are computed with the average over `period`, i
 TulipaClustering.transform_wide_to_long!(
     connection,
     "min_max_reservoir_levels",
-    "pivot_min_max_reservoir_levels",
+    "pivot_min_max_reservoir_levels";
+    exclude_columns = ["milestone_year", "timestep"],
 )
 
 period_duration = clustering_params.period_duration

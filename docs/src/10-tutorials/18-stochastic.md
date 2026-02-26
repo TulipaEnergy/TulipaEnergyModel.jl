@@ -92,7 +92,7 @@ TC.transform_wide_to_long!(
 To cluster per scenario and year, we define the profiles layout using TulipaClustering. The rest of the parameters are the same as in the previous tutorial on clustering. In this case, we want to cluster into 16 representative periods of 24 hours each.
 
 ```@example stochastic
-layout = TC.ProfilesTableLayout(; cols_to_groupby = [:milestone_year, :scenario])
+layout = TC.ProfilesTableLayout(; year = :milestone_year, cols_to_groupby = [:milestone_year, :scenario])
 num_rps = 16
 period_duration = 24
 clusters = TC.cluster!(
@@ -139,7 +139,7 @@ The mapping matrix has a diagonal block structure, which means that the represen
 TulipaClustering allows you to cluster across scenarios, which means that the representative periods can be shared across scenarios. This is useful when you want to capture common patterns across scenarios and reduce the number of representative periods even further. In that case, we need to define the layout differently, since we want to group by years and cross by scenarios. The rest of the parameters are the same as in the previous case.
 
 ```@example stochastic
-layout = TC.ProfilesTableLayout(; cols_to_groupby = [:milestone_year], cols_to_crossby = [:scenario])
+layout = TC.ProfilesTableLayout(; year = :milestone_year, cols_to_groupby = [:milestone_year], cols_to_crossby = [:scenario])
 num_rps = 16
 period_duration = 24
 clusters = TC.cluster!(
