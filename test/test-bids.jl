@@ -68,7 +68,10 @@
         attach_profile!(tulipa, "Bid Manager", :demand, 2030, zeros(12))
 
         connection = create_connection(tulipa)
-        TulipaClustering.dummy_cluster!(connection)
+        TulipaClustering.dummy_cluster!(
+            connection;
+            layout = TulipaClustering.ProfilesTableLayout(; year = :milestone_year),
+        )
         TulipaEnergyModel.populate_with_defaults!(connection)
 
         return connection

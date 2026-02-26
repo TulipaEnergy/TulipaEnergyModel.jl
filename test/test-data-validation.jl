@@ -451,8 +451,8 @@ end
     DuckDB.register_data_frame(connection, asset_commission, "asset_commission")
     error_messages = TEM._validate_use_binary_storage_method_has_investment_limit!(connection)
     @test error_messages == [
-        "Incorrect investment_limit = missing for investable storage asset 'storage_1' with use_binary_storage_method = 'binary' for year 1. The investment_limit at year 1 should be greater than 0 in 'asset_commission'.",
-        "Incorrect investment_limit = 0 for investable storage asset 'storage_2' with use_binary_storage_method = 'binary' for year 1. The investment_limit at year 1 should be greater than 0 in 'asset_commission'.",
+        "Incorrect investment_limit = missing for investable storage asset 'storage_1' with use_binary_storage_method = 'binary' for milestone_year 1. The investment_limit at commission_year 1 should be greater than 0 in 'asset_commission'.",
+        "Incorrect investment_limit = 0 for investable storage asset 'storage_2' with use_binary_storage_method = 'binary' for milestone_year 1. The investment_limit at commission_year 1 should be greater than 0 in 'asset_commission'.",
     ]
 end
 
@@ -468,7 +468,7 @@ end
     )
     error_messages = TEM._validate_use_binary_storage_method_has_investment_limit!(connection)
     @test error_messages == [
-        "Incorrect investment_limit = missing for investable storage asset 'battery' with use_binary_storage_method = 'binary' for year 2030. The investment_limit at year 2030 should be greater than 0 in 'asset_commission'.",
+        "Incorrect investment_limit = missing for investable storage asset 'battery' with use_binary_storage_method = 'binary' for milestone_year 2030. The investment_limit at commission_year 2030 should be greater than 0 in 'asset_commission'.",
     ]
 end
 @testitem "Test DC OPF data - reactance > 0 using fake data" setup = [CommonSetup] tags =
@@ -483,8 +483,8 @@ end
     DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
     error_messages = TEM._validate_reactance_must_be_greater_than_zero!(String[], connection)
     @test error_messages == [
-        "Incorrect reactance = 0.0 for flow ('A', 'B') for year 2 in 'flow_milestone'. The reactance should be greater than 0.",
-        "Incorrect reactance = -1.0 for flow ('A', 'B') for year 3 in 'flow_milestone'. The reactance should be greater than 0.",
+        "Incorrect reactance = 0.0 for flow ('A', 'B') for milestone_year 2 in 'flow_milestone'. The reactance should be greater than 0.",
+        "Incorrect reactance = -1.0 for flow ('A', 'B') for milestone_year 3 in 'flow_milestone'. The reactance should be greater than 0.",
     ]
 end
 
@@ -508,8 +508,8 @@ end
     error_messages =
         TEM._validate_dc_opf_only_apply_to_non_investable_transport_flows!(String[], connection)
     @test error_messages == [
-        "Incorrect use of dc-opf method for flow ('A', 'B') for year 2 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
-        "Incorrect use of dc-opf method for flow ('B', 'C') for year 1 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
+        "Incorrect use of dc-opf method for flow ('A', 'B') for milestone_year 2 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
+        "Incorrect use of dc-opf method for flow ('B', 'C') for milestone_year 1 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
     ]
 end
 
@@ -525,8 +525,8 @@ end
     )
     error_messages = TEM._validate_reactance_must_be_greater_than_zero!(String[], connection)
     @test error_messages == [
-        "Incorrect reactance = 0.0 for flow ('wind', 'demand') for year 2030 in 'flow_milestone'. The reactance should be greater than 0.",
-        "Incorrect reactance = -1.0 for flow ('solar', 'demand') for year 2030 in 'flow_milestone'. The reactance should be greater than 0.",
+        "Incorrect reactance = 0.0 for flow ('wind', 'demand') for milestone_year 2030 in 'flow_milestone'. The reactance should be greater than 0.",
+        "Incorrect reactance = -1.0 for flow ('solar', 'demand') for milestone_year 2030 in 'flow_milestone'. The reactance should be greater than 0.",
     ]
 end
 
@@ -544,8 +544,8 @@ end
     error_messages =
         TEM._validate_dc_opf_only_apply_to_non_investable_transport_flows!(String[], connection)
     @test error_messages == [
-        "Incorrect use of dc-opf method for flow ('wind', 'demand') for year 2030 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
-        "Incorrect use of dc-opf method for flow ('solar', 'demand') for year 2030 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
+        "Incorrect use of dc-opf method for flow ('wind', 'demand') for milestone_year 2030 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
+        "Incorrect use of dc-opf method for flow ('solar', 'demand') for milestone_year 2030 in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
     ]
 end
 
@@ -724,7 +724,10 @@ end
 
     function create_connection_and_prepare(tulipa)
         connection = create_connection(tulipa)
-        TulipaClustering.dummy_cluster!(connection)
+        TulipaClustering.dummy_cluster!(
+            connection;
+            layout = TulipaClustering.ProfilesTableLayout(; year = :milestone_year),
+        )
         TulipaEnergyModel.populate_with_defaults!(connection)
         return connection
     end
@@ -898,7 +901,7 @@ end
     DuckDB.query(
         connection,
         """
-        INSERT INTO flows_profiles (from_asset, to_asset, year, profile_type, profile_name)
+        INSERT INTO flows_profiles (from_asset, to_asset, milestone_year, profile_type, profile_name)
         VALUES ('wind', 'demand', 2030, 'commodity_price', 'commodity_price-wind-demand')
         """,
     )
