@@ -28,7 +28,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                             begin
                                 availability_agg = _profile_aggregate(
                                     profiles.rep_period,
-                                    (avail_profile_name, row.year, row.rep_period),
+                                    (avail_profile_name, row.milestone_year, row.rep_period),
                                     row.time_block_start:row.time_block_end,
                                     Statistics.mean,
                                     1.0,
@@ -56,7 +56,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     row.capacity *
                     _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.profile_name, row.milestone_year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -80,7 +80,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.profile_name, row.milestone_year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -109,7 +109,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.profile_name, row.milestone_year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -134,7 +134,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.profile_name, row.milestone_year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -160,7 +160,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.profile_name, row.milestone_year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -187,7 +187,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.profile_name, row.milestone_year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -213,7 +213,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.profile_name, row.milestone_year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -238,7 +238,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 begin
                     availability_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.profile_name, row.milestone_year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -272,7 +272,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 @constraint(
                     model,
                     outgoing_flow ≤ profile_times_capacity,
-                    base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "$cons_name[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, outgoing_flow, profile_times_capacity) in zip(
                     constraints[table_name].indices,
                     constraints[table_name].expressions[:outgoing],
@@ -296,7 +296,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 @constraint(
                     model,
                     outgoing_flow ≤ profile_times_capacity,
-                    base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "$cons_name[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, outgoing_flow, profile_times_capacity) in zip(
                     constraints[table_name].indices,
                     constraints[table_name].expressions[:outgoing],
@@ -319,7 +319,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 @constraint(
                     model,
                     incoming_flow ≤ profile_times_capacity,
-                    base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "$cons_name[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, incoming_flow, profile_times_capacity) in zip(
                     constraints[table_name].indices,
                     constraints[table_name].expressions[:incoming],
@@ -343,7 +343,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                 @constraint(
                     model,
                     incoming_flow ≤ profile_times_capacity,
-                    base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "$cons_name[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, incoming_flow, profile_times_capacity) in zip(
                     constraints[table_name].indices,
                     constraints[table_name].expressions[:incoming],
@@ -477,7 +477,7 @@ function _append_capacity_data_to_indices_compact_method(connection, table_name)
         "SELECT
             ANY_VALUE(cons.id) AS id,
             ANY_VALUE(cons.asset) AS asset,
-            ANY_VALUE(cons.year) AS year,
+            ANY_VALUE(cons.milestone_year) AS milestone_year,
             ANY_VALUE(cons.rep_period) AS rep_period,
             ANY_VALUE(cons.time_block_start) AS time_block_start,
             ANY_VALUE(cons.time_block_end) AS time_block_end,
@@ -489,7 +489,7 @@ function _append_capacity_data_to_indices_compact_method(connection, table_name)
             ON cons.asset = asset.asset
         LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
             ON cons.asset = expr_avail.asset
-            AND cons.year = expr_avail.milestone_year
+            AND cons.milestone_year = expr_avail.milestone_year
         LEFT OUTER JOIN assets_profiles AS avail_profile
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
@@ -510,7 +510,7 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
         "SELECT
             cons.id AS id,
             cons.asset AS asset,
-            cons.year AS year,
+            cons.milestone_year AS milestone_year,
             cons.rep_period AS rep_period,
             cons.time_block_start AS time_block_start,
             cons.time_block_end AS time_block_end,
@@ -524,12 +524,12 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
             ON cons.asset = asset.asset
         LEFT JOIN asset_commission
             ON cons.asset = asset_commission.asset
-            AND cons.year = asset_commission.commission_year
+            AND cons.milestone_year = asset_commission.commission_year
         LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
             ON cons.asset = expr_avail.asset
             -- For simple method: milestone_year = commission_year
             -- so no need to join on commission_year
-            AND cons.year = expr_avail.milestone_year
+            AND cons.milestone_year = expr_avail.milestone_year
         -- OUTER JOIN is used to allow for assets without availability profiles
         -- Null will be left and replaced by 1.0 in the profile aggregate
         LEFT OUTER JOIN assets_profiles AS avail_profile

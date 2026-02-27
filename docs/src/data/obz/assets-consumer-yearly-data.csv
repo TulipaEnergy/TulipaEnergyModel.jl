@@ -1,4 +1,4 @@
-name,year,partition,peak_demand
+name,milestone_year,partition,peak_demand
 NL_E_Demand,2050,1,37.48725257
 BE_E_Demand,2050,2,26.32290865
 DE_E_Demand,2050,1,125.0411243

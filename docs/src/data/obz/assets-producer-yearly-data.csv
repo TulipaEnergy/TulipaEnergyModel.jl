@@ -1,4 +1,4 @@
-name,year,partition,initial_units
+name,milestone_year,partition,initial_units
 NL_E_ENS,2050,1,1
 NL_Wind_Onshore,2050,1,1
 NL_Wind_Offshore,2050,1,1

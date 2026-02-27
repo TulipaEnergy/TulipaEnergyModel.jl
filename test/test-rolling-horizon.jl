@@ -95,7 +95,7 @@ end
     @test sort(unique(df_rolsol_var_flow.window_id)) == 1:number_of_windows
     # All variable ids are there
     number_of_flows = TEM.get_num_rows(connection, "flow")
-    expected_number_of_var_flow = move_forward * number_of_flows * number_of_windows # 1 year, 1 rp
+    expected_number_of_var_flow = move_forward * number_of_flows * number_of_windows # 1 milestone_year, 1 rp
     @test sort(unique(df_rolsol_var_flow.var_id)) == 1:expected_number_of_var_flow
 end
 
@@ -131,10 +131,10 @@ end
             asset TEXT,
             specification TEXT,
             partition TEXT,
-            year INT,
+            milestone_year INT,
             rep_period INT
         );
-        INSERT INTO assets_rep_periods_partitions (asset, specification, partition, year, rep_period)
+        INSERT INTO assets_rep_periods_partitions (asset, specification, partition, milestone_year, rep_period)
             VALUES
                 ('solar',   'uniform', '2', 2030, 1),
                 ('thermal', 'uniform', '3', 2030, 1),

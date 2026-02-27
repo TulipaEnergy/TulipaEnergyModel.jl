@@ -20,8 +20,8 @@ Aggregates the `profiles[tuple_key]` over the `time_block` using the `agg_functi
 If the profile does not exist, uses `default_value` instead of **each** profile value.
 
 `profiles` should be a dictionary of profiles, and `tuple_key` should be either
-`(profile_name, year, rep_period)` for the profiles of representative periods
-or `(profile_name, year)` for the profiles over clustered years.
+`(profile_name, milestone_year, rep_period)` for the profiles of representative periods
+or `(profile_name, milestone_year)` for the profiles over clustered years.
 
 If `profiles[tuple_key]` exists, then this function computes the aggregation of `V = profiles[tuple_key]`
 over the range `time_block` using the aggregator `agg_function`, i.e., `agg_function(V[time_block])`.
@@ -71,7 +71,7 @@ end
     )
 
 Create a grouped table grouping the `table_name` into the `grouped_table_name`.
-The `group_by_columns` are the columns that are used in the group by (e.g., asset, year, rep_period),
+The `group_by_columns` are the columns that are used in the group by (e.g., asset, milestone_year, rep_period),
 and the `array_agg_columns` are the columns that are aggregated into arrays (e.g., id, time_block_start, time_block_end).
 
 It is expected that the original table has an `id` column, which is used in the ordering of the `array_agg_columns`.
@@ -174,7 +174,7 @@ function _append_variable_ids(connection, constraint_table_name, variables_to_ap
 
         variable_query = "LEFT JOIN $variable_table_name
                              ON $variable_table_name.asset = cons.asset
-                             AND $variable_table_name.year = cons.year
+                             AND $variable_table_name.milestone_year = cons.milestone_year
                              AND $variable_table_name.rep_period = cons.rep_period
                              AND $variable_table_name.time_block_start = cons.time_block_start"
 

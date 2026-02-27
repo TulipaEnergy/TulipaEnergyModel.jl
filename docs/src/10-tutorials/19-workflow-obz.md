@@ -114,14 +114,14 @@ clustering of the profile data.
 We need a single profiles table with 4 columns:
 
 - `profile_name`
-- `year`
+- `milestone_year`
 - `timestep`
 - `value`
 
 Instead, we have the profiles data in the `profiles` table, which looks something like the following, but with many more columns:
 
 ```@example obz
-nice_query("SELECT year, timestep, * LIKE 'NL_%' FROM profiles LIMIT 5")
+nice_query("SELECT milestone_year, timestep, * LIKE 'NL_%' FROM profiles LIMIT 5")
 ```
 
 The total number of columns in the `profiles` table:
@@ -133,7 +133,7 @@ nice_query("SELECT COUNT(*) FROM duckdb_columns() WHERE table_name = 'profiles'"
 Notice that these are all hourly profiles for the whole year:
 
 ```@example obz
-nice_query("SELECT year, MAX(timestep) FROM profiles GROUP BY year")
+nice_query("SELECT milestone_year, MAX(timestep) FROM profiles GROUP BY milestone_year")
 ```
 
 So we will transform both this table to long format:
@@ -141,13 +141,13 @@ So we will transform both this table to long format:
 ```@example obz
 using TulipaClustering: TulipaClustering
 
-TulipaClustering.transform_wide_to_long!(connection, "profiles", "pivot_profiles")
+TulipaClustering.transform_wide_to_long!(connection, "profiles", "pivot_profiles"; exclude_columns = ["milestone_year", "timestep"])
 
 DuckDB.query(
     connection,
     "CREATE OR REPLACE TABLE profiles AS
     FROM pivot_profiles
-    ORDER BY profile_name, year, timestep
+    ORDER BY profile_name, milestone_year, timestep
     "
 )
 
@@ -168,7 +168,7 @@ subtable = DuckDB.query(
     FROM profiles
     WHERE
         profile_name LIKE 'NL_%'
-        AND year=2050
+        AND milestone_year=2050
         AND timestep <= 72 -- Just 72 hours
     ORDER BY timestep
     ",
@@ -212,6 +212,7 @@ TulipaClustering.cluster!(
     clustering_params.distance,         # Optional
     clustering_params.weight_type,      # Optional
     clustering_params.tol,              # Optional
+    layout = TulipaClustering.ProfilesTableLayout(year = :milestone_year), # Required
 );
 ```
 
@@ -229,7 +230,7 @@ Again, we remind you that you can create most of these files externally, i.e., y
 However, defining the workflow in a programmatic way makes it easier to reproduce it in the future.
 
 We have to define a minimum set of columns for each table, and then the remaining columns will be filled with defaults.
-Some columns cannot contain missing values (such as the `asset` or `year` columns in most tables).
+Some columns cannot contain missing values (such as the `asset` or `milestone_year` columns in most tables).
 For other columns, missing values will be filled with the columns' default.
 
 !!! warning "Populating with defaults is an explicit step"
@@ -303,7 +304,7 @@ DuckDB.query(
     "CREATE TABLE asset_commission AS
     SELECT
         name AS asset,
-        year AS commission_year,
+        milestone_year AS commission_year,
     FROM t_asset_yearly
     ORDER by asset
     "
@@ -314,7 +315,7 @@ DuckDB.query(
     "CREATE TABLE asset_milestone AS
     SELECT
         name AS asset,
-        year AS milestone_year,
+        milestone_year,
         peak_demand,
         initial_storage_level,
         storage_inflows,
@@ -328,8 +329,8 @@ DuckDB.query(
     "CREATE TABLE asset_both AS
     SELECT
         name AS asset,
-        year AS milestone_year,
-        year AS commission_year, -- Yes, it is the same year twice with different names because it's not a multi-year problem
+        milestone_year,
+        milestone_year AS commission_year, -- Yes, it is the same milestone_year twice with different names because it's not a multi-year problem
         initial_units,
         initial_storage_units,
     FROM t_asset_yearly
@@ -384,7 +385,7 @@ DuckDB.query(
     SELECT
         from_asset,
         to_asset,
-        year AS commission_year,
+        milestone_year AS commission_year,
         efficiency AS producer_efficiency,
     FROM t_flow_yearly
     ORDER by from_asset, to_asset
@@ -397,7 +398,7 @@ DuckDB.query(
     SELECT
         from_asset,
         to_asset,
-        year AS milestone_year,
+        milestone_year,
         variable_cost AS operational_cost,
     FROM t_flow_yearly
     ORDER by from_asset, to_asset
@@ -410,8 +411,8 @@ DuckDB.query(
     SELECT
         t_flow_yearly.from_asset,
         t_flow_yearly.to_asset,
-        t_flow_yearly.year AS milestone_year,
-        t_flow_yearly.year AS commission_year,
+        t_flow_yearly.milestone_year,
+        t_flow_yearly.milestone_year AS commission_year,
         t_flow_yearly.initial_export_units,
         t_flow_yearly.initial_import_units,
     FROM t_flow_yearly
@@ -435,11 +436,11 @@ DuckDB.query(
       "CREATE TABLE assets_timeframe_profiles AS
       SELECT
         asset,
-        commission_year AS year,
+        commission_year AS milestone_year,
         profile_type,
         profile_name
       FROM assets_storage_min_max_reservoir_level_profiles
-      ORDER BY asset, year, profile_name
+      ORDER BY asset, milestone_year, profile_name
       ",
 )
 ```
@@ -456,14 +457,14 @@ DuckDB.query(
     "CREATE TABLE assets_rep_periods_partitions AS
     SELECT
         t.name AS asset,
-        t.year,
+        t.milestone_year,
         t.partition AS partition,
         rep_periods_data.rep_period,
         'uniform' AS specification,
     FROM t_asset_yearly AS t
     LEFT JOIN rep_periods_data
-        ON t.year = rep_periods_data.year
-    ORDER BY asset, t.year, rep_period
+        ON t.milestone_year = rep_periods_data.milestone_year
+    ORDER BY asset, t.milestone_year, rep_period
     ",
 )
 ```
@@ -480,7 +481,7 @@ DuckDB.query(
     SELECT
         flow.from_asset,
         flow.to_asset,
-        t_from.year,
+        t_from.milestone_year,
         t_from.rep_period,
         'uniform' AS specification,
         IF(
@@ -493,7 +494,7 @@ DuckDB.query(
         ON flow.from_asset = t_from.asset
     LEFT JOIN assets_rep_periods_partitions AS t_to
         ON flow.to_asset = t_to.asset
-        AND t_from.year = t_to.year
+        AND t_from.milestone_year = t_to.milestone_year
         AND t_from.rep_period = t_to.rep_period
     ",
 )
@@ -513,7 +514,8 @@ Finally, the `timeframe` profiles are computed with the average over `period`, i
 TulipaClustering.transform_wide_to_long!(
     connection,
     "min_max_reservoir_levels",
-    "pivot_min_max_reservoir_levels",
+    "pivot_min_max_reservoir_levels";
+    exclude_columns = ["milestone_year", "timestep"],
 )
 
 period_duration = clustering_params.period_duration
@@ -525,7 +527,7 @@ DuckDB.query(
     WITH cte_split_profiles AS (
         SELECT
             profile_name,
-            year,
+            milestone_year,
             1 + (timestep - 1) // $period_duration  AS period,
             1 + (timestep - 1)  % $period_duration AS timestep,
             value,
@@ -533,17 +535,17 @@ DuckDB.query(
     )
     SELECT
         cte_split_profiles.profile_name,
-        cte_split_profiles.year,
+        cte_split_profiles.milestone_year,
         cte_split_profiles.period,
         AVG(cte_split_profiles.value) AS value, -- Computing the average aggregation
     FROM cte_split_profiles
     GROUP BY
         cte_split_profiles.profile_name,
-        cte_split_profiles.year,
+        cte_split_profiles.milestone_year,
         cte_split_profiles.period
     ORDER BY
         cte_split_profiles.profile_name,
-        cte_split_profiles.year,
+        cte_split_profiles.milestone_year,
         cte_split_profiles.period
     ",
 )

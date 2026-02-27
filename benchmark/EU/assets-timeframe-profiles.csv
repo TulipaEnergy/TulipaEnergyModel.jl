@@ -1,4 +1,4 @@
-asset,year,scenario,profile_name,profile_type
+asset,milestone_year,scenario,profile_name,profile_type
 FR_Hydro_Reservoir,2050,1,FR_Hydro_Reservoir_Min_Storage_Level,min_storage_level
 FR_Hydro_Reservoir,2050,1,FR_Hydro_Reservoir_Max_Storage_Level,max_storage_level
 CH_Pump_Hydro_Open,2050,1,CH_Pump_Hydro_Open_Min_Storage_Level,min_storage_level

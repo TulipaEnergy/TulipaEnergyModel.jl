@@ -30,13 +30,13 @@ function add_consumer_constraints!(connection, model, variables, constraints, pr
                         model,
                         incoming_flow - outgoing_flow - var * row.peak_demand in
                         consumer_balance_sense,
-                        base_name = "consumer_balance[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "consumer_balance[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 else
                     # On demand computation of the mean
                     demand_agg = _profile_aggregate(
                         profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
+                        (row.profile_name, row.milestone_year, row.rep_period),
                         row.time_block_start:row.time_block_end,
                         Statistics.mean,
                         1.0,
@@ -45,7 +45,7 @@ function add_consumer_constraints!(connection, model, variables, constraints, pr
                         model,
                         incoming_flow - outgoing_flow - demand_agg * row.peak_demand in
                         consumer_balance_sense,
-                        base_name = "consumer_balance[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "consumer_balance[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end
             end for (row, incoming_flow, outgoing_flow) in
@@ -62,7 +62,7 @@ function _create_consumer_table(connection)
         happen at the join clause, i.e., in the ON ... AND ... list. This is
         necessary because we are using an OUTER join with the result, because
         we want to propagate the information that some combinations of (asset,
-        year, rep_period) don't have a profile for the given profile_type.
+        milestone_year, rep_period) don't have a profile for the given profile_type.
 
         If we use a WHERE condition, all combination with all the profile_type
         would be created, and only after that it would be filtered (which would
@@ -79,7 +79,7 @@ function _create_consumer_table(connection)
             LEFT JOIN var_flow AS var
                 ON cons.asset = var.from_asset
                 AND cons.asset = var.to_asset
-                AND cons.year = var.year
+                AND cons.milestone_year = var.milestone_year
                 AND cons.rep_period = var.rep_period
                 AND cons.time_block_start = var.time_block_start -- TODO: This is a simplification ignoring different time resolution
                 AND cons.time_block_end = var.time_block_end
@@ -96,12 +96,12 @@ function _create_consumer_table(connection)
             ON cons.asset = asset.asset
         LEFT JOIN asset_milestone
             ON cons.asset = asset_milestone.asset
-            AND cons.year = asset_milestone.milestone_year
+            AND cons.milestone_year = asset_milestone.milestone_year
         LEFT JOIN cte_loop
             ON cons.id = cte_loop.cons_id
         LEFT OUTER JOIN assets_profiles
             ON cons.asset = assets_profiles.asset
-            AND cons.year = assets_profiles.commission_year
+            AND cons.milestone_year = assets_profiles.commission_year
             AND assets_profiles.profile_type = 'demand' -- This must be a ON condition not a where (note 1)
         ORDER BY cons.id -- order is important
         ",

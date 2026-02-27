@@ -11,7 +11,10 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
     social_rate = model_parameters.discount_rate
     discount_year = model_parameters.discount_year
     end_of_horizon = get_single_element_from_query_and_ensure_its_only_one(
-        DuckDB.query(connection, "SELECT MAX(year) AS end_of_horizon FROM rep_periods_data"),
+        DuckDB.query(
+            connection,
+            "SELECT MAX(milestone_year) AS end_of_horizon FROM rep_periods_data",
+        ),
     )
 
     constants = (; social_rate, discount_year, end_of_horizon)
@@ -228,7 +231,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         LEFT JOIN flows_profiles AS commodity_price_profiles
             ON commodity_price_profiles.from_asset = var.from_asset
             AND commodity_price_profiles.to_asset = var.to_asset
-            AND commodity_price_profiles.year = var.year -- TODO: inconsistent year naming to assets_profiles
+            AND commodity_price_profiles.milestone_year = var.milestone_year
             AND commodity_price_profiles.profile_type = 'commodity_price'
         """
     end
@@ -236,21 +239,21 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         connection,
         "WITH rp_weight_prob AS (
             SELECT
-                year,
+                milestone_year,
                 rep_period,
                 SUM(rpm.weight * scn.probability) AS total_weight_prob
             FROM rep_periods_mapping AS rpm
             LEFT JOIN stochastic_scenario AS scn
                 ON rpm.scenario = scn.scenario
-            GROUP BY year, rep_period
+            GROUP BY milestone_year, rep_period
         ),
         rp_res AS (
             SELECT
-                year,
+                milestone_year,
                 rep_period,
                 ANY_VALUE(resolution) AS resolution
             FROM rep_periods_data
-            GROUP BY year, rep_period
+            GROUP BY milestone_year, rep_period
         )
         SELECT
             var.id,
@@ -262,7 +265,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
                 * (var.time_block_end - var.time_block_start + 1) AS total_cost_if_no_profile,
             var.time_block_start,
             var.time_block_end,
-            var.year,
+            var.milestone_year,
             var.rep_period,
             obj.commodity_price,
             obj.producer_efficiency,
@@ -272,12 +275,12 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         LEFT JOIN t_objective_flows as obj
             ON var.from_asset = obj.from_asset
             AND var.to_asset = obj.to_asset
-            AND var.year = obj.milestone_year
+            AND var.milestone_year = obj.milestone_year
         LEFT JOIN rp_weight_prob
-            ON var.year = rp_weight_prob.year
+            ON var.milestone_year = rp_weight_prob.milestone_year
             AND var.rep_period = rp_weight_prob.rep_period
         LEFT JOIN rp_res
-            ON var.year = rp_res.year
+            ON var.milestone_year = rp_res.milestone_year
             AND var.rep_period = rp_res.rep_period
         LEFT JOIN asset
             ON asset.asset = var.from_asset
@@ -302,7 +305,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         else
             commodity_price_agg = _profile_aggregate(
                 profiles.rep_period,
-                (row.profile_name::String, row.year::Int32, row.rep_period::Int32),
+                (row.profile_name::String, row.milestone_year::Int32, row.rep_period::Int32),
                 row.time_block_start:row.time_block_end,
                 Statistics.mean,
                 1.0,
@@ -324,21 +327,21 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         connection,
         "WITH rp_weight_prob AS (
             SELECT
-                year,
+                milestone_year,
                 rep_period,
                 SUM(rpm.weight * scn.probability) AS total_weight_prob
             FROM rep_periods_mapping AS rpm
             LEFT JOIN stochastic_scenario AS scn
                 ON rpm.scenario = scn.scenario
-            GROUP BY year, rep_period
+            GROUP BY milestone_year, rep_period
         ),
         rp_res AS (
             SELECT
-                year,
+                milestone_year,
                 rep_period,
                 ANY_VALUE(resolution) AS resolution
             FROM rep_periods_data
-            GROUP BY year, rep_period
+            GROUP BY milestone_year, rep_period
         ),
         vint_obj AS (
             SELECT
@@ -365,10 +368,10 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             AND var.milestone_year = vint_obj.milestone_year
             AND var.commission_year = vint_obj.commission_year
         LEFT JOIN rp_weight_prob
-            ON var.milestone_year = rp_weight_prob.year
+            ON var.milestone_year = rp_weight_prob.milestone_year
             AND var.rep_period = rp_weight_prob.rep_period
         LEFT JOIN rp_res
-            ON var.milestone_year = rp_res.year
+            ON var.milestone_year = rp_res.milestone_year
             AND var.rep_period = rp_res.rep_period
         ORDER BY var.id
         ",
@@ -386,21 +389,21 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         connection,
         "WITH rp_weight_prob AS (
             SELECT
-                year,
+                milestone_year,
                 rep_period,
                 SUM(rpm.weight * scn.probability) AS total_weight_prob
             FROM rep_periods_mapping AS rpm
             LEFT JOIN stochastic_scenario AS scn
                 ON rpm.scenario = scn.scenario
-            GROUP BY year, rep_period
+            GROUP BY milestone_year, rep_period
         ),
         rp_res AS (
             SELECT
-                year,
+                milestone_year,
                 rep_period,
                 ANY_VALUE(resolution) AS resolution
             FROM rep_periods_data
-            GROUP BY year, rep_period
+            GROUP BY milestone_year, rep_period
         )
         SELECT
             var.id,
@@ -413,12 +416,12 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         FROM var_units_on AS var
         LEFT JOIN t_objective_assets as obj
             ON var.asset = obj.asset
-            AND var.year = obj.milestone_year
+            AND var.milestone_year = obj.milestone_year
         LEFT JOIN rp_weight_prob
-            ON var.year = rp_weight_prob.year
+            ON var.milestone_year = rp_weight_prob.milestone_year
             AND var.rep_period = rp_weight_prob.rep_period
         LEFT JOIN rp_res
-            ON var.year = rp_res.year
+            ON var.milestone_year = rp_res.milestone_year
             AND var.rep_period = rp_res.rep_period
         WHERE obj.units_on_cost IS NOT NULL
         ORDER BY var.id

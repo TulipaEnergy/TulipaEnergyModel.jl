@@ -1,4 +1,4 @@
-from_asset,to_asset,year,variable_cost,efficiency
+from_asset,to_asset,milestone_year,variable_cost,efficiency
 NL_E_ENS,NL_E_Demand,2050,1000,1
 NL_Wind_Onshore,NL_E_Demand,2050,0,1
 NL_Wind_Offshore,NL_E_Demand,2050,0,1

@@ -81,14 +81,14 @@
             TB.add_flow!(tulipa, "consumer", storage_name)
             TB.add_flow!(tulipa, storage_name, "consumer")
 
-            # Attach inflows profiles per  storage asset, year and scenario
-            for ((asset, year, scenario), values) in inflows_profile
+            # Attach inflows profiles per  storage asset, milestone_year and scenario
+            for ((asset, milestone_year, scenario), values) in inflows_profile
                 if asset == storage_name
                     TB.attach_profile!(
                         tulipa,
                         storage_name,
                         :inflows,
-                        year,
+                        milestone_year,
                         values;
                         scenario = scenario,
                     )
@@ -98,7 +98,7 @@
 
         # Create connection and apply clustering
         connection = TB.create_connection(tulipa)
-        layout = TC.ProfilesTableLayout(; cols_to_crossby = [:scenario])
+        layout = TC.ProfilesTableLayout(; year = :milestone_year, cols_to_crossby = [:scenario])
         TC.cluster!(
             connection,
             num_timesteps,
@@ -169,7 +169,7 @@
     """
         get_storage_ids(connection, storage_asset, scenarios, periods) -> storage_level_ids
 
-    Query storage level over clustered year IDs for a storage asset for each scenario and period block.
+    Query storage level over_clustered_year IDs for a storage asset for each scenario and period block.
     Returns a dictionary indexed by (scenario, period).
 
     Optimized to use a single batched query instead of multiple queries.
@@ -375,9 +375,9 @@ end
     # Test parameters
     storage_asset = "non_seasonal_storage"
     config = STORAGE_CONFIGS[storage_asset]
-    year = 2030
+    milestone_year = 2030
     scenario = 1
-    inflows_profile = Dict((storage_asset, year, scenario) => [1.0, 5.5, 10.0, 2.5])
+    inflows_profile = Dict((storage_asset, milestone_year, scenario) => [1.0, 5.5, 10.0, 2.5])
     num_timesteps = 2
     num_rps = 2
 
@@ -446,10 +446,10 @@ end
     # Test parameters
     storage_asset = "seasonal_storage"
     config = STORAGE_CONFIGS[storage_asset]
-    year = 2030
+    milestone_year = 2030
     scenario = 1
-    inflows_profile = Dict((storage_asset, year, scenario) => [1.0, 5.5, 10.0])
-    periods = 1:length(inflows_profile[(storage_asset, year, scenario)])
+    inflows_profile = Dict((storage_asset, milestone_year, scenario) => [1.0, 5.5, 10.0])
+    periods = 1:length(inflows_profile[(storage_asset, milestone_year, scenario)])
     num_timesteps = 1
     num_rps = 2
 
@@ -524,12 +524,12 @@ end
     # Test parameters
     storage_asset = "seasonal_storage"
     config = STORAGE_CONFIGS[storage_asset]
-    year = 2030
+    milestone_year = 2030
     inflows_profile = Dict(
-        (storage_asset, year, 1) => [1.0, 5.5, 10.0],  # Scenario 1
-        (storage_asset, year, 2) => [10.0, 5.5, 1.0],  # Scenario 2
+        (storage_asset, milestone_year, 1) => [1.0, 5.5, 10.0],  # Scenario 1
+        (storage_asset, milestone_year, 2) => [10.0, 5.5, 1.0],  # Scenario 2
     )
-    periods = 1:length(inflows_profile[(storage_asset, year, 1)])
+    periods = 1:length(inflows_profile[(storage_asset, milestone_year, 1)])
     scenarios = 1:2
     num_timesteps = 1
     num_rps = 2

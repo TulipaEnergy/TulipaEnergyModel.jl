@@ -25,7 +25,6 @@ Each output table has three types of columns:
    - `asset`: Unique name of the asset.
    - `from_asset`: For a flow, the origin asset.
    - `to_asset`: For a flow, the terminal asset.
-   - `year`: Equivalent to `milestone_year`. (Will be fixed in future release.)
    - `milestone_year`: Year of investment and operation decisions.
    - `commission_year`: Commissioning year of an asset (used for unique asset identification).
    - `rep_period`: Number of the representative period.
@@ -80,11 +79,11 @@ Associated input parameters: `investable`, `investment_integer`, `capacity`, `in
 
 ### `var_storage_level_over_clustered_year`
 
-For a storage asset in a specific `year` and between `period_start` and `period_end`, the optimal storage level BETWEEN representative periods, expressed in the same units as `capacity_storage_energy` of asset.
+For a storage asset in a specific `milestone_year` and between `period_start` and `period_end`, the optimal storage level BETWEEN representative periods, expressed in the same units as `capacity_storage_energy` of asset.
 
 ### `var_storage_level_rep_period`
 
-For a storage asset in a specific `year` and between `period_start` and `period_end`, the optimal storage level WITHIN representative periods, expressed in the same units as `capacity_storage_energy` of asset.
+For a storage asset in a specific `milestone_year` and between `period_start` and `period_end`, the optimal storage level WITHIN representative periods, expressed in the same units as `capacity_storage_energy` of asset.
 
 ### `var_units_on`
 

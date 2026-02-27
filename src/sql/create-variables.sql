@@ -12,7 +12,7 @@ select
     nextval('id') as id,
     from_asset,
     to_asset,
-    year,
+    milestone_year,
     rep_period,
     capacity_coefficient,
     conversion_coefficient,
@@ -49,7 +49,7 @@ from
     flow_time_resolution_rep_period as ft
     -- We want to split the outgoing flows by the asset's vintage
     left join asset_both as ab on ab.asset = ft.from_asset
-    and ab.milestone_year = ft.year
+    and ab.milestone_year = ft.milestone_year
     left join asset on asset.asset = ab.asset
     left join flow_commission as fc on fc.from_asset = ft.from_asset
     and fc.to_asset = ft.to_asset
@@ -76,7 +76,7 @@ from
     (
         select
             atr.asset,
-            atr.year,
+            atr.milestone_year,
             atr.rep_period,
             atr.time_block_start,
             atr.time_block_end,
@@ -89,7 +89,7 @@ from
             and asset.unit_commitment = true
         order by
             atr.asset,
-            atr.year,
+            atr.milestone_year,
             atr.rep_period,
             atr.time_block_start
     ) as sub
@@ -113,7 +113,7 @@ from
     (
         select
             atr.asset,
-            atr.year,
+            atr.milestone_year,
             atr.rep_period,
             t_high.time_block_start,
             t_high.time_block_end,
@@ -121,7 +121,7 @@ from
         from
             t_highest_assets_and_out_flows as t_high
             inner join asset_time_resolution_rep_period as atr on t_high.asset = atr.asset
-            and t_high.year = atr.year
+            and t_high.milestone_year = atr.milestone_year
             and t_high.rep_period = atr.rep_period
             and t_high.time_block_start = atr.time_block_start
             left join asset on asset.asset = atr.asset
@@ -131,7 +131,7 @@ from
             and asset.unit_commitment_method like '3var%'
         order by
             atr.asset,
-            atr.year,
+            atr.milestone_year,
             atr.rep_period,
             atr.time_block_start
     ) as sub
@@ -155,7 +155,7 @@ from
     (
         select
             atr.asset,
-            atr.year,
+            atr.milestone_year,
             atr.rep_period,
             t_high.time_block_start,
             t_high.time_block_end,
@@ -163,7 +163,7 @@ from
         from
             t_highest_assets_and_out_flows as t_high
             inner join asset_time_resolution_rep_period as atr on t_high.asset = atr.asset
-            and t_high.year = atr.year
+            and t_high.milestone_year = atr.milestone_year
             and t_high.rep_period = atr.rep_period
             and t_high.time_block_start = atr.time_block_start
             left join asset on asset.asset = atr.asset
@@ -173,7 +173,7 @@ from
             and asset.unit_commitment_method like '3var%'
         order by
             atr.asset,
-            atr.year,
+            atr.milestone_year,
             atr.rep_period,
             atr.time_block_start
     ) as sub
@@ -192,7 +192,7 @@ create table var_electricity_angle as
 select
     nextval('id') as id,
     atr.asset,
-    atr.year,
+    atr.milestone_year,
     atr.rep_period,
     atr.time_block_start,
     any_value (atr.time_block_end) as time_block_end,
@@ -210,7 +210,7 @@ from
     -- Here we use AND because we need to match flow_milestone with flow
     left join flow_milestone on flow_milestone.from_asset = flow.from_asset
     and flow_milestone.to_asset = flow.to_asset
-    and flow_milestone.milestone_year = atr.year
+    and flow_milestone.milestone_year = atr.milestone_year
 where
     flow.is_transport
     and flow_milestone.dc_opf
@@ -220,7 +220,7 @@ where
     -- Note SELECT only happens after the GROUP BY, so id is unique for each row.
 group by
     atr.asset,
-    atr.year,
+    atr.milestone_year,
     atr.rep_period,
     atr.time_block_start
 ;
@@ -238,7 +238,7 @@ create table var_is_charging as
 select
     nextval('id') as id,
     t_low.asset,
-    t_low.year,
+    t_low.milestone_year,
     t_low.rep_period,
     t_low.time_block_start,
     t_low.time_block_end,
@@ -266,7 +266,7 @@ with
     filtered_assets as (
         select
             t_low.asset,
-            t_low.year,
+            t_low.milestone_year,
             t_low.rep_period,
             t_low.time_block_start,
             t_low.time_block_end,
@@ -278,7 +278,7 @@ with
             and asset.is_seasonal = false
         order by
             t_low.asset,
-            t_low.year,
+            t_low.milestone_year,
             t_low.rep_period,
             t_low.time_block_start
     )
@@ -304,7 +304,7 @@ with
     filtered_assets as (
         select
             attr.asset,
-            attr.year,
+            attr.milestone_year,
             attr.scenario,
             attr.period_block_start,
             attr.period_block_end,
@@ -316,7 +316,7 @@ with
             and asset.is_seasonal = true
         order by
             attr.asset,
-            attr.year,
+            attr.milestone_year,
             attr.scenario,
             attr.period_block_start
     )

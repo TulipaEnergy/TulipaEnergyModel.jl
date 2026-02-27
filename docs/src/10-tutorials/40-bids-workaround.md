@@ -120,7 +120,7 @@ tulipa = create_new_problem()
 connection = create_connection(tulipa)
 
 # (Fake) cluster the profiles to generate representative periods
-TC.dummy_cluster!(connection)
+TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
 
 # Solve the scenario
 TEM.populate_with_defaults!(connection)
@@ -219,7 +219,7 @@ end
 connection = create_connection(tulipa)
 
 # (Fake) cluster the profiles to generate representative periods
-TC.dummy_cluster!(connection)
+TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
 
 # Solve the scenario
 TEM.populate_with_defaults!(connection)
@@ -311,7 +311,7 @@ end
 connection = create_connection(tulipa)
 
 # (Fake) cluster the profiles to generate representative periods
-TC.dummy_cluster!(connection)
+TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
 
 # Create the mode
 TEM.populate_with_defaults!(connection)
@@ -376,7 +376,7 @@ function full_bid_run(bid_blocks; capacity, operational_cost)
     connection = create_connection(tulipa)
 
     # (Fake) cluster the profiles to generate representative periods
-    TC.dummy_cluster!(connection)
+    TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
 
     # Create the mode
     TEM.populate_with_defaults!(connection)
@@ -511,7 +511,7 @@ function compute_per_capacity(capacity_vector, operational_cost_vector)
         connection = create_connection(tulipa)
 
         # (Fake) cluster the profiles to generate representative periods
-        TC.dummy_cluster!(connection)
+        TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
 
         # Solve the scenario
         TEM.populate_with_defaults!(connection)
