@@ -499,7 +499,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and not (asset.unit_commitment_method in ('1var-0', '1var-E2C', '2var-0T', '2var-0C', '2var-E1', '3var-0T', '3var-0C', '3var-E1'))
+    and not (asset.unit_commitment_method in ('1var-0', '1var-E2C', '2var-0T', '2var-0C', '2var-E1', '3var-0T', '3var-0C', '3var-E1', '3var-0N'))
 ;
 
 drop sequence id
@@ -985,7 +985,7 @@ from (
     where
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
-        and (asset.unit_commitment_method in ('3var-0T')
+        and (asset.unit_commitment_method in ('3var-0T', '3var-0N')
         or asset.unit_commitment_method LIKE '3var-E%')
     order by
         t_high.asset,
