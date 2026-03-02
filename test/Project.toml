@@ -23,6 +23,7 @@ TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
 TulipaEnergyModel = {path = ".."}
 
 [compat]
+Aqua = "0.8.14"
 BenchmarkTools = "1"
 CSV = "0.10"
 DataFrames = " 1"
