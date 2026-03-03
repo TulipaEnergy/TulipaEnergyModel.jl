@@ -1,4 +1,4 @@
-id,asset,year,scenario,period_block_start,period_block_end,solution,dual_balance_storage_over_clustered_year,dual_max_storage_level_over_clustered_year_limit,dual_min_storage_level_over_clustered_year_limit
+id,asset,milestone_year,scenario,period_block_start,period_block_end,solution,dual_balance_storage_over_clustered_year,dual_max_storage_level_over_clustered_year_limit,dual_min_storage_level_over_clustered_year_limit
 1,AT_Hydro_Reservoir,2050,1,1,1,,-0.0,0.0,0.0
 2,AT_Hydro_Reservoir,2050,1,2,2,,-0.0,0.0,0.0
 3,AT_Hydro_Reservoir,2050,1,3,3,,-0.0,0.0,0.0

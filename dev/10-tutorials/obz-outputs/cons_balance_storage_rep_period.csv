@@ -1,4 +1,4 @@
-id,asset,year,rep_period,time_block_start,time_block_end,solution,dual_balance_storage_rep_period,dual_max_storage_level_rep_period_limit,dual_min_storage_level_rep_period_limit
+id,asset,milestone_year,rep_period,time_block_start,time_block_end,solution,dual_balance_storage_rep_period,dual_max_storage_level_rep_period_limit,dual_min_storage_level_rep_period_limit
 1,AT_Battery,2050,1,1,4,,-0.0,0.0,0.0
 2,AT_Battery,2050,1,5,8,,-0.0,0.0,0.0
 3,AT_Battery,2050,1,9,12,,-0.0,0.0,0.0

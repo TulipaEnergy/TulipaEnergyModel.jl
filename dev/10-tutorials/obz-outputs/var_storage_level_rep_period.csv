@@ -1,4 +1,4 @@
-id,asset,year,rep_period,time_block_start,time_block_end,solution
+id,asset,milestone_year,rep_period,time_block_start,time_block_end,solution
 1,AT_Battery,2050,1,1,4,0.0
 2,AT_Battery,2050,1,5,8,0.0
 3,AT_Battery,2050,1,9,12,0.0

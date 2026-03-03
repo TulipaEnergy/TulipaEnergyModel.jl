@@ -1,4 +1,4 @@
-year,timestep,availability-wind,availability-solar,demand-demand
+milestone_year,timestep,availability-wind,availability-solar,demand-demand
 2030,1,0.975744495,0,0.633142247
 2030,2,0.974481951,0,0.625239406
 2030,3,0.974812418,0,0.621110133

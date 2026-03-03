@@ -1,4 +1,4 @@
-id,from_asset,to_asset,year,rep_period,capacity_coefficient,conversion_coefficient,time_block_start,time_block_end,solution
+id,from_asset,to_asset,milestone_year,rep_period,capacity_coefficient,conversion_coefficient,time_block_start,time_block_end,solution
 1,AT_E_Demand,DE_E_Demand,2050,1,1.0,1.0,1,4,-3.212406762808242
 2,AT_E_Demand,DE_E_Demand,2050,1,1.0,1.0,5,8,6.5315716992136
 3,AT_E_Demand,DE_E_Demand,2050,1,1.0,1.0,9,12,-11.5

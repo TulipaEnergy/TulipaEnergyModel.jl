@@ -1,4 +1,4 @@
-id,asset,year,rep_period,time_block_start,time_block_end,dual_balance_consumer
+id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_balance_consumer
 1,AT_E_Demand,2050,1,1,4,-0.0
 2,AT_E_Demand,2050,1,5,8,-0.0
 3,AT_E_Demand,2050,1,9,12,-0.0

@@ -1,4 +1,4 @@
-id,asset,year,scenario,period_block_start,period_block_end,solution
+id,asset,milestone_year,scenario,period_block_start,period_block_end,solution
 1,AT_Hydro_Reservoir,2050,1,1,1,380.9400617993934
 2,AT_Hydro_Reservoir,2050,1,2,2,383.3801235987868
 3,AT_Hydro_Reservoir,2050,1,3,3,385.8201853981802

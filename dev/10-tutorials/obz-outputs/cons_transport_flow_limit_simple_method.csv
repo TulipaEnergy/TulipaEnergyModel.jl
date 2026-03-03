@@ -1,4 +1,4 @@
-id,from_asset,to_asset,year,rep_period,time_block_start,time_block_end,var_flow_id,dual_max_transport_flow_limit_simple_method,dual_min_transport_flow_limit_simple_method
+id,from_asset,to_asset,milestone_year,rep_period,time_block_start,time_block_end,var_flow_id,dual_max_transport_flow_limit_simple_method,dual_min_transport_flow_limit_simple_method
 1,AT_E_Demand,DE_E_Demand,2050,1,1,4,1,0.0,0.0
 2,AT_E_Demand,DE_E_Demand,2050,1,5,8,2,0.0,0.0
 3,AT_E_Demand,DE_E_Demand,2050,1,9,12,3,0.0,-0.0
