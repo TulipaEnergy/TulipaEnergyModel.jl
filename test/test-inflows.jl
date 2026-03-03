@@ -51,7 +51,7 @@
     )
 
     # Cluster, populate_with_defaults, and create model
-    TC.dummy_cluster!(connection)
+    TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(; year = :milestone_year))
     TEM.populate_with_defaults!(connection)
     energy_problem = TEM.EnergyProblem(connection)
     TEM.create_model!(energy_problem)

@@ -15,7 +15,7 @@ from
     t_lowest_flows_conversion_balance as t_low
 order by
     t_low.asset,
-    t_low.year,
+    t_low.milestone_year,
     t_low.rep_period,
     t_low.time_block_start
 ;
@@ -77,7 +77,7 @@ from
     t_highest_in_flows as t_high
     left join asset on t_high.asset = asset.asset
     left join asset_milestone on t_high.asset = asset_milestone.asset
-    and t_high.year = asset_milestone.milestone_year
+    and t_high.milestone_year = asset_milestone.milestone_year
 where
     asset.type in ('storage')
     and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
@@ -101,7 +101,7 @@ from
     t_highest_in_flows as t_high
     left join asset on t_high.asset = asset.asset
     left join asset_milestone on t_high.asset = asset_milestone.asset
-    and t_high.year = asset_milestone.milestone_year
+    and t_high.milestone_year = asset_milestone.milestone_year
 where
     asset.type in ('storage')
     and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
@@ -151,7 +151,7 @@ with cons_data as (
         t_highest_out_flows as t_high
         left join asset on t_high.asset = asset.asset
         left join asset_both on t_high.asset = asset_both.asset
-        and t_high.year = asset_both.milestone_year
+        and t_high.milestone_year = asset_both.milestone_year
     where
         asset.type = 'producer'
         and asset.investment_method = 'semi-compact'
@@ -210,7 +210,7 @@ from
     t_highest_out_flows as t_high
     left join asset on t_high.asset = asset.asset
     left join asset_milestone on t_high.asset = asset_milestone.asset
-    and t_high.year = asset_milestone.milestone_year
+    and t_high.milestone_year = asset_milestone.milestone_year
 where
     asset.type in ('storage')
     and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
@@ -234,7 +234,7 @@ from
     t_highest_out_flows as t_high
     left join asset on t_high.asset = asset.asset
     left join asset_milestone on t_high.asset = asset_milestone.asset
-    and t_high.year = asset_milestone.milestone_year
+    and t_high.milestone_year = asset_milestone.milestone_year
 where
     asset.type in ('storage')
     and asset.use_binary_storage_method in ('binary', 'relaxed_binary')
@@ -322,7 +322,7 @@ with
 select
     nextval('id') as id,
     t_high.asset as asset,
-    t_high.year as milestone_year,
+    t_high.milestone_year as milestone_year,
     asset_both.commission_year as commission_year,
     t_high.rep_period,
     t_high.time_block_start,
@@ -332,7 +332,7 @@ from
     left join asset on t_high.asset = asset.asset
     left join cte_transport_flow_info on t_high.asset = cte_transport_flow_info.asset
     left join asset_both on t_high.asset = asset_both.asset
-        and t_high.year = asset_both.milestone_year
+        and t_high.milestone_year = asset_both.milestone_year
 where
     asset.type = 'producer'
     and asset.investment_method = 'semi-compact'
@@ -534,14 +534,14 @@ create table cons_min_energy_over_clustered_year as
 select
     nextval('id') as id,
     attr.asset,
-    attr.year,
+    attr.milestone_year,
     attr.scenario,
     attr.period_block_start,
     attr.period_block_end,
 from
     asset_time_resolution_over_clustered_year as attr
     left join asset_milestone on attr.asset = asset_milestone.asset
-    and attr.year = asset_milestone.milestone_year
+    and attr.milestone_year = asset_milestone.milestone_year
 where
     asset_milestone.min_energy_timeframe_partition is not null
 ;
@@ -559,14 +559,14 @@ create table cons_max_energy_over_clustered_year as
 select
     nextval('id') as id,
     attr.asset,
-    attr.year,
+    attr.milestone_year,
     attr.scenario,
     attr.period_block_start,
     attr.period_block_end,
 from
     asset_time_resolution_over_clustered_year as attr
     left join asset_milestone on attr.asset = asset_milestone.asset
-    and attr.year = asset_milestone.milestone_year
+    and attr.milestone_year = asset_milestone.milestone_year
 where
     asset_milestone.max_energy_timeframe_partition is not null
 ;
@@ -585,7 +585,7 @@ select
     nextval('id') as id,
     var_flow.from_asset,
     var_flow.to_asset,
-    var_flow.year,
+    var_flow.milestone_year,
     var_flow.rep_period,
     var_flow.time_block_start,
     var_flow.time_block_end,
@@ -678,7 +678,7 @@ from
         '_',
         fr.flow_2_to_asset
     )
-    and t_low.year = fr.milestone_year
+    and t_low.milestone_year = fr.milestone_year
 ;
 
 drop sequence id
@@ -695,7 +695,7 @@ select
     nextval('id') as id,
     flow.from_asset,
     flow.to_asset,
-    t_high.year,
+    t_high.milestone_year,
     t_high.rep_period,
     t_high.time_block_start,
     t_high.time_block_end
@@ -704,7 +704,7 @@ from
 left join flow on t_high.asset = CONCAT(flow.from_asset, '_', flow.to_asset)
 left join flow_milestone on flow_milestone.from_asset = flow.from_asset
     and flow_milestone.to_asset = flow.to_asset
-    and flow_milestone.milestone_year = t_high.year
+    and flow_milestone.milestone_year = t_high.milestone_year
 where
     flow.is_transport
     and flow_milestone.dc_opf
@@ -746,7 +746,7 @@ select
     nextval('id') as id,
     from_asset,
     to_asset,
-    year,
+    milestone_year,
     rep_period,
     time_block_start,
     time_block_end,
@@ -773,7 +773,7 @@ select
 from (
     select
         t_high.asset,
-        t_high.year,
+        t_high.milestone_year,
         t_high.rep_period,
         t_high.time_block_start,
         t_high.time_block_end
@@ -782,7 +782,7 @@ from (
         inner join asset_time_resolution_rep_period as atr
             on
                 t_high.asset = atr.asset
-                and t_high.year = atr.year
+                and t_high.milestone_year = atr.milestone_year
                 and t_high.rep_period = atr.rep_period
                 and t_high.time_block_start = atr.time_block_start
         left join asset on asset.asset = atr.asset
@@ -792,7 +792,7 @@ from (
         and asset.unit_commitment_method LIKE '3var%'
     order by
         t_high.asset,
-        t_high.year,
+        t_high.milestone_year,
         t_high.rep_period,
         t_high.time_block_start
 ) as sub
@@ -814,7 +814,7 @@ select
 from (
     select
         t_high.asset,
-        t_high.year,
+        t_high.milestone_year,
         t_high.rep_period,
         t_high.time_block_start,
         t_high.time_block_end
@@ -823,7 +823,7 @@ from (
         inner join asset_time_resolution_rep_period as atr
             on
                 t_high.asset = atr.asset
-                and t_high.year = atr.year
+                and t_high.milestone_year = atr.milestone_year
                 and t_high.rep_period = atr.rep_period
                 and t_high.time_block_start = atr.time_block_start
         left join asset on asset.asset = atr.asset
@@ -835,7 +835,7 @@ from (
 
     order by
         t_high.asset,
-        t_high.year,
+        t_high.milestone_year,
         t_high.rep_period,
         t_high.time_block_start
 ) as sub
@@ -854,7 +854,7 @@ create table cons_shut_down_upper_bound_compact_investment as
 with sub as
 (select distinct
     t_high.asset,
-    t_high.year,
+    t_high.milestone_year,
     t_high.rep_period,
     t_high.time_block_start,
     t_high.time_block_end,
@@ -866,7 +866,7 @@ from
             atr.asset = t_high.asset and
             atr.time_block_start = t_high.time_block_start and
             atr.rep_period = t_high.rep_period and
-            atr.year = t_high.year
+            atr.milestone_year = t_high.milestone_year
     join asset
         on
             asset.asset = t_high.asset
@@ -877,7 +877,7 @@ where
     and asset.investment_method = 'compact'
 order by
     t_high.asset,
-    t_high.year,
+    t_high.milestone_year,
     t_high.rep_period,
     t_high.time_block_start)
 select
@@ -902,7 +902,7 @@ select distinct
 from (
     select distinct
         t_high.asset,
-        t_high.year,
+        t_high.milestone_year,
         t_high.rep_period,
         t_high.time_block_start,
         t_high.time_block_end,
@@ -911,7 +911,7 @@ from (
         inner join asset_time_resolution_rep_period as atr
             on
                 t_high.asset = atr.asset
-                and t_high.year = atr.year
+                and t_high.milestone_year = atr.milestone_year
                 and t_high.rep_period = atr.rep_period
                 and t_high.time_block_start = atr.time_block_start
         left join asset on asset.asset = atr.asset
@@ -921,7 +921,7 @@ from (
         and asset.unit_commitment_method LIKE '3var%'
     order by
         t_high.asset,
-        t_high.year,
+        t_high.milestone_year,
         t_high.rep_period,
         t_high.time_block_start
 ) as sub

@@ -1,4 +1,4 @@
-year,period,rep_period,weight,scenario
+milestone_year,period,rep_period,weight,scenario
 2030,1,2,1.0,1
 2030,2,2,1.0,1
 2030,3,2,1.0,1

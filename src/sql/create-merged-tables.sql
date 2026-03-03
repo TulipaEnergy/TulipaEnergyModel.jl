@@ -2,7 +2,7 @@
 create or replace temp table merged_in_flows as
 select
     distinct to_asset as asset,
-    year,
+    milestone_year,
     rep_period,
     time_block_start,
     time_block_end
@@ -14,7 +14,7 @@ from
 create or replace temp table merged_in_flows_conversion_balance as
 select
     distinct ftrrp.to_asset as asset,
-    ftrrp.year,
+    ftrrp.milestone_year,
     ftrrp.rep_period,
     ftrrp.time_block_start,
     ftrrp.time_block_end
@@ -24,7 +24,7 @@ left join
     flow_commission as fc on
         ftrrp.from_asset = fc.from_asset and
         ftrrp.to_asset = fc.to_asset and
-        ftrrp.year = fc.commission_year
+        ftrrp.milestone_year = fc.commission_year
 left join
     asset on ftrrp.to_asset = asset.asset
 where
@@ -36,7 +36,7 @@ where
 create or replace temp table merged_out_flows as
 select
     distinct from_asset as asset,
-    year,
+    milestone_year,
     rep_period,
     time_block_start,
     time_block_end
@@ -48,7 +48,7 @@ from
 create or replace temp table merged_out_flows_conversion_balance as
 select
     distinct ftrrp.from_asset as asset,
-    ftrrp.year,
+    ftrrp.milestone_year,
     ftrrp.rep_period,
     ftrrp.time_block_start,
     ftrrp.time_block_end
@@ -58,7 +58,7 @@ left join
     flow_commission as fc on
         ftrrp.from_asset = fc.from_asset and
         ftrrp.to_asset = fc.to_asset and
-        ftrrp.year = fc.commission_year
+        ftrrp.milestone_year = fc.commission_year
 left join
     asset on ftrrp.from_asset = asset.asset
 where
@@ -70,7 +70,7 @@ where
 create or replace temp table merged_assets_and_out_flows as
 select
     distinct asset,
-    year,
+    milestone_year,
     rep_period,
     time_block_start,
     time_block_end
@@ -103,7 +103,7 @@ from
 create or replace temp table merged_all as
 select
     distinct asset,
-    year,
+    milestone_year,
     rep_period,
     time_block_start,
     time_block_end
@@ -123,7 +123,7 @@ create or replace temp table merged_flows_relationship as
                fr.flow_1_to_asset, '_',
                fr.flow_2_from_asset, '_',
                fr.flow_2_to_asset) as asset,
-        ftrrp.year,
+        ftrrp.milestone_year,
         ftrrp.rep_period,
         ftrrp.time_block_start,
         ftrrp.time_block_end,
@@ -139,7 +139,7 @@ create or replace temp table merged_flows_relationship as
                 and ftrrp.to_asset = fr.flow_2_to_asset
             )
         )
-        and ftrrp.year = fr.milestone_year
+        and ftrrp.milestone_year = fr.milestone_year
 ;
 
 -- merged table for flows and connecting assets:
@@ -149,7 +149,7 @@ create or replace temp table merged_flows_relationship as
 create or replace temp table merged_flows_and_connecting_assets as
 select distinct
     CONCAT(ftrrp.from_asset, '_', ftrrp.to_asset) as asset,
-    ftrrp.year,
+    ftrrp.milestone_year,
     ftrrp.rep_period,
     ftrrp.time_block_start,
     ftrrp.time_block_end
@@ -159,14 +159,14 @@ from
 left join flow_milestone as fm
     on fm.from_asset = ftrrp.from_asset
      and fm.to_asset = ftrrp.to_asset
-     and fm.milestone_year = ftrrp.year
+     and fm.milestone_year = ftrrp.milestone_year
 where fm.dc_opf
 
 union
 
 select distinct
     CONCAT(fm.from_asset, '_', fm.to_asset) as asset,
-    atrrp.year,
+    atrrp.milestone_year,
     atrrp.rep_period,
     atrrp.time_block_start,
     atrrp.time_block_end
@@ -178,6 +178,6 @@ join
         atrrp.asset = fm.from_asset
         or atrrp.asset = fm.to_asset
     )
-      and fm.milestone_year = atrrp.year
+      and fm.milestone_year = atrrp.milestone_year
 where fm.dc_opf
 ;

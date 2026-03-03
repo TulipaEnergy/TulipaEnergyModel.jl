@@ -4,7 +4,7 @@
 
 Validation of the rolling horizon input:
 - opt_window_length ≥ move_forward
-- Only one representative period per year
+- Only one representative period per milestone_year
 - Only 'uniform' partitions are allowed
 - Only partitions that exactly divide opt_window_length are allowed
 """
@@ -12,9 +12,9 @@ function validate_rolling_horizon_input(connection, move_forward, opt_window_len
     @assert opt_window_length >= move_forward
     for row in DuckDB.query(
         connection,
-        "SELECT year, max(rep_period) as num_rep_periods
+        "SELECT milestone_year, max(rep_period) as num_rep_periods
         FROM rep_periods_data
-        GROUP BY year",
+        GROUP BY milestone_year",
     )
         @assert row.num_rep_periods == 1
     end
@@ -106,7 +106,7 @@ function get_where_condition(connection, table_name)
             FROM duckdb_columns
             WHERE table_name = '$table_name'
                 AND column_name IN ('asset', 'from_asset', 'to_asset',
-                    'milestone_year', 'commission_year', 'year', 'rep_period')
+                    'milestone_year', 'commission_year', 'rep_period')
             """,
         )
     ]

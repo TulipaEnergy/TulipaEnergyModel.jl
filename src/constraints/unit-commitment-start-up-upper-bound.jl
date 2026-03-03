@@ -27,7 +27,7 @@ function add_start_up_upper_bound_constraints!(
                 @constraint(
                     model,
                     start_up_vars[row.start_up_id] <= units_on_vars[row.units_on_id],
-                    base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for row in indices
             ],
         )

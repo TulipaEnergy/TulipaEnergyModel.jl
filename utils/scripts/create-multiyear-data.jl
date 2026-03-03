@@ -16,7 +16,7 @@ cd(multiyear_folder) do
     # Extra bad-assets.csv is not necessary
     rm("bad-assets-data.csv")
 
-    # Copy rows and change year to 2050 in new lines
+    # Copy rows and change milestone_year to 2050 in new lines
     for filename in (
         "assets-data.csv",
         "assets-profiles.csv",
@@ -30,7 +30,7 @@ cd(multiyear_folder) do
     )
         change_file(filename) do tcsv
             df_2050 = copy(tcsv.csv)
-            df_2050.year .= 2050
+            df_2050.milestone_year .= 2050
             return tcsv.csv = [tcsv.csv; df_2050]
         end
     end

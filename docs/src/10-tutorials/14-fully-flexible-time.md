@@ -30,7 +30,7 @@ Working in the folder `tutorial-3`:
 2. Copy this text into the file:
 
    ```txt
-   asset,partition,rep_period,specification,year
+   asset,partition,rep_period,specification,milestone_year
    electrolizer,6,1,uniform,2030
    ```
 
@@ -38,7 +38,7 @@ Working in the folder `tutorial-3`:
 4. Copy this text into the file:
 
    ```txt
-   from_asset,to_asset,partition,rep_period,specification,year
+   from_asset,to_asset,partition,rep_period,specification,milestone_year
    electrolizer,h2_demand,6,1,uniform,2030
    ```
 
@@ -128,7 +128,7 @@ filtered_flow = filter(
     row ->
         row.from_asset == from_asset &&
             row.to_asset == to_asset &&
-            row.year == year &&
+            row.milestone_year == year &&
             row.rep_period == rep_period,
     flows,
 )
@@ -160,7 +160,7 @@ rep_period = 1
 filtered_asset = filter(
     row ->
         row.asset == asset &&
-            row.year == year &&
+            row.milestone_year == year &&
             row.rep_period == rep_period,
     balance,
 )
@@ -173,7 +173,7 @@ How is the resolution of the Consumer Balance Constraint defined?
 Update the `flows_rep_periods_partitions` file:
 
 ```txt
-from_asset,to_asset,partition,rep_period,specification,year
+from_asset,to_asset,partition,rep_period,specification,milestone_year
 electrolizer,h2_demand,6,1,uniform,2030
 smr_ccs,h2_demand,6,1,uniform,2030
 ```
@@ -232,7 +232,7 @@ filtered_flow = filter(
     row ->
         row.from_asset == from_asset &&
             row.to_asset == to_asset &&
-            row.year == year &&
+            row.milestone_year == year &&
             row.rep_period == rep_period,
     flows,
 )
@@ -256,7 +256,7 @@ hourly_filtered_flow = filter(
     row ->
         row.from_asset == from_asset &&
             row.to_asset == to_asset &&
-            row.year == year &&
+            row.milestone_year == year &&
             row.rep_period == rep_period,
     hourly_flows,
 )

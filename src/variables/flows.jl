@@ -22,7 +22,7 @@ function add_flow_variables!(connection, model, variables)
         @variable(
             model,
             lower_bound = lower_bound(row),
-            base_name = "flow[($(row.from_asset),$(row.to_asset)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+            base_name = "flow[($(row.from_asset),$(row.to_asset)),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
         ) for row in indices
     ]
 

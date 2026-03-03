@@ -8,7 +8,7 @@
     )
 
 Computes the intersection of the constraint and variable grouping by (:asset,
-:year, :rep_period).
+:milestone_year, :rep_period).
 
 The intersection is made on time blocks, so both the constraint table and the
 variable table must have columns id, time_block_start and time_block_end.
@@ -27,7 +27,7 @@ time block.
 
 The algorithm works like this:
 
-1. Loop over each group of (asset, year, rep_period)
+1. Loop over each group of (asset, milestone_year, rep_period)
 1.1. Loop over each variable in the group: (var_id, var_time_block_start, var_time_block_end)
 1.1.1. Loop over each timestep in var_time_block_start:var_time_block_end
 1.1.1.1. Compute the coefficient of the variable based on the rep_period
@@ -61,7 +61,7 @@ function attach_expression_on_constraints_grouping_variables!(
         connection,
         cons.table_name,
         grouped_cons_table_name,
-        [:asset, :year, :rep_period],
+        [:asset, :milestone_year, :rep_period],
         [:id, :time_block_start, :time_block_end],
     )
 
@@ -70,7 +70,7 @@ function attach_expression_on_constraints_grouping_variables!(
         connection,
         var.table_name,
         grouped_var_table_name,
-        [:asset, :year, :rep_period],
+        [:asset, :milestone_year, :rep_period],
         [:id, :time_block_start, :time_block_end],
     )
 
@@ -83,7 +83,7 @@ function attach_expression_on_constraints_grouping_variables!(
         connection,
         "SELECT
             cons.asset,
-            cons.year,
+            cons.milestone_year,
             cons.rep_period,
             cons.id AS cons_id_vec,
             cons.time_block_start AS cons_time_block_start_vec,
@@ -94,7 +94,7 @@ function attach_expression_on_constraints_grouping_variables!(
         FROM $grouped_cons_table_name AS cons
         LEFT JOIN $grouped_var_table_name AS var
             ON cons.asset = var.asset
-            AND cons.year = var.year
+            AND cons.milestone_year = var.milestone_year
             AND cons.rep_period = var.rep_period
         WHERE
             len(var.id) > 0

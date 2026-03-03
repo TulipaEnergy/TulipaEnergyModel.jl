@@ -57,7 +57,7 @@ big_table_no_rh = nice_query("""
             var.time_block_start AS timestep,
             SUM(var.solution) AS solution,
         FROM var_flow AS var
-        WHERE rep_period = 1 AND year = 2030
+        WHERE rep_period = 1 AND milestone_year = 2030
         GROUP BY asset, timestep
     ), cte_incoming AS (
         SELECT
@@ -65,7 +65,7 @@ big_table_no_rh = nice_query("""
             var.time_block_start AS timestep,
             SUM(var.solution) AS solution,
         FROM var_flow AS var
-        WHERE rep_period = 1 AND year = 2030
+        WHERE rep_period = 1 AND milestone_year = 2030
         GROUP BY asset, timestep
     ), cte_unified AS (
         SELECT
@@ -302,7 +302,7 @@ big_table_rh = nice_query("""
             var.time_block_start AS timestep,
             SUM(var.solution) AS solution,
         FROM var_flow AS var
-        WHERE rep_period = 1 AND year = 2030
+        WHERE rep_period = 1 AND milestone_year = 2030
         GROUP BY asset, timestep
     ), cte_incoming AS (
         SELECT
@@ -310,7 +310,7 @@ big_table_rh = nice_query("""
             var.time_block_start AS timestep,
             SUM(var.solution) AS solution,
         FROM var_flow AS var
-        WHERE rep_period = 1 AND year = 2030
+        WHERE rep_period = 1 AND milestone_year = 2030
         GROUP BY asset, timestep
     ), cte_unified AS (
         SELECT

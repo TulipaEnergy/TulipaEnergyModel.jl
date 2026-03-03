@@ -19,7 +19,7 @@ function add_energy_constraints!(connection, model, constraints, profiles)
                 begin
                     max_energy_agg = _profile_aggregate(
                         profiles.over_clustered_year,
-                        (row.profile_name, row.year, row.scenario),
+                        (row.profile_name, row.milestone_year, row.scenario),
                         row.period_block_start:row.period_block_end,
                         sum,
                         1.0,
@@ -27,7 +27,7 @@ function add_energy_constraints!(connection, model, constraints, profiles)
                     @constraint(
                         model,
                         outgoing_flow ≤ max_energy_agg * row.max_energy_timeframe_partition,
-                        base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+                        base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, outgoing_flow) in zip(indices, cons.expressions[:outgoing])
             ],
@@ -45,7 +45,7 @@ function add_energy_constraints!(connection, model, constraints, profiles)
                 begin
                     min_energy_agg = _profile_aggregate(
                         profiles.over_clustered_year,
-                        (row.profile_name, row.year, row.scenario),
+                        (row.profile_name, row.milestone_year, row.scenario),
                         row.period_block_start:row.period_block_end,
                         sum,
                         1.0,
@@ -53,7 +53,7 @@ function add_energy_constraints!(connection, model, constraints, profiles)
                     @constraint(
                         model,
                         outgoing_flow ≥ min_energy_agg * row.min_energy_timeframe_partition,
-                        base_name = "$table_name[$(row.asset),$(row.year),$(row.period_block_start):$(row.period_block_end)]"
+                        base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for (row, outgoing_flow) in zip(indices, cons.expressions[:outgoing])
             ],
@@ -73,10 +73,10 @@ function _append_energy_data_to_indices(connection, table_name, min_or_max)
         FROM cons_$table_name AS cons
         LEFT JOIN asset_milestone
             ON cons.asset = asset_milestone.asset
-            AND cons.year = asset_milestone.milestone_year
+            AND cons.milestone_year = asset_milestone.milestone_year
         LEFT OUTER JOIN assets_timeframe_profiles
             ON cons.asset = assets_timeframe_profiles.asset
-            AND cons.year = assets_timeframe_profiles.year
+            AND cons.milestone_year = assets_timeframe_profiles.milestone_year
             AND assets_timeframe_profiles.profile_type = '$(min_or_max)_energy'
         ORDER BY cons.id
         ",

@@ -399,6 +399,10 @@
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
+    "milestone_year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    },
     "partition": {
       "default": "1",
       "description": "Partition or temporal resolution in the representative periods. For example, for a `uniform` specification `1` is hourly, `2` is every two hours.",
@@ -420,16 +424,16 @@
       "default": "uniform",
       "description": "Partition (or temporal resolution) specification in the representative periods.",
       "type": "VARCHAR"
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
     }
   },
   "assets_timeframe_partitions": {
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
+    },
+    "milestone_year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
     },
     "partition": {
       "default": "1",
@@ -447,16 +451,16 @@
       "default": "uniform",
       "description": "Partition (or temporal resolution) specification in the timeframe.",
       "type": "VARCHAR"
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
     }
   },
   "assets_timeframe_profiles": {
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
+    },
+    "milestone_year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
     },
     "profile_name": {
       "description": "Name of profile, used to determine data inside the DuckDB table",
@@ -479,10 +483,6 @@
       "description": "Stochastic scenario number.",
       "type": "INTEGER",
       "unit_of_measure": "number"
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
     }
   },
   "flow": {
@@ -687,6 +687,10 @@
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
+    "milestone_year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    },
     "profile_name": {
       "description": "Name of profile, used to determine data inside the DuckDB table",
       "type": "VARCHAR"
@@ -704,10 +708,6 @@
     "to_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
     }
   },
   "flows_relationships": {
@@ -761,6 +761,10 @@
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
+    "milestone_year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    },
     "partition": {
       "default": "1",
       "description": "Partition or temporal resolution in the representative periods. For example, for a `uniform` specification `1` is hourly, `2` is every two hours.",
@@ -786,10 +790,6 @@
     "to_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
     }
   },
   "group_asset": {
@@ -815,6 +815,10 @@
     }
   },
   "profiles_rep_periods": {
+    "milestone_year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    },
     "profile_name": {
       "description": "Profile name.",
       "type": "VARCHAR"
@@ -831,13 +835,13 @@
       "description": "Value of the profile.",
       "type": "DOUBLE",
       "unit_of_measure": "p.u."
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
     }
   },
   "profiles_timeframe": {
+    "milestone_year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    },
     "period": {
       "description": "Period.",
       "type": "INTEGER"
@@ -850,13 +854,13 @@
       "description": "value of the profile.",
       "type": "DOUBLE",
       "unit_of_measure": "p.u."
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
     }
   },
   "rep_periods_data": {
+    "milestone_year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    },
     "num_timesteps": {
       "default": 8760,
       "description": "Number of timesteps",
@@ -872,13 +876,13 @@
       "description": "Duration of each timestep",
       "type": "DOUBLE",
       "unit_of_measure": "hours"
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
     }
   },
   "rep_periods_mapping": {
+    "milestone_year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    },
     "period": {
       "description": "Period number.",
       "type": "INTEGER"
@@ -897,10 +901,6 @@
       "default": 1.0,
       "description": "Hours",
       "type": "DOUBLE"
-    },
-    "year": {
-      "description": "Milestone year.",
-      "type": "INTEGER"
     }
   },
   "stochastic_scenario": {
@@ -926,6 +926,10 @@
     }
   },
   "timeframe_data": {
+    "milestone_year": {
+      "description": "Milestone year.",
+      "type": "INTEGER"
+    },
     "num_timesteps": {
       "default": 8760,
       "description": "Number of timesteps of the representative period.",
@@ -933,10 +937,6 @@
     },
     "period": {
       "description": "Period.",
-      "type": "INTEGER"
-    },
-    "year": {
-      "description": "Unique identifier (currently, the year itself)",
       "type": "INTEGER"
     }
   },

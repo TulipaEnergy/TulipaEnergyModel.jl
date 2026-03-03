@@ -1,4 +1,4 @@
-name,year,partition,initial_units,initial_storage_units,initial_storage_level,storage_inflows
+name,milestone_year,partition,initial_units,initial_storage_units,initial_storage_level,storage_inflows
 NL_Battery,2050,1,1,1,,0
 BE_Battery,2050,1,1,1,,0
 DE_Hydro_Reservoir,2050,24,1,1,129.3,1.297

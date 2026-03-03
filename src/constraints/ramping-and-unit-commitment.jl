@@ -31,7 +31,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
             [
                 _profile_aggregate(
                     profiles.rep_period,
-                    (row.profile_name, row.year, row.rep_period),
+                    (row.profile_name, row.milestone_year, row.rep_period),
                     row.time_block_start:row.time_block_end,
                     Statistics.mean,
                     1.0,
@@ -86,7 +86,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                     model,
                     variables[:units_on].container[row.units_on_id] ≤
                     sum(expr_avail_compact_method[avail_id] for avail_id in row.avail_indices),
-                    base_name = "limit_units_on_compact_method[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "limit_units_on_compact_method[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for row in indices
             ],
         )
@@ -109,7 +109,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                     model,
                     variables[:units_on].container[row.units_on_id] ≤
                     expr_avail_simple_method[row.avail_id],
-                    base_name = "limit_units_on_simple_method[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "limit_units_on_simple_method[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for row in indices
             ],
         )
@@ -126,7 +126,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                 @constraint(
                     model,
                     flow_above_min_operating_point ≥ 0,
-                    base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "min_output_flow_with_unit_commitment[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, flow_above_min_operating_point) in
                 zip(indices, cons.expressions[:flow_above_min_operating_point])
             ],
@@ -147,7 +147,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                     (1 - row.min_operating_point) *
                     profile_times_capacity[table_name][row.id] *
                     units_on,
-                    base_name = "max_output_flow_with_basic_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "max_output_flow_with_basic_unit_commitment[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, flow_above_min_operating_point, units_on) in zip(
                     indices,
                     cons.expressions[:flow_above_min_operating_point],
@@ -182,7 +182,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         min_outgoing_flow_duration *
                         profile_times_capacity[table_name][row.id] *
                         units_on[row.id],
-                        base_name = "max_ramp_up_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "max_ramp_up_with_unit_commitment[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, min_outgoing_flow_duration) in
                 zip(indices, cons.coefficients[:min_outgoing_flow_duration])
@@ -206,7 +206,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         min_outgoing_flow_duration *
                         profile_times_capacity[table_name][row.id] *
                         units_on[row.id-1],
-                        base_name = "max_ramp_down_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "max_ramp_down_with_unit_commitment[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, min_outgoing_flow_duration) in
                 zip(indices, cons.coefficients[:min_outgoing_flow_duration])
@@ -236,7 +236,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         row.max_ramp_up *
                         min_outgoing_flow_duration *
                         profile_times_capacity[table_name][row.id],
-                        base_name = "max_ramp_up_without_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "max_ramp_up_without_unit_commitment[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, min_outgoing_flow_duration) in
                 zip(indices, cons.coefficients[:min_outgoing_flow_duration])
@@ -258,7 +258,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         -row.max_ramp_down *
                         min_outgoing_flow_duration *
                         profile_times_capacity[table_name][row.id],
-                        base_name = "max_ramp_down_without_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "max_ramp_down_without_unit_commitment[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, min_outgoing_flow_duration) in
                 zip(indices, cons.coefficients[:min_outgoing_flow_duration])
@@ -293,7 +293,7 @@ function _append_ramping_data_to_indices(connection, table_name, allow_consumers
             ON cons.asset = asset.asset
         LEFT OUTER JOIN assets_profiles
             ON cons.asset = assets_profiles.asset
-            AND cons.year = assets_profiles.commission_year
+            AND cons.milestone_year = assets_profiles.commission_year
             AND $profile_type_condition
         ORDER BY cons.id
         ",
@@ -308,7 +308,7 @@ function _append_available_units_data_compact_method(connection, table_name)
         "SELECT
             cons.id,
             ANY_VALUE(cons.asset) AS asset,
-            ANY_VALUE(cons.year) AS year,
+            ANY_VALUE(cons.milestone_year) AS milestone_year,
             ANY_VALUE(cons.rep_period) AS rep_period,
             ANY_VALUE(cons.time_block_start) AS time_block_start,
             ANY_VALUE(cons.time_block_end) AS time_block_end,
@@ -317,12 +317,12 @@ function _append_available_units_data_compact_method(connection, table_name)
         FROM cons_$table_name AS cons
         LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
             ON cons.asset = expr_avail.asset
-            AND cons.year = expr_avail.milestone_year
+            AND cons.milestone_year = expr_avail.milestone_year
         LEFT JOIN asset
             ON cons.asset = asset.asset
         LEFT JOIN var_units_on
             ON var_units_on.asset = cons.asset
-            AND var_units_on.year = cons.year
+            AND var_units_on.milestone_year = cons.milestone_year
             AND var_units_on.rep_period = cons.rep_period
             AND var_units_on.time_block_start = cons.time_block_start
         WHERE asset.investment_method = 'compact'
@@ -339,7 +339,7 @@ function _append_available_units_data_simple_method(connection, table_name)
         "SELECT
             cons.id,
             cons.asset AS asset,
-            cons.year AS year,
+            cons.milestone_year AS milestone_year,
             cons.rep_period AS rep_period,
             cons.time_block_start AS time_block_start,
             cons.time_block_end AS time_block_end,
@@ -348,12 +348,12 @@ function _append_available_units_data_simple_method(connection, table_name)
         FROM cons_$table_name AS cons
         LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
             ON cons.asset = expr_avail.asset
-            AND cons.year = expr_avail.milestone_year
+            AND cons.milestone_year = expr_avail.milestone_year
         LEFT JOIN asset
             ON cons.asset = asset.asset
         LEFT JOIN var_units_on
             ON var_units_on.asset = cons.asset
-            AND var_units_on.year = cons.year
+            AND var_units_on.milestone_year = cons.milestone_year
             AND var_units_on.rep_period = cons.rep_period
             AND var_units_on.time_block_start = cons.time_block_start
         WHERE asset.investment_method in ('simple', 'none')

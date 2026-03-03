@@ -1,4 +1,4 @@
-asset,year,rep_period,specification,partition
+asset,milestone_year,rep_period,specification,partition
 H2,2030,1,uniform,6
 wind,2030,1,uniform,6
 phs,2030,1,uniform,6

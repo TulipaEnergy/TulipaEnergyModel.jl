@@ -28,7 +28,15 @@
         (3, "death_star", "input_1", 2025, 1, 1, 1),
         (4, "death_star", "input_2", 2025, 1, 1, 1),
     ]
-    columns = [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end]
+    columns = [
+        :id,
+        :from_asset,
+        :to_asset,
+        :milestone_year,
+        :rep_period,
+        :time_block_start,
+        :time_block_end,
+    ]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "var_vintage_flow"
@@ -57,7 +65,15 @@
 
     table_name = "cons_vintage_flow_sum_semi_compact_method"
     table_rows = [(1, "input_1", "death_star", 2025, 1, 1, 1)]
-    columns = [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end]
+    columns = [
+        :id,
+        :from_asset,
+        :to_asset,
+        :milestone_year,
+        :rep_period,
+        :time_block_start,
+        :time_block_end,
+    ]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     constraints = let key = :vintage_flow_sum_semi_compact_method

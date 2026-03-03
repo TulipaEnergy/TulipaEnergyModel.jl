@@ -23,7 +23,15 @@
         (3, "input_2", "death_star", 2025, 1, 1, 2),
         (4, "input_2", "death_star", 2025, 1, 3, 5),
     ]
-    columns = [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end]
+    columns = [
+        :id,
+        :from_asset,
+        :to_asset,
+        :milestone_year,
+        :rep_period,
+        :time_block_start,
+        :time_block_end,
+    ]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "var_electricity_angle"
@@ -32,7 +40,7 @@
         (2, "input_1", 2025, 1, 4, 5),
         (3, "death_star", 2025, 1, 1, 5),
     ]
-    columns = [:id, :asset, :year, :rep_period, :time_block_start, :time_block_end]
+    columns = [:id, :asset, :milestone_year, :rep_period, :time_block_start, :time_block_end]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "cons_dc_power_flow"
@@ -41,7 +49,15 @@
         (2, "input_1", "death_star", 2025, 1, 2, 3),
         (3, "input_1", "death_star", 2025, 1, 4, 5),
     ]
-    columns = [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end]
+    columns = [
+        :id,
+        :from_asset,
+        :to_asset,
+        :milestone_year,
+        :rep_period,
+        :time_block_start,
+        :time_block_end,
+    ]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     variables = Dict{Symbol,TulipaEnergyModel.TulipaVariable}(

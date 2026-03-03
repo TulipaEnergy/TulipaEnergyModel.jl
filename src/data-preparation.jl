@@ -186,7 +186,7 @@ function _append_given_durations(appender, row, durations)
             DuckDB.append(appender, row.from_asset)
             DuckDB.append(appender, row.to_asset)
         end
-        DuckDB.append(appender, row.year)
+        DuckDB.append(appender, row.milestone_year)
         if haskey(row, :scenario)
             DuckDB.append(appender, row.scenario)
         end
@@ -249,7 +249,7 @@ function create_unrolled_partition_tables!(connection)
         "CREATE OR REPLACE TEMP TABLE t_explicit_assets_rep_periods_partitions AS
         SELECT
             asset.asset,
-            rep_periods_data.year,
+            rep_periods_data.milestone_year,
             rep_periods_data.rep_period,
             COALESCE(arpp.specification, 'uniform') AS specification,
             COALESCE(arpp.partition::string, '1') AS partition,
@@ -258,9 +258,9 @@ function create_unrolled_partition_tables!(connection)
         CROSS JOIN rep_periods_data
         LEFT JOIN assets_rep_periods_partitions as arpp
             ON asset.asset = arpp.asset
-            AND rep_periods_data.year = arpp.year
+            AND rep_periods_data.milestone_year = arpp.milestone_year
             AND rep_periods_data.rep_period = arpp.rep_period
-        ORDER BY rep_periods_data.year, rep_periods_data.rep_period
+        ORDER BY rep_periods_data.milestone_year, rep_periods_data.rep_period
         ",
     )
 
@@ -270,7 +270,7 @@ function create_unrolled_partition_tables!(connection)
         SELECT
             flow.from_asset,
             flow.to_asset,
-            rep_periods_data.year,
+            rep_periods_data.milestone_year,
             rep_periods_data.rep_period,
             COALESCE(frpp.specification, 'uniform') AS specification,
             COALESCE(frpp.partition::string, '1') AS partition,
@@ -282,11 +282,11 @@ function create_unrolled_partition_tables!(connection)
         LEFT JOIN flow_commission
             ON flow.from_asset = flow_commission.from_asset
             AND flow.to_asset = flow_commission.to_asset
-            AND rep_periods_data.year = flow_commission.commission_year
+            AND rep_periods_data.milestone_year = flow_commission.commission_year
         LEFT JOIN flows_rep_periods_partitions as frpp
             ON flow.from_asset = frpp.from_asset
             AND flow.to_asset = frpp.to_asset
-            AND rep_periods_data.year = frpp.year
+            AND rep_periods_data.milestone_year = frpp.milestone_year
             AND rep_periods_data.rep_period = frpp.rep_period
         LEFT JOIN (
             SELECT
@@ -299,8 +299,8 @@ function create_unrolled_partition_tables!(connection)
         ) AS t
             ON flow.from_asset = t.from_asset
             AND flow.to_asset = t.to_asset
-            AND rep_periods_data.year = t.milestone_year
-        ORDER BY rep_periods_data.year, rep_periods_data.rep_period
+            AND rep_periods_data.milestone_year = t.milestone_year
+        ORDER BY rep_periods_data.milestone_year, rep_periods_data.rep_period
         ",
     )
 
@@ -308,7 +308,7 @@ function create_unrolled_partition_tables!(connection)
         connection,
         "CREATE OR REPLACE TABLE asset_time_resolution_rep_period(
             asset STRING,
-            year INT,
+            milestone_year INT,
             rep_period INT,
             time_block_start INT,
             time_block_end INT
@@ -327,7 +327,7 @@ function create_unrolled_partition_tables!(connection)
         "CREATE OR REPLACE TABLE flow_time_resolution_rep_period(
             from_asset STRING,
             to_asset STRING,
-            year INT,
+            milestone_year INT,
             rep_period INT,
             capacity_coefficient DOUBLE,
             conversion_coefficient DOUBLE,
@@ -349,20 +349,20 @@ function create_unrolled_partition_tables!(connection)
         WITH t_relevant_assets AS (
             SELECT DISTINCT
                 asset.asset,
-                timeframe_data.year,
+                timeframe_data.milestone_year,
             FROM asset
             CROSS JOIN timeframe_data
             WHERE asset.is_seasonal
         )
         SELECT
             t_relevant_assets.asset,
-            t_relevant_assets.year,
+            t_relevant_assets.milestone_year,
             COALESCE(atp.specification, 'uniform') AS specification,
             COALESCE(atp.partition, '1') AS partition,
         FROM t_relevant_assets
         LEFT JOIN assets_timeframe_partitions AS atp
             ON t_relevant_assets.asset = atp.asset
-            AND t_relevant_assets.year = atp.year
+            AND t_relevant_assets.milestone_year = atp.milestone_year
         ",
     )
 
@@ -370,7 +370,7 @@ function create_unrolled_partition_tables!(connection)
         connection,
         "CREATE OR REPLACE TABLE asset_time_resolution_over_clustered_year(
             asset STRING,
-            year INT,
+            milestone_year INT,
             scenario INT,
             period_block_start INT,
             period_block_end INT
@@ -380,14 +380,14 @@ function create_unrolled_partition_tables!(connection)
     appender = DuckDB.Appender(connection, "asset_time_resolution_over_clustered_year")
     for row in DuckDB.query(
         connection,
-        "SELECT asset, sub.year, sub.scenario, specification, partition, num_periods AS num_periods
+        "SELECT asset, sub.milestone_year, sub.scenario, specification, partition, num_periods AS num_periods
         FROM t_explicit_assets_timeframe_partitions AS main
         LEFT JOIN (
-            SELECT year, scenario, MAX(period::BIGINT) AS num_periods
+            SELECT milestone_year, scenario, MAX(period::BIGINT) AS num_periods
             FROM rep_periods_mapping
-            GROUP BY year, scenario
+            GROUP BY milestone_year, scenario
         ) AS sub
-            ON main.year = sub.year
+            ON main.milestone_year = sub.milestone_year
         ",
     )
         durations = _compute_durations(row, row.num_periods)
@@ -402,8 +402,8 @@ end
 
 Create the internal tables of merged flows and assets time partitions to be used in the computation of the lowest and highest resolution tables.
 The inputs tables are the flows table `flow_time_resolution_rep_period`, the assets table `asset_time_resolution_rep_period` and the `flows_relationships`.
-All merged tables have the same columns: `asset`, `year`, `rep_period`, `time_block_start`, and `time_block_end`.
-Given a "group" `(asset, year, rep_period)`, the table will have the list of all partitions that should be used to compute the resolution tables.
+All merged tables have the same columns: `asset`, `milestone_year`, `rep_period`, `time_block_start`, and `time_block_end`.
+Given a "group" `(asset, milestone_year, rep_period)`, the table will have the list of all partitions that should be used to compute the resolution tables.
 These are the output tables:
 - `merged_in_flows`: Set `asset = from_asset` and drop `to_asset` from `flow_time_resolution_rep_period`.
 - `merged_out_flows`: Set `asset = to_asset` and drop `from_asset` from `flow_time_resolution_rep_period`.
@@ -424,7 +424,7 @@ function create_lowest_resolution_table!(connection)
     # Following the lowest resolution merge strategy
 
     # The logic:
-    # - merged table is ordered by groups (asset, year, rep_period), so every new group starts the same way
+    # - merged table is ordered by groups (asset, milestone_year, rep_period), so every new group starts the same way
     # - Inside a group, time blocks (TBs) are ordered by time_block_start, so the
     #   first row of every group starts at time_block_start = 1
     # - The objective of the lowest resolution is to iteratively find the
@@ -486,7 +486,7 @@ function create_lowest_resolution_table!(connection)
             connection,
             "CREATE OR REPLACE TEMP TABLE $table_name(
                 asset STRING,
-                year INT,
+                milestone_year INT,
                 rep_period INT,
                 time_block_start INT,
                 time_block_end INT
@@ -502,12 +502,12 @@ function create_lowest_resolution_table!(connection)
             "SELECT merged.* FROM $merged_table AS merged
             ORDER BY
                 merged.asset,
-                merged.year,
+                merged.milestone_year,
                 merged.rep_period,
                 merged.time_block_start
             ",
         )
-            new_group = (row.asset::String, row.year::Int32, row.rep_period::Int32)
+            new_group = (row.asset::String, row.milestone_year::Int32, row.rep_period::Int32)
             if new_group != current_group
                 # New group, create the last entry
                 # Except for the initial case and when it was already added
@@ -543,7 +543,7 @@ function create_highest_resolution_table!(connection)
     # Following the highest resolution merge strategy
 
     # The logic:
-    # - for each group (asset, year, rep_period) in merged
+    # - for each group (asset, milestone_year, rep_period) in merged
     # - keep all unique time_block_start
     # - create corresponing time_block_end
 
@@ -562,20 +562,20 @@ function create_highest_resolution_table!(connection)
             "CREATE OR REPLACE TEMP TABLE $table_name AS
             SELECT
                 merged.asset,
-                merged.year,
+                merged.milestone_year,
                 merged.rep_period,
                 merged.time_block_start,
                 lead(merged.time_block_start - 1, 1, rep_periods_data.num_timesteps)
-                    OVER (PARTITION BY merged.asset, merged.year, merged.rep_period ORDER BY merged.time_block_start)
+                    OVER (PARTITION BY merged.asset, merged.milestone_year, merged.rep_period ORDER BY merged.time_block_start)
                     AS time_block_end
             FROM (
-                SELECT DISTINCT asset, year, rep_period, time_block_start
+                SELECT DISTINCT asset, milestone_year, rep_period, time_block_start
                 FROM $merged_table
             ) AS merged
             LEFT JOIN rep_periods_data
-                ON merged.year = rep_periods_data.year
+                ON merged.milestone_year = rep_periods_data.milestone_year
                     AND merged.rep_period = rep_periods_data.rep_period
-            ORDER BY merged.asset, merged.year, merged.rep_period, time_block_start
+            ORDER BY merged.asset, merged.milestone_year, merged.rep_period, time_block_start
             ",
         )
     end

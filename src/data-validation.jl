@@ -142,22 +142,22 @@ function _validate_no_duplicate_rows!(connection)
         ("asset_commission", [:asset, :commission_year]),
         ("asset_milestone", [:asset, :milestone_year]),
         ("assets_profiles", [:asset, :commission_year, :profile_type]),
-        ("assets_rep_periods_partitions", [:asset, :year, :rep_period]),
-        ("assets_timeframe_partitions", [:asset, :year]),
-        ("assets_timeframe_profiles", [:asset, :year, :profile_type]),
+        ("assets_rep_periods_partitions", [:asset, :milestone_year, :rep_period]),
+        ("assets_timeframe_partitions", [:asset, :milestone_year]),
+        ("assets_timeframe_profiles", [:asset, :milestone_year, :profile_type]),
         ("flow", [:from_asset, :to_asset]),
         ("flow_both", [:from_asset, :to_asset, :milestone_year, :commission_year]),
         ("flow_commission", [:from_asset, :to_asset, :commission_year]),
         ("flow_milestone", [:from_asset, :to_asset, :milestone_year]),
-        ("flows_profiles", [:from_asset, :to_asset, :year, :profile_type]),
-        ("flows_rep_periods_partitions", [:from_asset, :to_asset, :year, :rep_period]),
+        ("flows_profiles", [:from_asset, :to_asset, :milestone_year, :profile_type]),
+        ("flows_rep_periods_partitions", [:from_asset, :to_asset, :milestone_year, :rep_period]),
         ("group_asset", [:name, :milestone_year]),
-        ("profiles_rep_periods", [:profile_name, :year, :rep_period, :timestep]),
-        ("profiles_timeframe", [:profile_name, :year, :period]),
-        ("rep_periods_data", [:year, :rep_period]),
-        ("rep_periods_mapping", [:year, :scenario, :period, :rep_period]),
+        ("profiles_rep_periods", [:profile_name, :milestone_year, :rep_period, :timestep]),
+        ("profiles_timeframe", [:profile_name, :milestone_year, :period]),
+        ("rep_periods_data", [:milestone_year, :rep_period]),
+        ("rep_periods_mapping", [:milestone_year, :scenario, :period, :rep_period]),
         ("stochastic_scenario", [:scenario]),
-        ("timeframe_data", [:year, :period]),
+        ("timeframe_data", [:milestone_year, :period]),
         ("year_data", [:year]),
     )
         append!(duplicates, _validate_no_duplicate_rows!(connection, table, primary_keys))
@@ -452,7 +452,7 @@ function _validate_use_binary_storage_method_has_investment_limit!(connection)
     )
         push!(
             error_messages,
-            "Incorrect investment_limit = $(row.investment_limit) for investable storage asset '$(row.asset)' with use_binary_storage_method = '$(row.use_binary_storage_method)' for year $(row.milestone_year). The investment_limit at year $(row.commission_year) should be greater than 0 in 'asset_commission'.",
+            "Incorrect investment_limit = $(row.investment_limit) for investable storage asset '$(row.asset)' with use_binary_storage_method = '$(row.use_binary_storage_method)' for milestone_year $(row.milestone_year). The investment_limit at commission_year $(row.commission_year) should be greater than 0 in 'asset_commission'.",
         )
     end
 
@@ -477,7 +477,7 @@ function _validate_reactance_must_be_greater_than_zero!(error_messages, connecti
     )
         push!(
             error_messages,
-            "Incorrect reactance = $(row.reactance) for flow ('$(row.from_asset)', '$(row.to_asset)') for year $(row.milestone_year) in 'flow_milestone'. The reactance should be greater than 0.",
+            "Incorrect reactance = $(row.reactance) for flow ('$(row.from_asset)', '$(row.to_asset)') for milestone_year $(row.milestone_year) in 'flow_milestone'. The reactance should be greater than 0.",
         )
     end
 
@@ -498,7 +498,7 @@ function _validate_dc_opf_only_apply_to_non_investable_transport_flows!(error_me
     )
         push!(
             error_messages,
-            "Incorrect use of dc-opf method for flow ('$(row.from_asset)', '$(row.to_asset)') for year $(row.milestone_year) in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
+            "Incorrect use of dc-opf method for flow ('$(row.from_asset)', '$(row.to_asset)') for milestone_year $(row.milestone_year) in 'flow_milestone'. This method can only be applied to non-investable transport flows.",
         )
     end
 
@@ -633,7 +633,7 @@ function _validate_bid_related_data!(connection)
     - there is a loop flow.from_asset = flow.to_asset = asset.asset (i.e., the asset has a loop) (by itself is already prohibitive)
     - there is a flow from some consumer to this asset, with operational_cost < 0
     - there is a single rep_period
-    - there is a single year
+    - there is a single milestone_year
     """
     function get_bid_data(connection)
         has_demand_profile_str = "false"
@@ -653,7 +653,7 @@ function _validate_bid_related_data!(connection)
             EXISTS (
                 FROM assets_rep_periods_partitions AS partitions
                 LEFT JOIN rep_periods_data AS rpdata
-                    ON partitions.year = rpdata.year AND partitions.rep_period = rpdata.rep_period
+                    ON partitions.milestone_year = rpdata.milestone_year AND partitions.rep_period = rpdata.rep_period
                 WHERE partitions.asset = asset.asset
                     AND (
                         partitions.specification != 'uniform'
@@ -777,7 +777,7 @@ function _validate_bid_related_data!(connection)
             if num_years != 1
                 push!(
                     error_messages,
-                    "Problem is assumed to have bids because at least 1 asset has $justification, so it should have only 1 year, but found $num_years",
+                    "Problem is assumed to have bids because at least 1 asset has $justification, so it should have only 1 milestone_year, but found $num_years",
                 )
             end
             if num_rep_periods != 1

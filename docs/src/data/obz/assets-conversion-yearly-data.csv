@@ -1,4 +1,4 @@
-name,year,partition,initial_units
+name,milestone_year,partition,initial_units
 NL_electrolyzer,2050,1,1
 BE_electrolyzer,2050,2,1
 DE_electrolyzer,2050,1,1

@@ -1,4 +1,4 @@
-profile_name,year,rep_period,timestep,value
+profile_name,milestone_year,rep_period,timestep,value
 electricity_demand_profile,2030,1,1,0.808046214
 electricity_demand_profile,2030,1,2,0.804735
 electricity_demand_profile,2030,1,3,0.805795943

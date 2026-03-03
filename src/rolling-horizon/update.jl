@@ -42,7 +42,7 @@ function update_initial_storage_level!(
             FROM param_initial_storage_level AS param
             LEFT JOIN var_storage_level_rep_period AS var
                 ON param.asset = var.asset
-                AND param.year = var.year
+                AND param.milestone_year = var.milestone_year
                 AND param.rep_period = var.rep_period
             WHERE var.time_block_end = $move_forward
             ORDER BY param.id

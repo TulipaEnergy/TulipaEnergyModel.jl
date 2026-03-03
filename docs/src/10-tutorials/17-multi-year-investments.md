@@ -82,7 +82,7 @@ Let's check it out.
 
 ```julia
 plot()
-wind_profiles = filter(row -> occursin("wind", row.profile_name) && row.year == 2030,
+wind_profiles = filter(row -> occursin("wind", row.profile_name) && row.milestone_year == 2030,
     TIO.get_table(connection, "profiles_rep_periods"))
 
 for pname in unique(wind_profiles.profile_name)

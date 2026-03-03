@@ -1,4 +1,4 @@
-from_asset,to_asset,year,initial_export_units,initial_import_units
+from_asset,to_asset,milestone_year,initial_export_units,initial_import_units
 NL_E_Demand,BE_E_Demand,2050,6.4,6.4
 DE_E_Demand,NL_E_Demand,2050,8,8
 DE_E_Demand,BE_E_Demand,2050,4,4

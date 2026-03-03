@@ -1,4 +1,4 @@
-profile_name,year,timestep,value
+profile_name,milestone_year,timestep,value
 G01-availability-2030,2030,3,1.0
 G01-availability-2030,2030,2,1.0
 G01-availability-2030,2030,1,1.0

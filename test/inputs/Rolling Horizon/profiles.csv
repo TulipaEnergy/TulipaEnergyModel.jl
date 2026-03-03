@@ -1,4 +1,4 @@
-profile_name,year,timestep,value
+profile_name,milestone_year,timestep,value
 solar-availability-2030,2030,1,0.0
 solar-availability-2030,2030,2,0.0
 solar-availability-2030,2030,3,0.0

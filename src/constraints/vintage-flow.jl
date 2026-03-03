@@ -23,7 +23,7 @@ function add_vintage_flow_sum_constraints!(connection, model, variables, constra
                     model,
                     sum(var_vintage_flow[idx] for idx in row.var_vintage_flow_indices) ==
                     var_flow[row.var_flow_id],
-                    base_name = "$table_name[$(row.from_asset),$(row.to_asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "$table_name[$(row.from_asset),$(row.to_asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for row in indices
             ],
         )
@@ -45,7 +45,7 @@ function _append_vintage_flow_data_to_indices(connection, table_name)
             cons.id,
             cons.from_asset,
             cons.to_asset,
-            cons.year,
+            cons.milestone_year,
             cons.rep_period,
             cons.time_block_start,
             cons.time_block_end,
@@ -55,13 +55,13 @@ function _append_vintage_flow_data_to_indices(connection, table_name)
         LEFT JOIN var_flow as var_flow
             ON cons.from_asset = var_flow.from_asset
             AND cons.to_asset = var_flow.to_asset
-            AND cons.year = var_flow.year
+            AND cons.milestone_year = var_flow.milestone_year
             AND cons.rep_period = var_flow.rep_period
             AND cons.time_block_start = var_flow.time_block_start
         LEFT JOIN grouped_var_vintage_flow as var_vintage_flow
             ON var_vintage_flow.from_asset = cons.from_asset
             AND var_vintage_flow.to_asset = cons.to_asset
-            AND var_vintage_flow.milestone_year = cons.year
+            AND var_vintage_flow.milestone_year = cons.milestone_year
             AND var_vintage_flow.rep_period = cons.rep_period
             AND var_vintage_flow.time_block_start = cons.time_block_start
         ORDER BY cons.id

@@ -64,7 +64,7 @@ function add_capacity_limits_transport_flows!(
         availability_agg_iterator = (
             _profile_aggregate(
                 profiles.rep_period,
-                (row.profile_name, row.year, row.rep_period),
+                (row.profile_name, row.milestone_year, row.rep_period),
                 row.time_block_start:row.time_block_end,
                 Statistics.mean,
                 1.0,
@@ -106,7 +106,7 @@ function add_capacity_limits_transport_flows!(
                 @constraint(
                     model,
                     var_flow[row.var_flow_id] ≤ upper_bound_transport_flow,
-                    base_name = "max_transport_flow_limit_simple_method[($(row.from_asset),$(row.to_asset)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "max_transport_flow_limit_simple_method[($(row.from_asset),$(row.to_asset)),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, upper_bound_transport_flow) in
                 zip(indices, cons.expressions[:upper_bound_transport_flow])
             ],
@@ -121,7 +121,7 @@ function add_capacity_limits_transport_flows!(
                 @constraint(
                     model,
                     var_flow[row.var_flow_id] ≥ -lower_bound_transport_flow,
-                    base_name = "min_transport_flow_limit_simple_method[($(row.from_asset),$(row.to_asset)),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "min_transport_flow_limit_simple_method[($(row.from_asset),$(row.to_asset)),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, lower_bound_transport_flow) in
                 zip(indices, cons.expressions[:lower_bound_transport_flow])
             ],
@@ -141,7 +141,7 @@ function add_min_outgoing_flow_for_transport_flows_without_unit_commitment(model
                 @constraint(
                     model,
                     outgoing_flow ≥ 0,
-                    base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "$cons_name[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, outgoing_flow) in
                 zip(constraints[table_name].indices, constraints[table_name].expressions[:outgoing])
             ],
@@ -181,7 +181,7 @@ function add_min_incoming_flow_for_transport_flows(model, constraints)
                 @constraint(
                     model,
                     incoming_flow ≥ 0,
-                    base_name = "$cons_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "$cons_name[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, incoming_flow) in
                 zip(constraints[table_name].indices, constraints[table_name].expressions[:incoming])
             ],
@@ -196,7 +196,7 @@ function _append_transport_data_to_indices(connection)
             cons.id AS id,
             cons.from_asset AS from_asset,
             cons.to_asset AS to_asset,
-            cons.year AS year,
+            cons.milestone_year AS milestone_year,
             cons.rep_period AS rep_period,
             cons.time_block_start AS time_block_start,
             cons.time_block_end AS time_block_end,
@@ -211,11 +211,11 @@ function _append_transport_data_to_indices(connection)
         LEFT JOIN expr_available_flow_units_simple_method AS expr_avail
             ON cons.from_asset = expr_avail.from_asset
             AND cons.to_asset = expr_avail.to_asset
-            AND cons.year = expr_avail.milestone_year
+            AND cons.milestone_year = expr_avail.milestone_year
         LEFT OUTER JOIN flows_profiles
             ON cons.from_asset = flows_profiles.from_asset
             AND cons.to_asset = flows_profiles.to_asset
-            AND cons.year = flows_profiles.year
+            AND cons.milestone_year = flows_profiles.milestone_year
             AND flows_profiles.profile_type = 'availability'
         ORDER BY cons.id
         ",

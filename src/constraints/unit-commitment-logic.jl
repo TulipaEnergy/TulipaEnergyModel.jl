@@ -27,7 +27,7 @@ function add_uc_logic_constraints!(connection, model, variables, expressions, co
                             model,
                             units_on[row.units_on_id] - units_on[row.units_on_id-1] ==
                             start_up[row.start_up_id] - shut_down[row.shut_down_id],
-                            base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                            base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                         )
                     end
                 end for row in indices

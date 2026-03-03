@@ -1,4 +1,4 @@
-from_asset,partition,rep_period,specification,to_asset,year
+from_asset,partition,rep_period,specification,to_asset,milestone_year
 NL_E_Balance,1,1,uniform,NL_E_Demand,2050
 NL_E_ENS,1,1,uniform,NL_E_Demand,2050
 NL_Wind_Onshore,1,1,uniform,NL_E_Balance,2050

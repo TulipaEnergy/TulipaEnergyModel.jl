@@ -31,7 +31,15 @@
         (7, "death_star", "output_2", 2025, 1, 1, 4),
         (8, "death_star", "output_2", 2025, 1, 5, 5),
     ]
-    columns = [:id, :from_asset, :to_asset, :year, :rep_period, :time_block_start, :time_block_end]
+    columns = [
+        :id,
+        :from_asset,
+        :to_asset,
+        :milestone_year,
+        :rep_period,
+        :time_block_start,
+        :time_block_end,
+    ]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "cons_flows_relationships"
@@ -160,7 +168,7 @@
     columns = [
         :id,
         :asset,
-        :year,
+        :milestone_year,
         :rep_period,
         :time_block_start,
         :time_block_end,

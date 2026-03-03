@@ -1,4 +1,4 @@
-asset,partition,specification,year
+asset,partition,specification,milestone_year
 DE_Hydro_Reservoir,1,uniform,2050
 DE_Pump_Hydro_Closed,1,uniform,2050
 DE_Pump_Hydro_Open,1,uniform,2050
