@@ -54,7 +54,7 @@ jobs:
           JULIA_PKG_SERVER: ""
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
-          PUSH_PREVIEW: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # true if PR is from same repo
+          PUSH_PREVIEW: ${{ github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]' }} # true if PR is from same repo, but not from dependabot
           GKSwstype: "100" # https://discourse.julialang.org/t/generation-of-documentation-fails-qt-qpa-xcb-could-not-connect-to-display/60988
       - name: Find comment for preview link
         if: github.event.pull_request.head.repo.full_name == github.repository
