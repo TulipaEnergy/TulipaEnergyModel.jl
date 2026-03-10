@@ -43,4 +43,4 @@ Solar5,demand,2030,0.01
 Solar6,demand,2030,0.01
 Solar7,demand,2030,0.01
 Solar8,demand,2030,0.01
-ens,demand,2030,0.18
+ens,demand,2030,1000
