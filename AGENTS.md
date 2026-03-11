@@ -57,7 +57,6 @@ See `test/test-pipeline.jl` for examples of both levels.
 
 ## Performance Requirements
 
-
 Apply these guidelines with judgement. Not every function is performance-critical. Focus optimization efforts on hot paths and frequently called code.
 If necessary, check the [Julia Performance Tips](https://docs.julialang.org/en/v1/manual/performance-tips/).
 To investigate performance issues, check the "Investigating performance issues" section in docs/src/90-contributing/91-developer.md.
@@ -113,7 +112,6 @@ Avoid returning `Union` types or abstract types.
 - Avoid `try-catch` in hot paths
 - Use function barriers to isolate type instability
 
-
 ## Code Conventions
 
 Formatter (JuliaFormatter): Use the formatter script provided in each package.
@@ -154,7 +152,7 @@ Branch naming: `feature/description` or `fix/description`
 
 ## Development Commands
 
-**CRITICAL:** Always use `julia --project=<env>` when running Julia code. **NEVER** use bare `julia` or `julia --project` without specifying the environment. 
+**CRITICAL:** Always use `julia --project=<env>` when running Julia code. **NEVER** use bare `julia` or `julia --project` without specifying the environment.
 
 **CRITICAL:** Use the testing filters to avoid running too many tests at once.
 
