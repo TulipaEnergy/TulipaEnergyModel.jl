@@ -195,6 +195,8 @@ Now, you can only commit if all the pre-commit tests pass.
 This section will list the guidelines for code formatting **not enforced** by JuliaFormatter.
 We will try to follow these during development and reviews.
 
+> **CRITICAL:** This list should be kept in sync with `AGENTS.md`.
+
 - Naming
   - `CamelCase` for classes and modules
   - `snake_case` for functions and variables
@@ -205,6 +207,12 @@ We will try to follow these during development and reviews.
   - For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `JuMP.direct_model`.
   - List all `using` in <src/TulipaEnergyModel.jl>.
 - Explicitly state what a function will `return`; if returning nothing, simply use `return`.
+- Constructors: prefer `function foo()` instead of the short form `foo() = ...`.
+- Globals: use `UPPER_CASE` for constants.
+- Exports: define exports in the source file that owns the public functions.
+- Comments: write complete sentences and prefer explaining why over how.
+
+For AI-assistant-focused, compact guidance, see `AGENTS.md`.
 
 ### Markdown Table Formatting (MD060)
 

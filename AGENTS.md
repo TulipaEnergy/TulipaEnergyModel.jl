@@ -116,12 +116,18 @@ Avoid returning `Union` types or abstract types.
 
 Formatter (JuliaFormatter): Use the formatter script provided in each package.
 
-Key rules:
+**CRITICAL:** This list should be kept in sync with `docs/src/90-contributing/91-developer.md`.
 
+Lightweight rules (see developer docs for full details):
+
+- Naming: `CamelCase` for classes/modules, `snake_case` for functions/variables, `kebab-case` for file names and doc reference tags
+- Imports: prefer `using Package: A, B, C`; avoid bare `using Package`; centralize `using` declarations in `src/TulipaEnergyModel.jl`
+- Returns: explicitly state what a function returns; use explicit `return`
 - Constructors: use `function foo()` not `foo() = ...`
 - Globals: `UPPER_CASE` for constants
-- Exports: each source file exports its own public functions at the top of the file
-- Comments: complete sentences, describe why not how
+- Exports: define exports in the source file that owns the public functions
+- Comments: complete sentences, prefer why over how
+- Markdown docs: tables must satisfy MD060 column alignment
 
 ## Documentation Practices and Requirements
 
