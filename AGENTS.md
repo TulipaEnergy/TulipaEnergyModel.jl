@@ -1,10 +1,66 @@
-# Tulipa Programming Practices
+# AGENTS.md
 
-This document describes general programming practices and conventions that apply across all Tulipa packages.
+This file provides guidance to AI coding assistants working on TulipaEnergyModel.jl.
+
+For full developer documentation, see `docs/src/90-contributing/91-developer.md`.
+
+## Architecture
+
+Julia package for modeling and optimization of electric energy systems. Uses DuckDB for data handling, JuMP for optimization modeling, and HiGHS as the default solver. Part of the Tulipa ecosystem (TulipaIO, TulipaBuilder, TulipaClustering).
+
+### Source Structure
+
+- `src/TulipaEnergyModel.jl` — Main module; all `using` statements live here
+- `src/structures.jl` — Core types: `EnergyProblem`, `TulipaVariable`, `TulipaConstraint`, `TulipaExpression`
+- `src/run-scenario.jl` — High-level `run_scenario` entry point
+- `src/create-model.jl` — `create_model!` / `create_model`
+- `src/solve-model.jl` — `solve_model!` / `solve_model` / `save_solution!`
+- `src/objective.jl` — Objective function construction
+- `src/model-preparation.jl` — Data massage before model creation
+- `src/data-preparation.jl` — `populate_with_defaults!`
+- `src/data-validation.jl` — Input validation
+- `src/io.jl` — `create_internal_tables!` / `export_solution_to_csv_files`
+- `src/input-schemas.jl` + `src/input-schemas.json` — Table schema definitions
+- `src/model-parameters.jl` — `ModelParameters` struct
+- `src/solver-parameters.jl` — Solver parameter handling
+- `src/utils.jl` — Utility functions
+- `src/variables/` (7 files) — Variable creation (flows, investments, storage, etc.)
+- `src/constraints/` (16 files) — Constraint creation (capacity, energy, transport, etc.)
+- `src/expressions/` (3 files) — Expression creation (storage, intersection, multi-year)
+- `src/rolling-horizon/` (4 files) — Rolling horizon implementation
+- `src/sql/` (3 SQL files) — SQL templates for creating tables
+
+**Dynamic includes:** The main module uses a loop to include all `.jl` files from `variables/`, `constraints/`, and `expressions/` directories. New files
+added to these directories are automatically included.
+
+### Pipeline Flow
+
+**All-in-one:** `run_scenario(connection)`
+
+**High-level** (using `EnergyProblem` struct):
+
+1. `EnergyProblem(connection)` — creates internal tables, computes variable/constraint indices
+2. `create_model!(energy_problem)` — builds the JuMP model
+3. `solve_model!(energy_problem)` — solves the optimization
+4. `save_solution!(energy_problem)` — stores results back in DuckDB
+
+**Low-level** (without `EnergyProblem`, for finer control):
+
+1. `create_internal_tables!(connection)` — data preparation
+2. `compute_variables_indices(connection)` / `compute_constraints_indices(connection)` — index computation
+3. `prepare_profiles_structure(connection)` — profile setup
+4. `create_model(connection, variables, constraints, profiles, model_parameters)` — builds model
+5. `solve_model(model)` — solves the optimization
+6. `save_solution!(connection, model, variables, constraints)` — stores results
+
+See `test/test-pipeline.jl` for examples of both levels.
 
 ## Performance Requirements
 
-**Priority:** Critical. See the [Julia Performance Tips](https://docs.julialang.org/en/v1/manual/performance-tips/).
+
+Apply these guidelines with judgement. Not every function is performance-critical. Focus optimization efforts on hot paths and frequently called code.
+If necessary, check the [Julia Performance Tips](https://docs.julialang.org/en/v1/manual/performance-tips/).
+To investigate performance issues, check the "Investigating performance issues" section in docs/src/90-contributing/91-developer.md.
 
 ### Anti-Patterns to Avoid
 
@@ -40,7 +96,7 @@ Struct fields must have concrete types or be parameterized.
 
 #### Captured variables
 
-Avoid closures that capture variables causing boxing. Pass variables as function arguments instead.
+When creating anonymous functions inside a local scope, don't use variables from that local scope.
 
 #### Splatting penalty
 
@@ -52,12 +108,11 @@ Avoid returning `Union` types or abstract types.
 
 ### Best Practices
 
-- Use `@inbounds` when bounds are verified
+- Use `@inbounds` when bounds are verified. Be sure when doing this because it might cause crashes.
 - Use broadcasting (dot syntax) for element-wise operations
 - Avoid `try-catch` in hot paths
 - Use function barriers to isolate type instability
 
-> Apply these guidelines with judgment. Not every function is performance-critical. Focus optimization efforts on hot paths and frequently called code.
 
 ## Code Conventions
 
@@ -65,9 +120,9 @@ Formatter (JuliaFormatter): Use the formatter script provided in each package.
 
 Key rules:
 
-- Constructors: use `function Foo()` not `Foo() = ...`
+- Constructors: use `function foo()` not `foo() = ...`
 - Globals: `UPPER_CASE` for constants
-- Exports: all exports in main module file
+- Exports: each source file exports its own public functions at the top of the file
 - Comments: complete sentences, describe why not how
 
 ## Documentation Practices and Requirements
@@ -97,41 +152,30 @@ Branch naming: `feature/description` or `fix/description`
 3. Ensure tests pass
 4. Submit pull request
 
-## AI Agent Guidance
+## Development Commands
 
-**Key priorities:** Read existing patterns first, maintain consistency, use concrete types in hot paths, run formatter, add docstrings to public API, ensure tests pass.
+**CRITICAL:** Always use `julia --project=<env>` when running Julia code. **NEVER** use bare `julia` or `julia --project` without specifying the environment. 
 
-**Critical rules:**
+**CRITICAL:** Use the testing filters to avoid running too many tests at once.
 
-- Always use `julia --project=<env>` (never bare `julia`)
-- Never edit auto-generated files directly
-- Verify type stability with `@code_warntype` for performance-critical code
-- Consider downstream package impact
+## Testing Strategy
 
-## Julia Environment Best Practices
+Uses [TestItemRunner.jl](https://github.com/julia-vscode/TestItemRunner.jl) with `@testitem`, `@testsnippet`, `@testmodule` — **not** standard `@testset`.
+ Test inputs are in `test/inputs/`.
 
-**CRITICAL:** Always use `julia --project=<env>` when running Julia code in Tulipa repositories. **NEVER** use bare `julia` or `julia --project` without specifying the environment. Each package typically defines dependencies in `test/Project.toml` for testing.
+### Shared Setup (in `test/utils.jl`)
 
-Common patterns:
+- `@testsnippet CommonSetup` — imports all standard libraries, defines `INPUT_FOLDER`, fixture helpers (`_tiny_fixture`, `_storage_fixture`, `_multi_year_
+fixture`)
+- `@testmodule TestData` — provides `TestData.simplest_data` dict for minimal test data
 
-```sh
-# Run tests (using test environment)
-julia --project=test test/runtests.jl
+### Available Tags (from `TAGS_DATA` in `test/runtests.jl`)
 
-# Run specific test
-julia --project=test test/runtests.jl test_file_name
+- **Test types:** `:unit`, `:integration`, `:validation`
+- **Complexity:** `:fast`, `:slow`
+- **Feature areas:** `:case_study`, `:data_validation`, `:data_preparation`, `:io`, `:pipeline`
 
-# Run expression
-julia --project=test -e 'using PackageName; ...'
-
-# Instantiate environment
-julia --project=test -e 'using Pkg; Pkg.instantiate()'
-
-# Build docs (using docs environment)
-julia --project=docs docs/make.jl
-```
-
-**Why this matters:** Running without `--project=<env>` will fail because required packages won't be available in the default environment. The test/docs environments contain all necessary dependencies for their respective tasks.
+### Writing New Tests
 
 ## Troubleshooting
 
