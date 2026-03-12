@@ -66,16 +66,21 @@ function add_trajectory_constraints!(
         asset_trajectory_info = _get_trajectory_info(connection)
 
         # Holds assetname -> ((su_trajectory, su_length), (sd_trajectory, sd_length))
-        trajectories_info = Dict{String,Dict{String,Union{Vector{Int64},Int64}}}()
+        trajectories_info = Dict{String,Dict{String,Union{Vector{Float64},Int}}}()
 
         for asset_row in asset_trajectory_info
-            trajectories_info[asset_row.asset] = Dict{String,Union{String,Int64}}()
+            trajectories_info[asset_row.asset] = Dict{String,Union{Vector{Float64},Int}}()
 
-            trajectories_info[asset_row.asset]["su_trajectory"] =
-                read_trajectory(asset_row.start_trajectory)
+            trajectories_info[asset_row.asset]["su_trajectory"] = read_trajectory(
+                asset_row.start_trajectory,
+                asset_row.min_operating_point * asset_row.capacity,
+            )
 
-            trajectories_info[asset_row.asset]["sd_trajectory"] =
-                read_trajectory(asset_row.shut_trajectory)
+            trajectories_info[asset_row.asset]["sd_trajectory"] = read_trajectory(
+                asset_row.shut_trajectory,
+                asset_row.min_operating_point * asset_row.capacity,
+                true,
+            )
 
             trajectories_info[asset_row.asset]["su_length"] =
                 length(trajectories_info[asset_row.asset]["su_trajectory"])
@@ -201,7 +206,9 @@ function _get_trajectory_info(connection)
         SELECT
             asset.asset,
             asset.start_trajectory,
-            asset.shut_trajectory
+            asset.shut_trajectory,
+            asset.min_operating_point,
+            asset.capacity
         FROM asset AS asset
         WHERE
             asset.type in ('producer', 'conversion')
@@ -264,22 +271,12 @@ function _find_relevant_sd_var_ids(connection, asset, year, rep_period)
     )
 end
 
-function read_trajectory(trajectory::String)#, target::Float64 = 0.0)
-    s = split(trajectory, ",")
-    # if s[1] == "linear"
-    #     len = parse(Int, s[3])
-    #     step = target / len
-    #     traj = [(i * step + (step / 2)) for i in 0:len][1:len]
-    #     if s[2] == "up"
-    #         return traj
-    #     elseif s[2] == "down"
-    #         return reverse!(traj)
-    #     end
-    # else
-    return parse.(Int, split(trajectory, ","))
-    # end
-end
+function read_trajectory(time_blocks::Integer, target_value::Float64, reverse::Bool = false)
+    if time_blocks <= 0
+        return Float64[]
+    end
 
-function read_trajectory(trajectory::Int64)
-    return trajectory
+    step_size = target_value / time_blocks
+    values = [((i) * step_size + (i + 1) * step_size) / 2 for i in 0:(time_blocks-1)]
+    return reverse ? reverse!(values) : values
 end
