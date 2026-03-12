@@ -28,7 +28,7 @@ over the range `time_block` using the aggregator `agg_function`, i.e., `agg_func
 If it does not exist, then `V[time_block]` is substituted by a vector of the corresponding size and `default_value`.
 """
 function _profile_aggregate(
-    profiles::Dict, # either rep_period or over_clustered_year
+    profiles::Dict, # either rep_period or inter_period
     tuple_key::Tuple,
     time_block,
     agg_function,

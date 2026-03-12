@@ -59,7 +59,7 @@
     # Actual test, create expected constraint
 
     flow = energy_problem.variables[:flow].container
-    cons_name = :balance_storage_over_clustered_year
+    cons_name = :balance_storage_inter_period
 
     for storage_asset in ("storageA", "storageB")
         incoming_flow_ids = [
