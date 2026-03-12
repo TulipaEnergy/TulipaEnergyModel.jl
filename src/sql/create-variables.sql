@@ -296,10 +296,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists var_storage_level_over_clustered_year
+drop table if exists var_storage_level_inter_period
 ;
 
-create table var_storage_level_over_clustered_year as
+create table var_storage_level_inter_period as
 with
     filtered_assets as (
         select
@@ -309,7 +309,7 @@ with
             attr.period_block_start,
             attr.period_block_end,
         from
-            asset_time_resolution_over_clustered_year as attr
+            asset_time_resolution_inter_period as attr
             left join asset on attr.asset = asset.asset
         where
             asset.type = 'storage'

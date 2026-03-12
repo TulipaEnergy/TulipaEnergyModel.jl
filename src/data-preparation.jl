@@ -240,7 +240,7 @@ blocks, and are replaced by columns `time_block_start` and `time_block_end`.
 
 - `asset_time_resolution_rep_period`
 - `flow_time_resolution_rep_period`
-- `asset_time_resolution_over_clustered_year`
+- `asset_time_resolution_inter_period`
 
 """
 function create_unrolled_partition_tables!(connection)
@@ -368,7 +368,7 @@ function create_unrolled_partition_tables!(connection)
 
     DBInterface.execute(
         connection,
-        "CREATE OR REPLACE TABLE asset_time_resolution_over_clustered_year(
+        "CREATE OR REPLACE TABLE asset_time_resolution_inter_period(
             asset STRING,
             milestone_year INT,
             scenario INT,
@@ -377,7 +377,7 @@ function create_unrolled_partition_tables!(connection)
         )",
     )
 
-    appender = DuckDB.Appender(connection, "asset_time_resolution_over_clustered_year")
+    appender = DuckDB.Appender(connection, "asset_time_resolution_inter_period")
     for row in DuckDB.query(
         connection,
         "SELECT asset, sub.milestone_year, sub.scenario, specification, partition, num_periods AS num_periods

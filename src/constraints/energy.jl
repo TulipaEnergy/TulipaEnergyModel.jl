@@ -3,12 +3,12 @@ export add_energy_constraints!
 """
     add_energy_constraints!(connection, model, constraints, profiles)
 
-Adds the energy constraints for assets within the period blocks of the timeframe (over_clustered_year) to the model.
+Adds the energy constraints for assets within the period blocks of the timeframe (inter_period) to the model.
 """
 function add_energy_constraints!(connection, model, constraints, profiles)
     ## OVER-CLUSTERED-YEAR CONSTRAINTS (between representative periods)
 
-    let table_name = :max_energy_over_clustered_year, cons = constraints[table_name]
+    let table_name = :max_energy_inter_period, cons = constraints[table_name]
         indices = _append_energy_data_to_indices(connection, table_name, :max)
         # - Maximum outgoing energy within each period block
         attach_constraint!(
@@ -18,7 +18,7 @@ function add_energy_constraints!(connection, model, constraints, profiles)
             [
                 begin
                     max_energy_agg = _profile_aggregate(
-                        profiles.over_clustered_year,
+                        profiles.inter_period,
                         (row.profile_name, row.milestone_year, row.scenario),
                         row.period_block_start:row.period_block_end,
                         sum,
@@ -34,7 +34,7 @@ function add_energy_constraints!(connection, model, constraints, profiles)
         )
     end
 
-    let table_name = :min_energy_over_clustered_year, cons = constraints[table_name]
+    let table_name = :min_energy_inter_period, cons = constraints[table_name]
         indices = _append_energy_data_to_indices(connection, table_name, :min)
         # - Minimum outgoing energy within each period block
         attach_constraint!(
@@ -44,7 +44,7 @@ function add_energy_constraints!(connection, model, constraints, profiles)
             [
                 begin
                     min_energy_agg = _profile_aggregate(
-                        profiles.over_clustered_year,
+                        profiles.inter_period,
                         (row.profile_name, row.milestone_year, row.scenario),
                         row.period_block_start:row.period_block_end,
                         sum,
