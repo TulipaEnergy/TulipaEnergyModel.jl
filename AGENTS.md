@@ -157,12 +157,31 @@ Branch naming: `feature/description` or `fix/description`
 3. Ensure tests pass
 4. Submit pull request
 
+**CRITICAL**: When making commits, always add a co-authored line with the tool name, the agent model, and the relevant e-mail. For instance "Co-Authored-By: Claude Code (claude-sonnet-4-6) <noreply@anthropic.com>"
 ## Development Commands
 
 **CRITICAL:** Always use `julia --project=<env>` when running Julia code. **NEVER** use bare `julia` or `julia --project` without specifying the environment.
 
 **CRITICAL:** Use the testing filters to avoid running too many tests at once.
 
+## Testing Strategy
+
+Uses [TestItemRunner.jl](https://github.com/julia-vscode/TestItemRunner.jl) with `@testitem`, `@testsnippet`, `@testmodule` — **not** standard `@testset`.
+ Test inputs are in `test/inputs/`.
+
+### Shared Setup (in `test/utils.jl`)
+
+- `@testsnippet CommonSetup` — imports all standard libraries, defines `INPUT_FOLDER`, fixture helpers (`_tiny_fixture`, `_storage_fixture`, `_multi_year_
+fixture`)
+- `@testmodule TestData` — provides `TestData.simplest_data` dict for minimal test data
+
+### Available Tags (from `TAGS_DATA` in `test/runtests.jl`)
+
+- **Test types:** `:unit`, `:integration`, `:validation`
+- **Complexity:** `:fast`, `:slow`
+- **Feature areas:** `:case_study`, `:data_validation`, `:data_preparation`, `:io`, `:pipeline`
+
+### Writing New Tests
 ## Testing Strategy
 
 Uses [TestItemRunner.jl](https://github.com/julia-vscode/TestItemRunner.jl) with `@testitem`, `@testsnippet`, `@testmodule` — **not** standard `@testset`.

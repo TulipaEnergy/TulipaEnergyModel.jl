@@ -212,13 +212,8 @@ Use these guidelines for when and how to involve an agent:
 ### Ensure Your Agent Reads AGENTS.md
 
 `AGENTS.md` applies to all coding agents used in this repository.
-Configure your tooling so the agent always reads it before proposing changes.
-
-Example (Copilot):
-
-1. Create or update `.github/copilot-instructions.md` in your fork/workspace.
-1. Add a top-level instruction such as: `Always read AGENTS.md before planning or editing files.`
-1. Keep that instruction active for all sessions in this repository.
+Copilot already reads AGENTS.md.
+For other tools, configure them so the agent always reads them before proposing changes.
 
 Example (Claude):
 
