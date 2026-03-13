@@ -127,10 +127,13 @@ If your model is infeasible, you can try exploring the infeasibility with [JuMP.
 Use `energy_problem.model` for the model argument. For instance:
 
 ```julia
-if energy_problem.termination_status == INFEASIBLE
-  compute_conflict!(energy_problem.model)
-  iis_model, reference_map = copy_conflict(energy_problem.model)
-  print(iis_model)
+import MathOptInterface as MOI
+using JuMP
+
+if JuMP.termination_status(energy_problem.model) == MOI.INFEASIBLE
+    JuMP.compute_conflict!(energy_problem.model)
+    iis_model, reference_map = JuMP.copy_conflict(energy_problem.model)
+    print(iis_model)
 end
 ```
 
