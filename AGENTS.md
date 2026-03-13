@@ -158,6 +158,7 @@ Branch naming: `feature/description` or `fix/description`
 4. Submit pull request
 
 **CRITICAL**: When making commits, always add a co-authored line with the tool name, the agent model, and the relevant e-mail. For instance "Co-Authored-By: Claude Code (claude-sonnet-4-6) <noreply@anthropic.com>"
+
 ## Development Commands
 
 **CRITICAL:** Always use `julia --project=<env>` when running Julia code. **NEVER** use bare `julia` or `julia --project` without specifying the environment.
@@ -182,24 +183,22 @@ fixture`)
 - **Feature areas:** `:case_study`, `:data_validation`, `:data_preparation`, `:io`, `:pipeline`
 
 ### Writing New Tests
-## Testing Strategy
 
-Uses [TestItemRunner.jl](https://github.com/julia-vscode/TestItemRunner.jl) with `@testitem`, `@testsnippet`, `@testmodule` — **not** standard `@testset`.
- Test inputs are in `test/inputs/`.
+```julia
+@testitem "Description" setup = [CommonSetup] tags = [:unit, :fast] begin
+    @test result == expected
+end
+```
 
-### Shared Setup (in `test/utils.jl`)
+New tags must be added to `TAGS_DATA` in `test/runtests.jl`. Target: 100% test coverage.
 
-- `@testsnippet CommonSetup` — imports all standard libraries, defines `INPUT_FOLDER`, fixture helpers (`_tiny_fixture`, `_storage_fixture`, `_multi_year_
-fixture`)
-- `@testmodule TestData` — provides `TestData.simplest_data` dict for minimal test data
+### MPS Regression Testing
 
-### Available Tags (from `TAGS_DATA` in `test/runtests.jl`)
+MPS files in `benchmark/model-mps-folder/` serve as regression tests for the optimization model. The `CompareMPS.yml` workflow runs automatically on PRs.
 
-- **Test types:** `:unit`, `:integration`, `:validation`
-- **Complexity:** `:fast`, `:slow`
-- **Feature areas:** `:case_study`, `:data_validation`, `:data_preparation`, `:io`, `:pipeline`
-
-### Writing New Tests
+- If your change intentionally modifies the model, update MPS files: `julia --project=. utils/scripts/model-mps-update.jl`
+- To check without updating: `julia --project=. utils/scripts/model-mps-compare.jl`
+- If MPS comparison fails unexpectedly, investigate using the compare script log
 
 ## Troubleshooting
 
