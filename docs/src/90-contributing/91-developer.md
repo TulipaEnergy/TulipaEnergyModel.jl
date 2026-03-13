@@ -190,10 +190,43 @@ Now, you can only commit if all the pre-commit tests pass.
 > pre-commit run -a
 > ```
 
+## Working with AI Agents
+
+AI agents can speed up contributions, but they do not replace code ownership.
+The committer remains responsible for correctness, tests, and review.
+
+Use these guidelines for when and how to involve an agent:
+
+1. Start with scoped tasks, preferably issues labeled as good first issue.
+   - How: ask the agent to work on one existing issue (or one pull-request review comment) with clear acceptance criteria.
+1. Use agents to detect potential problems and create issues when useful.
+   - How: ask the agent to inspect one area (for example, docs consistency, test gaps, or possible regressions), then open an issue with evidence.
+   - Human check required: the person who asked for the analysis must verify the issue before triage.
+1. Use agents for follow-up changes during review.
+   - How: after review comments are posted, ask the agent to implement specific requested changes and update tests/docs as needed.
+1. Always verify agent output before merge.
+   - Run `pre-commit run -a`.
+   - Run relevant tests (prefer filtered test runs during development).
+   - Confirm that the PR description and attribution are accurate.
+
+### Ensure Your Agent Reads AGENTS.md
+
+`AGENTS.md` applies to all coding agents used in this repository.
+Copilot already reads AGENTS.md.
+For other tools, configure them so the agent always reads them before proposing changes.
+
+Example (Claude):
+
+1. Add this rule to your global Claude configuration (for example, `~/.claude/CLAUDE.md`) so it applies to every session.
+1. Include: `ALWAYS READ AGENTS.md`.
+1. Keep the rule together with your other persistent coding instructions.
+
 ## Code format and guidelines
 
 This section will list the guidelines for code formatting **not enforced** by JuliaFormatter.
 We will try to follow these during development and reviews.
+
+> **CRITICAL:** This list should be kept in sync with `AGENTS.md`.
 
 - Naming
   - `CamelCase` for classes and modules
@@ -205,6 +238,12 @@ We will try to follow these during development and reviews.
   - For other objects inside `Package`, use `using Package: Package` and explicitly call `Package.A` to use it, e.g., `JuMP.direct_model`.
   - List all `using` in <src/TulipaEnergyModel.jl>.
 - Explicitly state what a function will `return`; if returning nothing, simply use `return`.
+- Constructors: prefer `function foo()` instead of the short form `foo() = ...`.
+- Globals: use `UPPER_CASE` for constants.
+- Exports: define exports in the source file that owns the public functions.
+- Comments: write complete sentences and prefer explaining why over how.
+
+For AI-assistant-focused, compact guidance, see `AGENTS.md`.
 
 ### Markdown Table Formatting (MD060)
 
