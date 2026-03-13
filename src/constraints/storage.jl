@@ -15,7 +15,7 @@ function add_storage_constraints!(
     rolling_horizon = false,
 )
     var_storage_level_rep_period = variables[:storage_level_rep_period]
-    var_storage_level_over_clustered_year = variables[:storage_level_over_clustered_year]
+    var_storage_level_inter_period = variables[:storage_level_inter_period]
 
     rolling_horizon_lookup = if rolling_horizon
         Dict{Int,Int}(
@@ -162,8 +162,8 @@ function add_storage_constraints!(
     ## OVER-CLUSTERED-YEAR CONSTRAINTS (between representative periods)
 
     # - Balance constraint (using the lowest temporal resolution)
-    let table_name = :balance_storage_over_clustered_year, cons = constraints[table_name]
-        var_storage_level = variables[:storage_level_over_clustered_year].container
+    let table_name = :balance_storage_inter_period, cons = constraints[table_name]
+        var_storage_level = variables[:storage_level_inter_period].container
         indices = _append_storage_data_to_indices(connection, table_name)
 
         # This assumes an ordering of the time blocks, that is guaranteed by the append function above
@@ -171,7 +171,7 @@ function add_storage_constraints!(
         attach_constraint!(
             model,
             cons,
-            :balance_storage_over_clustered_year,
+            :balance_storage_inter_period,
             [
                 begin
                     initial_storage_level = row.initial_storage_level::Union{Float64,Missing}
@@ -180,7 +180,7 @@ function add_storage_constraints!(
 
                     inflows_agg =
                         _profile_aggregate(
-                            profiles.over_clustered_year,
+                            profiles.inter_period,
                             (row.inflows_profile_name, row.milestone_year, row.scenario),
                             row.period_block_start:row.period_block_end,
                             sum,
@@ -191,7 +191,7 @@ function add_storage_constraints!(
                         # Initial storage is a Float64
                         @constraint(
                             model,
-                            var_storage_level_over_clustered_year.container[row.id] ==
+                            var_storage_level_inter_period.container[row.id] ==
                             initial_storage_level +
                             inflows_agg +
                             storage_charging_efficiency * incoming_flow -
@@ -222,7 +222,7 @@ function add_storage_constraints!(
                         end
                         @constraint(
                             model,
-                            var_storage_level_over_clustered_year.container[row.id] ==
+                            var_storage_level_inter_period.container[row.id] ==
                             computed_storage_loss_coef * previous_level +
                             inflows_agg +
                             storage_charging_efficiency * incoming_flow -
@@ -242,11 +242,11 @@ function add_storage_constraints!(
         attach_constraint!(
             model,
             cons,
-            :max_storage_level_over_clustered_year_limit,
+            :max_storage_level_inter_period_limit,
             [
                 begin
                     max_storage_level_agg = _profile_aggregate(
-                        profiles.over_clustered_year,
+                        profiles.inter_period,
                         (row.max_storage_level_profile_name, row.milestone_year, row.scenario),
                         row.period_block_start:row.period_block_end,
                         Statistics.mean,
@@ -257,10 +257,10 @@ function add_storage_constraints!(
                         var_storage_level ≤
                         max_storage_level_agg *
                         available_energy_capacity_simple_method[row.avail_energy_capacity_id],
-                        base_name = "max_storage_level_over_clustered_year_limit[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
+                        base_name = "max_storage_level_inter_period_limit[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                     )
-                end for (row, var_storage_level) in
-                zip(indices, var_storage_level_over_clustered_year.container)
+                end for
+                (row, var_storage_level) in zip(indices, var_storage_level_inter_period.container)
             ],
         )
 
@@ -268,11 +268,11 @@ function add_storage_constraints!(
         attach_constraint!(
             model,
             cons,
-            :min_storage_level_over_clustered_year_limit,
+            :min_storage_level_inter_period_limit,
             [
                 begin
                     min_storage_level_agg = _profile_aggregate(
-                        profiles.over_clustered_year,
+                        profiles.inter_period,
                         (row.min_storage_level_profile_name, row.milestone_year, row.scenario),
                         row.period_block_start:row.period_block_end,
                         Statistics.mean,
@@ -283,10 +283,10 @@ function add_storage_constraints!(
                         var_storage_level ≥
                         min_storage_level_agg *
                         available_energy_capacity_simple_method[row.avail_energy_capacity_id],
-                        base_name = "min_storage_level_over_clustered_year_limit[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
+                        base_name = "min_storage_level_inter_period_limit[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                     )
-                end for (row, var_storage_level) in
-                zip(indices, var_storage_level_over_clustered_year.container)
+                end for
+                (row, var_storage_level) in zip(indices, var_storage_level_inter_period.container)
             ],
         )
     end
@@ -296,18 +296,18 @@ function _append_storage_data_to_indices(connection, table_name)
     join_duration = ""
     select_duration = ""
 
-    if table_name == :balance_storage_over_clustered_year
+    if table_name == :balance_storage_inter_period
         DuckDB.query(
             connection,
             """
-            CREATE OR REPLACE TEMP TABLE t_duration_over_clustered_year AS
+            CREATE OR REPLACE TEMP TABLE t_duration_inter_period AS
             SELECT
                 cons.asset,
                 cons.milestone_year,
                 cons.scenario,
                 cons.period_block_start,
                 SUM(mapping.num_timesteps) AS duration_period_block
-            FROM cons_balance_storage_over_clustered_year AS cons
+            FROM cons_balance_storage_inter_period AS cons
             LEFT JOIN timeframe_data AS mapping
                 ON mapping.milestone_year = cons.milestone_year
                 AND mapping.period BETWEEN cons.period_block_start AND cons.period_block_end
@@ -316,7 +316,7 @@ function _append_storage_data_to_indices(connection, table_name)
         )
 
         join_duration = """
-        LEFT JOIN t_duration_over_clustered_year AS duration
+        LEFT JOIN t_duration_inter_period AS duration
             ON cons.asset = duration.asset
             AND cons.milestone_year = duration.milestone_year
             AND cons.scenario = duration.scenario

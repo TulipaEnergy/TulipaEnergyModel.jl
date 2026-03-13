@@ -216,7 +216,7 @@ investments[!, selected_columns]
 Now, let's have a look at the operational results, which are scenario dependent. For instance, let's look at the storage level of the seasonal storage for the different scenarios.
 
 ```@example stochastic
-seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_over_clustered_year")
+seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_inter_period")
 gdf = groupby(seasonal_storage_levels, [:asset])
 n_subplots = length(gdf)
 p = plot(; layout=grid(n_subplots, 1))
@@ -291,7 +291,7 @@ investments[!, selected_columns]
 The seasonal pattern of the storage level is still captured for each scenario as before accounting for the second stage decisions given the new investments.
 
 ```@example stochastic
-seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_over_clustered_year")
+seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_inter_period")
 gdf = groupby(seasonal_storage_levels, [:asset])
 n_subplots = length(gdf)
 p = plot(; layout=grid(n_subplots, 1))

@@ -122,11 +122,11 @@ What do you notice in the output folder? Any new variables/constraints?
 Check the storage level of the hydrogen storage.
 
 !!! tip
-    It's now in the variable `var_storage_level_over_clustered_year` because it's seasonal.
-    Use `TIO.get_table(connection, "var_storage_level_over_clustered_year")` to access it.
+    It's now in the variable `var_storage_level_inter_period` because it's seasonal.
+    Use `TIO.get_table(connection, "var_storage_level_inter_period")` to access it.
 
 ```julia
-seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_over_clustered_year")
+seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_inter_period")
 gdf = groupby(seasonal_storage_levels, [:asset])
 n_subplots = length(gdf)
 p = plot(; layout=grid(n_subplots, 1))
@@ -296,7 +296,7 @@ for num_rps in list_num_rps
     energy_problem = TEM.run_scenario(connection; show_log = false)
 
     # update the plot for each num_rps
-    seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_over_clustered_year")
+    seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_inter_period")
     seasonal_filtered_asset = filter(row -> row.asset == asset_to_filter, seasonal_storage_levels)
     seasonal_filtered_asset.period_block_end .*= period_duration
     seasonal_filtered_asset

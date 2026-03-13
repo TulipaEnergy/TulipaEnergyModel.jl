@@ -169,7 +169,7 @@
     """
         get_storage_ids(connection, storage_asset, scenarios, periods) -> storage_level_ids
 
-    Query storage level over_clustered_year IDs for a storage asset for each scenario and period block.
+    Query storage level inter_period IDs for a storage asset for each scenario and period block.
     Returns a dictionary indexed by (scenario, period).
 
     Optimized to use a single batched query instead of multiple queries.
@@ -186,7 +186,7 @@
         # Batch query for all scenarios and periods
         query = """
             SELECT id, scenario, period_block_start
-            FROM var_storage_level_over_clustered_year
+            FROM var_storage_level_inter_period
             WHERE asset = '$storage_asset'
             ORDER BY scenario, period_block_start
         """
@@ -458,7 +458,7 @@ end
         setup_test_problem(storage_asset, inflows_profile, num_timesteps, num_rps)
 
     # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_over_clustered_year].container
+    storage_level = energy_problem.variables[:storage_level_inter_period].container
 
     # Build period-to-representative-period weight mapping
     rep_periods_mapping = TulipaIO.get_table(connection, "rep_periods_mapping")
@@ -468,7 +468,7 @@ end
     )
 
     # Verify all expected constraints exist
-    cons_name = :balance_storage_over_clustered_year
+    cons_name = :balance_storage_inter_period
     constraint_data = DuckDB.query(
         connection,
         "SELECT id
@@ -539,7 +539,7 @@ end
         setup_test_problem(storage_asset, inflows_profile, num_timesteps, num_rps)
 
     # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_over_clustered_year].container
+    storage_level = energy_problem.variables[:storage_level_inter_period].container
 
     # Build period-to-representative-period weight mapping
     rep_periods_mapping = TulipaIO.get_table(connection, "rep_periods_mapping")
@@ -552,7 +552,7 @@ end
     storage_level_ids = get_storage_ids(connection, storage_asset, scenarios, periods)
 
     # Verify all expected constraints exist
-    cons_name = :balance_storage_over_clustered_year
+    cons_name = :balance_storage_inter_period
     constraint_data = DuckDB.query(
         connection,
         "SELECT id

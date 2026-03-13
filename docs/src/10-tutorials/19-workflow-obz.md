@@ -669,7 +669,7 @@ SELECT
     var.solution / (
         IF(asset.capacity_storage_energy > 0, asset.capacity_storage_energy, 1)
     ) AS SoC,
-FROM var_storage_level_over_clustered_year AS var
+FROM var_storage_level_inter_period AS var
 LEFT JOIN asset
     ON var.asset = asset.asset
 ")
