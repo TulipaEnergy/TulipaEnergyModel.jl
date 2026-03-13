@@ -190,6 +190,42 @@ Now, you can only commit if all the pre-commit tests pass.
 > pre-commit run -a
 > ```
 
+## Working with AI Agents
+
+AI agents can speed up contributions, but they do not replace code ownership.
+The committer remains responsible for correctness, tests, and review.
+
+Use these guidelines for when and how to involve an agent:
+
+1. Start with scoped tasks, preferably issues labeled as good first issue.
+   - How: ask the agent to work on one existing issue (or one pull-request review comment) with clear acceptance criteria.
+1. Use agents to detect potential problems and create issues when useful.
+   - How: ask the agent to inspect one area (for example, docs consistency, test gaps, or possible regressions), then open an issue with evidence.
+   - Human check required: the person who asked for the analysis must verify the issue before triage.
+1. Use agents for follow-up changes during review.
+   - How: after review comments are posted, ask the agent to implement specific requested changes and update tests/docs as needed.
+1. Always verify agent output before merge.
+   - Run `pre-commit run -a`.
+   - Run relevant tests (prefer filtered test runs during development).
+   - Confirm that the PR description and attribution are accurate.
+
+### Ensure Your Agent Reads AGENTS.md
+
+`AGENTS.md` applies to all coding agents used in this repository.
+Configure your tooling so the agent always reads it before proposing changes.
+
+Example (Copilot):
+
+1. Create or update `.github/copilot-instructions.md` in your fork/workspace.
+1. Add a top-level instruction such as: `Always read AGENTS.md before planning or editing files.`
+1. Keep that instruction active for all sessions in this repository.
+
+Example (Claude):
+
+1. Add this rule to your global Claude configuration (for example, `~/.claude/CLAUDE.md`) so it applies to every session.
+1. Include: `ALWAYS READ AGENTS.md`.
+1. Keep the rule together with your other persistent coding instructions.
+
 ## Code format and guidelines
 
 This section will list the guidelines for code formatting **not enforced** by JuliaFormatter.

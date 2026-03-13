@@ -1,6 +1,7 @@
 # AGENTS.md
 
 This file provides guidance to AI coding assistants working on TulipaEnergyModel.jl.
+It applies to any coding agent (for example, Copilot, Claude, or similar tools).
 
 For full developer documentation, see `docs/src/90-contributing/91-developer.md`.
 
@@ -114,7 +115,7 @@ Avoid returning `Union` types or abstract types.
 
 ## Code Conventions
 
-Formatter (JuliaFormatter): Use the formatter script provided in each package.
+Linting and formatting: Use `pre-commit` (which includes formatting checks) before committing.
 
 **CRITICAL:** This list should be kept in sync with `docs/src/90-contributing/91-developer.md`.
 
@@ -152,7 +153,7 @@ Docstring requirements:
 Branch naming: `feature/description` or `fix/description`
 
 1. Create feature branch
-2. Follow style guide and run formatter
+2. Follow style guide and run pre-commit
 3. Ensure tests pass
 4. Submit pull request
 
@@ -189,10 +190,10 @@ fixture`)
 - Diagnosis: `@code_warntype` on suspect function
 - Solution: See performance anti-patterns above
 
-### Formatter fails
+### Pre-commit or formatter fails
 
-- Symptom: Formatter command returns error
-- Solution: Apply formatter rules in the file .JuliaFormatter.toml
+- Symptom: `pre-commit run -a` returns one or more failures
+- Solution: Apply the reported fixes, including formatter rules from `.JuliaFormatter.toml`, and run `pre-commit run -a` again
 
 ### Test failures
 

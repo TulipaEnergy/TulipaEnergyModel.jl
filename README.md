@@ -37,6 +37,8 @@ If you have a general question or idea, start a [discussion](https://github.com/
 
 If you want to contribute (awesome!), please read our [Contributing Guidelines](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/90-contributing/90-contributing/) and follow the setup in our [Developer Documentation](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/90-contributing/91-developer/).
 
+If you contribute with AI agents, please also follow the "Working with AI Agents" section in the developer docs, including the recommendation to configure your agent to always read `AGENTS.md`.
+
 ## License
 
 This content is released under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) License.
