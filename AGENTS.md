@@ -153,9 +153,10 @@ Docstring requirements:
 Branch naming: `feature/description` or `fix/description`
 
 1. Create feature branch
-2. Follow style guide and run pre-commit
-3. Ensure tests pass
-4. Submit pull request
+2. Follow style guide and run formatter
+3. Follow the style guide and run pre-commit when committing
+4. Ensure tests pass
+5. Submit pull request
 
 **CRITICAL**: When making commits, always add a co-authored line with the tool name, the agent model, and the relevant e-mail. For instance "Co-Authored-By: Claude Code (claude-sonnet-4-6) <noreply@anthropic.com>"
 
