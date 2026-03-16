@@ -435,6 +435,42 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         )
     )
 
+    ## Register cost expressions in the model for breakdown retrieval after solve
+    model[:assets_investment_cost] = assets_investment_cost
+    model[:assets_fixed_cost_compact_method] = assets_fixed_cost_compact_method
+    model[:assets_fixed_cost_simple_method] = assets_fixed_cost_simple_method
+    model[:storage_assets_energy_investment_cost] = storage_assets_energy_investment_cost
+    model[:storage_assets_energy_fixed_cost] = storage_assets_energy_fixed_cost
+    model[:flows_investment_cost] = flows_investment_cost
+    model[:flows_fixed_cost] = flows_fixed_cost
+    # :flows_operational_cost is already registered above
+    model[:vintage_flows_operational_cost] = vintage_flows_operational_cost
+    model[:units_on_cost] = units_on_cost
+
+    ## Create obj_breakdown table (values populated by save_solution! after solve)
+    DuckDB.execute(
+        connection,
+        """CREATE OR REPLACE TABLE obj_breakdown (
+            name  VARCHAR,
+            value FLOAT8
+        )""",
+    )
+    DuckDB.execute(
+        connection,
+        """INSERT INTO obj_breakdown (name, value) VALUES
+            ('assets_investment_cost',                NULL),
+            ('assets_fixed_cost_compact_method',      NULL),
+            ('assets_fixed_cost_simple_method',       NULL),
+            ('storage_assets_energy_investment_cost', NULL),
+            ('storage_assets_energy_fixed_cost',      NULL),
+            ('flows_investment_cost',                 NULL),
+            ('flows_fixed_cost',                      NULL),
+            ('flows_operational_cost',                NULL),
+            ('vintage_flows_operational_cost',        NULL),
+            ('units_on_cost',                         NULL)
+        """,
+    )
+
     ## Objective function
     @objective(
         model,

@@ -103,6 +103,22 @@ function save_solution!(connection, model, variables, constraints; compute_duals
         )
     end
 
+    # Populate obj_breakdown with post-solve expression values
+    breakdown_names =
+        [row.name for row in DuckDB.query(connection, "SELECT name FROM obj_breakdown")]
+    breakdown_table = [
+        (name = name, value = JuMP.value(model[Symbol(name)])) for
+        name in breakdown_names if haskey(model, Symbol(name))
+    ]
+    DuckDB.register_table(connection, breakdown_table, "t_obj_breakdown_solution")
+    DuckDB.execute(
+        connection,
+        "UPDATE obj_breakdown
+         SET value = sol.value
+         FROM t_obj_breakdown_solution AS sol
+         WHERE obj_breakdown.name = sol.name",
+    )
+
     if compute_duals
         # Compute the dual variables
         @timeit to "compute_dual_variables" compute_dual_variables!(model)
