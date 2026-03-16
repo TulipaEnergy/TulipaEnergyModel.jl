@@ -170,6 +170,7 @@ Branch naming: `feature/description` or `fix/description`
 
 Uses [TestItemRunner.jl](https://github.com/julia-vscode/TestItemRunner.jl) with `@testitem`, `@testsnippet`, `@testmodule` — **not** standard `@testset`.
  Test inputs are in `test/inputs/`.
+Never run the full tests unless asked explicitly, only run the tests that are created/modified. For example, if the test is called `test-model.jl`, the command is `julia --project=test test/runtests.jl --file test_model`.
 
 ### Shared Setup (in `test/utils.jl`)
 
