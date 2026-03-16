@@ -24,11 +24,15 @@ If both are passed, then `path` has preference. Explicit keyword arguments take 
 - `discount_rate::Float64 = 0.0`: The model discount rate.
 - `discount_year::Int`: The model discount year.
 - `power_system_base::Float64 = 100.0`: The power system base in MVA.
+- `risk_aversion_weight_lambda::Float64 = 0.0`: Weight reflecting the risk aversion of the objective
+- `risk_aversion_confidence_level_alpha::Float64 = 0.95`: Confidence level that system costs will not exceed the VaR_alpha
 """
 Base.@kwdef mutable struct ModelParameters
     discount_rate::Float64 = 0.0
     discount_year::Int # Explicit definition expected
     power_system_base::Float64 = 100.0
+    risk_aversion_weight_lambda::Float64 = 0.0
+    risk_aversion_confidence_level_alpha::Float64 = 0.95
 end
 
 # Using `@kwdef` defines a default constructor based on keywords
