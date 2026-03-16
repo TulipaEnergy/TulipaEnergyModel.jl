@@ -23,6 +23,7 @@ function compute_variables_indices(connection)
             :flows_decommission,
             :assets_investment_energy,
             :assets_decommission_energy,
+            :value_at_risk_threshold_mu,
         )
     )
 
