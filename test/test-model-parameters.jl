@@ -22,10 +22,14 @@ end
         discount_rate = 0.1,
         discount_year = 2018,
         power_system_base = 50,
+        risk_aversion_confidence_level_alpha = 0.90,
+        risk_aversion_weight_lambda = 0.1,
     )
     @test mp.discount_rate == 0.1
     @test mp.discount_year == 2018
     @test mp.power_system_base == 50
+    @test mp.risk_aversion_confidence_level_alpha == 0.90
+    @test mp.risk_aversion_weight_lambda == 0.1
 end
 
 @testitem "Test model parameters - errors when missing required parameters" setup = [CommonSetup] tags =
