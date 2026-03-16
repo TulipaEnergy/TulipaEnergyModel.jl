@@ -116,6 +116,7 @@ function add_expression_terms_rep_period_constraints!(
                 :id,
                 :time_block_start,
                 :time_block_end,
+                :is_trajectory_flow,
                 :capacity_coefficient,
                 :conversion_coefficient,
             ];
@@ -145,6 +146,7 @@ function add_expression_terms_rep_period_constraints!(
                 var.capacity_coefficient,
                 var.conversion_coefficient,
                 asset.type AS type,
+                var.is_trajectory_flow AS var_is_trajectory_flow_vec,
                 $resolution_query AS resolution,
             FROM $grouped_cons_table_name AS cons
             LEFT JOIN $grouped_var_table_name AS var
@@ -169,12 +171,14 @@ function add_expression_terms_rep_period_constraints!(
                 var_id::Int64,
                 time_block_start::Int32,
                 time_block_end::Int32,
+                is_trajectory_flow::Bool,
                 capacity_coefficient::Float64,
                 conversion_coefficient::Float64,
             ) in zip(
                 group_row.var_id_vec::Vector{Union{Missing,Int64}},
                 group_row.var_time_block_start_vec::Vector{Union{Missing,Int32}},
                 group_row.var_time_block_end_vec::Vector{Union{Missing,Int32}},
+                group_row.var_is_trajectory_flow_vec::Vector{Union{Missing,Bool}},
                 group_row.capacity_coefficient::Vector{Union{Missing,Float64}},
                 group_row.conversion_coefficient::Vector{Union{Missing,Float64}},
             )
