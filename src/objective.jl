@@ -1,3 +1,17 @@
+"""
+    _add_to_objective!(connection, model, objective_expr, name, expr)
+
+Add `expr` to the running objective sum, register it on the model under `name`, and
+insert a placeholder row in the `obj_breakdown` table (value filled in by
+`save_solution!` after the solve).
+"""
+function _add_to_objective!(connection, model, objective_expr, name::String, expr)
+    DuckDB.execute(connection, "INSERT INTO obj_breakdown (name, value) VALUES (?, NULL)", [name])
+    model[Symbol(name)] = expr
+    JuMP.add_to_expression!(objective_expr, expr)
+    return
+end
+
 function add_objective!(connection, model, variables, expressions, profiles, model_parameters)
     assets_investment = variables[:assets_investment]
     assets_investment_energy = variables[:assets_investment_energy]
@@ -21,6 +35,16 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
 
     _create_objective_auxiliary_table(connection, constants)
 
+    ## Create obj_breakdown table (values populated by save_solution! after solve)
+    DuckDB.execute(
+        connection,
+        """CREATE OR REPLACE TABLE obj_breakdown (
+            name  VARCHAR,
+            value FLOAT8
+        )""",
+    )
+    objective_expr = JuMP.AffExpr(0.0)
+
     indices = DuckDB.query(
         connection,
         "SELECT
@@ -43,6 +67,13 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             row.cost * asset_investment for
             (row, asset_investment) in zip(indices, assets_investment.container)
         )
+    )
+    _add_to_objective!(
+        connection,
+        model,
+        objective_expr,
+        "assets_investment_cost",
+        assets_investment_cost,
     )
 
     # Select expressions for compact method
@@ -72,6 +103,13 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             zip(indices, expr_available_asset_units_compact_method.expressions[:assets])
         )
     )
+    _add_to_objective!(
+        connection,
+        model,
+        objective_expr,
+        "assets_fixed_cost_compact_method",
+        assets_fixed_cost_compact_method,
+    )
 
     # Select expressions for simple method
     indices = DuckDB.query(
@@ -100,6 +138,13 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             zip(indices, expr_available_asset_units_simple_method.expressions[:assets])
         )
     )
+    _add_to_objective!(
+        connection,
+        model,
+        objective_expr,
+        "assets_fixed_cost_simple_method",
+        assets_fixed_cost_simple_method,
+    )
 
     indices = DuckDB.query(
         connection,
@@ -123,6 +168,13 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             row.cost * assets_investment_energy for
             (row, assets_investment_energy) in zip(indices, assets_investment_energy.container)
         )
+    )
+    _add_to_objective!(
+        connection,
+        model,
+        objective_expr,
+        "storage_assets_energy_investment_cost",
+        storage_assets_energy_investment_cost,
     )
 
     indices = DuckDB.query(
@@ -151,6 +203,13 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             zip(indices, expr_available_energy_units_simple_method.expressions[:energy])
         )
     )
+    _add_to_objective!(
+        connection,
+        model,
+        objective_expr,
+        "storage_assets_energy_fixed_cost",
+        storage_assets_energy_fixed_cost,
+    )
 
     indices = DuckDB.query(
         connection,
@@ -175,6 +234,13 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             row.cost * flow_investment for
             (row, flow_investment) in zip(indices, flows_investment.container)
         )
+    )
+    _add_to_objective!(
+        connection,
+        model,
+        objective_expr,
+        "flows_investment_cost",
+        flows_investment_cost,
     )
 
     indices = DuckDB.query(
@@ -209,6 +275,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             )
         )
     )
+    _add_to_objective!(connection, model, objective_expr, "flows_fixed_cost", flows_fixed_cost)
 
     commodity_price_profile_name = ""
     flows_profiles_query_left_join = ""
@@ -320,8 +387,13 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         end
         JuMP.add_to_expression!(flows_operational_cost, coefficient, var_flow[row.id::Int64])
     end
-
-    model[:flows_operational_cost] = flows_operational_cost
+    _add_to_objective!(
+        connection,
+        model,
+        objective_expr,
+        "flows_operational_cost",
+        flows_operational_cost,
+    )
 
     indices = DuckDB.query(
         connection,
@@ -384,6 +456,13 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             (row, vintage_flow) in zip(indices, variables[:vintage_flow].container)
         )
     )
+    _add_to_objective!(
+        connection,
+        model,
+        objective_expr,
+        "vintage_flows_operational_cost",
+        vintage_flows_operational_cost,
+    )
 
     indices = DuckDB.query(
         connection,
@@ -434,58 +513,9 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             row.cost * units_on for (row, units_on) in zip(indices, variables[:units_on].container)
         )
     )
+    _add_to_objective!(connection, model, objective_expr, "units_on_cost", units_on_cost)
 
-    ## Register cost expressions in the model for breakdown retrieval after solve
-    model[:assets_investment_cost] = assets_investment_cost
-    model[:assets_fixed_cost_compact_method] = assets_fixed_cost_compact_method
-    model[:assets_fixed_cost_simple_method] = assets_fixed_cost_simple_method
-    model[:storage_assets_energy_investment_cost] = storage_assets_energy_investment_cost
-    model[:storage_assets_energy_fixed_cost] = storage_assets_energy_fixed_cost
-    model[:flows_investment_cost] = flows_investment_cost
-    model[:flows_fixed_cost] = flows_fixed_cost
-    # :flows_operational_cost is already registered above
-    model[:vintage_flows_operational_cost] = vintage_flows_operational_cost
-    model[:units_on_cost] = units_on_cost
-
-    ## Create obj_breakdown table (values populated by save_solution! after solve)
-    DuckDB.execute(
-        connection,
-        """CREATE OR REPLACE TABLE obj_breakdown (
-            name  VARCHAR,
-            value FLOAT8
-        )""",
-    )
-    DuckDB.execute(
-        connection,
-        """INSERT INTO obj_breakdown (name, value) VALUES
-            ('assets_investment_cost',                NULL),
-            ('assets_fixed_cost_compact_method',      NULL),
-            ('assets_fixed_cost_simple_method',       NULL),
-            ('storage_assets_energy_investment_cost', NULL),
-            ('storage_assets_energy_fixed_cost',      NULL),
-            ('flows_investment_cost',                 NULL),
-            ('flows_fixed_cost',                      NULL),
-            ('flows_operational_cost',                NULL),
-            ('vintage_flows_operational_cost',        NULL),
-            ('units_on_cost',                         NULL)
-        """,
-    )
-
-    ## Objective function
-    @objective(
-        model,
-        Min,
-        assets_investment_cost +
-        assets_fixed_cost_compact_method +
-        assets_fixed_cost_simple_method +
-        storage_assets_energy_investment_cost +
-        storage_assets_energy_fixed_cost +
-        flows_investment_cost +
-        flows_fixed_cost +
-        flows_operational_cost +
-        vintage_flows_operational_cost +
-        units_on_cost
-    )
+    @objective(model, Min, objective_expr)
 end
 
 function _create_objective_auxiliary_table(connection, constants)
