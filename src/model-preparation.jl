@@ -73,6 +73,11 @@ function add_expression_terms_rep_period_constraints!(
             asset_match = :from_asset,
             selected_assets = ["hub", "consumer", "producer"],
         ),
+        (
+            expr_key = :outgoing_trajectory,
+            asset_match = :from_asset,
+            selected_assets = ["producer"],
+        ),
     ]
     num_rows = get_num_rows(connection, cons)
 
@@ -116,6 +121,7 @@ function add_expression_terms_rep_period_constraints!(
                 :id,
                 :time_block_start,
                 :time_block_end,
+                :is_trajectory_flow,
                 :capacity_coefficient,
                 :conversion_coefficient,
             ];
@@ -145,6 +151,7 @@ function add_expression_terms_rep_period_constraints!(
                 var.capacity_coefficient,
                 var.conversion_coefficient,
                 asset.type AS type,
+                var.is_trajectory_flow AS var_is_trajectory_flow_vec,
                 $resolution_query AS resolution,
             FROM $grouped_cons_table_name AS cons
             LEFT JOIN $grouped_var_table_name AS var
@@ -169,15 +176,23 @@ function add_expression_terms_rep_period_constraints!(
                 var_id::Int64,
                 time_block_start::Int32,
                 time_block_end::Int32,
+                is_trajectory_flow::Bool,
                 capacity_coefficient::Float64,
                 conversion_coefficient::Float64,
             ) in zip(
                 group_row.var_id_vec::Vector{Union{Missing,Int64}},
                 group_row.var_time_block_start_vec::Vector{Union{Missing,Int32}},
                 group_row.var_time_block_end_vec::Vector{Union{Missing,Int32}},
+                group_row.var_is_trajectory_flow_vec::Vector{Union{Missing,Bool}},
                 group_row.capacity_coefficient::Vector{Union{Missing,Float64}},
                 group_row.conversion_coefficient::Vector{Union{Missing,Float64}},
             )
+                # Trajectory flows should NOT be counted towards the total outgoing flow,
+                # however, they should be counted towards the incoming flow
+                if (case.expr_key == :outgoing && is_trajectory_flow) ||
+                   (case.expr_key == :outgoing_trajectory && !is_trajectory_flow)
+                    continue
+                end
                 time_block = time_block_start:time_block_end
                 # Step 1.1.1.
                 for timestep in time_block

@@ -14,6 +14,7 @@ select
     to_asset,
     year,
     rep_period,
+    is_trajectory_flow,
     capacity_coefficient,
     conversion_coefficient,
     time_block_start,
@@ -43,6 +44,7 @@ select
     ft.time_block_end,
     fc.capacity_coefficient,
     fc.conversion_coefficient,
+    false as is_trajectory_flow,
 from
     flow_time_resolution_rep_period as ft
     -- We want to split the outgoing flows by the asset's vintage

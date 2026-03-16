@@ -181,7 +181,7 @@ function populate_with_defaults!(connection)
     return
 end
 
-function _append_given_durations(appender, row, durations)
+function _append_given_durations(appender, row, durations; is_trajectory_flow = false)
     s = 1
     for Δ in durations
         e = s + Δ - 1
@@ -194,6 +194,9 @@ function _append_given_durations(appender, row, durations)
         DuckDB.append(appender, row.year)
         if haskey(row, :rep_period)
             DuckDB.append(appender, row.rep_period)
+        end
+        if haskey(row, :is_trajectory_asset)
+            DuckDB.append(appender, is_trajectory_flow)
         end
         if haskey(row, :capacity_coefficient)
             DuckDB.append(appender, row.capacity_coefficient)
@@ -274,6 +277,7 @@ function create_unrolled_partition_tables!(connection)
             flow.to_asset,
             rep_periods_data.year,
             rep_periods_data.rep_period,
+            a.from_uc_method == '3var-E3' AS is_trajectory_asset,
             COALESCE(frpp.specification, 'uniform') AS specification,
             COALESCE(frpp.partition::string, '1') AS partition,
             flow_commission.capacity_coefficient,
@@ -302,6 +306,13 @@ function create_unrolled_partition_tables!(connection)
             ON flow.from_asset = t.from_asset
             AND flow.to_asset = t.to_asset
             AND rep_periods_data.year = t.milestone_year
+        LEFT JOIN (
+            SELECT
+                asset,
+                unit_commitment_method AS from_uc_method,
+            FROM asset
+        ) AS a
+            ON flow.from_asset = a.asset
         ORDER BY rep_periods_data.year, rep_periods_data.rep_period
         ",
     )
@@ -331,6 +342,7 @@ function create_unrolled_partition_tables!(connection)
             to_asset STRING,
             year INT,
             rep_period INT,
+            is_trajectory_flow BOOLEAN,
             capacity_coefficient DOUBLE,
             conversion_coefficient DOUBLE,
             time_block_start INT,
@@ -342,6 +354,9 @@ function create_unrolled_partition_tables!(connection)
     for row in TulipaIO.get_table(Val(:raw), connection, "t_explicit_flows_rep_periods_partitions")
         durations = _compute_durations(row, row.num_timesteps)
         _append_given_durations(appender, row, durations)
+        if row.is_trajectory_asset # If originating from an asset that has trajectory, create double flows
+            _append_given_durations(appender, row, durations; is_trajectory_flow = true)
+        end
     end
     DuckDB.close(appender)
 
