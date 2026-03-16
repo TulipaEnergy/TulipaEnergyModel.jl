@@ -21,42 +21,8 @@ function add_trajectory_constraints!(
 
         indices = _append_data_to_trajectory(connection)
 
-        # Expression for pmax = capacity * profile * units_on
-        attach_expression!(
-            cons,
-            :max_production,
-            [
-                @expression(
-                    model,
-                    row.capacity *
-                    _profile_aggregate(
-                        profiles.rep_period,
-                        (row.profile_name, row.year, row.rep_period),
-                        row.time_block_start:row.time_block_end,
-                        Statistics.mean,
-                        1.0,
-                    ) *
-                    cons.expressions[:units_on][row.id]
-                ) for row in indices
-            ],
-        )
-
-        # Expression for pmin = min_op_point * pmax
-        attach_expression!(
-            cons,
-            :min_production,
-            [
-                @expression(
-                    model,
-                    row.min_operating_point * cons.expressions[:max_production][row.id]
-                ) for row in indices
-            ],
-        )
-
         # Label expressions
-        flow_total = cons.expressions[:outgoing_trajectory]
-        pmin = cons.expressions[:min_production]
-        pmax = cons.expressions[:max_production]
+        flow_traj = cons.expressions[:outgoing_trajectory]
 
         """
         The idea here is to read and process every trajectory just once and store the results.
@@ -141,30 +107,16 @@ function add_trajectory_constraints!(
             end for row in indices
         ]
 
-        # Attach lower bound constraint
+        # Attach trajectory upper bound constraint
         attach_constraint!(
             model,
             cons,
-            :susd_trajectory_lower_bound,
+            :susd_trajectory_flow,
             [
                 @constraint(
                     model,
-                    flow_total[row.id] >= trajectories_term[row.id],
-                    base_name = "susd_trajectory_lower_bound[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-                ) for row in indices
-            ],
-        )
-
-        # Attach upper bound constraint
-        attach_constraint!(
-            model,
-            cons,
-            :susd_trajectory_upper_bound,
-            [
-                @constraint(
-                    model,
-                    flow_total[row.id] <= trajectories_term[row.id],
-                    base_name = "susd_trajectory_upper_bound[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    flow_traj[row.id] == trajectories_term[row.id],
+                    base_name = "susd_trajectory_flow[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for row in indices
             ],
         )
@@ -218,7 +170,6 @@ function _get_trajectory_info(connection)
     )
 end
 
-# The reason for the WHERE clause in this function is to prevent creating an extremely large table, which would take up a lot of memory
 function _find_relevant_su_var_ids(connection, asset, year, rep_period)
     return DuckDB.query(
         connection,
@@ -244,7 +195,7 @@ function _find_relevant_su_var_ids(connection, asset, year, rep_period)
         ",
     )
 end
-# The reason for the WHERE clause in this function is to prevent creating an extremely large table, which would take up a lot of memory
+
 function _find_relevant_sd_var_ids(connection, asset, year, rep_period)
     return DuckDB.query(
         connection,
