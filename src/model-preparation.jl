@@ -73,6 +73,11 @@ function add_expression_terms_rep_period_constraints!(
             asset_match = :from_asset,
             selected_assets = ["hub", "consumer", "producer"],
         ),
+        (
+            expr_key = :outgoing_trajectory,
+            asset_match = :from_asset,
+            selected_assets = ["producer"],
+        ),
     ]
     num_rows = get_num_rows(connection, cons)
 
@@ -182,6 +187,12 @@ function add_expression_terms_rep_period_constraints!(
                 group_row.capacity_coefficient::Vector{Union{Missing,Float64}},
                 group_row.conversion_coefficient::Vector{Union{Missing,Float64}},
             )
+                # Trajectory flows should NOT be counted towards the total outgoing flow,
+                # however, they should be counted towards the incoming flow
+                if (case.expr_key == :outgoing && is_trajectory_flow) ||
+                   (case.expr_key == :outgoing_trajectory && !is_trajectory_flow)
+                    continue
+                end
                 time_block = time_block_start:time_block_end
                 # Step 1.1.1.
                 for timestep in time_block

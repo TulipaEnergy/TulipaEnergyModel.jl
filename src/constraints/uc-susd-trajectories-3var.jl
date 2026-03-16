@@ -54,7 +54,7 @@ function add_trajectory_constraints!(
         )
 
         # Label expressions
-        flow_total = cons.expressions[:outgoing]
+        flow_total = cons.expressions[:outgoing_trajectory]
         pmin = cons.expressions[:min_production]
         pmax = cons.expressions[:max_production]
 
@@ -149,7 +149,8 @@ function add_trajectory_constraints!(
             [
                 @constraint(
                     model,
-                    flow_total[row.id] >= pmin[row.id] + trajectories_term[row.id],
+                    # flow_total[row.id] >= pmin[row.id] + trajectories_term[row.id],
+                    flow_total[row.id] >= trajectories_term[row.id],
                     base_name = "susd_trajectory_lower_bound[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for row in indices
             ],
@@ -163,7 +164,8 @@ function add_trajectory_constraints!(
             [
                 @constraint(
                     model,
-                    flow_total[row.id] <= pmax[row.id] + trajectories_term[row.id],
+                    # flow_total[row.id] <= pmax[row.id] + trajectories_term[row.id],
+                    flow_total[row.id] <= trajectories_term[row.id],
                     base_name = "susd_trajectory_upper_bound[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for row in indices
             ],
