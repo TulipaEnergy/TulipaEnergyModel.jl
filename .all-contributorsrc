@@ -165,6 +165,17 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "florinelaseur",
+      "name": "Florine LASEUR",
+      "avatar_url": "https://avatars.githubusercontent.com/u/75248762?v=4",
+      "profile": "https://github.com/florinelaseur",
+      "contributions": [
+        "code",
+        "research",
+        "doc"
+      ]
     }
   ]
 }
