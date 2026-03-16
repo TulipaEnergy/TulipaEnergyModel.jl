@@ -1,0 +1,13 @@
+services:
+  tulipa:
+    image: julia:1.10
+    container_name: tulipa
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace
+    stdin_open: true
+    tty: true
+    command: sleep infinity
+    cpus: 4
+    mem_limit: 24g
+    memswap_limit: 128g

@@ -22,6 +22,12 @@ function add_uc_logic_constraints!(connection, model, variables, expressions, co
                 begin
                     if row.time_block_start == 1
                         @constraint(model, 0 == 0) # TODO: Placeholder for case k = 1
+                    # @constraint(
+                    #     model,
+                    #     units_on[row.units_on_id] ==
+                    #     start_up[row.start_up_id] - shut_down[row.shut_down_id],
+                    #     base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    # )
                     else
                         @constraint(
                             model,

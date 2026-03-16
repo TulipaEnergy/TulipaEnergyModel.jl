@@ -29,7 +29,7 @@ Specify a `log_file` name to export the log to a file.
 function run_scenario(
     connection;
     output_folder = "",
-    optimizer = HiGHS.Optimizer,
+    optimizer = Gurobi.Optimizer,
     optimizer_parameters = default_parameters(optimizer),
     model_parameters_file = "",
     model_file_name = "",

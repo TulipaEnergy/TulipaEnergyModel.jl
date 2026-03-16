@@ -1,0 +1,12 @@
+asset,type,capacity,investment_method,investment_integer,technical_lifetime,discount_rate
+ccgt,producer,800.0,simple,true,15,0.05
+e_demand,consumer,0.0,none,false,15,0.05
+ens,producer,1000.0,none,false,15,0.05
+ocgt,producer,100.0,simple,true,15,0.05
+solar,producer,500.0,simple,true,15,0.05
+wind,producer,400.0,simple,true,15,0.05
+electrolizer,conversion,100,simple,true,15,0.05
+h2_demand,consumer,100,none,false,15,0.05
+smr_ccs,producer,100,simple,true,15,0.05
+hub,hub,0,none,false,15,0.05
+wind_offshore,producer,400,simple,true,15,0.05

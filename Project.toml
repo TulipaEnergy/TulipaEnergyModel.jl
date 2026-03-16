@@ -1,12 +1,14 @@
 name = "TulipaEnergyModel"
 uuid = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
 authors = ["Abel Soares Siqueira <abel.s.siqueira@gmail.com>", "Diego A. Tejada-Arango <diego.tejadaarango@tno.nl>", "Germán Morales-España <german.morales@tno.nl>", "Grigory Neustroev <G.Neustroev@tudelft.nl>", "Juha Kiviluoma <Juha.Kiviluoma@vtt.fi>", "Lauren Clisby <lauren.clisby@tno.nl>", "Maaike Elgersma <m.b.elgersma@tudelft.nl>", "Ni Wang <ni.wang@tno.nl>", "Suvayu Ali <s.ali@esciencecenter.nl>", "Zhi Gao <z.gao1@uu.nl>"]
-version = "0.17.1"
+version = "0.18.0"
 
 [deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DuckDB = "d2f5444f-75bc-4fdf-ac35-56f514c445e1"
 DuckDB_jll = "2cbbab25-fc8b-58cf-88d4-687a02676033"
+Gurobi = "2e9cd046-0924-5485-92f1-d5272153d98b"
 HiGHS = "87dc4568-4c63-4d18-b0c0-bb2238e4078b"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
@@ -20,9 +22,11 @@ TimerOutputs = "a759f4b9-e2f1-59dc-863e-4aeb61b1ea8f"
 TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
 
 [compat]
+BenchmarkTools = "1.6.2"
 CSV = "0.10"
 DuckDB = "1"
 DuckDB_jll = "1.2.1"
+Gurobi = "1.7.6"
 HiGHS = "1"
 JSON = "0.21.4, 1"
 JuMP = "1"

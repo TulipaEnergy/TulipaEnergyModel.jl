@@ -64,7 +64,7 @@ function create_model(
     constraints,
     profiles,
     model_parameters;
-    optimizer = HiGHS.Optimizer,
+    optimizer = Gurobi.Optimizer,
     optimizer_parameters = default_parameters(optimizer),
     model_file_name = "",
     enable_names = true,
@@ -231,12 +231,113 @@ function create_model(
         constraints,
     )
 
+    @timeit to "add_shut_down_upper_bound_2var_constraints!" add_shut_down_upper_bound_2var_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_shut_down_domain_2var_constraints!" add_shut_down_domain_2var_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
     @timeit to "add_uc_logic_constraints!" add_uc_logic_constraints!(
         connection,
         model,
         variables,
         expressions,
         constraints,
+    )
+
+    @timeit to "add_start_up_lower_bound_constraints!" add_start_up_lower_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_shut_down_lower_bound_constraints!" add_shut_down_lower_bound_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_minimum_up_time_constraints!" add_minimum_up_time_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_minimum_down_time_constraints!" add_minimum_down_time_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_su_sd_ramping_with_vars_constraints!" add_su_sd_ramping_with_vars_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles,
+    )
+
+    @timeit to "add_su_sd_ramping_constraints_compact!" add_su_sd_ramping_constraints_compact!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles,
+    )
+
+    @timeit to "add_su_sd_ramping_constraints_tight!" add_su_sd_ramping_constraints_tight!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles,
+    )
+
+    @timeit to "add_minimum_down_time_2var_constraints!" add_minimum_down_time_2var_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_2var_sd_ramping_constraints!" add_2var_sd_ramping_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles,
+    )
+
+    @timeit to "add_trajectory_constraints!" add_trajectory_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+        profiles,
     )
 
     if model_file_name != ""

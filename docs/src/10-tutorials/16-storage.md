@@ -1,4 +1,4 @@
-# Seasonal and Non-seasonal Storage
+# Tutorial 5: Seasonal and Non-seasonal Storage
 
 ## Introduction
 
@@ -9,13 +9,7 @@ Tulipa has two types of storage representations:
 
 Here is the concept documentation for more details: [Storage Modelling](https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/30-concepts/#storage-modeling)
 
-## The new data
-
-Using our now well-known `awesome energy system` case, there are two new assets: `battery` and `H2_storage` in the `my-awesome-energy-system-lesson-5` folder.
-
-**Download the files** from the following link: [case studies files](https://github.com/datejada/Tulipa101-hands-on/tree/main)
-
-- Click the green button Code > Download ZIP
+The data we will be working with is once again located in the `my-awesome-energy-system` folder, this time under tutorial 5
 
 Let's have a look at their input parameters...
 
@@ -25,7 +19,7 @@ For instance, what are the storage capacities? Efficiencies? Initial storage lev
 
 Let's start the workflow in Lesson 4, but using our new storage data (and a temporary hack - sorry, a fix is coming soon):
 
-```julia=
+```julia
 using Pkg
 Pkg.activate(".")
 # Pkg.add("TulipaEnergyModel")
@@ -48,8 +42,8 @@ using Distances
 
 connection = DBInterface.connect(DuckDB.DB)
 
-input_dir = "my-awesome-energy-system-lesson-5"
-output_dir = "my-awesome-energy-system-results"
+input_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-5"
+output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-5/results"
 
 TIO.read_csv_folder(connection, input_dir)
 
@@ -58,7 +52,7 @@ profiles_df = TIO.get_table(connection, "profiles_periods")
 TC.combine_periods!(profiles_df)
 TC.split_into_periods!(profiles_df; period_duration)
 
-num_rep_periods = 2
+num_rep_periods = 10
 method = :convex_hull  # :k_means, :convex_hull, :convex_hull_with_null, :conical_hull
 distance = CosineDist()  # CosineDist()
 
@@ -80,11 +74,6 @@ TC.write_clustering_result_to_tables(connection, clustering_result)
 
 TEM.populate_with_defaults!(connection)
 
-### TEMPORARY HACK ###
-DuckDB.query(
-    connection, "ALTER TABLE rep_periods_mapping ALTER COLUMN period SET DATA TYPE INT")
-### TEMPORARY HACK ###
-
 energy_problem = TEM.run_scenario(connection; output_folder=output_dir)
 ```
 
@@ -96,7 +85,7 @@ At this point, everything should work the same as Lesson 4.
 
 Nice, so what about the storage level?
 
-```julia=98
+```julia
 # Retrieve and group the data
 storage_levels = TIO.get_table(connection, "var_storage_level_rep_period")
 gdf = groupby(storage_levels, [:asset])
@@ -140,8 +129,9 @@ What do you notice in the output folder? Any new variables/constraints?
 
 Check the storage level of the hydrogen storage.
 >**Note:** It's now in the variable `var_storage_level_over_clustered_year` because it's seasonal.
+TIO.get_table(connection, "var_storage_level_over_clustered_year") # Or any other table name
 
-```julia=
+```julia
 seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_over_clustered_year")
 gdf = groupby(seasonal_storage_levels, [:asset])
 n_subplots = length(gdf)
@@ -183,7 +173,7 @@ The following code:
    *Since it is 1 year and 1 representative, the storage is not considered seasonal (it is within the representative period)*
 4. Stores the run in a new object called `ep_hourly`
 
-```julia=
+```julia
 ## Hourly benchmark
 conn_hourly_benchmark = DBInterface.connect(DuckDB.DB)
 TIO.read_csv_folder(conn_hourly_benchmark, input_dir)
@@ -221,7 +211,7 @@ ep_hourly = TEM.run_scenario(conn_hourly_benchmark)
 You can use this result and the ones from the clustering to see the comparison of the two solutions.\
 Here is an example of how to combine the plots for this case:
 
-```julia=
+```julia
 # plotting the results for the hourly benchmark
 storage_levels_hourly = TIO.get_table(conn_hourly_benchmark, "var_storage_level_rep_period")
 asset_to_filter = "h2_storage"

@@ -1,4 +1,4 @@
-# Representative Periods with Tulipa Clustering
+# Tutorial 4: Representative Periods with Tulipa Clustering
 
 ## Introduction
 
@@ -15,13 +15,13 @@ Add the new packages:
 ```julia
 using Pkg: Pkg
 Pkg.activate(".")
-Pkg.add(name="TulipaClustering", version="0.4.0")
+Pkg.add(name="TulipaClustering")
 Pkg.add("Distances")
 ```
 
 Import packages:
 
-```julia=
+```julia
 import TulipaIO as TIO
 import TulipaEnergyModel as TEM
 import TulipaClustering as TC
@@ -33,22 +33,22 @@ using Distances
 
 > **Question:** Do you remember how to install the two new libraries into your environment?
 
-## Set up the data
+## Set up the workflow
 
-Let's now go to the repository and download the new files **my-awesome-energy-system-lesson-4** from the following link: [case studies github repo](https://github.com/datejada/Tulipa101-hands-on/tree/main)
+The data for this tutorial can be found in the folder `my-awesome-energy-system/tutorial-4`
 
-Then load the data:
+Load the data:
 
-```julia=9
+```julia
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "my-awesome-energy-system-lesson-4"
-output_dir = "my-awesome-energy-system-results"
+input_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-4"
+output_dir = "docs/src/10-tutorials/my-awesome-energy-system/tutorial-4/results"
 TIO.read_csv_folder(connection, input_dir)
 ```
 
 Try to run the problem as usual:
 
-```julia=14
+```julia
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.run_scenario(connection; output_folder=output_dir)
 ```
@@ -57,13 +57,10 @@ Uh oh! It doesn't work. Why not?
 
 ```txt
 ERROR: DataValidationException: The following issues were found in the data:
-- Table 'rep_periods_data' expected but not found
-- Table 'rep_periods_mapping' expected but not found
-- Table 'timeframe_data' expected but not found
-- Column 'is_milestone' is missing from table 'year_data'
+- Column 'rep_period' of table 'rep_periods_data' does not have a default
 ```
 
-Because we need the tables from the clustering!
+Because we need data from the clustering!
 
 ## Adding `TulipaClustering`
 
@@ -73,7 +70,7 @@ We need to produce representative period data from the base period data.
 
 Let's say we want to split the year into days, i.e., periods of length 24. `TulipaClustering` provides two methods that can help: `combine_periods!` combines existing periods into consequentive timesteps, and `split_into_periods!` splits it back into periods of desired length:
 
-```julia=17
+```julia
 period_duration = 24  # group data into days
 
 profiles_df = TIO.get_table(connection, "profiles_periods")
@@ -94,7 +91,7 @@ You can also change two optional arguments (after a semicolon):
 - `method` clustering method (defaults to `:k_means`),
 - `distance` a metric used to measure how different the datapoints are (defaults to `SqEuclidean()`),
 
-```julia=23
+```julia
 num_rep_periods = 7
 method = :k_medoids  # :k_means, :convex_hull, :convex_hull_with_null, :conical_hull
 distance = Euclidean()  # CosineDist()
@@ -121,7 +118,7 @@ After the clustering is done, each period is assigned to one representative peri
 
 Now fit the weights:
 
-```julia=29
+```julia
 weight_type = :dirac  # :convex, :conical, :conical_bounded
 tol = 1e-2
 niters = 100
@@ -140,7 +137,7 @@ TC.fit_rep_period_weights!(
 
 To run the model, add the data to the system with `TulipaIO` and then run it as usual:
 
-```julia=42
+```julia
 TC.write_clustering_result_to_tables(connection, clustering_result)
 
 TEM.populate_with_defaults!(connection)
@@ -151,7 +148,7 @@ energy_problem = TEM.run_scenario(connection; output_folder=output_dir)
 
 To plot the results, first read the data with `TulipaIO` and filter what's needed (and rename `time_block_start` to `timestep` while you're at it):
 
-```julia=47
+```julia
 flows = TIO.get_table(connection, "var_flow")
 
 select!(
@@ -179,21 +176,21 @@ filtered_flow = filter(
 
 To reinterpret the RP data as base periods data, first create a new dataframe that contains both by using the inner join operation:
 
-```julia=71
+```julia
 rep_periods_mapping = TIO.get_table(connection, "rep_periods_mapping")
 df = innerjoin(filtered_flow, rep_periods_mapping, on=[:year, :rep_period])
 ```
 
 Next, use Julia's Split-Apply-Combine approach to group the dataframe into smaller ones. Each grouped dataframe contains a single data point for one base period and all RPs it maps to. Then multiply the results by weights and add them up.
 
-```julia=73
+```julia
 gdf = groupby(df, [:from_asset, :to_asset, :year, :period, :timestep])
 result_df = combine(gdf, [:weight, :solution] => ((w, s) -> sum(w .* s)) => :solution)
 ```
 
 Now you can plot the results. Remove the period data since you don't need it anymore, and re-sort the data to make sure it is in the right order.
 
-```julia=76
+```julia
 TC.combine_periods!(result_df)
 sort!(result_df, :timestep)
 
@@ -212,44 +209,14 @@ plot(
 
 This concludes this tutorial! Play around with different parameters to see how the results change. For example, when you use `:dirac` vs `:convex` weights, do you see the difference? How does the solution change as you increase the number of RPs?
 
-## Troubleshooting
-
-If you can't run up to the end, then check that you have the following information in the `Project.toml` file in your repository, and then in your Julia REPL activate and instantiate the project.
-
-`Project.toml`:
-
-```txt
-[deps]
-DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
-Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
-DuckDB = "d2f5444f-75bc-4fdf-ac35-56f514c445e1"
-Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-TulipaClustering = "314fac8b-c762-4aa3-9d12-851379729163"
-TulipaEnergyModel = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
-TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
-
-[compat]
-TulipaEnergyModel = "0.15.0"
-
-```
-
-Close your current REPL, open a new one, and type:
-
-```julia
-using Pkg: Pkg
-Pkg.activate(".")
-Pkg.resolve()
-Pkg.instantiate()
-```
-
 ## The Script as a Whole
 
-```julia=
+```julia
 using Pkg
 Pkg.activate(".")
 # Pkg.add("TulipaEnergyModel")
 # Pkg.add("TulipaIO")
-Pkg.add("TulipaClustering") # NB: this is new; ask students if they remember how to install a package
+Pkg.add("TulipaClustering")
 # Pkg.add("DuckDB")
 # Pkg.add("DataFrames")
 # Pkg.add("Plots")
@@ -259,16 +226,16 @@ Pkg.instantiate()
 
 import TulipaIO as TIO
 import TulipaEnergyModel as TEM
-import TulipaClustering as TC  # NB: this is new
+import TulipaClustering as TC
 using DuckDB
 using DataFrames
 using Plots
-using Distances  # NB: this is new
+using Distances
 
 connection = DBInterface.connect(DuckDB.DB)
 
-input_dir = "my-awesome-energy-system-lesson-4"
-output_dir = "my-awesome-energy-system-results"
+input_dir = "my-awesome-energy-system/tutorial-4"
+output_dir = "my-awesome-energy-system/tutorial-4/results"
 
 TIO.read_csv_folder(connection, input_dir)
 
@@ -351,13 +318,13 @@ plot(
 
 You can check the new tables with TulipaIO, for example:
 
-```julia=
+```julia
 TIO.get_table(connection,"rep_periods_mapping")
 ```
 
 If you want to save the intermediary tables created by the clustering, you can do this with DuckDB:
 
-```julia=
+```julia
 DuckDB.execute(
     connection,
     "COPY 'profiles_rep_periods' TO 'profiles-rep-periods.csv' (HEADER, DELIMITER ',')",

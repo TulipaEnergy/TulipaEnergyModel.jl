@@ -73,6 +73,11 @@ function add_expression_terms_rep_period_constraints!(
             asset_match = :from_asset,
             selected_assets = ["hub", "consumer", "producer"],
         ),
+        (
+            expr_key = :outgoing_trajectory,
+            asset_match = :from_asset,
+            selected_assets = ["producer"],
+        ),
     ]
     num_rows = get_num_rows(connection, cons)
 
@@ -116,6 +121,7 @@ function add_expression_terms_rep_period_constraints!(
                 :id,
                 :time_block_start,
                 :time_block_end,
+                :is_trajectory_flow,
                 :capacity_coefficient,
                 :conversion_coefficient,
             ];
@@ -145,6 +151,7 @@ function add_expression_terms_rep_period_constraints!(
                 var.capacity_coefficient,
                 var.conversion_coefficient,
                 asset.type AS type,
+                var.is_trajectory_flow AS var_is_trajectory_flow_vec,
                 $resolution_query AS resolution,
             FROM $grouped_cons_table_name AS cons
             LEFT JOIN $grouped_var_table_name AS var
@@ -169,15 +176,23 @@ function add_expression_terms_rep_period_constraints!(
                 var_id::Int64,
                 time_block_start::Int32,
                 time_block_end::Int32,
+                is_trajectory_flow::Bool,
                 capacity_coefficient::Float64,
                 conversion_coefficient::Float64,
             ) in zip(
                 group_row.var_id_vec::Vector{Union{Missing,Int64}},
                 group_row.var_time_block_start_vec::Vector{Union{Missing,Int32}},
                 group_row.var_time_block_end_vec::Vector{Union{Missing,Int32}},
+                group_row.var_is_trajectory_flow_vec::Vector{Union{Missing,Bool}},
                 group_row.capacity_coefficient::Vector{Union{Missing,Float64}},
                 group_row.conversion_coefficient::Vector{Union{Missing,Float64}},
             )
+                # Trajectory flows should NOT be counted towards the total outgoing flow,
+                # however, they should be counted towards the incoming flow
+                if (case.expr_key == :outgoing && is_trajectory_flow) ||
+                   (case.expr_key == :outgoing_trajectory && !is_trajectory_flow)
+                    continue
+                end
                 time_block = time_block_start:time_block_end
                 # Step 1.1.1.
                 for timestep in time_block
@@ -569,6 +584,18 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         :max_ramp_with_unit_commitment,
         :max_ramp_without_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
+        :su_ramping_2_3_var_flow_diff,
+        :sd_ramping_3var_flow_diff,
+        :su_ramping_2_3_var_flow_upper_bound,
+        :sd_ramping_3var_flow_upper_bound,
+        :susd_ramping_3var_flow_unaligned_uc,
+        :su_ramping_compact_1var,
+        :sd_ramping_compact_1var,
+        :su_ramping_tight_1var,
+        :sd_ramping_tight_1var,
+        :sd_ramping_2var_flow_diff,
+        :susd_ramping_2var_flow_unaligned_uc,
+        :sd_ramping_2var_flow_upper_bound,
     )
         @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
             connection,
@@ -603,6 +630,10 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         :min_output_flow_with_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
         :max_ramp_with_unit_commitment,
+        :su_ramping_compact_1var,
+        :sd_ramping_compact_1var,
+        :su_ramping_tight_1var,
+        :sd_ramping_tight_1var,
     )
         @timeit to "attach units_on expression to $table_name" attach_expression_on_constraints_grouping_variables!(
             connection,
@@ -611,6 +642,67 @@ function add_expressions_to_constraints!(connection, variables, constraints)
             :units_on,
             workspace,
             agg_strategy = :unique_sum,
+        )
+    end
+
+    for table_name in (
+        :su_ramping_2_3_var_flow_diff,
+        :sd_ramping_3var_flow_diff,
+        :su_ramping_2_3_var_flow_upper_bound,
+        :sd_ramping_3var_flow_upper_bound,
+        :susd_ramping_3var_flow_unaligned_uc,
+        :sd_ramping_2var_flow_diff,
+        :susd_ramping_2var_flow_unaligned_uc,
+        :sd_ramping_2var_flow_upper_bound,
+    )
+        @timeit to "attach units_on expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+            connection,
+            constraints[table_name],
+            variables[:units_on],
+            :units_on,
+            workspace,
+            agg_strategy = :unique_sum,
+        )
+
+        @timeit to "attach start_up expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+            connection,
+            constraints[table_name],
+            variables[:start_up],
+            :start_up,
+            workspace,
+            agg_strategy = :unique_sum,
+        )
+
+        if (!occursin("2var", string(table_name)))
+            @timeit to "attach shut_down expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+                connection,
+                constraints[table_name],
+                variables[:shut_down],
+                :shut_down,
+                workspace,
+                agg_strategy = :unique_sum,
+            )
+        end
+    end
+
+    for table_name in (:susd_trajectory,)
+        for expr_name in (:units_on,)
+            @timeit to "attach $expr_name expression to $table_name" attach_expression_on_constraints_grouping_variables!(
+                connection,
+                constraints[table_name],
+                variables[:units_on],
+                :units_on,
+                workspace,
+                agg_strategy = :unique_sum,
+            )
+        end
+        @timeit to "add_expression_terms_rep_period_constraints!" add_expression_terms_rep_period_constraints!(
+            connection,
+            constraints[table_name],
+            variables[:flow],
+            workspace;
+            use_highest_resolution = true,
+            multiply_by_duration = false,
         )
     end
 

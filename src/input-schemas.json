@@ -112,6 +112,24 @@
       "type": "DOUBLE",
       "unit_of_measure": "p.u./h"
     },
+    "max_sd_ramp": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Maximum ramping down rate at shutdown as a portion of the capacity of asset.",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u./h"
+    },
+    "max_su_ramp": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Maximum ramping up rate at startup as a portion of the capacity of asset.",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u./h"
+    },
     "min_operating_point": {
       "constraints": {
         "maximum": 1,
@@ -122,10 +140,46 @@
       "type": "DOUBLE",
       "unit_of_measure": "p.u."
     },
+    "minimum_down_time": {
+      "constraints": {
+        "minimum": 1
+      },
+      "default": 1,
+      "description": "Minimum time between shutting a unit down and starting it back up",
+      "type": "INTEGER",
+      "unit_of_measure": "h"
+    },
+    "minimum_up_time": {
+      "constraints": {
+        "minimum": 1
+      },
+      "default": 1,
+      "description": "Minimum time between starting a unit up and shutting it back down",
+      "type": "INTEGER",
+      "unit_of_measure": "h"
+    },
     "ramping": {
       "default": false,
       "description": "Whether asset has ramping constraints or not.",
       "type": "BOOLEAN"
+    },
+    "shut_down_cost": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Cost of shutting down a unit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR"
+    },
+    "start_up_cost": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Cost of starting up a unit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR"
     },
     "storage_method_energy": {
       "default": false,
@@ -169,7 +223,22 @@
         "oneOf": [
           null,
           "basic",
-          "3var"
+          "1var-0",
+          "1var-E1",
+          "1var-E2T",
+          "1var-E2C",
+          "1var-E2TC",
+          "1var-E2CT",
+          "2var-0T",
+          "2var-0C",
+          "2var-E1",
+          "2var-E2",
+          "3var-0T",
+          "3var-0C",
+          "3var-0N",
+          "3var-E1",
+          "3var-E2",
+          "3var-E3"
         ]
       },
       "default": null,
@@ -808,6 +877,12 @@
       "description": "Representative period number.",
       "type": "INTEGER"
     },
+    "scenario": {
+      "default": 1,
+      "description": "Stochastic scenario number.",
+      "type": "INTEGER",
+      "unit_of_measure": "number"
+    },
     "timestep": {
       "description": "Timestep number.",
       "type": "INTEGER"
@@ -880,6 +955,28 @@
     "year": {
       "description": "Milestone year.",
       "type": "INTEGER"
+    }
+  },
+  "stochastic_scenario": {
+    "description": {
+      "default": "",
+      "description": "Description of the stochastic scenario. e.g., 'Weather year 1982'.",
+      "type": "VARCHAR"
+    },
+    "probability": {
+      "constraints": {
+        "maximum": 1,
+        "minimum": 0
+      },
+      "default": 1.0,
+      "description": "Probability of the stochastic scenario.",
+      "type": "DOUBLE",
+      "unit_of_measure": "ratio"
+    },
+    "scenario": {
+      "description": "Stochastic scenario number.",
+      "type": "INTEGER",
+      "unit_of_measure": "number"
     }
   },
   "timeframe_data": {

@@ -10,7 +10,9 @@
 Manifest.toml
 benchmark/*.json
 coverage
-debugging
+debugging/experiment-inputs
+debugging/experiment-results
+debugging/converted
 docs/build
 env
 node_modules

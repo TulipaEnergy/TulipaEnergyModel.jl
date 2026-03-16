@@ -1,0 +1,5 @@
+asset,milestone_year,commission_year,decommissionable,initial_units,initial_storage_units
+g1,2030,2030,false,1.0,0.0
+g2,2030,2030,false,1.0,0.0
+g3,2030,2030,false,1.0,0.0
+demand,2030,2030,false,0.0,0.0

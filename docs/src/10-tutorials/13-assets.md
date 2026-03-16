@@ -1,18 +1,12 @@
-# Assets and Flows
+# Tutorial 2: Assets and Flows
 
 Tulipa uses [Assets and Flows](@ref concepts) as generalized components to build energy systems.
 
-## Set up the data
-
-We will start from the [Basics Tutorial](@ref basic-example).\
-If you have not followed that tutorial, follow these sections before starting this tutorial:
-
-1. [Create a VS Code Project](@ref vscode-project)
-1. [Set up data and folders](@ref tutorial-data-folders)
-
 ## Explore the files
 
-Take a look at the files in the `assets-tutorial` folder.
+Take a look at the files in the `my-awesome-energy-system/tutorial-2` folder.
+
+Do you notice any changes compared to the files you worked with in tutorial 1?
 
 ## Run the workflow
 
@@ -31,9 +25,9 @@ using DuckDB
 using DataFrames
 using Plots
 
-# Define the directories
-input_dir = "assets-tutorial"
-output_dir = "my-awesome-results"
+# Define the directories - notice we now select tutorial 2 for both the input and output directory
+input_dir = "my-awesome-energy-system/tutorial-2"
+output_dir = "my-awesome-energy-system/tutorial-2/results"
 
 # Create the connection and read the input files
 connection = DBInterface.connect(DuckDB.DB)
@@ -94,6 +88,7 @@ filter(
 
 !!! info "Test Your Knowledge"
     Can you explain the values you get from the column `dual_max_transport_flow_limit_simple_method`?
+    Hint: consider what is currently defining the capacity to transport the flow between the assets you see in the table
 
 ## Challenge: Add a Battery
 
