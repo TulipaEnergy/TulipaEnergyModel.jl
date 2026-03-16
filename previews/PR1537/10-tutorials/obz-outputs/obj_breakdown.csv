@@ -1,0 +1,11 @@
+name,value
+assets_investment_cost,0.0
+assets_fixed_cost_compact_method,0.0
+assets_fixed_cost_simple_method,0.0
+storage_assets_energy_investment_cost,0.0
+storage_assets_energy_fixed_cost,0.0
+flows_investment_cost,0.0
+flows_fixed_cost,0.0
+flows_operational_cost,690850.29962647
+vintage_flows_operational_cost,0.0
+units_on_cost,0.0
