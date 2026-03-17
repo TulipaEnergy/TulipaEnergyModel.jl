@@ -1,67 +1,102 @@
 export ModelParameters
 
 """
-    ModelParameters(;key = value, ...)
-    ModelParameters(path; ...)
-    ModelParameters(connection; ...)
-    ModelParameters(connection, path; ...)
+    ModelParameters(connection)
 
 Structure to hold the model parameters.
-Some values are defined by default and some required explicit definition.
 
-If `path` is passed, it is expected to be a string pointing to a TOML file with
-a `key = value` list of parameters. Explicit keyword arguments take precedence.
+Create parameters by reading from the `model_parameters` table in the DuckDB
+connection. Default values for `discount_rate` and `power_system_base` come from
+the input schema. If `discount_year` is missing, it defaults to the minimum year
+in `year_data` where `is_milestone` is true.
 
-If `connection` is passed, the default `discount_year` is set to the
-minimum of all milestone years. In other words, we check for the table
-`year_data` for the column `year` where the column `is_milestone` is true.
-Explicit keyword arguments take precedence.
+## Fields
 
-If both are passed, then `path` has preference. Explicit keyword arguments take precedence.
-
-## Parameters
-
-- `discount_rate::Float64 = 0.0`: The model discount rate.
+- `discount_rate::Float64`: The model discount rate.
 - `discount_year::Int`: The model discount year.
-- `power_system_base::Float64 = 100.0`: The power system base in MVA.
-- `risk_aversion_weight_lambda::Float64 = 0.0`: Weight reflecting the risk aversion of the objective
-- `risk_aversion_confidence_level_alpha::Float64 = 0.95`: Confidence level that system costs will not exceed the VaR_alpha
+- `power_system_base::Float64`: The power system base in MVA.
+- `risk_aversion_weight_lambda::Float64`: Weight reflecting the risk aversion of the objective
+- `risk_aversion_confidence_level_alpha::Float64`: Confidence level that system costs will not exceed the VaR_alpha
 """
-Base.@kwdef mutable struct ModelParameters
-    discount_rate::Float64 = 0.0
-    discount_year::Int # Explicit definition expected
-    power_system_base::Float64 = 100.0
-    risk_aversion_weight_lambda::Float64 = 0.0
-    risk_aversion_confidence_level_alpha::Float64 = 0.95
+mutable struct ModelParameters
+    discount_rate::Float64
+    discount_year::Int
+    power_system_base::Float64
+    risk_aversion_weight_lambda::Float64
+    risk_aversion_confidence_level_alpha::Float64
 end
 
-# Using `@kwdef` defines a default constructor based on keywords
-
-function _read_model_parameters(path)
-    if length(path) > 0 && !isfile(path)
-        throw(ArgumentError("path `$path` does not contain a file"))
-    end
-
-    file_data = length(path) > 0 ? TOML.parsefile(path) : Dict{String,Any}()
-    file_parameters = Dict(Symbol(k) => v for (k, v) in file_data)
-
-    return file_parameters
-end
-
-function ModelParameters(path::String; kwargs...)
-    file_parameters = _read_model_parameters(path)
-
-    return ModelParameters(; file_parameters..., kwargs...)
-end
-
-function ModelParameters(connection::DuckDB.DB, path::String = ""; kwargs...)
-    discount_year = minimum(
+function _default_discount_year(connection::DuckDB.DB)
+    return minimum(
         row.year for
         row in DuckDB.query(connection, "SELECT year FROM year_data WHERE is_milestone = true")
     )
-    # This can't be naively refactored to reuse the function above because of
-    # the order of preference of the parameters.
-    file_parameters = _read_model_parameters(path)
+end
 
-    return ModelParameters(; discount_year, file_parameters..., kwargs...)
+function _read_model_parameters(connection::DuckDB.DB)
+    if !_check_if_table_exists(connection, "model_parameters")
+        return Dict{Symbol,Any}()
+    end
+
+    rows = collect(
+        DuckDB.query(
+            connection,
+            "SELECT discount_rate, discount_year, power_system_base FROM model_parameters",
+        ),
+    )
+
+    if length(rows) > 1
+        error("Table `model_parameters` must contain at most one row.")
+    end
+
+    if isempty(rows)
+        return Dict{Symbol,Any}()
+    end
+
+    table_parameters = Dict{Symbol,Any}()
+    row = only(rows)
+
+    if !ismissing(row.discount_rate)
+        table_parameters[:discount_rate] = row.discount_rate
+    end
+    if !ismissing(row.discount_year)
+        table_parameters[:discount_year] = row.discount_year
+    end
+    if !ismissing(row.power_system_base)
+        table_parameters[:power_system_base] = row.power_system_base
+    end
+
+    return table_parameters
+end
+
+function _schema_defaults()
+    model_params_schema = schema["model_parameters"]
+    defaults = Dict{Symbol,Any}()
+    for (col_name, props) in model_params_schema
+        if haskey(props, "default") && !isnothing(props["default"])
+            defaults[Symbol(col_name)] = props["default"]
+        end
+    end
+    return defaults
+end
+
+function ModelParameters(connection::DuckDB.DB)
+    schema_defaults = _schema_defaults()
+    table_parameters = _read_model_parameters(connection)
+
+    # Merge: table values override schema defaults
+    params = merge(schema_defaults, table_parameters)
+
+    # Compute discount_year default if still missing
+    if !haskey(params, :discount_year)
+        params[:discount_year] = _default_discount_year(connection)
+    end
+
+    return ModelParameters(
+        Float64(params[:discount_rate]),
+        Int(params[:discount_year]),
+        Float64(params[:power_system_base]),
+        Float64(params[:risk_aversion_weight_lambda]),
+        Float64(params[:risk_aversion_confidence_level_alpha]),
+    )
 end
