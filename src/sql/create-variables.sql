@@ -505,3 +505,25 @@ drop table if exists var_value_at_risk_threshold_mu
 
 create table var_value_at_risk_threshold_mu (id integer, solution float8)
 ;
+
+create sequence id start 1
+;
+
+drop table if exists var_tail_excess_slack_xi
+;
+
+create table var_tail_excess_slack_xi as
+select
+    nextval('id') as id,
+    scenario,
+    cast(null as float8) as solution
+from
+    stochastic_scenario
+order by
+    scenario
+;
+
+drop sequence id
+;
+
+

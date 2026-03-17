@@ -122,7 +122,11 @@ function create_model(
         variables,
         model_parameters,
     )
-
+    @timeit to "add_tail_excess_slack_xi!" add_tail_excess_slack_xi!(
+        model,
+        variables,
+        model_parameters,
+    )
     @timeit to "add_expressions_to_constraints!" add_expressions_to_constraints!(
         connection,
         variables,
