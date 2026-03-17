@@ -20,7 +20,7 @@ in `year_data` where `is_milestone` is true.
 """
 mutable struct ModelParameters
     discount_rate::Float64
-    discount_year::Int
+    discount_year::Int32
     power_system_base::Float64
     risk_aversion_weight_lambda::Float64
     risk_aversion_confidence_level_alpha::Float64
@@ -28,32 +28,38 @@ end
 
 function _default_discount_year(connection::DuckDB.DB)
     return minimum(
-        row.year for
-        row in DuckDB.query(connection, "SELECT year FROM year_data WHERE is_milestone = true")
+        row.year for row in DuckDB.query(
+            connection,
+            "SELECT year::INT32 AS year FROM year_data WHERE is_milestone = true",
+        )
     )
 end
 
 function _read_model_parameters(connection::DuckDB.DB)
     if !_check_if_table_exists(connection, "model_parameters")
-        return Dict{Symbol,Any}()
+        return Dict{Symbol,Union{Float64,Int32}}()
     end
 
-    rows = collect(
-        DuckDB.query(
-            connection,
-            "SELECT discount_rate, discount_year, power_system_base FROM model_parameters",
-        ),
-    )
+    rows = collect(DuckDB.query(
+        connection,
+        "SELECT
+            discount_rate,
+            discount_year,
+            power_system_base,
+            risk_aversion_weight_lambda,
+            risk_aversion_confidence_level_alpha
+        FROM model_parameters",
+    ))
 
     if length(rows) > 1
         error("Table `model_parameters` must contain at most one row.")
     end
 
     if isempty(rows)
-        return Dict{Symbol,Any}()
+        return Dict{Symbol,Union{Float64,Int32}}()
     end
 
-    table_parameters = Dict{Symbol,Any}()
+    table_parameters = Dict{Symbol,Union{Float64,Int32}}()
     row = only(rows)
 
     if !ismissing(row.discount_rate)
@@ -65,13 +71,19 @@ function _read_model_parameters(connection::DuckDB.DB)
     if !ismissing(row.power_system_base)
         table_parameters[:power_system_base] = row.power_system_base
     end
-
+    if !ismissing(row.risk_aversion_weight_lambda)
+        table_parameters[:risk_aversion_weight_lambda] = row.risk_aversion_weight_lambda
+    end
+    if !ismissing(row.risk_aversion_confidence_level_alpha)
+        table_parameters[:risk_aversion_confidence_level_alpha] =
+            row.risk_aversion_confidence_level_alpha
+    end
     return table_parameters
 end
 
 function _schema_defaults()
     model_params_schema = schema["model_parameters"]
-    defaults = Dict{Symbol,Any}()
+    defaults = Dict{Symbol,Union{Float64,Int32}}()
     for (col_name, props) in model_params_schema
         if haskey(props, "default") && !isnothing(props["default"])
             defaults[Symbol(col_name)] = props["default"]
@@ -94,7 +106,7 @@ function ModelParameters(connection::DuckDB.DB)
 
     return ModelParameters(
         Float64(params[:discount_rate]),
-        Int(params[:discount_year]),
+        Int32(params[:discount_year]),
         Float64(params[:power_system_base]),
         Float64(params[:risk_aversion_weight_lambda]),
         Float64(params[:risk_aversion_confidence_level_alpha]),

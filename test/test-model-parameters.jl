@@ -12,6 +12,8 @@
         discount_rate = missing,
         discount_year = missing,
         power_system_base = missing,
+        risk_aversion_confidence_level_alpha = missing,
+        risk_aversion_weight_lambda = missing,
     )
         DuckDB.query(
             connection,
@@ -19,7 +21,9 @@
             CREATE OR REPLACE TABLE model_parameters (
                 discount_rate DOUBLE,
                 discount_year INTEGER,
-                power_system_base DOUBLE
+                power_system_base DOUBLE,
+                risk_aversion_confidence_level_alpha DOUBLE,
+                risk_aversion_weight_lambda DOUBLE
             );
             """,
         )
@@ -29,6 +33,12 @@
         !ismissing(discount_rate) && (data_dict[:discount_rate] = [discount_rate])
         !ismissing(discount_year) && (data_dict[:discount_year] = [discount_year])
         !ismissing(power_system_base) && (data_dict[:power_system_base] = [power_system_base])
+        !ismissing(risk_aversion_confidence_level_alpha) && (
+            data_dict[:risk_aversion_confidence_level_alpha] =
+                [risk_aversion_confidence_level_alpha]
+        )
+        !ismissing(risk_aversion_weight_lambda) &&
+            (data_dict[:risk_aversion_weight_lambda] = [risk_aversion_weight_lambda])
 
         if !isempty(data_dict)
             DuckDB.register_data_frame(connection, DataFrame(data_dict), "model_parameters_values")
@@ -78,6 +88,8 @@ end
     @test mp.discount_rate == 0.0
     @test mp.discount_year == 2030
     @test mp.power_system_base == 100.0
+    @test mp.risk_aversion_confidence_level_alpha == 0.95
+    @test mp.risk_aversion_weight_lambda == 0.0
 end
 
 @testitem "Test model parameters - uses milestone default if discount_year is missing" setup =
@@ -88,6 +100,8 @@ end
         discount_rate = 0.03,
         discount_year = missing,
         power_system_base = 80.0,
+        risk_aversion_confidence_level_alpha = 0.8,
+        risk_aversion_weight_lambda = 0.2,
     )
 
     mp = TulipaEnergyModel.ModelParameters(connection)
@@ -95,6 +109,8 @@ end
     @test mp.discount_rate == 0.03
     @test mp.discount_year == 2030
     @test mp.power_system_base == 80.0
+    @test mp.risk_aversion_confidence_level_alpha == 0.8
+    @test mp.risk_aversion_weight_lambda == 0.2
 end
 
 @testitem "Test model parameters - errors if model_parameters has more than one row" setup =
@@ -106,9 +122,9 @@ end
         CREATE OR REPLACE TABLE model_parameters AS
         SELECT *
         FROM (VALUES
-            (0.03, 2020, 100.0),
-            (0.04, 2030, 110.0)
-        ) AS t(discount_rate, discount_year, power_system_base)
+            (0.03, 2020, 100.0, 0.95, 0.1),
+            (0.04, 2030, 110.0, 0.95, 0.1)
+        ) AS t(discount_rate, discount_year, power_system_base, risk_aversion_confidence_level_alpha, risk_aversion_weight_lambda);
         """,
     )
 
