@@ -47,7 +47,6 @@ TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.run_scenario(
         connection;
-        model_parameters_file = joinpath(@__DIR__, input_dir, "model-parameters-example.toml"),
         output_folder = output_dir,
 )
 ```
@@ -55,7 +54,7 @@ energy_problem = TEM.run_scenario(
 !!! warning
     Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error.
 
-There is a new file *model-parameters-example.toml*. It contains model-wide parameters, in this case:
+There is a new file *model_parameters.csv*. It contains model-wide parameters, in this case:
 
 ```julia
 discount_rate = energy_problem.model_parameters.discount_rate
@@ -109,7 +108,6 @@ TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.run_scenario(
         connection;
-        model_parameters_file = joinpath(@__DIR__, input_dir, "model-parameters-example.toml"),
         output_folder = output_dir,
     )
 ```
@@ -139,7 +137,6 @@ TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.run_scenario(
         connection;
-        model_parameters_file = joinpath(@__DIR__, input_dir, "model-parameters-example.toml"),
         output_folder = output_dir,
     )
 ```

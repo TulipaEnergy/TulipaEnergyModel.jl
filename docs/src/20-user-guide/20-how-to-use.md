@@ -398,7 +398,7 @@ We have 3 profiles for `wind` commissioned in 2020, 2030, and 2050, respectively
 
 For economic representation, the following parameters need to be set up:
 
-- [optional] `discount year` and `discount rate` in the `model-parameters-example.toml` file: model-wide discount year and rate. By default, the model will use a discount rate of 0, and a discount year of the first milestone year. In other words, the costs will be discounted to the cost of the first milestone year.
+- [optional] `discount_year` and `discount_rate` in the `model_parameters` table (for CSV input, in `model_parameters.csv`): model-wide discount year and rate. By default, the model will use a discount rate of 0, and a discount year of the first milestone year. In other words, the costs will be discounted to the cost of the first milestone year.
 - `discount_rate`: technology-specific discount rates.
 - `economic_lifetime`: used for discounting the costs.
 
