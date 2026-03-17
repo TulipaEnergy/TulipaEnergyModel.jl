@@ -168,6 +168,12 @@ Branch naming: `feature/description` or `fix/description`
 
 **CRITICAL:** Use the testing filters to avoid running too many tests at once.
 
+**Run all tests:** `julia --project=test test/runtests.jl`
+**Run specific file:** `julia --project=test test/runtests.jl --file test-model`
+**Run fast tests only:** `julia --project=test test/runtests.jl --tags fast --exclude slow`
+**List available tags:** `julia --project=test test/runtests.jl --list-tags`
+**Docs:** `julia --project=docs -e "using LiveServer; servedocs()"`
+
 ## Testing Strategy
 
 Uses [TestItemRunner.jl](https://github.com/julia-vscode/TestItemRunner.jl) with `@testitem`, `@testsnippet`, `@testmodule` — **not** standard `@testset`.
