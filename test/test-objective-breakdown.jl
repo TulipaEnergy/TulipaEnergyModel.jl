@@ -12,7 +12,7 @@
         @test !ismissing(row.value)
     end
     # Sum of components ≈ total objective value
-    total = get_single_element_from_query_and_ensure_its_only_one(
+    total = TulipaEnergyModel.get_single_element_from_query_and_ensure_its_only_one(
         DuckDB.query(connection, "SELECT SUM(value) AS s FROM obj_breakdown"),
     )
     @test total ≈ energy_problem.objective_value atol = 1e-6
