@@ -158,6 +158,8 @@ Branch naming: `feature/description` or `fix/description`
 4. Ensure tests pass
 5. Submit pull request
 
+**Commit message style:** Imperative, present tense subject line with an informative title (`Add X`, `Fix Y`, `Remove Z`), optionally prefixed with a bracket tag (`[Fix]`, `[docs]`, `[Validation]`). No trailing period. Add a body when the change needs more context. Put issue references (`Closes #N`, `Fixes #N`) in the body, not the subject. Avoid conventional commits style (`feat:`, `fix:`).
+
 **CRITICAL**: When making commits, always add a co-authored line with the tool name, the agent model, and the relevant e-mail. For instance "Co-Authored-By: Claude Code (claude-sonnet-4-6) <noreply@anthropic.com>"
 
 ## Development Commands
