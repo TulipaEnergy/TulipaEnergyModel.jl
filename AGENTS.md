@@ -193,6 +193,37 @@ fixture`)
 - **Complexity:** `:fast`, `:slow`
 - **Feature areas:** `:case_study`, `:data_validation`, `:data_preparation`, `:io`, `:pipeline`
 
+### CLI Filter Flags
+
+| Flag              | Description                                              |
+| ----------------- | -------------------------------------------------------- |
+| `--tags t1,t2`    | Run tests that have ALL listed tags                      |
+| `--exclude t1,t2` | Skip tests that have ANY of the listed tags              |
+| `--file substr`   | Run tests from files whose path contains `substr`        |
+| `--name substr`   | Run tests whose name contains `substr`                   |
+| `--pattern text`  | Run tests whose name OR filename contains `text`         |
+| `--list-tags`     | Print all available tags and exit                        |
+| `--verbose`       | Show individual test results                             |
+| `--help`          | Show full usage help and exit                            |
+
+Multiple filters combine with AND logic. Use `--list-tags` to discover available tags when this file is stale.
+
+**Common workflows:**
+
+```bash
+# Quick iteration — only fast tests
+julia --project=test test/runtests.jl --tags fast --exclude slow
+
+# Focus on a specific feature area
+julia --project=test test/runtests.jl --file test-pipeline
+
+# Run a single test by name
+julia --project=test test/runtests.jl --name "My test description"
+
+# CI-style: all integration tests, verbose
+julia --project=test test/runtests.jl --tags integration --verbose
+```
+
 ### Writing New Tests
 
 ```julia
