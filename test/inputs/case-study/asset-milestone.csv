@@ -3,10 +3,10 @@ CoalSubC1,2030,true,0.0,0
 CoalSubC2,2030,true,0.0,0
 CoalSubC3,2030,true,0.0,0
 CoalSubC4,2030,true,0.0,0
-CoalSC1,2030,true,0.0,0
-CoalSC2,2030,true,0.0,0
-CoalSC3,2030,true,0.0,0
-CoalSC4,2030,true,0.0,0
+CoalSuperC1,2030,true,0.0,0
+CoalSuperC2,2030,true,0.0,0
+CoalSuperC3,2030,true,0.0,0
+CoalSuperC4,2030,true,0.0,0
 CCGT1,2030,true,0.0,0
 CCGT2,2030,true,0.0,0
 CCGT3,2030,true,0.0,0

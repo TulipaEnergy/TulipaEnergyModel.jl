@@ -3,10 +3,10 @@ CoalSubC1,demand,10,0.02
 CoalSubC2,demand,10,0.02
 CoalSubC3,demand,10,0.02
 CoalSubC4,demand,10,0.02
-CoalSC1,demand,10,0.02
-CoalSC2,demand,10,0.02
-CoalSC3,demand,10,0.02
-CoalSC4,demand,10,0.02
+CoalSuperC1,demand,10,0.02
+CoalSuperC2,demand,10,0.02
+CoalSuperC3,demand,10,0.02
+CoalSuperC4,demand,10,0.02
 CCGT1,demand,10,0.02
 CCGT2,demand,10,0.02
 CCGT3,demand,10,0.02

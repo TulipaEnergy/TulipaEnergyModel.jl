@@ -3,10 +3,10 @@ CoalSubC1,demand,2030,0.0077
 CoalSubC2,demand,2030,0.0077
 CoalSubC3,demand,2030,0.0077
 CoalSubC4,demand,2030,0.0077
-CoalSC1,demand,2030,0.006
-CoalSC2,demand,2030,0.006
-CoalSC3,demand,2030,0.006
-CoalSC4,demand,2030,0.006
+CoalSuperC1,demand,2030,0.006
+CoalSuperC2,demand,2030,0.006
+CoalSuperC3,demand,2030,0.006
+CoalSuperC4,demand,2030,0.006
 CCGT1,demand,2030,0.005
 CCGT2,demand,2030,0.005
 CCGT3,demand,2030,0.005
