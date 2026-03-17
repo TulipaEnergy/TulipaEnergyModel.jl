@@ -232,6 +232,35 @@ julia --project=test test/runtests.jl --tags integration --verbose
 end
 ```
 
+Use `@testsnippet` for per-test setup that should run fresh for each test item:
+
+```julia
+@testsnippet MySetup begin
+    # Runs once per @testitem that lists it in setup=[...]
+    data = Dict("key" => 1)
+end
+
+@testitem "Uses fresh data" setup = [MySetup] tags = [:unit, :fast] begin
+    data["key"] = 99  # safe — each test gets its own copy
+    @test data["key"] == 99
+end
+```
+
+Use `@testmodule` for expensive one-time setup shared across many tests (loaded once, accessed via module name):
+
+```julia
+@testmodule SharedData begin
+    # Runs once for the whole test suite
+    const connection = open_connection("test/inputs/tiny")
+end
+
+@testitem "Reads shared connection" setup = [SharedData] tags = [:integration, :fast] begin
+    @test SharedData.connection !== nothing
+end
+```
+
+Prefer `@testsnippet` when tests mutate the data; prefer `@testmodule` when setup is slow and data is read-only.
+
 New tags must be added to `TAGS_DATA` in `test/runtests.jl`. Target: 100% test coverage.
 
 ### MPS Regression Testing
