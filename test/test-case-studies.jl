@@ -102,19 +102,11 @@ end
     dir = joinpath(INPUT_FOLDER, "Multi-year Investments")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    energy_problem = TulipaEnergyModel.run_scenario(
-        connection;
-        model_parameters_file = joinpath(@__DIR__, "inputs", "model-parameters-example.toml"),
-        show_log = false,
-    )
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test energy_problem.objective_value ≈ 4623425.16649 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(
-        connection;
-        model_parameters_file = joinpath(@__DIR__, "inputs", "model-parameters-example.toml"),
-        show_log = false,
-    )
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test energy_problem.objective_value ≈ 4623425.16649 atol = 1e-5
 end
 
