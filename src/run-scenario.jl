@@ -6,7 +6,6 @@ export run_scenario
         output_folder,
         optimizer,
         optimizer_parameters,
-        model_parameters_file,
         model_file_name,
         enable_names,
         log_file,
@@ -23,7 +22,6 @@ Set `direct_model = true` to create a JuMP direct model (faster & less memory).
 Set `show_log = false` to silence printing the log while running.
 
 Specify a `output_folder` name to export the solution to CSV files.
-Specify a `model_parameters_file` name to load the model parameters from a TOML file.
 Specify a `log_file` name to export the log to a file.
 """
 function run_scenario(
@@ -31,17 +29,13 @@ function run_scenario(
     output_folder = "",
     optimizer = HiGHS.Optimizer,
     optimizer_parameters = default_parameters(optimizer),
-    model_parameters_file = "",
     model_file_name = "",
     enable_names = true,
     direct_model = false,
     log_file = "",
     show_log = true,
 )
-    energy_problem = @timeit to "create EnergyProblem from connection" EnergyProblem(
-        connection;
-        model_parameters_file,
-    )
+    energy_problem = @timeit to "create EnergyProblem from connection" EnergyProblem(connection)
 
     @timeit to "create_model!" create_model!(
         energy_problem;
