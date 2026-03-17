@@ -814,6 +814,22 @@
       "type": "VARCHAR"
     }
   },
+  "model_parameters": {
+    "discount_rate": {
+      "default": 0.0,
+      "description": "The model discount rate.",
+      "type": "DOUBLE"
+    },
+    "discount_year": {
+      "description": "The model discount year. If missing, the default `discount_year` is set to the minimum of all milestone years. In other words, we check for the table `year_data` for the column `year` where the column `is_milestone` is true.",
+      "type": "INTEGER"
+    },
+    "power_system_base": {
+      "default": 100.0,
+      "description": "The power system base in MVA.",
+      "type": "DOUBLE"
+    }
+  },
   "profiles_rep_periods": {
     "milestone_year": {
       "description": "Milestone year.",
