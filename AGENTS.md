@@ -171,6 +171,8 @@ Branch naming: `feature/description` or `fix/description`
 Uses [TestItemRunner.jl](https://github.com/julia-vscode/TestItemRunner.jl) with `@testitem`, `@testsnippet`, `@testmodule` — **not** standard `@testset`.
  Test inputs are in `test/inputs/`.
 
+Never run the full test suite unless you are explicitly asked to. Instead, run only the tests you created or modified; for example, for `test-model.jl` run `julia --project=test test/runtests.jl --file test-model`.
+
 ### Shared Setup (in `test/utils.jl`)
 
 - `@testsnippet CommonSetup` — imports all standard libraries, defines `INPUT_FOLDER`, fixture helpers (`_tiny_fixture`, `_storage_fixture`, `_multi_year_
