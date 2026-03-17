@@ -184,6 +184,19 @@
         DuckDB.register_data_frame(connection, df, table_name)
         return nothing
     end
+
+    """
+    compare_tokens(e, a) -> Bool
+
+    Compare two string tokens for equality.
+    compare them numerically with a tolerance of `1e-5`. Otherwise, compare as strings.
+    """
+    function compare_tokens(e, a)
+        e == a && return true
+        e_num = parse(Float64, e)
+        a_num = parse(Float64, a)
+        return isapprox(e_num, a_num; atol = 1e-5)
+    end
 end
 
 @testmodule TestData begin
