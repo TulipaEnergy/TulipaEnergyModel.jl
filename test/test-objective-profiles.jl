@@ -184,3 +184,9 @@ end
 
     @test expected1 + expected2 == observed
 end
+
+#= Test with one scenario and with two or more
+@testitem "Check existence and addition of CVaR if risk_aversion_weight_lambda > 0" tags =
+    [:unit, :objective] setup = [CommonSetup] begin
+end
+=#
