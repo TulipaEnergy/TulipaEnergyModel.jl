@@ -821,7 +821,8 @@
       "type": "DOUBLE"
     },
     "discount_year": {
-      "description": "The model discount year. If missing, the default `discount_year` is set to the minimum of all milestone years. In other words, we check for the table `year_data` for the column `year` where the column `is_milestone` is true.",
+      "default": 9999,
+      "description": "The model discount year. The `discount_year` is calculated in the code as the minimum value between the input value in the table `model_parameters` and the minimum of all milestone years (i.e., we check for the table `year_data` for the column `year` where the column `is_milestone` is true and take the minimum).",
       "type": "INTEGER"
     },
     "power_system_base": {

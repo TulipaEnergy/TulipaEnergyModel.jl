@@ -7,8 +7,9 @@ Structure to hold the model parameters.
 
 Create parameters by reading from the `model_parameters` table in the DuckDB
 connection. Default values for `discount_rate` and `power_system_base` come from
-the input schema. If `discount_year` is missing, it defaults to the minimum year
-in `year_data` where `is_milestone` is true.
+the input schema. The `discount_year` is always computed as the minimum between
+the provided discount year (table value if present, otherwise schema default) and
+the minimum year in `year_data` where `is_milestone` is true.
 
 ## Fields
 
@@ -37,7 +38,7 @@ end
 
 function _read_model_parameters(connection::DuckDB.DB)
     if !_check_if_table_exists(connection, "model_parameters")
-        return Dict{Symbol,Union{Float64,Int32}}()
+        return Dict{Symbol,Union{Float64,Int32,Int64}}()
     end
 
     rows = collect(DuckDB.query(
@@ -51,10 +52,10 @@ function _read_model_parameters(connection::DuckDB.DB)
     end
 
     if isempty(rows)
-        return Dict{Symbol,Union{Float64,Int32}}()
+        return Dict{Symbol,Union{Float64,Int32,Int64}}()
     end
 
-    table_parameters = Dict{Symbol,Union{Float64,Int32}}()
+    table_parameters = Dict{Symbol,Union{Float64,Int32,Int64}}()
     row = only(rows)
 
     for (key, value) in pairs(row)
@@ -68,7 +69,7 @@ end
 
 function _schema_defaults()
     model_params_schema = schema["model_parameters"]
-    defaults = Dict{Symbol,Union{Float64,Int32}}()
+    defaults = Dict{Symbol,Union{Float64,Int32,Int64}}()
     for (col_name, props) in model_params_schema
         if haskey(props, "default") && !isnothing(props["default"])
             defaults[Symbol(col_name)] = props["default"]
@@ -84,10 +85,10 @@ function ModelParameters(connection::DuckDB.DB)
     # Merge: table values override schema defaults
     params = merge(schema_defaults, table_parameters)
 
-    # Compute discount_year default if still missing
-    if !haskey(params, :discount_year)
-        params[:discount_year] = _default_discount_year(connection)
-    end
+    # discount_year is the minimum between the input/default value and the first milestone year.
+    milestone_discount_year = _default_discount_year(connection)
+    params[:discount_year] =
+        min(Int32(get(params, :discount_year, milestone_discount_year)), milestone_discount_year)
 
     return ModelParameters(
         Float64(params[:discount_rate]),

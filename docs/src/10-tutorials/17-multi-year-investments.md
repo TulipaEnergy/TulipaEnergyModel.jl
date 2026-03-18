@@ -54,7 +54,10 @@ energy_problem = TEM.run_scenario(
 !!! warning
     Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error.
 
-There is a new file *model_parameters.csv*. It contains model-wide parameters, in this case:
+There is a new file *model-parameters.csv*. It contains model-wide parameters, in this case:
+
+!!! tip "Pro tip: Creating the `model_parameters` table manually"
+    If you already have a DuckDB connection with the input data but the `model_parameters` table is not there yet, you can create the table manually to add the `discount_rate` and `discount_year` using DuckDB with your values and then populating with defaults for the missing columns in the table.
 
 ```julia
 discount_rate = energy_problem.model_parameters.discount_rate

@@ -398,9 +398,9 @@ We have 3 profiles for `wind` commissioned in 2020, 2030, and 2050, respectively
 
 For economic representation, the following parameters need to be set up:
 
-- [optional] `discount_year` and `discount_rate` in the `model_parameters` table (for CSV input, in `model_parameters.csv`): model-wide discount year and rate. By default, the model will use a discount rate of 0, and a discount year of the first milestone year. In other words, the costs will be discounted to the cost of the first milestone year.
-- `discount_rate`: technology-specific discount rates.
-- `economic_lifetime`: used for discounting the costs.
+- [optional] `discount_year` and `discount_rate` in the `model_parameters` table (for CSV input, in `model-parameters.csv`): model-wide discount year and rate. By default, the model will use a discount rate of 0. The `discount_year` is calculated in the code as the minimum value between the input value in the table `model_parameters` and the minimum of all milestone years (i.e., we check for the table `year_data` for the column `year` where the column `is_milestone` is true and take the minimum). In other words, the costs will be discounted to the cost of the first milestone year is the user don't provide a specific value or if the input value is greater than the minimum milestone year.
+- `discount_rate`: technology-specific discount rates in the `assets` table.
+- `economic_lifetime`: used for discounting the costs in the `assets` table.
 
 !!! info
     1. Since the model explicitly discounts, all the inputs for costs should be given in the costs of the relevant year. For example, to model investments in 2030 and 2050, the `investment_cost` should be given in 2030 costs and 2050 costs, respectively.

@@ -55,9 +55,6 @@
             )
         end
 
-        model_parameters_df = DataFrame(kwargs...)
-        DuckDB.register_data_frame(connection, model_parameters_df, "model_parameters")
-
         return
     end
 end
@@ -114,6 +111,72 @@ end
     @test mp.power_system_base == 80.0
     @test mp.risk_aversion_confidence_level_alpha == 0.8
     @test mp.risk_aversion_weight_lambda == 0.2
+end
+
+@testitem "Test model parameters - clamps discount_year to earliest milestone year" setup =
+    [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
+    connection = connection_with_norse()
+    create_model_parameters_table!(
+        connection;
+        discount_rate = 0.03,
+        discount_year = 2040,
+        power_system_base = 80.0,
+        risk_aversion_confidence_level_alpha = 0.8,
+        risk_aversion_weight_lambda = 0.2,
+    )
+
+    mp = TulipaEnergyModel.ModelParameters(connection)
+
+    @test mp.discount_rate == 0.03
+    @test mp.discount_year == 2030
+    @test mp.power_system_base == 80.0
+    @test mp.risk_aversion_confidence_level_alpha == 0.8
+    @test mp.risk_aversion_weight_lambda == 0.2
+end
+
+@testitem "Test model parameters - partial table values with missing non-discount fields" setup =
+    [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
+    connection = connection_with_norse()
+    create_model_parameters_table!(
+        connection;
+        discount_rate = missing,
+        discount_year = 2040,
+        power_system_base = missing,
+        risk_aversion_confidence_level_alpha = missing,
+        risk_aversion_weight_lambda = 0.2,
+    )
+
+    mp = TulipaEnergyModel.ModelParameters(connection)
+
+    @test mp.discount_rate == 0.0
+    @test mp.discount_year == 2030
+    @test mp.power_system_base == 100.0
+    @test mp.risk_aversion_confidence_level_alpha == 0.95
+    @test mp.risk_aversion_weight_lambda == 0.2
+end
+
+@testitem "Test model parameters - with populate with default values" setup =
+    [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
+    connection = connection_with_norse()
+    DuckDB.query(
+        connection,
+        """
+        CREATE OR REPLACE TABLE model_parameters AS
+        SELECT *
+        FROM (VALUES
+            (0.03)
+        ) AS t(discount_rate);
+        """,
+    )
+
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    mp = TulipaEnergyModel.ModelParameters(connection)
+
+    @test mp.discount_rate == 0.03
+    @test mp.discount_year == 2030
+    @test mp.power_system_base == 100.0
+    @test mp.risk_aversion_confidence_level_alpha == 0.95
+    @test mp.risk_aversion_weight_lambda == 0.0
 end
 
 @testitem "Test model parameters - errors if model_parameters has more than one row" setup =
