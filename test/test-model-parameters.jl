@@ -55,6 +55,9 @@
             )
         end
 
+        model_parameters_df = DataFrame(kwargs...)
+        DuckDB.register_data_frame(connection, model_parameters_df, "model_parameters")
+
         return
     end
 end

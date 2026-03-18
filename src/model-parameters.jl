@@ -42,12 +42,7 @@ function _read_model_parameters(connection::DuckDB.DB)
 
     rows = collect(DuckDB.query(
         connection,
-        "SELECT
-            discount_rate,
-            discount_year,
-            power_system_base,
-            risk_aversion_weight_lambda,
-            risk_aversion_confidence_level_alpha
+        "SELECT *
         FROM model_parameters",
     ))
 
@@ -62,22 +57,12 @@ function _read_model_parameters(connection::DuckDB.DB)
     table_parameters = Dict{Symbol,Union{Float64,Int32}}()
     row = only(rows)
 
-    if !ismissing(row.discount_rate)
-        table_parameters[:discount_rate] = row.discount_rate
+    for (key, value) in pairs(row)
+        if !ismissing(value)
+            table_parameters[key] = value
+        end
     end
-    if !ismissing(row.discount_year)
-        table_parameters[:discount_year] = row.discount_year
-    end
-    if !ismissing(row.power_system_base)
-        table_parameters[:power_system_base] = row.power_system_base
-    end
-    if !ismissing(row.risk_aversion_weight_lambda)
-        table_parameters[:risk_aversion_weight_lambda] = row.risk_aversion_weight_lambda
-    end
-    if !ismissing(row.risk_aversion_confidence_level_alpha)
-        table_parameters[:risk_aversion_confidence_level_alpha] =
-            row.risk_aversion_confidence_level_alpha
-    end
+
     return table_parameters
 end
 
