@@ -814,6 +814,41 @@
       "type": "VARCHAR"
     }
   },
+  "model_parameters": {
+    "discount_rate": {
+      "default": 0.0,
+      "description": "The model discount rate.",
+      "type": "DOUBLE"
+    },
+    "discount_year": {
+      "default": 9999,
+      "description": "The model discount year. The `discount_year` is calculated in the code as the minimum value between the input value in the table `model_parameters` and the minimum of all milestone years (i.e., we check for the table `year_data` for the column `year` where the column `is_milestone` is true and take the minimum).",
+      "type": "INTEGER"
+    },
+    "power_system_base": {
+      "default": 100.0,
+      "description": "The power system base in MVA.",
+      "type": "DOUBLE"
+    },
+    "risk_aversion_confidence_level_alpha": {
+      "constraints": {
+        "maximum": 0.9999,
+        "minimum": 0
+      },
+      "default": 0.95,
+      "description": "The confidence level that the system costs will not exceed the Value at Risk (VaR).",
+      "type": "DOUBLE"
+    },
+    "risk_aversion_weight_lambda": {
+      "constraints": {
+        "maximum": 1,
+        "minimum": 0
+      },
+      "default": 0.0,
+      "description": "The risk aversion weight (between 0 and 1) for the mean-variance objective function. If 0, the objective function is the expected cost; if 1, the objective function is the variance of the cost; if between 0 and 1, the objective function is a weighted sum of the expected cost and the variance of the cost.",
+      "type": "DOUBLE"
+    }
+  },
   "profiles_rep_periods": {
     "milestone_year": {
       "description": "Milestone year.",

@@ -53,7 +53,6 @@ function run_rolling_horizon(
     output_folder = "",
     optimizer = HiGHS.Optimizer,
     optimizer_parameters = default_parameters(optimizer),
-    model_parameters_file = "",
     model_file_name = "",
     enable_names = true,
     direct_model = false,
@@ -88,10 +87,8 @@ function run_rolling_horizon(
     )
 
     # Create no-rolling problem
-    full_energy_problem = @timeit to "Create Rolling Horizon EnergyProblem" EnergyProblem(
-        connection;
-        model_parameters_file,
-    )
+    full_energy_problem =
+        @timeit to "Create Rolling Horizon EnergyProblem" EnergyProblem(connection)
 
     # These are all the non-empty variable tables
     variable_tables = [
@@ -116,10 +113,8 @@ function run_rolling_horizon(
         opt_window_length,
     )
 
-    energy_problem = @timeit to "Create internal EnergyProblem for rolling horizon" EnergyProblem(
-        connection;
-        model_parameters_file,
-    )
+    energy_problem =
+        @timeit to "Create internal EnergyProblem for rolling horizon" EnergyProblem(connection)
 
     # The rolling horizon Parameters are created here. The model has the size of
     # the `opt_window_length`.

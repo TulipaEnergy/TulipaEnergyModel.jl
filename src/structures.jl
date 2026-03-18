@@ -273,12 +273,12 @@ mutable struct EnergyProblem
     rolling_horizon_energy_problem::Union{EnergyProblem,Nothing}
 
     """
-        EnergyProblem(connection; model_parameters_file = "")
+        EnergyProblem(connection)
 
     Constructs a new EnergyProblem object using the `connection`.
     This will call relevant functions to generate all input that is required for the model creation.
     """
-    function EnergyProblem(connection; model_parameters_file = "")
+    function EnergyProblem(connection)
         @timeit to "create_internal_structure" create_internal_tables!(connection)
 
         variables = @timeit to "compute_variables_indices" compute_variables_indices(connection)
@@ -294,7 +294,7 @@ mutable struct EnergyProblem
             Dict{Symbol,TulipaExpression}(),
             constraints,
             profiles,
-            ModelParameters(connection, model_parameters_file),
+            ModelParameters(connection),
             nothing,
             false,
             NaN,
