@@ -158,6 +158,8 @@ Branch naming: `feature/description` or `fix/description`
 4. Ensure tests pass
 5. Submit pull request
 
+**Commit message style:** Imperative, present tense subject line with an informative title (`Add X`, `Fix Y`, `Remove Z`), optionally prefixed with a bracket tag (`[Fix]`, `[docs]`, `[Validation]`). No trailing period. Add a body when the change needs more context. Put issue references (`Closes #N`, `Fixes #N`) in the body, not the subject. Avoid conventional commits style (`feat:`, `fix:`).
+
 **CRITICAL**: When making commits, always add a co-authored line with the tool name, the agent model, and the relevant e-mail. For instance "Co-Authored-By: Claude Code (claude-sonnet-4-6) <noreply@anthropic.com>"
 
 ## Development Commands
@@ -165,6 +167,12 @@ Branch naming: `feature/description` or `fix/description`
 **CRITICAL:** Always use `julia --project=<env>` when running Julia code. **NEVER** use bare `julia` or `julia --project` without specifying the environment.
 
 **CRITICAL:** Use the testing filters to avoid running too many tests at once.
+
+**Run all tests:** `julia --project=test test/runtests.jl`
+**Run specific file:** `julia --project=test test/runtests.jl --file test-model`
+**Run fast tests only:** `julia --project=test test/runtests.jl --tags fast --exclude slow`
+**List available tags:** `julia --project=test test/runtests.jl --list-tags`
+**Docs:** `julia --project=docs -e "using LiveServer; servedocs()"`
 
 ## Testing Strategy
 
@@ -185,6 +193,37 @@ fixture`)
 - **Complexity:** `:fast`, `:slow`
 - **Feature areas:** `:case_study`, `:data_validation`, `:data_preparation`, `:io`, `:pipeline`
 
+### CLI Filter Flags
+
+| Flag              | Description                                              |
+| ----------------- | -------------------------------------------------------- |
+| `--tags t1,t2`    | Run tests that have ALL listed tags                      |
+| `--exclude t1,t2` | Skip tests that have ANY of the listed tags              |
+| `--file substr`   | Run tests from files whose path contains `substr`        |
+| `--name substr`   | Run tests whose name contains `substr`                   |
+| `--pattern text`  | Run tests whose name OR filename contains `text`         |
+| `--list-tags`     | Print all available tags and exit                        |
+| `--verbose`       | Show individual test results                             |
+| `--help`          | Show full usage help and exit                            |
+
+Multiple filters combine with AND logic. Use `--list-tags` to discover available tags when this file is stale.
+
+**Common workflows:**
+
+```bash
+# Quick iteration — only fast tests
+julia --project=test test/runtests.jl --tags fast --exclude slow
+
+# Focus on a specific feature area
+julia --project=test test/runtests.jl --file test-pipeline
+
+# Run a single test by name
+julia --project=test test/runtests.jl --name "My test description"
+
+# CI-style: all integration tests, verbose
+julia --project=test test/runtests.jl --tags integration --verbose
+```
+
 ### Writing New Tests
 
 ```julia
@@ -192,6 +231,35 @@ fixture`)
     @test result == expected
 end
 ```
+
+Use `@testsnippet` for per-test setup that should run fresh for each test item:
+
+```julia
+@testsnippet MySetup begin
+    # Runs once per @testitem that lists it in setup=[...]
+    data = Dict("key" => 1)
+end
+
+@testitem "Uses fresh data" setup = [MySetup] tags = [:unit, :fast] begin
+    data["key"] = 99  # safe — each test gets its own copy
+    @test data["key"] == 99
+end
+```
+
+Use `@testmodule` for expensive one-time setup shared across many tests (loaded once, accessed via module name):
+
+```julia
+@testmodule SharedData begin
+    # Runs once for the whole test suite
+    const connection = open_connection("test/inputs/tiny")
+end
+
+@testitem "Reads shared connection" setup = [SharedData] tags = [:integration, :fast] begin
+    @test SharedData.connection !== nothing
+end
+```
+
+Prefer `@testsnippet` when tests mutate the data; prefer `@testmodule` when setup is slow and data is read-only.
 
 New tags must be added to `TAGS_DATA` in `test/runtests.jl`. Target: 100% test coverage.
 
