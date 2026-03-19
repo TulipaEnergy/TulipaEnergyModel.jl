@@ -82,7 +82,7 @@ Notice that this assumes that the solution has already been computed (e.g., by
 """
 function export_solution_to_csv_files(output_folder, connection)
     # Save each variable and constraint
-    for prefix in ("var", "cons")
+    for prefix in ("var", "cons", "obj")
         for table_name in [
             row.table_name for row in DuckDB.query(
                 connection,
