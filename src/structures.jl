@@ -349,7 +349,10 @@ function Base.show(io::IO, ep::EnergyProblem)
         println(io, "    - Termination status: ", ep.termination_status)
         println(io, "    - Objective value: ", ep.objective_value)
         if !isnan(ep.objective_value)
-            rows = DuckDB.query(ep.db_connection, "SELECT name, value FROM obj_breakdown ORDER BY name")
+            rows = DuckDB.query(
+                ep.db_connection,
+                "SELECT name, value FROM obj_breakdown ORDER BY name",
+            )
             if !isempty(rows)
                 println(io, "    - Objective breakdown:")
                 for row in rows
