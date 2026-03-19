@@ -499,3 +499,9 @@ where
 
 drop sequence id
 ;
+
+drop table if exists var_value_at_risk_threshold_mu
+;
+
+create table var_value_at_risk_threshold_mu (id integer, solution float8)
+;
