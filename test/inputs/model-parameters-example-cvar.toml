@@ -1,0 +1,3 @@
+discount_year = 2020
+risk_aversion_weight_lambda = 0.1
+risk_aversion_confidence_level_alpha = 0.98

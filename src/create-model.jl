@@ -116,6 +116,11 @@ function create_model(
     )
     @timeit to "add_power_flow_variables!" add_power_flow_variables!(model, variables)
     @timeit to "add_storage_variables!" add_storage_variables!(connection, model, variables)
+    @timeit to "add_value_at_risk_threshold_mu!" add_value_at_risk_threshold_mu!(
+        model,
+        variables,
+        model_parameters,
+    )
 
     @timeit to "add_expressions_to_constraints!" add_expressions_to_constraints!(
         connection,
@@ -267,6 +272,15 @@ function create_model(
         variables,
         expressions,
         constraints,
+    )
+
+    @timeit to "add_tail_excess_constraints!" add_tail_excess_constraints!(
+        connection,
+        model,
+        variables,
+        constraints,
+        profiles,
+        expressions,
     )
 
     if model_file_name != ""
