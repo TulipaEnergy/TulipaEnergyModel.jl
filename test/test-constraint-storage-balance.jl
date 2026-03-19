@@ -207,7 +207,7 @@
     """
     function get_inflow_value(profiles_rep_periods::DataFrame, rp::Int, tb::Int)
         filtered = profiles_rep_periods[
-            (profiles_rep_periods.rep_period.==rp).&(profiles_rep_periods.timestep.==tb),
+            (profiles_rep_periods.rep_period .== rp) .& (profiles_rep_periods.timestep .== tb),
             :value,
         ]
         return isempty(filtered) ? 0.0 : filtered[1]

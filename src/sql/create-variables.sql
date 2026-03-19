@@ -500,17 +500,8 @@ where
 drop sequence id
 ;
 
-create sequence id start 1
-;
-
 drop table if exists var_value_at_risk_threshold_mu
 ;
 
-create table var_value_at_risk_threshold_mu as
-select
-    nextval('id') as id,
-    cast(null as float8) as solution,
-;
-
-drop sequence id
+create table var_value_at_risk_threshold_mu (id integer, solution float8)
 ;

@@ -273,7 +273,7 @@ function _create_filter(args)
             filters,
             test_item ->
                 contains(test_item.name, args.pattern) ||
-                    contains(test_item.filename, args.pattern),
+                contains(test_item.filename, args.pattern),
         )
     end
 

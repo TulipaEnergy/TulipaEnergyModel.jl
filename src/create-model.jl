@@ -116,7 +116,8 @@ function create_model(
     )
     @timeit to "add_power_flow_variables!" add_power_flow_variables!(model, variables)
     @timeit to "add_storage_variables!" add_storage_variables!(connection, model, variables)
-    @timeit to "add_value_at_risk_threshold_mu!" add_value_at_risk_threshold_mu!(
+    @timeit to "add_conditional_value_at_risk_variables!" add_conditional_value_at_risk_variables!(
+        connection,
         model,
         variables,
         model_parameters,

@@ -3,15 +3,24 @@
     dir = joinpath(INPUT_FOLDER, "Tinier")
     connection = DBInterface.connect(DuckDB.DB)
     TulipaIO.read_csv_folder(connection, dir)
-    TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(
-        connection;
-        show_log = true,
-        model_parameters_file = joinpath(@__DIR__, "inputs", "model-parameters-example-cvar.toml"),
+    DuckDB.query(
+        connection,
+        """
+        CREATE OR REPLACE TABLE model_parameters AS
+        SELECT *
+        FROM (VALUES
+            (0.1)
+        ) AS t(risk_aversion_weight_lambda);
+        """,
     )
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
     @test haskey(energy_problem.variables, :value_at_risk_threshold_mu)
-    @test JuMP.lower_bound.(energy_problem.variables[:value_at_risk_threshold_mu].container) ==
-          [0.0]
+    value_at_risk_threshold_mu = energy_problem.variables[:value_at_risk_threshold_mu].container
+    @test length(value_at_risk_threshold_mu) == 1
+    @test JuMP.lower_bound.(value_at_risk_threshold_mu) == [0.0]
+    @test JuMP.has_upper_bound.(value_at_risk_threshold_mu) == [false]
+    @test JuMP.is_integer.(value_at_risk_threshold_mu) == [false]
 end
 
 @testitem "Don't create value-at-risk threshold `μ` variable" setup = [CommonSetup] tags =
@@ -22,5 +31,9 @@ end
     TulipaEnergyModel.populate_with_defaults!(connection)
     # default parameters have risk_aversion_weight_lambda = 0.0, so no variable  should be created
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test !haskey(energy_problem.variables, :value_at_risk_threshold_mu)
+    # the dictionary of variables should have the key :value_at_risk_threshold_mu
+    @test haskey(energy_problem.variables, :value_at_risk_threshold_mu)
+    # but the container should be empty
+    value_at_risk_threshold_mu = energy_problem.variables[:value_at_risk_threshold_mu].container
+    @test length(value_at_risk_threshold_mu) == 0
 end
