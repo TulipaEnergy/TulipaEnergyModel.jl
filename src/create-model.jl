@@ -274,6 +274,15 @@ function create_model(
         constraints,
     )
 
+    @timeit to "add_tail_excess_constraints!" add_tail_excess_constraints!(
+        connection,
+        model,
+        variables,
+        constraints,
+        profiles,
+        expressions,
+    )
+
     if model_file_name != ""
         @timeit to "save model file" JuMP.write_to_file(model, model_file_name)
     end
