@@ -106,9 +106,14 @@ function save_solution!(connection, model, variables, constraints; compute_duals
     # Populate obj_breakdown with post-solve expression values
     breakdown_names =
         [row.name for row in DuckDB.query(connection, "SELECT name FROM obj_breakdown")]
+    for name in breakdown_names
+        if !haskey(model, Symbol(name))
+            error("Table obj_breakdown has no corresponding objective in model")
+        end
+    end
     breakdown_table = [
         (name = name, value = JuMP.value(model[Symbol(name)])) for
-        name in breakdown_names if haskey(model, Symbol(name))
+        name in breakdown_names
     ]
     DuckDB.register_table(connection, breakdown_table, "t_obj_breakdown_solution")
     DuckDB.execute(
