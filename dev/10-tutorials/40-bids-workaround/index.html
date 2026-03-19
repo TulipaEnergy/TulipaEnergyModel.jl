@@ -76,6 +76,17 @@ energy_problem</code></pre><pre class="documenter-example-output"><code class="n
   - Model solved!
     - Termination status: OPTIMAL
     - Objective value: 0.0
+    - Objective breakdown:
+      - assets_fixed_cost_compact_method: 0.0
+      - assets_fixed_cost_simple_method: 0.0
+      - assets_investment_cost: 0.0
+      - flows_fixed_cost: 0.0
+      - flows_investment_cost: 0.0
+      - flows_operational_cost: 0.0
+      - storage_assets_energy_fixed_cost: 0.0
+      - storage_assets_energy_investment_cost: 0.0
+      - units_on_cost: 0.0
+      - vintage_flows_operational_cost: 0.0
 </code></pre><h3 id="Input-modification-for-bids"><a class="docs-heading-anchor" href="#Input-modification-for-bids">Input modification for bids</a><a id="Input-modification-for-bids-1"></a><a class="docs-heading-anchor-permalink" href="#Input-modification-for-bids" title="Permalink"></a></h3><p>The trick to have bids is to create a new asset for each of the bids. Each of these bid assets is a consumer asset requesting the profile bid as a &quot;demand&quot; bid. In Tulipa, the <code>:consumer</code> assets also work as hubs, i.e., they are allowed to provide energy to other assets connected via outgoing flows. So, to satisfy the &quot;demand&quot; of the bid assets, we create a flow from the <code>&quot;Consumer&quot;</code> asset to these bid assets. To simulate the <code>price</code> willing to be paid by a bid, we use the <code>operational_cost</code> between the &quot;Consumer&quot; and the bid asset. In summary:</p><ul><li>For each <code>(consumer, exclusive_group, profile_block)</code> bid, create a new &#39;:consumer&#39; asset.</li><li>Attach a profile with the quantities per time steps of the bid to this asset.<ul><li>The profiles in Tulipa have to be complete, so the remaining hours are simply completed with 0.</li></ul></li><li>Create a flow between an existing <code>:consumer</code> and this bid asset and set <code>operational_cost = -price</code>.</li></ul><p>However, this by itself is not sufficient, because there is nothing yet forcing this bid to accepted or not.</p><p>If the bid is accepted, the requested quantity is treated as a demand to be satisfied for every time step. If the bid is not accepted, there should be no flow to this asset for every time step.</p><p>The missing link is to have some kind of variable that indicates whether the bid is accepted or not. For that, we will use an existing feature of TulipaEnergyModel, <a href="../../20-user-guide/20-how-to-use/#unit-commitment-setup">Unit Commitment</a>, but we will apply it to consumers.</p><p>By itself, however, this is not enough, because the consumer balance constraint still forces the requested bid to be satisfied, and there is nothing tying that to the unit commitment variables. Therefore, we use a special condition inside the consumer balance constraint created specifically for this case, which is to create a <strong>loop flow</strong> in the bid asset. This existence of a loop flow changes the balance constraint tying the incoming flow to the loop flow, and the loop flow is tied to the unit commitment variables by the minimum and maximum output flow ramping constraints.</p><p>These are the modifications:</p><ul><li>For each bid, create a new asset. We&#39;ll name it &quot;Bid&quot;. Set<ul><li><code>capacity = 1.0</code></li><li><code>consumer_balance_sense = &quot;==&quot;</code> (which is the default)</li><li><code>initial_units = 1.0</code></li><li><code>peak_demand</code> as anything positive (<code>1.0</code> makes it easier to understand the results, <code>maximum(bid_block.profile)</code> is the common normalized way)</li><li><code>type = :consumer</code></li><li><code>unit_commitment = true</code></li><li><code>unit_commitment_integer = true</code></li><li><code>unit_commitment_method = &quot;basic&quot;</code></li></ul></li><li>Set the time resolution of the asset to the full length of the profile (<code>assets_rep_periods_partitions.partition = rep_periods_data.num_timesteps</code>)</li><li>Find an existing consumer, we&#39;ll name it &quot;Bid Manager&quot;.</li><li>Connect a flow from the &quot;Bid Manager&quot; to &quot;Bid&quot;, with <code>flow_milestone.operational_cost = -price</code>.</li><li>Create a loop flow, connecting the asset &quot;Bid&quot; to itself.</li><li>Create a profile in <code>profiles_rep_periods</code> or <code>profiles</code>, depending on whether you still have to cluster or not.<ul><li>Use the bid&#39;s quantities, normalized by <code>peak_demand</code>, as <code>value</code>, for the corresponding time steps as <code>timestep</code>.</li><li>Use 0 as <code>value</code> for the missing <code>timestep</code>.</li><li>Choose a <code>profile_name</code></li></ul></li><li>Relate the profile above to the asset &quot;Bid&quot; in <code>assets_profiles</code>, with <code>profile_type = &#39;demand&#39;</code>.</li></ul><p>We can create a function to help us create a bid with the above characteristics based on a given bid_block:</p><pre><code class="language-julia hljs">function add_new_bid!(tulipa, bid_id, bid_block)
     bid_name = &quot;bid$bid_id&quot;
     bid_manager = &quot;Consumer&quot;
@@ -124,6 +135,17 @@ energy_problem</code></pre><pre class="documenter-example-output"><code class="n
   - Model solved!
     - Termination status: OPTIMAL
     - Objective value: -225.0
+    - Objective breakdown:
+      - assets_fixed_cost_compact_method: 0.0
+      - assets_fixed_cost_simple_method: 0.0
+      - assets_investment_cost: 0.0
+      - flows_fixed_cost: 0.0
+      - flows_investment_cost: 0.0
+      - flows_operational_cost: -225.0
+      - storage_assets_energy_fixed_cost: 0.0
+      - storage_assets_energy_investment_cost: 0.0
+      - units_on_cost: 0.0
+      - vintage_flows_operational_cost: 0.0
 </code></pre><p>We can see that the objective value is different, but let&#39;s investigate the solution in more details. First, we can check which flows are not 0:</p><pre><code class="language-julia hljs">using DuckDB, DataFrames
 
 # Helper function
@@ -197,6 +219,17 @@ energy_problem</code></pre><pre class="documenter-example-output"><code class="n
   - Model solved!
     - Termination status: OPTIMAL
     - Objective value: -215.0
+    - Objective breakdown:
+      - assets_fixed_cost_compact_method: 0.0
+      - assets_fixed_cost_simple_method: 0.0
+      - assets_investment_cost: 0.0
+      - flows_fixed_cost: 0.0
+      - flows_investment_cost: 0.0
+      - flows_operational_cost: -215.0
+      - storage_assets_energy_fixed_cost: 0.0
+      - storage_assets_energy_investment_cost: 0.0
+      - units_on_cost: 0.0
+      - vintage_flows_operational_cost: 0.0
 </code></pre><p>Once again, we investigate the flow and unit commitment solution:</p><pre><code class="language-julia hljs">using DuckDB, DataFrames
 
 # Helper function
@@ -277,6 +310,17 @@ energy_problem</code></pre><pre class="documenter-example-output"><code class="n
   - Model solved!
     - Termination status: OPTIMAL
     - Objective value: -215.0
+    - Objective breakdown:
+      - assets_fixed_cost_compact_method: 0.0
+      - assets_fixed_cost_simple_method: 0.0
+      - assets_investment_cost: 0.0
+      - flows_fixed_cost: 0.0
+      - flows_investment_cost: 0.0
+      - flows_operational_cost: -215.0
+      - storage_assets_energy_fixed_cost: 0.0
+      - storage_assets_energy_investment_cost: 0.0
+      - units_on_cost: 0.0
+      - vintage_flows_operational_cost: 0.0
 </code></pre><p>Now that we have a function that runs the whole process based on the given bid blocks, the generator capacity, and the operational cost to deliver the generated energy, we can verify these cases:</p><ul><li>There is enough capacity to accept all bids and there is no generation cost, so we expect the all bids to be accepted. Notice that bids 2 and 3 are exclusive, so only bids 1, 2, and 4 are accepted.</li></ul><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 999.9, operational_cost = 0.0)
 @assert accepted_bids == [1, 2, 4]</code></pre><ul><li>By restricting the capacity, we accepted bids will eventually change. The first breakpoint is at capacity = 50, because bids 2 and 4 requires 50 KW at time steps 2 and 3.</li></ul><p>When capacity is slightly less than 50, bid 3 is dropped:</p><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 49.9, operational_cost = 0.0)
 @assert accepted_bids == [1, 2]</code></pre><ul><li>We also expect bid 4 to be dropped if the price is not higher than the operational cost:</li></ul><pre><code class="language-julia hljs">_, _, accepted_bids = full_bid_run(bid_blocks; capacity = 999.9, operational_cost = 1.0)
@@ -291,4 +335,4 @@ plot(
     layout = grid(3, dim2),
     leftmargin = 5Plots.mm,
     bottommargin = 4Plots.mm,
-)</code></pre><img src="066ea6c4.svg" alt="Example block output"/><p>The plot has three columns and three rows. The columns vary in operational cost, and the rows show three different kinds of plots. The x-axis of all plots is the capacity.</p><p>The first row of plots show the profit made accepting these bids, per capacity. The second row of plots show the accepted bids per capacity. The plots in the third row show the profit made per capacity, but grouped per bid.</p><p>Some noteworthy points in the plots above:</p><ul><li>For operational cost = <span>$</span> 0.1 / KW, around capacity 35, bid 1 is slightly less profitable than bid 4, and there is only capacity for one of them (and bid 3), so the accepted bids change accordingly.</li><li>For operational cost = <span>$</span> 0.6 / KW, this is not the case anymore, and thus bid 1 is always accepted.</li><li>For operational cost = <span>$</span> 1.1 / KW, then it is never profitable to accept bid 4.</li><li>The profit generated by bid 3 around capacity 16 to 20, and 31 to 35 is linearly increasing, since the bid 3 can be curtailed.</li></ul></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../31-rolling-horizon/">« Rolling Horizon</a><a class="docs-footer-nextpage" href="../99-manual-steps/">Advanced Control »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Wednesday 18 March 2026 16:12">Wednesday 18 March 2026</span>. Using Julia version 1.12.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+)</code></pre><img src="e7bbcfd3.svg" alt="Example block output"/><p>The plot has three columns and three rows. The columns vary in operational cost, and the rows show three different kinds of plots. The x-axis of all plots is the capacity.</p><p>The first row of plots show the profit made accepting these bids, per capacity. The second row of plots show the accepted bids per capacity. The plots in the third row show the profit made per capacity, but grouped per bid.</p><p>Some noteworthy points in the plots above:</p><ul><li>For operational cost = <span>$</span> 0.1 / KW, around capacity 35, bid 1 is slightly less profitable than bid 4, and there is only capacity for one of them (and bid 3), so the accepted bids change accordingly.</li><li>For operational cost = <span>$</span> 0.6 / KW, this is not the case anymore, and thus bid 1 is always accepted.</li><li>For operational cost = <span>$</span> 1.1 / KW, then it is never profitable to accept bid 4.</li><li>The profit generated by bid 3 around capacity 16 to 20, and 31 to 35 is linearly increasing, since the bid 3 can be curtailed.</li></ul></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../31-rolling-horizon/">« Rolling Horizon</a><a class="docs-footer-nextpage" href="../99-manual-steps/">Advanced Control »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Thursday 19 March 2026 13:31">Thursday 19 March 2026</span>. Using Julia version 1.12.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
