@@ -113,7 +113,7 @@
         end
         result = true
         for k in keys(left_terms)
-            if !isapprox(left_terms[k], right_terms[k])
+            if !isapprox(left_terms[k], right_terms[k]; rtol = 1e-8)
                 @error string(left_terms[k], " != ", right_terms[k])
                 result = false
             end
