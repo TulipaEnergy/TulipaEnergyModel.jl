@@ -929,3 +929,21 @@ from (
 
 drop sequence id
 ;
+
+
+create sequence id start 1
+;
+
+drop table if exists cons_tail_excess
+;
+
+create table cons_tail_excess as
+select distinct
+    nextval('id') as id,
+    attr.scenario,
+from
+    asset_time_resolution_over_clustered_year as attr
+;
+
+drop sequence id
+;
