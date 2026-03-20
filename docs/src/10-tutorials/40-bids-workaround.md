@@ -113,6 +113,7 @@ Notice that this is already a valid Tulipa problem, but the solution is to have 
 ```@example bids
 using TulipaClustering: TulipaClustering as TC
 using TulipaEnergyModel: TulipaEnergyModel as TEM
+using DuckDB
 
 tulipa = create_new_problem()
 
