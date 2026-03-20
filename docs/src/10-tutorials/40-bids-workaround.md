@@ -122,6 +122,10 @@ connection = create_connection(tulipa)
 # (Fake) cluster the profiles to generate representative periods
 TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
 
+# Create the stochastic scenario table (mandatory since it's not auto-generated)
+DuckDB.query(connection, "CREATE TABLE stochastic_scenario (scenario INTEGER, probability DOUBLE, description VARCHAR)")
+DuckDB.query(connection, "INSERT INTO stochastic_scenario VALUES (1, 1.0, '')")
+
 # Solve the scenario
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.run_scenario(connection, show_log=false)
@@ -221,6 +225,10 @@ connection = create_connection(tulipa)
 # (Fake) cluster the profiles to generate representative periods
 TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
 
+# Create the stochastic scenario table (mandatory since it's not auto-generated)
+DuckDB.query(connection, "CREATE TABLE stochastic_scenario (scenario INTEGER, probability DOUBLE, description VARCHAR)")
+DuckDB.query(connection, "INSERT INTO stochastic_scenario VALUES (1, 1.0, '')")
+
 # Solve the scenario
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.run_scenario(connection, show_log=false)
@@ -313,7 +321,11 @@ connection = create_connection(tulipa)
 # (Fake) cluster the profiles to generate representative periods
 TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
 
-# Create the mode
+# Create the stochastic scenario table (mandatory since it's not auto-generated)
+DuckDB.query(connection, "CREATE TABLE stochastic_scenario (scenario INTEGER, probability DOUBLE, description VARCHAR)")
+DuckDB.query(connection, "INSERT INTO stochastic_scenario VALUES (1, 1.0, '')")
+
+# Create the model
 TEM.populate_with_defaults!(connection)
 energy_problem = TEM.EnergyProblem(connection)
 TEM.create_model!(energy_problem)
@@ -378,7 +390,11 @@ function full_bid_run(bid_blocks; capacity, operational_cost)
     # (Fake) cluster the profiles to generate representative periods
     TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
 
-    # Create the mode
+    # Create the stochastic scenario table (mandatory since it's not auto-generated)
+    DuckDB.query(connection, "CREATE TABLE stochastic_scenario (scenario INTEGER, probability DOUBLE, description VARCHAR)")
+    DuckDB.query(connection, "INSERT INTO stochastic_scenario VALUES (1, 1.0, '')")
+
+    # Create the model
     TEM.populate_with_defaults!(connection)
     energy_problem = TEM.EnergyProblem(connection)
     TEM.create_model!(energy_problem)
@@ -512,6 +528,10 @@ function compute_per_capacity(capacity_vector, operational_cost_vector)
 
         # (Fake) cluster the profiles to generate representative periods
         TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
+
+        # Create the stochastic scenario table (mandatory since it's not auto-generated)
+        DuckDB.query(connection, "CREATE TABLE stochastic_scenario (scenario INTEGER, probability DOUBLE, description VARCHAR)")
+        DuckDB.query(connection, "INSERT INTO stochastic_scenario VALUES (1, 1.0, '')")
 
         # Solve the scenario
         TEM.populate_with_defaults!(connection)

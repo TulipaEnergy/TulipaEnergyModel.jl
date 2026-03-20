@@ -557,6 +557,14 @@ Finally, in many cases, you will need to complete the missing columns with addit
 To simplify this process, we created the `populate_with_defaults!` function.
 Please read TulipaEnergyModel's [populate with default section](@ref minimum-data) for a complete picture.
 
+Before populating with defaults, we also need to create the `stochastic_scenario` table.
+Since this case study uses a single deterministic scenario, we set its probability to 1.0:
+
+```@example obz
+DuckDB.query(connection, "CREATE TABLE stochastic_scenario (scenario INTEGER, probability DOUBLE, description VARCHAR)")
+DuckDB.query(connection, "INSERT INTO stochastic_scenario VALUES (1, 1.0, '')")
+```
+
 Here is the before of one of the tables:
 
 ```@example obz

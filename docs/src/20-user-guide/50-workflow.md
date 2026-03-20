@@ -109,6 +109,8 @@ data = Dict(
     "timeframe_data" => DataFrame(:milestone_year => 2030, :period => 1:365),
     "rep_periods_mapping" =>
         DataFrame(:milestone_year => 2030, :period => 1:365, :rep_period => mod1.(1:365, 2)),
+    "stochastic_scenario" =>
+        DataFrame(:scenario => Int32[1], :probability => [1.0], :description => [""]),
 )
 ```
 
