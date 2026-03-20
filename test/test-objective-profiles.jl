@@ -48,6 +48,11 @@
 
         connection = TB.create_connection(tulipa)
         TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(; year = :milestone_year))
+        DuckDB.query(
+            connection,
+            "CREATE TABLE stochastic_scenario (scenario INTEGER, probability DOUBLE, description VARCHAR)",
+        )
+        DuckDB.query(connection, "INSERT INTO stochastic_scenario VALUES (1, 1.0, '')")
         TEM.populate_with_defaults!(connection)
         energy_problem = TEM.EnergyProblem(connection)
         TEM.create_model!(energy_problem)
@@ -141,6 +146,11 @@ end
 
         connection = TB.create_connection(tulipa)
         TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(; year = :milestone_year))
+        DuckDB.query(
+            connection,
+            "CREATE TABLE stochastic_scenario (scenario INTEGER, probability DOUBLE, description VARCHAR)",
+        )
+        DuckDB.query(connection, "INSERT INTO stochastic_scenario VALUES (1, 1.0, '')")
         TEM.populate_with_defaults!(connection)
         energy_problem = TEM.EnergyProblem(connection)
         TEM.create_model!(energy_problem)

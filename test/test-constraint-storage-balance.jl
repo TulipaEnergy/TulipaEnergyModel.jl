@@ -109,6 +109,11 @@
             weight_fitting_kwargs = Dict(:learning_rate => 0.001, :niters => 1000),
             layout = layout,
         )
+        DuckDB.query(
+            connection,
+            "CREATE TABLE stochastic_scenario (scenario INTEGER, probability DOUBLE, description VARCHAR)",
+        )
+        DuckDB.query(connection, "INSERT INTO stochastic_scenario VALUES (1, 1.0, '')")
 
         return connection
     end

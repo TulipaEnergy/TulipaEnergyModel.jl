@@ -238,19 +238,19 @@ p
 
 Here we can see the seasonal storage level for the different scenarios. We can see that the storage level is different across scenarios, which is expected since they are second stage decisions, which are made after the uncertainty is realized. We can also see that the storage level follows a seasonal pattern, which is captured by the representative periods.
 
-**But, wait! We didn't define any probability, so what happened?**
-
-The answer is that if there are no probabilities defined, TulipaEnergyModel.jl assumes that all scenarios are equally likely. Let's check the table `stochastic_scenario` to see the probabilities of the scenarios.
+Let's check the table `stochastic_scenario` to see the probabilities of the scenarios.
 
 ```@example stochastic
 TIO.get_table(connection, "stochastic_scenario")
 ```
 
+The scenarios have equal probabilities of 1/3 each, as defined in the `stochastic-scenario.csv` file that was loaded with the input data.
+
 Let's play around with the probabilities and see how it affects the results. For instance, let's say that we want to assign a higher probability to the scenario 2008, which has a lower average renewable availability and hydro inflows, to see how the model reacts to that.
 
 ### Modifying the probabilities in the database
 
-If you want to define different probabilities for the scenarios, you can add the file `stochastic-scenario.csv` to your input directory (or create a table with the name `stochastic_scenario` in your database), check the [table schemas](@ref table-schemas) for further information. Another option is to modify the table in the database directly by using SQL or by using the `DBInterface.execute!` function in Julia.
+To define different probabilities for the scenarios, you can modify the `stochastic-scenario.csv` file in your input directory (or modify the `stochastic_scenario` table in your database), check the [table schemas](@ref table-schemas) for further information. Another option is to modify the table in the database directly by using SQL or by using the `DBInterface.execute!` function in Julia.
 
 ```@example stochastic
 DBInterface.execute(

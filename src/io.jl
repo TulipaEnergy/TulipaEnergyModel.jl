@@ -13,7 +13,6 @@ const tables_allowed_to_be_missing = [
     "model_parameters"
     "profiles_rep_periods"
     "profiles_timeframe"
-    "stochastic_scenario"
 ]
 
 """
@@ -25,7 +24,6 @@ function create_internal_tables!(connection; skip_validation = false)
     for table in TulipaEnergyModel.tables_allowed_to_be_missing
         _create_empty_unless_exists(connection, table)
     end
-    _calculate_stochastic_scenario_probabilities(connection)
 
     if !skip_validation
         # Data validation - ensure that data is correct before

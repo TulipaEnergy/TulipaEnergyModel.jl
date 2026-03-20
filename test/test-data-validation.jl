@@ -688,7 +688,7 @@ end
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
 
-    # Doesn't throw (creates default stochastic_scenario table with probabilities summing to 1)
+    # Doesn't throw (stochastic_scenario table loaded from CSV has probabilities summing to 1)
     TEM.create_internal_tables!(connection)
 
     # Modify stochastic_scenario to have bad probabilities
@@ -728,6 +728,11 @@ end
             connection;
             layout = TulipaClustering.ProfilesTableLayout(; year = :milestone_year),
         )
+        DuckDB.query(
+            connection,
+            "CREATE TABLE stochastic_scenario (scenario INTEGER, probability DOUBLE, description VARCHAR)",
+        )
+        DuckDB.query(connection, "INSERT INTO stochastic_scenario VALUES (1, 1.0, '')")
         TulipaEnergyModel.populate_with_defaults!(connection)
         return connection
     end
