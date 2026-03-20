@@ -476,6 +476,7 @@ where
     and (asset.unit_commitment_method = 'basic'
     or asset.unit_commitment_method LIKE '%var-0%'
     or asset.unit_commitment_method LIKE '%var-E1%'
+    or asset.unit_commitment_method LIKE '1var%'
     )
 ;
 
@@ -499,7 +500,8 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and not (asset.unit_commitment_method in ('1var-0', '1var-E2C', '2var-0T', '2var-0C', '2var-E1', '3var-0T', '3var-0C', '3var-E1', '3var-0N'))
+    and asset.unit_commitment_method in ('basic', '1var-E1', '1var-E2T', '1var-E2CT', '1var-E2TC')
+    -- and not (asset.unit_commitment_method in ('1var-0', '1var-E2C', '2var-0T', '2var-0C', '2var-E1', '3var-0T', '3var-0C', '3var-E1', '3var-0N'))
 ;
 
 drop sequence id
