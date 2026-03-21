@@ -632,6 +632,7 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         :min_output_flow_with_unit_commitment,
         :max_output_flow_with_basic_unit_commitment,
         :max_ramp_with_unit_commitment_compact,
+        :max_ramp_with_unit_commitment_tight,
         :su_ramping_compact_1var,
         :sd_ramping_compact_1var,
         :su_ramping_tight_1var,

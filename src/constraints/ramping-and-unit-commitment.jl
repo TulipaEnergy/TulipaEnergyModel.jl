@@ -353,12 +353,16 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         cons.expressions[:outgoing][row.id] <=
                         (
                             profile_times_capacity[table_name][row.id] * row.min_operating_point +
-                            row.max_ramp_up
+                            row.max_ramp_up *
+                            min_outgoing_flow_duration *
+                            profile_times_capacity[table_name][row.id]
                         ) * units_on[row.id] +
                         (
                             profile_times_capacity[table_name][row.id] -
                             profile_times_capacity[table_name][row.id] * row.min_operating_point -
-                            row.max_ramp_up
+                            row.max_ramp_up *
+                            min_outgoing_flow_duration *
+                            profile_times_capacity[table_name][row.id]
                         ) * units_on[row.id-1],
                         base_name = "max_ramp_up_with_unit_commitment_tight[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
@@ -380,12 +384,16 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         cons.expressions[:outgoing][row.id-1] <=
                         (
                             profile_times_capacity[table_name][row.id] * row.min_operating_point +
-                            row.max_ramp_down
+                            row.max_ramp_down *
+                            min_outgoing_flow_duration *
+                            profile_times_capacity[table_name][row.id]
                         ) * units_on[row.id-1] +
                         (
                             profile_times_capacity[table_name][row.id] -
                             profile_times_capacity[table_name][row.id] * row.min_operating_point -
-                            row.max_ramp_down
+                            row.max_ramp_down *
+                            min_outgoing_flow_duration *
+                            profile_times_capacity[table_name][row.id]
                         ) * units_on[row.id],
                         base_name = "max_ramp_down_with_unit_commitment_tight[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
