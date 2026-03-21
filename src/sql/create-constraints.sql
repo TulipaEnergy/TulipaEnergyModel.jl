@@ -486,10 +486,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_max_ramp_with_unit_commitment
+drop table if exists cons_max_ramp_with_unit_commitment_compact
 ;
 
-create table cons_max_ramp_with_unit_commitment as
+create table cons_max_ramp_with_unit_commitment_compact as
 select
     nextval('id') as id,
     t_high.*
@@ -500,8 +500,31 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method in ('basic', '1var-E1')
-    -- and not (asset.unit_commitment_method in ('1var-0', '1var-E2C', '2var-0T', '2var-0C', '2var-E1', '3var-0T', '3var-0C', '3var-E1', '3var-0N'))
+    and (asset.unit_commitment_method in ('basic')
+    or asset.unit_commitment_method LIKE '1var-E1%C%')
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_max_ramp_with_unit_commitment_tight
+;
+
+create table cons_max_ramp_with_unit_commitment_tight as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_assets_and_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.ramping
+    and asset.unit_commitment
+    and asset.unit_commitment_method LIKE ('1var-E1%T%')
 ;
 
 drop sequence id
