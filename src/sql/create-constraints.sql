@@ -500,8 +500,32 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method in ('basic', '1var-E1', '1var-E2T', '1var-E2CT', '1var-E2TC')
+    and asset.unit_commitment_method in ('basic', '1var-E1')
     -- and not (asset.unit_commitment_method in ('1var-0', '1var-E2C', '2var-0T', '2var-0C', '2var-E1', '3var-0T', '3var-0C', '3var-E1', '3var-0N'))
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_max_ramp_with_unit_commitment_avg
+;
+
+create table cons_max_ramp_with_unit_commitment_avg as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_assets_and_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.ramping
+    and asset.unit_commitment
+    and asset.unit_commitment_method in ('1var-E2T', '1var-E2CT', '1var-E2TC')
+    -- and asset.unit_commitment_method in ('bla')
 ;
 
 drop sequence id
@@ -1514,7 +1538,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method = '1var-E2%T%'
+    and asset.unit_commitment_method LIKE '1var-E2%T%'
 ;
 
 drop sequence id
@@ -1537,7 +1561,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.ramping
     and asset.unit_commitment
-    and asset.unit_commitment_method = '1var-E2%T%'
+    and asset.unit_commitment_method LIKE '1var-E2%T%'
 ;
 
 drop sequence id
@@ -1607,7 +1631,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment = true
-    and asset.unit_commitment_method in ('2var-E%')
+    and asset.unit_commitment_method LIKE ('2var-E%')
     and asset.investment_method = 'compact'
 order by
     t_high.asset,

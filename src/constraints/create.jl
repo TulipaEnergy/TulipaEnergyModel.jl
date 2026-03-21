@@ -63,6 +63,7 @@ function compute_constraints_indices(connection)
             :sd_ramping_2var_flow_upper_bound,
             :shut_down_upper_bound_simple_investment_2var,
             :shut_down_domain_2var,
+            :max_ramp_with_unit_commitment_avg,
         )
     )
 
