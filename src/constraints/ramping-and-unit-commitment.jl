@@ -172,7 +172,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         attach_constraint!(
             model,
             constraints[table_name],
-            :max_ramp_up_with_unit_commitment,
+            :max_ramp_up_with_unit_commitment_compact,
             [
                 if row.time_block_start == 1
                     @constraint(model, 0 == 0) # Placeholder for case k = 1
@@ -185,7 +185,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         min_outgoing_flow_duration *
                         profile_times_capacity[table_name][row.id] *
                         units_on[row.id],
-                        base_name = "max_ramp_up_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "max_ramp_up_with_unit_commitment_compact[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, min_outgoing_flow_duration) in
                 zip(indices, cons.coefficients[:min_outgoing_flow_duration])
@@ -196,7 +196,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         attach_constraint!(
             model,
             constraints[table_name],
-            :max_ramp_down_with_unit_commitment,
+            :max_ramp_down_with_unit_commitment_compact,
             [
                 if row.time_block_start == 1
                     @constraint(model, 0 == 0) # Placeholder for case k = 1
@@ -209,7 +209,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         min_outgoing_flow_duration *
                         profile_times_capacity[table_name][row.id] *
                         units_on[row.id-1],
-                        base_name = "max_ramp_down_with_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "max_ramp_down_with_unit_commitment_compact[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, min_outgoing_flow_duration) in
                 zip(indices, cons.coefficients[:min_outgoing_flow_duration])
