@@ -46,7 +46,7 @@
         end
         TB.set_partition!(tulipa, "Producer", "Consumer", 2030, 1, "explicit", "1;2;3")
 
-        connection = TB.create_connection(tulipa)
+        connection = create_connection(tulipa)
         TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(; year = :milestone_year))
         TEM.populate_with_defaults!(connection)
         energy_problem = TEM.EnergyProblem(connection)
@@ -139,7 +139,7 @@ end
         TB.set_partition!(tulipa, "Producer1", "Consumer", 2030, 1, "explicit", "1;2;3")
         TB.set_partition!(tulipa, "Producer2", "Consumer", 2030, 1, "explicit", "3;1;2")
 
-        connection = TB.create_connection(tulipa)
+        connection = create_connection(tulipa)
         TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(; year = :milestone_year))
         TEM.populate_with_defaults!(connection)
         energy_problem = TEM.EnergyProblem(connection)

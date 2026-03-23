@@ -36,7 +36,7 @@
     inflows_profile = [0.5; 0.25; 0.125]
     TB.attach_profile!(tulipa, "storageA", :inflows, 2030, inflows_profile)
 
-    connection = TB.create_connection(tulipa)
+    connection = create_connection(tulipa)
 
     # Use same profile for storageB
     DuckDB.query(
