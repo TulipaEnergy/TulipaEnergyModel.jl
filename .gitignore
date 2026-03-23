@@ -13,6 +13,7 @@ coverage
 debugging/experiment-inputs
 debugging/experiment-results
 debugging/converted
+debugging/outputs
 docs/build
 env
 node_modules
