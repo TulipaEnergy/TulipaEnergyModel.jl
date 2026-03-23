@@ -24,6 +24,7 @@ function compute_variables_indices(connection)
             :assets_investment_energy,
             :assets_decommission_energy,
             :value_at_risk_threshold_mu,
+            :tail_excess_slack_xi,
         )
     )
 

@@ -500,8 +500,57 @@ where
 drop sequence id
 ;
 
+-- Helper view for risk aversion conditions
+drop view if exists risk_aversion_conditions_tmp
+;
+
+create view risk_aversion_conditions_tmp as
+select
+    (select count(*) from stochastic_scenario) as n_scenarios,
+    (select risk_aversion_weight_lambda from model_parameters) as lambda
+;
+
+create sequence id start 1
+;
+
 drop table if exists var_value_at_risk_threshold_mu
 ;
 
-create table var_value_at_risk_threshold_mu (id integer, solution float8)
+create table var_value_at_risk_threshold_mu as
+select
+    nextval('id') as id,
+    cast(null as float8) as solution
+from
+    model_parameters
+    cross join risk_aversion_conditions_tmp
+where
+    risk_aversion_conditions_tmp.n_scenarios > 1
+    and risk_aversion_conditions_tmp.lambda is not null
+    and risk_aversion_conditions_tmp.lambda > 0
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists var_tail_excess_slack_xi
+;
+
+create table var_tail_excess_slack_xi as
+select
+    nextval('id') as id,
+    stochastic_scenario.scenario,
+    cast(null as float8) as solution
+from
+    stochastic_scenario
+    cross join risk_aversion_conditions_tmp
+where
+    risk_aversion_conditions_tmp.n_scenarios > 1
+    and risk_aversion_conditions_tmp.lambda is not null
+    and risk_aversion_conditions_tmp.lambda > 0
+;
+
+drop sequence id
 ;
