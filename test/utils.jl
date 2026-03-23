@@ -8,10 +8,15 @@
     using MathOptInterface: MathOptInterface
     using Test: Test, @test, @testset, @test_throws, @test_logs
     using TOML: TOML
+    using TulipaBuilder: TulipaBuilder as TB
     using TulipaEnergyModel: TulipaEnergyModel
     using TulipaIO: TulipaIO
 
     const TEM = TulipaEnergyModel
+
+    function create_connection(tulipa)
+        return TB.create_connection(tulipa, TulipaEnergyModel.schema)
+    end
 
     INPUT_FOLDER = joinpath(@__DIR__, "inputs")
     export INPUT_FOLDER

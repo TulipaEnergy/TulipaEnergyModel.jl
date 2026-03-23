@@ -20,7 +20,7 @@ TulipaEnergyModel = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
 TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
 
 [sources]
-TulipaEnergyModel = {path = ".."}
+TulipaEnergyModel = { path = ".." }
 
 [compat]
 Aqua = "0.8.14"
@@ -36,6 +36,5 @@ Statistics = "1"
 TOML = "1"
 TestItemRunner = "1"
 TestItems = "1"
-TulipaBuilder = "0.2"
 TulipaClustering = "0.5"
 TulipaIO = "0.5"
