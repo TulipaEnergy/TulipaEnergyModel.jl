@@ -511,14 +511,14 @@ from
     var_storage_level_rep_period
 ;
 
-drop table if exists cons_balance_storage_over_clustered_year
+drop table if exists cons_balance_storage_inter_period
 ;
 
-create table cons_balance_storage_over_clustered_year as
+create table cons_balance_storage_inter_period as
 select
     *
 from
-    var_storage_level_over_clustered_year
+    var_storage_level_inter_period
 ;
 
 drop sequence id
@@ -527,10 +527,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_min_energy_over_clustered_year
+drop table if exists cons_min_energy_inter_period
 ;
 
-create table cons_min_energy_over_clustered_year as
+create table cons_min_energy_inter_period as
 select
     nextval('id') as id,
     attr.asset,
@@ -539,7 +539,7 @@ select
     attr.period_block_start,
     attr.period_block_end,
 from
-    asset_time_resolution_over_clustered_year as attr
+    asset_time_resolution_inter_period as attr
     left join asset_milestone on attr.asset = asset_milestone.asset
     and attr.milestone_year = asset_milestone.milestone_year
 where
@@ -552,10 +552,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_max_energy_over_clustered_year
+drop table if exists cons_max_energy_inter_period
 ;
 
-create table cons_max_energy_over_clustered_year as
+create table cons_max_energy_inter_period as
 select
     nextval('id') as id,
     attr.asset,
@@ -564,7 +564,7 @@ select
     attr.period_block_start,
     attr.period_block_end,
 from
-    asset_time_resolution_over_clustered_year as attr
+    asset_time_resolution_inter_period as attr
     left join asset_milestone on attr.asset = asset_milestone.asset
     and attr.milestone_year = asset_milestone.milestone_year
 where

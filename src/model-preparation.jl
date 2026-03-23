@@ -250,7 +250,7 @@ function add_expression_terms_rep_period_constraints!(
 end
 
 """
-    add_expression_terms_over_clustered_year_constraints!(
+    add_expression_terms_inter_period_constraints!(
         connection,
         cons,
         flow,
@@ -264,7 +264,7 @@ that are between (inter) the representative periods.
 This function is only used internally in the model.
 
 """
-function add_expression_terms_over_clustered_year_constraints!(
+function add_expression_terms_inter_period_constraints!(
     connection,
     cons::TulipaConstraint,
     flow::TulipaVariable,
@@ -527,22 +527,22 @@ function add_expressions_to_constraints!(connection, variables, constraints)
             add_min_outgoing_flow_duration = true,
         )
     end
-    @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
+    @timeit to "add_expression_terms_inter_period_constraints!" add_expression_terms_inter_period_constraints!(
         connection,
-        constraints[:balance_storage_over_clustered_year],
+        constraints[:balance_storage_inter_period],
         variables[:flow],
         workspace;
         is_storage_level = true,
     )
-    @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
+    @timeit to "add_expression_terms_inter_period_constraints!" add_expression_terms_inter_period_constraints!(
         connection,
-        constraints[:max_energy_over_clustered_year],
+        constraints[:max_energy_inter_period],
         variables[:flow],
         workspace;
     )
-    @timeit to "add_expression_terms_over_clustered_year_constraints!" add_expression_terms_over_clustered_year_constraints!(
+    @timeit to "add_expression_terms_inter_period_constraints!" add_expression_terms_inter_period_constraints!(
         connection,
-        constraints[:min_energy_over_clustered_year],
+        constraints[:min_energy_inter_period],
         variables[:flow],
         workspace;
     )
@@ -583,7 +583,7 @@ function prepare_profiles_structure(connection)
         )
     )
 
-    over_clustered_year = Dict(
+    inter_period = Dict(
         (row.profile_name, row.milestone_year, row.scenario) =>
             convert(Vector{Float64}, row.values) for row in DuckDB.query(
             connection,
@@ -602,7 +602,7 @@ function prepare_profiles_structure(connection)
     )
 
     # TODO: Try to convert the flow below using group by like above
-    # Creating over_clustered_year profiles of inflows using the inflows
+    # Creating inter_period profiles of inflows using the inflows
     # profiles of rep_periods (asset_milestone.storage_inflows is
     # asset-specific and is not used here).
     # These profiles are scenario-specific since rep_periods_mapping depends on scenario
@@ -660,9 +660,9 @@ function prepare_profiles_structure(connection)
             )
         ]
         if length(values) > 0
-            over_clustered_year[(profile_name, milestone_year, scenario)] = values
+            inter_period[(profile_name, milestone_year, scenario)] = values
         end
     end
 
-    return ProfileLookup(rep_period, over_clustered_year)
+    return ProfileLookup(rep_period, inter_period)
 end
