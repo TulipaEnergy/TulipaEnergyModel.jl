@@ -43,14 +43,13 @@ include("model-preparation.jl")
 include("rolling-horizon/rolling-horizon.jl")
 
 # Model creation
-for folder_name in ["variables", "constraints", "expressions"]
+for folder_name in ["variables", "constraints", "expressions", "objectives"]
     folder_path = joinpath(@__DIR__, folder_name)
     files = filter(endswith(".jl"), readdir(folder_path))
     for file in files
         include(joinpath(folder_path, file))
     end
 end
-include("objective.jl")
 include("create-model.jl")
 
 # Solution
