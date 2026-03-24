@@ -38,9 +38,15 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
     )
     objective_expr = JuMP.AffExpr(0.0)
 
-    _add_assets_costs!(connection, model, variables, expressions, objective_expr)
-    _add_storage_costs!(connection, model, variables, expressions, objective_expr)
-    _add_flows_costs!(connection, model, variables, expressions, profiles, objective_expr)
+    _add_assets_investment_cost!(connection, model, variables, objective_expr)
+    _add_assets_fixed_cost_compact_method!(connection, model, expressions, objective_expr)
+    _add_assets_fixed_cost_simple_method!(connection, model, expressions, objective_expr)
+    _add_storage_assets_energy_investment_cost!(connection, model, variables, objective_expr)
+    _add_storage_assets_energy_fixed_cost!(connection, model, expressions, objective_expr)
+    _add_flows_investment_cost!(connection, model, variables, objective_expr)
+    _add_flows_fixed_cost!(connection, model, expressions, objective_expr)
+    _add_flows_operational_cost!(connection, model, variables, profiles, objective_expr)
+    _add_vintage_flows_operational_cost!(connection, model, variables, objective_expr)
     _add_units_on_cost!(connection, model, variables, objective_expr)
 
     @objective(model, Min, objective_expr)
