@@ -1,21 +1,15 @@
 name = "TulipaEnergyModel"
 uuid = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
 version = "0.21.0"
-authors = [
-  "Abel Soares Siqueira <abel.s.siqueira@gmail.com>",
-  "Diego A. Tejada-Arango <diego.tejadaarango@tno.nl>",
-  "Germán Morales-España <german.morales@tno.nl>",
-  "Grigory Neustroev <G.Neustroev@tudelft.nl>",
-  "Juha Kiviluoma <Juha.Kiviluoma@vtt.fi>",
-  "Lauren Clisby <lauren.clisby@tno.nl>",
-  "Maaike Elgersma <m.b.elgersma@tudelft.nl>",
-  "Ni Wang <ni.wang@tno.nl>",
-  "Suvayu Ali <s.ali@esciencecenter.nl>",
-  "Zhi Gao <z.gao1@uu.nl>",
-]
+authors = ["Abel Soares Siqueira <abel.s.siqueira@gmail.com>", "Diego A. Tejada-Arango <diego.tejadaarango@tno.nl>", "Germán Morales-España <german.morales@tno.nl>", "Grigory Neustroev <G.Neustroev@tudelft.nl>", "Juha Kiviluoma <Juha.Kiviluoma@vtt.fi>", "Lauren Clisby <lauren.clisby@tno.nl>", "Maaike Elgersma <m.b.elgersma@tudelft.nl>", "Ni Wang <ni.wang@tno.nl>", "Suvayu Ali <s.ali@esciencecenter.nl>", "Zhi Gao <z.gao1@uu.nl>"]
+
+[workspace]
+projects = ["test", "docs", "benchmark"]
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
 DuckDB = "d2f5444f-75bc-4fdf-ac35-56f514c445e1"
 HiGHS = "87dc4568-4c63-4d18-b0c0-bb2238e4078b"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
@@ -23,13 +17,17 @@ JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
 MathOptInterface = "b8f27783-ece8-5eb3-8dc8-9495eed66fee"
 OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
 ParametricOptInterface = "0ce4ce61-57bf-432b-a095-efac525d185e"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 TimerOutputs = "a759f4b9-e2f1-59dc-863e-4aeb61b1ea8f"
+TulipaClustering = "314fac8b-c762-4aa3-9d12-851379729163"
 TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
 
 [compat]
 CSV = "0.10"
+DataFrames = "1.8.1"
+Distances = "0.10.12"
 DuckDB = "1"
 HiGHS = "1"
 JSON = "0.21.4, 1"
@@ -37,11 +35,10 @@ JuMP = "1"
 MathOptInterface = "1"
 OrderedCollections = "1"
 ParametricOptInterface = "0.12.1, 0.14, 0.15"
+Plots = "1.41.6"
 Statistics = "1"
 TOML = "1"
 TimerOutputs = "0.5"
+TulipaClustering = "0.5.2"
 TulipaIO = "0.5"
 julia = "1.10"
-
-[workspace]
-projects = ["test", "docs", "benchmark"]
