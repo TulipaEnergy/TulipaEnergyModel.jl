@@ -312,22 +312,6 @@
     end
 
     """
-        verify_constraint_balance(model, cons_name, id, expected_cons) -> Bool
-
-    Helper function to verify that a constraint matches the expected form.
-    Returns true if constraints are equal, false otherwise.
-    """
-    function verify_constraint_balance(
-        model::JuMP.Model,
-        cons_name::Symbol,
-        id::Int,
-        expected_cons,
-    )::Bool
-        observed_cons = _get_cons_object(model, cons_name)[id]
-        return _is_constraint_equal(expected_cons, observed_cons)
-    end
-
-    """
         setup_test_problem(storage_asset, inflows_profile, num_timesteps, num_rps)
 
     Common setup function for creating and configuring test problems.
@@ -431,7 +415,7 @@ end
         end
 
         # Verify constraint matches expected form
-        @test verify_constraint_balance(energy_problem.model, cons_name, id, expected_cons)
+        @test _verify_constraint_using_id(energy_problem.model, cons_name, id, expected_cons)
     end
 end
 
@@ -509,7 +493,7 @@ end
         end
 
         # Verify constraint matches expected form
-        @test verify_constraint_balance(energy_problem.model, cons_name, period, expected_cons)
+        @test _verify_constraint_using_id(energy_problem.model, cons_name, period, expected_cons)
     end
 end
 
@@ -601,7 +585,7 @@ end
         # Verify constraint matches expected form
         # Constraints are ordered by scenario and period
         constraint_id = max_period * (scenario - 1) + period
-        @test verify_constraint_balance(
+        @test _verify_constraint_using_id(
             energy_problem.model,
             cons_name,
             constraint_id,
