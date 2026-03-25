@@ -45,8 +45,8 @@ The changes are:
 - Stored the original variable tables as `full_var_%` per variable table
 - Add `solution` column to each full variable table.
 - If `save_rolling_solution`, create the `rolling_solution_var_%` tables per variable table.
-- Backup `rep_periods_data` and `year_data` into `full_rep_periods_data` and `full_year_data`.
-- Modify `rep_periods_data` and `year_data` to use `opt_window_length` as `num_timesteps`/`length`, respectively.
+- Backup `rep_periods_data` into `full_rep_periods_data`.
+- Modify `rep_periods_data` to use `opt_window_length` as `num_timesteps`/`length`, respectively.
 """
 function prepare_rolling_horizon_tables!(
     connection,
@@ -80,18 +80,15 @@ function prepare_rolling_horizon_tables!(
         DuckDB.execute(connection, "ALTER TABLE $table RENAME TO full_$table")
     end
 
-    # Create backup tables for rep_periods_data and year_data
-    for table_name in ["rep_periods_data", "year_data"]
-        DuckDB.query(
-            connection,
-            "CREATE OR REPLACE TABLE full_$table_name AS
-            FROM $table_name",
-        )
-    end
+    # Create backup tables for rep_periods_data
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TABLE full_rep_periods_data AS
+        FROM rep_periods_data",
+    )
 
     # Modify tables that keep horizon information to limit the horizon to the rolling window
     DuckDB.query(connection, "UPDATE rep_periods_data SET num_timesteps = $opt_window_length")
-    DuckDB.query(connection, "UPDATE year_data SET length = $opt_window_length")
 
     return
 end
@@ -247,13 +244,13 @@ end
 
 Undo some of the changes done by [`prepare_rolling_horizon_tables`] to go back to the original input data.
 This involves:
-- Revert `rep_periods_data` and `year_data` to their original values.
+- Revert `rep_periods_data`to their original values.
 - Drop the internal variable tables and replace them with the full variable tables.
 """
 function prepare_tables_to_leave_rolling_horizon!(connection, variable_tables, constraint_tables)
     # Drop the rolling horizon variable tables and rename the full_var_% tables to var_%
-    # Do the same for rep_periods_data and year_data
-    for table_name in ["rep_periods_data"; "year_data"; variable_tables; constraint_tables]
+    # Do the same for rep_periods_data
+    for table_name in ["rep_periods_data"; variable_tables; constraint_tables]
         DuckDB.query(connection, "DROP TABLE IF EXISTS $table_name")
         DuckDB.query(connection, "ALTER TABLE full_$table_name RENAME TO $table_name")
     end

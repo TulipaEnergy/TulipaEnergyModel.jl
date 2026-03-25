@@ -9,7 +9,7 @@ Create parameters by reading from the `model_parameters` table in the DuckDB
 connection. Default values for `discount_rate` and `power_system_base` come from
 the input schema. The `discount_year` is always computed as the minimum between
 the provided discount year (table value if present, otherwise schema default) and
-the minimum year in `year_data` where `is_milestone` is true.
+the minimum year in `rep_periods_data`.
 
 ## Fields
 
@@ -29,10 +29,8 @@ end
 
 function _default_discount_year(connection::DuckDB.DB)
     return minimum(
-        row.year for row in DuckDB.query(
-            connection,
-            "SELECT year::INT32 AS year FROM year_data WHERE is_milestone = true",
-        )
+        row.year for row in
+        DuckDB.query(connection, "SELECT milestone_year::INT32 AS year FROM rep_periods_data")
     )
 end
 

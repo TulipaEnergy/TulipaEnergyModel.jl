@@ -318,16 +318,6 @@ It is possible to simutaneously model different years, which is especially relev
 
 In order to set up a model with year information, the following steps are necessary. The below illustrative example uses assets, but flows follow the same idea.
 
-##### Year data
-
-Fill in all the years in [`year-data.csv`](@ref table-schemas) file by defining the `year` property and its parameters. Differentiate milestone years and non-milestone years.
-
-- Milestone years are the years you would like to model. For example, if you want to model operation and/or investments in 2030, 2040, and 2050. These 3 years are then milestone years.
-- Non-milestone years are the commission years of existing units. For example, you want to consider a existing wind unit that has been commissioned in 2020, then 2020 is a non-milestone year.
-
-!!! info
-    A year can both be a year that you want to model and that there are existing units invested, then this year is a milestone year.
-
 ##### Asset basic data
 
 Fill in the parameters in the `asset.csv` file. These parameters are for the assets across all the years, i.e., not dependent on years. Examples are lifetime (both `technical_lifetime` and `economic_lifetime`) and capacity of a unit.
@@ -398,7 +388,7 @@ We have 3 profiles for `wind` commissioned in 2020, 2030, and 2050, respectively
 
 For economic representation, the following parameters need to be set up:
 
-- [optional] `discount_year` and `discount_rate` in the `model_parameters` table (for CSV input, in `model-parameters.csv`): model-wide discount year and rate. By default, the model will use a discount rate of 0. The `discount_year` is calculated in the code as the minimum value between the input value in the table `model_parameters` and the minimum of all milestone years (i.e., we check for the table `year_data` for the column `year` where the column `is_milestone` is true and take the minimum). In other words, the costs will be discounted to the cost of the first milestone year is the user don't provide a specific value or if the input value is greater than the minimum milestone year.
+- [optional] `discount_year` and `discount_rate` in the `model_parameters` table (for CSV input, in `model-parameters.csv`): model-wide discount year and rate. By default, the model will use a discount rate of 0. The `discount_year` is calculated in the code as the minimum value between the input value in the table `model_parameters` and the minimum of all milestone years. In other words, the costs will be discounted to the cost of the first milestone year is the user don't provide a specific value or if the input value is greater than the minimum milestone year.
 - `discount_rate`: technology-specific discount rates in the `assets` table.
 - `economic_lifetime`: used for discounting the costs in the `assets` table.
 

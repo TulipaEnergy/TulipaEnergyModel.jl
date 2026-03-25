@@ -811,17 +811,7 @@ end
         tulipa = create_problem_base()
         add_new_bid!(tulipa, "bid1"; price = 1.0, quantity = Dict(3 => 30.0, 4 => 50.0), kwargs...)
         connection = create_connection_and_prepare(tulipa)
-        if num_years > 1
-            for i in 2:num_years
-                DuckDB.query(
-                    connection,
-                    """
-                    INSERT INTO year_data (year, length, is_milestone)
-                    VALUES ($(2020 + 10i), 24, false)
-                    """,
-                )
-            end
-        end
+
         if num_rep_periods > 1
             for i in 2:num_rep_periods
                 DuckDB.query(

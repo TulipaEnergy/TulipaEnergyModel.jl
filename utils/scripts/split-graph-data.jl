@@ -58,9 +58,3 @@ apply_to_files_named("flows-data.csv") do path
         return old_tcsv.csv = old_tcsv.csv[:, indices]
     end
 end
-
-apply_to_files_named("year-data.csv") do path
-    change_file(path) do tcsv
-        return add_column(tcsv, "is_milestone", true; unit = "{true;false}")
-    end
-end

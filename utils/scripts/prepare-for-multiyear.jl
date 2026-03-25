@@ -14,20 +14,6 @@ for filename in ["assets-data.csv", "flows-data.csv"]
     end
 end
 
-# New file to hold year information. Just one file for existing test files
-# This file can exist even before the clustering
-apply_to_files_named("year-data.csv"; include_missing = true) do path
-    @debug "Creating $path"
-    if isfile(path)
-        rm(path)
-    end
-    touch(path)
-    change_file(path) do tcsv
-        tcsv.units = ["", "h"]
-        return tcsv.csv = DataFrame(:milestone_year => [2030], :length => [8760])
-    end
-end
-
 # New file to hold timeframe information. This should be a by-product of the clustering.
 # It should list the timeframes per milestone_year with their number of timesteps.
 apply_to_files_named("timeframe-data.csv"; include_missing = true) do path

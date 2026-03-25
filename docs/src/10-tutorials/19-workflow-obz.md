@@ -236,14 +236,6 @@ For other columns, missing values will be filled with the columns' default.
 !!! warning "Populating with defaults is an explicit step"
     As we'll see in the end of this section, populating the remaining columns with default values is an explicit step and can only be skipped if your data is already correct.
 
-### Year data
-
-This data is already correct in the case study and contains a single year.
-
-```@example obz
-nice_query("FROM year_data")
-```
-
 ### Assets
 
 First, let's join all assets' basic data.
