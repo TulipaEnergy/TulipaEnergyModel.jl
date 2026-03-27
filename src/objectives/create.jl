@@ -24,6 +24,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
         ),
     )
     lambda = model_parameters.risk_aversion_weight_lambda
+    alpha = model_parameters.risk_aversion_confidence_level_alpha
 
     constants = (; social_rate, discount_year, end_of_horizon)
 
@@ -55,6 +56,14 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
     _add_flows_operational_cost!(connection, model, variables, profiles, objective_expr, lambda)
     _add_vintage_flows_operational_cost!(connection, model, variables, objective_expr, lambda)
     _add_units_on_cost!(connection, model, variables, objective_expr, lambda)
+    _add_conditional_value_at_risk_term!(
+        connection,
+        model,
+        variables,
+        objective_expr,
+        lambda,
+        alpha,
+    )
 
     @objective(model, Min, objective_expr)
 end

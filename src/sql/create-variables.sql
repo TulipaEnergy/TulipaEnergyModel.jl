@@ -542,6 +542,7 @@ create table var_tail_excess_slack_xi as
 select
     nextval('id') as id,
     stochastic_scenario.scenario,
+    stochastic_scenario.probability,
     cast(null as float8) as solution
 from
     stochastic_scenario
