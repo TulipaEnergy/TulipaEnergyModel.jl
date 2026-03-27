@@ -155,6 +155,22 @@
     end
 
     """
+        _verify_constraint_using_id(model, cons_name, id, expected_cons) -> Bool
+
+    Helper function to verify that a constraint matches the expected form using the id.
+    Returns true if constraints are equal, false otherwise.
+    """
+    function _verify_constraint_using_id(
+        model::JuMP.Model,
+        cons_name::Symbol,
+        id::Int,
+        expected_cons,
+    )::Bool
+        observed_cons = _get_cons_object(model, cons_name)[id]
+        return _is_constraint_equal(expected_cons, observed_cons)
+    end
+
+    """
         _create_table_for_tests(connection, table_name, table_rows, columns)
 
     Create a non-empty table for tests.

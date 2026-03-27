@@ -57,7 +57,7 @@
         "minimum": 0
       },
       "default": 0,
-      "description": "Fixed ratio between the energy storage capacity [MWh] and the discharge/charge capacity [MW] for energy storage investments where `storage_method_energy = false`.",
+      "description": "Fixed ratio between the energy storage capacity [MWh] and the discharge/charge capacity [MW] when `storage_method_energy = 'use_fixed_energy_to_power_ratio'`.",
       "type": "DOUBLE",
       "unit_of_measure": "h"
     },
@@ -73,7 +73,7 @@
     },
     "investment_integer_storage_energy": {
       "default": false,
-      "description": "Whether investment for storage energy is integer or continuous. It only applies for energy storage investments where `storage_method_energy = true`.",
+      "description": "Whether investment for storage energy is integer or continuous. It only applies when `storage_method_energy = 'optimize_storage_capacity'`.",
       "type": "BOOLEAN"
     },
     "investment_method": {
@@ -128,9 +128,16 @@
       "type": "BOOLEAN"
     },
     "storage_method_energy": {
-      "default": false,
-      "description": "Whether there is independent investment on storage capacity or not. If false, the investment on storage capacity uses the energy_to_power_ratio as a constant fixed value.",
-      "type": "BOOLEAN"
+      "constraints": {
+        "oneOf": [
+          "none",
+          "optimize_storage_capacity",
+          "use_fixed_energy_to_power_ratio"
+        ]
+      },
+      "default": "none",
+      "description": "Storage energy investment method. See constraints for possible values.",
+      "type": "VARCHAR"
     },
     "technical_lifetime": {
       "constraints": {
