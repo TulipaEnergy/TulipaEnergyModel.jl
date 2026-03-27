@@ -644,3 +644,42 @@ function _calculate_stochastic_scenario_probabilities(connection)
     )
     return nothing
 end
+
+"""
+    _prepare_model_parameters!(connection)
+
+Ensure the `model_parameters` table has exactly one row with all defaults filled in,
+then calculate `discount_year` to be at most the minimum milestone year from `rep_periods_data`.
+"""
+function _prepare_model_parameters!(connection)
+    rows = collect(DuckDB.query(
+        connection,
+        "SELECT *
+        FROM model_parameters",
+    ))
+
+    if isempty(rows)
+        _insert_schema_defaults!(connection)
+    end
+
+    DuckDB.execute(
+        connection,
+        "UPDATE model_parameters
+         SET discount_year = LEAST(discount_year,
+             (SELECT MIN(milestone_year) FROM rep_periods_data))",
+    )
+    return
+end
+
+function _insert_schema_defaults!(connection)
+    DuckDB.execute(connection, "INSERT INTO model_parameters DEFAULT VALUES")
+    model_params_schema = schema["model_parameters"]
+    for (col_name, props) in model_params_schema
+        if haskey(props, "default") && !isnothing(props["default"])
+            DuckDB.execute(
+                connection,
+                "UPDATE model_parameters SET $col_name = $(props["default"])",
+            )
+        end
+    end
+end
