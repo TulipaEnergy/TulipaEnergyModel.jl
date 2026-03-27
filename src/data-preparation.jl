@@ -658,7 +658,9 @@ function _prepare_model_parameters!(connection)
         FROM model_parameters",
     ))
 
-    if isempty(rows)
+    if length(rows) > 1
+        error("Table `model_parameters` must contain at most one row.")
+    elseif isempty(rows)
         _insert_schema_defaults!(connection)
     end
 
