@@ -1,4 +1,4 @@
-function _add_flows_fixed_cost!(connection, model, expressions, objective_expr)
+function _add_flows_fixed_cost!(connection, model, expressions, objective_expr, lambda)
     expr_available_flow_units_simple_method = expressions[:available_flow_units_simple_method]
 
     indices = DuckDB.query(
@@ -33,7 +33,13 @@ function _add_flows_fixed_cost!(connection, model, expressions, objective_expr)
             )
         )
     )
-    _add_to_objective!(connection, model, objective_expr, "flows_fixed_cost", flows_fixed_cost)
+    _add_to_objective!(
+        connection,
+        model,
+        objective_expr,
+        "flows_fixed_cost",
+        (1 - lambda) * flows_fixed_cost,
+    )
 
     return
 end

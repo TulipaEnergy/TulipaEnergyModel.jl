@@ -1,4 +1,4 @@
-function _add_vintage_flows_operational_cost!(connection, model, variables, objective_expr)
+function _add_vintage_flows_operational_cost!(connection, model, variables, objective_expr, lambda)
     indices = DuckDB.query(
         connection,
         "WITH rp_weight_prob AS (
@@ -65,7 +65,7 @@ function _add_vintage_flows_operational_cost!(connection, model, variables, obje
         model,
         objective_expr,
         "vintage_flows_operational_cost",
-        vintage_flows_operational_cost,
+        (1 - lambda) * vintage_flows_operational_cost,
     )
 
     return
