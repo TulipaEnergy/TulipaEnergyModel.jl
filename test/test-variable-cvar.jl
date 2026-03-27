@@ -25,23 +25,24 @@
         """,
     )
     TulipaEnergyModel.populate_with_defaults!(connection)
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.EnergyProblem(connection)
+    TulipaEnergyModel.create_model!(energy_problem)
 
     # Test value-at-risk threshold `μ` variable
     @test haskey(energy_problem.variables, :value_at_risk_threshold_mu)
     value_at_risk_threshold_mu = energy_problem.variables[:value_at_risk_threshold_mu].container
     @test length(value_at_risk_threshold_mu) == 1
-    @test JuMP.lower_bound.(value_at_risk_threshold_mu) == [0.0]
-    @test JuMP.has_upper_bound.(value_at_risk_threshold_mu) == [false]
-    @test JuMP.is_integer.(value_at_risk_threshold_mu) == [false]
+    for var in value_at_risk_threshold_mu
+        _test_variable_properties(var, 0.0, nothing)
+    end
 
     # Test tail excess slack `ξ` variable
     @test haskey(energy_problem.variables, :tail_excess_slack_xi)
     tail_excess_slack_xi = energy_problem.variables[:tail_excess_slack_xi].container
     @test length(tail_excess_slack_xi) == 2
-    @test JuMP.lower_bound.(tail_excess_slack_xi) == [0.0, 0.0]
-    @test JuMP.has_upper_bound.(tail_excess_slack_xi) == [false, false]
-    @test JuMP.is_integer.(tail_excess_slack_xi) == [false, false]
+    for var in tail_excess_slack_xi
+        _test_variable_properties(var, 0.0, nothing)
+    end
 end
 
 @testitem "Don't create variables for conditional value-at-risk" setup = [CommonSetup] tags =
@@ -51,7 +52,8 @@ end
     TulipaIO.read_csv_folder(connection, dir)
     TulipaEnergyModel.populate_with_defaults!(connection)
     # default parameters have risk_aversion_weight_lambda = 0.0, so no variable  should be created
-    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    energy_problem = TulipaEnergyModel.EnergyProblem(connection)
+    TulipaEnergyModel.create_model!(energy_problem)
 
     # the dictionary of variables should have the key :value_at_risk_threshold_mu
     @test haskey(energy_problem.variables, :value_at_risk_threshold_mu)
