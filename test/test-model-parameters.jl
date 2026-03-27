@@ -57,6 +57,10 @@
 
         return
     end
+
+    function query_model_parameters(connection)
+        return only(collect(DuckDB.query(connection, "SELECT * FROM model_parameters")))
+    end
 end
 
 @testitem "Test model parameters - read from model_parameters table" setup =
@@ -71,7 +75,7 @@ end
         risk_aversion_weight_lambda = 0.1,
     )
 
-    mp = TulipaEnergyModel.ModelParameters(connection)
+    mp = query_model_parameters(connection)
 
     @test mp.discount_rate == 0.03
     @test mp.discount_year == 2020
@@ -83,7 +87,10 @@ end
 @testitem "Test model parameters - uses default values when table is missing" setup =
     [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
     connection = connection_with_norse()
-    mp = TulipaEnergyModel.ModelParameters(connection)
+
+    TulipaEnergyModel._create_empty_unless_exists(connection, "model_parameters")
+    TulipaEnergyModel._prepare_model_parameters!(connection)
+    mp = query_model_parameters(connection)
 
     @test mp.discount_rate == 0.0
     @test mp.discount_year == 2030
@@ -104,7 +111,9 @@ end
         risk_aversion_weight_lambda = 0.2,
     )
 
-    mp = TulipaEnergyModel.ModelParameters(connection)
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    TulipaEnergyModel._prepare_model_parameters!(connection)
+    mp = query_model_parameters(connection)
 
     @test mp.discount_rate == 0.03
     @test mp.discount_year == 2030
@@ -125,7 +134,8 @@ end
         risk_aversion_weight_lambda = 0.2,
     )
 
-    mp = TulipaEnergyModel.ModelParameters(connection)
+    TulipaEnergyModel._prepare_model_parameters!(connection)
+    mp = query_model_parameters(connection)
 
     @test mp.discount_rate == 0.03
     @test mp.discount_year == 2030
@@ -146,7 +156,9 @@ end
         risk_aversion_weight_lambda = 0.2,
     )
 
-    mp = TulipaEnergyModel.ModelParameters(connection)
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    TulipaEnergyModel._prepare_model_parameters!(connection)
+    mp = query_model_parameters(connection)
 
     @test mp.discount_rate == 0.0
     @test mp.discount_year == 2030
@@ -170,7 +182,8 @@ end
     )
 
     TulipaEnergyModel.populate_with_defaults!(connection)
-    mp = TulipaEnergyModel.ModelParameters(connection)
+    TulipaEnergyModel._prepare_model_parameters!(connection)
+    mp = query_model_parameters(connection)
 
     @test mp.discount_rate == 0.03
     @test mp.discount_year == 2030
@@ -194,5 +207,5 @@ end
         """,
     )
 
-    @test_throws Exception TulipaEnergyModel.ModelParameters(connection)
+    @test_throws Exception TulipaEnergyModel._prepare_model_parameters!(connection)
 end

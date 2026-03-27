@@ -26,7 +26,6 @@ const to = TimerOutput()
 
 # Definitions and auxiliary files
 include("run-scenario.jl")
-include("model-parameters.jl")
 include("structures.jl")
 include("utils.jl")
 

@@ -83,15 +83,12 @@
     columns = [:milestone_year, :rep_period]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
-    model_parameters = TulipaEnergyModel.ModelParameters(connection)
+    table_name = "model_parameters"
+    table_rows = [(100.0,)]
+    columns = [:power_system_base]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
-    TulipaEnergyModel.add_dc_power_flow_constraints!(
-        connection,
-        model,
-        variables,
-        constraints,
-        model_parameters,
-    )
+    TulipaEnergyModel.add_dc_power_flow_constraints!(connection, model, variables, constraints)
 
     # components of the expected constraints
     expected_ids = [(1, 1, 3), (2, 1, 3), (2, 2, 3)]
