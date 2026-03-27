@@ -72,15 +72,15 @@
         key in (:dc_power_flow,)
     )
 
-    table_name = "year_data"
-    table_rows = [(2025, true)]
-    columns = [:year, :is_milestone]
-    _create_table_for_tests(connection, table_name, table_rows, columns)
-
     table_name = "flow_milestone"
     table_rows =
         [("input_1", "death_star", 2025, true, 0.5), ("input_2", "death_star", 2025, false, 0.4)]
     columns = [:from_asset, :to_asset, :milestone_year, :dc_opf, :reactance]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
+
+    table_name = "rep_periods_data"
+    table_rows = [(2025, 1)]
+    columns = [:milestone_year, :rep_period]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     model_parameters = TulipaEnergyModel.ModelParameters(connection)

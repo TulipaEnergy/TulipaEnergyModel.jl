@@ -398,14 +398,6 @@ timeframe_data = DataFrame(
 
 push!(timeframe_data, (2050, 1, 8760))
 
-year_data = DataFrame(
-    year = Int[],
-    length = Int[],
-    is_milestone = Bool[]
-)
-
-push!(year_data, (2050, 8760, true))
-
 # Add dataframes to DuckDB file
 
 DuckDB.register_data_frame(connection, rep_periods_data, "rep_periods_data_temp")
@@ -416,10 +408,6 @@ DBInterface.execute(connection, "CREATE TABLE rep_periods_mapping AS SELECT * FR
 
 DuckDB.register_data_frame(connection, timeframe_data, "timeframe_data_temp")
 DBInterface.execute(connection, "CREATE TABLE timeframe_data AS SELECT * FROM timeframe_data_temp")
-
-DuckDB.register_data_frame(connection, year_data, "year_data_temp")
-DBInterface.execute(connection, "CREATE TABLE year_data AS SELECT * FROM year_data_temp")
-
 
 # Finally, check to see if you have added the dataframes to the database properly
 

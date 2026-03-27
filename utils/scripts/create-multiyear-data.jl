@@ -26,7 +26,6 @@ cd(multiyear_folder) do
         "rep-periods-data.csv",
         "rep-periods-mapping.csv",
         "timeframe-data.csv",
-        "year-data.csv",
     )
         change_file(filename) do tcsv
             df_2050 = copy(tcsv.csv)

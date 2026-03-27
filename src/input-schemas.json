@@ -822,7 +822,7 @@
     },
     "discount_year": {
       "default": 9999,
-      "description": "The model discount year. The `discount_year` is calculated in the code as the minimum value between the input value in the table `model_parameters` and the minimum of all milestone years (i.e., we check for the table `year_data` for the column `year` where the column `is_milestone` is true and take the minimum).",
+      "description": "The model discount year. The `discount_year` is calculated in the code as the minimum value between the input value in the table `model_parameters` and the minimum of all milestone years (in the table `rep_periods_data`).",
       "type": "INTEGER"
     },
     "power_system_base": {
@@ -972,22 +972,6 @@
     },
     "period": {
       "description": "Period.",
-      "type": "INTEGER"
-    }
-  },
-  "year_data": {
-    "is_milestone": {
-      "default": true,
-      "description": "Whether the year is a milestone year or a vintage year",
-      "type": "BOOLEAN"
-    },
-    "length": {
-      "default": 8760,
-      "description": "How many hours in a year, e.g., 8760",
-      "type": "INTEGER"
-    },
-    "year": {
-      "description": "Unique identifier (currently, the year itself)",
       "type": "INTEGER"
     }
   }

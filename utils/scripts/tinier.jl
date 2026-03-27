@@ -47,7 +47,6 @@ for (filename, cols) in (
     ("rep-periods-data", ["all"]),
     ("rep-periods-mapping", ["all"]),
     ("timeframe-data", ["all"]),
-    ("year-data", ["all"]),
 )
     tiny_filepath = joinpath(tiny_dir, "$filename.csv")
     tinier_filepath = joinpath(tinier_dir, "$filename.csv")

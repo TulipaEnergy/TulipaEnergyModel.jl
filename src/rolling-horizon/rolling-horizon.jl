@@ -189,7 +189,7 @@ function run_rolling_horizon(
     full_energy_problem.termination_status = energy_problem.termination_status
     full_energy_problem.rolling_horizon_energy_problem = energy_problem
 
-    # Undo the changes to rep_periods_data and year_data
+    # Undo the changes to rep_periods_data
     @timeit to "undo changes to rolling horizon tables" prepare_tables_to_leave_rolling_horizon!(
         connection,
         variable_tables,

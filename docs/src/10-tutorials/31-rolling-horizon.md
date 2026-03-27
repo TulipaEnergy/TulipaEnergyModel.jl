@@ -480,9 +480,9 @@ nice_query("FROM rolling_solution_var_flow ORDER BY RANDOM() LIMIT 5")
 
 ### `full_%` (intermediate)
 
-During the execution of the rolling horizon, we also created intermediate tables to store the full problem. These are named `full_X` for each varable table `X`, and for the `rep_periods_data` and `year_data` tables.
+During the execution of the rolling horizon, we also created intermediate tables to store the full problem. These are named `full_X` for each varable table `X`, and for the `rep_periods_data` table.
 
-The `rep_periods_data` and `year_data` are modified to pretend that the horizon is limited to the optimisation window, thus the `full_X` version of these tables serve as backup.
+The `rep_periods_data` is modified to pretend that the horizon is limited to the optimisation window, thus the `full_X` version of these tables serve as backup.
 
 The `full_var_X` tables are created to hold the final solution of rolling horizon execution.
 For each window, we copy all `var_X` solution within the "move forward" window to the correct position in `full_var_X`.

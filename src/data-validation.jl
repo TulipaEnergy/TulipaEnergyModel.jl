@@ -158,7 +158,6 @@ function _validate_no_duplicate_rows!(connection)
         ("rep_periods_mapping", [:milestone_year, :scenario, :period, :rep_period]),
         ("stochastic_scenario", [:scenario]),
         ("timeframe_data", [:milestone_year, :period]),
-        ("year_data", [:year]),
     )
         append!(duplicates, _validate_no_duplicate_rows!(connection, table, primary_keys))
     end
@@ -765,8 +764,14 @@ function _validate_bid_related_data!(connection)
     end
 
     bid_data = get_bid_data(connection)
-    num_years = count_rows_from(connection, "year_data")
-    num_rep_periods = count_rows_from(connection, "rep_periods_data")
+    num_years = only(
+        only(
+            DuckDB.query(connection, "SELECT COUNT(DISTINCT milestone_year) FROM rep_periods_data"),
+        ),
+    )
+    num_rep_periods = only(
+        only(DuckDB.query(connection, "SELECT COUNT(DISTINCT rep_period) FROM rep_periods_data")),
+    )
 
     for (justification, condition_dict) in (
         ("consumer with unit commitment", consumers_with_unit_commitment),
