@@ -27,6 +27,7 @@ function create_internal_tables!(connection; skip_validation = false)
         _create_empty_unless_exists(connection, table)
     end
     _calculate_stochastic_scenario_probabilities(connection)
+    _prepare_model_parameters!(connection)
 
     if !skip_validation
         # Data validation - ensure that data is correct before
