@@ -16,14 +16,12 @@ function lower_level_pipeline(; kwargs...)
 
     # Internal data and structures pre-model
     TEM.create_internal_tables!(connection)
-    model_parameters = TEM.ModelParameters(connection)
     variables = TEM.compute_variables_indices(connection)
     constraints = TEM.compute_constraints_indices(connection)
     profiles = TEM.prepare_profiles_structure(connection)
 
     # Create model
-    model, expressions =
-        TEM.create_model(connection, variables, constraints, profiles, model_parameters)
+    model, expressions = TEM.create_model(connection, variables, constraints, profiles)
 
     # Solve model
     TEM.solve_model(model)
