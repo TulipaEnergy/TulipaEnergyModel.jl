@@ -19,19 +19,13 @@ end
 
         # Internal data and structures pre-model
         TulipaEnergyModel.create_internal_tables!(connection)
-        model_parameters = TulipaEnergyModel.ModelParameters(connection)
         variables = TulipaEnergyModel.compute_variables_indices(connection)
         constraints = TulipaEnergyModel.compute_constraints_indices(connection)
         profiles = TulipaEnergyModel.prepare_profiles_structure(connection)
 
         # Create model
-        model, expressions = TulipaEnergyModel.create_model(
-            connection,
-            variables,
-            constraints,
-            profiles,
-            model_parameters,
-        )
+        model, expressions =
+            TulipaEnergyModel.create_model(connection, variables, constraints, profiles)
 
         # Solve model
         TulipaEnergyModel.solve_model(model)
