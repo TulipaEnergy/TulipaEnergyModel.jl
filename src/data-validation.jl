@@ -769,7 +769,9 @@ function _validate_bid_related_data!(connection)
             DuckDB.query(connection, "SELECT COUNT(DISTINCT milestone_year) FROM rep_periods_data"),
         ),
     )
-    num_rep_periods = count_rows_from(connection, "rep_periods_data")
+    num_rep_periods = only(
+        only(DuckDB.query(connection, "SELECT COUNT(DISTINCT rep_period) FROM rep_periods_data")),
+    )
 
     for (justification, condition_dict) in (
         ("consumer with unit commitment", consumers_with_unit_commitment),
