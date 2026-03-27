@@ -1,4 +1,10 @@
-function _add_assets_fixed_cost_simple_method!(connection, model, expressions, objective_expr)
+function _add_assets_fixed_cost_simple_method!(
+    connection,
+    model,
+    expressions,
+    objective_expr,
+    lambda,
+)
     expr_available_asset_units_simple_method = expressions[:available_asset_units_simple_method]
 
     indices = DuckDB.query(
@@ -32,7 +38,7 @@ function _add_assets_fixed_cost_simple_method!(connection, model, expressions, o
         model,
         objective_expr,
         "assets_fixed_cost_simple_method",
-        assets_fixed_cost_simple_method,
+        (1 - lambda) * assets_fixed_cost_simple_method,
     )
 
     return

@@ -23,6 +23,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             "SELECT MAX(milestone_year) AS end_of_horizon FROM rep_periods_data",
         ),
     )
+    lambda = model_parameters.risk_aversion_weight_lambda
 
     constants = (; social_rate, discount_year, end_of_horizon)
 
@@ -38,16 +39,22 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
     )
     objective_expr = JuMP.AffExpr(0.0)
 
-    _add_assets_investment_cost!(connection, model, variables, objective_expr)
-    _add_assets_fixed_cost_compact_method!(connection, model, expressions, objective_expr)
-    _add_assets_fixed_cost_simple_method!(connection, model, expressions, objective_expr)
-    _add_storage_assets_energy_investment_cost!(connection, model, variables, objective_expr)
-    _add_storage_assets_energy_fixed_cost!(connection, model, expressions, objective_expr)
-    _add_flows_investment_cost!(connection, model, variables, objective_expr)
-    _add_flows_fixed_cost!(connection, model, expressions, objective_expr)
-    _add_flows_operational_cost!(connection, model, variables, profiles, objective_expr)
-    _add_vintage_flows_operational_cost!(connection, model, variables, objective_expr)
-    _add_units_on_cost!(connection, model, variables, objective_expr)
+    _add_assets_investment_cost!(connection, model, variables, objective_expr, lambda)
+    _add_assets_fixed_cost_compact_method!(connection, model, expressions, objective_expr, lambda)
+    _add_assets_fixed_cost_simple_method!(connection, model, expressions, objective_expr, lambda)
+    _add_storage_assets_energy_investment_cost!(
+        connection,
+        model,
+        variables,
+        objective_expr,
+        lambda,
+    )
+    _add_storage_assets_energy_fixed_cost!(connection, model, expressions, objective_expr, lambda)
+    _add_flows_investment_cost!(connection, model, variables, objective_expr, lambda)
+    _add_flows_fixed_cost!(connection, model, expressions, objective_expr, lambda)
+    _add_flows_operational_cost!(connection, model, variables, profiles, objective_expr, lambda)
+    _add_vintage_flows_operational_cost!(connection, model, variables, objective_expr, lambda)
+    _add_units_on_cost!(connection, model, variables, objective_expr, lambda)
 
     @objective(model, Min, objective_expr)
 end

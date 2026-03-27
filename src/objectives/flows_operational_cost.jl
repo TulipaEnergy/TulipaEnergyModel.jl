@@ -1,4 +1,11 @@
-function _add_flows_operational_cost!(connection, model, variables, profiles, objective_expr)
+function _add_flows_operational_cost!(
+    connection,
+    model,
+    variables,
+    profiles,
+    objective_expr,
+    lambda,
+)
     commodity_price_profile_name = ""
     flows_profiles_query_left_join = ""
     # has_commodity_price_profile is used to determine if there is at least one flow with commodity_price profile.
@@ -114,7 +121,7 @@ function _add_flows_operational_cost!(connection, model, variables, profiles, ob
         model,
         objective_expr,
         "flows_operational_cost",
-        flows_operational_cost,
+        (1 - lambda) * flows_operational_cost,
     )
 
     return

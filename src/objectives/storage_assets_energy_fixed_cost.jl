@@ -1,4 +1,10 @@
-function _add_storage_assets_energy_fixed_cost!(connection, model, expressions, objective_expr)
+function _add_storage_assets_energy_fixed_cost!(
+    connection,
+    model,
+    expressions,
+    objective_expr,
+    lambda,
+)
     expr_available_energy_units_simple_method = expressions[:available_energy_units_simple_method]
 
     indices = DuckDB.query(
@@ -32,7 +38,7 @@ function _add_storage_assets_energy_fixed_cost!(connection, model, expressions, 
         model,
         objective_expr,
         "storage_assets_energy_fixed_cost",
-        storage_assets_energy_fixed_cost,
+        (1 - lambda) * storage_assets_energy_fixed_cost,
     )
 
     return
