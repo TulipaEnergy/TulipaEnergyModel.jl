@@ -18,11 +18,10 @@ Julia package for modeling and optimization of electric energy systems. Uses Duc
 - `src/solve-model.jl` — `solve_model!` / `solve_model` / `save_solution!`
 - `src/objective.jl` — Objective function construction
 - `src/model-preparation.jl` — Data massage before model creation
-- `src/data-preparation.jl` — `populate_with_defaults!`
+- `src/data-preparation.jl` — `populate_with_defaults!`, `_prepare_model_parameters!`
 - `src/data-validation.jl` — Input validation
 - `src/io.jl` — `create_internal_tables!` / `export_solution_to_csv_files`
 - `src/input-schemas.jl` + `src/input-schemas.json` — Table schema definitions
-- `src/model-parameters.jl` — `ModelParameters` struct
 - `src/solver-parameters.jl` — Solver parameter handling
 - `src/utils.jl` — Utility functions
 - `src/variables/` (7 files) — Variable creation (flows, investments, storage, etc.)
@@ -50,7 +49,7 @@ added to these directories are automatically included.
 1. `create_internal_tables!(connection)` — data preparation
 2. `compute_variables_indices(connection)` / `compute_constraints_indices(connection)` — index computation
 3. `prepare_profiles_structure(connection)` — profile setup
-4. `create_model(connection, variables, constraints, profiles, model_parameters)` — builds model
+4. `create_model(connection, variables, constraints, profiles)` — builds model
 5. `solve_model(model)` — solves the optimization
 6. `save_solution!(connection, model, variables, constraints)` — stores results
 
