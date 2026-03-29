@@ -1,0 +1,14 @@
+# to give information about the simulations that we are running
+
+[simulation]
+input_data = "base-input-data/case-study-cvar/"
+# possibilities: "base-input-data/example-tulipa-single-year/", "base-input-data/simple-case-2-scenarios/equal/", "base-input-data/simple-case-2-scenarios/modified/", "base-input-data/simple-case-2-scenarios/modified_3scen/", "base-input-data/simple-case-2-scenarios/1995equal/"
+representative_periods = [9,15,30,60,90,120,180,240,360, 365]
+solvers = ["Gurobi"]
+#["HiGHS", "Gurobi"]
+fix_level_storage = true
+
+[clustering]
+use_ratio = false
+heuristic_distance = false
+
