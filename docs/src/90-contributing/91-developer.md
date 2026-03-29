@@ -221,6 +221,12 @@ Example (Claude):
 1. Include: `ALWAYS READ AGENTS.md`.
 1. Keep the rule together with your other persistent coding instructions.
 
+### Julia MCP
+
+[Julia MCP](https://github.com/aplavin/julia-mcp) lets AI agents run Julia code in a persistent REPL session via the Model Context Protocol. This avoids recompilation on every test run, making iterative development significantly faster.
+
+**Install it** by following the instructions at [github.com/aplavin/julia-mcp](https://github.com/aplavin/julia-mcp) for your AI tool (Claude Code, Cursor, etc.). Once installed, agents can run tests using `@run_package_tests` with `env_path = "test/"` — see `AGENTS.md` for filter examples.
+
 ## Code format and guidelines
 
 This section will list the guidelines for code formatting **not enforced** by JuliaFormatter.
