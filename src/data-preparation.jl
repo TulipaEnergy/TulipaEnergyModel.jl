@@ -650,10 +650,11 @@ end
 """
     _prepare_model_parameters!(connection)
 
-Ensure the `model_parameters` table has exactly one row with all defaults filled in,
+Ensure the `model_parameters` table has no more than one row,
 then calculate `discount_year` to be at most the minimum milestone year from `rep_periods_data`.
 """
 function _prepare_model_parameters!(connection)
+    # validate that there is at most one row in model_parameters
     rows = collect(DuckDB.query(
         connection,
         "SELECT *
@@ -662,28 +663,15 @@ function _prepare_model_parameters!(connection)
 
     if length(rows) > 1
         error("Table `model_parameters` must contain at most one row.")
-    elseif isempty(rows)
-        _insert_schema_defaults!(connection)
     end
 
+    # calculate discount_year
     DuckDB.execute(
         connection,
         "UPDATE model_parameters
          SET discount_year = LEAST(discount_year,
              (SELECT MIN(milestone_year) FROM rep_periods_data))",
     )
-    return
-end
 
-function _insert_schema_defaults!(connection)
-    DuckDB.execute(connection, "INSERT INTO model_parameters DEFAULT VALUES")
-    model_params_schema = schema["model_parameters"]
-    for (col_name, props) in model_params_schema
-        if haskey(props, "default") && !isnothing(props["default"])
-            DuckDB.execute(
-                connection,
-                "UPDATE model_parameters SET $col_name = $(props["default"])",
-            )
-        end
-    end
+    return
 end
