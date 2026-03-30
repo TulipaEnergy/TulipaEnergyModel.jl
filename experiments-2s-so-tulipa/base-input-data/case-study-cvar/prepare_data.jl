@@ -77,3 +77,13 @@ sort!(df_profiles_new, [:scenario, :timestep])
 
 # Overwrite profiles-wide.csv
 CSV.write(input_data_file * "/profiles-wide.csv", df_profiles_new)
+
+n_scenarios = length(unique(df_profiles_new.scenario))
+
+df_stochastic_scenario = DataFrame(;
+    scenario = sort(unique(df_profiles_new.scenario)),
+    probability = fill(1.0 / n_scenarios, n_scenarios),
+)
+df_probabilities = DataFrame[]
+
+CSV.write(input_data_file * "/stochastic-scenario.csv")

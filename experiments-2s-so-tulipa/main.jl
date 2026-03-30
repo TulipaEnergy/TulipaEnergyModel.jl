@@ -19,6 +19,7 @@ using CSV: CSV
 using Statistics: Statistics
 using JuMP: JuMP
 using TOML: TOML
+
 using DataFrames
 
 # helper functions
@@ -81,6 +82,7 @@ results_df = DataFrame(;
     num_loss_of_load_e_demand = Int[],
     num_loss_of_load_h2_demand = Int[],
     water_borrowed = Float64[],
+    value_at_risk_threshold_mu = Float64[],
 )
 
 function main()
@@ -97,7 +99,7 @@ function main()
         connection_benchmark,
         "profiles_wide",
         "profiles";
-        exclude_columns = ["scenario", "year", "timestep"],
+        exclude_columns = ["scenario", "milestone_year", "timestep"],
     )
 
     # To make number of rps comparable with per and cross scenario
@@ -106,9 +108,11 @@ function main()
     n_scenarios = length(unique(profiles_wide.scenario))
     representative_periods .= n_scenarios .* round.(Int, representative_periods ./ n_scenarios)
 
-    layout = TC.ProfilesTableLayout(; cols_to_groupby = [:year, :scenario])
+    layout = TC.ProfilesTableLayout(;
+        year = :milestone_year,
+        cols_to_groupby = [:milestone_year, :scenario],
+    )
     time_to_cluster = @elapsed TC.dummy_cluster!(connection_benchmark; layout = layout)
-    ensure_milestone_year!(connection_benchmark)
     TEM.populate_with_defaults!(connection_benchmark)
     DuckDB.query(connection_benchmark, "UPDATE asset SET is_seasonal = false")
 
@@ -132,6 +136,8 @@ function main()
 
         @info "Solving the model and saving the solution for the base case study (0_HourlyBenchmark) with $solver"
         time_to_solve = @elapsed TEM.solve_model!(energy_problem_benchmark)
+        mu_value =
+            JuMP.value(energy_problem_benchmark.variables[:value_at_risk_threshold_mu].container)
         time_to_save = @elapsed TEM.save_solution!(energy_problem_benchmark)
         TEM.export_solution_to_csv_files(output_folder, energy_problem_benchmark)
 
@@ -173,6 +179,7 @@ function main()
             num_loss_of_load_e_demand = n_lol_ens,
             num_loss_of_load_h2_demand = n_lol_smr_cca,
             water_borrowed = amount_water_borrowed_b,
+            value_at_risk_threshold_mu = mu_value,
         )
         push!(results_df, new_results_row)
     end
@@ -188,7 +195,7 @@ function main()
         learning_rate = row[:learning_rate]
         stochastic_method = row[:stochastic_method]
         risk_aversion_weight_lambda = row[:risk_aversion_weight_lambda]
-        risk_aversion_confidence_level = row[:risk_aversion_confidence_level]
+        risk_aversion_confidence_level_alpha = row[:risk_aversion_confidence_level]
         run_case = row[:run_case]
 
         weight_fitting_kwargs = Dict(:learning_rate => learning_rate, :niters => niters)
@@ -206,6 +213,15 @@ function main()
             connection = DuckDB.DBInterface.connect(DuckDB.DB)
             TIO.read_csv_folder(connection, input_data_path)
 
+            DuckDB.query(
+                connection,
+                "
+                UPDATE model_parameters -- tables are with underscore in DuckDB world
+                SET
+                    risk_aversion_weight_lambda = $(risk_aversion_weight_lambda) ,
+                    risk_aversion_confidence_level_alpha = $(risk_aversion_confidence_level_alpha);
+                ",
+            )
             # to use the ratio availability/demand
             if use_ratio == true # be careful: this works now that we have only one demand location, so we divide each availability and inflow by that only demand
                 DuckDB.query(
@@ -226,11 +242,14 @@ function main()
                 connection,
                 "profiles_wide",
                 "profiles";
-                exclude_columns = ["scenario", "year", "timestep"],
+                exclude_columns = ["scenario", "milestone_year", "timestep"],
             )
 
             if stochastic_method == :per_scenario
-                layout = TC.ProfilesTableLayout(; cols_to_groupby = [:year, :scenario])
+                layout = TC.ProfilesTableLayout(;
+                    year = :milestone_year,
+                    cols_to_groupby = [:milestone_year, :scenario],
+                )
                 time_to_cluster = @elapsed TC.cluster!(
                     connection,
                     period_duration,
@@ -254,7 +273,7 @@ function main()
                             FROM profiles_rep_periods AS d
                             WHERE d.timestep   = x.timestep
                             AND d.rep_period       = x.rep_period
-                            AND d.year       = x.year
+                            AND d.milestone_year       = x.milestone_year
                             AND d.scenario   = x.scenario
                             AND d.profile_name = 'demand';
                                 ",
@@ -263,7 +282,8 @@ function main()
 
             elseif stochastic_method == :cross_scenario
                 layout = TC.ProfilesTableLayout(;
-                    cols_to_groupby = [:year],
+                    year = :milestone_year,
+                    cols_to_groupby = [:milestone_year],
                     cols_to_crossby = [:scenario],
                 )
                 time_to_cluster = @elapsed TC.cluster!(
@@ -289,7 +309,7 @@ function main()
                             FROM profiles_rep_periods AS d
                             WHERE d.timestep   = x.timestep
                             AND d.rep_period       = x.rep_period
-                            AND d.year       = x.year
+                            AND d.milestone_year       = x.milestone_year
                             AND d.profile_name = 'demand';
                                 ",
                     )
@@ -308,13 +328,12 @@ function main()
                             END
                         FROM profiles AS d
                         WHERE d.timestep   = x.timestep
-                        AND d.year       = x.year
+                        AND d.milestone_year       = x.milestone_year
                         AND d.scenario   = x.scenario
                         AND d.profile_name = 'demand';
                             ",
                 )
             end
-            ensure_milestone_year!(connection)
             TEM.populate_with_defaults!(connection)
 
             time_to_read = @elapsed energy_problem = TEM.EnergyProblem(connection)
@@ -450,6 +469,12 @@ function main()
     end
 
     results_df |> CSV.write("outputs/results.csv"; writeheader = true)
+
+    plot_mu_vs_rp(
+        results_df,
+        case_studies_info;
+        savepath = "outputs/value_at_risk_threshold_mu.png",
+    )
 
     return nothing
 end

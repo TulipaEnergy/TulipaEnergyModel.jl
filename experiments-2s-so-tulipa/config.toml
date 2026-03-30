@@ -1,10 +1,11 @@
 # to give information about the simulations that we are running
 
 [simulation]
-input_data = "base-input-data/case-study-cvar/" # feasibility-study-cvar/"
+input_data = "base-input-data/example-tulipa-single-year/" # /case-study-cvar/" # feasibility-study-cvar/"
 # possibilities: "base-input-data/example-tulipa-single-year/", "base-input-data/simple-case-2-scenarios/equal/", "base-input-data/simple-case-2-scenarios/modified/", "base-input-data/simple-case-2-scenarios/modified_3scen/", "base-input-data/simple-case-2-scenarios/1995equal/"
-representative_periods = [9,15,30,60,90,120,180,240,360,365]
-# possibilities: [9,15,30,60,90,120,180,240,360,365] or [8760] etc
+representative_periods = [30,60,90,120,180,240,360,365]
+#representative_periods = [30,60]
+#with cross you have possibilities: [9,15,30,60,90,120,180,240,360,365] or [8760] etc
 solvers = ["Gurobi"]
 #["HiGHS", "Gurobi"]
 fix_level_storage = true

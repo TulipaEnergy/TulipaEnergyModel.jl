@@ -24,6 +24,115 @@ function fix_variables_from_solution!(benchmark_model, reduced_model, var_symbol
     end
 end
 
+function plot_mu_vs_rp(
+    results_df::DataFrame,
+    case_studies_df::DataFrame;
+    savepath = "value_at_risk_threshold_mu.png",
+)
+    results_with_options =
+        outerjoin(case_studies_df, results_df; on = "base_name", makeunique = true)
+
+    results_with_options =
+        filter(row -> !ismissing(row.value_at_risk_threshold_mu), results_with_options)
+
+    benchmark_df = filter(row -> row.base_name == "0_HourlyBenchmark", results_with_options)
+    nonbenchmark_df = filter(row -> row.base_name != "0_HourlyBenchmark", results_with_options)
+
+    rp_vals = sort(unique(nonbenchmark_df.rp))
+    rp_labels = string.(rp_vals)
+    rp_index = Dict(rp => i for (i, rp) in enumerate(rp_vals))
+
+    p = plot(;
+        xlabel = "Number of representative_periods",
+        ylabel = "Optimal value_at_risk_threshold_mu",
+        title = "",
+        legend = :topright,
+        size = (800, 500),
+        xticks = (1:length(rp_vals), rp_labels),
+    )
+
+    for g in groupby(nonbenchmark_df, :base_name)
+        g_sorted = sort(g, :rp)
+
+        stochastic_method = g.stochastic_method[1]
+        mk = get(MARKER_MAP, stochastic_method) do
+            return error("Unknown stochastic_method: $stochastic_method")
+        end
+
+        weight_type = g.weight_type[1]
+        mcol = get(COLOR_MAP_weight, weight_type) do
+            return error("Unknown weight_type: $weight_type")
+        end
+
+        xidx = [rp_index[rp] for rp in g_sorted.rp]
+
+        scatter!(
+            p,
+            xidx,
+            g_sorted.value_at_risk_threshold_mu;
+            markershape = mk,
+            markersize = 8,
+            markercolor = mcol,
+            label = "",
+        )
+
+        plot!(
+            p,
+            xidx,
+            g_sorted.value_at_risk_threshold_mu;
+            color = mcol,
+            linewidth = 1.5,
+            label = "",
+        )
+    end
+
+    # Benchmark as horizontal reference line
+    if nrow(benchmark_df) > 0
+        mu_benchmark = benchmark_df.value_at_risk_threshold_mu[1]
+
+        hline!(
+            p,
+            [mu_benchmark];
+            color = :black,
+            linestyle = :dash,
+            linewidth = 2,
+            label = "Hourly benchmark",
+        )
+    end
+
+    # Legend for shapes (stochastic methods)
+    for (label, marker) in MARKER_MAP
+        short_label = replace(string(label), "_scenario" => "-scenario")
+        scatter!(
+            p,
+            [NaN],
+            [NaN];
+            markershape = marker,
+            markersize = 8,
+            markercolor = :gray30,
+            label = short_label,
+        )
+    end
+
+    # Legend for colors (weight types)
+    for (label, color) in COLOR_MAP_weight
+        scatter!(
+            p,
+            [NaN],
+            [NaN];
+            markershape = :rect,
+            markersize = 8,
+            markercolor = color,
+            label = get(LEGEND_METHOD_MAP, label) do
+                return error("Unknown method: $label")
+            end,
+        )
+    end
+
+    savefig(p, savepath)
+    @info "Plot saved in: $savepath"
+end
+
 function plot_values_stocmethod_weight( #considering different options: stochastic_method, weight_type
     results_df::DataFrame,
     case_studies_df::DataFrame,
@@ -402,19 +511,3 @@ function plot_storage_behavior(
 end
 
 using DataFrames
-
-function ensure_milestone_year!(connection)
-    tables = ["rep_periods_data", "rep_periods_mapping", "profiles_rep_periods", "timeframe_data"]
-
-    for table_name in tables
-        cols = DataFrame(DuckDB.query(connection, "PRAGMA table_info('$table_name')"))
-
-        if !("milestone_year" in cols.name)
-            DuckDB.query(connection, "ALTER TABLE $table_name ADD COLUMN milestone_year INTEGER")
-        end
-
-        DuckDB.query(connection, "UPDATE $table_name SET milestone_year = year")
-    end
-
-    return nothing
-end
