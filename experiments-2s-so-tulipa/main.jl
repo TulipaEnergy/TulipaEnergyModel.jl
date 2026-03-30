@@ -136,11 +136,12 @@ function main()
 
         @info "Solving the model and saving the solution for the base case study (0_HourlyBenchmark) with $solver"
         time_to_solve = @elapsed TEM.solve_model!(energy_problem_benchmark)
-        mu_value =
-            JuMP.value(energy_problem_benchmark.variables[:value_at_risk_threshold_mu].container)
+        #        mu_value =
+        #            JuMP.value(energy_problem_benchmark.variables[:value_at_risk_threshold_mu].container)
         time_to_save = @elapsed TEM.save_solution!(energy_problem_benchmark)
         TEM.export_solution_to_csv_files(output_folder, energy_problem_benchmark)
-
+        mu_value_df = TIO.get_table(connection_benchmark, "var_value_at_risk_threshold_mu")
+        mu_value = only(mu_value_df.solution)
         var_flow_df = TIO.get_table(connection_benchmark, "var_flow")
         flow_ens = filter(row -> row.from_asset == "ens" && row.to_asset == "e_demand", var_flow_df)
         flow_smr_ccs =
