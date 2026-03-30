@@ -20,7 +20,7 @@ _TulipaEnergyModel.jl_ uses two fundamental building blocks as the foundation of
 In a nutshell, the model guarantees a balance of energy for the various types of assets while considering the flow limits. It considers a set of [representative periods](@ref representative-periods) (e.g., days or weeks) for a given [timeframe](@ref timeframe) (e.g., a year) the user wants to analyze. Therefore, the model has two types of temporal (time) constraints to consider the different chronology characteristics of the assets:
 
 - **Rep-period Constraints**: These constraints limit the asset or flow within a representative period. The rep-period constraints help to characterize the short-term operational dynamics of the assets. So far, the model considers balance and flow limitations within the representative period, as well as unit commitment and ramping. In the future, reserve constraints will also be included.
-- **Over-clustered-year Constraints**: These constraints combine the information of the representative periods and create limitations between them to recover chronological information across the whole timeframe. The over-clustered-year constraints help to characterize the long-term operational dynamics of the assets (e.g., seasonality). So far, the model uses this type of constraint to model seasonal storage. Future developments will include, for example, maximum or minimum production/consumption for a year (or any timeframe).
+- **Inter-period Constraints**: These constraints combine the information of the representative periods and create limitations between them to recover chronological information across the whole timeframe. The inter-period constraints help to characterize the long-term operational dynamics of the assets (e.g., seasonality). So far, the model uses this type of constraint to model seasonal storage. Future developments will include, for example, maximum or minimum production/consumption for a year (or any timeframe).
 
 !!! info "Are you into the math, objective function terms, and constraints?"
     The [`mathematical formulation`](@ref formulation) shows an overview of all the constraints and the variables in the model.
@@ -578,9 +578,9 @@ Energy storage systems can be broadly classified into two categories: seasonal a
 Both storage categories can be represented in _TulipaEnergyModel.jl_ using the representative periods approach:
 
 - _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, like in the case of a battery with a storage capacity of 4 hours and representative periods of 24-hour timesteps, rep-period constraints should be applied.
-- _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, like in the case of a hydroplant with a storage capacity of a month and representative periods of 24-hour timesteps, over-clustered-year constraints should be applied.
+- _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, like in the case of a hydroplant with a storage capacity of a month and representative periods of 24-hour timesteps, inter-period constraints should be applied.
 
-The equations of rep-period and over-clustered-year constraints for energy storage are available in the [`mathematical formulation`](@ref formulation). An example is shown in the following section to explain these concepts. In addition, the section [`seasonal and non-seasonal storage setup`](@ref seasonal-setup) shows how to set the parameters in the model to consider each type in the storage assets.
+The equations of rep-period and inter-period constraints for energy storage are available in the [`mathematical formulation`](@ref formulation). An example is shown in the following section to explain these concepts. In addition, the section [`seasonal and non-seasonal storage setup`](@ref seasonal-setup) shows how to set the parameters in the model to consider each type in the storage assets.
 
 ### Example to Model Seasonal and Non-seasonal Storage
 
@@ -598,7 +598,7 @@ assets = leftjoin(graph_assets, assets_data, on=:asset) # hide
 filtered_assets = assets[assets.type .== "storage", ["asset", "type", "capacity", "capacity_storage_energy",  "is_seasonal"]] # hide
 ```
 
-The `is_seasonal` parameter determines whether or not the storage asset uses the over-clustered-year constraints. The `phs` is the only storage asset with this type of constraint and over-clustered-year-storage level variable (i.e., $v^{\text{over-clustered-year-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` will only consider rep-period constraints with rep-period-storage level variables (i.e., $v^{\text{rep-period-storage}}_{\text{battery},k,b_k}$), and has 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration).
+The `is_seasonal` parameter determines whether or not the storage asset uses the inter-period constraints. The `phs` is the only storage asset with this type of constraint and inter-period-storage level variable (i.e., $v^{\text{inter-period-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` will only consider rep-period constraints with rep-period-storage level variables (i.e., $v^{\text{rep-period-storage}}_{\text{battery},k,b_k}$), and has 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration).
 
 The `rep-periods-data` file has information on the representative periods in the example. We have three representative periods, each with 24 timesteps and hourly resolution, representing a day. The figure below shows the availability profile of the renewable energy sources in the example.
 
@@ -620,7 +620,7 @@ unstacked_map[!,["k=1", "k=2", "k=3"]] = convert.(Float64, unstacked_map[!,["k=1
 unstacked_map # hide
 ```
 
-The file `assets-timeframe-partitions` has the information on how often we want to evaluate the over-clustered-year constraints that combine the information of the representative periods. In this example, the file is missing in the folder, meaning that the default of a `uniform` distribution of one period will be use in the model, see [model parameters](@ref table-schemas) section. This assumption implies that the model will check the over-clustered-year-storage level every day of the week timeframe.
+The file `assets-timeframe-partitions` has the information on how often we want to evaluate the inter-period constraints that combine the information of the representative periods. In this example, the file is missing in the folder, meaning that the default of a `uniform` distribution of one period will be use in the model, see [model parameters](@ref table-schemas) section. This assumption implies that the model will check the inter-period-storage level every day of the week timeframe.
 
 !!! info
     For the sake of simplicity, we show how using three representative days can recover part of the chronological information of one week. The same method can be applied to more representative periods to analyze the seasonality across a year or longer timeframe.
@@ -641,9 +641,9 @@ Since the `battery` is not seasonal, it only has results for the rep-period-stor
 
 ![Battery-rep-period-storage-level](./figs/intra-storage-level.png)
 
-Since the `phs` is defined as seasonal, it has results for only the over-clustered-year-storage level. Since we defined the period partition as 1, we get results for each period (i.e., day). We can see that the over-clustered-year constraints in the model keep track of the storage level through the whole timeframe definition (i.e., week).
+Since the `phs` is defined as seasonal, it has results for only the inter-period-storage level. Since we defined the period partition as 1, we get results for each period (i.e., day). We can see that the inter-period constraints in the model keep track of the storage level through the whole timeframe definition (i.e., week).
 
-![PHS-over-clustered-year-storage-level](./figs/inter-storage-level.png)
+![PHS-inter-period-storage-level](./figs/inter-storage-level.png)
 
 In this example, we have demonstrated how to partially recover the chronological information of a storage asset with a longer discharge duration (such as 48 hours) than the representative period length (24 hours). This feature enables us to model both short- and long-term storage in _TulipaEnergyModel.jl_.
 
