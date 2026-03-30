@@ -104,6 +104,14 @@
     _sense_string(::MathOptInterface.EqualTo) = "=="
     _sense_string(::MathOptInterface.GreaterThan) = ">="
 
+    _is_set_approx(s1::MathOptInterface.LessThan, s2::MathOptInterface.LessThan) =
+        isapprox(s1.upper, s2.upper)
+    _is_set_approx(s1::MathOptInterface.EqualTo, s2::MathOptInterface.EqualTo) =
+        isapprox(s1.value, s2.value)
+    _is_set_approx(s1::MathOptInterface.GreaterThan, s2::MathOptInterface.GreaterThan) =
+        isapprox(s1.lower, s2.lower)
+    _is_set_approx(::Any, ::Any) = false
+
     function _is_constraint_equal_kernel(left, right)
         left_terms, right_terms = left.func.terms, right.func.terms
         missing_in_right = setdiff(keys(left_terms), keys(right_terms))
@@ -123,7 +131,7 @@
                 result = false
             end
         end
-        if left.set != right.set
+        if !_is_set_approx(left.set, right.set)
             @error string(left.set, " != ", right.set)
             result = false
         end
