@@ -140,6 +140,7 @@ function main()
         #            JuMP.value(energy_problem_benchmark.variables[:value_at_risk_threshold_mu].container)
         time_to_save = @elapsed TEM.save_solution!(energy_problem_benchmark)
         TEM.export_solution_to_csv_files(output_folder, energy_problem_benchmark)
+
         mu_value_df = TIO.get_table(connection_benchmark, "var_value_at_risk_threshold_mu")
         mu_value = only(mu_value_df.solution)
         var_flow_df = TIO.get_table(connection_benchmark, "var_flow")
