@@ -108,7 +108,7 @@ function main()
 
     layout = TC.ProfilesTableLayout(; cols_to_groupby = [:year, :scenario])
     time_to_cluster = @elapsed TC.dummy_cluster!(connection_benchmark; layout = layout)
-
+    ensure_milestone_year!(connection_benchmark)
     TEM.populate_with_defaults!(connection_benchmark)
     DuckDB.query(connection_benchmark, "UPDATE asset SET is_seasonal = false")
 
@@ -314,7 +314,7 @@ function main()
                             ",
                 )
             end
-
+            ensure_milestone_year!(connection)
             TEM.populate_with_defaults!(connection)
 
             time_to_read = @elapsed energy_problem = TEM.EnergyProblem(connection)

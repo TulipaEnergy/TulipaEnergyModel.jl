@@ -11,7 +11,6 @@ conicalb_dirac_cross,24,convex_hull_with_null,Euclidean,dirac,2000,0.001,cross_s
 conicalb_dirac_per,24,convex_hull_with_null,Euclidean,dirac,2000,0.001,per_scenario,0.1,0.95,false
 conicalb_conicalb_cross,24,convex_hull_with_null,Euclidean,conical_bounded,2000,0.001,cross_scenario,0.1,0.95,false
 conicalb_conicalb_per,24,convex_hull_with_null,Euclidean,conical_bounded,2000,0.001,per_scenario,0.1,0.95,false
-
-convex_convex_per,1,convex_hull_with_null,Euclidean,conical_bounded,2000,0.001,per_scenario,0.1,0.95,true
-convex_convex_per,1,convex_hull_with_null,Euclidean,conical_bounded,2000,0.001,cross_scenario,0.1,0.95,true
+convex_convex_per,24,convex_hull_with_null,Euclidean,conical_bounded,2000,0.001,per_scenario,0.1,0.95,true
+convex_convex_per,24,convex_hull_with_null,Euclidean,conical_bounded,2000,0.001,cross_scenario,0.1,0.95,true
 
