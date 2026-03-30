@@ -168,7 +168,8 @@ Branch naming: `feature/description` or `fix/description`
 
 **CRITICAL:** Use the testing filters to avoid running too many tests at once.
 
-**Run all tests:** `julia --project=test test/runtests.jl`
+**Run tests (MCP preferred):** Use `julia_eval` with `env_path = "test/"` and `@run_package_tests` — see [Julia MCP](#julia-mcp-preferred) below.
+**Run all tests (CLI):** `julia --project=test test/runtests.jl`
 **Run specific file:** `julia --project=test test/runtests.jl --file test-model`
 **Run fast tests only:** `julia --project=test test/runtests.jl --tags fast --exclude slow`
 **List available tags:** `julia --project=test test/runtests.jl --list-tags`
@@ -179,7 +180,26 @@ Branch naming: `feature/description` or `fix/description`
 Uses [TestItemRunner.jl](https://github.com/julia-vscode/TestItemRunner.jl) with `@testitem`, `@testsnippet`, `@testmodule` — **not** standard `@testset`.
  Test inputs are in `test/inputs/`.
 
-Never run the full test suite unless you are explicitly asked to. Instead, run only the tests you created or modified; for example, for `test-model.jl` run `julia --project=test test/runtests.jl --file test-model`.
+Never run the full test suite unless you are explicitly asked to. Instead, run only the tests you created or modified.
+
+### Julia MCP (Preferred)
+
+**When `julia_eval` (Julia MCP) is available, use it instead of the CLI** — it maintains a warm session and avoids recompilation on every run.
+
+Use `env_path = "test/"` (has its own `Project.toml` with the package as a path source). Call `@run_package_tests` directly — `runtests.jl` reads `ARGS` and won't work in a REPL:
+
+```julia
+# Filter by file (most common)
+@run_package_tests verbose=true filter = ti -> contains(ti.filename, "test-model")
+
+# Filter by tags (AND logic)
+@run_package_tests verbose=true filter = ti -> all(tag in ti.tags for tag in [:unit, :fast])
+
+# Exclude slow tests
+@run_package_tests verbose=true filter = ti -> !any(tag in ti.tags for tag in [:slow])
+```
+
+`ti` fields: `.filename`, `.name`, `.tags` — same semantics as the CLI flags below.
 
 ### Shared Setup (in `test/utils.jl`)
 
