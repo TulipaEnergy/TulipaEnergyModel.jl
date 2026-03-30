@@ -117,7 +117,7 @@ using TulipaEnergyModel: TulipaEnergyModel as TEM
 tulipa = create_new_problem()
 
 # Convert TulipaBuilder's data to TulipaEnergyModel format in the connection
-connection = create_connection(tulipa)
+connection = create_connection(tulipa, TEM.schema)
 
 # (Fake) cluster the profiles to generate representative periods
 TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
@@ -216,7 +216,7 @@ for (bid_id, bid_block) in enumerate(bid_blocks)
 end
 
 # Convert TulipaBuilder's data to TulipaEnergyModel format in the connection
-connection = create_connection(tulipa)
+connection = create_connection(tulipa, TEM.schema)
 
 # (Fake) cluster the profiles to generate representative periods
 TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
@@ -308,7 +308,7 @@ for (bid_id, bid_block) in enumerate(bid_blocks)
 end
 
 # Convert TulipaBuilder's data to TulipaEnergyModel format in the connection
-connection = create_connection(tulipa)
+connection = create_connection(tulipa, TEM.schema)
 
 # (Fake) cluster the profiles to generate representative periods
 TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
@@ -373,7 +373,7 @@ function full_bid_run(bid_blocks; capacity, operational_cost)
     end
 
     # Convert TulipaBuilder's data to TulipaEnergyModel format in the connection
-    connection = create_connection(tulipa)
+    connection = create_connection(tulipa, TEM.schema)
 
     # (Fake) cluster the profiles to generate representative periods
     TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))
@@ -508,7 +508,7 @@ function compute_per_capacity(capacity_vector, operational_cost_vector)
         end
 
         # Convert TulipaBuilder's data to TulipaEnergyModel format in the connection
-        connection = create_connection(tulipa)
+        connection = create_connection(tulipa, TEM.schema)
 
         # (Fake) cluster the profiles to generate representative periods
         TC.dummy_cluster!(connection; layout = TC.ProfilesTableLayout(year = :milestone_year))

@@ -1,5 +1,6 @@
 using TulipaBuilder: TulipaBuilder as TB
 using TulipaClustering: TulipaClustering as TC
+using TulipaEnergyModel: TulipaEnergyModel
 
 """
     create_synthetic_problem(; kwargs...)
@@ -98,7 +99,7 @@ function create_synthetic_problem(;
         end
     end
 
-    connection = TB.create_connection(tulipa)
+    connection = TB.create_connection(tulipa, TulipaEnergyModel.schema)
 
     TC.cluster!(connection, period_duration, num_rep_periods)
 

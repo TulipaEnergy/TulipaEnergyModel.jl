@@ -97,7 +97,7 @@
         end
 
         # Create connection and apply clustering
-        connection = TB.create_connection(tulipa)
+        connection = create_connection(tulipa)
         layout = TC.ProfilesTableLayout(; year = :milestone_year, cols_to_crossby = [:scenario])
         TC.cluster!(
             connection,
