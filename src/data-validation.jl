@@ -279,31 +279,67 @@ function _validate_foreign_key!(
     return error_messages
 end
 
+function _validate_assets_in_investment_groups_are_investable!(connection)
+    query = """
+    SELECT
+        group_asset_membership.group_name,
+        group_asset_membership.asset,
+        group_asset.milestone_year,
+    FROM group_asset_membership
+    LEFT JOIN group_asset
+        ON group_asset_membership.group_name = group_asset.name
+    LEFT JOIN asset_milestone
+        ON group_asset_membership.asset = asset_milestone.asset
+        AND group_asset.milestone_year = asset_milestone.milestone_year
+    WHERE NOT asset_milestone.investable
+    """
+    error_messages = [
+        "Asset '$(row.asset)' is in investment group '$(row.group_name)' for milestone_year '$(row.milestone_year)' but it is not 'asset_milestone.investable'"
+        for row in DuckDB.query(connection, query)
+    ]
+
+    return error_messages
+end
+
 function _validate_group_consistency!(connection)
     error_messages = String[]
 
-    # First, check if the values are valid
+    # Check the values in the table `group_asset_membership`:
+    # - `group_name` comes from `group_asset.name`
+    # - `asset` comes from `asset.asset`
     append!(
         error_messages,
-        _validate_foreign_key!(connection, "asset", :investment_group, "group_asset", :name),
+        _validate_foreign_key!(
+            connection,
+            "group_asset_membership",
+            :group_name,
+            "group_asset",
+            :name,
+        ),
+    )
+    append!(
+        error_messages,
+        _validate_foreign_key!(connection, "group_asset_membership", :asset, "asset", :asset),
     )
 
-    # Second, these that the values are used
+    # Check that the groups created in `group_asset` have at least one entry in `group_asset_membership`
     for row in DuckDB.query(
         connection,
         "FROM (
-            SELECT group_asset.name, COUNT(asset.investment_group) AS group_count
+            SELECT group_asset.name, COUNT(group_asset_membership.asset) AS count_group_members
             FROM group_asset
-            LEFT JOIN asset
-                ON asset.investment_group = group_asset.name
+            LEFT JOIN group_asset_membership
+                ON group_asset.name = group_asset_membership.group_name
             GROUP BY group_asset.name
-        ) WHERE group_count = 0",
+        ) WHERE count_group_members = 0",
     )
         push!(
             error_messages,
-            "Group '$(row.name)' in 'group_asset' has no members in 'asset', column 'investment_group'",
+            "Group '$(row.name)' in 'group_asset' has no members in 'group_asset_membership'",
         )
     end
+
+    append!(error_messages, _validate_assets_in_investment_groups_are_investable!(connection))
 
     return error_messages
 end
