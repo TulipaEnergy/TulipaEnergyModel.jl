@@ -73,8 +73,8 @@ model_parameters = CSV.read(
 )
 
 for row in eachrow(model_parameters)
-    risk_aversion_weight_lambda = row[:risk_aversion_weight_lambda]
-    risk_aversion_confidence_level_alpha = row[:risk_aversion_confidence_level_alpha]
+    global risk_aversion_weight_lambda = row[:risk_aversion_weight_lambda]
+    global risk_aversion_confidence_level_alpha = row[:risk_aversion_confidence_level_alpha]
 end
 
 enable_names = true
