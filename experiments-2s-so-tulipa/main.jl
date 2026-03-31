@@ -63,6 +63,20 @@ case_studies_info = CSV.read(
     ),
 )
 
+model_parameters = CSV.read(
+    "base-input-data/example-tulipa-single-year/model-parameters.csv",
+    DataFrame;
+    types = Dict(
+        :risk_aversion_weight_lambda => Float64,
+        :risk_aversion_confidence_level_alpha => Float64,
+    ),
+)
+
+for row in eachrow(model_parameters)
+    risk_aversion_weight_lambda = row[:risk_aversion_weight_lambda]
+    risk_aversion_confidence_level_alpha = row[:risk_aversion_confidence_level_alpha]
+end
+
 enable_names = true
 direct_model = false
 results_df = DataFrame(;
@@ -95,7 +109,15 @@ function main()
     # set up the connection and read the data
     connection_benchmark = DuckDB.DBInterface.connect(DuckDB.DB)
     TIO.read_csv_folder(connection_benchmark, input_data_path)
-
+    DuckDB.query(
+        connection_benchmark,
+        "
+        UPDATE model_parameters -- tables are with underscore in DuckDB world
+        SET
+            risk_aversion_weight_lambda = $(risk_aversion_weight_lambda) ,
+            risk_aversion_confidence_level_alpha = $(risk_aversion_confidence_level_alpha);
+        ",
+    )
     # transform the profiles data from wide to long
     TC.transform_wide_to_long!(
         connection_benchmark,
