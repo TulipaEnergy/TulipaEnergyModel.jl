@@ -12,7 +12,6 @@ df_dup = copy(df_profiles)
 df_dup.scenario .= 2009
 df_profiles_new = vcat(df_profiles, df_dup)
 
-
 # now we modify availability
 
 mask = (df_profiles_new.scenario .== 2009) .& (df_profiles_new.timestep .<= 504) # only for one scenario and for the first 3 weeks (24 * 7 * 3)

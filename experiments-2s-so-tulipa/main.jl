@@ -6,6 +6,8 @@
 cd(@__DIR__)
 using Pkg: Pkg
 Pkg.activate(".")
+Pkg.update()
+Pkg.instantiate()
 
 # Load the required packages
 import TulipaEnergyModel as TEM

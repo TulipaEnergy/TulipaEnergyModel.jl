@@ -942,7 +942,7 @@ select distinct
     nextval('id') as id,
     attr.scenario,
 from
-    asset_time_resolution_over_clustered_year as attr
+    asset_time_resolution_inter_period as attr
 ;
 
 drop sequence id
