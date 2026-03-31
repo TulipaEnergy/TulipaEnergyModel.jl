@@ -1,0 +1,5 @@
+group_name,asset,coefficient
+ccgt,Asgard_CCGT,500.0
+renewables,Asgard_Solar,100.0
+ccgt,Midgard_CCGT,500.0
+renewables,Midgard_Wind,3.0
