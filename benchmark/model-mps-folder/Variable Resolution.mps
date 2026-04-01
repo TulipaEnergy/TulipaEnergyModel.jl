@@ -32,20 +32,6 @@ ROWS
  E  balance_storage_rep_period[phs,2030,1,1:6]
  E  conversion_balance[ccgt,2030,1,1:6]
 COLUMNS
-    flow[(balance,demand),2030,1,1:3] max_transport_flow_limit_simple_method[(balance,demand),2030,1,1:3] 1
-    flow[(balance,demand),2030,1,1:3] min_transport_flow_limit_simple_method[(balance,demand),2030,1,1:3] 1
-    flow[(balance,demand),2030,1,1:3] consumer_balance[balance,2030,1,1:1] -1
-    flow[(balance,demand),2030,1,1:3] consumer_balance[balance,2030,1,2:2] -1
-    flow[(balance,demand),2030,1,1:3] consumer_balance[balance,2030,1,3:3] -1
-    flow[(balance,demand),2030,1,1:3] consumer_balance[demand,2030,1,1:3] 1
-    flow[(balance,demand),2030,1,1:3] OBJ 0.00030000000000000003
-    flow[(balance,demand),2030,1,4:6] max_transport_flow_limit_simple_method[(balance,demand),2030,1,4:6] 1
-    flow[(balance,demand),2030,1,4:6] min_transport_flow_limit_simple_method[(balance,demand),2030,1,4:6] 1
-    flow[(balance,demand),2030,1,4:6] consumer_balance[balance,2030,1,4:4] -1
-    flow[(balance,demand),2030,1,4:6] consumer_balance[balance,2030,1,5:5] -1
-    flow[(balance,demand),2030,1,4:6] consumer_balance[balance,2030,1,6:6] -1
-    flow[(balance,demand),2030,1,4:6] consumer_balance[demand,2030,1,4:6] 1
-    flow[(balance,demand),2030,1,4:6] OBJ 0.00030000000000000003
     flow[(H2,ccgt),2030,1,1:6] max_output_flows_limit_simple_method[H2,2030,1,1:6] 1
     flow[(H2,ccgt),2030,1,1:6] conversion_balance[ccgt,2030,1,1:6] 3
     flow[(H2,ccgt),2030,1,1:6] OBJ 0.06
@@ -81,6 +67,20 @@ COLUMNS
     flow[(phs,balance),2030,1,5:6] consumer_balance[balance,2030,1,6:6] 1
     flow[(phs,balance),2030,1,5:6] balance_storage_rep_period[phs,2030,1,1:6] 2.2222222222222223
     flow[(phs,balance),2030,1,5:6] OBJ 0.002
+    flow[(balance,demand),2030,1,1:3] max_transport_flow_limit_simple_method[(balance,demand),2030,1,1:3] 1
+    flow[(balance,demand),2030,1,1:3] min_transport_flow_limit_simple_method[(balance,demand),2030,1,1:3] 1
+    flow[(balance,demand),2030,1,1:3] consumer_balance[balance,2030,1,1:1] -1
+    flow[(balance,demand),2030,1,1:3] consumer_balance[balance,2030,1,2:2] -1
+    flow[(balance,demand),2030,1,1:3] consumer_balance[balance,2030,1,3:3] -1
+    flow[(balance,demand),2030,1,1:3] consumer_balance[demand,2030,1,1:3] 1
+    flow[(balance,demand),2030,1,1:3] OBJ 0.00030000000000000003
+    flow[(balance,demand),2030,1,4:6] max_transport_flow_limit_simple_method[(balance,demand),2030,1,4:6] 1
+    flow[(balance,demand),2030,1,4:6] min_transport_flow_limit_simple_method[(balance,demand),2030,1,4:6] 1
+    flow[(balance,demand),2030,1,4:6] consumer_balance[balance,2030,1,4:4] -1
+    flow[(balance,demand),2030,1,4:6] consumer_balance[balance,2030,1,5:5] -1
+    flow[(balance,demand),2030,1,4:6] consumer_balance[balance,2030,1,6:6] -1
+    flow[(balance,demand),2030,1,4:6] consumer_balance[demand,2030,1,4:6] 1
+    flow[(balance,demand),2030,1,4:6] OBJ 0.00030000000000000003
     flow[(ccgt,balance),2030,1,1:1] max_output_flows_limit_simple_method[ccgt,2030,1,1:1] 1
     flow[(ccgt,balance),2030,1,1:1] consumer_balance[balance,2030,1,1:1] 1
     flow[(ccgt,balance),2030,1,1:1] conversion_balance[ccgt,2030,1,1:6] -1
@@ -145,8 +145,6 @@ RHS
     rhs       conversion_balance[ccgt,2030,1,1:6] 0
 RANGES
 BOUNDS
- FR bounds    flow[(balance,demand),2030,1,1:3]
- FR bounds    flow[(balance,demand),2030,1,4:6]
  LO bounds    flow[(H2,ccgt),2030,1,1:6] 0
  PL bounds    flow[(H2,ccgt),2030,1,1:6]
  LO bounds    flow[(wind,balance),2030,1,1:2] 0
@@ -161,6 +159,8 @@ BOUNDS
  PL bounds    flow[(phs,balance),2030,1,1:4]
  LO bounds    flow[(phs,balance),2030,1,5:6] 0
  PL bounds    flow[(phs,balance),2030,1,5:6]
+ FR bounds    flow[(balance,demand),2030,1,1:3]
+ FR bounds    flow[(balance,demand),2030,1,4:6]
  LO bounds    flow[(ccgt,balance),2030,1,1:1] 0
  PL bounds    flow[(ccgt,balance),2030,1,1:1]
  LO bounds    flow[(ccgt,balance),2030,1,2:2] 0
