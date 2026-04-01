@@ -3,9 +3,7 @@
     using TulipaBuilder: TulipaBuilder as TB
     using TulipaClustering: TulipaClustering as TC
 
-    struct ConsInvestmentGroupData end
-
-    function create_investment_group_problem(config::ConsInvestmentGroupData;)
+    function create_investment_group_problem()
         tulipa = TB.TulipaData()
 
         TB.add_asset!(
@@ -63,7 +61,7 @@ end
 
 @testitem "Constraints for investment groups" setup = [CommonSetup, ConsInvestmentGroupSetup] tags =
     [:unit, :constraint] begin
-    con, ep = create_investment_group_problem(ConsInvestmentGroupData())
+    con, ep = create_investment_group_problem()
 
     var_assets_investment = ep.variables[:assets_investment].container
     var_lookup = Dict(
