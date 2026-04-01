@@ -174,6 +174,7 @@ Branch naming: `feature/description` or `fix/description`
 **Run fast tests only:** `julia --project=test test/runtests.jl --tags fast --exclude slow`
 **List available tags:** `julia --project=test test/runtests.jl --list-tags`
 **Docs:** `julia --project=docs -e "using LiveServer; servedocs()"`
+**Diff CSV files:** `git diff --word-diff-regex="[^[:space:],]+" <path>` — highlights changed field values instead of whole lines.
 
 ## Testing Strategy
 
@@ -186,9 +187,11 @@ Never run the full test suite unless you are explicitly asked to. Instead, run o
 
 **When `julia_eval` (Julia MCP) is available, use it instead of the CLI** — it maintains a warm session and avoids recompilation on every run.
 
-Use `env_path = "test/"` (has its own `Project.toml` with the package as a path source). Call `@run_package_tests` directly — `runtests.jl` reads `ARGS` and won't work in a REPL:
+Use `env_path = "test/"` (has its own `Project.toml` with the package as a path source). Always import `TestItemRunner` first, then call `@run_package_tests` — `runtests.jl` reads `ARGS` and won't work in a REPL:
 
 ```julia
+using TestItemRunner
+
 # Filter by file (most common)
 @run_package_tests verbose=true filter = ti -> contains(ti.filename, "test-model")
 
