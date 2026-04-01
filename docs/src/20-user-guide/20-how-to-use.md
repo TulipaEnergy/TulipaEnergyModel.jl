@@ -266,10 +266,7 @@ Groups are useful to represent several common constraints.
 In order to define the groups in the model, the following steps are necessary:
 
 1. Create a group file by defining the `name` property and its parameters in the `group_asset` table (or CSV file).
-2. Assign assets to the group by setting the `name` in the `group` parameter/column of the asset file.
-
-!!! info
-    A missing value in the parameter `group` means that the asset does not belong to any group.
+2. Assign assets to the group by adding entries to the `group_asset_membership` table (or CSV file).
 
 #### [Group Investment constraints (maximum or minimum)](@id investment-group-setup)
 
@@ -298,9 +295,8 @@ In the given data, there are two groups: `renewables` and `ccgt`. Both groups ha
 Let's now explore which assets are in each group. To do so, we can take a look at the `asset.csv` file:
 
 ```@example display-group-setup
-input_asset_file = "../../../test/inputs/Norse/asset.csv" # hide
-assets = CSV.read(input_asset_file, DataFrame) # hide
-assets = assets[.!ismissing.(assets.investment_group), [:asset, :type, :investment_group]] # hide
+input_file = "../../../test/inputs/Norse/group-asset-membership.csv" # hide
+group_asset_membership = CSV.read(input_file, DataFrame) # hide
 ```
 
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
