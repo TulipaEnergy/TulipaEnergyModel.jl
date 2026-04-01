@@ -273,10 +273,10 @@ end
         CREATE TABLE group_asset AS (
         SELECT
             'group1' AS name,
-            2030 as milestone_year,
+            2030 AS milestone_year,
             true AS invest_method,
-            0.0 as max_investment_limit,
-            0.0 as min_investment_limit,
+            '<=' AS constraint_sense,
+            0.0 AS rhs,
         )
         """,
     )

@@ -795,25 +795,32 @@
     }
   },
   "group_asset": {
+    "constraint_sense": {
+      "constraints": {
+        "oneOf": [
+          "==",
+          ">=",
+          "<="
+        ]
+      },
+      "description": "Whether the expression in the group constraint is equal to, greater than, or less than, the right-hand-side.",
+      "type": "VARCHAR"
+    },
     "invest_method": {
       "description": "true -> activate group constraints; false -> no group investment constraints",
       "type": "BOOLEAN"
-    },
-    "max_investment_limit": {
-      "description": "MW (Missing -> no limit)",
-      "type": "DOUBLE"
     },
     "milestone_year": {
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
-    "min_investment_limit": {
-      "description": "MW (Missing -> no limit)",
-      "type": "DOUBLE"
-    },
     "name": {
       "description": "Name of the Group",
       "type": "VARCHAR"
+    },
+    "rhs": {
+      "description": "Right-hand-side of the group constraint.",
+      "type": "DOUBLE"
     }
   },
   "group_asset_membership": {

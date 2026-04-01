@@ -268,15 +268,30 @@ In order to define the groups in the model, the following steps are necessary:
 1. Create a group file by defining the `name` property and its parameters in the `group_asset` table (or CSV file).
 2. Assign assets to the group by adding entries to the `group_asset_membership` table (or CSV file).
 
-#### [Group Investment constraints (maximum or minimum)](@id investment-group-setup)
+#### [Group Investment constraints](@id investment-group-setup)
 
-The mathematical formulation of the maximum and minimum investment limit for group constraints is available [here](@ref investment-group-constraints).
+A group investment constraint is a constraint of the form
 
-- `invest_method = true`. This parameter enables the model to use the investment group constraints.
-- `min_investment_limit` $\neq$ `missing` or `max_investment_limit` $\neq$ `missing`. This value represents the limits that will be imposed on the investment that belongs to the group.
+$\sum_{a \in G} v^{\text{inv}}_a \times \text{coefficient}_a \left\{\begin{array}{c} \leq \\ \geq \\ =\end{array}\right\} \text{right hand side}$,
+
+i.e., a sum-product of all investment variables listed in the group multiplied by given coefficients related by a "right hand side".
+An example of group investment are the maximum and minimum investment limits for group of investment variables.
+The mathematical formulation of these constraints is available [here](@ref investment-group-constraints).
+They can be achieved using group investment constraints by adding rows in `group_asset` such that:
+
+- Each row in table `group_asset`
+  - `name` is the name of the group, and unique identifier.
+  - `milestone_year` is the year for which the group is defined.
+  - `invest_method = true`. This parameter enables the model to use the investment group constraints.
+  - `constraint_sense` is either `<=` for maximum and `>=` for minimum.
+  - `rhs` is the corresponding value.
+- Each row in table `group_asset_membership`
+  - `group_name` should match `group_asset.name`.
+  - `asset` is the name of the asset.
+  - `coefficient` should be the capacity value for the investment limit.
 
 !!! info
-    1. A missing value in the parameters `min_investment_limit` and `max_investment_limit` means that there is no investment limit.
+    TODO: I don't know what the following is informing:
     2. These constraints are applied to the investments each year. The model does not yet have investment limits to a group's available invested capacity.
 
 #### Example: Group of Assets
@@ -290,7 +305,7 @@ input_asset_file = "../../../test/inputs/Norse/group-asset.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 ```
 
-In the given data, there are two groups: `renewables` and `ccgt`. Both groups have the `invest_method` parameter set to `true`, indicating that investment group constraints apply to both. For the `renewables` group, the `min_investment_limit` parameter is missing, signifying that there is no minimum limit imposed on the group. However, the `max_investment_limit` parameter is set to 40000 MW, indicating that the total investments of assets in the group must be less than or equal to this value. In contrast, the `ccgt` group has a missing value in the `max_investment_limit` parameter, indicating no maximum limit, while the `min_investment_limit` is set to 10000 MW for the total investments in that group.
+In the given data, there are two groups: `renewables` and `ccgt`. Both groups have the `invest_method` parameter set to `true`, indicating that investment group constraints apply to both. For the `renewables` group, the `constraint_sense` is `<=` and the `rhs` is 40000 MW, indicating the this is a maximum investment limit, i.e., that the total investments of assets in the group must be less than or equal to this value. In contrast, the `ccgt` group has `>=` and 10000 MW in the corresponding fields, indicating a minimum investment limit.
 
 Let's now explore which assets are in each group. To do so, we can take a look at the `asset.csv` file:
 
@@ -302,7 +317,7 @@ group_asset_membership = CSV.read(input_file, DataFrame) # hide
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
 
 !!! info
-    If the group has a `min_investment_limit`, then assets in the group have to allow investment (`investable = true`) for the model to be feasible. If the assets are not `investable` then they cannot satisfy the minimum constraint.
+    The assets in the group have to allow investment (`asset_milestone.investable = true` for the corresponding year) and have some investment method (`asset.investment_method != "none"`).
 
 ### [Multi-year investments](@id multi-year-setup)
 

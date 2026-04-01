@@ -8,52 +8,32 @@ Adds group constraints for assets that share a common limits or bounds.
 function add_investment_group_constraints!(connection, model, variables, constraints)
     assets_investment = variables[:assets_investment].container
 
-    for table_name in [:group_max_investment_limit, :group_min_investment_limit]
+    let table_name = :group_investment
         cons = constraints[table_name]
         indices = _append_group_data_to_indices!(connection, "cons_$table_name")
-        attach_expression!(
+        attach_constraint!(
+            model,
             cons,
             :investment_group,
             [
-                @expression(
-                    model,
-                    sum(
-                        coef * assets_investment[var_id] for
-                        (var_id, coef) in zip(row.var_assets_investment_ids, row.coefficients)
+                begin
+                    constraint_sense = if row.constraint_sense == "=="
+                        MathOptInterface.EqualTo(0.0)
+                    elseif row.constraint_sense == ">="
+                        MathOptInterface.GreaterThan(0.0)
+                    else
+                        MathOptInterface.LessThan(0.0)
+                    end
+
+                    @constraint(
+                        model,
+                        sum(
+                            coef * assets_investment[var_id] for
+                            (var_id, coef) in zip(row.var_assets_investment_ids, row.coefficients)
+                        ) - row.rhs in constraint_sense,
+                        base_name = "investment_group[$(row.name),$(row.milestone_year)]"
                     )
-                ) for row in indices
-            ],
-        )
-    end
-
-    let table_name = :group_max_investment_limit, cons = constraints[table_name]
-        attach_constraint!(
-            model,
-            cons,
-            :investment_group_max_limit,
-            [
-                @constraint(
-                    model,
-                    investment_group ≤ row.max_investment_limit,
-                    base_name = "investment_group_max_limit[$(row.name)]"
-                ) for
-                (row, investment_group) in zip(cons.indices, cons.expressions[:investment_group])
-            ],
-        )
-    end
-
-    let table_name = :group_min_investment_limit, cons = constraints[table_name]
-        attach_constraint!(
-            model,
-            cons,
-            :investment_group_min_limit,
-            [
-                @constraint(
-                    model,
-                    investment_group ≥ row.min_investment_limit,
-                    base_name = "investment_group_min_limit[$(row.name)]"
-                ) for
-                (row, investment_group) in zip(cons.indices, cons.expressions[:investment_group])
+                end for row in indices
             ],
         )
     end
@@ -81,8 +61,7 @@ function _append_group_data_to_indices!(connection, cons_table_name)
             GROUP BY group_asset.name
         )
         SELECT
-            cons.id,
-            cte.name,
+            cons.*,
             cte.var_assets_investment_ids,
             cte.coefficients,
         FROM $cons_table_name AS cons
