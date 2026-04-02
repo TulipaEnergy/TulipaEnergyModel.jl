@@ -4,11 +4,13 @@ import os
 import duckdb
 
 INPUTS = "test/inputs"
+TUTORIALS = "docs/src/10-tutorials/my-awesome-energy-system"
 
-for folder in sorted(os.listdir(INPUTS)):
-    path = os.path.join(INPUTS, folder, "group-asset.csv")
+
+def migrate_folder(folder_path):
+    path = os.path.join(folder_path, "group-asset.csv")
     if not os.path.exists(path):
-        continue
+        return
 
     con = duckdb.connect()
     con.execute(f"CREATE TABLE ga AS SELECT * FROM read_csv_auto('{path}')")
@@ -16,7 +18,9 @@ for folder in sorted(os.listdir(INPUTS)):
     cols = [r[0] for r in con.execute("DESCRIBE ga").fetchall()]
     if "min_investment_limit" not in cols and "max_investment_limit" not in cols:
         con.close()
-        continue
+        return
+
+    label = folder_path
 
     # Build other columns (everything except the two limit columns)
     other = ", ".join(c for c in cols if c not in ("min_investment_limit", "max_investment_limit"))
@@ -33,6 +37,15 @@ for folder in sorted(os.listdir(INPUTS)):
 
     con.execute(f"COPY ga_new TO '{path}' (HEADER, DELIMITER ',')")
     n = con.execute("SELECT COUNT(*) FROM ga_new").fetchone()[0]
-    print(f"{folder}: wrote {n} rows to group-asset.csv")
+    print(f"{label}: wrote {n} rows to group-asset.csv")
 
     con.close()
+
+
+for folder in sorted(os.listdir(INPUTS)):
+    migrate_folder(os.path.join(INPUTS, folder))
+
+migrate_folder("benchmark/EU")
+
+for folder in sorted(os.listdir(TUTORIALS)):
+    migrate_folder(os.path.join(TUTORIALS, folder))

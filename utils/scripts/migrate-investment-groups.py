@@ -44,7 +44,12 @@ def migrate_folder(folder_path):
     con.close()
 
 
+TUTORIALS = "docs/src/10-tutorials/my-awesome-energy-system"
+
 for folder in sorted(os.listdir(INPUTS)):
     migrate_folder(os.path.join(INPUTS, folder))
 
 migrate_folder("benchmark/EU")
+
+for folder in sorted(os.listdir(TUTORIALS)):
+    migrate_folder(os.path.join(TUTORIALS, folder))
