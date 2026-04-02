@@ -2308,246 +2308,150 @@ ROWS
  E  vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,23:23]
  E  vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,24:24]
 COLUMNS
-    flow[(ccgt,demand),2030,1,1:1] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,1:1] 1
-    flow[(ccgt,demand),2030,1,1:1] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,1:1] 1
-    flow[(ccgt,demand),2030,1,1:1] consumer_balance[demand,2030,1,1:1] 1
-    flow[(ccgt,demand),2030,1,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,1:1] -1
-    flow[(ccgt,demand),2030,1,2:2] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,2:2] 1
-    flow[(ccgt,demand),2030,1,2:2] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,2:2] 1
-    flow[(ccgt,demand),2030,1,2:2] consumer_balance[demand,2030,1,2:2] 1
-    flow[(ccgt,demand),2030,1,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,2:2] -1
-    flow[(ccgt,demand),2030,1,3:3] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,3:3] 1
-    flow[(ccgt,demand),2030,1,3:3] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,3:3] 1
-    flow[(ccgt,demand),2030,1,3:3] consumer_balance[demand,2030,1,3:3] 1
-    flow[(ccgt,demand),2030,1,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,3:3] -1
-    flow[(ccgt,demand),2030,1,4:4] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,4:4] 1
-    flow[(ccgt,demand),2030,1,4:4] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,4:4] 1
-    flow[(ccgt,demand),2030,1,4:4] consumer_balance[demand,2030,1,4:4] 1
-    flow[(ccgt,demand),2030,1,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,4:4] -1
-    flow[(ccgt,demand),2030,1,5:5] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,5:5] 1
-    flow[(ccgt,demand),2030,1,5:5] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,5:5] 1
-    flow[(ccgt,demand),2030,1,5:5] consumer_balance[demand,2030,1,5:5] 1
-    flow[(ccgt,demand),2030,1,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,5:5] -1
-    flow[(ccgt,demand),2030,1,6:6] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,6:6] 1
-    flow[(ccgt,demand),2030,1,6:6] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,6:6] 1
-    flow[(ccgt,demand),2030,1,6:6] consumer_balance[demand,2030,1,6:6] 1
-    flow[(ccgt,demand),2030,1,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,6:6] -1
-    flow[(ccgt,demand),2030,1,7:7] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,7:7] 1
-    flow[(ccgt,demand),2030,1,7:7] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,7:7] 1
-    flow[(ccgt,demand),2030,1,7:7] consumer_balance[demand,2030,1,7:7] 1
-    flow[(ccgt,demand),2030,1,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,7:7] -1
-    flow[(ccgt,demand),2030,1,8:8] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,8:8] 1
-    flow[(ccgt,demand),2030,1,8:8] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,8:8] 1
-    flow[(ccgt,demand),2030,1,8:8] consumer_balance[demand,2030,1,8:8] 1
-    flow[(ccgt,demand),2030,1,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,8:8] -1
-    flow[(ccgt,demand),2030,1,9:9] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,9:9] 1
-    flow[(ccgt,demand),2030,1,9:9] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,9:9] 1
-    flow[(ccgt,demand),2030,1,9:9] consumer_balance[demand,2030,1,9:9] 1
-    flow[(ccgt,demand),2030,1,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,9:9] -1
-    flow[(ccgt,demand),2030,1,10:10] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,10:10] 1
-    flow[(ccgt,demand),2030,1,10:10] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,10:10] 1
-    flow[(ccgt,demand),2030,1,10:10] consumer_balance[demand,2030,1,10:10] 1
-    flow[(ccgt,demand),2030,1,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,10:10] -1
-    flow[(ccgt,demand),2030,1,11:11] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,11:11] 1
-    flow[(ccgt,demand),2030,1,11:11] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,11:11] 1
-    flow[(ccgt,demand),2030,1,11:11] consumer_balance[demand,2030,1,11:11] 1
-    flow[(ccgt,demand),2030,1,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,11:11] -1
-    flow[(ccgt,demand),2030,1,12:12] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,12:12] 1
-    flow[(ccgt,demand),2030,1,12:12] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,12:12] 1
-    flow[(ccgt,demand),2030,1,12:12] consumer_balance[demand,2030,1,12:12] 1
-    flow[(ccgt,demand),2030,1,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,12:12] -1
-    flow[(ccgt,demand),2030,1,13:13] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,13:13] 1
-    flow[(ccgt,demand),2030,1,13:13] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,13:13] 1
-    flow[(ccgt,demand),2030,1,13:13] consumer_balance[demand,2030,1,13:13] 1
-    flow[(ccgt,demand),2030,1,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,13:13] -1
-    flow[(ccgt,demand),2030,1,14:14] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,14:14] 1
-    flow[(ccgt,demand),2030,1,14:14] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,14:14] 1
-    flow[(ccgt,demand),2030,1,14:14] consumer_balance[demand,2030,1,14:14] 1
-    flow[(ccgt,demand),2030,1,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,14:14] -1
-    flow[(ccgt,demand),2030,1,15:15] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,15:15] 1
-    flow[(ccgt,demand),2030,1,15:15] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,15:15] 1
-    flow[(ccgt,demand),2030,1,15:15] consumer_balance[demand,2030,1,15:15] 1
-    flow[(ccgt,demand),2030,1,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,15:15] -1
-    flow[(ccgt,demand),2030,1,16:16] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,16:16] 1
-    flow[(ccgt,demand),2030,1,16:16] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,16:16] 1
-    flow[(ccgt,demand),2030,1,16:16] consumer_balance[demand,2030,1,16:16] 1
-    flow[(ccgt,demand),2030,1,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,16:16] -1
-    flow[(ccgt,demand),2030,1,17:17] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,17:17] 1
-    flow[(ccgt,demand),2030,1,17:17] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,17:17] 1
-    flow[(ccgt,demand),2030,1,17:17] consumer_balance[demand,2030,1,17:17] 1
-    flow[(ccgt,demand),2030,1,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,17:17] -1
-    flow[(ccgt,demand),2030,1,18:18] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,18:18] 1
-    flow[(ccgt,demand),2030,1,18:18] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,18:18] 1
-    flow[(ccgt,demand),2030,1,18:18] consumer_balance[demand,2030,1,18:18] 1
-    flow[(ccgt,demand),2030,1,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,18:18] -1
-    flow[(ccgt,demand),2030,1,19:19] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,19:19] 1
-    flow[(ccgt,demand),2030,1,19:19] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,19:19] 1
-    flow[(ccgt,demand),2030,1,19:19] consumer_balance[demand,2030,1,19:19] 1
-    flow[(ccgt,demand),2030,1,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,19:19] -1
-    flow[(ccgt,demand),2030,1,20:20] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,20:20] 1
-    flow[(ccgt,demand),2030,1,20:20] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,20:20] 1
-    flow[(ccgt,demand),2030,1,20:20] consumer_balance[demand,2030,1,20:20] 1
-    flow[(ccgt,demand),2030,1,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,20:20] -1
-    flow[(ccgt,demand),2030,1,21:21] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,21:21] 1
-    flow[(ccgt,demand),2030,1,21:21] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,21:21] 1
-    flow[(ccgt,demand),2030,1,21:21] consumer_balance[demand,2030,1,21:21] 1
-    flow[(ccgt,demand),2030,1,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,21:21] -1
-    flow[(ccgt,demand),2030,1,22:22] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,22:22] 1
-    flow[(ccgt,demand),2030,1,22:22] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,22:22] 1
-    flow[(ccgt,demand),2030,1,22:22] consumer_balance[demand,2030,1,22:22] 1
-    flow[(ccgt,demand),2030,1,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,22:22] -1
-    flow[(ccgt,demand),2030,1,23:23] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,23:23] 1
-    flow[(ccgt,demand),2030,1,23:23] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,23:23] 1
-    flow[(ccgt,demand),2030,1,23:23] consumer_balance[demand,2030,1,23:23] 1
-    flow[(ccgt,demand),2030,1,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,23:23] -1
-    flow[(ccgt,demand),2030,1,24:24] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,24:24] 1
-    flow[(ccgt,demand),2030,1,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,24:24] 1
-    flow[(ccgt,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
-    flow[(ccgt,demand),2030,1,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,24:24] -1
     flow[(ens,demand),2030,1,1:1] max_output_flows_limit_simple_method[ens,2030,1,1:1] 1
     flow[(ens,demand),2030,1,1:1] consumer_balance[demand,2030,1,1:1] 1
-    flow[(ens,demand),2030,1,1:1] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,1:1] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,2:2] max_output_flows_limit_simple_method[ens,2030,1,2:2] 1
     flow[(ens,demand),2030,1,2:2] consumer_balance[demand,2030,1,2:2] 1
-    flow[(ens,demand),2030,1,2:2] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,2:2] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,3:3] max_output_flows_limit_simple_method[ens,2030,1,3:3] 1
     flow[(ens,demand),2030,1,3:3] consumer_balance[demand,2030,1,3:3] 1
-    flow[(ens,demand),2030,1,3:3] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,3:3] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,4:4] max_output_flows_limit_simple_method[ens,2030,1,4:4] 1
     flow[(ens,demand),2030,1,4:4] consumer_balance[demand,2030,1,4:4] 1
-    flow[(ens,demand),2030,1,4:4] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,4:4] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,5:5] max_output_flows_limit_simple_method[ens,2030,1,5:5] 1
     flow[(ens,demand),2030,1,5:5] consumer_balance[demand,2030,1,5:5] 1
-    flow[(ens,demand),2030,1,5:5] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,5:5] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,6:6] max_output_flows_limit_simple_method[ens,2030,1,6:6] 1
     flow[(ens,demand),2030,1,6:6] consumer_balance[demand,2030,1,6:6] 1
-    flow[(ens,demand),2030,1,6:6] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,6:6] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,7:7] max_output_flows_limit_simple_method[ens,2030,1,7:7] 1
     flow[(ens,demand),2030,1,7:7] consumer_balance[demand,2030,1,7:7] 1
-    flow[(ens,demand),2030,1,7:7] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,7:7] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,8:8] max_output_flows_limit_simple_method[ens,2030,1,8:8] 1
     flow[(ens,demand),2030,1,8:8] consumer_balance[demand,2030,1,8:8] 1
-    flow[(ens,demand),2030,1,8:8] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,8:8] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,9:9] max_output_flows_limit_simple_method[ens,2030,1,9:9] 1
     flow[(ens,demand),2030,1,9:9] consumer_balance[demand,2030,1,9:9] 1
-    flow[(ens,demand),2030,1,9:9] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,9:9] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,10:10] max_output_flows_limit_simple_method[ens,2030,1,10:10] 1
     flow[(ens,demand),2030,1,10:10] consumer_balance[demand,2030,1,10:10] 1
-    flow[(ens,demand),2030,1,10:10] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,10:10] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,11:11] max_output_flows_limit_simple_method[ens,2030,1,11:11] 1
     flow[(ens,demand),2030,1,11:11] consumer_balance[demand,2030,1,11:11] 1
-    flow[(ens,demand),2030,1,11:11] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,11:11] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,12:12] max_output_flows_limit_simple_method[ens,2030,1,12:12] 1
     flow[(ens,demand),2030,1,12:12] consumer_balance[demand,2030,1,12:12] 1
-    flow[(ens,demand),2030,1,12:12] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,12:12] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,13:13] max_output_flows_limit_simple_method[ens,2030,1,13:13] 1
     flow[(ens,demand),2030,1,13:13] consumer_balance[demand,2030,1,13:13] 1
-    flow[(ens,demand),2030,1,13:13] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,13:13] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,14:14] max_output_flows_limit_simple_method[ens,2030,1,14:14] 1
     flow[(ens,demand),2030,1,14:14] consumer_balance[demand,2030,1,14:14] 1
-    flow[(ens,demand),2030,1,14:14] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,14:14] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,15:15] max_output_flows_limit_simple_method[ens,2030,1,15:15] 1
     flow[(ens,demand),2030,1,15:15] consumer_balance[demand,2030,1,15:15] 1
-    flow[(ens,demand),2030,1,15:15] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,15:15] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,16:16] max_output_flows_limit_simple_method[ens,2030,1,16:16] 1
     flow[(ens,demand),2030,1,16:16] consumer_balance[demand,2030,1,16:16] 1
-    flow[(ens,demand),2030,1,16:16] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,16:16] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,17:17] max_output_flows_limit_simple_method[ens,2030,1,17:17] 1
     flow[(ens,demand),2030,1,17:17] consumer_balance[demand,2030,1,17:17] 1
-    flow[(ens,demand),2030,1,17:17] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,17:17] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,18:18] max_output_flows_limit_simple_method[ens,2030,1,18:18] 1
     flow[(ens,demand),2030,1,18:18] consumer_balance[demand,2030,1,18:18] 1
-    flow[(ens,demand),2030,1,18:18] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,18:18] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,19:19] max_output_flows_limit_simple_method[ens,2030,1,19:19] 1
     flow[(ens,demand),2030,1,19:19] consumer_balance[demand,2030,1,19:19] 1
-    flow[(ens,demand),2030,1,19:19] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,19:19] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,20:20] max_output_flows_limit_simple_method[ens,2030,1,20:20] 1
     flow[(ens,demand),2030,1,20:20] consumer_balance[demand,2030,1,20:20] 1
-    flow[(ens,demand),2030,1,20:20] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,20:20] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,21:21] max_output_flows_limit_simple_method[ens,2030,1,21:21] 1
     flow[(ens,demand),2030,1,21:21] consumer_balance[demand,2030,1,21:21] 1
-    flow[(ens,demand),2030,1,21:21] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,21:21] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,22:22] max_output_flows_limit_simple_method[ens,2030,1,22:22] 1
     flow[(ens,demand),2030,1,22:22] consumer_balance[demand,2030,1,22:22] 1
-    flow[(ens,demand),2030,1,22:22] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,22:22] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,23:23] max_output_flows_limit_simple_method[ens,2030,1,23:23] 1
     flow[(ens,demand),2030,1,23:23] consumer_balance[demand,2030,1,23:23] 1
-    flow[(ens,demand),2030,1,23:23] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,23:23] OBJ 149.82682207850235
     flow[(ens,demand),2030,1,24:24] max_output_flows_limit_simple_method[ens,2030,1,24:24] 1
     flow[(ens,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
-    flow[(ens,demand),2030,1,24:24] OBJ 149.82682207850243
+    flow[(ens,demand),2030,1,24:24] OBJ 149.82682207850235
     flow[(ocgt,demand),2030,1,1:1] max_output_flows_limit_simple_method[ocgt,2030,1,1:1] 1
     flow[(ocgt,demand),2030,1,1:1] consumer_balance[demand,2030,1,1:1] 1
-    flow[(ocgt,demand),2030,1,1:1] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,1:1] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,2:2] max_output_flows_limit_simple_method[ocgt,2030,1,2:2] 1
     flow[(ocgt,demand),2030,1,2:2] consumer_balance[demand,2030,1,2:2] 1
-    flow[(ocgt,demand),2030,1,2:2] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,2:2] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,3:3] max_output_flows_limit_simple_method[ocgt,2030,1,3:3] 1
     flow[(ocgt,demand),2030,1,3:3] consumer_balance[demand,2030,1,3:3] 1
-    flow[(ocgt,demand),2030,1,3:3] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,3:3] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,4:4] max_output_flows_limit_simple_method[ocgt,2030,1,4:4] 1
     flow[(ocgt,demand),2030,1,4:4] consumer_balance[demand,2030,1,4:4] 1
-    flow[(ocgt,demand),2030,1,4:4] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,4:4] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,5:5] max_output_flows_limit_simple_method[ocgt,2030,1,5:5] 1
     flow[(ocgt,demand),2030,1,5:5] consumer_balance[demand,2030,1,5:5] 1
-    flow[(ocgt,demand),2030,1,5:5] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,5:5] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,6:6] max_output_flows_limit_simple_method[ocgt,2030,1,6:6] 1
     flow[(ocgt,demand),2030,1,6:6] consumer_balance[demand,2030,1,6:6] 1
-    flow[(ocgt,demand),2030,1,6:6] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,6:6] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,7:7] max_output_flows_limit_simple_method[ocgt,2030,1,7:7] 1
     flow[(ocgt,demand),2030,1,7:7] consumer_balance[demand,2030,1,7:7] 1
-    flow[(ocgt,demand),2030,1,7:7] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,7:7] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,8:8] max_output_flows_limit_simple_method[ocgt,2030,1,8:8] 1
     flow[(ocgt,demand),2030,1,8:8] consumer_balance[demand,2030,1,8:8] 1
-    flow[(ocgt,demand),2030,1,8:8] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,8:8] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,9:9] max_output_flows_limit_simple_method[ocgt,2030,1,9:9] 1
     flow[(ocgt,demand),2030,1,9:9] consumer_balance[demand,2030,1,9:9] 1
-    flow[(ocgt,demand),2030,1,9:9] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,9:9] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,10:10] max_output_flows_limit_simple_method[ocgt,2030,1,10:10] 1
     flow[(ocgt,demand),2030,1,10:10] consumer_balance[demand,2030,1,10:10] 1
-    flow[(ocgt,demand),2030,1,10:10] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,10:10] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,11:11] max_output_flows_limit_simple_method[ocgt,2030,1,11:11] 1
     flow[(ocgt,demand),2030,1,11:11] consumer_balance[demand,2030,1,11:11] 1
-    flow[(ocgt,demand),2030,1,11:11] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,11:11] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,12:12] max_output_flows_limit_simple_method[ocgt,2030,1,12:12] 1
     flow[(ocgt,demand),2030,1,12:12] consumer_balance[demand,2030,1,12:12] 1
-    flow[(ocgt,demand),2030,1,12:12] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,12:12] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,13:13] max_output_flows_limit_simple_method[ocgt,2030,1,13:13] 1
     flow[(ocgt,demand),2030,1,13:13] consumer_balance[demand,2030,1,13:13] 1
-    flow[(ocgt,demand),2030,1,13:13] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,13:13] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,14:14] max_output_flows_limit_simple_method[ocgt,2030,1,14:14] 1
     flow[(ocgt,demand),2030,1,14:14] consumer_balance[demand,2030,1,14:14] 1
-    flow[(ocgt,demand),2030,1,14:14] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,14:14] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,15:15] max_output_flows_limit_simple_method[ocgt,2030,1,15:15] 1
     flow[(ocgt,demand),2030,1,15:15] consumer_balance[demand,2030,1,15:15] 1
-    flow[(ocgt,demand),2030,1,15:15] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,15:15] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,16:16] max_output_flows_limit_simple_method[ocgt,2030,1,16:16] 1
     flow[(ocgt,demand),2030,1,16:16] consumer_balance[demand,2030,1,16:16] 1
-    flow[(ocgt,demand),2030,1,16:16] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,16:16] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,17:17] max_output_flows_limit_simple_method[ocgt,2030,1,17:17] 1
     flow[(ocgt,demand),2030,1,17:17] consumer_balance[demand,2030,1,17:17] 1
-    flow[(ocgt,demand),2030,1,17:17] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,17:17] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,18:18] max_output_flows_limit_simple_method[ocgt,2030,1,18:18] 1
     flow[(ocgt,demand),2030,1,18:18] consumer_balance[demand,2030,1,18:18] 1
-    flow[(ocgt,demand),2030,1,18:18] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,18:18] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,19:19] max_output_flows_limit_simple_method[ocgt,2030,1,19:19] 1
     flow[(ocgt,demand),2030,1,19:19] consumer_balance[demand,2030,1,19:19] 1
-    flow[(ocgt,demand),2030,1,19:19] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,19:19] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,20:20] max_output_flows_limit_simple_method[ocgt,2030,1,20:20] 1
     flow[(ocgt,demand),2030,1,20:20] consumer_balance[demand,2030,1,20:20] 1
-    flow[(ocgt,demand),2030,1,20:20] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,20:20] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,21:21] max_output_flows_limit_simple_method[ocgt,2030,1,21:21] 1
     flow[(ocgt,demand),2030,1,21:21] consumer_balance[demand,2030,1,21:21] 1
-    flow[(ocgt,demand),2030,1,21:21] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,21:21] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,22:22] max_output_flows_limit_simple_method[ocgt,2030,1,22:22] 1
     flow[(ocgt,demand),2030,1,22:22] consumer_balance[demand,2030,1,22:22] 1
-    flow[(ocgt,demand),2030,1,22:22] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,22:22] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,23:23] max_output_flows_limit_simple_method[ocgt,2030,1,23:23] 1
     flow[(ocgt,demand),2030,1,23:23] consumer_balance[demand,2030,1,23:23] 1
-    flow[(ocgt,demand),2030,1,23:23] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,23:23] OBJ 8381.978324058437
     flow[(ocgt,demand),2030,1,24:24] max_output_flows_limit_simple_method[ocgt,2030,1,24:24] 1
     flow[(ocgt,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
-    flow[(ocgt,demand),2030,1,24:24] OBJ 8381.978324058442
+    flow[(ocgt,demand),2030,1,24:24] OBJ 8381.978324058437
     flow[(demand,battery),2030,1,1:1] max_input_flows_limit_simple_method[battery,2030,1,1:1] 1
     flow[(demand,battery),2030,1,1:1] consumer_balance[demand,2030,1,1:1] -1
     flow[(demand,battery),2030,1,1:1] balance_storage_rep_period[battery,2030,1,1:1] -0.95
@@ -2692,78 +2596,174 @@ COLUMNS
     flow[(battery,demand),2030,1,24:24] max_output_flows_limit_simple_method[battery,2030,1,24:24] 1
     flow[(battery,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
     flow[(battery,demand),2030,1,24:24] balance_storage_rep_period[battery,2030,1,24:24] 1.0526315789473684
+    flow[(ccgt,demand),2030,1,1:1] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,1:1] 1
+    flow[(ccgt,demand),2030,1,1:1] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,1:1] 1
+    flow[(ccgt,demand),2030,1,1:1] consumer_balance[demand,2030,1,1:1] 1
+    flow[(ccgt,demand),2030,1,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,1:1] -1
+    flow[(ccgt,demand),2030,1,2:2] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,2:2] 1
+    flow[(ccgt,demand),2030,1,2:2] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,2:2] 1
+    flow[(ccgt,demand),2030,1,2:2] consumer_balance[demand,2030,1,2:2] 1
+    flow[(ccgt,demand),2030,1,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,2:2] -1
+    flow[(ccgt,demand),2030,1,3:3] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,3:3] 1
+    flow[(ccgt,demand),2030,1,3:3] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,3:3] 1
+    flow[(ccgt,demand),2030,1,3:3] consumer_balance[demand,2030,1,3:3] 1
+    flow[(ccgt,demand),2030,1,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,3:3] -1
+    flow[(ccgt,demand),2030,1,4:4] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,4:4] 1
+    flow[(ccgt,demand),2030,1,4:4] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,4:4] 1
+    flow[(ccgt,demand),2030,1,4:4] consumer_balance[demand,2030,1,4:4] 1
+    flow[(ccgt,demand),2030,1,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,4:4] -1
+    flow[(ccgt,demand),2030,1,5:5] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,5:5] 1
+    flow[(ccgt,demand),2030,1,5:5] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,5:5] 1
+    flow[(ccgt,demand),2030,1,5:5] consumer_balance[demand,2030,1,5:5] 1
+    flow[(ccgt,demand),2030,1,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,5:5] -1
+    flow[(ccgt,demand),2030,1,6:6] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,6:6] 1
+    flow[(ccgt,demand),2030,1,6:6] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,6:6] 1
+    flow[(ccgt,demand),2030,1,6:6] consumer_balance[demand,2030,1,6:6] 1
+    flow[(ccgt,demand),2030,1,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,6:6] -1
+    flow[(ccgt,demand),2030,1,7:7] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,7:7] 1
+    flow[(ccgt,demand),2030,1,7:7] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,7:7] 1
+    flow[(ccgt,demand),2030,1,7:7] consumer_balance[demand,2030,1,7:7] 1
+    flow[(ccgt,demand),2030,1,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,7:7] -1
+    flow[(ccgt,demand),2030,1,8:8] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,8:8] 1
+    flow[(ccgt,demand),2030,1,8:8] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,8:8] 1
+    flow[(ccgt,demand),2030,1,8:8] consumer_balance[demand,2030,1,8:8] 1
+    flow[(ccgt,demand),2030,1,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,8:8] -1
+    flow[(ccgt,demand),2030,1,9:9] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,9:9] 1
+    flow[(ccgt,demand),2030,1,9:9] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,9:9] 1
+    flow[(ccgt,demand),2030,1,9:9] consumer_balance[demand,2030,1,9:9] 1
+    flow[(ccgt,demand),2030,1,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,9:9] -1
+    flow[(ccgt,demand),2030,1,10:10] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,10:10] 1
+    flow[(ccgt,demand),2030,1,10:10] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,10:10] 1
+    flow[(ccgt,demand),2030,1,10:10] consumer_balance[demand,2030,1,10:10] 1
+    flow[(ccgt,demand),2030,1,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,10:10] -1
+    flow[(ccgt,demand),2030,1,11:11] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,11:11] 1
+    flow[(ccgt,demand),2030,1,11:11] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,11:11] 1
+    flow[(ccgt,demand),2030,1,11:11] consumer_balance[demand,2030,1,11:11] 1
+    flow[(ccgt,demand),2030,1,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,11:11] -1
+    flow[(ccgt,demand),2030,1,12:12] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,12:12] 1
+    flow[(ccgt,demand),2030,1,12:12] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,12:12] 1
+    flow[(ccgt,demand),2030,1,12:12] consumer_balance[demand,2030,1,12:12] 1
+    flow[(ccgt,demand),2030,1,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,12:12] -1
+    flow[(ccgt,demand),2030,1,13:13] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,13:13] 1
+    flow[(ccgt,demand),2030,1,13:13] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,13:13] 1
+    flow[(ccgt,demand),2030,1,13:13] consumer_balance[demand,2030,1,13:13] 1
+    flow[(ccgt,demand),2030,1,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,13:13] -1
+    flow[(ccgt,demand),2030,1,14:14] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,14:14] 1
+    flow[(ccgt,demand),2030,1,14:14] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,14:14] 1
+    flow[(ccgt,demand),2030,1,14:14] consumer_balance[demand,2030,1,14:14] 1
+    flow[(ccgt,demand),2030,1,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,14:14] -1
+    flow[(ccgt,demand),2030,1,15:15] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,15:15] 1
+    flow[(ccgt,demand),2030,1,15:15] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,15:15] 1
+    flow[(ccgt,demand),2030,1,15:15] consumer_balance[demand,2030,1,15:15] 1
+    flow[(ccgt,demand),2030,1,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,15:15] -1
+    flow[(ccgt,demand),2030,1,16:16] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,16:16] 1
+    flow[(ccgt,demand),2030,1,16:16] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,16:16] 1
+    flow[(ccgt,demand),2030,1,16:16] consumer_balance[demand,2030,1,16:16] 1
+    flow[(ccgt,demand),2030,1,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,16:16] -1
+    flow[(ccgt,demand),2030,1,17:17] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,17:17] 1
+    flow[(ccgt,demand),2030,1,17:17] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,17:17] 1
+    flow[(ccgt,demand),2030,1,17:17] consumer_balance[demand,2030,1,17:17] 1
+    flow[(ccgt,demand),2030,1,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,17:17] -1
+    flow[(ccgt,demand),2030,1,18:18] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,18:18] 1
+    flow[(ccgt,demand),2030,1,18:18] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,18:18] 1
+    flow[(ccgt,demand),2030,1,18:18] consumer_balance[demand,2030,1,18:18] 1
+    flow[(ccgt,demand),2030,1,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,18:18] -1
+    flow[(ccgt,demand),2030,1,19:19] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,19:19] 1
+    flow[(ccgt,demand),2030,1,19:19] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,19:19] 1
+    flow[(ccgt,demand),2030,1,19:19] consumer_balance[demand,2030,1,19:19] 1
+    flow[(ccgt,demand),2030,1,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,19:19] -1
+    flow[(ccgt,demand),2030,1,20:20] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,20:20] 1
+    flow[(ccgt,demand),2030,1,20:20] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,20:20] 1
+    flow[(ccgt,demand),2030,1,20:20] consumer_balance[demand,2030,1,20:20] 1
+    flow[(ccgt,demand),2030,1,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,20:20] -1
+    flow[(ccgt,demand),2030,1,21:21] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,21:21] 1
+    flow[(ccgt,demand),2030,1,21:21] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,21:21] 1
+    flow[(ccgt,demand),2030,1,21:21] consumer_balance[demand,2030,1,21:21] 1
+    flow[(ccgt,demand),2030,1,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,21:21] -1
+    flow[(ccgt,demand),2030,1,22:22] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,22:22] 1
+    flow[(ccgt,demand),2030,1,22:22] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,22:22] 1
+    flow[(ccgt,demand),2030,1,22:22] consumer_balance[demand,2030,1,22:22] 1
+    flow[(ccgt,demand),2030,1,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,22:22] -1
+    flow[(ccgt,demand),2030,1,23:23] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,23:23] 1
+    flow[(ccgt,demand),2030,1,23:23] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,23:23] 1
+    flow[(ccgt,demand),2030,1,23:23] consumer_balance[demand,2030,1,23:23] 1
+    flow[(ccgt,demand),2030,1,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,23:23] -1
+    flow[(ccgt,demand),2030,1,24:24] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,24:24] 1
+    flow[(ccgt,demand),2030,1,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2030,1,24:24] 1
+    flow[(ccgt,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
+    flow[(ccgt,demand),2030,1,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,24:24] -1
     flow[(wind,demand),2030,1,1:1] max_output_flows_limit_compact_method[wind,2030,1,1:1] 1
     flow[(wind,demand),2030,1,1:1] consumer_balance[demand,2030,1,1:1] 1
-    flow[(wind,demand),2030,1,1:1] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,1:1] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,2:2] max_output_flows_limit_compact_method[wind,2030,1,2:2] 1
     flow[(wind,demand),2030,1,2:2] consumer_balance[demand,2030,1,2:2] 1
-    flow[(wind,demand),2030,1,2:2] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,2:2] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,3:3] max_output_flows_limit_compact_method[wind,2030,1,3:3] 1
     flow[(wind,demand),2030,1,3:3] consumer_balance[demand,2030,1,3:3] 1
-    flow[(wind,demand),2030,1,3:3] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,3:3] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,4:4] max_output_flows_limit_compact_method[wind,2030,1,4:4] 1
     flow[(wind,demand),2030,1,4:4] consumer_balance[demand,2030,1,4:4] 1
-    flow[(wind,demand),2030,1,4:4] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,4:4] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,5:5] max_output_flows_limit_compact_method[wind,2030,1,5:5] 1
     flow[(wind,demand),2030,1,5:5] consumer_balance[demand,2030,1,5:5] 1
-    flow[(wind,demand),2030,1,5:5] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,5:5] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,6:6] max_output_flows_limit_compact_method[wind,2030,1,6:6] 1
     flow[(wind,demand),2030,1,6:6] consumer_balance[demand,2030,1,6:6] 1
-    flow[(wind,demand),2030,1,6:6] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,6:6] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,7:7] max_output_flows_limit_compact_method[wind,2030,1,7:7] 1
     flow[(wind,demand),2030,1,7:7] consumer_balance[demand,2030,1,7:7] 1
-    flow[(wind,demand),2030,1,7:7] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,7:7] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,8:8] max_output_flows_limit_compact_method[wind,2030,1,8:8] 1
     flow[(wind,demand),2030,1,8:8] consumer_balance[demand,2030,1,8:8] 1
-    flow[(wind,demand),2030,1,8:8] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,8:8] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,9:9] max_output_flows_limit_compact_method[wind,2030,1,9:9] 1
     flow[(wind,demand),2030,1,9:9] consumer_balance[demand,2030,1,9:9] 1
-    flow[(wind,demand),2030,1,9:9] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,9:9] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,10:10] max_output_flows_limit_compact_method[wind,2030,1,10:10] 1
     flow[(wind,demand),2030,1,10:10] consumer_balance[demand,2030,1,10:10] 1
-    flow[(wind,demand),2030,1,10:10] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,10:10] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,11:11] max_output_flows_limit_compact_method[wind,2030,1,11:11] 1
     flow[(wind,demand),2030,1,11:11] consumer_balance[demand,2030,1,11:11] 1
-    flow[(wind,demand),2030,1,11:11] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,11:11] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,12:12] max_output_flows_limit_compact_method[wind,2030,1,12:12] 1
     flow[(wind,demand),2030,1,12:12] consumer_balance[demand,2030,1,12:12] 1
-    flow[(wind,demand),2030,1,12:12] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,12:12] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,13:13] max_output_flows_limit_compact_method[wind,2030,1,13:13] 1
     flow[(wind,demand),2030,1,13:13] consumer_balance[demand,2030,1,13:13] 1
-    flow[(wind,demand),2030,1,13:13] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,13:13] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,14:14] max_output_flows_limit_compact_method[wind,2030,1,14:14] 1
     flow[(wind,demand),2030,1,14:14] consumer_balance[demand,2030,1,14:14] 1
-    flow[(wind,demand),2030,1,14:14] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,14:14] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,15:15] max_output_flows_limit_compact_method[wind,2030,1,15:15] 1
     flow[(wind,demand),2030,1,15:15] consumer_balance[demand,2030,1,15:15] 1
-    flow[(wind,demand),2030,1,15:15] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,15:15] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,16:16] max_output_flows_limit_compact_method[wind,2030,1,16:16] 1
     flow[(wind,demand),2030,1,16:16] consumer_balance[demand,2030,1,16:16] 1
-    flow[(wind,demand),2030,1,16:16] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,16:16] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,17:17] max_output_flows_limit_compact_method[wind,2030,1,17:17] 1
     flow[(wind,demand),2030,1,17:17] consumer_balance[demand,2030,1,17:17] 1
-    flow[(wind,demand),2030,1,17:17] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,17:17] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,18:18] max_output_flows_limit_compact_method[wind,2030,1,18:18] 1
     flow[(wind,demand),2030,1,18:18] consumer_balance[demand,2030,1,18:18] 1
-    flow[(wind,demand),2030,1,18:18] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,18:18] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,19:19] max_output_flows_limit_compact_method[wind,2030,1,19:19] 1
     flow[(wind,demand),2030,1,19:19] consumer_balance[demand,2030,1,19:19] 1
-    flow[(wind,demand),2030,1,19:19] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,19:19] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,20:20] max_output_flows_limit_compact_method[wind,2030,1,20:20] 1
     flow[(wind,demand),2030,1,20:20] consumer_balance[demand,2030,1,20:20] 1
-    flow[(wind,demand),2030,1,20:20] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,20:20] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,21:21] max_output_flows_limit_compact_method[wind,2030,1,21:21] 1
     flow[(wind,demand),2030,1,21:21] consumer_balance[demand,2030,1,21:21] 1
-    flow[(wind,demand),2030,1,21:21] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,21:21] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,22:22] max_output_flows_limit_compact_method[wind,2030,1,22:22] 1
     flow[(wind,demand),2030,1,22:22] consumer_balance[demand,2030,1,22:22] 1
-    flow[(wind,demand),2030,1,22:22] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,22:22] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,23:23] max_output_flows_limit_compact_method[wind,2030,1,23:23] 1
     flow[(wind,demand),2030,1,23:23] consumer_balance[demand,2030,1,23:23] 1
-    flow[(wind,demand),2030,1,23:23] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,23:23] OBJ 0.8323712337694575
     flow[(wind,demand),2030,1,24:24] max_output_flows_limit_compact_method[wind,2030,1,24:24] 1
     flow[(wind,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
-    flow[(wind,demand),2030,1,24:24] OBJ 0.8323712337694581
+    flow[(wind,demand),2030,1,24:24] OBJ 0.8323712337694575
     flow[(solar,demand),2030,1,1:1] max_output_flows_limit_simple_method[solar,2030,1,1:1] 1
     flow[(solar,demand),2030,1,1:1] consumer_balance[demand,2030,1,1:1] 1
     flow[(solar,demand),2030,1,2:2] max_output_flows_limit_simple_method[solar,2030,1,2:2] 1
@@ -2812,6 +2812,150 @@ COLUMNS
     flow[(solar,demand),2030,1,23:23] consumer_balance[demand,2030,1,23:23] 1
     flow[(solar,demand),2030,1,24:24] max_output_flows_limit_simple_method[solar,2030,1,24:24] 1
     flow[(solar,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
+    flow[(ens,demand),2030,2,1:1] max_output_flows_limit_simple_method[ens,2030,2,1:1] 1
+    flow[(ens,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
+    flow[(ens,demand),2030,2,1:1] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,2:2] max_output_flows_limit_simple_method[ens,2030,2,2:2] 1
+    flow[(ens,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
+    flow[(ens,demand),2030,2,2:2] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,3:3] max_output_flows_limit_simple_method[ens,2030,2,3:3] 1
+    flow[(ens,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
+    flow[(ens,demand),2030,2,3:3] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,4:4] max_output_flows_limit_simple_method[ens,2030,2,4:4] 1
+    flow[(ens,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
+    flow[(ens,demand),2030,2,4:4] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,5:5] max_output_flows_limit_simple_method[ens,2030,2,5:5] 1
+    flow[(ens,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
+    flow[(ens,demand),2030,2,5:5] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,6:6] max_output_flows_limit_simple_method[ens,2030,2,6:6] 1
+    flow[(ens,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
+    flow[(ens,demand),2030,2,6:6] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,7:7] max_output_flows_limit_simple_method[ens,2030,2,7:7] 1
+    flow[(ens,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
+    flow[(ens,demand),2030,2,7:7] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,8:8] max_output_flows_limit_simple_method[ens,2030,2,8:8] 1
+    flow[(ens,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
+    flow[(ens,demand),2030,2,8:8] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,9:9] max_output_flows_limit_simple_method[ens,2030,2,9:9] 1
+    flow[(ens,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
+    flow[(ens,demand),2030,2,9:9] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,10:10] max_output_flows_limit_simple_method[ens,2030,2,10:10] 1
+    flow[(ens,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
+    flow[(ens,demand),2030,2,10:10] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,11:11] max_output_flows_limit_simple_method[ens,2030,2,11:11] 1
+    flow[(ens,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
+    flow[(ens,demand),2030,2,11:11] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,12:12] max_output_flows_limit_simple_method[ens,2030,2,12:12] 1
+    flow[(ens,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
+    flow[(ens,demand),2030,2,12:12] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,13:13] max_output_flows_limit_simple_method[ens,2030,2,13:13] 1
+    flow[(ens,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
+    flow[(ens,demand),2030,2,13:13] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,14:14] max_output_flows_limit_simple_method[ens,2030,2,14:14] 1
+    flow[(ens,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
+    flow[(ens,demand),2030,2,14:14] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,15:15] max_output_flows_limit_simple_method[ens,2030,2,15:15] 1
+    flow[(ens,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
+    flow[(ens,demand),2030,2,15:15] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,16:16] max_output_flows_limit_simple_method[ens,2030,2,16:16] 1
+    flow[(ens,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
+    flow[(ens,demand),2030,2,16:16] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,17:17] max_output_flows_limit_simple_method[ens,2030,2,17:17] 1
+    flow[(ens,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
+    flow[(ens,demand),2030,2,17:17] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,18:18] max_output_flows_limit_simple_method[ens,2030,2,18:18] 1
+    flow[(ens,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
+    flow[(ens,demand),2030,2,18:18] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,19:19] max_output_flows_limit_simple_method[ens,2030,2,19:19] 1
+    flow[(ens,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
+    flow[(ens,demand),2030,2,19:19] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,20:20] max_output_flows_limit_simple_method[ens,2030,2,20:20] 1
+    flow[(ens,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
+    flow[(ens,demand),2030,2,20:20] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,21:21] max_output_flows_limit_simple_method[ens,2030,2,21:21] 1
+    flow[(ens,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
+    flow[(ens,demand),2030,2,21:21] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,22:22] max_output_flows_limit_simple_method[ens,2030,2,22:22] 1
+    flow[(ens,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
+    flow[(ens,demand),2030,2,22:22] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,23:23] max_output_flows_limit_simple_method[ens,2030,2,23:23] 1
+    flow[(ens,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
+    flow[(ens,demand),2030,2,23:23] OBJ 374.56705519625586
+    flow[(ens,demand),2030,2,24:24] max_output_flows_limit_simple_method[ens,2030,2,24:24] 1
+    flow[(ens,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
+    flow[(ens,demand),2030,2,24:24] OBJ 374.56705519625586
+    flow[(ocgt,demand),2030,2,1:1] max_output_flows_limit_simple_method[ocgt,2030,2,1:1] 1
+    flow[(ocgt,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
+    flow[(ocgt,demand),2030,2,1:1] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,2:2] max_output_flows_limit_simple_method[ocgt,2030,2,2:2] 1
+    flow[(ocgt,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
+    flow[(ocgt,demand),2030,2,2:2] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,3:3] max_output_flows_limit_simple_method[ocgt,2030,2,3:3] 1
+    flow[(ocgt,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
+    flow[(ocgt,demand),2030,2,3:3] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,4:4] max_output_flows_limit_simple_method[ocgt,2030,2,4:4] 1
+    flow[(ocgt,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
+    flow[(ocgt,demand),2030,2,4:4] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,5:5] max_output_flows_limit_simple_method[ocgt,2030,2,5:5] 1
+    flow[(ocgt,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
+    flow[(ocgt,demand),2030,2,5:5] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,6:6] max_output_flows_limit_simple_method[ocgt,2030,2,6:6] 1
+    flow[(ocgt,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
+    flow[(ocgt,demand),2030,2,6:6] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,7:7] max_output_flows_limit_simple_method[ocgt,2030,2,7:7] 1
+    flow[(ocgt,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
+    flow[(ocgt,demand),2030,2,7:7] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,8:8] max_output_flows_limit_simple_method[ocgt,2030,2,8:8] 1
+    flow[(ocgt,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
+    flow[(ocgt,demand),2030,2,8:8] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,9:9] max_output_flows_limit_simple_method[ocgt,2030,2,9:9] 1
+    flow[(ocgt,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
+    flow[(ocgt,demand),2030,2,9:9] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,10:10] max_output_flows_limit_simple_method[ocgt,2030,2,10:10] 1
+    flow[(ocgt,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
+    flow[(ocgt,demand),2030,2,10:10] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,11:11] max_output_flows_limit_simple_method[ocgt,2030,2,11:11] 1
+    flow[(ocgt,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
+    flow[(ocgt,demand),2030,2,11:11] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,12:12] max_output_flows_limit_simple_method[ocgt,2030,2,12:12] 1
+    flow[(ocgt,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
+    flow[(ocgt,demand),2030,2,12:12] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,13:13] max_output_flows_limit_simple_method[ocgt,2030,2,13:13] 1
+    flow[(ocgt,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
+    flow[(ocgt,demand),2030,2,13:13] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,14:14] max_output_flows_limit_simple_method[ocgt,2030,2,14:14] 1
+    flow[(ocgt,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
+    flow[(ocgt,demand),2030,2,14:14] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,15:15] max_output_flows_limit_simple_method[ocgt,2030,2,15:15] 1
+    flow[(ocgt,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
+    flow[(ocgt,demand),2030,2,15:15] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,16:16] max_output_flows_limit_simple_method[ocgt,2030,2,16:16] 1
+    flow[(ocgt,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
+    flow[(ocgt,demand),2030,2,16:16] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,17:17] max_output_flows_limit_simple_method[ocgt,2030,2,17:17] 1
+    flow[(ocgt,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
+    flow[(ocgt,demand),2030,2,17:17] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,18:18] max_output_flows_limit_simple_method[ocgt,2030,2,18:18] 1
+    flow[(ocgt,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
+    flow[(ocgt,demand),2030,2,18:18] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,19:19] max_output_flows_limit_simple_method[ocgt,2030,2,19:19] 1
+    flow[(ocgt,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
+    flow[(ocgt,demand),2030,2,19:19] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,20:20] max_output_flows_limit_simple_method[ocgt,2030,2,20:20] 1
+    flow[(ocgt,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
+    flow[(ocgt,demand),2030,2,20:20] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,21:21] max_output_flows_limit_simple_method[ocgt,2030,2,21:21] 1
+    flow[(ocgt,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
+    flow[(ocgt,demand),2030,2,21:21] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,22:22] max_output_flows_limit_simple_method[ocgt,2030,2,22:22] 1
+    flow[(ocgt,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
+    flow[(ocgt,demand),2030,2,22:22] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,23:23] max_output_flows_limit_simple_method[ocgt,2030,2,23:23] 1
+    flow[(ocgt,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
+    flow[(ocgt,demand),2030,2,23:23] OBJ 20954.94581014609
+    flow[(ocgt,demand),2030,2,24:24] max_output_flows_limit_simple_method[ocgt,2030,2,24:24] 1
+    flow[(ocgt,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
+    flow[(ocgt,demand),2030,2,24:24] OBJ 20954.94581014609
     flow[(demand,battery),2030,2,1:1] max_input_flows_limit_simple_method[battery,2030,2,1:1] 1
     flow[(demand,battery),2030,2,1:1] consumer_balance[demand,2030,2,1:1] -1
     flow[(demand,battery),2030,2,1:1] balance_storage_rep_period[battery,2030,2,1:1] -0.95
@@ -2884,6 +3028,78 @@ COLUMNS
     flow[(demand,battery),2030,2,24:24] max_input_flows_limit_simple_method[battery,2030,2,24:24] 1
     flow[(demand,battery),2030,2,24:24] consumer_balance[demand,2030,2,24:24] -1
     flow[(demand,battery),2030,2,24:24] balance_storage_rep_period[battery,2030,2,24:24] -0.95
+    flow[(battery,demand),2030,2,1:1] max_output_flows_limit_simple_method[battery,2030,2,1:1] 1
+    flow[(battery,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
+    flow[(battery,demand),2030,2,1:1] balance_storage_rep_period[battery,2030,2,1:1] 1.0526315789473684
+    flow[(battery,demand),2030,2,2:2] max_output_flows_limit_simple_method[battery,2030,2,2:2] 1
+    flow[(battery,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
+    flow[(battery,demand),2030,2,2:2] balance_storage_rep_period[battery,2030,2,2:2] 1.0526315789473684
+    flow[(battery,demand),2030,2,3:3] max_output_flows_limit_simple_method[battery,2030,2,3:3] 1
+    flow[(battery,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
+    flow[(battery,demand),2030,2,3:3] balance_storage_rep_period[battery,2030,2,3:3] 1.0526315789473684
+    flow[(battery,demand),2030,2,4:4] max_output_flows_limit_simple_method[battery,2030,2,4:4] 1
+    flow[(battery,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
+    flow[(battery,demand),2030,2,4:4] balance_storage_rep_period[battery,2030,2,4:4] 1.0526315789473684
+    flow[(battery,demand),2030,2,5:5] max_output_flows_limit_simple_method[battery,2030,2,5:5] 1
+    flow[(battery,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
+    flow[(battery,demand),2030,2,5:5] balance_storage_rep_period[battery,2030,2,5:5] 1.0526315789473684
+    flow[(battery,demand),2030,2,6:6] max_output_flows_limit_simple_method[battery,2030,2,6:6] 1
+    flow[(battery,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
+    flow[(battery,demand),2030,2,6:6] balance_storage_rep_period[battery,2030,2,6:6] 1.0526315789473684
+    flow[(battery,demand),2030,2,7:7] max_output_flows_limit_simple_method[battery,2030,2,7:7] 1
+    flow[(battery,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
+    flow[(battery,demand),2030,2,7:7] balance_storage_rep_period[battery,2030,2,7:7] 1.0526315789473684
+    flow[(battery,demand),2030,2,8:8] max_output_flows_limit_simple_method[battery,2030,2,8:8] 1
+    flow[(battery,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
+    flow[(battery,demand),2030,2,8:8] balance_storage_rep_period[battery,2030,2,8:8] 1.0526315789473684
+    flow[(battery,demand),2030,2,9:9] max_output_flows_limit_simple_method[battery,2030,2,9:9] 1
+    flow[(battery,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
+    flow[(battery,demand),2030,2,9:9] balance_storage_rep_period[battery,2030,2,9:9] 1.0526315789473684
+    flow[(battery,demand),2030,2,10:10] max_output_flows_limit_simple_method[battery,2030,2,10:10] 1
+    flow[(battery,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
+    flow[(battery,demand),2030,2,10:10] balance_storage_rep_period[battery,2030,2,10:10] 1.0526315789473684
+    flow[(battery,demand),2030,2,11:11] max_output_flows_limit_simple_method[battery,2030,2,11:11] 1
+    flow[(battery,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
+    flow[(battery,demand),2030,2,11:11] balance_storage_rep_period[battery,2030,2,11:11] 1.0526315789473684
+    flow[(battery,demand),2030,2,12:12] max_output_flows_limit_simple_method[battery,2030,2,12:12] 1
+    flow[(battery,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
+    flow[(battery,demand),2030,2,12:12] balance_storage_rep_period[battery,2030,2,12:12] 1.0526315789473684
+    flow[(battery,demand),2030,2,13:13] max_output_flows_limit_simple_method[battery,2030,2,13:13] 1
+    flow[(battery,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
+    flow[(battery,demand),2030,2,13:13] balance_storage_rep_period[battery,2030,2,13:13] 1.0526315789473684
+    flow[(battery,demand),2030,2,14:14] max_output_flows_limit_simple_method[battery,2030,2,14:14] 1
+    flow[(battery,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
+    flow[(battery,demand),2030,2,14:14] balance_storage_rep_period[battery,2030,2,14:14] 1.0526315789473684
+    flow[(battery,demand),2030,2,15:15] max_output_flows_limit_simple_method[battery,2030,2,15:15] 1
+    flow[(battery,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
+    flow[(battery,demand),2030,2,15:15] balance_storage_rep_period[battery,2030,2,15:15] 1.0526315789473684
+    flow[(battery,demand),2030,2,16:16] max_output_flows_limit_simple_method[battery,2030,2,16:16] 1
+    flow[(battery,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
+    flow[(battery,demand),2030,2,16:16] balance_storage_rep_period[battery,2030,2,16:16] 1.0526315789473684
+    flow[(battery,demand),2030,2,17:17] max_output_flows_limit_simple_method[battery,2030,2,17:17] 1
+    flow[(battery,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
+    flow[(battery,demand),2030,2,17:17] balance_storage_rep_period[battery,2030,2,17:17] 1.0526315789473684
+    flow[(battery,demand),2030,2,18:18] max_output_flows_limit_simple_method[battery,2030,2,18:18] 1
+    flow[(battery,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
+    flow[(battery,demand),2030,2,18:18] balance_storage_rep_period[battery,2030,2,18:18] 1.0526315789473684
+    flow[(battery,demand),2030,2,19:19] max_output_flows_limit_simple_method[battery,2030,2,19:19] 1
+    flow[(battery,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
+    flow[(battery,demand),2030,2,19:19] balance_storage_rep_period[battery,2030,2,19:19] 1.0526315789473684
+    flow[(battery,demand),2030,2,20:20] max_output_flows_limit_simple_method[battery,2030,2,20:20] 1
+    flow[(battery,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
+    flow[(battery,demand),2030,2,20:20] balance_storage_rep_period[battery,2030,2,20:20] 1.0526315789473684
+    flow[(battery,demand),2030,2,21:21] max_output_flows_limit_simple_method[battery,2030,2,21:21] 1
+    flow[(battery,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
+    flow[(battery,demand),2030,2,21:21] balance_storage_rep_period[battery,2030,2,21:21] 1.0526315789473684
+    flow[(battery,demand),2030,2,22:22] max_output_flows_limit_simple_method[battery,2030,2,22:22] 1
+    flow[(battery,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
+    flow[(battery,demand),2030,2,22:22] balance_storage_rep_period[battery,2030,2,22:22] 1.0526315789473684
+    flow[(battery,demand),2030,2,23:23] max_output_flows_limit_simple_method[battery,2030,2,23:23] 1
+    flow[(battery,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
+    flow[(battery,demand),2030,2,23:23] balance_storage_rep_period[battery,2030,2,23:23] 1.0526315789473684
+    flow[(battery,demand),2030,2,24:24] max_output_flows_limit_simple_method[battery,2030,2,24:24] 1
+    flow[(battery,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
+    flow[(battery,demand),2030,2,24:24] balance_storage_rep_period[battery,2030,2,24:24] 1.0526315789473684
     flow[(ccgt,demand),2030,2,1:1] max_transport_flow_limit_simple_method[(ccgt,demand),2030,2,1:1] 1
     flow[(ccgt,demand),2030,2,1:1] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,1:1] 1
     flow[(ccgt,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
@@ -2980,6 +3196,78 @@ COLUMNS
     flow[(ccgt,demand),2030,2,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2030,2,24:24] 1
     flow[(ccgt,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
     flow[(ccgt,demand),2030,2,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,24:24] -1
+    flow[(wind,demand),2030,2,1:1] max_output_flows_limit_compact_method[wind,2030,2,1:1] 1
+    flow[(wind,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
+    flow[(wind,demand),2030,2,1:1] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,2:2] max_output_flows_limit_compact_method[wind,2030,2,2:2] 1
+    flow[(wind,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
+    flow[(wind,demand),2030,2,2:2] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,3:3] max_output_flows_limit_compact_method[wind,2030,2,3:3] 1
+    flow[(wind,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
+    flow[(wind,demand),2030,2,3:3] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,4:4] max_output_flows_limit_compact_method[wind,2030,2,4:4] 1
+    flow[(wind,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
+    flow[(wind,demand),2030,2,4:4] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,5:5] max_output_flows_limit_compact_method[wind,2030,2,5:5] 1
+    flow[(wind,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
+    flow[(wind,demand),2030,2,5:5] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,6:6] max_output_flows_limit_compact_method[wind,2030,2,6:6] 1
+    flow[(wind,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
+    flow[(wind,demand),2030,2,6:6] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,7:7] max_output_flows_limit_compact_method[wind,2030,2,7:7] 1
+    flow[(wind,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
+    flow[(wind,demand),2030,2,7:7] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,8:8] max_output_flows_limit_compact_method[wind,2030,2,8:8] 1
+    flow[(wind,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
+    flow[(wind,demand),2030,2,8:8] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,9:9] max_output_flows_limit_compact_method[wind,2030,2,9:9] 1
+    flow[(wind,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
+    flow[(wind,demand),2030,2,9:9] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,10:10] max_output_flows_limit_compact_method[wind,2030,2,10:10] 1
+    flow[(wind,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
+    flow[(wind,demand),2030,2,10:10] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,11:11] max_output_flows_limit_compact_method[wind,2030,2,11:11] 1
+    flow[(wind,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
+    flow[(wind,demand),2030,2,11:11] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,12:12] max_output_flows_limit_compact_method[wind,2030,2,12:12] 1
+    flow[(wind,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
+    flow[(wind,demand),2030,2,12:12] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,13:13] max_output_flows_limit_compact_method[wind,2030,2,13:13] 1
+    flow[(wind,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
+    flow[(wind,demand),2030,2,13:13] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,14:14] max_output_flows_limit_compact_method[wind,2030,2,14:14] 1
+    flow[(wind,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
+    flow[(wind,demand),2030,2,14:14] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,15:15] max_output_flows_limit_compact_method[wind,2030,2,15:15] 1
+    flow[(wind,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
+    flow[(wind,demand),2030,2,15:15] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,16:16] max_output_flows_limit_compact_method[wind,2030,2,16:16] 1
+    flow[(wind,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
+    flow[(wind,demand),2030,2,16:16] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,17:17] max_output_flows_limit_compact_method[wind,2030,2,17:17] 1
+    flow[(wind,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
+    flow[(wind,demand),2030,2,17:17] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,18:18] max_output_flows_limit_compact_method[wind,2030,2,18:18] 1
+    flow[(wind,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
+    flow[(wind,demand),2030,2,18:18] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,19:19] max_output_flows_limit_compact_method[wind,2030,2,19:19] 1
+    flow[(wind,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
+    flow[(wind,demand),2030,2,19:19] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,20:20] max_output_flows_limit_compact_method[wind,2030,2,20:20] 1
+    flow[(wind,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
+    flow[(wind,demand),2030,2,20:20] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,21:21] max_output_flows_limit_compact_method[wind,2030,2,21:21] 1
+    flow[(wind,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
+    flow[(wind,demand),2030,2,21:21] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,22:22] max_output_flows_limit_compact_method[wind,2030,2,22:22] 1
+    flow[(wind,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
+    flow[(wind,demand),2030,2,22:22] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,23:23] max_output_flows_limit_compact_method[wind,2030,2,23:23] 1
+    flow[(wind,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
+    flow[(wind,demand),2030,2,23:23] OBJ 2.0809280844236437
+    flow[(wind,demand),2030,2,24:24] max_output_flows_limit_compact_method[wind,2030,2,24:24] 1
+    flow[(wind,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
+    flow[(wind,demand),2030,2,24:24] OBJ 2.0809280844236437
     flow[(solar,demand),2030,2,1:1] max_output_flows_limit_simple_method[solar,2030,2,1:1] 1
     flow[(solar,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
     flow[(solar,demand),2030,2,2:2] max_output_flows_limit_simple_method[solar,2030,2,2:2] 1
@@ -3028,294 +3316,222 @@ COLUMNS
     flow[(solar,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
     flow[(solar,demand),2030,2,24:24] max_output_flows_limit_simple_method[solar,2030,2,24:24] 1
     flow[(solar,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
-    flow[(wind,demand),2030,2,1:1] max_output_flows_limit_compact_method[wind,2030,2,1:1] 1
-    flow[(wind,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
-    flow[(wind,demand),2030,2,1:1] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,2:2] max_output_flows_limit_compact_method[wind,2030,2,2:2] 1
-    flow[(wind,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
-    flow[(wind,demand),2030,2,2:2] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,3:3] max_output_flows_limit_compact_method[wind,2030,2,3:3] 1
-    flow[(wind,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
-    flow[(wind,demand),2030,2,3:3] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,4:4] max_output_flows_limit_compact_method[wind,2030,2,4:4] 1
-    flow[(wind,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
-    flow[(wind,demand),2030,2,4:4] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,5:5] max_output_flows_limit_compact_method[wind,2030,2,5:5] 1
-    flow[(wind,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
-    flow[(wind,demand),2030,2,5:5] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,6:6] max_output_flows_limit_compact_method[wind,2030,2,6:6] 1
-    flow[(wind,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
-    flow[(wind,demand),2030,2,6:6] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,7:7] max_output_flows_limit_compact_method[wind,2030,2,7:7] 1
-    flow[(wind,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
-    flow[(wind,demand),2030,2,7:7] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,8:8] max_output_flows_limit_compact_method[wind,2030,2,8:8] 1
-    flow[(wind,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
-    flow[(wind,demand),2030,2,8:8] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,9:9] max_output_flows_limit_compact_method[wind,2030,2,9:9] 1
-    flow[(wind,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
-    flow[(wind,demand),2030,2,9:9] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,10:10] max_output_flows_limit_compact_method[wind,2030,2,10:10] 1
-    flow[(wind,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
-    flow[(wind,demand),2030,2,10:10] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,11:11] max_output_flows_limit_compact_method[wind,2030,2,11:11] 1
-    flow[(wind,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
-    flow[(wind,demand),2030,2,11:11] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,12:12] max_output_flows_limit_compact_method[wind,2030,2,12:12] 1
-    flow[(wind,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
-    flow[(wind,demand),2030,2,12:12] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,13:13] max_output_flows_limit_compact_method[wind,2030,2,13:13] 1
-    flow[(wind,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
-    flow[(wind,demand),2030,2,13:13] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,14:14] max_output_flows_limit_compact_method[wind,2030,2,14:14] 1
-    flow[(wind,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
-    flow[(wind,demand),2030,2,14:14] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,15:15] max_output_flows_limit_compact_method[wind,2030,2,15:15] 1
-    flow[(wind,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
-    flow[(wind,demand),2030,2,15:15] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,16:16] max_output_flows_limit_compact_method[wind,2030,2,16:16] 1
-    flow[(wind,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
-    flow[(wind,demand),2030,2,16:16] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,17:17] max_output_flows_limit_compact_method[wind,2030,2,17:17] 1
-    flow[(wind,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
-    flow[(wind,demand),2030,2,17:17] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,18:18] max_output_flows_limit_compact_method[wind,2030,2,18:18] 1
-    flow[(wind,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
-    flow[(wind,demand),2030,2,18:18] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,19:19] max_output_flows_limit_compact_method[wind,2030,2,19:19] 1
-    flow[(wind,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
-    flow[(wind,demand),2030,2,19:19] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,20:20] max_output_flows_limit_compact_method[wind,2030,2,20:20] 1
-    flow[(wind,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
-    flow[(wind,demand),2030,2,20:20] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,21:21] max_output_flows_limit_compact_method[wind,2030,2,21:21] 1
-    flow[(wind,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
-    flow[(wind,demand),2030,2,21:21] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,22:22] max_output_flows_limit_compact_method[wind,2030,2,22:22] 1
-    flow[(wind,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
-    flow[(wind,demand),2030,2,22:22] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,23:23] max_output_flows_limit_compact_method[wind,2030,2,23:23] 1
-    flow[(wind,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
-    flow[(wind,demand),2030,2,23:23] OBJ 2.080928084423645
-    flow[(wind,demand),2030,2,24:24] max_output_flows_limit_compact_method[wind,2030,2,24:24] 1
-    flow[(wind,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
-    flow[(wind,demand),2030,2,24:24] OBJ 2.080928084423645
-    flow[(battery,demand),2030,2,1:1] max_output_flows_limit_simple_method[battery,2030,2,1:1] 1
-    flow[(battery,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
-    flow[(battery,demand),2030,2,1:1] balance_storage_rep_period[battery,2030,2,1:1] 1.0526315789473684
-    flow[(battery,demand),2030,2,2:2] max_output_flows_limit_simple_method[battery,2030,2,2:2] 1
-    flow[(battery,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
-    flow[(battery,demand),2030,2,2:2] balance_storage_rep_period[battery,2030,2,2:2] 1.0526315789473684
-    flow[(battery,demand),2030,2,3:3] max_output_flows_limit_simple_method[battery,2030,2,3:3] 1
-    flow[(battery,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
-    flow[(battery,demand),2030,2,3:3] balance_storage_rep_period[battery,2030,2,3:3] 1.0526315789473684
-    flow[(battery,demand),2030,2,4:4] max_output_flows_limit_simple_method[battery,2030,2,4:4] 1
-    flow[(battery,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
-    flow[(battery,demand),2030,2,4:4] balance_storage_rep_period[battery,2030,2,4:4] 1.0526315789473684
-    flow[(battery,demand),2030,2,5:5] max_output_flows_limit_simple_method[battery,2030,2,5:5] 1
-    flow[(battery,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
-    flow[(battery,demand),2030,2,5:5] balance_storage_rep_period[battery,2030,2,5:5] 1.0526315789473684
-    flow[(battery,demand),2030,2,6:6] max_output_flows_limit_simple_method[battery,2030,2,6:6] 1
-    flow[(battery,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
-    flow[(battery,demand),2030,2,6:6] balance_storage_rep_period[battery,2030,2,6:6] 1.0526315789473684
-    flow[(battery,demand),2030,2,7:7] max_output_flows_limit_simple_method[battery,2030,2,7:7] 1
-    flow[(battery,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
-    flow[(battery,demand),2030,2,7:7] balance_storage_rep_period[battery,2030,2,7:7] 1.0526315789473684
-    flow[(battery,demand),2030,2,8:8] max_output_flows_limit_simple_method[battery,2030,2,8:8] 1
-    flow[(battery,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
-    flow[(battery,demand),2030,2,8:8] balance_storage_rep_period[battery,2030,2,8:8] 1.0526315789473684
-    flow[(battery,demand),2030,2,9:9] max_output_flows_limit_simple_method[battery,2030,2,9:9] 1
-    flow[(battery,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
-    flow[(battery,demand),2030,2,9:9] balance_storage_rep_period[battery,2030,2,9:9] 1.0526315789473684
-    flow[(battery,demand),2030,2,10:10] max_output_flows_limit_simple_method[battery,2030,2,10:10] 1
-    flow[(battery,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
-    flow[(battery,demand),2030,2,10:10] balance_storage_rep_period[battery,2030,2,10:10] 1.0526315789473684
-    flow[(battery,demand),2030,2,11:11] max_output_flows_limit_simple_method[battery,2030,2,11:11] 1
-    flow[(battery,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
-    flow[(battery,demand),2030,2,11:11] balance_storage_rep_period[battery,2030,2,11:11] 1.0526315789473684
-    flow[(battery,demand),2030,2,12:12] max_output_flows_limit_simple_method[battery,2030,2,12:12] 1
-    flow[(battery,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
-    flow[(battery,demand),2030,2,12:12] balance_storage_rep_period[battery,2030,2,12:12] 1.0526315789473684
-    flow[(battery,demand),2030,2,13:13] max_output_flows_limit_simple_method[battery,2030,2,13:13] 1
-    flow[(battery,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
-    flow[(battery,demand),2030,2,13:13] balance_storage_rep_period[battery,2030,2,13:13] 1.0526315789473684
-    flow[(battery,demand),2030,2,14:14] max_output_flows_limit_simple_method[battery,2030,2,14:14] 1
-    flow[(battery,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
-    flow[(battery,demand),2030,2,14:14] balance_storage_rep_period[battery,2030,2,14:14] 1.0526315789473684
-    flow[(battery,demand),2030,2,15:15] max_output_flows_limit_simple_method[battery,2030,2,15:15] 1
-    flow[(battery,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
-    flow[(battery,demand),2030,2,15:15] balance_storage_rep_period[battery,2030,2,15:15] 1.0526315789473684
-    flow[(battery,demand),2030,2,16:16] max_output_flows_limit_simple_method[battery,2030,2,16:16] 1
-    flow[(battery,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
-    flow[(battery,demand),2030,2,16:16] balance_storage_rep_period[battery,2030,2,16:16] 1.0526315789473684
-    flow[(battery,demand),2030,2,17:17] max_output_flows_limit_simple_method[battery,2030,2,17:17] 1
-    flow[(battery,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
-    flow[(battery,demand),2030,2,17:17] balance_storage_rep_period[battery,2030,2,17:17] 1.0526315789473684
-    flow[(battery,demand),2030,2,18:18] max_output_flows_limit_simple_method[battery,2030,2,18:18] 1
-    flow[(battery,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
-    flow[(battery,demand),2030,2,18:18] balance_storage_rep_period[battery,2030,2,18:18] 1.0526315789473684
-    flow[(battery,demand),2030,2,19:19] max_output_flows_limit_simple_method[battery,2030,2,19:19] 1
-    flow[(battery,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
-    flow[(battery,demand),2030,2,19:19] balance_storage_rep_period[battery,2030,2,19:19] 1.0526315789473684
-    flow[(battery,demand),2030,2,20:20] max_output_flows_limit_simple_method[battery,2030,2,20:20] 1
-    flow[(battery,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
-    flow[(battery,demand),2030,2,20:20] balance_storage_rep_period[battery,2030,2,20:20] 1.0526315789473684
-    flow[(battery,demand),2030,2,21:21] max_output_flows_limit_simple_method[battery,2030,2,21:21] 1
-    flow[(battery,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
-    flow[(battery,demand),2030,2,21:21] balance_storage_rep_period[battery,2030,2,21:21] 1.0526315789473684
-    flow[(battery,demand),2030,2,22:22] max_output_flows_limit_simple_method[battery,2030,2,22:22] 1
-    flow[(battery,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
-    flow[(battery,demand),2030,2,22:22] balance_storage_rep_period[battery,2030,2,22:22] 1.0526315789473684
-    flow[(battery,demand),2030,2,23:23] max_output_flows_limit_simple_method[battery,2030,2,23:23] 1
-    flow[(battery,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
-    flow[(battery,demand),2030,2,23:23] balance_storage_rep_period[battery,2030,2,23:23] 1.0526315789473684
-    flow[(battery,demand),2030,2,24:24] max_output_flows_limit_simple_method[battery,2030,2,24:24] 1
-    flow[(battery,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
-    flow[(battery,demand),2030,2,24:24] balance_storage_rep_period[battery,2030,2,24:24] 1.0526315789473684
-    flow[(ens,demand),2030,2,1:1] max_output_flows_limit_simple_method[ens,2030,2,1:1] 1
-    flow[(ens,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
-    flow[(ens,demand),2030,2,1:1] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,2:2] max_output_flows_limit_simple_method[ens,2030,2,2:2] 1
-    flow[(ens,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
-    flow[(ens,demand),2030,2,2:2] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,3:3] max_output_flows_limit_simple_method[ens,2030,2,3:3] 1
-    flow[(ens,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
-    flow[(ens,demand),2030,2,3:3] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,4:4] max_output_flows_limit_simple_method[ens,2030,2,4:4] 1
-    flow[(ens,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
-    flow[(ens,demand),2030,2,4:4] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,5:5] max_output_flows_limit_simple_method[ens,2030,2,5:5] 1
-    flow[(ens,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
-    flow[(ens,demand),2030,2,5:5] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,6:6] max_output_flows_limit_simple_method[ens,2030,2,6:6] 1
-    flow[(ens,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
-    flow[(ens,demand),2030,2,6:6] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,7:7] max_output_flows_limit_simple_method[ens,2030,2,7:7] 1
-    flow[(ens,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
-    flow[(ens,demand),2030,2,7:7] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,8:8] max_output_flows_limit_simple_method[ens,2030,2,8:8] 1
-    flow[(ens,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
-    flow[(ens,demand),2030,2,8:8] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,9:9] max_output_flows_limit_simple_method[ens,2030,2,9:9] 1
-    flow[(ens,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
-    flow[(ens,demand),2030,2,9:9] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,10:10] max_output_flows_limit_simple_method[ens,2030,2,10:10] 1
-    flow[(ens,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
-    flow[(ens,demand),2030,2,10:10] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,11:11] max_output_flows_limit_simple_method[ens,2030,2,11:11] 1
-    flow[(ens,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
-    flow[(ens,demand),2030,2,11:11] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,12:12] max_output_flows_limit_simple_method[ens,2030,2,12:12] 1
-    flow[(ens,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
-    flow[(ens,demand),2030,2,12:12] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,13:13] max_output_flows_limit_simple_method[ens,2030,2,13:13] 1
-    flow[(ens,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
-    flow[(ens,demand),2030,2,13:13] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,14:14] max_output_flows_limit_simple_method[ens,2030,2,14:14] 1
-    flow[(ens,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
-    flow[(ens,demand),2030,2,14:14] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,15:15] max_output_flows_limit_simple_method[ens,2030,2,15:15] 1
-    flow[(ens,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
-    flow[(ens,demand),2030,2,15:15] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,16:16] max_output_flows_limit_simple_method[ens,2030,2,16:16] 1
-    flow[(ens,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
-    flow[(ens,demand),2030,2,16:16] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,17:17] max_output_flows_limit_simple_method[ens,2030,2,17:17] 1
-    flow[(ens,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
-    flow[(ens,demand),2030,2,17:17] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,18:18] max_output_flows_limit_simple_method[ens,2030,2,18:18] 1
-    flow[(ens,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
-    flow[(ens,demand),2030,2,18:18] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,19:19] max_output_flows_limit_simple_method[ens,2030,2,19:19] 1
-    flow[(ens,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
-    flow[(ens,demand),2030,2,19:19] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,20:20] max_output_flows_limit_simple_method[ens,2030,2,20:20] 1
-    flow[(ens,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
-    flow[(ens,demand),2030,2,20:20] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,21:21] max_output_flows_limit_simple_method[ens,2030,2,21:21] 1
-    flow[(ens,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
-    flow[(ens,demand),2030,2,21:21] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,22:22] max_output_flows_limit_simple_method[ens,2030,2,22:22] 1
-    flow[(ens,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
-    flow[(ens,demand),2030,2,22:22] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,23:23] max_output_flows_limit_simple_method[ens,2030,2,23:23] 1
-    flow[(ens,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
-    flow[(ens,demand),2030,2,23:23] OBJ 374.5670551962561
-    flow[(ens,demand),2030,2,24:24] max_output_flows_limit_simple_method[ens,2030,2,24:24] 1
-    flow[(ens,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
-    flow[(ens,demand),2030,2,24:24] OBJ 374.5670551962561
-    flow[(ocgt,demand),2030,2,1:1] max_output_flows_limit_simple_method[ocgt,2030,2,1:1] 1
-    flow[(ocgt,demand),2030,2,1:1] consumer_balance[demand,2030,2,1:1] 1
-    flow[(ocgt,demand),2030,2,1:1] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,2:2] max_output_flows_limit_simple_method[ocgt,2030,2,2:2] 1
-    flow[(ocgt,demand),2030,2,2:2] consumer_balance[demand,2030,2,2:2] 1
-    flow[(ocgt,demand),2030,2,2:2] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,3:3] max_output_flows_limit_simple_method[ocgt,2030,2,3:3] 1
-    flow[(ocgt,demand),2030,2,3:3] consumer_balance[demand,2030,2,3:3] 1
-    flow[(ocgt,demand),2030,2,3:3] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,4:4] max_output_flows_limit_simple_method[ocgt,2030,2,4:4] 1
-    flow[(ocgt,demand),2030,2,4:4] consumer_balance[demand,2030,2,4:4] 1
-    flow[(ocgt,demand),2030,2,4:4] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,5:5] max_output_flows_limit_simple_method[ocgt,2030,2,5:5] 1
-    flow[(ocgt,demand),2030,2,5:5] consumer_balance[demand,2030,2,5:5] 1
-    flow[(ocgt,demand),2030,2,5:5] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,6:6] max_output_flows_limit_simple_method[ocgt,2030,2,6:6] 1
-    flow[(ocgt,demand),2030,2,6:6] consumer_balance[demand,2030,2,6:6] 1
-    flow[(ocgt,demand),2030,2,6:6] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,7:7] max_output_flows_limit_simple_method[ocgt,2030,2,7:7] 1
-    flow[(ocgt,demand),2030,2,7:7] consumer_balance[demand,2030,2,7:7] 1
-    flow[(ocgt,demand),2030,2,7:7] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,8:8] max_output_flows_limit_simple_method[ocgt,2030,2,8:8] 1
-    flow[(ocgt,demand),2030,2,8:8] consumer_balance[demand,2030,2,8:8] 1
-    flow[(ocgt,demand),2030,2,8:8] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,9:9] max_output_flows_limit_simple_method[ocgt,2030,2,9:9] 1
-    flow[(ocgt,demand),2030,2,9:9] consumer_balance[demand,2030,2,9:9] 1
-    flow[(ocgt,demand),2030,2,9:9] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,10:10] max_output_flows_limit_simple_method[ocgt,2030,2,10:10] 1
-    flow[(ocgt,demand),2030,2,10:10] consumer_balance[demand,2030,2,10:10] 1
-    flow[(ocgt,demand),2030,2,10:10] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,11:11] max_output_flows_limit_simple_method[ocgt,2030,2,11:11] 1
-    flow[(ocgt,demand),2030,2,11:11] consumer_balance[demand,2030,2,11:11] 1
-    flow[(ocgt,demand),2030,2,11:11] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,12:12] max_output_flows_limit_simple_method[ocgt,2030,2,12:12] 1
-    flow[(ocgt,demand),2030,2,12:12] consumer_balance[demand,2030,2,12:12] 1
-    flow[(ocgt,demand),2030,2,12:12] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,13:13] max_output_flows_limit_simple_method[ocgt,2030,2,13:13] 1
-    flow[(ocgt,demand),2030,2,13:13] consumer_balance[demand,2030,2,13:13] 1
-    flow[(ocgt,demand),2030,2,13:13] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,14:14] max_output_flows_limit_simple_method[ocgt,2030,2,14:14] 1
-    flow[(ocgt,demand),2030,2,14:14] consumer_balance[demand,2030,2,14:14] 1
-    flow[(ocgt,demand),2030,2,14:14] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,15:15] max_output_flows_limit_simple_method[ocgt,2030,2,15:15] 1
-    flow[(ocgt,demand),2030,2,15:15] consumer_balance[demand,2030,2,15:15] 1
-    flow[(ocgt,demand),2030,2,15:15] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,16:16] max_output_flows_limit_simple_method[ocgt,2030,2,16:16] 1
-    flow[(ocgt,demand),2030,2,16:16] consumer_balance[demand,2030,2,16:16] 1
-    flow[(ocgt,demand),2030,2,16:16] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,17:17] max_output_flows_limit_simple_method[ocgt,2030,2,17:17] 1
-    flow[(ocgt,demand),2030,2,17:17] consumer_balance[demand,2030,2,17:17] 1
-    flow[(ocgt,demand),2030,2,17:17] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,18:18] max_output_flows_limit_simple_method[ocgt,2030,2,18:18] 1
-    flow[(ocgt,demand),2030,2,18:18] consumer_balance[demand,2030,2,18:18] 1
-    flow[(ocgt,demand),2030,2,18:18] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,19:19] max_output_flows_limit_simple_method[ocgt,2030,2,19:19] 1
-    flow[(ocgt,demand),2030,2,19:19] consumer_balance[demand,2030,2,19:19] 1
-    flow[(ocgt,demand),2030,2,19:19] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,20:20] max_output_flows_limit_simple_method[ocgt,2030,2,20:20] 1
-    flow[(ocgt,demand),2030,2,20:20] consumer_balance[demand,2030,2,20:20] 1
-    flow[(ocgt,demand),2030,2,20:20] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,21:21] max_output_flows_limit_simple_method[ocgt,2030,2,21:21] 1
-    flow[(ocgt,demand),2030,2,21:21] consumer_balance[demand,2030,2,21:21] 1
-    flow[(ocgt,demand),2030,2,21:21] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,22:22] max_output_flows_limit_simple_method[ocgt,2030,2,22:22] 1
-    flow[(ocgt,demand),2030,2,22:22] consumer_balance[demand,2030,2,22:22] 1
-    flow[(ocgt,demand),2030,2,22:22] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,23:23] max_output_flows_limit_simple_method[ocgt,2030,2,23:23] 1
-    flow[(ocgt,demand),2030,2,23:23] consumer_balance[demand,2030,2,23:23] 1
-    flow[(ocgt,demand),2030,2,23:23] OBJ 20954.945810146106
-    flow[(ocgt,demand),2030,2,24:24] max_output_flows_limit_simple_method[ocgt,2030,2,24:24] 1
-    flow[(ocgt,demand),2030,2,24:24] consumer_balance[demand,2030,2,24:24] 1
-    flow[(ocgt,demand),2030,2,24:24] OBJ 20954.945810146106
+    flow[(ens,demand),2030,3,1:1] max_output_flows_limit_simple_method[ens,2030,3,1:1] 1
+    flow[(ens,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
+    flow[(ens,demand),2030,3,1:1] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,2:2] max_output_flows_limit_simple_method[ens,2030,3,2:2] 1
+    flow[(ens,demand),2030,3,2:2] consumer_balance[demand,2030,3,2:2] 1
+    flow[(ens,demand),2030,3,2:2] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,3:3] max_output_flows_limit_simple_method[ens,2030,3,3:3] 1
+    flow[(ens,demand),2030,3,3:3] consumer_balance[demand,2030,3,3:3] 1
+    flow[(ens,demand),2030,3,3:3] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,4:4] max_output_flows_limit_simple_method[ens,2030,3,4:4] 1
+    flow[(ens,demand),2030,3,4:4] consumer_balance[demand,2030,3,4:4] 1
+    flow[(ens,demand),2030,3,4:4] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,5:5] max_output_flows_limit_simple_method[ens,2030,3,5:5] 1
+    flow[(ens,demand),2030,3,5:5] consumer_balance[demand,2030,3,5:5] 1
+    flow[(ens,demand),2030,3,5:5] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,6:6] max_output_flows_limit_simple_method[ens,2030,3,6:6] 1
+    flow[(ens,demand),2030,3,6:6] consumer_balance[demand,2030,3,6:6] 1
+    flow[(ens,demand),2030,3,6:6] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,7:7] max_output_flows_limit_simple_method[ens,2030,3,7:7] 1
+    flow[(ens,demand),2030,3,7:7] consumer_balance[demand,2030,3,7:7] 1
+    flow[(ens,demand),2030,3,7:7] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,8:8] max_output_flows_limit_simple_method[ens,2030,3,8:8] 1
+    flow[(ens,demand),2030,3,8:8] consumer_balance[demand,2030,3,8:8] 1
+    flow[(ens,demand),2030,3,8:8] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,9:9] max_output_flows_limit_simple_method[ens,2030,3,9:9] 1
+    flow[(ens,demand),2030,3,9:9] consumer_balance[demand,2030,3,9:9] 1
+    flow[(ens,demand),2030,3,9:9] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,10:10] max_output_flows_limit_simple_method[ens,2030,3,10:10] 1
+    flow[(ens,demand),2030,3,10:10] consumer_balance[demand,2030,3,10:10] 1
+    flow[(ens,demand),2030,3,10:10] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,11:11] max_output_flows_limit_simple_method[ens,2030,3,11:11] 1
+    flow[(ens,demand),2030,3,11:11] consumer_balance[demand,2030,3,11:11] 1
+    flow[(ens,demand),2030,3,11:11] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,12:12] max_output_flows_limit_simple_method[ens,2030,3,12:12] 1
+    flow[(ens,demand),2030,3,12:12] consumer_balance[demand,2030,3,12:12] 1
+    flow[(ens,demand),2030,3,12:12] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,13:13] max_output_flows_limit_simple_method[ens,2030,3,13:13] 1
+    flow[(ens,demand),2030,3,13:13] consumer_balance[demand,2030,3,13:13] 1
+    flow[(ens,demand),2030,3,13:13] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,14:14] max_output_flows_limit_simple_method[ens,2030,3,14:14] 1
+    flow[(ens,demand),2030,3,14:14] consumer_balance[demand,2030,3,14:14] 1
+    flow[(ens,demand),2030,3,14:14] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,15:15] max_output_flows_limit_simple_method[ens,2030,3,15:15] 1
+    flow[(ens,demand),2030,3,15:15] consumer_balance[demand,2030,3,15:15] 1
+    flow[(ens,demand),2030,3,15:15] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,16:16] max_output_flows_limit_simple_method[ens,2030,3,16:16] 1
+    flow[(ens,demand),2030,3,16:16] consumer_balance[demand,2030,3,16:16] 1
+    flow[(ens,demand),2030,3,16:16] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,17:17] max_output_flows_limit_simple_method[ens,2030,3,17:17] 1
+    flow[(ens,demand),2030,3,17:17] consumer_balance[demand,2030,3,17:17] 1
+    flow[(ens,demand),2030,3,17:17] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,18:18] max_output_flows_limit_simple_method[ens,2030,3,18:18] 1
+    flow[(ens,demand),2030,3,18:18] consumer_balance[demand,2030,3,18:18] 1
+    flow[(ens,demand),2030,3,18:18] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,19:19] max_output_flows_limit_simple_method[ens,2030,3,19:19] 1
+    flow[(ens,demand),2030,3,19:19] consumer_balance[demand,2030,3,19:19] 1
+    flow[(ens,demand),2030,3,19:19] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,20:20] max_output_flows_limit_simple_method[ens,2030,3,20:20] 1
+    flow[(ens,demand),2030,3,20:20] consumer_balance[demand,2030,3,20:20] 1
+    flow[(ens,demand),2030,3,20:20] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,21:21] max_output_flows_limit_simple_method[ens,2030,3,21:21] 1
+    flow[(ens,demand),2030,3,21:21] consumer_balance[demand,2030,3,21:21] 1
+    flow[(ens,demand),2030,3,21:21] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,22:22] max_output_flows_limit_simple_method[ens,2030,3,22:22] 1
+    flow[(ens,demand),2030,3,22:22] consumer_balance[demand,2030,3,22:22] 1
+    flow[(ens,demand),2030,3,22:22] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,23:23] max_output_flows_limit_simple_method[ens,2030,3,23:23] 1
+    flow[(ens,demand),2030,3,23:23] consumer_balance[demand,2030,3,23:23] 1
+    flow[(ens,demand),2030,3,23:23] OBJ 224.74023311775352
+    flow[(ens,demand),2030,3,24:24] max_output_flows_limit_simple_method[ens,2030,3,24:24] 1
+    flow[(ens,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
+    flow[(ens,demand),2030,3,24:24] OBJ 224.74023311775352
+    flow[(ocgt,demand),2030,3,1:1] max_output_flows_limit_simple_method[ocgt,2030,3,1:1] 1
+    flow[(ocgt,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
+    flow[(ocgt,demand),2030,3,1:1] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,2:2] max_output_flows_limit_simple_method[ocgt,2030,3,2:2] 1
+    flow[(ocgt,demand),2030,3,2:2] consumer_balance[demand,2030,3,2:2] 1
+    flow[(ocgt,demand),2030,3,2:2] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,3:3] max_output_flows_limit_simple_method[ocgt,2030,3,3:3] 1
+    flow[(ocgt,demand),2030,3,3:3] consumer_balance[demand,2030,3,3:3] 1
+    flow[(ocgt,demand),2030,3,3:3] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,4:4] max_output_flows_limit_simple_method[ocgt,2030,3,4:4] 1
+    flow[(ocgt,demand),2030,3,4:4] consumer_balance[demand,2030,3,4:4] 1
+    flow[(ocgt,demand),2030,3,4:4] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,5:5] max_output_flows_limit_simple_method[ocgt,2030,3,5:5] 1
+    flow[(ocgt,demand),2030,3,5:5] consumer_balance[demand,2030,3,5:5] 1
+    flow[(ocgt,demand),2030,3,5:5] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,6:6] max_output_flows_limit_simple_method[ocgt,2030,3,6:6] 1
+    flow[(ocgt,demand),2030,3,6:6] consumer_balance[demand,2030,3,6:6] 1
+    flow[(ocgt,demand),2030,3,6:6] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,7:7] max_output_flows_limit_simple_method[ocgt,2030,3,7:7] 1
+    flow[(ocgt,demand),2030,3,7:7] consumer_balance[demand,2030,3,7:7] 1
+    flow[(ocgt,demand),2030,3,7:7] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,8:8] max_output_flows_limit_simple_method[ocgt,2030,3,8:8] 1
+    flow[(ocgt,demand),2030,3,8:8] consumer_balance[demand,2030,3,8:8] 1
+    flow[(ocgt,demand),2030,3,8:8] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,9:9] max_output_flows_limit_simple_method[ocgt,2030,3,9:9] 1
+    flow[(ocgt,demand),2030,3,9:9] consumer_balance[demand,2030,3,9:9] 1
+    flow[(ocgt,demand),2030,3,9:9] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,10:10] max_output_flows_limit_simple_method[ocgt,2030,3,10:10] 1
+    flow[(ocgt,demand),2030,3,10:10] consumer_balance[demand,2030,3,10:10] 1
+    flow[(ocgt,demand),2030,3,10:10] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,11:11] max_output_flows_limit_simple_method[ocgt,2030,3,11:11] 1
+    flow[(ocgt,demand),2030,3,11:11] consumer_balance[demand,2030,3,11:11] 1
+    flow[(ocgt,demand),2030,3,11:11] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,12:12] max_output_flows_limit_simple_method[ocgt,2030,3,12:12] 1
+    flow[(ocgt,demand),2030,3,12:12] consumer_balance[demand,2030,3,12:12] 1
+    flow[(ocgt,demand),2030,3,12:12] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,13:13] max_output_flows_limit_simple_method[ocgt,2030,3,13:13] 1
+    flow[(ocgt,demand),2030,3,13:13] consumer_balance[demand,2030,3,13:13] 1
+    flow[(ocgt,demand),2030,3,13:13] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,14:14] max_output_flows_limit_simple_method[ocgt,2030,3,14:14] 1
+    flow[(ocgt,demand),2030,3,14:14] consumer_balance[demand,2030,3,14:14] 1
+    flow[(ocgt,demand),2030,3,14:14] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,15:15] max_output_flows_limit_simple_method[ocgt,2030,3,15:15] 1
+    flow[(ocgt,demand),2030,3,15:15] consumer_balance[demand,2030,3,15:15] 1
+    flow[(ocgt,demand),2030,3,15:15] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,16:16] max_output_flows_limit_simple_method[ocgt,2030,3,16:16] 1
+    flow[(ocgt,demand),2030,3,16:16] consumer_balance[demand,2030,3,16:16] 1
+    flow[(ocgt,demand),2030,3,16:16] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,17:17] max_output_flows_limit_simple_method[ocgt,2030,3,17:17] 1
+    flow[(ocgt,demand),2030,3,17:17] consumer_balance[demand,2030,3,17:17] 1
+    flow[(ocgt,demand),2030,3,17:17] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,18:18] max_output_flows_limit_simple_method[ocgt,2030,3,18:18] 1
+    flow[(ocgt,demand),2030,3,18:18] consumer_balance[demand,2030,3,18:18] 1
+    flow[(ocgt,demand),2030,3,18:18] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,19:19] max_output_flows_limit_simple_method[ocgt,2030,3,19:19] 1
+    flow[(ocgt,demand),2030,3,19:19] consumer_balance[demand,2030,3,19:19] 1
+    flow[(ocgt,demand),2030,3,19:19] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,20:20] max_output_flows_limit_simple_method[ocgt,2030,3,20:20] 1
+    flow[(ocgt,demand),2030,3,20:20] consumer_balance[demand,2030,3,20:20] 1
+    flow[(ocgt,demand),2030,3,20:20] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,21:21] max_output_flows_limit_simple_method[ocgt,2030,3,21:21] 1
+    flow[(ocgt,demand),2030,3,21:21] consumer_balance[demand,2030,3,21:21] 1
+    flow[(ocgt,demand),2030,3,21:21] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,22:22] max_output_flows_limit_simple_method[ocgt,2030,3,22:22] 1
+    flow[(ocgt,demand),2030,3,22:22] consumer_balance[demand,2030,3,22:22] 1
+    flow[(ocgt,demand),2030,3,22:22] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,23:23] max_output_flows_limit_simple_method[ocgt,2030,3,23:23] 1
+    flow[(ocgt,demand),2030,3,23:23] consumer_balance[demand,2030,3,23:23] 1
+    flow[(ocgt,demand),2030,3,23:23] OBJ 12572.967486087657
+    flow[(ocgt,demand),2030,3,24:24] max_output_flows_limit_simple_method[ocgt,2030,3,24:24] 1
+    flow[(ocgt,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
+    flow[(ocgt,demand),2030,3,24:24] OBJ 12572.967486087657
+    flow[(demand,battery),2030,3,1:1] max_input_flows_limit_simple_method[battery,2030,3,1:1] 1
+    flow[(demand,battery),2030,3,1:1] consumer_balance[demand,2030,3,1:1] -1
+    flow[(demand,battery),2030,3,1:1] balance_storage_rep_period[battery,2030,3,1:1] -0.95
+    flow[(demand,battery),2030,3,2:2] max_input_flows_limit_simple_method[battery,2030,3,2:2] 1
+    flow[(demand,battery),2030,3,2:2] consumer_balance[demand,2030,3,2:2] -1
+    flow[(demand,battery),2030,3,2:2] balance_storage_rep_period[battery,2030,3,2:2] -0.95
+    flow[(demand,battery),2030,3,3:3] max_input_flows_limit_simple_method[battery,2030,3,3:3] 1
+    flow[(demand,battery),2030,3,3:3] consumer_balance[demand,2030,3,3:3] -1
+    flow[(demand,battery),2030,3,3:3] balance_storage_rep_period[battery,2030,3,3:3] -0.95
+    flow[(demand,battery),2030,3,4:4] max_input_flows_limit_simple_method[battery,2030,3,4:4] 1
+    flow[(demand,battery),2030,3,4:4] consumer_balance[demand,2030,3,4:4] -1
+    flow[(demand,battery),2030,3,4:4] balance_storage_rep_period[battery,2030,3,4:4] -0.95
+    flow[(demand,battery),2030,3,5:5] max_input_flows_limit_simple_method[battery,2030,3,5:5] 1
+    flow[(demand,battery),2030,3,5:5] consumer_balance[demand,2030,3,5:5] -1
+    flow[(demand,battery),2030,3,5:5] balance_storage_rep_period[battery,2030,3,5:5] -0.95
+    flow[(demand,battery),2030,3,6:6] max_input_flows_limit_simple_method[battery,2030,3,6:6] 1
+    flow[(demand,battery),2030,3,6:6] consumer_balance[demand,2030,3,6:6] -1
+    flow[(demand,battery),2030,3,6:6] balance_storage_rep_period[battery,2030,3,6:6] -0.95
+    flow[(demand,battery),2030,3,7:7] max_input_flows_limit_simple_method[battery,2030,3,7:7] 1
+    flow[(demand,battery),2030,3,7:7] consumer_balance[demand,2030,3,7:7] -1
+    flow[(demand,battery),2030,3,7:7] balance_storage_rep_period[battery,2030,3,7:7] -0.95
+    flow[(demand,battery),2030,3,8:8] max_input_flows_limit_simple_method[battery,2030,3,8:8] 1
+    flow[(demand,battery),2030,3,8:8] consumer_balance[demand,2030,3,8:8] -1
+    flow[(demand,battery),2030,3,8:8] balance_storage_rep_period[battery,2030,3,8:8] -0.95
+    flow[(demand,battery),2030,3,9:9] max_input_flows_limit_simple_method[battery,2030,3,9:9] 1
+    flow[(demand,battery),2030,3,9:9] consumer_balance[demand,2030,3,9:9] -1
+    flow[(demand,battery),2030,3,9:9] balance_storage_rep_period[battery,2030,3,9:9] -0.95
+    flow[(demand,battery),2030,3,10:10] max_input_flows_limit_simple_method[battery,2030,3,10:10] 1
+    flow[(demand,battery),2030,3,10:10] consumer_balance[demand,2030,3,10:10] -1
+    flow[(demand,battery),2030,3,10:10] balance_storage_rep_period[battery,2030,3,10:10] -0.95
+    flow[(demand,battery),2030,3,11:11] max_input_flows_limit_simple_method[battery,2030,3,11:11] 1
+    flow[(demand,battery),2030,3,11:11] consumer_balance[demand,2030,3,11:11] -1
+    flow[(demand,battery),2030,3,11:11] balance_storage_rep_period[battery,2030,3,11:11] -0.95
+    flow[(demand,battery),2030,3,12:12] max_input_flows_limit_simple_method[battery,2030,3,12:12] 1
+    flow[(demand,battery),2030,3,12:12] consumer_balance[demand,2030,3,12:12] -1
+    flow[(demand,battery),2030,3,12:12] balance_storage_rep_period[battery,2030,3,12:12] -0.95
+    flow[(demand,battery),2030,3,13:13] max_input_flows_limit_simple_method[battery,2030,3,13:13] 1
+    flow[(demand,battery),2030,3,13:13] consumer_balance[demand,2030,3,13:13] -1
+    flow[(demand,battery),2030,3,13:13] balance_storage_rep_period[battery,2030,3,13:13] -0.95
+    flow[(demand,battery),2030,3,14:14] max_input_flows_limit_simple_method[battery,2030,3,14:14] 1
+    flow[(demand,battery),2030,3,14:14] consumer_balance[demand,2030,3,14:14] -1
+    flow[(demand,battery),2030,3,14:14] balance_storage_rep_period[battery,2030,3,14:14] -0.95
+    flow[(demand,battery),2030,3,15:15] max_input_flows_limit_simple_method[battery,2030,3,15:15] 1
+    flow[(demand,battery),2030,3,15:15] consumer_balance[demand,2030,3,15:15] -1
+    flow[(demand,battery),2030,3,15:15] balance_storage_rep_period[battery,2030,3,15:15] -0.95
+    flow[(demand,battery),2030,3,16:16] max_input_flows_limit_simple_method[battery,2030,3,16:16] 1
+    flow[(demand,battery),2030,3,16:16] consumer_balance[demand,2030,3,16:16] -1
+    flow[(demand,battery),2030,3,16:16] balance_storage_rep_period[battery,2030,3,16:16] -0.95
+    flow[(demand,battery),2030,3,17:17] max_input_flows_limit_simple_method[battery,2030,3,17:17] 1
+    flow[(demand,battery),2030,3,17:17] consumer_balance[demand,2030,3,17:17] -1
+    flow[(demand,battery),2030,3,17:17] balance_storage_rep_period[battery,2030,3,17:17] -0.95
+    flow[(demand,battery),2030,3,18:18] max_input_flows_limit_simple_method[battery,2030,3,18:18] 1
+    flow[(demand,battery),2030,3,18:18] consumer_balance[demand,2030,3,18:18] -1
+    flow[(demand,battery),2030,3,18:18] balance_storage_rep_period[battery,2030,3,18:18] -0.95
+    flow[(demand,battery),2030,3,19:19] max_input_flows_limit_simple_method[battery,2030,3,19:19] 1
+    flow[(demand,battery),2030,3,19:19] consumer_balance[demand,2030,3,19:19] -1
+    flow[(demand,battery),2030,3,19:19] balance_storage_rep_period[battery,2030,3,19:19] -0.95
+    flow[(demand,battery),2030,3,20:20] max_input_flows_limit_simple_method[battery,2030,3,20:20] 1
+    flow[(demand,battery),2030,3,20:20] consumer_balance[demand,2030,3,20:20] -1
+    flow[(demand,battery),2030,3,20:20] balance_storage_rep_period[battery,2030,3,20:20] -0.95
+    flow[(demand,battery),2030,3,21:21] max_input_flows_limit_simple_method[battery,2030,3,21:21] 1
+    flow[(demand,battery),2030,3,21:21] consumer_balance[demand,2030,3,21:21] -1
+    flow[(demand,battery),2030,3,21:21] balance_storage_rep_period[battery,2030,3,21:21] -0.95
+    flow[(demand,battery),2030,3,22:22] max_input_flows_limit_simple_method[battery,2030,3,22:22] 1
+    flow[(demand,battery),2030,3,22:22] consumer_balance[demand,2030,3,22:22] -1
+    flow[(demand,battery),2030,3,22:22] balance_storage_rep_period[battery,2030,3,22:22] -0.95
+    flow[(demand,battery),2030,3,23:23] max_input_flows_limit_simple_method[battery,2030,3,23:23] 1
+    flow[(demand,battery),2030,3,23:23] consumer_balance[demand,2030,3,23:23] -1
+    flow[(demand,battery),2030,3,23:23] balance_storage_rep_period[battery,2030,3,23:23] -0.95
+    flow[(demand,battery),2030,3,24:24] max_input_flows_limit_simple_method[battery,2030,3,24:24] 1
+    flow[(demand,battery),2030,3,24:24] consumer_balance[demand,2030,3,24:24] -1
+    flow[(demand,battery),2030,3,24:24] balance_storage_rep_period[battery,2030,3,24:24] -0.95
     flow[(battery,demand),2030,3,1:1] max_output_flows_limit_simple_method[battery,2030,3,1:1] 1
     flow[(battery,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
     flow[(battery,demand),2030,3,1:1] balance_storage_rep_period[battery,2030,3,1:1] 1.0526315789473684
@@ -3484,6 +3700,78 @@ COLUMNS
     flow[(ccgt,demand),2030,3,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2030,3,24:24] 1
     flow[(ccgt,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
     flow[(ccgt,demand),2030,3,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,24:24] -1
+    flow[(wind,demand),2030,3,1:1] max_output_flows_limit_compact_method[wind,2030,3,1:1] 1
+    flow[(wind,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
+    flow[(wind,demand),2030,3,1:1] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,2:2] max_output_flows_limit_compact_method[wind,2030,3,2:2] 1
+    flow[(wind,demand),2030,3,2:2] consumer_balance[demand,2030,3,2:2] 1
+    flow[(wind,demand),2030,3,2:2] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,3:3] max_output_flows_limit_compact_method[wind,2030,3,3:3] 1
+    flow[(wind,demand),2030,3,3:3] consumer_balance[demand,2030,3,3:3] 1
+    flow[(wind,demand),2030,3,3:3] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,4:4] max_output_flows_limit_compact_method[wind,2030,3,4:4] 1
+    flow[(wind,demand),2030,3,4:4] consumer_balance[demand,2030,3,4:4] 1
+    flow[(wind,demand),2030,3,4:4] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,5:5] max_output_flows_limit_compact_method[wind,2030,3,5:5] 1
+    flow[(wind,demand),2030,3,5:5] consumer_balance[demand,2030,3,5:5] 1
+    flow[(wind,demand),2030,3,5:5] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,6:6] max_output_flows_limit_compact_method[wind,2030,3,6:6] 1
+    flow[(wind,demand),2030,3,6:6] consumer_balance[demand,2030,3,6:6] 1
+    flow[(wind,demand),2030,3,6:6] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,7:7] max_output_flows_limit_compact_method[wind,2030,3,7:7] 1
+    flow[(wind,demand),2030,3,7:7] consumer_balance[demand,2030,3,7:7] 1
+    flow[(wind,demand),2030,3,7:7] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,8:8] max_output_flows_limit_compact_method[wind,2030,3,8:8] 1
+    flow[(wind,demand),2030,3,8:8] consumer_balance[demand,2030,3,8:8] 1
+    flow[(wind,demand),2030,3,8:8] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,9:9] max_output_flows_limit_compact_method[wind,2030,3,9:9] 1
+    flow[(wind,demand),2030,3,9:9] consumer_balance[demand,2030,3,9:9] 1
+    flow[(wind,demand),2030,3,9:9] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,10:10] max_output_flows_limit_compact_method[wind,2030,3,10:10] 1
+    flow[(wind,demand),2030,3,10:10] consumer_balance[demand,2030,3,10:10] 1
+    flow[(wind,demand),2030,3,10:10] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,11:11] max_output_flows_limit_compact_method[wind,2030,3,11:11] 1
+    flow[(wind,demand),2030,3,11:11] consumer_balance[demand,2030,3,11:11] 1
+    flow[(wind,demand),2030,3,11:11] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,12:12] max_output_flows_limit_compact_method[wind,2030,3,12:12] 1
+    flow[(wind,demand),2030,3,12:12] consumer_balance[demand,2030,3,12:12] 1
+    flow[(wind,demand),2030,3,12:12] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,13:13] max_output_flows_limit_compact_method[wind,2030,3,13:13] 1
+    flow[(wind,demand),2030,3,13:13] consumer_balance[demand,2030,3,13:13] 1
+    flow[(wind,demand),2030,3,13:13] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,14:14] max_output_flows_limit_compact_method[wind,2030,3,14:14] 1
+    flow[(wind,demand),2030,3,14:14] consumer_balance[demand,2030,3,14:14] 1
+    flow[(wind,demand),2030,3,14:14] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,15:15] max_output_flows_limit_compact_method[wind,2030,3,15:15] 1
+    flow[(wind,demand),2030,3,15:15] consumer_balance[demand,2030,3,15:15] 1
+    flow[(wind,demand),2030,3,15:15] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,16:16] max_output_flows_limit_compact_method[wind,2030,3,16:16] 1
+    flow[(wind,demand),2030,3,16:16] consumer_balance[demand,2030,3,16:16] 1
+    flow[(wind,demand),2030,3,16:16] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,17:17] max_output_flows_limit_compact_method[wind,2030,3,17:17] 1
+    flow[(wind,demand),2030,3,17:17] consumer_balance[demand,2030,3,17:17] 1
+    flow[(wind,demand),2030,3,17:17] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,18:18] max_output_flows_limit_compact_method[wind,2030,3,18:18] 1
+    flow[(wind,demand),2030,3,18:18] consumer_balance[demand,2030,3,18:18] 1
+    flow[(wind,demand),2030,3,18:18] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,19:19] max_output_flows_limit_compact_method[wind,2030,3,19:19] 1
+    flow[(wind,demand),2030,3,19:19] consumer_balance[demand,2030,3,19:19] 1
+    flow[(wind,demand),2030,3,19:19] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,20:20] max_output_flows_limit_compact_method[wind,2030,3,20:20] 1
+    flow[(wind,demand),2030,3,20:20] consumer_balance[demand,2030,3,20:20] 1
+    flow[(wind,demand),2030,3,20:20] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,21:21] max_output_flows_limit_compact_method[wind,2030,3,21:21] 1
+    flow[(wind,demand),2030,3,21:21] consumer_balance[demand,2030,3,21:21] 1
+    flow[(wind,demand),2030,3,21:21] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,22:22] max_output_flows_limit_compact_method[wind,2030,3,22:22] 1
+    flow[(wind,demand),2030,3,22:22] consumer_balance[demand,2030,3,22:22] 1
+    flow[(wind,demand),2030,3,22:22] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,23:23] max_output_flows_limit_compact_method[wind,2030,3,23:23] 1
+    flow[(wind,demand),2030,3,23:23] consumer_balance[demand,2030,3,23:23] 1
+    flow[(wind,demand),2030,3,23:23] OBJ 1.2485568506541864
+    flow[(wind,demand),2030,3,24:24] max_output_flows_limit_compact_method[wind,2030,3,24:24] 1
+    flow[(wind,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
+    flow[(wind,demand),2030,3,24:24] OBJ 1.2485568506541864
     flow[(solar,demand),2030,3,1:1] max_output_flows_limit_simple_method[solar,2030,3,1:1] 1
     flow[(solar,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
     flow[(solar,demand),2030,3,2:2] max_output_flows_limit_simple_method[solar,2030,3,2:2] 1
@@ -3532,534 +3820,150 @@ COLUMNS
     flow[(solar,demand),2030,3,23:23] consumer_balance[demand,2030,3,23:23] 1
     flow[(solar,demand),2030,3,24:24] max_output_flows_limit_simple_method[solar,2030,3,24:24] 1
     flow[(solar,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
-    flow[(wind,demand),2030,3,1:1] max_output_flows_limit_compact_method[wind,2030,3,1:1] 1
-    flow[(wind,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
-    flow[(wind,demand),2030,3,1:1] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,2:2] max_output_flows_limit_compact_method[wind,2030,3,2:2] 1
-    flow[(wind,demand),2030,3,2:2] consumer_balance[demand,2030,3,2:2] 1
-    flow[(wind,demand),2030,3,2:2] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,3:3] max_output_flows_limit_compact_method[wind,2030,3,3:3] 1
-    flow[(wind,demand),2030,3,3:3] consumer_balance[demand,2030,3,3:3] 1
-    flow[(wind,demand),2030,3,3:3] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,4:4] max_output_flows_limit_compact_method[wind,2030,3,4:4] 1
-    flow[(wind,demand),2030,3,4:4] consumer_balance[demand,2030,3,4:4] 1
-    flow[(wind,demand),2030,3,4:4] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,5:5] max_output_flows_limit_compact_method[wind,2030,3,5:5] 1
-    flow[(wind,demand),2030,3,5:5] consumer_balance[demand,2030,3,5:5] 1
-    flow[(wind,demand),2030,3,5:5] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,6:6] max_output_flows_limit_compact_method[wind,2030,3,6:6] 1
-    flow[(wind,demand),2030,3,6:6] consumer_balance[demand,2030,3,6:6] 1
-    flow[(wind,demand),2030,3,6:6] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,7:7] max_output_flows_limit_compact_method[wind,2030,3,7:7] 1
-    flow[(wind,demand),2030,3,7:7] consumer_balance[demand,2030,3,7:7] 1
-    flow[(wind,demand),2030,3,7:7] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,8:8] max_output_flows_limit_compact_method[wind,2030,3,8:8] 1
-    flow[(wind,demand),2030,3,8:8] consumer_balance[demand,2030,3,8:8] 1
-    flow[(wind,demand),2030,3,8:8] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,9:9] max_output_flows_limit_compact_method[wind,2030,3,9:9] 1
-    flow[(wind,demand),2030,3,9:9] consumer_balance[demand,2030,3,9:9] 1
-    flow[(wind,demand),2030,3,9:9] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,10:10] max_output_flows_limit_compact_method[wind,2030,3,10:10] 1
-    flow[(wind,demand),2030,3,10:10] consumer_balance[demand,2030,3,10:10] 1
-    flow[(wind,demand),2030,3,10:10] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,11:11] max_output_flows_limit_compact_method[wind,2030,3,11:11] 1
-    flow[(wind,demand),2030,3,11:11] consumer_balance[demand,2030,3,11:11] 1
-    flow[(wind,demand),2030,3,11:11] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,12:12] max_output_flows_limit_compact_method[wind,2030,3,12:12] 1
-    flow[(wind,demand),2030,3,12:12] consumer_balance[demand,2030,3,12:12] 1
-    flow[(wind,demand),2030,3,12:12] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,13:13] max_output_flows_limit_compact_method[wind,2030,3,13:13] 1
-    flow[(wind,demand),2030,3,13:13] consumer_balance[demand,2030,3,13:13] 1
-    flow[(wind,demand),2030,3,13:13] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,14:14] max_output_flows_limit_compact_method[wind,2030,3,14:14] 1
-    flow[(wind,demand),2030,3,14:14] consumer_balance[demand,2030,3,14:14] 1
-    flow[(wind,demand),2030,3,14:14] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,15:15] max_output_flows_limit_compact_method[wind,2030,3,15:15] 1
-    flow[(wind,demand),2030,3,15:15] consumer_balance[demand,2030,3,15:15] 1
-    flow[(wind,demand),2030,3,15:15] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,16:16] max_output_flows_limit_compact_method[wind,2030,3,16:16] 1
-    flow[(wind,demand),2030,3,16:16] consumer_balance[demand,2030,3,16:16] 1
-    flow[(wind,demand),2030,3,16:16] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,17:17] max_output_flows_limit_compact_method[wind,2030,3,17:17] 1
-    flow[(wind,demand),2030,3,17:17] consumer_balance[demand,2030,3,17:17] 1
-    flow[(wind,demand),2030,3,17:17] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,18:18] max_output_flows_limit_compact_method[wind,2030,3,18:18] 1
-    flow[(wind,demand),2030,3,18:18] consumer_balance[demand,2030,3,18:18] 1
-    flow[(wind,demand),2030,3,18:18] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,19:19] max_output_flows_limit_compact_method[wind,2030,3,19:19] 1
-    flow[(wind,demand),2030,3,19:19] consumer_balance[demand,2030,3,19:19] 1
-    flow[(wind,demand),2030,3,19:19] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,20:20] max_output_flows_limit_compact_method[wind,2030,3,20:20] 1
-    flow[(wind,demand),2030,3,20:20] consumer_balance[demand,2030,3,20:20] 1
-    flow[(wind,demand),2030,3,20:20] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,21:21] max_output_flows_limit_compact_method[wind,2030,3,21:21] 1
-    flow[(wind,demand),2030,3,21:21] consumer_balance[demand,2030,3,21:21] 1
-    flow[(wind,demand),2030,3,21:21] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,22:22] max_output_flows_limit_compact_method[wind,2030,3,22:22] 1
-    flow[(wind,demand),2030,3,22:22] consumer_balance[demand,2030,3,22:22] 1
-    flow[(wind,demand),2030,3,22:22] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,23:23] max_output_flows_limit_compact_method[wind,2030,3,23:23] 1
-    flow[(wind,demand),2030,3,23:23] consumer_balance[demand,2030,3,23:23] 1
-    flow[(wind,demand),2030,3,23:23] OBJ 1.248556850654187
-    flow[(wind,demand),2030,3,24:24] max_output_flows_limit_compact_method[wind,2030,3,24:24] 1
-    flow[(wind,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
-    flow[(wind,demand),2030,3,24:24] OBJ 1.248556850654187
-    flow[(ens,demand),2030,3,1:1] max_output_flows_limit_simple_method[ens,2030,3,1:1] 1
-    flow[(ens,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
-    flow[(ens,demand),2030,3,1:1] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,2:2] max_output_flows_limit_simple_method[ens,2030,3,2:2] 1
-    flow[(ens,demand),2030,3,2:2] consumer_balance[demand,2030,3,2:2] 1
-    flow[(ens,demand),2030,3,2:2] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,3:3] max_output_flows_limit_simple_method[ens,2030,3,3:3] 1
-    flow[(ens,demand),2030,3,3:3] consumer_balance[demand,2030,3,3:3] 1
-    flow[(ens,demand),2030,3,3:3] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,4:4] max_output_flows_limit_simple_method[ens,2030,3,4:4] 1
-    flow[(ens,demand),2030,3,4:4] consumer_balance[demand,2030,3,4:4] 1
-    flow[(ens,demand),2030,3,4:4] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,5:5] max_output_flows_limit_simple_method[ens,2030,3,5:5] 1
-    flow[(ens,demand),2030,3,5:5] consumer_balance[demand,2030,3,5:5] 1
-    flow[(ens,demand),2030,3,5:5] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,6:6] max_output_flows_limit_simple_method[ens,2030,3,6:6] 1
-    flow[(ens,demand),2030,3,6:6] consumer_balance[demand,2030,3,6:6] 1
-    flow[(ens,demand),2030,3,6:6] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,7:7] max_output_flows_limit_simple_method[ens,2030,3,7:7] 1
-    flow[(ens,demand),2030,3,7:7] consumer_balance[demand,2030,3,7:7] 1
-    flow[(ens,demand),2030,3,7:7] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,8:8] max_output_flows_limit_simple_method[ens,2030,3,8:8] 1
-    flow[(ens,demand),2030,3,8:8] consumer_balance[demand,2030,3,8:8] 1
-    flow[(ens,demand),2030,3,8:8] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,9:9] max_output_flows_limit_simple_method[ens,2030,3,9:9] 1
-    flow[(ens,demand),2030,3,9:9] consumer_balance[demand,2030,3,9:9] 1
-    flow[(ens,demand),2030,3,9:9] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,10:10] max_output_flows_limit_simple_method[ens,2030,3,10:10] 1
-    flow[(ens,demand),2030,3,10:10] consumer_balance[demand,2030,3,10:10] 1
-    flow[(ens,demand),2030,3,10:10] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,11:11] max_output_flows_limit_simple_method[ens,2030,3,11:11] 1
-    flow[(ens,demand),2030,3,11:11] consumer_balance[demand,2030,3,11:11] 1
-    flow[(ens,demand),2030,3,11:11] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,12:12] max_output_flows_limit_simple_method[ens,2030,3,12:12] 1
-    flow[(ens,demand),2030,3,12:12] consumer_balance[demand,2030,3,12:12] 1
-    flow[(ens,demand),2030,3,12:12] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,13:13] max_output_flows_limit_simple_method[ens,2030,3,13:13] 1
-    flow[(ens,demand),2030,3,13:13] consumer_balance[demand,2030,3,13:13] 1
-    flow[(ens,demand),2030,3,13:13] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,14:14] max_output_flows_limit_simple_method[ens,2030,3,14:14] 1
-    flow[(ens,demand),2030,3,14:14] consumer_balance[demand,2030,3,14:14] 1
-    flow[(ens,demand),2030,3,14:14] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,15:15] max_output_flows_limit_simple_method[ens,2030,3,15:15] 1
-    flow[(ens,demand),2030,3,15:15] consumer_balance[demand,2030,3,15:15] 1
-    flow[(ens,demand),2030,3,15:15] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,16:16] max_output_flows_limit_simple_method[ens,2030,3,16:16] 1
-    flow[(ens,demand),2030,3,16:16] consumer_balance[demand,2030,3,16:16] 1
-    flow[(ens,demand),2030,3,16:16] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,17:17] max_output_flows_limit_simple_method[ens,2030,3,17:17] 1
-    flow[(ens,demand),2030,3,17:17] consumer_balance[demand,2030,3,17:17] 1
-    flow[(ens,demand),2030,3,17:17] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,18:18] max_output_flows_limit_simple_method[ens,2030,3,18:18] 1
-    flow[(ens,demand),2030,3,18:18] consumer_balance[demand,2030,3,18:18] 1
-    flow[(ens,demand),2030,3,18:18] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,19:19] max_output_flows_limit_simple_method[ens,2030,3,19:19] 1
-    flow[(ens,demand),2030,3,19:19] consumer_balance[demand,2030,3,19:19] 1
-    flow[(ens,demand),2030,3,19:19] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,20:20] max_output_flows_limit_simple_method[ens,2030,3,20:20] 1
-    flow[(ens,demand),2030,3,20:20] consumer_balance[demand,2030,3,20:20] 1
-    flow[(ens,demand),2030,3,20:20] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,21:21] max_output_flows_limit_simple_method[ens,2030,3,21:21] 1
-    flow[(ens,demand),2030,3,21:21] consumer_balance[demand,2030,3,21:21] 1
-    flow[(ens,demand),2030,3,21:21] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,22:22] max_output_flows_limit_simple_method[ens,2030,3,22:22] 1
-    flow[(ens,demand),2030,3,22:22] consumer_balance[demand,2030,3,22:22] 1
-    flow[(ens,demand),2030,3,22:22] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,23:23] max_output_flows_limit_simple_method[ens,2030,3,23:23] 1
-    flow[(ens,demand),2030,3,23:23] consumer_balance[demand,2030,3,23:23] 1
-    flow[(ens,demand),2030,3,23:23] OBJ 224.74023311775366
-    flow[(ens,demand),2030,3,24:24] max_output_flows_limit_simple_method[ens,2030,3,24:24] 1
-    flow[(ens,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
-    flow[(ens,demand),2030,3,24:24] OBJ 224.74023311775366
-    flow[(ocgt,demand),2030,3,1:1] max_output_flows_limit_simple_method[ocgt,2030,3,1:1] 1
-    flow[(ocgt,demand),2030,3,1:1] consumer_balance[demand,2030,3,1:1] 1
-    flow[(ocgt,demand),2030,3,1:1] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,2:2] max_output_flows_limit_simple_method[ocgt,2030,3,2:2] 1
-    flow[(ocgt,demand),2030,3,2:2] consumer_balance[demand,2030,3,2:2] 1
-    flow[(ocgt,demand),2030,3,2:2] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,3:3] max_output_flows_limit_simple_method[ocgt,2030,3,3:3] 1
-    flow[(ocgt,demand),2030,3,3:3] consumer_balance[demand,2030,3,3:3] 1
-    flow[(ocgt,demand),2030,3,3:3] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,4:4] max_output_flows_limit_simple_method[ocgt,2030,3,4:4] 1
-    flow[(ocgt,demand),2030,3,4:4] consumer_balance[demand,2030,3,4:4] 1
-    flow[(ocgt,demand),2030,3,4:4] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,5:5] max_output_flows_limit_simple_method[ocgt,2030,3,5:5] 1
-    flow[(ocgt,demand),2030,3,5:5] consumer_balance[demand,2030,3,5:5] 1
-    flow[(ocgt,demand),2030,3,5:5] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,6:6] max_output_flows_limit_simple_method[ocgt,2030,3,6:6] 1
-    flow[(ocgt,demand),2030,3,6:6] consumer_balance[demand,2030,3,6:6] 1
-    flow[(ocgt,demand),2030,3,6:6] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,7:7] max_output_flows_limit_simple_method[ocgt,2030,3,7:7] 1
-    flow[(ocgt,demand),2030,3,7:7] consumer_balance[demand,2030,3,7:7] 1
-    flow[(ocgt,demand),2030,3,7:7] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,8:8] max_output_flows_limit_simple_method[ocgt,2030,3,8:8] 1
-    flow[(ocgt,demand),2030,3,8:8] consumer_balance[demand,2030,3,8:8] 1
-    flow[(ocgt,demand),2030,3,8:8] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,9:9] max_output_flows_limit_simple_method[ocgt,2030,3,9:9] 1
-    flow[(ocgt,demand),2030,3,9:9] consumer_balance[demand,2030,3,9:9] 1
-    flow[(ocgt,demand),2030,3,9:9] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,10:10] max_output_flows_limit_simple_method[ocgt,2030,3,10:10] 1
-    flow[(ocgt,demand),2030,3,10:10] consumer_balance[demand,2030,3,10:10] 1
-    flow[(ocgt,demand),2030,3,10:10] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,11:11] max_output_flows_limit_simple_method[ocgt,2030,3,11:11] 1
-    flow[(ocgt,demand),2030,3,11:11] consumer_balance[demand,2030,3,11:11] 1
-    flow[(ocgt,demand),2030,3,11:11] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,12:12] max_output_flows_limit_simple_method[ocgt,2030,3,12:12] 1
-    flow[(ocgt,demand),2030,3,12:12] consumer_balance[demand,2030,3,12:12] 1
-    flow[(ocgt,demand),2030,3,12:12] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,13:13] max_output_flows_limit_simple_method[ocgt,2030,3,13:13] 1
-    flow[(ocgt,demand),2030,3,13:13] consumer_balance[demand,2030,3,13:13] 1
-    flow[(ocgt,demand),2030,3,13:13] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,14:14] max_output_flows_limit_simple_method[ocgt,2030,3,14:14] 1
-    flow[(ocgt,demand),2030,3,14:14] consumer_balance[demand,2030,3,14:14] 1
-    flow[(ocgt,demand),2030,3,14:14] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,15:15] max_output_flows_limit_simple_method[ocgt,2030,3,15:15] 1
-    flow[(ocgt,demand),2030,3,15:15] consumer_balance[demand,2030,3,15:15] 1
-    flow[(ocgt,demand),2030,3,15:15] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,16:16] max_output_flows_limit_simple_method[ocgt,2030,3,16:16] 1
-    flow[(ocgt,demand),2030,3,16:16] consumer_balance[demand,2030,3,16:16] 1
-    flow[(ocgt,demand),2030,3,16:16] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,17:17] max_output_flows_limit_simple_method[ocgt,2030,3,17:17] 1
-    flow[(ocgt,demand),2030,3,17:17] consumer_balance[demand,2030,3,17:17] 1
-    flow[(ocgt,demand),2030,3,17:17] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,18:18] max_output_flows_limit_simple_method[ocgt,2030,3,18:18] 1
-    flow[(ocgt,demand),2030,3,18:18] consumer_balance[demand,2030,3,18:18] 1
-    flow[(ocgt,demand),2030,3,18:18] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,19:19] max_output_flows_limit_simple_method[ocgt,2030,3,19:19] 1
-    flow[(ocgt,demand),2030,3,19:19] consumer_balance[demand,2030,3,19:19] 1
-    flow[(ocgt,demand),2030,3,19:19] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,20:20] max_output_flows_limit_simple_method[ocgt,2030,3,20:20] 1
-    flow[(ocgt,demand),2030,3,20:20] consumer_balance[demand,2030,3,20:20] 1
-    flow[(ocgt,demand),2030,3,20:20] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,21:21] max_output_flows_limit_simple_method[ocgt,2030,3,21:21] 1
-    flow[(ocgt,demand),2030,3,21:21] consumer_balance[demand,2030,3,21:21] 1
-    flow[(ocgt,demand),2030,3,21:21] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,22:22] max_output_flows_limit_simple_method[ocgt,2030,3,22:22] 1
-    flow[(ocgt,demand),2030,3,22:22] consumer_balance[demand,2030,3,22:22] 1
-    flow[(ocgt,demand),2030,3,22:22] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,23:23] max_output_flows_limit_simple_method[ocgt,2030,3,23:23] 1
-    flow[(ocgt,demand),2030,3,23:23] consumer_balance[demand,2030,3,23:23] 1
-    flow[(ocgt,demand),2030,3,23:23] OBJ 12572.967486087664
-    flow[(ocgt,demand),2030,3,24:24] max_output_flows_limit_simple_method[ocgt,2030,3,24:24] 1
-    flow[(ocgt,demand),2030,3,24:24] consumer_balance[demand,2030,3,24:24] 1
-    flow[(ocgt,demand),2030,3,24:24] OBJ 12572.967486087664
-    flow[(demand,battery),2030,3,1:1] max_input_flows_limit_simple_method[battery,2030,3,1:1] 1
-    flow[(demand,battery),2030,3,1:1] consumer_balance[demand,2030,3,1:1] -1
-    flow[(demand,battery),2030,3,1:1] balance_storage_rep_period[battery,2030,3,1:1] -0.95
-    flow[(demand,battery),2030,3,2:2] max_input_flows_limit_simple_method[battery,2030,3,2:2] 1
-    flow[(demand,battery),2030,3,2:2] consumer_balance[demand,2030,3,2:2] -1
-    flow[(demand,battery),2030,3,2:2] balance_storage_rep_period[battery,2030,3,2:2] -0.95
-    flow[(demand,battery),2030,3,3:3] max_input_flows_limit_simple_method[battery,2030,3,3:3] 1
-    flow[(demand,battery),2030,3,3:3] consumer_balance[demand,2030,3,3:3] -1
-    flow[(demand,battery),2030,3,3:3] balance_storage_rep_period[battery,2030,3,3:3] -0.95
-    flow[(demand,battery),2030,3,4:4] max_input_flows_limit_simple_method[battery,2030,3,4:4] 1
-    flow[(demand,battery),2030,3,4:4] consumer_balance[demand,2030,3,4:4] -1
-    flow[(demand,battery),2030,3,4:4] balance_storage_rep_period[battery,2030,3,4:4] -0.95
-    flow[(demand,battery),2030,3,5:5] max_input_flows_limit_simple_method[battery,2030,3,5:5] 1
-    flow[(demand,battery),2030,3,5:5] consumer_balance[demand,2030,3,5:5] -1
-    flow[(demand,battery),2030,3,5:5] balance_storage_rep_period[battery,2030,3,5:5] -0.95
-    flow[(demand,battery),2030,3,6:6] max_input_flows_limit_simple_method[battery,2030,3,6:6] 1
-    flow[(demand,battery),2030,3,6:6] consumer_balance[demand,2030,3,6:6] -1
-    flow[(demand,battery),2030,3,6:6] balance_storage_rep_period[battery,2030,3,6:6] -0.95
-    flow[(demand,battery),2030,3,7:7] max_input_flows_limit_simple_method[battery,2030,3,7:7] 1
-    flow[(demand,battery),2030,3,7:7] consumer_balance[demand,2030,3,7:7] -1
-    flow[(demand,battery),2030,3,7:7] balance_storage_rep_period[battery,2030,3,7:7] -0.95
-    flow[(demand,battery),2030,3,8:8] max_input_flows_limit_simple_method[battery,2030,3,8:8] 1
-    flow[(demand,battery),2030,3,8:8] consumer_balance[demand,2030,3,8:8] -1
-    flow[(demand,battery),2030,3,8:8] balance_storage_rep_period[battery,2030,3,8:8] -0.95
-    flow[(demand,battery),2030,3,9:9] max_input_flows_limit_simple_method[battery,2030,3,9:9] 1
-    flow[(demand,battery),2030,3,9:9] consumer_balance[demand,2030,3,9:9] -1
-    flow[(demand,battery),2030,3,9:9] balance_storage_rep_period[battery,2030,3,9:9] -0.95
-    flow[(demand,battery),2030,3,10:10] max_input_flows_limit_simple_method[battery,2030,3,10:10] 1
-    flow[(demand,battery),2030,3,10:10] consumer_balance[demand,2030,3,10:10] -1
-    flow[(demand,battery),2030,3,10:10] balance_storage_rep_period[battery,2030,3,10:10] -0.95
-    flow[(demand,battery),2030,3,11:11] max_input_flows_limit_simple_method[battery,2030,3,11:11] 1
-    flow[(demand,battery),2030,3,11:11] consumer_balance[demand,2030,3,11:11] -1
-    flow[(demand,battery),2030,3,11:11] balance_storage_rep_period[battery,2030,3,11:11] -0.95
-    flow[(demand,battery),2030,3,12:12] max_input_flows_limit_simple_method[battery,2030,3,12:12] 1
-    flow[(demand,battery),2030,3,12:12] consumer_balance[demand,2030,3,12:12] -1
-    flow[(demand,battery),2030,3,12:12] balance_storage_rep_period[battery,2030,3,12:12] -0.95
-    flow[(demand,battery),2030,3,13:13] max_input_flows_limit_simple_method[battery,2030,3,13:13] 1
-    flow[(demand,battery),2030,3,13:13] consumer_balance[demand,2030,3,13:13] -1
-    flow[(demand,battery),2030,3,13:13] balance_storage_rep_period[battery,2030,3,13:13] -0.95
-    flow[(demand,battery),2030,3,14:14] max_input_flows_limit_simple_method[battery,2030,3,14:14] 1
-    flow[(demand,battery),2030,3,14:14] consumer_balance[demand,2030,3,14:14] -1
-    flow[(demand,battery),2030,3,14:14] balance_storage_rep_period[battery,2030,3,14:14] -0.95
-    flow[(demand,battery),2030,3,15:15] max_input_flows_limit_simple_method[battery,2030,3,15:15] 1
-    flow[(demand,battery),2030,3,15:15] consumer_balance[demand,2030,3,15:15] -1
-    flow[(demand,battery),2030,3,15:15] balance_storage_rep_period[battery,2030,3,15:15] -0.95
-    flow[(demand,battery),2030,3,16:16] max_input_flows_limit_simple_method[battery,2030,3,16:16] 1
-    flow[(demand,battery),2030,3,16:16] consumer_balance[demand,2030,3,16:16] -1
-    flow[(demand,battery),2030,3,16:16] balance_storage_rep_period[battery,2030,3,16:16] -0.95
-    flow[(demand,battery),2030,3,17:17] max_input_flows_limit_simple_method[battery,2030,3,17:17] 1
-    flow[(demand,battery),2030,3,17:17] consumer_balance[demand,2030,3,17:17] -1
-    flow[(demand,battery),2030,3,17:17] balance_storage_rep_period[battery,2030,3,17:17] -0.95
-    flow[(demand,battery),2030,3,18:18] max_input_flows_limit_simple_method[battery,2030,3,18:18] 1
-    flow[(demand,battery),2030,3,18:18] consumer_balance[demand,2030,3,18:18] -1
-    flow[(demand,battery),2030,3,18:18] balance_storage_rep_period[battery,2030,3,18:18] -0.95
-    flow[(demand,battery),2030,3,19:19] max_input_flows_limit_simple_method[battery,2030,3,19:19] 1
-    flow[(demand,battery),2030,3,19:19] consumer_balance[demand,2030,3,19:19] -1
-    flow[(demand,battery),2030,3,19:19] balance_storage_rep_period[battery,2030,3,19:19] -0.95
-    flow[(demand,battery),2030,3,20:20] max_input_flows_limit_simple_method[battery,2030,3,20:20] 1
-    flow[(demand,battery),2030,3,20:20] consumer_balance[demand,2030,3,20:20] -1
-    flow[(demand,battery),2030,3,20:20] balance_storage_rep_period[battery,2030,3,20:20] -0.95
-    flow[(demand,battery),2030,3,21:21] max_input_flows_limit_simple_method[battery,2030,3,21:21] 1
-    flow[(demand,battery),2030,3,21:21] consumer_balance[demand,2030,3,21:21] -1
-    flow[(demand,battery),2030,3,21:21] balance_storage_rep_period[battery,2030,3,21:21] -0.95
-    flow[(demand,battery),2030,3,22:22] max_input_flows_limit_simple_method[battery,2030,3,22:22] 1
-    flow[(demand,battery),2030,3,22:22] consumer_balance[demand,2030,3,22:22] -1
-    flow[(demand,battery),2030,3,22:22] balance_storage_rep_period[battery,2030,3,22:22] -0.95
-    flow[(demand,battery),2030,3,23:23] max_input_flows_limit_simple_method[battery,2030,3,23:23] 1
-    flow[(demand,battery),2030,3,23:23] consumer_balance[demand,2030,3,23:23] -1
-    flow[(demand,battery),2030,3,23:23] balance_storage_rep_period[battery,2030,3,23:23] -0.95
-    flow[(demand,battery),2030,3,24:24] max_input_flows_limit_simple_method[battery,2030,3,24:24] 1
-    flow[(demand,battery),2030,3,24:24] consumer_balance[demand,2030,3,24:24] -1
-    flow[(demand,battery),2030,3,24:24] balance_storage_rep_period[battery,2030,3,24:24] -0.95
-    flow[(ccgt,demand),2050,1,1:1] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,1:1] 1
-    flow[(ccgt,demand),2050,1,1:1] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,1:1] 1
-    flow[(ccgt,demand),2050,1,1:1] consumer_balance[demand,2050,1,1:1] 1
-    flow[(ccgt,demand),2050,1,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,1:1] -1
-    flow[(ccgt,demand),2050,1,2:2] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,2:2] 1
-    flow[(ccgt,demand),2050,1,2:2] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,2:2] 1
-    flow[(ccgt,demand),2050,1,2:2] consumer_balance[demand,2050,1,2:2] 1
-    flow[(ccgt,demand),2050,1,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,2:2] -1
-    flow[(ccgt,demand),2050,1,3:3] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,3:3] 1
-    flow[(ccgt,demand),2050,1,3:3] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,3:3] 1
-    flow[(ccgt,demand),2050,1,3:3] consumer_balance[demand,2050,1,3:3] 1
-    flow[(ccgt,demand),2050,1,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,3:3] -1
-    flow[(ccgt,demand),2050,1,4:4] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,4:4] 1
-    flow[(ccgt,demand),2050,1,4:4] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,4:4] 1
-    flow[(ccgt,demand),2050,1,4:4] consumer_balance[demand,2050,1,4:4] 1
-    flow[(ccgt,demand),2050,1,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,4:4] -1
-    flow[(ccgt,demand),2050,1,5:5] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,5:5] 1
-    flow[(ccgt,demand),2050,1,5:5] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,5:5] 1
-    flow[(ccgt,demand),2050,1,5:5] consumer_balance[demand,2050,1,5:5] 1
-    flow[(ccgt,demand),2050,1,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,5:5] -1
-    flow[(ccgt,demand),2050,1,6:6] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,6:6] 1
-    flow[(ccgt,demand),2050,1,6:6] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,6:6] 1
-    flow[(ccgt,demand),2050,1,6:6] consumer_balance[demand,2050,1,6:6] 1
-    flow[(ccgt,demand),2050,1,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,6:6] -1
-    flow[(ccgt,demand),2050,1,7:7] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,7:7] 1
-    flow[(ccgt,demand),2050,1,7:7] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,7:7] 1
-    flow[(ccgt,demand),2050,1,7:7] consumer_balance[demand,2050,1,7:7] 1
-    flow[(ccgt,demand),2050,1,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,7:7] -1
-    flow[(ccgt,demand),2050,1,8:8] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,8:8] 1
-    flow[(ccgt,demand),2050,1,8:8] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,8:8] 1
-    flow[(ccgt,demand),2050,1,8:8] consumer_balance[demand,2050,1,8:8] 1
-    flow[(ccgt,demand),2050,1,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,8:8] -1
-    flow[(ccgt,demand),2050,1,9:9] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,9:9] 1
-    flow[(ccgt,demand),2050,1,9:9] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,9:9] 1
-    flow[(ccgt,demand),2050,1,9:9] consumer_balance[demand,2050,1,9:9] 1
-    flow[(ccgt,demand),2050,1,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,9:9] -1
-    flow[(ccgt,demand),2050,1,10:10] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,10:10] 1
-    flow[(ccgt,demand),2050,1,10:10] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,10:10] 1
-    flow[(ccgt,demand),2050,1,10:10] consumer_balance[demand,2050,1,10:10] 1
-    flow[(ccgt,demand),2050,1,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,10:10] -1
-    flow[(ccgt,demand),2050,1,11:11] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,11:11] 1
-    flow[(ccgt,demand),2050,1,11:11] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,11:11] 1
-    flow[(ccgt,demand),2050,1,11:11] consumer_balance[demand,2050,1,11:11] 1
-    flow[(ccgt,demand),2050,1,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,11:11] -1
-    flow[(ccgt,demand),2050,1,12:12] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,12:12] 1
-    flow[(ccgt,demand),2050,1,12:12] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,12:12] 1
-    flow[(ccgt,demand),2050,1,12:12] consumer_balance[demand,2050,1,12:12] 1
-    flow[(ccgt,demand),2050,1,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,12:12] -1
-    flow[(ccgt,demand),2050,1,13:13] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,13:13] 1
-    flow[(ccgt,demand),2050,1,13:13] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,13:13] 1
-    flow[(ccgt,demand),2050,1,13:13] consumer_balance[demand,2050,1,13:13] 1
-    flow[(ccgt,demand),2050,1,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,13:13] -1
-    flow[(ccgt,demand),2050,1,14:14] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,14:14] 1
-    flow[(ccgt,demand),2050,1,14:14] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,14:14] 1
-    flow[(ccgt,demand),2050,1,14:14] consumer_balance[demand,2050,1,14:14] 1
-    flow[(ccgt,demand),2050,1,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,14:14] -1
-    flow[(ccgt,demand),2050,1,15:15] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,15:15] 1
-    flow[(ccgt,demand),2050,1,15:15] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,15:15] 1
-    flow[(ccgt,demand),2050,1,15:15] consumer_balance[demand,2050,1,15:15] 1
-    flow[(ccgt,demand),2050,1,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,15:15] -1
-    flow[(ccgt,demand),2050,1,16:16] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,16:16] 1
-    flow[(ccgt,demand),2050,1,16:16] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,16:16] 1
-    flow[(ccgt,demand),2050,1,16:16] consumer_balance[demand,2050,1,16:16] 1
-    flow[(ccgt,demand),2050,1,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,16:16] -1
-    flow[(ccgt,demand),2050,1,17:17] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,17:17] 1
-    flow[(ccgt,demand),2050,1,17:17] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,17:17] 1
-    flow[(ccgt,demand),2050,1,17:17] consumer_balance[demand,2050,1,17:17] 1
-    flow[(ccgt,demand),2050,1,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,17:17] -1
-    flow[(ccgt,demand),2050,1,18:18] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,18:18] 1
-    flow[(ccgt,demand),2050,1,18:18] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,18:18] 1
-    flow[(ccgt,demand),2050,1,18:18] consumer_balance[demand,2050,1,18:18] 1
-    flow[(ccgt,demand),2050,1,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,18:18] -1
-    flow[(ccgt,demand),2050,1,19:19] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,19:19] 1
-    flow[(ccgt,demand),2050,1,19:19] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,19:19] 1
-    flow[(ccgt,demand),2050,1,19:19] consumer_balance[demand,2050,1,19:19] 1
-    flow[(ccgt,demand),2050,1,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,19:19] -1
-    flow[(ccgt,demand),2050,1,20:20] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,20:20] 1
-    flow[(ccgt,demand),2050,1,20:20] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,20:20] 1
-    flow[(ccgt,demand),2050,1,20:20] consumer_balance[demand,2050,1,20:20] 1
-    flow[(ccgt,demand),2050,1,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,20:20] -1
-    flow[(ccgt,demand),2050,1,21:21] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,21:21] 1
-    flow[(ccgt,demand),2050,1,21:21] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,21:21] 1
-    flow[(ccgt,demand),2050,1,21:21] consumer_balance[demand,2050,1,21:21] 1
-    flow[(ccgt,demand),2050,1,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,21:21] -1
-    flow[(ccgt,demand),2050,1,22:22] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,22:22] 1
-    flow[(ccgt,demand),2050,1,22:22] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,22:22] 1
-    flow[(ccgt,demand),2050,1,22:22] consumer_balance[demand,2050,1,22:22] 1
-    flow[(ccgt,demand),2050,1,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,22:22] -1
-    flow[(ccgt,demand),2050,1,23:23] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,23:23] 1
-    flow[(ccgt,demand),2050,1,23:23] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,23:23] 1
-    flow[(ccgt,demand),2050,1,23:23] consumer_balance[demand,2050,1,23:23] 1
-    flow[(ccgt,demand),2050,1,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,23:23] -1
-    flow[(ccgt,demand),2050,1,24:24] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,24:24] 1
-    flow[(ccgt,demand),2050,1,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,24:24] 1
-    flow[(ccgt,demand),2050,1,24:24] consumer_balance[demand,2050,1,24:24] 1
-    flow[(ccgt,demand),2050,1,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,24:24] -1
     flow[(ens,demand),2050,1,1:1] max_output_flows_limit_simple_method[ens,2050,1,1:1] 1
     flow[(ens,demand),2050,1,1:1] consumer_balance[demand,2050,1,1:1] 1
-    flow[(ens,demand),2050,1,1:1] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,1:1] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,2:2] max_output_flows_limit_simple_method[ens,2050,1,2:2] 1
     flow[(ens,demand),2050,1,2:2] consumer_balance[demand,2050,1,2:2] 1
-    flow[(ens,demand),2050,1,2:2] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,2:2] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,3:3] max_output_flows_limit_simple_method[ens,2050,1,3:3] 1
     flow[(ens,demand),2050,1,3:3] consumer_balance[demand,2050,1,3:3] 1
-    flow[(ens,demand),2050,1,3:3] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,3:3] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,4:4] max_output_flows_limit_simple_method[ens,2050,1,4:4] 1
     flow[(ens,demand),2050,1,4:4] consumer_balance[demand,2050,1,4:4] 1
-    flow[(ens,demand),2050,1,4:4] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,4:4] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,5:5] max_output_flows_limit_simple_method[ens,2050,1,5:5] 1
     flow[(ens,demand),2050,1,5:5] consumer_balance[demand,2050,1,5:5] 1
-    flow[(ens,demand),2050,1,5:5] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,5:5] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,6:6] max_output_flows_limit_simple_method[ens,2050,1,6:6] 1
     flow[(ens,demand),2050,1,6:6] consumer_balance[demand,2050,1,6:6] 1
-    flow[(ens,demand),2050,1,6:6] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,6:6] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,7:7] max_output_flows_limit_simple_method[ens,2050,1,7:7] 1
     flow[(ens,demand),2050,1,7:7] consumer_balance[demand,2050,1,7:7] 1
-    flow[(ens,demand),2050,1,7:7] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,7:7] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,8:8] max_output_flows_limit_simple_method[ens,2050,1,8:8] 1
     flow[(ens,demand),2050,1,8:8] consumer_balance[demand,2050,1,8:8] 1
-    flow[(ens,demand),2050,1,8:8] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,8:8] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,9:9] max_output_flows_limit_simple_method[ens,2050,1,9:9] 1
     flow[(ens,demand),2050,1,9:9] consumer_balance[demand,2050,1,9:9] 1
-    flow[(ens,demand),2050,1,9:9] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,9:9] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,10:10] max_output_flows_limit_simple_method[ens,2050,1,10:10] 1
     flow[(ens,demand),2050,1,10:10] consumer_balance[demand,2050,1,10:10] 1
-    flow[(ens,demand),2050,1,10:10] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,10:10] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,11:11] max_output_flows_limit_simple_method[ens,2050,1,11:11] 1
     flow[(ens,demand),2050,1,11:11] consumer_balance[demand,2050,1,11:11] 1
-    flow[(ens,demand),2050,1,11:11] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,11:11] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,12:12] max_output_flows_limit_simple_method[ens,2050,1,12:12] 1
     flow[(ens,demand),2050,1,12:12] consumer_balance[demand,2050,1,12:12] 1
-    flow[(ens,demand),2050,1,12:12] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,12:12] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,13:13] max_output_flows_limit_simple_method[ens,2050,1,13:13] 1
     flow[(ens,demand),2050,1,13:13] consumer_balance[demand,2050,1,13:13] 1
-    flow[(ens,demand),2050,1,13:13] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,13:13] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,14:14] max_output_flows_limit_simple_method[ens,2050,1,14:14] 1
     flow[(ens,demand),2050,1,14:14] consumer_balance[demand,2050,1,14:14] 1
-    flow[(ens,demand),2050,1,14:14] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,14:14] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,15:15] max_output_flows_limit_simple_method[ens,2050,1,15:15] 1
     flow[(ens,demand),2050,1,15:15] consumer_balance[demand,2050,1,15:15] 1
-    flow[(ens,demand),2050,1,15:15] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,15:15] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,16:16] max_output_flows_limit_simple_method[ens,2050,1,16:16] 1
     flow[(ens,demand),2050,1,16:16] consumer_balance[demand,2050,1,16:16] 1
-    flow[(ens,demand),2050,1,16:16] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,16:16] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,17:17] max_output_flows_limit_simple_method[ens,2050,1,17:17] 1
     flow[(ens,demand),2050,1,17:17] consumer_balance[demand,2050,1,17:17] 1
-    flow[(ens,demand),2050,1,17:17] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,17:17] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,18:18] max_output_flows_limit_simple_method[ens,2050,1,18:18] 1
     flow[(ens,demand),2050,1,18:18] consumer_balance[demand,2050,1,18:18] 1
-    flow[(ens,demand),2050,1,18:18] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,18:18] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,19:19] max_output_flows_limit_simple_method[ens,2050,1,19:19] 1
     flow[(ens,demand),2050,1,19:19] consumer_balance[demand,2050,1,19:19] 1
-    flow[(ens,demand),2050,1,19:19] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,19:19] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,20:20] max_output_flows_limit_simple_method[ens,2050,1,20:20] 1
     flow[(ens,demand),2050,1,20:20] consumer_balance[demand,2050,1,20:20] 1
-    flow[(ens,demand),2050,1,20:20] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,20:20] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,21:21] max_output_flows_limit_simple_method[ens,2050,1,21:21] 1
     flow[(ens,demand),2050,1,21:21] consumer_balance[demand,2050,1,21:21] 1
-    flow[(ens,demand),2050,1,21:21] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,21:21] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,22:22] max_output_flows_limit_simple_method[ens,2050,1,22:22] 1
     flow[(ens,demand),2050,1,22:22] consumer_balance[demand,2050,1,22:22] 1
-    flow[(ens,demand),2050,1,22:22] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,22:22] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,23:23] max_output_flows_limit_simple_method[ens,2050,1,23:23] 1
     flow[(ens,demand),2050,1,23:23] consumer_balance[demand,2050,1,23:23] 1
-    flow[(ens,demand),2050,1,23:23] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,23:23] OBJ 5.413506020039009
     flow[(ens,demand),2050,1,24:24] max_output_flows_limit_simple_method[ens,2050,1,24:24] 1
     flow[(ens,demand),2050,1,24:24] consumer_balance[demand,2050,1,24:24] 1
-    flow[(ens,demand),2050,1,24:24] OBJ 5.413506020039017
+    flow[(ens,demand),2050,1,24:24] OBJ 5.413506020039009
     flow[(ocgt,demand),2050,1,1:1] max_output_flows_limit_simple_method[ocgt,2050,1,1:1] 1
     flow[(ocgt,demand),2050,1,1:1] consumer_balance[demand,2050,1,1:1] 1
-    flow[(ocgt,demand),2050,1,1:1] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,1:1] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,2:2] max_output_flows_limit_simple_method[ocgt,2050,1,2:2] 1
     flow[(ocgt,demand),2050,1,2:2] consumer_balance[demand,2050,1,2:2] 1
-    flow[(ocgt,demand),2050,1,2:2] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,2:2] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,3:3] max_output_flows_limit_simple_method[ocgt,2050,1,3:3] 1
     flow[(ocgt,demand),2050,1,3:3] consumer_balance[demand,2050,1,3:3] 1
-    flow[(ocgt,demand),2050,1,3:3] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,3:3] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,4:4] max_output_flows_limit_simple_method[ocgt,2050,1,4:4] 1
     flow[(ocgt,demand),2050,1,4:4] consumer_balance[demand,2050,1,4:4] 1
-    flow[(ocgt,demand),2050,1,4:4] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,4:4] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,5:5] max_output_flows_limit_simple_method[ocgt,2050,1,5:5] 1
     flow[(ocgt,demand),2050,1,5:5] consumer_balance[demand,2050,1,5:5] 1
-    flow[(ocgt,demand),2050,1,5:5] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,5:5] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,6:6] max_output_flows_limit_simple_method[ocgt,2050,1,6:6] 1
     flow[(ocgt,demand),2050,1,6:6] consumer_balance[demand,2050,1,6:6] 1
-    flow[(ocgt,demand),2050,1,6:6] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,6:6] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,7:7] max_output_flows_limit_simple_method[ocgt,2050,1,7:7] 1
     flow[(ocgt,demand),2050,1,7:7] consumer_balance[demand,2050,1,7:7] 1
-    flow[(ocgt,demand),2050,1,7:7] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,7:7] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,8:8] max_output_flows_limit_simple_method[ocgt,2050,1,8:8] 1
     flow[(ocgt,demand),2050,1,8:8] consumer_balance[demand,2050,1,8:8] 1
-    flow[(ocgt,demand),2050,1,8:8] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,8:8] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,9:9] max_output_flows_limit_simple_method[ocgt,2050,1,9:9] 1
     flow[(ocgt,demand),2050,1,9:9] consumer_balance[demand,2050,1,9:9] 1
-    flow[(ocgt,demand),2050,1,9:9] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,9:9] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,10:10] max_output_flows_limit_simple_method[ocgt,2050,1,10:10] 1
     flow[(ocgt,demand),2050,1,10:10] consumer_balance[demand,2050,1,10:10] 1
-    flow[(ocgt,demand),2050,1,10:10] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,10:10] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,11:11] max_output_flows_limit_simple_method[ocgt,2050,1,11:11] 1
     flow[(ocgt,demand),2050,1,11:11] consumer_balance[demand,2050,1,11:11] 1
-    flow[(ocgt,demand),2050,1,11:11] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,11:11] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,12:12] max_output_flows_limit_simple_method[ocgt,2050,1,12:12] 1
     flow[(ocgt,demand),2050,1,12:12] consumer_balance[demand,2050,1,12:12] 1
-    flow[(ocgt,demand),2050,1,12:12] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,12:12] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,13:13] max_output_flows_limit_simple_method[ocgt,2050,1,13:13] 1
     flow[(ocgt,demand),2050,1,13:13] consumer_balance[demand,2050,1,13:13] 1
-    flow[(ocgt,demand),2050,1,13:13] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,13:13] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,14:14] max_output_flows_limit_simple_method[ocgt,2050,1,14:14] 1
     flow[(ocgt,demand),2050,1,14:14] consumer_balance[demand,2050,1,14:14] 1
-    flow[(ocgt,demand),2050,1,14:14] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,14:14] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,15:15] max_output_flows_limit_simple_method[ocgt,2050,1,15:15] 1
     flow[(ocgt,demand),2050,1,15:15] consumer_balance[demand,2050,1,15:15] 1
-    flow[(ocgt,demand),2050,1,15:15] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,15:15] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,16:16] max_output_flows_limit_simple_method[ocgt,2050,1,16:16] 1
     flow[(ocgt,demand),2050,1,16:16] consumer_balance[demand,2050,1,16:16] 1
-    flow[(ocgt,demand),2050,1,16:16] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,16:16] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,17:17] max_output_flows_limit_simple_method[ocgt,2050,1,17:17] 1
     flow[(ocgt,demand),2050,1,17:17] consumer_balance[demand,2050,1,17:17] 1
-    flow[(ocgt,demand),2050,1,17:17] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,17:17] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,18:18] max_output_flows_limit_simple_method[ocgt,2050,1,18:18] 1
     flow[(ocgt,demand),2050,1,18:18] consumer_balance[demand,2050,1,18:18] 1
-    flow[(ocgt,demand),2050,1,18:18] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,18:18] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,19:19] max_output_flows_limit_simple_method[ocgt,2050,1,19:19] 1
     flow[(ocgt,demand),2050,1,19:19] consumer_balance[demand,2050,1,19:19] 1
-    flow[(ocgt,demand),2050,1,19:19] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,19:19] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,20:20] max_output_flows_limit_simple_method[ocgt,2050,1,20:20] 1
     flow[(ocgt,demand),2050,1,20:20] consumer_balance[demand,2050,1,20:20] 1
-    flow[(ocgt,demand),2050,1,20:20] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,20:20] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,21:21] max_output_flows_limit_simple_method[ocgt,2050,1,21:21] 1
     flow[(ocgt,demand),2050,1,21:21] consumer_balance[demand,2050,1,21:21] 1
-    flow[(ocgt,demand),2050,1,21:21] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,21:21] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,22:22] max_output_flows_limit_simple_method[ocgt,2050,1,22:22] 1
     flow[(ocgt,demand),2050,1,22:22] consumer_balance[demand,2050,1,22:22] 1
-    flow[(ocgt,demand),2050,1,22:22] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,22:22] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,23:23] max_output_flows_limit_simple_method[ocgt,2050,1,23:23] 1
     flow[(ocgt,demand),2050,1,23:23] consumer_balance[demand,2050,1,23:23] 1
-    flow[(ocgt,demand),2050,1,23:23] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,23:23] OBJ 603.6059212343496
     flow[(ocgt,demand),2050,1,24:24] max_output_flows_limit_simple_method[ocgt,2050,1,24:24] 1
     flow[(ocgt,demand),2050,1,24:24] consumer_balance[demand,2050,1,24:24] 1
-    flow[(ocgt,demand),2050,1,24:24] OBJ 603.6059212343504
+    flow[(ocgt,demand),2050,1,24:24] OBJ 603.6059212343496
     flow[(demand,battery),2050,1,1:1] max_input_flows_limit_simple_method[battery,2050,1,1:1] 1
     flow[(demand,battery),2050,1,1:1] consumer_balance[demand,2050,1,1:1] -1
     flow[(demand,battery),2050,1,1:1] balance_storage_rep_period[battery,2050,1,1:1] -0.95
@@ -4204,78 +4108,174 @@ COLUMNS
     flow[(battery,demand),2050,1,24:24] max_output_flows_limit_simple_method[battery,2050,1,24:24] 1
     flow[(battery,demand),2050,1,24:24] consumer_balance[demand,2050,1,24:24] 1
     flow[(battery,demand),2050,1,24:24] balance_storage_rep_period[battery,2050,1,24:24] 1.0526315789473684
+    flow[(ccgt,demand),2050,1,1:1] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,1:1] 1
+    flow[(ccgt,demand),2050,1,1:1] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,1:1] 1
+    flow[(ccgt,demand),2050,1,1:1] consumer_balance[demand,2050,1,1:1] 1
+    flow[(ccgt,demand),2050,1,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,1:1] -1
+    flow[(ccgt,demand),2050,1,2:2] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,2:2] 1
+    flow[(ccgt,demand),2050,1,2:2] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,2:2] 1
+    flow[(ccgt,demand),2050,1,2:2] consumer_balance[demand,2050,1,2:2] 1
+    flow[(ccgt,demand),2050,1,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,2:2] -1
+    flow[(ccgt,demand),2050,1,3:3] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,3:3] 1
+    flow[(ccgt,demand),2050,1,3:3] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,3:3] 1
+    flow[(ccgt,demand),2050,1,3:3] consumer_balance[demand,2050,1,3:3] 1
+    flow[(ccgt,demand),2050,1,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,3:3] -1
+    flow[(ccgt,demand),2050,1,4:4] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,4:4] 1
+    flow[(ccgt,demand),2050,1,4:4] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,4:4] 1
+    flow[(ccgt,demand),2050,1,4:4] consumer_balance[demand,2050,1,4:4] 1
+    flow[(ccgt,demand),2050,1,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,4:4] -1
+    flow[(ccgt,demand),2050,1,5:5] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,5:5] 1
+    flow[(ccgt,demand),2050,1,5:5] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,5:5] 1
+    flow[(ccgt,demand),2050,1,5:5] consumer_balance[demand,2050,1,5:5] 1
+    flow[(ccgt,demand),2050,1,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,5:5] -1
+    flow[(ccgt,demand),2050,1,6:6] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,6:6] 1
+    flow[(ccgt,demand),2050,1,6:6] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,6:6] 1
+    flow[(ccgt,demand),2050,1,6:6] consumer_balance[demand,2050,1,6:6] 1
+    flow[(ccgt,demand),2050,1,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,6:6] -1
+    flow[(ccgt,demand),2050,1,7:7] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,7:7] 1
+    flow[(ccgt,demand),2050,1,7:7] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,7:7] 1
+    flow[(ccgt,demand),2050,1,7:7] consumer_balance[demand,2050,1,7:7] 1
+    flow[(ccgt,demand),2050,1,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,7:7] -1
+    flow[(ccgt,demand),2050,1,8:8] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,8:8] 1
+    flow[(ccgt,demand),2050,1,8:8] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,8:8] 1
+    flow[(ccgt,demand),2050,1,8:8] consumer_balance[demand,2050,1,8:8] 1
+    flow[(ccgt,demand),2050,1,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,8:8] -1
+    flow[(ccgt,demand),2050,1,9:9] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,9:9] 1
+    flow[(ccgt,demand),2050,1,9:9] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,9:9] 1
+    flow[(ccgt,demand),2050,1,9:9] consumer_balance[demand,2050,1,9:9] 1
+    flow[(ccgt,demand),2050,1,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,9:9] -1
+    flow[(ccgt,demand),2050,1,10:10] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,10:10] 1
+    flow[(ccgt,demand),2050,1,10:10] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,10:10] 1
+    flow[(ccgt,demand),2050,1,10:10] consumer_balance[demand,2050,1,10:10] 1
+    flow[(ccgt,demand),2050,1,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,10:10] -1
+    flow[(ccgt,demand),2050,1,11:11] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,11:11] 1
+    flow[(ccgt,demand),2050,1,11:11] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,11:11] 1
+    flow[(ccgt,demand),2050,1,11:11] consumer_balance[demand,2050,1,11:11] 1
+    flow[(ccgt,demand),2050,1,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,11:11] -1
+    flow[(ccgt,demand),2050,1,12:12] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,12:12] 1
+    flow[(ccgt,demand),2050,1,12:12] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,12:12] 1
+    flow[(ccgt,demand),2050,1,12:12] consumer_balance[demand,2050,1,12:12] 1
+    flow[(ccgt,demand),2050,1,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,12:12] -1
+    flow[(ccgt,demand),2050,1,13:13] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,13:13] 1
+    flow[(ccgt,demand),2050,1,13:13] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,13:13] 1
+    flow[(ccgt,demand),2050,1,13:13] consumer_balance[demand,2050,1,13:13] 1
+    flow[(ccgt,demand),2050,1,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,13:13] -1
+    flow[(ccgt,demand),2050,1,14:14] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,14:14] 1
+    flow[(ccgt,demand),2050,1,14:14] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,14:14] 1
+    flow[(ccgt,demand),2050,1,14:14] consumer_balance[demand,2050,1,14:14] 1
+    flow[(ccgt,demand),2050,1,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,14:14] -1
+    flow[(ccgt,demand),2050,1,15:15] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,15:15] 1
+    flow[(ccgt,demand),2050,1,15:15] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,15:15] 1
+    flow[(ccgt,demand),2050,1,15:15] consumer_balance[demand,2050,1,15:15] 1
+    flow[(ccgt,demand),2050,1,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,15:15] -1
+    flow[(ccgt,demand),2050,1,16:16] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,16:16] 1
+    flow[(ccgt,demand),2050,1,16:16] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,16:16] 1
+    flow[(ccgt,demand),2050,1,16:16] consumer_balance[demand,2050,1,16:16] 1
+    flow[(ccgt,demand),2050,1,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,16:16] -1
+    flow[(ccgt,demand),2050,1,17:17] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,17:17] 1
+    flow[(ccgt,demand),2050,1,17:17] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,17:17] 1
+    flow[(ccgt,demand),2050,1,17:17] consumer_balance[demand,2050,1,17:17] 1
+    flow[(ccgt,demand),2050,1,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,17:17] -1
+    flow[(ccgt,demand),2050,1,18:18] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,18:18] 1
+    flow[(ccgt,demand),2050,1,18:18] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,18:18] 1
+    flow[(ccgt,demand),2050,1,18:18] consumer_balance[demand,2050,1,18:18] 1
+    flow[(ccgt,demand),2050,1,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,18:18] -1
+    flow[(ccgt,demand),2050,1,19:19] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,19:19] 1
+    flow[(ccgt,demand),2050,1,19:19] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,19:19] 1
+    flow[(ccgt,demand),2050,1,19:19] consumer_balance[demand,2050,1,19:19] 1
+    flow[(ccgt,demand),2050,1,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,19:19] -1
+    flow[(ccgt,demand),2050,1,20:20] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,20:20] 1
+    flow[(ccgt,demand),2050,1,20:20] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,20:20] 1
+    flow[(ccgt,demand),2050,1,20:20] consumer_balance[demand,2050,1,20:20] 1
+    flow[(ccgt,demand),2050,1,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,20:20] -1
+    flow[(ccgt,demand),2050,1,21:21] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,21:21] 1
+    flow[(ccgt,demand),2050,1,21:21] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,21:21] 1
+    flow[(ccgt,demand),2050,1,21:21] consumer_balance[demand,2050,1,21:21] 1
+    flow[(ccgt,demand),2050,1,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,21:21] -1
+    flow[(ccgt,demand),2050,1,22:22] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,22:22] 1
+    flow[(ccgt,demand),2050,1,22:22] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,22:22] 1
+    flow[(ccgt,demand),2050,1,22:22] consumer_balance[demand,2050,1,22:22] 1
+    flow[(ccgt,demand),2050,1,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,22:22] -1
+    flow[(ccgt,demand),2050,1,23:23] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,23:23] 1
+    flow[(ccgt,demand),2050,1,23:23] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,23:23] 1
+    flow[(ccgt,demand),2050,1,23:23] consumer_balance[demand,2050,1,23:23] 1
+    flow[(ccgt,demand),2050,1,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,23:23] -1
+    flow[(ccgt,demand),2050,1,24:24] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,24:24] 1
+    flow[(ccgt,demand),2050,1,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2050,1,24:24] 1
+    flow[(ccgt,demand),2050,1,24:24] consumer_balance[demand,2050,1,24:24] 1
+    flow[(ccgt,demand),2050,1,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,24:24] -1
     flow[(wind,demand),2050,1,1:1] max_output_flows_limit_compact_method[wind,2050,1,1:1] 1
     flow[(wind,demand),2050,1,1:1] consumer_balance[demand,2050,1,1:1] 1
-    flow[(wind,demand),2050,1,1:1] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,1:1] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,2:2] max_output_flows_limit_compact_method[wind,2050,1,2:2] 1
     flow[(wind,demand),2050,1,2:2] consumer_balance[demand,2050,1,2:2] 1
-    flow[(wind,demand),2050,1,2:2] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,2:2] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,3:3] max_output_flows_limit_compact_method[wind,2050,1,3:3] 1
     flow[(wind,demand),2050,1,3:3] consumer_balance[demand,2050,1,3:3] 1
-    flow[(wind,demand),2050,1,3:3] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,3:3] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,4:4] max_output_flows_limit_compact_method[wind,2050,1,4:4] 1
     flow[(wind,demand),2050,1,4:4] consumer_balance[demand,2050,1,4:4] 1
-    flow[(wind,demand),2050,1,4:4] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,4:4] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,5:5] max_output_flows_limit_compact_method[wind,2050,1,5:5] 1
     flow[(wind,demand),2050,1,5:5] consumer_balance[demand,2050,1,5:5] 1
-    flow[(wind,demand),2050,1,5:5] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,5:5] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,6:6] max_output_flows_limit_compact_method[wind,2050,1,6:6] 1
     flow[(wind,demand),2050,1,6:6] consumer_balance[demand,2050,1,6:6] 1
-    flow[(wind,demand),2050,1,6:6] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,6:6] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,7:7] max_output_flows_limit_compact_method[wind,2050,1,7:7] 1
     flow[(wind,demand),2050,1,7:7] consumer_balance[demand,2050,1,7:7] 1
-    flow[(wind,demand),2050,1,7:7] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,7:7] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,8:8] max_output_flows_limit_compact_method[wind,2050,1,8:8] 1
     flow[(wind,demand),2050,1,8:8] consumer_balance[demand,2050,1,8:8] 1
-    flow[(wind,demand),2050,1,8:8] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,8:8] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,9:9] max_output_flows_limit_compact_method[wind,2050,1,9:9] 1
     flow[(wind,demand),2050,1,9:9] consumer_balance[demand,2050,1,9:9] 1
-    flow[(wind,demand),2050,1,9:9] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,9:9] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,10:10] max_output_flows_limit_compact_method[wind,2050,1,10:10] 1
     flow[(wind,demand),2050,1,10:10] consumer_balance[demand,2050,1,10:10] 1
-    flow[(wind,demand),2050,1,10:10] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,10:10] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,11:11] max_output_flows_limit_compact_method[wind,2050,1,11:11] 1
     flow[(wind,demand),2050,1,11:11] consumer_balance[demand,2050,1,11:11] 1
-    flow[(wind,demand),2050,1,11:11] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,11:11] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,12:12] max_output_flows_limit_compact_method[wind,2050,1,12:12] 1
     flow[(wind,demand),2050,1,12:12] consumer_balance[demand,2050,1,12:12] 1
-    flow[(wind,demand),2050,1,12:12] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,12:12] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,13:13] max_output_flows_limit_compact_method[wind,2050,1,13:13] 1
     flow[(wind,demand),2050,1,13:13] consumer_balance[demand,2050,1,13:13] 1
-    flow[(wind,demand),2050,1,13:13] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,13:13] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,14:14] max_output_flows_limit_compact_method[wind,2050,1,14:14] 1
     flow[(wind,demand),2050,1,14:14] consumer_balance[demand,2050,1,14:14] 1
-    flow[(wind,demand),2050,1,14:14] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,14:14] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,15:15] max_output_flows_limit_compact_method[wind,2050,1,15:15] 1
     flow[(wind,demand),2050,1,15:15] consumer_balance[demand,2050,1,15:15] 1
-    flow[(wind,demand),2050,1,15:15] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,15:15] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,16:16] max_output_flows_limit_compact_method[wind,2050,1,16:16] 1
     flow[(wind,demand),2050,1,16:16] consumer_balance[demand,2050,1,16:16] 1
-    flow[(wind,demand),2050,1,16:16] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,16:16] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,17:17] max_output_flows_limit_compact_method[wind,2050,1,17:17] 1
     flow[(wind,demand),2050,1,17:17] consumer_balance[demand,2050,1,17:17] 1
-    flow[(wind,demand),2050,1,17:17] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,17:17] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,18:18] max_output_flows_limit_compact_method[wind,2050,1,18:18] 1
     flow[(wind,demand),2050,1,18:18] consumer_balance[demand,2050,1,18:18] 1
-    flow[(wind,demand),2050,1,18:18] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,18:18] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,19:19] max_output_flows_limit_compact_method[wind,2050,1,19:19] 1
     flow[(wind,demand),2050,1,19:19] consumer_balance[demand,2050,1,19:19] 1
-    flow[(wind,demand),2050,1,19:19] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,19:19] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,20:20] max_output_flows_limit_compact_method[wind,2050,1,20:20] 1
     flow[(wind,demand),2050,1,20:20] consumer_balance[demand,2050,1,20:20] 1
-    flow[(wind,demand),2050,1,20:20] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,20:20] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,21:21] max_output_flows_limit_compact_method[wind,2050,1,21:21] 1
     flow[(wind,demand),2050,1,21:21] consumer_balance[demand,2050,1,21:21] 1
-    flow[(wind,demand),2050,1,21:21] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,21:21] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,22:22] max_output_flows_limit_compact_method[wind,2050,1,22:22] 1
     flow[(wind,demand),2050,1,22:22] consumer_balance[demand,2050,1,22:22] 1
-    flow[(wind,demand),2050,1,22:22] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,22:22] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,23:23] max_output_flows_limit_compact_method[wind,2050,1,23:23] 1
     flow[(wind,demand),2050,1,23:23] consumer_balance[demand,2050,1,23:23] 1
-    flow[(wind,demand),2050,1,23:23] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,23:23] OBJ 0.030075033444661163
     flow[(wind,demand),2050,1,24:24] max_output_flows_limit_compact_method[wind,2050,1,24:24] 1
     flow[(wind,demand),2050,1,24:24] consumer_balance[demand,2050,1,24:24] 1
-    flow[(wind,demand),2050,1,24:24] OBJ 0.030075033444661205
+    flow[(wind,demand),2050,1,24:24] OBJ 0.030075033444661163
     flow[(solar,demand),2050,1,1:1] max_output_flows_limit_simple_method[solar,2050,1,1:1] 1
     flow[(solar,demand),2050,1,1:1] consumer_balance[demand,2050,1,1:1] 1
     flow[(solar,demand),2050,1,2:2] max_output_flows_limit_simple_method[solar,2050,1,2:2] 1
@@ -4324,246 +4324,150 @@ COLUMNS
     flow[(solar,demand),2050,1,23:23] consumer_balance[demand,2050,1,23:23] 1
     flow[(solar,demand),2050,1,24:24] max_output_flows_limit_simple_method[solar,2050,1,24:24] 1
     flow[(solar,demand),2050,1,24:24] consumer_balance[demand,2050,1,24:24] 1
-    flow[(ccgt,demand),2050,2,1:1] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,1:1] 1
-    flow[(ccgt,demand),2050,2,1:1] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,1:1] 1
-    flow[(ccgt,demand),2050,2,1:1] consumer_balance[demand,2050,2,1:1] 1
-    flow[(ccgt,demand),2050,2,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,1:1] -1
-    flow[(ccgt,demand),2050,2,2:2] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,2:2] 1
-    flow[(ccgt,demand),2050,2,2:2] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,2:2] 1
-    flow[(ccgt,demand),2050,2,2:2] consumer_balance[demand,2050,2,2:2] 1
-    flow[(ccgt,demand),2050,2,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,2:2] -1
-    flow[(ccgt,demand),2050,2,3:3] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,3:3] 1
-    flow[(ccgt,demand),2050,2,3:3] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,3:3] 1
-    flow[(ccgt,demand),2050,2,3:3] consumer_balance[demand,2050,2,3:3] 1
-    flow[(ccgt,demand),2050,2,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,3:3] -1
-    flow[(ccgt,demand),2050,2,4:4] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,4:4] 1
-    flow[(ccgt,demand),2050,2,4:4] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,4:4] 1
-    flow[(ccgt,demand),2050,2,4:4] consumer_balance[demand,2050,2,4:4] 1
-    flow[(ccgt,demand),2050,2,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,4:4] -1
-    flow[(ccgt,demand),2050,2,5:5] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,5:5] 1
-    flow[(ccgt,demand),2050,2,5:5] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,5:5] 1
-    flow[(ccgt,demand),2050,2,5:5] consumer_balance[demand,2050,2,5:5] 1
-    flow[(ccgt,demand),2050,2,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,5:5] -1
-    flow[(ccgt,demand),2050,2,6:6] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,6:6] 1
-    flow[(ccgt,demand),2050,2,6:6] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,6:6] 1
-    flow[(ccgt,demand),2050,2,6:6] consumer_balance[demand,2050,2,6:6] 1
-    flow[(ccgt,demand),2050,2,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,6:6] -1
-    flow[(ccgt,demand),2050,2,7:7] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,7:7] 1
-    flow[(ccgt,demand),2050,2,7:7] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,7:7] 1
-    flow[(ccgt,demand),2050,2,7:7] consumer_balance[demand,2050,2,7:7] 1
-    flow[(ccgt,demand),2050,2,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,7:7] -1
-    flow[(ccgt,demand),2050,2,8:8] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,8:8] 1
-    flow[(ccgt,demand),2050,2,8:8] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,8:8] 1
-    flow[(ccgt,demand),2050,2,8:8] consumer_balance[demand,2050,2,8:8] 1
-    flow[(ccgt,demand),2050,2,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,8:8] -1
-    flow[(ccgt,demand),2050,2,9:9] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,9:9] 1
-    flow[(ccgt,demand),2050,2,9:9] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,9:9] 1
-    flow[(ccgt,demand),2050,2,9:9] consumer_balance[demand,2050,2,9:9] 1
-    flow[(ccgt,demand),2050,2,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,9:9] -1
-    flow[(ccgt,demand),2050,2,10:10] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,10:10] 1
-    flow[(ccgt,demand),2050,2,10:10] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,10:10] 1
-    flow[(ccgt,demand),2050,2,10:10] consumer_balance[demand,2050,2,10:10] 1
-    flow[(ccgt,demand),2050,2,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,10:10] -1
-    flow[(ccgt,demand),2050,2,11:11] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,11:11] 1
-    flow[(ccgt,demand),2050,2,11:11] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,11:11] 1
-    flow[(ccgt,demand),2050,2,11:11] consumer_balance[demand,2050,2,11:11] 1
-    flow[(ccgt,demand),2050,2,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,11:11] -1
-    flow[(ccgt,demand),2050,2,12:12] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,12:12] 1
-    flow[(ccgt,demand),2050,2,12:12] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,12:12] 1
-    flow[(ccgt,demand),2050,2,12:12] consumer_balance[demand,2050,2,12:12] 1
-    flow[(ccgt,demand),2050,2,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,12:12] -1
-    flow[(ccgt,demand),2050,2,13:13] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,13:13] 1
-    flow[(ccgt,demand),2050,2,13:13] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,13:13] 1
-    flow[(ccgt,demand),2050,2,13:13] consumer_balance[demand,2050,2,13:13] 1
-    flow[(ccgt,demand),2050,2,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,13:13] -1
-    flow[(ccgt,demand),2050,2,14:14] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,14:14] 1
-    flow[(ccgt,demand),2050,2,14:14] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,14:14] 1
-    flow[(ccgt,demand),2050,2,14:14] consumer_balance[demand,2050,2,14:14] 1
-    flow[(ccgt,demand),2050,2,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,14:14] -1
-    flow[(ccgt,demand),2050,2,15:15] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,15:15] 1
-    flow[(ccgt,demand),2050,2,15:15] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,15:15] 1
-    flow[(ccgt,demand),2050,2,15:15] consumer_balance[demand,2050,2,15:15] 1
-    flow[(ccgt,demand),2050,2,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,15:15] -1
-    flow[(ccgt,demand),2050,2,16:16] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,16:16] 1
-    flow[(ccgt,demand),2050,2,16:16] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,16:16] 1
-    flow[(ccgt,demand),2050,2,16:16] consumer_balance[demand,2050,2,16:16] 1
-    flow[(ccgt,demand),2050,2,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,16:16] -1
-    flow[(ccgt,demand),2050,2,17:17] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,17:17] 1
-    flow[(ccgt,demand),2050,2,17:17] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,17:17] 1
-    flow[(ccgt,demand),2050,2,17:17] consumer_balance[demand,2050,2,17:17] 1
-    flow[(ccgt,demand),2050,2,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,17:17] -1
-    flow[(ccgt,demand),2050,2,18:18] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,18:18] 1
-    flow[(ccgt,demand),2050,2,18:18] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,18:18] 1
-    flow[(ccgt,demand),2050,2,18:18] consumer_balance[demand,2050,2,18:18] 1
-    flow[(ccgt,demand),2050,2,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,18:18] -1
-    flow[(ccgt,demand),2050,2,19:19] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,19:19] 1
-    flow[(ccgt,demand),2050,2,19:19] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,19:19] 1
-    flow[(ccgt,demand),2050,2,19:19] consumer_balance[demand,2050,2,19:19] 1
-    flow[(ccgt,demand),2050,2,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,19:19] -1
-    flow[(ccgt,demand),2050,2,20:20] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,20:20] 1
-    flow[(ccgt,demand),2050,2,20:20] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,20:20] 1
-    flow[(ccgt,demand),2050,2,20:20] consumer_balance[demand,2050,2,20:20] 1
-    flow[(ccgt,demand),2050,2,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,20:20] -1
-    flow[(ccgt,demand),2050,2,21:21] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,21:21] 1
-    flow[(ccgt,demand),2050,2,21:21] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,21:21] 1
-    flow[(ccgt,demand),2050,2,21:21] consumer_balance[demand,2050,2,21:21] 1
-    flow[(ccgt,demand),2050,2,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,21:21] -1
-    flow[(ccgt,demand),2050,2,22:22] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,22:22] 1
-    flow[(ccgt,demand),2050,2,22:22] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,22:22] 1
-    flow[(ccgt,demand),2050,2,22:22] consumer_balance[demand,2050,2,22:22] 1
-    flow[(ccgt,demand),2050,2,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,22:22] -1
-    flow[(ccgt,demand),2050,2,23:23] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,23:23] 1
-    flow[(ccgt,demand),2050,2,23:23] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,23:23] 1
-    flow[(ccgt,demand),2050,2,23:23] consumer_balance[demand,2050,2,23:23] 1
-    flow[(ccgt,demand),2050,2,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,23:23] -1
-    flow[(ccgt,demand),2050,2,24:24] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,24:24] 1
-    flow[(ccgt,demand),2050,2,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,24:24] 1
-    flow[(ccgt,demand),2050,2,24:24] consumer_balance[demand,2050,2,24:24] 1
-    flow[(ccgt,demand),2050,2,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,24:24] -1
     flow[(ens,demand),2050,2,1:1] max_output_flows_limit_simple_method[ens,2050,2,1:1] 1
     flow[(ens,demand),2050,2,1:1] consumer_balance[demand,2050,2,1:1] 1
-    flow[(ens,demand),2050,2,1:1] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,1:1] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,2:2] max_output_flows_limit_simple_method[ens,2050,2,2:2] 1
     flow[(ens,demand),2050,2,2:2] consumer_balance[demand,2050,2,2:2] 1
-    flow[(ens,demand),2050,2,2:2] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,2:2] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,3:3] max_output_flows_limit_simple_method[ens,2050,2,3:3] 1
     flow[(ens,demand),2050,2,3:3] consumer_balance[demand,2050,2,3:3] 1
-    flow[(ens,demand),2050,2,3:3] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,3:3] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,4:4] max_output_flows_limit_simple_method[ens,2050,2,4:4] 1
     flow[(ens,demand),2050,2,4:4] consumer_balance[demand,2050,2,4:4] 1
-    flow[(ens,demand),2050,2,4:4] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,4:4] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,5:5] max_output_flows_limit_simple_method[ens,2050,2,5:5] 1
     flow[(ens,demand),2050,2,5:5] consumer_balance[demand,2050,2,5:5] 1
-    flow[(ens,demand),2050,2,5:5] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,5:5] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,6:6] max_output_flows_limit_simple_method[ens,2050,2,6:6] 1
     flow[(ens,demand),2050,2,6:6] consumer_balance[demand,2050,2,6:6] 1
-    flow[(ens,demand),2050,2,6:6] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,6:6] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,7:7] max_output_flows_limit_simple_method[ens,2050,2,7:7] 1
     flow[(ens,demand),2050,2,7:7] consumer_balance[demand,2050,2,7:7] 1
-    flow[(ens,demand),2050,2,7:7] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,7:7] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,8:8] max_output_flows_limit_simple_method[ens,2050,2,8:8] 1
     flow[(ens,demand),2050,2,8:8] consumer_balance[demand,2050,2,8:8] 1
-    flow[(ens,demand),2050,2,8:8] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,8:8] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,9:9] max_output_flows_limit_simple_method[ens,2050,2,9:9] 1
     flow[(ens,demand),2050,2,9:9] consumer_balance[demand,2050,2,9:9] 1
-    flow[(ens,demand),2050,2,9:9] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,9:9] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,10:10] max_output_flows_limit_simple_method[ens,2050,2,10:10] 1
     flow[(ens,demand),2050,2,10:10] consumer_balance[demand,2050,2,10:10] 1
-    flow[(ens,demand),2050,2,10:10] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,10:10] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,11:11] max_output_flows_limit_simple_method[ens,2050,2,11:11] 1
     flow[(ens,demand),2050,2,11:11] consumer_balance[demand,2050,2,11:11] 1
-    flow[(ens,demand),2050,2,11:11] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,11:11] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,12:12] max_output_flows_limit_simple_method[ens,2050,2,12:12] 1
     flow[(ens,demand),2050,2,12:12] consumer_balance[demand,2050,2,12:12] 1
-    flow[(ens,demand),2050,2,12:12] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,12:12] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,13:13] max_output_flows_limit_simple_method[ens,2050,2,13:13] 1
     flow[(ens,demand),2050,2,13:13] consumer_balance[demand,2050,2,13:13] 1
-    flow[(ens,demand),2050,2,13:13] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,13:13] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,14:14] max_output_flows_limit_simple_method[ens,2050,2,14:14] 1
     flow[(ens,demand),2050,2,14:14] consumer_balance[demand,2050,2,14:14] 1
-    flow[(ens,demand),2050,2,14:14] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,14:14] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,15:15] max_output_flows_limit_simple_method[ens,2050,2,15:15] 1
     flow[(ens,demand),2050,2,15:15] consumer_balance[demand,2050,2,15:15] 1
-    flow[(ens,demand),2050,2,15:15] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,15:15] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,16:16] max_output_flows_limit_simple_method[ens,2050,2,16:16] 1
     flow[(ens,demand),2050,2,16:16] consumer_balance[demand,2050,2,16:16] 1
-    flow[(ens,demand),2050,2,16:16] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,16:16] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,17:17] max_output_flows_limit_simple_method[ens,2050,2,17:17] 1
     flow[(ens,demand),2050,2,17:17] consumer_balance[demand,2050,2,17:17] 1
-    flow[(ens,demand),2050,2,17:17] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,17:17] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,18:18] max_output_flows_limit_simple_method[ens,2050,2,18:18] 1
     flow[(ens,demand),2050,2,18:18] consumer_balance[demand,2050,2,18:18] 1
-    flow[(ens,demand),2050,2,18:18] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,18:18] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,19:19] max_output_flows_limit_simple_method[ens,2050,2,19:19] 1
     flow[(ens,demand),2050,2,19:19] consumer_balance[demand,2050,2,19:19] 1
-    flow[(ens,demand),2050,2,19:19] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,19:19] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,20:20] max_output_flows_limit_simple_method[ens,2050,2,20:20] 1
     flow[(ens,demand),2050,2,20:20] consumer_balance[demand,2050,2,20:20] 1
-    flow[(ens,demand),2050,2,20:20] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,20:20] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,21:21] max_output_flows_limit_simple_method[ens,2050,2,21:21] 1
     flow[(ens,demand),2050,2,21:21] consumer_balance[demand,2050,2,21:21] 1
-    flow[(ens,demand),2050,2,21:21] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,21:21] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,22:22] max_output_flows_limit_simple_method[ens,2050,2,22:22] 1
     flow[(ens,demand),2050,2,22:22] consumer_balance[demand,2050,2,22:22] 1
-    flow[(ens,demand),2050,2,22:22] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,22:22] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,23:23] max_output_flows_limit_simple_method[ens,2050,2,23:23] 1
     flow[(ens,demand),2050,2,23:23] consumer_balance[demand,2050,2,23:23] 1
-    flow[(ens,demand),2050,2,23:23] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,23:23] OBJ 13.533765050097523
     flow[(ens,demand),2050,2,24:24] max_output_flows_limit_simple_method[ens,2050,2,24:24] 1
     flow[(ens,demand),2050,2,24:24] consumer_balance[demand,2050,2,24:24] 1
-    flow[(ens,demand),2050,2,24:24] OBJ 13.533765050097541
+    flow[(ens,demand),2050,2,24:24] OBJ 13.533765050097523
     flow[(ocgt,demand),2050,2,1:1] max_output_flows_limit_simple_method[ocgt,2050,2,1:1] 1
     flow[(ocgt,demand),2050,2,1:1] consumer_balance[demand,2050,2,1:1] 1
-    flow[(ocgt,demand),2050,2,1:1] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,1:1] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,2:2] max_output_flows_limit_simple_method[ocgt,2050,2,2:2] 1
     flow[(ocgt,demand),2050,2,2:2] consumer_balance[demand,2050,2,2:2] 1
-    flow[(ocgt,demand),2050,2,2:2] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,2:2] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,3:3] max_output_flows_limit_simple_method[ocgt,2050,2,3:3] 1
     flow[(ocgt,demand),2050,2,3:3] consumer_balance[demand,2050,2,3:3] 1
-    flow[(ocgt,demand),2050,2,3:3] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,3:3] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,4:4] max_output_flows_limit_simple_method[ocgt,2050,2,4:4] 1
     flow[(ocgt,demand),2050,2,4:4] consumer_balance[demand,2050,2,4:4] 1
-    flow[(ocgt,demand),2050,2,4:4] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,4:4] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,5:5] max_output_flows_limit_simple_method[ocgt,2050,2,5:5] 1
     flow[(ocgt,demand),2050,2,5:5] consumer_balance[demand,2050,2,5:5] 1
-    flow[(ocgt,demand),2050,2,5:5] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,5:5] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,6:6] max_output_flows_limit_simple_method[ocgt,2050,2,6:6] 1
     flow[(ocgt,demand),2050,2,6:6] consumer_balance[demand,2050,2,6:6] 1
-    flow[(ocgt,demand),2050,2,6:6] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,6:6] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,7:7] max_output_flows_limit_simple_method[ocgt,2050,2,7:7] 1
     flow[(ocgt,demand),2050,2,7:7] consumer_balance[demand,2050,2,7:7] 1
-    flow[(ocgt,demand),2050,2,7:7] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,7:7] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,8:8] max_output_flows_limit_simple_method[ocgt,2050,2,8:8] 1
     flow[(ocgt,demand),2050,2,8:8] consumer_balance[demand,2050,2,8:8] 1
-    flow[(ocgt,demand),2050,2,8:8] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,8:8] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,9:9] max_output_flows_limit_simple_method[ocgt,2050,2,9:9] 1
     flow[(ocgt,demand),2050,2,9:9] consumer_balance[demand,2050,2,9:9] 1
-    flow[(ocgt,demand),2050,2,9:9] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,9:9] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,10:10] max_output_flows_limit_simple_method[ocgt,2050,2,10:10] 1
     flow[(ocgt,demand),2050,2,10:10] consumer_balance[demand,2050,2,10:10] 1
-    flow[(ocgt,demand),2050,2,10:10] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,10:10] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,11:11] max_output_flows_limit_simple_method[ocgt,2050,2,11:11] 1
     flow[(ocgt,demand),2050,2,11:11] consumer_balance[demand,2050,2,11:11] 1
-    flow[(ocgt,demand),2050,2,11:11] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,11:11] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,12:12] max_output_flows_limit_simple_method[ocgt,2050,2,12:12] 1
     flow[(ocgt,demand),2050,2,12:12] consumer_balance[demand,2050,2,12:12] 1
-    flow[(ocgt,demand),2050,2,12:12] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,12:12] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,13:13] max_output_flows_limit_simple_method[ocgt,2050,2,13:13] 1
     flow[(ocgt,demand),2050,2,13:13] consumer_balance[demand,2050,2,13:13] 1
-    flow[(ocgt,demand),2050,2,13:13] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,13:13] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,14:14] max_output_flows_limit_simple_method[ocgt,2050,2,14:14] 1
     flow[(ocgt,demand),2050,2,14:14] consumer_balance[demand,2050,2,14:14] 1
-    flow[(ocgt,demand),2050,2,14:14] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,14:14] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,15:15] max_output_flows_limit_simple_method[ocgt,2050,2,15:15] 1
     flow[(ocgt,demand),2050,2,15:15] consumer_balance[demand,2050,2,15:15] 1
-    flow[(ocgt,demand),2050,2,15:15] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,15:15] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,16:16] max_output_flows_limit_simple_method[ocgt,2050,2,16:16] 1
     flow[(ocgt,demand),2050,2,16:16] consumer_balance[demand,2050,2,16:16] 1
-    flow[(ocgt,demand),2050,2,16:16] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,16:16] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,17:17] max_output_flows_limit_simple_method[ocgt,2050,2,17:17] 1
     flow[(ocgt,demand),2050,2,17:17] consumer_balance[demand,2050,2,17:17] 1
-    flow[(ocgt,demand),2050,2,17:17] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,17:17] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,18:18] max_output_flows_limit_simple_method[ocgt,2050,2,18:18] 1
     flow[(ocgt,demand),2050,2,18:18] consumer_balance[demand,2050,2,18:18] 1
-    flow[(ocgt,demand),2050,2,18:18] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,18:18] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,19:19] max_output_flows_limit_simple_method[ocgt,2050,2,19:19] 1
     flow[(ocgt,demand),2050,2,19:19] consumer_balance[demand,2050,2,19:19] 1
-    flow[(ocgt,demand),2050,2,19:19] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,19:19] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,20:20] max_output_flows_limit_simple_method[ocgt,2050,2,20:20] 1
     flow[(ocgt,demand),2050,2,20:20] consumer_balance[demand,2050,2,20:20] 1
-    flow[(ocgt,demand),2050,2,20:20] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,20:20] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,21:21] max_output_flows_limit_simple_method[ocgt,2050,2,21:21] 1
     flow[(ocgt,demand),2050,2,21:21] consumer_balance[demand,2050,2,21:21] 1
-    flow[(ocgt,demand),2050,2,21:21] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,21:21] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,22:22] max_output_flows_limit_simple_method[ocgt,2050,2,22:22] 1
     flow[(ocgt,demand),2050,2,22:22] consumer_balance[demand,2050,2,22:22] 1
-    flow[(ocgt,demand),2050,2,22:22] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,22:22] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,23:23] max_output_flows_limit_simple_method[ocgt,2050,2,23:23] 1
     flow[(ocgt,demand),2050,2,23:23] consumer_balance[demand,2050,2,23:23] 1
-    flow[(ocgt,demand),2050,2,23:23] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,23:23] OBJ 1509.014803085874
     flow[(ocgt,demand),2050,2,24:24] max_output_flows_limit_simple_method[ocgt,2050,2,24:24] 1
     flow[(ocgt,demand),2050,2,24:24] consumer_balance[demand,2050,2,24:24] 1
-    flow[(ocgt,demand),2050,2,24:24] OBJ 1509.0148030858759
+    flow[(ocgt,demand),2050,2,24:24] OBJ 1509.014803085874
     flow[(demand,battery),2050,2,1:1] max_input_flows_limit_simple_method[battery,2050,2,1:1] 1
     flow[(demand,battery),2050,2,1:1] consumer_balance[demand,2050,2,1:1] -1
     flow[(demand,battery),2050,2,1:1] balance_storage_rep_period[battery,2050,2,1:1] -0.95
@@ -4708,78 +4612,174 @@ COLUMNS
     flow[(battery,demand),2050,2,24:24] max_output_flows_limit_simple_method[battery,2050,2,24:24] 1
     flow[(battery,demand),2050,2,24:24] consumer_balance[demand,2050,2,24:24] 1
     flow[(battery,demand),2050,2,24:24] balance_storage_rep_period[battery,2050,2,24:24] 1.0526315789473684
+    flow[(ccgt,demand),2050,2,1:1] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,1:1] 1
+    flow[(ccgt,demand),2050,2,1:1] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,1:1] 1
+    flow[(ccgt,demand),2050,2,1:1] consumer_balance[demand,2050,2,1:1] 1
+    flow[(ccgt,demand),2050,2,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,1:1] -1
+    flow[(ccgt,demand),2050,2,2:2] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,2:2] 1
+    flow[(ccgt,demand),2050,2,2:2] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,2:2] 1
+    flow[(ccgt,demand),2050,2,2:2] consumer_balance[demand,2050,2,2:2] 1
+    flow[(ccgt,demand),2050,2,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,2:2] -1
+    flow[(ccgt,demand),2050,2,3:3] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,3:3] 1
+    flow[(ccgt,demand),2050,2,3:3] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,3:3] 1
+    flow[(ccgt,demand),2050,2,3:3] consumer_balance[demand,2050,2,3:3] 1
+    flow[(ccgt,demand),2050,2,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,3:3] -1
+    flow[(ccgt,demand),2050,2,4:4] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,4:4] 1
+    flow[(ccgt,demand),2050,2,4:4] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,4:4] 1
+    flow[(ccgt,demand),2050,2,4:4] consumer_balance[demand,2050,2,4:4] 1
+    flow[(ccgt,demand),2050,2,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,4:4] -1
+    flow[(ccgt,demand),2050,2,5:5] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,5:5] 1
+    flow[(ccgt,demand),2050,2,5:5] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,5:5] 1
+    flow[(ccgt,demand),2050,2,5:5] consumer_balance[demand,2050,2,5:5] 1
+    flow[(ccgt,demand),2050,2,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,5:5] -1
+    flow[(ccgt,demand),2050,2,6:6] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,6:6] 1
+    flow[(ccgt,demand),2050,2,6:6] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,6:6] 1
+    flow[(ccgt,demand),2050,2,6:6] consumer_balance[demand,2050,2,6:6] 1
+    flow[(ccgt,demand),2050,2,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,6:6] -1
+    flow[(ccgt,demand),2050,2,7:7] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,7:7] 1
+    flow[(ccgt,demand),2050,2,7:7] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,7:7] 1
+    flow[(ccgt,demand),2050,2,7:7] consumer_balance[demand,2050,2,7:7] 1
+    flow[(ccgt,demand),2050,2,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,7:7] -1
+    flow[(ccgt,demand),2050,2,8:8] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,8:8] 1
+    flow[(ccgt,demand),2050,2,8:8] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,8:8] 1
+    flow[(ccgt,demand),2050,2,8:8] consumer_balance[demand,2050,2,8:8] 1
+    flow[(ccgt,demand),2050,2,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,8:8] -1
+    flow[(ccgt,demand),2050,2,9:9] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,9:9] 1
+    flow[(ccgt,demand),2050,2,9:9] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,9:9] 1
+    flow[(ccgt,demand),2050,2,9:9] consumer_balance[demand,2050,2,9:9] 1
+    flow[(ccgt,demand),2050,2,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,9:9] -1
+    flow[(ccgt,demand),2050,2,10:10] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,10:10] 1
+    flow[(ccgt,demand),2050,2,10:10] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,10:10] 1
+    flow[(ccgt,demand),2050,2,10:10] consumer_balance[demand,2050,2,10:10] 1
+    flow[(ccgt,demand),2050,2,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,10:10] -1
+    flow[(ccgt,demand),2050,2,11:11] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,11:11] 1
+    flow[(ccgt,demand),2050,2,11:11] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,11:11] 1
+    flow[(ccgt,demand),2050,2,11:11] consumer_balance[demand,2050,2,11:11] 1
+    flow[(ccgt,demand),2050,2,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,11:11] -1
+    flow[(ccgt,demand),2050,2,12:12] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,12:12] 1
+    flow[(ccgt,demand),2050,2,12:12] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,12:12] 1
+    flow[(ccgt,demand),2050,2,12:12] consumer_balance[demand,2050,2,12:12] 1
+    flow[(ccgt,demand),2050,2,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,12:12] -1
+    flow[(ccgt,demand),2050,2,13:13] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,13:13] 1
+    flow[(ccgt,demand),2050,2,13:13] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,13:13] 1
+    flow[(ccgt,demand),2050,2,13:13] consumer_balance[demand,2050,2,13:13] 1
+    flow[(ccgt,demand),2050,2,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,13:13] -1
+    flow[(ccgt,demand),2050,2,14:14] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,14:14] 1
+    flow[(ccgt,demand),2050,2,14:14] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,14:14] 1
+    flow[(ccgt,demand),2050,2,14:14] consumer_balance[demand,2050,2,14:14] 1
+    flow[(ccgt,demand),2050,2,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,14:14] -1
+    flow[(ccgt,demand),2050,2,15:15] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,15:15] 1
+    flow[(ccgt,demand),2050,2,15:15] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,15:15] 1
+    flow[(ccgt,demand),2050,2,15:15] consumer_balance[demand,2050,2,15:15] 1
+    flow[(ccgt,demand),2050,2,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,15:15] -1
+    flow[(ccgt,demand),2050,2,16:16] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,16:16] 1
+    flow[(ccgt,demand),2050,2,16:16] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,16:16] 1
+    flow[(ccgt,demand),2050,2,16:16] consumer_balance[demand,2050,2,16:16] 1
+    flow[(ccgt,demand),2050,2,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,16:16] -1
+    flow[(ccgt,demand),2050,2,17:17] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,17:17] 1
+    flow[(ccgt,demand),2050,2,17:17] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,17:17] 1
+    flow[(ccgt,demand),2050,2,17:17] consumer_balance[demand,2050,2,17:17] 1
+    flow[(ccgt,demand),2050,2,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,17:17] -1
+    flow[(ccgt,demand),2050,2,18:18] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,18:18] 1
+    flow[(ccgt,demand),2050,2,18:18] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,18:18] 1
+    flow[(ccgt,demand),2050,2,18:18] consumer_balance[demand,2050,2,18:18] 1
+    flow[(ccgt,demand),2050,2,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,18:18] -1
+    flow[(ccgt,demand),2050,2,19:19] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,19:19] 1
+    flow[(ccgt,demand),2050,2,19:19] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,19:19] 1
+    flow[(ccgt,demand),2050,2,19:19] consumer_balance[demand,2050,2,19:19] 1
+    flow[(ccgt,demand),2050,2,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,19:19] -1
+    flow[(ccgt,demand),2050,2,20:20] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,20:20] 1
+    flow[(ccgt,demand),2050,2,20:20] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,20:20] 1
+    flow[(ccgt,demand),2050,2,20:20] consumer_balance[demand,2050,2,20:20] 1
+    flow[(ccgt,demand),2050,2,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,20:20] -1
+    flow[(ccgt,demand),2050,2,21:21] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,21:21] 1
+    flow[(ccgt,demand),2050,2,21:21] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,21:21] 1
+    flow[(ccgt,demand),2050,2,21:21] consumer_balance[demand,2050,2,21:21] 1
+    flow[(ccgt,demand),2050,2,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,21:21] -1
+    flow[(ccgt,demand),2050,2,22:22] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,22:22] 1
+    flow[(ccgt,demand),2050,2,22:22] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,22:22] 1
+    flow[(ccgt,demand),2050,2,22:22] consumer_balance[demand,2050,2,22:22] 1
+    flow[(ccgt,demand),2050,2,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,22:22] -1
+    flow[(ccgt,demand),2050,2,23:23] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,23:23] 1
+    flow[(ccgt,demand),2050,2,23:23] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,23:23] 1
+    flow[(ccgt,demand),2050,2,23:23] consumer_balance[demand,2050,2,23:23] 1
+    flow[(ccgt,demand),2050,2,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,23:23] -1
+    flow[(ccgt,demand),2050,2,24:24] max_transport_flow_limit_simple_method[(ccgt,demand),2050,2,24:24] 1
+    flow[(ccgt,demand),2050,2,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2050,2,24:24] 1
+    flow[(ccgt,demand),2050,2,24:24] consumer_balance[demand,2050,2,24:24] 1
+    flow[(ccgt,demand),2050,2,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,24:24] -1
     flow[(wind,demand),2050,2,1:1] max_output_flows_limit_compact_method[wind,2050,2,1:1] 1
     flow[(wind,demand),2050,2,1:1] consumer_balance[demand,2050,2,1:1] 1
-    flow[(wind,demand),2050,2,1:1] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,1:1] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,2:2] max_output_flows_limit_compact_method[wind,2050,2,2:2] 1
     flow[(wind,demand),2050,2,2:2] consumer_balance[demand,2050,2,2:2] 1
-    flow[(wind,demand),2050,2,2:2] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,2:2] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,3:3] max_output_flows_limit_compact_method[wind,2050,2,3:3] 1
     flow[(wind,demand),2050,2,3:3] consumer_balance[demand,2050,2,3:3] 1
-    flow[(wind,demand),2050,2,3:3] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,3:3] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,4:4] max_output_flows_limit_compact_method[wind,2050,2,4:4] 1
     flow[(wind,demand),2050,2,4:4] consumer_balance[demand,2050,2,4:4] 1
-    flow[(wind,demand),2050,2,4:4] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,4:4] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,5:5] max_output_flows_limit_compact_method[wind,2050,2,5:5] 1
     flow[(wind,demand),2050,2,5:5] consumer_balance[demand,2050,2,5:5] 1
-    flow[(wind,demand),2050,2,5:5] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,5:5] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,6:6] max_output_flows_limit_compact_method[wind,2050,2,6:6] 1
     flow[(wind,demand),2050,2,6:6] consumer_balance[demand,2050,2,6:6] 1
-    flow[(wind,demand),2050,2,6:6] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,6:6] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,7:7] max_output_flows_limit_compact_method[wind,2050,2,7:7] 1
     flow[(wind,demand),2050,2,7:7] consumer_balance[demand,2050,2,7:7] 1
-    flow[(wind,demand),2050,2,7:7] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,7:7] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,8:8] max_output_flows_limit_compact_method[wind,2050,2,8:8] 1
     flow[(wind,demand),2050,2,8:8] consumer_balance[demand,2050,2,8:8] 1
-    flow[(wind,demand),2050,2,8:8] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,8:8] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,9:9] max_output_flows_limit_compact_method[wind,2050,2,9:9] 1
     flow[(wind,demand),2050,2,9:9] consumer_balance[demand,2050,2,9:9] 1
-    flow[(wind,demand),2050,2,9:9] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,9:9] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,10:10] max_output_flows_limit_compact_method[wind,2050,2,10:10] 1
     flow[(wind,demand),2050,2,10:10] consumer_balance[demand,2050,2,10:10] 1
-    flow[(wind,demand),2050,2,10:10] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,10:10] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,11:11] max_output_flows_limit_compact_method[wind,2050,2,11:11] 1
     flow[(wind,demand),2050,2,11:11] consumer_balance[demand,2050,2,11:11] 1
-    flow[(wind,demand),2050,2,11:11] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,11:11] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,12:12] max_output_flows_limit_compact_method[wind,2050,2,12:12] 1
     flow[(wind,demand),2050,2,12:12] consumer_balance[demand,2050,2,12:12] 1
-    flow[(wind,demand),2050,2,12:12] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,12:12] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,13:13] max_output_flows_limit_compact_method[wind,2050,2,13:13] 1
     flow[(wind,demand),2050,2,13:13] consumer_balance[demand,2050,2,13:13] 1
-    flow[(wind,demand),2050,2,13:13] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,13:13] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,14:14] max_output_flows_limit_compact_method[wind,2050,2,14:14] 1
     flow[(wind,demand),2050,2,14:14] consumer_balance[demand,2050,2,14:14] 1
-    flow[(wind,demand),2050,2,14:14] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,14:14] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,15:15] max_output_flows_limit_compact_method[wind,2050,2,15:15] 1
     flow[(wind,demand),2050,2,15:15] consumer_balance[demand,2050,2,15:15] 1
-    flow[(wind,demand),2050,2,15:15] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,15:15] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,16:16] max_output_flows_limit_compact_method[wind,2050,2,16:16] 1
     flow[(wind,demand),2050,2,16:16] consumer_balance[demand,2050,2,16:16] 1
-    flow[(wind,demand),2050,2,16:16] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,16:16] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,17:17] max_output_flows_limit_compact_method[wind,2050,2,17:17] 1
     flow[(wind,demand),2050,2,17:17] consumer_balance[demand,2050,2,17:17] 1
-    flow[(wind,demand),2050,2,17:17] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,17:17] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,18:18] max_output_flows_limit_compact_method[wind,2050,2,18:18] 1
     flow[(wind,demand),2050,2,18:18] consumer_balance[demand,2050,2,18:18] 1
-    flow[(wind,demand),2050,2,18:18] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,18:18] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,19:19] max_output_flows_limit_compact_method[wind,2050,2,19:19] 1
     flow[(wind,demand),2050,2,19:19] consumer_balance[demand,2050,2,19:19] 1
-    flow[(wind,demand),2050,2,19:19] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,19:19] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,20:20] max_output_flows_limit_compact_method[wind,2050,2,20:20] 1
     flow[(wind,demand),2050,2,20:20] consumer_balance[demand,2050,2,20:20] 1
-    flow[(wind,demand),2050,2,20:20] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,20:20] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,21:21] max_output_flows_limit_compact_method[wind,2050,2,21:21] 1
     flow[(wind,demand),2050,2,21:21] consumer_balance[demand,2050,2,21:21] 1
-    flow[(wind,demand),2050,2,21:21] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,21:21] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,22:22] max_output_flows_limit_compact_method[wind,2050,2,22:22] 1
     flow[(wind,demand),2050,2,22:22] consumer_balance[demand,2050,2,22:22] 1
-    flow[(wind,demand),2050,2,22:22] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,22:22] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,23:23] max_output_flows_limit_compact_method[wind,2050,2,23:23] 1
     flow[(wind,demand),2050,2,23:23] consumer_balance[demand,2050,2,23:23] 1
-    flow[(wind,demand),2050,2,23:23] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,23:23] OBJ 0.07518758361165291
     flow[(wind,demand),2050,2,24:24] max_output_flows_limit_compact_method[wind,2050,2,24:24] 1
     flow[(wind,demand),2050,2,24:24] consumer_balance[demand,2050,2,24:24] 1
-    flow[(wind,demand),2050,2,24:24] OBJ 0.07518758361165301
+    flow[(wind,demand),2050,2,24:24] OBJ 0.07518758361165291
     flow[(solar,demand),2050,2,1:1] max_output_flows_limit_simple_method[solar,2050,2,1:1] 1
     flow[(solar,demand),2050,2,1:1] consumer_balance[demand,2050,2,1:1] 1
     flow[(solar,demand),2050,2,2:2] max_output_flows_limit_simple_method[solar,2050,2,2:2] 1
@@ -4828,246 +4828,150 @@ COLUMNS
     flow[(solar,demand),2050,2,23:23] consumer_balance[demand,2050,2,23:23] 1
     flow[(solar,demand),2050,2,24:24] max_output_flows_limit_simple_method[solar,2050,2,24:24] 1
     flow[(solar,demand),2050,2,24:24] consumer_balance[demand,2050,2,24:24] 1
-    flow[(ccgt,demand),2050,3,1:1] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,1:1] 1
-    flow[(ccgt,demand),2050,3,1:1] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,1:1] 1
-    flow[(ccgt,demand),2050,3,1:1] consumer_balance[demand,2050,3,1:1] 1
-    flow[(ccgt,demand),2050,3,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,1:1] -1
-    flow[(ccgt,demand),2050,3,2:2] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,2:2] 1
-    flow[(ccgt,demand),2050,3,2:2] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,2:2] 1
-    flow[(ccgt,demand),2050,3,2:2] consumer_balance[demand,2050,3,2:2] 1
-    flow[(ccgt,demand),2050,3,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,2:2] -1
-    flow[(ccgt,demand),2050,3,3:3] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,3:3] 1
-    flow[(ccgt,demand),2050,3,3:3] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,3:3] 1
-    flow[(ccgt,demand),2050,3,3:3] consumer_balance[demand,2050,3,3:3] 1
-    flow[(ccgt,demand),2050,3,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,3:3] -1
-    flow[(ccgt,demand),2050,3,4:4] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,4:4] 1
-    flow[(ccgt,demand),2050,3,4:4] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,4:4] 1
-    flow[(ccgt,demand),2050,3,4:4] consumer_balance[demand,2050,3,4:4] 1
-    flow[(ccgt,demand),2050,3,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,4:4] -1
-    flow[(ccgt,demand),2050,3,5:5] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,5:5] 1
-    flow[(ccgt,demand),2050,3,5:5] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,5:5] 1
-    flow[(ccgt,demand),2050,3,5:5] consumer_balance[demand,2050,3,5:5] 1
-    flow[(ccgt,demand),2050,3,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,5:5] -1
-    flow[(ccgt,demand),2050,3,6:6] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,6:6] 1
-    flow[(ccgt,demand),2050,3,6:6] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,6:6] 1
-    flow[(ccgt,demand),2050,3,6:6] consumer_balance[demand,2050,3,6:6] 1
-    flow[(ccgt,demand),2050,3,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,6:6] -1
-    flow[(ccgt,demand),2050,3,7:7] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,7:7] 1
-    flow[(ccgt,demand),2050,3,7:7] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,7:7] 1
-    flow[(ccgt,demand),2050,3,7:7] consumer_balance[demand,2050,3,7:7] 1
-    flow[(ccgt,demand),2050,3,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,7:7] -1
-    flow[(ccgt,demand),2050,3,8:8] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,8:8] 1
-    flow[(ccgt,demand),2050,3,8:8] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,8:8] 1
-    flow[(ccgt,demand),2050,3,8:8] consumer_balance[demand,2050,3,8:8] 1
-    flow[(ccgt,demand),2050,3,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,8:8] -1
-    flow[(ccgt,demand),2050,3,9:9] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,9:9] 1
-    flow[(ccgt,demand),2050,3,9:9] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,9:9] 1
-    flow[(ccgt,demand),2050,3,9:9] consumer_balance[demand,2050,3,9:9] 1
-    flow[(ccgt,demand),2050,3,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,9:9] -1
-    flow[(ccgt,demand),2050,3,10:10] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,10:10] 1
-    flow[(ccgt,demand),2050,3,10:10] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,10:10] 1
-    flow[(ccgt,demand),2050,3,10:10] consumer_balance[demand,2050,3,10:10] 1
-    flow[(ccgt,demand),2050,3,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,10:10] -1
-    flow[(ccgt,demand),2050,3,11:11] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,11:11] 1
-    flow[(ccgt,demand),2050,3,11:11] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,11:11] 1
-    flow[(ccgt,demand),2050,3,11:11] consumer_balance[demand,2050,3,11:11] 1
-    flow[(ccgt,demand),2050,3,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,11:11] -1
-    flow[(ccgt,demand),2050,3,12:12] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,12:12] 1
-    flow[(ccgt,demand),2050,3,12:12] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,12:12] 1
-    flow[(ccgt,demand),2050,3,12:12] consumer_balance[demand,2050,3,12:12] 1
-    flow[(ccgt,demand),2050,3,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,12:12] -1
-    flow[(ccgt,demand),2050,3,13:13] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,13:13] 1
-    flow[(ccgt,demand),2050,3,13:13] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,13:13] 1
-    flow[(ccgt,demand),2050,3,13:13] consumer_balance[demand,2050,3,13:13] 1
-    flow[(ccgt,demand),2050,3,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,13:13] -1
-    flow[(ccgt,demand),2050,3,14:14] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,14:14] 1
-    flow[(ccgt,demand),2050,3,14:14] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,14:14] 1
-    flow[(ccgt,demand),2050,3,14:14] consumer_balance[demand,2050,3,14:14] 1
-    flow[(ccgt,demand),2050,3,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,14:14] -1
-    flow[(ccgt,demand),2050,3,15:15] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,15:15] 1
-    flow[(ccgt,demand),2050,3,15:15] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,15:15] 1
-    flow[(ccgt,demand),2050,3,15:15] consumer_balance[demand,2050,3,15:15] 1
-    flow[(ccgt,demand),2050,3,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,15:15] -1
-    flow[(ccgt,demand),2050,3,16:16] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,16:16] 1
-    flow[(ccgt,demand),2050,3,16:16] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,16:16] 1
-    flow[(ccgt,demand),2050,3,16:16] consumer_balance[demand,2050,3,16:16] 1
-    flow[(ccgt,demand),2050,3,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,16:16] -1
-    flow[(ccgt,demand),2050,3,17:17] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,17:17] 1
-    flow[(ccgt,demand),2050,3,17:17] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,17:17] 1
-    flow[(ccgt,demand),2050,3,17:17] consumer_balance[demand,2050,3,17:17] 1
-    flow[(ccgt,demand),2050,3,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,17:17] -1
-    flow[(ccgt,demand),2050,3,18:18] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,18:18] 1
-    flow[(ccgt,demand),2050,3,18:18] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,18:18] 1
-    flow[(ccgt,demand),2050,3,18:18] consumer_balance[demand,2050,3,18:18] 1
-    flow[(ccgt,demand),2050,3,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,18:18] -1
-    flow[(ccgt,demand),2050,3,19:19] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,19:19] 1
-    flow[(ccgt,demand),2050,3,19:19] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,19:19] 1
-    flow[(ccgt,demand),2050,3,19:19] consumer_balance[demand,2050,3,19:19] 1
-    flow[(ccgt,demand),2050,3,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,19:19] -1
-    flow[(ccgt,demand),2050,3,20:20] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,20:20] 1
-    flow[(ccgt,demand),2050,3,20:20] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,20:20] 1
-    flow[(ccgt,demand),2050,3,20:20] consumer_balance[demand,2050,3,20:20] 1
-    flow[(ccgt,demand),2050,3,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,20:20] -1
-    flow[(ccgt,demand),2050,3,21:21] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,21:21] 1
-    flow[(ccgt,demand),2050,3,21:21] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,21:21] 1
-    flow[(ccgt,demand),2050,3,21:21] consumer_balance[demand,2050,3,21:21] 1
-    flow[(ccgt,demand),2050,3,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,21:21] -1
-    flow[(ccgt,demand),2050,3,22:22] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22] 1
-    flow[(ccgt,demand),2050,3,22:22] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22] 1
-    flow[(ccgt,demand),2050,3,22:22] consumer_balance[demand,2050,3,22:22] 1
-    flow[(ccgt,demand),2050,3,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,22:22] -1
-    flow[(ccgt,demand),2050,3,23:23] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23] 1
-    flow[(ccgt,demand),2050,3,23:23] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23] 1
-    flow[(ccgt,demand),2050,3,23:23] consumer_balance[demand,2050,3,23:23] 1
-    flow[(ccgt,demand),2050,3,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,23:23] -1
-    flow[(ccgt,demand),2050,3,24:24] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24] 1
-    flow[(ccgt,demand),2050,3,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24] 1
-    flow[(ccgt,demand),2050,3,24:24] consumer_balance[demand,2050,3,24:24] 1
-    flow[(ccgt,demand),2050,3,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,24:24] -1
     flow[(ens,demand),2050,3,1:1] max_output_flows_limit_simple_method[ens,2050,3,1:1] 1
     flow[(ens,demand),2050,3,1:1] consumer_balance[demand,2050,3,1:1] 1
-    flow[(ens,demand),2050,3,1:1] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,1:1] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,2:2] max_output_flows_limit_simple_method[ens,2050,3,2:2] 1
     flow[(ens,demand),2050,3,2:2] consumer_balance[demand,2050,3,2:2] 1
-    flow[(ens,demand),2050,3,2:2] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,2:2] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,3:3] max_output_flows_limit_simple_method[ens,2050,3,3:3] 1
     flow[(ens,demand),2050,3,3:3] consumer_balance[demand,2050,3,3:3] 1
-    flow[(ens,demand),2050,3,3:3] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,3:3] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,4:4] max_output_flows_limit_simple_method[ens,2050,3,4:4] 1
     flow[(ens,demand),2050,3,4:4] consumer_balance[demand,2050,3,4:4] 1
-    flow[(ens,demand),2050,3,4:4] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,4:4] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,5:5] max_output_flows_limit_simple_method[ens,2050,3,5:5] 1
     flow[(ens,demand),2050,3,5:5] consumer_balance[demand,2050,3,5:5] 1
-    flow[(ens,demand),2050,3,5:5] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,5:5] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,6:6] max_output_flows_limit_simple_method[ens,2050,3,6:6] 1
     flow[(ens,demand),2050,3,6:6] consumer_balance[demand,2050,3,6:6] 1
-    flow[(ens,demand),2050,3,6:6] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,6:6] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,7:7] max_output_flows_limit_simple_method[ens,2050,3,7:7] 1
     flow[(ens,demand),2050,3,7:7] consumer_balance[demand,2050,3,7:7] 1
-    flow[(ens,demand),2050,3,7:7] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,7:7] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,8:8] max_output_flows_limit_simple_method[ens,2050,3,8:8] 1
     flow[(ens,demand),2050,3,8:8] consumer_balance[demand,2050,3,8:8] 1
-    flow[(ens,demand),2050,3,8:8] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,8:8] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,9:9] max_output_flows_limit_simple_method[ens,2050,3,9:9] 1
     flow[(ens,demand),2050,3,9:9] consumer_balance[demand,2050,3,9:9] 1
-    flow[(ens,demand),2050,3,9:9] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,9:9] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,10:10] max_output_flows_limit_simple_method[ens,2050,3,10:10] 1
     flow[(ens,demand),2050,3,10:10] consumer_balance[demand,2050,3,10:10] 1
-    flow[(ens,demand),2050,3,10:10] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,10:10] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,11:11] max_output_flows_limit_simple_method[ens,2050,3,11:11] 1
     flow[(ens,demand),2050,3,11:11] consumer_balance[demand,2050,3,11:11] 1
-    flow[(ens,demand),2050,3,11:11] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,11:11] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,12:12] max_output_flows_limit_simple_method[ens,2050,3,12:12] 1
     flow[(ens,demand),2050,3,12:12] consumer_balance[demand,2050,3,12:12] 1
-    flow[(ens,demand),2050,3,12:12] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,12:12] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,13:13] max_output_flows_limit_simple_method[ens,2050,3,13:13] 1
     flow[(ens,demand),2050,3,13:13] consumer_balance[demand,2050,3,13:13] 1
-    flow[(ens,demand),2050,3,13:13] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,13:13] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,14:14] max_output_flows_limit_simple_method[ens,2050,3,14:14] 1
     flow[(ens,demand),2050,3,14:14] consumer_balance[demand,2050,3,14:14] 1
-    flow[(ens,demand),2050,3,14:14] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,14:14] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,15:15] max_output_flows_limit_simple_method[ens,2050,3,15:15] 1
     flow[(ens,demand),2050,3,15:15] consumer_balance[demand,2050,3,15:15] 1
-    flow[(ens,demand),2050,3,15:15] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,15:15] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,16:16] max_output_flows_limit_simple_method[ens,2050,3,16:16] 1
     flow[(ens,demand),2050,3,16:16] consumer_balance[demand,2050,3,16:16] 1
-    flow[(ens,demand),2050,3,16:16] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,16:16] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,17:17] max_output_flows_limit_simple_method[ens,2050,3,17:17] 1
     flow[(ens,demand),2050,3,17:17] consumer_balance[demand,2050,3,17:17] 1
-    flow[(ens,demand),2050,3,17:17] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,17:17] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,18:18] max_output_flows_limit_simple_method[ens,2050,3,18:18] 1
     flow[(ens,demand),2050,3,18:18] consumer_balance[demand,2050,3,18:18] 1
-    flow[(ens,demand),2050,3,18:18] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,18:18] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,19:19] max_output_flows_limit_simple_method[ens,2050,3,19:19] 1
     flow[(ens,demand),2050,3,19:19] consumer_balance[demand,2050,3,19:19] 1
-    flow[(ens,demand),2050,3,19:19] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,19:19] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,20:20] max_output_flows_limit_simple_method[ens,2050,3,20:20] 1
     flow[(ens,demand),2050,3,20:20] consumer_balance[demand,2050,3,20:20] 1
-    flow[(ens,demand),2050,3,20:20] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,20:20] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,21:21] max_output_flows_limit_simple_method[ens,2050,3,21:21] 1
     flow[(ens,demand),2050,3,21:21] consumer_balance[demand,2050,3,21:21] 1
-    flow[(ens,demand),2050,3,21:21] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,21:21] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,22:22] max_output_flows_limit_simple_method[ens,2050,3,22:22] 1
     flow[(ens,demand),2050,3,22:22] consumer_balance[demand,2050,3,22:22] 1
-    flow[(ens,demand),2050,3,22:22] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,22:22] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,23:23] max_output_flows_limit_simple_method[ens,2050,3,23:23] 1
     flow[(ens,demand),2050,3,23:23] consumer_balance[demand,2050,3,23:23] 1
-    flow[(ens,demand),2050,3,23:23] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,23:23] OBJ 8.120259030058515
     flow[(ens,demand),2050,3,24:24] max_output_flows_limit_simple_method[ens,2050,3,24:24] 1
     flow[(ens,demand),2050,3,24:24] consumer_balance[demand,2050,3,24:24] 1
-    flow[(ens,demand),2050,3,24:24] OBJ 8.120259030058525
+    flow[(ens,demand),2050,3,24:24] OBJ 8.120259030058515
     flow[(ocgt,demand),2050,3,1:1] max_output_flows_limit_simple_method[ocgt,2050,3,1:1] 1
     flow[(ocgt,demand),2050,3,1:1] consumer_balance[demand,2050,3,1:1] 1
-    flow[(ocgt,demand),2050,3,1:1] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,1:1] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,2:2] max_output_flows_limit_simple_method[ocgt,2050,3,2:2] 1
     flow[(ocgt,demand),2050,3,2:2] consumer_balance[demand,2050,3,2:2] 1
-    flow[(ocgt,demand),2050,3,2:2] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,2:2] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,3:3] max_output_flows_limit_simple_method[ocgt,2050,3,3:3] 1
     flow[(ocgt,demand),2050,3,3:3] consumer_balance[demand,2050,3,3:3] 1
-    flow[(ocgt,demand),2050,3,3:3] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,3:3] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,4:4] max_output_flows_limit_simple_method[ocgt,2050,3,4:4] 1
     flow[(ocgt,demand),2050,3,4:4] consumer_balance[demand,2050,3,4:4] 1
-    flow[(ocgt,demand),2050,3,4:4] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,4:4] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,5:5] max_output_flows_limit_simple_method[ocgt,2050,3,5:5] 1
     flow[(ocgt,demand),2050,3,5:5] consumer_balance[demand,2050,3,5:5] 1
-    flow[(ocgt,demand),2050,3,5:5] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,5:5] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,6:6] max_output_flows_limit_simple_method[ocgt,2050,3,6:6] 1
     flow[(ocgt,demand),2050,3,6:6] consumer_balance[demand,2050,3,6:6] 1
-    flow[(ocgt,demand),2050,3,6:6] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,6:6] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,7:7] max_output_flows_limit_simple_method[ocgt,2050,3,7:7] 1
     flow[(ocgt,demand),2050,3,7:7] consumer_balance[demand,2050,3,7:7] 1
-    flow[(ocgt,demand),2050,3,7:7] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,7:7] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,8:8] max_output_flows_limit_simple_method[ocgt,2050,3,8:8] 1
     flow[(ocgt,demand),2050,3,8:8] consumer_balance[demand,2050,3,8:8] 1
-    flow[(ocgt,demand),2050,3,8:8] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,8:8] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,9:9] max_output_flows_limit_simple_method[ocgt,2050,3,9:9] 1
     flow[(ocgt,demand),2050,3,9:9] consumer_balance[demand,2050,3,9:9] 1
-    flow[(ocgt,demand),2050,3,9:9] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,9:9] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,10:10] max_output_flows_limit_simple_method[ocgt,2050,3,10:10] 1
     flow[(ocgt,demand),2050,3,10:10] consumer_balance[demand,2050,3,10:10] 1
-    flow[(ocgt,demand),2050,3,10:10] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,10:10] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,11:11] max_output_flows_limit_simple_method[ocgt,2050,3,11:11] 1
     flow[(ocgt,demand),2050,3,11:11] consumer_balance[demand,2050,3,11:11] 1
-    flow[(ocgt,demand),2050,3,11:11] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,11:11] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,12:12] max_output_flows_limit_simple_method[ocgt,2050,3,12:12] 1
     flow[(ocgt,demand),2050,3,12:12] consumer_balance[demand,2050,3,12:12] 1
-    flow[(ocgt,demand),2050,3,12:12] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,12:12] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,13:13] max_output_flows_limit_simple_method[ocgt,2050,3,13:13] 1
     flow[(ocgt,demand),2050,3,13:13] consumer_balance[demand,2050,3,13:13] 1
-    flow[(ocgt,demand),2050,3,13:13] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,13:13] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,14:14] max_output_flows_limit_simple_method[ocgt,2050,3,14:14] 1
     flow[(ocgt,demand),2050,3,14:14] consumer_balance[demand,2050,3,14:14] 1
-    flow[(ocgt,demand),2050,3,14:14] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,14:14] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,15:15] max_output_flows_limit_simple_method[ocgt,2050,3,15:15] 1
     flow[(ocgt,demand),2050,3,15:15] consumer_balance[demand,2050,3,15:15] 1
-    flow[(ocgt,demand),2050,3,15:15] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,15:15] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,16:16] max_output_flows_limit_simple_method[ocgt,2050,3,16:16] 1
     flow[(ocgt,demand),2050,3,16:16] consumer_balance[demand,2050,3,16:16] 1
-    flow[(ocgt,demand),2050,3,16:16] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,16:16] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,17:17] max_output_flows_limit_simple_method[ocgt,2050,3,17:17] 1
     flow[(ocgt,demand),2050,3,17:17] consumer_balance[demand,2050,3,17:17] 1
-    flow[(ocgt,demand),2050,3,17:17] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,17:17] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,18:18] max_output_flows_limit_simple_method[ocgt,2050,3,18:18] 1
     flow[(ocgt,demand),2050,3,18:18] consumer_balance[demand,2050,3,18:18] 1
-    flow[(ocgt,demand),2050,3,18:18] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,18:18] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,19:19] max_output_flows_limit_simple_method[ocgt,2050,3,19:19] 1
     flow[(ocgt,demand),2050,3,19:19] consumer_balance[demand,2050,3,19:19] 1
-    flow[(ocgt,demand),2050,3,19:19] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,19:19] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,20:20] max_output_flows_limit_simple_method[ocgt,2050,3,20:20] 1
     flow[(ocgt,demand),2050,3,20:20] consumer_balance[demand,2050,3,20:20] 1
-    flow[(ocgt,demand),2050,3,20:20] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,20:20] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,21:21] max_output_flows_limit_simple_method[ocgt,2050,3,21:21] 1
     flow[(ocgt,demand),2050,3,21:21] consumer_balance[demand,2050,3,21:21] 1
-    flow[(ocgt,demand),2050,3,21:21] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,21:21] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,22:22] max_output_flows_limit_simple_method[ocgt,2050,3,22:22] 1
     flow[(ocgt,demand),2050,3,22:22] consumer_balance[demand,2050,3,22:22] 1
-    flow[(ocgt,demand),2050,3,22:22] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,22:22] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,23:23] max_output_flows_limit_simple_method[ocgt,2050,3,23:23] 1
     flow[(ocgt,demand),2050,3,23:23] consumer_balance[demand,2050,3,23:23] 1
-    flow[(ocgt,demand),2050,3,23:23] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,23:23] OBJ 905.4088818515244
     flow[(ocgt,demand),2050,3,24:24] max_output_flows_limit_simple_method[ocgt,2050,3,24:24] 1
     flow[(ocgt,demand),2050,3,24:24] consumer_balance[demand,2050,3,24:24] 1
-    flow[(ocgt,demand),2050,3,24:24] OBJ 905.4088818515256
+    flow[(ocgt,demand),2050,3,24:24] OBJ 905.4088818515244
     flow[(demand,battery),2050,3,1:1] max_input_flows_limit_simple_method[battery,2050,3,1:1] 1
     flow[(demand,battery),2050,3,1:1] consumer_balance[demand,2050,3,1:1] -1
     flow[(demand,battery),2050,3,1:1] balance_storage_rep_period[battery,2050,3,1:1] -0.95
@@ -5212,78 +5116,174 @@ COLUMNS
     flow[(battery,demand),2050,3,24:24] max_output_flows_limit_simple_method[battery,2050,3,24:24] 1
     flow[(battery,demand),2050,3,24:24] consumer_balance[demand,2050,3,24:24] 1
     flow[(battery,demand),2050,3,24:24] balance_storage_rep_period[battery,2050,3,24:24] 1.0526315789473684
+    flow[(ccgt,demand),2050,3,1:1] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,1:1] 1
+    flow[(ccgt,demand),2050,3,1:1] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,1:1] 1
+    flow[(ccgt,demand),2050,3,1:1] consumer_balance[demand,2050,3,1:1] 1
+    flow[(ccgt,demand),2050,3,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,1:1] -1
+    flow[(ccgt,demand),2050,3,2:2] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,2:2] 1
+    flow[(ccgt,demand),2050,3,2:2] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,2:2] 1
+    flow[(ccgt,demand),2050,3,2:2] consumer_balance[demand,2050,3,2:2] 1
+    flow[(ccgt,demand),2050,3,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,2:2] -1
+    flow[(ccgt,demand),2050,3,3:3] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,3:3] 1
+    flow[(ccgt,demand),2050,3,3:3] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,3:3] 1
+    flow[(ccgt,demand),2050,3,3:3] consumer_balance[demand,2050,3,3:3] 1
+    flow[(ccgt,demand),2050,3,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,3:3] -1
+    flow[(ccgt,demand),2050,3,4:4] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,4:4] 1
+    flow[(ccgt,demand),2050,3,4:4] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,4:4] 1
+    flow[(ccgt,demand),2050,3,4:4] consumer_balance[demand,2050,3,4:4] 1
+    flow[(ccgt,demand),2050,3,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,4:4] -1
+    flow[(ccgt,demand),2050,3,5:5] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,5:5] 1
+    flow[(ccgt,demand),2050,3,5:5] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,5:5] 1
+    flow[(ccgt,demand),2050,3,5:5] consumer_balance[demand,2050,3,5:5] 1
+    flow[(ccgt,demand),2050,3,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,5:5] -1
+    flow[(ccgt,demand),2050,3,6:6] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,6:6] 1
+    flow[(ccgt,demand),2050,3,6:6] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,6:6] 1
+    flow[(ccgt,demand),2050,3,6:6] consumer_balance[demand,2050,3,6:6] 1
+    flow[(ccgt,demand),2050,3,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,6:6] -1
+    flow[(ccgt,demand),2050,3,7:7] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,7:7] 1
+    flow[(ccgt,demand),2050,3,7:7] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,7:7] 1
+    flow[(ccgt,demand),2050,3,7:7] consumer_balance[demand,2050,3,7:7] 1
+    flow[(ccgt,demand),2050,3,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,7:7] -1
+    flow[(ccgt,demand),2050,3,8:8] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,8:8] 1
+    flow[(ccgt,demand),2050,3,8:8] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,8:8] 1
+    flow[(ccgt,demand),2050,3,8:8] consumer_balance[demand,2050,3,8:8] 1
+    flow[(ccgt,demand),2050,3,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,8:8] -1
+    flow[(ccgt,demand),2050,3,9:9] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,9:9] 1
+    flow[(ccgt,demand),2050,3,9:9] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,9:9] 1
+    flow[(ccgt,demand),2050,3,9:9] consumer_balance[demand,2050,3,9:9] 1
+    flow[(ccgt,demand),2050,3,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,9:9] -1
+    flow[(ccgt,demand),2050,3,10:10] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,10:10] 1
+    flow[(ccgt,demand),2050,3,10:10] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,10:10] 1
+    flow[(ccgt,demand),2050,3,10:10] consumer_balance[demand,2050,3,10:10] 1
+    flow[(ccgt,demand),2050,3,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,10:10] -1
+    flow[(ccgt,demand),2050,3,11:11] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,11:11] 1
+    flow[(ccgt,demand),2050,3,11:11] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,11:11] 1
+    flow[(ccgt,demand),2050,3,11:11] consumer_balance[demand,2050,3,11:11] 1
+    flow[(ccgt,demand),2050,3,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,11:11] -1
+    flow[(ccgt,demand),2050,3,12:12] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,12:12] 1
+    flow[(ccgt,demand),2050,3,12:12] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,12:12] 1
+    flow[(ccgt,demand),2050,3,12:12] consumer_balance[demand,2050,3,12:12] 1
+    flow[(ccgt,demand),2050,3,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,12:12] -1
+    flow[(ccgt,demand),2050,3,13:13] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,13:13] 1
+    flow[(ccgt,demand),2050,3,13:13] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,13:13] 1
+    flow[(ccgt,demand),2050,3,13:13] consumer_balance[demand,2050,3,13:13] 1
+    flow[(ccgt,demand),2050,3,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,13:13] -1
+    flow[(ccgt,demand),2050,3,14:14] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,14:14] 1
+    flow[(ccgt,demand),2050,3,14:14] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,14:14] 1
+    flow[(ccgt,demand),2050,3,14:14] consumer_balance[demand,2050,3,14:14] 1
+    flow[(ccgt,demand),2050,3,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,14:14] -1
+    flow[(ccgt,demand),2050,3,15:15] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,15:15] 1
+    flow[(ccgt,demand),2050,3,15:15] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,15:15] 1
+    flow[(ccgt,demand),2050,3,15:15] consumer_balance[demand,2050,3,15:15] 1
+    flow[(ccgt,demand),2050,3,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,15:15] -1
+    flow[(ccgt,demand),2050,3,16:16] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,16:16] 1
+    flow[(ccgt,demand),2050,3,16:16] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,16:16] 1
+    flow[(ccgt,demand),2050,3,16:16] consumer_balance[demand,2050,3,16:16] 1
+    flow[(ccgt,demand),2050,3,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,16:16] -1
+    flow[(ccgt,demand),2050,3,17:17] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,17:17] 1
+    flow[(ccgt,demand),2050,3,17:17] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,17:17] 1
+    flow[(ccgt,demand),2050,3,17:17] consumer_balance[demand,2050,3,17:17] 1
+    flow[(ccgt,demand),2050,3,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,17:17] -1
+    flow[(ccgt,demand),2050,3,18:18] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,18:18] 1
+    flow[(ccgt,demand),2050,3,18:18] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,18:18] 1
+    flow[(ccgt,demand),2050,3,18:18] consumer_balance[demand,2050,3,18:18] 1
+    flow[(ccgt,demand),2050,3,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,18:18] -1
+    flow[(ccgt,demand),2050,3,19:19] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,19:19] 1
+    flow[(ccgt,demand),2050,3,19:19] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,19:19] 1
+    flow[(ccgt,demand),2050,3,19:19] consumer_balance[demand,2050,3,19:19] 1
+    flow[(ccgt,demand),2050,3,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,19:19] -1
+    flow[(ccgt,demand),2050,3,20:20] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,20:20] 1
+    flow[(ccgt,demand),2050,3,20:20] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,20:20] 1
+    flow[(ccgt,demand),2050,3,20:20] consumer_balance[demand,2050,3,20:20] 1
+    flow[(ccgt,demand),2050,3,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,20:20] -1
+    flow[(ccgt,demand),2050,3,21:21] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,21:21] 1
+    flow[(ccgt,demand),2050,3,21:21] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,21:21] 1
+    flow[(ccgt,demand),2050,3,21:21] consumer_balance[demand,2050,3,21:21] 1
+    flow[(ccgt,demand),2050,3,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,21:21] -1
+    flow[(ccgt,demand),2050,3,22:22] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22] 1
+    flow[(ccgt,demand),2050,3,22:22] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22] 1
+    flow[(ccgt,demand),2050,3,22:22] consumer_balance[demand,2050,3,22:22] 1
+    flow[(ccgt,demand),2050,3,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,22:22] -1
+    flow[(ccgt,demand),2050,3,23:23] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23] 1
+    flow[(ccgt,demand),2050,3,23:23] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23] 1
+    flow[(ccgt,demand),2050,3,23:23] consumer_balance[demand,2050,3,23:23] 1
+    flow[(ccgt,demand),2050,3,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,23:23] -1
+    flow[(ccgt,demand),2050,3,24:24] max_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24] 1
+    flow[(ccgt,demand),2050,3,24:24] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24] 1
+    flow[(ccgt,demand),2050,3,24:24] consumer_balance[demand,2050,3,24:24] 1
+    flow[(ccgt,demand),2050,3,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,24:24] -1
     flow[(wind,demand),2050,3,1:1] max_output_flows_limit_compact_method[wind,2050,3,1:1] 1
     flow[(wind,demand),2050,3,1:1] consumer_balance[demand,2050,3,1:1] 1
-    flow[(wind,demand),2050,3,1:1] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,1:1] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,2:2] max_output_flows_limit_compact_method[wind,2050,3,2:2] 1
     flow[(wind,demand),2050,3,2:2] consumer_balance[demand,2050,3,2:2] 1
-    flow[(wind,demand),2050,3,2:2] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,2:2] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,3:3] max_output_flows_limit_compact_method[wind,2050,3,3:3] 1
     flow[(wind,demand),2050,3,3:3] consumer_balance[demand,2050,3,3:3] 1
-    flow[(wind,demand),2050,3,3:3] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,3:3] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,4:4] max_output_flows_limit_compact_method[wind,2050,3,4:4] 1
     flow[(wind,demand),2050,3,4:4] consumer_balance[demand,2050,3,4:4] 1
-    flow[(wind,demand),2050,3,4:4] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,4:4] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,5:5] max_output_flows_limit_compact_method[wind,2050,3,5:5] 1
     flow[(wind,demand),2050,3,5:5] consumer_balance[demand,2050,3,5:5] 1
-    flow[(wind,demand),2050,3,5:5] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,5:5] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,6:6] max_output_flows_limit_compact_method[wind,2050,3,6:6] 1
     flow[(wind,demand),2050,3,6:6] consumer_balance[demand,2050,3,6:6] 1
-    flow[(wind,demand),2050,3,6:6] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,6:6] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,7:7] max_output_flows_limit_compact_method[wind,2050,3,7:7] 1
     flow[(wind,demand),2050,3,7:7] consumer_balance[demand,2050,3,7:7] 1
-    flow[(wind,demand),2050,3,7:7] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,7:7] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,8:8] max_output_flows_limit_compact_method[wind,2050,3,8:8] 1
     flow[(wind,demand),2050,3,8:8] consumer_balance[demand,2050,3,8:8] 1
-    flow[(wind,demand),2050,3,8:8] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,8:8] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,9:9] max_output_flows_limit_compact_method[wind,2050,3,9:9] 1
     flow[(wind,demand),2050,3,9:9] consumer_balance[demand,2050,3,9:9] 1
-    flow[(wind,demand),2050,3,9:9] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,9:9] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,10:10] max_output_flows_limit_compact_method[wind,2050,3,10:10] 1
     flow[(wind,demand),2050,3,10:10] consumer_balance[demand,2050,3,10:10] 1
-    flow[(wind,demand),2050,3,10:10] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,10:10] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,11:11] max_output_flows_limit_compact_method[wind,2050,3,11:11] 1
     flow[(wind,demand),2050,3,11:11] consumer_balance[demand,2050,3,11:11] 1
-    flow[(wind,demand),2050,3,11:11] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,11:11] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,12:12] max_output_flows_limit_compact_method[wind,2050,3,12:12] 1
     flow[(wind,demand),2050,3,12:12] consumer_balance[demand,2050,3,12:12] 1
-    flow[(wind,demand),2050,3,12:12] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,12:12] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,13:13] max_output_flows_limit_compact_method[wind,2050,3,13:13] 1
     flow[(wind,demand),2050,3,13:13] consumer_balance[demand,2050,3,13:13] 1
-    flow[(wind,demand),2050,3,13:13] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,13:13] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,14:14] max_output_flows_limit_compact_method[wind,2050,3,14:14] 1
     flow[(wind,demand),2050,3,14:14] consumer_balance[demand,2050,3,14:14] 1
-    flow[(wind,demand),2050,3,14:14] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,14:14] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,15:15] max_output_flows_limit_compact_method[wind,2050,3,15:15] 1
     flow[(wind,demand),2050,3,15:15] consumer_balance[demand,2050,3,15:15] 1
-    flow[(wind,demand),2050,3,15:15] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,15:15] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,16:16] max_output_flows_limit_compact_method[wind,2050,3,16:16] 1
     flow[(wind,demand),2050,3,16:16] consumer_balance[demand,2050,3,16:16] 1
-    flow[(wind,demand),2050,3,16:16] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,16:16] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,17:17] max_output_flows_limit_compact_method[wind,2050,3,17:17] 1
     flow[(wind,demand),2050,3,17:17] consumer_balance[demand,2050,3,17:17] 1
-    flow[(wind,demand),2050,3,17:17] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,17:17] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,18:18] max_output_flows_limit_compact_method[wind,2050,3,18:18] 1
     flow[(wind,demand),2050,3,18:18] consumer_balance[demand,2050,3,18:18] 1
-    flow[(wind,demand),2050,3,18:18] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,18:18] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,19:19] max_output_flows_limit_compact_method[wind,2050,3,19:19] 1
     flow[(wind,demand),2050,3,19:19] consumer_balance[demand,2050,3,19:19] 1
-    flow[(wind,demand),2050,3,19:19] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,19:19] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,20:20] max_output_flows_limit_compact_method[wind,2050,3,20:20] 1
     flow[(wind,demand),2050,3,20:20] consumer_balance[demand,2050,3,20:20] 1
-    flow[(wind,demand),2050,3,20:20] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,20:20] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,21:21] max_output_flows_limit_compact_method[wind,2050,3,21:21] 1
     flow[(wind,demand),2050,3,21:21] consumer_balance[demand,2050,3,21:21] 1
-    flow[(wind,demand),2050,3,21:21] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,21:21] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,22:22] max_output_flows_limit_compact_method[wind,2050,3,22:22] 1
     flow[(wind,demand),2050,3,22:22] consumer_balance[demand,2050,3,22:22] 1
-    flow[(wind,demand),2050,3,22:22] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,22:22] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,23:23] max_output_flows_limit_compact_method[wind,2050,3,23:23] 1
     flow[(wind,demand),2050,3,23:23] consumer_balance[demand,2050,3,23:23] 1
-    flow[(wind,demand),2050,3,23:23] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,23:23] OBJ 0.04511255016699175
     flow[(wind,demand),2050,3,24:24] max_output_flows_limit_compact_method[wind,2050,3,24:24] 1
     flow[(wind,demand),2050,3,24:24] consumer_balance[demand,2050,3,24:24] 1
-    flow[(wind,demand),2050,3,24:24] OBJ 0.04511255016699181
+    flow[(wind,demand),2050,3,24:24] OBJ 0.04511255016699175
     flow[(solar,demand),2050,3,1:1] max_output_flows_limit_simple_method[solar,2050,3,1:1] 1
     flow[(solar,demand),2050,3,1:1] consumer_balance[demand,2050,3,1:1] 1
     flow[(solar,demand),2050,3,2:2] max_output_flows_limit_simple_method[solar,2050,3,2:2] 1
@@ -5335,867 +5335,867 @@ COLUMNS
     vintage_flow[(ccgt,demand),2030,2030,1,1:1] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,1:1] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,1:1] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,1:1] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,1:1] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,1:1] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,1:1] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,2:2] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,2:2] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,2:2] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,2:2] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,2:2] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,2:2] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,2:2] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,3:3] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,3:3] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,3:3] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,3:3] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,3:3] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,3:3] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,3:3] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,4:4] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,4:4] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,4:4] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,4:4] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,4:4] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,4:4] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,4:4] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,5:5] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,5:5] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,5:5] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,5:5] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,5:5] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,5:5] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,5:5] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,6:6] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,6:6] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,6:6] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,6:6] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,6:6] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,6:6] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,6:6] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,7:7] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,7:7] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,7:7] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,7:7] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,7:7] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,7:7] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,7:7] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,8:8] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,8:8] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,8:8] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,8:8] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,8:8] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,8:8] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,8:8] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,9:9] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,9:9] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,9:9] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,9:9] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,9:9] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,9:9] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,9:9] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,10:10] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,10:10] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,10:10] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,10:10] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,10:10] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,10:10] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,10:10] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,11:11] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,11:11] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,11:11] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,11:11] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,11:11] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,11:11] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,11:11] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,12:12] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,12:12] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,12:12] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,12:12] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,12:12] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,12:12] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,12:12] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,13:13] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,13:13] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,13:13] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,13:13] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,13:13] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,13:13] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,13:13] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,14:14] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,14:14] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,14:14] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,14:14] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,14:14] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,14:14] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,14:14] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,15:15] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,15:15] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,15:15] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,15:15] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,15:15] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,15:15] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,15:15] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,16:16] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,16:16] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,16:16] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,16:16] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,16:16] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,16:16] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,16:16] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,17:17] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,17:17] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,17:17] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,17:17] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,17:17] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,17:17] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,17:17] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,18:18] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,18:18] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,18:18] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,18:18] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,18:18] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,18:18] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,18:18] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,19:19] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,19:19] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,19:19] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,19:19] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,19:19] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,19:19] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,19:19] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,20:20] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,20:20] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,20:20] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,20:20] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,20:20] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,20:20] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,20:20] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,21:21] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,21:21] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,21:21] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,21:21] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,21:21] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,21:21] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,21:21] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,22:22] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,22:22] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,22:22] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,22:22] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,22:22] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,22:22] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,22:22] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,23:23] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,23:23] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,23:23] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,23:23] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,23:23] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,23:23] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,23:23] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,1,24:24] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,1,24:24] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,24:24] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,1,24:24] 0.9
     vintage_flow[(ccgt,demand),2030,2030,1,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,24:24] 1
-    vintage_flow[(ccgt,demand),2030,2030,1,24:24] OBJ 8365.330899383054
+    vintage_flow[(ccgt,demand),2030,2030,1,24:24] OBJ 8365.330899383049
     vintage_flow[(ccgt,demand),2030,2030,2,1:1] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,1:1] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,1:1] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,1:1] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,1:1] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,1:1] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,1:1] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,2:2] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,2:2] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,2:2] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,2:2] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,2:2] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,2:2] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,2:2] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,3:3] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,3:3] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,3:3] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,3:3] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,3:3] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,3:3] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,3:3] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,4:4] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,4:4] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,4:4] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,4:4] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,4:4] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,4:4] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,4:4] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,5:5] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,5:5] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,5:5] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,5:5] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,5:5] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,5:5] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,5:5] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,6:6] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,6:6] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,6:6] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,6:6] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,6:6] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,6:6] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,6:6] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,7:7] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,7:7] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,7:7] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,7:7] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,7:7] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,7:7] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,7:7] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,8:8] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,8:8] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,8:8] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,8:8] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,8:8] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,8:8] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,8:8] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,9:9] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,9:9] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,9:9] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,9:9] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,9:9] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,9:9] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,9:9] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,10:10] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,10:10] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,10:10] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,10:10] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,10:10] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,10:10] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,10:10] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,11:11] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,11:11] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,11:11] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,11:11] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,11:11] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,11:11] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,11:11] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,12:12] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,12:12] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,12:12] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,12:12] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,12:12] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,12:12] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,12:12] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,13:13] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,13:13] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,13:13] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,13:13] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,13:13] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,13:13] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,13:13] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,14:14] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,14:14] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,14:14] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,14:14] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,14:14] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,14:14] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,14:14] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,15:15] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,15:15] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,15:15] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,15:15] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,15:15] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,15:15] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,15:15] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,16:16] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,16:16] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,16:16] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,16:16] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,16:16] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,16:16] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,16:16] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,17:17] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,17:17] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,17:17] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,17:17] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,17:17] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,17:17] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,17:17] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,18:18] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,18:18] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,18:18] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,18:18] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,18:18] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,18:18] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,18:18] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,19:19] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,19:19] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,19:19] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,19:19] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,19:19] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,19:19] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,19:19] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,20:20] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,20:20] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,20:20] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,20:20] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,20:20] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,20:20] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,20:20] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,21:21] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,21:21] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,21:21] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,21:21] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,21:21] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,21:21] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,21:21] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,22:22] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,22:22] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,22:22] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,22:22] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,22:22] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,22:22] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,22:22] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,23:23] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,23:23] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,23:23] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,23:23] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,23:23] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,23:23] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,23:23] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,2,24:24] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,2,24:24] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,24:24] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,2,24:24] 0.9
     vintage_flow[(ccgt,demand),2030,2030,2,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,24:24] 1
-    vintage_flow[(ccgt,demand),2030,2030,2,24:24] OBJ 20913.327248457634
+    vintage_flow[(ccgt,demand),2030,2030,2,24:24] OBJ 20913.32724845762
     vintage_flow[(ccgt,demand),2030,2030,3,1:1] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,1:1] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,1:1] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,1:1] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,1:1] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,1:1] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,1:1] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,2:2] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,2:2] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,2:2] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,2:2] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,2:2] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,2:2] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,2:2] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,3:3] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,3:3] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,3:3] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,3:3] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,3:3] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,3:3] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,3:3] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,4:4] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,4:4] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,4:4] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,4:4] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,4:4] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,4:4] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,4:4] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,5:5] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,5:5] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,5:5] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,5:5] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,5:5] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,5:5] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,5:5] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,6:6] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,6:6] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,6:6] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,6:6] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,6:6] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,6:6] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,6:6] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,7:7] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,7:7] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,7:7] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,7:7] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,7:7] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,7:7] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,7:7] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,8:8] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,8:8] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,8:8] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,8:8] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,8:8] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,8:8] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,8:8] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,9:9] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,9:9] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,9:9] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,9:9] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,9:9] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,9:9] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,9:9] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,10:10] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,10:10] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,10:10] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,10:10] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,10:10] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,10:10] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,10:10] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,11:11] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,11:11] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,11:11] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,11:11] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,11:11] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,11:11] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,11:11] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,12:12] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,12:12] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,12:12] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,12:12] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,12:12] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,12:12] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,12:12] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,13:13] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,13:13] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,13:13] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,13:13] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,13:13] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,13:13] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,13:13] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,14:14] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,14:14] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,14:14] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,14:14] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,14:14] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,14:14] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,14:14] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,15:15] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,15:15] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,15:15] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,15:15] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,15:15] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,15:15] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,15:15] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,16:16] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,16:16] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,16:16] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,16:16] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,16:16] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,16:16] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,16:16] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,17:17] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,17:17] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,17:17] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,17:17] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,17:17] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,17:17] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,17:17] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,18:18] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,18:18] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,18:18] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,18:18] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,18:18] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,18:18] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,18:18] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,19:19] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,19:19] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,19:19] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,19:19] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,19:19] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,19:19] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,19:19] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,20:20] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,20:20] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,20:20] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,20:20] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,20:20] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,20:20] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,20:20] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,21:21] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,21:21] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,21:21] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,21:21] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,21:21] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,21:21] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,21:21] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,22:22] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,22:22] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,22:22] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,22:22] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,22:22] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,22:22] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,22:22] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,23:23] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,23:23] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,23:23] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,23:23] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,23:23] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,23:23] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,23:23] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2030,2030,3,24:24] max_output_flows_limit_semi_compact_method[ccgt,2030,2030,3,24:24] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,24:24] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2030,3,24:24] 0.9
     vintage_flow[(ccgt,demand),2030,2030,3,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,24:24] 1
-    vintage_flow[(ccgt,demand),2030,2030,3,24:24] OBJ 12547.99634907458
+    vintage_flow[(ccgt,demand),2030,2030,3,24:24] OBJ 12547.996349074574
     vintage_flow[(ccgt,demand),2050,2050,1,1:1] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,1:1] 1
     vintage_flow[(ccgt,demand),2050,2050,1,1:1] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,1:1] 1
     vintage_flow[(ccgt,demand),2050,2050,1,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,1:1] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,1:1] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,1:1] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,2:2] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,2:2] 1
     vintage_flow[(ccgt,demand),2050,2050,1,2:2] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,2:2] 1
     vintage_flow[(ccgt,demand),2050,2050,1,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,2:2] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,2:2] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,2:2] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,3:3] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,3:3] 1
     vintage_flow[(ccgt,demand),2050,2050,1,3:3] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,3:3] 1
     vintage_flow[(ccgt,demand),2050,2050,1,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,3:3] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,3:3] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,3:3] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,4:4] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,4:4] 1
     vintage_flow[(ccgt,demand),2050,2050,1,4:4] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,4:4] 1
     vintage_flow[(ccgt,demand),2050,2050,1,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,4:4] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,4:4] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,4:4] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,5:5] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,5:5] 1
     vintage_flow[(ccgt,demand),2050,2050,1,5:5] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,5:5] 1
     vintage_flow[(ccgt,demand),2050,2050,1,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,5:5] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,5:5] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,5:5] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,6:6] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,6:6] 1
     vintage_flow[(ccgt,demand),2050,2050,1,6:6] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,6:6] 1
     vintage_flow[(ccgt,demand),2050,2050,1,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,6:6] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,6:6] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,6:6] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,7:7] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,7:7] 1
     vintage_flow[(ccgt,demand),2050,2050,1,7:7] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,7:7] 1
     vintage_flow[(ccgt,demand),2050,2050,1,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,7:7] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,7:7] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,7:7] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,8:8] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,8:8] 1
     vintage_flow[(ccgt,demand),2050,2050,1,8:8] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,8:8] 1
     vintage_flow[(ccgt,demand),2050,2050,1,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,8:8] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,8:8] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,8:8] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,9:9] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,9:9] 1
     vintage_flow[(ccgt,demand),2050,2050,1,9:9] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,9:9] 1
     vintage_flow[(ccgt,demand),2050,2050,1,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,9:9] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,9:9] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,9:9] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,10:10] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,10:10] 1
     vintage_flow[(ccgt,demand),2050,2050,1,10:10] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,10:10] 1
     vintage_flow[(ccgt,demand),2050,2050,1,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,10:10] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,10:10] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,10:10] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,11:11] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,11:11] 1
     vintage_flow[(ccgt,demand),2050,2050,1,11:11] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,11:11] 1
     vintage_flow[(ccgt,demand),2050,2050,1,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,11:11] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,11:11] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,11:11] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,12:12] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,12:12] 1
     vintage_flow[(ccgt,demand),2050,2050,1,12:12] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,12:12] 1
     vintage_flow[(ccgt,demand),2050,2050,1,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,12:12] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,12:12] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,12:12] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,13:13] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,13:13] 1
     vintage_flow[(ccgt,demand),2050,2050,1,13:13] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,13:13] 1
     vintage_flow[(ccgt,demand),2050,2050,1,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,13:13] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,13:13] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,13:13] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,14:14] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,14:14] 1
     vintage_flow[(ccgt,demand),2050,2050,1,14:14] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,14:14] 1
     vintage_flow[(ccgt,demand),2050,2050,1,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,14:14] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,14:14] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,14:14] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,15:15] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,15:15] 1
     vintage_flow[(ccgt,demand),2050,2050,1,15:15] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,15:15] 1
     vintage_flow[(ccgt,demand),2050,2050,1,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,15:15] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,15:15] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,15:15] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,16:16] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,16:16] 1
     vintage_flow[(ccgt,demand),2050,2050,1,16:16] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,16:16] 1
     vintage_flow[(ccgt,demand),2050,2050,1,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,16:16] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,16:16] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,16:16] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,17:17] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,17:17] 1
     vintage_flow[(ccgt,demand),2050,2050,1,17:17] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,17:17] 1
     vintage_flow[(ccgt,demand),2050,2050,1,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,17:17] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,17:17] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,17:17] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,18:18] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,18:18] 1
     vintage_flow[(ccgt,demand),2050,2050,1,18:18] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,18:18] 1
     vintage_flow[(ccgt,demand),2050,2050,1,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,18:18] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,18:18] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,18:18] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,19:19] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,19:19] 1
     vintage_flow[(ccgt,demand),2050,2050,1,19:19] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,19:19] 1
     vintage_flow[(ccgt,demand),2050,2050,1,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,19:19] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,19:19] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,19:19] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,20:20] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,20:20] 1
     vintage_flow[(ccgt,demand),2050,2050,1,20:20] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,20:20] 1
     vintage_flow[(ccgt,demand),2050,2050,1,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,20:20] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,20:20] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,20:20] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,21:21] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,21:21] 1
     vintage_flow[(ccgt,demand),2050,2050,1,21:21] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,21:21] 1
     vintage_flow[(ccgt,demand),2050,2050,1,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,21:21] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,21:21] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,21:21] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,22:22] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,22:22] 1
     vintage_flow[(ccgt,demand),2050,2050,1,22:22] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,22:22] 1
     vintage_flow[(ccgt,demand),2050,2050,1,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,22:22] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,22:22] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,22:22] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,23:23] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,23:23] 1
     vintage_flow[(ccgt,demand),2050,2050,1,23:23] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,23:23] 1
     vintage_flow[(ccgt,demand),2050,2050,1,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,23:23] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,23:23] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,23:23] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,1,24:24] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,1,24:24] 1
     vintage_flow[(ccgt,demand),2050,2050,1,24:24] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,1,24:24] 1
     vintage_flow[(ccgt,demand),2050,2050,1,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,1,24:24] 1
-    vintage_flow[(ccgt,demand),2050,2050,1,24:24] OBJ 603.0044205654572
+    vintage_flow[(ccgt,demand),2050,2050,1,24:24] OBJ 603.0044205654564
     vintage_flow[(ccgt,demand),2050,2050,2,1:1] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,1:1] 1
     vintage_flow[(ccgt,demand),2050,2050,2,1:1] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,1:1] 1
     vintage_flow[(ccgt,demand),2050,2050,2,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,1:1] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,1:1] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,1:1] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,2:2] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,2:2] 1
     vintage_flow[(ccgt,demand),2050,2050,2,2:2] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,2:2] 1
     vintage_flow[(ccgt,demand),2050,2050,2,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,2:2] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,2:2] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,2:2] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,3:3] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,3:3] 1
     vintage_flow[(ccgt,demand),2050,2050,2,3:3] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,3:3] 1
     vintage_flow[(ccgt,demand),2050,2050,2,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,3:3] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,3:3] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,3:3] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,4:4] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,4:4] 1
     vintage_flow[(ccgt,demand),2050,2050,2,4:4] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,4:4] 1
     vintage_flow[(ccgt,demand),2050,2050,2,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,4:4] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,4:4] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,4:4] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,5:5] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,5:5] 1
     vintage_flow[(ccgt,demand),2050,2050,2,5:5] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,5:5] 1
     vintage_flow[(ccgt,demand),2050,2050,2,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,5:5] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,5:5] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,5:5] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,6:6] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,6:6] 1
     vintage_flow[(ccgt,demand),2050,2050,2,6:6] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,6:6] 1
     vintage_flow[(ccgt,demand),2050,2050,2,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,6:6] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,6:6] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,6:6] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,7:7] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,7:7] 1
     vintage_flow[(ccgt,demand),2050,2050,2,7:7] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,7:7] 1
     vintage_flow[(ccgt,demand),2050,2050,2,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,7:7] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,7:7] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,7:7] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,8:8] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,8:8] 1
     vintage_flow[(ccgt,demand),2050,2050,2,8:8] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,8:8] 1
     vintage_flow[(ccgt,demand),2050,2050,2,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,8:8] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,8:8] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,8:8] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,9:9] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,9:9] 1
     vintage_flow[(ccgt,demand),2050,2050,2,9:9] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,9:9] 1
     vintage_flow[(ccgt,demand),2050,2050,2,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,9:9] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,9:9] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,9:9] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,10:10] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,10:10] 1
     vintage_flow[(ccgt,demand),2050,2050,2,10:10] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,10:10] 1
     vintage_flow[(ccgt,demand),2050,2050,2,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,10:10] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,10:10] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,10:10] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,11:11] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,11:11] 1
     vintage_flow[(ccgt,demand),2050,2050,2,11:11] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,11:11] 1
     vintage_flow[(ccgt,demand),2050,2050,2,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,11:11] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,11:11] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,11:11] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,12:12] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,12:12] 1
     vintage_flow[(ccgt,demand),2050,2050,2,12:12] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,12:12] 1
     vintage_flow[(ccgt,demand),2050,2050,2,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,12:12] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,12:12] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,12:12] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,13:13] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,13:13] 1
     vintage_flow[(ccgt,demand),2050,2050,2,13:13] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,13:13] 1
     vintage_flow[(ccgt,demand),2050,2050,2,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,13:13] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,13:13] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,13:13] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,14:14] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,14:14] 1
     vintage_flow[(ccgt,demand),2050,2050,2,14:14] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,14:14] 1
     vintage_flow[(ccgt,demand),2050,2050,2,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,14:14] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,14:14] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,14:14] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,15:15] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,15:15] 1
     vintage_flow[(ccgt,demand),2050,2050,2,15:15] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,15:15] 1
     vintage_flow[(ccgt,demand),2050,2050,2,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,15:15] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,15:15] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,15:15] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,16:16] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,16:16] 1
     vintage_flow[(ccgt,demand),2050,2050,2,16:16] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,16:16] 1
     vintage_flow[(ccgt,demand),2050,2050,2,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,16:16] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,16:16] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,16:16] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,17:17] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,17:17] 1
     vintage_flow[(ccgt,demand),2050,2050,2,17:17] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,17:17] 1
     vintage_flow[(ccgt,demand),2050,2050,2,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,17:17] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,17:17] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,17:17] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,18:18] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,18:18] 1
     vintage_flow[(ccgt,demand),2050,2050,2,18:18] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,18:18] 1
     vintage_flow[(ccgt,demand),2050,2050,2,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,18:18] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,18:18] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,18:18] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,19:19] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,19:19] 1
     vintage_flow[(ccgt,demand),2050,2050,2,19:19] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,19:19] 1
     vintage_flow[(ccgt,demand),2050,2050,2,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,19:19] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,19:19] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,19:19] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,20:20] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,20:20] 1
     vintage_flow[(ccgt,demand),2050,2050,2,20:20] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,20:20] 1
     vintage_flow[(ccgt,demand),2050,2050,2,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,20:20] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,20:20] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,20:20] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,21:21] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,21:21] 1
     vintage_flow[(ccgt,demand),2050,2050,2,21:21] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,21:21] 1
     vintage_flow[(ccgt,demand),2050,2050,2,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,21:21] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,21:21] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,21:21] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,22:22] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,22:22] 1
     vintage_flow[(ccgt,demand),2050,2050,2,22:22] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,22:22] 1
     vintage_flow[(ccgt,demand),2050,2050,2,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,22:22] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,22:22] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,22:22] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,23:23] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,23:23] 1
     vintage_flow[(ccgt,demand),2050,2050,2,23:23] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,23:23] 1
     vintage_flow[(ccgt,demand),2050,2050,2,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,23:23] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,23:23] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,23:23] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,2,24:24] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,2,24:24] 1
     vintage_flow[(ccgt,demand),2050,2050,2,24:24] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,2,24:24] 1
     vintage_flow[(ccgt,demand),2050,2050,2,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,2,24:24] 1
-    vintage_flow[(ccgt,demand),2050,2050,2,24:24] OBJ 1507.511051413643
+    vintage_flow[(ccgt,demand),2050,2050,2,24:24] OBJ 1507.5110514136409
     vintage_flow[(ccgt,demand),2050,2050,3,1:1] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,1:1] 1
     vintage_flow[(ccgt,demand),2050,2050,3,1:1] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,1:1] 1
     vintage_flow[(ccgt,demand),2050,2050,3,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,1:1] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,1:1] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,1:1] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,2:2] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,2:2] 1
     vintage_flow[(ccgt,demand),2050,2050,3,2:2] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,2:2] 1
     vintage_flow[(ccgt,demand),2050,2050,3,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,2:2] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,2:2] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,2:2] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,3:3] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,3:3] 1
     vintage_flow[(ccgt,demand),2050,2050,3,3:3] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,3:3] 1
     vintage_flow[(ccgt,demand),2050,2050,3,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,3:3] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,3:3] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,3:3] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,4:4] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,4:4] 1
     vintage_flow[(ccgt,demand),2050,2050,3,4:4] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,4:4] 1
     vintage_flow[(ccgt,demand),2050,2050,3,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,4:4] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,4:4] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,4:4] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,5:5] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,5:5] 1
     vintage_flow[(ccgt,demand),2050,2050,3,5:5] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,5:5] 1
     vintage_flow[(ccgt,demand),2050,2050,3,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,5:5] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,5:5] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,5:5] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,6:6] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,6:6] 1
     vintage_flow[(ccgt,demand),2050,2050,3,6:6] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,6:6] 1
     vintage_flow[(ccgt,demand),2050,2050,3,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,6:6] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,6:6] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,6:6] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,7:7] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,7:7] 1
     vintage_flow[(ccgt,demand),2050,2050,3,7:7] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,7:7] 1
     vintage_flow[(ccgt,demand),2050,2050,3,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,7:7] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,7:7] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,7:7] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,8:8] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,8:8] 1
     vintage_flow[(ccgt,demand),2050,2050,3,8:8] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,8:8] 1
     vintage_flow[(ccgt,demand),2050,2050,3,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,8:8] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,8:8] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,8:8] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,9:9] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,9:9] 1
     vintage_flow[(ccgt,demand),2050,2050,3,9:9] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,9:9] 1
     vintage_flow[(ccgt,demand),2050,2050,3,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,9:9] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,9:9] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,9:9] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,10:10] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,10:10] 1
     vintage_flow[(ccgt,demand),2050,2050,3,10:10] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,10:10] 1
     vintage_flow[(ccgt,demand),2050,2050,3,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,10:10] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,10:10] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,10:10] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,11:11] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,11:11] 1
     vintage_flow[(ccgt,demand),2050,2050,3,11:11] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,11:11] 1
     vintage_flow[(ccgt,demand),2050,2050,3,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,11:11] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,11:11] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,11:11] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,12:12] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,12:12] 1
     vintage_flow[(ccgt,demand),2050,2050,3,12:12] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,12:12] 1
     vintage_flow[(ccgt,demand),2050,2050,3,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,12:12] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,12:12] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,12:12] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,13:13] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,13:13] 1
     vintage_flow[(ccgt,demand),2050,2050,3,13:13] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,13:13] 1
     vintage_flow[(ccgt,demand),2050,2050,3,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,13:13] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,13:13] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,13:13] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,14:14] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,14:14] 1
     vintage_flow[(ccgt,demand),2050,2050,3,14:14] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,14:14] 1
     vintage_flow[(ccgt,demand),2050,2050,3,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,14:14] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,14:14] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,14:14] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,15:15] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,15:15] 1
     vintage_flow[(ccgt,demand),2050,2050,3,15:15] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,15:15] 1
     vintage_flow[(ccgt,demand),2050,2050,3,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,15:15] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,15:15] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,15:15] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,16:16] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,16:16] 1
     vintage_flow[(ccgt,demand),2050,2050,3,16:16] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,16:16] 1
     vintage_flow[(ccgt,demand),2050,2050,3,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,16:16] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,16:16] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,16:16] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,17:17] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,17:17] 1
     vintage_flow[(ccgt,demand),2050,2050,3,17:17] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,17:17] 1
     vintage_flow[(ccgt,demand),2050,2050,3,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,17:17] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,17:17] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,17:17] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,18:18] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,18:18] 1
     vintage_flow[(ccgt,demand),2050,2050,3,18:18] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,18:18] 1
     vintage_flow[(ccgt,demand),2050,2050,3,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,18:18] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,18:18] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,18:18] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,19:19] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,19:19] 1
     vintage_flow[(ccgt,demand),2050,2050,3,19:19] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,19:19] 1
     vintage_flow[(ccgt,demand),2050,2050,3,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,19:19] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,19:19] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,19:19] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,20:20] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,20:20] 1
     vintage_flow[(ccgt,demand),2050,2050,3,20:20] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,20:20] 1
     vintage_flow[(ccgt,demand),2050,2050,3,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,20:20] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,20:20] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,20:20] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,21:21] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,21:21] 1
     vintage_flow[(ccgt,demand),2050,2050,3,21:21] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,21:21] 1
     vintage_flow[(ccgt,demand),2050,2050,3,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,21:21] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,21:21] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,21:21] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,22:22] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,22:22] 1
     vintage_flow[(ccgt,demand),2050,2050,3,22:22] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,22:22] 1
     vintage_flow[(ccgt,demand),2050,2050,3,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,22:22] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,22:22] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,22:22] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,23:23] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,23:23] 1
     vintage_flow[(ccgt,demand),2050,2050,3,23:23] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,23:23] 1
     vintage_flow[(ccgt,demand),2050,2050,3,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,23:23] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,23:23] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,23:23] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2050,2050,3,24:24] max_output_flows_limit_semi_compact_method[ccgt,2050,2050,3,24:24] 1
     vintage_flow[(ccgt,demand),2050,2050,3,24:24] min_output_flows_limit_for_transport_vintage_flows[ccgt,2050,2050,3,24:24] 1
     vintage_flow[(ccgt,demand),2050,2050,3,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,24:24] 1
-    vintage_flow[(ccgt,demand),2050,2050,3,24:24] OBJ 904.5066308481859
+    vintage_flow[(ccgt,demand),2050,2050,3,24:24] OBJ 904.5066308481845
     vintage_flow[(ccgt,demand),2030,2025,1,1:1] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,1:1] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,1:1] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,1:1] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,1:1] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,1:1] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,1:1] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,2:2] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,2:2] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,2:2] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,2:2] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,2:2] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,2:2] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,2:2] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,3:3] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,3:3] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,3:3] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,3:3] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,3:3] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,3:3] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,3:3] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,4:4] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,4:4] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,4:4] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,4:4] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,4:4] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,4:4] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,4:4] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,5:5] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,5:5] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,5:5] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,5:5] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,5:5] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,5:5] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,5:5] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,6:6] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,6:6] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,6:6] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,6:6] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,6:6] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,6:6] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,6:6] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,7:7] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,7:7] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,7:7] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,7:7] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,7:7] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,7:7] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,7:7] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,8:8] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,8:8] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,8:8] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,8:8] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,8:8] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,8:8] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,8:8] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,9:9] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,9:9] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,9:9] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,9:9] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,9:9] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,9:9] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,9:9] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,10:10] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,10:10] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,10:10] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,10:10] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,10:10] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,10:10] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,10:10] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,11:11] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,11:11] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,11:11] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,11:11] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,11:11] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,11:11] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,11:11] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,12:12] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,12:12] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,12:12] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,12:12] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,12:12] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,12:12] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,12:12] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,13:13] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,13:13] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,13:13] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,13:13] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,13:13] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,13:13] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,13:13] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,14:14] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,14:14] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,14:14] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,14:14] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,14:14] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,14:14] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,14:14] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,15:15] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,15:15] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,15:15] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,15:15] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,15:15] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,15:15] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,15:15] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,16:16] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,16:16] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,16:16] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,16:16] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,16:16] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,16:16] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,16:16] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,17:17] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,17:17] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,17:17] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,17:17] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,17:17] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,17:17] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,17:17] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,18:18] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,18:18] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,18:18] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,18:18] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,18:18] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,18:18] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,18:18] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,19:19] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,19:19] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,19:19] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,19:19] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,19:19] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,19:19] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,19:19] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,20:20] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,20:20] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,20:20] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,20:20] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,20:20] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,20:20] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,20:20] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,21:21] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,21:21] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,21:21] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,21:21] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,21:21] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,21:21] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,21:21] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,22:22] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,22:22] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,22:22] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,22:22] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,22:22] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,22:22] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,22:22] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,23:23] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,23:23] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,23:23] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,23:23] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,23:23] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,23:23] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,23:23] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,1,24:24] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,1,24:24] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,24:24] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,1,24:24] 0.8
     vintage_flow[(ccgt,demand),2030,2025,1,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,1,24:24] 1
-    vintage_flow[(ccgt,demand),2030,2025,1,24:24] OBJ 16689.043237077636
+    vintage_flow[(ccgt,demand),2030,2025,1,24:24] OBJ 16689.04323707762
     vintage_flow[(ccgt,demand),2030,2025,2,1:1] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,1:1] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,1:1] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,1:1] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,1:1] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,1:1] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,1:1] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,2:2] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,2:2] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,2:2] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,2:2] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,2:2] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,2:2] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,2:2] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,3:3] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,3:3] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,3:3] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,3:3] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,3:3] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,3:3] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,3:3] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,4:4] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,4:4] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,4:4] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,4:4] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,4:4] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,4:4] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,4:4] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,5:5] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,5:5] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,5:5] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,5:5] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,5:5] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,5:5] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,5:5] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,6:6] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,6:6] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,6:6] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,6:6] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,6:6] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,6:6] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,6:6] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,7:7] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,7:7] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,7:7] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,7:7] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,7:7] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,7:7] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,7:7] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,8:8] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,8:8] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,8:8] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,8:8] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,8:8] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,8:8] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,8:8] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,9:9] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,9:9] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,9:9] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,9:9] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,9:9] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,9:9] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,9:9] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,10:10] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,10:10] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,10:10] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,10:10] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,10:10] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,10:10] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,10:10] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,11:11] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,11:11] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,11:11] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,11:11] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,11:11] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,11:11] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,11:11] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,12:12] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,12:12] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,12:12] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,12:12] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,12:12] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,12:12] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,12:12] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,13:13] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,13:13] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,13:13] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,13:13] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,13:13] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,13:13] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,13:13] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,14:14] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,14:14] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,14:14] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,14:14] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,14:14] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,14:14] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,14:14] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,15:15] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,15:15] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,15:15] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,15:15] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,15:15] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,15:15] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,15:15] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,16:16] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,16:16] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,16:16] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,16:16] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,16:16] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,16:16] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,16:16] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,17:17] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,17:17] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,17:17] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,17:17] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,17:17] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,17:17] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,17:17] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,18:18] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,18:18] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,18:18] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,18:18] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,18:18] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,18:18] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,18:18] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,19:19] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,19:19] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,19:19] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,19:19] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,19:19] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,19:19] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,19:19] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,20:20] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,20:20] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,20:20] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,20:20] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,20:20] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,20:20] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,20:20] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,21:21] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,21:21] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,21:21] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,21:21] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,21:21] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,21:21] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,21:21] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,22:22] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,22:22] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,22:22] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,22:22] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,22:22] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,22:22] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,22:22] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,23:23] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,23:23] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,23:23] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,23:23] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,23:23] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,23:23] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,23:23] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,2,24:24] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,2,24:24] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,24:24] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,2,24:24] 0.8
     vintage_flow[(ccgt,demand),2030,2025,2,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,2,24:24] 1
-    vintage_flow[(ccgt,demand),2030,2025,2,24:24] OBJ 41722.608092694085
+    vintage_flow[(ccgt,demand),2030,2025,2,24:24] OBJ 41722.608092694056
     vintage_flow[(ccgt,demand),2030,2025,3,1:1] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,1:1] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,1:1] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,1:1] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,1:1] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,1:1] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,1:1] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,1:1] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,2:2] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,2:2] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,2:2] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,2:2] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,2:2] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,2:2] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,2:2] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,2:2] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,3:3] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,3:3] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,3:3] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,3:3] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,3:3] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,3:3] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,3:3] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,3:3] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,4:4] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,4:4] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,4:4] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,4:4] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,4:4] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,4:4] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,4:4] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,4:4] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,5:5] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,5:5] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,5:5] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,5:5] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,5:5] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,5:5] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,5:5] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,5:5] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,6:6] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,6:6] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,6:6] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,6:6] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,6:6] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,6:6] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,6:6] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,6:6] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,7:7] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,7:7] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,7:7] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,7:7] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,7:7] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,7:7] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,7:7] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,7:7] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,8:8] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,8:8] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,8:8] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,8:8] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,8:8] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,8:8] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,8:8] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,8:8] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,9:9] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,9:9] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,9:9] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,9:9] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,9:9] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,9:9] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,9:9] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,9:9] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,10:10] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,10:10] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,10:10] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,10:10] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,10:10] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,10:10] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,10:10] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,10:10] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,11:11] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,11:11] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,11:11] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,11:11] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,11:11] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,11:11] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,11:11] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,11:11] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,12:12] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,12:12] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,12:12] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,12:12] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,12:12] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,12:12] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,12:12] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,12:12] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,13:13] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,13:13] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,13:13] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,13:13] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,13:13] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,13:13] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,13:13] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,13:13] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,14:14] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,14:14] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,14:14] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,14:14] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,14:14] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,14:14] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,14:14] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,14:14] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,15:15] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,15:15] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,15:15] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,15:15] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,15:15] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,15:15] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,15:15] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,15:15] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,16:16] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,16:16] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,16:16] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,16:16] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,16:16] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,16:16] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,16:16] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,16:16] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,17:17] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,17:17] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,17:17] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,17:17] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,17:17] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,17:17] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,17:17] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,17:17] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,18:18] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,18:18] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,18:18] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,18:18] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,18:18] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,18:18] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,18:18] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,18:18] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,19:19] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,19:19] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,19:19] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,19:19] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,19:19] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,19:19] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,19:19] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,19:19] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,20:20] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,20:20] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,20:20] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,20:20] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,20:20] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,20:20] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,20:20] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,20:20] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,21:21] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,21:21] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,21:21] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,21:21] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,21:21] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,21:21] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,21:21] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,21:21] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,22:22] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,22:22] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,22:22] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,22:22] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,22:22] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,22:22] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,22:22] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,22:22] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,23:23] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,23:23] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,23:23] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,23:23] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,23:23] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,23:23] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,23:23] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,23:23] OBJ 25033.564855616438
     vintage_flow[(ccgt,demand),2030,2025,3,24:24] max_output_flows_limit_semi_compact_method[ccgt,2030,2025,3,24:24] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,24:24] min_output_flows_limit_for_transport_vintage_flows[ccgt,2030,2025,3,24:24] 0.8
     vintage_flow[(ccgt,demand),2030,2025,3,24:24] vintage_flow_sum_semi_compact_method[ccgt,demand,2030,3,24:24] 1
-    vintage_flow[(ccgt,demand),2030,2025,3,24:24] OBJ 25033.56485561645
+    vintage_flow[(ccgt,demand),2030,2025,3,24:24] OBJ 25033.564855616438
     flows_investment[2030,("ccgt",_"demand")] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,1:1] -100
     flows_investment[2030,("ccgt",_"demand")] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,2:2] -100
     flows_investment[2030,("ccgt",_"demand")] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,3:3] -100
@@ -6484,7 +6484,7 @@ COLUMNS
     flows_investment[2030,("ccgt",_"demand")] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22] 100
     flows_investment[2030,("ccgt",_"demand")] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23] 100
     flows_investment[2030,("ccgt",_"demand")] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24] 100
-    flows_investment[2030,("ccgt",_"demand")] OBJ 28447.352182855106
+    flows_investment[2030,("ccgt",_"demand")] OBJ 28447.3521828551
     flows_investment[2050,("ccgt",_"demand")] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,1:1] -100
     flows_investment[2050,("ccgt",_"demand")] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,2:2] -100
     flows_investment[2050,("ccgt",_"demand")] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,3:3] -100
@@ -6629,7 +6629,7 @@ COLUMNS
     flows_investment[2050,("ccgt",_"demand")] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22] 100
     flows_investment[2050,("ccgt",_"demand")] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23] 100
     flows_investment[2050,("ccgt",_"demand")] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24] 100
-    flows_investment[2050,("ccgt",_"demand")] OBJ 14543.132610911514
+    flows_investment[2050,("ccgt",_"demand")] OBJ 14543.132610911494
     MARKER    'MARKER'                 'INTORG'
     assets_investment[2030,battery] max_output_flows_limit_simple_method[battery,2030,1,1:1] -50
     assets_investment[2030,battery] max_output_flows_limit_simple_method[battery,2030,1,2:2] -50
@@ -6919,7 +6919,7 @@ COLUMNS
     assets_investment[2030,battery] max_input_flows_limit_simple_method[battery,2050,3,22:22] -50
     assets_investment[2030,battery] max_input_flows_limit_simple_method[battery,2050,3,23:23] -50
     assets_investment[2030,battery] max_input_flows_limit_simple_method[battery,2050,3,24:24] -50
-    assets_investment[2030,battery] OBJ 16343.623757053916
+    assets_investment[2030,battery] OBJ 16343.623757053905
     assets_investment[2050,battery] max_output_flows_limit_simple_method[battery,2050,1,1:1] -50
     assets_investment[2050,battery] max_output_flows_limit_simple_method[battery,2050,1,2:2] -50
     assets_investment[2050,battery] max_output_flows_limit_simple_method[battery,2050,1,3:3] -50
@@ -7064,7 +7064,7 @@ COLUMNS
     assets_investment[2050,battery] max_input_flows_limit_simple_method[battery,2050,3,22:22] -50
     assets_investment[2050,battery] max_input_flows_limit_simple_method[battery,2050,3,23:23] -50
     assets_investment[2050,battery] max_input_flows_limit_simple_method[battery,2050,3,24:24] -50
-    assets_investment[2050,battery] OBJ 705.5340571895382
+    assets_investment[2050,battery] OBJ 705.5340571895372
     assets_investment[2030,ocgt] max_output_flows_limit_simple_method[ocgt,2030,1,1:1] -100
     assets_investment[2030,ocgt] max_output_flows_limit_simple_method[ocgt,2030,1,2:2] -100
     assets_investment[2030,ocgt] max_output_flows_limit_simple_method[ocgt,2030,1,3:3] -100
@@ -7137,7 +7137,7 @@ COLUMNS
     assets_investment[2030,ocgt] max_output_flows_limit_simple_method[ocgt,2030,3,22:22] -100
     assets_investment[2030,ocgt] max_output_flows_limit_simple_method[ocgt,2030,3,23:23] -100
     assets_investment[2030,ocgt] max_output_flows_limit_simple_method[ocgt,2030,3,24:24] -100
-    assets_investment[2030,ocgt] OBJ 48609.85202634835
+    assets_investment[2030,ocgt] OBJ 48609.85202634833
     assets_investment[2050,ocgt] max_output_flows_limit_simple_method[ocgt,2050,1,1:1] -100
     assets_investment[2050,ocgt] max_output_flows_limit_simple_method[ocgt,2050,1,2:2] -100
     assets_investment[2050,ocgt] max_output_flows_limit_simple_method[ocgt,2050,1,3:3] -100
@@ -7210,7 +7210,7 @@ COLUMNS
     assets_investment[2050,ocgt] max_output_flows_limit_simple_method[ocgt,2050,3,22:22] -100
     assets_investment[2050,ocgt] max_output_flows_limit_simple_method[ocgt,2050,3,23:23] -100
     assets_investment[2050,ocgt] max_output_flows_limit_simple_method[ocgt,2050,3,24:24] -100
-    assets_investment[2050,ocgt] OBJ 1862.4594780377693
+    assets_investment[2050,ocgt] OBJ 1862.4594780377672
     assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,6:6] -0.2
     assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,7:7] -1.2
     assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,1,8:8] -3
@@ -7247,7 +7247,7 @@ COLUMNS
     assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,3,15:15] -4
     assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,3,16:16] -2.3000000000000003
     assets_investment[2030,solar] max_output_flows_limit_simple_method[solar,2030,3,17:17] -0.5
-    assets_investment[2030,solar] OBJ 6194.684187315461
+    assets_investment[2030,solar] OBJ 6194.684187315457
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,1,6:6] -0.2
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,1,7:7] -1.2
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,1,8:8] -3
@@ -7284,7 +7284,7 @@ COLUMNS
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,3,15:15] -4
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,3,16:16] -2.3000000000000003
     assets_investment[2050,solar] max_output_flows_limit_simple_method[solar,2050,3,17:17] -0.5
-    assets_investment[2050,solar] OBJ 240.65613256246368
+    assets_investment[2050,solar] OBJ 240.65613256246337
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2030,1,1:1] -5.5
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2030,1,2:2] -5.5
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2030,1,3:3] -5.5
@@ -7430,7 +7430,7 @@ COLUMNS
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2050,3,23:23] -37
     assets_investment[2030,wind] max_output_flows_limit_compact_method[wind,2050,3,24:24] -37
     assets_investment[2030,wind] limit_decommission_compact_method[wind,2050,2030] 1
-    assets_investment[2030,wind] OBJ 39675.21557660766
+    assets_investment[2030,wind] OBJ 39675.21557660764
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,1,1:1] -5.5
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,1,2:2] -5.5
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,1,3:3] -5.5
@@ -7503,7 +7503,7 @@ COLUMNS
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,3,22:22] -37
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,3,23:23] -37
     assets_investment[2050,wind] max_output_flows_limit_compact_method[wind,2050,3,24:24] -37
-    assets_investment[2050,wind] OBJ 1508.634298434524
+    assets_investment[2050,wind] OBJ 1508.6342984345226
     MARKER    'MARKER'                 'INTEND'
     assets_investment_energy[2030,battery] max_storage_level_rep_period_limit[battery,2030,1,1:1] -100
     assets_investment_energy[2030,battery] max_storage_level_rep_period_limit[battery,2030,1,2:2] -100
@@ -7649,7 +7649,7 @@ COLUMNS
     assets_investment_energy[2030,battery] max_storage_level_rep_period_limit[battery,2050,3,22:22] -100
     assets_investment_energy[2030,battery] max_storage_level_rep_period_limit[battery,2050,3,23:23] -100
     assets_investment_energy[2030,battery] max_storage_level_rep_period_limit[battery,2050,3,24:24] -100
-    assets_investment_energy[2030,battery] OBJ 42397.36519006819
+    assets_investment_energy[2030,battery] OBJ 42397.365190068165
     assets_investment_energy[2050,battery] max_storage_level_rep_period_limit[battery,2050,1,1:1] -100
     assets_investment_energy[2050,battery] max_storage_level_rep_period_limit[battery,2050,1,2:2] -100
     assets_investment_energy[2050,battery] max_storage_level_rep_period_limit[battery,2050,1,3:3] -100
@@ -7722,7 +7722,7 @@ COLUMNS
     assets_investment_energy[2050,battery] max_storage_level_rep_period_limit[battery,2050,3,22:22] -100
     assets_investment_energy[2050,battery] max_storage_level_rep_period_limit[battery,2050,3,23:23] -100
     assets_investment_energy[2050,battery] max_storage_level_rep_period_limit[battery,2050,3,24:24] -100
-    assets_investment_energy[2050,battery] OBJ 2291.333925043442
+    assets_investment_energy[2050,battery] OBJ 2291.3339250434387
     MARKER    'MARKER'                 'INTORG'
     assets_decommission[battery,2030,2030] max_output_flows_limit_simple_method[battery,2030,1,1:1] 50
     assets_decommission[battery,2030,2030] max_output_flows_limit_simple_method[battery,2030,1,2:2] 50
@@ -8012,7 +8012,7 @@ COLUMNS
     assets_decommission[battery,2030,2030] max_input_flows_limit_simple_method[battery,2050,3,22:22] 50
     assets_decommission[battery,2030,2030] max_input_flows_limit_simple_method[battery,2050,3,23:23] 50
     assets_decommission[battery,2030,2030] max_input_flows_limit_simple_method[battery,2050,3,24:24] 50
-    assets_decommission[battery,2030,2030] OBJ -13627.680967680868
+    assets_decommission[battery,2030,2030] OBJ -13627.680967680859
     assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,1:1] 50
     assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,2:2] 50
     assets_decommission[battery,2050,2050] max_output_flows_limit_simple_method[battery,2050,1,3:3] 50
@@ -8157,7 +8157,7 @@ COLUMNS
     assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,22:22] 50
     assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,23:23] 50
     assets_decommission[battery,2050,2050] max_input_flows_limit_simple_method[battery,2050,3,24:24] 50
-    assets_decommission[battery,2050,2050] OBJ -514.9834493948837
+    assets_decommission[battery,2050,2050] OBJ -514.983449394883
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,1,1:1] 5.5
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,1,2:2] 5.5
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,1,3:3] 5.5
@@ -8231,7 +8231,7 @@ COLUMNS
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,3,23:23] 37
     assets_decommission[wind,2030,2020] max_output_flows_limit_compact_method[wind,2030,3,24:24] 37
     assets_decommission[wind,2030,2020] limit_decommission_compact_method[wind,2030,2020] -1
-    assets_decommission[wind,2030,2020] OBJ -34777.154287628044
+    assets_decommission[wind,2030,2020] OBJ -34777.15428762802
     assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,1:1] 5.5
     assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,2:2] 5.5
     assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,1,3:3] 5.5
@@ -8305,7 +8305,7 @@ COLUMNS
     assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,23:23] 37
     assets_decommission[wind,2050,2030] max_output_flows_limit_compact_method[wind,2050,3,24:24] 37
     assets_decommission[wind,2050,2030] limit_decommission_compact_method[wind,2050,2030] -1
-    assets_decommission[wind,2050,2030] OBJ -1277.1589544993114
+    assets_decommission[wind,2050,2030] OBJ -1277.1589544993096
     MARKER    'MARKER'                 'INTEND'
     flows_decommission[("ccgt",_"demand"),2030,2030] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,1:1] 100
     flows_decommission[("ccgt",_"demand"),2030,2030] max_transport_flow_limit_simple_method[(ccgt,demand),2030,1,2:2] 100
@@ -8595,7 +8595,7 @@ COLUMNS
     flows_decommission[("ccgt",_"demand"),2030,2030] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22] -100
     flows_decommission[("ccgt",_"demand"),2030,2030] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23] -100
     flows_decommission[("ccgt",_"demand"),2030,2030] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24] -100
-    flows_decommission[("ccgt",_"demand"),2030,2030] OBJ -2404.065161469726
+    flows_decommission[("ccgt",_"demand"),2030,2030] OBJ -2404.065161469724
     flows_decommission[("ccgt",_"demand"),2050,2050] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,1:1] 100
     flows_decommission[("ccgt",_"demand"),2050,2050] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,2:2] 100
     flows_decommission[("ccgt",_"demand"),2050,2050] max_transport_flow_limit_simple_method[(ccgt,demand),2050,1,3:3] 100
@@ -8740,7 +8740,7 @@ COLUMNS
     flows_decommission[("ccgt",_"demand"),2050,2050] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,22:22] -100
     flows_decommission[("ccgt",_"demand"),2050,2050] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,23:23] -100
     flows_decommission[("ccgt",_"demand"),2050,2050] min_transport_flow_limit_simple_method[(ccgt,demand),2050,3,24:24] -100
-    flows_decommission[("ccgt",_"demand"),2050,2050] OBJ -123.59602785477209
+    flows_decommission[("ccgt",_"demand"),2050,2050] OBJ -123.5960278547719
     assets_decommission_energy[battery,2030,2030] max_storage_level_rep_period_limit[battery,2030,1,1:1] 100
     assets_decommission_energy[battery,2030,2030] max_storage_level_rep_period_limit[battery,2030,1,2:2] 100
     assets_decommission_energy[battery,2030,2030] max_storage_level_rep_period_limit[battery,2030,1,3:3] 100
@@ -8885,7 +8885,7 @@ COLUMNS
     assets_decommission_energy[battery,2030,2030] max_storage_level_rep_period_limit[battery,2050,3,22:22] 100
     assets_decommission_energy[battery,2030,2030] max_storage_level_rep_period_limit[battery,2050,3,23:23] 100
     assets_decommission_energy[battery,2030,2030] max_storage_level_rep_period_limit[battery,2050,3,24:24] 100
-    assets_decommission_energy[battery,2030,2030] OBJ -42174.13701559917
+    assets_decommission_energy[battery,2030,2030] OBJ -42174.137015599146
     assets_decommission_energy[battery,2050,2050] max_storage_level_rep_period_limit[battery,2050,1,1:1] 100
     assets_decommission_energy[battery,2050,2050] max_storage_level_rep_period_limit[battery,2050,1,2:2] 100
     assets_decommission_energy[battery,2050,2050] max_storage_level_rep_period_limit[battery,2050,1,3:3] 100
@@ -8958,7 +8958,7 @@ COLUMNS
     assets_decommission_energy[battery,2050,2050] max_storage_level_rep_period_limit[battery,2050,3,22:22] 100
     assets_decommission_energy[battery,2050,2050] max_storage_level_rep_period_limit[battery,2050,3,23:23] 100
     assets_decommission_energy[battery,2050,2050] max_storage_level_rep_period_limit[battery,2050,3,24:24] 100
-    assets_decommission_energy[battery,2050,2050] OBJ -2265.927177337488
+    assets_decommission_energy[battery,2050,2050] OBJ -2265.927177337485
     storage_level_rep_period[battery,2030,1,1:1] max_storage_level_rep_period_limit[battery,2030,1,1:1] 1
     storage_level_rep_period[battery,2030,1,1:1] min_storage_level_rep_period_limit[battery,2030,1,1:1] 1
     storage_level_rep_period[battery,2030,1,1:1] balance_storage_rep_period[battery,2030,1,1:1] 1
@@ -11836,33 +11836,9 @@ RHS
     rhs       vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,22:22] 0
     rhs       vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,23:23] 0
     rhs       vintage_flow_sum_semi_compact_method[ccgt,demand,2050,3,24:24] 0
-    rhs       OBJ       -313557.801468063
+    rhs       OBJ       -313557.80146806285
 RANGES
 BOUNDS
- FR bounds    flow[(ccgt,demand),2030,1,1:1]
- FR bounds    flow[(ccgt,demand),2030,1,2:2]
- FR bounds    flow[(ccgt,demand),2030,1,3:3]
- FR bounds    flow[(ccgt,demand),2030,1,4:4]
- FR bounds    flow[(ccgt,demand),2030,1,5:5]
- FR bounds    flow[(ccgt,demand),2030,1,6:6]
- FR bounds    flow[(ccgt,demand),2030,1,7:7]
- FR bounds    flow[(ccgt,demand),2030,1,8:8]
- FR bounds    flow[(ccgt,demand),2030,1,9:9]
- FR bounds    flow[(ccgt,demand),2030,1,10:10]
- FR bounds    flow[(ccgt,demand),2030,1,11:11]
- FR bounds    flow[(ccgt,demand),2030,1,12:12]
- FR bounds    flow[(ccgt,demand),2030,1,13:13]
- FR bounds    flow[(ccgt,demand),2030,1,14:14]
- FR bounds    flow[(ccgt,demand),2030,1,15:15]
- FR bounds    flow[(ccgt,demand),2030,1,16:16]
- FR bounds    flow[(ccgt,demand),2030,1,17:17]
- FR bounds    flow[(ccgt,demand),2030,1,18:18]
- FR bounds    flow[(ccgt,demand),2030,1,19:19]
- FR bounds    flow[(ccgt,demand),2030,1,20:20]
- FR bounds    flow[(ccgt,demand),2030,1,21:21]
- FR bounds    flow[(ccgt,demand),2030,1,22:22]
- FR bounds    flow[(ccgt,demand),2030,1,23:23]
- FR bounds    flow[(ccgt,demand),2030,1,24:24]
  LO bounds    flow[(ens,demand),2030,1,1:1] 0
  PL bounds    flow[(ens,demand),2030,1,1:1]
  LO bounds    flow[(ens,demand),2030,1,2:2] 0
@@ -12055,6 +12031,30 @@ BOUNDS
  PL bounds    flow[(battery,demand),2030,1,23:23]
  LO bounds    flow[(battery,demand),2030,1,24:24] 0
  PL bounds    flow[(battery,demand),2030,1,24:24]
+ FR bounds    flow[(ccgt,demand),2030,1,1:1]
+ FR bounds    flow[(ccgt,demand),2030,1,2:2]
+ FR bounds    flow[(ccgt,demand),2030,1,3:3]
+ FR bounds    flow[(ccgt,demand),2030,1,4:4]
+ FR bounds    flow[(ccgt,demand),2030,1,5:5]
+ FR bounds    flow[(ccgt,demand),2030,1,6:6]
+ FR bounds    flow[(ccgt,demand),2030,1,7:7]
+ FR bounds    flow[(ccgt,demand),2030,1,8:8]
+ FR bounds    flow[(ccgt,demand),2030,1,9:9]
+ FR bounds    flow[(ccgt,demand),2030,1,10:10]
+ FR bounds    flow[(ccgt,demand),2030,1,11:11]
+ FR bounds    flow[(ccgt,demand),2030,1,12:12]
+ FR bounds    flow[(ccgt,demand),2030,1,13:13]
+ FR bounds    flow[(ccgt,demand),2030,1,14:14]
+ FR bounds    flow[(ccgt,demand),2030,1,15:15]
+ FR bounds    flow[(ccgt,demand),2030,1,16:16]
+ FR bounds    flow[(ccgt,demand),2030,1,17:17]
+ FR bounds    flow[(ccgt,demand),2030,1,18:18]
+ FR bounds    flow[(ccgt,demand),2030,1,19:19]
+ FR bounds    flow[(ccgt,demand),2030,1,20:20]
+ FR bounds    flow[(ccgt,demand),2030,1,21:21]
+ FR bounds    flow[(ccgt,demand),2030,1,22:22]
+ FR bounds    flow[(ccgt,demand),2030,1,23:23]
+ FR bounds    flow[(ccgt,demand),2030,1,24:24]
  LO bounds    flow[(wind,demand),2030,1,1:1] 0
  PL bounds    flow[(wind,demand),2030,1,1:1]
  LO bounds    flow[(wind,demand),2030,1,2:2] 0
@@ -12151,222 +12151,6 @@ BOUNDS
  PL bounds    flow[(solar,demand),2030,1,23:23]
  LO bounds    flow[(solar,demand),2030,1,24:24] 0
  PL bounds    flow[(solar,demand),2030,1,24:24]
- LO bounds    flow[(demand,battery),2030,2,1:1] 0
- PL bounds    flow[(demand,battery),2030,2,1:1]
- LO bounds    flow[(demand,battery),2030,2,2:2] 0
- PL bounds    flow[(demand,battery),2030,2,2:2]
- LO bounds    flow[(demand,battery),2030,2,3:3] 0
- PL bounds    flow[(demand,battery),2030,2,3:3]
- LO bounds    flow[(demand,battery),2030,2,4:4] 0
- PL bounds    flow[(demand,battery),2030,2,4:4]
- LO bounds    flow[(demand,battery),2030,2,5:5] 0
- PL bounds    flow[(demand,battery),2030,2,5:5]
- LO bounds    flow[(demand,battery),2030,2,6:6] 0
- PL bounds    flow[(demand,battery),2030,2,6:6]
- LO bounds    flow[(demand,battery),2030,2,7:7] 0
- PL bounds    flow[(demand,battery),2030,2,7:7]
- LO bounds    flow[(demand,battery),2030,2,8:8] 0
- PL bounds    flow[(demand,battery),2030,2,8:8]
- LO bounds    flow[(demand,battery),2030,2,9:9] 0
- PL bounds    flow[(demand,battery),2030,2,9:9]
- LO bounds    flow[(demand,battery),2030,2,10:10] 0
- PL bounds    flow[(demand,battery),2030,2,10:10]
- LO bounds    flow[(demand,battery),2030,2,11:11] 0
- PL bounds    flow[(demand,battery),2030,2,11:11]
- LO bounds    flow[(demand,battery),2030,2,12:12] 0
- PL bounds    flow[(demand,battery),2030,2,12:12]
- LO bounds    flow[(demand,battery),2030,2,13:13] 0
- PL bounds    flow[(demand,battery),2030,2,13:13]
- LO bounds    flow[(demand,battery),2030,2,14:14] 0
- PL bounds    flow[(demand,battery),2030,2,14:14]
- LO bounds    flow[(demand,battery),2030,2,15:15] 0
- PL bounds    flow[(demand,battery),2030,2,15:15]
- LO bounds    flow[(demand,battery),2030,2,16:16] 0
- PL bounds    flow[(demand,battery),2030,2,16:16]
- LO bounds    flow[(demand,battery),2030,2,17:17] 0
- PL bounds    flow[(demand,battery),2030,2,17:17]
- LO bounds    flow[(demand,battery),2030,2,18:18] 0
- PL bounds    flow[(demand,battery),2030,2,18:18]
- LO bounds    flow[(demand,battery),2030,2,19:19] 0
- PL bounds    flow[(demand,battery),2030,2,19:19]
- LO bounds    flow[(demand,battery),2030,2,20:20] 0
- PL bounds    flow[(demand,battery),2030,2,20:20]
- LO bounds    flow[(demand,battery),2030,2,21:21] 0
- PL bounds    flow[(demand,battery),2030,2,21:21]
- LO bounds    flow[(demand,battery),2030,2,22:22] 0
- PL bounds    flow[(demand,battery),2030,2,22:22]
- LO bounds    flow[(demand,battery),2030,2,23:23] 0
- PL bounds    flow[(demand,battery),2030,2,23:23]
- LO bounds    flow[(demand,battery),2030,2,24:24] 0
- PL bounds    flow[(demand,battery),2030,2,24:24]
- FR bounds    flow[(ccgt,demand),2030,2,1:1]
- FR bounds    flow[(ccgt,demand),2030,2,2:2]
- FR bounds    flow[(ccgt,demand),2030,2,3:3]
- FR bounds    flow[(ccgt,demand),2030,2,4:4]
- FR bounds    flow[(ccgt,demand),2030,2,5:5]
- FR bounds    flow[(ccgt,demand),2030,2,6:6]
- FR bounds    flow[(ccgt,demand),2030,2,7:7]
- FR bounds    flow[(ccgt,demand),2030,2,8:8]
- FR bounds    flow[(ccgt,demand),2030,2,9:9]
- FR bounds    flow[(ccgt,demand),2030,2,10:10]
- FR bounds    flow[(ccgt,demand),2030,2,11:11]
- FR bounds    flow[(ccgt,demand),2030,2,12:12]
- FR bounds    flow[(ccgt,demand),2030,2,13:13]
- FR bounds    flow[(ccgt,demand),2030,2,14:14]
- FR bounds    flow[(ccgt,demand),2030,2,15:15]
- FR bounds    flow[(ccgt,demand),2030,2,16:16]
- FR bounds    flow[(ccgt,demand),2030,2,17:17]
- FR bounds    flow[(ccgt,demand),2030,2,18:18]
- FR bounds    flow[(ccgt,demand),2030,2,19:19]
- FR bounds    flow[(ccgt,demand),2030,2,20:20]
- FR bounds    flow[(ccgt,demand),2030,2,21:21]
- FR bounds    flow[(ccgt,demand),2030,2,22:22]
- FR bounds    flow[(ccgt,demand),2030,2,23:23]
- FR bounds    flow[(ccgt,demand),2030,2,24:24]
- LO bounds    flow[(solar,demand),2030,2,1:1] 0
- PL bounds    flow[(solar,demand),2030,2,1:1]
- LO bounds    flow[(solar,demand),2030,2,2:2] 0
- PL bounds    flow[(solar,demand),2030,2,2:2]
- LO bounds    flow[(solar,demand),2030,2,3:3] 0
- PL bounds    flow[(solar,demand),2030,2,3:3]
- LO bounds    flow[(solar,demand),2030,2,4:4] 0
- PL bounds    flow[(solar,demand),2030,2,4:4]
- LO bounds    flow[(solar,demand),2030,2,5:5] 0
- PL bounds    flow[(solar,demand),2030,2,5:5]
- LO bounds    flow[(solar,demand),2030,2,6:6] 0
- PL bounds    flow[(solar,demand),2030,2,6:6]
- LO bounds    flow[(solar,demand),2030,2,7:7] 0
- PL bounds    flow[(solar,demand),2030,2,7:7]
- LO bounds    flow[(solar,demand),2030,2,8:8] 0
- PL bounds    flow[(solar,demand),2030,2,8:8]
- LO bounds    flow[(solar,demand),2030,2,9:9] 0
- PL bounds    flow[(solar,demand),2030,2,9:9]
- LO bounds    flow[(solar,demand),2030,2,10:10] 0
- PL bounds    flow[(solar,demand),2030,2,10:10]
- LO bounds    flow[(solar,demand),2030,2,11:11] 0
- PL bounds    flow[(solar,demand),2030,2,11:11]
- LO bounds    flow[(solar,demand),2030,2,12:12] 0
- PL bounds    flow[(solar,demand),2030,2,12:12]
- LO bounds    flow[(solar,demand),2030,2,13:13] 0
- PL bounds    flow[(solar,demand),2030,2,13:13]
- LO bounds    flow[(solar,demand),2030,2,14:14] 0
- PL bounds    flow[(solar,demand),2030,2,14:14]
- LO bounds    flow[(solar,demand),2030,2,15:15] 0
- PL bounds    flow[(solar,demand),2030,2,15:15]
- LO bounds    flow[(solar,demand),2030,2,16:16] 0
- PL bounds    flow[(solar,demand),2030,2,16:16]
- LO bounds    flow[(solar,demand),2030,2,17:17] 0
- PL bounds    flow[(solar,demand),2030,2,17:17]
- LO bounds    flow[(solar,demand),2030,2,18:18] 0
- PL bounds    flow[(solar,demand),2030,2,18:18]
- LO bounds    flow[(solar,demand),2030,2,19:19] 0
- PL bounds    flow[(solar,demand),2030,2,19:19]
- LO bounds    flow[(solar,demand),2030,2,20:20] 0
- PL bounds    flow[(solar,demand),2030,2,20:20]
- LO bounds    flow[(solar,demand),2030,2,21:21] 0
- PL bounds    flow[(solar,demand),2030,2,21:21]
- LO bounds    flow[(solar,demand),2030,2,22:22] 0
- PL bounds    flow[(solar,demand),2030,2,22:22]
- LO bounds    flow[(solar,demand),2030,2,23:23] 0
- PL bounds    flow[(solar,demand),2030,2,23:23]
- LO bounds    flow[(solar,demand),2030,2,24:24] 0
- PL bounds    flow[(solar,demand),2030,2,24:24]
- LO bounds    flow[(wind,demand),2030,2,1:1] 0
- PL bounds    flow[(wind,demand),2030,2,1:1]
- LO bounds    flow[(wind,demand),2030,2,2:2] 0
- PL bounds    flow[(wind,demand),2030,2,2:2]
- LO bounds    flow[(wind,demand),2030,2,3:3] 0
- PL bounds    flow[(wind,demand),2030,2,3:3]
- LO bounds    flow[(wind,demand),2030,2,4:4] 0
- PL bounds    flow[(wind,demand),2030,2,4:4]
- LO bounds    flow[(wind,demand),2030,2,5:5] 0
- PL bounds    flow[(wind,demand),2030,2,5:5]
- LO bounds    flow[(wind,demand),2030,2,6:6] 0
- PL bounds    flow[(wind,demand),2030,2,6:6]
- LO bounds    flow[(wind,demand),2030,2,7:7] 0
- PL bounds    flow[(wind,demand),2030,2,7:7]
- LO bounds    flow[(wind,demand),2030,2,8:8] 0
- PL bounds    flow[(wind,demand),2030,2,8:8]
- LO bounds    flow[(wind,demand),2030,2,9:9] 0
- PL bounds    flow[(wind,demand),2030,2,9:9]
- LO bounds    flow[(wind,demand),2030,2,10:10] 0
- PL bounds    flow[(wind,demand),2030,2,10:10]
- LO bounds    flow[(wind,demand),2030,2,11:11] 0
- PL bounds    flow[(wind,demand),2030,2,11:11]
- LO bounds    flow[(wind,demand),2030,2,12:12] 0
- PL bounds    flow[(wind,demand),2030,2,12:12]
- LO bounds    flow[(wind,demand),2030,2,13:13] 0
- PL bounds    flow[(wind,demand),2030,2,13:13]
- LO bounds    flow[(wind,demand),2030,2,14:14] 0
- PL bounds    flow[(wind,demand),2030,2,14:14]
- LO bounds    flow[(wind,demand),2030,2,15:15] 0
- PL bounds    flow[(wind,demand),2030,2,15:15]
- LO bounds    flow[(wind,demand),2030,2,16:16] 0
- PL bounds    flow[(wind,demand),2030,2,16:16]
- LO bounds    flow[(wind,demand),2030,2,17:17] 0
- PL bounds    flow[(wind,demand),2030,2,17:17]
- LO bounds    flow[(wind,demand),2030,2,18:18] 0
- PL bounds    flow[(wind,demand),2030,2,18:18]
- LO bounds    flow[(wind,demand),2030,2,19:19] 0
- PL bounds    flow[(wind,demand),2030,2,19:19]
- LO bounds    flow[(wind,demand),2030,2,20:20] 0
- PL bounds    flow[(wind,demand),2030,2,20:20]
- LO bounds    flow[(wind,demand),2030,2,21:21] 0
- PL bounds    flow[(wind,demand),2030,2,21:21]
- LO bounds    flow[(wind,demand),2030,2,22:22] 0
- PL bounds    flow[(wind,demand),2030,2,22:22]
- LO bounds    flow[(wind,demand),2030,2,23:23] 0
- PL bounds    flow[(wind,demand),2030,2,23:23]
- LO bounds    flow[(wind,demand),2030,2,24:24] 0
- PL bounds    flow[(wind,demand),2030,2,24:24]
- LO bounds    flow[(battery,demand),2030,2,1:1] 0
- PL bounds    flow[(battery,demand),2030,2,1:1]
- LO bounds    flow[(battery,demand),2030,2,2:2] 0
- PL bounds    flow[(battery,demand),2030,2,2:2]
- LO bounds    flow[(battery,demand),2030,2,3:3] 0
- PL bounds    flow[(battery,demand),2030,2,3:3]
- LO bounds    flow[(battery,demand),2030,2,4:4] 0
- PL bounds    flow[(battery,demand),2030,2,4:4]
- LO bounds    flow[(battery,demand),2030,2,5:5] 0
- PL bounds    flow[(battery,demand),2030,2,5:5]
- LO bounds    flow[(battery,demand),2030,2,6:6] 0
- PL bounds    flow[(battery,demand),2030,2,6:6]
- LO bounds    flow[(battery,demand),2030,2,7:7] 0
- PL bounds    flow[(battery,demand),2030,2,7:7]
- LO bounds    flow[(battery,demand),2030,2,8:8] 0
- PL bounds    flow[(battery,demand),2030,2,8:8]
- LO bounds    flow[(battery,demand),2030,2,9:9] 0
- PL bounds    flow[(battery,demand),2030,2,9:9]
- LO bounds    flow[(battery,demand),2030,2,10:10] 0
- PL bounds    flow[(battery,demand),2030,2,10:10]
- LO bounds    flow[(battery,demand),2030,2,11:11] 0
- PL bounds    flow[(battery,demand),2030,2,11:11]
- LO bounds    flow[(battery,demand),2030,2,12:12] 0
- PL bounds    flow[(battery,demand),2030,2,12:12]
- LO bounds    flow[(battery,demand),2030,2,13:13] 0
- PL bounds    flow[(battery,demand),2030,2,13:13]
- LO bounds    flow[(battery,demand),2030,2,14:14] 0
- PL bounds    flow[(battery,demand),2030,2,14:14]
- LO bounds    flow[(battery,demand),2030,2,15:15] 0
- PL bounds    flow[(battery,demand),2030,2,15:15]
- LO bounds    flow[(battery,demand),2030,2,16:16] 0
- PL bounds    flow[(battery,demand),2030,2,16:16]
- LO bounds    flow[(battery,demand),2030,2,17:17] 0
- PL bounds    flow[(battery,demand),2030,2,17:17]
- LO bounds    flow[(battery,demand),2030,2,18:18] 0
- PL bounds    flow[(battery,demand),2030,2,18:18]
- LO bounds    flow[(battery,demand),2030,2,19:19] 0
- PL bounds    flow[(battery,demand),2030,2,19:19]
- LO bounds    flow[(battery,demand),2030,2,20:20] 0
- PL bounds    flow[(battery,demand),2030,2,20:20]
- LO bounds    flow[(battery,demand),2030,2,21:21] 0
- PL bounds    flow[(battery,demand),2030,2,21:21]
- LO bounds    flow[(battery,demand),2030,2,22:22] 0
- PL bounds    flow[(battery,demand),2030,2,22:22]
- LO bounds    flow[(battery,demand),2030,2,23:23] 0
- PL bounds    flow[(battery,demand),2030,2,23:23]
- LO bounds    flow[(battery,demand),2030,2,24:24] 0
- PL bounds    flow[(battery,demand),2030,2,24:24]
  LO bounds    flow[(ens,demand),2030,2,1:1] 0
  PL bounds    flow[(ens,demand),2030,2,1:1]
  LO bounds    flow[(ens,demand),2030,2,2:2] 0
@@ -12463,174 +12247,222 @@ BOUNDS
  PL bounds    flow[(ocgt,demand),2030,2,23:23]
  LO bounds    flow[(ocgt,demand),2030,2,24:24] 0
  PL bounds    flow[(ocgt,demand),2030,2,24:24]
- LO bounds    flow[(battery,demand),2030,3,1:1] 0
- PL bounds    flow[(battery,demand),2030,3,1:1]
- LO bounds    flow[(battery,demand),2030,3,2:2] 0
- PL bounds    flow[(battery,demand),2030,3,2:2]
- LO bounds    flow[(battery,demand),2030,3,3:3] 0
- PL bounds    flow[(battery,demand),2030,3,3:3]
- LO bounds    flow[(battery,demand),2030,3,4:4] 0
- PL bounds    flow[(battery,demand),2030,3,4:4]
- LO bounds    flow[(battery,demand),2030,3,5:5] 0
- PL bounds    flow[(battery,demand),2030,3,5:5]
- LO bounds    flow[(battery,demand),2030,3,6:6] 0
- PL bounds    flow[(battery,demand),2030,3,6:6]
- LO bounds    flow[(battery,demand),2030,3,7:7] 0
- PL bounds    flow[(battery,demand),2030,3,7:7]
- LO bounds    flow[(battery,demand),2030,3,8:8] 0
- PL bounds    flow[(battery,demand),2030,3,8:8]
- LO bounds    flow[(battery,demand),2030,3,9:9] 0
- PL bounds    flow[(battery,demand),2030,3,9:9]
- LO bounds    flow[(battery,demand),2030,3,10:10] 0
- PL bounds    flow[(battery,demand),2030,3,10:10]
- LO bounds    flow[(battery,demand),2030,3,11:11] 0
- PL bounds    flow[(battery,demand),2030,3,11:11]
- LO bounds    flow[(battery,demand),2030,3,12:12] 0
- PL bounds    flow[(battery,demand),2030,3,12:12]
- LO bounds    flow[(battery,demand),2030,3,13:13] 0
- PL bounds    flow[(battery,demand),2030,3,13:13]
- LO bounds    flow[(battery,demand),2030,3,14:14] 0
- PL bounds    flow[(battery,demand),2030,3,14:14]
- LO bounds    flow[(battery,demand),2030,3,15:15] 0
- PL bounds    flow[(battery,demand),2030,3,15:15]
- LO bounds    flow[(battery,demand),2030,3,16:16] 0
- PL bounds    flow[(battery,demand),2030,3,16:16]
- LO bounds    flow[(battery,demand),2030,3,17:17] 0
- PL bounds    flow[(battery,demand),2030,3,17:17]
- LO bounds    flow[(battery,demand),2030,3,18:18] 0
- PL bounds    flow[(battery,demand),2030,3,18:18]
- LO bounds    flow[(battery,demand),2030,3,19:19] 0
- PL bounds    flow[(battery,demand),2030,3,19:19]
- LO bounds    flow[(battery,demand),2030,3,20:20] 0
- PL bounds    flow[(battery,demand),2030,3,20:20]
- LO bounds    flow[(battery,demand),2030,3,21:21] 0
- PL bounds    flow[(battery,demand),2030,3,21:21]
- LO bounds    flow[(battery,demand),2030,3,22:22] 0
- PL bounds    flow[(battery,demand),2030,3,22:22]
- LO bounds    flow[(battery,demand),2030,3,23:23] 0
- PL bounds    flow[(battery,demand),2030,3,23:23]
- LO bounds    flow[(battery,demand),2030,3,24:24] 0
- PL bounds    flow[(battery,demand),2030,3,24:24]
- FR bounds    flow[(ccgt,demand),2030,3,1:1]
- FR bounds    flow[(ccgt,demand),2030,3,2:2]
- FR bounds    flow[(ccgt,demand),2030,3,3:3]
- FR bounds    flow[(ccgt,demand),2030,3,4:4]
- FR bounds    flow[(ccgt,demand),2030,3,5:5]
- FR bounds    flow[(ccgt,demand),2030,3,6:6]
- FR bounds    flow[(ccgt,demand),2030,3,7:7]
- FR bounds    flow[(ccgt,demand),2030,3,8:8]
- FR bounds    flow[(ccgt,demand),2030,3,9:9]
- FR bounds    flow[(ccgt,demand),2030,3,10:10]
- FR bounds    flow[(ccgt,demand),2030,3,11:11]
- FR bounds    flow[(ccgt,demand),2030,3,12:12]
- FR bounds    flow[(ccgt,demand),2030,3,13:13]
- FR bounds    flow[(ccgt,demand),2030,3,14:14]
- FR bounds    flow[(ccgt,demand),2030,3,15:15]
- FR bounds    flow[(ccgt,demand),2030,3,16:16]
- FR bounds    flow[(ccgt,demand),2030,3,17:17]
- FR bounds    flow[(ccgt,demand),2030,3,18:18]
- FR bounds    flow[(ccgt,demand),2030,3,19:19]
- FR bounds    flow[(ccgt,demand),2030,3,20:20]
- FR bounds    flow[(ccgt,demand),2030,3,21:21]
- FR bounds    flow[(ccgt,demand),2030,3,22:22]
- FR bounds    flow[(ccgt,demand),2030,3,23:23]
- FR bounds    flow[(ccgt,demand),2030,3,24:24]
- LO bounds    flow[(solar,demand),2030,3,1:1] 0
- PL bounds    flow[(solar,demand),2030,3,1:1]
- LO bounds    flow[(solar,demand),2030,3,2:2] 0
- PL bounds    flow[(solar,demand),2030,3,2:2]
- LO bounds    flow[(solar,demand),2030,3,3:3] 0
- PL bounds    flow[(solar,demand),2030,3,3:3]
- LO bounds    flow[(solar,demand),2030,3,4:4] 0
- PL bounds    flow[(solar,demand),2030,3,4:4]
- LO bounds    flow[(solar,demand),2030,3,5:5] 0
- PL bounds    flow[(solar,demand),2030,3,5:5]
- LO bounds    flow[(solar,demand),2030,3,6:6] 0
- PL bounds    flow[(solar,demand),2030,3,6:6]
- LO bounds    flow[(solar,demand),2030,3,7:7] 0
- PL bounds    flow[(solar,demand),2030,3,7:7]
- LO bounds    flow[(solar,demand),2030,3,8:8] 0
- PL bounds    flow[(solar,demand),2030,3,8:8]
- LO bounds    flow[(solar,demand),2030,3,9:9] 0
- PL bounds    flow[(solar,demand),2030,3,9:9]
- LO bounds    flow[(solar,demand),2030,3,10:10] 0
- PL bounds    flow[(solar,demand),2030,3,10:10]
- LO bounds    flow[(solar,demand),2030,3,11:11] 0
- PL bounds    flow[(solar,demand),2030,3,11:11]
- LO bounds    flow[(solar,demand),2030,3,12:12] 0
- PL bounds    flow[(solar,demand),2030,3,12:12]
- LO bounds    flow[(solar,demand),2030,3,13:13] 0
- PL bounds    flow[(solar,demand),2030,3,13:13]
- LO bounds    flow[(solar,demand),2030,3,14:14] 0
- PL bounds    flow[(solar,demand),2030,3,14:14]
- LO bounds    flow[(solar,demand),2030,3,15:15] 0
- PL bounds    flow[(solar,demand),2030,3,15:15]
- LO bounds    flow[(solar,demand),2030,3,16:16] 0
- PL bounds    flow[(solar,demand),2030,3,16:16]
- LO bounds    flow[(solar,demand),2030,3,17:17] 0
- PL bounds    flow[(solar,demand),2030,3,17:17]
- LO bounds    flow[(solar,demand),2030,3,18:18] 0
- PL bounds    flow[(solar,demand),2030,3,18:18]
- LO bounds    flow[(solar,demand),2030,3,19:19] 0
- PL bounds    flow[(solar,demand),2030,3,19:19]
- LO bounds    flow[(solar,demand),2030,3,20:20] 0
- PL bounds    flow[(solar,demand),2030,3,20:20]
- LO bounds    flow[(solar,demand),2030,3,21:21] 0
- PL bounds    flow[(solar,demand),2030,3,21:21]
- LO bounds    flow[(solar,demand),2030,3,22:22] 0
- PL bounds    flow[(solar,demand),2030,3,22:22]
- LO bounds    flow[(solar,demand),2030,3,23:23] 0
- PL bounds    flow[(solar,demand),2030,3,23:23]
- LO bounds    flow[(solar,demand),2030,3,24:24] 0
- PL bounds    flow[(solar,demand),2030,3,24:24]
- LO bounds    flow[(wind,demand),2030,3,1:1] 0
- PL bounds    flow[(wind,demand),2030,3,1:1]
- LO bounds    flow[(wind,demand),2030,3,2:2] 0
- PL bounds    flow[(wind,demand),2030,3,2:2]
- LO bounds    flow[(wind,demand),2030,3,3:3] 0
- PL bounds    flow[(wind,demand),2030,3,3:3]
- LO bounds    flow[(wind,demand),2030,3,4:4] 0
- PL bounds    flow[(wind,demand),2030,3,4:4]
- LO bounds    flow[(wind,demand),2030,3,5:5] 0
- PL bounds    flow[(wind,demand),2030,3,5:5]
- LO bounds    flow[(wind,demand),2030,3,6:6] 0
- PL bounds    flow[(wind,demand),2030,3,6:6]
- LO bounds    flow[(wind,demand),2030,3,7:7] 0
- PL bounds    flow[(wind,demand),2030,3,7:7]
- LO bounds    flow[(wind,demand),2030,3,8:8] 0
- PL bounds    flow[(wind,demand),2030,3,8:8]
- LO bounds    flow[(wind,demand),2030,3,9:9] 0
- PL bounds    flow[(wind,demand),2030,3,9:9]
- LO bounds    flow[(wind,demand),2030,3,10:10] 0
- PL bounds    flow[(wind,demand),2030,3,10:10]
- LO bounds    flow[(wind,demand),2030,3,11:11] 0
- PL bounds    flow[(wind,demand),2030,3,11:11]
- LO bounds    flow[(wind,demand),2030,3,12:12] 0
- PL bounds    flow[(wind,demand),2030,3,12:12]
- LO bounds    flow[(wind,demand),2030,3,13:13] 0
- PL bounds    flow[(wind,demand),2030,3,13:13]
- LO bounds    flow[(wind,demand),2030,3,14:14] 0
- PL bounds    flow[(wind,demand),2030,3,14:14]
- LO bounds    flow[(wind,demand),2030,3,15:15] 0
- PL bounds    flow[(wind,demand),2030,3,15:15]
- LO bounds    flow[(wind,demand),2030,3,16:16] 0
- PL bounds    flow[(wind,demand),2030,3,16:16]
- LO bounds    flow[(wind,demand),2030,3,17:17] 0
- PL bounds    flow[(wind,demand),2030,3,17:17]
- LO bounds    flow[(wind,demand),2030,3,18:18] 0
- PL bounds    flow[(wind,demand),2030,3,18:18]
- LO bounds    flow[(wind,demand),2030,3,19:19] 0
- PL bounds    flow[(wind,demand),2030,3,19:19]
- LO bounds    flow[(wind,demand),2030,3,20:20] 0
- PL bounds    flow[(wind,demand),2030,3,20:20]
- LO bounds    flow[(wind,demand),2030,3,21:21] 0
- PL bounds    flow[(wind,demand),2030,3,21:21]
- LO bounds    flow[(wind,demand),2030,3,22:22] 0
- PL bounds    flow[(wind,demand),2030,3,22:22]
- LO bounds    flow[(wind,demand),2030,3,23:23] 0
- PL bounds    flow[(wind,demand),2030,3,23:23]
- LO bounds    flow[(wind,demand),2030,3,24:24] 0
- PL bounds    flow[(wind,demand),2030,3,24:24]
+ LO bounds    flow[(demand,battery),2030,2,1:1] 0
+ PL bounds    flow[(demand,battery),2030,2,1:1]
+ LO bounds    flow[(demand,battery),2030,2,2:2] 0
+ PL bounds    flow[(demand,battery),2030,2,2:2]
+ LO bounds    flow[(demand,battery),2030,2,3:3] 0
+ PL bounds    flow[(demand,battery),2030,2,3:3]
+ LO bounds    flow[(demand,battery),2030,2,4:4] 0
+ PL bounds    flow[(demand,battery),2030,2,4:4]
+ LO bounds    flow[(demand,battery),2030,2,5:5] 0
+ PL bounds    flow[(demand,battery),2030,2,5:5]
+ LO bounds    flow[(demand,battery),2030,2,6:6] 0
+ PL bounds    flow[(demand,battery),2030,2,6:6]
+ LO bounds    flow[(demand,battery),2030,2,7:7] 0
+ PL bounds    flow[(demand,battery),2030,2,7:7]
+ LO bounds    flow[(demand,battery),2030,2,8:8] 0
+ PL bounds    flow[(demand,battery),2030,2,8:8]
+ LO bounds    flow[(demand,battery),2030,2,9:9] 0
+ PL bounds    flow[(demand,battery),2030,2,9:9]
+ LO bounds    flow[(demand,battery),2030,2,10:10] 0
+ PL bounds    flow[(demand,battery),2030,2,10:10]
+ LO bounds    flow[(demand,battery),2030,2,11:11] 0
+ PL bounds    flow[(demand,battery),2030,2,11:11]
+ LO bounds    flow[(demand,battery),2030,2,12:12] 0
+ PL bounds    flow[(demand,battery),2030,2,12:12]
+ LO bounds    flow[(demand,battery),2030,2,13:13] 0
+ PL bounds    flow[(demand,battery),2030,2,13:13]
+ LO bounds    flow[(demand,battery),2030,2,14:14] 0
+ PL bounds    flow[(demand,battery),2030,2,14:14]
+ LO bounds    flow[(demand,battery),2030,2,15:15] 0
+ PL bounds    flow[(demand,battery),2030,2,15:15]
+ LO bounds    flow[(demand,battery),2030,2,16:16] 0
+ PL bounds    flow[(demand,battery),2030,2,16:16]
+ LO bounds    flow[(demand,battery),2030,2,17:17] 0
+ PL bounds    flow[(demand,battery),2030,2,17:17]
+ LO bounds    flow[(demand,battery),2030,2,18:18] 0
+ PL bounds    flow[(demand,battery),2030,2,18:18]
+ LO bounds    flow[(demand,battery),2030,2,19:19] 0
+ PL bounds    flow[(demand,battery),2030,2,19:19]
+ LO bounds    flow[(demand,battery),2030,2,20:20] 0
+ PL bounds    flow[(demand,battery),2030,2,20:20]
+ LO bounds    flow[(demand,battery),2030,2,21:21] 0
+ PL bounds    flow[(demand,battery),2030,2,21:21]
+ LO bounds    flow[(demand,battery),2030,2,22:22] 0
+ PL bounds    flow[(demand,battery),2030,2,22:22]
+ LO bounds    flow[(demand,battery),2030,2,23:23] 0
+ PL bounds    flow[(demand,battery),2030,2,23:23]
+ LO bounds    flow[(demand,battery),2030,2,24:24] 0
+ PL bounds    flow[(demand,battery),2030,2,24:24]
+ LO bounds    flow[(battery,demand),2030,2,1:1] 0
+ PL bounds    flow[(battery,demand),2030,2,1:1]
+ LO bounds    flow[(battery,demand),2030,2,2:2] 0
+ PL bounds    flow[(battery,demand),2030,2,2:2]
+ LO bounds    flow[(battery,demand),2030,2,3:3] 0
+ PL bounds    flow[(battery,demand),2030,2,3:3]
+ LO bounds    flow[(battery,demand),2030,2,4:4] 0
+ PL bounds    flow[(battery,demand),2030,2,4:4]
+ LO bounds    flow[(battery,demand),2030,2,5:5] 0
+ PL bounds    flow[(battery,demand),2030,2,5:5]
+ LO bounds    flow[(battery,demand),2030,2,6:6] 0
+ PL bounds    flow[(battery,demand),2030,2,6:6]
+ LO bounds    flow[(battery,demand),2030,2,7:7] 0
+ PL bounds    flow[(battery,demand),2030,2,7:7]
+ LO bounds    flow[(battery,demand),2030,2,8:8] 0
+ PL bounds    flow[(battery,demand),2030,2,8:8]
+ LO bounds    flow[(battery,demand),2030,2,9:9] 0
+ PL bounds    flow[(battery,demand),2030,2,9:9]
+ LO bounds    flow[(battery,demand),2030,2,10:10] 0
+ PL bounds    flow[(battery,demand),2030,2,10:10]
+ LO bounds    flow[(battery,demand),2030,2,11:11] 0
+ PL bounds    flow[(battery,demand),2030,2,11:11]
+ LO bounds    flow[(battery,demand),2030,2,12:12] 0
+ PL bounds    flow[(battery,demand),2030,2,12:12]
+ LO bounds    flow[(battery,demand),2030,2,13:13] 0
+ PL bounds    flow[(battery,demand),2030,2,13:13]
+ LO bounds    flow[(battery,demand),2030,2,14:14] 0
+ PL bounds    flow[(battery,demand),2030,2,14:14]
+ LO bounds    flow[(battery,demand),2030,2,15:15] 0
+ PL bounds    flow[(battery,demand),2030,2,15:15]
+ LO bounds    flow[(battery,demand),2030,2,16:16] 0
+ PL bounds    flow[(battery,demand),2030,2,16:16]
+ LO bounds    flow[(battery,demand),2030,2,17:17] 0
+ PL bounds    flow[(battery,demand),2030,2,17:17]
+ LO bounds    flow[(battery,demand),2030,2,18:18] 0
+ PL bounds    flow[(battery,demand),2030,2,18:18]
+ LO bounds    flow[(battery,demand),2030,2,19:19] 0
+ PL bounds    flow[(battery,demand),2030,2,19:19]
+ LO bounds    flow[(battery,demand),2030,2,20:20] 0
+ PL bounds    flow[(battery,demand),2030,2,20:20]
+ LO bounds    flow[(battery,demand),2030,2,21:21] 0
+ PL bounds    flow[(battery,demand),2030,2,21:21]
+ LO bounds    flow[(battery,demand),2030,2,22:22] 0
+ PL bounds    flow[(battery,demand),2030,2,22:22]
+ LO bounds    flow[(battery,demand),2030,2,23:23] 0
+ PL bounds    flow[(battery,demand),2030,2,23:23]
+ LO bounds    flow[(battery,demand),2030,2,24:24] 0
+ PL bounds    flow[(battery,demand),2030,2,24:24]
+ FR bounds    flow[(ccgt,demand),2030,2,1:1]
+ FR bounds    flow[(ccgt,demand),2030,2,2:2]
+ FR bounds    flow[(ccgt,demand),2030,2,3:3]
+ FR bounds    flow[(ccgt,demand),2030,2,4:4]
+ FR bounds    flow[(ccgt,demand),2030,2,5:5]
+ FR bounds    flow[(ccgt,demand),2030,2,6:6]
+ FR bounds    flow[(ccgt,demand),2030,2,7:7]
+ FR bounds    flow[(ccgt,demand),2030,2,8:8]
+ FR bounds    flow[(ccgt,demand),2030,2,9:9]
+ FR bounds    flow[(ccgt,demand),2030,2,10:10]
+ FR bounds    flow[(ccgt,demand),2030,2,11:11]
+ FR bounds    flow[(ccgt,demand),2030,2,12:12]
+ FR bounds    flow[(ccgt,demand),2030,2,13:13]
+ FR bounds    flow[(ccgt,demand),2030,2,14:14]
+ FR bounds    flow[(ccgt,demand),2030,2,15:15]
+ FR bounds    flow[(ccgt,demand),2030,2,16:16]
+ FR bounds    flow[(ccgt,demand),2030,2,17:17]
+ FR bounds    flow[(ccgt,demand),2030,2,18:18]
+ FR bounds    flow[(ccgt,demand),2030,2,19:19]
+ FR bounds    flow[(ccgt,demand),2030,2,20:20]
+ FR bounds    flow[(ccgt,demand),2030,2,21:21]
+ FR bounds    flow[(ccgt,demand),2030,2,22:22]
+ FR bounds    flow[(ccgt,demand),2030,2,23:23]
+ FR bounds    flow[(ccgt,demand),2030,2,24:24]
+ LO bounds    flow[(wind,demand),2030,2,1:1] 0
+ PL bounds    flow[(wind,demand),2030,2,1:1]
+ LO bounds    flow[(wind,demand),2030,2,2:2] 0
+ PL bounds    flow[(wind,demand),2030,2,2:2]
+ LO bounds    flow[(wind,demand),2030,2,3:3] 0
+ PL bounds    flow[(wind,demand),2030,2,3:3]
+ LO bounds    flow[(wind,demand),2030,2,4:4] 0
+ PL bounds    flow[(wind,demand),2030,2,4:4]
+ LO bounds    flow[(wind,demand),2030,2,5:5] 0
+ PL bounds    flow[(wind,demand),2030,2,5:5]
+ LO bounds    flow[(wind,demand),2030,2,6:6] 0
+ PL bounds    flow[(wind,demand),2030,2,6:6]
+ LO bounds    flow[(wind,demand),2030,2,7:7] 0
+ PL bounds    flow[(wind,demand),2030,2,7:7]
+ LO bounds    flow[(wind,demand),2030,2,8:8] 0
+ PL bounds    flow[(wind,demand),2030,2,8:8]
+ LO bounds    flow[(wind,demand),2030,2,9:9] 0
+ PL bounds    flow[(wind,demand),2030,2,9:9]
+ LO bounds    flow[(wind,demand),2030,2,10:10] 0
+ PL bounds    flow[(wind,demand),2030,2,10:10]
+ LO bounds    flow[(wind,demand),2030,2,11:11] 0
+ PL bounds    flow[(wind,demand),2030,2,11:11]
+ LO bounds    flow[(wind,demand),2030,2,12:12] 0
+ PL bounds    flow[(wind,demand),2030,2,12:12]
+ LO bounds    flow[(wind,demand),2030,2,13:13] 0
+ PL bounds    flow[(wind,demand),2030,2,13:13]
+ LO bounds    flow[(wind,demand),2030,2,14:14] 0
+ PL bounds    flow[(wind,demand),2030,2,14:14]
+ LO bounds    flow[(wind,demand),2030,2,15:15] 0
+ PL bounds    flow[(wind,demand),2030,2,15:15]
+ LO bounds    flow[(wind,demand),2030,2,16:16] 0
+ PL bounds    flow[(wind,demand),2030,2,16:16]
+ LO bounds    flow[(wind,demand),2030,2,17:17] 0
+ PL bounds    flow[(wind,demand),2030,2,17:17]
+ LO bounds    flow[(wind,demand),2030,2,18:18] 0
+ PL bounds    flow[(wind,demand),2030,2,18:18]
+ LO bounds    flow[(wind,demand),2030,2,19:19] 0
+ PL bounds    flow[(wind,demand),2030,2,19:19]
+ LO bounds    flow[(wind,demand),2030,2,20:20] 0
+ PL bounds    flow[(wind,demand),2030,2,20:20]
+ LO bounds    flow[(wind,demand),2030,2,21:21] 0
+ PL bounds    flow[(wind,demand),2030,2,21:21]
+ LO bounds    flow[(wind,demand),2030,2,22:22] 0
+ PL bounds    flow[(wind,demand),2030,2,22:22]
+ LO bounds    flow[(wind,demand),2030,2,23:23] 0
+ PL bounds    flow[(wind,demand),2030,2,23:23]
+ LO bounds    flow[(wind,demand),2030,2,24:24] 0
+ PL bounds    flow[(wind,demand),2030,2,24:24]
+ LO bounds    flow[(solar,demand),2030,2,1:1] 0
+ PL bounds    flow[(solar,demand),2030,2,1:1]
+ LO bounds    flow[(solar,demand),2030,2,2:2] 0
+ PL bounds    flow[(solar,demand),2030,2,2:2]
+ LO bounds    flow[(solar,demand),2030,2,3:3] 0
+ PL bounds    flow[(solar,demand),2030,2,3:3]
+ LO bounds    flow[(solar,demand),2030,2,4:4] 0
+ PL bounds    flow[(solar,demand),2030,2,4:4]
+ LO bounds    flow[(solar,demand),2030,2,5:5] 0
+ PL bounds    flow[(solar,demand),2030,2,5:5]
+ LO bounds    flow[(solar,demand),2030,2,6:6] 0
+ PL bounds    flow[(solar,demand),2030,2,6:6]
+ LO bounds    flow[(solar,demand),2030,2,7:7] 0
+ PL bounds    flow[(solar,demand),2030,2,7:7]
+ LO bounds    flow[(solar,demand),2030,2,8:8] 0
+ PL bounds    flow[(solar,demand),2030,2,8:8]
+ LO bounds    flow[(solar,demand),2030,2,9:9] 0
+ PL bounds    flow[(solar,demand),2030,2,9:9]
+ LO bounds    flow[(solar,demand),2030,2,10:10] 0
+ PL bounds    flow[(solar,demand),2030,2,10:10]
+ LO bounds    flow[(solar,demand),2030,2,11:11] 0
+ PL bounds    flow[(solar,demand),2030,2,11:11]
+ LO bounds    flow[(solar,demand),2030,2,12:12] 0
+ PL bounds    flow[(solar,demand),2030,2,12:12]
+ LO bounds    flow[(solar,demand),2030,2,13:13] 0
+ PL bounds    flow[(solar,demand),2030,2,13:13]
+ LO bounds    flow[(solar,demand),2030,2,14:14] 0
+ PL bounds    flow[(solar,demand),2030,2,14:14]
+ LO bounds    flow[(solar,demand),2030,2,15:15] 0
+ PL bounds    flow[(solar,demand),2030,2,15:15]
+ LO bounds    flow[(solar,demand),2030,2,16:16] 0
+ PL bounds    flow[(solar,demand),2030,2,16:16]
+ LO bounds    flow[(solar,demand),2030,2,17:17] 0
+ PL bounds    flow[(solar,demand),2030,2,17:17]
+ LO bounds    flow[(solar,demand),2030,2,18:18] 0
+ PL bounds    flow[(solar,demand),2030,2,18:18]
+ LO bounds    flow[(solar,demand),2030,2,19:19] 0
+ PL bounds    flow[(solar,demand),2030,2,19:19]
+ LO bounds    flow[(solar,demand),2030,2,20:20] 0
+ PL bounds    flow[(solar,demand),2030,2,20:20]
+ LO bounds    flow[(solar,demand),2030,2,21:21] 0
+ PL bounds    flow[(solar,demand),2030,2,21:21]
+ LO bounds    flow[(solar,demand),2030,2,22:22] 0
+ PL bounds    flow[(solar,demand),2030,2,22:22]
+ LO bounds    flow[(solar,demand),2030,2,23:23] 0
+ PL bounds    flow[(solar,demand),2030,2,23:23]
+ LO bounds    flow[(solar,demand),2030,2,24:24] 0
+ PL bounds    flow[(solar,demand),2030,2,24:24]
  LO bounds    flow[(ens,demand),2030,3,1:1] 0
  PL bounds    flow[(ens,demand),2030,3,1:1]
  LO bounds    flow[(ens,demand),2030,3,2:2] 0
@@ -12775,30 +12607,174 @@ BOUNDS
  PL bounds    flow[(demand,battery),2030,3,23:23]
  LO bounds    flow[(demand,battery),2030,3,24:24] 0
  PL bounds    flow[(demand,battery),2030,3,24:24]
- FR bounds    flow[(ccgt,demand),2050,1,1:1]
- FR bounds    flow[(ccgt,demand),2050,1,2:2]
- FR bounds    flow[(ccgt,demand),2050,1,3:3]
- FR bounds    flow[(ccgt,demand),2050,1,4:4]
- FR bounds    flow[(ccgt,demand),2050,1,5:5]
- FR bounds    flow[(ccgt,demand),2050,1,6:6]
- FR bounds    flow[(ccgt,demand),2050,1,7:7]
- FR bounds    flow[(ccgt,demand),2050,1,8:8]
- FR bounds    flow[(ccgt,demand),2050,1,9:9]
- FR bounds    flow[(ccgt,demand),2050,1,10:10]
- FR bounds    flow[(ccgt,demand),2050,1,11:11]
- FR bounds    flow[(ccgt,demand),2050,1,12:12]
- FR bounds    flow[(ccgt,demand),2050,1,13:13]
- FR bounds    flow[(ccgt,demand),2050,1,14:14]
- FR bounds    flow[(ccgt,demand),2050,1,15:15]
- FR bounds    flow[(ccgt,demand),2050,1,16:16]
- FR bounds    flow[(ccgt,demand),2050,1,17:17]
- FR bounds    flow[(ccgt,demand),2050,1,18:18]
- FR bounds    flow[(ccgt,demand),2050,1,19:19]
- FR bounds    flow[(ccgt,demand),2050,1,20:20]
- FR bounds    flow[(ccgt,demand),2050,1,21:21]
- FR bounds    flow[(ccgt,demand),2050,1,22:22]
- FR bounds    flow[(ccgt,demand),2050,1,23:23]
- FR bounds    flow[(ccgt,demand),2050,1,24:24]
+ LO bounds    flow[(battery,demand),2030,3,1:1] 0
+ PL bounds    flow[(battery,demand),2030,3,1:1]
+ LO bounds    flow[(battery,demand),2030,3,2:2] 0
+ PL bounds    flow[(battery,demand),2030,3,2:2]
+ LO bounds    flow[(battery,demand),2030,3,3:3] 0
+ PL bounds    flow[(battery,demand),2030,3,3:3]
+ LO bounds    flow[(battery,demand),2030,3,4:4] 0
+ PL bounds    flow[(battery,demand),2030,3,4:4]
+ LO bounds    flow[(battery,demand),2030,3,5:5] 0
+ PL bounds    flow[(battery,demand),2030,3,5:5]
+ LO bounds    flow[(battery,demand),2030,3,6:6] 0
+ PL bounds    flow[(battery,demand),2030,3,6:6]
+ LO bounds    flow[(battery,demand),2030,3,7:7] 0
+ PL bounds    flow[(battery,demand),2030,3,7:7]
+ LO bounds    flow[(battery,demand),2030,3,8:8] 0
+ PL bounds    flow[(battery,demand),2030,3,8:8]
+ LO bounds    flow[(battery,demand),2030,3,9:9] 0
+ PL bounds    flow[(battery,demand),2030,3,9:9]
+ LO bounds    flow[(battery,demand),2030,3,10:10] 0
+ PL bounds    flow[(battery,demand),2030,3,10:10]
+ LO bounds    flow[(battery,demand),2030,3,11:11] 0
+ PL bounds    flow[(battery,demand),2030,3,11:11]
+ LO bounds    flow[(battery,demand),2030,3,12:12] 0
+ PL bounds    flow[(battery,demand),2030,3,12:12]
+ LO bounds    flow[(battery,demand),2030,3,13:13] 0
+ PL bounds    flow[(battery,demand),2030,3,13:13]
+ LO bounds    flow[(battery,demand),2030,3,14:14] 0
+ PL bounds    flow[(battery,demand),2030,3,14:14]
+ LO bounds    flow[(battery,demand),2030,3,15:15] 0
+ PL bounds    flow[(battery,demand),2030,3,15:15]
+ LO bounds    flow[(battery,demand),2030,3,16:16] 0
+ PL bounds    flow[(battery,demand),2030,3,16:16]
+ LO bounds    flow[(battery,demand),2030,3,17:17] 0
+ PL bounds    flow[(battery,demand),2030,3,17:17]
+ LO bounds    flow[(battery,demand),2030,3,18:18] 0
+ PL bounds    flow[(battery,demand),2030,3,18:18]
+ LO bounds    flow[(battery,demand),2030,3,19:19] 0
+ PL bounds    flow[(battery,demand),2030,3,19:19]
+ LO bounds    flow[(battery,demand),2030,3,20:20] 0
+ PL bounds    flow[(battery,demand),2030,3,20:20]
+ LO bounds    flow[(battery,demand),2030,3,21:21] 0
+ PL bounds    flow[(battery,demand),2030,3,21:21]
+ LO bounds    flow[(battery,demand),2030,3,22:22] 0
+ PL bounds    flow[(battery,demand),2030,3,22:22]
+ LO bounds    flow[(battery,demand),2030,3,23:23] 0
+ PL bounds    flow[(battery,demand),2030,3,23:23]
+ LO bounds    flow[(battery,demand),2030,3,24:24] 0
+ PL bounds    flow[(battery,demand),2030,3,24:24]
+ FR bounds    flow[(ccgt,demand),2030,3,1:1]
+ FR bounds    flow[(ccgt,demand),2030,3,2:2]
+ FR bounds    flow[(ccgt,demand),2030,3,3:3]
+ FR bounds    flow[(ccgt,demand),2030,3,4:4]
+ FR bounds    flow[(ccgt,demand),2030,3,5:5]
+ FR bounds    flow[(ccgt,demand),2030,3,6:6]
+ FR bounds    flow[(ccgt,demand),2030,3,7:7]
+ FR bounds    flow[(ccgt,demand),2030,3,8:8]
+ FR bounds    flow[(ccgt,demand),2030,3,9:9]
+ FR bounds    flow[(ccgt,demand),2030,3,10:10]
+ FR bounds    flow[(ccgt,demand),2030,3,11:11]
+ FR bounds    flow[(ccgt,demand),2030,3,12:12]
+ FR bounds    flow[(ccgt,demand),2030,3,13:13]
+ FR bounds    flow[(ccgt,demand),2030,3,14:14]
+ FR bounds    flow[(ccgt,demand),2030,3,15:15]
+ FR bounds    flow[(ccgt,demand),2030,3,16:16]
+ FR bounds    flow[(ccgt,demand),2030,3,17:17]
+ FR bounds    flow[(ccgt,demand),2030,3,18:18]
+ FR bounds    flow[(ccgt,demand),2030,3,19:19]
+ FR bounds    flow[(ccgt,demand),2030,3,20:20]
+ FR bounds    flow[(ccgt,demand),2030,3,21:21]
+ FR bounds    flow[(ccgt,demand),2030,3,22:22]
+ FR bounds    flow[(ccgt,demand),2030,3,23:23]
+ FR bounds    flow[(ccgt,demand),2030,3,24:24]
+ LO bounds    flow[(wind,demand),2030,3,1:1] 0
+ PL bounds    flow[(wind,demand),2030,3,1:1]
+ LO bounds    flow[(wind,demand),2030,3,2:2] 0
+ PL bounds    flow[(wind,demand),2030,3,2:2]
+ LO bounds    flow[(wind,demand),2030,3,3:3] 0
+ PL bounds    flow[(wind,demand),2030,3,3:3]
+ LO bounds    flow[(wind,demand),2030,3,4:4] 0
+ PL bounds    flow[(wind,demand),2030,3,4:4]
+ LO bounds    flow[(wind,demand),2030,3,5:5] 0
+ PL bounds    flow[(wind,demand),2030,3,5:5]
+ LO bounds    flow[(wind,demand),2030,3,6:6] 0
+ PL bounds    flow[(wind,demand),2030,3,6:6]
+ LO bounds    flow[(wind,demand),2030,3,7:7] 0
+ PL bounds    flow[(wind,demand),2030,3,7:7]
+ LO bounds    flow[(wind,demand),2030,3,8:8] 0
+ PL bounds    flow[(wind,demand),2030,3,8:8]
+ LO bounds    flow[(wind,demand),2030,3,9:9] 0
+ PL bounds    flow[(wind,demand),2030,3,9:9]
+ LO bounds    flow[(wind,demand),2030,3,10:10] 0
+ PL bounds    flow[(wind,demand),2030,3,10:10]
+ LO bounds    flow[(wind,demand),2030,3,11:11] 0
+ PL bounds    flow[(wind,demand),2030,3,11:11]
+ LO bounds    flow[(wind,demand),2030,3,12:12] 0
+ PL bounds    flow[(wind,demand),2030,3,12:12]
+ LO bounds    flow[(wind,demand),2030,3,13:13] 0
+ PL bounds    flow[(wind,demand),2030,3,13:13]
+ LO bounds    flow[(wind,demand),2030,3,14:14] 0
+ PL bounds    flow[(wind,demand),2030,3,14:14]
+ LO bounds    flow[(wind,demand),2030,3,15:15] 0
+ PL bounds    flow[(wind,demand),2030,3,15:15]
+ LO bounds    flow[(wind,demand),2030,3,16:16] 0
+ PL bounds    flow[(wind,demand),2030,3,16:16]
+ LO bounds    flow[(wind,demand),2030,3,17:17] 0
+ PL bounds    flow[(wind,demand),2030,3,17:17]
+ LO bounds    flow[(wind,demand),2030,3,18:18] 0
+ PL bounds    flow[(wind,demand),2030,3,18:18]
+ LO bounds    flow[(wind,demand),2030,3,19:19] 0
+ PL bounds    flow[(wind,demand),2030,3,19:19]
+ LO bounds    flow[(wind,demand),2030,3,20:20] 0
+ PL bounds    flow[(wind,demand),2030,3,20:20]
+ LO bounds    flow[(wind,demand),2030,3,21:21] 0
+ PL bounds    flow[(wind,demand),2030,3,21:21]
+ LO bounds    flow[(wind,demand),2030,3,22:22] 0
+ PL bounds    flow[(wind,demand),2030,3,22:22]
+ LO bounds    flow[(wind,demand),2030,3,23:23] 0
+ PL bounds    flow[(wind,demand),2030,3,23:23]
+ LO bounds    flow[(wind,demand),2030,3,24:24] 0
+ PL bounds    flow[(wind,demand),2030,3,24:24]
+ LO bounds    flow[(solar,demand),2030,3,1:1] 0
+ PL bounds    flow[(solar,demand),2030,3,1:1]
+ LO bounds    flow[(solar,demand),2030,3,2:2] 0
+ PL bounds    flow[(solar,demand),2030,3,2:2]
+ LO bounds    flow[(solar,demand),2030,3,3:3] 0
+ PL bounds    flow[(solar,demand),2030,3,3:3]
+ LO bounds    flow[(solar,demand),2030,3,4:4] 0
+ PL bounds    flow[(solar,demand),2030,3,4:4]
+ LO bounds    flow[(solar,demand),2030,3,5:5] 0
+ PL bounds    flow[(solar,demand),2030,3,5:5]
+ LO bounds    flow[(solar,demand),2030,3,6:6] 0
+ PL bounds    flow[(solar,demand),2030,3,6:6]
+ LO bounds    flow[(solar,demand),2030,3,7:7] 0
+ PL bounds    flow[(solar,demand),2030,3,7:7]
+ LO bounds    flow[(solar,demand),2030,3,8:8] 0
+ PL bounds    flow[(solar,demand),2030,3,8:8]
+ LO bounds    flow[(solar,demand),2030,3,9:9] 0
+ PL bounds    flow[(solar,demand),2030,3,9:9]
+ LO bounds    flow[(solar,demand),2030,3,10:10] 0
+ PL bounds    flow[(solar,demand),2030,3,10:10]
+ LO bounds    flow[(solar,demand),2030,3,11:11] 0
+ PL bounds    flow[(solar,demand),2030,3,11:11]
+ LO bounds    flow[(solar,demand),2030,3,12:12] 0
+ PL bounds    flow[(solar,demand),2030,3,12:12]
+ LO bounds    flow[(solar,demand),2030,3,13:13] 0
+ PL bounds    flow[(solar,demand),2030,3,13:13]
+ LO bounds    flow[(solar,demand),2030,3,14:14] 0
+ PL bounds    flow[(solar,demand),2030,3,14:14]
+ LO bounds    flow[(solar,demand),2030,3,15:15] 0
+ PL bounds    flow[(solar,demand),2030,3,15:15]
+ LO bounds    flow[(solar,demand),2030,3,16:16] 0
+ PL bounds    flow[(solar,demand),2030,3,16:16]
+ LO bounds    flow[(solar,demand),2030,3,17:17] 0
+ PL bounds    flow[(solar,demand),2030,3,17:17]
+ LO bounds    flow[(solar,demand),2030,3,18:18] 0
+ PL bounds    flow[(solar,demand),2030,3,18:18]
+ LO bounds    flow[(solar,demand),2030,3,19:19] 0
+ PL bounds    flow[(solar,demand),2030,3,19:19]
+ LO bounds    flow[(solar,demand),2030,3,20:20] 0
+ PL bounds    flow[(solar,demand),2030,3,20:20]
+ LO bounds    flow[(solar,demand),2030,3,21:21] 0
+ PL bounds    flow[(solar,demand),2030,3,21:21]
+ LO bounds    flow[(solar,demand),2030,3,22:22] 0
+ PL bounds    flow[(solar,demand),2030,3,22:22]
+ LO bounds    flow[(solar,demand),2030,3,23:23] 0
+ PL bounds    flow[(solar,demand),2030,3,23:23]
+ LO bounds    flow[(solar,demand),2030,3,24:24] 0
+ PL bounds    flow[(solar,demand),2030,3,24:24]
  LO bounds    flow[(ens,demand),2050,1,1:1] 0
  PL bounds    flow[(ens,demand),2050,1,1:1]
  LO bounds    flow[(ens,demand),2050,1,2:2] 0
@@ -12991,6 +12967,30 @@ BOUNDS
  PL bounds    flow[(battery,demand),2050,1,23:23]
  LO bounds    flow[(battery,demand),2050,1,24:24] 0
  PL bounds    flow[(battery,demand),2050,1,24:24]
+ FR bounds    flow[(ccgt,demand),2050,1,1:1]
+ FR bounds    flow[(ccgt,demand),2050,1,2:2]
+ FR bounds    flow[(ccgt,demand),2050,1,3:3]
+ FR bounds    flow[(ccgt,demand),2050,1,4:4]
+ FR bounds    flow[(ccgt,demand),2050,1,5:5]
+ FR bounds    flow[(ccgt,demand),2050,1,6:6]
+ FR bounds    flow[(ccgt,demand),2050,1,7:7]
+ FR bounds    flow[(ccgt,demand),2050,1,8:8]
+ FR bounds    flow[(ccgt,demand),2050,1,9:9]
+ FR bounds    flow[(ccgt,demand),2050,1,10:10]
+ FR bounds    flow[(ccgt,demand),2050,1,11:11]
+ FR bounds    flow[(ccgt,demand),2050,1,12:12]
+ FR bounds    flow[(ccgt,demand),2050,1,13:13]
+ FR bounds    flow[(ccgt,demand),2050,1,14:14]
+ FR bounds    flow[(ccgt,demand),2050,1,15:15]
+ FR bounds    flow[(ccgt,demand),2050,1,16:16]
+ FR bounds    flow[(ccgt,demand),2050,1,17:17]
+ FR bounds    flow[(ccgt,demand),2050,1,18:18]
+ FR bounds    flow[(ccgt,demand),2050,1,19:19]
+ FR bounds    flow[(ccgt,demand),2050,1,20:20]
+ FR bounds    flow[(ccgt,demand),2050,1,21:21]
+ FR bounds    flow[(ccgt,demand),2050,1,22:22]
+ FR bounds    flow[(ccgt,demand),2050,1,23:23]
+ FR bounds    flow[(ccgt,demand),2050,1,24:24]
  LO bounds    flow[(wind,demand),2050,1,1:1] 0
  PL bounds    flow[(wind,demand),2050,1,1:1]
  LO bounds    flow[(wind,demand),2050,1,2:2] 0
@@ -13087,30 +13087,6 @@ BOUNDS
  PL bounds    flow[(solar,demand),2050,1,23:23]
  LO bounds    flow[(solar,demand),2050,1,24:24] 0
  PL bounds    flow[(solar,demand),2050,1,24:24]
- FR bounds    flow[(ccgt,demand),2050,2,1:1]
- FR bounds    flow[(ccgt,demand),2050,2,2:2]
- FR bounds    flow[(ccgt,demand),2050,2,3:3]
- FR bounds    flow[(ccgt,demand),2050,2,4:4]
- FR bounds    flow[(ccgt,demand),2050,2,5:5]
- FR bounds    flow[(ccgt,demand),2050,2,6:6]
- FR bounds    flow[(ccgt,demand),2050,2,7:7]
- FR bounds    flow[(ccgt,demand),2050,2,8:8]
- FR bounds    flow[(ccgt,demand),2050,2,9:9]
- FR bounds    flow[(ccgt,demand),2050,2,10:10]
- FR bounds    flow[(ccgt,demand),2050,2,11:11]
- FR bounds    flow[(ccgt,demand),2050,2,12:12]
- FR bounds    flow[(ccgt,demand),2050,2,13:13]
- FR bounds    flow[(ccgt,demand),2050,2,14:14]
- FR bounds    flow[(ccgt,demand),2050,2,15:15]
- FR bounds    flow[(ccgt,demand),2050,2,16:16]
- FR bounds    flow[(ccgt,demand),2050,2,17:17]
- FR bounds    flow[(ccgt,demand),2050,2,18:18]
- FR bounds    flow[(ccgt,demand),2050,2,19:19]
- FR bounds    flow[(ccgt,demand),2050,2,20:20]
- FR bounds    flow[(ccgt,demand),2050,2,21:21]
- FR bounds    flow[(ccgt,demand),2050,2,22:22]
- FR bounds    flow[(ccgt,demand),2050,2,23:23]
- FR bounds    flow[(ccgt,demand),2050,2,24:24]
  LO bounds    flow[(ens,demand),2050,2,1:1] 0
  PL bounds    flow[(ens,demand),2050,2,1:1]
  LO bounds    flow[(ens,demand),2050,2,2:2] 0
@@ -13303,6 +13279,30 @@ BOUNDS
  PL bounds    flow[(battery,demand),2050,2,23:23]
  LO bounds    flow[(battery,demand),2050,2,24:24] 0
  PL bounds    flow[(battery,demand),2050,2,24:24]
+ FR bounds    flow[(ccgt,demand),2050,2,1:1]
+ FR bounds    flow[(ccgt,demand),2050,2,2:2]
+ FR bounds    flow[(ccgt,demand),2050,2,3:3]
+ FR bounds    flow[(ccgt,demand),2050,2,4:4]
+ FR bounds    flow[(ccgt,demand),2050,2,5:5]
+ FR bounds    flow[(ccgt,demand),2050,2,6:6]
+ FR bounds    flow[(ccgt,demand),2050,2,7:7]
+ FR bounds    flow[(ccgt,demand),2050,2,8:8]
+ FR bounds    flow[(ccgt,demand),2050,2,9:9]
+ FR bounds    flow[(ccgt,demand),2050,2,10:10]
+ FR bounds    flow[(ccgt,demand),2050,2,11:11]
+ FR bounds    flow[(ccgt,demand),2050,2,12:12]
+ FR bounds    flow[(ccgt,demand),2050,2,13:13]
+ FR bounds    flow[(ccgt,demand),2050,2,14:14]
+ FR bounds    flow[(ccgt,demand),2050,2,15:15]
+ FR bounds    flow[(ccgt,demand),2050,2,16:16]
+ FR bounds    flow[(ccgt,demand),2050,2,17:17]
+ FR bounds    flow[(ccgt,demand),2050,2,18:18]
+ FR bounds    flow[(ccgt,demand),2050,2,19:19]
+ FR bounds    flow[(ccgt,demand),2050,2,20:20]
+ FR bounds    flow[(ccgt,demand),2050,2,21:21]
+ FR bounds    flow[(ccgt,demand),2050,2,22:22]
+ FR bounds    flow[(ccgt,demand),2050,2,23:23]
+ FR bounds    flow[(ccgt,demand),2050,2,24:24]
  LO bounds    flow[(wind,demand),2050,2,1:1] 0
  PL bounds    flow[(wind,demand),2050,2,1:1]
  LO bounds    flow[(wind,demand),2050,2,2:2] 0
@@ -13399,30 +13399,6 @@ BOUNDS
  PL bounds    flow[(solar,demand),2050,2,23:23]
  LO bounds    flow[(solar,demand),2050,2,24:24] 0
  PL bounds    flow[(solar,demand),2050,2,24:24]
- FR bounds    flow[(ccgt,demand),2050,3,1:1]
- FR bounds    flow[(ccgt,demand),2050,3,2:2]
- FR bounds    flow[(ccgt,demand),2050,3,3:3]
- FR bounds    flow[(ccgt,demand),2050,3,4:4]
- FR bounds    flow[(ccgt,demand),2050,3,5:5]
- FR bounds    flow[(ccgt,demand),2050,3,6:6]
- FR bounds    flow[(ccgt,demand),2050,3,7:7]
- FR bounds    flow[(ccgt,demand),2050,3,8:8]
- FR bounds    flow[(ccgt,demand),2050,3,9:9]
- FR bounds    flow[(ccgt,demand),2050,3,10:10]
- FR bounds    flow[(ccgt,demand),2050,3,11:11]
- FR bounds    flow[(ccgt,demand),2050,3,12:12]
- FR bounds    flow[(ccgt,demand),2050,3,13:13]
- FR bounds    flow[(ccgt,demand),2050,3,14:14]
- FR bounds    flow[(ccgt,demand),2050,3,15:15]
- FR bounds    flow[(ccgt,demand),2050,3,16:16]
- FR bounds    flow[(ccgt,demand),2050,3,17:17]
- FR bounds    flow[(ccgt,demand),2050,3,18:18]
- FR bounds    flow[(ccgt,demand),2050,3,19:19]
- FR bounds    flow[(ccgt,demand),2050,3,20:20]
- FR bounds    flow[(ccgt,demand),2050,3,21:21]
- FR bounds    flow[(ccgt,demand),2050,3,22:22]
- FR bounds    flow[(ccgt,demand),2050,3,23:23]
- FR bounds    flow[(ccgt,demand),2050,3,24:24]
  LO bounds    flow[(ens,demand),2050,3,1:1] 0
  PL bounds    flow[(ens,demand),2050,3,1:1]
  LO bounds    flow[(ens,demand),2050,3,2:2] 0
@@ -13615,6 +13591,30 @@ BOUNDS
  PL bounds    flow[(battery,demand),2050,3,23:23]
  LO bounds    flow[(battery,demand),2050,3,24:24] 0
  PL bounds    flow[(battery,demand),2050,3,24:24]
+ FR bounds    flow[(ccgt,demand),2050,3,1:1]
+ FR bounds    flow[(ccgt,demand),2050,3,2:2]
+ FR bounds    flow[(ccgt,demand),2050,3,3:3]
+ FR bounds    flow[(ccgt,demand),2050,3,4:4]
+ FR bounds    flow[(ccgt,demand),2050,3,5:5]
+ FR bounds    flow[(ccgt,demand),2050,3,6:6]
+ FR bounds    flow[(ccgt,demand),2050,3,7:7]
+ FR bounds    flow[(ccgt,demand),2050,3,8:8]
+ FR bounds    flow[(ccgt,demand),2050,3,9:9]
+ FR bounds    flow[(ccgt,demand),2050,3,10:10]
+ FR bounds    flow[(ccgt,demand),2050,3,11:11]
+ FR bounds    flow[(ccgt,demand),2050,3,12:12]
+ FR bounds    flow[(ccgt,demand),2050,3,13:13]
+ FR bounds    flow[(ccgt,demand),2050,3,14:14]
+ FR bounds    flow[(ccgt,demand),2050,3,15:15]
+ FR bounds    flow[(ccgt,demand),2050,3,16:16]
+ FR bounds    flow[(ccgt,demand),2050,3,17:17]
+ FR bounds    flow[(ccgt,demand),2050,3,18:18]
+ FR bounds    flow[(ccgt,demand),2050,3,19:19]
+ FR bounds    flow[(ccgt,demand),2050,3,20:20]
+ FR bounds    flow[(ccgt,demand),2050,3,21:21]
+ FR bounds    flow[(ccgt,demand),2050,3,22:22]
+ FR bounds    flow[(ccgt,demand),2050,3,23:23]
+ FR bounds    flow[(ccgt,demand),2050,3,24:24]
  LO bounds    flow[(wind,demand),2050,3,1:1] 0
  PL bounds    flow[(wind,demand),2050,3,1:1]
  LO bounds    flow[(wind,demand),2050,3,2:2] 0

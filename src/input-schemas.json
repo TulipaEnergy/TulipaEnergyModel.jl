@@ -61,11 +61,6 @@
       "type": "DOUBLE",
       "unit_of_measure": "h"
     },
-    "investment_group": {
-      "default": null,
-      "description": "Investment group to which the asset belongs to (null/empty/missing -> no group).",
-      "type": "VARCHAR"
-    },
     "investment_integer": {
       "default": false,
       "description": "Whether investment decisions are using integer variables.",
@@ -800,25 +795,51 @@
     }
   },
   "group_asset": {
+    "constraint_sense": {
+      "constraints": {
+        "oneOf": [
+          "==",
+          ">=",
+          "<="
+        ]
+      },
+      "description": "Whether the expression in the group constraint is equal to, greater than, or less than, the right-hand-side.",
+      "type": "VARCHAR"
+    },
     "invest_method": {
       "description": "true -> activate group constraints; false -> no group investment constraints",
       "type": "BOOLEAN"
-    },
-    "max_investment_limit": {
-      "description": "MW (Missing -> no limit)",
-      "type": "DOUBLE"
     },
     "milestone_year": {
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
-    "min_investment_limit": {
-      "description": "MW (Missing -> no limit)",
-      "type": "DOUBLE"
-    },
     "name": {
       "description": "Name of the Group",
       "type": "VARCHAR"
+    },
+    "rhs": {
+      "description": "Right-hand-side of the group constraint.",
+      "type": "DOUBLE"
+    }
+  },
+  "group_asset_membership": {
+    "asset": {
+      "description": "One of the assets in this group.",
+      "type": "VARCHAR"
+    },
+    "coefficient": {
+      "default": 1.0,
+      "description": "Coefficient of the investment variable corresponding to this asset.",
+      "type": "DOUBLE"
+    },
+    "group_name": {
+      "description": "Investment group to which the asset belongs to.",
+      "type": "VARCHAR"
+    },
+    "milestone_year": {
+      "description": "Year of investment and operation decisions in the optimization.",
+      "type": "INTEGER"
     }
   },
   "model_parameters": {

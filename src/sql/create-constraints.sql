@@ -604,42 +604,20 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_group_max_investment_limit
+drop table if exists cons_group_investment
 ;
 
-create table cons_group_max_investment_limit as
+create table cons_group_investment as
 select
     nextval('id') as id,
     ga.name,
     ga.milestone_year,
-    ga.max_investment_limit,
+    ga.constraint_sense,
+    ga.rhs,
 from
     group_asset as ga
 where
     ga.invest_method
-    and ga.max_investment_limit is not null
-;
-
-drop sequence id
-;
-
-create sequence id start 1
-;
-
-drop table if exists cons_group_min_investment_limit
-;
-
-create table cons_group_min_investment_limit as
-select
-    nextval('id') as id,
-    ga.name,
-    ga.milestone_year,
-    ga.min_investment_limit,
-from
-    group_asset as ga
-where
-    ga.invest_method
-    and ga.min_investment_limit is not null
 ;
 
 drop sequence id
