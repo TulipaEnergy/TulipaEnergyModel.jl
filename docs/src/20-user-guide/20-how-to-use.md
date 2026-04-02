@@ -290,10 +290,6 @@ They can be achieved using group investment constraints by adding rows in `group
   - `asset` is the name of the asset.
   - `coefficient` should be the capacity value for the investment limit.
 
-!!! info
-    TODO: I don't know what the following is informing:
-    2. These constraints are applied to the investments each year. The model does not yet have investment limits to a group's available invested capacity.
-
 #### Example: Group of Assets
 
 Let's explore how the groups are set up in the test case called [Norse](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Norse). First, let's take a look at the `group-asset.csv` file:
