@@ -1,5 +1,5 @@
-group_name,asset,coefficient
-ccgt,Asgard_CCGT,500.0
-renewables,Asgard_Solar,100.0
-ccgt,Midgard_CCGT,500.0
-renewables,Midgard_Wind,3.0
+group_name,milestone_year,asset,coefficient
+ccgt_min,2030,Asgard_CCGT,500.0
+ccgt_min,2030,Midgard_CCGT,500.0
+renewables_max,2030,Asgard_Solar,100.0
+renewables_max,2030,Midgard_Wind,3.0

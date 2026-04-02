@@ -50,23 +50,28 @@ function _append_group_data_to_indices!(connection, cons_table_name)
         WITH cte_group_expression AS (
             SELECT
                 group_asset.name AS name,
+                group_asset.milestone_year AS milestone_year,
                 ARRAY_AGG(var.id) AS var_assets_investment_ids,
                 ARRAY_AGG(group_asset_membership.coefficient) AS coefficients,
             FROM group_asset
             LEFT JOIN group_asset_membership
                 ON group_asset.name = group_asset_membership.group_name
+                AND group_asset.milestone_year = group_asset_membership.milestone_year
             LEFT JOIN var_assets_investment AS var
                 ON group_asset_membership.asset = var.asset
                 AND group_asset.milestone_year = var.milestone_year
-            GROUP BY group_asset.name
+            GROUP BY group_asset.name, group_asset.milestone_year
         )
         SELECT
             cons.*,
+            cte.name,
+            cte.milestone_year,
             cte.var_assets_investment_ids,
             cte.coefficients,
         FROM $cons_table_name AS cons
         LEFT JOIN cte_group_expression AS cte
             ON cons.name = cte.name
+            AND cons.milestone_year = cte.milestone_year
         """,
     )
 end

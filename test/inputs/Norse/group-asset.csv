@@ -1,3 +1,3 @@
 name,milestone_year,invest_method,constraint_sense,rhs
-ccgt,2030,true,>=,10000
-renewables,2030,true,<=,40000
+ccgt_min,2030,true,>=,10000
+renewables_max,2030,true,<=,40000

@@ -340,11 +340,9 @@ end
         :milestone_year => [2030, 2050, 2030, 2050, 2030, 2050],
         :investable => [false, false, true, false, true, true],
     )
-    group_asset = DataFrame(:name => ["group1", "group2"], :milestone_year => [2030, 2050])
-    group_asset_membership = DataFrame(
-        :group_name => ["group1", "group1", "group1", "group2", "group2", "group2"],
-        :asset => ["A1", "A2", "A3", "A1", "A2", "A3"],
-    )
+    group_asset = DataFrame(:name => ["group1", "group1"], :milestone_year => [2030, 2050])
+    group_asset_membership =
+        DataFrame(:group_name => "group1", :asset => ["A1", "A2", "A3", "A1", "A2", "A3"])
 
     connection = DBInterface.connect(DuckDB.DB)
     DuckDB.register_data_frame(connection, asset, "asset")
@@ -355,8 +353,8 @@ end
     error_messages = TEM._validate_group_consistency!(connection)
     @test Set(error_messages) == Set([
         "Asset 'A1' is in investment group 'group1' for milestone_year '2030' but it is not 'asset_milestone.investable'",
-        "Asset 'A1' is in investment group 'group2' for milestone_year '2050' but it is not 'asset_milestone.investable'",
-        "Asset 'A2' is in investment group 'group2' for milestone_year '2050' but it is not 'asset_milestone.investable'",
+        "Asset 'A1' is in investment group 'group1' for milestone_year '2050' but it is not 'asset_milestone.investable'",
+        "Asset 'A2' is in investment group 'group1' for milestone_year '2050' but it is not 'asset_milestone.investable'",
     ])
 end
 

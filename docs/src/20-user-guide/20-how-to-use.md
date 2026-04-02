@@ -288,7 +288,12 @@ They can be achieved using group investment constraints by adding rows in `group
 - Each row in table `group_asset_membership`
   - `group_name` should match `group_asset.name`.
   - `asset` is the name of the asset.
+  - `milestone_year` should match `group_asset.milestone_year` and `asset.milestone_year`.
   - `coefficient` should be the capacity value for the investment limit.
+
+!!! warning
+    Notice that only one constraint is created per row in `group_asset`, which means that if both the minimum and maximum investment limits are desired, two rows are required in `group_asset`, one with `constraint_sense = '<='` and one with `constraint_sense = '>='`. In this case, the names of the groups must be different, from instance `ccgt_max` and `ccgt_min`.
+    Similarly, the elements in `group_asset_membership` will need to be duplicated, one for each group.
 
 #### Example: Group of Assets
 

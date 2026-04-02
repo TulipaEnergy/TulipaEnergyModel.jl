@@ -836,6 +836,10 @@
     "group_name": {
       "description": "Investment group to which the asset belongs to.",
       "type": "VARCHAR"
+    },
+    "milestone_year": {
+      "description": "Year of investment and operation decisions in the optimization.",
+      "type": "INTEGER"
     }
   },
   "model_parameters": {
