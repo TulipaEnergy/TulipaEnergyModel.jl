@@ -134,6 +134,10 @@ function populate_with_defaults!(connection)
             continue
         end
 
+        if table_name == "model_parameters" && !_check_if_table_exists(connection, table_name)
+            continue
+        end
+
         # Get the table_creation string
         # table_creation_string = _arguments_to_create_table(connection, table_name, table_schema)
 
