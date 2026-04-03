@@ -181,12 +181,10 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         model,
                         cons.expressions[:flow_above_min_operating_point][row.id] -
                         cons.expressions[:flow_above_min_operating_point][row.id-1] ≤
-                        (
-                            row.min_operating_point *
-                            min(row.max_ramp_up, (1 - row.min_operating_point))
-                        ) *
+                        min(row.max_ramp_up, 1 - row.min_operating_point) *
                         min_outgoing_flow_duration *
-                        units_on[row.id] - row.min_operating_point * units_on[row.id-1],
+                        profile_times_capacity[table_name][row.id] *
+                        units_on[row.id],
                         base_name = "max_ramp_up_with_unit_commitment_compact[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, min_outgoing_flow_duration) in
@@ -241,7 +239,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
 
                     average_su, average_up_ramp = _calculate_average_ramping_parameters(
                         row.max_su_ramp,
-                        row.max_ramp_up,
+                        min(row.max_ramp_up, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id],
                         duration[row.id],
                     )
@@ -269,7 +267,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
 
                     average_sd, average_down_ramp = _calculate_average_ramping_parameters(
                         row.max_sd_ramp,
-                        row.max_ramp_down,
+                        min(row.max_ramp_down, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id-1],
                         duration[row.id-1],
                     )

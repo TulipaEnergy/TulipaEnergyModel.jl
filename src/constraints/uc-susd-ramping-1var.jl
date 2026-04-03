@@ -65,7 +65,7 @@ function add_su_sd_ramping_constraints_compact!(
                 else
                     start_up_avg = _calculate_average_su_sd_ramping_parameters(
                         row.max_su_ramp,
-                        row.max_ramp_up,
+                        min(row.max_ramp_up, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id],
                         min_outgoing_flow_duration,
                     )
@@ -104,7 +104,7 @@ function add_su_sd_ramping_constraints_compact!(
                 else
                     shut_down_avg = _calculate_average_su_sd_ramping_parameters(
                         row.max_sd_ramp,
-                        row.max_ramp_down,
+                        min(row.max_ramp_down, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id-1],
                         cons.coefficients[:min_outgoing_flow_duration][row.id-1],
                     )
@@ -189,7 +189,7 @@ function add_su_sd_ramping_constraints_tight!(
                 else
                     start_up_avg = _calculate_average_su_sd_ramping_parameters(
                         row.max_su_ramp,
-                        row.max_ramp_up,
+                        min(row.max_ramp_up, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id],
                         min_outgoing_flow_duration,
                     )
@@ -222,7 +222,7 @@ function add_su_sd_ramping_constraints_tight!(
                 else
                     shut_down_avg = _calculate_average_su_sd_ramping_parameters(
                         row.max_sd_ramp,
-                        row.max_ramp_down,
+                        min(row.max_ramp_down, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id-1],
                         cons.coefficients[:min_outgoing_flow_duration][row.id-1],
                     )
