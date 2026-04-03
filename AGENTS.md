@@ -286,6 +286,15 @@ Prefer `@testsnippet` when tests mutate the data; prefer `@testmodule` when setu
 
 New tags must be added to `TAGS_DATA` in `test/runtests.jl`. Target: 100% test coverage.
 
+### Adding a Data Validator
+
+1. Write `_validate_<description>!(error_messages, connection)` in `src/data-validation.jl`.
+   Push error strings into `error_messages` directly; return `error_messages` at the end.
+2. Register it in the tuple in `validate_data!` with a log message and `fail_fast = false`
+   (use `true` only if later validators would crash without this one passing).
+3. Add tests in `test/test-data-validation.jl` tagged `[:unit, :data_validation, :fast]`.
+   Call the validator as `TEM._validate_foo!(String[], connection)` and assert on the result.
+
 ### MPS Regression Testing
 
 MPS files in `benchmark/model-mps-folder/` serve as regression tests for the optimization model. The `CompareMPS.yml` workflow runs automatically on PRs.
