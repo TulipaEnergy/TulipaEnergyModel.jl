@@ -63,39 +63,15 @@
     end
 end
 
-# @testitem "Test model parameters - populate with default values" setup =
-#     [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
-#     connection = connection_with_norse()
-#     DuckDB.query(
-#         connection,
-#         """
-#         CREATE OR REPLACE TABLE model_parameters AS
-#         SELECT *
-#         FROM (VALUES
-#             (0.03)
-#         ) AS t(discount_rate);
-#         """,
-#     )
-
-#     TulipaEnergyModel.populate_with_defaults!(connection)
-#     mp = query_model_parameters(connection)
-
-#     @test mp.discount_rate == 0.03
-#     @test mp.discount_year == 9999
-#     @test mp.power_system_base == 100.0
-#     @test mp.risk_aversion_confidence_level_alpha == 0.95
-#     @test mp.risk_aversion_weight_lambda == 0.0
-# end
-
 @testitem "Test model parameters - table missing" setup = [CommonSetup, ModelParametersSetup] tags =
     [:unit, :validation, :fast] begin
     connection = connection_with_norse()
-    # populate_with_defaults! should not work if the table doesn't exist
-    @test_throws Exception TulipaEnergyModel.populate_with_defaults!(connection)
+    # populate_with_defaults! should do nothing silently if the table doesn't exist
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    @test_throws Exception DuckDB.query(connection, "SELECT * FROM model_parameters")
 
     # we should be able to create the model_parameters table with defaults
     TulipaEnergyModel._create_model_parameters_unless_exists!(connection)
-
     mp = query_model_parameters(connection)
 
     @test mp.discount_rate == 0.0
@@ -111,7 +87,7 @@ end
 
     create_model_parameters_table!(connection;)
 
-    # below functions should not work
+    # below functions should do nothing silently if the table exists but has no data
     TulipaEnergyModel.populate_with_defaults!(connection)
     TulipaEnergyModel._create_model_parameters_unless_exists!(connection)
 
