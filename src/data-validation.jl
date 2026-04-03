@@ -890,26 +890,23 @@ function _validate_commodity_price_consistency!(error_messages, connection)
         return error_messages
     end
     # All flows associated with a 'commodity_price' profile
-    rows = [
-        row for row in DuckDB.query(
-            connection,
-            """
-            SELECT
-                flow_milestone.from_asset,
-                flow_milestone.to_asset,
-                flows_profiles.profile_type,
-                flow_milestone.commodity_price,
-            FROM flows_profiles
-            LEFT JOIN flow_milestone
-                ON flow_milestone.from_asset = flows_profiles.from_asset
-                AND flow_milestone.to_asset = flows_profiles.to_asset
-            WHERE
-                flows_profiles.profile_type = 'commodity_price'
-                AND flow_milestone.commodity_price <= 0
-            """,
-        )
-    ]
-    for row in rows
+    for row in DuckDB.query(
+        connection,
+        """
+        SELECT
+            flow_milestone.from_asset,
+            flow_milestone.to_asset,
+            flows_profiles.profile_type,
+            flow_milestone.commodity_price,
+        FROM flows_profiles
+        LEFT JOIN flow_milestone
+            ON flow_milestone.from_asset = flows_profiles.from_asset
+            AND flow_milestone.to_asset = flows_profiles.to_asset
+        WHERE
+            flows_profiles.profile_type = 'commodity_price'
+            AND flow_milestone.commodity_price <= 0
+        """,
+    )
         from, to, commodity_price = row.from_asset, row.to_asset, row.commodity_price
         push!(
             error_messages,
