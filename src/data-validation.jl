@@ -851,10 +851,10 @@ function _validate_bid_related_data!(connection)
                 )
             end
             if !unit_commitment_integer
-                push!(error_messages, "have asset.unit_commitment_integer = true")
+                push!(error_messages, "$prefix_msg have asset.unit_commitment_integer = true")
             end
             if unit_commitment_method != "basic"
-                push!(error_messages, "have asset.unit_commitment_method = \"basic\"")
+                push!(error_messages, "$prefix_msg have asset.unit_commitment_method = \"basic\"")
             end
             if consumer_balance_sense != "=="
                 push!(

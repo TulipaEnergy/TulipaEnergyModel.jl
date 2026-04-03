@@ -187,7 +187,7 @@ Never run the full test suite unless you are explicitly asked to. Instead, run o
 
 **When `julia_eval` (Julia MCP) is available, use it instead of the CLI** — it maintains a warm session and avoids recompilation on every run.
 
-Use `env_path = "test/"` (has its own `Project.toml` with the package as a path source). Always import `TestItemRunner` first, then call `@run_package_tests` — `runtests.jl` reads `ARGS` and won't work in a REPL:
+Use `env_path` with the **absolute path** to the `test/` directory (e.g., `/full/path/to/TulipaEnergyModel.jl/test/`) — relative paths resolve from the MCP server's directory, not the project root. The test env has its own `Project.toml` with the package as a path source. Always import `TestItemRunner` first, then call `@run_package_tests` — `runtests.jl` reads `ARGS` and won't work in a REPL:
 
 ```julia
 using TestItemRunner
