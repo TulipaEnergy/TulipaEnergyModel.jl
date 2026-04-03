@@ -774,6 +774,53 @@ Profiling memory use is useful to figure out _where_ large amounts of memory are
 Type stability is one of the main issues.
 Check [Modern Julia Workflows' type stability section](https://modernjuliaworkflows.org/optimizing/#type_stability) and memory management section for more information.
 
+## Updating Data Schemas (CSV Migrations)
+
+When a change requires modifying the structure of CSV data files (adding/removing columns, renaming fields, transforming values), create a **migration script** instead of editing files by hand.
+
+### Why Use a Script
+
+- **Reproducibility:** the transformation is documented as code, not ad-hoc edits.
+- **Rebase recovery:** if you rebase on top of another data change and get conflicts in CSV files, you can simply reset the data files with `git restore` and rerun the script — no manual conflict resolution needed.
+- **Consistency:** the same script updates all data folders at once.
+
+### Writing a Migration Script
+
+See examples in `utils/scripts/` (e.g., `migrate-investment-groups.py` and `migrate-group-asset-limits.py`). These use Python + DuckDB and can be run with:
+
+```bash
+uv run --with duckdb python utils/scripts/your-migration.py
+```
+
+The script must update all data folders:
+
+- `test/inputs/` — test fixtures
+- `benchmark/EU/` — benchmark data
+- `docs/src/10-tutorials/my-awesome-energy-system/` — tutorial data (subfolders for each step)
+
+Save the script in `utils/scripts/` so the migration is documented and rerunnable.
+
+#### Using an AI Agent to Write the Script
+
+When asking an agent to write the migration script:
+
+- **Be explicit about the transformation.** Describe exactly which columns to remove, which to add, and how new columns derive from existing ones. For example: "remove `min_investment_limit` and `max_investment_limit`; add `constraint_sense` and `rhs`; if `min_investment_limit` is not NULL then create a row with `constraint_sense = '>='` and `rhs = min_investment_limit`; if both are non-null, create two rows, one for each."
+- **Describe the else-branch.** Always say what to do when a condition is not met: e.g., "if there are no non-NULL values, only remove the column."
+- **List which columns go into which output table.** It's better to be explicit, but in some cases you can tell the agent to use the `src/input-schemas.json` file in the script.
+- **Flag edge cases**, e.g., "when splitting `asset.csv` by type into `asset-producer.csv`, `asset-consumer.csv`, etc., notice that some columns such as `capacity` appear in more than one output table."
+- **Tell the agent to be concise, use short comments, and skip input validation.**
+
+### Rebase Recovery Pattern
+
+When rebasing on top of another data change:
+
+1. Resolve any non-data conflicts normally.
+2. For conflicting CSV files, reset them: `git restore test/inputs/ benchmark/EU/ docs/src/10-tutorials/` (adjust paths as needed).
+3. Rerun the migration script.
+4. Stage and continue the rebase.
+
+This avoids the error-prone process of manually resolving conflicts in CSV files.
+
 ## Testing the generated MPS files
 
 To make sure that unintended changes don't change the model, we have a workflow that automatically compares the generated MPS files.
