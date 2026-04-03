@@ -18,7 +18,7 @@ Julia package for modeling and optimization of electric energy systems. Uses Duc
 - `src/solve-model.jl` — `solve_model!` / `solve_model` / `save_solution!`
 - `src/objective.jl` — Objective function construction
 - `src/model-preparation.jl` — Data massage before model creation
-- `src/data-preparation.jl` — `populate_with_defaults!`, `_prepare_model_parameters!`
+- `src/data-preparation.jl` — `populate_with_defaults!`
 - `src/data-validation.jl` — Input validation
 - `src/io.jl` — `create_internal_tables!` / `export_solution_to_csv_files`
 - `src/input-schemas.jl` + `src/input-schemas.json` — Table schema definitions
