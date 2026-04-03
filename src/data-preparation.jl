@@ -648,30 +648,24 @@ function _calculate_stochastic_scenario_probabilities(connection)
 end
 
 """
-    _prepare_model_parameters!(connection)
+    _create_model_parameters_unless_exists!(connection)
 
-Ensure the `model_parameters` table has no more than one row,
-then calculate `discount_year` to be at most the minimum milestone year from `rep_periods_data`.
+Creates the `model_parameters` table if it does not exist, with the appropriate schema and default values.
 """
-function _prepare_model_parameters!(connection)
-    # validate that there is at most one row in model_parameters
-    rows = collect(DuckDB.query(
-        connection,
-        "SELECT *
-        FROM model_parameters",
-    ))
+function _create_model_parameters_unless_exists!(connection)
+    if !_check_if_table_exists(connection, "model_parameters")
+        sql_create_string, _ = _sql_arguments_for_defaults(
+            connection,
+            "model_parameters",
+            TulipaEnergyModel.schema["model_parameters"],
+        )
 
-    if length(rows) > 1
-        error("Table `model_parameters` must contain at most one row.")
+        DuckDB.query(
+            connection,
+            "CREATE OR REPLACE TABLE model_parameters
+            ($sql_create_string)",
+        )
+        DuckDB.execute(connection, "INSERT INTO model_parameters DEFAULT VALUES")
     end
-
-    # calculate discount_year
-    DuckDB.execute(
-        connection,
-        "UPDATE model_parameters
-         SET discount_year = LEAST(discount_year,
-             (SELECT MIN(milestone_year) FROM rep_periods_data))",
-    )
-
-    return
+    return nothing
 end

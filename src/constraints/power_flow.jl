@@ -12,10 +12,10 @@ function add_dc_power_flow_constraints!(connection, model, variables, constraint
         var_flow = variables[:flow].container
         var_angle = variables[:electricity_angle].container
 
-        row = only(
-            collect(DuckDB.query(connection, "SELECT power_system_base FROM model_parameters")),
-        )
-        power_system_base = row.power_system_base
+        power_system_base = get_single_element_from_query_and_ensure_its_only_one(
+            connection,
+            "SELECT power_system_base FROM model_parameters",
+        )::Float64
 
         attach_constraint!(
             model,
