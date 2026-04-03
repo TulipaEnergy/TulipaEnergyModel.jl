@@ -77,7 +77,8 @@ function add_su_sd_ramping_constraints_compact!(
                         (start_up_avg * units_on[row.id]) -
                         (
                             row.max_su_ramp * profile_times_capacity[table_name][row.id] -
-                            row.max_ramp_up * profile_times_capacity[table_name][row.id]
+                            min(row.max_ramp_up, (1 - row.min_operating_point)) *
+                            profile_times_capacity[table_name][row.id]
                         ) * units_on[row.id-1],
                         base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
@@ -115,7 +116,8 @@ function add_su_sd_ramping_constraints_compact!(
                         shut_down_avg * units_on[row.id-1] -
                         (
                             row.max_sd_ramp * profile_times_capacity[table_name][row.id-1] -
-                            row.max_ramp_down * profile_times_capacity[table_name][row.id-1]
+                            min(row.max_ramp_down, (1 - row.min_operating_point)) *
+                            profile_times_capacity[table_name][row.id-1]
                         ) * units_on[row.id],
                         base_name = "$table_name[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
