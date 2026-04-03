@@ -86,10 +86,7 @@ function validate_data!(connection)
             false,
         ),
     )
-        @timeit to "$log_msg" append!(
-            error_messages,
-            validation_function(connection)::Vector{String},
-        )
+        @timeit to "$log_msg" validation_function(error_messages, connection)
         if fail_fast && length(error_messages) > 0
             break
         end
@@ -102,8 +99,7 @@ function validate_data!(connection)
     return
 end
 
-function _validate_has_all_tables_and_columns!(connection)
-    error_messages = String[]
+function _validate_has_all_tables_and_columns!(error_messages, connection)
     for (table_name, table) in TulipaEnergyModel.schema_per_table_name
         columns_from_connection = [
             row.column_name::String for row in DuckDB.query(
@@ -132,10 +128,9 @@ function _validate_has_all_tables_and_columns!(connection)
     return error_messages
 end
 
-function _validate_no_duplicate_rows!(connection)
+function _validate_no_duplicate_rows!(error_messages, connection)
     # It should be possible to add a primary key to the tables below to avoid this validation.
     # However, where to add this, and how to ensure it was added is not clear.
-    duplicates = String[]
     for (table, primary_keys) in (
         ("asset", [:asset]),
         ("asset_both", [:asset, :milestone_year, :commission_year]),
@@ -159,28 +154,26 @@ function _validate_no_duplicate_rows!(connection)
         ("stochastic_scenario", [:scenario]),
         ("timeframe_data", [:milestone_year, :period]),
     )
-        append!(duplicates, _validate_no_duplicate_rows!(connection, table, primary_keys))
+        _validate_no_duplicate_rows!(error_messages, connection, table, primary_keys)
     end
 
-    return duplicates
+    return error_messages
 end
 
-function _validate_no_duplicate_rows!(connection, table, primary_keys)
+function _validate_no_duplicate_rows!(error_messages, connection, table, primary_keys)
     keys_as_string = join(primary_keys, ", ")
-    duplicates = String[]
     for row in DuckDB.query(
         connection,
         "SELECT $keys_as_string, COUNT(*) FROM $table GROUP BY $keys_as_string HAVING COUNT(*) > 1",
     )
         values = join(["$k=$(row[k])" for k in primary_keys], ", ")
-        push!(duplicates, "Table $table has duplicate entries for ($values)")
+        push!(error_messages, "Table $table has duplicate entries for ($values)")
     end
 
-    return duplicates
+    return error_messages
 end
 
-function _validate_schema_one_of_constraints!(connection)
-    error_messages = String[]
+function _validate_schema_one_of_constraints!(error_messages, connection)
     for (table_name, table) in TulipaEnergyModel.schema, (col, attr) in table
         if haskey(attr, "constraints") && haskey(attr["constraints"], "oneOf")
             valid_types = attr["constraints"]["oneOf"]
@@ -204,9 +197,7 @@ function _validate_schema_one_of_constraints!(connection)
     return error_messages
 end
 
-function _validate_only_transport_flows_are_investable!(connection)
-    error_messages = String[]
-
+function _validate_only_transport_flows_are_investable!(error_messages, connection)
     for row in DuckDB.query(
         connection,
         "SELECT flow.from_asset, flow.to_asset,
@@ -227,11 +218,9 @@ function _validate_only_transport_flows_are_investable!(connection)
     return error_messages
 end
 
-function _validate_flow_both_table_does_not_contain_non_transport_flows!(connection)
+function _validate_flow_both_table_does_not_contain_non_transport_flows!(error_messages, connection)
     # In principle, we should also check all transport flows are covered.
     # But that is tested elsewhere, i.e., in _validate_simple_method_data_consistency!()
-    error_messages = String[]
-
     for row in DuckDB.query(
         connection,
         "SELECT flow_both.from_asset, flow_both.to_asset, flow_both.milestone_year, flow_both.commission_year
@@ -252,6 +241,7 @@ function _validate_flow_both_table_does_not_contain_non_transport_flows!(connect
 end
 
 function _validate_foreign_key!(
+    error_messages,
     connection,
     table_name,
     column::Symbol,
@@ -259,7 +249,6 @@ function _validate_foreign_key!(
     foreign_key::Symbol;
     allow_missing = true,
 )
-    error_messages = String[]
     query = "SELECT main.$column
         FROM $table_name AS main
         ANTI JOIN $foreign_table_name AS other
@@ -279,7 +268,7 @@ function _validate_foreign_key!(
     return error_messages
 end
 
-function _validate_assets_in_investment_groups_are_investable!(connection)
+function _validate_assets_in_investment_groups_are_investable!(error_messages, connection)
     query = """
     SELECT
         group_asset_membership.group_name,
@@ -293,33 +282,35 @@ function _validate_assets_in_investment_groups_are_investable!(connection)
         AND group_asset.milestone_year = asset_milestone.milestone_year
     WHERE NOT asset_milestone.investable
     """
-    error_messages = [
-        "Asset '$(row.asset)' is in investment group '$(row.group_name)' for milestone_year '$(row.milestone_year)' but it is not 'asset_milestone.investable'"
-        for row in DuckDB.query(connection, query)
-    ]
+    for row in DuckDB.query(connection, query)
+        push!(
+            error_messages,
+            "Asset '$(row.asset)' is in investment group '$(row.group_name)' for milestone_year '$(row.milestone_year)' but it is not 'asset_milestone.investable'",
+        )
+    end
 
     return error_messages
 end
 
-function _validate_group_consistency!(connection)
-    error_messages = String[]
-
+function _validate_group_consistency!(error_messages, connection)
     # Check the values in the table `group_asset_membership`:
     # - `group_name` comes from `group_asset.name`
     # - `asset` comes from `asset.asset`
-    append!(
+    _validate_foreign_key!(
         error_messages,
-        _validate_foreign_key!(
-            connection,
-            "group_asset_membership",
-            :group_name,
-            "group_asset",
-            :name,
-        ),
+        connection,
+        "group_asset_membership",
+        :group_name,
+        "group_asset",
+        :name,
     )
-    append!(
+    _validate_foreign_key!(
         error_messages,
-        _validate_foreign_key!(connection, "group_asset_membership", :asset, "asset", :asset),
+        connection,
+        "group_asset_membership",
+        :asset,
+        "asset",
+        :asset,
     )
 
     # Check that the groups created in `group_asset` have at least one entry in `group_asset_membership`
@@ -339,14 +330,16 @@ function _validate_group_consistency!(connection)
         )
     end
 
-    append!(error_messages, _validate_assets_in_investment_groups_are_investable!(connection))
+    _validate_assets_in_investment_groups_are_investable!(error_messages, connection)
 
     return error_messages
 end
 
-function _validate_stochastic_scenario_probabilities_sum_to_one!(connection; tolerance = 1e-3)
-    error_messages = String[]
-
+function _validate_stochastic_scenario_probabilities_sum_to_one!(
+    error_messages,
+    connection;
+    tolerance = 1e-3,
+)
     # Check if table is not empty
     row_count = count_rows_from(connection, "stochastic_scenario")
     if row_count == 0
@@ -368,8 +361,7 @@ function _validate_stochastic_scenario_probabilities_sum_to_one!(connection; tol
     return error_messages
 end
 
-function _validate_simple_method_data_consistency!(connection)
-    error_messages = String[]
+function _validate_simple_method_data_consistency!(error_messages, connection)
     _validate_simple_method_has_only_matching_years!(error_messages, connection)
     _validate_simple_method_all_milestone_years_are_covered!(error_messages, connection)
 
@@ -467,9 +459,7 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
     return error_messages
 end
 
-function _validate_use_binary_storage_method_has_investment_limit!(connection)
-    error_messages = String[]
-
+function _validate_use_binary_storage_method_has_investment_limit!(error_messages, connection)
     for row in DuckDB.query(
         connection,
         "SELECT asset.asset, asset.use_binary_storage_method, asset_milestone.milestone_year, asset_commission.commission_year, asset_commission.investment_limit
@@ -494,8 +484,7 @@ function _validate_use_binary_storage_method_has_investment_limit!(connection)
     return error_messages
 end
 
-function _validate_dc_opf_data!(connection)
-    error_messages = String[]
+function _validate_dc_opf_data!(error_messages, connection)
     _validate_reactance_must_be_greater_than_zero!(error_messages, connection)
     _validate_dc_opf_only_apply_to_non_investable_transport_flows!(error_messages, connection)
 
@@ -540,9 +529,10 @@ function _validate_dc_opf_only_apply_to_non_investable_transport_flows!(error_me
     return error_messages
 end
 
-function _validate_certain_asset_types_can_only_have_none_investment_methods!(connection)
-    error_messages = String[]
-
+function _validate_certain_asset_types_can_only_have_none_investment_methods!(
+    error_messages,
+    connection,
+)
     for row in DuckDB.query(
         connection,
         "SELECT asset.asset, asset.investment_method, asset.type
@@ -560,8 +550,7 @@ function _validate_certain_asset_types_can_only_have_none_investment_methods!(co
     return error_messages
 end
 
-function _validate_asset_commission_and_asset_both_consistency!(connection)
-    error_messages = String[]
+function _validate_asset_commission_and_asset_both_consistency!(error_messages, connection)
     for row in DuckDB.query(
         connection,
         "SELECT asset_both.asset, asset_both.milestone_year, asset_both.commission_year
@@ -597,8 +586,7 @@ function _validate_asset_commission_and_asset_both_consistency!(connection)
     return error_messages
 end
 
-function _validate_flow_commission_and_asset_both_consistency!(connection)
-    error_messages = String[]
+function _validate_flow_commission_and_asset_both_consistency!(error_messages, connection)
     for row in DuckDB.query(
         connection,
         "SELECT asset_both.asset, asset_both.milestone_year, asset_both.commission_year
@@ -640,8 +628,7 @@ function _validate_flow_commission_and_asset_both_consistency!(connection)
     return error_messages
 end
 
-function _validate_bid_related_data!(connection)
-    error_messages = String[]
+function _validate_bid_related_data!(error_messages, connection)
 
     #= Testing strategy:
     # - For a given `asset`, there are necessary and sufficient conditions that
@@ -898,8 +885,7 @@ function _validate_bid_related_data!(connection)
     return error_messages
 end
 
-function _validate_commodity_price_consistency!(connection)
-    error_messages = String[]
+function _validate_commodity_price_consistency!(error_messages, connection)
     if !_check_if_table_exists(connection, "flows_profiles")
         return error_messages
     end
@@ -934,9 +920,7 @@ function _validate_commodity_price_consistency!(connection)
     return error_messages
 end
 
-function _validate_investable_and_asset_both_consistency!(connection)
-    error_messages = String[]
-
+function _validate_investable_and_asset_both_consistency!(error_messages, connection)
     for row in DuckDB.query(
         connection,
         "SELECT asset_milestone.asset, asset_milestone.milestone_year
