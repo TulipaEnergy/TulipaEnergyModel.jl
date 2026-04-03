@@ -1,0 +1,17 @@
+from_asset,to_asset,technical_lifetime,discount_rate,is_transport,capacity,carrier,economic_lifetime,investment_integer
+ens,e_demand,10,0.02,false,0.0,,1,false
+ocgt,e_demand,10,0.02,false,0.0,,1,false
+ccgt,e_demand,10,0.02,false,0.0,,1,false
+wind,e_demand,10,0.02,false,0.0,,1,false
+solar,e_demand,10,0.02,false,0.0,,1,false
+electrolizer,h2_demand,10,0.02,false,0.0,,1,false
+e_demand,electrolizer,10,0.02,false,0.0,,1,false
+smr_ccs,h2_demand,10,0.02,false,0.0,,1,false
+wind_offshore,e_demand,10,0.02,false,0.0,,1,false
+wind_offshore,electrolizer,10,0.02,false,0.0,,1,false
+battery,e_demand,10,0.02,false,0.0,,1,false
+e_demand,battery,10,0.02,false,0.0,,1,false
+h2_storage,h2_demand,10,0.02,false,0.0,,1,false
+h2_demand,h2_storage,10,0.02,false,0.0,,1,false
+hydro_reservoir,e_demand,10,0.02,false,0.0,,1,false
+hydro_reservoir,spillage,10,0.02,false,0.0,,1,false
