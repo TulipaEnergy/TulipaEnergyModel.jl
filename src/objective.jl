@@ -429,8 +429,11 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     shut_down_cost_2var = @expression(
         model,
         sum(
-            row.cost * (var_start_up[row.id] - var_units_on[row.units_on_id] + prev) for
-            (row, prev) in zip(indices, previous_units_on)
+            if row.time_block_start == 1
+                0
+            else
+                row.cost * (var_start_up[row.id] - var_units_on[row.units_on_id] + prev)
+            end for (row, prev) in zip(indices, previous_units_on)
         )
     )
 
