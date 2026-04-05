@@ -451,7 +451,6 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment
-    and asset.unit_commitment_method != '3var-E3'
 ;
 
 drop sequence id

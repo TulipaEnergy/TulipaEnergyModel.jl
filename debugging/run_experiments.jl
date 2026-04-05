@@ -27,14 +27,14 @@ use_random_seeds = true # set to `true` if you want the solver to use a random s
 # ]
 metrics = [
     "obj_value",
-    # "num_constraints",
-    # "num_constraints_presolve",
+    "num_constraints",
+    "num_constraints_presolve",
     "LP_gap",
-    # "LP_gap_presolve",
-    # "model_creation_time",
-    # "model_solve_time",
-    # "model_create_time_std",
-    # "model_solve_time_std",
+    "LP_gap_presolve",
+    "model_creation_time",
+    "model_solve_time",
+    "model_create_time_std",
+    "model_solve_time_std",
 ]
 experiment_inputs_dir = "debugging/experiment-inputs"
 experiment_results_dir = "debugging/experiment-results"
@@ -44,14 +44,29 @@ create_model_timeout = 86400 # seconds
 run_model_timeout = 86400 #seconds
 
 ### LIST OF NAMES OF CASE STUDIES TO RUN
-case_studies_to_run = ["2var-E2", "3var-E2", "2var-0T", "3var-0T"]
-# case_studies_to_run = ["3var-E2"]
+case_studies_to_run = [
+    "1var-0",
+    "1var-E1C",
+    "1var-E1CT",
+    "1var-E2C",
+    "1var-E2CT",
+    "2var-0C",
+    "2var-0T",
+    "2var-E1",
+    "2var-E2",
+    "3var-0C",
+    "3var-0T",
+    "3var-0N",
+    "3var-E1",
+    "3var-E2",
+    "3var-E3",
+]
 
 ### BENCHMARK PARAMETERS
 
 # number of samples to run
-create_model_num_samples = 2
-run_model_num_samples = 2
+create_model_num_samples = 1
+run_model_num_samples = 10
 
 # this should be kept to 1
 create_model_num_evals = 1

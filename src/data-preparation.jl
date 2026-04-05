@@ -277,7 +277,7 @@ function create_unrolled_partition_tables!(connection)
             flow.to_asset,
             rep_periods_data.year,
             rep_periods_data.rep_period,
-            a.from_uc_method == '3var-E3' AS is_trajectory_asset,
+            COALESCE(a.from_uc_method == '3var-E3', false) AS is_trajectory_asset,
             COALESCE(frpp.specification, 'uniform') AS specification,
             COALESCE(frpp.partition::string, '1') AS partition,
             flow_commission.capacity_coefficient,

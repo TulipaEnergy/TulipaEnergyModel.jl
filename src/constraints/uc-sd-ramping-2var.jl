@@ -62,7 +62,7 @@ function add_2var_sd_ramping_constraints!(
 
                     average_down, average_down_prime = _calculate_average_ramping_parameters(
                         row.max_sd_ramp,
-                        row.max_ramp_down,
+                        min(row.max_ramp_down, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id],
                         duration[row.id],
                     )
@@ -103,14 +103,14 @@ function add_2var_sd_ramping_constraints!(
 
                     average_up = _calculate_average_su_sd_ramping_parameters(
                         row.max_su_ramp,
-                        row.max_ramp_up,
+                        min(row.max_ramp_up, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id-1],
                         duration[row.id-1],
                     )
 
                     average_down = _calculate_average_su_sd_ramping_parameters(
                         row.max_sd_ramp,
-                        row.max_ramp_down,
+                        min(row.max_ramp_down, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id-1],
                         duration[row.id-1],
                     )
@@ -153,14 +153,14 @@ function add_2var_sd_ramping_constraints!(
 
                     average_up = _calculate_average_su_sd_ramping_parameters(
                         row.max_su_ramp,
-                        row.max_ramp_up,
+                        min(row.max_ramp_up, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id-1],
                         duration[row.id-1],
                     )
 
                     average_down = _calculate_average_su_sd_ramping_parameters(
                         row.max_sd_ramp,
-                        row.max_ramp_down,
+                        min(row.max_ramp_down, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id-1],
                         duration[row.id-1],
                     )

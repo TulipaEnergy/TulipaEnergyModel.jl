@@ -181,7 +181,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         model,
                         cons.expressions[:flow_above_min_operating_point][row.id] -
                         cons.expressions[:flow_above_min_operating_point][row.id-1] ≤
-                        row.max_ramp_up *
+                        min(row.max_ramp_up, 1 - row.min_operating_point) *
                         min_outgoing_flow_duration *
                         profile_times_capacity[table_name][row.id] *
                         units_on[row.id],
@@ -205,7 +205,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         model,
                         cons.expressions[:flow_above_min_operating_point][row.id] -
                         cons.expressions[:flow_above_min_operating_point][row.id-1] ≥
-                        -row.max_ramp_down *
+                        -min(row.max_ramp_down, (1 - row.min_operating_point)) *
                         min_outgoing_flow_duration *
                         profile_times_capacity[table_name][row.id] *
                         units_on[row.id-1],
@@ -239,7 +239,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
 
                     average_su, average_up_ramp = _calculate_average_ramping_parameters(
                         row.max_su_ramp,
-                        row.max_ramp_up,
+                        min(row.max_ramp_up, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id],
                         duration[row.id],
                     )
@@ -267,7 +267,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
 
                     average_sd, average_down_ramp = _calculate_average_ramping_parameters(
                         row.max_sd_ramp,
-                        row.max_ramp_down,
+                        min(row.max_ramp_down, 1 - row.min_operating_point),
                         profile_times_capacity[table_name][row.id-1],
                         duration[row.id-1],
                     )
@@ -303,7 +303,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         model,
                         cons.expressions[:outgoing][row.id] -
                         cons.expressions[:outgoing][row.id-1] ≤
-                        row.max_ramp_up *
+                        min(row.max_ramp_up, (1 - row.min_operating_point)) *
                         min_outgoing_flow_duration *
                         profile_times_capacity[table_name][row.id],
                         base_name = "max_ramp_up_without_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
@@ -325,7 +325,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         model,
                         cons.expressions[:outgoing][row.id] -
                         cons.expressions[:outgoing][row.id-1] ≥
-                        -row.max_ramp_down *
+                        -min(row.max_ramp_down, (1 - row.min_operating_point)) *
                         min_outgoing_flow_duration *
                         profile_times_capacity[table_name][row.id],
                         base_name = "max_ramp_down_without_unit_commitment[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
@@ -353,11 +353,15 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         cons.expressions[:outgoing][row.id] <=
                         (
                             row.capacity * row.min_operating_point +
-                            row.max_ramp_up * min_outgoing_flow_duration * row.capacity
+                            min(row.max_ramp_up, (1 - row.min_operating_point)) *
+                            min_outgoing_flow_duration *
+                            row.capacity
                         ) * units_on[row.id] +
                         (
                             row.capacity - row.capacity * row.min_operating_point -
-                            row.max_ramp_up * min_outgoing_flow_duration * row.capacity
+                            min(row.max_ramp_up, (1 - row.min_operating_point)) *
+                            min_outgoing_flow_duration *
+                            row.capacity
                         ) * units_on[row.id-1],
                         base_name = "max_ramp_up_with_unit_commitment_tight[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
@@ -379,11 +383,15 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
                         cons.expressions[:outgoing][row.id-1] <=
                         (
                             row.capacity * row.min_operating_point +
-                            row.max_ramp_down * min_outgoing_flow_duration * row.capacity
+                            min(row.max_ramp_down, (1 - row.min_operating_point)) *
+                            min_outgoing_flow_duration *
+                            row.capacity
                         ) * units_on[row.id-1] +
                         (
                             row.capacity - row.capacity * row.min_operating_point -
-                            row.max_ramp_down * min_outgoing_flow_duration * row.capacity
+                            min(row.max_ramp_down, (1 - row.min_operating_point)) *
+                            min_outgoing_flow_duration *
+                            row.capacity
                         ) * units_on[row.id],
                         base_name = "max_ramp_down_with_unit_commitment_tight[$(row.asset),$(row.year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
