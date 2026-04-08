@@ -137,7 +137,7 @@ function populate_with_defaults!(connection)
         sql_create_string, sql_select_string =
             _sql_arguments_for_defaults(connection, table_name, table_schema)
 
-        # craete model_parameters if it doesn't exist
+        # craete model_parameters with default values if it doesn't exist
         # this is needed because this table can be missing
         if table_name == "model_parameters" && !_check_if_table_exists(connection, table_name)
             DuckDB.query(
@@ -152,6 +152,7 @@ function populate_with_defaults!(connection)
             "CREATE OR REPLACE TABLE t_new_$table_name
             ($sql_create_string)",
         )
+        # below only works when there the rows are not empty
         DuckDB.query(
             connection,
             "INSERT INTO t_new_$table_name BY NAME
@@ -173,9 +174,11 @@ function populate_with_defaults!(connection)
         )
 
         if table_name == "model_parameters"
+            # when there are no rows, we need to insert default values
             if count_rows_from(connection, table_name) == 0
                 DuckDB.execute(connection, "INSERT INTO $table_name DEFAULT VALUES")
             end
+            # we only update discount_year when it's NULL, otherwise we might overwrite a user-provided value
             DuckDB.execute(
                 connection,
                 "UPDATE $table_name SET discount_year = (

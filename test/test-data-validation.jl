@@ -11,7 +11,7 @@ end
     for table in TulipaEnergyModel.tables_allowed_to_be_missing
         TEM._create_empty_unless_exists(connection, table)
     end
-    TEM._create_model_parameters_unless_exists!(connection)
+    TEM._create_empty_unless_exists(connection, "model_parameters")
 
     DuckDB.query(connection, "DROP TABLE asset")
     @test TEM._validate_has_all_tables_and_columns!(String[], connection) ==
@@ -24,7 +24,7 @@ end
     for table in TulipaEnergyModel.tables_allowed_to_be_missing
         TEM._create_empty_unless_exists(connection, table)
     end
-    TEM._create_model_parameters_unless_exists!(connection)
+    TEM._create_empty_unless_exists(connection, "model_parameters")
 
     DuckDB.query(connection, "ALTER TABLE asset DROP COLUMN type")
     @test TEM._validate_has_all_tables_and_columns!(String[], connection) ==
