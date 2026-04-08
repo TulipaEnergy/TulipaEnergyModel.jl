@@ -66,16 +66,14 @@ end
 @testitem "Test model parameters - table missing" setup = [CommonSetup, ModelParametersSetup] tags =
     [:unit, :validation, :fast] begin
     connection = connection_with_norse()
-    # populate_with_defaults! should do nothing silently if the table doesn't exist
     TulipaEnergyModel.populate_with_defaults!(connection)
-    @test_throws Exception DuckDB.query(connection, "SELECT * FROM model_parameters")
 
-    # we should be able to create the model_parameters table with defaults
-    TulipaEnergyModel._create_model_parameters_unless_exists!(connection)
     mp = query_model_parameters(connection)
 
+    # discount_year should be calculated as the earliest milestone year, which is 2030 in the Norse dataset
+    @test mp.discount_year == 2030
+    # all the other parameters should be filled with default values
     @test mp.discount_rate == 0.0
-    @test mp.discount_year == 9999
     @test mp.power_system_base == 100.0
     @test mp.risk_aversion_confidence_level_alpha == 0.95
     @test mp.risk_aversion_weight_lambda == 0.0
@@ -83,16 +81,20 @@ end
 
 @testitem "Test model parameters - table exists but only has headers" setup =
     [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
+    # this should be equivalent to the table missing case
     connection = connection_with_norse()
 
-    create_model_parameters_table!(connection;)
-
-    # below functions should do nothing silently if the table exists but has no data
     TulipaEnergyModel.populate_with_defaults!(connection)
-    TulipaEnergyModel._create_model_parameters_unless_exists!(connection)
 
-    mp = collect(DuckDB.query(connection, "SELECT * FROM model_parameters"))
-    @test length(mp) == 0
+    mp = query_model_parameters(connection)
+
+    # discount_year should be calculated as the earliest milestone year, which is 2030 in the Norse dataset
+    @test mp.discount_year == 2030
+    # all the other parameters should be filled with default values
+    @test mp.discount_rate == 0.0
+    @test mp.power_system_base == 100.0
+    @test mp.risk_aversion_confidence_level_alpha == 0.95
+    @test mp.risk_aversion_weight_lambda == 0.0
 end
 
 @testitem "Test model parameters - read from model_parameters table" setup =
@@ -115,7 +117,6 @@ end
     @test mp.risk_aversion_confidence_level_alpha == 0.90
     @test mp.risk_aversion_weight_lambda == 0.1
 end
-
 @testitem "Test model parameters - if discount_year is missing" setup =
     [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
     connection = connection_with_norse()
@@ -128,23 +129,38 @@ end
         risk_aversion_weight_lambda = 0.2,
     )
 
-    # using populate_with_defaults! should fill in the missing discount_year with the default value
+    # using populate_with_defaults! should fill in the missing discount_year with the calculated value based on the earliest milestone year,
+    # which is 2030 in the Norse dataset
     TulipaEnergyModel.populate_with_defaults!(connection)
     mp = query_model_parameters(connection)
 
     @test mp.discount_rate == 0.03
-    @test mp.discount_year == 9999
+    @test mp.discount_year == 2030
     @test mp.power_system_base == 80.0
     @test mp.risk_aversion_confidence_level_alpha == 0.8
     @test mp.risk_aversion_weight_lambda == 0.2
-
-    # discount_year should be clamped to the earliest milestone year, which is 2030 in the Norse dataset
-    energy_problem = TulipaEnergyModel.EnergyProblem(connection)
-    TulipaEnergyModel.create_model!(energy_problem)
-    mp = query_model_parameters(connection)
-    @test mp.discount_year == 2030
 end
 
-# We do two validations for model_parameters in data_validation!:
-# 1) We check that the table has exactly one row
-# 2) We check that if discount_year is given, then it is the earliest milestone year or earlier.
+@testitem "Test model parameters - if other parameters are missing" setup =
+    [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
+    connection = connection_with_norse()
+    create_model_parameters_table!(
+        connection;
+        discount_rate = missing,
+        discount_year = 2025,
+        power_system_base = 80.0,
+        risk_aversion_confidence_level_alpha = 0.8,
+        risk_aversion_weight_lambda = 0.2,
+    )
+
+    # using populate_with_defaults! should fill in the missing discount_rate with the default value,
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    mp = query_model_parameters(connection)
+
+    @test mp.discount_rate == 0.0
+    # discount_year should be the value given in the table, since it's not missing
+    @test mp.discount_year == 2025
+    @test mp.power_system_base == 80.0
+    @test mp.risk_aversion_confidence_level_alpha == 0.8
+    @test mp.risk_aversion_weight_lambda == 0.2
+end

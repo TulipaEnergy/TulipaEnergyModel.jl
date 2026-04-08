@@ -1062,18 +1062,3 @@ end
         "The 'discount_year' (2035) in 'model_parameters' must be less than or equal to the earliest milestone year (2030).",
     ]
 end
-
-@testitem "Check model_parameters discount_year - default value 9999 skips validation" setup =
-    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
-    connection = _tiny_fixture()
-    # discount_year = 9999 is the default, validation should be skipped
-    DuckDB.query(
-        connection,
-        "CREATE OR REPLACE TABLE model_parameters AS
-        SELECT * FROM (VALUES
-            (0.03, 9999, 100.0, 0.95, 0.0)
-        ) AS t(discount_rate, discount_year, power_system_base, risk_aversion_confidence_level_alpha, risk_aversion_weight_lambda)",
-    )
-    error_messages = TEM._validate_model_parameters_discount_year!(connection)
-    @test isempty(error_messages)
-end

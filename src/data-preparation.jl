@@ -136,20 +136,18 @@ function populate_with_defaults!(connection)
             continue
         end
 
-        if table_name == "model_parameters" && !_check_if_table_exists(connection, table_name)
-            continue
-        end
-
-        # Get the table_creation string
-        # table_creation_string = _arguments_to_create_table(connection, table_name, table_schema)
-
-        # Get the query string
-        # query_string = _query_to_complement_with_defaults(connection, table_name, table_schema)
-
         sql_create_string, sql_select_string =
             _sql_arguments_for_defaults(connection, table_name, table_schema)
 
-        # @error table_name, sql_create_string, sql_select_string
+        # craete model_parameters if it doesn't exist
+        # this is needed because this table can be missing
+        if table_name == "model_parameters" && !_check_if_table_exists(connection, table_name)
+            DuckDB.query(
+                connection,
+                "CREATE OR REPLACE TABLE $table_name
+                ($sql_create_string)",
+            )
+        end
 
         DuckDB.query(
             connection,
@@ -175,6 +173,18 @@ function populate_with_defaults!(connection)
             "ALTER TABLE t_new_$table_name
             RENAME TO $table_name",
         )
+
+        if table_name == "model_parameters"
+            if count_rows_from(connection, table_name) == 0
+                DuckDB.execute(connection, "INSERT INTO $table_name DEFAULT VALUES")
+            end
+            DuckDB.execute(
+                connection,
+                "UPDATE $table_name SET discount_year = (
+                    SELECT MIN(milestone_year) FROM rep_periods_data
+                ) WHERE discount_year IS NULL",
+            )
+        end
     end
 
     return
@@ -648,28 +658,5 @@ function _calculate_stochastic_scenario_probabilities(connection)
             '' AS description
         ",
     )
-    return nothing
-end
-
-"""
-    _create_model_parameters_unless_exists!(connection)
-
-Creates the `model_parameters` table if it does not exist, with the appropriate schema and default values.
-"""
-function _create_model_parameters_unless_exists!(connection)
-    if !_check_if_table_exists(connection, "model_parameters")
-        sql_create_string, _ = _sql_arguments_for_defaults(
-            connection,
-            "model_parameters",
-            TulipaEnergyModel.schema["model_parameters"],
-        )
-
-        DuckDB.query(
-            connection,
-            "CREATE OR REPLACE TABLE model_parameters
-            ($sql_create_string)",
-        )
-        DuckDB.execute(connection, "INSERT INTO model_parameters DEFAULT VALUES")
-    end
     return nothing
 end

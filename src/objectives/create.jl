@@ -19,16 +19,7 @@ function add_objective!(connection, model, variables, expressions, profiles)
 
     social_rate = row.discount_rate
 
-    discount_year_input = row.discount_year
-    if discount_year_input == 9999 # default value
-        discount_year = get_single_element_from_query_and_ensure_its_only_one(
-            connection,
-            "SELECT MIN(milestone_year) AS end_of_horizon FROM rep_periods_data",
-        )::Int32
-        DuckDB.execute(connection, "UPDATE model_parameters SET discount_year = $discount_year")
-    else
-        discount_year = discount_year_input
-    end
+    discount_year = row.discount_year
 
     lambda = row.risk_aversion_weight_lambda
     alpha = row.risk_aversion_confidence_level_alpha
