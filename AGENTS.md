@@ -162,6 +162,20 @@ Branch naming: `feature/description` or `fix/description`
 
 **CRITICAL**: When making commits, always add a co-authored line with the tool name, the agent model, and the relevant e-mail. For instance "Co-Authored-By: Claude Code (claude-sonnet-4-6) <noreply@anthropic.com>"
 
+## Data Schema Migrations
+
+When a change requires modifying CSV data files (adding/removing columns, transforming values), create a Python + DuckDB migration script rather than editing files by hand. Save it in `utils/scripts/`. See `migrate-investment-groups.py` and `migrate-group-asset-limits.py` for examples. Run with:
+
+```bash
+uv run --with duckdb python utils/scripts/your-migration.py
+```
+
+Scripts must update all data folders: `test/inputs/`, `benchmark/EU/`, and `docs/src/10-tutorials/my-awesome-energy-system/` (subfolders for each step).
+
+**When asked to do a data migration:** make sure you are writing a script, make sure you have enough information or ask the user for more details, and suggest that the user reads `docs/src/90-contributing/91-developer.md` under "Using an AI Agent to Write the Script" for tips.
+
+**Rebase recovery:** if data files conflict during a rebase, reset them with `git restore` and rerun the script.
+
 ## Development Commands
 
 **CRITICAL:** Always use `julia --project=<env>` when running Julia code. **NEVER** use bare `julia` or `julia --project` without specifying the environment.
