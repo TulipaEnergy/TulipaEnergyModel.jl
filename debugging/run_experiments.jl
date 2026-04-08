@@ -110,21 +110,15 @@ function root_relaxation_callback(cb_data, cb_where::Cint)
         ran_already[] = true
 
         obj = JuMP.objective_function(energy_problem_cb.model)
-        terms = obj.terms
-        res = obj.constant
-
-        num_vars = length(terms)
-
-        ## The line below initialises all the values to some 6.3e-310
-        ## I want an array of zeros, so I use `fill` instead. They have the same type, but I will keep this here in case we need to change it.
-        # resultP4 = Vector{Cdouble}(undef, num_vars)
-
+        num_vars = JuMP.num_variables(energy_problem_cb.model)
         resultP4 = fill(Cdouble(0.0), num_vars)
 
         Gurobi.GRBcbget(cb_data, cb_where, Gurobi.GRB_CB_MIPNODE_REL, resultP4)
 
-        for (coeff, var_val) in zip(collect(values(terms)), resultP4)
-            res += coeff * var_val
+        res = obj.constant
+        for (var, coeff) in obj.terms
+            idx = Gurobi.column(unsafe_backend(energy_problem_cb.model), JuMP.index(var))
+            res += coeff * resultP4[idx]
         end
 
         LP_relaxation[] = res
