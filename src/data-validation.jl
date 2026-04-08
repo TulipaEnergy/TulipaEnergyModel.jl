@@ -962,9 +962,6 @@ function _validate_model_parameters_discount_year!(connection)
         connection,
         "SELECT discount_year FROM model_parameters",
     )
-    if discount_year == 9999
-        return error_messages  # Default value, will be calculated in add_objective!
-    end
     min_milestone_year = get_single_element_from_query_and_ensure_its_only_one(
         connection,
         "SELECT MIN(milestone_year) AS min_milestone_year FROM rep_periods_data",
