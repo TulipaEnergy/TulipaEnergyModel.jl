@@ -539,13 +539,22 @@ drop table if exists var_tail_excess_slack_xi
 ;
 
 create table var_tail_excess_slack_xi as
+with ordered_scenarios as (
+    select
+        scenario,
+        probability
+    from
+        stochastic_scenario
+    order by
+        scenario
+)
 select
     nextval('id') as id,
-    stochastic_scenario.scenario,
-    stochastic_scenario.probability,
+    ordered_scenarios.scenario,
+    ordered_scenarios.probability,
     cast(null as float8) as solution
 from
-    stochastic_scenario
+    ordered_scenarios
     cross join risk_aversion_conditions_tmp
 where
     risk_aversion_conditions_tmp.n_scenarios > 1
