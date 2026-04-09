@@ -12,7 +12,7 @@ function _add_to_objective!(connection, objective_expr, name::String, expr)
     return
 end
 
-function add_objective!(connection, model, variables, expressions, profiles, model_parameters)
+function prepare_objective_tables!(connection, model_parameters)
     social_rate = model_parameters.discount_rate
     discount_year = model_parameters.discount_year
     end_of_horizon = get_single_element_from_query_and_ensure_its_only_one(
@@ -21,12 +21,16 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
             "SELECT MAX(milestone_year) AS end_of_horizon FROM rep_periods_data",
         ),
     )
-    lambda = model_parameters.risk_aversion_weight_lambda
-    alpha = model_parameters.risk_aversion_confidence_level_alpha
 
     constants = (; social_rate, discount_year, end_of_horizon)
-
     _create_objective_auxiliary_table(connection, constants)
+
+    return nothing
+end
+
+function add_objective!(connection, model, variables, expressions, model_parameters)
+    lambda = model_parameters.risk_aversion_weight_lambda
+    alpha = model_parameters.risk_aversion_confidence_level_alpha
 
     ## Create obj_breakdown table (values populated by save_solution! after solve)
     DuckDB.execute(
@@ -51,9 +55,9 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
     _add_storage_assets_energy_fixed_cost!(connection, model, expressions, objective_expr, lambda)
     _add_flows_investment_cost!(connection, model, variables, objective_expr, lambda)
     _add_flows_fixed_cost!(connection, model, expressions, objective_expr, lambda)
-    _add_flows_operational_cost!(connection, model, variables, profiles, objective_expr, lambda)
-    _add_vintage_flows_operational_cost!(connection, model, variables, objective_expr, lambda)
-    _add_units_on_operational_cost!(connection, model, variables, objective_expr, lambda)
+    _add_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
+    _add_vintage_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
+    _add_units_on_operational_cost!(connection, model, expressions, objective_expr, lambda)
     _add_conditional_value_at_risk_term!(
         connection,
         model,

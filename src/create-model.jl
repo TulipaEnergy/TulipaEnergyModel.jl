@@ -151,13 +151,24 @@ function create_model(
     ## Expressions for storage assets
     @timeit to "add_storage_expressions!" add_storage_expressions!(connection, model, expressions)
 
+    ## Tables for the objective function
+    @timeit to "prepare_objective_tables!" prepare_objective_tables!(connection, model_parameters)
+
+    ## Expressions for operational costs
+    @timeit to "add_operational_cost_expressions!" add_operational_cost_expressions!(
+        connection,
+        model,
+        variables,
+        expressions,
+        profiles,
+    )
+
     ## Expressions for the objective function
     @timeit to "add_objective!" add_objective!(
         connection,
         model,
         variables,
         expressions,
-        profiles,
         model_parameters,
     )
 
