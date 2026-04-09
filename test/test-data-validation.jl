@@ -1026,3 +1026,45 @@ end
         "Investable asset 'wind' with milestone_year=2030 in 'asset_milestone' does not have a corresponding entry (asset='wind', milestone_year=2030, commission_year=2030) in 'asset_both'.",
     ]
 end
+
+@testitem "Check consistency between investable and investment_method - using fake data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    asset = DataFrame(:asset => ["A", "B", "C"], :investment_method => ["none", "simple", "none"])
+    asset_milestone = DataFrame(
+        :asset => ["A", "B", "C"],
+        :milestone_year => [1, 1, 1],
+        :investable => [true, false, false],
+    )
+    connection = DBInterface.connect(DuckDB.DB)
+    DuckDB.register_data_frame(connection, asset, "asset")
+    DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
+
+    error_messages =
+        TEM._validate_investable_and_investment_method_consistency!(String[], connection)
+    @test error_messages == [
+        "Asset 'A' is investable in 'asset_milestone' for milestone_year=1, but 'asset.investment_method' is 'none'. An asset is investable if and only if its investment_method is not 'none'.",
+        "Asset 'B' is not investable in 'asset_milestone' for milestone_year=1, but 'asset.investment_method' is 'simple'. An asset is investable if and only if its investment_method is not 'none'.",
+    ]
+end
+
+@testitem "Check consistency between investable and investment_method - investable but method none - using Tiny data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(connection, "UPDATE asset SET investment_method = 'none' WHERE asset = 'wind'")
+    error_messages =
+        TEM._validate_investable_and_investment_method_consistency!(String[], connection)
+    @test error_messages == [
+        "Asset 'wind' is investable in 'asset_milestone' for milestone_year=2030, but 'asset.investment_method' is 'none'. An asset is investable if and only if its investment_method is not 'none'.",
+    ]
+end
+
+@testitem "Check consistency between investable and investment_method - not investable but method not none - using Tiny data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(connection, "UPDATE asset_milestone SET investable = false WHERE asset = 'wind'")
+    error_messages =
+        TEM._validate_investable_and_investment_method_consistency!(String[], connection)
+    @test error_messages == [
+        "Asset 'wind' is not investable in 'asset_milestone' for milestone_year=2030, but 'asset.investment_method' is 'simple'. An asset is investable if and only if its investment_method is not 'none'.",
+    ]
+end
