@@ -850,3 +850,24 @@ function prepare_profiles_structure(connection)
 
     return ProfileLookup(rep_period, inter_period)
 end
+
+function get_model_parameters(connection)
+    row = only(collect(DuckDB.query(connection, "SELECT * FROM model_parameters")))
+
+    social_rate = row.discount_rate
+    discount_year = row.discount_year
+
+    end_of_horizon = get_single_element_from_query_and_ensure_its_only_one(
+        DuckDB.query(
+            connection,
+            "SELECT MAX(milestone_year) AS end_of_horizon FROM rep_periods_data",
+        ),
+    )::Int32
+
+    lambda = row.risk_aversion_weight_lambda
+    alpha = row.risk_aversion_confidence_level_alpha
+
+    model_parameters = (; social_rate, discount_year, end_of_horizon, lambda, alpha)
+
+    return model_parameters
+end
