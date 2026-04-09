@@ -55,14 +55,14 @@
     tail_excess_slack_xi = variables[:tail_excess_slack_xi].container
 
     @test JuMP.constant(cvar_expr) == 0.0
-    @test isapprox(JuMP.coefficient(cvar_expr, value_at_risk_threshold_mu), lambda)
+    @test isapprox(JuMP.coefficient(cvar_expr, value_at_risk_threshold_mu), 1.0)
     @test isapprox(
         JuMP.coefficient(cvar_expr, tail_excess_slack_xi[1]),
-        lambda * probability_scenario_1 / (1 - alpha),
+        probability_scenario_1 / (1 - alpha),
     )
     @test isapprox(
         JuMP.coefficient(cvar_expr, tail_excess_slack_xi[2]),
-        lambda * probability_scenario_2 / (1 - alpha),
+        probability_scenario_2 / (1 - alpha),
     )
 end
 
@@ -77,7 +77,7 @@ end
     TulipaEnergyModel.create_model!(energy_problem)
 
     # The expression for the CVaR term should not be added to the objective function.
-    # So, the the expression in the model should not exit
+    # So, the the expression in the model should not exist
     @test !haskey(energy_problem.model, :conditional_value_at_risk_term)
 
     # Check that it is not in the obj_breakdown table

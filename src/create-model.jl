@@ -170,6 +170,14 @@ function create_model(
         model_parameters,
     )
 
+    ## Expressions for the scenario tail excess (conditional value at risk constraints)
+    @timeit to "add_scenario_tail_excess_expressions!" add_scenario_tail_excess_expressions!(
+        connection,
+        model,
+        variables,
+        expressions,
+    )
+
     ## Constraints
     @timeit to "add_capacity_constraints!" add_capacity_constraints!(
         connection,
@@ -273,6 +281,14 @@ function create_model(
     )
 
     @timeit to "add_uc_logic_constraints!" add_uc_logic_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_scenario_tail_excess_constraints!" add_scenario_tail_excess_constraints!(
         connection,
         model,
         variables,
