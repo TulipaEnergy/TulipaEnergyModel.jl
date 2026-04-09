@@ -1,15 +1,13 @@
 export add_objective!
 
 """
-    _add_to_objective!(connection, model, objective_expr, name, expr)
+    _add_to_objective!(connection, objective_expr, name, expr)
 
-Add `expr` to the running objective sum, register it on the model under `name`, and
-insert a placeholder row in the `obj_breakdown` table (value filled in by
-`save_solution!` after the solve).
+Add `expr` to the running objective sum  and insert a placeholder row
+in the `obj_breakdown` table (value filled in by `save_solution!` after the solve).
 """
-function _add_to_objective!(connection, model, objective_expr, name::String, expr)
+function _add_to_objective!(connection, objective_expr, name::String, expr)
     DuckDB.execute(connection, "INSERT INTO obj_breakdown (name, value) VALUES (?, NULL)", [name])
-    model[Symbol(name)] = expr
     JuMP.add_to_expression!(objective_expr, expr)
     return
 end
@@ -55,7 +53,7 @@ function add_objective!(connection, model, variables, expressions, profiles, mod
     _add_flows_fixed_cost!(connection, model, expressions, objective_expr, lambda)
     _add_flows_operational_cost!(connection, model, variables, profiles, objective_expr, lambda)
     _add_vintage_flows_operational_cost!(connection, model, variables, objective_expr, lambda)
-    _add_units_on_cost!(connection, model, variables, objective_expr, lambda)
+    _add_units_on_operational_cost!(connection, model, variables, objective_expr, lambda)
     _add_conditional_value_at_risk_term!(
         connection,
         model,
