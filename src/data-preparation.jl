@@ -152,7 +152,8 @@ function populate_with_defaults!(connection)
             "CREATE OR REPLACE TABLE t_new_$table_name
             ($sql_create_string)",
         )
-        # below only works when there the rows are not empty
+        # below only works when the rows are not empty
+        # because sql_select_string operates per row, so if there are no rows, the defaults won't be applied
         DuckDB.query(
             connection,
             "INSERT INTO t_new_$table_name BY NAME
