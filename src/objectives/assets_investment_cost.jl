@@ -17,8 +17,9 @@ function _add_assets_investment_cost!(connection, model, variables, objective_ex
         ",
     )
 
-    assets_investment_cost = @expression(
+    @expression(
         model,
+        assets_investment_cost,
         sum(
             row.cost * asset_investment for
             (row, asset_investment) in zip(indices, assets_investment.container)
@@ -26,7 +27,6 @@ function _add_assets_investment_cost!(connection, model, variables, objective_ex
     )
     _add_to_objective!(
         connection,
-        model,
         objective_expr,
         "assets_investment_cost",
         (1 - lambda) * assets_investment_cost,
