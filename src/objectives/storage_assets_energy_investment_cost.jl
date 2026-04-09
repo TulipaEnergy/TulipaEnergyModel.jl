@@ -23,8 +23,9 @@ function _add_storage_assets_energy_investment_cost!(
         ",
     )
 
-    storage_assets_energy_investment_cost = @expression(
+    @expression(
         model,
+        storage_assets_energy_investment_cost,
         sum(
             row.cost * assets_investment_energy for
             (row, assets_investment_energy) in zip(indices, assets_investment_energy.container)
@@ -32,7 +33,6 @@ function _add_storage_assets_energy_investment_cost!(
     )
     _add_to_objective!(
         connection,
-        model,
         objective_expr,
         "storage_assets_energy_investment_cost",
         (1 - lambda) * storage_assets_energy_investment_cost,

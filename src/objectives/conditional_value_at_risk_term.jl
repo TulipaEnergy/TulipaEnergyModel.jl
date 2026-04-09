@@ -12,7 +12,7 @@ function _add_conditional_value_at_risk_term!(
         DuckDB.query(
             connection,
             """
-            SELECT count(*) from stochastic_scenario
+            SELECT COUNT(*) FROM stochastic_scenario
             """,
         ),
     )
@@ -25,14 +25,14 @@ function _add_conditional_value_at_risk_term!(
     tail_excess_slack_xi = variables[:tail_excess_slack_xi].container
     indices = variables[:tail_excess_slack_xi].indices
 
-    conditional_value_at_risk_term = @expression(
+    @expression(
         model,
+        conditional_value_at_risk_term,
         value_at_risk_threshold_mu +
         (1 / (1 - alpha)) * sum(row.probability * tail_excess_slack_xi[row.id] for row in indices)
     )
     _add_to_objective!(
         connection,
-        model,
         objective_expr,
         "conditional_value_at_risk_term",
         lambda * conditional_value_at_risk_term,
