@@ -1,5 +1,0 @@
-asset,commission_year,profile_type,profile_name
-OnWind,2030,availability,wind-onshore-availability
-OffWind,2030,availability,wind-offshore-availability
-Solar,2030,availability,solar-availability
-demand,2030,demand,demand-demand
