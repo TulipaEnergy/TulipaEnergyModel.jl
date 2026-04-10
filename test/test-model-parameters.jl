@@ -124,7 +124,6 @@ end
     connection = _Norse_fixture()
     create_model_parameters_table!(
         connection;
-        discount_rate = missing,
         discount_year = 2025, # this should be used instead of the calculated 2030 since it's not missing
         power_system_base = 80.0,
         risk_aversion_weight_lambda = 0.2,

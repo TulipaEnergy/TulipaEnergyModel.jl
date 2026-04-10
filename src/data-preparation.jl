@@ -130,67 +130,74 @@ doesn't want to fill out all default columns by hand.
 """
 function populate_with_defaults!(connection)
     for (table_name, table_schema) in TulipaEnergyModel.schema
+        table_name == "model_parameters" && continue
         # Ignore tables that don't exist and are allowed to not exist
         if table_name in TulipaEnergyModel.tables_allowed_to_be_missing &&
            !_check_if_table_exists(connection, table_name)
             continue
         end
-
-        sql_create_string, sql_select_string =
-            _sql_arguments_for_defaults(connection, table_name, table_schema)
-
-        # create model_parameters with default values if it doesn't exist
-        # this is needed because this table can be missing
-        if table_name == "model_parameters" && !_check_if_table_exists(connection, table_name)
-            DuckDB.query(
-                connection,
-                "CREATE OR REPLACE TABLE $table_name
-                ($sql_create_string)",
-            )
-        end
-
-        DuckDB.query(
-            connection,
-            "CREATE OR REPLACE TABLE t_new_$table_name
-            ($sql_create_string)",
-        )
-        # below only works when the rows are not empty
-        # because sql_select_string operates per row, so if there are no rows, the defaults won't be applied
-        DuckDB.query(
-            connection,
-            "INSERT INTO t_new_$table_name BY NAME
-            SELECT $sql_select_string
-            FROM $table_name",
-        )
-        # DROP TABLE OR VIEW
-        count_tables = count_rows_from(connection, "duckdb_tables WHERE table_name='$table_name'")
-        is_table = count_tables > 0
-        if is_table
-            DuckDB.query(connection, "DROP TABLE $table_name")
-        else
-            DuckDB.query(connection, "DROP VIEW $table_name")
-        end
-        DuckDB.query(
-            connection,
-            "ALTER TABLE t_new_$table_name
-            RENAME TO $table_name",
-        )
-
-        if table_name == "model_parameters"
-            # when there are no rows, we need to insert default values
-            if count_rows_from(connection, table_name) == 0
-                DuckDB.execute(connection, "INSERT INTO $table_name DEFAULT VALUES")
-            end
-            # we only update discount_year when it's NULL, otherwise we might overwrite a user-provided value
-            DuckDB.execute(
-                connection,
-                "UPDATE $table_name SET discount_year = (
-                    SELECT MIN(milestone_year) FROM rep_periods_data
-                ) WHERE discount_year IS NULL",
-            )
-        end
+        _rebuild_table_with_defaults!(connection, table_name, table_schema)
     end
 
+    _populate_model_parameters_with_defaults!(connection)
+    return
+end
+
+function _rebuild_table_with_defaults!(connection, table_name, table_schema)
+    sql_create_string, sql_select_string =
+        _sql_arguments_for_defaults(connection, table_name, table_schema)
+
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TABLE t_new_$table_name
+        ($sql_create_string)",
+    )
+    # below only works when the rows are not empty
+    # because sql_select_string operates per row, so if there are no rows, the defaults won't be applied
+    DuckDB.query(
+        connection,
+        "INSERT INTO t_new_$table_name BY NAME
+        SELECT $sql_select_string
+        FROM $table_name",
+    )
+    # DROP TABLE OR VIEW
+    count_tables = count_rows_from(connection, "duckdb_tables WHERE table_name='$table_name'")
+    is_table = count_tables > 0
+    if is_table
+        DuckDB.query(connection, "DROP TABLE $table_name")
+    else
+        DuckDB.query(connection, "DROP VIEW $table_name")
+    end
+    DuckDB.query(
+        connection,
+        "ALTER TABLE t_new_$table_name
+        RENAME TO $table_name",
+    )
+    return
+end
+
+function _populate_model_parameters_with_defaults!(connection)
+    table_name = "model_parameters"
+    table_schema = TulipaEnergyModel.schema[table_name]
+
+    if _check_if_table_exists(connection, table_name)
+        _rebuild_table_with_defaults!(connection, table_name, table_schema)
+    else
+        sql_create_string, _ = _sql_arguments_for_defaults(connection, table_name, table_schema)
+        DuckDB.query(connection, "CREATE OR REPLACE TABLE $table_name ($sql_create_string)")
+    end
+
+    # when there are no rows, we need to insert default values
+    if count_rows_from(connection, table_name) == 0
+        DuckDB.execute(connection, "INSERT INTO $table_name DEFAULT VALUES")
+    end
+    # we only update discount_year when it's NULL, otherwise we might overwrite a user-provided value
+    DuckDB.execute(
+        connection,
+        "UPDATE $table_name SET discount_year = (
+            SELECT MIN(milestone_year) FROM rep_periods_data
+        ) WHERE discount_year IS NULL",
+    )
     return
 end
 
