@@ -128,6 +128,7 @@ Lightweight rules (see developer docs for full details):
 - Globals: `UPPER_CASE` for constants
 - Exports: define exports in the source file that owns the public functions
 - Comments: complete sentences, prefer why over how
+- DuckDB / SQL: use `src/sql/*.sql` for large reusable query batches and inline SQL for short local queries; prefer `CREATE OR REPLACE TEMP TABLE` for intermediates reused across steps and CTEs for single-query decomposition; prefer set-based operations and bulk write patterns (`DuckDB.Appender`, `DuckDB.register_table`, `UPDATE ... FROM`); join on full keys, use explicit column lists and `ARRAY_AGG(... ORDER BY ...)`, add `ORDER BY` only when row order matters, and prefer parameter binding for scalar values when possible
 - Markdown docs: tables must satisfy MD060 column alignment
 
 ## Documentation Practices and Requirements
