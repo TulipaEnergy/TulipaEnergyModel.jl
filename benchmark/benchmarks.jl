@@ -28,70 +28,58 @@ function higher_level_create_model_setup()
     return EnergyProblem(connection)
 end
 
-function lower_level_input_setup()
-    input_folder = if isdefined(Main, :Test)
-        joinpath(@__DIR__, "../test/inputs/Norse")
-    else
-        joinpath(@__DIR__, "EU")
-    end
+# function lower_level_input_setup()
+#     input_folder = if isdefined(Main, :Test)
+#         joinpath(@__DIR__, "../test/inputs/Norse")
+#     else
+#         joinpath(@__DIR__, "EU")
+#     end
 
-    connection = DBInterface.connect(DuckDB.DB)
-    TulipaIO.read_csv_folder(
-        connection,
-        input_folder;
-        schemas = TulipaEnergyModel.schema_per_table_name,
-    )
+#     connection = DBInterface.connect(DuckDB.DB)
+#     TulipaIO.read_csv_folder(
+#         connection,
+#         input_folder;
+#         schemas = TulipaEnergyModel.schema_per_table_name,
+#     )
 
-    return connection
-end
+#     return connection
+# end
 
-function lower_level_create_internal_tables()
-    connection = lower_level_input_setup()
-    create_internal_tables!(connection)
+# function lower_level_create_internal_tables()
+#     connection = lower_level_input_setup()
+#     create_internal_tables!(connection)
 
-    return connection
-end
+#     return connection
+# end
 
-function lower_level_model_parameters()
-    connection = lower_level_create_internal_tables()
-    model_parameters = ModelParameters(connection)
+# function lower_level_variables()
+#     connection = lower_level_create_internal_tables()
+#     variables = compute_variables_indices(connection)
 
-    return connection, model_parameters
-end
+#     return connection, variables
+# end
 
-function lower_level_variables()
-    connection, model_parameters = lower_level_model_parameters()
-    variables = compute_variables_indices(connection)
+# function lower_level_constraints()
+#     connection, variables = lower_level_variables()
+#     constraints = compute_constraints_indices(connection)
 
-    return connection, model_parameters, variables
-end
+#     return connection, variables, constraints
+# end
 
-function lower_level_constraints()
-    connection, model_parameters, variables = lower_level_variables()
-    constraints = compute_constraints_indices(connection)
+# function lower_level_profiles()
+#     connection, variables, constraints = lower_level_constraints()
+#     profiles = prepare_profiles_structure(connection)
 
-    return connection, model_parameters, variables, constraints
-end
+#     return connection, variables, constraints, profiles
+# end
 
-function lower_level_profiles()
-    connection, model_parameters, variables, constraints = lower_level_constraints()
-    profiles = prepare_profiles_structure(connection)
+# function lower_level_create_model()
+#     connection, variables, constraints, profiles = lower_level_profiles()
+#     model, expressions =
+#         TulipaEnergyModel.create_model(connection, variables, constraints, profiles)
 
-    return connection, model_parameters, variables, constraints, profiles
-end
-
-function lower_level_create_model()
-    connection, model_parameters, variables, constraints, profiles = lower_level_profiles()
-    model, expressions = TulipaEnergyModel.create_model(
-        connection,
-        variables,
-        constraints,
-        profiles,
-        model_parameters,
-    )
-
-    return connection, model_parameters, variables, constraints, profiles, model, expressions
-end
+#     return connection, variables, constraints, profiles, model, expressions
+# end
 
 function add_to_suite_higher_level_pipeline!(SUITE)
     SUITE["higher_level"] = BenchmarkGroup()
@@ -109,43 +97,36 @@ function add_to_suite_higher_level_pipeline!(SUITE)
     return SUITE
 end
 
-function add_to_suite_lower_level_pipeline!(SUITE)
-    SUITE["lower_level"] = BenchmarkGroup()
-    SUITE["lower_level"]["EU"] = BenchmarkGroup()
+# function add_to_suite_lower_level_pipeline!(SUITE)
+#     SUITE["lower_level"] = BenchmarkGroup()
+#     SUITE["lower_level"]["EU"] = BenchmarkGroup()
 
-    SUITE["lower_level"]["EU"]["create_internal_tables"] = @benchmarkable begin
-        create_internal_tables!(connection)
-    end samples = 3 evals = 1 seconds = 86400 setup = (connection = lower_level_input_setup())
+#     SUITE["lower_level"]["EU"]["create_internal_tables"] = @benchmarkable begin
+#         create_internal_tables!(connection)
+#     end samples = 3 evals = 1 seconds = 86400 setup = (connection = lower_level_input_setup())
 
-    SUITE["lower_level"]["EU"]["model_parameters"] = @benchmarkable begin
-        ModelParameters(connection)
-    end samples = 3 evals = 1 seconds = 86400 setup =
-        (connection = lower_level_create_internal_tables())
+#     SUITE["lower_level"]["EU"]["variables"] = @benchmarkable begin
+#         compute_variables_indices(connection)
+#     end samples = 3 evals = 1 seconds = 86400 setup =
+#         (connection = lower_level_create_internal_tables())
 
-    SUITE["lower_level"]["EU"]["variables"] = @benchmarkable begin
-        compute_variables_indices(connection)
-    end samples = 3 evals = 1 seconds = 86400 setup =
-        ((connection, model_parameters) = lower_level_model_parameters())
+#     SUITE["lower_level"]["EU"]["constraints"] = @benchmarkable begin
+#         compute_constraints_indices(connection)
+#     end samples = 3 evals = 1 seconds = 86400 setup =
+#         ((connection, variables) = lower_level_variables())
 
-    SUITE["lower_level"]["EU"]["constraints"] = @benchmarkable begin
-        compute_constraints_indices(connection)
-    end samples = 3 evals = 1 seconds = 86400 setup =
-        ((connection, model_parameters, variables) = lower_level_variables())
+#     SUITE["lower_level"]["EU"]["profiles"] = @benchmarkable begin
+#         prepare_profiles_structure(connection)
+#     end samples = 3 evals = 1 seconds = 86400 setup =
+#         ((connection, variables, constraints) = lower_level_constraints())
 
-    SUITE["lower_level"]["EU"]["profiles"] = @benchmarkable begin
-        prepare_profiles_structure(connection)
-    end samples = 3 evals = 1 seconds = 86400 setup =
-        ((connection, model_parameters, variables, constraints) = lower_level_constraints())
+#     SUITE["lower_level"]["EU"]["create_model"] = @benchmarkable begin
+#         create_model(connection, variables, constraints, profiles)
+#     end samples = 3 evals = 1 seconds = 86400 setup =
+#         ((connection, variables, constraints, profiles) = lower_level_profiles())
 
-    SUITE["lower_level"]["EU"]["create_model"] = @benchmarkable begin
-        create_model(connection, variables, constraints, profiles, model_parameters)
-    end samples = 3 evals = 1 seconds = 86400 setup = (
-        (connection, model_parameters, variables, constraints, profiles) =
-            lower_level_profiles()
-    )
-
-    return SUITE
-end
+#     return SUITE
+# end
 
 add_to_suite_higher_level_pipeline!(SUITE)
-add_to_suite_lower_level_pipeline!(SUITE)
+# add_to_suite_lower_level_pipeline!(SUITE)

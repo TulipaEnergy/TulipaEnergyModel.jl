@@ -11,8 +11,7 @@ function create_model!(energy_problem; kwargs...)
         energy_problem.db_connection,
         energy_problem.variables,
         energy_problem.constraints,
-        energy_problem.profiles,
-        energy_problem.model_parameters;
+        energy_problem.profiles;
         kwargs...,
     )
     energy_problem.termination_status = JuMP.OPTIMIZE_NOT_CALLED
@@ -27,8 +26,7 @@ end
         connection,
         variables,
         constraints,
-        profiles,
-        model_parameters;
+        profiles;
         optimizer = HiGHS.Optimizer,
         optimizer_parameters = default_parameters(optimizer),
         model_file_name = "",
@@ -62,8 +60,7 @@ function create_model(
     connection,
     variables,
     constraints,
-    profiles,
-    model_parameters;
+    profiles;
     optimizer = HiGHS.Optimizer,
     optimizer_parameters = default_parameters(optimizer),
     model_file_name = "",
@@ -152,14 +149,7 @@ function create_model(
     @timeit to "add_storage_expressions!" add_storage_expressions!(connection, model, expressions)
 
     ## Expressions for the objective function
-    @timeit to "add_objective!" add_objective!(
-        connection,
-        model,
-        variables,
-        expressions,
-        profiles,
-        model_parameters,
-    )
+    @timeit to "add_objective!" add_objective!(connection, model, variables, expressions, profiles)
 
     ## Constraints
     @timeit to "add_capacity_constraints!" add_capacity_constraints!(
@@ -238,7 +228,6 @@ function create_model(
         model,
         variables,
         constraints,
-        model_parameters,
     )
 
     @timeit to "add_vintage_flow_sum_constraints!" add_vintage_flow_sum_constraints!(

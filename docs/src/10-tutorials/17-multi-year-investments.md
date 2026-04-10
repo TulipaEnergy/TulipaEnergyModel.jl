@@ -60,8 +60,10 @@ There is a new file *model-parameters.csv*. It contains model-wide parameters, i
     If you already have a DuckDB connection with the input data but the `model_parameters` table is not there yet, you can create the table manually to add the `discount_rate` and `discount_year` using DuckDB with your values and then populating with defaults for the missing columns in the table.
 
 ```julia
-discount_rate = energy_problem.model_parameters.discount_rate
-discount_year = energy_problem.model_parameters.discount_year
+connection = energy_problem.db_connection
+row = only(collect(DuckDB.query(connection, "SELECT discount_rate, discount_year FROM model_parameters")))
+discount_rate = row.discount_rate
+discount_year = row.discount_year
 ```
 
 Check discounting parameters calculated internally by TEM.

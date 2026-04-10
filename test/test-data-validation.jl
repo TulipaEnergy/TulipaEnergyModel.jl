@@ -11,6 +11,7 @@ end
     for table in TulipaEnergyModel.tables_allowed_to_be_missing
         TEM._create_empty_unless_exists(connection, table)
     end
+    TEM._create_empty_unless_exists(connection, "model_parameters")
 
     DuckDB.query(connection, "DROP TABLE asset")
     @test TEM._validate_has_all_tables_and_columns!(String[], connection) ==
@@ -23,6 +24,7 @@ end
     for table in TulipaEnergyModel.tables_allowed_to_be_missing
         TEM._create_empty_unless_exists(connection, table)
     end
+    TEM._create_empty_unless_exists(connection, "model_parameters")
 
     DuckDB.query(connection, "ALTER TABLE asset DROP COLUMN type")
     @test TEM._validate_has_all_tables_and_columns!(String[], connection) ==
@@ -1024,5 +1026,54 @@ end
     error_messages = TEM._validate_investable_and_asset_both_consistency!(String[], connection)
     @test error_messages == [
         "Investable asset 'wind' with milestone_year=2030 in 'asset_milestone' does not have a corresponding entry (asset='wind', milestone_year=2030, commission_year=2030) in 'asset_both'.",
+    ]
+end
+
+@testitem "Check model_parameters has exactly one row - zero rows" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TABLE model_parameters (
+            discount_rate DOUBLE,
+            discount_year INTEGER,
+            power_system_base DOUBLE,
+            risk_aversion_confidence_level_alpha DOUBLE,
+            risk_aversion_weight_lambda DOUBLE
+        )",
+    )
+    error_messages = TEM._validate_model_parameters_has_exactly_one_row!(connection)
+    @test error_messages == ["Table 'model_parameters' must have exactly one row"]
+end
+
+@testitem "Check model_parameters has exactly one row - two rows" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TABLE model_parameters AS
+        SELECT * FROM (VALUES
+            (0.03, 2020, 100.0, 0.95, 0.1),
+            (0.04, 2030, 110.0, 0.95, 0.1)
+        ) AS t(discount_rate, discount_year, power_system_base, risk_aversion_confidence_level_alpha, risk_aversion_weight_lambda)",
+    )
+    error_messages = TEM._validate_model_parameters_has_exactly_one_row!(connection)
+    @test error_messages == ["Table 'model_parameters' must have exactly one row"]
+end
+
+@testitem "Check model_parameters discount_year - after earliest milestone year" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    # Tiny has milestone_year = 2030, so discount_year = 2035 should fail
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TABLE model_parameters AS
+        SELECT * FROM (VALUES
+            (0.03, 2035, 100.0, 0.95, 0.1)
+        ) AS t(discount_rate, discount_year, power_system_base, risk_aversion_confidence_level_alpha, risk_aversion_weight_lambda)",
+    )
+    error_messages = TEM._validate_model_parameters_discount_year!(connection)
+    @test error_messages == [
+        "The 'discount_year' (2035) in 'model_parameters' must be less than or equal to the earliest milestone year (2030).",
     ]
 end
