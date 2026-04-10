@@ -139,7 +139,7 @@ function populate_with_defaults!(connection)
         sql_create_string, sql_select_string =
             _sql_arguments_for_defaults(connection, table_name, table_schema)
 
-        # craete model_parameters with default values if it doesn't exist
+        # create model_parameters with default values if it doesn't exist
         # this is needed because this table can be missing
         if table_name == "model_parameters" && !_check_if_table_exists(connection, table_name)
             DuckDB.query(
