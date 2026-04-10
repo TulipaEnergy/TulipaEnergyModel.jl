@@ -1,19 +1,11 @@
 @testsnippet ModelParametersSetup begin
-    const NORSE_PATH = joinpath(@__DIR__, "inputs", "Norse")
-
-    function connection_with_norse()
-        connection = DBInterface.connect(DuckDB.DB)
-        TulipaIO.read_csv_folder(connection, NORSE_PATH)
-        return connection
-    end
-
     function create_model_parameters_table!(
         connection;
-        discount_rate = missing,
-        discount_year = missing,
-        power_system_base = missing,
-        risk_aversion_confidence_level_alpha = missing,
-        risk_aversion_weight_lambda = missing,
+        discount_rate = "NULL",
+        discount_year = "NULL",
+        power_system_base = "NULL",
+        risk_aversion_confidence_level_alpha = "NULL",
+        risk_aversion_weight_lambda = "NULL",
     )
         DuckDB.query(
             connection,
@@ -27,35 +19,15 @@
             );
             """,
         )
-
-        # Build a data frame with non-missing values only
-        data_dict = Dict{Symbol,Vector}()
-        !ismissing(discount_rate) && (data_dict[:discount_rate] = [discount_rate])
-        !ismissing(discount_year) && (data_dict[:discount_year] = [discount_year])
-        !ismissing(power_system_base) && (data_dict[:power_system_base] = [power_system_base])
-        !ismissing(risk_aversion_confidence_level_alpha) && (
-            data_dict[:risk_aversion_confidence_level_alpha] =
-                [risk_aversion_confidence_level_alpha]
-        )
-        !ismissing(risk_aversion_weight_lambda) &&
-            (data_dict[:risk_aversion_weight_lambda] = [risk_aversion_weight_lambda])
-
-        if !isempty(data_dict)
-            DuckDB.register_data_frame(connection, DataFrame(data_dict), "model_parameters_values")
-
-            # Build column list dynamically for the INSERT statement
-            cols = join(String.(keys(data_dict)), ", ")
-            DuckDB.query(
-                connection,
-                """
-                INSERT INTO model_parameters($cols)
-                SELECT $cols
-                FROM model_parameters_values
-                """,
+        return DuckDB.query(
+            connection,
+            """
+            INSERT INTO model_parameters VALUES (
+                $discount_rate, $discount_year, $power_system_base,
+                $risk_aversion_confidence_level_alpha, $risk_aversion_weight_lambda
             )
-        end
-
-        return
+            """,
+        )
     end
 
     function query_model_parameters(connection)
@@ -65,7 +37,12 @@ end
 
 @testitem "Test model parameters - table missing" setup = [CommonSetup, ModelParametersSetup] tags =
     [:unit, :validation, :fast] begin
-    connection = connection_with_norse()
+    connection = _Norse_fixture()
+
+    # Norse has the table with only headers, so drop it first
+    DuckDB.query(connection, "DROP TABLE IF EXISTS model_parameters")
+    @test !TulipaEnergyModel._check_if_table_exists(connection, "model_parameters")
+
     TulipaEnergyModel.populate_with_defaults!(connection)
 
     mp = query_model_parameters(connection)
@@ -79,10 +56,12 @@ end
     @test mp.risk_aversion_weight_lambda == 0.0
 end
 
-@testitem "Test model parameters - table exists but only has headers" setup =
+@testitem "Test model parameters - empty table, i.e., exists but only has headers" setup =
     [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
-    # this should be equivalent to the table missing case
-    connection = connection_with_norse()
+    connection = _Norse_fixture()
+
+    @test TulipaEnergyModel._check_if_table_exists(connection, "model_parameters")
+    @test TulipaEnergyModel.count_rows_from(connection, "model_parameters") == 0
 
     TulipaEnergyModel.populate_with_defaults!(connection)
 
@@ -99,7 +78,7 @@ end
 
 @testitem "Test model parameters - read from model_parameters table" setup =
     [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
-    connection = connection_with_norse()
+    connection = _Norse_fixture()
     create_model_parameters_table!(
         connection;
         discount_rate = 0.03,
@@ -119,11 +98,10 @@ end
 end
 @testitem "Test model parameters - if discount_year is missing" setup =
     [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
-    connection = connection_with_norse()
+    connection = _Norse_fixture()
     create_model_parameters_table!(
         connection;
         discount_rate = 0.03,
-        discount_year = missing,
         power_system_base = 80.0,
         risk_aversion_confidence_level_alpha = 0.8,
         risk_aversion_weight_lambda = 0.2,
@@ -143,13 +121,12 @@ end
 
 @testitem "Test model parameters - if other parameters are missing" setup =
     [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
-    connection = connection_with_norse()
+    connection = _Norse_fixture()
     create_model_parameters_table!(
         connection;
         discount_rate = missing,
-        discount_year = 2025,
+        discount_year = 2025, # this should be used instead of the calculated 2030 since it's not missing
         power_system_base = 80.0,
-        risk_aversion_confidence_level_alpha = 0.8,
         risk_aversion_weight_lambda = 0.2,
     )
 
@@ -161,6 +138,24 @@ end
     # discount_year should be the value given in the table, since it's not missing
     @test mp.discount_year == 2025
     @test mp.power_system_base == 80.0
-    @test mp.risk_aversion_confidence_level_alpha == 0.8
+    @test mp.risk_aversion_confidence_level_alpha == 0.95
     @test mp.risk_aversion_weight_lambda == 0.2
+end
+
+@testitem "Test model parameters - check calculation logic of discount_year if missing" setup =
+    [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
+    connection = _multi_year_fixture()
+    # set discount_year to missing
+    DuckDB.query(connection, "UPDATE model_parameters SET discount_year = NULL")
+
+    # using populate_with_defaults! should calculate the missing discount_year based on the earliest milestone year, which is 2030 in the Multi-year Investments dataset
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    mp = query_model_parameters(connection)
+
+    @test mp.discount_rate == 0.03
+    # discount_year should be the value given in the table, since it's not missing
+    @test mp.discount_year == 2030
+    @test mp.power_system_base == 100
+    @test mp.risk_aversion_confidence_level_alpha == 0.95
+    @test mp.risk_aversion_weight_lambda == 0.0
 end
