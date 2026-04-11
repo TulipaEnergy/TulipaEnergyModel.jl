@@ -1,3 +1,15 @@
+"""
+    _add_vintage_flows_operational_cost!(
+        connection,
+        model,
+        expressions,
+        objective_expr,
+        lambda,
+    )
+
+Add the expected vintage-flow operational-cost term to the objective by
+weighting each scenario cost expression by its probability.
+"""
 function _add_vintage_flows_operational_cost!(
     connection,
     model,

@@ -1,3 +1,9 @@
+"""
+    _add_units_on_operational_cost!(connection, model, expressions, objective_expr, lambda)
+
+Add the expected units-on operational-cost term to the objective by weighting
+each scenario cost expression by its probability.
+"""
 function _add_units_on_operational_cost!(connection, model, expressions, objective_expr, lambda)
     expr = expressions[:units_on_operational_cost_per_scenario]
 

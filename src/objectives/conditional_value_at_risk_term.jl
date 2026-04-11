@@ -1,3 +1,21 @@
+"""
+    _add_conditional_value_at_risk_term!(
+        connection,
+        model,
+        variables,
+        objective_expr,
+        lambda,
+        alpha,
+    )
+
+Build and add the conditional value at risk (CVaR) term to the objective.
+
+The term is
+`mu + (1 / (1 - alpha)) * sum(probability_s * xi_s)`
+and it is added to the objective as `lambda * CVaR_term`.
+
+No term is added when `lambda <= 0` or when there is only one scenario.
+"""
 function _add_conditional_value_at_risk_term!(
     connection,
     model,

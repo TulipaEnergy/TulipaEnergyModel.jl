@@ -1,3 +1,9 @@
+"""
+    _add_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
+
+Add the expected flow operational-cost term to the objective by weighting each
+scenario cost expression by its probability.
+"""
 function _add_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
     expr = expressions[:flows_operational_cost_per_scenario]
 

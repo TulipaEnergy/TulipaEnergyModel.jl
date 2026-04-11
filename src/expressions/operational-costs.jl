@@ -1,3 +1,13 @@
+"""
+    add_operational_cost_expressions!(connection, model, variables, expressions, profiles)
+
+Create and attach per-scenario operational cost expressions for flows,
+vintage flows, and units-on variables.
+
+These expressions are later reused by the objective builder and by the CVaR
+tail-excess expression/constraint path, so scenario-indexed costs are computed
+once and shared across downstream steps.
+"""
 function add_operational_cost_expressions!(connection, model, variables, expressions, profiles)
     _add_flows_operational_cost_per_scenario_expressions!(
         connection,
@@ -22,6 +32,21 @@ function add_operational_cost_expressions!(connection, model, variables, express
     return nothing
 end
 
+"""
+    _add_flows_operational_cost_per_scenario_expressions!(
+        connection,
+        model,
+        variables,
+        expressions,
+        profiles,
+    )
+
+Create and attach one flow operational-cost expression per scenario.
+
+Rows are queried once, grouped by scenario with `_scenario_ranges`, and then
+accumulated into a `Vector{JuMP.AffExpr}` stored as
+`expressions[:flows_operational_cost_per_scenario].expressions[:cost]`.
+"""
 function _add_flows_operational_cost_per_scenario_expressions!(
     connection,
     model,
@@ -98,6 +123,19 @@ function _add_flows_operational_cost_per_scenario_expressions!(
     return nothing
 end
 
+"""
+    _add_vintage_flows_operational_cost_per_scenario_expressions!(
+        connection,
+        model,
+        variables,
+        expressions,
+    )
+
+Create and attach one vintage-flow operational-cost expression per scenario.
+
+The resulting expression vector is indexed by scenario id order from
+`stochastic_scenario` and reused by the objective and CVaR expression builders.
+"""
 function _add_vintage_flows_operational_cost_per_scenario_expressions!(
     connection,
     model,
@@ -133,6 +171,19 @@ function _add_vintage_flows_operational_cost_per_scenario_expressions!(
     return nothing
 end
 
+"""
+    _add_units_on_operational_cost_per_scenario_expressions!(
+        connection,
+        model,
+        variables,
+        expressions,
+    )
+
+Create and attach one units-on operational-cost expression per scenario.
+
+The function aggregates costs over all matching `var_units_on` rows for each
+scenario and stores the result as `expressions[:units_on_operational_cost_per_scenario].expressions[:cost]`.
+"""
 function _add_units_on_operational_cost_per_scenario_expressions!(
     connection,
     model,
@@ -168,6 +219,13 @@ function _add_units_on_operational_cost_per_scenario_expressions!(
     return nothing
 end
 
+"""
+    _create_scenario_cost_expression!(connection, expressions, expr_name)
+
+Create a temporary expression table with one row per scenario (`id`,
+`scenario`, `probability`) ordered by scenario, register it in `expressions`,
+and return the created `TulipaExpression`.
+"""
 function _create_scenario_cost_expression!(connection, expressions, expr_name)
     DuckDB.query(
         connection,
@@ -193,6 +251,22 @@ function _create_scenario_cost_expression!(connection, expressions, expr_name)
     return expressions[expr_name]
 end
 
+"""
+    _scenario_ranges(indices)
+
+Return a `Dict` mapping each scenario id to the contiguous `UnitRange` of row
+positions it occupies in `indices`.
+
+`indices` must be sorted by scenario (as guaranteed by the `ORDER BY scenario`
+clause in every query that feeds this function). The function exploits that sort
+to detect group boundaries in a single O(n) pass, avoiding the need for one
+DuckDB query per scenario or an O(n × S) repeated scan.
+
+The resulting dict is used by the per-scenario expression builders to slice
+`indices` into per-scenario sub-arrays, which are then accumulated into
+`JuMP.AffExpr` vectors — one expression per scenario — required by the CVaR
+tail-excess constraint.
+"""
 function _scenario_ranges(indices)
     n = length(indices)
     if n == 0
@@ -207,6 +281,14 @@ function _scenario_ranges(indices)
     return Dict(scenarios[k] => group_starts[k]:group_ends[k] for k in eachindex(scenarios))
 end
 
+"""
+    _query_flows_operational_cost_per_scenario_indices(connection, has_commodity_price_profile)
+
+Return flow rows with scenario, variable id, and cost components needed to build
+per-scenario flow operational-cost expressions.
+
+The result is ordered by `(scenario, id)` to enable linear-time grouping.
+"""
 function _query_flows_operational_cost_per_scenario_indices(connection, has_commodity_price_profile)
     commodity_price_profile_name = ""
     flows_profiles_query_left_join = ""
@@ -275,6 +357,14 @@ function _query_flows_operational_cost_per_scenario_indices(connection, has_comm
     )
 end
 
+"""
+    _query_vintage_flows_operational_cost_per_scenario_indices(connection)
+
+Return vintage-flow rows with scenario, variable id, and cost coefficient used
+to assemble per-scenario vintage-flow operational-cost expressions.
+
+The result is ordered by `(scenario, id)`.
+"""
 function _query_vintage_flows_operational_cost_per_scenario_indices(connection)
     return DuckDB.query(
         connection,
@@ -330,6 +420,14 @@ function _query_vintage_flows_operational_cost_per_scenario_indices(connection)
     )
 end
 
+"""
+    _query_units_on_operational_cost_per_scenario_indices(connection)
+
+Return units-on rows with scenario, variable id, and cost coefficient used to
+assemble per-scenario units-on operational-cost expressions.
+
+The result is ordered by `(scenario, id)`.
+"""
 function _query_units_on_operational_cost_per_scenario_indices(connection)
     return DuckDB.query(
         connection,

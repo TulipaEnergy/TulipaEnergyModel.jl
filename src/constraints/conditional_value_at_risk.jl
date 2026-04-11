@@ -10,8 +10,13 @@ export add_scenario_tail_excess_constraints!
         constraints,
     )
 
-Adds the scenario tail excess constraints to the model for the
-    conditional value at risk feature.
+Add the scenario tail-excess constraints for the conditional value at risk
+(CVaR) feature.
+
+For each scenario row `s` in `cons_scenario_tail_excess`, this function adds
+the constraint `xi[s] >= total_cost_per_scenario[s] - mu`.
+
+If `tail_excess_slack_xi` is empty, no constraints are attached.
 """
 function add_scenario_tail_excess_constraints!(
     connection,
@@ -47,6 +52,14 @@ function add_scenario_tail_excess_constraints!(
     return nothing
 end
 
+"""
+    _append_scenario_tail_excess_data_to_indices(connection, table_name)
+
+Fetch `(id, scenario)` rows for `cons_<table_name>` ordered by `id`.
+
+The returned iterator is used to align constraint rows with the positional
+scenario-cost expressions built for the CVaR tail-excess formulation.
+"""
 function _append_scenario_tail_excess_data_to_indices(connection, table_name)
     return DuckDB.query(
         connection,
