@@ -74,16 +74,10 @@
         TC.cluster!(connection, config.num_timesteps, config.num_rps; layout)
 
         # Create model parameters table with risk aversion parameters to trigger scenario tail excess constraints
-        DuckDB.query(
-            connection,
-            """
-            CREATE OR REPLACE TABLE model_parameters AS
-            SELECT *
-            FROM (VALUES
-            	($(config.lambda), $(config.alpha))
-            ) AS t(risk_aversion_weight_lambda, risk_aversion_confidence_level_alpha);
-            """,
-        )
+        table_name = "model_parameters"
+        table_rows = [(config.lambda, config.alpha)]
+        columns = [:risk_aversion_weight_lambda, :risk_aversion_confidence_level_alpha]
+        _create_table_for_tests(connection, table_name, table_rows, columns)
 
         # Populate with defaults and create model
         TEM.populate_with_defaults!(connection)
@@ -103,26 +97,25 @@
         return (connection, energy_problem, num_scenarios)
     end
 
-    function get_weight(connection, rp::Int64, scenario::Int64)
+    function create_weight_lookup(connection)
         query_result = DuckDB.query(
             connection,
             """
             SELECT
+                rep_period,
+                scenario,
                 COALESCE(SUM(weight), 0.0) AS weight
             FROM rep_periods_mapping
-            WHERE rep_period = $rp AND scenario = $scenario
             GROUP BY milestone_year, rep_period, scenario
             ;
             """,
         )
-        if isempty(query_result)
-            return 0.0
-        end
-        return TEM.get_single_element_from_query_and_ensure_its_only_one(query_result)
+        weight_lookup = Dict((row.rep_period, row.scenario) => row.weight for row in query_result)
+        return weight_lookup
     end
 end
 
-@testitem "Test scenario tail excess using workflow TB->TC->TEM" setup =
+@testitem "Test scenario tail excess constraints using workflow TB->TC->TEM" setup =
     [CommonSetup, ConsScenarioTailExcessSetup] tags = [:unit, :fast, :constraint] begin
     asset = ConsScenarioTailExcessConfig()
     connection, energy_problem, num_scenarios = create_scenario_tail_excess_test_problem(asset)
@@ -139,7 +132,7 @@ end
     assets_decommission = variables[:assets_decommission].container[1]
     flow = variables[:flow].container
     tail_excess_vars = variables[:tail_excess_slack_xi].container
-    value_at_risk_threshold_mu = variables[:value_at_risk_threshold_mu].container[1]
+    value_at_risk_threshold_mu = only(variables[:value_at_risk_threshold_mu].container)
 
     # Create expected base cost (scenario independent part of the cost expression)
     constant_cost = asset.capacity * asset.initial_units * asset.fixed_cost
@@ -152,11 +145,12 @@ end
     end
 
     # Create expected flows operational cost per scenario
+    weight_lookup = create_weight_lookup(connection)
     operational_cost_per_scenario = Dict{Int64,JuMP.AffExpr}()
     for scenario in 1:num_scenarios
         operational_cost_per_scenario[scenario] = JuMP.AffExpr(0.0)
         for rp in 1:num_rep_periods
-            weight = get_weight(connection, rp, scenario)
+            weight = get(weight_lookup, (rp, scenario), 0.0)
             JuMP.add_to_expression!(
                 operational_cost_per_scenario[scenario],
                 asset.operational_cost * weight,
@@ -181,22 +175,17 @@ end
     end
 end
 
-@testitem "Create scenario tail excess for case study" setup = [CommonSetup] tags =
+@testitem "Create scenario tail excess constraints from case study" setup = [CommonSetup] tags =
     [:unit, :fast, :constraint] begin
     dir = joinpath(INPUT_FOLDER, "TwoStage-StochOpt RPs per Scenario")
     connection = DBInterface.connect(DuckDB.DB)
     TulipaIO.read_csv_folder(connection, dir)
 
-    DuckDB.query(
-        connection,
-        """
-        CREATE OR REPLACE TABLE model_parameters AS
-        SELECT *
-        FROM (VALUES
-        	(0.1, 0.98)
-        ) AS t(risk_aversion_weight_lambda, risk_aversion_confidence_level_alpha);
-        """,
-    )
+    # Create model parameters table with risk aversion parameters to trigger scenario tail excess constraints
+    table_name = "model_parameters"
+    table_rows = [(0.1, 0.98)]
+    columns = [:risk_aversion_weight_lambda, :risk_aversion_confidence_level_alpha]
+    _create_table_for_tests(connection, table_name, table_rows, columns)
 
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.EnergyProblem(connection)
@@ -208,7 +197,8 @@ end
     model = energy_problem.model
     scenario_tail_excess_indices = energy_problem.constraints[:scenario_tail_excess].indices
     tail_excess_vars = energy_problem.variables[:tail_excess_slack_xi].container
-    value_at_risk_threshold_mu = energy_problem.variables[:value_at_risk_threshold_mu].container[1]
+    value_at_risk_threshold_mu =
+        only(energy_problem.variables[:value_at_risk_threshold_mu].container)
 
     base_cost = JuMP.AffExpr(0.0)
     for objective_name in (
