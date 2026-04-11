@@ -12,6 +12,14 @@ function _add_to_objective!(connection, objective_expr, name::String, expr)
     return
 end
 
+"""
+    prepare_objective_tables!(connection, model_parameters)
+
+Create temporary SQL tables used by objective-term builders.
+
+This precomputes discount-related auxiliary data and objective coefficient
+tables so subsequent objective functions can read prepared inputs directly.
+"""
 function prepare_objective_tables!(connection, model_parameters)
     social_rate = model_parameters.discount_rate
     discount_year = model_parameters.discount_year
@@ -28,6 +36,12 @@ function prepare_objective_tables!(connection, model_parameters)
     return nothing
 end
 
+"""
+    add_objective!(connection, model, variables, expressions, model_parameters)
+
+Build all objective components, register them in `obj_breakdown`, and set the
+model objective to minimization of their sum.
+"""
 function add_objective!(connection, model, variables, expressions, model_parameters)
     lambda = model_parameters.risk_aversion_weight_lambda
     alpha = model_parameters.risk_aversion_confidence_level_alpha
