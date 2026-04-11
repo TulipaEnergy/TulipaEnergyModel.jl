@@ -151,14 +151,33 @@ function create_model(
     ## Expressions for storage assets
     @timeit to "add_storage_expressions!" add_storage_expressions!(connection, model, expressions)
 
+    ## Tables for the objective function
+    @timeit to "prepare_objective_tables!" prepare_objective_tables!(connection, model_parameters)
+
+    ## Expressions for operational costs
+    @timeit to "add_operational_cost_expressions!" add_operational_cost_expressions!(
+        connection,
+        model,
+        variables,
+        expressions,
+        profiles,
+    )
+
     ## Expressions for the objective function
     @timeit to "add_objective!" add_objective!(
         connection,
         model,
         variables,
         expressions,
-        profiles,
         model_parameters,
+    )
+
+    ## Expressions for the scenario tail excess (conditional value at risk constraints)
+    @timeit to "add_scenario_tail_excess_expressions!" add_scenario_tail_excess_expressions!(
+        connection,
+        model,
+        variables,
+        expressions,
     )
 
     ## Constraints
@@ -265,6 +284,14 @@ function create_model(
     )
 
     @timeit to "add_uc_logic_constraints!" add_uc_logic_constraints!(
+        connection,
+        model,
+        variables,
+        expressions,
+        constraints,
+    )
+
+    @timeit to "add_scenario_tail_excess_constraints!" add_scenario_tail_excess_constraints!(
         connection,
         model,
         variables,

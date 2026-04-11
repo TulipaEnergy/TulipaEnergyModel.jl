@@ -26,8 +26,9 @@ function _add_storage_assets_energy_fixed_cost!(
         ",
     )
 
-    storage_assets_energy_fixed_cost = @expression(
+    @expression(
         model,
+        storage_assets_energy_fixed_cost,
         sum(
             row.cost * expr_avail for (row, expr_avail) in
             zip(indices, expr_available_energy_units_simple_method.expressions[:energy])
@@ -35,7 +36,6 @@ function _add_storage_assets_energy_fixed_cost!(
     )
     _add_to_objective!(
         connection,
-        model,
         objective_expr,
         "storage_assets_energy_fixed_cost",
         (1 - lambda) * storage_assets_energy_fixed_cost,

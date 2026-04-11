@@ -15,5 +15,5 @@ EnergyProblem:
       - flows_operational_cost: 92238.43824156489
       - storage_assets_energy_fixed_cost: 0.0
       - storage_assets_energy_investment_cost: 0.0
-      - units_on_cost: 0.0
+      - units_on_operational_cost: 0.0
       - vintage_flows_operational_cost: 0.0
