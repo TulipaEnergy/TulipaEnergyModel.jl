@@ -293,6 +293,8 @@ end
 end
 ```
 
+Use the auxiliary function `_create_table_for_tests` in `test/utils.jl` to create temporary tables in DuckDB for testing.
+
 Use `@testmodule` for expensive one-time setup shared across many tests (loaded once, accessed via module name):
 
 ```julia
