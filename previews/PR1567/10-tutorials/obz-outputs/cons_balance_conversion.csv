@@ -63,10 +63,10 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_balance_
 62,BG_electrolyzer,2050,2,5,8,1518.380461127451
 63,BG_electrolyzer,2050,2,9,12,-0.0
 64,BG_electrolyzer,2050,2,13,16,-0.0
-65,BG_electrolyzer,2050,2,17,20,1518.3804611274506
-66,BG_electrolyzer,2050,2,21,24,1518.3804611274506
-67,BG_electrolyzer,2050,3,1,4,1552.766213890187
-68,BG_electrolyzer,2050,3,5,8,1552.7662138901865
+65,BG_electrolyzer,2050,2,17,20,1518.380461127451
+66,BG_electrolyzer,2050,2,21,24,1518.380461127451
+67,BG_electrolyzer,2050,3,1,4,1552.7662138901871
+68,BG_electrolyzer,2050,3,5,8,1552.7662138901867
 69,BG_electrolyzer,2050,3,9,12,-0.0
 70,BG_electrolyzer,2050,3,13,16,-0.0
 71,BG_electrolyzer,2050,3,17,20,1552.7662138901867
@@ -107,7 +107,7 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_balance_
 106,CY_electrolyzer,2050,3,13,16,-0.0
 107,CY_electrolyzer,2050,3,17,20,-0.0
 108,CY_electrolyzer,2050,3,21,24,-0.0
-109,CZ_electrolyzer,2050,1,1,4,-6.190603585309873e-13
+109,CZ_electrolyzer,2050,1,1,4,-4.1588954502458364e-13
 110,CZ_electrolyzer,2050,1,5,8,-0.0
 111,CZ_electrolyzer,2050,1,9,12,-0.0
 112,CZ_electrolyzer,2050,1,13,16,-0.0
@@ -401,7 +401,7 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_balance_
 400,HR_electrolyzer,2050,3,13,16,-0.0
 401,HR_electrolyzer,2050,3,17,20,-0.0
 402,HR_electrolyzer,2050,3,21,24,-0.0
-403,HU_electrolyzer,2050,1,1,4,1126.3533249823618
+403,HU_electrolyzer,2050,1,1,4,1126.353324982362
 404,HU_electrolyzer,2050,1,5,8,1126.3533249823622
 405,HU_electrolyzer,2050,1,9,12,-0.0
 406,HU_electrolyzer,2050,1,13,16,-0.0
@@ -413,7 +413,7 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_balance_
 412,HU_electrolyzer,2050,2,13,16,-0.0
 413,HU_electrolyzer,2050,2,17,20,1518.380461127451
 414,HU_electrolyzer,2050,2,21,24,1518.380461127451
-415,HU_electrolyzer,2050,3,1,4,1552.7662138901874
+415,HU_electrolyzer,2050,3,1,4,1552.766213890188
 416,HU_electrolyzer,2050,3,5,8,1552.7662138901867
 417,HU_electrolyzer,2050,3,9,12,-0.0
 418,HU_electrolyzer,2050,3,13,16,-0.0
@@ -527,12 +527,12 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_balance_
 526,LV_electrolyzer,2050,3,13,16,-0.0
 527,LV_electrolyzer,2050,3,17,20,-0.0
 528,LV_electrolyzer,2050,3,21,24,-0.0
-529,MT_electrolyzer,2050,1,1,4,7821.649302103481
-530,MT_electrolyzer,2050,1,5,8,7821.649302103481
+529,MT_electrolyzer,2050,1,1,4,7821.649302103482
+530,MT_electrolyzer,2050,1,5,8,7821.649302103482
 531,MT_electrolyzer,2050,1,9,12,4897.188369488531
 532,MT_electrolyzer,2050,1,13,16,4897.188369488531
-533,MT_electrolyzer,2050,1,17,20,7821.649302103481
-534,MT_electrolyzer,2050,1,21,24,7821.649302103481
+533,MT_electrolyzer,2050,1,17,20,7821.649302103482
+534,MT_electrolyzer,2050,1,21,24,7821.649302103482
 535,MT_electrolyzer,2050,2,1,4,10543.973379126895
 536,MT_electrolyzer,2050,2,5,8,10543.973379126895
 537,MT_electrolyzer,2050,2,9,12,6601.654178815005
@@ -803,7 +803,7 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_balance_
 802,PT_electrolyzer,2050,3,13,16,-0.0
 803,PT_electrolyzer,2050,3,17,20,-0.0
 804,PT_electrolyzer,2050,3,21,24,-0.0
-805,RO_electrolyzer,2050,1,1,4,1126.3533249823618
+805,RO_electrolyzer,2050,1,1,4,1126.353324982362
 806,RO_electrolyzer,2050,1,5,8,1126.3533249823622
 807,RO_electrolyzer,2050,1,9,12,-0.0
 808,RO_electrolyzer,2050,1,13,16,-0.0
@@ -815,7 +815,7 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_balance_
 814,RO_electrolyzer,2050,2,13,16,-0.0
 815,RO_electrolyzer,2050,2,17,20,1518.380461127451
 816,RO_electrolyzer,2050,2,21,24,1518.380461127451
-817,RO_electrolyzer,2050,3,1,4,1552.7662138901874
+817,RO_electrolyzer,2050,3,1,4,1552.766213890188
 818,RO_electrolyzer,2050,3,5,8,1552.7662138901867
 819,RO_electrolyzer,2050,3,9,12,-0.0
 820,RO_electrolyzer,2050,3,13,16,-0.0
@@ -857,7 +857,7 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_balance_
 856,SI_electrolyzer,2050,3,13,16,-0.0
 857,SI_electrolyzer,2050,3,17,20,-0.0
 858,SI_electrolyzer,2050,3,21,24,-0.0
-859,SK_electrolyzer,2050,1,1,4,1126.3533249823618
+859,SK_electrolyzer,2050,1,1,4,1126.353324982362
 860,SK_electrolyzer,2050,1,5,8,1126.3533249823622
 861,SK_electrolyzer,2050,1,9,12,-0.0
 862,SK_electrolyzer,2050,1,13,16,-0.0
@@ -869,7 +869,7 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_balance_
 868,SK_electrolyzer,2050,2,13,16,1518.380461127451
 869,SK_electrolyzer,2050,2,17,20,1518.380461127451
 870,SK_electrolyzer,2050,2,21,24,1518.380461127451
-871,SK_electrolyzer,2050,3,1,4,1552.7662138901874
+871,SK_electrolyzer,2050,3,1,4,1552.766213890188
 872,SK_electrolyzer,2050,3,5,8,1552.7662138901867
 873,SK_electrolyzer,2050,3,9,12,-0.0
 874,SK_electrolyzer,2050,3,13,16,-0.0
