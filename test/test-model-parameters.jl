@@ -19,15 +19,28 @@
             );
             """,
         )
-        return DuckDB.query(
-            connection,
-            """
-            INSERT INTO model_parameters VALUES (
-                $discount_rate, $discount_year, $power_system_base,
-                $risk_aversion_confidence_level_alpha, $risk_aversion_weight_lambda
-            )
-            """,
+        # if default values are provided, we only give the headers
+        if any(
+            v -> v != "NULL",
+            (
+                discount_rate,
+                discount_year,
+                power_system_base,
+                risk_aversion_confidence_level_alpha,
+                risk_aversion_weight_lambda,
+            ),
         )
+            DuckDB.query(
+                connection,
+                """
+                INSERT INTO model_parameters VALUES (
+                    $discount_rate, $discount_year, $power_system_base,
+                    $risk_aversion_confidence_level_alpha, $risk_aversion_weight_lambda
+                )
+                """,
+            )
+        end
+        return nothing
     end
 
     function query_model_parameters(connection)
@@ -39,7 +52,7 @@ end
     [:unit, :validation, :fast] begin
     connection = _Norse_fixture()
 
-    # Norse has the table with only headers, so drop it first
+    # Norse has the table, so drop it first
     DuckDB.query(connection, "DROP TABLE IF EXISTS model_parameters")
     @test !TulipaEnergyModel._check_if_table_exists(connection, "model_parameters")
 
@@ -60,6 +73,11 @@ end
     [CommonSetup, ModelParametersSetup] tags = [:unit, :validation, :fast] begin
     connection = _Norse_fixture()
 
+    # Norse has the table, so drop it first
+    DuckDB.query(connection, "DROP TABLE IF EXISTS model_parameters")
+    @test !TulipaEnergyModel._check_if_table_exists(connection, "model_parameters")
+    # create the table but don't insert any values, so it only has headers
+    create_model_parameters_table!(connection;)
     @test TulipaEnergyModel._check_if_table_exists(connection, "model_parameters")
     @test TulipaEnergyModel.count_rows_from(connection, "model_parameters") == 0
 
