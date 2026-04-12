@@ -947,8 +947,7 @@ function _validate_investable_and_asset_both_consistency!(error_messages, connec
     return error_messages
 end
 
-function _validate_model_parameters_has_exactly_one_row!(connection)
-    error_messages = String[]
+function _validate_model_parameters_has_exactly_one_row!(error_messages, connection)
     row_count = count_rows_from(connection, "model_parameters")
     if row_count != 1
         push!(error_messages, "Table 'model_parameters' must have exactly one row")
@@ -956,8 +955,7 @@ function _validate_model_parameters_has_exactly_one_row!(connection)
     return error_messages
 end
 
-function _validate_model_parameters_discount_year!(connection)
-    error_messages = String[]
+function _validate_model_parameters_discount_year!(error_messages, connection)
     discount_year = get_single_element_from_query_and_ensure_its_only_one(
         connection,
         "SELECT discount_year FROM model_parameters",

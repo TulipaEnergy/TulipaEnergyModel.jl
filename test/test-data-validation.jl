@@ -1042,7 +1042,7 @@ end
             risk_aversion_weight_lambda DOUBLE
         )",
     )
-    error_messages = TEM._validate_model_parameters_has_exactly_one_row!(connection)
+    error_messages = TEM._validate_model_parameters_has_exactly_one_row!(String[], connection)
     @test error_messages == ["Table 'model_parameters' must have exactly one row"]
 end
 
@@ -1057,7 +1057,7 @@ end
             (0.04, 2030, 110.0, 0.95, 0.1)
         ) AS t(discount_rate, discount_year, power_system_base, risk_aversion_confidence_level_alpha, risk_aversion_weight_lambda)",
     )
-    error_messages = TEM._validate_model_parameters_has_exactly_one_row!(connection)
+    error_messages = TEM._validate_model_parameters_has_exactly_one_row!(String[], connection)
     @test error_messages == ["Table 'model_parameters' must have exactly one row"]
 end
 
@@ -1072,7 +1072,7 @@ end
             (0.03, 2035, 100.0, 0.95, 0.1)
         ) AS t(discount_rate, discount_year, power_system_base, risk_aversion_confidence_level_alpha, risk_aversion_weight_lambda)",
     )
-    error_messages = TEM._validate_model_parameters_discount_year!(connection)
+    error_messages = TEM._validate_model_parameters_discount_year!(String[], connection)
     @test error_messages == [
         "The 'discount_year' (2035) in 'model_parameters' must be less than or equal to the earliest milestone year (2030).",
     ]
