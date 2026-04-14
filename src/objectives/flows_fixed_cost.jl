@@ -22,8 +22,9 @@ function _add_flows_fixed_cost!(connection, model, expressions, objective_expr, 
         ",
     )
 
-    flows_fixed_cost = @expression(
+    @expression(
         model,
+        flows_fixed_cost,
         sum(
             row.cost * (avail_export_unit + avail_import_unit) for
             (row, avail_export_unit, avail_import_unit) in zip(
@@ -35,7 +36,6 @@ function _add_flows_fixed_cost!(connection, model, expressions, objective_expr, 
     )
     _add_to_objective!(
         connection,
-        model,
         objective_expr,
         "flows_fixed_cost",
         (1 - lambda) * flows_fixed_cost,

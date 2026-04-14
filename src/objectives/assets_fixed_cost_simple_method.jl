@@ -26,8 +26,9 @@ function _add_assets_fixed_cost_simple_method!(
         ",
     )
 
-    assets_fixed_cost_simple_method = @expression(
+    @expression(
         model,
+        assets_fixed_cost_simple_method,
         sum(
             row.cost * expr_avail for (row, expr_avail) in
             zip(indices, expr_available_asset_units_simple_method.expressions[:assets])
@@ -35,7 +36,6 @@ function _add_assets_fixed_cost_simple_method!(
     )
     _add_to_objective!(
         connection,
-        model,
         objective_expr,
         "assets_fixed_cost_simple_method",
         (1 - lambda) * assets_fixed_cost_simple_method,

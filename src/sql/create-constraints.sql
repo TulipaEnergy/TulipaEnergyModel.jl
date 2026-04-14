@@ -907,3 +907,13 @@ from (
 
 drop sequence id
 ;
+
+drop table if exists cons_scenario_tail_excess
+;
+
+create table cons_scenario_tail_excess as
+select
+    *
+from
+    var_tail_excess_slack_xi
+;

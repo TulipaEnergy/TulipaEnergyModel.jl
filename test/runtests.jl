@@ -56,9 +56,11 @@ const TAGS_DATA = Dict(
     # Feature Areas (What functionality is being tested?)
     :case_study => "Complete case study tests with real-world scenarios",
     :constraint => "JuMP constraints created by the model",
+    :cvar => "Conditional value at risk feature tests",
     :data_validation => "Data integrity, business rules, and schema validation",
     :data_preparation => "Data transformation and table creation",
     :io => "Input/output operations and file handling",
+    :objective => "Objective function construction tests",
     :pipeline => "Workflow orchestration and multi-step processes",
 
     # Test Characteristics (What capabilities/dependencies are required?)
