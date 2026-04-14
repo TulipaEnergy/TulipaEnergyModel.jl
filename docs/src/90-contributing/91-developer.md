@@ -249,10 +249,10 @@ We will try to follow these during development and reviews.
 - Exports: define exports in the source file that owns the public functions.
 - Comments: write complete sentences and prefer explaining why over how.
 - DuckDB / SQL
-  - Put large reusable DDL or staging pipelines in `src/sql/*.sql`; keep short single-use queries inline in Julia near the code that consumes them.
+  - Put large reusable SQL queries or staging pipelines (preparing indices tables) in `src/sql/*.sql`; keep short single-use queries inline in Julia near the code that consumes them.
   - Prefer `CREATE OR REPLACE TEMP TABLE` for intermediates reused across multiple later queries, loops, or model-building steps. This is the main staging pattern used across the codebase.
   - Prefer `WITH` clauses (CTEs) over deeply nested subqueries when a single query has multiple logical steps. Use descriptive names such as `milestones`, `discounts`, or `cte_group_expression`. If the same intermediate is reused several times or is expensive to recompute, promote it to a temp table instead of repeating the CTE.
-  - Prefer set-based SQL over Julia-side row-by-row database work: `CREATE TABLE AS SELECT`, `INSERT INTO ... SELECT`, `UPDATE ... FROM`, window functions, `ARRAY_AGG`, and `ANTI JOIN`.
+  - Often, aggregating with SQL is better than using Julia. For instance, using `GROUP BY` and `ARRAY_AGG` to create an array of `id`s can be faster that not grouping and looping row-by-row in Julia
   - Join on the full business key explicitly. Keep multi-column `ON` clauses aligned one key per line, and add aliases when they improve readability.
   - Use explicit column lists for stable schemas. Avoid `SELECT *` unless you are intentionally copying an internal row shape or staging table where the full schema is the point of the query.
   - When order matters, state it explicitly. Use `ARRAY_AGG(... ORDER BY ...)` for deterministic arrays, and only add a top-level `ORDER BY` when downstream Julia code, tests, or exported results rely on row order, since sorting is not free.
