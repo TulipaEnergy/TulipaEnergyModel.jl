@@ -1,5 +1,3 @@
-export run_scenario
-
 """
     energy_problem = run_scenario(
         connection;

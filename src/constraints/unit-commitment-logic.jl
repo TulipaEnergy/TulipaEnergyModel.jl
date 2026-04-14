@@ -1,5 +1,3 @@
-export add_uc_logic_constraints!
-
 """
     add_uc_logic_constraints!(model, constraints)
 

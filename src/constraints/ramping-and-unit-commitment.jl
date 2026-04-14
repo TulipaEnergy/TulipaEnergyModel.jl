@@ -1,5 +1,3 @@
-export add_ramping_constraints!
-
 """
     add_ramping_constraints!(
         connection,

@@ -1,6 +1,3 @@
-export add_unit_commitment_variables!
-export add_start_up_and_shut_down_variables!
-
 """
     add_unit_commitment_variables!(model, variables)
 

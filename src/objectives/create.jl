@@ -1,5 +1,3 @@
-export add_objective!
-
 """
     _add_to_objective!(connection, model, objective_expr, name, expr)
 

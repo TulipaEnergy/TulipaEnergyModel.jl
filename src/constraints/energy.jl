@@ -1,5 +1,3 @@
-export add_energy_constraints!
-
 """
     add_energy_constraints!(connection, model, constraints, profiles)
 

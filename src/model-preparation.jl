@@ -1,5 +1,4 @@
 # Tools to prepare data and structures to the model creation
-export prepare_profiles_structure
 
 """
     add_expression_terms_rep_period_constraints!(

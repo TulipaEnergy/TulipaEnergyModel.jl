@@ -1,5 +1,3 @@
-export add_dc_power_flow_constraints!
-
 """
     add_dc_power_flow_constraints!(connection, model, variables, constraints, model_parameters)
 

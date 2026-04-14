@@ -126,7 +126,7 @@ Lightweight rules (see developer docs for full details):
 - Returns: explicitly state what a function returns; use explicit `return`
 - Constructors: use `function foo()` not `foo() = ...`
 - Globals: `UPPER_CASE` for constants
-- Exports: define exports in the source file that owns the public functions
+- Exports: define exports in the main module file (`src/TulipaEnergyModel.jl`)
 - Comments: complete sentences, prefer why over how
 - Markdown docs: tables must satisfy MD060 column alignment
 

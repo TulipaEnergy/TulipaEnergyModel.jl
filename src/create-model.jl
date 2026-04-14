@@ -1,5 +1,3 @@
-export create_model!, create_model
-
 """
     create_model!(energy_problem; kwargs...)
 

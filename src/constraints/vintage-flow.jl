@@ -1,5 +1,3 @@
-export add_vintage_flow_sum_constraints!
-
 """
     add_vintage_flow_sum_constraints!(connection, model, variables, constraints)
 

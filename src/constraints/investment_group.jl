@@ -1,5 +1,3 @@
-export add_investment_group_constraints!
-
 """
     add_investment_group_constraints!(connection, model, variables, constraints)
 

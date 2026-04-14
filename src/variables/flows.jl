@@ -1,5 +1,3 @@
-export add_flow_variables!, add_vintage_flow_variables!
-
 """
     add_flow_variables!(connection, model, variables)
 
