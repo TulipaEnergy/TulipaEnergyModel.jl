@@ -1,5 +1,3 @@
-export add_conditional_value_at_risk_variables!
-
 """
     add_conditional_value_at_risk_variables!(model, variables)
 

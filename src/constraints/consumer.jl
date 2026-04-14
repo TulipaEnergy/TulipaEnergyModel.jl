@@ -1,5 +1,3 @@
-export add_consumer_constraints!
-
 """
     add_consumer_constraints!(connection, model, constraints, profiles)
 

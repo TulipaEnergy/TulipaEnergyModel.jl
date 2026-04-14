@@ -1,5 +1,3 @@
-export add_capacity_constraints!
-
 """
     add_capacity_constraints!(connection, model, expressions, constraints, profiles)
 

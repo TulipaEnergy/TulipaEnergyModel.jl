@@ -1,5 +1,3 @@
-export add_transport_constraints!
-
 """
     add_transport_constraints!(connection, model, variables, expressions, constraints, profiles)
 

@@ -126,7 +126,7 @@ Lightweight rules (see developer docs for full details):
 - Returns: explicitly state what a function returns; use explicit `return`
 - Constructors: use `function foo()` not `foo() = ...`
 - Globals: `UPPER_CASE` for constants
-- Exports: define exports in the source file that owns the public functions
+- Exports: define exports in the main module file (`src/TulipaEnergyModel.jl`)
 - Comments: complete sentences, prefer why over how
 - DuckDB / SQL: use `src/sql/*.sql` for large reusable query batches and inline SQL for short local queries; prefer `CREATE OR REPLACE TEMP TABLE` for intermediates reused across steps and CTEs for single-query decomposition; prefer set-based operations and bulk write patterns (`DuckDB.Appender`, `DuckDB.register_table`, `UPDATE ... FROM`); join on full keys, use explicit column lists and `ARRAY_AGG(... ORDER BY ...)`, add `ORDER BY` only when row order matters, and prefer parameter binding for scalar values when possible
 - Markdown docs: tables must satisfy MD060 column alignment
@@ -179,15 +179,12 @@ Scripts must update all data folders: `test/inputs/`, `benchmark/EU/`, and `docs
 
 ## Development Commands
 
-**CRITICAL:** Always use `julia --project=<env>` when running Julia code. **NEVER** use bare `julia` or `julia --project` without specifying the environment.
+**CRITICAL:** Always try Julia MCP first. It can also be used to run general Julia commands. Always pass the environment.
 
 **CRITICAL:** Use the testing filters to avoid running too many tests at once.
 
-**Run tests (MCP preferred):** Use `julia_eval` with `env_path = "test/"` and `@run_package_tests` — see [Julia MCP](#julia-mcp-preferred) below.
-**Run all tests (CLI):** `julia --project=test test/runtests.jl`
-**Run specific file:** `julia --project=test test/runtests.jl --file test-model`
-**Run fast tests only:** `julia --project=test test/runtests.jl --tags fast --exclude slow`
-**List available tags:** `julia --project=test test/runtests.jl --list-tags`
+**Run tests (Julia MCP):** Use `julia_eval` with `env_path = "/full/path/to/test/"` and `@run_package_tests` — see [Julia MCP](#julia-mcp) below.
+**Run all tests (testitem CLI fallback):** `julia --project=test test/runtests.jl`
 **Docs:** `julia --project=docs -e "using LiveServer; servedocs()"`
 **Diff CSV files:** `git diff --word-diff-regex="[^[:space:],]+" <path>` — highlights changed field values instead of whole lines.
 
@@ -198,9 +195,11 @@ Uses [TestItemRunner.jl](https://github.com/julia-vscode/TestItemRunner.jl) with
 
 Never run the full test suite unless you are explicitly asked to. Instead, run only the tests you created or modified.
 
-### Julia MCP (Preferred)
+### Julia MCP
 
-**When `julia_eval` (Julia MCP) is available, use it instead of the CLI** — it maintains a warm session and avoids recompilation on every run.
+If `julia_eval` (from [julia-mcp](https://github.com/aplavin/julia-mcp)) is available, always use it to run Julia code and tests. It keeps a warm session alive between calls, avoiding Julia's startup and recompilation costs. **Never** use `include("runtests.jl")` or `Pkg.test()` through `julia_eval` — use `@run_package_tests` as shown below.
+
+If `julia_eval` is not available, suggest installing julia-mcp. If it is installed but not working, try reconnecting (`/mcp` in Claude Code) or restarting the session (`julia_restart`). Only fall back to CLI commands (see below) if the user cannot or does not want to use julia-mcp.
 
 Use `env_path` with the **absolute path** to the `test/` directory (e.g., `/full/path/to/TulipaEnergyModel.jl/test/`) — relative paths resolve from the MCP server's directory, not the project root. The test env has its own `Project.toml` with the package as a path source. Always import `TestItemRunner` first, then call `@run_package_tests` — `runtests.jl` reads `ARGS` and won't work in a REPL:
 
@@ -218,6 +217,17 @@ using TestItemRunner
 ```
 
 `ti` fields: `.filename`, `.name`, `.tags` — same semantics as the CLI flags below.
+
+### testitem CLI (fallback)
+
+The file `runtests.jl` includes a CLI for running the test items directly.
+
+**CRITICAL**: Use `julia --project=<env>` when running Julia code. **NEVER** use bare `julia` or `julia --project` without specifying the environment.
+
+**Run all tests:** `julia --project=test test/runtests.jl`
+**Run specific file:** `julia --project=test test/runtests.jl --file test-model`
+**Run fast tests only:** `julia --project=test test/runtests.jl --tags fast --exclude slow`
+**List available tags:** `julia --project=test test/runtests.jl --list-tags`
 
 ### Shared Setup (in `test/utils.jl`)
 

@@ -246,7 +246,7 @@ We will try to follow these during development and reviews.
 - Explicitly state what a function will `return`; if returning nothing, simply use `return`.
 - Constructors: prefer `function foo()` instead of the short form `foo() = ...`.
 - Globals: use `UPPER_CASE` for constants.
-- Exports: define exports in the source file that owns the public functions.
+- Exports: define exports in the main module file (`src/TulipaEnergyModel.jl`).
 - Comments: write complete sentences and prefer explaining why over how.
 - DuckDB / SQL
   - Put large reusable SQL queries or staging pipelines (preparing indices tables) in `src/sql/*.sql`; keep short single-use queries inline in Julia near the code that consumes them.

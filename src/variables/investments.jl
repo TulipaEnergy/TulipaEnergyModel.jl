@@ -1,5 +1,3 @@
-export add_investment_variables!
-
 """
     _get_investment_variable_specifications()
 

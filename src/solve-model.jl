@@ -1,5 +1,3 @@
-export solve_model!, solve_model, save_solution!
-
 """
     solve_model!(energy_problem::EnergyProblem)
 

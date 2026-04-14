@@ -1,5 +1,3 @@
-export compute_variables_indices
-
 # TODO: Allow changing table names to make unit tests possible
 # The signature should be something like `...(connection; assets_data="t_assets_data", ...)`
 function compute_variables_indices(connection)

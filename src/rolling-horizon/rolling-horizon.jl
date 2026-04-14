@@ -1,5 +1,3 @@
-export run_rolling_horizon
-
 include("create.jl")
 include("update.jl")
 include("utils.jl")

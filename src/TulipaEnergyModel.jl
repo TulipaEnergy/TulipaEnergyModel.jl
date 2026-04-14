@@ -24,6 +24,84 @@ using TimerOutputs: TimerOutput, @timeit
 
 const to = TimerOutput()
 
+# Public API
+export
+
+    # Run
+    run_scenario,
+
+    # Model parameters
+    ModelParameters,
+
+    # Structures
+    EnergyProblem,
+    ProfileLookup,
+    TulipaVariable,
+    TulipaConstraint,
+    TulipaExpression,
+    PeriodsBlock,
+    TimestepsBlock,
+    attach_constraint!,
+    attach_expression!,
+    attach_coefficient!,
+
+    # Data
+    DataValidationException,
+    create_internal_tables!,
+    export_solution_to_csv_files,
+    populate_with_defaults!,
+
+    # Model preparation
+    prepare_profiles_structure,
+
+    # Variables
+    compute_variables_indices,
+    add_flow_variables!,
+    add_vintage_flow_variables!,
+    add_storage_variables!,
+    add_unit_commitment_variables!,
+    add_start_up_and_shut_down_variables!,
+    add_power_flow_variables!,
+    add_decommission_variables!,
+    add_investment_variables!,
+    add_conditional_value_at_risk_variables!,
+
+    # Constraints
+    compute_constraints_indices,
+    add_capacity_constraints!,
+    add_energy_constraints!,
+    add_storage_constraints!,
+    add_consumer_constraints!,
+    add_conversion_constraints!,
+    add_transport_constraints!,
+    add_flows_relationships_constraints!,
+    add_vintage_flow_sum_constraints!,
+    add_uc_logic_constraints!,
+    add_ramping_constraints!,
+    add_dc_power_flow_constraints!,
+    add_investment_group_constraints!,
+    add_start_up_upper_bound_constraints!,
+    add_shut_down_upper_bound_constraints!,
+
+    # Objectives
+    add_objective!,
+
+    # Model creation
+    create_model!,
+    create_model,
+
+    # Solver
+    default_parameters,
+    read_parameters_from_file,
+
+    # Solution
+    solve_model!,
+    solve_model,
+    save_solution!,
+
+    # Rolling horizon
+    run_rolling_horizon
+
 # Definitions and auxiliary files
 include("run-scenario.jl")
 include("model-parameters.jl")

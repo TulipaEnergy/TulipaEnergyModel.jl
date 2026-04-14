@@ -1,5 +1,3 @@
-export add_shut_down_upper_bound_constraints!
-
 """
     add_shut_down_upper_bound_constraints!(model, constraints)
 

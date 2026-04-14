@@ -1,5 +1,3 @@
-export compute_constraints_indices
-
 function compute_constraints_indices(connection)
     query_file = joinpath(SQL_FOLDER, "create-constraints.sql")
     DuckDB.query(connection, read(query_file, String))

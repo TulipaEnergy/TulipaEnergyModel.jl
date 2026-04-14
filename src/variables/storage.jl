@@ -1,5 +1,3 @@
-export add_storage_variables!
-
 """
     add_storage_variables!(connection, model, variables)
 

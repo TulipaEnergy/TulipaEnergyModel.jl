@@ -1,5 +1,3 @@
-export create_internal_tables!, export_solution_to_csv_files
-
 # Create tables that are allowed to be missing
 const tables_allowed_to_be_missing = [
     "assets_profiles"

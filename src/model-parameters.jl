@@ -1,5 +1,3 @@
-export ModelParameters
-
 """
     ModelParameters(connection)
 

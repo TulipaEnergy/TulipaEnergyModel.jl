@@ -1,5 +1,3 @@
-export add_flows_relationships_constraints!
-
 """
     add_flows_relationships_constraints!(connection, model, variables, constraints)
 

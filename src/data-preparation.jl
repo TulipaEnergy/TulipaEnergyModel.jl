@@ -1,5 +1,3 @@
-export populate_with_defaults!
-
 """
     create_str, select_str = _sql_arguments_for_defaults(connection, table_name, table_schema)
 
