@@ -114,7 +114,7 @@ The following example illustrates these concepts:
 
 For the fully flexible temporal resolution, consider the 6-hour duration of this system. The flow between "H2" and "ccgt" has a resolution of 6 hours, while the flow between "ccgt" and "balance" is 1 hour. The resolution from "wind" to "phs" is 3 hours, and from "phs" to "balance" is irregular, a 4-hour block followed by a 2-hour block. Tulipa allows different temporal resolutions throughout the model, thereby reducing the number of variables and constraints. This feature can drastically speed up solving with little loss in accuracy [@Gao2025].
 
-For the direct connection between assets, the storage “phs” is directly connected to the “wind“ to charge, and to “balance” to discharge. This for direct connection between assets completely avoids intermediate elements (connections/nodes), thereby eliminating unnecessary variables and constraints. Thus, accelerating solving times without any loss of accuracy [@Tejada2025].
+For the direct connection between assets, the storage “phs” is directly connected to the “wind“ to charge, and to “balance” to discharge. This direct connection between assets completely avoids intermediate elements (connections/nodes), thereby eliminating unnecessary variables and constraints. Thus, accelerating solving times without any loss of accuracy [@Tejada2025].
 
 TulipaEnergyModel.jl is fundamentally focused on high-quality mathematical formulations. The model also includes other key features such as seasonal storage modelling using representative periods [@Tejada2018; @greg2025], tight and compact MIP formulations for storage [@Elgersma2025], unit commitment [@MoralesEspana2013], and compact formulations for multi-year investment [@wang2025a; @wang2025b].
 
@@ -166,6 +166,17 @@ Then, the indices are created from the data in the DuckDB connection and saved b
 While this step currently occurs in Julia, many of the operations use SQL and could potentially be moved outside Julia.
 Finally, the JuMP pipeline begins by reading the indices table and complementing the data as necessary, then creates the JuMP objects and generates the complete model, which is sent to the solver.
 Tulipa is tested and benchmarked using the HiGHS [@HiGHS] solver, but other MIP solvers accepted by JuMP can be used as well.
+
+## AI usage disclosure
+
+We use and accept pull requests with AI coding assistants to help with development, but we expect the committers to understand and be responsible for the changes that they introduce.
+We expect contributors to include used coding agents as co-authors in their commits, such as:
+
+```plaintext
+Co-authored-by: MODEL NAME (FULL MODEL VERSION) <EMAIL>
+```
+
+No AI agents were used in writing this paper.
 
 ## Acknowledgements
 
