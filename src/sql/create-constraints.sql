@@ -521,6 +521,16 @@ from
     var_storage_level_inter_period
 ;
 
+drop table if exists cons_accumulated_storage_intra_period
+;
+
+create table cons_accumulated_storage_intra_period as
+select
+    *
+from
+    var_accumulated_storage_level_intra_period
+;
+
 drop sequence id
 ;
 
