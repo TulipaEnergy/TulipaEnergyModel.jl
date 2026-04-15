@@ -349,7 +349,7 @@
 end
 
 @testitem "Test non seasonal storage balance constraints" setup = [CommonSetup, StorageSetup] tags =
-    [:unit, :validation, :fast] begin
+    [:unit, :constraint, :fast] begin
     using DuckDB: DuckDB
     using JuMP: JuMP
 
@@ -419,8 +419,80 @@ end
     end
 end
 
+@testitem "Test accumulated storage intra period for seasonal storage" setup =
+    [CommonSetup, StorageSetup] tags = [:unit, :constraint, :fast] begin
+    using DuckDB: DuckDB
+    using JuMP: JuMP
+
+    # accumulated storage intra period only exists for seasonal storage
+    # and only depends on representative periods, not on scenarios.
+    # So, we test with a single scenario.
+
+    # Test parameters
+    storage_asset = "seasonal_storage"
+    config = STORAGE_CONFIGS[storage_asset]
+    milestone_year = 2030
+    scenario = 1
+    inflows_profile = Dict((storage_asset, milestone_year, scenario) => [1.0, 5.5, 10.0, 2.5])
+    num_timesteps = 2
+    num_rps = 2
+
+    # Setup test problem with common helper
+    connection, energy_problem, flow, profiles, incoming_flow_ids, outgoing_flow_ids =
+        setup_test_problem(storage_asset, inflows_profile, num_timesteps, num_rps)
+
+    # Extract accumulated storage level variable
+    accumulated_storage_level =
+        energy_problem.variables[:accumulated_storage_level_intra_period].container
+
+    # Verify all expected constraints exist
+    cons_name = :accumulated_storage_intra_period
+    constraint_data = DuckDB.query(
+        connection,
+        "SELECT id, rep_period, time_block_start
+         FROM cons_$cons_name
+         WHERE asset = '$storage_asset'
+         ORDER BY rep_period, time_block_start",
+    )
+    num_constraints = constraint_data |> collect |> length
+    @test num_constraints == num_rps * num_timesteps
+
+    # Test each constraint for proper formulation
+    for row in constraint_data
+        rp, tb, id = Int(row.rep_period), Int(row.time_block_start), row.id
+
+        # Compute expected terms for this time block
+        # we can reuse the same function as for seasonal storage since it computes terms per time block, just without weights
+        incoming_expr, outgoing_expr, total_inflows = compute_expected_terms_non_seasonal_storage(
+            flow,
+            incoming_flow_ids,
+            outgoing_flow_ids,
+            profiles,
+            rp,
+            tb,
+            config,
+        )
+
+        # Build expected constraint based on position in time series
+        expected_cons = if tb == 1
+            # First time block: balance includes initial storage level
+            JuMP.@build_constraint(
+                accumulated_storage_level[id] - incoming_expr + outgoing_expr == total_inflows
+            )
+        else
+            # Subsequent time blocks: balance against previous time block
+            JuMP.@build_constraint(
+                accumulated_storage_level[id] - accumulated_storage_level[id-1] - incoming_expr + outgoing_expr == total_inflows
+            )
+        end
+
+        # Verify constraint matches expected form
+        @test _verify_constraint_using_id(energy_problem.model, cons_name, id, expected_cons)
+    end
+end
+
 @testitem "Test seasonal storage balance constraints - single scenario" setup =
-    [CommonSetup, StorageSetup] tags = [:unit, :validation, :fast] begin
+    [CommonSetup, StorageSetup] tags = [:unit, :constraint, :fast] begin
     using DuckDB: DuckDB
     using JuMP: JuMP
 
@@ -498,7 +570,7 @@ end
 end
 
 @testitem "Test seasonal storage balance constraints - two scenarios" setup =
-    [CommonSetup, StorageSetup] tags = [:unit, :validation, :fast] begin
+    [CommonSetup, StorageSetup] tags = [:unit, :constraint, :fast] begin
     using DuckDB: DuckDB
     using JuMP: JuMP
 
