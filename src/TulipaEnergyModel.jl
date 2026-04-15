@@ -30,9 +30,6 @@ export
     # Run
     run_scenario,
 
-    # Model parameters
-    ModelParameters,
-
     # Structures
     EnergyProblem,
     ProfileLookup,

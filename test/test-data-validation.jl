@@ -1090,7 +1090,6 @@ end
     )
     error_messages = TEM._validate_model_parameters_discount_year!(String[], connection)
     @test error_messages == [
-        "The 'discount_year' in 'model_parameters' is required but missing. " *
-        "Provide a value, or call populate_with_defaults! to compute it from rep_periods_data.",
+        "The 'discount_year' in 'model_parameters' is required but missing. Provide a value, or call populate_with_defaults!.",
     ]
 end
