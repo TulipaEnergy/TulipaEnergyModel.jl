@@ -2,14 +2,14 @@ using TulipaEnergyModel
 using DuckDB
 using TulipaIO
 
-in_folder = joinpath(pwd(), "test/inputs")
-# in_folder = joinpath(pwd(), "debugging/experiment-inputs")
+# in_folder = joinpath(pwd(), "test/inputs")
+in_folder = joinpath(pwd(), "debugging/experiment-inputs/single-country")
 # bench_folder = joinpath(pwd(), "debugging")
 
 # in_dir = joinpath(in_folder, "Multi-year Investments")
-# in_dir = joinpath(in_folder, "with_limits_model_2")
+in_dir = joinpath(in_folder, "1var-0")
 # in_dir = joinpath(in_folder, "all-susd")
-in_dir = joinpath(in_folder, "UC-ramping")
+# in_dir = joinpath(in_folder, "UC-ramping")
 # in_dir = joinpath(in_folder, "case-study")
 # in_dir = joinpath(bench_folder, "EU")
 
