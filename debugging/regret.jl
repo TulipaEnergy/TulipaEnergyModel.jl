@@ -10,8 +10,22 @@ experiment_inputs_dir = "debugging/experiment-inputs/single-country"
 experiment_results_dir = "debugging/experiment-results"
 reference_objective = 2338362.08463463
 
-cases = ["1var-0", "1var-E1C"]
-
+cases = [
+    "1var-0",
+    "1var-E1C",
+    "1var-E1CT",
+    "1var-E2C",
+    "1var-E2CT",
+    "2var-0C",
+    "2var-0T",
+    "2var-E1",
+    "2var-E2",
+    "3var-0C",
+    "3var-0T",
+    "3var-0N",
+    "3var-E1",
+    "3var-E2",
+]
 # DB connection helper
 function input_setup_regret(input_folder)
     connection = DBInterface.connect(DuckDB.DB)
