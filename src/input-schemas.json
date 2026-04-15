@@ -849,7 +849,6 @@
       "type": "DOUBLE"
     },
     "discount_year": {
-      "default": null,
       "description": "The model discount year. If provided, it must be less than or equal to the minimum of all milestone years (from the table `rep_periods_data`). If not provided, the minimum is used.",
       "type": "INTEGER"
     },

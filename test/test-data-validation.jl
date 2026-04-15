@@ -1077,3 +1077,20 @@ end
         "The 'discount_year' (2035) in 'model_parameters' must be less than or equal to the earliest milestone year (2030).",
     ]
 end
+
+@testitem "Check model_parameters discount_year - missing (NULL) without populate" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(
+        connection,
+        "CREATE OR REPLACE TABLE model_parameters AS
+        SELECT * FROM (VALUES
+            (0.03, NULL, 100.0, 0.95, 0.1)
+        ) AS t(discount_rate, discount_year, power_system_base, risk_aversion_confidence_level_alpha, risk_aversion_weight_lambda)",
+    )
+    error_messages = TEM._validate_model_parameters_discount_year!(String[], connection)
+    @test error_messages == [
+        "The 'discount_year' in 'model_parameters' is required but missing. " *
+        "Provide a value, or call populate_with_defaults! to compute it from rep_periods_data.",
+    ]
+end

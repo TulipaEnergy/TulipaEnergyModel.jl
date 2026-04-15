@@ -176,19 +176,34 @@ end
 
 function _populate_model_parameters_with_defaults!(connection)
     table_name = "model_parameters"
-    table_schema = TulipaEnergyModel.schema[table_name]
+    # discount_year has no static default; it is computed from rep_periods_data below.
+    # Exclude it from the generic schema-driven table build so _sql_arguments_for_defaults
+    # does not require a default for it.
+    table_schema = filter(p -> p.first != "discount_year", TulipaEnergyModel.schema[table_name])
 
     if _check_if_table_exists(connection, table_name)
+        # we only populate defaults for other parameters without discount_year
+        # the result is a table with defaults for all parameters except discount_year, which is populated later
         _rebuild_table_with_defaults!(connection, table_name, table_schema)
     else
+        # otherwise we create the headers with defaults (still without discount_year, which is added later)
+        # the result is a table with headers anddefaults for all parameters except discount_year, which is added later
         sql_create_string, _ = _sql_arguments_for_defaults(connection, table_name, table_schema)
         DuckDB.query(connection, "CREATE OR REPLACE TABLE $table_name ($sql_create_string)")
     end
+
+    # Ensure the discount_year column exists (user may have omitted it).
+    DuckDB.execute(
+        connection,
+        "ALTER TABLE $table_name ADD COLUMN IF NOT EXISTS discount_year INTEGER",
+    )
 
     # when there are no rows, we need to insert default values
     if count_rows_from(connection, table_name) == 0
         DuckDB.execute(connection, "INSERT INTO $table_name DEFAULT VALUES")
     end
+
+    # now discount_year is either a user-provided value, or NULL
     # we only update discount_year when it's NULL, otherwise we might overwrite a user-provided value
     DuckDB.execute(
         connection,

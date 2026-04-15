@@ -960,6 +960,14 @@ function _validate_model_parameters_discount_year!(error_messages, connection)
         connection,
         "SELECT discount_year FROM model_parameters",
     )
+    if ismissing(discount_year)
+        push!(
+            error_messages,
+            "The 'discount_year' in 'model_parameters' is required but missing. " *
+            "Provide a value, or call populate_with_defaults! to compute it from rep_periods_data.",
+        )
+        return error_messages
+    end
     min_milestone_year = get_single_element_from_query_and_ensure_its_only_one(
         connection,
         "SELECT MIN(milestone_year) AS min_milestone_year FROM rep_periods_data",
