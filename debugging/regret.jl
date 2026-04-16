@@ -93,6 +93,8 @@ function regret_calculation(case, reference_objective)
 
     CSV.write("$input_folder_baseline/asset-both.csv", asset_both_df)
 
+    DBInterface.close!(connection)
+
     connection = input_setup_regret(input_folder_baseline)
 
     energy_problem_baseline = EnergyProblem(connection)
