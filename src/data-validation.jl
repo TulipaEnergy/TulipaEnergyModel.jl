@@ -83,6 +83,11 @@ function validate_data!(connection)
             _validate_commodity_price_consistency!,
             false,
         ),
+        (
+            "consistency between investable and investment_method",
+            _validate_investable_and_investment_method_consistency!,
+            false,
+        ),
     )
         @timeit to "$log_msg" validation_function(error_messages, connection)
         if fail_fast && length(error_messages) > 0
@@ -931,6 +936,40 @@ function _validate_investable_and_asset_both_consistency!(error_messages, connec
         push!(
             error_messages,
             "Investable asset '$(row.asset)' with milestone_year=$(row.milestone_year) in 'asset_milestone' does not have a corresponding entry (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)) in 'asset_both'.",
+        )
+    end
+
+    return error_messages
+end
+
+function _validate_investable_and_investment_method_consistency!(error_messages, connection)
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset_milestone.asset, asset_milestone.milestone_year
+        FROM asset_milestone
+        JOIN asset ON asset_milestone.asset = asset.asset
+        WHERE asset_milestone.investable
+            AND asset.investment_method = 'none'
+        ",
+    )
+        push!(
+            error_messages,
+            "Asset '$(row.asset)' is investable in 'asset_milestone' for milestone_year=$(row.milestone_year), but 'asset.investment_method' is 'none'. An asset is investable if and only if its investment_method is not 'none'.",
+        )
+    end
+
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset_milestone.asset, asset_milestone.milestone_year, asset.investment_method
+        FROM asset_milestone
+        JOIN asset ON asset_milestone.asset = asset.asset
+        WHERE NOT asset_milestone.investable
+            AND asset.investment_method != 'none'
+        ",
+    )
+        push!(
+            error_messages,
+            "Asset '$(row.asset)' is not investable in 'asset_milestone' for milestone_year=$(row.milestone_year), but 'asset.investment_method' is '$(row.investment_method)'. An asset is investable if and only if its investment_method is not 'none'.",
         )
     end
 
