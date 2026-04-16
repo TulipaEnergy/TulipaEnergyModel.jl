@@ -849,8 +849,7 @@
       "type": "DOUBLE"
     },
     "discount_year": {
-      "default": 9999,
-      "description": "The model discount year. The `discount_year` is calculated in the code as the minimum value between the input value in the table `model_parameters` and the minimum of all milestone years (in the table `rep_periods_data`).",
+      "description": "The model discount year. If provided, it must be less than or equal to the minimum of all milestone years (from the table `rep_periods_data`). If not provided, the minimum is used.",
       "type": "INTEGER"
     },
     "power_system_base": {

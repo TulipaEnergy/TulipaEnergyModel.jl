@@ -58,6 +58,12 @@
         return connection
     end
 
+    function _Norse_fixture()
+        connection = DBInterface.connect(DuckDB.DB)
+        _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Norse"))
+        return connection
+    end
+
     function _is_constraint_equal(left, right)
         if !_is_constraint_equal_kernel(left, right)
             println("LEFT")

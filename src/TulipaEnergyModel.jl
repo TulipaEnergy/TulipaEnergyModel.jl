@@ -30,9 +30,6 @@ export
     # Run
     run_scenario,
 
-    # Model parameters
-    ModelParameters,
-
     # Structures
     EnergyProblem,
     ProfileLookup,
@@ -104,7 +101,6 @@ export
 
 # Definitions and auxiliary files
 include("run-scenario.jl")
-include("model-parameters.jl")
 include("structures.jl")
 include("utils.jl")
 

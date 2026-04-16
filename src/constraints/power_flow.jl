@@ -1,16 +1,19 @@
 """
-    add_dc_power_flow_constraints!(connection, model, variables, constraints, model_parameters)
+    add_dc_power_flow_constraints!(connection, model, variables, constraints)
 
 Adds the dc power flow constraints to the model.
 """
-function add_dc_power_flow_constraints!(connection, model, variables, constraints, model_parameters)
+function add_dc_power_flow_constraints!(connection, model, variables, constraints)
     let table_name = :dc_power_flow, cons = constraints[:dc_power_flow]
         indices = _append_power_flow_data_to_indices(connection, table_name)
 
         var_flow = variables[:flow].container
         var_angle = variables[:electricity_angle].container
 
-        power_system_base = model_parameters.power_system_base
+        power_system_base = get_single_element_from_query_and_ensure_its_only_one(
+            connection,
+            "SELECT power_system_base FROM model_parameters",
+        )::Float64
 
         attach_constraint!(
             model,

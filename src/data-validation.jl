@@ -83,6 +83,16 @@ function validate_data!(connection)
             _validate_commodity_price_consistency!,
             false,
         ),
+        (
+            "model_parameters has exactly one row",
+            _validate_model_parameters_has_exactly_one_row!,
+            true,
+        ),
+        (
+            "model_parameters discount_year is valid",
+            _validate_model_parameters_discount_year!,
+            false,
+        ),
     )
         @timeit to "$log_msg" validation_function(error_messages, connection)
         if fail_fast && length(error_messages) > 0
@@ -934,5 +944,38 @@ function _validate_investable_and_asset_both_consistency!(error_messages, connec
         )
     end
 
+    return error_messages
+end
+
+function _validate_model_parameters_has_exactly_one_row!(error_messages, connection)
+    row_count = count_rows_from(connection, "model_parameters")
+    if row_count != 1
+        push!(error_messages, "Table 'model_parameters' must have exactly one row")
+    end
+    return error_messages
+end
+
+function _validate_model_parameters_discount_year!(error_messages, connection)
+    discount_year = get_single_element_from_query_and_ensure_its_only_one(
+        connection,
+        "SELECT discount_year FROM model_parameters",
+    )
+    if ismissing(discount_year)
+        push!(
+            error_messages,
+            "The 'discount_year' in 'model_parameters' is required but missing. Provide a value, or call populate_with_defaults!.",
+        )
+        return error_messages
+    end
+    min_milestone_year = get_single_element_from_query_and_ensure_its_only_one(
+        connection,
+        "SELECT MIN(milestone_year) AS min_milestone_year FROM rep_periods_data",
+    )
+    if discount_year > min_milestone_year
+        push!(
+            error_messages,
+            "The 'discount_year' ($discount_year) in 'model_parameters' must be less than or equal to the earliest milestone year ($min_milestone_year).",
+        )
+    end
     return error_messages
 end
