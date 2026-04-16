@@ -174,27 +174,20 @@ function add_storage_constraints!(
             [
                 begin
                     initial_storage_level = row.initial_storage_level::Union{Float64,Missing}
-                    storage_charging_efficiency = row.storage_charging_efficiency::Float64
-                    storage_discharging_efficiency = row.storage_discharging_efficiency::Float64
 
-                    inflows_agg =
-                        _profile_aggregate(
-                            profiles.inter_period,
-                            (row.inflows_profile_name, row.milestone_year, row.scenario),
-                            row.period_block_start:row.period_block_end,
-                            sum,
-                            0.0,
-                        ) * row.storage_inflows
+                    computed_storage_loss_coef = 1.0
+                    if row.storage_loss_from_stored_energy > 0.0
+                        computed_storage_loss_coef =
+                            (1 - row.storage_loss_from_stored_energy)^row.duration_period_block
+                    end
 
                     if row.period_block_start == 1 && !ismissing(initial_storage_level)
                         # Initial storage is a Float64
                         @constraint(
                             model,
                             var_storage_level_inter_period.container[row.id] ==
-                            initial_storage_level +
-                            inflows_agg +
-                            storage_charging_efficiency * incoming_flow -
-                            outgoing_flow / storage_discharging_efficiency,
+                            computed_storage_loss_coef * initial_storage_level +
+                            accumulated_intra_period,
                             base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     else
@@ -214,23 +207,15 @@ function add_storage_constraints!(
                             )::Int
                             var_storage_level[last_id]
                         end
-                        computed_storage_loss_coef = 1.0
-                        if row.storage_loss_from_stored_energy > 0.0
-                            computed_storage_loss_coef =
-                                (1 - row.storage_loss_from_stored_energy)^row.duration_period_block
-                        end
                         @constraint(
                             model,
                             var_storage_level_inter_period.container[row.id] ==
-                            computed_storage_loss_coef * previous_level +
-                            inflows_agg +
-                            storage_charging_efficiency * incoming_flow -
-                            outgoing_flow / storage_discharging_efficiency,
+                            computed_storage_loss_coef * previous_level + accumulated_intra_period,
                             base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                         )
                     end
-                end for (row, incoming_flow, outgoing_flow) in
-                zip(indices, cons.expressions[:incoming], cons.expressions[:outgoing])
+                end for (row, accumulated_intra_period) in
+                zip(indices, cons.expressions[:accumulated_intra_period])
             ],
         )
 

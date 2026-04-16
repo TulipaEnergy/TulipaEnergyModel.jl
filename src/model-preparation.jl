@@ -453,7 +453,7 @@ The algorithm works like this:
 1. Loop over each group of (asset, milestone_year, scenario)
 1.1. Loop over each representative period in the group
 1.1.1. Extract the last accumulated intra-period variable of the representative period
-1.1.2. Compute the coefficient of the variable from its time-block duration
+1.1.2. Compute the coefficient of the variable from its representative period weigth
 1.1.3. Loop over each original period mapped from the representative period
 1.1.3.1. Multiply the coefficient by the mapping weight
 1.1.3.2. Store (var_id, weighted_coefficient) in workspace[period]
@@ -572,11 +572,6 @@ function add_expression_terms_inter_period_storage_constraints!(
             group_row.var_periods,
             group_row.var_weights,
         )
-            if any(ismissing, (var_id, time_block_start, time_block_end, var_periods, var_weights))
-                continue
-            end
-
-            var_coef = Float64(time_block_end - time_block_start + 1)
 
             # Loop over each period in the group and add the accumulated intra-period storage levels to the workspace
             for (period, weight) in zip(var_periods, var_weights)
@@ -585,8 +580,7 @@ function add_expression_terms_inter_period_storage_constraints!(
                 end
 
                 workspace_at_period = workspace[period]
-                workspace_at_period[var_id] =
-                    get(workspace_at_period, var_id, 0.0) + var_coef * weight
+                workspace_at_period[var_id] = get(workspace_at_period, var_id, 0.0) + weight
             end
         end
 
@@ -596,10 +590,6 @@ function add_expression_terms_inter_period_storage_constraints!(
             group_row.cons_period_block_start_vec,
             group_row.cons_period_block_end_vec,
         )
-            if any(ismissing, (cons_id, period_block_start, period_block_end))
-                continue
-            end
-
             empty!(workspace_aggregation)
             for period in period_block_start:period_block_end
                 mergewith!(+, workspace_aggregation, workspace[period])
@@ -731,12 +721,11 @@ function add_expressions_to_constraints!(connection, variables, constraints)
             add_min_outgoing_flow_duration = true,
         )
     end
-    @timeit to "add_expression_terms_inter_period_constraints!" add_expression_terms_inter_period_constraints!(
+    @timeit to "add_expression_terms_inter_period_storage_constraints!" add_expression_terms_inter_period_storage_constraints!(
         connection,
         constraints[:balance_storage_inter_period],
-        variables[:flow],
-        workspace;
-        is_storage_level = true,
+        variables[:accumulated_storage_level_intra_period],
+        workspace,
     )
     @timeit to "add_expression_terms_inter_period_constraints!" add_expression_terms_inter_period_constraints!(
         connection,
