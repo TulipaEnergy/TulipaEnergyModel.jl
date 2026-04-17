@@ -15,6 +15,7 @@ function compute_variables_indices(connection)
             :is_charging,
             :storage_level_rep_period,
             :storage_level_inter_period,
+            :accumulated_storage_level_intra_period,
             :assets_investment,
             :assets_decommission,
             :flows_investment,

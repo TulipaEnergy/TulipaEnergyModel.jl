@@ -4,6 +4,8 @@
 *.log
 *.lp
 *.rej
+*.db
+*.db.wal
 .DS_Store
 .benchmarkci
 .vscode

@@ -56,6 +56,7 @@ const TAGS_DATA = Dict(
     # Feature Areas (What functionality is being tested?)
     :case_study => "Complete case study tests with real-world scenarios",
     :constraint => "JuMP constraints created by the model",
+    :variable => "JuMP variables created by the model",
     :data_validation => "Data integrity, business rules, and schema validation",
     :data_preparation => "Data transformation and table creation",
     :io => "Input/output operations and file handling",
