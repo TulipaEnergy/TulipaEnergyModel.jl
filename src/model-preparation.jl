@@ -465,6 +465,15 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         multiply_by_duration = false,
     )
 
+    @timeit to "add_expression_terms_accumulated_storage_intra_period_constraints!" add_expression_terms_rep_period_constraints!(
+        connection,
+        constraints[:accumulated_storage_intra_period],
+        variables[:flow],
+        workspace;
+        use_highest_resolution = false,
+        multiply_by_duration = true,
+    )
+
     for table_name in
         (:capacity_outgoing_semi_compact_method, :min_outgoing_flow_for_transport_vintage_flows)
         @timeit to "add_expression_terms_rep_period_constraints! for $table_name" add_expression_terms_rep_period_constraints!(
