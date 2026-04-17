@@ -334,6 +334,44 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists var_accumulated_storage_level_intra_period
+;
+
+create table var_accumulated_storage_level_intra_period as
+with
+    filtered_assets as (
+        select
+            t_low.asset,
+            t_low.milestone_year,
+            t_low.rep_period,
+            t_low.time_block_start,
+            t_low.time_block_end,
+        from
+            t_lowest_all as t_low
+            left join asset on t_low.asset = asset.asset
+        where
+            asset.type = 'storage'
+            and asset.is_seasonal = true
+        order by
+            t_low.asset,
+            t_low.milestone_year,
+            t_low.rep_period,
+            t_low.time_block_start
+    )
+select
+    nextval('id') as id,
+    filtered_assets.*,
+    cast(null as float8) as solution,
+from
+    filtered_assets
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 drop table if exists var_flows_investment
 ;
 
