@@ -1,5 +1,6 @@
 {
   "asset": {
+    "_description": "Core asset type definitions with technical and operational parameters. All parameters are indexed on only the asset name.",
     "asset": {
       "description": "Unique identifier with the name of the asset.",
       "type": "VARCHAR"
@@ -191,12 +192,13 @@
     }
   },
   "asset_both": {
+    "_description": "Contains asset parameters that are indexed by the asset name and BOTH the commission_year (aka the year the asset is built) and the milestone_year (the year of investment and operation decisions).",
     "asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "commission_year": {
-      "description": "Year of commissioning",
+      "description": "(Table Index) Year of commissioning the asset.",
       "type": "INTEGER"
     },
     "decommissionable": {
@@ -217,17 +219,18 @@
       "unit_of_measure": "number"
     },
     "milestone_year": {
-      "description": "Year of investment and operation decisions in the optimization.",
+      "description": "(Table Index) Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     }
   },
   "asset_commission": {
+    "_description": "Contains asset parameters that are indexed by the asset name and the commission_year (aka the year the asset is built).",
     "asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "commission_year": {
-      "description": "Year of commissioning.",
+      "description": "(Table Index) Year of commissioning the asset.",
       "type": "INTEGER"
     },
     "conversion_efficiency": {
@@ -301,8 +304,9 @@
     }
   },
   "asset_milestone": {
+    "_description": "Contains asset parameters that are indexed by the asset name and the milestone_year (the year of investment and operation decisions).",
     "asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "initial_storage_level": {
@@ -329,7 +333,7 @@
       "unit_of_measure": "MWh"
     },
     "milestone_year": {
-      "description": "Year of investment and operation decisions in the optimization.",
+      "description": "(Table Index) Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
     "min_energy_timeframe_partition": {
@@ -370,12 +374,13 @@
     }
   },
   "assets_profiles": {
+    "_description": "Links time-series profiles (availability, demand, inflows, etc.) to assets.",
     "asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "commission_year": {
-      "description": "Year of commissioning",
+      "description": "(Table Index) Year of commissioning the asset.",
       "type": "INTEGER"
     },
     "profile_name": {
@@ -397,12 +402,13 @@
     }
   },
   "assets_rep_periods_partitions": {
+    "_description": "Defines temporal resolution (partitioning) for assets within representative periods.",
     "asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "milestone_year": {
-      "description": "Milestone year.",
+      "description": "(Table Index) Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
     "partition": {
@@ -411,7 +417,7 @@
       "type": "VARCHAR"
     },
     "rep_period": {
-      "description": "Number of the representative period",
+      "description": "(Table Index) Number of the representative period",
       "type": "INTEGER",
       "unit_of_measure": "number"
     },
@@ -429,12 +435,13 @@
     }
   },
   "assets_timeframe_partitions": {
+    "_description": "Defines temporal resolution (partitioning) for assets within the timeframe (e.g., annual periods).",
     "asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "milestone_year": {
-      "description": "Milestone year.",
+      "description": "(Table Index) Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
     "partition": {
@@ -456,12 +463,13 @@
     }
   },
   "assets_timeframe_profiles": {
+    "_description": "Links timeseries profiles to assets, based on the milestone year and stochastic scenario.",
     "asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "milestone_year": {
-      "description": "Milestone year.",
+      "description": "(Table Index) Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
     "profile_name": {
@@ -482,12 +490,13 @@
     },
     "scenario": {
       "default": 1,
-      "description": "Stochastic scenario number.",
+      "description": "(Table Index) Stochastic scenario number.",
       "type": "INTEGER",
       "unit_of_measure": "number"
     }
   },
   "flow": {
+    "_description": "Flow of energy or materials between assets, either as a direct connection or transport (such as a network).",
     "capacity": {
       "constraints": {
         "minimum": 0
@@ -499,7 +508,7 @@
     },
     "carrier": {
       "default": null,
-      "description": "Energy carrier",
+      "description": "Energy carrier or material, such as electricity, gas, or water.",
       "type": "VARCHAR"
     },
     "discount_rate": {
@@ -507,7 +516,7 @@
         "minimum": 0
       },
       "default": 0,
-      "description": " e.g. 0.05 is 5 %. discount rate for the annuity calculation.",
+      "description": "Discount rate for the annuity calculation (e.g. 0.05 is 5%).",
       "type": "DOUBLE",
       "unit_of_measure": "ratio"
     },
@@ -516,22 +525,22 @@
         "minimum": 0
       },
       "default": 1,
-      "description": "Economic lifetime of the transport asset for annuity calculation.",
+      "description": "Economic lifetime of the transport asset (such as a pipeline) for the annuity calculation.",
       "type": "INTEGER",
       "unit_of_measure": "years"
     },
     "from_asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset where the flow originates. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "investment_integer": {
       "default": false,
-      "description": "Whether investment decisions are using integer variables.",
+      "description": "Whether investment decisions will use integer variables.",
       "type": "BOOLEAN"
     },
     "is_transport": {
       "default": false,
-      "description": "Whether a transport flow or not. Transport assets can have flows in both directions and can be invested in.",
+      "description": "#TODO CLARIFY Whether a transport flow or not. Transport flows can have capacity constraints, can have flows in both directions, and can be invested in. (Such as a pipeline or a network.)",
       "type": "BOOLEAN"
     },
     "technical_lifetime": {
@@ -539,32 +548,33 @@
         "minimum": 0
       },
       "default": 1,
-      "description": "Technical lifetime of the transport asset to determine for how long the capacity is considered from the commission year.",
+      "description": "How long the flow operational (capacity is considered), starting from the commission year.",
       "type": "INTEGER",
       "unit_of_measure": "years"
     },
     "to_asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset where the flow terminates. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     }
   },
   "flow_both": {
+    "_description": "Flow parameters that are dependent on BOTH the milestone and commissioning years.",
     "commission_year": {
-      "description": "Year of commissioning",
+      "description": "(Table Index) Year of commissioning the transport asset.",
       "type": "INTEGER"
     },
     "decommissionable": {
       "default": false,
-      "description": "Whether the transport asset can be decomission or not.",
+      "description": "Whether the transport asset can be decommissioned or not.",
       "type": "BOOLEAN"
     },
     "from_asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset where the flow originates. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "initial_export_units": {
       "default": 0,
-      "description": "Number of existing units in `from_asset` -> `to_asset` direction",
+      "description": "#TODO WHEN? Number of existing units in `from_asset` -> `to_asset` direction",
       "type": "DOUBLE",
       "unit_of_measure": "number"
     },
@@ -575,15 +585,16 @@
       "unit_of_measure": "number"
     },
     "milestone_year": {
-      "description": "Year of investment and operation decisions in the optimization.",
+      "description": "(Table Index) Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
     "to_asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset where the flow terminates. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     }
   },
   "flow_commission": {
+    "_description": "Flow parameters that are dependent on the commissioning year.",
     "capacity_coefficient": {
       "constraints": {
         "minimum": 0
@@ -594,7 +605,7 @@
       "unit_of_measure": "p.u."
     },
     "commission_year": {
-      "description": "Year of commissioning",
+      "description": "(Table Index) Year of commissioning the transport asset.",
       "type": "INTEGER"
     },
     "conversion_coefficient": {
@@ -613,7 +624,7 @@
       "unit_of_measure": "CUR/MW/year"
     },
     "from_asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset where the flow originates. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "investment_cost": {
@@ -638,11 +649,12 @@
       "unit_of_measure": "ratio"
     },
     "to_asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset where the flow terminates. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     }
   },
   "flow_milestone": {
+    "_description": "Flow parameters that are dependent on the milestone year.",
     "commodity_price": {
       "default": 0,
       "description": "Price of the commodity.",
@@ -655,7 +667,7 @@
       "type": "BOOLEAN"
     },
     "from_asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset where the flow originates. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "investable": {
@@ -664,7 +676,7 @@
       "type": "BOOLEAN"
     },
     "milestone_year": {
-      "description": "Year of investment and operation decisions in the optimization.",
+      "description": "(Table Index) Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
     "operational_cost": {
@@ -680,17 +692,18 @@
       "unit_of_measure": "p.u."
     },
     "to_asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset where the flow terminates. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     }
   },
   "flows_profiles": {
+    "_description": "Links time-series profiles (availability, commodity price) to flows.",
     "from_asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "#TODO CORRECT OR IS IT PROFILE_NAME (Table Index) Name of the asset where the flow originates. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "milestone_year": {
-      "description": "Milestone year.",
+      "description": "(Table Index) Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
     "profile_name": {
@@ -708,11 +721,12 @@
       "type": "VARCHAR"
     },
     "to_asset": {
-      "description": "Name of the asset. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the asset where the flow terminates. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     }
   },
   "flows_relationships": {
+    "_description": "Defines linear relationships and coupling constraints between pairs of flows, i.e. for multi-in multi-out conversions.",
     "constant": {
       "default": 0,
       "description": "Constant `C` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint",
@@ -720,23 +734,23 @@
       "unit_of_measure": "MWh"
     },
     "flow_1_from_asset": {
-      "description": "Name of the `from_asset` of the `flow_1` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the `from_asset` of the `flow_1` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "flow_1_to_asset": {
-      "description": "Name of the `to_asset` of the `flow_1` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the `to_asset` of the `flow_1` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "flow_2_from_asset": {
-      "description": "Name of the `from_asset` of the `flow_2` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the `from_asset` of the `flow_2` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "flow_2_to_asset": {
-      "description": "Name of the `to_asset` of the `flow_2` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
+      "description": "(Table Index) Name of the `to_asset` of the `flow_2` in `flow_1 {==;>=;<=} C + A x flow_2` relationship constraint. Same as the one in the `asset` table.",
       "type": "VARCHAR"
     },
     "milestone_year": {
-      "description": "Milestone year.",
+      "description": "(Table Index) Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
     "ratio": {
@@ -759,6 +773,7 @@
     }
   },
   "flows_rep_periods_partitions": {
+    "_description": "#TODO CONTINUE HERE Defines temporal resolution (partitioning) for flows within representative periods.",
     "from_asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
@@ -795,6 +810,7 @@
     }
   },
   "group_asset": {
+    "_description": "Defines investment groups with aggregate capacity constraints.",
     "constraint_sense": {
       "constraints": {
         "oneOf": [
@@ -824,6 +840,7 @@
     }
   },
   "group_asset_membership": {
+    "_description": "Defines which assets belong to which investment groups with contribution coefficients.",
     "asset": {
       "description": "One of the assets in this group.",
       "type": "VARCHAR"
@@ -843,6 +860,7 @@
     }
   },
   "model_parameters": {
+    "_description": "Global optimization model parameters including discount rates and risk aversion settings.",
     "discount_rate": {
       "default": 0.0,
       "description": "The model discount rate.",
@@ -878,6 +896,7 @@
     }
   },
   "profiles_rep_periods": {
+    "_description": "Time-series profile values for representative periods used in constraints and expressions.",
     "milestone_year": {
       "description": "Milestone year.",
       "type": "INTEGER"
@@ -901,6 +920,7 @@
     }
   },
   "profiles_timeframe": {
+    "_description": "Time-series profile values for timeframe periods used in constraints and expressions.",
     "milestone_year": {
       "description": "Milestone year.",
       "type": "INTEGER"
@@ -920,6 +940,7 @@
     }
   },
   "rep_periods_data": {
+    "_description": "Metadata for each representative period including timestep count and resolution.",
     "milestone_year": {
       "description": "Milestone year.",
       "type": "INTEGER"
@@ -942,6 +963,7 @@
     }
   },
   "rep_periods_mapping": {
+    "_description": "Maps periods to representative periods with scenario weights for stochastic optimization.",
     "milestone_year": {
       "description": "Milestone year.",
       "type": "INTEGER"
@@ -967,6 +989,7 @@
     }
   },
   "stochastic_scenario": {
+    "_description": "Defines stochastic scenarios with probabilities for Monte Carlo or robust optimization.",
     "description": {
       "default": "",
       "description": "Description of the stochastic scenario. e.g., 'Weather year 1982'.",
@@ -989,8 +1012,9 @@
     }
   },
   "timeframe_data": {
+    "_description": "Metadata for each period in the timeframe (e.g., annual periods) including timestep count.",
     "milestone_year": {
-      "description": "Milestone year.",
+      "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
     },
     "num_timesteps": {
