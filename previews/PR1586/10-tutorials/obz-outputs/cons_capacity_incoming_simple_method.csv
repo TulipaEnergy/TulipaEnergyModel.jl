@@ -127,8 +127,8 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_max_inpu
 126,BE_Battery,2050,3,24,24,-0.0
 127,BG_Pump_Hydro_Closed,2050,1,1,4,0.0
 128,BG_Pump_Hydro_Closed,2050,1,5,8,0.0
-129,BG_Pump_Hydro_Closed,2050,1,9,12,-4505.413299929447
-130,BG_Pump_Hydro_Closed,2050,1,13,16,-4505.413299929447
+129,BG_Pump_Hydro_Closed,2050,1,9,12,-4505.413299929446
+130,BG_Pump_Hydro_Closed,2050,1,13,16,-4505.413299929446
 131,BG_Pump_Hydro_Closed,2050,1,17,20,0.0
 132,BG_Pump_Hydro_Closed,2050,1,21,24,0.0
 133,BG_Pump_Hydro_Closed,2050,2,1,4,0.0
@@ -145,8 +145,8 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_max_inpu
 144,BG_Pump_Hydro_Closed,2050,3,21,24,0.0
 145,BG_Pump_Hydro_Open,2050,1,1,4,0.0
 146,BG_Pump_Hydro_Open,2050,1,5,8,0.0
-147,BG_Pump_Hydro_Open,2050,1,9,12,-4505.413299929447
-148,BG_Pump_Hydro_Open,2050,1,13,16,-4505.413299929447
+147,BG_Pump_Hydro_Open,2050,1,9,12,-4505.413299929446
+148,BG_Pump_Hydro_Open,2050,1,13,16,-4505.413299929446
 149,BG_Pump_Hydro_Open,2050,1,17,20,0.0
 150,BG_Pump_Hydro_Open,2050,1,21,24,0.0
 151,BG_Pump_Hydro_Open,2050,2,1,4,0.0
@@ -1195,8 +1195,8 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_max_inpu
 1194,RO_Pump_Hydro_Open,2050,2,21,24,0.0
 1195,RO_Pump_Hydro_Open,2050,3,1,4,0.0
 1196,RO_Pump_Hydro_Open,2050,3,5,8,0.0
-1197,RO_Pump_Hydro_Open,2050,3,9,12,-6211.06485556075
-1198,RO_Pump_Hydro_Open,2050,3,13,16,-6211.06485556075
+1197,RO_Pump_Hydro_Open,2050,3,9,12,-6211.0648555607495
+1198,RO_Pump_Hydro_Open,2050,3,13,16,-6211.0648555607495
 1199,RO_Pump_Hydro_Open,2050,3,17,20,0.0
 1200,RO_Pump_Hydro_Open,2050,3,21,24,0.0
 1201,SE_Battery,2050,1,1,4,0.0
@@ -1255,8 +1255,8 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_max_inpu
 1254,SI_Pump_Hydro_Closed,2050,3,21,24,0.0
 1255,SK_Pump_Hydro_Closed,2050,1,1,4,0.0
 1256,SK_Pump_Hydro_Closed,2050,1,5,8,0.0
-1257,SK_Pump_Hydro_Closed,2050,1,9,12,-4505.413299929447
-1258,SK_Pump_Hydro_Closed,2050,1,13,16,-4505.413299929447
+1257,SK_Pump_Hydro_Closed,2050,1,9,12,-4505.413299929446
+1258,SK_Pump_Hydro_Closed,2050,1,13,16,-4505.413299929446
 1259,SK_Pump_Hydro_Closed,2050,1,17,20,0.0
 1260,SK_Pump_Hydro_Closed,2050,1,21,24,0.0
 1261,SK_Pump_Hydro_Closed,2050,2,1,4,0.0
@@ -1273,8 +1273,8 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,dual_max_inpu
 1272,SK_Pump_Hydro_Closed,2050,3,21,24,0.0
 1273,SK_Pump_Hydro_Open,2050,1,1,4,0.0
 1274,SK_Pump_Hydro_Open,2050,1,5,8,0.0
-1275,SK_Pump_Hydro_Open,2050,1,9,12,-4505.413299929447
-1276,SK_Pump_Hydro_Open,2050,1,13,16,-4505.413299929447
+1275,SK_Pump_Hydro_Open,2050,1,9,12,-4505.413299929446
+1276,SK_Pump_Hydro_Open,2050,1,13,16,-4505.413299929446
 1277,SK_Pump_Hydro_Open,2050,1,17,20,0.0
 1278,SK_Pump_Hydro_Open,2050,1,21,24,0.0
 1279,SK_Pump_Hydro_Open,2050,2,1,4,0.0
