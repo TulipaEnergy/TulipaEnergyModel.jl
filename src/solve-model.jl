@@ -105,6 +105,8 @@ function save_solution!(connection, model, variables, constraints; compute_duals
             WHERE $(var.table_name).id = sol.id
             ",
         )
+
+        DuckDB.execute(connection, "drop VIEW if exists t_var_solution_$name")
     end
 
     if compute_duals

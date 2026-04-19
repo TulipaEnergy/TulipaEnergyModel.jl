@@ -106,6 +106,10 @@ function regret_calculation(case, reference_objective)
     REGRET =
         (energy_problem_baseline.objective_value + assets_investment_cost) - reference_objective
 
+    DBInterface.close!(connection)
+
+    GC.gc()
+
     return [REGRET, assets_investment_cost, energy_problem_baseline.objective_value]
 end
 
