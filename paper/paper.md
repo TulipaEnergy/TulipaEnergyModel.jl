@@ -118,6 +118,8 @@ For the direct connection between assets, the storage “phs” is directly conn
 
 TulipaEnergyModel.jl is fundamentally focused on high-quality mathematical formulations. The model also includes other key features such as seasonal storage modelling using representative periods [@Tejada2018; @greg2025], tight and compact MIP formulations for storage [@Elgersma2025], unit commitment [@MoralesEspana2013], and compact formulations for multi-year investment [@wang2025a; @wang2025b].
 
+Although TulipaEnergyModel.jl is a relatively young package, it already shows promising results in breaking the trade-off between computational burden and model details. As presented in initial benchmark results, TulipaEnergyModel.jl allows to: 1) solve large capacity expansion problems faster [@greg2025], 2) include uncertainty through more computationally demanding stochastic programming [@Kremer2025], 3) create computationally efficient approximations by exploiting the flexible temporal resolution [Gao2025], and 4) reduce the problem size without sacrificing any accuracy [@Tejada2025]. All these studies demonstrate how TulipaEnergyModel.jl does not rely on (over)simplifying the problem, leading to unreliable results/conclusions, to solve more computationally demanding problems.
+
 ## Software Design Innovations
 
 To accommodate flexible temporal resolution for assets and flows, many variables have a "time block" component instead of a "time step", and many variables and constraints have sparse indices.
