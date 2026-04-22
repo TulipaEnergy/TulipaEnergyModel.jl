@@ -5,7 +5,7 @@ function _add_storage_assets_energy_fixed_cost!(
     objective_expr,
     lambda,
 )
-    expr_available_energy_units_simple_method = expressions[:available_energy_units_simple_method]
+    expr_available_energy_units_aggregated = expressions[:available_energy_units_aggregated]
 
     indices = DuckDB.query(
         connection,
@@ -15,7 +15,7 @@ function _add_storage_assets_energy_fixed_cost!(
                 * asset_commission.fixed_cost_storage_energy
                 * obj.capacity_storage_energy
                 AS cost,
-        FROM expr_available_energy_units_simple_method AS expr
+        FROM expr_available_energy_units_aggregated AS expr
         LEFT JOIN asset_commission
             ON expr.asset = asset_commission.asset
             AND expr.commission_year = asset_commission.commission_year
@@ -31,7 +31,7 @@ function _add_storage_assets_energy_fixed_cost!(
         storage_assets_energy_fixed_cost,
         sum(
             row.cost * expr_avail for (row, expr_avail) in
-            zip(indices, expr_available_energy_units_simple_method.expressions[:energy])
+            zip(indices, expr_available_energy_units_aggregated.expressions[:energy])
         )
     )
     _add_to_objective!(

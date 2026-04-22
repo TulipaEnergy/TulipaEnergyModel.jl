@@ -55,7 +55,7 @@ from
     and fc.to_asset = ft.to_asset
     and fc.commission_year = ab.commission_year
 where asset.type = 'producer'
-    and asset.investment_method = 'semi-compact'
+    and asset.investment_method = 'compact_efficiencies'
 ;
 
 drop sequence id
@@ -421,7 +421,7 @@ from
     and asset_commission.commission_year = asset_milestone.milestone_year
 where
     asset_milestone.investable = true
-    and asset.investment_method in ('simple', 'semi-compact', 'compact')
+    and asset.investment_method in ('aggregated', 'compact_efficiencies', 'compact_profiles')
 ;
 
 drop sequence id
@@ -448,7 +448,7 @@ from
     left join asset on asset.asset = asset_both.asset
 where
     asset_both.decommissionable
-    and asset.investment_method in ('simple', 'semi-compact', 'compact')
+    and asset.investment_method in ('aggregated', 'compact_efficiencies', 'compact_profiles')
 ;
 
 drop sequence id
@@ -505,7 +505,7 @@ where
     asset.storage_method_energy = 'optimize_storage_capacity'
     and asset_milestone.investable = true
     and asset.type = 'storage'
-    and asset.investment_method = 'simple'
+    and asset.investment_method = 'aggregated'
 ;
 
 drop sequence id
@@ -532,7 +532,7 @@ where
     asset.storage_method_energy = 'optimize_storage_capacity'
     and asset.type = 'storage'
     and asset_both.decommissionable
-    and asset.investment_method = 'simple'
+    and asset.investment_method = 'aggregated'
 ;
 
 drop sequence id

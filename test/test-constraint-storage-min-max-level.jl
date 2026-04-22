@@ -14,7 +14,7 @@
         capacity_storage_energy::Float64 = 47.0
         energy_to_power_ratio::Float64 = 7.0
         investable::Bool = true
-        investment_method::String = "simple"
+        investment_method::String = "aggregated"
         max_storage_level_profile::Dict{Tuple{Int,Int},Vector{Float64}} =
             Dict((2030, 1) => [0.8, 0.5, 1.0])
         min_storage_level_profile::Dict{Tuple{Int,Int},Vector{Float64}} =

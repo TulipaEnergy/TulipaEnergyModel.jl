@@ -126,7 +126,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type = 'producer'
-    and asset.investment_method = 'compact'
+    and asset.investment_method = 'compact_profiles'
 ;
 
 drop sequence id
@@ -154,7 +154,7 @@ with cons_data as (
         and t_high.milestone_year = asset_both.milestone_year
     where
         asset.type = 'producer'
-        and asset.investment_method = 'semi-compact'
+        and asset.investment_method = 'compact_efficiencies'
     -- t_high is ordered by asset, milestone_year, rep_period, time_block_start
     -- since we added commission_year, we need to explictly order by commission_year
     -- note the order is only needed for the test, constraints do not require it
@@ -190,7 +190,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
-    and asset.investment_method in ('simple', 'none')
+    and asset.investment_method in ('aggregated', 'none')
 ;
 
 drop sequence id
@@ -286,7 +286,7 @@ where
     and cte_transport_flow_info.outgoing_flows_have_transport_flows
     -- Assets with unit commitment already have a minimum outgoing flow constraints
     and not asset.unit_commitment
-    and asset.investment_method in ('compact', 'simple', 'none')
+    and asset.investment_method in ('compact_profiles', 'aggregated', 'none')
 ;
 
 drop sequence id
@@ -335,7 +335,7 @@ from
         and t_high.milestone_year = asset_both.milestone_year
 where
     asset.type = 'producer'
-    and asset.investment_method = 'semi-compact'
+    and asset.investment_method = 'compact_efficiencies'
     and cte_transport_flow_info.outgoing_flows_have_transport_flows
     -- Note we do not exclude UC here, because UC only guarantees
     -- the minimum point of flow, instead of vintage flow
@@ -383,7 +383,7 @@ from
 where
     asset.type in ('storage', 'conversion')
     and cte_transport_flow_info.incoming_flows_have_transport_flows
-    and asset.investment_method in ('compact', 'simple', 'none')
+    and asset.investment_method in ('compact_profiles', 'aggregated', 'none')
 ;
 
 drop sequence id
@@ -399,7 +399,7 @@ from
     var_units_on
     left join asset on var_units_on.asset = asset.asset
 where
-    asset.investment_method = 'compact'
+    asset.investment_method = 'compact_profiles'
 ;
 
 drop table if exists cons_limit_units_on_simple_method
@@ -412,7 +412,7 @@ from
     var_units_on
     left join asset on var_units_on.asset = asset.asset
 where
-    asset.investment_method in ('simple', 'none')
+    asset.investment_method in ('aggregated', 'none')
 ;
 
 create sequence id start 1
@@ -717,7 +717,7 @@ from
     var_assets_decommission
 left join asset on asset.asset = var_assets_decommission.asset
 where
-    asset.investment_method = 'compact'
+    asset.investment_method = 'compact_profiles'
 ;
 
 drop sequence id
@@ -742,7 +742,7 @@ from
     var_flow
 left join asset on asset.asset = var_flow.from_asset
 where
-    asset.investment_method = 'semi-compact'
+    asset.investment_method = 'compact_efficiencies'
 ;
 
 drop sequence id
@@ -819,7 +819,7 @@ from (
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
         and asset.unit_commitment_method LIKE '3var%'
-        and asset.investment_method in ('simple', 'none')
+        and asset.investment_method in ('aggregated', 'none')
 
     order by
         t_high.asset,
@@ -862,7 +862,7 @@ where
     asset.type in ('producer', 'conversion')
     and asset.unit_commitment = true
     and asset.unit_commitment_method LIKE '3var%'
-    and asset.investment_method = 'compact'
+    and asset.investment_method = 'compact_profiles'
 order by
     t_high.asset,
     t_high.milestone_year,

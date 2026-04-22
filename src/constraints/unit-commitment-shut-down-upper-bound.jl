@@ -12,7 +12,7 @@ function add_shut_down_upper_bound_constraints!(
 )
     let table_name = :shut_down_upper_bound_simple_investment, cons = constraints[table_name]
         expr_avail_simple_method =
-            expressions[:available_asset_units_simple_method].expressions[:assets]
+            expressions[:available_asset_units_aggregated].expressions[:assets]
 
         indices = _append_available_units_shut_down_simple_method(connection, table_name)
 
@@ -35,8 +35,7 @@ function add_shut_down_upper_bound_constraints!(
     end
 
     let table_name = :shut_down_upper_bound_compact_investment, cons = constraints[table_name]
-        expr_avail_compact_method =
-            expressions[:available_asset_units_compact_method].expressions[:assets]
+        expr_avail_compact_method = expressions[:available_asset_units_compact].expressions[:assets]
 
         indices = _append_available_units_shut_down_compact_method(connection, table_name)
 
@@ -71,7 +70,7 @@ function _append_available_units_shut_down_simple_method(connection, table_name)
             var_units_on.id as units_on_id,
             var_shut_down.id as shut_down_id
         FROM cons_$table_name AS cons
-        LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
+        LEFT JOIN expr_available_asset_units_aggregated AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.milestone_year = expr_avail.milestone_year
         LEFT JOIN asset
@@ -86,7 +85,7 @@ function _append_available_units_shut_down_simple_method(connection, table_name)
             AND var_shut_down.milestone_year = cons.milestone_year
             AND var_shut_down.rep_period = cons.rep_period
             AND var_shut_down.time_block_start = cons.time_block_start
-        WHERE asset.investment_method in ('simple', 'none')
+        WHERE asset.investment_method in ('aggregated', 'none')
         ORDER BY cons.id
         ",
     )
@@ -106,7 +105,7 @@ function _append_available_units_shut_down_compact_method(connection, table_name
             ANY_VALUE(var_units_on.id) AS units_on_id,
             ANY_VALUE(var_shut_down.id) AS shut_down_id
         FROM cons_$table_name AS cons
-        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
+        LEFT JOIN expr_available_asset_units_compact AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.milestone_year = expr_avail.milestone_year
         LEFT JOIN asset
@@ -121,7 +120,7 @@ function _append_available_units_shut_down_compact_method(connection, table_name
             AND var_shut_down.milestone_year = cons.milestone_year
             AND var_shut_down.rep_period = cons.rep_period
             AND var_shut_down.time_block_start = cons.time_block_start
-        WHERE asset.investment_method = 'compact'
+        WHERE asset.investment_method = 'compact_profiles'
         GROUP BY cons.id
         ORDER BY cons.id
         ",

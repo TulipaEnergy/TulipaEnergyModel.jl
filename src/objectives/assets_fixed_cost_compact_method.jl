@@ -5,7 +5,7 @@ function _add_assets_fixed_cost_compact_method!(
     objective_expr,
     lambda,
 )
-    expr_available_asset_units_compact_method = expressions[:available_asset_units_compact_method]
+    expr_available_asset_units_compact = expressions[:available_asset_units_compact]
 
     indices = DuckDB.query(
         connection,
@@ -15,7 +15,7 @@ function _add_assets_fixed_cost_compact_method!(
                 * asset_commission.fixed_cost
                 * obj.capacity
                 AS cost,
-        FROM expr_available_asset_units_compact_method AS expr
+        FROM expr_available_asset_units_compact AS expr
         LEFT JOIN asset_commission
             ON expr.asset = asset_commission.asset
             AND expr.commission_year = asset_commission.commission_year
@@ -31,7 +31,7 @@ function _add_assets_fixed_cost_compact_method!(
         assets_fixed_cost_compact_method,
         sum(
             row.cost * expr_avail for (row, expr_avail) in
-            zip(indices, expr_available_asset_units_compact_method.expressions[:assets])
+            zip(indices, expr_available_asset_units_compact.expressions[:assets])
         )
     )
     _add_to_objective!(

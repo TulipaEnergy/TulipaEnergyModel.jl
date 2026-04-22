@@ -1,12 +1,12 @@
 @testset "Test add_capacity_outgoing_semi_compact_method_constraints!" begin
     # Setup a temporary DuckDB connection and model
     connection = _multi_year_fixture()
-    # Set the investment method to 'semi-compact' for wind
+    # Set the investment method to 'compact_efficiencies' for wind
     # Add another flow wind-battery so now wind has two outgoing flows: wind-battery and wind-demand
     DuckDB.query(
         connection,
         """
-        UPDATE asset SET investment_method = 'semi-compact' WHERE asset = 'wind';
+        UPDATE asset SET investment_method = 'compact_efficiencies' WHERE asset = 'wind';
         INSERT INTO flow VALUES
             ('wind', 'battery', 'electricity', false, 0.0, 10, 1, 0.02, false);
         INSERT INTO flow_milestone VALUES
@@ -107,8 +107,7 @@
     # Create expressions
     expressions = Dict{Symbol,TulipaEnergyModel.TulipaExpression}()
     TulipaEnergyModel.create_multi_year_expressions!(connection, model, variables, expressions)
-    expr_avail_compact_method =
-        expressions[:available_asset_units_compact_method].expressions[:assets]
+    expr_avail_compact_method = expressions[:available_asset_units_compact].expressions[:assets]
 
     # Create constraint
     table_name = "cons_capacity_outgoing_semi_compact_method"

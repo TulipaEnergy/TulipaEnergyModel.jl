@@ -329,7 +329,7 @@ function prepare_objective_tables!(connection, model_parameters)
             AND var.milestone_year = in_between_years.milestone_year
         LEFT JOIN asset
             ON asset.asset = flow_milestone.from_asset
-        WHERE asset.investment_method = 'semi-compact'
+        WHERE asset.investment_method = 'compact_efficiencies'
         ",
     )
 

@@ -50,7 +50,7 @@ function add_capacity_limits_transport_flows!(
     profiles,
 )
     ## unpack from model
-    expr_avail = expressions[:available_flow_units_simple_method]
+    expr_avail = expressions[:available_flow_units_aggregated]
     expr_avail_export = expr_avail.expressions[:export]
     expr_avail_import = expr_avail.expressions[:import]
 
@@ -206,7 +206,7 @@ function _append_transport_data_to_indices(connection)
         LEFT JOIN flow
             ON cons.from_asset = flow.from_asset
             AND cons.to_asset = flow.to_asset
-        LEFT JOIN expr_available_flow_units_simple_method AS expr_avail
+        LEFT JOIN expr_available_flow_units_aggregated AS expr_avail
             ON cons.from_asset = expr_avail.from_asset
             AND cons.to_asset = expr_avail.to_asset
             AND cons.milestone_year = expr_avail.milestone_year

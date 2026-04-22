@@ -64,8 +64,7 @@
     # Create expressions
     expressions = Dict{Symbol,TulipaEnergyModel.TulipaExpression}()
     TulipaEnergyModel.create_multi_year_expressions!(connection, model, variables, expressions)
-    expr_avail_compact_method =
-        expressions[:available_asset_units_compact_method].expressions[:assets]
+    expr_avail_compact_method = expressions[:available_asset_units_compact].expressions[:assets]
 
     # Create constraint tables
     table_name = "cons_limit_decommission_compact_method"

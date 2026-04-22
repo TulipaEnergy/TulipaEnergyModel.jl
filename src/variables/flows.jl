@@ -10,7 +10,7 @@ function add_flow_variables!(connection, model, variables)
     indices = _create_flow_table(connection)
 
     lower_bound(row) =
-        if row.is_transport || row.investment_method == "semi-compact"
+        if row.is_transport || row.investment_method == "compact_efficiencies"
             -Inf
         else
             0.0

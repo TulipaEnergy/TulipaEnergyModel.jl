@@ -371,7 +371,7 @@ end
     # Validate have only matching years
     # Error otherwise and point out the unmatched rows
     connection = DBInterface.connect(DuckDB.DB)
-    asset = DataFrame(:asset => ["A1", "A2"], :investment_method => ["simple", "none"])
+    asset = DataFrame(:asset => ["A1", "A2"], :investment_method => ["aggregated", "none"])
     asset_both = DataFrame(
         :asset => ["A1", "A1", "A2", "A2"],
         :milestone_year => [1, 1, 1, 1],
@@ -396,9 +396,9 @@ end
 
     error_messages = TEM._validate_simple_method_has_only_matching_years!(String[], connection)
     @test error_messages == [
-        "Unexpected (asset='A1', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A1' with investment_method='simple'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Unexpected (asset='A1', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A1' with investment_method='aggregated'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
         "Unexpected (asset='A2', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A2' with investment_method='none'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Unexpected (from_asset='A2', to_asset='B', milestone_year=1, commission_year=0) in 'flow_both' for an flow=('A2', 'B') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Unexpected (from_asset='A2', to_asset='B', milestone_year=1, commission_year=0) in 'flow_both' for an flow=('A2', 'B') with default investment_method='aggregated/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
@@ -408,7 +408,7 @@ end
     # Validate that the data contains all milestone years where milestone year = commission year
     # Error otherwise and point out the missing milestone years
     connection = DBInterface.connect(DuckDB.DB)
-    asset = DataFrame(:asset => ["A1", "A2"], :investment_method => ["simple", "none"])
+    asset = DataFrame(:asset => ["A1", "A2"], :investment_method => ["aggregated", "none"])
     asset_milestone = DataFrame(:asset => ["A1", "A2"], :milestone_year => [1, 1])
     asset_both =
         DataFrame(:asset => ["A1", "A2"], :milestone_year => [1, 1], :commission_year => [0, 0])
@@ -436,9 +436,9 @@ end
         TEM._validate_simple_method_all_milestone_years_are_covered!(String[], connection)
 
     @test error_messages == [
-        "Missing information in 'asset_both': Asset 'A1' has investment_method='simple' but there is no row (asset='A1', milestone_year=1, commission_year=1). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Missing information in 'asset_both': Asset 'A1' has investment_method='aggregated' but there is no row (asset='A1', milestone_year=1, commission_year=1). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
         "Missing information in 'asset_both': Asset 'A2' has investment_method='none' but there is no row (asset='A2', milestone_year=1, commission_year=1). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Missing information in 'flow_both': Flow ('A2', 'B') currently only has investment_method='simple/none' but there is no row (from_asset='A2', to_asset='B', milestone_year=1, commission_year=1). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Missing information in 'flow_both': Flow ('A2', 'B') currently only has investment_method='aggregated/none' but there is no row (from_asset='A2', to_asset='B', milestone_year=1, commission_year=1). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
@@ -460,8 +460,8 @@ end
     )
     error_messages = TEM._validate_simple_method_has_only_matching_years!(String[], connection)
     @test error_messages == [
-        "Unexpected (asset='ccgt', milestone_year=2030, commission_year=2029) in 'asset_both' for an asset='ccgt' with investment_method='simple'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Unexpected (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2029) in 'flow_both' for an flow=('wind', 'demand') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Unexpected (asset='ccgt', milestone_year=2030, commission_year=2029) in 'asset_both' for an asset='ccgt' with investment_method='aggregated'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Unexpected (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2029) in 'flow_both' for an flow=('wind', 'demand') with default investment_method='aggregated/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
@@ -482,8 +482,8 @@ end
     error_messages =
         TEM._validate_simple_method_all_milestone_years_are_covered!(String[], connection)
     @test error_messages == [
-        "Missing information in 'asset_both': Asset 'ccgt' has investment_method='simple' but there is no row (asset='ccgt', milestone_year=2030, commission_year=2030). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Missing information in 'flow_both': Flow ('wind', 'demand') currently only has investment_method='simple/none' but there is no row (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2030). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Missing information in 'asset_both': Asset 'ccgt' has investment_method='aggregated' but there is no row (asset='ccgt', milestone_year=2030, commission_year=2030). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Missing information in 'flow_both': Flow ('wind', 'demand') currently only has investment_method='aggregated/none' but there is no row (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2030). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
@@ -624,7 +624,8 @@ end
             "consumer",
             "consumer",
         ],
-        :investment_method => ["simple", "none", "none", "simple", "compact", "none", "none"],
+        :investment_method =>
+            ["aggregated", "none", "none", "aggregated", "compact_profiles", "none", "none"],
     )
     connection = DBInterface.connect(DuckDB.DB)
     DuckDB.register_data_frame(connection, asset, "asset")
@@ -634,21 +635,24 @@ end
         connection,
     )
     @test error_messages == [
-        "Incorrect use of investment method 'simple' for asset 'A4' of type 'consumer'. Consumer assets can only have 'none' investment method.",
-        "Incorrect use of investment method 'compact' for asset 'A5' of type 'consumer'. Consumer assets can only have 'none' investment method.",
+        "Incorrect use of investment method 'aggregated' for asset 'A4' of type 'consumer'. Consumer assets can only have 'none' investment method.",
+        "Incorrect use of investment method 'compact_profiles' for asset 'A5' of type 'consumer'. Consumer assets can only have 'none' investment method.",
     ]
 end
 
 @testitem "Test investment method and asset types consistency - using Tiny data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
-    DuckDB.query(connection, "UPDATE asset SET investment_method = 'simple' WHERE asset = 'demand'")
+    DuckDB.query(
+        connection,
+        "UPDATE asset SET investment_method = 'aggregated' WHERE asset = 'demand'",
+    )
     error_messages = TEM._validate_certain_asset_types_can_only_have_none_investment_methods!(
         String[],
         connection,
     )
     @test error_messages == [
-        "Incorrect use of investment method 'simple' for asset 'demand' of type 'consumer'. Consumer assets can only have 'none' investment method.",
+        "Incorrect use of investment method 'aggregated' for asset 'demand' of type 'consumer'. Consumer assets can only have 'none' investment method.",
     ]
 end
 
@@ -700,7 +704,10 @@ end
     )
     DuckDB.register_data_frame(connection, flow_commission, "flow_commission")
 
-    asset = DataFrame(:asset => ["A", "B"], :investment_method => ["semi-compact", "semi-compact"])
+    asset = DataFrame(
+        :asset => ["A", "B"],
+        :investment_method => ["compact_efficiencies", "compact_efficiencies"],
+    )
     DuckDB.register_data_frame(connection, asset, "asset")
 
     error_messages = TEM._validate_flow_commission_and_asset_both_consistency!(String[], connection)
@@ -717,7 +724,7 @@ end
         connection,
         """
         UPDATE flow_commission SET commission_year = 0 WHERE from_asset = 'wind';
-        UPDATE asset SET investment_method = 'semi-compact' WHERE asset = 'wind';
+        UPDATE asset SET investment_method = 'compact_efficiencies' WHERE asset = 'wind';
         """,
     )
     error_messages = TEM._validate_flow_commission_and_asset_both_consistency!(String[], connection)

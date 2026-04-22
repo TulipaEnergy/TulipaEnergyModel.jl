@@ -75,9 +75,9 @@
       "constraints": {
         "oneOf": [
           "none",
-          "simple",
-          "semi-compact",
-          "compact"
+          "aggregated",
+          "compact_efficiencies",
+          "compact_profiles"
         ]
       },
       "default": "none",

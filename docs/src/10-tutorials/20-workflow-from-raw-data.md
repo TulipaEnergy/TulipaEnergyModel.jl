@@ -218,9 +218,9 @@ asset = DataFrame(
 )
 
 # Add rows
-push!(asset, ("ccgt_ccs", "producer", 84600.0, "simple", true, 15, 0.05))
-push!(asset, ("solar", "producer", 550000.0, "simple", true, 15, 0.05))
-push!(asset, ("wind", "producer", 134000.0, "simple", true, 15, 0.05))
+push!(asset, ("ccgt_ccs", "producer", 84600.0, "aggregated", true, 15, 0.05))
+push!(asset, ("solar", "producer", 550000.0, "aggregated", true, 15, 0.05))
+push!(asset, ("wind", "producer", 134000.0, "aggregated", true, 15, 0.05))
 push!(asset, ("e_demand", "consumer", 0.0, "none", false, 15, 0.05))
 push!(asset, ("ens", "producer", 1000000.0, "none", false, 15, 0.05))
 
@@ -560,12 +560,12 @@ TIO.get_table(connection, "asset")
 
 DBInterface.execute(connection, """
     INSERT INTO asset (asset, type, capacity, investment_method, investment_integer, technical_lifetime, discount_rate, capacity_storage_energy)
-    VALUES ('battery', 'storage', 40000.0, 'simple', false, 15, 0.05, 160000)
+    VALUES ('battery', 'storage', 40000.0, 'aggregated', false, 15, 0.05, 160000)
 """)
 
 DBInterface.execute(connection, """
     INSERT INTO asset (asset, type, capacity, investment_method, investment_integer, technical_lifetime, discount_rate, capacity_storage_energy)
-    VALUES ('pumped_hydro', 'storage', 50000.0, 'simple', false, 15, 0.05, 500000)
+    VALUES ('pumped_hydro', 'storage', 50000.0, 'aggregated', false, 15, 0.05, 500000)
 """)
 
 # Check new entries

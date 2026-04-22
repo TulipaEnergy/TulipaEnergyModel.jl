@@ -5,10 +5,8 @@ Adds the capacity constraints for all asset types to the model
 """
 function add_capacity_constraints!(connection, model, expressions, constraints, profiles)
     ## unpack from expressions
-    expr_avail_compact_method =
-        expressions[:available_asset_units_compact_method].expressions[:assets]
-    expr_avail_simple_method =
-        expressions[:available_asset_units_simple_method].expressions[:assets]
+    expr_avail_compact_method = expressions[:available_asset_units_compact].expressions[:assets]
+    expr_avail_simple_method = expressions[:available_asset_units_aggregated].expressions[:assets]
 
     ## Expressions used by capacity constraints
     # - Create capacity limit for outgoing flows
@@ -485,14 +483,14 @@ function _append_capacity_data_to_indices_compact_method(connection, table_name)
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
-        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
+        LEFT JOIN expr_available_asset_units_compact AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.milestone_year = expr_avail.milestone_year
         LEFT OUTER JOIN assets_profiles AS avail_profile
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
             AND avail_profile.profile_type = 'availability'
-        WHERE asset.investment_method = 'compact'
+        WHERE asset.investment_method = 'compact_profiles'
         GROUP BY cons.id
         ORDER BY cons.id
         ",
@@ -523,7 +521,7 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
         LEFT JOIN asset_commission
             ON cons.asset = asset_commission.asset
             AND cons.milestone_year = asset_commission.commission_year
-        LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
+        LEFT JOIN expr_available_asset_units_aggregated AS expr_avail
             ON cons.asset = expr_avail.asset
             -- For simple method: milestone_year = commission_year
             -- so no need to join on commission_year
@@ -534,7 +532,7 @@ function _append_capacity_data_to_indices_simple_method(connection, table_name)
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
             AND avail_profile.profile_type = 'availability'
-        WHERE asset.investment_method in ('simple', 'none')
+        WHERE asset.investment_method in ('aggregated', 'none')
         ORDER BY cons.id
         ",
     )
@@ -560,7 +558,7 @@ function _append_capacity_data_to_indices_semi_compact_method(connection, table_
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
-        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
+        LEFT JOIN expr_available_asset_units_compact AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.milestone_year = expr_avail.milestone_year
             AND cons.commission_year = expr_avail.commission_year
@@ -568,7 +566,7 @@ function _append_capacity_data_to_indices_semi_compact_method(connection, table_
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
             AND avail_profile.profile_type = 'availability'
-        WHERE asset.investment_method = 'semi-compact' -- this condition is not needed, but makes it more explicit
+        WHERE asset.investment_method = 'compact_efficiencies' -- this condition is not needed, but makes it more explicit
         ORDER BY cons.id
         ",
     )
@@ -585,7 +583,7 @@ function _append_expression_available_capacity_id_to_indices_compact_method(conn
             cons.milestone_year AS milestone_year,
             cons.commission_year AS commission_year,
         FROM cons_$table_name AS cons
-        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail_compact_method
+        LEFT JOIN expr_available_asset_units_compact AS expr_avail_compact_method
             ON cons.asset = expr_avail_compact_method.asset
             AND cons.milestone_year = expr_avail_compact_method.milestone_year
             AND cons.commission_year = expr_avail_compact_method.commission_year

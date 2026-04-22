@@ -73,8 +73,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
 
         indices = _append_available_units_data_compact_method(connection, table_name)
 
-        expr_avail_compact_method =
-            expressions[:available_asset_units_compact_method].expressions[:assets]
+        expr_avail_compact_method = expressions[:available_asset_units_compact].expressions[:assets]
         attach_constraint!(
             model,
             cons,
@@ -97,7 +96,7 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
         indices = _append_available_units_data_simple_method(connection, table_name)
 
         expr_avail_simple_method =
-            expressions[:available_asset_units_simple_method].expressions[:assets]
+            expressions[:available_asset_units_aggregated].expressions[:assets]
         attach_constraint!(
             model,
             cons,
@@ -313,7 +312,7 @@ function _append_available_units_data_compact_method(connection, table_name)
             ARRAY_AGG(expr_avail.id) AS avail_indices,
             ANY_VALUE(var_units_on.id) AS units_on_id,
         FROM cons_$table_name AS cons
-        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
+        LEFT JOIN expr_available_asset_units_compact AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.milestone_year = expr_avail.milestone_year
         LEFT JOIN asset
@@ -323,7 +322,7 @@ function _append_available_units_data_compact_method(connection, table_name)
             AND var_units_on.milestone_year = cons.milestone_year
             AND var_units_on.rep_period = cons.rep_period
             AND var_units_on.time_block_start = cons.time_block_start
-        WHERE asset.investment_method = 'compact'
+        WHERE asset.investment_method = 'compact_profiles'
         GROUP BY cons.id
         ORDER BY cons.id
         ",
@@ -344,7 +343,7 @@ function _append_available_units_data_simple_method(connection, table_name)
             expr_avail.id AS avail_id,
             var_units_on.id AS units_on_id,
         FROM cons_$table_name AS cons
-        LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
+        LEFT JOIN expr_available_asset_units_aggregated AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.milestone_year = expr_avail.milestone_year
         LEFT JOIN asset
@@ -354,7 +353,7 @@ function _append_available_units_data_simple_method(connection, table_name)
             AND var_units_on.milestone_year = cons.milestone_year
             AND var_units_on.rep_period = cons.rep_period
             AND var_units_on.time_block_start = cons.time_block_start
-        WHERE asset.investment_method in ('simple', 'none')
+        WHERE asset.investment_method in ('aggregated', 'none')
         ORDER BY cons.id
         ",
     )

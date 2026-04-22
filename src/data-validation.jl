@@ -387,7 +387,7 @@ function _validate_simple_method_has_only_matching_years!(error_messages, connec
         LEFT JOIN asset
             ON asset.asset = asset_both.asset
         WHERE asset_both.milestone_year != asset_both.commission_year
-            AND asset.investment_method in ('simple', 'none')
+            AND asset.investment_method in ('aggregated', 'none')
         ",
     )
         push!(
@@ -410,7 +410,7 @@ function _validate_simple_method_has_only_matching_years!(error_messages, connec
     )
         push!(
             error_messages,
-            "Unexpected (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' for an flow=('$(row.from_asset)', '$(row.to_asset)') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+            "Unexpected (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' for an flow=('$(row.from_asset)', '$(row.to_asset)') with default investment_method='aggregated/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -432,7 +432,7 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
             AND asset_milestone.milestone_year = asset_both.milestone_year
             AND asset_milestone.milestone_year = asset_both.commission_year
         WHERE asset_both.commission_year IS NULL
-            AND asset.investment_method in ('simple', 'none')
+            AND asset.investment_method in ('aggregated', 'none')
         ",
     )
         push!(
@@ -460,7 +460,7 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
     )
         push!(
             error_messages,
-            "Missing information in 'flow_both': Flow ('$(row.from_asset)', '$(row.to_asset)') currently only has investment_method='simple/none' but there is no row (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+            "Missing information in 'flow_both': Flow ('$(row.from_asset)', '$(row.to_asset)') currently only has investment_method='aggregated/none' but there is no row (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -604,7 +604,7 @@ function _validate_flow_commission_and_asset_both_consistency!(error_messages, c
             AND asset_both.commission_year = flow_commission.commission_year
         LEFT JOIN asset
             ON asset_both.asset = asset.asset
-        WHERE asset.investment_method = 'semi-compact'
+        WHERE asset.investment_method = 'compact_efficiencies'
             AND flow_commission.commission_year IS NULL
         ",
     )
@@ -623,7 +623,7 @@ function _validate_flow_commission_and_asset_both_consistency!(error_messages, c
             AND flow_commission.commission_year = asset_both.commission_year
         LEFT JOIN asset
             ON flow_commission.from_asset = asset.asset
-        WHERE asset.investment_method = 'semi-compact'
+        WHERE asset.investment_method = 'compact_efficiencies'
             AND asset_both.commission_year IS NULL
         ",
     )
