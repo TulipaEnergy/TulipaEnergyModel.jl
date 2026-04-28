@@ -180,7 +180,7 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,solution
 179,DE_Battery,2050,1,17,17,0.0
 180,DE_Battery,2050,1,18,18,0.0
 181,DE_Battery,2050,1,19,19,0.0
-182,DE_Battery,2050,1,20,20,1.5411227913387893
+182,DE_Battery,2050,1,20,20,1.541122791338788
 183,DE_Battery,2050,1,21,21,0.0
 184,DE_Battery,2050,1,22,22,0.0
 185,DE_Battery,2050,1,23,23,0.0
@@ -310,8 +310,8 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,solution
 309,ES_Battery,2050,1,7,9,0.0
 310,ES_Battery,2050,1,10,12,0.0
 311,ES_Battery,2050,1,13,15,0.0
-312,ES_Battery,2050,1,16,18,58.44347403703159
-313,ES_Battery,2050,1,19,21,18.970469601013466
+312,ES_Battery,2050,1,16,18,58.44347403703158
+313,ES_Battery,2050,1,19,21,18.970469601013445
 314,ES_Battery,2050,1,22,24,0.0
 315,ES_Battery,2050,2,1,3,11.7554618734724
 316,ES_Battery,2050,2,4,6,11.871818705722035
@@ -487,9 +487,9 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,solution
 486,IT_Battery,2050,2,21,24,198.521806393328
 487,IT_Battery,2050,3,1,4,38.5837025347563
 488,IT_Battery,2050,3,5,8,0.0
-489,IT_Battery,2050,3,9,12,12.110226635649674
+489,IT_Battery,2050,3,9,12,12.110226635649672
 490,IT_Battery,2050,3,13,16,208.61528748945642
-491,IT_Battery,2050,3,17,20,72.31254160763292
+491,IT_Battery,2050,3,17,20,72.31254160763294
 492,IT_Battery,2050,3,21,24,39.144232119261396
 493,LT_Battery,2050,1,1,4,0.0
 494,LT_Battery,2050,1,5,8,0.0
@@ -545,7 +545,7 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,solution
 544,NL_Battery,2050,1,16,16,0.0
 545,NL_Battery,2050,1,17,17,0.0
 546,NL_Battery,2050,1,18,18,0.0
-547,NL_Battery,2050,1,19,19,5.394243976948944
+547,NL_Battery,2050,1,19,19,5.874367035556663
 548,NL_Battery,2050,1,20,20,0.22843187305737622
 549,NL_Battery,2050,1,21,21,0.0
 550,NL_Battery,2050,1,22,22,0.0
@@ -706,8 +706,8 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,solution
 705,UK_Battery,2050,1,15,15,0.0
 706,UK_Battery,2050,1,16,16,0.0
 707,UK_Battery,2050,1,17,17,0.0
-708,UK_Battery,2050,1,18,18,0.8855155125169203
-709,UK_Battery,2050,1,19,19,4.099932822154804
+708,UK_Battery,2050,1,18,18,1.8457616297323565
+709,UK_Battery,2050,1,19,19,4.580055880762521
 710,UK_Battery,2050,1,20,20,2.220147293153971
 711,UK_Battery,2050,1,21,21,0.0
 712,UK_Battery,2050,1,22,22,0.0
