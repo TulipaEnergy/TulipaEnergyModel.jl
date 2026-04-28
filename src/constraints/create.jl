@@ -22,6 +22,7 @@ function compute_constraints_indices(connection)
             :max_ramp_without_unit_commitment,
             :balance_storage_rep_period,
             :balance_storage_inter_period,
+            :accumulated_storage_intra_period,
             :min_energy_inter_period,
             :max_energy_inter_period,
             :transport_flow_limit_simple_method,

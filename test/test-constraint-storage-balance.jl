@@ -349,7 +349,7 @@
 end
 
 @testitem "Test non seasonal storage balance constraints" setup = [CommonSetup, StorageSetup] tags =
-    [:unit, :validation, :fast] begin
+    [:unit, :constraint, :fast] begin
     using DuckDB: DuckDB
     using JuMP: JuMP
 
@@ -419,8 +419,80 @@ end
     end
 end
 
+@testitem "Test accumulated storage intra period for seasonal storage" setup =
+    [CommonSetup, StorageSetup] tags = [:unit, :constraint, :fast] begin
+    using DuckDB: DuckDB
+    using JuMP: JuMP
+
+    # accumulated storage intra period only exists for seasonal storage
+    # and only depends on representative periods, not on scenarios.
+    # So, we test with a single scenario.
+
+    # Test parameters
+    storage_asset = "seasonal_storage"
+    config = STORAGE_CONFIGS[storage_asset]
+    milestone_year = 2030
+    scenario = 1
+    inflows_profile = Dict((storage_asset, milestone_year, scenario) => [1.0, 5.5, 10.0, 2.5])
+    num_timesteps = 2
+    num_rps = 2
+
+    # Setup test problem with common helper
+    connection, energy_problem, flow, profiles, incoming_flow_ids, outgoing_flow_ids =
+        setup_test_problem(storage_asset, inflows_profile, num_timesteps, num_rps)
+
+    # Extract accumulated storage level variable
+    accumulated_storage_level =
+        energy_problem.variables[:accumulated_storage_level_intra_period].container
+
+    # Verify all expected constraints exist
+    cons_name = :accumulated_storage_intra_period
+    constraint_data = DuckDB.query(
+        connection,
+        "SELECT id, rep_period, time_block_start
+         FROM cons_$cons_name
+         WHERE asset = '$storage_asset'
+         ORDER BY rep_period, time_block_start",
+    )
+    num_constraints = constraint_data |> collect |> length
+    @test num_constraints == num_rps * num_timesteps
+
+    # Test each constraint for proper formulation
+    for row in constraint_data
+        rp, tb, id = Int(row.rep_period), Int(row.time_block_start), row.id
+
+        # Compute expected terms for this time block
+        # we can reuse the same function as for seasonal storage since it computes terms per time block, just without weights
+        incoming_expr, outgoing_expr, total_inflows = compute_expected_terms_non_seasonal_storage(
+            flow,
+            incoming_flow_ids,
+            outgoing_flow_ids,
+            profiles,
+            rp,
+            tb,
+            config,
+        )
+
+        # Build expected constraint based on position in time series
+        expected_cons = if tb == 1
+            # First time block: balance includes initial storage level
+            JuMP.@build_constraint(
+                accumulated_storage_level[id] - incoming_expr + outgoing_expr == total_inflows
+            )
+        else
+            # Subsequent time blocks: balance against previous time block
+            JuMP.@build_constraint(
+                accumulated_storage_level[id] - accumulated_storage_level[id-1] - incoming_expr + outgoing_expr == total_inflows
+            )
+        end
+
+        # Verify constraint matches expected form
+        @test _verify_constraint_using_id(energy_problem.model, cons_name, id, expected_cons)
+    end
+end
+
 @testitem "Test seasonal storage balance constraints - single scenario" setup =
-    [CommonSetup, StorageSetup] tags = [:unit, :validation, :fast] begin
+    [CommonSetup, StorageSetup] tags = [:unit, :constraint, :fast] begin
     using DuckDB: DuckDB
     using JuMP: JuMP
 
@@ -443,62 +515,64 @@ end
 
     # Extract storage level variable
     storage_level = energy_problem.variables[:storage_level_inter_period].container
+    accumulated_intra_period_expr =
+        energy_problem.constraints[:balance_storage_inter_period].expressions[:accumulated_intra_period]
 
-    # Build period-to-representative-period weight mapping
-    rep_periods_mapping = TulipaIO.get_table(connection, "rep_periods_mapping")
-    period_weight_map = Dict{Tuple{Int,Int,Int},Float64}(
-        (scenario, row.period, row.rep_period) => get(row, :weight, 0.0) for
-        row in eachrow(rep_periods_mapping)
-    )
-
-    # Verify all expected constraints exist
+    # Verify all expected constraints exist and fetch fields used in the balance equation
     cons_name = :balance_storage_inter_period
     constraint_data = DuckDB.query(
         connection,
-        "SELECT id
-         FROM cons_$cons_name
-         WHERE asset = '$storage_asset'",
+        "SELECT
+             c.id,
+             c.period_block_start,
+             c.period_block_end,
+             am.initial_storage_level
+         FROM cons_$cons_name AS c
+         INNER JOIN asset_milestone AS am
+             ON am.asset = c.asset
+             AND am.milestone_year = c.milestone_year
+         WHERE c.asset = '$storage_asset'
+         ORDER BY c.period_block_start",
     )
-    num_constraints = constraint_data |> collect |> length
+    constraint_rows = collect(constraint_data)
+    num_constraints = length(constraint_rows)
     @test num_constraints == length(periods)
 
-    # Test each period's constraint
-    for period in periods
-        # Compute expected terms aggregated over all representative periods
-        incoming_expr, outgoing_expr, total_inflows = compute_expected_terms_seasonal_storage(
-            flow,
-            incoming_flow_ids,
-            outgoing_flow_ids,
-            period_weight_map,
-            profiles,
-            scenario,
-            period,
-            num_rps,
-            num_timesteps,
-            config,
-        )
+    # Test each period's constraint against the new accumulated_intra_period equation
+    for row in constraint_rows
+        period = Int(row.period_block_start)
+        constraint_id = Int(row.id)
+        initial_storage_level = row.initial_storage_level::Union{Float64,Missing}
+        computed_storage_loss_coef = 1.0
+        accumulated_expr = accumulated_intra_period_expr[constraint_id]
 
         # Build expected constraint based on position in time series
         expected_cons = if period == 1
-            # First period: balance includes initial storage level
+            # First period: balance uses initial storage level
             JuMP.@build_constraint(
-                storage_level[period] - incoming_expr + outgoing_expr ==
-                total_inflows + config.initial_storage_level
+                storage_level[constraint_id] ==
+                computed_storage_loss_coef * initial_storage_level + accumulated_expr
             )
         else
             # Subsequent periods: balance against previous period
             JuMP.@build_constraint(
-                storage_level[period] - storage_level[period-1] - incoming_expr + outgoing_expr == total_inflows
+                storage_level[constraint_id] ==
+                computed_storage_loss_coef * storage_level[constraint_id-1] + accumulated_expr
             )
         end
 
         # Verify constraint matches expected form
-        @test _verify_constraint_using_id(energy_problem.model, cons_name, period, expected_cons)
+        @test _verify_constraint_using_id(
+            energy_problem.model,
+            cons_name,
+            constraint_id,
+            expected_cons,
+        )
     end
 end
 
 @testitem "Test seasonal storage balance constraints - two scenarios" setup =
-    [CommonSetup, StorageSetup] tags = [:unit, :validation, :fast] begin
+    [CommonSetup, StorageSetup] tags = [:unit, :constraint, :fast] begin
     using DuckDB: DuckDB
     using JuMP: JuMP
 
@@ -524,71 +598,63 @@ end
 
     # Extract storage level variable
     storage_level = energy_problem.variables[:storage_level_inter_period].container
-
-    # Build period-to-representative-period weight mapping
-    rep_periods_mapping = TulipaIO.get_table(connection, "rep_periods_mapping")
-    period_weight_map = Dict{Tuple{Int,Int,Int},Float64}(
-        (row.scenario, row.period, row.rep_period) => get(row, :weight, 0.0) for
-        row in eachrow(rep_periods_mapping)
-    )
+    accumulated_intra_period_expr =
+        energy_problem.constraints[:balance_storage_inter_period].expressions[:accumulated_intra_period]
 
     # Get storage level variable IDs for all periods and scenarios
     storage_level_ids = get_storage_ids(connection, storage_asset, scenarios, periods)
 
-    # Verify all expected constraints exist
+    # Verify all expected constraints exist and fetch fields used in the balance equation
     cons_name = :balance_storage_inter_period
     constraint_data = DuckDB.query(
         connection,
-        "SELECT id
-         FROM cons_$cons_name
-         WHERE asset = '$storage_asset'",
+        "SELECT
+             c.id,
+             c.scenario,
+             c.period_block_start,
+             c.period_block_end,
+             am.initial_storage_level
+         FROM cons_$cons_name AS c
+         INNER JOIN asset_milestone AS am
+             ON am.asset = c.asset
+             AND am.milestone_year = c.milestone_year
+         WHERE c.asset = '$storage_asset'
+         ORDER BY c.scenario, c.period_block_start",
     )
-    num_constraints = constraint_data |> collect |> length
+    constraint_rows = collect(constraint_data)
+    num_constraints = length(constraint_rows)
     @test num_constraints == length(periods) * length(scenarios)
 
-    # Test each scenario and period
-    max_period = maximum(periods)
-    for scenario in scenarios, period in periods
-        # Compute expected terms aggregated over all representative periods
-        incoming_expr, outgoing_expr, total_inflows = compute_expected_terms_seasonal_storage(
-            flow,
-            incoming_flow_ids,
-            outgoing_flow_ids,
-            period_weight_map,
-            profiles,
-            scenario,
-            period,
-            num_rps,
-            num_timesteps,
-            config,
-        )
-
-        # Get current and previous storage level IDs
-        current_storage_id = storage_level_ids[(scenario, period)]
+    # Test each scenario and period against the new accumulated_intra_period equation
+    for row in constraint_rows
+        scenario = Int(row.scenario)
+        period = Int(row.period_block_start)
+        current_storage_id = Int(row.id)
+        initial_storage_level = row.initial_storage_level::Union{Float64,Missing}
+        computed_storage_loss_coef = 1.0
+        accumulated_expr = accumulated_intra_period_expr[current_storage_id]
 
         # Build expected constraint based on position in time series
         expected_cons = if period == 1
-            # First period: balance includes initial storage level
+            # First period: balance uses initial storage level
             JuMP.@build_constraint(
-                storage_level[current_storage_id] - incoming_expr + outgoing_expr ==
-                total_inflows + config.initial_storage_level
+                storage_level[current_storage_id] ==
+                computed_storage_loss_coef * initial_storage_level + accumulated_expr
             )
         else
             # Subsequent periods: balance against previous period
             previous_storage_id = storage_level_ids[(scenario, period - 1)]
             JuMP.@build_constraint(
-                storage_level[current_storage_id] - storage_level[previous_storage_id] -
-                incoming_expr + outgoing_expr == total_inflows
+                storage_level[current_storage_id] ==
+                computed_storage_loss_coef * storage_level[previous_storage_id] + accumulated_expr
             )
         end
 
         # Verify constraint matches expected form
-        # Constraints are ordered by scenario and period
-        constraint_id = max_period * (scenario - 1) + period
         @test _verify_constraint_using_id(
             energy_problem.model,
             cons_name,
-            constraint_id,
+            current_storage_id,
             expected_cons,
         )
     end

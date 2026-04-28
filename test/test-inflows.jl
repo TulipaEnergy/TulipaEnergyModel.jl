@@ -35,6 +35,7 @@
     # Attach profile only to storageA
     inflows_profile = [0.5; 0.25; 0.125]
     TB.attach_profile!(tulipa, "storageA", :inflows, 2030, inflows_profile)
+    num_time_blocks = length(inflows_profile)
 
     connection = create_connection(tulipa)
 
@@ -57,41 +58,70 @@
     TEM.create_model!(energy_problem)
 
     # Actual test, create expected constraint
-
+    storage_level_intra =
+        energy_problem.variables[:accumulated_storage_level_intra_period].container
     flow = energy_problem.variables[:flow].container
-    cons_name = :balance_storage_inter_period
+    cons_name = :accumulated_storage_intra_period
 
     for storage_asset in ("storageA", "storageB")
-        incoming_flow_ids = [
+        storage_level_ids = [
             row.id for row in DuckDB.query(
                 connection,
-                "SELECT id FROM var_flow WHERE from_asset = '$storage_asset'",
+                """
+                SELECT id
+                FROM var_accumulated_storage_level_intra_period
+                WHERE asset = '$storage_asset'
+                """,
             )
         ]
-        outgoing_flow_ids = [
-            row.id for row in DuckDB.query(
+        for tb in 1:num_time_blocks
+            incoming_flow_ids = [row.id for row in DuckDB.query(
                 connection,
-                "SELECT id FROM var_flow WHERE to_asset = '$storage_asset'",
-            )
-        ]
+                """
+                SELECT id
+                 FROM var_flow
+                 WHERE to_asset = '$storage_asset'
+                    AND time_block_start = $tb
+                """,
+            )]
+            outgoing_flow_ids = [row.id for row in DuckDB.query(
+                connection,
+                """
+                SELECT id
+                 FROM var_flow
+                 WHERE from_asset = '$storage_asset'
+                    AND time_block_start = $tb
+                """,
+            )]
 
-        incoming = sum(flow[id] for id in incoming_flow_ids)
-        outgoing = sum(flow[id] for id in outgoing_flow_ids)
-        rhs = sum(inflows_profile) * storage_inflows[storage_asset]
+            incoming = sum(flow[id] for id in incoming_flow_ids)
+            outgoing = sum(flow[id] for id in outgoing_flow_ids)
+            rhs = inflows_profile[tb] * storage_inflows[storage_asset]
 
-        expected_cons = JuMP.@build_constraint(incoming - outgoing == rhs)
+            if tb == 1
+                expected_cons = JuMP.@build_constraint(
+                    storage_level_intra[storage_level_ids[1]] - incoming + outgoing == rhs
+                )
+            else
+                expected_cons = JuMP.@build_constraint(
+                    storage_level_intra[storage_level_ids[tb]] -
+                    storage_level_intra[storage_level_ids[tb-1]] - incoming + outgoing == rhs
+                )
+            end
 
-        cons_id = only([row.id for row in DuckDB.query(
-            connection,
-            """
-            SELECT id
-            FROM cons_$cons_name
-            WHERE asset = '$storage_asset'
-            """,
-        )])
+            cons_id = only([row.id for row in DuckDB.query(
+                connection,
+                """
+                SELECT id
+                FROM cons_$cons_name
+                WHERE asset = '$storage_asset'
+                    AND time_block_start = $tb
+                """,
+            )])
 
-        observed_cons = _get_cons_object(energy_problem.model, cons_name)[cons_id]
+            observed_cons = _get_cons_object(energy_problem.model, cons_name)[cons_id]
 
-        @test _is_constraint_equal(expected_cons, observed_cons)
+            @test _is_constraint_equal(expected_cons, observed_cons)
+        end
     end
 end

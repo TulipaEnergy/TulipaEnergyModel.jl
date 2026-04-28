@@ -53,11 +53,11 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 2542.234377 atol = 1e-5
+    @test energy_problem.objective_value ≈ 2582.214722 atol = 1e-5
     # populate_with_defaults shouldn't change the solution
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
-    @test energy_problem.objective_value ≈ 2542.234377 atol = 1e-5
+    @test energy_problem.objective_value ≈ 2582.214722 atol = 1e-5
 end
 
 @testitem "UC ramping Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow] begin
