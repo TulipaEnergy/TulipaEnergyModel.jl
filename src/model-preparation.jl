@@ -516,18 +516,9 @@ function add_expression_terms_inter_period_storage_constraints!(
                 asset,
                 milestone_year,
                 rep_period,
-            CASE
-                WHEN len(id) > 0 THEN list_extract(id, len(id))
-                ELSE NULL
-            END AS id,
-            CASE
-                WHEN len(id) > 0 THEN list_extract(time_block_start, len(id))
-                ELSE NULL
-            END AS time_block_start,
-            CASE
-                WHEN len(id) > 0 THEN list_extract(time_block_end, len(id))
-                ELSE NULL
-            END AS time_block_end
+            list_last(id) AS id,
+            list_last(time_block_start) AS time_block_start,
+            list_last(time_block_end) AS time_block_end,
         FROM $grouped_var_table_name
         )
     SELECT
@@ -537,7 +528,7 @@ function add_expression_terms_inter_period_storage_constraints!(
         ANY_VALUE(cons.id) AS cons_id_vec,
         ANY_VALUE(cons.period_block_start) AS cons_period_block_start_vec,
         ANY_VALUE(cons.period_block_end) AS cons_period_block_end_vec,
-        ARRAY_AGG(COALESCE(var.id, NULL) ORDER BY var.rep_period) AS var_id_vec,
+        ARRAY_AGG(COALESCE(var.id, []) ORDER BY var.rep_period) AS var_id_vec,
         ARRAY_AGG(COALESCE(var.time_block_start, NULL) ORDER BY var.rep_period) AS var_time_block_start_vec,
         ARRAY_AGG(COALESCE(var.time_block_end, NULL) ORDER BY var.rep_period) AS var_time_block_end_vec,
         ARRAY_AGG(var.rep_period ORDER BY var.rep_period) AS var_rep_periods,
