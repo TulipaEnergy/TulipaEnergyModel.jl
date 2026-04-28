@@ -202,6 +202,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | Name                            | Domain           | Domains of Indices                                                   | Description                                                                                     | Units |
 | ------------------------------- | ---------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----- |
 | $p^{\text{duration}}_{b_{k_y}}$ | $\mathbb{R}_{+}$ | $b_{k_y} \in \mathcal{B_{k_y}}$                                      | Duration of the timestep blocks $b_{k_y}$                                                       | [h]   |
+| $p^{\text{duration}}_{y}$       | $\mathbb{R}_{+}$ | $p_y \in \mathcal{P}_y$                                              | Duration of the period $p_y$                                                                    | [h]   |
 | $p^{\text{rp weight}}_{s,k_y}$  | $\mathbb{R}_{+}$ | $s \in \mathcal{S}, k_y \in \mathcal{K}_y$                           | Weight of representative period $k_y$ in stochastic scenario $s$                                | [-]   |
 | $p^{\text{map}}_{s,p_y,k_y}$    | $\mathbb{R}_{+}$ | $s \in \mathcal{S}, p_y \in \mathcal{P}_y$, $k_y \in \mathcal{K}_y$  | Map with the weight of representative period $k_y$ in period $p_y$, and stochastic scenario $s$ | [-]   |
 
@@ -653,8 +654,9 @@ e^{\text{available energy inv limit}}_{a,y}
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} = \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{b_{k_y}}}
- \cdot  v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}-1}  + p^{\text{inflows}}_{a,k_y,b_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} = & \; \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{b_{k_y}}} \cdot  v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}-1}  \\
+& + p^{\text{inflows}}_{a,k_y,b_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
@@ -679,7 +681,9 @@ The cycling constraint for the rep-period constraints links the first timestep b
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = & \; v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}} \\
+& + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
@@ -688,7 +692,9 @@ v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{rep-peri
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = p^{\text{init storage level}}_{a,y}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = & \; p^{\text{init storage level}}_{a,y} \\
+& + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
@@ -729,13 +735,13 @@ v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b_{k_y}} = & \left(1 - p^{\
 
 This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year) and stochastic scenario. The parameter $p^{\text{map}}_{s,p_y,k_y}$ determines how much of the representative period $k_y$ is in the period $p_y$, and stochastic scenario $s$. Researchers and practitioners often use clustering techniques to determine this parameter. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
 
-For the sake of simplicity, we show the constraint assuming the inter-period-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref table-schemas).
+For the sake of simplicity, we show the constraint assuming the inter-period-storage level between two consecutive periods $p_y$ with duration $p^{\text{duration}}_{p_y}$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref table-schemas).
 
 The inter-period storage balance uses $v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{last}}_{k_y}}$, i.e., the accumulated intra-period storage level at the last timestep block of representative period $k_y$ (see the [accumulated intra-period constraint](@ref accumulated-intra-period-storage-balance)), weighted by the mapping parameter $p^{\text{map}}_{s,p_y,k_y}$:
 
 ```math
 \begin{aligned}
-v^{\text{inter-period-storage}}_{a,s,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}}
+v^{\text{inter-period-storage}}_{a,s,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{y}}
  \cdot v^{\text{inter-period-storage}}_{a,s,p_y-1} \\
 & + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \cdot v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{last}}_{k_y}}
 \\ \\ & \forall s \in \mathcal{S}, y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y, \forall p_y \in \mathcal{P}_y
@@ -762,7 +768,7 @@ The cycling constraint for the inter-period constraints links the first-period b
 
 ```math
 \begin{aligned}
-v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}} \cdot v^{\text{inter-period-storage}}_{a,s,p^{\text{last}}_y} \\
+v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{y}} \cdot v^{\text{inter-period-storage}}_{a,s,p^{\text{last}}_y} \\
 & + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \cdot v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{last}}_{k_y}}
 \\ \\ & s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y
 \end{aligned}
@@ -772,7 +778,7 @@ v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & \left(1 - p^{\text{
 
 ```math
 \begin{aligned}
-v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}} \cdot p^{\text{init storage level}}_{a,y} \\
+v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{y}} \cdot p^{\text{init storage level}}_{a,y} \\
 & + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \cdot v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{last}}_{k_y}}
 \\ \\ & s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y
 \end{aligned}
