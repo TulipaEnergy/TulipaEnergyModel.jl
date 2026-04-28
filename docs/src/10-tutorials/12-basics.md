@@ -35,6 +35,10 @@ output_dir = "my-awesome-energy-system/tutorial-1/results"
 
 Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error later.
 
+```julia
+mkpath(output_dir)
+```
+
 Let's use TulipaIO to read the files and list them:
 
 ```julia
