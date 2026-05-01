@@ -1,0 +1,12 @@
+asset,milestone_year,investable,peak_demand
+ccgt,2030,false,0.0
+wind,2030,false,0.0
+solar,2030,false,0.0
+e_demand,2030,false,1000.0
+ocgt,2030,false,0.0
+ens,2030,false,0.0
+electrolizer,2030,false,0.0
+h2_demand,2030,false,100.0
+smr_ccs,2030,false,0.0
+hub,2030,false,0.0
+wind_offshore,2030,false,0.0
