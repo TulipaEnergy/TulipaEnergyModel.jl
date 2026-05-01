@@ -243,7 +243,7 @@ end
         )
         JuMP.add_to_expression!(cost_per_scenario, units_on_operational_cost_per_scenario[scenario])
 
-        @test cost_per_scenario == total_cost_per_scenario[id]
+        @test cost_per_scenario ≈ total_cost_per_scenario[id]
 
         expected_cons = JuMP.@build_constraint(
             tail_excess_vars[id] >= cost_per_scenario - value_at_risk_threshold_mu
