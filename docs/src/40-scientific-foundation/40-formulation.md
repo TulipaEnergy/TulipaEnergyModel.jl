@@ -202,6 +202,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | Name                            | Domain           | Domains of Indices                                                   | Description                                                                                     | Units |
 | ------------------------------- | ---------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----- |
 | $p^{\text{duration}}_{b_{k_y}}$ | $\mathbb{R}_{+}$ | $b_{k_y} \in \mathcal{B_{k_y}}$                                      | Duration of the timestep blocks $b_{k_y}$                                                       | [h]   |
+| $p^{\text{duration}}_{y}$       | $\mathbb{R}_{+}$ | $p_y \in \mathcal{P}_y$                                              | Duration of the period $p_y$                                                                    | [h]   |
 | $p^{\text{rp weight}}_{s,k_y}$  | $\mathbb{R}_{+}$ | $s \in \mathcal{S}, k_y \in \mathcal{K}_y$                           | Weight of representative period $k_y$ in stochastic scenario $s$                                | [-]   |
 | $p^{\text{map}}_{s,p_y,k_y}$    | $\mathbb{R}_{+}$ | $s \in \mathcal{S}, p_y \in \mathcal{P}_y$, $k_y \in \mathcal{K}_y$  | Map with the weight of representative period $k_y$ in period $p_y$, and stochastic scenario $s$ | [-]   |
 
@@ -235,24 +236,25 @@ In addition, the following subsets represent methods for incorporating additiona
 
 ## [Variables](@id math-variables)
 
-| Name                                               | Domain           | Domains of Indices                                                                                                                                                                                                | Description                                                                                                                           | Units   |
-| -------------------------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| $v^{\text{flow}}_{f,k_y,b_{k_y}}$                  | $\mathbb{R}$     | $f \in \mathcal{F}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                                     | Flow $f$ between two assets in representative period $k_y$ and timestep block $b_{k_y}$                                               | [MW]    |
-| $v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}}$        | $\mathbb{R}$     | $f \in \mathcal{F}^{\text{out}}_{a,y} \mid a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} $, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Vintage flow $f$ between two assets in commission year $v$ in representative period $k_y$ and timestep block $b_{k_y}$                | [MW]    |
-| $v^{\text{inv}}_{a,y}$                             | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y$, $y \in \mathcal{Y}$                                                                                                                                                             | Number of invested units of asset $a$ at year $y$                                                                                     | [units] |
-| $v^{\text{decom simple}}_{a,y}$                    | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{simple investment}}$, $y \in \mathcal{Y}$                                                                                                                                               | Number of decommissioned units of asset $a$ that uses simple investment method at year $y$                                            | [units] |
-| $v^{\text{decom compact}}_{a,y,v}$                 | $\mathbb{Z}_{+}$ | $ (a,y,v) \in \mathcal{D}^{\text{compact investment}}$                                                                                                                                                            | Number of decommissioned units of asset $a$ commissioned in year $v$ that uses compact investment method at year $y$                  | [units] |
-| $v^{\text{inv energy}}_{a,y}$                      | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                                                                                                              | Number of invested units of the energy component of the storage asset $a$ that uses energy method at year $y$                         | [units] |
-| $v^{\text{decom energy simple}}_{a,y}$             | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                                                                                                              | Number of decommissioned units of the energy component of the storage asset $a$ that uses energy method at year $y$                   | [units] |
-| $v^{\text{inv}}_{f,y}$                             | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                                                                                                            | Number of invested units of capacity increment of transport flow $f$ at year $y$                                                      | [units] |
-| $v^{\text{decom simple}}_{f,y}$                    | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                                                                                                            | Number of decommissioned units of capacity increment of transport flow $f$ at year $y$                                                | [units] |
-| $v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}}$    | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}_y \setminus \mathcal{A}^{\text{ss}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                    | Rep-period-storage level for storage asset $a$, representative period $k_y$, and timestep block $b_{k_y}$                             | [MWh]   |
-| $v^{\text{inter-period-storage}}_{a,s,p_y}$        | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $s \in \mathcal{S}$, $p_y \in \mathcal{P}_y$                                                                                                                                   | inter-period-storage level for storage asset $a$, stochastic scenario $s$, and period $p_y$                                           | [MWh]   |
-| $v^{\text{is charging}}_{a,k_y,b_{k_y}}$           | $\{0, 1\}$       | $a \in \mathcal{A}^{\text{sb}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                       | If an storage asset $a$ is charging or not in representative period $k_y$ and timestep block $b_{k_y}$                                | [-]     |
-| $v^{\text{angle}}_{a,k_y,b_{k_y}}$                 | $\mathbb{R}$     | $a \in \mathcal{A}^{\text{dc-opf}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                   | Electricity angle of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                            | [rad]   |
-| $v^{\text{units on}}_{a,k_y,b_{k_y}}$              | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                       | Number of units ON of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                           | [units] |
-| $v^{\text{start up}}_{a,k_y,b_{k_y}}$              | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc 3var}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                  | Number of units of asset $a$ STARTING UP in representative period $k_y$ and timestep block $b_{k_y}$                                  | [units] |
-| $v^{\text{shut down}}_{a,k_y,b_{k_y}}$             | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc 3var}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                  | Number of units of asset $a$ SHUTTING DOWN in representative period $k_y$ and timestep block $b_{k_y}$                                | [units] |
+| Name                                                            | Domain           | Domains of Indices                                                                                                                                                                                                | Description                                                                                                                                  | Units   |
+| --------------------------------------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| $v^{\text{flow}}_{f,k_y,b_{k_y}}$                               | $\mathbb{R}$     | $f \in \mathcal{F}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                                     | Flow $f$ between two assets in representative period $k_y$ and timestep block $b_{k_y}$                                                      | [MW]    |
+| $v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}}$                     | $\mathbb{R}$     | $f \in \mathcal{F}^{\text{out}}_{a,y} \mid a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} $, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Vintage flow $f$ between two assets in commission year $v$ in representative period $k_y$ and timestep block $b_{k_y}$                       | [MW]    |
+| $v^{\text{inv}}_{a,y}$                                          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y$, $y \in \mathcal{Y}$                                                                                                                                                             | Number of invested units of asset $a$ at year $y$                                                                                            | [units] |
+| $v^{\text{decom simple}}_{a,y}$                                 | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{simple investment}}$, $y \in \mathcal{Y}$                                                                                                                                               | Number of decommissioned units of asset $a$ that uses simple investment method at year $y$                                                   | [units] |
+| $v^{\text{decom compact}}_{a,y,v}$                              | $\mathbb{Z}_{+}$ | $ (a,y,v) \in \mathcal{D}^{\text{compact investment}}$                                                                                                                                                            | Number of decommissioned units of asset $a$ commissioned in year $v$ that uses compact investment method at year $y$                         | [units] |
+| $v^{\text{inv energy}}_{a,y}$                                   | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                                                                                                              | Number of invested units of the energy component of the storage asset $a$ that uses energy method at year $y$                                | [units] |
+| $v^{\text{decom energy simple}}_{a,y}$                          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                                                                                                              | Number of decommissioned units of the energy component of the storage asset $a$ that uses energy method at year $y$                          | [units] |
+| $v^{\text{inv}}_{f,y}$                                          | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                                                                                                            | Number of invested units of capacity increment of transport flow $f$ at year $y$                                                             | [units] |
+| $v^{\text{decom simple}}_{f,y}$                                 | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                                                                                                            | Number of decommissioned units of capacity increment of transport flow $f$ at year $y$                                                       | [units] |
+| $v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}}$                 | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}_y \setminus \mathcal{A}^{\text{ss}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                    | Rep-period-storage level for storage asset $a$, representative period $k_y$, and timestep block $b_{k_y}$                                    | [MWh]   |
+| $v^{\text{inter-period-storage}}_{a,s,p_y}$                     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $s \in \mathcal{S}$, $p_y \in \mathcal{P}_y$                                                                                                                                   | inter-period-storage level for storage asset $a$, stochastic scenario $s$, and period $p_y$                                                  | [MWh]   |
+| $v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b_{k_y}}$ | $\mathbb{R}$     | $a \in \mathcal{A}^{\text{ss}}_y$, $y \in \mathcal{Y}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                  | Accumulated intra-period storage level for seasonal storage asset $a$ at year $y$, representative period $k_y$, and timestep block $b_{k_y}$ | [MWh]   |
+| $v^{\text{is charging}}_{a,k_y,b_{k_y}}$                        | $\{0, 1\}$       | $a \in \mathcal{A}^{\text{sb}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                       | If an storage asset $a$ is charging or not in representative period $k_y$ and timestep block $b_{k_y}$                                       | [-]     |
+| $v^{\text{angle}}_{a,k_y,b_{k_y}}$                              | $\mathbb{R}$     | $a \in \mathcal{A}^{\text{dc-opf}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                   | Electricity angle of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                                   | [rad]   |
+| $v^{\text{units on}}_{a,k_y,b_{k_y}}$                           | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                       | Number of units ON of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                                  | [units] |
+| $v^{\text{start up}}_{a,k_y,b_{k_y}}$                           | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc 3var}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                  | Number of units of asset $a$ STARTING UP in representative period $k_y$ and timestep block $b_{k_y}$                                         | [units] |
+| $v^{\text{shut down}}_{a,k_y,b_{k_y}}$                          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc 3var}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                  | Number of units of asset $a$ SHUTTING DOWN in representative period $k_y$ and timestep block $b_{k_y}$                                       | [units] |
 
 ## [Objective Function](@id math-objective-function)
 
@@ -652,8 +654,9 @@ e^{\text{available energy inv limit}}_{a,y}
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} = \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{b_{k_y}}}
- \cdot  v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}-1}  + p^{\text{inflows}}_{a,k_y,b_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} = & \; \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{b_{k_y}}} \cdot  v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}-1}  \\
+& + p^{\text{inflows}}_{a,k_y,b_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
@@ -678,7 +681,9 @@ The cycling constraint for the rep-period constraints links the first timestep b
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = & \; v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}} \\
+& + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
@@ -687,7 +692,9 @@ v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = v^{\text{rep-peri
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = p^{\text{init storage level}}_{a,y}  + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = & \; p^{\text{init storage level}}_{a,y} \\
+& + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
@@ -697,19 +704,47 @@ v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}} \geq p^{\text{init s
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 ```
 
+#### [Accumulated Intra-period Constraint for Storage Balance](@id accumulated-intra-period-storage-balance)
+
+This constraint defines the accumulated intra-period storage level for seasonal storage assets ($a \in \mathcal{A}^{\text{ss}}_y$). It tracks the cumulative effect of charging, discharging, and inflows within a representative period up to each timestep block. The last timestep block's value ($b^{\text{last}}_{k_y}$) is then used in the [inter-period constraint for the storage balance](@ref inter-period-storage-balance) to account for the net energy exchanged during each representative period.
+
+- If the timestep block is the first one ($b^{\text{first}}_{k_y}$):
+
+```math
+\begin{aligned}
+v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{first}}_{k_y}} = & \; p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} \\
+& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b^{\text{first}}_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b^{\text{first}}_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}}
+\\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y, \forall k_y \in \mathcal{K}_y
+\end{aligned}
+```
+
+- For all other timestep blocks:
+
+```math
+\begin{aligned}
+v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b_{k_y}} = & \left(1 - p^{\text{storage loss from stored energy}}_{a,y}\right)^{p^{\text{duration}}_{b_{k_y}}} \cdot v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b_{k_y}-1} \\
+& + p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
+& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
+\\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B}_{k_y} \setminus \{b^{\text{first}}_{k_y}\}
+\end{aligned}
+```
+
 #### [Inter-period Constraint for Storage Balance](@id inter-period-storage-balance)
 
 This constraint allows us to consider the storage seasonality throughout the model's timeframe (e.g., a year) and stochastic scenario. The parameter $p^{\text{map}}_{s,p_y,k_y}$ determines how much of the representative period $k_y$ is in the period $p_y$, and stochastic scenario $s$. Researchers and practitioners often use clustering techniques to determine this parameter. For _TulipaEnergyModel.jl_, we recommend using [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) to compute the clusters for the representative periods and their map.
 
-For the sake of simplicity, we show the constraint assuming the inter-period-storage level between two consecutive periods $p_y$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref table-schemas).
+For the sake of simplicity, we show the constraint assuming the inter-period-storage level between two consecutive periods $p_y$ with duration $p^{\text{duration}}_{p_y}$; however, _TulipaEnergyModel.jl_ can handle more flexible period block definition through the timeframe definition in the model using the information in the timeframe partitions file, see [schemas](@ref table-schemas).
+
+The inter-period storage balance uses $v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{last}}_{k_y}}$, i.e., the accumulated intra-period storage level at the last timestep block of representative period $k_y$ (see the [accumulated intra-period constraint](@ref accumulated-intra-period-storage-balance)), weighted by the mapping parameter $p^{\text{map}}_{s,p_y,k_y}$:
 
 ```math
 \begin{aligned}
-v^{\text{inter-period-storage}}_{a,s,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{\sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}}}
- \cdot v^{\text{inter-period-storage}}_{a,s,p_y-1} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
-& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
-\\ \\ & \forall s \in \mathcal{S}, y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
+v^{\text{inter-period-storage}}_{a,s,p_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{y}}
+ \cdot v^{\text{inter-period-storage}}_{a,s,p_y-1} \\
+& + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p_y,k_y} \cdot v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{last}}_{k_y}}
+\\ \\ & \forall s \in \mathcal{S}, y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y, \forall p_y \in \mathcal{P}_y
 \end{aligned}
 ```
 
@@ -733,10 +768,9 @@ The cycling constraint for the inter-period constraints links the first-period b
 
 ```math
 \begin{aligned}
-v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & v^{\text{inter-period-storage}}_{a,s,p^{\text{last}}_y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
-& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
-\\ \\ & s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
+v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{y}} \cdot v^{\text{inter-period-storage}}_{a,s,p^{\text{last}}_y} \\
+& + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \cdot v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{last}}_{k_y}}
+\\ \\ & s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y
 \end{aligned}
 ```
 
@@ -744,16 +778,15 @@ v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & v^{\text{inter-peri
 
 ```math
 \begin{aligned}
-v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & p^{\text{init storage level}}_{a,y} + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
-& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \sum_{b_{k_y} \in \mathcal{B_{k_y}}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
-\\ \\ & s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
+v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{y}} \cdot p^{\text{init storage level}}_{a,y} \\
+& + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \cdot v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{last}}_{k_y}}
+\\ \\ & s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y
 \end{aligned}
 ```
 
 ```math
 v^{\text{inter-period-storage}}_{a,s,p^{\text{last}}_y} \geq p^{\text{init storage level}}_{a,y} \quad
-\\ \\ s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}
+\\ \\ s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y
 ```
 
 ### Constraints for Energy Conversion Assets
