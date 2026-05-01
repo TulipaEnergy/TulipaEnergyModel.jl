@@ -10,22 +10,6 @@ function _add_to_objective!(connection, objective_expr, name::String, expr)
     return
 end
 
-function prepare_objective_tables!(connection, model_parameters)
-    social_rate = model_parameters.discount_rate
-    discount_year = model_parameters.discount_year
-    end_of_horizon = get_single_element_from_query_and_ensure_its_only_one(
-        DuckDB.query(
-            connection,
-            "SELECT MAX(milestone_year) AS end_of_horizon FROM rep_periods_data",
-        ),
-    )
-
-    constants = (; social_rate, discount_year, end_of_horizon)
-    _create_objective_auxiliary_table(connection, constants)
-
-    return nothing
-end
-
 """
     add_objective!(connection, model, variables, expressions, model_parameters)
 
