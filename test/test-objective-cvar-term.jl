@@ -10,10 +10,14 @@
     probability_scenario_2 = 0.4
 
     # Create model parameters table with risk aversion parameters to trigger scenario tail excess constraints
-    table_name = "model_parameters"
-    table_rows = [(lambda, alpha)]
-    columns = [:risk_aversion_weight_lambda, :risk_aversion_confidence_level_alpha]
-    _create_table_for_tests(connection, table_name, table_rows, columns)
+    DBInterface.execute(
+        connection,
+        """
+        UPDATE model_parameters
+         SET risk_aversion_weight_lambda = $lambda,
+             risk_aversion_confidence_level_alpha = $alpha
+        """,
+    )
 
     # Create stochastic_scenario table with probabilities for each scenario
     table_name = "stochastic_scenario"

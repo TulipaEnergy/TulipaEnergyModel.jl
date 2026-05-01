@@ -851,6 +851,12 @@ function prepare_profiles_structure(connection)
     return ProfileLookup(rep_period, inter_period)
 end
 
+"""
+    get_model_parameters(connection)
+
+Gets the model parameters from the 'model_parameters' table in
+the database connection and returns them in a named tuple.
+"""
 function get_model_parameters(connection)
     row = only(collect(DuckDB.query(connection, "SELECT * FROM model_parameters")))
 

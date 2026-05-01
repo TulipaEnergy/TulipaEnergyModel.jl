@@ -50,6 +50,7 @@ export
 
     # Model preparation
     prepare_profiles_structure,
+    get_model_parameters,
 
     # Variables
     compute_variables_indices,
