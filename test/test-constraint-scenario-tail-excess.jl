@@ -181,11 +181,15 @@ end
     connection = DBInterface.connect(DuckDB.DB)
     TulipaIO.read_csv_folder(connection, dir)
 
-    # Create model parameters table with risk aversion parameters to trigger scenario tail excess constraints
-    table_name = "model_parameters"
-    table_rows = [(0.1, 0.98)]
-    columns = [:risk_aversion_weight_lambda, :risk_aversion_confidence_level_alpha]
-    _create_table_for_tests(connection, table_name, table_rows, columns)
+    # Update model parameters table with risk aversion parameters to trigger scenario tail excess constraints
+    DBInterface.execute(
+        connection,
+        """
+        UPDATE model_parameters
+         SET risk_aversion_weight_lambda = 0.1,
+             risk_aversion_confidence_level_alpha = 0.98
+        """,
+    )
 
     TulipaEnergyModel.populate_with_defaults!(connection)
     energy_problem = TulipaEnergyModel.EnergyProblem(connection)
@@ -243,7 +247,8 @@ end
         )
         JuMP.add_to_expression!(cost_per_scenario, units_on_operational_cost_per_scenario[scenario])
 
-        @test cost_per_scenario == total_cost_per_scenario[id]
+        diff_expr = cost_per_scenario - total_cost_per_scenario[id]
+        @test diff_expr.constant ≈ 0.0 && all(c -> c ≈ 0.0, values(diff_expr.terms))
 
         expected_cons = JuMP.@build_constraint(
             tail_excess_vars[id] >= cost_per_scenario - value_at_risk_threshold_mu
