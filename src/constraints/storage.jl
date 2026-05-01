@@ -335,6 +335,34 @@ function _append_storage_data_to_indices(connection, table_name)
     join_duration = ""
     select_duration = ""
 
+    # Seasonal (inter-period) storage uses assets_timeframe_profiles (keyed by milestone_year
+    # and scenario), while rep-period storage uses assets_profiles (keyed by commission_year).
+    join_storage_level_profiles = if table_name == :balance_storage_inter_period
+        """
+        LEFT OUTER JOIN assets_timeframe_profiles AS max_storage_level_profile
+            ON cons.asset = max_storage_level_profile.asset
+            AND cons.milestone_year = max_storage_level_profile.milestone_year
+            AND cons.scenario = max_storage_level_profile.scenario
+            AND max_storage_level_profile.profile_type = 'max_storage_level'
+        LEFT OUTER JOIN assets_timeframe_profiles AS min_storage_level_profile
+            ON cons.asset = min_storage_level_profile.asset
+            AND cons.milestone_year = min_storage_level_profile.milestone_year
+            AND cons.scenario = min_storage_level_profile.scenario
+            AND min_storage_level_profile.profile_type = 'min_storage_level'
+        """
+    else
+        """
+        LEFT OUTER JOIN assets_profiles AS max_storage_level_profile
+            ON cons.asset = max_storage_level_profile.asset
+            AND cons.milestone_year = max_storage_level_profile.commission_year
+            AND max_storage_level_profile.profile_type = 'max_storage_level'
+        LEFT OUTER JOIN assets_profiles AS min_storage_level_profile
+            ON cons.asset = min_storage_level_profile.asset
+            AND cons.milestone_year = min_storage_level_profile.commission_year
+            AND min_storage_level_profile.profile_type = 'min_storage_level'
+        """
+    end
+
     if table_name == :balance_storage_inter_period
         DuckDB.query(
             connection,
@@ -396,14 +424,7 @@ function _append_storage_data_to_indices(connection, table_name)
             ON cons.asset = inflows_profile.asset
             AND cons.milestone_year = inflows_profile.commission_year
             AND inflows_profile.profile_type = 'inflows'
-        LEFT OUTER JOIN assets_profiles AS max_storage_level_profile
-            ON cons.asset = max_storage_level_profile.asset
-            AND cons.milestone_year = max_storage_level_profile.commission_year
-            AND max_storage_level_profile.profile_type = 'max_storage_level'
-        LEFT OUTER JOIN assets_profiles AS min_storage_level_profile
-            ON cons.asset = min_storage_level_profile.asset
-            AND cons.milestone_year = min_storage_level_profile.commission_year
-            AND min_storage_level_profile.profile_type = 'min_storage_level'
+        $join_storage_level_profiles
         $join_duration
         ORDER BY cons.id
         ",
