@@ -1,34 +1,24 @@
 """
-    _add_to_objective!(connection, model, objective_expr, name, expr)
+    _add_to_objective!(connection, objective_expr, name, expr)
 
-Add `expr` to the running objective sum, register it on the model under `name`, and
-insert a placeholder row in the `obj_breakdown` table (value filled in by
-`save_solution!` after the solve).
+Add `expr` to the running objective sum  and insert a placeholder row
+in the `obj_breakdown` table (value filled in by `save_solution!` after the solve).
 """
-function _add_to_objective!(connection, model, objective_expr, name::String, expr)
+function _add_to_objective!(connection, objective_expr, name::String, expr)
     DuckDB.execute(connection, "INSERT INTO obj_breakdown (name, value) VALUES (?, NULL)", [name])
-    model[Symbol(name)] = expr
     JuMP.add_to_expression!(objective_expr, expr)
     return
 end
 
-function add_objective!(connection, model, variables, expressions, profiles)
-    row = only(collect(DuckDB.query(connection, "SELECT * FROM model_parameters")))
+"""
+    add_objective!(connection, model, variables, expressions, model_parameters)
 
-    social_rate = row.discount_rate
-
-    discount_year = row.discount_year
-
-    lambda = row.risk_aversion_weight_lambda
-    alpha = row.risk_aversion_confidence_level_alpha
-    end_of_horizon = get_single_element_from_query_and_ensure_its_only_one(
-        connection,
-        "SELECT MAX(milestone_year) AS end_of_horizon FROM rep_periods_data",
-    )::Int32
-
-    constants = (; social_rate, discount_year, end_of_horizon)
-
-    _create_objective_auxiliary_table(connection, constants)
+Build all objective components, register them in `obj_breakdown`, and set the
+model objective to minimization of their sum.
+"""
+function add_objective!(connection, model, variables, expressions, model_parameters)
+    lambda = model_parameters.lambda
+    alpha = model_parameters.alpha
 
     ## Create obj_breakdown table (values populated by save_solution! after solve)
     DuckDB.execute(
@@ -53,9 +43,9 @@ function add_objective!(connection, model, variables, expressions, profiles)
     _add_storage_assets_energy_fixed_cost!(connection, model, expressions, objective_expr, lambda)
     _add_flows_investment_cost!(connection, model, variables, objective_expr, lambda)
     _add_flows_fixed_cost!(connection, model, expressions, objective_expr, lambda)
-    _add_flows_operational_cost!(connection, model, variables, profiles, objective_expr, lambda)
-    _add_vintage_flows_operational_cost!(connection, model, variables, objective_expr, lambda)
-    _add_units_on_cost!(connection, model, variables, objective_expr, lambda)
+    _add_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
+    _add_vintage_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
+    _add_units_on_operational_cost!(connection, model, expressions, objective_expr, lambda)
     _add_conditional_value_at_risk_term!(
         connection,
         model,
@@ -68,7 +58,15 @@ function add_objective!(connection, model, variables, expressions, profiles)
     @objective(model, Min, objective_expr)
 end
 
-function _create_objective_auxiliary_table(connection, constants)
+"""
+    prepare_objective_tables!(connection, model_parameters)
+
+Create temporary SQL tables used by objective-term builders.
+
+This precomputes discount-related auxiliary data and objective coefficient
+tables so subsequent objective functions can read prepared inputs directly.
+"""
+function prepare_objective_tables!(connection, model_parameters)
     # Create a table with the discount_factor_from_current_milestone_year_to_next_milestone_year (short for total_discount_factor) for operation
     #
     # total_discount_factor[asset, milestone_year] = ∑_[year = milestone_year:next_milestone_year - 1] discount_factor[asset, year]
@@ -101,7 +99,7 @@ function _create_objective_auxiliary_table(connection, constants)
             SELECT
                 asset,
                 current_year as milestone_year,
-                SUM(1 / (1 + $(constants.social_rate))^(year - $(constants.discount_year))) AS discount_factor_from_current_milestone_year_to_next_milestone_year
+                SUM(1 / (1 + $(model_parameters.social_rate))^(year - $(model_parameters.discount_year))) AS discount_factor_from_current_milestone_year_to_next_milestone_year
             FROM years_in_between
             GROUP BY asset, milestone_year
         )
@@ -139,7 +137,7 @@ function _create_objective_auxiliary_table(connection, constants)
                 from_asset,
                 to_asset,
                 current_year as milestone_year,
-                SUM(1 / (1 + $(constants.social_rate))^(year - $(constants.discount_year))) AS discount_factor_from_current_milestone_year_to_next_milestone_year
+                SUM(1 / (1 + $(model_parameters.social_rate))^(year - $(model_parameters.discount_year))) AS discount_factor_from_current_milestone_year_to_next_milestone_year
             FROM years_in_between
             GROUP BY from_asset, to_asset, milestone_year
         )
@@ -173,19 +171,19 @@ function _create_objective_auxiliary_table(connection, constants)
                     ) * asset_commission.investment_cost
             END AS annualized_cost,
             CASE
-                WHEN asset_milestone.milestone_year + asset.economic_lifetime <= $(constants.end_of_horizon) + 1
+                WHEN asset_milestone.milestone_year + asset.economic_lifetime <= $(model_parameters.end_of_horizon) + 1
                     THEN 0.0
                 -- the below closed-form equation does not accept asset.discount_rate = 0 in the denominator
                 WHEN asset.discount_rate = 0
                     THEN annualized_cost *
-                        (asset_milestone.milestone_year + asset.economic_lifetime - $(constants.end_of_horizon) - 1)
+                        (asset_milestone.milestone_year + asset.economic_lifetime - $(model_parameters.end_of_horizon) - 1)
                 ELSE -annualized_cost * (
                         (1 / (1 + asset.discount_rate)) ^ (
-                            asset_milestone.milestone_year + asset.economic_lifetime - $(constants.end_of_horizon) - 1
+                            asset_milestone.milestone_year + asset.economic_lifetime - $(model_parameters.end_of_horizon) - 1
                         ) - 1
                     ) / asset.discount_rate
             END AS salvage_value,
-            1 / (1 + $(constants.social_rate))^(asset_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
+            1 / (1 + $(model_parameters.social_rate))^(asset_milestone.milestone_year - $(model_parameters.discount_year)) AS investment_year_discount,
             CASE
                 -- the below calculation does not accept asset_commission.investment_cost = 0 in the denominator
                 WHEN asset_commission.investment_cost = 0
@@ -232,19 +230,19 @@ function _create_objective_auxiliary_table(connection, constants)
                     ) * flow_commission.investment_cost
             END AS annualized_cost,
             CASE
-                WHEN flow_milestone.milestone_year + flow.economic_lifetime <= $(constants.end_of_horizon) + 1
+                WHEN flow_milestone.milestone_year + flow.economic_lifetime <= $(model_parameters.end_of_horizon) + 1
                     THEN 0.0
                 -- the below closed-form equation does not accept flow.discount_rate = 0 in the denominator
                 WHEN flow.discount_rate = 0
                     THEN annualized_cost *
-                        (flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1)
+                        (flow_milestone.milestone_year + flow.economic_lifetime - $(model_parameters.end_of_horizon) - 1)
                 ELSE -annualized_cost * (
                         (1 / (1 + flow.discount_rate)) ^ (
-                            flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1
+                            flow_milestone.milestone_year + flow.economic_lifetime - $(model_parameters.end_of_horizon) - 1
                         ) - 1
                     ) / flow.discount_rate
             END AS salvage_value,
-            1 / (1 + $(constants.social_rate))^(flow_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
+            1 / (1 + $(model_parameters.social_rate))^(flow_milestone.milestone_year - $(model_parameters.discount_year)) AS investment_year_discount,
             CASE
                 -- the below calculation does not accept flow_commission.investment_cost = 0 in the denominator
                 WHEN flow_commission.investment_cost = 0
@@ -293,19 +291,19 @@ function _create_objective_auxiliary_table(connection, constants)
                     ) * flow_commission.investment_cost
             END AS annualized_cost,
             CASE
-                WHEN flow_milestone.milestone_year + flow.economic_lifetime <= $(constants.end_of_horizon) + 1
+                WHEN flow_milestone.milestone_year + flow.economic_lifetime <= $(model_parameters.end_of_horizon) + 1
                     THEN 0.0
                 -- the below closed-form equation does not accept flow.discount_rate = 0 in the denominator
                 WHEN flow.discount_rate = 0
                     THEN annualized_cost *
-                        (flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1)
+                        (flow_milestone.milestone_year + flow.economic_lifetime - $(model_parameters.end_of_horizon) - 1)
                 ELSE -annualized_cost * (
                         (1 / (1 + flow.discount_rate)) ^ (
-                            flow_milestone.milestone_year + flow.economic_lifetime - $(constants.end_of_horizon) - 1
+                            flow_milestone.milestone_year + flow.economic_lifetime - $(model_parameters.end_of_horizon) - 1
                         ) - 1
                     ) / flow.discount_rate
             END AS salvage_value,
-            1 / (1 + $(constants.social_rate))^(flow_milestone.milestone_year - $(constants.discount_year)) AS investment_year_discount,
+            1 / (1 + $(model_parameters.social_rate))^(flow_milestone.milestone_year - $(model_parameters.discount_year)) AS investment_year_discount,
             CASE
                 -- the below calculation does not accept flow_commission.investment_cost = 0 in the denominator
                 WHEN flow_commission.investment_cost = 0
@@ -335,5 +333,5 @@ function _create_objective_auxiliary_table(connection, constants)
         ",
     )
 
-    return
+    return nothing
 end
