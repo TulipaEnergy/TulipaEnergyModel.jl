@@ -154,12 +154,12 @@ function _add_vintage_flows_operational_cost_per_scenario_expressions!(
         expr,
         :cost,
         JuMP.AffExpr[
-            if haskey(range_per_scenario, row.scenario)
+            if length(row.var_vintage_flow_ids) > 0
                 @expression(
                     model,
                     sum(
-                        indices[i].cost * vintage_flow[indices[i].id::Int64] for
-                        i in range_per_scenario[row.scenario]
+                        cost * vintage_flow[var_id::Int64]
+                        for (cost, var_id) in zip(row.arr_cost, row.var_vintage_flow_ids)
                     ),
                 )
             else
