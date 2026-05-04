@@ -8,9 +8,9 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,solution,dual
 7,AT_Pump_Hydro_Open,2050,1,1,24,,-0.0
 8,AT_Pump_Hydro_Open,2050,2,1,24,,-0.0
 9,AT_Pump_Hydro_Open,2050,3,1,24,,-0.0
-10,BG_Hydro_Reservoir,2050,1,1,24,,-1126.353324982362
+10,BG_Hydro_Reservoir,2050,1,1,24,,-1126.3533249823622
 11,BG_Hydro_Reservoir,2050,2,1,24,,-1518.3804611274527
-12,BG_Hydro_Reservoir,2050,3,1,24,,-1552.7662138901871
+12,BG_Hydro_Reservoir,2050,3,1,24,,-1552.7662138901874
 13,BG_Pump_Hydro_Closed,2050,1,1,24,,-1126.3533249823615
 14,BG_Pump_Hydro_Closed,2050,2,1,24,,-1518.3804611274527
 15,BG_Pump_Hydro_Closed,2050,3,1,24,,-1552.7662138901867
@@ -129,7 +129,7 @@ id,asset,milestone_year,rep_period,time_block_start,time_block_end,solution,dual
 128,SI_Pump_Hydro_Closed,2050,2,1,24,,-0.0
 129,SI_Pump_Hydro_Closed,2050,3,1,24,,-0.0
 130,SK_Hydro_Reservoir,2050,1,1,24,,-1126.3533249823615
-131,SK_Hydro_Reservoir,2050,2,1,24,,-1518.3804611274504
+131,SK_Hydro_Reservoir,2050,2,1,24,,-1518.3804611274527
 132,SK_Hydro_Reservoir,2050,3,1,24,,-1552.7662138901867
 133,SK_Pump_Hydro_Closed,2050,1,1,24,,-1126.3533249823615
 134,SK_Pump_Hydro_Closed,2050,2,1,24,,-1518.3804611274527
