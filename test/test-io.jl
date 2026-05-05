@@ -15,7 +15,7 @@ end
         "var_flow.csv",
         "var_flows_investment.csv",
         "cons_balance_consumer.csv",
-        "cons_capacity_incoming_simple_method.csv",
+        "cons_capacity_incoming_aggregated_vintage_method.csv",
     )
         @test isfile(joinpath(output_folder, filename))
     end

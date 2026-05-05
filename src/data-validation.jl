@@ -44,7 +44,7 @@ function validate_data!(connection)
         ),
         (
             "data consistency for simple investment",
-            _validate_simple_method_data_consistency!,
+            _validate_aggregated_vintage_method_data_consistency!,
             false,
         ),
         (
@@ -55,7 +55,7 @@ function validate_data!(connection)
         ("check DC OPF data", _validate_dc_opf_data!, false),
         (
             "consistency between asset types and investment methods",
-            _validate_certain_asset_types_can_only_have_none_investment_methods!,
+            _validate_certain_asset_types_can_only_have_none_vintage_methods!,
             false,
         ),
         (
@@ -228,7 +228,7 @@ end
 
 function _validate_flow_both_table_does_not_contain_non_transport_flows!(error_messages, connection)
     # In principle, we should also check all transport flows are covered.
-    # But that is tested elsewhere, i.e., in _validate_simple_method_data_consistency!()
+    # But that is tested elsewhere, i.e., in _validate_aggregated_vintage_method_data_consistency!()
     for row in DuckDB.query(
         connection,
         "SELECT flow_both.from_asset, flow_both.to_asset, flow_both.milestone_year, flow_both.commission_year
@@ -369,30 +369,30 @@ function _validate_stochastic_scenario_probabilities_sum_to_one!(
     return error_messages
 end
 
-function _validate_simple_method_data_consistency!(error_messages, connection)
-    _validate_simple_method_has_only_matching_years!(error_messages, connection)
-    _validate_simple_method_all_milestone_years_are_covered!(error_messages, connection)
+function _validate_aggregated_vintage_method_data_consistency!(error_messages, connection)
+    _validate_aggregated_vintage_method_has_only_matching_years!(error_messages, connection)
+    _validate_aggregated_vintage_method_all_milestone_years_are_covered!(error_messages, connection)
 
     return error_messages
 end
 
-function _validate_simple_method_has_only_matching_years!(error_messages, connection)
+function _validate_aggregated_vintage_method_has_only_matching_years!(error_messages, connection)
     # Validate that the data should have milestone year = commission year
     # Error otherwise and point out the unmatched rows
     # - For assets
     for row in DuckDB.query(
         connection,
-        "SELECT asset.asset, asset_both.milestone_year, asset_both.commission_year, asset.investment_method
+        "SELECT asset.asset, asset_both.milestone_year, asset_both.commission_year, asset.vintage_method
         FROM asset_both
         LEFT JOIN asset
             ON asset.asset = asset_both.asset
         WHERE asset_both.milestone_year != asset_both.commission_year
-            AND asset.investment_method in ('aggregated', 'none')
+            AND asset.vintage_method in ('aggregated', 'none')
         ",
     )
         push!(
             error_messages,
-            "Unexpected (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'asset_both' for an asset='$(row.asset)' with investment_method='$(row.investment_method)'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+            "Unexpected (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'asset_both' for an asset='$(row.asset)' with vintage_method='$(row.vintage_method)'. For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -410,20 +410,23 @@ function _validate_simple_method_has_only_matching_years!(error_messages, connec
     )
         push!(
             error_messages,
-            "Unexpected (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' for an flow=('$(row.from_asset)', '$(row.to_asset)') with default investment_method='aggregated/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+            "Unexpected (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' for an flow=('$(row.from_asset)', '$(row.to_asset)') with default vintage_method='aggregated/none'. For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
         )
     end
 
     return error_messages
 end
 
-function _validate_simple_method_all_milestone_years_are_covered!(error_messages, connection)
+function _validate_aggregated_vintage_method_all_milestone_years_are_covered!(
+    error_messages,
+    connection,
+)
     # Validate that the data contains all milestone years where milestone year = commission year
     # Error otherwise and point out the missing milestone years
     # - For assets
     for row in DuckDB.query(
         connection,
-        "SELECT asset_milestone.asset, asset_milestone.milestone_year, asset.investment_method
+        "SELECT asset_milestone.asset, asset_milestone.milestone_year, asset.vintage_method
         FROM asset_milestone
         LEFT JOIN asset
             ON asset_milestone.asset = asset.asset
@@ -432,12 +435,12 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
             AND asset_milestone.milestone_year = asset_both.milestone_year
             AND asset_milestone.milestone_year = asset_both.commission_year
         WHERE asset_both.commission_year IS NULL
-            AND asset.investment_method in ('aggregated', 'none')
+            AND asset.vintage_method in ('aggregated', 'none')
         ",
     )
         push!(
             error_messages,
-            "Missing information in 'asset_both': Asset '$(row.asset)' has investment_method='$(row.investment_method)' but there is no row (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+            "Missing information in 'asset_both': Asset '$(row.asset)' has vintage_method='$(row.vintage_method)' but there is no row (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -460,7 +463,7 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
     )
         push!(
             error_messages,
-            "Missing information in 'flow_both': Flow ('$(row.from_asset)', '$(row.to_asset)') currently only has investment_method='aggregated/none' but there is no row (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+            "Missing information in 'flow_both': Flow ('$(row.from_asset)', '$(row.to_asset)') currently only has vintage_method='aggregated/none' but there is no row (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -537,21 +540,21 @@ function _validate_dc_opf_only_apply_to_non_investable_transport_flows!(error_me
     return error_messages
 end
 
-function _validate_certain_asset_types_can_only_have_none_investment_methods!(
+function _validate_certain_asset_types_can_only_have_none_vintage_methods!(
     error_messages,
     connection,
 )
     for row in DuckDB.query(
         connection,
-        "SELECT asset.asset, asset.investment_method, asset.type
+        "SELECT asset.asset, asset.vintage_method, asset.type
         FROM asset
-        WHERE asset.investment_method != 'none'
+        WHERE asset.vintage_method != 'none'
             AND asset.type in ('consumer')
         ",
     )
         push!(
             error_messages,
-            "Incorrect use of investment method '$(row.investment_method)' for asset '$(row.asset)' of type '$(row.type)'. Consumer assets can only have 'none' investment method.",
+            "Incorrect use of vintage method '$(row.vintage_method)' for asset '$(row.asset)' of type '$(row.type)'. Consumer assets can only have 'none' vintage method.",
         )
     end
 
@@ -604,7 +607,7 @@ function _validate_flow_commission_and_asset_both_consistency!(error_messages, c
             AND asset_both.commission_year = flow_commission.commission_year
         LEFT JOIN asset
             ON asset_both.asset = asset.asset
-        WHERE asset.investment_method = 'compact_efficiencies'
+        WHERE asset.vintage_method = 'compact_efficiencies'
             AND flow_commission.commission_year IS NULL
         ",
     )
@@ -623,7 +626,7 @@ function _validate_flow_commission_and_asset_both_consistency!(error_messages, c
             AND flow_commission.commission_year = asset_both.commission_year
         LEFT JOIN asset
             ON flow_commission.from_asset = asset.asset
-        WHERE asset.investment_method = 'compact_efficiencies'
+        WHERE asset.vintage_method = 'compact_efficiencies'
             AND asset_both.commission_year IS NULL
         ",
     )

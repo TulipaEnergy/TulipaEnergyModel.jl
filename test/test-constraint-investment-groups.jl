@@ -11,14 +11,14 @@
             "producer1",
             :producer;
             investable = true,
-            investment_method = "aggregated",
+            vintage_method = "aggregated",
         )
         TB.add_asset!(
             tulipa,
             "producer2",
             :producer;
             investable = true,
-            investment_method = "aggregated",
+            vintage_method = "aggregated",
         )
         TB.attach_profile!(tulipa, "producer1", :availability, 2030, ones(6))
         TB.attach_profile!(tulipa, "producer2", :availability, 2050, ones(6))

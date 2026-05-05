@@ -78,19 +78,19 @@ plot(
 Explore the congestion using the duals in the results:
 
 ```julia
-transport = TIO.get_table(connection, "cons_transport_flow_limit_simple_method")
+transport = TIO.get_table(connection, "cons_transport_flow_limit_aggregated_vintage_method")
 
 names(transport)
 
 filter(
     row ->
-        row.dual_max_transport_flow_limit_simple_method != 0.0,
+        row.dual_max_transport_flow_limit_aggregated_vintage_method != 0.0,
     transport,
 )
 ```
 
 !!! info "Test Your Knowledge"
-    Can you explain the values you get from the column `dual_max_transport_flow_limit_simple_method`?
+    Can you explain the values you get from the column `dual_max_transport_flow_limit_aggregated_vintage_method`?
     Hint: consider what is currently defining the capacity to transport the flow between the assets you see in the table.
 
 ## Challenge: Add a Battery

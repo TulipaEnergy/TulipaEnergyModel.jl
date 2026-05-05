@@ -500,14 +500,14 @@ end
         end
     end
 
-    # limit_units_on_simple_method
+    # limit_units_on_aggregated_vintage_method
     for (bid_id, bid) in enumerate(bid_list)
         units_on = var_units_on_lookup[bid]
         expected_cons = JuMP.@build_constraint(units_on <= 1)
 
         cons_id = bid_id
         observed_cons =
-            _get_cons_object(energy_problem.model, :limit_units_on_simple_method)[cons_id]
+            _get_cons_object(energy_problem.model, :limit_units_on_aggregated_vintage_method)[cons_id]
 
         @test _is_constraint_equal(expected_cons, observed_cons)
     end

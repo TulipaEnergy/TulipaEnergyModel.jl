@@ -26,7 +26,7 @@ apply_to_files_named("assets-data.csv") do path
             tcsv.csv = unique(old_tcsv.csv[:, indices])
 
             idx = findfirst(names(tcsv.csv) .== "investment_cost")
-            return add_column(tcsv, "investment_method", "simple"; unit = "{none;simple;compact}")
+            return add_column(tcsv, "vintage_method", "simple"; unit = "{none;simple;compact}")
         end
 
         indices = setdiff(1:length(old_tcsv.units), columnindex.(Ref(old_tcsv.csv), static_cols))

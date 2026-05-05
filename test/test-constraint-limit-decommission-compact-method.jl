@@ -64,17 +64,18 @@
     # Create expressions
     expressions = Dict{Symbol,TulipaEnergyModel.TulipaExpression}()
     TulipaEnergyModel.create_multi_year_expressions!(connection, model, variables, expressions)
-    expr_avail_compact_method = expressions[:available_asset_units_compact].expressions[:assets]
+    expr_avail_compact_method =
+        expressions[:available_asset_units_compact_vintage_method].expressions[:assets]
 
     # Create constraint tables
-    table_name = "cons_limit_decommission_compact_method"
+    table_name = "cons_limit_decommission_compact_vintage_method"
     table_rows = [(1, "wind", 2030, 2020), (2, "wind", 2050, 2030)]
     columns = [:id, :asset, :milestone_year, :commission_year]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     constraints = Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(
         key => TulipaEnergyModel.TulipaConstraint(connection, "cons_$key") for
-        key in (:limit_decommission_compact_method,)
+        key in (:limit_decommission_compact_vintage_method,)
     )
 
     # Create JuMP constraints
@@ -92,6 +93,6 @@
         JuMP.@build_constraint(0.07 - var_assets_decommission[1] ≥ 0),
         JuMP.@build_constraint(0.02 + var_assets_investment[1] - var_assets_decommission[2] ≥ 0)
     ]
-    observed_cons = _get_cons_object(model, :limit_decommission_compact_method)
+    observed_cons = _get_cons_object(model, :limit_decommission_compact_vintage_method)
     @test _is_constraint_equal(expected_cons, observed_cons)
 end

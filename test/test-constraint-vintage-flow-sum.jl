@@ -12,7 +12,7 @@
         ("input_2", "compact_profiles"),
         ("death_star", "aggregated"),
     ]
-    columns = [:asset, :investment_method]
+    columns = [:asset, :vintage_method]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "flow"
@@ -67,7 +67,7 @@
     TulipaEnergyModel.add_flow_variables!(connection, model, variables)
     TulipaEnergyModel.add_vintage_flow_variables!(connection, model, variables)
 
-    table_name = "cons_vintage_flow_sum_semi_compact_method"
+    table_name = "cons_vintage_flow_sum_compact_efficiencies_vintage_method"
     table_rows = [(1, "input_1", "death_star", 2025, 1, 1, 1)]
     columns = [
         :id,
@@ -80,7 +80,7 @@
     ]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
-    constraints = let key = :vintage_flow_sum_semi_compact_method
+    constraints = let key = :vintage_flow_sum_compact_efficiencies_vintage_method
         Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(
             key => TulipaEnergyModel.TulipaConstraint(connection, "cons_$key"),
         )
@@ -94,6 +94,6 @@
 
     expected_cons =
         [JuMP.@build_constraint(var_vintage_flow[1] + var_vintage_flow[2] == var_flow[1])]
-    observed_cons = _get_cons_object(model, :vintage_flow_sum_semi_compact_method)
+    observed_cons = _get_cons_object(model, :vintage_flow_sum_compact_efficiencies_vintage_method)
     @test _is_constraint_equal(expected_cons, observed_cons)
 end

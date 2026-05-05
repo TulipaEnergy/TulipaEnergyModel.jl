@@ -50,12 +50,12 @@ function add_capacity_limits_transport_flows!(
     profiles,
 )
     ## unpack from model
-    expr_avail = expressions[:available_flow_units_aggregated]
+    expr_avail = expressions[:available_flow_units_aggregated_vintage_method]
     expr_avail_export = expr_avail.expressions[:export]
     expr_avail_import = expr_avail.expressions[:import]
 
     # - Capacity limits for transport flows
-    let table_name = :transport_flow_limit_simple_method, cons = constraints[table_name]
+    let table_name = :transport_flow_limit_aggregated_vintage_method, cons = constraints[table_name]
         indices = _append_transport_data_to_indices(connection)
         var_flow = variables[:flow].container
 
@@ -99,12 +99,12 @@ function add_capacity_limits_transport_flows!(
         attach_constraint!(
             model,
             cons,
-            :max_transport_flow_limit_simple_method,
+            :max_transport_flow_limit_aggregated_vintage_method,
             [
                 @constraint(
                     model,
                     var_flow[row.var_flow_id] ≤ upper_bound_transport_flow,
-                    base_name = "max_transport_flow_limit_simple_method[($(row.from_asset),$(row.to_asset)),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "max_transport_flow_limit_aggregated_vintage_method[($(row.from_asset),$(row.to_asset)),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, upper_bound_transport_flow) in
                 zip(indices, cons.expressions[:upper_bound_transport_flow])
             ],
@@ -114,12 +114,12 @@ function add_capacity_limits_transport_flows!(
         attach_constraint!(
             model,
             cons,
-            :min_transport_flow_limit_simple_method,
+            :min_transport_flow_limit_aggregated_vintage_method,
             [
                 @constraint(
                     model,
                     var_flow[row.var_flow_id] ≥ -lower_bound_transport_flow,
-                    base_name = "min_transport_flow_limit_simple_method[($(row.from_asset),$(row.to_asset)),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "min_transport_flow_limit_aggregated_vintage_method[($(row.from_asset),$(row.to_asset)),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for (row, lower_bound_transport_flow) in
                 zip(indices, cons.expressions[:lower_bound_transport_flow])
             ],
@@ -202,11 +202,11 @@ function _append_transport_data_to_indices(connection)
             flow.capacity AS capacity,
             expr_avail.id AS avail_id,
             flows_profiles.profile_name AS profile_name,
-        FROM cons_transport_flow_limit_simple_method AS cons
+        FROM cons_transport_flow_limit_aggregated_vintage_method AS cons
         LEFT JOIN flow
             ON cons.from_asset = flow.from_asset
             AND cons.to_asset = flow.to_asset
-        LEFT JOIN expr_available_flow_units_aggregated AS expr_avail
+        LEFT JOIN expr_available_flow_units_aggregated_vintage_method AS expr_avail
             ON cons.from_asset = expr_avail.from_asset
             AND cons.to_asset = expr_avail.to_asset
             AND cons.milestone_year = expr_avail.milestone_year

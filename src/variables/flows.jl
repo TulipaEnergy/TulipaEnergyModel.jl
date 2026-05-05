@@ -10,7 +10,7 @@ function add_flow_variables!(connection, model, variables)
     indices = _create_flow_table(connection)
 
     lower_bound(row) =
-        if row.is_transport || row.investment_method == "compact_efficiencies"
+        if row.is_transport || row.vintage_method == "compact_efficiencies"
             -Inf
         else
             0.0
@@ -33,7 +33,7 @@ function _create_flow_table(connection)
         "SELECT
             var_flow.*,
             flow.is_transport,
-            asset.investment_method,
+            asset.vintage_method,
         FROM var_flow
         LEFT JOIN flow
             ON flow.from_asset = var_flow.from_asset

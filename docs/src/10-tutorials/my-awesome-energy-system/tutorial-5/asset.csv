@@ -1,4 +1,4 @@
-asset,type,capacity,investment_method,investment_integer,technical_lifetime,discount_rate,capacity_storage_energy,is_seasonal
+asset,type,capacity,vintage_method,investment_integer,technical_lifetime,discount_rate,capacity_storage_energy,is_seasonal
 ccgt,producer,800.0,aggregated,true,15,0.05,0.0,false
 e_demand,consumer,0.0,none,false,15,0.05,0.0,false
 ens,producer,1000.0,none,false,15,0.05,0.0,false
