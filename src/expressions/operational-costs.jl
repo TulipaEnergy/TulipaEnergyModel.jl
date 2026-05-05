@@ -45,7 +45,8 @@ Create and attach one flow operational-cost expression per scenario.
 
 Costs are aggregated per scenario using SQL `ARRAY_AGG`. Because profile-based
 cost components require Julia-side lookups, a `costs` vector is pre-allocated
-from the known aggregate length and filled before building the expression.
+once outside the scenario loop (using the maximum number of flows across all
+scenarios) and reused per scenario, avoiding repeated allocations.
 The result is stored as
 `expressions[:flows_operational_cost_per_scenario].expressions[:cost]`.
 """
@@ -79,29 +80,31 @@ function _add_flows_operational_cost_per_scenario_expressions!(
         has_commodity_price_profile,
     )
 
+    max_n_flows = _get_max_n_flows(connection)
+    costs = Vector{Float64}(undef, max_n_flows)
+
     attach_expression!(
         expr,
         :cost,
         JuMP.AffExpr[
             if length(row.var_flow_ids) > 0
                 n_flows = length(row.var_flow_ids)
-                costs = Vector{Float64}(undef, n_flows)
                 for i in 1:n_flows
-                    costs[i] =
-                        if !has_commodity_price_profile || ismissing(row.arr_profile_name[i])
-                            row.arr_total_cost_if_no_profile[i]::Float64
-                        else
-                            commodity_price_agg = _profile_aggregate(
-                                profiles.rep_period,
-                                (
-                                    row.arr_profile_name[i]::String,
-                                    row.arr_milestone_year[i]::Int32,
-                                    row.arr_rep_period[i]::Int32,
-                                ),
-                                row.arr_time_block_start[i]:row.arr_time_block_end[i],
-                                Statistics.mean,
-                                1.0,
-                            )
+                    if !has_commodity_price_profile || ismissing(row.arr_profile_name[i])
+                        costs[i] = row.arr_total_cost_if_no_profile[i]::Float64
+                    else
+                        commodity_price_agg = _profile_aggregate(
+                            profiles.rep_period,
+                            (
+                                row.arr_profile_name[i]::String,
+                                row.arr_milestone_year[i]::Int32,
+                                row.arr_rep_period[i]::Int32,
+                            ),
+                            row.arr_time_block_start[i]:row.arr_time_block_end[i],
+                            Statistics.mean,
+                            1.0,
+                        )
+                        costs[i] =
                             row.arr_cost_coefficient[i]::Float64 *
                             (
                                 row.arr_commodity_price[i]::Float64 * commodity_price_agg /
@@ -109,7 +112,7 @@ function _add_flows_operational_cost_per_scenario_expressions!(
                                 row.arr_operational_cost[i]::Float64
                             ) *
                             (row.arr_time_block_end[i] - row.arr_time_block_start[i] + 1)
-                        end
+                    end
                 end
                 @expression(
                     model,
@@ -523,5 +526,44 @@ function _query_units_on_operational_cost_per_scenario_indices(connection, expr_
         LEFT JOIN units_on_per_scenario AS uops ON expr.scenario = uops.scenario
         ORDER BY expr.id
         """,
+    )
+end
+
+"""
+    _get_max_n_flows(connection)
+
+Return the maximum number of flow variable rows belonging to any single
+scenario, excluding flows whose source asset uses the `semi-compact`
+investment method (consistent with the filter applied in
+`_query_flows_operational_cost_per_scenario_indices`).
+
+Each flow variable is defined for a `(from_asset, to_asset, milestone_year,
+rep_period, time_block)` tuple. Because a rep-period can be shared across
+multiple scenarios (via `rep_periods_mapping`), a single flow row is counted
+once per scenario it participates in. The inner query counts these
+per-scenario totals; the outer query selects the maximum so that a single
+`costs` buffer allocated to this size is large enough to hold the costs for
+any scenario without reallocation. `COALESCE(..., 0)` guards against an empty
+`var_flow` table, where `MAX` would otherwise return `NULL`.
+"""
+function _get_max_n_flows(connection)
+    return get_single_element_from_query_and_ensure_its_only_one(
+        DuckDB.query(
+            connection,
+            """
+            SELECT COALESCE(MAX(cnt), 0)
+            FROM (
+                SELECT COUNT(*) AS cnt
+                FROM var_flow AS var
+                LEFT JOIN rep_periods_mapping AS rpm
+                    ON var.milestone_year = rpm.milestone_year
+                    AND var.rep_period = rpm.rep_period
+                LEFT JOIN asset
+                    ON asset.asset = var.from_asset
+                WHERE asset.investment_method != 'semi-compact'
+                GROUP BY rpm.scenario
+            )
+            """,
+        ),
     )
 end
