@@ -412,7 +412,7 @@ end
         is_seasonal = true,
         storage_method_energy = "none",
         investable = false,
-        investment_method = "none",
+        vintage_method = "none",
         max_storage_level_profile = Dict((2030, 1) => [0.8, 0.4, 1.0]),
         min_storage_level_profile = Dict((2030, 1) => [0.2, 0.3, 0.0]),
     )
