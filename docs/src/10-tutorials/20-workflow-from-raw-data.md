@@ -211,7 +211,7 @@ asset = DataFrame(
     asset = String[],
     type  = String[],
     capacity = Float64[],
-    investment_method = String[],
+    vintage_method = String[],
     investment_integer = Bool[],
     technical_lifetime = Int[],
     discount_rate = Float64[]
@@ -559,12 +559,12 @@ As you can see, we have some installed capacity figures for battery and hydro pu
 TIO.get_table(connection, "asset")
 
 DBInterface.execute(connection, """
-    INSERT INTO asset (asset, type, capacity, investment_method, investment_integer, technical_lifetime, discount_rate, capacity_storage_energy)
+    INSERT INTO asset (asset, type, capacity, vintage_method, investment_integer, technical_lifetime, discount_rate, capacity_storage_energy)
     VALUES ('battery', 'storage', 40000.0, 'aggregated', false, 15, 0.05, 160000)
 """)
 
 DBInterface.execute(connection, """
-    INSERT INTO asset (asset, type, capacity, investment_method, investment_integer, technical_lifetime, discount_rate, capacity_storage_energy)
+    INSERT INTO asset (asset, type, capacity, vintage_method, investment_integer, technical_lifetime, discount_rate, capacity_storage_energy)
     VALUES ('pumped_hydro', 'storage', 50000.0, 'aggregated', false, 15, 0.05, 500000)
 """)
 

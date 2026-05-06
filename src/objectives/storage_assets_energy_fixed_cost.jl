@@ -31,10 +31,8 @@ function _add_storage_assets_energy_fixed_cost!(
         model,
         storage_assets_energy_fixed_cost,
         sum(
-            row.cost * expr_avail for (row, expr_avail) in zip(
-                indices,
-                expr_available_energy_units_aggregated_vintage_method.expressions[:energy],
-            )
+            row.cost * expr_avail for (row, expr_avail) in
+            zip(indices, expr_available_energy_units_aggregated_vintage_method.expressions[:energy])
         )
     )
     _add_to_objective!(

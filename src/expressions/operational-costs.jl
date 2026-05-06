@@ -338,7 +338,7 @@ function _query_flows_operational_cost_per_scenario_indices(
             LEFT JOIN asset
                 ON asset.asset = var.from_asset
             $flows_profiles_query_left_join
-            WHERE asset.investment_method != 'semi-compact'
+            WHERE asset.vintage_method != 'compact_efficiencies'
         ),
         flows_per_scenario AS (
             SELECT
@@ -560,7 +560,7 @@ function _get_max_n_flows(connection)
                     AND var.rep_period = rpm.rep_period
                 LEFT JOIN asset
                     ON asset.asset = var.from_asset
-                WHERE asset.investment_method != 'semi-compact'
+                WHERE asset.vintage_method != 'compact_efficiencies'
                 GROUP BY rpm.scenario
             )
             """,

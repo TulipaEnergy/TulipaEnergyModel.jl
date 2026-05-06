@@ -10,7 +10,7 @@
         capacity::Float64 = 5.0
         investable::Bool = true
         decommissionable::Bool = true
-        investment_method::String = "simple"
+        vintage_method::String = "aggregated"
         fixed_cost::Float64 = 1.7
         investment_cost::Float64 = 13.0
         operational_cost::Float64 = 0.19
@@ -32,7 +32,7 @@
         tulipa = TB.TulipaData()
 
         # Add basic producer and consumer to connect the storage
-        TB.add_asset!(tulipa, "consumer", :consumer)
+        TB.add_asset!(tulipa, "consumer", :consumer; vintage_method = "none")
 
         # Add and configure the producer asset
         TB.add_asset!(
@@ -43,7 +43,7 @@
             capacity = config.capacity,
             investable = config.investable,
             decommissionable = config.decommissionable,
-            investment_method = config.investment_method,
+            vintage_method = config.vintage_method,
             fixed_cost = config.fixed_cost,
             investment_cost = config.investment_cost,
         )
@@ -207,8 +207,8 @@ end
     base_cost = JuMP.AffExpr(0.0)
     for objective_name in (
         :assets_investment_cost,
-        :assets_fixed_cost_compact_method,
-        :assets_fixed_cost_simple_method,
+        :assets_fixed_cost_compact_vintage_method,
+        :assets_fixed_cost_aggregated_vintage_method,
         :storage_assets_energy_investment_cost,
         :storage_assets_energy_fixed_cost,
         :flows_investment_cost,

@@ -318,7 +318,7 @@ group_asset_membership = CSV.read(input_file, DataFrame) # hide
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
 
 !!! info
-    The assets in the group have to allow investment (`asset_milestone.investable = true` for the corresponding year) and have some investment method (`asset.investment_method != "none"`).
+    The assets in the group have to allow investment (`asset_milestone.investable = true` for the corresponding year) and have some investment method (`asset.vintage_method != "none"`).
 
 ### [Multi-year investments](@id multi-year-setup)
 
@@ -335,7 +335,7 @@ In order to set up a model with year information, the following steps are necess
 
 Fill in the parameters in the `asset.csv` file. These parameters are for the assets across all the years, i.e., not dependent on years. Examples are lifetime (both `technical_lifetime` and `economic_lifetime`) and capacity of a unit.
 
-You need to choose a `investment_method` for the asset, between `none`, `aggregated`, `compact_profiles`, and `compact_efficiencies`. In addition, you also have to make it explicit on which assets you would like to invest in, by setting the `investable` parameter in `asset-milestone.csv`, and which assets you would like to decommission, by setting the `decommissionable` parameter in `asset-both.csv`. More information on `investable` and `decommissionable` are given in the next sections.
+You need to choose a `vintage_method` for the asset, between `none`, `aggregated`, `compact_profiles`, and `compact_efficiencies`. In addition, you also have to make it explicit on which assets you would like to invest in, by setting the `investable` parameter in `asset-milestone.csv`, and which assets you would like to decommission, by setting the `decommissionable` parameter in `asset-both.csv`. More information on `investable` and `decommissionable` are given in the next sections.
 
 Below is an overview of the important set-ups regarding the investment methods.
 

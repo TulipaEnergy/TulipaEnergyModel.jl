@@ -103,7 +103,7 @@ So...the wind built in 2020 has a worse profile. How does it play a role in the 
 
 ### Aggregated method
 
-Let's try the aggregated method first (`investment_method = "aggregated"`).
+Let's try the aggregated method first (`vintage_method = "aggregated"`).
 
 ```julia
 connection = DBInterface.connect(DuckDB.DB)
@@ -132,7 +132,7 @@ filter(row -> row.asset=="wind", TIO.get_table(connection, "var_assets_investmen
 
 ### Compact method
 
-Now try the compact method (`investment_method = "compact_profiles"`).
+Now try the compact method (`vintage_method = "compact_profiles"`).
 
 ```julia
 connection = DBInterface.connect(DuckDB.DB)
