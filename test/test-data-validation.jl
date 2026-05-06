@@ -365,7 +365,7 @@ end
     ])
 end
 
-@testitem "Test simple vintage method has only matching years - using fake data" setup =
+@testitem "Test aggregated vintage method has only matching years - using fake data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     # For asset and flow
     # Validate have only matching years
@@ -403,7 +403,7 @@ end
     ]
 end
 
-@testitem "Test simple vintage method all milestone years covered - using fake data" setup =
+@testitem "Test aggregated vintage method all milestone years covered - using fake data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     # For asset and flow
     # Validate that the data contains all milestone years where milestone year = commission year
@@ -445,7 +445,7 @@ end
     ]
 end
 
-@testitem "Test simple vintage method has only matching years - using Tiny data" setup =
+@testitem "Test aggregated vintage method has only matching years - using Tiny data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     # For asset and flow
     # Validate have only matching years
@@ -469,7 +469,7 @@ end
     ]
 end
 
-@testitem "Test simple vintage method all milestone years covered - using Tiny data" setup =
+@testitem "Test aggregated vintage method all milestone years covered - using Tiny data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     # For asset and flow
     # Validate that the data contains all milestone years where milestone year = commission year

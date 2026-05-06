@@ -43,7 +43,7 @@ function validate_data!(connection)
             false,
         ),
         (
-            "data consistency for simple investment",
+            "data consistency for aggregated vintage method",
             _validate_aggregated_vintage_method_data_consistency!,
             false,
         ),
