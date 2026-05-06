@@ -222,11 +222,13 @@ In addition, the following subsets represent methods for incorporating additiona
 
 ### Parameters for the Model
 
-| Name                              | Domain           | Description          | Units  |
-| --------------------------------- | ---------------- | -------------------- | ------ |
-| $p^{\text{social discount rate}}$ | $\mathbb{R}_{+}$ | Social discount rate | [-]    |
-| $p^{\text{discount year}}$        | $\mathbb{Z}_{+}$ | Discount year        | [year] |
-| $p^{\text{power system base}}$    | $\mathbb{R}_{+}$ | Power system base    | [MVA]  |
+| Name                              | Domain           | Description                                      | Units  |
+| --------------------------------- | ---------------- | ------------------------------------------------ | ------ |
+| $p^{\text{social discount rate}}$ | $\mathbb{R}_{+}$ | Social discount rate                             | [-]    |
+| $p^{\text{discount year}}$        | $\mathbb{Z}_{+}$ | Discount year                                    | [year] |
+| $p^{\text{power system base}}$    | $\mathbb{R}_{+}$ | Power system base                                | [MVA]  |
+| $p^{\lambda}$                     | $[0, 1]$         | Risk aversion weight for the mean-CVaR objective | [-]    |
+| $p^{\alpha}$                      | $(0, 1)$         | Confidence level for the Value at Risk threshold | [-]    |
 
 ### Extra Parameters for Discounting
 
@@ -236,25 +238,27 @@ In addition, the following subsets represent methods for incorporating additiona
 
 ## [Variables](@id math-variables)
 
-| Name                                                            | Domain           | Domains of Indices                                                                                                                                                                                                | Description                                                                                                                                  | Units   |
-| --------------------------------------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| $v^{\text{flow}}_{f,k_y,b_{k_y}}$                               | $\mathbb{R}$     | $f \in \mathcal{F}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                                     | Flow $f$ between two assets in representative period $k_y$ and timestep block $b_{k_y}$                                                      | [MW]    |
-| $v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}}$                     | $\mathbb{R}$     | $f \in \mathcal{F}^{\text{out}}_{a,y} \mid a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} $, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Vintage flow $f$ between two assets in commission year $v$ in representative period $k_y$ and timestep block $b_{k_y}$                       | [MW]    |
-| $v^{\text{inv}}_{a,y}$                                          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y$, $y \in \mathcal{Y}$                                                                                                                                                             | Number of invested units of asset $a$ at year $y$                                                                                            | [units] |
-| $v^{\text{decom simple}}_{a,y}$                                 | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{simple investment}}$, $y \in \mathcal{Y}$                                                                                                                                               | Number of decommissioned units of asset $a$ that uses simple investment method at year $y$                                                   | [units] |
-| $v^{\text{decom compact}}_{a,y,v}$                              | $\mathbb{Z}_{+}$ | $ (a,y,v) \in \mathcal{D}^{\text{compact investment}}$                                                                                                                                                            | Number of decommissioned units of asset $a$ commissioned in year $v$ that uses compact investment method at year $y$                         | [units] |
-| $v^{\text{inv energy}}_{a,y}$                                   | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                                                                                                              | Number of invested units of the energy component of the storage asset $a$ that uses energy method at year $y$                                | [units] |
-| $v^{\text{decom energy simple}}_{a,y}$                          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                                                                                                              | Number of decommissioned units of the energy component of the storage asset $a$ that uses energy method at year $y$                          | [units] |
-| $v^{\text{inv}}_{f,y}$                                          | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                                                                                                            | Number of invested units of capacity increment of transport flow $f$ at year $y$                                                             | [units] |
-| $v^{\text{decom simple}}_{f,y}$                                 | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                                                                                                            | Number of decommissioned units of capacity increment of transport flow $f$ at year $y$                                                       | [units] |
-| $v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}}$                 | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}_y \setminus \mathcal{A}^{\text{ss}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                    | Rep-period-storage level for storage asset $a$, representative period $k_y$, and timestep block $b_{k_y}$                                    | [MWh]   |
-| $v^{\text{inter-period-storage}}_{a,s,p_y}$                     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $s \in \mathcal{S}$, $p_y \in \mathcal{P}_y$                                                                                                                                   | inter-period-storage level for storage asset $a$, stochastic scenario $s$, and period $p_y$                                                  | [MWh]   |
-| $v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b_{k_y}}$ | $\mathbb{R}$     | $a \in \mathcal{A}^{\text{ss}}_y$, $y \in \mathcal{Y}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                  | Accumulated intra-period storage level for seasonal storage asset $a$ at year $y$, representative period $k_y$, and timestep block $b_{k_y}$ | [MWh]   |
-| $v^{\text{is charging}}_{a,k_y,b_{k_y}}$                        | $\{0, 1\}$       | $a \in \mathcal{A}^{\text{sb}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                       | If an storage asset $a$ is charging or not in representative period $k_y$ and timestep block $b_{k_y}$                                       | [-]     |
-| $v^{\text{angle}}_{a,k_y,b_{k_y}}$                              | $\mathbb{R}$     | $a \in \mathcal{A}^{\text{dc-opf}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                   | Electricity angle of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                                   | [rad]   |
-| $v^{\text{units on}}_{a,k_y,b_{k_y}}$                           | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                       | Number of units ON of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                                  | [units] |
-| $v^{\text{start up}}_{a,k_y,b_{k_y}}$                           | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc 3var}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                  | Number of units of asset $a$ STARTING UP in representative period $k_y$ and timestep block $b_{k_y}$                                         | [units] |
-| $v^{\text{shut down}}_{a,k_y,b_{k_y}}$                          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc 3var}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                  | Number of units of asset $a$ SHUTTING DOWN in representative period $k_y$ and timestep block $b_{k_y}$                                       | [units] |
+| Name                                                            | Domain           | Domains of Indices                                                                                                                                                                                                | Description                                                                                                                                  | Units       |
+| --------------------------------------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| $v^{\text{flow}}_{f,k_y,b_{k_y}}$                               | $\mathbb{R}$     | $f \in \mathcal{F}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                                     | Flow $f$ between two assets in representative period $k_y$ and timestep block $b_{k_y}$                                                      | [MW]        |
+| $v^{\text{vintage flow}}_{f,v,k_y,b_{k_y}}$                     | $\mathbb{R}$     | $f \in \mathcal{F}^{\text{out}}_{a,y} \mid a \in \mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}} \cup \mathcal{A}^{\text{s}} $, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Vintage flow $f$ between two assets in commission year $v$ in representative period $k_y$ and timestep block $b_{k_y}$                       | [MW]        |
+| $v^{\text{inv}}_{a,y}$                                          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y$, $y \in \mathcal{Y}$                                                                                                                                                             | Number of invested units of asset $a$ at year $y$                                                                                            | [units]     |
+| $v^{\text{decom simple}}_{a,y}$                                 | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{simple investment}}$, $y \in \mathcal{Y}$                                                                                                                                               | Number of decommissioned units of asset $a$ that uses simple investment method at year $y$                                                   | [units]     |
+| $v^{\text{decom compact}}_{a,y,v}$                              | $\mathbb{Z}_{+}$ | $ (a,y,v) \in \mathcal{D}^{\text{compact investment}}$                                                                                                                                                            | Number of decommissioned units of asset $a$ commissioned in year $v$ that uses compact investment method at year $y$                         | [units]     |
+| $v^{\text{inv energy}}_{a,y}$                                   | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                                                                                                              | Number of invested units of the energy component of the storage asset $a$ that uses energy method at year $y$                                | [units]     |
+| $v^{\text{decom energy simple}}_{a,y}$                          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y$, $y \in \mathcal{Y}$                                                                                                                              | Number of decommissioned units of the energy component of the storage asset $a$ that uses energy method at year $y$                          | [units]     |
+| $v^{\text{inv}}_{f,y}$                                          | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                                                                                                            | Number of invested units of capacity increment of transport flow $f$ at year $y$                                                             | [units]     |
+| $v^{\text{decom simple}}_{f,y}$                                 | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{ti}}_y$, $y \in \mathcal{Y}$                                                                                                                                                            | Number of decommissioned units of capacity increment of transport flow $f$ at year $y$                                                       | [units]     |
+| $v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}}$                 | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}_y \setminus \mathcal{A}^{\text{ss}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                    | Rep-period-storage level for storage asset $a$, representative period $k_y$, and timestep block $b_{k_y}$                                    | [MWh]       |
+| $v^{\text{inter-period-storage}}_{a,s,p_y}$                     | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{ss}}}_y$, $s \in \mathcal{S}$, $p_y \in \mathcal{P}_y$                                                                                                                                   | inter-period-storage level for storage asset $a$, stochastic scenario $s$, and period $p_y$                                                  | [MWh]       |
+| $v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b_{k_y}}$ | $\mathbb{R}$     | $a \in \mathcal{A}^{\text{ss}}_y$, $y \in \mathcal{Y}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                  | Accumulated intra-period storage level for seasonal storage asset $a$ at year $y$, representative period $k_y$, and timestep block $b_{k_y}$ | [MWh]       |
+| $v^{\text{is charging}}_{a,k_y,b_{k_y}}$                        | $\{0, 1\}$       | $a \in \mathcal{A}^{\text{sb}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                       | If an storage asset $a$ is charging or not in representative period $k_y$ and timestep block $b_{k_y}$                                       | [-]         |
+| $v^{\text{angle}}_{a,k_y,b_{k_y}}$                              | $\mathbb{R}$     | $a \in \mathcal{A}^{\text{dc-opf}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                   | Electricity angle of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                                   | [rad]       |
+| $v^{\text{units on}}_{a,k_y,b_{k_y}}$                           | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                       | Number of units ON of asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$                                                  | [units]     |
+| $v^{\text{start up}}_{a,k_y,b_{k_y}}$                           | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc 3var}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                  | Number of units of asset $a$ STARTING UP in representative period $k_y$ and timestep block $b_{k_y}$                                         | [units]     |
+| $v^{\text{shut down}}_{a,k_y,b_{k_y}}$                          | $\mathbb{Z}_{+}$ | $a \in \mathcal{A}^{\text{uc 3var}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                                                                                                  | Number of units of asset $a$ SHUTTING DOWN in representative period $k_y$ and timestep block $b_{k_y}$                                       | [units]     |
+| $v^{\mu}$                                                       | $\mathbb{R}_{+}$ |                                                                                                                                                                                                                   | Value at Risk threshold (active when $p^{\lambda} > 0$ and $\lvert \mathcal{S} \rvert > 1$)                                                  | [kEUR]      |
+| $v^{\xi}_{s}$                                                   | $\mathbb{R}_{+}$ | $s \in \mathcal{S}$                                                                                                                                                                                               | Tail excess slack for scenario $s$ (active when $p^{\lambda} > 0$ and $\lvert \mathcal{S} \rvert > 1$)                                       | [kEUR]      |
 
 ## [Objective Function](@id math-objective-function)
 
@@ -365,15 +369,25 @@ This definition of the discount factor at year $y$ includes the discounts for th
 
 ### Objective Function
 
-The objective function is formulated as a two-stage stochastic optimization problem, where the investment decisions are the first-stage variables and the expected value of the operation variables is in the second stage.
+The objective function is formulated as a two-stage stochastic optimization problem, where the investment decisions are the first-stage variables and the expected value of the operation variables is in the second stage. When the risk aversion weight $p^{\lambda} > 0$ and there are multiple stochastic scenarios ($|\mathcal{S}| > 1$), the model uses a mean-CVaR (Conditional Value at Risk) formulation to incorporate risk into the objective.
 
 ```math
 \begin{aligned}
-\text{{minimize}} \quad & assets\_investment\_cost + assets\_fixed\_cost \\
+\text{{minimize}} \quad & (1 - p^{\lambda}) \cdot \bigg[ assets\_investment\_cost + assets\_fixed\_cost \\
                         & + flows\_investment\_cost + flows\_fixed\_cost \\
-                        & + \sum_{s \in \mathcal{S}} p^{\text{probability}}_{s} \cdot (flows\_operational\_cost_{s} + unit\_on\_cost_{s})
+                        & + \sum_{s \in \mathcal{S}} p^{\text{probability}}_{s} \cdot (flows\_operational\_cost_{s} + unit\_on\_cost_{s}) \bigg] \\
+                        & + p^{\lambda} \cdot \text{CVaR}_{p^{\alpha}}
 \end{aligned}
 ```
+
+where the CVaR term is:
+
+```math
+\text{CVaR}_{p^{\alpha}} = v^{\mu} + \frac{1}{1 - p^{\alpha}} \sum_{s \in \mathcal{S}} p^{\text{probability}}_{s} \cdot v^{\xi}_{s}
+```
+
+!!! note
+    When $p^{\lambda} = 0$ (the default), the CVaR variables are not created and the objective reduces to the standard expected cost minimization.
 
 Where:
 
@@ -906,3 +920,29 @@ These constraints apply to assets in a group using the investment method $\mathc
 \\ \\ & \forall y \in \mathcal{Y}, \forall g \in \mathcal{G}^{\text{ai}}_y
 \end{aligned}
 ```
+
+### [Conditional Value at Risk Constraints](@id cvar-constraints)
+
+These constraints are only active when $p^{\lambda} > 0$ and $|\mathcal{S}| > 1$. They relate the tail excess slack variable $v^{\xi}_{s}$ to the total system cost per scenario and the Value at Risk threshold $v^{\mu}$.
+
+#### Scenario Tail Excess Constraint
+
+For each stochastic scenario $s$, the non-negative tail excess slack variable $v^{\xi}_{s}$ captures the amount by which the total system cost in scenario $s$ exceeds the Value at Risk threshold $v^{\mu}$:
+
+```math
+\begin{aligned}
+v^{\xi}_{s} \geq total\_cost_{s} - v^{\mu} \quad \forall s \in \mathcal{S}
+\end{aligned}
+```
+
+where the total cost per scenario $s$ is:
+
+```math
+\begin{aligned}
+total\_cost_{s} = & \; assets\_investment\_cost + assets\_fixed\_cost \\
+                  & + flows\_investment\_cost + flows\_fixed\_cost \\
+                  & + flows\_operational\_cost_{s} + unit\_on\_cost_{s}
+\end{aligned}
+```
+
+and the individual cost terms follow the same expressions defined in the [Objective Function](@ref math-objective-function).
