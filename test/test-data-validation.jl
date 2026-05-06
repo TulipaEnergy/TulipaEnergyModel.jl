@@ -637,10 +637,12 @@ end
     DuckDB.register_data_frame(connection, asset, "asset")
 
     error_messages =
-        TEM._validate_certain_asset_types_can_only_have_none_vintage_methods!(String[], connection)
+        TEM._validate_consumer_if_and_only_if_none_vintage_method!(String[], connection)
     @test error_messages == [
         "Incorrect use of vintage method 'aggregated' for asset 'A4' of type 'consumer'. Consumer assets can only have 'none' vintage method.",
         "Incorrect use of vintage method 'compact_profiles' for asset 'A5' of type 'consumer'. Consumer assets can only have 'none' vintage method.",
+        "Incorrect use of vintage method 'none' for asset 'A2' of type 'conversion'. Only consumer assets can have 'none' vintage method.",
+        "Incorrect use of vintage method 'none' for asset 'A3' of type 'storage'. Only consumer assets can have 'none' vintage method.",
     ]
 end
 
@@ -649,12 +651,14 @@ end
     connection = _tiny_fixture()
     DuckDB.query(
         connection,
-        "UPDATE asset SET vintage_method = 'aggregated' WHERE asset = 'demand'",
+        "UPDATE asset SET vintage_method = 'aggregated' WHERE asset = 'demand';
+         UPDATE asset SET vintage_method = 'none' WHERE asset = 'ccgt';",
     )
     error_messages =
-        TEM._validate_certain_asset_types_can_only_have_none_vintage_methods!(String[], connection)
+        TEM._validate_consumer_if_and_only_if_none_vintage_method!(String[], connection)
     @test error_messages == [
         "Incorrect use of vintage method 'aggregated' for asset 'demand' of type 'consumer'. Consumer assets can only have 'none' vintage method.",
+        "Incorrect use of vintage method 'none' for asset 'ccgt' of type 'producer'. Only consumer assets can have 'none' vintage method.",
     ]
 end
 

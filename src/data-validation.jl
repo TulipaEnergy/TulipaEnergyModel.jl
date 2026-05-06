@@ -54,8 +54,8 @@ function validate_data!(connection)
         ),
         ("check DC OPF data", _validate_dc_opf_data!, false),
         (
-            "consistency between asset types and investment methods",
-            _validate_certain_asset_types_can_only_have_none_vintage_methods!,
+            "consumer assets and 'none' vintage method are paired",
+            _validate_consumer_if_and_only_if_none_vintage_method!,
             false,
         ),
         (
@@ -540,10 +540,7 @@ function _validate_dc_opf_only_apply_to_non_investable_transport_flows!(error_me
     return error_messages
 end
 
-function _validate_certain_asset_types_can_only_have_none_vintage_methods!(
-    error_messages,
-    connection,
-)
+function _validate_consumer_if_and_only_if_none_vintage_method!(error_messages, connection)
     for row in DuckDB.query(
         connection,
         "SELECT asset.asset, asset.vintage_method, asset.type
@@ -555,6 +552,20 @@ function _validate_certain_asset_types_can_only_have_none_vintage_methods!(
         push!(
             error_messages,
             "Incorrect use of vintage method '$(row.vintage_method)' for asset '$(row.asset)' of type '$(row.type)'. Consumer assets can only have 'none' vintage method.",
+        )
+    end
+
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset.asset, asset.vintage_method, asset.type
+        FROM asset
+        WHERE asset.vintage_method = 'none'
+            AND asset.type NOT IN ('consumer')
+        ",
+    )
+        push!(
+            error_messages,
+            "Incorrect use of vintage method 'none' for asset '$(row.asset)' of type '$(row.type)'. Only consumer assets can have 'none' vintage method.",
         )
     end
 
