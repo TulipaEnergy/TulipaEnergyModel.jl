@@ -185,7 +185,6 @@
           "compact_profiles"
         ]
       },
-      "default": "none",
       "description": "How vintage units are treated.",
       "type": "VARCHAR"
     }

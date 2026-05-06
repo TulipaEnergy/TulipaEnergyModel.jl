@@ -61,8 +61,15 @@
     """
     function create_problem(; capacity = 1.0, operational_cost = 1.0)
         tulipa = TulipaData{String}()
-        add_asset!(tulipa, "Generator", :producer; capacity = capacity, initial_units = 1.0)
-        add_asset!(tulipa, "Bid Manager", :consumer; peak_demand = 0.0) # no demand
+        add_asset!(
+            tulipa,
+            "Generator",
+            :producer;
+            capacity = capacity,
+            initial_units = 1.0,
+            vintage_method = "aggregated",
+        )
+        add_asset!(tulipa, "Bid Manager", :consumer; peak_demand = 0.0, vintage_method = "none") # no demand
         add_flow!(tulipa, "Generator", "Bid Manager"; operational_cost = operational_cost)
         # Because we at least one profile
         attach_profile!(tulipa, "Bid Manager", :demand, 2030, zeros(12))
@@ -216,7 +223,8 @@
             $min_operating_point AS min_operating_point,
             true AS unit_commitment,
             true AS unit_commitment_integer,
-            'basic' AS unit_commitment_method
+            'basic' AS unit_commitment_method,
+            'none' AS vintage_method
             """,
         )
         from_bids_insert_into(connection, "asset_milestone", "asset, $milestone_year, peak_demand")

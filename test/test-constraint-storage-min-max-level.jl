@@ -34,7 +34,7 @@
         tulipa = TB.TulipaData()
 
         # Add basic producer and consumer to connect the storage
-        TB.add_asset!(tulipa, "consumer", :consumer)
+        TB.add_asset!(tulipa, "consumer", :consumer; vintage_method = "none")
 
         # Add and configure the storage asset
         TB.add_asset!(

@@ -3,11 +3,11 @@ Asgard_Battery,storage,100.0,,aggregated,true,15,1,0.05,==,10.0,false,binary,fal
 Asgard_CCGT,conversion,500.0,0.25,aggregated,true,15,1,0.05,==,0.0,false,,true,basic,false,true,0.0,false,0.5,0.3,none
 Asgard_E_demand,consumer,0.0,,none,false,15,1,0.05,==,0.0,false,,false,,false,false,0.0,false,,,none
 Asgard_Solar,producer,100.0,,aggregated,true,15,1,0.05,==,0.0,false,,false,,false,false,0.0,false,,,none
-G_imports,producer,75000.0,,none,false,15,1,0.05,==,0.0,false,,false,,false,false,0.0,false,,,none
+G_imports,producer,75000.0,,aggregated,false,15,1,0.05,==,0.0,false,,false,,false,false,0.0,false,,,none
 Midgard_CCGT,conversion,500.0,0.4,aggregated,false,15,1,0.05,==,0.0,false,,true,basic,true,false,0.0,false,,,none
 Midgard_E_demand,consumer,0.0,,none,false,15,1,0.05,==,0.0,false,,false,,false,false,0.0,false,,,none
-Midgard_E_imports,producer,500.0,,none,false,15,1,0.05,==,0.0,false,,false,,false,false,0.0,false,,,none
-Midgard_Hydro,storage,250.0,,none,false,15,1,0.05,==,50000.0,true,relaxed_binary,false,,false,false,0.0,false,,,none
+Midgard_E_imports,producer,500.0,,aggregated,false,15,1,0.05,==,0.0,false,,false,,false,false,0.0,false,,,none
+Midgard_Hydro,storage,250.0,,aggregated,false,15,1,0.05,==,50000.0,true,relaxed_binary,false,,false,false,0.0,false,,,none
 Midgard_Nuclear_SMR,producer,150.0,,aggregated,false,15,1,0.05,==,0.0,true,,false,,false,true,0.0,false,0.75,0.65,none
 Midgard_PHS,storage,200.0,,aggregated,true,15,1,0.05,==,100.0,false,,false,,false,false,1.0,false,,,optimize_storage_capacity
 Midgard_Wind,producer,3.0,,aggregated,true,15,1,0.05,==,0.0,true,,false,,false,false,0.0,false,,,none
@@ -21,5 +21,5 @@ Valhalla_H2_generator,conversion,100.0,,aggregated,true,15,1,0.05,==,0.0,false,,
 Valhalla_H2_storage,storage,500.0,,aggregated,true,15,1,0.05,==,100.0,true,,false,,false,false,10000.0,true,,,none
 Valhalla_Heat_demand,consumer,0.0,,none,false,15,1,0.05,>=,0.0,false,,false,,false,false,0.0,false,,,none
 Valhalla_Heat_pump,conversion,100.0,,aggregated,true,15,1,0.05,==,0.0,false,,false,,false,false,0.0,false,,,none
-Valhalla_Waste_heat,producer,200.0,,none,false,15,1,0.05,==,0.0,false,,false,,false,false,0.0,false,,,none
+Valhalla_Waste_heat,producer,200.0,,aggregated,false,15,1,0.05,==,0.0,false,,false,,false,false,0.0,false,,,none
 W_Spillage,consumer,0.0,,none,false,15,1,0.05,>=,0.0,false,,false,,false,false,0.0,false,,,none
