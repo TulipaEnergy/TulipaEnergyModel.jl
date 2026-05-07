@@ -494,3 +494,98 @@ In summary:
 
 Finally, if there are exclusive groups in the bids, i.e., at most 1 bid in the same exclusive group can be accepted, then you also need to modify the underlying JuMP model.
 We need to add a constraint like $\displaystyle \sum_{i: i \in G_k} u_i \leq 1$, where $u_i$ are the unit commitment variables (i.e., the bid-acceptance variables), and $G_k$ are the exclusive groups.
+
+## [Two-Stage Stochastic Optimization](@id stochastic-setup)
+
+Tulipa formulates energy system planning as a **two-stage stochastic optimization** problem:
+
+- **First stage** (investment decisions): capacity investments are made before uncertainty is realized and are therefore **shared across all scenarios**.
+- **Second stage** (operational decisions): dispatch and storage levels are determined after the scenario is revealed and are therefore **scenario-dependent**.
+
+This structure allows the model to find investment plans that are robust against uncertainty in, for example, renewable availability, demand, or hydro inflows.
+
+!!! info
+    Without multiple scenarios (i.e., $\lvert \mathcal{S} \rvert = 1$), the model reduces to a standard deterministic planning problem.
+
+### Defining Stochastic Scenarios
+
+Scenarios are defined through the `rep_periods_mapping` table (or `rep-periods-mapping.csv` for CSV input). Each row maps an original period to a representative period for a given milestone year, with the following key columns for the stochastic feature:
+
+- `scenario`: Integer identifier for the stochastic scenario. Default is `1`, which corresponds to a single deterministic scenario.
+- `rep_period`: The representative period that this original period is mapped to under this scenario.
+- `weight`: The fraction of the original period captured by the representative period.
+
+To run with multiple stochastic scenarios, include rows with different `scenario` values in `rep_periods_mapping`. Representative periods can be organized in two ways:
+
+- **Per-scenario clustering**: each scenario has its own set of representative periods (diagonal block structure in the mapping matrix). With $\lvert \mathcal{S} \rvert$ scenarios and $K$ representative periods each, there are $\lvert \mathcal{S} \rvert \times K$ representative periods in total.
+- **Cross-scenario clustering**: representative periods are shared across scenarios (full matrix structure). With $K$ cross-scenario representative periods, there are only $K$ representative periods in total regardless of the number of scenarios.
+
+See [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) and the Two-Stage Stochastic Optimization tutorial in the Tutorials section for guidance on how to cluster representative periods per or cross scenario.
+
+### Scenario Probabilities
+
+Scenario probabilities are stored in the `stochastic_scenario` table (or `stochastic-scenario.csv` for CSV input). Each row defines:
+
+- `scenario`: Integer identifier matching the values used in `rep_periods_mapping`.
+- `probability`: Probability of the scenario, in $[0, 1]$. Probabilities must sum to 1.
+- `description` (optional): A free-text description of the scenario (e.g., `'Weather year 1982'`). Default is an empty string.
+
+!!! info "Default probabilities"
+    If no `stochastic_scenario` table or CSV file is provided, Tulipa automatically assigns **uniform probabilities** to all scenarios found in `rep_periods_mapping`: each scenario gets a probability of $1 / \lvert \mathcal{S} \rvert$.
+
+To override the default probabilities, add a `stochastic-scenario.csv` file to your input directory. Another option is to modify the `stochastic_scenario` table in the database directly after calling [`populate_with_defaults!`](@ref):
+
+```julia
+DBInterface.execute(
+    connection,
+    """
+    UPDATE stochastic_scenario
+    SET probability = CASE
+        WHEN scenario = 1 THEN 0.7
+        WHEN scenario = 2 THEN 0.3
+    END;
+    """,
+)
+```
+
+!!! warning "Probabilities must sum to 1"
+    The model validates that all scenario probabilities sum to 1 and raises an error if they do not.
+
+For more details on the objective function and constraints for the stochastic setting, see the [`mathematical formulation`](@ref formulation) section.
+
+## [Risk-Averse Optimization with Conditional Value at Risk (CVaR)](@id cvar-setup)
+
+By default, Tulipa minimizes the **expected total system cost** across stochastic scenarios, which is the standard risk-neutral objective. When multiple stochastic scenarios are present and you want to account for risk, you can activate the **mean-CVaR** (Conditional Value at Risk) formulation. This penalizes scenarios with high costs and produces a solution that is more robust to worst-case outcomes.
+
+The mean-CVaR objective is a convex combination of the expected cost and the CVaR at confidence level $\alpha$:
+
+$$\text{minimize} \quad (1 - \lambda) \cdot \mathbb{E}[C] + \lambda \cdot \text{CVaR}_{\alpha}$$
+
+where $\lambda \in [0, 1]$ controls the trade-off between average performance and risk aversion.
+
+### Setting up CVaR
+
+To activate CVaR, set the following parameters in the `model_parameters` table (or `model-parameters.csv` for CSV input):
+
+- `risk_aversion_weight_lambda`: Risk aversion weight $\lambda \in [0, 1]$. Default is `0.0` (risk-neutral). Increasing this value shifts the objective towards minimizing risk.
+- `risk_aversion_confidence_level_alpha`: Confidence level $\alpha \in (0, 1)$ for the Value at Risk threshold. Default is `0.95`.
+
+!!! info
+    The CVaR feature is only active when **both** `risk_aversion_weight_lambda > 0` **and** there are more than one stochastic scenario ($\lvert \mathcal{S} \rvert > 1$). Otherwise, the model reduces to the standard expected cost minimization regardless of the values set.
+
+!!! tip "Choosing the parameters"
+    - `risk_aversion_weight_lambda = 0.0` gives the fully risk-neutral expected cost solution.
+    - `risk_aversion_weight_lambda = 1.0` minimizes the CVaR only (fully risk-averse).
+    - Typical values are in the range $[0.1, 0.5]$, depending on the desired trade-off between average cost and protection against high-cost scenarios.
+    - A higher `risk_aversion_confidence_level_alpha` (e.g., `0.99` vs `0.95`) focuses the risk measure on a smaller fraction of the worst scenarios.
+
+### What the model adds when CVaR is active
+
+When the CVaR feature is activated, the model automatically creates two additional variables:
+
+- **Value at Risk threshold** ($v^{\mu}$): a single non-negative scalar variable representing the cost threshold at the $\alpha$ confidence level.
+- **Tail excess slack** ($v^{\xi}_{s}$): one non-negative variable per scenario $s \in \mathcal{S}$, capturing how much the total cost of scenario $s$ exceeds the threshold $v^{\mu}$.
+
+These variables are linked through the [scenario tail excess constraints](@ref cvar-constraints), which enforce $v^{\xi}_{s} \geq C_s - v^{\mu}$ for every scenario $s$.
+
+For more details on the mathematical formulation of the CVaR objective and constraints, see the [`mathematical formulation`](@ref formulation) section.

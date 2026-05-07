@@ -1130,3 +1130,42 @@ In addition, the resolution of all the flows comming into the `atmosphere` asset
 Notice that the flows are defined as power (i.e., instantaneous value); therefore, the result of all the flows going to the `atmosphere` will represent the average CO2 emissions within the day. To compute the total daily emissions, multiply the flow by the duration (i.e., 24h) and then get the total daily value.
 
 As explained in the [modeling greenhouse gas emissions](@ref greenhouse-gas-emissions) section, you can alternatively model the `atmosphere` as a storage asset and account for the total emissions as the storage level of the asset.
+
+## [Two-Stage Stochastic Optimization](@id stochastic-concept)
+
+_TulipaEnergyModel.jl_ formulates energy system planning as a **two-stage stochastic optimization** problem:
+
+- **First stage** (investment decisions): capacity investments are decided before the uncertainty is realized and are therefore the same across all scenarios.
+- **Second stage** (operational decisions): dispatch, storage levels, and other operational variables are determined after the scenario is revealed and can therefore differ between scenarios.
+
+The set of stochastic scenarios $\mathcal{S}$ represents, for example, different weather years or demand outcomes. Each scenario $s \in \mathcal{S}$ is assigned a probability $p^{\text{probability}}_s \in [0,1]$ with $\sum_{s \in \mathcal{S}} p^{\text{probability}}_s = 1$, and the model minimizes the **expected total system cost** across all scenarios.
+
+Scenarios are linked to representative periods through the `rep_periods_mapping` table. Depending on how representative periods are clustered, two structural approaches are possible:
+
+- **Per-scenario clustering**: each scenario has its own set of representative periods (diagonal block structure in the mapping matrix).
+- **Cross-scenario clustering**: representative periods are shared across all scenarios (full matrix structure), which reduces the total number of representative periods.
+
+!!! info
+    By default (single scenario), _TulipaEnergyModel.jl_ behaves as a standard deterministic model. Multi-scenario optimization is activated by providing multiple scenario identifiers in `rep_periods_mapping`. If no probabilities are specified, Tulipa assigns uniform probabilities ($1 / \lvert \mathcal{S} \rvert$) to all scenarios automatically.
+
+See the [two-stage stochastic setup](@ref stochastic-setup) section for instructions on how to configure the model for this feature, and the [mathematical formulation](@ref formulation) for the full objective function and constraints.
+
+## [Risk-Averse Optimization with Conditional Value at Risk (CVaR)](@id cvar-concept)
+
+By default, _TulipaEnergyModel.jl_ minimizes the **expected total system cost** across stochastic scenarios, which is a risk-neutral objective. When the spread of costs across scenarios matters — for example, when avoiding high-cost outcomes is valued — the model supports a **mean-CVaR** (Conditional Value at Risk) objective.
+
+The mean-CVaR objective is a convex combination of the expected cost and the CVaR at confidence level $\alpha$:
+
+$$\text{minimize} \quad (1 - \lambda) \cdot \mathbb{E}[C] + \lambda \cdot \text{CVaR}_{\alpha}$$
+
+where:
+
+- $\lambda \in [0,1]$ is the **risk aversion weight**: $\lambda = 0$ recovers the fully risk-neutral expected cost, while $\lambda = 1$ minimizes only the CVaR.
+- $\alpha \in (0,1)$ is the **confidence level**: the CVaR focuses on the worst $(1-\alpha)$ fraction of scenarios.
+
+The CVaR is computed using the [Rockafellar-Uryasev convex formulation](https://www.risk.net/journal-risk/2161159/optimization-conditional-value-risk), which introduces a scalar Value at Risk threshold variable $v^{\mu}$ and a tail excess slack variable $v^{\xi}_s$ per scenario $s$.
+
+!!! info
+    The CVaR feature only changes the objective function and adds two sets of variables and one set of constraints. All capacity, balance, and storage constraints remain the same.
+
+See the [CVaR setup](@ref cvar-setup) section for instructions on how to activate and configure this feature, and the [mathematical formulation](@ref formulation) for the full formulation.
