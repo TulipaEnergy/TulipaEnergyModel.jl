@@ -1,7 +1,7 @@
 name,value
 assets_investment_cost,0.0
-assets_fixed_cost_compact_method,0.0
-assets_fixed_cost_simple_method,0.0
+assets_fixed_cost_compact_vintage_method,0.0
+assets_fixed_cost_aggregated_vintage_method,0.0
 storage_assets_energy_investment_cost,0.0
 storage_assets_energy_fixed_cost,0.0
 flows_investment_cost,0.0
