@@ -421,7 +421,7 @@ from
     and asset_commission.commission_year = asset_milestone.milestone_year
 where
     asset_milestone.investable = true
-    and asset.vintage_method in ('aggregated', 'compact_efficiencies', 'compact_profiles')
+    and asset.type != 'consumer'
 ;
 
 drop sequence id
@@ -448,7 +448,7 @@ from
     left join asset on asset.asset = asset_both.asset
 where
     asset_both.decommissionable
-    and asset.vintage_method in ('aggregated', 'compact_efficiencies', 'compact_profiles')
+    and asset.type != 'consumer'
 ;
 
 drop sequence id

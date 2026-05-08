@@ -354,7 +354,7 @@ function _append_available_units_data_aggregated_vintage_method(connection, tabl
             AND var_units_on.milestone_year = cons.milestone_year
             AND var_units_on.rep_period = cons.rep_period
             AND var_units_on.time_block_start = cons.time_block_start
-        WHERE asset.vintage_method in ('aggregated', 'none')
+        WHERE asset.vintage_method = 'aggregated'
         ORDER BY cons.id
         ",
     )

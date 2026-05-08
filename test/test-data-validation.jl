@@ -371,7 +371,7 @@ end
     # Validate have only matching years
     # Error otherwise and point out the unmatched rows
     connection = DBInterface.connect(DuckDB.DB)
-    asset = DataFrame(:asset => ["A1", "A2"], :vintage_method => ["aggregated", "none"])
+    asset = DataFrame(:asset => ["A1", "A2"], :vintage_method => ["aggregated", "aggregated"])
     asset_both = DataFrame(
         :asset => ["A1", "A1", "A2", "A2"],
         :milestone_year => [1, 1, 1, 1],
@@ -398,8 +398,8 @@ end
         TEM._validate_aggregated_vintage_method_has_only_matching_years!(String[], connection)
     @test error_messages == [
         "Unexpected (asset='A1', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A1' with vintage_method='aggregated'. For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Unexpected (asset='A2', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A2' with vintage_method='none'. For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Unexpected (from_asset='A2', to_asset='B', milestone_year=1, commission_year=0) in 'flow_both' for an flow=('A2', 'B') with default vintage_method='aggregated/none'. For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Unexpected (asset='A2', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A2' with vintage_method='aggregated'. For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Unexpected (from_asset='A2', to_asset='B', milestone_year=1, commission_year=0) in 'flow_both' for an flow=('A2', 'B') with default vintage_method='aggregated'. For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
@@ -409,7 +409,7 @@ end
     # Validate that the data contains all milestone years where milestone year = commission year
     # Error otherwise and point out the missing milestone years
     connection = DBInterface.connect(DuckDB.DB)
-    asset = DataFrame(:asset => ["A1", "A2"], :vintage_method => ["aggregated", "none"])
+    asset = DataFrame(:asset => ["A1", "A2"], :vintage_method => ["aggregated", "aggregated"])
     asset_milestone = DataFrame(:asset => ["A1", "A2"], :milestone_year => [1, 1])
     asset_both =
         DataFrame(:asset => ["A1", "A2"], :milestone_year => [1, 1], :commission_year => [0, 0])
@@ -440,8 +440,8 @@ end
 
     @test error_messages == [
         "Missing information in 'asset_both': Asset 'A1' has vintage_method='aggregated' but there is no row (asset='A1', milestone_year=1, commission_year=1). For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Missing information in 'asset_both': Asset 'A2' has vintage_method='none' but there is no row (asset='A2', milestone_year=1, commission_year=1). For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Missing information in 'flow_both': Flow ('A2', 'B') currently only has vintage_method='aggregated/none' but there is no row (from_asset='A2', to_asset='B', milestone_year=1, commission_year=1). For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Missing information in 'asset_both': Asset 'A2' has vintage_method='aggregated' but there is no row (asset='A2', milestone_year=1, commission_year=1). For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Missing information in 'flow_both': Flow ('A2', 'B') currently only has vintage_method='aggregated' but there is no row (from_asset='A2', to_asset='B', milestone_year=1, commission_year=1). For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
@@ -465,7 +465,7 @@ end
         TEM._validate_aggregated_vintage_method_has_only_matching_years!(String[], connection)
     @test error_messages == [
         "Unexpected (asset='ccgt', milestone_year=2030, commission_year=2029) in 'asset_both' for an asset='ccgt' with vintage_method='aggregated'. For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Unexpected (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2029) in 'flow_both' for an flow=('wind', 'demand') with default vintage_method='aggregated/none'. For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Unexpected (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2029) in 'flow_both' for an flow=('wind', 'demand') with default vintage_method='aggregated'. For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
@@ -489,7 +489,7 @@ end
     )
     @test error_messages == [
         "Missing information in 'asset_both': Asset 'ccgt' has vintage_method='aggregated' but there is no row (asset='ccgt', milestone_year=2030, commission_year=2030). For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Missing information in 'flow_both': Flow ('wind', 'demand') currently only has vintage_method='aggregated/none' but there is no row (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2030). For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Missing information in 'flow_both': Flow ('wind', 'demand') currently only has vintage_method='aggregated' but there is no row (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2030). For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
@@ -620,29 +620,24 @@ end
 @testitem "Test vintage method and asset types consistency - using fake data" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     asset = DataFrame(
-        :asset => ["A1", "A2", "A3", "A4", "A5", "A6", "A7"],
-        :type => [
-            "producer",
-            "conversion",
-            "storage",
-            "consumer",
-            "consumer",
-            "consumer",
-            "consumer",
+        :asset => ["A1", "A2", "A3", "A4", "A5", "A6"],
+        :type => ["producer", "conversion", "storage", "consumer", "consumer", "consumer"],
+        :vintage_method => [
+            "aggregated",
+            "compact_efficiencies",
+            "compact_profiles",
+            "aggregated",
+            "compact_profiles",
+            "compact_efficiencies",
         ],
-        :vintage_method =>
-            ["aggregated", "none", "none", "aggregated", "compact_profiles", "none", "none"],
     )
     connection = DBInterface.connect(DuckDB.DB)
     DuckDB.register_data_frame(connection, asset, "asset")
 
-    error_messages =
-        TEM._validate_consumer_if_and_only_if_none_vintage_method!(String[], connection)
+    error_messages = TEM._validate_consumer_uses_aggregated_vintage_method!(String[], connection)
     @test error_messages == [
-        "Incorrect use of vintage method 'aggregated' for asset 'A4' of type 'consumer'. Consumer assets can only have 'none' vintage method.",
-        "Incorrect use of vintage method 'compact_profiles' for asset 'A5' of type 'consumer'. Consumer assets can only have 'none' vintage method.",
-        "Incorrect use of vintage method 'none' for asset 'A2' of type 'conversion'. Only consumer assets can have 'none' vintage method.",
-        "Incorrect use of vintage method 'none' for asset 'A3' of type 'storage'. Only consumer assets can have 'none' vintage method.",
+        "Incorrect use of vintage method 'compact_profiles' for asset 'A5' of type 'consumer'. Consumer assets can only have 'aggregated' vintage method.",
+        "Incorrect use of vintage method 'compact_efficiencies' for asset 'A6' of type 'consumer'. Consumer assets can only have 'aggregated' vintage method.",
     ]
 end
 
@@ -651,14 +646,11 @@ end
     connection = _tiny_fixture()
     DuckDB.query(
         connection,
-        "UPDATE asset SET vintage_method = 'aggregated' WHERE asset = 'demand';
-         UPDATE asset SET vintage_method = 'none' WHERE asset = 'ccgt';",
+        "UPDATE asset SET vintage_method = 'compact_profiles' WHERE asset = 'demand';",
     )
-    error_messages =
-        TEM._validate_consumer_if_and_only_if_none_vintage_method!(String[], connection)
+    error_messages = TEM._validate_consumer_uses_aggregated_vintage_method!(String[], connection)
     @test error_messages == [
-        "Incorrect use of vintage method 'aggregated' for asset 'demand' of type 'consumer'. Consumer assets can only have 'none' vintage method.",
-        "Incorrect use of vintage method 'none' for asset 'ccgt' of type 'producer'. Only consumer assets can have 'none' vintage method.",
+        "Incorrect use of vintage method 'compact_profiles' for asset 'demand' of type 'consumer'. Consumer assets can only have 'aggregated' vintage method.",
     ]
 end
 
@@ -796,15 +788,8 @@ end
 
     function create_problem_base()
         tulipa = TulipaData{String}()
-        add_asset!(
-            tulipa,
-            "Generator",
-            :producer;
-            capacity = 50.0,
-            initial_units = 1.0,
-            vintage_method = "aggregated",
-        )
-        add_asset!(tulipa, "Bid Manager", :consumer; peak_demand = 0.0, vintage_method = "none") # no demand
+        add_asset!(tulipa, "Generator", :producer; capacity = 50.0, initial_units = 1.0)
+        add_asset!(tulipa, "Bid Manager", :consumer; peak_demand = 0.0) # no demand
         add_flow!(tulipa, "Generator", "Bid Manager"; operational_cost = 5.0)
         # Because we at least one profile
         attach_profile!(tulipa, "Bid Manager", :demand, 2030, zeros(year_length))
@@ -864,7 +849,6 @@ end
             unit_commitment,
             unit_commitment_integer,
             unit_commitment_method,
-            vintage_method = type === :consumer ? "none" : "aggregated",
         )
         if set_partition
             set_partition!(tulipa, bid_name, year, 1, year_length)

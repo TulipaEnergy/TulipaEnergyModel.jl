@@ -2,4 +2,4 @@ asset,capacity,capacity_storage_energy,consumer_balance_sense,type,discount_rate
 solar,150.0,0.0,==,producer,0.0,1,0.0,false,false,aggregated,false,0.0,0.0,0.0,false,1,false,false,,,none
 thermal,150.0,0.0,==,producer,0.0,1,0.0,false,false,aggregated,false,0.0,0.0,0.0,false,1,false,false,,,none
 battery,10.0,40.0,==,storage,0.0,1,0.0,false,false,aggregated,false,0.0,0.0,0.0,false,1,false,false,,,none
-demand,0.0,0.0,==,consumer,0.0,1,0.0,false,false,none,false,0.0,0.0,0.0,false,1,false,false,,,none
+demand,0.0,0.0,==,consumer,0.0,1,0.0,false,false,aggregated,false,0.0,0.0,0.0,false,1,false,false,,,none

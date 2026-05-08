@@ -54,8 +54,8 @@ function validate_data!(connection)
         ),
         ("check DC OPF data", _validate_dc_opf_data!, false),
         (
-            "consumer assets and 'none' vintage method are paired",
-            _validate_consumer_if_and_only_if_none_vintage_method!,
+            "consumer assets use the aggregated vintage method",
+            _validate_consumer_uses_aggregated_vintage_method!,
             false,
         ),
         (
@@ -387,7 +387,7 @@ function _validate_aggregated_vintage_method_has_only_matching_years!(error_mess
         LEFT JOIN asset
             ON asset.asset = asset_both.asset
         WHERE asset_both.milestone_year != asset_both.commission_year
-            AND asset.vintage_method in ('aggregated', 'none')
+            AND asset.vintage_method = 'aggregated'
         ",
     )
         push!(
@@ -410,7 +410,7 @@ function _validate_aggregated_vintage_method_has_only_matching_years!(error_mess
     )
         push!(
             error_messages,
-            "Unexpected (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' for an flow=('$(row.from_asset)', '$(row.to_asset)') with default vintage_method='aggregated/none'. For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
+            "Unexpected (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' for an flow=('$(row.from_asset)', '$(row.to_asset)') with default vintage_method='aggregated'. For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -435,7 +435,7 @@ function _validate_aggregated_vintage_method_all_milestone_years_are_covered!(
             AND asset_milestone.milestone_year = asset_both.milestone_year
             AND asset_milestone.milestone_year = asset_both.commission_year
         WHERE asset_both.commission_year IS NULL
-            AND asset.vintage_method in ('aggregated', 'none')
+            AND asset.vintage_method = 'aggregated'
         ",
     )
         push!(
@@ -463,7 +463,7 @@ function _validate_aggregated_vintage_method_all_milestone_years_are_covered!(
     )
         push!(
             error_messages,
-            "Missing information in 'flow_both': Flow ('$(row.from_asset)', '$(row.to_asset)') currently only has vintage_method='aggregated/none' but there is no row (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
+            "Missing information in 'flow_both': Flow ('$(row.from_asset)', '$(row.to_asset)') currently only has vintage_method='aggregated' but there is no row (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -540,32 +540,18 @@ function _validate_dc_opf_only_apply_to_non_investable_transport_flows!(error_me
     return error_messages
 end
 
-function _validate_consumer_if_and_only_if_none_vintage_method!(error_messages, connection)
+function _validate_consumer_uses_aggregated_vintage_method!(error_messages, connection)
     for row in DuckDB.query(
         connection,
         "SELECT asset.asset, asset.vintage_method, asset.type
         FROM asset
-        WHERE asset.vintage_method != 'none'
+        WHERE asset.vintage_method != 'aggregated'
             AND asset.type in ('consumer')
         ",
     )
         push!(
             error_messages,
-            "Incorrect use of vintage method '$(row.vintage_method)' for asset '$(row.asset)' of type '$(row.type)'. Consumer assets can only have 'none' vintage method.",
-        )
-    end
-
-    for row in DuckDB.query(
-        connection,
-        "SELECT asset.asset, asset.vintage_method, asset.type
-        FROM asset
-        WHERE asset.vintage_method = 'none'
-            AND asset.type NOT IN ('consumer')
-        ",
-    )
-        push!(
-            error_messages,
-            "Incorrect use of vintage method 'none' for asset '$(row.asset)' of type '$(row.type)'. Only consumer assets can have 'none' vintage method.",
+            "Incorrect use of vintage method '$(row.vintage_method)' for asset '$(row.asset)' of type '$(row.type)'. Consumer assets can only have 'aggregated' vintage method.",
         )
     end
 

@@ -553,7 +553,7 @@ function _append_capacity_data_to_indices_aggregated_vintage_method(connection, 
             ON cons.asset = avail_profile.asset
             AND expr_avail.commission_year = avail_profile.commission_year
             AND avail_profile.profile_type = 'availability'
-        WHERE asset.vintage_method in ('aggregated', 'none')
+        WHERE asset.vintage_method = 'aggregated'
         ORDER BY cons.id
         ",
     )

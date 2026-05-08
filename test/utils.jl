@@ -242,7 +242,6 @@ end
         "asset" => DataFrame(
             :asset => ["some_producer", "some_consumer"],
             :type => ["producer", "consumer"],
-            :vintage_method => ["aggregated", "none"],
         ),
         "asset_both" => DataFrame(
             :asset => ["some_producer", "some_consumer"],

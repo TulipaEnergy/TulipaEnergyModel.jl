@@ -90,7 +90,7 @@ function _append_available_units_shut_down_aggregated_vintage_method(connection,
             AND var_shut_down.milestone_year = cons.milestone_year
             AND var_shut_down.rep_period = cons.rep_period
             AND var_shut_down.time_block_start = cons.time_block_start
-        WHERE asset.vintage_method in ('aggregated', 'none')
+        WHERE asset.vintage_method = 'aggregated'
         ORDER BY cons.id
         ",
     )

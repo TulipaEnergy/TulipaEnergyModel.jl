@@ -100,8 +100,8 @@ num_timesteps = 6
 function create_new_problem(;capacity = 60.0, operational_cost = 0.5)
     tulipa = TulipaData()
 
-    add_asset!(tulipa, "Generator", :producer; capacity, operational_cost, initial_units = 1.0, vintage_method = "aggregated")
-    add_asset!(tulipa, "Consumer", :consumer; peak_demand = 0.0, vintage_method = "none")
+    add_asset!(tulipa, "Generator", :producer; capacity, operational_cost, initial_units = 1.0)
+    add_asset!(tulipa, "Consumer", :consumer; peak_demand = 0.0)
     add_flow!(tulipa, "Generator", "Consumer"; operational_cost)
     # Because we need at least one profile, we explicitly set demand to 0
     attach_profile!(tulipa, "Consumer", :demand, year, zeros(num_timesteps))
@@ -195,7 +195,6 @@ function add_new_bid!(tulipa, bid_id, bid_block)
         unit_commitment = true,
         unit_commitment_integer = true,
         unit_commitment_method = "basic",
-        vintage_method = "none",
     )
     set_partition!(tulipa, bid_name, year, 1, num_timesteps) # 1 = rep_period, there is only one
     add_flow!(tulipa, bid_manager, bid_name, operational_cost = -bid_block.price)

@@ -251,7 +251,6 @@ DuckDB.query(
         capacity,
         capacity_storage_energy,
         is_seasonal,
-        CASE WHEN type = 'consumer' THEN 'none' ELSE 'aggregated' END AS vintage_method,
     FROM (
         FROM assets_consumer_basic_data
         UNION BY NAME

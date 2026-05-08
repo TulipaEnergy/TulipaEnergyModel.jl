@@ -58,8 +58,8 @@
         tulipa = TB.TulipaData()
 
         # Add basic producer and consumer for flow balance
-        TB.add_asset!(tulipa, "generator", :producer; vintage_method = "aggregated")
-        TB.add_asset!(tulipa, "consumer", :consumer; vintage_method = "none")
+        TB.add_asset!(tulipa, "generator", :producer)
+        TB.add_asset!(tulipa, "consumer", :consumer)
         TB.add_flow!(tulipa, "generator", "consumer")
 
         # Add and configure storage assets
@@ -77,7 +77,6 @@
                 initial_storage_level = config.initial_storage_level,
                 capacity = config.capacity,
                 capacity_storage_energy = config.capacity_storage_energy,
-                vintage_method = "aggregated",
             )
             TB.add_flow!(tulipa, "consumer", storage_name)
             TB.add_flow!(tulipa, storage_name, "consumer")

@@ -179,13 +179,13 @@
     "vintage_method": {
       "constraints": {
         "oneOf": [
-          "none",
           "aggregated",
           "compact_efficiencies",
           "compact_profiles"
         ]
       },
-      "description": "How vintage units are treated.",
+      "default": "aggregated",
+      "description": "How vintage units are treated. It only applies to producer, storage, or conversion assets.",
       "type": "VARCHAR"
     }
   },

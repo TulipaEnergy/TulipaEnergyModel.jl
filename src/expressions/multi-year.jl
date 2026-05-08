@@ -306,8 +306,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             AND asset_both.milestone_year >= var_inv.milestone_year
             AND var_inv.milestone_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
         WHERE
-            -- 'none' vintage method is included only for consumer assets, see next comment.
-            asset.vintage_method in ('aggregated', 'none')
+            asset.vintage_method = 'aggregated'
             -- Consumer assets are included because of the workaround for the bids using consumers
             -- see https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/10-tutorials/40-bids-workaround/
             AND asset.type in ('producer', 'conversion', 'storage', 'consumer')

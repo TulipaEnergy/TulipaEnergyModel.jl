@@ -211,18 +211,17 @@ asset = DataFrame(
     asset = String[],
     type  = String[],
     capacity = Float64[],
-    vintage_method = String[],
     investment_integer = Bool[],
     technical_lifetime = Int[],
     discount_rate = Float64[]
 )
 
 # Add rows
-push!(asset, ("ccgt_ccs", "producer", 84600.0, "aggregated", true, 15, 0.05))
-push!(asset, ("solar", "producer", 550000.0, "aggregated", true, 15, 0.05))
-push!(asset, ("wind", "producer", 134000.0, "aggregated", true, 15, 0.05))
-push!(asset, ("e_demand", "consumer", 0.0, "none", false, 15, 0.05))
-push!(asset, ("ens", "producer", 1000000.0, "none", false, 15, 0.05))
+push!(asset, ("ccgt_ccs", "producer", 84600.0, true, 15, 0.05))
+push!(asset, ("solar", "producer", 550000.0, true, 15, 0.05))
+push!(asset, ("wind", "producer", 134000.0, true, 15, 0.05))
+push!(asset, ("e_demand", "consumer", 0.0, false, 15, 0.05))
+push!(asset, ("ens", "producer", 1000000.0, false, 15, 0.05))
 
 # The dataframe 'asset_both' is based on the assets chosen above and can be constructed as follows
 

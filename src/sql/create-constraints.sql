@@ -190,7 +190,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
-    and asset.vintage_method in ('aggregated', 'none')
+    and asset.vintage_method = 'aggregated'
 ;
 
 drop sequence id
@@ -286,7 +286,7 @@ where
     and cte_transport_flow_info.outgoing_flows_have_transport_flows
     -- Assets with unit commitment already have a minimum outgoing flow constraints
     and not asset.unit_commitment
-    and asset.vintage_method in ('compact_profiles', 'aggregated', 'none')
+    and asset.vintage_method in ('compact_profiles', 'aggregated')
 ;
 
 drop sequence id
@@ -383,7 +383,7 @@ from
 where
     asset.type in ('storage', 'conversion')
     and cte_transport_flow_info.incoming_flows_have_transport_flows
-    and asset.vintage_method in ('compact_profiles', 'aggregated', 'none')
+    and asset.vintage_method in ('compact_profiles', 'aggregated')
 ;
 
 drop sequence id
@@ -412,7 +412,7 @@ from
     var_units_on
     left join asset on var_units_on.asset = asset.asset
 where
-    asset.vintage_method in ('aggregated', 'none')
+    asset.vintage_method = 'aggregated'
 ;
 
 create sequence id start 1
@@ -819,7 +819,7 @@ from (
         asset.type in ('producer', 'conversion')
         and asset.unit_commitment = true
         and asset.unit_commitment_method LIKE '3var%'
-        and asset.vintage_method in ('aggregated', 'none')
+        and asset.vintage_method = 'aggregated'
 
     order by
         t_high.asset,

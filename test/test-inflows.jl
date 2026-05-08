@@ -14,8 +14,8 @@
     tulipa = TB.TulipaData()
 
     storage_inflows = Dict("storageA" => 2.5, "storageB" => 5.5)
-    TB.add_asset!(tulipa, "generator", :producer; vintage_method = "aggregated")
-    TB.add_asset!(tulipa, "consumer", :consumer; vintage_method = "none")
+    TB.add_asset!(tulipa, "generator", :producer)
+    TB.add_asset!(tulipa, "consumer", :consumer)
     TB.add_flow!(tulipa, "generator", "consumer")
     TB.add_flow!(tulipa, "consumer", "storageB")
     TB.add_flow!(tulipa, "storageB", "consumer")
@@ -27,7 +27,6 @@
             :storage;
             storage_inflows = storage_inflows[storage_asset],
             is_seasonal = true,
-            vintage_method = "aggregated",
         )
         TB.add_flow!(tulipa, "consumer", storage_asset)
         TB.add_flow!(tulipa, storage_asset, "consumer")

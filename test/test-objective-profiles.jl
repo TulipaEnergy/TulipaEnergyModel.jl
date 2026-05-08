@@ -12,8 +12,8 @@
 
     function full_run(; add_commodity_price, add_commodity_price_profile)
         tulipa = TB.TulipaData()
-        TB.add_asset!(tulipa, "Producer", :producer; vintage_method = "aggregated")
-        TB.add_asset!(tulipa, "Consumer", :consumer; vintage_method = "none")
+        TB.add_asset!(tulipa, "Producer", :producer)
+        TB.add_asset!(tulipa, "Consumer", :consumer)
         if add_commodity_price
             TB.add_flow!(
                 tulipa,
@@ -114,10 +114,10 @@ end
 
     function full_run()
         tulipa = TB.TulipaData()
-        TB.add_asset!(tulipa, "Consumer", :consumer; vintage_method = "none")
+        TB.add_asset!(tulipa, "Consumer", :consumer)
         for i in 1:2
             producer_name = "Producer$i"
-            TB.add_asset!(tulipa, producer_name, :producer; vintage_method = "aggregated")
+            TB.add_asset!(tulipa, producer_name, :producer)
             TB.add_flow!(
                 tulipa,
                 producer_name,
