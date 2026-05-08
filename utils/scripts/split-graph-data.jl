@@ -30,7 +30,7 @@ apply_to_files_named("assets-data.csv") do path
                 tcsv,
                 "vintage_method",
                 "aggregated";
-                unit = "{none;aggregated;compact_profiles;compact_efficiencies}",
+                unit = "{aggregated;compact_profiles;compact_efficiencies}",
             )
         end
 

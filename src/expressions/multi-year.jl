@@ -32,7 +32,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
     # Assumption:
     # - asset_both exists only for (a,my,cy) where technical lifetime was already taken into account
     #
-    # ------------------------- Aggregated method (including none) -------------------------
+    # ------------------------- Aggregated method -------------------------
     #
     # The variable assets_decommission_aggregated_vintage_method is defined for (a, my)
     # The capacity expression that we need to compute is
@@ -96,7 +96,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
         )
     end
 
-    # - Aggregated method (including none)
+    # - Aggregated method
     let table_name = :available_asset_units_aggregated_vintage_method,
         expr = expressions[table_name]
 
@@ -133,7 +133,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
         )
     end
 
-    # - Aggregated method (including none)
+    # - Aggregated method
     let table_name = :available_energy_units_aggregated_vintage_method,
         expr = expressions[table_name]
 
@@ -172,7 +172,7 @@ function create_multi_year_expressions!(connection, model, variables, expression
         )
     end
 
-    # - Aggregated method (including none)
+    # - Aggregated method
     let table_name = :available_flow_units_aggregated_vintage_method, expr = expressions[table_name]
         var_inv = variables[:flows_investment].container
         var_dec = variables[:flows_decommission].container
