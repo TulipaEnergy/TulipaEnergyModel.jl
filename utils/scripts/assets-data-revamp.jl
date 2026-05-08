@@ -32,7 +32,6 @@ run(`git restore test/inputs/ benchmark/EU/`)
     is_seasonal -> ANY FROM assets_data
     use_binary_storage_method -> ANY FROM assets_data
     unit_commitment -> ANY FROM assets_data
-    unit_commitment_method -> ANY FROM assets_data
     unit_commitment_integer -> ANY FROM assets_data
     ramping -> ANY FROM assets_data
 =#
@@ -63,7 +62,6 @@ apply_to_files_named("asset.csv"; include_missing = true) do path
                     ANY_VALUE(is_seasonal) AS is_seasonal,
                     ANY_VALUE(use_binary_storage_method) AS use_binary_storage_method,
                     ANY_VALUE(unit_commitment) AS unit_commitment,
-                    ANY_VALUE(unit_commitment_method) AS unit_commitment_method,
                     ANY_VALUE(unit_commitment_integer) AS unit_commitment_integer,
                     ANY_VALUE(ramping) AS ramping,
                     ANY_VALUE(storage_method_energy) AS storage_method_energy,
