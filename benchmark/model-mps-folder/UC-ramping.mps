@@ -295,6 +295,29 @@ ROWS
  L  max_ramp_up_with_unit_commitment[smr,2030,1,22:22]
  L  max_ramp_up_with_unit_commitment[smr,2030,1,23:23]
  L  max_ramp_up_with_unit_commitment[smr,2030,1,24:24]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,2:2]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,3:3]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,4:4]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,5:5]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,6:6]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,7:7]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,8:8]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,9:9]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,10:10]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,11:11]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,12:12]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,13:13]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,14:14]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,15:15]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,16:16]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,17:17]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,18:18]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,19:19]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,20:20]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,21:21]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,22:22]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,23:23]
+ L  max_ramp_up_without_unit_commitment[gas,2030,1,24:24]
  G  min_output_flow_with_unit_commitment[ccgt,2030,1,1:2]
  G  min_output_flow_with_unit_commitment[ccgt,2030,1,3:3]
  G  min_output_flow_with_unit_commitment[ccgt,2030,1,4:4]
@@ -397,6 +420,29 @@ ROWS
  G  max_ramp_down_with_unit_commitment[smr,2030,1,22:22]
  G  max_ramp_down_with_unit_commitment[smr,2030,1,23:23]
  G  max_ramp_down_with_unit_commitment[smr,2030,1,24:24]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,2:2]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,3:3]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,4:4]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,5:5]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,6:6]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,7:7]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,8:8]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,9:9]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,10:10]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,11:11]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,12:12]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,13:13]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,14:14]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,15:15]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,16:16]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,17:17]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,18:18]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,19:19]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,20:20]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,21:21]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,22:22]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,23:23]
+ G  max_ramp_down_without_unit_commitment[gas,2030,1,24:24]
  E  consumer_balance[demand,2030,1,1:1]
  E  consumer_balance[demand,2030,1,2:2]
  E  consumer_balance[demand,2030,1,3:3]
@@ -461,6 +507,8 @@ ROWS
  E  c62
  E  c63
  E  c64
+ E  c65
+ E  c66
 COLUMNS
     flow[(ccgt,demand),2030,1,1:2] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,1,1:2] 1
     flow[(ccgt,demand),2030,1,1:2] max_output_flow_with_basic_unit_commitment[ccgt,2030,1,1:2] 1
@@ -600,39 +648,83 @@ COLUMNS
     flow[(ccgt,demand),2030,1,23:24] OBJ 36.5
     flow[(gas,ccgt),2030,1,1:2] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,1:1] 1
     flow[(gas,ccgt),2030,1,1:2] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,2:2] 1
+    flow[(gas,ccgt),2030,1,1:2] max_ramp_up_without_unit_commitment[gas,2030,1,3:3] -1
+    flow[(gas,ccgt),2030,1,1:2] max_ramp_down_without_unit_commitment[gas,2030,1,3:3] -1
     flow[(gas,ccgt),2030,1,1:2] conversion_balance[ccgt,2030,1,1:2] 1
     flow[(gas,ccgt),2030,1,3:4] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,3:3] 1
     flow[(gas,ccgt),2030,1,3:4] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,4:4] 1
+    flow[(gas,ccgt),2030,1,3:4] max_ramp_up_without_unit_commitment[gas,2030,1,3:3] 1
+    flow[(gas,ccgt),2030,1,3:4] max_ramp_up_without_unit_commitment[gas,2030,1,5:5] -1
+    flow[(gas,ccgt),2030,1,3:4] max_ramp_down_without_unit_commitment[gas,2030,1,3:3] 1
+    flow[(gas,ccgt),2030,1,3:4] max_ramp_down_without_unit_commitment[gas,2030,1,5:5] -1
     flow[(gas,ccgt),2030,1,3:4] conversion_balance[ccgt,2030,1,3:4] 1
     flow[(gas,ccgt),2030,1,5:6] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,5:5] 1
     flow[(gas,ccgt),2030,1,5:6] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,6:6] 1
+    flow[(gas,ccgt),2030,1,5:6] max_ramp_up_without_unit_commitment[gas,2030,1,5:5] 1
+    flow[(gas,ccgt),2030,1,5:6] max_ramp_up_without_unit_commitment[gas,2030,1,7:7] -1
+    flow[(gas,ccgt),2030,1,5:6] max_ramp_down_without_unit_commitment[gas,2030,1,5:5] 1
+    flow[(gas,ccgt),2030,1,5:6] max_ramp_down_without_unit_commitment[gas,2030,1,7:7] -1
     flow[(gas,ccgt),2030,1,5:6] conversion_balance[ccgt,2030,1,5:6] 1
     flow[(gas,ccgt),2030,1,7:8] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,7:7] 1
     flow[(gas,ccgt),2030,1,7:8] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,8:8] 1
+    flow[(gas,ccgt),2030,1,7:8] max_ramp_up_without_unit_commitment[gas,2030,1,7:7] 1
+    flow[(gas,ccgt),2030,1,7:8] max_ramp_up_without_unit_commitment[gas,2030,1,9:9] -1
+    flow[(gas,ccgt),2030,1,7:8] max_ramp_down_without_unit_commitment[gas,2030,1,7:7] 1
+    flow[(gas,ccgt),2030,1,7:8] max_ramp_down_without_unit_commitment[gas,2030,1,9:9] -1
     flow[(gas,ccgt),2030,1,7:8] conversion_balance[ccgt,2030,1,7:8] 1
     flow[(gas,ccgt),2030,1,9:10] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,9:9] 1
     flow[(gas,ccgt),2030,1,9:10] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,10:10] 1
+    flow[(gas,ccgt),2030,1,9:10] max_ramp_up_without_unit_commitment[gas,2030,1,9:9] 1
+    flow[(gas,ccgt),2030,1,9:10] max_ramp_up_without_unit_commitment[gas,2030,1,11:11] -1
+    flow[(gas,ccgt),2030,1,9:10] max_ramp_down_without_unit_commitment[gas,2030,1,9:9] 1
+    flow[(gas,ccgt),2030,1,9:10] max_ramp_down_without_unit_commitment[gas,2030,1,11:11] -1
     flow[(gas,ccgt),2030,1,9:10] conversion_balance[ccgt,2030,1,9:10] 1
     flow[(gas,ccgt),2030,1,11:12] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,11:11] 1
     flow[(gas,ccgt),2030,1,11:12] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,12:12] 1
+    flow[(gas,ccgt),2030,1,11:12] max_ramp_up_without_unit_commitment[gas,2030,1,11:11] 1
+    flow[(gas,ccgt),2030,1,11:12] max_ramp_up_without_unit_commitment[gas,2030,1,13:13] -1
+    flow[(gas,ccgt),2030,1,11:12] max_ramp_down_without_unit_commitment[gas,2030,1,11:11] 1
+    flow[(gas,ccgt),2030,1,11:12] max_ramp_down_without_unit_commitment[gas,2030,1,13:13] -1
     flow[(gas,ccgt),2030,1,11:12] conversion_balance[ccgt,2030,1,11:12] 1
     flow[(gas,ccgt),2030,1,13:14] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,13:13] 1
     flow[(gas,ccgt),2030,1,13:14] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,14:14] 1
+    flow[(gas,ccgt),2030,1,13:14] max_ramp_up_without_unit_commitment[gas,2030,1,13:13] 1
+    flow[(gas,ccgt),2030,1,13:14] max_ramp_up_without_unit_commitment[gas,2030,1,15:15] -1
+    flow[(gas,ccgt),2030,1,13:14] max_ramp_down_without_unit_commitment[gas,2030,1,13:13] 1
+    flow[(gas,ccgt),2030,1,13:14] max_ramp_down_without_unit_commitment[gas,2030,1,15:15] -1
     flow[(gas,ccgt),2030,1,13:14] conversion_balance[ccgt,2030,1,13:14] 1
     flow[(gas,ccgt),2030,1,15:16] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,15:15] 1
     flow[(gas,ccgt),2030,1,15:16] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,16:16] 1
+    flow[(gas,ccgt),2030,1,15:16] max_ramp_up_without_unit_commitment[gas,2030,1,15:15] 1
+    flow[(gas,ccgt),2030,1,15:16] max_ramp_up_without_unit_commitment[gas,2030,1,17:17] -1
+    flow[(gas,ccgt),2030,1,15:16] max_ramp_down_without_unit_commitment[gas,2030,1,15:15] 1
+    flow[(gas,ccgt),2030,1,15:16] max_ramp_down_without_unit_commitment[gas,2030,1,17:17] -1
     flow[(gas,ccgt),2030,1,15:16] conversion_balance[ccgt,2030,1,15:16] 1
     flow[(gas,ccgt),2030,1,17:18] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,17:17] 1
     flow[(gas,ccgt),2030,1,17:18] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,18:18] 1
+    flow[(gas,ccgt),2030,1,17:18] max_ramp_up_without_unit_commitment[gas,2030,1,17:17] 1
+    flow[(gas,ccgt),2030,1,17:18] max_ramp_up_without_unit_commitment[gas,2030,1,19:19] -1
+    flow[(gas,ccgt),2030,1,17:18] max_ramp_down_without_unit_commitment[gas,2030,1,17:17] 1
+    flow[(gas,ccgt),2030,1,17:18] max_ramp_down_without_unit_commitment[gas,2030,1,19:19] -1
     flow[(gas,ccgt),2030,1,17:18] conversion_balance[ccgt,2030,1,17:18] 1
     flow[(gas,ccgt),2030,1,19:20] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,19:19] 1
     flow[(gas,ccgt),2030,1,19:20] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,20:20] 1
+    flow[(gas,ccgt),2030,1,19:20] max_ramp_up_without_unit_commitment[gas,2030,1,19:19] 1
+    flow[(gas,ccgt),2030,1,19:20] max_ramp_up_without_unit_commitment[gas,2030,1,21:21] -1
+    flow[(gas,ccgt),2030,1,19:20] max_ramp_down_without_unit_commitment[gas,2030,1,19:19] 1
+    flow[(gas,ccgt),2030,1,19:20] max_ramp_down_without_unit_commitment[gas,2030,1,21:21] -1
     flow[(gas,ccgt),2030,1,19:20] conversion_balance[ccgt,2030,1,19:20] 1
     flow[(gas,ccgt),2030,1,21:22] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,21:21] 1
     flow[(gas,ccgt),2030,1,21:22] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,22:22] 1
+    flow[(gas,ccgt),2030,1,21:22] max_ramp_up_without_unit_commitment[gas,2030,1,21:21] 1
+    flow[(gas,ccgt),2030,1,21:22] max_ramp_up_without_unit_commitment[gas,2030,1,23:23] -1
+    flow[(gas,ccgt),2030,1,21:22] max_ramp_down_without_unit_commitment[gas,2030,1,21:21] 1
+    flow[(gas,ccgt),2030,1,21:22] max_ramp_down_without_unit_commitment[gas,2030,1,23:23] -1
     flow[(gas,ccgt),2030,1,21:22] conversion_balance[ccgt,2030,1,21:22] 1
     flow[(gas,ccgt),2030,1,23:24] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,23:23] 1
     flow[(gas,ccgt),2030,1,23:24] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,24:24] 1
+    flow[(gas,ccgt),2030,1,23:24] max_ramp_up_without_unit_commitment[gas,2030,1,23:23] 1
+    flow[(gas,ccgt),2030,1,23:24] max_ramp_down_without_unit_commitment[gas,2030,1,23:23] 1
     flow[(gas,ccgt),2030,1,23:24] conversion_balance[ccgt,2030,1,23:24] 1
     flow[(wind,demand),2030,1,1:1] max_output_flows_limit_aggregated_vintage_method[wind,2030,1,1:1] 1
     flow[(wind,demand),2030,1,1:1] consumer_balance[demand,2030,1,1:1] 1
@@ -707,52 +799,144 @@ COLUMNS
     flow[(wind,demand),2030,1,24:24] consumer_balance[demand,2030,1,24:24] 1
     flow[(wind,demand),2030,1,24:24] OBJ 0.365
     flow[(gas,ocgt),2030,1,1:1] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,1:1] 1
+    flow[(gas,ocgt),2030,1,1:1] max_ramp_up_without_unit_commitment[gas,2030,1,2:2] -1
+    flow[(gas,ocgt),2030,1,1:1] max_ramp_down_without_unit_commitment[gas,2030,1,2:2] -1
     flow[(gas,ocgt),2030,1,1:1] conversion_balance[ocgt,2030,1,1:1] 0.45
     flow[(gas,ocgt),2030,1,2:2] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,2:2] 1
+    flow[(gas,ocgt),2030,1,2:2] max_ramp_up_without_unit_commitment[gas,2030,1,2:2] 1
+    flow[(gas,ocgt),2030,1,2:2] max_ramp_up_without_unit_commitment[gas,2030,1,3:3] -1
+    flow[(gas,ocgt),2030,1,2:2] max_ramp_down_without_unit_commitment[gas,2030,1,2:2] 1
+    flow[(gas,ocgt),2030,1,2:2] max_ramp_down_without_unit_commitment[gas,2030,1,3:3] -1
     flow[(gas,ocgt),2030,1,2:2] conversion_balance[ocgt,2030,1,2:2] 0.45
     flow[(gas,ocgt),2030,1,3:3] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,3:3] 1
+    flow[(gas,ocgt),2030,1,3:3] max_ramp_up_without_unit_commitment[gas,2030,1,3:3] 1
+    flow[(gas,ocgt),2030,1,3:3] max_ramp_up_without_unit_commitment[gas,2030,1,4:4] -1
+    flow[(gas,ocgt),2030,1,3:3] max_ramp_down_without_unit_commitment[gas,2030,1,3:3] 1
+    flow[(gas,ocgt),2030,1,3:3] max_ramp_down_without_unit_commitment[gas,2030,1,4:4] -1
     flow[(gas,ocgt),2030,1,3:3] conversion_balance[ocgt,2030,1,3:3] 0.45
     flow[(gas,ocgt),2030,1,4:4] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,4:4] 1
+    flow[(gas,ocgt),2030,1,4:4] max_ramp_up_without_unit_commitment[gas,2030,1,4:4] 1
+    flow[(gas,ocgt),2030,1,4:4] max_ramp_up_without_unit_commitment[gas,2030,1,5:5] -1
+    flow[(gas,ocgt),2030,1,4:4] max_ramp_down_without_unit_commitment[gas,2030,1,4:4] 1
+    flow[(gas,ocgt),2030,1,4:4] max_ramp_down_without_unit_commitment[gas,2030,1,5:5] -1
     flow[(gas,ocgt),2030,1,4:4] conversion_balance[ocgt,2030,1,4:4] 0.45
     flow[(gas,ocgt),2030,1,5:5] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,5:5] 1
+    flow[(gas,ocgt),2030,1,5:5] max_ramp_up_without_unit_commitment[gas,2030,1,5:5] 1
+    flow[(gas,ocgt),2030,1,5:5] max_ramp_up_without_unit_commitment[gas,2030,1,6:6] -1
+    flow[(gas,ocgt),2030,1,5:5] max_ramp_down_without_unit_commitment[gas,2030,1,5:5] 1
+    flow[(gas,ocgt),2030,1,5:5] max_ramp_down_without_unit_commitment[gas,2030,1,6:6] -1
     flow[(gas,ocgt),2030,1,5:5] conversion_balance[ocgt,2030,1,5:5] 0.45
     flow[(gas,ocgt),2030,1,6:6] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,6:6] 1
+    flow[(gas,ocgt),2030,1,6:6] max_ramp_up_without_unit_commitment[gas,2030,1,6:6] 1
+    flow[(gas,ocgt),2030,1,6:6] max_ramp_up_without_unit_commitment[gas,2030,1,7:7] -1
+    flow[(gas,ocgt),2030,1,6:6] max_ramp_down_without_unit_commitment[gas,2030,1,6:6] 1
+    flow[(gas,ocgt),2030,1,6:6] max_ramp_down_without_unit_commitment[gas,2030,1,7:7] -1
     flow[(gas,ocgt),2030,1,6:6] conversion_balance[ocgt,2030,1,6:6] 0.45
     flow[(gas,ocgt),2030,1,7:7] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,7:7] 1
+    flow[(gas,ocgt),2030,1,7:7] max_ramp_up_without_unit_commitment[gas,2030,1,7:7] 1
+    flow[(gas,ocgt),2030,1,7:7] max_ramp_up_without_unit_commitment[gas,2030,1,8:8] -1
+    flow[(gas,ocgt),2030,1,7:7] max_ramp_down_without_unit_commitment[gas,2030,1,7:7] 1
+    flow[(gas,ocgt),2030,1,7:7] max_ramp_down_without_unit_commitment[gas,2030,1,8:8] -1
     flow[(gas,ocgt),2030,1,7:7] conversion_balance[ocgt,2030,1,7:7] 0.45
     flow[(gas,ocgt),2030,1,8:8] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,8:8] 1
+    flow[(gas,ocgt),2030,1,8:8] max_ramp_up_without_unit_commitment[gas,2030,1,8:8] 1
+    flow[(gas,ocgt),2030,1,8:8] max_ramp_up_without_unit_commitment[gas,2030,1,9:9] -1
+    flow[(gas,ocgt),2030,1,8:8] max_ramp_down_without_unit_commitment[gas,2030,1,8:8] 1
+    flow[(gas,ocgt),2030,1,8:8] max_ramp_down_without_unit_commitment[gas,2030,1,9:9] -1
     flow[(gas,ocgt),2030,1,8:8] conversion_balance[ocgt,2030,1,8:8] 0.45
     flow[(gas,ocgt),2030,1,9:9] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,9:9] 1
+    flow[(gas,ocgt),2030,1,9:9] max_ramp_up_without_unit_commitment[gas,2030,1,9:9] 1
+    flow[(gas,ocgt),2030,1,9:9] max_ramp_up_without_unit_commitment[gas,2030,1,10:10] -1
+    flow[(gas,ocgt),2030,1,9:9] max_ramp_down_without_unit_commitment[gas,2030,1,9:9] 1
+    flow[(gas,ocgt),2030,1,9:9] max_ramp_down_without_unit_commitment[gas,2030,1,10:10] -1
     flow[(gas,ocgt),2030,1,9:9] conversion_balance[ocgt,2030,1,9:9] 0.45
     flow[(gas,ocgt),2030,1,10:10] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,10:10] 1
+    flow[(gas,ocgt),2030,1,10:10] max_ramp_up_without_unit_commitment[gas,2030,1,10:10] 1
+    flow[(gas,ocgt),2030,1,10:10] max_ramp_up_without_unit_commitment[gas,2030,1,11:11] -1
+    flow[(gas,ocgt),2030,1,10:10] max_ramp_down_without_unit_commitment[gas,2030,1,10:10] 1
+    flow[(gas,ocgt),2030,1,10:10] max_ramp_down_without_unit_commitment[gas,2030,1,11:11] -1
     flow[(gas,ocgt),2030,1,10:10] conversion_balance[ocgt,2030,1,10:10] 0.45
     flow[(gas,ocgt),2030,1,11:11] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,11:11] 1
+    flow[(gas,ocgt),2030,1,11:11] max_ramp_up_without_unit_commitment[gas,2030,1,11:11] 1
+    flow[(gas,ocgt),2030,1,11:11] max_ramp_up_without_unit_commitment[gas,2030,1,12:12] -1
+    flow[(gas,ocgt),2030,1,11:11] max_ramp_down_without_unit_commitment[gas,2030,1,11:11] 1
+    flow[(gas,ocgt),2030,1,11:11] max_ramp_down_without_unit_commitment[gas,2030,1,12:12] -1
     flow[(gas,ocgt),2030,1,11:11] conversion_balance[ocgt,2030,1,11:11] 0.45
     flow[(gas,ocgt),2030,1,12:12] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,12:12] 1
+    flow[(gas,ocgt),2030,1,12:12] max_ramp_up_without_unit_commitment[gas,2030,1,12:12] 1
+    flow[(gas,ocgt),2030,1,12:12] max_ramp_up_without_unit_commitment[gas,2030,1,13:13] -1
+    flow[(gas,ocgt),2030,1,12:12] max_ramp_down_without_unit_commitment[gas,2030,1,12:12] 1
+    flow[(gas,ocgt),2030,1,12:12] max_ramp_down_without_unit_commitment[gas,2030,1,13:13] -1
     flow[(gas,ocgt),2030,1,12:12] conversion_balance[ocgt,2030,1,12:12] 0.45
     flow[(gas,ocgt),2030,1,13:13] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,13:13] 1
+    flow[(gas,ocgt),2030,1,13:13] max_ramp_up_without_unit_commitment[gas,2030,1,13:13] 1
+    flow[(gas,ocgt),2030,1,13:13] max_ramp_up_without_unit_commitment[gas,2030,1,14:14] -1
+    flow[(gas,ocgt),2030,1,13:13] max_ramp_down_without_unit_commitment[gas,2030,1,13:13] 1
+    flow[(gas,ocgt),2030,1,13:13] max_ramp_down_without_unit_commitment[gas,2030,1,14:14] -1
     flow[(gas,ocgt),2030,1,13:13] conversion_balance[ocgt,2030,1,13:13] 0.45
     flow[(gas,ocgt),2030,1,14:14] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,14:14] 1
+    flow[(gas,ocgt),2030,1,14:14] max_ramp_up_without_unit_commitment[gas,2030,1,14:14] 1
+    flow[(gas,ocgt),2030,1,14:14] max_ramp_up_without_unit_commitment[gas,2030,1,15:15] -1
+    flow[(gas,ocgt),2030,1,14:14] max_ramp_down_without_unit_commitment[gas,2030,1,14:14] 1
+    flow[(gas,ocgt),2030,1,14:14] max_ramp_down_without_unit_commitment[gas,2030,1,15:15] -1
     flow[(gas,ocgt),2030,1,14:14] conversion_balance[ocgt,2030,1,14:14] 0.45
     flow[(gas,ocgt),2030,1,15:15] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,15:15] 1
+    flow[(gas,ocgt),2030,1,15:15] max_ramp_up_without_unit_commitment[gas,2030,1,15:15] 1
+    flow[(gas,ocgt),2030,1,15:15] max_ramp_up_without_unit_commitment[gas,2030,1,16:16] -1
+    flow[(gas,ocgt),2030,1,15:15] max_ramp_down_without_unit_commitment[gas,2030,1,15:15] 1
+    flow[(gas,ocgt),2030,1,15:15] max_ramp_down_without_unit_commitment[gas,2030,1,16:16] -1
     flow[(gas,ocgt),2030,1,15:15] conversion_balance[ocgt,2030,1,15:15] 0.45
     flow[(gas,ocgt),2030,1,16:16] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,16:16] 1
+    flow[(gas,ocgt),2030,1,16:16] max_ramp_up_without_unit_commitment[gas,2030,1,16:16] 1
+    flow[(gas,ocgt),2030,1,16:16] max_ramp_up_without_unit_commitment[gas,2030,1,17:17] -1
+    flow[(gas,ocgt),2030,1,16:16] max_ramp_down_without_unit_commitment[gas,2030,1,16:16] 1
+    flow[(gas,ocgt),2030,1,16:16] max_ramp_down_without_unit_commitment[gas,2030,1,17:17] -1
     flow[(gas,ocgt),2030,1,16:16] conversion_balance[ocgt,2030,1,16:16] 0.45
     flow[(gas,ocgt),2030,1,17:17] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,17:17] 1
+    flow[(gas,ocgt),2030,1,17:17] max_ramp_up_without_unit_commitment[gas,2030,1,17:17] 1
+    flow[(gas,ocgt),2030,1,17:17] max_ramp_up_without_unit_commitment[gas,2030,1,18:18] -1
+    flow[(gas,ocgt),2030,1,17:17] max_ramp_down_without_unit_commitment[gas,2030,1,17:17] 1
+    flow[(gas,ocgt),2030,1,17:17] max_ramp_down_without_unit_commitment[gas,2030,1,18:18] -1
     flow[(gas,ocgt),2030,1,17:17] conversion_balance[ocgt,2030,1,17:17] 0.45
     flow[(gas,ocgt),2030,1,18:18] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,18:18] 1
+    flow[(gas,ocgt),2030,1,18:18] max_ramp_up_without_unit_commitment[gas,2030,1,18:18] 1
+    flow[(gas,ocgt),2030,1,18:18] max_ramp_up_without_unit_commitment[gas,2030,1,19:19] -1
+    flow[(gas,ocgt),2030,1,18:18] max_ramp_down_without_unit_commitment[gas,2030,1,18:18] 1
+    flow[(gas,ocgt),2030,1,18:18] max_ramp_down_without_unit_commitment[gas,2030,1,19:19] -1
     flow[(gas,ocgt),2030,1,18:18] conversion_balance[ocgt,2030,1,18:18] 0.45
     flow[(gas,ocgt),2030,1,19:19] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,19:19] 1
+    flow[(gas,ocgt),2030,1,19:19] max_ramp_up_without_unit_commitment[gas,2030,1,19:19] 1
+    flow[(gas,ocgt),2030,1,19:19] max_ramp_up_without_unit_commitment[gas,2030,1,20:20] -1
+    flow[(gas,ocgt),2030,1,19:19] max_ramp_down_without_unit_commitment[gas,2030,1,19:19] 1
+    flow[(gas,ocgt),2030,1,19:19] max_ramp_down_without_unit_commitment[gas,2030,1,20:20] -1
     flow[(gas,ocgt),2030,1,19:19] conversion_balance[ocgt,2030,1,19:19] 0.45
     flow[(gas,ocgt),2030,1,20:20] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,20:20] 1
+    flow[(gas,ocgt),2030,1,20:20] max_ramp_up_without_unit_commitment[gas,2030,1,20:20] 1
+    flow[(gas,ocgt),2030,1,20:20] max_ramp_up_without_unit_commitment[gas,2030,1,21:21] -1
+    flow[(gas,ocgt),2030,1,20:20] max_ramp_down_without_unit_commitment[gas,2030,1,20:20] 1
+    flow[(gas,ocgt),2030,1,20:20] max_ramp_down_without_unit_commitment[gas,2030,1,21:21] -1
     flow[(gas,ocgt),2030,1,20:20] conversion_balance[ocgt,2030,1,20:20] 0.45
     flow[(gas,ocgt),2030,1,21:21] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,21:21] 1
+    flow[(gas,ocgt),2030,1,21:21] max_ramp_up_without_unit_commitment[gas,2030,1,21:21] 1
+    flow[(gas,ocgt),2030,1,21:21] max_ramp_up_without_unit_commitment[gas,2030,1,22:22] -1
+    flow[(gas,ocgt),2030,1,21:21] max_ramp_down_without_unit_commitment[gas,2030,1,21:21] 1
+    flow[(gas,ocgt),2030,1,21:21] max_ramp_down_without_unit_commitment[gas,2030,1,22:22] -1
     flow[(gas,ocgt),2030,1,21:21] conversion_balance[ocgt,2030,1,21:21] 0.45
     flow[(gas,ocgt),2030,1,22:22] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,22:22] 1
+    flow[(gas,ocgt),2030,1,22:22] max_ramp_up_without_unit_commitment[gas,2030,1,22:22] 1
+    flow[(gas,ocgt),2030,1,22:22] max_ramp_up_without_unit_commitment[gas,2030,1,23:23] -1
+    flow[(gas,ocgt),2030,1,22:22] max_ramp_down_without_unit_commitment[gas,2030,1,22:22] 1
+    flow[(gas,ocgt),2030,1,22:22] max_ramp_down_without_unit_commitment[gas,2030,1,23:23] -1
     flow[(gas,ocgt),2030,1,22:22] conversion_balance[ocgt,2030,1,22:22] 0.45
     flow[(gas,ocgt),2030,1,23:23] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,23:23] 1
+    flow[(gas,ocgt),2030,1,23:23] max_ramp_up_without_unit_commitment[gas,2030,1,23:23] 1
+    flow[(gas,ocgt),2030,1,23:23] max_ramp_up_without_unit_commitment[gas,2030,1,24:24] -1
+    flow[(gas,ocgt),2030,1,23:23] max_ramp_down_without_unit_commitment[gas,2030,1,23:23] 1
+    flow[(gas,ocgt),2030,1,23:23] max_ramp_down_without_unit_commitment[gas,2030,1,24:24] -1
     flow[(gas,ocgt),2030,1,23:23] conversion_balance[ocgt,2030,1,23:23] 0.45
     flow[(gas,ocgt),2030,1,24:24] max_output_flows_limit_aggregated_vintage_method[gas,2030,1,24:24] 1
+    flow[(gas,ocgt),2030,1,24:24] max_ramp_up_without_unit_commitment[gas,2030,1,24:24] 1
+    flow[(gas,ocgt),2030,1,24:24] max_ramp_down_without_unit_commitment[gas,2030,1,24:24] 1
     flow[(gas,ocgt),2030,1,24:24] conversion_balance[ocgt,2030,1,24:24] 0.45
     flow[(ocgt,demand),2030,1,1:1] max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,1:1] 1
     flow[(ocgt,demand),2030,1,1:1] max_output_flow_with_basic_unit_commitment[ocgt,2030,1,1:1] 1
@@ -2011,6 +2195,29 @@ RHS
     rhs       max_ramp_up_with_unit_commitment[smr,2030,1,22:22] 0
     rhs       max_ramp_up_with_unit_commitment[smr,2030,1,23:23] 0
     rhs       max_ramp_up_with_unit_commitment[smr,2030,1,24:24] 0
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,2:2] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,3:3] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,4:4] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,5:5] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,6:6] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,7:7] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,8:8] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,9:9] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,10:10] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,11:11] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,12:12] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,13:13] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,14:14] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,15:15] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,16:16] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,17:17] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,18:18] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,19:19] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,20:20] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,21:21] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,22:22] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,23:23] 1494
+    rhs       max_ramp_up_without_unit_commitment[gas,2030,1,24:24] 1494
     rhs       min_output_flow_with_unit_commitment[ccgt,2030,1,1:2] 0
     rhs       min_output_flow_with_unit_commitment[ccgt,2030,1,3:3] 0
     rhs       min_output_flow_with_unit_commitment[ccgt,2030,1,4:4] 0
@@ -2113,6 +2320,29 @@ RHS
     rhs       max_ramp_down_with_unit_commitment[smr,2030,1,22:22] 0
     rhs       max_ramp_down_with_unit_commitment[smr,2030,1,23:23] 0
     rhs       max_ramp_down_with_unit_commitment[smr,2030,1,24:24] 0
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,2:2] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,3:3] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,4:4] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,5:5] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,6:6] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,7:7] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,8:8] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,9:9] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,10:10] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,11:11] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,12:12] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,13:13] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,14:14] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,15:15] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,16:16] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,17:17] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,18:18] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,19:19] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,20:20] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,21:21] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,22:22] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,23:23] -1494
+    rhs       max_ramp_down_without_unit_commitment[gas,2030,1,24:24] -1494
     rhs       consumer_balance[demand,2030,1,1:1] 979.8206275499999
     rhs       consumer_balance[demand,2030,1,2:2] 897.3094167
     rhs       consumer_balance[demand,2030,1,3:3] 839.5515694500001
@@ -2177,6 +2407,8 @@ RHS
     rhs       c62       0
     rhs       c63       0
     rhs       c64       0
+    rhs       c65       0
+    rhs       c66       0
 RANGES
 BOUNDS
  LO bounds    flow[(ccgt,demand),2030,1,1:2] 0
