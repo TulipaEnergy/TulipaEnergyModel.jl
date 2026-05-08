@@ -652,9 +652,8 @@ function _validate_bid_related_data!(error_messages, connection)
     verify the necessary conditions for a bid to be defined correctly:
 
     - asset.type = 'consumer'
-    - asset.unit_commitment = true
+    - asset.unit_commitment = 'basic'
     - asset.unit_commitment_integer = true
-    - asset.unit_commitment_method = 'basic'
     - asset.consumer_balance_sense = '=='
     - asset.capacity = 1.0
     - asset_both.initial_units = 1.0
@@ -698,7 +697,6 @@ function _validate_bid_related_data!(error_messages, connection)
             asset.type,
             asset.unit_commitment,
             asset.unit_commitment_integer,
-            asset.unit_commitment_method,
             asset.consumer_balance_sense,
             asset.capacity,
             asset_both.initial_units,
@@ -727,7 +725,7 @@ function _validate_bid_related_data!(error_messages, connection)
 
     Gets the assets that satisfy the first sufficient condition that implies
     that this asset represents a bid: It has asset.type = 'consumer' and
-    asset.unit_commitment is true.
+    asset.unit_commitment is 'basic'.
     """
     function get_consumers_with_unit_commitment(connection)
         return Dict(
@@ -737,7 +735,7 @@ function _validate_bid_related_data!(error_messages, connection)
                 SELECT
                     asset, type, unit_commitment, consumer_balance_sense, capacity
                 FROM asset
-                WHERE asset.type = 'consumer' AND unit_commitment
+                WHERE asset.type = 'consumer' AND unit_commitment = 'basic'
                 """,
             )
         )
@@ -829,7 +827,6 @@ function _validate_bid_related_data!(error_messages, connection)
             type,
             unit_commitment,
             unit_commitment_integer,
-            unit_commitment_method,
             consumer_balance_sense,
             capacity,
             initial_units,
@@ -839,17 +836,14 @@ function _validate_bid_related_data!(error_messages, connection)
             has_demand_profile,
             has_wrong_asset_partition = bid_data[asset]
 
-            if !(type == "consumer" && unit_commitment)
+            if !(type == "consumer" && unit_commitment == "basic")
                 push!(
                     error_messages,
-                    "$prefix_msg have asset.type = 'consumer' and asset.unit_commitment = true",
+                    "$prefix_msg have asset.type = 'consumer' and asset.unit_commitment = 'basic'",
                 )
             end
             if !unit_commitment_integer
                 push!(error_messages, "$prefix_msg have asset.unit_commitment_integer = true")
-            end
-            if unit_commitment_method != "basic"
-                push!(error_messages, "$prefix_msg have asset.unit_commitment_method = \"basic\"")
             end
             if consumer_balance_sense != "=="
                 push!(

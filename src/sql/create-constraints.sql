@@ -285,7 +285,7 @@ where
     asset.type in ('producer', 'storage', 'conversion')
     and cte_transport_flow_info.outgoing_flows_have_transport_flows
     -- Assets with unit commitment already have a minimum outgoing flow constraints
-    and not asset.unit_commitment
+    and asset.unit_commitment = 'none'
     and asset.vintage_method in ('compact_profiles', 'aggregated')
 ;
 
@@ -430,7 +430,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'conversion', 'consumer')
-    and asset.unit_commitment
+    and asset.unit_commitment != 'none'
 ;
 
 drop sequence id
@@ -451,8 +451,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'conversion', 'consumer')
-    and asset.unit_commitment
-    and asset.unit_commitment_method = 'basic'
+    and asset.unit_commitment = 'basic'
 ;
 
 drop sequence id
@@ -474,8 +473,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.ramping
-    and asset.unit_commitment
-    and asset.unit_commitment_method = 'basic'
+    and asset.unit_commitment = 'basic'
 ;
 
 drop sequence id
@@ -497,8 +495,7 @@ from
 where
     asset.type in ('producer', 'storage', 'conversion')
     and asset.ramping
-    and not asset.unit_commitment
-    and asset.unit_commitment_method != 'basic'
+    and asset.unit_commitment == 'none'
 ;
 
 drop table if exists cons_balance_storage_rep_period
@@ -776,8 +773,7 @@ from (
         left join asset on asset.asset = atr.asset
     where
         asset.type in ('producer', 'conversion')
-        and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var%'
+        and asset.unit_commitment LIKE '3var%'
     order by
         t_high.asset,
         t_high.milestone_year,
@@ -817,8 +813,7 @@ from (
         left join asset on asset.asset = atr.asset
     where
         asset.type in ('producer', 'conversion')
-        and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var%'
+        and asset.unit_commitment LIKE '3var%'
         and asset.vintage_method = 'aggregated'
 
     order by
@@ -860,8 +855,7 @@ from
             asset.asset = t_high.asset
 where
     asset.type in ('producer', 'conversion')
-    and asset.unit_commitment = true
-    and asset.unit_commitment_method LIKE '3var%'
+    and asset.unit_commitment LIKE '3var%'
     and asset.vintage_method = 'compact_profiles'
 order by
     t_high.asset,
@@ -905,8 +899,7 @@ from (
         left join asset on asset.asset = atr.asset
     where
         asset.type in ('producer', 'conversion')
-        and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var%'
+        and asset.unit_commitment LIKE '3var%'
     order by
         t_high.asset,
         t_high.milestone_year,

@@ -184,9 +184,8 @@
 
     - `asset.capacity = 1.0`, to be ignored in the min and max output flows.
     - `asset.consumer_balance_sense = "=="`, balance using equality.
-    - `asset.unit_commitment = true`, because unit commitment is what controls the bid acceptance.
+    - `asset.unit_commitment = "basic"`, because unit commitment is what controls the bid acceptance.
     - `asset.unit_commitment_integer = true`, because it's either accepted or not.
-    - `asset.unit_commitment_method = "basic"`. Maybe other alternatives will also make sense.
     - `asset_milestone.peak_demand`, from the normalised profile quantity.
     - `asset_both.initial_units = 1.0`, for the limit on units on
     - `assets_rep_periods_partitions.partition = <FULL PERIOD>`, so that a
@@ -214,9 +213,8 @@
             1.0 AS capacity,
             '==' AS consumer_balance_sense,
             $min_operating_point AS min_operating_point,
-            true AS unit_commitment,
+            'basic' AS unit_commitment,
             true AS unit_commitment_integer,
-            'basic' AS unit_commitment_method,
             """,
         )
         from_bids_insert_into(connection, "asset_milestone", "asset, $milestone_year, peak_demand")

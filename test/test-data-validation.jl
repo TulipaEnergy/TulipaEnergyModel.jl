@@ -90,14 +90,10 @@ end
     [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
     # Change the table to force an error
-    DuckDB.query(
-        connection,
-        "UPDATE asset SET unit_commitment_method = 'bad' WHERE asset = 'demand'",
-    )
+    DuckDB.query(connection, "UPDATE asset SET unit_commitment = 'bad' WHERE asset = 'demand'")
     @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
     error_messages = TEM._validate_schema_one_of_constraints!(String[], connection)
-    @test error_messages ==
-          ["Table 'asset' has bad value for column 'unit_commitment_method': 'bad'"]
+    @test error_messages == ["Table 'asset' has bad value for column 'unit_commitment': 'bad'"]
 end
 
 @testitem "Test schema oneOf constraints - bad specification" setup = [CommonSetup] tags =
@@ -829,9 +825,8 @@ end
         initial_units = 1.0,
         set_partition = true,
         type = :consumer,
-        unit_commitment = true,
+        unit_commitment = "basic",
         unit_commitment_integer = true,
-        unit_commitment_method = "basic",
     )
         profile = zeros(year_length)
         for (t, qty) in quantity
@@ -848,7 +843,6 @@ end
             peak_demand = maximum(profile),
             unit_commitment,
             unit_commitment_integer,
-            unit_commitment_method,
         )
         if set_partition
             set_partition!(tulipa, bid_name, year, 1, year_length)
@@ -937,7 +931,6 @@ end
         (:num_rep_periods => 3, 3, "only 1 representative period, but found 3"),
         (:num_years => 3, 3, "only 1 milestone_year, but found 3"),
         (:unit_commitment_integer => false, 3, "asset.unit_commitment_integer = true"),
-        (:unit_commitment_method => "", 3, "asset.unit_commitment_method = \"basic\""),
         # These are excluding cases, i.e., one of the sufficient cases won't be generated, so only 2 will error.
         (
             :add_flow_from_bid_manager => false,
@@ -946,8 +939,12 @@ end
         ),
         (:add_loop => false, 2, "a loop flow, but found none"),
         (:price => -1.0, 2, "an incoming flow with negative operational_cost, but found none"),
-        (:type => :producer, 2, "asset.type = 'consumer' and asset.unit_commitment = true"),
-        (:unit_commitment => false, 2, "asset.type = 'consumer' and asset.unit_commitment = true"),
+        (:type => :producer, 2, "asset.type = 'consumer' and asset.unit_commitment = 'basic'"),
+        (
+            :unit_commitment => "none",
+            2,
+            "asset.type = 'consumer' and asset.unit_commitment = 'basic'",
+        ),
     )
         error_messages = error_messages_for_wrong_problem(; Dict(bad_key_value_pair)...)
         @test length(error_messages) == expected_num_errors

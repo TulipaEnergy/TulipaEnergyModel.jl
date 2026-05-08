@@ -125,9 +125,8 @@ from_bids_insert_into(
     1.0 AS capacity,
     '==' AS consumer_balance_sense,
     1.0 AS min_operating_point,
-    true AS unit_commitment,
-    true AS unit_commitment_integer,
-    'basic' AS unit_commitment_method
+    'basic' AS unit_commitment,
+    true AS unit_commitment_integer
     """,
 )
 
