@@ -369,9 +369,8 @@ Here is a list of noteworthy values:
     Curtailment is not controlled here.
 - `asset.min_operating_point = 1.0`, to force the lower and upper limit
     constraints to match. Maybe curtailment should be controlled here.
-- `asset.unit_commitment = true`, because unit commitment is what controls the bid acceptance.
+- `asset.unit_commitment = "basic"`, because unit commitment is what controls the bid acceptance.
 - `asset.unit_commitment_integer = true`. Possibly not necessary? Curtailment should set this to false?
-- `asset.unit_commitment_method = "basic"`. I don't know if other alternatives make sense or not.
 - `asset_milestone.peak_demand`, from the normalised profile quantity.
 - `asset_both.initial_units = 1.0`, which corresponds to 100% of the bid.
 - `assets_rep_periods_partitions.partition = <FULL PERIOD>`, so that a
@@ -393,9 +392,8 @@ function create_assets_for_bids!(connection, year, timestep_window)
         1.0 AS capacity,
         '==' AS consumer_balance_sense,
         1.0 AS min_operating_point,
-        true AS unit_commitment,
-        true AS unit_commitment_integer,
-        'basic' AS unit_commitment_method
+        'basic' AS unit_commitment,
+        true AS unit_commitment_integer
         """,
     )
     from_bids_insert_into(connection, "asset_milestone", "asset, $milestone_year, peak_demand")
