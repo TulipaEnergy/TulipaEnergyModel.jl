@@ -9,18 +9,11 @@ using JuMP
     # This first table is only necessary because we have a left join of var_flow with the asset table
     table_name = "asset"
     table_rows = [
-        ("input_1", "aggregated", true, "3var-0", "conversion", 15),
-        ("input_2", "compact_profiles", true, "3var-0", "conversion", 15),
-        ("death_star", "aggregated", true, "3var-0", "conversion", 15),
+        ("input_1", "aggregated", "3var-0", "conversion", 15),
+        ("input_2", "compact_profiles", "3var-0", "conversion", 15),
+        ("death_star", "aggregated", "3var-0", "conversion", 15),
     ]
-    columns = [
-        :asset,
-        :vintage_method,
-        :unit_commitment,
-        :unit_commitment_method,
-        :type,
-        :technical_lifetime,
-    ]
+    columns = [:asset, :vintage_method, :unit_commitment, :type, :technical_lifetime]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "var_units_on"
