@@ -86,7 +86,7 @@ from
             left join asset on asset.asset = atr.asset
         where
             asset.type in ('producer', 'conversion', 'consumer')
-            and asset.unit_commitment = true
+            and asset.unit_commitment != 'none'
         order by
             atr.asset,
             atr.milestone_year,
@@ -127,8 +127,7 @@ from
             left join asset on asset.asset = atr.asset
         where
             asset.type in ('producer', 'conversion')
-            and asset.unit_commitment = true
-            and asset.unit_commitment_method like '3var%'
+            and asset.unit_commitment like '3var%'
         order by
             atr.asset,
             atr.milestone_year,
@@ -169,8 +168,7 @@ from
             left join asset on asset.asset = atr.asset
         where
             asset.type in ('producer', 'conversion')
-            and asset.unit_commitment = true
-            and asset.unit_commitment_method like '3var%'
+            and asset.unit_commitment like '3var%'
         order by
             atr.asset,
             atr.milestone_year,
