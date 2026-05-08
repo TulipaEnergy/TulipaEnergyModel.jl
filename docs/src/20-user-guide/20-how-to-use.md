@@ -211,9 +211,8 @@ For more details on the constraints that apply when selecting this method, pleas
 
 ### [Unit Commitment constraints](@id unit-commitment-setup)
 
-The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter must be set to `true` to include the constraints. Additionally, the following parameters should be set in that same file:
+The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter determines which unit commitment method to use. The current version of the code only includes the basic version. Future versions will add more detailed constraints as additional options. Additionally, the following parameters should be set in that same file:
 
-- `unit_commitment_method`: It determines which unit commitment method to use. The current version of the code only includes the basic version. Future versions will add more detailed constraints as additional options.
 - `units_on_cost`: Objective function coefficient on `units_on` variable. (e.g., no-load cost or idling cost in kEUR/h/unit)
 - `unit_commitment_integer`: It determines whether the unit commitment variables are considered as integer or not (`true` or `false`)
 - `min_operating_point`: Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset (p.u.)
@@ -479,9 +478,8 @@ In summary:
   - `initial_units = 1.0`
   - `peak_demand` as anything positive (`1.0` makes it easier to understand the results, `maximum(bid_block.profile)` is the common normalized way)
   - `type = :consumer`
-  - `unit_commitment = true`
+  - `unit_commitment = "basic"`
   - `unit_commitment_integer = true`
-  - `unit_commitment_method = "basic"`
 - Set the time resolution of the asset to the full length of the profile (`assets_rep_periods_partitions.partition = rep_periods_data.num_timesteps`)
 - Find an existing consumer, we'll name it "Bid Manager".
 - Connect a flow from the "Bid Manager" to "Bid", with `flow_milestone.operational_cost = -price`.

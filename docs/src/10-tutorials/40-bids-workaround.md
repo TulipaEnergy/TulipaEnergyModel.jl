@@ -163,9 +163,8 @@ These are the modifications:
   - `initial_units = 1.0`
   - `peak_demand` as anything positive (`1.0` makes it easier to understand the results, `maximum(bid_block.profile)` is the common normalized way)
   - `type = :consumer`
-  - `unit_commitment = true`
+  - `unit_commitment = "basic"`
   - `unit_commitment_integer = true`
-  - `unit_commitment_method = "basic"`
 - Set the time resolution of the asset to the full length of the profile (`assets_rep_periods_partitions.partition = rep_periods_data.num_timesteps`)
 - Find an existing consumer, we'll name it "Bid Manager".
 - Connect a flow from the "Bid Manager" to "Bid", with `flow_milestone.operational_cost = -price`.
@@ -192,9 +191,8 @@ function add_new_bid!(tulipa, bid_id, bid_block)
         initial_units = 1.0,
         min_operating_point = bid_block.curtailment_minimum,
         peak_demand = peak_demand,
-        unit_commitment = true,
+        unit_commitment = "basic",
         unit_commitment_integer = true,
-        unit_commitment_method = "basic",
     )
     set_partition!(tulipa, bid_name, year, 1, num_timesteps) # 1 = rep_period, there is only one
     add_flow!(tulipa, bid_manager, bid_name, operational_cost = -bid_block.price)
