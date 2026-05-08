@@ -6,20 +6,8 @@
     function create_investment_group_problem()
         tulipa = TB.TulipaData()
 
-        TB.add_asset!(
-            tulipa,
-            "producer1",
-            :producer;
-            investable = true,
-            investment_method = "simple",
-        )
-        TB.add_asset!(
-            tulipa,
-            "producer2",
-            :producer;
-            investable = true,
-            investment_method = "simple",
-        )
+        TB.add_asset!(tulipa, "producer1", :producer; investable = true)
+        TB.add_asset!(tulipa, "producer2", :producer; investable = true)
         TB.attach_profile!(tulipa, "producer1", :availability, 2030, ones(6))
         TB.attach_profile!(tulipa, "producer2", :availability, 2050, ones(6))
 

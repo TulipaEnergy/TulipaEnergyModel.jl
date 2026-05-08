@@ -31,8 +31,20 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     objective_expr = JuMP.AffExpr(0.0)
 
     _add_assets_investment_cost!(connection, model, variables, objective_expr, lambda)
-    _add_assets_fixed_cost_compact_method!(connection, model, expressions, objective_expr, lambda)
-    _add_assets_fixed_cost_simple_method!(connection, model, expressions, objective_expr, lambda)
+    _add_assets_fixed_cost_compact_vintage_method!(
+        connection,
+        model,
+        expressions,
+        objective_expr,
+        lambda,
+    )
+    _add_assets_fixed_cost_aggregated_vintage_method!(
+        connection,
+        model,
+        expressions,
+        objective_expr,
+        lambda,
+    )
     _add_storage_assets_energy_investment_cost!(
         connection,
         model,
@@ -329,7 +341,7 @@ function prepare_objective_tables!(connection, model_parameters)
             AND var.milestone_year = in_between_years.milestone_year
         LEFT JOIN asset
             ON asset.asset = flow_milestone.from_asset
-        WHERE asset.investment_method = 'semi-compact'
+        WHERE asset.vintage_method = 'compact_efficiencies'
         ",
     )
 

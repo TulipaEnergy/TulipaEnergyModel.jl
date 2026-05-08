@@ -7,8 +7,8 @@ EnergyProblem:
     - Termination status: OPTIMAL
     - Objective value: 269238.4382415648
     - Objective breakdown:
-      - assets_fixed_cost_compact_method: 0.0
-      - assets_fixed_cost_simple_method: 0.0
+      - assets_fixed_cost_aggregated_vintage_method: 0.0
+      - assets_fixed_cost_compact_vintage_method: 0.0
       - assets_investment_cost: 177000.0
       - flows_fixed_cost: 0.0
       - flows_investment_cost: 0.0

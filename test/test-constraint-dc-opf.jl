@@ -8,7 +8,7 @@
     # This first table is only necessary because we have a left join of var_flow with the asset
     table_name = "asset"
     table_rows = [("input_1", "none"), ("input_2", "none")]
-    columns = [:asset, :investment_method]
+    columns = [:asset, :vintage_method]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "flow"

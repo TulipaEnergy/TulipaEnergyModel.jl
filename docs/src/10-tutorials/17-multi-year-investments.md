@@ -79,7 +79,7 @@ df_asset = filter(:asset => ==("wind"), TIO.get_table(connection, "asset"))[:,
 df = leftjoin(df_objective, df_asset, on = :asset)
 ```
 
-## 4. Different levels of details: simple method vs compact method
+## 4. Different levels of details: aggregated method vs compact method
 
 Remember that we have wind built in 2020 - does it have the same profiles as 2030?
 Let's check it out.
@@ -101,9 +101,9 @@ ylabel!("Capacity factor")
 
 So...the wind built in 2020 has a worse profile. How does it play a role in the investment methods?
 
-### Simple method
+### Aggregated method
 
-Let's try the simple method first.
+Let's try the aggregated method first (`vintage_method = "aggregated"`).
 
 ```julia
 connection = DBInterface.connect(DuckDB.DB)
@@ -117,7 +117,7 @@ energy_problem = TEM.run_scenario(
     )
 ```
 
-Check initial capacity - under the simple method, we will not be able to differentiate units built in other years (than milestone years), they will *simply* be considered the same as the units built in the milestone year, which means that we will not use the 2020 profile.
+Check initial capacity - under the aggregated method, we will not be able to differentiate units built in other years (than milestone years), they will be considered the same as the units built in the milestone year, which means that we will not use the 2020 profile.
 
 ```julia
 filter(row -> row.asset=="wind" && row.milestone_year == 2030, TIO.get_table(connection, "asset_both"))
@@ -132,7 +132,7 @@ filter(row -> row.asset=="wind", TIO.get_table(connection, "var_assets_investmen
 
 ### Compact method
 
-Now try the compact method.
+Now try the compact method (`vintage_method = "compact_profiles"`).
 
 ```julia
 connection = DBInterface.connect(DuckDB.DB)

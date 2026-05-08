@@ -68,46 +68,46 @@ function add_ramping_constraints!(connection, model, variables, expressions, con
     ## Unit Commitment Constraints (basic implementation - more advanced will be added in 2025)
     # - Limit to the units on (i.e. commitment)
     # - For compact investment method
-    let table_name = :limit_units_on_compact_method,
+    let table_name = :limit_units_on_compact_vintage_method,
         cons = constraints[table_name],
 
         indices = _append_available_units_data_compact_method(connection, table_name)
 
         expr_avail_compact_method =
-            expressions[:available_asset_units_compact_method].expressions[:assets]
+            expressions[:available_asset_units_compact_vintage_method].expressions[:assets]
         attach_constraint!(
             model,
             cons,
-            :limit_units_on_compact_method,
+            :limit_units_on_compact_vintage_method,
             [
                 @constraint(
                     model,
                     variables[:units_on].container[row.units_on_id] ≤
                     sum(expr_avail_compact_method[avail_id] for avail_id in row.avail_indices),
-                    base_name = "limit_units_on_compact_method[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    base_name = "limit_units_on_compact_vintage_method[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for row in indices
             ],
         )
     end
 
     # - For simple and none investment method
-    let table_name = :limit_units_on_simple_method,
+    let table_name = :limit_units_on_aggregated_vintage_method,
         cons = constraints[table_name],
 
-        indices = _append_available_units_data_simple_method(connection, table_name)
+        indices = _append_available_units_data_aggregated_vintage_method(connection, table_name)
 
-        expr_avail_simple_method =
-            expressions[:available_asset_units_simple_method].expressions[:assets]
+        expr_avail_aggregated_vintage_method =
+            expressions[:available_asset_units_aggregated_vintage_method].expressions[:assets]
         attach_constraint!(
             model,
             cons,
-            :limit_units_on_simple_method,
+            :limit_units_on_aggregated_vintage_method,
             [
                 @constraint(
                     model,
                     variables[:units_on].container[row.units_on_id] ≤
-                    expr_avail_simple_method[row.avail_id],
-                    base_name = "limit_units_on_simple_method[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                    expr_avail_aggregated_vintage_method[row.avail_id],
+                    base_name = "limit_units_on_aggregated_vintage_method[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                 ) for row in indices
             ],
         )
@@ -313,7 +313,7 @@ function _append_available_units_data_compact_method(connection, table_name)
             ARRAY_AGG(expr_avail.id) AS avail_indices,
             ANY_VALUE(var_units_on.id) AS units_on_id,
         FROM cons_$table_name AS cons
-        LEFT JOIN expr_available_asset_units_compact_method AS expr_avail
+        LEFT JOIN expr_available_asset_units_compact_vintage_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.milestone_year = expr_avail.milestone_year
         LEFT JOIN asset
@@ -323,7 +323,7 @@ function _append_available_units_data_compact_method(connection, table_name)
             AND var_units_on.milestone_year = cons.milestone_year
             AND var_units_on.rep_period = cons.rep_period
             AND var_units_on.time_block_start = cons.time_block_start
-        WHERE asset.investment_method = 'compact'
+        WHERE asset.vintage_method = 'compact_profiles'
         GROUP BY cons.id
         ORDER BY cons.id
         ",
@@ -331,7 +331,7 @@ function _append_available_units_data_compact_method(connection, table_name)
 end
 
 # - Select simple investment method and simple expression (including none method)
-function _append_available_units_data_simple_method(connection, table_name)
+function _append_available_units_data_aggregated_vintage_method(connection, table_name)
     return DuckDB.query(
         connection,
         "SELECT
@@ -344,7 +344,7 @@ function _append_available_units_data_simple_method(connection, table_name)
             expr_avail.id AS avail_id,
             var_units_on.id AS units_on_id,
         FROM cons_$table_name AS cons
-        LEFT JOIN expr_available_asset_units_simple_method AS expr_avail
+        LEFT JOIN expr_available_asset_units_aggregated_vintage_method AS expr_avail
             ON cons.asset = expr_avail.asset
             AND cons.milestone_year = expr_avail.milestone_year
         LEFT JOIN asset
@@ -354,7 +354,7 @@ function _append_available_units_data_simple_method(connection, table_name)
             AND var_units_on.milestone_year = cons.milestone_year
             AND var_units_on.rep_period = cons.rep_period
             AND var_units_on.time_block_start = cons.time_block_start
-        WHERE asset.investment_method in ('simple', 'none')
+        WHERE asset.vintage_method = 'aggregated'
         ORDER BY cons.id
         ",
     )

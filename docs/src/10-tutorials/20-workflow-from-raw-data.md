@@ -211,18 +211,17 @@ asset = DataFrame(
     asset = String[],
     type  = String[],
     capacity = Float64[],
-    investment_method = String[],
     investment_integer = Bool[],
     technical_lifetime = Int[],
     discount_rate = Float64[]
 )
 
 # Add rows
-push!(asset, ("ccgt_ccs", "producer", 84600.0, "simple", true, 15, 0.05))
-push!(asset, ("solar", "producer", 550000.0, "simple", true, 15, 0.05))
-push!(asset, ("wind", "producer", 134000.0, "simple", true, 15, 0.05))
-push!(asset, ("e_demand", "consumer", 0.0, "none", false, 15, 0.05))
-push!(asset, ("ens", "producer", 1000000.0, "none", false, 15, 0.05))
+push!(asset, ("ccgt_ccs", "producer", 84600.0, true, 15, 0.05))
+push!(asset, ("solar", "producer", 550000.0, true, 15, 0.05))
+push!(asset, ("wind", "producer", 134000.0, true, 15, 0.05))
+push!(asset, ("e_demand", "consumer", 0.0, false, 15, 0.05))
+push!(asset, ("ens", "producer", 1000000.0, false, 15, 0.05))
 
 # The dataframe 'asset_both' is based on the assets chosen above and can be constructed as follows
 
@@ -559,13 +558,13 @@ As you can see, we have some installed capacity figures for battery and hydro pu
 TIO.get_table(connection, "asset")
 
 DBInterface.execute(connection, """
-    INSERT INTO asset (asset, type, capacity, investment_method, investment_integer, technical_lifetime, discount_rate, capacity_storage_energy)
-    VALUES ('battery', 'storage', 40000.0, 'simple', false, 15, 0.05, 160000)
+    INSERT INTO asset (asset, type, capacity, vintage_method, investment_integer, technical_lifetime, discount_rate, capacity_storage_energy)
+    VALUES ('battery', 'storage', 40000.0, 'aggregated', false, 15, 0.05, 160000)
 """)
 
 DBInterface.execute(connection, """
-    INSERT INTO asset (asset, type, capacity, investment_method, investment_integer, technical_lifetime, discount_rate, capacity_storage_energy)
-    VALUES ('pumped_hydro', 'storage', 50000.0, 'simple', false, 15, 0.05, 500000)
+    INSERT INTO asset (asset, type, capacity, vintage_method, investment_integer, technical_lifetime, discount_rate, capacity_storage_energy)
+    VALUES ('pumped_hydro', 'storage', 50000.0, 'aggregated', false, 15, 0.05, 500000)
 """)
 
 # Check new entries

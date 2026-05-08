@@ -4,8 +4,8 @@
 Adds the vintage flow sum constraints to the model.
 """
 function add_vintage_flow_sum_constraints!(connection, model, variables, constraints)
-    let table_name = :vintage_flow_sum_semi_compact_method,
-        cons = constraints[:vintage_flow_sum_semi_compact_method]
+    let table_name = :vintage_flow_sum_compact_efficiencies_vintage_method,
+        cons = constraints[:vintage_flow_sum_compact_efficiencies_vintage_method]
 
         indices = _append_vintage_flow_data_to_indices(connection, table_name)
 

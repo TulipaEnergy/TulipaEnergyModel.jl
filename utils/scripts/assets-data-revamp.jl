@@ -23,7 +23,7 @@ run(`git restore test/inputs/ benchmark/EU/`)
     group
     capacity
     min_operating_point -> ANY FROM assets_data
-    investment_method
+    vintage_method
     technical_lifetime
     economic_lifetime
     discount_rate
@@ -53,7 +53,7 @@ apply_to_files_named("asset.csv"; include_missing = true) do path
                     ANY_VALUE(gad.investment_group) AS investment_group,
                     ANY_VALUE(gad.capacity) AS capacity,
                     ANY_VALUE(ad.min_operating_point) AS min_operating_point,
-                    ANY_VALUE(investment_method) AS investment_method,
+                    ANY_VALUE(vintage_method) AS vintage_method,
                     ANY_VALUE(investment_integer) AS investment_integer,
                     ANY_VALUE(technical_lifetime) AS technical_lifetime,
                     ANY_VALUE(economic_lifetime) AS economic_lifetime,

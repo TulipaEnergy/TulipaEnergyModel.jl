@@ -200,8 +200,11 @@ end
     _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
     output_folder = mktempdir()
     TulipaEnergyModel.run_rolling_horizon(connection, 24, 48; output_folder, show_log = false)
-    for filename in
-        ("var_flow.csv", "cons_balance_consumer.csv", "cons_capacity_incoming_simple_method.csv")
+    for filename in (
+        "var_flow.csv",
+        "cons_balance_consumer.csv",
+        "cons_capacity_incoming_aggregated_vintage_method.csv",
+    )
         @test isfile(joinpath(output_folder, filename))
     end
 end

@@ -318,7 +318,7 @@ group_asset_membership = CSV.read(input_file, DataFrame) # hide
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
 
 !!! info
-    The assets in the group have to allow investment (`asset_milestone.investable = true` for the corresponding year) and have some investment method (`asset.investment_method != "none"`).
+    The assets in the group have to allow investment (`asset_milestone.investable = true` for the corresponding year) and not be of type `consumer` (`asset.type != "consumer"`).
 
 ### [Multi-year investments](@id multi-year-setup)
 
@@ -335,16 +335,16 @@ In order to set up a model with year information, the following steps are necess
 
 Fill in the parameters in the `asset.csv` file. These parameters are for the assets across all the years, i.e., not dependent on years. Examples are lifetime (both `technical_lifetime` and `economic_lifetime`) and capacity of a unit.
 
-You need to choose a `investment_method` for the asset, between `none`, `simple`, and `compact`. In addition, you also have to make it explicit on which assets you would like to invest in, by setting the `investable` parameter in `asset-milestone.csv`, and which assets you would like to decommission, by setting the `decommissionable` parameter in `asset-both.csv`. More information on `investable` and `decommissionable` are given in the next sections.
+You need to choose a `vintage_method` for the asset, between `aggregated`, `compact_profiles`, and `compact_efficiencies`. In addition, you also have to make it explicit on which assets you would like to invest in, by setting the `investable` parameter in `asset-milestone.csv`, and which assets you would like to decommission, by setting the `decommissionable` parameter in `asset-both.csv`. More information on `investable` and `decommissionable` are given in the next sections.
 
 Below is an overview of the important set-ups regarding the investment methods.
 
-- Operation mode: choose `none`. Set `investable` and `decommissionable` to `false` to make sure neither investments nor decommissioning occur.
-- Simple investment method: choose `simple`. Set `investable` and `decommissionable` manually. Make sure `milestone_year = commission_year` in `asset-both.csv`. Any missing or redundant rows will throw an error.
-- Compact investment method: choose `compact`. Set `investable` and `decommissionable` manually. Make sure to have more than one commission year for a milestone year in `asset-both.csv`, and the matching profiles. Otherwise the compact method will work the same as the simple method.
+- Operation mode: choose `aggregated` and set `investable` and `decommissionable` to `false` to make sure neither investments nor decommissioning occur.
+- Aggregated investment method: choose `aggregated`. Set `investable` and `decommissionable` manually. Make sure `milestone_year = commission_year` in `asset-both.csv`. Any missing or redundant rows will throw an error.
+- Compact investment method with vintage profiles: choose `compact_profiles`. Set `investable` and `decommissionable` manually. Make sure to have more than one commission year for a milestone year in `asset-both.csv`, and the matching profiles. Otherwise the compact method will work the same as the aggregated method.
 
 !!! info "More about the investment methods"
-    1. The `compact` method can only be applied to producer assets and conversion assets. Transport assets and storage assets can only use `simple` or `none` method.
+    1. The `compact_profiles` and `compact_efficiencies` methods can only be applied to producer assets and conversion assets. Transport assets, storage assets, and consumer assets can only use the `aggregated` method.
     2. For more details on the constraints that apply when selecting these methods, please visit the [`mathematical formulation`](@ref formulation) section.
 
 ##### Asset milestone year data
@@ -385,7 +385,7 @@ assets_data = assets_data[:, [:asset, :milestone_year, :commission_year, :decomm
 
 ##### Profiles information
 
-Important to know that you can use different profiles for assets that are commissioned in different years, which is the power of the `compact` method. You fill in the profile names in `assets-profiles.csv` for relevant years. In `profiles-rep-periods.csv`, you relate the profile names with the modeled years.
+Important to know that you can use different profiles for assets that are commissioned in different years, which is the power of the `compact_profiles` method. You fill in the profile names in `assets-profiles.csv` for relevant years. In `profiles-rep-periods.csv`, you relate the profile names with the modeled years.
 
 Let's explain further using an example. To do so, we can take a look at the `assets-profiles.csv` file:
 

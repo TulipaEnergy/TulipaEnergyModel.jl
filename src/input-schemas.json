@@ -71,19 +71,6 @@
       "description": "Whether investment for storage energy is integer or continuous. It only applies when `storage_method_energy = 'optimize_storage_capacity'`.",
       "type": "BOOLEAN"
     },
-    "investment_method": {
-      "constraints": {
-        "oneOf": [
-          "none",
-          "simple",
-          "semi-compact",
-          "compact"
-        ]
-      },
-      "default": "none",
-      "description": "How investments are treated.",
-      "type": "VARCHAR"
-    },
     "is_seasonal": {
       "default": false,
       "description": "Whether seasonal storage (e.g., hydro) or not (e.g., battery)",
@@ -187,6 +174,18 @@
       },
       "default": null,
       "description": "Whether to use an extra binary variable for the storage assets to avoid charging and discharging simultaneously (null/empty/missing -> no binary).",
+      "type": "VARCHAR"
+    },
+    "vintage_method": {
+      "constraints": {
+        "oneOf": [
+          "aggregated",
+          "compact_efficiencies",
+          "compact_profiles"
+        ]
+      },
+      "default": "aggregated",
+      "description": "How vintage units are treated. It only applies to producer, storage, or conversion assets.",
       "type": "VARCHAR"
     }
   },

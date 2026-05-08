@@ -16,7 +16,7 @@
 Computes the incoming and outgoing expressions per row of `cons` for the constraints
 that are within the representative periods.
 
-Include_commission_year is only used for the constraints regarding the flows for the semi-compact investment method.
+Include_commission_year is only used for the constraints regarding the flows for the compact_efficiencies vintage method.
 If true, the expression will include the commission_year of the flows.
 If false (the default), it will only use the milestone_year.
 
@@ -651,8 +651,10 @@ function add_expressions_to_constraints!(connection, variables, constraints)
         multiply_by_duration = true,
     )
 
-    for table_name in
-        (:capacity_outgoing_semi_compact_method, :min_outgoing_flow_for_transport_vintage_flows)
+    for table_name in (
+        :capacity_outgoing_compact_efficiencies_vintage_method,
+        :min_outgoing_flow_for_transport_vintage_flows,
+    )
         @timeit to "add_expression_terms_rep_period_constraints! for $table_name" add_expression_terms_rep_period_constraints!(
             connection,
             constraints[table_name],
@@ -666,13 +668,13 @@ function add_expressions_to_constraints!(connection, variables, constraints)
     end
 
     for table_name in (
-        :capacity_incoming_simple_method,
-        :capacity_incoming_simple_method_non_investable_storage_with_binary,
-        :capacity_incoming_simple_method_investable_storage_with_binary,
-        :capacity_outgoing_compact_method,
-        :capacity_outgoing_simple_method,
-        :capacity_outgoing_simple_method_non_investable_storage_with_binary,
-        :capacity_outgoing_simple_method_investable_storage_with_binary,
+        :capacity_incoming_aggregated_vintage_method,
+        :capacity_incoming_aggregated_vintage_method_non_investable_storage_with_binary,
+        :capacity_incoming_aggregated_vintage_method_investable_storage_with_binary,
+        :capacity_outgoing_compact_profiles_vintage_method,
+        :capacity_outgoing_aggregated_vintage_method,
+        :capacity_outgoing_aggregated_vintage_method_non_investable_storage_with_binary,
+        :capacity_outgoing_aggregated_vintage_method_investable_storage_with_binary,
         :min_outgoing_flow_for_transport_flows_without_unit_commitment,
         :min_incoming_flow_for_transport_flows,
     )
