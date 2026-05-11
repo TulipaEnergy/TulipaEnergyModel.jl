@@ -27,6 +27,8 @@ In a nutshell, the model guarantees a balance of energy for the various types of
 
 Another essential concept in the model is the [flexible time resolution](@ref flex-time-res), which allows for each asset to be considered in a single timestep (e.g., 1, 2, 3...) or in a range of timesteps (e.g., 1:3, meaning that the asset's variable represents the value of timesteps 1, 2, and 3). This concept allows the modeling of different dynamics depending on the asset; for instance, electricity assets can be modeled hourly, whereas hydrogen assets can be modeled in a 6-hour resolution (avoiding creating unnecessary constraints and variables).
 
+The model also supports [multi-year investment modeling](@ref multi-year-investment-modeling), where investment decisions are made across multiple milestone years. This involves choosing a [vintage method](@ref vintage-modeling) that determines how units commissioned in different years are tracked in the model, and an [economic representation](@ref economic-representation) that accounts for the time value of money through discounting.
+
 The following sections explain these concepts in more detail.
 
 !!! info "Want to know more about the references used in this section?"
@@ -646,6 +648,55 @@ Since the `phs` is defined as seasonal, it has results for only the inter-period
 ![PHS-inter-period-storage-level](./figs/inter-storage-level.png)
 
 In this example, we have demonstrated how to partially recover the chronological information of a storage asset with a longer discharge duration (such as 48 hours) than the representative period length (24 hours). This feature enables us to model both short- and long-term storage in _TulipaEnergyModel.jl_.
+
+## [Multi-year Investment Modeling](@id multi-year-investment-modeling)
+
+_TulipaEnergyModel.jl_ supports multi-year investment planning, where investment and decommissioning decisions are made across multiple milestone years (e.g., 2030 and 2050) to model long-term pathways. Two fundamental aspects govern how the model handles these decisions: the **vintage method**, which determines how units from different commissioning years are represented in the model, and the **economic representation**, which ensures that costs occurring at different points in time are properly discounted and compared.
+
+### [Vintage Modeling](@id vintage-modeling)
+
+When an energy system is modeled over multiple years, assets commissioned at different times may coexist in the same milestone year. For example, in milestone year 2050, the system may include wind turbines built in 2020, 2030, and 2050 — each potentially having different performance characteristics (e.g., capacity factors or efficiencies) due to technological evolution. The **vintage method** controls how the model treats these coexisting units from different commissioning years (vintages).
+
+The `vintage_method` parameter in the `asset` table determines which method is used. There are three options:
+
+- **Aggregated** (`vintage_method = "aggregated"`): All units available in a milestone year are treated identically, regardless of when they were commissioned. Their profiles and efficiencies are assumed to be the same. This is the simplest and most compact approach, producing the fewest variables and constraints. It is the **default** method and is suitable when vintage-specific differences are negligible.
+
+- **Compact profiles** (`vintage_method = "compact_profiles"`): Units are tracked by commission year, allowing each vintage to have its own availability profile. For instance, a wind turbine built in 2020 can use a different capacity factor profile than one built in 2050. This method introduces additional terms in the capacity constraints but does not add new flow variables, and hence the the model size is comparable to that of the aggregated method. It is the go-to choice for capacity-factor-constrained producers such as wind and solar producers.
+
+- **Compact efficiencies** (`vintage_method = "compact_efficiencies"`): This method allows vintage-specific efficiencies for conversion assets. It introduces **vintage flow variables** that represent the output of each vintage separately, which are then linked to the standard flow variables through a summation constraint. This is the most detailed method and produces the largest model. It is the choice if efficiencies for conversion vintages matter.
+
+!!! info "Which asset types support which methods?"
+    The `compact_profiles` methods can only be applied to **producer** and the `compact_efficiencies` method to **conversion** assets. **Consumer**, **storage**, and **transport** assets always use the `aggregated` method.
+
+!!! tip "Vintage method vs. investment decisions"
+    The `vintage_method` parameter only controls **how vintage units are represented** in the model (i.e., whether they are aggregated or tracked individually). It does **not** control whether investment or decommissioning occurs. Those decisions are governed by separate parameters:
+    - `investable` (in `asset_milestone`): whether new investment is allowed at a given milestone year.
+    - `decommissionable` (in `asset_both`): whether existing or invested units can be decommissioned.
+
+For the full mathematical formulation of the vintage methods, including the expressions for available units and the capacity constraints under each method, see the [`mathematical formulation`](@ref formulation). For instructions on how to set up the input data, see [multi-year investments setup](@ref multi-year-setup). For more details on the theory, see [Wang and Morales-España (2025)](@ref scientific-refs).
+
+### [Economic Representation](@id economic-representation)
+
+In a multi-year investment model, costs incurred at different points in time are not directly comparable. An investment made in 2030 and one made in 2050 must be brought to a common reference point to be meaningfully compared in the objective function. _TulipaEnergyModel.jl_ handles this through **discounting**, which converts all costs to their present value at a chosen reference year.
+
+The model uses two types of discount rates:
+
+- **Social discount rate** (`discount_rate` in the `model_parameters` table): A system-wide rate that reflects the societal time preference for money. It is used to discount all costs — investment, fixed, and operational — to a common **discount year** (`discount_year` in the same table). By default, the discount rate is 0 and the discount year is the earliest milestone year.
+
+- **Technology-specific discount rate** (`discount_rate` in the `asset` table): A rate specific to each technology that captures its financing cost or risk premium. It is used internally for two purposes:
+  - **Annualizing investment costs**: Converting a lump-sum investment cost into equivalent annual payments over the asset's economic lifetime.
+  - **Computing salvage values**: Determining the residual value of an investment whose economic lifetime extends beyond the last modeled year.
+
+The key derived quantities in the economic representation are:
+
+- **Annualized cost**: The investment cost of an asset spread over its `economic_lifetime` using the technology-specific discount rate. This converts a one-time capital expenditure into a series of equal annual payments.
+- **Salvage value**: If an asset invested in a milestone year has an economic lifetime that extends past the modeling horizon, the portion of the annualized cost falling beyond the last milestone year is credited back as a salvage value, ensuring that the model does not overcharge for assets that outlive the study period.
+- **Discount year**: The reference year to which all costs are discounted. It defaults to the minimum of the user-provided value and the first milestone year.
+
+!!! warning "Nominal cost inputs"
+    Since the model explicitly discounts costs, all input cost parameters (e.g., `investment_cost`, `fixed_cost`, `variable_cost`) should be provided in the nominal costs of the relevant year. For example, if modeling investments in 2030 and 2050, the `investment_cost` for each year should reflect the expected cost at that time.
+
+For the full mathematical formulation of the discounting factors, annualized costs, and salvage values, see the [`mathematical formulation`](@ref formulation). For instructions on how to set up the economic parameters, see [multi-year investments setup](@ref multi-year-setup). For more details on the theory, see [Wang and Tejada-Arango (2025)](@ref scientific-refs).
 
 ## [Flexible Time Resolution in the Direct Current Optimal Power Flow Constraints](@id flex-time-res-dc-opf)
 
