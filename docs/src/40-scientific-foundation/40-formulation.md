@@ -261,7 +261,7 @@ In addition, the following subsets represent methods for incorporating additiona
 
 ### Expresssions for the Objective Function
 
-There are two types of vintage methods for multi-year investment modelling: the aggregated method and the compact method. The aggregated method (`vintage_method = "aggregated"`) aggregates all units available in a year, regardless of when they were invested. The compact method (`vintage_method = "compact_profiles"` or `"compact_efficiencies"`) tracks availability by investment and operational year, enabling vintage-specific constraints while reducing model size. For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
+There are two types of vintage methods for multi-year investment modelling: the aggregated method and the compact method. The aggregated method (`vintage_method = "aggregated"`) aggregates all units available in a year, regardless of when they were invested. The compact method (`vintage_method = "compact_profiles"` or `"compact_efficiencies"`) tracks availability by investment and operational year, enabling vintage-specific constraints while reducing model size. For more information on this topic, refer to the [vintage modeling](@ref vintage-modeling) concept, the [How to use](@ref multi-year-setup) guide, or [Wang and Morales-España (2025)](@ref scientific-refs).
 
 For available units across years, we define the following expresssions:
 
@@ -318,7 +318,7 @@ In addition, we define the following expressions to determine the available unit
 
 ### Economic Representation for the Objective Function
 
-The model accounts for discounting in multi-year investment modelling. For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Tejada-Arango (2025)](@ref scientific-refs).
+The model accounts for discounting in multi-year investment modelling. For more information on this topic, refer to the [economic representation](@ref economic-representation) concept, the [How to use](@ref multi-year-setup) guide, or [Wang and Tejada-Arango (2025)](@ref scientific-refs).
 
 #### Discounting Factor for Asset Investment Costs
 
@@ -409,7 +409,7 @@ unit\_on\_cost_{s} &= \sum_{y \in \mathcal{Y}} \sum_{a \in \mathcal{A}^{\text{uc
 
 #### Maximum Output Flows Limit
 
-Maximum output flow constraints depend on the chosen vintage method (none, aggregated, compact_profiles, or compact_efficiencies). For more information on this topic, refer to the [How to use](@ref how-to-use) or [Wang and Morales-España (2025)](@ref scientific-refs).
+Maximum output flow constraints depend on the chosen vintage method (aggregated, compact_profiles, or compact_efficiencies). For more information on this topic, refer to the [vintage modeling](@ref vintage-modeling) concept, the [How to use](@ref multi-year-setup) guide, or [Wang and Morales-España (2025)](@ref scientific-refs).
 
 ```math
 \begin{aligned}
