@@ -58,6 +58,194 @@ Outputs are sent from Tulipa to DuckDB and can be exported to various file forma
 
 To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref). See the [Workflow Tutorial](@ref step-export) for an example showcasing this function.
 
+## [Cost breakdown in post-processing](@id cost-breakdown)
+
+After solving the model, you can compute a detailed cost breakdown per asset or per flow directly from the solved variable and expression values. This does not modify the optimization model — it is purely a post-processing step.
+
+The total objective is composed of several cost components (investment costs, fixed O&M costs, operational costs, etc.). Each component is stored as an aggregated value in the `obj_breakdown` table. The examples below show how to disaggregate these components by asset or by flow.
+
+The general approach to construct these breakdowns is:
+
+1. **Identify the source**: Look at the corresponding objective function in `src/objectives/` to understand what variables, expressions, and cost coefficients are involved.
+2. **Get the solved values**: Variable solutions are stored in the `solution` column of `var_*` tables. Expression values (like available units) must be evaluated via `JuMP.value()` on the in-memory expressions.
+3. **Get the cost coefficients**: Join with the same tables the objective uses (`t_objective_assets`, `t_objective_flows`, `asset_commission`, etc.) to obtain discounted cost coefficients.
+4. **Combine**: Multiply solved values by cost coefficients, applying the `(1 - lambda)` risk aversion weight when necessary.
+
+!!! info
+    The tables `t_objective_assets` and `t_objective_flows` are temporary tables created during model construction. They contain pre-computed discount factors and annualized costs. They remain available in the DuckDB connection after solving.
+
+!!! tip "Verifying correctness"
+    You can verify that your per-asset or per-flow breakdown is consistent with the aggregated objective by comparing the sum of your breakdown with the corresponding row in `obj_breakdown`:
+    ```julia
+    DuckDB.query(connection, "SELECT * FROM obj_breakdown")
+    ```
+
+To save any result as a CSV file, register it as a DuckDB table and use `COPY`:
+
+```julia
+DuckDB.register_table(connection, result, "my_table_name")
+output_file = joinpath(output_folder, "my_table_name.csv")
+DuckDB.execute(connection, "COPY my_table_name TO '$output_file' (HEADER, DELIMITER ',')")
+```
+
+### Investment cost (CAPEX) per asset
+
+```julia
+obj_assets_investment_cost = DuckDB.query(
+    connection,
+    "SELECT
+        var.asset,
+        var.milestone_year,
+        obj.weight_for_asset_investment_discount
+            * obj.investment_cost
+            * obj.capacity
+            AS cost_per_unit_invested,
+        var.solution AS units_invested,
+        (1 - mp.risk_aversion_weight_lambda)
+            * cost_per_unit_invested
+            * var.solution
+            AS investment_cost,
+    FROM var_assets_investment AS var
+    LEFT JOIN t_objective_assets AS obj
+        ON var.asset = obj.asset
+        AND var.milestone_year = obj.milestone_year
+    CROSS JOIN model_parameters AS mp
+    ORDER BY var.asset, var.milestone_year
+    ",
+)
+
+DuckDB.register_table(connection, obj_assets_investment_cost, "obj_assets_investment_cost")
+output_file = joinpath(output_folder, "obj_assets_investment_cost.csv")
+DuckDB.execute(connection, "COPY obj_assets_investment_cost TO '$output_file' (HEADER, DELIMITER ',')")
+```
+
+### Fixed O&M cost per asset
+
+```julia
+using JuMP: value
+
+# Evaluate the available units expressions (one value per row in the expr table)
+expr_agg = energy_problem.expressions[:available_asset_units_aggregated_vintage_method]
+avail_units = value.(expr_agg.expressions[:assets])
+
+# Get cost coefficients from DuckDB (same query the objective uses, plus key columns)
+cost_data = DuckDB.query(
+    connection,
+    "SELECT
+        expr.id,
+        expr.asset,
+        expr.milestone_year,
+        expr.commission_year,
+        obj.weight_for_operation_discounts
+            * asset_commission.fixed_cost
+            * obj.capacity
+            AS cost_coefficient,
+    FROM expr_available_asset_units_aggregated_vintage_method AS expr
+    LEFT JOIN asset_commission
+        ON expr.asset = asset_commission.asset
+        AND expr.commission_year = asset_commission.commission_year
+    LEFT JOIN t_objective_assets AS obj
+        ON expr.asset = obj.asset
+        AND expr.milestone_year = obj.milestone_year
+    ORDER BY expr.id
+    ",
+)
+
+# Combine and build the result table
+lambda = first(
+    DuckDB.query(connection, "SELECT risk_aversion_weight_lambda FROM model_parameters"),
+).risk_aversion_weight_lambda
+
+obj_assets_fixed_cost = [
+    (
+        asset = row.asset,
+        milestone_year = row.milestone_year,
+        commission_year = row.commission_year,
+        available_units = avail_units[row.id],
+        cost_coefficient = row.cost_coefficient,
+        fixed_cost = (1 - lambda) * avail_units[row.id] * row.cost_coefficient,
+    ) for row in cost_data
+]
+
+# Register and export
+DuckDB.register_table(connection, obj_assets_fixed_cost, "obj_assets_fixed_cost")
+output_file = joinpath(output_folder, "obj_assets_fixed_cost.csv")
+DuckDB.execute(connection, "COPY obj_assets_fixed_cost TO '$output_file' (HEADER, DELIMITER ',')")
+```
+
+!!! tip
+    The same pattern applies to the compact vintage method — replace `aggregated` with `compact` and use `expressions[:available_asset_units_compact_vintage_method]`. For models that use both methods (different assets use different methods), you can run both queries and concatenate the results.
+
+### Flows operational cost per flow
+
+```julia
+table_name = "obj_flows_operational_cost"
+DuckDB.execute(
+    connection,
+    "CREATE OR REPLACE TABLE $table_name AS
+    SELECT
+        var.from_asset,
+        var.to_asset,
+        var.milestone_year,
+        (1 - mp.risk_aversion_weight_lambda) * SUM(
+            ss.probability
+            * obj.weight_for_operation_discounts
+            * rp_weight.total_weight_per_scenario
+            * rp_res.resolution
+            * obj.total_variable_cost
+            * (var.time_block_end - var.time_block_start + 1)
+            * var.solution
+        ) AS operational_cost,
+    FROM var_flow AS var
+    LEFT JOIN t_objective_flows AS obj
+        ON var.from_asset = obj.from_asset
+        AND var.to_asset = obj.to_asset
+        AND var.milestone_year = obj.milestone_year
+    LEFT JOIN (
+        SELECT milestone_year, rep_period, scenario,
+               SUM(weight) AS total_weight_per_scenario
+        FROM rep_periods_mapping
+        GROUP BY milestone_year, rep_period, scenario
+    ) AS rp_weight
+        ON var.milestone_year = rp_weight.milestone_year
+        AND var.rep_period = rp_weight.rep_period
+    LEFT JOIN (
+        SELECT milestone_year, rep_period, ANY_VALUE(resolution) AS resolution
+        FROM rep_periods_data
+        GROUP BY milestone_year, rep_period
+    ) AS rp_res
+        ON var.milestone_year = rp_res.milestone_year
+        AND var.rep_period = rp_res.rep_period
+    LEFT JOIN stochastic_scenario AS ss
+        ON rp_weight.scenario = ss.scenario
+    LEFT JOIN asset
+        ON asset.asset = var.from_asset
+    CROSS JOIN model_parameters AS mp
+    WHERE asset.vintage_method != 'compact_efficiencies'
+    GROUP BY var.from_asset, var.to_asset, var.milestone_year, mp.risk_aversion_weight_lambda
+    ORDER BY var.from_asset, var.to_asset, var.milestone_year
+    ",
+)
+```
+
+!!! warning
+    This query uses the constant `total_variable_cost` from `t_objective_flows`. If your model uses **commodity price profiles** , it needs modifications.
+
+!!! info
+    Flows from assets using `vintage_method = 'compact_efficiencies'` are excluded here — their costs are in a separate `vintage_flows_operational_cost` component. The same query pattern applies with `var_vintage_flow` and `t_objective_vintage_flows` instead.
+
+<!-- markdownlint-disable MD046 -->
+
+!!! tip "Splitting into energy cost and variable O&M"
+    The `total_variable_cost` in `t_objective_flows` is the sum of two components: `commodity_price / producer_efficiency` (the fuel/energy cost) and `operational_cost` (the variable O&M cost). To get a finer breakdown, replace `obj.total_variable_cost` in the query above with either:
+
+    - `(obj.commodity_price / obj.producer_efficiency)` for the **energy cost** only (fuel/commodity cost adjusted for efficiency), or
+    - `obj.operational_cost` for the **variable O&M cost** only.
+
+    The sum of both sub-components equals the `operational_cost` column from the full query.
+
+<!-- markdownlint-enable MD046 -->
+
 ## Setting the solver and its parameters
 
 By default, the model is solved using the [HiGHS](https://github.com/jump-dev/HiGHS.jl) optimizer (or solver).
@@ -593,47 +781,3 @@ When the CVaR feature is activated, the model automatically creates two addition
 These variables are linked through the [scenario tail excess constraints](@ref cvar-constraints), which enforce $v^{\xi}_{s} \geq C_s - v^{\mu}$ for every scenario $s$.
 
 For more details on the mathematical formulation of the CVaR objective and constraints, see the [`mathematical formulation`](@ref formulation) section.
-
-## [Per-asset cost breakdown (post-processing)](@id cost-breakdown)
-
-After solving the model, you can compute a per-asset cost breakdown directly from the solved variable values stored in DuckDB. This does not modify the optimization model — it is purely a post-processing step using SQL queries on the solution tables.
-
-### Investment cost (CAPEX) per asset
-
-The investment cost per asset and milestone year can be computed by joining the solved investment variable with the pre-computed cost coefficients:
-
-```julia
-obj_assets_investment_cost = DuckDB.query(
-    connection,
-    "SELECT
-        var.asset,
-        var.milestone_year,
-        obj.weight_for_asset_investment_discount
-            * obj.investment_cost
-            * obj.capacity
-            AS cost_per_unit_invested,
-        var.solution AS units_invested,
-        (1 - mp.risk_aversion_weight_lambda)
-            * cost_per_unit_invested
-            * var.solution
-            AS investment_cost,
-    FROM var_assets_investment AS var
-    LEFT JOIN t_objective_assets AS obj
-        ON var.asset = obj.asset
-        AND var.milestone_year = obj.milestone_year
-    CROSS JOIN model_parameters AS mp
-    ORDER BY var.asset, var.milestone_year
-    ",
-)
-```
-
-!!! info
-    The table `t_objective_assets` is a temporary table created during model construction. It contains pre-computed discount factors and annualized costs. It remains available in the DuckDB connection after solving.
-
-To save the result as a CSV file, register it as a DuckDB table and use `COPY`:
-
-```julia
-DuckDB.register_table(connection, obj_assets_investment_cost, "obj_assets_investment_cost")
-output_file = joinpath(output_folder, "obj_assets_investment_cost.csv")
-DuckDB.execute(connection, "COPY obj_assets_investment_cost TO '$output_file' (HEADER, DELIMITER ',')")
-```
