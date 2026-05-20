@@ -593,3 +593,47 @@ When the CVaR feature is activated, the model automatically creates two addition
 These variables are linked through the [scenario tail excess constraints](@ref cvar-constraints), which enforce $v^{\xi}_{s} \geq C_s - v^{\mu}$ for every scenario $s$.
 
 For more details on the mathematical formulation of the CVaR objective and constraints, see the [`mathematical formulation`](@ref formulation) section.
+
+## [Per-asset cost breakdown (post-processing)](@id cost-breakdown)
+
+After solving the model, you can compute a per-asset cost breakdown directly from the solved variable values stored in DuckDB. This does not modify the optimization model — it is purely a post-processing step using SQL queries on the solution tables.
+
+### Investment cost (CAPEX) per asset
+
+The investment cost per asset and milestone year can be computed by joining the solved investment variable with the pre-computed cost coefficients:
+
+```julia
+obj_assets_investment_cost = DuckDB.query(
+    connection,
+    "SELECT
+        var.asset,
+        var.milestone_year,
+        obj.weight_for_asset_investment_discount
+            * obj.investment_cost
+            * obj.capacity
+            AS cost_per_unit_invested,
+        var.solution AS units_invested,
+        (1 - mp.risk_aversion_weight_lambda)
+            * cost_per_unit_invested
+            * var.solution
+            AS investment_cost,
+    FROM var_assets_investment AS var
+    LEFT JOIN t_objective_assets AS obj
+        ON var.asset = obj.asset
+        AND var.milestone_year = obj.milestone_year
+    CROSS JOIN model_parameters AS mp
+    ORDER BY var.asset, var.milestone_year
+    ",
+)
+```
+
+!!! info
+    The table `t_objective_assets` is a temporary table created during model construction. It contains pre-computed discount factors and annualized costs. It remains available in the DuckDB connection after solving.
+
+To save the result as a CSV file, register it as a DuckDB table and use `COPY`:
+
+```julia
+DuckDB.register_table(connection, obj_assets_investment_cost, "obj_assets_investment_cost")
+output_file = joinpath(output_folder, "obj_assets_investment_cost.csv")
+DuckDB.execute(connection, "COPY obj_assets_investment_cost TO '$output_file' (HEADER, DELIMITER ',')")
+```
