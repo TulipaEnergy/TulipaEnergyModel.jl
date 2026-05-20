@@ -234,17 +234,11 @@ DuckDB.execute(
 !!! info
     Flows from assets using `vintage_method = 'compact_efficiencies'` are excluded here — their costs are in a separate `vintage_flows_operational_cost` component. The same query pattern applies with `var_vintage_flow` and `t_objective_vintage_flows` instead.
 
-<!-- markdownlint-disable MD046 -->
-
 !!! tip "Splitting into energy cost and variable O&M"
     The `total_variable_cost` in `t_objective_flows` is the sum of two components: `commodity_price / producer_efficiency` (the fuel/energy cost) and `operational_cost` (the variable O&M cost). To get a finer breakdown, replace `obj.total_variable_cost` in the query above with either:
-
     - `(obj.commodity_price / obj.producer_efficiency)` for the **energy cost** only (fuel/commodity cost adjusted for efficiency), or
     - `obj.operational_cost` for the **variable O&M cost** only.
-
     The sum of both sub-components equals the `operational_cost` column from the full query.
-
-<!-- markdownlint-enable MD046 -->
 
 ## Setting the solver and its parameters
 
