@@ -229,7 +229,7 @@ DuckDB.execute(
 ```
 
 !!! warning
-    This query uses the constant `total_variable_cost` from `t_objective_flows`. If your model uses **commodity price profiles** , it needs modifications.
+    This query uses the constant `total_variable_cost` from `t_objective_flows`. If your model uses **commodity price profiles**, it needs modifications.
 
 !!! info
     Flows from assets using `vintage_method = 'compact_efficiencies'` are excluded here — their costs are in a separate `vintage_flows_operational_cost` component. The same query pattern applies with `var_vintage_flow` and `t_objective_vintage_flows` instead.
