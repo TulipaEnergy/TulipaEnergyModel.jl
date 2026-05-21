@@ -562,7 +562,7 @@ function _get_max_n_flows(connection)
                 LEFT JOIN asset
                     ON asset.asset = var.from_asset
                 WHERE asset.investment_method != 'semi-compact'
-                WHERE asset.vintage_method != 'compact_efficiencies'
+                AND asset.vintage_method != 'compact_efficiencies'
                 GROUP BY rpm.scenario
             )
             """,
