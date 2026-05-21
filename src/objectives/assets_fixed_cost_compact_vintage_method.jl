@@ -29,11 +29,7 @@ function _add_assets_fixed_cost_compact_vintage_method!(
 
     @expression(
         model,
-<<<<<<< HEAD:src/objectives/assets_fixed_cost_compact_method.jl
-        assets_fixed_cost_compact_method,
-=======
         assets_fixed_cost_compact_vintage_method,
->>>>>>> upstream/main:src/objectives/assets_fixed_cost_compact_vintage_method.jl
         sum(
             row.cost * expr_avail for (row, expr_avail) in
             zip(indices, expr_available_asset_units_compact_vintage_method.expressions[:assets])
