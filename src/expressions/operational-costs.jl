@@ -339,7 +339,7 @@ function _query_flows_operational_cost_per_scenario_indices(
                 ON asset.asset = var.from_asset
             $flows_profiles_query_left_join
             WHERE asset.investment_method != 'semi-compact'
-            WHERE asset.vintage_method != 'compact_efficiencies'
+            AND asset.vintage_method != 'compact_efficiencies'
         ),
         flows_per_scenario AS (
             SELECT
