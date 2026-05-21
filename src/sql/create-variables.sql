@@ -55,7 +55,7 @@ from
     and fc.to_asset = ft.to_asset
     and fc.commission_year = ab.commission_year
 where asset.type = 'producer'
-    and asset.investment_method = 'semi-compact'
+    and asset.vintage_method = 'compact_efficiencies'
 ;
 
 drop sequence id
@@ -86,7 +86,7 @@ from
             left join asset on asset.asset = atr.asset
         where
             asset.type in ('producer', 'conversion', 'consumer')
-            and asset.unit_commitment = true
+            and asset.unit_commitment != 'none'
         order by
             atr.asset,
             atr.milestone_year,
@@ -127,8 +127,7 @@ from
             left join asset on asset.asset = atr.asset
         where
             asset.type in ('producer', 'conversion')
-            and asset.unit_commitment = true
-            and asset.unit_commitment_method like '3var%'
+            and asset.unit_commitment like '3var%'
         order by
             atr.asset,
             atr.milestone_year,
@@ -169,8 +168,7 @@ from
             left join asset on asset.asset = atr.asset
         where
             asset.type in ('producer', 'conversion')
-            and asset.unit_commitment = true
-            and asset.unit_commitment_method like '3var%'
+            and asset.unit_commitment like '3var%'
         order by
             atr.asset,
             atr.milestone_year,
@@ -421,7 +419,7 @@ from
     and asset_commission.commission_year = asset_milestone.milestone_year
 where
     asset_milestone.investable = true
-    and asset.investment_method in ('simple', 'semi-compact', 'compact')
+    and asset.type != 'consumer'
 ;
 
 drop sequence id
@@ -448,7 +446,7 @@ from
     left join asset on asset.asset = asset_both.asset
 where
     asset_both.decommissionable
-    and asset.investment_method in ('simple', 'semi-compact', 'compact')
+    and asset.type != 'consumer'
 ;
 
 drop sequence id
@@ -505,7 +503,7 @@ where
     asset.storage_method_energy = 'optimize_storage_capacity'
     and asset_milestone.investable = true
     and asset.type = 'storage'
-    and asset.investment_method = 'simple'
+    and asset.vintage_method = 'aggregated'
 ;
 
 drop sequence id
@@ -532,7 +530,7 @@ where
     asset.storage_method_energy = 'optimize_storage_capacity'
     and asset.type = 'storage'
     and asset_both.decommissionable
-    and asset.investment_method = 'simple'
+    and asset.vintage_method = 'aggregated'
 ;
 
 drop sequence id

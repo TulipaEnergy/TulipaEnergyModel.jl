@@ -46,10 +46,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_capacity_incoming_simple_method
+drop table if exists cons_capacity_incoming_aggregated_vintage_method
 ;
 
-create table cons_capacity_incoming_simple_method as
+create table cons_capacity_incoming_aggregated_vintage_method as
 select
     nextval('id') as id,
     t_high.*
@@ -66,10 +66,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_capacity_incoming_simple_method_non_investable_storage_with_binary
+drop table if exists cons_capacity_incoming_aggregated_vintage_method_non_investable_storage_with_binary
 ;
 
-create table cons_capacity_incoming_simple_method_non_investable_storage_with_binary as
+create table cons_capacity_incoming_aggregated_vintage_method_non_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -90,10 +90,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_capacity_incoming_simple_method_investable_storage_with_binary
+drop table if exists cons_capacity_incoming_aggregated_vintage_method_investable_storage_with_binary
 ;
 
-create table cons_capacity_incoming_simple_method_investable_storage_with_binary as
+create table cons_capacity_incoming_aggregated_vintage_method_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -114,10 +114,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_capacity_outgoing_compact_method
+drop table if exists cons_capacity_outgoing_compact_profiles_vintage_method
 ;
 
-create table cons_capacity_outgoing_compact_method as
+create table cons_capacity_outgoing_compact_profiles_vintage_method as
 select
     nextval('id') as id,
     t_high.*
@@ -126,7 +126,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type = 'producer'
-    and asset.investment_method = 'compact'
+    and asset.vintage_method = 'compact_profiles'
 ;
 
 drop sequence id
@@ -135,10 +135,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_capacity_outgoing_semi_compact_method
+drop table if exists cons_capacity_outgoing_compact_efficiencies_vintage_method
 ;
 
-create table cons_capacity_outgoing_semi_compact_method as
+create table cons_capacity_outgoing_compact_efficiencies_vintage_method as
 with cons_data as (
     select
         t_high.asset,
@@ -154,7 +154,7 @@ with cons_data as (
         and t_high.milestone_year = asset_both.milestone_year
     where
         asset.type = 'producer'
-        and asset.investment_method = 'semi-compact'
+        and asset.vintage_method = 'compact_efficiencies'
     -- t_high is ordered by asset, milestone_year, rep_period, time_block_start
     -- since we added commission_year, we need to explictly order by commission_year
     -- note the order is only needed for the test, constraints do not require it
@@ -178,10 +178,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_capacity_outgoing_simple_method
+drop table if exists cons_capacity_outgoing_aggregated_vintage_method
 ;
 
-create table cons_capacity_outgoing_simple_method as
+create table cons_capacity_outgoing_aggregated_vintage_method as
 select
     nextval('id') as id,
     t_high.*
@@ -190,7 +190,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'storage', 'conversion')
-    and asset.investment_method in ('simple', 'none')
+    and asset.vintage_method = 'aggregated'
 ;
 
 drop sequence id
@@ -199,10 +199,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_capacity_outgoing_simple_method_non_investable_storage_with_binary
+drop table if exists cons_capacity_outgoing_aggregated_vintage_method_non_investable_storage_with_binary
 ;
 
-create table cons_capacity_outgoing_simple_method_non_investable_storage_with_binary as
+create table cons_capacity_outgoing_aggregated_vintage_method_non_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -223,10 +223,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_capacity_outgoing_simple_method_investable_storage_with_binary
+drop table if exists cons_capacity_outgoing_aggregated_vintage_method_investable_storage_with_binary
 ;
 
-create table cons_capacity_outgoing_simple_method_investable_storage_with_binary as
+create table cons_capacity_outgoing_aggregated_vintage_method_investable_storage_with_binary as
 select
     nextval('id') as id,
     t_high.*
@@ -285,8 +285,8 @@ where
     asset.type in ('producer', 'storage', 'conversion')
     and cte_transport_flow_info.outgoing_flows_have_transport_flows
     -- Assets with unit commitment already have a minimum outgoing flow constraints
-    and not asset.unit_commitment
-    and asset.investment_method in ('compact', 'simple', 'none')
+    and asset.unit_commitment = 'none'
+    and asset.vintage_method in ('compact_profiles', 'aggregated')
 ;
 
 drop sequence id
@@ -335,7 +335,7 @@ from
         and t_high.milestone_year = asset_both.milestone_year
 where
     asset.type = 'producer'
-    and asset.investment_method = 'semi-compact'
+    and asset.vintage_method = 'compact_efficiencies'
     and cte_transport_flow_info.outgoing_flows_have_transport_flows
     -- Note we do not exclude UC here, because UC only guarantees
     -- the minimum point of flow, instead of vintage flow
@@ -383,36 +383,36 @@ from
 where
     asset.type in ('storage', 'conversion')
     and cte_transport_flow_info.incoming_flows_have_transport_flows
-    and asset.investment_method in ('compact', 'simple', 'none')
+    and asset.vintage_method in ('compact_profiles', 'aggregated')
 ;
 
 drop sequence id
 ;
 
-drop table if exists cons_limit_units_on_compact_method
+drop table if exists cons_limit_units_on_compact_vintage_method
 ;
 
-create table cons_limit_units_on_compact_method as
+create table cons_limit_units_on_compact_vintage_method as
 select
     *
 from
     var_units_on
     left join asset on var_units_on.asset = asset.asset
 where
-    asset.investment_method = 'compact'
+    asset.vintage_method = 'compact_profiles'
 ;
 
-drop table if exists cons_limit_units_on_simple_method
+drop table if exists cons_limit_units_on_aggregated_vintage_method
 ;
 
-create table cons_limit_units_on_simple_method as
+create table cons_limit_units_on_aggregated_vintage_method as
 select
     *
 from
     var_units_on
     left join asset on var_units_on.asset = asset.asset
 where
-    asset.investment_method in ('simple', 'none')
+    asset.vintage_method = 'aggregated'
 ;
 
 create sequence id start 1
@@ -430,7 +430,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'conversion', 'consumer')
-    and asset.unit_commitment
+    and asset.unit_commitment != 'none'
 ;
 
 drop sequence id
@@ -451,8 +451,7 @@ from
     left join asset on t_high.asset = asset.asset
 where
     asset.type in ('producer', 'conversion', 'consumer')
-    and asset.unit_commitment
-    and asset.unit_commitment_method = 'basic'
+    and asset.unit_commitment = 'basic'
 ;
 
 drop sequence id
@@ -474,8 +473,7 @@ from
 where
     asset.type in ('producer', 'conversion')
     and asset.ramping
-    and asset.unit_commitment
-    and asset.unit_commitment_method = 'basic'
+    and asset.unit_commitment = 'basic'
 ;
 
 drop sequence id
@@ -497,8 +495,7 @@ from
 where
     asset.type in ('producer', 'storage', 'conversion')
     and asset.ramping
-    and not asset.unit_commitment
-    and asset.unit_commitment_method != 'basic'
+    and asset.unit_commitment == 'none'
 ;
 
 drop table if exists cons_balance_storage_rep_period
@@ -587,10 +584,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_transport_flow_limit_simple_method
+drop table if exists cons_transport_flow_limit_aggregated_vintage_method
 ;
 
-create table cons_transport_flow_limit_simple_method as
+create table cons_transport_flow_limit_aggregated_vintage_method as
 select
     nextval('id') as id,
     var_flow.from_asset,
@@ -704,10 +701,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_limit_decommission_compact_method
+drop table if exists cons_limit_decommission_compact_vintage_method
 ;
 
-create table cons_limit_decommission_compact_method as
+create table cons_limit_decommission_compact_vintage_method as
 select
     nextval('id') as id,
     var_assets_decommission.asset,
@@ -717,7 +714,7 @@ from
     var_assets_decommission
 left join asset on asset.asset = var_assets_decommission.asset
 where
-    asset.investment_method = 'compact'
+    asset.vintage_method = 'compact_profiles'
 ;
 
 drop sequence id
@@ -726,10 +723,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_vintage_flow_sum_semi_compact_method
+drop table if exists cons_vintage_flow_sum_compact_efficiencies_vintage_method
 ;
 
-create table cons_vintage_flow_sum_semi_compact_method as
+create table cons_vintage_flow_sum_compact_efficiencies_vintage_method as
 select
     nextval('id') as id,
     from_asset,
@@ -742,7 +739,7 @@ from
     var_flow
 left join asset on asset.asset = var_flow.from_asset
 where
-    asset.investment_method = 'semi-compact'
+    asset.vintage_method = 'compact_efficiencies'
 ;
 
 drop sequence id
@@ -776,8 +773,7 @@ from (
         left join asset on asset.asset = atr.asset
     where
         asset.type in ('producer', 'conversion')
-        and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var%'
+        and asset.unit_commitment LIKE '3var%'
     order by
         t_high.asset,
         t_high.milestone_year,
@@ -792,10 +788,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_shut_down_upper_bound_simple_investment
+drop table if exists cons_shut_down_upper_bound_aggregated_vintage_method
 ;
 
-create table cons_shut_down_upper_bound_simple_investment as
+create table cons_shut_down_upper_bound_aggregated_vintage_method as
 select
     nextval('id') as id,
     sub.*
@@ -817,9 +813,8 @@ from (
         left join asset on asset.asset = atr.asset
     where
         asset.type in ('producer', 'conversion')
-        and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var%'
-        and asset.investment_method in ('simple', 'none')
+        and asset.unit_commitment LIKE '3var%'
+        and asset.vintage_method = 'aggregated'
 
     order by
         t_high.asset,
@@ -835,10 +830,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists cons_shut_down_upper_bound_compact_investment
+drop table if exists cons_shut_down_upper_bound_compact_vintage_method
 ;
 
-create table cons_shut_down_upper_bound_compact_investment as
+create table cons_shut_down_upper_bound_compact_vintage_method as
 with sub as
 (select distinct
     t_high.asset,
@@ -860,9 +855,8 @@ from
             asset.asset = t_high.asset
 where
     asset.type in ('producer', 'conversion')
-    and asset.unit_commitment = true
-    and asset.unit_commitment_method LIKE '3var%'
-    and asset.investment_method = 'compact'
+    and asset.unit_commitment LIKE '3var%'
+    and asset.vintage_method = 'compact_profiles'
 order by
     t_high.asset,
     t_high.milestone_year,
@@ -905,8 +899,7 @@ from (
         left join asset on asset.asset = atr.asset
     where
         asset.type in ('producer', 'conversion')
-        and asset.unit_commitment = true
-        and asset.unit_commitment_method LIKE '3var%'
+        and asset.unit_commitment LIKE '3var%'
     order by
         t_high.asset,
         t_high.milestone_year,

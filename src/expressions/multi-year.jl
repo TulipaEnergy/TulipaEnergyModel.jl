@@ -1,5 +1,5 @@
 function create_multi_year_expressions!(connection, model, variables, expressions)
-    # ------------------------- Compact investmnet -------------------------
+    # ------------------------- Compact method (profiles/efficiencies) -------------------------
     #
     # The variable assets_decommission is defined for (a, my, cy)
     # The capacity expression that we need to compute is
@@ -32,9 +32,9 @@ function create_multi_year_expressions!(connection, model, variables, expression
     # Assumption:
     # - asset_both exists only for (a,my,cy) where technical lifetime was already taken into account
     #
-    # ------------------------- Simple investmnet -------------------------
+    # ------------------------- Aggregated method -------------------------
     #
-    # The variable assets_decommission_simple_method is defined for (a, my)
+    # The variable assets_decommission_aggregated_vintage_method is defined for (a, my)
     # The capacity expression that we need to compute is
     #
     #   profile_times_capacity[a, my] = agg(
@@ -64,9 +64,9 @@ function create_multi_year_expressions!(connection, model, variables, expression
 
     _create_multi_year_expressions_indices!(connection, expressions)
 
-    # - Semi-compact and compact method
-    # - Note this expression is used for both compact and semi-compact investment methods
-    let table_name = :available_asset_units_compact_method, expr = expressions[table_name]
+    # - compact_profiles and compact_efficiencies method
+    # - Note this expression is used for both compact_profiles and compact_efficiencies investment methods
+    let table_name = :available_asset_units_compact_vintage_method, expr = expressions[table_name]
         var_inv = variables[:assets_investment].container
         var_dec = variables[:assets_decommission].container
 
@@ -96,8 +96,10 @@ function create_multi_year_expressions!(connection, model, variables, expression
         )
     end
 
-    # - Simple method (including none)
-    let table_name = :available_asset_units_simple_method, expr = expressions[table_name]
+    # - Aggregated method
+    let table_name = :available_asset_units_aggregated_vintage_method,
+        expr = expressions[table_name]
+
         var_inv = variables[:assets_investment].container
         var_dec = variables[:assets_decommission].container
 
@@ -131,8 +133,10 @@ function create_multi_year_expressions!(connection, model, variables, expression
         )
     end
 
-    # - Simple method (including none)
-    let table_name = :available_energy_units_simple_method, expr = expressions[table_name]
+    # - Aggregated method
+    let table_name = :available_energy_units_aggregated_vintage_method,
+        expr = expressions[table_name]
+
         var_energy_inv = variables[:assets_investment_energy].container
         var_energy_dec = variables[:assets_decommission_energy].container
 
@@ -168,8 +172,8 @@ function create_multi_year_expressions!(connection, model, variables, expression
         )
     end
 
-    # - Simple method (including none)
-    let table_name = :available_flow_units_simple_method, expr = expressions[table_name]
+    # - Aggregated method
+    let table_name = :available_flow_units_aggregated_vintage_method, expr = expressions[table_name]
         var_inv = variables[:flows_investment].container
         var_dec = variables[:flows_decommission].container
 
@@ -239,7 +243,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_asset_units_compact_method AS
+        CREATE OR REPLACE TABLE expr_available_asset_units_compact_vintage_method AS
         -- use a CTE here because we want to add ids after the group by
         -- the order is needed by the test, but not by the constraints
         WITH grouped_data AS (
@@ -265,7 +269,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
                 ON asset_both.asset = var_inv.asset
                 AND asset_both.commission_year = var_inv.milestone_year
             WHERE
-                asset.investment_method in ('compact', 'semi-compact')
+                asset.vintage_method in ('compact_profiles', 'compact_efficiencies')
                 -- Consumer assets do not use this expression, so we can filter them out to be more explicit
                 AND asset.type in ('producer', 'conversion', 'storage')
             GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
@@ -282,7 +286,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_asset_units_simple_method AS
+        CREATE OR REPLACE TABLE expr_available_asset_units_aggregated_vintage_method AS
         SELECT
             nextval('id') AS id,
             asset_both.asset AS asset,
@@ -302,8 +306,9 @@ function _create_multi_year_expressions_indices!(connection, expressions)
             AND asset_both.milestone_year >= var_inv.milestone_year
             AND var_inv.milestone_year + asset.technical_lifetime - 1 >= asset_both.milestone_year
         WHERE
-            asset.investment_method in ('simple', 'none')
-            -- Consumer assets do not use this expression, so we can filter them out to be more explicit
+            asset.vintage_method = 'aggregated'
+            -- Consumer assets are included because of the workaround for the bids using consumers
+            -- see https://tulipaenergy.github.io/TulipaEnergyModel.jl/dev/10-tutorials/40-bids-workaround/
             AND asset.type in ('producer', 'conversion', 'storage', 'consumer')
         GROUP BY asset_both.asset, asset_both.milestone_year, asset_both.commission_year
         ",
@@ -313,7 +318,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_energy_units_simple_method AS
+        CREATE OR REPLACE TABLE expr_available_energy_units_aggregated_vintage_method AS
         SELECT
             nextval('id') AS id,
             asset_both.asset AS asset,
@@ -342,7 +347,7 @@ function _create_multi_year_expressions_indices!(connection, expressions)
         connection,
         "
         CREATE OR REPLACE TEMP SEQUENCE id START 1;
-        CREATE OR REPLACE TABLE expr_available_flow_units_simple_method AS
+        CREATE OR REPLACE TABLE expr_available_flow_units_aggregated_vintage_method AS
         SELECT
             nextval('id') AS id,
             flow_both.from_asset AS from_asset,
@@ -371,10 +376,10 @@ function _create_multi_year_expressions_indices!(connection, expressions)
     )
 
     for expr_name in (
-        :available_asset_units_compact_method,
-        :available_asset_units_simple_method,
-        :available_energy_units_simple_method,
-        :available_flow_units_simple_method,
+        :available_asset_units_compact_vintage_method,
+        :available_asset_units_aggregated_vintage_method,
+        :available_energy_units_aggregated_vintage_method,
+        :available_flow_units_aggregated_vintage_method,
     )
         expressions[expr_name] = TulipaExpression(connection, "expr_$expr_name")
     end

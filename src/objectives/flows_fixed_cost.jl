@@ -1,5 +1,6 @@
 function _add_flows_fixed_cost!(connection, model, expressions, objective_expr, lambda)
-    expr_available_flow_units_simple_method = expressions[:available_flow_units_simple_method]
+    expr_available_flow_units_aggregated_vintage_method =
+        expressions[:available_flow_units_aggregated_vintage_method]
 
     indices = DuckDB.query(
         connection,
@@ -9,7 +10,7 @@ function _add_flows_fixed_cost!(connection, model, expressions, objective_expr, 
                 * flow_commission.fixed_cost / 2
                 * obj.capacity
                 AS cost,
-        FROM expr_available_flow_units_simple_method AS expr
+        FROM expr_available_flow_units_aggregated_vintage_method AS expr
         LEFT JOIN flow_commission
             ON expr.from_asset = flow_commission.from_asset
             AND expr.to_asset = flow_commission.to_asset
@@ -29,8 +30,8 @@ function _add_flows_fixed_cost!(connection, model, expressions, objective_expr, 
             row.cost * (avail_export_unit + avail_import_unit) for
             (row, avail_export_unit, avail_import_unit) in zip(
                 indices,
-                expr_available_flow_units_simple_method.expressions[:export],
-                expr_available_flow_units_simple_method.expressions[:import],
+                expr_available_flow_units_aggregated_vintage_method.expressions[:export],
+                expr_available_flow_units_aggregated_vintage_method.expressions[:import],
             )
         )
     )

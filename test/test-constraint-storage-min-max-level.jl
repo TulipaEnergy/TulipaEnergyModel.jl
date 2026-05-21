@@ -14,7 +14,7 @@
         capacity_storage_energy::Float64 = 47.0
         energy_to_power_ratio::Float64 = 7.0
         investable::Bool = true
-        investment_method::String = "simple"
+        vintage_method::String = "aggregated"
         max_storage_level_profile::Dict{Tuple{Int,Int},Vector{Float64}} =
             Dict((2030, 1) => [0.8, 0.5, 1.0])
         min_storage_level_profile::Dict{Tuple{Int,Int},Vector{Float64}} =
@@ -49,7 +49,7 @@
             storage_method_energy = storage_asset.storage_method_energy,
             energy_to_power_ratio = storage_asset.energy_to_power_ratio,
             investable = storage_asset.investable,
-            investment_method = storage_asset.investment_method,
+            vintage_method = storage_asset.vintage_method,
         )
         TB.add_flow!(tulipa, "consumer", storage_asset.name)
         TB.add_flow!(tulipa, storage_asset.name, "consumer")
@@ -184,7 +184,6 @@ end
         is_seasonal = false,
         storage_method_energy = "none",
         investable = false,
-        investment_method = "none",
     )
 
     # clustering parameters
@@ -412,7 +411,6 @@ end
         is_seasonal = true,
         storage_method_energy = "none",
         investable = false,
-        investment_method = "none",
         max_storage_level_profile = Dict((2030, 1) => [0.8, 0.4, 1.0]),
         min_storage_level_profile = Dict((2030, 1) => [0.2, 0.3, 0.0]),
     )

@@ -1,12 +1,12 @@
-@testset "Test add_capacity_outgoing_semi_compact_method_constraints!" begin
+@testset "Test add_capacity_outgoing_compact_efficiencies_vintage_method_constraints!" begin
     # Setup a temporary DuckDB connection and model
     connection = _multi_year_fixture()
-    # Set the investment method to 'semi-compact' for wind
+    # Set the investment method to 'compact_efficiencies' for wind
     # Add another flow wind-battery so now wind has two outgoing flows: wind-battery and wind-demand
     DuckDB.query(
         connection,
         """
-        UPDATE asset SET investment_method = 'semi-compact' WHERE asset = 'wind';
+        UPDATE asset SET vintage_method = 'compact_efficiencies' WHERE asset = 'wind';
         INSERT INTO flow VALUES
             ('wind', 'battery', 'electricity', false, 0.0, 10, 1, 0.02, false);
         INSERT INTO flow_milestone VALUES
@@ -108,10 +108,10 @@
     expressions = Dict{Symbol,TulipaEnergyModel.TulipaExpression}()
     TulipaEnergyModel.create_multi_year_expressions!(connection, model, variables, expressions)
     expr_avail_compact_method =
-        expressions[:available_asset_units_compact_method].expressions[:assets]
+        expressions[:available_asset_units_compact_vintage_method].expressions[:assets]
 
     # Create constraint
-    table_name = "cons_capacity_outgoing_semi_compact_method"
+    table_name = "cons_capacity_outgoing_compact_efficiencies_vintage_method"
     table_rows = [
         (1, "wind", 2030, 2020, 1, 1, 1),
         (2, "wind", 2030, 2030, 1, 1, 1),
@@ -128,7 +128,7 @@
         :time_block_end,
     ]
     _create_table_for_tests(connection, table_name, table_rows, columns)
-    constraints = let key = :capacity_outgoing_semi_compact_method
+    constraints = let key = :capacity_outgoing_compact_efficiencies_vintage_method
         Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(
             key => TulipaEnergyModel.TulipaConstraint(connection, "cons_$key"),
         )
@@ -145,7 +145,7 @@
     # Note in the original code, this is done by `add_expression_terms_rep_period_constraints!`
     # which will be tested separately.
     TulipaEnergyModel.attach_expression!(
-        constraints[:capacity_outgoing_semi_compact_method],
+        constraints[:capacity_outgoing_compact_efficiencies_vintage_method],
         :outgoing,
         [
             JuMP.@expression(
@@ -155,14 +155,15 @@
         ],
     )
     # Create JuMP constraints
-    TulipaEnergyModel.add_capacity_outgoing_semi_compact_method_constraints!(
+    TulipaEnergyModel.add_capacity_outgoing_compact_efficiencies_vintage_method_constraints!(
         connection,
         model,
         expr_avail_compact_method,
         constraints,
         profiles,
     )
-    observed_cons = _get_cons_object(model, :max_output_flows_limit_semi_compact_method)
+    observed_cons =
+        _get_cons_object(model, :max_output_flows_limit_compact_efficiencies_vintage_method)
 
     expected_profiles = [
         profiles.rep_period[("availability-wind2020", 2030, 1)][1],

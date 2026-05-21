@@ -29,7 +29,7 @@ for (filename, cols) in (
             "asset",
             "type",
             "capacity",
-            "investment_method",
+            "vintage_method",
             "investment_integer",
             "technical_lifetime",
             "discount_rate",

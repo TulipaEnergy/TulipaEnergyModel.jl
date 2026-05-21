@@ -43,8 +43,8 @@ function validate_data!(connection)
             false,
         ),
         (
-            "data consistency for simple investment",
-            _validate_simple_method_data_consistency!,
+            "data consistency for aggregated vintage method",
+            _validate_aggregated_vintage_method_data_consistency!,
             false,
         ),
         (
@@ -54,8 +54,8 @@ function validate_data!(connection)
         ),
         ("check DC OPF data", _validate_dc_opf_data!, false),
         (
-            "consistency between asset types and investment methods",
-            _validate_certain_asset_types_can_only_have_none_investment_methods!,
+            "consumer assets use the aggregated vintage method",
+            _validate_consumer_uses_aggregated_vintage_method!,
             false,
         ),
         (
@@ -228,7 +228,7 @@ end
 
 function _validate_flow_both_table_does_not_contain_non_transport_flows!(error_messages, connection)
     # In principle, we should also check all transport flows are covered.
-    # But that is tested elsewhere, i.e., in _validate_simple_method_data_consistency!()
+    # But that is tested elsewhere, i.e., in _validate_aggregated_vintage_method_data_consistency!()
     for row in DuckDB.query(
         connection,
         "SELECT flow_both.from_asset, flow_both.to_asset, flow_both.milestone_year, flow_both.commission_year
@@ -369,30 +369,30 @@ function _validate_stochastic_scenario_probabilities_sum_to_one!(
     return error_messages
 end
 
-function _validate_simple_method_data_consistency!(error_messages, connection)
-    _validate_simple_method_has_only_matching_years!(error_messages, connection)
-    _validate_simple_method_all_milestone_years_are_covered!(error_messages, connection)
+function _validate_aggregated_vintage_method_data_consistency!(error_messages, connection)
+    _validate_aggregated_vintage_method_has_only_matching_years!(error_messages, connection)
+    _validate_aggregated_vintage_method_all_milestone_years_are_covered!(error_messages, connection)
 
     return error_messages
 end
 
-function _validate_simple_method_has_only_matching_years!(error_messages, connection)
+function _validate_aggregated_vintage_method_has_only_matching_years!(error_messages, connection)
     # Validate that the data should have milestone year = commission year
     # Error otherwise and point out the unmatched rows
     # - For assets
     for row in DuckDB.query(
         connection,
-        "SELECT asset.asset, asset_both.milestone_year, asset_both.commission_year, asset.investment_method
+        "SELECT asset.asset, asset_both.milestone_year, asset_both.commission_year, asset.vintage_method
         FROM asset_both
         LEFT JOIN asset
             ON asset.asset = asset_both.asset
         WHERE asset_both.milestone_year != asset_both.commission_year
-            AND asset.investment_method in ('simple', 'none')
+            AND asset.vintage_method = 'aggregated'
         ",
     )
         push!(
             error_messages,
-            "Unexpected (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'asset_both' for an asset='$(row.asset)' with investment_method='$(row.investment_method)'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+            "Unexpected (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'asset_both' for an asset='$(row.asset)' with vintage_method='$(row.vintage_method)'. For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -410,20 +410,23 @@ function _validate_simple_method_has_only_matching_years!(error_messages, connec
     )
         push!(
             error_messages,
-            "Unexpected (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' for an flow=('$(row.from_asset)', '$(row.to_asset)') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+            "Unexpected (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.commission_year)) in 'flow_both' for an flow=('$(row.from_asset)', '$(row.to_asset)') with default vintage_method='aggregated'. For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
         )
     end
 
     return error_messages
 end
 
-function _validate_simple_method_all_milestone_years_are_covered!(error_messages, connection)
+function _validate_aggregated_vintage_method_all_milestone_years_are_covered!(
+    error_messages,
+    connection,
+)
     # Validate that the data contains all milestone years where milestone year = commission year
     # Error otherwise and point out the missing milestone years
     # - For assets
     for row in DuckDB.query(
         connection,
-        "SELECT asset_milestone.asset, asset_milestone.milestone_year, asset.investment_method
+        "SELECT asset_milestone.asset, asset_milestone.milestone_year, asset.vintage_method
         FROM asset_milestone
         LEFT JOIN asset
             ON asset_milestone.asset = asset.asset
@@ -432,12 +435,12 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
             AND asset_milestone.milestone_year = asset_both.milestone_year
             AND asset_milestone.milestone_year = asset_both.commission_year
         WHERE asset_both.commission_year IS NULL
-            AND asset.investment_method in ('simple', 'none')
+            AND asset.vintage_method = 'aggregated'
         ",
     )
         push!(
             error_messages,
-            "Missing information in 'asset_both': Asset '$(row.asset)' has investment_method='$(row.investment_method)' but there is no row (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
+            "Missing information in 'asset_both': Asset '$(row.asset)' has vintage_method='$(row.vintage_method)' but there is no row (asset='$(row.asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -460,7 +463,7 @@ function _validate_simple_method_all_milestone_years_are_covered!(error_messages
     )
         push!(
             error_messages,
-            "Missing information in 'flow_both': Flow ('$(row.from_asset)', '$(row.to_asset)') currently only has investment_method='simple/none' but there is no row (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+            "Missing information in 'flow_both': Flow ('$(row.from_asset)', '$(row.to_asset)') currently only has vintage_method='aggregated' but there is no row (from_asset='$(row.from_asset)', to_asset='$(row.to_asset)', milestone_year=$(row.milestone_year), commission_year=$(row.milestone_year)). For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
         )
     end
 
@@ -537,21 +540,18 @@ function _validate_dc_opf_only_apply_to_non_investable_transport_flows!(error_me
     return error_messages
 end
 
-function _validate_certain_asset_types_can_only_have_none_investment_methods!(
-    error_messages,
-    connection,
-)
+function _validate_consumer_uses_aggregated_vintage_method!(error_messages, connection)
     for row in DuckDB.query(
         connection,
-        "SELECT asset.asset, asset.investment_method, asset.type
+        "SELECT asset.asset, asset.vintage_method, asset.type
         FROM asset
-        WHERE asset.investment_method != 'none'
+        WHERE asset.vintage_method != 'aggregated'
             AND asset.type in ('consumer')
         ",
     )
         push!(
             error_messages,
-            "Incorrect use of investment method '$(row.investment_method)' for asset '$(row.asset)' of type '$(row.type)'. Consumer assets can only have 'none' investment method.",
+            "Incorrect use of vintage method '$(row.vintage_method)' for asset '$(row.asset)' of type '$(row.type)'. Consumer assets can only have 'aggregated' vintage method.",
         )
     end
 
@@ -604,7 +604,7 @@ function _validate_flow_commission_and_asset_both_consistency!(error_messages, c
             AND asset_both.commission_year = flow_commission.commission_year
         LEFT JOIN asset
             ON asset_both.asset = asset.asset
-        WHERE asset.investment_method = 'semi-compact'
+        WHERE asset.vintage_method = 'compact_efficiencies'
             AND flow_commission.commission_year IS NULL
         ",
     )
@@ -623,7 +623,7 @@ function _validate_flow_commission_and_asset_both_consistency!(error_messages, c
             AND flow_commission.commission_year = asset_both.commission_year
         LEFT JOIN asset
             ON flow_commission.from_asset = asset.asset
-        WHERE asset.investment_method = 'semi-compact'
+        WHERE asset.vintage_method = 'compact_efficiencies'
             AND asset_both.commission_year IS NULL
         ",
     )
@@ -652,9 +652,8 @@ function _validate_bid_related_data!(error_messages, connection)
     verify the necessary conditions for a bid to be defined correctly:
 
     - asset.type = 'consumer'
-    - asset.unit_commitment = true
+    - asset.unit_commitment = 'basic'
     - asset.unit_commitment_integer = true
-    - asset.unit_commitment_method = 'basic'
     - asset.consumer_balance_sense = '=='
     - asset.capacity = 1.0
     - asset_both.initial_units = 1.0
@@ -698,7 +697,6 @@ function _validate_bid_related_data!(error_messages, connection)
             asset.type,
             asset.unit_commitment,
             asset.unit_commitment_integer,
-            asset.unit_commitment_method,
             asset.consumer_balance_sense,
             asset.capacity,
             asset_both.initial_units,
@@ -727,7 +725,7 @@ function _validate_bid_related_data!(error_messages, connection)
 
     Gets the assets that satisfy the first sufficient condition that implies
     that this asset represents a bid: It has asset.type = 'consumer' and
-    asset.unit_commitment is true.
+    asset.unit_commitment is 'basic'.
     """
     function get_consumers_with_unit_commitment(connection)
         return Dict(
@@ -737,7 +735,7 @@ function _validate_bid_related_data!(error_messages, connection)
                 SELECT
                     asset, type, unit_commitment, consumer_balance_sense, capacity
                 FROM asset
-                WHERE asset.type = 'consumer' AND unit_commitment
+                WHERE asset.type = 'consumer' AND unit_commitment = 'basic'
                 """,
             )
         )
@@ -829,7 +827,6 @@ function _validate_bid_related_data!(error_messages, connection)
             type,
             unit_commitment,
             unit_commitment_integer,
-            unit_commitment_method,
             consumer_balance_sense,
             capacity,
             initial_units,
@@ -839,17 +836,14 @@ function _validate_bid_related_data!(error_messages, connection)
             has_demand_profile,
             has_wrong_asset_partition = bid_data[asset]
 
-            if !(type == "consumer" && unit_commitment)
+            if !(type == "consumer" && unit_commitment == "basic")
                 push!(
                     error_messages,
-                    "$prefix_msg have asset.type = 'consumer' and asset.unit_commitment = true",
+                    "$prefix_msg have asset.type = 'consumer' and asset.unit_commitment = 'basic'",
                 )
             end
             if !unit_commitment_integer
                 push!(error_messages, "$prefix_msg have asset.unit_commitment_integer = true")
-            end
-            if unit_commitment_method != "basic"
-                push!(error_messages, "$prefix_msg have asset.unit_commitment_method = \"basic\"")
             end
             if consumer_balance_sense != "=="
                 push!(

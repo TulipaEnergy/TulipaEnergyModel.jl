@@ -37,6 +37,8 @@ function add_scenario_tail_excess_expressions!(connection, model, variables, exp
             :assets_investment_cost,
             :assets_fixed_cost_compact_method,
             :assets_fixed_cost_simple_method,
+            :assets_fixed_cost_compact_vintage_method,
+            :assets_fixed_cost_aggregated_vintage_method,
             :storage_assets_energy_investment_cost,
             :storage_assets_energy_fixed_cost,
             :flows_investment_cost,

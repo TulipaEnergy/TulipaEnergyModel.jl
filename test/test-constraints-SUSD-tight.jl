@@ -9,18 +9,11 @@ using JuMP
     # This first table is only necessary because we have a left join of var_flow with the asset table
     table_name = "asset"
     table_rows = [
-        ("input_1", "simple", true, "3var-0", "conversion", 15),
-        ("input_2", "compact", true, "3var-0", "conversion", 15),
-        ("death_star", "simple", true, "3var-0", "conversion", 15),
+        ("input_1", "aggregated", "3var-0", "conversion", 15),
+        ("input_2", "compact_profiles", "3var-0", "conversion", 15),
+        ("death_star", "aggregated", "3var-0", "conversion", 15),
     ]
-    columns = [
-        :asset,
-        :investment_method,
-        :unit_commitment,
-        :unit_commitment_method,
-        :type,
-        :technical_lifetime,
-    ]
+    columns = [:asset, :vintage_method, :unit_commitment, :type, :technical_lifetime]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "var_units_on"
@@ -105,7 +98,7 @@ using JuMP
     columns = [:id, :asset, :milestone_year, :rep_period, :time_block_start, :time_block_end]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
-    table_name = "cons_shut_down_upper_bound_simple_investment"
+    table_name = "cons_shut_down_upper_bound_aggregated_vintage_method"
     table_rows = [
         (1, "input_1", 2050, 1, 1, 2),
         (2, "input_1", 2050, 1, 4, 4),
@@ -115,7 +108,7 @@ using JuMP
     columns = [:id, :asset, :milestone_year, :rep_period, :time_block_start, :time_block_end]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
-    table_name = "cons_shut_down_upper_bound_compact_investment"
+    table_name = "cons_shut_down_upper_bound_compact_vintage_method"
     table_rows = [(3, "input_2", 2050, 1, 1, 2), (4, "input_2", 2050, 1, 4, 4)]
     columns = [:id, :asset, :milestone_year, :rep_period, :time_block_start, :time_block_end]
     _create_table_for_tests(connection, table_name, table_rows, columns)
@@ -135,13 +128,13 @@ using JuMP
     constraints = Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(
         key => TulipaEnergyModel.TulipaConstraint(connection, "cons_$key") for key in (
             :start_up_upper_bound,
-            :shut_down_upper_bound_simple_investment,
-            :shut_down_upper_bound_compact_investment,
+            :shut_down_upper_bound_aggregated_vintage_method,
+            :shut_down_upper_bound_compact_vintage_method,
             :unit_commitment_logic,
         )
     )
 
-    table_name = "expr_available_asset_units_simple_method"
+    table_name = "expr_available_asset_units_aggregated_vintage_method"
     table_rows = [(1, "input_1", 2050, 2050, 1, 1, 1), (2, "death_star", 2050, 2050, 1, 2, 2)]
     columns = [
         :id,
@@ -154,7 +147,7 @@ using JuMP
     ]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
-    table_name = "expr_available_asset_units_compact_method"
+    table_name = "expr_available_asset_units_compact_vintage_method"
     table_rows = [(1, "input_2", 2050, 2050, 1, 3, 3)]
     columns = [
         :id,
@@ -168,18 +161,20 @@ using JuMP
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     expressions = Dict{Symbol,TulipaEnergyModel.TulipaExpression}(
-        key => TulipaEnergyModel.TulipaExpression(connection, "expr_$key") for
-        key in (:available_asset_units_simple_method, :available_asset_units_compact_method)
+        key => TulipaEnergyModel.TulipaExpression(connection, "expr_$key") for key in (
+            :available_asset_units_aggregated_vintage_method,
+            :available_asset_units_compact_vintage_method,
+        )
     )
 
-    expressions[:available_asset_units_simple_method].expressions[:assets] = [
+    expressions[:available_asset_units_aggregated_vintage_method].expressions[:assets] = [
         JuMP.@expression(model, 1),
         JuMP.@expression(model, 1),
         JuMP.@expression(model, 1),
         JuMP.@expression(model, 1)
     ]
 
-    expressions[:available_asset_units_compact_method].expressions[:assets] =
+    expressions[:available_asset_units_compact_vintage_method].expressions[:assets] =
         [JuMP.@expression(model, 1), JuMP.@expression(model, 1)]
 
     TulipaEnergyModel.add_start_up_upper_bound_constraints!(
@@ -229,14 +224,14 @@ using JuMP
         JuMP.@build_constraint(var_shut_down[5] <= 1 - var_units_on[5]),
         JuMP.@build_constraint(var_shut_down[6] <= 1 - var_units_on[6]),
     ]
-    observed_cons = _get_cons_object(model, :shut_down_upper_bound_simple_investment)
+    observed_cons = _get_cons_object(model, :shut_down_upper_bound_aggregated_vintage_method)
     @test _is_constraint_equal(expected_cons, observed_cons)
 
     expected_cons = [
         JuMP.@build_constraint(var_shut_down[3] <= 1 - var_units_on[3]),
         JuMP.@build_constraint(var_shut_down[4] <= 1 - var_units_on[4]),
     ]
-    observed_cons = _get_cons_object(model, :shut_down_upper_bound_compact_investment)
+    observed_cons = _get_cons_object(model, :shut_down_upper_bound_compact_vintage_method)
     @test _is_constraint_equal(expected_cons, observed_cons)
 
     JuMP.@variable(model, dummy)

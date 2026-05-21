@@ -11,6 +11,7 @@
         investable::Bool = true
         decommissionable::Bool = true
         investment_method::String = "simple"
+        vintage_method::String = "aggregated"
         fixed_cost::Float64 = 1.7
         investment_cost::Float64 = 13.0
         operational_cost::Float64 = 0.19
@@ -44,6 +45,7 @@
             investable = config.investable,
             decommissionable = config.decommissionable,
             investment_method = config.investment_method,
+            vintage_method = config.vintage_method,
             fixed_cost = config.fixed_cost,
             investment_cost = config.investment_cost,
         )
@@ -209,6 +211,8 @@ end
         :assets_investment_cost,
         :assets_fixed_cost_compact_method,
         :assets_fixed_cost_simple_method,
+        :assets_fixed_cost_compact_vintage_method,
+        :assets_fixed_cost_aggregated_vintage_method,
         :storage_assets_energy_investment_cost,
         :storage_assets_energy_fixed_cost,
         :flows_investment_cost,

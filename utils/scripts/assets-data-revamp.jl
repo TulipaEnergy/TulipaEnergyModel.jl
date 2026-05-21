@@ -23,7 +23,7 @@ run(`git restore test/inputs/ benchmark/EU/`)
     group
     capacity
     min_operating_point -> ANY FROM assets_data
-    investment_method
+    vintage_method
     technical_lifetime
     economic_lifetime
     discount_rate
@@ -32,7 +32,6 @@ run(`git restore test/inputs/ benchmark/EU/`)
     is_seasonal -> ANY FROM assets_data
     use_binary_storage_method -> ANY FROM assets_data
     unit_commitment -> ANY FROM assets_data
-    unit_commitment_method -> ANY FROM assets_data
     unit_commitment_integer -> ANY FROM assets_data
     ramping -> ANY FROM assets_data
 =#
@@ -53,7 +52,7 @@ apply_to_files_named("asset.csv"; include_missing = true) do path
                     ANY_VALUE(gad.investment_group) AS investment_group,
                     ANY_VALUE(gad.capacity) AS capacity,
                     ANY_VALUE(ad.min_operating_point) AS min_operating_point,
-                    ANY_VALUE(investment_method) AS investment_method,
+                    ANY_VALUE(vintage_method) AS vintage_method,
                     ANY_VALUE(investment_integer) AS investment_integer,
                     ANY_VALUE(technical_lifetime) AS technical_lifetime,
                     ANY_VALUE(economic_lifetime) AS economic_lifetime,
@@ -63,7 +62,6 @@ apply_to_files_named("asset.csv"; include_missing = true) do path
                     ANY_VALUE(is_seasonal) AS is_seasonal,
                     ANY_VALUE(use_binary_storage_method) AS use_binary_storage_method,
                     ANY_VALUE(unit_commitment) AS unit_commitment,
-                    ANY_VALUE(unit_commitment_method) AS unit_commitment_method,
                     ANY_VALUE(unit_commitment_integer) AS unit_commitment_integer,
                     ANY_VALUE(ramping) AS ramping,
                     ANY_VALUE(storage_method_energy) AS storage_method_energy,

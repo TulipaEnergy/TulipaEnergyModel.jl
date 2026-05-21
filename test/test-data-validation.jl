@@ -90,14 +90,10 @@ end
     [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
     # Change the table to force an error
-    DuckDB.query(
-        connection,
-        "UPDATE asset SET unit_commitment_method = 'bad' WHERE asset = 'demand'",
-    )
+    DuckDB.query(connection, "UPDATE asset SET unit_commitment = 'bad' WHERE asset = 'demand'")
     @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
     error_messages = TEM._validate_schema_one_of_constraints!(String[], connection)
-    @test error_messages ==
-          ["Table 'asset' has bad value for column 'unit_commitment_method': 'bad'"]
+    @test error_messages == ["Table 'asset' has bad value for column 'unit_commitment': 'bad'"]
 end
 
 @testitem "Test schema oneOf constraints - bad specification" setup = [CommonSetup] tags =
@@ -365,13 +361,13 @@ end
     ])
 end
 
-@testitem "Test simple investment method has only matching years - using fake data" setup =
+@testitem "Test aggregated vintage method has only matching years - using fake data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     # For asset and flow
     # Validate have only matching years
     # Error otherwise and point out the unmatched rows
     connection = DBInterface.connect(DuckDB.DB)
-    asset = DataFrame(:asset => ["A1", "A2"], :investment_method => ["simple", "none"])
+    asset = DataFrame(:asset => ["A1", "A2"], :vintage_method => ["aggregated", "aggregated"])
     asset_both = DataFrame(
         :asset => ["A1", "A1", "A2", "A2"],
         :milestone_year => [1, 1, 1, 1],
@@ -394,21 +390,22 @@ end
     DuckDB.register_data_frame(connection, flow, "flow")
     DuckDB.register_data_frame(connection, flow_both, "flow_both")
 
-    error_messages = TEM._validate_simple_method_has_only_matching_years!(String[], connection)
+    error_messages =
+        TEM._validate_aggregated_vintage_method_has_only_matching_years!(String[], connection)
     @test error_messages == [
-        "Unexpected (asset='A1', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A1' with investment_method='simple'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Unexpected (asset='A2', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A2' with investment_method='none'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Unexpected (from_asset='A2', to_asset='B', milestone_year=1, commission_year=0) in 'flow_both' for an flow=('A2', 'B') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Unexpected (asset='A1', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A1' with vintage_method='aggregated'. For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Unexpected (asset='A2', milestone_year=1, commission_year=0) in 'asset_both' for an asset='A2' with vintage_method='aggregated'. For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Unexpected (from_asset='A2', to_asset='B', milestone_year=1, commission_year=0) in 'flow_both' for an flow=('A2', 'B') with default vintage_method='aggregated'. For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
-@testitem "Test simple investment method all milestone years covered - using fake data" setup =
+@testitem "Test aggregated vintage method all milestone years covered - using fake data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     # For asset and flow
     # Validate that the data contains all milestone years where milestone year = commission year
     # Error otherwise and point out the missing milestone years
     connection = DBInterface.connect(DuckDB.DB)
-    asset = DataFrame(:asset => ["A1", "A2"], :investment_method => ["simple", "none"])
+    asset = DataFrame(:asset => ["A1", "A2"], :vintage_method => ["aggregated", "aggregated"])
     asset_milestone = DataFrame(:asset => ["A1", "A2"], :milestone_year => [1, 1])
     asset_both =
         DataFrame(:asset => ["A1", "A2"], :milestone_year => [1, 1], :commission_year => [0, 0])
@@ -432,17 +429,19 @@ end
     DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
     DuckDB.register_data_frame(connection, flow_both, "flow_both")
 
-    error_messages =
-        TEM._validate_simple_method_all_milestone_years_are_covered!(String[], connection)
+    error_messages = TEM._validate_aggregated_vintage_method_all_milestone_years_are_covered!(
+        String[],
+        connection,
+    )
 
     @test error_messages == [
-        "Missing information in 'asset_both': Asset 'A1' has investment_method='simple' but there is no row (asset='A1', milestone_year=1, commission_year=1). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Missing information in 'asset_both': Asset 'A2' has investment_method='none' but there is no row (asset='A2', milestone_year=1, commission_year=1). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Missing information in 'flow_both': Flow ('A2', 'B') currently only has investment_method='simple/none' but there is no row (from_asset='A2', to_asset='B', milestone_year=1, commission_year=1). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Missing information in 'asset_both': Asset 'A1' has vintage_method='aggregated' but there is no row (asset='A1', milestone_year=1, commission_year=1). For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Missing information in 'asset_both': Asset 'A2' has vintage_method='aggregated' but there is no row (asset='A2', milestone_year=1, commission_year=1). For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Missing information in 'flow_both': Flow ('A2', 'B') currently only has vintage_method='aggregated' but there is no row (from_asset='A2', to_asset='B', milestone_year=1, commission_year=1). For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
-@testitem "Test simple investment method has only matching years - using Tiny data" setup =
+@testitem "Test aggregated vintage method has only matching years - using Tiny data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     # For asset and flow
     # Validate have only matching years
@@ -458,14 +457,15 @@ end
         VALUES ('wind', 'demand', 2030, 2029);
         """,
     )
-    error_messages = TEM._validate_simple_method_has_only_matching_years!(String[], connection)
+    error_messages =
+        TEM._validate_aggregated_vintage_method_has_only_matching_years!(String[], connection)
     @test error_messages == [
-        "Unexpected (asset='ccgt', milestone_year=2030, commission_year=2029) in 'asset_both' for an asset='ccgt' with investment_method='simple'. For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Unexpected (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2029) in 'flow_both' for an flow=('wind', 'demand') with default investment_method='simple/none'. For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Unexpected (asset='ccgt', milestone_year=2030, commission_year=2029) in 'asset_both' for an asset='ccgt' with vintage_method='aggregated'. For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Unexpected (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2029) in 'flow_both' for an flow=('wind', 'demand') with default vintage_method='aggregated'. For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
-@testitem "Test simple investment method all milestone years covered - using Tiny data" setup =
+@testitem "Test aggregated vintage method all milestone years covered - using Tiny data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     # For asset and flow
     # Validate that the data contains all milestone years where milestone year = commission year
@@ -479,11 +479,13 @@ end
         UPDATE flow_both SET commission_year = 2029 WHERE from_asset = 'wind' AND to_asset = 'demand' AND milestone_year = 2030;
         """,
     )
-    error_messages =
-        TEM._validate_simple_method_all_milestone_years_are_covered!(String[], connection)
+    error_messages = TEM._validate_aggregated_vintage_method_all_milestone_years_are_covered!(
+        String[],
+        connection,
+    )
     @test error_messages == [
-        "Missing information in 'asset_both': Asset 'ccgt' has investment_method='simple' but there is no row (asset='ccgt', milestone_year=2030, commission_year=2030). For this investment method, rows in 'asset_both' should have milestone_year=commission_year.",
-        "Missing information in 'flow_both': Flow ('wind', 'demand') currently only has investment_method='simple/none' but there is no row (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2030). For this investment method, rows in 'flow_both' should have milestone_year=commission_year.",
+        "Missing information in 'asset_both': Asset 'ccgt' has vintage_method='aggregated' but there is no row (asset='ccgt', milestone_year=2030, commission_year=2030). For this vintage method, rows in 'asset_both' should have milestone_year=commission_year.",
+        "Missing information in 'flow_both': Flow ('wind', 'demand') currently only has vintage_method='aggregated' but there is no row (from_asset='wind', to_asset='demand', milestone_year=2030, commission_year=2030). For this vintage method, rows in 'flow_both' should have milestone_year=commission_year.",
     ]
 end
 
@@ -611,44 +613,40 @@ end
     ]
 end
 
-@testitem "Test investment method and asset types consistency - using fake data" setup =
-    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+@testitem "Test vintage method and asset types consistency - using fake data" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
     asset = DataFrame(
-        :asset => ["A1", "A2", "A3", "A4", "A5", "A6", "A7"],
-        :type => [
-            "producer",
-            "conversion",
-            "storage",
-            "consumer",
-            "consumer",
-            "consumer",
-            "consumer",
+        :asset => ["A1", "A2", "A3", "A4", "A5", "A6"],
+        :type => ["producer", "conversion", "storage", "consumer", "consumer", "consumer"],
+        :vintage_method => [
+            "aggregated",
+            "compact_efficiencies",
+            "compact_profiles",
+            "aggregated",
+            "compact_profiles",
+            "compact_efficiencies",
         ],
-        :investment_method => ["simple", "none", "none", "simple", "compact", "none", "none"],
     )
     connection = DBInterface.connect(DuckDB.DB)
     DuckDB.register_data_frame(connection, asset, "asset")
 
-    error_messages = TEM._validate_certain_asset_types_can_only_have_none_investment_methods!(
-        String[],
-        connection,
-    )
+    error_messages = TEM._validate_consumer_uses_aggregated_vintage_method!(String[], connection)
     @test error_messages == [
-        "Incorrect use of investment method 'simple' for asset 'A4' of type 'consumer'. Consumer assets can only have 'none' investment method.",
-        "Incorrect use of investment method 'compact' for asset 'A5' of type 'consumer'. Consumer assets can only have 'none' investment method.",
+        "Incorrect use of vintage method 'compact_profiles' for asset 'A5' of type 'consumer'. Consumer assets can only have 'aggregated' vintage method.",
+        "Incorrect use of vintage method 'compact_efficiencies' for asset 'A6' of type 'consumer'. Consumer assets can only have 'aggregated' vintage method.",
     ]
 end
 
-@testitem "Test investment method and asset types consistency - using Tiny data" setup =
-    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
+@testitem "Test vintage method and asset types consistency - using Tiny data" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
-    DuckDB.query(connection, "UPDATE asset SET investment_method = 'simple' WHERE asset = 'demand'")
-    error_messages = TEM._validate_certain_asset_types_can_only_have_none_investment_methods!(
-        String[],
+    DuckDB.query(
         connection,
+        "UPDATE asset SET vintage_method = 'compact_profiles' WHERE asset = 'demand';",
     )
+    error_messages = TEM._validate_consumer_uses_aggregated_vintage_method!(String[], connection)
     @test error_messages == [
-        "Incorrect use of investment method 'simple' for asset 'demand' of type 'consumer'. Consumer assets can only have 'none' investment method.",
+        "Incorrect use of vintage method 'compact_profiles' for asset 'demand' of type 'consumer'. Consumer assets can only have 'aggregated' vintage method.",
     ]
 end
 
@@ -700,7 +698,10 @@ end
     )
     DuckDB.register_data_frame(connection, flow_commission, "flow_commission")
 
-    asset = DataFrame(:asset => ["A", "B"], :investment_method => ["semi-compact", "semi-compact"])
+    asset = DataFrame(
+        :asset => ["A", "B"],
+        :vintage_method => ["compact_efficiencies", "compact_efficiencies"],
+    )
     DuckDB.register_data_frame(connection, asset, "asset")
 
     error_messages = TEM._validate_flow_commission_and_asset_both_consistency!(String[], connection)
@@ -717,7 +718,7 @@ end
         connection,
         """
         UPDATE flow_commission SET commission_year = 0 WHERE from_asset = 'wind';
-        UPDATE asset SET investment_method = 'semi-compact' WHERE asset = 'wind';
+        UPDATE asset SET vintage_method = 'compact_efficiencies' WHERE asset = 'wind';
         """,
     )
     error_messages = TEM._validate_flow_commission_and_asset_both_consistency!(String[], connection)
@@ -824,9 +825,8 @@ end
         initial_units = 1.0,
         set_partition = true,
         type = :consumer,
-        unit_commitment = true,
+        unit_commitment = "basic",
         unit_commitment_integer = true,
-        unit_commitment_method = "basic",
     )
         profile = zeros(year_length)
         for (t, qty) in quantity
@@ -843,7 +843,6 @@ end
             peak_demand = maximum(profile),
             unit_commitment,
             unit_commitment_integer,
-            unit_commitment_method,
         )
         if set_partition
             set_partition!(tulipa, bid_name, year, 1, year_length)
@@ -932,7 +931,6 @@ end
         (:num_rep_periods => 3, 3, "only 1 representative period, but found 3"),
         (:num_years => 3, 3, "only 1 milestone_year, but found 3"),
         (:unit_commitment_integer => false, 3, "asset.unit_commitment_integer = true"),
-        (:unit_commitment_method => "", 3, "asset.unit_commitment_method = \"basic\""),
         # These are excluding cases, i.e., one of the sufficient cases won't be generated, so only 2 will error.
         (
             :add_flow_from_bid_manager => false,
@@ -941,8 +939,12 @@ end
         ),
         (:add_loop => false, 2, "a loop flow, but found none"),
         (:price => -1.0, 2, "an incoming flow with negative operational_cost, but found none"),
-        (:type => :producer, 2, "asset.type = 'consumer' and asset.unit_commitment = true"),
-        (:unit_commitment => false, 2, "asset.type = 'consumer' and asset.unit_commitment = true"),
+        (:type => :producer, 2, "asset.type = 'consumer' and asset.unit_commitment = 'basic'"),
+        (
+            :unit_commitment => "none",
+            2,
+            "asset.type = 'consumer' and asset.unit_commitment = 'basic'",
+        ),
     )
         error_messages = error_messages_for_wrong_problem(; Dict(bad_key_value_pair)...)
         @test length(error_messages) == expected_num_errors

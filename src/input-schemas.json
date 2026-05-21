@@ -71,19 +71,6 @@
       "description": "Whether investment for storage energy is integer or continuous. It only applies when `storage_method_energy = 'optimize_storage_capacity'`.",
       "type": "BOOLEAN"
     },
-    "investment_method": {
-      "constraints": {
-        "oneOf": [
-          "none",
-          "simple",
-          "semi-compact",
-          "compact"
-        ]
-      },
-      "default": "none",
-      "description": "How investments are treated.",
-      "type": "VARCHAR"
-    },
     "is_seasonal": {
       "default": false,
       "description": "Whether seasonal storage (e.g., hydro) or not (e.g., battery)",
@@ -156,26 +143,21 @@
       "type": "VARCHAR"
     },
     "unit_commitment": {
-      "default": false,
-      "description": "Whether asset has unit commitment constraints or not",
-      "type": "BOOLEAN"
+      "constraints": {
+        "oneOf": [
+          "none",
+          "basic",
+          "3var"
+        ]
+      },
+      "default": "none",
+      "description": "Which unit commitment method to use. 'none' -> no unit commitment variables or constraints are created.",
+      "type": "VARCHAR"
     },
     "unit_commitment_integer": {
       "default": false,
       "description": "Whether the unit commitment variables are integer or not.",
       "type": "BOOLEAN"
-    },
-    "unit_commitment_method": {
-      "constraints": {
-        "oneOf": [
-          null,
-          "basic",
-          "3var"
-        ]
-      },
-      "default": null,
-      "description": "Which unit commitment method to use (null/empty/missing -> no unit commitment method).",
-      "type": "VARCHAR"
     },
     "use_binary_storage_method": {
       "constraints": {
@@ -187,6 +169,18 @@
       },
       "default": null,
       "description": "Whether to use an extra binary variable for the storage assets to avoid charging and discharging simultaneously (null/empty/missing -> no binary).",
+      "type": "VARCHAR"
+    },
+    "vintage_method": {
+      "constraints": {
+        "oneOf": [
+          "aggregated",
+          "compact_efficiencies",
+          "compact_profiles"
+        ]
+      },
+      "default": "aggregated",
+      "description": "How vintage units are treated. It only applies to producer, storage, or conversion assets.",
       "type": "VARCHAR"
     }
   },

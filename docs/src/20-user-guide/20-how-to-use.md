@@ -167,6 +167,101 @@ create_model!(energy_problem; direct_model = true)
 
 For more information, see the JuMP documentation for [`direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model).
 
+## [Multi-year Investments and Vintage Modeling](@id multi-year-setup)
+
+It is possible to simultaneously model different milestone years, which is essential for modeling multi-year investment pathways. Multi-year investments refer to making investment decisions at different points in time, such that a pathway of investments can be modeled. This is particularly useful when long-term scenarios are modeled but representing each year is not practical, or when investment decisions must be made at different points in time.
+
+For conceptual background on the vintage methods and the economic representation (discounting), see the [multi-year investment modeling](@ref multi-year-investment-modeling) section in Concepts.
+
+### Setting up the input data
+
+The following steps describe how to set up a model with multi-year information. The illustrative example below uses assets, but flows follow the same idea.
+
+#### Asset basic data
+
+Fill in the parameters in the `asset.csv` file. These parameters are for the assets across all the years, i.e., not dependent on years. Examples are lifetime (both `technical_lifetime` and `economic_lifetime`) and capacity of a unit.
+
+You need to choose a `vintage_method` for the asset. The default is `aggregated`, which treats all units identically regardless of their commissioning year. Alternatively, you can choose `compact_profiles` (to use vintage-specific availability profiles) or `compact_efficiencies` (to use vintage-specific efficiencies). For a detailed explanation of these methods, see [vintage modeling](@ref vintage-modeling) in Concepts.
+
+In addition, you control whether investment and decommissioning are allowed through separate parameters:
+
+- `investable` (in `asset-milestone.csv`): whether the model can invest in new units of this asset at a given milestone year.
+- `decommissionable` (in `asset-both.csv`): whether existing or invested units can be decommissioned.
+
+Below is an overview of the important set-ups regarding the vintage methods.
+
+| Set-up                               | `vintage_method`        | `investable`    | `decommissionable` | Notes                                                                                                                                        |
+| :----------------------------------- | :---------------------- | :-------------- | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| Operation only (no investment)       | `aggregated`            | `false`         | `false`            | No investment or decommissioning occurs                                                                                                      |
+| Aggregated investment                | `aggregated`            | set per asset   | set per asset      | All units treated identically; `milestone_year = commission_year` in `asset-both.csv`                                                        |
+| Compact with vintage profiles        | `compact_profiles`      | set per asset   | set per asset      | Vintage-specific profiles; requires multiple commission years per milestone year in `asset-both.csv` and matching profiles                   |
+| Compact with vintage efficiencies    | `compact_efficiencies`  | set per asset   | set per asset      | Vintage-specific efficiencies; introduces vintage flow variables                                                                             |
+
+!!! info "Which asset types support which methods?"
+    The `compact_profiles` methods can only be applied to producer and the `compact_efficiencies` method to conversion assets. Transport, storage, and consumer assets always use the `aggregated` method. For more details on the constraints that apply when selecting these methods, see the [`mathematical formulation`](@ref formulation).
+
+#### Asset milestone year data
+
+Fill in the parameters related to the milestone year. Whether the model allows investment at a milestone year for an asset is set by the `investable` parameter in `asset-milestone.csv`. You can only invest in milestone years.
+
+#### Asset commission year data
+
+Fill in the parameters related to the commission year, e.g., investment costs and fixed costs.
+
+#### Existing capacities and decommissioning
+
+Existing capacities and decommissioning are taken care of in `asset-both.csv`:
+
+- In the `milestone_year` column, fill in all the milestone years. In the `commission_year` column, fill in the commission years of the existing assets that are still available in this `milestone_year` and put the existing units in the column `initial_units`.
+- Whether the model allows decommissioning at a `milestone_year` for an asset that has been commissioned in a `commission_year` is set by the parameter `decommissionable`.
+
+Let's explain further using an example. To do so, we take a look at the `asset-both.csv` file:
+
+```@example multi-year-setup
+using DataFrames # hide
+using CSV # hide
+input_asset_file = "../../../test/inputs/Multi-year Investments/asset-both.csv" # hide
+assets_data = CSV.read(input_asset_file, DataFrame) # hide
+assets_data = assets_data[:, [:asset, :milestone_year, :commission_year, :decommissionable, :initial_units]] # hide
+```
+
+- `battery` has 1.09 existing units in 2030 and 2.02 existing units in 2050. Both units can be decommissioned.
+- `ccgt` has 1 existing unit in 2030 and 2050. Neither can be decommissioned.
+- `demand` is a consumer, so it has no initial units and you only have data where `milestone_year = commission_year`.
+- `ens` has 1 existing unit in 2030 and 2050. Neither can be decommissioned.
+- `ocgt` has no existing units.
+- `solar` has no existing units.
+- `wind` has 0.07 existing units, commissioned in 2020, and still available in 2030 but not in 2050. Another 0.02 existing units, commissioned in 2030, available in 2030 and 2050. There are no initial units commissioned in 2050.
+
+!!! info
+    We only consider the existing units which are still available in the milestone years.
+
+#### Profiles information
+
+You can use different profiles for assets commissioned in different years, which is the power of the `compact_profiles` method. You fill in the profile names in `assets-profiles.csv` for relevant years. In `profiles-rep-periods.csv`, you relate the profile names with the modeled years.
+
+Let's explain further using an example. To do so, we can take a look at the `assets-profiles.csv` file:
+
+```@example multi-year-setup
+input_asset_file = "../../../test/inputs/Multi-year Investments/assets-profiles.csv" # hide
+assets_profiles = CSV.read(input_asset_file, DataFrame, header = 1) # hide
+assets_profiles = assets_profiles[:, :] # hide
+```
+
+We have 3 profiles for `wind` commissioned in 2020, 2030, and 2050, respectively. Imagine these are 3 wind turbines with different capacity factors due to the year of manufacture.
+
+#### Economic representation
+
+For economic representation, the following parameters need to be set up. For conceptual background, see [economic representation](@ref economic-representation) in Concepts.
+
+- [optional] `discount_year` and `discount_rate` in the `model_parameters` table (for CSV input, in `model-parameters.csv`): model-wide discount year and rate. By default, the model will use a discount rate of 0. The `discount_year` defaults to the first milestone year (or the user-provided value if it is earlier).
+- `discount_rate` in the `asset` table: technology-specific discount rate, used for annualizing investment costs and computing salvage values.
+- `economic_lifetime` in the `asset` table: used together with the technology-specific discount rate for discounting.
+
+!!! info
+    1. Since the model explicitly discounts, all input costs should be given in the nominal costs of the relevant year. For example, to model investments in 2030 and 2050, the `investment_cost` should be given in 2030 costs and 2050 costs, respectively.
+    2. For the full formulas, see the [`mathematical formulation`](@ref formulation) section.
+
 ## Activating specific constraints
 
 ### Storage constraints
@@ -211,9 +306,8 @@ For more details on the constraints that apply when selecting this method, pleas
 
 ### [Unit Commitment constraints](@id unit-commitment-setup)
 
-The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter must be set to `true` to include the constraints. Additionally, the following parameters should be set in that same file:
+The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter determines which unit commitment method to use. The current version of the code only includes the basic version. Future versions will add more detailed constraints as additional options. Additionally, the following parameters should be set in that same file:
 
-- `unit_commitment_method`: It determines which unit commitment method to use. The current version of the code only includes the basic version. Future versions will add more detailed constraints as additional options.
 - `units_on_cost`: Objective function coefficient on `units_on` variable. (e.g., no-load cost or idling cost in kEUR/h/unit)
 - `unit_commitment_integer`: It determines whether the unit commitment variables are considered as integer or not (`true` or `false`)
 - `min_operating_point`: Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset (p.u.)
@@ -318,96 +412,7 @@ group_asset_membership = CSV.read(input_file, DataFrame) # hide
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
 
 !!! info
-    The assets in the group have to allow investment (`asset_milestone.investable = true` for the corresponding year) and have some investment method (`asset.investment_method != "none"`).
-
-### [Multi-year investments](@id multi-year-setup)
-
-!!! warning "The workflow of feature is under construction"
-    This section describes the existing workflow but we are working to make it more user friendly.
-
-It is possible to simutaneously model different years, which is especially relevant for modeling multi-year investments. Multi-year investments refer to making investment decisions at different points in time, such that a pathway of investments can be modeled. This is particularly useful when long-term scenarios are modeled, but modeling each year is not practical. Or in a business case, investment decisions are supposed to be made in different years which has an impact on the cash flow.
-
-#### Filling the input data
-
-In order to set up a model with year information, the following steps are necessary. The below illustrative example uses assets, but flows follow the same idea.
-
-##### Asset basic data
-
-Fill in the parameters in the `asset.csv` file. These parameters are for the assets across all the years, i.e., not dependent on years. Examples are lifetime (both `technical_lifetime` and `economic_lifetime`) and capacity of a unit.
-
-You need to choose a `investment_method` for the asset, between `none`, `simple`, and `compact`. In addition, you also have to make it explicit on which assets you would like to invest in, by setting the `investable` parameter in `asset-milestone.csv`, and which assets you would like to decommission, by setting the `decommissionable` parameter in `asset-both.csv`. More information on `investable` and `decommissionable` are given in the next sections.
-
-Below is an overview of the important set-ups regarding the investment methods.
-
-- Operation mode: choose `none`. Set `investable` and `decommissionable` to `false` to make sure neither investments nor decommissioning occur.
-- Simple investment method: choose `simple`. Set `investable` and `decommissionable` manually. Make sure `milestone_year = commission_year` in `asset-both.csv`. Any missing or redundant rows will throw an error.
-- Compact investment method: choose `compact`. Set `investable` and `decommissionable` manually. Make sure to have more than one commission year for a milestone year in `asset-both.csv`, and the matching profiles. Otherwise the compact method will work the same as the simple method.
-
-!!! info "More about the investment methods"
-    1. The `compact` method can only be applied to producer assets and conversion assets. Transport assets and storage assets can only use `simple` or `none` method.
-    2. For more details on the constraints that apply when selecting these methods, please visit the [`mathematical formulation`](@ref formulation) section.
-
-##### Asset milestone year data
-
-Fill in the parameters related to the milestone year. Whether the model allows investment at a milestone year for an asset is set by the `investable` parameter in `asset-milestone.csv`. You can only invest in milestone years.
-
-##### Asset commission year data
-
-Fill in the parameters related to the commission year, e.g., investment costs and fixed costs.
-
-##### Existing capacities and decommissioning
-
-Existing capacities and decommissioning are taken care of in `asset-both.csv`
-
-- In the `milestone_year` column, fill in all the milestone years. In the `commission_year` column, fill in the commission years of the existing assets that are still available in this `milestone_year` and put the existing units in the column `initial_units`.
-- Whether the model allows decommissioning at a `milestone_year` for an asset that has been commissioned in a `commission_year` is set by the parameter `decommissionable`.
-
-Let's explain further using an example. To do so, we take a look at the `asset-both.csv` file:
-
-```@example multi-year-setup
-using DataFrames # hide
-using CSV # hide
-input_asset_file = "../../../test/inputs/Multi-year Investments/asset-both.csv" # hide
-assets_data = CSV.read(input_asset_file, DataFrame) # hide
-assets_data = assets_data[:, [:asset, :milestone_year, :commission_year, :decommissionable, :initial_units]] # hide
-```
-
-- `battery` has 1.09 existing units in 2030 and 2.02 existing units in 2050. Both units can be decommissioned.
-- `ccgt` has 1 existing units in 2030 and 2050. Neither can be decommissioned.
-- `demand` is a consumer, so is has no initial units and you only have data where `milestone_year = commission_year`.
-- `ens` has 1 existing units in 2030 and 2050. Neither can be decommissioned.
-- `ocgt` has no existing units.
-- `solar` has no existing units.
-- `wind` has 0.07 existing units, commissioned in 2020, and still available in 2030 but not in 2050. Another 0.02 existing units, commissioned in 2030, available in 2030 and 2050. There are no initial units commissioned in 2050.
-
-!!! info
-    We only consider the existing units which are still available in the milestone years.
-
-##### Profiles information
-
-Important to know that you can use different profiles for assets that are commissioned in different years, which is the power of the `compact` method. You fill in the profile names in `assets-profiles.csv` for relevant years. In `profiles-rep-periods.csv`, you relate the profile names with the modeled years.
-
-Let's explain further using an example. To do so, we can take a look at the `assets-profiles.csv` file:
-
-```@example multi-year-setup
-input_asset_file = "../../../test/inputs/Multi-year Investments/assets-profiles.csv" # hide
-assets_profiles = CSV.read(input_asset_file, DataFrame, header = 1) # hide
-assets_profiles = assets_profiles[:, :] # hide
-```
-
-We have 3 profiles for `wind` commissioned in 2020, 2030, and 2050, respectively. Imagine these are 3 wind turbines with different efficiencies due to the year of manufacture.
-
-#### Economic representation
-
-For economic representation, the following parameters need to be set up:
-
-- [optional] `discount_year` and `discount_rate` in the `model_parameters` table (for CSV input, in `model-parameters.csv`): model-wide discount year and rate. By default, the model will use a discount rate of 0. The `discount_year` is calculated in the code as the minimum value between the input value in the table `model_parameters` and the minimum of all milestone years (i.e. years in the `rep_periods_data` table). In other words, the costs will be discounted to the cost of the first milestone year is the user don't provide a specific value or if the input value is greater than the minimum milestone year.
-- `discount_rate`: technology-specific discount rates in the `assets` table.
-- `economic_lifetime`: used for discounting the costs in the `assets` table.
-
-!!! info
-    1. Since the model explicitly discounts, all the inputs for costs should be given in the costs of the relevant year. For example, to model investments in 2030 and 2050, the `investment_cost` should be given in 2030 costs and 2050 costs, respectively.
-    2. For more details on the formulas for economic representation, please visit the [`mathematical formulation`](@ref formulation) section.
+    The assets in the group have to allow investment (`asset_milestone.investable = true` for the corresponding year) and not be of type `consumer` (`asset.type != "consumer"`).
 
 ### [Flow Coefficient in Capacity constraints](@id coefficient-for-capacity-constraints)
 
@@ -479,9 +484,8 @@ In summary:
   - `initial_units = 1.0`
   - `peak_demand` as anything positive (`1.0` makes it easier to understand the results, `maximum(bid_block.profile)` is the common normalized way)
   - `type = :consumer`
-  - `unit_commitment = true`
+  - `unit_commitment = "basic"`
   - `unit_commitment_integer = true`
-  - `unit_commitment_method = "basic"`
 - Set the time resolution of the asset to the full length of the profile (`assets_rep_periods_partitions.partition = rep_periods_data.num_timesteps`)
 - Find an existing consumer, we'll name it "Bid Manager".
 - Connect a flow from the "Bid Manager" to "Bid", with `flow_milestone.operational_cost = -price`.
@@ -494,3 +498,98 @@ In summary:
 
 Finally, if there are exclusive groups in the bids, i.e., at most 1 bid in the same exclusive group can be accepted, then you also need to modify the underlying JuMP model.
 We need to add a constraint like $\displaystyle \sum_{i: i \in G_k} u_i \leq 1$, where $u_i$ are the unit commitment variables (i.e., the bid-acceptance variables), and $G_k$ are the exclusive groups.
+
+## [Two-Stage Stochastic Optimization](@id stochastic-setup)
+
+Tulipa formulates energy system planning as a **two-stage stochastic optimization** problem:
+
+- **First stage** (investment decisions): capacity investments are made before uncertainty is realized and are therefore **shared across all scenarios**.
+- **Second stage** (operational decisions): dispatch and storage levels are determined after the scenario is revealed and are therefore **scenario-dependent**.
+
+This structure allows the model to find investment plans that are robust against uncertainty in, for example, renewable availability, demand, or hydro inflows.
+
+!!! info
+    Without multiple scenarios (i.e., $\lvert \mathcal{S} \rvert = 1$), the model reduces to a standard deterministic planning problem.
+
+### Defining Stochastic Scenarios
+
+Scenarios are defined through the `rep_periods_mapping` table (or `rep-periods-mapping.csv` for CSV input). Each row maps an original period to a representative period for a given milestone year, with the following key columns for the stochastic feature:
+
+- `scenario`: Integer identifier for the stochastic scenario. Default is `1`, which corresponds to a single deterministic scenario.
+- `rep_period`: The representative period that this original period is mapped to under this scenario.
+- `weight`: The fraction of the original period captured by the representative period.
+
+To run with multiple stochastic scenarios, include rows with different `scenario` values in `rep_periods_mapping`. Representative periods can be organized in two ways:
+
+- **Per-scenario clustering**: each scenario has its own set of representative periods (diagonal block structure in the mapping matrix). With $\lvert \mathcal{S} \rvert$ scenarios and $K$ representative periods each, there are $\lvert \mathcal{S} \rvert \times K$ representative periods in total.
+- **Cross-scenario clustering**: representative periods are shared across scenarios (full matrix structure). With $K$ cross-scenario representative periods, there are only $K$ representative periods in total regardless of the number of scenarios.
+
+See [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl) and the Two-Stage Stochastic Optimization tutorial in the Tutorials section for guidance on how to cluster representative periods per or cross scenario.
+
+### Scenario Probabilities
+
+Scenario probabilities are stored in the `stochastic_scenario` table (or `stochastic-scenario.csv` for CSV input). Each row defines:
+
+- `scenario`: Integer identifier matching the values used in `rep_periods_mapping`.
+- `probability`: Probability of the scenario, in $[0, 1]$. Probabilities must sum to 1.
+- `description` (optional): A free-text description of the scenario (e.g., `'Weather year 1982'`). Default is an empty string.
+
+!!! info "Default probabilities"
+    If no `stochastic_scenario` table or CSV file is provided, Tulipa automatically assigns **uniform probabilities** to all scenarios found in `rep_periods_mapping`: each scenario gets a probability of $1 / \lvert \mathcal{S} \rvert$.
+
+To override the default probabilities, add a `stochastic-scenario.csv` file to your input directory. Another option is to modify the `stochastic_scenario` table in the database directly after calling [`populate_with_defaults!`](@ref):
+
+```julia
+DBInterface.execute(
+    connection,
+    """
+    UPDATE stochastic_scenario
+    SET probability = CASE
+        WHEN scenario = 1 THEN 0.7
+        WHEN scenario = 2 THEN 0.3
+    END;
+    """,
+)
+```
+
+!!! warning "Probabilities must sum to 1"
+    The model validates that all scenario probabilities sum to 1 and raises an error if they do not.
+
+For more details on the objective function and constraints for the stochastic setting, see the [`mathematical formulation`](@ref formulation) section.
+
+## [Risk-Averse Optimization with Conditional Value at Risk (CVaR)](@id cvar-setup)
+
+By default, Tulipa minimizes the **expected total system cost** across stochastic scenarios, which is the standard risk-neutral objective. When multiple stochastic scenarios are present and you want to account for risk, you can activate the **mean-CVaR** (Conditional Value at Risk) formulation. This penalizes scenarios with high costs and produces a solution that is more robust to worst-case outcomes.
+
+The mean-CVaR objective is a convex combination of the expected cost and the CVaR at confidence level $\alpha$:
+
+$$\text{minimize} \quad (1 - \lambda) \cdot \mathbb{E}[C] + \lambda \cdot \text{CVaR}_{\alpha}$$
+
+where $\lambda \in [0, 1]$ controls the trade-off between average performance and risk aversion.
+
+### Setting up CVaR
+
+To activate CVaR, set the following parameters in the `model_parameters` table (or `model-parameters.csv` for CSV input):
+
+- `risk_aversion_weight_lambda`: Risk aversion weight $\lambda \in [0, 1]$. Default is `0.0` (risk-neutral). Increasing this value shifts the objective towards minimizing risk.
+- `risk_aversion_confidence_level_alpha`: Confidence level $\alpha \in (0, 1)$ for the Value at Risk threshold. Default is `0.95`.
+
+!!! info
+    The CVaR feature is only active when **both** `risk_aversion_weight_lambda > 0` **and** there are more than one stochastic scenario ($\lvert \mathcal{S} \rvert > 1$). Otherwise, the model reduces to the standard expected cost minimization regardless of the values set.
+
+!!! tip "Choosing the parameters"
+    - `risk_aversion_weight_lambda = 0.0` gives the fully risk-neutral expected cost solution.
+    - `risk_aversion_weight_lambda = 1.0` minimizes the CVaR only (fully risk-averse).
+    - Typical values are in the range $[0.1, 0.5]$, depending on the desired trade-off between average cost and protection against high-cost scenarios.
+    - A higher `risk_aversion_confidence_level_alpha` (e.g., `0.99` vs `0.95`) focuses the risk measure on a smaller fraction of the worst scenarios.
+
+### What the model adds when CVaR is active
+
+When the CVaR feature is activated, the model automatically creates two additional variables:
+
+- **Value at Risk threshold** ($v^{\mu}$): a single non-negative scalar variable representing the cost threshold at the $\alpha$ confidence level.
+- **Tail excess slack** ($v^{\xi}_{s}$): one non-negative variable per scenario $s \in \mathcal{S}$, capturing how much the total cost of scenario $s$ exceeds the threshold $v^{\mu}$.
+
+These variables are linked through the [scenario tail excess constraints](@ref cvar-constraints), which enforce $v^{\xi}_{s} \geq C_s - v^{\mu}$ for every scenario $s$.
+
+For more details on the mathematical formulation of the CVaR objective and constraints, see the [`mathematical formulation`](@ref formulation) section.
