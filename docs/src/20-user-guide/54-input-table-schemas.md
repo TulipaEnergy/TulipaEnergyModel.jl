@@ -44,7 +44,7 @@ let buffer = IOBuffer()
     summary_table_header = ("Table", "Mandatory columns (no defaults)")
     summary_table_rows = [
         (
-            table_name,
+            "`$table_name`",
             join(["`$field_name`" for field_name in mandatory_columns], ", "),
         ) for (;
             table_name,
