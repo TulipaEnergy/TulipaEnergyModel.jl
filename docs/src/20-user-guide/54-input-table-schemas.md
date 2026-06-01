@@ -41,8 +41,8 @@ let buffer = IOBuffer()
         ) for (table_name, fields) in input_schemas
     ]
 
-    table_header = ("Table", "Mandatory columns (no defaults)")
-    table_rows = [
+    summary_table_header = ("Table", "Mandatory columns (no defaults)")
+    summary_table_rows = [
         (
             table_name,
             join(["`$field_name`" for field_name in mandatory_columns], ", "),
@@ -51,13 +51,16 @@ let buffer = IOBuffer()
             mandatory_columns,
         ) in mandatory_columns_per_table
     ]
-    col_1_width = maximum(length.([table_header[1]; [row[1] for row in table_rows]]))
-    col_2_width = maximum(length.([table_header[2]; [row[2] for row in table_rows]]))
+    col_1_width = maximum(length.([summary_table_header[1]; [row[1] for row in summary_table_rows]]))
+    col_2_width = maximum(length.([summary_table_header[2]; [row[2] for row in summary_table_rows]]))
 
     write(buffer, "## Mandatory columns by table\n\n")
-    write(buffer, "| $(rpad(table_header[1], col_1_width)) | $(rpad(table_header[2], col_2_width)) |\n")
+    write(
+        buffer,
+        "| $(rpad(summary_table_header[1], col_1_width)) | $(rpad(summary_table_header[2], col_2_width)) |\n",
+    )
     write(buffer, "| $(repeat("-", col_1_width)) | $(repeat("-", col_2_width)) |\n")
-    for (table_name, mandatory_columns) in table_rows
+    for (table_name, mandatory_columns) in summary_table_rows
         write(buffer, "| $(rpad(table_name, col_1_width)) | $(rpad(mandatory_columns, col_2_width)) |\n")
     end
     write(buffer, "\n")
