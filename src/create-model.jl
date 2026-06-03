@@ -243,6 +243,13 @@ function create_model(
         profiles,
     )
 
+    @timeit to "add_min_output_flow_without_unit_commitment_constraints!" add_min_output_flow_without_unit_commitment_constraints!(
+        connection,
+        model,
+        expressions,
+        constraints,
+    )
+
     @timeit to "add_flows_relationships_constraints!" add_flows_relationships_constraints!(
         connection,
         model,
