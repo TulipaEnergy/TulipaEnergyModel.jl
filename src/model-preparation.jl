@@ -711,7 +711,23 @@ function add_expressions_to_constraints!(connection, variables, constraints)
             workspace;
             use_highest_resolution = true,
             multiply_by_duration = false,
+            multiply_by_capacity_coefficient = true,
             add_min_outgoing_flow_duration = true,
+        )
+    end
+
+    for table_name in (
+        :min_output_flow_without_unit_commitment_aggregated_vintage_method,
+        :min_output_flow_without_unit_commitment_compact_vintage_method,
+    )
+        @timeit to "add_expression_terms_rep_period_constraints! for $table_name" add_expression_terms_rep_period_constraints!(
+            connection,
+            constraints[table_name],
+            variables[:flow],
+            workspace;
+            use_highest_resolution = true,
+            multiply_by_duration = false,
+            multiply_by_capacity_coefficient = true,
         )
     end
     @timeit to "add_expression_terms_inter_period_storage_constraints!" add_expression_terms_inter_period_storage_constraints!(
