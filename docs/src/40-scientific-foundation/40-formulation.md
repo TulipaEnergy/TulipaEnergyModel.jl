@@ -563,9 +563,20 @@ e^{\text{flow above min}}_{a,k_y,b_{k_y}} \geq 0  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc basic}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
 ```
 
-### Minimum Output Constraints Without Unit Commitment
+#### Tight logical constraints for start-up and shut-down variables
 
-For producer and conversion assets without unit commitment, a minimum output flow can still be enforced using `min_operating_point > 0`.
+```math
+v^{\text{on}}_{a, k_y, b_{k_y}} - v^{\text{on}}_{a, k_y, (b_{k_y} - 1)} = v^{\text{start up}}_{a, k_y, b_{k_y}} - v^{\text{shut down}}_{a, k_y, b_{k_y}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+\\ v^{\text{start up}}_{a, k_y, b_{k_y}} \leq v^{\text{on}}_{a, k_y, b_{k_y}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+\\ v^{\text{shut down}}_{a, k_y, b_{k_y}} \leq v^{\text{available units}}_{a,y} - v^{\text{on}}_{a, k_y, b_{k_y}} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+```
+
+### [Minimum Output Constraints Without Unit Commitment](@id min-output-constraints-without-unit-commitment)
+
+For producer and conversion assets without unit commitment, a minimum output flow can still be enforced using `min_operating_point > 0`. This is useful for modeling assets that have a minimum output requirement but do not need to be turned on or off, such as run-of-river hydro plants or certain types of chemical processes or must-run units.
 
 The formulation applies only to assets with `unit_commitment = 'none'`. It uses the sum of outgoing flows weighted by $p^{\text{capacity coefficient}}_{f,y}$, so output flows that do not contribute to productive capacity (for example, byproduct emissions with coefficient 0) do not tighten the minimum-output requirement.
 
@@ -577,17 +588,6 @@ The formulation applies only to assets with `unit_commitment = 'none'`. It uses 
 ```math
 \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq p^{\text{min operating point}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot \sum_{v \in \mathcal{V} \mid (a,y,v) \in \mathcal{D}^{\text{compact profiles}}} v^{\text{available units compact}}_{a,y,v} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{compact profiles}} \cap (\mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}}) \setminus \mathcal{A}^{\text{uc}}_y \;\text{with}\; p^{\text{min operating point}}_{a,y} > 0, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B}_{k_y}
-```
-
-#### Tight logical constraints for start-up and shut-down variables
-
-```math
-v^{\text{on}}_{a, k_y, b_{k_y}} - v^{\text{on}}_{a, k_y, (b_{k_y} - 1)} = v^{\text{start up}}_{a, k_y, b_{k_y}} - v^{\text{shut down}}_{a, k_y, b_{k_y}} \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
-\\ v^{\text{start up}}_{a, k_y, b_{k_y}} \leq v^{\text{on}}_{a, k_y, b_{k_y}} \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
-\\ v^{\text{shut down}}_{a, k_y, b_{k_y}} \leq v^{\text{available units}}_{a,y} - v^{\text{on}}_{a, k_y, b_{k_y}} \quad
-\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc 3var}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
 ```
 
 ### [Ramping Constraints](@id ramp-constraints)
