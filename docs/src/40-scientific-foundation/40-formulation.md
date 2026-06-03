@@ -160,6 +160,8 @@ In addition, the following subsets represent methods for incorporating additiona
 
 #### Extra Parameters for Unit Commitment and Ramping Constraints
 
+The parameter $p^{\text{min operating point}}_{a,y}$ is also used for producer and conversion assets without unit commitment when `unit_commitment = 'none'` and `min_operating_point > 0`.
+
 | Name                                   | Domain           | Domains of Indices                  | Description                                                                                                              | Units          |
 | -------------------------------------- | ---------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------- |
 | $p^{\text{min operating point}}_{a,y}$ | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{uc}}}_y$   | Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset $a$ at year $y$ | [p.u.]         |
@@ -559,6 +561,22 @@ e^{\text{flow above min}}_{a,y,k_y,b_{k_y}} \leq p^{\text{availability profile}}
 ```math
 e^{\text{flow above min}}_{a,k_y,b_{k_y}} \geq 0  \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{uc basic}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B}_{k_y}
+```
+
+### Minimum Output Constraints Without Unit Commitment
+
+For producer and conversion assets without unit commitment, a minimum output flow can still be enforced using `min_operating_point > 0`.
+
+The formulation applies only to assets with `unit_commitment = 'none'`. It uses the sum of outgoing flows weighted by $p^{\text{capacity coefficient}}_{f,y}$, so output flows that do not contribute to productive capacity (for example, byproduct emissions with coefficient 0) do not tighten the minimum-output requirement.
+
+```math
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq p^{\text{min operating point}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot v^{\text{available units aggregated}}_{a,y} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{aggregated}} \cap (\mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}}) \setminus \mathcal{A}^{\text{uc}}_y \;\text{with}\; p^{\text{min operating point}}_{a,y} > 0, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B}_{k_y}
+```
+
+```math
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \geq p^{\text{min operating point}}_{a,y} \cdot p^{\text{capacity}}_{a} \cdot \sum_{v \in \mathcal{V} \mid (a,y,v) \in \mathcal{D}^{\text{compact profiles}}} v^{\text{available units compact}}_{a,y,v} \quad
+\\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{compact profiles}} \cap (\mathcal{A}^{\text{p}} \cup \mathcal{A}^{\text{cv}}) \setminus \mathcal{A}^{\text{uc}}_y \;\text{with}\; p^{\text{min operating point}}_{a,y} > 0, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B}_{k_y}
 ```
 
 #### Tight logical constraints for start-up and shut-down variables

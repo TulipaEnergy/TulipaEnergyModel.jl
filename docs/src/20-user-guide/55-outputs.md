@@ -140,6 +140,14 @@ Associated input parameter: `unit_commitment_integer`
 
 - `dual_min_output_flow_with_unit_commitment`: Dual of the constraint ["minimum output flow above the minimum operating point"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Minimum-output-flow-above-the-minimum-operating-point).
 
+### `cons_min_output_flow_without_unit_commitment_aggregated_vintage_method`
+
+- `dual_min_output_flow_without_unit_commitment_aggregated_vintage_method`: Dual of the constraint ["minimum output constraints without unit commitment"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Minimum-Output-Constraints-Without-Unit-Commitment).
+
+### `cons_min_output_flow_without_unit_commitment_compact_vintage_method`
+
+- `dual_min_output_flow_without_unit_commitment_compact_vintage_method`: Dual of the constraint ["minimum output constraints without unit commitment"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Minimum-Output-Constraints-Without-Unit-Commitment).
+
 ### `cons_transport_flow_limit`
 
 - `dual_max_transport_flow_limit`: Dual of the constraint ["maximum transport flow limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Maximum-Transport-Flow-Limit).
