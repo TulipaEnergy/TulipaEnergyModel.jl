@@ -49,6 +49,8 @@ function add_scenario_tail_excess_expressions!(connection, model, variables, exp
             end
         end
 
+        attach_expression!(expr, :base_cost, fill(base_cost, expr.num_rows))
+
         # Costs that depend on scenario (from src/objectives/*.jl)
         flows_operational_cost_per_scenario =
             expressions[:flows_operational_cost_per_scenario].expressions[:cost]
