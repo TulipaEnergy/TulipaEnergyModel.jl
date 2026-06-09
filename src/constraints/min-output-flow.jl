@@ -108,24 +108,32 @@ end
 function _append_min_output_flow_data_to_indices_compact_method(connection, table_name)
     return DuckDB.query(
         connection,
-        "SELECT
+        """
+        WITH avail_agg AS (
+        SELECT
+            asset,
+            milestone_year,
+            ARRAY_AGG(id ORDER BY id) AS avail_indices
+        FROM expr_available_asset_units_compact_vintage_method
+        GROUP BY asset, milestone_year
+        )
+        SELECT
             cons.id,
-            ANY_VALUE(cons.asset) AS asset,
-            ANY_VALUE(cons.milestone_year) AS milestone_year,
-            ANY_VALUE(cons.rep_period) AS rep_period,
-            ANY_VALUE(cons.time_block_start) AS time_block_start,
-            ANY_VALUE(cons.time_block_end) AS time_block_end,
-            ANY_VALUE(asset.capacity) AS capacity,
-            ANY_VALUE(asset.min_operating_point) AS min_operating_point,
-            ARRAY_AGG(expr_avail.id ORDER BY expr_avail.id) AS avail_indices,
+            cons.asset,
+            cons.milestone_year,
+            cons.rep_period,
+            cons.time_block_start,
+            cons.time_block_end,
+            asset.capacity,
+            asset.min_operating_point,
+            avail_agg.avail_indices,
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
-        LEFT JOIN expr_available_asset_units_compact_vintage_method AS expr_avail
-            ON cons.asset = expr_avail.asset
-            AND cons.milestone_year = expr_avail.milestone_year
-        GROUP BY cons.id
+        LEFT JOIN avail_agg
+            ON cons.asset = avail_agg.asset
+            AND cons.milestone_year = avail_agg.milestone_year
         ORDER BY cons.id
-        ",
+        """,
     )
 end

@@ -111,18 +111,7 @@ end
 
 @testitem "Test min output flow constraint - producer, aggregated, non-investable" setup =
     [CommonSetup, ConsMinOutputFlowSetup] tags = [:unit, :constraint, :fast] begin
-    config = ConsMinOutputFlowConfig(;
-        name = "wind",
-        asset_type = :producer,
-        vintage_method = "aggregated",
-        initial_units = 2.0,
-        capacity = 100.0,
-        min_operating_point = 0.4,
-        unit_commitment = "none",
-        investable = false,
-        num_timesteps = 1,
-        num_rps = 2,
-    )
+    config = ConsMinOutputFlowConfig(; name = "wind")
 
     connection, energy_problem = create_min_output_flow_test_problem(config)
     flow = energy_problem.variables[:flow].container
@@ -154,15 +143,9 @@ end
     # Use initial_units > 0 to verify both the constant and the investment term in the RHS.
     config = ConsMinOutputFlowConfig(;
         name = "wind",
-        asset_type = :producer,
-        vintage_method = "aggregated",
         initial_units = 1.0,
-        capacity = 100.0,
         min_operating_point = 0.5,
-        unit_commitment = "none",
         investable = true,
-        num_timesteps = 1,
-        num_rps = 2,
     )
 
     connection, energy_problem = create_min_output_flow_test_problem(config)
@@ -202,14 +185,9 @@ end
     config = ConsMinOutputFlowConfig(;
         name = "smr",
         asset_type = :conversion,
-        vintage_method = "aggregated",
         initial_units = 3.0,
         capacity = 50.0,
         min_operating_point = 0.3,
-        unit_commitment = "none",
-        investable = false,
-        num_timesteps = 1,
-        num_rps = 2,
     )
 
     connection, energy_problem = create_min_output_flow_test_problem(config)
@@ -245,14 +223,9 @@ end
     # flow has zero weight and must not affect the RHS lower bound.
     config = ConsMinOutputFlowConfig(;
         name = "ccgt",
-        asset_type = :producer,
         vintage_method = "aggregated",
-        initial_units = 1.0,
         capacity = 200.0,
         min_operating_point = 0.3,
-        unit_commitment = "none",
-        investable = false,
-        num_timesteps = 1,
         num_rps = 1,
         has_co2_output = true,
         co2_consumer_name = "atmosphere",
@@ -296,15 +269,10 @@ end
     [CommonSetup, ConsMinOutputFlowSetup] tags = [:unit, :constraint, :fast] begin
     config = ConsMinOutputFlowConfig(;
         name = "nuclear",
-        asset_type = :producer,
         vintage_method = "compact_profiles",
         initial_units = 3.0,
         capacity = 150.0,
         min_operating_point = 0.5,
-        unit_commitment = "none",
-        investable = false,
-        num_timesteps = 1,
-        num_rps = 2,
     )
 
     connection, energy_problem = create_min_output_flow_test_problem(config)
@@ -336,18 +304,7 @@ end
 
     # Assets with unit_commitment != 'none' use the min_output_flow_with_unit_commitment
     # mechanism instead; they must not appear in the without-UC constraint tables.
-    config = ConsMinOutputFlowConfig(;
-        name = "ccgt_uc",
-        asset_type = :producer,
-        vintage_method = "aggregated",
-        initial_units = 2.0,
-        capacity = 100.0,
-        min_operating_point = 0.4,
-        unit_commitment = "basic",
-        investable = false,
-        num_timesteps = 1,
-        num_rps = 1,
-    )
+    config = ConsMinOutputFlowConfig(; name = "ccgt_uc", unit_commitment = "basic", num_rps = 1)
 
     connection, energy_problem = create_min_output_flow_test_problem(config)
 
@@ -368,18 +325,7 @@ end
 
     # Assets with min_operating_point = 0 have no minimum output requirement,
     # so no constraint rows are created for them.
-    config = ConsMinOutputFlowConfig(;
-        name = "wind",
-        asset_type = :producer,
-        vintage_method = "aggregated",
-        initial_units = 2.0,
-        capacity = 100.0,
-        min_operating_point = 0.0,
-        unit_commitment = "none",
-        investable = false,
-        num_timesteps = 1,
-        num_rps = 1,
-    )
+    config = ConsMinOutputFlowConfig(; name = "wind", min_operating_point = 0.0, num_rps = 1)
 
     connection, energy_problem = create_min_output_flow_test_problem(config)
 
