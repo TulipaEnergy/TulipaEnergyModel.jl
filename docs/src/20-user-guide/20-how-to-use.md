@@ -494,6 +494,9 @@ The unit commitment constraints are only applied to producer and conversion asse
 - `unit_commitment_integer`: It determines whether the unit commitment variables are considered as integer or not (`true` or `false`)
 - `min_operating_point`: Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset (p.u.)
 
+!!! info "Minimum operating point constraints without unit commitment"
+    Even when `unit_commitment = 'none'`, producer and conversion assets with `min_operating_point > 0` still receive a minimum output-flow constraint (for aggregated and compact profiles vintage methods). This is useful to represent must-run conditions without the full unit commitment formulation.
+
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
 ### [Ramping constraints](@id ramping-setup)

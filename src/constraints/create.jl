@@ -17,6 +17,8 @@ function compute_constraints_indices(connection)
             :limit_units_on_compact_vintage_method,
             :limit_units_on_aggregated_vintage_method,
             :min_output_flow_with_unit_commitment,
+            :min_output_flow_without_unit_commitment_aggregated_vintage_method,
+            :min_output_flow_without_unit_commitment_compact_vintage_method,
             :max_output_flow_with_basic_unit_commitment,
             :max_ramp_with_unit_commitment,
             :max_ramp_without_unit_commitment,
