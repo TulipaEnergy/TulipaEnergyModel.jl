@@ -422,7 +422,7 @@ julia> cov = generate_coverage()
 This will run the tests, track line coverage and print a report table as output.
 We aim to keep coverage high, with reasonable exceptions.
 Our current guideline is to require at least 90% but aim for 95%,
-which is reflected in the [codecov.yml](../../codecov.yml) file.
+which is reflected in the [codecov.yml](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/codecov.yml) file.
 
 If you are having trouble reaching 100% test coverage, you can set your pull
 request to 'draft' status and ask for help.
