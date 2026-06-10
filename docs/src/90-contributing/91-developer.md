@@ -420,8 +420,9 @@ julia> cov = generate_coverage()
 ```
 
 This will run the tests, track line coverage and print a report table as output.
-Note that we want to maintain 100% test coverage. If any file does not show 100%
-coverage, please add tests to cover the missing lines.
+We aim to keep coverage high, with reasonable exceptions.
+Our current guideline is to require at least 90% but aim for 95%,
+which is reflected in the [codecov.yml](../../../codecov.yml) file.
 
 If you are having trouble reaching 100% test coverage, you can set your pull
 request to 'draft' status and ask for help.
