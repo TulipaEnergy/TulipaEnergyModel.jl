@@ -17,22 +17,22 @@
         DuckDB.query(
             connection,
             """
-            CREATE OR REPLACE TABLE group_asset (name VARCHAR, milestone_year INT, constraint_sense VARCHAR, rhs DOUBLE, invest_method BOOL);
-            INSERT INTO group_asset VALUES ('group1', 2030, '<=', 7700, true);
-            INSERT INTO group_asset VALUES ('group1', 2050, '>=', 3300, true);
-            INSERT INTO group_asset VALUES ('group2', 2030, '==', 1234, true);
-            INSERT INTO group_asset VALUES ('group2', 2050, '==', 4321, false);
+            CREATE OR REPLACE TABLE investment_group_asset (name VARCHAR, milestone_year INT, constraint_sense VARCHAR, rhs DOUBLE, invest_method BOOL);
+            INSERT INTO investment_group_asset VALUES ('group1', 2030, '<=', 7700, true);
+            INSERT INTO investment_group_asset VALUES ('group1', 2050, '>=', 3300, true);
+            INSERT INTO investment_group_asset VALUES ('group2', 2030, '==', 1234, true);
+            INSERT INTO investment_group_asset VALUES ('group2', 2050, '==', 4321, false);
             """,
         )
         DuckDB.query(
             connection,
             """
-            CREATE OR REPLACE TABLE group_asset_membership (group_name VARCHAR, milestone_year INT, asset VARCHAR, coefficient DOUBLE);
-            INSERT INTO group_asset_membership VALUES ('group1', 2030, 'producer1', 3.14);
-            INSERT INTO group_asset_membership VALUES ('group1', 2030, 'producer2', 6.66);
-            INSERT INTO group_asset_membership VALUES ('group1', 2050, 'producer2', 2.51);
-            INSERT INTO group_asset_membership VALUES ('group2', 2030, 'producer1', 0.73);
-            INSERT INTO group_asset_membership VALUES ('group2', 2050, 'producer2', 3.45);
+            CREATE OR REPLACE TABLE investment_group_asset_membership (group_name VARCHAR, milestone_year INT, asset VARCHAR, coefficient DOUBLE);
+            INSERT INTO investment_group_asset_membership VALUES ('group1', 2030, 'producer1', 3.14);
+            INSERT INTO investment_group_asset_membership VALUES ('group1', 2030, 'producer2', 6.66);
+            INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'producer2', 2.51);
+            INSERT INTO investment_group_asset_membership VALUES ('group2', 2030, 'producer1', 0.73);
+            INSERT INTO investment_group_asset_membership VALUES ('group2', 2050, 'producer2', 3.45);
             """,
         )
 

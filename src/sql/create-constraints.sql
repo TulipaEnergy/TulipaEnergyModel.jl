@@ -668,7 +668,7 @@ select
     ga.constraint_sense,
     ga.rhs,
 from
-    group_asset as ga
+    investment_group_asset as ga
 where
     ga.invest_method
 ;

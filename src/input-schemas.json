@@ -788,7 +788,7 @@
       "type": "VARCHAR"
     }
   },
-  "group_asset": {
+  "investment_group_asset": {
     "constraint_sense": {
       "constraints": {
         "oneOf": [
@@ -817,7 +817,7 @@
       "type": "DOUBLE"
     }
   },
-  "group_asset_membership": {
+  "investment_group_asset_membership": {
     "asset": {
       "description": "One of the assets in this group.",
       "type": "VARCHAR"
