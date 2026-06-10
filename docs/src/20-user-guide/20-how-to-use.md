@@ -544,8 +544,8 @@ Groups are useful to represent several common constraints.
 
 In order to define the groups in the model, the following steps are necessary:
 
-1. Create a group file by defining the `name` property and its parameters in the `group_asset` table (or CSV file).
-2. Assign assets to the group by adding entries to the `group_asset_membership` table (or CSV file).
+1. Create a group file by defining the `name` property and its parameters in the `investment_group_asset` table (or CSV file).
+2. Assign assets to the group by adding entries to the `investment_group_asset_membership` table (or CSV file).
 
 #### [Group Investment constraints](@id investment-group-setup)
 
@@ -556,32 +556,37 @@ $\sum_{a \in G} v^{\text{inv}}_a \times \text{coefficient}_a \left\{\begin{array
 i.e., a sum-product of all investment variables listed in the group multiplied by given coefficients related by a "right hand side".
 An example of group investment are the maximum and minimum investment limits for group of investment variables.
 The mathematical formulation of these constraints is available [here](@ref investment-group-constraints).
-They can be achieved using group investment constraints by adding rows in `group_asset` such that:
 
-- Each row in table `group_asset`
+!!! info
+    At the moment, group constraints are only supported for investment variables through `investment_group_asset` and `investment_group_asset_membership`.
+    If you need additional constraints involving other variables, add them manually to the JuMP model as shown in the [Bids tutorial](@ref bids-tutorial).
+
+They can be achieved using group investment constraints by adding rows in `investment_group_asset` such that:
+
+- Each row in table `investment_group_asset`
   - `name` is the name of the group, and unique identifier.
   - `milestone_year` is the year for which the group is defined.
   - `invest_method = true`. This parameter enables the model to use the investment group constraints.
   - `constraint_sense` is either `<=` for maximum and `>=` for minimum.
   - `rhs` is the corresponding value.
-- Each row in table `group_asset_membership`
-  - `group_name` should match `group_asset.name`.
+- Each row in table `investment_group_asset_membership`
+  - `group_name` should match `investment_group_asset.name`.
   - `asset` is the name of the asset.
-  - `milestone_year` should match `group_asset.milestone_year` and `asset.milestone_year`.
+  - `milestone_year` should match `investment_group_asset.milestone_year` and `asset.milestone_year`.
   - `coefficient` should be the capacity value for the investment limit.
 
 !!! warning
-    Notice that only one constraint is created per row in `group_asset`, which means that if both the minimum and maximum investment limits are desired, two rows are required in `group_asset`, one with `constraint_sense = '<='` and one with `constraint_sense = '>='`. In this case, the names of the groups must be different, from instance `ccgt_max` and `ccgt_min`.
-    Similarly, the elements in `group_asset_membership` will need to be duplicated, one for each group.
+    Notice that only one constraint is created per row in `investment_group_asset`, which means that if both the minimum and maximum investment limits are desired, two rows are required in `investment_group_asset`, one with `constraint_sense = '<='` and one with `constraint_sense = '>='`. In this case, the names of the groups must be different, from instance `ccgt_max` and `ccgt_min`.
+    Similarly, the elements in `investment_group_asset_membership` will need to be duplicated, one for each group.
 
 #### Example: Group of Assets
 
-Let's explore how the groups are set up in the test case called [Norse](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Norse). First, let's take a look at the `group-asset.csv` file:
+Let's explore how the groups are set up in the test case called [Norse](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Norse). First, let's take a look at the `investment-group-asset.csv` file:
 
 ```@example display-group-setup
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../../test/inputs/Norse/group-asset.csv" # hide
+input_asset_file = "../../../test/inputs/Norse/investment-group-asset.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 ```
 
@@ -590,8 +595,8 @@ In the given data, there are two groups: `renewables` and `ccgt`. Both groups ha
 Let's now explore which assets are in each group. To do so, we can take a look at the `asset.csv` file:
 
 ```@example display-group-setup
-input_file = "../../../test/inputs/Norse/group-asset-membership.csv" # hide
-group_asset_membership = CSV.read(input_file, DataFrame) # hide
+input_file = "../../../test/inputs/Norse/investment-group-asset-membership.csv" # hide
+investment_group_asset_membership = CSV.read(input_file, DataFrame) # hide
 ```
 
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.

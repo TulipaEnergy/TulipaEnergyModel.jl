@@ -265,7 +265,7 @@ end
     ]
 end
 
-@testitem "Test group_asset_membership foreign keys are valid - using Tiny data" setup =
+@testitem "Test investment_group_asset_membership foreign keys are valid - using Tiny data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
 
@@ -273,7 +273,7 @@ end
     DuckDB.query(
         connection,
         """
-        CREATE TABLE group_asset AS (
+        CREATE TABLE investment_group_asset AS (
         SELECT
             'group1' AS name,
             2030 AS milestone_year,
@@ -284,21 +284,21 @@ end
         """,
     )
 
-    # Creating group_asset_membership with 1 correct (group, asset) pairs and 2 incorrect pairs
+    # Creating investment_group_asset_membership with 1 correct (group, asset) pairs and 2 incorrect pairs
     DuckDB.query(
         connection,
         """
-        CREATE TABLE group_asset_membership (group_name VARCHAR, asset VARCHAR);
-        INSERT INTO group_asset_membership VALUES ('group1', 'ccgt');
-        INSERT INTO group_asset_membership VALUES ('group1', 'bad_asset');
-        INSERT INTO group_asset_membership VALUES ('bad_group', 'ccgt');
+        CREATE TABLE investment_group_asset_membership (group_name VARCHAR, asset VARCHAR);
+        INSERT INTO investment_group_asset_membership VALUES ('group1', 'ccgt');
+        INSERT INTO investment_group_asset_membership VALUES ('group1', 'bad_asset');
+        INSERT INTO investment_group_asset_membership VALUES ('bad_group', 'ccgt');
         """,
     )
 
     error_messages = TEM._validate_group_consistency!(String[], connection)
     @test Set(error_messages) == Set([
-        "Table 'group_asset_membership' column 'asset' has invalid value 'bad_asset'. Valid values should be among column 'asset' of 'asset'",
-        "Table 'group_asset_membership' column 'group_name' has invalid value 'bad_group'. Valid values should be among column 'name' of 'group_asset'",
+        "Table 'investment_group_asset_membership' column 'asset' has invalid value 'bad_asset'. Valid values should be among column 'asset' of 'asset'",
+        "Table 'investment_group_asset_membership' column 'group_name' has invalid value 'bad_group'. Valid values should be among column 'name' of 'investment_group_asset'",
     ])
 end
 
@@ -307,30 +307,36 @@ end
     asset = DataFrame(:asset => ["A1", "A2", "A3"])
     asset_milestone =
         DataFrame(:asset => ["A1", "A2", "A3"], :milestone_year => 2030, :investable => true)
-    group_asset = DataFrame(:name => ["group1", "group2", "bad_group"], :milestone_year => 2030)
-    group_asset_membership =
+    investment_group_asset =
+        DataFrame(:name => ["group1", "group2", "bad_group"], :milestone_year => 2030)
+    investment_group_asset_membership =
         DataFrame(:group_name => ["group1", "group1", "group2"], :asset => ["A1", "A3", "A2"])
     connection = DBInterface.connect(DuckDB.DB)
     DuckDB.register_data_frame(connection, asset, "asset")
     DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
-    DuckDB.register_data_frame(connection, group_asset, "group_asset")
-    DuckDB.register_data_frame(connection, group_asset_membership, "group_asset_membership")
+    DuckDB.register_data_frame(connection, investment_group_asset, "investment_group_asset")
+    DuckDB.register_data_frame(
+        connection,
+        investment_group_asset_membership,
+        "investment_group_asset_membership",
+    )
 
     error_messages = TEM._validate_group_consistency!(String[], connection)
-    @test error_messages ==
-          ["Group 'bad_group' in 'group_asset' has no members in 'group_asset_membership'"]
+    @test error_messages == [
+        "Group 'bad_group' in 'investment_group_asset' has no members in 'investment_group_asset_membership'",
+    ]
 end
 
 @testitem "Test groups have at least one member - using Tiny data" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
 
-    # Doesn't throw (and creates empty group_asset)
+    # Doesn't throw (and creates empty investment_group_asset)
     TEM.create_internal_tables!(connection)
 
     # Modify group value to bad value
-    DuckDB.query(connection, "INSERT INTO group_asset (name) VALUES ('lonely')")
-    @test_throws "Group 'lonely' in 'group_asset' has no members in 'group_asset_membership'" TEM.create_internal_tables!(
+    DuckDB.query(connection, "INSERT INTO investment_group_asset (name) VALUES ('lonely')")
+    @test_throws "Group 'lonely' in 'investment_group_asset' has no members in 'investment_group_asset_membership'" TEM.create_internal_tables!(
         connection,
     )
 end
@@ -343,15 +349,20 @@ end
         :milestone_year => [2030, 2050, 2030, 2050, 2030, 2050],
         :investable => [false, false, true, false, true, true],
     )
-    group_asset = DataFrame(:name => ["group1", "group1"], :milestone_year => [2030, 2050])
-    group_asset_membership =
+    investment_group_asset =
+        DataFrame(:name => ["group1", "group1"], :milestone_year => [2030, 2050])
+    investment_group_asset_membership =
         DataFrame(:group_name => "group1", :asset => ["A1", "A2", "A3", "A1", "A2", "A3"])
 
     connection = DBInterface.connect(DuckDB.DB)
     DuckDB.register_data_frame(connection, asset, "asset")
     DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
-    DuckDB.register_data_frame(connection, group_asset, "group_asset")
-    DuckDB.register_data_frame(connection, group_asset_membership, "group_asset_membership")
+    DuckDB.register_data_frame(connection, investment_group_asset, "investment_group_asset")
+    DuckDB.register_data_frame(
+        connection,
+        investment_group_asset_membership,
+        "investment_group_asset_membership",
+    )
 
     error_messages = TEM._validate_group_consistency!(String[], connection)
     @test Set(error_messages) == Set([
