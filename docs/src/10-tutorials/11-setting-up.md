@@ -48,6 +48,10 @@ using Plots
 
 ## [Set up data and folders](@id tutorial-data-folders)
 
+!!! warning "Check that the version of the data matches the version of the package you have installed!"
+     1. Fist check your TulipaEnergyModel version using the command `Pkg.status("TulipaEnergyModel")` in your Julia REPL.
+     1. Then make sure to download the data for the same version using the *Tag* for that version (see instructions below).
+
 - **Download the folders**
      1. Go to main repo website: [https://github.com/TulipaEnergy/TulipaEnergyModel.jl/](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/)
      1. Click on *Tags*
