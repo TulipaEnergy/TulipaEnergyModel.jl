@@ -9,7 +9,7 @@ You should have a VS Code project set up before starting this tutorial.
 
 Ensure you are using the necessary packages by running the lines below:
 
-```julia
+```@example basic
 import TulipaIO as TIO
 import TulipaEnergyModel as TEM
 using DuckDB
@@ -27,21 +27,23 @@ using Plots
 
 We need to create a connection to DuckDB and point to the input and output folders:
 
-```julia
+```@example basic
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "my-awesome-energy-system/tutorial-1"
-output_dir = "my-awesome-energy-system/tutorial-1/results"
+input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-1")
+output_dir = tempdir()
 ```
 
-Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error later.
+Here we create a temporary directory for the output. But, you can point to any directory you want. But! remember that if the output directory does not exist yet, you need to create the 'results' folder, otherwise it will error later.
 
-```julia
-mkpath(output_dir)
-```
+!!! tip
+    You can make an output directory in julia using the mkpath function:
+    ```julia
+    mkpath(output_dir)
+    ```
 
 Let's use TulipaIO to read the files and list them:
 
-```julia
+```@example basic
 TIO.read_csv_folder(connection, input_dir)
 
 TIO.show_tables(connection)  # View all the table names in the DuckDB connection
@@ -51,13 +53,13 @@ TIO.show_tables(connection)  # View all the table names in the DuckDB connection
 
 Now try viewing a specific table:
 
-```julia
+```@example basic
 TIO.get_table(connection, "asset") # Or any other table name
 ```
 
 Add any missing columns and fill them with defaults:
 
-```julia
+```@example basic
 TEM.populate_with_defaults!(connection)
 
 # Explore the tables in DuckDB (again)
@@ -67,7 +69,7 @@ TIO.get_table(connection, "asset")
 
 Run, baby run!
 
-```julia
+```@example basic
 energy_problem =
     TEM.run_scenario(connection; output_folder=output_dir)
 ```
@@ -84,7 +86,7 @@ But instead of exporting, you can also explore results in Julia!
 
 Take a look at the electricity production from the "wind" asset that flows to the "e_demand" asset:
 
-```julia
+```@example basic
 using DataFrames
 using Plots
 
@@ -117,7 +119,7 @@ plot(
 
 For the prices, work with the dual of the constraint.
 
-```julia
+```@example basic
 balance = TIO.get_table(connection, "cons_balance_consumer")
 
 asset = "e_demand"
@@ -135,11 +137,10 @@ filtered_asset = filter(
 plot(
     filtered_asset.time_block_start,
     filtered_asset.dual_balance_consumer;
-    #label=string(from_asset, " -> ", to_asset),
+    label=string(from_asset, " -> ", to_asset),
     xlabel="Hour",
     ylabel="[MWh]",
     ylims=(0,200),
-    #xlims=(0, 168),
     dpi=600,
 )
 ```
