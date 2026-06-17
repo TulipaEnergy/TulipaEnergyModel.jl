@@ -31,7 +31,8 @@ makedocs(;
     sitename = "TulipaEnergyModel.jl",
     format = Documenter.HTML(;
         canonical = "https://TulipaEnergy.github.io/TulipaEnergyModel.jl",
-        size_threshold = nothing,
+        size_threshold_warn = 250 * 1024, # 250 KiB
+        size_threshold = 1 * 1024^2,      # 1 MiB
     ),
     pages = [
         "index.md"
