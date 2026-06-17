@@ -13,11 +13,14 @@ Do you notice any changes compared to the files you worked with in tutorial 1?
 In `my_workflow.jl` you can simply change the name of your input directory and run your code.\
 From the Basics Tutorial, it should look something like this:
 
-```julia
-# Guarantee to run in the current directory
-using Pkg: Pkg
-Pkg.activate(".")
+!!! tip
+    Remember to activate the environment in the current directory using the following code in your Julia REPL:
+    ```julia
+    using Pkg: Pkg
+    Pkg.activate(".")
+    ```
 
+```@example assets
 # Load the packages
 import TulipaIO as TIO
 import TulipaEnergyModel as TEM
@@ -26,8 +29,8 @@ using DataFrames
 using Plots
 
 # Define the directories - notice we now select tutorial 2 for both the input and output directory
-input_dir = "my-awesome-energy-system/tutorial-2"
-output_dir = "my-awesome-energy-system/tutorial-2/results"
+input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-2")
+output_dir = tempdir() # point here to your results folder if you want to save the results in a specific location
 
 # Create the connection and read the input files
 connection = DBInterface.connect(DuckDB.DB)
@@ -48,7 +51,7 @@ energy_problem =
 
 Explore the flow that goes from the `hub` to the `e_demand`:
 
-```julia
+```@example assets
 flows = TIO.get_table(connection, "var_flow")
 
 from_asset = "hub"
@@ -77,7 +80,7 @@ plot(
 
 Explore the congestion using the duals in the results:
 
-```julia
+```@example assets
 transport = TIO.get_table(connection, "cons_transport_flow_limit_aggregated_vintage_method")
 
 names(transport)
