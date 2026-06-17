@@ -67,7 +67,6 @@ using Plots
 
 # Define the directories
 input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-3")
-output_dir = tempdir() # point here to your results folder if you want to save the results in a specific location
 
 # Create the connection and read the case study files
 connection = DBInterface.connect(DuckDB.DB)
@@ -135,13 +134,12 @@ TEM.populate_with_defaults!(connection)
 
 # Optimize the model
 energy_problem =
-    TEM.run_scenario(connection; output_folder=output_dir)
+    TEM.run_scenario(connection)
 
 ```
 
-!!! warning
-    Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error.
-
+!!! tip
+    Remember that you can always define and create the output directory if it doesn't exist to export the results to csv files. Then you can use the `output_folder` keyword argument in the `run_scenario` function to save the results in that folder.
 From the statistics at the end, what are the number of constraints, variables, and objective function?
 
 ## Explore the results
@@ -176,7 +174,6 @@ plot(
     markersize=2,
     linetype=:steppost, # try: stepmid, steppost, or steppre
     xlims=(168 * 2, 168 * 3),
-    #dpi=600, # uncomment this line to save the plot in high resolution
 )
 
 ```
@@ -306,7 +303,6 @@ plot(
     markersize=2,
     linetype=:steppost, # try: stepmid, steppost, or steppre
     xlims=(2200, 2400),
-    #dpi=600, # uncomment this line to save the plot in high resolution
 )
 
 hourly_flows = TIO.get_table(conn_hourly, "var_flow")
