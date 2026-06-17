@@ -70,10 +70,11 @@ Now, we will learn how to generate these tables using TulipaClustering! 😉
 
 ### Explore the Profiles Data
 
-Let's first take a look at the profiles data we have by looking at the file `profiles-wide.csv` in the input directory. You can also use TulipaIO to read the table and see its contents:
+Let's first take a look at the profiles data we have by looking at the file `profiles-wide.csv` in the input directory. You can also use TulipaIO to read the table and see its contents by displaying the first 12 rows of the table:
 
 ```@example blended-representative-periods
 profiles_wide_df = TIO.get_table(connection, "profiles_wide")
+first(profiles_wide_df, 12)
 ```
 
 The wide is very convenient for humans to read, but not so much for computers to process. We need to transform it into a long format first.
@@ -91,10 +92,15 @@ TC.transform_wide_to_long!(
 )
 ```
 
-Let's have a look at the new table:
+Let's have a look at the new table at the first 5 rows and the last 5 rows:
 
 ```@example blended-representative-periods
 profiles_df = TIO.get_table(connection, "profiles")
+first(profiles_df, 5)
+```
+
+```@example blended-representative-periods
+last(profiles_df, 5)
 ```
 
 The new table stacks the columns with profile data into one column called `value` and adds a new column called `profile_name` that contains the names of the profiles. Each row now corresponds to one timestep of one profile per year.
@@ -188,8 +194,8 @@ clusters = TC.cluster!(connection,
                     layout = layout,
                     )
 
-# Let's have a look at the new rep_periods_mapping table
-first(TIO.get_table(connection, "rep_periods_mapping"), 20)
+# Let's have a look at the first 10 rows of the new rep_periods_mapping table
+first(TIO.get_table(connection, "rep_periods_mapping"), 10)
 ```
 
 What do you notice about the new representative periods mapping?
@@ -268,6 +274,8 @@ filtered_flow = filter(
             row.milestone_year == year,
     flows,
 )
+# display the first 10 rows of the filtered flow
+first(filtered_flow, 10)
 ```
 
 To reinterpret the RP data as base periods data, first create a new dataframe that contains both by using the inner join operation:
@@ -275,6 +283,8 @@ To reinterpret the RP data as base periods data, first create a new dataframe th
 ```@example blended-representative-periods
 rep_periods_mapping = TIO.get_table(connection, "rep_periods_mapping")
 df = innerjoin(filtered_flow, rep_periods_mapping, on=[:milestone_year, :rep_period])
+# display the first 10 rows of the new dataframe
+first(df, 10)
 ```
 
 Next, use Julia's Split-Apply-Combine approach to group the dataframe into smaller ones. Each grouped dataframe contains a single data point for one base period and all RPs it maps to. Then multiply the results by weights and add them up.
@@ -282,6 +292,8 @@ Next, use Julia's Split-Apply-Combine approach to group the dataframe into small
 ```@example blended-representative-periods
 gdf = groupby(df, [:from_asset, :to_asset, :milestone_year, :period, :timestep])
 result_df = combine(gdf, [:weight, :solution] => ((w, s) -> sum(w .* s)) => :solution)
+# display the first 10 rows of the result dataframe
+first(result_df, 10)
 ```
 
 Now you can plot the results. Remove the period data since you don't need it anymore, and re-sort the data to make sure it is in the right order.
@@ -306,10 +318,10 @@ This concludes this tutorial! Play around with different parameters to see how t
 
 ## Working with the New Tables Created by TulipaClustering
 
-You can check the new tables with TulipaIO, for example:
+You can check the new tables with TulipaIO, for example, let's have a look at the first 10 rows of the new `rep_periods_mapping` table:
 
 ```@example blended-representative-periods
-first(TIO.get_table(connection,"rep_periods_mapping"), 20)
+first(TIO.get_table(connection,"rep_periods_mapping"), 10)
 ```
 
 If you want to save the intermediary tables created by the clustering, you can do this with DuckDB:

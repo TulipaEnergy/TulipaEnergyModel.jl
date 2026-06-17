@@ -76,7 +76,7 @@ plot(
 )
 ```
 
-Explore the congestion using the duals in the results:
+Explore the congestion using the duals in the results and displaying the first 5 rows of the table:
 
 ```@example assets
 transport = TIO.get_table(connection, "cons_transport_flow_limit_aggregated_vintage_method")
@@ -89,7 +89,7 @@ first(
         row.dual_max_transport_flow_limit_aggregated_vintage_method != 0.0,
     transport,
     ),
-    20,
+    5,
 )
 ```
 

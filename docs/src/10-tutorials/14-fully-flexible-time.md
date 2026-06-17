@@ -178,7 +178,7 @@ plot(
 
 ```
 
-Explore the h2_balance duals in the results:
+Explore the h2_balance duals in the results by displaying the first 5 rows of the table:
 
 ```@example fully-flexible-time-resolution
 balance = TIO.get_table(connection, "cons_balance_consumer")
@@ -194,6 +194,7 @@ filtered_asset = filter(
             row.rep_period == rep_period,
     balance,
 )
+first(filtered_asset, 5)
 ```
 
 What do you notice?
@@ -243,6 +244,7 @@ filtered_asset = filter(
             row.rep_period == rep_period,
     balance,
 )
+first(filtered_asset, 5)
 ```
 
 Do you notice the difference? Now the `h2_demand` is being balanced with both assets in a 6 hour resolution. Check the `time_block_start` column in the `cons_balance_consumer` table 😉
