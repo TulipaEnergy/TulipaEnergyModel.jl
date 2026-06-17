@@ -40,7 +40,7 @@ TEM.populate_with_defaults!(connection)
 
 # Run the model
 energy_problem =
-    TEM.run_scenario(connection)
+    TEM.run_scenario(connection);
 ```
 
 !!! tip
@@ -83,10 +83,13 @@ transport = TIO.get_table(connection, "cons_transport_flow_limit_aggregated_vint
 
 names(transport)
 
-filter(
+first(
+    filter(
     row ->
         row.dual_max_transport_flow_limit_aggregated_vintage_method != 0.0,
     transport,
+    ),
+    20,
 )
 ```
 
