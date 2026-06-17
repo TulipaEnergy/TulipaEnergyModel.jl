@@ -21,7 +21,7 @@ Pkg.instantiate()
 
 1. Paste the code below that loads the packages in the file
 
-```julia
+```@example multi-year-investments
 import TulipaIO as TIO
 import TulipaEnergyModel as TEM
 using DuckDB
@@ -39,16 +39,12 @@ There are two pairs of input-output files, we start with the *simple* one.
 
 Run TEM
 
-```julia
+```@example multi-year-investments
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "my-awesome-energy-system/tutorial-6-simple-method"
-output_dir = "my-awesome-energy-system/tutorial-6-simple-method/results"
+input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-6-simple-method")
 TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(
-        connection;
-        output_folder = output_dir,
-)
+energy_problem = TEM.run_scenario(connection)
 ```
 
 !!! warning
@@ -59,7 +55,7 @@ There is a new file *model-parameters.csv*. It contains model-wide parameters, i
 !!! tip "Pro tip: Creating the `model_parameters` table manually"
     If you already have a DuckDB connection with the input data but the `model_parameters` table is not there yet, you can create the table manually to add the `discount_rate` and `discount_year` using DuckDB with your values and then populating with defaults for the missing columns in the table.
 
-```julia
+```@example multi-year-investments
 connection = energy_problem.db_connection
 row = only(collect(DuckDB.query(connection, "SELECT discount_rate, discount_year FROM model_parameters")))
 discount_rate = row.discount_rate
@@ -68,7 +64,7 @@ discount_year = row.discount_year
 
 Check discounting parameters calculated internally by TEM.
 
-```julia
+```@example multi-year-investments
 df_objective = filter(:asset => ==("wind"), TIO.get_table(connection, "t_objective_assets"))[:,
     [:asset, :milestone_year, :investment_cost, :annualized_cost, :salvage_value,
      :investment_year_discount, :weight_for_asset_investment_discount, :weight_for_operation_discounts]]
@@ -84,7 +80,7 @@ df = leftjoin(df_objective, df_asset, on = :asset)
 Remember that we have wind built in 2020 - does it have the same profiles as 2030?
 Let's check it out.
 
-```julia
+```@example multi-year-investments
 plot()
 wind_profiles = filter(row -> occursin("wind", row.profile_name) && row.milestone_year == 2030,
     TIO.get_table(connection, "profiles_rep_periods"))
@@ -105,27 +101,23 @@ So...the wind built in 2020 has a worse profile. How does it play a role in the 
 
 Let's try the aggregated method first (`vintage_method = "aggregated"`).
 
-```julia
+```@example multi-year-investments
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "my-awesome-energy-system/tutorial-6-simple-method"
-output_dir = "my-awesome-energy-system/tutorial-6-simple-method/results"
+input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-6-simple-method")
 TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(
-        connection;
-        output_folder = output_dir,
-    )
+energy_problem = TEM.run_scenario(connection)
 ```
 
 Check initial capacity - under the aggregated method, we will not be able to differentiate units built in other years (than milestone years), they will be considered the same as the units built in the milestone year, which means that we will not use the 2020 profile.
 
-```julia
+```@example multi-year-investments
 filter(row -> row.asset=="wind" && row.milestone_year == 2030, TIO.get_table(connection, "asset_both"))
 ```
 
 Check the objective value and investments.
 
-```julia
+```@example multi-year-investments
 energy_problem.objective_value
 filter(row -> row.asset=="wind", TIO.get_table(connection, "var_assets_investment"))
 ```
@@ -134,16 +126,12 @@ filter(row -> row.asset=="wind", TIO.get_table(connection, "var_assets_investmen
 
 Now try the compact method (`vintage_method = "compact_profiles"`).
 
-```julia
+```@example multi-year-investments
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "my-awesome-energy-system/tutorial-6-compact-method"
-output_dir = "my-awesome-energy-system/tutorial-6-compact-method/results"
+input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-6-compact-method")
 TIO.read_csv_folder(connection, input_dir)
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(
-        connection;
-        output_folder = output_dir,
-    )
+energy_problem = TEM.run_scenario(connection)
 ```
 
 !!! warning
@@ -151,14 +139,19 @@ energy_problem = TEM.run_scenario(
 
 Check initial capacity - units built in different years are explicitly listed, meaning that their corresponding profiles are also considered.
 
-```julia
+```@example multi-year-investments
 filter(row -> row.asset=="wind" && row.milestone_year == 2030, TIO.get_table(connection, "asset_both"))
 ```
 
-Check the objective value and investments.
+Check the objective value:
 
-```julia
+```@example multi-year-investments
 energy_problem.objective_value
+```
+
+And, check the investments:
+
+```@example multi-year-investments
 filter(row -> row.asset=="wind", TIO.get_table(connection, "var_assets_investment"))
 ```
 
