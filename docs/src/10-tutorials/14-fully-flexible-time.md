@@ -45,27 +45,19 @@ Working in the folder `tutorial-3`:
 !!! note
     If no partition or resolution is defined for an asset or flow, then the default values are `uniform` and `1`.
 
-## Instantiate
-
-Please instantiate your enviroment by typing the following command in the Julia REPL:
-
-```julia
-# guaranteed to be run in the current directory
-using Pkg: Pkg
-Pkg.activate(".")
-Pkg.instantiate()
-```
-
 ## Run the workflow
 
 In `my_workflow.jl` you can simply change the name of your input directory and run your code.\
 From the Basics Tutorial, it should look something like this:
 
-```julia
-# Guarantee to run in the current directory
-using Pkg: Pkg
-Pkg.activate(".")
+!!! tip
+    Remember to activate the environment in the current directory using the following code in your Julia REPL:
+    ```julia
+    using Pkg: Pkg
+    Pkg.activate(".")
+    ```
 
+```@example fully-flexible-time-resolution
 # Load the packages
 import TulipaIO as TIO
 import TulipaEnergyModel as TEM
@@ -74,20 +66,72 @@ using DataFrames
 using Plots
 
 # Define the directories
-input_dir = "my-awesome-energy-system/tutorial-3"
-output_dir = "my-awesome-energy-system/tutorial-3/results"
+input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-3")
+output_dir = tempdir() # point here to your results folder if you want to save the results in a specific location
 
 # Create the connection and read the case study files
 connection = DBInterface.connect(DuckDB.DB)
 TIO.read_csv_folder(connection, input_dir)
+```
 
+!!! tip "PRO tip"
+    Alternatively to create csv files with the flexible time resolution information as before, you can create and fill in the tables `assets_rep_periods_partitions` and `flows_rep_periods_partitions` in the database with the following code and DuckDB SQL statements:
+
+```@example fully-flexible-time-resolution
+DuckDB.query(connection,
+    """
+    CREATE OR REPLACE TABLE assets_rep_periods_partitions (
+        asset TEXT,
+        partition INTEGER,
+        rep_period INTEGER,
+        specification TEXT,
+        milestone_year INTEGER
+    );
+    """
+    )
+
+DuckDB.query(connection,
+    """
+    INSERT INTO assets_rep_periods_partitions VALUES
+        ('electrolizer', 6, 1, 'uniform', 2030);
+    """
+    )
+
+DuckDB.query(connection,
+    """
+    CREATE OR REPLACE TABLE flows_rep_periods_partitions (
+        from_asset TEXT,
+        to_asset TEXT,
+        partition INTEGER,
+        rep_period INTEGER,
+        specification TEXT,
+        milestone_year INTEGER
+    );
+    """
+    )
+DuckDB.query(connection,
+    """
+    INSERT INTO flows_rep_periods_partitions VALUES
+        ('electrolizer', 'h2_demand', 6, 1, 'uniform', 2030);
+    """
+    )
+```
+
+You can print the tables you have created (either using the CSV files or the database connection) to see if everything matches and is filled in as intended
+
+```@example fully-flexible-time-resolution
+TIO.get_table(connection, "assets_rep_periods_partitions")
+```
+
+```@example fully-flexible-time-resolution
+TIO.get_table(connection, "flows_rep_periods_partitions")
+```
+
+Now, let's run the model and export the results to the output folder:
+
+```@example fully-flexible-time-resolution
 # Add the defaults
 TEM.populate_with_defaults!(connection)
-
-# You can print the tables you have created to see if everything matches and is filled in as intended
-TIO.get_table(connection, "assets_rep_periods_partitions")
-TIO.get_table(connection, "flows_rep_periods_partitions")
-
 
 # Optimize the model
 energy_problem =
@@ -100,23 +144,12 @@ energy_problem =
 
 From the statistics at the end, what are the number of constraints, variables, and objective function?
 
-```log
-  - Model created!
-    - Number of variables: 89060
-    - Number of constraints for variable bounds: 80300
-    - Number of structural constraints: 108040
-  - Model solved!
-    - Termination status: OPTIMAL
-    - Objective value: 1.4718768475318682e8
-```
-
 ## Explore the results
 
 Explore the flow that goes from the electrolizer to the h2_demand:\
 *Notice there are 1460 values (8760h/6h).*
 
-```julia
-
+```@example fully-flexible-time-resolution
 flows = TIO.get_table(connection, "var_flow")
 
 from_asset = "electrolizer"
@@ -143,14 +176,14 @@ plot(
     markersize=2,
     linetype=:steppost, # try: stepmid, steppost, or steppre
     xlims=(168 * 2, 168 * 3),
-    dpi=600,
+    #dpi=600, # uncomment this line to save the plot in high resolution
 )
 
 ```
 
 Explore the h2_balance duals in the results:
 
-```julia
+```@example fully-flexible-time-resolution
 balance = TIO.get_table(connection, "cons_balance_consumer")
 
 asset = "h2_demand"
@@ -170,7 +203,9 @@ What do you notice?
 
 How is the resolution of the Consumer Balance Constraint defined?
 
-Update the `flows_rep_periods_partitions` file:
+The answer is in the `cons_balance_consumer` table, in the column `time_block_start` - it is defined by the highest resolution of the assets that is being balanced in `the h2_demand`, check the [Concepts](@ref concepts) section for more on that. This means that the `h2_demand` is being balanced with the `smr_ccs` in a 1 hour resolution, and not with the `electrolizer`, which is in a 6 hour resolution. This means that the h2 balance constraint is being defined in a 1 hour resolution, and not in a 6 hour resolution.
+
+What we can do? Update the `flows_rep_periods_partitions` file, either manually or using the DuckDB connection, to set the `smr_ccs` to a 6 hour resolution as well, so that the `h2_demand` is being balanced with both assets in a 6 hour resolution.:
 
 ```txt
 from_asset,to_asset,partition,rep_period,specification,milestone_year
@@ -178,7 +213,42 @@ electrolizer,h2_demand,6,1,uniform,2030
 smr_ccs,h2_demand,6,1,uniform,2030
 ```
 
+or using the DuckDB connection:
+
+```@example fully-flexible-time-resolution
+DuckDB.query(connection,
+    """
+    INSERT INTO flows_rep_periods_partitions VALUES
+        ('smr_ccs', 'h2_demand', 6, 1, 'uniform', 2030);
+    """
+    )
+```
+
 Run again and explore the results once more...
+
+```@example fully-flexible-time-resolution
+# Optimize the model
+energy_problem =
+    TEM.run_scenario(connection; output_folder=output_dir)
+```
+
+```@example fully-flexible-time-resolution
+balance = TIO.get_table(connection, "cons_balance_consumer")
+
+asset = "h2_demand"
+year = 2030
+rep_period = 1
+
+filtered_asset = filter(
+    row ->
+        row.asset == asset &&
+            row.milestone_year == year &&
+            row.rep_period == rep_period,
+    balance,
+)
+```
+
+Do you notice the difference? Now the `h2_demand` is being balanced with both assets in a 6 hour resolution. Check the `time_block_start` column in the `cons_balance_consumer` table 😉
 
 ### Change the specification
 
@@ -194,9 +264,9 @@ If you want to compare results of two models, you can create a new connection, a
 One thing that could be interesting to consider is changing partitions in `flows_rep_periods_partitions` and `assets_rep_periods_partitions` to 1.
 Once changed, we can solve a new energy problem as such:
 
-```julia
+```@example fully-flexible-time-resolution
 conn_hourly = DBInterface.connect(DuckDB.DB)
-input_dir = "my-awesome-energy-system/tutorial-3"
+input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-3")
 TIO.read_csv_folder(conn_hourly, input_dir)
 TEM.populate_with_defaults!(conn_hourly)
 hourly_energy_problem = TEM.run_scenario(conn_hourly)
@@ -204,24 +274,13 @@ hourly_energy_problem = TEM.run_scenario(conn_hourly)
 
 Notice that we change the name of the connection and the name of the energy problem (also, we are not exporting the results, but it can be done in a new folder, if needed).
 
-Compare the number of constraints, variables, and objective function between the two problems:
-
-```log
-EnergyProblem:
-  - Model created!
-    - Number of variables: 96360
-    - Number of constraints for variable bounds: 87600
-    - Number of structural constraints: 122640
-  - Model solved!
-    - Termination status: OPTIMAL
-    - Objective value: 1.4854146333461973e8
-```
+Compare the number of constraints, variables, and objective function between the two problems.
 
 What do you notice? Is it what you where expecting?
 
 Let's plot the flows together, for a specific time period in the year:
 
-```julia
+```@example fully-flexible-time-resolution
 flows = TIO.get_table(connection, "var_flow")
 from_asset = "electrolizer"
 to_asset = "h2_demand"
@@ -247,7 +306,7 @@ plot(
     markersize=2,
     linetype=:steppost, # try: stepmid, steppost, or steppre
     xlims=(2200, 2400),
-    dpi=600,
+    #dpi=600, # uncomment this line to save the plot in high resolution
 )
 
 hourly_flows = TIO.get_table(conn_hourly, "var_flow")
