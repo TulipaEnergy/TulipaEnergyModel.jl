@@ -73,7 +73,7 @@ connection = DBInterface.connect(DuckDB.DB)
 TIO.read_csv_folder(connection, input_dir)
 ```
 
-!!! tip "PRO tip"
+!!! tip "Pro tip: Create tables using DuckDB SQL statements"
     Alternatively to create csv files with the flexible time resolution information as before, you can create and fill in the tables `assets_rep_periods_partitions` and `flows_rep_periods_partitions` in the database with the following code and DuckDB SQL statements:
 
 ```@example fully-flexible-time-resolution
