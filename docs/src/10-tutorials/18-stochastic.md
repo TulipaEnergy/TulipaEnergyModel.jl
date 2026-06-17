@@ -229,8 +229,7 @@ for (i, group) in enumerate(gdf)
         title=string(unique(group.asset)),
         xlabel="Day",
         ylabel="[GWh]",
-        xticks=0:30:365,
-        dpi=600,
+        xticks=0:30:365
     )
 end
 p
@@ -304,8 +303,7 @@ for (i, group) in enumerate(gdf)
         title=string(unique(group.asset)),
         xlabel="Day",
         ylabel="[GWh]",
-        xticks=0:30:365,
-        dpi=600,
+        xticks=0:30:365
     )
 end
 p
