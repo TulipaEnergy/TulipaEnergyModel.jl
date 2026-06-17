@@ -28,9 +28,9 @@ using Plots
 We need to create a connection to DuckDB and point to the input and output folders:
 
 ```@example basic
-connection = DBInterface.connect(DuckDB.DB)
 input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-1")
 output_dir = tempdir()
+connection = DBInterface.connect(DuckDB.DB)
 ```
 
 Here we create a temporary directory for the output. But, you can point to any directory you want. But! remember that if the output directory does not exist yet, you need to create the 'results' folder, otherwise it will error later.
