@@ -134,7 +134,7 @@ TEM.populate_with_defaults!(connection)
 
 # Optimize the model
 energy_problem =
-    TEM.run_scenario(connection)
+    TEM.run_scenario(connection);
 
 ```
 
@@ -226,7 +226,7 @@ Run again and explore the results once more...
 ```@example fully-flexible-time-resolution
 # Optimize the model
 energy_problem =
-    TEM.run_scenario(connection)
+    TEM.run_scenario(connection);
 ```
 
 ```@example fully-flexible-time-resolution
@@ -266,7 +266,7 @@ conn_hourly = DBInterface.connect(DuckDB.DB)
 input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-3")
 TIO.read_csv_folder(conn_hourly, input_dir)
 TEM.populate_with_defaults!(conn_hourly)
-hourly_energy_problem = TEM.run_scenario(conn_hourly)
+hourly_energy_problem = TEM.run_scenario(conn_hourly);
 ```
 
 Notice that we change the name of the connection and the name of the energy problem (also, we are not exporting the results, but it can be done in a new folder, if needed).

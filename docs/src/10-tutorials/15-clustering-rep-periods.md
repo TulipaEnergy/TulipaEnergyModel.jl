@@ -189,7 +189,7 @@ clusters = TC.cluster!(connection,
                     )
 
 # Let's have a look at the new rep_periods_mapping table
-TIO.get_table(connection, "rep_periods_mapping")
+first(TIO.get_table(connection, "rep_periods_mapping"), 20)
 ```
 
 What do you notice about the new representative periods mapping?
@@ -237,7 +237,7 @@ To run the model, add the data to the system with `TulipaIO` and then run it as 
 
 ```@example blended-representative-periods
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection)
+energy_problem = TEM.run_scenario(connection);
 ```
 
 ## Interpreting the Results
@@ -309,7 +309,7 @@ This concludes this tutorial! Play around with different parameters to see how t
 You can check the new tables with TulipaIO, for example:
 
 ```@example blended-representative-periods
-TIO.get_table(connection,"rep_periods_mapping")
+first(TIO.get_table(connection,"rep_periods_mapping"), 20)
 ```
 
 If you want to save the intermediary tables created by the clustering, you can do this with DuckDB:
