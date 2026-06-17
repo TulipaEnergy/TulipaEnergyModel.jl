@@ -226,7 +226,7 @@ Run again and explore the results once more...
 ```@example fully-flexible-time-resolution
 # Optimize the model
 energy_problem =
-    TEM.run_scenario(connection; output_folder=output_dir)
+    TEM.run_scenario(connection)
 ```
 
 ```@example fully-flexible-time-resolution
