@@ -19,18 +19,7 @@ For instance, what are the storage capacities? Efficiencies? Initial storage lev
 
 Let's reuse most of the final script from the Tutorial 4, but using the data from tutorial 5:
 
-```julia
-using Pkg
-Pkg.activate(".")
-# Pkg.add("TulipaEnergyModel")
-# Pkg.add("TulipaIO")
-# Pkg.add("TulipaClustering")
-# Pkg.add("DuckDB")
-# Pkg.add("DataFrames")
-# Pkg.add("Plots")
-# Pkg.add("Distances")
-Pkg.instantiate()
-
+```@example seasonal-and-non-seasonal-storage
 import TulipaIO as TIO
 import TulipaEnergyModel as TEM
 import TulipaClustering as TC
@@ -40,33 +29,34 @@ using Plots
 using Distances
 
 connection = DBInterface.connect(DuckDB.DB)
-input_dir = "my-awesome-energy-system/tutorial-5"
-output_dir = "my-awesome-energy-system/tutorial-5/results"
-#mkdir(output_dir) # optional if the output folder doesn't exist yet
+input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-5")
 TIO.read_csv_folder(connection, input_dir)
 
 TC.transform_wide_to_long!(
     connection,
     "profiles_wide",
     "profiles";
+    exclude_columns = ["milestone_year", "timestep"]
 )
 
 period_duration = 24
 num_rps = 12
+layout = TC.ProfilesTableLayout(year = :milestone_year)
 clusters = TC.cluster!(connection,
                     period_duration,
                     num_rps;
                     method = :convex_hull,
                     distance = Distances.CosineDist(),
-                    weight_type = :convex
+                    weight_type = :convex,
+                    layout = layout,
                     )
 
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection; output_folder=output_dir)
+energy_problem = TEM.run_scenario(connection)
 ```
 
-!!! warning
-    Since the output directory does not exist yet, we need to create the 'results' folder inside our tutorial folder, otherwise it will error.
+!!! tip
+    Remember that you can always define and create the output directory if it doesn't exist to export the results to csv files. Then you can use the `output_folder` keyword argument in the `run_scenario` function to save the results in that folder.
 
 At this point, everything should work similiar as Tutorial 4.
 
@@ -76,7 +66,7 @@ At this point, everything should work similiar as Tutorial 4.
 
 Nice, so what about the storage level?
 
-```julia
+```@example seasonal-and-non-seasonal-storage
 # Retrieve and group the data
 storage_levels = TIO.get_table(connection, "var_storage_level_rep_period")
 gdf = groupby(storage_levels, [:asset])
@@ -94,7 +84,6 @@ for (i, group) in enumerate(gdf)
         xlabel="Hour",
         ylabel="[MWh]",
         xlims=(1, 24),
-        dpi=600,
     )
 end
 p
@@ -112,10 +101,16 @@ Rerun the workflow and check the results again...
 
 !!! tip "Pro tip"
     You can use the following command to update a parameter in the database directly from Julia and then rerun:
-    ```julia
+
+```@example seasonal-and-non-seasonal-storage
     DuckDB.query(connection, "UPDATE asset SET is_seasonal = true WHERE asset = 'h2_storage'")
-    energy_problem = TEM.run_scenario(connection; output_folder=output_dir)
-    ```
+```
+
+And then run the scenario again:
+
+```@example seasonal-and-non-seasonal-storage
+energy_problem = TEM.run_scenario(connection)
+```
 
 What do you notice in the output folder? Any new variables/constraints?
 
@@ -125,7 +120,7 @@ Check the storage level of the hydrogen storage.
     It's now in the variable `var_storage_level_inter_period` because it's seasonal.
     Use `TIO.get_table(connection, "var_storage_level_inter_period")` to access it.
 
-```julia
+```@example seasonal-and-non-seasonal-storage
 seasonal_storage_levels = TIO.get_table(connection, "var_storage_level_inter_period")
 gdf = groupby(seasonal_storage_levels, [:asset])
 n_subplots = length(gdf)
@@ -137,8 +132,7 @@ for (i, group) in enumerate(gdf)
         group.solution;
         title=string(unique(group.asset)),
         xlabel="Day",
-        ylabel="[MWh]",
-        dpi=600,
+        ylabel="[MWh]"
     )
 end
 p
@@ -166,7 +160,7 @@ The following code:
    *Since it is 1 year and 1 representative, the storage is not considered seasonal (it is within the representative period)*
 4. Stores the run in a new object called `ep_hourly`
 
-```julia
+```@example seasonal-and-non-seasonal-storage
 # 1. Create a new connection for the hourly benchmark
 conn_hourly_benchmark = DBInterface.connect(DuckDB.DB)
 TIO.read_csv_folder(conn_hourly_benchmark, input_dir)
@@ -176,8 +170,9 @@ TC.transform_wide_to_long!(
     conn_hourly_benchmark,
     "profiles_wide",
     "profiles";
+    exclude_columns = ["milestone_year", "timestep"]
 )
-TC.dummy_cluster!(conn_hourly_benchmark)
+TC.dummy_cluster!(conn_hourly_benchmark; layout = layout)
 
 # 3. Populate with defaults
 TEM.populate_with_defaults!(conn_hourly_benchmark)
@@ -193,7 +188,7 @@ ep_hourly = TEM.run_scenario(conn_hourly_benchmark)
 You can use this result and the ones from the clustering to see the comparison of the two solutions.\
 Here is an example of how to combine the plots for this case:
 
-```julia
+```@example seasonal-and-non-seasonal-storage
 # plotting the results for the hourly benchmark
 storage_levels_hourly = TIO.get_table(conn_hourly_benchmark, "var_storage_level_rep_period")
 asset_to_filter = "h2_storage"
@@ -210,7 +205,6 @@ plot(
     xlabel="Hour",
     ylabel="[MWh]",
     xlims=(1, 8760),
-    dpi=600,
 )
 # adding the seasonal storage levels
 seasonal_filtered_asset = filter(
@@ -236,7 +230,7 @@ plot!(
 
 Here you can see a whole script to compare the results from different number of representative periods. See, that the more representatives, the better the approximations (but watch out! the longer the time to solve).
 
-```@example tutorial-5
+```@example seasonal-non-seasonal-in-full
 import TulipaIO as TIO
 import TulipaEnergyModel as TEM
 import TulipaClustering as TC
@@ -245,7 +239,7 @@ using DataFrames
 using Plots
 using Distances
 
-input_dir = "my-awesome-energy-system/tutorial-5"
+input_dir = joinpath(@__DIR__, "my-awesome-energy-system/tutorial-5")
 
 # The hourly benchmark
 conn_hourly_benchmark = DBInterface.connect(DuckDB.DB)
@@ -270,7 +264,6 @@ p = plot(
     xlims = (1, 8760),
     legend = Symbol(:outer,:bottom),
     legend_column = -1,
-    dpi = 600,
 )
 
 # The base for each representative periods run
@@ -306,7 +299,6 @@ for num_rps in list_num_rps
         label = "$num_rps rps",
     )
 end
-
 # show the final plot
 p
 ```
