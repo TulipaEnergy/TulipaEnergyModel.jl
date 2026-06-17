@@ -113,7 +113,7 @@ plot(
     label=string(from_asset, " -> ", to_asset),
     xlabel="Hour",
     ylabel="[MWh]",
-    dpi=600,
+    #dpi=600, # uncomment this line to save the plot in high resolution
 )
 ```
 
@@ -141,7 +141,7 @@ plot(
     xlabel="Hour",
     ylabel="[MWh]",
     ylims=(0,200),
-    dpi=600,
+    #dpi=600, # uncomment this line to save the plot in high resolution
 )
 ```
 
