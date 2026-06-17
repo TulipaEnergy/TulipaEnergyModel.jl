@@ -237,7 +237,7 @@ To run the model, add the data to the system with `TulipaIO` and then run it as 
 
 ```@example blended-representative-periods
 TEM.populate_with_defaults!(connection)
-energy_problem = TEM.run_scenario(connection; output_folder=output_dir)
+energy_problem = TEM.run_scenario(connection)
 ```
 
 ## Interpreting the Results
