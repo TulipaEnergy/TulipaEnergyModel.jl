@@ -5,10 +5,7 @@ The input data must follow the table schemas below to correctly build a system i
 The schemas below are in [`input-schemas.json`](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/src/input-schemas.json). You can also view the schemas after loading the package by typing `TulipaEnergyModel.schema` in the Julia console.
 
 !!! info "Optional tables/files and their defaults"
-    The following tables/files are allowed to be missing: "assets\_rep\_periods\_partitions", "assets\_timeframe\_partitions", "assets\_timeframe\_profiles", "flows\_rep\_periods\_partitions", "investment\_group\_asset", "investment\_group\_asset\_membership", "profiles\_timeframe". These tables that are allowed to be missing are tables allowed to be empty, i.e., to have 0 rows, during model creation.
-    - For the partitions tables/files, the default value are `specification = uniform` and `partition = 1` for each asset/flow and year
-    - For the profiles tables/files, the default value is a flat profile of value 1.0 p.u.
-    - If no group table/file is available there will be no group constraints in the model
+    The table below summarizes the optional tables/files and their default values. If a table/file is missing, the default value will be used.
 
 ```@eval
 """
@@ -28,40 +25,57 @@ PARAMETER_NAME
 
 using Markdown, JSON
 using OrderedCollections: OrderedDict
+using TulipaEnergyModel
 
 input_schemas = JSON.parsefile("../../../src/input-schemas.json"; dicttype = OrderedDict)
 
 let buffer = IOBuffer()
+    optional_tables = Set(TulipaEnergyModel.tables_allowed_to_be_missing)
+
     mandatory_columns_per_table = [
         (
             table_name = table_name,
             mandatory_columns = [
                 field_name for (field_name, field_info) in fields if !haskey(field_info, "default")
             ],
+            is_optional = table_name in optional_tables,
         ) for (table_name, fields) in input_schemas
     ]
 
-    summary_table_header = ("Table", "Mandatory columns (no defaults)")
+    summary_table_header = (
+        "Table",
+        "Optional (allowed to be missing)",
+        "Mandatory columns (no defaults)",
+    )
     summary_table_rows = [
         (
             "`$table_name`",
+            is_optional ? "True" : "False",
             join(["`$field_name`" for field_name in mandatory_columns], ", "),
         ) for (;
             table_name,
             mandatory_columns,
+            is_optional,
         ) in mandatory_columns_per_table
     ]
     col_1_width = maximum(length.([summary_table_header[1]; [row[1] for row in summary_table_rows]]))
     col_2_width = maximum(length.([summary_table_header[2]; [row[2] for row in summary_table_rows]]))
+    col_3_width = maximum(length.([summary_table_header[3]; [row[3] for row in summary_table_rows]]))
 
     write(buffer, "## Mandatory columns by table\n\n")
     write(
         buffer,
-        "| $(rpad(summary_table_header[1], col_1_width)) | $(rpad(summary_table_header[2], col_2_width)) |\n",
+        "| $(rpad(summary_table_header[1], col_1_width)) | $(rpad(summary_table_header[2], col_2_width)) | $(rpad(summary_table_header[3], col_3_width)) |\n",
     )
-    write(buffer, "| $(repeat("-", col_1_width)) | $(repeat("-", col_2_width)) |\n")
-    for (table_name, mandatory_columns) in summary_table_rows
-        write(buffer, "| $(rpad(table_name, col_1_width)) | $(rpad(mandatory_columns, col_2_width)) |\n")
+    write(
+        buffer,
+        "| $(repeat("-", col_1_width)) | $(repeat("-", col_2_width)) | $(repeat("-", col_3_width)) |\n",
+    )
+    for (table_name, optional_status, mandatory_columns) in summary_table_rows
+        write(
+            buffer,
+            "| $(rpad(table_name, col_1_width)) | $(rpad(optional_status, col_2_width)) | $(rpad(mandatory_columns, col_3_width)) |\n",
+        )
     end
     write(buffer, "\n")
 
