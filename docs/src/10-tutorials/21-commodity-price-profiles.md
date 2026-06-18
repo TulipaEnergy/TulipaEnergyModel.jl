@@ -19,6 +19,9 @@ We will build a small example with two producers feeding the same demand:
 When the commodity price multiplier is low, `"Gas"` should be cheaper.
 When the multiplier is high, `"Peaker"` should become cheaper.
 
+!!! info "TulipaBuilder.jl"
+    This tutorial uses [TulipaBuilder.jl](https://github.com/TulipaEnergy/TulipaBuilder.jl) instead of reading csv files as in previous tutorials, so make sure you have it installed in your environment to run the code below.
+
 ```@example commodity-price-profiles
 using TulipaBuilder: TulipaBuilder as TB
 using TulipaClustering: TulipaClustering as TC
