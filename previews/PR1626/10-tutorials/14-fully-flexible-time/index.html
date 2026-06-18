@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Fully-Flexible Time Resolution · TulipaEnergyModel.jl</title><meta name="title" content="Fully-Flexible Time Resolution · TulipaEnergyModel.jl"/><meta property="og:title" content="Fully-Flexible Time Resolution · TulipaEnergyModel.jl"/><meta property="twitter:title" content="Fully-Flexible Time Resolution · TulipaEnergyModel.jl"/><meta name="description" content="Documentation for TulipaEnergyModel.jl."/><meta property="og:description" content="Documentation for TulipaEnergyModel.jl."/><meta property="twitter:description" content="Documentation for TulipaEnergyModel.jl."/><meta property="og:url" content="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/14-fully-flexible-time/"/><meta property="twitter:url" content="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/14-fully-flexible-time/"/><link rel="canonical" href="https://TulipaEnergy.github.io/TulipaEnergyModel.jl/10-tutorials/14-fully-flexible-time/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.png" alt="TulipaEnergyModel.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TulipaEnergyModel.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Welcome</a></li><li><span class="tocitem">Tutorials</span><ul><li><a class="tocitem" href="../11-setting-up/">Tutorial Setup</a></li><li><a class="tocitem" href="../12-basics/">The Basics</a></li><li><a class="tocitem" href="../13-assets/">Gereralized Assets and Flows</a></li><li class="is-active"><a class="tocitem" href>Fully-Flexible Time Resolution</a><ul class="internal"><li><a class="tocitem" href="#Introduction"><span>Introduction</span></a></li><li><a class="tocitem" href="#Run-the-workflow"><span>Run the workflow</span></a></li><li><a class="tocitem" href="#Explore-the-results"><span>Explore the results</span></a></li></ul></li><li><a class="tocitem" href="../15-clustering-rep-periods/">Blended Representative Periods with Tulipa Clustering</a></li><li><a class="tocitem" href="../16-storage/">Seasonal and Non-seasonal Storage</a></li><li><a class="tocitem" href="../17-multi-year-investments/">Multi-Year Investment Pathways</a></li><li><a class="tocitem" href="../18-stochastic/">Two-Stage Stochastic Optimization</a></li><li><a class="tocitem" href="../19-workflow-obz/">Data-Handling Workflow (Example)</a></li><li><a class="tocitem" href="../20-workflow-from-raw-data/">Data-Handling Workflow From Raw Data (Example)</a></li><li><a class="tocitem" href="../21-commodity-price-profiles/">Commodity Price Profiles</a></li><li><a class="tocitem" href="../31-rolling-horizon/">Rolling Horizon</a></li><li><a class="tocitem" href="../40-bids-workaround/">Bids using Consumer Unit Commitment (Workaround)</a></li><li><a class="tocitem" href="../99-manual-steps/">Advanced Control</a></li></ul></li><li><span class="tocitem">User Guide</span><ul><li><a class="tocitem" href="../../20-user-guide/00-getting-started/">Getting Started</a></li><li><a class="tocitem" href="../../20-user-guide/20-how-to-use/">How to Use</a></li><li><a class="tocitem" href="../../20-user-guide/50-workflow/">Analysis Workflow</a></li><li><a class="tocitem" href="../../20-user-guide/54-input-table-schemas/">Input Table Schemas</a></li><li><a class="tocitem" href="../../20-user-guide/55-outputs/">Output Variables</a></li><li><a class="tocitem" href="../../20-user-guide/60-structures/">Internal Model Structures</a></li><li><a class="tocitem" href="../../20-user-guide/65-FFTR-table/">FFTR Constraints Table</a></li></ul></li><li><a class="tocitem" href="../../30-concepts/">Concepts</a></li><li><span class="tocitem">Scientific Foundation</span><ul><li><a class="tocitem" href="../../40-scientific-foundation/40-formulation/">Mathematical Formulation</a></li><li><a class="tocitem" href="../../40-scientific-foundation/45-scientific-references/">Scientific References</a></li></ul></li><li><a class="tocitem" href="../../70-reference/">API Reference</a></li><li><a class="tocitem" href="../../80-ecosystem/">Tulipa Ecosystem</a></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../90-contributing/90-contributing/">Contributing Guidelines</a></li><li><a class="tocitem" href="../../90-contributing/91-developer/">Developer Documentation</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Tutorials</a></li><li class="is-active"><a href>Fully-Flexible Time Resolution</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Fully-Flexible Time Resolution</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/TulipaEnergy/TulipaEnergyModel.jl/blob/main/docs/src/10-tutorials/14-fully-flexible-time.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Fully-Flexible-Time-Resolution"><a class="docs-heading-anchor" href="#Fully-Flexible-Time-Resolution">Fully-Flexible Time Resolution</a><a id="Fully-Flexible-Time-Resolution-1"></a><a class="docs-heading-anchor-permalink" href="#Fully-Flexible-Time-Resolution" title="Permalink"></a></h1><h2 id="Introduction"><a class="docs-heading-anchor" href="#Introduction">Introduction</a><a id="Introduction-1"></a><a class="docs-heading-anchor-permalink" href="#Introduction" title="Permalink"></a></h2><p>Tulipa allows mixing multiple time resolutions within the same problem.<br/>For instance, by:</p><ul><li>energy carrier - electricity high, gas medium, heat low</li><li>geographic area - local high, neighboring areas decreasing with distance</li><li>time horizon - short-term high, long-term low</li></ul><p>This is a useful feature for scaling large problems to make them solvable or to solve problems faster while iteratively tuning data - without losing granular detail in the area of interest.</p><p>More information is in the section <a href="../../30-concepts/#flex-time-res">Flexible Time Resolution</a>.</p><p>For more nitty gritty nerdy details, you can read this reference.</p><p>Gao, Z., Gazzani, M., Tejada-Arango, D. A., Siqueira, A. S., Wang, N., Gibescu, M., &amp; Morales-España, G. (2025). Fully flexible temporal resolution for energy system optimization. Applied Energy, 396, 126267. <a href="https://doi.org/10.1016/j.apenergy.2025.126267">https://doi.org/10.1016/j.apenergy.2025.126267</a></p><h3 id="Hydrogen-sector-on-6-hour-resolution"><a class="docs-heading-anchor" href="#Hydrogen-sector-on-6-hour-resolution">Hydrogen sector on 6 hour resolution</a><a id="Hydrogen-sector-on-6-hour-resolution-1"></a><a class="docs-heading-anchor-permalink" href="#Hydrogen-sector-on-6-hour-resolution" title="Permalink"></a></h3><p>Defining flexible temporal resolution requires the files <code>assets_rep_periods_partitions</code> and <code>flows_rep_periods_partitions</code>, so let&#39;s create them together.</p><div class="admonition is-success" id="Tip-d93816211fac426a"><header class="admonition-header">Tip<a class="admonition-anchor" href="#Tip-d93816211fac426a" title="Permalink"></a></header><div class="admonition-body"><p>The schemas of the files is described in the section <a href="../../20-user-guide/54-input-table-schemas/#table-schemas">Inputs</a>.</p></div></div><p>Working in the folder <code>tutorial-3</code>:</p><ol><li><p>Create a new file called <code>assets_rep_periods_partitions.csv</code></p></li><li><p>Copy this text into the file:</p><pre><code class="language-txt hljs">asset,partition,rep_period,specification,milestone_year
+electrolizer,6,1,uniform,2030</code></pre></li><li><p>Create a new file called <code>flows_rep_periods_partitions.csv</code></p></li><li><p>Copy this text into the file:</p><pre><code class="language-txt hljs">from_asset,to_asset,partition,rep_period,specification,milestone_year
+electrolizer,h2_demand,6,1,uniform,2030</code></pre></li></ol><div class="admonition is-info" id="Note-3cf48994077c2f58"><header class="admonition-header">Note<a class="admonition-anchor" href="#Note-3cf48994077c2f58" title="Permalink"></a></header><div class="admonition-body"><p>If no partition or resolution is defined for an asset or flow, then the default values are <code>uniform</code> and <code>1</code>.</p></div></div><h2 id="Run-the-workflow"><a class="docs-heading-anchor" href="#Run-the-workflow">Run the workflow</a><a id="Run-the-workflow-1"></a><a class="docs-heading-anchor-permalink" href="#Run-the-workflow" title="Permalink"></a></h2><p>In <code>my_workflow.jl</code> you can simply change the name of your input directory and run your code.<br/>From the Basics Tutorial, it should look something like this:</p><div class="admonition is-success" id="Tip-7b170fd701c99f5f"><header class="admonition-header">Tip<a class="admonition-anchor" href="#Tip-7b170fd701c99f5f" title="Permalink"></a></header><div class="admonition-body"><p>Remember to activate the environment in the current directory using the following code in your Julia REPL:</p><pre><code class="language-julia hljs">using Pkg: Pkg
+Pkg.activate(&quot;.&quot;)</code></pre></div></div><pre><code class="language-julia hljs"># Load the packages
+import TulipaIO as TIO
+import TulipaEnergyModel as TEM
+using DuckDB
+using DataFrames
+using Plots
+
+# Define the directories
+input_dir = joinpath(@__DIR__, &quot;my-awesome-energy-system/tutorial-3&quot;)
+
+# Create the connection and read the case study files
+connection = DBInterface.connect(DuckDB.DB)
+TIO.read_csv_folder(connection, input_dir)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">DuckDB.DB(&quot;:memory:&quot;)</code></pre><div class="admonition is-success" id="Pro-tip:-Create-tables-using-DuckDB-SQL-statements-a90ec0921d0180eb"><header class="admonition-header">Pro tip: Create tables using DuckDB SQL statements<a class="admonition-anchor" href="#Pro-tip:-Create-tables-using-DuckDB-SQL-statements-a90ec0921d0180eb" title="Permalink"></a></header><div class="admonition-body"><p>Alternatively to create csv files with the flexible time resolution information as before, you can create and fill in the tables <code>assets_rep_periods_partitions</code> and <code>flows_rep_periods_partitions</code> in the database with the following code and DuckDB SQL statements:</p></div></div><pre><code class="language-julia hljs">DuckDB.query(connection,
+    &quot;&quot;&quot;
+    CREATE OR REPLACE TABLE assets_rep_periods_partitions (
+        asset TEXT,
+        partition INTEGER,
+        rep_period INTEGER,
+        specification TEXT,
+        milestone_year INTEGER
+    );
+    &quot;&quot;&quot;
+    )
+
+DuckDB.query(connection,
+    &quot;&quot;&quot;
+    INSERT INTO assets_rep_periods_partitions VALUES
+        (&#39;electrolizer&#39;, 6, 1, &#39;uniform&#39;, 2030);
+    &quot;&quot;&quot;
+    )
+
+DuckDB.query(connection,
+    &quot;&quot;&quot;
+    CREATE OR REPLACE TABLE flows_rep_periods_partitions (
+        from_asset TEXT,
+        to_asset TEXT,
+        partition INTEGER,
+        rep_period INTEGER,
+        specification TEXT,
+        milestone_year INTEGER
+    );
+    &quot;&quot;&quot;
+    )
+DuckDB.query(connection,
+    &quot;&quot;&quot;
+    INSERT INTO flows_rep_periods_partitions VALUES
+        (&#39;electrolizer&#39;, &#39;h2_demand&#39;, 6, 1, &#39;uniform&#39;, 2030);
+    &quot;&quot;&quot;
+    )</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(Count = [1],)</code></pre><p>You can print the tables you have created (either using the CSV files or the database connection) to see if everything matches and is filled in as intended</p><pre><code class="language-julia hljs">TIO.get_table(connection, &quot;assets_rep_periods_partitions&quot;)</code></pre><div><div style = "float: left;"><span>1×5 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "columnLabelRow"><th class = "stubheadLabel" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">partition</th><th style = "text-align: left;">rep_period</th><th style = "text-align: left;">specification</th><th style = "text-align: left;">milestone_year</th></tr><tr class = "columnLabelRow"><th class = "stubheadLabel" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th></tr></thead><tbody><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">electrolizer</td><td style = "text-align: right;">6</td><td style = "text-align: right;">1</td><td style = "text-align: left;">uniform</td><td style = "text-align: right;">2030</td></tr></tbody></table></div><pre><code class="language-julia hljs">TIO.get_table(connection, &quot;flows_rep_periods_partitions&quot;)</code></pre><div><div style = "float: left;"><span>1×6 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "columnLabelRow"><th class = "stubheadLabel" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">from_asset</th><th style = "text-align: left;">to_asset</th><th style = "text-align: left;">partition</th><th style = "text-align: left;">rep_period</th><th style = "text-align: left;">specification</th><th style = "text-align: left;">milestone_year</th></tr><tr class = "columnLabelRow"><th class = "stubheadLabel" style = "font-weight: bold; text-align: right;"></th><th title = "String" style = "text-align: left;">String</th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th></tr></thead><tbody><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">electrolizer</td><td style = "text-align: left;">h2_demand</td><td style = "text-align: right;">6</td><td style = "text-align: right;">1</td><td style = "text-align: left;">uniform</td><td style = "text-align: right;">2030</td></tr></tbody></table></div><p>Now, let&#39;s run the model and export the results to the output folder:</p><pre><code class="language-julia hljs"># Add the defaults
+TEM.populate_with_defaults!(connection)
+
+# Optimize the model
+energy_problem =
+    TEM.run_scenario(connection);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+  - Model created!
+    - Number of variables: 89060
+    - Number of constraints for variable bounds: 80300
+    - Number of structural constraints: 108040
+  - Model solved!
+    - Termination status: OPTIMAL
+    - Objective value: 1.4718768475318378e8
+    - Objective breakdown:
+      - assets_fixed_cost_aggregated_vintage_method: 0.0
+      - assets_fixed_cost_compact_vintage_method: 0.0
+      - assets_investment_cost: 0.0
+      - flows_fixed_cost: 0.0
+      - flows_investment_cost: 0.0
+      - flows_operational_cost: 1.4718768475318378e8
+      - storage_assets_energy_fixed_cost: 0.0
+      - storage_assets_energy_investment_cost: 0.0
+      - units_on_operational_cost: 0.0
+      - vintage_flows_operational_cost: 0.0
+</code></pre><div class="admonition is-success" id="Tip-cf70198d04d99ae0"><header class="admonition-header">Tip<a class="admonition-anchor" href="#Tip-cf70198d04d99ae0" title="Permalink"></a></header><div class="admonition-body"><p>Remember that you can always define and create the output directory if it doesn&#39;t exist to export the results to csv files. Then you can use the <code>output_folder</code> keyword argument in the <code>run_scenario</code> function to save the results in that folder.</p></div></div><p>From the statistics at the end, what are the number of constraints, variables, and objective function?</p><h2 id="Explore-the-results"><a class="docs-heading-anchor" href="#Explore-the-results">Explore the results</a><a id="Explore-the-results-1"></a><a class="docs-heading-anchor-permalink" href="#Explore-the-results" title="Permalink"></a></h2><p>Explore the flow that goes from the electrolizer to the h2_demand:<br/><em>Notice there are 1460 values (8760h/6h).</em></p><pre><code class="language-julia hljs">flows = TIO.get_table(connection, &quot;var_flow&quot;)
+
+from_asset = &quot;electrolizer&quot;
+to_asset = &quot;h2_demand&quot;
+year = 2030
+rep_period = 1
+
+filtered_flow = filter(
+    row -&gt;
+        row.from_asset == from_asset &amp;&amp;
+            row.to_asset == to_asset &amp;&amp;
+            row.milestone_year == year &amp;&amp;
+            row.rep_period == rep_period,
+    flows,
+)
+
+plot(
+    filtered_flow.time_block_start,
+    filtered_flow.solution;
+    label=string(from_asset, &quot; -&gt; &quot;, to_asset),
+    xlabel=&quot;Hour&quot;,
+    ylabel=&quot;[MWh]&quot;,
+    marker=:circle,
+    markersize=2,
+    linetype=:steppost, # try: stepmid, steppost, or steppre
+    xlims=(168 * 2, 168 * 3),
+)</code></pre><img src="e1d71be0.svg" alt="Example block output"/><p>Explore the h2_balance duals in the results by displaying the first 5 rows of the table:</p><pre><code class="language-julia hljs">balance = TIO.get_table(connection, &quot;cons_balance_consumer&quot;)
+
+asset = &quot;h2_demand&quot;
+year = 2030
+rep_period = 1
+
+filtered_asset = filter(
+    row -&gt;
+        row.asset == asset &amp;&amp;
+            row.milestone_year == year &amp;&amp;
+            row.rep_period == rep_period,
+    balance,
+)
+first(filtered_asset, 5)</code></pre><div><div style = "float: left;"><span>5×7 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "columnLabelRow"><th class = "stubheadLabel" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">id</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">milestone_year</th><th style = "text-align: left;">rep_period</th><th style = "text-align: left;">time_block_start</th><th style = "text-align: left;">time_block_end</th><th style = "text-align: left;">dual_balance_consumer</th></tr><tr class = "columnLabelRow"><th class = "stubheadLabel" style = "font-weight: bold; text-align: right;"></th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">8761</td><td style = "text-align: left;">h2_demand</td><td style = "text-align: right;">2030</td><td style = "text-align: right;">1</td><td style = "text-align: right;">1</td><td style = "text-align: right;">1</td><td style = "text-align: right;">-305.0</td></tr><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: right;">8762</td><td style = "text-align: left;">h2_demand</td><td style = "text-align: right;">2030</td><td style = "text-align: right;">1</td><td style = "text-align: right;">2</td><td style = "text-align: right;">2</td><td style = "text-align: right;">100.0</td></tr><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: right;">8763</td><td style = "text-align: left;">h2_demand</td><td style = "text-align: right;">2030</td><td style = "text-align: right;">1</td><td style = "text-align: right;">3</td><td style = "text-align: right;">3</td><td style = "text-align: right;">100.0</td></tr><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: right;">8764</td><td style = "text-align: left;">h2_demand</td><td style = "text-align: right;">2030</td><td style = "text-align: right;">1</td><td style = "text-align: right;">4</td><td style = "text-align: right;">4</td><td style = "text-align: right;">100.0</td></tr><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: right;">8765</td><td style = "text-align: left;">h2_demand</td><td style = "text-align: right;">2030</td><td style = "text-align: right;">1</td><td style = "text-align: right;">5</td><td style = "text-align: right;">5</td><td style = "text-align: right;">100.0</td></tr></tbody></table></div><p>What do you notice?</p><p>How is the resolution of the Consumer Balance Constraint defined?</p><p>The answer is in the <code>cons_balance_consumer</code> table, in the column <code>time_block_start</code> - it is defined by the highest resolution of the assets that is being balanced in <code>the h2_demand</code>, check the <a href="../../30-concepts/#concepts">Concepts</a> section for more on that. This means that the <code>h2_demand</code> is being balanced with the <code>smr_ccs</code> in a 1 hour resolution, and not with the <code>electrolizer</code>, which is in a 6 hour resolution. This means that the h2 balance constraint is being defined in a 1 hour resolution, and not in a 6 hour resolution.</p><p>What we can do? Update the <code>flows_rep_periods_partitions</code> file, either manually or using the DuckDB connection, to set the <code>smr_ccs</code> to a 6 hour resolution as well, so that the <code>h2_demand</code> is being balanced with both assets in a 6 hour resolution.:</p><pre><code class="language-txt hljs">from_asset,to_asset,partition,rep_period,specification,milestone_year
+electrolizer,h2_demand,6,1,uniform,2030
+smr_ccs,h2_demand,6,1,uniform,2030</code></pre><p>or using the DuckDB connection:</p><pre><code class="language-julia hljs">DuckDB.query(connection,
+    &quot;&quot;&quot;
+    INSERT INTO flows_rep_periods_partitions VALUES
+        (&#39;smr_ccs&#39;, &#39;h2_demand&#39;, 6, 1, &#39;uniform&#39;, 2030);
+    &quot;&quot;&quot;
+    )</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(Count = [1],)</code></pre><p>Run again and explore the results once more...</p><pre><code class="language-julia hljs"># Optimize the model
+energy_problem =
+    TEM.run_scenario(connection);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+  - Model created!
+    - Number of variables: 81760
+    - Number of constraints for variable bounds: 73000
+    - Number of structural constraints: 93440
+  - Model solved!
+    - Termination status: OPTIMAL
+    - Objective value: 1.4718768475318453e8
+    - Objective breakdown:
+      - assets_fixed_cost_aggregated_vintage_method: 0.0
+      - assets_fixed_cost_compact_vintage_method: 0.0
+      - assets_investment_cost: 0.0
+      - flows_fixed_cost: 0.0
+      - flows_investment_cost: 0.0
+      - flows_operational_cost: 1.4718768475318453e8
+      - storage_assets_energy_fixed_cost: 0.0
+      - storage_assets_energy_investment_cost: 0.0
+      - units_on_operational_cost: 0.0
+      - vintage_flows_operational_cost: 0.0
+</code></pre><pre><code class="language-julia hljs">balance = TIO.get_table(connection, &quot;cons_balance_consumer&quot;)
+
+asset = &quot;h2_demand&quot;
+year = 2030
+rep_period = 1
+
+filtered_asset = filter(
+    row -&gt;
+        row.asset == asset &amp;&amp;
+            row.milestone_year == year &amp;&amp;
+            row.rep_period == rep_period,
+    balance,
+)
+first(filtered_asset, 5)</code></pre><div><div style = "float: left;"><span>5×7 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "columnLabelRow"><th class = "stubheadLabel" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">id</th><th style = "text-align: left;">asset</th><th style = "text-align: left;">milestone_year</th><th style = "text-align: left;">rep_period</th><th style = "text-align: left;">time_block_start</th><th style = "text-align: left;">time_block_end</th><th style = "text-align: left;">dual_balance_consumer</th></tr><tr class = "columnLabelRow"><th class = "stubheadLabel" style = "font-weight: bold; text-align: right;"></th><th title = "Int64" style = "text-align: left;">Int64</th><th title = "String" style = "text-align: left;">String</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Int32" style = "text-align: left;">Int32</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">8761</td><td style = "text-align: left;">h2_demand</td><td style = "text-align: right;">2030</td><td style = "text-align: right;">1</td><td style = "text-align: right;">1</td><td style = "text-align: right;">6</td><td style = "text-align: right;">195.0</td></tr><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: right;">8762</td><td style = "text-align: left;">h2_demand</td><td style = "text-align: right;">2030</td><td style = "text-align: right;">1</td><td style = "text-align: right;">7</td><td style = "text-align: right;">12</td><td style = "text-align: right;">195.0</td></tr><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: right;">8763</td><td style = "text-align: left;">h2_demand</td><td style = "text-align: right;">2030</td><td style = "text-align: right;">1</td><td style = "text-align: right;">13</td><td style = "text-align: right;">18</td><td style = "text-align: right;">195.0</td></tr><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: right;">8764</td><td style = "text-align: left;">h2_demand</td><td style = "text-align: right;">2030</td><td style = "text-align: right;">1</td><td style = "text-align: right;">19</td><td style = "text-align: right;">24</td><td style = "text-align: right;">195.0</td></tr><tr class = "dataRow"><td class = "rowLabel" style = "font-weight: bold; text-align: right;">5</td><td style = "text-align: right;">8765</td><td style = "text-align: left;">h2_demand</td><td style = "text-align: right;">2030</td><td style = "text-align: right;">1</td><td style = "text-align: right;">25</td><td style = "text-align: right;">30</td><td style = "text-align: right;">19.5</td></tr></tbody></table></div><p>Do you notice the difference? Now the <code>h2_demand</code> is being balanced with both assets in a 6 hour resolution. Check the <code>time_block_start</code> column in the <code>cons_balance_consumer</code> table 😉</p><h3 id="Change-the-specification"><a class="docs-heading-anchor" href="#Change-the-specification">Change the specification</a><a id="Change-the-specification-1"></a><a class="docs-heading-anchor-permalink" href="#Change-the-specification" title="Permalink"></a></h3><p>The parameter <code>specification</code> allows three values: <code>uniform</code>,<code>math</code>, or <code>explicit</code>.</p><p>Some examples on how to set it up are in the docs for the <a href="https://tulipaenergy.github.io/TulipaEnergyModel.jl/v0.10/95-reference/#TulipaEnergyModel._parse_rp_partition"><code>TulipaEnergyModel._parse_rp_partition</code></a> function.</p><p>What is the equialent of a partition of 6 in a <code>uniform</code> specification in a <code>math</code> specification?</p><h3 id="Compare-with-the-hourly-case-from-the-Assets-and-Flows-tutorial"><a class="docs-heading-anchor" href="#Compare-with-the-hourly-case-from-the-Assets-and-Flows-tutorial">Compare with the hourly case from the Assets &amp; Flows tutorial</a><a id="Compare-with-the-hourly-case-from-the-Assets-and-Flows-tutorial-1"></a><a class="docs-heading-anchor-permalink" href="#Compare-with-the-hourly-case-from-the-Assets-and-Flows-tutorial" title="Permalink"></a></h3><p>If you want to compare results of two models, you can create a new connection, a new energy problem and compare result. One thing that could be interesting to consider is changing partitions in <code>flows_rep_periods_partitions</code> and <code>assets_rep_periods_partitions</code> to 1. Once changed, we can solve a new energy problem as such:</p><pre><code class="language-julia hljs">conn_hourly = DBInterface.connect(DuckDB.DB)
+input_dir = joinpath(@__DIR__, &quot;my-awesome-energy-system/tutorial-3&quot;)
+TIO.read_csv_folder(conn_hourly, input_dir)
+TEM.populate_with_defaults!(conn_hourly)
+hourly_energy_problem = TEM.run_scenario(conn_hourly);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EnergyProblem:
+  - Model created!
+    - Number of variables: 96360
+    - Number of constraints for variable bounds: 87600
+    - Number of structural constraints: 122640
+  - Model solved!
+    - Termination status: OPTIMAL
+    - Objective value: 1.4854146333461672e8
+    - Objective breakdown:
+      - assets_fixed_cost_aggregated_vintage_method: 0.0
+      - assets_fixed_cost_compact_vintage_method: 0.0
+      - assets_investment_cost: 0.0
+      - flows_fixed_cost: 0.0
+      - flows_investment_cost: 0.0
+      - flows_operational_cost: 1.4854146333461672e8
+      - storage_assets_energy_fixed_cost: 0.0
+      - storage_assets_energy_investment_cost: 0.0
+      - units_on_operational_cost: 0.0
+      - vintage_flows_operational_cost: 0.0
+</code></pre><p>Notice that we change the name of the connection and the name of the energy problem (also, we are not exporting the results, but it can be done in a new folder, if needed).</p><p>Compare the number of constraints, variables, and objective function between the two problems.</p><p>What do you notice? Is it what you where expecting?</p><p>Let&#39;s plot the flows together, for a specific time period in the year:</p><pre><code class="language-julia hljs">flows = TIO.get_table(connection, &quot;var_flow&quot;)
+from_asset = &quot;electrolizer&quot;
+to_asset = &quot;h2_demand&quot;
+year = 2030
+rep_period = 1
+
+filtered_flow = filter(
+    row -&gt;
+        row.from_asset == from_asset &amp;&amp;
+            row.to_asset == to_asset &amp;&amp;
+            row.milestone_year == year &amp;&amp;
+            row.rep_period == rep_period,
+    flows,
+)
+
+plot(
+    filtered_flow.time_block_start,
+    filtered_flow.solution;
+    label=string(from_asset, &quot; -&gt; &quot;, to_asset),
+    xlabel=&quot;Hour&quot;,
+    ylabel=&quot;[MWh]&quot;,
+    marker=:circle,
+    markersize=2,
+    linetype=:steppost, # try: stepmid, steppost, or steppre
+    xlims=(2200, 2400),
+)
+
+hourly_flows = TIO.get_table(conn_hourly, &quot;var_flow&quot;)
+
+hourly_filtered_flow = filter(
+    row -&gt;
+        row.from_asset == from_asset &amp;&amp;
+            row.to_asset == to_asset &amp;&amp;
+            row.milestone_year == year &amp;&amp;
+            row.rep_period == rep_period,
+    hourly_flows,
+)
+
+plot!(
+    hourly_filtered_flow.time_block_start,
+    hourly_filtered_flow.solution;
+    label=string(from_asset, &quot; -&gt; &quot;, to_asset, &quot; (hourly)&quot;),
+)</code></pre><img src="9c9be6a7.svg" alt="Example block output"/></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../13-assets/">« Gereralized Assets and Flows</a><a class="docs-footer-nextpage" href="../15-clustering-rep-periods/">Blended Representative Periods with Tulipa Clustering »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Thursday 18 June 2026 13:28">Thursday 18 June 2026</span>. Using Julia version 1.12.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
