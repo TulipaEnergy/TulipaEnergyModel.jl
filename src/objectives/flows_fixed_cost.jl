@@ -1,4 +1,4 @@
-function _add_flows_fixed_cost!(connection, model, expressions, objective_expr, lambda)
+function _add_flows_fixed_cost!(connection, model, expressions, objective_expr)
     expr_available_flow_units_aggregated_vintage_method =
         expressions[:available_flow_units_aggregated_vintage_method]
 
@@ -35,12 +35,7 @@ function _add_flows_fixed_cost!(connection, model, expressions, objective_expr, 
             )
         )
     )
-    _add_to_objective!(
-        connection,
-        objective_expr,
-        "flows_fixed_cost",
-        (1 - lambda) * flows_fixed_cost,
-    )
+    _add_to_objective!(connection, objective_expr, "flows_fixed_cost", flows_fixed_cost)
 
     return
 end

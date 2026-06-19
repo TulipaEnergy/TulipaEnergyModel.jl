@@ -1,10 +1,4 @@
-function _add_storage_assets_energy_fixed_cost!(
-    connection,
-    model,
-    expressions,
-    objective_expr,
-    lambda,
-)
+function _add_storage_assets_energy_fixed_cost!(connection, model, expressions, objective_expr)
     expr_available_energy_units_aggregated_vintage_method =
         expressions[:available_energy_units_aggregated_vintage_method]
 
@@ -39,7 +33,7 @@ function _add_storage_assets_energy_fixed_cost!(
         connection,
         objective_expr,
         "storage_assets_energy_fixed_cost",
-        (1 - lambda) * storage_assets_energy_fixed_cost,
+        storage_assets_energy_fixed_cost,
     )
 
     return

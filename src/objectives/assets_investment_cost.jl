@@ -1,4 +1,4 @@
-function _add_assets_investment_cost!(connection, model, variables, objective_expr, lambda)
+function _add_assets_investment_cost!(connection, model, variables, objective_expr)
     assets_investment = variables[:assets_investment]
 
     indices = DuckDB.query(
@@ -25,12 +25,7 @@ function _add_assets_investment_cost!(connection, model, variables, objective_ex
             (row, asset_investment) in zip(indices, assets_investment.container)
         )
     )
-    _add_to_objective!(
-        connection,
-        objective_expr,
-        "assets_investment_cost",
-        (1 - lambda) * assets_investment_cost,
-    )
+    _add_to_objective!(connection, objective_expr, "assets_investment_cost", assets_investment_cost)
 
     return
 end
