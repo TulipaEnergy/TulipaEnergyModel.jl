@@ -161,6 +161,24 @@ end
     @test energy_problem.objective_value ≈ 11_794_495_552.83554 atol = 1e-5
 end
 
+@testitem "CVaR Case Study" setup = [CommonSetup] tags =
+    [:case_study, :integration, :slow, :cvar] begin
+    dir = joinpath(INPUT_FOLDER, "CVaR")
+    connection = DBInterface.connect(DuckDB.DB)
+    TulipaIO.read_csv_folder(connection, dir)
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    @test energy_problem.objective_value ≈ 31050.0 atol = 1e-5
+    # CVaR variables and constraints should be created (lambda > 0, n_scenarios > 1)
+    @test haskey(energy_problem.model, :conditional_value_at_risk_term)
+    @test !isempty(energy_problem.variables[:value_at_risk_threshold_mu].container)
+    @test !isempty(energy_problem.variables[:tail_excess_slack_xi].container)
+    # populate_with_defaults shouldn't change the solution
+    TulipaEnergyModel.populate_with_defaults!(connection)
+    energy_problem = TulipaEnergyModel.run_scenario(connection; show_log = false)
+    @test energy_problem.objective_value ≈ 31050.0 atol = 1e-5
+end
+
 @testitem "Rolling horizon Case Study" setup = [CommonSetup] tags =
     [:case_study, :integration, :slow] begin
     dir = joinpath(INPUT_FOLDER, "Rolling Horizon")

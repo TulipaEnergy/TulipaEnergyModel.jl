@@ -1,0 +1,5 @@
+asset,type,capacity,vintage_method,investment_integer,technical_lifetime,discount_rate,storage_method_energy
+wind,producer,100.0,aggregated,false,20,0.0,none
+ocgt,producer,100.0,aggregated,false,20,0.0,none
+demand,consumer,0.0,aggregated,false,20,0.0,none
+ens,producer,200.0,aggregated,false,20,0.0,none
