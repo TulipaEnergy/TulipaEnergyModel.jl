@@ -690,7 +690,6 @@ plot!(
     xlabel = "Period",
     ylabel = "Storage level [p.u.]",
     linewidth = 3,
-    dpi = 600,
 )
 ```
 

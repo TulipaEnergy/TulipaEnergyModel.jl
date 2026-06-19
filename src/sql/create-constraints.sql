@@ -439,6 +439,52 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_min_output_flow_without_unit_commitment_aggregated_vintage_method
+;
+
+create table cons_min_output_flow_without_unit_commitment_aggregated_vintage_method as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.unit_commitment = 'none'
+    and asset.min_operating_point > 0
+    and asset.vintage_method = 'aggregated'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_min_output_flow_without_unit_commitment_compact_vintage_method
+;
+
+create table cons_min_output_flow_without_unit_commitment_compact_vintage_method as
+select
+    nextval('id') as id,
+    t_high.*
+from
+    t_highest_out_flows as t_high
+    left join asset on t_high.asset = asset.asset
+where
+    asset.type in ('producer', 'conversion')
+    and asset.unit_commitment = 'none'
+    and asset.min_operating_point > 0
+    and asset.vintage_method = 'compact_profiles'
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 drop table if exists cons_max_output_flow_with_basic_unit_commitment
 ;
 
@@ -622,7 +668,7 @@ select
     ga.constraint_sense,
     ga.rhs,
 from
-    group_asset as ga
+    investment_group_asset as ga
 where
     ga.invest_method
 ;

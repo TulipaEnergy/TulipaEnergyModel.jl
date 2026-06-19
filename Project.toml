@@ -1,6 +1,6 @@
 name = "TulipaEnergyModel"
 uuid = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
-version = "0.21.0"
+version = "0.22.1"
 authors = [
   "Abel Soares Siqueira <abel.s.siqueira@gmail.com>",
   "Diego A. Tejada-Arango <diego.tejadaarango@tno.nl>",
@@ -35,7 +35,7 @@ HiGHS = "1"
 JSON = "0.21.4, 1"
 JuMP = "1"
 MathOptInterface = "1"
-OrderedCollections = "1"
+OrderedCollections = "1, 2.0"
 ParametricOptInterface = "0.12.1, 0.14, 0.15"
 Statistics = "1"
 TOML = "1"

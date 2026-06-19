@@ -154,7 +154,7 @@ function _validate_no_duplicate_rows!(error_messages, connection)
         ("flow_milestone", [:from_asset, :to_asset, :milestone_year]),
         ("flows_profiles", [:from_asset, :to_asset, :milestone_year, :profile_type]),
         ("flows_rep_periods_partitions", [:from_asset, :to_asset, :milestone_year, :rep_period]),
-        ("group_asset", [:name, :milestone_year]),
+        ("investment_group_asset", [:name, :milestone_year]),
         ("profiles_rep_periods", [:profile_name, :milestone_year, :rep_period, :timestep]),
         ("profiles_timeframe", [:profile_name, :milestone_year, :period]),
         ("rep_periods_data", [:milestone_year, :rep_period]),
@@ -279,15 +279,15 @@ end
 function _validate_assets_in_investment_groups_are_investable!(error_messages, connection)
     query = """
     SELECT
-        group_asset_membership.group_name,
-        group_asset_membership.asset,
-        group_asset.milestone_year,
-    FROM group_asset_membership
-    LEFT JOIN group_asset
-        ON group_asset_membership.group_name = group_asset.name
+        investment_group_asset_membership.group_name,
+        investment_group_asset_membership.asset,
+        investment_group_asset.milestone_year,
+    FROM investment_group_asset_membership
+    LEFT JOIN investment_group_asset
+        ON investment_group_asset_membership.group_name = investment_group_asset.name
     LEFT JOIN asset_milestone
-        ON group_asset_membership.asset = asset_milestone.asset
-        AND group_asset.milestone_year = asset_milestone.milestone_year
+        ON investment_group_asset_membership.asset = asset_milestone.asset
+        AND investment_group_asset.milestone_year = asset_milestone.milestone_year
     WHERE NOT asset_milestone.investable
     """
     for row in DuckDB.query(connection, query)
@@ -301,40 +301,40 @@ function _validate_assets_in_investment_groups_are_investable!(error_messages, c
 end
 
 function _validate_group_consistency!(error_messages, connection)
-    # Check the values in the table `group_asset_membership`:
-    # - `group_name` comes from `group_asset.name`
+    # Check the values in the table `investment_group_asset_membership`:
+    # - `group_name` comes from `investment_group_asset.name`
     # - `asset` comes from `asset.asset`
     _validate_foreign_key!(
         error_messages,
         connection,
-        "group_asset_membership",
+        "investment_group_asset_membership",
         :group_name,
-        "group_asset",
+        "investment_group_asset",
         :name,
     )
     _validate_foreign_key!(
         error_messages,
         connection,
-        "group_asset_membership",
+        "investment_group_asset_membership",
         :asset,
         "asset",
         :asset,
     )
 
-    # Check that the groups created in `group_asset` have at least one entry in `group_asset_membership`
+    # Check that the groups created in `investment_group_asset` have at least one entry in `investment_group_asset_membership`
     for row in DuckDB.query(
         connection,
         "FROM (
-            SELECT group_asset.name, COUNT(group_asset_membership.asset) AS count_group_members
-            FROM group_asset
-            LEFT JOIN group_asset_membership
-                ON group_asset.name = group_asset_membership.group_name
-            GROUP BY group_asset.name
+            SELECT investment_group_asset.name, COUNT(investment_group_asset_membership.asset) AS count_group_members
+            FROM investment_group_asset
+            LEFT JOIN investment_group_asset_membership
+                ON investment_group_asset.name = investment_group_asset_membership.group_name
+            GROUP BY investment_group_asset.name
         ) WHERE count_group_members = 0",
     )
         push!(
             error_messages,
-            "Group '$(row.name)' in 'group_asset' has no members in 'group_asset_membership'",
+            "Group '$(row.name)' in 'investment_group_asset' has no members in 'investment_group_asset_membership'",
         )
     end
 

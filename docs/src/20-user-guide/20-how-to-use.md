@@ -58,6 +58,188 @@ Outputs are sent from Tulipa to DuckDB and can be exported to various file forma
 
 To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref). See the [Workflow Tutorial](@ref step-export) for an example showcasing this function.
 
+## [Cost breakdown in post-processing](@id cost-breakdown)
+
+After solving the model, you can compute a detailed cost breakdown per asset or per flow directly from the solved variable and expression values. This does not modify the optimization model — it is purely a post-processing step.
+
+The total objective is composed of several cost components (investment costs, fixed O&M costs, operational costs, etc.). Each component is stored as an aggregated value in the `obj_breakdown` table. The examples below show how to disaggregate these components by asset or by flow.
+
+The general approach to construct these breakdowns is:
+
+1. **Identify the source**: Look at the corresponding objective function in `src/objectives/` to understand what variables, expressions, and cost coefficients are involved.
+2. **Get the solved values**: Variable solutions are stored in the `solution` column of `var_*` tables. Expression values (like available units) must be evaluated via `JuMP.value()` on the in-memory expressions.
+3. **Get the cost coefficients**: Join with the same tables the objective uses (`t_objective_assets`, `t_objective_flows`, `asset_commission`, etc.) to obtain discounted cost coefficients.
+4. **Combine**: Multiply solved values by cost coefficients, applying the `(1 - lambda)` risk aversion weight when necessary.
+
+!!! info
+    The tables `t_objective_assets` and `t_objective_flows` are temporary tables created during model construction. They contain pre-computed discount factors and annualized costs. They remain available in the DuckDB connection after solving.
+
+!!! tip "Verifying correctness"
+    You can verify that your per-asset or per-flow breakdown is consistent with the aggregated objective by comparing the sum of your breakdown with the corresponding row in `obj_breakdown`:
+    ```julia
+    DuckDB.query(connection, "SELECT * FROM obj_breakdown")
+    ```
+
+To save any result as a CSV file, register it as a DuckDB table and use `COPY`:
+
+```julia
+DuckDB.register_table(connection, result, "my_table_name")
+output_file = joinpath(output_folder, "my_table_name.csv")
+DuckDB.execute(connection, "COPY my_table_name TO '$output_file' (HEADER, DELIMITER ',')")
+```
+
+### Investment cost (CAPEX) per asset
+
+```julia
+obj_assets_investment_cost = DuckDB.query(
+    connection,
+    "SELECT
+        var.asset,
+        var.milestone_year,
+        obj.weight_for_asset_investment_discount
+            * obj.investment_cost
+            * obj.capacity
+            AS cost_per_unit_invested,
+        var.solution AS units_invested,
+        (1 - mp.risk_aversion_weight_lambda)
+            * cost_per_unit_invested
+            * var.solution
+            AS investment_cost,
+    FROM var_assets_investment AS var
+    LEFT JOIN t_objective_assets AS obj
+        ON var.asset = obj.asset
+        AND var.milestone_year = obj.milestone_year
+    CROSS JOIN model_parameters AS mp
+    ORDER BY var.asset, var.milestone_year
+    ",
+)
+
+DuckDB.register_table(connection, obj_assets_investment_cost, "obj_assets_investment_cost")
+output_file = joinpath(output_folder, "obj_assets_investment_cost.csv")
+DuckDB.execute(connection, "COPY obj_assets_investment_cost TO '$output_file' (HEADER, DELIMITER ',')")
+```
+
+### Fixed O&M cost per asset
+
+```julia
+using JuMP: value
+
+# Evaluate the available units expressions (one value per row in the expr table)
+expr_agg = energy_problem.expressions[:available_asset_units_aggregated_vintage_method]
+avail_units = value.(expr_agg.expressions[:assets])
+
+# Get cost coefficients from DuckDB (same query the objective uses, plus key columns)
+cost_data = DuckDB.query(
+    connection,
+    "SELECT
+        expr.id,
+        expr.asset,
+        expr.milestone_year,
+        expr.commission_year,
+        obj.weight_for_operation_discounts
+            * asset_commission.fixed_cost
+            * obj.capacity
+            AS cost_coefficient,
+    FROM expr_available_asset_units_aggregated_vintage_method AS expr
+    LEFT JOIN asset_commission
+        ON expr.asset = asset_commission.asset
+        AND expr.commission_year = asset_commission.commission_year
+    LEFT JOIN t_objective_assets AS obj
+        ON expr.asset = obj.asset
+        AND expr.milestone_year = obj.milestone_year
+    ORDER BY expr.id
+    ",
+)
+
+# Combine and build the result table
+lambda = first(
+    DuckDB.query(connection, "SELECT risk_aversion_weight_lambda FROM model_parameters"),
+).risk_aversion_weight_lambda
+
+obj_assets_fixed_cost = [
+    (
+        asset = row.asset,
+        milestone_year = row.milestone_year,
+        commission_year = row.commission_year,
+        available_units = avail_units[row.id],
+        cost_coefficient = row.cost_coefficient,
+        fixed_cost = (1 - lambda) * avail_units[row.id] * row.cost_coefficient,
+    ) for row in cost_data
+]
+
+# Register and export
+DuckDB.register_table(connection, obj_assets_fixed_cost, "obj_assets_fixed_cost")
+output_file = joinpath(output_folder, "obj_assets_fixed_cost.csv")
+DuckDB.execute(connection, "COPY obj_assets_fixed_cost TO '$output_file' (HEADER, DELIMITER ',')")
+```
+
+!!! tip
+    The same pattern applies to the compact vintage method — replace `aggregated` with `compact` and use `expressions[:available_asset_units_compact_vintage_method]`. For models that use both methods (different assets use different methods), you can run both queries and concatenate the results.
+
+### Flows operational cost per flow
+
+```julia
+table_name = "obj_flows_operational_cost"
+DuckDB.execute(
+    connection,
+    "CREATE OR REPLACE TABLE $table_name AS
+    SELECT
+        var.from_asset,
+        var.to_asset,
+        var.milestone_year,
+        (1 - mp.risk_aversion_weight_lambda) * SUM(
+            ss.probability
+            * obj.weight_for_operation_discounts
+            * rp_weight.total_weight_per_scenario
+            * rp_res.resolution
+            * obj.total_variable_cost
+            * (var.time_block_end - var.time_block_start + 1)
+            * var.solution
+        ) AS operational_cost,
+    FROM var_flow AS var
+    LEFT JOIN t_objective_flows AS obj
+        ON var.from_asset = obj.from_asset
+        AND var.to_asset = obj.to_asset
+        AND var.milestone_year = obj.milestone_year
+    LEFT JOIN (
+        SELECT milestone_year, rep_period, scenario,
+               SUM(weight) AS total_weight_per_scenario
+        FROM rep_periods_mapping
+        GROUP BY milestone_year, rep_period, scenario
+    ) AS rp_weight
+        ON var.milestone_year = rp_weight.milestone_year
+        AND var.rep_period = rp_weight.rep_period
+    LEFT JOIN (
+        SELECT milestone_year, rep_period, ANY_VALUE(resolution) AS resolution
+        FROM rep_periods_data
+        GROUP BY milestone_year, rep_period
+    ) AS rp_res
+        ON var.milestone_year = rp_res.milestone_year
+        AND var.rep_period = rp_res.rep_period
+    LEFT JOIN stochastic_scenario AS ss
+        ON rp_weight.scenario = ss.scenario
+    LEFT JOIN asset
+        ON asset.asset = var.from_asset
+    CROSS JOIN model_parameters AS mp
+    WHERE asset.vintage_method != 'compact_efficiencies'
+    GROUP BY var.from_asset, var.to_asset, var.milestone_year, mp.risk_aversion_weight_lambda
+    ORDER BY var.from_asset, var.to_asset, var.milestone_year
+    ",
+)
+```
+
+!!! warning
+    This query uses the constant `total_variable_cost` from `t_objective_flows`. If your model uses **commodity price profiles**, it needs modifications.
+
+!!! info
+    Flows from assets using `vintage_method = 'compact_efficiencies'` are excluded here — their costs are in a separate `vintage_flows_operational_cost` component. The same query pattern applies with `var_vintage_flow` and `t_objective_vintage_flows` instead.
+
+!!! tip "Splitting into energy cost and variable O&M"
+    The `total_variable_cost` in `t_objective_flows` is the sum of two components: `commodity_price / producer_efficiency` (the fuel/energy cost) and `operational_cost` (the variable O&M cost). To get a finer breakdown, replace `obj.total_variable_cost` in the query above with either:
+    - `(obj.commodity_price / obj.producer_efficiency)` for the **energy cost** only (fuel/commodity cost adjusted for efficiency), or
+    - `obj.operational_cost` for the **variable O&M cost** only.
+    The sum of both sub-components equals the `operational_cost` column from the full query.
+
 ## Setting the solver and its parameters
 
 By default, the model is solved using the [HiGHS](https://github.com/jump-dev/HiGHS.jl) optimizer (or solver).
@@ -312,6 +494,9 @@ The unit commitment constraints are only applied to producer and conversion asse
 - `unit_commitment_integer`: It determines whether the unit commitment variables are considered as integer or not (`true` or `false`)
 - `min_operating_point`: Minimum operating point or minimum stable generation level defined as a portion of the capacity of asset (p.u.)
 
+!!! info "Minimum operating point constraints without unit commitment"
+    Even when `unit_commitment = 'none'`, producer and conversion assets with `min_operating_point > 0` still receive a minimum output-flow constraint (for aggregated and compact profiles vintage methods). This is useful to represent must-run conditions without the full unit commitment formulation.
+
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
 ### [Ramping constraints](@id ramping-setup)
@@ -359,8 +544,8 @@ Groups are useful to represent several common constraints.
 
 In order to define the groups in the model, the following steps are necessary:
 
-1. Create a group file by defining the `name` property and its parameters in the `group_asset` table (or CSV file).
-2. Assign assets to the group by adding entries to the `group_asset_membership` table (or CSV file).
+1. Create a group file by defining the `name` property and its parameters in the `investment_group_asset` table (or CSV file).
+2. Assign assets to the group by adding entries to the `investment_group_asset_membership` table (or CSV file).
 
 #### [Group Investment constraints](@id investment-group-setup)
 
@@ -371,32 +556,37 @@ $\sum_{a \in G} v^{\text{inv}}_a \times \text{coefficient}_a \left\{\begin{array
 i.e., a sum-product of all investment variables listed in the group multiplied by given coefficients related by a "right hand side".
 An example of group investment are the maximum and minimum investment limits for group of investment variables.
 The mathematical formulation of these constraints is available [here](@ref investment-group-constraints).
-They can be achieved using group investment constraints by adding rows in `group_asset` such that:
 
-- Each row in table `group_asset`
+!!! info
+    At the moment, group constraints are only supported for investment variables through `investment_group_asset` and `investment_group_asset_membership`.
+    If you need additional constraints involving other variables, add them manually to the JuMP model as shown in the [Bids tutorial](@ref bids-tutorial).
+
+They can be achieved using group investment constraints by adding rows in `investment_group_asset` such that:
+
+- Each row in table `investment_group_asset`
   - `name` is the name of the group, and unique identifier.
   - `milestone_year` is the year for which the group is defined.
   - `invest_method = true`. This parameter enables the model to use the investment group constraints.
   - `constraint_sense` is either `<=` for maximum and `>=` for minimum.
   - `rhs` is the corresponding value.
-- Each row in table `group_asset_membership`
-  - `group_name` should match `group_asset.name`.
+- Each row in table `investment_group_asset_membership`
+  - `group_name` should match `investment_group_asset.name`.
   - `asset` is the name of the asset.
-  - `milestone_year` should match `group_asset.milestone_year` and `asset.milestone_year`.
+  - `milestone_year` should match `investment_group_asset.milestone_year` and `asset.milestone_year`.
   - `coefficient` should be the capacity value for the investment limit.
 
 !!! warning
-    Notice that only one constraint is created per row in `group_asset`, which means that if both the minimum and maximum investment limits are desired, two rows are required in `group_asset`, one with `constraint_sense = '<='` and one with `constraint_sense = '>='`. In this case, the names of the groups must be different, from instance `ccgt_max` and `ccgt_min`.
-    Similarly, the elements in `group_asset_membership` will need to be duplicated, one for each group.
+    Notice that only one constraint is created per row in `investment_group_asset`, which means that if both the minimum and maximum investment limits are desired, two rows are required in `investment_group_asset`, one with `constraint_sense = '<='` and one with `constraint_sense = '>='`. In this case, the names of the groups must be different, from instance `ccgt_max` and `ccgt_min`.
+    Similarly, the elements in `investment_group_asset_membership` will need to be duplicated, one for each group.
 
 #### Example: Group of Assets
 
-Let's explore how the groups are set up in the test case called [Norse](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Norse). First, let's take a look at the `group-asset.csv` file:
+Let's explore how the groups are set up in the test case called [Norse](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Norse). First, let's take a look at the `investment-group-asset.csv` file:
 
 ```@example display-group-setup
 using DataFrames # hide
 using CSV # hide
-input_asset_file = "../../../test/inputs/Norse/group-asset.csv" # hide
+input_asset_file = "../../../test/inputs/Norse/investment-group-asset.csv" # hide
 assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 ```
 
@@ -405,8 +595,8 @@ In the given data, there are two groups: `renewables` and `ccgt`. Both groups ha
 Let's now explore which assets are in each group. To do so, we can take a look at the `asset.csv` file:
 
 ```@example display-group-setup
-input_file = "../../../test/inputs/Norse/group-asset-membership.csv" # hide
-group_asset_membership = CSV.read(input_file, DataFrame) # hide
+input_file = "../../../test/inputs/Norse/investment-group-asset-membership.csv" # hide
+investment_group_asset_membership = CSV.read(input_file, DataFrame) # hide
 ```
 
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
