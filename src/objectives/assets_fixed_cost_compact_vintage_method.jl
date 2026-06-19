@@ -3,7 +3,6 @@ function _add_assets_fixed_cost_compact_vintage_method!(
     model,
     expressions,
     objective_expr,
-    lambda,
 )
     expr_available_asset_units_compact_vintage_method =
         expressions[:available_asset_units_compact_vintage_method]
@@ -39,7 +38,7 @@ function _add_assets_fixed_cost_compact_vintage_method!(
         connection,
         objective_expr,
         "assets_fixed_cost_compact_vintage_method",
-        (1 - lambda) * assets_fixed_cost_compact_vintage_method,
+        assets_fixed_cost_compact_vintage_method,
     )
 
     return
