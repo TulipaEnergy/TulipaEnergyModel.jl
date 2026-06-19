@@ -161,8 +161,7 @@ end
     @test energy_problem.objective_value ≈ 11_794_495_552.83554 atol = 1e-5
 end
 
-@testitem "CVaR Case Study" setup = [CommonSetup] tags =
-    [:case_study, :integration, :slow, :cvar] begin
+@testitem "CVaR Case Study" setup = [CommonSetup] tags = [:case_study, :integration, :slow, :cvar] begin
     dir = joinpath(INPUT_FOLDER, "CVaR")
     connection = DBInterface.connect(DuckDB.DB)
     TulipaIO.read_csv_folder(connection, dir)

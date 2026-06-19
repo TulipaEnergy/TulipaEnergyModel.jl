@@ -8,11 +8,11 @@ Energy system planning must grapple with **uncertainty**: wind and solar availab
 
 $$\text{minimise} \quad (1 - \lambda) \cdot \underbrace{\mathbb{E}[C]}_{\text{expected cost}} + \lambda \cdot \underbrace{\text{CVaR}_{\alpha}[C]}_{\text{risk measure}}$$
 
-| $\lambda$ | Behaviour |
-|---|---|
-| `0.0` | Risk-neutral: minimise expected cost only |
-| `0.5` | Balanced: equal weight on expected cost and CVaR |
-| `1.0` | Fully risk-averse: minimise CVaR only |
+| $\lambda$ | Behaviour                                        |
+| --------- | ------------------------------------------------ |
+| `0.0`     | Risk-neutral: minimise expected cost only        |
+| `0.5`     | Balanced: equal weight on expected cost and CVaR |
+| `1.0`     | Fully risk-averse: minimise CVaR only            |
 
 !!! note
     CVaR is only activated when **both** $\lambda > 0$ and there are **at least two** stochastic scenarios. Otherwise, the model reduces to the standard expected-cost minimisation.
@@ -30,19 +30,19 @@ For the mathematical background, see [`Risk-Averse Optimization with CVaR`](@ref
 
 We model a small electricity system with **two stochastic scenarios** representing different wind years:
 
-| Scenario | Probability | Wind availability |
-|---|---|---|
-| 1 — Good wind year | 0.6 | 90 % of installed capacity |
-| 2 — Bad wind year | 0.4 | 10 % of installed capacity |
+| Scenario           | Probability | Wind availability          |
+| ------------------ | ----------- | -------------------------- |
+| 1 — Good wind year | 0.6         | 90 % of installed capacity |
+| 2 — Bad wind year  | 0.4         | 10 % of installed capacity |
 
 The system has four assets:
 
-| Asset | Type | Description |
-|---|---|---|
-| `wind` | Producer (investable) | Wind farm, 100 MW/unit, 0 €/MWh |
-| `ocgt` | Producer (fixed) | Gas turbine, 100 MW, 50 €/MWh |
-| `demand` | Consumer | Constant demand of 100 MW |
-| `ens` | Producer (fixed) | Energy not served, 200 MW, 500 €/MWh |
+| Asset    | Type                  | Description                          |
+| -------- | --------------------- | ------------------------------------ |
+| `wind`   | Producer (investable) | Wind farm, 100 MW/unit, 0 €/MWh      |
+| `ocgt`   | Producer (fixed)      | Gas turbine, 100 MW, 50 €/MWh        |
+| `demand` | Consumer              | Constant demand of 100 MW            |
+| `ens`    | Producer (fixed)      | Energy not served, 200 MW, 500 €/MWh |
 
 Wind is the **only investable asset** with investment cost 100 €/MW. The optimizer decides how much wind capacity to build (up to 100 MW = 1 unit) before the scenarios are revealed.
 
@@ -192,19 +192,19 @@ Surprisingly, the fully risk-averse model **does not invest in wind at all**. Wh
 
 With no wind (0 units):
 
-| Scenario | Total cost |
-|---|---|
+| Scenario       | Total cost                         |
+| -------------- | ---------------------------------- |
 | Good wind year | 100 MW × 9 h × 50 €/MWh = 45,000 € |
-| Bad wind year | 100 MW × 9 h × 50 €/MWh = 45,000 € |
+| Bad wind year  | 100 MW × 9 h × 50 €/MWh = 45,000 € |
 
 Both scenarios have identical cost = 45,000 €, so CVaR = 45,000 €.
 
 With 1 unit of wind (100 MW):
 
-| Scenario | Total cost |
-|---|---|
+| Scenario       | Total cost                                            |
+| -------------- | ----------------------------------------------------- |
 | Good wind year | 10,000 € (invest) + 10 MW × 9 h × 50 €/MWh = 14,500 € |
-| Bad wind year | 10,000 € (invest) + 90 MW × 9 h × 50 €/MWh = 50,500 € |
+| Bad wind year  | 10,000 € (invest) + 90 MW × 9 h × 50 €/MWh = 50,500 € |
 
 CVaR$_{0.8}$ = 50,500 € (the 80th-percentile worst case is the bad scenario).
 
@@ -212,11 +212,11 @@ CVaR$_{0.8}$ = 50,500 € (the 80th-percentile worst case is the bad scenario).
 
 ### Results Summary
 
-| $\lambda$ | Wind invested | Objective | E[cost] | CVaR$_{0.8}$ |
-|---|---|---|---|---|
-| 0.0 (risk-neutral) | 1 unit | 28,900 € | 28,900 € | 50,500 € |
-| 0.5 (balanced) | 1 unit | 39,700 € | 28,900 € | 50,500 € |
-| 1.0 (fully risk-averse) | 0 units | 45,000 € | 45,000 € | 45,000 € |
+| $\lambda$               | Wind invested | Objective | E[cost]  | CVaR$_{0.8}$ |
+| ----------------------- | ------------- | --------- | -------- | ------------ |
+| 0.0 (risk-neutral)      | 1 unit        | 28,900 €  | 28,900 € | 50,500 €     |
+| 0.5 (balanced)          | 1 unit        | 39,700 €  | 28,900 € | 50,500 €     |
+| 1.0 (fully risk-averse) | 0 units       | 45,000 €  | 45,000 € | 45,000 €     |
 
 The transition from "invest" to "don't invest" occurs at $\lambda^* \approx 0.745$. For $\lambda < \lambda^*$ the expected savings dominate; for $\lambda > \lambda^*$ CVaR reduction dominates.
 
