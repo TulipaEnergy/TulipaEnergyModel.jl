@@ -1,4 +1,4 @@
-# [Two-Stage Stochastic Optimization](@ref two-stage-stochastic)
+# [Two-Stage Stochastic Optimization](@id two-stage-stochastic)
 
 ## Introduction
 
