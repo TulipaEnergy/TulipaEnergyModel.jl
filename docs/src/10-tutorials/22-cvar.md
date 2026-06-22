@@ -2,11 +2,11 @@
 
 ## Introduction
 
-Energy system planning must grapple with **uncertainty**: wind and solar availability fluctuate, demand varies, and fuel prices change year to year. The standard approach minimises the **expected cost** across scenarios, but this can lead to solutions that perform well on average yet expose the system to high costs in bad years.
+Energy system planning must deal with **uncertainty**: wind and solar availability fluctuate, demand varies, and fuel prices change year to year. The standard approach minimises the **expected cost** across scenarios, but this can lead to solutions that perform well on average yet expose the system to high costs in bad years.
 
-**Conditional Value at Risk (CVaR)** is a risk measure that addresses this problem by penalising the worst outcomes. At confidence level $\alpha$, $\text{CVaR}_\alpha$ is the *average cost of the $(1-\alpha)$-fraction of most expensive scenarios*. Tulipa's **mean-CVaR** objective blends expected cost and CVaR through a risk-aversion weight $\lambda$:
+**Conditional Value at Risk (CVaR)** is a risk measure that addresses this problem by penalising the worst outcomes. At confidence level $\alpha$, $\text{CVaR}_\alpha$ is the *average cost of the $(1-\alpha)$-fraction of most expensive operational scenarios*. Tulipa's **mean-CVaR** objective uses both expected operational cost and CVaR through a risk-aversion weight $\lambda$. The investment ($I$) and fixed ($F$) costs are always included in the objective because they don't depend on the scenarios set in Tulipa, while the operational cost ($O$) is split into expected cost and CVaR:
 
-$$\text{minimise} \quad (1 - \lambda) \cdot \underbrace{\mathbb{E}[C]}_{\text{expected cost}} + \lambda \cdot \underbrace{\text{CVaR}_{\alpha}[C]}_{\text{risk measure}}$$
+$$\text{minimise} \quad \underbrace{I + F}_{\substack{\text{non-scenario}\\\text{dependent costs}}} + (1 - \lambda) \cdot \underbrace{\mathbb{E}[O]}_{\substack{\text{expected}\\\text{operational cost}}} + \lambda \cdot \underbrace{\text{CVaR}_{\alpha}[O]}_{\text{risk measure}}$$
 
 | $\lambda$ | Behaviour                                        |
 | --------- | ------------------------------------------------ |
@@ -117,10 +117,10 @@ In the good wind year (rep period 1, wind covers 90 MW), the gas turbine only ru
 
 ```@example cvar
 DataFrame(DuckDB.query(connection, """
-    SELECT from_asset, scenario, rep_period, timestep_block_start AS timestep, solution AS flow_MW
+    SELECT from_asset, rep_period, time_block_start AS timestep, solution AS flow_MW
     FROM var_flow
     WHERE from_asset IN ('wind', 'ocgt', 'ens')
-    ORDER BY scenario, from_asset, timestep_block_start
+    ORDER BY rep_period, from_asset, time_block_start
 """))
 ```
 
@@ -131,13 +131,13 @@ In the bad wind year (rep period 2, wind covers only 10 MW), the gas turbine run
 When CVaR is active, the model creates two auxiliary variables:
 
 - **$v^\mu$** (`var_value_at_risk_threshold_mu`): the Value-at-Risk threshold, i.e. the cost level below which a fraction $\alpha$ of scenarios fall.
-- **$v^\xi_s$** (`var_scenario_tail_excess`): the tail excess for scenario $s$, representing by how much scenario $s$ costs exceed the VaR threshold.
+- **$v^\xi_s$** (`var_tail_excess_slack_xi`): the tail excess for scenario $s$, representing by how much scenario $s$ costs exceed the VaR threshold.
 
 ```@example cvar
 mu_df = DataFrame(DuckDB.query(connection, "SELECT solution AS var_mu FROM var_value_at_risk_threshold_mu"))
 xi_df = DataFrame(DuckDB.query(connection, """
     SELECT s.scenario, s.description, x.solution AS xi_s
-    FROM var_scenario_tail_excess x
+    FROM var_tail_excess_slack_xi As x
     JOIN stochastic_scenario s ON x.id = s.scenario
     ORDER BY s.scenario
 """))
@@ -146,11 +146,11 @@ println()
 xi_df
 ```
 
-The VaR threshold $v^\mu = 50{,}500$ € equals the total cost of the **bad wind year** (investment 10,000 € + OCGT at 90 MW for 9 h × 50 €/MWh = 40,500 €). The tail excess for both scenarios is zero because the bad year *is* the worst case at the 80 % confidence level, so $\text{CVaR}_{0.8} = v^\mu = 50{,}500$ €.
+The VaR threshold $v^\mu = 40{,}500$ € equals the total cost of the **bad wind year** (investment 10,000 € + OCGT at 90 MW for 9 h × 50 €/MWh = 40,500 €). The tail excess for both scenarios is zero because the bad year *is* the worst case at the 80 % confidence level, so $\text{CVaR}_{0.8} = v^\mu = 40{,}500$ €.
 
 The full objective is:
 
-$$f = (1 - 0.5) \times 28{,}900 + 0.5 \times 50{,}500 = 14{,}450 + 25{,}250 = 39{,}700 \text{ €}$$
+$$f = (1 - 0.5) \times 28{,}900 + 0.5 \times 40{,}500 = 14{,}450 + 25{,}250 = 39{,}700 \text{ €}$$
 
 ## Sensitivity to Risk Aversion (λ = 0 and λ = 1)
 
