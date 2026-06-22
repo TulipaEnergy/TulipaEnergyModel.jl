@@ -368,13 +368,13 @@ This definition of the discount factor at year $y$ includes the discounts for th
 
 ### Objective Function
 
-The objective function is formulated as a two-stage stochastic optimization problem, where the investment decisions are the first-stage variables and the expected value of the operation variables is in the second stage. When the risk aversion weight $p^{\lambda} > 0$ and there are multiple stochastic scenarios ($|\mathcal{S}| > 1$), the model uses a mean-CVaR (Conditional Value at Risk) formulation to incorporate risk into the objective.
+The objective function is formulated as a two-stage stochastic optimization problem, where the investment decisions are the first-stage variables and the expected value of the operation variables is in the second stage. When the risk aversion weight $p^{\lambda} > 0$ and there are multiple stochastic scenarios ($|\mathcal{S}| > 1$), the model uses a mean-CVaR (Conditional Value at Risk) formulation to incorporate risk into the objective to the operation costs (i.e., the risk measure only applies to uncertain quantities).
 
 ```math
 \begin{aligned}
-\text{{minimize}} \quad & (1 - p^{\lambda}) \cdot \bigg[ assets\_investment\_cost + assets\_fixed\_cost \\
-                        & + flows\_investment\_cost + flows\_fixed\_cost \\
-                        & + \sum_{s \in \mathcal{S}} p^{\text{probability}}_{s} \cdot (flows\_operational\_cost_{s} + unit\_on\_cost_{s}) \bigg] \\
+\text{{minimize}} & \quad assets\_investment\_cost +assets\_fixed\_cost \\
+                  & + flows\_investment\_cost + flows\_fixed\_cost \\
+                  & + (1 - p^{\lambda}) \cdot \bigg[\sum_{s \in \mathcal{S}} p^{\text{probability}}_{s} \cdot (flows\_operational\_cost_{s} + unit\_on\_cost_{s}) \bigg] \\
                         & + p^{\lambda} \cdot \text{CVaR}_{p^{\alpha}}
 \end{aligned}
 ```
@@ -938,25 +938,23 @@ These constraints apply to assets in a group using the vintage method $\mathcal{
 
 ### [Conditional Value at Risk Constraints](@id cvar-constraints)
 
-These constraints are only active when $p^{\lambda} > 0$ and $|\mathcal{S}| > 1$. They relate the tail excess slack variable $v^{\xi}_{s}$ to the total system cost per scenario and the Value at Risk threshold $v^{\mu}$.
+These constraints are only active when $p^{\lambda} > 0$ and $|\mathcal{S}| > 1$. They relate the tail excess slack variable $v^{\xi}_{s}$ to the total operational cost per scenario and the Value at Risk threshold $v^{\mu}$.
 
 #### Scenario Tail Excess Constraint
 
-For each stochastic scenario $s$, the non-negative tail excess slack variable $v^{\xi}_{s}$ captures the amount by which the total system cost in scenario $s$ exceeds the Value at Risk threshold $v^{\mu}$:
+For each stochastic scenario $s$, the non-negative tail excess slack variable $v^{\xi}_{s}$ captures the amount by which the total operational cost in scenario $s$ exceeds the Value at Risk threshold $v^{\mu}$:
 
 ```math
 \begin{aligned}
-v^{\xi}_{s} \geq total\_cost_{s} - v^{\mu} \quad \forall s \in \mathcal{S}
+v^{\xi}_{s} \geq total\_operational\_cost_{s} - v^{\mu} \quad \forall s \in \mathcal{S}
 \end{aligned}
 ```
 
-where the total cost per scenario $s$ is:
+where the total operational cost per scenario $s$ is:
 
 ```math
 \begin{aligned}
-total\_cost_{s} = & \; assets\_investment\_cost + assets\_fixed\_cost \\
-                  & + flows\_investment\_cost + flows\_fixed\_cost \\
-                  & + flows\_operational\_cost_{s} + unit\_on\_cost_{s}
+total\_operational\_cost_{s} = & \; flows\_operational\_cost_{s} + unit\_on\_cost_{s}
 \end{aligned}
 ```
 

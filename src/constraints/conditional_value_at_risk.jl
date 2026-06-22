@@ -31,8 +31,8 @@ function add_scenario_tail_excess_constraints!(
             return nothing
         end
         var_tail_excess_slack_xi = variables[:tail_excess_slack_xi].container
-        total_cost_per_scenario =
-            expressions[:scenario_tail_excess].expressions[:total_cost_per_scenario]
+        total_operational_cost_per_scenario =
+            expressions[:scenario_tail_excess].expressions[:total_operational_cost_per_scenario]
         var_value_at_risk_threshold_mu = variables[:value_at_risk_threshold_mu].container[1]
         attach_constraint!(
             model,
@@ -42,7 +42,8 @@ function add_scenario_tail_excess_constraints!(
                 @constraint(
                     model,
                     var_tail_excess_slack_xi[row.id::Int64] >=
-                    total_cost_per_scenario[row.id::Int64] - var_value_at_risk_threshold_mu,
+                    total_operational_cost_per_scenario[row.id::Int64] -
+                    var_value_at_risk_threshold_mu,
                     base_name = "$table_name[$(row.scenario)]"
                 ) for row in indices
             ],
