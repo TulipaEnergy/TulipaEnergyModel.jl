@@ -3,6 +3,7 @@ CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+DocumenterMermaid = "a078cd44-4d9c-4618-b545-3ab9d77f9177"
 DuckDB = "d2f5444f-75bc-4fdf-ac35-56f514c445e1"
 GLPK = "60bf3e95-4087-53dc-ae20-288a0d20c6a6"
 HiGHS = "87dc4568-4c63-4d18-b0c0-bb2238e4078b"
@@ -17,7 +18,7 @@ TulipaEnergyModel = "5d7bd171-d18e-45a5-9111-f1f11ac5d04d"
 TulipaIO = "7b3808b7-0819-42d4-885c-978ba173db11"
 
 [sources]
-TulipaEnergyModel = { path = ".." }
+TulipaEnergyModel = {path = ".."}
 
 [compat]
 CSV = "0.10"
@@ -35,3 +36,4 @@ Plots = "1"
 TulipaBuilder = "0.3"
 TulipaClustering = "0.4 - 0.5"
 TulipaIO = "0.5.0"
+DocumenterMermaid = "0.2"
