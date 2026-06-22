@@ -128,21 +128,9 @@ end
     expressions = energy_problem.expressions
 
     # Extract the variables
-    assets_investment = variables[:assets_investment].container[1]
-    assets_decommission = variables[:assets_decommission].container[1]
     flow = variables[:flow].container
     tail_excess_vars = variables[:tail_excess_slack_xi].container
     value_at_risk_threshold_mu = only(variables[:value_at_risk_threshold_mu].container)
-
-    # Create expected base cost (scenario independent part of the cost expression)
-    constant_cost = asset.capacity * asset.initial_units * asset.fixed_cost
-    investment_cost = asset.capacity * (asset.investment_cost + asset.fixed_cost)
-    decommission_cost = -1.0 * asset.capacity * asset.fixed_cost
-    base_cost = JuMP.AffExpr(constant_cost)
-    for (coef, var) in
-        ((investment_cost, assets_investment), (decommission_cost, assets_decommission))
-        JuMP.add_to_expression!(base_cost, coef, var)
-    end
 
     # Create expected flows operational cost per scenario
     weight_lookup = create_weight_lookup(connection)
@@ -164,12 +152,9 @@ end
 
     for row in scenario_tail_excess_indices
         id, scenario = row.id, row.scenario
-        cost_per_scenario = JuMP.AffExpr(0.0)
-        JuMP.add_to_expression!(cost_per_scenario, base_cost)
-        JuMP.add_to_expression!(cost_per_scenario, operational_cost_per_scenario[scenario])
-
         expected_cons = JuMP.@build_constraint(
-            tail_excess_vars[id] >= cost_per_scenario - value_at_risk_threshold_mu
+            tail_excess_vars[id] >=
+            operational_cost_per_scenario[scenario] - value_at_risk_threshold_mu
         )
         @test _verify_constraint_using_id(model, :scenario_tail_excess, id, expected_cons)
     end
@@ -196,28 +181,13 @@ end
     TulipaEnergyModel.create_model!(energy_problem)
 
     total_cost_per_scenario =
-        energy_problem.expressions[:scenario_tail_excess].expressions[:total_cost_per_scenario]
+        energy_problem.expressions[:scenario_tail_excess].expressions[:total_operational_cost_per_scenario]
 
     model = energy_problem.model
     scenario_tail_excess_indices = energy_problem.constraints[:scenario_tail_excess].indices
     tail_excess_vars = energy_problem.variables[:tail_excess_slack_xi].container
     value_at_risk_threshold_mu =
         only(energy_problem.variables[:value_at_risk_threshold_mu].container)
-
-    base_cost = JuMP.AffExpr(0.0)
-    for objective_name in (
-        :assets_investment_cost,
-        :assets_fixed_cost_compact_vintage_method,
-        :assets_fixed_cost_aggregated_vintage_method,
-        :storage_assets_energy_investment_cost,
-        :storage_assets_energy_fixed_cost,
-        :flows_investment_cost,
-        :flows_fixed_cost,
-    )
-        if haskey(model, objective_name)
-            JuMP.add_to_expression!(base_cost, model[objective_name])
-        end
-    end
 
     flows_operational_cost_per_scenario = Dict(
         row.scenario =>
@@ -239,7 +209,6 @@ end
     for row in scenario_tail_excess_indices
         id, scenario = row.id, row.scenario
         cost_per_scenario = JuMP.AffExpr(0.0)
-        JuMP.add_to_expression!(cost_per_scenario, base_cost)
         JuMP.add_to_expression!(cost_per_scenario, flows_operational_cost_per_scenario[scenario])
         JuMP.add_to_expression!(
             cost_per_scenario,
@@ -269,7 +238,7 @@ end
 
     # Check that no constraints were created for scenario tail excess
     @test isempty(
-        energy_problem.expressions[:scenario_tail_excess].expressions[:total_cost_per_scenario],
+        energy_problem.expressions[:scenario_tail_excess].expressions[:total_operational_cost_per_scenario],
     )
 
     # Check that the expr_scenario_tail_excess table is empty
