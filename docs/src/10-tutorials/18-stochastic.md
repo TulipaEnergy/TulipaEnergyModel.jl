@@ -1,4 +1,4 @@
-# Two-Stage Stochastic Optimization
+# [Two-Stage Stochastic Optimization](@ref two-stage-stochastic)
 
 ## Introduction
 
