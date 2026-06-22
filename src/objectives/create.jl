@@ -29,6 +29,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
         )""",
     )
     objective_expr = JuMP.AffExpr(0.0)
+
+    # Add components that do not depend on scenario
     _add_assets_investment_cost!(connection, model, variables, objective_expr)
     _add_assets_fixed_cost_compact_vintage_method!(connection, model, expressions, objective_expr)
     _add_assets_fixed_cost_aggregated_vintage_method!(
@@ -41,6 +43,8 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     _add_storage_assets_energy_fixed_cost!(connection, model, expressions, objective_expr)
     _add_flows_investment_cost!(connection, model, variables, objective_expr)
     _add_flows_fixed_cost!(connection, model, expressions, objective_expr)
+
+    # Add components that depend on scenario
     _add_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
     _add_vintage_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
     _add_units_on_operational_cost!(connection, model, expressions, objective_expr, lambda)
