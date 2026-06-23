@@ -1,0 +1,5 @@
+asset,milestone_year,commission_year,initial_units
+wind,2030,2030,0.0
+ocgt,2030,2030,1.0
+demand,2030,2030,1.0
+ens,2030,2030,1.0
