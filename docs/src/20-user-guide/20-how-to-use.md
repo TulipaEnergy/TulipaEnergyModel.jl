@@ -749,13 +749,13 @@ For more details on the objective function and constraints for the stochastic se
 
 ## [Risk-Averse Optimization with Conditional Value at Risk (CVaR)](@id cvar-setup)
 
-By default, Tulipa minimizes the **expected total system cost** across stochastic scenarios, which is the standard risk-neutral objective. When multiple stochastic scenarios are present and you want to account for risk, you can activate the **mean-CVaR** (Conditional Value at Risk) formulation. This penalizes scenarios with high costs and produces a solution that is more robust to worst-case outcomes.
+By default, Tulipa minimizes the **expected total operational system cost** across stochastic scenarios, which is the standard risk-neutral objective. When multiple stochastic scenarios are present and you want to account for risk, you can activate the **mean-CVaR** (Conditional Value at Risk) formulation. This penalizes scenarios with high operational costs and produces a solution that is more robust to worst-case outcomes.
 
-The mean-CVaR objective is a convex combination of the expected cost and the CVaR at confidence level $\alpha$:
+The mean-CVaR objective is a convex combination of the expected operational cost and the CVaR at confidence level $\alpha$:
 
-$$\text{minimize} \quad (1 - \lambda) \cdot \mathbb{E}[C] + \lambda \cdot \text{CVaR}_{\alpha}$$
+$$\text{minimize} \quad C^I + C^F + (1 - \lambda) \cdot \mathbb{E}[C^O] + \lambda \cdot \text{CVaR}_{\alpha}$$
 
-where $\lambda \in [0, 1]$ controls the trade-off between average performance and risk aversion.
+where $\lambda \in [0, 1]$ controls the trade-off between average performance and risk aversion, and $C^I$ and $C^F$ are the total investment and fixed costs that don't depend on the scenarios, $\mathbb{E}[C^O]$ is the total expected operational cost across scenarios, and $\text{CVaR}_{\alpha}$ is the Conditional Value at Risk at confidence level $\alpha$.
 
 ### Setting up CVaR
 
