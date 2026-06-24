@@ -26,7 +26,7 @@
             method = :convex_hull,
             distance = TC.Distances.CosineDist(),
             weight_type = :convex,
-            layout = TC.ProfilesTableLayout(year = :milestone_year),
+            layout = TC.ProfilesTableLayout(; year = :milestone_year),
         )
         return nothing
     end
@@ -45,7 +45,7 @@
             method = :convex_hull,
             distance = TC.Distances.CosineDist(),
             weight_type = :convex,
-            layout = TC.ProfilesTableLayout(year = :milestone_year),
+            layout = TC.ProfilesTableLayout(; year = :milestone_year),
         )
         return nothing
     end
@@ -57,8 +57,7 @@
             "profiles";
             exclude_columns = ["scenario", "milestone_year", "timestep"],
         )
-        layout = TC.ProfilesTableLayout(
-            ;
+        layout = TC.ProfilesTableLayout(;
             year = :milestone_year,
             cols_to_groupby = [:milestone_year],
             cols_to_crossby = [:scenario],
