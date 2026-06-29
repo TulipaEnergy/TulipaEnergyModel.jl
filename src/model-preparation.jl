@@ -208,13 +208,14 @@ function add_expression_terms_rep_period_constraints!(
             end
 
             # Step 1.2. Loop over each constraint
+            workspace_agg = Dict{Int,Float64}()
             for (cons_id::Int64, time_block_start::Int32, time_block_end::Int32) in zip(
                 group_row.cons_id_vec::Vector{Union{Missing,Int64}},
                 group_row.cons_time_block_start_vec::Vector{Union{Missing,Int32}},
                 group_row.cons_time_block_end_vec::Vector{Union{Missing,Int32}},
             )
                 time_block = time_block_start:time_block_end
-                workspace_agg = Dict{Int,Float64}()
+                empty!(workspace_agg)
                 # Step 1.2.1.
                 for timestep in time_block
                     for (var_id, var_coefficient) in workspace[timestep]
@@ -350,6 +351,7 @@ function add_expression_terms_inter_period_constraints!(
         )
             empty!.(workspace)
 
+            group_flows_accumulation = Dict{Int,Float64}()
             for (
                 var_id_vec::Vector{Union{Missing,Int64}},
                 var_time_block_start_vec::Vector{Union{Missing,Int32}},
@@ -369,7 +371,7 @@ function add_expression_terms_inter_period_constraints!(
             )
 
                 # Loop over each variable in the (group,rp) and accumulate them
-                group_flows_accumulation = Dict{Int,Float64}()
+                empty!(group_flows_accumulation)
 
                 for (var_id::Int64, time_block_start::Int32, time_block_end::Int32) in zip(
                     var_id_vec::Vector{Union{Missing,Int64}},
@@ -401,13 +403,14 @@ function add_expression_terms_inter_period_constraints!(
             end
 
             # Loop over each constraint and aggregate from the workspace into the expression
+            workspace_aggregation = Dict{Int,Float64}()
             for (cons_id::Int64, period_block_start::Int32, period_block_end::Int32) in zip(
                 group_row.cons_id_vec::Vector{Union{Missing,Int64}},
                 group_row.cons_period_block_start_vec::Vector{Union{Missing,Int32}},
                 group_row.cons_period_block_end_vec::Vector{Union{Missing,Int32}},
             )
                 period_block = period_block_start:period_block_end
-                workspace_aggregation = Dict{Int,Float64}()
+                empty!(workspace_aggregation)
                 for period in period_block
                     mergewith!(+, workspace_aggregation, workspace[period])
                 end
@@ -803,7 +806,6 @@ function prepare_profiles_structure(connection)
         )
     )
 
-    # TODO: Try to convert the flow below using group by like above
     # Creating inter_period profiles of inflows using the inflows
     # profiles of rep_periods (asset_milestone.storage_inflows is
     # asset-specific and is not used here).
@@ -812,58 +814,48 @@ function prepare_profiles_structure(connection)
         connection,
         """
         WITH
-            cte_scenarios AS (
-                SELECT DISTINCT scenario
-                FROM rep_periods_mapping
+            cte_storage_profiles AS (
+                SELECT DISTINCT
+                    assets_profiles.profile_name,
+                    assets_profiles.commission_year AS milestone_year
+                FROM assets_profiles
+                INNER JOIN asset
+                    ON assets_profiles.asset = asset.asset
+                WHERE assets_profiles.profile_type = 'inflows'
+                    AND asset.type = 'storage'
+                    AND asset.is_seasonal
             ),
-            cte_storage_assets AS (
-                SELECT asset.asset
-                FROM asset
-                WHERE asset.type = 'storage' AND asset.is_seasonal
+            cte_period_values AS (
+                SELECT
+                    cte_storage_profiles.profile_name,
+                    cte_storage_profiles.milestone_year,
+                    rep_periods_mapping.scenario,
+                    rep_periods_mapping.period,
+                    SUM(profiles_rep_periods.value * rep_periods_mapping.weight) AS value
+                FROM cte_storage_profiles
+                INNER JOIN profiles_rep_periods
+                    ON cte_storage_profiles.profile_name = profiles_rep_periods.profile_name
+                    AND cte_storage_profiles.milestone_year = profiles_rep_periods.milestone_year
+                INNER JOIN rep_periods_mapping
+                    ON profiles_rep_periods.milestone_year = rep_periods_mapping.milestone_year
+                    AND profiles_rep_periods.rep_period = rep_periods_mapping.rep_period
+                GROUP BY
+                    cte_storage_profiles.profile_name,
+                    cte_storage_profiles.milestone_year,
+                    rep_periods_mapping.scenario,
+                    rep_periods_mapping.period
             )
-        SELECT DISTINCT
-            assets_profiles.profile_name,
-            assets_profiles.commission_year,
-            cte_scenarios.scenario
-        FROM assets_profiles
-        INNER JOIN cte_storage_assets
-            ON assets_profiles.asset = cte_storage_assets.asset
-        CROSS JOIN cte_scenarios
-        WHERE assets_profiles.profile_type = 'inflows'
+        SELECT
+            profile_name,
+            milestone_year,
+            scenario,
+            ARRAY_AGG(value ORDER BY period) AS values
+        FROM cte_period_values
+        GROUP BY profile_name, milestone_year, scenario
         """,
     )
-        profile_name = row.profile_name
-        milestone_year = row.commission_year
-        scenario = row.scenario
-        values = Float64[
-            row.value for row in DuckDB.query(
-                connection,
-                """
-                WITH cte_profile_rp AS (
-                    SELECT
-                        $milestone_year AS milestone_year,
-                        $scenario AS scenario,
-                        profiles_rep_periods.rep_period,
-                        profiles_rep_periods.value
-                    FROM profiles_rep_periods
-                    WHERE profile_name = '$profile_name' AND milestone_year = $milestone_year
-                )
-                SELECT
-                    rp_map.period,
-                    SUM(cte_profile_rp.value * rp_map.weight) AS value
-                FROM cte_profile_rp
-                INNER JOIN rep_periods_mapping AS rp_map
-                    ON cte_profile_rp.milestone_year = rp_map.milestone_year
-                    AND cte_profile_rp.scenario = rp_map.scenario
-                    AND cte_profile_rp.rep_period = rp_map.rep_period
-                GROUP BY rp_map.period
-                ORDER BY rp_map.period
-                """,
-            )
-        ]
-        if length(values) > 0
-            inter_period[(profile_name, milestone_year, scenario)] = values
-        end
+        inter_period[(row.profile_name, row.milestone_year, row.scenario)] =
+            convert(Vector{Float64}, row.values)
     end
 
     return ProfileLookup(rep_period, inter_period)
@@ -876,7 +868,7 @@ Gets the model parameters from the 'model_parameters' table in
 the database connection and returns them in a named tuple.
 """
 function get_model_parameters(connection)
-    row = only(collect(DuckDB.query(connection, "SELECT * FROM model_parameters")))
+    row = only(DuckDB.query(connection, "SELECT * FROM model_parameters"))
 
     social_rate = row.discount_rate
     discount_year = row.discount_year
