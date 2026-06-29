@@ -59,6 +59,8 @@ function run_rolling_horizon(
     save_rolling_solution = false,
     compute_duals = true,
 )
+    reset_timer!(to)
+
     # Validation that the input data must satisfy to run rolling horizon
     @timeit to "Validate rolling horizon input" validate_rolling_horizon_input(
         connection,

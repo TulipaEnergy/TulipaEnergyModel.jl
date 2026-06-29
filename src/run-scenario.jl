@@ -33,6 +33,8 @@ function run_scenario(
     log_file = "",
     show_log = true,
 )
+    reset_timer!(to)
+
     energy_problem = @timeit to "create EnergyProblem from connection" EnergyProblem(connection)
 
     @timeit to "create_model!" create_model!(
