@@ -43,7 +43,7 @@ function _profile_aggregate(
 end
 
 function _profile_aggregate(profile_object::Vector{Float64}, time_block, agg_function)
-    return agg_function(skipmissing(profile_object[time_block]))
+    return agg_function(skipmissing(view(profile_object, time_block)))
 end
 
 function _profile_aggregate(profile_object::ProfileWithRollingHorizon, time_block, agg_function)
@@ -56,7 +56,7 @@ function _profile_aggregate(profile_object::ProfileWithRollingHorizon, time_bloc
         profile_object.values
     end
 
-    return agg_function(skipmissing(profile_value[time_block]))
+    return agg_function(skipmissing(view(profile_value, time_block)))
 end
 
 """
