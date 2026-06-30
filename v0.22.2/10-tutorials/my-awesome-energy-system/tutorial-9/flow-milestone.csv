@@ -1,0 +1,17 @@
+from_asset,to_asset,milestone_year,operational_cost,dc_opf,investable,reactance,commodity_price
+wind,e_demand,2030,0.002,false,false,0.3,0.0
+ccgt,e_demand,2030,0.0,false,false,0.3,0.05
+ocgt,e_demand,2030,0.0,false,false,0.3,0.07
+solar,e_demand,2030,0.0,false,false,0.3,0.0
+ens,e_demand,2030,0.0,false,false,0.3,0.18
+electrolizer,h2_demand,2030,0.0,false,false,0.3,0.0
+e_demand,electrolizer,2030,0.0,false,false,0.3,0.0
+smr_ccs,h2_demand,2030,0.0,false,false,0.3,0.25
+wind_offshore,e_demand,2030,0.004,false,false,0.3,0.0
+wind_offshore,electrolizer,2030,0.004,false,false,0.3,0.0
+battery,e_demand,2030,0.0,false,false,0.3,0.0
+e_demand,battery,2030,0.0,false,false,0.3,0.0
+h2_storage,h2_demand,2030,0.0,false,false,0.3,0.0
+h2_demand,h2_storage,2030,0.0,false,false,0.3,0.0
+hydro_reservoir,e_demand,2030,0.0,false,false,0.3,0.0
+hydro_reservoir,spillage,2030,0.001,false,false,0.3,0.0
