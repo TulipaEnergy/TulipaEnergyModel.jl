@@ -20,7 +20,7 @@ using ParametricOptInterface: ParametricOptInterface as POI
 ## Others
 using OrderedCollections: OrderedDict
 using Statistics: Statistics
-using TimerOutputs: TimerOutput, @timeit
+using TimerOutputs: TimerOutput, @timeit, reset_timer!
 
 const to = TimerOutput()
 

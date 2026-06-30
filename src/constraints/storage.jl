@@ -66,20 +66,9 @@ function add_storage_constraints!(
                     else
                         # Initial storage is the previous level (a JuMP variable)
                         previous_level::JuMP.VariableRef = if row.time_block_start > 1
-                            var_storage_level[row.id-1]
+                            var_storage_level[row.previous_id::Int]
                         else
-                            # Find last id of this group (there are probably cheaper ways, in case this becomes expensive)
-                            last_id = get_single_element_from_query_and_ensure_its_only_one(
-                                DuckDB.query(
-                                    connection,
-                                    "SELECT
-                                        MAX(id)
-                                    FROM cons_$table_name
-                                    WHERE asset = '$(row.asset)' AND milestone_year = $(row.milestone_year) AND rep_period = $(row.rep_period)
-                                    ",
-                                ),
-                            )::Int
-                            var_storage_level[last_id]
+                            var_storage_level[row.cycle_id::Int]
                         end
                         computed_storage_loss_coef = 1.0
                         if row.storage_loss_from_stored_energy > 0.0
@@ -193,19 +182,9 @@ function add_storage_constraints!(
                     else
                         # Initial storage is the previous level (a JuMP variable)
                         previous_level::JuMP.VariableRef = if row.period_block_start > 1
-                            var_storage_level[row.id-1]
+                            var_storage_level[row.previous_id::Int]
                         else
-                            last_id = get_single_element_from_query_and_ensure_its_only_one(
-                                DuckDB.query(
-                                    connection,
-                                    "SELECT
-                                        MAX(id)
-                                    FROM cons_$table_name
-                                    WHERE asset = '$(row.asset)' AND milestone_year = $(row.milestone_year) AND scenario = $(row.scenario)
-                                    ",
-                                ),
-                            )::Int
-                            var_storage_level[last_id]
+                            var_storage_level[row.cycle_id::Int]
                         end
                         @constraint(
                             model,
@@ -307,7 +286,7 @@ function add_storage_constraints!(
                     else
                         # Initial accumulated storage intra period is the previous level (a JuMP variable)
                         previous_accumulated_level::JuMP.VariableRef =
-                            var_accumulated_storage_level[row.id-1]
+                            var_accumulated_storage_level[row.previous_id::Int]
                         computed_storage_loss_coef = 1.0
                         if row.storage_loss_from_stored_energy > 0.0
                             duration = row.time_block_end - row.time_block_start + 1
@@ -334,6 +313,22 @@ end
 function _append_storage_data_to_indices(connection, table_name)
     join_duration = ""
     select_duration = ""
+    id_partition_columns, id_order_column = if table_name == :balance_storage_inter_period
+        ("cons.asset, cons.milestone_year, cons.scenario", "cons.period_block_start")
+    else
+        ("cons.asset, cons.milestone_year, cons.rep_period", "cons.time_block_start")
+    end
+    select_neighbor_ids = """
+    LAG(cons.id) OVER (
+        PARTITION BY $id_partition_columns
+        ORDER BY $id_order_column
+    ) AS previous_id,
+    LAST_VALUE(cons.id) OVER (
+        PARTITION BY $id_partition_columns
+        ORDER BY $id_order_column
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING -- frame expanding window to all rows, to avoid assuming ordering of ids
+    ) AS cycle_id,
+    """
 
     # Seasonal (inter-period) storage uses assets_timeframe_profiles (keyed by milestone_year
     # and scenario), while rep-period storage uses assets_profiles (keyed by commission_year).
@@ -397,6 +392,7 @@ function _append_storage_data_to_indices(connection, table_name)
         "SELECT
             cons.*,
             $select_duration
+            $select_neighbor_ids
             asset.capacity,
             asset_commission.investment_limit,
             asset_commission.storage_loss_from_stored_energy,

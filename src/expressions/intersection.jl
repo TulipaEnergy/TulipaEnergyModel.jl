@@ -114,6 +114,8 @@ function attach_expression_on_constraints_grouping_variables!(
         end
 
         # Loop over each constraint
+        workspace_coef_agg = Dict{Int,Float64}()
+        workspace_count_agg = Dict{Int,Int}()
         for (cons_id::Int64, time_block_start::Int32, time_block_end::Int32) in zip(
             group_row.cons_id_vec::Vector{Union{Missing,Int64}},
             group_row.cons_time_block_start_vec::Vector{Union{Missing,Int32}},
@@ -122,8 +124,8 @@ function attach_expression_on_constraints_grouping_variables!(
             time_block = time_block_start:time_block_end
 
             # We keep the coefficient and count to compute the mean later
-            workspace_coef_agg = Dict{Int,Float64}()
-            workspace_count_agg = Dict{Int,Int}()
+            empty!(workspace_coef_agg)
+            empty!(workspace_count_agg)
 
             for timestep in time_block
                 for (var_id, var_coefficient) in workspace[timestep]
