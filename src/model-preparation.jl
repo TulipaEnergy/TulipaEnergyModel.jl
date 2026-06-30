@@ -817,7 +817,7 @@ function prepare_profiles_structure(connection)
             cte_storage_profiles AS (
                 SELECT DISTINCT
                     assets_profiles.profile_name,
-                    assets_profiles.commission_year AS milestone_year
+                    assets_profiles.commission_year AS milestone_year -- here commission_year = milestone_year
                 FROM assets_profiles
                 INNER JOIN asset
                     ON assets_profiles.asset = asset.asset

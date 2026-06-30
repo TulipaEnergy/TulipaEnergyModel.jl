@@ -326,7 +326,7 @@ function _append_storage_data_to_indices(connection, table_name)
     LAST_VALUE(cons.id) OVER (
         PARTITION BY $id_partition_columns
         ORDER BY $id_order_column
-        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING -- frame expanding window to all rows, to avoid assuming ordering of ids
     ) AS cycle_id,
     """
 
