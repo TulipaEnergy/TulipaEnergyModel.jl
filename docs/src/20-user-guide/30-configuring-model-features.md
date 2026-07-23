@@ -1,353 +1,51 @@
-# [How to Use](@id how-to-use)
+# [Configuring Model Features](@id configuring-model-features)
 
 ```@contents
-Pages = ["20-how-to-use.md"]
+Pages = ["30-configuring-model-features.md"]
 Depth = [2, 3]
 ```
 
 This section assumes users have already followed the basic Tutorials and are looking for specific instructions for certain features.
 
-## Running a Scenario
+## Storage constraints
 
-To run a scenario, use the function:
+### [Seasonal and non-seasonal storage](@id seasonal-setup)
 
-- [`run_scenario(connection)`](@ref)
-- [`run_scenario(connection; output_folder)`](@ref)
+Section [Storage Modeling](@ref storage-modeling) explains the main concepts for modeling seasonal and non-seasonal storage in _TulipaEnergyModel.jl_. To define if an asset is one type or the other then consider the following:
 
-The `connection` should have been created and the data loaded into it using [TulipaIO](https://github.com/TulipaEnergy/TulipaIO.jl).
-See the [Workflow Tutorial](@ref workflow-tutorial) for a complete guide on how to achieve this.
-The `output_folder` is optional if the user wants to export the output.
-
-## Finding an input parameter
-
-!!! tip "Are you looking for an input parameter?"
-    Please visit the [Model Parameters](@ref table-schemas) section for a description and location of all model input parameters.
-
-## Running automatic tests
-
-To run the automatic tests on your installation of TulipaEnergyModel:
-
-- Enter package mode (press "]")
-
-```julia-pkg
-pkg> test TulipaEnergyModel
-# This takes a minute or two...
-```
-
-All tests should pass.
-(If you have an error in your analysis, it is probably not caused by TulipaEnergyModel.)
-
-!!! warning "Admin rights on your local machine"
-    Ensure you have admin rights on the folder where the package is installed; otherwise, an error will appear during the tests.
-
-## [Input and Output](@id input)
-
-Tulipa runs from tables in DuckDB, which can be loaded from many formats (CSV, Parquet, etc).
-See the workflow tutorial for more information on inputting data.
-
-### Input
-
-Tulipa runs from strictly defined files that follow the [Schemas](@ref table-schemas).
-See the workflow section for more information on how to work with the schema.
-
-You can check the [`test/inputs` folder](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs) for examples of different predefined energy systems and features. Moreover, Tulipa's Offshore Bidding Zone Case Study can be found in <https://github.com/TulipaEnergy/Tulipa-OBZ-CaseStudy>. It shows how to start from user-friendly files and transform the data into the input files in the [Schemas](@ref table-schemas) through different functions.
-
-### Output
-
-Outputs are sent from Tulipa to DuckDB and can be exported to various file formats.
-
-To save the solution to CSV files, you can use [`export_solution_to_csv_files`](@ref). See the [Workflow Tutorial](@ref step-export) for an example showcasing this function.
-
-## [Cost breakdown in post-processing](@id cost-breakdown)
-
-After solving the model, you can compute a detailed cost breakdown per asset or per flow directly from the solved variable and expression values. This does not modify the optimization model — it is purely a post-processing step.
-
-The total objective is composed of several cost components (investment costs, fixed O&M costs, operational costs, etc.). Each component is stored as an aggregated value in the `obj_breakdown` table. The examples below show how to disaggregate these components by asset or by flow.
-
-The general approach to construct these breakdowns is:
-
-1. **Identify the source**: Look at the corresponding objective function in `src/objectives/` to understand what variables, expressions, and cost coefficients are involved.
-2. **Get the solved values**: Variable solutions are stored in the `solution` column of `var_*` tables. Expression values (like available units) must be evaluated via `JuMP.value()` on the in-memory expressions.
-3. **Get the cost coefficients**: Join with the same tables the objective uses (`t_objective_assets`, `t_objective_flows`, `asset_commission`, etc.) to obtain discounted cost coefficients.
-4. **Combine**: Multiply solved values by cost coefficients, applying the `(1 - lambda)` risk aversion weight when necessary.
+- _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, we recommend using the inter-period constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `true`.
+- _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the rep-period constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `false`.
 
 !!! info
-    The tables `t_objective_assets` and `t_objective_flows` are temporary tables created during model construction. They contain pre-computed discount factors and annualized costs. They remain available in the DuckDB connection after solving.
+    If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
 
-!!! tip "Verifying correctness"
-    You can verify that your per-asset or per-flow breakdown is consistent with the aggregated objective by comparing the sum of your breakdown with the corresponding row in `obj_breakdown`:
-    ```julia
-    DuckDB.query(connection, "SELECT * FROM obj_breakdown")
-    ```
+### [The energy storage investment method](@id storage-investment-setup)
 
-To save any result as a CSV file, register it as a DuckDB table and use `COPY`:
+Energy storage assets have a unique characteristic wherein the investment is based not solely on the capacity to charge and discharge, but also on the capacity storage energy. Some storage asset types have a fixed duration for a given capacity, which means that there is a predefined ratio between energy and power. For instance, a battery of 10MW/unit and 4h duration implies that the capacity storage energy is 40MWh. Conversely, other storage asset types do not have a fixed ratio between the investment of capacity and storage capacity. Therefore, the capacity storage energy can be optimized independently of the capacity investment, such as hydrogen storage in salt caverns. This behavior is controlled by `storage_method_energy`:
 
-```julia
-DuckDB.register_table(connection, result, "my_table_name")
-output_file = joinpath(output_folder, "my_table_name.csv")
-DuckDB.execute(connection, "COPY my_table_name TO '$output_file' (HEADER, DELIMITER ',')")
-```
+- `none`: Do not create storage-energy investment/decommission variables. The storage-energy capacity only comes from `capacity_storage_energy` and existing `initial_storage_units`.
+- `optimize_storage_capacity`: Create storage-energy investment/decommission variables and optimize them independently. In this mode, it is necessary to define:
 
-### Investment cost (CAPEX) per asset
+  - `investment_cost_storage_energy`: To establish the cost of investing in the storage capacity (e.g., kEUR/MWh/unit).
+  - `fixed_cost_storage_energy`: To establish the fixed cost of energy storage capacity (e.g., kEUR/MWh/unit).
+  - `investment_limit_storage_energy`: To define the potential of the capacity storage energy investment (e.g., MWh). `Missing` values mean that there is no limit.
+  - `investment_integer_storage_energy`: To determine whether the investment variables of storage capacity are integer or continuous.
 
-```julia
-obj_assets_investment_cost = DuckDB.query(
-    connection,
-    "SELECT
-        var.asset,
-        var.milestone_year,
-        obj.weight_for_asset_investment_discount
-            * obj.investment_cost
-            * obj.capacity
-            AS cost_per_unit_invested,
-        var.solution AS units_invested,
-        (1 - mp.risk_aversion_weight_lambda)
-            * cost_per_unit_invested
-            * var.solution
-            AS investment_cost,
-    FROM var_assets_investment AS var
-    LEFT JOIN t_objective_assets AS obj
-        ON var.asset = obj.asset
-        AND var.milestone_year = obj.milestone_year
-    CROSS JOIN model_parameters AS mp
-    ORDER BY var.asset, var.milestone_year
-    ",
-)
+- `use_fixed_energy_to_power_ratio`: Do not create storage-energy investment/decommission variables. Instead, invested storage-energy capacity is linked to invested power capacity through `energy_to_power_ratio`.
 
-DuckDB.register_table(connection, obj_assets_investment_cost, "obj_assets_investment_cost")
-output_file = joinpath(output_folder, "obj_assets_investment_cost.csv")
-DuckDB.execute(connection, "COPY obj_assets_investment_cost TO '$output_file' (HEADER, DELIMITER ',')")
-```
+In addition, the parameter `capacity_storage_energy` defines the energy per unit of storage capacity invested in (e.g., MWh/unit).
 
-### Fixed O&M cost per asset
+For more details on the constraints that apply when selecting one method or the other, please visit the [`mathematical formulation`](@ref formulation) section.
 
-```julia
-using JuMP: value
+### [Control simultaneous charging and discharging](@id storage-binary-method-setup)
 
-# Evaluate the available units expressions (one value per row in the expr table)
-expr_agg = energy_problem.expressions[:available_asset_units_aggregated_vintage_method]
-avail_units = value.(expr_agg.expressions[:assets])
+Depending on the configuration of the energy storage assets, it may or may not be possible to charge and discharge them simultaneously. For instance, a single battery cannot charge and discharge at the same time, but some pumped hydro storage technologies have separate components for charging (pump) and discharging (turbine) that can function independently, allowing them to charge and discharge simultaneously. To account for these differences, the model provides users with three options for the `use_binary_storage_method` parameter:
 
-# Get cost coefficients from DuckDB (same query the objective uses, plus key columns)
-cost_data = DuckDB.query(
-    connection,
-    "SELECT
-        expr.id,
-        expr.asset,
-        expr.milestone_year,
-        expr.commission_year,
-        obj.weight_for_operation_discounts
-            * asset_commission.fixed_cost
-            * obj.capacity
-            AS cost_coefficient,
-    FROM expr_available_asset_units_aggregated_vintage_method AS expr
-    LEFT JOIN asset_commission
-        ON expr.asset = asset_commission.asset
-        AND expr.commission_year = asset_commission.commission_year
-    LEFT JOIN t_objective_assets AS obj
-        ON expr.asset = obj.asset
-        AND expr.milestone_year = obj.milestone_year
-    ORDER BY expr.id
-    ",
-)
+- `binary`: the model adds a binary variable to prevent charging and discharging simultaneously.
+- `relaxed_binary`: the model adds a binary variable that allows values between 0 and 1, reducing the likelihood of charging and discharging simultaneously. This option uses a tighter set of constraints close to the convex hull of the full formulation, resulting in fewer instances of simultaneous charging and discharging in the results.
+- If no value is set, i.e., `missing` value, the storage asset can charge and discharge simultaneously.
 
-# Combine and build the result table
-lambda = first(
-    DuckDB.query(connection, "SELECT risk_aversion_weight_lambda FROM model_parameters"),
-).risk_aversion_weight_lambda
-
-obj_assets_fixed_cost = [
-    (
-        asset = row.asset,
-        milestone_year = row.milestone_year,
-        commission_year = row.commission_year,
-        available_units = avail_units[row.id],
-        cost_coefficient = row.cost_coefficient,
-        fixed_cost = (1 - lambda) * avail_units[row.id] * row.cost_coefficient,
-    ) for row in cost_data
-]
-
-# Register and export
-DuckDB.register_table(connection, obj_assets_fixed_cost, "obj_assets_fixed_cost")
-output_file = joinpath(output_folder, "obj_assets_fixed_cost.csv")
-DuckDB.execute(connection, "COPY obj_assets_fixed_cost TO '$output_file' (HEADER, DELIMITER ',')")
-```
-
-!!! tip
-    The same pattern applies to the compact vintage method — replace `aggregated` with `compact` and use `expressions[:available_asset_units_compact_vintage_method]`. For models that use both methods (different assets use different methods), you can run both queries and concatenate the results.
-
-### Flows operational cost per flow
-
-```julia
-table_name = "obj_flows_operational_cost"
-DuckDB.execute(
-    connection,
-    "CREATE OR REPLACE TABLE $table_name AS
-    SELECT
-        var.from_asset,
-        var.to_asset,
-        var.milestone_year,
-        (1 - mp.risk_aversion_weight_lambda) * SUM(
-            ss.probability
-            * obj.weight_for_operation_discounts
-            * rp_weight.total_weight_per_scenario
-            * rp_res.resolution
-            * obj.total_variable_cost
-            * (var.time_block_end - var.time_block_start + 1)
-            * var.solution
-        ) AS operational_cost,
-    FROM var_flow AS var
-    LEFT JOIN t_objective_flows AS obj
-        ON var.from_asset = obj.from_asset
-        AND var.to_asset = obj.to_asset
-        AND var.milestone_year = obj.milestone_year
-    LEFT JOIN (
-        SELECT milestone_year, rep_period, scenario,
-               SUM(weight) AS total_weight_per_scenario
-        FROM rep_periods_mapping
-        GROUP BY milestone_year, rep_period, scenario
-    ) AS rp_weight
-        ON var.milestone_year = rp_weight.milestone_year
-        AND var.rep_period = rp_weight.rep_period
-    LEFT JOIN (
-        SELECT milestone_year, rep_period, ANY_VALUE(resolution) AS resolution
-        FROM rep_periods_data
-        GROUP BY milestone_year, rep_period
-    ) AS rp_res
-        ON var.milestone_year = rp_res.milestone_year
-        AND var.rep_period = rp_res.rep_period
-    LEFT JOIN stochastic_scenario AS ss
-        ON rp_weight.scenario = ss.scenario
-    LEFT JOIN asset
-        ON asset.asset = var.from_asset
-    CROSS JOIN model_parameters AS mp
-    WHERE asset.vintage_method != 'compact_efficiencies'
-    GROUP BY var.from_asset, var.to_asset, var.milestone_year, mp.risk_aversion_weight_lambda
-    ORDER BY var.from_asset, var.to_asset, var.milestone_year
-    ",
-)
-```
-
-!!! warning
-    This query uses the constant `total_variable_cost` from `t_objective_flows`. If your model uses **commodity price profiles**, it needs modifications.
-
-!!! info
-    Flows from assets using `vintage_method = 'compact_efficiencies'` are excluded here — their costs are in a separate `vintage_flows_operational_cost` component. The same query pattern applies with `var_vintage_flow` and `t_objective_vintage_flows` instead.
-
-!!! tip "Splitting into energy cost and variable O&M"
-    The `total_variable_cost` in `t_objective_flows` is the sum of two components: `commodity_price / producer_efficiency` (the fuel/energy cost) and `operational_cost` (the variable O&M cost). To get a finer breakdown, replace `obj.total_variable_cost` in the query above with either:
-    - `(obj.commodity_price / obj.producer_efficiency)` for the **energy cost** only (fuel/commodity cost adjusted for efficiency), or
-    - `obj.operational_cost` for the **variable O&M cost** only.
-    The sum of both sub-components equals the `operational_cost` column from the full query.
-
-## Setting the solver and its parameters
-
-By default, the model is solved using the [HiGHS](https://github.com/jump-dev/HiGHS.jl) optimizer (or solver).
-To change this, you can give the functions [`run_scenario`](@ref) or [`create_model!`](@ref) a different optimizer.
-
-!!! warning
-    HiGHS is the only open source solver that we recommend. GLPK and Cbc are not (fully) tested for Tulipa.
-
-Here is an example running the Tiny case using the [GLPK](https://github.com/jump-dev/GLPK.jl) optimizer:
-
-```julia
-using DuckDB, TulipaIO, TulipaEnergyModel, GLPK
-
-input_dir = "../../test/inputs/Tiny" # you path will be different
-connection = DBInterface.connect(DuckDB.DB)
-read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_table_name)
-energy_problem = run_scenario(connection; optimizer = GLPK.Optimizer)
-#OR create_model!(energy_problem; optimizer = GLPK.Optimizer)
-```
-
-!!! info
-    Notice that you need to add the GLPK package and run `using GLPK` before running `GLPK.Optimizer`.
-
-In both cases above, the `GLPK` optimizer uses its default parameters, which you can query using [`default_parameters`](@ref).
-To change any optimizer parameters, you can pass a dictionary to the `optimizer_parameters` keyword argument.
-The example below changes the maximum allowed runtime for GLPK to 1 second, which will probably cause it to fail to converge in time.
-
-```julia
-# change the optimizer parameters
-parameter_dict = Dict("tm_lim" => 1) # list optimizer parameters as comma-separated parameter=>value pairs
-energy_problem = run_scenario(connection; optimizer = GLPK.Optimizer, optimizer_parameters = parameter_dict)
-#OR create_model!(energy_problem; optimizer = GLPK.Optimizer, optimizer_parameters = parameter_dict)
-energy_problem.termination_status
-```
-
-If `direct_model = false` you can change the optimizer and parameters after creating the model (but before solving it) using the JuMP commands demonstrated below.
-For more information on `direct_model`, see [Speed improvements in the model creation](@ref need-for-speed).
-
-```julia @example change-optimizer
-# create the model and solve with the default optimizer and optimizer parameters
-energy_problem = EnergyProblem(connection)
-create_model!(energy_problem)
-solve_model(energy_problem)
-
-# change the solver and parameters and resolve:
-parameter_dict = Dict("tm_lim" => 1) # list optimizer parameters as comma-separated parameter=>value pairs
-
-JuMP.set_optimizer(energy_problem.model, GLPK.Optimizer) # change the optimizer
-for (k, v) in optimizer_parameters
-    JuMP.set_attribute(energy_problem.model, k, v) # change the optimizer_parameters
-end
-
-solve_model(energy_problem) # solve the model with new optimizer & optimizer_parameters
-```
-
-For the complete list of parameters, check your chosen optimizer.
-
-You can also pass these parameters via a file using the [`read_parameters_from_file`](@ref) function.
-
-## [Exploring infeasibility](@id infeasible)
-
-If your model is infeasible, you can try exploring the infeasibility with [JuMP.compute_conflict!](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.compute_conflict!) and [JuMP.copy_conflict](https://jump.dev/JuMP.jl/stable/api/JuMP/#JuMP.copy_conflict).
-
-!!! warning "Check your solver options!"
-    Not all solvers support this functionality; please check your specific solver.
-
-Use `energy_problem.model` for the model argument. For instance:
-
-```julia
-import MathOptInterface as MOI
-using JuMP
-
-if JuMP.termination_status(energy_problem.model) == MOI.INFEASIBLE
-    JuMP.compute_conflict!(energy_problem.model)
-    iis_model, reference_map = JuMP.copy_conflict(energy_problem.model)
-    print(iis_model)
-end
-```
-
-## [Speeding up model creation](@id need-for-speed)
-
-### Disable names of variables and constraints
-
-If you want to speed-up model creation, consider disabling the naming of variables and constraints. Of course, removing the names will make debugging difficult (or impossible) - so enable/disable naming as needed for your analysis.
-
-```julia
-# Disable names while using run_scenario
-run_scenario(connection; enable_names = false)
-
-# OR while using create_model!
-create_model!(energy_problem; enable_names = false)
-```
-
-For more information, see the JuMP documentation for [Disable string names](https://jump.dev/JuMP.jl/stable/tutorials/getting_started/performance_tips/#Disable-string-names).
-
-### Create a direct model
-
-If you want to reduce memory usage, consider using `direct_model = true`. This restricts certain actions after model creation, such as changing the optimizer.
-
-```julia
-# Create direct model with run_scenario
-run_scenario(connection; direct_model = true)
-
-# OR while using create_model!
-create_model!(energy_problem; direct_model = true)
-```
-
-For more information, see the JuMP documentation for [`direct_model`](https://jump.dev/JuMP.jl/stable/api/JuMP/#direct_model).
+For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
 ## [Multi-year Investments and Vintage Modeling](@id multi-year-setup)
 
@@ -444,49 +142,7 @@ For economic representation, the following parameters need to be set up. For con
     1. Since the model explicitly discounts, all input costs should be given in the nominal costs of the relevant year. For example, to model investments in 2030 and 2050, the `investment_cost` should be given in 2030 costs and 2050 costs, respectively.
     2. For the full formulas, see the [`mathematical formulation`](@ref formulation) section.
 
-## Activating specific constraints
-
-### Storage constraints
-
-#### [Seasonal and non-seasonal storage](@id seasonal-setup)
-
-Section [Storage Modeling](@ref storage-modeling) explains the main concepts for modeling seasonal and non-seasonal storage in _TulipaEnergyModel.jl_. To define if an asset is one type or the other then consider the following:
-
-- _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, we recommend using the inter-period constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `true`.
-- _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the rep-period constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `false`.
-
-!!! info
-    If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
-
-#### [The energy storage investment method](@id storage-investment-setup)
-
-Energy storage assets have a unique characteristic wherein the investment is based not solely on the capacity to charge and discharge, but also on the capacity storage energy. Some storage asset types have a fixed duration for a given capacity, which means that there is a predefined ratio between energy and power. For instance, a battery of 10MW/unit and 4h duration implies that the capacity storage energy is 40MWh. Conversely, other storage asset types do not have a fixed ratio between the investment of capacity and storage capacity. Therefore, the capacity storage energy can be optimized independently of the capacity investment, such as hydrogen storage in salt caverns. This behavior is controlled by `storage_method_energy`:
-
-- `none`: Do not create storage-energy investment/decommission variables. The storage-energy capacity only comes from `capacity_storage_energy` and existing `initial_storage_units`.
-- `optimize_storage_capacity`: Create storage-energy investment/decommission variables and optimize them independently. In this mode, it is necessary to define:
-
-  - `investment_cost_storage_energy`: To establish the cost of investing in the storage capacity (e.g., kEUR/MWh/unit).
-  - `fixed_cost_storage_energy`: To establish the fixed cost of energy storage capacity (e.g., kEUR/MWh/unit).
-  - `investment_limit_storage_energy`: To define the potential of the capacity storage energy investment (e.g., MWh). `Missing` values mean that there is no limit.
-  - `investment_integer_storage_energy`: To determine whether the investment variables of storage capacity are integer or continuous.
-
-- `use_fixed_energy_to_power_ratio`: Do not create storage-energy investment/decommission variables. Instead, invested storage-energy capacity is linked to invested power capacity through `energy_to_power_ratio`.
-
-In addition, the parameter `capacity_storage_energy` defines the energy per unit of storage capacity invested in (e.g., MWh/unit).
-
-For more details on the constraints that apply when selecting one method or the other, please visit the [`mathematical formulation`](@ref formulation) section.
-
-#### [Control simultaneous charging and discharging](@id storage-binary-method-setup)
-
-Depending on the configuration of the energy storage assets, it may or may not be possible to charge and discharge them simultaneously. For instance, a single battery cannot charge and discharge at the same time, but some pumped hydro storage technologies have separate components for charging (pump) and discharging (turbine) that can function independently, allowing them to charge and discharge simultaneously. To account for these differences, the model provides users with three options for the `use_binary_storage_method` parameter:
-
-- `binary`: the model adds a binary variable to prevent charging and discharging simultaneously.
-- `relaxed_binary`: the model adds a binary variable that allows values between 0 and 1, reducing the likelihood of charging and discharging simultaneously. This option uses a tighter set of constraints close to the convex hull of the full formulation, resulting in fewer instances of simultaneous charging and discharging in the results.
-- If no value is set, i.e., `missing` value, the storage asset can charge and discharge simultaneously.
-
-For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
-
-### [Unit Commitment constraints](@id unit-commitment-setup)
+## [Unit Commitment constraints](@id unit-commitment-setup)
 
 The unit commitment constraints are only applied to producer and conversion assets. The `unit_commitment` parameter determines which unit commitment method to use. The current version of the code only includes the basic version. Future versions will add more detailed constraints as additional options. Additionally, the following parameters should be set in that same file:
 
@@ -499,7 +155,7 @@ The unit commitment constraints are only applied to producer and conversion asse
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
-### [Ramping constraints](@id ramping-setup)
+## [Ramping constraints](@id ramping-setup)
 
 The ramping constraints are only applied to producer and conversion assets. The `ramping` parameter must be set to `true` to include the constraints. Additionally, the following parameters should be set in that same file:
 
@@ -508,7 +164,7 @@ The ramping constraints are only applied to producer and conversion assets. The 
 
 For more details on the constraints that apply when selecting this method, please visit the [`mathematical formulation`](@ref formulation) section.
 
-### [Outgoing energy constraints (maximum or minimum)](@id max-min-outgoing-energy-setup)
+## [Outgoing energy constraints (maximum or minimum)](@id max-min-outgoing-energy-setup)
 
 For the model to add constraints for a [maximum or minimum energy limit](@ref inter-period-energy-constraints) for an asset throughout the model's timeframe (e.g., a year), we need to establish a couple of parameters:
 
@@ -524,7 +180,7 @@ For the model to add constraints for a [maximum or minimum energy limit](@ref in
 !!! tip "Tip"
     If you want to set a limit on the maximum or minimum outgoing energy for a year with representative days, you can use the partition definition to create a single partition for the entire year to combine the profile.
 
-#### Example: Setting Energy Limits
+### Example: Setting Energy Limits
 
 Let's assume we have a year divided into 365 days because we are using days as periods in the representatives from [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl). Also, we define the `max_energy_timeframe_partition = 10 MWh`, meaning the peak energy we want to have is 10MWh for each period or period partition. So depending on the optional information, we can have:
 
@@ -534,20 +190,20 @@ Let's assume we have a year divided into 365 days because we are using days as p
 | Defined | None              | The profile definition and value will be in the timeframe profiles files. For example, we define a profile that has the following first four values: 0.6 p.u., 1.0 p.u., 0.8 p.u., and 0.4 p.u. There are no period partitions, so constraints will be for each period (i.e., daily). Therefore the outgoing energy of the asset for the first four days must be less than or equal to 6MWh, 10MWh, 8MWh, and 4MWh.                                                                                                                                                                                        |
 | Defined | Defined           | Using the same profile as above, we now define a period partition in the timeframe partitions file as `uniform` with a value of 2. This value means that we will aggregate every two periods (i.e., every two days). So, instead of having 365 constraints, we will have 183 constraints (182 every two days and one last constraint of 1 day). Then the profile is aggregated with the sum of the values inside the periods within the partition. Thus, the outgoing energy of the asset for the first two partitions (i.e., every two days) must be less than or equal to 16MWh and 12MWh, respectively. |
 
-### Group constraints
+## Group constraints
 
 A group of assets refers to a set of assets that share certain constraints. For example, the investments of a group of assets may be capped at a maximum value, which represents the potential of a specific area that is restricted in terms of the maximum allowable MW due to limitations on building licenses.
 
 Groups are useful to represent several common constraints.
 
-#### [Creating Groups](@id group-setup)
+### [Creating Groups](@id group-setup)
 
 In order to define the groups in the model, the following steps are necessary:
 
 1. Create a group file by defining the `name` property and its parameters in the `investment_group_asset` table (or CSV file).
 2. Assign assets to the group by adding entries to the `investment_group_asset_membership` table (or CSV file).
 
-#### [Group Investment constraints](@id investment-group-setup)
+### [Group Investment constraints](@id investment-group-setup)
 
 A group investment constraint is a constraint of the form
 
@@ -579,7 +235,7 @@ They can be achieved using group investment constraints by adding rows in `inves
     Notice that only one constraint is created per row in `investment_group_asset`, which means that if both the minimum and maximum investment limits are desired, two rows are required in `investment_group_asset`, one with `constraint_sense = '<='` and one with `constraint_sense = '>='`. In this case, the names of the groups must be different, from instance `ccgt_max` and `ccgt_min`.
     Similarly, the elements in `investment_group_asset_membership` will need to be duplicated, one for each group.
 
-#### Example: Group of Assets
+### Example: Group of Assets
 
 Let's explore how the groups are set up in the test case called [Norse](https://github.com/TulipaEnergy/TulipaEnergyModel.jl/tree/main/test/inputs/Norse). First, let's take a look at the `investment-group-asset.csv` file:
 
@@ -604,7 +260,7 @@ Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the 
 !!! info
     The assets in the group have to allow investment (`asset_milestone.investable = true` for the corresponding year) and not be of type `consumer` (`asset.type != "consumer"`).
 
-### [Flow Coefficient in Capacity constraints](@id coefficient-for-capacity-constraints)
+## [Flow Coefficient in Capacity constraints](@id coefficient-for-capacity-constraints)
 
 Capacity constraints apply to all the outputs and inputs to assets according to the equations in the [`capacity constraints`](@ref cap-constraints) section of the mathematical formulation. The coefficient $p^{\text{capacity coefficient}}_{f,y}$ in the capacity constraints can be set to model situations or processes where the flows in the capacity constraint are multiplied by a constant factor.
 
@@ -618,7 +274,7 @@ In that case the sum must be always below the total capacity $\text{C}$, but if 
 
 To set up this parameter you need to fill in the information for the `capacity_coefficient` in the `flow_commission` table, see more in the [model parameters](@ref table-schemas) section.
 
-## [Using the coefficient for flows in the conversion constraints](@id coefficient-for-conversion-constraints)
+### [Using the coefficient for flows in the conversion constraints](@id coefficient-for-conversion-constraints)
 
 Conversion constraints apply to all the outputs and inputs of a conversion asset according to the equations in the [`conversion balance constraints`](@ref conversion-balance-constraints) section of the mathematical formulation. The coefficient $p^{\text{conversion coefficient}}_{f,y}$ in that constraint can be set to model situations or processes where the flows in the conversion balance constraint are multiplied by a constant factor.
 
@@ -635,7 +291,7 @@ Two flows in the model can be related using the [`flows relationships constraint
 
 There will be a set of constraints for each row in the `flows_relationships` table, meaning that the same flows can have different sets of constraints to describe different relationships between them. One example is the Combined Heat and Power (CHP) extraction plants, which rely on a set of inequality constraints between the electricity and heat outputs to define a feasible operating region. For more details about this example, refer to the [`multiple inputs and outputs`](@ref flex-time-res-mimo) example in the concepts section.
 
-## [Modeling Greenhouse Gas Emissions (e.g., CO2)](@id greenhouse-gas-emissions)
+### [Modeling Greenhouse Gas Emissions (e.g., CO2)](@id greenhouse-gas-emissions)
 
 Since the model provides a general definition of assets, specific definitions for different greenhouse gas emissions, such as CO2 or methane, do not exist. Instead, these emissions can be modeled as outputs of an asset. Through the concept of [`flows relationships`](@ref flow-relationships), any input (e.g., fuel consumption) or output (e.g., electricity) of the asset can be linked to an output flow that represents greenhouse gas emissions (e.g., CO2). In this context, the fixed ratio in the relationship equation serves as the emission factor.
 
