@@ -58,6 +58,7 @@ function validate_data!(connection)
             _validate_consumer_uses_aggregated_vintage_method!,
             false,
         ),
+        ("demand response data is consistent", _validate_demand_response!, false),
         (
             "consistency between asset_commission and asset_both",
             _validate_asset_commission_and_asset_both_consistency!,
@@ -490,6 +491,57 @@ function _validate_use_binary_storage_method_has_investment_limit!(error_message
             error_messages,
             "Incorrect investment_limit = $(row.investment_limit) for investable storage asset '$(row.asset)' with use_binary_storage_method = '$(row.use_binary_storage_method)' for milestone_year $(row.milestone_year). The investment_limit at commission_year $(row.commission_year) should be greater than 0 in 'asset_commission'.",
         )
+    end
+
+    return error_messages
+end
+
+function _validate_demand_response!(error_messages, connection)
+    # Demand response is only allowed on consumer assets.
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset.asset, asset.type, asset.demand_response_method
+        FROM asset
+        WHERE asset.demand_response_method != 'none'
+            AND asset.type != 'consumer'
+        ",
+    )
+        push!(
+            error_messages,
+            "Asset '$(row.asset)' has demand_response_method = '$(row.demand_response_method)' but type = '$(row.type)'. Demand response is only allowed on 'consumer' assets.",
+        )
+    end
+
+    # For demand-response-enabled assets, validate the numeric parameters.
+    for row in DuckDB.query(
+        connection,
+        "SELECT asset_milestone.asset, asset_milestone.milestone_year,
+            asset_milestone.dr_max_shift_fraction, asset_milestone.dr_window_blocks,
+            asset_milestone.dr_transaction_cost
+        FROM asset_milestone
+        LEFT JOIN asset
+            ON asset_milestone.asset = asset.asset
+        WHERE asset.demand_response_method != 'none'
+        ",
+    )
+        if row.dr_max_shift_fraction < 0 || row.dr_max_shift_fraction > 1
+            push!(
+                error_messages,
+                "Incorrect dr_max_shift_fraction = $(row.dr_max_shift_fraction) for demand response asset '$(row.asset)' for milestone_year $(row.milestone_year) in 'asset_milestone'. It should be between 0 and 1.",
+            )
+        end
+        if row.dr_window_blocks < 1
+            push!(
+                error_messages,
+                "Incorrect dr_window_blocks = $(row.dr_window_blocks) for demand response asset '$(row.asset)' for milestone_year $(row.milestone_year) in 'asset_milestone'. It should be greater than or equal to 1.",
+            )
+        end
+        if row.dr_transaction_cost < 0
+            push!(
+                error_messages,
+                "Incorrect dr_transaction_cost = $(row.dr_transaction_cost) for demand response asset '$(row.asset)' for milestone_year $(row.milestone_year) in 'asset_milestone'. It should be greater than or equal to 0.",
+            )
+        end
     end
 
     return error_messages

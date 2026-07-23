@@ -1,7 +1,7 @@
-asset,milestone_year,investable,peak_demand
-ccgt,2030,true,0.0
-wind,2030,true,0.0
-solar,2030,true,0.0
-demand,2030,false,1115.0
-ocgt,2030,true,0.0
-ens,2030,false,0.0
+asset,milestone_year,investable,peak_demand,dr_max_shift_fraction,dr_transaction_cost,dr_window_blocks
+ccgt,2030,true,0.0,0,0,1
+wind,2030,true,0.0,0,0,1
+solar,2030,true,0.0,0,0,1
+demand,2030,false,1115.0,0,0,1
+ocgt,2030,true,0.0,0,0,1
+ens,2030,false,0.0,0,0,1

@@ -580,6 +580,66 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_dr_window_balance
+;
+
+-- One recovery window per group of `dr_window_blocks` consecutive demand
+-- response time blocks (per asset, milestone_year, rep_period). The last
+-- window in a rep-period may be shorter (remainder window). Each window is
+-- described by the contiguous block range [time_block_start, time_block_end].
+create table cons_dr_window_balance as
+with
+    dr_blocks as (
+        select
+            var.asset,
+            var.milestone_year,
+            var.rep_period,
+            var.time_block_start,
+            var.time_block_end,
+            (
+                row_number() over (
+                    partition by
+                        var.asset,
+                        var.milestone_year,
+                        var.rep_period
+                    order by
+                        var.time_block_start
+                ) - 1
+            ) // asset_milestone.dr_window_blocks as window_id,
+        from
+            var_dr_demand_increase as var
+            left join asset_milestone on var.asset = asset_milestone.asset
+            and var.milestone_year = asset_milestone.milestone_year
+    )
+select
+    nextval('id') as id,
+    dr_blocks.asset,
+    dr_blocks.milestone_year,
+    dr_blocks.rep_period,
+    dr_blocks.window_id,
+    min(dr_blocks.time_block_start) as time_block_start,
+    max(dr_blocks.time_block_end) as time_block_end,
+from
+    dr_blocks
+group by
+    dr_blocks.asset,
+    dr_blocks.milestone_year,
+    dr_blocks.rep_period,
+    dr_blocks.window_id
+order by
+    dr_blocks.asset,
+    dr_blocks.milestone_year,
+    dr_blocks.rep_period,
+    dr_blocks.window_id
+;
+
+drop sequence id
+;
+
+
+create sequence id start 1
+;
+
 drop table if exists cons_min_energy_inter_period
 ;
 

@@ -63,6 +63,7 @@ export
     add_decommission_variables!,
     add_investment_variables!,
     add_conditional_value_at_risk_variables!,
+    add_demand_response_variables!,
 
     # Constraints
     compute_constraints_indices,
@@ -70,6 +71,7 @@ export
     add_energy_constraints!,
     add_storage_constraints!,
     add_consumer_constraints!,
+    add_demand_response_constraints!,
     add_conversion_constraints!,
     add_transport_constraints!,
     add_flows_relationships_constraints!,

@@ -22,11 +22,24 @@ function add_consumer_constraints!(connection, model, variables, constraints, pr
                 else
                     MathOptInterface.LessThan(0.0)
                 end
+                # Demand response shifts the effective demand up (d⁺) or down (d⁻).
+                dr_term = JuMP.AffExpr(0.0)
+                if !ismissing(row.dr_increase_var_id)
+                    JuMP.add_to_expression!(
+                        dr_term,
+                        variables[:dr_demand_increase].container[row.dr_increase_var_id],
+                    )
+                    JuMP.add_to_expression!(
+                        dr_term,
+                        -1.0,
+                        variables[:dr_demand_decrease].container[row.dr_decrease_var_id],
+                    )
+                end
                 if !ismissing(row.loop_var_id)
                     var = variables[:flow].container[row.loop_var_id]
                     @constraint(
                         model,
-                        incoming_flow - outgoing_flow - var * row.peak_demand in
+                        incoming_flow - outgoing_flow - var * row.peak_demand - dr_term in
                         consumer_balance_sense,
                         base_name = "consumer_balance[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
@@ -41,7 +54,7 @@ function add_consumer_constraints!(connection, model, variables, constraints, pr
                     )
                     @constraint(
                         model,
-                        incoming_flow - outgoing_flow - demand_agg * row.peak_demand in
+                        incoming_flow - outgoing_flow - demand_agg * row.peak_demand - dr_term in
                         consumer_balance_sense,
                         base_name = "consumer_balance[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
@@ -86,9 +99,12 @@ function _create_consumer_table(connection)
             cons.*,
             asset.type,
             asset.consumer_balance_sense,
+            asset.demand_response_method,
             asset_milestone.peak_demand,
             assets_profiles.profile_name,
             cte_loop.var_id AS loop_var_id,
+            dr_inc.id AS dr_increase_var_id,
+            dr_dec.id AS dr_decrease_var_id,
         FROM cons_balance_consumer AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
@@ -97,6 +113,18 @@ function _create_consumer_table(connection)
             AND cons.milestone_year = asset_milestone.milestone_year
         LEFT JOIN cte_loop
             ON cons.id = cte_loop.cons_id
+        LEFT JOIN var_dr_demand_increase AS dr_inc
+            ON cons.asset = dr_inc.asset
+            AND cons.milestone_year = dr_inc.milestone_year
+            AND cons.rep_period = dr_inc.rep_period
+            AND cons.time_block_start = dr_inc.time_block_start
+            AND cons.time_block_end = dr_inc.time_block_end
+        LEFT JOIN var_dr_demand_decrease AS dr_dec
+            ON cons.asset = dr_dec.asset
+            AND cons.milestone_year = dr_dec.milestone_year
+            AND cons.rep_period = dr_dec.rep_period
+            AND cons.time_block_start = dr_dec.time_block_start
+            AND cons.time_block_end = dr_dec.time_block_end
         LEFT OUTER JOIN assets_profiles
             ON cons.asset = assets_profiles.asset
             AND cons.milestone_year = assets_profiles.commission_year

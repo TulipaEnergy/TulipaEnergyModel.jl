@@ -114,6 +114,11 @@ function create_model(
     )
     @timeit to "add_power_flow_variables!" add_power_flow_variables!(model, variables)
     @timeit to "add_storage_variables!" add_storage_variables!(connection, model, variables)
+    @timeit to "add_demand_response_variables!" add_demand_response_variables!(
+        connection,
+        model,
+        variables,
+    )
     @timeit to "add_conditional_value_at_risk_variables!" add_conditional_value_at_risk_variables!(
         model,
         variables,
@@ -195,6 +200,14 @@ function create_model(
     )
 
     @timeit to "add_consumer_constraints!" add_consumer_constraints!(
+        connection,
+        model,
+        variables,
+        constraints,
+        profiles,
+    )
+
+    @timeit to "add_demand_response_constraints!" add_demand_response_constraints!(
         connection,
         model,
         variables,
