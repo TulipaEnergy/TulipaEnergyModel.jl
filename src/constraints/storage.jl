@@ -394,7 +394,6 @@ function _append_storage_data_to_indices(connection, table_name)
             $select_duration
             $select_neighbor_ids
             asset.capacity,
-            asset_commission.investment_limit,
             asset_commission.storage_loss_from_stored_energy,
             asset_commission.storage_charging_efficiency,
             asset_commission.storage_discharging_efficiency,

@@ -130,7 +130,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
 
         attach_expression!(
             cons,
-            :profile_times_capacity_with_investment_limit,
+            :profile_times_capacity_with_investment_max_limit,
             [
                 begin
                     availability_agg = _profile_aggregate(
@@ -143,7 +143,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     @expression(
                         model,
                         availability_agg *
-                        (row.capacity * row.avail_initial_units + row.investment_limit) *
+                        (row.capacity * row.avail_initial_units + row.investment_max_limit) *
                         (1 - is_charging)
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -237,7 +237,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
 
         attach_expression!(
             cons,
-            :profile_times_capacity_with_investment_limit,
+            :profile_times_capacity_with_investment_max_limit,
             [
                 begin
                     availability_agg = _profile_aggregate(
@@ -250,7 +250,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
                     @expression(
                         model,
                         availability_agg *
-                        (row.capacity * row.avail_initial_units + row.investment_limit) *
+                        (row.capacity * row.avail_initial_units + row.investment_max_limit) *
                         is_charging
                     )
                 end for (row, is_charging) in zip(indices, cons.expressions[:is_charging])
@@ -289,7 +289,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
-    for suffix in ("_with_investment_variable", "_with_investment_limit")
+    for suffix in ("_with_investment_variable", "_with_investment_max_limit")
         cons_name = Symbol(
             "max_output_flows_limit_aggregated_vintage_method_investable_storage_with_binary_and$suffix",
         )
@@ -340,7 +340,7 @@ function add_capacity_constraints!(connection, model, expressions, constraints, 
         )
     end
 
-    for suffix in ("_with_investment_variable", "_with_investment_limit")
+    for suffix in ("_with_investment_variable", "_with_investment_max_limit")
         cons_name = Symbol(
             "max_input_flows_limit_aggregated_vintage_method_investable_storage_with_binary_and_$suffix",
         )
@@ -534,7 +534,7 @@ function _append_capacity_data_to_indices_aggregated_vintage_method(connection, 
             expr_avail.id AS avail_id,
             expr_avail.initial_units AS avail_initial_units,
             asset.capacity AS capacity,
-            asset_commission.investment_limit AS investment_limit,
+            asset_commission.investment_max_limit,
             avail_profile.profile_name AS profile_name,
         FROM cons_$table_name AS cons
         LEFT JOIN asset

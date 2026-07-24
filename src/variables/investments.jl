@@ -8,9 +8,13 @@ function _get_investment_variable_specifications()
     return Dict{Symbol,NamedTuple}(
         :flows_investment => (
             keys_from_row = row -> (row.milestone_year, (row.from_asset, row.to_asset)),
-            lower_bound_from_row = _ -> 0.0,
+            lower_bound_from_row = row -> _find_var_lower_bound(
+                row.investment_min_limit,
+                row.capacity,
+                row.investment_integer,
+            ),
             upper_bound_from_row = row -> _find_var_upper_bound(
-                row.investment_limit,
+                row.investment_max_limit,
                 row.capacity,
                 row.investment_integer,
             ),
@@ -18,9 +22,13 @@ function _get_investment_variable_specifications()
         ),
         :assets_investment => (
             keys_from_row = row -> (row.milestone_year, row.asset),
-            lower_bound_from_row = _ -> 0.0,
+            lower_bound_from_row = row -> _find_var_lower_bound(
+                row.investment_min_limit,
+                row.capacity,
+                row.investment_integer,
+            ),
             upper_bound_from_row = row -> _find_var_upper_bound(
-                row.investment_limit,
+                row.investment_max_limit,
                 row.capacity,
                 row.investment_integer,
             ),
@@ -28,9 +36,13 @@ function _get_investment_variable_specifications()
         ),
         :assets_investment_energy => (
             keys_from_row = row -> (row.milestone_year, row.asset),
-            lower_bound_from_row = _ -> 0.0,
+            lower_bound_from_row = row -> _find_var_lower_bound(
+                row.investment_min_limit_storage_energy,
+                row.capacity_storage_energy,
+                row.investment_integer_storage_energy,
+            ),
             upper_bound_from_row = row -> _find_var_upper_bound(
-                row.investment_limit_storage_energy,
+                row.investment_max_limit_storage_energy,
                 row.capacity_storage_energy,
                 row.investment_integer_storage_energy,
             ),
@@ -58,6 +70,17 @@ function _find_var_upper_bound(limit, capacity, integer)
     bound_value = limit / capacity
     if integer
         bound_value = floor(bound_value)
+    end
+    return bound_value
+end
+
+function _find_var_lower_bound(limit, capacity, integer)
+    if capacity <= 0 || ismissing(limit)
+        return 0.0
+    end
+    bound_value = limit / capacity
+    if integer
+        bound_value = ceil(bound_value)
     end
     return bound_value
 end

@@ -257,15 +257,33 @@
       "type": "DOUBLE",
       "unit_of_measure": "CUR/MWh"
     },
-    "investment_limit": {
+    "investment_max_limit": {
       "default": null,
-      "description": "Maximum capacity for the asset investment. If the initial value is null, empty, or missing, it will be no limit.",
+      "description": "Maximum capacity for the asset investment. If the initial value is null, empty, or missing, there is no limit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "MW"
+    },
+    "investment_max_limit_storage_energy": {
+      "default": null,
+      "description": "Maximum capacity for the asset storage energy investment. If the initial value is null, empty, or missing, there is no limit.",
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
     },
-    "investment_limit_storage_energy": {
-      "default": null,
-      "description": "Maximum capacity for the asset storage investment. If the initial value is null, empty, or missing, it will be no limit.",
+    "investment_min_limit": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0.0,
+      "description": "Minimum capacity for the asset investment.",
+      "type": "DOUBLE",
+      "unit_of_measure": "MW"
+    },
+    "investment_min_limit_storage_energy": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0.0,
+      "description": "Minimum capacity for the asset storage energy investment.",
       "type": "DOUBLE",
       "unit_of_measure": "MWh"
     },
@@ -313,6 +331,15 @@
       "description": "Whether there is an investment variable created for the asset or not.",
       "type": "BOOLEAN"
     },
+    "max_available_units": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": null,
+      "description": "Maximum number of available asset units. If the initial value is null, empty, or missing, there is no limit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "number"
+    },
     "max_energy_timeframe_partition": {
       "constraints": {
         "minimum": 0
@@ -325,6 +352,15 @@
     "milestone_year": {
       "description": "Year of investment and operation decisions in the optimization.",
       "type": "INTEGER"
+    },
+    "min_available_units": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": null,
+      "description": "Minimum number of available asset units. If the initial value is null, empty, or missing, there is no limit.",
+      "type": "DOUBLE",
+      "unit_of_measure": "number"
     },
     "min_energy_timeframe_partition": {
       "constraints": {
@@ -616,11 +652,20 @@
       "type": "DOUBLE",
       "unit_of_measure": "CUR/MW"
     },
-    "investment_limit": {
+    "investment_max_limit": {
       "default": null,
-      "description": "Maximum capacity for the transport asset investment. If the initial value is null, empty, or missing, it will be no limit.",
+      "description": "Maximum capacity for the transport flow investment. If the initial value is null, empty, or missing, there is no limit.",
       "type": "DOUBLE",
-      "unit_of_measure": "MWh"
+      "unit_of_measure": "MW"
+    },
+    "investment_min_limit": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0.0,
+      "description": "Minimum capacity for the transport flow investment.",
+      "type": "DOUBLE",
+      "unit_of_measure": "MW"
     },
     "producer_efficiency": {
       "constraints": {

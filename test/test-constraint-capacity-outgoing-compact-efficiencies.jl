@@ -47,8 +47,16 @@
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "var_assets_investment"
-    table_rows = [(1, "wind", 2030, true, 50, Inf), (2, "wind", 2050, true, 50, Inf)]
-    columns = [:id, :asset, :milestone_year, :investment_integer, :capacity, :investment_limit]
+    table_rows = [(1, "wind", 2030, true, 50, 0, Inf), (2, "wind", 2050, true, 50, 0, Inf)]
+    columns = [
+        :id,
+        :asset,
+        :milestone_year,
+        :investment_integer,
+        :capacity,
+        :investment_min_limit,
+        :investment_max_limit,
+    ]
     _create_table_for_tests(connection, table_name, table_rows, columns)
 
     table_name = "var_assets_decommission"
@@ -64,7 +72,8 @@
         :milestone_year => Int,
         :investment_integer => Bool,
         :capacity => Float64,
-        :investment_limit => Float64,
+        :investment_min_limit => Float64,
+        :investment_max_limit => Float64,
     ]
     _create_empty_table_for_tests(connection, table_name, columns_with_types)
 
