@@ -85,7 +85,7 @@ In addition, the following subsets represent methods for incorporating additiona
 
 | Name                        | Description                                         | Elements | Superset                                                     | Notes                                                                                                                                                            |
 | --------------------------- | --------------------------------------------------- | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| $\mathcal{G}^{\text{ai}}_y$ | Group of assets that share min/max investment limit |          | $\mathcal{G}^{\text{ai}}_y \subseteq \mathcal{G}^{\text{a}}$ | This set contains assets that have a group investment limit. Please visit the [how-to section](@ref investment-group-setup) to learn how to set up this feature. |
+| $\mathcal{G}^{\text{ai}}_y$ | Group of assets that share a constraint             |          | $\mathcal{G}^{\text{ai}}_y \subseteq \mathcal{G}^{\text{a}}$ | Groups with investment-units or available-units limits. See the [how-to section](@ref investment-group-setup) for configuration.                                 |
 
 ### Sets for Flows Relationships
 
@@ -911,30 +911,35 @@ These constraints allow us to consider a maximum or minimum energy limit for an 
 
 The following constraints aggregate variables of different assets depending on the method that applies to the group.
 
-#### [Investment Limits of a Group](@id investment-group-constraints)
+#### [Asset Group Constraints](@id investment-group-constraints)
 
-These constraints apply to assets in a group using the vintage method $\mathcal{G}^{\text{ai}}_y$. They help impose an investment potential of a spatial area commonly shared by several assets that can be invested there.
+These constraints apply to assets in a group using the method $\mathcal{G}^{\text{ai}}_y$. The group membership coefficient $c_{g,a,y}$ and right-hand side $r_{g,y}$ are defined in the group input tables. The method selects the expression on the left-hand side.
 
-!!! info
-    These constraints are applied to the investments each year. The model does not yet have investment limits to a group's available invested capacity.
+##### Investment Units
 
-##### Minimum Investment Limit of a Group
-
-```math
-\begin{aligned}
-\sum_{a \in \mathcal{A}^{\text{i}}_y | p^{\text{group}}_{a} = g} p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \geq  p^{\text{min invest limit}}_{g,y}
-\\ \\ & \forall y \in \mathcal{Y}, \forall g \in \mathcal{G}^{\text{ai}}_y
-\end{aligned}
-```
-
-##### Maximum Investment Limit of a Group
+When `invest_method = "use_only_investment_units"`, the constraint uses the investment units in the group's milestone year:
 
 ```math
 \begin{aligned}
-\sum_{a \in \mathcal{A}^{\text{i}}_y | p^{\text{group}}_{a} = g} p^{\text{capacity}}_{a} \cdot v^{\text{inv}}_{a,y} \leq  p^{\text{max invest limit}}_{g,y}
-\\ \\ & \forall y \in \mathcal{Y}, \forall g \in \mathcal{G}^{\text{ai}}_y
+\sum_{a \in G_g} c_{g,a,y} \cdot v^{\text{inv}}_{a,y}
+\left\{\begin{array}{c} \leq \\ \geq \\ = \end{array}\right\}
+r_{g,y} \quad \forall y \in \mathcal{Y}, \forall g \in \mathcal{G}^{\text{ai}}_y
 \end{aligned}
 ```
+
+##### Available Units
+
+When `invest_method = "use_available_units"`, the constraint uses the available units at the group's milestone year. This includes initial units, investments that remain within their technical lifetime, and decommissions:
+
+```math
+\begin{aligned}
+\sum_{a \in G_g} c_{g,a,y} \cdot v^{\text{available units}}_{a,y}
+\left\{\begin{array}{c} \leq \\ \geq \\ = \end{array}\right\}
+r_{g,y} \quad \forall y \in \mathcal{Y}, \forall g \in \mathcal{G}^{\text{ai}}_y
+\end{aligned}
+```
+
+Groups with `invest_method = "none"` create no constraint.
 
 ### [Conditional Value at Risk Constraints](@id cvar-constraints)
 
