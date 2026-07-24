@@ -120,7 +120,7 @@ println("Objective value: ", round(energy_problem.objective_value; digits=2), " 
 With $\lambda = 0.5$, the model builds the full 100 MW of wind:
 
 ```@example cvar
-DataFrame(DuckDB.query(connection, "SELECT asset, capacity, investment_limit, solution AS units_invested FROM var_assets_investment"))
+DataFrame(DuckDB.query(connection, "SELECT asset, capacity, investment_max_limit, solution AS units_invested FROM var_assets_investment"))
 ```
 
 ### Dispatch by Scenario

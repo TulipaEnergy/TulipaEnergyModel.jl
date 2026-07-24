@@ -28,7 +28,8 @@ Energy storage assets have a unique characteristic wherein the investment is bas
 
   - `investment_cost_storage_energy`: To establish the cost of investing in the storage capacity (e.g., kEUR/MWh/unit).
   - `fixed_cost_storage_energy`: To establish the fixed cost of energy storage capacity (e.g., kEUR/MWh/unit).
-  - `investment_limit_storage_energy`: To define the potential of the capacity storage energy investment (e.g., MWh). `Missing` values mean that there is no limit.
+  - `investment_min_limit_storage_energy`: To define the minimum capacity-storage-energy investment (e.g., MWh). It defaults to `0.0`.
+  - `investment_max_limit_storage_energy`: To define the maximum capacity-storage-energy investment (e.g., MWh). `Missing` values mean that there is no upper limit.
   - `investment_integer_storage_energy`: To determine whether the investment variables of storage capacity are integer or continuous.
 
 - `use_fixed_energy_to_power_ratio`: Do not create storage-energy investment/decommission variables. Instead, invested storage-energy capacity is linked to invested power capacity through `energy_to_power_ratio`.
@@ -82,11 +83,11 @@ Below is an overview of the important set-ups regarding the vintage methods.
 
 #### Asset milestone year data
 
-Fill in the parameters related to the milestone year. Whether the model allows investment at a milestone year for an asset is set by the `investable` parameter in `asset-milestone.csv`. You can only invest in milestone years.
+Fill in the parameters related to the milestone year. Whether the model allows investment at a milestone year for an asset is set by the `investable` parameter in `asset-milestone.csv`. You can only invest in milestone years. Optional `min_available_units` and `max_available_units` constrain the total number of available asset units in that milestone year. Leave either value `missing` to omit that bound. These limits apply to assets only.
 
 #### Asset commission year data
 
-Fill in the parameters related to the commission year, e.g., investment costs and fixed costs.
+Fill in the parameters related to the commission year, e.g., investment costs and fixed costs. `investment_min_limit` defaults to `0.0`; `investment_max_limit` is optional and limits capacity investment when defined. For independently optimized storage energy, use the corresponding `_storage_energy` fields. Minimum and maximum limits are expressed in capacity units, not numbers of investment units.
 
 #### Existing capacities and decommissioning
 

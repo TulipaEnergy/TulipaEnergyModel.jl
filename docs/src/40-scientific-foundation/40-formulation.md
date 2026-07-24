@@ -106,13 +106,16 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{salvage value}}_{a,y}$                     | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Salvage value of a unit of asset $a$ at year $y$                                                                       | [kEUR/MW]                 |
 | $p^{\text{discounting factor asset inv cost}}_{a,y}$ | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Discounting factor for investment cost of a unit of asset $a$ at year $y$                                              | [-]                       |
 | $p^{\text{fixed cost}}_{a,y}$                        | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Fixed cost of a unit of asset $a$ at year $y$                                                                          | [kEUR/MW/year]            |
-| $p^{\text{inv limit}}_{a,y}$                         | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Investment potential of asset $a$ at year $y$                                                                          | [MW]                      |
+| $p^{\text{min inv limit}}_{a,y}$                     | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Minimum investment of asset $a$ at year $y$                                                                            | [MW]                      |
+| $p^{\text{max inv limit}}_{a,y}$                     | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Maximum investment of asset $a$ at year $y$                                                                            | [MW]                      |
 | $p^{\text{capacity}}_{a}$                            | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                | Capacity per unit of asset $a$                                                                                         | [MW]                      |
 | $p^{\text{technical lifetime}}_{a}$                  | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$                                                                                | Technical lifetime of asset $a$                                                                                        | [year]                    |
 | $p^{\text{economic lifetime}}_{a}$                   | $\mathbb{Z}_{+}$         | $a \in \mathcal{A}$                                                                                | Economic lifetime of asset $a$                                                                                         | [year]                    |
 | $p^{\text{technology-specific discount rate}}_{a}$   | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$                                                                                | Technology-specific discount rate of asset $a$                                                                         | [year]                    |
 | $p^{\text{init units}}_{a,y}$                        | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Initial number of units of asset $a$ available at year $y$                                                             | [units]                   |
 | $p^{\text{init units}}_{a,y,v}$                      | $\mathbb{R}_{+}$         | $ (a,y,v) \in \mathcal{D}^{\text{compact profiles}}$                                               | Initial number of units of asset $a$ available at year $y$ commissioned in year $v$                                    | [units]                   |
+| $p^{\text{min available units}}_{a,y}$               | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Optional minimum number of available units of asset $a$ at year $y$                                                    | [units]                   |
+| $p^{\text{max available units}}_{a,y}$               | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $y \in \mathcal{Y}$                                                           | Optional maximum number of available units of asset $a$ at year $y$                                                    | [units]                   |
 | $p^{\text{availability profile}}_{a,v,k_y,b_{k_y}}$  | $\mathbb{R}_{+}$         | $a \in \mathcal{A}$, $v \in \mathcal{V}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Availability profile of asset $a$ invested in year $v$ in the representative period $k_y$ and timestep block $b_{k_y}$ | [p.u.]                    |
 | $p^{\text{group}}_{a}$                               | $\mathcal{G}^{\text{a}}$ | $a \in \mathcal{A}$                                                                                | Group $g$ to which the asset $a$ belongs                                                                               | [-]                       |
 
@@ -134,7 +137,8 @@ In addition, the following subsets represent methods for incorporating additiona
 | $p^{\text{discharging eff}}_{a,y}$                                    | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}$                                                                          | Discharging efficiency of storage asset $a$ at year $y$                                                                      | [p.u.]          |
 | $p^{\text{inv cost energy}}_{a,y}$                                    | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Overnight cost of a energy unit of asset $a$ at year $y$                                                                     | [kEUR/MWh]      |
 | $p^{\text{fixed cost energy}}_{a,y}$                                  | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Fixed cost of a energy unit of asset $a$ at year $y$                                                                         | [kEUR/MWh/year] |
-| $p^{\text{inv limit energy}}_{a,y}$                                   | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Investment energy potential of asset $a$ at year $y$                                                                         | [MWh]           |
+| $p^{\text{min inv limit energy}}_{a,y}$                               | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Minimum storage-energy investment of asset $a$ at year $y$                                                                   | [MWh]           |
+| $p^{\text{max inv limit energy}}_{a,y}$                               | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$, $y \in \mathcal{Y}$                                                                         | Maximum storage-energy investment of asset $a$ at year $y$                                                                   | [MWh]           |
 | $p^{\text{capacity storage energy}}_{a}$                              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{se}}$                                                                                              | Capacity storage energy of a unit of investment of the asset $a$                                                             | [MWh]           |
 | $p^{\text{energy to power ratio}}_{a,y}$                              | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{se}}_y$                                                           | Energy to power ratio of storage asset $a$ at year $y$                                                                       | [h]             |
 | $p^{\text{max rep-period-storage level}}_{a,k_y,b_{k_y}}$             | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}} \setminus \mathcal{A^{\text{ss}}}_y$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$ | Maximum rep-period-storage level profile of storage asset $a$ in representative period $k_y$ and timestep block $b_{k_y}$    | [p.u.]          |
@@ -184,7 +188,8 @@ The parameter $p^{\text{min operating point}}_{a,y}$ is also used for producer a
 | $p^{\text{salvage value}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Salvage value of transport flow $f$ at year $y$                                                                       | [kEUR/MW]                 |
 | $p^{\text{discounting factor flow inv cost}}_{f,y}$ | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Discounting factor for investment cost of transport flow $f$ at year $y$                                              | [-]                       |
 | $p^{\text{fixed cost}}_{f,y}$                       | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Fixed cost of transport flow $f$ at year $y$                                                                          | [kEUR/MW/year]            |
-| $p^{\text{inv limit}}_{f,y}$                        | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Investment potential of flow $f$ at year $y$                                                                          | [MW]                      |
+| $p^{\text{min inv limit}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Minimum investment of flow $f$ at year $y$                                                                            | [MW]                      |
+| $p^{\text{max inv limit}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Maximum investment of flow $f$ at year $y$                                                                            | [MW]                      |
 | $p^{\text{capacity}}_{f}$                           | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Capacity per unit of investment of transport flow $f$ (both exports and imports)                                      | [MW]                      |
 | $p^{\text{technical lifetime}}_{f}$                 | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Technical lifetime of investment of transport flow $f$ (both exports and imports)                                     | [year]                    |
 | $p^{\text{economic lifetime}}_{f}$                  | $\mathbb{Z}_{+}$ | $f \in \mathcal{F}^{\text{t}}$                                                                     | Economic lifetime of investment of transport flow $f$ (both exports and imports)                                      | [year]                    |
@@ -432,7 +437,7 @@ Storage assets using the method to avoid charging and discharging simultaneously
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a,y} + p^{\text{inv limit}}_{a,y} \right) \cdot \left(1 - v^{\text{is charging}}_{a,k_y,b_{k_y}} \right) \quad
+\sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a,y} + p^{\text{max inv limit}}_{a,y} \right) \cdot \left(1 - v^{\text{is charging}}_{a,k_y,b_{k_y}} \right) \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y \cap \mathcal{A}^{\text{i}}_y, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
@@ -471,7 +476,7 @@ Storage assets using the method to avoid charging and discharging simultaneously
 
 ```math
 \begin{aligned}
-\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a,y} + p^{\text{inv limit}}_{a,y} \right)  \cdot v^{\text{is charging}}_{a,k_y,b_{k_y}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y \cap \mathcal{A}^{\text{i}}_y, \forall k_y \in \mathcal{K_y},\forall b_{k_y} \in \mathcal{B_{k_y}}
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{capacity coefficient}}_{f,y} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \leq p^{\text{availability profile}}_{a,y,k_y,b_{k_y}} \cdot \left(p^{\text{capacity}}_{a} \cdot p^{\text{init units}}_{a,y} + p^{\text{max inv limit}}_{a,y} \right)  \cdot v^{\text{is charging}}_{a,k_y,b_{k_y}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{sb}}_y \cap \mathcal{A}^{\text{i}}_y, \forall k_y \in \mathcal{K_y},\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
 
@@ -862,29 +867,39 @@ v^{\text{flow}}_{f,k_y,b_{k_y}} \geq - p^{\text{availability profile}}_{f,y,k_y,
 
 ### Constraints for Investments
 
-#### Maximum Investment Limit for Assets
+#### Investment Limits for Assets
 
 ```math
-v^{\text{inv}}_{a,y} \leq \frac{p^{\text{inv limit}}_{a,y}}{p^{\text{capacity}}_{a}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{i}}_y
+\frac{p^{\text{min inv limit}}_{a,y}}{p^{\text{capacity}}_{a}} \leq v^{\text{inv}}_{a,y} \leq \frac{p^{\text{max inv limit}}_{a,y}}{p^{\text{capacity}}_{a}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{i}}_y
 ```
 
-If the parameter `investment_integer` is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
+`investment_min_limit` defaults to zero. The upper inequality is included only when `investment_max_limit` is defined.
 
-#### Maximum Energy Investment Limit for Assets
+#### Storage-Energy Investment Limits for Assets
 
 ```math
-v^{\text{inv energy}}_{a,y} \leq \frac{p^{\text{inv limit energy}}_{a,y}}{p^{\text{capacity storage energy}}_{a}} \quad \forall y \in \mathcal{Y},  \forall a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y
+\frac{p^{\text{min inv limit energy}}_{a,y}}{p^{\text{capacity storage energy}}_{a}} \leq v^{\text{inv energy}}_{a,y} \leq \frac{p^{\text{max inv limit energy}}_{a,y}}{p^{\text{capacity storage energy}}_{a}} \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{i}}_y \cap \mathcal{A}^{\text{se}}_y
 ```
 
-If the parameter `investment_integer_storage_energy` is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
+`investment_min_limit_storage_energy` defaults to zero. The upper inequality is included only when `investment_max_limit_storage_energy` is defined.
 
-#### Maximum Investment Limit for Flows
+#### Investment Limits for Flows
 
 ```math
-v^{\text{inv}}_{f,y} \leq \frac{p^{\text{inv limit}}_{f,y}}{p^{\text{capacity}}_{f}} \quad \forall y \in \mathcal{Y}, \forall f \in \mathcal{F}^{\text{ti}}_y
+\frac{p^{\text{min inv limit}}_{f,y}}{p^{\text{capacity}}_{f}} \leq v^{\text{inv}}_{f,y} \leq \frac{p^{\text{max inv limit}}_{f,y}}{p^{\text{capacity}}_{f}} \quad \forall y \in \mathcal{Y}, \forall f \in \mathcal{F}^{\text{ti}}_y
 ```
 
-If the parameter `investment_integer` is set to true, then the right-hand side of this constraint uses a least integer function (floor function) to guarantee that the limit is integer.
+`investment_min_limit` defaults to zero. The upper inequality is included only when `investment_max_limit` is defined.
+
+For integer investment variables, the lower bound uses the ceiling of the minimum divided by capacity and the upper bound uses the floor of the maximum divided by capacity. Input validation rejects a range that contains no integer number of units.
+
+#### Asset Available-Unit Limits
+
+```math
+p^{\text{min available units}}_{a,y} \leq v^{\text{available units}}_{a,y} \leq p^{\text{max available units}}_{a,y} \quad \forall a \in \mathcal{A}, \forall y \in \mathcal{Y}
+```
+
+Each inequality is included only when its corresponding `asset_milestone` field is defined. The available-unit expression uses initial units, active investments, and decommissions; for compact assets it sums all active vintages. These limits apply to assets only.
 
 ### [Inter-period Energy Constraints](@id inter-period-energy-constraints)
 
