@@ -237,6 +237,9 @@ function _append_given_durations(appender, row, durations)
         if haskey(row, :conversion_coefficient)
             DuckDB.append(appender, row.conversion_coefficient)
         end
+        if haskey(row, :storage_coefficient)
+            DuckDB.append(appender, row.storage_coefficient)
+        end
         DuckDB.append(appender, s)
         DuckDB.append(appender, e)
         DuckDB.end_row(appender)
@@ -314,6 +317,7 @@ function create_unrolled_partition_tables!(connection)
             COALESCE(frpp.partition::string, '1') AS partition,
             flow_commission.capacity_coefficient,
             flow_commission.conversion_coefficient,
+            flow_commission.storage_coefficient,
             rep_periods_data.num_timesteps,
         FROM flow
         CROSS JOIN rep_periods_data
@@ -369,6 +373,7 @@ function create_unrolled_partition_tables!(connection)
             rep_period INT,
             capacity_coefficient DOUBLE,
             conversion_coefficient DOUBLE,
+            storage_coefficient DOUBLE,
             time_block_start INT,
             time_block_end INT
         )",
