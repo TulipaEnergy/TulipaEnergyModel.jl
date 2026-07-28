@@ -271,7 +271,7 @@ with
             t_low.time_block_start,
             t_low.time_block_end,
         from
-            t_lowest_all as t_low
+            t_lowest_storage_balance as t_low
             left join asset on t_low.asset = asset.asset
         where
             asset.type = 'storage'
@@ -347,7 +347,7 @@ with
             t_low.time_block_start,
             t_low.time_block_end,
         from
-            t_lowest_all as t_low
+            t_lowest_storage_balance as t_low
             left join asset on t_low.asset = asset.asset
         where
             asset.type = 'storage'

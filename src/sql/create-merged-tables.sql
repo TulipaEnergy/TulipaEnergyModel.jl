@@ -32,6 +32,28 @@ where
     asset.type in ('conversion')
 ;
 
+-- incoming flows for storage balance
+create or replace temp table merged_in_flows_storage_balance as
+select
+    distinct ftrrp.to_asset as asset,
+    ftrrp.milestone_year,
+    ftrrp.rep_period,
+    ftrrp.time_block_start,
+    ftrrp.time_block_end
+from
+    flow_time_resolution_rep_period as ftrrp
+left join
+    flow_commission as fc on
+        ftrrp.from_asset = fc.from_asset and
+        ftrrp.to_asset = fc.to_asset and
+        ftrrp.milestone_year = fc.commission_year
+left join
+    asset on ftrrp.to_asset = asset.asset
+where
+    fc.storage_coefficient > 0 and
+    asset.type in ('storage')
+;
+
 -- outgoing flows
 create or replace temp table merged_out_flows as
 select
@@ -64,6 +86,28 @@ left join
 where
     fc.conversion_coefficient > 0 and
     asset.type in ('conversion')
+;
+
+-- outgoing flows for storage balance
+create or replace temp table merged_out_flows_storage_balance as
+select
+    distinct ftrrp.from_asset as asset,
+    ftrrp.milestone_year,
+    ftrrp.rep_period,
+    ftrrp.time_block_start,
+    ftrrp.time_block_end
+from
+    flow_time_resolution_rep_period as ftrrp
+left join
+    flow_commission as fc on
+        ftrrp.from_asset = fc.from_asset and
+        ftrrp.to_asset = fc.to_asset and
+        ftrrp.milestone_year = fc.commission_year
+left join
+    asset on ftrrp.from_asset = asset.asset
+where
+    fc.storage_coefficient > 0 and
+    asset.type in ('storage')
 ;
 
 -- union of all assets and outgoing flows
@@ -99,19 +143,27 @@ from
     merged_out_flows_conversion_balance
 ;
 
--- union of all assets, and incoming and outgoing flows
-create or replace temp table merged_all as
+-- union of the storage assets' own resolution and their incoming and outgoing flows
+-- for storage balance
+create or replace temp table merged_storage_balance as
 select
-    distinct asset,
-    milestone_year,
-    rep_period,
-    time_block_start,
-    time_block_end
+    distinct atrrp.asset,
+    atrrp.milestone_year,
+    atrrp.rep_period,
+    atrrp.time_block_start,
+    atrrp.time_block_end
 from
-    asset_time_resolution_rep_period
+    asset_time_resolution_rep_period as atrrp
+left join
+    asset on atrrp.asset = asset.asset
+where
+    asset.type in ('storage')
 union
 from
-    merged_all_flows
+    merged_in_flows_storage_balance
+union
+from
+    merged_out_flows_storage_balance
 ;
 
 -- merged table for flows relationships:

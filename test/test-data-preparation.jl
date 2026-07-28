@@ -164,21 +164,6 @@ end
     expected_table = DataFrame(expected_rows, expected_cols)
     @test merged_all_flows == expected_table
 
-    merged_all = TulipaIO.select_tbl(connection, "merged_all"; where_)
-    expected_rows = [
-        ("death_star", 2025, 1, 1, 1),
-        ("death_star", 2025, 1, 1, 2),
-        ("death_star", 2025, 1, 1, 3),
-        ("death_star", 2025, 1, 1, 4),
-        ("death_star", 2025, 1, 1, 5),
-        ("death_star", 2025, 1, 2, 5),
-        ("death_star", 2025, 1, 3, 5),
-        ("death_star", 2025, 1, 4, 5),
-        ("death_star", 2025, 1, 5, 5),
-    ]
-    expected_table = DataFrame(expected_rows, expected_cols)
-    @test merged_all == expected_table
-
     merged_flows_conversion_balance =
         TulipaIO.select_tbl(connection, "merged_flows_conversion_balance"; where_)
     expected_rows = [
@@ -235,11 +220,6 @@ end
     TulipaEnergyModel.create_lowest_resolution_table!(connection)
 
     # Verify the results in the lowest resolution tables
-    t_lowest_all = TulipaIO.select_tbl(connection, "t_lowest_all"; where_)
-    expected_rows = [("death_star", 2025, 1, 1, 5)]
-    expected_table = DataFrame(expected_rows, expected_cols)
-    @test t_lowest_all == expected_table
-
     t_lowest_all_flows = TulipaIO.select_tbl(connection, "t_lowest_all_flows"; where_)
     expected_rows = [("death_star", 2025, 1, 1, 4), ("death_star", 2025, 1, 5, 5)]
     expected_table = DataFrame(expected_rows, expected_cols)

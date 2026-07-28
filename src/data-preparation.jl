@@ -452,7 +452,6 @@ These are the output tables:
 - `merged_out_flows`: Set `asset = to_asset` and drop `from_asset` from `flow_time_resolution_rep_period`.
 - `merged_assets_and_out_flows`: Union of `merged_out_flows` and `asset_time_resolution_rep_period`.
 - `merged_all_flows`: Union (i.e., vertically concatenation) of the tables above.
-- `merged_all`: Union of `merged_all_flows` and `asset_time_resolution_rep_period`.
 - `merged_flows_relationship`: Set `asset` from `flow_time_resolution_rep_period` depending on `flows_relationships`
 This function is intended for internal use.
 """
@@ -520,9 +519,9 @@ function create_lowest_resolution_table!(connection)
 
     for merged_table in (
         "merged_all_flows",
-        "merged_all",
         "merged_flows_relationship",
         "merged_flows_conversion_balance",
+        "merged_storage_balance",
     )
         table_name = replace(merged_table, "merged" => "t_lowest")
         DuckDB.execute(
