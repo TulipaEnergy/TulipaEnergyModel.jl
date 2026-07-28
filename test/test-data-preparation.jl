@@ -29,13 +29,15 @@
     DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
 
     table_rows = [
-        ("input_1", "death_star", milestone_year, 1.0),
-        ("input_2", "death_star", milestone_year, 0.0),
-        ("death_star", "output_1", milestone_year, 1.0),
-        ("death_star", "output_2", milestone_year, 0.0),
+        ("input_1", "death_star", milestone_year, 1.0, 1.0),
+        ("input_2", "death_star", milestone_year, 0.0, 1.0),
+        ("death_star", "output_1", milestone_year, 1.0, 1.0),
+        ("death_star", "output_2", milestone_year, 0.0, 1.0),
     ]
-    flow_commission =
-        DataFrame(table_rows, [:from_asset, :to_asset, :commission_year, :conversion_coefficient])
+    flow_commission = DataFrame(
+        table_rows,
+        [:from_asset, :to_asset, :commission_year, :conversion_coefficient, :storage_coefficient],
+    )
     DuckDB.register_data_frame(connection, flow_commission, "flow_commission")
 
     table_rows = [
@@ -315,7 +317,7 @@ end
     TulipaEnergyModel.create_highest_resolution_table!(connection)
 
     # test that the final number of tables is correct
-    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 26
+    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 28
 end
 
 @testitem "Test _compute_durations" setup = [CommonSetup] tags = [:unit, :fast] begin
