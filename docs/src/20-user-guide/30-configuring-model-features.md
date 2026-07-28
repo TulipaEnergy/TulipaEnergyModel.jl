@@ -260,7 +260,9 @@ Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the 
 !!! info
     The assets in the group have to allow investment (`asset_milestone.investable = true` for the corresponding year) and not be of type `consumer` (`asset.type != "consumer"`).
 
-## [Flow Coefficient in Capacity constraints](@id coefficient-for-capacity-constraints)
+## [Flow Coefficients](@id flow-coefficient)
+
+### [In the capacity constraints](@id coefficient-for-capacity-constraints)
 
 Capacity constraints apply to all the outputs and inputs to assets according to the equations in the [`capacity constraints`](@ref cap-constraints) section of the mathematical formulation. The coefficient $p^{\text{capacity coefficient}}_{f,y}$ in the capacity constraints can be set to model situations or processes where the flows in the capacity constraint are multiplied by a constant factor.
 
@@ -274,7 +276,7 @@ In that case the sum must be always below the total capacity $\text{C}$, but if 
 
 To set up this parameter you need to fill in the information for the `capacity_coefficient` in the `flow_commission` table, see more in the [model parameters](@ref table-schemas) section.
 
-### [Using the coefficient for flows in the conversion constraints](@id coefficient-for-conversion-constraints)
+### [In the conversion constraints](@id coefficient-for-conversion-constraints)
 
 Conversion constraints apply to all the outputs and inputs of a conversion asset according to the equations in the [`conversion balance constraints`](@ref conversion-balance-constraints) section of the mathematical formulation. The coefficient $p^{\text{conversion coefficient}}_{f,y}$ in that constraint can be set to model situations or processes where the flows in the conversion balance constraint are multiplied by a constant factor.
 
@@ -285,7 +287,7 @@ To set up this parameter you need to fill in the information for the `conversion
 !!! info "Conversion coefficient and flexible time resolution"
     As explained in the [flexible time resolution section](@ref flex-time-res), the resolution of the conversion balance constraint is determined by the highest resolution of the input and output flows because it is treated as an energy constraint. Nevertheless, for consistency, only the flows with a `conversion_coefficient` greater than zero are included in the definition of the constraint's resolution.
 
-## [Using the coefficient for flows in the storage constraints](@id coefficient-for-storage-constraints)
+### [In the storage constraints](@id coefficient-for-storage-constraints)
 
 Storage balance constraints apply to all the inputs (charging) and outputs (discharging) of a storage asset according to the equations in the [`storage balance constraints`](@ref rep-period-storage-balance) section of the mathematical formulation. The coefficient $p^{\text{storage coefficient}}_{f,y}$ in that constraint can be set to model situations or processes where the flows in the storage balance constraint are multiplied by a constant factor.
 
