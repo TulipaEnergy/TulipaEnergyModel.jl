@@ -16,6 +16,7 @@ select
     rep_period,
     capacity_coefficient,
     conversion_coefficient,
+    storage_coefficient,
     time_block_start,
     time_block_end,
     cast(null as float8) as solution,
@@ -44,6 +45,7 @@ select
     ft.time_block_end,
     fc.capacity_coefficient,
     fc.conversion_coefficient,
+    fc.storage_coefficient,
     cast(null as float8) as solution,
 from
     flow_time_resolution_rep_period as ft
