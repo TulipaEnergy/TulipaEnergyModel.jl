@@ -11,4 +11,4 @@ ens,demand,2030,false,0.18,0.3,false,0.0
 caes,demand,2030,false,0.0,0.3,false,0.0
 ens,caes,2030,false,0.18,0.3,false,0.0
 ccgt,caes,2030,false,0.05,0.3,false,0.0
-caes,atmosphere,2030,false,0.0,0.3,false,0.0
+caes,atmosphere,2030,false,1.2,0.3,false,0.0
