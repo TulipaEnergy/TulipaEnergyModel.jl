@@ -5,10 +5,16 @@ Adds group constraints for assets that share a common limits or bounds.
 """
 function add_investment_group_constraints!(connection, model, variables, expressions, constraints)
     assets_investment = variables[:assets_investment].container
-    expr_available_asset_units_aggregated =
-        _get_expression_assets(expressions, :available_asset_units_aggregated_vintage_method)
-    expr_available_asset_units_compact =
-        _get_expression_assets(expressions, :available_asset_units_compact_vintage_method)
+    expr_available_asset_units_aggregated = get(
+        expressions[:available_asset_units_aggregated_vintage_method].expressions,
+        :assets,
+        JuMP.AffExpr[],
+    )
+    expr_available_asset_units_compact = get(
+        expressions[:available_asset_units_compact_vintage_method].expressions,
+        :assets,
+        JuMP.AffExpr[],
+    )
 
     let table_name = :group_investment
         cons = constraints[table_name]
@@ -66,44 +72,7 @@ function add_investment_group_constraints!(connection, model, variables, express
     return
 end
 
-function _get_expression_assets(expressions, expression_name)
-    if !haskey(expressions, expression_name)
-        return JuMP.AffExpr[]
-    end
-
-    return get(expressions[expression_name].expressions, :assets, JuMP.AffExpr[])
-end
-
-function _create_empty_available_units_table_if_missing!(connection, table_name)
-    if isempty(
-        DuckDB.query(connection, "FROM duckdb_tables() WHERE table_name = '$table_name' LIMIT 1"),
-    )
-        DuckDB.query(
-            connection,
-            """
-            CREATE TEMP TABLE $table_name (
-                id BIGINT,
-                asset VARCHAR,
-                milestone_year INT,
-                commission_year INT
-            );
-            """,
-        )
-    end
-
-    return
-end
-
 function _append_group_data_to_indices!(connection, cons_table_name)
-    _create_empty_available_units_table_if_missing!(
-        connection,
-        "expr_available_asset_units_aggregated_vintage_method",
-    )
-    _create_empty_available_units_table_if_missing!(
-        connection,
-        "expr_available_asset_units_compact_vintage_method",
-    )
-
     return DuckDB.query(
         connection,
         """
