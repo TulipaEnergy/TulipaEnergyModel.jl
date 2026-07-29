@@ -66,36 +66,17 @@ function add_investment_group_constraints!(connection, model, variables, express
     return
 end
 
-function _get_expression_assets(expressions, expression_name)
-    if !haskey(expressions, expression_name)
-        return JuMP.AffExpr[]
+_get_expression_assets(expressions, k) =
+    if haskey(expressions, k)
+        get(expressions[k].expressions, :assets, JuMP.AffExpr[])
+    else
+        JuMP.AffExpr[]
     end
-
-    return get(expressions[expression_name].expressions, :assets, JuMP.AffExpr[])
-end
-
-function _ensure_group_available_units_tables!(connection)
-    _create_empty_available_units_table_if_missing!(
-        connection,
-        "expr_available_asset_units_aggregated_vintage_method",
-    )
-    _create_empty_available_units_table_if_missing!(
-        connection,
-        "expr_available_asset_units_compact_vintage_method",
-    )
-
-    return
-end
 
 function _create_empty_available_units_table_if_missing!(connection, table_name)
-    table_exists = false
-    for _ in
-        DuckDB.query(connection, "FROM duckdb_tables() WHERE table_name = '$table_name' LIMIT 1")
-        table_exists = true
-        break
-    end
-
-    if !table_exists
+    if isempty(
+        DuckDB.query(connection, "FROM duckdb_tables() WHERE table_name = '$table_name' LIMIT 1"),
+    )
         DuckDB.query(
             connection,
             """
@@ -113,7 +94,14 @@ function _create_empty_available_units_table_if_missing!(connection, table_name)
 end
 
 function _append_group_data_to_indices!(connection, cons_table_name)
-    _ensure_group_available_units_tables!(connection)
+    _create_empty_available_units_table_if_missing!(
+        connection,
+        "expr_available_asset_units_aggregated_vintage_method",
+    )
+    _create_empty_available_units_table_if_missing!(
+        connection,
+        "expr_available_asset_units_compact_vintage_method",
+    )
 
     return DuckDB.query(
         connection,
