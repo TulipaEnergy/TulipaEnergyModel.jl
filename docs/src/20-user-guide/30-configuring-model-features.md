@@ -264,6 +264,7 @@ Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the 
 !!! info
     Assets in `use_only_investment_units` groups have to allow investment (`asset_milestone.investable = true` for the corresponding year) and must not be consumers (`asset.type != "consumer"`).
     Assets in `use_available_units` groups may be non-investable, which allows limits on existing capacity and decommissioning trajectories.
+    Assets in `use_available_units` groups may be have different `vintage_method`, i.e., they can be `aggregated` or `compact_profiles` and the group constraints will be applied accordingly.
 
 ## [Flow Coefficient in Capacity constraints](@id coefficient-for-capacity-constraints)
 
