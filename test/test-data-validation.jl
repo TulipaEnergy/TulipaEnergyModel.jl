@@ -298,7 +298,7 @@ end
         """,
     )
 
-    # Creating investment_group_asset_membership with 1 correct (group, asset) pairs and 2 incorrect pairs
+    # Creating investment_group_asset_membership with 1 correct pair and 3 incorrect pairs
     DuckDB.query(
         connection,
         """
@@ -306,13 +306,15 @@ end
         INSERT INTO investment_group_asset_membership VALUES ('group1', 2030, 'ccgt');
         INSERT INTO investment_group_asset_membership VALUES ('group1', 2030, 'bad_asset');
         INSERT INTO investment_group_asset_membership VALUES ('bad_group', 2030, 'ccgt');
+        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'ccgt');
         """,
     )
 
     error_messages = TEM._validate_group_consistency!(String[], connection)
     @test Set(error_messages) == Set([
         "Table 'investment_group_asset_membership' column 'asset' has invalid value 'bad_asset'. Valid values should be among column 'asset' of 'asset'",
-        "Table 'investment_group_asset_membership' column 'group_name' has invalid value 'bad_group'. Valid values should be among column 'name' of 'investment_group_asset'",
+        "Table 'investment_group_asset_membership' has invalid (group_name, milestone_year) = ('bad_group', 2030). Valid pairs should exist in ('investment_group_asset'.name, 'investment_group_asset'.milestone_year)",
+        "Table 'investment_group_asset_membership' has invalid (group_name, milestone_year) = ('group1', 2050). Valid pairs should exist in ('investment_group_asset'.name, 'investment_group_asset'.milestone_year)",
     ])
 end
 
