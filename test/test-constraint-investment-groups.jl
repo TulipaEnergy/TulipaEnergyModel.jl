@@ -108,6 +108,7 @@ end
         @test _is_constraint_equal(expected_cons_lookup[group_name, milestone_year], observed_cons)
     end
 end
+
 @testitem "Available-unit group constraints aggregate compact vintages" setup = [CommonSetup] tags =
     [:unit, :constraint, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)
@@ -189,6 +190,141 @@ end
         2.0 * available_units_aggregated +
         3.0 * available_units_compact[1] +
         3.0 * available_units_compact[2] <= 100.0
+    )
+    @test _is_constraint_equal(expected_constraint, observed_constraint)
+end
+
+@testitem "Available-unit group constraints aggregate only" setup = [CommonSetup] tags =
+    [:unit, :constraint, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    DuckDB.query(
+        connection,
+        """
+        CREATE TABLE cons_group_investment (
+            id BIGINT,
+            name VARCHAR,
+            milestone_year INT,
+            invest_method VARCHAR,
+            constraint_sense VARCHAR,
+            rhs DOUBLE
+        );
+        INSERT INTO cons_group_investment VALUES (1, 'group1', 2050, 'use_available_units', '<=', 100.0);
+        CREATE TABLE investment_group_asset (
+            name VARCHAR,
+            milestone_year INT,
+            invest_method VARCHAR
+        );
+        INSERT INTO investment_group_asset VALUES ('group1', 2050, 'use_available_units');
+        CREATE TABLE investment_group_asset_membership (
+            group_name VARCHAR,
+            milestone_year INT,
+            asset VARCHAR,
+            coefficient DOUBLE
+        );
+        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'aggregated_asset_1', 2.0);
+        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'aggregated_asset_2', 3.0);
+        CREATE TABLE var_assets_investment (id BIGINT, asset VARCHAR, milestone_year INT);
+        CREATE TABLE expr_available_asset_units_aggregated_vintage_method (
+            id BIGINT,
+            asset VARCHAR,
+            milestone_year INT,
+            commission_year INT
+        );
+        INSERT INTO expr_available_asset_units_aggregated_vintage_method VALUES (1, 'aggregated_asset_1', 2050, 2050);
+        INSERT INTO expr_available_asset_units_aggregated_vintage_method VALUES (2, 'aggregated_asset_2', 2050, 2050);
+        """,
+    )
+
+    model = JuMP.Model()
+    variables = Dict(:assets_investment => TEM.TulipaVariable(connection, "var_assets_investment"))
+    expr_available_asset_units_aggregated =
+        TEM.TulipaExpression(connection, "expr_available_asset_units_aggregated_vintage_method")
+    JuMP.@variable(model, available_units_aggregated[1:2])
+    TEM.attach_expression!(
+        expr_available_asset_units_aggregated,
+        :assets,
+        [JuMP.@expression(model, available_units_aggregated[id] + 0) for id in 1:2],
+    )
+    expressions = Dict(
+        :available_asset_units_aggregated_vintage_method =>
+            expr_available_asset_units_aggregated,
+    )
+    constraints =
+        Dict(:group_investment => TEM.TulipaConstraint(connection, "cons_group_investment"))
+
+    TEM.add_investment_group_constraints!(connection, model, variables, expressions, constraints)
+
+    observed_constraint = only(_get_cons_object(model, :investment_group))
+    expected_constraint = JuMP.@build_constraint(
+        2.0 * available_units_aggregated[1] + 3.0 * available_units_aggregated[2] <= 100.0
+    )
+    @test _is_constraint_equal(expected_constraint, observed_constraint)
+end
+
+@testitem "Available-unit group constraints compact only" setup = [CommonSetup] tags =
+    [:unit, :constraint, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    DuckDB.query(
+        connection,
+        """
+        CREATE TABLE cons_group_investment (
+            id BIGINT,
+            name VARCHAR,
+            milestone_year INT,
+            invest_method VARCHAR,
+            constraint_sense VARCHAR,
+            rhs DOUBLE
+        );
+        INSERT INTO cons_group_investment VALUES (1, 'group1', 2050, 'use_available_units', '<=', 100.0);
+        CREATE TABLE investment_group_asset (
+            name VARCHAR,
+            milestone_year INT,
+            invest_method VARCHAR
+        );
+        INSERT INTO investment_group_asset VALUES ('group1', 2050, 'use_available_units');
+        CREATE TABLE investment_group_asset_membership (
+            group_name VARCHAR,
+            milestone_year INT,
+            asset VARCHAR,
+            coefficient DOUBLE
+        );
+        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'compact_asset_1', 2.0);
+        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'compact_asset_2', 3.0);
+        CREATE TABLE var_assets_investment (id BIGINT, asset VARCHAR, milestone_year INT);
+        CREATE TABLE expr_available_asset_units_compact_vintage_method (
+            id BIGINT,
+            asset VARCHAR,
+            milestone_year INT,
+            commission_year INT
+        );
+        INSERT INTO expr_available_asset_units_compact_vintage_method VALUES (1, 'compact_asset_1', 2050, 2030);
+        INSERT INTO expr_available_asset_units_compact_vintage_method VALUES (2, 'compact_asset_2', 2050, 2030);
+        INSERT INTO expr_available_asset_units_compact_vintage_method VALUES (3, 'compact_asset_2', 2050, 2050);
+        """,
+    )
+
+    model = JuMP.Model()
+    variables = Dict(:assets_investment => TEM.TulipaVariable(connection, "var_assets_investment"))
+    expr_available_asset_units_compact =
+        TEM.TulipaExpression(connection, "expr_available_asset_units_compact_vintage_method")
+    JuMP.@variable(model, available_units_compact[1:3])
+    TEM.attach_expression!(
+        expr_available_asset_units_compact,
+        :assets,
+        [JuMP.@expression(model, available_units_compact[id] + 0) for id in 1:3],
+    )
+    expressions =
+        Dict(:available_asset_units_compact_vintage_method => expr_available_asset_units_compact)
+    constraints =
+        Dict(:group_investment => TEM.TulipaConstraint(connection, "cons_group_investment"))
+
+    TEM.add_investment_group_constraints!(connection, model, variables, expressions, constraints)
+
+    observed_constraint = only(_get_cons_object(model, :investment_group))
+    expected_constraint = JuMP.@build_constraint(
+        2.0 * available_units_compact[1] +
+        3.0 * available_units_compact[2] +
+        3.0 * available_units_compact[3] <= 100.0
     )
     @test _is_constraint_equal(expected_constraint, observed_constraint)
 end
