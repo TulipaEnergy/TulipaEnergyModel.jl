@@ -33,7 +33,7 @@ function add_investment_group_constraints!(connection, model, variables, express
                                 row.var_assets_investment_ids,
                                 row.var_assets_investment_coefficients,
                             );
-                            init = 0.0,
+                            init = JuMP.AffExpr(),
                         )
                     else
                         sum(
@@ -42,14 +42,14 @@ function add_investment_group_constraints!(connection, model, variables, express
                                 row.available_asset_units_aggregated_ids,
                                 row.available_asset_units_aggregated_coefficients,
                             );
-                            init = 0.0,
+                            init = JuMP.AffExpr(),
                         ) + sum(
                             coefficient * expr_available_asset_units_compact[id] for
                             (id, coefficient) in zip(
                                 row.available_asset_units_compact_ids,
                                 row.available_asset_units_compact_coefficients,
                             );
-                            init = 0.0,
+                            init = JuMP.AffExpr(),
                         )
                     end
 
