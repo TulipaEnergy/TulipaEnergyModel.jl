@@ -3,48 +3,74 @@
     using TulipaBuilder: TulipaBuilder as TB
     using TulipaClustering: TulipaClustering as TC
 
-    function create_investment_group_problem()
+    function create_investment_group_problem(assets, groups)
         tulipa = TB.TulipaData()
 
-        TB.add_asset!(tulipa, "producer1", :producer; investable = true)
-        TB.add_asset!(tulipa, "producer2", :producer; investable = true)
-        TB.add_asset!(
-            tulipa,
-            "producer3",
-            :producer;
-            investable = true,
-            vintage_method = "compact_profiles",
-        )
-        for asset in ("producer1", "producer2", "producer3"), milestone_year in (2030, 2050)
-            TB.attach_profile!(tulipa, asset, :availability, milestone_year, ones(6))
+        for asset in assets
+            TB.add_asset!(
+                tulipa,
+                asset.name,
+                asset.kind;
+                investable = asset.investable,
+                vintage_method = asset.vintage_method,
+            )
+            for (milestone_year, profile) in asset.profiles
+                TB.attach_profile!(tulipa, asset.name, :availability, milestone_year, profile)
+            end
         end
 
         connection = TB.create_connection(tulipa, TEM.schema)
 
-        # There is no way to inform these via TB yet
-        DuckDB.query(
-            connection,
-            """
-            CREATE OR REPLACE TABLE investment_group_asset (name VARCHAR, milestone_year INT, constraint_sense VARCHAR, rhs DOUBLE, invest_method VARCHAR);
-            INSERT INTO investment_group_asset VALUES ('group1', 2030, '<=', 7700, 'use_only_investment_units');
-            INSERT INTO investment_group_asset VALUES ('group1', 2050, '>=', 3300, 'use_only_investment_units');
-            INSERT INTO investment_group_asset VALUES ('group2', 2030, '==', 1234, 'use_only_investment_units');
-            INSERT INTO investment_group_asset VALUES ('group3', 2050, '<=', 987, 'use_available_units');
-            INSERT INTO investment_group_asset VALUES ('group4', 2050, '==', 4321, 'none');
-            """,
+        function insert_rows(table_name, columns, rows)
+            values = join(
+                [
+                    "(" *
+                    join([
+                        if value isa String
+                            "'$(replace(value, "'" => "''"))'"
+                        else
+                            string(value)
+                        end for value in row
+                    ], ", ") *
+                    ")" for row in rows
+                ],
+                ", ",
+            )
+            return DuckDB.query(
+                connection,
+                """
+                CREATE OR REPLACE TABLE $table_name ($(join(columns, ", ")));
+                INSERT INTO $table_name VALUES $values;
+                """,
+            )
+        end
+
+        insert_rows(
+            "investment_group_asset",
+            [
+                "name VARCHAR",
+                "milestone_year INT",
+                "constraint_sense VARCHAR",
+                "rhs DOUBLE",
+                "invest_method VARCHAR",
+            ],
+            [
+                (
+                    group.name,
+                    group.milestone_year,
+                    group.constraint_sense,
+                    group.rhs,
+                    group.invest_method,
+                ) for group in groups
+            ],
         )
-        DuckDB.query(
-            connection,
-            """
-            CREATE OR REPLACE TABLE investment_group_asset_membership (group_name VARCHAR, milestone_year INT, asset VARCHAR, coefficient DOUBLE);
-            INSERT INTO investment_group_asset_membership VALUES ('group1', 2030, 'producer1', 3.14);
-            INSERT INTO investment_group_asset_membership VALUES ('group1', 2030, 'producer2', 6.66);
-            INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'producer2', 2.51);
-            INSERT INTO investment_group_asset_membership VALUES ('group2', 2030, 'producer1', 0.73);
-            INSERT INTO investment_group_asset_membership VALUES ('group3', 2050, 'producer1', 2.0);
-            INSERT INTO investment_group_asset_membership VALUES ('group3', 2050, 'producer3', 4.2);
-            INSERT INTO investment_group_asset_membership VALUES ('group4', 2050, 'producer2', 3.45);
-            """,
+        insert_rows(
+            "investment_group_asset_membership",
+            ["group_name VARCHAR", "milestone_year INT", "asset VARCHAR", "coefficient DOUBLE"],
+            [
+                (group.name, group.milestone_year, membership.asset, membership.coefficient) for
+                group in groups for membership in group.memberships
+            ],
         )
 
         layout = TC.ProfilesTableLayout(; year = :milestone_year)
@@ -60,7 +86,78 @@ end
 
 @testitem "Constraints for investment groups" setup = [CommonSetup, ConsInvestmentGroupSetup] tags =
     [:unit, :constraint, :fast] begin
-    con, ep = create_investment_group_problem()
+    assets = [
+        (;
+            name = "producer1",
+            kind = :producer,
+            investable = true,
+            vintage_method = "aggregated",
+            profiles = [(2030, ones(6)), (2050, ones(6))],
+        ),
+        (;
+            name = "producer2",
+            kind = :producer,
+            investable = true,
+            vintage_method = "aggregated",
+            profiles = [(2030, ones(6)), (2050, ones(6))],
+        ),
+        (;
+            name = "producer3",
+            kind = :producer,
+            investable = true,
+            vintage_method = "compact_profiles",
+            profiles = [(2030, ones(6)), (2050, ones(6))],
+        ),
+    ]
+    groups = [
+        (;
+            name = "group1",
+            milestone_year = 2030,
+            constraint_sense = "<=",
+            rhs = 7700.0,
+            invest_method = "use_only_investment_units",
+            memberships = [
+                (asset = "producer1", coefficient = 3.14),
+                (asset = "producer2", coefficient = 6.66),
+            ],
+        ),
+        (;
+            name = "group1",
+            milestone_year = 2050,
+            constraint_sense = ">=",
+            rhs = 3300.0,
+            invest_method = "use_only_investment_units",
+            memberships = [(asset = "producer2", coefficient = 2.51)],
+        ),
+        (;
+            name = "group2",
+            milestone_year = 2030,
+            constraint_sense = "==",
+            rhs = 1234.0,
+            invest_method = "use_only_investment_units",
+            memberships = [(asset = "producer1", coefficient = 0.73)],
+        ),
+        (;
+            name = "group3",
+            milestone_year = 2050,
+            constraint_sense = "<=",
+            rhs = 987.0,
+            invest_method = "use_available_units",
+            memberships = [
+                (asset = "producer1", coefficient = 2.0),
+                (asset = "producer3", coefficient = 4.2),
+            ],
+        ),
+        (;
+            name = "group4",
+            milestone_year = 2050,
+            constraint_sense = "==",
+            rhs = 4321.0,
+            invest_method = "none",
+            memberships = [(asset = "producer2", coefficient = 3.45)],
+        ),
+    ]
+    con, ep = create_investment_group_problem(assets, groups)
 
     var_assets_investment = ep.variables[:assets_investment].container
     var_lookup = Dict(
@@ -109,222 +206,157 @@ end
     end
 end
 
-@testitem "Available-unit group constraints aggregate compact vintages" setup = [CommonSetup] tags =
-    [:unit, :constraint, :fast] begin
-    connection = DBInterface.connect(DuckDB.DB)
-    DuckDB.query(
-        connection,
-        """
-        CREATE TABLE cons_group_investment (
-            id BIGINT,
-            name VARCHAR,
-            milestone_year INT,
-            invest_method VARCHAR,
-            constraint_sense VARCHAR,
-            rhs DOUBLE
-        );
-        INSERT INTO cons_group_investment VALUES (1, 'group1', 2050, 'use_available_units', '<=', 100.0);
-        CREATE TABLE investment_group_asset (
-            name VARCHAR,
-            milestone_year INT,
-            invest_method VARCHAR
-        );
-        INSERT INTO investment_group_asset VALUES ('group1', 2050, 'use_available_units');
-        CREATE TABLE investment_group_asset_membership (
-            group_name VARCHAR,
-            milestone_year INT,
-            asset VARCHAR,
-            coefficient DOUBLE
-        );
-        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'aggregated_asset', 2.0);
-        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'compact_asset', 3.0);
-        CREATE TABLE var_assets_investment (id BIGINT, asset VARCHAR, milestone_year INT);
-        CREATE TABLE expr_available_asset_units_aggregated_vintage_method (
-            id BIGINT,
-            asset VARCHAR,
-            milestone_year INT,
-            commission_year INT
-        );
-        INSERT INTO expr_available_asset_units_aggregated_vintage_method VALUES (1, 'aggregated_asset', 2050, 2050);
-        CREATE TABLE expr_available_asset_units_compact_vintage_method (
-            id BIGINT,
-            asset VARCHAR,
-            milestone_year INT,
-            commission_year INT
-        );
-        INSERT INTO expr_available_asset_units_compact_vintage_method VALUES (1, 'compact_asset', 2050, 2030);
-        INSERT INTO expr_available_asset_units_compact_vintage_method VALUES (2, 'compact_asset', 2050, 2050);
-        """,
-    )
+@testitem "Available-unit group constraints aggregate compact vintages" setup =
+    [CommonSetup, ConsInvestmentGroupSetup] tags = [:unit, :constraint, :fast] begin
+    assets = [
+        (;
+            name = "aggregated_asset",
+            kind = :producer,
+            investable = true,
+            vintage_method = "aggregated",
+            profiles = [(2050, ones(6))],
+        ),
+        (;
+            name = "compact_asset",
+            kind = :producer,
+            investable = true,
+            vintage_method = "compact_profiles",
+            profiles = [(2030, ones(6)), (2050, ones(6))],
+        ),
+    ]
+    groups = [
+        (;
+            name = "group1",
+            milestone_year = 2050,
+            constraint_sense = "<=",
+            rhs = 100.0,
+            invest_method = "use_available_units",
+            memberships = [
+                (asset = "aggregated_asset", coefficient = 2.0),
+                (asset = "compact_asset", coefficient = 3.0),
+            ],
+        ),
+    ]
+    connection, ep = create_investment_group_problem(assets, groups)
 
-    model = JuMP.Model()
-    variables = Dict(:assets_investment => TEM.TulipaVariable(connection, "var_assets_investment"))
     expr_available_asset_units_aggregated =
-        TEM.TulipaExpression(connection, "expr_available_asset_units_aggregated_vintage_method")
+        ep.expressions[:available_asset_units_aggregated_vintage_method].expressions[:assets]
     expr_available_asset_units_compact =
-        TEM.TulipaExpression(connection, "expr_available_asset_units_compact_vintage_method")
-    JuMP.@variable(model, available_units_aggregated)
-    JuMP.@variable(model, available_units_compact[1:2])
-    TEM.attach_expression!(
-        expr_available_asset_units_aggregated,
-        :assets,
-        [JuMP.@expression(model, available_units_aggregated + 0)],
-    )
-    TEM.attach_expression!(
-        expr_available_asset_units_compact,
-        :assets,
-        [JuMP.@expression(model, available_units_compact[id] + 0) for id in 1:2],
-    )
-    expressions = Dict(
-        :available_asset_units_aggregated_vintage_method =>
-            expr_available_asset_units_aggregated,
-        :available_asset_units_compact_vintage_method => expr_available_asset_units_compact,
-    )
-    constraints =
-        Dict(:group_investment => TEM.TulipaConstraint(connection, "cons_group_investment"))
-
-    TEM.add_investment_group_constraints!(connection, model, variables, expressions, constraints)
-
-    observed_constraint = only(_get_cons_object(model, :investment_group))
+        ep.expressions[:available_asset_units_compact_vintage_method].expressions[:assets]
+    aggregated_ids = [
+        row.id for
+        row in ep.expressions[:available_asset_units_aggregated_vintage_method].indices if
+        row.asset == "aggregated_asset" && row.milestone_year == 2050
+    ]
+    compact_ids = [
+        row.id for
+        row in ep.expressions[:available_asset_units_compact_vintage_method].indices if
+        row.asset == "compact_asset" && row.milestone_year == 2050
+    ]
+    observed_constraint = only(_get_cons_object(ep.model, :investment_group))
     expected_constraint = JuMP.@build_constraint(
-        2.0 * available_units_aggregated +
-        3.0 * available_units_compact[1] +
-        3.0 * available_units_compact[2] <= 100.0
+        sum(2.0 * expr_available_asset_units_aggregated[id] for id in aggregated_ids) +
+        sum(3.0 * expr_available_asset_units_compact[id] for id in compact_ids) <= 100.0
     )
     @test _is_constraint_equal(expected_constraint, observed_constraint)
 end
 
-@testitem "Available-unit group constraints aggregate only" setup = [CommonSetup] tags =
-    [:unit, :constraint, :fast] begin
-    connection = DBInterface.connect(DuckDB.DB)
-    DuckDB.query(
-        connection,
-        """
-        CREATE TABLE cons_group_investment (
-            id BIGINT,
-            name VARCHAR,
-            milestone_year INT,
-            invest_method VARCHAR,
-            constraint_sense VARCHAR,
-            rhs DOUBLE
-        );
-        INSERT INTO cons_group_investment VALUES (1, 'group1', 2050, 'use_available_units', '<=', 100.0);
-        CREATE TABLE investment_group_asset (
-            name VARCHAR,
-            milestone_year INT,
-            invest_method VARCHAR
-        );
-        INSERT INTO investment_group_asset VALUES ('group1', 2050, 'use_available_units');
-        CREATE TABLE investment_group_asset_membership (
-            group_name VARCHAR,
-            milestone_year INT,
-            asset VARCHAR,
-            coefficient DOUBLE
-        );
-        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'aggregated_asset_1', 2.0);
-        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'aggregated_asset_2', 3.0);
-        CREATE TABLE var_assets_investment (id BIGINT, asset VARCHAR, milestone_year INT);
-        CREATE TABLE expr_available_asset_units_aggregated_vintage_method (
-            id BIGINT,
-            asset VARCHAR,
-            milestone_year INT,
-            commission_year INT
-        );
-        INSERT INTO expr_available_asset_units_aggregated_vintage_method VALUES (1, 'aggregated_asset_1', 2050, 2050);
-        INSERT INTO expr_available_asset_units_aggregated_vintage_method VALUES (2, 'aggregated_asset_2', 2050, 2050);
-        """,
-    )
+@testitem "Available-unit group constraints aggregate only" setup =
+    [CommonSetup, ConsInvestmentGroupSetup] tags = [:unit, :constraint, :fast] begin
+    assets = [
+        (;
+            name = "aggregated_asset_1",
+            kind = :producer,
+            investable = true,
+            vintage_method = "aggregated",
+            profiles = [(2050, ones(6))],
+        ),
+        (;
+            name = "aggregated_asset_2",
+            kind = :producer,
+            investable = true,
+            vintage_method = "aggregated",
+            profiles = [(2050, ones(6))],
+        ),
+    ]
+    groups = [
+        (;
+            name = "group1",
+            milestone_year = 2050,
+            constraint_sense = "<=",
+            rhs = 100.0,
+            invest_method = "use_available_units",
+            memberships = [
+                (asset = "aggregated_asset_1", coefficient = 2.0),
+                (asset = "aggregated_asset_2", coefficient = 3.0),
+            ],
+        ),
+    ]
+    connection, ep = create_investment_group_problem(assets, groups)
 
-    model = JuMP.Model()
-    variables = Dict(:assets_investment => TEM.TulipaVariable(connection, "var_assets_investment"))
     expr_available_asset_units_aggregated =
-        TEM.TulipaExpression(connection, "expr_available_asset_units_aggregated_vintage_method")
-    JuMP.@variable(model, available_units_aggregated[1:2])
-    TEM.attach_expression!(
-        expr_available_asset_units_aggregated,
-        :assets,
-        [JuMP.@expression(model, available_units_aggregated[id] + 0) for id in 1:2],
-    )
-    expressions = Dict(
-        :available_asset_units_aggregated_vintage_method =>
-            expr_available_asset_units_aggregated,
-    )
-    constraints =
-        Dict(:group_investment => TEM.TulipaConstraint(connection, "cons_group_investment"))
-
-    TEM.add_investment_group_constraints!(connection, model, variables, expressions, constraints)
-
-    observed_constraint = only(_get_cons_object(model, :investment_group))
+        ep.expressions[:available_asset_units_aggregated_vintage_method].expressions[:assets]
+    aggregated_ids = [
+        row.id for
+        row in ep.expressions[:available_asset_units_aggregated_vintage_method].indices if
+        row.asset in ("aggregated_asset_1", "aggregated_asset_2") && row.milestone_year == 2050
+    ]
+    observed_constraint = only(_get_cons_object(ep.model, :investment_group))
     expected_constraint = JuMP.@build_constraint(
-        2.0 * available_units_aggregated[1] + 3.0 * available_units_aggregated[2] <= 100.0
+        sum(2.0 * expr_available_asset_units_aggregated[id] for id in aggregated_ids[1:1]) +
+        sum(3.0 * expr_available_asset_units_aggregated[id] for id in aggregated_ids[2:2]) <=
+        100.0
     )
     @test _is_constraint_equal(expected_constraint, observed_constraint)
 end
 
-@testitem "Available-unit group constraints compact only" setup = [CommonSetup] tags =
-    [:unit, :constraint, :fast] begin
-    connection = DBInterface.connect(DuckDB.DB)
-    DuckDB.query(
-        connection,
-        """
-        CREATE TABLE cons_group_investment (
-            id BIGINT,
-            name VARCHAR,
-            milestone_year INT,
-            invest_method VARCHAR,
-            constraint_sense VARCHAR,
-            rhs DOUBLE
-        );
-        INSERT INTO cons_group_investment VALUES (1, 'group1', 2050, 'use_available_units', '<=', 100.0);
-        CREATE TABLE investment_group_asset (
-            name VARCHAR,
-            milestone_year INT,
-            invest_method VARCHAR
-        );
-        INSERT INTO investment_group_asset VALUES ('group1', 2050, 'use_available_units');
-        CREATE TABLE investment_group_asset_membership (
-            group_name VARCHAR,
-            milestone_year INT,
-            asset VARCHAR,
-            coefficient DOUBLE
-        );
-        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'compact_asset_1', 2.0);
-        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'compact_asset_2', 3.0);
-        CREATE TABLE var_assets_investment (id BIGINT, asset VARCHAR, milestone_year INT);
-        CREATE TABLE expr_available_asset_units_compact_vintage_method (
-            id BIGINT,
-            asset VARCHAR,
-            milestone_year INT,
-            commission_year INT
-        );
-        INSERT INTO expr_available_asset_units_compact_vintage_method VALUES (1, 'compact_asset_1', 2050, 2030);
-        INSERT INTO expr_available_asset_units_compact_vintage_method VALUES (2, 'compact_asset_2', 2050, 2030);
-        INSERT INTO expr_available_asset_units_compact_vintage_method VALUES (3, 'compact_asset_2', 2050, 2050);
-        """,
-    )
+@testitem "Available-unit group constraints compact only" setup =
+    [CommonSetup, ConsInvestmentGroupSetup] tags = [:unit, :constraint, :fast] begin
+    assets = [
+        (;
+            name = "compact_asset_1",
+            kind = :producer,
+            investable = true,
+            vintage_method = "compact_profiles",
+            profiles = [(2030, ones(6))],
+        ),
+        (;
+            name = "compact_asset_2",
+            kind = :producer,
+            investable = true,
+            vintage_method = "compact_profiles",
+            profiles = [(2030, ones(6)), (2050, ones(6))],
+        ),
+    ]
+    groups = [
+        (;
+            name = "group1",
+            milestone_year = 2050,
+            constraint_sense = "<=",
+            rhs = 100.0,
+            invest_method = "use_available_units",
+            memberships = [
+                (asset = "compact_asset_1", coefficient = 2.0),
+                (asset = "compact_asset_2", coefficient = 3.0),
+            ],
+        ),
+    ]
+    connection, ep = create_investment_group_problem(assets, groups)
 
-    model = JuMP.Model()
-    variables = Dict(:assets_investment => TEM.TulipaVariable(connection, "var_assets_investment"))
     expr_available_asset_units_compact =
-        TEM.TulipaExpression(connection, "expr_available_asset_units_compact_vintage_method")
-    JuMP.@variable(model, available_units_compact[1:3])
-    TEM.attach_expression!(
-        expr_available_asset_units_compact,
-        :assets,
-        [JuMP.@expression(model, available_units_compact[id] + 0) for id in 1:3],
-    )
-    expressions =
-        Dict(:available_asset_units_compact_vintage_method => expr_available_asset_units_compact)
-    constraints =
-        Dict(:group_investment => TEM.TulipaConstraint(connection, "cons_group_investment"))
-
-    TEM.add_investment_group_constraints!(connection, model, variables, expressions, constraints)
-
-    observed_constraint = only(_get_cons_object(model, :investment_group))
-    expected_constraint = JuMP.@build_constraint(
-        2.0 * available_units_compact[1] +
-        3.0 * available_units_compact[2] +
-        3.0 * available_units_compact[3] <= 100.0
-    )
+        ep.expressions[:available_asset_units_compact_vintage_method].expressions[:assets]
+    group = only(groups)
+    expected_terms = [
+        membership.coefficient * sum(
+            expr_available_asset_units_compact[id] for id in [
+                row.id for
+                row in ep.expressions[:available_asset_units_compact_vintage_method].indices if
+                row.asset == membership.asset && row.milestone_year == group.milestone_year
+            ];
+            init = 0.0,
+        ) for membership in group.memberships
+    ]
+    observed_constraint = only(_get_cons_object(ep.model, :investment_group))
+    expected_constraint = JuMP.@build_constraint(sum(expected_terms; init = 0.0) <= 100.0)
     @test _is_constraint_equal(expected_constraint, observed_constraint)
 end
