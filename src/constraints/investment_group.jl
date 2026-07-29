@@ -66,12 +66,13 @@ function add_investment_group_constraints!(connection, model, variables, express
     return
 end
 
-_get_expression_assets(expressions, k) =
-    if haskey(expressions, k)
-        get(expressions[k].expressions, :assets, JuMP.AffExpr[])
-    else
-        JuMP.AffExpr[]
+function _get_expression_assets(expressions, expression_name)
+    if !haskey(expressions, expression_name)
+        return JuMP.AffExpr[]
     end
+
+    return get(expressions[expression_name].expressions, :assets, JuMP.AffExpr[])
+end
 
 function _create_empty_available_units_table_if_missing!(connection, table_name)
     if isempty(
