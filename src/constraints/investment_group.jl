@@ -6,9 +6,9 @@ Adds group constraints for assets that share a common limits or bounds.
 function add_investment_group_constraints!(connection, model, variables, expressions, constraints)
     assets_investment = variables[:assets_investment].container
     expr_available_asset_units_aggregated =
-        expressions[:available_asset_units_aggregated_vintage_method].expressions[:assets]
+        _get_expression_assets(expressions, :available_asset_units_aggregated_vintage_method)
     expr_available_asset_units_compact =
-        expressions[:available_asset_units_compact_vintage_method].expressions[:assets]
+        _get_expression_assets(expressions, :available_asset_units_compact_vintage_method)
 
     let table_name = :group_investment
         cons = constraints[table_name]
@@ -32,7 +32,8 @@ function add_investment_group_constraints!(connection, model, variables, express
                             coefficient * assets_investment[id] for (id, coefficient) in zip(
                                 row.var_assets_investment_ids,
                                 row.var_assets_investment_coefficients,
-                            )
+                            );
+                            init = 0.0,
                         )
                     else
                         sum(
@@ -40,13 +41,15 @@ function add_investment_group_constraints!(connection, model, variables, express
                             (id, coefficient) in zip(
                                 row.available_asset_units_aggregated_ids,
                                 row.available_asset_units_aggregated_coefficients,
-                            )
+                            );
+                            init = 0.0,
                         ) + sum(
                             coefficient * expr_available_asset_units_compact[id] for
                             (id, coefficient) in zip(
                                 row.available_asset_units_compact_ids,
                                 row.available_asset_units_compact_coefficients,
-                            )
+                            );
+                            init = 0.0,
                         )
                     end
 
@@ -63,7 +66,55 @@ function add_investment_group_constraints!(connection, model, variables, express
     return
 end
 
+function _get_expression_assets(expressions, expression_name)
+    if !haskey(expressions, expression_name)
+        return JuMP.AffExpr[]
+    end
+
+    return get(expressions[expression_name].expressions, :assets, JuMP.AffExpr[])
+end
+
+function _ensure_group_available_units_tables!(connection)
+    _create_empty_available_units_table_if_missing!(
+        connection,
+        "expr_available_asset_units_aggregated_vintage_method",
+    )
+    _create_empty_available_units_table_if_missing!(
+        connection,
+        "expr_available_asset_units_compact_vintage_method",
+    )
+
+    return
+end
+
+function _create_empty_available_units_table_if_missing!(connection, table_name)
+    table_exists = false
+    for _ in
+        DuckDB.query(connection, "FROM duckdb_tables() WHERE table_name = '$table_name' LIMIT 1")
+        table_exists = true
+        break
+    end
+
+    if !table_exists
+        DuckDB.query(
+            connection,
+            """
+            CREATE TEMP TABLE $table_name (
+                id BIGINT,
+                asset VARCHAR,
+                milestone_year INT,
+                commission_year INT
+            );
+            """,
+        )
+    end
+
+    return
+end
+
 function _append_group_data_to_indices!(connection, cons_table_name)
+    _ensure_group_available_units_tables!(connection)
+
     return DuckDB.query(
         connection,
         """
