@@ -116,6 +116,20 @@ end
           ["Table 'flows_rep_periods_partitions' has bad value for column 'specification': 'bad'"]
 end
 
+@testitem "Test schema oneOf constraints - bad investment group method" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(@__DIR__, "inputs", "Norse"))
+    DuckDB.query(
+        connection,
+        "UPDATE investment_group_asset SET invest_method = 'true' WHERE name = 'ccgt_min'",
+    )
+    @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
+    error_messages = TEM._validate_schema_one_of_constraints!(String[], connection)
+    @test error_messages ==
+          ["Table 'investment_group_asset' has bad value for column 'invest_method': 'true'"]
+end
+
 @testitem "Test only transport flows can be investable - using fake data" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     # Create all four combinations of is_transport and investable
@@ -277,28 +291,30 @@ end
         SELECT
             'group1' AS name,
             2030 AS milestone_year,
-            true AS invest_method,
+            'use_only_investment_units' AS invest_method,
             '<=' AS constraint_sense,
             0.0 AS rhs,
         )
         """,
     )
 
-    # Creating investment_group_asset_membership with 1 correct (group, asset) pairs and 2 incorrect pairs
+    # Creating investment_group_asset_membership with 1 correct pair and 3 incorrect pairs
     DuckDB.query(
         connection,
         """
-        CREATE TABLE investment_group_asset_membership (group_name VARCHAR, asset VARCHAR);
-        INSERT INTO investment_group_asset_membership VALUES ('group1', 'ccgt');
-        INSERT INTO investment_group_asset_membership VALUES ('group1', 'bad_asset');
-        INSERT INTO investment_group_asset_membership VALUES ('bad_group', 'ccgt');
+        CREATE TABLE investment_group_asset_membership (group_name VARCHAR, milestone_year INT, asset VARCHAR);
+        INSERT INTO investment_group_asset_membership VALUES ('group1', 2030, 'ccgt');
+        INSERT INTO investment_group_asset_membership VALUES ('group1', 2030, 'bad_asset');
+        INSERT INTO investment_group_asset_membership VALUES ('bad_group', 2030, 'ccgt');
+        INSERT INTO investment_group_asset_membership VALUES ('group1', 2050, 'ccgt');
         """,
     )
 
     error_messages = TEM._validate_group_consistency!(String[], connection)
     @test Set(error_messages) == Set([
         "Table 'investment_group_asset_membership' column 'asset' has invalid value 'bad_asset'. Valid values should be among column 'asset' of 'asset'",
-        "Table 'investment_group_asset_membership' column 'group_name' has invalid value 'bad_group'. Valid values should be among column 'name' of 'investment_group_asset'",
+        "Table 'investment_group_asset_membership' has invalid (group_name, milestone_year) = ('bad_group', 2030). Valid pairs should exist in ('investment_group_asset'.name, 'investment_group_asset'.milestone_year)",
+        "Table 'investment_group_asset_membership' has invalid (group_name, milestone_year) = ('group1', 2050). Valid pairs should exist in ('investment_group_asset'.name, 'investment_group_asset'.milestone_year)",
     ])
 end
 
@@ -307,10 +323,16 @@ end
     asset = DataFrame(:asset => ["A1", "A2", "A3"])
     asset_milestone =
         DataFrame(:asset => ["A1", "A2", "A3"], :milestone_year => 2030, :investable => true)
-    investment_group_asset =
-        DataFrame(:name => ["group1", "group2", "bad_group"], :milestone_year => 2030)
-    investment_group_asset_membership =
-        DataFrame(:group_name => ["group1", "group1", "group2"], :asset => ["A1", "A3", "A2"])
+    investment_group_asset = DataFrame(
+        :name => ["group1", "group2", "bad_group"],
+        :milestone_year => 2030,
+        :invest_method => "use_only_investment_units",
+    )
+    investment_group_asset_membership = DataFrame(
+        :group_name => ["group1", "group1", "group2"],
+        :milestone_year => 2030,
+        :asset => ["A1", "A3", "A2"],
+    )
     connection = DBInterface.connect(DuckDB.DB)
     DuckDB.register_data_frame(connection, asset, "asset")
     DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
@@ -323,7 +345,7 @@ end
 
     error_messages = TEM._validate_group_consistency!(String[], connection)
     @test error_messages == [
-        "Group 'bad_group' in 'investment_group_asset' has no members in 'investment_group_asset_membership'",
+        "Group 'bad_group' in 'investment_group_asset' for milestone_year '2030' has no members in 'investment_group_asset_membership'",
     ]
 end
 
@@ -336,23 +358,34 @@ end
 
     # Modify group value to bad value
     DuckDB.query(connection, "INSERT INTO investment_group_asset (name) VALUES ('lonely')")
-    @test_throws "Group 'lonely' in 'investment_group_asset' has no members in 'investment_group_asset_membership'" TEM.create_internal_tables!(
+    @test_throws "Group 'lonely' in 'investment_group_asset' for milestone_year" TEM.create_internal_tables!(
         connection,
     )
 end
 
-@testitem "If asset belong to an investable group, then it is investable in the corresponding year" setup =
-    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
-    asset = DataFrame(:asset => ["A1", "A2", "A3"])
+@testitem "Only investment-only group members must be investable" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    asset = DataFrame(:asset => ["A1", "A2"])
     asset_milestone = DataFrame(
-        :asset => ["A1", "A1", "A2", "A2", "A3", "A3"],
-        :milestone_year => [2030, 2050, 2030, 2050, 2030, 2050],
-        :investable => [false, false, true, false, true, true],
+        :asset => ["A1", "A1", "A2", "A2"],
+        :milestone_year => [2030, 2050, 2030, 2050],
+        :investable => [false, false, true, false],
     )
-    investment_group_asset =
-        DataFrame(:name => ["group1", "group1"], :milestone_year => [2030, 2050])
-    investment_group_asset_membership =
-        DataFrame(:group_name => "group1", :asset => ["A1", "A2", "A3", "A1", "A2", "A3"])
+    investment_group_asset = DataFrame(
+        :name => ["group1", "group1", "group2", "group3"],
+        :milestone_year => [2030, 2050, 2030, 2050],
+        :invest_method => [
+            "use_available_units",
+            "use_only_investment_units",
+            "use_only_investment_units",
+            "none",
+        ],
+    )
+    investment_group_asset_membership = DataFrame(
+        :group_name => ["group1", "group1", "group2", "group3"],
+        :milestone_year => [2030, 2050, 2030, 2050],
+        :asset => ["A1", "A2", "A1", "A1"],
+    )
 
     connection = DBInterface.connect(DuckDB.DB)
     DuckDB.register_data_frame(connection, asset, "asset")
@@ -366,9 +399,8 @@ end
 
     error_messages = TEM._validate_group_consistency!(String[], connection)
     @test Set(error_messages) == Set([
-        "Asset 'A1' is in investment group 'group1' for milestone_year '2030' but it is not 'asset_milestone.investable'",
-        "Asset 'A1' is in investment group 'group1' for milestone_year '2050' but it is not 'asset_milestone.investable'",
         "Asset 'A2' is in investment group 'group1' for milestone_year '2050' but it is not 'asset_milestone.investable'",
+        "Asset 'A1' is in investment group 'group2' for milestone_year '2030' but it is not 'asset_milestone.investable'",
     ])
 end
 

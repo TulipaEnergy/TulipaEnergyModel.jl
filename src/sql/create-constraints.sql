@@ -665,12 +665,13 @@ select
     nextval('id') as id,
     ga.name,
     ga.milestone_year,
+    ga.invest_method,
     ga.constraint_sense,
     ga.rhs,
 from
     investment_group_asset as ga
 where
-    ga.invest_method
+    ga.invest_method != 'none'
 ;
 
 drop sequence id

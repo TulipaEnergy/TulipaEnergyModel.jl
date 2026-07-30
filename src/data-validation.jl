@@ -285,10 +285,11 @@ function _validate_assets_in_investment_groups_are_investable!(error_messages, c
     FROM investment_group_asset_membership
     LEFT JOIN investment_group_asset
         ON investment_group_asset_membership.group_name = investment_group_asset.name
+        AND investment_group_asset_membership.milestone_year = investment_group_asset.milestone_year
     LEFT JOIN asset_milestone
         ON investment_group_asset_membership.asset = asset_milestone.asset
         AND investment_group_asset.milestone_year = asset_milestone.milestone_year
-    WHERE NOT asset_milestone.investable
+    WHERE investment_group_asset.invest_method = 'use_only_investment_units' AND NOT asset_milestone.investable
     """
     for row in DuckDB.query(connection, query)
         push!(
@@ -300,18 +301,34 @@ function _validate_assets_in_investment_groups_are_investable!(error_messages, c
     return error_messages
 end
 
+function _validate_investment_group_membership_group_and_year!(error_messages, connection)
+    query = """
+    SELECT
+        membership.group_name,
+        membership.milestone_year,
+    FROM investment_group_asset_membership AS membership
+    ANTI JOIN investment_group_asset AS groups
+        ON membership.group_name = groups.name
+        AND membership.milestone_year = groups.milestone_year
+    WHERE membership.group_name IS NOT NULL
+        AND membership.milestone_year IS NOT NULL
+    """
+
+    for row in DuckDB.query(connection, query)
+        push!(
+            error_messages,
+            "Table 'investment_group_asset_membership' has invalid (group_name, milestone_year) = ('$(row.group_name)', $(row.milestone_year)). Valid pairs should exist in ('investment_group_asset'.name, 'investment_group_asset'.milestone_year)",
+        )
+    end
+
+    return error_messages
+end
+
 function _validate_group_consistency!(error_messages, connection)
     # Check the values in the table `investment_group_asset_membership`:
-    # - `group_name` comes from `investment_group_asset.name`
+    # - (`group_name`, `milestone_year`) comes from (`investment_group_asset.name`, `investment_group_asset.milestone_year`)
     # - `asset` comes from `asset.asset`
-    _validate_foreign_key!(
-        error_messages,
-        connection,
-        "investment_group_asset_membership",
-        :group_name,
-        "investment_group_asset",
-        :name,
-    )
+    _validate_investment_group_membership_group_and_year!(error_messages, connection)
     _validate_foreign_key!(
         error_messages,
         connection,
@@ -325,16 +342,17 @@ function _validate_group_consistency!(error_messages, connection)
     for row in DuckDB.query(
         connection,
         "FROM (
-            SELECT investment_group_asset.name, COUNT(investment_group_asset_membership.asset) AS count_group_members
+            SELECT investment_group_asset.name, investment_group_asset.milestone_year, COUNT(investment_group_asset_membership.asset) AS count_group_members
             FROM investment_group_asset
             LEFT JOIN investment_group_asset_membership
                 ON investment_group_asset.name = investment_group_asset_membership.group_name
-            GROUP BY investment_group_asset.name
+                AND investment_group_asset.milestone_year = investment_group_asset_membership.milestone_year
+            GROUP BY investment_group_asset.name, investment_group_asset.milestone_year
         ) WHERE count_group_members = 0",
     )
         push!(
             error_messages,
-            "Group '$(row.name)' in 'investment_group_asset' has no members in 'investment_group_asset_membership'",
+            "Group '$(row.name)' in 'investment_group_asset' for milestone_year '$(row.milestone_year)' has no members in 'investment_group_asset_membership'",
         )
     end
 

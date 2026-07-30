@@ -203,33 +203,37 @@ In order to define the groups in the model, the following steps are necessary:
 1. Create a group file by defining the `name` property and its parameters in the `investment_group_asset` table (or CSV file).
 2. Assign assets to the group by adding entries to the `investment_group_asset_membership` table (or CSV file).
 
-### [Group Investment constraints](@id investment-group-setup)
+### [Group Asset Constraints](@id investment-group-setup)
 
-A group investment constraint is a constraint of the form
+A group asset constraint is a constraint of the form
 
-$\sum_{a \in G} v^{\text{inv}}_a \times \text{coefficient}_a \left\{\begin{array}{c} \leq \\ \geq \\ =\end{array}\right\} \text{right hand side}$,
+$\sum_{a \in G} x_a \times \text{coefficient}_a \left\{\begin{array}{c} \leq \\ \geq \\ =\end{array}\right\} \text{right hand side}$,
 
-i.e., a sum-product of all investment variables listed in the group multiplied by given coefficients related by a "right hand side".
-An example of group investment are the maximum and minimum investment limits for group of investment variables.
+where `invest_method` selects $x_a$:
+
+- `use_only_investment_units` uses the investment variable for asset $a$ in the group's milestone year.
+- `use_available_units` uses the available units of asset $a$ in the group's milestone year, including initial units, investments that remain within their technical lifetime, and decommissions.
+- `none` creates no constraint.
+
 The mathematical formulation of these constraints is available [here](@ref investment-group-constraints).
 
 !!! info
-    At the moment, group constraints are only supported for investment variables through `investment_group_asset` and `investment_group_asset_membership`.
-    If you need additional constraints involving other variables, add them manually to the JuMP model as shown in the [Bids tutorial](@ref bids-tutorial).
+    Group constraints support investment units and available units through `investment_group_asset` and `investment_group_asset_membership`.
+    If you need constraints involving other variables, add them manually to the JuMP model as shown in the [Bids tutorial](@ref bids-tutorial).
 
-They can be achieved using group investment constraints by adding rows in `investment_group_asset` such that:
+Create group constraints by adding rows in `investment_group_asset` such that:
 
 - Each row in table `investment_group_asset`
   - `name` is the name of the group, and unique identifier.
   - `milestone_year` is the year for which the group is defined.
-  - `invest_method = true`. This parameter enables the model to use the investment group constraints.
-  - `constraint_sense` is either `<=` for maximum and `>=` for minimum.
+  - `invest_method` is `use_only_investment_units`, `use_available_units`, or `none`.
+  - `constraint_sense` is `<=`, `>=`, or `==`.
   - `rhs` is the corresponding value.
 - Each row in table `investment_group_asset_membership`
   - `group_name` should match `investment_group_asset.name`.
   - `asset` is the name of the asset.
   - `milestone_year` should match `investment_group_asset.milestone_year` and `asset.milestone_year`.
-  - `coefficient` should be the capacity value for the investment limit.
+  - `coefficient` multiplies the investment or available-units expression selected by `invest_method`.
 
 !!! warning
     Notice that only one constraint is created per row in `investment_group_asset`, which means that if both the minimum and maximum investment limits are desired, two rows are required in `investment_group_asset`, one with `constraint_sense = '<='` and one with `constraint_sense = '>='`. In this case, the names of the groups must be different, from instance `ccgt_max` and `ccgt_min`.
@@ -246,7 +250,7 @@ input_asset_file = "../../../test/inputs/Norse/investment-group-asset.csv" # hid
 assets = CSV.read(input_asset_file, DataFrame, header = 1) # hide
 ```
 
-In the given data, there are two groups: `renewables` and `ccgt`. Both groups have the `invest_method` parameter set to `true`, indicating that investment group constraints apply to both. For the `renewables` group, the `constraint_sense` is `<=` and the `rhs` is 40000 MW, indicating the this is a maximum investment limit, i.e., that the total investments of assets in the group must be less than or equal to this value. In contrast, the `ccgt` group has `>=` and 10000 MW in the corresponding fields, indicating a minimum investment limit.
+In the given data, there are two groups: `renewables` and `ccgt`. Both use `invest_method = "use_only_investment_units"`, preserving the original investment-limit behavior. For the `renewables` group, the `constraint_sense` is `<=` and the `rhs` is 40000 MW, indicating that this is a maximum investment limit, i.e., that the total investments of assets in the group must be less than or equal to this value. In contrast, the `ccgt` group has `>=` and 10000 MW in the corresponding fields, indicating a minimum investment limit.
 
 Let's now explore which assets are in each group. To do so, we can take a look at the `asset.csv` file:
 
@@ -258,7 +262,9 @@ investment_group_asset_membership = CSV.read(input_file, DataFrame) # hide
 Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the `renewables` group, while the assets `Asgard_CCGT` and `Midgard_CCGT` belong to the `ccgt` group.
 
 !!! info
-    The assets in the group have to allow investment (`asset_milestone.investable = true` for the corresponding year) and not be of type `consumer` (`asset.type != "consumer"`).
+    Assets in `use_only_investment_units` groups have to allow investment (`asset_milestone.investable = true` for the corresponding year) and must not be consumers (`asset.type != "consumer"`).
+    Assets in `use_available_units` groups may be non-investable, which allows limits on existing capacity and decommissioning trajectories.
+    Assets in `use_available_units` groups may be have different `vintage_method`, i.e., they can be `aggregated` or `compact_profiles` and the group constraints will be applied accordingly.
 
 ## [Flow Coefficient in Capacity constraints](@id coefficient-for-capacity-constraints)
 

@@ -801,8 +801,15 @@
       "type": "VARCHAR"
     },
     "invest_method": {
-      "description": "true -> activate group constraints; false -> no group investment constraints",
-      "type": "BOOLEAN"
+      "constraints": {
+        "oneOf": [
+          "none",
+          "use_only_investment_units",
+          "use_available_units"
+        ]
+      },
+      "description": "Method used in the group constraint: none creates no constraint, use_only_investment_units uses investment units, and use_available_units uses available units.",
+      "type": "VARCHAR"
     },
     "milestone_year": {
       "description": "Year of investment and operation decisions in the optimization.",
@@ -824,7 +831,7 @@
     },
     "coefficient": {
       "default": 1.0,
-      "description": "Coefficient of the investment variable corresponding to this asset.",
+      "description": "Coefficient of the expression selected by invest_method for this asset.",
       "type": "DOUBLE"
     },
     "group_name": {
