@@ -66,27 +66,6 @@ where
     asset.type in ('conversion')
 ;
 
--- outgoing flows for storage balance
-create or replace temp table merged_out_flows_storage_balance as
-select
-    distinct ftrrp.from_asset as asset,
-    ftrrp.milestone_year,
-    ftrrp.rep_period,
-    ftrrp.time_block_start,
-    ftrrp.time_block_end
-from
-    flow_time_resolution_rep_period as ftrrp
-left join
-    flow_commission as fc on
-        ftrrp.from_asset = fc.from_asset and
-        ftrrp.to_asset = fc.to_asset and
-        ftrrp.milestone_year = fc.commission_year
-left join
-    asset on ftrrp.from_asset = asset.asset
-where
-    fc.storage_coefficient > 0 and
-    asset.type in ('storage')
-;
 
 -- union of all assets and outgoing flows
 create or replace temp table merged_assets_and_out_flows as
