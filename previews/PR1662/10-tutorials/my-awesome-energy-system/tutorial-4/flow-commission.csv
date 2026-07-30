@@ -1,0 +1,12 @@
+from_asset,to_asset,commission_year,conversion_coefficient
+wind,e_demand,2030,1.0
+ccgt,e_demand,2030,1.0
+ocgt,e_demand,2030,1.0
+solar,e_demand,2030,1.0
+ens,e_demand,2030,1.0
+wind,electrolizer,2030,1
+electrolizer,h2_demand,2030,0.65
+smr_ccs,h2_demand,2030,1
+wind_offshore,hub,2030,1
+wind_offshore,electrolizer,2030,1
+hub,e_demand,2030,1

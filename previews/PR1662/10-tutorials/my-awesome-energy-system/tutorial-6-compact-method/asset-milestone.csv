@@ -1,0 +1,7 @@
+asset,milestone_year,investable,peak_demand,storage_inflows,initial_storage_level,min_energy_timeframe_partition,max_energy_timeframe_partition,units_on_cost
+wind,2030,true,0.0,0.0,0.0,,,
+ens,2050,false,0.0,0.0,0.0,,,
+demand,2030,false,1115.0,0.0,0.0,,,
+demand,2050,false,2000.0,0.0,0.0,,,
+ens,2030,false,0.0,0.0,0.0,,,
+wind,2050,true,0.0,0.0,0.0,,,
