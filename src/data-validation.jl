@@ -559,9 +559,23 @@ function _validate_investment_and_available_units_limits!(error_messages, connec
             ORDER BY $key_selection",
         )
             key_values = join(["$key=$(row[Symbol(key)])" for key in key_columns], ", ")
+            min_value = row[Symbol(min_column)]
+            max_value = row[Symbol(max_column)]
+            failure_reasons = String[]
+
+            if min_value < 0
+                push!(failure_reasons, "'$min_column' is negative")
+            end
+            if !ismissing(max_value) && max_value < 0
+                push!(failure_reasons, "'$max_column' is negative")
+            end
+            if !ismissing(max_value) && min_value > max_value
+                push!(failure_reasons, "'$min_column' > '$max_column'")
+            end
+
             push!(
                 error_messages,
-                "Invalid limits in '$table_name' for ($key_values): '$min_column' must be nonnegative and less than or equal to '$max_column' when it is defined.",
+                "Invalid limits in '$table_name' for ($key_values): $min_column=$(repr(min_value)), $max_column=$(repr(max_value)); violations: $(join(failure_reasons, ", ")).",
             )
         end
     end

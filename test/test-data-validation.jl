@@ -603,8 +603,12 @@ end
     )
 
     error_messages = TEM._validate_investment_and_available_units_limits!(String[], connection)
-    @test length(error_messages) == 4
-    @test all(occursin("Invalid limits", message) for message in error_messages)
+    @test error_messages == [
+        "Invalid limits in 'asset_commission' for (asset=ccgt, commission_year=2030): investment_min_limit=-1.0, investment_max_limit=10000.0; violations: 'investment_min_limit' is negative.",
+        "Invalid limits in 'asset_commission' for (asset=ccgt, commission_year=2030): investment_min_limit_storage_energy=5.0, investment_max_limit_storage_energy=4.0; violations: 'investment_min_limit_storage_energy' > 'investment_max_limit_storage_energy'.",
+        "Invalid limits in 'flow_commission' for (from_asset=ccgt, to_asset=demand, commission_year=2030): investment_min_limit=2.0, investment_max_limit=1.0; violations: 'investment_min_limit' > 'investment_max_limit'.",
+        "Invalid limits in 'asset_milestone' for (asset=ccgt, milestone_year=2030): min_available_units=2.0, max_available_units=1.0; violations: 'min_available_units' > 'max_available_units'.",
+    ]
 end
 
 @testitem "Test integer investment limits validation" setup = [CommonSetup] tags =
