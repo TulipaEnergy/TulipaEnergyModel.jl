@@ -581,6 +581,69 @@ function _validate_investment_and_available_units_limits!(error_messages, connec
     end
 
     _validate_integer_investment_limits!(error_messages, connection)
+    _validate_positive_investment_min_limit_has_positive_capacity!(error_messages, connection)
+    return error_messages
+end
+
+function _validate_positive_investment_min_limit_has_positive_capacity!(error_messages, connection)
+    for (table_name, key_selection, min_column, capacity_column, join_clause, where_clause) in (
+        (
+            "asset_commission",
+            "asset_commission.asset, asset_commission.commission_year",
+            "investment_min_limit",
+            "asset.capacity",
+            "LEFT JOIN asset ON asset_commission.asset = asset.asset
+            LEFT JOIN asset_milestone
+                ON asset_commission.asset = asset_milestone.asset
+                AND asset_commission.commission_year = asset_milestone.milestone_year",
+            "asset_milestone.investable AND asset.type != 'consumer'",
+        ),
+        (
+            "asset_commission",
+            "asset_commission.asset, asset_commission.commission_year",
+            "investment_min_limit_storage_energy",
+            "asset.capacity_storage_energy",
+            "LEFT JOIN asset ON asset_commission.asset = asset.asset
+            LEFT JOIN asset_milestone
+                ON asset_commission.asset = asset_milestone.asset
+                AND asset_commission.commission_year = asset_milestone.milestone_year",
+            "asset_milestone.investable
+                AND asset.type = 'storage'
+                AND asset.storage_method_energy = 'optimize_storage_capacity'
+                AND asset.vintage_method = 'aggregated'",
+        ),
+        (
+            "flow_commission",
+            "flow_commission.from_asset, flow_commission.to_asset, flow_commission.commission_year",
+            "investment_min_limit",
+            "flow.capacity",
+            "LEFT JOIN flow
+                ON flow_commission.from_asset = flow.from_asset
+                AND flow_commission.to_asset = flow.to_asset
+            LEFT JOIN flow_milestone
+                ON flow_commission.from_asset = flow_milestone.from_asset
+                AND flow_commission.to_asset = flow_milestone.to_asset
+                AND flow_commission.commission_year = flow_milestone.milestone_year",
+            "flow_milestone.investable AND flow.is_transport",
+        ),
+    )
+        for row in DuckDB.query(
+            connection,
+            "SELECT $key_selection, $min_column, $capacity_column AS capacity
+            FROM $table_name
+            $join_clause
+            WHERE $where_clause
+                AND $min_column > 0
+                AND $capacity_column <= 0",
+        )
+            key_values = join([row[index] for index in 1:(length(row)-2)], ", ")
+            push!(
+                error_messages,
+                "Positive '$min_column' requires a positive capacity for '$table_name' at ($key_values).",
+            )
+        end
+    end
+
     return error_messages
 end
 

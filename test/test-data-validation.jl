@@ -629,6 +629,23 @@ end
     ]
 end
 
+@testitem "Test positive investment minimum limit requires positive capacity" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(
+        connection,
+        """
+        UPDATE asset SET capacity = 0 WHERE asset = 'ccgt';
+        UPDATE asset_commission SET investment_min_limit = 1 WHERE asset = 'ccgt';
+        """,
+    )
+
+    error_messages = TEM._validate_investment_and_available_units_limits!(String[], connection)
+    @test error_messages == [
+        "Positive 'investment_min_limit' requires a positive capacity for 'asset_commission' at (ccgt, 2030).",
+    ]
+end
+
 @testitem "Test legacy investment limit columns validation" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
