@@ -862,6 +862,7 @@
           "use_available_units"
         ]
       },
+      "default": "none",
       "description": "Method used in the group constraint: none creates no constraint, use_only_investment_units uses investment units, and use_available_units uses available units.",
       "type": "VARCHAR"
     },
