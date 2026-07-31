@@ -34,6 +34,17 @@
       "description": "Is the sense of the consumer balance constraint, equal to, greater than or less than.",
       "type": "VARCHAR"
     },
+    "demand_response_method": {
+      "constraints": {
+        "oneOf": [
+          "none",
+          "shifting_with_recovery"
+        ]
+      },
+      "default": "none",
+      "description": "Demand response method for consumer assets. 'none' -> no demand response variables or constraints are created. 'shifting_with_recovery' -> demand can be shifted within fixed recovery windows that must net to zero.",
+      "type": "VARCHAR"
+    },
     "discount_rate": {
       "constraints": {
         "minimum": 0
@@ -298,6 +309,34 @@
     "asset": {
       "description": "Name of the asset. Same as the one in the `asset` table.",
       "type": "VARCHAR"
+    },
+    "dr_max_shift_fraction": {
+      "constraints": {
+        "maximum": 1,
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Maximum instantaneous demand shift as a portion of the baseline demand at each timestep, when `demand_response_method = 'shifting_with_recovery'`.",
+      "type": "DOUBLE",
+      "unit_of_measure": "p.u."
+    },
+    "dr_transaction_cost": {
+      "constraints": {
+        "minimum": 0
+      },
+      "default": 0,
+      "description": "Penalty cost per unit of upward shifted demand energy, used to avoid degenerate shifting, when `demand_response_method = 'shifting_with_recovery'`.",
+      "type": "DOUBLE",
+      "unit_of_measure": "CUR/MWh"
+    },
+    "dr_window_blocks": {
+      "constraints": {
+        "minimum": 1
+      },
+      "default": 1,
+      "description": "Length of each demand response recovery window, expressed in number of demand response time blocks, when `demand_response_method = 'shifting_with_recovery'`. Each window must net to zero shifted energy.",
+      "type": "INTEGER",
+      "unit_of_measure": "number"
     },
     "initial_storage_level": {
       "constraints": {

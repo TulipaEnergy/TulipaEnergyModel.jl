@@ -10,6 +10,7 @@ EnergyProblem:
       - assets_fixed_cost_aggregated_vintage_method: 0.0
       - assets_fixed_cost_compact_vintage_method: 0.0
       - assets_investment_cost: 177000.0
+      - demand_response_transaction_cost: 0.0
       - flows_fixed_cost: 0.0
       - flows_investment_cost: 0.0
       - flows_operational_cost: 92238.43824156489

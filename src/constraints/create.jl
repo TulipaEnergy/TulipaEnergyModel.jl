@@ -41,6 +41,7 @@ function compute_constraints_indices(connection)
             :shut_down_upper_bound_compact_vintage_method,
             :unit_commitment_logic,
             :scenario_tail_excess,
+            :dr_window_balance,
         )
     )
 

@@ -7,7 +7,7 @@
     TulipaEnergyModel.solve_model!(energy_problem)
     TulipaEnergyModel.save_solution!(energy_problem)
 
-    @test length(collect(DuckDB.query(connection, "SELECT name FROM obj_breakdown"))) == 10
+    @test length(collect(DuckDB.query(connection, "SELECT name FROM obj_breakdown"))) == 11
     for row in DuckDB.query(connection, "SELECT name, value FROM obj_breakdown")
         @test !ismissing(row.value)
     end

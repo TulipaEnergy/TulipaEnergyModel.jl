@@ -600,3 +600,86 @@ where
 
 drop sequence id
 ;
+
+create sequence id start 1
+;
+
+drop table if exists var_dr_demand_increase
+;
+
+-- Upward demand deviation for demand response (shifting_with_recovery).
+-- Defined at the same resolution as the consumer balance (t_highest_all_flows)
+-- so that the deviation couples one-to-one with the balance rows.
+create table var_dr_demand_increase as
+with
+    filtered_assets as (
+        select
+            t_high.asset,
+            t_high.milestone_year,
+            t_high.rep_period,
+            t_high.time_block_start,
+            t_high.time_block_end,
+        from
+            t_highest_all_flows as t_high
+            left join asset on t_high.asset = asset.asset
+        where
+            asset.type = 'consumer'
+            and asset.demand_response_method = 'shifting_with_recovery'
+        order by
+            t_high.asset,
+            t_high.milestone_year,
+            t_high.rep_period,
+            t_high.time_block_start
+    )
+select
+    nextval('id') as id,
+    filtered_assets.*,
+    cast(null as float8) as solution,
+from
+    filtered_assets
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists var_dr_demand_decrease
+;
+
+-- Downward demand deviation for demand response (shifting_with_recovery).
+-- Defined at the same resolution as the consumer balance (t_highest_all_flows)
+-- so that the deviation couples one-to-one with the balance rows.
+create table var_dr_demand_decrease as
+with
+    filtered_assets as (
+        select
+            t_high.asset,
+            t_high.milestone_year,
+            t_high.rep_period,
+            t_high.time_block_start,
+            t_high.time_block_end,
+        from
+            t_highest_all_flows as t_high
+            left join asset on t_high.asset = asset.asset
+        where
+            asset.type = 'consumer'
+            and asset.demand_response_method = 'shifting_with_recovery'
+        order by
+            t_high.asset,
+            t_high.milestone_year,
+            t_high.rep_period,
+            t_high.time_block_start
+    )
+select
+    nextval('id') as id,
+    filtered_assets.*,
+    cast(null as float8) as solution,
+from
+    filtered_assets
+;
+
+drop sequence id
+;
+

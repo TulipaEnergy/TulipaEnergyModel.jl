@@ -48,6 +48,7 @@ function add_objective!(connection, model, variables, expressions, model_paramet
     _add_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
     _add_vintage_flows_operational_cost!(connection, model, expressions, objective_expr, lambda)
     _add_units_on_operational_cost!(connection, model, expressions, objective_expr, lambda)
+    _add_demand_response_penalty!(connection, model, variables, objective_expr, lambda)
     _add_conditional_value_at_risk_term!(
         connection,
         model,

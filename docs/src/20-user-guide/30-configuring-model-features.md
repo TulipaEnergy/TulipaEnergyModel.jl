@@ -351,6 +351,20 @@ In summary:
 Finally, if there are exclusive groups in the bids, i.e., at most 1 bid in the same exclusive group can be accepted, then you also need to modify the underlying JuMP model.
 We need to add a constraint like $\displaystyle \sum_{i: i \in G_k} u_i \leq 1$, where $u_i$ are the unit commitment variables (i.e., the bid-acceptance variables), and $G_k$ are the exclusive groups.
 
+## [Demand Response](@id demand-response-how-to)
+
+Consumer assets can shift their demand over time while preserving the total energy consumed within fixed recovery windows. This models flexible loads that can be advanced or postponed but not permanently curtailed. See the [scientific formulation](@ref demand-response-formulation) for the mathematical details.
+
+To enable demand response on a consumer asset:
+
+- In the `asset` table, set `demand_response_method = "shifting_with_recovery"` (the default is `"none"`, which disables demand response).
+- In the `asset_milestone` table, set the following parameters for the same asset and milestone year:
+  - `dr_max_shift_fraction`: the maximum instantaneous deviation as a fraction of the baseline demand, in the range $[0, 1]$. For example, `0.2` allows the demand to increase or decrease by up to 20% in any time block. The default is `0`, which disables shifting.
+  - `dr_window_blocks`: the size of each recovery window, expressed as a number of consecutive demand-response time blocks. The shifted energy must net to zero within each window. If the number of blocks in a representative period is not an exact multiple of this value, the final window is shorter. The default is `1`.
+  - `dr_transaction_cost`: an optional penalty (in currency per MWh) applied to the upward demand deviation, representing the transaction cost of shifting load. The default is `0`.
+
+Demand response only applies to `consumer` assets; enabling it on any other asset type raises a data validation error. The deviations are defined at the same time resolution as the consumer balance constraint.
+
 ## [Two-Stage Stochastic Optimization](@id stochastic-setup)
 
 Tulipa formulates energy system planning as a **two-stage stochastic optimization** problem:

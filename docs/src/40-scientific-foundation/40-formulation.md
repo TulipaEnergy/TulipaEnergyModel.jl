@@ -653,6 +653,39 @@ The balance constraint sense depends on the method selected in the asset file's 
 \end{aligned}
 ```
 
+#### [Demand Response (Shifting with Recovery)](@id demand-response-formulation)
+
+Consumer assets can optionally participate in demand response by setting the asset parameter [`demand_response_method`](@ref table-schemas) to `shifting_with_recovery` (the default is `none`). This lets the consumer shift its demand across time while recovering the shifted energy within fixed recovery windows, so that total energy consumption over each window is preserved.
+
+Let $\mathcal{A}^{\text{dr}} \subseteq \mathcal{A}^{\text{c}}$ be the set of demand-response-enabled consumer assets. For each such asset we introduce two non-negative deviation variables per time block: the upward deviation $v^{\text{dr+}}_{a,k_y,b_{k_y}} \geq 0$ (extra demand) and the downward deviation $v^{\text{dr-}}_{a,k_y,b_{k_y}} \geq 0$ (reduced demand). The baseline demand is $p^{\text{demand}}_{a,k_y,b_{k_y}} = p^{\text{demand profile}}_{a,k_y,b_{k_y}} \cdot p^{\text{peak demand}}_{a,y}$.
+
+The consumer balance is modified to include the net deviation:
+
+```math
+\begin{aligned}
+\sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} - \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} v^{\text{flow}}_{f,k_y,b_{k_y}} \left\{\begin{array}{l} = \\ \geq \end{array}\right\} p^{\text{demand}}_{a,k_y,b_{k_y}} + v^{\text{dr+}}_{a,k_y,b_{k_y}} - v^{\text{dr-}}_{a,k_y,b_{k_y}} \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{dr}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\end{aligned}
+```
+
+Each instantaneous deviation is capped to a fraction $p^{\text{dr max shift}}_{a,y} \in [0,1]$ (parameter [`dr_max_shift_fraction`](@ref table-schemas)) of the baseline demand:
+
+```math
+\begin{aligned}
+v^{\text{dr+}}_{a,k_y,b_{k_y}} \leq p^{\text{dr max shift}}_{a,y} \cdot p^{\text{demand}}_{a,k_y,b_{k_y}}, \qquad
+v^{\text{dr-}}_{a,k_y,b_{k_y}} \leq p^{\text{dr max shift}}_{a,y} \cdot p^{\text{demand}}_{a,k_y,b_{k_y}} \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{dr}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
+\end{aligned}
+```
+
+The recovery windows partition the ordered time blocks of each representative period into consecutive, non-overlapping groups of $p^{\text{dr window blocks}}_{a,y}$ blocks (parameter [`dr_window_blocks`](@ref table-schemas)); when the number of blocks is not an exact multiple, the final window is shorter. Let $\mathcal{W}_{a,y,k_y}$ denote the set of windows and $w$ a window (a set of time blocks). Within each window, the net shifted energy must be zero:
+
+```math
+\begin{aligned}
+\sum_{b_{k_y} \in w} \left( v^{\text{dr+}}_{a,k_y,b_{k_y}} - v^{\text{dr-}}_{a,k_y,b_{k_y}} \right) \cdot p^{\text{duration}}_{b_{k_y}} = 0 \quad \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{dr}}, \forall k_y \in \mathcal{K}_y, \forall w \in \mathcal{W}_{a,y,k_y}
+\end{aligned}
+```
+
+An optional transaction cost $p^{\text{dr transaction cost}}_{a,y}$ (parameter [`dr_transaction_cost`](@ref table-schemas)) penalizes the upward deviation in the [objective function](@ref math-objective-function).
+
 ### Constraints for Energy Storage Assets
 
 There are two types of constraints for energy storage assets: rep-period and inter-period. Rep-period constraints impose limits inside a representative period, while inter-period constraints combine information from several representative periods (e.g., to model seasonal storage). For more information on this topic, refer to the [concepts section](@ref storage-modeling) or [Tejada-Arango et al. (2018)](@ref scientific-refs) and [Tejada-Arango et al. (2019)](@ref scientific-refs).
