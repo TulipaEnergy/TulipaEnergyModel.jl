@@ -102,7 +102,51 @@ from
 
 -- union of the storage assets' own resolution and their incoming and outgoing flows
 -- for storage balance
+-- CTEs are used here because temp tables are only used once, and they are not kept in
+-- memory after creating this merged table.
 create or replace temp table merged_storage_balance as
+with in_flows as (
+    -- incoming flows for storage balance
+    select
+        distinct ftrrp.to_asset as asset,
+        ftrrp.milestone_year,
+        ftrrp.rep_period,
+        ftrrp.time_block_start,
+        ftrrp.time_block_end
+    from
+        flow_time_resolution_rep_period as ftrrp
+    join
+        flow_commission as fc on
+            ftrrp.from_asset = fc.from_asset and
+            ftrrp.to_asset = fc.to_asset and
+            ftrrp.milestone_year = fc.commission_year
+    join
+        asset on ftrrp.to_asset = asset.asset
+    where
+        fc.storage_coefficient > 0 and
+        asset.type in ('storage')
+),
+out_flows as (
+    -- outgoing flows for storage balance
+    select
+        distinct ftrrp.from_asset as asset,
+        ftrrp.milestone_year,
+        ftrrp.rep_period,
+        ftrrp.time_block_start,
+        ftrrp.time_block_end
+    from
+        flow_time_resolution_rep_period as ftrrp
+    join
+        flow_commission as fc on
+            ftrrp.from_asset = fc.from_asset and
+            ftrrp.to_asset = fc.to_asset and
+            ftrrp.milestone_year = fc.commission_year
+    join
+        asset on ftrrp.from_asset = asset.asset
+    where
+        fc.storage_coefficient > 0 and
+        asset.type in ('storage')
+)
 select
     distinct atrrp.asset,
     atrrp.milestone_year,
@@ -111,16 +155,16 @@ select
     atrrp.time_block_end
 from
     asset_time_resolution_rep_period as atrrp
-left join
+join
     asset on atrrp.asset = asset.asset
 where
     asset.type in ('storage')
 union
 from
-    merged_in_flows_storage_balance
+    in_flows
 union
 from
-    merged_out_flows_storage_balance
+    out_flows
 ;
 
 -- merged table for flows relationships:

@@ -155,18 +155,6 @@ end
     expected_table = DataFrame(expected_rows, expected_cols)
     @test merged_out_flows_conversion_balance == expected_table
 
-    merged_in_flows_storage_balance =
-        TulipaIO.select_tbl(connection, "merged_in_flows_storage_balance"; where_ = where_caes)
-    expected_rows = [("caes", 2025, 1, 1, 1), ("caes", 2025, 1, 2, 5)]
-    expected_table = DataFrame(expected_rows, expected_cols)
-    @test merged_in_flows_storage_balance == expected_table
-
-    merged_out_flows_storage_balance =
-        TulipaIO.select_tbl(connection, "merged_out_flows_storage_balance"; where_ = where_caes)
-    expected_rows = [("caes", 2025, 1, 1, 3), ("caes", 2025, 1, 4, 5)]
-    expected_table = DataFrame(expected_rows, expected_cols)
-    @test merged_out_flows_storage_balance == expected_table
-
     merged_storage_balance =
         TulipaIO.select_tbl(connection, "merged_storage_balance"; where_ = where_caes)
     expected_rows = [
@@ -363,7 +351,7 @@ end
     TulipaEnergyModel.create_highest_resolution_table!(connection)
 
     # test that the final number of tables is correct
-    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 28
+    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 26
 end
 
 @testitem "Test _compute_durations" setup = [CommonSetup] tags = [:unit, :fast] begin
