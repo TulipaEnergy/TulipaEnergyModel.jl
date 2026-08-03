@@ -10,28 +10,6 @@ from
     flow_time_resolution_rep_period
 ;
 
--- incoming flows for conversion balance
-create or replace temp table merged_in_flows_conversion_balance as
-select
-    distinct ftrrp.to_asset as asset,
-    ftrrp.milestone_year,
-    ftrrp.rep_period,
-    ftrrp.time_block_start,
-    ftrrp.time_block_end
-from
-    flow_time_resolution_rep_period as ftrrp
-left join
-    flow_commission as fc on
-        ftrrp.from_asset = fc.from_asset and
-        ftrrp.to_asset = fc.to_asset and
-        ftrrp.milestone_year = fc.commission_year
-left join
-    asset on ftrrp.to_asset = asset.asset
-where
-    fc.conversion_coefficient > 0 and
-    asset.type in ('conversion')
-;
-
 -- outgoing flows
 create or replace temp table merged_out_flows as
 select
@@ -43,29 +21,6 @@ select
 from
     flow_time_resolution_rep_period
 ;
-
--- outgoing flows for conversion balance
-create or replace temp table merged_out_flows_conversion_balance as
-select
-    distinct ftrrp.from_asset as asset,
-    ftrrp.milestone_year,
-    ftrrp.rep_period,
-    ftrrp.time_block_start,
-    ftrrp.time_block_end
-from
-    flow_time_resolution_rep_period as ftrrp
-left join
-    flow_commission as fc on
-        ftrrp.from_asset = fc.from_asset and
-        ftrrp.to_asset = fc.to_asset and
-        ftrrp.milestone_year = fc.commission_year
-left join
-    asset on ftrrp.from_asset = asset.asset
-where
-    fc.conversion_coefficient > 0 and
-    asset.type in ('conversion')
-;
-
 
 -- union of all assets and outgoing flows
 create or replace temp table merged_assets_and_out_flows as
@@ -92,12 +47,56 @@ from
 ;
 
 -- union of all incoming and outgoing flows for conversion balance
+-- CTEs are used here because temp tables are only used once, and they are not kept in
+-- memory after creating this merged table.
 create or replace temp table merged_flows_conversion_balance as
+with in_flows as (
+    -- incoming flows for conversion balance
+    select
+        distinct ftrrp.to_asset as asset,
+        ftrrp.milestone_year,
+        ftrrp.rep_period,
+        ftrrp.time_block_start,
+        ftrrp.time_block_end
+    from
+        flow_time_resolution_rep_period as ftrrp
+    left join
+        flow_commission as fc on
+            ftrrp.from_asset = fc.from_asset and
+            ftrrp.to_asset = fc.to_asset and
+            ftrrp.milestone_year = fc.commission_year
+    left join
+        asset on ftrrp.to_asset = asset.asset
+    where
+        fc.conversion_coefficient > 0 and
+        asset.type in ('conversion')
+),
+out_flows as (
+    -- outgoing flows for conversion balance
+    select
+        distinct ftrrp.from_asset as asset,
+        ftrrp.milestone_year,
+        ftrrp.rep_period,
+        ftrrp.time_block_start,
+        ftrrp.time_block_end
+    from
+        flow_time_resolution_rep_period as ftrrp
+    left join
+        flow_commission as fc on
+            ftrrp.from_asset = fc.from_asset and
+            ftrrp.to_asset = fc.to_asset and
+            ftrrp.milestone_year = fc.commission_year
+    left join
+        asset on ftrrp.from_asset = asset.asset
+    where
+        fc.conversion_coefficient > 0 and
+        asset.type in ('conversion')
+)
 from
-    merged_in_flows_conversion_balance
+    in_flows
 union
 from
-    merged_out_flows_conversion_balance
+    out_flows
 ;
 
 -- union of the storage assets' own resolution and their incoming and outgoing flows
@@ -115,12 +114,12 @@ with in_flows as (
         ftrrp.time_block_end
     from
         flow_time_resolution_rep_period as ftrrp
-    join
+    left join
         flow_commission as fc on
             ftrrp.from_asset = fc.from_asset and
             ftrrp.to_asset = fc.to_asset and
             ftrrp.milestone_year = fc.commission_year
-    join
+    left join
         asset on ftrrp.to_asset = asset.asset
     where
         fc.storage_coefficient > 0 and
@@ -136,12 +135,12 @@ out_flows as (
         ftrrp.time_block_end
     from
         flow_time_resolution_rep_period as ftrrp
-    join
+    left join
         flow_commission as fc on
             ftrrp.from_asset = fc.from_asset and
             ftrrp.to_asset = fc.to_asset and
             ftrrp.milestone_year = fc.commission_year
-    join
+    left join
         asset on ftrrp.from_asset = asset.asset
     where
         fc.storage_coefficient > 0 and
@@ -155,7 +154,7 @@ select
     atrrp.time_block_end
 from
     asset_time_resolution_rep_period as atrrp
-join
+left join
     asset on atrrp.asset = asset.asset
 where
     asset.type in ('storage')
@@ -225,7 +224,7 @@ select distinct
     atrrp.time_block_end
 from
     asset_time_resolution_rep_period as atrrp
-join
+left join
     flow_milestone as fm
     on (
         atrrp.asset = fm.from_asset
