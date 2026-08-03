@@ -600,7 +600,7 @@ assets = leftjoin(graph_assets, assets_data, on=:asset) # hide
 filtered_assets = assets[assets.type .== "storage", ["asset", "type", "capacity", "capacity_storage_energy",  "is_seasonal"]] # hide
 ```
 
-The `is_seasonal` parameter determines whether or not the storage asset uses the inter-period constraints. The `phs` is the only storage asset with this type of constraint and inter-period-storage level variable (i.e., $v^{\text{inter-period-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` will only consider rep-period constraints with rep-period-storage level variables (i.e., $v^{\text{rep-period-storage}}_{\text{battery},k,b_k}$), and has 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration).
+The `is_seasonal` parameter determines whether or not the storage asset uses the inter-period constraints. The `phs` is the only storage asset with this type of constraint and inter-period-storage level variable (i.e., $v^{\text{inter-period-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` and the `caes` will only consider rep-period constraints with rep-period-storage level variables (i.e., $v^{\text{rep-period-storage}}_{\text{battery},k,b_k}$ and $v^{\text{rep-period-storage}}_{\text{caes},k,b_k}$), and both have 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration). The `caes` also has an auxiliary output that is kept out of its storage balance; see the [flow coefficients](@ref coefficient-for-storage-constraints) section of the user guide.
 
 The `rep-periods-data` file has information on the representative periods in the example. We have three representative periods, each with 24 timesteps and hourly resolution, representing a day. The figure below shows the availability profile of the renewable energy sources in the example.
 
@@ -609,7 +609,44 @@ rp_file = "../../test/inputs/Storage/rep-periods-data.csv" # hide
 rp = CSV.read(rp_file, DataFrame, header = 1) # hide
 ```
 
-![availability-profiles](./figs/availability-profiles.png)
+```@example seasonal-storage
+using Plots # hide
+plot_style = ( # hide
+    fontfamily = "Computer Modern", # hide
+    titlefontsize = 16, # hide
+    guidefontsize = 14, # hide
+    tickfontsize = 11, # hide
+    legendfontsize = 12, # hide
+    left_margin = 6Plots.mm, # hide
+    bottom_margin = 4Plots.mm, # hide
+) # hide
+assets_profiles = CSV.read(joinpath(input_dir, "assets-profiles.csv"), DataFrame, header = 1) # hide
+profiles = CSV.read(joinpath(input_dir, "profiles-rep-periods.csv"), DataFrame, header = 1) # hide
+availability = innerjoin( # hide
+    profiles, # hide
+    assets_profiles[assets_profiles.profile_type .== "availability", ["asset", "profile_name"]], # hide
+    on = :profile_name, # hide
+) # hide
+rep_periods = sort(unique(availability.rep_period)) # hide
+p = plot(; layout = grid(length(rep_periods), 1), size = (800, 800), plot_style...) # hide
+for (i, k) in enumerate(rep_periods) # hide
+    df = availability[availability.rep_period .== k, :] # hide
+    for (a, c) in (("solar", :orange), ("wind", :darkgreen)) # hide
+        rows = df[df.asset .== a, :] # hide
+        plot!(p[i], rows.timestep, rows.value; label = a, color = c, linewidth = 3) # hide
+    end # hide
+    plot!( # hide
+        p[i]; # hide
+        title = "Representative period \$k = $k\$", # hide
+        ylabel = "[p.u.]", # hide
+        ylims = (0, 1), # hide
+        xticks = 1:24, # hide
+        legend = (i == 1 ? :topleft : false), # hide
+        xlabel = (i == length(rep_periods) ? "Timesteps \$b_k\$ [h]" : ""), # hide
+    ) # hide
+end # hide
+p # hide
+```
 
 The `rep-periods-mapping` relates each representative period with the periods in the timeframe. We have seven periods in this case, meaning the timeframe is a week. Each value in the file indicates the weight of each representative period in the timeframe period. Notice that each period is composed of a linear combination of the representative periods. For more details on obtaining the representative periods and the weights, please look at [_TulipaClustering.jl_](https://github.com/TulipaEnergy/TulipaClustering.jl). For the sake of readability, we show here the information in the file in tabular form:
 
@@ -639,13 +676,54 @@ read_csv_folder(connection, input_dir; schemas = TulipaEnergyModel.schema_per_ta
 energy_problem = run_scenario(connection)
 ```
 
-Since the `battery` is not seasonal, it only has results for the rep-period-storage level of each representative period, as shown in the following figure:
+Since the `battery` and the `caes` are not seasonal, they only have results for the rep-period-storage level of each representative period, as shown in the following figure:
 
-![Battery-rep-period-storage-level](./figs/intra-storage-level.png)
+```@example seasonal-storage
+storage_levels = TulipaIO.get_table(connection, "var_storage_level_rep_period") # hide
+rep_period_assets = sort(unique(storage_levels.asset)) # hide
+p = plot(; # hide
+    layout = grid(length(rep_period_assets), 1), # hide
+    size = (800, 400 * length(rep_period_assets)), # hide
+    plot_style..., # hide
+) # hide
+for (i, a) in enumerate(rep_period_assets) # hide
+    df = storage_levels[storage_levels.asset .== a, :] # hide
+    for k in sort(unique(df.rep_period)) # hide
+        rows = df[df.rep_period .== k, :] # hide
+        plot!(p[i], rows.time_block_end, rows.solution; label = "\$k = $k\$", linewidth = 3) # hide
+    end # hide
+    plot!( # hide
+        p[i]; # hide
+        title = "Intra-storage level for the $a", # hide
+        ylabel = "[MWh]", # hide
+        xticks = 1:24, # hide
+        legend = :topleft, # hide
+        legendtitle = "Representative period", # hide
+        xlabel = (i == length(rep_period_assets) ? "Timesteps \$b_k\$ [h]" : ""), # hide
+    ) # hide
+end # hide
+p # hide
+```
 
 Since the `phs` is defined as seasonal, it has results for only the inter-period-storage level. Since we defined the period partition as 1, we get results for each period (i.e., day). We can see that the inter-period constraints in the model keep track of the storage level through the whole timeframe definition (i.e., week).
 
-![PHS-inter-period-storage-level](./figs/inter-storage-level.png)
+```@example seasonal-storage
+seasonal_storage_levels = TulipaIO.get_table(connection, "var_storage_level_inter_period") # hide
+p = plot(; size = (800, 500), plot_style...) # hide
+for a in sort(unique(seasonal_storage_levels.asset)) # hide
+    df = seasonal_storage_levels[seasonal_storage_levels.asset .== a, :] # hide
+    plot!(p, df.period_block_end, df.solution; label = a, linewidth = 3) # hide
+end # hide
+plot!( # hide
+    p; # hide
+    title = "Inter-storage level", # hide
+    xlabel = "Periods \$p\$ [days]", # hide
+    ylabel = "[MWh]", # hide
+    xticks = 1:7, # hide
+    legend = :topleft, # hide
+) # hide
+p # hide
+```
 
 In this example, we have demonstrated how to partially recover the chronological information of a storage asset with a longer discharge duration (such as 48 hours) than the representative period length (24 hours). This feature enables us to model both short- and long-term storage in _TulipaEnergyModel.jl_.
 

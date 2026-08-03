@@ -16,6 +16,7 @@ select
     rep_period,
     capacity_coefficient,
     conversion_coefficient,
+    storage_coefficient,
     time_block_start,
     time_block_end,
     cast(null as float8) as solution,
@@ -44,6 +45,7 @@ select
     ft.time_block_end,
     fc.capacity_coefficient,
     fc.conversion_coefficient,
+    fc.storage_coefficient,
     cast(null as float8) as solution,
 from
     flow_time_resolution_rep_period as ft
@@ -269,7 +271,7 @@ with
             t_low.time_block_start,
             t_low.time_block_end,
         from
-            t_lowest_all as t_low
+            t_lowest_storage_balance as t_low
             left join asset on t_low.asset = asset.asset
         where
             asset.type = 'storage'
@@ -345,7 +347,7 @@ with
             t_low.time_block_start,
             t_low.time_block_end,
         from
-            t_lowest_all as t_low
+            t_lowest_storage_balance as t_low
             left join asset on t_low.asset = asset.asset
         where
             asset.type = 'storage'

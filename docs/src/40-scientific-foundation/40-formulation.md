@@ -178,6 +178,7 @@ The parameter $p^{\text{min operating point}}_{a,y}$ is also used for producer a
 | $p^{\text{commodity price}}_{f,y}$                  | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Price of the commodity to produce a unit of energy for flow $f$ at year $y$. Only applies to producers.               | [kEUR/MWh] or other units |
 | $p^{\text{capacity coefficient}}_{f,y}$             | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Coefficient that multiplies the flow $f$ at year $y$ in the capacity constraints                                      | [-]                       |
 | $p^{\text{conversion coefficient}}_{f,y}$           | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Coefficient that multiplies the flow $f$ at year $y$ in the conversion constraints                                    | [-]                       |
+| $p^{\text{storage coefficient}}_{f,y}$              | $\mathbb{R}_{+}$ | $f \in \mathcal{F}$, $y \in \mathcal{Y}$                                                           | Coefficient that multiplies the flow $f$ at year $y$ in the storage balance constraints                               | [-]                       |
 | $p^{\text{inv cost}}_{f,y}$                         | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Overnight cost of transport flow $f$ at year $y$                                                                      | [kEUR/MW]                 |
 | $p^{\text{annualized inv cost}}_{f,y}$              | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Annualized investment cost of transport flow $f$ at year $y$                                                          | [kEUR/MW/year]            |
 | $p^{\text{salvage value}}_{f,y}$                    | $\mathbb{R}_{+}$ | $f \in \mathcal{F}^{\text{t}}$, $y \in \mathcal{Y}$                                                | Salvage value of transport flow $f$ at year $y$                                                                       | [kEUR/MW]                 |
@@ -684,8 +685,8 @@ e^{\text{available energy inv limit}}_{a,y}
 ```math
 \begin{aligned}
 v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}} = & \; \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{b_{k_y}}} \cdot  v^{\text{rep-period-storage}}_{a,k_y,b_{k_y}-1}  \\
-& + p^{\text{inflows}}_{a,k_y,b_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
+& + p^{\text{inflows}}_{a,k_y,b_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y,\forall b_{k_y} \in \mathcal{B_{k_y}}
 \end{aligned}
 ```
@@ -711,8 +712,8 @@ The cycling constraint for the rep-period constraints links the first timestep b
 ```math
 \begin{aligned}
 v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = & \; v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}} \\
-& + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
-& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+& + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
@@ -722,8 +723,8 @@ v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = & \; v^{\text{rep
 ```math
 \begin{aligned}
 v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = & \; p^{\text{init storage level}}_{a,y} \\
-& + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
-& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
+& + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
@@ -742,8 +743,8 @@ This constraint defines the accumulated intra-period storage level for seasonal 
 ```math
 \begin{aligned}
 v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{first}}_{k_y}} = & \; p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} \\
-& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b^{\text{first}}_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
-& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b^{\text{first}}_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}}
+& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b^{\text{first}}_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b^{\text{first}}_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y, \forall k_y \in \mathcal{K}_y
 \end{aligned}
 ```
@@ -754,8 +755,8 @@ v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{first}}_{k_y}} = &
 \begin{aligned}
 v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b_{k_y}} = & \left(1 - p^{\text{storage loss from stored energy}}_{a,y}\right)^{p^{\text{duration}}_{b_{k_y}}} \cdot v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b_{k_y}-1} \\
 & + p^{\text{inflows}}_{a,k_y,b_{k_y}} \\
-& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
-& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
+& + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}} \\
+& - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b_{k_y}}
 \\ \\ & \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y, \forall k_y \in \mathcal{K}_y, \forall b_{k_y} \in \mathcal{B}_{k_y} \setminus \{b^{\text{first}}_{k_y}\}
 \end{aligned}
 ```

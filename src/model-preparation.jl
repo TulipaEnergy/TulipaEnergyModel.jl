@@ -117,6 +117,7 @@ function add_expression_terms_rep_period_constraints!(
                 :time_block_end,
                 :capacity_coefficient,
                 :conversion_coefficient,
+                :storage_coefficient,
             ];
             rename_columns = Dict(case.asset_match => :asset),
         )
@@ -143,6 +144,7 @@ function add_expression_terms_rep_period_constraints!(
                 var.time_block_end AS var_time_block_end_vec,
                 var.capacity_coefficient,
                 var.conversion_coefficient,
+                var.storage_coefficient,
                 asset.type AS type,
                 $resolution_query AS resolution,
             FROM $grouped_cons_table_name AS cons
@@ -170,12 +172,14 @@ function add_expression_terms_rep_period_constraints!(
                 time_block_end::Int32,
                 capacity_coefficient::Float64,
                 conversion_coefficient::Float64,
+                storage_coefficient::Float64,
             ) in zip(
                 group_row.var_id_vec::Vector{Union{Missing,Int64}},
                 group_row.var_time_block_start_vec::Vector{Union{Missing,Int32}},
                 group_row.var_time_block_end_vec::Vector{Union{Missing,Int32}},
                 group_row.capacity_coefficient::Vector{Union{Missing,Float64}},
                 group_row.conversion_coefficient::Vector{Union{Missing,Float64}},
+                group_row.storage_coefficient::Vector{Union{Missing,Float64}},
             )
                 time_block = time_block_start:time_block_end
                 # Step 1.1.1.
@@ -195,6 +199,8 @@ function add_expression_terms_rep_period_constraints!(
                             end
                         elseif group_row.type::String == "conversion"
                             conversion_coefficient
+                        elseif group_row.type::String == "storage"
+                            storage_coefficient
                         else
                             1.0
                         end

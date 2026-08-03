@@ -8,3 +8,7 @@ phs,demand,electricity,false,0.0,10,1,0.02,false
 ccgt,demand,electricity,false,0.0,10,1,0.02,false
 wind,demand,electricity,false,0.0,10,1,0.02,false
 solar,demand,electricity,false,0.0,10,1,0.02,false
+caes,demand,electricity,false,0.0,10,1,0.02,false
+ens,caes,electricity,false,0.0,10,1,0.02,false
+ccgt,caes,electricity,false,0.0,10,1,0.02,false
+caes,atmosphere,co2,false,0.0,10,1,0.02,false

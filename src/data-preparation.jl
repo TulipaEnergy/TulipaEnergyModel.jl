@@ -237,6 +237,9 @@ function _append_given_durations(appender, row, durations)
         if haskey(row, :conversion_coefficient)
             DuckDB.append(appender, row.conversion_coefficient)
         end
+        if haskey(row, :storage_coefficient)
+            DuckDB.append(appender, row.storage_coefficient)
+        end
         DuckDB.append(appender, s)
         DuckDB.append(appender, e)
         DuckDB.end_row(appender)
@@ -314,6 +317,7 @@ function create_unrolled_partition_tables!(connection)
             COALESCE(frpp.partition::string, '1') AS partition,
             flow_commission.capacity_coefficient,
             flow_commission.conversion_coefficient,
+            flow_commission.storage_coefficient,
             rep_periods_data.num_timesteps,
         FROM flow
         CROSS JOIN rep_periods_data
@@ -369,6 +373,7 @@ function create_unrolled_partition_tables!(connection)
             rep_period INT,
             capacity_coefficient DOUBLE,
             conversion_coefficient DOUBLE,
+            storage_coefficient DOUBLE,
             time_block_start INT,
             time_block_end INT
         )",
@@ -447,7 +452,6 @@ These are the output tables:
 - `merged_out_flows`: Set `asset = to_asset` and drop `from_asset` from `flow_time_resolution_rep_period`.
 - `merged_assets_and_out_flows`: Union of `merged_out_flows` and `asset_time_resolution_rep_period`.
 - `merged_all_flows`: Union (i.e., vertically concatenation) of the tables above.
-- `merged_all`: Union of `merged_all_flows` and `asset_time_resolution_rep_period`.
 - `merged_flows_relationship`: Set `asset` from `flow_time_resolution_rep_period` depending on `flows_relationships`
 This function is intended for internal use.
 """
@@ -515,9 +519,9 @@ function create_lowest_resolution_table!(connection)
 
     for merged_table in (
         "merged_all_flows",
-        "merged_all",
         "merged_flows_relationship",
         "merged_flows_conversion_balance",
+        "merged_storage_balance",
     )
         table_name = replace(merged_table, "merged" => "t_lowest")
         DuckDB.execute(

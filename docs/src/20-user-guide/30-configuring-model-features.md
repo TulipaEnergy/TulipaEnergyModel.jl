@@ -266,7 +266,9 @@ Here we can see that the assets `Asgard_Solar` and `Midgard_Wind` belong to the 
     Assets in `use_available_units` groups may be non-investable, which allows limits on existing capacity and decommissioning trajectories.
     Assets in `use_available_units` groups may be have different `vintage_method`, i.e., they can be `aggregated` or `compact_profiles` and the group constraints will be applied accordingly.
 
-## [Flow Coefficient in Capacity constraints](@id coefficient-for-capacity-constraints)
+## [Flow Coefficients](@id flow-coefficient)
+
+### [In the capacity constraints](@id coefficient-for-capacity-constraints)
 
 Capacity constraints apply to all the outputs and inputs to assets according to the equations in the [`capacity constraints`](@ref cap-constraints) section of the mathematical formulation. The coefficient $p^{\text{capacity coefficient}}_{f,y}$ in the capacity constraints can be set to model situations or processes where the flows in the capacity constraint are multiplied by a constant factor.
 
@@ -280,7 +282,7 @@ In that case the sum must be always below the total capacity $\text{C}$, but if 
 
 To set up this parameter you need to fill in the information for the `capacity_coefficient` in the `flow_commission` table, see more in the [model parameters](@ref table-schemas) section.
 
-### [Using the coefficient for flows in the conversion constraints](@id coefficient-for-conversion-constraints)
+### [In the conversion constraints](@id coefficient-for-conversion-constraints)
 
 Conversion constraints apply to all the outputs and inputs of a conversion asset according to the equations in the [`conversion balance constraints`](@ref conversion-balance-constraints) section of the mathematical formulation. The coefficient $p^{\text{conversion coefficient}}_{f,y}$ in that constraint can be set to model situations or processes where the flows in the conversion balance constraint are multiplied by a constant factor.
 
@@ -290,6 +292,20 @@ To set up this parameter you need to fill in the information for the `conversion
 
 !!! info "Conversion coefficient and flexible time resolution"
     As explained in the [flexible time resolution section](@ref flex-time-res), the resolution of the conversion balance constraint is determined by the highest resolution of the input and output flows because it is treated as an energy constraint. Nevertheless, for consistency, only the flows with a `conversion_coefficient` greater than zero are included in the definition of the constraint's resolution.
+
+### [In the storage constraints](@id coefficient-for-storage-constraints)
+
+Storage balance constraints apply to all the inputs (charging) and outputs (discharging) of a storage asset according to the equations in the [`storage balance constraints`](@ref rep-period-storage-balance) section of the mathematical formulation. The coefficient $p^{\text{storage coefficient}}_{f,y}$ in that constraint can be set to model situations or processes where the flows in the storage balance constraint are multiplied by a constant factor.
+
+For instance, a compressed-air energy storage (CAES) asset that charges and discharges electricity, but that also has an auxiliary output representing a by-product such as CO2 emissions. By default this auxiliary output would be part of the storage balance and would therefore draw down the stored energy. By setting its `storage_coefficient` to zero, the flow is excluded from the storage balance, while it can still be costed in the objective and constrained elsewhere (for example, through a [flows relationship](@ref flow-relationships) or the capacity constraints).
+
+To set up this parameter you need to fill in the information for the `storage_coefficient` in the `flow_commission` table, see more in the [model parameters](@ref table-schemas) section.
+
+!!! info "Storage coefficient and flexible time resolution"
+    As explained in the [flexible time resolution section](@ref flex-time-res), the resolution of the storage balance constraint follows the resolution of the storage-level variable, which combines the storage asset's own time resolution with the resolution of its charging and discharging flows. For consistency, only the flows with a `storage_coefficient` greater than zero are included in the definition of that resolution; the storage asset's own time resolution is always kept, so at the default value (`storage_coefficient = 1` for every flow) the resolution is unchanged.
+
+!!! note "Storage coefficient and by-products"
+    Excluding an auxiliary flow from the storage balance is independent from excluding it from the [capacity constraints](@ref coefficient-for-capacity-constraints). A by-product output that should neither draw down the stored energy nor consume the asset's charging/discharging capacity needs both `storage_coefficient = 0` and `capacity_coefficient = 0`.
 
 ## [Defining Flows Relationships](@id flow-relationships)
 

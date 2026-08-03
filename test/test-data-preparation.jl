@@ -15,7 +15,7 @@
     connection = DBInterface.connect(DuckDB.DB)
 
     # Create mock tables for testing using register_data_frame
-    table_rows = [("death_star", "conversion")]
+    table_rows = [("death_star", "conversion"), ("caes", "storage")]
     asset = DataFrame(table_rows, [:asset, :type])
     DuckDB.register_data_frame(connection, asset, "asset")
     milestone_year = Int32(2025)
@@ -29,13 +29,19 @@
     DuckDB.register_data_frame(connection, flow_milestone, "flow_milestone")
 
     table_rows = [
-        ("input_1", "death_star", milestone_year, 1.0),
-        ("input_2", "death_star", milestone_year, 0.0),
-        ("death_star", "output_1", milestone_year, 1.0),
-        ("death_star", "output_2", milestone_year, 0.0),
+        ("input_1", "death_star", milestone_year, 1.0, 1.0),
+        ("input_2", "death_star", milestone_year, 0.0, 1.0),
+        ("death_star", "output_1", milestone_year, 1.0, 1.0),
+        ("death_star", "output_2", milestone_year, 0.0, 1.0),
+        ("input_a", "caes", milestone_year, 1.0, 1.0),
+        ("input_b", "caes", milestone_year, 1.0, 0.0),
+        ("caes", "output_a", milestone_year, 1.0, 1.0),
+        ("caes", "output_b", milestone_year, 1.0, 0.0),
     ]
-    flow_commission =
-        DataFrame(table_rows, [:from_asset, :to_asset, :commission_year, :conversion_coefficient])
+    flow_commission = DataFrame(
+        table_rows,
+        [:from_asset, :to_asset, :commission_year, :conversion_coefficient, :storage_coefficient],
+    )
     DuckDB.register_data_frame(connection, flow_commission, "flow_commission")
 
     table_rows = [
@@ -47,6 +53,14 @@
         ("death_star", "output_1", milestone_year, rp, Int32(4), Int32(5)),
         ("death_star", "output_2", milestone_year, rp, Int32(1), Int32(4)),
         ("death_star", "output_2", milestone_year, rp, Int32(5), Int32(5)),
+        ("input_a", "caes", milestone_year, rp, Int32(1), Int32(1)),
+        ("input_a", "caes", milestone_year, rp, Int32(2), Int32(5)),
+        ("input_b", "caes", milestone_year, rp, Int32(1), Int32(2)),
+        ("input_b", "caes", milestone_year, rp, Int32(3), Int32(5)),
+        ("caes", "output_a", milestone_year, rp, Int32(1), Int32(3)),
+        ("caes", "output_a", milestone_year, rp, Int32(4), Int32(5)),
+        ("caes", "output_b", milestone_year, rp, Int32(1), Int32(4)),
+        ("caes", "output_b", milestone_year, rp, Int32(5), Int32(5)),
     ]
     flow_time_resolution_rep_period = DataFrame(
         table_rows,
@@ -62,6 +76,8 @@
         ("input_1", milestone_year, rp, Int32(1), Int32(3)),
         ("input_1", milestone_year, rp, Int32(4), Int32(5)),
         ("death_star", milestone_year, rp, Int32(1), Int32(5)),
+        ("caes", milestone_year, rp, Int32(1), Int32(2)),
+        ("caes", milestone_year, rp, Int32(3), Int32(5)),
     ]
     asset_time_resolution_rep_period = DataFrame(
         table_rows,
@@ -99,6 +115,7 @@
     # Auxiliary information for the tests
     expected_cols = [:asset, :milestone_year, :rep_period, :time_block_start, :time_block_end]
     where_ = "asset LIKE '%death_star%' ORDER BY asset, rep_period, time_block_start, time_block_end"
+    where_caes = "asset LIKE '%caes%' ORDER BY asset, rep_period, time_block_start, time_block_end"
 end
 
 @testitem "Test create_merged_tables!" setup = [CommonSetup, DataPreparationSetup] tags =
@@ -116,12 +133,6 @@ end
     expected_table = DataFrame(expected_rows, expected_cols)
     @test merged_in_flows == expected_table
 
-    merged_in_flows_conversion_balance =
-        TulipaIO.select_tbl(connection, "merged_in_flows_conversion_balance"; where_)
-    expected_rows = [("death_star", 2025, 1, 1, 1), ("death_star", 2025, 1, 2, 5)]
-    expected_table = DataFrame(expected_rows, expected_cols)
-    @test merged_in_flows_conversion_balance == expected_table
-
     merged_out_flows = TulipaIO.select_tbl(connection, "merged_out_flows"; where_)
     expected_rows = [
         ("death_star", 2025, 1, 1, 3),
@@ -132,11 +143,18 @@ end
     expected_table = DataFrame(expected_rows, expected_cols)
     @test merged_out_flows == expected_table
 
-    merged_out_flows_conversion_balance =
-        TulipaIO.select_tbl(connection, "merged_out_flows_conversion_balance"; where_)
-    expected_rows = [("death_star", 2025, 1, 1, 3), ("death_star", 2025, 1, 4, 5)]
+    merged_storage_balance =
+        TulipaIO.select_tbl(connection, "merged_storage_balance"; where_ = where_caes)
+    expected_rows = [
+        ("caes", 2025, 1, 1, 1),
+        ("caes", 2025, 1, 1, 2),
+        ("caes", 2025, 1, 1, 3),
+        ("caes", 2025, 1, 2, 5),
+        ("caes", 2025, 1, 3, 5),
+        ("caes", 2025, 1, 4, 5),
+    ]
     expected_table = DataFrame(expected_rows, expected_cols)
-    @test merged_out_flows_conversion_balance == expected_table
+    @test merged_storage_balance == expected_table
 
     merged_assets_and_out_flows =
         TulipaIO.select_tbl(connection, "merged_assets_and_out_flows"; where_)
@@ -163,21 +181,6 @@ end
     ]
     expected_table = DataFrame(expected_rows, expected_cols)
     @test merged_all_flows == expected_table
-
-    merged_all = TulipaIO.select_tbl(connection, "merged_all"; where_)
-    expected_rows = [
-        ("death_star", 2025, 1, 1, 1),
-        ("death_star", 2025, 1, 1, 2),
-        ("death_star", 2025, 1, 1, 3),
-        ("death_star", 2025, 1, 1, 4),
-        ("death_star", 2025, 1, 1, 5),
-        ("death_star", 2025, 1, 2, 5),
-        ("death_star", 2025, 1, 3, 5),
-        ("death_star", 2025, 1, 4, 5),
-        ("death_star", 2025, 1, 5, 5),
-    ]
-    expected_table = DataFrame(expected_rows, expected_cols)
-    @test merged_all == expected_table
 
     merged_flows_conversion_balance =
         TulipaIO.select_tbl(connection, "merged_flows_conversion_balance"; where_)
@@ -235,11 +238,6 @@ end
     TulipaEnergyModel.create_lowest_resolution_table!(connection)
 
     # Verify the results in the lowest resolution tables
-    t_lowest_all = TulipaIO.select_tbl(connection, "t_lowest_all"; where_)
-    expected_rows = [("death_star", 2025, 1, 1, 5)]
-    expected_table = DataFrame(expected_rows, expected_cols)
-    @test t_lowest_all == expected_table
-
     t_lowest_all_flows = TulipaIO.select_tbl(connection, "t_lowest_all_flows"; where_)
     expected_rows = [("death_star", 2025, 1, 1, 4), ("death_star", 2025, 1, 5, 5)]
     expected_table = DataFrame(expected_rows, expected_cols)
@@ -250,6 +248,12 @@ end
     expected_rows = [("death_star", 2025, 1, 1, 3), ("death_star", 2025, 1, 4, 5)]
     expected_table = DataFrame(expected_rows, expected_cols)
     @test t_lowest_flows_conversion_balance == expected_table
+
+    t_lowest_storage_balance =
+        TulipaIO.select_tbl(connection, "t_lowest_storage_balance"; where_ = where_caes)
+    expected_rows = [("caes", 2025, 1, 1, 3), ("caes", 2025, 1, 4, 5)]
+    expected_table = DataFrame(expected_rows, expected_cols)
+    @test t_lowest_storage_balance == expected_table
 
     t_lowest_flows_relationship =
         TulipaIO.select_tbl(connection, "t_lowest_flows_relationship"; where_)
@@ -335,7 +339,7 @@ end
     TulipaEnergyModel.create_highest_resolution_table!(connection)
 
     # test that the final number of tables is correct
-    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 26
+    @test DataFrames.nrow(TulipaIO.show_tables(connection)) == 24
 end
 
 @testitem "Test _compute_durations" setup = [CommonSetup] tags = [:unit, :fast] begin
