@@ -551,11 +551,17 @@ function _validate_investment_and_available_units_limits!(error_messages, connec
         key_selection = join(key_columns, ", ")
         for row in DuckDB.query(
             connection,
-            "SELECT $key_selection, $min_column, $max_column
+            "SELECT
+                $key_selection,
+                $min_column,
+                $max_column,
+                COALESCE($min_column < 0, FALSE) AS min_is_negative,
+                COALESCE($max_column < 0, FALSE) AS max_is_negative,
+                COALESCE($min_column > $max_column, FALSE) AS min_is_greater_than_max
             FROM $table_name
-            WHERE $min_column < 0
-                OR ($max_column IS NOT NULL AND $max_column < 0)
-                OR ($max_column IS NOT NULL AND $min_column > $max_column)
+            WHERE COALESCE($min_column < 0, FALSE)
+                OR COALESCE($max_column < 0, FALSE)
+                OR COALESCE($min_column > $max_column, FALSE)
             ORDER BY $key_selection",
         )
             key_values = join(["$key=$(row[Symbol(key)])" for key in key_columns], ", ")
@@ -563,13 +569,13 @@ function _validate_investment_and_available_units_limits!(error_messages, connec
             max_value = row[Symbol(max_column)]
             failure_reasons = String[]
 
-            if min_value < 0
+            if row.min_is_negative
                 push!(failure_reasons, "'$min_column' is negative")
             end
-            if !ismissing(max_value) && max_value < 0
+            if row.max_is_negative
                 push!(failure_reasons, "'$max_column' is negative")
             end
-            if !ismissing(max_value) && min_value > max_value
+            if row.min_is_greater_than_max
                 push!(failure_reasons, "'$min_column' > '$max_column'")
             end
 
@@ -634,12 +640,12 @@ function _validate_positive_investment_min_limit_has_positive_capacity!(error_me
             $join_clause
             WHERE $where_clause
                 AND $min_column > 0
-                AND $capacity_column <= 0",
+                AND $capacity_column = 0",
         )
             key_values = join([row[index] for index in 1:(length(row)-2)], ", ")
             push!(
                 error_messages,
-                "Positive '$min_column' requires a positive capacity for '$table_name' at ($key_values).",
+                "Positive '$min_column' requires a capacity greater than zero for '$table_name' at ($key_values).",
             )
         end
     end

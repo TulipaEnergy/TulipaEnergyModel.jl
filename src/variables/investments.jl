@@ -48,7 +48,7 @@ function add_investment_variables!(model, variables)
 end
 
 function _find_var_upper_bound(limit, capacity, integer)
-    if capacity <= 0 || ismissing(limit)
+    if capacity == 0 || ismissing(limit)
         return Inf
     end
     bound_value = limit / capacity
@@ -59,7 +59,7 @@ function _find_var_upper_bound(limit, capacity, integer)
 end
 
 function _find_var_lower_bound(limit, capacity, integer)
-    if capacity <= 0 || ismissing(limit)
+    if capacity == 0 || ismissing(limit)
         return 0.0
     end
     bound_value = limit / capacity
