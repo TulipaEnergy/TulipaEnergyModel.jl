@@ -71,12 +71,12 @@ In addition, you control whether investment and decommissioning are allowed thro
 
 Below is an overview of the important set-ups regarding the vintage methods.
 
-| Set-up                               | `vintage_method`        | `investable`    | `decommissionable` | Notes                                                                                                                                        |
-| :----------------------------------- | :---------------------- | :-------------- | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
-| Operation only (no investment)       | `aggregated`            | `false`         | `false`            | No investment or decommissioning occurs                                                                                                      |
-| Aggregated investment                | `aggregated`            | set per asset   | set per asset      | All units treated identically; `milestone_year = commission_year` in `asset-both.csv`                                                        |
-| Compact with vintage profiles        | `compact_profiles`      | set per asset   | set per asset      | Vintage-specific profiles; requires multiple commission years per milestone year in `asset-both.csv` and matching profiles                   |
-| Compact with vintage efficiencies    | `compact_efficiencies`  | set per asset   | set per asset      | Vintage-specific efficiencies; introduces vintage flow variables                                                                             |
+| Set-up                            | `vintage_method`       | `investable`  | `decommissionable` | Notes                                                                                                                      |
+| :-------------------------------- | :--------------------- | :------------ | :----------------- | :------------------------------------------------------------------------------------------------------------------------- |
+| Operation only (no investment)    | `aggregated`           | `false`       | `false`            | No investment or decommissioning occurs                                                                                    |
+| Aggregated investment             | `aggregated`           | set per asset | set per asset      | All units treated identically; `milestone_year = commission_year` in `asset-both.csv`                                      |
+| Compact with vintage profiles     | `compact_profiles`     | set per asset | set per asset      | Vintage-specific profiles; requires multiple commission years per milestone year in `asset-both.csv` and matching profiles |
+| Compact with vintage efficiencies | `compact_efficiencies` | set per asset | set per asset      | Vintage-specific efficiencies; introduces vintage flow variables                                                           |
 
 !!! info "Which asset types support which methods?"
     The `compact_profiles` methods can only be applied to producer and the `compact_efficiencies` method to conversion assets. Transport, storage, and consumer assets always use the `aggregated` method. For more details on the constraints that apply when selecting these methods, see the [`mathematical formulation`](@ref formulation).
@@ -180,6 +180,8 @@ For the model to add constraints for a [maximum or minimum energy limit](@ref in
 
 !!! tip "Tip"
     If you want to set a limit on the maximum or minimum outgoing energy for a year with representative days, you can use the partition definition to create a single partition for the entire year to combine the profile.
+
+These constraints are also the mechanism behind emission budgets, see the [modeling greenhouse gas emissions](@ref greenhouse-gas-emissions) section.
 
 ### Example: Setting Energy Limits
 
@@ -312,22 +314,202 @@ To set up this parameter you need to fill in the information for the `storage_co
 
 Two flows in the model can be related using the [`flows relationships constraints`](@ref flows-relationships-constraints) section of the mathematical formulation. The parameters in this constraint, i.e., the constant, sense, and ratio, and the flows in the relationship are defined in the `flows_relationships` table, see more in the [model parameters](@ref table-schemas) section.
 
-There will be a set of constraints for each row in the `flows_relationships` table, meaning that the same flows can have different sets of constraints to describe different relationships between them. One example is the Combined Heat and Power (CHP) extraction plants, which rely on a set of inequality constraints between the electricity and heat outputs to define a feasible operating region. For more details about this example, refer to the [`multiple inputs and outputs`](@ref flex-time-res-mimo) example in the concepts section.
+There will be a set of constraints for each row in the `flows_relationships` table, meaning that the same flows can have different sets of constraints to describe different relationships between them. One example is the Combined Heat and Power (CHP) extraction plants, which rely on a set of inequality constraints between the electricity and heat outputs to define a feasible operating region. For more details about this example, refer to the [`multiple inputs and outputs`](@ref flex-time-res-mimo) example in the concepts section. Flow relationships are also the basis for representing greenhouse gas emissions, see the [modeling greenhouse gas emissions](@ref greenhouse-gas-emissions) section.
 
-### [Modeling Greenhouse Gas Emissions (e.g., CO2)](@id greenhouse-gas-emissions)
+## [Modeling Greenhouse Gas Emissions](@id greenhouse-gas-emissions)
 
-Since the model provides a general definition of assets, specific definitions for different greenhouse gas emissions, such as CO2 or methane, do not exist. Instead, these emissions can be modeled as outputs of an asset. Through the concept of [`flows relationships`](@ref flow-relationships), any input (e.g., fuel consumption) or output (e.g., electricity) of the asset can be linked to an output flow that represents greenhouse gas emissions (e.g., CO2). In this context, the fixed ratio in the relationship equation serves as the emission factor.
+The model provides a general definition of assets, so specific definitions for different greenhouse gases, such as CO2 or methane, do not exist: there is no emission variable, no emission parameter, and no emission asset type. Instead, emissions are modeled as ordinary flows between ordinary assets, and an emission budget is an ordinary constraint on those flows.
 
-Thanks to the [`flexible temporal resolution`](@ref flex-time-res) in the model, the output flow representing greenhouse gases can have a high resolution, such as daily, monthly, or even yearly. This flexibility allows for varying resolutions based on modeling needs and helps in reducing the number of variables in the model.
+This means that emission modeling is not a feature of its own, but a recipe that combines features documented elsewhere in this page:
 
-Additionally, you can use either a consumer or a storage asset to represent the aggregation of a particular greenhouse gas, such as total CO2 emissions in the system. Both options are viable, and the choice depends on what the modeler finds more convenient for their analysis.
+| Building block                                                    | What it does for emissions                                                                                    |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| [Flows relationships](@ref flow-relationships)                    | Ties the emission flow of an asset to its fuel input or energy output, with the emission factor as the ratio. |
+| [Flow coefficients](@ref flow-coefficient)                        | Keeps the emission flows out of the capacity and balance constraints of the emitting asset.                   |
+| [Consumer balance sense](@ref table-schemas)                      | Builds the accounting nodes that pass the emissions through or absorb them.                                   |
+| [Outgoing energy constraints](@ref max-min-outgoing-energy-setup) | Imposes a per-period emission budget over the timeframe, for example a yearly cap.                            |
+| [Seasonal storage](@ref seasonal-setup)                           | Accumulates the emissions as a storage level, giving a cumulative carbon budget.                              |
+| [Flexible time resolution](@ref flex-time-res)                    | Represents the emission flows at a coarser resolution than the energy flows, to save variables.               |
 
-For instance, using a storage asset means that the storage level will represent the total accumulated emissions at each defined time block (or period), which can then be restricted by maximum and minimum storage levels to account for limits on total emissions. Alternatively, if you use a consumer asset, you can define the consumer's output as $\geq 0$, allowing you to track total emissions by post-processing all emission flows over a specified duration. This latter approach involves fewer variables since no storage level is created, but it does require post-processing to obtain the desired results. Ultimately, both methods have their pros and cons, and it is up to the modeler to decide which is best suited for their case study.
+The three steps below explain the recipe, and the three examples that follow apply it to [carbon capture and storage](@ref ccs-example), to [negative emissions with BECCS](@ref beccs-example), and to a [system-wide emission cap](@ref emission-cap-example).
+
+### [Step 1: Creating the emission flow](@id emissions-step-creating)
+
+Through the concept of [`flows relationships`](@ref flow-relationships), any input (e.g., fuel consumption) or output (e.g., electricity) of the asset can be linked to an output flow that represents greenhouse gas emissions (e.g., CO2). In this context, the fixed ratio in the relationship equation serves as the emission factor.
+
+Concretely, a row in the `flows_relationships` table with the emission flow as flow 1, the flow it is proportional to (e.g., the fuel input) as flow 2, `sense = '=='`, `constant = 0`, and `ratio` equal to the emission factor (e.g., tCO2 per MWh of fuel) forces the emission output to follow the fuel consumption of the asset at every timestep.
+
+Thanks to the [`flexible temporal resolution`](@ref flex-time-res) in the model, the output flow representing greenhouse gases can have a coarse resolution, such as daily, monthly, or even yearly. This flexibility allows for varying resolutions based on modeling needs and helps in reducing the number of variables in the model.
+
+!!! warning "Emission flows should not distort the constraints of the emitting asset"
+    An emission flow is a by-product: it enters or leaves the asset, but it neither consumes the asset's capacity nor takes part in its energy balance. Therefore, on **every** emission-carrying flow of the asset, both incoming and outgoing, you should set the [`capacity_coefficient`](@ref coefficient-for-capacity-constraints) to zero, to prevent the emission flow from limiting the asset's energy output, and the [`conversion_coefficient`](@ref coefficient-for-conversion-constraints) to zero for a conversion asset (or the [`storage_coefficient`](@ref coefficient-for-storage-constraints) to zero for a storage asset), so that the emissions are not counted in the asset's balance constraint. All three parameters are defined in the `flow_commission` table, see more in the [model parameters](@ref table-schemas) section.
+
+### [Step 2: Aggregating the emissions](@id emissions-step-aggregating)
+
+The emission flows of the individual emitting assets normally end in an accounting node that represents a particular greenhouse gas pool, such as the atmosphere. A consumer asset with `peak_demand = 0` is the usual choice, and its `consumer_balance_sense` decides how the node behaves:
+
+| `consumer_balance_sense` | Balance at the node            | Behavior                                                                                                                           |
+| ------------------------ | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `'=='` (default)         | incoming $-$ outgoing $= 0$    | **Pass-through node.** Everything that arrives must leave again, so the node forwards the emissions to the next node in the chain. |
+| `'>='`                   | incoming $-$ outgoing $\geq 0$ | **Sink node.** Absorbs whatever arrives. Use it to terminate a chain.                                                              |
+
+A storage asset can be used instead, in which case the storage level accumulates the total emissions and becomes the budget itself, see [using a storage asset as the emission accounting node](@ref emissions-as-storage).
 
 For an example of implementing CO2 emissions as a consumer asset, refer to the [`multiple inputs and outputs`](@ref flex-time-res-mimo) example in the concepts section.
 
-!!! warning "By-products should not be part of the capacity constraint"
-    It is important to note that by-products like emissions should not be included in the capacity constraint of the asset. Therefore, the [`capacity_coefficient`](@ref coefficient-for-capacity-constraints) should be set to zero to prevent the asset's output flow from limiting its energy output.
+!!! warning "A terminal node must not use the default balance sense"
+    A terminal node with `consumer_balance_sense = '=='` and `peak_demand = 0` has no outgoing flow, so its balance reduces to incoming $= 0$, which forces the emissions to be zero and typically makes the model infeasible. The last node of a chain must use `'>='`.
+
+### [Step 3: Limiting the total emissions](@id emissions-step-limiting)
+
+There are three ways to impose an emission budget, and it is up to the modeler to decide which is best suited for their case study.
+
+| Approach                                                        | Accounting node                     | What the limit means                                                                                                                        | Cost                                                                                              |
+| --------------------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [Storage level bounds](@ref emissions-as-storage)               | storage                             | A **cumulative** budget. The storage level is the running total of the emissions since the start of the timeframe, and is bounded directly. | Adds storage level variables and balance constraints; cannot represent a net-negative total.      |
+| Post-processing                                                 | consumer with `'>='`                | Nothing. The emission flows are summed over the desired duration after the solve.                                                           | Cheapest in variables, but the budget is _not_ enforced by the model.                             |
+| [Outgoing energy constraint](@ref emissions-as-outgoing-energy) | consumer with `'=='` (pass-through) | A **per-block** budget. Each period block of the timeframe gets its own limit on the emission flows.                                        | One constraint per period block and no extra variables; a yearly budget needs a single partition. |
+
+The second approach adds nothing to the model and needs no explanation. The other two are described below. They differ in more than cost: the storage level carries a running total across the whole timeframe, which is what a carbon budget usually means, whereas the outgoing energy constraint limits each period block independently.
+
+#### [Using a storage asset as the emission accounting node](@id emissions-as-storage)
+
+Instead of a consumer, the accounting node can be a **storage asset** whose charging flows are the emission flows of the system. The storage level then _is_ the accumulated emissions: at every point of the timeframe it holds the total CO2 emitted since the start of the year, directly as a model variable and without any post-processing.
+
+This is particularly convenient with representative periods. Setting `is_seasonal = true` activates the [inter-period storage constraints](@ref inter-period-storage-balance), which accumulate the level across the representative periods weighted by the `rep_periods_mapping`. The running total therefore follows the real chronological year, even though only a few periods are actually modeled. Bounding that level with `capacity_storage_energy` then gives a genuine cumulative carbon budget, whose trajectory can additionally be shaped period by period with a `max_storage_level` profile.
+
+To set it up:
+
+1. Make the accounting node a storage asset and connect every emission flow of the system as an input to it.
+2. Set `is_seasonal = true` in the `asset` table.
+3. Set `capacity_storage_energy` in the `asset` table to the emission budget, and `initial_storage_units` in `asset_both` to 1. With the default `storage_method_energy = 'none'`, the available energy capacity is the product of the two, and the level limit is the `max_storage_level` profile times that capacity. The profile defaults to 1.0 p.u., so the level is capped at the budget.
+4. Set `initial_storage_level = 0` in the `asset_milestone` table (see the warning below).
+5. (optional) Add a `max_storage_level` profile in `assets_timeframe_profiles` to make the budget tighten or relax over the year, or a `min_storage_level` profile to impose a floor.
+
+Keep the defaults for `storage_charging_efficiency` (1.0) and `storage_loss_from_stored_energy` (0), otherwise CO2 is created or destroyed on its way into the accumulator.
+
+!!! warning "The initial storage level must be set, or the emissions are forced to zero"
+    When `initial_storage_level` is missing, the [inter-period cycling constraint](@ref inter-period-storage-balance) makes the level of the first period block equal to the level of the last one. An emission accumulator only charges, so its level can only increase, and the only way to close the cycle is a level that never changes, i.e., zero emissions everywhere. Defining `initial_storage_level = 0` replaces the cycle with a final level greater than or equal to the initial one, which is what a carbon budget needs.
+
+!!! info "Emission flows into the accounting node keep the default storage coefficient"
+    The by-product warning in [step 1](@ref emissions-step-creating) is about the _emitting_ asset, whose own balance the emissions must stay out of. At the accounting node the opposite holds: the emission flows are exactly what the storage balance should count, so they keep the default `storage_coefficient = 1`.
+
+The two costs of this approach are:
+
+- **Model size.** A seasonal storage asset adds an [accumulated intra-period level](@ref accumulated-intra-period-storage-balance) variable per timestep block, an [inter-period level](@ref inter-period-storage-balance) variable per period, and the balance and limit constraints that go with them. The [outgoing energy constraint](@ref emissions-as-outgoing-energy) adds one constraint per period block and no variables at all.
+- **Negative emissions are awkward.** A removal has to become a discharging flow out of the accumulator, which then needs a `capacity_coefficient = 0` to stay out of the storage asset's capacity constraints and a destination asset of its own. More fundamentally, storage level variables have a lower bound of zero, so the cumulative total can never become net-negative. In the consumer chain of the [BECCS example](@ref beccs-example) a removal is simply a flow in the opposite direction, which is why that example does not use a storage node.
+
+#### [Using the outgoing energy constraint as an emission budget](@id emissions-as-outgoing-energy)
+
+The [outgoing energy constraints](@ref max-min-outgoing-energy-setup) limit the total energy leaving an asset over a period block of the timeframe, which is exactly the shape of an emission budget. To use them for emissions:
+
+1. Make the accounting node a **pass-through node** (`consumer_balance_sense = '=='`, `peak_demand = 0`) whose **only** outgoing flow is the aggregated emission flow, and terminate the chain with a sink node (`consumer_balance_sense = '>='`).
+2. Set `is_seasonal = true` for the pass-through node in the `asset` table, to enable the inter-period constraints.
+3. Set `max_energy_timeframe_partition` for the pass-through node in the `asset_milestone` table to the emission budget **per period**. Use `min_energy_timeframe_partition` if instead you need a floor.
+4. (optional) Add a row to `assets_timeframe_profiles` with `profile_type = 'max_energy'` (or `'min_energy'`) pointing to a profile in `profiles_timeframe`, if the budget should vary over the periods. Without a profile, the default is 1.0 p.u. for every period.
+5. (optional) Add a row to `assets_timeframe_partitions` to aggregate periods into a single constraint.
+
+!!! warning "The cap applies to every outgoing flow of the asset"
+    The constraint sums every outgoing flow of the asset, so it must be placed on a node whose outgoing flows are only emissions. Setting `max_energy_timeframe_partition` directly on a gas-fired power plant would cap the sum of its electricity output _and_ its CO2 output, which is not an emission budget. For the same reason, an accounting node that sends emissions to more than one place needs an extra pass-through node that carries only the flow to be capped, as in the [BECCS example](@ref beccs-example).
+
+!!! info "The seasonal flag is not restricted to storage assets"
+    Although the description of `is_seasonal` refers to seasonal storage (e.g., hydro), the flag is what enables the inter-period constraints for _any_ asset type, so it can be set on an accounting node as well.
+
+Since `max_energy_timeframe_partition` is defined **per period**, and the profile of a period block is aggregated with a sum, the value to fill in is the budget of a single period, not the budget of the whole year. What the partition changes is how tightly the budget is distributed over the year, not its total. For example, with a year clustered into 365 daily periods, an annual budget of 3650 tCO2, and no profile defined:
+
+- Without a partition, `max_energy_timeframe_partition = 10` produces 365 daily constraints of 10 tCO2 each. The yearly total is capped at 3650 tCO2, but the emissions cannot be shifted between days.
+- With a row in `assets_timeframe_partitions` using `specification = 'uniform'` and `partition = '365'`, the same `max_energy_timeframe_partition = 10` produces a single constraint for the whole year, whose right-hand side is the sum of the default 1.0 p.u. over the 365 periods times 10, i.e., 3650 tCO2. This is the annual budget, and it lets the optimization decide when to emit.
+
+### [Example: Carbon capture and storage (CCS)](@id ccs-example)
+
+A CCS plant burns gas to produce electricity, releases part of the resulting CO2 to the atmosphere, and captures the rest for permanent storage. The capture rate is the split between the two CO2 outputs.
+
+```mermaid
+flowchart LR
+    gas_supply -->|gas| ccs
+    ccs -->|electricity| electricity_demand
+    ccs -->|"released CO2"| atmosphere
+    ccs -->|"captured CO2"| co2_storage
+    atmosphere -->|"total CO2"| co2_cap
+```
+
+The assets are set up as follows:
+
+| Asset         | `type`     | Notes                                                                                                                  |
+| ------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `ccs`         | conversion | Gas in, electricity out. The two CO2 flows are by-products, see the warning in [step 1](@ref emissions-step-creating). |
+| `atmosphere`  | consumer   | `consumer_balance_sense = '=='`, `peak_demand = 0`. Pass-through node that carries the emission budget.                |
+| `co2_cap`     | consumer   | `consumer_balance_sense = '>='`, `peak_demand = 0`. Sink that terminates the chain.                                    |
+| `co2_storage` | consumer   | `consumer_balance_sense = '>='`, `peak_demand = 0`. Use a storage asset instead if the storage volume is limited.      |
+
+Two rows in `flows_relationships` describe the chemistry, where $\eta$ is the emission factor of the fuel and $\kappa$ is the capture rate:
+
+- Total CO2 follows the gas input: `flow_1 = (ccs, atmosphere)`, `flow_2 = (gas_supply, ccs)`, `sense = '=='`, `constant = 0`, `ratio =` $\eta \cdot (1 - \kappa)$.
+- Captured CO2 follows the gas input as well: `flow_1 = (ccs, co2_storage)`, `flow_2 = (gas_supply, ccs)`, `sense = '=='`, `constant = 0`, `ratio =` $\eta \cdot \kappa$.
+
+!!! info "One pair of flows per row"
+    Each row of `flows_relationships` links exactly one flow 1 to exactly one flow 2, since the flows are identified by the four `flow_*_from_asset` and `flow_*_to_asset` columns. A quantity that has to be split over several flows, as the CO2 is here, therefore needs one row per flow, each tied to the same reference flow.
+
+Because the released and captured shares are both tied to the same gas input with constant ratios, the capture rate $\kappa$ is a fixed input, not a decision of the optimization. To choose between capturing and not capturing, model the two operating modes as two separate assets and let the investment or dispatch decide between them.
+
+Finally, `is_seasonal = true` and `max_energy_timeframe_partition` on `atmosphere` turn the flow towards `co2_cap` into the emission budget, as described in [step 3](@ref emissions-step-limiting).
+
+### [Example: Negative emissions with BECCS](@id beccs-example)
+
+BECCS (bioenergy with carbon capture and storage) differs from CCS in one respect: the biomass it burns has already removed CO2 from the atmosphere while growing. That removal is modeled as a flow that goes **into** the plant **from** the atmosphere, so the atmosphere node sees both a release and an uptake.
+
+```mermaid
+flowchart LR
+    biomass_supply -->|biomass| beccs
+    beccs -->|electricity| electricity_demand
+    beccs -->|"released CO2"| atmosphere
+    atmosphere -->|"CO2 absorbed while growing"| beccs
+    beccs -->|"stored CO2"| co2_storage
+    atmosphere -->|"net CO2"| atmosphere_net
+    atmosphere_net -->|"net CO2"| co2_cap
+```
+
+The `atmosphere` node is a pass-through node, so its balance reads
+
+```math
+\underbrace{v^{\text{flow}}_{(\text{beccs},\text{atmosphere})}}_{\text{released}} - \underbrace{v^{\text{flow}}_{(\text{atmosphere},\text{beccs})}}_{\text{absorbed}} - v^{\text{flow}}_{(\text{atmosphere},\text{atmosphere\_net})} = 0
+```
+
+which makes the flow towards `atmosphere_net` the **net** emissions, released minus absorbed. Two rows in `flows_relationships` complete the picture, where $\eta$ is the emission factor of the biomass:
+
+- The absorbed CO2 follows the biomass input: `flow_1 = (atmosphere, beccs)`, `flow_2 = (biomass_supply, beccs)`, `sense = '=='`, `constant = 0`, `ratio =` $\eta$.
+- The stored CO2 equals the absorbed CO2: `flow_1 = (beccs, co2_storage)`, `flow_2 = (atmosphere, beccs)`, `sense = '=='`, `constant = 0`, `ratio = 1`. This is the `flow_3 = flow_2` condition that makes the removal permanent.
+
+!!! info "Why the extra net emissions node?"
+    The `atmosphere` node has two outgoing flows: the CO2 absorbed by the biomass and the net emissions. Since the [outgoing energy constraint](@ref max-min-outgoing-energy-setup) sums _all_ outgoing flows of an asset, placing the cap on `atmosphere` would also count the absorbed CO2. The `atmosphere_net` pass-through node has exactly one outgoing flow, so it is the node that carries `is_seasonal = true` and `max_energy_timeframe_partition`.
+
+!!! warning "The net flow of the accounting node cannot become negative"
+    Flows have a lower bound of zero unless they are transport flows, so the flow towards `atmosphere_net` cannot be negative, and the balance above therefore enforces released $\geq$ absorbed **at the node**. With BECCS as the only asset connected to `atmosphere`, the model consequently cannot reach a net-negative total. This is normally not a restriction, because the other emitters of the system share the same node: the balance then reads (sum of all releases) $-$ (sum of all removals) $\geq 0$, so BECCS can be net-negative individually as long as the system as a whole is not. Only a system that should end up net-negative overall runs into the bound.
+
+If a case study needs more than one accounting scheme, for instance the physical atmosphere alongside a regulatory scope such as an emission trading system, repeat the chain: give the emitting asset a parallel pair of release and absorption flows towards a second accounting node, and give that node its own pass-through node and cap.
+
+### [Example: A system-wide emission cap](@id emission-cap-example)
+
+Once each emitting asset has its emission flows, the system-wide cap is a single chain. All emitters send their CO2 to the same accounting node, which forwards the total to a sink.
+
+```mermaid
+flowchart LR
+    ccs -->|CO2| atmosphere
+    beccs -->|CO2| atmosphere
+    other_emitters -->|CO2| atmosphere
+    atmosphere -->|"total CO2"| co2_cap
+```
+
+The cap is then a single row in `asset` and a single row in `asset_milestone` for the `atmosphere` node:
+
+| Table             | Column                           | Value                                                                      |
+| ----------------- | -------------------------------- | -------------------------------------------------------------------------- |
+| `asset`           | `is_seasonal`                    | `true`                                                                     |
+| `asset`           | `consumer_balance_sense`         | `'=='`                                                                     |
+| `asset_milestone` | `peak_demand`                    | `0`                                                                        |
+| `asset_milestone` | `max_energy_timeframe_partition` | The emission budget per period, see [step 3](@ref emissions-step-limiting) |
+
+Adding a new emitter later requires no change to the cap: its emission flow simply joins the others at the `atmosphere` node.
 
 ## [Simulating Bids using Unit Commitment](@id bids)
 
