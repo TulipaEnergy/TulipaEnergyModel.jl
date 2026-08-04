@@ -52,6 +52,38 @@ end
     ) == 1
 end
 
+@testitem "Test populate_with_defaults adds investment and available units limits" setup =
+    [CommonSetup] tags = [:unit, :validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(
+        connection,
+        """
+        ALTER TABLE asset_commission DROP COLUMN investment_min_limit;
+        ALTER TABLE asset_commission DROP COLUMN investment_min_limit_storage_energy;
+        ALTER TABLE asset_milestone DROP COLUMN min_available_units;
+        ALTER TABLE asset_milestone DROP COLUMN max_available_units;
+        """,
+    )
+
+    TulipaEnergyModel.populate_with_defaults!(connection)
+
+    @test all(
+        row.investment_min_limit == 0 for
+        row in DuckDB.query(connection, "SELECT investment_min_limit FROM asset_commission")
+    )
+    @test all(
+        row.investment_min_limit_storage_energy == 0 for row in
+        DuckDB.query(connection, "SELECT investment_min_limit_storage_energy FROM asset_commission")
+    )
+    @test all(
+        ismissing(row.min_available_units) && ismissing(row.max_available_units) for
+        row in DuckDB.query(
+            connection,
+            "SELECT min_available_units, max_available_units FROM asset_milestone",
+        )
+    )
+end
+
 @testitem "Test populate_with_defaults fixes missing columns" setup = [CommonSetup] tags =
     [:unit, :validation, :fast] begin
     connection = _tiny_fixture()

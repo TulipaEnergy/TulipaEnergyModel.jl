@@ -383,7 +383,8 @@ select
     flow_milestone.milestone_year,
     flow.investment_integer,
     flow.capacity,
-    flow_commission.investment_limit,
+    flow_commission.investment_min_limit,
+    flow_commission.investment_max_limit,
     cast(null as float8) as solution,
 from
     flow_milestone
@@ -412,7 +413,8 @@ select
     asset_milestone.milestone_year,
     asset.investment_integer,
     asset.capacity,
-    asset_commission.investment_limit,
+    asset_commission.investment_min_limit,
+    asset_commission.investment_max_limit,
     cast(null as float8) as solution,
 from
     asset_milestone
@@ -494,7 +496,8 @@ select
     asset_milestone.milestone_year,
     asset.investment_integer_storage_energy,
     asset.capacity_storage_energy,
-    asset_commission.investment_limit_storage_energy,
+    asset_commission.investment_min_limit_storage_energy,
+    asset_commission.investment_max_limit_storage_energy,
     cast(null as float8) as solution,
 from
     asset_milestone

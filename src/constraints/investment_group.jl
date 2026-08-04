@@ -5,16 +5,10 @@ Adds group constraints for assets that share a common limits or bounds.
 """
 function add_investment_group_constraints!(connection, model, variables, expressions, constraints)
     assets_investment = variables[:assets_investment].container
-    expr_available_asset_units_aggregated = get(
-        expressions[:available_asset_units_aggregated_vintage_method].expressions,
-        :assets,
-        JuMP.AffExpr[],
-    )
-    expr_available_asset_units_compact = get(
-        expressions[:available_asset_units_compact_vintage_method].expressions,
-        :assets,
-        JuMP.AffExpr[],
-    )
+    expr_available_asset_units_aggregated =
+        expressions[:available_asset_units_aggregated_vintage_method].expressions[:assets]
+    expr_available_asset_units_compact =
+        expressions[:available_asset_units_compact_vintage_method].expressions[:assets]
 
     let table_name = :group_investment
         cons = constraints[table_name]
@@ -39,7 +33,7 @@ function add_investment_group_constraints!(connection, model, variables, express
                                 row.var_assets_investment_ids,
                                 row.var_assets_investment_coefficients,
                             );
-                            init = JuMP.AffExpr(),
+                            init = JuMP.AffExpr(0.0),
                         )
                     else
                         sum(
@@ -48,14 +42,14 @@ function add_investment_group_constraints!(connection, model, variables, express
                                 row.available_asset_units_aggregated_ids,
                                 row.available_asset_units_aggregated_coefficients,
                             );
-                            init = JuMP.AffExpr(),
+                            init = JuMP.AffExpr(0.0),
                         ) + sum(
                             coefficient * expr_available_asset_units_compact[id] for
                             (id, coefficient) in zip(
                                 row.available_asset_units_compact_ids,
                                 row.available_asset_units_compact_coefficients,
                             );
-                            init = JuMP.AffExpr(),
+                            init = JuMP.AffExpr(0.0),
                         )
                     end
 

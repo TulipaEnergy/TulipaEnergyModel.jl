@@ -238,7 +238,8 @@ asset_commission = DataFrame(
     asset = asset.asset,                         # reuse 'asset' column
     commission_year = asset_both.commission_year, # reuse 'commission_year'
     investment_cost = fill(0.0, nrow(asset)),             # all zeros
-    investment_limit = Vector{Union{Missing, Float64}}(missing, nrow(asset)),  # empty entries, can either contain missing or float64 values (to prevent type errors later)
+    investment_min_limit = fill(0.0, nrow(asset)),
+    investment_max_limit = Vector{Union{Missing, Float64}}(missing, nrow(asset)),  # empty entries, can either contain missing or float64 values (to prevent type errors later)
     fixed_cost_storage_energy = fill(5.0, nrow(asset))    # all 5.0
 )
 

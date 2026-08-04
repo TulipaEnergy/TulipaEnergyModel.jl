@@ -53,13 +53,13 @@ Associated input parameters: `decommissionable`, `initial_units`, `investment_in
 
 For a storage asset with `storage_method_energy = 'optimize_storage_capacity'`, the optimal investment (increase) in asset capacity storage energy in `milestone_year`, expressed in the same units as `capacity_storage_energy` of asset.
 
-Associated input parameters: `investable`, `investment_integer_storage_energy`, `capacity_storage_energy`, `investment_limit_storage_energy`
+Associated input parameters: `investable`, `investment_integer_storage_energy`, `capacity_storage_energy`, `investment_min_limit_storage_energy`, `investment_max_limit_storage_energy`
 
 ### `var_assets_investment`
 
 For an asset, the optimal investment (increase) in asset capacity in `milestone_year`, expressed in the same units as `capacity` of asset.
 
-Associated input parameters: `investable`, `investment_integer`, `capacity`, `investment_limit`
+Associated input parameters: `investable`, `investment_integer`, `capacity`, `investment_min_limit`, `investment_max_limit`
 
 ### `var_flow`
 
@@ -75,7 +75,7 @@ Associated input parameter: `decommissionable`, `investment_integer`, `capacity`
 
 For a transport flow, the optimal investment (increase) in flow capacity in `milestone_year`, expressed in the same units as `capacity` of flow.
 
-Associated input parameters: `investable`, `investment_integer`, `capacity`, `investment_limit`
+Associated input parameters: `investable`, `investment_integer`, `capacity`, `investment_min_limit`, `investment_max_limit`
 
 ### `var_storage_level_inter_period`
 

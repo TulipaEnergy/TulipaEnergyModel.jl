@@ -27,6 +27,16 @@ function validate_data!(connection)
         ("no duplicate rows", _validate_no_duplicate_rows!, false),
         ("valid schema's oneOf constraints", _validate_schema_one_of_constraints!, false),
         (
+            "no legacy investment limit columns",
+            _validate_no_legacy_investment_limit_columns!,
+            false,
+        ),
+        (
+            "investment and available units limits are valid",
+            _validate_investment_and_available_units_limits!,
+            false,
+        ),
+        (
             "only transport flows are investable",
             _validate_only_transport_flows_are_investable!,
             false,
@@ -48,8 +58,8 @@ function validate_data!(connection)
             false,
         ),
         (
-            "investable storage assets using binary method should have investment limit > 0",
-            _validate_use_binary_storage_method_has_investment_limit!,
+            "investable storage assets using binary method should have investment maximum limit > 0",
+            _validate_use_binary_storage_method_has_investment_max_limit!,
             false,
         ),
         ("check DC OPF data", _validate_dc_opf_data!, false),
@@ -488,10 +498,244 @@ function _validate_aggregated_vintage_method_all_milestone_years_are_covered!(
     return error_messages
 end
 
-function _validate_use_binary_storage_method_has_investment_limit!(error_messages, connection)
+function _validate_no_legacy_investment_limit_columns!(error_messages, connection)
+    for (table_name, column_name) in (
+        ("asset_commission", "investment_limit"),
+        ("asset_commission", "investment_limit_storage_energy"),
+        ("flow_commission", "investment_limit"),
+    )
+        for _ in DuckDB.query(
+            connection,
+            "SELECT 1
+            FROM duckdb_columns()
+            WHERE table_name = '$table_name'
+                AND column_name = '$column_name'",
+        )
+            push!(
+                error_messages,
+                "Legacy column '$column_name' found in '$table_name'. Run 'uv run --with duckdb python utils/scripts/migrate-investment-limits.py'.",
+            )
+        end
+    end
+
+    return error_messages
+end
+
+function _validate_investment_and_available_units_limits!(error_messages, connection)
+    for (table_name, key_columns, min_column, max_column) in (
+        (
+            "asset_commission",
+            ("asset", "commission_year"),
+            "investment_min_limit",
+            "investment_max_limit",
+        ),
+        (
+            "asset_commission",
+            ("asset", "commission_year"),
+            "investment_min_limit_storage_energy",
+            "investment_max_limit_storage_energy",
+        ),
+        (
+            "flow_commission",
+            ("from_asset", "to_asset", "commission_year"),
+            "investment_min_limit",
+            "investment_max_limit",
+        ),
+        (
+            "asset_milestone",
+            ("asset", "milestone_year"),
+            "min_available_units",
+            "max_available_units",
+        ),
+    )
+        key_selection = join(key_columns, ", ")
+        for row in DuckDB.query(
+            connection,
+            "SELECT
+                $key_selection,
+                $min_column,
+                $max_column,
+                COALESCE($min_column < 0, FALSE) AS min_is_negative,
+                COALESCE($max_column < 0, FALSE) AS max_is_negative,
+                COALESCE($min_column > $max_column, FALSE) AS min_is_greater_than_max
+            FROM $table_name
+            WHERE COALESCE($min_column < 0, FALSE)
+                OR COALESCE($max_column < 0, FALSE)
+                OR COALESCE($min_column > $max_column, FALSE)
+            ORDER BY $key_selection",
+        )
+            key_values = join(["$key=$(row[Symbol(key)])" for key in key_columns], ", ")
+            min_value = row[Symbol(min_column)]
+            max_value = row[Symbol(max_column)]
+            failure_reasons = String[]
+
+            if row.min_is_negative
+                push!(failure_reasons, "'$min_column' is negative")
+            end
+            if row.max_is_negative
+                push!(failure_reasons, "'$max_column' is negative")
+            end
+            if row.min_is_greater_than_max
+                push!(failure_reasons, "'$min_column' > '$max_column'")
+            end
+
+            push!(
+                error_messages,
+                "Invalid limits in '$table_name' for ($key_values): $min_column=$(repr(min_value)), $max_column=$(repr(max_value)); violations: $(join(failure_reasons, ", ")).",
+            )
+        end
+    end
+
+    _validate_integer_investment_limits!(error_messages, connection)
+    _validate_positive_investment_min_limit_has_positive_capacity!(error_messages, connection)
+    return error_messages
+end
+
+function _validate_positive_investment_min_limit_has_positive_capacity!(error_messages, connection)
+    for (table_name, key_selection, min_column, capacity_column, join_clause, where_clause) in (
+        (
+            "asset_commission",
+            "asset_commission.asset, asset_commission.commission_year",
+            "investment_min_limit",
+            "asset.capacity",
+            "LEFT JOIN asset ON asset_commission.asset = asset.asset
+            LEFT JOIN asset_milestone
+                ON asset_commission.asset = asset_milestone.asset
+                AND asset_commission.commission_year = asset_milestone.milestone_year",
+            "asset_milestone.investable AND asset.type != 'consumer'",
+        ),
+        (
+            "asset_commission",
+            "asset_commission.asset, asset_commission.commission_year",
+            "investment_min_limit_storage_energy",
+            "asset.capacity_storage_energy",
+            "LEFT JOIN asset ON asset_commission.asset = asset.asset
+            LEFT JOIN asset_milestone
+                ON asset_commission.asset = asset_milestone.asset
+                AND asset_commission.commission_year = asset_milestone.milestone_year",
+            "asset_milestone.investable
+                AND asset.type = 'storage'
+                AND asset.storage_method_energy = 'optimize_storage_capacity'
+                AND asset.vintage_method = 'aggregated'",
+        ),
+        (
+            "flow_commission",
+            "flow_commission.from_asset, flow_commission.to_asset, flow_commission.commission_year",
+            "investment_min_limit",
+            "flow.capacity",
+            "LEFT JOIN flow
+                ON flow_commission.from_asset = flow.from_asset
+                AND flow_commission.to_asset = flow.to_asset
+            LEFT JOIN flow_milestone
+                ON flow_commission.from_asset = flow_milestone.from_asset
+                AND flow_commission.to_asset = flow_milestone.to_asset
+                AND flow_commission.commission_year = flow_milestone.milestone_year",
+            "flow_milestone.investable AND flow.is_transport",
+        ),
+    )
+        for row in DuckDB.query(
+            connection,
+            "SELECT $key_selection, $min_column, $capacity_column AS capacity
+            FROM $table_name
+            $join_clause
+            WHERE $where_clause
+                AND $min_column > 0
+                AND $capacity_column = 0",
+        )
+            key_values = join([row[index] for index in 1:(length(row)-2)], ", ")
+            push!(
+                error_messages,
+                "Positive '$min_column' requires a capacity greater than zero for '$table_name' at ($key_values).",
+            )
+        end
+    end
+
+    return error_messages
+end
+
+function _validate_integer_investment_limits!(error_messages, connection)
+    for (
+        table_name,
+        key_selection,
+        min_column,
+        max_column,
+        capacity_column,
+        join_clause,
+        where_clause,
+    ) in (
+        (
+            "asset_commission",
+            "asset_commission.asset, asset_commission.commission_year",
+            "investment_min_limit",
+            "investment_max_limit",
+            "asset.capacity",
+            "LEFT JOIN asset ON asset_commission.asset = asset.asset
+            LEFT JOIN asset_milestone
+                ON asset_commission.asset = asset_milestone.asset
+                AND asset_commission.commission_year = asset_milestone.milestone_year",
+            "asset_milestone.investable
+                AND asset.type != 'consumer'
+                AND asset.investment_integer",
+        ),
+        (
+            "asset_commission",
+            "asset_commission.asset, asset_commission.commission_year",
+            "investment_min_limit_storage_energy",
+            "investment_max_limit_storage_energy",
+            "asset.capacity_storage_energy",
+            "LEFT JOIN asset ON asset_commission.asset = asset.asset
+            LEFT JOIN asset_milestone
+                ON asset_commission.asset = asset_milestone.asset
+                AND asset_commission.commission_year = asset_milestone.milestone_year",
+            "asset_milestone.investable
+                AND asset.type = 'storage'
+                AND asset.storage_method_energy = 'optimize_storage_capacity'
+                AND asset.vintage_method = 'aggregated'
+                AND asset.investment_integer_storage_energy",
+        ),
+        (
+            "flow_commission",
+            "flow_commission.from_asset, flow_commission.to_asset, flow_commission.commission_year",
+            "investment_min_limit",
+            "investment_max_limit",
+            "flow.capacity",
+            "LEFT JOIN flow
+                ON flow_commission.from_asset = flow.from_asset
+                AND flow_commission.to_asset = flow.to_asset
+            LEFT JOIN flow_milestone
+                ON flow_commission.from_asset = flow_milestone.from_asset
+                AND flow_commission.to_asset = flow_milestone.to_asset
+                AND flow_commission.commission_year = flow_milestone.milestone_year",
+            "flow_milestone.investable
+                AND flow.is_transport
+                AND flow.investment_integer",
+        ),
+    )
+        for row in DuckDB.query(
+            connection,
+            "SELECT $key_selection, $min_column, $max_column, $capacity_column AS capacity
+            FROM $table_name
+            $join_clause
+            WHERE $where_clause
+                AND $max_column IS NOT NULL
+                AND $capacity_column > 0
+                AND CEIL($min_column / $capacity_column) > FLOOR($max_column / $capacity_column)",
+        )
+            key_values = join([row[index] for index in 1:(length(row)-3)], ", ")
+            push!(
+                error_messages,
+                "No integer investment units satisfy '$min_column' and '$max_column' for '$table_name' at ($key_values).",
+            )
+        end
+    end
+
+    return error_messages
+end
+
+function _validate_use_binary_storage_method_has_investment_max_limit!(error_messages, connection)
     for row in DuckDB.query(
         connection,
-        "SELECT asset.asset, asset.use_binary_storage_method, asset_milestone.milestone_year, asset_commission.commission_year, asset_commission.investment_limit
+        "SELECT asset.asset, asset.use_binary_storage_method, asset_milestone.milestone_year, asset_commission.commission_year, asset_commission.investment_max_limit
         FROM asset_milestone
         LEFT JOIN asset_commission
             ON asset_milestone.asset = asset_commission.asset
@@ -501,12 +745,15 @@ function _validate_use_binary_storage_method_has_investment_limit!(error_message
         WHERE asset.type = 'storage'
             AND asset_milestone.investable
             AND asset.use_binary_storage_method IS NOT NULL
-            AND (asset_commission.investment_limit IS NULL OR asset_commission.investment_limit <= 0)
+            AND (
+                asset_commission.investment_max_limit IS NULL
+                OR asset_commission.investment_max_limit <= 0
+            )
         ",
     )
         push!(
             error_messages,
-            "Incorrect investment_limit = $(row.investment_limit) for investable storage asset '$(row.asset)' with use_binary_storage_method = '$(row.use_binary_storage_method)' for milestone_year $(row.milestone_year). The investment_limit at commission_year $(row.commission_year) should be greater than 0 in 'asset_commission'.",
+            "Incorrect investment_max_limit = $(row.investment_max_limit) for investable storage asset '$(row.asset)' with use_binary_storage_method = '$(row.use_binary_storage_method)' for milestone_year $(row.milestone_year). The investment_max_limit at commission_year $(row.commission_year) should be greater than 0 in 'asset_commission'.",
         )
     end
 

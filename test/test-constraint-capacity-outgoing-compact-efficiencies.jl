@@ -1,175 +1,158 @@
-@testset "Test add_capacity_outgoing_compact_efficiencies_vintage_method_constraints!" begin
-    # Setup a temporary DuckDB connection and model
-    connection = _multi_year_fixture()
-    # Set the investment method to 'compact_efficiencies' for wind
-    # Add another flow wind-battery so now wind has two outgoing flows: wind-battery and wind-demand
-    DuckDB.query(
-        connection,
-        """
-        UPDATE asset SET vintage_method = 'compact_efficiencies' WHERE asset = 'wind';
-        INSERT INTO flow VALUES
-            ('wind', 'battery', 'electricity', false, 0.0, 10, 1, 0.02, false);
-        INSERT INTO flow_milestone VALUES
-            ('wind', 'battery', 2030, false, 0.001, 0.3, false),
-            ('wind', 'battery', 2050, false, 0.001, 0.3, false);
-        INSERT INTO flow_commission VALUES
-            ('wind', 'battery', 2030, 0.0, 350.0, NULL, 1, 1.0),
-            ('wind', 'battery', 2050, 0.0, 350.0, NULL, 1, 1.0);
-        """,
-    )
+@testsnippet ConsCapacityOutgoingCompactEfficienciesSetup begin
+    using TulipaClustering: TulipaClustering as TC
 
-    model = JuMP.Model()
+    function create_capacity_outgoing_compact_efficiencies_problem()
+        tulipa = TB.TulipaData()
 
-    # Create variable tables
-    table_name = "var_vintage_flow"
-    table_rows = [
-        (1, "wind", "battery", 2030, 2020, 1, 1, 1, 1.0, 1.0),
-        (2, "wind", "battery", 2030, 2030, 1, 1, 1, 1.0, 1.0),
-        (3, "wind", "battery", 2050, 2030, 1, 1, 1, 1.0, 1.0),
-        (4, "wind", "battery", 2050, 2050, 1, 1, 1, 1.0, 1.0),
-        (5, "wind", "demand", 2030, 2020, 1, 1, 1, 1.0, 1.0),
-        (6, "wind", "demand", 2030, 2030, 1, 1, 1, 1.0, 1.0),
-        (7, "wind", "demand", 2050, 2030, 1, 1, 1, 1.0, 1.0),
-        (8, "wind", "demand", 2050, 2050, 1, 1, 1, 1.0, 1.0),
-    ]
-    columns = [
-        :id,
-        :from_asset,
-        :to_asset,
-        :milestone_year,
-        :commission_year,
-        :rep_period,
-        :time_block_start,
-        :time_block_end,
-        :capacity_coefficient,
-        :conversion_coefficient,
-    ]
-    _create_table_for_tests(connection, table_name, table_rows, columns)
-
-    table_name = "var_assets_investment"
-    table_rows = [(1, "wind", 2030, true, 50, Inf), (2, "wind", 2050, true, 50, Inf)]
-    columns = [:id, :asset, :milestone_year, :investment_integer, :capacity, :investment_limit]
-    _create_table_for_tests(connection, table_name, table_rows, columns)
-
-    table_name = "var_assets_decommission"
-    table_rows = [(1, "wind", 2030, 2020, true), (2, "wind", 2050, 2030, true)]
-    columns = [:id, :asset, :milestone_year, :commission_year, :investment_integer]
-    _create_table_for_tests(connection, table_name, table_rows, columns)
-
-    table_name = "var_flows_investment"
-    columns_with_types = [
-        :id => Int,
-        :from_asset => String,
-        :to_asset => String,
-        :milestone_year => Int,
-        :investment_integer => Bool,
-        :capacity => Float64,
-        :investment_limit => Float64,
-    ]
-    _create_empty_table_for_tests(connection, table_name, columns_with_types)
-
-    table_name = "var_flows_decommission"
-    columns_with_types = [
-        :id => Int,
-        :from_asset => String,
-        :to_asset => String,
-        :milestone_year => Int,
-        :commission_year => Int,
-        :investment_integer => Bool,
-    ]
-    _create_empty_table_for_tests(connection, table_name, columns_with_types)
-
-    table_name = "var_assets_investment_energy"
-    columns_with_types = [:id => Int, :asset => String, :milestone_year => Int]
-    _create_empty_table_for_tests(connection, table_name, columns_with_types)
-
-    table_name = "var_assets_decommission_energy"
-    columns_with_types =
-        [:id => Int, :asset => String, :milestone_year => Int, :commission_year => Int]
-    _create_empty_table_for_tests(connection, table_name, columns_with_types)
-
-    variables = Dict{Symbol,TulipaEnergyModel.TulipaVariable}(
-        key => TulipaEnergyModel.TulipaVariable(connection, "var_$key") for key in (
-            :assets_investment,
-            :assets_decommission,
-            :flows_investment,
-            :flows_decommission,
-            :assets_investment_energy,
-            :assets_decommission_energy,
-            :vintage_flow,
+        TB.add_asset!(
+            tulipa,
+            "wind",
+            :producer;
+            vintage_method = "compact_efficiencies",
+            capacity = 50.0,
         )
-    )
-    # Create JuMP variables
-    TulipaEnergyModel.add_vintage_flow_variables!(connection, model, variables)
-    TulipaEnergyModel.add_investment_variables!(model, variables)
-    TulipaEnergyModel.add_decommission_variables!(model, variables)
+        TB.add_asset!(tulipa, "demand", :consumer; peak_demand = 0.0)
+        TB.add_asset!(tulipa, "battery", :consumer; peak_demand = 0.0)
 
-    # Create expressions
-    expressions = Dict{Symbol,TulipaEnergyModel.TulipaExpression}()
-    TulipaEnergyModel.create_multi_year_expressions!(connection, model, variables, expressions)
-    expr_avail_compact_method =
-        expressions[:available_asset_units_compact_vintage_method].expressions[:assets]
-
-    # Create constraint
-    table_name = "cons_capacity_outgoing_compact_efficiencies_vintage_method"
-    table_rows = [
-        (1, "wind", 2030, 2020, 1, 1, 1),
-        (2, "wind", 2030, 2030, 1, 1, 1),
-        (3, "wind", 2050, 2030, 1, 1, 1),
-        (4, "wind", 2050, 2050, 1, 1, 1),
-    ]
-    columns = [
-        :id,
-        :asset,
-        :milestone_year,
-        :commission_year,
-        :rep_period,
-        :time_block_start,
-        :time_block_end,
-    ]
-    _create_table_for_tests(connection, table_name, table_rows, columns)
-    constraints = let key = :capacity_outgoing_compact_efficiencies_vintage_method
-        Dict{Symbol,TulipaEnergyModel.TulipaConstraint}(
-            key => TulipaEnergyModel.TulipaConstraint(connection, "cons_$key"),
+        # Explicitly define the compact-efficiencies vintages to match the test target.
+        TB.attach_milestone_data!(tulipa, "wind", 2030; investable = true)
+        TB.attach_milestone_data!(tulipa, "wind", 2050; investable = true)
+        TB.attach_commission_data!(tulipa, "wind", 2030)
+        TB.attach_commission_data!(tulipa, "wind", 2050)
+        TB.attach_both_years_data!(
+            tulipa,
+            "wind",
+            2020,
+            2030;
+            initial_units = 1.0,
+            decommissionable = true,
         )
+        TB.attach_both_years_data!(
+            tulipa,
+            "wind",
+            2030,
+            2030;
+            initial_units = 1.0,
+            decommissionable = true,
+        )
+        TB.attach_both_years_data!(
+            tulipa,
+            "wind",
+            2030,
+            2050;
+            initial_units = 1.0,
+            decommissionable = true,
+        )
+        TB.attach_both_years_data!(
+            tulipa,
+            "wind",
+            2050,
+            2050;
+            initial_units = 1.0,
+            decommissionable = true,
+        )
+
+        TB.add_flow!(tulipa, "wind", "demand")
+        TB.add_flow!(tulipa, "wind", "battery")
+        for to_asset in ("demand", "battery")
+            TB.attach_milestone_data!(tulipa, "wind", to_asset, 2030)
+            TB.attach_milestone_data!(tulipa, "wind", to_asset, 2050)
+            TB.attach_commission_data!(tulipa, "wind", to_asset, 2020)
+            TB.attach_commission_data!(tulipa, "wind", to_asset, 2030)
+            TB.attach_commission_data!(tulipa, "wind", to_asset, 2050)
+        end
+
+        TB.attach_profile!(tulipa, "wind", :availability, 2020, [1.0])
+        TB.attach_profile!(tulipa, "wind", :availability, 2030, [1.0])
+        TB.attach_profile!(tulipa, "wind", :availability, 2050, [1.0])
+
+        connection = TB.create_connection(tulipa, TEM.schema)
+        layout = TC.ProfilesTableLayout(; year = :milestone_year)
+        TC.dummy_cluster!(connection; layout)
+
+        TEM.populate_with_defaults!(connection)
+        energy_problem = TEM.EnergyProblem(connection)
+        TEM.create_model!(energy_problem)
+
+        return energy_problem
     end
+end
 
-    # Create profiles
-    TulipaEnergyModel.create_internal_tables!(connection)
-    profiles = TulipaEnergyModel.prepare_profiles_structure(connection)
+@testitem "Test add_capacity_outgoing_compact_efficiencies_vintage_method_constraints!" setup =
+    [CommonSetup, ConsCapacityOutgoingCompactEfficienciesSetup] tags = [:unit, :constraint, :fast] begin
+    energy_problem = create_capacity_outgoing_compact_efficiencies_problem()
 
-    var_vintage_flow_wind_battery = variables[:vintage_flow].container[1:4]
-    var_vintage_flow_wind_demand = variables[:vintage_flow].container[5:8]
+    connection = energy_problem.db_connection
+    model = energy_problem.model
+    profiles = energy_problem.profiles
 
-    # Attach outgoing flow expressions to the constraint
-    # Note in the original code, this is done by `add_expression_terms_rep_period_constraints!`
-    # which will be tested separately.
-    TulipaEnergyModel.attach_expression!(
-        constraints[:capacity_outgoing_compact_efficiencies_vintage_method],
-        :outgoing,
-        [
-            JuMP.@expression(
-                model,
-                var_vintage_flow_wind_battery[idx] + var_vintage_flow_wind_demand[idx]
-            ) for idx in 1:4
-        ],
-    )
-    # Create JuMP constraints
-    TulipaEnergyModel.add_capacity_outgoing_compact_efficiencies_vintage_method_constraints!(
+    vintage_flow = energy_problem.variables[:vintage_flow].container
+    expr_avail_compact_method =
+        energy_problem.expressions[:available_asset_units_compact_vintage_method].expressions[:assets]
+
+    selected_rows = DuckDB.query(
         connection,
-        model,
-        expr_avail_compact_method,
-        constraints,
-        profiles,
+        "SELECT id, milestone_year, commission_year, rep_period
+         FROM cons_capacity_outgoing_compact_efficiencies_vintage_method
+         WHERE milestone_year IN (2030, 2050)
+         ORDER BY milestone_year, commission_year",
     )
-    observed_cons =
-        _get_cons_object(model, :max_output_flows_limit_compact_efficiencies_vintage_method)
+    selected_constraint_ids = [row.id for row in selected_rows]
+    selected_rep_periods = [row.rep_period for row in selected_rows]
+
+    selected_var_battery_ids = [
+        row.id for row in DuckDB.query(
+            connection,
+            "SELECT id
+             FROM var_vintage_flow
+             WHERE from_asset = 'wind' AND to_asset = 'battery' AND milestone_year IN (2030, 2050)
+             ORDER BY milestone_year, commission_year",
+        )
+    ]
+    selected_var_demand_ids = [
+        row.id for row in DuckDB.query(
+            connection,
+            "SELECT id
+             FROM var_vintage_flow
+             WHERE from_asset = 'wind' AND to_asset = 'demand' AND milestone_year IN (2030, 2050)
+             ORDER BY milestone_year, commission_year",
+        )
+    ]
+    selected_expr_ids = [
+        row.id for row in DuckDB.query(
+            connection,
+            "SELECT id
+             FROM expr_available_asset_units_compact_vintage_method
+             WHERE milestone_year IN (2030, 2050)
+             ORDER BY milestone_year, commission_year",
+        )
+    ]
+
+    var_vintage_flow_wind_battery = vintage_flow[selected_var_battery_ids]
+    var_vintage_flow_wind_demand = vintage_flow[selected_var_demand_ids]
+    selected_expr_avail_compact_method = expr_avail_compact_method[selected_expr_ids]
 
     expected_profiles = [
-        profiles.rep_period[("availability-wind2020", 2030, 1)][1],
-        profiles.rep_period[("availability-wind2030", 2030, 1)][1],
-        profiles.rep_period[("availability-wind2030", 2050, 1)][1],
-        profiles.rep_period[("availability-wind2050", 2050, 1)][1],
+        if haskey(profiles.rep_period, ("wind-availability-2020", 2030, selected_rep_periods[1]))
+            profiles.rep_period[("wind-availability-2020", 2030, selected_rep_periods[1])].values[1]
+        else
+            1.0
+        end,
+        if haskey(profiles.rep_period, ("wind-availability-2030", 2030, selected_rep_periods[2]))
+            profiles.rep_period[("wind-availability-2030", 2030, selected_rep_periods[2])].values[1]
+        else
+            1.0
+        end,
+        if haskey(profiles.rep_period, ("wind-availability-2030", 2050, selected_rep_periods[3]))
+            profiles.rep_period[("wind-availability-2030", 2050, selected_rep_periods[3])].values[1]
+        else
+            1.0
+        end,
+        if haskey(profiles.rep_period, ("wind-availability-2050", 2050, selected_rep_periods[4]))
+            profiles.rep_period[("wind-availability-2050", 2050, selected_rep_periods[4])].values[1]
+        else
+            1.0
+        end,
     ]
     capacity = 50
     expected_cons = [
@@ -178,8 +161,11 @@
             var_vintage_flow_wind_battery,
             var_vintage_flow_wind_demand,
             expected_profiles,
-            expr_avail_compact_method,
+            selected_expr_avail_compact_method,
         )
     ]
+
+    observed_cons =
+        _get_cons_object(model, :max_output_flows_limit_compact_efficiencies_vintage_method)[selected_constraint_ids]
     @test _is_constraint_equal(expected_cons, observed_cons)
 end

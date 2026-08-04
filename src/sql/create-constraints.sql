@@ -680,6 +680,54 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_max_available_asset_units
+;
+
+create table cons_max_available_asset_units as
+select
+    nextval('id') as id,
+    asset,
+    milestone_year,
+    max_available_units as rhs,
+from
+    asset_milestone
+where
+    max_available_units is not null
+order by
+    asset,
+    milestone_year
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_min_available_asset_units
+;
+
+create table cons_min_available_asset_units as
+select
+    nextval('id') as id,
+    asset,
+    milestone_year,
+    min_available_units as rhs,
+from
+    asset_milestone
+where
+    min_available_units is not null
+order by
+    asset,
+    milestone_year
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 -- This query fetches and appends flows relationships data to constraint table
 -- It joins the `cons_flows_relationships` table with the `flows_relationships` table
 -- using a composite key created by concatenating the flows from/to columns in the `flows_relationships` table.

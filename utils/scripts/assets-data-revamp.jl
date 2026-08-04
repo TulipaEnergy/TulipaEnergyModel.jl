@@ -219,10 +219,12 @@ apply_to_files_named("asset-commission.csv"; include_missing = true) do path
                     vad.commission_year,
                     ANY_VALUE(fixed_cost) AS fixed_cost,
                     ANY_VALUE(investment_cost) AS investment_cost,
-                    ANY_VALUE(investment_limit) AS investment_limit,
+                    ANY_VALUE(investment_limit) AS investment_max_limit,
+                    0.0 AS investment_min_limit,
                     ANY_VALUE(vad.fixed_cost_storage_energy) AS fixed_cost_storage_energy,
                     ANY_VALUE(vad.investment_cost_storage_energy) AS investment_cost_storage_energy,
-                    ANY_VALUE(investment_limit_storage_energy) AS investment_limit_storage_energy,
+                    ANY_VALUE(investment_limit_storage_energy) AS investment_max_limit_storage_energy,
+                    0.0 AS investment_min_limit_storage_energy,
                 FROM vintage_assets_data AS vad
                 LEFT JOIN assets_data AS ad
                     ON vad.name = ad.name
@@ -264,7 +266,8 @@ apply_to_files_named("flow-commission.csv"; include_missing = true) do path
                     ANY_VALUE(fixed_cost) AS fixed_cost,
                     ANY_VALUE(investment_cost) AS investment_cost,
                     ANY_VALUE(producer_efficiency) AS producer_efficiency,
-                    ANY_VALUE(investment_limit) AS investment_limit,
+                    ANY_VALUE(investment_limit) AS investment_max_limit,
+                    0.0 AS investment_min_limit,
                 FROM vintage_flows_data AS vfd
                 LEFT JOIN flows_data AS fd
                     ON vfd.from_asset = fd.from_asset

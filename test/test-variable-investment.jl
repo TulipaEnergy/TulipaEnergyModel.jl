@@ -10,7 +10,8 @@
         milestone_year = [2030, 2030, 2040, 2040],
         investment_integer = [true, false, true, true],
         capacity = [100.0, 50.0, 25.0, 125.0],
-        investment_limit = [1000.0, missing, 500.0, 650.0],
+        investment_min_limit = [150.0, 12.5, 500.0, 125.0],
+        investment_max_limit = [1000.0, missing, 500.0, 650.0],
     )
     DuckDB.register_data_frame(connection, asset_investment_data, "var_assets_investment")
 
@@ -22,7 +23,8 @@
         milestone_year = [2030, 2030],
         investment_integer = [false, true],
         capacity = [80.0, 60.0],
-        investment_limit = [800.0, missing],
+        investment_min_limit = [160.0, 0.0],
+        investment_max_limit = [800.0, missing],
     )
     DuckDB.register_data_frame(connection, flow_investment_data, "var_flows_investment")
 
@@ -33,7 +35,8 @@
         milestone_year = [2040],
         investment_integer_storage_energy = [true],
         capacity_storage_energy = [100.0],
-        investment_limit_storage_energy = [1200.0],
+        investment_min_limit_storage_energy = [250.0],
+        investment_max_limit_storage_energy = [1200.0],
     )
     DuckDB.register_data_frame(
         connection,
@@ -62,8 +65,22 @@
     for row in eachrow(asset_investment_data)
         _test_variable_properties(
             asset_vars[row.id],
-            0.0,
-            ismissing(row.investment_limit) ? nothing : floor(row.investment_limit / row.capacity);
+            if row.investment_integer
+                ceil(row.investment_min_limit / row.capacity)
+            else
+                row.investment_min_limit / row.capacity
+            end,
+            if ismissing(row.investment_max_limit)
+                nothing
+            else
+                (
+                    if row.investment_integer
+                        floor(row.investment_max_limit / row.capacity)
+                    else
+                        row.investment_max_limit / row.capacity
+                    end
+                )
+            end;
             is_integer = row.investment_integer,
         )
     end
@@ -73,8 +90,22 @@
     for row in eachrow(flow_investment_data)
         _test_variable_properties(
             flow_vars[row.id],
-            0.0,
-            ismissing(row.investment_limit) ? nothing : floor(row.investment_limit / row.capacity);
+            if row.investment_integer
+                ceil(row.investment_min_limit / row.capacity)
+            else
+                row.investment_min_limit / row.capacity
+            end,
+            if ismissing(row.investment_max_limit)
+                nothing
+            else
+                (
+                    if row.investment_integer
+                        floor(row.investment_max_limit / row.capacity)
+                    else
+                        row.investment_max_limit / row.capacity
+                    end
+                )
+            end;
             is_integer = row.investment_integer,
         )
     end
@@ -84,11 +115,19 @@
     for row in eachrow(asset_investment_energy_data)
         _test_variable_properties(
             energy_vars[row.id],
-            0.0,
-            if ismissing(row.investment_limit_storage_energy)
+            if row.investment_integer_storage_energy
+                ceil(row.investment_min_limit_storage_energy / row.capacity_storage_energy)
+            else
+                row.investment_min_limit_storage_energy / row.capacity_storage_energy
+            end,
+            if ismissing(row.investment_max_limit_storage_energy)
                 nothing
             else
-                floor(row.investment_limit_storage_energy / row.capacity_storage_energy)
+                if row.investment_integer_storage_energy
+                    floor(row.investment_max_limit_storage_energy / row.capacity_storage_energy)
+                else
+                    row.investment_max_limit_storage_energy / row.capacity_storage_energy
+                end
             end;
             is_integer = row.investment_integer_storage_energy,
         )

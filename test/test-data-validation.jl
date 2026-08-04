@@ -532,8 +532,8 @@ end
     ]
 end
 
-@testitem "Test binary storage method has investment limit - using fake data" setup = [CommonSetup] tags =
-    [:unit, :data_validation, :fast] begin
+@testitem "Test binary storage method has investment maximum limit - using fake data" setup =
+    [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)
     asset = DataFrame(
         :asset => ["storage_1", "storage_2", "storage_3", "storage_4", "storage_5"],
@@ -549,20 +549,20 @@ end
         :asset => ["storage_1", "storage_2", "storage_3", "storage_4", "storage_5"],
         :milestone_year => repeat([1], 5),
         :commission_year => repeat([1], 5),
-        :investment_limit => [missing, 0, 1, missing, missing],
+        :investment_max_limit => [missing, 0, 1, missing, missing],
     )
     DuckDB.register_data_frame(connection, asset, "asset")
     DuckDB.register_data_frame(connection, asset_milestone, "asset_milestone")
     DuckDB.register_data_frame(connection, asset_commission, "asset_commission")
     error_messages =
-        TEM._validate_use_binary_storage_method_has_investment_limit!(String[], connection)
+        TEM._validate_use_binary_storage_method_has_investment_max_limit!(String[], connection)
     @test error_messages == [
-        "Incorrect investment_limit = missing for investable storage asset 'storage_1' with use_binary_storage_method = 'binary' for milestone_year 1. The investment_limit at commission_year 1 should be greater than 0 in 'asset_commission'.",
-        "Incorrect investment_limit = 0 for investable storage asset 'storage_2' with use_binary_storage_method = 'binary' for milestone_year 1. The investment_limit at commission_year 1 should be greater than 0 in 'asset_commission'.",
+        "Incorrect investment_max_limit = missing for investable storage asset 'storage_1' with use_binary_storage_method = 'binary' for milestone_year 1. The investment_max_limit at commission_year 1 should be greater than 0 in 'asset_commission'.",
+        "Incorrect investment_max_limit = 0 for investable storage asset 'storage_2' with use_binary_storage_method = 'binary' for milestone_year 1. The investment_max_limit at commission_year 1 should be greater than 0 in 'asset_commission'.",
     ]
 end
 
-@testitem "Test binary storage method has investment limit - using Storage data" setup =
+@testitem "Test binary storage method has investment maximum limit - using Storage data" setup =
     [CommonSetup] tags = [:unit, :data_validation, :fast] begin
     connection = _storage_fixture()
     DuckDB.query(
@@ -573,11 +573,90 @@ end
         """,
     )
     error_messages =
-        TEM._validate_use_binary_storage_method_has_investment_limit!(String[], connection)
+        TEM._validate_use_binary_storage_method_has_investment_max_limit!(String[], connection)
     @test error_messages == [
-        "Incorrect investment_limit = missing for investable storage asset 'battery' with use_binary_storage_method = 'binary' for milestone_year 2030. The investment_limit at commission_year 2030 should be greater than 0 in 'asset_commission'.",
+        "Incorrect investment_max_limit = missing for investable storage asset 'battery' with use_binary_storage_method = 'binary' for milestone_year 2030. The investment_max_limit at commission_year 2030 should be greater than 0 in 'asset_commission'.",
     ]
 end
+
+@testitem "Test investment and available units limits validation" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(
+        connection,
+        """
+        UPDATE asset_commission
+        SET investment_min_limit = -1
+        WHERE asset = 'ccgt';
+        UPDATE asset_commission
+        SET
+            investment_min_limit_storage_energy = 5,
+            investment_max_limit_storage_energy = 4
+        WHERE asset = 'ccgt';
+        UPDATE flow_commission
+        SET investment_min_limit = 2, investment_max_limit = 1
+        WHERE from_asset = 'ccgt' AND to_asset = 'demand';
+        UPDATE asset_milestone
+        SET min_available_units = 2, max_available_units = 1
+        WHERE asset = 'ccgt';
+        """,
+    )
+
+    error_messages = TEM._validate_investment_and_available_units_limits!(String[], connection)
+    @test error_messages == [
+        "Invalid limits in 'asset_commission' for (asset=ccgt, commission_year=2030): investment_min_limit=-1.0, investment_max_limit=10000.0; violations: 'investment_min_limit' is negative.",
+        "Invalid limits in 'asset_commission' for (asset=ccgt, commission_year=2030): investment_min_limit_storage_energy=5.0, investment_max_limit_storage_energy=4.0; violations: 'investment_min_limit_storage_energy' > 'investment_max_limit_storage_energy'.",
+        "Invalid limits in 'flow_commission' for (from_asset=ccgt, to_asset=demand, commission_year=2030): investment_min_limit=2.0, investment_max_limit=1.0; violations: 'investment_min_limit' > 'investment_max_limit'.",
+        "Invalid limits in 'asset_milestone' for (asset=ccgt, milestone_year=2030): min_available_units=2.0, max_available_units=1.0; violations: 'min_available_units' > 'max_available_units'.",
+    ]
+end
+
+@testitem "Test integer investment limits validation" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(
+        connection,
+        """
+        UPDATE asset_commission
+        SET investment_min_limit = 401, investment_max_limit = 799
+        WHERE asset = 'ccgt';
+        """,
+    )
+
+    error_messages = TEM._validate_investment_and_available_units_limits!(String[], connection)
+    @test error_messages == [
+        "No integer investment units satisfy 'investment_min_limit' and 'investment_max_limit' for 'asset_commission' at (ccgt, 2030).",
+    ]
+end
+
+@testitem "Test positive investment minimum limit requires non-zero capacity" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(
+        connection,
+        """
+        UPDATE asset SET capacity = 0 WHERE asset = 'ccgt';
+        UPDATE asset_commission SET investment_min_limit = 1 WHERE asset = 'ccgt';
+        """,
+    )
+
+    error_messages = TEM._validate_investment_and_available_units_limits!(String[], connection)
+    @test error_messages == [
+        "Positive 'investment_min_limit' requires a capacity greater than zero for 'asset_commission' at (ccgt, 2030).",
+    ]
+end
+
+@testitem "Test legacy investment limit columns validation" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(connection, "ALTER TABLE asset_commission ADD COLUMN investment_limit DOUBLE")
+
+    error_messages = TEM._validate_no_legacy_investment_limit_columns!(String[], connection)
+    @test error_messages == [
+        "Legacy column 'investment_limit' found in 'asset_commission'. Run 'uv run --with duckdb python utils/scripts/migrate-investment-limits.py'.",
+    ]
+end
+
 @testitem "Test DC OPF data - reactance > 0 using fake data" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     connection = DBInterface.connect(DuckDB.DB)

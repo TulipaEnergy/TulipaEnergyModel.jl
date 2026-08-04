@@ -235,6 +235,13 @@ function create_model(
         constraints,
     )
 
+    @timeit to "add_available_asset_units_constraints!" add_available_asset_units_constraints!(
+        connection,
+        model,
+        expressions,
+        constraints,
+    )
+
     @timeit to "add_ramping_constraints!" add_ramping_constraints!(
         connection,
         model,

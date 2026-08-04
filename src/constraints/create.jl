@@ -32,6 +32,8 @@ function compute_constraints_indices(connection)
             :min_outgoing_flow_for_transport_vintage_flows,
             :min_incoming_flow_for_transport_flows,
             :group_investment,
+            :max_available_asset_units,
+            :min_available_asset_units,
             :flows_relationships,
             :dc_power_flow,
             :limit_decommission_compact_vintage_method,
