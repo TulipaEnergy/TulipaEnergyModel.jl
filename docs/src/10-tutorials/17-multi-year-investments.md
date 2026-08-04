@@ -52,7 +52,7 @@ energy_problem = TEM.run_scenario(connection)
 
 There is a new file *model-parameters.csv*. It contains model-wide parameters, in this case:
 
-!!! tip "Pro tip: Creating the `model_parameters` table manually"
+!!! tip "Pro tip: Creating the model parameters table manually"
     If you already have a DuckDB connection with the input data but the `model_parameters` table is not there yet, you can create the table manually to add the `discount_rate` and `discount_year` using DuckDB with your values and then populating with defaults for the missing columns in the table.
 
 ```@example multi-year-investments

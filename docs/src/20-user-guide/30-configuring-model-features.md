@@ -356,7 +356,7 @@ A storage asset can be used instead, in which case the storage level accumulates
 
 For an example of implementing CO2 emissions as a consumer asset, refer to the [`multiple inputs and outputs`](@ref flex-time-res-mimo) example in the concepts section.
 
-!!! warning "A sink must not be an `'=='` consumer"
+!!! warning "A terminal node must not use the default balance sense"
     A terminal node with `consumer_balance_sense = '=='` and `peak_demand = 0` has no outgoing flow, so its balance reduces to incoming $= 0$, which forces the emissions to be zero and typically makes the model infeasible. The last node of a chain must use `'>='`.
 
 ### [Step 3: Limiting the total emissions](@id emissions-step-limiting)
@@ -387,10 +387,10 @@ To set it up:
 
 Keep the defaults for `storage_charging_efficiency` (1.0) and `storage_loss_from_stored_energy` (0), otherwise CO2 is created or destroyed on its way into the accumulator.
 
-!!! warning "`initial_storage_level` must be set, or the emissions are forced to zero"
+!!! warning "The initial storage level must be set, or the emissions are forced to zero"
     When `initial_storage_level` is missing, the [inter-period cycling constraint](@ref inter-period-storage-balance) makes the level of the first period block equal to the level of the last one. An emission accumulator only charges, so its level can only increase, and the only way to close the cycle is a level that never changes, i.e., zero emissions everywhere. Defining `initial_storage_level = 0` replaces the cycle with a final level greater than or equal to the initial one, which is what a carbon budget needs.
 
-!!! info "Emission flows into the accounting node keep `storage_coefficient = 1`"
+!!! info "Emission flows into the accounting node keep the default storage coefficient"
     The by-product warning in [step 1](@ref emissions-step-creating) is about the _emitting_ asset, whose own balance the emissions must stay out of. At the accounting node the opposite holds: the emission flows are exactly what the storage balance should count, so they keep the default `storage_coefficient = 1`.
 
 The two costs of this approach are:
@@ -408,10 +408,10 @@ The [outgoing energy constraints](@ref max-min-outgoing-energy-setup) limit the 
 4. (optional) Add a row to `assets_timeframe_profiles` with `profile_type = 'max_energy'` (or `'min_energy'`) pointing to a profile in `profiles_timeframe`, if the budget should vary over the periods. Without a profile, the default is 1.0 p.u. for every period.
 5. (optional) Add a row to `assets_timeframe_partitions` to aggregate periods into a single constraint.
 
-!!! warning "The cap applies to _all_ the outgoing flows of the asset"
+!!! warning "The cap applies to every outgoing flow of the asset"
     The constraint sums every outgoing flow of the asset, so it must be placed on a node whose outgoing flows are only emissions. Setting `max_energy_timeframe_partition` directly on a gas-fired power plant would cap the sum of its electricity output _and_ its CO2 output, which is not an emission budget. For the same reason, an accounting node that sends emissions to more than one place needs an extra pass-through node that carries only the flow to be capped, as in the [BECCS example](@ref beccs-example).
 
-!!! info "`is_seasonal` is not restricted to storage assets"
+!!! info "The seasonal flag is not restricted to storage assets"
     Although the description of `is_seasonal` refers to seasonal storage (e.g., hydro), the flag is what enables the inter-period constraints for _any_ asset type, so it can be set on an accounting node as well.
 
 Since `max_energy_timeframe_partition` is defined **per period**, and the profile of a period block is aggregated with a sum, the value to fill in is the budget of a single period, not the budget of the whole year. What the partition changes is how tightly the budget is distributed over the year, not its total. For example, with a year clustered into 365 daily periods, an annual budget of 3650 tCO2, and no profile defined:
@@ -479,7 +479,7 @@ which makes the flow towards `atmosphere_net` the **net** emissions, released mi
 - The absorbed CO2 follows the biomass input: `flow_1 = (atmosphere, beccs)`, `flow_2 = (biomass_supply, beccs)`, `sense = '=='`, `constant = 0`, `ratio =` $\eta$.
 - The stored CO2 equals the absorbed CO2: `flow_1 = (beccs, co2_storage)`, `flow_2 = (atmosphere, beccs)`, `sense = '=='`, `constant = 0`, `ratio = 1`. This is the `flow_3 = flow_2` condition that makes the removal permanent.
 
-!!! info "Why the extra `atmosphere_net` node?"
+!!! info "Why the extra net emissions node?"
     The `atmosphere` node has two outgoing flows: the CO2 absorbed by the biomass and the net emissions. Since the [outgoing energy constraint](@ref max-min-outgoing-energy-setup) sums _all_ outgoing flows of an asset, placing the cap on `atmosphere` would also count the absorbed CO2. The `atmosphere_net` pass-through node has exactly one outgoing flow, so it is the node that carries `is_seasonal = true` and `max_energy_timeframe_partition`.
 
 !!! warning "The net flow of the accounting node cannot become negative"
