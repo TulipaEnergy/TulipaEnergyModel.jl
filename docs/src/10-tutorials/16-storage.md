@@ -68,7 +68,7 @@ Nice, so what about the storage level?
 
 ```@example seasonal-and-non-seasonal-storage
 # Retrieve and group the data
-storage_levels = TIO.get_table(connection, "var_storage_level_rep_period")
+storage_levels = TIO.get_table(connection, "var_storage_level_intra_rep_period")
 gdf = groupby(storage_levels, [:asset])
 
 # Create a simple plot
@@ -190,7 +190,7 @@ Here is an example of how to combine the plots for this case:
 
 ```@example seasonal-and-non-seasonal-storage
 # plotting the results for the hourly benchmark
-storage_levels_hourly = TIO.get_table(conn_hourly_benchmark, "var_storage_level_rep_period")
+storage_levels_hourly = TIO.get_table(conn_hourly_benchmark, "var_storage_level_intra_rep_period")
 asset_to_filter = "h2_storage"
 hourly_filtered_asset = filter(
     row ->
@@ -251,7 +251,7 @@ DuckDB.query(conn_hourly_benchmark, "UPDATE asset SET use_inter_period_constrain
 ep_hourly = TEM.run_scenario(conn_hourly_benchmark; show_log = false)
 
 # The plot of the hourly benchmark
-storage_levels_hourly = TIO.get_table(conn_hourly_benchmark, "var_storage_level_rep_period")
+storage_levels_hourly = TIO.get_table(conn_hourly_benchmark, "var_storage_level_intra_rep_period")
 asset_to_filter = "h2_storage"
 hourly_filtered_asset = filter(row -> row.asset == asset_to_filter, storage_levels_hourly)
 p = plot(

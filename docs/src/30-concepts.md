@@ -679,7 +679,7 @@ energy_problem = run_scenario(connection)
 Since the `battery` and the `caes` are not seasonal, they only have results for the rep-period-storage level of each representative period, as shown in the following figure:
 
 ```@example seasonal-storage
-storage_levels = TulipaIO.get_table(connection, "var_storage_level_rep_period") # hide
+storage_levels = TulipaIO.get_table(connection, "var_storage_level_intra_rep_period") # hide
 rep_period_assets = sort(unique(storage_levels.asset)) # hide
 p = plot(; # hide
     layout = grid(length(rep_period_assets), 1), # hide

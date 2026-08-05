@@ -27,7 +27,7 @@ The `use_inter_period_constraints` parameter enables inter-period constraints fo
 
 !!! tip
     For storage assets, you can validate which formulation is active by checking the output tables:
-    - rep-period behavior: `var_storage_level_rep_period`
+    - rep-period behavior: `var_storage_level_intra_rep_period`
     - inter-period behavior: `var_storage_level_inter_period`
 
 ## Storage constraints

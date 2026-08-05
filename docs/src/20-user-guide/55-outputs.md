@@ -81,7 +81,7 @@ Associated input parameters: `investable`, `investment_integer`, `capacity`, `in
 
 For a storage asset in a specific `milestone_year` and between `period_start` and `period_end`, the optimal storage level BETWEEN representative periods, expressed in the same units as `capacity_storage_energy` of asset.
 
-### `var_storage_level_rep_period`
+### `var_storage_level_intra_rep_period`
 
 For a storage asset in a specific `milestone_year` and between `period_start` and `period_end`, the optimal storage level WITHIN representative periods, expressed in the same units as `capacity_storage_energy` of asset.
 

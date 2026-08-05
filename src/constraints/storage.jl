@@ -12,7 +12,7 @@ function add_storage_constraints!(
     profiles;
     rolling_horizon = false,
 )
-    var_storage_level_rep_period = variables[:storage_level_rep_period]
+    var_storage_level_intra_rep_period = variables[:storage_level_rep_period]
     var_storage_level_inter_period = variables[:storage_level_inter_period]
     var_accumulated_storage_level_intra_rep_period =
         variables[:accumulated_storage_level_intra_period]
@@ -116,8 +116,8 @@ function add_storage_constraints!(
                         available_energy_capacity_aggregated_vintage_method[row.avail_energy_capacity_id],
                         base_name = "max_storage_level_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
-                end for
-                (row, var_storage_level) in zip(indices, var_storage_level_rep_period.container)
+                end for (row, var_storage_level) in
+                zip(indices, var_storage_level_intra_rep_period.container)
             ],
         )
 
@@ -142,8 +142,8 @@ function add_storage_constraints!(
                         available_energy_capacity_aggregated_vintage_method[row.avail_energy_capacity_id],
                         base_name = "min_storage_level_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
-                end for
-                (row, var_storage_level) in zip(indices, var_storage_level_rep_period.container)
+                end for (row, var_storage_level) in
+                zip(indices, var_storage_level_intra_rep_period.container)
             ],
         )
     end

@@ -624,7 +624,7 @@ Select all variables of storage level at representative periods with value great
 
 ```@example obz
 nice_query("SELECT *
-    FROM var_storage_level_rep_period
+    FROM var_storage_level_intra_rep_period
     WHERE solution > 0
     LIMIT 5
 ")
