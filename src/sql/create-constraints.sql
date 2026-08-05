@@ -571,7 +571,7 @@ create table cons_accumulated_storage_intra_period as
 select
     *
 from
-    var_accumulated_storage_level_intra_period
+    var_accumulated_storage_level_intra_rep_period
 ;
 
 drop sequence id

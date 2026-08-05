@@ -14,7 +14,8 @@ function add_storage_constraints!(
 )
     var_storage_level_rep_period = variables[:storage_level_rep_period]
     var_storage_level_inter_period = variables[:storage_level_inter_period]
-    var_accumulated_storage_level_intra_period = variables[:accumulated_storage_level_intra_period]
+    var_accumulated_storage_level_intra_rep_period =
+        variables[:accumulated_storage_level_intra_period]
 
     rolling_horizon_lookup = if rolling_horizon
         Dict{Int,Int}(

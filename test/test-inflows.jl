@@ -69,7 +69,7 @@
                 connection,
                 """
                 SELECT id
-                FROM var_accumulated_storage_level_intra_period
+                FROM var_accumulated_storage_level_intra_rep_period
                 WHERE asset = '$storage_asset'
                 """,
             )

@@ -334,10 +334,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists var_accumulated_storage_level_intra_period
+drop table if exists var_accumulated_storage_level_intra_rep_period
 ;
 
-create table var_accumulated_storage_level_intra_period as
+create table var_accumulated_storage_level_intra_rep_period as
 with
     filtered_assets as (
         select
