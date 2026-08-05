@@ -1,0 +1,12 @@
+from_asset,to_asset,milestone_year,operational_cost,commodity_price
+wind,e_demand,2030,5,0.0
+ccgt,e_demand,2030,50,0.0
+ocgt,e_demand,2030,70,0.0
+solar,e_demand,2030,10,0.0
+ens,e_demand,2030,180,0.0
+wind,electrolizer,2030,5,0.0
+electrolizer,h2_demand,2030,0,0.0
+smr_ccs,h2_demand,2030,100,0.0
+wind_offshore,hub,2030,5,0.0
+wind_offshore,electrolizer,2030,5,0.0
+hub,e_demand,2030,0,0.0
