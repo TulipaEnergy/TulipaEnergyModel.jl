@@ -13,7 +13,7 @@ function compute_variables_indices(connection)
             :shut_down,
             :electricity_angle,
             :is_charging,
-            :storage_level_rep_period,
+            :storage_level_intra_rep_period,
             :storage_level_inter_period,
             :accumulated_storage_level_intra_rep_period,
             :assets_investment,

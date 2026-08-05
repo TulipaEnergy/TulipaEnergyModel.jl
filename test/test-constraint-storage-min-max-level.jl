@@ -194,7 +194,7 @@ end
     connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
 
     # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_rep_period].container
+    storage_level = energy_problem.variables[:storage_level_intra_rep_period].container
 
     # Verify all expected constraints exist
     constraint_data = get_rep_periods_constraint_data(connection, storage_asset.name)
@@ -209,7 +209,7 @@ end
         min_profile_value =
             get_rep_periods_profile_value(connection, "min_storage_level", y, rp, ts)
 
-        # Build expected min_storage_level_rep_period_limit constraint
+        # Build expected min_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] >=
             storage_asset.capacity_storage_energy *
@@ -220,7 +220,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :min_storage_level_rep_period_limit,
+            :min_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )
@@ -229,7 +229,7 @@ end
         max_profile_value =
             get_rep_periods_profile_value(connection, "max_storage_level", y, rp, ts)
 
-        # Build expected max_storage_level_rep_period_limit constraint
+        # Build expected max_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] <=
             storage_asset.capacity_storage_energy *
@@ -240,7 +240,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :max_storage_level_rep_period_limit,
+            :max_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )
@@ -267,7 +267,7 @@ end
     connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
 
     # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_rep_period].container
+    storage_level = energy_problem.variables[:storage_level_intra_rep_period].container
 
     # Extract energy storage investment
     assets_investment_energy = energy_problem.variables[:assets_investment_energy].container[1]
@@ -285,7 +285,7 @@ end
         min_profile_value =
             get_rep_periods_profile_value(connection, "min_storage_level", y, rp, ts)
 
-        # Build expected min_storage_level_rep_period_limit constraint
+        # Build expected min_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] >=
             min_profile_value *
@@ -296,7 +296,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :min_storage_level_rep_period_limit,
+            :min_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )
@@ -305,7 +305,7 @@ end
         max_profile_value =
             get_rep_periods_profile_value(connection, "max_storage_level", y, rp, ts)
 
-        # Build expected max_storage_level_rep_period_limit constraint
+        # Build expected max_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] <=
             max_profile_value *
@@ -316,7 +316,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :max_storage_level_rep_period_limit,
+            :max_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )
@@ -343,7 +343,7 @@ end
     connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
 
     # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_rep_period].container
+    storage_level = energy_problem.variables[:storage_level_intra_rep_period].container
 
     # Extract storage investment
     assets_investment = energy_problem.variables[:assets_investment].container[1]
@@ -361,7 +361,7 @@ end
         min_profile_value =
             get_rep_periods_profile_value(connection, "min_storage_level", y, rp, ts)
 
-        # Build expected min_storage_level_rep_period_limit constraint
+        # Build expected min_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] >=
             min_profile_value * (
@@ -373,7 +373,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :min_storage_level_rep_period_limit,
+            :min_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )
@@ -382,7 +382,7 @@ end
         max_profile_value =
             get_rep_periods_profile_value(connection, "max_storage_level", y, rp, ts)
 
-        # Build expected max_storage_level_rep_period_limit constraint
+        # Build expected max_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] <=
             max_profile_value * (
@@ -394,7 +394,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :max_storage_level_rep_period_limit,
+            :max_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )

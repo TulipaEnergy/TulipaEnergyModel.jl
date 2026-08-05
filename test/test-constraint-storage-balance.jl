@@ -370,7 +370,7 @@ end
         setup_test_problem(storage_asset, inflows_profile, num_timesteps, num_rps)
 
     # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_rep_period].container
+    storage_level = energy_problem.variables[:storage_level_intra_rep_period].container
 
     # Verify all expected constraints exist
     cons_name = :balance_storage_rep_period

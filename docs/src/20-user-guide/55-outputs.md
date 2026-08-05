@@ -110,8 +110,8 @@ Associated input parameter: `unit_commitment_integer`
 ### `cons_balance_storage_rep_period`
 
 - `dual_balance_storage_rep_period`: Dual of the constraint ["rep-period constraint for storage balance"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#rep-period-storage-balance).
-- `dual_max_storage_level_rep_period_limit`: Dual of the constraint ["rep-period constraint for maximimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Rep-period-Constraint-for-Maximum-Storage-Level-Limit)
-- `dual_min_storage_level_rep_period_limit`: Dual of the constraint ["rep-period constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Rep-period-Constraint-for-Minimum-Storage-Level-Limit)
+- `dual_max_storage_level_intra_rep_period_limit`: Dual of the constraint ["rep-period constraint for maximimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Rep-period-Constraint-for-Maximum-Storage-Level-Limit)
+- `dual_min_storage_level_intra_rep_period_limit`: Dual of the constraint ["rep-period constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Rep-period-Constraint-for-Minimum-Storage-Level-Limit)
 
 ### `cons_capacity_incoming`
 
