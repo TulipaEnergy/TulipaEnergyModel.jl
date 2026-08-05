@@ -443,7 +443,7 @@ end
 
     # Extract accumulated storage level variable
     accumulated_storage_level =
-        energy_problem.variables[:accumulated_storage_level_intra_period].container
+        energy_problem.variables[:accumulated_storage_level_intra_rep_period].container
 
     # Verify all expected constraints exist
     cons_name = :accumulated_storage_intra_period

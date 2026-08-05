@@ -742,7 +742,7 @@ function add_expressions_to_constraints!(connection, variables, constraints)
     @timeit to "add_expression_terms_inter_period_storage_constraints!" add_expression_terms_inter_period_storage_constraints!(
         connection,
         constraints[:balance_storage_inter_period],
-        variables[:accumulated_storage_level_intra_period],
+        variables[:accumulated_storage_level_intra_rep_period],
         workspace,
     )
     @timeit to "add_expression_terms_inter_period_constraints!" add_expression_terms_inter_period_constraints!(

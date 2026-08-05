@@ -15,7 +15,7 @@ function add_storage_constraints!(
     var_storage_level_intra_rep_period = variables[:storage_level_rep_period]
     var_storage_level_inter_period = variables[:storage_level_inter_period]
     var_accumulated_storage_level_intra_rep_period =
-        variables[:accumulated_storage_level_intra_period]
+        variables[:accumulated_storage_level_intra_rep_period]
 
     rolling_horizon_lookup = if rolling_horizon
         Dict{Int,Int}(
@@ -257,7 +257,8 @@ function add_storage_constraints!(
 
     ## intra-period constraints for seasonal storage
     let table_name = :accumulated_storage_intra_period, cons = constraints[table_name]
-        var_accumulated_storage_level = variables[:accumulated_storage_level_intra_period].container
+        var_accumulated_storage_level =
+            variables[:accumulated_storage_level_intra_rep_period].container
         indices = _append_storage_data_to_indices(connection, table_name)
         attach_constraint!(
             model,

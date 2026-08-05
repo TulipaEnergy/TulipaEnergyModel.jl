@@ -7,8 +7,8 @@ The function also optionally sets binary constraints for certain charging variab
 function add_storage_variables!(connection, model, variables)
     storage_level_rep_period_indices = variables[:storage_level_rep_period].indices
     storage_level_inter_period_indices = variables[:storage_level_inter_period].indices
-    accumulated_storage_level_intra_period_indices =
-        variables[:accumulated_storage_level_intra_period].indices
+    accumulated_storage_level_intra_rep_period_indices =
+        variables[:accumulated_storage_level_intra_rep_period].indices
     is_charging_indices = variables[:is_charging].indices
 
     variables[:storage_level_rep_period].container = [
@@ -27,11 +27,11 @@ function add_storage_variables!(connection, model, variables)
         ) for row in storage_level_inter_period_indices
     ]
 
-    variables[:accumulated_storage_level_intra_period].container = [
+    variables[:accumulated_storage_level_intra_rep_period].container = [
         @variable(
             model,
-            base_name = "accumulated_storage_level_intra_period[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
-        ) for row in accumulated_storage_level_intra_period_indices
+            base_name = "accumulated_storage_level_intra_rep_period[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+        ) for row in accumulated_storage_level_intra_rep_period_indices
     ]
 
     variables[:is_charging].container = [

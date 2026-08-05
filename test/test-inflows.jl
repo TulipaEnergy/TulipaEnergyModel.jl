@@ -59,7 +59,7 @@
 
     # Actual test, create expected constraint
     storage_level_intra =
-        energy_problem.variables[:accumulated_storage_level_intra_period].container
+        energy_problem.variables[:accumulated_storage_level_intra_rep_period].container
     flow = energy_problem.variables[:flow].container
     cons_name = :accumulated_storage_intra_period
 
