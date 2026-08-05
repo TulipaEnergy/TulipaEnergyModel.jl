@@ -7,6 +7,29 @@ Depth = [2, 3]
 
 This section assumes users have already followed the basic Tutorials and are looking for specific instructions for certain features.
 
+## [Using `use_inter_period_constraints`](@id use-inter-period-constraints-setup)
+
+The `use_inter_period_constraints` parameter enables inter-period constraints for an asset. In practice, it is used in two main feature groups:
+
+- Seasonal storage behavior (storage assets): it enables the inter-period storage balance across representative periods.
+- Outgoing energy limits (any asset type): it enables maximum/minimum outgoing energy constraints over timeframe periods.
+
+### Typical usage
+
+- Short-duration storage (for example, batteries with a few hours of duration and 24-hour representative periods): use `false`.
+- Long-duration or seasonal storage (for example, hydro reservoirs, hydrogen storage, or other multi-period storage): use `true`.
+- Outgoing energy caps/floors (`max_energy_timeframe_partition` or `min_energy_timeframe_partition`): use `true` on the asset where the limit is applied.
+
+### Important notes
+
+- One representative period covering the whole year (for example, one 8760-hour period): storage usually don't need constraints inter representative periods because one would like to track the storage level within the year, so use `false` for storage assets unless you intentionally need inter-period behavior (for example, modeling the CO2 emissions as a storage asset that aggregates over the year).
+- For outgoing energy limits, this flag is still required even when there is only one representative period, because it is the switch that activates those constraints.
+
+!!! tip
+    For storage assets, you can validate which formulation is active by checking the output tables:
+    - rep-period behavior: `var_storage_level_rep_period`
+    - inter-period behavior: `var_storage_level_inter_period`
+
 ## Storage constraints
 
 ### [Seasonal and non-seasonal storage](@id seasonal-setup)
@@ -169,7 +192,7 @@ For more details on the constraints that apply when selecting this method, pleas
 
 For the model to add constraints for a [maximum or minimum energy limit](@ref inter-period-energy-constraints) for an asset throughout the model's timeframe (e.g., a year), we need to establish a couple of parameters:
 
-- `use_inter_period_constraints = true`. This parameter enables the model to use the inter-period constraints.
+- `use_inter_period_constraints = true`. This parameter enables the inter-period constraints for that asset. See [Using `use_inter_period_constraints`](@ref use-inter-period-constraints-setup).
 - `max_energy_timeframe_partition` $\neq$ `missing` or `min_energy_timeframe_partition` $\neq$ `missing`. This value represents the peak energy that will be then multiplied by the profile for each period in the timeframe.
 
 !!! info
