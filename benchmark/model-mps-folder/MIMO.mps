@@ -93,14 +93,14 @@ ROWS
  L  max_output_flows_limit_aggregated_vintage_method[power_plant,2030,1,22:22]
  L  max_output_flows_limit_aggregated_vintage_method[power_plant,2030,1,23:23]
  L  max_output_flows_limit_aggregated_vintage_method[power_plant,2030,1,24:24]
- L  max_storage_level_rep_period_limit[biomass,2030,1,1:3]
- L  max_storage_level_rep_period_limit[biomass,2030,1,4:6]
- L  max_storage_level_rep_period_limit[biomass,2030,1,7:9]
- L  max_storage_level_rep_period_limit[biomass,2030,1,10:12]
- L  max_storage_level_rep_period_limit[biomass,2030,1,13:15]
- L  max_storage_level_rep_period_limit[biomass,2030,1,16:18]
- L  max_storage_level_rep_period_limit[biomass,2030,1,19:21]
- L  max_storage_level_rep_period_limit[biomass,2030,1,22:24]
+ L  max_storage_level_intra_rep_period_limit[biomass,2030,1,1:3]
+ L  max_storage_level_intra_rep_period_limit[biomass,2030,1,4:6]
+ L  max_storage_level_intra_rep_period_limit[biomass,2030,1,7:9]
+ L  max_storage_level_intra_rep_period_limit[biomass,2030,1,10:12]
+ L  max_storage_level_intra_rep_period_limit[biomass,2030,1,13:15]
+ L  max_storage_level_intra_rep_period_limit[biomass,2030,1,16:18]
+ L  max_storage_level_intra_rep_period_limit[biomass,2030,1,19:21]
+ L  max_storage_level_intra_rep_period_limit[biomass,2030,1,22:24]
  L  flows_relationships[chp_extraction_heat_demand_chp_extraction_electricity_demand,_2030,_1,_1:1]
  L  flows_relationships[chp_extraction_heat_demand_chp_extraction_electricity_demand,_2030,_1,_2:2]
  L  flows_relationships[chp_extraction_heat_demand_chp_extraction_electricity_demand,_2030,_1,_3:3]
@@ -174,14 +174,14 @@ ROWS
  G  consumer_balance[heat_demand,2030,1,22:22]
  G  consumer_balance[heat_demand,2030,1,23:23]
  G  consumer_balance[heat_demand,2030,1,24:24]
- G  min_storage_level_rep_period_limit[biomass,2030,1,1:3]
- G  min_storage_level_rep_period_limit[biomass,2030,1,4:6]
- G  min_storage_level_rep_period_limit[biomass,2030,1,7:9]
- G  min_storage_level_rep_period_limit[biomass,2030,1,10:12]
- G  min_storage_level_rep_period_limit[biomass,2030,1,13:15]
- G  min_storage_level_rep_period_limit[biomass,2030,1,16:18]
- G  min_storage_level_rep_period_limit[biomass,2030,1,19:21]
- G  min_storage_level_rep_period_limit[biomass,2030,1,22:24]
+ G  min_storage_level_intra_rep_period_limit[biomass,2030,1,1:3]
+ G  min_storage_level_intra_rep_period_limit[biomass,2030,1,4:6]
+ G  min_storage_level_intra_rep_period_limit[biomass,2030,1,7:9]
+ G  min_storage_level_intra_rep_period_limit[biomass,2030,1,10:12]
+ G  min_storage_level_intra_rep_period_limit[biomass,2030,1,13:15]
+ G  min_storage_level_intra_rep_period_limit[biomass,2030,1,16:18]
+ G  min_storage_level_intra_rep_period_limit[biomass,2030,1,19:21]
+ G  min_storage_level_intra_rep_period_limit[biomass,2030,1,22:24]
  G  flows_relationships[chp_extraction_electricity_demand_chp_extraction_heat_demand,_2030,_1,_1:1]
  G  flows_relationships[chp_extraction_electricity_demand_chp_extraction_heat_demand,_2030,_1,_2:2]
  G  flows_relationships[chp_extraction_electricity_demand_chp_extraction_heat_demand,_2030,_1,_3:3]
@@ -1193,37 +1193,37 @@ COLUMNS
     flow[(chp_extraction,heat_demand),2030,1,24:24] flows_relationships[chp_extraction_electricity_demand_chp_extraction_heat_demand,_2030,_1,_24:24] 0.15
     flow[(chp_extraction,heat_demand),2030,1,24:24] flows_relationships[chp_extraction_electricity_demand_chp_extraction_heat_demand,_2030,_1,_24:24]_1 -1.8
     flow[(chp_extraction,heat_demand),2030,1,24:24] conversion_balance[chp_extraction,2030,1,23:24] -1
-    storage_level_rep_period[biomass,2030,1,1:3] max_storage_level_rep_period_limit[biomass,2030,1,1:3] 1
-    storage_level_rep_period[biomass,2030,1,1:3] min_storage_level_rep_period_limit[biomass,2030,1,1:3] 1
-    storage_level_rep_period[biomass,2030,1,1:3] balance_storage_rep_period[biomass,2030,1,1:3] 1
-    storage_level_rep_period[biomass,2030,1,1:3] balance_storage_rep_period[biomass,2030,1,4:6] -1
-    storage_level_rep_period[biomass,2030,1,4:6] max_storage_level_rep_period_limit[biomass,2030,1,4:6] 1
-    storage_level_rep_period[biomass,2030,1,4:6] min_storage_level_rep_period_limit[biomass,2030,1,4:6] 1
-    storage_level_rep_period[biomass,2030,1,4:6] balance_storage_rep_period[biomass,2030,1,4:6] 1
-    storage_level_rep_period[biomass,2030,1,4:6] balance_storage_rep_period[biomass,2030,1,7:9] -1
-    storage_level_rep_period[biomass,2030,1,7:9] max_storage_level_rep_period_limit[biomass,2030,1,7:9] 1
-    storage_level_rep_period[biomass,2030,1,7:9] min_storage_level_rep_period_limit[biomass,2030,1,7:9] 1
-    storage_level_rep_period[biomass,2030,1,7:9] balance_storage_rep_period[biomass,2030,1,7:9] 1
-    storage_level_rep_period[biomass,2030,1,7:9] balance_storage_rep_period[biomass,2030,1,10:12] -1
-    storage_level_rep_period[biomass,2030,1,10:12] max_storage_level_rep_period_limit[biomass,2030,1,10:12] 1
-    storage_level_rep_period[biomass,2030,1,10:12] min_storage_level_rep_period_limit[biomass,2030,1,10:12] 1
-    storage_level_rep_period[biomass,2030,1,10:12] balance_storage_rep_period[biomass,2030,1,10:12] 1
-    storage_level_rep_period[biomass,2030,1,10:12] balance_storage_rep_period[biomass,2030,1,13:15] -1
-    storage_level_rep_period[biomass,2030,1,13:15] max_storage_level_rep_period_limit[biomass,2030,1,13:15] 1
-    storage_level_rep_period[biomass,2030,1,13:15] min_storage_level_rep_period_limit[biomass,2030,1,13:15] 1
-    storage_level_rep_period[biomass,2030,1,13:15] balance_storage_rep_period[biomass,2030,1,13:15] 1
-    storage_level_rep_period[biomass,2030,1,13:15] balance_storage_rep_period[biomass,2030,1,16:18] -1
-    storage_level_rep_period[biomass,2030,1,16:18] max_storage_level_rep_period_limit[biomass,2030,1,16:18] 1
-    storage_level_rep_period[biomass,2030,1,16:18] min_storage_level_rep_period_limit[biomass,2030,1,16:18] 1
-    storage_level_rep_period[biomass,2030,1,16:18] balance_storage_rep_period[biomass,2030,1,16:18] 1
-    storage_level_rep_period[biomass,2030,1,16:18] balance_storage_rep_period[biomass,2030,1,19:21] -1
-    storage_level_rep_period[biomass,2030,1,19:21] max_storage_level_rep_period_limit[biomass,2030,1,19:21] 1
-    storage_level_rep_period[biomass,2030,1,19:21] min_storage_level_rep_period_limit[biomass,2030,1,19:21] 1
-    storage_level_rep_period[biomass,2030,1,19:21] balance_storage_rep_period[biomass,2030,1,19:21] 1
-    storage_level_rep_period[biomass,2030,1,19:21] balance_storage_rep_period[biomass,2030,1,22:24] -1
-    storage_level_rep_period[biomass,2030,1,22:24] max_storage_level_rep_period_limit[biomass,2030,1,22:24] 1
-    storage_level_rep_period[biomass,2030,1,22:24] min_storage_level_rep_period_limit[biomass,2030,1,22:24] 1
-    storage_level_rep_period[biomass,2030,1,22:24] balance_storage_rep_period[biomass,2030,1,22:24] 1
+    storage_level_intra_rep_period[biomass,2030,1,1:3] max_storage_level_intra_rep_period_limit[biomass,2030,1,1:3] 1
+    storage_level_intra_rep_period[biomass,2030,1,1:3] min_storage_level_intra_rep_period_limit[biomass,2030,1,1:3] 1
+    storage_level_intra_rep_period[biomass,2030,1,1:3] balance_storage_rep_period[biomass,2030,1,1:3] 1
+    storage_level_intra_rep_period[biomass,2030,1,1:3] balance_storage_rep_period[biomass,2030,1,4:6] -1
+    storage_level_intra_rep_period[biomass,2030,1,4:6] max_storage_level_intra_rep_period_limit[biomass,2030,1,4:6] 1
+    storage_level_intra_rep_period[biomass,2030,1,4:6] min_storage_level_intra_rep_period_limit[biomass,2030,1,4:6] 1
+    storage_level_intra_rep_period[biomass,2030,1,4:6] balance_storage_rep_period[biomass,2030,1,4:6] 1
+    storage_level_intra_rep_period[biomass,2030,1,4:6] balance_storage_rep_period[biomass,2030,1,7:9] -1
+    storage_level_intra_rep_period[biomass,2030,1,7:9] max_storage_level_intra_rep_period_limit[biomass,2030,1,7:9] 1
+    storage_level_intra_rep_period[biomass,2030,1,7:9] min_storage_level_intra_rep_period_limit[biomass,2030,1,7:9] 1
+    storage_level_intra_rep_period[biomass,2030,1,7:9] balance_storage_rep_period[biomass,2030,1,7:9] 1
+    storage_level_intra_rep_period[biomass,2030,1,7:9] balance_storage_rep_period[biomass,2030,1,10:12] -1
+    storage_level_intra_rep_period[biomass,2030,1,10:12] max_storage_level_intra_rep_period_limit[biomass,2030,1,10:12] 1
+    storage_level_intra_rep_period[biomass,2030,1,10:12] min_storage_level_intra_rep_period_limit[biomass,2030,1,10:12] 1
+    storage_level_intra_rep_period[biomass,2030,1,10:12] balance_storage_rep_period[biomass,2030,1,10:12] 1
+    storage_level_intra_rep_period[biomass,2030,1,10:12] balance_storage_rep_period[biomass,2030,1,13:15] -1
+    storage_level_intra_rep_period[biomass,2030,1,13:15] max_storage_level_intra_rep_period_limit[biomass,2030,1,13:15] 1
+    storage_level_intra_rep_period[biomass,2030,1,13:15] min_storage_level_intra_rep_period_limit[biomass,2030,1,13:15] 1
+    storage_level_intra_rep_period[biomass,2030,1,13:15] balance_storage_rep_period[biomass,2030,1,13:15] 1
+    storage_level_intra_rep_period[biomass,2030,1,13:15] balance_storage_rep_period[biomass,2030,1,16:18] -1
+    storage_level_intra_rep_period[biomass,2030,1,16:18] max_storage_level_intra_rep_period_limit[biomass,2030,1,16:18] 1
+    storage_level_intra_rep_period[biomass,2030,1,16:18] min_storage_level_intra_rep_period_limit[biomass,2030,1,16:18] 1
+    storage_level_intra_rep_period[biomass,2030,1,16:18] balance_storage_rep_period[biomass,2030,1,16:18] 1
+    storage_level_intra_rep_period[biomass,2030,1,16:18] balance_storage_rep_period[biomass,2030,1,19:21] -1
+    storage_level_intra_rep_period[biomass,2030,1,19:21] max_storage_level_intra_rep_period_limit[biomass,2030,1,19:21] 1
+    storage_level_intra_rep_period[biomass,2030,1,19:21] min_storage_level_intra_rep_period_limit[biomass,2030,1,19:21] 1
+    storage_level_intra_rep_period[biomass,2030,1,19:21] balance_storage_rep_period[biomass,2030,1,19:21] 1
+    storage_level_intra_rep_period[biomass,2030,1,19:21] balance_storage_rep_period[biomass,2030,1,22:24] -1
+    storage_level_intra_rep_period[biomass,2030,1,22:24] max_storage_level_intra_rep_period_limit[biomass,2030,1,22:24] 1
+    storage_level_intra_rep_period[biomass,2030,1,22:24] min_storage_level_intra_rep_period_limit[biomass,2030,1,22:24] 1
+    storage_level_intra_rep_period[biomass,2030,1,22:24] balance_storage_rep_period[biomass,2030,1,22:24] 1
 RHS
     rhs       max_output_flows_limit_aggregated_vintage_method[biomass,2030,1,1:3] 400
     rhs       max_output_flows_limit_aggregated_vintage_method[biomass,2030,1,4:6] 400
@@ -1317,14 +1317,14 @@ RHS
     rhs       max_output_flows_limit_aggregated_vintage_method[power_plant,2030,1,22:22] 400
     rhs       max_output_flows_limit_aggregated_vintage_method[power_plant,2030,1,23:23] 400
     rhs       max_output_flows_limit_aggregated_vintage_method[power_plant,2030,1,24:24] 400
-    rhs       max_storage_level_rep_period_limit[biomass,2030,1,1:3] 2400
-    rhs       max_storage_level_rep_period_limit[biomass,2030,1,4:6] 2400
-    rhs       max_storage_level_rep_period_limit[biomass,2030,1,7:9] 2400
-    rhs       max_storage_level_rep_period_limit[biomass,2030,1,10:12] 2400
-    rhs       max_storage_level_rep_period_limit[biomass,2030,1,13:15] 2400
-    rhs       max_storage_level_rep_period_limit[biomass,2030,1,16:18] 2400
-    rhs       max_storage_level_rep_period_limit[biomass,2030,1,19:21] 2400
-    rhs       max_storage_level_rep_period_limit[biomass,2030,1,22:24] 2400
+    rhs       max_storage_level_intra_rep_period_limit[biomass,2030,1,1:3] 2400
+    rhs       max_storage_level_intra_rep_period_limit[biomass,2030,1,4:6] 2400
+    rhs       max_storage_level_intra_rep_period_limit[biomass,2030,1,7:9] 2400
+    rhs       max_storage_level_intra_rep_period_limit[biomass,2030,1,10:12] 2400
+    rhs       max_storage_level_intra_rep_period_limit[biomass,2030,1,13:15] 2400
+    rhs       max_storage_level_intra_rep_period_limit[biomass,2030,1,16:18] 2400
+    rhs       max_storage_level_intra_rep_period_limit[biomass,2030,1,19:21] 2400
+    rhs       max_storage_level_intra_rep_period_limit[biomass,2030,1,22:24] 2400
     rhs       flows_relationships[chp_extraction_heat_demand_chp_extraction_electricity_demand,_2030,_1,_1:1] 13.61
     rhs       flows_relationships[chp_extraction_heat_demand_chp_extraction_electricity_demand,_2030,_1,_2:2] 13.61
     rhs       flows_relationships[chp_extraction_heat_demand_chp_extraction_electricity_demand,_2030,_1,_3:3] 13.61
@@ -1398,14 +1398,14 @@ RHS
     rhs       consumer_balance[heat_demand,2030,1,22:22] 15.30002131
     rhs       consumer_balance[heat_demand,2030,1,23:23] 15.071113995000001
     rhs       consumer_balance[heat_demand,2030,1,24:24] 14.7771407
-    rhs       min_storage_level_rep_period_limit[biomass,2030,1,1:3] 0
-    rhs       min_storage_level_rep_period_limit[biomass,2030,1,4:6] 0
-    rhs       min_storage_level_rep_period_limit[biomass,2030,1,7:9] 0
-    rhs       min_storage_level_rep_period_limit[biomass,2030,1,10:12] 0
-    rhs       min_storage_level_rep_period_limit[biomass,2030,1,13:15] 0
-    rhs       min_storage_level_rep_period_limit[biomass,2030,1,16:18] 0
-    rhs       min_storage_level_rep_period_limit[biomass,2030,1,19:21] 0
-    rhs       min_storage_level_rep_period_limit[biomass,2030,1,22:24] 0
+    rhs       min_storage_level_intra_rep_period_limit[biomass,2030,1,1:3] 0
+    rhs       min_storage_level_intra_rep_period_limit[biomass,2030,1,4:6] 0
+    rhs       min_storage_level_intra_rep_period_limit[biomass,2030,1,7:9] 0
+    rhs       min_storage_level_intra_rep_period_limit[biomass,2030,1,10:12] 0
+    rhs       min_storage_level_intra_rep_period_limit[biomass,2030,1,13:15] 0
+    rhs       min_storage_level_intra_rep_period_limit[biomass,2030,1,16:18] 0
+    rhs       min_storage_level_intra_rep_period_limit[biomass,2030,1,19:21] 0
+    rhs       min_storage_level_intra_rep_period_limit[biomass,2030,1,22:24] 0
     rhs       flows_relationships[chp_extraction_electricity_demand_chp_extraction_heat_demand,_2030,_1,_1:1] 15
     rhs       flows_relationships[chp_extraction_electricity_demand_chp_extraction_heat_demand,_2030,_1,_2:2] 15
     rhs       flows_relationships[chp_extraction_electricity_demand_chp_extraction_heat_demand,_2030,_1,_3:3] 15
@@ -1954,20 +1954,20 @@ BOUNDS
  PL bounds    flow[(chp_extraction,heat_demand),2030,1,23:23]
  LO bounds    flow[(chp_extraction,heat_demand),2030,1,24:24] 0
  PL bounds    flow[(chp_extraction,heat_demand),2030,1,24:24]
- LO bounds    storage_level_rep_period[biomass,2030,1,1:3] 0
- PL bounds    storage_level_rep_period[biomass,2030,1,1:3]
- LO bounds    storage_level_rep_period[biomass,2030,1,4:6] 0
- PL bounds    storage_level_rep_period[biomass,2030,1,4:6]
- LO bounds    storage_level_rep_period[biomass,2030,1,7:9] 0
- PL bounds    storage_level_rep_period[biomass,2030,1,7:9]
- LO bounds    storage_level_rep_period[biomass,2030,1,10:12] 0
- PL bounds    storage_level_rep_period[biomass,2030,1,10:12]
- LO bounds    storage_level_rep_period[biomass,2030,1,13:15] 0
- PL bounds    storage_level_rep_period[biomass,2030,1,13:15]
- LO bounds    storage_level_rep_period[biomass,2030,1,16:18] 0
- PL bounds    storage_level_rep_period[biomass,2030,1,16:18]
- LO bounds    storage_level_rep_period[biomass,2030,1,19:21] 0
- PL bounds    storage_level_rep_period[biomass,2030,1,19:21]
- LO bounds    storage_level_rep_period[biomass,2030,1,22:24] 0
- PL bounds    storage_level_rep_period[biomass,2030,1,22:24]
+ LO bounds    storage_level_intra_rep_period[biomass,2030,1,1:3] 0
+ PL bounds    storage_level_intra_rep_period[biomass,2030,1,1:3]
+ LO bounds    storage_level_intra_rep_period[biomass,2030,1,4:6] 0
+ PL bounds    storage_level_intra_rep_period[biomass,2030,1,4:6]
+ LO bounds    storage_level_intra_rep_period[biomass,2030,1,7:9] 0
+ PL bounds    storage_level_intra_rep_period[biomass,2030,1,7:9]
+ LO bounds    storage_level_intra_rep_period[biomass,2030,1,10:12] 0
+ PL bounds    storage_level_intra_rep_period[biomass,2030,1,10:12]
+ LO bounds    storage_level_intra_rep_period[biomass,2030,1,13:15] 0
+ PL bounds    storage_level_intra_rep_period[biomass,2030,1,13:15]
+ LO bounds    storage_level_intra_rep_period[biomass,2030,1,16:18] 0
+ PL bounds    storage_level_intra_rep_period[biomass,2030,1,16:18]
+ LO bounds    storage_level_intra_rep_period[biomass,2030,1,19:21] 0
+ PL bounds    storage_level_intra_rep_period[biomass,2030,1,19:21]
+ LO bounds    storage_level_intra_rep_period[biomass,2030,1,22:24] 0
+ PL bounds    storage_level_intra_rep_period[biomass,2030,1,22:24]
 ENDATA
