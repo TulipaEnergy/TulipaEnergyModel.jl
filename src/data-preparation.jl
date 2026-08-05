@@ -395,7 +395,7 @@ function create_unrolled_partition_tables!(connection)
                 timeframe_data.milestone_year,
             FROM asset
             CROSS JOIN timeframe_data
-            WHERE asset.is_seasonal
+            WHERE asset.use_inter_period_constraints
         )
         SELECT
             t_relevant_assets.asset,

@@ -26,7 +26,7 @@
             storage_asset,
             :storage;
             storage_inflows = storage_inflows[storage_asset],
-            is_seasonal = true,
+            use_inter_period_constraints = true,
         )
         TB.add_flow!(tulipa, "consumer", storage_asset)
         TB.add_flow!(tulipa, storage_asset, "consumer")

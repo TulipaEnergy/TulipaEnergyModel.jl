@@ -13,11 +13,11 @@ This section assumes users have already followed the basic Tutorials and are loo
 
 Section [Storage Modeling](@ref storage-modeling) explains the main concepts for modeling seasonal and non-seasonal storage in _TulipaEnergyModel.jl_. To define if an asset is one type or the other then consider the following:
 
-- _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, we recommend using the inter-period constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `true`.
-- _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the rep-period constraints. To apply these constraints, you must set the input parameter `is_seasonal` to `false`.
+- _Seasonal storage_: When the storage capacity of an asset is greater than the total length of representative periods, we recommend using the inter-period constraints. To apply these constraints, you must set the input parameter `use_inter_period_constraints` to `true`.
+- _Non-seasonal storage_: When the storage capacity of an asset is lower than the total length of representative periods, we recommend using the rep-period constraints. To apply these constraints, you must set the input parameter `use_inter_period_constraints` to `false`.
 
 !!! info
-    If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `is_seasonal` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
+    If the input data covers only one representative period for the entire year, for example, with 8760-hour timesteps, and you have a monthly hydropower plant, then you should set the `use_inter_period_constraints` parameter for that asset to `false`. This is because the length of the representative period is greater than the storage capacity of the storage asset.
 
 ### [The energy storage investment method](@id storage-investment-setup)
 
@@ -169,7 +169,7 @@ For more details on the constraints that apply when selecting this method, pleas
 
 For the model to add constraints for a [maximum or minimum energy limit](@ref inter-period-energy-constraints) for an asset throughout the model's timeframe (e.g., a year), we need to establish a couple of parameters:
 
-- `is_seasonal = true`. This parameter enables the model to use the inter-period constraints.
+- `use_inter_period_constraints = true`. This parameter enables the model to use the inter-period constraints.
 - `max_energy_timeframe_partition` $\neq$ `missing` or `min_energy_timeframe_partition` $\neq$ `missing`. This value represents the peak energy that will be then multiplied by the profile for each period in the timeframe.
 
 !!! info
@@ -376,12 +376,12 @@ The second approach adds nothing to the model and needs no explanation. The othe
 
 Instead of a consumer, the accounting node can be a **storage asset** whose charging flows are the emission flows of the system. The storage level then _is_ the accumulated emissions: at every point of the timeframe it holds the total CO2 emitted since the start of the year, directly as a model variable and without any post-processing.
 
-This is particularly convenient with representative periods. Setting `is_seasonal = true` activates the [inter-period storage constraints](@ref inter-period-storage-balance), which accumulate the level across the representative periods weighted by the `rep_periods_mapping`. The running total therefore follows the real chronological year, even though only a few periods are actually modeled. Bounding that level with `capacity_storage_energy` then gives a genuine cumulative carbon budget, whose trajectory can additionally be shaped period by period with a `max_storage_level` profile.
+This is particularly convenient with representative periods. Setting `use_inter_period_constraints = true` activates the [inter-period storage constraints](@ref inter-period-storage-balance), which accumulate the level across the representative periods weighted by the `rep_periods_mapping`. The running total therefore follows the real chronological year, even though only a few periods are actually modeled. Bounding that level with `capacity_storage_energy` then gives a genuine cumulative carbon budget, whose trajectory can additionally be shaped period by period with a `max_storage_level` profile.
 
 To set it up:
 
 1. Make the accounting node a storage asset and connect every emission flow of the system as an input to it.
-2. Set `is_seasonal = true` in the `asset` table.
+2. Set `use_inter_period_constraints = true` in the `asset` table.
 3. Set `capacity_storage_energy` in the `asset` table to the emission budget, and `initial_storage_units` in `asset_both` to 1. With the default `storage_method_energy = 'none'`, the available energy capacity is the product of the two, and the level limit is the `max_storage_level` profile times that capacity. The profile defaults to 1.0 p.u., so the level is capped at the budget.
 4. Set `initial_storage_level = 0` in the `asset_milestone` table (see the warning below).
 5. (optional) Add a `max_storage_level` profile in `assets_timeframe_profiles` to make the budget tighten or relax over the year, or a `min_storage_level` profile to impose a floor.
@@ -404,7 +404,7 @@ The two costs of this approach are:
 The [outgoing energy constraints](@ref max-min-outgoing-energy-setup) limit the total energy leaving an asset over a period block of the timeframe, which is exactly the shape of an emission budget. To use them for emissions:
 
 1. Make the accounting node a **pass-through node** (`consumer_balance_sense = '=='`, `peak_demand = 0`) whose **only** outgoing flow is the aggregated emission flow, and terminate the chain with a sink node (`consumer_balance_sense = '>='`).
-2. Set `is_seasonal = true` for the pass-through node in the `asset` table, to enable the inter-period constraints.
+2. Set `use_inter_period_constraints = true` for the pass-through node in the `asset` table, to enable the inter-period constraints.
 3. Set `max_energy_timeframe_partition` for the pass-through node in the `asset_milestone` table to the emission budget **per period**. Use `min_energy_timeframe_partition` if instead you need a floor.
 4. (optional) Add a row to `assets_timeframe_profiles` with `profile_type = 'max_energy'` (or `'min_energy'`) pointing to a profile in `profiles_timeframe`, if the budget should vary over the periods. Without a profile, the default is 1.0 p.u. for every period.
 5. (optional) Add a row to `assets_timeframe_partitions` to aggregate periods into a single constraint.
@@ -413,7 +413,7 @@ The [outgoing energy constraints](@ref max-min-outgoing-energy-setup) limit the 
     The constraint sums every outgoing flow of the asset, so it must be placed on a node whose outgoing flows are only emissions. Setting `max_energy_timeframe_partition` directly on a gas-fired power plant would cap the sum of its electricity output _and_ its CO2 output, which is not an emission budget. For the same reason, an accounting node that sends emissions to more than one place needs an extra pass-through node that carries only the flow to be capped, as in the [BECCS example](@ref beccs-example).
 
 !!! info "The seasonal flag is not restricted to storage assets"
-    Although the description of `is_seasonal` refers to seasonal storage (e.g., hydro), the flag is what enables the inter-period constraints for _any_ asset type, so it can be set on an accounting node as well.
+    Although the description of `use_inter_period_constraints` refers to seasonal storage (e.g., hydro), the flag is what enables the inter-period constraints for _any_ asset type, so it can be set on an accounting node as well.
 
 Since `max_energy_timeframe_partition` is defined **per period**, and the profile of a period block is aggregated with a sum, the value to fill in is the budget of a single period, not the budget of the whole year. What the partition changes is how tightly the budget is distributed over the year, not its total. For example, with a year clustered into 365 daily periods, an annual budget of 3650 tCO2, and no profile defined:
 
@@ -452,7 +452,7 @@ Two rows in `flows_relationships` describe the chemistry, where $\eta$ is the em
 
 Because the released and captured shares are both tied to the same gas input with constant ratios, the capture rate $\kappa$ is a fixed input, not a decision of the optimization. To choose between capturing and not capturing, model the two operating modes as two separate assets and let the investment or dispatch decide between them.
 
-Finally, `is_seasonal = true` and `max_energy_timeframe_partition` on `atmosphere` turn the flow towards `co2_cap` into the emission budget, as described in [step 3](@ref emissions-step-limiting).
+Finally, `use_inter_period_constraints = true` and `max_energy_timeframe_partition` on `atmosphere` turn the flow towards `co2_cap` into the emission budget, as described in [step 3](@ref emissions-step-limiting).
 
 ### [Example: Negative emissions with BECCS](@id beccs-example)
 
@@ -481,7 +481,7 @@ which makes the flow towards `atmosphere_net` the **net** emissions, released mi
 - The stored CO2 equals the absorbed CO2: `flow_1 = (beccs, co2_storage)`, `flow_2 = (atmosphere, beccs)`, `sense = '=='`, `constant = 0`, `ratio = 1`. This is the `flow_3 = flow_2` condition that makes the removal permanent.
 
 !!! info "Why the extra net emissions node?"
-    The `atmosphere` node has two outgoing flows: the CO2 absorbed by the biomass and the net emissions. Since the [outgoing energy constraint](@ref max-min-outgoing-energy-setup) sums _all_ outgoing flows of an asset, placing the cap on `atmosphere` would also count the absorbed CO2. The `atmosphere_net` pass-through node has exactly one outgoing flow, so it is the node that carries `is_seasonal = true` and `max_energy_timeframe_partition`.
+    The `atmosphere` node has two outgoing flows: the CO2 absorbed by the biomass and the net emissions. Since the [outgoing energy constraint](@ref max-min-outgoing-energy-setup) sums _all_ outgoing flows of an asset, placing the cap on `atmosphere` would also count the absorbed CO2. The `atmosphere_net` pass-through node has exactly one outgoing flow, so it is the node that carries `use_inter_period_constraints = true` and `max_energy_timeframe_partition`.
 
 !!! warning "The net flow of the accounting node cannot become negative"
     Flows have a lower bound of zero unless they are transport flows, so the flow towards `atmosphere_net` cannot be negative, and the balance above therefore enforces released $\geq$ absorbed **at the node**. With BECCS as the only asset connected to `atmosphere`, the model consequently cannot reach a net-negative total. This is normally not a restriction, because the other emitters of the system share the same node: the balance then reads (sum of all releases) $-$ (sum of all removals) $\geq 0$, so BECCS can be net-negative individually as long as the system as a whole is not. Only a system that should end up net-negative overall runs into the bound.
@@ -504,7 +504,7 @@ The cap is then a single row in `asset` and a single row in `asset_milestone` fo
 
 | Table             | Column                           | Value                                                                      |
 | ----------------- | -------------------------------- | -------------------------------------------------------------------------- |
-| `asset`           | `is_seasonal`                    | `true`                                                                     |
+| `asset`           | `use_inter_period_constraints`   | `true`                                                                     |
 | `asset`           | `consumer_balance_sense`         | `'=='`                                                                     |
 | `asset_milestone` | `peak_demand`                    | `0`                                                                        |
 | `asset_milestone` | `max_energy_timeframe_partition` | The emission budget per period, see [step 3](@ref emissions-step-limiting) |

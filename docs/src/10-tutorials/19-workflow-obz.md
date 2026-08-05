@@ -250,7 +250,7 @@ DuckDB.query(
         type,
         capacity,
         capacity_storage_energy,
-        is_seasonal,
+        use_inter_period_constraints,
     FROM (
         FROM assets_consumer_basic_data
         UNION BY NAME

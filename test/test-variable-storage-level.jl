@@ -56,7 +56,7 @@
     )
 
     # Test storage level rep-period variable only for the Midgard_PHS and Asgard_Battery assets
-    # since is_seasonal = false in the test case
+    # since use_inter_period_constraints = false in the test case
     @test haskey(energy_problem.variables, :storage_level_rep_period)
     storage_level_rep_period = energy_problem.variables[:storage_level_rep_period].container
     @test length(storage_level_rep_period) == 2 * expected_num_storage_level_rep_period_vars

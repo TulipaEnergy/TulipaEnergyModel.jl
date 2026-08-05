@@ -5,7 +5,7 @@
 
     # Configuration struct for testing
     @kwdef struct ConsStorageMinMaxLevelConfig
-        is_seasonal::Bool
+        use_inter_period_constraints::Bool
         storage_method_energy::String
         name::String = "dummy_storage"
         initial_units::Float64 = 2.0
@@ -41,7 +41,7 @@
             tulipa,
             storage_asset.name,
             :storage;
-            is_seasonal = storage_asset.is_seasonal,
+            use_inter_period_constraints = storage_asset.use_inter_period_constraints,
             initial_units = storage_asset.initial_units,
             initial_storage_units = storage_asset.initial_storage_units,
             capacity = storage_asset.capacity,
@@ -66,7 +66,7 @@
             )
         end
 
-        if !storage_asset.is_seasonal
+        if !storage_asset.use_inter_period_constraints
             # Attach max storage level profiles to the non-seasonal storage asset, commission_year and scenario
             for ((commission_year, scenario), values) in storage_asset.max_storage_level_profile
                 TB.attach_profile!(
@@ -181,7 +181,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = false,
+        use_inter_period_constraints = false,
         storage_method_energy = "none",
         investable = false,
     )
@@ -255,7 +255,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = false,
+        use_inter_period_constraints = false,
         storage_method_energy = "optimize_storage_capacity",
     )
 
@@ -331,7 +331,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = false,
+        use_inter_period_constraints = false,
         storage_method_energy = "use_fixed_energy_to_power_ratio",
     )
 
@@ -408,7 +408,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = true,
+        use_inter_period_constraints = true,
         storage_method_energy = "none",
         investable = false,
         max_storage_level_profile = Dict((2030, 1) => [0.8, 0.4, 1.0]),
@@ -470,7 +470,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = true,
+        use_inter_period_constraints = true,
         storage_method_energy = "optimize_storage_capacity",
         max_storage_level_profile = Dict((2030, 1) => [0.8, 0.4, 1.0]),
         min_storage_level_profile = Dict((2030, 1) => [0.2, 0.3, 0.0]),
@@ -536,7 +536,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = true,
+        use_inter_period_constraints = true,
         storage_method_energy = "use_fixed_energy_to_power_ratio",
         max_storage_level_profile = Dict((2030, 1) => [0.8, 0.4, 1.0]),
         min_storage_level_profile = Dict((2030, 1) => [0.2, 0.3, 0.0]),

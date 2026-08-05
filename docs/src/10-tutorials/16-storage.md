@@ -93,9 +93,9 @@ What is happening with the storage assets? Any ideas?
 
 The battery storage looks reasonable, but what is happening with the hydrogen storage?
 
-## The parameter `is_seasonal`
+## The parameter `use_inter_period_constraints`
 
-Change the parameter `is_seasonal` from `false` to `true` for the hydrogen storage in the file `assets.csv`.
+Change the parameter `use_inter_period_constraints` from `false` to `true` for the hydrogen storage in the file `assets.csv`.
 
 Rerun the workflow and check the results again...
 
@@ -103,7 +103,7 @@ Rerun the workflow and check the results again...
     You can use the following command to update a parameter in the database directly from Julia and then rerun:
 
 ```@example seasonal-and-non-seasonal-storage
-    DuckDB.query(connection, "UPDATE asset SET is_seasonal = true WHERE asset = 'h2_storage'")
+    DuckDB.query(connection, "UPDATE asset SET use_inter_period_constraints = true WHERE asset = 'h2_storage'")
 ```
 
 And then run the scenario again:
@@ -156,7 +156,7 @@ The following code:
 
 1. Creates a new connection `conn_hourly_benchmark` to store the results of the hourly benchmark
 2. Runs TulipaClustering using the `dummy_cluster!` function to create 1 representative period of 8760 hours
-3. Updates the values of the `is_seasonal` parameter to `false`.\
+3. Updates the values of the `use_inter_period_constraints` parameter to `false`.\
    *Since it is 1 year and 1 representative, the storage is not considered seasonal (it is within the representative period)*
 4. Stores the run in a new object called `ep_hourly`
 
@@ -177,9 +177,9 @@ TC.dummy_cluster!(conn_hourly_benchmark; layout = layout)
 # 3. Populate with defaults
 TEM.populate_with_defaults!(conn_hourly_benchmark)
 
-# 4. We update the `is_seasonal` column to false to make sure all the storage assets are non-seasonal since we only have one representative period that is the whole year
+# 4. We update the `use_inter_period_constraints` column to false to make sure all the storage assets are non-seasonal since we only have one representative period that is the whole year
 DuckDB.query(
-    conn_hourly_benchmark, "UPDATE asset SET is_seasonal = false")
+    conn_hourly_benchmark, "UPDATE asset SET use_inter_period_constraints = false")
 
 # 5. We can solve it now
 ep_hourly = TEM.run_scenario(conn_hourly_benchmark)
@@ -247,7 +247,7 @@ TIO.read_csv_folder(conn_hourly_benchmark, input_dir)
 TC.transform_wide_to_long!(conn_hourly_benchmark, "profiles_wide", "profiles"; exclude_columns = ["milestone_year", "timestep"])
 TC.dummy_cluster!(conn_hourly_benchmark; layout = TC.ProfilesTableLayout(year = :milestone_year))
 TEM.populate_with_defaults!(conn_hourly_benchmark)
-DuckDB.query(conn_hourly_benchmark, "UPDATE asset SET is_seasonal = false")
+DuckDB.query(conn_hourly_benchmark, "UPDATE asset SET use_inter_period_constraints = false")
 ep_hourly = TEM.run_scenario(conn_hourly_benchmark; show_log = false)
 
 # The plot of the hourly benchmark
@@ -285,7 +285,7 @@ for num_rps in list_num_rps
         layout = TC.ProfilesTableLayout(year = :milestone_year),
     )
     TEM.populate_with_defaults!(connection)
-    DuckDB.query(connection, "UPDATE asset SET is_seasonal = true WHERE asset = 'h2_storage'")
+    DuckDB.query(connection, "UPDATE asset SET use_inter_period_constraints = true WHERE asset = 'h2_storage'")
     energy_problem = TEM.run_scenario(connection; show_log = false)
 
     # update the plot for each num_rps

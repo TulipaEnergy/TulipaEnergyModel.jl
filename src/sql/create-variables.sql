@@ -275,7 +275,7 @@ with
             left join asset on t_low.asset = asset.asset
         where
             asset.type = 'storage'
-            and asset.is_seasonal = false
+            and asset.use_inter_period_constraints = false
         order by
             t_low.asset,
             t_low.milestone_year,
@@ -313,7 +313,7 @@ with
             left join asset on attr.asset = asset.asset
         where
             asset.type = 'storage'
-            and asset.is_seasonal = true
+            and asset.use_inter_period_constraints = true
         order by
             attr.asset,
             attr.milestone_year,
@@ -351,7 +351,7 @@ with
             left join asset on t_low.asset = asset.asset
         where
             asset.type = 'storage'
-            and asset.is_seasonal = true
+            and asset.use_inter_period_constraints = true
         order by
             t_low.asset,
             t_low.milestone_year,

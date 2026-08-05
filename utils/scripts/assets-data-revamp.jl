@@ -29,7 +29,7 @@ run(`git restore test/inputs/ benchmark/EU/`)
     discount_rate
     consumer_balance_sense -> ANY FROM assets_data
     capacity_storage_energy
-    is_seasonal -> ANY FROM assets_data
+    use_inter_period_constraints -> ANY FROM assets_data
     use_binary_storage_method -> ANY FROM assets_data
     unit_commitment -> ANY FROM assets_data
     unit_commitment_integer -> ANY FROM assets_data
@@ -59,7 +59,7 @@ apply_to_files_named("asset.csv"; include_missing = true) do path
                     ANY_VALUE(discount_rate) AS discount_rate,
                     ANY_VALUE(consumer_balance_sense) AS consumer_balance_sense,
                     ANY_VALUE(capacity_storage_energy) AS capacity_storage_energy,
-                    ANY_VALUE(is_seasonal) AS is_seasonal,
+                    ANY_VALUE(use_inter_period_constraints) AS use_inter_period_constraints,
                     ANY_VALUE(use_binary_storage_method) AS use_binary_storage_method,
                     ANY_VALUE(unit_commitment) AS unit_commitment,
                     ANY_VALUE(unit_commitment_integer) AS unit_commitment_integer,

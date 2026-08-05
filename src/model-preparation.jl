@@ -829,7 +829,7 @@ function prepare_profiles_structure(connection)
                     ON assets_profiles.asset = asset.asset
                 WHERE assets_profiles.profile_type = 'inflows'
                     AND asset.type = 'storage'
-                    AND asset.is_seasonal
+                    AND asset.use_inter_period_constraints
             ),
             cte_period_values AS (
                 SELECT
