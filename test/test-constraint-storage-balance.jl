@@ -6,7 +6,7 @@
     # Type-stable storage configuration struct
     struct StorageConfig
         inflows::Float64
-        is_seasonal::Bool
+        use_inter_period_constraints::Bool
         initial_units::Float64
         initial_storage_units::Float64
         charging_efficiency::Float64
@@ -20,7 +20,7 @@
     const STORAGE_CONFIGS = Dict{String,StorageConfig}(
         "seasonal_storage" => StorageConfig(
             10.0,  # inflows
-            true,  # is_seasonal
+            true,  # use_inter_period_constraints
             1.0,   # initial_units
             1.0,   # initial_storage_units
             0.85,  # charging_efficiency
@@ -31,7 +31,7 @@
         ),
         "non_seasonal_storage" => StorageConfig(
             3.5,   # inflows
-            false, # is_seasonal
+            false, # use_inter_period_constraints
             1.0,   # initial_units
             1.0,   # initial_storage_units
             0.9,   # charging_efficiency
@@ -69,7 +69,7 @@
                 storage_name,
                 :storage;
                 storage_inflows = config.inflows,
-                is_seasonal = config.is_seasonal,
+                use_inter_period_constraints = config.use_inter_period_constraints,
                 initial_units = config.initial_units,
                 initial_storage_units = config.initial_storage_units,
                 storage_charging_efficiency = config.charging_efficiency,
@@ -370,7 +370,7 @@ end
         setup_test_problem(storage_asset, inflows_profile, num_timesteps, num_rps)
 
     # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_rep_period].container
+    storage_level = energy_problem.variables[:storage_level_intra_rep_period].container
 
     # Verify all expected constraints exist
     cons_name = :balance_storage_rep_period
@@ -443,7 +443,7 @@ end
 
     # Extract accumulated storage level variable
     accumulated_storage_level =
-        energy_problem.variables[:accumulated_storage_level_intra_period].container
+        energy_problem.variables[:accumulated_storage_level_intra_rep_period].container
 
     # Verify all expected constraints exist
     cons_name = :accumulated_storage_intra_period

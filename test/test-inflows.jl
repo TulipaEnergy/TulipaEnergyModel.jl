@@ -26,7 +26,7 @@
             storage_asset,
             :storage;
             storage_inflows = storage_inflows[storage_asset],
-            is_seasonal = true,
+            use_inter_period_constraints = true,
         )
         TB.add_flow!(tulipa, "consumer", storage_asset)
         TB.add_flow!(tulipa, storage_asset, "consumer")
@@ -59,7 +59,7 @@
 
     # Actual test, create expected constraint
     storage_level_intra =
-        energy_problem.variables[:accumulated_storage_level_intra_period].container
+        energy_problem.variables[:accumulated_storage_level_intra_rep_period].container
     flow = energy_problem.variables[:flow].container
     cons_name = :accumulated_storage_intra_period
 
@@ -69,7 +69,7 @@
                 connection,
                 """
                 SELECT id
-                FROM var_accumulated_storage_level_intra_period
+                FROM var_accumulated_storage_level_intra_rep_period
                 WHERE asset = '$storage_asset'
                 """,
             )

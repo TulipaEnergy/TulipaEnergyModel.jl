@@ -742,7 +742,7 @@ function add_expressions_to_constraints!(connection, variables, constraints)
     @timeit to "add_expression_terms_inter_period_storage_constraints!" add_expression_terms_inter_period_storage_constraints!(
         connection,
         constraints[:balance_storage_inter_period],
-        variables[:accumulated_storage_level_intra_period],
+        variables[:accumulated_storage_level_intra_rep_period],
         workspace,
     )
     @timeit to "add_expression_terms_inter_period_constraints!" add_expression_terms_inter_period_constraints!(
@@ -829,7 +829,7 @@ function prepare_profiles_structure(connection)
                     ON assets_profiles.asset = asset.asset
                 WHERE assets_profiles.profile_type = 'inflows'
                     AND asset.type = 'storage'
-                    AND asset.is_seasonal
+                    AND asset.use_inter_period_constraints
             ),
             cte_period_values AS (
                 SELECT

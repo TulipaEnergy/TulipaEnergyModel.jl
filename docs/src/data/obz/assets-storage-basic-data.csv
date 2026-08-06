@@ -1,4 +1,4 @@
-name,type,capacity,capacity_storage_energy,technology,is_seasonal,lat,lon
+name,type,capacity,capacity_storage_energy,technology,use_inter_period_constraints,lat,lon
 NL_Battery,storage,52.294,156.882,Battery,FALSE,52.1326,5.2913
 BE_Battery,storage,1.13,3.39,Battery,FALSE,50.5039,4.4699
 DE_Hydro_Reservoir,storage,1.297,258.6,Hydro_Reservoir,TRUE,51.1657,10.4515

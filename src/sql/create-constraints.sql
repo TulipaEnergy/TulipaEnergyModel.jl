@@ -551,7 +551,7 @@ create table cons_balance_storage_rep_period as
 select
     *
 from
-    var_storage_level_rep_period
+    var_storage_level_intra_rep_period
 ;
 
 drop table if exists cons_balance_storage_inter_period
@@ -571,7 +571,7 @@ create table cons_accumulated_storage_intra_period as
 select
     *
 from
-    var_accumulated_storage_level_intra_period
+    var_accumulated_storage_level_intra_rep_period
 ;
 
 drop sequence id

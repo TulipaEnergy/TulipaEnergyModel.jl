@@ -40,8 +40,8 @@ unit_of_measure = "number"
 description = "Number of existing units"
 unit_of_measure = "number"
 
-[is_seasonal]
-description = "Whether seasonal storage (e.g., hydro) or not (e.g., battery)"
+[use_inter_period_constraints]
+description = "Whether the asset uses the inter period constraints or not. It only applies to storage balance in storage assets and outgoing flow in any asset type."
 type = "BOOLEAN"
 
 [is_transport]

@@ -258,10 +258,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists var_storage_level_rep_period
+drop table if exists var_storage_level_intra_rep_period
 ;
 
-create table var_storage_level_rep_period as
+create table var_storage_level_intra_rep_period as
 with
     filtered_assets as (
         select
@@ -275,7 +275,7 @@ with
             left join asset on t_low.asset = asset.asset
         where
             asset.type = 'storage'
-            and asset.is_seasonal = false
+            and asset.use_inter_period_constraints = false
         order by
             t_low.asset,
             t_low.milestone_year,
@@ -313,7 +313,7 @@ with
             left join asset on attr.asset = asset.asset
         where
             asset.type = 'storage'
-            and asset.is_seasonal = true
+            and asset.use_inter_period_constraints = true
         order by
             attr.asset,
             attr.milestone_year,
@@ -334,10 +334,10 @@ drop sequence id
 create sequence id start 1
 ;
 
-drop table if exists var_accumulated_storage_level_intra_period
+drop table if exists var_accumulated_storage_level_intra_rep_period
 ;
 
-create table var_accumulated_storage_level_intra_period as
+create table var_accumulated_storage_level_intra_rep_period as
 with
     filtered_assets as (
         select
@@ -351,7 +351,7 @@ with
             left join asset on t_low.asset = asset.asset
         where
             asset.type = 'storage'
-            and asset.is_seasonal = true
+            and asset.use_inter_period_constraints = true
         order by
             t_low.asset,
             t_low.milestone_year,

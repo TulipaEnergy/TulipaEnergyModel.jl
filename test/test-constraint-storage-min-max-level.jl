@@ -5,7 +5,7 @@
 
     # Configuration struct for testing
     @kwdef struct ConsStorageMinMaxLevelConfig
-        is_seasonal::Bool
+        use_inter_period_constraints::Bool
         storage_method_energy::String
         name::String = "dummy_storage"
         initial_units::Float64 = 2.0
@@ -41,7 +41,7 @@
             tulipa,
             storage_asset.name,
             :storage;
-            is_seasonal = storage_asset.is_seasonal,
+            use_inter_period_constraints = storage_asset.use_inter_period_constraints,
             initial_units = storage_asset.initial_units,
             initial_storage_units = storage_asset.initial_storage_units,
             capacity = storage_asset.capacity,
@@ -66,7 +66,7 @@
             )
         end
 
-        if !storage_asset.is_seasonal
+        if !storage_asset.use_inter_period_constraints
             # Attach max storage level profiles to the non-seasonal storage asset, commission_year and scenario
             for ((commission_year, scenario), values) in storage_asset.max_storage_level_profile
                 TB.attach_profile!(
@@ -181,7 +181,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = false,
+        use_inter_period_constraints = false,
         storage_method_energy = "none",
         investable = false,
     )
@@ -194,7 +194,7 @@ end
     connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
 
     # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_rep_period].container
+    storage_level = energy_problem.variables[:storage_level_intra_rep_period].container
 
     # Verify all expected constraints exist
     constraint_data = get_rep_periods_constraint_data(connection, storage_asset.name)
@@ -209,7 +209,7 @@ end
         min_profile_value =
             get_rep_periods_profile_value(connection, "min_storage_level", y, rp, ts)
 
-        # Build expected min_storage_level_rep_period_limit constraint
+        # Build expected min_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] >=
             storage_asset.capacity_storage_energy *
@@ -220,7 +220,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :min_storage_level_rep_period_limit,
+            :min_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )
@@ -229,7 +229,7 @@ end
         max_profile_value =
             get_rep_periods_profile_value(connection, "max_storage_level", y, rp, ts)
 
-        # Build expected max_storage_level_rep_period_limit constraint
+        # Build expected max_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] <=
             storage_asset.capacity_storage_energy *
@@ -240,7 +240,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :max_storage_level_rep_period_limit,
+            :max_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )
@@ -255,7 +255,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = false,
+        use_inter_period_constraints = false,
         storage_method_energy = "optimize_storage_capacity",
     )
 
@@ -267,7 +267,7 @@ end
     connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
 
     # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_rep_period].container
+    storage_level = energy_problem.variables[:storage_level_intra_rep_period].container
 
     # Extract energy storage investment
     assets_investment_energy = energy_problem.variables[:assets_investment_energy].container[1]
@@ -285,7 +285,7 @@ end
         min_profile_value =
             get_rep_periods_profile_value(connection, "min_storage_level", y, rp, ts)
 
-        # Build expected min_storage_level_rep_period_limit constraint
+        # Build expected min_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] >=
             min_profile_value *
@@ -296,7 +296,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :min_storage_level_rep_period_limit,
+            :min_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )
@@ -305,7 +305,7 @@ end
         max_profile_value =
             get_rep_periods_profile_value(connection, "max_storage_level", y, rp, ts)
 
-        # Build expected max_storage_level_rep_period_limit constraint
+        # Build expected max_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] <=
             max_profile_value *
@@ -316,7 +316,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :max_storage_level_rep_period_limit,
+            :max_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )
@@ -331,7 +331,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = false,
+        use_inter_period_constraints = false,
         storage_method_energy = "use_fixed_energy_to_power_ratio",
     )
 
@@ -343,7 +343,7 @@ end
     connection, energy_problem = create_storage_min_max_level_test_problem(storage_asset)
 
     # Extract storage level variable
-    storage_level = energy_problem.variables[:storage_level_rep_period].container
+    storage_level = energy_problem.variables[:storage_level_intra_rep_period].container
 
     # Extract storage investment
     assets_investment = energy_problem.variables[:assets_investment].container[1]
@@ -361,7 +361,7 @@ end
         min_profile_value =
             get_rep_periods_profile_value(connection, "min_storage_level", y, rp, ts)
 
-        # Build expected min_storage_level_rep_period_limit constraint
+        # Build expected min_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] >=
             min_profile_value * (
@@ -373,7 +373,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :min_storage_level_rep_period_limit,
+            :min_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )
@@ -382,7 +382,7 @@ end
         max_profile_value =
             get_rep_periods_profile_value(connection, "max_storage_level", y, rp, ts)
 
-        # Build expected max_storage_level_rep_period_limit constraint
+        # Build expected max_storage_level_intra_rep_period_limit constraint
         expected_cons = JuMP.@build_constraint(
             storage_level[id] <=
             max_profile_value * (
@@ -394,7 +394,7 @@ end
         # Verify constraint matches expected form
         @test _verify_constraint_using_id(
             energy_problem.model,
-            :max_storage_level_rep_period_limit,
+            :max_storage_level_intra_rep_period_limit,
             id,
             expected_cons,
         )
@@ -408,7 +408,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = true,
+        use_inter_period_constraints = true,
         storage_method_energy = "none",
         investable = false,
         max_storage_level_profile = Dict((2030, 1) => [0.8, 0.4, 1.0]),
@@ -470,7 +470,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = true,
+        use_inter_period_constraints = true,
         storage_method_energy = "optimize_storage_capacity",
         max_storage_level_profile = Dict((2030, 1) => [0.8, 0.4, 1.0]),
         min_storage_level_profile = Dict((2030, 1) => [0.2, 0.3, 0.0]),
@@ -536,7 +536,7 @@ end
 
     # Create storage asset config struct
     storage_asset = ConsStorageMinMaxLevelConfig(;
-        is_seasonal = true,
+        use_inter_period_constraints = true,
         storage_method_energy = "use_fixed_energy_to_power_ratio",
         max_storage_level_profile = Dict((2030, 1) => [0.8, 0.4, 1.0]),
         min_storage_level_profile = Dict((2030, 1) => [0.2, 0.3, 0.0]),

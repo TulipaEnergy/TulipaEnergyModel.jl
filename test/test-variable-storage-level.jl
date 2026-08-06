@@ -39,8 +39,8 @@
 
     # get the rep periods data to compute the expected number of variables
     rep_periods_data = DuckDB.query(connection, "SELECT * FROM rep_periods_data") |> DataFrame
-    expected_num_storage_level_rep_period_vars =
-        expected_num_accumulated_storage_level_intra_period_vars =
+    expected_num_storage_level_intra_rep_period_vars =
+        expected_num_accumulated_storage_level_intra_rep_period_vars =
             sum(rep_periods_data.num_timesteps)
     num_rep_periods = DataFrames.nrow(rep_periods_data)
 
@@ -56,19 +56,23 @@
     )
 
     # Test storage level rep-period variable only for the Midgard_PHS and Asgard_Battery assets
-    # since is_seasonal = false in the test case
-    @test haskey(energy_problem.variables, :storage_level_rep_period)
-    storage_level_rep_period = energy_problem.variables[:storage_level_rep_period].container
-    @test length(storage_level_rep_period) == 2 * expected_num_storage_level_rep_period_vars
+    # since use_inter_period_constraints = false in the test case
+    @test haskey(energy_problem.variables, :storage_level_intra_rep_period)
+    storage_level_intra_rep_period =
+        energy_problem.variables[:storage_level_intra_rep_period].container
+    @test length(storage_level_intra_rep_period) ==
+          2 * expected_num_storage_level_intra_rep_period_vars
     # get the variable indices
-    storage_level_rep_period_indices =
-        energy_problem.variables[:storage_level_rep_period].indices |> DataFrame
+    storage_level_intra_rep_period_indices =
+        energy_problem.variables[:storage_level_intra_rep_period].indices |> DataFrame
     # only the assets Midgard_PHS and Asgard_Battery should be in the indices
-    non_seasonal_assets = storage_level_rep_period_indices.asset |> unique |> sort
+    non_seasonal_assets = storage_level_intra_rep_period_indices.asset |> unique |> sort
     @test non_seasonal_assets == ["Asgard_Battery", "Midgard_PHS"]
     # group the indices by asset, milestone_year and rep_period
-    grouped_indices =
-        DataFrames.groupby(storage_level_rep_period_indices, [:asset, :milestone_year, :rep_period])
+    grouped_indices = DataFrames.groupby(
+        storage_level_intra_rep_period_indices,
+        [:asset, :milestone_year, :rep_period],
+    )
     @test grouped_indices.ngroups == num_rep_periods * 2 # we have 2 assets with non-seasonal storage, so we expect 2 groups per rep period (only 1 year)
     # iterate over the groups and get the last variable for each group to check the lower bound
     for group in grouped_indices
@@ -76,7 +80,7 @@
         initial_storage_level = initial_storage_levels[(asset, 2030)]
         last_id = last(group.id)
         for id in group.id
-            var = storage_level_rep_period[id]
+            var = storage_level_intra_rep_period[id]
             if id == last_id
                 if !ismissing(initial_storage_level)
                     _test_variable_properties(var, initial_storage_level, nothing)
@@ -125,25 +129,25 @@
 
     ## Test accumulated storage level intra-period variable only for the Valhalla_H2_storage and Midgard_Hydro asset
     # since it is the only seasonal storage in the test case
-    @test haskey(energy_problem.variables, :accumulated_storage_level_intra_period)
-    accumulated_storage_level_intra_period =
-        energy_problem.variables[:accumulated_storage_level_intra_period].container
+    @test haskey(energy_problem.variables, :accumulated_storage_level_intra_rep_period)
+    accumulated_storage_level_intra_rep_period =
+        energy_problem.variables[:accumulated_storage_level_intra_rep_period].container
     # get the variable indices
-    accumulated_storage_level_intra_period_indices =
-        energy_problem.variables[:accumulated_storage_level_intra_period].indices |> DataFrame
+    accumulated_storage_level_intra_rep_period_indices =
+        energy_problem.variables[:accumulated_storage_level_intra_rep_period].indices |> DataFrame
     # only the assets Valhalla_H2_storage and Midgard_Hydro should be in the indices
-    seasonal_assets = accumulated_storage_level_intra_period_indices.asset |> unique |> sort
+    seasonal_assets = accumulated_storage_level_intra_rep_period_indices.asset |> unique |> sort
     @test seasonal_assets == ["Midgard_Hydro", "Valhalla_H2_storage"]
     # group the indices by asset, milestone_year and rep_period
     grouped_indices = DataFrames.groupby(
-        accumulated_storage_level_intra_period_indices,
+        accumulated_storage_level_intra_rep_period_indices,
         [:asset, :milestone_year, :rep_period],
     )
     @test grouped_indices.ngroups == num_rep_periods * 2 # we have 2 assets with seasonal storage, so we expect 2 groups per rep period (only 1 year)
-    # iterate over the groups -- this variable is a free variable without bounds, so we expect all variables to have lower bound = 0.0 and no upper bound, even the last variable in each group with the initial storage level (which is used as lower bound only for the storage_level_rep_period variable)
+    # iterate over the groups -- this variable is a free variable without bounds, so we expect all variables to have lower bound = 0.0 and no upper bound, even the last variable in each group with the initial storage level (which is used as lower bound only for the storage_level_intra_rep_period variable)
     for group in grouped_indices
         for id in group.id
-            var = accumulated_storage_level_intra_period[id]
+            var = accumulated_storage_level_intra_rep_period[id]
             _test_variable_properties(var, nothing, nothing)
         end
     end

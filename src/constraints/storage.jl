@@ -12,9 +12,10 @@ function add_storage_constraints!(
     profiles;
     rolling_horizon = false,
 )
-    var_storage_level_rep_period = variables[:storage_level_rep_period]
+    var_storage_level_intra_rep_period = variables[:storage_level_intra_rep_period]
     var_storage_level_inter_period = variables[:storage_level_inter_period]
-    var_accumulated_storage_level_intra_period = variables[:accumulated_storage_level_intra_period]
+    var_accumulated_storage_level_intra_rep_period =
+        variables[:accumulated_storage_level_intra_rep_period]
 
     rolling_horizon_lookup = if rolling_horizon
         Dict{Int,Int}(
@@ -28,7 +29,7 @@ function add_storage_constraints!(
     ## REP-PERIOD CONSTRAINTS (within a representative period)
     # - Balance constraint (using the lowest temporal resolution)
     let table_name = :balance_storage_rep_period, cons = constraints[table_name]
-        var_storage_level = variables[:storage_level_rep_period].container
+        var_storage_level = variables[:storage_level_intra_rep_period].container
         indices = _append_storage_data_to_indices(connection, table_name)
         attach_constraint!(
             model,
@@ -98,7 +99,7 @@ function add_storage_constraints!(
         attach_constraint!(
             model,
             cons,
-            :max_storage_level_rep_period_limit,
+            :max_storage_level_intra_rep_period_limit,
             [
                 begin
                     max_storage_level_agg = _profile_aggregate(
@@ -113,10 +114,10 @@ function add_storage_constraints!(
                         var_storage_level ≤
                         max_storage_level_agg *
                         available_energy_capacity_aggregated_vintage_method[row.avail_energy_capacity_id],
-                        base_name = "max_storage_level_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "max_storage_level_intra_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
-                end for
-                (row, var_storage_level) in zip(indices, var_storage_level_rep_period.container)
+                end for (row, var_storage_level) in
+                zip(indices, var_storage_level_intra_rep_period.container)
             ],
         )
 
@@ -124,7 +125,7 @@ function add_storage_constraints!(
         attach_constraint!(
             model,
             cons,
-            :min_storage_level_rep_period_limit,
+            :min_storage_level_intra_rep_period_limit,
             [
                 begin
                     min_storage_level_agg = _profile_aggregate(
@@ -139,10 +140,10 @@ function add_storage_constraints!(
                         var_storage_level ≥
                         min_storage_level_agg *
                         available_energy_capacity_aggregated_vintage_method[row.avail_energy_capacity_id],
-                        base_name = "min_storage_level_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "min_storage_level_intra_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
-                end for
-                (row, var_storage_level) in zip(indices, var_storage_level_rep_period.container)
+                end for (row, var_storage_level) in
+                zip(indices, var_storage_level_intra_rep_period.container)
             ],
         )
     end
@@ -256,7 +257,8 @@ function add_storage_constraints!(
 
     ## intra-period constraints for seasonal storage
     let table_name = :accumulated_storage_intra_period, cons = constraints[table_name]
-        var_accumulated_storage_level = variables[:accumulated_storage_level_intra_period].container
+        var_accumulated_storage_level =
+            variables[:accumulated_storage_level_intra_rep_period].container
         indices = _append_storage_data_to_indices(connection, table_name)
         attach_constraint!(
             model,

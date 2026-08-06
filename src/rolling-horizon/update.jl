@@ -40,7 +40,7 @@ function update_initial_storage_level!(
                 param.id,
                 var.solution
             FROM param_initial_storage_level AS param
-            LEFT JOIN var_storage_level_rep_period AS var
+            LEFT JOIN var_storage_level_intra_rep_period AS var
                 ON param.asset = var.asset
                 AND param.milestone_year = var.milestone_year
                 AND param.rep_period = var.rep_period

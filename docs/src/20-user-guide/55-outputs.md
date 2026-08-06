@@ -81,7 +81,7 @@ Associated input parameters: `investable`, `investment_integer`, `capacity`, `in
 
 For a storage asset in a specific `milestone_year` and between `period_start` and `period_end`, the optimal storage level BETWEEN representative periods, expressed in the same units as `capacity_storage_energy` of asset.
 
-### `var_storage_level_rep_period`
+### `var_storage_level_intra_rep_period`
 
 For a storage asset in a specific `milestone_year` and between `period_start` and `period_end`, the optimal storage level WITHIN representative periods, expressed in the same units as `capacity_storage_energy` of asset.
 
@@ -110,8 +110,8 @@ Associated input parameter: `unit_commitment_integer`
 ### `cons_balance_storage_rep_period`
 
 - `dual_balance_storage_rep_period`: Dual of the constraint ["rep-period constraint for storage balance"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#rep-period-storage-balance).
-- `dual_max_storage_level_rep_period_limit`: Dual of the constraint ["rep-period constraint for maximimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Rep-period-Constraint-for-Maximum-Storage-Level-Limit)
-- `dual_min_storage_level_rep_period_limit`: Dual of the constraint ["rep-period constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Rep-period-Constraint-for-Minimum-Storage-Level-Limit)
+- `dual_max_storage_level_intra_rep_period_limit`: Dual of the constraint ["rep-period constraint for maximimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Rep-period-Constraint-for-Maximum-Storage-Level-Limit)
+- `dual_min_storage_level_intra_rep_period_limit`: Dual of the constraint ["rep-period constraint for minimum storage level limit"](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/40-formulation/#Rep-period-Constraint-for-Minimum-Storage-Level-Limit)
 
 ### `cons_capacity_incoming`
 

@@ -597,10 +597,10 @@ input_dir = "../../test/inputs/Storage" # hide
 assets_data = CSV.read(joinpath(input_dir, "asset-both.csv"), DataFrame) # hide
 graph_assets = CSV.read(joinpath(input_dir, "asset.csv"), DataFrame) # hide
 assets = leftjoin(graph_assets, assets_data, on=:asset) # hide
-filtered_assets = assets[assets.type .== "storage", ["asset", "type", "capacity", "capacity_storage_energy",  "is_seasonal"]] # hide
+filtered_assets = assets[assets.type .== "storage", ["asset", "type", "capacity", "capacity_storage_energy",  "use_inter_period_constraints"]] # hide
 ```
 
-The `is_seasonal` parameter determines whether or not the storage asset uses the inter-period constraints. The `phs` is the only storage asset with this type of constraint and inter-period-storage level variable (i.e., $v^{\text{inter-period-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` and the `caes` will only consider rep-period constraints with rep-period-storage level variables (i.e., $v^{\text{rep-period-storage}}_{\text{battery},k,b_k}$ and $v^{\text{rep-period-storage}}_{\text{caes},k,b_k}$), and both have 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration). The `caes` also has an auxiliary output that is kept out of its storage balance; see the [flow coefficients](@ref coefficient-for-storage-constraints) section of the user guide.
+The `use_inter_period_constraints` parameter determines whether or not the storage asset uses the inter-period constraints. The `phs` is the only storage asset with this type of constraint and inter-period-storage level variable (i.e., $v^{\text{inter-period-storage}}_{\text{phs},p}$), and has 100MW capacity and 4800MWh of storage capacity (i.e., 48h discharge duration). The `battery` and the `caes` will only consider rep-period constraints with rep-period-storage level variables (i.e., $v^{\text{rep-period-storage}}_{\text{battery},k,b_k}$ and $v^{\text{rep-period-storage}}_{\text{caes},k,b_k}$), and both have 10MW capacity with 20MWh of storage capacity (i.e., 2h discharge duration). The `caes` also has an auxiliary output that is kept out of its storage balance; see the [flow coefficients](@ref coefficient-for-storage-constraints) section of the user guide.
 
 The `rep-periods-data` file has information on the representative periods in the example. We have three representative periods, each with 24 timesteps and hourly resolution, representing a day. The figure below shows the availability profile of the renewable energy sources in the example.
 
@@ -679,7 +679,7 @@ energy_problem = run_scenario(connection)
 Since the `battery` and the `caes` are not seasonal, they only have results for the rep-period-storage level of each representative period, as shown in the following figure:
 
 ```@example seasonal-storage
-storage_levels = TulipaIO.get_table(connection, "var_storage_level_rep_period") # hide
+storage_levels = TulipaIO.get_table(connection, "var_storage_level_intra_rep_period") # hide
 rep_period_assets = sort(unique(storage_levels.asset)) # hide
 p = plot(; # hide
     layout = grid(length(rep_period_assets), 1), # hide

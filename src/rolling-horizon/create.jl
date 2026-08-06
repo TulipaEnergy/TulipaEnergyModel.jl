@@ -58,7 +58,7 @@ function add_rolling_horizon_parameters!(connection, model, variables, profiles,
             var.rep_period,
             var.id as var_storage_id,
             asset_milestone.initial_storage_level as original_value
-        FROM var_storage_level_rep_period as var
+        FROM var_storage_level_intra_rep_period as var
         LEFT JOIN asset_milestone
             ON var.asset = asset_milestone.asset
             AND var.milestone_year = asset_milestone.milestone_year
