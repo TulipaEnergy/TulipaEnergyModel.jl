@@ -10,6 +10,20 @@ Tulipa is free and easy to install. Check out [Getting Started](@ref getting-sta
 
 ## Tulipa in a Nutshell
 
+### Why Tulipa
+
+Tulipa is built to challenge the usual speed-versus-fidelity tradeoff in energy system modelling. Instead of simplifying away important dynamics, Tulipa combines strong formulations with flexible model detail so you can scale up scenarios while keeping key physics and operational behavior.
+
+In practice, this means:
+
+- **Lower computational cost without sacrificing fidelity:** Reduce problem size through [flexible asset connections](@ref flex-asset-connection) and [fully flexible time resolution](@ref flex-time-res).
+
+- **Higher formulation quality:** Use tighter formulations for key decisions such as [storage modeling](@ref storage-modeling) and unit commitment/ramping (see [Flexible Time Resolution in UC and Ramping](@ref flex-time-res-uc)).
+
+- **Adaptive detail where it matters:** Mix levels of detail across time, technologies, and planning horizons, including [multi-year investment modeling](@ref multi-year-investment-modeling).
+
+- **Scalable advanced studies:** Tackle larger studies and uncertainty-aware workflows, including [two-stage stochastic optimization](@ref two-stage-stochastic).
+
 ### Example Questions
 
 Tulipa can answer questions such as:
