@@ -402,9 +402,13 @@ end
         # Build expected constraint based on position in time series
         expected_cons = if tb == 1
             # First time block: balance includes initial storage level
+            initial_storage_level_in_energy_units =
+                config.initial_storage_level *
+                config.initial_storage_units *
+                config.capacity_storage_energy
             JuMP.@build_constraint(
                 storage_level[id] - incoming_expr + outgoing_expr ==
-                total_inflows + config.initial_storage_level
+                total_inflows + initial_storage_level_in_energy_units
             )
         else
             # Subsequent time blocks: balance against previous time block
@@ -549,9 +553,14 @@ end
         # Build expected constraint based on position in time series
         expected_cons = if period == 1
             # First period: balance uses initial storage level
+            initial_storage_level_in_energy_units =
+                initial_storage_level *
+                config.initial_storage_units *
+                config.capacity_storage_energy
             JuMP.@build_constraint(
                 storage_level[constraint_id] ==
-                computed_storage_loss_coef * initial_storage_level + accumulated_expr
+                computed_storage_loss_coef * initial_storage_level_in_energy_units +
+                accumulated_expr
             )
         else
             # Subsequent periods: balance against previous period
@@ -637,9 +646,14 @@ end
         # Build expected constraint based on position in time series
         expected_cons = if period == 1
             # First period: balance uses initial storage level
+            initial_storage_level_in_energy_units =
+                initial_storage_level *
+                config.initial_storage_units *
+                config.capacity_storage_energy
             JuMP.@build_constraint(
                 storage_level[current_storage_id] ==
-                computed_storage_loss_coef * initial_storage_level + accumulated_expr
+                computed_storage_loss_coef * initial_storage_level_in_energy_units +
+                accumulated_expr
             )
         else
             # Subsequent periods: balance against previous period

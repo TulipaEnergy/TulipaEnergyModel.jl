@@ -9,7 +9,7 @@
     # - Asgard_Battery -> initial_storage_level = 1.0 (note: we update this value from missing to 1.0 in the test to cover the edge case of initial storage level greater than 0)
     # seasonal
     # - Valhalla_H2_storage -> initial_storage_level = missing
-    # - Midgard_Hydro -> initial_storage_level = 25000.0
+    # - Midgard_Hydro -> initial_storage_level = 0.5
 
     connection = DBInterface.connect(DuckDB.DB)
     TulipaIO.read_csv_folder(connection, dir)
@@ -48,13 +48,6 @@
     periods_data = DuckDB.query(connection, "SELECT * FROM timeframe_data") |> DataFrame
     expected_num_storage_level_inter_period_vars = length(periods_data.period)
 
-    # get the initial storage levels to compute the expected lower bounds for storage level
-    asset_milestone = DuckDB.query(connection, "SELECT * FROM asset_milestone") |> DataFrame
-    initial_storage_levels = Dict(
-        (row.asset, row.milestone_year) => row.initial_storage_level for
-        row in eachrow(asset_milestone)
-    )
-
     # Test storage level rep-period variable only for the Midgard_PHS and Asgard_Battery assets
     # since use_inter_period_constraints = false in the test case
     @test haskey(energy_problem.variables, :storage_level_intra_rep_period)
@@ -74,24 +67,14 @@
         [:asset, :milestone_year, :rep_period],
     )
     @test grouped_indices.ngroups == num_rep_periods * 2 # we have 2 assets with non-seasonal storage, so we expect 2 groups per rep period (only 1 year)
-    # iterate over the groups and get the last variable for each group to check the lower bound
+    # Initial levels are enforced by explicit constraints because the available capacity can
+    # contain investment variables. All storage-level variables keep their zero lower bound.
     for group in grouped_indices
-        asset = group.asset[1]
-        initial_storage_level = initial_storage_levels[(asset, 2030)]
-        last_id = last(group.id)
         for id in group.id
-            var = storage_level_intra_rep_period[id]
-            if id == last_id
-                if !ismissing(initial_storage_level)
-                    _test_variable_properties(var, initial_storage_level, nothing)
-                else
-                    _test_variable_properties(var, 0.0, nothing)
-                end
-            else
-                _test_variable_properties(var, 0.0, nothing)
-            end
+            _test_variable_properties(storage_level_intra_rep_period[id], 0.0, nothing)
         end
     end
+    @test length(energy_problem.model[:cycling_condition_intra_rep_period]) == num_rep_periods
 
     # Test storage level inter-period variable only for the Valhalla_H2_storage and Midgard_Hydro asset
     # since it is the only seasonal storage in the test case
@@ -108,24 +91,12 @@
     grouped_indices =
         DataFrames.groupby(storage_level_inter_period_indices, [:asset, :milestone_year])
     @test grouped_indices.ngroups == 2 # we have 2 assets with seasonal storage, so we expect 2 groups (only 1 year)
-    # iterate over the groups and get the last variable for each group to check the lower bound
     for group in grouped_indices
-        asset = group.asset[1]
-        initial_storage_level = initial_storage_levels[(asset, 2030)]
-        last_id = last(group.id)
         for id in group.id
-            var = storage_level_inter_period[id]
-            if id == last_id
-                if !ismissing(initial_storage_level)
-                    _test_variable_properties(var, initial_storage_level, nothing)
-                else
-                    _test_variable_properties(var, 0.0, nothing)
-                end
-            else
-                _test_variable_properties(var, 0.0, nothing)
-            end
+            _test_variable_properties(storage_level_inter_period[id], 0.0, nothing)
         end
     end
+    @test length(energy_problem.model[:cycling_condition_inter_period]) == 1
 
     ## Test accumulated storage level intra-period variable only for the Valhalla_H2_storage and Midgard_Hydro asset
     # since it is the only seasonal storage in the test case
@@ -144,7 +115,7 @@
         [:asset, :milestone_year, :rep_period],
     )
     @test grouped_indices.ngroups == num_rep_periods * 2 # we have 2 assets with seasonal storage, so we expect 2 groups per rep period (only 1 year)
-    # iterate over the groups -- this variable is a free variable without bounds, so we expect all variables to have lower bound = 0.0 and no upper bound, even the last variable in each group with the initial storage level (which is used as lower bound only for the storage_level_intra_rep_period variable)
+    # This expression variable is free and has no bounds.
     for group in grouped_indices
         for id in group.id
             var = accumulated_storage_level_intra_rep_period[id]

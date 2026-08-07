@@ -72,6 +72,37 @@ end
     @test error_messages == ["Table 'asset' has bad value for column 'type': 'badtype'"]
 end
 
+@testitem "Test schema numeric constraints - minimum" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(connection, "UPDATE asset SET capacity = -1 WHERE asset = 'ccgt'")
+
+    error_messages = TEM._validate_schema_min_max_constraints!(String[], connection)
+    @test length(error_messages) == 1
+    @test occursin(
+        "Table 'asset' has out-of-range value for column 'capacity'",
+        only(error_messages),
+    )
+    @test occursin("expected >= 0", only(error_messages))
+end
+
+@testitem "Test schema numeric constraints - maximum" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _storage_fixture()
+    DuckDB.query(
+        connection,
+        "UPDATE asset_milestone SET initial_storage_level = 1.1 WHERE asset = 'phs'",
+    )
+
+    error_messages = TEM._validate_schema_min_max_constraints!(String[], connection)
+    @test length(error_messages) == 1
+    @test occursin(
+        "Table 'asset_milestone' has out-of-range value for column 'initial_storage_level'",
+        only(error_messages),
+    )
+    @test occursin("expected >= 0 and <= 1", only(error_messages))
+end
+
 @testitem "Test schema oneOf constraints - bad consumer balance sense" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
