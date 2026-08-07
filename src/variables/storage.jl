@@ -44,48 +44,5 @@ function add_storage_variables!(connection, model, variables)
         ) for row in is_charging_indices
     ]
 
-    ### Cycling conditions
-    let var = variables[:storage_level_intra_rep_period]
-        table_name = var.table_name
-        for row in DuckDB.query(
-            connection,
-            "SELECT
-                last(var.id) AS last_id,
-                var.asset, var.milestone_year, var.rep_period,
-                ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
-            FROM $table_name AS var
-            LEFT JOIN asset_milestone
-                ON var.asset = asset_milestone.asset
-                AND var.milestone_year = asset_milestone.milestone_year
-            WHERE asset_milestone.initial_storage_level IS NOT NULL
-            GROUP BY var.asset, var.milestone_year, var.rep_period
-            ",
-        )
-            JuMP.set_lower_bound(var.container[row.last_id], row.initial_storage_level)
-        end
-    end
-
-    let var = variables[:storage_level_inter_period]
-        table_name = var.table_name
-        for row in DuckDB.query(
-            connection,
-            "SELECT
-                last(var.id) AS last_id,
-                var.asset,
-                var.milestone_year,
-                var.scenario,
-                ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
-            FROM $table_name AS var
-            LEFT JOIN asset_milestone
-                ON var.asset = asset_milestone.asset
-                AND var.milestone_year = asset_milestone.milestone_year
-            WHERE asset_milestone.initial_storage_level IS NOT NULL
-            GROUP BY var.asset, var.milestone_year, var.scenario
-            ",
-        )
-            JuMP.set_lower_bound(var.container[row.last_id], row.initial_storage_level)
-        end
-    end
-
     return
 end

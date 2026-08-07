@@ -255,6 +255,65 @@ function add_storage_constraints!(
         )
     end
 
+    # Cycling conditions:
+    ## An explicit constraint is required because the initial level now depends on
+    ## capacity expressions that can contain investment and decommission variables.
+    model[:cycling_condition_intra_rep_period] = [
+        @constraint(
+            model,
+            var_storage_level_intra_rep_period.container[row.last_id] ≥
+            row.initial_storage_level * available_energy_capacity[row.avail_energy_capacity_id],
+            base_name = "cycling_condition_intra_rep_period[$(row.asset),$(row.milestone_year),$(row.rep_period)]"
+        ) for row in DuckDB.query(
+            connection,
+            "SELECT
+                ARG_MAX(var.id, var.time_block_start) AS last_id,
+                var.asset,
+                var.milestone_year,
+                var.rep_period,
+                ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
+                ANY_VALUE(expr_avail.id) AS avail_energy_capacity_id
+            FROM var_storage_level_intra_rep_period AS var
+            LEFT JOIN asset_milestone
+                ON var.asset = asset_milestone.asset
+                AND var.milestone_year = asset_milestone.milestone_year
+            LEFT JOIN expr_available_energy_capacity_aggregated_vintage_method AS expr_avail
+                ON var.asset = expr_avail.asset
+                AND var.milestone_year = expr_avail.milestone_year
+            WHERE asset_milestone.initial_storage_level > 0
+            GROUP BY var.asset, var.milestone_year, var.rep_period
+            ORDER BY var.asset, var.milestone_year, var.rep_period",
+        )
+    ]
+
+    model[:cycling_condition_inter_period] = [
+        @constraint(
+            model,
+            var_storage_level_inter_period.container[row.last_id] ≥
+            row.initial_storage_level * available_energy_capacity[row.avail_energy_capacity_id],
+            base_name = "cycling_condition_inter_period[$(row.asset),$(row.milestone_year),$(row.scenario)]"
+        ) for row in DuckDB.query(
+            connection,
+            "SELECT
+                ARG_MAX(var.id, var.period_block_start) AS last_id,
+                var.asset,
+                var.milestone_year,
+                var.scenario,
+                ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
+                ANY_VALUE(expr_avail.id) AS avail_energy_capacity_id
+            FROM var_storage_level_inter_period AS var
+            LEFT JOIN asset_milestone
+                ON var.asset = asset_milestone.asset
+                AND var.milestone_year = asset_milestone.milestone_year
+            LEFT JOIN expr_available_energy_capacity_aggregated_vintage_method AS expr_avail
+                ON var.asset = expr_avail.asset
+                AND var.milestone_year = expr_avail.milestone_year
+            WHERE asset_milestone.initial_storage_level > 0
+            GROUP BY var.asset, var.milestone_year, var.scenario
+            ORDER BY var.asset, var.milestone_year, var.scenario",
+        )
+    ]
+
     ## intra-period constraints for seasonal storage
     let table_name = :accumulated_storage_intra_period, cons = constraints[table_name]
         var_accumulated_storage_level =
