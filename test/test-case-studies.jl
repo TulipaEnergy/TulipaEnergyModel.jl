@@ -210,13 +210,20 @@ end
     dir = joinpath(INPUT_FOLDER, "Tiny")
     connection = DBInterface.connect(DuckDB.DB)
     _read_csv_folder(connection, dir)
-    DuckDB.execute( # Make it infeasible
+    # Make it infeasible
+    DuckDB.execute(
         connection,
         "UPDATE asset_milestone
-            SET peak_demand = -1
+            SET peak_demand = 1200
             WHERE
                 asset = 'demand'
                 AND milestone_year = 2030
+        ",
+    )
+    DuckDB.execute(
+        connection,
+        "UPDATE asset_commission
+            SET investment_max_limit = 1
         ",
     )
     energy_problem = TulipaEnergyModel.EnergyProblem(connection)
