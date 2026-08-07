@@ -124,17 +124,6 @@ function create_model(
         constraints,
     )
 
-    ## Rolling Horizon Parameters
-    if rolling_horizon
-        add_rolling_horizon_parameters!(
-            connection,
-            model,
-            variables,
-            profiles,
-            rolling_horizon_window_length,
-        )
-    end
-
     ## Expressions
     expressions = Dict{Symbol,TulipaExpression}()
 
@@ -148,6 +137,17 @@ function create_model(
 
     ## Expressions for storage assets
     @timeit to "add_storage_expressions!" add_storage_expressions!(connection, model, expressions)
+
+    ## Rolling Horizon Parameters
+    if rolling_horizon
+        add_rolling_horizon_parameters!(
+            connection,
+            model,
+            variables,
+            profiles,
+            rolling_horizon_window_length,
+        )
+    end
 
     ## Tables for the objective function
     @timeit to "prepare_objective_tables!" prepare_objective_tables!(connection, model_parameters)

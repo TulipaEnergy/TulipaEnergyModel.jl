@@ -57,11 +57,15 @@ function add_rolling_horizon_parameters!(connection, model, variables, profiles,
             var.milestone_year,
             var.rep_period,
             var.id as var_storage_id,
+            expr_avail.id AS available_energy_capacity_id,
             asset_milestone.initial_storage_level as original_value
         FROM var_storage_level_intra_rep_period as var
         LEFT JOIN asset_milestone
             ON var.asset = asset_milestone.asset
             AND var.milestone_year = asset_milestone.milestone_year
+        LEFT JOIN expr_available_energy_capacity_aggregated_vintage_method AS expr_avail
+            ON var.asset = expr_avail.asset
+            AND var.milestone_year = expr_avail.milestone_year
         WHERE time_block_start = 1;
         DROP SEQUENCE id;
         """,

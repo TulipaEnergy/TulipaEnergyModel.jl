@@ -141,6 +141,7 @@ function run_rolling_horizon(
         if window_id > 1 # Don't try to update the first initial values
             @timeit to "update scalar parameters" update_scalar_parameters!(
                 energy_problem.variables,
+                energy_problem.expressions,
                 connection,
                 move_forward,
             )
