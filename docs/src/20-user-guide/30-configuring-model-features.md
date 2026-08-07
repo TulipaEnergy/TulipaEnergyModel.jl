@@ -61,6 +61,34 @@ In addition, the parameter `capacity_storage_energy` defines the energy per unit
 
 For more details on the constraints that apply when selecting one method or the other, please visit the [`mathematical formulation`](@ref formulation) section.
 
+### [Initial storage level](@id initial-storage-level-setup)
+
+`initial_storage_level` is the fraction of the available storage-energy capacity that is stored at the start of a milestone year. It accepts values from `0` (empty) through `1` (full). The initial energy in MWh is therefore:
+
+```math
+E^{\text{initial}}_{a,y} = p^{\text{initial storage level}}_{a,y} \cdot E^{\text{available}}_{a,y}.
+```
+
+How the available capacity is calculated depends on `storage_method_energy`:
+
+- With `none`, it is `capacity_storage_energy * initial_storage_units`. For example, `initial_storage_level = 0.5` and 100 MWh of available capacity starts the asset at 50 MWh.
+- With `optimize_storage_capacity`, it includes the independently optimized storage-energy investments and decommissions. The initial energy consequently scales with the capacity selected by the optimization.
+- With `use_fixed_energy_to_power_ratio`, it includes the existing storage-energy capacity plus the storage energy associated with available power capacity through `energy_to_power_ratio`. The initial energy scales with that total.
+
+When capacity can be invested in or decommissioned, `initial_storage_level` represents a fill fraction, not a fixed quantity of MWh. To impose a fixed initial quantity, fix the available capacity and convert the quantity to p.u.
+
+If `initial_storage_level` is missing, the model uses a cyclic boundary condition: the last storage level supplies the initial state. If it is defined, including as `0`, the first balance starts from the specified fraction and the final level must be at least that fraction of available capacity. Storage-level profiles apply after each dispatch block, so charging and discharging in the first block can move the level away from its initial value.
+
+In a rolling-horizon run, the input value initializes the first window. Each later window uses the previous window's solved storage level, divided by its solved available capacity, as its new p.u. value. Non-seasonal storage therefore requires an explicit initial level when rolling horizon is enabled.
+
+Existing input data that stores this field in MWh can be migrated with:
+
+```bash
+uv run --with duckdb python utils/scripts/migrate-initial-storage-level.py --input-folder path/to/input-data
+```
+
+The migration divides the old MWh value by the fixed available capacity and fails with an explanation when that conversion is ambiguous, such as when investment makes the capacity decision-dependent. Run it only once on legacy data.
+
 ### [Control simultaneous charging and discharging](@id storage-binary-method-setup)
 
 Depending on the configuration of the energy storage assets, it may or may not be possible to charge and discharge them simultaneously. For instance, a single battery cannot charge and discharge at the same time, but some pumped hydro storage technologies have separate components for charging (pump) and discharging (turbine) that can function independently, allowing them to charge and discharge simultaneously. To account for these differences, the model provides users with three options for the `use_binary_storage_method` parameter:
@@ -406,7 +434,7 @@ To set it up:
 1. Make the accounting node a storage asset and connect every emission flow of the system as an input to it.
 2. Set `use_inter_period_constraints = true` in the `asset` table.
 3. Set `capacity_storage_energy` in the `asset` table to the emission budget, and `initial_storage_units` in `asset_both` to 1. With the default `storage_method_energy = 'none'`, the available energy capacity is the product of the two, and the level limit is the `max_storage_level` profile times that capacity. The profile defaults to 1.0 p.u., so the level is capped at the budget.
-4. Set `initial_storage_level = 0` in the `asset_milestone` table (see the warning below).
+4. Set `initial_storage_level = 0` in the `asset_milestone` table (see [Initial storage level](@ref initial-storage-level-setup) and the warning below).
 5. (optional) Add a `max_storage_level` profile in `assets_timeframe_profiles` to make the budget tighten or relax over the year, or a `min_storage_level` profile to impose a floor.
 
 Keep the defaults for `storage_charging_efficiency` (1.0) and `storage_loss_from_stored_energy` (0), otherwise CO2 is created or destroyed on its way into the accumulator.
