@@ -56,11 +56,13 @@ function add_storage_constraints!(
                     storage_discharging_efficiency = row.storage_discharging_efficiency::Float64
 
                     if row.time_block_start == 1 && !ismissing(initial_storage_level)
-                        # Initial storage is a Float64
+                        initial_storage_level_in_energy_units =
+                            initial_storage_level *
+                            available_energy_capacity[row.avail_energy_capacity_id]
                         @constraint(
                             model,
                             var_storage_level[row.id] ==
-                            initial_storage_level +
+                            initial_storage_level_in_energy_units +
                             profile_agg * row.storage_inflows +
                             storage_charging_efficiency * incoming_flow -
                             outgoing_flow / storage_discharging_efficiency,
@@ -171,11 +173,13 @@ function add_storage_constraints!(
                     end
 
                     if row.period_block_start == 1 && !ismissing(initial_storage_level)
-                        # Initial storage is a Float64
+                        initial_storage_level_in_energy_units =
+                            initial_storage_level *
+                            available_energy_capacity[row.avail_energy_capacity_id]
                         @constraint(
                             model,
                             var_storage_level_inter_period.container[row.id] ==
-                            computed_storage_loss_coef * initial_storage_level +
+                            computed_storage_loss_coef * initial_storage_level_in_energy_units +
                             accumulated_intra_period,
                             base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                         )
