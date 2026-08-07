@@ -1,0 +1,9 @@
+from_asset,to_asset,technical_lifetime,discount_rate
+ens,e_demand,10,0.02
+ocgt,e_demand,10,0.02
+ccgt,e_demand,10,0.02
+wind,e_demand,10,0.02
+solar,e_demand,10,0.02
+wind,electrolizer,10,0.02
+electrolizer,h2_demand,10,0.02
+smr_ccs,h2_demand,10,0.02
