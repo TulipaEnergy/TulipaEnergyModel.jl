@@ -22,8 +22,8 @@ authors:
       orcid: "0000-0002-3278-9283"
     - given-names: Grigory
       surname: Neustroev
-      email: g.neustroev@tudelft.nl
-      affiliation: 3
+      email: greg.neustroev@zeroth.org
+      affiliation: 7
       orcid: "0000-0002-7706-7778"
     - given-names: Juha
       surname:  Kiviluoma
@@ -32,8 +32,8 @@ authors:
       orcid: "0000-0002-1299-9056"
     - given-names: Lauren
       surname: Clisby
-      email: lauren.clisby@tno.nl
-      affiliation: 2
+      email: lauren.clisby@openenergytransition.org
+      affiliation: 8
       orcid: "0009-0008-7848-4144"
     - given-names: Maaike
       surname: Elgersma
@@ -82,6 +82,10 @@ affiliations:
   - name: Universidad Pontificia Comillas
     ror: 017mdc710
     index: 6
+  - name: Zeroth Research
+    index: 7
+  - name: Open Energy Transition
+    index: 8
 date: 04 October 2025
 bibliography: paper.bib
 ---
