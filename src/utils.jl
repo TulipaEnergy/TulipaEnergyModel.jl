@@ -185,3 +185,85 @@ function _append_variable_ids(connection, constraint_table_name, variables_to_ap
 
     return DuckDB.query(connection, query_string)
 end
+
+"""
+    _append_available_units_shut_down_aggregated_vintage_method(
+        connection,
+        table_name
+    )
+
+Add available units expression to the given constraint (`table_name`) using the aggregated vintage method.
+"""
+function _append_available_units_shut_down_aggregated_vintage_method(connection, table_name)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            cons.*,
+            expr_avail.id AS avail_id,
+            var_units_on.id as units_on_id,
+            var_shut_down.id as shut_down_id
+        FROM cons_$table_name AS cons
+        LEFT JOIN expr_available_asset_units_aggregated_vintage_method AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.milestone_year = expr_avail.milestone_year
+        LEFT JOIN asset
+            ON cons.asset = asset.asset
+        LEFT JOIN var_units_on
+            ON var_units_on.asset = cons.asset
+            AND var_units_on.milestone_year = cons.milestone_year
+            AND var_units_on.rep_period = cons.rep_period
+            AND var_units_on.time_block_start = cons.time_block_start
+        LEFT JOIN var_shut_down
+            ON var_shut_down.asset = cons.asset
+            AND var_shut_down.milestone_year = cons.milestone_year
+            AND var_shut_down.rep_period = cons.rep_period
+            AND var_shut_down.time_block_start = cons.time_block_start
+        WHERE asset.vintage_method = 'aggregated'
+        ORDER BY cons.id
+        ",
+    )
+end
+
+"""
+    _append_available_units_shut_down_compact_method(
+        connection,
+        table_name
+    )
+
+Add available units expression to the given constraint (`table_name`) using the copmact vintage method.
+"""
+function _append_available_units_shut_down_compact_method(connection, table_name)
+    return DuckDB.query(
+        connection,
+        "SELECT
+            cons.id,
+            ANY_VALUE(cons.asset) AS asset,
+            ANY_VALUE(cons.milestone_year) AS milestone_year,
+            ANY_VALUE(cons.rep_period) AS rep_period,
+            ANY_VALUE(cons.time_block_start) AS time_block_start,
+            ANY_VALUE(cons.time_block_end) AS time_block_end,
+            ARRAY_AGG(expr_avail.id) AS avail_indices,
+            ANY_VALUE(var_units_on.id) AS units_on_id,
+            ANY_VALUE(var_shut_down.id) AS shut_down_id
+        FROM cons_$table_name AS cons
+        LEFT JOIN expr_available_asset_units_compact_vintage_method AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.milestone_year = expr_avail.milestone_year
+        LEFT JOIN asset
+            ON cons.asset = asset.asset
+        LEFT JOIN var_units_on
+            ON var_units_on.asset = cons.asset
+            AND var_units_on.milestone_year = cons.milestone_year
+            AND var_units_on.rep_period = cons.rep_period
+            AND var_units_on.time_block_start = cons.time_block_start
+        LEFT JOIN var_shut_down
+            ON var_shut_down.asset = cons.asset
+            AND var_shut_down.milestone_year = cons.milestone_year
+            AND var_shut_down.rep_period = cons.rep_period
+            AND var_shut_down.time_block_start = cons.time_block_start
+        WHERE asset.vintage_method = 'compact_profiles'
+        GROUP BY cons.id
+        ORDER BY cons.id
+        ",
+    )
+end

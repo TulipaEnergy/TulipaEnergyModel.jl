@@ -99,6 +99,24 @@
       "type": "DOUBLE",
       "unit_of_measure": "p.u."
     },
+    "minimum_down_time": {
+      "constraints": {
+        "minimum": 1
+      },
+      "default": 1,
+      "description": "Minimum amount of time which must pass between the shutting down and subsequent starting up of a unit.",
+      "type": "INTEGER",
+      "unit_of_measure": "h"
+    },
+    "minimum_up_time": {
+      "constraints": {
+        "minimum": 1
+      },
+      "default": 1,
+      "description": "Minimum amount of time which must pass between the starting up and subsequent shutting down of a unit.",
+      "type": "INTEGER",
+      "unit_of_measure": "h"
+    },
     "ramping": {
       "default": false,
       "description": "Whether asset has ramping constraints or not.",
