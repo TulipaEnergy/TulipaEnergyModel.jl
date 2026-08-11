@@ -79,7 +79,7 @@ When capacity can be invested in or decommissioned, `initial_storage_level` repr
 
 If `initial_storage_level` is missing, the model uses a cyclic boundary condition: the last storage level supplies the initial state. If it is defined, including as `0`, the first balance starts from the specified fraction and the final level must be at least that fraction of available capacity. Storage-level profiles apply after each dispatch block, so charging and discharging in the first block can move the level away from its initial value.
 
-In a rolling-horizon run, the input value initializes the first window. Each later window uses the previous window's solved storage level, divided by its solved available capacity, as its new p.u. value. Non-seasonal storage therefore requires an explicit initial level when rolling horizon is enabled.
+In a rolling-horizon run, the input value initializes the first window. Each later window uses the previous window's solved storage level in p.u. as the initial value for the next window. Storage assets therefore require an explicit initial level when the rolling horizon is enabled.
 
 Existing input data that stores this field in MWh can be migrated with:
 
