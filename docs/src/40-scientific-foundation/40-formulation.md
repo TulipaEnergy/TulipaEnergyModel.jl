@@ -353,8 +353,6 @@ p^{\text{annualized inv cost}}_{a, y} = \frac{p^{\text{technology-specific disco
 
 #### Discounting Factor for Storage-Energy Investment Costs
 
-Storage assets using the energy method ($a \in \mathcal{A}^{\text{se}}_y$) invest in an energy component with its own overnight cost $p^{\text{inv cost energy}}_{a,y}$. This component is discounted with the same technology-specific rate and economic lifetime as the asset, but based on the energy investment cost, so that it is priced correctly even when the asset has no power investment cost.
-
 ```math
 p_{a, y}^{\text{discounting factor asset energy inv cost}}=\frac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}}(1-\frac{p_{a, y}^{\text{salvage value energy}}}{p_{a, y}^{\text{inv cost energy}}}) \quad \forall a \in \mathcal{A}_y^{\text{i}} \cap \mathcal{A}_y^{\text{se}}, \forall y \in \mathcal{Y}
 ```
@@ -397,7 +395,7 @@ p_{y}^{\text{discounting factor operation cost}}= \sum^{\text{next}(y)-1}_{y`=y}
 
 This definition of the discount factor at year $y$ includes the discounts for the range of years from the milestone year $y$ to the next milestone year $y+1$, i.e., \{$y$, $y$+1, ..., next($y$)-1\}, so the discounts at the non-modeled years are also correctly considered. When $y$=last($y$), only the discount at year $y$ is included.
 
-### Objective Function
+### Objective Function Definition
 
 The objective function is formulated as a two-stage stochastic optimization problem, where the investment decisions are the first-stage variables and the expected value of the operation variables is in the second stage. When the risk aversion weight $p^{\lambda} > 0$ and there are multiple stochastic scenarios ($|\mathcal{S}| > 1$), the model uses a mean-CVaR (Conditional Value at Risk) formulation to incorporate risk into the objective to the operation costs (i.e., the risk measure only applies to uncertain quantities).
 
