@@ -336,7 +336,13 @@ The model accounts for discounting in multi-year investment modelling. For more 
 #### Discounting Factor for Asset Investment Costs
 
 ```math
-p_{a, y}^{\text{discounting factor asset inv cost}}=\frac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}}(1-\frac{p_{a, y}^{\text{salvage value}}}{p_{a, y}^{\text{inv cost}}}) \quad \forall a \in \mathcal{A}_y^{\text{i}}, \forall y \in \mathcal{Y}
+p_{a, y}^{\text{discounting factor asset inv cost}}=
+\begin{cases}
+0, & p_{a,y}^{\text{inv cost}} = 0, \\
+\dfrac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}}
+\left(1+p_{a,y}^{\text{technology-specific discount rate}}-\dfrac{p_{a,y}^{\text{salvage value}}}{p_{a,y}^{\text{inv cost}}}\right), & p_{a,y}^{\text{inv cost}} > 0,
+\end{cases}
+\quad \forall a \in \mathcal{A}_y^{\text{i}}, \forall y \in \mathcal{Y}
 ```
 
 where salvage value is
@@ -348,13 +354,27 @@ p^{\text{salvage value}}_{a, y} = p^{\text{annualized inv cost}}_{a, y} \sum_{i=
 and where annualized cost is
 
 ```math
-p^{\text{annualized inv cost}}_{a, y} = \frac{p^{\text{technology-specific discount rate}}_{a, y}}{ (1+p^{\text{technology-specific discount rate}}_{a, y}) \cdot \bigg( 1 - \frac{1}{ (1+p^{\text{technology-specific discount rate}}_{a, y})^{p^{\text{economic lifetime}}_{a, y}} } \bigg) } p^{\text{inv cost}}_{a, y} \quad \forall a \in \mathcal{A}_y^{\text{i}}, \forall y \in \mathcal{Y}
+p^{\text{annualized inv cost}}_{a, y} =
+\begin{cases}
+\dfrac{p^{\text{inv cost}}_{a,y}}{p^{\text{economic lifetime}}_{a,y}}, & p^{\text{technology-specific discount rate}}_{a,y}=0, \\
+\dfrac{p^{\text{technology-specific discount rate}}_{a,y}}{1-\dfrac{1}{(1+p^{\text{technology-specific discount rate}}_{a,y})^{p^{\text{economic lifetime}}_{a,y}}}}p^{\text{inv cost}}_{a,y}, & p^{\text{technology-specific discount rate}}_{a,y}>0,
+\end{cases}
+\quad \forall a \in \mathcal{A}_y^{\text{i}}, \forall y \in \mathcal{Y}
 ```
+
+!!! info "The same formula covers single-year and multi-year models"
+    The discounting factor above (and its transport-flow counterpart below) needs no special case for single-year versus multi-year models. In plain terms, the model charges the annualized cost once for every year of the asset's economic lifetime that falls inside the model horizon, starting from the commissioning year $y$, while the salvage value credits back the lifetime years that extend beyond the horizon, so an investment is never charged for time it is not used within the study. The commissioning year is the key differentiator: in a single-year model only the commissioning year lies inside the horizon, so the factor charges exactly one year of annualized cost (discounted to the discount year by the social rate only), whereas in a multi-year model the same factor additionally charges the remaining represented years, each first discounted back to the commissioning year with the technology-specific rate and then to the discount year with the social rate.
 
 #### Discounting Factor for Storage-Energy Investment Costs
 
 ```math
-p_{a, y}^{\text{discounting factor asset energy inv cost}}=\frac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}}(1-\frac{p_{a, y}^{\text{salvage value energy}}}{p_{a, y}^{\text{inv cost energy}}}) \quad \forall a \in \mathcal{A}_y^{\text{i}} \cap \mathcal{A}_y^{\text{se}}, \forall y \in \mathcal{Y}
+p_{a, y}^{\text{discounting factor asset energy inv cost}}=
+\begin{cases}
+0, & p_{a,y}^{\text{inv cost energy}} = 0, \\
+\dfrac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}}
+\left(1+p_{a,y}^{\text{technology-specific discount rate}}-\dfrac{p_{a,y}^{\text{salvage value energy}}}{p_{a,y}^{\text{inv cost energy}}}\right), & p_{a,y}^{\text{inv cost energy}} > 0,
+\end{cases}
+\quad \forall a \in \mathcal{A}_y^{\text{i}} \cap \mathcal{A}_y^{\text{se}}, \forall y \in \mathcal{Y}
 ```
 
 where salvage value is
@@ -366,13 +386,24 @@ p^{\text{salvage value energy}}_{a, y} = p^{\text{annualized inv cost energy}}_{
 and where annualized cost is
 
 ```math
-p^{\text{annualized inv cost energy}}_{a, y} = \frac{p^{\text{technology-specific discount rate}}_{a, y}}{ (1+p^{\text{technology-specific discount rate}}_{a, y}) \cdot \bigg( 1 - \frac{1}{ (1+p^{\text{technology-specific discount rate}}_{a, y})^{p^{\text{economic lifetime}}_{a, y}} } \bigg) } p^{\text{inv cost energy}}_{a, y} \quad \forall a \in \mathcal{A}_y^{\text{i}} \cap \mathcal{A}_y^{\text{se}}, \forall y \in \mathcal{Y}
+p^{\text{annualized inv cost energy}}_{a, y} =
+\begin{cases}
+\dfrac{p^{\text{inv cost energy}}_{a,y}}{p^{\text{economic lifetime}}_{a,y}}, & p^{\text{technology-specific discount rate}}_{a,y}=0, \\
+\dfrac{p^{\text{technology-specific discount rate}}_{a,y}}{1-\dfrac{1}{(1+p^{\text{technology-specific discount rate}}_{a,y})^{p^{\text{economic lifetime}}_{a,y}}}}p^{\text{inv cost energy}}_{a,y}, & p^{\text{technology-specific discount rate}}_{a,y}>0,
+\end{cases}
+\quad \forall a \in \mathcal{A}_y^{\text{i}} \cap \mathcal{A}_y^{\text{se}}, \forall y \in \mathcal{Y}
 ```
 
 #### Discounting Factor for Flow Investment Costs
 
 ```math
-p_{f, y}^{\text{discounting factor flow inv cost}}=\frac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}}(1-\frac{p_{f, y}^{\text{salvage value}}}{p_{f, y}^{\text{inv cost}}}) \quad \forall f \in \mathcal{F}_y^{\text{ti}}, \forall y \in \mathcal{Y}
+p_{f, y}^{\text{discounting factor flow inv cost}}=
+\begin{cases}
+0, & p_{f,y}^{\text{inv cost}} = 0, \\
+\dfrac{1}{(1+p^{\text{social discount rate}})^{y-p^{\text{discount year}}}}
+\left(1+p_{f,y}^{\text{technology-specific discount rate}}-\dfrac{p_{f,y}^{\text{salvage value}}}{p_{f,y}^{\text{inv cost}}}\right), & p_{f,y}^{\text{inv cost}} > 0,
+\end{cases}
+\quad \forall f \in \mathcal{F}_y^{\text{ti}}, \forall y \in \mathcal{Y}
 ```
 
 where salvage value is
@@ -384,7 +415,12 @@ p^{\text{salvage value}}_{f, y} = p^{\text{annualized inv cost}}_{f, y} \sum_{i=
 and where annualized cost is
 
 ```math
-p^{\text{annualized inv cost}}_{f, y} = \frac{p^{\text{technology-specific discount rate}}_{f, y}}{ (1+p^{\text{technology-specific discount rate}}_{f, y}) \cdot \bigg( 1 - \frac{1}{ (1+p^{\text{technology-specific discount rate}}_{f, y})^{p^{\text{economic lifetime}}_{f, y}} } \bigg) } p^{\text{inv cost}}_{f, y} \quad \forall f \in \mathcal{F}_y^{\text{ti}}, \forall y \in \mathcal{Y}
+p^{\text{annualized inv cost}}_{f, y} =
+\begin{cases}
+\dfrac{p^{\text{inv cost}}_{f,y}}{p^{\text{economic lifetime}}_{f,y}}, & p^{\text{technology-specific discount rate}}_{f,y}=0, \\
+\dfrac{p^{\text{technology-specific discount rate}}_{f,y}}{1-\dfrac{1}{(1+p^{\text{technology-specific discount rate}}_{f,y})^{p^{\text{economic lifetime}}_{f,y}}}}p^{\text{inv cost}}_{f,y}, & p^{\text{technology-specific discount rate}}_{f,y}>0,
+\end{cases}
+\quad \forall f \in \mathcal{F}_y^{\text{ti}}, \forall y \in \mathcal{Y}
 ```
 
 #### Discounting Factor for Operation Costs
