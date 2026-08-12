@@ -4,12 +4,34 @@
 
 Validation of the rolling horizon input:
 - opt_window_length ≥ move_forward
+- All storage assets must have initial_storage_level defined for all milestone_years
 - Only one representative period per milestone_year
 - Only 'uniform' partitions are allowed
 - Only partitions that exactly divide opt_window_length are allowed
 """
 function validate_rolling_horizon_input(connection, move_forward, opt_window_length)
     @assert opt_window_length >= move_forward
+
+    missing_initial_storage_levels = [
+        "$(row.asset) ($(row.milestone_year))" for row in DuckDB.query(
+            connection,
+            "SELECT asset.asset, asset_milestone.milestone_year
+            FROM asset
+            LEFT JOIN asset_milestone USING (asset)
+            WHERE asset.type = 'storage'
+                AND asset_milestone.initial_storage_level IS NULL
+            ORDER BY asset.asset, asset_milestone.milestone_year",
+        )
+    ]
+    if !isempty(missing_initial_storage_levels)
+        throw(
+            ArgumentError(
+                "Rolling horizon requires initial_storage_level for storage assets: " *
+                join(missing_initial_storage_levels, ", "),
+            ),
+        )
+    end
+
     for row in DuckDB.query(
         connection,
         "SELECT milestone_year, max(rep_period) as num_rep_periods

@@ -319,12 +319,13 @@
     },
     "initial_storage_level": {
       "constraints": {
+        "maximum": 1,
         "minimum": 0
       },
       "default": null,
-      "description": "The initial storage level at the beginning of the optimization. The final storage level needs to be above this initial value. If the initial value is null, empty, or missing, it will be optimized using a cycling constraint that links the last period to the initial period.",
+      "description": "The initial storage level as a fraction of the available storage energy capacity at the beginning of the optimization. The final storage level needs to be above this initial value. If the initial value is null, empty, or missing, it will be optimized using a cycling constraint that links the last period to the initial period.",
       "type": "DOUBLE",
-      "unit_of_measure": "MWh"
+      "unit_of_measure": "p.u."
     },
     "investable": {
       "default": false,

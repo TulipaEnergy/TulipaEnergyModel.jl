@@ -48,6 +48,25 @@ end
     @test sum(df_rolling_horizon_window.move_forward) == horizon_length
 end
 
+@testitem "Rolling horizon requires an initial level for non-seasonal storage" setup = [CommonSetup] tags =
+    [:rolling_horizon, :unit, :fast] begin
+    connection = DBInterface.connect(DuckDB.DB)
+    _read_csv_folder(connection, joinpath(INPUT_FOLDER, "Rolling Horizon"))
+    DuckDB.query(
+        connection,
+        "UPDATE asset_milestone SET initial_storage_level = NULL WHERE asset = 'battery'",
+    )
+
+    error = try
+        TEM.run_rolling_horizon(connection, 24, 48; show_log = false)
+        nothing
+    catch exception
+        exception
+    end
+    @test error isa ArgumentError
+    @test occursin("battery (2030)", sprint(showerror, error))
+end
+
 @testitem "If the optimisation window is very large, the first rolling solution is the same as no-horizon" setup =
     [CommonSetup] tags = [:rolling_horizon, :unit] begin
     connection = DBInterface.connect(DuckDB.DB)

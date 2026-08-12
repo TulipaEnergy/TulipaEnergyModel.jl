@@ -131,7 +131,7 @@ In addition, the following subsets represent methods for incorporating additiona
 | Name                                                                  | Domain           | Domains of Indices                                                                                                           | Description                                                                                                                  | Units           |
 | --------------------------------------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------- |
 | $p^{\text{init storage units}}_{a,y}$                                 | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage units of storage asset $a$ available at year $y$                                                             | [units]         |
-| $p^{\text{init storage level}}_{a,y}$                                 | $\mathbb{R}_{+}$ | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage level of storage asset $a$ at year $y$                                                                       | [MWh]           |
+| $p^{\text{init storage level}}_{a,y}$                                 | $[0,1]$          | $a \in \mathcal{A}^{\text{s}}$, $y \in \mathcal{Y}$                                                                          | Initial storage level as a fraction of the available storage-energy capacity of asset $a$ at year $y$                        | [p.u.]          |
 | $p^{\text{inflows}}_{a,k_y,b_{k_y}}$                                  | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $k_y \in \mathcal{K}_y$, $b_{k_y} \in \mathcal{B_{k_y}}$                                     | Inflows of storage asset $a$ in the representative period $k_y$ and timestep block $b_{k_y}$                                 | [MWh]           |
 | $p^{\text{charging eff}}_{a,y}$                                       | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}$                                                                          | Charging efficiency of storage asset $a$ at year $y$                                                                         | [p.u.]          |
 | $p^{\text{discharging eff}}_{a,y}$                                    | $\mathbb{R}_{+}$ | $a \in \mathcal{A^{\text{s}}}$, $y \in \mathcal{Y}$                                                                          | Discharging efficiency of storage asset $a$ at year $y$                                                                      | [p.u.]          |
@@ -723,11 +723,11 @@ v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = & \; v^{\text{rep
 \end{aligned}
 ```
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first timestep block in the [rep-period constraint for the storage balance](@ref rep-period-storage-balance). In addition, the rep-period-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) in each representative period must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, its product with the available storage-energy capacity is used as the initial value for the first timestep block in the [rep-period constraint for the storage balance](@ref rep-period-storage-balance). In addition, the rep-period-storage level of the last timestep block ($b^{\text{last}}_{k_y}$) in each representative period must be greater than this initial energy.
 
 ```math
 \begin{aligned}
-v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = & \; p^{\text{init storage level}}_{a,y} \\
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = & \; p^{\text{init storage level}}_{a,y} \cdot e^{\text{available energy inv limit}}_{a,y} \\
 & + p^{\text{inflows}}_{a,k_y,b^{\text{first}}_{k_y}} + p^{\text{charging eff}}_{a,y} \cdot \sum_{f \in \mathcal{F}^{\text{in}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \\
 & - \frac{1}{p^{\text{discharging eff}}_{a,y}} \cdot \sum_{f \in \mathcal{F}^{\text{out}}_{a,y}} p^{\text{storage coefficient}}_{f,y} \cdot p^{\text{duration}}_{b_{k_y}} \cdot v^{\text{flow}}_{f,k_y,b^{\text{first}}_{k_y}} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
@@ -735,7 +735,7 @@ v^{\text{rep-period-storage}}_{a,k_y,b^{\text{first}}_{k_y}} = & \; p^{\text{ini
 ```
 
 ```math
-v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}} \geq p^{\text{init storage level}}_{a,y} \quad
+v^{\text{rep-period-storage}}_{a,k_y,b^{\text{last}}_{k_y}} \geq p^{\text{init storage level}}_{a,y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad
 \\ \\ \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{s}} \setminus \mathcal{A}^{\text{ss}}, \forall k_y \in \mathcal{K}_y
 ```
 
@@ -809,18 +809,18 @@ v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & \left(1 - p^{\text{
 \end{aligned}
 ```
 
-- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, we use it as the initial value for the first-period block in the [inter-period constraint for the storage balance](@ref inter-period-storage-balance). In addition, the inter-period-storage level of the last period block ($p^{\text{last}}_y$) in the timeframe must be greater than this initial value.
+- If parameter $p^{\text{init storage level}}_{a,y}$ is defined, its product with the available storage-energy capacity is used as the initial value for the first-period block in the [inter-period constraint for the storage balance](@ref inter-period-storage-balance). In addition, the inter-period-storage level of the last period block ($p^{\text{last}}_y$) in the timeframe must be greater than this initial energy.
 
 ```math
 \begin{aligned}
-v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{y}} \cdot p^{\text{init storage level}}_{a,y} \\
+v^{\text{inter-period-storage}}_{a,s,p^{\text{first}}_y} = & \left(1 - p^{\text{storage loss from stored energy}}_{a, y}\right)^{p^{\text{duration}}_{y}} \cdot p^{\text{init storage level}}_{a,y} \cdot e^{\text{available energy inv limit}}_{a,y} \\
 & + \sum_{k_y \in \mathcal{K}_y} p^{\text{map}}_{s,p^{\text{first}}_y,k_y} \cdot v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b^{\text{last}}_{k_y}}
 \\ \\ & s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y
 \end{aligned}
 ```
 
 ```math
-v^{\text{inter-period-storage}}_{a,s,p^{\text{last}}_y} \geq p^{\text{init storage level}}_{a,y} \quad
+v^{\text{inter-period-storage}}_{a,s,p^{\text{last}}_y} \geq p^{\text{init storage level}}_{a,y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad
 \\ \\ s \in \mathcal{S}, \forall y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}_y
 ```
 

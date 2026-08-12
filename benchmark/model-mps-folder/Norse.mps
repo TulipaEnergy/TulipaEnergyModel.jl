@@ -7302,6 +7302,7 @@ ROWS
  G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,183:196]
  G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,197:210]
  G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,211:215]
+ G  cycling_condition_inter_period[Midgard_Hydro,2030,1]
  G  min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,1:1]
  G  min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,2:2]
  G  min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,3:3]
@@ -44009,6 +44010,7 @@ COLUMNS
     storage_level_inter_period[Midgard_Hydro,2030,1,201:207] balance_storage_inter_period[Midgard_Hydro,2030,1,208:215] -1
     storage_level_inter_period[Midgard_Hydro,2030,1,208:215] max_storage_level_inter_period_limit[Midgard_Hydro,2030,1,208:215] 1
     storage_level_inter_period[Midgard_Hydro,2030,1,208:215] min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,208:215] 1
+    storage_level_inter_period[Midgard_Hydro,2030,1,208:215] cycling_condition_inter_period[Midgard_Hydro,2030,1] 1
     storage_level_inter_period[Midgard_Hydro,2030,1,208:215] balance_storage_inter_period[Midgard_Hydro,2030,1,208:215] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,1:14] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,1:14] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,1:14] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,1:14] 1
@@ -52797,6 +52799,7 @@ RHS
     rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,183:196] 0
     rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,197:210] 0
     rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,211:215] 0
+    rhs       cycling_condition_inter_period[Midgard_Hydro,2030,1] 25000
     rhs       min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,1:1] 0
     rhs       min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,2:2] 0
     rhs       min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,3:3] 0
@@ -69926,7 +69929,7 @@ BOUNDS
  PL bounds    storage_level_inter_period[Midgard_Hydro,2030,1,194:200]
  LO bounds    storage_level_inter_period[Midgard_Hydro,2030,1,201:207] 0
  PL bounds    storage_level_inter_period[Midgard_Hydro,2030,1,201:207]
- LO bounds    storage_level_inter_period[Midgard_Hydro,2030,1,208:215] 25000
+ LO bounds    storage_level_inter_period[Midgard_Hydro,2030,1,208:215] 0
  PL bounds    storage_level_inter_period[Midgard_Hydro,2030,1,208:215]
  LO bounds    storage_level_inter_period[Valhalla_H2_storage,2030,1,1:14] 0
  PL bounds    storage_level_inter_period[Valhalla_H2_storage,2030,1,1:14]

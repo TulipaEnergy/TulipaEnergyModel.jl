@@ -27,6 +27,11 @@ function validate_data!(connection)
         ("no duplicate rows", _validate_no_duplicate_rows!, false),
         ("valid schema's oneOf constraints", _validate_schema_one_of_constraints!, false),
         (
+            "valid schema's numeric minimum and maximum constraints",
+            _validate_schema_min_max_constraints!,
+            false,
+        ),
+        (
             "no legacy investment limit columns",
             _validate_no_legacy_investment_limit_columns!,
             false,
@@ -209,6 +214,66 @@ function _validate_schema_one_of_constraints!(error_messages, connection)
                     "Table '$table_name' has bad value for column '$col': '$(row[1])'",
                 )
             end
+        end
+    end
+
+    return error_messages
+end
+
+function _validate_schema_min_max_constraints!(error_messages, connection)
+    for (table_name, table) in TulipaEnergyModel.schema, (col, attr) in table
+        if !_check_if_table_exists(connection, table_name)
+            continue
+        end
+
+        if !haskey(attr, "constraints")
+            continue
+        end
+        constraints = attr["constraints"]
+        has_minimum = haskey(constraints, "minimum")
+        has_maximum = haskey(constraints, "maximum")
+
+        if !(has_minimum || has_maximum)
+            continue
+        end
+
+        col_type = get(attr, "type", "")
+        if !(col_type in ("INTEGER", "DOUBLE"))
+            continue
+        end
+
+        minimum = has_minimum ? constraints["minimum"] : nothing
+        maximum = has_maximum ? constraints["maximum"] : nothing
+
+        violation_conditions = String[]
+        if has_minimum
+            push!(violation_conditions, "$col < $minimum")
+        end
+        if has_maximum
+            push!(violation_conditions, "$col > $maximum")
+        end
+
+        violation_clause = join(violation_conditions, " OR ")
+
+        for row in DuckDB.query(
+            connection,
+            "SELECT $col FROM $table_name
+            WHERE $col IS NOT NULL
+                AND ($violation_clause)",
+        )
+            constraints_msg_parts = String[]
+            if has_minimum
+                push!(constraints_msg_parts, ">= $minimum")
+            end
+            if has_maximum
+                push!(constraints_msg_parts, "<= $maximum")
+            end
+            constraints_msg = join(constraints_msg_parts, " and ")
+
+            push!(
+                error_messages,
+                "Table '$table_name' has out-of-range value for column '$col': '$(row[1])' (expected $constraints_msg)",
+            )
         end
     end
 

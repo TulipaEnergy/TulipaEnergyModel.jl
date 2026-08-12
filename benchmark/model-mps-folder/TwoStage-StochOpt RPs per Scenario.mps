@@ -17401,6 +17401,12 @@ ROWS
  G  min_storage_level_inter_period_limit[hydro_reservoir,2050,2009,363:363]
  G  min_storage_level_inter_period_limit[hydro_reservoir,2050,2009,364:364]
  G  min_storage_level_inter_period_limit[hydro_reservoir,2050,2009,365:365]
+ G  cycling_condition_inter_period[hydro_reservoir,2030,1995]
+ G  cycling_condition_inter_period[hydro_reservoir,2030,2008]
+ G  cycling_condition_inter_period[hydro_reservoir,2030,2009]
+ G  cycling_condition_inter_period[hydro_reservoir,2050,1995]
+ G  cycling_condition_inter_period[hydro_reservoir,2050,2008]
+ G  cycling_condition_inter_period[hydro_reservoir,2050,2009]
  E  consumer_balance[e_demand,2030,1,1:1]
  E  consumer_balance[e_demand,2030,1,2:2]
  E  consumer_balance[e_demand,2030,1,3:3]
@@ -70323,6 +70329,7 @@ COLUMNS
     storage_level_inter_period[hydro_reservoir,2030,1995,364:364] balance_storage_inter_period[hydro_reservoir,2030,1995,365:365] -1
     storage_level_inter_period[hydro_reservoir,2030,1995,365:365] max_storage_level_inter_period_limit[hydro_reservoir,2030,1995,365:365] 1
     storage_level_inter_period[hydro_reservoir,2030,1995,365:365] min_storage_level_inter_period_limit[hydro_reservoir,2030,1995,365:365] 1
+    storage_level_inter_period[hydro_reservoir,2030,1995,365:365] cycling_condition_inter_period[hydro_reservoir,2030,1995] 1
     storage_level_inter_period[hydro_reservoir,2030,1995,365:365] balance_storage_inter_period[hydro_reservoir,2030,1995,365:365] 1
     storage_level_inter_period[hydro_reservoir,2030,2008,1:1] max_storage_level_inter_period_limit[hydro_reservoir,2030,2008,1:1] 1
     storage_level_inter_period[hydro_reservoir,2030,2008,1:1] min_storage_level_inter_period_limit[hydro_reservoir,2030,2008,1:1] 1
@@ -71782,6 +71789,7 @@ COLUMNS
     storage_level_inter_period[hydro_reservoir,2030,2008,364:364] balance_storage_inter_period[hydro_reservoir,2030,2008,365:365] -1
     storage_level_inter_period[hydro_reservoir,2030,2008,365:365] max_storage_level_inter_period_limit[hydro_reservoir,2030,2008,365:365] 1
     storage_level_inter_period[hydro_reservoir,2030,2008,365:365] min_storage_level_inter_period_limit[hydro_reservoir,2030,2008,365:365] 1
+    storage_level_inter_period[hydro_reservoir,2030,2008,365:365] cycling_condition_inter_period[hydro_reservoir,2030,2008] 1
     storage_level_inter_period[hydro_reservoir,2030,2008,365:365] balance_storage_inter_period[hydro_reservoir,2030,2008,365:365] 1
     storage_level_inter_period[hydro_reservoir,2030,2009,1:1] max_storage_level_inter_period_limit[hydro_reservoir,2030,2009,1:1] 1
     storage_level_inter_period[hydro_reservoir,2030,2009,1:1] min_storage_level_inter_period_limit[hydro_reservoir,2030,2009,1:1] 1
@@ -73241,6 +73249,7 @@ COLUMNS
     storage_level_inter_period[hydro_reservoir,2030,2009,364:364] balance_storage_inter_period[hydro_reservoir,2030,2009,365:365] -1
     storage_level_inter_period[hydro_reservoir,2030,2009,365:365] max_storage_level_inter_period_limit[hydro_reservoir,2030,2009,365:365] 1
     storage_level_inter_period[hydro_reservoir,2030,2009,365:365] min_storage_level_inter_period_limit[hydro_reservoir,2030,2009,365:365] 1
+    storage_level_inter_period[hydro_reservoir,2030,2009,365:365] cycling_condition_inter_period[hydro_reservoir,2030,2009] 1
     storage_level_inter_period[hydro_reservoir,2030,2009,365:365] balance_storage_inter_period[hydro_reservoir,2030,2009,365:365] 1
     storage_level_inter_period[hydro_reservoir,2050,1995,1:1] max_storage_level_inter_period_limit[hydro_reservoir,2050,1995,1:1] 1
     storage_level_inter_period[hydro_reservoir,2050,1995,1:1] min_storage_level_inter_period_limit[hydro_reservoir,2050,1995,1:1] 1
@@ -74700,6 +74709,7 @@ COLUMNS
     storage_level_inter_period[hydro_reservoir,2050,1995,364:364] balance_storage_inter_period[hydro_reservoir,2050,1995,365:365] -1
     storage_level_inter_period[hydro_reservoir,2050,1995,365:365] max_storage_level_inter_period_limit[hydro_reservoir,2050,1995,365:365] 1
     storage_level_inter_period[hydro_reservoir,2050,1995,365:365] min_storage_level_inter_period_limit[hydro_reservoir,2050,1995,365:365] 1
+    storage_level_inter_period[hydro_reservoir,2050,1995,365:365] cycling_condition_inter_period[hydro_reservoir,2050,1995] 1
     storage_level_inter_period[hydro_reservoir,2050,1995,365:365] balance_storage_inter_period[hydro_reservoir,2050,1995,365:365] 1
     storage_level_inter_period[hydro_reservoir,2050,2008,1:1] max_storage_level_inter_period_limit[hydro_reservoir,2050,2008,1:1] 1
     storage_level_inter_period[hydro_reservoir,2050,2008,1:1] min_storage_level_inter_period_limit[hydro_reservoir,2050,2008,1:1] 1
@@ -76159,6 +76169,7 @@ COLUMNS
     storage_level_inter_period[hydro_reservoir,2050,2008,364:364] balance_storage_inter_period[hydro_reservoir,2050,2008,365:365] -1
     storage_level_inter_period[hydro_reservoir,2050,2008,365:365] max_storage_level_inter_period_limit[hydro_reservoir,2050,2008,365:365] 1
     storage_level_inter_period[hydro_reservoir,2050,2008,365:365] min_storage_level_inter_period_limit[hydro_reservoir,2050,2008,365:365] 1
+    storage_level_inter_period[hydro_reservoir,2050,2008,365:365] cycling_condition_inter_period[hydro_reservoir,2050,2008] 1
     storage_level_inter_period[hydro_reservoir,2050,2008,365:365] balance_storage_inter_period[hydro_reservoir,2050,2008,365:365] 1
     storage_level_inter_period[hydro_reservoir,2050,2009,1:1] max_storage_level_inter_period_limit[hydro_reservoir,2050,2009,1:1] 1
     storage_level_inter_period[hydro_reservoir,2050,2009,1:1] min_storage_level_inter_period_limit[hydro_reservoir,2050,2009,1:1] 1
@@ -77618,6 +77629,7 @@ COLUMNS
     storage_level_inter_period[hydro_reservoir,2050,2009,364:364] balance_storage_inter_period[hydro_reservoir,2050,2009,365:365] -1
     storage_level_inter_period[hydro_reservoir,2050,2009,365:365] max_storage_level_inter_period_limit[hydro_reservoir,2050,2009,365:365] 1
     storage_level_inter_period[hydro_reservoir,2050,2009,365:365] min_storage_level_inter_period_limit[hydro_reservoir,2050,2009,365:365] 1
+    storage_level_inter_period[hydro_reservoir,2050,2009,365:365] cycling_condition_inter_period[hydro_reservoir,2050,2009] 1
     storage_level_inter_period[hydro_reservoir,2050,2009,365:365] balance_storage_inter_period[hydro_reservoir,2050,2009,365:365] 1
     accumulated_storage_level_intra_rep_period[h2_storage,2030,1,1:1] accumulated_storage_intra_period[h2_storage,2030,1,1:1] 1
     accumulated_storage_level_intra_rep_period[h2_storage,2030,1,1:1] accumulated_storage_intra_period[h2_storage,2030,1,2:2] -1
@@ -110452,6 +110464,12 @@ RHS
     rhs       min_storage_level_inter_period_limit[hydro_reservoir,2050,2009,363:363] 0
     rhs       min_storage_level_inter_period_limit[hydro_reservoir,2050,2009,364:364] 0
     rhs       min_storage_level_inter_period_limit[hydro_reservoir,2050,2009,365:365] 0
+    rhs       cycling_condition_inter_period[hydro_reservoir,2030,1995] 201600
+    rhs       cycling_condition_inter_period[hydro_reservoir,2030,2008] 201600
+    rhs       cycling_condition_inter_period[hydro_reservoir,2030,2009] 201600
+    rhs       cycling_condition_inter_period[hydro_reservoir,2050,1995] 161280
+    rhs       cycling_condition_inter_period[hydro_reservoir,2050,2008] 161280
+    rhs       cycling_condition_inter_period[hydro_reservoir,2050,2009] 161280
     rhs       consumer_balance[e_demand,2030,1,1:1] 790.6989087418651
     rhs       consumer_balance[e_demand,2030,1,2:2] 757.0812275100378
     rhs       consumer_balance[e_demand,2030,1,3:3] 729.9957312644763
@@ -141862,7 +141880,7 @@ BOUNDS
  PL bounds    storage_level_inter_period[hydro_reservoir,2030,1995,363:363]
  LO bounds    storage_level_inter_period[hydro_reservoir,2030,1995,364:364] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2030,1995,364:364]
- LO bounds    storage_level_inter_period[hydro_reservoir,2030,1995,365:365] 201600
+ LO bounds    storage_level_inter_period[hydro_reservoir,2030,1995,365:365] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2030,1995,365:365]
  LO bounds    storage_level_inter_period[hydro_reservoir,2030,2008,1:1] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2030,2008,1:1]
@@ -142592,7 +142610,7 @@ BOUNDS
  PL bounds    storage_level_inter_period[hydro_reservoir,2030,2008,363:363]
  LO bounds    storage_level_inter_period[hydro_reservoir,2030,2008,364:364] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2030,2008,364:364]
- LO bounds    storage_level_inter_period[hydro_reservoir,2030,2008,365:365] 201600
+ LO bounds    storage_level_inter_period[hydro_reservoir,2030,2008,365:365] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2030,2008,365:365]
  LO bounds    storage_level_inter_period[hydro_reservoir,2030,2009,1:1] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2030,2009,1:1]
@@ -143322,7 +143340,7 @@ BOUNDS
  PL bounds    storage_level_inter_period[hydro_reservoir,2030,2009,363:363]
  LO bounds    storage_level_inter_period[hydro_reservoir,2030,2009,364:364] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2030,2009,364:364]
- LO bounds    storage_level_inter_period[hydro_reservoir,2030,2009,365:365] 201600
+ LO bounds    storage_level_inter_period[hydro_reservoir,2030,2009,365:365] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2030,2009,365:365]
  LO bounds    storage_level_inter_period[hydro_reservoir,2050,1995,1:1] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,1995,1:1]
@@ -144052,7 +144070,7 @@ BOUNDS
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,1995,363:363]
  LO bounds    storage_level_inter_period[hydro_reservoir,2050,1995,364:364] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,1995,364:364]
- LO bounds    storage_level_inter_period[hydro_reservoir,2050,1995,365:365] 161280
+ LO bounds    storage_level_inter_period[hydro_reservoir,2050,1995,365:365] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,1995,365:365]
  LO bounds    storage_level_inter_period[hydro_reservoir,2050,2008,1:1] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,2008,1:1]
@@ -144782,7 +144800,7 @@ BOUNDS
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,2008,363:363]
  LO bounds    storage_level_inter_period[hydro_reservoir,2050,2008,364:364] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,2008,364:364]
- LO bounds    storage_level_inter_period[hydro_reservoir,2050,2008,365:365] 161280
+ LO bounds    storage_level_inter_period[hydro_reservoir,2050,2008,365:365] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,2008,365:365]
  LO bounds    storage_level_inter_period[hydro_reservoir,2050,2009,1:1] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,2009,1:1]
@@ -145512,7 +145530,7 @@ BOUNDS
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,2009,363:363]
  LO bounds    storage_level_inter_period[hydro_reservoir,2050,2009,364:364] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,2009,364:364]
- LO bounds    storage_level_inter_period[hydro_reservoir,2050,2009,365:365] 161280
+ LO bounds    storage_level_inter_period[hydro_reservoir,2050,2009,365:365] 0
  PL bounds    storage_level_inter_period[hydro_reservoir,2050,2009,365:365]
  FR bounds    accumulated_storage_level_intra_rep_period[h2_storage,2030,1,1:1]
  FR bounds    accumulated_storage_level_intra_rep_period[h2_storage,2030,1,2:2]

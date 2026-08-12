@@ -1095,6 +1095,7 @@ ROWS
  G  min_storage_level_inter_period_limit[phs,2030,1,5:5]
  G  min_storage_level_inter_period_limit[phs,2030,1,6:6]
  G  min_storage_level_inter_period_limit[phs,2030,1,7:7]
+ G  cycling_condition_inter_period[phs,2030,1]
  E  consumer_balance[atmosphere,2030,1,1:1]
  E  consumer_balance[atmosphere,2030,1,2:2]
  E  consumer_balance[atmosphere,2030,1,3:3]
@@ -5839,6 +5840,7 @@ COLUMNS
     storage_level_inter_period[phs,2030,1,6:6] balance_storage_inter_period[phs,2030,1,7:7] -0.7856781408072188
     storage_level_inter_period[phs,2030,1,7:7] max_storage_level_inter_period_limit[phs,2030,1,7:7] 1
     storage_level_inter_period[phs,2030,1,7:7] min_storage_level_inter_period_limit[phs,2030,1,7:7] 1
+    storage_level_inter_period[phs,2030,1,7:7] cycling_condition_inter_period[phs,2030,1] 1
     storage_level_inter_period[phs,2030,1,7:7] balance_storage_inter_period[phs,2030,1,7:7] 1
     accumulated_storage_level_intra_rep_period[phs,2030,1,1:1] accumulated_storage_intra_period[phs,2030,1,1:1] 1
     accumulated_storage_level_intra_rep_period[phs,2030,1,1:1] accumulated_storage_intra_period[phs,2030,1,2:2] -0.99
@@ -7093,6 +7095,7 @@ RHS
     rhs       min_storage_level_inter_period_limit[phs,2030,1,5:5] 0
     rhs       min_storage_level_inter_period_limit[phs,2030,1,6:6] 0
     rhs       min_storage_level_inter_period_limit[phs,2030,1,7:7] 0
+    rhs       cycling_condition_inter_period[phs,2030,1] 2400
     rhs       consumer_balance[atmosphere,2030,1,1:1] 10
     rhs       consumer_balance[atmosphere,2030,1,2:2] 10
     rhs       consumer_balance[atmosphere,2030,1,3:3] 10
@@ -9722,7 +9725,7 @@ BOUNDS
  PL bounds    storage_level_inter_period[phs,2030,1,5:5]
  LO bounds    storage_level_inter_period[phs,2030,1,6:6] 0
  PL bounds    storage_level_inter_period[phs,2030,1,6:6]
- LO bounds    storage_level_inter_period[phs,2030,1,7:7] 2400
+ LO bounds    storage_level_inter_period[phs,2030,1,7:7] 0
  PL bounds    storage_level_inter_period[phs,2030,1,7:7]
  FR bounds    accumulated_storage_level_intra_rep_period[phs,2030,1,1:1]
  FR bounds    accumulated_storage_level_intra_rep_period[phs,2030,1,2:2]

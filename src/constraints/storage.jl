@@ -16,6 +16,8 @@ function add_storage_constraints!(
     var_storage_level_inter_period = variables[:storage_level_inter_period]
     var_accumulated_storage_level_intra_rep_period =
         variables[:accumulated_storage_level_intra_rep_period]
+    available_energy_capacity =
+        expressions[:available_energy_capacity_aggregated_vintage_method].expressions[:energy_capacity]
 
     rolling_horizon_lookup = if rolling_horizon
         Dict{Int,Int}(
@@ -54,11 +56,13 @@ function add_storage_constraints!(
                     storage_discharging_efficiency = row.storage_discharging_efficiency::Float64
 
                     if row.time_block_start == 1 && !ismissing(initial_storage_level)
-                        # Initial storage is a Float64
+                        initial_storage_level_in_energy =
+                            initial_storage_level *
+                            available_energy_capacity[row.avail_energy_capacity_id]
                         @constraint(
                             model,
                             var_storage_level[row.id] ==
-                            initial_storage_level +
+                            initial_storage_level_in_energy +
                             profile_agg * row.storage_inflows +
                             storage_charging_efficiency * incoming_flow -
                             outgoing_flow / storage_discharging_efficiency,
@@ -92,9 +96,6 @@ function add_storage_constraints!(
             ],
         )
 
-        available_energy_capacity_aggregated_vintage_method =
-            expressions[:available_energy_capacity_aggregated_vintage_method].expressions[:energy_capacity]
-
         # - Maximum storage level
         attach_constraint!(
             model,
@@ -113,7 +114,7 @@ function add_storage_constraints!(
                         model,
                         var_storage_level ≤
                         max_storage_level_agg *
-                        available_energy_capacity_aggregated_vintage_method[row.avail_energy_capacity_id],
+                        available_energy_capacity[row.avail_energy_capacity_id],
                         base_name = "max_storage_level_intra_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, var_storage_level) in
@@ -139,7 +140,7 @@ function add_storage_constraints!(
                         model,
                         var_storage_level ≥
                         min_storage_level_agg *
-                        available_energy_capacity_aggregated_vintage_method[row.avail_energy_capacity_id],
+                        available_energy_capacity[row.avail_energy_capacity_id],
                         base_name = "min_storage_level_intra_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
                 end for (row, var_storage_level) in
@@ -172,11 +173,13 @@ function add_storage_constraints!(
                     end
 
                     if row.period_block_start == 1 && !ismissing(initial_storage_level)
-                        # Initial storage is a Float64
+                        initial_storage_level_in_energy =
+                            initial_storage_level *
+                            available_energy_capacity[row.avail_energy_capacity_id]
                         @constraint(
                             model,
                             var_storage_level_inter_period.container[row.id] ==
-                            computed_storage_loss_coef * initial_storage_level +
+                            computed_storage_loss_coef * initial_storage_level_in_energy +
                             accumulated_intra_period,
                             base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                         )
@@ -199,9 +202,6 @@ function add_storage_constraints!(
             ],
         )
 
-        available_energy_capacity_aggregated_vintage_method =
-            expressions[:available_energy_capacity_aggregated_vintage_method].expressions[:energy_capacity]
-
         # - Maximum storage level
         attach_constraint!(
             model,
@@ -220,7 +220,7 @@ function add_storage_constraints!(
                         model,
                         var_storage_level ≤
                         max_storage_level_agg *
-                        available_energy_capacity_aggregated_vintage_method[row.avail_energy_capacity_id],
+                        available_energy_capacity[row.avail_energy_capacity_id],
                         base_name = "max_storage_level_inter_period_limit[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for
@@ -246,7 +246,7 @@ function add_storage_constraints!(
                         model,
                         var_storage_level ≥
                         min_storage_level_agg *
-                        available_energy_capacity_aggregated_vintage_method[row.avail_energy_capacity_id],
+                        available_energy_capacity[row.avail_energy_capacity_id],
                         base_name = "min_storage_level_inter_period_limit[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
                     )
                 end for
@@ -254,6 +254,65 @@ function add_storage_constraints!(
             ],
         )
     end
+
+    # Cycling conditions:
+    ## An explicit constraint is required because the initial level now depends on
+    ## capacity expressions that can contain investment and decommission variables.
+    model[:cycling_condition_intra_rep_period] = [
+        @constraint(
+            model,
+            var_storage_level_intra_rep_period.container[row.last_id] ≥
+            row.initial_storage_level * available_energy_capacity[row.avail_energy_capacity_id],
+            base_name = "cycling_condition_intra_rep_period[$(row.asset),$(row.milestone_year),$(row.rep_period)]"
+        ) for row in DuckDB.query(
+            connection,
+            "SELECT
+                ARG_MAX(var.id, var.time_block_start) AS last_id,
+                var.asset,
+                var.milestone_year,
+                var.rep_period,
+                ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
+                ANY_VALUE(expr_avail.id) AS avail_energy_capacity_id
+            FROM var_storage_level_intra_rep_period AS var
+            LEFT JOIN asset_milestone
+                ON var.asset = asset_milestone.asset
+                AND var.milestone_year = asset_milestone.milestone_year
+            LEFT JOIN expr_available_energy_capacity_aggregated_vintage_method AS expr_avail
+                ON var.asset = expr_avail.asset
+                AND var.milestone_year = expr_avail.milestone_year
+            WHERE asset_milestone.initial_storage_level > 0
+            GROUP BY var.asset, var.milestone_year, var.rep_period
+            ORDER BY var.asset, var.milestone_year, var.rep_period",
+        )
+    ]
+
+    model[:cycling_condition_inter_period] = [
+        @constraint(
+            model,
+            var_storage_level_inter_period.container[row.last_id] ≥
+            row.initial_storage_level * available_energy_capacity[row.avail_energy_capacity_id],
+            base_name = "cycling_condition_inter_period[$(row.asset),$(row.milestone_year),$(row.scenario)]"
+        ) for row in DuckDB.query(
+            connection,
+            "SELECT
+                ARG_MAX(var.id, var.period_block_start) AS last_id,
+                var.asset,
+                var.milestone_year,
+                var.scenario,
+                ANY_VALUE(asset_milestone.initial_storage_level) AS initial_storage_level,
+                ANY_VALUE(expr_avail.id) AS avail_energy_capacity_id
+            FROM var_storage_level_inter_period AS var
+            LEFT JOIN asset_milestone
+                ON var.asset = asset_milestone.asset
+                AND var.milestone_year = asset_milestone.milestone_year
+            LEFT JOIN expr_available_energy_capacity_aggregated_vintage_method AS expr_avail
+                ON var.asset = expr_avail.asset
+                AND var.milestone_year = expr_avail.milestone_year
+            WHERE asset_milestone.initial_storage_level > 0
+            GROUP BY var.asset, var.milestone_year, var.scenario
+            ORDER BY var.asset, var.milestone_year, var.scenario",
+        )
+    ]
 
     ## intra-period constraints for seasonal storage
     let table_name = :accumulated_storage_intra_period, cons = constraints[table_name]
