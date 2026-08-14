@@ -1515,7 +1515,7 @@ COLUMNS
     assets_investment[2030,ccgt] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,3,22:22] -400
     assets_investment[2030,ccgt] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,3,23:23] -400
     assets_investment[2030,ccgt] max_output_flows_limit_aggregated_vintage_method[ccgt,2030,3,24:24] -400
-    assets_investment[2030,ccgt] OBJ 16000
+    assets_investment[2030,ccgt] OBJ 16800
     assets_investment[2030,wind] max_output_flows_limit_aggregated_vintage_method[wind,2030,1,1:1] -5.5
     assets_investment[2030,wind] max_output_flows_limit_aggregated_vintage_method[wind,2030,1,2:2] -5.5
     assets_investment[2030,wind] max_output_flows_limit_aggregated_vintage_method[wind,2030,1,3:3] -5.5
@@ -1588,7 +1588,7 @@ COLUMNS
     assets_investment[2030,wind] max_output_flows_limit_aggregated_vintage_method[wind,2030,3,22:22] -37
     assets_investment[2030,wind] max_output_flows_limit_aggregated_vintage_method[wind,2030,3,23:23] -37
     assets_investment[2030,wind] max_output_flows_limit_aggregated_vintage_method[wind,2030,3,24:24] -37
-    assets_investment[2030,wind] OBJ 3500
+    assets_investment[2030,wind] OBJ 3675
     assets_investment[2030,solar] max_output_flows_limit_aggregated_vintage_method[solar,2030,1,6:6] -0.2
     assets_investment[2030,solar] max_output_flows_limit_aggregated_vintage_method[solar,2030,1,7:7] -1.2
     assets_investment[2030,solar] max_output_flows_limit_aggregated_vintage_method[solar,2030,1,8:8] -3
@@ -1625,7 +1625,7 @@ COLUMNS
     assets_investment[2030,solar] max_output_flows_limit_aggregated_vintage_method[solar,2030,3,15:15] -4
     assets_investment[2030,solar] max_output_flows_limit_aggregated_vintage_method[solar,2030,3,16:16] -2.3000000000000003
     assets_investment[2030,solar] max_output_flows_limit_aggregated_vintage_method[solar,2030,3,17:17] -0.5
-    assets_investment[2030,solar] OBJ 500
+    assets_investment[2030,solar] OBJ 525
     assets_investment[2030,ocgt] max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,1:1] -100
     assets_investment[2030,ocgt] max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,2:2] -100
     assets_investment[2030,ocgt] max_output_flows_limit_aggregated_vintage_method[ocgt,2030,1,3:3] -100
@@ -1698,7 +1698,7 @@ COLUMNS
     assets_investment[2030,ocgt] max_output_flows_limit_aggregated_vintage_method[ocgt,2030,3,22:22] -100
     assets_investment[2030,ocgt] max_output_flows_limit_aggregated_vintage_method[ocgt,2030,3,23:23] -100
     assets_investment[2030,ocgt] max_output_flows_limit_aggregated_vintage_method[ocgt,2030,3,24:24] -100
-    assets_investment[2030,ocgt] OBJ 2500
+    assets_investment[2030,ocgt] OBJ 2625
     MARKER    'MARKER'                 'INTEND'
 RHS
     rhs       max_output_flows_limit_aggregated_vintage_method[ccgt,2030,1,1:1] 0
