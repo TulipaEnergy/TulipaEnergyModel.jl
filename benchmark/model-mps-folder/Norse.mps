@@ -6979,261 +6979,6 @@ ROWS
  G  consumer_balance[W_Spillage,2030,2,22:22]
  G  consumer_balance[W_Spillage,2030,2,23:23]
  G  consumer_balance[W_Spillage,2030,2,24:24]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,1:3]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,4:6]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,7:9]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,10:12]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,13:15]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,16:18]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,19:21]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,22:24]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,25:27]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,28:30]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,31:33]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,34:36]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,37:39]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,40:42]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,43:45]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,46:48]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,49:51]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,52:54]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,55:57]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,58:60]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,61:63]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,64:66]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,67:69]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,70:72]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,73:75]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,76:78]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,79:81]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,82:84]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,85:87]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,88:90]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,91:93]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,94:96]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,97:99]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,100:102]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,103:105]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,106:108]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,109:111]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,112:114]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,115:117]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,118:120]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,121:123]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,124:126]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,127:129]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,130:132]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,133:135]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,136:138]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,139:141]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,142:144]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,145:147]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,148:150]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,151:153]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,154:156]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,157:159]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,160:162]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,163:165]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,166:168]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,1:3]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,4:6]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,7:9]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,10:12]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,13:16]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,17:20]
- G  min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,21:24]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,1:1]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,2:2]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,3:3]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,4:4]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,5:5]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,6:6]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,7:7]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,8:8]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,9:9]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,10:10]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,11:11]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,12:12]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,13:13]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,14:14]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,15:15]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,16:16]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,17:17]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,18:18]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,19:19]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,20:20]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,21:21]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,22:22]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,23:23]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,24:24]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,25:25]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,26:26]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,27:27]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,28:28]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,29:29]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,30:30]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,31:31]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,32:32]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,33:33]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,34:34]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,35:35]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,36:36]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,37:37]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,38:38]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,39:39]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,40:40]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,41:41]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,42:42]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,43:43]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,44:44]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,45:45]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,46:46]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,47:47]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,48:48]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,49:49]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,50:50]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,51:51]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,52:52]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,53:53]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,54:54]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,55:55]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,56:56]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,57:57]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,58:58]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,59:59]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,60:60]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,61:61]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,62:62]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,63:63]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,64:64]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,65:65]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,66:66]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,67:67]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,68:68]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,69:69]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,70:70]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,71:71]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,72:72]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,73:73]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,74:74]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,75:75]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,76:76]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,77:77]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,78:78]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,79:79]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,80:80]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,81:81]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,82:82]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,83:83]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,84:84]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,85:85]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,86:86]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,87:87]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,88:88]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,89:89]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,90:90]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,91:91]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,92:92]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,93:93]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,94:94]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,95:95]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,96:96]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,97:97]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,98:98]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,99:99]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,100:100]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,101:101]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,102:102]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,103:103]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,104:104]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,105:105]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,106:106]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,107:107]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,108:108]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,109:109]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,110:110]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,111:111]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,112:112]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,113:113]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,114:114]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,115:115]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,116:116]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,117:117]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,118:118]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,119:119]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,120:120]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,121:121]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,122:122]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,123:123]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,124:124]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,125:125]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,126:126]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,127:127]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,128:128]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,129:129]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,130:130]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,131:131]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,132:132]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,133:133]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,134:134]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,135:135]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,136:136]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,137:137]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,138:138]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,139:139]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,140:140]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,141:141]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,142:142]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,143:143]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,144:144]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,145:145]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,146:146]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,147:147]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,148:148]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,149:149]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,150:150]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,151:151]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,152:152]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,153:153]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,154:154]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,155:155]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,156:156]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,157:157]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,158:158]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,159:159]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,160:160]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,161:161]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,162:162]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,163:163]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,164:164]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,165:165]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,166:166]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,167:167]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,168:168]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,1:1]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,2:2]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,3:3]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,4:4]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,5:5]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,6:6]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,7:7]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,8:8]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,9:9]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,10:10]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,11:11]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,12:12]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,13:13]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,14:14]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,15:15]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,16:16]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,17:17]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,18:18]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,19:19]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,20:20]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,21:21]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,22:22]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,23:23]
- G  min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,24:24]
  G  min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,1:7]
  G  min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,8:14]
  G  min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,15:21]
@@ -7286,22 +7031,6 @@ ROWS
  G  min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,194:200]
  G  min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,201:207]
  G  min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,208:215]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,1:14]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,15:28]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,29:42]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,43:56]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,57:70]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,71:84]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,85:98]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,99:112]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,113:126]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,127:140]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,141:154]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,155:168]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,169:182]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,183:196]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,197:210]
- G  min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,211:215]
  G  cycling_condition_inter_period[Midgard_Hydro,2030,1]
  G  min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,1:1]
  G  min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,2:2]
@@ -42785,1023 +42514,768 @@ COLUMNS
     units_on[Midgard_CCGT,2030,2,24:24] min_output_flow_with_unit_commitment[Midgard_CCGT,2030,2,24:24] -200
     MARKER    'MARKER'                 'INTEND'
     storage_level_intra_rep_period[Asgard_Battery,2030,1,1:3] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,1:3] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,1:3] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,1:3] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,1:3] balance_storage_rep_period[Asgard_Battery,2030,1,1:3] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,1:3] balance_storage_rep_period[Asgard_Battery,2030,1,4:6] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,4:6] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,4:6] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,4:6] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,4:6] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,4:6] balance_storage_rep_period[Asgard_Battery,2030,1,4:6] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,4:6] balance_storage_rep_period[Asgard_Battery,2030,1,7:9] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,7:9] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,7:9] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,7:9] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,7:9] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,7:9] balance_storage_rep_period[Asgard_Battery,2030,1,7:9] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,7:9] balance_storage_rep_period[Asgard_Battery,2030,1,10:12] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,10:12] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,10:12] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,10:12] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,10:12] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,10:12] balance_storage_rep_period[Asgard_Battery,2030,1,10:12] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,10:12] balance_storage_rep_period[Asgard_Battery,2030,1,13:15] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,13:15] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,13:15] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,13:15] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,13:15] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,13:15] balance_storage_rep_period[Asgard_Battery,2030,1,13:15] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,13:15] balance_storage_rep_period[Asgard_Battery,2030,1,16:18] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,16:18] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,16:18] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,16:18] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,16:18] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,16:18] balance_storage_rep_period[Asgard_Battery,2030,1,16:18] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,16:18] balance_storage_rep_period[Asgard_Battery,2030,1,19:21] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,19:21] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,19:21] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,19:21] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,19:21] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,19:21] balance_storage_rep_period[Asgard_Battery,2030,1,19:21] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,19:21] balance_storage_rep_period[Asgard_Battery,2030,1,22:24] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,22:24] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,22:24] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,22:24] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,22:24] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,22:24] balance_storage_rep_period[Asgard_Battery,2030,1,22:24] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,22:24] balance_storage_rep_period[Asgard_Battery,2030,1,25:27] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,25:27] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,25:27] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,25:27] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,25:27] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,25:27] balance_storage_rep_period[Asgard_Battery,2030,1,25:27] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,25:27] balance_storage_rep_period[Asgard_Battery,2030,1,28:30] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,28:30] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,28:30] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,28:30] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,28:30] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,28:30] balance_storage_rep_period[Asgard_Battery,2030,1,28:30] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,28:30] balance_storage_rep_period[Asgard_Battery,2030,1,31:33] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,31:33] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,31:33] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,31:33] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,31:33] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,31:33] balance_storage_rep_period[Asgard_Battery,2030,1,31:33] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,31:33] balance_storage_rep_period[Asgard_Battery,2030,1,34:36] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,34:36] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,34:36] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,34:36] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,34:36] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,34:36] balance_storage_rep_period[Asgard_Battery,2030,1,34:36] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,34:36] balance_storage_rep_period[Asgard_Battery,2030,1,37:39] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,37:39] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,37:39] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,37:39] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,37:39] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,37:39] balance_storage_rep_period[Asgard_Battery,2030,1,37:39] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,37:39] balance_storage_rep_period[Asgard_Battery,2030,1,40:42] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,40:42] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,40:42] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,40:42] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,40:42] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,40:42] balance_storage_rep_period[Asgard_Battery,2030,1,40:42] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,40:42] balance_storage_rep_period[Asgard_Battery,2030,1,43:45] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,43:45] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,43:45] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,43:45] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,43:45] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,43:45] balance_storage_rep_period[Asgard_Battery,2030,1,43:45] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,43:45] balance_storage_rep_period[Asgard_Battery,2030,1,46:48] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,46:48] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,46:48] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,46:48] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,46:48] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,46:48] balance_storage_rep_period[Asgard_Battery,2030,1,46:48] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,46:48] balance_storage_rep_period[Asgard_Battery,2030,1,49:51] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,49:51] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,49:51] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,49:51] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,49:51] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,49:51] balance_storage_rep_period[Asgard_Battery,2030,1,49:51] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,49:51] balance_storage_rep_period[Asgard_Battery,2030,1,52:54] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,52:54] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,52:54] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,52:54] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,52:54] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,52:54] balance_storage_rep_period[Asgard_Battery,2030,1,52:54] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,52:54] balance_storage_rep_period[Asgard_Battery,2030,1,55:57] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,55:57] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,55:57] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,55:57] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,55:57] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,55:57] balance_storage_rep_period[Asgard_Battery,2030,1,55:57] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,55:57] balance_storage_rep_period[Asgard_Battery,2030,1,58:60] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,58:60] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,58:60] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,58:60] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,58:60] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,58:60] balance_storage_rep_period[Asgard_Battery,2030,1,58:60] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,58:60] balance_storage_rep_period[Asgard_Battery,2030,1,61:63] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,61:63] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,61:63] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,61:63] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,61:63] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,61:63] balance_storage_rep_period[Asgard_Battery,2030,1,61:63] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,61:63] balance_storage_rep_period[Asgard_Battery,2030,1,64:66] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,64:66] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,64:66] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,64:66] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,64:66] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,64:66] balance_storage_rep_period[Asgard_Battery,2030,1,64:66] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,64:66] balance_storage_rep_period[Asgard_Battery,2030,1,67:69] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,67:69] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,67:69] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,67:69] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,67:69] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,67:69] balance_storage_rep_period[Asgard_Battery,2030,1,67:69] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,67:69] balance_storage_rep_period[Asgard_Battery,2030,1,70:72] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,70:72] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,70:72] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,70:72] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,70:72] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,70:72] balance_storage_rep_period[Asgard_Battery,2030,1,70:72] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,70:72] balance_storage_rep_period[Asgard_Battery,2030,1,73:75] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,73:75] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,73:75] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,73:75] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,73:75] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,73:75] balance_storage_rep_period[Asgard_Battery,2030,1,73:75] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,73:75] balance_storage_rep_period[Asgard_Battery,2030,1,76:78] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,76:78] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,76:78] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,76:78] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,76:78] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,76:78] balance_storage_rep_period[Asgard_Battery,2030,1,76:78] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,76:78] balance_storage_rep_period[Asgard_Battery,2030,1,79:81] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,79:81] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,79:81] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,79:81] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,79:81] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,79:81] balance_storage_rep_period[Asgard_Battery,2030,1,79:81] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,79:81] balance_storage_rep_period[Asgard_Battery,2030,1,82:84] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,82:84] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,82:84] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,82:84] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,82:84] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,82:84] balance_storage_rep_period[Asgard_Battery,2030,1,82:84] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,82:84] balance_storage_rep_period[Asgard_Battery,2030,1,85:87] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,85:87] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,85:87] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,85:87] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,85:87] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,85:87] balance_storage_rep_period[Asgard_Battery,2030,1,85:87] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,85:87] balance_storage_rep_period[Asgard_Battery,2030,1,88:90] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,88:90] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,88:90] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,88:90] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,88:90] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,88:90] balance_storage_rep_period[Asgard_Battery,2030,1,88:90] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,88:90] balance_storage_rep_period[Asgard_Battery,2030,1,91:93] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,91:93] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,91:93] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,91:93] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,91:93] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,91:93] balance_storage_rep_period[Asgard_Battery,2030,1,91:93] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,91:93] balance_storage_rep_period[Asgard_Battery,2030,1,94:96] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,94:96] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,94:96] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,94:96] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,94:96] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,94:96] balance_storage_rep_period[Asgard_Battery,2030,1,94:96] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,94:96] balance_storage_rep_period[Asgard_Battery,2030,1,97:99] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,97:99] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,97:99] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,97:99] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,97:99] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,97:99] balance_storage_rep_period[Asgard_Battery,2030,1,97:99] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,97:99] balance_storage_rep_period[Asgard_Battery,2030,1,100:102] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,100:102] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,100:102] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,100:102] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,100:102] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,100:102] balance_storage_rep_period[Asgard_Battery,2030,1,100:102] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,100:102] balance_storage_rep_period[Asgard_Battery,2030,1,103:105] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,103:105] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,103:105] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,103:105] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,103:105] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,103:105] balance_storage_rep_period[Asgard_Battery,2030,1,103:105] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,103:105] balance_storage_rep_period[Asgard_Battery,2030,1,106:108] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,106:108] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,106:108] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,106:108] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,106:108] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,106:108] balance_storage_rep_period[Asgard_Battery,2030,1,106:108] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,106:108] balance_storage_rep_period[Asgard_Battery,2030,1,109:111] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,109:111] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,109:111] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,109:111] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,109:111] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,109:111] balance_storage_rep_period[Asgard_Battery,2030,1,109:111] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,109:111] balance_storage_rep_period[Asgard_Battery,2030,1,112:114] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,112:114] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,112:114] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,112:114] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,112:114] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,112:114] balance_storage_rep_period[Asgard_Battery,2030,1,112:114] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,112:114] balance_storage_rep_period[Asgard_Battery,2030,1,115:117] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,115:117] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,115:117] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,115:117] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,115:117] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,115:117] balance_storage_rep_period[Asgard_Battery,2030,1,115:117] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,115:117] balance_storage_rep_period[Asgard_Battery,2030,1,118:120] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,118:120] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,118:120] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,118:120] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,118:120] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,118:120] balance_storage_rep_period[Asgard_Battery,2030,1,118:120] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,118:120] balance_storage_rep_period[Asgard_Battery,2030,1,121:123] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,121:123] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,121:123] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,121:123] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,121:123] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,121:123] balance_storage_rep_period[Asgard_Battery,2030,1,121:123] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,121:123] balance_storage_rep_period[Asgard_Battery,2030,1,124:126] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,124:126] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,124:126] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,124:126] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,124:126] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,124:126] balance_storage_rep_period[Asgard_Battery,2030,1,124:126] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,124:126] balance_storage_rep_period[Asgard_Battery,2030,1,127:129] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,127:129] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,127:129] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,127:129] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,127:129] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,127:129] balance_storage_rep_period[Asgard_Battery,2030,1,127:129] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,127:129] balance_storage_rep_period[Asgard_Battery,2030,1,130:132] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,130:132] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,130:132] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,130:132] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,130:132] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,130:132] balance_storage_rep_period[Asgard_Battery,2030,1,130:132] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,130:132] balance_storage_rep_period[Asgard_Battery,2030,1,133:135] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,133:135] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,133:135] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,133:135] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,133:135] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,133:135] balance_storage_rep_period[Asgard_Battery,2030,1,133:135] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,133:135] balance_storage_rep_period[Asgard_Battery,2030,1,136:138] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,136:138] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,136:138] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,136:138] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,136:138] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,136:138] balance_storage_rep_period[Asgard_Battery,2030,1,136:138] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,136:138] balance_storage_rep_period[Asgard_Battery,2030,1,139:141] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,139:141] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,139:141] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,139:141] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,139:141] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,139:141] balance_storage_rep_period[Asgard_Battery,2030,1,139:141] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,139:141] balance_storage_rep_period[Asgard_Battery,2030,1,142:144] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,142:144] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,142:144] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,142:144] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,142:144] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,142:144] balance_storage_rep_period[Asgard_Battery,2030,1,142:144] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,142:144] balance_storage_rep_period[Asgard_Battery,2030,1,145:147] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,145:147] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,145:147] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,145:147] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,145:147] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,145:147] balance_storage_rep_period[Asgard_Battery,2030,1,145:147] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,145:147] balance_storage_rep_period[Asgard_Battery,2030,1,148:150] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,148:150] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,148:150] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,148:150] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,148:150] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,148:150] balance_storage_rep_period[Asgard_Battery,2030,1,148:150] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,148:150] balance_storage_rep_period[Asgard_Battery,2030,1,151:153] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,151:153] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,151:153] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,151:153] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,151:153] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,151:153] balance_storage_rep_period[Asgard_Battery,2030,1,151:153] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,151:153] balance_storage_rep_period[Asgard_Battery,2030,1,154:156] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,154:156] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,154:156] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,154:156] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,154:156] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,154:156] balance_storage_rep_period[Asgard_Battery,2030,1,154:156] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,154:156] balance_storage_rep_period[Asgard_Battery,2030,1,157:159] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,157:159] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,157:159] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,157:159] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,157:159] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,157:159] balance_storage_rep_period[Asgard_Battery,2030,1,157:159] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,157:159] balance_storage_rep_period[Asgard_Battery,2030,1,160:162] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,160:162] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,160:162] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,160:162] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,160:162] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,160:162] balance_storage_rep_period[Asgard_Battery,2030,1,160:162] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,160:162] balance_storage_rep_period[Asgard_Battery,2030,1,163:165] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,163:165] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,163:165] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,163:165] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,163:165] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,163:165] balance_storage_rep_period[Asgard_Battery,2030,1,163:165] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,163:165] balance_storage_rep_period[Asgard_Battery,2030,1,166:168] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,166:168] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,166:168] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,1,166:168] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,166:168] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,166:168] balance_storage_rep_period[Asgard_Battery,2030,1,1:3] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,1,166:168] balance_storage_rep_period[Asgard_Battery,2030,1,166:168] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,1:3] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,1:3] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,2,1:3] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,1:3] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,1:3] balance_storage_rep_period[Asgard_Battery,2030,2,1:3] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,1:3] balance_storage_rep_period[Asgard_Battery,2030,2,4:6] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,4:6] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,4:6] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,2,4:6] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,4:6] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,4:6] balance_storage_rep_period[Asgard_Battery,2030,2,4:6] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,4:6] balance_storage_rep_period[Asgard_Battery,2030,2,7:9] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,7:9] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,7:9] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,2,7:9] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,7:9] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,7:9] balance_storage_rep_period[Asgard_Battery,2030,2,7:9] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,7:9] balance_storage_rep_period[Asgard_Battery,2030,2,10:12] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,10:12] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,10:12] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,2,10:12] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,10:12] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,10:12] balance_storage_rep_period[Asgard_Battery,2030,2,10:12] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,10:12] balance_storage_rep_period[Asgard_Battery,2030,2,13:16] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,13:16] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,13:16] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,2,13:16] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,13:16] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,13:16] balance_storage_rep_period[Asgard_Battery,2030,2,13:16] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,13:16] balance_storage_rep_period[Asgard_Battery,2030,2,17:20] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,17:20] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,17:20] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,2,17:20] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,17:20] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,17:20] balance_storage_rep_period[Asgard_Battery,2030,2,17:20] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,17:20] balance_storage_rep_period[Asgard_Battery,2030,2,21:24] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,21:24] max_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,21:24] 1
-    storage_level_intra_rep_period[Asgard_Battery,2030,2,21:24] min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,21:24] 1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,21:24] balance_storage_rep_period[Asgard_Battery,2030,2,1:3] -1
     storage_level_intra_rep_period[Asgard_Battery,2030,2,21:24] balance_storage_rep_period[Asgard_Battery,2030,2,21:24] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,1:1] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,1:1] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,1:1] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,1:1] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,1:1] balance_storage_rep_period[Midgard_PHS,2030,1,1:1] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,1:1] balance_storage_rep_period[Midgard_PHS,2030,1,2:2] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,2:2] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,2:2] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,2:2] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,2:2] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,2:2] balance_storage_rep_period[Midgard_PHS,2030,1,2:2] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,2:2] balance_storage_rep_period[Midgard_PHS,2030,1,3:3] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,3:3] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,3:3] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,3:3] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,3:3] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,3:3] balance_storage_rep_period[Midgard_PHS,2030,1,3:3] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,3:3] balance_storage_rep_period[Midgard_PHS,2030,1,4:4] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,4:4] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,4:4] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,4:4] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,4:4] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,4:4] balance_storage_rep_period[Midgard_PHS,2030,1,4:4] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,4:4] balance_storage_rep_period[Midgard_PHS,2030,1,5:5] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,5:5] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,5:5] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,5:5] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,5:5] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,5:5] balance_storage_rep_period[Midgard_PHS,2030,1,5:5] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,5:5] balance_storage_rep_period[Midgard_PHS,2030,1,6:6] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,6:6] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,6:6] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,6:6] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,6:6] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,6:6] balance_storage_rep_period[Midgard_PHS,2030,1,6:6] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,6:6] balance_storage_rep_period[Midgard_PHS,2030,1,7:7] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,7:7] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,7:7] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,7:7] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,7:7] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,7:7] balance_storage_rep_period[Midgard_PHS,2030,1,7:7] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,7:7] balance_storage_rep_period[Midgard_PHS,2030,1,8:8] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,8:8] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,8:8] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,8:8] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,8:8] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,8:8] balance_storage_rep_period[Midgard_PHS,2030,1,8:8] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,8:8] balance_storage_rep_period[Midgard_PHS,2030,1,9:9] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,9:9] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,9:9] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,9:9] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,9:9] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,9:9] balance_storage_rep_period[Midgard_PHS,2030,1,9:9] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,9:9] balance_storage_rep_period[Midgard_PHS,2030,1,10:10] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,10:10] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,10:10] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,10:10] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,10:10] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,10:10] balance_storage_rep_period[Midgard_PHS,2030,1,10:10] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,10:10] balance_storage_rep_period[Midgard_PHS,2030,1,11:11] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,11:11] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,11:11] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,11:11] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,11:11] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,11:11] balance_storage_rep_period[Midgard_PHS,2030,1,11:11] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,11:11] balance_storage_rep_period[Midgard_PHS,2030,1,12:12] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,12:12] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,12:12] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,12:12] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,12:12] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,12:12] balance_storage_rep_period[Midgard_PHS,2030,1,12:12] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,12:12] balance_storage_rep_period[Midgard_PHS,2030,1,13:13] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,13:13] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,13:13] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,13:13] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,13:13] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,13:13] balance_storage_rep_period[Midgard_PHS,2030,1,13:13] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,13:13] balance_storage_rep_period[Midgard_PHS,2030,1,14:14] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,14:14] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,14:14] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,14:14] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,14:14] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,14:14] balance_storage_rep_period[Midgard_PHS,2030,1,14:14] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,14:14] balance_storage_rep_period[Midgard_PHS,2030,1,15:15] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,15:15] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,15:15] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,15:15] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,15:15] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,15:15] balance_storage_rep_period[Midgard_PHS,2030,1,15:15] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,15:15] balance_storage_rep_period[Midgard_PHS,2030,1,16:16] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,16:16] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,16:16] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,16:16] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,16:16] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,16:16] balance_storage_rep_period[Midgard_PHS,2030,1,16:16] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,16:16] balance_storage_rep_period[Midgard_PHS,2030,1,17:17] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,17:17] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,17:17] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,17:17] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,17:17] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,17:17] balance_storage_rep_period[Midgard_PHS,2030,1,17:17] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,17:17] balance_storage_rep_period[Midgard_PHS,2030,1,18:18] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,18:18] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,18:18] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,18:18] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,18:18] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,18:18] balance_storage_rep_period[Midgard_PHS,2030,1,18:18] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,18:18] balance_storage_rep_period[Midgard_PHS,2030,1,19:19] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,19:19] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,19:19] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,19:19] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,19:19] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,19:19] balance_storage_rep_period[Midgard_PHS,2030,1,19:19] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,19:19] balance_storage_rep_period[Midgard_PHS,2030,1,20:20] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,20:20] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,20:20] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,20:20] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,20:20] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,20:20] balance_storage_rep_period[Midgard_PHS,2030,1,20:20] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,20:20] balance_storage_rep_period[Midgard_PHS,2030,1,21:21] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,21:21] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,21:21] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,21:21] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,21:21] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,21:21] balance_storage_rep_period[Midgard_PHS,2030,1,21:21] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,21:21] balance_storage_rep_period[Midgard_PHS,2030,1,22:22] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,22:22] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,22:22] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,22:22] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,22:22] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,22:22] balance_storage_rep_period[Midgard_PHS,2030,1,22:22] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,22:22] balance_storage_rep_period[Midgard_PHS,2030,1,23:23] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,23:23] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,23:23] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,23:23] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,23:23] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,23:23] balance_storage_rep_period[Midgard_PHS,2030,1,23:23] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,23:23] balance_storage_rep_period[Midgard_PHS,2030,1,24:24] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,24:24] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,24:24] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,24:24] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,24:24] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,24:24] balance_storage_rep_period[Midgard_PHS,2030,1,24:24] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,24:24] balance_storage_rep_period[Midgard_PHS,2030,1,25:25] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,25:25] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,25:25] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,25:25] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,25:25] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,25:25] balance_storage_rep_period[Midgard_PHS,2030,1,25:25] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,25:25] balance_storage_rep_period[Midgard_PHS,2030,1,26:26] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,26:26] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,26:26] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,26:26] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,26:26] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,26:26] balance_storage_rep_period[Midgard_PHS,2030,1,26:26] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,26:26] balance_storage_rep_period[Midgard_PHS,2030,1,27:27] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,27:27] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,27:27] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,27:27] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,27:27] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,27:27] balance_storage_rep_period[Midgard_PHS,2030,1,27:27] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,27:27] balance_storage_rep_period[Midgard_PHS,2030,1,28:28] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,28:28] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,28:28] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,28:28] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,28:28] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,28:28] balance_storage_rep_period[Midgard_PHS,2030,1,28:28] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,28:28] balance_storage_rep_period[Midgard_PHS,2030,1,29:29] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,29:29] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,29:29] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,29:29] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,29:29] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,29:29] balance_storage_rep_period[Midgard_PHS,2030,1,29:29] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,29:29] balance_storage_rep_period[Midgard_PHS,2030,1,30:30] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,30:30] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,30:30] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,30:30] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,30:30] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,30:30] balance_storage_rep_period[Midgard_PHS,2030,1,30:30] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,30:30] balance_storage_rep_period[Midgard_PHS,2030,1,31:31] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,31:31] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,31:31] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,31:31] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,31:31] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,31:31] balance_storage_rep_period[Midgard_PHS,2030,1,31:31] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,31:31] balance_storage_rep_period[Midgard_PHS,2030,1,32:32] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,32:32] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,32:32] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,32:32] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,32:32] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,32:32] balance_storage_rep_period[Midgard_PHS,2030,1,32:32] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,32:32] balance_storage_rep_period[Midgard_PHS,2030,1,33:33] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,33:33] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,33:33] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,33:33] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,33:33] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,33:33] balance_storage_rep_period[Midgard_PHS,2030,1,33:33] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,33:33] balance_storage_rep_period[Midgard_PHS,2030,1,34:34] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,34:34] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,34:34] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,34:34] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,34:34] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,34:34] balance_storage_rep_period[Midgard_PHS,2030,1,34:34] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,34:34] balance_storage_rep_period[Midgard_PHS,2030,1,35:35] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,35:35] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,35:35] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,35:35] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,35:35] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,35:35] balance_storage_rep_period[Midgard_PHS,2030,1,35:35] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,35:35] balance_storage_rep_period[Midgard_PHS,2030,1,36:36] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,36:36] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,36:36] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,36:36] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,36:36] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,36:36] balance_storage_rep_period[Midgard_PHS,2030,1,36:36] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,36:36] balance_storage_rep_period[Midgard_PHS,2030,1,37:37] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,37:37] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,37:37] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,37:37] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,37:37] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,37:37] balance_storage_rep_period[Midgard_PHS,2030,1,37:37] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,37:37] balance_storage_rep_period[Midgard_PHS,2030,1,38:38] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,38:38] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,38:38] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,38:38] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,38:38] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,38:38] balance_storage_rep_period[Midgard_PHS,2030,1,38:38] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,38:38] balance_storage_rep_period[Midgard_PHS,2030,1,39:39] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,39:39] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,39:39] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,39:39] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,39:39] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,39:39] balance_storage_rep_period[Midgard_PHS,2030,1,39:39] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,39:39] balance_storage_rep_period[Midgard_PHS,2030,1,40:40] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,40:40] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,40:40] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,40:40] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,40:40] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,40:40] balance_storage_rep_period[Midgard_PHS,2030,1,40:40] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,40:40] balance_storage_rep_period[Midgard_PHS,2030,1,41:41] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,41:41] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,41:41] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,41:41] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,41:41] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,41:41] balance_storage_rep_period[Midgard_PHS,2030,1,41:41] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,41:41] balance_storage_rep_period[Midgard_PHS,2030,1,42:42] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,42:42] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,42:42] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,42:42] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,42:42] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,42:42] balance_storage_rep_period[Midgard_PHS,2030,1,42:42] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,42:42] balance_storage_rep_period[Midgard_PHS,2030,1,43:43] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,43:43] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,43:43] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,43:43] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,43:43] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,43:43] balance_storage_rep_period[Midgard_PHS,2030,1,43:43] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,43:43] balance_storage_rep_period[Midgard_PHS,2030,1,44:44] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,44:44] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,44:44] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,44:44] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,44:44] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,44:44] balance_storage_rep_period[Midgard_PHS,2030,1,44:44] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,44:44] balance_storage_rep_period[Midgard_PHS,2030,1,45:45] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,45:45] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,45:45] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,45:45] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,45:45] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,45:45] balance_storage_rep_period[Midgard_PHS,2030,1,45:45] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,45:45] balance_storage_rep_period[Midgard_PHS,2030,1,46:46] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,46:46] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,46:46] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,46:46] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,46:46] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,46:46] balance_storage_rep_period[Midgard_PHS,2030,1,46:46] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,46:46] balance_storage_rep_period[Midgard_PHS,2030,1,47:47] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,47:47] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,47:47] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,47:47] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,47:47] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,47:47] balance_storage_rep_period[Midgard_PHS,2030,1,47:47] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,47:47] balance_storage_rep_period[Midgard_PHS,2030,1,48:48] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,48:48] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,48:48] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,48:48] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,48:48] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,48:48] balance_storage_rep_period[Midgard_PHS,2030,1,48:48] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,48:48] balance_storage_rep_period[Midgard_PHS,2030,1,49:49] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,49:49] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,49:49] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,49:49] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,49:49] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,49:49] balance_storage_rep_period[Midgard_PHS,2030,1,49:49] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,49:49] balance_storage_rep_period[Midgard_PHS,2030,1,50:50] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,50:50] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,50:50] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,50:50] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,50:50] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,50:50] balance_storage_rep_period[Midgard_PHS,2030,1,50:50] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,50:50] balance_storage_rep_period[Midgard_PHS,2030,1,51:51] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,51:51] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,51:51] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,51:51] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,51:51] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,51:51] balance_storage_rep_period[Midgard_PHS,2030,1,51:51] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,51:51] balance_storage_rep_period[Midgard_PHS,2030,1,52:52] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,52:52] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,52:52] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,52:52] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,52:52] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,52:52] balance_storage_rep_period[Midgard_PHS,2030,1,52:52] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,52:52] balance_storage_rep_period[Midgard_PHS,2030,1,53:53] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,53:53] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,53:53] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,53:53] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,53:53] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,53:53] balance_storage_rep_period[Midgard_PHS,2030,1,53:53] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,53:53] balance_storage_rep_period[Midgard_PHS,2030,1,54:54] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,54:54] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,54:54] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,54:54] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,54:54] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,54:54] balance_storage_rep_period[Midgard_PHS,2030,1,54:54] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,54:54] balance_storage_rep_period[Midgard_PHS,2030,1,55:55] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,55:55] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,55:55] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,55:55] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,55:55] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,55:55] balance_storage_rep_period[Midgard_PHS,2030,1,55:55] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,55:55] balance_storage_rep_period[Midgard_PHS,2030,1,56:56] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,56:56] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,56:56] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,56:56] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,56:56] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,56:56] balance_storage_rep_period[Midgard_PHS,2030,1,56:56] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,56:56] balance_storage_rep_period[Midgard_PHS,2030,1,57:57] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,57:57] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,57:57] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,57:57] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,57:57] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,57:57] balance_storage_rep_period[Midgard_PHS,2030,1,57:57] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,57:57] balance_storage_rep_period[Midgard_PHS,2030,1,58:58] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,58:58] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,58:58] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,58:58] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,58:58] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,58:58] balance_storage_rep_period[Midgard_PHS,2030,1,58:58] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,58:58] balance_storage_rep_period[Midgard_PHS,2030,1,59:59] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,59:59] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,59:59] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,59:59] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,59:59] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,59:59] balance_storage_rep_period[Midgard_PHS,2030,1,59:59] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,59:59] balance_storage_rep_period[Midgard_PHS,2030,1,60:60] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,60:60] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,60:60] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,60:60] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,60:60] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,60:60] balance_storage_rep_period[Midgard_PHS,2030,1,60:60] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,60:60] balance_storage_rep_period[Midgard_PHS,2030,1,61:61] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,61:61] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,61:61] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,61:61] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,61:61] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,61:61] balance_storage_rep_period[Midgard_PHS,2030,1,61:61] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,61:61] balance_storage_rep_period[Midgard_PHS,2030,1,62:62] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,62:62] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,62:62] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,62:62] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,62:62] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,62:62] balance_storage_rep_period[Midgard_PHS,2030,1,62:62] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,62:62] balance_storage_rep_period[Midgard_PHS,2030,1,63:63] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,63:63] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,63:63] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,63:63] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,63:63] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,63:63] balance_storage_rep_period[Midgard_PHS,2030,1,63:63] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,63:63] balance_storage_rep_period[Midgard_PHS,2030,1,64:64] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,64:64] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,64:64] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,64:64] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,64:64] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,64:64] balance_storage_rep_period[Midgard_PHS,2030,1,64:64] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,64:64] balance_storage_rep_period[Midgard_PHS,2030,1,65:65] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,65:65] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,65:65] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,65:65] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,65:65] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,65:65] balance_storage_rep_period[Midgard_PHS,2030,1,65:65] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,65:65] balance_storage_rep_period[Midgard_PHS,2030,1,66:66] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,66:66] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,66:66] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,66:66] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,66:66] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,66:66] balance_storage_rep_period[Midgard_PHS,2030,1,66:66] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,66:66] balance_storage_rep_period[Midgard_PHS,2030,1,67:67] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,67:67] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,67:67] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,67:67] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,67:67] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,67:67] balance_storage_rep_period[Midgard_PHS,2030,1,67:67] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,67:67] balance_storage_rep_period[Midgard_PHS,2030,1,68:68] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,68:68] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,68:68] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,68:68] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,68:68] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,68:68] balance_storage_rep_period[Midgard_PHS,2030,1,68:68] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,68:68] balance_storage_rep_period[Midgard_PHS,2030,1,69:69] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,69:69] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,69:69] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,69:69] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,69:69] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,69:69] balance_storage_rep_period[Midgard_PHS,2030,1,69:69] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,69:69] balance_storage_rep_period[Midgard_PHS,2030,1,70:70] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,70:70] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,70:70] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,70:70] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,70:70] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,70:70] balance_storage_rep_period[Midgard_PHS,2030,1,70:70] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,70:70] balance_storage_rep_period[Midgard_PHS,2030,1,71:71] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,71:71] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,71:71] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,71:71] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,71:71] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,71:71] balance_storage_rep_period[Midgard_PHS,2030,1,71:71] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,71:71] balance_storage_rep_period[Midgard_PHS,2030,1,72:72] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,72:72] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,72:72] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,72:72] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,72:72] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,72:72] balance_storage_rep_period[Midgard_PHS,2030,1,72:72] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,72:72] balance_storage_rep_period[Midgard_PHS,2030,1,73:73] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,73:73] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,73:73] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,73:73] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,73:73] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,73:73] balance_storage_rep_period[Midgard_PHS,2030,1,73:73] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,73:73] balance_storage_rep_period[Midgard_PHS,2030,1,74:74] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,74:74] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,74:74] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,74:74] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,74:74] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,74:74] balance_storage_rep_period[Midgard_PHS,2030,1,74:74] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,74:74] balance_storage_rep_period[Midgard_PHS,2030,1,75:75] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,75:75] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,75:75] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,75:75] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,75:75] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,75:75] balance_storage_rep_period[Midgard_PHS,2030,1,75:75] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,75:75] balance_storage_rep_period[Midgard_PHS,2030,1,76:76] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,76:76] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,76:76] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,76:76] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,76:76] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,76:76] balance_storage_rep_period[Midgard_PHS,2030,1,76:76] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,76:76] balance_storage_rep_period[Midgard_PHS,2030,1,77:77] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,77:77] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,77:77] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,77:77] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,77:77] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,77:77] balance_storage_rep_period[Midgard_PHS,2030,1,77:77] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,77:77] balance_storage_rep_period[Midgard_PHS,2030,1,78:78] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,78:78] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,78:78] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,78:78] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,78:78] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,78:78] balance_storage_rep_period[Midgard_PHS,2030,1,78:78] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,78:78] balance_storage_rep_period[Midgard_PHS,2030,1,79:79] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,79:79] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,79:79] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,79:79] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,79:79] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,79:79] balance_storage_rep_period[Midgard_PHS,2030,1,79:79] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,79:79] balance_storage_rep_period[Midgard_PHS,2030,1,80:80] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,80:80] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,80:80] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,80:80] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,80:80] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,80:80] balance_storage_rep_period[Midgard_PHS,2030,1,80:80] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,80:80] balance_storage_rep_period[Midgard_PHS,2030,1,81:81] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,81:81] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,81:81] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,81:81] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,81:81] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,81:81] balance_storage_rep_period[Midgard_PHS,2030,1,81:81] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,81:81] balance_storage_rep_period[Midgard_PHS,2030,1,82:82] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,82:82] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,82:82] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,82:82] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,82:82] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,82:82] balance_storage_rep_period[Midgard_PHS,2030,1,82:82] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,82:82] balance_storage_rep_period[Midgard_PHS,2030,1,83:83] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,83:83] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,83:83] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,83:83] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,83:83] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,83:83] balance_storage_rep_period[Midgard_PHS,2030,1,83:83] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,83:83] balance_storage_rep_period[Midgard_PHS,2030,1,84:84] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,84:84] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,84:84] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,84:84] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,84:84] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,84:84] balance_storage_rep_period[Midgard_PHS,2030,1,84:84] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,84:84] balance_storage_rep_period[Midgard_PHS,2030,1,85:85] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,85:85] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,85:85] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,85:85] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,85:85] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,85:85] balance_storage_rep_period[Midgard_PHS,2030,1,85:85] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,85:85] balance_storage_rep_period[Midgard_PHS,2030,1,86:86] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,86:86] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,86:86] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,86:86] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,86:86] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,86:86] balance_storage_rep_period[Midgard_PHS,2030,1,86:86] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,86:86] balance_storage_rep_period[Midgard_PHS,2030,1,87:87] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,87:87] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,87:87] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,87:87] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,87:87] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,87:87] balance_storage_rep_period[Midgard_PHS,2030,1,87:87] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,87:87] balance_storage_rep_period[Midgard_PHS,2030,1,88:88] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,88:88] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,88:88] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,88:88] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,88:88] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,88:88] balance_storage_rep_period[Midgard_PHS,2030,1,88:88] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,88:88] balance_storage_rep_period[Midgard_PHS,2030,1,89:89] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,89:89] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,89:89] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,89:89] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,89:89] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,89:89] balance_storage_rep_period[Midgard_PHS,2030,1,89:89] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,89:89] balance_storage_rep_period[Midgard_PHS,2030,1,90:90] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,90:90] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,90:90] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,90:90] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,90:90] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,90:90] balance_storage_rep_period[Midgard_PHS,2030,1,90:90] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,90:90] balance_storage_rep_period[Midgard_PHS,2030,1,91:91] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,91:91] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,91:91] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,91:91] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,91:91] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,91:91] balance_storage_rep_period[Midgard_PHS,2030,1,91:91] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,91:91] balance_storage_rep_period[Midgard_PHS,2030,1,92:92] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,92:92] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,92:92] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,92:92] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,92:92] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,92:92] balance_storage_rep_period[Midgard_PHS,2030,1,92:92] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,92:92] balance_storage_rep_period[Midgard_PHS,2030,1,93:93] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,93:93] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,93:93] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,93:93] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,93:93] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,93:93] balance_storage_rep_period[Midgard_PHS,2030,1,93:93] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,93:93] balance_storage_rep_period[Midgard_PHS,2030,1,94:94] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,94:94] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,94:94] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,94:94] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,94:94] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,94:94] balance_storage_rep_period[Midgard_PHS,2030,1,94:94] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,94:94] balance_storage_rep_period[Midgard_PHS,2030,1,95:95] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,95:95] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,95:95] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,95:95] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,95:95] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,95:95] balance_storage_rep_period[Midgard_PHS,2030,1,95:95] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,95:95] balance_storage_rep_period[Midgard_PHS,2030,1,96:96] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,96:96] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,96:96] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,96:96] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,96:96] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,96:96] balance_storage_rep_period[Midgard_PHS,2030,1,96:96] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,96:96] balance_storage_rep_period[Midgard_PHS,2030,1,97:97] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,97:97] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,97:97] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,97:97] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,97:97] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,97:97] balance_storage_rep_period[Midgard_PHS,2030,1,97:97] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,97:97] balance_storage_rep_period[Midgard_PHS,2030,1,98:98] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,98:98] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,98:98] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,98:98] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,98:98] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,98:98] balance_storage_rep_period[Midgard_PHS,2030,1,98:98] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,98:98] balance_storage_rep_period[Midgard_PHS,2030,1,99:99] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,99:99] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,99:99] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,99:99] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,99:99] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,99:99] balance_storage_rep_period[Midgard_PHS,2030,1,99:99] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,99:99] balance_storage_rep_period[Midgard_PHS,2030,1,100:100] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,100:100] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,100:100] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,100:100] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,100:100] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,100:100] balance_storage_rep_period[Midgard_PHS,2030,1,100:100] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,100:100] balance_storage_rep_period[Midgard_PHS,2030,1,101:101] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,101:101] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,101:101] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,101:101] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,101:101] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,101:101] balance_storage_rep_period[Midgard_PHS,2030,1,101:101] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,101:101] balance_storage_rep_period[Midgard_PHS,2030,1,102:102] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,102:102] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,102:102] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,102:102] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,102:102] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,102:102] balance_storage_rep_period[Midgard_PHS,2030,1,102:102] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,102:102] balance_storage_rep_period[Midgard_PHS,2030,1,103:103] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,103:103] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,103:103] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,103:103] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,103:103] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,103:103] balance_storage_rep_period[Midgard_PHS,2030,1,103:103] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,103:103] balance_storage_rep_period[Midgard_PHS,2030,1,104:104] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,104:104] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,104:104] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,104:104] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,104:104] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,104:104] balance_storage_rep_period[Midgard_PHS,2030,1,104:104] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,104:104] balance_storage_rep_period[Midgard_PHS,2030,1,105:105] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,105:105] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,105:105] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,105:105] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,105:105] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,105:105] balance_storage_rep_period[Midgard_PHS,2030,1,105:105] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,105:105] balance_storage_rep_period[Midgard_PHS,2030,1,106:106] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,106:106] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,106:106] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,106:106] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,106:106] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,106:106] balance_storage_rep_period[Midgard_PHS,2030,1,106:106] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,106:106] balance_storage_rep_period[Midgard_PHS,2030,1,107:107] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,107:107] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,107:107] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,107:107] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,107:107] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,107:107] balance_storage_rep_period[Midgard_PHS,2030,1,107:107] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,107:107] balance_storage_rep_period[Midgard_PHS,2030,1,108:108] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,108:108] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,108:108] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,108:108] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,108:108] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,108:108] balance_storage_rep_period[Midgard_PHS,2030,1,108:108] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,108:108] balance_storage_rep_period[Midgard_PHS,2030,1,109:109] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,109:109] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,109:109] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,109:109] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,109:109] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,109:109] balance_storage_rep_period[Midgard_PHS,2030,1,109:109] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,109:109] balance_storage_rep_period[Midgard_PHS,2030,1,110:110] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,110:110] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,110:110] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,110:110] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,110:110] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,110:110] balance_storage_rep_period[Midgard_PHS,2030,1,110:110] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,110:110] balance_storage_rep_period[Midgard_PHS,2030,1,111:111] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,111:111] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,111:111] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,111:111] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,111:111] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,111:111] balance_storage_rep_period[Midgard_PHS,2030,1,111:111] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,111:111] balance_storage_rep_period[Midgard_PHS,2030,1,112:112] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,112:112] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,112:112] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,112:112] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,112:112] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,112:112] balance_storage_rep_period[Midgard_PHS,2030,1,112:112] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,112:112] balance_storage_rep_period[Midgard_PHS,2030,1,113:113] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,113:113] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,113:113] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,113:113] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,113:113] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,113:113] balance_storage_rep_period[Midgard_PHS,2030,1,113:113] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,113:113] balance_storage_rep_period[Midgard_PHS,2030,1,114:114] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,114:114] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,114:114] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,114:114] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,114:114] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,114:114] balance_storage_rep_period[Midgard_PHS,2030,1,114:114] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,114:114] balance_storage_rep_period[Midgard_PHS,2030,1,115:115] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,115:115] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,115:115] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,115:115] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,115:115] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,115:115] balance_storage_rep_period[Midgard_PHS,2030,1,115:115] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,115:115] balance_storage_rep_period[Midgard_PHS,2030,1,116:116] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,116:116] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,116:116] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,116:116] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,116:116] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,116:116] balance_storage_rep_period[Midgard_PHS,2030,1,116:116] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,116:116] balance_storage_rep_period[Midgard_PHS,2030,1,117:117] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,117:117] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,117:117] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,117:117] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,117:117] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,117:117] balance_storage_rep_period[Midgard_PHS,2030,1,117:117] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,117:117] balance_storage_rep_period[Midgard_PHS,2030,1,118:118] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,118:118] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,118:118] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,118:118] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,118:118] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,118:118] balance_storage_rep_period[Midgard_PHS,2030,1,118:118] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,118:118] balance_storage_rep_period[Midgard_PHS,2030,1,119:119] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,119:119] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,119:119] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,119:119] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,119:119] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,119:119] balance_storage_rep_period[Midgard_PHS,2030,1,119:119] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,119:119] balance_storage_rep_period[Midgard_PHS,2030,1,120:120] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,120:120] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,120:120] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,120:120] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,120:120] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,120:120] balance_storage_rep_period[Midgard_PHS,2030,1,120:120] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,120:120] balance_storage_rep_period[Midgard_PHS,2030,1,121:121] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,121:121] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,121:121] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,121:121] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,121:121] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,121:121] balance_storage_rep_period[Midgard_PHS,2030,1,121:121] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,121:121] balance_storage_rep_period[Midgard_PHS,2030,1,122:122] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,122:122] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,122:122] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,122:122] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,122:122] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,122:122] balance_storage_rep_period[Midgard_PHS,2030,1,122:122] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,122:122] balance_storage_rep_period[Midgard_PHS,2030,1,123:123] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,123:123] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,123:123] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,123:123] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,123:123] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,123:123] balance_storage_rep_period[Midgard_PHS,2030,1,123:123] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,123:123] balance_storage_rep_period[Midgard_PHS,2030,1,124:124] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,124:124] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,124:124] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,124:124] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,124:124] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,124:124] balance_storage_rep_period[Midgard_PHS,2030,1,124:124] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,124:124] balance_storage_rep_period[Midgard_PHS,2030,1,125:125] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,125:125] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,125:125] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,125:125] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,125:125] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,125:125] balance_storage_rep_period[Midgard_PHS,2030,1,125:125] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,125:125] balance_storage_rep_period[Midgard_PHS,2030,1,126:126] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,126:126] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,126:126] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,126:126] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,126:126] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,126:126] balance_storage_rep_period[Midgard_PHS,2030,1,126:126] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,126:126] balance_storage_rep_period[Midgard_PHS,2030,1,127:127] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,127:127] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,127:127] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,127:127] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,127:127] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,127:127] balance_storage_rep_period[Midgard_PHS,2030,1,127:127] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,127:127] balance_storage_rep_period[Midgard_PHS,2030,1,128:128] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,128:128] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,128:128] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,128:128] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,128:128] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,128:128] balance_storage_rep_period[Midgard_PHS,2030,1,128:128] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,128:128] balance_storage_rep_period[Midgard_PHS,2030,1,129:129] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,129:129] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,129:129] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,129:129] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,129:129] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,129:129] balance_storage_rep_period[Midgard_PHS,2030,1,129:129] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,129:129] balance_storage_rep_period[Midgard_PHS,2030,1,130:130] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,130:130] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,130:130] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,130:130] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,130:130] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,130:130] balance_storage_rep_period[Midgard_PHS,2030,1,130:130] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,130:130] balance_storage_rep_period[Midgard_PHS,2030,1,131:131] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,131:131] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,131:131] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,131:131] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,131:131] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,131:131] balance_storage_rep_period[Midgard_PHS,2030,1,131:131] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,131:131] balance_storage_rep_period[Midgard_PHS,2030,1,132:132] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,132:132] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,132:132] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,132:132] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,132:132] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,132:132] balance_storage_rep_period[Midgard_PHS,2030,1,132:132] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,132:132] balance_storage_rep_period[Midgard_PHS,2030,1,133:133] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,133:133] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,133:133] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,133:133] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,133:133] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,133:133] balance_storage_rep_period[Midgard_PHS,2030,1,133:133] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,133:133] balance_storage_rep_period[Midgard_PHS,2030,1,134:134] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,134:134] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,134:134] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,134:134] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,134:134] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,134:134] balance_storage_rep_period[Midgard_PHS,2030,1,134:134] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,134:134] balance_storage_rep_period[Midgard_PHS,2030,1,135:135] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,135:135] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,135:135] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,135:135] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,135:135] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,135:135] balance_storage_rep_period[Midgard_PHS,2030,1,135:135] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,135:135] balance_storage_rep_period[Midgard_PHS,2030,1,136:136] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,136:136] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,136:136] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,136:136] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,136:136] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,136:136] balance_storage_rep_period[Midgard_PHS,2030,1,136:136] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,136:136] balance_storage_rep_period[Midgard_PHS,2030,1,137:137] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,137:137] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,137:137] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,137:137] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,137:137] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,137:137] balance_storage_rep_period[Midgard_PHS,2030,1,137:137] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,137:137] balance_storage_rep_period[Midgard_PHS,2030,1,138:138] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,138:138] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,138:138] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,138:138] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,138:138] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,138:138] balance_storage_rep_period[Midgard_PHS,2030,1,138:138] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,138:138] balance_storage_rep_period[Midgard_PHS,2030,1,139:139] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,139:139] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,139:139] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,139:139] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,139:139] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,139:139] balance_storage_rep_period[Midgard_PHS,2030,1,139:139] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,139:139] balance_storage_rep_period[Midgard_PHS,2030,1,140:140] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,140:140] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,140:140] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,140:140] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,140:140] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,140:140] balance_storage_rep_period[Midgard_PHS,2030,1,140:140] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,140:140] balance_storage_rep_period[Midgard_PHS,2030,1,141:141] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,141:141] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,141:141] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,141:141] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,141:141] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,141:141] balance_storage_rep_period[Midgard_PHS,2030,1,141:141] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,141:141] balance_storage_rep_period[Midgard_PHS,2030,1,142:142] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,142:142] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,142:142] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,142:142] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,142:142] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,142:142] balance_storage_rep_period[Midgard_PHS,2030,1,142:142] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,142:142] balance_storage_rep_period[Midgard_PHS,2030,1,143:143] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,143:143] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,143:143] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,143:143] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,143:143] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,143:143] balance_storage_rep_period[Midgard_PHS,2030,1,143:143] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,143:143] balance_storage_rep_period[Midgard_PHS,2030,1,144:144] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,144:144] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,144:144] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,144:144] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,144:144] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,144:144] balance_storage_rep_period[Midgard_PHS,2030,1,144:144] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,144:144] balance_storage_rep_period[Midgard_PHS,2030,1,145:145] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,145:145] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,145:145] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,145:145] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,145:145] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,145:145] balance_storage_rep_period[Midgard_PHS,2030,1,145:145] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,145:145] balance_storage_rep_period[Midgard_PHS,2030,1,146:146] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,146:146] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,146:146] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,146:146] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,146:146] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,146:146] balance_storage_rep_period[Midgard_PHS,2030,1,146:146] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,146:146] balance_storage_rep_period[Midgard_PHS,2030,1,147:147] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,147:147] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,147:147] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,147:147] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,147:147] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,147:147] balance_storage_rep_period[Midgard_PHS,2030,1,147:147] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,147:147] balance_storage_rep_period[Midgard_PHS,2030,1,148:148] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,148:148] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,148:148] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,148:148] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,148:148] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,148:148] balance_storage_rep_period[Midgard_PHS,2030,1,148:148] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,148:148] balance_storage_rep_period[Midgard_PHS,2030,1,149:149] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,149:149] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,149:149] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,149:149] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,149:149] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,149:149] balance_storage_rep_period[Midgard_PHS,2030,1,149:149] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,149:149] balance_storage_rep_period[Midgard_PHS,2030,1,150:150] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,150:150] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,150:150] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,150:150] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,150:150] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,150:150] balance_storage_rep_period[Midgard_PHS,2030,1,150:150] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,150:150] balance_storage_rep_period[Midgard_PHS,2030,1,151:151] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,151:151] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,151:151] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,151:151] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,151:151] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,151:151] balance_storage_rep_period[Midgard_PHS,2030,1,151:151] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,151:151] balance_storage_rep_period[Midgard_PHS,2030,1,152:152] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,152:152] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,152:152] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,152:152] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,152:152] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,152:152] balance_storage_rep_period[Midgard_PHS,2030,1,152:152] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,152:152] balance_storage_rep_period[Midgard_PHS,2030,1,153:153] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,153:153] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,153:153] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,153:153] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,153:153] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,153:153] balance_storage_rep_period[Midgard_PHS,2030,1,153:153] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,153:153] balance_storage_rep_period[Midgard_PHS,2030,1,154:154] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,154:154] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,154:154] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,154:154] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,154:154] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,154:154] balance_storage_rep_period[Midgard_PHS,2030,1,154:154] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,154:154] balance_storage_rep_period[Midgard_PHS,2030,1,155:155] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,155:155] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,155:155] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,155:155] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,155:155] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,155:155] balance_storage_rep_period[Midgard_PHS,2030,1,155:155] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,155:155] balance_storage_rep_period[Midgard_PHS,2030,1,156:156] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,156:156] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,156:156] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,156:156] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,156:156] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,156:156] balance_storage_rep_period[Midgard_PHS,2030,1,156:156] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,156:156] balance_storage_rep_period[Midgard_PHS,2030,1,157:157] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,157:157] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,157:157] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,157:157] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,157:157] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,157:157] balance_storage_rep_period[Midgard_PHS,2030,1,157:157] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,157:157] balance_storage_rep_period[Midgard_PHS,2030,1,158:158] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,158:158] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,158:158] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,158:158] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,158:158] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,158:158] balance_storage_rep_period[Midgard_PHS,2030,1,158:158] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,158:158] balance_storage_rep_period[Midgard_PHS,2030,1,159:159] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,159:159] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,159:159] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,159:159] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,159:159] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,159:159] balance_storage_rep_period[Midgard_PHS,2030,1,159:159] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,159:159] balance_storage_rep_period[Midgard_PHS,2030,1,160:160] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,160:160] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,160:160] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,160:160] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,160:160] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,160:160] balance_storage_rep_period[Midgard_PHS,2030,1,160:160] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,160:160] balance_storage_rep_period[Midgard_PHS,2030,1,161:161] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,161:161] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,161:161] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,161:161] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,161:161] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,161:161] balance_storage_rep_period[Midgard_PHS,2030,1,161:161] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,161:161] balance_storage_rep_period[Midgard_PHS,2030,1,162:162] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,162:162] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,162:162] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,162:162] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,162:162] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,162:162] balance_storage_rep_period[Midgard_PHS,2030,1,162:162] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,162:162] balance_storage_rep_period[Midgard_PHS,2030,1,163:163] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,163:163] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,163:163] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,163:163] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,163:163] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,163:163] balance_storage_rep_period[Midgard_PHS,2030,1,163:163] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,163:163] balance_storage_rep_period[Midgard_PHS,2030,1,164:164] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,164:164] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,164:164] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,164:164] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,164:164] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,164:164] balance_storage_rep_period[Midgard_PHS,2030,1,164:164] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,164:164] balance_storage_rep_period[Midgard_PHS,2030,1,165:165] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,165:165] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,165:165] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,165:165] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,165:165] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,165:165] balance_storage_rep_period[Midgard_PHS,2030,1,165:165] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,165:165] balance_storage_rep_period[Midgard_PHS,2030,1,166:166] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,166:166] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,166:166] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,166:166] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,166:166] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,166:166] balance_storage_rep_period[Midgard_PHS,2030,1,166:166] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,166:166] balance_storage_rep_period[Midgard_PHS,2030,1,167:167] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,167:167] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,167:167] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,167:167] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,167:167] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,167:167] balance_storage_rep_period[Midgard_PHS,2030,1,167:167] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,167:167] balance_storage_rep_period[Midgard_PHS,2030,1,168:168] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,168:168] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,168:168] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,1,168:168] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,168:168] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,168:168] balance_storage_rep_period[Midgard_PHS,2030,1,1:1] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,1,168:168] balance_storage_rep_period[Midgard_PHS,2030,1,168:168] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,1:1] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,1:1] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,1:1] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,1:1] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,1:1] balance_storage_rep_period[Midgard_PHS,2030,2,1:1] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,1:1] balance_storage_rep_period[Midgard_PHS,2030,2,2:2] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,2:2] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,2:2] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,2:2] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,2:2] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,2:2] balance_storage_rep_period[Midgard_PHS,2030,2,2:2] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,2:2] balance_storage_rep_period[Midgard_PHS,2030,2,3:3] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,3:3] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,3:3] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,3:3] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,3:3] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,3:3] balance_storage_rep_period[Midgard_PHS,2030,2,3:3] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,3:3] balance_storage_rep_period[Midgard_PHS,2030,2,4:4] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,4:4] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,4:4] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,4:4] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,4:4] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,4:4] balance_storage_rep_period[Midgard_PHS,2030,2,4:4] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,4:4] balance_storage_rep_period[Midgard_PHS,2030,2,5:5] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,5:5] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,5:5] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,5:5] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,5:5] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,5:5] balance_storage_rep_period[Midgard_PHS,2030,2,5:5] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,5:5] balance_storage_rep_period[Midgard_PHS,2030,2,6:6] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,6:6] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,6:6] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,6:6] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,6:6] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,6:6] balance_storage_rep_period[Midgard_PHS,2030,2,6:6] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,6:6] balance_storage_rep_period[Midgard_PHS,2030,2,7:7] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,7:7] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,7:7] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,7:7] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,7:7] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,7:7] balance_storage_rep_period[Midgard_PHS,2030,2,7:7] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,7:7] balance_storage_rep_period[Midgard_PHS,2030,2,8:8] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,8:8] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,8:8] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,8:8] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,8:8] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,8:8] balance_storage_rep_period[Midgard_PHS,2030,2,8:8] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,8:8] balance_storage_rep_period[Midgard_PHS,2030,2,9:9] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,9:9] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,9:9] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,9:9] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,9:9] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,9:9] balance_storage_rep_period[Midgard_PHS,2030,2,9:9] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,9:9] balance_storage_rep_period[Midgard_PHS,2030,2,10:10] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,10:10] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,10:10] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,10:10] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,10:10] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,10:10] balance_storage_rep_period[Midgard_PHS,2030,2,10:10] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,10:10] balance_storage_rep_period[Midgard_PHS,2030,2,11:11] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,11:11] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,11:11] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,11:11] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,11:11] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,11:11] balance_storage_rep_period[Midgard_PHS,2030,2,11:11] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,11:11] balance_storage_rep_period[Midgard_PHS,2030,2,12:12] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,12:12] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,12:12] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,12:12] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,12:12] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,12:12] balance_storage_rep_period[Midgard_PHS,2030,2,12:12] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,12:12] balance_storage_rep_period[Midgard_PHS,2030,2,13:13] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,13:13] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,13:13] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,13:13] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,13:13] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,13:13] balance_storage_rep_period[Midgard_PHS,2030,2,13:13] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,13:13] balance_storage_rep_period[Midgard_PHS,2030,2,14:14] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,14:14] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,14:14] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,14:14] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,14:14] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,14:14] balance_storage_rep_period[Midgard_PHS,2030,2,14:14] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,14:14] balance_storage_rep_period[Midgard_PHS,2030,2,15:15] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,15:15] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,15:15] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,15:15] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,15:15] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,15:15] balance_storage_rep_period[Midgard_PHS,2030,2,15:15] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,15:15] balance_storage_rep_period[Midgard_PHS,2030,2,16:16] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,16:16] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,16:16] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,16:16] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,16:16] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,16:16] balance_storage_rep_period[Midgard_PHS,2030,2,16:16] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,16:16] balance_storage_rep_period[Midgard_PHS,2030,2,17:17] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,17:17] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,17:17] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,17:17] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,17:17] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,17:17] balance_storage_rep_period[Midgard_PHS,2030,2,17:17] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,17:17] balance_storage_rep_period[Midgard_PHS,2030,2,18:18] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,18:18] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,18:18] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,18:18] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,18:18] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,18:18] balance_storage_rep_period[Midgard_PHS,2030,2,18:18] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,18:18] balance_storage_rep_period[Midgard_PHS,2030,2,19:19] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,19:19] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,19:19] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,19:19] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,19:19] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,19:19] balance_storage_rep_period[Midgard_PHS,2030,2,19:19] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,19:19] balance_storage_rep_period[Midgard_PHS,2030,2,20:20] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,20:20] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,20:20] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,20:20] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,20:20] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,20:20] balance_storage_rep_period[Midgard_PHS,2030,2,20:20] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,20:20] balance_storage_rep_period[Midgard_PHS,2030,2,21:21] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,21:21] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,21:21] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,21:21] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,21:21] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,21:21] balance_storage_rep_period[Midgard_PHS,2030,2,21:21] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,21:21] balance_storage_rep_period[Midgard_PHS,2030,2,22:22] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,22:22] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,22:22] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,22:22] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,22:22] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,22:22] balance_storage_rep_period[Midgard_PHS,2030,2,22:22] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,22:22] balance_storage_rep_period[Midgard_PHS,2030,2,23:23] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,23:23] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,23:23] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,23:23] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,23:23] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,23:23] balance_storage_rep_period[Midgard_PHS,2030,2,23:23] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,23:23] balance_storage_rep_period[Midgard_PHS,2030,2,24:24] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,24:24] max_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,24:24] 1
-    storage_level_intra_rep_period[Midgard_PHS,2030,2,24:24] min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,24:24] 1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,24:24] balance_storage_rep_period[Midgard_PHS,2030,2,1:1] -1
     storage_level_intra_rep_period[Midgard_PHS,2030,2,24:24] balance_storage_rep_period[Midgard_PHS,2030,2,24:24] 1
     storage_level_inter_period[Midgard_Hydro,2030,1,1:7] max_storage_level_inter_period_limit[Midgard_Hydro,2030,1,1:7] 1
@@ -44013,67 +43487,51 @@ COLUMNS
     storage_level_inter_period[Midgard_Hydro,2030,1,208:215] cycling_condition_inter_period[Midgard_Hydro,2030,1] 1
     storage_level_inter_period[Midgard_Hydro,2030,1,208:215] balance_storage_inter_period[Midgard_Hydro,2030,1,208:215] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,1:14] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,1:14] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,1:14] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,1:14] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,1:14] balance_storage_inter_period[Valhalla_H2_storage,2030,1,1:14] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,1:14] balance_storage_inter_period[Valhalla_H2_storage,2030,1,15:28] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,15:28] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,15:28] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,15:28] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,15:28] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,15:28] balance_storage_inter_period[Valhalla_H2_storage,2030,1,15:28] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,15:28] balance_storage_inter_period[Valhalla_H2_storage,2030,1,29:42] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,29:42] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,29:42] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,29:42] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,29:42] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,29:42] balance_storage_inter_period[Valhalla_H2_storage,2030,1,29:42] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,29:42] balance_storage_inter_period[Valhalla_H2_storage,2030,1,43:56] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,43:56] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,43:56] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,43:56] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,43:56] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,43:56] balance_storage_inter_period[Valhalla_H2_storage,2030,1,43:56] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,43:56] balance_storage_inter_period[Valhalla_H2_storage,2030,1,57:70] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,57:70] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,57:70] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,57:70] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,57:70] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,57:70] balance_storage_inter_period[Valhalla_H2_storage,2030,1,57:70] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,57:70] balance_storage_inter_period[Valhalla_H2_storage,2030,1,71:84] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,71:84] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,71:84] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,71:84] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,71:84] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,71:84] balance_storage_inter_period[Valhalla_H2_storage,2030,1,71:84] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,71:84] balance_storage_inter_period[Valhalla_H2_storage,2030,1,85:98] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,85:98] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,85:98] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,85:98] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,85:98] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,85:98] balance_storage_inter_period[Valhalla_H2_storage,2030,1,85:98] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,85:98] balance_storage_inter_period[Valhalla_H2_storage,2030,1,99:112] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,99:112] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,99:112] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,99:112] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,99:112] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,99:112] balance_storage_inter_period[Valhalla_H2_storage,2030,1,99:112] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,99:112] balance_storage_inter_period[Valhalla_H2_storage,2030,1,113:126] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,113:126] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,113:126] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,113:126] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,113:126] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,113:126] balance_storage_inter_period[Valhalla_H2_storage,2030,1,113:126] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,113:126] balance_storage_inter_period[Valhalla_H2_storage,2030,1,127:140] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,127:140] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,127:140] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,127:140] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,127:140] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,127:140] balance_storage_inter_period[Valhalla_H2_storage,2030,1,127:140] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,127:140] balance_storage_inter_period[Valhalla_H2_storage,2030,1,141:154] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,141:154] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,141:154] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,141:154] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,141:154] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,141:154] balance_storage_inter_period[Valhalla_H2_storage,2030,1,141:154] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,141:154] balance_storage_inter_period[Valhalla_H2_storage,2030,1,155:168] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,155:168] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,155:168] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,155:168] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,155:168] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,155:168] balance_storage_inter_period[Valhalla_H2_storage,2030,1,155:168] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,155:168] balance_storage_inter_period[Valhalla_H2_storage,2030,1,169:182] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,169:182] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,169:182] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,169:182] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,169:182] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,169:182] balance_storage_inter_period[Valhalla_H2_storage,2030,1,169:182] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,169:182] balance_storage_inter_period[Valhalla_H2_storage,2030,1,183:196] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,183:196] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,183:196] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,183:196] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,183:196] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,183:196] balance_storage_inter_period[Valhalla_H2_storage,2030,1,183:196] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,183:196] balance_storage_inter_period[Valhalla_H2_storage,2030,1,197:210] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,197:210] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,197:210] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,197:210] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,197:210] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,197:210] balance_storage_inter_period[Valhalla_H2_storage,2030,1,197:210] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,197:210] balance_storage_inter_period[Valhalla_H2_storage,2030,1,211:215] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,211:215] max_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,211:215] 1
-    storage_level_inter_period[Valhalla_H2_storage,2030,1,211:215] min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,211:215] 1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,211:215] balance_storage_inter_period[Valhalla_H2_storage,2030,1,1:14] -1
     storage_level_inter_period[Valhalla_H2_storage,2030,1,211:215] balance_storage_inter_period[Valhalla_H2_storage,2030,1,211:215] 1
     accumulated_storage_level_intra_rep_period[Midgard_Hydro,2030,1,1:3] accumulated_storage_intra_period[Midgard_Hydro,2030,1,1:3] 1
@@ -52476,261 +51934,6 @@ RHS
     rhs       consumer_balance[W_Spillage,2030,2,22:22] 0
     rhs       consumer_balance[W_Spillage,2030,2,23:23] 0
     rhs       consumer_balance[W_Spillage,2030,2,24:24] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,1:3] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,4:6] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,7:9] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,10:12] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,13:15] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,16:18] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,19:21] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,22:24] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,25:27] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,28:30] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,31:33] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,34:36] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,37:39] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,40:42] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,43:45] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,46:48] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,49:51] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,52:54] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,55:57] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,58:60] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,61:63] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,64:66] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,67:69] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,70:72] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,73:75] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,76:78] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,79:81] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,82:84] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,85:87] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,88:90] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,91:93] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,94:96] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,97:99] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,100:102] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,103:105] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,106:108] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,109:111] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,112:114] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,115:117] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,118:120] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,121:123] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,124:126] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,127:129] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,130:132] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,133:135] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,136:138] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,139:141] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,142:144] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,145:147] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,148:150] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,151:153] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,154:156] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,157:159] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,160:162] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,163:165] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,1,166:168] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,1:3] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,4:6] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,7:9] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,10:12] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,13:16] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,17:20] 0
-    rhs       min_storage_level_intra_rep_period_limit[Asgard_Battery,2030,2,21:24] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,1:1] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,2:2] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,3:3] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,4:4] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,5:5] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,6:6] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,7:7] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,8:8] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,9:9] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,10:10] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,11:11] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,12:12] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,13:13] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,14:14] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,15:15] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,16:16] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,17:17] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,18:18] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,19:19] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,20:20] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,21:21] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,22:22] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,23:23] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,24:24] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,25:25] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,26:26] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,27:27] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,28:28] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,29:29] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,30:30] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,31:31] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,32:32] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,33:33] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,34:34] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,35:35] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,36:36] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,37:37] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,38:38] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,39:39] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,40:40] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,41:41] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,42:42] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,43:43] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,44:44] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,45:45] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,46:46] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,47:47] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,48:48] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,49:49] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,50:50] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,51:51] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,52:52] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,53:53] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,54:54] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,55:55] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,56:56] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,57:57] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,58:58] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,59:59] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,60:60] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,61:61] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,62:62] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,63:63] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,64:64] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,65:65] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,66:66] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,67:67] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,68:68] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,69:69] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,70:70] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,71:71] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,72:72] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,73:73] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,74:74] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,75:75] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,76:76] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,77:77] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,78:78] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,79:79] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,80:80] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,81:81] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,82:82] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,83:83] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,84:84] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,85:85] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,86:86] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,87:87] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,88:88] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,89:89] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,90:90] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,91:91] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,92:92] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,93:93] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,94:94] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,95:95] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,96:96] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,97:97] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,98:98] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,99:99] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,100:100] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,101:101] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,102:102] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,103:103] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,104:104] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,105:105] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,106:106] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,107:107] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,108:108] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,109:109] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,110:110] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,111:111] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,112:112] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,113:113] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,114:114] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,115:115] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,116:116] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,117:117] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,118:118] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,119:119] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,120:120] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,121:121] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,122:122] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,123:123] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,124:124] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,125:125] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,126:126] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,127:127] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,128:128] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,129:129] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,130:130] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,131:131] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,132:132] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,133:133] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,134:134] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,135:135] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,136:136] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,137:137] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,138:138] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,139:139] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,140:140] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,141:141] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,142:142] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,143:143] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,144:144] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,145:145] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,146:146] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,147:147] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,148:148] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,149:149] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,150:150] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,151:151] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,152:152] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,153:153] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,154:154] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,155:155] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,156:156] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,157:157] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,158:158] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,159:159] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,160:160] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,161:161] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,162:162] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,163:163] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,164:164] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,165:165] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,166:166] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,167:167] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,1,168:168] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,1:1] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,2:2] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,3:3] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,4:4] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,5:5] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,6:6] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,7:7] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,8:8] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,9:9] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,10:10] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,11:11] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,12:12] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,13:13] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,14:14] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,15:15] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,16:16] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,17:17] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,18:18] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,19:19] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,20:20] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,21:21] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,22:22] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,23:23] 0
-    rhs       min_storage_level_intra_rep_period_limit[Midgard_PHS,2030,2,24:24] 0
     rhs       min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,1:7] 20000
     rhs       min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,8:14] 18500.000000000004
     rhs       min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,15:21] 17500
@@ -52783,22 +51986,6 @@ RHS
     rhs       min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,194:200] 23000
     rhs       min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,201:207] 22000
     rhs       min_storage_level_inter_period_limit[Midgard_Hydro,2030,1,208:215] 21500.000000000004
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,1:14] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,15:28] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,29:42] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,43:56] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,57:70] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,71:84] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,85:98] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,99:112] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,113:126] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,127:140] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,141:154] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,155:168] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,169:182] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,183:196] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,197:210] 0
-    rhs       min_storage_level_inter_period_limit[Valhalla_H2_storage,2030,1,211:215] 0
     rhs       cycling_condition_inter_period[Midgard_Hydro,2030,1] 25000
     rhs       min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,1:1] 0
     rhs       min_transport_flow_limit_aggregated_vintage_method[(Midgard_E_demand,Valhalla_E_balance),2030,1,2:2] 0

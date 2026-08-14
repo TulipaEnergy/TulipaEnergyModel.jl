@@ -18,7 +18,6 @@ ROWS
  L  max_storage_level_intra_rep_period_limit[phs,2030,1,1:6]
  L  max_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,1:3]
  L  max_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,4:6]
- G  min_storage_level_intra_rep_period_limit[phs,2030,1,1:6]
  G  min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,1:3]
  G  min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,4:6]
  E  consumer_balance[balance,2030,1,1:1]
@@ -124,7 +123,6 @@ COLUMNS
     flows_decommission[("balance",_"demand"),2030,2030] min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,1:3] -200
     flows_decommission[("balance",_"demand"),2030,2030] min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,4:6] -200
     storage_level_intra_rep_period[phs,2030,1,1:6] max_storage_level_intra_rep_period_limit[phs,2030,1,1:6] 1
-    storage_level_intra_rep_period[phs,2030,1,1:6] min_storage_level_intra_rep_period_limit[phs,2030,1,1:6] 1
     storage_level_intra_rep_period[phs,2030,1,1:6] balance_storage_rep_period[phs,2030,1,1:6] 1
 RHS
     rhs       max_output_flows_limit_aggregated_vintage_method[H2,2030,1,1:6] 400
@@ -144,7 +142,6 @@ RHS
     rhs       max_storage_level_intra_rep_period_limit[phs,2030,1,1:6] 150
     rhs       max_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,1:3] 200
     rhs       max_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,4:6] 200
-    rhs       min_storage_level_intra_rep_period_limit[phs,2030,1,1:6] 0
     rhs       min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,1:3] -200
     rhs       min_transport_flow_limit_aggregated_vintage_method[(balance,demand),2030,1,4:6] -200
     rhs       consumer_balance[balance,2030,1,1:1] 0
