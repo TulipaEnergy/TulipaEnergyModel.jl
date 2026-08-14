@@ -1,0 +1,12 @@
+asset,type,capacity,vintage_method,investment_integer,technical_lifetime,discount_rate,inter_period_storage_level_bounds
+ccgt,producer,800.0,aggregated,true,15,0.05,inter_period_only
+e_demand,consumer,0.0,aggregated,false,15,0.05,inter_period_only
+ens,producer,1000.0,aggregated,false,15,0.05,inter_period_only
+ocgt,producer,100.0,aggregated,true,15,0.05,inter_period_only
+solar,producer,500.0,aggregated,true,15,0.05,inter_period_only
+wind,producer,400.0,aggregated,true,15,0.05,inter_period_only
+electrolizer,conversion,100.0,aggregated,true,15,0.05,inter_period_only
+h2_demand,consumer,100.0,aggregated,false,15,0.05,inter_period_only
+smr_ccs,producer,100.0,aggregated,true,15,0.05,inter_period_only
+hub,consumer,0.0,aggregated,false,15,0.05,inter_period_only
+wind_offshore,producer,400.0,aggregated,true,15,0.05,inter_period_only
