@@ -580,6 +580,189 @@ drop sequence id
 create sequence id start 1
 ;
 
+drop table if exists cons_storage_level_intra_rep_period_bounds
+;
+
+create table cons_storage_level_intra_rep_period_bounds as
+select
+    nextval('id') as id,
+    accumulated.asset,
+    accumulated.milestone_year,
+    accumulated.rep_period,
+    accumulated.time_block_start,
+    accumulated.time_block_end,
+    accumulated.id as accumulated_storage_level_id,
+    increase.id as max_storage_level_increase_id,
+    decrease.id as max_storage_level_decrease_id,
+from
+    var_accumulated_storage_level_intra_rep_period as accumulated
+    inner join var_max_storage_level_increase_intra_rep_period as increase
+        on accumulated.asset = increase.asset
+        and accumulated.milestone_year = increase.milestone_year
+        and accumulated.rep_period = increase.rep_period
+    inner join var_max_storage_level_decrease_intra_rep_period as decrease
+        on accumulated.asset = decrease.asset
+        and accumulated.milestone_year = decrease.milestone_year
+        and accumulated.rep_period = decrease.rep_period
+order by
+    accumulated.asset,
+    accumulated.milestone_year,
+    accumulated.rep_period,
+    accumulated.time_block_start
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_max_storage_level_intra_rep_period_limit
+;
+
+create table cons_max_storage_level_intra_rep_period_limit as
+select
+    nextval('id') as id,
+    var.id as storage_level_id,
+    var.asset,
+    var.milestone_year,
+    var.rep_period,
+    var.time_block_start,
+    var.time_block_end,
+from
+    var_storage_level_intra_rep_period as var
+order by
+    var.asset,
+    var.milestone_year,
+    var.rep_period,
+    var.time_block_start
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_min_storage_level_intra_rep_period_limit
+;
+
+create table cons_min_storage_level_intra_rep_period_limit as
+select
+    nextval('id') as id,
+    var.id as storage_level_id,
+    var.asset,
+    var.milestone_year,
+    var.rep_period,
+    var.time_block_start,
+    var.time_block_end,
+from
+    var_storage_level_intra_rep_period as var
+where
+    coalesce((
+        select avg(profile.value)
+        from assets_profiles as asset_profile
+        inner join profiles_rep_periods as profile
+            on asset_profile.profile_name = profile.profile_name
+            and var.milestone_year = profile.milestone_year
+            and var.rep_period = profile.rep_period
+            and profile.timestep between var.time_block_start and var.time_block_end
+        where
+            asset_profile.asset = var.asset
+            and asset_profile.commission_year = var.milestone_year
+            and asset_profile.profile_type = 'min_storage_level'
+    ), 0.0) > 0.0
+order by
+    var.asset,
+    var.milestone_year,
+    var.rep_period,
+    var.time_block_start
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_max_storage_level_inter_period_limit
+;
+
+create table cons_max_storage_level_inter_period_limit as
+select
+    nextval('id') as id,
+    var.id as storage_level_id,
+    var.asset,
+    var.milestone_year,
+    var.scenario,
+    var.period_block_start,
+    var.period_block_end,
+    asset.inter_period_storage_level_bounds,
+from
+    var_storage_level_inter_period as var
+    left join asset on var.asset = asset.asset
+where
+    asset.inter_period_storage_level_bounds != 'none'
+order by
+    var.asset,
+    var.milestone_year,
+    var.scenario,
+    var.period_block_start
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
+drop table if exists cons_min_storage_level_inter_period_limit
+;
+
+create table cons_min_storage_level_inter_period_limit as
+select
+    nextval('id') as id,
+    var.id as storage_level_id,
+    var.asset,
+    var.milestone_year,
+    var.scenario,
+    var.period_block_start,
+    var.period_block_end,
+    asset.inter_period_storage_level_bounds,
+from
+    var_storage_level_inter_period as var
+    left join asset on var.asset = asset.asset
+where
+    asset.inter_period_storage_level_bounds = 'inter_and_intra_rep_period'
+    or (
+        asset.inter_period_storage_level_bounds = 'inter_period_only'
+        and coalesce((
+            select avg(profile.value)
+            from assets_timeframe_profiles as asset_profile
+            inner join profiles_timeframe as profile
+                on asset_profile.profile_name = profile.profile_name
+                and var.milestone_year = profile.milestone_year
+                and profile.period between var.period_block_start and var.period_block_end
+            where
+                asset_profile.asset = var.asset
+                and asset_profile.milestone_year = var.milestone_year
+                and asset_profile.scenario = var.scenario
+                and asset_profile.profile_type = 'min_storage_level'
+        ), 0.0) > 0.0
+    )
+order by
+    var.asset,
+    var.milestone_year,
+    var.scenario,
+    var.period_block_start
+;
+
+drop sequence id
+;
+
+create sequence id start 1
+;
+
 drop table if exists cons_min_energy_inter_period
 ;
 
