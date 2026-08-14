@@ -5,7 +5,7 @@ function _add_storage_assets_energy_investment_cost!(connection, model, variable
         connection,
         "SELECT
             var.id,
-            obj.weight_for_asset_investment_discount
+            obj.weight_for_asset_investment_energy_discount
                 * obj.investment_cost_storage_energy
                 * obj.capacity_storage_energy
                 AS cost,
