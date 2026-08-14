@@ -16,6 +16,10 @@ function add_storage_constraints!(
     var_storage_level_inter_period = variables[:storage_level_inter_period]
     var_accumulated_storage_level_intra_rep_period =
         variables[:accumulated_storage_level_intra_rep_period]
+    var_max_storage_level_increase_intra_rep_period =
+        variables[:max_storage_level_increase_intra_rep_period]
+    var_max_storage_level_decrease_intra_rep_period =
+        variables[:max_storage_level_decrease_intra_rep_period]
     available_energy_capacity =
         expressions[:available_energy_capacity_aggregated_vintage_method].expressions[:energy_capacity]
 
@@ -95,12 +99,18 @@ function add_storage_constraints!(
                 zip(indices, cons.expressions[:incoming], cons.expressions[:outgoing])
             ],
         )
+    end
 
-        # - Maximum storage level
+    # - Maximum storage level within a representative period
+    let table_name = :max_storage_level_intra_rep_period_limit,
+        cons = constraints[table_name],
+        indices =
+            _append_storage_level_intra_rep_period_bound_data_to_indices(connection, table_name)
+
         attach_constraint!(
             model,
             cons,
-            :max_storage_level_intra_rep_period_limit,
+            table_name,
             [
                 begin
                     max_storage_level_agg = _profile_aggregate(
@@ -112,21 +122,26 @@ function add_storage_constraints!(
                     )
                     @constraint(
                         model,
-                        var_storage_level ≤
+                        var_storage_level_intra_rep_period.container[row.storage_level_id] ≤
                         max_storage_level_agg *
                         available_energy_capacity[row.avail_energy_capacity_id],
-                        base_name = "max_storage_level_intra_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
-                end for (row, var_storage_level) in
-                zip(indices, var_storage_level_intra_rep_period.container)
+                end for row in indices
             ],
         )
+    end
 
-        # - Minimum storage level
+    # - Nonredundant minimum storage level within a representative period
+    let table_name = :min_storage_level_intra_rep_period_limit,
+        cons = constraints[table_name],
+        indices =
+            _append_storage_level_intra_rep_period_bound_data_to_indices(connection, table_name)
+
         attach_constraint!(
             model,
             cons,
-            :min_storage_level_intra_rep_period_limit,
+            table_name,
             [
                 begin
                     min_storage_level_agg = _profile_aggregate(
@@ -138,13 +153,12 @@ function add_storage_constraints!(
                     )
                     @constraint(
                         model,
-                        var_storage_level ≥
+                        var_storage_level_intra_rep_period.container[row.storage_level_id] ≥
                         min_storage_level_agg *
                         available_energy_capacity[row.avail_energy_capacity_id],
-                        base_name = "min_storage_level_intra_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                        base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
                     )
-                end for (row, var_storage_level) in
-                zip(indices, var_storage_level_intra_rep_period.container)
+                end for row in indices
             ],
         )
     end
@@ -201,56 +215,187 @@ function add_storage_constraints!(
                 zip(indices, cons.expressions[:accumulated_intra_period])
             ],
         )
+    end
 
-        # - Maximum storage level
+    # - Maximum increase and decrease of accumulated storage within a representative period (6a)
+    let table_name = :storage_level_intra_rep_period_bounds, cons = constraints[table_name]
+        indices = DuckDB.query(connection, "FROM cons_$table_name ORDER BY id")
         attach_constraint!(
             model,
             cons,
-            :max_storage_level_inter_period_limit,
+            :max_storage_level_increase_intra_rep_period_limit,
             [
-                begin
-                    max_storage_level_agg = _profile_aggregate(
-                        profiles.inter_period,
-                        (row.max_storage_level_profile_name, row.milestone_year, row.scenario),
-                        row.period_block_start:row.period_block_end,
-                        Statistics.mean,
-                        1.0,
-                    )
-                    @constraint(
-                        model,
-                        var_storage_level ≤
-                        max_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_id],
-                        base_name = "max_storage_level_inter_period_limit[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
-                    )
-                end for
-                (row, var_storage_level) in zip(indices, var_storage_level_inter_period.container)
+                @constraint(
+                    model,
+                    var_accumulated_storage_level_intra_rep_period.container[row.accumulated_storage_level_id] ≤
+                    var_max_storage_level_increase_intra_rep_period.container[row.max_storage_level_increase_id],
+                    base_name = "max_storage_level_increase_intra_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                ) for row in indices
             ],
         )
-
-        # - Minimum storage level
+        indices = DuckDB.query(connection, "FROM cons_$table_name ORDER BY id")
         attach_constraint!(
             model,
             cons,
-            :min_storage_level_inter_period_limit,
+            :max_storage_level_decrease_intra_rep_period_limit,
+            [
+                @constraint(
+                    model,
+                    -var_max_storage_level_decrease_intra_rep_period.container[row.max_storage_level_decrease_id] ≤
+                    var_accumulated_storage_level_intra_rep_period.container[row.accumulated_storage_level_id],
+                    base_name = "max_storage_level_decrease_intra_rep_period_limit[$(row.asset),$(row.milestone_year),$(row.rep_period),$(row.time_block_start):$(row.time_block_end)]"
+                ) for row in indices
+            ],
+        )
+    end
+
+    # - Maximum inter-period storage level (4a or 6b-6c)
+    let table_name = :max_storage_level_inter_period_limit,
+        cons = constraints[table_name],
+        indices = _append_storage_level_inter_period_bound_data_to_indices(connection, table_name)
+
+        attach_constraint!(
+            model,
+            cons,
+            table_name,
             [
                 begin
-                    min_storage_level_agg = _profile_aggregate(
-                        profiles.inter_period,
-                        (row.min_storage_level_profile_name, row.milestone_year, row.scenario),
-                        row.period_block_start:row.period_block_end,
-                        Statistics.mean,
-                        0.0,
-                    )
-                    @constraint(
-                        model,
-                        var_storage_level ≥
-                        min_storage_level_agg *
-                        available_energy_capacity[row.avail_energy_capacity_id],
-                        base_name = "min_storage_level_inter_period_limit[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
-                    )
-                end for
-                (row, var_storage_level) in zip(indices, var_storage_level_inter_period.container)
+                    conservative =
+                        row.inter_period_storage_level_bounds == "inter_and_intra_rep_period"
+                    max_storage_level_agg = if conservative
+                        _profile_aggregate(
+                            profiles.inter_period,
+                            (row.max_storage_level_profile_name, row.milestone_year, row.scenario),
+                            row.period_block_start:row.period_block_end,
+                            minimum,
+                            1.0,
+                        )
+                    else
+                        _profile_aggregate(
+                            profiles.inter_period,
+                            (row.max_storage_level_profile_name, row.milestone_year, row.scenario),
+                            row.period_block_start:row.period_block_end,
+                            Statistics.mean,
+                            1.0,
+                        )
+                    end
+                    if conservative
+                        initial_storage_level = row.initial_storage_level::Union{Float64,Missing}
+                        loss_coefficient = 1.0 - (row.storage_loss_from_stored_energy::Float64)
+                        max_increase =
+                            cons.expressions[:max_storage_level_increase_intra_rep_period][row.id]
+                        if row.period_block_start == 1 && !ismissing(initial_storage_level)
+                            initial_storage_level_in_energy =
+                                initial_storage_level *
+                                available_energy_capacity[row.avail_energy_capacity_id]
+                            @constraint(
+                                model,
+                                loss_coefficient * initial_storage_level_in_energy + max_increase ≤
+                                max_storage_level_agg *
+                                available_energy_capacity[row.avail_energy_capacity_id],
+                                base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
+                            )
+                        else
+                            previous_level::JuMP.VariableRef = if row.period_block_start > 1
+                                var_storage_level_inter_period.container[row.previous_id::Int]
+                            else
+                                var_storage_level_inter_period.container[row.cycle_id::Int]
+                            end
+                            @constraint(
+                                model,
+                                loss_coefficient * previous_level + max_increase ≤
+                                max_storage_level_agg *
+                                available_energy_capacity[row.avail_energy_capacity_id],
+                                base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
+                            )
+                        end
+                    else
+                        @constraint(
+                            model,
+                            var_storage_level_inter_period.container[row.storage_level_id] ≤
+                            max_storage_level_agg *
+                            available_energy_capacity[row.avail_energy_capacity_id],
+                            base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
+                        )
+                    end
+                end for row in indices
+            ],
+        )
+    end
+
+    # - Minimum inter-period storage level (4b or 6d-6e)
+    let table_name = :min_storage_level_inter_period_limit,
+        cons = constraints[table_name],
+        indices = _append_storage_level_inter_period_bound_data_to_indices(connection, table_name)
+
+        attach_constraint!(
+            model,
+            cons,
+            table_name,
+            [
+                begin
+                    conservative =
+                        row.inter_period_storage_level_bounds == "inter_and_intra_rep_period"
+                    min_storage_level_agg = if conservative
+                        _profile_aggregate(
+                            profiles.inter_period,
+                            (row.min_storage_level_profile_name, row.milestone_year, row.scenario),
+                            row.period_block_start:row.period_block_end,
+                            maximum,
+                            0.0,
+                        )
+                    else
+                        _profile_aggregate(
+                            profiles.inter_period,
+                            (row.min_storage_level_profile_name, row.milestone_year, row.scenario),
+                            row.period_block_start:row.period_block_end,
+                            Statistics.mean,
+                            0.0,
+                        )
+                    end
+                    if conservative
+                        initial_storage_level = row.initial_storage_level::Union{Float64,Missing}
+                        loss_coefficient =
+                            (
+                                1.0 - (row.storage_loss_from_stored_energy::Float64)
+                            )^(Int(row.duration_period_block))
+                        max_decrease =
+                            cons.expressions[:max_storage_level_decrease_intra_rep_period][row.id]
+                        if row.period_block_start == 1 && !ismissing(initial_storage_level)
+                            initial_storage_level_in_energy =
+                                initial_storage_level *
+                                available_energy_capacity[row.avail_energy_capacity_id]
+                            @constraint(
+                                model,
+                                loss_coefficient * initial_storage_level_in_energy - max_decrease ≥
+                                min_storage_level_agg *
+                                available_energy_capacity[row.avail_energy_capacity_id],
+                                base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
+                            )
+                        else
+                            previous_level::JuMP.VariableRef = if row.period_block_start > 1
+                                var_storage_level_inter_period.container[row.previous_id::Int]
+                            else
+                                var_storage_level_inter_period.container[row.cycle_id::Int]
+                            end
+                            @constraint(
+                                model,
+                                loss_coefficient * previous_level - max_decrease ≥
+                                min_storage_level_agg *
+                                available_energy_capacity[row.avail_energy_capacity_id],
+                                base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
+                            )
+                        end
+                    else
+                        @constraint(
+                            model,
+                            var_storage_level_inter_period.container[row.storage_level_id] ≥
+                            min_storage_level_agg *
+                            available_energy_capacity[row.avail_energy_capacity_id],
+                            base_name = "$table_name[$(row.asset),$(row.milestone_year),$(row.scenario),$(row.period_block_start):$(row.period_block_end)]"
+                        )
+                    end
+                end for row in indices
             ],
         )
     end
@@ -371,7 +516,7 @@ function add_storage_constraints!(
     end
 end
 
-function _append_storage_data_to_indices(connection, table_name)
+function _append_storage_data_to_indices(connection, table_name::Symbol)
     join_duration = ""
     select_duration = ""
     id_partition_columns, id_order_column = if table_name == :balance_storage_inter_period
@@ -484,5 +629,103 @@ function _append_storage_data_to_indices(connection, table_name)
         $join_duration
         ORDER BY cons.id
         ",
+    )
+end
+
+function _append_storage_level_intra_rep_period_bound_data_to_indices(
+    connection::DuckDB.DB,
+    table_name::Symbol,
+)
+    return DuckDB.query(
+        connection,
+        """
+        SELECT
+            cons.*,
+            max_profile.profile_name AS max_storage_level_profile_name,
+            min_profile.profile_name AS min_storage_level_profile_name,
+            expr_avail.id AS avail_energy_capacity_id
+        FROM cons_$table_name AS cons
+        LEFT JOIN expr_available_energy_capacity_aggregated_vintage_method AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.milestone_year = expr_avail.milestone_year
+        LEFT JOIN assets_profiles AS max_profile
+            ON cons.asset = max_profile.asset
+            AND cons.milestone_year = max_profile.commission_year
+            AND max_profile.profile_type = 'max_storage_level'
+        LEFT JOIN assets_profiles AS min_profile
+            ON cons.asset = min_profile.asset
+            AND cons.milestone_year = min_profile.commission_year
+            AND min_profile.profile_type = 'min_storage_level'
+        ORDER BY cons.id
+        """,
+    )
+end
+
+function _append_storage_level_inter_period_bound_data_to_indices(
+    connection::DuckDB.DB,
+    table_name::Symbol,
+)
+    return DuckDB.query(
+        connection,
+        """
+        WITH
+            variable_neighbors AS (
+                SELECT
+                    var.id,
+                    LAG(var.id) OVER (
+                        PARTITION BY var.asset, var.milestone_year, var.scenario
+                        ORDER BY var.period_block_start
+                    ) AS previous_id,
+                    LAST_VALUE(var.id) OVER (
+                        PARTITION BY var.asset, var.milestone_year, var.scenario
+                        ORDER BY var.period_block_start
+                        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+                    ) AS cycle_id
+                FROM var_storage_level_inter_period AS var
+            ),
+            durations AS (
+                SELECT
+                    cons.id,
+                    SUM(timeframe.num_timesteps) AS duration_period_block
+                FROM cons_$table_name AS cons
+                LEFT JOIN timeframe_data AS timeframe
+                    ON cons.milestone_year = timeframe.milestone_year
+                    AND timeframe.period BETWEEN cons.period_block_start AND cons.period_block_end
+                GROUP BY cons.id
+            )
+        SELECT
+            cons.*,
+            variable_neighbors.previous_id,
+            variable_neighbors.cycle_id,
+            durations.duration_period_block,
+            asset_commission.storage_loss_from_stored_energy,
+            asset_milestone.initial_storage_level,
+            max_profile.profile_name AS max_storage_level_profile_name,
+            min_profile.profile_name AS min_storage_level_profile_name,
+            expr_avail.id AS avail_energy_capacity_id
+        FROM cons_$table_name AS cons
+        LEFT JOIN variable_neighbors ON cons.storage_level_id = variable_neighbors.id
+        LEFT JOIN asset_commission
+            ON cons.asset = asset_commission.asset
+            AND cons.milestone_year = asset_commission.commission_year
+        LEFT JOIN asset_milestone
+            ON cons.asset = asset_milestone.asset
+            AND cons.milestone_year = asset_milestone.milestone_year
+        LEFT JOIN expr_available_energy_capacity_aggregated_vintage_method AS expr_avail
+            ON cons.asset = expr_avail.asset
+            AND cons.milestone_year = expr_avail.milestone_year
+        LEFT JOIN assets_timeframe_profiles AS max_profile
+            ON cons.asset = max_profile.asset
+            AND cons.milestone_year = max_profile.milestone_year
+            AND cons.scenario = max_profile.scenario
+            AND max_profile.profile_type = 'max_storage_level'
+        LEFT JOIN assets_timeframe_profiles AS min_profile
+            ON cons.asset = min_profile.asset
+            AND cons.milestone_year = min_profile.milestone_year
+            AND cons.scenario = min_profile.scenario
+            AND min_profile.profile_type = 'min_storage_level'
+        LEFT JOIN durations ON cons.id = durations.id
+        ORDER BY cons.id
+        """,
     )
 end
