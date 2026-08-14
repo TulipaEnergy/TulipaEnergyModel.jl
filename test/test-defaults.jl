@@ -15,6 +15,20 @@
     TulipaEnergyModel.EnergyProblem(connection)
 end
 
+@testitem "Test inter-period storage-level bounds default" setup = [CommonSetup] tags =
+    [:unit, :validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(connection, "ALTER TABLE asset DROP COLUMN inter_period_storage_level_bounds")
+
+    TEM.populate_with_defaults!(connection)
+
+    values = [
+        row.inter_period_storage_level_bounds for row in
+        DuckDB.query(connection, "SELECT DISTINCT inter_period_storage_level_bounds FROM asset")
+    ]
+    @test values == ["inter_period_only"]
+end
+
 @testitem "Test Tiny fixture has all defaults and populate doesn't break it" setup = [CommonSetup] tags =
     [:unit, :validation, :fast] begin
     connection = _tiny_fixture()

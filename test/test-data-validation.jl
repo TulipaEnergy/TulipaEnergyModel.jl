@@ -72,6 +72,21 @@ end
     @test error_messages == ["Table 'asset' has bad value for column 'type': 'badtype'"]
 end
 
+@testitem "Test schema oneOf constraints - bad storage-level bounds" setup = [CommonSetup] tags =
+    [:unit, :data_validation, :fast] begin
+    connection = _tiny_fixture()
+    DuckDB.query(
+        connection,
+        "UPDATE asset SET inter_period_storage_level_bounds = 'bad_bounds' WHERE asset = 'ccgt'",
+    )
+
+    @test_throws TEM.DataValidationException TEM.create_internal_tables!(connection)
+    error_messages = TEM._validate_schema_one_of_constraints!(String[], connection)
+    @test error_messages == [
+        "Table 'asset' has bad value for column 'inter_period_storage_level_bounds': 'bad_bounds'",
+    ]
+end
+
 @testitem "Test schema numeric constraints - minimum" setup = [CommonSetup] tags =
     [:unit, :data_validation, :fast] begin
     connection = _tiny_fixture()
