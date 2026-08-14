@@ -630,13 +630,12 @@ nice_query("SELECT *
 ")
 ```
 
-Select all indices related to the balance storage at representative periods when both `min_storage_level_intra_rep_period_limit` and `max_storage_level_intra_rep_period_limit` have duals equal to 0.
+Select all maximum storage-level constraint indices at representative periods with a dual equal to 0.
 
 ```@example obz
 nice_query("SELECT *
-    FROM cons_balance_storage_rep_period
+    FROM cons_max_storage_level_intra_rep_period_limit
     WHERE dual_max_storage_level_intra_rep_period_limit = 0
-        AND dual_min_storage_level_intra_rep_period_limit = 0
     LIMIT 5
 ")
 ```

@@ -827,6 +827,78 @@ v^{\text{inter-period-storage}}_{a,s,p_y} \leq p^{\text{max inter-period-storage
 v^{\text{inter-period-storage}}_{a,s,p_y} \geq p^{\text{min inter-period-storage level}}_{a,s,p_y} \cdot e^{\text{available energy inv limit}}_{a,y} \quad \forall s \in \mathcal{S}, y \in \mathcal{Y}, \forall a \in \mathcal{A}^{\text{ss}}, \forall p_y \in \mathcal{P}_y
 ```
 
+The two constraints above are selected with
+`inter_period_storage_level_bounds = inter_period_only`. For a timeframe block,
+Tulipa uses the mean minimum and maximum profiles. A zero or missing minimum
+profile does not create a constraint because
+$v^{\text{inter-period-storage}}$ is already nonnegative. Selecting `none`
+omits both constraints.
+
+#### [Inter- and Intra-representative-period Storage Bounds](@id conservative-storage-level-bounds)
+
+The `inter_and_intra_rep_period` option implements equations to prevent the accumulated storage trajectory within a
+representative period from violating a limit even when the inter-period level at
+the end of the period is feasible.
+
+Let $v^{\text{max increase}}_{a,y,k_y}$ and
+$v^{\text{max decrease}}_{a,y,k_y}$ be nonnegative envelope variables. The following equation bounds every accumulated-change checkpoint:
+
+```math
+-v^{\text{max decrease}}_{a,y,k_y}
+\leq v^{\text{accumulated intra-period-storage}}_{a,y,k_y,b_{k_y}}
+\leq v^{\text{max increase}}_{a,y,k_y}
+```
+
+For a timeframe block $B$, define
+$\Omega_{s,B,k_y} = \sum_{p_y \in B} p^{\text{map}}_{s,p_y,k_y}$,
+$D_B = \sum_{p_y \in B} p^{\text{duration}}_{p_y}$, and let
+$p^{\max}_{a,s,B}$ be the minimum maximum-level profile over the block. For a
+non-first block, the conservative upper bound is:
+
+```math
+\left(1-p^{\text{storage loss from stored energy}}_{a,y}\right)
+v^{\text{inter-period-storage}}_{a,s,B-1}
++ \sum_{k_y \in \mathcal{K}_y} \Omega_{s,B,k_y}
+v^{\text{max increase}}_{a,y,k_y}
+\leq p^{\max}_{a,s,B} e^{\text{available energy inv limit}}_{a,y}
+```
+
+For the first block, $v^{\text{start}}_{a,s,y}$ is the last inter-period level
+for cyclic storage, or
+$p^{\text{init storage level}}_{a,y}e^{\text{available energy inv limit}}_{a,y}$
+when an explicit initial level is defined:
+
+```math
+\left(1-p^{\text{storage loss from stored energy}}_{a,y}\right)
+v^{\text{start}}_{a,s,y}
++ \sum_{k_y \in \mathcal{K}_y} \Omega_{s,B^{\text{first}},k_y}
+v^{\text{max increase}}_{a,y,k_y}
+\leq p^{\max}_{a,s,B^{\text{first}}} e^{\text{available energy inv limit}}_{a,y}
+```
+
+Let $p^{\min}_{a,s,B}$ be the maximum minimum-level profile over the block. The
+corresponding lower bounds use the full block duration:
+
+```math
+\left(1-p^{\text{storage loss from stored energy}}_{a,y}\right)^{D_B}
+v^{\text{inter-period-storage}}_{a,s,B-1}
+- \sum_{k_y \in \mathcal{K}_y} \Omega_{s,B,k_y}
+v^{\text{max decrease}}_{a,y,k_y}
+\geq p^{\min}_{a,s,B} e^{\text{available energy inv limit}}_{a,y}
+```
+
+```math
+\left(1-p^{\text{storage loss from stored energy}}_{a,y}\right)^{D_{B^{\text{first}}}}
+v^{\text{start}}_{a,s,y}
+- \sum_{k_y \in \mathcal{K}_y} \Omega_{s,B^{\text{first}},k_y}
+v^{\text{max decrease}}_{a,y,k_y}
+\geq p^{\min}_{a,s,B^{\text{first}}} e^{\text{available energy inv limit}}_{a,y}
+```
+
+Unlike the simple lower bound, equations in this section remain necessary when the
+minimum profile is zero because the decrease envelope can make their left-hand
+side negative. The conservative option therefore retains these rows.
+
 #### Inter-period Cycling Constraint
 
 The cycling constraint for the inter-period constraints links the first-period block ($p^{\text{first}}_y$) and the last one ($p^{\text{last}}_y$) in the timeframe. The parameter $p^{\text{init storage level}}_{a,y}$ determines the considered equations in the model for this constraint:

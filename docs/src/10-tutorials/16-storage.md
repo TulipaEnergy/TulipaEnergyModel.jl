@@ -97,6 +97,13 @@ The battery storage looks reasonable, but what is happening with the hydrogen st
 
 Change the parameter `use_inter_period_constraints` from `false` to `true` for the hydrogen storage in the file `assets.csv`.
 
+The companion parameter `inter_period_storage_level_bounds` chooses how storage
+limits are enforced for the inter-period storage level. Its default, `inter_period_only`, bounds the level between
+representative periods. Use `inter_and_intra_rep_period` to conservatively protect
+the level within the mapped representative periods as well, or `none` to omit
+these additional bounds. See [Choosing storage-level bounds](@ref use-inter-period-constraints-setup)
+for the model-size and accuracy tradeoff.
+
 Rerun the workflow and check the results again...
 
 !!! tip "Pro tip"
@@ -149,6 +156,10 @@ Change the `initial_storage_level` of the battery to empty (blank) and rerun the
 ### The parameter `storage_loss_from_stored_energy`
 
 Change the `storage_loss_from_stored_energy` of the battery to empty (blank) and rerun the workflow.
+
+### The parameter `inter_period_storage_level_bounds`
+
+Change the `inter_period_storage_level_bounds` of the hydrogen storage to `inter_and_intra_rep_period` and rerun the workflow.
 
 ## Comparing with the full year of optimization
 
