@@ -108,7 +108,7 @@ function _sum_min_down_blocks(sum_rows, shut_downs, start_of_curr_constraint)
             start_of_this <=
             start_of_curr_constraint
         )
-            sum = sum + shut_downs[single_row.id]
+            sum = sum + shut_downs[single_row.shut_down_id]
         end
     end
     return sum
