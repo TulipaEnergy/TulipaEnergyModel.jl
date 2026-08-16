@@ -48,13 +48,12 @@ end
 function _sum_min_up_blocks(sum_rows, start_ups, start_of_curr_constraint)
     sum = 0
     for single_row in sum_rows
+        minimum_up_steps = ceil(Int, single_row.minimum_up_time / single_row.resolution)
+        lower_bound = start_of_curr_constraint - minimum_up_steps + 1
+
         start_of_this = single_row.time_block_start
-        minimum_up_time = single_row.minimum_up_time
-        if (
-            start_of_curr_constraint - minimum_up_time + 1 <=
-            start_of_this <=
-            start_of_curr_constraint
-        )
+
+        if (lower_bound <= start_of_this <= start_of_curr_constraint)
             sum = sum + start_ups[single_row.start_up_id]
         end
     end
@@ -78,6 +77,7 @@ function _get_indices_for_sum(
             asset.minimum_up_time,
             asset.minimum_down_time,
             $variable_table_name.id as $(variable_name)_id,
+            rep_periods_data.resolution as resolution
         FROM cons_$table_name AS cons
         LEFT JOIN asset
             ON cons.asset = asset.asset
@@ -86,6 +86,9 @@ function _get_indices_for_sum(
             AND $variable_table_name.milestone_year = cons.milestone_year
             AND $variable_table_name.rep_period = cons.rep_period
             AND $variable_table_name.time_block_start = cons.time_block_start
+        LEFT JOIN rep_periods_data
+            ON rep_periods_data.milestone_year == cons.milestone_year
+            AND rep_periods_data.rep_period == cons.rep_period
         WHERE cons.asset = '$curr_asset' AND cons.milestone_year = $curr_year AND cons.rep_period = $curr_rep_period
         ORDER BY cons.id
         ",

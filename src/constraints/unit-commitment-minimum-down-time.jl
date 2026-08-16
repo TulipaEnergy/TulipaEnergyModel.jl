@@ -100,14 +100,14 @@ end
 
 function _sum_min_down_blocks(sum_rows, shut_downs, start_of_curr_constraint)
     sum = 0
+
     for single_row in sum_rows
+        minimum_down_steps = ceil(Int, single_row.minimum_down_time / single_row.resolution)
+        lower_bound = start_of_curr_constraint - minimum_down_steps + 1
+
         start_of_this = single_row.time_block_start
-        minimum_down_time = single_row.minimum_down_time
-        if (
-            start_of_curr_constraint - minimum_down_time + 1 <=
-            start_of_this <=
-            start_of_curr_constraint
-        )
+
+        if (lower_bound <= start_of_this <= start_of_curr_constraint)
             sum = sum + shut_downs[single_row.shut_down_id]
         end
     end
